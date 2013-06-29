@@ -76,8 +76,8 @@ IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 @echo BUILD_FLAVOR_DIR=%BUILD_FLAVOR_DIR%
 
-copy ".\lib\AspNetMvc\*.*" "%PACKAGE_DIR%\."
-IF %ERRORLEVEL% NEQ 0 goto pkgError
+rem copy ".\lib\AspNetMvc\*.*" "%PACKAGE_DIR%\."
+rem IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 copy ".\lib\IronRuby\*.*" "%PACKAGE_DIR%\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError

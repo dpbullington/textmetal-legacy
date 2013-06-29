@@ -5,6 +5,8 @@ REM	Copyright ©2002-2013 Daniel Bullington (dpbullington@gmail.com)
 REM	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 REM
 
+set SNK_EXE=C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\sn.exe
+
 set BUILD_FLAVOR_DIR=Debug
 set BUILD_TOOL_CFG=Debug
 
@@ -252,6 +254,9 @@ echo *** adonet_codegen_execute ***
 	-property:"DataSourceTag=odbc.sqlserver"
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
+echo *** strong_name_key_generate ***
+"%SNK_EXE%" -k "%SRC_DIR%\%CLR_NAMESPACE%.snk"
+IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 goto pkgSuccess
 
