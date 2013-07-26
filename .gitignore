@@ -22,6 +22,6 @@ desktop.ini
 *.pidb
 *.userprefs
 
-testresult*
-coverage*
+#testresult*
+#coverage*
 [\!]git*

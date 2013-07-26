@@ -38,9 +38,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core">
     </Reference>
-    <Reference Include="TestingFramework.Core">
-      <HintPath>..\..\lib\PrivateBuilt\TestingFramework.Core.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SolutionAssemblyInfo.cs">
@@ -56,6 +53,14 @@
     <None Include="UnitTesting.nunit" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TextMetal.Imports\TextMetal.Imports.csproj">
+      <Project>{40E6902D-3881-4271-BDF3-7D88DB7CF230}</Project>
+      <Name>TextMetal.Imports</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.TestFramework\TextMetal.TestFramework.csproj">
+      <Project>{3155F5F3-7B0B-4B3B-B5BC-11DF80FE2148}</Project>
+      <Name>TextMetal.TestFramework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

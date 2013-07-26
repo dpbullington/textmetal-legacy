@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<DataSourceMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+               xmlns="http://www.textmetal.com/api/v5.0.0">
+	<Insert text="" type="Text" timeout="" prepare="false">
+		<Parameters>
+			<Parameter prepare="Input" name="" property="" size="0" type="Object" />
+			<Parameter prepare="Input" name="" property="" size="0" type="Object" />
+			<Parameter prepare="Input" name="" property="" size="0" type="Object" />
+		</Parameters>
+		<Fields>
+			<Field name="" property="" />
+			<Field name="" property="" />
+			<Field name="" property="" />
+		</Fields>
+	</Insert>
+	<Update text="" type="Text" timeout="" prepare="false">
+		<Parameters />
+		<Fields />
+	</Update>
+	<Delete text="" type="Text" timeout="" prepare="false">
+		<Parameters />
+		<Fields />
+	</Delete>
+	<SelectOne text="" type="Text" timeout="" prepare="false">
+		<Parameters />
+		<Fields />
+	</SelectOne>
+	<SelectAll text="" type="Text" timeout="" prepare="false">
+		<Parameters />
+		<Fields />
+	</SelectAll>
+	<Select>
+		<For id="">
+			<Command text="" type="Text" timeout="" prepare="false">
+				<Parameters />
+				<Fields />
+			</Command>
+		</For>
+	</Select>
+</DataSourceMap>

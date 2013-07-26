@@ -42,9 +42,6 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WebFramework.Core">
-      <HintPath>..\..\lib\PrivateBuilt\WebFramework.Core.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SolutionAssemblyInfo.cs">
@@ -187,6 +184,10 @@
     <ProjectReference Include="..\TextMetal.Framework.Core\TextMetal.Framework.Core.csproj">
       <Project>{72DACF93-04D7-42A3-B851-2717915FFF89}</Project>
       <Name>TextMetal.Framework.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Imports\TextMetal.Imports.csproj">
+      <Project>{40E6902D-3881-4271-BDF3-7D88DB7CF230}</Project>
+      <Name>TextMetal.Imports</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

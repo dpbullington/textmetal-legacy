@@ -143,58 +143,6 @@ namespace TextMetal.Common.Data.Advanced
 			return expressionText;
 		}
 
-		private static DbType InferDbTypeForClrType(Type clrType)
-		{
-			if ((object)clrType == null)
-				throw new ArgumentNullException("clrType");
-
-			if (clrType.IsByRef /* || type.IsPointer || type.IsArray */)
-				return InferDbTypeForClrType(clrType.GetElementType());
-			else if (clrType.IsGenericType &&
-			         clrType.GetGenericTypeDefinition() == typeof(Nullable<>))
-				return InferDbTypeForClrType(Nullable.GetUnderlyingType(clrType));
-			else if (clrType.IsEnum)
-				return InferDbTypeForClrType(Enum.GetUnderlyingType(clrType));
-			else if (clrType == typeof(Boolean))
-				return DbType.Boolean;
-			else if (clrType == typeof(Byte))
-				return DbType.Byte;
-			else if (clrType == typeof(DateTime))
-				return DbType.DateTime;
-			else if (clrType == typeof(DateTimeOffset))
-				return DbType.DateTimeOffset;
-			else if (clrType == typeof(Decimal))
-				return DbType.Decimal;
-			else if (clrType == typeof(Double))
-				return DbType.Double;
-			else if (clrType == typeof(Guid))
-				return DbType.Guid;
-			else if (clrType == typeof(Int16))
-				return DbType.Int16;
-			else if (clrType == typeof(Int32))
-				return DbType.Int32;
-			else if (clrType == typeof(Int64))
-				return DbType.Int64;
-			else if (clrType == typeof(SByte))
-				return DbType.SByte;
-			else if (clrType == typeof(Single))
-				return DbType.Single;
-			else if (clrType == typeof(UInt16))
-				return DbType.UInt16;
-			else if (clrType == typeof(UInt32))
-				return DbType.UInt32;
-			else if (clrType == typeof(UInt64))
-				return DbType.UInt64;
-			else if (clrType == typeof(Byte[]))
-				return DbType.Binary;
-			else if (clrType == typeof(String))
-				return DbType.String;
-			else if (clrType == typeof(Object))
-				return DbType.Object;
-			else
-				throw new InvalidOperationException(string.Format("Cannot infer parameter type from unsupported CLR type '{0}'.", clrType.FullName));
-		}
-
 		protected override IExpression VisitBinary(IBinaryExpression binaryExpression)
 		{
 			if ((object)binaryExpression == null)
@@ -374,7 +322,7 @@ namespace TextMetal.Common.Data.Advanced
 			parameterName = this.DataSourceTagSpecific.GetParameterName(string.Format("expr_{0}", Guid.NewGuid().ToString("N")));
 			valueType = value.__.GetType();
 
-			commandParameter = this.UnitOfWorkContext.CreateParameter(ParameterDirection.Input, InferDbTypeForClrType(valueType), 0, 0, 0, true, parameterName, value.__);
+			commandParameter = this.UnitOfWorkContext.CreateParameter(ParameterDirection.Input, AdoNetHelper.InferDbTypeForClrType(valueType), 0, 0, 0, true, parameterName, value.__);
 			this.commandParameters.Add(commandParameter);
 
 			this.Strings.Append(parameterName);

@@ -82,9 +82,6 @@ rem IF %ERRORLEVEL% NEQ 0 goto pkgError
 copy ".\lib\IronRuby\*.*" "%PACKAGE_DIR%\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy ".\lib\PrivateBuilt\*.*" "%PACKAGE_DIR%\."
-IF %ERRORLEVEL% NEQ 0 goto pkgError
-
 copy ".\lib\SQLite\x64\*.*" "%PACKAGE_DIR%\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
@@ -305,6 +302,49 @@ copy ".\src\TextMetal.HostImpl.Web\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.Web
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 copy ".\src\TextMetal.HostImpl.Web\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.Web.pdb" "%PACKAGE_DIR%\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+
+copy ".\src\TextMetal.TestFramework\bin\%BUILD_FLAVOR_DIR%\TextMetal.TestFramework.dll" "%PACKAGE_DIR%\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy ".\src\TextMetal.TestFramework\bin\%BUILD_FLAVOR_DIR%\TextMetal.TestFramework.xml" "%PACKAGE_DIR%\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy ".\src\TextMetal.TestFramework\bin\%BUILD_FLAVOR_DIR%\TextMetal.TestFramework.pdb" "%PACKAGE_DIR%\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+
+
+REM IMPORTS
+
+copy ".\src\TextMetal.Imports\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.dll" "%PACKAGE_DIR%\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy ".\src\TextMetal.Imports\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.xml" "%PACKAGE_DIR%\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy ".\src\TextMetal.Imports\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.pdb" "%PACKAGE_DIR%\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+
+copy ".\src\TextMetal.Imports.nunit.console.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.console.exe" "%PACKAGE_DIR%\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy ".\src\TextMetal.Imports.nunit.console.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.console.xml" "%PACKAGE_DIR%\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy ".\src\TextMetal.Imports.nunit.console.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.console.pdb" "%PACKAGE_DIR%\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+
+copy ".\src\TextMetal.Imports.nunit.gui.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.gui.exe" "%PACKAGE_DIR%\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy ".\src\TextMetal.Imports.nunit.gui.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.gui.xml" "%PACKAGE_DIR%\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy ".\src\TextMetal.Imports.nunit.gui.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.gui.pdb" "%PACKAGE_DIR%\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 

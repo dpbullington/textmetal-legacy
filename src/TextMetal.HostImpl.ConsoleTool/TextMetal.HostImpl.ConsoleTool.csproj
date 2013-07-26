@@ -93,7 +93,7 @@
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.HostImpl.Tool\TextMetal.HostImpl.Tool.csproj">
       <Project>{059BC844-6711-4A7E-A716-446E54D8E33B}</Project>
-      <Name>TextMetal.Hosting.Tool</Name>
+      <Name>TextMetal.HostImpl.Tool</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

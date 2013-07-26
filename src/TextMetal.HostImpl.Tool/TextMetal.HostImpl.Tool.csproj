@@ -62,7 +62,7 @@
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.Core\TextMetal.Common.Core.csproj">
       <Project>{D1860A67-7EFB-4C0F-89CD-A641D99DCC2A}</Project>
-      <Name>TextMetal.Plumbing</Name>
+      <Name>TextMetal.Common.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Framework.AssociativeModel\TextMetal.Framework.AssociativeModel.csproj">
       <Project>{69F2FDCB-60AA-4B1E-B133-715D5EC29131}</Project>

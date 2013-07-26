@@ -33,7 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-	<DocumentationFile>bin\Release\VisualStudioConversion.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\VisualStudioConversion.XML</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
@@ -55,7 +55,7 @@
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.HostImpl.Tool\TextMetal.HostImpl.Tool.csproj">
       <Project>{059BC844-6711-4A7E-A716-446E54D8E33B}</Project>
-      <Name>TextMetal.Hosting.Tool</Name>
+      <Name>TextMetal.HostImpl.Tool</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

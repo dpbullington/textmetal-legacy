@@ -241,10 +241,96 @@ namespace TextMetal.Common.UnitTests.Data
 		}
 
 		[Test]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void ShouldFailOnInvalidTypeInferDbTypeForClrTypeTest()
+		{
+			AdoNetHelper.InferDbTypeForClrType(typeof(Exception));
+		}
+
+		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullConnectionStaticExecuteReaderTest()
 		{
 			AdoNetHelper.ExecuteReader(null, null, CommandType.StoredProcedure, null, null, CommandBehavior.CloseConnection, null, false);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullTypeInferDbTypeForClrTypeTest()
+		{
+			AdoNetHelper.InferDbTypeForClrType(null);
+		}
+
+		[Test]
+		public void ShouldInferDbTypeForClrTypeTest()
+		{
+			DbType dbType;
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(Boolean));
+			Assert.AreEqual(DbType.Boolean, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(Byte));
+			Assert.AreEqual(DbType.Byte, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(DateTime));
+			Assert.AreEqual(DbType.DateTime, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(DateTimeOffset));
+			Assert.AreEqual(DbType.DateTimeOffset, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(Decimal));
+			Assert.AreEqual(DbType.Decimal, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(Double));
+			Assert.AreEqual(DbType.Double, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(Guid));
+			Assert.AreEqual(DbType.Guid, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(Int16));
+			Assert.AreEqual(DbType.Int16, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(Int32));
+			Assert.AreEqual(DbType.Int32, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(Int64));
+			Assert.AreEqual(DbType.Int64, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(SByte));
+			Assert.AreEqual(DbType.SByte, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(Single));
+			Assert.AreEqual(DbType.Single, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(UInt16));
+			Assert.AreEqual(DbType.UInt16, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(UInt32));
+			Assert.AreEqual(DbType.UInt32, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(UInt64));
+			Assert.AreEqual(DbType.UInt64, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(Byte[]));
+			Assert.AreEqual(DbType.Binary, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(Object));
+			Assert.AreEqual(DbType.Object, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(UInt64));
+			Assert.AreEqual(DbType.UInt64, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(DbType));
+			Assert.AreEqual(DbType.Int32, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(Int32?));
+			Assert.AreEqual(DbType.Int32, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(String));
+			Assert.AreEqual(DbType.String, dbType);
+
+			dbType = AdoNetHelper.InferDbTypeForClrType(typeof(String).MakeByRefType());
+			Assert.AreEqual(DbType.String, dbType);
 		}
 
 		#endregion

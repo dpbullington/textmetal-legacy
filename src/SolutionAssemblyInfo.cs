@@ -3,6 +3,14 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
+/*
+	Import Sources:
+	Unified framework
+		Copyright ©2002-2013 Daniel Bullington (dpbullington@gmail.com)
+	Actual frameworks
+		Copyright © others: see license files in source or imports raw source.
+*/
+
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -19,9 +27,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Distributed under the MIT license:\r\nhttp://www.opensource.org/licenses/mit-license.php")]
 [assembly: AssemblyTrademark("π")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("5.0.0.*")]
-[assembly: AssemblyFileVersion("5.0.0.0")]
-[assembly: AssemblyInformationalVersion("2013.05.12")]
+[assembly: AssemblyVersion("5.0.1.*")]
+[assembly: AssemblyFileVersion("5.0.1.0")]
+[assembly: AssemblyInformationalVersion("2013.07.25")]
 [assembly: AssemblyDelaySign(false)]
 [assembly: ComVisible(false)]
 

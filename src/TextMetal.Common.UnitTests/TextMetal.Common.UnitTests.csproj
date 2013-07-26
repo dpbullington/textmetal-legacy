@@ -39,36 +39,45 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
-    <Reference Include="TestingFramework.Core">
-      <HintPath>..\..\lib\PrivateBuilt\TestingFramework.Core.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Core\AppConfigTests.cs" />
-    <Compile Include="Core\DataTypeTests.cs" />
-    <Compile Include="Core\ExecutionPathStorageTests.cs" />
-    <Compile Include="Core\ReflexionTests.cs" />
-    <Compile Include="Core\StringTokens\DynamicValueTokenReplacementStrategyTests.cs" />
-    <Compile Include="Core\StringTokens\StaticValueTokenReplacementStrategyTests.cs" />
-    <Compile Include="Core\StringTokens\TokenizerTests.cs" />
+    <Compile Include="Core\_\AppConfigTests.cs" />
+    <Compile Include="Core\_\DataTypeTests.cs" />
+    <Compile Include="Core\_\ExecutionPathStorageTests.cs" />
+    <Compile Include="Core\_\ReflexionTests.cs" />
+    <Compile Include="Core\StringTokens\_\DynamicValueTokenReplacementStrategyTests.cs" />
+    <Compile Include="Core\StringTokens\_\StaticValueTokenReplacementStrategyTests.cs" />
+    <Compile Include="Core\StringTokens\_\TokenizerTests.cs" />
     <Compile Include="Data\AdoNetHelperTests.cs" />
     <None Include="App.config" />
     <None Include="Data\UnitOfWorkContextTests.cs" />
-    <Compile Include="Solder\DependencyManagement\ActivatorDependencyResolutionTests.cs" />
-    <Compile Include="Solder\DependencyManagement\ConstructorDependencyResolutionTests.cs" />
-    <Compile Include="Solder\DependencyManagement\DelegateDependencyResolutionTests.cs" />
-    <Compile Include="Solder\DependencyManagement\DependencyExceptionTests.cs" />
-    <Compile Include="Solder\DependencyManagement\DependencyManagerTests.cs" />
-    <Compile Include="Solder\DependencyManagement\DependencyRegistrationAttributeTests.cs" />
-    <Compile Include="Solder\DependencyManagement\SingletonDependencyResolutionTests.cs" />
+    <Compile Include="Data\LinqToSql\ContextWrapperTests.cs" />
+    <None Include="Data\LinqToSql\LinqToSqlHelperTests.cs" />
+    <Compile Include="Data\LinqToSql\MulticastContextTests.cs" />
+    <Compile Include="Data\TypeMap\LowLevel\AssemblyResourceDataSourceMapFactoryTests.cs" />
+    <Compile Include="Data\TypeMap\LowLevel\CommandTests.cs" />
+    <Compile Include="Data\TypeMap\LowLevel\DataSourceMapTests.cs" />
+    <Compile Include="Data\TypeMap\LowLevel\FieldTests.cs" />
+    <Compile Include="Data\TypeMap\LowLevel\ForTests.cs" />
+    <Compile Include="Data\TypeMap\LowLevel\MappingUtilsTests.cs" />
+    <Compile Include="Data\TypeMap\LowLevel\ParameterTests.cs" />
+    <Compile Include="Data\TypeMap\PlainObjectTests.cs" />
+    <Compile Include="Solder\DependencyManagement\_\ActivatorDependencyResolutionTests.cs" />
+    <Compile Include="Solder\DependencyManagement\_\ConstructorDependencyResolutionTests.cs" />
+    <Compile Include="Solder\DependencyManagement\_\DelegateDependencyResolutionTests.cs" />
+    <Compile Include="Solder\DependencyManagement\_\DependencyExceptionTests.cs" />
+    <Compile Include="Solder\DependencyManagement\_\DependencyManagerTests.cs" />
+    <Compile Include="Solder\DependencyManagement\_\DependencyRegistrationAttributeTests.cs" />
+    <Compile Include="Solder\DependencyManagement\_\SingletonDependencyResolutionTests.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
-    <Compile Include="Solder\RuntimeInterception\RemotingImpl\DynamicInvokerRealProxyTests.cs" />
-    <Compile Include="Solder\RuntimeInterception\root\AspectDynamicInvokerTests.cs" />
-    <Compile Include="Solder\RuntimeInterception\root\DynamicInvokerTests.cs" />
-    <Compile Include="Solder\RuntimeInterception\root\ProxyFactoryTests.cs" />
+    <Compile Include="Solder\RuntimeInterception\RemotingImpl\_\DynamicInvokerRealProxyTests.cs" />
+    <Compile Include="Solder\RuntimeInterception\_\AspectDynamicInvokerTests.cs" />
+    <Compile Include="Solder\RuntimeInterception\_\DynamicInvokerTests.cs" />
+    <Compile Include="Solder\RuntimeInterception\_\ProxyFactoryTests.cs" />
     <Compile Include="TestingInfrastructure\IMockObject.cs" />
     <Compile Include="TestingInfrastructure\MockAspectDynamicInvoker.cs" />
     <Compile Include="TestingInfrastructure\MockConnection.cs" />
@@ -77,6 +86,8 @@
     <Compile Include="TestingInfrastructure\MockException.cs" />
     <Compile Include="TestingInfrastructure\MockMultipleTestAttibute.cs" />
     <Compile Include="TestingInfrastructure\MockObject.cs" />
+    <Compile Include="TestingInfrastructure\MockPlainObject.cs" />
+    <Compile Include="TestingInfrastructure\MockPlainObjectNoMap.cs" />
     <Compile Include="TestingInfrastructure\MockProxyFactory.cs" />
     <Compile Include="TestingInfrastructure\MockSingleTestAttibute.cs" />
     <Compile Include="TestingInfrastructure\MockTestAttributedClass.cs" />
@@ -88,6 +99,7 @@
     <None Include="UnitTesting.nunit" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Data\Advanced\" />
     <Folder Include="Expressions\" />
     <Folder Include="Xml\" />
   </ItemGroup>
@@ -108,6 +120,17 @@
       <Project>{3B0EFC3C-AA91-4FB4-B2EE-BD8727230A94}</Project>
       <Name>TextMetal.Common.Solder</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Imports\TextMetal.Imports.csproj">
+      <Project>{40e6902d-3881-4271-bdf3-7d88db7cf230}</Project>
+      <Name>TextMetal.Imports</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.TestFramework\TextMetal.TestFramework.csproj">
+      <Project>{3155f5f3-7b0b-4b3b-b5bc-11df80fe2148}</Project>
+      <Name>TextMetal.TestFramework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestingInfrastructure\MockPlainObject.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

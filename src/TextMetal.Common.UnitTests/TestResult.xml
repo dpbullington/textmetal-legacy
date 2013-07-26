@@ -1,0 +1,634 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="D:\development\textmetal\src\TextMetal.Common.UnitTests\UnitTesting.nunit" total="387" errors="4" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2013-07-25" time="22:32:27">
+  <environment nunit-version="5.0.1.38747" clr-version="4.0.30319.18046" os-version="Microsoft Windows NT 6.2.9200.0" platform="Win32NT" cwd="D:\development\textmetal\src\TextMetal.Imports.nunit.gui.exe\bin\Debug" machine-name="FRAMEWORK" user="Administrator" user-domain="framework" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="Project" name="D:\development\textmetal\src\TextMetal.Common.UnitTests\UnitTesting.nunit" executed="True" result="Failure" success="False" time="6.218" asserts="0">
+    <results>
+      <test-suite type="Assembly" name="D:\development\textmetal\src\TextMetal.Common.UnitTests\bin\Debug\TextMetal.Common.UnitTests.dll" executed="True" result="Failure" success="False" time="6.207" asserts="0">
+        <results>
+          <test-suite type="Namespace" name="TextMetal" executed="True" result="Failure" success="False" time="6.207" asserts="0">
+            <results>
+              <test-suite type="Namespace" name="Common" executed="True" result="Failure" success="False" time="6.206" asserts="0">
+                <results>
+                  <test-suite type="Namespace" name="UnitTests" executed="True" result="Failure" success="False" time="6.206" asserts="0">
+                    <results>
+                      <test-suite type="Namespace" name="Core" executed="True" result="Success" success="True" time="4.056" asserts="0">
+                        <results>
+                          <test-suite type="Namespace" name="_" executed="True" result="Success" success="True" time="3.500" asserts="0">
+                            <results>
+                              <test-suite type="TestFixture" name="AppConfigTests" executed="True" result="Success" success="True" time="1.078" asserts="0">
+                                <results>
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetBooleanTest" executed="True" result="Success" success="True" time="0.703" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetByteTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetCharTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetConnectionProviderTest" executed="True" result="Success" success="True" time="0.014" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetConnectionStringTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetDateTimeTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetDecimalTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetDoubleTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetEnumTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetGuidTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetInt16Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetInt32Test" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetInt64Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetSByteTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetSingleTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetTimeSpanTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetUInt16Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetUInt32Test" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnInvalidValueGetUInt64Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetBooleanTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetByteTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetCharTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetConnectionProviderTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetConnectionStringTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetDateTimeTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetDecimalTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetDoubleTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetEnumTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetGuidTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetInt16Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetInt32Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetInt64Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetSByteTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetSingleTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetTimeSpanTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetUInt16Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetUInt32Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNonExistKeyGetUInt64Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullArgsParseCommandLineArgumentsTest" executed="True" result="Success" success="True" time="0.009" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullKeyGetBooleanTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullKeyGetByteTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullKeyGetCharTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullKeyGetDateTimeTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullKeyGetDecimalTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullKeyGetDoubleTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullKeyGetEnumTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullKeyGetGuidTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullKeyGetInt16Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullKeyGetInt32Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullKeyGetInt64Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullKeyGetSByteTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullKeyGetSingleTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullKeyGetTimeSpanTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullKeyGetUInt16Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullKeyGetUInt32Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullKeyGetUInt64Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullKeyHasAppSettingTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullNameGetAppSettingTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullNameGetConnectionProviderTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullNameGetConnectionStringTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldFailOnNullNameHasConnectionStringTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetArgsParseCommandLineArgumentsTest" executed="True" result="Success" success="True" time="0.164" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetBooleanTest" executed="True" result="Success" success="True" time="0.014" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetByteTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetCharTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetConnectionProviderTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetConnectionStringTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetDateTimeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetDecimalTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetDoubleTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetEnumTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetGuidTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetInt16Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetInt32Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetInt64Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetSByteTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetSingleTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetStringTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetTimeSpanTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetUInt16Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetUInt32Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldGetUInt64Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldHaveFalseHasAppSettingTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldHaveFalseHasConnectionStringTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldHaveTrueHasAppSettingTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.AppConfigTests.ShouldHaveTrueHasConnectionStringTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="DataTypeTests" executed="True" result="Success" success="True" time="0.112" asserts="0">
+                                <results>
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldCheckIsNullOrWhiteSpaceTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldCheckIsWhiteSpaceTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldCheckObjectsEqualValueSemanticsTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldFailOnInvalidGenericTypeTryParseTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldFailOnInvalidTypeTryParseTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldFailOnNullTypeChangeTypeTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldFailOnNullTypeDefaultValueTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldFailOnNullTypeTryParseTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetBooleanTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetByteTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetCharTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetDateTimeOffsetTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetDateTimeTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetDecimalTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetDefaultValueTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetDoubleTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetEnumTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetGuidTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetInt16Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetInt32Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetInt64Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetSByteTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetSingleTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetStringTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetTimeSpanTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetUInt16Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetUInt32Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldGetUInt64Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldNotGetBooleanTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldNotGetByteTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldNotGetCharTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldNotGetDateTimeOffsetTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldNotGetDateTimeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldNotGetDecimalTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldNotGetDoubleTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldNotGetEnumTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldNotGetGuidTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldNotGetInt16Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldNotGetInt32Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldNotGetInt64Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldNotGetSByteTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldNotGetSingleTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldNotGetTimeSpanTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldNotGetUInt16Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldNotGetUInt32Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldNotGetUInt64Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldSafeToStringTest" executed="True" result="Success" success="True" time="0.012" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldSpecialGetValueOnNonNullNullableGenericTryParseTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldSpecialGetValueOnNonNullNullableTryParseTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldSpecialGetValueOnNullNullableGenericTryParseTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldSpecialGetValueOnNullNullableTryParseTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldWithNullNotGetBooleanTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldWithNullNotGetByteTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldWithNullNotGetCharTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldWithNullNotGetDateTimeOffsetTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldWithNullNotGetDateTimeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldWithNullNotGetDecimalTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldWithNullNotGetDoubleTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldWithNullNotGetEnumTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldWithNullNotGetGuidTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldWithNullNotGetInt16Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldWithNullNotGetInt32Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldWithNullNotGetInt64Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldWithNullNotGetSByteTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldWithNullNotGetSingleTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldWithNullNotGetTimeSpanTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldWithNullNotGetUInt16Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldWithNullNotGetUInt32Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.DataTypeTests.ShouldWithNullNotGetUInt64Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="ExecutionPathStorageTests" executed="True" result="Inconclusive" success="False" time="0.000" asserts="0" />
+                              <test-suite type="TestFixture" name="ExecutionPathStorageTests+CallContextExecutionPathStorageTests" executed="True" result="Success" success="True" time="1.011" asserts="0">
+                                <results>
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ExecutionPathStorageTests+CallContextExecutionPathStorageTests.ShouldCreateAddGetRemoveCallContextExecutionPathStorageTest" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ExecutionPathStorageTests+CallContextExecutionPathStorageTests.ShouldThreadSafeRunCallContextExecutionPathStorageTest" executed="True" result="Success" success="True" time="1.002" asserts="0" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="ExecutionPathStorageTests+HttpContextExecutionPathStorageTests" executed="True" result="Success" success="True" time="1.113" asserts="0">
+                                <results>
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ExecutionPathStorageTests+HttpContextExecutionPathStorageTests.ShouldCreateAddGetRemoveExecutionPathStorageTest" executed="True" result="Success" success="True" time="0.107" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ExecutionPathStorageTests+HttpContextExecutionPathStorageTests.ShouldThreadSafeRunExecutionPathStorageTest" executed="True" result="Success" success="True" time="1.003" asserts="0" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="ReflexionTests" executed="True" result="Success" success="True" time="0.163" asserts="0">
+                                <results>
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldAssociativeOnlyGetLogicalPropertyTypeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldAssociativeOnlyGetLogicalPropertyValueTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldAssociativeOnlySetLogicalPropertyValueTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldFailOnDefinedGetNoAttributesTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldFailOnMultiDefinedGetAttributeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldFailOnNullConversionTypeMakeNonNullableTypeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldFailOnNullConversionTypeMakeNullableTypeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldFailOnNullTargetGetAttributeICustomAttributeProviderTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldFailOnNullTargetGetAttributesICustomAttributeProviderTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldFailOnNullTargetGetZeroAttributesICustomAttributeProviderTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldGetAttributeICustomAttributeProviderTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldGetAttributesICustomAttributeProviderTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldGetDefaultOnNullValueChangeTypeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldGetErrors" executed="True" result="Success" success="True" time="0.053" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldGetNoAttributesTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldGetNonNullOnNonNullValueChangeTypeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldGetNonNullOnNonNullValueNullableChangeTypeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldGetNullAttributeICustomAttributeProviderTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldGetNullAttributesICustomAttributeProviderTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldMakeNonNullableTypeTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldMakeNullableTypeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldReflectionOnlyGetLogicalPropertyTypeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldReflectionOnlyGetLogicalPropertyValueTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Core._.ReflexionTests.ShouldReflectionOnlySetLogicalPropertyValueTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                </results>
+                              </test-suite>
+                            </results>
+                          </test-suite>
+                          <test-suite type="Namespace" name="StringTokens" executed="True" result="Success" success="True" time="0.538" asserts="0">
+                            <results>
+                              <test-suite type="Namespace" name="_" executed="True" result="Success" success="True" time="0.538" asserts="0">
+                                <results>
+                                  <test-suite type="TestFixture" name="DynamicValueTokenReplacementStrategyTests" executed="True" result="Success" success="True" time="0.005" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Core.StringTokens._.DynamicValueTokenReplacementStrategyTests.ShouldCreateAndEvaluateTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Core.StringTokens._.DynamicValueTokenReplacementStrategyTests.ShouldFailOnNullValueCreateTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                  <test-suite type="TestFixture" name="StaticValueTokenReplacementStrategyTests" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Core.StringTokens._.StaticValueTokenReplacementStrategyTests.ShouldCreateAndEvaluateTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                  <test-suite type="TestFixture" name="TokenizerTests" executed="True" result="Success" success="True" time="0.528" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Core.StringTokens._.TokenizerTests.ShouldCreateTest" executed="True" result="Success" success="True" time="0.378" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Core.StringTokens._.TokenizerTests.ShouldExpandTokensLooseMatchingTest" executed="True" result="Success" success="True" time="0.115" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Core.StringTokens._.TokenizerTests.ShouldExpandTokensStrictMatchingTest" executed="True" result="Success" success="True" time="0.011" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Core.StringTokens._.TokenizerTests.ShouldExpandTokensWildcardLooseMatchingTest" executed="True" result="Success" success="True" time="0.016" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Core.StringTokens._.TokenizerTests.ShouldFailOnNullTokenReplStratsCreateTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Core.StringTokens._.TokenizerTests.ShouldValidateTokenizerRegExTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                </results>
+                              </test-suite>
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                      <test-suite type="Namespace" name="Data" executed="True" result="Failure" success="False" time="1.675" asserts="0">
+                        <results>
+                          <test-suite type="TestFixture" name="AdoNetHelperTests" executed="True" result="Success" success="True" time="0.222" asserts="0">
+                            <results>
+                              <test-case name="TextMetal.Common.UnitTests.Data.AdoNetHelperTests.ShouldExecuteReaderCloseConnectionSprocWithParametersTest" executed="True" result="Success" success="True" time="0.186" asserts="0" />
+                              <test-case name="TextMetal.Common.UnitTests.Data.AdoNetHelperTests.ShouldExecuteReaderCloseConnectionTextNoParametersTest" executed="True" result="Success" success="True" time="0.004" asserts="0" />
+                              <test-case name="TextMetal.Common.UnitTests.Data.AdoNetHelperTests.ShouldExecuteReaderCloseConnectionTextNoParametersWithTransactionTest" executed="True" result="Success" success="True" time="0.012" asserts="0" />
+                              <test-case name="TextMetal.Common.UnitTests.Data.AdoNetHelperTests.ShouldExecuteReaderNoCloseConnectionSprocWithParametersTest" executed="True" result="Success" success="True" time="0.003" asserts="0" />
+                              <test-case name="TextMetal.Common.UnitTests.Data.AdoNetHelperTests.ShouldExecuteReaderNoCloseConnectionTextNoParametersTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                              <test-case name="TextMetal.Common.UnitTests.Data.AdoNetHelperTests.ShouldFailOnInvalidTypeInferDbTypeForClrTypeTest" executed="True" result="Success" success="True" time="0.003" asserts="0" />
+                              <test-case name="TextMetal.Common.UnitTests.Data.AdoNetHelperTests.ShouldFailOnNullConnectionStaticExecuteReaderTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                              <test-case name="TextMetal.Common.UnitTests.Data.AdoNetHelperTests.ShouldFailOnNullTypeInferDbTypeForClrTypeTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                              <test-case name="TextMetal.Common.UnitTests.Data.AdoNetHelperTests.ShouldInferDbTypeForClrTypeTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="Namespace" name="LinqToSql" executed="True" result="Success" success="True" time="0.050" asserts="0">
+                            <results>
+                              <test-suite type="TestFixture" name="ContextWrapperTests" executed="True" result="Success" success="True" time="0.020" asserts="0">
+                                <results>
+                                  <test-case name="TextMetal.Common.UnitTests.Data.LinqToSql.ContextWrapperTests.ShouldCreateTest" executed="True" result="Success" success="True" time="0.012" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.LinqToSql.ContextWrapperTests.ShouldFailOnDisposedGetInnerContextTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.LinqToSql.ContextWrapperTests.ShouldFailOnNullContextCreateTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.LinqToSql.ContextWrapperTests.ShouldNotFailOnDoubleDisposeTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="MulticastContextTests" executed="True" result="Success" success="True" time="0.028" asserts="0">
+                                <results>
+                                  <test-case name="TextMetal.Common.UnitTests.Data.LinqToSql.MulticastContextTests.ShouldCreateTest" executed="True" result="Success" success="True" time="0.006" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.LinqToSql.MulticastContextTests.ShouldFailOnActualInstanceSetContextTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.LinqToSql.MulticastContextTests.ShouldFailOnActualTypeHasContextTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.LinqToSql.MulticastContextTests.ShouldFailOnActualTypeSetContextTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.LinqToSql.MulticastContextTests.ShouldFailOnAlreadyRegisteredSetContextTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.LinqToSql.MulticastContextTests.ShouldFailOnDisposedGetContextTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.LinqToSql.MulticastContextTests.ShouldFailOnDisposedHasContextTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.LinqToSql.MulticastContextTests.ShouldFailOnDisposedSetContextTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.LinqToSql.MulticastContextTests.ShouldFailOnNotAlreadyRegisteredGetContextTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.LinqToSql.MulticastContextTests.ShouldFailOnNullActualTypeGetContextTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.LinqToSql.MulticastContextTests.ShouldNotFailOnDoubleDisposeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                </results>
+                              </test-suite>
+                            </results>
+                          </test-suite>
+                          <test-suite type="Namespace" name="TypeMap" executed="True" result="Failure" success="False" time="1.394" asserts="0">
+                            <results>
+                              <test-suite type="Namespace" name="LowLevel" executed="True" result="Failure" success="False" time="1.344" asserts="0">
+                                <results>
+                                  <test-suite type="TestFixture" name="AssemblyResourceDataSourceMapFactoryTests" executed="True" result="Success" success="True" time="0.810" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.AssemblyResourceDataSourceMapFactoryTests.ShouldCreateTest" executed="True" result="Success" success="True" time="0.806" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.AssemblyResourceDataSourceMapFactoryTests.ShouldFailOnNoManifestResourceMappingCreateTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                  <test-suite type="TestFixture" name="CommandTests" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.CommandTests.ShouldCreateTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                  <test-suite type="TestFixture" name="DataSourceMapTests" executed="True" result="Success" success="True" time="0.076" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.DataSourceMapTests.ShouldCreateTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.DataSourceMapTests.ShouldXmlTest" executed="True" result="Success" success="True" time="0.073" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                  <test-suite type="TestFixture" name="FieldTests" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.FieldTests.ShouldCreateTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                  <test-suite type="TestFixture" name="ForTests" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.ForTests.ShouldCreateTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                  <test-suite type="TestFixture" name="MappingUtilsTests" executed="True" result="Failure" success="False" time="0.433" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnMissingPropertyMapObjectFromOutputParametersTest" executed="True" result="Success" success="True" time="0.040" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnMissingPropertyMapObjectFromRecordTest" executed="True" result="Success" success="True" time="0.024" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnMissingPropertyMapObjectToInputParametersTest" executed="True" result="Success" success="True" time="0.014" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNoGetterPropertyMapObjectFromOutputParametersTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNoGetterPropertyMapObjectToInputParametersTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNoSetterPropertyMapObjectFromRecordTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullCommandMapObjectFromOutputParametersNoTargetInstanceTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullCommandMapObjectFromOutputParametersTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullCommandMapObjectFromRecordTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullCommandMapObjectToInputParametersNoTargetInstanceTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullCommandMapObjectToInputParametersTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullCommandMapObjectToOutputParametersNoTargetInstanceTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullCommandMapObjectToOutputParametersTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullDataParametersMapObjectFromOutputParametersNoTargetInstanceTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullDataParametersMapObjectFromOutputParametersTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullDataParametersMapObjectToInputParametersNoTargetInstanceTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullDataParametersMapObjectToInputParametersTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullDataParametersMapObjectToOutputParametersNoTargetInstanceTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullDataParametersMapObjectToOutputParametersTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNulldataRecordMapObjectFromRecordTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullTargetInstanceMapObjectFromOutputParametersTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullTargetInstanceMapObjectFromRecordTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullTargetInstanceMapObjectToInputParametersTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullTargetInstanceMapObjectToOutputParametersTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullUnitOfWorkContextMapObjectToInputParametersNoTargetInstanceTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullUnitOfWorkContextMapObjectToInputParametersTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullUnitOfWorkContextMapObjectToOutputParametersNoTargetInstanceTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnNullUnitOfWorkContextMapObjectToOutputParametersTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnUnknownParameterNameMapObjectFromOutputParametersTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldFailOnUnknownParameterNameMapObjectFromRecordTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldMapObjectFromOutputParametersNoTargetInstanceTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldMapObjectFromOutputParametersTest" executed="True" result="Success" success="True" time="0.003" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldMapObjectFromRecordTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldMapObjectToInputParametersNoTargetInstanceTest" executed="True" result="Error" success="False" time="0.054" asserts="0">
+                                        <failure>
+                                          <message><![CDATA[System.ArgumentException : mock object unitOfWorkContext does not have a method matching CreateParameter]]></message>
+                                          <stack-trace><![CDATA[at NMock2.Internal.ExpectationBuilder.EnsureMatchingMethodExistsOnMock(Matcher methodMatcher, String methodDescription) in d:\development\textmetal\src\TextMetal.Imports\nmock2\Internal\ExpectationBuilder.cs:line 144
+at NMock2.Internal.ExpectationBuilder.Method(Matcher methodMatcher, Matcher typeParamsMatcher) in d:\development\textmetal\src\TextMetal.Imports\nmock2\Internal\ExpectationBuilder.cs:line 311
+at NMock2.Internal.ExpectationBuilder.Method(Matcher methodMatcher, Type[] typeParams) in d:\development\textmetal\src\TextMetal.Imports\nmock2\Internal\ExpectationBuilder.cs:line 300
+at NMock2.Internal.ExpectationBuilder.Method(String methodName, Type[] typeParams) in d:\development\textmetal\src\TextMetal.Imports\nmock2\Internal\ExpectationBuilder.cs:line 268
+at TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldMapObjectToInputParametersNoTargetInstanceTest() in d:\development\textmetal\src\TextMetal.Common.UnitTests\Data\TypeMap\LowLevel\MappingUtilsTests.cs:line 901
+]]></stack-trace>
+                                        </failure>
+                                      </test-case>
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldMapObjectToInputParametersTest" executed="True" result="Error" success="False" time="0.003" asserts="0">
+                                        <failure>
+                                          <message><![CDATA[System.ArgumentException : mock object unitOfWorkContext does not have a method matching CreateParameter]]></message>
+                                          <stack-trace><![CDATA[at NMock2.Internal.ExpectationBuilder.EnsureMatchingMethodExistsOnMock(Matcher methodMatcher, String methodDescription) in d:\development\textmetal\src\TextMetal.Imports\nmock2\Internal\ExpectationBuilder.cs:line 144
+at NMock2.Internal.ExpectationBuilder.Method(Matcher methodMatcher, Matcher typeParamsMatcher) in d:\development\textmetal\src\TextMetal.Imports\nmock2\Internal\ExpectationBuilder.cs:line 311
+at NMock2.Internal.ExpectationBuilder.Method(Matcher methodMatcher, Type[] typeParams) in d:\development\textmetal\src\TextMetal.Imports\nmock2\Internal\ExpectationBuilder.cs:line 300
+at NMock2.Internal.ExpectationBuilder.Method(String methodName, Type[] typeParams) in d:\development\textmetal\src\TextMetal.Imports\nmock2\Internal\ExpectationBuilder.cs:line 268
+at TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldMapObjectToInputParametersTest() in d:\development\textmetal\src\TextMetal.Common.UnitTests\Data\TypeMap\LowLevel\MappingUtilsTests.cs:line 943
+]]></stack-trace>
+                                        </failure>
+                                      </test-case>
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldMapObjectToOutputParametersNoTargetInstanceTest" executed="True" result="Error" success="False" time="0.002" asserts="0">
+                                        <failure>
+                                          <message><![CDATA[System.ArgumentException : mock object unitOfWorkContext does not have a method matching CreateParameter]]></message>
+                                          <stack-trace><![CDATA[at NMock2.Internal.ExpectationBuilder.EnsureMatchingMethodExistsOnMock(Matcher methodMatcher, String methodDescription) in d:\development\textmetal\src\TextMetal.Imports\nmock2\Internal\ExpectationBuilder.cs:line 144
+at NMock2.Internal.ExpectationBuilder.Method(Matcher methodMatcher, Matcher typeParamsMatcher) in d:\development\textmetal\src\TextMetal.Imports\nmock2\Internal\ExpectationBuilder.cs:line 311
+at NMock2.Internal.ExpectationBuilder.Method(Matcher methodMatcher, Type[] typeParams) in d:\development\textmetal\src\TextMetal.Imports\nmock2\Internal\ExpectationBuilder.cs:line 300
+at NMock2.Internal.ExpectationBuilder.Method(String methodName, Type[] typeParams) in d:\development\textmetal\src\TextMetal.Imports\nmock2\Internal\ExpectationBuilder.cs:line 268
+at TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldMapObjectToOutputParametersNoTargetInstanceTest() in d:\development\textmetal\src\TextMetal.Common.UnitTests\Data\TypeMap\LowLevel\MappingUtilsTests.cs:line 983
+]]></stack-trace>
+                                        </failure>
+                                      </test-case>
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldMapObjectToOutputParametersTest" executed="True" result="Error" success="False" time="0.002" asserts="0">
+                                        <failure>
+                                          <message><![CDATA[System.ArgumentException : mock object unitOfWorkContext does not have a method matching CreateParameter]]></message>
+                                          <stack-trace><![CDATA[at NMock2.Internal.ExpectationBuilder.EnsureMatchingMethodExistsOnMock(Matcher methodMatcher, String methodDescription) in d:\development\textmetal\src\TextMetal.Imports\nmock2\Internal\ExpectationBuilder.cs:line 144
+at NMock2.Internal.ExpectationBuilder.Method(Matcher methodMatcher, Matcher typeParamsMatcher) in d:\development\textmetal\src\TextMetal.Imports\nmock2\Internal\ExpectationBuilder.cs:line 311
+at NMock2.Internal.ExpectationBuilder.Method(Matcher methodMatcher, Type[] typeParams) in d:\development\textmetal\src\TextMetal.Imports\nmock2\Internal\ExpectationBuilder.cs:line 300
+at NMock2.Internal.ExpectationBuilder.Method(String methodName, Type[] typeParams) in d:\development\textmetal\src\TextMetal.Imports\nmock2\Internal\ExpectationBuilder.cs:line 268
+at TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.MappingUtilsTests.ShouldMapObjectToOutputParametersTest() in d:\development\textmetal\src\TextMetal.Common.UnitTests\Data\TypeMap\LowLevel\MappingUtilsTests.cs:line 1025
+]]></stack-trace>
+                                        </failure>
+                                      </test-case>
+                                    </results>
+                                  </test-suite>
+                                  <test-suite type="TestFixture" name="ParameterTests" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.LowLevel.ParameterTests.ShouldCreateTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="PlainObjectTests" executed="True" result="Success" success="True" time="0.044" asserts="0">
+                                <results>
+                                  <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.PlainObjectTests.ShouldCreateTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.PlainObjectTests.ShouldFailNullOnPersistentObjectDataOperationDetermineBeforeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.PlainObjectTests.ShouldFailNullOnPersistentObjectDetermineAfterTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.PlainObjectTests.ShouldGetConsistentObjectStateDetermineAfterTest" executed="True" result="Success" success="True" time="0.011" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.PlainObjectTests.ShouldGetConsistentOriginalObjectStateDetermineAfterTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.PlainObjectTests.ShouldGetDeleteDataOperationDetermineBeforeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.PlainObjectTests.ShouldGetErrorDataOperationDetermineBeforeTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.PlainObjectTests.ShouldGetFaultyObjectStateDetermineAfterTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.PlainObjectTests.ShouldGetInsertDataOperationDetermineBeforeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.PlainObjectTests.ShouldGetNoneConsistentDataOperationDetermineBeforeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.PlainObjectTests.ShouldGetNoneNewRemovedDataOperationDetermineBeforeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.PlainObjectTests.ShouldGetNoneObsoletedDataOperationDetermineBeforeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.PlainObjectTests.ShouldGetObsoletedObjectStateDetermineAfterTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.PlainObjectTests.ShouldGetObsoletedOriginalObjectStateDetermineAfterTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TextMetal.Common.UnitTests.Data.TypeMap.PlainObjectTests.ShouldGetUpdateDataOperationDetermineBeforeTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                </results>
+                              </test-suite>
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                      <test-suite type="Namespace" name="Solder" executed="True" result="Success" success="True" time="0.443" asserts="0">
+                        <results>
+                          <test-suite type="Namespace" name="DependencyManagement" executed="True" result="Success" success="True" time="0.174" asserts="0">
+                            <results>
+                              <test-suite type="Namespace" name="_" executed="True" result="Success" success="True" time="0.174" asserts="0">
+                                <results>
+                                  <test-suite type="TestFixture" name="ActivatorDependencyResolutionTests" executed="True" result="Success" success="True" time="0.004" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.ActivatorDependencyResolutionTests.ShouldCreateAndEvaluateTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.ActivatorDependencyResolutionTests.ShouldFailOnNullValueCreateTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                  <test-suite type="TestFixture" name="ConstructorDependencyResolutionTests" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.ConstructorDependencyResolutionTests.ShouldCreateAndEvaluateTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                  <test-suite type="TestFixture" name="DelegateDependencyResolutionTests" executed="True" result="Success" success="True" time="0.008" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DelegateDependencyResolutionTests.ShouldCreateAndEvaluateFromFuncTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DelegateDependencyResolutionTests.ShouldCreateAndEvaluateTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DelegateDependencyResolutionTests.ShouldFailOnNullValueCreateFromFuncTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DelegateDependencyResolutionTests.ShouldFailOnNullValueCreateTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                  <test-suite type="TestFixture" name="DependencyExceptionTests" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyExceptionTests.ShouldCreateTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                  <test-suite type="TestFixture" name="DependencyManagerTests" executed="True" result="Success" success="True" time="0.140" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldAddResolution1Test" executed="True" result="Success" success="True" time="0.013" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldAddResolutionTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldCheckIfHasResolution1Test" executed="True" result="Success" success="True" time="0.005" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldCheckIfHasResolutionTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldClearAllResolutionsTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldClearTypeResolutions1Test" executed="True" result="Success" success="True" time="0.022" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldClearTypeResolutionsTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldCreateTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnDisposedAddResolution1Test" executed="True" result="Success" success="True" time="0.003" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnDisposedAddResolutionTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnDisposedCheckIfHasResolution1Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnDisposedCheckIfHasResolutionTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnDisposedClearAllResolutionsTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnDisposedClearTypeResolutions1Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnDisposedClearTypeResolutionsTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnDisposedRemoveResolution1Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnDisposedRemoveResolutionTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnDisposedResolveDependency1Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnDisposedResolveDependencyTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnKeyExistsAddResolutionTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnKeyNotExistsRemoveResolutionTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnKeyNotExistsResolveDependencyTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnNotAssignableResolveDependencyTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnNullDependencyResolutionAddResolution1Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnNullDependencyResolutionAddResolutionTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnNullKeyAddResolution1Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnNullKeyAddResolutionTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnNullKeyRemoveResolution1Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnNullKeyRemoveResolutionTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnNullKeyResolveDependency1Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnNullKeyResolveDependencyTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnNullTypeAddResolutionTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnNullTypeCheckIfHasResolutionTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnNullTypeClearTypeResolutionsTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnNullTypeRemoveResolutionTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldFailOnNullTypeResolveDependencyTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldNotFailOnDoubleDisposedAddResolution1Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldRemoveResolution1Test" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldRemoveResolutionTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldResolveDependency1Test" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldResolveDependencyTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyManagerTests.ShouldVerifyAutoWiringTest" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                  <test-suite type="TestFixture" name="DependencyRegistrationAttributeTests" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.DependencyRegistrationAttributeTests.ShouldCreateTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                  <test-suite type="TestFixture" name="SingletonDependencyResolutionTests" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.SingletonDependencyResolutionTests.ShouldCreateAndEvaluateOfTypeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.DependencyManagement._.SingletonDependencyResolutionTests.ShouldCreateAndEvaluateTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                </results>
+                              </test-suite>
+                            </results>
+                          </test-suite>
+                          <test-suite type="Namespace" name="RuntimeInterception" executed="True" result="Success" success="True" time="0.260" asserts="0">
+                            <results>
+                              <test-suite type="Namespace" name="_" executed="True" result="Success" success="True" time="0.166" asserts="0">
+                                <results>
+                                  <test-suite type="TestFixture" name="AspectDynamicInvokerTests" executed="True" result="Success" success="True" time="0.045" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.AspectDynamicInvokerTests.ShouldCloneInvokeTest" executed="True" result="Success" success="True" time="0.022" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.AspectDynamicInvokerTests.ShouldDisposeInvokeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.AspectDynamicInvokerTests.ShouldFailOnDisposedInvokeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.AspectDynamicInvokerTests.ShouldFailOnNullInputParameterInvokeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.AspectDynamicInvokerTests.ShouldFailOnNullInvokingTypeInvokeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.AspectDynamicInvokerTests.ShouldFailOnNullMethodInfoInvokeTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.AspectDynamicInvokerTests.ShouldFailOnNullTargetInstanceInvokeTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.AspectDynamicInvokerTests.ShouldNotFailOnDoubleDisposeTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.AspectDynamicInvokerTests.ShouldThrowOnProceedInvokeTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.AspectDynamicInvokerTests.ShouldToStringInvokeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                  <test-suite type="TestFixture" name="DynamicInvokerTests" executed="True" result="Success" success="True" time="0.052" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldCloneInvokeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldDisposeInvokeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldEqualsInvokeOnObjectTest" executed="True" result="Success" success="True" time="0.003" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldFailOnBadDeclaringTypeInvokeOnObjectTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldFailOnBadInputParameterCountEqualsInvokeOnObjectTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldFailOnBadInputParameterCountGetHashCodeInvokeOnObjectTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldFailOnBadInputParameterCountGetTypeInvokeOnObjectTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldFailOnBadInputParameterCountToStringInvokeOnObjectTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldFailOnBadMethodNameInvokeOnObjectTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldFailOnNullInputInvokeOnObjectTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldFailOnNullInputParameterInvokeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldFailOnNullInvokingTypeInvokeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldFailOnNullMethodInfoInvokeOnObjectTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldFailOnNullMethodInfoInvokeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldFailOnNullProxyTypeInvokeOnObjectTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldFailOnNullTargetInstanceInvokeOnObjectTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldFailOnNullTargetInstanceInvokeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldGetHashCodeInvokeOnObjectTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldGetTypeInvokeOnObjectTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldNotFailOnDoubleDisposeTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldToStringInvokeOnObjectTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.DynamicInvokerTests.ShouldToStringInvokeTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                  <test-suite type="TestFixture" name="ProxyFactoryTests" executed="True" result="Success" success="True" time="0.063" asserts="0">
+                                    <results>
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.ProxyFactoryTests.ShouldCreateInstanceWithCacheKeyAndInvokeDynamicFactoryTest" executed="True" result="Success" success="True" time="0.036" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.ProxyFactoryTests.ShouldCreateInstanceWithCacheKeyTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.ProxyFactoryTests.ShouldCreateInstanceWithInvokeDynamicTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.ProxyFactoryTests.ShouldEnsureCachingTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.ProxyFactoryTests.ShouldEnsureNoCachingTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.ProxyFactoryTests.ShouldFailOnDisposedCreateInstanceWithCacheKeyAndInvokeDynamicFactoryTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.ProxyFactoryTests.ShouldFailOnDisposedCreateInstanceWithCacheKeyTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.ProxyFactoryTests.ShouldFailOnDisposedCreateInstanceWithInvokeDynamicTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.ProxyFactoryTests.ShouldFailOnNullCacheKeyCreateInstanceWithCacheKeyAndInvokeDynamicFactoryTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.ProxyFactoryTests.ShouldFailOnNullInvokeDynamicFactoryCreateInstanceWithCacheKeyAndInvokeDynamicFactoryTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.ProxyFactoryTests.ShouldFailOnNullServiceCreateInstanceWithInvokeDynamicTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                      <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception._.ProxyFactoryTests.ShouldNotFailOnDoubleDisposeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                    </results>
+                                  </test-suite>
+                                </results>
+                              </test-suite>
+                              <test-suite type="Namespace" name="RemotingImpl" executed="True" result="Success" success="True" time="0.089" asserts="0">
+                                <results>
+                                  <test-suite type="Namespace" name="_" executed="True" result="Success" success="True" time="0.089" asserts="0">
+                                    <results>
+                                      <test-suite type="TestFixture" name="DynamicInvokerRealProxyTests" executed="True" result="Success" success="True" time="0.088" asserts="0">
+                                        <results>
+                                          <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception.RemotingImpl._.DynamicInvokerRealProxyTests.ShouldCreateInstanceWithInvokeDynamicAndDisposeInnerDisposableTest" executed="True" result="Success" success="True" time="0.003" asserts="0" />
+                                          <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception.RemotingImpl._.DynamicInvokerRealProxyTests.ShouldFailOnDisposedInvokeTest" executed="True" result="Success" success="True" time="0.019" asserts="0" />
+                                          <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception.RemotingImpl._.DynamicInvokerRealProxyTests.ShouldFailOnGetTypeNameTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                          <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception.RemotingImpl._.DynamicInvokerRealProxyTests.ShouldFailOnNullInvokeDynamicCreateTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                          <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception.RemotingImpl._.DynamicInvokerRealProxyTests.ShouldFailOnSetTypeNameTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                          <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception.RemotingImpl._.DynamicInvokerRealProxyTests.ShouldIFailOnNullInvocationParametersInGetOutputParametersTest" executed="True" result="Success" success="True" time="0.012" asserts="0" />
+                                          <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception.RemotingImpl._.DynamicInvokerRealProxyTests.ShouldIFailOnNullMethodInfoInGetOutputParametersTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                          <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception.RemotingImpl._.DynamicInvokerRealProxyTests.ShouldInvokeAsIDiposableTest" executed="True" result="Success" success="True" time="0.004" asserts="0" />
+                                          <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception.RemotingImpl._.DynamicInvokerRealProxyTests.ShouldInvokeAsIMockObjectTest" executed="True" result="Success" success="True" time="0.003" asserts="0" />
+                                          <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception.RemotingImpl._.DynamicInvokerRealProxyTests.ShouldInvokeAsNonObjectTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                          <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception.RemotingImpl._.DynamicInvokerRealProxyTests.ShouldInvokeAsObjectTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                          <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception.RemotingImpl._.DynamicInvokerRealProxyTests.ShouldNotFailOnDoubleDisposeTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                          <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception.RemotingImpl._.DynamicInvokerRealProxyTests.ShouldValidateAssumptionAboutRealProxyObjectCastingTest" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                                          <test-case name="TextMetal.Common.UnitTests.Solder.RuntimeInterception.RemotingImpl._.DynamicInvokerRealProxyTests.ShouldValidateAssumptionAboutRealProxyObjectIdTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                                        </results>
+                                      </test-suite>
+                                    </results>
+                                  </test-suite>
+                                </results>
+                              </test-suite>
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

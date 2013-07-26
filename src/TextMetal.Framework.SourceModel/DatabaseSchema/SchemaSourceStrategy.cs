@@ -76,63 +76,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			return sqlText;
 		}
 
-		public static DbType InferDbTypeForClrType(Type clrType)
-		{
-			if ((object)clrType == null)
-				throw new ArgumentNullException("clrType");
-
-			if (clrType.IsByRef /* || type.IsPointer || type.IsArray */)
-				return InferDbTypeForClrType(clrType.GetElementType());
-			else if (clrType.IsGenericType &&
-			         !clrType.IsGenericTypeDefinition &&
-			         clrType.GetGenericTypeDefinition() == typeof(Nullable<>))
-				return InferDbTypeForClrType(Nullable.GetUnderlyingType(clrType));
-			else if (clrType.IsEnum)
-				return InferDbTypeForClrType(Enum.GetUnderlyingType(clrType));
-			else if (clrType == typeof(Boolean))
-				return DbType.Boolean;
-			else if (clrType == typeof(Byte))
-				return DbType.Byte;
-			else if (clrType == typeof(DateTime))
-				return DbType.DateTime;
-			else if (clrType == typeof(DateTimeOffset))
-				return DbType.DateTimeOffset;
-			else if (clrType == typeof(Decimal))
-				return DbType.Decimal;
-			else if (clrType == typeof(Double))
-				return DbType.Double;
-			else if (clrType == typeof(Guid))
-				return DbType.Guid;
-			else if (clrType == typeof(Int16))
-				return DbType.Int16;
-			else if (clrType == typeof(Int32))
-				return DbType.Int32;
-			else if (clrType == typeof(Int64))
-				return DbType.Int64;
-			else if (clrType == typeof(SByte))
-				return DbType.SByte;
-			else if (clrType == typeof(Single))
-				return DbType.Single;
-			else if (clrType == typeof(TimeSpan))
-				return DbType.Time;
-			else if (clrType == typeof(UInt16))
-				return DbType.UInt16;
-			else if (clrType == typeof(UInt32))
-				return DbType.UInt32;
-			else if (clrType == typeof(UInt64))
-				return DbType.UInt64;
-			else if (clrType == typeof(Byte[]))
-				return DbType.Binary;
-			else if (clrType == typeof(Boolean[]))
-				return DbType.Byte;
-			else if (clrType == typeof(String))
-				return DbType.String;
-			else if (clrType == typeof(Object))
-				return DbType.Object;
-			else
-				throw new InvalidOperationException(string.Format("Cannot infer parameter type from unsupported CLR type '{0}'.", clrType.FullName));
-		}
-
 		protected abstract int CoreCalculateColumnSize(string dataSourceTag, Column column);
 
 		protected abstract int CoreCalculateParameterSize(string dataSourceTag, Parameter parameter);
@@ -354,7 +297,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 												column.ColumnNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(column.ColumnName));
 
 												clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType);
-												column.ColumnDbType = InferDbTypeForClrType(clrType);
+												column.ColumnDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
 												column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
 												column.ColumnClrType = clrType ?? typeof(object);
@@ -541,7 +484,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 													parameter.ParameterDirection = (parameter.ParameterIsOutput || parameter.ParameterIsReadOnly) ? ParameterDirection.Output : ParameterDirection.Input;
 
 													clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, parameter.ParameterSqlType);
-													parameter.ParameterDbType = InferDbTypeForClrType(clrType);
+													parameter.ParameterDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
 													parameter.ParameterSize = this.CoreCalculateParameterSize(dataSourceTag, parameter);
 
 													parameter.ParameterClrType = clrType;
@@ -590,7 +533,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 												parameter.ParameterDirection = ParameterDirection.ReturnValue;
 
 												clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, parameter.ParameterSqlType);
-												parameter.ParameterDbType = InferDbTypeForClrType(clrType);
+												parameter.ParameterDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
 												parameter.ParameterSize = this.CoreCalculateParameterSize(dataSourceTag, parameter);
 
 												parameter.ParameterClrType = clrType;
@@ -641,7 +584,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 												column.ColumnNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(columnParameter.ParameterName));
 
 												clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, columnParameter.ParameterSqlType);
-												column.ColumnDbType = InferDbTypeForClrType(clrType);
+												column.ColumnDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
 												column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
 												column.ColumnClrType = clrType ?? typeof(object);
@@ -699,7 +642,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 														column.ColumnNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(column.ColumnName));
 
 														clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType);
-														column.ColumnDbType = InferDbTypeForClrType(clrType);
+														column.ColumnDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
 														column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
 														column.ColumnClrType = clrType ?? typeof(object);
