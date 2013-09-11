@@ -1378,11 +1378,11 @@
       <!--<LogicalName></LogicalName>-->
     </EmbeddedResource>
     <EmbeddedResource Include="intelligencia.urlrewriter\Messages.resx">
-      <!--<LogicalName></LogicalName>-->
+      <LogicalName>Intelligencia.UrlRewriter.Messages.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="nmock2\Properties\Resources.resx">
       <SubType>Designer</SubType>
-	  <LogicalName>NMock2.Properties.Resources.resx</LogicalName>
+	  <LogicalName>NMock2.Properties.Resources.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.gui\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>

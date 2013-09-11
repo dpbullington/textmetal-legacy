@@ -21,6 +21,7 @@ desktop.ini
 *.visualstate.xml
 *.pidb
 *.userprefs
+*.DotSettings
 
 #testresult*
 #coverage*

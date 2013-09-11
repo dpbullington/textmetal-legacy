@@ -44,12 +44,12 @@ namespace TextMetal.Framework.InputOutputModel
 
 		public string LoadContent(string resourceName)
 		{
-			throw new NotImplementedException();
+			return null;
 		}
 
 		public ITemplateXmlObject LoadFragment(string resourceName)
 		{
-			throw new NotImplementedException();
+			return null;
 		}
 
 		#endregion

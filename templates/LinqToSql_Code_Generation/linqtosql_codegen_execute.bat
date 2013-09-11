@@ -41,8 +41,6 @@ mkdir "%LIB_DIR%"
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 mkdir "%LIB_DIR%\SQLite"
 IF %ERRORLEVEL% NEQ 0 goto pkgError
-mkdir "%LIB_DIR%\PrivateBuilt"
-IF %ERRORLEVEL% NEQ 0 goto pkgError
 mkdir "%LIB_DIR%\TextMetal"
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 mkdir "%SRC_DIR%"
@@ -57,9 +55,6 @@ goto pkgBuild
 
 
 :pkgBuild
-
-copy "..\..\lib\PrivateBuilt\*.*"  %LIB_DIR%\PrivateBuilt\."
-IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 copy "..\..\lib\SQLite\x64\*.*"  %LIB_DIR%\SQLite\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
