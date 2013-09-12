@@ -56,6 +56,8 @@ namespace TextMetal.Common.UnitTests.Core.StringTokens._
 			Assert.IsNotNull(tokenizer);
 			Assert.IsNotNull(tokenizer.TokenReplacementStrategies);
 			Assert.IsTrue(tokenizer.StrictMatching);
+
+			mockery.VerifyAllExpectationsHaveBeenMet();
 		}
 
 		[Test]
@@ -361,6 +363,8 @@ namespace TextMetal.Common.UnitTests.Core.StringTokens._
 			mockTokenReplacementStrategies = null;
 
 			tokenizer = new Tokenizer(mockTokenReplacementStrategies, true);
+
+			mockery.VerifyAllExpectationsHaveBeenMet();
 		}
 
 		[Test]

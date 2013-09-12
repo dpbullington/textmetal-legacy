@@ -55,7 +55,7 @@ namespace TextMetal.Common.Core.StringTokens
 		/// <summary>
 		/// Used by the token model to execute public, static methods with zero parameters in a dynamic manner.
 		/// </summary>
-		/// <param name="parameters"> An array of parameters in the form: assembly-qualified-type-name, method-name, [parameters, ...] </param>
+		/// <param name="parameters"> An array of parameters in the form: assembly-qualified-type-name, method-name, [argument-value, ...] </param>
 		/// <returns> The return value of the executed method. </returns>
 		public static object StaticMethodResolver(string[] parameters)
 		{
@@ -65,45 +65,36 @@ namespace TextMetal.Common.Core.StringTokens
 			object methodValue = null;
 
 			if ((object)parameters == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new ArgumentNullException("parameters");
 
 			foreach (string parameter in parameters)
 			{
 				if (DataType.IsNullOrWhiteSpace(parameter))
-					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+					throw new InvalidOperationException(string.Format("StaticMethodResolver paramter at index '{0}' was either null or zero length.", index));
 
-				if (index == 0)
+				if (index == 0) // assembly-qualified-type-name
 				{
 					targetType = Type.GetType(parameter, false);
-					index++;
-				}
-				else if (index == 1)
-				{
+
 					if ((object)targetType == null)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException(string.Format("StaticMethodResolver paramter at index '{0}' with value '{1}' was not a valid, loadable CLR type.", 0, parameters[0]));
 
+					index++;
+				}
+				else if (index == 1) // method-name
+				{
 					methodInfo = targetType.GetMethod(parameter, BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static, null, new Type[] { }, null);
 
 					if ((object)methodInfo == null)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException(string.Format("StaticMethodResolver paramter at index '{0}' with value '{1}' was not a valid, executable method name.", 1, parameters[1]));
 
 					methodValue = methodInfo.Invoke(null, null);
 					index++;
 				}
-				else
+				else // argument-value[0...n]
 				{
-					if ((object)methodValue == null)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
-
-					targetType = methodValue.GetType();
-					methodInfo = targetType.GetMethod(parameter, BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static, null, new Type[] { }, null);
-
-					if ((object)methodInfo == null)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
-
 					// TODO: Add support for method parameters and type coersion and edit documentation.
-					methodValue = methodInfo.Invoke(null, null);
-					index++;
+					throw new NotImplementedException();
 				}
 			}
 
@@ -123,48 +114,38 @@ namespace TextMetal.Common.Core.StringTokens
 			object propertyValue = null;
 
 			if ((object)parameters == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new ArgumentNullException("parameters");
 
 			foreach (string parameter in parameters)
 			{
 				if (DataType.IsNullOrWhiteSpace(parameter))
-					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+					throw new InvalidOperationException(string.Format("StaticPropertyResolver paramter at index '{0}' was either null or zero length.", index));
 
-				if (index == 0)
+				if (index == 0) // assembly-qualified-type-name
 				{
 					targetType = Type.GetType(parameter, false);
+
+					if ((object)targetType == null)
+						throw new InvalidOperationException(string.Format("StaticPropertyResolver paramter at index '{0}' with value '{1}' was not a valid, loadable CLR type.", 0, parameters[0]));
+					
 					index++;
 				}
-				else if (index == 1)
+				else if (index == 1) // property-name
 				{
-					if ((object)targetType == null)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
-
 					propertyInfo = targetType.GetProperty(parameter, BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static, null, null, new Type[] { }, null);
 
 					if ((object)propertyInfo == null)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException(string.Format("StaticPropertyResolver paramter at index '{0}' with value '{1}' was not a valid, executable property name.", 1, parameters[1]));
 
 					if (!propertyInfo.CanRead)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException(string.Format("StaticPropertyResolver paramter at index '{0}' with value '{1}' was not a valid, readable property name.", 1, parameters[1]));
 
 					propertyValue = propertyInfo.GetValue(null, null);
 					index++;
 				}
 				else
 				{
-					if ((object)propertyValue == null)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
-
-					targetType = propertyValue.GetType();
-					propertyInfo = targetType.GetProperty(parameter, BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static, null, null, new Type[] { }, null);
-
-					if ((object)propertyInfo == null)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
-
-					// TODO: Add support for method parameters and type coersion and edit documentation.
-					propertyValue = propertyInfo.GetValue(null, null);
-					index++;
+					throw new InvalidOperationException(string.Format("StaticPropertyResolver paramter at index '{0}' cannot be specified for properties.", index));
 				}
 			}
 
