@@ -82,7 +82,7 @@ namespace TextMetal.Framework.TemplateModel
 
 			if (!DataType.IsNullOrWhiteSpace(name))
 			{
-				ExpressionContainerConstruct expressionContainerConstruct;
+				IExpressionContainerConstruct expressionContainerConstruct;
 				ValueConstruct valueConstruct;
 
 				expressionContainerConstruct = new ExpressionContainerConstruct();
@@ -93,7 +93,7 @@ namespace TextMetal.Framework.TemplateModel
 					                 __ = name
 				                 };
 
-				expressionContainerConstruct.Content = valueConstruct;
+				((IContentContainerXmlObject<IExpressionXmlObject>)expressionContainerConstruct).Content = valueConstruct;
 
 				new AssignConstruct()
 				{

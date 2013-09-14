@@ -29,10 +29,10 @@ namespace TextMetal.Framework.TemplateModel
 
 		#region Fields/Constants
 
-		private TemplateContainerConstruct body;
-		private ExpressionContainerConstruct condition;
-		private ExpressionContainerConstruct initializer;
-		private ExpressionContainerConstruct iterator;
+		private ITemplateContainerConstruct body;
+		private IExpressionContainerConstruct condition;
+		private IExpressionContainerConstruct initializer;
+		private IExpressionContainerConstruct iterator;
 		private string varIx;
 
 		#endregion
@@ -40,7 +40,7 @@ namespace TextMetal.Framework.TemplateModel
 		#region Properties/Indexers/Events
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Body", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
-		public TemplateContainerConstruct Body
+		public ITemplateContainerConstruct Body
 		{
 			get
 			{
@@ -53,7 +53,7 @@ namespace TextMetal.Framework.TemplateModel
 		}
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Condition", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
-		public ExpressionContainerConstruct Condition
+		public IExpressionContainerConstruct Condition
 		{
 			get
 			{
@@ -65,8 +65,8 @@ namespace TextMetal.Framework.TemplateModel
 			}
 		}
 
-		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Intializer", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
-		public ExpressionContainerConstruct Initializer
+		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Initializer", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
+		public IExpressionContainerConstruct Initializer
 		{
 			get
 			{
@@ -87,7 +87,7 @@ namespace TextMetal.Framework.TemplateModel
 		}
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Iterator", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
-		public ExpressionContainerConstruct Iterator
+		public IExpressionContainerConstruct Iterator
 		{
 			get
 			{
@@ -143,8 +143,31 @@ namespace TextMetal.Framework.TemplateModel
 			if ((object)this.Initializer != null)
 				value = this.Initializer.EvaluateExpression(templatingContext);
 
+			// DO NOT USE REAL FOR LOOP HERE
 			while (true)
 			{
+				if (!DataType.IsNullOrWhiteSpace(varIx))
+				{
+					IExpressionContainerConstruct expressionContainerConstruct;
+					ValueConstruct valueConstruct;
+
+					expressionContainerConstruct = new ExpressionContainerConstruct();
+
+					valueConstruct = new ValueConstruct()
+					{
+						Type = typeof(int).FullName,
+						__ = index
+					};
+
+					((IContentContainerXmlObject<IExpressionXmlObject>)expressionContainerConstruct).Content = valueConstruct;
+
+					new AssignConstruct()
+					{
+						Token = varIx,
+						Expression = expressionContainerConstruct
+					}.ExpandTemplate(templatingContext);
+				}
+
 				if (index > MAX_ITERATIONS_INFINITE_LOOP_CHECK)
 					throw new InvalidOperationException(string.Format("The for construct has exceeded the maximun number of iterations '{0}'; this is an infinite loop prevention mechansim.", MAX_ITERATIONS_INFINITE_LOOP_CHECK));
 
@@ -160,28 +183,6 @@ namespace TextMetal.Framework.TemplateModel
 
 				if (!shouldLoop)
 					break;
-
-				if (!DataType.IsNullOrWhiteSpace(varIx))
-				{
-					ExpressionContainerConstruct expressionContainerConstruct;
-					ValueConstruct valueConstruct;
-
-					expressionContainerConstruct = new ExpressionContainerConstruct();
-
-					valueConstruct = new ValueConstruct()
-					                 {
-						                 Type = typeof(int).FullName,
-						                 __ = index
-					                 };
-
-					expressionContainerConstruct.Content = valueConstruct;
-
-					new AssignConstruct()
-					{
-						Token = varIx,
-						Expression = expressionContainerConstruct
-					}.ExpandTemplate(templatingContext);
-				}
 
 				if ((object)this.Body != null)
 					this.Body.ExpandTemplate(templatingContext);

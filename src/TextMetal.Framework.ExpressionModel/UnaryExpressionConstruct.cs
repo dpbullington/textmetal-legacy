@@ -32,7 +32,7 @@ namespace TextMetal.Framework.ExpressionModel
 
 		#region Fields/Constants
 
-		private ExpressionContainerConstruct theExpression;
+		private IExpressionContainerConstruct theExpression;
 		private UnaryOperator unaryOperator;
 
 		#endregion
@@ -40,7 +40,7 @@ namespace TextMetal.Framework.ExpressionModel
 		#region Properties/Indexers/Events
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "TheExpression", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
-		public ExpressionContainerConstruct TheExpression
+		public IExpressionContainerConstruct TheExpression
 		{
 			get
 			{

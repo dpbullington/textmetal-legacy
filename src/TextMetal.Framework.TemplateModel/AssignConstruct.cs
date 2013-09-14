@@ -28,7 +28,7 @@ namespace TextMetal.Framework.TemplateModel
 
 		#region Fields/Constants
 
-		private ExpressionContainerConstruct expression;
+		private IExpressionContainerConstruct expression;
 		private string token;
 
 		#endregion
@@ -36,7 +36,7 @@ namespace TextMetal.Framework.TemplateModel
 		#region Properties/Indexers/Events
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Expression", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
-		public ExpressionContainerConstruct Expression
+		public IExpressionContainerConstruct Expression
 		{
 			get
 			{

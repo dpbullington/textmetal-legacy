@@ -29,18 +29,18 @@ namespace TextMetal.Framework.TemplateModel
 
 		#region Fields/Constants
 
-		private ExpressionContainerConstruct @default;
+		private IExpressionContainerConstruct @default;
 		private bool dofvisnow;
 		private string format;
 		private bool newline;
-		private ExpressionContainerConstruct text;
+		private IExpressionContainerConstruct text;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "default", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
-		public ExpressionContainerConstruct Default
+		public IExpressionContainerConstruct Default
 		{
 			get
 			{
@@ -92,7 +92,7 @@ namespace TextMetal.Framework.TemplateModel
 		}
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Text", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
-		public ExpressionContainerConstruct Text
+		public IExpressionContainerConstruct Text
 		{
 			get
 			{

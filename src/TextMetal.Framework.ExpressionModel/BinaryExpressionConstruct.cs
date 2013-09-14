@@ -34,8 +34,8 @@ namespace TextMetal.Framework.ExpressionModel
 		#region Fields/Constants
 
 		private BinaryOperator binaryOperator;
-		private ExpressionContainerConstruct leftExpression;
-		private ExpressionContainerConstruct rightExpression;
+		private IExpressionContainerConstruct leftExpression;
+		private IExpressionContainerConstruct rightExpression;
 
 		#endregion
 
@@ -63,7 +63,7 @@ namespace TextMetal.Framework.ExpressionModel
 		}
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "LeftExpression", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
-		public ExpressionContainerConstruct LeftExpression
+		public IExpressionContainerConstruct LeftExpression
 		{
 			get
 			{
@@ -84,7 +84,7 @@ namespace TextMetal.Framework.ExpressionModel
 		}
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "RightExpression", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
-		public ExpressionContainerConstruct RightExpression
+		public IExpressionContainerConstruct RightExpression
 		{
 			get
 			{
@@ -108,7 +108,7 @@ namespace TextMetal.Framework.ExpressionModel
 
 		#region Methods/Operators
 
-		private void Assign(string token, ExpressionContainerConstruct expressionContainerConstruct, ITemplatingContext templatingContext)
+		private void Assign(string token, IExpressionContainerConstruct expressionContainerConstruct, ITemplatingContext templatingContext)
 		{
 			DynamicWildcardTokenReplacementStrategy dynamicWildcardTokenReplacementStrategy;
 			object obj = null;
@@ -2230,7 +2230,7 @@ namespace TextMetal.Framework.ExpressionModel
 					if (typeof(AspectConstruct).IsAssignableFrom(leftType))
 					{
 						AspectConstruct lhs;
-						ExpressionContainerConstruct expressionContainerConstruct;
+						IExpressionContainerConstruct expressionContainerConstruct;
 						ValueConstruct valueConstruct;
 
 						rightObj = onDemandRightExpressionEvaluator();
@@ -2247,7 +2247,7 @@ namespace TextMetal.Framework.ExpressionModel
 							                 __ = rightObj
 						                 };
 
-						expressionContainerConstruct.Content = valueConstruct;
+						((IContentContainerXmlObject<IExpressionXmlObject>)expressionContainerConstruct).Content = valueConstruct;
 
 						this.Assign(lhs.Name, expressionContainerConstruct, templatingContext);
 

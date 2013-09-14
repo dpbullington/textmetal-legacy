@@ -28,16 +28,16 @@ namespace TextMetal.Framework.TemplateModel
 
 		#region Fields/Constants
 
-		private ExpressionContainerConstruct condition;
-		private TemplateContainerConstruct @false;
-		private TemplateContainerConstruct @true;
+		private IExpressionContainerConstruct condition;
+		private ITemplateContainerConstruct @false;
+		private ITemplateContainerConstruct @true;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Condition", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
-		public ExpressionContainerConstruct Condition
+		public IExpressionContainerConstruct Condition
 		{
 			get
 			{
@@ -50,7 +50,7 @@ namespace TextMetal.Framework.TemplateModel
 		}
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "False", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
-		public TemplateContainerConstruct False
+		public ITemplateContainerConstruct False
 		{
 			get
 			{
@@ -71,7 +71,7 @@ namespace TextMetal.Framework.TemplateModel
 		}
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "True", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
-		public TemplateContainerConstruct True
+		public ITemplateContainerConstruct True
 		{
 			get
 			{

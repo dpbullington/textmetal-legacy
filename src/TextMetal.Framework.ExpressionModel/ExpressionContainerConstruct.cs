@@ -13,7 +13,7 @@ using TextMetal.Framework.Core;
 namespace TextMetal.Framework.ExpressionModel
 {
 	[XmlElementMapping(LocalName = "ExpressionContainer", NamespaceUri = "http://www.textmetal.com/api/v5.0.0", ChildElementModel = ChildElementModel.Content)]
-	public sealed class ExpressionContainerConstruct : ExpressionXmlObject, IContainer, IContentContainerXmlObject<ExpressionXmlObject>
+	public sealed class ExpressionContainerConstruct : ExpressionXmlObject, IContainer, IExpressionContainerConstruct
 	{
 		#region Constructors/Destructors
 
@@ -34,11 +34,11 @@ namespace TextMetal.Framework.ExpressionModel
 
 		#region Properties/Indexers/Events
 
-		public new ExpressionXmlObject Content
+		public new IExpressionXmlObject Content
 		{
 			get
 			{
-				return (ExpressionXmlObject)base.Content;
+				return (IExpressionXmlObject)base.Content;
 			}
 			set
 			{

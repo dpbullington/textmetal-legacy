@@ -27,14 +27,14 @@ namespace TextMetal.Framework.TemplateModel
 
 		#region Fields/Constants
 
-		private AssociativeContainerConstruct dynamic;
+		private IAssociativeContainerConstruct dynamic;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Dynamic", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
-		public AssociativeContainerConstruct Dynamic
+		public IAssociativeContainerConstruct Dynamic
 		{
 			get
 			{

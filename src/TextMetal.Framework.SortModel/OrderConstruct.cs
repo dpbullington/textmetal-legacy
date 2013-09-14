@@ -34,7 +34,7 @@ namespace TextMetal.Framework.SortModel
 		#region Fields/Constants
 
 		private readonly bool ascending;
-		private ExpressionContainerConstruct compare;
+		private IExpressionContainerConstruct compare;
 
 		#endregion
 
@@ -49,7 +49,7 @@ namespace TextMetal.Framework.SortModel
 		}
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Compare", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
-		public ExpressionContainerConstruct Compare
+		public IExpressionContainerConstruct Compare
 		{
 			get
 			{

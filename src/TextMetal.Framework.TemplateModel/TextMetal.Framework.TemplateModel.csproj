@@ -45,6 +45,7 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ITemplateContainerConstruct.cs" />
     <Compile Include="ExpandoConstruct.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
     <Compile Include="AliasConstruct.cs" />

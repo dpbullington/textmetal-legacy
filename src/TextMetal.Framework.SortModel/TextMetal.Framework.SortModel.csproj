@@ -45,6 +45,7 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ISortContainerConstruct.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
     <Compile Include="AscendingConstruct.cs" />
     <Compile Include="SortXmlObject.cs" />

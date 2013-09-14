@@ -14,7 +14,7 @@ namespace TextMetal.Framework.AssociativeModel
 	/// Provides an XML construct for associative model containers.
 	/// </summary>
 	[XmlElementMapping(LocalName = "AssociativeContainer", NamespaceUri = "http://www.textmetal.com/api/v5.0.0", ChildElementModel = ChildElementModel.Content)]
-	public sealed class AssociativeContainerConstruct : AssociativeXmlObject, IContentContainerXmlObject<AssociativeXmlObject>
+	public sealed class AssociativeContainerConstruct : AssociativeXmlObject, IAssociativeContainerConstruct
 	{
 		#region Constructors/Destructors
 
@@ -38,11 +38,11 @@ namespace TextMetal.Framework.AssociativeModel
 		/// <summary>
 		/// Gets or sets the optional single XML object content as a strongly-typed associative XML object.
 		/// </summary>
-		public new AssociativeXmlObject Content
+		public new IAssociativeXmlObject Content
 		{
 			get
 			{
-				return (AssociativeXmlObject)base.Content;
+				return (IAssociativeXmlObject)base.Content;
 			}
 			set
 			{

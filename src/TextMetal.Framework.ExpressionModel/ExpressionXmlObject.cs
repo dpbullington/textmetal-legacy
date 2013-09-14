@@ -5,13 +5,12 @@
 
 using System;
 
-using TextMetal.Common.Expressions;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 
 namespace TextMetal.Framework.ExpressionModel
 {
-	public abstract class ExpressionXmlObject : XmlObject, IExpressionXmlObject, IExpression
+	public abstract class ExpressionXmlObject : XmlObject, IExpressionXmlObject
 	{
 		#region Constructors/Destructors
 

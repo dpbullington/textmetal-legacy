@@ -55,7 +55,7 @@ namespace TextMetal.Framework.TemplateModel
 		{
 			string name;
 			string content;
-			ExpressionContainerConstruct expressionContainerConstruct;
+			IExpressionContainerConstruct expressionContainerConstruct;
 			DynamicWildcardTokenReplacementStrategy dynamicWildcardTokenReplacementStrategy;
 
 			if ((object)templatingContext == null)
@@ -68,7 +68,7 @@ namespace TextMetal.Framework.TemplateModel
 			content = templatingContext.Input.LoadContent(name);
 
 			expressionContainerConstruct = new ExpressionContainerConstruct();
-			expressionContainerConstruct.Content = new ValueConstruct()
+			((IContentContainerXmlObject<IExpressionXmlObject>)expressionContainerConstruct).Content = new ValueConstruct()
 			                                       {
 				                                       __ = content
 			                                       };

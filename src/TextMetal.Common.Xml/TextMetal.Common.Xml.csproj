@@ -47,6 +47,7 @@
     <Compile Include="ChildElementModel.cs" />
     <Compile Include="ChildElementType.cs" />
     <Compile Include="ContravariantListAdapter~2.cs" />
+    <Compile Include="XmlKnownElementMappingAttribute.cs" />
     <Compile Include="CovariantListAdapter~2.cs" />
     <Compile Include="IXmlObject.cs" />
     <Compile Include="IXmlObjectCollection.cs" />

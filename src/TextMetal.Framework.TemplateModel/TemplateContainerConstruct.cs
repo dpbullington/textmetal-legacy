@@ -12,7 +12,7 @@ using TextMetal.Framework.Core;
 namespace TextMetal.Framework.TemplateModel
 {
 	[XmlElementMapping(LocalName = "TemplateContainer", NamespaceUri = "http://www.textmetal.com/api/v5.0.0", ChildElementModel = ChildElementModel.Items)]
-	public sealed class TemplateContainerConstruct : TemplateXmlObject, IItemsContainerXmlObject<TemplateXmlObject>
+	public sealed class TemplateContainerConstruct : TemplateXmlObject, ITemplateContainerConstruct
 	{
 		#region Constructors/Destructors
 
@@ -49,11 +49,11 @@ namespace TextMetal.Framework.TemplateModel
 			}
 		}
 
-		public new IXmlObjectCollection<TemplateXmlObject> Items
+		public new IXmlObjectCollection<ITemplateXmlObject> Items
 		{
 			get
 			{
-				return new ContravariantListAdapter<TemplateXmlObject, IXmlObject>(base.Items);
+				return new ContravariantListAdapter<ITemplateXmlObject, IXmlObject>(base.Items);
 			}
 		}
 

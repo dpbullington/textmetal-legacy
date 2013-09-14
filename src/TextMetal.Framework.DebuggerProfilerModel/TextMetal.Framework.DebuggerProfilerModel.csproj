@@ -53,6 +53,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TextMetal.Common.Expressions\TextMetal.Common.Expressions.csproj">
+      <Project>{483501D9-4D73-4076-997B-3A5D8B5DDB2C}</Project>
+      <Name>TextMetal.Common.Expressions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.Xml\TextMetal.Common.Xml.csproj">
       <Project>{CEF6C9D5-D5F2-4F4E-81DD-0BFDF81A2C93}</Project>
       <Name>TextMetal.Common.Xml</Name>

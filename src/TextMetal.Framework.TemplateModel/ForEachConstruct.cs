@@ -31,10 +31,10 @@ namespace TextMetal.Framework.TemplateModel
 
 		#region Fields/Constants
 
-		private TemplateContainerConstruct body;
-		private ExpressionContainerConstruct filter;
+		private ITemplateContainerConstruct body;
+		private IExpressionContainerConstruct filter;
 		private string @in;
-		private SortContainerConstruct sort;
+		private ISortContainerConstruct sort;
 		private string varCt;
 		private string varItem;
 		private string varIx;
@@ -44,7 +44,7 @@ namespace TextMetal.Framework.TemplateModel
 		#region Properties/Indexers/Events
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Body", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
-		public TemplateContainerConstruct Body
+		public ITemplateContainerConstruct Body
 		{
 			get
 			{
@@ -57,7 +57,7 @@ namespace TextMetal.Framework.TemplateModel
 		}
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Filter", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
-		public ExpressionContainerConstruct Filter
+		public IExpressionContainerConstruct Filter
 		{
 			get
 			{
@@ -91,7 +91,7 @@ namespace TextMetal.Framework.TemplateModel
 		}
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Sort", NamespaceUri = "http://www.textmetal.com/api/v5.0.0")]
-		public SortContainerConstruct Sort
+		public ISortContainerConstruct Sort
 		{
 			get
 			{
@@ -246,7 +246,7 @@ namespace TextMetal.Framework.TemplateModel
 
 			if (!DataType.IsNullOrWhiteSpace(varCt))
 			{
-				ExpressionContainerConstruct expressionContainerConstruct;
+				IExpressionContainerConstruct expressionContainerConstruct;
 				ValueConstruct valueConstruct;
 
 				expressionContainerConstruct = new ExpressionContainerConstruct();
@@ -257,7 +257,7 @@ namespace TextMetal.Framework.TemplateModel
 					                 __ = count
 				                 };
 
-				expressionContainerConstruct.Content = valueConstruct;
+				((IContentContainerXmlObject<IExpressionXmlObject>)expressionContainerConstruct).Content = valueConstruct;
 
 				new AssignConstruct()
 				{
@@ -272,7 +272,7 @@ namespace TextMetal.Framework.TemplateModel
 				{
 					if (!DataType.IsNullOrWhiteSpace(varItem))
 					{
-						ExpressionContainerConstruct expressionContainerConstruct;
+						IExpressionContainerConstruct expressionContainerConstruct;
 						ValueConstruct valueConstruct;
 
 						expressionContainerConstruct = new ExpressionContainerConstruct();
@@ -282,7 +282,7 @@ namespace TextMetal.Framework.TemplateModel
 							                 __ = value
 						                 };
 
-						expressionContainerConstruct.Content = valueConstruct;
+						((IContentContainerXmlObject<IExpressionXmlObject>)expressionContainerConstruct).Content = valueConstruct;
 
 						new AssignConstruct()
 						{
@@ -293,7 +293,7 @@ namespace TextMetal.Framework.TemplateModel
 
 					if (!DataType.IsNullOrWhiteSpace(varIx))
 					{
-						ExpressionContainerConstruct expressionContainerConstruct;
+						IExpressionContainerConstruct expressionContainerConstruct;
 						ValueConstruct valueConstruct;
 
 						expressionContainerConstruct = new ExpressionContainerConstruct();
@@ -304,7 +304,7 @@ namespace TextMetal.Framework.TemplateModel
 							                 __ = index
 						                 };
 
-						expressionContainerConstruct.Content = valueConstruct;
+						((IContentContainerXmlObject<IExpressionXmlObject>)expressionContainerConstruct).Content = valueConstruct;
 
 						new AssignConstruct()
 						{

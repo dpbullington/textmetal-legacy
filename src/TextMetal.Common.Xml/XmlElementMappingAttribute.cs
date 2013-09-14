@@ -11,7 +11,7 @@ namespace TextMetal.Common.Xml
 	/// Marks a class as an XML object which is mapped to/from an XML element.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-	public sealed class XmlElementMappingAttribute : Attribute
+	public class XmlElementMappingAttribute : Attribute
 	{
 		#region Constructors/Destructors
 
