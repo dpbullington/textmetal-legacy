@@ -5,6 +5,8 @@
 
 using System;
 
+using NMock2;
+
 using NUnit.Framework;
 
 using TextMetal.Common.Solder.DependencyManagement;
@@ -28,8 +30,13 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 		public void ShouldCreateAndEvaluateFromFuncTest()
 		{
 			DelegateDependencyResolution delegateDependencyResolution;
+			IDependencyManager mockDependencyManager;
 			Func<object> value;
 			object result;
+			Mockery mockery;
+
+			mockery = new Mockery();
+			mockDependencyManager = mockery.NewMock<IDependencyManager>();
 
 			value = () => 11;
 
@@ -37,29 +44,38 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 
 			Assert.IsNotNull(delegateDependencyResolution);
 
-			result = delegateDependencyResolution.Resolve();
+			result = delegateDependencyResolution.Resolve(mockDependencyManager);
 
 			Assert.IsNotNull(result);
 			Assert.AreEqual(11, result);
+
+			mockery.VerifyAllExpectationsHaveBeenMet();
 		}
 
 		[Test]
 		public void ShouldCreateAndEvaluateTest()
 		{
 			DelegateDependencyResolution delegateDependencyResolution;
+			IDependencyManager mockDependencyManager;
 			Func<object> value;
 			object result;
+			Mockery mockery;
 
+			mockery = new Mockery();
+			mockDependencyManager = mockery.NewMock<IDependencyManager>();
+			
 			value = () => 11;
 
 			delegateDependencyResolution = new DelegateDependencyResolution(value);
 
 			Assert.IsNotNull(delegateDependencyResolution);
 
-			result = delegateDependencyResolution.Resolve();
+			result = delegateDependencyResolution.Resolve(mockDependencyManager);
 
 			Assert.IsNotNull(result);
 			Assert.AreEqual(11, result);
+
+			mockery.VerifyAllExpectationsHaveBeenMet();
 		}
 
 		[Test]

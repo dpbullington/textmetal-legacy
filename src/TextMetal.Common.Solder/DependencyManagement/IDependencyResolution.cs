@@ -17,8 +17,9 @@ namespace TextMetal.Common.Solder.DependencyManagement
 		/// <summary>
 		/// Resolves a dependency.
 		/// </summary>
+		/// <param name="dependencyManager">The current in-effect dependency manager requesting this resolution.</param>
 		/// <returns> An instance of an object or null. </returns>
-		object Resolve();
+		object Resolve(IDependencyManager dependencyManager);
 
 		#endregion
 	}

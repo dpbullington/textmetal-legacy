@@ -13,6 +13,7 @@ using TextMetal.Common.Core.StringTokens;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.AssociativeModel;
 using TextMetal.Framework.Core;
+using TextMetal.Framework.ExpressionModel;
 using TextMetal.Framework.HostingModel;
 using TextMetal.Framework.InputOutputModel;
 using TextMetal.Framework.SourceModel.Primative;
@@ -55,7 +56,6 @@ namespace TextMetal.HostImpl.Tool
 			TemplateConstruct template;
 			object source;
 			ObjectConstruct objectConstruct = null;
-			ITemplatingContext templatingContext;
 			Dictionary<string, object> globalVariableTable;
 			string toolVersion;
 			string templateDirectoryPath;
@@ -131,33 +131,44 @@ namespace TextMetal.HostImpl.Tool
 				{
 					outputMechanism.LogTextWriter.WriteLine("['{0:O}' (UTC)]\tText templating started.", startUtc);
 
-					templatingContext = new TemplatingContext(xpe, new Tokenizer(strictMatching), inputMechanism, outputMechanism);
-
-					templatingContext.Tokenizer.TokenReplacementStrategies.Add("StaticPropertyResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticPropertyResolver));
-					templatingContext.Tokenizer.TokenReplacementStrategies.Add("StaticMethodResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticMethodResolver));
-
-					// globals
-					templatingContext.VariableTables.Push(globalVariableTable = new Dictionary<string, object>());
-					globalVariableTable.Add("ToolVersion", toolVersion);
-
-					foreach (KeyValuePair<string, IList<string>> property in properties)
+					using (ITemplatingContext templatingContext = new TemplatingContext(xpe, new Tokenizer(strictMatching), inputMechanism, outputMechanism))
 					{
-						if (property.Value.Count == 0)
-							continue;
+						try
+						{
+							TemplatingContext.Current = templatingContext; // set ambient context
 
-						if (property.Value.Count == 1)
-							globalVariableTable.Add(property.Key, property.Value[0]);
-						else
-							globalVariableTable.Add(property.Key, property.Value);
+							templatingContext.Tokenizer.TokenReplacementStrategies.Add("StaticPropertyResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticPropertyResolver));
+							templatingContext.Tokenizer.TokenReplacementStrategies.Add("StaticMethodResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticMethodResolver));
+							templatingContext.Tokenizer.TokenReplacementStrategies.Add("rb", new DynamicValueTokenReplacementStrategy(RubyConstruct.RubyExpressionResolver));
+
+							// globals
+							templatingContext.VariableTables.Push(globalVariableTable = new Dictionary<string, object>());
+							globalVariableTable.Add("ToolVersion", toolVersion);
+
+							foreach (KeyValuePair<string, IList<string>> property in properties)
+							{
+								if (property.Value.Count == 0)
+									continue;
+
+								if (property.Value.Count == 1)
+									globalVariableTable.Add(property.Key, property.Value[0]);
+								else
+									globalVariableTable.Add(property.Key, property.Value);
+							}
+
+							templatingContext.IteratorModels.Push(source);
+							template.ExpandTemplate(templatingContext);
+							templatingContext.IteratorModels.Pop();
+							templatingContext.VariableTables.Pop();
+
+							endUtc = DateTime.UtcNow;
+							outputMechanism.LogTextWriter.WriteLine("['{0:O}' (UTC)]\tText templating completed with duration: '{1}'.", endUtc, (endUtc - startUtc));
+						}
+						finally
+						{
+							TemplatingContext.Current = null; // unset ambient context
+						}
 					}
-
-					templatingContext.IteratorModels.Push(source);
-					template.ExpandTemplate(templatingContext);
-					templatingContext.IteratorModels.Pop();
-					templatingContext.VariableTables.Pop();
-
-					endUtc = DateTime.UtcNow;
-					outputMechanism.LogTextWriter.WriteLine("['{0:O}' (UTC)]\tText templating completed with duration: '{1}'.", endUtc, (endUtc - startUtc));
 				}
 			}
 		}

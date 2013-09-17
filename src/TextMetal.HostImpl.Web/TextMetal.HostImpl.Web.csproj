@@ -67,6 +67,10 @@
       <Project>{D1860A67-7EFB-4C0F-89CD-A641D99DCC2A}</Project>
       <Name>TextMetal.Common.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Common.Expressions\TextMetal.Common.Expressions.csproj">
+      <Project>{483501D9-4D73-4076-997B-3A5D8B5DDB2C}</Project>
+      <Name>TextMetal.Common.Expressions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.Xml\TextMetal.Common.Xml.csproj">
       <Project>{CEF6C9D5-D5F2-4F4E-81DD-0BFDF81A2C93}</Project>
       <Name>TextMetal.Common.Xml</Name>
@@ -74,6 +78,10 @@
     <ProjectReference Include="..\TextMetal.Framework.Core\TextMetal.Framework.Core.csproj">
       <Project>{72DACF93-04D7-42A3-B851-2717915FFF89}</Project>
       <Name>TextMetal.Framework.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Framework.ExpressionModel\TextMetal.Framework.ExpressionModel.csproj">
+      <Project>{DDF068F4-CA5A-4CF9-AC02-C9B88E719F4E}</Project>
+      <Name>TextMetal.Framework.ExpressionModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Framework.HostingModel\TextMetal.Framework.HostingModel.csproj">
       <Project>{D5226035-2438-4DFB-96D1-BB771D08CC65}</Project>

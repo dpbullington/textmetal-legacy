@@ -344,8 +344,6 @@ namespace TextMetal.HostImpl.Web.Email
 			XmlPersistEngine xpe;
 			TemplateConstruct template;
 			ITemplatingContext templatingContext;
-			NullInputMechanism nullInputMechanism;
-			StringOutputMechanism stringOutputMechanism;
 			XmlTextReader templateXmlTextReader;
 
 			TEmailMessage emailMessage;
@@ -358,92 +356,108 @@ namespace TextMetal.HostImpl.Web.Email
 			xpe = new XmlPersistEngine();
 			xpe.RegisterWellKnownConstructs();
 
-			nullInputMechanism = new NullInputMechanism();
-			stringOutputMechanism = new StringOutputMechanism();
-			templatingContext = new TemplatingContext(xpe, new Tokenizer(true), nullInputMechanism, stringOutputMechanism);
+			using (NullInputMechanism nullInputMechanism = new NullInputMechanism())
+			{
+				using (StringOutputMechanism stringOutputMechanism = new StringOutputMechanism())
+				{
+					using (templatingContext = new TemplatingContext(xpe, new Tokenizer(true), nullInputMechanism, stringOutputMechanism))
+					{
+						try
+						{
+							TemplatingContext.Current = templatingContext; // set ambient context
 
-			// FROM
-			templateXmlTextReader = new XmlTextReader(new StringReader(this.FromXml.OuterXml));
-			template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
+							// BUG ?? Not disposing stuff here?
 
-			templatingContext.IteratorModels.Push(source);
-			template.ExpandTemplate(templatingContext);
-			templatingContext.IteratorModels.Pop();
+							// FROM
+							templateXmlTextReader = new XmlTextReader(new StringReader(this.FromXml.OuterXml));
+							template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
 
-			emailMessage.From = stringOutputMechanism.RecycleOutput();
+							templatingContext.IteratorModels.Push(source);
+							template.ExpandTemplate(templatingContext);
+							templatingContext.IteratorModels.Pop();
 
-			// SENDER
-			templateXmlTextReader = new XmlTextReader(new StringReader(this.SenderXml.OuterXml));
-			template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
+							emailMessage.From = stringOutputMechanism.RecycleOutput();
 
-			templatingContext.IteratorModels.Push(source);
-			template.ExpandTemplate(templatingContext);
-			templatingContext.IteratorModels.Pop();
+							// SENDER
+							templateXmlTextReader = new XmlTextReader(new StringReader(this.SenderXml.OuterXml));
+							template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
 
-			emailMessage.Sender = stringOutputMechanism.RecycleOutput();
+							templatingContext.IteratorModels.Push(source);
+							template.ExpandTemplate(templatingContext);
+							templatingContext.IteratorModels.Pop();
 
-			// REPLYTO
-			templateXmlTextReader = new XmlTextReader(new StringReader(this.ReplyToXml.OuterXml));
-			template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
+							emailMessage.Sender = stringOutputMechanism.RecycleOutput();
 
-			templatingContext.IteratorModels.Push(source);
-			template.ExpandTemplate(templatingContext);
-			templatingContext.IteratorModels.Pop();
+							// REPLYTO
+							templateXmlTextReader = new XmlTextReader(new StringReader(this.ReplyToXml.OuterXml));
+							template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
 
-			emailMessage.ReplyTo = stringOutputMechanism.RecycleOutput();
+							templatingContext.IteratorModels.Push(source);
+							template.ExpandTemplate(templatingContext);
+							templatingContext.IteratorModels.Pop();
 
-			// TO
-			templateXmlTextReader = new XmlTextReader(new StringReader(this.ToXml.OuterXml));
-			template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
+							emailMessage.ReplyTo = stringOutputMechanism.RecycleOutput();
 
-			templatingContext.IteratorModels.Push(source);
-			template.ExpandTemplate(templatingContext);
-			templatingContext.IteratorModels.Pop();
+							// TO
+							templateXmlTextReader = new XmlTextReader(new StringReader(this.ToXml.OuterXml));
+							template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
 
-			emailMessage.To = stringOutputMechanism.RecycleOutput();
+							templatingContext.IteratorModels.Push(source);
+							template.ExpandTemplate(templatingContext);
+							templatingContext.IteratorModels.Pop();
 
-			// CC
-			templateXmlTextReader = new XmlTextReader(new StringReader(this.CcXml.OuterXml));
-			template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
+							emailMessage.To = stringOutputMechanism.RecycleOutput();
 
-			templatingContext.IteratorModels.Push(source);
-			template.ExpandTemplate(templatingContext);
-			templatingContext.IteratorModels.Pop();
+							// CC
+							templateXmlTextReader = new XmlTextReader(new StringReader(this.CcXml.OuterXml));
+							template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
 
-			emailMessage.Cc = stringOutputMechanism.RecycleOutput();
+							templatingContext.IteratorModels.Push(source);
+							template.ExpandTemplate(templatingContext);
+							templatingContext.IteratorModels.Pop();
 
-			// BCC
-			templateXmlTextReader = new XmlTextReader(new StringReader(this.BccXml.OuterXml));
-			template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
+							emailMessage.Cc = stringOutputMechanism.RecycleOutput();
 
-			templatingContext.IteratorModels.Push(source);
-			template.ExpandTemplate(templatingContext);
-			templatingContext.IteratorModels.Pop();
+							// BCC
+							templateXmlTextReader = new XmlTextReader(new StringReader(this.BccXml.OuterXml));
+							template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
 
-			emailMessage.Bcc = stringOutputMechanism.RecycleOutput();
+							templatingContext.IteratorModels.Push(source);
+							template.ExpandTemplate(templatingContext);
+							templatingContext.IteratorModels.Pop();
 
-			// SUBJECT
-			templateXmlTextReader = new XmlTextReader(new StringReader(this.SubjectXml.OuterXml));
-			template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
+							emailMessage.Bcc = stringOutputMechanism.RecycleOutput();
 
-			templatingContext.IteratorModels.Push(source);
-			template.ExpandTemplate(templatingContext);
-			templatingContext.IteratorModels.Pop();
+							// SUBJECT
+							templateXmlTextReader = new XmlTextReader(new StringReader(this.SubjectXml.OuterXml));
+							template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
 
-			emailMessage.Subject = stringOutputMechanism.RecycleOutput();
+							templatingContext.IteratorModels.Push(source);
+							template.ExpandTemplate(templatingContext);
+							templatingContext.IteratorModels.Pop();
 
-			// ISBODYHTML
-			emailMessage.IsBodyHtml = this.IsBodyHtml;
+							emailMessage.Subject = stringOutputMechanism.RecycleOutput();
 
-			// BODY
-			templateXmlTextReader = new XmlTextReader(new StringReader(this.BodyXml.OuterXml));
-			template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
+							// ISBODYHTML
+							emailMessage.IsBodyHtml = this.IsBodyHtml;
 
-			templatingContext.IteratorModels.Push(source);
-			template.ExpandTemplate(templatingContext);
-			templatingContext.IteratorModels.Pop();
+							// BODY
+							templateXmlTextReader = new XmlTextReader(new StringReader(this.BodyXml.OuterXml));
+							template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
 
-			emailMessage.Body = stringOutputMechanism.RecycleOutput();
+							templatingContext.IteratorModels.Push(source);
+							template.ExpandTemplate(templatingContext);
+							templatingContext.IteratorModels.Pop();
+
+							emailMessage.Body = stringOutputMechanism.RecycleOutput();
+						}
+						finally
+						{
+							TemplatingContext.Current = null; // unset ambient context
+						}
+					}
+				}
+			}
 
 			return emailMessage;
 		}

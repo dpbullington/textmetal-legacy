@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 
+using TextMetal.Common.Core;
 using TextMetal.Common.Core.StringTokens;
 using TextMetal.Common.Xml;
 
@@ -46,22 +47,54 @@ namespace TextMetal.Framework.Core
 
 		#region Fields/Constants
 
+		private static readonly string TEMPLATING_CONTEXT_CURRENT_KEY = typeof(TemplatingContext).GUID.SafeToString();
 		private readonly IInputMechanism input;
 		private readonly Stack<object> iteratorModels = new Stack<object>();
 		private readonly IOutputMechanism output;
 		private readonly Tokenizer tokenizer;
 		private readonly Stack<Dictionary<string, object>> variableTables = new Stack<Dictionary<string, object>>();
 		private readonly IXmlPersistEngine xpe;
+		private bool disposed;
 
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		/// <summary>
+		/// Gets the current ambient templating context active on the current thread and application domain.
+		/// </summary>
+		public static ITemplatingContext Current
+		{
+			get
+			{
+				return (ITemplatingContext)ExecutionPathStorage.GetValue(TEMPLATING_CONTEXT_CURRENT_KEY);
+			}
+			set
+			{
+				ExecutionPathStorage.SetValue(TEMPLATING_CONTEXT_CURRENT_KEY, value);
+			}
+		}
 
 		public IDictionary<string, object> CurrentVariableTable
 		{
 			get
 			{
 				return this.VariableTables.Count > 0 ? this.VariableTables.Peek() : null;
+			}
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether the current instance has been disposed.
+		/// </summary>
+		public bool Disposed
+		{
+			get
+			{
+				return this.disposed;
+			}
+			private set
+			{
+				this.disposed = value;
 			}
 		}
 
@@ -139,6 +172,24 @@ namespace TextMetal.Framework.Core
 		public void ClearReferences()
 		{
 			this.Xpe.ClearAllKnowns();
+		}
+
+		/// <summary>
+		/// Dispose of the unit of work context.
+		/// </summary>
+		public void Dispose()
+		{
+			if (this.Disposed)
+				return;
+
+			try
+			{
+			}
+			finally
+			{
+				this.Disposed = true;
+				GC.SuppressFinalize(this);
+			}
 		}
 
 		public DynamicWildcardTokenReplacementStrategy GetDynamicWildcardTokenReplacementStrategy()

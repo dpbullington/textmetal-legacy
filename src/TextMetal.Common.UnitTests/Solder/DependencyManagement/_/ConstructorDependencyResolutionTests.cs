@@ -5,6 +5,8 @@
 
 using System;
 
+using NMock2;
+
 using NUnit.Framework;
 
 using TextMetal.Common.Solder.DependencyManagement;
@@ -28,16 +30,23 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 		public void ShouldCreateAndEvaluateTest()
 		{
 			ConstructorDependencyResolution<int> constructorDependencyResolution;
+			IDependencyManager mockDependencyManager;
 			object result;
+			Mockery mockery;
+
+			mockery = new Mockery();
+			mockDependencyManager = mockery.NewMock<IDependencyManager>();
 
 			constructorDependencyResolution = new ConstructorDependencyResolution<int>();
 
 			Assert.IsNotNull(constructorDependencyResolution);
 
-			result = constructorDependencyResolution.Resolve();
+			result = constructorDependencyResolution.Resolve(mockDependencyManager);
 
 			Assert.IsNotNull(result);
 			Assert.AreEqual(0, result);
+
+			mockery.VerifyAllExpectationsHaveBeenMet();
 		}
 
 		#endregion

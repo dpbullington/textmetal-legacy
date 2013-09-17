@@ -94,7 +94,7 @@ namespace TextMetal.Framework.ExpressionModel
 			if ((object)templatingContext == null)
 				throw new ArgumentNullException("templatingContext");
 
-			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy(false);
+			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy();
 
 			if ((object)this.TheExpression != null)
 				theObj = this.TheExpression.EvaluateExpression(templatingContext);

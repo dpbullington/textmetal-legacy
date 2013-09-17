@@ -53,6 +53,7 @@
     <Compile Include="DependencyManagement\IDependencyManager.cs" />
     <Compile Include="DependencyManagement\IDependencyResolution.cs" />
     <Compile Include="DependencyManagement\SingletonDependencyResolution.cs" />
+    <Compile Include="DependencyManagement\DependencyInjectionAttribute.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
     <Compile Include="RuntimeInterception\AspectDynamicInvoker.cs" />
     <Compile Include="RuntimeInterception\DynamicInvoker.cs" />

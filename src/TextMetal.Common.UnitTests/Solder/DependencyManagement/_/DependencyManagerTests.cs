@@ -608,12 +608,13 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 			string selectorKey;
 			object value;
 
+			dependencyManager = new DependencyManager();
+
 			mockery = new Mockery();
 			mockDependencyResolution = mockery.NewMock<IDependencyResolution>();
 
-			Expect.Once.On(mockDependencyResolution).Method("Resolve").WithNoArguments().Will(Return.Value(1));
+			Expect.Once.On(mockDependencyResolution).Method("Resolve").With(dependencyManager).Will(Return.Value(1));
 
-			dependencyManager = new DependencyManager();
 			targetType = typeof(IDisposable);
 			selectorKey = "yyy";
 
@@ -954,12 +955,13 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 			string selectorKey;
 			object value;
 
+			dependencyManager = new DependencyManager();
+
 			mockery = new Mockery();
 			mockDependencyResolution = mockery.NewMock<IDependencyResolution>();
 
-			Expect.Once.On(mockDependencyResolution).Method("Resolve").WithNoArguments().Will(Return.Value(1));
+			Expect.Once.On(mockDependencyResolution).Method("Resolve").With(dependencyManager).Will(Return.Value(1));
 
-			dependencyManager = new DependencyManager();
 			selectorKey = "x";
 
 			dependencyManager.AddResolution<object>(selectorKey, mockDependencyResolution);
@@ -981,12 +983,13 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 			string selectorKey;
 			object value;
 
+			dependencyManager = new DependencyManager();
+
 			mockery = new Mockery();
 			mockDependencyResolution = mockery.NewMock<IDependencyResolution>();
 
-			Expect.Once.On(mockDependencyResolution).Method("Resolve").WithNoArguments().Will(Return.Value(1));
-
-			dependencyManager = new DependencyManager();
+			Expect.Once.On(mockDependencyResolution).Method("Resolve").With(dependencyManager).Will(Return.Value(1));
+			
 			targetType = typeof(object);
 			selectorKey = "x";
 

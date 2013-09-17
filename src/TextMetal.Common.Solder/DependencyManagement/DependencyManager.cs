@@ -641,7 +641,7 @@ namespace TextMetal.Common.Solder.DependencyManagement
 				if ((object)dependencyResolution == null)
 					throw new InvalidOperationException("dependencyResolution");
 
-				value = dependencyResolution.Resolve();
+				value = dependencyResolution.Resolve(this);
 
 				if ((object)value != null)
 				{

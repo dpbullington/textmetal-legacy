@@ -163,7 +163,7 @@ namespace TextMetal.Framework.ExpressionModel
 			if ((object)templatingContext == null)
 				throw new ArgumentNullException("templatingContext");
 
-			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy(false);
+			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy();
 
 			if ((object)this.LeftExpression != null)
 				leftObj = this.LeftExpression.EvaluateExpression(templatingContext);

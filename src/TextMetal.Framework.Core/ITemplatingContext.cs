@@ -11,7 +11,7 @@ using TextMetal.Common.Xml;
 
 namespace TextMetal.Framework.Core
 {
-	public interface ITemplatingContext
+	public interface ITemplatingContext : IDisposable
 	{
 		#region Properties/Indexers/Events
 
