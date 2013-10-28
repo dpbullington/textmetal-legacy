@@ -37,7 +37,7 @@ namespace TextMetal.Framework.ExpressionModel
 
 			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy();
 
-			if (!dynamicWildcardTokenReplacementStrategy.GetByPath(this.Name, out obj))
+			if (!dynamicWildcardTokenReplacementStrategy.GetByToken(this.Name, out obj))
 				throw new InvalidOperationException(string.Format("The facet name '{0}' was not found on the target model.", this.Name));
 
 			return obj;

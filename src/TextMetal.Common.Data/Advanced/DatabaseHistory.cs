@@ -125,7 +125,7 @@ namespace TextMetal.Common.Data.Advanced
 				throw new ArgumentNullException("unitOfWorkContext");
 
 			if (this.Revisions.Count < 1)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Revision count was less than one."));
 
 			ivalue = unitOfWorkContext.FetchScalar<int>(CommandType.Text, this.DoesSchemaTrackingExistCommandText, null);
 
@@ -139,7 +139,7 @@ namespace TextMetal.Common.Data.Advanced
 				svalue = unitOfWorkContext.FetchScalar<string>(CommandType.Text, this.GetSchemaVersionCommandText, null);
 
 				if (!DataType.TryParse(svalue, out schemaRevision))
-					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+					throw new InvalidOperationException(string.Format("The schema revision scalar value returned from the database '{0}' could not be parsed into a valid '{1}'.", svalue, typeof(int)));
 			}
 
 			currentSchemaRevision = this.Revisions.Max(x => x.Number);
@@ -166,22 +166,22 @@ namespace TextMetal.Common.Data.Advanced
 					results = unitOfWorkContext.ExecuteDictionary(CommandType.Text, this.IncrementSchemaVersionCommandText, null, out recordsAffected);
 
 					if (recordsAffected != 1)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException(string.Format("The records affected was not equal to one."));
 				}
 			}
 
 			ivalue = unitOfWorkContext.FetchScalar<int>(CommandType.Text, this.DoesSchemaTrackingExistCommandText, null);
 
 			if (ivalue != 1)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Schema tracking is not enabled in the database."));
 
 			svalue = unitOfWorkContext.FetchScalar<string>(CommandType.Text, this.GetSchemaVersionCommandText, null);
 
 			if (!DataType.TryParse(svalue, out schemaRevision))
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("The schema revision scalar value returned from the database '{0}' could not be parsed into a valid '{1}'.", svalue, typeof(int)));
 
 			if (schemaRevision != currentSchemaRevision)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("The schema revison '{0}' does not equal the CURRENT schema revison '{1}.", schemaRevision, currentSchemaRevision));
 
 			return changed;
 		}

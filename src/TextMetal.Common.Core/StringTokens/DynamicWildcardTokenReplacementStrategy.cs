@@ -8,7 +8,7 @@ using System;
 namespace TextMetal.Common.Core.StringTokens
 {
 	/// <summary>
-	/// Provides a wldcard token replacement strategy which returns the data using reflection or dictionary semantics against an object property path.
+	/// Provides a wldcard token replacement strategy which returns the data using reflection or dictionary semantics against an object property token.
 	/// </summary>
 	public class DynamicWildcardTokenReplacementStrategy : IWildcardTokenReplacementStrategy
 	{
@@ -82,22 +82,18 @@ namespace TextMetal.Common.Core.StringTokens
 		{
 			object value;
 
-			if (!this.GetByPath(token, out value))
-			{
-				if (this.Strict)
-					throw new ArgumentException("TODO (enhancement): add meaningful message " + token);
-			}
+			this.GetByToken(token, out value); // or fail if strict
 
 			return value;
 		}
 
 		/// <summary>
-		/// Gets a value by path from the array of target objects. This method obeys the strict matching semantics flag in effect and if enabled, will throw an exception on path lookup failure.
+		/// Gets a value by token from the array of target objects. This method obeys the strict matching semantics flag in effect and if enabled, will throw an exception on token lookup failure.
 		/// </summary>
-		/// <param name="path"> The logical path (i.e. property name, dictionary key, etc.) to lookup. </param>
-		/// <param name="value"> The output value or null if the path was not found. </param>
-		/// <returns> A value indicating whether the path was found in the array of target objects. </returns>
-		public bool GetByPath(string path, out object value)
+		/// <param name="token"> The logical token (i.e. property name, dictionary key, etc.) to lookup. </param>
+		/// <param name="value"> The output value or null if the token was not found. </param>
+		/// <returns> A value indicating whether the token was found in the array of target objects. </returns>
+		public bool GetByToken(string token, out object value)
 		{
 			value = null;
 
@@ -105,42 +101,40 @@ namespace TextMetal.Common.Core.StringTokens
 			{
 				foreach (object target in this.Targets)
 				{
-					if (Reflexion.GetLogicalPropertyValue(target, path, out value))
+					if (Reflexion.GetLogicalPropertyValue(target, token, out value))
 						return true;
 				}
 			}
 
 			if (this.Strict)
-				throw new ArgumentException("TODO (enhancement): add meaningful message " + path);
+				throw new InvalidOperationException(string.Format("Failed to get value for token '{0}'", token));
 
 			return false;
 		}
 
 		/// <summary>
-		/// Sets a value by path to the array of target objects. This method obeys the strict matching semantics flag in effect and if enabled, will throw an exception on path lookup failure.
+		/// Sets a value by token to the array of target objects. This method obeys the strict matching semantics flag in effect and if enabled, will throw an exception on token lookup failure.
 		/// </summary>
-		/// <param name="path"> The logical path (i.e. property name, dictionary key, etc.) to lookup. </param>
+		/// <param name="token"> The logical token (i.e. property name, dictionary key, etc.) to lookup. </param>
 		/// <param name="value"> The value to set or null. </param>
-		/// <returns> A value indicating whether the path was found in the array of target objects. </returns>
-		public bool SetByPath(string path, object value)
+		/// <returns> A value indicating whether the token was found in the array of target objects. </returns>
+		public bool SetByToken(string token, object value)
 		{
 			object unused;
 
-			// is this needed?
-			if (this.Strict && !this.GetByPath(path, out unused))
-				throw new ArgumentException("TODO (enhancement): add meaningful message " + path);
+			this.GetByToken(token, out unused); // or fail if strict
 
 			if ((object)this.Targets != null)
 			{
 				foreach (object target in this.Targets)
 				{
-					if (Reflexion.SetLogicalPropertyValue(target, path, value, false, false))
+					if (Reflexion.SetLogicalPropertyValue(target, token, value, false, false))
 						return true;
 				}
 			}
 
 			if (this.Strict)
-				throw new ArgumentException("TODO (enhancement): add meaningful message " + path);
+				throw new InvalidOperationException(string.Format("Failed to set value for token '{0}", token));
 
 			return false;
 		}

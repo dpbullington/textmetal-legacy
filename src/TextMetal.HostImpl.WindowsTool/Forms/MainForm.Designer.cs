@@ -64,7 +64,7 @@
 			// tsslMain
 			// 
 			this.tsslMain.Name = "tsslMain";
-			this.tsslMain.Size = new System.Drawing.Size(53, 17);
+			this.tsslMain.Size = new System.Drawing.Size(54, 17);
 			this.tsslMain.Text = "%TEXT%";
 			// 
 			// msMain
@@ -87,7 +87,7 @@
             this.toolStripSeparator1,
             this.tsmiExit});
 			this.tsmiFile.Name = "tsmiFile";
-			this.tsmiFile.Size = new System.Drawing.Size(35, 20);
+			this.tsmiFile.Size = new System.Drawing.Size(37, 20);
 			this.tsmiFile.Text = "&File";
 			// 
 			// tsmiNew
@@ -103,8 +103,8 @@
 			this.tsmiNewDocument.Name = "tsmiNewDocument";
 			this.tsmiNewDocument.ShortcutKeyDisplayString = "";
 			this.tsmiNewDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-			this.tsmiNewDocument.Size = new System.Drawing.Size(161, 22);
-			this.tsmiNewDocument.Text = "&Document";
+			this.tsmiNewDocument.Size = new System.Drawing.Size(182, 22);
+			this.tsmiNewDocument.Text = "&Document...";
 			this.tsmiNewDocument.Click += new System.EventHandler(this.tsmiNewDocument_Click);
 			// 
 			// tsmiOpen
@@ -119,7 +119,7 @@
 			// 
 			this.tsmiOpenDocument.Name = "tsmiOpenDocument";
 			this.tsmiOpenDocument.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-			this.tsmiOpenDocument.Size = new System.Drawing.Size(174, 22);
+			this.tsmiOpenDocument.Size = new System.Drawing.Size(182, 22);
 			this.tsmiOpenDocument.Text = "&Document...";
 			this.tsmiOpenDocument.Click += new System.EventHandler(this.tsmiOpenDocument_Click);
 			// 
@@ -143,7 +143,7 @@
             this.toolStripSeparator2,
             this.tsmiDocumentWindows});
 			this.tsmiWindow.Name = "tsmiWindow";
-			this.tsmiWindow.Size = new System.Drawing.Size(57, 20);
+			this.tsmiWindow.Size = new System.Drawing.Size(63, 20);
 			this.tsmiWindow.Text = "&Window";
 			// 
 			// tsmiCloseAllDocuments
@@ -152,19 +152,19 @@
 			this.tsmiCloseAllDocuments.ShortcutKeys = ((System.Windows.Forms.Keys)((((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
             | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.W)));
-			this.tsmiCloseAllDocuments.Size = new System.Drawing.Size(263, 22);
+			this.tsmiCloseAllDocuments.Size = new System.Drawing.Size(284, 22);
 			this.tsmiCloseAllDocuments.Text = "&Close All Documents";
 			this.tsmiCloseAllDocuments.Click += new System.EventHandler(this.tsmiCloseAllDocuments_Click);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(260, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(281, 6);
 			// 
 			// tsmiDocumentWindows
 			// 
 			this.tsmiDocumentWindows.Name = "tsmiDocumentWindows";
-			this.tsmiDocumentWindows.Size = new System.Drawing.Size(263, 22);
+			this.tsmiDocumentWindows.Size = new System.Drawing.Size(284, 22);
 			this.tsmiDocumentWindows.Text = "Document Windows";
 			// 
 			// tsmiHelp
@@ -173,14 +173,14 @@
             this.tsmiTopics,
             this.tsmiAbout});
 			this.tsmiHelp.Name = "tsmiHelp";
-			this.tsmiHelp.Size = new System.Drawing.Size(40, 20);
+			this.tsmiHelp.Size = new System.Drawing.Size(44, 20);
 			this.tsmiHelp.Text = "&Help";
 			// 
 			// tsmiTopics
 			// 
 			this.tsmiTopics.Name = "tsmiTopics";
 			this.tsmiTopics.ShortcutKeys = System.Windows.Forms.Keys.F1;
-			this.tsmiTopics.Size = new System.Drawing.Size(128, 22);
+			this.tsmiTopics.Size = new System.Drawing.Size(132, 22);
 			this.tsmiTopics.Text = "&Topics";
 			this.tsmiTopics.Click += new System.EventHandler(this.tsmiTopics_Click);
 			// 
@@ -188,7 +188,7 @@
 			// 
 			this.tsmiAbout.Name = "tsmiAbout";
 			this.tsmiAbout.ShortcutKeys = System.Windows.Forms.Keys.F12;
-			this.tsmiAbout.Size = new System.Drawing.Size(128, 22);
+			this.tsmiAbout.Size = new System.Drawing.Size(132, 22);
 			this.tsmiAbout.Text = "&About";
 			this.tsmiAbout.Click += new System.EventHandler(this.tsmiAbout_Click);
 			// 

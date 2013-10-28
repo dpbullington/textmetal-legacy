@@ -100,10 +100,10 @@ namespace TextMetal.HostImpl.Tool
 			sourceStrategyType = Type.GetType(sourceStrategyAssemblyQualifiedTypeName, false);
 
 			if ((object)sourceStrategyType == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Failed to load source strategy from assembly qualified type name '{0}'.", sourceStrategyAssemblyQualifiedTypeName));
 
 			if (!typeof(ISourceStrategy).IsAssignableFrom(sourceStrategyType))
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Source strategy type '{0}' is not assignable to '{1}'.", sourceStrategyType, typeof(ISourceStrategy)));
 
 			sourceStrategy = (ISourceStrategy)Activator.CreateInstance(sourceStrategyType);
 

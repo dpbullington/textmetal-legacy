@@ -11,7 +11,6 @@
 	
 	<Import name="ds_tag_specific_net.sqlite_template.xml" />
 	<Import name="ds_tag_specific_net.sqlserver_template.xml" />
-	<Import name="ds_tag_specific_odbc.sybaseiq_template.xml" />
 	<Import name="ds_tag_specific_odbc.sqlserver_template.xml" />
 	
 	<Import name="tbl_vw_model_template.xml" />

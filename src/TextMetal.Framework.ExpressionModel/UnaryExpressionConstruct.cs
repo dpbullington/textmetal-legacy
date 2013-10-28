@@ -94,7 +94,8 @@ namespace TextMetal.Framework.ExpressionModel
 			if ((object)templatingContext == null)
 				throw new ArgumentNullException("templatingContext");
 
-			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy();
+			// *** THIS MUST USE THIS OVERLOAD OR CODE WILL FAIL ***
+			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy(false);
 
 			if ((object)this.TheExpression != null)
 				theObj = this.TheExpression.EvaluateExpression(templatingContext);
@@ -150,7 +151,7 @@ namespace TextMetal.Framework.ExpressionModel
 						if (DataType.IsWhiteSpace(ths.Name))
 							throw new InvalidOperationException("TODO (enhancement): add meaningful message | DataType.IsNullOrWhiteSpace(ths)");
 
-						return dynamicWildcardTokenReplacementStrategy.GetByPath(ths.Name, out obj);
+						return dynamicWildcardTokenReplacementStrategy.GetByToken(ths.Name, out obj);
 					}
 
 					break;

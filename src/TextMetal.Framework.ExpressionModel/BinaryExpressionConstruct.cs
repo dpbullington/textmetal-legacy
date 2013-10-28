@@ -116,14 +116,15 @@ namespace TextMetal.Framework.ExpressionModel
 			if ((object)templatingContext == null)
 				throw new ArgumentNullException("templatingContext");
 
-			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy();
+			// *** THIS MUST USE THIS OVERLOAD OR CODE WILL FAIL ***
+			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy(false);
 
 			token = templatingContext.Tokenizer.ExpandTokens(token, dynamicWildcardTokenReplacementStrategy);
 
 			if ((object)expressionContainerConstruct != null)
 				obj = expressionContainerConstruct.EvaluateExpression(templatingContext);
 
-			if (!dynamicWildcardTokenReplacementStrategy.SetByPath(token, obj))
+			if (!dynamicWildcardTokenReplacementStrategy.SetByToken(token, obj))
 				throw new InvalidOperationException(string.Format("The facet name '{0}' was not found on the target model.", token));
 		}
 
@@ -163,7 +164,8 @@ namespace TextMetal.Framework.ExpressionModel
 			if ((object)templatingContext == null)
 				throw new ArgumentNullException("templatingContext");
 
-			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy();
+			// *** THIS MUST USE THIS OVERLOAD OR CODE WILL FAIL ***
+			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy(false);
 
 			if ((object)this.LeftExpression != null)
 				leftObj = this.LeftExpression.EvaluateExpression(templatingContext);

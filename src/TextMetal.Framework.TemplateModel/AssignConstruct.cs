@@ -81,7 +81,7 @@ namespace TextMetal.Framework.TemplateModel
 			if ((object)this.Expression != null)
 				obj = this.Expression.EvaluateExpression(templatingContext);
 
-			if (!dynamicWildcardTokenReplacementStrategy.SetByPath(token, obj))
+			if (!dynamicWildcardTokenReplacementStrategy.SetByToken(token, obj))
 				throw new InvalidOperationException(string.Format("The facet name '{0}' was not found on the target model.", token));
 		}
 

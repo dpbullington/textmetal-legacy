@@ -44,9 +44,22 @@ IF NOT EXIST %PACKAGE_DIR_EXISTS% GOTO noPkgDir
 goto delPkgDir
 
 :noPkgDir
-@echo Creating pkg directory...
+@echo Creating pkg directories...
 mkdir "%PACKAGE_DIR%"
 IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+mkdir "%PACKAGE_DIR%\IronRuby"
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+mkdir "%PACKAGE_DIR%\SQLite"
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+mkdir "%PACKAGE_DIR%\SQLite\x86"
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+mkdir "%PACKAGE_DIR%\SQLite\x64"
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
 goto pkgBuild
 
 :delPkgDir
@@ -79,10 +92,13 @@ IF %ERRORLEVEL% NEQ 0 goto pkgError
 rem copy ".\lib\AspNetMvc\*.*" "%PACKAGE_DIR%\."
 rem IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy ".\lib\IronRuby\*.*" "%PACKAGE_DIR%\."
+copy ".\lib\IronRuby\*.*" "%PACKAGE_DIR%\IronRuby\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy ".\lib\SQLite\x64\*.*" "%PACKAGE_DIR%\."
+copy ".\lib\SQLite\x86\*.*" "%PACKAGE_DIR%\SQLite\x86\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy ".\lib\SQLite\x64\*.*" "%PACKAGE_DIR%\SQLite\x64\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 

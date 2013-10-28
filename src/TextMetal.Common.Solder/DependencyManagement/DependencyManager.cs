@@ -15,7 +15,7 @@ using TextMetal.Common.Core;
 namespace TextMetal.Common.Solder.DependencyManagement
 {
 	/// <summary>
-	/// Provides dependency registration and resoltuion services. Uses reader-writer lock for asynchronous protection (i.e. thread-safety).
+	/// Provides dependency registration and resolution services. Uses reader-writer lock for asynchronous protection (i.e. thread-safety).
 	/// </summary>
 	public sealed class DependencyManager : IDependencyManager
 	{

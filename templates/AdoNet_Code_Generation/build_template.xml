@@ -358,7 +358,6 @@ EndGlobal
 	<Compile Include="NetSqlServerSpecific.g.cs" />
 	<Compile Include="OdbcSqlServerSpecific.g.cs" />
 	<Compile Include="NetSqliteSpecific.g.cs" />
-	<Compile Include="OdbcSybaseIqSpecific.g.cs" />
 	
 ]]>
 
@@ -433,7 +432,6 @@ EndGlobal
     <None Include="SQL\RevisionHistory%28net.sqlserver%29.xml" />
     <None Include="SQL\RevisionHistory%28net.sqlite%29.xml" />
 	<None Include="SQL\RevisionHistory%28odbc.sqlserver%29.xml" />
-    <None Include="SQL\RevisionHistory%28odbc.sybaseiq%29.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

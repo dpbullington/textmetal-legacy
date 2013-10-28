@@ -172,8 +172,6 @@ namespace ${ClrNamespace}
 				return NetSqlServerSpecific.Instance;
 			else if (DataSourceTag.SafeToString().ToLower() == NetSqliteSpecific.Instance.DataSourceTag.SafeToString().ToLower())
 				return NetSqliteSpecific.Instance;
-			else if (DataSourceTag.SafeToString().ToLower() == OdbcSybaseIqSpecific.Instance.DataSourceTag.SafeToString().ToLower())
-				return OdbcSybaseIqSpecific.Instance;
 			else if (DataSourceTag.SafeToString().ToLower() == OdbcSqlServerSpecific.Instance.DataSourceTag.SafeToString().ToLower())
 				return OdbcSqlServerSpecific.Instance;
 			else

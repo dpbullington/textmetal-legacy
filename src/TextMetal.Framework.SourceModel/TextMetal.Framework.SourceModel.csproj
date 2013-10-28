@@ -81,17 +81,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sybaseiq\Columns.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sybaseiq\Database.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sybaseiq\ForeignKeyColumns.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sybaseiq\ForeignKeys.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sybaseiq\Parameters.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sybaseiq\Procedures.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sybaseiq\ProcedureSchema.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sybaseiq\Schemas.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sybaseiq\Tables.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sybaseiq\UniqueKeyColumns.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sybaseiq\UniqueKeys.sql" />
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\Columns.sql" />
   </ItemGroup>
   <ItemGroup>
@@ -184,16 +173,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="DatabaseSchema\Odbc\DML\odbc.db2luw\todo.txt" />
-    <None Include="DatabaseSchema\Odbc\DML\odbc.db2zos\todo.txt" />
-    <None Include="DatabaseSchema\Odbc\DML\odbc.oracle\todo.txt" />
-    <None Include="DatabaseSchema\Sql\DML\net.sqlce\todo.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="DatabaseSchema\Sqlite\DML\net.sqlite\todo.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="DatabaseSchema\Oracle\DML\net.oracle\todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
