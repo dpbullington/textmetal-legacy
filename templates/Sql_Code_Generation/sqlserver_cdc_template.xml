@@ -1,0 +1,510 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	Copyright ©2002-2013 Daniel Bullington (dpbullington@gmail.com)
+	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+-->
+<Template xmlns="http://www.textmetal.com/api/v5.0.0">
+
+	<OutputScope name="CDC.g.sql">
+	
+	<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
+		<ForEach.Filter>
+			<BinaryExpression operator="Ne">
+				<BinaryExpression.LeftExpression>
+					<Facet name="SchemaName" />
+				</BinaryExpression.LeftExpression>
+				<BinaryExpression.RightExpression>
+					<Facet name="HistorySchemaName" />
+				</BinaryExpression.RightExpression>
+			</BinaryExpression>
+		</ForEach.Filter>
+		
+		<ForEach.Body>
+
+			<ForEach in="Tables" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach.Filter>
+					<BinaryExpression operator="Eq">
+						<BinaryExpression.LeftExpression>
+							<Facet name="IsView" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Value type="System.Boolean" data="False" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</ForEach.Filter>
+				<ForEach.Body>
+<![CDATA[
+
+CREATE TABLE [${HistorySchemaName}].[${TableName}History]
+(
+	[TimestampId] [bigint] NOT NULL,	
+]]>
+				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+					<ForEach.Filter>
+						<BinaryExpression operator="Or">
+							<BinaryExpression.LeftExpression>
+								<BinaryExpression operator="Eq">
+									<BinaryExpression.LeftExpression>
+										<Facet name="ColumnIsPrimaryKey" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.LeftExpression>
+							<BinaryExpression.RightExpression>
+								<BinaryExpression operator="Eq">
+									<BinaryExpression.LeftExpression>
+										<Facet name="HasNoDefinedPrimaryKeyColumns" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.RightExpression>
+						</BinaryExpression>
+					</ForEach.Filter>
+					<ForEach.Body>
+						<![CDATA[	[${ColumnName}] [${ColumnSqlType}] NOT NULL,]]>
+							
+						<If>
+							<If.Condition>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="#LoopCount" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Facet name="#LoopIndex" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</If.Condition>
+							<If.True>
+<![CDATA[
+]]>
+							</If.True>
+						</If>
+					</ForEach.Body>
+				</ForEach>
+<![CDATA[
+
+]]>
+				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">							
+					<ForEach.Filter>
+						<BinaryExpression operator="And">
+							<BinaryExpression.LeftExpression>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="ColumnIsPrimaryKey" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.LeftExpression>
+							<BinaryExpression.RightExpression>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="HasNoDefinedPrimaryKeyColumns" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.RightExpression>
+						</BinaryExpression>
+					</ForEach.Filter>
+					<ForEach.Body>
+						<![CDATA[	[${ColumnName}] [${ColumnSqlType}] NULL,]]>
+						
+						<If>
+							<If.Condition>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="#LoopCount" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Facet name="#LoopIndex" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</If.Condition>
+							<If.True>
+<![CDATA[
+]]>
+							</If.True>
+						</If>
+					</ForEach.Body>
+				</ForEach>
+<![CDATA[
+
+	CONSTRAINT [pk_${TableName}History] PRIMARY KEY
+	(
+		[TimestampId],
+]]>
+				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+					<ForEach.Filter>
+						<BinaryExpression operator="Or">
+							<BinaryExpression.LeftExpression>
+								<BinaryExpression operator="Eq">
+									<BinaryExpression.LeftExpression>
+										<Facet name="ColumnIsPrimaryKey" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.LeftExpression>
+							<BinaryExpression.RightExpression>
+								<BinaryExpression operator="Eq">
+									<BinaryExpression.LeftExpression>
+										<Facet name="HasNoDefinedPrimaryKeyColumns" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.RightExpression>
+						</BinaryExpression>
+					</ForEach.Filter>
+					<ForEach.Body>
+						<![CDATA[		[${ColumnName}]]]>
+							
+						<If>
+							<If.Condition>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="#LoopCount" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Facet name="#LoopIndex" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</If.Condition>
+							<If.True>
+<![CDATA[,
+]]>
+							</If.True>
+						</If>
+					</ForEach.Body>
+				</ForEach>
+<![CDATA[
+	)
+)
+GO
+
+
+CREATE TRIGGER [${SchemaName}].[On${TableName}Change] ON [${SchemaName}].[${TableName}] AFTER INSERT, UPDATE, DELETE
+AS
+	BEGIN
+		SET NOCOUNT ON;
+
+		INSERT INTO [${HistorySchemaName}].[${TableName}History]
+		SELECT
+			[${SchemaName}].GetTimestampId(GetUtcDate()) AS [TimestampId],
+]]>
+				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+					<ForEach.Filter>
+						<BinaryExpression operator="Or">
+							<BinaryExpression.LeftExpression>
+								<BinaryExpression operator="Eq">
+									<BinaryExpression.LeftExpression>
+										<Facet name="ColumnIsPrimaryKey" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.LeftExpression>
+							<BinaryExpression.RightExpression>
+								<BinaryExpression operator="Eq">
+									<BinaryExpression.LeftExpression>
+										<Facet name="HasNoDefinedPrimaryKeyColumns" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.RightExpression>
+						</BinaryExpression>
+					</ForEach.Filter>
+					<ForEach.Body>
+						<![CDATA[			i.[${ColumnName}],]]>
+							
+						<If>
+							<If.Condition>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="#LoopCount" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Facet name="#LoopIndex" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</If.Condition>
+							<If.True>
+<![CDATA[
+]]>
+							</If.True>
+						</If>
+					</ForEach.Body>
+				</ForEach>
+<![CDATA[
+
+]]>		
+				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">							
+					<ForEach.Filter>
+						<BinaryExpression operator="And">
+							<BinaryExpression.LeftExpression>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="ColumnIsPrimaryKey" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.LeftExpression>
+							<BinaryExpression.RightExpression>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="HasNoDefinedPrimaryKeyColumns" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.RightExpression>
+						</BinaryExpression>
+					</ForEach.Filter>
+					<ForEach.Body>
+						<![CDATA[			i.[${ColumnName}]]]>
+						
+						<If>
+							<If.Condition>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="#LoopCount" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Facet name="#LoopIndex" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</If.Condition>
+							<If.True>
+<![CDATA[,
+]]>
+							</If.True>
+						</If>
+					</ForEach.Body>
+				</ForEach>
+<![CDATA[
+		FROM [inserted] i
+
+		UNION ALL
+
+		SELECT
+			[${SchemaName}].GetTimestampId(GetUtcDate()) AS [TimestampId],
+]]>
+				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+					<ForEach.Filter>
+						<BinaryExpression operator="Or">
+							<BinaryExpression.LeftExpression>
+								<BinaryExpression operator="Eq">
+									<BinaryExpression.LeftExpression>
+										<Facet name="ColumnIsPrimaryKey" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.LeftExpression>
+							<BinaryExpression.RightExpression>
+								<BinaryExpression operator="Eq">
+									<BinaryExpression.LeftExpression>
+										<Facet name="HasNoDefinedPrimaryKeyColumns" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.RightExpression>
+						</BinaryExpression>
+					</ForEach.Filter>
+					<ForEach.Body>
+						<![CDATA[			d.[${ColumnName}],]]>
+							
+						<If>
+							<If.Condition>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="#LoopCount" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Facet name="#LoopIndex" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</If.Condition>
+							<If.True>
+<![CDATA[
+]]>
+							</If.True>
+						</If>
+					</ForEach.Body>
+				</ForEach>
+<![CDATA[
+
+]]>		
+				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">							
+					<ForEach.Filter>
+						<BinaryExpression operator="And">
+							<BinaryExpression.LeftExpression>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="ColumnIsPrimaryKey" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.LeftExpression>
+							<BinaryExpression.RightExpression>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="HasNoDefinedPrimaryKeyColumns" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.RightExpression>
+						</BinaryExpression>
+					</ForEach.Filter>
+					<ForEach.Body>
+						<![CDATA[			NULL AS [${ColumnName}]]]>
+						
+						<If>
+							<If.Condition>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="#LoopCount" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Facet name="#LoopIndex" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</If.Condition>
+							<If.True>
+<![CDATA[,
+]]>
+							</If.True>
+						</If>
+					</ForEach.Body>
+				</ForEach>
+<![CDATA[
+		FROM [deleted] d
+		LEFT OUTER JOIN [inserted] i ON ]]>
+				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+					<ForEach.Filter>
+						<BinaryExpression operator="Or">
+							<BinaryExpression.LeftExpression>
+								<BinaryExpression operator="Eq">
+									<BinaryExpression.LeftExpression>
+										<Facet name="ColumnIsPrimaryKey" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.LeftExpression>
+							<BinaryExpression.RightExpression>
+								<BinaryExpression operator="Eq">
+									<BinaryExpression.LeftExpression>
+										<Facet name="HasNoDefinedPrimaryKeyColumns" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.RightExpression>
+						</BinaryExpression>
+					</ForEach.Filter>
+					<ForEach.Body>
+						<![CDATA[i.[${ColumnName}] = d.[${ColumnName}]]]>
+							
+						<If>
+							<If.Condition>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="#LoopCount" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Facet name="#LoopIndex" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</If.Condition>
+							<If.True>
+<![CDATA[ AND ]]>
+							</If.True>
+						</If>
+					</ForEach.Body>
+				</ForEach>
+<![CDATA[
+		WHERE ]]>
+				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+					<ForEach.Filter>
+						<BinaryExpression operator="Or">
+							<BinaryExpression.LeftExpression>
+								<BinaryExpression operator="Eq">
+									<BinaryExpression.LeftExpression>
+										<Facet name="ColumnIsPrimaryKey" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.LeftExpression>
+							<BinaryExpression.RightExpression>
+								<BinaryExpression operator="Eq">
+									<BinaryExpression.LeftExpression>
+										<Facet name="HasNoDefinedPrimaryKeyColumns" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.RightExpression>
+						</BinaryExpression>
+					</ForEach.Filter>
+					<ForEach.Body>
+						<![CDATA[i.[${ColumnName}] IS NULL]]>
+							
+						<If>
+							<If.Condition>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="#LoopCount" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Facet name="#LoopIndex" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</If.Condition>
+							<If.True>
+<![CDATA[ AND ]]>
+							</If.True>
+						</If>
+					</ForEach.Body>
+				</ForEach>
+<![CDATA[
+	END
+GO
+
+]]>
+					
+				</ForEach.Body>
+			</ForEach>
+
+		</ForEach.Body>
+	</ForEach>
+	</OutputScope>
+</Template>
