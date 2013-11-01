@@ -14,6 +14,7 @@
 	<Import name="ds_tag_specific_odbc.sqlserver_template.xml" />
 	
 	<Import name="tbl_vw_model_template.xml" />
+	<Import name="tbl_vw_partial_model_template.xml" />
 	
 	<Import name="tbl_vw_irepository_template.xml" />
 	<Import name="tbl_vw_repository_template.xml" />
