@@ -78,6 +78,7 @@ namespace TextMetal.HostImpl.Web.AspNet
 							templatingContext.VariableTables.Push(globalVariableTable = new Dictionary<string, object>());
 							globalVariableTable.Add("ToolVersion", toolVersion);
 
+							// TODO add all Request cookies, querystring, etc in here
 							/*
 						if ((object)properties != null)
 						{

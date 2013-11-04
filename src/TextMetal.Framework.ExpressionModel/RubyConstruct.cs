@@ -124,7 +124,7 @@ namespace TextMetal.Framework.ExpressionModel
 				throw new InvalidOperationException(string.Format("RubyExpressionResolver requires an ambient TemplatingContext."));
 
 			if (parameters.Length > 1)
-				throw new InvalidOperationException(string.Format("RubyExpressionResolver paramter count '{0}' exceeds limit of '{1}'.", parameters.Length, 1));
+				throw new InvalidOperationException(string.Format("RubyExpressionResolver parameter count '{0}' exceeds limit of '{1}'.", parameters.Length, 1));
 
 			return new RubyConstruct() { Src = RubySource.Expr, Expr = parameters[0] }.CoreEvaluateExpression(TemplatingContext.Current);
 		}

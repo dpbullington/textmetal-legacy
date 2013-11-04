@@ -34,9 +34,9 @@ namespace TextMetal.HostImpl.Web.Email
 
 		#region Fields/Constants
 
-		private XmlElement bccXml;
+		private XmlElement blindCarbonCopyXml;
 		private XmlElement bodyXml;
-		private XmlElement ccXml;
+		private XmlElement carbonCopyXml;
 		private XmlElement fromXml;
 		private bool isBodyHtml;
 		private XmlElement replyToXml;
@@ -48,16 +48,16 @@ namespace TextMetal.HostImpl.Web.Email
 
 		#region Properties/Indexers/Events
 
-		[XmlElement("BCC", Order = 5)]
-		public XmlElement BccXml
+		[XmlElement("BlindCarbonCopy", Order = 5)]
+		public XmlElement BlindCarbonCopyXml
 		{
 			get
 			{
-				return this.bccXml;
+				return this.blindCarbonCopyXml;
 			}
 			set
 			{
-				this.bccXml = value;
+				this.blindCarbonCopyXml = value;
 			}
 		}
 
@@ -74,16 +74,16 @@ namespace TextMetal.HostImpl.Web.Email
 			}
 		}
 
-		[XmlElement("CC", Order = 4)]
-		public XmlElement CcXml
+		[XmlElement("CarbonCopy", Order = 4)]
+		public XmlElement CarbonCopyXml
 		{
 			get
 			{
-				return this.ccXml;
+				return this.carbonCopyXml;
 			}
 			set
 			{
-				this.ccXml = value;
+				this.carbonCopyXml = value;
 			}
 		}
 
@@ -169,7 +169,7 @@ namespace TextMetal.HostImpl.Web.Email
 
 		#region Methods/Operators
 
-		public static TEmailMessage SendEmailTemplate<TEmailMessage>(Type templateReosurceType, string templateReosurceName, object modelObject, Func<TEmailMessage, bool> saveMethod)
+		public static TEmailMessage SendEmailTemplate<TEmailMessage>(Type templateResourceType, string templateResourceName, object modelObject, Func<TEmailMessage, bool> saveMethod)
 			where TEmailMessage : class, IEmailMessage, new()
 		{
 			MessageTemplate messageTemplate;
@@ -177,11 +177,11 @@ namespace TextMetal.HostImpl.Web.Email
 			SmtpClient smtpClient;
 			string[] addresses;
 
-			if ((object)templateReosurceType == null)
-				throw new ArgumentNullException("templateReosurceType");
+			if ((object)templateResourceType == null)
+				throw new ArgumentNullException("templateResourceType");
 
-			if ((object)templateReosurceName == null)
-				throw new ArgumentNullException("templateReosurceName");
+			if ((object)templateResourceName == null)
+				throw new ArgumentNullException("templateResourceName");
 
 			if ((object)modelObject == null)
 				throw new ArgumentNullException("modelObject");
@@ -189,7 +189,7 @@ namespace TextMetal.HostImpl.Web.Email
 			if ((object)saveMethod == null)
 				throw new ArgumentNullException("saveMethod");
 
-			if (!Cerealization.TryGetFromAssemblyResource<MessageTemplate>(templateReosurceType, templateReosurceName, out messageTemplate))
+			if (!Cerealization.TryGetFromAssemblyResource<MessageTemplate>(templateResourceType, templateResourceName, out messageTemplate))
 				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
 			emailMessage = messageTemplate.Resolve<TEmailMessage>(modelObject);
@@ -200,11 +200,8 @@ namespace TextMetal.HostImpl.Web.Email
 			if (!saveMethod(emailMessage))
 				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
-			// yeah, its hardcoded...
-			smtpClient = new SmtpClient("relay-hosting.secureserver.net", 25);
-			smtpClient.EnableSsl = false;
-			smtpClient.UseDefaultCredentials = true;
-			smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+			// no longer hardcoded, uses standard config file
+			smtpClient = new SmtpClient();
 
 			using (MailMessage mailMessage = new MailMessage())
 			{
@@ -251,9 +248,9 @@ namespace TextMetal.HostImpl.Web.Email
 					// mailMessage.ReplyTo = emailMessage.ReplyTo;
 				}
 
-				if (!DataType.IsNullOrWhiteSpace(emailMessage.Bcc))
+				if (!DataType.IsNullOrWhiteSpace(emailMessage.BlindCarbonCopy))
 				{
-					addresses = emailMessage.Bcc.Split(';');
+					addresses = emailMessage.BlindCarbonCopy.Split(';');
 
 					if ((object)addresses != null)
 					{
@@ -265,9 +262,9 @@ namespace TextMetal.HostImpl.Web.Email
 					}
 				}
 
-				if (!DataType.IsNullOrWhiteSpace(emailMessage.Cc))
+				if (!DataType.IsNullOrWhiteSpace(emailMessage.CarbonCopy))
 				{
-					addresses = emailMessage.Cc.Split(';');
+					addresses = emailMessage.CarbonCopy.Split(';');
 
 					if ((object)addresses != null)
 					{
@@ -293,49 +290,6 @@ namespace TextMetal.HostImpl.Web.Email
 			}
 
 			return emailMessage;
-		}
-
-		private static void smtpClient_SendCompleted(object sender, AsyncCompletedEventArgs e)
-		{
-			object[] parameters;
-			MailMessage mailMessage;
-			IEmailMessage emailMessage;
-			Action<IEmailMessage, bool> saveMethod;
-
-			if ((object)sender == null)
-				throw new ArgumentNullException("sender");
-
-			if ((object)e == null)
-				throw new ArgumentNullException("e");
-
-			parameters = (object[])e.UserState;
-
-			if ((object)parameters == null || parameters.Length != 3)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
-
-			mailMessage = (MailMessage)parameters[0];
-			emailMessage = (IEmailMessage)parameters[1];
-			saveMethod = (Action<IEmailMessage, bool>)parameters[2];
-
-			if ((object)mailMessage == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
-
-			// dispose here instead
-			mailMessage.Dispose();
-
-			if ((object)emailMessage == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
-
-			if ((object)saveMethod == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
-
-			if (e.Cancelled)
-				return;
-
-			if ((object)e.Error != null)
-				return;
-
-			saveMethod(emailMessage, true);
 		}
 
 		private TEmailMessage Resolve<TEmailMessage>(object source)
@@ -366,7 +320,7 @@ namespace TextMetal.HostImpl.Web.Email
 						{
 							TemplatingContext.Current = templatingContext; // set ambient context
 
-							// BUG ?? Not disposing stuff here?
+							// BUG ?? Not disposing readers here?
 
 							// FROM
 							templateXmlTextReader = new XmlTextReader(new StringReader(this.FromXml.OuterXml));
@@ -409,24 +363,24 @@ namespace TextMetal.HostImpl.Web.Email
 							emailMessage.To = stringOutputMechanism.RecycleOutput();
 
 							// CC
-							templateXmlTextReader = new XmlTextReader(new StringReader(this.CcXml.OuterXml));
+							templateXmlTextReader = new XmlTextReader(new StringReader(this.CarbonCopyXml.OuterXml));
 							template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
 
 							templatingContext.IteratorModels.Push(source);
 							template.ExpandTemplate(templatingContext);
 							templatingContext.IteratorModels.Pop();
 
-							emailMessage.Cc = stringOutputMechanism.RecycleOutput();
+							emailMessage.CarbonCopy = stringOutputMechanism.RecycleOutput();
 
 							// BCC
-							templateXmlTextReader = new XmlTextReader(new StringReader(this.BccXml.OuterXml));
+							templateXmlTextReader = new XmlTextReader(new StringReader(this.BlindCarbonCopyXml.OuterXml));
 							template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
 
 							templatingContext.IteratorModels.Push(source);
 							template.ExpandTemplate(templatingContext);
 							templatingContext.IteratorModels.Pop();
 
-							emailMessage.Bcc = stringOutputMechanism.RecycleOutput();
+							emailMessage.BlindCarbonCopy = stringOutputMechanism.RecycleOutput();
 
 							// SUBJECT
 							templateXmlTextReader = new XmlTextReader(new StringReader(this.SubjectXml.OuterXml));

@@ -90,10 +90,56 @@
     <Compile Include="Objects\Model\Repository.cs" />
     <Compile Include="Objects\Model\Repository.g.cs" />
     <Compile Include="Objects\Model\Repository.tv.g.cs" />
+    <Compile Include="Objects\Model\Tables\EmailAttachment.cs" />
+    <Compile Include="Objects\Model\Tables\EmailAttachmentHistory.cs" />
+    <Compile Include="Objects\Model\Tables\EmailAttachmentHistory.g.cs" />
     <Compile Include="Objects\Model\Tables\EmailMessage.cs" />
     <Compile Include="Objects\Model\Tables\EmailAttachment.g.cs" />
     <Compile Include="Objects\Model\Tables\EmailMessage.g.cs" />
+    <Compile Include="Objects\Model\Tables\EmailMessageHistory.cs" />
+    <Compile Include="Objects\Model\Tables\EmailMessageHistory.g.cs" />
+    <Compile Include="Objects\Model\Tables\EventLog.cs" />
     <Compile Include="Objects\Model\Tables\EventLog.g.cs" />
+    <Compile Include="Objects\Model\Tables\EventLogHistory.cs" />
+    <Compile Include="Objects\Model\Tables\EventLogHistory.g.cs" />
+    <Compile Include="Objects\Model\Tables\SexualChocolate.cs" />
+    <Compile Include="Objects\Model\Tables\SexualChocolate.g.cs" />
+    <Compile Include="Objects\Model\Tables\SexualChocolateHistory.cs" />
+    <Compile Include="Objects\Model\Tables\SexualChocolateHistory.g.cs" />
+    <Compile Include="Objects\Model\Tables\TableNoPrimaryKeyNoIdentity.cs" />
+    <Compile Include="Objects\Model\Tables\TableNoPrimaryKeyNoIdentity.g.cs" />
+    <Compile Include="Objects\Model\Tables\TableNoPrimaryKeyNoIdentityHistory.cs" />
+    <Compile Include="Objects\Model\Tables\TableNoPrimaryKeyNoIdentityHistory.g.cs" />
+    <Compile Include="Objects\Model\Tables\TableNoPrimaryKeyWithIdentity.cs" />
+    <Compile Include="Objects\Model\Tables\TableNoPrimaryKeyWithIdentity.g.cs" />
+    <Compile Include="Objects\Model\Tables\TableNoPrimaryKeyWithIdentityHistory.cs" />
+    <Compile Include="Objects\Model\Tables\TableNoPrimaryKeyWithIdentityHistory.g.cs" />
+    <Compile Include="Objects\Model\Tables\TableTypeTest.cs" />
+    <Compile Include="Objects\Model\Tables\TableTypeTest.g.cs" />
+    <Compile Include="Objects\Model\Tables\TableTypeTestHistory.cs" />
+    <Compile Include="Objects\Model\Tables\TableTypeTestHistory.g.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithCompositePrimaryKeyNoIdentity.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithCompositePrimaryKeyNoIdentity.g.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithCompositePrimaryKeyNoIdentityHistory.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithCompositePrimaryKeyNoIdentityHistory.g.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyAsDefault.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyAsDefault.g.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyAsDefaultHistory.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyAsDefaultHistory.g.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyAsIdentity.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyAsIdentity.g.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyAsIdentityHistory.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyAsIdentityHistory.g.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyNoIdentity.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyNoIdentity.g.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyNoIdentityHistory.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyNoIdentityHistory.g.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyWithDiffIdentity.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyWithDiffIdentity.g.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyWithDiffIdentityHistory.cs" />
+    <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyWithDiffIdentityHistory.g.cs" />
+    <Compile Include="Objects\Model\Views\EventLogAggregation.cs" />
+    <Compile Include="Objects\Model\Views\EventLogAggregation.g.cs" />
     <Compile Include="Pages\Index.tmpx.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
   </ItemGroup>
@@ -114,6 +160,7 @@
     <Content Include="Views\Web.config" />
     <None Include="Objects\Model\L2S\TxtMtlPrimaryDataContext.dbml.layout">
       <DependentUpon>TxtMtlPrimaryDataContext.dbml</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -150,7 +197,7 @@
   <ItemGroup>
     <Content Include="Objects\Model\L2S\TxtMtlPrimaryDataContext.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>TxtMtlPrimaryDataContext1.designer.cs</LastGenOutput>
+      <LastGenOutput>TxtMtlPrimaryDataContext.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>

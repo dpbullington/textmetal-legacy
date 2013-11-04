@@ -168,7 +168,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		protected abstract IEnumerable<IDataParameter> CoreGetUniqueKeyParameters(IUnitOfWorkContext unitOfWorkContext, string dataSourceTag, Database database, Schema schema, Table table);
 
-		protected abstract Type CoreInferClrTypeForSqlType(string dataSourceTag, string sqlType);
+		protected abstract Type CoreInferClrTypeForSqlType(string dataSourceTag, string sqlType, int sqlPrecision);
 
 		private object GetSchemaModel(string connectionString, Type connectionType, string dataSourceTag, string[] schemaFilter)
 		{
@@ -296,7 +296,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 												column.ColumnNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(column.ColumnName));
 												column.ColumnNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(column.ColumnName));
 
-												clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType);
+												clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType, column.ColumnPrecision);
 												column.ColumnDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
 												column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
@@ -483,7 +483,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 													parameter.ParameterNullable = true;
 													parameter.ParameterDirection = (parameter.ParameterIsOutput || parameter.ParameterIsReadOnly) ? ParameterDirection.Output : ParameterDirection.Input;
 
-													clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, parameter.ParameterSqlType);
+													clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, parameter.ParameterSqlType, parameter.ParameterPrecision);
 													parameter.ParameterDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
 													parameter.ParameterSize = this.CoreCalculateParameterSize(dataSourceTag, parameter);
 
@@ -532,7 +532,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 												parameter.ParameterNullable = true;
 												parameter.ParameterDirection = ParameterDirection.ReturnValue;
 
-												clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, parameter.ParameterSqlType);
+												clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, parameter.ParameterSqlType, parameter.ParameterPrecision);
 												parameter.ParameterDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
 												parameter.ParameterSize = this.CoreCalculateParameterSize(dataSourceTag, parameter);
 
@@ -583,7 +583,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 												column.ColumnNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(columnParameter.ParameterName));
 												column.ColumnNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(columnParameter.ParameterName));
 
-												clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, columnParameter.ParameterSqlType);
+												clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, columnParameter.ParameterSqlType, columnParameter.ParameterPrecision);
 												column.ColumnDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
 												column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
@@ -641,7 +641,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 														column.ColumnNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(column.ColumnName));
 														column.ColumnNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(column.ColumnName));
 
-														clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType);
+														clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType, column.ColumnPrecision);
 														column.ColumnDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
 														column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 

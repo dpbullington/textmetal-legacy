@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 
+using TextMetal.Common.Core;
 using TextMetal.HostImpl.Web.Email;
 
 namespace TextMetal.HostImpl.AspNetSample.Objects.Model.Tables
@@ -20,6 +21,23 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model.Tables
 			{
 				return null;
 			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		public void Mark()
+		{
+		}
+
+		public virtual Message[] Validate()
+		{
+			List<Message> messages;
+
+			messages = new List<Message>();
+
+			return messages.ToArray();
 		}
 
 		#endregion

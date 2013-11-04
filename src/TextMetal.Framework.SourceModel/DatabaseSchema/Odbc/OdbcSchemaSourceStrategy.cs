@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Xml;
+using System.Xml.Linq;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
@@ -411,7 +412,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override Type CoreInferClrTypeForSqlType(string dataSourceTag, string sqlType)
+		protected override Type CoreInferClrTypeForSqlType(string dataSourceTag, string sqlType, int sqlPrecision)
 		{
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
@@ -444,7 +445,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 					case "DECIMAL":
 						return typeof(Decimal);
 					case "FLOAT":
-						return typeof(Double);
+						return sqlPrecision >= 0 && sqlPrecision <= 24 ? typeof(Single) : (sqlPrecision >= 25 && sqlPrecision <= 54 ? typeof(Double) : typeof(Object));
 					case "HIERARCHYID":
 						return typeof(Object);
 					case "IMAGE":
@@ -462,7 +463,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 					case "NVARCHAR":
 						return typeof(String);
 					case "REAL":
-						return typeof(Double);
+						return typeof(Single);
 					case "SMALLDATETIME":
 						return typeof(DateTime);
 					case "SMALLINT":
@@ -474,9 +475,9 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 					case "TABLE":
 						return typeof(Object);
 					case "TEXT":
-						return typeof(Object);
+						return typeof(String);
 					case "TIME":
-						return typeof(DateTime);
+						return typeof(TimeSpan);
 					case "TIMESTAMP":
 						return typeof(Byte[]);
 					case "TINYINT":

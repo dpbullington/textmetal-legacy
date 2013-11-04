@@ -7,6 +7,35 @@
 <Template xmlns="http://www.textmetal.com/api/v5.0.0">
 
 	<OutputScope name="CDC.g.sql">
+<![CDATA[
+
+CREATE SCHEMA [${HistorySchemaName}]
+GO
+
+
+CREATE FUNCTION [${HistorySchemaName}].[GetTimestampId]
+(
+	@DateTime as [datetime]
+)
+RETURNS [bigint]
+AS
+BEGIN
+	RETURN
+	CAST( (CAST(DATEPART(YYYY,@DateTime) AS VARCHAR) + '' +
+	CAST(DATEPART(MM,@DateTime) AS VARCHAR) + '' +
+	CAST(DATEPART(DD,@DateTime) AS VARCHAR) + '' +
+	CAST(DATEPART(HH,@DateTime) AS VARCHAR) + '' +
+	CAST(DATEPART(MI,@DateTime) AS VARCHAR) + '' +
+	CAST(DATEPART(SS,@DateTime) AS VARCHAR) + '' +
+	CASE WHEN DATEPART(MS,@DateTime) < 10 THEN '00'
+		WHEN DATEPART(MS,@DateTime) < 100 THEN '0'
+		ELSE '' END +
+		CAST(DATEPART(MS,@DateTime) AS VARCHAR) ) AS BIGINT)
+END
+GO
+
+
+]]>
 	
 	<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
 		<ForEach.Filter>
@@ -66,7 +95,13 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 						</BinaryExpression>
 					</ForEach.Filter>
 					<ForEach.Body>
-						<![CDATA[	[${ColumnName}] [${ColumnSqlType}] NOT NULL,]]>
+						<![CDATA[	[${ColumnName}] [${ColumnSqlType}]${rb(`
+	if ["varchar", "nvarchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") != 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
+	else
+		""
+	end
+`)} NOT NULL,]]>
 							
 						<If>
 							<If.Condition>
@@ -115,7 +150,13 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 						</BinaryExpression>
 					</ForEach.Filter>
 					<ForEach.Body>
-						<![CDATA[	[${ColumnName}] [${ColumnSqlType}] NULL,]]>
+						<![CDATA[	[${ColumnName}] [${ColumnSqlType}]${rb(`
+	if ["varchar", "nvarchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") != 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
+	else
+		""
+	end
+`)} NULL,]]>
 						
 						<If>
 							<If.Condition>
@@ -200,7 +241,7 @@ AS
 
 		INSERT INTO [${HistorySchemaName}].[${TableName}History]
 		SELECT
-			[${SchemaName}].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			[${HistorySchemaName}].GetTimestampId(GetUtcDate()) AS [TimestampId],
 ]]>
 				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
 					<ForEach.Filter>
@@ -303,7 +344,7 @@ AS
 		UNION ALL
 
 		SELECT
-			[${SchemaName}].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			[${HistorySchemaName}].GetTimestampId(GetUtcDate()) AS [TimestampId],
 ]]>
 				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
 					<ForEach.Filter>

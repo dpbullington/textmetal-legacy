@@ -11,7 +11,7 @@ namespace TextMetal.HostImpl.Web.Email
 	{
 		#region Properties/Indexers/Events
 
-		string Bcc
+		string BlindCarbonCopy
 		{
 			get;
 			set;
@@ -23,7 +23,7 @@ namespace TextMetal.HostImpl.Web.Email
 			set;
 		}
 
-		string Cc
+		string CarbonCopy
 		{
 			get;
 			set;

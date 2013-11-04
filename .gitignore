@@ -7,6 +7,7 @@ clientbin
 output
 pkg
 _ReSharper.*
+.partial
 
 # file specs
 thumbs.db
