@@ -13,7 +13,7 @@ CREATE SCHEMA [${HistorySchemaName}]
 GO
 
 
-CREATE FUNCTION [${HistorySchemaName}].[GetTimestampId]
+CREATE FUNCTION [history].[GetTimestampId]
 (
 	@DateTime as [datetime]
 )
@@ -21,16 +21,28 @@ RETURNS [bigint]
 AS
 BEGIN
 	RETURN
-	CAST( (CAST(DATEPART(YYYY,@DateTime) AS VARCHAR) + '' +
-	CAST(DATEPART(MM,@DateTime) AS VARCHAR) + '' +
-	CAST(DATEPART(DD,@DateTime) AS VARCHAR) + '' +
-	CAST(DATEPART(HH,@DateTime) AS VARCHAR) + '' +
-	CAST(DATEPART(MI,@DateTime) AS VARCHAR) + '' +
-	CAST(DATEPART(SS,@DateTime) AS VARCHAR) + '' +
-	CASE WHEN DATEPART(MS,@DateTime) < 10 THEN '00'
-		WHEN DATEPART(MS,@DateTime) < 100 THEN '0'
+	CAST( 
+	( CAST(DATEPART(YYYY,@DateTime) AS VARCHAR) + '' +
+	(CASE WHEN DATEPART(MM,@DateTime) < 10 THEN '0'
 		ELSE '' END +
-		CAST(DATEPART(MS,@DateTime) AS VARCHAR) ) AS BIGINT)
+		CAST(DATEPART(MM,@DateTime) AS VARCHAR)) + '' +
+	(CASE WHEN DATEPART(DD,@DateTime) < 10 THEN '0'
+		ELSE '' END +
+		CAST(DATEPART(DD,@DateTime) AS VARCHAR)) + '' +
+	(CASE WHEN DATEPART(HH,@DateTime) < 10 THEN '0'
+		ELSE '' END +
+		CAST(DATEPART(HH,@DateTime) AS VARCHAR)) + '' +
+	(CASE WHEN DATEPART(MI,@DateTime) < 10 THEN '0'
+		ELSE '' END +
+		CAST(DATEPART(MI,@DateTime) AS VARCHAR)) + '' +
+	(CASE WHEN DATEPART(SS,@DateTime) < 10 THEN '0'
+		ELSE '' END +
+		CAST(DATEPART(SS,@DateTime) AS VARCHAR)) + '' +
+	(CASE WHEN DATEPART(MS,@DateTime) < 10 THEN '000'
+		WHEN DATEPART(MS,@DateTime) < 100 THEN '00'
+		ELSE '0' END +
+		CAST(DATEPART(MS,@DateTime) AS VARCHAR)) )
+		AS BIGINT)
 END
 GO
 
