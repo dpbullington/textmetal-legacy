@@ -424,14 +424,12 @@ namespace ${ClrNamespace}
 
 			<If>
 				<If.Condition>
-					<BinaryExpression operator="Eq">
-						<BinaryExpression.LeftExpression>
-							<Facet name="ColumnSqlType" />
-						</BinaryExpression.LeftExpression>
-						<BinaryExpression.RightExpression>
-							<Value type="System.String" data="image" />
-						</BinaryExpression.RightExpression>
-					</BinaryExpression>
+					<Ruby src="Script" expr="" file="">
+						<Script>
+							type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+							return ["image", "varbinary"].include?(type);
+						</Script>
+					</Ruby>
 				</If.Condition>
 				<If.True>
 					<![CDATA[(object)query.${ColumnNamePascalCase} != null ? query.@${ColumnNamePascalCase}.ToArray() : null]]>
@@ -507,14 +505,12 @@ namespace ${ClrNamespace}
 
 			<If>
 				<If.Condition>
-					<BinaryExpression operator="Eq">
-						<BinaryExpression.LeftExpression>
-							<Facet name="ColumnSqlType" />
-						</BinaryExpression.LeftExpression>
-						<BinaryExpression.RightExpression>
-							<Value type="System.String" data="image" />
-						</BinaryExpression.RightExpression>
-					</BinaryExpression>
+					<Ruby src="Script" expr="" file="">
+						<Script>
+							type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+							return ["image", "varbinary"].include?(type);
+						</Script>
+					</Ruby>
 				</If.Condition>
 				<If.True>
 					<![CDATA[(object)lo.@${ColumnNamePascalCase} != null ? lo.@${ColumnNamePascalCase}.ToArray() : null]]>
@@ -724,14 +720,12 @@ namespace ${ClrNamespace}
 <![CDATA[				@${TableNameSingularCamelCase}.@${ColumnNamePascalCase} = ]]>
 			<If>
 				<If.Condition>
-					<BinaryExpression operator="Eq">
-						<BinaryExpression.LeftExpression>
-							<Facet name="ColumnSqlType" />
-						</BinaryExpression.LeftExpression>
-						<BinaryExpression.RightExpression>
-							<Value type="System.String" data="image" />
-						</BinaryExpression.RightExpression>
-					</BinaryExpression>
+					<Ruby src="Script" expr="" file="">
+						<Script>
+							type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+							return ["image", "varbinary"].include?(type);
+						</Script>
+					</Ruby>
 				</If.Condition>
 				<If.True>
 					<![CDATA[(object)query.@${ColumnNamePascalCase} != null ? query.@${ColumnNamePascalCase}.ToArray() : null;]]>

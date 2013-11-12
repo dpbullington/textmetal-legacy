@@ -13,7 +13,7 @@ CREATE SCHEMA [${HistorySchemaName}]
 GO
 
 
-CREATE FUNCTION [history].[GetTimestampId]
+CREATE FUNCTION [${HistorySchemaName}].[GetTimestampId]
 (
 	@DateTime as [datetime]
 )
