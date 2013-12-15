@@ -17,7 +17,7 @@ using NUnit.Core;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Summary description for RemotingUtilities.
+	/// Summary description for RemotingUtilities.
 	/// </summary>
 	public class ServerUtilities
 	{
@@ -30,7 +30,7 @@ namespace NUnit.Util
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Create a TcpChannel with a given name, on a given port.
+		/// Create a TcpChannel with a given name, on a given port.
 		/// </summary>
 		/// <param name="port"> </param>
 		/// <param name="name"> </param>
@@ -68,9 +68,9 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Get a channel by name, casting it to a TcpChannel.
-		/// 	Otherwise, create, register and return a TcpChannel with
-		/// 	that name, on the port provided as the second argument.
+		/// Get a channel by name, casting it to a TcpChannel.
+		/// Otherwise, create, register and return a TcpChannel with
+		/// that name, on the port provided as the second argument.
 		/// </summary>
 		/// <param name="name"> The channel name </param>
 		/// <param name="port"> The port to use if the channel must be created </param>
@@ -81,9 +81,9 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Get a channel by name, casting it to a TcpChannel.
-		/// 	Otherwise, create, register and return a TcpChannel with
-		/// 	that name, on the port provided as the second argument.
+		/// Get a channel by name, casting it to a TcpChannel.
+		/// Otherwise, create, register and return a TcpChannel with
+		/// that name, on the port provided as the second argument.
 		/// </summary>
 		/// <param name="name"> The channel name </param>
 		/// <param name="port"> The port to use if the channel must be created </param>

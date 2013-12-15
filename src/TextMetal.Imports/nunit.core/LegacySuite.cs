@@ -9,7 +9,7 @@ using System;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Represents a test suite constructed from a type that has a static Suite property
+	/// Represents a test suite constructed from a type that has a static Suite property
 	/// </summary>
 	public class LegacySuite : TestSuite
 	{

@@ -13,7 +13,7 @@ using System.Xml;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Summary description for XmlSettingsStorage.
+	/// Summary description for XmlSettingsStorage.
 	/// </summary>
 	public class XmlSettingsStorage : MemorySettingsStorage
 	{

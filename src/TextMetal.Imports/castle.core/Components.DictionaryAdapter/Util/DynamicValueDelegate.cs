@@ -18,16 +18,31 @@ namespace Castle.Components.DictionaryAdapter
 
 	public class DynamicValueDelegate<T> : DynamicValue<T>
 	{
-		private readonly Func<T> dynamicDelegate;
+		#region Constructors/Destructors
 
 		public DynamicValueDelegate(Func<T> dynamicDelegate)
 		{
 			this.dynamicDelegate = dynamicDelegate;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly Func<T> dynamicDelegate;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
 		public override T Value
 		{
-			get { return dynamicDelegate(); }
+			get
+			{
+				return this.dynamicDelegate();
+			}
 		}
+
+		#endregion
 	}
 }

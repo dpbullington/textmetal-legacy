@@ -8,40 +8,40 @@ using System.Windows.Forms;
 
 namespace NUnit.UiException.Controls
 {
-	///<summary>
-	///	A control that encapsulates a collection of IErrorDisplay instances
-	///	and which shows relevant information about failures & errors after
-	///	a test suite run.
-	///	By default, ErrorBrowser is empty and should be populated with
-	///	IErrorDisplay instances at loading time. The example below shows how
-	///	to achieve this:
-	///	<code>ErrorBrowser errorBrowser = new ErrorBrowser();
+	/// <summary>
+	/// A control that encapsulates a collection of IErrorDisplay instances
+	/// and which shows relevant information about failures & errors after
+	/// a test suite run.
+	/// By default, ErrorBrowser is empty and should be populated with
+	/// IErrorDisplay instances at loading time. The example below shows how
+	/// to achieve this:
+	/// <code>ErrorBrowser errorBrowser = new ErrorBrowser();
+	///  
+	/// 		// configure and register a SourceCodeDisplay
+	/// 		// that will display source code context on failure
+	///  
+	/// 		SourceCodeDisplay sourceCode = new SourceCodeDisplay();
+	/// 		sourceCode.AutoSelectFirstItem = true;
+	/// 		sourceCode.ListOrderPolicy = ErrorListOrderPolicy.ReverseOrder;
+	/// 		sourceCode.SplitOrientation = Orientation.Vertical;
+	/// 		sourceCode.SplitterDistance = 0.3f;
 	/// 
-	///		// configure and register a SourceCodeDisplay
-	///		// that will display source code context on failure
-	/// 
-	///		SourceCodeDisplay sourceCode = new SourceCodeDisplay();
-	///		sourceCode.AutoSelectFirstItem = true;
-	///		sourceCode.ListOrderPolicy = ErrorListOrderPolicy.ReverseOrder;
-	///		sourceCode.SplitOrientation = Orientation.Vertical;
-	///		sourceCode.SplitterDistance = 0.3f;
-	///
-	///		errorBrowser.RegisterDisplay(sourceCode);
-	/// 
-	///		// configure and register a StackTraceDisplay
-	///		// that will display the stack trace details on failure
-	/// 
-	///		errorBrowser.RegisterDisplay(new StackTraceDisplay());
-	///		[...]
-	///		// set the stack trace information
-	///		errorBrowser.StackTraceSource = [a stack trace here]</code>
-	///</summary>
+	/// 		errorBrowser.RegisterDisplay(sourceCode);
+	///  
+	/// 		// configure and register a StackTraceDisplay
+	/// 		// that will display the stack trace details on failure
+	///  
+	/// 		errorBrowser.RegisterDisplay(new StackTraceDisplay());
+	/// 		[...]
+	/// 		// set the stack trace information
+	/// 		errorBrowser.StackTraceSource = [a stack trace here]</code>
+	/// </summary>
 	public class ErrorBrowser : UserControl
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Builds a new instance of ErrorBrowser.
+		/// Builds a new instance of ErrorBrowser.
 		/// </summary>
 		public ErrorBrowser()
 		{
@@ -56,9 +56,9 @@ namespace NUnit.UiException.Controls
 			this._layout.Height = this.Height;
 
 			this._layout.Anchor = AnchorStyles.Top |
-			                      AnchorStyles.Left |
-			                      AnchorStyles.Bottom |
-			                      AnchorStyles.Right;
+								AnchorStyles.Left |
+								AnchorStyles.Bottom |
+								AnchorStyles.Right;
 
 			return;
 		}
@@ -87,7 +87,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gets the selected display.
+		/// Gets the selected display.
 		/// </summary>
 		public IErrorDisplay SelectedDisplay
 		{
@@ -102,8 +102,8 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Use this property to get or set the new stack trace details.
-		/// 	The changes are repercuted on the registered displays.
+		/// Use this property to get or set the new stack trace details.
+		/// The changes are repercuted on the registered displays.
 		/// </summary>
 		public string StackTraceSource
 		{
@@ -141,7 +141,7 @@ namespace NUnit.UiException.Controls
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Removes all display from ErrorBrowser.
+		/// Removes all display from ErrorBrowser.
 		/// </summary>
 		public void ClearAll()
 		{
@@ -154,9 +154,9 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Populates ErrorBrowser with the new display passed in parameter.
-		/// 	If ErrorBrowser is empty, the display becomes automatically the
-		/// 	new selected display.
+		/// Populates ErrorBrowser with the new display passed in parameter.
+		/// If ErrorBrowser is empty, the display becomes automatically the
+		/// new selected display.
 		/// </summary>
 		/// <param name="display"> </param>
 		public void RegisterDisplay(IErrorDisplay display)

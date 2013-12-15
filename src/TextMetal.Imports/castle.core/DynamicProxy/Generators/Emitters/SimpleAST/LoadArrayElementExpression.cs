@@ -12,16 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
 	using System;
-	using System.Reflection.Emit;
 
 	public class LoadArrayElementExpression : Expression
 	{
-		private readonly Reference arrayReference;
-		private readonly ConstReference index;
-		private readonly Type returnType;
+		#region Constructors/Destructors
 
 		public LoadArrayElementExpression(int index, Reference arrayReference, Type returnType)
 			: this(new ConstReference(index), arrayReference, returnType)
@@ -35,11 +34,25 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 			this.returnType = returnType;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly Reference arrayReference;
+		private readonly ConstReference index;
+		private readonly Type returnType;
+
+		#endregion
+
+		#region Methods/Operators
+
 		public override void Emit(IMemberEmitter member, ILGenerator gen)
 		{
-			ArgumentsUtil.EmitLoadOwnerAndReference(arrayReference, gen);
-			ArgumentsUtil.EmitLoadOwnerAndReference(index, gen);
-			gen.Emit(OpCodes.Ldelem, returnType);
+			ArgumentsUtil.EmitLoadOwnerAndReference(this.arrayReference, gen);
+			ArgumentsUtil.EmitLoadOwnerAndReference(this.index, gen);
+			gen.Emit(OpCodes.Ldelem, this.returnType);
 		}
+
+		#endregion
 	}
 }

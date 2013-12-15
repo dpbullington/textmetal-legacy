@@ -12,7 +12,7 @@ using NUnit.Core;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Summary description for ProcessRunner.
+	/// Summary description for ProcessRunner.
 	/// </summary>
 	public class ProcessRunner : ProxyTestRunner
 	{

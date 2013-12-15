@@ -13,7 +13,7 @@ using System.Reflection;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	TestAssemblyInfo holds information about a loaded test assembly
+	/// TestAssemblyInfo holds information about a loaded test assembly
 	/// </summary>
 	[Serializable]
 	public class TestAssemblyInfo
@@ -21,7 +21,7 @@ namespace NUnit.Core
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Constructs a TestAssemblyInfo
+		/// Constructs a TestAssemblyInfo
 		/// </summary>
 		/// <param name="assemblyName"> The name of the assembly </param>
 		/// <param name="imageRuntimeVersion"> The version of the runtime for which the assembly was built </param>
@@ -37,8 +37,8 @@ namespace NUnit.Core
 			this.processId = p.Id;
 			Assembly entryAssembly = Assembly.GetEntryAssembly();
 			this.moduleName = entryAssembly != null
-				                  ? Path.GetFileName(Assembly.GetEntryAssembly().Location)
-				                  : p.MainModule.ModuleName;
+				? Path.GetFileName(Assembly.GetEntryAssembly().Location)
+				: p.MainModule.ModuleName;
 			this.domainName = AppDomain.CurrentDomain.FriendlyName;
 			this.appBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
 			this.configFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
@@ -65,7 +65,7 @@ namespace NUnit.Core
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	The Application Base of the AppDomain in which the assembly is loaded
+		/// The Application Base of the AppDomain in which the assembly is loaded
 		/// </summary>
 		public string ApplicationBase
 		{
@@ -76,7 +76,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	The ConfigurationFile of the AppDomain in which the assembly is loaded
+		/// The ConfigurationFile of the AppDomain in which the assembly is loaded
 		/// </summary>
 		public string ConfigurationFile
 		{
@@ -87,7 +87,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	The friendly name of the AppDomain in which the assembly is loaded
+		/// The friendly name of the AppDomain in which the assembly is loaded
 		/// </summary>
 		public string DomainName
 		{
@@ -98,7 +98,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the runtime version for which the assembly was built
+		/// Gets the runtime version for which the assembly was built
 		/// </summary>
 		public Version ImageRuntimeVersion
 		{
@@ -109,7 +109,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	The name of the main module of the process in which the assembly is loaded
+		/// The name of the main module of the process in which the assembly is loaded
 		/// </summary>
 		public string ModuleName
 		{
@@ -124,7 +124,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the name of the assembly
+		/// Gets the name of the assembly
 		/// </summary>
 		public string Name
 		{
@@ -135,7 +135,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	The PrivateBinPath of the AppDomain in which the assembly is loaded
+		/// The PrivateBinPath of the AppDomain in which the assembly is loaded
 		/// </summary>
 		public string PrivateBinPath
 		{
@@ -146,7 +146,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	The Id of the process in which the assembly is loaded
+		/// The Id of the process in which the assembly is loaded
 		/// </summary>
 		public int ProcessId
 		{
@@ -157,7 +157,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the runtime framework under which the assembly is loaded
+		/// Gets the runtime framework under which the assembly is loaded
 		/// </summary>
 		public RuntimeFramework RunnerRuntimeFramework
 		{
@@ -168,7 +168,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the runtime version under which the assembly is loaded
+		/// Gets the runtime version under which the assembly is loaded
 		/// </summary>
 		public Version RunnerRuntimeVersion
 		{
@@ -179,7 +179,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets a list of testframeworks referenced by the assembly
+		/// Gets a list of testframeworks referenced by the assembly
 		/// </summary>
 		public IList TestFrameworks
 		{

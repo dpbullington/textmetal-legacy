@@ -20,23 +20,22 @@ namespace Castle.Core.Logging
 	using System.Collections.Generic;
 #if DOTNET40
 	using System.Security;
+
 #endif
 
 	/// <summary>
-	///   The TraceLogger sends all logging to the System.Diagnostics.TraceSource
-	///   built into the .net framework.
+	/// The TraceLogger sends all logging to the System.Diagnostics.TraceSource
+	/// built into the .net framework.
 	/// </summary>
 	/// <remarks>
-	///   Logging can be configured in the system.diagnostics configuration 
-	///   section. 
-	/// 
-	///   If logger doesn't find a source name with a full match it will
-	///   use source names which match the namespace partially. For example you can
-	///   configure from all castle components by adding a source name with the
-	///   name "Castle". 
-	/// 
-	///   If no portion of the namespace matches the source named "Default" will
-	///   be used.
+	/// Logging can be configured in the system.diagnostics configuration
+	/// section.
+	/// If logger doesn't find a source name with a full match it will
+	/// use source names which match the namespace partially. For example you can
+	/// configure from all castle components by adding a source name with the
+	/// name "Castle".
+	/// If no portion of the namespace matches the source named "Default" will
+	/// be used.
 	/// </remarks>
 	public class TraceLogger : LevelFilteredLogger
 	{
@@ -47,45 +46,47 @@ namespace Castle.Core.Logging
 		/// <summary>
 		/// Build a new trace logger based on the named TraceSource
 		/// </summary>
-		/// <param name="name">The name used to locate the best TraceSource. In most cases comes from the using type's fullname.</param>
+		/// <param name="name"> The name used to locate the best TraceSource. In most cases comes from the using type's fullname. </param>
 #if DOTNET40
 		[SecuritySafeCritical]
 #endif
 		public TraceLogger(string name)
 			: base(name)
 		{
-			Initialize();
-			Level = MapLoggerLevel(traceSource.Switch.Level);
+			this.Initialize();
+			this.Level = MapLoggerLevel(this.traceSource.Switch.Level);
 		}
 
 		/// <summary>
 		/// Build a new trace logger based on the named TraceSource
 		/// </summary>
-		/// <param name="name">The name used to locate the best TraceSource. In most cases comes from the using type's fullname.</param>
-		/// <param name="level">The default logging level at which this source should write messages. In almost all cases this
-		/// default value will be overridden in the config file. </param>
+		/// <param name="name"> The name used to locate the best TraceSource. In most cases comes from the using type's fullname. </param>
+		/// <param name="level">
+		/// The default logging level at which this source should write messages. In almost all cases this
+		/// default value will be overridden in the config file.
+		/// </param>
 #if DOTNET40
 		[SecuritySafeCritical]
 #endif
 		public TraceLogger(string name, LoggerLevel level)
 			: base(name, level)
 		{
-			Initialize();
-			Level = MapLoggerLevel(traceSource.Switch.Level);
+			this.Initialize();
+			this.Level = MapLoggerLevel(this.traceSource.Switch.Level);
 		}
 
 		/// <summary>
 		/// Create a new child logger.
 		/// The name of the child logger is [current-loggers-name].[passed-in-name]
 		/// </summary>
-		/// <param name="loggerName">The Subname of this logger.</param>
-		/// <returns>The New ILogger instance.</returns> 
+		/// <param name="loggerName"> The Subname of this logger. </param>
+		/// <returns> The New ILogger instance. </returns>
 #if DOTNET40
 		[SecuritySafeCritical]
 #endif
 		public override ILogger CreateChildLogger(string loggerName)
 		{
-			return InternalCreateChildLogger(loggerName);
+			return this.InternalCreateChildLogger(loggerName);
 		}
 
 #if DOTNET40
@@ -93,19 +94,15 @@ namespace Castle.Core.Logging
 #endif
 		private ILogger InternalCreateChildLogger(string loggerName)
 		{
-			return new TraceLogger(string.Concat(Name, ".", loggerName), Level);
+			return new TraceLogger(string.Concat(this.Name, ".", loggerName), this.Level);
 		}
 
 		protected override void Log(LoggerLevel loggerLevel, string loggerName, string message, Exception exception)
 		{
 			if (exception == null)
-			{
-				traceSource.TraceEvent(MapTraceEventType(loggerLevel), 0, message);
-			}
+				this.traceSource.TraceEvent(MapTraceEventType(loggerLevel), 0, message);
 			else
-			{
-				traceSource.TraceData(MapTraceEventType(loggerLevel), 0, message, exception);
-			}
+				this.traceSource.TraceData(MapTraceEventType(loggerLevel), 0, message, exception);
 		}
 
 #if DOTNET40
@@ -120,25 +117,23 @@ namespace Castle.Core.Logging
 				// themselves are cached for so multiple TraceLogger instances will reuse
 				// the named TraceSources which have been created
 
-				if (cache.TryGetValue(Name, out traceSource))
-				{
+				if (cache.TryGetValue(this.Name, out this.traceSource))
 					return;
-				}
 
-				var defaultLevel = MapSourceLevels(Level);
-				traceSource = new TraceSource(Name, defaultLevel);
+				var defaultLevel = MapSourceLevels(this.Level);
+				this.traceSource = new TraceSource(this.Name, defaultLevel);
 
 				// no further action necessary when the named source is configured
-				if (IsSourceConfigured(traceSource))
+				if (IsSourceConfigured(this.traceSource))
 				{
-					cache.Add(Name, traceSource);
+					cache.Add(this.Name, this.traceSource);
 					return;
 				}
 
 				// otherwise hunt for a shorter source that been configured            
 				var foundSource = new TraceSource("Default", defaultLevel);
 
-				var searchName = ShortenName(Name);
+				var searchName = ShortenName(this.Name);
 				while (!string.IsNullOrEmpty(searchName))
 				{
 					var searchSource = new TraceSource(searchName, defaultLevel);
@@ -152,14 +147,12 @@ namespace Castle.Core.Logging
 				}
 
 				// reconfigure the created source to act like the found source
-				traceSource.Switch = foundSource.Switch;
-				traceSource.Listeners.Clear();
+				this.traceSource.Switch = foundSource.Switch;
+				this.traceSource.Listeners.Clear();
 				foreach (TraceListener listener in foundSource.Listeners)
-				{
-					traceSource.Listeners.Add(listener);
-				}
+					this.traceSource.Listeners.Add(listener);
 
-				cache.Add(Name, traceSource);
+				cache.Add(this.Name, this.traceSource);
 			}
 		}
 
@@ -167,9 +160,7 @@ namespace Castle.Core.Logging
 		{
 			var lastDot = name.LastIndexOf('.');
 			if (lastDot != -1)
-			{
 				return name.Substring(0, lastDot);
-			}
 			return null;
 		}
 
@@ -179,11 +170,9 @@ namespace Castle.Core.Logging
 		private static bool IsSourceConfigured(TraceSource source)
 		{
 			if (source.Listeners.Count == 1 &&
-			    source.Listeners[0] is DefaultTraceListener &&
-			    source.Listeners[0].Name == "Default")
-			{
+				source.Listeners[0] is DefaultTraceListener &&
+				source.Listeners[0].Name == "Default")
 				return false;
-			}
 			return true;
 		}
 

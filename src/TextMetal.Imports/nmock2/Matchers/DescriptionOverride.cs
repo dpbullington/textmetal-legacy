@@ -22,14 +22,14 @@ using System.IO;
 namespace NMock2.Matchers
 {
 	/// <summary>
-	/// 	Matcher that is used to change the description the wrapped matcher.
+	/// Matcher that is used to change the description the wrapped matcher.
 	/// </summary>
 	public class DescriptionOverride : Matcher
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="DescriptionOverride" /> class.
+		/// Initializes a new instance of the <see cref="DescriptionOverride" /> class.
 		/// </summary>
 		/// <param name="description"> The new description for the wrapped matcher. </param>
 		/// <param name="otherMatcher"> The matcher to wrap. </param>
@@ -44,12 +44,12 @@ namespace NMock2.Matchers
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Stores the new description for the wrapped matcher.
+		/// Stores the new description for the wrapped matcher.
 		/// </summary>
 		private readonly string description;
 
 		/// <summary>
-		/// 	Stores the matcher to wrap.
+		/// Stores the matcher to wrap.
 		/// </summary>
 		private readonly Matcher otherMatcher;
 
@@ -58,7 +58,7 @@ namespace NMock2.Matchers
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public override void DescribeTo(TextWriter writer)
@@ -67,7 +67,7 @@ namespace NMock2.Matchers
 		}
 
 		/// <summary>
-		/// 	Matches the specified object to this matcher and returns whether it matches.
+		/// Matches the specified object to this matcher and returns whether it matches.
 		/// </summary>
 		/// <param name="o"> The object to match. </param>
 		/// <returns> Whether the wrapped matcher matches. </returns>

@@ -19,10 +19,14 @@ namespace Castle.Components.DictionaryAdapter
 	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Property, AllowMultiple = false)]
 	public class StringStorageAttribute : DictionaryBehaviorAttribute, IDictionaryPropertySetter
 	{
+		#region Methods/Operators
+
 		public bool SetPropertyValue(IDictionaryAdapter dictionaryAdapter, string key, ref object value, PropertyDescriptor property)
 		{
 			value = (value != null) ? value.ToString() : null;
 			return true;
 		}
+
+		#endregion
 	}
 }

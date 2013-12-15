@@ -12,45 +12,53 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+
 namespace Castle.Core.Configuration
 {
 	using System;
-	using System.Collections.Generic;
 
 	/// <summary>
-	/// A collection of <see cref="IConfiguration"/> objects.
+	/// A collection of <see cref="IConfiguration" /> objects.
 	/// </summary>
 	[Serializable]
 	public class ConfigurationCollection : List<IConfiguration>
 	{
+		#region Constructors/Destructors
+
 		/// <summary>
-		/// Creates a new instance of <c>ConfigurationCollection</c>.
+		/// Creates a new instance of <c> ConfigurationCollection </c>.
 		/// </summary>
 		public ConfigurationCollection()
 		{
 		}
 
 		/// <summary>
-		/// Creates a new instance of <c>ConfigurationCollection</c>.
+		/// Creates a new instance of <c> ConfigurationCollection </c>.
 		/// </summary>
-		public ConfigurationCollection(IEnumerable<IConfiguration> value) : base(value)
+		public ConfigurationCollection(IEnumerable<IConfiguration> value)
+			: base(value)
 		{
 		}
+
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		public IConfiguration this[String name]
 		{
 			get
 			{
-				foreach(IConfiguration config in this)
+				foreach (IConfiguration config in this)
 				{
 					if (name.Equals(config.Name))
-					{
 						return config;
-					}
 				}
 
 				return null;
 			}
 		}
+
+		#endregion
 	}
 }

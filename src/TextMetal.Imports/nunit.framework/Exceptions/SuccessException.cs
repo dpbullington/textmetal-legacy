@@ -11,7 +11,7 @@ namespace NUnit.Framework
 	using System;
 
 	/// <summary>
-	/// 	Thrown when an assertion failed.
+	/// Thrown when an assertion failed.
 	/// </summary>
 	[Serializable]
 	public class SuccessException : Exception
@@ -33,10 +33,10 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Serialization Constructor
+		/// Serialization Constructor
 		/// </summary>
 		protected SuccessException(SerializationInfo info,
-		                           StreamingContext context)
+			StreamingContext context)
 			: base(info, context)
 		{
 		}

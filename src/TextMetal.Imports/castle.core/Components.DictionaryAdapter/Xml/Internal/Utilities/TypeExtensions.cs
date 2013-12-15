@@ -12,22 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Linq;
+using System.Xml.Serialization;
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
-	using System.Linq;
-	using System.Xml.Serialization;
 
 	public static class TypeExtensions
 	{
-		public static Type NonNullable(this Type type)
-		{
-			return type.IsGenericType
-				&& type.GetGenericTypeDefinition() == typeof(Nullable<>)
-				? type.GetGenericArguments()[0]
-				: type;
-		}
+		#region Methods/Operators
 
 		public static Type GetCollectionItemType(this Type type)
 		{
@@ -50,6 +46,17 @@ namespace Castle.Components.DictionaryAdapter.Xml
 		{
 			return typeof(IXmlSerializable).IsAssignableFrom(type);
 		}
+
+		public static Type NonNullable(this Type type)
+		{
+			return type.IsGenericType
+					&& type.GetGenericTypeDefinition() == typeof(Nullable<>)
+				? type.GetGenericArguments()[0]
+				: type;
+		}
+
+		#endregion
 	}
 }
+
 #endif

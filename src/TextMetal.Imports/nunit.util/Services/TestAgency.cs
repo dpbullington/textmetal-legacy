@@ -17,7 +17,7 @@ using NUnit.Core;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Enumeration used to report AgentStatus
+	/// Enumeration used to report AgentStatus
 	/// </summary>
 	public enum AgentStatus
 	{
@@ -29,12 +29,12 @@ namespace NUnit.Util
 	}
 
 	/// <summary>
-	/// 	The TestAgency class provides RemoteTestAgents
-	/// 	on request and tracks their status. Agents
-	/// 	are wrapped in an instance of the TestAgent
-	/// 	class. Multiple agent types are supported
-	/// 	but only one, ProcessAgent is implemented
-	/// 	at this time.
+	/// The TestAgency class provides RemoteTestAgents
+	/// on request and tracks their status. Agents
+	/// are wrapped in an instance of the TestAgent
+	/// class. Multiple agent types are supported
+	/// but only one, ProcessAgent is implemented
+	/// at this time.
 	/// </summary>
 	public class TestAgency : ServerBase, IAgency, IService
 	{
@@ -63,12 +63,12 @@ namespace NUnit.Util
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Return the NUnit Bin Directory for a particular
-		/// 	runtime version, or null if it's not installed.
-		/// 	For normal installations, there are only 1.1 and
-		/// 	2.0 directories. However, this method accomodates
-		/// 	3.5 and 4.0 directories for the benefit of NUnit
-		/// 	developers using those runtimes.
+		/// Return the NUnit Bin Directory for a particular
+		/// runtime version, or null if it's not installed.
+		/// For normal installations, there are only 1.1 and
+		/// 2.0 directories. However, this method accomodates
+		/// 3.5 and 4.0 directories for the benefit of NUnit
+		/// developers using those runtimes.
 		/// </summary>
 		private static string GetNUnitBinDirectory(Version v)
 		{
@@ -92,8 +92,8 @@ namespace NUnit.Util
 				// one version number for another in the path.
 				string[] search = new string[] { "2.0", "3.0", "3.5", "4.0" };
 				string[] replace = v.Minor == 0
-					                   ? new string[] { "1.0", "1.1" }
-					                   : new string[] { "1.1", "1.0" };
+					? new string[] { "1.0", "1.1" }
+					: new string[] { "1.1", "1.0" };
 
 				// Look for current value in path so it can be replaced
 				string current = null;
@@ -130,8 +130,8 @@ namespace NUnit.Util
 #if CLR_2_0 || CLR_4_0
 			Assembly a = Assembly.GetEntryAssembly();
 			string agentName = v.Major > 1 && a != null && a.GetName().ProcessorArchitecture == ProcessorArchitecture.X86
-				                   ? "nunit-agent-x86.exe"
-				                   : "nunit-agent.exe";
+				? "nunit-agent-x86.exe"
+				: "nunit-agent.exe";
 #else
             string agentName = "nunit-agent.exe";
 #endif
@@ -214,13 +214,12 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Returns true if NUnit support for the runtime specified 
-		/// 	is installed, independent of whether the runtime itself
-		/// 	is installed on the system.
-		/// 
-		/// 	In the current implementation, only .NET 1.x requires
-		/// 	special handling, since all higher runtimes are 
-		/// 	supported normally.
+		/// Returns true if NUnit support for the runtime specified
+		/// is installed, independent of whether the runtime itself
+		/// is installed on the system.
+		/// In the current implementation, only .NET 1.x requires
+		/// special handling, since all higher runtimes are
+		/// supported normally.
 		/// </summary>
 		/// <param name="version"> The desired runtime version </param>
 		/// <returns> True if NUnit support is installed </returns>
@@ -248,7 +247,7 @@ namespace NUnit.Util
 			{
 				throw new ArgumentException(
 					string.Format("NUnit components for version {0} of the CLR are not installed",
-					              targetRuntime.ClrVersion.ToString()), "targetRuntime");
+						targetRuntime.ClrVersion.ToString()), "targetRuntime");
 			}
 
 			log.Debug("Using nunit-agent at " + agentExePath);
@@ -372,8 +371,8 @@ namespace NUnit.Util
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		/// <summary>
-		/// 	A simple class that tracks data about this
-		/// 	agencies active and available agents
+		/// A simple class that tracks data about this
+		/// agencies active and available agents
 		/// </summary>
 		private class AgentDataBase : IEnumerable
 		{

@@ -9,8 +9,8 @@ using System;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	Attribute used to provide descriptive text about a 
-	/// 	test case or fixture.
+	/// Attribute used to provide descriptive text about a
+	/// test case or fixture.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
 	public class DescriptionAttribute : Attribute
@@ -18,7 +18,7 @@ namespace NUnit.Framework
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct the attribute
+		/// Construct the attribute
 		/// </summary>
 		/// <param name="description"> Text describing the test </param>
 		public DescriptionAttribute(string description)
@@ -37,7 +37,7 @@ namespace NUnit.Framework
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the test description
+		/// Gets the test description
 		/// </summary>
 		public string Description
 		{

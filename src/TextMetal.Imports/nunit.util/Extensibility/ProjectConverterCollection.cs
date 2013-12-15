@@ -12,7 +12,7 @@ using NUnit.Core.Extensibility;
 namespace NUnit.Util.Extensibility
 {
 	/// <summary>
-	/// 	Summary description for ProjectConverterCollection.
+	/// Summary description for ProjectConverterCollection.
 	/// </summary>
 	public class ProjectConverterCollection : IProjectConverter, IExtensionPoint
 	{

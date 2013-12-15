@@ -11,7 +11,7 @@ namespace NUnit.Core
 	using System;
 
 	/// <summary>
-	/// 	Summary description for NoTestMethodsException.
+	/// Summary description for NoTestMethodsException.
 	/// </summary>
 	[Serializable]
 	public class InvalidTestFixtureException : ApplicationException
@@ -34,10 +34,10 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Serialization Constructor
+		/// Serialization Constructor
 		/// </summary>
 		protected InvalidTestFixtureException(SerializationInfo info,
-		                                      StreamingContext context)
+			StreamingContext context)
 			: base(info, context)
 		{
 		}

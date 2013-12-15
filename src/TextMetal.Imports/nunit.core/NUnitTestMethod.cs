@@ -9,7 +9,7 @@ using System.Reflection;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Class to implement an NUnit test method
+	/// Class to implement an NUnit test method
 	/// </summary>
 	public class NUnitTestMethod : TestMethod
 	{
@@ -25,8 +25,8 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Run a test returning the result. Overrides TestMethod
-		/// 	to count assertions.
+		/// Run a test returning the result. Overrides TestMethod
+		/// to count assertions.
 		/// </summary>
 		/// <param name="testResult"> </param>
 		public override TestResult RunTest()

@@ -14,40 +14,40 @@ using Microsoft.Win32;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Enumeration identifying a common language 
-	/// 	runtime implementation.
+	/// Enumeration identifying a common language
+	/// runtime implementation.
 	/// </summary>
 	public enum RuntimeType
 	{
 		/// <summary>
-		/// 	Any supported runtime framework
+		/// Any supported runtime framework
 		/// </summary>
 		Any,
 
 		/// <summary>
-		/// 	Microsoft .NET Framework
+		/// Microsoft .NET Framework
 		/// </summary>
 		Net,
 
 		/// <summary>
-		/// 	Microsoft .NET Compact Framework
+		/// Microsoft .NET Compact Framework
 		/// </summary>
 		NetCF,
 
 		/// <summary>
-		/// 	Microsoft Shared Source CLI
+		/// Microsoft Shared Source CLI
 		/// </summary>
 		SSCLI,
 
 		/// <summary>
-		/// 	Mono
+		/// Mono
 		/// </summary>
 		Mono
 	}
 
 	/// <summary>
-	/// 	RuntimeFramework represents a particular version
-	/// 	of a common language runtime implementation.
+	/// RuntimeFramework represents a particular version
+	/// of a common language runtime implementation.
 	/// </summary>
 	[Serializable]
 	public sealed class RuntimeFramework
@@ -55,8 +55,8 @@ namespace NUnit.Core
 		#region Static and Instance Fields
 
 		/// <summary>
-		/// 	DefaultVersion is an empty Version, used to indicate that
-		/// 	NUnit should select the CLR version to use for the test.
+		/// DefaultVersion is an empty Version, used to indicate that
+		/// NUnit should select the CLR version to use for the test.
 		/// </summary>
 		public static readonly Version DefaultVersion = new Version();
 
@@ -64,12 +64,12 @@ namespace NUnit.Core
 		private static RuntimeFramework[] availableFrameworks;
 
 		private static Version[] knownVersions = new Version[]
-		                                         {
-			                                         new Version(1, 0, 3705),
-			                                         new Version(1, 1, 4322),
-			                                         new Version(2, 0, 50727),
-			                                         new Version(4, 0, 30319)
-		                                         };
+												{
+													new Version(1, 0, 3705),
+													new Version(1, 1, 4322),
+													new Version(2, 0, 50727),
+													new Version(4, 0, 30319)
+												};
 
 		private RuntimeType runtime;
 		private Version frameworkVersion;
@@ -81,7 +81,7 @@ namespace NUnit.Core
 		#region Constructor
 
 		/// <summary>
-		/// 	Construct from a runtime type and version
+		/// Construct from a runtime type and version
 		/// </summary>
 		/// <param name="runtime"> The runtime type of the framework </param>
 		/// <param name="version"> The version of the framework </param>
@@ -141,8 +141,8 @@ namespace NUnit.Core
 		#region Properties
 
 		/// <summary>
-		/// 	Static method to return a RuntimeFramework object
-		/// 	for the framework that is currently in use.
+		/// Static method to return a RuntimeFramework object
+		/// for the framework that is currently in use.
 		/// </summary>
 		public static RuntimeFramework CurrentFramework
 		{
@@ -195,8 +195,8 @@ namespace NUnit.Core
 					else if (major == 4)
 					{
 						minor = Type.GetType("System.Reflection.ReflectionContext", false) != null
-							        ? 5
-							        : 0;
+							? 5
+							: 0;
 					}
 
 					currentFramework = new RuntimeFramework(runtime, new Version(major, minor));
@@ -209,7 +209,7 @@ namespace NUnit.Core
 						if (getDisplayNameMethod != null)
 						{
 							currentFramework.displayName += string.Format(" ( {0} )",
-							                                              (string)getDisplayNameMethod.Invoke(null, new object[0]));
+								(string)getDisplayNameMethod.Invoke(null, new object[0]));
 						}
 					}
 				}
@@ -219,7 +219,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets an array of all available frameworks
+		/// Gets an array of all available frameworks
 		/// </summary>
 		public static RuntimeFramework[] AvailableFrameworks
 		{
@@ -242,9 +242,9 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Returns true if the current RuntimeFramework is available.
-		/// 	In the current implementation, only Mono and Microsoft .NET
-		/// 	are supported.
+		/// Returns true if the current RuntimeFramework is available.
+		/// In the current implementation, only Mono and Microsoft .NET
+		/// are supported.
 		/// </summary>
 		/// <returns> True if it's available, false if not </returns>
 		public bool IsAvailable
@@ -262,7 +262,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	The type of this runtime framework
+		/// The type of this runtime framework
 		/// </summary>
 		public RuntimeType Runtime
 		{
@@ -273,7 +273,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	The framework version for this runtime framework
+		/// The framework version for this runtime framework
 		/// </summary>
 		public Version FrameworkVersion
 		{
@@ -284,7 +284,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	The CLR version for this runtime framework
+		/// The CLR version for this runtime framework
 		/// </summary>
 		public Version ClrVersion
 		{
@@ -295,8 +295,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if any CLR version may be used in
-		/// 	matching this RuntimeFramework object.
+		/// Return true if any CLR version may be used in
+		/// matching this RuntimeFramework object.
 		/// </summary>
 		public bool AllowAnyVersion
 		{
@@ -307,7 +307,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Returns the Display name for this framework
+		/// Returns the Display name for this framework
 		/// </summary>
 		public string DisplayName
 		{
@@ -322,10 +322,10 @@ namespace NUnit.Core
 		#region Public Methods
 
 		/// <summary>
-		/// 	Parses a string representing a RuntimeFramework.
-		/// 	The string may be just a RuntimeType name or just
-		/// 	a Version or a hyphentated RuntimeType-Version or
-		/// 	a Version prefixed by 'v'.
+		/// Parses a string representing a RuntimeFramework.
+		/// The string may be just a RuntimeType name or just
+		/// a Version or a hyphentated RuntimeType-Version or
+		/// a Version prefixed by 'v'.
 		/// </summary>
 		/// <param name="s"> </param>
 		/// <returns> </returns>
@@ -353,10 +353,10 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Returns the best available framework that matches a target framework.
-		/// 	If the target framework has a build number specified, then an exact
-		/// 	match is needed. Otherwise, the matching framework with the highest
-		/// 	build number is used.
+		/// Returns the best available framework that matches a target framework.
+		/// If the target framework has a build number specified, then an exact
+		/// match is needed. Otherwise, the matching framework with the highest
+		/// build number is used.
 		/// </summary>
 		/// <param name="target"> </param>
 		/// <returns> </returns>
@@ -369,7 +369,7 @@ namespace NUnit.Core
 				foreach (RuntimeFramework framework in AvailableFrameworks)
 				{
 					if (framework.Supports(target) &&
-					    framework.ClrVersion.Build > result.ClrVersion.Build)
+						framework.ClrVersion.Build > result.ClrVersion.Build)
 						result = framework;
 				}
 			}
@@ -378,7 +378,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Overridden to return the short name of the framework
+		/// Overridden to return the short name of the framework
 		/// </summary>
 		/// <returns> </returns>
 		public override string ToString()
@@ -396,34 +396,30 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Returns true if this framework's supports executing under the 
-		/// 	requested target framework. The target is supported if
-		/// 
-		/// 	1. The runtime types are the same or either one is RuntimeType.Any
-		/// 
-		/// 	2. All specified (non-negative) components of the CLR version are equal. 
-		/// 
-		/// 	3. The major and minor components of the current framework version are
-		/// 	greater than or equal to the corresponding target components.
-		///    
-		/// 	The last provision allows tests requiring .NET 2.0 to run under the
-		/// 	3.0 and 3.5 platforms and those requiring .NET 4.0 to run under 4.5.
+		/// Returns true if this framework's supports executing under the
+		/// requested target framework. The target is supported if
+		/// 1. The runtime types are the same or either one is RuntimeType.Any
+		/// 2. All specified (non-negative) components of the CLR version are equal.
+		/// 3. The major and minor components of the current framework version are
+		/// greater than or equal to the corresponding target components.
+		/// The last provision allows tests requiring .NET 2.0 to run under the
+		/// 3.0 and 3.5 platforms and those requiring .NET 4.0 to run under 4.5.
 		/// </summary>
 		/// <param name="target"> The RuntimeFramework to be matched. </param>
 		/// <returns> True on match, otherwise false </returns>
 		public bool Supports(RuntimeFramework target)
 		{
 			if (this.Runtime != RuntimeType.Any
-			    && target.Runtime != RuntimeType.Any
-			    && this.Runtime != target.Runtime)
+				&& target.Runtime != RuntimeType.Any
+				&& this.Runtime != target.Runtime)
 				return false;
 
 			if (this.AllowAnyVersion || target.AllowAnyVersion)
 				return true;
 
 			return VersionsMatch(this.ClrVersion, target.ClrVersion)
-			       && this.FrameworkVersion.Major >= target.FrameworkVersion.Major
-			       && this.FrameworkVersion.Minor >= target.FrameworkVersion.Minor;
+					&& this.FrameworkVersion.Major >= target.FrameworkVersion.Major
+					&& this.FrameworkVersion.Minor >= target.FrameworkVersion.Minor;
 		}
 
 		#endregion
@@ -456,9 +452,9 @@ namespace NUnit.Core
 		private static bool VersionsMatch(Version v1, Version v2)
 		{
 			return v1.Major == v2.Major &&
-			       v1.Minor == v2.Minor &&
-			       (v1.Build < 0 || v2.Build < 0 || v1.Build == v2.Build) &&
-			       (v1.Revision < 0 || v2.Revision < 0 || v1.Revision == v2.Revision);
+					v1.Minor == v2.Minor &&
+					(v1.Build < 0 || v2.Build < 0 || v1.Build == v2.Build) &&
+					(v1.Revision < 0 || v2.Revision < 0 || v1.Revision == v2.Revision);
 		}
 
 		private static void AppendMonoFrameworks(FrameworkCollection frameworks)
@@ -526,8 +522,8 @@ namespace NUnit.Core
 			if (monoPrefix != null)
 			{
 				string displayFmt = version != null
-					                    ? "Mono " + version + " - {0} Profile"
-					                    : "Mono {0} Profile";
+					? "Mono " + version + " - {0} Profile"
+					: "Mono {0} Profile";
 
 				if (File.Exists(Path.Combine(monoPrefix, "lib/mono/1.0/mscorlib.dll")))
 				{

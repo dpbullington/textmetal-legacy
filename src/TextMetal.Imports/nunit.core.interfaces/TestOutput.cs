@@ -9,8 +9,8 @@ namespace NUnit.Core
 	using System;
 
 	/// <summary>
-	/// 	The TestOutput class holds a unit of output from 
-	/// 	a test to either stdOut or stdErr
+	/// The TestOutput class holds a unit of output from
+	/// a test to either stdOut or stdErr
 	/// </summary>
 	[Serializable]
 	public class TestOutput
@@ -18,7 +18,7 @@ namespace NUnit.Core
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct with text and an ouput destination type
+		/// Construct with text and an ouput destination type
 		/// </summary>
 		/// <param name="text"> Text to be output </param>
 		/// <param name="type"> Destination of output </param>
@@ -40,7 +40,7 @@ namespace NUnit.Core
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Get the text
+		/// Get the text
 		/// </summary>
 		public string Text
 		{
@@ -51,7 +51,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Get the output type
+		/// Get the output type
 		/// </summary>
 		public TestOutputType Type
 		{
@@ -66,7 +66,7 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Return string representation of the object for debugging
+		/// Return string representation of the object for debugging
 		/// </summary>
 		/// <returns> </returns>
 		public override string ToString()
@@ -78,31 +78,31 @@ namespace NUnit.Core
 	}
 
 	/// <summary>
-	/// 	Enum representing the output destination
-	/// 	It uses combinable flags so that a given
-	/// 	output control can accept multiple types
-	/// 	of output. Normally, each individual
-	/// 	output uses a single flag value.
+	/// Enum representing the output destination
+	/// It uses combinable flags so that a given
+	/// output control can accept multiple types
+	/// of output. Normally, each individual
+	/// output uses a single flag value.
 	/// </summary>
 	public enum TestOutputType
 	{
 		/// <summary>
-		/// 	Send output to stdOut
+		/// Send output to stdOut
 		/// </summary>
 		Out,
 
 		/// <summary>
-		/// 	Send output to stdErr
+		/// Send output to stdErr
 		/// </summary>
 		Error,
 
 		/// <summary>
-		/// 	Send output to Trace
+		/// Send output to Trace
 		/// </summary>
 		Trace,
 
 		/// <summary>
-		/// 	Send output to Log
+		/// Send output to Log
 		/// </summary>
 		Log
 	}

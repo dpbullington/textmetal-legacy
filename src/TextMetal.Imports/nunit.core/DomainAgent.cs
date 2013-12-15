@@ -12,15 +12,15 @@ using System.Runtime.Remoting;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Represesents an agent that controls running of tests in
-	/// 	an application domain.
+	/// Represesents an agent that controls running of tests in
+	/// an application domain.
 	/// </summary>
 	public class DomainAgent : TestAgent
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Constructs a DomainAgent specifying the trace level.
+		/// Constructs a DomainAgent specifying the trace level.
 		/// </summary>
 		/// <param name="traceLevel"> The level of internal tracing to use </param>
 		public DomainAgent()
@@ -53,7 +53,7 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Factory method used to create a DomainAgent in an AppDomain.
+		/// Factory method used to create a DomainAgent in an AppDomain.
 		/// </summary>
 		/// <param name="targetDomain"> The domain in which to create the agent </param>
 		/// <param name="traceLevel"> The level of internal tracing to use </param>
@@ -75,9 +75,9 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Creates a TestRunner for use in loading and running
-		/// 	tests in this domain. DomainAgent always creates
-		/// 	a RemoteTestRunner.
+		/// Creates a TestRunner for use in loading and running
+		/// tests in this domain. DomainAgent always creates
+		/// a RemoteTestRunner.
 		/// </summary>
 		/// <param name="runnerID"> Runner ID to be used </param>
 		/// <returns> A TestRunner </returns>
@@ -88,7 +88,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Starts the agent if it is no aready started.
+		/// Starts the agent if it is no aready started.
 		/// </summary>
 		/// <returns> </returns>
 		public override bool Start()
@@ -103,7 +103,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Stops the agent if it is running
+		/// Stops the agent if it is running
 		/// </summary>
 		public override void Stop()
 		{
@@ -128,7 +128,7 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Factory method used to create a DomainInitializer in an AppDomain.
+		/// Factory method used to create a DomainInitializer in an AppDomain.
 		/// </summary>
 		/// <param name="targetDomain"> The domain in which to create the agent </param>
 		/// <param name="traceLevel"> The level of internal tracing to use </param>

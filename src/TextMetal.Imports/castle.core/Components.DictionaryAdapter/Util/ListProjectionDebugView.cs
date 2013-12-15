@@ -12,14 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Diagnostics;
+
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
-	using System.Diagnostics;
 
 	internal sealed class ListProjectionDebugView<T>
 	{
-		private readonly ListProjection<T> projection;
+		#region Constructors/Destructors
 
 		public ListProjectionDebugView(ListProjection<T> projection)
 		{
@@ -29,20 +30,35 @@ namespace Castle.Components.DictionaryAdapter
 			this.projection = projection;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly ListProjection<T> projection;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public ICollectionAdapter<T> Adapter
+		{
+			get
+			{
+				return this.projection.Adapter;
+			}
+		}
+
 		[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
 		public T[] Items
 		{
 			get
 			{
-				T[] array = new T[projection.Count];
-				projection.CopyTo(array, 0);
+				T[] array = new T[this.projection.Count];
+				this.projection.CopyTo(array, 0);
 				return array;
 			}
 		}
 
-		public ICollectionAdapter<T> Adapter
-		{
-			get { return projection.Adapter; }
-		}
+		#endregion
 	}
 }

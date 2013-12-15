@@ -12,28 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System.Collections.Generic;
-	using System.Reflection.Emit;
-
 	public class MultiStatementExpression : Expression
 	{
+		#region Fields/Constants
+
 		private readonly List<Statement> statements = new List<Statement>();
 
-		public void AddStatement(Statement statement)
-		{
-			statements.Add(statement);
-		}
+		#endregion
+
+		#region Methods/Operators
 
 		public void AddExpression(Expression expression)
 		{
-			AddStatement(new ExpressionStatement(expression));
+			this.AddStatement(new ExpressionStatement(expression));
+		}
+
+		public void AddStatement(Statement statement)
+		{
+			this.statements.Add(statement);
 		}
 
 		public override void Emit(IMemberEmitter member, ILGenerator gen)
 		{
-			statements.ForEach(s => s.Emit(member, gen));
+			this.statements.ForEach(s => s.Emit(member, gen));
 		}
+
+		#endregion
 	}
 }

@@ -11,8 +11,8 @@ namespace NUnit.Core
 	using System;
 
 	/// <summary>
-	/// 	Thrown when an assertion failed. Here to preserve the inner
-	/// 	exception and hence its stack trace.
+	/// Thrown when an assertion failed. Here to preserve the inner
+	/// exception and hence its stack trace.
 	/// </summary>
 	[Serializable]
 	public class NUnitException : ApplicationException
@@ -25,7 +25,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Standard constructor
+		/// Standard constructor
 		/// </summary>
 		/// <param name="message"> The error message that explains the reason for the exception </param>
 		public NUnitException(string message)
@@ -34,7 +34,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Standard constructor
+		/// Standard constructor
 		/// </summary>
 		/// <param name="message"> The error message that explains the reason for the exception </param>
 		/// <param name="inner"> The exception that caused the current exception </param>
@@ -45,10 +45,10 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Serialization Constructor
+		/// Serialization Constructor
 		/// </summary>
 		protected NUnitException(SerializationInfo info,
-		                         StreamingContext context)
+			StreamingContext context)
 			: base(info, context)
 		{
 		}

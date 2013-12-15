@@ -16,22 +16,18 @@ using NUnit.Util;
 namespace NUnit.Gui
 {
 	/// <summary>
-	/// 	NUnitPresenter does all file opening and closing that
-	/// 	involves interacting with the user.
-	/// 
-	/// 	NOTE: This class originated as the static class
-	/// 	TestLoaderUI and is slowly being converted to a
-	/// 	true presenter. Current limitations include:
-	/// 
-	/// 	1. At this time, the presenter is created by
-	/// 	the form and interacts with it directly, rather
-	/// 	than through an interface. 
-	/// 
-	/// 	2. Many functions, which should properly be in
-	/// 	the presenter, remain in the form.
-	/// 
-	/// 	3. The presenter creates dialogs itself, which
-	/// 	limits testability.
+	/// NUnitPresenter does all file opening and closing that
+	/// involves interacting with the user.
+	/// NOTE: This class originated as the static class
+	/// TestLoaderUI and is slowly being converted to a
+	/// true presenter. Current limitations include:
+	/// 1. At this time, the presenter is created by
+	/// the form and interacts with it directly, rather
+	/// than through an interface.
+	/// 2. Many functions, which should properly be in
+	/// the presenter, remain in the form.
+	/// 3. The presenter creates dialogs itself, which
+	/// limits testability.
 	/// </summary>
 	public class NUnitPresenter
 	{
@@ -82,7 +78,7 @@ namespace NUnit.Gui
 		private static bool CanWriteProjectFile(string path)
 		{
 			return !File.Exists(path) ||
-			       (File.GetAttributes(path) & FileAttributes.ReadOnly) == 0;
+					(File.GetAttributes(path) & FileAttributes.ReadOnly) == 0;
 		}
 
 		private static string GetProjectEditorPath()
@@ -107,8 +103,8 @@ namespace NUnit.Gui
 		public void AddAssembly(string configName)
 		{
 			ProjectConfig config = configName == null
-				                       ? this.loader.TestProject.ActiveConfig
-				                       : this.loader.TestProject.Configs[configName];
+				? this.loader.TestProject.ActiveConfig
+				: this.loader.TestProject.Configs[configName];
 
 			OpenFileDialog dlg = new OpenFileDialog();
 			dlg.Title = "Add Assembly";
@@ -130,8 +126,8 @@ namespace NUnit.Gui
 		public void AddToProject(string configName)
 		{
 			ProjectConfig config = configName == null
-				                       ? this.loader.TestProject.ActiveConfig
-				                       : this.loader.TestProject.Configs[configName];
+				? this.loader.TestProject.ActiveConfig
+				: this.loader.TestProject.Configs[configName];
 
 			OpenFileDialog dlg = new OpenFileDialog();
 			dlg.Title = "Add Assemblies To Project";
@@ -173,16 +169,16 @@ namespace NUnit.Gui
 					if (configName != null && vsProject.Configs.Contains(configName))
 					{
 						msg = "The project being added may contain multiple configurations;\r\r" +
-						      "Select\tYes to add all configurations found.\r" +
-						      "\tNo to add only the " + configName + " configuration.\r" +
-						      "\tCancel to exit without modifying the project.";
+							"Select\tYes to add all configurations found.\r" +
+							"\tNo to add only the " + configName + " configuration.\r" +
+							"\tCancel to exit without modifying the project.";
 						buttons = MessageBoxButtons.YesNoCancel;
 					}
 					else
 					{
 						msg = "The project being added may contain multiple configurations;\r\r" +
-						      "Select\tOK to add all configurations found.\r" +
-						      "\tCancel to exit without modifying the project.";
+							"Select\tOK to add all configurations found.\r" +
+							"\tCancel to exit without modifying the project.";
 						buttons = MessageBoxButtons.OKCancel;
 					}
 
@@ -257,8 +253,8 @@ namespace NUnit.Gui
 				string message =
 					"Unable to locate the specified Project Editor:" + NL + NL + editorPath + NL + NL +
 					(Services.UserSettings.GetSetting("Options.ProjectEditor.EditorPath") == null
-						 ? "Verify that nunit.editor.exe is properly installed in the NUnit bin directory."
-						 : "Verify that you have set the path to the editor correctly.");
+						? "Verify that nunit.editor.exe is properly installed in the NUnit bin directory."
+						: "Verify that you have set the path to the editor correctly.");
 
 				this.Form.MessageDisplay.Error(message);
 
@@ -320,8 +316,8 @@ namespace NUnit.Gui
 		private void OnTestProjectChanged(string filePath)
 		{
 			string message = filePath + Environment.NewLine + Environment.NewLine +
-			                 "This file has been modified outside of NUnit." + Environment.NewLine +
-			                 "Do you want to reload it?";
+							"This file has been modified outside of NUnit." + Environment.NewLine +
+							"Do you want to reload it?";
 
 			if (this.Form.MessageDisplay.Ask(message) == DialogResult.Yes)
 				this.ReloadProject();
@@ -462,8 +458,8 @@ namespace NUnit.Gui
 		public void SaveProject()
 		{
 			if (Path.IsPathRooted(this.loader.TestProject.ProjectPath) &&
-			    NUnitProject.IsNUnitProjectFile(this.loader.TestProject.ProjectPath) &&
-			    CanWriteProjectFile(this.loader.TestProject.ProjectPath))
+				NUnitProject.IsNUnitProjectFile(this.loader.TestProject.ProjectPath) &&
+				CanWriteProjectFile(this.loader.TestProject.ProjectPath))
 				this.loader.TestProject.Save();
 			else
 				this.SaveProjectAs();

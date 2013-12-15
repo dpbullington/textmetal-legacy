@@ -10,17 +10,21 @@ using System.Net;
 
 namespace Intelligencia.UrlRewriter.Actions
 {
-    /// <summary>
-    /// Returns a 403 Forbidden HTTP status code.
-    /// </summary>
-    public sealed class ForbiddenAction : SetStatusAction
-    {
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public ForbiddenAction()
-            : base(HttpStatusCode.Forbidden)
-        {
-        }
-    }
+	/// <summary>
+	/// Returns a 403 Forbidden HTTP status code.
+	/// </summary>
+	public sealed class ForbiddenAction : SetStatusAction
+	{
+		#region Constructors/Destructors
+
+		/// <summary>
+		/// Default constructor.
+		/// </summary>
+		public ForbiddenAction()
+			: base(HttpStatusCode.Forbidden)
+		{
+		}
+
+		#endregion
+	}
 }

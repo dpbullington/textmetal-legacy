@@ -12,18 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Xml;
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
-	using System.Xml;
 
 	internal static class XmlExtensions
 	{
-		public static bool PositionEquals(this IXmlNode nodeA, IXmlNode nodeB)
-		{
-			return XmlPositionComparer.Instance.Equals(nodeA, nodeB);
-		}
+		#region Methods/Operators
 
 		public static void CopyTo(this IXmlNode source, IXmlNode target)
 		{
@@ -39,10 +38,21 @@ namespace Castle.Components.DictionaryAdapter.Xml
 					return;
 
 				using (var writer = target.WriteChildren())
-					do writer.WriteNode(reader, false);
+				{
+					do
+						writer.WriteNode(reader, false);
 					while (!(reader.EOF || reader.NodeType == XmlNodeType.EndElement));
+				}
 			}
 		}
+
+		public static bool PositionEquals(this IXmlNode nodeA, IXmlNode nodeB)
+		{
+			return XmlPositionComparer.Instance.Equals(nodeA, nodeB);
+		}
+
+		#endregion
 	}
 }
+
 #endif

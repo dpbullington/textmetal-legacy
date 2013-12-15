@@ -25,7 +25,7 @@ namespace NUnit.UiKit
 	}
 
 	/// <summary>
-	/// 	Summary description for GuiTestEventDispatcher.
+	/// Summary description for GuiTestEventDispatcher.
 	/// </summary>
 	public class GuiTestEventDispatcher : TestEventDispatcher
 	{

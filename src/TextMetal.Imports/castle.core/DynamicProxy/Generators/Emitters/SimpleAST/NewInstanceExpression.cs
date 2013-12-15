@@ -12,50 +12,57 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection;
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
 	using System;
-	using System.Reflection;
-	using System.Reflection.Emit;
 
 	public class NewInstanceExpression : Expression
 	{
+		#region Constructors/Destructors
+
+		public NewInstanceExpression(ConstructorInfo constructor, params Expression[] args)
+		{
+			this.constructor = constructor;
+			this.arguments = args;
+		}
+
+		public NewInstanceExpression(Type target, Type[] constructor_args, params Expression[] args)
+		{
+			this.type = target;
+			this.constructorArgs = constructor_args;
+			this.arguments = args;
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
 		private readonly Expression[] arguments;
 		private readonly Type[] constructorArgs;
 		private readonly Type type;
 		private ConstructorInfo constructor;
 
-		public NewInstanceExpression(ConstructorInfo constructor, params Expression[] args)
-		{
-			this.constructor = constructor;
-			arguments = args;
-		}
+		#endregion
 
-		public NewInstanceExpression(Type target, Type[] constructor_args, params Expression[] args)
-		{
-			type = target;
-			constructorArgs = constructor_args;
-			arguments = args;
-		}
+		#region Methods/Operators
 
 		public override void Emit(IMemberEmitter member, ILGenerator gen)
 		{
-			foreach (var exp in arguments)
-			{
+			foreach (var exp in this.arguments)
 				exp.Emit(member, gen);
-			}
 
-			if (constructor == null)
-			{
-				constructor = type.GetConstructor(constructorArgs);
-			}
+			if (this.constructor == null)
+				this.constructor = this.type.GetConstructor(this.constructorArgs);
 
-			if (constructor == null)
-			{
+			if (this.constructor == null)
 				throw new ProxyGenerationException("Could not find constructor matching specified arguments");
-			}
 
-			gen.Emit(OpCodes.Newobj, constructor);
+			gen.Emit(OpCodes.Newobj, this.constructor);
 		}
+
+		#endregion
 	}
 }

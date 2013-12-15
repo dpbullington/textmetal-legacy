@@ -12,67 +12,66 @@ using System.Windows.Forms;
 namespace CP.Windows.Forms
 {
 	/// <summary>
-	/// 	A special type of textbox which can display a tooltip-like
-	/// 	window to show the full extent of any text which doesn't 
-	/// 	fit. The window may be placed directly over the label
-	/// 	or immediately beneath it and will expand to fit in
-	/// 	a horizontal, vertical or both directions as needed.
-	/// 
-	/// 	TODO: This control is virtually identical to ExpandingLabel.
-	/// 	We need to have an extension provider that works like a 
-	/// 	ToolTip in order to eliminate the duplication.
+	/// A special type of textbox which can display a tooltip-like
+	/// window to show the full extent of any text which doesn't
+	/// fit. The window may be placed directly over the label
+	/// or immediately beneath it and will expand to fit in
+	/// a horizontal, vertical or both directions as needed.
+	/// TODO: This control is virtually identical to ExpandingLabel.
+	/// We need to have an extension provider that works like a
+	/// ToolTip in order to eliminate the duplication.
 	/// </summary>
 	public class ExpandingTextBox : TextBox
 	{
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Time in milliseconds that the tip window
-		/// 	will remain displayed.
+		/// Time in milliseconds that the tip window
+		/// will remain displayed.
 		/// </summary>
 		private int autoCloseDelay = 0;
 
 		/// <summary>
-		/// 	True if control should expand automatically on hover.
+		/// True if control should expand automatically on hover.
 		/// </summary>
 		private bool autoExpand = true;
 
 		/// <summary>
-		/// 	If true, a context menu with Copy is displayed which
-		/// 	allows copying contents to the clipboard.
+		/// If true, a context menu with Copy is displayed which
+		/// allows copying contents to the clipboard.
 		/// </summary>
 		private bool copySupported = false;
 
 		/// <summary>
-		/// 	Direction of expansion
+		/// Direction of expansion
 		/// </summary>
 		private TipWindow.ExpansionStyle expansion = TipWindow.ExpansionStyle.Horizontal;
 
 		/// <summary>
-		/// 	Timer used to control display behavior on hover.
+		/// Timer used to control display behavior on hover.
 		/// </summary>
 		private Timer hoverTimer;
 
 		/// <summary>
-		/// 	Time in milliseconds that the mouse must
-		/// 	be stationary over an item before the
-		/// 	tip window will display.
+		/// Time in milliseconds that the mouse must
+		/// be stationary over an item before the
+		/// tip window will display.
 		/// </summary>
 		private int mouseHoverDelay = 300;
 
 		/// <summary>
-		/// 	Time in milliseconds that the window stays
-		/// 	open after the mouse leaves the control.
+		/// Time in milliseconds that the window stays
+		/// open after the mouse leaves the control.
 		/// </summary>
 		private int mouseLeaveDelay = 300;
 
 		/// <summary>
-		/// 	True if tipWindow may overlay the label
+		/// True if tipWindow may overlay the label
 		/// </summary>
 		private bool overlay = true;
 
 		/// <summary>
-		/// 	Our window for displaying expanded text
+		/// Our window for displaying expanded text
 		/// </summary>
 		private TipWindow tipWindow;
 
@@ -81,8 +80,8 @@ namespace CP.Windows.Forms
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Time in milliseconds that the tip window
-		/// 	will remain displayed.
+		/// Time in milliseconds that the tip window
+		/// will remain displayed.
 		/// </summary>
 		[Category("Behavior")]
 		[DefaultValue(0)]
@@ -154,9 +153,9 @@ namespace CP.Windows.Forms
 		}
 
 		/// <summary>
-		/// 	Time in milliseconds that the mouse must
-		/// 	be stationary over an item before the
-		/// 	tip window will display.
+		/// Time in milliseconds that the mouse must
+		/// be stationary over an item before the
+		/// tip window will display.
 		/// </summary>
 		[Category("Behavior")]
 		[DefaultValue(300)]
@@ -174,9 +173,9 @@ namespace CP.Windows.Forms
 		}
 
 		/// <summary>
-		/// 	Time in milliseconds that the window stays
-		/// 	open after the mouse leaves the control.
-		/// 	Reentering the control resets this.
+		/// Time in milliseconds that the window stays
+		/// open after the mouse leaves the control.
+		/// Reentering the control resets this.
 		/// </summary>
 		[Category("Behavior")]
 		[DefaultValue(300)]
@@ -209,8 +208,8 @@ namespace CP.Windows.Forms
 		}
 
 		/// <summary>
-		/// 	Override Text property to set up copy menu if
-		/// 	the value is non-empty.
+		/// Override Text property to set up copy menu if
+		/// the value is non-empty.
 		/// </summary>
 		public override string Text
 		{
@@ -256,7 +255,7 @@ namespace CP.Windows.Forms
 		}
 
 		/// <summary>
-		/// 	Copy contents to clipboard
+		/// Copy contents to clipboard
 		/// </summary>
 		private void CopyToClipboard(object sender, EventArgs e)
 		{

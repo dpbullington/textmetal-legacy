@@ -9,23 +9,22 @@ using System;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	The ITestCaseData interface is implemented by a class
-	/// 	that is able to return complete testcases for use by
-	/// 	a parameterized test method.
-	/// 
-	/// 	NOTE: This interface is used in both the framework
-	/// 	and the core, even though that results in two different
-	/// 	types. However, sharing the source code guarantees that
-	/// 	the various implementations will be compatible and that
-	/// 	the core is able to reflect successfully over the
-	/// 	framework implementations of ITestCaseData.
+	/// The ITestCaseData interface is implemented by a class
+	/// that is able to return complete testcases for use by
+	/// a parameterized test method.
+	/// NOTE: This interface is used in both the framework
+	/// and the core, even though that results in two different
+	/// types. However, sharing the source code guarantees that
+	/// the various implementations will be compatible and that
+	/// the core is able to reflect successfully over the
+	/// framework implementations of ITestCaseData.
 	/// </summary>
 	public interface ITestCaseData
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the argument list to be provided to the test
+		/// Gets the argument list to be provided to the test
 		/// </summary>
 		object[] Arguments
 		{
@@ -33,7 +32,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets the description of the test
+		/// Gets the description of the test
 		/// </summary>
 		string Description
 		{
@@ -41,7 +40,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets the expected exception Type
+		/// Gets the expected exception Type
 		/// </summary>
 		Type ExpectedException
 		{
@@ -49,7 +48,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets the FullName of the expected exception
+		/// Gets the FullName of the expected exception
 		/// </summary>
 		string ExpectedExceptionName
 		{
@@ -57,18 +56,18 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets a value indicating whether this <see cref="ITestCaseData" /> is explicit.
+		/// Gets a value indicating whether this <see cref="ITestCaseData" /> is explicit.
 		/// </summary>
-		/// <value> <c>true</c> if explicit; otherwise, <c>false</c> . </value>
+		/// <value> <c> true </c> if explicit; otherwise, <c> false </c> . </value>
 		bool Explicit
 		{
 			get;
 		}
 
 		/// <summary>
-		/// 	Indicates whether a result has been specified.
-		/// 	This is necessary because the result may be
-		/// 	null, so it's value cannot be checked.
+		/// Indicates whether a result has been specified.
+		/// This is necessary because the result may be
+		/// null, so it's value cannot be checked.
 		/// </summary>
 		bool HasExpectedResult
 		{
@@ -76,7 +75,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets the ignore reason.
+		/// Gets the ignore reason.
 		/// </summary>
 		/// <value> The ignore reason. </value>
 		string IgnoreReason
@@ -85,16 +84,16 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets a value indicating whether this <see cref="ITestCaseData" /> is ignored.
+		/// Gets a value indicating whether this <see cref="ITestCaseData" /> is ignored.
 		/// </summary>
-		/// <value> <c>true</c> if ignored; otherwise, <c>false</c> . </value>
+		/// <value> <c> true </c> if ignored; otherwise, <c> false </c> . </value>
 		bool Ignored
 		{
 			get;
 		}
 
 		/// <summary>
-		/// 	Gets the expected result
+		/// Gets the expected result
 		/// </summary>
 		object Result
 		{
@@ -102,7 +101,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets the name to be used for the test
+		/// Gets the name to be used for the test
 		/// </summary>
 		string TestName
 		{

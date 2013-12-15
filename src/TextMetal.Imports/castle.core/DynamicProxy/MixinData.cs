@@ -12,24 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+
 namespace Castle.DynamicProxy
 {
 	using System;
-	using System.Collections.Generic;
 
 	public class MixinData
 	{
-		private readonly Dictionary<Type, int> mixinPositions = new Dictionary<Type, int>();
-		private readonly List<object> mixinsImpl = new List<object>();
+		#region Constructors/Destructors
 
 		/// <summary>
-		///   Because we need to cache the types based on the mixed in mixins, we do the following here:
-		///   - Get all the mixin interfaces
-		///   - Sort them by full name
-		///   - Return them by position
-		/// 
+		/// Because we need to cache the types based on the mixed in mixins, we do the following here:
+		/// - Get all the mixin interfaces
+		/// - Sort them by full name
+		/// - Return them by position
 		/// The idea is to have reproducible behavior for the case that mixins are registered in different orders.
-		/// This method is here because it is required 
+		/// This method is here because it is required
 		/// </summary>
 		public MixinData(IEnumerable<object> mixinInstances)
 		{
@@ -66,52 +65,65 @@ namespace Castle.DynamicProxy
 					var mixinInterface = sortedMixedInterfaceTypes[i];
 					var mixin = interface2Mixin[mixinInterface];
 
-					mixinPositions[mixinInterface] = i;
-					mixinsImpl.Add(mixin);
+					this.mixinPositions[mixinInterface] = i;
+					this.mixinsImpl.Add(mixin);
 				}
 			}
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly Dictionary<Type, int> mixinPositions = new Dictionary<Type, int>();
+		private readonly List<object> mixinsImpl = new List<object>();
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
 		public IEnumerable<Type> MixinInterfaces
 		{
-			get { return mixinPositions.Keys; }
+			get
+			{
+				return this.mixinPositions.Keys;
+			}
 		}
 
 		public IEnumerable<object> Mixins
 		{
-			get { return mixinsImpl; }
+			get
+			{
+				return this.mixinsImpl;
+			}
 		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		public bool ContainsMixin(Type mixinInterfaceType)
 		{
-			return mixinPositions.ContainsKey(mixinInterfaceType);
+			return this.mixinPositions.ContainsKey(mixinInterfaceType);
 		}
 
 		// For two MixinData objects being regarded equal, only the sorted mixin types are considered, not the actual instances.
 		public override bool Equals(object obj)
 		{
 			if (ReferenceEquals(this, obj))
-			{
 				return true;
-			}
 
 			var other = obj as MixinData;
 			if (ReferenceEquals(other, null))
-			{
 				return false;
-			}
 
-			if (mixinsImpl.Count != other.mixinsImpl.Count)
-			{
+			if (this.mixinsImpl.Count != other.mixinsImpl.Count)
 				return false;
-			}
 
-			for (var i = 0; i < mixinsImpl.Count; ++i)
+			for (var i = 0; i < this.mixinsImpl.Count; ++i)
 			{
-				if (mixinsImpl[i].GetType() != other.mixinsImpl[i].GetType())
-				{
+				if (this.mixinsImpl[i].GetType() != other.mixinsImpl[i].GetType())
 					return false;
-				}
 			}
 
 			return true;
@@ -121,22 +133,22 @@ namespace Castle.DynamicProxy
 		public override int GetHashCode()
 		{
 			var hashCode = 0;
-			foreach (var mixinImplementation in mixinsImpl)
-			{
-				hashCode = 29*hashCode + mixinImplementation.GetType().GetHashCode();
-			}
+			foreach (var mixinImplementation in this.mixinsImpl)
+				hashCode = 29 * hashCode + mixinImplementation.GetType().GetHashCode();
 
 			return hashCode;
 		}
 
 		public object GetMixinInstance(Type mixinInterfaceType)
 		{
-			return mixinsImpl[mixinPositions[mixinInterfaceType]];
+			return this.mixinsImpl[this.mixinPositions[mixinInterfaceType]];
 		}
 
 		public int GetMixinPosition(Type mixinInterfaceType)
 		{
-			return mixinPositions[mixinInterfaceType];
+			return this.mixinPositions[mixinInterfaceType];
 		}
+
+		#endregion
 	}
 }

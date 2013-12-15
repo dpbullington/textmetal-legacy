@@ -11,13 +11,12 @@ using System.Collections.Specialized;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	The TestCaseData class represents a set of arguments
-	/// 	and other parameter info to be used for a parameterized
-	/// 	test case. It provides a number of instance modifiers
-	/// 	for use in initializing the test case.
-	/// 
-	/// 	Note: Instance modifiers are getters that return
-	/// 	the same instance after modifying it's state.
+	/// The TestCaseData class represents a set of arguments
+	/// and other parameter info to be used for a parameterized
+	/// test case. It provides a number of instance modifiers
+	/// for use in initializing the test case.
+	/// Note: Instance modifiers are getters that return
+	/// the same instance after modifying it's state.
 	/// </summary>
 	public class TestCaseData : ITestCaseData
 	{
@@ -27,7 +26,7 @@ namespace NUnit.Framework
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:TestCaseData" /> class.
+		/// Initializes a new instance of the <see cref="T:TestCaseData" /> class.
 		/// </summary>
 		/// <param name="args"> The arguments. </param>
 		public TestCaseData(params object[] args)
@@ -39,7 +38,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:TestCaseData" /> class.
+		/// Initializes a new instance of the <see cref="T:TestCaseData" /> class.
 		/// </summary>
 		/// <param name="arg"> The argument. </param>
 		public TestCaseData(object arg)
@@ -48,7 +47,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:TestCaseData" /> class.
+		/// Initializes a new instance of the <see cref="T:TestCaseData" /> class.
 		/// </summary>
 		/// <param name="arg1"> The first argument. </param>
 		/// <param name="arg2"> The second argument. </param>
@@ -58,7 +57,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:TestCaseData" /> class.
+		/// Initializes a new instance of the <see cref="T:TestCaseData" /> class.
 		/// </summary>
 		/// <param name="arg1"> The first argument. </param>
 		/// <param name="arg2"> The second argument. </param>
@@ -75,58 +74,58 @@ namespace NUnit.Framework
 		private static readonly string CATEGORIES = "_CATEGORIES";
 
 		/// <summary>
-		/// 	The argument list to be provided to the test
+		/// The argument list to be provided to the test
 		/// </summary>
 		private object[] arguments;
 
 		/// <summary>
-		/// 	The description of the test
+		/// The description of the test
 		/// </summary>
 		private string description;
 
 		/// <summary>
-		/// 	The FullName of the expected exception
+		/// The FullName of the expected exception
 		/// </summary>
 		private string expectedExceptionName;
 
 		/// <summary>
-		/// 	The expected exception Type
+		/// The expected exception Type
 		/// </summary>
 		private Type expectedExceptionType;
 
 		/// <summary>
-		/// 	The expected result to be returned
+		/// The expected result to be returned
 		/// </summary>
 		private object expectedResult;
 
 		/// <summary>
-		/// 	Set to true if this has an expected result
+		/// Set to true if this has an expected result
 		/// </summary>
 		private bool hasExpectedResult;
 
 		/// <summary>
-		/// 	The reason for ignoring a test case
+		/// The reason for ignoring a test case
 		/// </summary>
 		private string ignoreReason;
 
 		/// <summary>
-		/// 	If true, indicates that the test case is marked explicit
+		/// If true, indicates that the test case is marked explicit
 		/// </summary>
 		private bool isExplicit;
 
 		/// <summary>
-		/// 	If true, indicates that the test case is to be ignored
+		/// If true, indicates that the test case is to be ignored
 		/// </summary>
 		private bool isIgnored;
 
 		/// <summary>
-		/// 	A dictionary of properties, used to add information
-		/// 	to tests without requiring the class to change.
+		/// A dictionary of properties, used to add information
+		/// to tests without requiring the class to change.
 		/// </summary>
 		private IDictionary properties;
 
 		/// <summary>
-		/// 	The name to be used for the test
+		/// The name to be used for the test
 		/// </summary>
 		private string testName;
 
@@ -135,7 +134,7 @@ namespace NUnit.Framework
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the argument list to be provided to the test
+		/// Gets the argument list to be provided to the test
 		/// </summary>
 		public object[] Arguments
 		{
@@ -146,7 +145,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets a list of categories associated with this test.
+		/// Gets a list of categories associated with this test.
 		/// </summary>
 		public IList Categories
 		{
@@ -160,7 +159,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets the description of the test
+		/// Gets the description of the test
 		/// </summary>
 		public string Description
 		{
@@ -171,7 +170,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets the expected exception Type
+		/// Gets the expected exception Type
 		/// </summary>
 		public Type ExpectedException
 		{
@@ -182,7 +181,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets the FullName of the expected exception
+		/// Gets the FullName of the expected exception
 		/// </summary>
 		public string ExpectedExceptionName
 		{
@@ -193,9 +192,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets a value indicating whether this <see cref="ITestCaseData" /> is explicit.
+		/// Gets a value indicating whether this <see cref="ITestCaseData" /> is explicit.
 		/// </summary>
-		/// <value> <c>true</c> if explicit; otherwise, <c>false</c> . </value>
+		/// <value> <c> true </c> if explicit; otherwise, <c> false </c> . </value>
 		public bool Explicit
 		{
 			get
@@ -205,7 +204,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Returns true if the result has been set
+		/// Returns true if the result has been set
 		/// </summary>
 		public bool HasExpectedResult
 		{
@@ -216,7 +215,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets the ignore reason.
+		/// Gets the ignore reason.
 		/// </summary>
 		/// <value> The ignore reason. </value>
 		public string IgnoreReason
@@ -228,9 +227,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets a value indicating whether this <see cref="ITestCaseData" /> is ignored.
+		/// Gets a value indicating whether this <see cref="ITestCaseData" /> is ignored.
 		/// </summary>
-		/// <value> <c>true</c> if ignored; otherwise, <c>false</c> . </value>
+		/// <value> <c> true </c> if ignored; otherwise, <c> false </c> . </value>
 		public bool Ignored
 		{
 			get
@@ -240,7 +239,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets the property dictionary for this test
+		/// Gets the property dictionary for this test
 		/// </summary>
 		public IDictionary Properties
 		{
@@ -254,7 +253,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets the expected result
+		/// Gets the expected result
 		/// </summary>
 		public object Result
 		{
@@ -265,7 +264,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets the name to be used for the test
+		/// Gets the name to be used for the test
 		/// </summary>
 		public string TestName
 		{
@@ -280,7 +279,7 @@ namespace NUnit.Framework
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Ignores this TestCase.
+		/// Ignores this TestCase.
 		/// </summary>
 		/// <returns> </returns>
 		public TestCaseData Ignore()
@@ -290,7 +289,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Ignores this TestCase, specifying the reason.
+		/// Ignores this TestCase, specifying the reason.
 		/// </summary>
 		/// <param name="reason"> The reason. </param>
 		/// <returns> </returns>
@@ -302,7 +301,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Marks this TestCase as Explicit
+		/// Marks this TestCase as Explicit
 		/// </summary>
 		/// <returns> </returns>
 		public TestCaseData MakeExplicit()
@@ -312,7 +311,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Marks this TestCase as Explicit, specifying the reason.
+		/// Marks this TestCase as Explicit, specifying the reason.
 		/// </summary>
 		/// <param name="reason"> The reason. </param>
 		/// <returns> </returns>
@@ -324,7 +323,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Sets the expected result for the test
+		/// Sets the expected result for the test
 		/// </summary>
 		/// <param name="result"> The expected result </param>
 		/// <returns> A modified TestCaseData </returns>
@@ -336,7 +335,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Applies a category to the test
+		/// Applies a category to the test
 		/// </summary>
 		/// <param name="category"> </param>
 		/// <returns> </returns>
@@ -347,8 +346,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Sets the description for the test case
-		/// 	being constructed.
+		/// Sets the description for the test case
+		/// being constructed.
 		/// </summary>
 		/// <param name="description"> The description. </param>
 		/// <returns> The modified TestCaseData instance. </returns>
@@ -359,7 +358,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Sets the name of the test case
+		/// Sets the name of the test case
 		/// </summary>
 		/// <returns> The modified TestCaseData instance </returns>
 		public TestCaseData SetName(string name)
@@ -369,7 +368,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Applies a named property to the test
+		/// Applies a named property to the test
 		/// </summary>
 		/// <param name="propName"> </param>
 		/// <param name="propValue"> </param>
@@ -381,7 +380,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Applies a named property to the test
+		/// Applies a named property to the test
 		/// </summary>
 		/// <param name="propName"> </param>
 		/// <param name="propValue"> </param>
@@ -393,7 +392,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Applies a named property to the test
+		/// Applies a named property to the test
 		/// </summary>
 		/// <param name="propName"> </param>
 		/// <param name="propValue"> </param>
@@ -405,7 +404,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Sets the expected exception type for the test
+		/// Sets the expected exception type for the test
 		/// </summary>
 		/// <param name="exceptionType"> Type of the expected exception. </param>
 		/// <returns> The modified TestCaseData instance </returns>
@@ -417,7 +416,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Sets the expected exception type for the test
+		/// Sets the expected exception type for the test
 		/// </summary>
 		/// <param name="exceptionName"> FullName of the expected exception. </param>
 		/// <returns> The modified TestCaseData instance </returns>

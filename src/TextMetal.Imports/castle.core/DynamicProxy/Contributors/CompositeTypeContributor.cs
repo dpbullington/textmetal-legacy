@@ -12,57 +12,86 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Diagnostics;
+
+using Castle.Core.Logging;
+using Castle.DynamicProxy.Generators;
+using Castle.DynamicProxy.Generators.Emitters;
+using Castle.DynamicProxy.Internal;
+
 namespace Castle.DynamicProxy.Contributors
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Diagnostics;
-
-	using Castle.Core.Logging;
-	using Castle.DynamicProxy.Generators;
-	using Castle.DynamicProxy.Generators.Emitters;
-	using Castle.DynamicProxy.Internal;
 
 	public abstract class CompositeTypeContributor : ITypeContributor
 	{
-		protected readonly INamingScope namingScope;
-
-		protected readonly ICollection<Type> interfaces = new HashSet<Type>();
-		
-		private ILogger logger = NullLogger.Instance;
-		private readonly ICollection<MetaProperty> properties = new TypeElementCollection<MetaProperty>();
-		private readonly ICollection<MetaEvent> events = new TypeElementCollection<MetaEvent>();
-		private readonly ICollection<MetaMethod> methods = new TypeElementCollection<MetaMethod>();
+		#region Constructors/Destructors
 
 		protected CompositeTypeContributor(INamingScope namingScope)
 		{
 			this.namingScope = namingScope;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly ICollection<MetaEvent> events = new TypeElementCollection<MetaEvent>();
+		protected readonly ICollection<Type> interfaces = new HashSet<Type>();
+		private readonly ICollection<MetaMethod> methods = new TypeElementCollection<MetaMethod>();
+		protected readonly INamingScope namingScope;
+		private readonly ICollection<MetaProperty> properties = new TypeElementCollection<MetaProperty>();
+		private ILogger logger = NullLogger.Instance;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
 		public ILogger Logger
 		{
-			get { return logger; }
-			set { logger = value; }
+			get
+			{
+				return this.logger;
+			}
+			set
+			{
+				this.logger = value;
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		public void AddInterfaceToProxy(Type @interface)
+		{
+			Debug.Assert(@interface != null, "@interface == null", "Shouldn't be adding empty interfaces...");
+			Debug.Assert(@interface.IsInterface, "@interface.IsInterface", "Should be adding interfaces only...");
+			Debug.Assert(!this.interfaces.Contains(@interface), "!interfaces.ContainsKey(@interface)",
+				"Shouldn't be adding same interface twice...");
+
+			this.interfaces.Add(@interface);
 		}
 
 		public void CollectElementsToProxy(IProxyGenerationHook hook, MetaType model)
 		{
-			foreach (var collector in CollectElementsToProxyInternal(hook))
+			foreach (var collector in this.CollectElementsToProxyInternal(hook))
 			{
 				foreach (var method in collector.Methods)
 				{
 					model.AddMethod(method);
-					methods.Add(method);
+					this.methods.Add(method);
 				}
 				foreach (var @event in collector.Events)
 				{
 					model.AddEvent(@event);
-					events.Add(@event);
+					this.events.Add(@event);
 				}
 				foreach (var property in collector.Properties)
 				{
 					model.AddProperty(property);
-					properties.Add(property);
+					this.properties.Add(property);
 				}
 			}
 		}
@@ -71,80 +100,58 @@ namespace Castle.DynamicProxy.Contributors
 
 		public virtual void Generate(ClassEmitter @class, ProxyGenerationOptions options)
 		{
-			foreach (var method in methods)
+			foreach (var method in this.methods)
 			{
 				if (!method.Standalone)
-				{
 					continue;
-				}
 
-				ImplementMethod(method,
-				                @class,
-				                options,
-				                @class.CreateMethod);
+				this.ImplementMethod(method,
+					@class,
+					options,
+					@class.CreateMethod);
 			}
 
-			foreach (var property in properties)
-			{
-				ImplementProperty(@class, property, options);
-			}
+			foreach (var property in this.properties)
+				this.ImplementProperty(@class, property, options);
 
-			foreach (var @event in events)
-			{
-				ImplementEvent(@class, @event, options);
-			}
+			foreach (var @event in this.events)
+				this.ImplementEvent(@class, @event, options);
 		}
 
-		public void AddInterfaceToProxy(Type @interface)
-		{
-			Debug.Assert(@interface != null, "@interface == null", "Shouldn't be adding empty interfaces...");
-			Debug.Assert(@interface.IsInterface, "@interface.IsInterface", "Should be adding interfaces only...");
-			Debug.Assert(!interfaces.Contains(@interface), "!interfaces.ContainsKey(@interface)",
-			             "Shouldn't be adding same interface twice...");
-
-			interfaces.Add(@interface);
-		}
+		protected abstract MethodGenerator GetMethodGenerator(MetaMethod method, ClassEmitter @class,
+			ProxyGenerationOptions options,
+			OverrideMethodDelegate overrideMethod);
 
 		private void ImplementEvent(ClassEmitter emitter, MetaEvent @event, ProxyGenerationOptions options)
 		{
 			@event.BuildEventEmitter(emitter);
-			ImplementMethod(@event.Adder, emitter, options, @event.Emitter.CreateAddMethod);
-			ImplementMethod(@event.Remover, emitter, options, @event.Emitter.CreateRemoveMethod);
+			this.ImplementMethod(@event.Adder, emitter, options, @event.Emitter.CreateAddMethod);
+			this.ImplementMethod(@event.Remover, emitter, options, @event.Emitter.CreateRemoveMethod);
+		}
+
+		private void ImplementMethod(MetaMethod method, ClassEmitter @class, ProxyGenerationOptions options,
+			OverrideMethodDelegate overrideMethod)
+		{
+			{
+				var generator = this.GetMethodGenerator(method, @class, options, overrideMethod);
+				if (generator == null)
+					return;
+				var proxyMethod = generator.Generate(@class, options, this.namingScope);
+				foreach (var attribute in method.Method.GetNonInheritableAttributes())
+					proxyMethod.DefineCustomAttribute(attribute);
+			}
 		}
 
 		private void ImplementProperty(ClassEmitter emitter, MetaProperty property, ProxyGenerationOptions options)
 		{
 			property.BuildPropertyEmitter(emitter);
 			if (property.CanRead)
-			{
-				ImplementMethod(property.Getter, emitter, options, property.Emitter.CreateGetMethod);
-			}
+				this.ImplementMethod(property.Getter, emitter, options, property.Emitter.CreateGetMethod);
 
 			if (property.CanWrite)
-			{
-				ImplementMethod(property.Setter, emitter, options, property.Emitter.CreateSetMethod);
-			}
+				this.ImplementMethod(property.Setter, emitter, options, property.Emitter.CreateSetMethod);
 		}
 
-		protected abstract MethodGenerator GetMethodGenerator(MetaMethod method, ClassEmitter @class,
-		                                                      ProxyGenerationOptions options,
-		                                                      OverrideMethodDelegate overrideMethod);
-
-		private void ImplementMethod(MetaMethod method, ClassEmitter @class, ProxyGenerationOptions options,
-		                             OverrideMethodDelegate overrideMethod)
-		{
-			{
-				var generator = GetMethodGenerator(method, @class, options, overrideMethod);
-				if (generator == null)
-				{
-					return;
-				}
-				var proxyMethod = generator.Generate(@class, options, namingScope);
-				foreach (var attribute in method.Method.GetNonInheritableAttributes())
-				{
-					proxyMethod.DefineCustomAttribute(attribute);
-				}
-			}
-		}
+		#endregion
 	}
 }

@@ -23,14 +23,14 @@ using System.Reflection;
 namespace NMock2.Matchers
 {
 	/// <summary>
-	/// 	Matcher that checks whether the actual object is a <see cref="MethodInfo" /> and its name is equal to the expected name.
+	/// Matcher that checks whether the actual object is a <see cref="MethodInfo" /> and its name is equal to the expected name.
 	/// </summary>
 	public class MethodNameMatcher : Matcher
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="MethodNameMatcher" /> class.
+		/// Initializes a new instance of the <see cref="MethodNameMatcher" /> class.
 		/// </summary>
 		/// <param name="methodName"> The expected name of the method. </param>
 		public MethodNameMatcher(string methodName)
@@ -43,7 +43,7 @@ namespace NMock2.Matchers
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Holds the expected name of the mocked method.
+		/// Holds the expected name of the mocked method.
 		/// </summary>
 		private readonly string methodName;
 
@@ -52,7 +52,7 @@ namespace NMock2.Matchers
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public override void DescribeTo(TextWriter writer)
@@ -61,7 +61,7 @@ namespace NMock2.Matchers
 		}
 
 		/// <summary>
-		/// 	Matches the specified object to this matcher and returns whether it matches.
+		/// Matches the specified object to this matcher and returns whether it matches.
 		/// </summary>
 		/// <param name="o"> The MethodInfo to match. </param>
 		/// <returns> Whether the object is a MethodInfo and its name matches the expected one. </returns>

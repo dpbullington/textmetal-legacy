@@ -51,37 +51,37 @@ namespace NUnit.Core
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The exception handler method
+		/// The exception handler method
 		/// </summary>
 		internal MethodInfo exceptionHandler;
 
 		/// <summary>
-		/// 	The full name of any expected exception type
+		/// The full name of any expected exception type
 		/// </summary>
 		internal string expectedExceptionName;
 
 		/// <summary>
-		/// 	The type of any expected exception
+		/// The type of any expected exception
 		/// </summary>
 		internal Type expectedExceptionType;
 
 		/// <summary>
-		/// 	The value of any message associated with an expected exception
+		/// The value of any message associated with an expected exception
 		/// </summary>
 		internal string expectedMessage;
 
 		/// <summary>
-		/// 	A string indicating how to match the expected message
+		/// A string indicating how to match the expected message
 		/// </summary>
 		internal string matchType;
 
 		/// <summary>
-		/// 	The TestMethod to which this exception processor applies
+		/// The TestMethod to which this exception processor applies
 		/// </summary>
 		internal TestMethod testMethod;
 
 		/// <summary>
-		/// 	A string containing any user message specified for the expected exception
+		/// A string containing any user message specified for the expected exception
 		/// </summary>
 		internal string userMessage;
 
@@ -92,8 +92,8 @@ namespace NUnit.Core
 		private static MethodInfo GetDefaultExceptionHandler(Type fixtureType)
 		{
 			return Reflect.HasInterface(fixtureType, NUnitFramework.ExpectExceptionInterface)
-				       ? GetExceptionHandler(fixtureType, "HandleException")
-				       : null;
+				? GetExceptionHandler(fixtureType, "HandleException")
+				: null;
 		}
 
 		private static MethodInfo GetExceptionHandler(Type fixtureType, string name)
@@ -169,7 +169,7 @@ namespace NUnit.Core
 		private bool IsExpectedExceptionType(Exception exception)
 		{
 			return this.expectedExceptionName == null ||
-			       this.expectedExceptionName.Equals(exception.GetType().FullName);
+					this.expectedExceptionName.Equals(exception.GetType().FullName);
 		}
 
 		private bool IsExpectedMessageMatch(Exception exception)

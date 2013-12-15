@@ -9,16 +9,16 @@ using System;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Interface to be implemented by filters applied to tests.
-	/// 	The filter applies when running the test, after it has been
-	/// 	loaded, since this is the only time an ITest exists.
+	/// Interface to be implemented by filters applied to tests.
+	/// The filter applies when running the test, after it has been
+	/// loaded, since this is the only time an ITest exists.
 	/// </summary>
 	public interface ITestFilter
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Indicates whether this is the EmptyFilter
+		/// Indicates whether this is the EmptyFilter
 		/// </summary>
 		bool IsEmpty
 		{
@@ -30,17 +30,17 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Determine whether the test itself matches the filter criteria,
-		/// 	without examining either parents or descendants.
+		/// Determine whether the test itself matches the filter criteria,
+		/// without examining either parents or descendants.
 		/// </summary>
 		/// <param name="test"> The test to which the filter is applied </param>
 		/// <returns> True if the filter matches the any parent of the test </returns>
 		bool Match(ITest test);
 
 		/// <summary>
-		/// 	Determine if a particular test passes the filter criteria. Pass
-		/// 	may examine the parents and/or descendants of a test, depending
-		/// 	on the semantics of the particular filter
+		/// Determine if a particular test passes the filter criteria. Pass
+		/// may examine the parents and/or descendants of a test, depending
+		/// on the semantics of the particular filter
 		/// </summary>
 		/// <param name="test"> The test to which the filter is applied </param>
 		/// <returns> True if the test passes the filter, otherwise false </returns>

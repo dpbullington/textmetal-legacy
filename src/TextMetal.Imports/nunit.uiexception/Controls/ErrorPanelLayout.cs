@@ -9,35 +9,31 @@ using System.Windows.Forms;
 namespace NUnit.UiException.Controls
 {
 	/// <summary>
-	/// 	Provides the panels and layout of ErrorBrowser as
-	/// 	shown below:
-	/// 
-	/// 	+--------------------------------------------+
-	/// 	|                  Toolbar                   |
-	/// 	+--------------------------------------------+
-	/// 	|                                            |
-	/// 	|                                            |
-	/// 	|                  Content                   |
-	/// 	|                                            |
-	/// 	|                                            |
-	/// 	+--------------------------------------------+
-	/// 
-	/// 	Toolbar: the control which shows buttons
-	/// 	to alternate between the StackTraceDisplay
-	/// 	and BrowserDisplay back and forth.
-	/// 	The control collection of this control
-	/// 	never changes.
-	///               
-	/// 	Option:  a free place holder to show subfeature
-	/// 	for a specific display (e.g: StackTraceDisplay
-	/// 	or BrowserDisplay). This control's
-	/// 	collection changes in relation with the
-	/// 	selected display.
-	///               
-	/// 	Content: the place where to put the main content
-	/// 	for the current display. This control's 
-	/// 	collection changes in regard of the
-	/// 	selected display.
+	/// Provides the panels and layout of ErrorBrowser as
+	/// shown below:
+	/// +--------------------------------------------+
+	/// |                  Toolbar                   |
+	/// +--------------------------------------------+
+	/// |                                            |
+	/// |                                            |
+	/// |                  Content                   |
+	/// |                                            |
+	/// |                                            |
+	/// +--------------------------------------------+
+	/// Toolbar: the control which shows buttons
+	/// to alternate between the StackTraceDisplay
+	/// and BrowserDisplay back and forth.
+	/// The control collection of this control
+	/// never changes.
+	/// Option:  a free place holder to show subfeature
+	/// for a specific display (e.g: StackTraceDisplay
+	/// or BrowserDisplay). This control's
+	/// collection changes in relation with the
+	/// selected display.
+	/// Content: the place where to put the main content
+	/// for the current display. This control's
+	/// collection changes in regard of the
+	/// selected display.
 	/// </summary>
 	public class ErrorPanelLayout :
 		UserControl
@@ -87,13 +83,12 @@ namespace NUnit.UiException.Controls
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets or sets the control to be placed in Content location.
-		/// 	Pass null to reset content to its default state.
-		/// 
-		/// 	When setting a control, the control's hierarchy of
-		/// 	ErrorPanelLayout is automatically updated with the
-		/// 	passed component. Besides, the passed component is
-		/// 	automatically positionned to the right coordinates.
+		/// Gets or sets the control to be placed in Content location.
+		/// Pass null to reset content to its default state.
+		/// When setting a control, the control's hierarchy of
+		/// ErrorPanelLayout is automatically updated with the
+		/// passed component. Besides, the passed component is
+		/// automatically positionned to the right coordinates.
 		/// </summary>
 		public Control Content
 		{
@@ -113,13 +108,12 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gets or sets the control to be placed in Option location.
-		/// 	Pass null to reset Option to its default state.
-		/// 
-		/// 	When setting a control, the control's hierarchy of
-		/// 	ErrorPanelLayout is automatically updated with the
-		/// 	passed component. Besides, the passed component is
-		/// 	automatically positionned to the right coordinates.
+		/// Gets or sets the control to be placed in Option location.
+		/// Pass null to reset Option to its default state.
+		/// When setting a control, the control's hierarchy of
+		/// ErrorPanelLayout is automatically updated with the
+		/// passed component. Besides, the passed component is
+		/// automatically positionned to the right coordinates.
 		/// </summary>
 		public Control Option
 		{
@@ -137,13 +131,12 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gets or sets the control to be placed in Toolbar location.
-		/// 	Pass null to reset Toolbar to its default state.
-		/// 
-		/// 	When setting a control, the control's hierarchy of
-		/// 	ErrorPanelLayout is automatically updated with the
-		/// 	passed component. Besides, the passed component is
-		/// 	automatically positionned to the right coordinates.
+		/// Gets or sets the control to be placed in Toolbar location.
+		/// Pass null to reset Toolbar to its default state.
+		/// When setting a control, the control's hierarchy of
+		/// ErrorPanelLayout is automatically updated with the
+		/// passed component. Besides, the passed component is
+		/// automatically positionned to the right coordinates.
 		/// </summary>
 		public Control Toolbar
 		{

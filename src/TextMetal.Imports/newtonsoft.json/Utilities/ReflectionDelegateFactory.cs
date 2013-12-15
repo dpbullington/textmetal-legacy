@@ -1,4 +1,5 @@
 #region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,51 +22,61 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
 using System.Globalization;
 using System.Reflection;
-using Newtonsoft.Json.Serialization;
+
 #if NET20
 using Newtonsoft.Json.Utilities.LinqBridge;
 #endif
 
 namespace Newtonsoft.Json.Utilities
 {
-  internal abstract class ReflectionDelegateFactory
-  {
-    public Func<T, object> CreateGet<T>(MemberInfo memberInfo)
-    {
-      PropertyInfo propertyInfo = memberInfo as PropertyInfo;
-      if (propertyInfo != null)
-        return CreateGet<T>(propertyInfo);
+	internal abstract class ReflectionDelegateFactory
+	{
+		#region Methods/Operators
 
-      FieldInfo fieldInfo = memberInfo as FieldInfo;
-      if (fieldInfo != null)
-        return CreateGet<T>(fieldInfo);
+		public abstract Func<T> CreateDefaultConstructor<T>(Type type);
 
-      throw new Exception("Could not create getter for {0}.".FormatWith(CultureInfo.InvariantCulture, memberInfo));
-    }
+		public Func<T, object> CreateGet<T>(MemberInfo memberInfo)
+		{
+			PropertyInfo propertyInfo = memberInfo as PropertyInfo;
+			if (propertyInfo != null)
+				return CreateGet<T>(propertyInfo);
 
-    public Action<T, object> CreateSet<T>(MemberInfo memberInfo)
-    {
-      PropertyInfo propertyInfo = memberInfo as PropertyInfo;
-      if (propertyInfo != null)
-        return CreateSet<T>(propertyInfo);
+			FieldInfo fieldInfo = memberInfo as FieldInfo;
+			if (fieldInfo != null)
+				return CreateGet<T>(fieldInfo);
 
-      FieldInfo fieldInfo = memberInfo as FieldInfo;
-      if (fieldInfo != null)
-        return CreateSet<T>(fieldInfo);
+			throw new Exception("Could not create getter for {0}.".FormatWith(CultureInfo.InvariantCulture, memberInfo));
+		}
 
-      throw new Exception("Could not create setter for {0}.".FormatWith(CultureInfo.InvariantCulture, memberInfo));
-    }
+		public abstract Func<T, object> CreateGet<T>(PropertyInfo propertyInfo);
 
-    public abstract MethodCall<T, object> CreateMethodCall<T>(MethodBase method);
-    public abstract Func<T> CreateDefaultConstructor<T>(Type type);
-    public abstract Func<T, object> CreateGet<T>(PropertyInfo propertyInfo);
-    public abstract Func<T, object> CreateGet<T>(FieldInfo fieldInfo);
-    public abstract Action<T, object> CreateSet<T>(FieldInfo fieldInfo);
-    public abstract Action<T, object> CreateSet<T>(PropertyInfo propertyInfo);
-  }
+		public abstract Func<T, object> CreateGet<T>(FieldInfo fieldInfo);
+
+		public abstract MethodCall<T, object> CreateMethodCall<T>(MethodBase method);
+
+		public Action<T, object> CreateSet<T>(MemberInfo memberInfo)
+		{
+			PropertyInfo propertyInfo = memberInfo as PropertyInfo;
+			if (propertyInfo != null)
+				return CreateSet<T>(propertyInfo);
+
+			FieldInfo fieldInfo = memberInfo as FieldInfo;
+			if (fieldInfo != null)
+				return CreateSet<T>(fieldInfo);
+
+			throw new Exception("Could not create setter for {0}.".FormatWith(CultureInfo.InvariantCulture, memberInfo));
+		}
+
+		public abstract Action<T, object> CreateSet<T>(FieldInfo fieldInfo);
+
+		public abstract Action<T, object> CreateSet<T>(PropertyInfo propertyInfo);
+
+		#endregion
+	}
 }

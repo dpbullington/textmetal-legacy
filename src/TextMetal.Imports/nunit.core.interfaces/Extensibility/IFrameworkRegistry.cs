@@ -9,15 +9,15 @@ using System;
 namespace NUnit.Core.Extensibility
 {
 	/// <summary>
-	/// 	The IFrameworkRegistry allows extensions to register new
-	/// 	frameworks or emulations of other frameworks.
+	/// The IFrameworkRegistry allows extensions to register new
+	/// frameworks or emulations of other frameworks.
 	/// </summary>
 	public interface IFrameworkRegistry
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Register a framework
+		/// Register a framework
 		/// </summary>
 		/// <param name="frameworkName"> The name of the framework </param>
 		/// <param name="assemblyName"> The name of the assembly that the tests reference </param>

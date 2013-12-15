@@ -7,35 +7,36 @@
 
 using System;
 using System.Xml;
+
 using Intelligencia.UrlRewriter.Conditions;
 using Intelligencia.UrlRewriter.Utilities;
 
 namespace Intelligencia.UrlRewriter.Parsers
 {
-    /// <summary>
-    /// Parser for method conditions.
-    /// </summary>
-    public sealed class MethodConditionParser : IRewriteConditionParser
-    {
-        /// <summary>
-        /// Parses the condition.
-        /// </summary>
-        /// <param name="node">The node to parse.</param>
-        /// <returns>The condition parsed, or null if nothing parsed.</returns>
-        public IRewriteCondition Parse(XmlNode node)
-        {
-            if (node == null)
-            {
-                throw new ArgumentNullException("node");
-            }
+	/// <summary>
+	/// Parser for method conditions.
+	/// </summary>
+	public sealed class MethodConditionParser : IRewriteConditionParser
+	{
+		#region Methods/Operators
 
-            XmlNode methodAttr = node.Attributes.GetNamedItem(Constants.AttrMethod);
-            if (methodAttr == null)
-            {
-                return null;
-            }
+		/// <summary>
+		/// Parses the condition.
+		/// </summary>
+		/// <param name="node"> The node to parse. </param>
+		/// <returns> The condition parsed, or null if nothing parsed. </returns>
+		public IRewriteCondition Parse(XmlNode node)
+		{
+			if (node == null)
+				throw new ArgumentNullException("node");
 
-            return new MethodCondition(methodAttr.Value);
-        }
-    }
+			XmlNode methodAttr = node.Attributes.GetNamedItem(Constants.AttrMethod);
+			if (methodAttr == null)
+				return null;
+
+			return new MethodCondition(methodAttr.Value);
+		}
+
+		#endregion
+	}
 }

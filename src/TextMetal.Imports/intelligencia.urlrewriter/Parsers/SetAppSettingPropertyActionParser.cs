@@ -6,67 +6,77 @@
 // 
 
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
 using System.Xml;
+
 using Intelligencia.UrlRewriter.Actions;
 using Intelligencia.UrlRewriter.Configuration;
 using Intelligencia.UrlRewriter.Utilities;
 
 namespace Intelligencia.UrlRewriter.Parsers
 {
-    /// <summary>
-    /// Action parser for the set-appsetting property action.
-    /// </summary>
-    public sealed class SetAppSettingPropertyActionParser : RewriteActionParserBase
-    {
-        /// <summary>
-        /// The name of the action.
-        /// </summary>
-        public override string Name
-        {
-            get { return Constants.ElementSetAppSetting; }
-        }
+	/// <summary>
+	/// Action parser for the set-appsetting property action.
+	/// </summary>
+	public sealed class SetAppSettingPropertyActionParser : RewriteActionParserBase
+	{
+		#region Properties/Indexers/Events
 
-        /// <summary>
-        /// Whether the action allows nested actions.
-        /// </summary>
-        public override bool AllowsNestedActions
-        {
-            get { return false; }
-        }
+		/// <summary>
+		/// Whether the action allows attributes.
+		/// </summary>
+		public override bool AllowsAttributes
+		{
+			get
+			{
+				return true;
+			}
+		}
 
-        /// <summary>
-        /// Whether the action allows attributes.
-        /// </summary>
-        public override bool AllowsAttributes
-        {
-            get { return true; }
-        }
+		/// <summary>
+		/// Whether the action allows nested actions.
+		/// </summary>
+		public override bool AllowsNestedActions
+		{
+			get
+			{
+				return false;
+			}
+		}
 
-        /// <summary>
-        /// Parses the node.
-        /// </summary>
-        /// <param name="node">The node to parse.</param>
-        /// <param name="config">The rewriter configuration.</param>
-        /// <returns>The parsed action, or null if no action parsed.</returns>
-        public override IRewriteAction Parse(XmlNode node, RewriterConfiguration config)
-        {
-            if (node == null)
-            {
-                throw new ArgumentNullException("node");
-            }
-            if (config == null)
-            {
-                throw new ArgumentNullException("config");
-            }
+		/// <summary>
+		/// The name of the action.
+		/// </summary>
+		public override string Name
+		{
+			get
+			{
+				return Constants.ElementSetAppSetting;
+			}
+		}
 
-            string propertyName = node.GetRequiredAttribute(Constants.AttrProperty);
-            string appSettingKey = node.GetRequiredAttribute(Constants.AttrKey);
+		#endregion
 
-            return new SetAppSettingPropertyAction(propertyName, appSettingKey);
-        }
-    }
+		#region Methods/Operators
+
+		/// <summary>
+		/// Parses the node.
+		/// </summary>
+		/// <param name="node"> The node to parse. </param>
+		/// <param name="config"> The rewriter configuration. </param>
+		/// <returns> The parsed action, or null if no action parsed. </returns>
+		public override IRewriteAction Parse(XmlNode node, RewriterConfiguration config)
+		{
+			if (node == null)
+				throw new ArgumentNullException("node");
+			if (config == null)
+				throw new ArgumentNullException("config");
+
+			string propertyName = node.GetRequiredAttribute(Constants.AttrProperty);
+			string appSettingKey = node.GetRequiredAttribute(Constants.AttrKey);
+
+			return new SetAppSettingPropertyAction(propertyName, appSettingKey);
+		}
+
+		#endregion
+	}
 }

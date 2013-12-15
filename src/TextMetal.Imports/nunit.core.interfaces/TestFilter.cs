@@ -9,9 +9,9 @@ using System;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Interface to be implemented by filters applied to tests.
-	/// 	The filter applies when running the test, after it has been
-	/// 	loaded, since this is the only time an ITest exists.
+	/// Interface to be implemented by filters applied to tests.
+	/// The filter applies when running the test, after it has been
+	/// loaded, since this is the only time an ITest exists.
 	/// </summary>
 	[Serializable]
 	public abstract class TestFilter : ITestFilter
@@ -19,7 +19,7 @@ namespace NUnit.Core
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Unique Empty filter.
+		/// Unique Empty filter.
 		/// </summary>
 		public static TestFilter Empty = new EmptyFilter();
 
@@ -28,7 +28,7 @@ namespace NUnit.Core
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Indicates whether this is the EmptyFilter
+		/// Indicates whether this is the EmptyFilter
 		/// </summary>
 		public bool IsEmpty
 		{
@@ -43,15 +43,15 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Determine whether the test itself matches the filter criteria, without
-		/// 	examining either parents or descendants.
+		/// Determine whether the test itself matches the filter criteria, without
+		/// examining either parents or descendants.
 		/// </summary>
 		/// <param name="test"> The test to which the filter is applied </param>
 		/// <returns> True if the filter matches the any parent of the test </returns>
 		public abstract bool Match(ITest test);
 
 		/// <summary>
-		/// 	Determine whether any descendant of the test matches the filter criteria.
+		/// Determine whether any descendant of the test matches the filter criteria.
 		/// </summary>
 		/// <param name="test"> The test to be matched </param>
 		/// <returns> True if at least one descendant matches the filter criteria </returns>
@@ -70,22 +70,21 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Determine whether any ancestor of the test mateches the filter criteria
+		/// Determine whether any ancestor of the test mateches the filter criteria
 		/// </summary>
 		/// <param name="test"> The test to which the filter is applied </param>
 		/// <returns> True if the filter matches the an ancestor of the test </returns>
 		protected virtual bool MatchParent(ITest test)
 		{
 			return (test.RunState != RunState.Explicit && test.Parent != null &&
-			        (this.Match(test.Parent) || this.MatchParent(test.Parent)));
+					(this.Match(test.Parent) || this.MatchParent(test.Parent)));
 		}
 
 		/// <summary>
-		/// 	Determine if a particular test passes the filter criteria. The default 
-		/// 	implementation checks the test itself, its parents and any descendants.
-		/// 
-		/// 	Derived classes may override this method or any of the Match methods
-		/// 	to change the behavior of the filter.
+		/// Determine if a particular test passes the filter criteria. The default
+		/// implementation checks the test itself, its parents and any descendants.
+		/// Derived classes may override this method or any of the Match methods
+		/// to change the behavior of the filter.
 		/// </summary>
 		/// <param name="test"> The test to which the filter is applied </param>
 		/// <returns> True if the test passes the filter, otherwise false </returns>
@@ -99,8 +98,8 @@ namespace NUnit.Core
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		/// <summary>
-		/// 	Nested class provides an empty filter - one that always
-		/// 	returns true when called, unless the test is marked explicit.
+		/// Nested class provides an empty filter - one that always
+		/// returns true when called, unless the test is marked explicit.
 		/// </summary>
 		[Serializable]
 		private class EmptyFilter : TestFilter

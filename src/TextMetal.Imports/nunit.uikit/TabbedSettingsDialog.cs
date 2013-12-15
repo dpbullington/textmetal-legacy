@@ -46,7 +46,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Clean up any resources being used.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose(bool disposing)
 		{
@@ -59,42 +59,42 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Required method for Designer support - do not modify
-		/// 	the contents of this method with the code editor.
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.tabControl1 = new System.Windows.Forms.TabControl();
+			this.tabControl1 = new TabControl();
 			this.SuspendLayout();
 			// 
 			// cancelButton
 			// 
-			this.cancelButton.Location = new System.Drawing.Point(394, 392);
+			this.cancelButton.Location = new Point(394, 392);
 			this.cancelButton.Name = "cancelButton";
 			// 
 			// okButton
 			// 
-			this.okButton.Location = new System.Drawing.Point(306, 392);
+			this.okButton.Location = new Point(306, 392);
 			this.okButton.Name = "okButton";
 			// 
 			// tabControl1
 			// 
-			this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-			                                                                 | System.Windows.Forms.AnchorStyles.Left)
-			                                                                | System.Windows.Forms.AnchorStyles.Right)));
-			this.tabControl1.ItemSize = new System.Drawing.Size(46, 18);
-			this.tabControl1.Location = new System.Drawing.Point(10, 8);
+			this.tabControl1.Anchor = ((AnchorStyles)((((AnchorStyles.Top | AnchorStyles.Bottom)
+														| AnchorStyles.Left)
+														| AnchorStyles.Right)));
+			this.tabControl1.ItemSize = new Size(46, 18);
+			this.tabControl1.Location = new Point(10, 8);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(456, 376);
+			this.tabControl1.Size = new Size(456, 376);
 			this.tabControl1.TabIndex = 2;
 			// 
 			// TabbedSettingsDialog
 			// 
-			this.ClientSize = new System.Drawing.Size(474, 426);
+			this.ClientSize = new Size(474, 426);
 			this.Controls.Add(this.tabControl1);
 			this.Name = "TabbedSettingsDialog";
-			this.Load += new System.EventHandler(this.TabbedSettingsDialog_Load);
+			this.Load += new EventHandler(this.TabbedSettingsDialog_Load);
 			this.Controls.SetChildIndex(this.okButton, 0);
 			this.Controls.SetChildIndex(this.cancelButton, 0);
 			this.Controls.SetChildIndex(this.tabControl1, 0);

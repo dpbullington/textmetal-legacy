@@ -11,15 +11,15 @@ using System.Reflection;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	Randomizer returns a set of random values in a repeatable
-	/// 	way, to allow re-running of tests if necessary.
+	/// Randomizer returns a set of random values in a repeatable
+	/// way, to allow re-running of tests if necessary.
 	/// </summary>
 	public class Randomizer : Random
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a randomizer using a random seed
+		/// Construct a randomizer using a random seed
 		/// </summary>
 		public Randomizer()
 			: base(RandomSeed)
@@ -27,7 +27,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Construct a randomizer using a specified seed
+		/// Construct a randomizer using a specified seed
 		/// </summary>
 		public Randomizer(int seed)
 			: base(seed)
@@ -46,7 +46,7 @@ namespace NUnit.Framework
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Get a random seed for use in creating a randomizer.
+		/// Get a random seed for use in creating a randomizer.
 		/// </summary>
 		public static int RandomSeed
 		{
@@ -61,10 +61,10 @@ namespace NUnit.Framework
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Get a randomizer for a particular member, returning
-		/// 	one that has already been created if it exists.
-		/// 	This ensures that the same values are generated
-		/// 	each time the tests are reloaded.
+		/// Get a randomizer for a particular member, returning
+		/// one that has already been created if it exists.
+		/// This ensures that the same values are generated
+		/// each time the tests are reloaded.
 		/// </summary>
 		public static Randomizer GetRandomizer(MemberInfo member)
 		{
@@ -77,10 +77,10 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Get a randomizer for a particular parameter, returning
-		/// 	one that has already been created if it exists.
-		/// 	This ensures that the same values are generated
-		/// 	each time the tests are reloaded.
+		/// Get a randomizer for a particular parameter, returning
+		/// one that has already been created if it exists.
+		/// This ensures that the same values are generated
+		/// each time the tests are reloaded.
 		/// </summary>
 		public static Randomizer GetRandomizer(ParameterInfo parameter)
 		{
@@ -88,7 +88,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Return an array of random doubles between 0.0 and 1.0.
+		/// Return an array of random doubles between 0.0 and 1.0.
 		/// </summary>
 		/// <param name="count"> </param>
 		/// <returns> </returns>
@@ -103,7 +103,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Return an array of random doubles with values in a specified range.
+		/// Return an array of random doubles with values in a specified range.
 		/// </summary>
 		public double[] GetDoubles(double min, double max, int count)
 		{
@@ -117,7 +117,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Return an array of random ints with values in a specified range.
+		/// Return an array of random ints with values in a specified range.
 		/// </summary>
 		public int[] GetInts(int min, int max, int count)
 		{

@@ -12,15 +12,15 @@ using NUnit.Util;
 namespace NUnit.UiKit
 {
 	/// <summary>
-	/// 	The TextDisplay interface is implemented by object - generally
-	/// 	controls - that display text.
+	/// The TextDisplay interface is implemented by object - generally
+	/// controls - that display text.
 	/// </summary>
 	public interface TextDisplay : TestObserver
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	The output types handled by this display
+		/// The output types handled by this display
 		/// </summary>
 		TextDisplayContent Content
 		{
@@ -33,17 +33,17 @@ namespace NUnit.UiKit
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Clears the display
+		/// Clears the display
 		/// </summary>
 		void Clear();
 
 		/// <summary>
-		/// 	Gets the current text - used mainly for testing
+		/// Gets the current text - used mainly for testing
 		/// </summary>
 		string GetText();
 
 		/// <summary>
-		/// 	Appends text to the display
+		/// Appends text to the display
 		/// </summary>
 		/// <param name="text"> The text to append </param>
 		void Write(string text);
@@ -51,7 +51,7 @@ namespace NUnit.UiKit
 		void Write(TestOutput output);
 
 		/// <summary>
-		/// 	Appends text to the display followed by a newline
+		/// Appends text to the display followed by a newline
 		/// </summary>
 		/// <param name="text"> The text to append </param>
 		void WriteLine(string text);

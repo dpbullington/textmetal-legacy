@@ -13,9 +13,9 @@ using BF = System.Reflection.BindingFlags;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Proxy class for operations on a real log4net appender,
-	/// 	allowing NUnit to work with multiple versions of log4net
-	/// 	and to fail gracefully if no log4net assembly is present.
+	/// Proxy class for operations on a real log4net appender,
+	/// allowing NUnit to work with multiple versions of log4net
+	/// and to fail gracefully if no log4net assembly is present.
 	/// </summary>
 	public class Log4NetCapture : TextCapture
 	{
@@ -33,17 +33,17 @@ namespace NUnit.Core
 		private Assembly log4netAssembly;
 
 		/// <summary>
-		/// 	The threshold for capturing text. A value of "Off"
-		/// 	means that no text is captured. A value of "All"
-		/// 	should be taken to mean the highest possible level
-		/// 	of verbosity supported by the derived class. The 
-		/// 	meaning of any other values is determined by the 
-		/// 	derived class.
+		/// The threshold for capturing text. A value of "Off"
+		/// means that no text is captured. A value of "All"
+		/// should be taken to mean the highest possible level
+		/// of verbosity supported by the derived class. The
+		/// meaning of any other values is determined by the
+		/// derived class.
 		/// </summary>
 		private LoggingThreshold threshold = LoggingThreshold.Off;
 
 		/// <summary>
-		/// 	The TextWriter to which text is redirected
+		/// The TextWriter to which text is redirected
 		/// </summary>
 		private TextWriter writer;
 
@@ -78,11 +78,11 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets or sets the capture threshold value, which represents
-		/// 	the degree of verbosity of the output text stream.
-		/// 	Derived classes may supply multiple levels of capture but
-		/// 	must retain the use of the "Off" setting to represent 
-		/// 	no logging.
+		/// Gets or sets the capture threshold value, which represents
+		/// the degree of verbosity of the output text stream.
+		/// Derived classes may supply multiple levels of capture but
+		/// must retain the use of the "Off" setting to represent
+		/// no logging.
 		/// </summary>
 		public override LoggingThreshold Threshold
 		{
@@ -109,9 +109,9 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets or sets the TextWriter to which text is redirected
-		/// 	when captured. The value may only be changed when the
-		/// 	logging threshold is set to "Off"
+		/// Gets or sets the TextWriter to which text is redirected
+		/// when captured. The value may only be changed when the
+		/// logging threshold is set to "Off"
 		/// </summary>
 		public override TextWriter Writer
 		{
@@ -249,8 +249,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Attempt to create a TextWriterAppender using reflection,
-		/// 	failing silently if it is not possible.
+		/// Attempt to create a TextWriterAppender using reflection,
+		/// failing silently if it is not possible.
 		/// </summary>
 		private object TryCreateAppender()
 		{

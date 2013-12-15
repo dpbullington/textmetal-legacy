@@ -12,18 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Castle.DynamicProxy.Generators;
+using Castle.DynamicProxy.Generators.Emitters;
+
 namespace Castle.DynamicProxy.Contributors
 {
-	using Castle.DynamicProxy.Generators;
-	using Castle.DynamicProxy.Generators.Emitters;
-
 	/// <summary>
-	///   Interface describing elements composing generated type
+	/// Interface describing elements composing generated type
 	/// </summary>
 	public interface ITypeContributor
 	{
+		#region Methods/Operators
+
 		void CollectElementsToProxy(IProxyGenerationHook hook, MetaType model);
 
 		void Generate(ClassEmitter @class, ProxyGenerationOptions options);
+
+		#endregion
 	}
 }

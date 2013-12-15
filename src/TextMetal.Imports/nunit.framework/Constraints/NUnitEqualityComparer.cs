@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Reflection;
+
 #if CLR_2_0 || CLR_4_0
 
 #endif
@@ -15,26 +16,26 @@ using System.Reflection;
 namespace NUnit.Framework.Constraints
 {
 	/// <summary>
-	/// 	NUnitEqualityComparer encapsulates NUnit's handling of
-	/// 	equality tests between objects.
+	/// NUnitEqualityComparer encapsulates NUnit's handling of
+	/// equality tests between objects.
 	/// </summary>
 	public class NUnitEqualityComparer : INUnitEqualityComparer
 	{
 		#region Static and Instance Fields
 
 		/// <summary>
-		/// 	If true, all string comparisons will ignore case
+		/// If true, all string comparisons will ignore case
 		/// </summary>
 		private bool caseInsensitive;
 
 		/// <summary>
-		/// 	If true, arrays will be treated as collections, allowing
-		/// 	those of different dimensions to be compared
+		/// If true, arrays will be treated as collections, allowing
+		/// those of different dimensions to be compared
 		/// </summary>
 		private bool compareAsCollection;
 
 		/// <summary>
-		/// 	Comparison objects used in comparisons for some constraints.
+		/// Comparison objects used in comparisons for some constraints.
 		/// </summary>
 		private ArrayList externalComparers = new ArrayList();
 
@@ -47,7 +48,7 @@ namespace NUnit.Framework.Constraints
 		#region Properties
 
 		/// <summary>
-		/// 	Returns the default NUnitEqualityComparer
+		/// Returns the default NUnitEqualityComparer
 		/// </summary>
 		public static NUnitEqualityComparer Default
 		{
@@ -58,8 +59,8 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Gets and sets a flag indicating whether case should
-		/// 	be ignored in determining equality.
+		/// Gets and sets a flag indicating whether case should
+		/// be ignored in determining equality.
 		/// </summary>
 		public bool IgnoreCase
 		{
@@ -74,8 +75,8 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Gets and sets a flag indicating that arrays should be
-		/// 	compared as collections, without regard to their shape.
+		/// Gets and sets a flag indicating that arrays should be
+		/// compared as collections, without regard to their shape.
 		/// </summary>
 		public bool CompareAsCollection
 		{
@@ -90,9 +91,9 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Gets and sets an external comparer to be used to
-		/// 	test for equality. It is applied to members of
-		/// 	collections, in place of NUnit's own logic.
+		/// Gets and sets an external comparer to be used to
+		/// test for equality. It is applied to members of
+		/// collections, in place of NUnit's own logic.
 		/// </summary>
 		public IList ExternalComparers
 		{
@@ -103,7 +104,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Gets the list of failure points for the last Match performed.
+		/// Gets the list of failure points for the last Match performed.
 		/// </summary>
 		public IList FailurePoints
 		{
@@ -118,7 +119,7 @@ namespace NUnit.Framework.Constraints
 		#region Public Methods
 
 		/// <summary>
-		/// 	Compares two objects for equality within a tolerance.
+		/// Compares two objects for equality within a tolerance.
 		/// </summary>
 		public bool AreEqual(object x, object y, ref Tolerance tolerance)
 		{
@@ -202,15 +203,15 @@ namespace NUnit.Framework.Constraints
 		private static Type[] GetEquatableGenericArguments(Type type)
 		{
 			return Array.ConvertAll(Array.FindAll(type.GetInterfaces(),
-			                                      delegate(Type @interface)
-			                                      {
-				                                      return @interface.IsGenericType &&
-				                                             @interface.GetGenericTypeDefinition().Equals(typeof(IEquatable<>));
-			                                      }),
-			                        delegate(Type iEquatableInterface)
-			                        {
-				                        return iEquatableInterface.GetGenericArguments()[0];
-			                        });
+				delegate(Type @interface)
+				{
+					return @interface.IsGenericType &&
+							@interface.GetGenericTypeDefinition().Equals(typeof(IEquatable<>));
+				}),
+				delegate(Type iEquatableInterface)
+				{
+					return iEquatableInterface.GetGenericArguments()[0];
+				});
 		}
 
 		private static bool InvokeFirstIEquatableEqualsSecond(object first, object second)
@@ -237,7 +238,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Helper method to compare two arrays
+		/// Helper method to compare two arrays
 		/// </summary>
 		private bool ArraysEqual(Array x, Array y, ref Tolerance tolerance)
 		{
@@ -288,7 +289,7 @@ namespace NUnit.Framework.Constraints
 					return true;
 
 				if (expectedHasData != actualHasData ||
-				    !this.AreEqual(expectedEnum.Current, actualEnum.Current, ref tolerance))
+					!this.AreEqual(expectedEnum.Current, actualEnum.Current, ref tolerance))
 				{
 					FailurePoint fp = new FailurePoint();
 					fp.Position = count;
@@ -327,7 +328,7 @@ namespace NUnit.Framework.Constraints
 					return true;
 
 				if (expectedHasData != actualHasData ||
-				    !this.AreEqual(expectedEnum.Current, actualEnum.Current, ref tolerance))
+					!this.AreEqual(expectedEnum.Current, actualEnum.Current, ref tolerance))
 				{
 					FailurePoint fp = new FailurePoint();
 					fp.Position = count;
@@ -344,7 +345,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Method to compare two DirectoryInfo objects
+		/// Method to compare two DirectoryInfo objects
 		/// </summary>
 		/// <param name="x"> first directory to compare </param>
 		/// <param name="y"> second directory to compare </param>
@@ -353,8 +354,8 @@ namespace NUnit.Framework.Constraints
 		{
 			// Do quick compares first
 			if (x.Attributes != y.Attributes ||
-			    x.CreationTime != y.CreationTime ||
-			    x.LastAccessTime != y.LastAccessTime)
+				x.CreationTime != y.CreationTime ||
+				x.LastAccessTime != y.LastAccessTime)
 				return false;
 
 			// TODO: Find a cleaner way to do this
@@ -422,35 +423,35 @@ namespace NUnit.Framework.Constraints
 		#region Nested FailurePoint Class
 
 		/// <summary>
-		/// 	FailurePoint class represents one point of failure
-		/// 	in an equality test.
+		/// FailurePoint class represents one point of failure
+		/// in an equality test.
 		/// </summary>
 		public class FailurePoint
 		{
 			#region Fields/Constants
 
 			/// <summary>
-			/// 	Indicates whether the actual value is valid
+			/// Indicates whether the actual value is valid
 			/// </summary>
 			public bool ActualHasData;
 
 			/// <summary>
-			/// 	The actual value
+			/// The actual value
 			/// </summary>
 			public object ActualValue;
 
 			/// <summary>
-			/// 	Indicates whether the expected value is valid
+			/// Indicates whether the expected value is valid
 			/// </summary>
 			public bool ExpectedHasData;
 
 			/// <summary>
-			/// 	The expected value
+			/// The expected value
 			/// </summary>
 			public object ExpectedValue;
 
 			/// <summary>
-			/// 	The location of the failure
+			/// The location of the failure
 			/// </summary>
 			public int Position;
 

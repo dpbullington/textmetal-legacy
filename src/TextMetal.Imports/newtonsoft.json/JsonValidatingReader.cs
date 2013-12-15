@@ -1,4 +1,5 @@
 ﻿#region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,720 +22,785 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
-using System.Collections.Generic;
 #if !(NET20 || NET35 || SILVERLIGHT || PORTABLE40 || PORTABLE)
 using System.Numerics;
 #endif
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Text.RegularExpressions;
+
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using Newtonsoft.Json.Utilities;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.IO;
 #if NET20
 using Newtonsoft.Json.Utilities.LinqBridge;
 #else
 using System.Linq;
+
 #endif
 
 namespace Newtonsoft.Json
 {
-  /// <summary>
-  /// Represents a reader that provides <see cref="JsonSchema"/> validation.
-  /// </summary>
-  public class JsonValidatingReader : JsonReader, IJsonLineInfo
-  {
-    private class SchemaScope
-    {
-      private readonly JTokenType _tokenType;
-      private readonly IList<JsonSchemaModel> _schemas;
-      private readonly Dictionary<string, bool> _requiredProperties;
+	/// <summary>
+	/// Represents a reader that provides <see cref="JsonSchema" /> validation.
+	/// </summary>
+	public class JsonValidatingReader : JsonReader, IJsonLineInfo
+	{
+		private class SchemaScope
+		{
+			#region Constructors/Destructors
 
-      public string CurrentPropertyName { get; set; }
-      public int ArrayItemCount { get; set; }
-      public bool IsUniqueArray { get; set; }
-      public bool IsEnum { get; set; }
-      public IList<JToken> UniqueArrayItems { get; set; }
-      public JTokenWriter CurrentItemWriter { get; set; }
+			public SchemaScope(JTokenType tokenType, IList<JsonSchemaModel> schemas)
+			{
+				this._tokenType = tokenType;
+				this._schemas = schemas;
 
-      public IList<JsonSchemaModel> Schemas
-      {
-        get { return _schemas; }
-      }
+				this._requiredProperties = schemas.SelectMany<JsonSchemaModel, string>(this.GetRequiredProperties).Distinct().ToDictionary(p => p, p => false);
 
-      public Dictionary<string, bool> RequiredProperties
-      {
-        get { return _requiredProperties; }
-      }
+				if (tokenType == JTokenType.Array && schemas.Any(s => s.UniqueItems))
+				{
+					this.IsUniqueArray = true;
+					this.UniqueArrayItems = new List<JToken>();
+				}
+			}
 
-      public JTokenType TokenType
-      {
-        get { return _tokenType; }
-      }
+			#endregion
 
-      public SchemaScope(JTokenType tokenType, IList<JsonSchemaModel> schemas)
-      {
-        _tokenType = tokenType;
-        _schemas = schemas;
+			#region Fields/Constants
 
-        _requiredProperties = schemas.SelectMany<JsonSchemaModel, string>(GetRequiredProperties).Distinct().ToDictionary(p => p, p => false);
+			private readonly Dictionary<string, bool> _requiredProperties;
+			private readonly IList<JsonSchemaModel> _schemas;
+			private readonly JTokenType _tokenType;
 
-        if (tokenType == JTokenType.Array && schemas.Any(s => s.UniqueItems))
-        {
-          IsUniqueArray = true;
-          UniqueArrayItems = new List<JToken>();
-        }
-      }
+			#endregion
 
-      private IEnumerable<string> GetRequiredProperties(JsonSchemaModel schema)
-      {
-        if (schema == null || schema.Properties == null)
-          return Enumerable.Empty<string>();
+			#region Properties/Indexers/Events
 
-        return schema.Properties.Where(p => p.Value.Required).Select(p => p.Key);
-      }
+			public int ArrayItemCount
+			{
+				get;
+				set;
+			}
 
-    }
+			public JTokenWriter CurrentItemWriter
+			{
+				get;
+				set;
+			}
 
-    private readonly JsonReader _reader;
-    private readonly Stack<SchemaScope> _stack;
-    private JsonSchema _schema;
-    private JsonSchemaModel _model;
-    private SchemaScope _currentScope;
+			public string CurrentPropertyName
+			{
+				get;
+				set;
+			}
 
-    /// <summary>
-    /// Sets an event handler for receiving schema validation errors.
-    /// </summary>
-    public event ValidationEventHandler ValidationEventHandler;
+			public bool IsEnum
+			{
+				get;
+				set;
+			}
 
-    /// <summary>
-    /// Gets the text value of the current JSON token.
-    /// </summary>
-    /// <value></value>
-    public override object Value
-    {
-      get { return _reader.Value; }
-    }
+			public bool IsUniqueArray
+			{
+				get;
+				set;
+			}
 
-    /// <summary>
-    /// Gets the depth of the current token in the JSON document.
-    /// </summary>
-    /// <value>The depth of the current token in the JSON document.</value>
-    public override int Depth
-    {
-      get { return _reader.Depth; }
-    }
+			public Dictionary<string, bool> RequiredProperties
+			{
+				get
+				{
+					return this._requiredProperties;
+				}
+			}
 
-    /// <summary>
-    /// Gets the path of the current JSON token. 
-    /// </summary>
-    public override string Path
-    {
-      get { return _reader.Path; }
-    }
+			public IList<JsonSchemaModel> Schemas
+			{
+				get
+				{
+					return this._schemas;
+				}
+			}
 
-    /// <summary>
-    /// Gets the quotation mark character used to enclose the value of a string.
-    /// </summary>
-    /// <value></value>
-    public override char QuoteChar
-    {
-      get { return _reader.QuoteChar; }
-      protected internal set { }
-    }
+			public JTokenType TokenType
+			{
+				get
+				{
+					return this._tokenType;
+				}
+			}
 
-    /// <summary>
-    /// Gets the type of the current JSON token.
-    /// </summary>
-    /// <value></value>
-    public override JsonToken TokenType
-    {
-      get { return _reader.TokenType; }
-    }
+			public IList<JToken> UniqueArrayItems
+			{
+				get;
+				set;
+			}
 
-    /// <summary>
-    /// Gets the Common Language Runtime (CLR) type for the current JSON token.
-    /// </summary>
-    /// <value></value>
-    public override Type ValueType
-    {
-      get { return _reader.ValueType; }
-    }
+			#endregion
 
-    private void Push(SchemaScope scope)
-    {
-      _stack.Push(scope);
-      _currentScope = scope;
-    }
+			#region Methods/Operators
 
-    private SchemaScope Pop()
-    {
-      SchemaScope poppedScope = _stack.Pop();
-      _currentScope = (_stack.Count != 0)
-        ? _stack.Peek()
-        : null;
+			private IEnumerable<string> GetRequiredProperties(JsonSchemaModel schema)
+			{
+				if (schema == null || schema.Properties == null)
+					return Enumerable.Empty<string>();
 
-      return poppedScope;
-    }
+				return schema.Properties.Where(p => p.Value.Required).Select(p => p.Key);
+			}
 
-    private IList<JsonSchemaModel> CurrentSchemas
-    {
-      get { return _currentScope.Schemas; }
-    }
+			#endregion
+		}
 
-    private static readonly IList<JsonSchemaModel> EmptySchemaList = new List<JsonSchemaModel>();
+		private readonly JsonReader _reader;
+		private readonly Stack<SchemaScope> _stack;
+		private JsonSchema _schema;
+		private JsonSchemaModel _model;
+		private SchemaScope _currentScope;
 
-    private IList<JsonSchemaModel> CurrentMemberSchemas
-    {
-      get
-      {
-        if (_currentScope == null)
-          return new List<JsonSchemaModel>(new [] { _model });
+		/// <summary>
+		/// Sets an event handler for receiving schema validation errors.
+		/// </summary>
+		public event ValidationEventHandler ValidationEventHandler;
 
-        if (_currentScope.Schemas == null || _currentScope.Schemas.Count == 0)
-          return EmptySchemaList;
+		/// <summary>
+		/// Gets the text value of the current JSON token.
+		/// </summary>
+		/// <value> </value>
+		public override object Value
+		{
+			get
+			{
+				return this._reader.Value;
+			}
+		}
 
-        switch (_currentScope.TokenType)
-        {
-          case JTokenType.None:
-            return _currentScope.Schemas;
-          case JTokenType.Object:
-            {
-              if (_currentScope.CurrentPropertyName == null)
-                throw new JsonReaderException("CurrentPropertyName has not been set on scope.");
+		/// <summary>
+		/// Gets the depth of the current token in the JSON document.
+		/// </summary>
+		/// <value> The depth of the current token in the JSON document. </value>
+		public override int Depth
+		{
+			get
+			{
+				return this._reader.Depth;
+			}
+		}
 
-              IList<JsonSchemaModel> schemas = new List<JsonSchemaModel>();
+		/// <summary>
+		/// Gets the path of the current JSON token.
+		/// </summary>
+		public override string Path
+		{
+			get
+			{
+				return this._reader.Path;
+			}
+		}
 
-              foreach (JsonSchemaModel schema in CurrentSchemas)
-              {
-                JsonSchemaModel propertySchema;
-                if (schema.Properties != null && schema.Properties.TryGetValue(_currentScope.CurrentPropertyName, out propertySchema))
-                {
-                  schemas.Add(propertySchema);
-                }
-                if (schema.PatternProperties != null)
-                {
-                  foreach (KeyValuePair<string, JsonSchemaModel> patternProperty in schema.PatternProperties)
-                  {
-                    if (Regex.IsMatch(_currentScope.CurrentPropertyName, patternProperty.Key))
-                    {
-                      schemas.Add(patternProperty.Value);
-                    }
-                  }
-                }
+		/// <summary>
+		/// Gets the quotation mark character used to enclose the value of a string.
+		/// </summary>
+		/// <value> </value>
+		public override char QuoteChar
+		{
+			get
+			{
+				return this._reader.QuoteChar;
+			}
+			protected internal set
+			{
+			}
+		}
 
-                if (schemas.Count == 0 && schema.AllowAdditionalProperties && schema.AdditionalProperties != null)
-                  schemas.Add(schema.AdditionalProperties);
-              }
+		/// <summary>
+		/// Gets the type of the current JSON token.
+		/// </summary>
+		/// <value> </value>
+		public override JsonToken TokenType
+		{
+			get
+			{
+				return this._reader.TokenType;
+			}
+		}
 
-              return schemas;
-            }
-          case JTokenType.Array:
-            {
-              IList<JsonSchemaModel> schemas = new List<JsonSchemaModel>();
+		/// <summary>
+		/// Gets the Common Language Runtime (CLR) type for the current JSON token.
+		/// </summary>
+		/// <value> </value>
+		public override Type ValueType
+		{
+			get
+			{
+				return this._reader.ValueType;
+			}
+		}
 
-              foreach (JsonSchemaModel schema in CurrentSchemas)
-              {
-                if (!schema.PositionalItemsValidation)
-                {
-                  if (schema.Items != null && schema.Items.Count > 0)
-                    schemas.Add(schema.Items[0]);
-                }
-                else
-                {
-                  if (schema.Items != null && schema.Items.Count > 0)
-                  {
-                    if (schema.Items.Count > (_currentScope.ArrayItemCount - 1))
-                      schemas.Add(schema.Items[_currentScope.ArrayItemCount - 1]);
-                  }
+		private void Push(SchemaScope scope)
+		{
+			this._stack.Push(scope);
+			this._currentScope = scope;
+		}
 
-                  if (schema.AllowAdditionalItems && schema.AdditionalItems != null)
-                    schemas.Add(schema.AdditionalItems);
-                }
-              }
+		private SchemaScope Pop()
+		{
+			SchemaScope poppedScope = this._stack.Pop();
+			this._currentScope = (this._stack.Count != 0)
+				? this._stack.Peek()
+				: null;
 
-              return schemas;
-            }
-          case JTokenType.Constructor:
-            return EmptySchemaList;
-          default:
-            throw new ArgumentOutOfRangeException("TokenType", "Unexpected token type: {0}".FormatWith(CultureInfo.InvariantCulture, _currentScope.TokenType));
-        }
-      }
-    }
+			return poppedScope;
+		}
 
-    private void RaiseError(string message, JsonSchemaModel schema)
-    {
-      IJsonLineInfo lineInfo = this;
+		private IList<JsonSchemaModel> CurrentSchemas
+		{
+			get
+			{
+				return this._currentScope.Schemas;
+			}
+		}
 
-      string exceptionMessage = (lineInfo.HasLineInfo())
-                                  ? message + " Line {0}, position {1}.".FormatWith(CultureInfo.InvariantCulture, lineInfo.LineNumber, lineInfo.LinePosition)
-                                  : message;
+		private static readonly IList<JsonSchemaModel> EmptySchemaList = new List<JsonSchemaModel>();
 
-      OnValidationEvent(new JsonSchemaException(exceptionMessage, null, Path, lineInfo.LineNumber, lineInfo.LinePosition));
-    }
+		private IList<JsonSchemaModel> CurrentMemberSchemas
+		{
+			get
+			{
+				if (this._currentScope == null)
+					return new List<JsonSchemaModel>(new[] { this._model });
 
-    private void OnValidationEvent(JsonSchemaException exception)
-    {
-      ValidationEventHandler handler = ValidationEventHandler;
-      if (handler != null)
-        handler(this, new ValidationEventArgs(exception));
-      else
-        throw exception;
-    }
+				if (this._currentScope.Schemas == null || this._currentScope.Schemas.Count == 0)
+					return EmptySchemaList;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="JsonValidatingReader"/> class that
-    /// validates the content returned from the given <see cref="JsonReader"/>.
-    /// </summary>
-    /// <param name="reader">The <see cref="JsonReader"/> to read from while validating.</param>
-    public JsonValidatingReader(JsonReader reader)
-    {
-      ValidationUtils.ArgumentNotNull(reader, "reader");
-      _reader = reader;
-      _stack = new Stack<SchemaScope>();
-    }
+				switch (this._currentScope.TokenType)
+				{
+					case JTokenType.None:
+						return this._currentScope.Schemas;
+					case JTokenType.Object:
+					{
+						if (this._currentScope.CurrentPropertyName == null)
+							throw new JsonReaderException("CurrentPropertyName has not been set on scope.");
 
-    /// <summary>
-    /// Gets or sets the schema.
-    /// </summary>
-    /// <value>The schema.</value>
-    public JsonSchema Schema
-    {
-      get { return _schema; }
-      set
-      {
-        if (TokenType != JsonToken.None)
-          throw new InvalidOperationException("Cannot change schema while validating JSON.");
+						IList<JsonSchemaModel> schemas = new List<JsonSchemaModel>();
 
-        _schema = value;
-        _model = null;
-      }
-    }
+						foreach (JsonSchemaModel schema in this.CurrentSchemas)
+						{
+							JsonSchemaModel propertySchema;
+							if (schema.Properties != null && schema.Properties.TryGetValue(this._currentScope.CurrentPropertyName, out propertySchema))
+								schemas.Add(propertySchema);
+							if (schema.PatternProperties != null)
+							{
+								foreach (KeyValuePair<string, JsonSchemaModel> patternProperty in schema.PatternProperties)
+								{
+									if (Regex.IsMatch(this._currentScope.CurrentPropertyName, patternProperty.Key))
+										schemas.Add(patternProperty.Value);
+								}
+							}
 
-    /// <summary>
-    /// Gets the <see cref="JsonReader"/> used to construct this <see cref="JsonValidatingReader"/>.
-    /// </summary>
-    /// <value>The <see cref="JsonReader"/> specified in the constructor.</value>
-    public JsonReader Reader
-    {
-      get { return _reader; }
-    }
+							if (schemas.Count == 0 && schema.AllowAdditionalProperties && schema.AdditionalProperties != null)
+								schemas.Add(schema.AdditionalProperties);
+						}
 
-    private void ValidateNotDisallowed(JsonSchemaModel schema)
-    {
-      if (schema == null)
-        return;
+						return schemas;
+					}
+					case JTokenType.Array:
+					{
+						IList<JsonSchemaModel> schemas = new List<JsonSchemaModel>();
 
-      JsonSchemaType? currentNodeType = GetCurrentNodeSchemaType();
-      if (currentNodeType != null)
-      {
-        if (JsonSchemaGenerator.HasFlag(schema.Disallow, currentNodeType.Value))
-          RaiseError("Type {0} is disallowed.".FormatWith(CultureInfo.InvariantCulture, currentNodeType), schema);
-      }
-    }
+						foreach (JsonSchemaModel schema in this.CurrentSchemas)
+						{
+							if (!schema.PositionalItemsValidation)
+							{
+								if (schema.Items != null && schema.Items.Count > 0)
+									schemas.Add(schema.Items[0]);
+							}
+							else
+							{
+								if (schema.Items != null && schema.Items.Count > 0)
+								{
+									if (schema.Items.Count > (this._currentScope.ArrayItemCount - 1))
+										schemas.Add(schema.Items[this._currentScope.ArrayItemCount - 1]);
+								}
 
-    private JsonSchemaType? GetCurrentNodeSchemaType()
-    {
-      switch (_reader.TokenType)
-      {
-        case JsonToken.StartObject:
-          return JsonSchemaType.Object;
-        case JsonToken.StartArray:
-          return JsonSchemaType.Array;
-        case JsonToken.Integer:
-          return JsonSchemaType.Integer;
-        case JsonToken.Float:
-          return JsonSchemaType.Float;
-        case JsonToken.String:
-          return JsonSchemaType.String;
-        case JsonToken.Boolean:
-          return JsonSchemaType.Boolean;
-        case JsonToken.Null:
-          return JsonSchemaType.Null;
-        default:
-          return null;
-      }
-    }
+								if (schema.AllowAdditionalItems && schema.AdditionalItems != null)
+									schemas.Add(schema.AdditionalItems);
+							}
+						}
 
-    /// <summary>
-    /// Reads the next JSON token from the stream as a <see cref="Nullable{Int32}"/>.
-    /// </summary>
-    /// <returns>A <see cref="Nullable{Int32}"/>.</returns>
-    public override int? ReadAsInt32()
-    {
-      int? i = _reader.ReadAsInt32();
+						return schemas;
+					}
+					case JTokenType.Constructor:
+						return EmptySchemaList;
+					default:
+						throw new ArgumentOutOfRangeException("TokenType", "Unexpected token type: {0}".FormatWith(CultureInfo.InvariantCulture, this._currentScope.TokenType));
+				}
+			}
+		}
 
-      ValidateCurrentToken();
-      return i;
-    }
+		private void RaiseError(string message, JsonSchemaModel schema)
+		{
+			IJsonLineInfo lineInfo = this;
 
-    /// <summary>
-    /// Reads the next JSON token from the stream as a <see cref="T:Byte[]"/>.
-    /// </summary>
-    /// <returns>
-    /// A <see cref="T:Byte[]"/> or a null reference if the next JSON token is null.
-    /// </returns>
-    public override byte[] ReadAsBytes()
-    {
-      byte[] data = _reader.ReadAsBytes();
+			string exceptionMessage = (lineInfo.HasLineInfo())
+				? message + " Line {0}, position {1}.".FormatWith(CultureInfo.InvariantCulture, lineInfo.LineNumber, lineInfo.LinePosition)
+				: message;
 
-      ValidateCurrentToken();
-      return data;
-    }
+			this.OnValidationEvent(new JsonSchemaException(exceptionMessage, null, this.Path, lineInfo.LineNumber, lineInfo.LinePosition));
+		}
 
-    /// <summary>
-    /// Reads the next JSON token from the stream as a <see cref="Nullable{Decimal}"/>.
-    /// </summary>
-    /// <returns>A <see cref="Nullable{Decimal}"/>.</returns>
-    public override decimal? ReadAsDecimal()
-    {
-      decimal? d = _reader.ReadAsDecimal();
+		private void OnValidationEvent(JsonSchemaException exception)
+		{
+			ValidationEventHandler handler = this.ValidationEventHandler;
+			if (handler != null)
+				handler(this, new ValidationEventArgs(exception));
+			else
+				throw exception;
+		}
 
-      ValidateCurrentToken();
-      return d;
-    }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="JsonValidatingReader" /> class that
+		/// validates the content returned from the given <see cref="JsonReader" />.
+		/// </summary>
+		/// <param name="reader"> The <see cref="JsonReader" /> to read from while validating. </param>
+		public JsonValidatingReader(JsonReader reader)
+		{
+			ValidationUtils.ArgumentNotNull(reader, "reader");
+			this._reader = reader;
+			this._stack = new Stack<SchemaScope>();
+		}
 
-    /// <summary>
-    /// Reads the next JSON token from the stream as a <see cref="String"/>.
-    /// </summary>
-    /// <returns>A <see cref="String"/>. This method will return <c>null</c> at the end of an array.</returns>
-    public override string ReadAsString()
-    {
-      string s = _reader.ReadAsString();
+		/// <summary>
+		/// Gets or sets the schema.
+		/// </summary>
+		/// <value> The schema. </value>
+		public JsonSchema Schema
+		{
+			get
+			{
+				return this._schema;
+			}
+			set
+			{
+				if (this.TokenType != JsonToken.None)
+					throw new InvalidOperationException("Cannot change schema while validating JSON.");
 
-      ValidateCurrentToken();
-      return s;
-    }
+				this._schema = value;
+				this._model = null;
+			}
+		}
 
-    /// <summary>
-    /// Reads the next JSON token from the stream as a <see cref="Nullable{DateTime}"/>.
-    /// </summary>
-    /// <returns>A <see cref="String"/>. This method will return <c>null</c> at the end of an array.</returns>
-    public override DateTime? ReadAsDateTime()
-    {
-      DateTime? dateTime = _reader.ReadAsDateTime();
+		/// <summary>
+		/// Gets the <see cref="JsonReader" /> used to construct this <see cref="JsonValidatingReader" />.
+		/// </summary>
+		/// <value> The <see cref="JsonReader" /> specified in the constructor. </value>
+		public JsonReader Reader
+		{
+			get
+			{
+				return this._reader;
+			}
+		}
 
-      ValidateCurrentToken();
-      return dateTime;
-    }
+		private void ValidateNotDisallowed(JsonSchemaModel schema)
+		{
+			if (schema == null)
+				return;
+
+			JsonSchemaType? currentNodeType = this.GetCurrentNodeSchemaType();
+			if (currentNodeType != null)
+			{
+				if (JsonSchemaGenerator.HasFlag(schema.Disallow, currentNodeType.Value))
+					this.RaiseError("Type {0} is disallowed.".FormatWith(CultureInfo.InvariantCulture, currentNodeType), schema);
+			}
+		}
+
+		private JsonSchemaType? GetCurrentNodeSchemaType()
+		{
+			switch (this._reader.TokenType)
+			{
+				case JsonToken.StartObject:
+					return JsonSchemaType.Object;
+				case JsonToken.StartArray:
+					return JsonSchemaType.Array;
+				case JsonToken.Integer:
+					return JsonSchemaType.Integer;
+				case JsonToken.Float:
+					return JsonSchemaType.Float;
+				case JsonToken.String:
+					return JsonSchemaType.String;
+				case JsonToken.Boolean:
+					return JsonSchemaType.Boolean;
+				case JsonToken.Null:
+					return JsonSchemaType.Null;
+				default:
+					return null;
+			}
+		}
+
+		/// <summary>
+		/// Reads the next JSON token from the stream as a <see cref="Nullable{Int32}" />.
+		/// </summary>
+		/// <returns> A <see cref="Nullable{Int32}" />. </returns>
+		public override int? ReadAsInt32()
+		{
+			int? i = this._reader.ReadAsInt32();
+
+			this.ValidateCurrentToken();
+			return i;
+		}
+
+		/// <summary>
+		/// Reads the next JSON token from the stream as a <see cref="T:Byte[]" />.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="T:Byte[]" /> or a null reference if the next JSON token is null.
+		/// </returns>
+		public override byte[] ReadAsBytes()
+		{
+			byte[] data = this._reader.ReadAsBytes();
+
+			this.ValidateCurrentToken();
+			return data;
+		}
+
+		/// <summary>
+		/// Reads the next JSON token from the stream as a <see cref="Nullable{Decimal}" />.
+		/// </summary>
+		/// <returns> A <see cref="Nullable{Decimal}" />. </returns>
+		public override decimal? ReadAsDecimal()
+		{
+			decimal? d = this._reader.ReadAsDecimal();
+
+			this.ValidateCurrentToken();
+			return d;
+		}
+
+		/// <summary>
+		/// Reads the next JSON token from the stream as a <see cref="String" />.
+		/// </summary>
+		/// <returns> A <see cref="String" />. This method will return <c> null </c> at the end of an array. </returns>
+		public override string ReadAsString()
+		{
+			string s = this._reader.ReadAsString();
+
+			this.ValidateCurrentToken();
+			return s;
+		}
+
+		/// <summary>
+		/// Reads the next JSON token from the stream as a <see cref="Nullable{DateTime}" />.
+		/// </summary>
+		/// <returns> A <see cref="String" />. This method will return <c> null </c> at the end of an array. </returns>
+		public override DateTime? ReadAsDateTime()
+		{
+			DateTime? dateTime = this._reader.ReadAsDateTime();
+
+			this.ValidateCurrentToken();
+			return dateTime;
+		}
 
 #if !NET20
-    /// <summary>
-    /// Reads the next JSON token from the stream as a <see cref="Nullable{DateTimeOffset}"/>.
-    /// </summary>
-    /// <returns>A <see cref="Nullable{DateTimeOffset}"/>.</returns>
-    public override DateTimeOffset? ReadAsDateTimeOffset()
-    {
-      DateTimeOffset? dateTimeOffset = _reader.ReadAsDateTimeOffset();
+		/// <summary>
+		/// Reads the next JSON token from the stream as a <see cref="Nullable{DateTimeOffset}" />.
+		/// </summary>
+		/// <returns> A <see cref="Nullable{DateTimeOffset}" />. </returns>
+		public override DateTimeOffset? ReadAsDateTimeOffset()
+		{
+			DateTimeOffset? dateTimeOffset = this._reader.ReadAsDateTimeOffset();
 
-      ValidateCurrentToken();
-      return dateTimeOffset;
-    }
+			this.ValidateCurrentToken();
+			return dateTimeOffset;
+		}
 #endif
 
-    /// <summary>
-    /// Reads the next JSON token from the stream.
-    /// </summary>
-    /// <returns>
-    /// true if the next token was read successfully; false if there are no more tokens to read.
-    /// </returns>
-    public override bool Read()
-    {
-      if (!_reader.Read())
-        return false;
+		/// <summary>
+		/// Reads the next JSON token from the stream.
+		/// </summary>
+		/// <returns>
+		/// true if the next token was read successfully; false if there are no more tokens to read.
+		/// </returns>
+		public override bool Read()
+		{
+			if (!this._reader.Read())
+				return false;
 
-      if (_reader.TokenType == JsonToken.Comment)
-        return true;
+			if (this._reader.TokenType == JsonToken.Comment)
+				return true;
 
-      ValidateCurrentToken();
-      return true;
-    }
+			this.ValidateCurrentToken();
+			return true;
+		}
 
-    private void ValidateCurrentToken()
-    {
-      // first time validate has been called. build model
-      if (_model == null)
-      {
-        JsonSchemaModelBuilder builder = new JsonSchemaModelBuilder();
-        _model = builder.Build(_schema);
+		private void ValidateCurrentToken()
+		{
+			// first time validate has been called. build model
+			if (this._model == null)
+			{
+				JsonSchemaModelBuilder builder = new JsonSchemaModelBuilder();
+				this._model = builder.Build(this._schema);
 
-        if (!JsonWriter.IsStartToken(_reader.TokenType))
-          Push(new SchemaScope(JTokenType.None, CurrentMemberSchemas));
-      }
+				if (!JsonWriter.IsStartToken(this._reader.TokenType))
+					this.Push(new SchemaScope(JTokenType.None, this.CurrentMemberSchemas));
+			}
 
-      switch (_reader.TokenType)
-      {
-        case JsonToken.StartObject:
-          ProcessValue();
-          IList<JsonSchemaModel> objectSchemas = CurrentMemberSchemas.Where(ValidateObject).ToList();
-          Push(new SchemaScope(JTokenType.Object, objectSchemas));
-          WriteToken(CurrentSchemas);
-          break;
-        case JsonToken.StartArray:
-          ProcessValue();
-          IList<JsonSchemaModel> arraySchemas = CurrentMemberSchemas.Where(ValidateArray).ToList();
-          Push(new SchemaScope(JTokenType.Array, arraySchemas));
-          WriteToken(CurrentSchemas);
-          break;
-        case JsonToken.StartConstructor:
-          ProcessValue();
-          Push(new SchemaScope(JTokenType.Constructor, null));
-          WriteToken(CurrentSchemas);
-          break;
-        case JsonToken.PropertyName:
-          WriteToken(CurrentSchemas);
-          foreach (JsonSchemaModel schema in CurrentSchemas)
-          {
-            ValidatePropertyName(schema);
-          }
-          break;
-        case JsonToken.Raw:
-          ProcessValue();
-          break;
-        case JsonToken.Integer:
-          ProcessValue();
-          WriteToken(CurrentMemberSchemas);
-          foreach (JsonSchemaModel schema in CurrentMemberSchemas)
-          {
-            ValidateInteger(schema);
-          }
-          break;
-        case JsonToken.Float:
-          ProcessValue();
-          WriteToken(CurrentMemberSchemas);
-          foreach (JsonSchemaModel schema in CurrentMemberSchemas)
-          {
-            ValidateFloat(schema);
-          }
-          break;
-        case JsonToken.String:
-          ProcessValue();
-          WriteToken(CurrentMemberSchemas);
-          foreach (JsonSchemaModel schema in CurrentMemberSchemas)
-          {
-            ValidateString(schema);
-          }
-          break;
-        case JsonToken.Boolean:
-          ProcessValue();
-          WriteToken(CurrentMemberSchemas);
-          foreach (JsonSchemaModel schema in CurrentMemberSchemas)
-          {
-            ValidateBoolean(schema);
-          }
-          break;
-        case JsonToken.Null:
-          ProcessValue();
-          WriteToken(CurrentMemberSchemas);
-          foreach (JsonSchemaModel schema in CurrentMemberSchemas)
-          {
-            ValidateNull(schema);
-          }
-          break;
-        case JsonToken.EndObject:
-          WriteToken(CurrentSchemas);
-          foreach (JsonSchemaModel schema in CurrentSchemas)
-          {
-            ValidateEndObject(schema);
-          }
-          Pop();
-          break;
-        case JsonToken.EndArray:
-          WriteToken(CurrentSchemas);
-          foreach (JsonSchemaModel schema in CurrentSchemas)
-          {
-            ValidateEndArray(schema);
-          }
-          Pop();
-          break;
-        case JsonToken.EndConstructor:
-          WriteToken(CurrentSchemas);
-          Pop();
-          break;
-        case JsonToken.Undefined:
-        case JsonToken.Date:
-        case JsonToken.Bytes:
-          // these have no equivalent in JSON schema
-          WriteToken(CurrentMemberSchemas);
-          break;
-        case JsonToken.None:
-          // no content, do nothing
-          break;
-        default:
-          throw new ArgumentOutOfRangeException();
-      }
-    }
+			switch (this._reader.TokenType)
+			{
+				case JsonToken.StartObject:
+					this.ProcessValue();
+					IList<JsonSchemaModel> objectSchemas = this.CurrentMemberSchemas.Where(this.ValidateObject).ToList();
+					this.Push(new SchemaScope(JTokenType.Object, objectSchemas));
+					this.WriteToken(this.CurrentSchemas);
+					break;
+				case JsonToken.StartArray:
+					this.ProcessValue();
+					IList<JsonSchemaModel> arraySchemas = this.CurrentMemberSchemas.Where(this.ValidateArray).ToList();
+					this.Push(new SchemaScope(JTokenType.Array, arraySchemas));
+					this.WriteToken(this.CurrentSchemas);
+					break;
+				case JsonToken.StartConstructor:
+					this.ProcessValue();
+					this.Push(new SchemaScope(JTokenType.Constructor, null));
+					this.WriteToken(this.CurrentSchemas);
+					break;
+				case JsonToken.PropertyName:
+					this.WriteToken(this.CurrentSchemas);
+					foreach (JsonSchemaModel schema in this.CurrentSchemas)
+						this.ValidatePropertyName(schema);
+					break;
+				case JsonToken.Raw:
+					this.ProcessValue();
+					break;
+				case JsonToken.Integer:
+					this.ProcessValue();
+					this.WriteToken(this.CurrentMemberSchemas);
+					foreach (JsonSchemaModel schema in this.CurrentMemberSchemas)
+						this.ValidateInteger(schema);
+					break;
+				case JsonToken.Float:
+					this.ProcessValue();
+					this.WriteToken(this.CurrentMemberSchemas);
+					foreach (JsonSchemaModel schema in this.CurrentMemberSchemas)
+						this.ValidateFloat(schema);
+					break;
+				case JsonToken.String:
+					this.ProcessValue();
+					this.WriteToken(this.CurrentMemberSchemas);
+					foreach (JsonSchemaModel schema in this.CurrentMemberSchemas)
+						this.ValidateString(schema);
+					break;
+				case JsonToken.Boolean:
+					this.ProcessValue();
+					this.WriteToken(this.CurrentMemberSchemas);
+					foreach (JsonSchemaModel schema in this.CurrentMemberSchemas)
+						this.ValidateBoolean(schema);
+					break;
+				case JsonToken.Null:
+					this.ProcessValue();
+					this.WriteToken(this.CurrentMemberSchemas);
+					foreach (JsonSchemaModel schema in this.CurrentMemberSchemas)
+						this.ValidateNull(schema);
+					break;
+				case JsonToken.EndObject:
+					this.WriteToken(this.CurrentSchemas);
+					foreach (JsonSchemaModel schema in this.CurrentSchemas)
+						this.ValidateEndObject(schema);
+					this.Pop();
+					break;
+				case JsonToken.EndArray:
+					this.WriteToken(this.CurrentSchemas);
+					foreach (JsonSchemaModel schema in this.CurrentSchemas)
+						this.ValidateEndArray(schema);
+					this.Pop();
+					break;
+				case JsonToken.EndConstructor:
+					this.WriteToken(this.CurrentSchemas);
+					this.Pop();
+					break;
+				case JsonToken.Undefined:
+				case JsonToken.Date:
+				case JsonToken.Bytes:
+					// these have no equivalent in JSON schema
+					this.WriteToken(this.CurrentMemberSchemas);
+					break;
+				case JsonToken.None:
+					// no content, do nothing
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
 
-    private void WriteToken(IList<JsonSchemaModel> schemas)
-    {
-      foreach (SchemaScope schemaScope in _stack)
-      {
-        bool isInUniqueArray = (schemaScope.TokenType == JTokenType.Array && schemaScope.IsUniqueArray && schemaScope.ArrayItemCount > 0);
+		private void WriteToken(IList<JsonSchemaModel> schemas)
+		{
+			foreach (SchemaScope schemaScope in this._stack)
+			{
+				bool isInUniqueArray = (schemaScope.TokenType == JTokenType.Array && schemaScope.IsUniqueArray && schemaScope.ArrayItemCount > 0);
 
-        if (isInUniqueArray || schemaScope.IsEnum || schemas.Any(s => s.Enum != null))
-        {
-          if (schemaScope.CurrentItemWriter == null)
-          {
-            if (JsonWriter.IsEndToken(_reader.TokenType))
-              continue;
+				if (isInUniqueArray || schemaScope.IsEnum || schemas.Any(s => s.Enum != null))
+				{
+					if (schemaScope.CurrentItemWriter == null)
+					{
+						if (JsonWriter.IsEndToken(this._reader.TokenType))
+							continue;
 
-            schemaScope.CurrentItemWriter = new JTokenWriter();
-          }
+						schemaScope.CurrentItemWriter = new JTokenWriter();
+					}
 
-          schemaScope.CurrentItemWriter.WriteToken(_reader, false);
+					schemaScope.CurrentItemWriter.WriteToken(this._reader, false);
 
-          // finished writing current item
-          if (schemaScope.CurrentItemWriter.Top == 0 && _reader.TokenType != JsonToken.PropertyName)
-          {
-            JToken finishedItem = schemaScope.CurrentItemWriter.Token;
+					// finished writing current item
+					if (schemaScope.CurrentItemWriter.Top == 0 && this._reader.TokenType != JsonToken.PropertyName)
+					{
+						JToken finishedItem = schemaScope.CurrentItemWriter.Token;
 
-            // start next item with new writer
-            schemaScope.CurrentItemWriter = null;
+						// start next item with new writer
+						schemaScope.CurrentItemWriter = null;
 
-            if (isInUniqueArray)
-            {
-              if (schemaScope.UniqueArrayItems.Contains(finishedItem, JToken.EqualityComparer))
-                RaiseError("Non-unique array item at index {0}.".FormatWith(CultureInfo.InvariantCulture, schemaScope.ArrayItemCount - 1), schemaScope.Schemas.First(s => s.UniqueItems));
+						if (isInUniqueArray)
+						{
+							if (schemaScope.UniqueArrayItems.Contains(finishedItem, JToken.EqualityComparer))
+								this.RaiseError("Non-unique array item at index {0}.".FormatWith(CultureInfo.InvariantCulture, schemaScope.ArrayItemCount - 1), schemaScope.Schemas.First(s => s.UniqueItems));
 
-              schemaScope.UniqueArrayItems.Add(finishedItem);
-            }
-            else if (schemaScope.IsEnum || schemas.Any(s => s.Enum != null))
-            {
-              foreach (JsonSchemaModel schema in schemas)
-              {
-                if (schema.Enum != null)
-                {
-                  if (!schema.Enum.ContainsValue(finishedItem, JToken.EqualityComparer))
-                  {
-                    StringWriter sw = new StringWriter(CultureInfo.InvariantCulture);
-                    finishedItem.WriteTo(new JsonTextWriter(sw));
+							schemaScope.UniqueArrayItems.Add(finishedItem);
+						}
+						else if (schemaScope.IsEnum || schemas.Any(s => s.Enum != null))
+						{
+							foreach (JsonSchemaModel schema in schemas)
+							{
+								if (schema.Enum != null)
+								{
+									if (!schema.Enum.ContainsValue(finishedItem, JToken.EqualityComparer))
+									{
+										StringWriter sw = new StringWriter(CultureInfo.InvariantCulture);
+										finishedItem.WriteTo(new JsonTextWriter(sw));
 
-                    RaiseError("Value {0} is not defined in enum.".FormatWith(CultureInfo.InvariantCulture, sw.ToString()), schema);
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+										this.RaiseError("Value {0} is not defined in enum.".FormatWith(CultureInfo.InvariantCulture, sw.ToString()), schema);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 
-    private void ValidateEndObject(JsonSchemaModel schema)
-    {
-      if (schema == null)
-        return;
+		private void ValidateEndObject(JsonSchemaModel schema)
+		{
+			if (schema == null)
+				return;
 
-      Dictionary<string, bool> requiredProperties = _currentScope.RequiredProperties;
+			Dictionary<string, bool> requiredProperties = this._currentScope.RequiredProperties;
 
-      if (requiredProperties != null)
-      {
-        List<string> unmatchedRequiredProperties =
-          requiredProperties.Where(kv => !kv.Value).Select(kv => kv.Key).ToList();
+			if (requiredProperties != null)
+			{
+				List<string> unmatchedRequiredProperties =
+					requiredProperties.Where(kv => !kv.Value).Select(kv => kv.Key).ToList();
 
-        if (unmatchedRequiredProperties.Count > 0)
-          RaiseError("Required properties are missing from object: {0}.".FormatWith(CultureInfo.InvariantCulture, string.Join(", ", unmatchedRequiredProperties.ToArray())), schema);
-      }
-    }
+				if (unmatchedRequiredProperties.Count > 0)
+					this.RaiseError("Required properties are missing from object: {0}.".FormatWith(CultureInfo.InvariantCulture, string.Join(", ", unmatchedRequiredProperties.ToArray())), schema);
+			}
+		}
 
-    private void ValidateEndArray(JsonSchemaModel schema)
-    {
-      if (schema == null)
-        return;
+		private void ValidateEndArray(JsonSchemaModel schema)
+		{
+			if (schema == null)
+				return;
 
-      int arrayItemCount = _currentScope.ArrayItemCount;
+			int arrayItemCount = this._currentScope.ArrayItemCount;
 
-      if (schema.MaximumItems != null && arrayItemCount > schema.MaximumItems)
-        RaiseError("Array item count {0} exceeds maximum count of {1}.".FormatWith(CultureInfo.InvariantCulture, arrayItemCount, schema.MaximumItems), schema);
+			if (schema.MaximumItems != null && arrayItemCount > schema.MaximumItems)
+				this.RaiseError("Array item count {0} exceeds maximum count of {1}.".FormatWith(CultureInfo.InvariantCulture, arrayItemCount, schema.MaximumItems), schema);
 
-      if (schema.MinimumItems != null && arrayItemCount < schema.MinimumItems)
-        RaiseError("Array item count {0} is less than minimum count of {1}.".FormatWith(CultureInfo.InvariantCulture, arrayItemCount, schema.MinimumItems), schema);
-    }
+			if (schema.MinimumItems != null && arrayItemCount < schema.MinimumItems)
+				this.RaiseError("Array item count {0} is less than minimum count of {1}.".FormatWith(CultureInfo.InvariantCulture, arrayItemCount, schema.MinimumItems), schema);
+		}
 
-    private void ValidateNull(JsonSchemaModel schema)
-    {
-      if (schema == null)
-        return;
+		private void ValidateNull(JsonSchemaModel schema)
+		{
+			if (schema == null)
+				return;
 
-      if (!TestType(schema, JsonSchemaType.Null))
-        return;
+			if (!this.TestType(schema, JsonSchemaType.Null))
+				return;
 
-      ValidateNotDisallowed(schema);
-    }
+			this.ValidateNotDisallowed(schema);
+		}
 
-    private void ValidateBoolean(JsonSchemaModel schema)
-    {
-      if (schema == null)
-        return;
+		private void ValidateBoolean(JsonSchemaModel schema)
+		{
+			if (schema == null)
+				return;
 
-      if (!TestType(schema, JsonSchemaType.Boolean))
-        return;
+			if (!this.TestType(schema, JsonSchemaType.Boolean))
+				return;
 
-      ValidateNotDisallowed(schema);
-    }
+			this.ValidateNotDisallowed(schema);
+		}
 
-    private void ValidateString(JsonSchemaModel schema)
-    {
-      if (schema == null)
-        return;
+		private void ValidateString(JsonSchemaModel schema)
+		{
+			if (schema == null)
+				return;
 
-      if (!TestType(schema, JsonSchemaType.String))
-        return;
+			if (!this.TestType(schema, JsonSchemaType.String))
+				return;
 
-      ValidateNotDisallowed(schema);
+			this.ValidateNotDisallowed(schema);
 
-      string value = _reader.Value.ToString();
+			string value = this._reader.Value.ToString();
 
-      if (schema.MaximumLength != null && value.Length > schema.MaximumLength)
-        RaiseError("String '{0}' exceeds maximum length of {1}.".FormatWith(CultureInfo.InvariantCulture, value, schema.MaximumLength), schema);
+			if (schema.MaximumLength != null && value.Length > schema.MaximumLength)
+				this.RaiseError("String '{0}' exceeds maximum length of {1}.".FormatWith(CultureInfo.InvariantCulture, value, schema.MaximumLength), schema);
 
-      if (schema.MinimumLength != null && value.Length < schema.MinimumLength)
-        RaiseError("String '{0}' is less than minimum length of {1}.".FormatWith(CultureInfo.InvariantCulture, value, schema.MinimumLength), schema);
+			if (schema.MinimumLength != null && value.Length < schema.MinimumLength)
+				this.RaiseError("String '{0}' is less than minimum length of {1}.".FormatWith(CultureInfo.InvariantCulture, value, schema.MinimumLength), schema);
 
-      if (schema.Patterns != null)
-      {
-        foreach (string pattern in schema.Patterns)
-        {
-          if (!Regex.IsMatch(value, pattern))
-            RaiseError("String '{0}' does not match regex pattern '{1}'.".FormatWith(CultureInfo.InvariantCulture, value, pattern), schema);
-        }
-      }
-    }
+			if (schema.Patterns != null)
+			{
+				foreach (string pattern in schema.Patterns)
+				{
+					if (!Regex.IsMatch(value, pattern))
+						this.RaiseError("String '{0}' does not match regex pattern '{1}'.".FormatWith(CultureInfo.InvariantCulture, value, pattern), schema);
+				}
+			}
+		}
 
-    private void ValidateInteger(JsonSchemaModel schema)
-    {
-      if (schema == null)
-        return;
+		private void ValidateInteger(JsonSchemaModel schema)
+		{
+			if (schema == null)
+				return;
 
-      if (!TestType(schema, JsonSchemaType.Integer))
-        return;
+			if (!this.TestType(schema, JsonSchemaType.Integer))
+				return;
 
-      ValidateNotDisallowed(schema);
-      
-      object value = _reader.Value;
+			this.ValidateNotDisallowed(schema);
 
-      if (schema.Maximum != null)
-      {
-        if (JValue.Compare(JTokenType.Integer, value, schema.Maximum) > 0)
-          RaiseError("Integer {0} exceeds maximum value of {1}.".FormatWith(CultureInfo.InvariantCulture, value, schema.Maximum), schema);
-        if (schema.ExclusiveMaximum && JValue.Compare(JTokenType.Integer, value, schema.Maximum) == 0)
-          RaiseError("Integer {0} equals maximum value of {1} and exclusive maximum is true.".FormatWith(CultureInfo.InvariantCulture, value, schema.Maximum), schema);
-      }
+			object value = this._reader.Value;
 
-      if (schema.Minimum != null)
-      {
-        if (JValue.Compare(JTokenType.Integer, value, schema.Minimum) < 0)
-          RaiseError("Integer {0} is less than minimum value of {1}.".FormatWith(CultureInfo.InvariantCulture, value, schema.Minimum), schema);
-        if (schema.ExclusiveMinimum && JValue.Compare(JTokenType.Integer, value, schema.Minimum) == 0)
-          RaiseError("Integer {0} equals minimum value of {1} and exclusive minimum is true.".FormatWith(CultureInfo.InvariantCulture, value, schema.Minimum), schema);
-      }
+			if (schema.Maximum != null)
+			{
+				if (JValue.Compare(JTokenType.Integer, value, schema.Maximum) > 0)
+					this.RaiseError("Integer {0} exceeds maximum value of {1}.".FormatWith(CultureInfo.InvariantCulture, value, schema.Maximum), schema);
+				if (schema.ExclusiveMaximum && JValue.Compare(JTokenType.Integer, value, schema.Maximum) == 0)
+					this.RaiseError("Integer {0} equals maximum value of {1} and exclusive maximum is true.".FormatWith(CultureInfo.InvariantCulture, value, schema.Maximum), schema);
+			}
 
-      if (schema.DivisibleBy != null)
-      {
-        bool notDivisible;
+			if (schema.Minimum != null)
+			{
+				if (JValue.Compare(JTokenType.Integer, value, schema.Minimum) < 0)
+					this.RaiseError("Integer {0} is less than minimum value of {1}.".FormatWith(CultureInfo.InvariantCulture, value, schema.Minimum), schema);
+				if (schema.ExclusiveMinimum && JValue.Compare(JTokenType.Integer, value, schema.Minimum) == 0)
+					this.RaiseError("Integer {0} equals minimum value of {1} and exclusive minimum is true.".FormatWith(CultureInfo.InvariantCulture, value, schema.Minimum), schema);
+			}
+
+			if (schema.DivisibleBy != null)
+			{
+				bool notDivisible;
 #if !(NET20 || NET35 || SILVERLIGHT || PORTABLE40 || PORTABLE)
         if (value is BigInteger)
         {
@@ -749,169 +815,167 @@ namespace Newtonsoft.Json
         }
         else
 #endif
-        notDivisible = !IsZero(Convert.ToInt64(value, CultureInfo.InvariantCulture) % schema.DivisibleBy.Value);
+				notDivisible = !IsZero(Convert.ToInt64(value, CultureInfo.InvariantCulture) % schema.DivisibleBy.Value);
 
-        if (notDivisible)
-          RaiseError("Integer {0} is not evenly divisible by {1}.".FormatWith(CultureInfo.InvariantCulture, JsonConvert.ToString(value), schema.DivisibleBy), schema);
-      }
-    }
+				if (notDivisible)
+					this.RaiseError("Integer {0} is not evenly divisible by {1}.".FormatWith(CultureInfo.InvariantCulture, JsonConvert.ToString(value), schema.DivisibleBy), schema);
+			}
+		}
 
-    private void ProcessValue()
-    {
-      if (_currentScope != null && _currentScope.TokenType == JTokenType.Array)
-      {
-        _currentScope.ArrayItemCount++;
+		private void ProcessValue()
+		{
+			if (this._currentScope != null && this._currentScope.TokenType == JTokenType.Array)
+			{
+				this._currentScope.ArrayItemCount++;
 
-        foreach (JsonSchemaModel currentSchema in CurrentSchemas)
-        {
-          // if there is positional validation and the array index is past the number of item validation schemas and there is no additonal items then error
-          if (currentSchema != null
-            && currentSchema.PositionalItemsValidation
-            && !currentSchema.AllowAdditionalItems
-            && (currentSchema.Items == null || _currentScope.ArrayItemCount - 1 >= currentSchema.Items.Count))
-          {
-            RaiseError("Index {0} has not been defined and the schema does not allow additional items.".FormatWith(CultureInfo.InvariantCulture, _currentScope.ArrayItemCount), currentSchema);
-          }
-        }
-      }
-    }
+				foreach (JsonSchemaModel currentSchema in this.CurrentSchemas)
+				{
+					// if there is positional validation and the array index is past the number of item validation schemas and there is no additonal items then error
+					if (currentSchema != null
+						&& currentSchema.PositionalItemsValidation
+						&& !currentSchema.AllowAdditionalItems
+						&& (currentSchema.Items == null || this._currentScope.ArrayItemCount - 1 >= currentSchema.Items.Count))
+						this.RaiseError("Index {0} has not been defined and the schema does not allow additional items.".FormatWith(CultureInfo.InvariantCulture, this._currentScope.ArrayItemCount), currentSchema);
+				}
+			}
+		}
 
-    private void ValidateFloat(JsonSchemaModel schema)
-    {
-      if (schema == null)
-        return;
+		private void ValidateFloat(JsonSchemaModel schema)
+		{
+			if (schema == null)
+				return;
 
-      if (!TestType(schema, JsonSchemaType.Float))
-        return;
+			if (!this.TestType(schema, JsonSchemaType.Float))
+				return;
 
-      ValidateNotDisallowed(schema);
-      
-      double value = Convert.ToDouble(_reader.Value, CultureInfo.InvariantCulture);
+			this.ValidateNotDisallowed(schema);
 
-      if (schema.Maximum != null)
-      {
-        if (value > schema.Maximum)
-          RaiseError("Float {0} exceeds maximum value of {1}.".FormatWith(CultureInfo.InvariantCulture, JsonConvert.ToString(value), schema.Maximum), schema);
-        if (schema.ExclusiveMaximum && value == schema.Maximum)
-          RaiseError("Float {0} equals maximum value of {1} and exclusive maximum is true.".FormatWith(CultureInfo.InvariantCulture, JsonConvert.ToString(value), schema.Maximum), schema);
-      }
+			double value = Convert.ToDouble(this._reader.Value, CultureInfo.InvariantCulture);
 
-      if (schema.Minimum != null)
-      {
-        if (value < schema.Minimum)
-          RaiseError("Float {0} is less than minimum value of {1}.".FormatWith(CultureInfo.InvariantCulture, JsonConvert.ToString(value), schema.Minimum), schema);
-        if (schema.ExclusiveMinimum && value == schema.Minimum)
-          RaiseError("Float {0} equals minimum value of {1} and exclusive minimum is true.".FormatWith(CultureInfo.InvariantCulture, JsonConvert.ToString(value), schema.Minimum), schema);
-      }
+			if (schema.Maximum != null)
+			{
+				if (value > schema.Maximum)
+					this.RaiseError("Float {0} exceeds maximum value of {1}.".FormatWith(CultureInfo.InvariantCulture, JsonConvert.ToString(value), schema.Maximum), schema);
+				if (schema.ExclusiveMaximum && value == schema.Maximum)
+					this.RaiseError("Float {0} equals maximum value of {1} and exclusive maximum is true.".FormatWith(CultureInfo.InvariantCulture, JsonConvert.ToString(value), schema.Maximum), schema);
+			}
 
-      if (schema.DivisibleBy != null)
-      {
-        double remainder = FloatingPointRemainder(value, schema.DivisibleBy.Value);
+			if (schema.Minimum != null)
+			{
+				if (value < schema.Minimum)
+					this.RaiseError("Float {0} is less than minimum value of {1}.".FormatWith(CultureInfo.InvariantCulture, JsonConvert.ToString(value), schema.Minimum), schema);
+				if (schema.ExclusiveMinimum && value == schema.Minimum)
+					this.RaiseError("Float {0} equals minimum value of {1} and exclusive minimum is true.".FormatWith(CultureInfo.InvariantCulture, JsonConvert.ToString(value), schema.Minimum), schema);
+			}
 
-        if (!IsZero(remainder))
-          RaiseError("Float {0} is not evenly divisible by {1}.".FormatWith(CultureInfo.InvariantCulture, JsonConvert.ToString(value), schema.DivisibleBy), schema);
-      }
-    }
+			if (schema.DivisibleBy != null)
+			{
+				double remainder = FloatingPointRemainder(value, schema.DivisibleBy.Value);
 
-    private static double FloatingPointRemainder(double dividend, double divisor)
-    {
-      return dividend - Math.Floor(dividend/divisor)*divisor;
-    }
+				if (!IsZero(remainder))
+					this.RaiseError("Float {0} is not evenly divisible by {1}.".FormatWith(CultureInfo.InvariantCulture, JsonConvert.ToString(value), schema.DivisibleBy), schema);
+			}
+		}
 
-    private static bool IsZero(double value)
-    {
-      const double epsilon = 2.2204460492503131e-016;
+		private static double FloatingPointRemainder(double dividend, double divisor)
+		{
+			return dividend - Math.Floor(dividend / divisor) * divisor;
+		}
 
-      return Math.Abs(value) < 10.0 * epsilon;
-    }
+		private static bool IsZero(double value)
+		{
+			const double epsilon = 2.2204460492503131e-016;
 
-    private void ValidatePropertyName(JsonSchemaModel schema)
-    {
-      if (schema == null)
-        return;
+			return Math.Abs(value) < 10.0 * epsilon;
+		}
 
-      string propertyName = Convert.ToString(_reader.Value, CultureInfo.InvariantCulture);
+		private void ValidatePropertyName(JsonSchemaModel schema)
+		{
+			if (schema == null)
+				return;
 
-      if (_currentScope.RequiredProperties.ContainsKey(propertyName))
-        _currentScope.RequiredProperties[propertyName] = true;
+			string propertyName = Convert.ToString(this._reader.Value, CultureInfo.InvariantCulture);
 
-      if (!schema.AllowAdditionalProperties)
-      {
-        bool propertyDefinied = IsPropertyDefinied(schema, propertyName);
+			if (this._currentScope.RequiredProperties.ContainsKey(propertyName))
+				this._currentScope.RequiredProperties[propertyName] = true;
 
-        if (!propertyDefinied)
-          RaiseError("Property '{0}' has not been defined and the schema does not allow additional properties.".FormatWith(CultureInfo.InvariantCulture, propertyName), schema);
-      }
+			if (!schema.AllowAdditionalProperties)
+			{
+				bool propertyDefinied = this.IsPropertyDefinied(schema, propertyName);
 
-      _currentScope.CurrentPropertyName = propertyName;
-    }
+				if (!propertyDefinied)
+					this.RaiseError("Property '{0}' has not been defined and the schema does not allow additional properties.".FormatWith(CultureInfo.InvariantCulture, propertyName), schema);
+			}
 
-    private bool IsPropertyDefinied(JsonSchemaModel schema, string propertyName)
-    {
-      if (schema.Properties != null && schema.Properties.ContainsKey(propertyName))
-        return true;
+			this._currentScope.CurrentPropertyName = propertyName;
+		}
 
-      if (schema.PatternProperties != null)
-      {
-        foreach (string pattern in schema.PatternProperties.Keys)
-        {
-          if (Regex.IsMatch(propertyName, pattern))
-            return true;
-        }
-      }
+		private bool IsPropertyDefinied(JsonSchemaModel schema, string propertyName)
+		{
+			if (schema.Properties != null && schema.Properties.ContainsKey(propertyName))
+				return true;
 
-      return false;
-    }
+			if (schema.PatternProperties != null)
+			{
+				foreach (string pattern in schema.PatternProperties.Keys)
+				{
+					if (Regex.IsMatch(propertyName, pattern))
+						return true;
+				}
+			}
 
-    private bool ValidateArray(JsonSchemaModel schema)
-    {
-      if (schema == null)
-        return true;
+			return false;
+		}
 
-      return (TestType(schema, JsonSchemaType.Array));
-    }
+		private bool ValidateArray(JsonSchemaModel schema)
+		{
+			if (schema == null)
+				return true;
 
-    private bool ValidateObject(JsonSchemaModel schema)
-    {
-      if (schema == null)
-        return true;
+			return (this.TestType(schema, JsonSchemaType.Array));
+		}
 
-      return (TestType(schema, JsonSchemaType.Object));
-    }
+		private bool ValidateObject(JsonSchemaModel schema)
+		{
+			if (schema == null)
+				return true;
 
-    private bool TestType(JsonSchemaModel currentSchema, JsonSchemaType currentType)
-    {
-      if (!JsonSchemaGenerator.HasFlag(currentSchema.Type, currentType))
-      {
-        RaiseError("Invalid type. Expected {0} but got {1}.".FormatWith(CultureInfo.InvariantCulture, currentSchema.Type, currentType), currentSchema);
-        return false;
-      }
+			return (this.TestType(schema, JsonSchemaType.Object));
+		}
 
-      return true;
-    }
+		private bool TestType(JsonSchemaModel currentSchema, JsonSchemaType currentType)
+		{
+			if (!JsonSchemaGenerator.HasFlag(currentSchema.Type, currentType))
+			{
+				this.RaiseError("Invalid type. Expected {0} but got {1}.".FormatWith(CultureInfo.InvariantCulture, currentSchema.Type, currentType), currentSchema);
+				return false;
+			}
 
-    bool IJsonLineInfo.HasLineInfo()
-    {
-      IJsonLineInfo lineInfo = _reader as IJsonLineInfo;
-      return lineInfo != null && lineInfo.HasLineInfo();
-    }
+			return true;
+		}
 
-    int IJsonLineInfo.LineNumber
-    {
-      get
-      {
-        IJsonLineInfo lineInfo = _reader as IJsonLineInfo;
-        return (lineInfo != null) ? lineInfo.LineNumber : 0;
-      }
-    }
+		bool IJsonLineInfo.HasLineInfo()
+		{
+			IJsonLineInfo lineInfo = this._reader as IJsonLineInfo;
+			return lineInfo != null && lineInfo.HasLineInfo();
+		}
 
-    int IJsonLineInfo.LinePosition
-    {
-      get
-      {
-        IJsonLineInfo lineInfo = _reader as IJsonLineInfo;
-        return (lineInfo != null) ? lineInfo.LinePosition : 0;
-      }
-    }
-  }
+		int IJsonLineInfo.LineNumber
+		{
+			get
+			{
+				IJsonLineInfo lineInfo = this._reader as IJsonLineInfo;
+				return (lineInfo != null) ? lineInfo.LineNumber : 0;
+			}
+		}
+
+		int IJsonLineInfo.LinePosition
+		{
+			get
+			{
+				IJsonLineInfo lineInfo = this._reader as IJsonLineInfo;
+				return (lineInfo != null) ? lineInfo.LinePosition : 0;
+			}
+		}
+	}
 }

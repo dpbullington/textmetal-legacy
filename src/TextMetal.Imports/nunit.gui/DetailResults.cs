@@ -15,7 +15,7 @@ namespace NUnit.Gui
 	using System;
 
 	/// <summary>
-	/// 	Summary description for DetailResults
+	/// Summary description for DetailResults
 	/// </summary>
 	public class DetailResults
 	{

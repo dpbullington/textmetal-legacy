@@ -24,14 +24,14 @@ using NMock2.Monitoring;
 namespace NMock2.Actions
 {
 	/// <summary>
-	/// 	Action that sets the result value on an invocation.
+	/// Action that sets the result value on an invocation.
 	/// </summary>
 	public class ReturnAction : IAction
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="ReturnAction" /> class.
+		/// Initializes a new instance of the <see cref="ReturnAction" /> class.
 		/// </summary>
 		/// <param name="result"> The result to set on the invocation as the return value. </param>
 		public ReturnAction(object result)
@@ -44,7 +44,7 @@ namespace NMock2.Actions
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Stores the result to set on the invocation as the return value.
+		/// Stores the result to set on the invocation as the return value.
 		/// </summary>
 		private readonly object result;
 
@@ -53,7 +53,7 @@ namespace NMock2.Actions
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public void DescribeTo(TextWriter writer)
@@ -63,7 +63,7 @@ namespace NMock2.Actions
 		}
 
 		/// <summary>
-		/// 	Invokes this object. Sets the result value of the invocation.
+		/// Invokes this object. Sets the result value of the invocation.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
 		public void Invoke(Invocation invocation)

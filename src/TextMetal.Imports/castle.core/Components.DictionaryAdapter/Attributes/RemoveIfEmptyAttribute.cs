@@ -12,38 +12,51 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections;
+
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
-	using System.Collections;
 
 	/// <summary>
 	/// Removes a property if null or empty string, guid or collection.
 	/// </summary>
 	public class RemoveIfEmptyAttribute : RemoveIfAttribute
 	{
+		#region Constructors/Destructors
+
 		public RemoveIfEmptyAttribute()
 			: base(RemoveIfEmptyCondition.Instance)
 		{
 		}
 
-		private new Type Condition { get; set; }
+		#endregion
 
-		class RemoveIfEmptyCondition : ICondition
+		#region Properties/Indexers/Events
+
+		private new Type Condition
 		{
+			get;
+			set;
+		}
+
+		#endregion
+
+		#region Classes/Structs/Interfaces/Enums/Delegates
+
+		private class RemoveIfEmptyCondition : ICondition
+		{
+			#region Fields/Constants
+
 			public static readonly RemoveIfEmptyCondition Instance = new RemoveIfEmptyCondition();
 
-			public bool SatisfiedBy(object value)
-			{
-				return value == null ||
-					   IsEmptyString(value) ||
-					   IsEmptyGuid(value) ||
-					   IsEmptyCollection(value);
-			}
+			#endregion
 
-			private static bool IsEmptyString(object value)
+			#region Methods/Operators
+
+			private static bool IsEmptyCollection(object value)
 			{
-				return (value is string && ((string)value).Length == 0);
+				return (value is IEnumerable && ((IEnumerable)value).GetEnumerator().MoveNext() == false);
 			}
 
 			private static bool IsEmptyGuid(object value)
@@ -51,10 +64,22 @@ namespace Castle.Components.DictionaryAdapter
 				return (value is Guid && ((Guid)value) == Guid.Empty);
 			}
 
-			private static bool IsEmptyCollection(object value)
+			private static bool IsEmptyString(object value)
 			{
-				return (value is IEnumerable && ((IEnumerable)value).GetEnumerator().MoveNext() == false);
+				return (value is string && ((string)value).Length == 0);
 			}
+
+			public bool SatisfiedBy(object value)
+			{
+				return value == null ||
+						IsEmptyString(value) ||
+						IsEmptyGuid(value) ||
+						IsEmptyCollection(value);
+			}
+
+			#endregion
 		}
+
+		#endregion
 	}
 }

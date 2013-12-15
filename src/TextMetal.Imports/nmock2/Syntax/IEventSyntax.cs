@@ -20,14 +20,14 @@
 namespace NMock2.Syntax
 {
 	/// <summary>
-	/// 	Syntax for defining the object that fires an event.
+	/// Syntax for defining the object that fires an event.
 	/// </summary>
 	public interface IEventSyntax
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Defines the object that fires the event.
+		/// Defines the object that fires the event.
 		/// </summary>
 		/// <param name="o"> The object firing the event. </param>
 		/// <returns> Event argument syntax defining the arguments passed to the event. </returns>
@@ -37,14 +37,14 @@ namespace NMock2.Syntax
 	}
 
 	/// <summary>
-	/// 	Syntax for defining the event that is fired.
+	/// Syntax for defining the event that is fired.
 	/// </summary>
 	public interface INewEventSyntax
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Defines the event to fire.
+		/// Defines the event to fire.
 		/// </summary>
 		/// <param name="eventName"> Name of the event. </param>
 		/// <returns> Event argument syntax defining the arguments passed to the event. </returns>

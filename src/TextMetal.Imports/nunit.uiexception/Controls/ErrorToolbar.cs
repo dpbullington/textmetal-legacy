@@ -14,7 +14,7 @@ using NUnit.UiException.Properties;
 namespace NUnit.UiException.Controls
 {
 	/// <summary>
-	/// 	A specialization of a ToolStrip to show instances of IErrorDisplay.
+	/// A specialization of a ToolStrip to show instances of IErrorDisplay.
 	/// </summary>
 	public class ErrorToolbar :
 		ToolStrip,
@@ -53,7 +53,7 @@ namespace NUnit.UiException.Controls
 		public event EventHandler SelectedRendererChanged;
 
 		/// <summary>
-		/// 	Gets the display at the given index.
+		/// Gets the display at the given index.
 		/// </summary>
 		public IErrorDisplay this[int index]
 		{
@@ -64,7 +64,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gets the count of IErrorDisplay instances.
+		/// Gets the count of IErrorDisplay instances.
 		/// </summary>
 		public int Count
 		{
@@ -75,7 +75,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gets or sets the IErrorDisplay to be selected.
+		/// Gets or sets the IErrorDisplay to be selected.
 		/// </summary>
 		public IErrorDisplay SelectedDisplay
 		{
@@ -90,7 +90,7 @@ namespace NUnit.UiException.Controls
 				int index = this.IndexOf(value);
 
 				UiExceptionHelper.CheckFalse(index == -1 && value != null,
-				                             "Cannot select unregistered display.", "SelectedDisplay");
+					"Cannot select unregistered display.", "SelectedDisplay");
 
 				if (index == this._selection)
 					return;
@@ -111,7 +111,7 @@ namespace NUnit.UiException.Controls
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Create and configure a ToolStripButton.
+		/// Create and configure a ToolStripButton.
 		/// </summary>
 		public static ToolStripButton NewStripButton(
 			bool canCheck, string text, Image image, EventHandler onClick)
@@ -129,7 +129,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Clears all IErrorDisplay in the toolbar.
+		/// Clears all IErrorDisplay in the toolbar.
 		/// </summary>
 		public void Clear()
 		{
@@ -162,7 +162,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Register a new IErrorDisplay in the toolbar.
+		/// Register a new IErrorDisplay in the toolbar.
 		/// </summary>
 		public void Register(IErrorDisplay display)
 		{

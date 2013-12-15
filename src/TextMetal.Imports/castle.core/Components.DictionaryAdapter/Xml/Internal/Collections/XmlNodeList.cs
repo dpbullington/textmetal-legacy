@@ -12,32 +12,47 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	internal class XmlNodeList<T> : ListProjection<T>, IXmlNodeSource
 	{
+		#region Constructors/Destructors
+
 		public XmlNodeList
-		(
-			IXmlNode               parentNode,
-			IDictionaryAdapter     parentObject,
-			IXmlCollectionAccessor accessor
-		)
-		: base
-		(
-			new XmlCollectionAdapter<T>
 			(
-				parentNode,
-				parentObject,
-				accessor
+			IXmlNode parentNode,
+			IDictionaryAdapter parentObject,
+			IXmlCollectionAccessor accessor
 			)
-		)
-		{ }
+			: base
+				(
+				new XmlCollectionAdapter<T>
+					(
+					parentNode,
+					parentObject,
+					accessor
+					)
+				)
+		{
+		}
+
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		public IXmlNode Node
 		{
-		    get { return ((IXmlNodeSource)Adapter).Node; }
+			get
+			{
+				return ((IXmlNodeSource)this.Adapter).Node;
+			}
 		}
+
+		#endregion
 	}
 }
+
 #endif

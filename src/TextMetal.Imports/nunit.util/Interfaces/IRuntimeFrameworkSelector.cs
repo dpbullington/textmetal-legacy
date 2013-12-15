@@ -15,10 +15,10 @@ namespace NUnit.Util
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Selects a target runtime framework for a TestPackage based on
-		/// 	the settings in the package and the assemblies themselves.
-		/// 	The package RuntimeFramework setting may be updated as a 
-		/// 	result and the selected runtime is returned.
+		/// Selects a target runtime framework for a TestPackage based on
+		/// the settings in the package and the assemblies themselves.
+		/// The package RuntimeFramework setting may be updated as a
+		/// result and the selected runtime is returned.
 		/// </summary>
 		/// <param name="package"> A TestPackage </param>
 		/// <returns> The selected RuntimeFramework </returns>

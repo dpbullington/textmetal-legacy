@@ -18,19 +18,34 @@ namespace Castle.Components.DictionaryAdapter
 
 	public interface IVirtual
 	{
-		bool IsReal { get; }
+		#region Properties/Indexers/Events
+
+		event EventHandler Realized;
+
+		bool IsReal
+		{
+			get;
+		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		void Realize();
 
-		event EventHandler Realized;
+		#endregion
 	}
 
 	public interface IVirtual<T> : IVirtual
 	{
-		new T Realize();
+		#region Methods/Operators
 
 		void AddSite(IVirtualSite<T> site);
 
+		new T Realize();
+
 		void RemoveSite(IVirtualSite<T> site);
+
+		#endregion
 	}
 }

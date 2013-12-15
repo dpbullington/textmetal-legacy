@@ -12,13 +12,13 @@ using NUnit.Core.Filters;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	CategoryExpression parses strings representing boolean
-	/// 	combinations of categories according to the following
-	/// 	grammar:
-	/// 	CategoryName ::= string not containing any of ',', '&', '+', '-'
-	/// 	CategoryFilter ::= CategoryName | CategoryFilter ',' CategoryName
-	/// 	CategoryPrimitive ::= CategoryFilter | '-' CategoryPrimitive
-	/// 	CategoryTerm ::= CategoryPrimitive | CategoryTerm '&' CategoryPrimitive
+	/// CategoryExpression parses strings representing boolean
+	/// combinations of categories according to the following
+	/// grammar:
+	/// CategoryName ::= string not containing any of ',', '&', '+', '-'
+	/// CategoryFilter ::= CategoryName | CategoryFilter ',' CategoryName
+	/// CategoryPrimitive ::= CategoryFilter | '-' CategoryPrimitive
+	/// CategoryTerm ::= CategoryPrimitive | CategoryTerm '&' CategoryPrimitive
 	/// </summary>
 	public class CategoryExpression
 	{
@@ -52,8 +52,8 @@ namespace NUnit.Util
 				if (this.filter == null)
 				{
 					this.filter = this.GetToken() == null
-						              ? TestFilter.Empty
-						              : this.GetExpression();
+						? TestFilter.Empty
+						: this.GetExpression();
 				}
 
 				return this.filter;

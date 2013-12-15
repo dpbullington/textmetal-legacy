@@ -12,77 +12,104 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Text;
+
 namespace Castle.Core.Resource
 {
 	using System;
-	using System.Text;
 
 	[Serializable]
 	public sealed class CustomUri
 	{
-		public static readonly String SchemeDelimiter = "://";
-		public static readonly String UriSchemeFile = "file";
-		public static readonly String UriSchemeAssembly = "assembly";
-
-		private String scheme;
-		private String host;
-		private String path;
-		private bool isUnc;
-		private bool isFile;
-		private bool isAssembly;
+		#region Constructors/Destructors
 
 		public CustomUri(String resourceIdentifier)
 		{
 			if (resourceIdentifier == null)
-			{
 				throw new ArgumentNullException("resourceIdentifier");
-			}
 			if (resourceIdentifier == String.Empty)
-			{
 				throw new ArgumentException("Empty resource identifier is not allowed", "resourceIdentifier");
+
+			this.ParseIdentifier(resourceIdentifier);
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		public static readonly String SchemeDelimiter = "://";
+		public static readonly String UriSchemeAssembly = "assembly";
+		public static readonly String UriSchemeFile = "file";
+
+		private String host;
+		private bool isAssembly;
+		private bool isFile;
+		private bool isUnc;
+		private String path;
+		private String scheme;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public string Host
+		{
+			get
+			{
+				return this.host;
 			}
-
-			ParseIdentifier(resourceIdentifier);
-		}
-
-		public bool IsUnc
-		{
-			get { return isUnc; }
-		}
-
-		public bool IsFile
-		{
-			get { return isFile; }
 		}
 
 		public bool IsAssembly
 		{
-			get { return isAssembly; }
+			get
+			{
+				return this.isAssembly;
+			}
 		}
 
-		public string Scheme
+		public bool IsFile
 		{
-			get { return scheme; }
+			get
+			{
+				return this.isFile;
+			}
 		}
 
-		public string Host
+		public bool IsUnc
 		{
-			get { return host; }
+			get
+			{
+				return this.isUnc;
+			}
 		}
 
 		public String Path
 		{
-			get { return path; }
+			get
+			{
+				return this.path;
+			}
 		}
+
+		public string Scheme
+		{
+			get
+			{
+				return this.scheme;
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		private void ParseIdentifier(String identifier)
 		{
 			int comma = identifier.IndexOf(':');
 
 			if (comma == -1 && !(identifier[0] == '\\' && identifier[1] == '\\') && identifier[0] != '/')
-			{
 				throw new ArgumentException("Invalid Uri: no scheme delimiter found on " + identifier);
-			}
 
 			bool translateSlashes = true;
 
@@ -90,52 +117,52 @@ namespace Castle.Core.Resource
 			{
 				// Unc
 
-				isUnc = true;
-				isFile = true;
-				scheme = UriSchemeFile;
+				this.isUnc = true;
+				this.isFile = true;
+				this.scheme = UriSchemeFile;
 				translateSlashes = false;
 			}
 			else if (identifier[comma + 1] == '/' && identifier[comma + 2] == '/')
 			{
 				// Extract scheme
 
-				scheme = identifier.Substring(0, comma);
+				this.scheme = identifier.Substring(0, comma);
 
-				isFile = (scheme == UriSchemeFile);
-				isAssembly = (scheme == UriSchemeAssembly);
+				this.isFile = (this.scheme == UriSchemeFile);
+				this.isAssembly = (this.scheme == UriSchemeAssembly);
 
 				identifier = identifier.Substring(comma + SchemeDelimiter.Length);
 			}
 			else
 			{
-				isFile = true;
-				scheme = UriSchemeFile;
+				this.isFile = true;
+				this.scheme = UriSchemeFile;
 			}
 
 			var sb = new StringBuilder();
-			foreach(char ch in identifier.ToCharArray())
+			foreach (char ch in identifier.ToCharArray())
 			{
 				if (translateSlashes && (ch == '\\' || ch == '/'))
 				{
-					if (host == null && !IsFile)
+					if (this.host == null && !this.IsFile)
 					{
-						host = sb.ToString();
+						this.host = sb.ToString();
 						sb.Length = 0;
 					}
 
 					sb.Append('/');
 				}
 				else
-				{
 					sb.Append(ch);
-				}
 			}
 
 #if SILVERLIGHT
 			path = sb.ToString();
 #else
-			path = Environment.ExpandEnvironmentVariables(sb.ToString());
+			this.path = Environment.ExpandEnvironmentVariables(sb.ToString());
 #endif
 		}
+
+		#endregion
 	}
 }

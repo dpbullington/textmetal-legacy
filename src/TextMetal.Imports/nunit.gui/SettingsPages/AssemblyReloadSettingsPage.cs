@@ -7,6 +7,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Windows.Forms;
 
 using NUnit.UiKit;
@@ -51,7 +52,7 @@ namespace NUnit.Gui.SettingsPages
 		}
 
 		/// <summary>
-		/// 	Clean up any resources being used.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose(bool disposing)
 		{
@@ -64,35 +65,35 @@ namespace NUnit.Gui.SettingsPages
 		}
 
 		/// <summary>
-		/// 	Required method for Designer support - do not modify
-		/// 	the contents of this method with the code editor.
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.label1 = new System.Windows.Forms.Label();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.rerunOnChangeCheckBox = new System.Windows.Forms.CheckBox();
-			this.reloadOnRunCheckBox = new System.Windows.Forms.CheckBox();
-			this.reloadOnChangeCheckBox = new System.Windows.Forms.CheckBox();
-			this.helpProvider1 = new System.Windows.Forms.HelpProvider();
+			this.label1 = new Label();
+			this.groupBox1 = new GroupBox();
+			this.rerunOnChangeCheckBox = new CheckBox();
+			this.reloadOnRunCheckBox = new CheckBox();
+			this.reloadOnChangeCheckBox = new CheckBox();
+			this.helpProvider1 = new HelpProvider();
 			this.SuspendLayout();
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(8, 4);
+			this.label1.Location = new Point(8, 4);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(88, 13);
+			this.label1.Size = new Size(88, 13);
 			this.label1.TabIndex = 7;
 			this.label1.Text = "Assembly Reload";
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-			                                                              | System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox1.Location = new System.Drawing.Point(181, 4);
+			this.groupBox1.Anchor = ((AnchorStyles)(((AnchorStyles.Top | AnchorStyles.Left)
+													| AnchorStyles.Right)));
+			this.groupBox1.Location = new Point(181, 4);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(259, 8);
+			this.groupBox1.Size = new Size(259, 8);
 			this.groupBox1.TabIndex = 6;
 			this.groupBox1.TabStop = false;
 			// 
@@ -101,11 +102,11 @@ namespace NUnit.Gui.SettingsPages
 			this.rerunOnChangeCheckBox.AutoSize = true;
 			this.rerunOnChangeCheckBox.Enabled = false;
 			this.helpProvider1.SetHelpString(this.rerunOnChangeCheckBox, "If checked, the last tests run will be re-run automatically whenever the assembly" +
-			                                                             " changes.");
-			this.rerunOnChangeCheckBox.Location = new System.Drawing.Point(48, 96);
+																		" changes.");
+			this.rerunOnChangeCheckBox.Location = new Point(48, 96);
 			this.rerunOnChangeCheckBox.Name = "rerunOnChangeCheckBox";
 			this.helpProvider1.SetShowHelp(this.rerunOnChangeCheckBox, true);
-			this.rerunOnChangeCheckBox.Size = new System.Drawing.Size(120, 17);
+			this.rerunOnChangeCheckBox.Size = new Size(120, 17);
 			this.rerunOnChangeCheckBox.TabIndex = 13;
 			this.rerunOnChangeCheckBox.Text = "Re-run last tests run";
 			// 
@@ -113,10 +114,10 @@ namespace NUnit.Gui.SettingsPages
 			// 
 			this.reloadOnRunCheckBox.AutoSize = true;
 			this.helpProvider1.SetHelpString(this.reloadOnRunCheckBox, "If checked, the assembly is reloaded before each run");
-			this.reloadOnRunCheckBox.Location = new System.Drawing.Point(24, 32);
+			this.reloadOnRunCheckBox.Location = new Point(24, 32);
 			this.reloadOnRunCheckBox.Name = "reloadOnRunCheckBox";
 			this.helpProvider1.SetShowHelp(this.reloadOnRunCheckBox, true);
-			this.reloadOnRunCheckBox.Size = new System.Drawing.Size(158, 17);
+			this.reloadOnRunCheckBox.Size = new Size(158, 17);
 			this.reloadOnRunCheckBox.TabIndex = 11;
 			this.reloadOnRunCheckBox.Text = "Reload before each test run";
 			// 
@@ -124,14 +125,14 @@ namespace NUnit.Gui.SettingsPages
 			// 
 			this.reloadOnChangeCheckBox.AutoSize = true;
 			this.helpProvider1.SetHelpString(this.reloadOnChangeCheckBox, "If checked, the assembly is reloaded whenever it changes. Changes to this setting" +
-			                                                              " do not take effect until the next time an assembly is loaded.");
-			this.reloadOnChangeCheckBox.Location = new System.Drawing.Point(24, 64);
+																		" do not take effect until the next time an assembly is loaded.");
+			this.reloadOnChangeCheckBox.Location = new Point(24, 64);
 			this.reloadOnChangeCheckBox.Name = "reloadOnChangeCheckBox";
 			this.helpProvider1.SetShowHelp(this.reloadOnChangeCheckBox, true);
-			this.reloadOnChangeCheckBox.Size = new System.Drawing.Size(199, 17);
+			this.reloadOnChangeCheckBox.Size = new Size(199, 17);
 			this.reloadOnChangeCheckBox.TabIndex = 12;
 			this.reloadOnChangeCheckBox.Text = "Reload when test assembly changes";
-			this.reloadOnChangeCheckBox.CheckedChanged += new System.EventHandler(this.reloadOnChangeCheckBox_CheckedChanged);
+			this.reloadOnChangeCheckBox.CheckedChanged += new EventHandler(this.reloadOnChangeCheckBox_CheckedChanged);
 			// 
 			// AssemblyReloadSettingsPage
 			// 

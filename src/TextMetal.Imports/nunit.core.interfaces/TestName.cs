@@ -9,12 +9,12 @@ using System;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	TestName encapsulates all info needed to identify and
-	/// 	locate a test that has been loaded by a runner. It consists
-	/// 	of a three components: the simple name of the test, an int
-	/// 	id that is unique to a given tree of tests and an int 
-	/// 	runner id that identifies the particular runner that
-	/// 	holds the test instance.
+	/// TestName encapsulates all info needed to identify and
+	/// locate a test that has been loaded by a runner. It consists
+	/// of a three components: the simple name of the test, an int
+	/// id that is unique to a given tree of tests and an int
+	/// runner id that identifies the particular runner that
+	/// holds the test instance.
 	/// </summary>
 	[Serializable]
 	public class TestName : ICloneable
@@ -22,19 +22,19 @@ namespace NUnit.Core
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The fully qualified name of the test
+		/// The fully qualified name of the test
 		/// </summary>
 		private string fullName;
 
 		/// <summary>
-		/// 	The simple name of the test, without qualification
+		/// The simple name of the test, without qualification
 		/// </summary>
 		private string name;
 
 		private int runnerID;
 
 		/// <summary>
-		/// 	ID that uniquely identifies the test
+		/// ID that uniquely identifies the test
 		/// </summary>
 		private TestID testID;
 
@@ -43,7 +43,7 @@ namespace NUnit.Core
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets or sets the full (qualified) name of the test
+		/// Gets or sets the full (qualified) name of the test
 		/// </summary>
 		public string FullName
 		{
@@ -58,7 +58,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets or sets the simple name of the test
+		/// Gets or sets the simple name of the test
 		/// </summary>
 		public string Name
 		{
@@ -73,8 +73,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the ID for the runner that created the test from
-		/// 	the TestID, or returns -1 if the TestID is null.
+		/// Gets the ID for the runner that created the test from
+		/// the TestID, or returns -1 if the TestID is null.
 		/// </summary>
 		public int RunnerID
 		{
@@ -89,7 +89,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets or sets the TestID that uniquely identifies this test
+		/// Gets or sets the TestID that uniquely identifies this test
 		/// </summary>
 		public TestID TestID
 		{
@@ -104,8 +104,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Get the string representation of this test name, incorporating all
-		/// 	the components of the name.
+		/// Get the string representation of this test name, incorporating all
+		/// the components of the name.
 		/// </summary>
 		public string UniqueName
 		{
@@ -123,8 +123,8 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Parse a string representation of a TestName,
-		/// 	returning a TestName.
+		/// Parse a string representation of a TestName,
+		/// returning a TestName.
 		/// </summary>
 		/// <param name="s"> The string to parse </param>
 		/// <returns> A TestName </returns>
@@ -158,7 +158,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Returns a duplicate of this TestName
+		/// Returns a duplicate of this TestName
 		/// </summary>
 		/// <returns> </returns>
 		public object Clone()
@@ -167,7 +167,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Compares two TestNames for equality
+		/// Compares two TestNames for equality
 		/// </summary>
 		/// <param name="obj"> the other TestID </param>
 		/// <returns> True if the two TestIDs are equal </returns>
@@ -178,12 +178,12 @@ namespace NUnit.Core
 				return base.Equals(obj);
 
 			return this.TestID == other.testID
-			       && this.runnerID == other.runnerID
-			       && this.fullName == other.fullName;
+					&& this.runnerID == other.runnerID
+					&& this.fullName == other.fullName;
 		}
 
 		/// <summary>
-		/// 	Calculates a hashcode for this TestID
+		/// Calculates a hashcode for this TestID
 		/// </summary>
 		/// <returns> The hash code. </returns>
 		public override int GetHashCode()
@@ -192,7 +192,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Override ToString() to display the UniqueName
+		/// Override ToString() to display the UniqueName
 		/// </summary>
 		/// <returns> </returns>
 		public override string ToString()
@@ -201,7 +201,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Override the == operator
+		/// Override the == operator
 		/// </summary>
 		/// <param name="name1"> </param>
 		/// <param name="name2"> </param>
@@ -215,7 +215,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Override the != operator
+		/// Override the != operator
 		/// </summary>
 		/// <param name="name1"> </param>
 		/// <param name="name2"> </param>

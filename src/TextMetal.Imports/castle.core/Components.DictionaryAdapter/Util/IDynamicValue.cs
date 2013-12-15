@@ -19,15 +19,26 @@ namespace Castle.Components.DictionaryAdapter
 	/// </summary>
 	public interface IDynamicValue
 	{
+		#region Methods/Operators
+
 		object GetValue();
+
+		#endregion
 	}
 
 	/// <summary>
 	/// Contract for typed dynamic value resolution.
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
+	/// <typeparam name="T"> </typeparam>
 	public interface IDynamicValue<T> : IDynamicValue
 	{
-		T Value { get; }
+		#region Properties/Indexers/Events
+
+		T Value
+		{
+			get;
+		}
+
+		#endregion
 	}
 }

@@ -12,17 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
+
+using Castle.DynamicProxy.Generators.Emitters;
+
 namespace Castle.DynamicProxy.Generators
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Reflection;
-	using System.Reflection.Emit;
-
-	using Castle.DynamicProxy.Generators.Emitters;
 
 	public class MetaProperty : MetaTypeElement, IEquatable<MetaProperty>
 	{
+		#region Constructors/Destructors
+
+		public MetaProperty(string name, Type propertyType, Type declaringType, MetaMethod getter, MetaMethod setter,
+			IEnumerable<CustomAttributeBuilder> customAttributes, Type[] arguments)
+			: base(declaringType)
+		{
+			this.name = name;
+			this.type = propertyType;
+			this.getter = getter;
+			this.setter = setter;
+			this.attributes = PropertyAttributes.None;
+			this.customAttributes = customAttributes;
+			this.arguments = arguments ?? Type.EmptyTypes;
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
 		private readonly Type[] arguments;
 		private readonly PropertyAttributes attributes;
 		private readonly IEnumerable<CustomAttributeBuilder> customAttributes;
@@ -32,44 +52,44 @@ namespace Castle.DynamicProxy.Generators
 		private PropertyEmitter emitter;
 		private string name;
 
-		public MetaProperty(string name, Type propertyType, Type declaringType, MetaMethod getter, MetaMethod setter,
-		                    IEnumerable<CustomAttributeBuilder> customAttributes, Type[] arguments)
-			: base(declaringType)
-		{
-			this.name = name;
-			type = propertyType;
-			this.getter = getter;
-			this.setter = setter;
-			attributes = PropertyAttributes.None;
-			this.customAttributes = customAttributes;
-			this.arguments = arguments ?? Type.EmptyTypes;
-		}
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		public Type[] Arguments
 		{
-			get { return arguments; }
+			get
+			{
+				return this.arguments;
+			}
 		}
 
 		public bool CanRead
 		{
-			get { return getter != null; }
+			get
+			{
+				return this.getter != null;
+			}
 		}
 
 		public bool CanWrite
 		{
-			get { return setter != null; }
+			get
+			{
+				return this.setter != null;
+			}
 		}
 
 		public PropertyEmitter Emitter
 		{
 			get
 			{
-				if (emitter == null)
+				if (this.emitter == null)
 				{
 					throw new InvalidOperationException(
 						"Emitter is not initialized. You have to initialize it first using 'BuildPropertyEmitter' method");
 				}
-				return emitter;
+				return this.emitter;
 			}
 		}
 
@@ -77,122 +97,104 @@ namespace Castle.DynamicProxy.Generators
 		{
 			get
 			{
-				if (!CanRead)
-				{
+				if (!this.CanRead)
 					throw new InvalidOperationException();
-				}
-				return getter.Method;
+				return this.getter.Method;
 			}
 		}
 
 		public MetaMethod Getter
 		{
-			get { return getter; }
+			get
+			{
+				return this.getter;
+			}
 		}
 
 		public MethodInfo SetMethod
 		{
 			get
 			{
-				if (!CanWrite)
-				{
+				if (!this.CanWrite)
 					throw new InvalidOperationException();
-				}
-				return setter.Method;
+				return this.setter.Method;
 			}
 		}
 
 		public MetaMethod Setter
 		{
-			get { return setter; }
+			get
+			{
+				return this.setter;
+			}
 		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		public void BuildPropertyEmitter(ClassEmitter classEmitter)
 		{
-			if (emitter != null)
-			{
+			if (this.emitter != null)
 				throw new InvalidOperationException("Emitter is already created. It is illegal to invoke this method twice.");
-			}
 
-			emitter = classEmitter.CreateProperty(name, attributes, type, arguments);
-			foreach (var attribute in customAttributes)
-			{
-				emitter.DefineCustomAttribute(attribute);
-			}
+			this.emitter = classEmitter.CreateProperty(this.name, this.attributes, this.type, this.arguments);
+			foreach (var attribute in this.customAttributes)
+				this.emitter.DefineCustomAttribute(attribute);
 		}
 
 		public override bool Equals(object obj)
 		{
 			if (ReferenceEquals(null, obj))
-			{
 				return false;
-			}
 			if (ReferenceEquals(this, obj))
-			{
 				return true;
-			}
 			if (obj.GetType() != typeof(MetaProperty))
-			{
 				return false;
+			return this.Equals((MetaProperty)obj);
+		}
+
+		public bool Equals(MetaProperty other)
+		{
+			if (ReferenceEquals(null, other))
+				return false;
+
+			if (ReferenceEquals(this, other))
+				return true;
+
+			if (!this.type.Equals(other.type))
+				return false;
+
+			if (!StringComparer.OrdinalIgnoreCase.Equals(this.name, other.name))
+				return false;
+			if (this.Arguments.Length != other.Arguments.Length)
+				return false;
+			for (var i = 0; i < this.Arguments.Length; i++)
+			{
+				if (this.Arguments[i].Equals(other.Arguments[i]) == false)
+					return false;
 			}
-			return Equals((MetaProperty)obj);
+
+			return true;
 		}
 
 		public override int GetHashCode()
 		{
 			unchecked
 			{
-				return ((GetMethod != null ? GetMethod.GetHashCode() : 0)*397) ^ (SetMethod != null ? SetMethod.GetHashCode() : 0);
+				return ((this.GetMethod != null ? this.GetMethod.GetHashCode() : 0) * 397) ^ (this.SetMethod != null ? this.SetMethod.GetHashCode() : 0);
 			}
-		}
-
-		public bool Equals(MetaProperty other)
-		{
-			if (ReferenceEquals(null, other))
-			{
-				return false;
-			}
-
-			if (ReferenceEquals(this, other))
-			{
-				return true;
-			}
-
-			if (!type.Equals(other.type))
-			{
-				return false;
-			}
-
-			if (!StringComparer.OrdinalIgnoreCase.Equals(name, other.name))
-			{
-				return false;
-			}
-			if (Arguments.Length != other.Arguments.Length)
-			{
-				return false;
-			}
-			for (var i = 0; i < Arguments.Length; i++)
-			{
-				if (Arguments[i].Equals(other.Arguments[i]) == false)
-				{
-					return false;
-				}
-			}
-
-			return true;
 		}
 
 		internal override void SwitchToExplicitImplementation()
 		{
-			name = string.Format("{0}.{1}", sourceType.Name, name);
-			if (setter != null)
-			{
-				setter.SwitchToExplicitImplementation();
-			}
-			if (getter != null)
-			{
-				getter.SwitchToExplicitImplementation();
-			}
+			this.name = string.Format("{0}.{1}", this.sourceType.Name, this.name);
+			if (this.setter != null)
+				this.setter.SwitchToExplicitImplementation();
+			if (this.getter != null)
+				this.getter.SwitchToExplicitImplementation();
 		}
+
+		#endregion
 	}
 }

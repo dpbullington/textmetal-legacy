@@ -12,29 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection;
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System.Reflection;
-	using System.Reflection.Emit;
-
 	public class MethodInvocationExpression : Expression
 	{
-		protected readonly Expression[] args;
-		protected readonly MethodInfo method;
-		protected readonly Reference owner;
+		#region Constructors/Destructors
 
-		public MethodInvocationExpression(MethodInfo method, params Expression[] args) :
-			this(SelfReference.Self, method, args)
+		public MethodInvocationExpression(MethodInfo method, params Expression[] args)
+			:
+				this(SelfReference.Self, method, args)
 		{
 		}
 
-		public MethodInvocationExpression(MethodEmitter method, params Expression[] args) :
-			this(SelfReference.Self, method.MethodBuilder, args)
+		public MethodInvocationExpression(MethodEmitter method, params Expression[] args)
+			:
+				this(SelfReference.Self, method.MethodBuilder, args)
 		{
 		}
 
-		public MethodInvocationExpression(Reference owner, MethodEmitter method, params Expression[] args) :
-			this(owner, method.MethodBuilder, args)
+		public MethodInvocationExpression(Reference owner, MethodEmitter method, params Expression[] args)
+			:
+				this(owner, method.MethodBuilder, args)
 		{
 		}
 
@@ -45,25 +46,41 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 			this.args = args;
 		}
 
-		public bool VirtualCall { get; set; }
+		#endregion
+
+		#region Fields/Constants
+
+		protected readonly Expression[] args;
+		protected readonly MethodInfo method;
+		protected readonly Reference owner;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public bool VirtualCall
+		{
+			get;
+			set;
+		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		public override void Emit(IMemberEmitter member, ILGenerator gen)
 		{
-			ArgumentsUtil.EmitLoadOwnerAndReference(owner, gen);
+			ArgumentsUtil.EmitLoadOwnerAndReference(this.owner, gen);
 
-			foreach (var exp in args)
-			{
+			foreach (var exp in this.args)
 				exp.Emit(member, gen);
-			}
 
-			if (VirtualCall)
-			{
-				gen.Emit(OpCodes.Callvirt, method);
-			}
+			if (this.VirtualCall)
+				gen.Emit(OpCodes.Callvirt, this.method);
 			else
-			{
-				gen.Emit(OpCodes.Call, method);
-			}
+				gen.Emit(OpCodes.Call, this.method);
 		}
+
+		#endregion
 	}
 }

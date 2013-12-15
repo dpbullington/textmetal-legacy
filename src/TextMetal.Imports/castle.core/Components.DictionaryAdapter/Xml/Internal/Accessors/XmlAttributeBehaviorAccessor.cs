@@ -12,29 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Xml.Serialization;
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
-	using System.Xml.Serialization;
 
 	public class XmlAttributeBehaviorAccessor : XmlNodeAccessor,
 		IConfigurable<XmlAttributeAttribute>
 	{
-		internal static readonly XmlAccessorFactory<XmlAttributeBehaviorAccessor>
-			Factory = (name, type, context) => new XmlAttributeBehaviorAccessor(name, type, context);
+		#region Constructors/Destructors
 
 		public XmlAttributeBehaviorAccessor(string name, Type type, IXmlContext context)
 			: base(name, type, context)
 		{
-			if (Serializer.Kind != XmlTypeKind.Simple)
+			if (this.Serializer.Kind != XmlTypeKind.Simple)
 				throw Error.NotSupported();
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		internal static readonly XmlAccessorFactory<XmlAttributeBehaviorAccessor>
+			Factory = (name, type, context) => new XmlAttributeBehaviorAccessor(name, type, context);
+
+		#endregion
+
+		#region Methods/Operators
+
 		public void Configure(XmlAttributeAttribute attribute)
 		{
-			ConfigureLocalName   (attribute.AttributeName);
-			ConfigureNamespaceUri(attribute.Namespace);
+			this.ConfigureLocalName(attribute.AttributeName);
+			this.ConfigureNamespaceUri(attribute.Namespace);
 		}
 
 		public override void ConfigureNillable(bool nillable)
@@ -52,15 +64,18 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			throw Error.NotSupported();
 		}
 
-		public override IXmlCursor SelectPropertyNode(IXmlNode node, bool mutable)
-		{
-			return node.SelectChildren(this, Context, CursorFlags.Attributes.MutableIf(mutable));
-		}
-
 		public override IXmlCursor SelectCollectionNode(IXmlNode node, bool mutable)
 		{
 			throw Error.NotSupported();
 		}
+
+		public override IXmlCursor SelectPropertyNode(IXmlNode node, bool mutable)
+		{
+			return node.SelectChildren(this, this.Context, CursorFlags.Attributes.MutableIf(mutable));
+		}
+
+		#endregion
 	}
 }
+
 #endif

@@ -10,8 +10,8 @@ using NUnit.UiException.StackTraceAnalyzers;
 namespace NUnit.UiException.StackTraceAnalysers
 {
 	/// <summary>
-	/// 	Encapsulates a set of algorithms that try to match and locate
-	/// 	a path value coming from a raw stack trace line.
+	/// Encapsulates a set of algorithms that try to match and locate
+	/// a path value coming from a raw stack trace line.
 	/// </summary>
 	public class PathCompositeParser :
 		IErrorParser
@@ -19,7 +19,7 @@ namespace NUnit.UiException.StackTraceAnalysers
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Build a new instance of PathParser.
+		/// Build a new instance of PathParser.
 		/// </summary>
 		public PathCompositeParser()
 		{
@@ -27,12 +27,12 @@ namespace NUnit.UiException.StackTraceAnalysers
 			// that handle respectively Windows and Unix like paths.
 
 			this._array = new IErrorParser[]
-			              {
-				              new WindowsPathParser(),
-				              new UnixPathParser()
+						{
+							new WindowsPathParser(),
+							new UnixPathParser()
 
-				              // add your own parser here
-			              };
+							// add your own parser here
+						};
 
 			return;
 		}
@@ -42,9 +42,9 @@ namespace NUnit.UiException.StackTraceAnalysers
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	This array encapsulates a list of classes that inherit from
-		/// 	IErrorParser. Each instance is made for handling a path from
-		/// 	a specific file system such as: Windows or UNIX.
+		/// This array encapsulates a list of classes that inherit from
+		/// IErrorParser. Each instance is made for handling a path from
+		/// a specific file system such as: Windows or UNIX.
 		/// </summary>
 		private IErrorParser[] _array;
 
@@ -53,8 +53,8 @@ namespace NUnit.UiException.StackTraceAnalysers
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gives access to the IErrorParser instance that handles
-		/// 	Unix like path values.
+		/// Gives access to the IErrorParser instance that handles
+		/// Unix like path values.
 		/// </summary>
 		public IErrorParser UnixPathParser
 		{
@@ -65,8 +65,8 @@ namespace NUnit.UiException.StackTraceAnalysers
 		}
 
 		/// <summary>
-		/// 	Gives access to the IErrorParser instance that handles
-		/// 	Windows like path values.
+		/// Gives access to the IErrorParser instance that handles
+		/// Windows like path values.
 		/// </summary>
 		public IErrorParser WindowsPathParser
 		{
@@ -81,7 +81,7 @@ namespace NUnit.UiException.StackTraceAnalysers
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Helper method that locate the trailing ':' in a stack trace row.
+		/// Helper method that locate the trailing ':' in a stack trace row.
 		/// </summary>
 		/// <returns> The index position of ':' in the string or -1 if not found. </returns>
 		public static int IndexOfTrailingColon(string error, int startIndex)
@@ -98,9 +98,9 @@ namespace NUnit.UiException.StackTraceAnalysers
 		}
 
 		/// <summary>
-		/// 	Try to read from a stack trace line a path value given either
-		/// 	under the form of a Windows path or a UNIX path. If a match occurs
-		/// 	the method fills args.Function with the identified data.
+		/// Try to read from a stack trace line a path value given either
+		/// under the form of a Windows path or a UNIX path. If a match occurs
+		/// the method fills args.Function with the identified data.
 		/// </summary>
 		/// <param name="parser"> The instance of StackTraceParser, this parameter cannot be null. </param>
 		/// <param name="args"> The instance of RawError from where read and write RawError.Input and RawError.Function properties. This parameter cannot be null. </param>

@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+
 #if CLR_2_0 || CLR_4_0
 
 #endif
@@ -15,15 +16,15 @@ using System.Reflection;
 namespace NUnit.Framework.Constraints
 {
 	/// <summary>
-	/// 	NUnitComparer encapsulates NUnit's default behavior
-	/// 	in comparing two objects.
+	/// NUnitComparer encapsulates NUnit's default behavior
+	/// in comparing two objects.
 	/// </summary>
 	public class NUnitComparer : IComparer
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Returns the default NUnitComparer.
+		/// Returns the default NUnitComparer.
 		/// </summary>
 		public static NUnitComparer Default
 		{
@@ -38,7 +39,7 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Compares two objects
+		/// Compares two objects
 		/// </summary>
 		/// <param name="x"> </param>
 		/// <param name="y"> </param>
@@ -78,7 +79,7 @@ namespace NUnit.Framework.Constraints
 
 #if CLR_2_0 || CLR_4_0
 	/// <summary>
-	/// 	Generic version of NUnitComparer
+	/// Generic version of NUnitComparer
 	/// </summary>
 	/// <typeparam name="T"> </typeparam>
 	public class NUnitComparer<T> : IComparer<T>
@@ -86,7 +87,7 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Compare two objects of the same type
+		/// Compare two objects of the same type
 		/// </summary>
 		public int Compare(T x, T y)
 		{

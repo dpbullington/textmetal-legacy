@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.ObjectModel;
+
 namespace Castle.DynamicProxy.Generators.Emitters
 {
-	using System.Collections.ObjectModel;
-
 	public class ConstructorCollection : Collection<ConstructorEmitter>
 	{
 	}

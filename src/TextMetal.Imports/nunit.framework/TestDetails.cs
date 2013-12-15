@@ -12,20 +12,20 @@ using System.Reflection;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	Provides details about a test
+	/// Provides details about a test
 	/// </summary>
 	public class TestDetails
 	{
 		#region Constructors/Destructors
 
-		///<summary>
-		///	Creates an instance of TestDetails
-		///</summary>
-		///<param name="fixture"> The fixture that the test is a member of, if available. </param>
-		///<param name="method"> The method that implements the test, if available. </param>
-		///<param name="fullName"> The full name of the test. </param>
-		///<param name="type"> A string representing the type of test, e.g. "Test Case". </param>
-		///<param name="isSuite"> Indicates if the test represents a suite of tests. </param>
+		/// <summary>
+		/// Creates an instance of TestDetails
+		/// </summary>
+		/// <param name="fixture"> The fixture that the test is a member of, if available. </param>
+		/// <param name="method"> The method that implements the test, if available. </param>
+		/// <param name="fullName"> The full name of the test. </param>
+		/// <param name="type"> A string representing the type of test, e.g. "Test Case". </param>
+		/// <param name="isSuite"> Indicates if the test represents a suite of tests. </param>
 		public TestDetails(object fixture, MethodInfo method, string fullName, string type, bool isSuite)
 		{
 			this.Fixture = fixture;
@@ -40,9 +40,9 @@ namespace NUnit.Framework
 
 		#region Properties/Indexers/Events
 
-		///<summary>
-		///	The fixture that the test is a member of, if available.
-		///</summary>
+		/// <summary>
+		/// The fixture that the test is a member of, if available.
+		/// </summary>
 		public object Fixture
 		{
 			get;
@@ -50,7 +50,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	The full name of the test.
+		/// The full name of the test.
 		/// </summary>
 		public string FullName
 		{
@@ -59,7 +59,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Indicates if the test represents a suite of tests.
+		/// Indicates if the test represents a suite of tests.
 		/// </summary>
 		public bool IsSuite
 		{
@@ -68,7 +68,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	The method that implements the test, if available.
+		/// The method that implements the test, if available.
 		/// </summary>
 		public MethodInfo Method
 		{
@@ -77,7 +77,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	A string representing the type of test, e.g. "Test Case".
+		/// A string representing the type of test, e.g. "Test Case".
 		/// </summary>
 		public string Type
 		{

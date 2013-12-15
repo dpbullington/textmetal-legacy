@@ -23,16 +23,16 @@ using NMock2.Syntax;
 namespace NMock2
 {
 	/// <summary>
-	/// 	Defines stubs for interfaces. Stubs are used when it does not matter how many times (even 0) something is called.
-	/// 	A stub is the same as an "at least once" expecation.
-	/// 	Normally you use stubs on mocks that just provide information to your object under test.
+	/// Defines stubs for interfaces. Stubs are used when it does not matter how many times (even 0) something is called.
+	/// A stub is the same as an "at least once" expecation.
+	/// Normally you use stubs on mocks that just provide information to your object under test.
 	/// </summary>
 	public class Stub
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Defines the mock that is stubbed.
+		/// Defines the mock that is stubbed.
 		/// </summary>
 		/// <param name="mock"> The mock to stub. </param>
 		/// <returns> Method syntax defining the method, property or event to stub. </returns>

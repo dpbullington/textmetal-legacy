@@ -12,8 +12,8 @@ using System.Reflection;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	Abstract base class for attributes that apply to parameters 
-	/// 	and supply data for the parameter.
+	/// Abstract base class for attributes that apply to parameters
+	/// and supply data for the parameter.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
 	public abstract class ParameterDataAttribute : Attribute
@@ -21,7 +21,7 @@ namespace NUnit.Framework
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Gets the data to be provided to the specified parameter
+		/// Gets the data to be provided to the specified parameter
 		/// </summary>
 		public abstract IEnumerable GetData(ParameterInfo parameter);
 
@@ -29,8 +29,8 @@ namespace NUnit.Framework
 	}
 
 	/// <summary>
-	/// 	ValuesAttribute is used to provide literal arguments for
-	/// 	an individual parameter of a test.
+	/// ValuesAttribute is used to provide literal arguments for
+	/// an individual parameter of a test.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
 	public class ValuesAttribute : ParameterDataAttribute
@@ -38,7 +38,7 @@ namespace NUnit.Framework
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct with one argument
+		/// Construct with one argument
 		/// </summary>
 		/// <param name="arg1"> </param>
 		public ValuesAttribute(object arg1)
@@ -47,7 +47,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Construct with two arguments
+		/// Construct with two arguments
 		/// </summary>
 		/// <param name="arg1"> </param>
 		/// <param name="arg2"> </param>
@@ -57,7 +57,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Construct with three arguments
+		/// Construct with three arguments
 		/// </summary>
 		/// <param name="arg1"> </param>
 		/// <param name="arg2"> </param>
@@ -68,7 +68,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Construct with an array of arguments
+		/// Construct with an array of arguments
 		/// </summary>
 		/// <param name="args"> </param>
 		public ValuesAttribute(params object[] args)
@@ -81,11 +81,11 @@ namespace NUnit.Framework
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The collection of data to be returned. Must
-		/// 	be set by any derived attribute classes.
-		/// 	We use an object[] so that the individual
-		/// 	elements may have their type changed in GetData
-		/// 	if necessary.
+		/// The collection of data to be returned. Must
+		/// be set by any derived attribute classes.
+		/// We use an object[] so that the individual
+		/// elements may have their type changed in GetData
+		/// if necessary.
 		/// </summary>
 		// TODO: This causes a lot of boxing so we should eliminate it.
 		protected object[] data;
@@ -95,7 +95,7 @@ namespace NUnit.Framework
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Get the collection of values to be used as arguments
+		/// Get the collection of values to be used as arguments
 		/// </summary>
 		public override IEnumerable GetData(ParameterInfo parameter)
 		{
@@ -109,7 +109,7 @@ namespace NUnit.Framework
 					continue;
 
 				if (arg.GetType().FullName == "NUnit.Framework.SpecialValue" &&
-				    arg.ToString() == "Null")
+					arg.ToString() == "Null")
 				{
 					this.data[i] = null;
 					continue;

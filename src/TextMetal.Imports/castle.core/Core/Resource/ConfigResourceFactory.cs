@@ -14,15 +14,21 @@
 
 namespace Castle.Core.Resource
 {
-	#if !SILVERLIGHT
+#if !SILVERLIGHT
 
 	using System;
 
 	public class ConfigResourceFactory : IResourceFactory
 	{
+		#region Constructors/Destructors
+
 		public ConfigResourceFactory()
 		{
 		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		public bool Accept(CustomUri uri)
 		{
@@ -36,9 +42,11 @@ namespace Castle.Core.Resource
 
 		public IResource Create(CustomUri uri, String basePath)
 		{
-			return Create(uri);
+			return this.Create(uri);
 		}
+
+		#endregion
 	}
-	
-	#endif
+
+#endif
 }

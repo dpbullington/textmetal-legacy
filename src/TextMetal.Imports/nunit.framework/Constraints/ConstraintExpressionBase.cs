@@ -9,22 +9,21 @@ using System;
 namespace NUnit.Framework.Constraints
 {
 	/// <summary>
-	/// 	ConstraintExpressionBase is the abstract base class for the 
-	/// 	ConstraintExpression class, which represents a 
-	/// 	compound constraint in the process of being constructed 
-	/// 	from a series of syntactic elements.
-	/// 
-	/// 	NOTE: ConstraintExpressionBase is separate because the
-	/// 	ConstraintExpression class was generated in earlier
-	/// 	versions of NUnit. The two classes may be combined
-	/// 	in a future version.
+	/// ConstraintExpressionBase is the abstract base class for the
+	/// ConstraintExpression class, which represents a
+	/// compound constraint in the process of being constructed
+	/// from a series of syntactic elements.
+	/// NOTE: ConstraintExpressionBase is separate because the
+	/// ConstraintExpression class was generated in earlier
+	/// versions of NUnit. The two classes may be combined
+	/// in a future version.
 	/// </summary>
 	public abstract class ConstraintExpressionBase
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:ConstraintExpressionBase" /> class.
+		/// Initializes a new instance of the <see cref="T:ConstraintExpressionBase" /> class.
 		/// </summary>
 		public ConstraintExpressionBase()
 		{
@@ -32,8 +31,8 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:ConstraintExpressionBase" /> 
-		/// 	class passing in a ConstraintBuilder, which may be pre-populated.
+		/// Initializes a new instance of the <see cref="T:ConstraintExpressionBase" />
+		/// class passing in a ConstraintBuilder, which may be pre-populated.
 		/// </summary>
 		/// <param name="builder"> The builder. </param>
 		public ConstraintExpressionBase(ConstraintBuilder builder)
@@ -46,7 +45,7 @@ namespace NUnit.Framework.Constraints
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The ConstraintBuilder holding the elements recognized so far
+		/// The ConstraintBuilder holding the elements recognized so far
 		/// </summary>
 		protected ConstraintBuilder builder;
 
@@ -55,8 +54,8 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Appends an operator to the expression and returns the
-		/// 	resulting expression itself.
+		/// Appends an operator to the expression and returns the
+		/// resulting expression itself.
 		/// </summary>
 		public ConstraintExpression Append(ConstraintOperator op)
 		{
@@ -65,8 +64,8 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Appends a self-resolving operator to the expression and
-		/// 	returns a new ResolvableConstraintExpression.
+		/// Appends a self-resolving operator to the expression and
+		/// returns a new ResolvableConstraintExpression.
 		/// </summary>
 		public ResolvableConstraintExpression Append(SelfResolvingOperator op)
 		{
@@ -75,9 +74,9 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Appends a constraint to the expression and returns that
-		/// 	constraint, which is associated with the current state
-		/// 	of the expression being built.
+		/// Appends a constraint to the expression and returns that
+		/// constraint, which is associated with the current state
+		/// of the expression being built.
 		/// </summary>
 		public Constraint Append(Constraint constraint)
 		{
@@ -86,9 +85,9 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Returns a string representation of the expression as it
-		/// 	currently stands. This should only be used for testing,
-		/// 	since it has the side-effect of resolving the expression.
+		/// Returns a string representation of the expression as it
+		/// currently stands. This should only be used for testing,
+		/// since it has the side-effect of resolving the expression.
 		/// </summary>
 		/// <returns> </returns>
 		public override string ToString()

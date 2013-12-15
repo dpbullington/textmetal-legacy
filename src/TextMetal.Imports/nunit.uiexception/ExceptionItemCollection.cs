@@ -10,9 +10,8 @@ using System.Collections.Generic;
 namespace NUnit.UiException
 {
 	/// <summary>
-	/// 	(formerly named ExceptionItemCollection)
-	/// 
-	/// 	Manages an ordered set of ErrorItem.
+	/// (formerly named ExceptionItemCollection)
+	/// Manages an ordered set of ErrorItem.
 	/// </summary>
 	public class ErrorItemCollection :
 		IEnumerable
@@ -20,7 +19,7 @@ namespace NUnit.UiException
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Build a new ErrorItemCollection.
+		/// Build a new ErrorItemCollection.
 		/// </summary>
 		public ErrorItemCollection()
 		{
@@ -34,7 +33,7 @@ namespace NUnit.UiException
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The underlying item list.
+		/// The underlying item list.
 		/// </summary>
 		private List<ErrorItem> _items;
 
@@ -43,7 +42,7 @@ namespace NUnit.UiException
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the ErrorItem at the specified index.
+		/// Gets the ErrorItem at the specified index.
 		/// </summary>
 		/// <param name="index"> The index of the wanted ErrorItem. </param>
 		/// <returns> The ErrorItem. </returns>
@@ -56,7 +55,7 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Gets the number of item in this collection.
+		/// Gets the number of item in this collection.
 		/// </summary>
 		public int Count
 		{
@@ -71,7 +70,7 @@ namespace NUnit.UiException
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Appends the given item to the end of the collection.
+		/// Appends the given item to the end of the collection.
 		/// </summary>
 		/// <param name="item"> The ErrorItem to be added to the collection. </param>
 		public void Add(ErrorItem item)
@@ -83,7 +82,7 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Clears all items from this collection.
+		/// Clears all items from this collection.
 		/// </summary>
 		public void Clear()
 		{
@@ -96,7 +95,7 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Checks whether the given item belongs to this collection.
+		/// Checks whether the given item belongs to this collection.
 		/// </summary>
 		/// <param name="item"> The item to be checked. </param>
 		/// <returns> True if the item belongs to this collection. </returns>
@@ -106,8 +105,8 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Gets an IEnumerator able to iterate through all ExceptionItems
-		/// 	managed by this collection.
+		/// Gets an IEnumerator able to iterate through all ExceptionItems
+		/// managed by this collection.
 		/// </summary>
 		/// <returns> An iterator to be used to iterator through all items in this collection. </returns>
 		public IEnumerator GetEnumerator()
@@ -116,7 +115,7 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Reverses the sequence order of this collection.
+		/// Reverses the sequence order of this collection.
 		/// </summary>
 		public void Reverse()
 		{

@@ -12,18 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	// Namespace for Guid type
 	public static class Wsdl
 	{
+		#region Fields/Constants
+
 		public const string
-			Prefix        = "wsdl",
-			NamespaceUri  = "http://microsoft.com/wsdl/types/";
+			NamespaceUri = "http://microsoft.com/wsdl/types/";
+
+		public const string
+			Prefix = "wsdl";
 
 		internal static readonly XmlNamespaceAttribute
 			Namespace = new XmlNamespaceAttribute(NamespaceUri, Prefix) { Root = true };
+
+		#endregion
 	}
 }
+
 #endif

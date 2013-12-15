@@ -7,40 +7,60 @@
 
 using System;
 using System.Xml;
+
 using Intelligencia.UrlRewriter.Configuration;
 
 namespace Intelligencia.UrlRewriter
 {
-    /// <summary>
-    /// Interface defining a parser which parses an XML node and returns the correct
-    /// IRewriteAction instance based on the node.
-    /// </summary>
-    public interface IRewriteActionParser
-    {
-        /// <summary>
-        /// Parses the node if possible.  The parser may be called on an action node
-        /// that it cannot parse, if it is registered on a common verb
-        /// which is shared by several action parsers (e.g., set).
-        /// </summary>
-        /// <param name="node">The node to parse.</param>
-        /// <param name="config">The rewriter configuration.</param>
-        /// <returns>The action parsed.  If the parser could not parse the node,
-        /// it <strong>must</strong> return null.</returns>
-        IRewriteAction Parse(XmlNode node, RewriterConfiguration config);
+	/// <summary>
+	/// Interface defining a parser which parses an XML node and returns the correct
+	/// IRewriteAction instance based on the node.
+	/// </summary>
+	public interface IRewriteActionParser
+	{
+		#region Properties/Indexers/Events
 
-        /// <summary>
-        /// The name of the action.
-        /// </summary>
-        string Name { get; }
+		/// <summary>
+		/// Whether the action allows attributes.
+		/// </summary>
+		bool AllowsAttributes
+		{
+			get;
+		}
 
-        /// <summary>
-        /// Whether the action allows nested actions.
-        /// </summary>
-        bool AllowsNestedActions { get; }
+		/// <summary>
+		/// Whether the action allows nested actions.
+		/// </summary>
+		bool AllowsNestedActions
+		{
+			get;
+		}
 
-        /// <summary>
-        /// Whether the action allows attributes.
-        /// </summary>
-        bool AllowsAttributes { get; }
-    }
+		/// <summary>
+		/// The name of the action.
+		/// </summary>
+		string Name
+		{
+			get;
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		/// <summary>
+		/// Parses the node if possible.  The parser may be called on an action node
+		/// that it cannot parse, if it is registered on a common verb
+		/// which is shared by several action parsers (e.g., set).
+		/// </summary>
+		/// <param name="node"> The node to parse. </param>
+		/// <param name="config"> The rewriter configuration. </param>
+		/// <returns>
+		/// The action parsed.  If the parser could not parse the node,
+		/// it <strong> must </strong> return null.
+		/// </returns>
+		IRewriteAction Parse(XmlNode node, RewriterConfiguration config);
+
+		#endregion
+	}
 }

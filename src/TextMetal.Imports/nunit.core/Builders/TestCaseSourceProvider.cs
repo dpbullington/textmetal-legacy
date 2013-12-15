@@ -13,8 +13,8 @@ using NUnit.Core.Extensibility;
 namespace NUnit.Core.Builders
 {
 	/// <summary>
-	/// 	TestCaseSourceProvider provides data for methods
-	/// 	annotated with the TestCaseSourceAttribute.
+	/// TestCaseSourceProvider provides data for methods
+	/// annotated with the TestCaseSourceAttribute.
 	/// </summary>
 	public class TestCaseSourceProvider : ITestCaseProvider2
 	{
@@ -52,8 +52,8 @@ namespace NUnit.Core.Builders
 		}
 
 		/// <summary>
-		/// 	Return an IEnumerable providing test cases for use in
-		/// 	running a parameterized test.
+		/// Return an IEnumerable providing test cases for use in
+		/// running a parameterized test.
 		/// </summary>
 		/// <param name="method"> </param>
 		/// <returns> </returns>
@@ -63,8 +63,8 @@ namespace NUnit.Core.Builders
 		}
 
 		/// <summary>
-		/// 	Return an IEnumerable providing test cases for use in
-		/// 	running a parameterized test.
+		/// Return an IEnumerable providing test cases for use in
+		/// running a parameterized test.
 		/// </summary>
 		/// <param name="method"> </param>
 		/// <returns> </returns>
@@ -91,7 +91,7 @@ namespace NUnit.Core.Builders
 						Type sourceType = source.GetType();
 
 						if (sourceType.GetInterface("NUnit.Framework.ITestCaseData") != null ||
-						    sourceType.GetInterface("NUnit.Framework.Api.ITestCaseData") != null)
+							sourceType.GetInterface("NUnit.Framework.Api.ITestCaseData") != null)
 							parms = ParameterSet.FromDataSource(source);
 						else
 						{
@@ -132,7 +132,7 @@ namespace NUnit.Core.Builders
 		}
 
 		/// <summary>
-		/// 	Determine whether any test cases are available for a parameterized method.
+		/// Determine whether any test cases are available for a parameterized method.
 		/// </summary>
 		/// <param name="method"> A MethodInfo representing a parameterized test </param>
 		/// <returns> True if any cases are available, otherwise false. </returns>
@@ -142,7 +142,7 @@ namespace NUnit.Core.Builders
 		}
 
 		/// <summary>
-		/// 	Determine whether any test cases are available for a parameterized method.
+		/// Determine whether any test cases are available for a parameterized method.
 		/// </summary>
 		/// <param name="method"> A MethodInfo representing a parameterized test </param>
 		/// <returns> True if any cases are available, otherwise false. </returns>

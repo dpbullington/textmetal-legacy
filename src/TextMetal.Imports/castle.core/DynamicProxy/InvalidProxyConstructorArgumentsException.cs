@@ -19,13 +19,31 @@ namespace Castle.DynamicProxy
 	[Serializable]
 	public class InvalidProxyConstructorArgumentsException : ArgumentException
 	{
-		public InvalidProxyConstructorArgumentsException(string message, Type proxyType, Type classToProxy) : base(message)
+		#region Constructors/Destructors
+
+		public InvalidProxyConstructorArgumentsException(string message, Type proxyType, Type classToProxy)
+			: base(message)
 		{
-			ProxyType = proxyType;
-			ClassToProxy = classToProxy;
+			this.ProxyType = proxyType;
+			this.ClassToProxy = classToProxy;
 		}
 
-		public Type ClassToProxy { get; private set; }
-		public Type ProxyType { get; private set; }
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public Type ClassToProxy
+		{
+			get;
+			private set;
+		}
+
+		public Type ProxyType
+		{
+			get;
+			private set;
+		}
+
+		#endregion
 	}
 }

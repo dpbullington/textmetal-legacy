@@ -12,8 +12,8 @@ using System.Windows.Forms;
 namespace NUnit.UiKit
 {
 	/// <summary>
-	/// 	LongRunningOperationDisplay shows an overlay message block 
-	/// 	that describes the operation in progress.
+	/// LongRunningOperationDisplay shows an overlay message block
+	/// that describes the operation in progress.
 	/// </summary>
 	public class LongRunningOperationDisplay : Form
 	{
@@ -45,7 +45,7 @@ namespace NUnit.UiKit
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Required designer variable.
+		/// Required designer variable.
 		/// </summary>
 		private Container components = null;
 
@@ -57,7 +57,7 @@ namespace NUnit.UiKit
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Clean up any resources being used.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose(bool disposing)
 		{
@@ -72,38 +72,38 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Required method for Designer support - do not modify
-		/// 	the contents of this method with the code editor.
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.operation = new System.Windows.Forms.Label();
+			this.operation = new Label();
 			this.SuspendLayout();
 			// 
 			// operation
 			// 
-			this.operation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.operation.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.operation.Font = new System.Drawing.Font(FontFamily.GenericSansSerif, 10.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.operation.Location = new System.Drawing.Point(0, 0);
+			this.operation.BorderStyle = BorderStyle.FixedSingle;
+			this.operation.Dock = DockStyle.Fill;
+			this.operation.Font = new Font(FontFamily.GenericSansSerif, 10.2F, FontStyle.Italic, GraphicsUnit.Point, ((Byte)(0)));
+			this.operation.Location = new Point(0, 0);
 			this.operation.Name = "operation";
-			this.operation.Size = new System.Drawing.Size(320, 40);
+			this.operation.Size = new Size(320, 40);
 			this.operation.TabIndex = 0;
-			this.operation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.operation.TextAlign = ContentAlignment.MiddleCenter;
 			// 
 			// LongRunningOperationDisplay
 			// 
-			this.BackColor = System.Drawing.Color.LightYellow;
-			this.ClientSize = new System.Drawing.Size(320, 40);
+			this.BackColor = Color.LightYellow;
+			this.ClientSize = new Size(320, 40);
 			this.ControlBox = false;
 			this.Controls.Add(this.operation);
-			this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+			this.Cursor = Cursors.WaitCursor;
+			this.FormBorderStyle = FormBorderStyle.None;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "LongRunningOperationDisplay";
 			this.ShowInTaskbar = false;
-			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+			this.StartPosition = FormStartPosition.Manual;
 			this.ResumeLayout(false);
 		}
 

@@ -1,4 +1,5 @@
 ﻿#region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,41 +22,67 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 namespace Newtonsoft.Json.Utilities
 {
-  internal struct StringReference
-  {
-    private readonly char[] _chars;
-    private readonly int _startIndex;
-    private readonly int _length;
+	internal struct StringReference
+	{
+		#region Constructors/Destructors
 
-    public char[] Chars
-    {
-      get { return _chars; }
-    }
+		public StringReference(char[] chars, int startIndex, int length)
+		{
+			this._chars = chars;
+			this._startIndex = startIndex;
+			this._length = length;
+		}
 
-    public int StartIndex
-    {
-      get { return _startIndex; }
-    }
+		#endregion
 
-    public int Length
-    {
-      get { return _length; }
-    }
+		#region Fields/Constants
 
-    public StringReference(char[] chars, int startIndex, int length)
-    {
-      _chars = chars;
-      _startIndex = startIndex;
-      _length = length;
-    }
+		private readonly char[] _chars;
+		private readonly int _length;
+		private readonly int _startIndex;
 
-    public override string ToString()
-    {
-      return new string(_chars, _startIndex, _length);
-    }
-  }
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public char[] Chars
+		{
+			get
+			{
+				return this._chars;
+			}
+		}
+
+		public int Length
+		{
+			get
+			{
+				return this._length;
+			}
+		}
+
+		public int StartIndex
+		{
+			get
+			{
+				return this._startIndex;
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		public override string ToString()
+		{
+			return new string(this._chars, this._startIndex, this._length);
+		}
+
+		#endregion
+	}
 }

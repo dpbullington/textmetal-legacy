@@ -12,35 +12,59 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	public class XmlDynamicSerializer : XmlTypeSerializer
 	{
+		#region Constructors/Destructors
+
+		protected XmlDynamicSerializer()
+		{
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
 		public static readonly XmlDynamicSerializer
 			Instance = new XmlDynamicSerializer();
 
-		protected XmlDynamicSerializer() { }
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		public override XmlTypeKind Kind
 		{
-			get { return XmlTypeKind.Simple; }
+			get
+			{
+				return XmlTypeKind.Simple;
+			}
 		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		public override object GetValue(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor)
 		{
 			return node.ClrType == typeof(object)
 				? new object()
-				: XmlTypeSerializer.For(node.ClrType).GetValue(node, parent, accessor);
+				: For(node.ClrType).GetValue(node, parent, accessor);
 		}
 
 		public override void SetValue(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor, object oldValue, ref object value)
 		{
 			if (node.ClrType != typeof(object))
-				XmlTypeSerializer.For(node.ClrType).SetValue(node, parent, accessor, oldValue, ref value);
+				For(node.ClrType).SetValue(node, parent, accessor, oldValue, ref value);
 			else
 				node.Clear();
 		}
+
+		#endregion
 	}
 }
+
 #endif

@@ -16,16 +16,30 @@ namespace Castle.Core.Internal
 {
 	internal class NoOpLock : ILockHolder
 	{
+		#region Fields/Constants
+
 		public static readonly ILockHolder Lock = new NoOpLock();
 
-		public void Dispose()
-		{
+		#endregion
 
-		}
+		#region Properties/Indexers/Events
 
 		public bool LockAcquired
 		{
-			get { return true; }
+			get
+			{
+				return true;
+			}
 		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		public void Dispose()
+		{
+		}
+
+		#endregion
 	}
 }

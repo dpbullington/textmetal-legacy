@@ -6,6 +6,7 @@
 
 using System;
 using System.Text.RegularExpressions;
+
 #if !NETCF
 
 #endif
@@ -16,16 +17,16 @@ namespace NUnit.Framework.Constraints
 	#region StringConstraint
 
 	/// <summary>
-	/// 	StringConstraint is the abstract base for constraints
-	/// 	that operate on strings. It supports the IgnoreCase
-	/// 	modifier for string operations.
+	/// StringConstraint is the abstract base for constraints
+	/// that operate on strings. It supports the IgnoreCase
+	/// modifier for string operations.
 	/// </summary>
 	public abstract class StringConstraint : Constraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Constructs a StringConstraint given an expected value
+		/// Constructs a StringConstraint given an expected value
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		public StringConstraint(string expected)
@@ -39,12 +40,12 @@ namespace NUnit.Framework.Constraints
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Indicates whether tests should be case-insensitive
+		/// Indicates whether tests should be case-insensitive
 		/// </summary>
 		protected bool caseInsensitive;
 
 		/// <summary>
-		/// 	The expected value
+		/// The expected value
 		/// </summary>
 		protected string expected;
 
@@ -53,7 +54,7 @@ namespace NUnit.Framework.Constraints
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Modify the constraint to ignore case in matching.
+		/// Modify the constraint to ignore case in matching.
 		/// </summary>
 		public StringConstraint IgnoreCase
 		{
@@ -72,14 +73,14 @@ namespace NUnit.Framework.Constraints
 	#region EmptyStringConstraint
 
 	/// <summary>
-	/// 	EmptyStringConstraint tests whether a string is empty.
+	/// EmptyStringConstraint tests whether a string is empty.
 	/// </summary>
 	public class EmptyStringConstraint : Constraint
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Test whether the constraint is satisfied by a given value
+		/// Test whether the constraint is satisfied by a given value
 		/// </summary>
 		/// <param name="actual"> The value to be tested </param>
 		/// <returns> True for success, false for failure </returns>
@@ -94,7 +95,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write the constraint description to a MessageWriter
+		/// Write the constraint description to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The writer on which the description is displayed </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -110,14 +111,14 @@ namespace NUnit.Framework.Constraints
 	#region NullOrEmptyStringConstraint
 
 	/// <summary>
-	/// 	NullEmptyStringConstraint tests whether a string is either null or empty.
+	/// NullEmptyStringConstraint tests whether a string is either null or empty.
 	/// </summary>
 	public class NullOrEmptyStringConstraint : Constraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Constructs a new NullOrEmptyStringConstraint
+		/// Constructs a new NullOrEmptyStringConstraint
 		/// </summary>
 		public NullOrEmptyStringConstraint()
 		{
@@ -129,7 +130,7 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Test whether the constraint is satisfied by a given value
+		/// Test whether the constraint is satisfied by a given value
 		/// </summary>
 		/// <param name="actual"> The value to be tested </param>
 		/// <returns> True for success, false for failure </returns>
@@ -147,7 +148,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write the constraint description to a MessageWriter
+		/// Write the constraint description to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The writer on which the description is displayed </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -163,15 +164,15 @@ namespace NUnit.Framework.Constraints
 	#region Substring Constraint
 
 	/// <summary>
-	/// 	SubstringConstraint can test whether a string contains
-	/// 	the expected substring.
+	/// SubstringConstraint can test whether a string contains
+	/// the expected substring.
 	/// </summary>
 	public class SubstringConstraint : StringConstraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:SubstringConstraint" /> class.
+		/// Initializes a new instance of the <see cref="T:SubstringConstraint" /> class.
 		/// </summary>
 		/// <param name="expected"> The expected. </param>
 		public SubstringConstraint(string expected)
@@ -184,7 +185,7 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Test whether the constraint is satisfied by a given value
+		/// Test whether the constraint is satisfied by a given value
 		/// </summary>
 		/// <param name="actual"> The value to be tested </param>
 		/// <returns> True for success, false for failure </returns>
@@ -202,7 +203,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write the constraint description to a MessageWriter
+		/// Write the constraint description to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The writer on which the description is displayed </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -221,15 +222,15 @@ namespace NUnit.Framework.Constraints
 	#region StartsWithConstraint
 
 	/// <summary>
-	/// 	StartsWithConstraint can test whether a string starts
-	/// 	with an expected substring.
+	/// StartsWithConstraint can test whether a string starts
+	/// with an expected substring.
 	/// </summary>
 	public class StartsWithConstraint : StringConstraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:StartsWithConstraint" /> class.
+		/// Initializes a new instance of the <see cref="T:StartsWithConstraint" /> class.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		public StartsWithConstraint(string expected)
@@ -242,9 +243,9 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Test whether the constraint is matched by the actual value.
-		/// 	This is a template method, which calls the IsMatch method
-		/// 	of the derived class.
+		/// Test whether the constraint is matched by the actual value.
+		/// This is a template method, which calls the IsMatch method
+		/// of the derived class.
 		/// </summary>
 		/// <param name="actual"> </param>
 		/// <returns> </returns>
@@ -262,7 +263,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write the constraint description to a MessageWriter
+		/// Write the constraint description to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The writer on which the description is displayed </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -281,15 +282,15 @@ namespace NUnit.Framework.Constraints
 	#region EndsWithConstraint
 
 	/// <summary>
-	/// 	EndsWithConstraint can test whether a string ends
-	/// 	with an expected substring.
+	/// EndsWithConstraint can test whether a string ends
+	/// with an expected substring.
 	/// </summary>
 	public class EndsWithConstraint : StringConstraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:EndsWithConstraint" /> class.
+		/// Initializes a new instance of the <see cref="T:EndsWithConstraint" /> class.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		public EndsWithConstraint(string expected)
@@ -302,9 +303,9 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Test whether the constraint is matched by the actual value.
-		/// 	This is a template method, which calls the IsMatch method
-		/// 	of the derived class.
+		/// Test whether the constraint is matched by the actual value.
+		/// This is a template method, which calls the IsMatch method
+		/// of the derived class.
 		/// </summary>
 		/// <param name="actual"> </param>
 		/// <returns> </returns>
@@ -322,7 +323,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write the constraint description to a MessageWriter
+		/// Write the constraint description to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The writer on which the description is displayed </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -342,15 +343,15 @@ namespace NUnit.Framework.Constraints
 
 #if !NETCF
 	/// <summary>
-	/// 	RegexConstraint can test whether a string matches
-	/// 	the pattern provided.
+	/// RegexConstraint can test whether a string matches
+	/// the pattern provided.
 	/// </summary>
 	public class RegexConstraint : StringConstraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:RegexConstraint" /> class.
+		/// Initializes a new instance of the <see cref="T:RegexConstraint" /> class.
 		/// </summary>
 		/// <param name="pattern"> The pattern. </param>
 		public RegexConstraint(string pattern)
@@ -363,7 +364,7 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Test whether the constraint is satisfied by a given value
+		/// Test whether the constraint is satisfied by a given value
 		/// </summary>
 		/// <param name="actual"> The value to be tested </param>
 		/// <returns> True for success, false for failure </returns>
@@ -372,14 +373,14 @@ namespace NUnit.Framework.Constraints
 			this.actual = actual;
 
 			return actual is string &&
-			       Regex.IsMatch(
-				       (string)actual,
-				       this.expected,
-				       this.caseInsensitive ? RegexOptions.IgnoreCase : RegexOptions.None);
+					Regex.IsMatch(
+						(string)actual,
+						this.expected,
+						this.caseInsensitive ? RegexOptions.IgnoreCase : RegexOptions.None);
 		}
 
 		/// <summary>
-		/// 	Write the constraint description to a MessageWriter
+		/// Write the constraint description to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The writer on which the description is displayed </param>
 		public override void WriteDescriptionTo(MessageWriter writer)

@@ -12,86 +12,107 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
-	using System.Collections.Generic;
 
 	public abstract class VirtualObject<TNode> : IVirtual<TNode>
 	{
-		private List<IVirtualSite<TNode>> sites;
+		#region Constructors/Destructors
 
-		protected VirtualObject() { }
+		protected VirtualObject()
+		{
+		}
 
 		protected VirtualObject(IVirtualSite<TNode> site)
 		{
-			sites = new List<IVirtualSite<TNode>> { site };
+			this.sites = new List<IVirtualSite<TNode>> { site };
 		}
 
-		public abstract bool IsReal { get; }
+		#endregion
+
+		#region Fields/Constants
+
+		private List<IVirtualSite<TNode>> sites;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public event EventHandler Realized;
+
+		public abstract bool IsReal
+		{
+			get;
+		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		protected void AddSite(IVirtualSite<TNode> site)
 		{
-			if (sites != null)
-			{
-				sites.Add(site);
-			}
+			if (this.sites != null)
+				this.sites.Add(site);
 		}
 
 		void IVirtual<TNode>.AddSite(IVirtualSite<TNode> site)
 		{
-			AddSite(site);
+			this.AddSite(site);
 		}
 
-		protected void RemoveSite(IVirtualSite<TNode> site)
+		protected virtual void OnRealized()
 		{
-			if (sites != null)
+			var handler = this.Realized;
+			if (handler != null)
 			{
-				var index = sites.IndexOf(site);
-				if (index != -1)
-					sites.RemoveAt(index);
+				handler(this, EventArgs.Empty);
+				this.Realized = null;
 			}
-		}
-
-		void IVirtual<TNode>.RemoveSite(IVirtualSite<TNode> site)
-		{
-		    RemoveSite(site);
 		}
 
 		public TNode Realize()
 		{
 			TNode node;
-			if (TryRealize(out node))
+			if (this.TryRealize(out node))
 			{
-				if (sites != null)
+				if (this.sites != null)
 				{
-					var count = sites.Count;
+					var count = this.sites.Count;
 					for (var i = 0; i < count; i++)
-						sites[i].OnRealizing(node);
-					sites = null;
+						this.sites[i].OnRealizing(node);
+					this.sites = null;
 				}
 
-				OnRealized();
+				this.OnRealized();
 			}
 			return node;
 		}
 
 		void IVirtual.Realize()
 		{
-			Realize();
+			this.Realize();
+		}
+
+		protected void RemoveSite(IVirtualSite<TNode> site)
+		{
+			if (this.sites != null)
+			{
+				var index = this.sites.IndexOf(site);
+				if (index != -1)
+					this.sites.RemoveAt(index);
+			}
+		}
+
+		void IVirtual<TNode>.RemoveSite(IVirtualSite<TNode> site)
+		{
+			this.RemoveSite(site);
 		}
 
 		protected abstract bool TryRealize(out TNode node);
 
-		public event EventHandler Realized;
-		protected virtual void OnRealized()
-		{
-			var handler = Realized;
-			if (handler != null)
-			{
-				handler(this, EventArgs.Empty);
-				Realized = null;
-			}
-		}
+		#endregion
 	}
 }

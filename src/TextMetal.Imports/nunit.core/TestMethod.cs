@@ -13,17 +13,17 @@ using System.Threading;
 namespace NUnit.Core
 {
 	using System;
+
 #if CLR_2_0 || CLR_4_0
 
 #endif
 
 	/// <summary>
-	/// 	The TestMethod class represents a Test implemented as a method.
-	/// 
-	/// 	Because of how exceptions are handled internally, this class
-	/// 	must incorporate processing of expected exceptions. A change to
-	/// 	the Test interface might make it easier to process exceptions
-	/// 	in an object that aggregates a TestMethod in the future.
+	/// The TestMethod class represents a Test implemented as a method.
+	/// Because of how exceptions are handled internally, this class
+	/// must incorporate processing of expected exceptions. A change to
+	/// the Test interface might make it easier to process exceptions
+	/// in an object that aggregates a TestMethod in the future.
 	/// </summary>
 	public abstract class TestMethod : Test
 	{
@@ -32,54 +32,54 @@ namespace NUnit.Core
 		#region Fields
 
 		/// <summary>
-		/// 	The test method
+		/// The test method
 		/// </summary>
 		internal MethodInfo method;
 
 		/// <summary>
-		/// 	The SetUp method.
+		/// The SetUp method.
 		/// </summary>
 		protected MethodInfo[] setUpMethods;
 
 		/// <summary>
-		/// 	The teardown method
+		/// The teardown method
 		/// </summary>
 		protected MethodInfo[] tearDownMethods;
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	The actions
+		/// The actions
 		/// </summary>
 		protected TestAction[] actions;
 
 		/// <summary>
-		/// 	The parent suite's actions
+		/// The parent suite's actions
 		/// </summary>
 		protected TestAction[] suiteActions;
 #endif
 
 		/// <summary>
-		/// 	The ExpectedExceptionProcessor for this test, if any
+		/// The ExpectedExceptionProcessor for this test, if any
 		/// </summary>
 		internal ExpectedExceptionProcessor exceptionProcessor;
 
 		/// <summary>
-		/// 	Arguments to be used in invoking the method
+		/// Arguments to be used in invoking the method
 		/// </summary>
 		internal object[] arguments;
 
 		/// <summary>
-		/// 	The expected result of the method return value
+		/// The expected result of the method return value
 		/// </summary>
 		internal object expectedResult;
 
 		/// <summary>
-		/// 	Indicates whether expectedResult was set - thereby allowing null as a value
+		/// Indicates whether expectedResult was set - thereby allowing null as a value
 		/// </summary>
 		internal bool hasExpectedResult;
 
 		/// <summary>
-		/// 	The fixture object, if it has been created
+		/// The fixture object, if it has been created
 		/// </summary>
 		private object fixture;
 
@@ -171,8 +171,8 @@ namespace NUnit.Core
 			get
 			{
 				return this.Properties.Contains("Timeout")
-					       ? (int)this.Properties["Timeout"]
-					       : TestExecutionContext.CurrentContext.TestCaseTimeout;
+					? (int)this.Properties["Timeout"]
+					: TestExecutionContext.CurrentContext.TestCaseTimeout;
 			}
 		}
 
@@ -207,7 +207,7 @@ namespace NUnit.Core
 			long startTime = DateTime.Now.Ticks;
 
 			TestResult testResult = this.RunState == RunState.Runnable || this.RunState == RunState.Explicit
-				                        ? this.RunTestInContext() : this.SkipTest();
+				? this.RunTestInContext() : this.SkipTest();
 
 			log.Debug("Test result = " + testResult.ResultState);
 
@@ -325,17 +325,17 @@ namespace NUnit.Core
 			TestResult testResult = null;
 
 			int repeatCount = this.Properties.Contains("Repeat")
-				                  ? (int)this.Properties["Repeat"] : 1;
+				? (int)this.Properties["Repeat"] : 1;
 
 			while (repeatCount-- > 0)
 			{
 				testResult = this.ShouldRunOnOwnThread
-					             ? new TestMethodThread(this).Run(NullListener.NULL, TestFilter.Empty)
-					             : this.RunTest();
+					? new TestMethodThread(this).Run(NullListener.NULL, TestFilter.Empty)
+					: this.RunTest();
 
 				if (testResult.ResultState == ResultState.Failure ||
-				    testResult.ResultState == ResultState.Error ||
-				    testResult.ResultState == ResultState.Cancelled)
+					testResult.ResultState == ResultState.Error ||
+					testResult.ResultState == ResultState.Cancelled)
 					break;
 			}
 
@@ -343,9 +343,9 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	The doRun method is used to run a test internally.
-		/// 	It assumes that the caller is taking care of any 
-		/// 	TestFixtureSetUp and TestFixtureTearDown needed.
+		/// The doRun method is used to run a test internally.
+		/// It assumes that the caller is taking care of any
+		/// TestFixtureSetUp and TestFixtureTearDown needed.
 		/// </summary>
 		/// <param name="testResult"> The result in which to record success or failure </param>
 		public virtual TestResult RunTest()
@@ -395,13 +395,13 @@ namespace NUnit.Core
 						{
 							testResult.Failure(
 								string.Format("Elapsed time of {0}ms exceeds maximum of {1}ms",
-								              elapsedTime, maxTime),
+									elapsedTime, maxTime),
 								null);
 						}
 					}
 
 					if (testResult.IsSuccess && testResult.Message == null &&
-					    Environment.CurrentDirectory != TestExecutionContext.CurrentContext.prior.CurrentDirectory)
+						Environment.CurrentDirectory != TestExecutionContext.CurrentContext.prior.CurrentDirectory)
 					{
 						// TODO: Introduce a warning result state in NUnit 3.0
 						testResult.SetResult(ResultState.Success, "Warning: Test changed the CurrentDirectory", null);
@@ -543,8 +543,8 @@ namespace NUnit.Core
 
 			// Ensure that once a test is cancelled, it stays cancelled
 			ResultState finalResultState = testResult.ResultState == ResultState.Cancelled
-				                               ? ResultState.Cancelled
-				                               : NUnitFramework.GetResultState(exception);
+				? ResultState.Cancelled
+				: NUnitFramework.GetResultState(exception);
 
 			testResult.SetResult(finalResultState, exception, failureSite);
 		}

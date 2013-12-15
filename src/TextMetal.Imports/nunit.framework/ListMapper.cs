@@ -11,15 +11,15 @@ using System.Reflection;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	ListMapper is used to transform a collection used as an actual argument
-	/// 	producing another collection to be used in the assertion.
+	/// ListMapper is used to transform a collection used as an actual argument
+	/// producing another collection to be used in the assertion.
 	/// </summary>
 	public class ListMapper
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a ListMapper based on a collection
+		/// Construct a ListMapper based on a collection
 		/// </summary>
 		/// <param name="original"> The collection to be transformed </param>
 		public ListMapper(ICollection original)
@@ -38,7 +38,7 @@ namespace NUnit.Framework
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Produces a collection containing all the values of a property
+		/// Produces a collection containing all the values of a property
 		/// </summary>
 		/// <param name="name"> The collection of property values </param>
 		/// <returns> </returns>
@@ -48,7 +48,7 @@ namespace NUnit.Framework
 			foreach (object item in this.original)
 			{
 				PropertyInfo property = item.GetType().GetProperty(name,
-				                                                   BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+					BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 				if (property == null)
 				{
 					throw new ArgumentException(string.Format(

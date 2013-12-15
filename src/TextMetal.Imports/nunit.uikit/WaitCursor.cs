@@ -9,18 +9,16 @@ using System.Windows.Forms;
 
 namespace CP.Windows.Forms
 {
-	///<summary>
-	///	Utility class used to display a wait cursor
-	///	while a long operation takes place and
-	///	guarantee that it will be removed on exit.
-	/// 
-	///	Use as follows:
-	/// 
-	///	using ( new WaitCursor() )
-	///	{
-	///	// Long running operation goes here
-	///	}
-	///</summary>
+	/// <summary>
+	/// Utility class used to display a wait cursor
+	/// while a long operation takes place and
+	/// guarantee that it will be removed on exit.
+	/// Use as follows:
+	/// using ( new WaitCursor() )
+	/// {
+	/// // Long running operation goes here
+	/// }
+	/// </summary>
 	public class WaitCursor : IDisposable
 	{
 		#region Constructors/Destructors

@@ -11,7 +11,7 @@ namespace NUnit.Util
 	using System;
 
 	/// <summary>
-	/// 	Summary description for ResultSummarizer.
+	/// Summary description for ResultSummarizer.
 	/// </summary>
 	public class ResultSummarizer
 	{
@@ -54,7 +54,7 @@ namespace NUnit.Util
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Returns the number of test cases that had an error.
+		/// Returns the number of test cases that had an error.
 		/// </summary>
 		public int Errors
 		{
@@ -65,7 +65,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Returns the number of test cases that failed.
+		/// Returns the number of test cases that failed.
 		/// </summary>
 		public int Failures
 		{
@@ -84,7 +84,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Returns the number of test cases that failed.
+		/// Returns the number of test cases that failed.
 		/// </summary>
 		public int Inconclusive
 		{
@@ -103,9 +103,9 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Returns the number of test cases that were not runnable
-		/// 	due to errors in the signature of the class or method.
-		/// 	Such tests are also counted as Errors.
+		/// Returns the number of test cases that were not runnable
+		/// due to errors in the signature of the class or method.
+		/// Such tests are also counted as Errors.
 		/// </summary>
 		public int NotRunnable
 		{
@@ -116,7 +116,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Returns the number of tests that passed
+		/// Returns the number of tests that passed
 		/// </summary>
 		public int Passed
 		{
@@ -127,9 +127,9 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Returns the number of test cases for which results
-		/// 	have been summarized. Any tests excluded by use of
-		/// 	Category or Explicit attributes are not counted.
+		/// Returns the number of test cases for which results
+		/// have been summarized. Any tests excluded by use of
+		/// Category or Explicit attributes are not counted.
 		/// </summary>
 		public int ResultCount
 		{
@@ -140,7 +140,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Returns the number of test cases that were skipped.
+		/// Returns the number of test cases that were skipped.
 		/// </summary>
 		public int Skipped
 		{
@@ -167,9 +167,9 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Returns the number of test cases actually run, which
-		/// 	is the same as ResultCount, less any Skipped, Ignored
-		/// 	or NonRunnable tests.
+		/// Returns the number of test cases actually run, which
+		/// is the same as ResultCount, less any Skipped, Ignored
+		/// or NonRunnable tests.
 		/// </summary>
 		public int TestsRun
 		{

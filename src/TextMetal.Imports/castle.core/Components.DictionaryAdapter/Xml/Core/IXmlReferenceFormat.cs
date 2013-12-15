@@ -12,19 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	public interface IXmlReferenceFormat
 	{
-		bool TryGetIdentity  (IXmlNode node, out int id);
-		bool TryGetReference (IXmlNode node, out int id);
+		#region Methods/Operators
 
-		void SetIdentity     (IXmlNode node,     int id);
-		void SetReference    (IXmlNode node,     int id);
+		void ClearIdentity(IXmlNode node);
 
-		void ClearIdentity   (IXmlNode node);
-		void ClearReference  (IXmlNode node);
+		void ClearReference(IXmlNode node);
+
+		void SetIdentity(IXmlNode node, int id);
+
+		void SetReference(IXmlNode node, int id);
+
+		bool TryGetIdentity(IXmlNode node, out int id);
+
+		bool TryGetReference(IXmlNode node, out int id);
+
+		#endregion
 	}
 }
+
 #endif

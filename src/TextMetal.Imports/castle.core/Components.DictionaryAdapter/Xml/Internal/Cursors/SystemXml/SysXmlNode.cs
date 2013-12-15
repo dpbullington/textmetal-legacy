@@ -12,22 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Xml;
+using System.Xml.XPath;
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
 #if !SILVERLIGHT
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
-	using System.Xml;
-	using System.Xml.XPath;
 
 	public class SysXmlNode : XmlNodeBase, IXmlNode,
 		IRealizable<XmlNode>,
 		IRealizable<XPathNavigator>
 	{
-		protected XmlNode node;
+		#region Constructors/Destructors
 
 		protected SysXmlNode(IXmlNamespaceSource namespaces, IXmlNode parent)
-			: base(namespaces, parent) { }
+			: base(namespaces, parent)
+		{
+		}
 
 		public SysXmlNode(XmlNode node, Type type, IXmlNamespaceSource namespaces)
 			: base(namespaces, null)
@@ -41,79 +45,183 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			this.type = type;
 		}
 
-		public object UnderlyingObject
-		{
-			get { return node; }
-		}
+		#endregion
 
-		XmlNode IRealizable<XmlNode>.Value
-		{
-			get { Realize(); return node; }
-		}
+		#region Fields/Constants
 
-		XPathNavigator IRealizable<XPathNavigator>.Value
-		{
-			get { Realize(); return node.CreateNavigator(); }
-		}
+		protected XmlNode node;
 
-		public virtual XmlName Name
-		{
-			get { return new XmlName(node.LocalName, node.NamespaceURI); }
-		}
+		#endregion
 
-		public virtual XmlName XsiType
+		#region Properties/Indexers/Events
+
+		public virtual bool IsAttribute
 		{
-			get { return this.GetXsiType(); }
+			get
+			{
+				return this.node.NodeType == XmlNodeType.Attribute;
+			}
 		}
 
 		public virtual bool IsElement
 		{
-			get { return node.NodeType == XmlNodeType.Element; }
-		}
-
-		public virtual bool IsAttribute
-		{
-			get { return node.NodeType == XmlNodeType.Attribute; }
+			get
+			{
+				return this.node.NodeType == XmlNodeType.Element;
+			}
 		}
 
 		public virtual bool IsNil
 		{
-			get { return this.IsXsiNil(); }
-			set { this.SetXsiNil(value); }
+			get
+			{
+				return this.IsXsiNil();
+			}
+			set
+			{
+				this.SetXsiNil(value);
+			}
+		}
+
+		public virtual XmlName Name
+		{
+			get
+			{
+				return new XmlName(this.node.LocalName, this.node.NamespaceURI);
+			}
+		}
+
+		public object UnderlyingObject
+		{
+			get
+			{
+				return this.node;
+			}
+		}
+
+		XmlNode IRealizable<XmlNode>.Value
+		{
+			get
+			{
+				this.Realize();
+				return this.node;
+			}
+		}
+
+		XPathNavigator IRealizable<XPathNavigator>.Value
+		{
+			get
+			{
+				this.Realize();
+				return this.node.CreateNavigator();
+			}
 		}
 
 		public virtual string Value
 		{
-			get { return node.InnerText; }
-			set { var nil = (value == null); IsNil = nil; if (!nil) node.InnerText = value; }
+			get
+			{
+				return this.node.InnerText;
+			}
+			set
+			{
+				var nil = (value == null);
+				this.IsNil = nil;
+				if (!nil)
+					this.node.InnerText = value;
+			}
 		}
 
 		public virtual string Xml
 		{
-			get { return node.OuterXml; }
+			get
+			{
+				return this.node.OuterXml;
+			}
 		}
 
-		public bool UnderlyingPositionEquals(IXmlNode node)
+		public virtual XmlName XsiType
 		{
-			var sysXmlNode = node.AsRealizable<XmlNode>();
-			if (sysXmlNode != null)
-				return sysXmlNode.IsReal
-					&& sysXmlNode.Value == this.node;
+			get
+			{
+				return this.GetXsiType();
+			}
+		}
 
-			var xPathNode = node.AsRealizable<XPathNavigator>();
-			if (xPathNode != null)
-				return xPathNode.IsReal
-					&& xPathNode.Value.UnderlyingObject == this.node;
+		#endregion
 
-			return false;
+		#region Methods/Operators
+
+		public void Clear()
+		{
+			if (this.IsElement)
+				this.ClearAttributes();
+			else if (this.IsAttribute)
+			{
+				this.Value = string.Empty;
+				return;
+			}
+			this.ClearChildren();
+		}
+
+		private void ClearAttribute(XmlName name)
+		{
+			if (!this.IsReal)
+				return;
+
+			var element = this.node as XmlElement;
+			if (element == null)
+				return;
+
+			element.RemoveAttribute(name.LocalName, name.NamespaceUri);
+			return;
+		}
+
+		private void ClearAttributes()
+		{
+			var attributes = this.node.Attributes;
+			var count = attributes.Count;
+			while (count > 0)
+			{
+				var attribute = attributes[--count];
+				if (!attribute.IsNamespace() && !attribute.IsXsiType())
+					attributes.RemoveAt(count);
+			}
+		}
+
+		private void ClearChildren()
+		{
+			XmlNode next;
+			for (var child = this.node.FirstChild; child != null; child = next)
+			{
+				next = child.NextSibling;
+				this.node.RemoveChild(child);
+			}
+		}
+
+		public void DefineNamespace(string prefix, string namespaceUri, bool root)
+		{
+			var target = this.GetNamespaceTargetElement();
+			if (target == null)
+				throw Error.InvalidOperation();
+
+			if (root)
+				target = target.FindRoot();
+
+			target.DefineNamespace(prefix, namespaceUri);
+		}
+
+		public virtual object Evaluate(CompiledXPath path)
+		{
+			return this.node.CreateNavigator().Evaluate(path.Path);
 		}
 
 		public string GetAttribute(XmlName name)
 		{
-			if (!IsReal)
+			if (!this.IsReal)
 				return null;
 
-			var element = node as XmlElement;
+			var element = this.node as XmlElement;
 			if (element == null)
 				return null;
 
@@ -128,85 +236,41 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			return value;
 		}
 
-		public void SetAttribute(XmlName name, string value)
-		{
-			if (string.IsNullOrEmpty(value))
-				ClearAttribute(name);
-			else
-				SetAttributeCore(name, value);
-		}
-
-		private void SetAttributeCore(XmlName name, string value)
-		{
-			if (!IsElement)
-				throw Error.CannotSetAttribute(this);
-
-			Realize();
-
-			var element = node as XmlElement;
-			if (element == null)
-				throw Error.CannotSetAttribute(this);
-
-			var attribute = element.GetAttributeNode(name.LocalName, name.NamespaceUri);
-			if (attribute == null)
-			{
-				var prefix = Namespaces.GetAttributePrefix(this, name.NamespaceUri);
-				attribute = element.OwnerDocument.CreateAttribute(prefix, name.LocalName, name.NamespaceUri);
-				element.SetAttributeNode(attribute);
-			}
-			attribute.Value = value;
-		}
-
-		private void ClearAttribute(XmlName name)
-		{
-			if (!IsReal)
-				return;
-
-			var element = node as XmlElement;
-			if (element == null)
-				return;
-
-			element.RemoveAttribute(name.LocalName, name.NamespaceUri);
-			return;
-		}
-
-		public string LookupPrefix(string namespaceUri)
-		{
-			return node.GetPrefixOfNamespace(namespaceUri);
-		}
-
-		public string LookupNamespaceUri(string prefix)
-		{
-			return node.GetNamespaceOfPrefix(prefix);
-		}
-
-		public void DefineNamespace(string prefix, string namespaceUri, bool root)
-		{
-			var target = GetNamespaceTargetElement();
-			if (target == null)
-				throw Error.InvalidOperation();
-
-			if (root)
-				target = target.FindRoot();	
-
-			target.DefineNamespace(prefix, namespaceUri);
-		}
-
 		private XmlElement GetNamespaceTargetElement()
 		{
-			var element = node as XmlElement;
+			var element = this.node as XmlElement;
 			if (element != null)
 				return element;
 
-			var attribute = node as XmlAttribute;
+			var attribute = this.node as XmlAttribute;
 			if (attribute != null)
 				return attribute.OwnerElement;
 
-			var document = node as XmlDocument;
+			var document = this.node as XmlDocument;
 			if (document != null)
 				return document.DocumentElement;
 
 			return null;
+		}
+
+		public XmlNode GetNode()
+		{
+			return this.node;
+		}
+
+		public string LookupNamespaceUri(string prefix)
+		{
+			return this.node.GetNamespaceOfPrefix(prefix);
+		}
+
+		public string LookupPrefix(string namespaceUri)
+		{
+			return this.node.GetPrefixOfNamespace(namespaceUri);
+		}
+
+		public XmlReader ReadSubtree()
+		{
+			return this.node.CreateNavigator().ReadSubtree();
 		}
 
 		public virtual IXmlNode Save()
@@ -214,9 +278,11 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			return this;
 		}
 
-		public IXmlCursor SelectSelf(Type clrType)
+		public IXmlCursor Select(CompiledXPath path, IXmlIncludedTypeMap includedTypes, IXmlNamespaceSource namespaces, CursorFlags flags)
 		{
-			return new XmlSelfCursor(this, clrType);
+			return flags.SupportsMutation()
+				? (IXmlCursor)new XPathMutableCursor(this, path, includedTypes, namespaces, flags)
+				: (IXmlCursor)new XPathReadOnlyCursor(this, path, includedTypes, namespaces, flags);
 		}
 
 		public IXmlCursor SelectChildren(IXmlKnownTypeMap knownTypes, IXmlNamespaceSource namespaces, CursorFlags flags)
@@ -224,79 +290,77 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			return new SysXmlCursor(this, knownTypes, namespaces, flags);
 		}
 
-		public IXmlIterator SelectSubtree()
+		public IXmlCursor SelectSelf(Type clrType)
 		{
-			return new SysXmlSubtreeIterator(this, Namespaces);
+			return new XmlSelfCursor(this, clrType);
 		}
 
-		public XmlReader ReadSubtree()
+		public IXmlIterator SelectSubtree()
 		{
-			return node.CreateNavigator().ReadSubtree();
+			return new SysXmlSubtreeIterator(this, this.Namespaces);
+		}
+
+		public void SetAttribute(XmlName name, string value)
+		{
+			if (string.IsNullOrEmpty(value))
+				this.ClearAttribute(name);
+			else
+				this.SetAttributeCore(name, value);
+		}
+
+		private void SetAttributeCore(XmlName name, string value)
+		{
+			if (!this.IsElement)
+				throw Error.CannotSetAttribute(this);
+
+			this.Realize();
+
+			var element = this.node as XmlElement;
+			if (element == null)
+				throw Error.CannotSetAttribute(this);
+
+			var attribute = element.GetAttributeNode(name.LocalName, name.NamespaceUri);
+			if (attribute == null)
+			{
+				var prefix = this.Namespaces.GetAttributePrefix(this, name.NamespaceUri);
+				attribute = element.OwnerDocument.CreateAttribute(prefix, name.LocalName, name.NamespaceUri);
+				element.SetAttributeNode(attribute);
+			}
+			attribute.Value = value;
+		}
+
+		public bool UnderlyingPositionEquals(IXmlNode node)
+		{
+			var sysXmlNode = node.AsRealizable<XmlNode>();
+			if (sysXmlNode != null)
+			{
+				return sysXmlNode.IsReal
+						&& sysXmlNode.Value == this.node;
+			}
+
+			var xPathNode = node.AsRealizable<XPathNavigator>();
+			if (xPathNode != null)
+			{
+				return xPathNode.IsReal
+						&& xPathNode.Value.UnderlyingObject == this.node;
+			}
+
+			return false;
 		}
 
 		public XmlWriter WriteAttributes()
 		{
-			return node.CreateNavigator().CreateAttributes();
+			return this.node.CreateNavigator().CreateAttributes();
 		}
 
 		public XmlWriter WriteChildren()
 		{
-			return node.CreateNavigator().AppendChild();
+			return this.node.CreateNavigator().AppendChild();
 		}
 
-		public IXmlCursor Select(CompiledXPath path, IXmlIncludedTypeMap includedTypes, IXmlNamespaceSource namespaces, CursorFlags flags)
-		{
-			return flags.SupportsMutation()
-				? (IXmlCursor) new XPathMutableCursor (this, path, includedTypes, namespaces, flags)
-				: (IXmlCursor) new XPathReadOnlyCursor(this, path, includedTypes, namespaces, flags);
-		}
-
-		public virtual object Evaluate(CompiledXPath path)
-		{
-			return node.CreateNavigator().Evaluate(path.Path);
-		}
-
-		public XmlNode GetNode()
-		{
-			return node;
-		}
-
-		public void Clear()
-		{
-			if (IsElement)
-			{
-				ClearAttributes();
-			}
-			else if (IsAttribute)
-			{
-				Value = string.Empty;
-				return;
-			}
-			ClearChildren();
-		}
-
-		private void ClearAttributes()
-		{
-			var attributes = node.Attributes;
-			var count = attributes.Count;
-			while (count > 0)
-			{
-				var attribute = attributes[--count];
-				if (!attribute.IsNamespace() && !attribute.IsXsiType())
-					attributes.RemoveAt(count);
-			}
-		}
-
-		private void ClearChildren()
-		{
-			XmlNode next;
-			for (var child = node.FirstChild; child != null; child = next)
-			{
-				next = child.NextSibling;
-				node.RemoveChild(child);
-			}
-		}
+		#endregion
 	}
 }
+
 #endif
 #endif

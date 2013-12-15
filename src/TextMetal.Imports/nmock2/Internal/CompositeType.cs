@@ -26,20 +26,20 @@ namespace NMock2.Internal
 	using System;
 
 	/// <summary>
-	/// 	Represents one or more types that are to be mocked. Provides operations
-	/// 	that work over top of all the contained types, as well as a means of
-	/// 	grouping and identifying unique combinations of types.
+	/// Represents one or more types that are to be mocked. Provides operations
+	/// that work over top of all the contained types, as well as a means of
+	/// grouping and identifying unique combinations of types.
 	/// </summary>
 	/// <remarks>
-	/// 	Duplicate types are ignored when added. Only interface and class types are
-	/// 	supported, and there may only be a maximum of one class type per CompositeType instance.
+	/// Duplicate types are ignored when added. Only interface and class types are
+	/// supported, and there may only be a maximum of one class type per CompositeType instance.
 	/// </remarks>
 	public class CompositeType : IEquatable<CompositeType>
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the CompositeType class from the supplied types.
+		/// Initializes a new instance of the CompositeType class from the supplied types.
 		/// </summary>
 		/// <param name="types"> The types to include in the CompositeType. </param>
 		public CompositeType(Type[] types)
@@ -51,12 +51,12 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Initializes a new instance of the CompositeType class from the supplied types.
+		/// Initializes a new instance of the CompositeType class from the supplied types.
 		/// </summary>
 		/// <param name="type"> The first type to include in the CompositeType. This cannot be null. </param>
 		/// <param name="additionalTypes"> Zero or more further types to include in the CompositeType. </param>
 		/// <remarks>
-		/// 	This constructor is mostly included for convenience.
+		/// This constructor is mostly included for convenience.
 		/// </remarks>
 		public CompositeType(Type type, Type[] additionalTypes)
 		{
@@ -84,7 +84,7 @@ namespace NMock2.Internal
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets any additional types to be mocked. These will always be interfaces.
+		/// Gets any additional types to be mocked. These will always be interfaces.
 		/// </summary>
 		public Type[] AdditionalInterfaceTypes
 		{
@@ -95,8 +95,8 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Gets the 'primary' type we are mocking. This may be a class or an interface
-		/// 	and will determine the proxy generation method that will be used.
+		/// Gets the 'primary' type we are mocking. This may be a class or an interface
+		/// and will determine the proxy generation method that will be used.
 		/// </summary>
 		public Type PrimaryType
 		{
@@ -120,7 +120,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Determines whether the specified Object is equal to the current CompositeType.
+		/// Determines whether the specified Object is equal to the current CompositeType.
 		/// </summary>
 		/// <param name="obj"> The Object to compare with the current CompositeType. </param>
 		/// <returns> true if the specified Object is equal to the current CompositeType; otherwise, false. </returns>
@@ -135,7 +135,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Determines whether the specified CompositeType is equal to the current CompositeType.
+		/// Determines whether the specified CompositeType is equal to the current CompositeType.
 		/// </summary>
 		/// <param name="other"> The CompositeType to compare with the current CompositeType. </param>
 		/// <returns> true if the specified CompositeType is equal to the current CompositeType; otherwise, false. </returns>
@@ -157,7 +157,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Returns the hash code for this instance.
+		/// Returns the hash code for this instance.
 		/// </summary>
 		/// <returns> An Int32 containing the hash code for this instance. </returns>
 		public override int GetHashCode()
@@ -171,7 +171,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Gets the interfaces implemented by the specified type.
+		/// Gets the interfaces implemented by the specified type.
 		/// </summary>
 		/// <param name="type"> The interface type to inspect. </param>
 		/// <returns> The interfaces implemented by the specified type. </returns>
@@ -188,13 +188,13 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Gets any methods of the contained type(s) that match the specified matcher.
+		/// Gets any methods of the contained type(s) that match the specified matcher.
 		/// </summary>
 		/// <param name="matcher"> The matcher. </param>
-		/// <param name="firstMatchOnly"> if set to <c>true</c> then only the first match is returned. </param>
+		/// <param name="firstMatchOnly"> if set to <c> true </c> then only the first match is returned. </param>
 		/// <returns> The methods of the contained type(s) that match the specified matcher. </returns>
 		/// <remarks>
-		/// 	Only non-private methods can be matched.
+		/// Only non-private methods can be matched.
 		/// </remarks>
 		public IList<MethodInfo> GetMatchingMethods(Matcher matcher, bool firstMatchOnly)
 		{
@@ -237,7 +237,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Initializes the specified types.
+		/// Initializes the specified types.
 		/// </summary>
 		/// <param name="types"> The types. </param>
 		private void Initialize(Type[] types)
@@ -256,16 +256,16 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Filters out private methods.
+		/// Filters out private methods.
 		/// </summary>
 		/// <param name="methodInfo"> The method to test for visibility. </param>
 		/// <returns> True if the method is not private, otherwise false. </returns>
 		private bool IsMethodVisible(MethodInfo methodInfo)
 		{
 			return methodInfo.IsPublic
-			       || methodInfo.IsFamily
-			       || methodInfo.IsAssembly
-			       || methodInfo.IsFamilyOrAssembly;
+					|| methodInfo.IsFamily
+					|| methodInfo.IsAssembly
+					|| methodInfo.IsFamilyOrAssembly;
 		}
 
 		private Type[] RationalizeTypes(Type[] types)
@@ -302,7 +302,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Returns a String that represents the current CompositeType.
+		/// Returns a String that represents the current CompositeType.
 		/// </summary>
 		/// <returns> A String that represents the current CompositeType. </returns>
 		public override string ToString()

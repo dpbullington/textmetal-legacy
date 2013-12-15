@@ -1,4 +1,5 @@
 #region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,6 +22,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
@@ -30,50 +32,97 @@ using System.Collections.ObjectModel;
 using Newtonsoft.Json.Utilities.LinqBridge;
 #else
 using System.Linq;
+
 #endif
 
 namespace Newtonsoft.Json.Schema
 {
-  internal class JsonSchemaNode
-  {
-    public string Id { get; private set; }
-    public ReadOnlyCollection<JsonSchema> Schemas { get; private set; }
-    public Dictionary<string, JsonSchemaNode> Properties { get; private set; }
-    public Dictionary<string, JsonSchemaNode> PatternProperties { get; private set; }
-    public List<JsonSchemaNode> Items { get; private set; }
-    public JsonSchemaNode AdditionalProperties { get; set; }
-    public JsonSchemaNode AdditionalItems { get; set; }
+	internal class JsonSchemaNode
+	{
+		#region Constructors/Destructors
 
-    public JsonSchemaNode(JsonSchema schema)
-    {
-      Schemas = new ReadOnlyCollection<JsonSchema>(new []{ schema });
-      Properties = new Dictionary<string, JsonSchemaNode>();
-      PatternProperties = new Dictionary<string, JsonSchemaNode>();
-      Items = new List<JsonSchemaNode>();
+		public JsonSchemaNode(JsonSchema schema)
+		{
+			this.Schemas = new ReadOnlyCollection<JsonSchema>(new[] { schema });
+			this.Properties = new Dictionary<string, JsonSchemaNode>();
+			this.PatternProperties = new Dictionary<string, JsonSchemaNode>();
+			this.Items = new List<JsonSchemaNode>();
 
-      Id = GetId(Schemas);
-    }
+			this.Id = GetId(this.Schemas);
+		}
 
-    private JsonSchemaNode(JsonSchemaNode source, JsonSchema schema)
-    {
-      Schemas = new ReadOnlyCollection<JsonSchema>(source.Schemas.Union(new[] { schema }).ToList());
-      Properties = new Dictionary<string, JsonSchemaNode>(source.Properties);
-      PatternProperties = new Dictionary<string, JsonSchemaNode>(source.PatternProperties);
-      Items = new List<JsonSchemaNode>(source.Items);
-      AdditionalProperties = source.AdditionalProperties;
-      AdditionalItems = source.AdditionalItems;
+		private JsonSchemaNode(JsonSchemaNode source, JsonSchema schema)
+		{
+			this.Schemas = new ReadOnlyCollection<JsonSchema>(source.Schemas.Union(new[] { schema }).ToList());
+			this.Properties = new Dictionary<string, JsonSchemaNode>(source.Properties);
+			this.PatternProperties = new Dictionary<string, JsonSchemaNode>(source.PatternProperties);
+			this.Items = new List<JsonSchemaNode>(source.Items);
+			this.AdditionalProperties = source.AdditionalProperties;
+			this.AdditionalItems = source.AdditionalItems;
 
-      Id = GetId(Schemas);
-    }
+			this.Id = GetId(this.Schemas);
+		}
 
-    public JsonSchemaNode Combine(JsonSchema schema)
-    {
-      return new JsonSchemaNode(this, schema);
-    }
+		#endregion
 
-    public static string GetId(IEnumerable<JsonSchema> schemata)
-    {
-      return string.Join("-", schemata.Select(s => s.InternalId).OrderBy(id => id, StringComparer.Ordinal).ToArray());
-    }
-  }
+		#region Properties/Indexers/Events
+
+		public JsonSchemaNode AdditionalItems
+		{
+			get;
+			set;
+		}
+
+		public JsonSchemaNode AdditionalProperties
+		{
+			get;
+			set;
+		}
+
+		public string Id
+		{
+			get;
+			private set;
+		}
+
+		public List<JsonSchemaNode> Items
+		{
+			get;
+			private set;
+		}
+
+		public Dictionary<string, JsonSchemaNode> PatternProperties
+		{
+			get;
+			private set;
+		}
+
+		public Dictionary<string, JsonSchemaNode> Properties
+		{
+			get;
+			private set;
+		}
+
+		public ReadOnlyCollection<JsonSchema> Schemas
+		{
+			get;
+			private set;
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		public static string GetId(IEnumerable<JsonSchema> schemata)
+		{
+			return string.Join("-", schemata.Select(s => s.InternalId).OrderBy(id => id, StringComparer.Ordinal).ToArray());
+		}
+
+		public JsonSchemaNode Combine(JsonSchema schema)
+		{
+			return new JsonSchemaNode(this, schema);
+		}
+
+		#endregion
+	}
 }

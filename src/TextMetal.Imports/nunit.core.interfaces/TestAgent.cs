@@ -9,17 +9,17 @@ using System;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Abstract base for all types of TestAgents.
-	/// 	A TestAgent provides services of locating,
-	/// 	loading and running tests in a particular
-	/// 	context such as an AppDomain or Process.
+	/// Abstract base for all types of TestAgents.
+	/// A TestAgent provides services of locating,
+	/// loading and running tests in a particular
+	/// context such as an AppDomain or Process.
 	/// </summary>
 	public abstract class TestAgent : MarshalByRefObject, IDisposable
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Constructs a TestAgent
+		/// Constructs a TestAgent
 		/// </summary>
 		/// <param name="agentId"> </param>
 		public TestAgent(Guid agentId)
@@ -28,8 +28,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Consructor used by TestAgency when creating
-		/// 	an agent.
+		/// Consructor used by TestAgency when creating
+		/// an agent.
 		/// </summary>
 		/// <param name="agentId"> </param>
 		/// <param name="agency"> </param>
@@ -44,12 +44,12 @@ namespace NUnit.Core
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Reference to the TestAgency that controls this agent
+		/// Reference to the TestAgency that controls this agent
 		/// </summary>
 		private IAgency agency;
 
 		/// <summary>
-		/// 	This agent's assigned id
+		/// This agent's assigned id
 		/// </summary>
 		private Guid agentId;
 
@@ -58,8 +58,8 @@ namespace NUnit.Core
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	The TestAgency with which this agent is asssociated,
-		/// 	or null if the agent is not tied to an agency.
+		/// The TestAgency with which this agent is asssociated,
+		/// or null if the agent is not tied to an agency.
 		/// </summary>
 		public IAgency Agency
 		{
@@ -70,7 +70,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	A Guid that uniquely identifies this agent.
+		/// A Guid that uniquely identifies this agent.
 		/// </summary>
 		public Guid Id
 		{
@@ -85,12 +85,12 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Creates a runner using a given runner id
+		/// Creates a runner using a given runner id
 		/// </summary>
 		public abstract TestRunner CreateRunner(int runnerId);
 
 		/// <summary>
-		/// 	Dispose is overridden to stop the agent
+		/// Dispose is overridden to stop the agent
 		/// </summary>
 		public void Dispose()
 		{
@@ -98,7 +98,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Overridden to cause object to live indefinitely
+		/// Overridden to cause object to live indefinitely
 		/// </summary>
 		public override object InitializeLifetimeService()
 		{
@@ -106,13 +106,13 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Starts the agent, performing any required initialization
+		/// Starts the agent, performing any required initialization
 		/// </summary>
 		/// <returns> </returns>
 		public abstract bool Start();
 
 		/// <summary>
-		/// 	Stops the agent, releasing any resources
+		/// Stops the agent, releasing any resources
 		/// </summary>
 		public abstract void Stop();
 

@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+
 #if CLR_2_0 || CLR_4_0
 
 #endif
@@ -19,22 +20,22 @@ namespace NUnit.Framework.Constraints
 	#region CollectionConstraint
 
 	/// <summary>
-	/// 	CollectionConstraint is the abstract base class for
-	/// 	constraints that operate on collections.
+	/// CollectionConstraint is the abstract base class for
+	/// constraints that operate on collections.
 	/// </summary>
 	public abstract class CollectionConstraint : Constraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct an empty CollectionConstraint
+		/// Construct an empty CollectionConstraint
 		/// </summary>
 		public CollectionConstraint()
 		{
 		}
 
 		/// <summary>
-		/// 	Construct a CollectionConstraint
+		/// Construct a CollectionConstraint
 		/// </summary>
 		/// <param name="arg"> </param>
 		public CollectionConstraint(object arg)
@@ -47,10 +48,10 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Determines whether the specified enumerable is empty.
+		/// Determines whether the specified enumerable is empty.
 		/// </summary>
 		/// <param name="enumerable"> The enumerable. </param>
-		/// <returns> <c>true</c> if the specified enumerable is empty; otherwise, <c>false</c> . </returns>
+		/// <returns> <c> true </c> if the specified enumerable is empty; otherwise, <c> false </c> . </returns>
 		protected static bool IsEmpty(IEnumerable enumerable)
 		{
 			ICollection collection = enumerable as ICollection;
@@ -64,7 +65,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Test whether the constraint is satisfied by a given value
+		/// Test whether the constraint is satisfied by a given value
 		/// </summary>
 		/// <param name="actual"> The value to be tested </param>
 		/// <returns> True for success, false for failure </returns>
@@ -80,7 +81,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Protected method to be implemented by derived classes
+		/// Protected method to be implemented by derived classes
 		/// </summary>
 		/// <param name="collection"> </param>
 		/// <returns> </returns>
@@ -94,9 +95,9 @@ namespace NUnit.Framework.Constraints
 	#region CollectionItemsEqualConstraint
 
 	/// <summary>
-	/// 	CollectionItemsEqualConstraint is the abstract base class for all
-	/// 	collection constraints that apply some notion of item equality
-	/// 	as a part of their operation.
+	/// CollectionItemsEqualConstraint is the abstract base class for all
+	/// collection constraints that apply some notion of item equality
+	/// as a part of their operation.
 	/// </summary>
 	public abstract class CollectionItemsEqualConstraint : CollectionConstraint
 	{
@@ -105,14 +106,14 @@ namespace NUnit.Framework.Constraints
 		internal NUnitEqualityComparer comparer = NUnitEqualityComparer.Default;
 
 		/// <summary>
-		/// 	Construct an empty CollectionConstraint
+		/// Construct an empty CollectionConstraint
 		/// </summary>
 		public CollectionItemsEqualConstraint()
 		{
 		}
 
 		/// <summary>
-		/// 	Construct a CollectionConstraint
+		/// Construct a CollectionConstraint
 		/// </summary>
 		/// <param name="arg"> </param>
 		public CollectionItemsEqualConstraint(object arg)
@@ -123,7 +124,7 @@ namespace NUnit.Framework.Constraints
 		#region Modifiers
 
 		/// <summary>
-		/// 	Flag the constraint to ignore case and return self.
+		/// Flag the constraint to ignore case and return self.
 		/// </summary>
 		public CollectionItemsEqualConstraint IgnoreCase
 		{
@@ -135,7 +136,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Flag the constraint to use the supplied IComparer object.
+		/// Flag the constraint to use the supplied IComparer object.
 		/// </summary>
 		/// <param name="comparer"> The IComparer object to use. </param>
 		/// <returns> Self. </returns>
@@ -147,7 +148,7 @@ namespace NUnit.Framework.Constraints
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Flag the constraint to use the supplied IComparer object.
+		/// Flag the constraint to use the supplied IComparer object.
 		/// </summary>
 		/// <param name="comparer"> The IComparer object to use. </param>
 		/// <returns> Self. </returns>
@@ -158,7 +159,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Flag the constraint to use the supplied Comparison object.
+		/// Flag the constraint to use the supplied Comparison object.
 		/// </summary>
 		/// <param name="comparer"> The IComparer object to use. </param>
 		/// <returns> Self. </returns>
@@ -169,7 +170,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Flag the constraint to use the supplied IEqualityComparer object.
+		/// Flag the constraint to use the supplied IEqualityComparer object.
 		/// </summary>
 		/// <param name="comparer"> The IComparer object to use. </param>
 		/// <returns> Self. </returns>
@@ -180,7 +181,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Flag the constraint to use the supplied IEqualityComparer object.
+		/// Flag the constraint to use the supplied IEqualityComparer object.
 		/// </summary>
 		/// <param name="comparer"> The IComparer object to use. </param>
 		/// <returns> Self. </returns>
@@ -194,7 +195,7 @@ namespace NUnit.Framework.Constraints
 		#endregion
 
 		/// <summary>
-		/// 	Compares two collection members for equality
+		/// Compares two collection members for equality
 		/// </summary>
 		protected bool ItemsEqual(object x, object y)
 		{
@@ -203,7 +204,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Return a new CollectionTally for use in making tests
+		/// Return a new CollectionTally for use in making tests
 		/// </summary>
 		/// <param name="c"> The collection to be included in the tally </param>
 		protected CollectionTally Tally(IEnumerable c)
@@ -217,14 +218,14 @@ namespace NUnit.Framework.Constraints
 	#region EmptyCollectionConstraint
 
 	/// <summary>
-	/// 	EmptyCollectionConstraint tests whether a collection is empty.
+	/// EmptyCollectionConstraint tests whether a collection is empty.
 	/// </summary>
 	public class EmptyCollectionConstraint : CollectionConstraint
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Write the constraint description to a MessageWriter
+		/// Write the constraint description to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -233,7 +234,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Check that the collection is empty
+		/// Check that the collection is empty
 		/// </summary>
 		/// <param name="collection"> </param>
 		/// <returns> </returns>
@@ -250,15 +251,15 @@ namespace NUnit.Framework.Constraints
 	#region UniqueItemsConstraint
 
 	/// <summary>
-	/// 	UniqueItemsConstraint tests whether all the items in a 
-	/// 	collection are unique.
+	/// UniqueItemsConstraint tests whether all the items in a
+	/// collection are unique.
 	/// </summary>
 	public class UniqueItemsConstraint : CollectionItemsEqualConstraint
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Write a description of this constraint to a MessageWriter
+		/// Write a description of this constraint to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -267,7 +268,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Check that all items are unique.
+		/// Check that all items are unique.
 		/// </summary>
 		/// <param name="actual"> </param>
 		/// <returns> </returns>
@@ -296,15 +297,15 @@ namespace NUnit.Framework.Constraints
 	#region CollectionContainsConstraint
 
 	/// <summary>
-	/// 	CollectionContainsConstraint is used to test whether a collection
-	/// 	contains an expected object as a member.
+	/// CollectionContainsConstraint is used to test whether a collection
+	/// contains an expected object as a member.
 	/// </summary>
 	public class CollectionContainsConstraint : CollectionItemsEqualConstraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a CollectionContainsConstraint
+		/// Construct a CollectionContainsConstraint
 		/// </summary>
 		/// <param name="expected"> </param>
 		public CollectionContainsConstraint(object expected)
@@ -325,7 +326,7 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Write a descripton of the constraint to a MessageWriter
+		/// Write a descripton of the constraint to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -335,7 +336,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Test whether the expected item is contained in the collection
+		/// Test whether the expected item is contained in the collection
 		/// </summary>
 		/// <param name="actual"> </param>
 		/// <returns> </returns>
@@ -358,15 +359,15 @@ namespace NUnit.Framework.Constraints
 	#region CollectionEquivalentConstraint
 
 	/// <summary>
-	/// 	CollectionEquivalentCOnstraint is used to determine whether two
-	/// 	collections are equivalent.
+	/// CollectionEquivalentCOnstraint is used to determine whether two
+	/// collections are equivalent.
 	/// </summary>
 	public class CollectionEquivalentConstraint : CollectionItemsEqualConstraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a CollectionEquivalentConstraint
+		/// Construct a CollectionEquivalentConstraint
 		/// </summary>
 		/// <param name="expected"> </param>
 		public CollectionEquivalentConstraint(IEnumerable expected)
@@ -387,7 +388,7 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Write a description of this constraint to a MessageWriter
+		/// Write a description of this constraint to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -397,7 +398,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Test whether two collections are equivalent
+		/// Test whether two collections are equivalent
 		/// </summary>
 		/// <param name="actual"> </param>
 		/// <returns> </returns>
@@ -422,15 +423,15 @@ namespace NUnit.Framework.Constraints
 	#region CollectionSubsetConstraint
 
 	/// <summary>
-	/// 	CollectionSubsetConstraint is used to determine whether
-	/// 	one collection is a subset of another
+	/// CollectionSubsetConstraint is used to determine whether
+	/// one collection is a subset of another
 	/// </summary>
 	public class CollectionSubsetConstraint : CollectionItemsEqualConstraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a CollectionSubsetConstraint
+		/// Construct a CollectionSubsetConstraint
 		/// </summary>
 		/// <param name="expected"> The collection that the actual value is expected to be a subset of </param>
 		public CollectionSubsetConstraint(IEnumerable expected)
@@ -451,7 +452,7 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Write a description of this constraint to a MessageWriter
+		/// Write a description of this constraint to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -461,8 +462,8 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Test whether the actual collection is a subset of 
-		/// 	the expected collection provided.
+		/// Test whether the actual collection is a subset of
+		/// the expected collection provided.
 		/// </summary>
 		/// <param name="actual"> </param>
 		/// <returns> </returns>
@@ -479,7 +480,7 @@ namespace NUnit.Framework.Constraints
 	#region CollectionOrderedConstraint
 
 	/// <summary>
-	/// 	CollectionOrderedConstraint is used to test whether a collection is ordered.
+	/// CollectionOrderedConstraint is used to test whether a collection is ordered.
 	/// </summary>
 	public class CollectionOrderedConstraint : CollectionConstraint
 	{
@@ -489,16 +490,16 @@ namespace NUnit.Framework.Constraints
 		private bool descending;
 
 		/// <summary>
-		/// 	Construct a CollectionOrderedConstraint
+		/// Construct a CollectionOrderedConstraint
 		/// </summary>
 		public CollectionOrderedConstraint()
 		{
 			this.DisplayName = "ordered";
 		}
 
-		///<summary>
-		///	If used performs a reverse comparison
-		///</summary>
+		/// <summary>
+		/// If used performs a reverse comparison
+		/// </summary>
 		public CollectionOrderedConstraint Descending
 		{
 			get
@@ -509,7 +510,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Modifies the constraint to use an IComparer and returns self.
+		/// Modifies the constraint to use an IComparer and returns self.
 		/// </summary>
 		public CollectionOrderedConstraint Using(IComparer comparer)
 		{
@@ -520,7 +521,7 @@ namespace NUnit.Framework.Constraints
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Modifies the constraint to use an IComparer&lt;T&gt; and returns self.
+		/// Modifies the constraint to use an IComparer&lt;T&gt; and returns self.
 		/// </summary>
 		public CollectionOrderedConstraint Using<T>(IComparer<T> comparer)
 		{
@@ -530,7 +531,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Modifies the constraint to use a Comparison&lt;T&gt; and returns self.
+		/// Modifies the constraint to use a Comparison&lt;T&gt; and returns self.
 		/// </summary>
 		public CollectionOrderedConstraint Using<T>(Comparison<T> comparer)
 		{
@@ -541,8 +542,8 @@ namespace NUnit.Framework.Constraints
 #endif
 
 		/// <summary>
-		/// 	Modifies the constraint to test ordering by the value of
-		/// 	a specified property and returns self.
+		/// Modifies the constraint to test ordering by the value of
+		/// a specified property and returns self.
 		/// </summary>
 		public CollectionOrderedConstraint By(string propertyName)
 		{
@@ -551,7 +552,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Test whether the collection is ordered
+		/// Test whether the collection is ordered
 		/// </summary>
 		/// <param name="actual"> </param>
 		/// <returns> </returns>
@@ -592,7 +593,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write a description of the constraint to a MessageWriter
+		/// Write a description of the constraint to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -610,7 +611,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Returns the string representation of the constraint.
+		/// Returns the string representation of the constraint.
 		/// </summary>
 		/// <returns> </returns>
 		protected override string GetStringRepresentation()

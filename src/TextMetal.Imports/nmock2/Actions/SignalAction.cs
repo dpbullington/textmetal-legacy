@@ -25,15 +25,15 @@ using NMock2.Monitoring;
 namespace NMock2.Actions
 {
 	/// <summary>
-	/// 	Action that signals an event.
-	/// 	You can use this action to synchronize threads when an expectation is invoked.
+	/// Action that signals an event.
+	/// You can use this action to synchronize threads when an expectation is invoked.
 	/// </summary>
 	public class SignalAction : IAction
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="SignalAction" /> class.
+		/// Initializes a new instance of the <see cref="SignalAction" /> class.
 		/// </summary>
 		/// <param name="signal"> The signal. </param>
 		public SignalAction(EventWaitHandle signal)
@@ -46,7 +46,7 @@ namespace NMock2.Actions
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Stores the wait handle to be signalled.
+		/// Stores the wait handle to be signalled.
 		/// </summary>
 		private readonly EventWaitHandle signal;
 
@@ -55,8 +55,8 @@ namespace NMock2.Actions
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the signal.
-		/// 	You can use this signal to wait for this action beeing invoked.
+		/// Gets the signal.
+		/// You can use this signal to wait for this action beeing invoked.
 		/// </summary>
 		/// <value> The signal. </value>
 		public EventWaitHandle Signal
@@ -72,7 +72,7 @@ namespace NMock2.Actions
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public void DescribeTo(TextWriter writer)
@@ -81,7 +81,7 @@ namespace NMock2.Actions
 		}
 
 		/// <summary>
-		/// 	Invokes this object by signaling the event.
+		/// Invokes this object by signaling the event.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
 		public void Invoke(Invocation invocation)

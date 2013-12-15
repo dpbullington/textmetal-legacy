@@ -9,15 +9,15 @@ using System;
 namespace NUnit.Framework.Constraints
 {
 	/// <summary>
-	/// 	BinaryConstraint is the abstract base of all constraints
-	/// 	that combine two other constraints in some fashion.
+	/// BinaryConstraint is the abstract base of all constraints
+	/// that combine two other constraints in some fashion.
 	/// </summary>
 	public abstract class BinaryConstraint : Constraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a BinaryConstraint from two other constraints
+		/// Construct a BinaryConstraint from two other constraints
 		/// </summary>
 		/// <param name="left"> The first constraint </param>
 		/// <param name="right"> The second constraint </param>
@@ -33,12 +33,12 @@ namespace NUnit.Framework.Constraints
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The first constraint being combined
+		/// The first constraint being combined
 		/// </summary>
 		protected Constraint left;
 
 		/// <summary>
-		/// 	The second constraint being combined
+		/// The second constraint being combined
 		/// </summary>
 		protected Constraint right;
 
@@ -46,14 +46,14 @@ namespace NUnit.Framework.Constraints
 	}
 
 	/// <summary>
-	/// 	AndConstraint succeeds only if both members succeed.
+	/// AndConstraint succeeds only if both members succeed.
 	/// </summary>
 	public class AndConstraint : BinaryConstraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Create an AndConstraint from two other constraints
+		/// Create an AndConstraint from two other constraints
 		/// </summary>
 		/// <param name="left"> The first constraint </param>
 		/// <param name="right"> The second constraint </param>
@@ -73,8 +73,8 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Apply both member constraints to an actual value, succeeding 
-		/// 	succeeding only if both of them succeed.
+		/// Apply both member constraints to an actual value, succeeding
+		/// succeeding only if both of them succeed.
 		/// </summary>
 		/// <param name="actual"> The actual value </param>
 		/// <returns> True if the constraints both succeeded </returns>
@@ -83,19 +83,19 @@ namespace NUnit.Framework.Constraints
 			this.actual = actual;
 
 			this.failurePoint = this.left.Matches(actual)
-				                    ? this.right.Matches(actual)
-					                      ? FailurePoint.None
-					                      : FailurePoint.Right
-				                    : FailurePoint.Left;
+				? this.right.Matches(actual)
+					? FailurePoint.None
+					: FailurePoint.Right
+				: FailurePoint.Left;
 
 			return this.failurePoint == FailurePoint.None;
 		}
 
 		/// <summary>
-		/// 	Write the actual value for a failing constraint test to a
-		/// 	MessageWriter. The default implementation simply writes
-		/// 	the raw value of actual, leaving it to the writer to
-		/// 	perform any formatting.
+		/// Write the actual value for a failing constraint test to a
+		/// MessageWriter. The default implementation simply writes
+		/// the raw value of actual, leaving it to the writer to
+		/// perform any formatting.
 		/// </summary>
 		/// <param name="writer"> The writer on which the actual value is displayed </param>
 		public override void WriteActualValueTo(MessageWriter writer)
@@ -115,7 +115,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write a description for this contraint to a MessageWriter
+		/// Write a description for this contraint to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The MessageWriter to receive the description </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -140,14 +140,14 @@ namespace NUnit.Framework.Constraints
 	}
 
 	/// <summary>
-	/// 	OrConstraint succeeds if either member succeeds
+	/// OrConstraint succeeds if either member succeeds
 	/// </summary>
 	public class OrConstraint : BinaryConstraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Create an OrConstraint from two other constraints
+		/// Create an OrConstraint from two other constraints
 		/// </summary>
 		/// <param name="left"> The first constraint </param>
 		/// <param name="right"> The second constraint </param>
@@ -161,8 +161,8 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Apply the member constraints to an actual value, succeeding 
-		/// 	succeeding as soon as one of them succeeds.
+		/// Apply the member constraints to an actual value, succeeding
+		/// succeeding as soon as one of them succeeds.
 		/// </summary>
 		/// <param name="actual"> The actual value </param>
 		/// <returns> True if either constraint succeeded </returns>
@@ -173,7 +173,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write a description for this contraint to a MessageWriter
+		/// Write a description for this contraint to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The MessageWriter to receive the description </param>
 		public override void WriteDescriptionTo(MessageWriter writer)

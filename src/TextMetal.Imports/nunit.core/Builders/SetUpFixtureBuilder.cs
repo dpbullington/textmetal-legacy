@@ -11,7 +11,7 @@ using NUnit.Core.Extensibility;
 namespace NUnit.Core.Builders
 {
 	/// <summary>
-	/// 	SetUpFixtureBuilder knows how to build a SetUpFixture.
+	/// SetUpFixtureBuilder knows how to build a SetUpFixture.
 	/// </summary>
 	public class SetUpFixtureBuilder : ISuiteBuilder
 	{
@@ -51,7 +51,7 @@ namespace NUnit.Core.Builders
 			}
 
 			if (!NUnitFramework.CheckSetUpTearDownMethods(type, NUnitFramework.SetUpAttribute, ref reason) ||
-			    !NUnitFramework.CheckSetUpTearDownMethods(type, NUnitFramework.TearDownAttribute, ref reason))
+				!NUnitFramework.CheckSetUpTearDownMethods(type, NUnitFramework.TearDownAttribute, ref reason))
 				return false;
 
 			if (Reflect.HasMethodWithAttribute(type, NUnitFramework.FixtureSetUpAttribute, true))

@@ -9,7 +9,7 @@ using System;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Summary description for NullListener.
+	/// Summary description for NullListener.
 	/// </summary>
 	[Serializable]
 	public class NullListener : EventListener

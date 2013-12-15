@@ -8,16 +8,15 @@ using System;
 namespace NUnit.UiException.CodeFormatters
 {
 	/// <summary>
-	/// 	(formerly named CSTokenCollection)
-	/// 
-	/// 	Manages an ordered collection of ClassifiedToken present in one line of text.
+	/// (formerly named CSTokenCollection)
+	/// Manages an ordered collection of ClassifiedToken present in one line of text.
 	/// </summary>
 	public class ClassifiedTokenCollection
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	This class requires subclassing.
+		/// This class requires subclassing.
 		/// </summary>
 		protected ClassifiedTokenCollection()
 		{
@@ -29,17 +28,17 @@ namespace NUnit.UiException.CodeFormatters
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Keeps tracks of the data source.
+		/// Keeps tracks of the data source.
 		/// </summary>
 		protected FormattedCode.CodeInfo _info;
 
 		/// <summary>
-		/// 	Store the current line startingPosition.
+		/// Store the current line startingPosition.
 		/// </summary>
 		protected int _lineIndex;
 
 		/// <summary>
-		/// 	Target location when building a ClassifiedToken instance on the fly.
+		/// Target location when building a ClassifiedToken instance on the fly.
 		/// </summary>
 		protected ClassifiedToken _token;
 
@@ -48,10 +47,10 @@ namespace NUnit.UiException.CodeFormatters
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the ClassifiedToken instance at the specified startingPosition.
-		/// 	Warning: this indexer always return the same instance.
-		/// 	To keep data safe, it is strongly recommanded to make
-		/// 	a deep copy of the returned ClassifiedToken.
+		/// Gets the ClassifiedToken instance at the specified startingPosition.
+		/// Warning: this indexer always return the same instance.
+		/// To keep data safe, it is strongly recommanded to make
+		/// a deep copy of the returned ClassifiedToken.
 		/// </summary>
 		/// <param name="startingPosition"> A zero based value in the range: [0 - Count[ </param>
 		/// <returns> The ClassifiedToken at this startingPosition. </returns>
@@ -69,7 +68,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Gets the number of ClassifiedToken present in this line of text.
+		/// Gets the number of ClassifiedToken present in this line of text.
 		/// </summary>
 		public int Count
 		{
@@ -80,12 +79,12 @@ namespace NUnit.UiException.CodeFormatters
 				if (this._lineIndex + 1 < this._info.LineArray.Count)
 				{
 					count = this._info.LineArray[this._lineIndex + 1] -
-					        this._info.LineArray[this._lineIndex];
+							this._info.LineArray[this._lineIndex];
 				}
 				else
 				{
 					count = this._info.IndexArray.Count -
-					        this._info.LineArray[this._lineIndex];
+							this._info.LineArray[this._lineIndex];
 				}
 
 				return (count);
@@ -93,7 +92,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Return a string filled with the text present at the current line startingPosition.
+		/// Return a string filled with the text present at the current line startingPosition.
 		/// </summary>
 		public string Text
 		{
@@ -134,7 +133,7 @@ namespace NUnit.UiException.CodeFormatters
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Converts the given value into the matching ClassificationTag.
+		/// Converts the given value into the matching ClassificationTag.
 		/// </summary>
 		private ClassificationTag _getTagFromByteValue(byte value)
 		{
@@ -157,9 +156,9 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Gets the part of the text at the given position.
-		/// 	The returned string can be composed of one or severals words 
-		/// 	all with the same style.
+		/// Gets the part of the text at the given position.
+		/// The returned string can be composed of one or severals words
+		/// all with the same style.
 		/// </summary>
 		private void _populateToken(int lineIndex, int tokenIndex, InternalToken output)
 		{

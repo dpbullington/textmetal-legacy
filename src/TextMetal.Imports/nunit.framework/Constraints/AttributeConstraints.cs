@@ -10,15 +10,15 @@ using System.Reflection;
 namespace NUnit.Framework.Constraints
 {
 	/// <summary>
-	/// 	AttributeExistsConstraint tests for the presence of a
-	/// 	specified attribute on  a Type.
+	/// AttributeExistsConstraint tests for the presence of a
+	/// specified attribute on  a Type.
 	/// </summary>
 	public class AttributeExistsConstraint : Constraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Constructs an AttributeExistsConstraint for a specific attribute Type
+		/// Constructs an AttributeExistsConstraint for a specific attribute Type
 		/// </summary>
 		/// <param name="type"> </param>
 		public AttributeExistsConstraint(Type type)
@@ -44,7 +44,7 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Tests whether the object provides the expected attribute.
+		/// Tests whether the object provides the expected attribute.
 		/// </summary>
 		/// <param name="actual"> A Type, MethodInfo, or other ICustomAttributeProvider </param>
 		/// <returns> True if the expected attribute is present, otherwise false </returns>
@@ -61,7 +61,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Writes the description of the constraint to the specified writer
+		/// Writes the description of the constraint to the specified writer
 		/// </summary>
 		public override void WriteDescriptionTo(MessageWriter writer)
 		{
@@ -73,17 +73,17 @@ namespace NUnit.Framework.Constraints
 	}
 
 	/// <summary>
-	/// 	AttributeConstraint tests that a specified attribute is present
-	/// 	on a Type or other provider and that the value of the attribute
-	/// 	satisfies some other constraint.
+	/// AttributeConstraint tests that a specified attribute is present
+	/// on a Type or other provider and that the value of the attribute
+	/// satisfies some other constraint.
 	/// </summary>
 	public class AttributeConstraint : PrefixConstraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Constructs an AttributeConstraint for a specified attriute
-		/// 	Type and base constraint.
+		/// Constructs an AttributeConstraint for a specified attriute
+		/// Type and base constraint.
 		/// </summary>
 		/// <param name="type"> </param>
 		/// <param name="baseConstraint"> </param>
@@ -111,7 +111,7 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Returns a string representation of the constraint.
+		/// Returns a string representation of the constraint.
 		/// </summary>
 		protected override string GetStringRepresentation()
 		{
@@ -119,9 +119,9 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Determines whether the Type or other provider has the 
-		/// 	expected attribute and if its value matches the
-		/// 	additional constraint specified.
+		/// Determines whether the Type or other provider has the
+		/// expected attribute and if its value matches the
+		/// additional constraint specified.
 		/// </summary>
 		public override bool Matches(object actual)
 		{
@@ -141,7 +141,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Writes the actual value supplied to the specified writer.
+		/// Writes the actual value supplied to the specified writer.
 		/// </summary>
 		public override void WriteActualValueTo(MessageWriter writer)
 		{
@@ -149,7 +149,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Writes a description of the attribute to the specified writer.
+		/// Writes a description of the attribute to the specified writer.
 		/// </summary>
 		public override void WriteDescriptionTo(MessageWriter writer)
 		{

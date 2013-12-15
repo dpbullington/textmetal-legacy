@@ -11,24 +11,24 @@ using NUnit.UiException.StackTraceAnalyzers;
 namespace NUnit.UiException
 {
 	/// <summary>
-	/// 	StackTraceParser is the entry class for analyzing and converting a stack
-	/// 	trace - as given by .NET - into a manageable and ordered set of ErrorItem
-	/// 	instances.
-	/// 	StackTraceParser contains internaly a set of autonom, independent and
-	/// 	interchangeable algorithms that makes the analysis of the stack robust and
-	/// 	opened to changes. Its architecture is designed to abstract callers from
-	/// 	secondary details such as the type of culture or file system that can
-	/// 	both affect the format of the final stack as provided by .NET.
-	/// 	In the future, this class could easily be extended by exposing a
-	/// 	kind of register() method that would allow client code to append
-	/// 	new algorithms of analysis in its internal list.
+	/// StackTraceParser is the entry class for analyzing and converting a stack
+	/// trace - as given by .NET - into a manageable and ordered set of ErrorItem
+	/// instances.
+	/// StackTraceParser contains internaly a set of autonom, independent and
+	/// interchangeable algorithms that makes the analysis of the stack robust and
+	/// opened to changes. Its architecture is designed to abstract callers from
+	/// secondary details such as the type of culture or file system that can
+	/// both affect the format of the final stack as provided by .NET.
+	/// In the future, this class could easily be extended by exposing a
+	/// kind of register() method that would allow client code to append
+	/// new algorithms of analysis in its internal list.
 	/// </summary>
 	public class StackTraceParser
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Build a new instance of StackTraceParser.
+		/// Build a new instance of StackTraceParser.
 		/// </summary>
 		public StackTraceParser()
 		{
@@ -46,25 +46,25 @@ namespace NUnit.UiException
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	One or more algorithms designed to locate function names
-		/// 	inside a stack trace line.
+		/// One or more algorithms designed to locate function names
+		/// inside a stack trace line.
 		/// </summary>
 		private IErrorParser _functionParsers;
 
 		/// <summary>
-		/// 	Output list build from the StackTrace analyze .
+		/// Output list build from the StackTrace analyze .
 		/// </summary>
 		private ErrorItemCollection _items;
 
 		/// <summary>
-		/// 	One or more algorithms designed to locate line number
-		/// 	information inside a stack strace line.
+		/// One or more algorithms designed to locate line number
+		/// information inside a stack strace line.
 		/// </summary>
 		private IErrorParser _lineNumberParsers;
 
 		/// <summary>
-		/// 	One or more algorithms designed to locate path names
-		/// 	inside a stack strace line.
+		/// One or more algorithms designed to locate path names
+		/// inside a stack strace line.
 		/// </summary>
 		private IErrorParser _pathParsers;
 
@@ -73,8 +73,8 @@ namespace NUnit.UiException
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gives access to the collection of ErrorItem
-		/// 	build during the analyze of the StackTrace.
+		/// Gives access to the collection of ErrorItem
+		/// build during the analyze of the StackTrace.
 		/// </summary>
 		public ErrorItemCollection Items
 		{
@@ -89,8 +89,8 @@ namespace NUnit.UiException
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Reads and transforms the given stack trace into a manageable and ordered
-		/// 	set of ErrorItem instances. The resulting set is stored into Items property.
+		/// Reads and transforms the given stack trace into a manageable and ordered
+		/// set of ErrorItem instances. The resulting set is stored into Items property.
 		/// </summary>
 		/// <param name="stackTrace"> A string value that should contain a .Net stack trace. </param>
 		public void Parse(string stackTrace)

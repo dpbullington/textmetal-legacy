@@ -14,7 +14,7 @@
 
 namespace Castle.Core.Smtp
 {
-	#if !SILVERLIGHT
+#if !SILVERLIGHT
 
 	using System;
 	using System.Collections.Generic;
@@ -25,10 +25,11 @@ namespace Castle.Core.Smtp
 	using System.Security;
 #endif
 	using System.Security.Permissions;
-	using Castle.Core.Internal;
+
+	using Internal;
 
 	/// <summary>
-	/// Default <see cref="IEmailSender"/> implementation.
+	/// Default <see cref="IEmailSender" /> implementation.
 	/// </summary>
 	public class DefaultSmtpSender : IEmailSender
 	{
@@ -40,105 +41,138 @@ namespace Castle.Core.Smtp
 		private readonly NetworkCredential credentials = new NetworkCredential();
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="DefaultSmtpSender"/> class based on the <see cref="SmtpClient"/> configuration provided in the application configuration file.
+		/// Initializes a new instance of the <see cref="DefaultSmtpSender" /> class based on the <see cref="SmtpClient" /> configuration provided in the application configuration file.
 		/// </summary>
 		/// <remarks>
-		/// This constructor is based on the default <see cref="SmtpClient"/> configuration in the application configuration file.
-		/// </remarks> 
-		public DefaultSmtpSender() { }
+		/// This constructor is based on the default <see cref="SmtpClient" /> configuration in the application configuration file.
+		/// </remarks>
+		public DefaultSmtpSender()
+		{
+		}
 
 		/// <summary>
 		/// This service implementation
 		/// requires a host name in order to work
 		/// </summary>
-		/// <param name="hostname">The smtp server name</param>
+		/// <param name="hostname"> The smtp server name </param>
 		public DefaultSmtpSender(string hostname)
 		{
 			this.hostname = hostname;
 		}
 
 		/// <summary>
-		/// Gets or sets the port used to 
+		/// Gets or sets the port used to
 		/// access the SMTP server
 		/// </summary>
 		public int Port
 		{
-			get { return port; }
-			set { port = value; }
+			get
+			{
+				return this.port;
+			}
+			set
+			{
+				this.port = value;
+			}
 		}
 
 		/// <summary>
 		/// Gets the hostname.
 		/// </summary>
-		/// <value>The hostname.</value>
+		/// <value> The hostname. </value>
 		public string Hostname
 		{
-			get { return hostname; }
+			get
+			{
+				return this.hostname;
+			}
 		}
 
 		/// <summary>
-		/// Gets or sets a value which is used to 
+		/// Gets or sets a value which is used to
 		/// configure if emails are going to be sent asynchronously or not.
 		/// </summary>
 		public bool AsyncSend
 		{
-			get { return asyncSend; }
-			set { asyncSend = value; }
+			get
+			{
+				return this.asyncSend;
+			}
+			set
+			{
+				this.asyncSend = value;
+			}
 		}
 
 		/// <summary>
-		/// Gets or sets a value that specifies 
+		/// Gets or sets a value that specifies
 		/// the amount of time after which a synchronous Send call times out.
 		/// </summary>
 		public int Timeout
 		{
-			get { return timeout.HasValue ? timeout.Value : 0; }
-			set { timeout = value; }
+			get
+			{
+				return this.timeout.HasValue ? this.timeout.Value : 0;
+			}
+			set
+			{
+				this.timeout = value;
+			}
 		}
 
 		/// <summary>
-		/// Gets or sets a value indicating whether the email should be sent using 
+		/// Gets or sets a value indicating whether the email should be sent using
 		/// a secure communication channel.
 		/// </summary>
-		/// <value><c>true</c> if should use SSL; otherwise, <c>false</c>.</value>
+		/// <value> <c> true </c> if should use SSL; otherwise, <c> false </c>. </value>
 		public bool UseSsl
 		{
-			get { return useSsl; }
-			set { useSsl = value; }
+			get
+			{
+				return this.useSsl;
+			}
+			set
+			{
+				this.useSsl = value;
+			}
 		}
 
 		/// <summary>
-		/// Sends a message. 
+		/// Sends a message.
 		/// </summary>
-		/// <exception cref="ArgumentNullException">If any of the parameters is null</exception>
-		/// <param name="from">From field</param>
-		/// <param name="to">To field</param>
-		/// <param name="subject">e-mail's subject</param>
-		/// <param name="messageText">message's body</param>
+		/// <exception cref="ArgumentNullException"> If any of the parameters is null </exception>
+		/// <param name="from"> From field </param>
+		/// <param name="to"> To field </param>
+		/// <param name="subject"> e-mail's subject </param>
+		/// <param name="messageText"> message's body </param>
 #if DOTNET40
 		[SecuritySafeCritical]
 #endif
 		public void Send(String from, String to, String subject, String messageText)
 		{
-			if (from == null) throw new ArgumentNullException("from");
-			if (to == null) throw new ArgumentNullException("to");
-			if (subject == null) throw new ArgumentNullException("subject");
-			if (messageText == null) throw new ArgumentNullException("messageText");
+			if (from == null)
+				throw new ArgumentNullException("from");
+			if (to == null)
+				throw new ArgumentNullException("to");
+			if (subject == null)
+				throw new ArgumentNullException("subject");
+			if (messageText == null)
+				throw new ArgumentNullException("messageText");
 
-			Send(new MailMessage(from, to, subject, messageText));
+			this.Send(new MailMessage(from, to, subject, messageText));
 		}
 
 		/// <summary>
-		/// Sends a message. 
+		/// Sends a message.
 		/// </summary>
-		/// <exception cref="ArgumentNullException">If the message is null</exception>
-		/// <param name="message">Message instance</param>
+		/// <exception cref="ArgumentNullException"> If the message is null </exception>
+		/// <param name="message"> Message instance </param>
 #if DOTNET40
 		[SecuritySafeCritical]
 #endif
 		public void Send(MailMessage message)
 		{
-			InternalSend(message);
+			this.InternalSend(message);
 		}
 
 #if DOTNET40
@@ -146,9 +180,10 @@ namespace Castle.Core.Smtp
 #endif
 		private void InternalSend(MailMessage message)
 		{
-			if (message == null) throw new ArgumentNullException("message");
+			if (message == null)
+				throw new ArgumentNullException("message");
 
-			if (asyncSend)
+			if (this.asyncSend)
 			{
 				// The MailMessage must be disposed after sending the email.
 				// The code creates a delegate for deleting the mail and adds
@@ -157,7 +192,7 @@ namespace Castle.Core.Smtp
 				// eventHandler removed from the smtpClient.
 				SmtpClient smtpClient;
 
-				if (string.IsNullOrEmpty(hostname))
+				if (string.IsNullOrEmpty(this.hostname))
 				{
 					// No hostname configured, use the settings provided in system.net.smtp (SmtpClient default behavior)
 					smtpClient = new SmtpClient();
@@ -165,19 +200,19 @@ namespace Castle.Core.Smtp
 				else
 				{
 					// A hostname is provided - init and configure using configured settings
-					smtpClient = new SmtpClient(hostname, port);
-					Configure(smtpClient);
+					smtpClient = new SmtpClient(this.hostname, this.port);
+					this.Configure(smtpClient);
 				}
 
 				Guid msgGuid = new Guid();
 				SendCompletedEventHandler sceh = null;
 				sceh = delegate(object sender, AsyncCompletedEventArgs e)
-				{
-					if (msgGuid == (Guid)e.UserState)
-						message.Dispose();
-					// The handler itself, cannot be null, test omitted
-					smtpClient.SendCompleted -= sceh;
-				};
+						{
+							if (msgGuid == (Guid)e.UserState)
+								message.Dispose();
+							// The handler itself, cannot be null, test omitted
+							smtpClient.SendCompleted -= sceh;
+						};
 				smtpClient.SendCompleted += sceh;
 				smtpClient.SendAsync(message, msgGuid);
 			}
@@ -185,8 +220,8 @@ namespace Castle.Core.Smtp
 			{
 				using (message)
 				{
-					SmtpClient smtpClient = new SmtpClient(hostname, port);
-					Configure(smtpClient);
+					SmtpClient smtpClient = new SmtpClient(this.hostname, this.port);
+					this.Configure(smtpClient);
 
 					smtpClient.Send(message);
 				}
@@ -199,39 +234,55 @@ namespace Castle.Core.Smtp
 		public void Send(IEnumerable<MailMessage> messages)
 		{
 			foreach (MailMessage message in messages)
-			{
 				Send(message);
-			}
 		}
 
 		/// <summary>
 		/// Gets or sets the domain.
 		/// </summary>
-		/// <value>The domain.</value>
+		/// <value> The domain. </value>
 		public String Domain
 		{
-			get { return credentials.Domain; }
-			set { credentials.Domain = value; }
+			get
+			{
+				return this.credentials.Domain;
+			}
+			set
+			{
+				this.credentials.Domain = value;
+			}
 		}
 
 		/// <summary>
 		/// Gets or sets the name of the user.
 		/// </summary>
-		/// <value>The name of the user.</value>
+		/// <value> The name of the user. </value>
 		public String UserName
 		{
-			get { return credentials.UserName; }
-			set { credentials.UserName = value; }
+			get
+			{
+				return this.credentials.UserName;
+			}
+			set
+			{
+				this.credentials.UserName = value;
+			}
 		}
 
 		/// <summary>
 		/// Gets or sets the password.
 		/// </summary>
-		/// <value>The password.</value>
+		/// <value> The password. </value>
 		public String Password
 		{
-			get { return credentials.Password; }
-			set { credentials.Password = value; }
+			get
+			{
+				return this.credentials.Password;
+			}
+			set
+			{
+				this.credentials.Password = value;
+			}
 		}
 
 		/// <summary>
@@ -239,7 +290,7 @@ namespace Castle.Core.Smtp
 		/// with port information and eventual credential
 		/// informed
 		/// </summary>
-		/// <param name="smtpClient">Message instance</param>
+		/// <param name="smtpClient"> Message instance </param>
 #if DOTNET40
 		[SecurityCritical]
 #endif
@@ -247,31 +298,28 @@ namespace Castle.Core.Smtp
 		{
 			smtpClient.Credentials = null;
 
-			if (CanAccessCredentials() && HasCredentials)
-			{
-				smtpClient.Credentials = credentials;
-			}
+			if (CanAccessCredentials() && this.HasCredentials)
+				smtpClient.Credentials = this.credentials;
 
-			if (timeout.HasValue)
-			{
-				smtpClient.Timeout = timeout.Value;
-			}
+			if (this.timeout.HasValue)
+				smtpClient.Timeout = this.timeout.Value;
 
-			if (useSsl)
-			{
-				smtpClient.EnableSsl = useSsl;
-			}
+			if (this.useSsl)
+				smtpClient.EnableSsl = this.useSsl;
 		}
 
 		/// <summary>
 		/// Gets a value indicating whether credentials were informed.
 		/// </summary>
 		/// <value>
-		/// <see langword="true"/> if this instance has credentials; otherwise, <see langword="false"/>.
+		/// <see langword="true" /> if this instance has credentials; otherwise, <see langword="false" />.
 		/// </value>
 		private bool HasCredentials
 		{
-			get { return !string.IsNullOrEmpty(credentials.UserName); }
+			get
+			{
+				return !string.IsNullOrEmpty(this.credentials.UserName);
+			}
 		}
 
 		private static bool CanAccessCredentials()
@@ -279,5 +327,5 @@ namespace Castle.Core.Smtp
 			return new SecurityPermission(SecurityPermissionFlag.UnmanagedCode).IsGranted();
 		}
 	}
-	#endif
+#endif
 }

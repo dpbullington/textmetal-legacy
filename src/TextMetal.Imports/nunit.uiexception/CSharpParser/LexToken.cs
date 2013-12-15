@@ -8,56 +8,56 @@ using System;
 namespace NUnit.UiException.CodeFormatters
 {
 	/// <summary>
-	/// 	This enum defines the list of all tags
-	/// 	that can be assigned to a particular string.
+	/// This enum defines the list of all tags
+	/// that can be assigned to a particular string.
 	/// </summary>
 	public enum LexerTag
 	{
 		/// <summary>
-		/// 	All sequences but the ones below
+		/// All sequences but the ones below
 		/// </summary>
 		Text,
 
 		/// <summary>
-		/// 	White characters: ' ' \t \n
-		/// 	and other separators like:
-		/// 	- '[' ']' '(' ')' ';'
+		/// White characters: ' ' \t \n
+		/// and other separators like:
+		/// - '[' ']' '(' ')' ';'
 		/// </summary>
 		Separator,
 
 		/// <summary>
-		/// 	Char: \n
+		/// Char: \n
 		/// </summary>
 		EndOfLine,
 
 		/// <summary>
-		/// 	string: /*
+		/// string: /*
 		/// </summary>
 		CommentC_Open,
 
 		/// <summary>
-		/// 	string: */
+		/// string: */
 		/// </summary>
 		CommentC_Close,
 
 		/// <summary>
-		/// 	string: //
+		/// string: //
 		/// </summary>
 		CommentCpp,
 
 		/// <summary>
-		/// 	Char: '
+		/// Char: '
 		/// </summary>
 		SingleQuote,
 
 		/// <summary>
-		/// 	Char: "
+		/// Char: "
 		/// </summary>
 		DoubleQuote
 	}
 
 	/// <summary>
-	/// 	This class is used to make the link between a string and a LexerTag value.
+	/// This class is used to make the link between a string and a LexerTag value.
 	/// </summary>
 	public class LexToken
 	{
@@ -86,17 +86,17 @@ namespace NUnit.UiException.CodeFormatters
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The starting startingPosition.
+		/// The starting startingPosition.
 		/// </summary>
 		protected int _start;
 
 		/// <summary>
-		/// 	The current tag.
+		/// The current tag.
 		/// </summary>
 		protected LexerTag _tag;
 
 		/// <summary>
-		/// 	The string in this token.
+		/// The string in this token.
 		/// </summary>
 		protected string _text;
 
@@ -105,7 +105,7 @@ namespace NUnit.UiException.CodeFormatters
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the starting startingPosition of the string.
+		/// Gets the starting startingPosition of the string.
 		/// </summary>
 		public int IndexStart
 		{
@@ -116,7 +116,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Gets the tag value
+		/// Gets the tag value
 		/// </summary>
 		public LexerTag Tag
 		{
@@ -127,7 +127,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Gets the string value.
+		/// Gets the string value.
 		/// </summary>
 		public string Text
 		{
@@ -151,8 +151,8 @@ namespace NUnit.UiException.CodeFormatters
 			token = (LexToken)obj;
 
 			return (token.Text == this.Text &&
-			        token.IndexStart == this.IndexStart &&
-			        token.Tag == this.Tag);
+					token.IndexStart == this.IndexStart &&
+					token.Tag == this.Tag);
 		}
 
 		public override int GetHashCode()
@@ -163,7 +163,7 @@ namespace NUnit.UiException.CodeFormatters
 		public override string ToString()
 		{
 			return (String.Format("Token=([{0}], Index={1}, Tag={2})",
-			                      this.Text, this.IndexStart, this.Tag));
+				this.Text, this.IndexStart, this.Tag));
 		}
 
 		#endregion

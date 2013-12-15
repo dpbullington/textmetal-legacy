@@ -15,7 +15,7 @@ namespace NUnit.Util
 	#region TestEventHandler delegate
 
 	/// <summary>
-	/// 	The delegates for all events related to running tests
+	/// The delegates for all events related to running tests
 	/// </summary>
 	public delegate void TestEventHandler(object sender, TestEventArgs args);
 
@@ -24,7 +24,7 @@ namespace NUnit.Util
 	#region TestAction enumeration
 
 	/// <summary>
-	/// 	Enumeration used to distiguish test events
+	/// Enumeration used to distiguish test events
 	/// </summary>
 	public enum TestAction
 	{
@@ -59,7 +59,7 @@ namespace NUnit.Util
 	#endregion
 
 	/// <summary>
-	/// 	Argument used for all test events
+	/// Argument used for all test events
 	/// </summary>
 	public class TestEventArgs : EventArgs
 	{
@@ -70,7 +70,7 @@ namespace NUnit.Util
 		#region Constructors/Destructors
 
 		public TestEventArgs(TestAction action,
-		                     string name, ITest test)
+			string name, ITest test)
 		{
 			Debug.Assert(
 				action == TestAction.TestLoaded || action == TestAction.TestReloaded,
@@ -101,7 +101,7 @@ namespace NUnit.Util
 		public TestEventArgs(TestAction action, string name, int testCount)
 		{
 			Debug.Assert(action == TestAction.RunStarting,
-			             "Invalid TestAction argument to TestEventArgs constructor");
+				"Invalid TestAction argument to TestEventArgs constructor");
 
 			this.action = action;
 			this.name = name;
@@ -110,7 +110,7 @@ namespace NUnit.Util
 
 		// ProjectLoadFailed, ProjectUnloadFailed, TestLoadFailed, TestUnloadFailed, TestReloadFailed, TestException
 		public TestEventArgs(TestAction action,
-		                     string name, Exception exception)
+			string name, Exception exception)
 		{
 			Debug.Assert(
 				action == TestAction.ProjectLoadFailed || action == TestAction.ProjectUnloadFailed ||
@@ -127,7 +127,7 @@ namespace NUnit.Util
 		public TestEventArgs(TestAction action, TestName testName)
 		{
 			Debug.Assert(action == TestAction.TestStarting || action == TestAction.SuiteStarting,
-			             "Invalid TestAction argument to TestEventArgs constructor");
+				"Invalid TestAction argument to TestEventArgs constructor");
 
 			this.action = action;
 			this.testName = testName;
@@ -137,8 +137,8 @@ namespace NUnit.Util
 		public TestEventArgs(TestAction action, TestResult testResult)
 		{
 			Debug.Assert(action == TestAction.TestFinished || action == TestAction.SuiteFinished ||
-			             action == TestAction.RunFinished,
-			             "Invalid TestAction argument to TestEventArgs constructor");
+						action == TestAction.RunFinished,
+				"Invalid TestAction argument to TestEventArgs constructor");
 
 			this.action = action;
 			this.testResult = testResult;
@@ -148,7 +148,7 @@ namespace NUnit.Util
 		public TestEventArgs(TestAction action, Exception exception)
 		{
 			Debug.Assert(action == TestAction.RunFinished,
-			             "Invalid TestAction argument to TestEventArgs constructor");
+				"Invalid TestAction argument to TestEventArgs constructor");
 
 			this.action = action;
 			this.exception = exception;
@@ -158,7 +158,7 @@ namespace NUnit.Util
 		public TestEventArgs(TestAction action, TestOutput testOutput)
 		{
 			Debug.Assert(action == TestAction.TestOutput,
-			             "Invalid TestAction argument to TestEventArgs constructor");
+				"Invalid TestAction argument to TestEventArgs constructor");
 
 			this.action = action;
 			this.testOutput = testOutput;

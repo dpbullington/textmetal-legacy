@@ -10,16 +10,16 @@ using System.Collections;
 namespace NUnit.Core.Extensibility
 {
 	/// <summary>
-	/// 	The IAddinRegistry interface allows registering addins
-	/// 	and retrieving information about them. It is also used
-	/// 	to record the load status of an addin.
+	/// The IAddinRegistry interface allows registering addins
+	/// and retrieving information about them. It is also used
+	/// to record the load status of an addin.
 	/// </summary>
 	public interface IAddinRegistry
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets a list of all addins as Addin objects
+		/// Gets a list of all addins as Addin objects
 		/// </summary>
 		IList Addins
 		{
@@ -31,20 +31,20 @@ namespace NUnit.Core.Extensibility
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Returns true if an addin of a given name is registered
+		/// Returns true if an addin of a given name is registered
 		/// </summary>
 		/// <param name="name"> The name of the addin </param>
 		/// <returns> True if an addin of that name is registered, otherwise false </returns>
 		bool IsAddinRegistered(string name);
 
 		/// <summary>
-		/// 	Registers an addin
+		/// Registers an addin
 		/// </summary>
 		/// <param name="addin"> The addin to be registered </param>
 		void Register(Addin addin);
 
 		/// <summary>
-		/// 	Sets the load status of an addin
+		/// Sets the load status of an addin
 		/// </summary>
 		/// <param name="name"> The name of the addin </param>
 		/// <param name="status"> The status to be set </param>

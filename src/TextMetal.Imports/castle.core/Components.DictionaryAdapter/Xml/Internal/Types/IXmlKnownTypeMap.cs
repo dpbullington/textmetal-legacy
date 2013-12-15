@@ -12,21 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
 
 	public interface IXmlKnownTypeMap
 	{
-		IXmlKnownType Default { get; }
+		#region Properties/Indexers/Events
+
+		IXmlKnownType Default
+		{
+			get;
+		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		bool TryGet(IXmlIdentity xmlNode, out IXmlKnownType knownType);
-		bool TryGet(Type         clrType, out IXmlKnownType knownType);
+
+		bool TryGet(Type clrType, out IXmlKnownType knownType);
+
+		#endregion
 	}
 
 	public static class XmlKnownTypeMapExtensions
 	{
+		#region Methods/Operators
+
 		public static IXmlKnownType Require(this IXmlKnownTypeMap map, Type clrType)
 		{
 			IXmlKnownType knownType;
@@ -35,6 +51,9 @@ namespace Castle.Components.DictionaryAdapter.Xml
 
 			throw Error.NotXmlKnownType(clrType);
 		}
+
+		#endregion
 	}
 }
+
 #endif

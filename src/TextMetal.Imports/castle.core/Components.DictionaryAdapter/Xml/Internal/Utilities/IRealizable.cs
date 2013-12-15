@@ -12,24 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	// OBSOLETE: This has been replaced with IVirtual<T>.
 
 	public interface IRealizable<T> : IRealizableSource
 	{
-		bool IsReal { get; }
-		T    Value  { get; }
+		#region Properties/Indexers/Events
+
+		bool IsReal
+		{
+			get;
+		}
+
+		T Value
+		{
+			get;
+		}
+
+		#endregion
 	}
 
 	public interface IRealizableSource
 	{
+		#region Methods/Operators
+
 		IRealizable<T> AsRealizable<T>();
+
+		#endregion
 	}
 
 	public static class RealizableExtensions
 	{
+		#region Methods/Operators
+
 		public static IRealizable<T> RequireRealizable<T>(this IRealizableSource obj)
 		{
 			var realizable = obj.AsRealizable<T>();
@@ -37,6 +56,9 @@ namespace Castle.Components.DictionaryAdapter.Xml
 				throw Error.NotRealizable<T>();
 			return realizable;
 		}
+
+		#endregion
 	}
 }
+
 #endif

@@ -9,19 +9,18 @@ using System;
 namespace NUnit.Core.Extensibility
 {
 	/// <summary>
-	/// 	SuiteBuilderCollection is an ExtensionPoint for SuiteBuilders and
-	/// 	implements the ISuiteBuilder interface itself, passing calls 
-	/// 	on to the individual builders.
-	/// 
-	/// 	The builders are added to the collection by inserting them at
-	/// 	the start, as to take precedence over those added earlier.
+	/// SuiteBuilderCollection is an ExtensionPoint for SuiteBuilders and
+	/// implements the ISuiteBuilder interface itself, passing calls
+	/// on to the individual builders.
+	/// The builders are added to the collection by inserting them at
+	/// the start, as to take precedence over those added earlier.
 	/// </summary>
 	public class SuiteBuilderCollection : ExtensionPoint, ISuiteBuilder
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Default constructor
+		/// Default constructor
 		/// </summary>
 		public SuiteBuilderCollection(IExtensionHost host)
 			: base("SuiteBuilders", host)
@@ -33,7 +32,7 @@ namespace NUnit.Core.Extensibility
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Build a TestSuite from type provided.
+		/// Build a TestSuite from type provided.
 		/// </summary>
 		/// <param name="type"> The type of the fixture to be used </param>
 		/// <returns> A TestSuite or null </returns>
@@ -48,8 +47,8 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Examine the type and determine if it is suitable for
-		/// 	any SuiteBuilder to use in building a TestSuite
+		/// Examine the type and determine if it is suitable for
+		/// any SuiteBuilder to use in building a TestSuite
 		/// </summary>
 		/// <param name="type"> The type of the fixture to be used </param>
 		/// <returns> True if the type can be used to build a TestSuite </returns>

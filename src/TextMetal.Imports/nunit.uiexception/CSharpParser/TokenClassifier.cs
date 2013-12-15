@@ -9,12 +9,12 @@ using System.Collections.Generic;
 namespace NUnit.UiException.CodeFormatters
 {
 	/// <summary>
-	/// 	Used at an internal stage to convert LexToken into ClassifiedToken. This class provides
-	/// 	a very basic semantic analysis to make text following in one the categories below:
-	/// 	- regular code,
-	/// 	- developper comments,
-	/// 	- strings / character.
-	/// 	The output of this class is used by CSharpCodeFormatter to achieve the basic syntax coloring.
+	/// Used at an internal stage to convert LexToken into ClassifiedToken. This class provides
+	/// a very basic semantic analysis to make text following in one the categories below:
+	/// - regular code,
+	/// - developper comments,
+	/// - strings / character.
+	/// The output of this class is used by CSharpCodeFormatter to achieve the basic syntax coloring.
 	/// </summary>
 	public class TokenClassifier
 	{
@@ -33,7 +33,7 @@ namespace NUnit.UiException.CodeFormatters
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Build a new instance of TokenClassifier.
+		/// Build a new instance of TokenClassifier.
 		/// </summary>
 		public TokenClassifier()
 		{
@@ -56,19 +56,19 @@ namespace NUnit.UiException.CodeFormatters
 			// whatever... I want them paint in blue as well!
 
 			words = new string[]
-			        {
-				        "abstract", "event", "new", "struct", "as", "explicit", "null", "switch",
-				        "base", "extern", "object", "this", "bool", "false", "operator", "throw",
-				        "break", "finally", "out", "true", "byte", "fixed", "override", "try", "case",
-				        "float", "params", "typeof", "catch", "for", "private", "uint", "char",
-				        "foreach", "protected", "ulong", "checked", "goto", "public", "unchecked",
-				        "class", "if", "readonly", "unsafe", "const", "implicit", "ref", "ushort",
-				        "continue", "in", "return", "using", "decimal", "int", "sbyte", "virtual",
-				        "default", "interface", "sealed", "volatile", "delegate", "internal",
-				        "short", "void", "do", "is", "sizeof", "while", "double", "lock", "stackalloc",
-				        "else", "long", "static", "enum", "namespace", "string", "partial", "get", "set",
-				        "region", "endregion",
-			        };
+					{
+						"abstract", "event", "new", "struct", "as", "explicit", "null", "switch",
+						"base", "extern", "object", "this", "bool", "false", "operator", "throw",
+						"break", "finally", "out", "true", "byte", "fixed", "override", "try", "case",
+						"float", "params", "typeof", "catch", "for", "private", "uint", "char",
+						"foreach", "protected", "ulong", "checked", "goto", "public", "unchecked",
+						"class", "if", "readonly", "unsafe", "const", "implicit", "ref", "ushort",
+						"continue", "in", "return", "using", "decimal", "int", "sbyte", "virtual",
+						"default", "interface", "sealed", "volatile", "delegate", "internal",
+						"short", "void", "do", "is", "sizeof", "while", "double", "lock", "stackalloc",
+						"else", "long", "static", "enum", "namespace", "string", "partial", "get", "set",
+						"region", "endregion",
+					};
 
 			this._keywords = new Dictionary<string, bool>();
 			foreach (string key in words)
@@ -84,60 +84,60 @@ namespace NUnit.UiException.CodeFormatters
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	State code for the smState machine.
-		/// 	State when reaching a C comment block.
+		/// State code for the smState machine.
+		/// State when reaching a C comment block.
 		/// </summary>
 		public const int SMSTATE_CCOMMENT = 1;
 
 		/// <summary>
-		/// 	State code for the smState machine.
-		/// 	State when reaching a char surrounded by single quotes.
+		/// State code for the smState machine.
+		/// State when reaching a char surrounded by single quotes.
 		/// </summary>
 		public const int SMSTATE_CHAR = 3;
 
 		/// <summary>
-		/// 	State code for the smState machine.
-		/// 	State when reaching a code block.
+		/// State code for the smState machine.
+		/// State when reaching a code block.
 		/// </summary>
 		public const int SMSTATE_CODE = 0;
 
 		/// <summary>
-		/// 	State code for the smState machine.
-		/// 	State when reaching a C++ comment block.
+		/// State code for the smState machine.
+		/// State when reaching a C++ comment block.
 		/// </summary>
 		public const int SMSTATE_CPPCOMMENT = 2;
 
 		/// <summary>
-		/// 	State code for the smState machine.
-		/// 	State when reaching a string surrounded by double quotes.
+		/// State code for the smState machine.
+		/// State when reaching a string surrounded by double quotes.
 		/// </summary>
 		public const int SMSTATE_STRING = 4;
 
 		/// <summary>
-		/// 	Indicate whether Lexer is in escaping mode.
-		/// 	This flag is set to true when parsing "\\" and
-		/// 	can influate on the following LexerTag value.
+		/// Indicate whether Lexer is in escaping mode.
+		/// This flag is set to true when parsing "\\" and
+		/// can influate on the following LexerTag value.
 		/// </summary>
 		private bool _escaping;
 
 		/// <summary>
-		/// 	Contains the list of C# keywords.
+		/// Contains the list of C# keywords.
 		/// </summary>
 		private Dictionary<string, bool> _keywords;
 
 		/// <summary>
-		/// 	A finite smState machine where states are: SMSTATE values and
-		/// 	transitions are LexToken.
+		/// A finite smState machine where states are: SMSTATE values and
+		/// transitions are LexToken.
 		/// </summary>
 		private StateMachine _sm;
 
 		/// <summary>
-		/// 	The current StateMachine's SMTATE code.
+		/// The current StateMachine's SMTATE code.
 		/// </summary>
 		private int _sm_output;
 
 		/// <summary>
-		/// 	Makes a link between SMSTATE code and ClassificationTag.
+		/// Makes a link between SMSTATE code and ClassificationTag.
 		/// </summary>
 		private Dictionary<int, ClassificationTag> _tags;
 
@@ -146,10 +146,10 @@ namespace NUnit.UiException.CodeFormatters
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Tells whether TokenClassifier is currently in escaping mode. When true,
-		/// 	this flag causes TokenClassifier to override the final classification
-		/// 	of a basic entity (such as: ") to be treated as normal text instead of
-		/// 	being interpreted as a string delimiter.
+		/// Tells whether TokenClassifier is currently in escaping mode. When true,
+		/// this flag causes TokenClassifier to override the final classification
+		/// of a basic entity (such as: ") to be treated as normal text instead of
+		/// being interpreted as a string delimiter.
 		/// </summary>
 		public bool Escaping
 		{
@@ -164,7 +164,7 @@ namespace NUnit.UiException.CodeFormatters
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Classify the given token and get its corresponding SMSTATE value.
+		/// Classify the given token and get its corresponding SMSTATE value.
 		/// </summary>
 		/// <param name="token"> The LexToken to be classified. </param>
 		/// <returns> An SMSTATE value. </returns>
@@ -182,7 +182,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Classify the given LexToken into a ClassificationTag.
+		/// Classify the given LexToken into a ClassificationTag.
 		/// </summary>
 		/// <param name="token"> The token to be classified. </param>
 		/// <returns> The smState value. </returns>
@@ -195,15 +195,15 @@ namespace NUnit.UiException.CodeFormatters
 			classTag = this.AcceptLexToken(token);
 
 			if (classTag == SMSTATE_CODE &&
-			    this._keywords.ContainsKey(token.Text))
+				this._keywords.ContainsKey(token.Text))
 				return (ClassificationTag.Keyword);
 
 			// Parsing a token whoose Text value is set to '\'
 			// causes the classifier to set/reset is escaping mode.
 
 			if (token.Text == "\\" &&
-			    this._sm_output == SMSTATE_STRING &&
-			    !this._escaping)
+				this._sm_output == SMSTATE_STRING &&
+				!this._escaping)
 				this._escaping = true;
 			else
 				this._escaping = false;
@@ -212,7 +212,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Gets the SMSTATE under the "transition" going from "smState".
+		/// Gets the SMSTATE under the "transition" going from "smState".
 		/// </summary>
 		/// <param name="smState"> The current smState. </param>
 		/// <param name="transition"> The current LexerTag. </param>
@@ -223,7 +223,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Gets a token SMSTATE under the "transition" going from "smState".
+		/// Gets a token SMSTATE under the "transition" going from "smState".
 		/// </summary>
 		/// <param name="smState"> The current smState machine. </param>
 		/// <param name="transition"> The LexerTag to be classified. </param>
@@ -234,7 +234,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Reset the StateMachine to default value. (code block).
+		/// Reset the StateMachine to default value. (code block).
 		/// </summary>
 		public void Reset()
 		{
@@ -249,7 +249,7 @@ namespace NUnit.UiException.CodeFormatters
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		/// <summary>
-		/// 	Defines a state (of a state machine) and its associated transitions.
+		/// Defines a state (of a state machine) and its associated transitions.
 		/// </summary>
 		private class State
 		{
@@ -276,8 +276,8 @@ namespace NUnit.UiException.CodeFormatters
 						if (transitions[j].Transition == transitions[i].Transition)
 						{
 							UiExceptionHelper.CheckTrue(false,
-							                            String.Format("transition '{0}' already present", transitions[j].Transition),
-							                            "transitions");
+								String.Format("transition '{0}' already present", transitions[j].Transition),
+								"transitions");
 						}
 					}
 				}
@@ -316,8 +316,8 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	A finite state machine. Where states are SMSTATE codes and
-		/// 	transitions are LexTokens.
+		/// A finite state machine. Where states are SMSTATE codes and
+		/// transitions are LexTokens.
 		/// </summary>
 		private class StateMachine
 		{
@@ -416,7 +416,7 @@ namespace NUnit.UiException.CodeFormatters
 			#region Methods/Operators
 
 			/// <summary>
-			/// 	Follow "transition" going from "smState" and returns reached SMSTATE.
+			/// Follow "transition" going from "smState" and returns reached SMSTATE.
 			/// </summary>
 			public int GetSMSTATE(int smState, LexerTag transition)
 			{
@@ -429,7 +429,7 @@ namespace NUnit.UiException.CodeFormatters
 			}
 
 			/// <summary>
-			/// 	Follow "transition" going from "smState" and returns reached TokenSMSTATE.
+			/// Follow "transition" going from "smState" and returns reached TokenSMSTATE.
 			/// </summary>
 			public int GetTokenSMSTATE(int smState, LexerTag transition)
 			{
@@ -445,7 +445,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Defines a transition (of a state machine).
+		/// Defines a transition (of a state machine).
 		/// </summary>
 		private class TransitionData
 		{
@@ -473,17 +473,17 @@ namespace NUnit.UiException.CodeFormatters
 			#region Fields/Constants
 
 			/// <summary>
-			/// 	The SMSTATE code reached when following that transition.
+			/// The SMSTATE code reached when following that transition.
 			/// </summary>
 			public int SMSTATE;
 
 			/// <summary>
-			/// 	The TokenSMSTATE reached when following that transition.
+			/// The TokenSMSTATE reached when following that transition.
 			/// </summary>
 			public int TokenSMSTATE;
 
 			/// <summary>
-			/// 	The current transition.
+			/// The current transition.
 			/// </summary>
 			public LexerTag Transition;
 

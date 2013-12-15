@@ -12,60 +12,96 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Threading;
+
+using Castle.Core.Internal;
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Threading;
-	using Castle.Core.Internal;
 
 	public class SingletonDispenser<TKey, TItem>
 		where TItem : class
 	{
-		private readonly Lock locker;
-		private readonly Dictionary<TKey, object> items;
-		private readonly Func<TKey, TItem> factory;
+		#region Constructors/Destructors
 
 		public SingletonDispenser(Func<TKey, TItem> factory)
 		{
 			if (factory == null)
 				throw Error.ArgumentNull("factory");
 
-			this.locker  = new SlimReadWriteLock();
-			this.items   = new Dictionary<TKey, object>();
+			this.locker = new SlimReadWriteLock();
+			this.items = new Dictionary<TKey, object>();
 			this.factory = factory;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly Func<TKey, TItem> factory;
+		private readonly Dictionary<TKey, object> items;
+		private readonly Lock locker;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
 		public TItem this[TKey key]
 		{
-			get { return GetOrCreate(key); }
-			protected set { items[key] = value; }
+			get
+			{
+				return this.GetOrCreate(key);
+			}
+			protected set
+			{
+				this.items[key] = value;
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		private TItem Create(TKey key, object item)
+		{
+			var handle = (ManualResetEvent)item;
+
+			var result = this.factory(key);
+
+			using (this.locker.ForWriting())
+				this.items[key] = result;
+
+			handle.Set();
+			return result;
 		}
 
 		private TItem GetOrCreate(TKey key)
 		{
 			object item;
-			return TryGetExistingItem(key, out item)
-				? item as TItem ?? WaitForCreate(key, item)
-				: Create(key, item);
+			return this.TryGetExistingItem(key, out item)
+				? item as TItem ?? this.WaitForCreate(key, item)
+				: this.Create(key, item);
 		}
 
 		private bool TryGetExistingItem(TKey key, out object item)
 		{
-			using (locker.ForReading())
+			using (this.locker.ForReading())
 			{
-				if (items.TryGetValue(key, out item))
+				if (this.items.TryGetValue(key, out item))
 					return true;
 			}
 
-			using (var hold = locker.ForReadingUpgradeable())
+			using (var hold = this.locker.ForReadingUpgradeable())
 			{
-				if (items.TryGetValue(key, out item))
+				if (this.items.TryGetValue(key, out item))
 					return true;
 
 				using (hold.Upgrade())
-					items[key] = item = new ManualResetEvent(false);
+					this.items[key] = item = new ManualResetEvent(false);
 			}
 
 			return false;
@@ -73,26 +109,16 @@ namespace Castle.Components.DictionaryAdapter.Xml
 
 		private TItem WaitForCreate(TKey key, object item)
 		{
-			var handle = (ManualResetEvent) item;
+			var handle = (ManualResetEvent)item;
 
 			handle.WaitOne();
 
-			using (locker.ForReading())
-				return (TItem) items[key];
+			using (this.locker.ForReading())
+				return (TItem)this.items[key];
 		}
 
-		private TItem Create(TKey key, object item)
-		{
-			var handle = (ManualResetEvent) item;
-
-			var result = factory(key);
-
-			using (locker.ForWriting())
-				items[key] = result;
-
-			handle.Set();
-			return result;
-		}
+		#endregion
 	}
 }
+
 #endif

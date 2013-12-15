@@ -11,9 +11,9 @@ using System.Threading;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Represents a thread of test execution and runs a test
-	/// 	on a thread, implementing timeout and setting the 
-	/// 	apartment state appropriately.
+	/// Represents a thread of test execution and runs a test
+	/// on a thread, implementing timeout and setting the
+	/// apartment state appropriately.
 	/// </summary>
 	public abstract class TestThread
 	{
@@ -44,19 +44,19 @@ namespace NUnit.Core
 		private Test test;
 
 		/// <summary>
-		/// 	The Thread object used to run tests
+		/// The Thread object used to run tests
 		/// </summary>
 		protected Thread thread;
 
 		/// <summary>
-		/// 	The result of running the test, which must be kept
-		/// 	separate from the returned TestResult while the thread
-		/// 	is running to avoid race conditions.
+		/// The result of running the test, which must be kept
+		/// separate from the returned TestResult while the thread
+		/// is running to avoid race conditions.
 		/// </summary>
 		protected TestResult threadResult;
 
 		/// <summary>
-		/// 	Unexpected exception thrown by test thread
+		/// Unexpected exception thrown by test thread
 		/// </summary>
 		protected Exception thrownException;
 
@@ -91,15 +91,14 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Run the test, honoring any timeout value provided. If the
-		/// 	timeout is exceeded, set the testresult as a failure. As
-		/// 	currently implemented, the thread proc calls test.doRun,
-		/// 	which handles all exceptions itself. However, for safety,
-		/// 	any exception thrown is rethrown upwards.
-		/// 
-		/// 	TODO: It would be cleaner to call test.Run, since that's
-		/// 	part of the pubic interface, but it would require some
-		/// 	restructuring of the Test hierarchy.
+		/// Run the test, honoring any timeout value provided. If the
+		/// timeout is exceeded, set the testresult as a failure. As
+		/// currently implemented, the thread proc calls test.doRun,
+		/// which handles all exceptions itself. However, for safety,
+		/// any exception thrown is rethrown upwards.
+		/// TODO: It would be cleaner to call test.Run, since that's
+		/// part of the pubic interface, but it would require some
+		/// restructuring of the Test hierarchy.
 		/// </summary>
 		public TestResult Run(EventListener listener, ITestFilter filter)
 		{
@@ -152,8 +151,8 @@ namespace NUnit.Core
 		protected abstract void RunTest();
 
 		/// <summary>
-		/// 	This is the engine of this class; the actual call to test.doRun!
-		/// 	Note that any thrown exception is saved for later use!
+		/// This is the engine of this class; the actual call to test.doRun!
+		/// Note that any thrown exception is saved for later use!
 		/// </summary>
 		private void RunTestProc()
 		{
@@ -205,8 +204,8 @@ namespace NUnit.Core
 			get
 			{
 				return this.testMethod.Timeout == 0 //|| System.Diagnostics.Debugger.IsAttached
-					       ? System.Threading.Timeout.Infinite
-					       : this.testMethod.Timeout;
+					? System.Threading.Timeout.Infinite
+					: this.testMethod.Timeout;
 			}
 		}
 

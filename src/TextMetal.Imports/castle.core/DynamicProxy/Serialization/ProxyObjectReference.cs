@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.Serialization;
+
+using Castle.DynamicProxy.Generators;
+using Castle.DynamicProxy.Internal;
 
 #if !SILVERLIGHT
 
 namespace Castle.DynamicProxy.Serialization
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Diagnostics;
-	using System.Reflection;
-	using System.Runtime.Serialization;
 #if DOTNET40
 	using System.Security;
 #endif
 
-	using Castle.DynamicProxy.Generators;
-	using Castle.DynamicProxy.Internal;
-
 	/// <summary>
-	///   Handles the deserialization of proxies.
+	/// Handles the deserialization of proxies.
 	/// </summary>
 	[Serializable]
 	public class ProxyObjectReference : IObjectReference, ISerializable, IDeserializationCallback
@@ -49,10 +49,10 @@ namespace Castle.DynamicProxy.Serialization
 		private bool delegateToBase;
 
 		/// <summary>
-		///   Resets the <see cref="ModuleScope" /> used for deserialization to a new scope.
+		/// Resets the <see cref="ModuleScope" /> used for deserialization to a new scope.
 		/// </summary>
 		/// <remarks>
-		///   This is useful for test cases.
+		/// This is useful for test cases.
 		/// </remarks>
 		public static void ResetScope()
 		{
@@ -60,31 +60,38 @@ namespace Castle.DynamicProxy.Serialization
 		}
 
 		/// <summary>
-		///   Resets the <see cref="ModuleScope" /> used for deserialization to a given <paramref name="scope" />.
+		/// Resets the <see cref="ModuleScope" /> used for deserialization to a given <paramref name="scope" />.
 		/// </summary>
 		/// <param name="scope"> The scope to be used for deserialization. </param>
 		/// <remarks>
-		///   By default, the deserialization process uses a different scope than the rest of the application, which can lead to multiple proxies
-		///   being generated for the same type. By explicitly setting the deserialization scope to the application's scope, this can be avoided.
+		/// By default, the deserialization process uses a different scope than the rest of the application, which can lead to multiple proxies
+		/// being generated for the same type. By explicitly setting the deserialization scope to the application's scope, this can be avoided.
 		/// </remarks>
 		public static void SetScope(ModuleScope scope)
 		{
 			if (scope == null)
-			{
 				throw new ArgumentNullException("scope");
-			}
 			ProxyObjectReference.scope = scope;
 		}
 
 		/// <summary>
-		///   Gets the <see cref="ModuleScope" /> used for deserialization.
+		/// Gets the <see cref="ModuleScope" /> used for deserialization.
 		/// </summary>
-		/// <value> As <see cref="ProxyObjectReference" /> has no way of automatically determining the scope used by the application (and the application might use more than one scope at the same time), <see
-		///    cref="ProxyObjectReference" /> uses a dedicated scope instance for deserializing proxy types. This instance can be reset and set to a specific value via <see
-		///    cref="ResetScope" /> and <see cref="SetScope" /> . </value>
+		/// <value>
+		/// As <see cref="ProxyObjectReference" /> has no way of automatically determining the scope used by the application (and the application might use more than one scope at the same time),
+		/// <see
+		///     cref="ProxyObjectReference" />
+		/// uses a dedicated scope instance for deserializing proxy types. This instance can be reset and set to a specific value via
+		/// <see
+		///     cref="ResetScope" />
+		/// and <see cref="SetScope" /> .
+		/// </value>
 		public static ModuleScope ModuleScope
 		{
-			get { return scope; }
+			get
+			{
+				return scope;
+			}
 		}
 
 #if DOTNET40
@@ -95,28 +102,26 @@ namespace Castle.DynamicProxy.Serialization
 			this.info = info;
 			this.context = context;
 
-			baseType = DeserializeTypeFromString("__baseType");
+			this.baseType = this.DeserializeTypeFromString("__baseType");
 
 			var _interfaceNames = (String[])info.GetValue("__interfaces", typeof(String[]));
-			interfaces = new Type[_interfaceNames.Length];
+			this.interfaces = new Type[_interfaceNames.Length];
 
 			for (var i = 0; i < _interfaceNames.Length; i++)
-			{
-				interfaces[i] = Type.GetType(_interfaceNames[i]);
-			}
+				this.interfaces[i] = Type.GetType(_interfaceNames[i]);
 
-			proxyGenerationOptions =
+			this.proxyGenerationOptions =
 				(ProxyGenerationOptions)info.GetValue("__proxyGenerationOptions", typeof(ProxyGenerationOptions));
-			proxy = RecreateProxy();
+			this.proxy = this.RecreateProxy();
 
 			// We'll try to deserialize as much of the proxy state as possible here. This is just best effort; due to deserialization dependency reasons,
 			// we need to repeat this in OnDeserialization to guarantee correct state deserialization.
-			DeserializeProxyState();
+			this.DeserializeProxyState();
 		}
 
 		private Type DeserializeTypeFromString(string key)
 		{
-			return Type.GetType(info.GetString(key), true, false);
+			return Type.GetType(this.info.GetString(key), true, false);
 		}
 
 #if DOTNET40
@@ -124,19 +129,19 @@ namespace Castle.DynamicProxy.Serialization
 #endif
 		protected virtual object RecreateProxy()
 		{
-			var generatorType = GetValue<string>("__proxyTypeId");
+			var generatorType = this.GetValue<string>("__proxyTypeId");
 			if (generatorType.Equals(ProxyTypeConstants.Class))
 			{
-				isInterfaceProxy = false;
-				return RecreateClassProxy();
+				this.isInterfaceProxy = false;
+				return this.RecreateClassProxy();
 			}
 			if (generatorType.Equals(ProxyTypeConstants.ClassWithTarget))
 			{
-				isInterfaceProxy = false;
-				return RecreateClassProxyWithTarget();
+				this.isInterfaceProxy = false;
+				return this.RecreateClassProxyWithTarget();
 			}
-			isInterfaceProxy = true;
-			return RecreateInterfaceProxy(generatorType);
+			this.isInterfaceProxy = true;
+			return this.RecreateInterfaceProxy(generatorType);
 		}
 
 #if DOTNET40
@@ -144,9 +149,9 @@ namespace Castle.DynamicProxy.Serialization
 #endif
 		private object RecreateClassProxyWithTarget()
 		{
-			var generator = new ClassProxyWithTargetGenerator(scope, baseType, interfaces, proxyGenerationOptions);
+			var generator = new ClassProxyWithTargetGenerator(scope, this.baseType, this.interfaces, this.proxyGenerationOptions);
 			var proxyType = generator.GetGeneratedType();
-			return InstantiateClassProxy(proxyType);
+			return this.InstantiateClassProxy(proxyType);
 		}
 
 #if DOTNET40
@@ -154,22 +159,16 @@ namespace Castle.DynamicProxy.Serialization
 #endif
 		public object RecreateInterfaceProxy(string generatorType)
 		{
-			var @interface = DeserializeTypeFromString("__theInterface");
-			var targetType = DeserializeTypeFromString("__targetFieldType");
+			var @interface = this.DeserializeTypeFromString("__theInterface");
+			var targetType = this.DeserializeTypeFromString("__targetFieldType");
 
 			InterfaceProxyWithTargetGenerator generator;
 			if (generatorType == ProxyTypeConstants.InterfaceWithTarget)
-			{
 				generator = new InterfaceProxyWithTargetGenerator(scope, @interface);
-			}
 			else if (generatorType == ProxyTypeConstants.InterfaceWithoutTarget)
-			{
 				generator = new InterfaceProxyWithoutTargetGenerator(scope, @interface);
-			}
 			else if (generatorType == ProxyTypeConstants.InterfaceWithTargetInterface)
-			{
 				generator = new InterfaceProxyWithTargetInterfaceGenerator(scope, @interface);
-			}
 			else
 			{
 				throw new InvalidOperationException(
@@ -178,7 +177,7 @@ namespace Castle.DynamicProxy.Serialization
 						generatorType));
 			}
 
-			var proxyType = generator.GenerateCode(targetType, interfaces, proxyGenerationOptions);
+			var proxyType = generator.GenerateCode(targetType, this.interfaces, this.proxyGenerationOptions);
 			return FormatterServices.GetSafeUninitializedObject(proxyType);
 		}
 
@@ -187,9 +186,9 @@ namespace Castle.DynamicProxy.Serialization
 #endif
 		public object RecreateClassProxy()
 		{
-			var generator = new ClassProxyGenerator(scope, baseType);
-			var proxyType = generator.GenerateCode(interfaces, proxyGenerationOptions);
-			return InstantiateClassProxy(proxyType);
+			var generator = new ClassProxyGenerator(scope, this.baseType);
+			var proxyType = generator.GenerateCode(this.interfaces, this.proxyGenerationOptions);
+			return this.InstantiateClassProxy(proxyType);
 		}
 
 #if DOTNET40
@@ -197,23 +196,17 @@ namespace Castle.DynamicProxy.Serialization
 #endif
 		private object InstantiateClassProxy(Type proxy_type)
 		{
-			delegateToBase = GetValue<bool>("__delegateToBase");
-			if (delegateToBase)
-			{
-				return Activator.CreateInstance(proxy_type, new object[] { info, context });
-			}
+			this.delegateToBase = this.GetValue<bool>("__delegateToBase");
+			if (this.delegateToBase)
+				return Activator.CreateInstance(proxy_type, new object[] { this.info, this.context });
 			else
-			{
 				return FormatterServices.GetSafeUninitializedObject(proxy_type);
-			}
 		}
 
 		protected void InvokeCallback(object target)
 		{
 			if (target is IDeserializationCallback)
-			{
 				(target as IDeserializationCallback).OnDeserialization(this);
-			}
 		}
 
 #if DOTNET40
@@ -221,7 +214,7 @@ namespace Castle.DynamicProxy.Serialization
 #endif
 		public object GetRealObject(StreamingContext context)
 		{
-			return proxy;
+			return this.proxy;
 		}
 
 #if DOTNET40
@@ -238,14 +231,14 @@ namespace Castle.DynamicProxy.Serialization
 #endif
 		public void OnDeserialization(object sender)
 		{
-			var interceptors = GetValue<IInterceptor[]>("__interceptors");
-			SetInterceptors(interceptors);
+			var interceptors = this.GetValue<IInterceptor[]>("__interceptors");
+			this.SetInterceptors(interceptors);
 
-			DeserializeProxyMembers();
+			this.DeserializeProxyMembers();
 
 			// Get the proxy state again, to get all those members we couldn't get in the constructor due to deserialization ordering.
-			DeserializeProxyState();
-			InvokeCallback(proxy);
+			this.DeserializeProxyState();
+			this.InvokeCallback(this.proxy);
 		}
 
 #if DOTNET40
@@ -253,7 +246,7 @@ namespace Castle.DynamicProxy.Serialization
 #endif
 		private void DeserializeProxyMembers()
 		{
-			var proxyType = proxy.GetType();
+			var proxyType = this.proxy.GetType();
 			var members = FormatterServices.GetSerializableMembers(proxyType);
 
 			var deserializedMembers = new List<MemberInfo>();
@@ -263,16 +256,14 @@ namespace Castle.DynamicProxy.Serialization
 				var member = members[i] as FieldInfo;
 				// we get some inherited members...
 				if (member.DeclaringType != proxyType)
-				{
 					continue;
-				}
 
 				Debug.Assert(member != null);
-				var value = info.GetValue(member.Name, member.FieldType);
+				var value = this.info.GetValue(member.Name, member.FieldType);
 				deserializedMembers.Add(member);
 				deserializedValues.Add(value);
 			}
-			FormatterServices.PopulateObjectMembers(proxy, deserializedMembers.ToArray(), deserializedValues.ToArray());
+			FormatterServices.PopulateObjectMembers(this.proxy, deserializedMembers.ToArray(), deserializedValues.ToArray());
 		}
 
 #if DOTNET40
@@ -280,50 +271,50 @@ namespace Castle.DynamicProxy.Serialization
 #endif
 		private void DeserializeProxyState()
 		{
-			if (isInterfaceProxy)
+			if (this.isInterfaceProxy)
 			{
-				var target = GetValue<object>("__target");
-				SetTarget(target);
+				var target = this.GetValue<object>("__target");
+				this.SetTarget(target);
 			}
-			else if (!delegateToBase)
+			else if (!this.delegateToBase)
 			{
-				var baseMemberData = GetValue<object[]>("__data");
-				var members = FormatterServices.GetSerializableMembers(baseType);
+				var baseMemberData = this.GetValue<object[]>("__data");
+				var members = FormatterServices.GetSerializableMembers(this.baseType);
 
 				// Sort to keep order on both serialize and deserialize side the same, c.f DYNPROXY-ISSUE-127
 				members = TypeUtil.Sort(members);
 
-				FormatterServices.PopulateObjectMembers(proxy, members, baseMemberData);
+				FormatterServices.PopulateObjectMembers(this.proxy, members, baseMemberData);
 			}
 		}
 
 		private void SetTarget(object target)
 		{
-			var targetField = proxy.GetType().GetField("__target");
+			var targetField = this.proxy.GetType().GetField("__target");
 			if (targetField == null)
 			{
 				throw new SerializationException(
 					"The SerializationInfo specifies an invalid interface proxy type, which has no __target field.");
 			}
 
-			targetField.SetValue(proxy, target);
+			targetField.SetValue(this.proxy, target);
 		}
 
 		private void SetInterceptors(IInterceptor[] interceptors)
 		{
-			var interceptorField = proxy.GetType().GetField("__interceptors");
+			var interceptorField = this.proxy.GetType().GetField("__interceptors");
 			if (interceptorField == null)
 			{
 				throw new SerializationException(
 					"The SerializationInfo specifies an invalid proxy type, which has no __interceptors field.");
 			}
 
-			interceptorField.SetValue(proxy, interceptors);
+			interceptorField.SetValue(this.proxy, interceptors);
 		}
 
 		private T GetValue<T>(string name)
 		{
-			return (T)info.GetValue(name, typeof(T));
+			return (T)this.info.GetValue(name, typeof(T));
 		}
 	}
 }

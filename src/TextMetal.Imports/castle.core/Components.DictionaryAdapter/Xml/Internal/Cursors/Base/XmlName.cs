@@ -12,73 +12,55 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
 
 	public struct XmlName : IEquatable<XmlName>
 	{
+		#region Constructors/Destructors
+
+		public XmlName(string localName, string namespaceUri)
+		{
+			this.localName = localName;
+			this.namespaceUri = namespaceUri;
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
 		public static readonly XmlName Empty = default(XmlName);
 
 		private readonly string localName;
 		private readonly string namespaceUri;
 
-		public XmlName(string localName, string namespaceUri)
-		{
-			this.localName    = localName;
-			this.namespaceUri = namespaceUri;
-		}
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		public string LocalName
 		{
-			get { return localName; }
-		} 
+			get
+			{
+				return this.localName;
+			}
+		}
 
 		public string NamespaceUri
 		{
-			get { return namespaceUri; }
-		} 
-
-		public override int GetHashCode()
-		{
-			return XmlNameComparer.Default.GetHashCode(this);
+			get
+			{
+				return this.namespaceUri;
+			}
 		}
 
-		public bool Equals(XmlName other)
-		{
-			return XmlNameComparer.Default.Equals(this, other);
-		}
+		#endregion
 
-		public override bool Equals(object obj)
-		{
-			return obj is XmlName
-				&& Equals((XmlName) obj);
-		}
-
-		public static bool operator == (XmlName x, XmlName y)
-		{
-			return XmlNameComparer.Default.Equals(x, y);
-		}
-
-		public static bool operator != (XmlName x, XmlName y)
-		{
-			return ! XmlNameComparer.Default.Equals(x, y);
-		}
-
-		public XmlName WithNamespaceUri(string namespaceUri)
-		{
-			return new XmlName(localName, namespaceUri);
-		}
-
-		public override string ToString()
-		{
-			if (string.IsNullOrEmpty(localName))
-				return string.Empty;
-			if (string.IsNullOrEmpty(namespaceUri))
-				return localName;
-			return string.Concat(namespaceUri, ":", localName);
-		}
+		#region Methods/Operators
 
 		public static XmlName ParseQName(string text)
 		{
@@ -97,6 +79,49 @@ namespace Castle.Components.DictionaryAdapter.Xml
 				text.Substring(index + 1),
 				text.Substring(0, index));
 		}
+
+		public bool Equals(XmlName other)
+		{
+			return XmlNameComparer.Default.Equals(this, other);
+		}
+
+		public override bool Equals(object obj)
+		{
+			return obj is XmlName
+					&& this.Equals((XmlName)obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return XmlNameComparer.Default.GetHashCode(this);
+		}
+
+		public override string ToString()
+		{
+			if (string.IsNullOrEmpty(this.localName))
+				return string.Empty;
+			if (string.IsNullOrEmpty(this.namespaceUri))
+				return this.localName;
+			return string.Concat(this.namespaceUri, ":", this.localName);
+		}
+
+		public XmlName WithNamespaceUri(string namespaceUri)
+		{
+			return new XmlName(this.localName, namespaceUri);
+		}
+
+		public static bool operator ==(XmlName x, XmlName y)
+		{
+			return XmlNameComparer.Default.Equals(x, y);
+		}
+
+		public static bool operator !=(XmlName x, XmlName y)
+		{
+			return ! XmlNameComparer.Default.Equals(x, y);
+		}
+
+		#endregion
 	}
 }
+
 #endif

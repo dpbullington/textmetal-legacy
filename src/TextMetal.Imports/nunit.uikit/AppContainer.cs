@@ -12,8 +12,8 @@ using System.Windows.Forms;
 namespace NUnit.UiKit
 {
 	/// <summary>
-	/// 	AppContainer acts as the container nunit components, providing 
-	/// 	them with a Site from which services may be acquired.
+	/// AppContainer acts as the container nunit components, providing
+	/// them with a Site from which services may be acquired.
 	/// </summary>
 	public class AppContainer : Container
 	{

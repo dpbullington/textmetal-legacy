@@ -13,8 +13,8 @@ using NUnit.Core.Extensibility;
 namespace NUnit.Core.Builders
 {
 	/// <summary>
-	/// 	Provides data from fields marked with the DatapointAttribute or the
-	/// 	DatapointsAttribute.
+	/// Provides data from fields marked with the DatapointAttribute or the
+	/// DatapointsAttribute.
 	/// </summary>
 	public class DatapointProvider : IDataPointProvider
 	{
@@ -39,7 +39,7 @@ namespace NUnit.Core.Builders
 				if (Reflect.HasAttribute(member, DatapointAttribute, true))
 				{
 					if (this.GetTypeFromMemberInfo(member) == parameterType &&
-					    member.MemberType == MemberTypes.Field)
+						member.MemberType == MemberTypes.Field)
 					{
 						FieldInfo field = member as FieldInfo;
 						if (field.IsStatic)
@@ -142,10 +142,10 @@ namespace NUnit.Core.Builders
 			foreach (MemberInfo member in fixtureType.GetMembers(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance))
 			{
 				if (Reflect.HasAttribute(member, DatapointAttribute, true) &&
-				    this.GetTypeFromMemberInfo(member) == parameterType)
+					this.GetTypeFromMemberInfo(member) == parameterType)
 					return true;
 				else if (Reflect.HasAttribute(member, DatapointsAttribute, true) &&
-				         this.GetElementTypeFromMemberInfo(member) == parameterType)
+						this.GetElementTypeFromMemberInfo(member) == parameterType)
 					return true;
 			}
 

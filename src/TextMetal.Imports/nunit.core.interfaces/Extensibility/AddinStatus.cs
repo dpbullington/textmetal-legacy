@@ -9,32 +9,32 @@ using System;
 namespace NUnit.Core.Extensibility
 {
 	/// <summary>
-	/// 	The AddinStatus enum indicates the load status of an addin.
+	/// The AddinStatus enum indicates the load status of an addin.
 	/// </summary>
 	public enum AddinStatus
 	{
 		/// <summary>
-		/// 	Not known - default
+		/// Not known - default
 		/// </summary>
 		Unknown,
 
 		/// <summary>
-		/// 	The addin is enabled but not loaded
+		/// The addin is enabled but not loaded
 		/// </summary>
 		Enabled,
 
 		/// <summary>
-		/// 	The addin is disabled
+		/// The addin is disabled
 		/// </summary>
 		Disabled,
 
 		/// <summary>
-		/// 	The addin was loaded successfully
+		/// The addin was loaded successfully
 		/// </summary>
 		Loaded,
 
 		/// <summary>
-		/// 	An error was encountered loading the addin
+		/// An error was encountered loading the addin
 		/// </summary>
 		Error
 	}

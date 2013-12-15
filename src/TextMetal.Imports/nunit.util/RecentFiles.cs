@@ -9,15 +9,15 @@ using System;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	The RecentFiles interface is used to isolate the app
-	/// 	from various implementations of recent files.
+	/// The RecentFiles interface is used to isolate the app
+	/// from various implementations of recent files.
 	/// </summary>
 	public interface RecentFiles
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	The current number of saved files
+		/// The current number of saved files
 		/// </summary>
 		int Count
 		{
@@ -25,7 +25,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Get a list of all the file entries
+		/// Get a list of all the file entries
 		/// </summary>
 		/// <returns> The most recent file list </returns>
 		RecentFilesCollection Entries
@@ -34,7 +34,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	The max number of files saved
+		/// The max number of files saved
 		/// </summary>
 		int MaxFiles
 		{
@@ -47,23 +47,23 @@ namespace NUnit.Util
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Remove a file from the list
+		/// Remove a file from the list
 		/// </summary>
 		/// <param name="fileName"> The name of the file to remove </param>
 		void Remove(string fileName);
 
 		/// <summary>
-		/// 	Set the most recent file entry, reordering
-		/// 	the saved names as needed and removing the oldest
-		/// 	if the max number of files would be exceeded.
+		/// Set the most recent file entry, reordering
+		/// the saved names as needed and removing the oldest
+		/// if the max number of files would be exceeded.
 		/// </summary>
 		void SetMostRecent(RecentFileEntry entry);
 
 		/// <summary>
-		/// 	Set the most recent file name, reordering
-		/// 	the saved names as needed and removing the oldest
-		/// 	if the max number of files would be exceeded.
-		/// 	The current CLR version is used to create the entry.
+		/// Set the most recent file name, reordering
+		/// the saved names as needed and removing the oldest
+		/// if the max number of files would be exceeded.
+		/// The current CLR version is used to create the entry.
 		/// </summary>
 		void SetMostRecent(string fileName);
 

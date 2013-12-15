@@ -24,8 +24,8 @@ namespace NMock2.Matchers
 	using System;
 
 	/// <summary>
-	/// 	Matcher that checks whether a value matches the check provided as a delegate.
-	/// 	the expectation.
+	/// Matcher that checks whether a value matches the check provided as a delegate.
+	/// the expectation.
 	/// </summary>
 	/// <typeparam name="T"> The type of the expected value. </typeparam>
 	public class GenericMatcher<T> : Matcher
@@ -33,12 +33,13 @@ namespace NMock2.Matchers
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="GenericMatcher{T}" /> class.
+		/// Initializes a new instance of the <see cref="GenericMatcher{T}" /> class.
 		/// </summary>
 		/// <param name="matchExpression"> The test that is performed to check if the value matches expectation. </param>
 		/// <exception cref="ArgumentNullException">
-		/// 	<c>matchExpression</c>
-		/// 	is null.</exception>
+		/// <c> matchExpression </c>
+		/// is null.
+		/// </exception>
 		public GenericMatcher(MatchExpression matchExpression)
 		{
 			if (matchExpression == null)
@@ -52,7 +53,7 @@ namespace NMock2.Matchers
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The test that is performed to see if the value matches the expectation.
+		/// The test that is performed to see if the value matches the expectation.
 		/// </summary>
 		private readonly MatchExpression matchExpression;
 
@@ -61,7 +62,7 @@ namespace NMock2.Matchers
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public override void DescribeTo(TextWriter writer)
@@ -70,7 +71,7 @@ namespace NMock2.Matchers
 		}
 
 		/// <summary>
-		/// 	Matches the specified object to this matcher and returns whether it matches.
+		/// Matches the specified object to this matcher and returns whether it matches.
 		/// </summary>
 		/// <param name="o"> The object to match. </param>
 		/// <returns> Whether the object matches. </returns>
@@ -84,7 +85,7 @@ namespace NMock2.Matchers
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		/// <summary>
-		/// 	The test that is performed to check if the <paramref name="value" /> matches the expectation.
+		/// The test that is performed to check if the <paramref name="value" /> matches the expectation.
 		/// </summary>
 		/// <param name="value"> The actually received value. </param>
 		/// <returns> True then value matches the expectation. </returns>

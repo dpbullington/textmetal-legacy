@@ -12,53 +12,62 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections;
+
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
-	using System.Collections;
 #if !SILVERLIGHT
 	using System.Collections.Specialized;
+
 #else
 	using HybridDictionary = System.Collections.Generic.Dictionary<object, object>;
 #endif
+
 	public abstract partial class DictionaryAdapterBase : IDictionaryCreate
 	{
+		#region Methods/Operators
+
 		public T Create<T>()
 		{
-			return Create<T>(new HybridDictionary());
+			return this.Create<T>(new HybridDictionary());
 		}
 
 		public object Create(Type type)
 		{
-			return Create(type, new HybridDictionary());
+			return this.Create(type, new HybridDictionary());
 		}
 
 		public T Create<T>(IDictionary dictionary)
 		{
-			return (T)Create(typeof(T), dictionary ?? new HybridDictionary());
+			return (T)this.Create(typeof(T), dictionary ?? new HybridDictionary());
 		}
 
 		public object Create(Type type, IDictionary dictionary)
 		{
-			if (This.CreateStrategy != null)
+			if (this.This.CreateStrategy != null)
 			{
-				var created = This.CreateStrategy.Create(this, type, dictionary);
-				if (created != null) return created;
+				var created = this.This.CreateStrategy.Create(this, type, dictionary);
+				if (created != null)
+					return created;
 			}
 			dictionary = dictionary ?? new HybridDictionary();
-			return This.Factory.GetAdapter(type, dictionary, This.Descriptor);
+			return this.This.Factory.GetAdapter(type, dictionary, this.This.Descriptor);
 		}
 
 		public T Create<T>(Action<T> init)
 		{
-			return Create<T>(new HybridDictionary(), init);
+			return this.Create<T>(new HybridDictionary(), init);
 		}
 
 		public T Create<T>(IDictionary dictionary, Action<T> init)
 		{
 			var adapter = Create<T>(dictionary ?? new HybridDictionary());
-			if (init != null) init(adapter);
+			if (init != null)
+				init(adapter);
 			return adapter;
 		}
+
+		#endregion
 	}
 }

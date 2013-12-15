@@ -13,7 +13,7 @@ using NUnit.Util;
 namespace NUnit.UiKit
 {
 	/// <summary>
-	/// 	Summary description for TextDisplayWriter.
+	/// Summary description for TextDisplayWriter.
 	/// </summary>
 	public class TextDisplayWriter : TextWriter, TestObserver
 	{
@@ -35,7 +35,7 @@ namespace NUnit.UiKit
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	The encoding in use for this TextWriter.
+		/// The encoding in use for this TextWriter.
 		/// </summary>
 		public override Encoding Encoding
 		{
@@ -64,7 +64,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Write a single char
+		/// Write a single char
 		/// </summary>
 		/// <param name="c"> The char to write </param>
 		public override void Write(char c)
@@ -73,7 +73,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Write a string
+		/// Write a string
 		/// </summary>
 		/// <param name="s"> The string to write </param>
 		public override void Write(String s)
@@ -82,7 +82,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Write a string followed by a newline.
+		/// Write a string followed by a newline.
 		/// </summary>
 		/// <param name="s"> The string to write </param>
 		public override void WriteLine(string s)

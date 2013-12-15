@@ -1,4 +1,5 @@
 #region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,79 +22,53 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Reflection;
-using Newtonsoft.Json.Utilities;
 using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
+
+using Newtonsoft.Json.Utilities;
+
 #if NET20
 using Newtonsoft.Json.Utilities.LinqBridge;
 #endif
 
 namespace Newtonsoft.Json.Serialization
 {
-  /// <summary>
-  /// Contract details for a <see cref="Type"/> used by the <see cref="JsonSerializer"/>.
-  /// </summary>
-  public class JsonDictionaryContract : JsonContainerContract
-  {
-    /// <summary>
-    /// Gets or sets the property name resolver.
-    /// </summary>
-    /// <value>The property name resolver.</value>
-    public Func<string, string> PropertyNameResolver { get; set; }
+	/// <summary>
+	/// Contract details for a <see cref="Type" /> used by the <see cref="JsonSerializer" />.
+	/// </summary>
+	public class JsonDictionaryContract : JsonContainerContract
+	{
+		#region Constructors/Destructors
 
-    /// <summary>
-    /// Gets the <see cref="Type"/> of the dictionary keys.
-    /// </summary>
-    /// <value>The <see cref="Type"/> of the dictionary keys.</value>
-    public Type DictionaryKeyType { get; private set; }
-    /// <summary>
-    /// Gets the <see cref="Type"/> of the dictionary values.
-    /// </summary>
-    /// <value>The <see cref="Type"/> of the dictionary values.</value>
-    public Type DictionaryValueType { get; private set; }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="JsonDictionaryContract" /> class.
+		/// </summary>
+		/// <param name="underlyingType"> The underlying type for the contract. </param>
+		public JsonDictionaryContract(Type underlyingType)
+			: base(underlyingType)
+		{
+			this.ContractType = JsonContractType.Dictionary;
 
-    internal JsonContract KeyContract { get; set; }
+			Type keyType;
+			Type valueType;
 
-    private readonly bool _isDictionaryValueTypeNullableType;
-    private readonly Type _genericCollectionDefinitionType;
+			if (ReflectionUtils.ImplementsGenericDefinition(underlyingType, typeof(IDictionary<,>), out this._genericCollectionDefinitionType))
+			{
+				keyType = this._genericCollectionDefinitionType.GetGenericArguments()[0];
+				valueType = this._genericCollectionDefinitionType.GetGenericArguments()[1];
 
-    private Type _genericWrapperType;
-    private MethodCall<object, object> _genericWrapperCreator;
-
-    private Func<object> _genericTemporaryDictionaryCreator;
-
-    internal bool ShouldCreateWrapper { get; private set; }
-    internal ConstructorInfo ParametrizedConstructor { get; private set; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="JsonDictionaryContract"/> class.
-    /// </summary>
-    /// <param name="underlyingType">The underlying type for the contract.</param>
-    public JsonDictionaryContract(Type underlyingType)
-      : base(underlyingType)
-    {
-      ContractType = JsonContractType.Dictionary;
-
-      Type keyType;
-      Type valueType;
-
-      if (ReflectionUtils.ImplementsGenericDefinition(underlyingType, typeof(IDictionary<,>), out _genericCollectionDefinitionType))
-      {
-        keyType = _genericCollectionDefinitionType.GetGenericArguments()[0];
-        valueType = _genericCollectionDefinitionType.GetGenericArguments()[1];
-
-        if (ReflectionUtils.IsGenericDefinition(UnderlyingType, typeof(IDictionary<,>)))
-          CreatedType = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
+				if (ReflectionUtils.IsGenericDefinition(this.UnderlyingType, typeof(IDictionary<,>)))
+					this.CreatedType = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
 
 #if !(NET40 || NET35 || NET20 || SILVERLIGHT || WINDOWS_PHONE || PORTABLE40)
         IsReadOnlyOrFixedSize = ReflectionUtils.InheritsGenericDefinition(underlyingType, typeof(ReadOnlyDictionary<,>));
 #endif
-      }
+			}
 #if !(NET40 || NET35 || NET20 || SILVERLIGHT || WINDOWS_PHONE || PORTABLE40)
       else if (ReflectionUtils.ImplementsGenericDefinition(underlyingType, typeof(IReadOnlyDictionary<,>), out _genericCollectionDefinitionType))
       {
@@ -106,24 +81,24 @@ namespace Newtonsoft.Json.Serialization
         IsReadOnlyOrFixedSize = true;
       }
 #endif
-      else
-      {
-        ReflectionUtils.GetDictionaryKeyValueTypes(UnderlyingType, out keyType, out valueType);
+			else
+			{
+				ReflectionUtils.GetDictionaryKeyValueTypes(this.UnderlyingType, out keyType, out valueType);
 
-        if (UnderlyingType == typeof(IDictionary))
-          CreatedType = typeof(Dictionary<object, object>);
-      }
+				if (this.UnderlyingType == typeof(IDictionary))
+					this.CreatedType = typeof(Dictionary<object, object>);
+			}
 
-      if (keyType != null && valueType != null)
-        ParametrizedConstructor = CollectionUtils.ResolveEnumableCollectionConstructor(CreatedType, typeof(KeyValuePair<,>).MakeGenericType(keyType, valueType));
+			if (keyType != null && valueType != null)
+				this.ParametrizedConstructor = CollectionUtils.ResolveEnumableCollectionConstructor(this.CreatedType, typeof(KeyValuePair<,>).MakeGenericType(keyType, valueType));
 
-      ShouldCreateWrapper = !typeof (IDictionary).IsAssignableFrom(CreatedType);
+			this.ShouldCreateWrapper = !typeof(IDictionary).IsAssignableFrom(this.CreatedType);
 
-      DictionaryKeyType = keyType;
-      DictionaryValueType = valueType;
+			this.DictionaryKeyType = keyType;
+			this.DictionaryValueType = valueType;
 
-      if (DictionaryValueType != null)
-        _isDictionaryValueTypeNullableType = ReflectionUtils.IsNullableType(DictionaryValueType);
+			if (this.DictionaryValueType != null)
+				this._isDictionaryValueTypeNullableType = ReflectionUtils.IsNullableType(this.DictionaryValueType);
 
 #if (NET20 || NET35)
       Type tempDictioanryType;
@@ -136,31 +111,99 @@ namespace Newtonsoft.Json.Serialization
         ShouldCreateWrapper = true;
       }
 #endif
-    }
+		}
 
-    internal IWrappedDictionary CreateWrapper(object dictionary)
-    {
-      if (_genericWrapperCreator == null)
-      {
-        _genericWrapperType = typeof(DictionaryWrapper<,>).MakeGenericType(DictionaryKeyType, DictionaryValueType);
+		#endregion
 
-        ConstructorInfo genericWrapperConstructor = _genericWrapperType.GetConstructor(new[] { _genericCollectionDefinitionType });
-        _genericWrapperCreator = JsonTypeReflector.ReflectionDelegateFactory.CreateMethodCall<object>(genericWrapperConstructor);
-      }
+		#region Fields/Constants
 
-      return (IWrappedDictionary)_genericWrapperCreator(null, dictionary);
-    }
+		private readonly Type _genericCollectionDefinitionType;
+		private readonly bool _isDictionaryValueTypeNullableType;
+		private Func<object> _genericTemporaryDictionaryCreator;
+		private MethodCall<object, object> _genericWrapperCreator;
+		private Type _genericWrapperType;
 
-    internal IDictionary CreateTemporaryDictionary()
-    {
-      if (_genericTemporaryDictionaryCreator == null)
-      {
-        Type temporaryDictionaryType = typeof(Dictionary<,>).MakeGenericType(DictionaryKeyType, DictionaryValueType);
+		#endregion
 
-        _genericTemporaryDictionaryCreator = JsonTypeReflector.ReflectionDelegateFactory.CreateDefaultConstructor<object>(temporaryDictionaryType);
-      }
+		#region Properties/Indexers/Events
 
-      return (IDictionary)_genericTemporaryDictionaryCreator();
-    }
-  }
+		/// <summary>
+		/// Gets the <see cref="Type" /> of the dictionary keys.
+		/// </summary>
+		/// <value> The <see cref="Type" /> of the dictionary keys. </value>
+		public Type DictionaryKeyType
+		{
+			get;
+			private set;
+		}
+
+		/// <summary>
+		/// Gets the <see cref="Type" /> of the dictionary values.
+		/// </summary>
+		/// <value> The <see cref="Type" /> of the dictionary values. </value>
+		public Type DictionaryValueType
+		{
+			get;
+			private set;
+		}
+
+		internal JsonContract KeyContract
+		{
+			get;
+			set;
+		}
+
+		internal ConstructorInfo ParametrizedConstructor
+		{
+			get;
+			private set;
+		}
+
+		/// <summary>
+		/// Gets or sets the property name resolver.
+		/// </summary>
+		/// <value> The property name resolver. </value>
+		public Func<string, string> PropertyNameResolver
+		{
+			get;
+			set;
+		}
+
+		internal bool ShouldCreateWrapper
+		{
+			get;
+			private set;
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		internal IDictionary CreateTemporaryDictionary()
+		{
+			if (this._genericTemporaryDictionaryCreator == null)
+			{
+				Type temporaryDictionaryType = typeof(Dictionary<,>).MakeGenericType(this.DictionaryKeyType, this.DictionaryValueType);
+
+				this._genericTemporaryDictionaryCreator = JsonTypeReflector.ReflectionDelegateFactory.CreateDefaultConstructor<object>(temporaryDictionaryType);
+			}
+
+			return (IDictionary)this._genericTemporaryDictionaryCreator();
+		}
+
+		internal IWrappedDictionary CreateWrapper(object dictionary)
+		{
+			if (this._genericWrapperCreator == null)
+			{
+				this._genericWrapperType = typeof(DictionaryWrapper<,>).MakeGenericType(this.DictionaryKeyType, this.DictionaryValueType);
+
+				ConstructorInfo genericWrapperConstructor = this._genericWrapperType.GetConstructor(new[] { this._genericCollectionDefinitionType });
+				this._genericWrapperCreator = JsonTypeReflector.ReflectionDelegateFactory.CreateMethodCall<object>(genericWrapperConstructor);
+			}
+
+			return (IWrappedDictionary)this._genericWrapperCreator(null, dictionary);
+		}
+
+		#endregion
+	}
 }

@@ -12,24 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System.Reflection.Emit;
-
 	public class AddressOfReferenceExpression : Expression
 	{
-		private readonly Reference reference;
+		#region Constructors/Destructors
 
 		public AddressOfReferenceExpression(Reference reference)
 		{
 			this.reference = reference;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly Reference reference;
+
+		#endregion
+
+		#region Methods/Operators
+
 		public override void Emit(IMemberEmitter member, ILGenerator gen)
 		{
-			ArgumentsUtil.EmitLoadOwnerAndReference(reference.OwnerReference, gen);
+			ArgumentsUtil.EmitLoadOwnerAndReference(this.reference.OwnerReference, gen);
 
-			reference.LoadAddressOfReference(gen);
+			this.reference.LoadAddressOfReference(gen);
 		}
+
+		#endregion
 	}
 }

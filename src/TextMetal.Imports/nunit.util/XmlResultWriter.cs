@@ -18,7 +18,7 @@ namespace NUnit.Util
 	using System;
 
 	/// <summary>
-	/// 	Summary description for XmlResultWriter.
+	/// Summary description for XmlResultWriter.
 	/// </summary>
 	public class XmlResultWriter
 	{
@@ -49,7 +49,7 @@ namespace NUnit.Util
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Makes string safe for xml parsing, replacing control chars with '?'
+		/// Makes string safe for xml parsing, replacing control chars with '?'
 		/// </summary>
 		/// <param name="encodedString"> string to make safe </param>
 		/// <returns> xml safe string </returns>
@@ -216,9 +216,9 @@ namespace NUnit.Util
 		{
 			this.xmlWriter.WriteStartElement("culture-info");
 			this.xmlWriter.WriteAttributeString("current-culture",
-			                                    CultureInfo.CurrentCulture.ToString());
+				CultureInfo.CurrentCulture.ToString());
 			this.xmlWriter.WriteAttributeString("current-uiculture",
-			                                    CultureInfo.CurrentUICulture.ToString());
+				CultureInfo.CurrentUICulture.ToString());
 			this.xmlWriter.WriteEndElement();
 		}
 
@@ -226,21 +226,21 @@ namespace NUnit.Util
 		{
 			this.xmlWriter.WriteStartElement("environment");
 			this.xmlWriter.WriteAttributeString("nunit-version",
-			                                    Assembly.GetExecutingAssembly().GetName().Version.ToString());
+				Assembly.GetExecutingAssembly().GetName().Version.ToString());
 			this.xmlWriter.WriteAttributeString("clr-version",
-			                                    Environment.Version.ToString());
+				Environment.Version.ToString());
 			this.xmlWriter.WriteAttributeString("os-version",
-			                                    Environment.OSVersion.ToString());
+				Environment.OSVersion.ToString());
 			this.xmlWriter.WriteAttributeString("platform",
-			                                    Environment.OSVersion.Platform.ToString());
+				Environment.OSVersion.Platform.ToString());
 			this.xmlWriter.WriteAttributeString("cwd",
-			                                    Environment.CurrentDirectory);
+				Environment.CurrentDirectory);
 			this.xmlWriter.WriteAttributeString("machine-name",
-			                                    Environment.MachineName);
+				Environment.MachineName);
 			this.xmlWriter.WriteAttributeString("user",
-			                                    Environment.UserName);
+				Environment.UserName);
 			this.xmlWriter.WriteAttributeString("user-domain",
-			                                    Environment.UserDomainName);
+				Environment.UserDomainName);
 			this.xmlWriter.WriteEndElement();
 		}
 

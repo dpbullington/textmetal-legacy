@@ -11,8 +11,8 @@ namespace NUnit.Core
 	using System;
 
 	/// <summary>
-	/// 	ThreadedTestRunner overrides the Run and BeginRun methods 
-	/// 	so that they are always run on a separate thread. The actual
+	/// ThreadedTestRunner overrides the Run and BeginRun methods
+	/// so that they are always run on a separate thread. The actual
 	/// </summary>
 	public class ThreadedTestRunner : ProxyTestRunner
 	{

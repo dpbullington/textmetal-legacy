@@ -14,7 +14,7 @@ using NUnit.UiKit;
 namespace NUnit.Gui
 {
 	/// <summary>
-	/// 	Summary description for OptionsDialog.
+	/// Summary description for OptionsDialog.
 	/// </summary>
 	public class OptionsDialog
 	{
@@ -22,17 +22,17 @@ namespace NUnit.Gui
 		public static void Display(Form owner)
 		{
 			TreeBasedSettingsDialog.Display(owner,
-			                                new GuiSettingsPage("Gui.General"),
-			                                new TreeSettingsPage("Gui.Tree Display"),
-			                                new TestResultSettingsPage("Gui.Test Results"),
-			                                new TextOutputSettingsPage("Gui.Text Output"),
-			                                new ProjectEditorSettingsPage("Gui.Project Editor"),
-			                                new TestLoaderSettingsPage("Test Loader.Assembly Isolation"),
-			                                new AssemblyReloadSettingsPage("Test Loader.Assembly Reload"),
-			                                new RuntimeSelectionSettingsPage("Test Loader.Runtime Selection"),
-			                                new AdvancedLoaderSettingsPage("Test Loader.Advanced"),
-			                                new VisualStudioSettingsPage("IDE Support.Visual Studio"),
-			                                new InternalTraceSettingsPage("Advanced Settings.Internal Trace"));
+				new GuiSettingsPage("Gui.General"),
+				new TreeSettingsPage("Gui.Tree Display"),
+				new TestResultSettingsPage("Gui.Test Results"),
+				new TextOutputSettingsPage("Gui.Text Output"),
+				new ProjectEditorSettingsPage("Gui.Project Editor"),
+				new TestLoaderSettingsPage("Test Loader.Assembly Isolation"),
+				new AssemblyReloadSettingsPage("Test Loader.Assembly Reload"),
+				new RuntimeSelectionSettingsPage("Test Loader.Runtime Selection"),
+				new AdvancedLoaderSettingsPage("Test Loader.Advanced"),
+				new VisualStudioSettingsPage("IDE Support.Visual Studio"),
+				new InternalTraceSettingsPage("Advanced Settings.Internal Trace"));
 		}
 #else
 		public static void Display( Form owner )

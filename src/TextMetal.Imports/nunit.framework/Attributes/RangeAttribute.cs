@@ -9,15 +9,15 @@ using System;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	RangeAttribute is used to supply a range of values to an
-	/// 	individual parameter of a parameterized test.
+	/// RangeAttribute is used to supply a range of values to an
+	/// individual parameter of a parameterized test.
 	/// </summary>
 	public class RangeAttribute : ValuesAttribute
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a range of ints using default step of 1
+		/// Construct a range of ints using default step of 1
 		/// </summary>
 		/// <param name="from"> </param>
 		/// <param name="to"> </param>
@@ -27,7 +27,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Construct a range of ints specifying the step size
+		/// Construct a range of ints specifying the step size
 		/// </summary>
 		/// <param name="from"> </param>
 		/// <param name="to"> </param>
@@ -42,7 +42,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Construct a range of longs
+		/// Construct a range of longs
 		/// </summary>
 		/// <param name="from"> </param>
 		/// <param name="to"> </param>
@@ -57,7 +57,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Construct a range of doubles
+		/// Construct a range of doubles
 		/// </summary>
 		/// <param name="from"> </param>
 		/// <param name="to"> </param>
@@ -73,7 +73,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Construct a range of floats
+		/// Construct a range of floats
 		/// </summary>
 		/// <param name="from"> </param>
 		/// <param name="to"> </param>

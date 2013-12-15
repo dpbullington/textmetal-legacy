@@ -22,14 +22,14 @@ using System.IO;
 namespace NMock2.Matchers
 {
 	/// <summary>
-	/// 	Matcher for indexer getters. Checks that the arguments passed to the indexer match.
+	/// Matcher for indexer getters. Checks that the arguments passed to the indexer match.
 	/// </summary>
 	public class IndexGetterArgumentsMatcher : ArgumentsMatcher
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="IndexGetterArgumentsMatcher" /> class.
+		/// Initializes a new instance of the <see cref="IndexGetterArgumentsMatcher" /> class.
 		/// </summary>
 		/// <param name="valueMatchers"> The value matchers. This is an ordered list of matchers, each matching a single method argument. </param>
 		public IndexGetterArgumentsMatcher(params Matcher[] valueMatchers)
@@ -42,7 +42,7 @@ namespace NMock2.Matchers
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public override void DescribeTo(TextWriter writer)

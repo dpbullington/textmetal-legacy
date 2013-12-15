@@ -21,7 +21,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Standard constructor
+		/// Standard constructor
 		/// </summary>
 		/// <param name="message"> The error message that explains the reason for the exception </param>
 		public InvalidSuiteException(string message)
@@ -30,7 +30,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Standard constructor
+		/// Standard constructor
 		/// </summary>
 		/// <param name="message"> The error message that explains the reason for the exception </param>
 		/// <param name="inner"> The exception that caused the current exception </param>
@@ -41,10 +41,10 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Serialization Constructor
+		/// Serialization Constructor
 		/// </summary>
 		protected InvalidSuiteException(SerializationInfo info,
-		                                StreamingContext context)
+			StreamingContext context)
 			: base(info, context)
 		{
 		}

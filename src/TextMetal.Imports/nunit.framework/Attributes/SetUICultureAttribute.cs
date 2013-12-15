@@ -9,7 +9,7 @@ using System;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	Summary description for SetUICultureAttribute.
+	/// Summary description for SetUICultureAttribute.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Assembly, AllowMultiple = true, Inherited = true)]
 	public class SetUICultureAttribute : PropertyAttribute
@@ -17,7 +17,7 @@ namespace NUnit.Framework
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct given the name of a culture
+		/// Construct given the name of a culture
 		/// </summary>
 		/// <param name="culture"> </param>
 		public SetUICultureAttribute(string culture)

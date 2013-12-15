@@ -25,14 +25,14 @@ using NMock2.Monitoring;
 namespace NMock2.Actions
 {
 	/// <summary>
-	/// 	Action that fires an event.
+	/// Action that fires an event.
 	/// </summary>
 	public class FireAction : IAction
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="FireAction" /> class.
+		/// Initializes a new instance of the <see cref="FireAction" /> class.
 		/// </summary>
 		/// <param name="eventName"> Name of the event. </param>
 		/// <param name="eventArgs"> The event args. </param>
@@ -47,12 +47,12 @@ namespace NMock2.Actions
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Stores the event arguments.
+		/// Stores the event arguments.
 		/// </summary>
 		private readonly object[] eventArgs;
 
 		/// <summary>
-		/// 	Stores the name of the event to fire.
+		/// Stores the name of the event to fire.
 		/// </summary>
 		private readonly string eventName;
 
@@ -61,7 +61,7 @@ namespace NMock2.Actions
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public void DescribeTo(TextWriter writer)
@@ -71,7 +71,7 @@ namespace NMock2.Actions
 		}
 
 		/// <summary>
-		/// 	Invokes this object. The event is fired on the receiver of the invocation.
+		/// Invokes this object. The event is fired on the receiver of the invocation.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
 		public void Invoke(Invocation invocation)

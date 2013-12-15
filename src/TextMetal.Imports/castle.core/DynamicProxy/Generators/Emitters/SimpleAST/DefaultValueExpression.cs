@@ -12,72 +12,73 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
 	using System;
-	using System.Reflection.Emit;
 
 	public class DefaultValueExpression : Expression
 	{
-		private readonly Type type;
+		#region Constructors/Destructors
 
 		public DefaultValueExpression(Type type)
 		{
 			this.type = type;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly Type type;
+
+		#endregion
+
+		#region Methods/Operators
+
 		public override void Emit(IMemberEmitter member, ILGenerator gen)
 		{
 			// TODO: check if this can be simplified by using more of OpCodeUtil and other existing types
-			if (IsPrimitiveOrClass(type))
-			{
-				OpCodeUtil.EmitLoadOpCodeForDefaultValueOfType(gen, type);
-			}
-			else if (type.IsValueType || type.IsGenericParameter)
+			if (this.IsPrimitiveOrClass(this.type))
+				OpCodeUtil.EmitLoadOpCodeForDefaultValueOfType(gen, this.type);
+			else if (this.type.IsValueType || this.type.IsGenericParameter)
 			{
 				// TODO: handle decimal explicitly
-				var local = gen.DeclareLocal(type);
+				var local = gen.DeclareLocal(this.type);
 				gen.Emit(OpCodes.Ldloca_S, local);
-				gen.Emit(OpCodes.Initobj, type);
+				gen.Emit(OpCodes.Initobj, this.type);
 				gen.Emit(OpCodes.Ldloc, local);
 			}
-			else if (type.IsByRef)
-			{
-				EmitByRef(gen);
-			}
+			else if (this.type.IsByRef)
+				this.EmitByRef(gen);
 			else
-			{
-				throw new ProxyGenerationException("Can't emit default value for type " + type);
-			}
+				throw new ProxyGenerationException("Can't emit default value for type " + this.type);
 		}
 
 		private void EmitByRef(ILGenerator gen)
 		{
-			var elementType = type.GetElementType();
-			if (IsPrimitiveOrClass(elementType))
+			var elementType = this.type.GetElementType();
+			if (this.IsPrimitiveOrClass(elementType))
 			{
 				OpCodeUtil.EmitLoadOpCodeForDefaultValueOfType(gen, elementType);
 				OpCodeUtil.EmitStoreIndirectOpCodeForType(gen, elementType);
 			}
 			else if (elementType.IsGenericParameter || elementType.IsValueType)
-			{
 				gen.Emit(OpCodes.Initobj, elementType);
-			}
 			else
-			{
 				throw new ProxyGenerationException("Can't emit default value for reference of type " + elementType);
-			}
 		}
 
 		private bool IsPrimitiveOrClass(Type type)
 		{
 			if ((type.IsPrimitive && type != typeof(IntPtr)))
-			{
 				return true;
-			}
 			return ((type.IsClass || type.IsInterface) &&
-			        type.IsGenericParameter == false &&
-			        type.IsByRef == false);
+					type.IsGenericParameter == false &&
+					type.IsByRef == false);
 		}
+
+		#endregion
 	}
 }

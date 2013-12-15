@@ -10,17 +10,16 @@ using NUnit.UiException.CodeFormatters;
 namespace NUnit.UiException.Controls
 {
 	/// <summary>
-	/// 	The interface through which SourceCodeDisplay interacts with the code display.
-	/// 
-	/// 	Direct implementation is:
-	/// 	- CodeBox
+	/// The interface through which SourceCodeDisplay interacts with the code display.
+	/// Direct implementation is:
+	/// - CodeBox
 	/// </summary>
 	public interface ICodeView
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets or sets the viewport location from a 0 based line index
+		/// Gets or sets the viewport location from a 0 based line index
 		/// </summary>
 		int CurrentLine
 		{
@@ -29,7 +28,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gives access to the underlying IFormatterCatalog.
+		/// Gives access to the underlying IFormatterCatalog.
 		/// </summary>
 		IFormatterCatalog Formatter
 		{
@@ -37,7 +36,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gets or sets the language formatting of the code display.
+		/// Gets or sets the language formatting of the code display.
 		/// </summary>
 		string Language
 		{
@@ -46,7 +45,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gets or sets a text to display in the code display.
+		/// Gets or sets a text to display in the code display.
 		/// </summary>
 		string Text
 		{

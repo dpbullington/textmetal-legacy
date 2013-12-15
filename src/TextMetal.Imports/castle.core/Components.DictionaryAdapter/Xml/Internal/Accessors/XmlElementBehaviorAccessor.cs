@@ -12,74 +12,64 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Xml.Serialization;
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Xml.Serialization;
 
 	public class XmlElementBehaviorAccessor : XmlNodeAccessor,
 		IConfigurable<XmlElementAttribute>,
-		IXmlBehaviorSemantics <XmlElementAttribute>
+		IXmlBehaviorSemantics<XmlElementAttribute>
 	{
-		private ItemAccessor itemAccessor;
-		private List<XmlElementAttribute> attributes;
+		#region Constructors/Destructors
+
+		public XmlElementBehaviorAccessor(string name, Type type, IXmlContext context)
+			: base(name, type, context)
+		{
+		}
+
+		#endregion
+
+		#region Fields/Constants
 
 		internal static readonly XmlAccessorFactory<XmlElementBehaviorAccessor>
 			Factory = (name, type, context) => new XmlElementBehaviorAccessor(name, type, context);
 
-		public XmlElementBehaviorAccessor(string name, Type type, IXmlContext context)
-			: base(name, type, context) { }
+		private List<XmlElementAttribute> attributes;
+		private ItemAccessor itemAccessor;
+
+		#endregion
+
+		#region Methods/Operators
 
 		public void Configure(XmlElementAttribute attribute)
 		{
 			if (attribute.Type == null)
 			{
-				ConfigureLocalName   (attribute.ElementName);
-				ConfigureNamespaceUri(attribute.Namespace  );
-				ConfigureNillable    (attribute.IsNullable );
+				this.ConfigureLocalName(attribute.ElementName);
+				this.ConfigureNamespaceUri(attribute.Namespace);
+				this.ConfigureNillable(attribute.IsNullable);
 			}
 			else
 			{
-				if (attributes == null)
-					attributes = new List<XmlElementAttribute>();
-				attributes.Add(attribute);
+				if (this.attributes == null)
+					this.attributes = new List<XmlElementAttribute>();
+				this.attributes.Add(attribute);
 			}
 		}
 
-		public override void Prepare()
+		public Type GetClrType(XmlElementAttribute attribute)
 		{
-			if (attributes != null)
-			{
-				ConfigureKnownTypesFromAttributes(attributes, this);
-				attributes = null;				
-			}
-			base.Prepare();
-		}
-
-		public override void SetValue(IXmlCursor cursor, IDictionaryAdapter parentObject, XmlReferenceManager references,
-			bool hasCurrent, object oldValue, ref object newValue)
-		{
-			if (newValue == null && IsCollection)
-				base.RemoveCollectionItems(cursor, references, oldValue);
-			else
-				base.SetValue(cursor, parentObject, references, hasCurrent, oldValue, ref newValue);
+			return attribute.Type;
 		}
 
 		public override IXmlCollectionAccessor GetCollectionAccessor(Type itemType)
 		{
-			return itemAccessor ?? (itemAccessor = new ItemAccessor(this));
-		}
-
-		public override IXmlCursor SelectPropertyNode(IXmlNode node, bool mutable)
-		{
-			return node.SelectChildren(KnownTypes, Context, CursorFlags.Elements.MutableIf(mutable));
-		}
-
-		public override IXmlCursor SelectCollectionNode(IXmlNode node, bool mutable)
-		{
-			return node.SelectSelf(ClrType);
+			return this.itemAccessor ?? (this.itemAccessor = new ItemAccessor(this));
 		}
 
 		public string GetLocalName(XmlElementAttribute attribute)
@@ -92,22 +82,56 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			return attribute.Namespace;
 		}
 
-		public Type GetClrType(XmlElementAttribute attribute)
+		public override void Prepare()
 		{
-			return attribute.Type;
+			if (this.attributes != null)
+			{
+				this.ConfigureKnownTypesFromAttributes(this.attributes, this);
+				this.attributes = null;
+			}
+			base.Prepare();
 		}
+
+		public override IXmlCursor SelectCollectionNode(IXmlNode node, bool mutable)
+		{
+			return node.SelectSelf(this.ClrType);
+		}
+
+		public override IXmlCursor SelectPropertyNode(IXmlNode node, bool mutable)
+		{
+			return node.SelectChildren(this.KnownTypes, this.Context, CursorFlags.Elements.MutableIf(mutable));
+		}
+
+		public override void SetValue(IXmlCursor cursor, IDictionaryAdapter parentObject, XmlReferenceManager references,
+			bool hasCurrent, object oldValue, ref object newValue)
+		{
+			if (newValue == null && this.IsCollection)
+				base.RemoveCollectionItems(cursor, references, oldValue);
+			else
+				base.SetValue(cursor, parentObject, references, hasCurrent, oldValue, ref newValue);
+		}
+
+		#endregion
+
+		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		private class ItemAccessor : XmlNodeAccessor
 		{
+			#region Constructors/Destructors
+
 			public ItemAccessor(XmlNodeAccessor parent)
 				: base(parent.ClrType.GetCollectionItemType(), parent.Context)
 			{
-				ConfigureLocalName   (parent.Name.LocalName   );
-				ConfigureNamespaceUri(parent.Name.NamespaceUri);
-				ConfigureNillable    (parent.IsNillable       );
-				ConfigureReference   (parent.IsReference      );
-				ConfigureKnownTypesFromParent(parent);
+				this.ConfigureLocalName(parent.Name.LocalName);
+				this.ConfigureNamespaceUri(parent.Name.NamespaceUri);
+				this.ConfigureNillable(parent.IsNillable);
+				this.ConfigureReference(parent.IsReference);
+				this.ConfigureKnownTypesFromParent(parent);
 			}
+
+			#endregion
+
+			#region Methods/Operators
 
 			public override void Prepare()
 			{
@@ -116,9 +140,14 @@ namespace Castle.Components.DictionaryAdapter.Xml
 
 			public override IXmlCursor SelectCollectionItems(IXmlNode node, bool mutable)
 			{
-				return node.SelectChildren(KnownTypes, Context, CursorFlags.Elements.MutableIf(mutable) | CursorFlags.Multiple);
+				return node.SelectChildren(this.KnownTypes, this.Context, CursorFlags.Elements.MutableIf(mutable) | CursorFlags.Multiple);
 			}
+
+			#endregion
 		}
+
+		#endregion
 	}
 }
+
 #endif

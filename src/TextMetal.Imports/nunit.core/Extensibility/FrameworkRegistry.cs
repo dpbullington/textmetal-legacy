@@ -24,7 +24,7 @@ namespace NUnit.Core.Extensibility
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	List of FrameworkInfo structs for supported frameworks
+		/// List of FrameworkInfo structs for supported frameworks
 		/// </summary>
 		private Hashtable testFrameworks = new Hashtable();
 
@@ -33,7 +33,7 @@ namespace NUnit.Core.Extensibility
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Get a list of known frameworks referenced by an assembly
+		/// Get a list of known frameworks referenced by an assembly
 		/// </summary>
 		/// <param name="assembly"> The assembly to be examined </param>
 		/// <returns> A list of AssemblyNames </returns>
@@ -62,8 +62,8 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Register a framework. NUnit registers itself using this method. Add-ins that
-		/// 	work with or emulate a different framework may register themselves as well.
+		/// Register a framework. NUnit registers itself using this method. Add-ins that
+		/// work with or emulate a different framework may register themselves as well.
 		/// </summary>
 		/// <param name="frameworkName"> The name of the framework </param>
 		/// <param name="assemblyName"> The name of the assembly that framework users reference </param>

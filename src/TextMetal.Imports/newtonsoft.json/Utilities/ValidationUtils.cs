@@ -1,4 +1,5 @@
 #region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,39 +22,41 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using System.Globalization;
 
 namespace Newtonsoft.Json.Utilities
 {
-  internal static class ValidationUtils
-  {
-    public static void ArgumentNotNullOrEmpty(string value, string parameterName)
-    {
-      if (value == null)
-        throw new ArgumentNullException(parameterName);
+	internal static class ValidationUtils
+	{
+		#region Methods/Operators
 
-      if (value.Length == 0)
-        throw new ArgumentException("'{0}' cannot be empty.".FormatWith(CultureInfo.InvariantCulture, parameterName), parameterName);
-    }
+		public static void ArgumentNotNull(object value, string parameterName)
+		{
+			if (value == null)
+				throw new ArgumentNullException(parameterName);
+		}
 
-    public static void ArgumentTypeIsEnum(Type enumType, string parameterName)
-    {
-      ArgumentNotNull(enumType, "enumType");
+		public static void ArgumentNotNullOrEmpty(string value, string parameterName)
+		{
+			if (value == null)
+				throw new ArgumentNullException(parameterName);
 
-      if (!enumType.IsEnum())
-        throw new ArgumentException("Type {0} is not an Enum.".FormatWith(CultureInfo.InvariantCulture, enumType), parameterName);
-    }
+			if (value.Length == 0)
+				throw new ArgumentException("'{0}' cannot be empty.".FormatWith(CultureInfo.InvariantCulture, parameterName), parameterName);
+		}
 
-    public static void ArgumentNotNull(object value, string parameterName)
-    {
-      if (value == null)
-        throw new ArgumentNullException(parameterName);
-    }
-  }
+		public static void ArgumentTypeIsEnum(Type enumType, string parameterName)
+		{
+			ArgumentNotNull(enumType, "enumType");
+
+			if (!enumType.IsEnum())
+				throw new ArgumentException("Type {0} is not an Enum.".FormatWith(CultureInfo.InvariantCulture, enumType), parameterName);
+		}
+
+		#endregion
+	}
 }

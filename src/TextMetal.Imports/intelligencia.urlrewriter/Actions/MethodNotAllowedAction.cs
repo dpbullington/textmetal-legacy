@@ -10,17 +10,21 @@ using System.Net;
 
 namespace Intelligencia.UrlRewriter.Actions
 {
-    /// <summary>
-    /// Returns a 405 Method Not Allowed HTTP status code.
-    /// </summary>
-    public sealed class MethodNotAllowedAction : SetStatusAction
-    {
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public MethodNotAllowedAction()
-            : base(HttpStatusCode.MethodNotAllowed)
-        {
-        }
-    }
+	/// <summary>
+	/// Returns a 405 Method Not Allowed HTTP status code.
+	/// </summary>
+	public sealed class MethodNotAllowedAction : SetStatusAction
+	{
+		#region Constructors/Destructors
+
+		/// <summary>
+		/// Default constructor.
+		/// </summary>
+		public MethodNotAllowedAction()
+			: base(HttpStatusCode.MethodNotAllowed)
+		{
+		}
+
+		#endregion
+	}
 }

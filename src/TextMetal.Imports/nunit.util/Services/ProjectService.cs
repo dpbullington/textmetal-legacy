@@ -14,26 +14,27 @@ using NUnit.Util.ProjectConverters;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Summary description for ProjectService.
+	/// Summary description for ProjectService.
 	/// </summary>
 	public class ProjectService : IProjectConverter, IService
 	{
+		//private static readonly string nunitExtension = ".nunit";
+
 		#region Fields/Constants
 
-		//private static readonly string nunitExtension = ".nunit";
 		/// <summary>
-		/// 	The extension used for test projects
+		/// The extension used for test projects
 		/// </summary>
 		/// <summary>
-		/// 	Array of all installed ProjectConverters
+		/// Array of all installed ProjectConverters
 		/// </summary>
 		private IProjectConverter[] converters = new IProjectConverter[]
-		                                         {
-			                                         new VisualStudioConverter()
-		                                         };
+												{
+													new VisualStudioConverter()
+												};
 
 		/// <summary>
-		/// 	Seed used to generate names for new projects
+		/// Seed used to generate names for new projects
 		/// </summary>
 		private int projectSeed = 0;
 
@@ -117,7 +118,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Creates a project to wrap a list of assemblies
+		/// Creates a project to wrap a list of assemblies
 		/// </summary>
 		public NUnitProject WrapAssemblies(string[] assemblies)
 		{
@@ -155,7 +156,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Creates a project to wrap an assembly
+		/// Creates a project to wrap an assembly
 		/// </summary>
 		public NUnitProject WrapAssembly(string assemblyPath)
 		{

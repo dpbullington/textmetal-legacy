@@ -12,7 +12,7 @@ using System.Text;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	AssemblyReader knows how to find various things in an assembly header
+	/// AssemblyReader knows how to find various things in an assembly header
 	/// </summary>
 	public class AssemblyReader : IDisposable
 	{
@@ -146,8 +146,8 @@ namespace NUnit.Core
 				this.peType = this.rdr.ReadUInt16();
 
 				this.dataDirectory = this.peType == 0x20b
-					                     ? this.optionalHeader + 112
-					                     : this.optionalHeader + 96;
+					? this.optionalHeader + 112
+					: this.optionalHeader + 96;
 
 				this.fs.Position = this.dataDirectory - 4;
 				this.numDataDirectoryEntries = this.rdr.ReadUInt32();

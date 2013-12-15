@@ -24,20 +24,20 @@ namespace NMock2.Monitoring
 	using System;
 
 	/// <summary>
-	/// 	Implementations of this interface are responsible for generating runtime
-	/// 	proxies of classes and interfaces for use as mock objects.
+	/// Implementations of this interface are responsible for generating runtime
+	/// proxies of classes and interfaces for use as mock objects.
 	/// </summary>
 	/// <remarks>
-	/// 	Returned instances are expected to implement IMockObject and take care of
-	/// 	intercepting calls to their public members. Intercepted calls should be
-	/// 	forwarded on to the supplied Mockery for processing against expectations.
+	/// Returned instances are expected to implement IMockObject and take care of
+	/// intercepting calls to their public members. Intercepted calls should be
+	/// forwarded on to the supplied Mockery for processing against expectations.
 	/// </remarks>
 	public interface IMockObjectFactory
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Creates a mock of the specified type(s).
+		/// Creates a mock of the specified type(s).
 		/// </summary>
 		/// <param name="mockery"> The mockery used to create this mock instance. </param>
 		/// <param name="typesToMock"> The type(s) to include in the mock. </param>

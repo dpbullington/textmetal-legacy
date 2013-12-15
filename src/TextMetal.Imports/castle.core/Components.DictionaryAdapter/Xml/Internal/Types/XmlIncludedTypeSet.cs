@@ -12,86 +12,109 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections;
+using System.Collections.Generic;
+using System.Xml;
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
-	using System.Collections;
-	using System.Collections.Generic;
 
 	public class XmlIncludedTypeSet : IXmlIncludedTypeMap, IEnumerable<IXmlIncludedType>
 	{
-		private readonly Dictionary<XmlName, IXmlIncludedType> itemsByXsiType;
-		private readonly Dictionary<Type,    IXmlIncludedType> itemsByClrType;
+		#region Constructors/Destructors
 
 		public XmlIncludedTypeSet()
 		{
-			itemsByXsiType = new Dictionary<XmlName, IXmlIncludedType>();
-			itemsByClrType = new Dictionary<Type,    IXmlIncludedType>();
+			this.itemsByXsiType = new Dictionary<XmlName, IXmlIncludedType>();
+			this.itemsByClrType = new Dictionary<Type, IXmlIncludedType>();
 
 			foreach (var includedType in DefaultEntries)
-				Add(includedType);
+				this.Add(includedType);
 		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		public static readonly IList<IXmlIncludedType> DefaultEntries
+			= Array.AsReadOnly(new IXmlIncludedType[]
+								{
+									new XmlIncludedType("anyType", Xsd.NamespaceUri, typeof(object)),
+									new XmlIncludedType("string", Xsd.NamespaceUri, typeof(string)),
+									new XmlIncludedType("boolean", Xsd.NamespaceUri, typeof(bool)),
+									new XmlIncludedType("byte", Xsd.NamespaceUri, typeof(sbyte)),
+									new XmlIncludedType("unsignedByte", Xsd.NamespaceUri, typeof(byte)),
+									new XmlIncludedType("short", Xsd.NamespaceUri, typeof(short)),
+									new XmlIncludedType("unsignedShort", Xsd.NamespaceUri, typeof(ushort)),
+									new XmlIncludedType("int", Xsd.NamespaceUri, typeof(int)),
+									new XmlIncludedType("unsignedInt", Xsd.NamespaceUri, typeof(uint)),
+									new XmlIncludedType("long", Xsd.NamespaceUri, typeof(long)),
+									new XmlIncludedType("unsignedLong", Xsd.NamespaceUri, typeof(ulong)),
+									new XmlIncludedType("float", Xsd.NamespaceUri, typeof(float)),
+									new XmlIncludedType("double", Xsd.NamespaceUri, typeof(double)),
+									new XmlIncludedType("decimal", Xsd.NamespaceUri, typeof(decimal)),
+									new XmlIncludedType("guid", Wsdl.NamespaceUri, typeof(Guid)),
+									new XmlIncludedType("dateTime", Xsd.NamespaceUri, typeof(DateTime)),
+//			new XmlIncludedType("dateTime",      Xsd .NamespaceUri, typeof(DateTimeOffset)), TODO: Find a way to enable this without duplicate key exception.
+									new XmlIncludedType("duration", Xsd.NamespaceUri, typeof(TimeSpan)),
+									new XmlIncludedType("base64Binary", Xsd.NamespaceUri, typeof(byte[])),
+									new XmlIncludedType("anyURI", Xsd.NamespaceUri, typeof(Uri)),
+									new XmlIncludedType("QName", Xsd.NamespaceUri, typeof(XmlQualifiedName))
+								});
+
+		private readonly Dictionary<Type, IXmlIncludedType> itemsByClrType;
+		private readonly Dictionary<XmlName, IXmlIncludedType> itemsByXsiType;
+
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		IXmlIncludedType IXmlIncludedTypeMap.Default
 		{
-			get { throw Error.NoDefaultKnownType(); }
+			get
+			{
+				throw Error.NoDefaultKnownType();
+			}
 		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		public void Add(IXmlIncludedType includedType)
 		{
 			// Allow only one item per xsi:type
-			itemsByXsiType.Add(includedType.XsiType, includedType);
+			this.itemsByXsiType.Add(includedType.XsiType, includedType);
 
 			// Overwrite any prior entry for CLR type
-			itemsByClrType[includedType.ClrType] = includedType;
-		}
-
-		public bool TryGet(XmlName xsiType, out IXmlIncludedType includedType)
-		{
-			return itemsByXsiType.TryGetValue(xsiType, out includedType);
-		}
-
-		public bool TryGet(Type clrType, out IXmlIncludedType includedType)
-		{
-			return itemsByClrType.TryGetValue(clrType, out includedType);
+			this.itemsByClrType[includedType.ClrType] = includedType;
 		}
 
 		public IEnumerator<IXmlIncludedType> GetEnumerator()
 		{
-			return itemsByXsiType.Values.GetEnumerator();
+			return this.itemsByXsiType.Values.GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			return GetEnumerator();
+			return this.GetEnumerator();
 		}
 
-		public static readonly IList<IXmlIncludedType> DefaultEntries
-			= Array.AsReadOnly(new IXmlIncludedType[]
+		public bool TryGet(XmlName xsiType, out IXmlIncludedType includedType)
 		{
-			new XmlIncludedType("anyType",       Xsd .NamespaceUri, typeof(object)),
-			new XmlIncludedType("string",        Xsd .NamespaceUri, typeof(string)),
-			new XmlIncludedType("boolean",       Xsd .NamespaceUri, typeof(bool)),
-			new XmlIncludedType("byte",          Xsd .NamespaceUri, typeof(sbyte)),
-			new XmlIncludedType("unsignedByte",  Xsd .NamespaceUri, typeof(byte)),
-			new XmlIncludedType("short",         Xsd .NamespaceUri, typeof(short)),
-			new XmlIncludedType("unsignedShort", Xsd .NamespaceUri, typeof(ushort)),
-			new XmlIncludedType("int",           Xsd .NamespaceUri, typeof(int)),
-			new XmlIncludedType("unsignedInt",   Xsd .NamespaceUri, typeof(uint)),
-			new XmlIncludedType("long",          Xsd .NamespaceUri, typeof(long)),
-			new XmlIncludedType("unsignedLong",  Xsd .NamespaceUri, typeof(ulong)),
-			new XmlIncludedType("float",         Xsd .NamespaceUri, typeof(float)),
-			new XmlIncludedType("double",        Xsd .NamespaceUri, typeof(double)),
-			new XmlIncludedType("decimal",       Xsd .NamespaceUri, typeof(decimal)),
-			new XmlIncludedType("guid",          Wsdl.NamespaceUri, typeof(Guid)),          
-			new XmlIncludedType("dateTime",      Xsd .NamespaceUri, typeof(DateTime)),
-//			new XmlIncludedType("dateTime",      Xsd .NamespaceUri, typeof(DateTimeOffset)), TODO: Find a way to enable this without duplicate key exception.
-			new XmlIncludedType("duration",      Xsd .NamespaceUri, typeof(TimeSpan)),      
-			new XmlIncludedType("base64Binary",  Xsd .NamespaceUri, typeof(byte[])),
-			new XmlIncludedType("anyURI",        Xsd .NamespaceUri, typeof(Uri)),
-			new XmlIncludedType("QName",         Xsd .NamespaceUri, typeof(System.Xml.XmlQualifiedName))
-		});
+			return this.itemsByXsiType.TryGetValue(xsiType, out includedType);
+		}
+
+		public bool TryGet(Type clrType, out IXmlIncludedType includedType)
+		{
+			return this.itemsByClrType.TryGetValue(clrType, out includedType);
+		}
+
+		#endregion
 	}
 }
+
 #endif

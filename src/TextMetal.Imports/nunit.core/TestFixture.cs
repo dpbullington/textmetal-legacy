@@ -9,8 +9,8 @@ using System;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	TestFixture is a surrogate for a user test fixture class,
-	/// 	containing one or more tests.
+	/// TestFixture is a surrogate for a user test fixture class,
+	/// containing one or more tests.
 	/// </summary>
 	public class TestFixture : TestSuite
 	{
@@ -31,8 +31,8 @@ namespace NUnit.Core
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets a string representing the kind of test
-		/// 	that this object represents, for use in display.
+		/// Gets a string representing the kind of test
+		/// that this object represents, for use in display.
 		/// </summary>
 		public override string TestType
 		{

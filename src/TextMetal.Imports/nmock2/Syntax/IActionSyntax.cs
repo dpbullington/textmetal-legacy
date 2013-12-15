@@ -20,14 +20,14 @@
 namespace NMock2.Syntax
 {
 	/// <summary>
-	/// 	Syntax for defining actions.
+	/// Syntax for defining actions.
 	/// </summary>
 	public interface IActionSyntax : ICommentSyntax
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Defines what will happen.
+		/// Defines what will happen.
 		/// </summary>
 		/// <param name="actions"> The actions to take. </param>
 		/// <returns> Returns the comment syntax defined after will. </returns>

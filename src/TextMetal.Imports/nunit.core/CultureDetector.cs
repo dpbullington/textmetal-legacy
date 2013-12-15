@@ -16,7 +16,7 @@ namespace NUnit.Core
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Default constructor uses the current culutre.
+		/// Default constructor uses the current culutre.
 		/// </summary>
 		public CultureDetector()
 		{
@@ -24,7 +24,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Contruct a CultureHelper for a particular culture for testing.
+		/// Contruct a CultureHelper for a particular culture for testing.
 		/// </summary>
 		/// <param name="culture"> The culture to be used </param>
 		public CultureDetector(string culture)
@@ -46,9 +46,9 @@ namespace NUnit.Core
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Return the last failure reason. Results are not
-		/// 	defined if called before IsSupported( Attribute )
-		/// 	is called.
+		/// Return the last failure reason. Results are not
+		/// defined if called before IsSupported( Attribute )
+		/// is called.
 		/// </summary>
 		public string Reason
 		{
@@ -63,8 +63,8 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Test to determine if one of a collection of culturess
-		/// 	is being used currently.
+		/// Test to determine if one of a collection of culturess
+		/// is being used currently.
 		/// </summary>
 		/// <param name="cultures"> </param>
 		/// <returns> </returns>
@@ -80,8 +80,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Tests to determine if the current culture is supported
-		/// 	based on a culture attribute.
+		/// Tests to determine if the current culture is supported
+		/// based on a culture attribute.
 		/// </summary>
 		/// <param name="platformAttribute"> The attribute to examine </param>
 		/// <returns> </returns>
@@ -120,8 +120,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Test to determine if the a particular culture or comma-
-		/// 	delimited set of cultures is in use.
+		/// Test to determine if the a particular culture or comma-
+		/// delimited set of cultures is in use.
 		/// </summary>
 		/// <param name="platform"> Name of the culture or comma-separated list of culture names </param>
 		/// <returns> True if the culture is in use on the system </returns>

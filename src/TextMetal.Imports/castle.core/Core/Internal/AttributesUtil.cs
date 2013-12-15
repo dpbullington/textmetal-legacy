@@ -12,47 +12,68 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
+
 namespace Castle.Core.Internal
 {
 	using System;
-	using System.ComponentModel;
-	using System.Linq;
-	using System.Reflection;
 
 	/// <summary>
-	///   Helper class for retrieving attributes.
+	/// Helper class for retrieving attributes.
 	/// </summary>
 	public static class AttributesUtil
 	{
+		#region Fields/Constants
+
+		private static readonly AttributeUsageAttribute
+			DefaultAttributeUsage = new AttributeUsageAttribute(AttributeTargets.All);
+
+		#endregion
+
+		#region Methods/Operators
+
 		/// <summary>
-		///   Gets the attribute.
+		/// Gets the attribute.
 		/// </summary>
-		/// <param name = "member">The member.</param>
-		/// <returns>The member attribute.</returns>
+		/// <param name="member"> The member. </param>
+		/// <returns> The member attribute. </returns>
 		public static T GetAttribute<T>(this ICustomAttributeProvider member) where T : class
 		{
 			return GetAttributes<T>(member).FirstOrDefault();
 		}
 
-		/// <summary>
-		///   Gets the attributes. Does not consider inherited attributes!
-		/// </summary>
-		/// <param name = "member">The member.</param>
-		/// <returns>The member attributes.</returns>
-		public static T[] GetAttributes<T>(this ICustomAttributeProvider member) where T : class
+		public static AttributeUsageAttribute GetAttributeUsage(this Type attributeType)
 		{
-			if (typeof(T) != typeof(object))
-			{
-				return (T[])member.GetCustomAttributes(typeof(T), false);
-			}
-			return (T[])member.GetCustomAttributes(false);
+			var attributes = attributeType.GetCustomAttributes(typeof(AttributeUsageAttribute), true);
+			return attributes.Length != 0
+				? (AttributeUsageAttribute)attributes[0]
+				: DefaultAttributeUsage;
 		}
 
 		/// <summary>
-		///   Gets the type attribute.
+		/// Gets the attributes. Does not consider inherited attributes!
 		/// </summary>
-		/// <param name = "type">The type.</param>
-		/// <returns>The type attribute.</returns>
+		/// <param name="member"> The member. </param>
+		/// <returns> The member attributes. </returns>
+		public static T[] GetAttributes<T>(this ICustomAttributeProvider member) where T : class
+		{
+			if (typeof(T) != typeof(object))
+				return (T[])member.GetCustomAttributes(typeof(T), false);
+			return (T[])member.GetCustomAttributes(false);
+		}
+
+		public static object[] GetInterfaceAttributes(Type type)
+		{
+			return InterfaceAttributeUtil.GetAttributes(type, true);
+		}
+
+		/// <summary>
+		/// Gets the type attribute.
+		/// </summary>
+		/// <param name="type"> The type. </param>
+		/// <returns> The type attribute. </returns>
 		public static T GetTypeAttribute<T>(this Type type) where T : class
 		{
 			var attribute = GetAttribute<T>(type);
@@ -63,9 +84,7 @@ namespace Castle.Core.Internal
 				{
 					attribute = GetTypeAttribute<T>(baseInterface);
 					if (attribute != null)
-					{
 						break;
-					}
 				}
 			}
 
@@ -73,10 +92,10 @@ namespace Castle.Core.Internal
 		}
 
 		/// <summary>
-		///   Gets the type attributes.
+		/// Gets the type attributes.
 		/// </summary>
-		/// <param name = "type">The type.</param>
-		/// <returns>The type attributes.</returns>
+		/// <param name="type"> The type. </param>
+		/// <returns> The type attributes. </returns>
 		public static T[] GetTypeAttributes<T>(Type type) where T : class
 		{
 			var attributes = GetAttributes<T>(type);
@@ -87,56 +106,38 @@ namespace Castle.Core.Internal
 				{
 					attributes = GetTypeAttributes<T>(baseInterface);
 					if (attributes.Length > 0)
-					{
 						break;
-					}
 				}
 			}
 
 			return attributes;
 		}
 
-		public static object[] GetInterfaceAttributes(Type type)
-		{
-			return InterfaceAttributeUtil.GetAttributes(type, true);
-		}
-
-		public static AttributeUsageAttribute GetAttributeUsage(this Type attributeType)
-		{
-			var attributes = attributeType.GetCustomAttributes(typeof(AttributeUsageAttribute), true);
-			return attributes.Length != 0
-				? (AttributeUsageAttribute) attributes[0]
-				: DefaultAttributeUsage;
-		}
-
-		private static readonly AttributeUsageAttribute
-			DefaultAttributeUsage = new AttributeUsageAttribute(AttributeTargets.All);
-
 		/// <summary>
-		///   Gets the type converter.
+		/// Gets the type converter.
 		/// </summary>
-		/// <param name = "member">The member.</param>
-		/// <returns></returns>
+		/// <param name="member"> The member. </param>
+		/// <returns> </returns>
 		public static Type GetTypeConverter(MemberInfo member)
 		{
 			var attrib = GetAttribute<TypeConverterAttribute>(member);
 
 			if (attrib != null)
-			{
 				return Type.GetType(attrib.ConverterTypeName);
-			}
 
 			return null;
 		}
 
 		/// <summary>
-		///   Gets the attribute.
+		/// Gets the attribute.
 		/// </summary>
-		/// <param name = "member">The member.</param>
-		/// <returns>The member attribute.</returns>
+		/// <param name="member"> The member. </param>
+		/// <returns> The member attribute. </returns>
 		public static bool HasAttribute<T>(this ICustomAttributeProvider member) where T : class
 		{
 			return GetAttributes<T>(member).FirstOrDefault() != null;
 		}
+
+		#endregion
 	}
 }

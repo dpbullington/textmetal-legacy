@@ -26,34 +26,34 @@ namespace NMock2
 	using System;
 
 	/// <summary>
-	/// 	Provides shortcuts to <see cref="Matcher" />s.
+	/// Provides shortcuts to <see cref="Matcher" />s.
 	/// </summary>
 	public class Is
 	{
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Matches anything.
+		/// Matches anything.
 		/// </summary>
 		public static readonly Matcher Anything = new AlwaysMatcher(true, "anything");
 
 		/// <summary>
-		/// 	Matches if the value is not null.
+		/// Matches if the value is not null.
 		/// </summary>
 		public static readonly Matcher NotNull = new NotMatcher(Null);
 
 		/// <summary>
-		/// 	Matches nothing.
+		/// Matches nothing.
 		/// </summary>
 		public static readonly Matcher Nothing = new AlwaysMatcher(false, "nothing");
 
 		/// <summary>
-		/// 	Matches if the value is null.
+		/// Matches if the value is null.
 		/// </summary>
 		public static readonly Matcher Null = new NullMatcher();
 
 		/// <summary>
-		/// 	Matches out parameters of methods.
+		/// Matches out parameters of methods.
 		/// </summary>
 		public static readonly Matcher Out = new ArgumentsMatcher.OutMatcher();
 
@@ -62,7 +62,7 @@ namespace NMock2
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Matches objects that are at least equal to <paramref name="value" />.
+		/// Matches objects that are at least equal to <paramref name="value" />.
 		/// </summary>
 		/// <param name="value"> The value to compare. </param>
 		/// <returns> Returns a new instance of the <see cref="ComparisonMatcher" /> class. </returns>
@@ -72,7 +72,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Matches objects that are less or equal to <paramref name="value" />.
+		/// Matches objects that are less or equal to <paramref name="value" />.
 		/// </summary>
 		/// <param name="value"> The value to compare. </param>
 		/// <returns> Returns a new instance of the <see cref="ComparisonMatcher" /> class. </returns>
@@ -82,8 +82,8 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Matches objects the are equal to the expected object.
-		/// 	<seealso cref="Same" />
+		/// Matches objects the are equal to the expected object.
+		/// <seealso cref="Same" />
 		/// </summary>
 		/// <param name="expected"> The expected. </param>
 		/// <returns> Returns a new instance of the <see cref="EqualMatcher" /> class. </returns>
@@ -93,7 +93,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Matches objects that are greater than <paramref name="value" />.
+		/// Matches objects that are greater than <paramref name="value" />.
 		/// </summary>
 		/// <param name="value"> The value to compare. </param>
 		/// <returns> Returns a new instance of the <see cref="ComparisonMatcher" /> class. </returns>
@@ -103,7 +103,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Matches objects in the specified collection.
+		/// Matches objects in the specified collection.
 		/// </summary>
 		/// <param name="collection"> The collection with objects to match. </param>
 		/// <returns> Returns a new instance of the <see cref="ElementMatcher" /> class. </returns>
@@ -113,7 +113,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Matches objects less than <paramref name="value" />.
+		/// Matches objects less than <paramref name="value" />.
 		/// </summary>
 		/// <param name="value"> The value to compare. </param>
 		/// <returns> Returns a new instance of the <see cref="ComparisonMatcher" /> class. </returns>
@@ -123,7 +123,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Matches objects against the specified expression.
+		/// Matches objects against the specified expression.
 		/// </summary>
 		/// <typeparam name="T"> Type of the value to match. </typeparam>
 		/// <param name="expression"> The match expression. </param>
@@ -134,7 +134,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Matches objects in the specified elements.
+		/// Matches objects in the specified elements.
 		/// </summary>
 		/// <param name="elements"> The elements to match. </param>
 		/// <returns> Returns a new instance of the <see cref="ElementMatcher" /> class. </returns>
@@ -144,8 +144,8 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Matches an expected object.
-		/// 	<seealso cref="EqualTo" />
+		/// Matches an expected object.
+		/// <seealso cref="EqualTo" />
 		/// </summary>
 		/// <param name="expected"> The expected object. </param>
 		/// <returns> Returns a new instance of the <see cref="SameMatcher" /> class. </returns>
@@ -155,7 +155,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Matches strings containing the specified <paramref name="substring" />.
+		/// Matches strings containing the specified <paramref name="substring" />.
 		/// </summary>
 		/// <param name="substring"> The substring. </param>
 		/// <returns> Returns a new instance of the <see cref="StringContainsMatcher" /> class. </returns>
@@ -165,7 +165,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Matches objects of the specified type.
+		/// Matches objects of the specified type.
 		/// </summary>
 		/// <param name="type"> The type to match. </param>
 		/// <returns> Returns a new instance of the <see cref="TypeMatcher" /> class. </returns>
@@ -175,7 +175,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Matches objects of the specified type.
+		/// Matches objects of the specified type.
 		/// </summary>
 		/// <typeparam name="T"> The type to match. </typeparam>
 		/// <returns> Returns a new instance of the <see cref="TypeMatcher" /> class. </returns>

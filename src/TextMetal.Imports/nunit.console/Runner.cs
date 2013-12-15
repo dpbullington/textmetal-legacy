@@ -14,7 +14,7 @@ using NUnit.Util;
 namespace NUnit.ConsoleRunner
 {
 	/// <summary>
-	/// 	Summary description for Runner.
+	/// Summary description for Runner.
 	/// </summary>
 	public class Runner
 	{
@@ -160,7 +160,7 @@ namespace NUnit.ConsoleRunner
 			RuntimeFramework framework = RuntimeFramework.CurrentFramework;
 			Console.WriteLine(string.Format("   OS Version: {0}", Environment.OSVersion));
 			Console.WriteLine(string.Format("  CLR Version: {0} ( {1} )",
-			                                Environment.Version, framework.DisplayName));
+				Environment.Version, framework.DisplayName));
 
 			Console.WriteLine();
 		}

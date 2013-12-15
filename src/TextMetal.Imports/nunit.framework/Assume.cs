@@ -12,18 +12,18 @@ using NUnit.Framework.Constraints;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	Provides static methods to express the assumptions
-	/// 	that must be met for a test to give a meaningful
-	/// 	result. If an assumption is not met, the test
-	/// 	should produce an inconclusive result.
+	/// Provides static methods to express the assumptions
+	/// that must be met for a test to give a meaningful
+	/// result. If an assumption is not met, the test
+	/// should produce an inconclusive result.
 	/// </summary>
 	public class Assume
 	{
 		#region Equals and ReferenceEquals
 
 		/// <summary>
-		/// 	The Equals method throws an AssertionException. This is done 
-		/// 	to make sure there is no mistake by calling this function.
+		/// The Equals method throws an AssertionException. This is done
+		/// to make sure there is no mistake by calling this function.
 		/// </summary>
 		/// <param name="a"> </param>
 		/// <param name="b"> </param>
@@ -35,9 +35,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	override the default ReferenceEquals to throw an AssertionException. This 
-		/// 	implementation makes sure there is no mistake in calling this function 
-		/// 	as part of Assert.
+		/// override the default ReferenceEquals to throw an AssertionException. This
+		/// implementation makes sure there is no mistake in calling this function
+		/// as part of Assert.
 		/// </summary>
 		/// <param name="a"> </param>
 		/// <param name="b"> </param>
@@ -53,8 +53,8 @@ namespace NUnit.Framework
 		#region Object
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an InconclusiveException on failure.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an InconclusiveException on failure.
 		/// </summary>
 		/// <param name="expression"> A Constraint expression to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -64,8 +64,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an InconclusiveException on failure.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an InconclusiveException on failure.
 		/// </summary>
 		/// <param name="expression"> A Constraint expression to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -76,8 +76,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an InconclusiveException on failure.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an InconclusiveException on failure.
 		/// </summary>
 		/// <param name="expression"> A Constraint expression to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -100,8 +100,8 @@ namespace NUnit.Framework
 		#region ActualValueDelegate
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an InconclusiveException on failure.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an InconclusiveException on failure.
 		/// </summary>
 		/// <param name="expr"> A Constraint expression to be applied </param>
 		/// <param name="del"> An ActualValueDelegate returning the value to be tested </param>
@@ -111,8 +111,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an InconclusiveException on failure.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an InconclusiveException on failure.
 		/// </summary>
 		/// <param name="expr"> A Constraint expression to be applied </param>
 		/// <param name="del"> An ActualValueDelegate returning the value to be tested </param>
@@ -123,8 +123,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an InconclusiveException on failure.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an InconclusiveException on failure.
 		/// </summary>
 		/// <param name="del"> An ActualValueDelegate returning the value to be tested </param>
 		/// <param name="expr"> A Constraint expression to be applied </param>
@@ -148,8 +148,8 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Apply a constraint to a referenced value, succeeding if the constraint
-		/// 	is satisfied and throwing an InconclusiveException on failure.
+		/// Apply a constraint to a referenced value, succeeding if the constraint
+		/// is satisfied and throwing an InconclusiveException on failure.
 		/// </summary>
 		/// <param name="expression"> A Constraint expression to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -159,8 +159,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to a referenced value, succeeding if the constraint
-		/// 	is satisfied and throwing an InconclusiveException on failure.
+		/// Apply a constraint to a referenced value, succeeding if the constraint
+		/// is satisfied and throwing an InconclusiveException on failure.
 		/// </summary>
 		/// <param name="expression"> A Constraint expression to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -171,8 +171,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to a referenced value, succeeding if the constraint
-		/// 	is satisfied and throwing an InconclusiveException on failure.
+		/// Apply a constraint to a referenced value, succeeding if the constraint
+		/// is satisfied and throwing an InconclusiveException on failure.
 		/// </summary>
 		/// <param name="expression"> A Constraint expression to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -239,8 +239,8 @@ namespace NUnit.Framework
 		#region Boolean
 
 		/// <summary>
-		/// 	Asserts that a condition is true. If the condition is false the method throws
-		/// 	an <see cref="InconclusiveException" />.
+		/// Asserts that a condition is true. If the condition is false the method throws
+		/// an <see cref="InconclusiveException" />.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		/// <param name="message"> The message to display if the condition is false </param>
@@ -251,8 +251,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a condition is true. If the condition is false the method throws
-		/// 	an <see cref="InconclusiveException" />.
+		/// Asserts that a condition is true. If the condition is false the method throws
+		/// an <see cref="InconclusiveException" />.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		/// <param name="message"> The message to display if the condition is false </param>
@@ -262,8 +262,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a condition is true. If the condition is false the 
-		/// 	method throws an <see cref="InconclusiveException" />.
+		/// Asserts that a condition is true. If the condition is false the
+		/// method throws an <see cref="InconclusiveException" />.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		public static void That(bool condition)
@@ -274,8 +274,8 @@ namespace NUnit.Framework
 		#endregion
 
 		/// <summary>
-		/// 	Asserts that the code represented by a delegate throws an exception
-		/// 	that satisfies the constraint provided.
+		/// Asserts that the code represented by a delegate throws an exception
+		/// that satisfies the constraint provided.
 		/// </summary>
 		/// <param name="code"> A TestDelegate to be executed </param>
 		/// <param name="constraint"> A ThrowsConstraint used in the test </param>

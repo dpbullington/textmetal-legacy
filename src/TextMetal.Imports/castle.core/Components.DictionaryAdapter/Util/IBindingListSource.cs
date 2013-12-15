@@ -12,14 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.ComponentModel;
+
 #if !SILVERLIGHT
+
 namespace Castle.Components.DictionaryAdapter
 {
-	using System.ComponentModel;
-
 	public interface IBindingListSource
 	{
-		IBindingList AsBindingList { get; }
+		#region Properties/Indexers/Events
+
+		IBindingList AsBindingList
+		{
+			get;
+		}
+
+		#endregion
 	}
 }
+
 #endif

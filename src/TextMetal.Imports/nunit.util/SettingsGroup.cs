@@ -13,16 +13,16 @@ namespace NUnit.Util
 	using System;
 
 	/// <summary>
-	/// 	SettingsGroup is the base class representing a group
-	/// 	of user or system settings. All storge of settings
-	/// 	is delegated to a SettingsStorage.
+	/// SettingsGroup is the base class representing a group
+	/// of user or system settings. All storge of settings
+	/// is delegated to a SettingsStorage.
 	/// </summary>
 	public class SettingsGroup : ISettings, IDisposable
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a settings group.
+		/// Construct a settings group.
 		/// </summary>
 		/// <param name="storage"> Storage for the group settings </param>
 		public SettingsGroup(ISettingsStorage storage)
@@ -31,8 +31,8 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Protected constructor for use by derived classes that
-		/// 	set the storage themselves or don't use a storage.
+		/// Protected constructor for use by derived classes that
+		/// set the storage themselves or don't use a storage.
 		/// </summary>
 		protected SettingsGroup()
 		{
@@ -51,7 +51,7 @@ namespace NUnit.Util
 		public event SettingsEventHandler Changed;
 
 		/// <summary>
-		/// 	The storage used for the group settings
+		/// The storage used for the group settings
 		/// </summary>
 		public ISettingsStorage Storage
 		{
@@ -66,7 +66,7 @@ namespace NUnit.Util
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Dispose of this group by disposing of it's storage implementation
+		/// Dispose of this group by disposing of it's storage implementation
 		/// </summary>
 		public void Dispose()
 		{
@@ -78,7 +78,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Load the value of one of the group's settings
+		/// Load the value of one of the group's settings
 		/// </summary>
 		/// <param name="settingName"> Name of setting to load </param>
 		/// <returns> Value of the setting or null </returns>
@@ -88,7 +88,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Load the value of one of the group's settings or return a default value
+		/// Load the value of one of the group's settings or return a default value
 		/// </summary>
 		/// <param name="settingName"> Name of setting to load </param>
 		/// <param name="defaultValue"> Value to return if the seeting is not present </param>
@@ -104,8 +104,8 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Load the value of one of the group's integer settings
-		/// 	in a type-safe manner or return a default value
+		/// Load the value of one of the group's integer settings
+		/// in a type-safe manner or return a default value
 		/// </summary>
 		/// <param name="settingName"> Name of setting to load </param>
 		/// <param name="defaultValue"> Value to return if the seeting is not present </param>
@@ -131,8 +131,8 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Load the value of one of the group's float settings
-		/// 	in a type-safe manner or return a default value
+		/// Load the value of one of the group's float settings
+		/// in a type-safe manner or return a default value
 		/// </summary>
 		/// <param name="settingName"> Name of setting to load </param>
 		/// <param name="defaultValue"> Value to return if the setting is not present </param>
@@ -158,8 +158,8 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Load the value of one of the group's boolean settings
-		/// 	in a type-safe manner.
+		/// Load the value of one of the group's boolean settings
+		/// in a type-safe manner.
 		/// </summary>
 		/// <param name="settingName"> Name of setting to load </param>
 		/// <param name="defaultValue"> Value of the setting or the default </param>
@@ -195,8 +195,8 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Load the value of one of the group's string settings
-		/// 	in a type-safe manner or return a default value
+		/// Load the value of one of the group's string settings
+		/// in a type-safe manner or return a default value
 		/// </summary>
 		/// <param name="settingName"> Name of setting to load </param>
 		/// <param name="defaultValue"> Value to return if the setting is not present </param>
@@ -215,8 +215,8 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Load the value of one of the group's enum settings
-		/// 	in a type-safe manner or return a default value
+		/// Load the value of one of the group's enum settings
+		/// in a type-safe manner or return a default value
 		/// </summary>
 		/// <param name="settingName"> Name of setting to load </param>
 		/// <param name="defaultValue"> Value to return if the setting is not present </param>
@@ -242,8 +242,8 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Load the value of one of the group's Font settings
-		/// 	in a type-safe manner or return a default value
+		/// Load the value of one of the group's Font settings
+		/// in a type-safe manner or return a default value
 		/// </summary>
 		/// <param name="settingName"> Name of setting to load </param>
 		/// <param name="defaultFont"> Value to return if the setting is not present </param>
@@ -270,7 +270,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Remove a group of settings
+		/// Remove a group of settings
 		/// </summary>
 		/// <param name="GroupName"> </param>
 		public void RemoveGroup(string groupName)
@@ -279,7 +279,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Remove a setting from the group
+		/// Remove a setting from the group
 		/// </summary>
 		/// <param name="settingName"> Name of the setting to remove </param>
 		public void RemoveSetting(string settingName)
@@ -291,7 +291,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Save the value of one of the group's settings
+		/// Save the value of one of the group's settings
 		/// </summary>
 		/// <param name="settingName"> Name of the setting to save </param>
 		/// <param name="settingValue"> Value to be saved </param>
@@ -303,9 +303,9 @@ namespace NUnit.Util
 			if (oldValue != null)
 			{
 				if (oldValue is string && settingValue is string && (string)oldValue == (string)settingValue ||
-				    oldValue is int && settingValue is int && (int)oldValue == (int)settingValue ||
-				    oldValue is bool && settingValue is bool && (bool)oldValue == (bool)settingValue ||
-				    oldValue is Enum && settingValue is Enum && oldValue.Equals(settingValue))
+					oldValue is int && settingValue is int && (int)oldValue == (int)settingValue ||
+					oldValue is bool && settingValue is bool && (bool)oldValue == (bool)settingValue ||
+					oldValue is Enum && settingValue is Enum && oldValue.Equals(settingValue))
 					return;
 			}
 

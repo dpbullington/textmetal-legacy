@@ -14,18 +14,16 @@ namespace NUnit.Util
 	using System;
 
 	/// <summary>
-	/// 	TestLoader handles interactions between a test runner and a 
-	/// 	client program - typically the user interface - for the 
-	/// 	purpose of loading, unloading and running tests.
-	/// 
-	/// 	It implemements the EventListener interface which is used by 
-	/// 	the test runner and repackages those events, along with
-	/// 	others as individual events that clients may subscribe to
-	/// 	in collaboration with a TestEventDispatcher helper object.
-	/// 
-	/// 	TestLoader is quite handy for use with a gui client because
-	/// 	of the large number of events it supports. However, it has
-	/// 	no dependencies on ui components and can be used independently.
+	/// TestLoader handles interactions between a test runner and a
+	/// client program - typically the user interface - for the
+	/// purpose of loading, unloading and running tests.
+	/// It implemements the EventListener interface which is used by
+	/// the test runner and repackages those events, along with
+	/// others as individual events that clients may subscribe to
+	/// in collaboration with a TestEventDispatcher helper object.
+	/// TestLoader is quite handy for use with a gui client because
+	/// of the large number of events it supports. However, it has
+	/// no dependencies on ui components and can be used independently.
 	/// </summary>
 	public class TestLoader : MarshalByRefObject, EventListener, ITestLoader, IService
 	{
@@ -61,96 +59,96 @@ namespace NUnit.Util
 		private static Logger log = InternalTrace.GetLogger(typeof(TestLoader));
 
 		/// <summary>
-		/// 	The runtime framework being used for the currently
-		/// 	loaded tests, or the current framework if no tests
-		/// 	are loaded.
+		/// The runtime framework being used for the currently
+		/// loaded tests, or the current framework if no tests
+		/// are loaded.
 		/// </summary>
 		private RuntimeFramework currentFramework = RuntimeFramework.CurrentFramework;
 
 		/// <summary>
-		/// 	The currently set runtime framework
+		/// The currently set runtime framework
 		/// </summary>
 		private RuntimeFramework currentRuntime;
 
 		/// <summary>
-		/// 	The currently executing test
+		/// The currently executing test
 		/// </summary>
 		private string currentTestName;
 
 		/// <summary>
-		/// 	Our event dispatching helper object
+		/// Our event dispatching helper object
 		/// </summary>
 		private TestEventDispatcher events;
 
 		/// <summary>
-		/// 	Our TestRunnerFactory
+		/// Our TestRunnerFactory
 		/// </summary>
 		private ITestRunnerFactory factory;
 
 		/// <summary>
-		/// 	The last exception received when trying to load, unload or run a test
+		/// The last exception received when trying to load, unload or run a test
 		/// </summary>
 		private Exception lastException = null;
 
 		/// <summary>
-		/// 	The last filter used for a run - used to 
-		/// 	rerun tests when a change occurs
+		/// The last filter used for a run - used to
+		/// rerun tests when a change occurs
 		/// </summary>
 		private ITestFilter lastFilter;
 
 		/// <summary>
-		/// 	Last logging level used for a run
+		/// Last logging level used for a run
 		/// </summary>
 		private LoggingThreshold lastLogLevel;
 
 		/// <summary>
-		/// 	The last trace setting used for a run
+		/// The last trace setting used for a run
 		/// </summary>
 		private bool lastTracing;
 
 		//private ITest loadedTest = null;
 		/// <summary>
-		/// 	The currently loaded test, returned by the testrunner
+		/// The currently loaded test, returned by the testrunner
 		/// </summary>
 		/// <summary>
-		/// 	The test name that was specified when loading
+		/// The test name that was specified when loading
 		/// </summary>
 		private string loadedTestName = null;
 
 		/// <summary>
-		/// 	LoggingThreshold to use for running tests
+		/// LoggingThreshold to use for running tests
 		/// </summary>
 		private LoggingThreshold logLevel;
 
 		/// <summary>
-		/// 	Assembly changed during a test and
-		/// 	needs to be reloaded later
+		/// Assembly changed during a test and
+		/// needs to be reloaded later
 		/// </summary>
 		private bool reloadPending = false;
 
 		/// <summary>
-		/// 	Our current test project, if we have one.
+		/// Our current test project, if we have one.
 		/// </summary>
 		private NUnitProject testProject = null;
 
 		/// <summary>
-		/// 	Result of the last test run
+		/// Result of the last test run
 		/// </summary>
 		private TestResult testResult = null;
 
 		/// <summary>
-		/// 	Loads and executes tests. Non-null when
-		/// 	we have loaded a test.
+		/// Loads and executes tests. Non-null when
+		/// we have loaded a test.
 		/// </summary>
 		private TestRunner testRunner = null;
 
 		/// <summary>
-		/// 	Trace setting to use for running tests
+		/// Trace setting to use for running tests
 		/// </summary>
 		private bool tracing;
 
 		/// <summary>
-		/// 	Watcher fires when the assembly changes
+		/// Watcher fires when the assembly changes
 		/// </summary>
 		private IAssemblyWatcher watcher;
 
@@ -283,8 +281,8 @@ namespace NUnit.Util
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Return true if the current project can be reloaded under
-		/// 	the specified CLR version.
+		/// Return true if the current project can be reloaded under
+		/// the specified CLR version.
 		/// </summary>
 		public bool CanReloadUnderRuntimeVersion(Version version)
 		{
@@ -304,9 +302,9 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Cancel the currently running test.
-		/// 	Fail silently if there is none to
-		/// 	allow for latency in the UI.
+		/// Cancel the currently running test.
+		/// Fail silently if there is none to
+		/// allow for latency in the UI.
 		/// </summary>
 		public void CancelTestRun()
 		{
@@ -334,8 +332,8 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Install our watcher object so as to get notifications
-		/// 	about changes to a test.
+		/// Install our watcher object so as to get notifications
+		/// about changes to a test.
 		/// </summary>
 		private void InstallWatcher()
 		{
@@ -351,7 +349,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Load a new project, optionally selecting the config and fire events
+		/// Load a new project, optionally selecting the config and fire events
 		/// </summary>
 		public void LoadProject(string filePath, string configName)
 		{
@@ -378,7 +376,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Load a new project using the default config and fire events
+		/// Load a new project using the default config and fire events
 		/// </summary>
 		public void LoadProject(string filePath)
 		{
@@ -386,7 +384,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Load a project from a list of assemblies and fire events
+		/// Load a project from a list of assemblies and fire events
 		/// </summary>
 		public void LoadProject(string[] assemblies)
 		{
@@ -439,8 +437,8 @@ namespace NUnit.Util
 				if (loaded)
 				{
 					this.currentFramework = package.Settings.Contains("RuntimeFramework")
-						                        ? package.Settings["RuntimeFramework"] as RuntimeFramework
-						                        : RuntimeFramework.CurrentFramework;
+						? package.Settings["RuntimeFramework"] as RuntimeFramework
+						: RuntimeFramework.CurrentFramework;
 
 					this.testProject.HasChangesRequiringReload = false;
 					this.events.FireTestLoaded(this.TestFileName, this.LoadedTest);
@@ -459,7 +457,7 @@ namespace NUnit.Util
 				foreach (string assembly in this.TestProject.ActiveConfig.Assemblies)
 				{
 					if (Path.GetFileNameWithoutExtension(assembly) == exception.FileName &&
-					    !PathUtils.SamePathOrUnder(this.testProject.ActiveConfig.BasePath, assembly))
+						!PathUtils.SamePathOrUnder(this.testProject.ActiveConfig.BasePath, assembly))
 					{
 						this.lastException = new ApplicationException(string.Format("Unable to load {0} because it is not located under the AppBase", exception.FileName), exception);
 						break;
@@ -494,17 +492,17 @@ namespace NUnit.Util
 			DomainUsage domainUsage = (DomainUsage)userSettings.GetSetting("Options.TestLoader.DomainUsage", DomainUsage.Default);
 
 			if (processModel != ProcessModel.Default && // Ignore default setting
-			    !package.Settings.Contains("ProcessModel")) // Ignore global setting if package has a setting
+				!package.Settings.Contains("ProcessModel")) // Ignore global setting if package has a setting
 				package.Settings["ProcessModel"] = processModel;
 
 			// NOTE: This code ignores DomainUsage.None because TestLoader
 			// is only called from the GUI and the GUI can't support that setting.
 			// TODO: Move this logic to the GUI if TestLoader is used more widely
 			if (domainUsage != DomainUsage.Default && // Ignore default setting
-			    domainUsage != DomainUsage.None && // Ignore DomainUsage.None in Gui
-			    (processModel != ProcessModel.Multiple ||
-			     domainUsage != DomainUsage.Multiple) && // Both process and domain may not be multiple
-			    !package.Settings.Contains("DomainUsage")) // Ignore global setting if package has a setting
+				domainUsage != DomainUsage.None && // Ignore DomainUsage.None in Gui
+				(processModel != ProcessModel.Multiple ||
+				domainUsage != DomainUsage.Multiple) && // Both process and domain may not be multiple
+				!package.Settings.Contains("DomainUsage")) // Ignore global setting if package has a setting
 				package.Settings["DomainUsage"] = domainUsage;
 
 			if (!package.Settings.Contains("WorkDirectory"))
@@ -517,7 +515,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Create a new project with default naming
+		/// Create a new project with default naming
 		/// </summary>
 		public void NewProject()
 		{
@@ -537,7 +535,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Create a new project using a given path
+		/// Create a new project using a given path
 		/// </summary>
 		public void NewProject(string filePath)
 		{
@@ -563,7 +561,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Common operations done each time a project is loaded
+		/// Common operations done each time a project is loaded
 		/// </summary>
 		/// <param name="testProject"> The newly loaded project </param>
 		private void OnProjectLoad(NUnitProject testProject)
@@ -577,11 +575,11 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Handle watcher event that signals when the loaded assembly
-		/// 	file has changed. Make sure it's a real change before
-		/// 	firing the SuiteChangedEvent. Since this all happens
-		/// 	asynchronously, we use an event to let ui components
-		/// 	know that the failure happened.
+		/// Handle watcher event that signals when the loaded assembly
+		/// file has changed. Make sure it's a real change before
+		/// firing the SuiteChangedEvent. Since this all happens
+		/// asynchronously, we use an event to let ui components
+		/// know that the failure happened.
 		/// </summary>
 		public void OnTestChanged(string testFileName)
 		{
@@ -613,7 +611,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Reload the current test on command
+		/// Reload the current test on command
 		/// </summary>
 		public void ReloadTest(RuntimeFramework framework)
 		{
@@ -638,8 +636,8 @@ namespace NUnit.Util
 				if (this.testRunner.Load(package))
 				{
 					this.currentFramework = package.Settings.Contains("RuntimeFramework")
-						                        ? package.Settings["RuntimeFramework"] as RuntimeFramework
-						                        : RuntimeFramework.CurrentFramework;
+						? package.Settings["RuntimeFramework"] as RuntimeFramework
+						: RuntimeFramework.CurrentFramework;
 				}
 
 				this.currentRuntime = framework;
@@ -667,7 +665,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Stop and remove our current watcher object.
+		/// Stop and remove our current watcher object.
 		/// </summary>
 		private void RemoveWatcher()
 		{
@@ -699,7 +697,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Run selected tests using a filter
+		/// Run selected tests using a filter
 		/// </summary>
 		/// <param name="filter"> The filter to be used </param>
 		public void RunTests(ITestFilter filter)
@@ -724,7 +722,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Trigger event when each suite finishes
+		/// Trigger event when each suite finishes
 		/// </summary>
 		/// <param name="result"> Result of the suite that finished </param>
 		public void SuiteFinished(TestResult result)
@@ -733,7 +731,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Trigger event when each suite starts
+		/// Trigger event when each suite starts
 		/// </summary>
 		/// <param name="suite"> Suite that is starting </param>
 		public void SuiteStarted(TestName suiteName)
@@ -742,7 +740,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Trigger event when each test finishes
+		/// Trigger event when each test finishes
 		/// </summary>
 		/// <param name="result"> Result of the case that finished </param>
 		public void TestFinished(TestResult result)
@@ -751,7 +749,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Trigger event when output occurs during a test
+		/// Trigger event when output occurs during a test
 		/// </summary>
 		/// <param name="testOutput"> The test output </param>
 		public void TestOutput(TestOutput testOutput)
@@ -760,7 +758,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Trigger event when each test starts
+		/// Trigger event when each test starts
 		/// </summary>
 		/// <param name="testName"> TestName of the Test that is starting </param>
 		public void TestStarted(TestName testName)
@@ -770,7 +768,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Trigger event when an unhandled exception (other than ThreadAbordException) occurs during a test
+		/// Trigger event when an unhandled exception (other than ThreadAbordException) occurs during a test
 		/// </summary>
 		/// <param name="exception"> The unhandled exception </param>
 		public void UnhandledException(Exception exception)
@@ -779,7 +777,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Unload the current project and fire events
+		/// Unload the current project and fire events
 		/// </summary>
 		public void UnloadProject()
 		{
@@ -811,7 +809,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Unload the current test suite and fire the Unloaded event
+		/// Unload the current test suite and fire the Unloaded event
 		/// </summary>
 		public void UnloadTest()
 		{

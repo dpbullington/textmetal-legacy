@@ -14,7 +14,7 @@ using NUnit.Core;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Class that represents an NUnit test project
+	/// Class that represents an NUnit test project
 	/// </summary>
 	public class NUnitProject
 	{
@@ -33,56 +33,56 @@ namespace NUnit.Util
 		public static readonly string Extension = ".nunit";
 
 		/// <summary>
-		/// 	The currently active configuration
+		/// The currently active configuration
 		/// </summary>
 		private ProjectConfig activeConfig;
 
 		/// <summary>
-		/// 	True for NUnit-related projects that follow the config
-		/// 	of the NUnit build under which they are running.
+		/// True for NUnit-related projects that follow the config
+		/// of the NUnit build under which they are running.
 		/// </summary>
 		private bool autoConfig;
 
 		/// <summary>
-		/// 	Application Base for the project. Since this
-		/// 	can be null, always fetch from the property
-		/// 	rather than using the field directly.
+		/// Application Base for the project. Since this
+		/// can be null, always fetch from the property
+		/// rather than using the field directly.
 		/// </summary>
 		private string basePath;
 
 		/// <summary>
-		/// 	Collection of configs for the project
+		/// Collection of configs for the project
 		/// </summary>
 		private ProjectConfigCollection configs;
 
 		/// <summary>
-		/// 	The DomainUsage setting to be used in loading this project
+		/// The DomainUsage setting to be used in loading this project
 		/// </summary>
 		private DomainUsage domainUsage;
 
 		/// <summary>
-		/// 	Flag indicating that this project is a
-		/// 	temporary wrapper for an assembly.
+		/// Flag indicating that this project is a
+		/// temporary wrapper for an assembly.
 		/// </summary>
 		private bool isAssemblyWrapper = false;
 
 		/// <summary>
-		/// 	Whether the project is dirty
+		/// Whether the project is dirty
 		/// </summary>
 		private bool isDirty = false;
 
 		/// <summary>
-		/// 	The ProcessModel to be used in loading this project
+		/// The ProcessModel to be used in loading this project
 		/// </summary>
 		private ProcessModel processModel;
 
 		/// <summary>
-		/// 	Path to the file storing this project
+		/// Path to the file storing this project
 		/// </summary>
 		private string projectPath;
 
 		/// <summary>
-		/// 	Whether canges have been made requiring a reload
+		/// Whether canges have been made requiring a reload
 		/// </summary>
 		private bool reloadRequired = false;
 
@@ -129,8 +129,8 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	The base path for the project. Constructor sets
-		/// 	it to the directory part of the project path.
+		/// The base path for the project. Constructor sets
+		/// it to the directory part of the project path.
 		/// </summary>
 		public string BasePath
 		{
@@ -145,7 +145,7 @@ namespace NUnit.Util
 				this.basePath = value;
 
 				if (this.basePath != null && this.basePath != string.Empty
-				    && !Path.IsPathRooted(this.basePath))
+					&& !Path.IsPathRooted(this.basePath))
 				{
 					this.basePath = Path.Combine(
 						this.DefaultBasePath,
@@ -158,7 +158,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Indicates whether a base path was specified for the project
+		/// Indicates whether a base path was specified for the project
 		/// </summary>
 		public bool BasePathSpecified
 		{
@@ -182,8 +182,8 @@ namespace NUnit.Util
 			{
 				// TODO: Check this
 				return this.isAssemblyWrapper
-					       ? Path.GetFileName(this.projectPath) + ".config"
-					       : Path.GetFileNameWithoutExtension(this.projectPath) + ".config";
+					? Path.GetFileName(this.projectPath) + ".config"
+					: Path.GetFileNameWithoutExtension(this.projectPath) + ".config";
 			}
 		}
 
@@ -256,12 +256,12 @@ namespace NUnit.Util
 			get
 			{
 				return this.ActiveConfig != null &&
-				       this.ActiveConfig.Assemblies.Count > 0;
+						this.ActiveConfig.Assemblies.Count > 0;
 			}
 		}
 
 		/// <summary>
-		/// 	The name of the project.
+		/// The name of the project.
 		/// </summary>
 		public string Name
 		{
@@ -285,7 +285,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	The path to which a project will be saved.
+		/// The path to which a project will be saved.
 		/// </summary>
 		public string ProjectPath
 		{
@@ -444,7 +444,7 @@ namespace NUnit.Util
 			{
 				throw new ProjectFormatException(
 					string.Format("Invalid project format: {0} Line {1}, Position {2}",
-					              e.Message, reader.LineNumber, reader.LinePosition),
+						e.Message, reader.LineNumber, reader.LinePosition),
 					reader.LineNumber, reader.LinePosition);
 			}
 			finally

@@ -23,16 +23,16 @@ using NMock2.Syntax;
 namespace NMock2
 {
 	/// <summary>
-	/// 	Defines expectations on dynamic mocks.
-	/// 	Expectations that are not fulfilled result in exceptions in <see cref="Mockery.VerifyAllExpectationsHaveBeenMet" />
-	/// 	or when the <see cref="Mockery" /> is disposed.
+	/// Defines expectations on dynamic mocks.
+	/// Expectations that are not fulfilled result in exceptions in <see cref="Mockery.VerifyAllExpectationsHaveBeenMet" />
+	/// or when the <see cref="Mockery" /> is disposed.
 	/// </summary>
 	public class Expect
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets a receiver of a method, property, etc. that has to be called at least once.
+		/// Gets a receiver of a method, property, etc. that has to be called at least once.
 		/// </summary>
 		public static IReceiverSyntax AtLeastOnce
 		{
@@ -43,7 +43,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Gets a receiver of a method, property, etc. that must never be called.
+		/// Gets a receiver of a method, property, etc. that must never be called.
 		/// </summary>
 		public static IReceiverSyntax Never
 		{
@@ -54,7 +54,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Gets a receiver of a method, property, etc. that has to be called exactly once.
+		/// Gets a receiver of a method, property, etc. that has to be called exactly once.
 		/// </summary>
 		public static IReceiverSyntax Once
 		{
@@ -69,7 +69,7 @@ namespace NMock2
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Gets a receiver of a method, property, etc. that has to be called at least <paramref name="count" /> times.
+		/// Gets a receiver of a method, property, etc. that has to be called at least <paramref name="count" /> times.
 		/// </summary>
 		/// <param name="count"> Minimal allowed number of invocations. </param>
 		/// <returns> Returns a receiver of a method, property, etc. that has to be called at least <paramref name="count" /> times. </returns>
@@ -79,7 +79,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Gets a receiver of a method, property, etc. that has to be called at most <paramref name="count" /> times.
+		/// Gets a receiver of a method, property, etc. that has to be called at most <paramref name="count" /> times.
 		/// </summary>
 		/// <param name="count"> Maximal allowed number of invocations. </param>
 		/// <returns> Returns a receiver of a method, property, etc. that has to be called at most <paramref name="count" /> times. </returns>
@@ -89,8 +89,8 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Gets a receiver of a method, property, etc. that has to be called between <paramref name="minCount" />
-		/// 	and <paramref name="maxCount" /> times.
+		/// Gets a receiver of a method, property, etc. that has to be called between <paramref name="minCount" />
+		/// and <paramref name="maxCount" /> times.
 		/// </summary>
 		/// <param name="minCount"> Minimal allowed number of invocations. </param>
 		/// <param name="maxCount"> Maximaal allowed number of invocations. </param>
@@ -101,7 +101,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Gets a receiver of a method, property, etc. that has to be called exactly <paramref name="count" /> times.
+		/// Gets a receiver of a method, property, etc. that has to be called exactly <paramref name="count" /> times.
 		/// </summary>
 		/// <param name="count"> Expected number of invocations. </param>
 		/// <returns> Returns a receiver of a method, property, etc. that has to be called exactly <paramref name="count" /> times. </returns>
@@ -111,7 +111,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Default expectation, specifies that a method, property, etc. that has to be called at least once.
+		/// Default expectation, specifies that a method, property, etc. that has to be called at least once.
 		/// </summary>
 		/// <param name="receiver"> The receiver. </param>
 		/// <returns> Returns a receiver of a method, property, etc. that has to be called at least once. </returns>
@@ -121,7 +121,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Returns a string representing grammatically correctness of n times depending on the value of <paramref name="n" />.
+		/// Returns a string representing grammatically correctness of n times depending on the value of <paramref name="n" />.
 		/// </summary>
 		/// <param name="n"> An integer value representing n times. </param>
 		/// <returns> String representation of n times. </returns>

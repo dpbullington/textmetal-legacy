@@ -10,60 +10,77 @@ using System.Collections.Generic;
 
 namespace Intelligencia.UrlRewriter.Actions
 {
-    /// <summary>
-    /// Rewrites in-place.
-    /// </summary>
-    public sealed class RewriteAction : SetLocationAction, IRewriteCondition
-    {
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        /// <param name="location">The location to set.</param>
-        /// <param name="processing">The processing directive.</param>
-        public RewriteAction(string location, RewriteProcessing processing)
-            : base(location)
-        {
-            _processing = processing;
-        }
+	/// <summary>
+	/// Rewrites in-place.
+	/// </summary>
+	public sealed class RewriteAction : SetLocationAction, IRewriteCondition
+	{
+		#region Constructors/Destructors
 
-        /// <summary>
-        /// Executes the action.
-        /// </summary>
-        /// <param name="context">The rewrite context.</param>
-        public override RewriteProcessing Execute(RewriteContext context)
-        {
-            base.Execute(context);
-            return _processing;
-        }
+		/// <summary>
+		/// Default constructor.
+		/// </summary>
+		/// <param name="location"> The location to set. </param>
+		/// <param name="processing"> The processing directive. </param>
+		public RewriteAction(string location, RewriteProcessing processing)
+			: base(location)
+		{
+			this._processing = processing;
+		}
 
-        /// <summary>
-        /// Determines if the rewrite rule matches.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public bool IsMatch(RewriteContext context)
-        {
-            // Ensure the conditions are met.
-            foreach (IRewriteCondition condition in Conditions)
-            {
-                if (!condition.IsMatch(context))
-                {
-                    return false;
-                }
-            }
+		#endregion
 
-            return true;
-        }
+		#region Fields/Constants
 
-        /// <summary>
-        /// Conditions that must hold for the rule to fire.
-        /// </summary>
-        public IList<IRewriteCondition> Conditions
-        {
-            get { return _conditions; }
-        }
+		private IList<IRewriteCondition> _conditions = new List<IRewriteCondition>();
+		private RewriteProcessing _processing;
 
-        private IList<IRewriteCondition> _conditions = new List<IRewriteCondition>();
-        private RewriteProcessing _processing;
-    }
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		/// <summary>
+		/// Conditions that must hold for the rule to fire.
+		/// </summary>
+		public IList<IRewriteCondition> Conditions
+		{
+			get
+			{
+				return this._conditions;
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		/// <summary>
+		/// Executes the action.
+		/// </summary>
+		/// <param name="context"> The rewrite context. </param>
+		public override RewriteProcessing Execute(RewriteContext context)
+		{
+			base.Execute(context);
+			return this._processing;
+		}
+
+		/// <summary>
+		/// Determines if the rewrite rule matches.
+		/// </summary>
+		/// <param name="context"> </param>
+		/// <returns> </returns>
+		public bool IsMatch(RewriteContext context)
+		{
+			// Ensure the conditions are met.
+			foreach (IRewriteCondition condition in this.Conditions)
+			{
+				if (!condition.IsMatch(context))
+					return false;
+			}
+
+			return true;
+		}
+
+		#endregion
+	}
 }

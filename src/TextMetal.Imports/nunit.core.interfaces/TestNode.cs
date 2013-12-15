@@ -10,16 +10,14 @@ using System.Collections;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	TestNode represents a single test or suite in the test hierarchy.
-	/// 	TestNode holds common info needed about a test and represents a
-	/// 	single node - either a test or a suite - in the hierarchy of tests.
-	/// 
-	/// 	TestNode extends TestInfo, which holds all the information with
-	/// 	the exception of the list of child classes. When constructed from
-	/// 	a Test, TestNodes are always fully populated with child TestNodes.
-	/// 
-	/// 	Like TestInfo, TestNode is purely a data class, and is not able
-	/// 	to execute tests.
+	/// TestNode represents a single test or suite in the test hierarchy.
+	/// TestNode holds common info needed about a test and represents a
+	/// single node - either a test or a suite - in the hierarchy of tests.
+	/// TestNode extends TestInfo, which holds all the information with
+	/// the exception of the list of child classes. When constructed from
+	/// a Test, TestNodes are always fully populated with child TestNodes.
+	/// Like TestInfo, TestNode is purely a data class, and is not able
+	/// to execute tests.
 	/// </summary>
 	[Serializable]
 	public class TestNode : TestInfo
@@ -27,7 +25,7 @@ namespace NUnit.Core
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct from an ITest
+		/// Construct from an ITest
 		/// </summary>
 		/// <param name="test"> Test from which a TestNode is to be constructed </param>
 		public TestNode(ITest test)
@@ -47,8 +45,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Construct a TestNode given a TestName and an
-		/// 	array of child tests.
+		/// Construct a TestNode given a TestName and an
+		/// array of child tests.
 		/// </summary>
 		/// <param name="testName"> The TestName of the new test </param>
 		/// <param name="tests"> An array of tests to be added as children of the new test </param>
@@ -66,8 +64,8 @@ namespace NUnit.Core
 		private ITest parent;
 
 		/// <summary>
-		/// 	For a test suite, the child tests or suites
-		/// 	Null if this is not a test suite
+		/// For a test suite, the child tests or suites
+		/// Null if this is not a test suite
 		/// </summary>
 		private ArrayList tests;
 
@@ -76,7 +74,7 @@ namespace NUnit.Core
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the parent test of the current test
+		/// Gets the parent test of the current test
 		/// </summary>
 		public override ITest Parent
 		{
@@ -87,7 +85,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Array of child tests, null if this is a test case.
+		/// Array of child tests, null if this is a test case.
 		/// </summary>
 		public override IList Tests
 		{

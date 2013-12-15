@@ -9,7 +9,7 @@ using System;
 namespace NUnit.Core.Extensibility
 {
 	/// <summary>
-	/// 	The Addin class holds information about an addin.
+	/// The Addin class holds information about an addin.
 	/// </summary>
 	[Serializable]
 	public class Addin
@@ -17,7 +17,7 @@ namespace NUnit.Core.Extensibility
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct an Addin for a type.
+		/// Construct an Addin for a type.
 		/// </summary>
 		/// <param name="type"> The type to be used </param>
 		public Addin(Type type)
@@ -58,7 +58,7 @@ namespace NUnit.Core.Extensibility
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Brief description of what the Addin does
+		/// Brief description of what the Addin does
 		/// </summary>
 		public string Description
 		{
@@ -69,8 +69,8 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	The type or types of extension provided, using 
-		/// 	one or more members of the ExtensionType enumeration.
+		/// The type or types of extension provided, using
+		/// one or more members of the ExtensionType enumeration.
 		/// </summary>
 		public ExtensionType ExtensionType
 		{
@@ -81,9 +81,9 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Any message that clarifies the status of the Addin,
-		/// 	such as an error message or an explanation of why
-		/// 	the addin is disabled.
+		/// Any message that clarifies the status of the Addin,
+		/// such as an error message or an explanation of why
+		/// the addin is disabled.
 		/// </summary>
 		public string Message
 		{
@@ -98,7 +98,7 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	The name of the Addin
+		/// The name of the Addin
 		/// </summary>
 		public string Name
 		{
@@ -109,7 +109,7 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	The status of the addin
+		/// The status of the addin
 		/// </summary>
 		public AddinStatus Status
 		{
@@ -124,8 +124,8 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	The AssemblyQualifiedName of the type that implements
-		/// 	the addin.
+		/// The AssemblyQualifiedName of the type that implements
+		/// the addin.
 		/// </summary>
 		public string TypeName
 		{
@@ -140,7 +140,7 @@ namespace NUnit.Core.Extensibility
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Return true if two Addins have teh same type name
+		/// Return true if two Addins have teh same type name
 		/// </summary>
 		/// <param name="obj"> The other addin to be compared </param>
 		public override bool Equals(object obj)
@@ -153,7 +153,7 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Return a hash code for this addin
+		/// Return a hash code for this addin
 		/// </summary>
 		public override int GetHashCode()
 		{

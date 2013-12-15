@@ -135,13 +135,13 @@ namespace NUnit.UiKit
 			this.Error = (contentType & ContentType.Error) != 0;
 			this.Trace = (contentType & ContentType.Trace) != 0;
 			this.LogLevel = (contentType & ContentType.Log) != 0
-				                ? LoggingThreshold.All
-				                : LoggingThreshold.Off;
+				? LoggingThreshold.All
+				: LoggingThreshold.Off;
 			this.Labels = (contentType & ContentType.Labels) != 0
-				              ? (contentType & ContentType.LabelOnlyOnOutput) != 0
-					                ? TestLabelLevel.All
-					                : TestLabelLevel.On
-				              : TestLabelLevel.Off;
+				? (contentType & ContentType.LabelOnlyOnOutput) != 0
+					? TestLabelLevel.All
+					: TestLabelLevel.On
+				: TestLabelLevel.Off;
 		}
 
 		public void SaveSettings(string name)

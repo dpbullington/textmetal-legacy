@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace NUnit.UiKit
 {
 	/// <summary>
-	/// 	Summary description for TextDisplayTabPage.
+	/// Summary description for TextDisplayTabPage.
 	/// </summary>
 	public class TextDisplayTabPage : TabPage
 	{

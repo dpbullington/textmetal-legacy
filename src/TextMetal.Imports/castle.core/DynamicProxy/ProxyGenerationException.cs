@@ -18,12 +18,18 @@ namespace Castle.DynamicProxy
 
 	public class ProxyGenerationException : Exception
 	{
-		public ProxyGenerationException(string message) : base(message)
+		#region Constructors/Destructors
+
+		public ProxyGenerationException(string message)
+			: base(message)
 		{
 		}
 
-		public ProxyGenerationException(string message, Exception innerException) : base(message, innerException)
+		public ProxyGenerationException(string message, Exception innerException)
+			: base(message, innerException)
 		{
 		}
+
+		#endregion
 	}
 }

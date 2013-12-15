@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using NUnit.Core.Extensibility;
+
 #if CLR_2_0 || CLR_4_0
 #endif
 

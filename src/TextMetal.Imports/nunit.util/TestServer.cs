@@ -11,7 +11,7 @@ using NUnit.Core;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Base class for servers
+	/// Base class for servers
 	/// </summary>
 	public class TestServer : ServerBase
 	{

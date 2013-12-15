@@ -13,8 +13,8 @@ using System.Text;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Static methods for manipulating project paths, including both directories
-	/// 	and files. Some synonyms for System.Path methods are included as well.
+	/// Static methods for manipulating project paths, including both directories
+	/// and files. Some synonyms for System.Path methods are included as well.
 	/// </summary>
 	public class PathUtils
 	{
@@ -32,7 +32,7 @@ namespace NUnit.Util
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Return the canonical form of a path.
+		/// Return the canonical form of a path.
 		/// </summary>
 		public static string Canonicalize(string path)
 		{
@@ -139,8 +139,8 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Returns the relative path from a base directory to another
-		/// 	directory or file.
+		/// Returns the relative path from a base directory to another
+		/// directory or file.
 		/// </summary>
 		public static string RelativePath(string from, string to)
 		{
@@ -188,9 +188,9 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	True if the two paths are the same. However, two paths
-		/// 	to the same file or directory using different network
-		/// 	shares or drive letters are not treated as equal.
+		/// True if the two paths are the same. However, two paths
+		/// to the same file or directory using different network
+		/// shares or drive letters are not treated as equal.
 		/// </summary>
 		public static bool SamePath(string path1, string path2)
 		{
@@ -198,11 +198,11 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	True if the two paths are the same or if the second is
-		/// 	directly or indirectly under the first. Note that paths 
-		/// 	using different network shares or drive letters are 
-		/// 	considered unrelated, even if they end up referencing
-		/// 	the same subtrees in the file system.
+		/// True if the two paths are the same or if the second is
+		/// directly or indirectly under the first. Note that paths
+		/// using different network shares or drive letters are
+		/// considered unrelated, even if they end up referencing
+		/// the same subtrees in the file system.
 		/// </summary>
 		public static bool SamePathOrUnder(string path1, string path2)
 		{
@@ -226,7 +226,7 @@ namespace NUnit.Util
 
 			// must match through or up to a directory separator boundary
 			return path2[length1 - 1] == DirectorySeparatorChar ||
-			       path2[length1] == DirectorySeparatorChar;
+					path2[length1] == DirectorySeparatorChar;
 		}
 
 		private static string[] SplitPath(string path)

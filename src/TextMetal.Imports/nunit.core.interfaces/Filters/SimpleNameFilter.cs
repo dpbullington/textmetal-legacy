@@ -10,7 +10,7 @@ using System.Collections;
 namespace NUnit.Core.Filters
 {
 	/// <summary>
-	/// 	SimpleName filter selects tests based on their name
+	/// SimpleName filter selects tests based on their name
 	/// </summary>
 	[Serializable]
 	public class SimpleNameFilter : TestFilter
@@ -18,14 +18,14 @@ namespace NUnit.Core.Filters
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct an empty SimpleNameFilter
+		/// Construct an empty SimpleNameFilter
 		/// </summary>
 		public SimpleNameFilter()
 		{
 		}
 
 		/// <summary>
-		/// 	Construct a SimpleNameFilter for a single name
+		/// Construct a SimpleNameFilter for a single name
 		/// </summary>
 		/// <param name="name"> The name the filter will recognize. </param>
 		public SimpleNameFilter(string name)
@@ -34,7 +34,7 @@ namespace NUnit.Core.Filters
 		}
 
 		/// <summary>
-		/// 	Construct a SimpleNameFilter for an array of names
+		/// Construct a SimpleNameFilter for an array of names
 		/// </summary>
 		/// <param names="nameToAdd"> The names the filter will recognize. </param>
 		public SimpleNameFilter(string[] namesToAdd)
@@ -53,7 +53,7 @@ namespace NUnit.Core.Filters
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Add a name to a SimpleNameFilter
+		/// Add a name to a SimpleNameFilter
 		/// </summary>
 		/// <param name="name"> The name to be added. </param>
 		public void Add(string name)
@@ -62,7 +62,7 @@ namespace NUnit.Core.Filters
 		}
 
 		/// <summary>
-		/// 	Add an array of names to a SimpleNameFilter
+		/// Add an array of names to a SimpleNameFilter
 		/// </summary>
 		/// <param name="namesToAdd"> The name to be added. </param>
 		public void Add(string[] namesToAdd)
@@ -72,7 +72,7 @@ namespace NUnit.Core.Filters
 		}
 
 		/// <summary>
-		/// 	Check whether the filter matches a test
+		/// Check whether the filter matches a test
 		/// </summary>
 		/// <param name="test"> The test to be matched </param>
 		/// <returns> True if it matches, otherwise false </returns>

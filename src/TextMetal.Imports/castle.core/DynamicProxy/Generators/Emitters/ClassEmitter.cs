@@ -12,19 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Reflection;
-	using System.Reflection.Emit;
 
 	public class ClassEmitter : AbstractTypeEmitter
 	{
-		private const TypeAttributes DefaultAttributes =
-			TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Serializable;
-
-		private readonly ModuleScope moduleScope;
+		#region Constructors/Destructors
 
 		public ClassEmitter(ModuleScope modulescope, String name, Type baseType, IEnumerable<Type> interfaces)
 			: this(modulescope, name, baseType, interfaces, DefaultAttributes, ShouldForceUnsigned())
@@ -32,28 +30,26 @@ namespace Castle.DynamicProxy.Generators.Emitters
 		}
 
 		public ClassEmitter(ModuleScope modulescope, String name, Type baseType, IEnumerable<Type> interfaces,
-		                    TypeAttributes flags)
+			TypeAttributes flags)
 			: this(modulescope, name, baseType, interfaces, flags, ShouldForceUnsigned())
 		{
 		}
 
 		public ClassEmitter(ModuleScope modulescope, String name, Type baseType, IEnumerable<Type> interfaces,
-		                    TypeAttributes flags,
-		                    bool forceUnsigned)
+			TypeAttributes flags,
+			bool forceUnsigned)
 			: this(CreateTypeBuilder(modulescope, name, baseType, interfaces, flags, forceUnsigned))
 		{
-			interfaces = InitializeGenericArgumentsFromBases(ref baseType, interfaces);
+			interfaces = this.InitializeGenericArgumentsFromBases(ref baseType, interfaces);
 
 			if (interfaces != null)
 			{
 				foreach (var inter in interfaces)
-				{
-					TypeBuilder.AddInterfaceImplementation(inter);
-				}
+					this.TypeBuilder.AddInterfaceImplementation(inter);
 			}
 
-			TypeBuilder.SetParent(baseType);
-			moduleScope = modulescope;
+			this.TypeBuilder.SetParent(baseType);
+			this.moduleScope = modulescope;
 		}
 
 		public ClassEmitter(TypeBuilder typeBuilder)
@@ -61,37 +57,34 @@ namespace Castle.DynamicProxy.Generators.Emitters
 		{
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private const TypeAttributes DefaultAttributes =
+			TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Serializable;
+
+		private readonly ModuleScope moduleScope;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
 		public ModuleScope ModuleScope
 		{
-			get { return moduleScope; }
+			get
+			{
+				return this.moduleScope;
+			}
 		}
 
-		protected virtual IEnumerable<Type> InitializeGenericArgumentsFromBases(ref Type baseType,
-		                                                                        IEnumerable<Type> interfaces)
-		{
-			if (baseType != null && baseType.IsGenericTypeDefinition)
-			{
-				throw new NotSupportedException("ClassEmitter does not support open generic base types. Type: " + baseType.FullName);
-			}
+		#endregion
 
-			if (interfaces == null)
-			{
-				return interfaces;
-			}
-
-			foreach (var inter in interfaces)
-			{
-				if (inter.IsGenericTypeDefinition)
-				{
-					throw new NotSupportedException("ClassEmitter does not support open generic interfaces. Type: " + inter.FullName);
-				}
-			}
-			return interfaces;
-		}
+		#region Methods/Operators
 
 		private static TypeBuilder CreateTypeBuilder(ModuleScope modulescope, string name, Type baseType,
-		                                             IEnumerable<Type> interfaces,
-		                                             TypeAttributes flags, bool forceUnsigned)
+			IEnumerable<Type> interfaces,
+			TypeAttributes flags, bool forceUnsigned)
 		{
 			var isAssemblySigned = !forceUnsigned && !StrongNameUtil.IsAnyTypeFromUnsignedAssembly(baseType, interfaces);
 			return modulescope.DefineType(isAssemblySigned, name, flags);
@@ -101,5 +94,24 @@ namespace Castle.DynamicProxy.Generators.Emitters
 		{
 			return StrongNameUtil.CanStrongNameAssembly == false;
 		}
+
+		protected virtual IEnumerable<Type> InitializeGenericArgumentsFromBases(ref Type baseType,
+			IEnumerable<Type> interfaces)
+		{
+			if (baseType != null && baseType.IsGenericTypeDefinition)
+				throw new NotSupportedException("ClassEmitter does not support open generic base types. Type: " + baseType.FullName);
+
+			if (interfaces == null)
+				return interfaces;
+
+			foreach (var inter in interfaces)
+			{
+				if (inter.IsGenericTypeDefinition)
+					throw new NotSupportedException("ClassEmitter does not support open generic interfaces. Type: " + inter.FullName);
+			}
+			return interfaces;
+		}
+
+		#endregion
 	}
 }

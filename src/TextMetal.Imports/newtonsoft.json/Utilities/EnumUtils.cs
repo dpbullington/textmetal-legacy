@@ -1,4 +1,5 @@
 ﻿#region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,127 +22,130 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Reflection;
 #if NET20
 using Newtonsoft.Json.Utilities.LinqBridge;
 #else
 using System.Linq;
 #endif
-using System.Reflection;
 
 namespace Newtonsoft.Json.Utilities
 {
-  internal static class EnumUtils
-  {
-    public static IList<T> GetFlagsValues<T>(T value) where T : struct
-    {
-      Type enumType = typeof(T);
+	internal static class EnumUtils
+	{
+		#region Methods/Operators
 
-      if (!enumType.IsDefined(typeof(FlagsAttribute), false))
-        throw new ArgumentException("Enum type {0} is not a set of flags.".FormatWith(CultureInfo.InvariantCulture, enumType));
+		public static IList<T> GetFlagsValues<T>(T value) where T : struct
+		{
+			Type enumType = typeof(T);
 
-      Type underlyingType = Enum.GetUnderlyingType(value.GetType());
+			if (!enumType.IsDefined(typeof(FlagsAttribute), false))
+				throw new ArgumentException("Enum type {0} is not a set of flags.".FormatWith(CultureInfo.InvariantCulture, enumType));
 
-      ulong num = Convert.ToUInt64(value, CultureInfo.InvariantCulture);
-      EnumValues<ulong> enumNameValues = GetNamesAndValues<T>();
-      IList<T> selectedFlagsValues = new List<T>();
+			Type underlyingType = Enum.GetUnderlyingType(value.GetType());
 
-      foreach (EnumValue<ulong> enumNameValue in enumNameValues)
-      {
-        if ((num & enumNameValue.Value) == enumNameValue.Value && enumNameValue.Value != 0)
-          selectedFlagsValues.Add((T)Convert.ChangeType(enumNameValue.Value, underlyingType, CultureInfo.CurrentCulture));
-      }
+			ulong num = Convert.ToUInt64(value, CultureInfo.InvariantCulture);
+			EnumValues<ulong> enumNameValues = GetNamesAndValues<T>();
+			IList<T> selectedFlagsValues = new List<T>();
 
-      if (selectedFlagsValues.Count == 0 && enumNameValues.SingleOrDefault(v => v.Value == 0) != null)
-        selectedFlagsValues.Add(default(T));
+			foreach (EnumValue<ulong> enumNameValue in enumNameValues)
+			{
+				if ((num & enumNameValue.Value) == enumNameValue.Value && enumNameValue.Value != 0)
+					selectedFlagsValues.Add((T)Convert.ChangeType(enumNameValue.Value, underlyingType, CultureInfo.CurrentCulture));
+			}
 
-      return selectedFlagsValues;
-    }
+			if (selectedFlagsValues.Count == 0 && enumNameValues.SingleOrDefault(v => v.Value == 0) != null)
+				selectedFlagsValues.Add(default(T));
 
-    /// <summary>
-    /// Gets a dictionary of the names and values of an Enum type.
-    /// </summary>
-    /// <returns></returns>
-    public static EnumValues<ulong> GetNamesAndValues<T>() where T : struct
-    {
-      return GetNamesAndValues<ulong>(typeof(T));
-    }
+			return selectedFlagsValues;
+		}
 
-    /// <summary>
-    /// Gets a dictionary of the names and values of an Enum type.
-    /// </summary>
-    /// <param name="enumType">The enum type to get names and values for.</param>
-    /// <returns></returns>
-    public static EnumValues<TUnderlyingType> GetNamesAndValues<TUnderlyingType>(Type enumType) where TUnderlyingType : struct
-    {
-      if (enumType == null)
-        throw new ArgumentNullException("enumType");
+		public static IList<string> GetNames(Type enumType)
+		{
+			if (!enumType.IsEnum())
+				throw new ArgumentException("Type '" + enumType.Name + "' is not an enum.");
 
-      ValidationUtils.ArgumentTypeIsEnum(enumType, "enumType");
+			List<string> values = new List<string>();
 
-      IList<object> enumValues = GetValues(enumType);
-      IList<string> enumNames = GetNames(enumType);
+			var fields = from field in enumType.GetFields()
+				where field.IsLiteral
+				select field;
 
-      EnumValues<TUnderlyingType> nameValues = new EnumValues<TUnderlyingType>();
+			foreach (FieldInfo field in fields)
+				values.Add(field.Name);
 
-      for (int i = 0; i < enumValues.Count; i++)
-      {
-        try
-        {
-          nameValues.Add(new EnumValue<TUnderlyingType>(enumNames[i], (TUnderlyingType)Convert.ChangeType(enumValues[i], typeof(TUnderlyingType), CultureInfo.CurrentCulture)));
-        }
-        catch (OverflowException e)
-        {
-          throw new InvalidOperationException(
-            string.Format(CultureInfo.InvariantCulture, "Value from enum with the underlying type of {0} cannot be added to dictionary with a value type of {1}. Value was too large: {2}",
-              Enum.GetUnderlyingType(enumType), typeof(TUnderlyingType), Convert.ToUInt64(enumValues[i], CultureInfo.InvariantCulture)), e);
-        }
-      }
+			return values;
+		}
 
-      return nameValues;
-    }
+		/// <summary>
+		/// Gets a dictionary of the names and values of an Enum type.
+		/// </summary>
+		/// <returns> </returns>
+		public static EnumValues<ulong> GetNamesAndValues<T>() where T : struct
+		{
+			return GetNamesAndValues<ulong>(typeof(T));
+		}
 
-    public static IList<object> GetValues(Type enumType)
-    {
-      if (!enumType.IsEnum())
-        throw new ArgumentException("Type '" + enumType.Name + "' is not an enum.");
+		/// <summary>
+		/// Gets a dictionary of the names and values of an Enum type.
+		/// </summary>
+		/// <param name="enumType"> The enum type to get names and values for. </param>
+		/// <returns> </returns>
+		public static EnumValues<TUnderlyingType> GetNamesAndValues<TUnderlyingType>(Type enumType) where TUnderlyingType : struct
+		{
+			if (enumType == null)
+				throw new ArgumentNullException("enumType");
 
-      List<object> values = new List<object>();
+			ValidationUtils.ArgumentTypeIsEnum(enumType, "enumType");
 
-      var fields = from field in enumType.GetFields()
-                   where field.IsLiteral
-                   select field;
+			IList<object> enumValues = GetValues(enumType);
+			IList<string> enumNames = GetNames(enumType);
 
-      foreach (FieldInfo field in fields)
-      {
-        object value = field.GetValue(enumType);
-        values.Add(value);
-      }
+			EnumValues<TUnderlyingType> nameValues = new EnumValues<TUnderlyingType>();
 
-      return values;
-    }
+			for (int i = 0; i < enumValues.Count; i++)
+			{
+				try
+				{
+					nameValues.Add(new EnumValue<TUnderlyingType>(enumNames[i], (TUnderlyingType)Convert.ChangeType(enumValues[i], typeof(TUnderlyingType), CultureInfo.CurrentCulture)));
+				}
+				catch (OverflowException e)
+				{
+					throw new InvalidOperationException(
+						string.Format(CultureInfo.InvariantCulture, "Value from enum with the underlying type of {0} cannot be added to dictionary with a value type of {1}. Value was too large: {2}",
+							Enum.GetUnderlyingType(enumType), typeof(TUnderlyingType), Convert.ToUInt64(enumValues[i], CultureInfo.InvariantCulture)), e);
+				}
+			}
 
-    public static IList<string> GetNames(Type enumType)
-    {
-      if (!enumType.IsEnum())
-        throw new ArgumentException("Type '" + enumType.Name + "' is not an enum.");
+			return nameValues;
+		}
 
-      List<string> values = new List<string>();
+		public static IList<object> GetValues(Type enumType)
+		{
+			if (!enumType.IsEnum())
+				throw new ArgumentException("Type '" + enumType.Name + "' is not an enum.");
 
-      var fields = from field in enumType.GetFields()
-                   where field.IsLiteral
-                   select field;
+			List<object> values = new List<object>();
 
-      foreach (FieldInfo field in fields)
-      {
-        values.Add(field.Name);
-      }
+			var fields = from field in enumType.GetFields()
+				where field.IsLiteral
+				select field;
 
-      return values;
-    }
-  }
+			foreach (FieldInfo field in fields)
+			{
+				object value = field.GetValue(enumType);
+				values.Add(value);
+			}
+
+			return values;
+		}
+
+		#endregion
+	}
 }

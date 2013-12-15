@@ -12,27 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
+
+using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Castle.DynamicProxy.Internal;
+
 namespace Castle.DynamicProxy.Generators.Emitters
 {
 	using System;
-	using System.Diagnostics;
-	using System.Linq;
-	using System.Reflection;
-	using System.Reflection.Emit;
-
-	using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
-	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-	using Castle.DynamicProxy.Internal;
 
 	[DebuggerDisplay("{builder.Name}")]
 	public class MethodEmitter : IMemberEmitter
 	{
-		private readonly MethodBuilder builder;
-		private readonly GenericTypeParameterBuilder[] genericTypeParams;
-
-		private ArgumentReference[] arguments;
-
-		private MethodCodeBuilder codebuilder;
+		#region Constructors/Destructors
 
 		protected internal MethodEmitter(MethodBuilder builder)
 		{
@@ -45,16 +41,16 @@ namespace Castle.DynamicProxy.Generators.Emitters
 		}
 
 		internal MethodEmitter(AbstractTypeEmitter owner, String name,
-		                       MethodAttributes attributes, Type returnType,
-		                       params Type[] argumentTypes)
+			MethodAttributes attributes, Type returnType,
+			params Type[] argumentTypes)
 			: this(owner, name, attributes)
 		{
-			SetParameters(argumentTypes);
-			SetReturnType(returnType);
+			this.SetParameters(argumentTypes);
+			this.SetReturnType(returnType);
 		}
 
 		internal MethodEmitter(AbstractTypeEmitter owner, String name,
-		                       MethodAttributes attributes, MethodInfo methodToUseAsATemplate)
+			MethodAttributes attributes, MethodInfo methodToUseAsATemplate)
 			: this(owner, name, attributes)
 		{
 			var name2GenericType = GenericUtil.GetGenericArgumentsMap(owner);
@@ -63,111 +59,139 @@ namespace Castle.DynamicProxy.Generators.Emitters
 			var baseMethodParameters = methodToUseAsATemplate.GetParameters();
 			var parameters = GenericUtil.ExtractParametersTypes(baseMethodParameters, name2GenericType);
 
-			genericTypeParams = GenericUtil.CopyGenericArguments(methodToUseAsATemplate, builder, name2GenericType);
-			SetParameters(parameters);
-			SetReturnType(returnType);
-			SetSignature(returnType, methodToUseAsATemplate.ReturnParameter, parameters, baseMethodParameters);
-			DefineParameters(baseMethodParameters);
+			this.genericTypeParams = GenericUtil.CopyGenericArguments(methodToUseAsATemplate, this.builder, name2GenericType);
+			this.SetParameters(parameters);
+			this.SetReturnType(returnType);
+			this.SetSignature(returnType, methodToUseAsATemplate.ReturnParameter, parameters, baseMethodParameters);
+			this.DefineParameters(baseMethodParameters);
 		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly MethodBuilder builder;
+		private readonly GenericTypeParameterBuilder[] genericTypeParams;
+
+		private ArgumentReference[] arguments;
+
+		private MethodCodeBuilder codebuilder;
+
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		public ArgumentReference[] Arguments
 		{
-			get { return arguments; }
+			get
+			{
+				return this.arguments;
+			}
 		}
 
 		public virtual MethodCodeBuilder CodeBuilder
 		{
 			get
 			{
-				if (codebuilder == null)
-				{
-					codebuilder = new MethodCodeBuilder(builder.GetILGenerator());
-				}
-				return codebuilder;
+				if (this.codebuilder == null)
+					this.codebuilder = new MethodCodeBuilder(this.builder.GetILGenerator());
+				return this.codebuilder;
 			}
 		}
 
 		public GenericTypeParameterBuilder[] GenericTypeParams
 		{
-			get { return genericTypeParams; }
-		}
-
-		public MethodBuilder MethodBuilder
-		{
-			get { return builder; }
-		}
-
-		public MemberInfo Member
-		{
-			get { return builder; }
-		}
-
-		public Type ReturnType
-		{
-			get { return builder.ReturnType; }
+			get
+			{
+				return this.genericTypeParams;
+			}
 		}
 
 		private bool ImplementedByRuntime
 		{
 			get
 			{
-				var attributes = builder.GetMethodImplementationFlags();
+				var attributes = this.builder.GetMethodImplementationFlags();
 				return (attributes & MethodImplAttributes.Runtime) != 0;
 			}
 		}
 
+		public MemberInfo Member
+		{
+			get
+			{
+				return this.builder;
+			}
+		}
+
+		public MethodBuilder MethodBuilder
+		{
+			get
+			{
+				return this.builder;
+			}
+		}
+
+		public Type ReturnType
+		{
+			get
+			{
+				return this.builder.ReturnType;
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
 		public void DefineCustomAttribute(CustomAttributeBuilder attribute)
 		{
-			builder.SetCustomAttribute(attribute);
-		}
-
-		public void SetParameters(Type[] paramTypes)
-		{
-			builder.SetParameters(paramTypes);
-			arguments = ArgumentsUtil.ConvertToArgumentReference(paramTypes);
-			ArgumentsUtil.InitializeArgumentsByPosition(arguments, MethodBuilder.IsStatic);
-		}
-
-		public virtual void EnsureValidCodeBlock()
-		{
-			if (ImplementedByRuntime == false && CodeBuilder.IsEmpty)
-			{
-				CodeBuilder.AddStatement(new NopStatement());
-				CodeBuilder.AddStatement(new ReturnStatement());
-			}
-		}
-
-		public virtual void Generate()
-		{
-			if (ImplementedByRuntime)
-			{
-				return;
-			}
-
-			codebuilder.Generate(this, builder.GetILGenerator());
+			this.builder.SetCustomAttribute(attribute);
 		}
 
 		private void DefineParameters(ParameterInfo[] parameters)
 		{
 			foreach (var parameter in parameters)
 			{
-				var parameterBuilder = builder.DefineParameter(parameter.Position + 1, parameter.Attributes, parameter.Name);
+				var parameterBuilder = this.builder.DefineParameter(parameter.Position + 1, parameter.Attributes, parameter.Name);
 				foreach (var attribute in parameter.GetNonInheritableAttributes())
-				{
 					parameterBuilder.SetCustomAttribute(attribute);
-				}
 			}
+		}
+
+		public virtual void EnsureValidCodeBlock()
+		{
+			if (this.ImplementedByRuntime == false && this.CodeBuilder.IsEmpty)
+			{
+				this.CodeBuilder.AddStatement(new NopStatement());
+				this.CodeBuilder.AddStatement(new ReturnStatement());
+			}
+		}
+
+		public virtual void Generate()
+		{
+			if (this.ImplementedByRuntime)
+				return;
+
+			this.codebuilder.Generate(this, this.builder.GetILGenerator());
+		}
+
+		public void SetParameters(Type[] paramTypes)
+		{
+			this.builder.SetParameters(paramTypes);
+			this.arguments = ArgumentsUtil.ConvertToArgumentReference(paramTypes);
+			ArgumentsUtil.InitializeArgumentsByPosition(this.arguments, this.MethodBuilder.IsStatic);
 		}
 
 		private void SetReturnType(Type returnType)
 		{
-			builder.SetReturnType(returnType);
+			this.builder.SetReturnType(returnType);
 		}
 
 		private void SetSignature(Type returnType, ParameterInfo returnParameter, Type[] parameters,
-		                          ParameterInfo[] baseMethodParameters)
+			ParameterInfo[] baseMethodParameters)
 		{
-			builder.SetSignature(
+			this.builder.SetSignature(
 				returnType,
 #if SILVERLIGHT
 				null,
@@ -186,5 +210,7 @@ namespace Castle.DynamicProxy.Generators.Emitters
 #endif
 				);
 		}
+
+		#endregion
 	}
 }

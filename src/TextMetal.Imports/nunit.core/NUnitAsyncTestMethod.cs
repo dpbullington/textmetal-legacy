@@ -42,10 +42,10 @@ namespace NUnit.Core
 			catch (NUnitException e)
 			{
 				if (e.InnerException != null &&
-				    e.InnerException.GetType().FullName.Equals(SystemAggregateException))
+					e.InnerException.GetType().FullName.Equals(SystemAggregateException))
 				{
 					IList<Exception> inner = (IList<Exception>)e.InnerException.GetType()
-						                                           .GetProperty(InnerExceptionsProperty).GetValue(e.InnerException, null);
+						.GetProperty(InnerExceptionsProperty).GetValue(e.InnerException, null);
 
 					throw new NUnitException("Rethrown", inner[0]);
 				}

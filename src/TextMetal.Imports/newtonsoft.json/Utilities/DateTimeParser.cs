@@ -1,4 +1,5 @@
 ﻿#region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,228 +22,236 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
 
 namespace Newtonsoft.Json.Utilities
 {
-  internal enum ParserTimeZone
-  {
-    Unspecified,
-    Utc,
-    LocalWestOfUtc,
-    LocalEastOfUtc
-  }
+	internal enum ParserTimeZone
+	{
+		Unspecified,
+		Utc,
+		LocalWestOfUtc,
+		LocalEastOfUtc
+	}
 
-  internal struct DateTimeParser
-  {
-    static DateTimeParser()
-    {
-      Power10 = new[] { -1, 10, 100, 1000, 10000, 100000, 1000000 };
+	internal struct DateTimeParser
+	{
+		#region Constructors/Destructors
 
-      Lzyyyy = "yyyy".Length;
-      Lzyyyy_ = "yyyy-".Length;
-      Lzyyyy_MM = "yyyy-MM".Length;
-      Lzyyyy_MM_ = "yyyy-MM-".Length;
-      Lzyyyy_MM_dd = "yyyy-MM-dd".Length;
-      Lzyyyy_MM_ddT = "yyyy-MM-ddT".Length;
-      LzHH = "HH".Length;
-      LzHH_ = "HH:".Length;
-      LzHH_mm = "HH:mm".Length;
-      LzHH_mm_ = "HH:mm:".Length;
-      LzHH_mm_ss = "HH:mm:ss".Length;
-      Lz_ = "-".Length;
-      Lz_zz = "-zz".Length;
-      Lz_zz_ = "-zz:".Length;
-      Lz_zz_zz = "-zz:zz".Length;
-    }
+		static DateTimeParser()
+		{
+			Power10 = new[] { -1, 10, 100, 1000, 10000, 100000, 1000000 };
 
-    public int Year;
-    public int Month;
-    public int Day;
-    public int Hour;
-    public int Minute;
-    public int Second;
-    public int Fraction;
-    public int ZoneHour;
-    public int ZoneMinute;
-    public ParserTimeZone Zone;
+			Lzyyyy = "yyyy".Length;
+			Lzyyyy_ = "yyyy-".Length;
+			Lzyyyy_MM = "yyyy-MM".Length;
+			Lzyyyy_MM_ = "yyyy-MM-".Length;
+			Lzyyyy_MM_dd = "yyyy-MM-dd".Length;
+			Lzyyyy_MM_ddT = "yyyy-MM-ddT".Length;
+			LzHH = "HH".Length;
+			LzHH_ = "HH:".Length;
+			LzHH_mm = "HH:mm".Length;
+			LzHH_mm_ = "HH:mm:".Length;
+			LzHH_mm_ss = "HH:mm:ss".Length;
+			Lz_ = "-".Length;
+			Lz_zz = "-zz".Length;
+			Lz_zz_ = "-zz:".Length;
+			Lz_zz_zz = "-zz:zz".Length;
+		}
 
-    private string _text;
-    private int _length;
+		#endregion
 
-    private static readonly int[] Power10;
+		#region Fields/Constants
 
-    private static readonly int Lzyyyy;
-    private static readonly int Lzyyyy_;
-    private static readonly int Lzyyyy_MM;
-    private static readonly int Lzyyyy_MM_;
-    private static readonly int Lzyyyy_MM_dd;
-    private static readonly int Lzyyyy_MM_ddT;
-    private static readonly int LzHH;
-    private static readonly int LzHH_;
-    private static readonly int LzHH_mm;
-    private static readonly int LzHH_mm_;
-    private static readonly int LzHH_mm_ss;
-    private static readonly int Lz_;
-    private static readonly int Lz_zz;
-    private static readonly int Lz_zz_;
-    private static readonly int Lz_zz_zz;
+		private const short MaxFractionDigits = 7;
 
-    private const short MaxFractionDigits = 7;
+		private static readonly int LzHH;
+		private static readonly int LzHH_;
+		private static readonly int LzHH_mm;
+		private static readonly int LzHH_mm_;
+		private static readonly int LzHH_mm_ss;
+		private static readonly int Lz_;
+		private static readonly int Lz_zz;
+		private static readonly int Lz_zz_;
+		private static readonly int Lz_zz_zz;
+		private static readonly int Lzyyyy;
+		private static readonly int Lzyyyy_;
+		private static readonly int Lzyyyy_MM;
+		private static readonly int Lzyyyy_MM_;
+		private static readonly int Lzyyyy_MM_dd;
+		private static readonly int Lzyyyy_MM_ddT;
+		private static readonly int[] Power10;
+		public int Day;
+		public int Fraction;
+		public int Hour;
+		public int Minute;
+		public int Month;
+		public int Second;
+		public int Year;
+		public ParserTimeZone Zone;
+		public int ZoneHour;
+		public int ZoneMinute;
+		private int _length;
+		private string _text;
 
-    public bool Parse(string text)
-    {
-      _text = text;
-      _length = text.Length;
+		#endregion
 
-      if (ParseDate(0) && ParseChar(Lzyyyy_MM_dd, 'T') && ParseTimeAndZoneAndWhitespace(Lzyyyy_MM_ddT))
-        return true;
+		#region Methods/Operators
 
-      return false;
-    }
+		public bool Parse(string text)
+		{
+			this._text = text;
+			this._length = text.Length;
 
-    private bool ParseDate(int start)
-    {
-      return (Parse4Digit(start, out Year)
-              && 1 <= Year
-              && ParseChar(start + Lzyyyy, '-')
-              && Parse2Digit(start + Lzyyyy_, out Month)
-              && 1 <= Month
-              && Month <= 12
-              && ParseChar(start + Lzyyyy_MM, '-')
-              && Parse2Digit(start + Lzyyyy_MM_, out Day)
-              && 1 <= Day
-              && Day <= DateTime.DaysInMonth(Year, Month));
-    }
+			if (this.ParseDate(0) && this.ParseChar(Lzyyyy_MM_dd, 'T') && this.ParseTimeAndZoneAndWhitespace(Lzyyyy_MM_ddT))
+				return true;
 
-    private bool ParseTimeAndZoneAndWhitespace(int start)
-    {
-      return (ParseTime(ref start) && ParseZone(start));
-    }
+			return false;
+		}
 
-    private bool ParseTime(ref int start)
-    {
-      if (!(Parse2Digit(start, out Hour)
-            && Hour < 24
-            && ParseChar(start + LzHH, ':')
-            && Parse2Digit(start + LzHH_, out Minute)
-            && Minute < 60
-            && ParseChar(start + LzHH_mm, ':')
-            && Parse2Digit(start + LzHH_mm_, out Second)
-            && Second < 60))
-      {
-        return false;
-      }
+		private bool Parse2Digit(int start, out int num)
+		{
+			if (start + 1 < this._length)
+			{
+				int digit1 = this._text[start] - '0';
+				int digit2 = this._text[start + 1] - '0';
+				if (0 <= digit1 && digit1 < 10
+					&& 0 <= digit2 && digit2 < 10)
+				{
+					num = (digit1 * 10) + digit2;
+					return true;
+				}
+			}
+			num = 0;
+			return false;
+		}
 
-      start += LzHH_mm_ss;
-      if (ParseChar(start, '.'))
-      {
-        Fraction = 0;
-        int numberOfDigits = 0;
+		private bool Parse4Digit(int start, out int num)
+		{
+			if (start + 3 < this._length)
+			{
+				int digit1 = this._text[start] - '0';
+				int digit2 = this._text[start + 1] - '0';
+				int digit3 = this._text[start + 2] - '0';
+				int digit4 = this._text[start + 3] - '0';
+				if (0 <= digit1 && digit1 < 10
+					&& 0 <= digit2 && digit2 < 10
+					&& 0 <= digit3 && digit3 < 10
+					&& 0 <= digit4 && digit4 < 10)
+				{
+					num = (((((digit1 * 10) + digit2) * 10) + digit3) * 10) + digit4;
+					return true;
+				}
+			}
+			num = 0;
+			return false;
+		}
 
-        while (++start < _length && numberOfDigits < MaxFractionDigits)
-        {
-          int digit = _text[start] - '0';
-          if (digit < 0 || digit > 9)
-            break;
+		private bool ParseChar(int start, char ch)
+		{
+			return (start < this._length && this._text[start] == ch);
+		}
 
-          Fraction = (Fraction*10) + digit;
+		private bool ParseDate(int start)
+		{
+			return (this.Parse4Digit(start, out this.Year)
+					&& 1 <= this.Year
+					&& this.ParseChar(start + Lzyyyy, '-')
+					&& this.Parse2Digit(start + Lzyyyy_, out this.Month)
+					&& 1 <= this.Month
+					&& this.Month <= 12
+					&& this.ParseChar(start + Lzyyyy_MM, '-')
+					&& this.Parse2Digit(start + Lzyyyy_MM_, out this.Day)
+					&& 1 <= this.Day
+					&& this.Day <= DateTime.DaysInMonth(this.Year, this.Month));
+		}
 
-          numberOfDigits++;
-        }
+		private bool ParseTime(ref int start)
+		{
+			if (!(this.Parse2Digit(start, out this.Hour)
+				&& this.Hour < 24
+				&& this.ParseChar(start + LzHH, ':')
+				&& this.Parse2Digit(start + LzHH_, out this.Minute)
+				&& this.Minute < 60
+				&& this.ParseChar(start + LzHH_mm, ':')
+				&& this.Parse2Digit(start + LzHH_mm_, out this.Second)
+				&& this.Second < 60))
+				return false;
 
-        if (numberOfDigits < MaxFractionDigits)
-        {
-          if (numberOfDigits == 0)
-            return false;
+			start += LzHH_mm_ss;
+			if (this.ParseChar(start, '.'))
+			{
+				this.Fraction = 0;
+				int numberOfDigits = 0;
 
-          Fraction *= Power10[MaxFractionDigits - numberOfDigits];
-        }
-      }
-      return true;
-    }
+				while (++start < this._length && numberOfDigits < MaxFractionDigits)
+				{
+					int digit = this._text[start] - '0';
+					if (digit < 0 || digit > 9)
+						break;
 
-    private bool ParseZone(int start)
-    {
-      if (start < _length)
-      {
-        char ch = _text[start];
-        if (ch == 'Z' || ch == 'z')
-        {
-          Zone = ParserTimeZone.Utc;
-          start++;
-        }
-        else
-        {
-          if (start + 5 < _length
-              && Parse2Digit(start + Lz_, out ZoneHour)
-              && ZoneHour <= 99
-              && ParseChar(start + Lz_zz, ':')
-              && Parse2Digit(start + Lz_zz_, out ZoneMinute)
-              && ZoneMinute <= 99)
-          {
-            switch (ch)
-            {
-              case '-':
-                Zone = ParserTimeZone.LocalWestOfUtc;
-                start += Lz_zz_zz;
-                break;
+					this.Fraction = (this.Fraction * 10) + digit;
 
-              case '+':
-                Zone = ParserTimeZone.LocalEastOfUtc;
-                start += Lz_zz_zz;
-                break;
-            }
-          }
-        }
-      }
+					numberOfDigits++;
+				}
 
-      return (start == _length);
-    }
+				if (numberOfDigits < MaxFractionDigits)
+				{
+					if (numberOfDigits == 0)
+						return false;
 
-    private bool Parse4Digit(int start, out int num)
-    {
-      if (start + 3 < _length)
-      {
-        int digit1 = _text[start] - '0';
-        int digit2 = _text[start + 1] - '0';
-        int digit3 = _text[start + 2] - '0';
-        int digit4 = _text[start + 3] - '0';
-        if (0 <= digit1 && digit1 < 10
-            && 0 <= digit2 && digit2 < 10
-            && 0 <= digit3 && digit3 < 10
-            && 0 <= digit4 && digit4 < 10)
-        {
-          num = (((((digit1*10) + digit2)*10) + digit3)*10) + digit4;
-          return true;
-        }
-      }
-      num = 0;
-      return false;
-    }
+					this.Fraction *= Power10[MaxFractionDigits - numberOfDigits];
+				}
+			}
+			return true;
+		}
 
-    private bool Parse2Digit(int start, out int num)
-    {
-      if (start + 1 < _length)
-      {
-        int digit1 = _text[start] - '0';
-        int digit2 = _text[start + 1] - '0';
-        if (0 <= digit1 && digit1 < 10
-            && 0 <= digit2 && digit2 < 10)
-        {
-          num = (digit1*10) + digit2;
-          return true;
-        }
-      }
-      num = 0;
-      return false;
-    }
+		private bool ParseTimeAndZoneAndWhitespace(int start)
+		{
+			return (this.ParseTime(ref start) && this.ParseZone(start));
+		}
 
-    private bool ParseChar(int start, char ch)
-    {
-      return (start < _length && _text[start] == ch);
-    }
-  }
+		private bool ParseZone(int start)
+		{
+			if (start < this._length)
+			{
+				char ch = this._text[start];
+				if (ch == 'Z' || ch == 'z')
+				{
+					this.Zone = ParserTimeZone.Utc;
+					start++;
+				}
+				else
+				{
+					if (start + 5 < this._length
+						&& this.Parse2Digit(start + Lz_, out this.ZoneHour)
+						&& this.ZoneHour <= 99
+						&& this.ParseChar(start + Lz_zz, ':')
+						&& this.Parse2Digit(start + Lz_zz_, out this.ZoneMinute)
+						&& this.ZoneMinute <= 99)
+					{
+						switch (ch)
+						{
+							case '-':
+								this.Zone = ParserTimeZone.LocalWestOfUtc;
+								start += Lz_zz_zz;
+								break;
+
+							case '+':
+								this.Zone = ParserTimeZone.LocalEastOfUtc;
+								start += Lz_zz_zz;
+								break;
+						}
+					}
+				}
+			}
+
+			return (start == this._length);
+		}
+
+		#endregion
+	}
 }

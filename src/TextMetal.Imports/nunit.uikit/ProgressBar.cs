@@ -15,11 +15,11 @@ using NUnit.Util;
 namespace NUnit.UiKit
 {
 	/// <summary>
-	/// 	ColorProgressBar provides a custom progress bar with the
-	/// 	ability to control the color of the bar and to render itself
-	/// 	in either solid or segmented style. The bar can be updated
-	/// 	on the fly and has code to avoid repainting the entire bar
-	/// 	when that occurs.
+	/// ColorProgressBar provides a custom progress bar with the
+	/// ability to control the color of the bar and to render itself
+	/// in either solid or segmented style. The bar can be updated
+	/// on the fly and has code to avoid repainting the entire bar
+	/// when that occurs.
 	/// </summary>
 	public class ColorProgressBar : Control
 	{
@@ -38,48 +38,48 @@ namespace NUnit.UiKit
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The brush to use in painting the background of the bar
+		/// The brush to use in painting the background of the bar
 		/// </summary>
 		private Brush backBrush = null;
 
 		/// <summary>
-		/// 	Required designer variable.
+		/// Required designer variable.
 		/// </summary>
 		private Container components = null;
 
 		/// <summary>
-		/// 	The brush to use in painting the progress bar
+		/// The brush to use in painting the progress bar
 		/// </summary>
 		private Brush foreBrush = null;
 
 		/// <summary>
-		/// 	Last segment displayed when displaying asynchronously rather 
-		/// 	than through OnPaint calls.
+		/// Last segment displayed when displaying asynchronously rather
+		/// than through OnPaint calls.
 		/// </summary>
 		private int lastSegmentCount = 0;
 
 		/// <summary>
-		/// 	The maximum value allowed
+		/// The maximum value allowed
 		/// </summary>
 		private int max = 100;
 
 		/// <summary>
-		/// 	The minimum value allowed
+		/// The minimum value allowed
 		/// </summary>
 		private int min = 0;
 
 		/// <summary>
-		/// 	Indicates whether to draw the bar in segments or not
+		/// Indicates whether to draw the bar in segments or not
 		/// </summary>
 		private bool segmented = false;
 
 		/// <summary>
-		/// 	Amount to advance for each step
+		/// Amount to advance for each step
 		/// </summary>
 		private int step = 1;
 
 		/// <summary>
-		/// 	The current progress value
+		/// The current progress value
 		/// </summary>
 		private int val = 0;
 
@@ -107,7 +107,7 @@ namespace NUnit.UiKit
 				else
 				{
 					throw new ArgumentOutOfRangeException("Maximum", value
-					                                      , "Maximum must be >= Minimum.");
+						, "Maximum must be >= Minimum.");
 				}
 			}
 		}
@@ -132,7 +132,7 @@ namespace NUnit.UiKit
 				else
 				{
 					throw new ArgumentOutOfRangeException("Minimum", value
-					                                      , "Minimum must be <= Maximum.");
+						, "Minimum must be <= Maximum.");
 				}
 			}
 		}
@@ -176,7 +176,7 @@ namespace NUnit.UiKit
 				else
 				{
 					throw new ArgumentOutOfRangeException("Step", value
-					                                      , "Must fall between Minimum and Maximum inclusive.");
+						, "Must fall between Minimum and Maximum inclusive.");
 				}
 			}
 		}
@@ -200,7 +200,7 @@ namespace NUnit.UiKit
 				else
 				{
 					throw new ArgumentOutOfRangeException("Value", value
-					                                      , "Must fall between Minimum and Maximum inclusive.");
+						, "Must fall between Minimum and Maximum inclusive.");
 				}
 			}
 		}
@@ -219,7 +219,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Clean up any resources being used.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose(bool disposing)
 		{
@@ -233,8 +233,8 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Required method for Designer support - do not modify 
-		/// 	the contents of this method with the code editor.
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
@@ -243,9 +243,9 @@ namespace NUnit.UiKit
 			// 
 			this.CausesValidation = false;
 			this.Enabled = false;
-			this.ForeColor = System.Drawing.SystemColors.Highlight;
+			this.ForeColor = SystemColors.Highlight;
 			this.Name = "ProgressBar";
-			this.Size = new System.Drawing.Size(432, 24);
+			this.Size = new Size(432, 24);
 		}
 
 		protected override void OnBackColorChanged(EventArgs e)

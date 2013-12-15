@@ -11,7 +11,7 @@ namespace NUnit.Core
 	using System;
 
 	/// <summary>
-	/// 	Summary description for NoTestFixtureException.
+	/// Summary description for NoTestFixtureException.
 	/// </summary>
 	[Serializable]
 	public class NoTestFixturesException : ApplicationException

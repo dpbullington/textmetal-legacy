@@ -12,32 +12,47 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 #if DOTNET40
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	internal class XmlNodeSet<T> : SetProjection<T>, IXmlNodeSource
 	{
+		#region Constructors/Destructors
+
 		public XmlNodeSet
-		(
-			IXmlNode               parentNode,
-			IDictionaryAdapter     parentObject,
-			IXmlCollectionAccessor accessor
-		)
-		: base
-		(
-			new XmlCollectionAdapter<T>
 			(
-				parentNode,
-				parentObject,
-				accessor
+			IXmlNode parentNode,
+			IDictionaryAdapter parentObject,
+			IXmlCollectionAccessor accessor
 			)
-		)
-		{ }
+			: base
+				(
+				new XmlCollectionAdapter<T>
+					(
+					parentNode,
+					parentObject,
+					accessor
+					)
+				)
+		{
+		}
+
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		public IXmlNode Node
 		{
-		    get { return ((IXmlNodeSource)Adapter).Node; }
+			get
+			{
+				return ((IXmlNodeSource)this.Adapter).Node;
+			}
 		}
+
+		#endregion
 	}
 }
+
 #endif

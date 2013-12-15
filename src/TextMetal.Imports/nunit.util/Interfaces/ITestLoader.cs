@@ -11,8 +11,8 @@ using NUnit.Core;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	The ITestLoader interface supports the loading and running
-	/// 	of tests in a remote domain.
+	/// The ITestLoader interface supports the loading and running
+	/// of tests in a remote domain.
 	/// </summary>
 	public interface ITestLoader
 	{

@@ -11,18 +11,16 @@ using System.Collections.Specialized;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	TestInfo holds common info about a test. It represents only
-	/// 	a single test or a suite and contains no references to other
-	/// 	tests. Since it is informational only, it can easily be passed
-	/// 	around using .Net remoting.
-	/// 
-	/// 	TestInfo is used directly in all EventListener events and in
-	/// 	TestResults. It contains an ID, which can be used by a 
-	/// 	runner to locate the actual test.
-	/// 
-	/// 	TestInfo also serves as the base class for TestNode, which
-	/// 	adds hierarchical information and is used in client code to
-	/// 	maintain a visible image of the structure of the tests.
+	/// TestInfo holds common info about a test. It represents only
+	/// a single test or a suite and contains no references to other
+	/// tests. Since it is informational only, it can easily be passed
+	/// around using .Net remoting.
+	/// TestInfo is used directly in all EventListener events and in
+	/// TestResults. It contains an ID, which can be used by a
+	/// runner to locate the actual test.
+	/// TestInfo also serves as the base class for TestNode, which
+	/// adds hierarchical information and is used in client code to
+	/// maintain a visible image of the structure of the tests.
 	/// </summary>
 	[Serializable]
 	public class TestInfo : ITest
@@ -30,7 +28,7 @@ namespace NUnit.Core
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct from an ITest
+		/// Construct from an ITest
 		/// </summary>
 		/// <param name="test"> Test from which a TestNode is to be constructed </param>
 		public TestInfo(ITest test)
@@ -58,7 +56,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Construct as a parent to multiple tests.
+		/// Construct as a parent to multiple tests.
 		/// </summary>
 		/// <param name="testName"> The name to use for the new test </param>
 		/// <param name="tests"> An array of child tests </param>
@@ -80,7 +78,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Construct given a test name
+		/// Construct given a test name
 		/// </summary>
 		/// <param name="testName"> The TestName for the new test </param>
 		public TestInfo(TestName testName)
@@ -93,44 +91,44 @@ namespace NUnit.Core
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	A list of all the categories assigned to a test
+		/// A list of all the categories assigned to a test
 		/// </summary>
 		private ArrayList categories = new ArrayList();
 
 		private string className;
 
 		/// <summary>
-		/// 	The test description
+		/// The test description
 		/// </summary>
 		private string description;
 
 		/// <summary>
-		/// 	Reason for not running the test
+		/// Reason for not running the test
 		/// </summary>
 		private string ignoreReason;
 
 		/// <summary>
-		/// 	True if this is a suite
+		/// True if this is a suite
 		/// </summary>
 		private bool isSuite;
 
 		private string methodName;
 
 		/// <summary>
-		/// 	A dictionary of properties, used to add information
-		/// 	to tests without requiring the class to change.
+		/// A dictionary of properties, used to add information
+		/// to tests without requiring the class to change.
 		/// </summary>
 		private ListDictionary properties = new ListDictionary();
 
 		private RunState runState;
 
 		/// <summary>
-		/// 	Number of test cases in this test or suite
+		/// Number of test cases in this test or suite
 		/// </summary>
 		private int testCaseCount;
 
 		/// <summary>
-		/// 	TestName that identifies this test
+		/// TestName that identifies this test
 		/// </summary>
 		private TestName testName;
 
@@ -141,7 +139,7 @@ namespace NUnit.Core
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets a list of the categories applied to this test
+		/// Gets a list of the categories applied to this test
 		/// </summary>
 		public IList Categories
 		{
@@ -152,7 +150,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	The name of the class containing this test, or null
+		/// The name of the class containing this test, or null
 		/// </summary>
 		public string ClassName
 		{
@@ -163,7 +161,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	The test description
+		/// The test description
 		/// </summary>
 		public string Description
 		{
@@ -178,7 +176,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	The reason for ignoring a test
+		/// The reason for ignoring a test
 		/// </summary>
 		public string IgnoreReason
 		{
@@ -193,7 +191,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	True if this is a suite, false if a test case
+		/// True if this is a suite, false if a test case
 		/// </summary>
 		public bool IsSuite
 		{
@@ -204,7 +202,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	The name of the method implementing this test, or null
+		/// The name of the method implementing this test, or null
 		/// </summary>
 		public string MethodName
 		{
@@ -215,7 +213,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the parent test of this test
+		/// Gets the parent test of this test
 		/// </summary>
 		public virtual ITest Parent
 		{
@@ -226,7 +224,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the Properties dictionary for this test
+		/// Gets the Properties dictionary for this test
 		/// </summary>
 		public IDictionary Properties
 		{
@@ -240,7 +238,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the RunState for this test
+		/// Gets the RunState for this test
 		/// </summary>
 		public RunState RunState
 		{
@@ -255,7 +253,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Count of test cases in this test.
+		/// Count of test cases in this test.
 		/// </summary>
 		public int TestCount
 		{
@@ -266,8 +264,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the completely specified name of the test
-		/// 	encapsulated in a TestName object.
+		/// Gets the completely specified name of the test
+		/// encapsulated in a TestName object.
 		/// </summary>
 		public TestName TestName
 		{
@@ -278,8 +276,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets a string representing the kind of test this
-		/// 	object represents for display purposes.
+		/// Gets a string representing the kind of test this
+		/// object represents for display purposes.
 		/// </summary>
 		public string TestType
 		{
@@ -290,7 +288,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets a list of any child tests
+		/// Gets a list of any child tests
 		/// </summary>
 		public virtual IList Tests
 		{
@@ -305,8 +303,8 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Counts the test cases that would be run if this
-		/// 	test were executed using the provided filter.
+		/// Counts the test cases that would be run if this
+		/// test were executed using the provided filter.
 		/// </summary>
 		/// <param name="filter"> The filter to apply </param>
 		/// <returns> A count of test cases </returns>

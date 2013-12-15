@@ -7,27 +7,27 @@
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	The TestStatus enum indicates the result of running a test
+	/// The TestStatus enum indicates the result of running a test
 	/// </summary>
 	public enum TestStatus
 	{
 		/// <summary>
-		/// 	The test was inconclusive
+		/// The test was inconclusive
 		/// </summary>
 		Inconclusive = 0,
 
 		/// <summary>
-		/// 	The test has skipped
+		/// The test has skipped
 		/// </summary>
 		Skipped = 1,
 
 		/// <summary>
-		/// 	The test succeeded
+		/// The test succeeded
 		/// </summary>
 		Passed = 2,
 
 		/// <summary>
-		/// 	The test failed
+		/// The test failed
 		/// </summary>
 		Failed = 3
 	}

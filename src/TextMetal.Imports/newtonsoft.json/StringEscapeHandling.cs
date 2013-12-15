@@ -1,4 +1,5 @@
 #region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,26 +22,29 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 namespace Newtonsoft.Json
 {
-  /// <summary>
-  /// Specifies how strings are escaped when writing JSON text.
-  /// </summary>
-  public enum StringEscapeHandling
-  {
-    /// <summary>
-    /// Only control characters (e.g. newline) are escaped.
-    /// </summary>
-    Default,
-    /// <summary>
-    /// All non-ASCII and control characters (e.g. newline) are escaped.
-    /// </summary>
-    EscapeNonAscii,
-    /// <summary>
-    /// HTML (&lt;, &gt;, &amp;, &apos;, &quot;) and control characters (e.g. newline) are escaped.
-    /// </summary>
-    EscapeHtml
-  }
+	/// <summary>
+	/// Specifies how strings are escaped when writing JSON text.
+	/// </summary>
+	public enum StringEscapeHandling
+	{
+		/// <summary>
+		/// Only control characters (e.g. newline) are escaped.
+		/// </summary>
+		Default,
+
+		/// <summary>
+		/// All non-ASCII and control characters (e.g. newline) are escaped.
+		/// </summary>
+		EscapeNonAscii,
+
+		/// <summary>
+		/// HTML (&lt;, &gt;, &amp;, &apos;, &quot;) and control characters (e.g. newline) are escaped.
+		/// </summary>
+		EscapeHtml
+	}
 }

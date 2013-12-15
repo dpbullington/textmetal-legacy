@@ -8,7 +8,7 @@ namespace NUnit.Framework
 	using System;
 
 	/// <summary>
-	/// 	Enumeration indicating how the expected message parameter is to be used
+	/// Enumeration indicating how the expected message parameter is to be used
 	/// </summary>
 	public enum MessageMatch
 	{
@@ -26,7 +26,7 @@ namespace NUnit.Framework
 	}
 
 	/// <summary>
-	/// 	ExpectedExceptionAttribute
+	/// ExpectedExceptionAttribute
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 	public class ExpectedExceptionAttribute : Attribute
@@ -34,14 +34,14 @@ namespace NUnit.Framework
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Constructor for a non-specific exception
+		/// Constructor for a non-specific exception
 		/// </summary>
 		public ExpectedExceptionAttribute()
 		{
 		}
 
 		/// <summary>
-		/// 	Constructor for a given type of exception
+		/// Constructor for a given type of exception
 		/// </summary>
 		/// <param name="exceptionType"> The type of the expected exception </param>
 		public ExpectedExceptionAttribute(Type exceptionType)
@@ -51,7 +51,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Constructor for a given exception name
+		/// Constructor for a given exception name
 		/// </summary>
 		/// <param name="exceptionName"> The full name of the expected exception </param>
 		public ExpectedExceptionAttribute(string exceptionName)
@@ -75,7 +75,7 @@ namespace NUnit.Framework
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets or sets the expected exception type
+		/// Gets or sets the expected exception type
 		/// </summary>
 		public Type ExpectedException
 		{
@@ -91,7 +91,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets the full Type name of the expected exception
+		/// Gets or sets the full Type name of the expected exception
 		/// </summary>
 		public string ExpectedExceptionName
 		{
@@ -106,7 +106,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets the expected message text
+		/// Gets or sets the expected message text
 		/// </summary>
 		public string ExpectedMessage
 		{
@@ -121,7 +121,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets the name of a method to be used as an exception handler
+		/// Gets the name of a method to be used as an exception handler
 		/// </summary>
 		public string Handler
 		{
@@ -136,7 +136,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets the type of match to be performed on the expected message
+		/// Gets or sets the type of match to be performed on the expected message
 		/// </summary>
 		public MessageMatch MatchType
 		{
@@ -151,7 +151,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets the user message displayed in case of failure
+		/// Gets or sets the user message displayed in case of failure
 		/// </summary>
 		public string UserMessage
 		{

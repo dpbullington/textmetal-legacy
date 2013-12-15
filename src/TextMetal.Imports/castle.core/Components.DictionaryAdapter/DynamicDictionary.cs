@@ -21,34 +21,46 @@ namespace Castle.Components.DictionaryAdapter
 	using System.Linq;
 
 	/// <summary>
-	/// Wraps a <see cref="IDictionary"/> with a dynamic object to expose a bit better looking API.
-	/// The implementation is trivial and assumes keys are <see cref="string"/>s.
+	/// Wraps a <see cref="IDictionary" /> with a dynamic object to expose a bit better looking API.
+	/// The implementation is trivial and assumes keys are <see cref="string" />s.
 	/// </summary>
 	public class DynamicDictionary : DynamicObject
 	{
-		private readonly IDictionary dictionary;
+		#region Constructors/Destructors
 
 		public DynamicDictionary(IDictionary dictionary)
 		{
 			this.dictionary = dictionary;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly IDictionary dictionary;
+
+		#endregion
+
+		#region Methods/Operators
+
 		public override IEnumerable<string> GetDynamicMemberNames()
 		{
-			return from object key in dictionary.Keys select key.ToString();
+			return from object key in this.dictionary.Keys select key.ToString();
 		}
 
 		public override bool TryGetMember(GetMemberBinder binder, out object result)
 		{
-			result = dictionary[binder.Name];
+			result = this.dictionary[binder.Name];
 			return true;
 		}
 
 		public override bool TrySetMember(SetMemberBinder binder, object value)
 		{
-			dictionary[binder.Name] = value;
+			this.dictionary[binder.Name] = value;
 			return true;
 		}
+
+		#endregion
 	}
 #endif
 }

@@ -9,8 +9,8 @@ using System;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	ValueSourceAttribute indicates the source to be used to
-	/// 	provide data for one parameter of a test method.
+	/// ValueSourceAttribute indicates the source to be used to
+	/// provide data for one parameter of a test method.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true, Inherited = false)]
 	public class ValueSourceAttribute : Attribute
@@ -18,8 +18,8 @@ namespace NUnit.Framework
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct with the name of the factory - for use with languages
-		/// 	that don't support params arrays.
+		/// Construct with the name of the factory - for use with languages
+		/// that don't support params arrays.
 		/// </summary>
 		/// <param name="sourceName"> The name of the data source to be used </param>
 		public ValueSourceAttribute(string sourceName)
@@ -28,8 +28,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Construct with a Type and name - for use with languages
-		/// 	that don't support params arrays.
+		/// Construct with a Type and name - for use with languages
+		/// that don't support params arrays.
 		/// </summary>
 		/// <param name="sourceType"> The Type that will provide data </param>
 		/// <param name="sourceName"> The name of the method, property or field that will provide data </param>
@@ -51,7 +51,7 @@ namespace NUnit.Framework
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	The name of a the method, property or fiend to be used as a source
+		/// The name of a the method, property or fiend to be used as a source
 		/// </summary>
 		public string SourceName
 		{
@@ -62,7 +62,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	A Type to be used as a source
+		/// A Type to be used as a source
 		/// </summary>
 		public Type SourceType
 		{

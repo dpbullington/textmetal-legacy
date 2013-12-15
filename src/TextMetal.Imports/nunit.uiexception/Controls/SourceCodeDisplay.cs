@@ -13,16 +13,14 @@ using NUnit.UiException.Properties;
 namespace NUnit.UiException.Controls
 {
 	/// <summary>
-	/// 	Implements IErrorDisplay and displays data about failures and error
-	/// 	after a test suite run. SourceCodeDisplay is a control composed of two
-	/// 	views. 
-	/// 
-	/// 	The first view displays the stack trace in an ordered list of items
-	/// 	where each item contains the context about a specific failure (file, class
-	/// 	method, line number).
-	/// 
-	/// 	The second view displays a CodeBox control and shows the source code
-	/// 	of one element in this list when the localization is available.
+	/// Implements IErrorDisplay and displays data about failures and error
+	/// after a test suite run. SourceCodeDisplay is a control composed of two
+	/// views.
+	/// The first view displays the stack trace in an ordered list of items
+	/// where each item contains the context about a specific failure (file, class
+	/// method, line number).
+	/// The second view displays a CodeBox control and shows the source code
+	/// of one element in this list when the localization is available.
 	/// </summary>
 	public class SourceCodeDisplay :
 		IErrorDisplay
@@ -30,7 +28,7 @@ namespace NUnit.UiException.Controls
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Builds a new instance of SourceCodeDisplay.
+		/// Builds a new instance of SourceCodeDisplay.
 		/// </summary>
 		public SourceCodeDisplay()
 		{
@@ -77,11 +75,11 @@ namespace NUnit.UiException.Controls
 		public event EventHandler SplitterDistanceChanged;
 
 		/// <summary>
-		/// 	Gets or sets a value telling whether or not to select automatically
-		/// 	the first localizable item each time the stack trace changes.
-		/// 	When set to true, the first localizable item will be selected 
-		/// 	and the source code context for this item displayed automatically.
-		/// 	Default is True.
+		/// Gets or sets a value telling whether or not to select automatically
+		/// the first localizable item each time the stack trace changes.
+		/// When set to true, the first localizable item will be selected
+		/// and the source code context for this item displayed automatically.
+		/// Default is True.
 		/// </summary>
 		public bool AutoSelectFirstItem
 		{
@@ -116,7 +114,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gets or sets a value defining the order of the item in the error list.
+		/// Gets or sets a value defining the order of the item in the error list.
 		/// </summary>
 		public ErrorListOrderPolicy ListOrderPolicy
 		{
@@ -147,7 +145,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gets or sets the splitter orientation in the SourceCodeDisplay.
+		/// Gets or sets the splitter orientation in the SourceCodeDisplay.
 		/// </summary>
 		public Orientation SplitOrientation
 		{
@@ -162,7 +160,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gets or sets the splitter distance in the SourceCodeDisplay.
+		/// Gets or sets the splitter distance in the SourceCodeDisplay.
 		/// </summary>
 		public float SplitterDistance
 		{
@@ -183,8 +181,8 @@ namespace NUnit.UiException.Controls
 		private void OnClick(object sender, EventArgs e)
 		{
 			this.ListOrderPolicy = this.ListOrderPolicy == ErrorListOrderPolicy.InitialOrder ?
-				                                                                                 ErrorListOrderPolicy.ReverseOrder :
-					                                                                                                                   ErrorListOrderPolicy.InitialOrder;
+				ErrorListOrderPolicy.ReverseOrder :
+				ErrorListOrderPolicy.InitialOrder;
 
 			return;
 		}

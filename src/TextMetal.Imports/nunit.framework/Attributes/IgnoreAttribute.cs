@@ -9,9 +9,9 @@ namespace NUnit.Framework
 	using System;
 
 	/// <summary>
-	/// 	Attribute used to mark a test that is to be ignored.
-	/// 	Ignored tests result in a warning message when the
-	/// 	tests are run.
+	/// Attribute used to mark a test that is to be ignored.
+	/// Ignored tests result in a warning message when the
+	/// tests are run.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
 	public class IgnoreAttribute : Attribute
@@ -19,8 +19,8 @@ namespace NUnit.Framework
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Constructs the attribute without giving a reason 
-		/// 	for ignoring the test.
+		/// Constructs the attribute without giving a reason
+		/// for ignoring the test.
 		/// </summary>
 		public IgnoreAttribute()
 		{
@@ -28,7 +28,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Constructs the attribute giving a reason for ignoring the test
+		/// Constructs the attribute giving a reason for ignoring the test
 		/// </summary>
 		/// <param name="reason"> The reason for ignoring the test </param>
 		public IgnoreAttribute(string reason)
@@ -47,7 +47,7 @@ namespace NUnit.Framework
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	The reason for ignoring a test
+		/// The reason for ignoring a test
 		/// </summary>
 		public string Reason
 		{

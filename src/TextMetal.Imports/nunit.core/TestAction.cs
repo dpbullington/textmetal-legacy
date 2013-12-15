@@ -73,11 +73,11 @@ namespace NUnit.Core
 				fixture = testObject.Fixture;
 
 			return Activator.CreateInstance(_TestDetailsClassType,
-			                                fixture,
-			                                method,
-			                                test.TestName.FullName,
-			                                test.TestType,
-			                                test.IsSuite);
+				fixture,
+				method,
+				test.TestName.FullName,
+				test.TestType,
+				test.IsSuite);
 		}
 
 		public bool DoesTarget(int target)

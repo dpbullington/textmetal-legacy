@@ -12,9 +12,9 @@ namespace NUnit.Core
 	using System;
 
 	/// <summary>
-	/// 	The TestResult class represents
-	/// 	the result of a test and is used to
-	/// 	communicate results across AppDomains.
+	/// The TestResult class represents
+	/// the result of a test and is used to
+	/// communicate results across AppDomains.
 	/// </summary>
 	[Serializable]
 	public class TestResult
@@ -22,7 +22,7 @@ namespace NUnit.Core
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a test result given a TestInfo
+		/// Construct a test result given a TestInfo
 		/// </summary>
 		/// <param name="test"> The test to be used </param>
 		public TestResult(TestInfo test)
@@ -32,7 +32,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Construct a TestResult given an ITest
+		/// Construct a TestResult given an ITest
 		/// </summary>
 		/// <param name="test"> </param>
 		public TestResult(ITest test)
@@ -41,7 +41,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Construct a TestResult given a TestName
+		/// Construct a TestResult given a TestName
 		/// </summary>
 		/// <param name="testName"> A TestName </param>
 		public TestResult(TestName testName)
@@ -54,42 +54,42 @@ namespace NUnit.Core
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The test that this result pertains to
+		/// The test that this result pertains to
 		/// </summary>
 		private readonly TestInfo test;
 
 		/// <summary>
-		/// 	Number of asserts executed by this test
+		/// Number of asserts executed by this test
 		/// </summary>
 		private int assertCount = 0;
 
 		/// <summary>
-		/// 	Indicates the location of a failure
+		/// Indicates the location of a failure
 		/// </summary>
 		private FailureSite failureSite;
 
 		/// <summary>
-		/// 	Message giving the reason for failure
+		/// Message giving the reason for failure
 		/// </summary>
 		private string message;
 
 		/// <summary>
-		/// 	Indicates the result of the test
+		/// Indicates the result of the test
 		/// </summary>
 		private ResultState resultState;
 
 		/// <summary>
-		/// 	List of child results
+		/// List of child results
 		/// </summary>
 		private IList results;
 
 		/// <summary>
-		/// 	The stacktrace at the point of failure
+		/// The stacktrace at the point of failure
 		/// </summary>
 		private string stackTrace;
 
 		/// <summary>
-		/// 	The elapsed time for executing this test
+		/// The elapsed time for executing this test
 		/// </summary>
 		private double time = 0.0;
 
@@ -98,8 +98,8 @@ namespace NUnit.Core
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets or sets the count of asserts executed
-		/// 	when running the test.
+		/// Gets or sets the count of asserts executed
+		/// when running the test.
 		/// </summary>
 		public int AssertCount
 		{
@@ -114,7 +114,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets a description associated with the test
+		/// Gets a description associated with the test
 		/// </summary>
 		public string Description
 		{
@@ -125,22 +125,22 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Indicates whether the test executed
+		/// Indicates whether the test executed
 		/// </summary>
 		public bool Executed
 		{
 			get
 			{
 				return this.resultState == ResultState.Success ||
-				       this.resultState == ResultState.Failure ||
-				       this.resultState == ResultState.Error ||
-				       this.resultState == ResultState.Inconclusive;
+						this.resultState == ResultState.Failure ||
+						this.resultState == ResultState.Error ||
+						this.resultState == ResultState.Inconclusive;
 			}
 		}
 
 		/// <summary>
-		/// 	Gets the stage of the test in which a failure
-		/// 	or error occured.
+		/// Gets the stage of the test in which a failure
+		/// or error occured.
 		/// </summary>
 		public FailureSite FailureSite
 		{
@@ -151,7 +151,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the full name of the test result
+		/// Gets the full name of the test result
 		/// </summary>
 		public virtual string FullName
 		{
@@ -162,7 +162,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if this result has any child results
+		/// Return true if this result has any child results
 		/// </summary>
 		public bool HasResults
 		{
@@ -173,7 +173,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Indicates whether the test had an error (as opposed to a failure)
+		/// Indicates whether the test had an error (as opposed to a failure)
 		/// </summary>
 		public virtual bool IsError
 		{
@@ -184,7 +184,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Indicates whether the test failed
+		/// Indicates whether the test failed
 		/// </summary>
 		public virtual bool IsFailure
 		{
@@ -195,7 +195,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Indicates whether the test ran successfully
+		/// Indicates whether the test ran successfully
 		/// </summary>
 		public virtual bool IsSuccess
 		{
@@ -206,8 +206,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the message associated with a test
-		/// 	failure or with not running the test
+		/// Gets the message associated with a test
+		/// failure or with not running the test
 		/// </summary>
 		public string Message
 		{
@@ -218,7 +218,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the name of the test result
+		/// Gets the name of the test result
 		/// </summary>
 		public virtual string Name
 		{
@@ -229,8 +229,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the ResultState of the test result, which 
-		/// 	indicates the success or failure of the test.
+		/// Gets the ResultState of the test result, which
+		/// indicates the success or failure of the test.
 		/// </summary>
 		public ResultState ResultState
 		{
@@ -241,7 +241,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets a list of the child results of this TestResult
+		/// Gets a list of the child results of this TestResult
 		/// </summary>
 		public IList Results
 		{
@@ -252,8 +252,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets any stacktrace associated with an
-		/// 	error or failure.
+		/// Gets any stacktrace associated with an
+		/// error or failure.
 		/// </summary>
 		public virtual string StackTrace
 		{
@@ -268,7 +268,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the test associated with this result
+		/// Gets the test associated with this result
 		/// </summary>
 		public ITest Test
 		{
@@ -279,7 +279,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the elapsed time for running the test
+		/// Gets the elapsed time for running the test
 		/// </summary>
 		public double Time
 		{
@@ -345,7 +345,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Add a child result
+		/// Add a child result
 		/// </summary>
 		/// <param name="result"> The child result to be added </param>
 		public void AddResult(TestResult result)
@@ -379,8 +379,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Marks the result as an error due to an exception thrown
-		/// 	by the test.
+		/// Marks the result as an error due to an exception thrown
+		/// by the test.
 		/// </summary>
 		/// <param name="exception"> The exception that was caught </param>
 		public void Error(Exception exception)
@@ -389,8 +389,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Marks the result as an error due to an exception thrown
-		/// 	from the indicated FailureSite.
+		/// Marks the result as an error due to an exception thrown
+		/// from the indicated FailureSite.
 		/// </summary>
 		/// <param name="exception"> The exception that was caught </param>
 		/// <param name="failureSite"> The site from which it was thrown </param>
@@ -416,8 +416,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Mark the test as a failure due to an
-		/// 	assertion having failed.
+		/// Mark the test as a failure due to an
+		/// assertion having failed.
 		/// </summary>
 		/// <param name="message"> Message to display </param>
 		/// <param name="stackTrace"> Stack trace giving the location of the failure </param>
@@ -427,8 +427,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Mark the test as a failure due to an
-		/// 	assertion having failed.
+		/// Mark the test as a failure due to an
+		/// assertion having failed.
 		/// </summary>
 		/// <param name="message"> Message to display </param>
 		/// <param name="stackTrace"> Stack trace giving the location of the failure </param>
@@ -440,7 +440,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Mark the test as ignored.
+		/// Mark the test as ignored.
 		/// </summary>
 		/// <param name="reason"> The reason the test was not run </param>
 		public void Ignore(string reason)
@@ -449,7 +449,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Mark the test as ignored.
+		/// Mark the test as ignored.
 		/// </summary>
 		/// <param name="ex"> The ignore exception that was thrown </param>
 		public void Ignore(Exception ex)
@@ -458,7 +458,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Mark the test as ignored.
+		/// Mark the test as ignored.
 		/// </summary>
 		/// <param name="reason"> The reason the test was not run </param>
 		/// <param name="stackTrace"> Stack trace giving the location of the command </param>
@@ -468,7 +468,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Mark the test a not runnable with a reason
+		/// Mark the test a not runnable with a reason
 		/// </summary>
 		/// <param name="reason"> The reason the test is invalid </param>
 		public void Invalid(string reason)
@@ -477,7 +477,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Mark the test as not runnable due to a builder exception
+		/// Mark the test as not runnable due to a builder exception
 		/// </summary>
 		/// <param name="ex"> The exception thrown by the builder or an addin </param>
 		public void Invalid(Exception ex)
@@ -486,7 +486,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Set the result of the test
+		/// Set the result of the test
 		/// </summary>
 		/// <param name="resultState"> The ResultState to use in the result </param>
 		/// <param name="reason"> The reason the test was not run </param>
@@ -514,7 +514,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Set the result of the test
+		/// Set the result of the test
 		/// </summary>
 		/// <param name="resultState"> The ResultState to use in the result </param>
 		/// <param name="reason"> The reason the test was not run </param>
@@ -525,7 +525,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Set the result of the test.
+		/// Set the result of the test.
 		/// </summary>
 		/// <param name="resultState"> The ResultState to use in the result </param>
 		/// <param name="ex"> The exception that caused this result </param>
@@ -541,7 +541,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Mark the test as skipped.
+		/// Mark the test as skipped.
 		/// </summary>
 		/// <param name="reason"> The reason the test was not run </param>
 		public void Skip(string reason)
@@ -550,7 +550,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Mark the test as succeeding
+		/// Mark the test as succeeding
 		/// </summary>
 		public void Success()
 		{
@@ -558,7 +558,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Mark the test as succeeding and set a message
+		/// Mark the test as succeeding and set a message
 		/// </summary>
 		public void Success(string message)
 		{

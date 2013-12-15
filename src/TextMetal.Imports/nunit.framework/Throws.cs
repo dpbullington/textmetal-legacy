@@ -12,15 +12,15 @@ using NUnit.Framework.Constraints;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	Helper class with properties and methods that supply
-	/// 	constraints that operate on exceptions.
+	/// Helper class with properties and methods that supply
+	/// constraints that operate on exceptions.
 	/// </summary>
 	public class Throws
 	{
 		#region Exception
 
 		/// <summary>
-		/// 	Creates a constraint specifying an expected exception
+		/// Creates a constraint specifying an expected exception
 		/// </summary>
 		public static ResolvableConstraintExpression Exception
 		{
@@ -35,7 +35,7 @@ namespace NUnit.Framework
 		#region InnerException
 
 		/// <summary>
-		/// 	Creates a constraint specifying an exception with a given InnerException
+		/// Creates a constraint specifying an exception with a given InnerException
 		/// </summary>
 		public static ResolvableConstraintExpression InnerException
 		{
@@ -50,7 +50,7 @@ namespace NUnit.Framework
 		#region TargetInvocationException
 
 		/// <summary>
-		/// 	Creates a constraint specifying an expected TargetInvocationException
+		/// Creates a constraint specifying an expected TargetInvocationException
 		/// </summary>
 		public static ExactTypeConstraint TargetInvocationException
 		{
@@ -65,7 +65,7 @@ namespace NUnit.Framework
 		#region ArgumentException
 
 		/// <summary>
-		/// 	Creates a constraint specifying an expected TargetInvocationException
+		/// Creates a constraint specifying an expected TargetInvocationException
 		/// </summary>
 		public static ExactTypeConstraint ArgumentException
 		{
@@ -80,7 +80,7 @@ namespace NUnit.Framework
 		#region InvalidOperationException
 
 		/// <summary>
-		/// 	Creates a constraint specifying an expected TargetInvocationException
+		/// Creates a constraint specifying an expected TargetInvocationException
 		/// </summary>
 		public static ExactTypeConstraint InvalidOperationException
 		{
@@ -95,7 +95,7 @@ namespace NUnit.Framework
 		#region Nothing
 
 		/// <summary>
-		/// 	Creates a constraint specifying that no exception is thrown
+		/// Creates a constraint specifying that no exception is thrown
 		/// </summary>
 		public static ThrowsNothingConstraint Nothing
 		{
@@ -110,7 +110,7 @@ namespace NUnit.Framework
 		#region TypeOf
 
 		/// <summary>
-		/// 	Creates a constraint specifying the exact type of exception expected
+		/// Creates a constraint specifying the exact type of exception expected
 		/// </summary>
 		public static ExactTypeConstraint TypeOf(Type expectedType)
 		{
@@ -119,7 +119,7 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Creates a constraint specifying the exact type of exception expected
+		/// Creates a constraint specifying the exact type of exception expected
 		/// </summary>
 		public static ExactTypeConstraint TypeOf<T>()
 		{
@@ -132,7 +132,7 @@ namespace NUnit.Framework
 		#region InstanceOf
 
 		/// <summary>
-		/// 	Creates a constraint specifying the type of exception expected
+		/// Creates a constraint specifying the type of exception expected
 		/// </summary>
 		public static InstanceOfTypeConstraint InstanceOf(Type expectedType)
 		{
@@ -141,7 +141,7 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Creates a constraint specifying the type of exception expected
+		/// Creates a constraint specifying the type of exception expected
 		/// </summary>
 		public static InstanceOfTypeConstraint InstanceOf<T>()
 		{

@@ -22,25 +22,38 @@ namespace Castle.Components.DictionaryAdapter
 	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Property, AllowMultiple = false)]
 	public class FetchAttribute : Attribute
 	{
+		#region Constructors/Destructors
+
 		/// <summary>
 		/// Instructs fetching to occur.
 		/// </summary>
-		public FetchAttribute() : this(true)
+		public FetchAttribute()
+			: this(true)
 		{
 		}
 
 		/// <summary>
-		/// Instructs fetching according to <paramref name="fetch"/>
+		/// Instructs fetching according to <paramref name="fetch" />
 		/// </summary>
-		/// <param name="fetch"></param>
+		/// <param name="fetch"> </param>
 		public FetchAttribute(bool fetch)
 		{
-			Fetch = fetch;
+			this.Fetch = fetch;
 		}
+
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		/// <summary>
 		/// Gets whether or not fetching should occur.
 		/// </summary>
-		public bool Fetch { get; private set; }
+		public bool Fetch
+		{
+			get;
+			private set;
+		}
+
+		#endregion
 	}
 }

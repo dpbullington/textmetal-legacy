@@ -11,9 +11,9 @@ using System.IO;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Represents a list of assemblies. It stores paths 
-	/// 	that are added and fires an event whenevever it
-	/// 	changes. All paths must be added as absolute paths.
+	/// Represents a list of assemblies. It stores paths
+	/// that are added and fires an event whenevever it
+	/// changes. All paths must be added as absolute paths.
 	/// </summary>
 	public class AssemblyList : CollectionBase
 	{

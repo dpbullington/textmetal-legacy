@@ -1,4 +1,5 @@
 ﻿#region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,427 +22,432 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Utilities;
 #if NET20
 using Newtonsoft.Json.Utilities.LinqBridge;
 #else
 using System.Linq;
 #endif
-using System.Globalization;
-using Newtonsoft.Json.Utilities;
-using Newtonsoft.Json.Linq;
 
 namespace Newtonsoft.Json.Schema
 {
-  internal class JsonSchemaBuilder
-  {
-    private readonly IList<JsonSchema> _stack;
-    private readonly JsonSchemaResolver _resolver;
-    private readonly IDictionary<string, JsonSchema> _documentSchemas;
-    private JsonSchema _currentSchema;
-    private JObject _rootSchema;
+	internal class JsonSchemaBuilder
+	{
+		#region Constructors/Destructors
 
-    public JsonSchemaBuilder(JsonSchemaResolver resolver)
-    {
-      _stack = new List<JsonSchema>();
-      _documentSchemas = new Dictionary<string, JsonSchema>();
-      _resolver = resolver;
-    }
+		public JsonSchemaBuilder(JsonSchemaResolver resolver)
+		{
+			this._stack = new List<JsonSchema>();
+			this._documentSchemas = new Dictionary<string, JsonSchema>();
+			this._resolver = resolver;
+		}
 
-    private void Push(JsonSchema value)
-    {
-      _currentSchema = value;
-      _stack.Add(value);
-      _resolver.LoadedSchemas.Add(value);
-      _documentSchemas.Add(value.Location, value);
-    }
+		#endregion
 
-    private JsonSchema Pop()
-    {
-      JsonSchema poppedSchema = _currentSchema;
-      _stack.RemoveAt(_stack.Count - 1);
-      _currentSchema = _stack.LastOrDefault();
+		#region Fields/Constants
 
-      return poppedSchema;
-    }
+		private readonly IDictionary<string, JsonSchema> _documentSchemas;
+		private readonly JsonSchemaResolver _resolver;
+		private readonly IList<JsonSchema> _stack;
+		private JsonSchema _currentSchema;
+		private JObject _rootSchema;
 
-    private JsonSchema CurrentSchema
-    {
-      get { return _currentSchema; }
-    }
+		#endregion
 
-    internal JsonSchema Read(JsonReader reader)
-    {
-      JToken schemaToken = JToken.ReadFrom(reader);
+		#region Properties/Indexers/Events
 
-      _rootSchema = schemaToken as JObject;
+		private JsonSchema CurrentSchema
+		{
+			get
+			{
+				return this._currentSchema;
+			}
+		}
 
-      JsonSchema schema = BuildSchema(schemaToken);
+		#endregion
 
-      ResolveReferences(schema);
+		#region Methods/Operators
 
-      return schema;
-    }
+		internal static JsonSchemaType MapType(string type)
+		{
+			JsonSchemaType mappedType;
+			if (!JsonSchemaConstants.JsonSchemaTypeMapping.TryGetValue(type, out mappedType))
+				throw new JsonException("Invalid JSON schema type: {0}".FormatWith(CultureInfo.InvariantCulture, type));
 
-    private string UnescapeReference(string reference)
-    {
-      return Uri.UnescapeDataString(reference).Replace("~1", "/").Replace("~0", "~");
-    }
+			return mappedType;
+		}
 
-    private JsonSchema ResolveReferences(JsonSchema schema)
-    {
-      if (schema.DeferredReference != null)
-      {
-        string reference = schema.DeferredReference;
+		internal static string MapType(JsonSchemaType type)
+		{
+			return JsonSchemaConstants.JsonSchemaTypeMapping.Single(kv => kv.Value == type).Key;
+		}
 
-        bool locationReference = (reference.StartsWith("#", StringComparison.OrdinalIgnoreCase));
-        if (locationReference)
-          reference = UnescapeReference(reference);
+		private JsonSchema BuildSchema(JToken token)
+		{
+			JObject schemaObject = token as JObject;
+			if (schemaObject == null)
+				throw JsonException.Create(token, token.Path, "Expected object while parsing schema object, got {0}.".FormatWith(CultureInfo.InvariantCulture, token.Type));
 
-        JsonSchema resolvedSchema = _resolver.GetSchema(reference);
+			JToken referenceToken;
+			if (schemaObject.TryGetValue(JsonSchemaConstants.ReferencePropertyName, out referenceToken))
+			{
+				JsonSchema deferredSchema = new JsonSchema();
+				deferredSchema.DeferredReference = (string)referenceToken;
 
-        if (resolvedSchema == null)
-        {
-          if (locationReference)
-          {
-            string[] escapedParts = schema.DeferredReference.TrimStart('#').Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-            JToken currentToken = _rootSchema;
-            foreach (string escapedPart in escapedParts)
-            {
-              string part = UnescapeReference(escapedPart);
+				return deferredSchema;
+			}
 
-              if (currentToken.Type == JTokenType.Object)
-              {
-                currentToken = currentToken[part];
-              }
-              else if (currentToken.Type == JTokenType.Array || currentToken.Type == JTokenType.Constructor)
-              {
-                int index;
-                if (int.TryParse(part, out index) && index >= 0 && index < currentToken.Count())
-                  currentToken = currentToken[index];
-                else
-                  currentToken = null;
-              }
+			string location = token.Path.Replace(".", "/").Replace("[", "/").Replace("]", string.Empty);
+			if (!string.IsNullOrEmpty(location))
+				location = "/" + location;
+			location = "#" + location;
 
-              if (currentToken == null)
-                break;
-            }
+			JsonSchema existingSchema;
+			if (this._documentSchemas.TryGetValue(location, out existingSchema))
+				return existingSchema;
 
-            if (currentToken != null)
-              resolvedSchema = BuildSchema(currentToken);
-          }
+			this.Push(new JsonSchema { Location = location });
 
-          if (resolvedSchema == null)
-            throw new JsonException("Could not resolve schema reference '{0}'.".FormatWith(CultureInfo.InvariantCulture, schema.DeferredReference));
-        }
+			this.ProcessSchemaProperties(schemaObject);
 
-        schema = resolvedSchema;
-      }
+			return this.Pop();
+		}
 
-      if (schema.ReferencesResolved)
-        return schema;
+		private JsonSchema Pop()
+		{
+			JsonSchema poppedSchema = this._currentSchema;
+			this._stack.RemoveAt(this._stack.Count - 1);
+			this._currentSchema = this._stack.LastOrDefault();
 
-      schema.ReferencesResolved = true;
+			return poppedSchema;
+		}
 
-      if (schema.Extends != null)
-      {
-        for (int i = 0; i < schema.Extends.Count; i++)
-        {
-          schema.Extends[i] = ResolveReferences(schema.Extends[i]);
-        }
-      }
+		private void ProcessAdditionalItems(JToken token)
+		{
+			if (token.Type == JTokenType.Boolean)
+				this.CurrentSchema.AllowAdditionalItems = (bool)token;
+			else
+				this.CurrentSchema.AdditionalItems = this.BuildSchema(token);
+		}
 
-      if (schema.Items != null)
-      {
-        for (int i = 0; i < schema.Items.Count; i++)
-        {
-          schema.Items[i] = ResolveReferences(schema.Items[i]);
-        }
-      }
+		private void ProcessAdditionalProperties(JToken token)
+		{
+			if (token.Type == JTokenType.Boolean)
+				this.CurrentSchema.AllowAdditionalProperties = (bool)token;
+			else
+				this.CurrentSchema.AdditionalProperties = this.BuildSchema(token);
+		}
 
-      if (schema.AdditionalItems != null)
-        schema.AdditionalItems = ResolveReferences(schema.AdditionalItems);
+		private void ProcessEnum(JToken token)
+		{
+			if (token.Type != JTokenType.Array)
+				throw JsonException.Create(token, token.Path, "Expected Array token while parsing enum values, got {0}.".FormatWith(CultureInfo.InvariantCulture, token.Type));
 
-      if (schema.PatternProperties != null)
-      {
-        foreach (KeyValuePair<string, JsonSchema> patternProperty in schema.PatternProperties.ToList())
-        {
-          schema.PatternProperties[patternProperty.Key] = ResolveReferences(patternProperty.Value);
-        }
-      }
+			this.CurrentSchema.Enum = new List<JToken>();
 
-      if (schema.Properties != null)
-      {
-        foreach (KeyValuePair<string, JsonSchema> property in schema.Properties.ToList())
-        {
-          schema.Properties[property.Key] = ResolveReferences(property.Value);
-        }
-      }
+			foreach (JToken enumValue in token)
+				this.CurrentSchema.Enum.Add(enumValue.DeepClone());
+		}
 
-      if (schema.AdditionalProperties != null)
-        schema.AdditionalProperties = ResolveReferences(schema.AdditionalProperties);
+		private void ProcessExtends(JToken token)
+		{
+			IList<JsonSchema> schemas = new List<JsonSchema>();
 
-      return schema;
-    }
+			if (token.Type == JTokenType.Array)
+			{
+				foreach (JToken schemaObject in token)
+					schemas.Add(this.BuildSchema(schemaObject));
+			}
+			else
+			{
+				JsonSchema schema = this.BuildSchema(token);
+				if (schema != null)
+					schemas.Add(schema);
+			}
 
-    private JsonSchema BuildSchema(JToken token)
-    {
-      JObject schemaObject = token as JObject;
-      if (schemaObject == null)
-        throw JsonException.Create(token, token.Path, "Expected object while parsing schema object, got {0}.".FormatWith(CultureInfo.InvariantCulture, token.Type));
+			if (schemas.Count > 0)
+				this.CurrentSchema.Extends = schemas;
+		}
 
-      JToken referenceToken;
-      if (schemaObject.TryGetValue(JsonSchemaConstants.ReferencePropertyName, out referenceToken))
-      {
-        JsonSchema deferredSchema = new JsonSchema();
-        deferredSchema.DeferredReference = (string)referenceToken;
+		private void ProcessItems(JToken token)
+		{
+			this.CurrentSchema.Items = new List<JsonSchema>();
 
-        return deferredSchema;
-      }
+			switch (token.Type)
+			{
+				case JTokenType.Object:
+					this.CurrentSchema.Items.Add(this.BuildSchema(token));
+					this.CurrentSchema.PositionalItemsValidation = false;
+					break;
+				case JTokenType.Array:
+					this.CurrentSchema.PositionalItemsValidation = true;
+					foreach (JToken schemaToken in token)
+						this.CurrentSchema.Items.Add(this.BuildSchema(schemaToken));
+					break;
+				default:
+					throw JsonException.Create(token, token.Path, "Expected array or JSON schema object, got {0}.".FormatWith(CultureInfo.InvariantCulture, token.Type));
+			}
+		}
 
-      string location = token.Path.Replace(".", "/").Replace("[", "/").Replace("]", string.Empty);
-      if (!string.IsNullOrEmpty(location))
-        location = "/" + location;
-      location = "#" + location;
+		private IDictionary<string, JsonSchema> ProcessProperties(JToken token)
+		{
+			IDictionary<string, JsonSchema> properties = new Dictionary<string, JsonSchema>();
 
-      JsonSchema existingSchema;
-      if (_documentSchemas.TryGetValue(location, out existingSchema))
-        return existingSchema;
+			if (token.Type != JTokenType.Object)
+				throw JsonException.Create(token, token.Path, "Expected Object token while parsing schema properties, got {0}.".FormatWith(CultureInfo.InvariantCulture, token.Type));
 
-      Push(new JsonSchema { Location = location });
+			foreach (JProperty propertyToken in token)
+			{
+				if (properties.ContainsKey(propertyToken.Name))
+					throw new JsonException("Property {0} has already been defined in schema.".FormatWith(CultureInfo.InvariantCulture, propertyToken.Name));
 
-      ProcessSchemaProperties(schemaObject);
+				properties.Add(propertyToken.Name, this.BuildSchema(propertyToken.Value));
+			}
 
-      return Pop();
-    }
+			return properties;
+		}
 
-    private void ProcessSchemaProperties(JObject schemaObject)
-    {
-      foreach (KeyValuePair<string, JToken> property in schemaObject)
-      {
-        switch (property.Key)
-        {
-          case JsonSchemaConstants.TypePropertyName:
-            CurrentSchema.Type = ProcessType(property.Value);
-            break;
-          case JsonSchemaConstants.IdPropertyName:
-            CurrentSchema.Id = (string)property.Value;
-            break;
-          case JsonSchemaConstants.TitlePropertyName:
-            CurrentSchema.Title = (string)property.Value;
-            break;
-          case JsonSchemaConstants.DescriptionPropertyName:
-            CurrentSchema.Description = (string)property.Value;
-            break;
-          case JsonSchemaConstants.PropertiesPropertyName:
-            CurrentSchema.Properties = ProcessProperties(property.Value);
-            break;
-          case JsonSchemaConstants.ItemsPropertyName:
-            ProcessItems(property.Value);
-            break;
-          case JsonSchemaConstants.AdditionalPropertiesPropertyName:
-            ProcessAdditionalProperties(property.Value);
-            break;
-          case JsonSchemaConstants.AdditionalItemsPropertyName:
-            ProcessAdditionalItems(property.Value);
-            break;
-          case JsonSchemaConstants.PatternPropertiesPropertyName:
-            CurrentSchema.PatternProperties = ProcessProperties(property.Value);
-            break;
-          case JsonSchemaConstants.RequiredPropertyName:
-            CurrentSchema.Required = (bool)property.Value;
-            break;
-          case JsonSchemaConstants.RequiresPropertyName:
-            CurrentSchema.Requires = (string)property.Value;
-            break;
-          case JsonSchemaConstants.MinimumPropertyName:
-            CurrentSchema.Minimum = (double)property.Value;
-            break;
-          case JsonSchemaConstants.MaximumPropertyName:
-            CurrentSchema.Maximum = (double)property.Value;
-            break;
-          case JsonSchemaConstants.ExclusiveMinimumPropertyName:
-            CurrentSchema.ExclusiveMinimum = (bool)property.Value;
-            break;
-          case JsonSchemaConstants.ExclusiveMaximumPropertyName:
-            CurrentSchema.ExclusiveMaximum = (bool)property.Value;
-            break;
-          case JsonSchemaConstants.MaximumLengthPropertyName:
-            CurrentSchema.MaximumLength = (int)property.Value;
-            break;
-          case JsonSchemaConstants.MinimumLengthPropertyName:
-            CurrentSchema.MinimumLength = (int)property.Value;
-            break;
-          case JsonSchemaConstants.MaximumItemsPropertyName:
-            CurrentSchema.MaximumItems = (int)property.Value;
-            break;
-          case JsonSchemaConstants.MinimumItemsPropertyName:
-            CurrentSchema.MinimumItems = (int)property.Value;
-            break;
-          case JsonSchemaConstants.DivisibleByPropertyName:
-            CurrentSchema.DivisibleBy = (double)property.Value;
-            break;
-          case JsonSchemaConstants.DisallowPropertyName:
-            CurrentSchema.Disallow = ProcessType(property.Value);
-            break;
-          case JsonSchemaConstants.DefaultPropertyName:
-            CurrentSchema.Default = property.Value.DeepClone();
-            break;
-          case JsonSchemaConstants.HiddenPropertyName:
-            CurrentSchema.Hidden = (bool)property.Value;
-            break;
-          case JsonSchemaConstants.ReadOnlyPropertyName:
-            CurrentSchema.ReadOnly = (bool)property.Value;
-            break;
-          case JsonSchemaConstants.FormatPropertyName:
-            CurrentSchema.Format = (string)property.Value;
-            break;
-          case JsonSchemaConstants.PatternPropertyName:
-            CurrentSchema.Pattern = (string)property.Value;
-            break;
-          case JsonSchemaConstants.EnumPropertyName:
-            ProcessEnum(property.Value);
-            break;
-          case JsonSchemaConstants.ExtendsPropertyName:
-            ProcessExtends(property.Value);
-            break;
-          case JsonSchemaConstants.UniqueItemsPropertyName:
-            CurrentSchema.UniqueItems = (bool)property.Value;
-            break;
-        } 
-      }
-    }
+		private void ProcessSchemaProperties(JObject schemaObject)
+		{
+			foreach (KeyValuePair<string, JToken> property in schemaObject)
+			{
+				switch (property.Key)
+				{
+					case JsonSchemaConstants.TypePropertyName:
+						this.CurrentSchema.Type = this.ProcessType(property.Value);
+						break;
+					case JsonSchemaConstants.IdPropertyName:
+						this.CurrentSchema.Id = (string)property.Value;
+						break;
+					case JsonSchemaConstants.TitlePropertyName:
+						this.CurrentSchema.Title = (string)property.Value;
+						break;
+					case JsonSchemaConstants.DescriptionPropertyName:
+						this.CurrentSchema.Description = (string)property.Value;
+						break;
+					case JsonSchemaConstants.PropertiesPropertyName:
+						this.CurrentSchema.Properties = this.ProcessProperties(property.Value);
+						break;
+					case JsonSchemaConstants.ItemsPropertyName:
+						this.ProcessItems(property.Value);
+						break;
+					case JsonSchemaConstants.AdditionalPropertiesPropertyName:
+						this.ProcessAdditionalProperties(property.Value);
+						break;
+					case JsonSchemaConstants.AdditionalItemsPropertyName:
+						this.ProcessAdditionalItems(property.Value);
+						break;
+					case JsonSchemaConstants.PatternPropertiesPropertyName:
+						this.CurrentSchema.PatternProperties = this.ProcessProperties(property.Value);
+						break;
+					case JsonSchemaConstants.RequiredPropertyName:
+						this.CurrentSchema.Required = (bool)property.Value;
+						break;
+					case JsonSchemaConstants.RequiresPropertyName:
+						this.CurrentSchema.Requires = (string)property.Value;
+						break;
+					case JsonSchemaConstants.MinimumPropertyName:
+						this.CurrentSchema.Minimum = (double)property.Value;
+						break;
+					case JsonSchemaConstants.MaximumPropertyName:
+						this.CurrentSchema.Maximum = (double)property.Value;
+						break;
+					case JsonSchemaConstants.ExclusiveMinimumPropertyName:
+						this.CurrentSchema.ExclusiveMinimum = (bool)property.Value;
+						break;
+					case JsonSchemaConstants.ExclusiveMaximumPropertyName:
+						this.CurrentSchema.ExclusiveMaximum = (bool)property.Value;
+						break;
+					case JsonSchemaConstants.MaximumLengthPropertyName:
+						this.CurrentSchema.MaximumLength = (int)property.Value;
+						break;
+					case JsonSchemaConstants.MinimumLengthPropertyName:
+						this.CurrentSchema.MinimumLength = (int)property.Value;
+						break;
+					case JsonSchemaConstants.MaximumItemsPropertyName:
+						this.CurrentSchema.MaximumItems = (int)property.Value;
+						break;
+					case JsonSchemaConstants.MinimumItemsPropertyName:
+						this.CurrentSchema.MinimumItems = (int)property.Value;
+						break;
+					case JsonSchemaConstants.DivisibleByPropertyName:
+						this.CurrentSchema.DivisibleBy = (double)property.Value;
+						break;
+					case JsonSchemaConstants.DisallowPropertyName:
+						this.CurrentSchema.Disallow = this.ProcessType(property.Value);
+						break;
+					case JsonSchemaConstants.DefaultPropertyName:
+						this.CurrentSchema.Default = property.Value.DeepClone();
+						break;
+					case JsonSchemaConstants.HiddenPropertyName:
+						this.CurrentSchema.Hidden = (bool)property.Value;
+						break;
+					case JsonSchemaConstants.ReadOnlyPropertyName:
+						this.CurrentSchema.ReadOnly = (bool)property.Value;
+						break;
+					case JsonSchemaConstants.FormatPropertyName:
+						this.CurrentSchema.Format = (string)property.Value;
+						break;
+					case JsonSchemaConstants.PatternPropertyName:
+						this.CurrentSchema.Pattern = (string)property.Value;
+						break;
+					case JsonSchemaConstants.EnumPropertyName:
+						this.ProcessEnum(property.Value);
+						break;
+					case JsonSchemaConstants.ExtendsPropertyName:
+						this.ProcessExtends(property.Value);
+						break;
+					case JsonSchemaConstants.UniqueItemsPropertyName:
+						this.CurrentSchema.UniqueItems = (bool)property.Value;
+						break;
+				}
+			}
+		}
 
-    private void ProcessExtends(JToken token)
-    {
-      IList<JsonSchema> schemas = new List<JsonSchema>();
+		private JsonSchemaType? ProcessType(JToken token)
+		{
+			switch (token.Type)
+			{
+				case JTokenType.Array:
+					// ensure type is in blank state before ORing values
+					JsonSchemaType? type = JsonSchemaType.None;
 
-      if (token.Type == JTokenType.Array)
-      {
-        foreach (JToken schemaObject in token)
-        {
-          schemas.Add(BuildSchema(schemaObject));
-        }
-      }
-      else
-      {
-        JsonSchema schema = BuildSchema(token);
-        if (schema != null)
-          schemas.Add(schema);
-      }
+					foreach (JToken typeToken in token)
+					{
+						if (typeToken.Type != JTokenType.String)
+							throw JsonException.Create(typeToken, typeToken.Path, "Exception JSON schema type string token, got {0}.".FormatWith(CultureInfo.InvariantCulture, token.Type));
 
-      if (schemas.Count > 0)
-        CurrentSchema.Extends = schemas;
-    }
+						type = type | MapType((string)typeToken);
+					}
 
-    private void ProcessEnum(JToken token)
-    {
-      if (token.Type != JTokenType.Array)
-        throw JsonException.Create(token, token.Path, "Expected Array token while parsing enum values, got {0}.".FormatWith(CultureInfo.InvariantCulture, token.Type));
+					return type;
+				case JTokenType.String:
+					return MapType((string)token);
+				default:
+					throw JsonException.Create(token, token.Path, "Expected array or JSON schema type string token, got {0}.".FormatWith(CultureInfo.InvariantCulture, token.Type));
+			}
+		}
 
-      CurrentSchema.Enum = new List<JToken>();
+		private void Push(JsonSchema value)
+		{
+			this._currentSchema = value;
+			this._stack.Add(value);
+			this._resolver.LoadedSchemas.Add(value);
+			this._documentSchemas.Add(value.Location, value);
+		}
 
-      foreach (JToken enumValue in token)
-      {
-        CurrentSchema.Enum.Add(enumValue.DeepClone());
-      }
-    }
+		internal JsonSchema Read(JsonReader reader)
+		{
+			JToken schemaToken = JToken.ReadFrom(reader);
 
-    private void ProcessAdditionalProperties(JToken token)
-    {
-      if (token.Type == JTokenType.Boolean)
-        CurrentSchema.AllowAdditionalProperties = (bool)token;
-      else
-        CurrentSchema.AdditionalProperties = BuildSchema(token);
-    }
+			this._rootSchema = schemaToken as JObject;
 
-    private void ProcessAdditionalItems(JToken token)
-    {
-      if (token.Type == JTokenType.Boolean)
-        CurrentSchema.AllowAdditionalItems = (bool)token;
-      else
-        CurrentSchema.AdditionalItems = BuildSchema(token);
-    }
+			JsonSchema schema = this.BuildSchema(schemaToken);
 
-    private IDictionary<string, JsonSchema> ProcessProperties(JToken token)
-    {
-      IDictionary<string, JsonSchema> properties = new Dictionary<string, JsonSchema>();
+			this.ResolveReferences(schema);
 
-      if (token.Type != JTokenType.Object)
-        throw JsonException.Create(token, token.Path, "Expected Object token while parsing schema properties, got {0}.".FormatWith(CultureInfo.InvariantCulture, token.Type));
+			return schema;
+		}
 
-      foreach (JProperty propertyToken in token)
-      {
-        if (properties.ContainsKey(propertyToken.Name))
-          throw new JsonException("Property {0} has already been defined in schema.".FormatWith(CultureInfo.InvariantCulture, propertyToken.Name));
+		private JsonSchema ResolveReferences(JsonSchema schema)
+		{
+			if (schema.DeferredReference != null)
+			{
+				string reference = schema.DeferredReference;
 
-        properties.Add(propertyToken.Name, BuildSchema(propertyToken.Value));
-      }
+				bool locationReference = (reference.StartsWith("#", StringComparison.OrdinalIgnoreCase));
+				if (locationReference)
+					reference = this.UnescapeReference(reference);
 
-      return properties;
-    }
+				JsonSchema resolvedSchema = this._resolver.GetSchema(reference);
 
-    private void ProcessItems(JToken token)
-    {
-      CurrentSchema.Items = new List<JsonSchema>();
+				if (resolvedSchema == null)
+				{
+					if (locationReference)
+					{
+						string[] escapedParts = schema.DeferredReference.TrimStart('#').Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+						JToken currentToken = this._rootSchema;
+						foreach (string escapedPart in escapedParts)
+						{
+							string part = this.UnescapeReference(escapedPart);
 
-      switch (token.Type)
-      {
-        case JTokenType.Object:
-          CurrentSchema.Items.Add(BuildSchema(token));
-          CurrentSchema.PositionalItemsValidation = false;
-          break;
-        case JTokenType.Array:
-          CurrentSchema.PositionalItemsValidation = true;
-          foreach (JToken schemaToken in token)
-          {
-            CurrentSchema.Items.Add(BuildSchema(schemaToken));
-          }
-          break;
-        default:
-          throw JsonException.Create(token, token.Path, "Expected array or JSON schema object, got {0}.".FormatWith(CultureInfo.InvariantCulture, token.Type));
-      }
-    }
+							if (currentToken.Type == JTokenType.Object)
+								currentToken = currentToken[part];
+							else if (currentToken.Type == JTokenType.Array || currentToken.Type == JTokenType.Constructor)
+							{
+								int index;
+								if (int.TryParse(part, out index) && index >= 0 && index < currentToken.Count())
+									currentToken = currentToken[index];
+								else
+									currentToken = null;
+							}
 
-    private JsonSchemaType? ProcessType(JToken token)
-    {
-      switch (token.Type)
-      {
-        case JTokenType.Array:
-           // ensure type is in blank state before ORing values
-          JsonSchemaType? type = JsonSchemaType.None;
+							if (currentToken == null)
+								break;
+						}
 
-          foreach (JToken typeToken in token)
-          {
-            if (typeToken.Type != JTokenType.String)
-              throw JsonException.Create(typeToken, typeToken.Path, "Exception JSON schema type string token, got {0}.".FormatWith(CultureInfo.InvariantCulture, token.Type));
+						if (currentToken != null)
+							resolvedSchema = this.BuildSchema(currentToken);
+					}
 
-            type = type | MapType((string) typeToken);
-          }
+					if (resolvedSchema == null)
+						throw new JsonException("Could not resolve schema reference '{0}'.".FormatWith(CultureInfo.InvariantCulture, schema.DeferredReference));
+				}
 
-          return type;
-        case JTokenType.String:
-          return MapType((string)token);
-        default:
-          throw JsonException.Create(token, token.Path, "Expected array or JSON schema type string token, got {0}.".FormatWith(CultureInfo.InvariantCulture, token.Type));
-      }
-    }
+				schema = resolvedSchema;
+			}
 
-    internal static JsonSchemaType MapType(string type)
-    {
-      JsonSchemaType mappedType;
-      if (!JsonSchemaConstants.JsonSchemaTypeMapping.TryGetValue(type, out mappedType))
-        throw new JsonException("Invalid JSON schema type: {0}".FormatWith(CultureInfo.InvariantCulture, type));
+			if (schema.ReferencesResolved)
+				return schema;
 
-      return mappedType;
-    }
+			schema.ReferencesResolved = true;
 
-    internal static string MapType(JsonSchemaType type)
-    {
-      return JsonSchemaConstants.JsonSchemaTypeMapping.Single(kv => kv.Value == type).Key;
-    }
-  }
+			if (schema.Extends != null)
+			{
+				for (int i = 0; i < schema.Extends.Count; i++)
+					schema.Extends[i] = this.ResolveReferences(schema.Extends[i]);
+			}
+
+			if (schema.Items != null)
+			{
+				for (int i = 0; i < schema.Items.Count; i++)
+					schema.Items[i] = this.ResolveReferences(schema.Items[i]);
+			}
+
+			if (schema.AdditionalItems != null)
+				schema.AdditionalItems = this.ResolveReferences(schema.AdditionalItems);
+
+			if (schema.PatternProperties != null)
+			{
+				foreach (KeyValuePair<string, JsonSchema> patternProperty in schema.PatternProperties.ToList())
+					schema.PatternProperties[patternProperty.Key] = this.ResolveReferences(patternProperty.Value);
+			}
+
+			if (schema.Properties != null)
+			{
+				foreach (KeyValuePair<string, JsonSchema> property in schema.Properties.ToList())
+					schema.Properties[property.Key] = this.ResolveReferences(property.Value);
+			}
+
+			if (schema.AdditionalProperties != null)
+				schema.AdditionalProperties = this.ResolveReferences(schema.AdditionalProperties);
+
+			return schema;
+		}
+
+		private string UnescapeReference(string reference)
+		{
+			return Uri.UnescapeDataString(reference).Replace("~1", "/").Replace("~0", "~");
+		}
+
+		#endregion
+	}
 }

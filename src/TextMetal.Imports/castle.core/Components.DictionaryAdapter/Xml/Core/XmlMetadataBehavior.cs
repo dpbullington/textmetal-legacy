@@ -12,47 +12,64 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Linq;
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
-	using System.Collections.Generic;
-	using System.Linq;
-
 	public class XmlMetadataBehavior : DictionaryBehaviorAttribute, IDictionaryMetaInitializer
 	{
+		#region Fields/Constants
+
 		public static readonly XmlMetadataBehavior
 			Default = new XmlMetadataBehavior();
 
 		private readonly HashSet<string> reservedNamespaceUris = new HashSet<string>
-		{
-			Xmlns.NamespaceUri,
-			Xsi  .NamespaceUri,
-			XRef .NamespaceUri
-		};
+																{
+																	Xmlns.NamespaceUri,
+																	Xsi.NamespaceUri,
+																	XRef.NamespaceUri
+																};
+
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		public IEnumerable<string> ReservedNamespaceUris
 		{
-			get { return reservedNamespaceUris.ToArray(); }
+			get
+			{
+				return this.reservedNamespaceUris.ToArray();
+			}
 		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		public XmlMetadataBehavior AddReservedNamespaceUri(string uri)
 		{
-			reservedNamespaceUris.Add(uri);
+			this.reservedNamespaceUris.Add(uri);
 			return this;
 		}
 
 		void IDictionaryMetaInitializer.Initialize(IDictionaryAdapterFactory factory, DictionaryAdapterMeta meta)
 		{
-			meta.SetXmlMeta(new XmlMetadata(meta, reservedNamespaceUris));
+			meta.SetXmlMeta(new XmlMetadata(meta, this.reservedNamespaceUris));
 		}
 
 		bool IDictionaryMetaInitializer.ShouldHaveBehavior(object behavior)
 		{
 			return behavior is XmlDefaultsAttribute
-				|| behavior is XmlNamespaceAttribute
-				|| behavior is XPathVariableAttribute
-				|| behavior is XPathFunctionAttribute;
+					|| behavior is XmlNamespaceAttribute
+					|| behavior is XPathVariableAttribute
+					|| behavior is XPathFunctionAttribute;
 		}
+
+		#endregion
 	}
 }
+
 #endif

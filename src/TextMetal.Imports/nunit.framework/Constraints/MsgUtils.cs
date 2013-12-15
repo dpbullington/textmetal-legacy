@@ -11,14 +11,14 @@ using System.Text;
 namespace NUnit.Framework.Constraints
 {
 	/// <summary>
-	/// 	Static methods used in creating messages
+	/// Static methods used in creating messages
 	/// </summary>
 	public class MsgUtils
 	{
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Static string used when strings are clipped
+		/// Static string used when strings are clipped
 		/// </summary>
 		private static readonly string ELLIPSIS = "...";
 
@@ -27,8 +27,8 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Clip the expected and actual strings in a coordinated fashion, 
-		/// 	so that they may be displayed together.
+		/// Clip the expected and actual strings in a coordinated fashion,
+		/// so that they may be displayed together.
 		/// </summary>
 		/// <param name="expected"> </param>
 		/// <param name="actual"> </param>
@@ -54,8 +54,8 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Clip a string to a given length, starting at a particular offset, returning the clipped
-		/// 	string with ellipses representing the removed parts
+		/// Clip a string to a given length, starting at a particular offset, returning the clipped
+		/// string with ellipses representing the removed parts
 		/// </summary>
 		/// <param name="s"> The string to be clipped </param>
 		/// <param name="maxStringLength"> The maximum permitted length of the result string </param>
@@ -87,8 +87,8 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Converts any control characters in a string 
-		/// 	to their escaped representation.
+		/// Converts any control characters in a string
+		/// to their escaped representation.
 		/// </summary>
 		/// <param name="s"> The string to be converted </param>
 		/// <returns> The converted string </returns>
@@ -157,8 +157,8 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Shows the position two strings start to differ.  Comparison 
-		/// 	starts at the start index.
+		/// Shows the position two strings start to differ.  Comparison
+		/// starts at the start index.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The actual string </param>
@@ -193,7 +193,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Return the a string representation for a set of indices into an array
+		/// Return the a string representation for a set of indices into an array
 		/// </summary>
 		/// <param name="indices"> Array of indices for which a string is needed </param>
 		public static string GetArrayIndicesAsString(int[] indices)
@@ -211,9 +211,9 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Get an array of indices representing the point in a enumerable, 
-		/// 	collection or array corresponding to a single int index into the 
-		/// 	collection.
+		/// Get an array of indices representing the point in a enumerable,
+		/// collection or array corresponding to a single int index into the
+		/// collection.
 		/// </summary>
 		/// <param name="collection"> The collection to which the indices apply </param>
 		/// <param name="index"> Index in the collection </param>
@@ -237,9 +237,9 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Returns the representation of a type as used in NUnitLite.
-		/// 	This is the same as Type.ToString() except for arrays,
-		/// 	which are displayed with their declared sizes.
+		/// Returns the representation of a type as used in NUnitLite.
+		/// This is the same as Type.ToString() except for arrays,
+		/// which are displayed with their declared sizes.
 		/// </summary>
 		/// <param name="obj"> </param>
 		/// <returns> </returns>

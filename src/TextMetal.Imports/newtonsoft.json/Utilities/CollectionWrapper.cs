@@ -1,4 +1,5 @@
 ﻿#region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,261 +22,287 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using System.Globalization;
+using System.Threading;
 #if NET20
 using Newtonsoft.Json.Utilities.LinqBridge;
 #else
 using System.Linq;
+
 #endif
 
 namespace Newtonsoft.Json.Utilities
 {
-  internal interface IWrappedCollection : IList
-  {
-    object UnderlyingCollection { get; }
-  }
+	internal interface IWrappedCollection : IList
+	{
+		#region Properties/Indexers/Events
 
-  internal class CollectionWrapper<T> : ICollection<T>, IWrappedCollection
-  {
-    private readonly IList _list;
-    private readonly ICollection<T> _genericCollection;
-    private object _syncRoot;
+		object UnderlyingCollection
+		{
+			get;
+		}
 
-    public CollectionWrapper(IList list)
-    {
-      ValidationUtils.ArgumentNotNull(list, "list");
+		#endregion
+	}
 
-      if (list is ICollection<T>)
-        _genericCollection = (ICollection<T>)list;
-      else
-        _list = list;
-    }
+	internal class CollectionWrapper<T> : ICollection<T>, IWrappedCollection
+	{
+		#region Constructors/Destructors
 
-    public CollectionWrapper(ICollection<T> list)
-    {
-      ValidationUtils.ArgumentNotNull(list, "list");
+		public CollectionWrapper(IList list)
+		{
+			ValidationUtils.ArgumentNotNull(list, "list");
 
-      _genericCollection = list;
-    }
+			if (list is ICollection<T>)
+				this._genericCollection = (ICollection<T>)list;
+			else
+				this._list = list;
+		}
 
-    public virtual void Add(T item)
-    {
-      if (_genericCollection != null)
-        _genericCollection.Add(item);
-      else
-        _list.Add(item);
-    }
+		public CollectionWrapper(ICollection<T> list)
+		{
+			ValidationUtils.ArgumentNotNull(list, "list");
 
-    public virtual void Clear()
-    {
-      if (_genericCollection != null)
-        _genericCollection.Clear();
-      else
-        _list.Clear();
-    }
+			this._genericCollection = list;
+		}
 
-    public virtual bool Contains(T item)
-    {
-      if (_genericCollection != null)
-        return _genericCollection.Contains(item);
-      else
-        return _list.Contains(item);
-    }
+		#endregion
 
-    public virtual void CopyTo(T[] array, int arrayIndex)
-    {
-      if (_genericCollection != null)
-        _genericCollection.CopyTo(array, arrayIndex);
-      else
-        _list.CopyTo(array, arrayIndex);
-    }
+		#region Fields/Constants
 
-    public virtual int Count
-    {
-      get
-      {
-        if (_genericCollection != null)
-          return _genericCollection.Count;
-        else
-          return _list.Count;
-      }
-    }
+		private readonly ICollection<T> _genericCollection;
+		private readonly IList _list;
+		private object _syncRoot;
 
-    public virtual bool IsReadOnly
-    {
-      get
-      {
-        if (_genericCollection != null)
-          return _genericCollection.IsReadOnly;
-        else
-          return _list.IsReadOnly;
-      }
-    }
+		#endregion
 
-    public virtual bool Remove(T item)
-    {
-      if (_genericCollection != null)
-      {
-        return _genericCollection.Remove(item);
-      }
-      else
-      {
-        bool contains = _list.Contains(item);
+		#region Properties/Indexers/Events
 
-        if (contains)
-          _list.Remove(item);
+		object IList.this[int index]
+		{
+			get
+			{
+				if (this._genericCollection != null)
+					throw new InvalidOperationException("Wrapped ICollection<T> does not support indexer.");
 
-        return contains;
-      }
-    }
+				return this._list[index];
+			}
+			set
+			{
+				if (this._genericCollection != null)
+					throw new InvalidOperationException("Wrapped ICollection<T> does not support indexer.");
 
-    public virtual IEnumerator<T> GetEnumerator()
-    {
-      if (_genericCollection != null)
-        return _genericCollection.GetEnumerator();
+				VerifyValueType(value);
+				this._list[index] = (T)value;
+			}
+		}
 
-      return _list.Cast<T>().GetEnumerator();
-    }
+		public virtual int Count
+		{
+			get
+			{
+				if (this._genericCollection != null)
+					return this._genericCollection.Count;
+				else
+					return this._list.Count;
+			}
+		}
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-      if (_genericCollection != null)
-        return _genericCollection.GetEnumerator();
-      else
-        return _list.GetEnumerator();
-    }
+		bool IList.IsFixedSize
+		{
+			get
+			{
+				if (this._genericCollection != null)
+					// ICollection<T> only has IsReadOnly
+					return this._genericCollection.IsReadOnly;
+				else
+					return this._list.IsFixedSize;
+			}
+		}
 
-    int IList.Add(object value)
-    {
-      VerifyValueType(value);
-      Add((T)value);
+		public virtual bool IsReadOnly
+		{
+			get
+			{
+				if (this._genericCollection != null)
+					return this._genericCollection.IsReadOnly;
+				else
+					return this._list.IsReadOnly;
+			}
+		}
 
-      return (Count - 1);
-    }
+		bool ICollection.IsSynchronized
+		{
+			get
+			{
+				return false;
+			}
+		}
 
-    bool IList.Contains(object value)
-    {
-      if (IsCompatibleObject(value))
-        return Contains((T)value);
+		object ICollection.SyncRoot
+		{
+			get
+			{
+				if (this._syncRoot == null)
+					Interlocked.CompareExchange(ref this._syncRoot, new object(), null);
 
-      return false;
-    }
+				return this._syncRoot;
+			}
+		}
 
-    int IList.IndexOf(object value)
-    {
-      if (_genericCollection != null)
-        throw new InvalidOperationException("Wrapped ICollection<T> does not support IndexOf.");
+		public object UnderlyingCollection
+		{
+			get
+			{
+				if (this._genericCollection != null)
+					return this._genericCollection;
+				else
+					return this._list;
+			}
+		}
 
-      if (IsCompatibleObject(value))
-        return _list.IndexOf((T)value);
+		#endregion
 
-      return -1;
-    }
+		#region Methods/Operators
 
-    void IList.RemoveAt(int index)
-    {
-      if (_genericCollection != null)
-        throw new InvalidOperationException("Wrapped ICollection<T> does not support RemoveAt.");
+		private static bool IsCompatibleObject(object value)
+		{
+			if (!(value is T) && (value != null || (typeof(T).IsValueType() && !ReflectionUtils.IsNullableType(typeof(T)))))
+				return false;
 
-      _list.RemoveAt(index);
-    }
+			return true;
+		}
 
-    void IList.Insert(int index, object value)
-    {
-      if (_genericCollection != null)
-        throw new InvalidOperationException("Wrapped ICollection<T> does not support Insert.");
+		private static void VerifyValueType(object value)
+		{
+			if (!IsCompatibleObject(value))
+				throw new ArgumentException("The value '{0}' is not of type '{1}' and cannot be used in this generic collection.".FormatWith(CultureInfo.InvariantCulture, value, typeof(T)), "value");
+		}
 
-      VerifyValueType(value);
-      _list.Insert(index, (T)value);
-    }
+		public virtual void Add(T item)
+		{
+			if (this._genericCollection != null)
+				this._genericCollection.Add(item);
+			else
+				this._list.Add(item);
+		}
 
-    bool IList.IsFixedSize
-    {
-      get
-      {
-        if (_genericCollection != null)
-          // ICollection<T> only has IsReadOnly
-          return _genericCollection.IsReadOnly;
-        else
-          return _list.IsFixedSize;
-      }
-    }
+		int IList.Add(object value)
+		{
+			VerifyValueType(value);
+			this.Add((T)value);
 
-    void IList.Remove(object value)
-    {
-      if (IsCompatibleObject(value))
-        Remove((T)value);
-    }
+			return (this.Count - 1);
+		}
 
-    object IList.this[int index]
-    {
-      get
-      {
-        if (_genericCollection != null)
-          throw new InvalidOperationException("Wrapped ICollection<T> does not support indexer.");
+		public virtual void Clear()
+		{
+			if (this._genericCollection != null)
+				this._genericCollection.Clear();
+			else
+				this._list.Clear();
+		}
 
-        return _list[index];
-      }
-      set
-      {
-        if (_genericCollection != null)
-          throw new InvalidOperationException("Wrapped ICollection<T> does not support indexer.");
+		public virtual bool Contains(T item)
+		{
+			if (this._genericCollection != null)
+				return this._genericCollection.Contains(item);
+			else
+				return this._list.Contains(item);
+		}
 
-        VerifyValueType(value);
-        _list[index] = (T)value;
-      }
-    }
+		bool IList.Contains(object value)
+		{
+			if (IsCompatibleObject(value))
+				return this.Contains((T)value);
 
-    void ICollection.CopyTo(Array array, int arrayIndex)
-    {
-      CopyTo((T[])array, arrayIndex);
-    }
+			return false;
+		}
 
-    bool ICollection.IsSynchronized
-    {
-      get { return false; }
-    }
+		public virtual void CopyTo(T[] array, int arrayIndex)
+		{
+			if (this._genericCollection != null)
+				this._genericCollection.CopyTo(array, arrayIndex);
+			else
+				this._list.CopyTo(array, arrayIndex);
+		}
 
-    object ICollection.SyncRoot
-    {
-      get
-      {
-        if (_syncRoot == null)
-          Interlocked.CompareExchange(ref _syncRoot, new object(), null);
+		void ICollection.CopyTo(Array array, int arrayIndex)
+		{
+			this.CopyTo((T[])array, arrayIndex);
+		}
 
-        return _syncRoot;
-      }
-    }
+		public virtual IEnumerator<T> GetEnumerator()
+		{
+			if (this._genericCollection != null)
+				return this._genericCollection.GetEnumerator();
 
-    private static void VerifyValueType(object value)
-    {
-      if (!IsCompatibleObject(value))
-        throw new ArgumentException("The value '{0}' is not of type '{1}' and cannot be used in this generic collection.".FormatWith(CultureInfo.InvariantCulture, value, typeof(T)), "value");
-    }
+			return this._list.Cast<T>().GetEnumerator();
+		}
 
-    private static bool IsCompatibleObject(object value)
-    {
-      if (!(value is T) && (value != null || (typeof(T).IsValueType() && !ReflectionUtils.IsNullableType(typeof(T)))))
-        return false;
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			if (this._genericCollection != null)
+				return this._genericCollection.GetEnumerator();
+			else
+				return this._list.GetEnumerator();
+		}
 
-      return true;
-    }
+		int IList.IndexOf(object value)
+		{
+			if (this._genericCollection != null)
+				throw new InvalidOperationException("Wrapped ICollection<T> does not support IndexOf.");
 
-    public object UnderlyingCollection
-    {
-      get
-      {
-        if (_genericCollection != null)
-          return _genericCollection;
-        else
-          return _list;
-      }
-    }
-  }
+			if (IsCompatibleObject(value))
+				return this._list.IndexOf((T)value);
+
+			return -1;
+		}
+
+		void IList.Insert(int index, object value)
+		{
+			if (this._genericCollection != null)
+				throw new InvalidOperationException("Wrapped ICollection<T> does not support Insert.");
+
+			VerifyValueType(value);
+			this._list.Insert(index, (T)value);
+		}
+
+		public virtual bool Remove(T item)
+		{
+			if (this._genericCollection != null)
+				return this._genericCollection.Remove(item);
+			else
+			{
+				bool contains = this._list.Contains(item);
+
+				if (contains)
+					this._list.Remove(item);
+
+				return contains;
+			}
+		}
+
+		void IList.Remove(object value)
+		{
+			if (IsCompatibleObject(value))
+				this.Remove((T)value);
+		}
+
+		void IList.RemoveAt(int index)
+		{
+			if (this._genericCollection != null)
+				throw new InvalidOperationException("Wrapped ICollection<T> does not support RemoveAt.");
+
+			this._list.RemoveAt(index);
+		}
+
+		#endregion
+	}
 }

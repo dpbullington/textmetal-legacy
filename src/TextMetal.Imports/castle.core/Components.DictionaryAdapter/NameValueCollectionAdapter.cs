@@ -19,67 +19,88 @@ namespace Castle.Components.DictionaryAdapter
 	using System.Collections.Specialized;
 
 	/// <summary>
-	/// 
 	/// </summary>
 	public class NameValueCollectionAdapter : AbstractDictionaryAdapter
 	{
-		private readonly NameValueCollection nameValues;
+		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="NameValueCollectionAdapter"/> class.
+		/// Initializes a new instance of the <see cref="NameValueCollectionAdapter" /> class.
 		/// </summary>
-		/// <param name="nameValues">The name values.</param>
+		/// <param name="nameValues"> The name values. </param>
 		public NameValueCollectionAdapter(NameValueCollection nameValues)
 		{
 			this.nameValues = nameValues;
 		}
 
-		/// <summary>
-		/// Gets a value indicating whether the <see cref="T:System.Collections.IDictionary"></see> object is read-only.
-		/// </summary>
-		/// <value></value>
-		/// <returns>true if the <see cref="T:System.Collections.IDictionary"></see> object is read-only; otherwise, false.</returns>
-		public override bool IsReadOnly
-		{
-			get { return false; }
-		}
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly NameValueCollection nameValues;
+
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// Determines whether the <see cref="T:System.Collections.IDictionary"></see> object contains an element with the specified key.
+		/// Gets or sets the <see cref="Object" /> with the specified key.
 		/// </summary>
-		/// <param name="key">The key to locate in the <see cref="T:System.Collections.IDictionary"></see> object.</param>
-		/// <returns>
-		/// true if the <see cref="T:System.Collections.IDictionary"></see> contains an element with the key; otherwise, false.
-		/// </returns>
-		/// <exception cref="T:System.ArgumentNullException">key is null. </exception>
-		public override bool Contains(object key)
-		{
-			return Array.IndexOf(nameValues.AllKeys, key) >= 0;
-		}
-
-		/// <summary>
-		/// Gets or sets the <see cref="Object"/> with the specified key.
-		/// </summary>
-		/// <value></value>
+		/// <value> </value>
 		public override object this[object key]
 		{
-			get { return nameValues[key.ToString()]; }
+			get
+			{
+				return this.nameValues[key.ToString()];
+			}
 			set
 			{
 				String val = (value != null) ? value.ToString() : null;
-				nameValues[key.ToString()] = val;
+				this.nameValues[key.ToString()] = val;
 			}
 		}
 
 		/// <summary>
+		/// Gets a value indicating whether the <see cref="T:System.Collections.IDictionary"> </see> object is read-only.
+		/// </summary>
+		/// <value> </value>
+		/// <returns> true if the <see cref="T:System.Collections.IDictionary"> </see> object is read-only; otherwise, false. </returns>
+		public override bool IsReadOnly
+		{
+			get
+			{
+				return false;
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		/// <summary>
 		/// Adapts the specified name values.
 		/// </summary>
-		/// <param name="nameValues">The name values.</param>
-		/// <returns></returns>
+		/// <param name="nameValues"> The name values. </param>
+		/// <returns> </returns>
 		public static NameValueCollectionAdapter Adapt(NameValueCollection nameValues)
 		{
 			return new NameValueCollectionAdapter(nameValues);
 		}
+
+		/// <summary>
+		/// Determines whether the <see cref="T:System.Collections.IDictionary"> </see> object contains an element with the specified key.
+		/// </summary>
+		/// <param name="key"> The key to locate in the <see cref="T:System.Collections.IDictionary"> </see> object. </param>
+		/// <returns>
+		/// true if the <see cref="T:System.Collections.IDictionary"> </see> contains an element with the key; otherwise, false.
+		/// </returns>
+		/// <exception cref="T:System.ArgumentNullException"> key is null. </exception>
+		public override bool Contains(object key)
+		{
+			return Array.IndexOf(this.nameValues.AllKeys, key) >= 0;
+		}
+
+		#endregion
 	}
 #endif
 }

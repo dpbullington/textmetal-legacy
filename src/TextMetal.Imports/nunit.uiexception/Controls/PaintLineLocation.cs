@@ -9,14 +9,14 @@ using System.Drawing;
 namespace NUnit.UiException.Controls
 {
 	/// <summary>
-	/// 	Encapsulate data to draw a line of text.
+	/// Encapsulate data to draw a line of text.
 	/// </summary>
 	public class PaintLineLocation
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Build a new instance of this object given some data.
+		/// Build a new instance of this object given some data.
 		/// </summary>
 		/// <param name="lineIndex"> Index of the current line. </param>
 		/// <param name="text"> String value at this line. </param>
@@ -35,17 +35,17 @@ namespace NUnit.UiException.Controls
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Index of the current line.
+		/// Index of the current line.
 		/// </summary>
 		private int _lineIndex;
 
 		/// <summary>
-		/// 	A client coordinate from where beginning the drawing.
+		/// A client coordinate from where beginning the drawing.
 		/// </summary>
 		private PointF _location;
 
 		/// <summary>
-		/// 	The string value at this line.
+		/// The string value at this line.
 		/// </summary>
 		private string _text;
 
@@ -54,7 +54,7 @@ namespace NUnit.UiException.Controls
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Index of the current line.
+		/// Index of the current line.
 		/// </summary>
 		public int LineIndex
 		{
@@ -65,7 +65,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Client coordinate where to beginning the drawing.
+		/// Client coordinate where to beginning the drawing.
 		/// </summary>
 		public PointF Location
 		{
@@ -76,7 +76,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	String value at this line.
+		/// String value at this line.
 		/// </summary>
 		public string Text
 		{
@@ -95,14 +95,14 @@ namespace NUnit.UiException.Controls
 			PaintLineLocation line;
 
 			if (obj == null ||
-			    !(obj is PaintLineLocation))
+				!(obj is PaintLineLocation))
 				return (false);
 
 			line = obj as PaintLineLocation;
 
 			return (line.LineIndex == this.LineIndex &&
-			        line.Text == this.Text &&
-			        line.Location == this.Location);
+					line.Text == this.Text &&
+					line.Location == this.Location);
 		}
 
 		public override int GetHashCode()
@@ -131,7 +131,7 @@ namespace NUnit.UiException.Controls
 		public override string ToString()
 		{
 			return ("PaintLineLocation: {" + this.LineIndex + ":[" + this.Text + "]:(" +
-			        this.Location.X + ", " + this.Location.Y + ")}");
+					this.Location.X + ", " + this.Location.Y + ")}");
 		}
 
 		#endregion

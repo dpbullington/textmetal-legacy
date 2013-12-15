@@ -9,22 +9,21 @@ using System.Windows.Forms;
 namespace NUnit.UiException.Controls
 {
 	/// <summary>
-	/// 	This interface describes a feature that can be added to the ErrorWindow
-	/// 	in order to show relevant information about failures/errors after a
-	/// 	test suite run.
-	/// 	Clients who wants to add their own display should implement this
-	/// 	interface and register their instance to ErrorBrowser at run-time.
-	/// 
-	/// 	Direct known implementations are:
-	/// 	StackTraceDisplay
-	/// 	SourceCodeDisplay
+	/// This interface describes a feature that can be added to the ErrorWindow
+	/// in order to show relevant information about failures/errors after a
+	/// test suite run.
+	/// Clients who wants to add their own display should implement this
+	/// interface and register their instance to ErrorBrowser at run-time.
+	/// Direct known implementations are:
+	/// StackTraceDisplay
+	/// SourceCodeDisplay
 	/// </summary>
 	public interface IErrorDisplay
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gives access to the content control of this display.
+		/// Gives access to the content control of this display.
 		/// </summary>
 		Control Content
 		{
@@ -32,8 +31,8 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gives access to a possibly null collection of option controls that will
-		/// 	be shown when this display has the focus.
+		/// Gives access to a possibly null collection of option controls that will
+		/// be shown when this display has the focus.
 		/// </summary>
 		ToolStripItem[] OptionItems
 		{
@@ -41,7 +40,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gives access to the ToolStripButton that enables this display.
+		/// Gives access to the ToolStripButton that enables this display.
 		/// </summary>
 		ToolStripButton PluginItem
 		{
@@ -53,9 +52,9 @@ namespace NUnit.UiException.Controls
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Called whenever the user changes the error selection in the detail list.
-		/// 	This method is called to allow the display to update its content according
-		/// 	the given stack trace.
+		/// Called whenever the user changes the error selection in the detail list.
+		/// This method is called to allow the display to update its content according
+		/// the given stack trace.
 		/// </summary>
 		/// <param name="stackTrace"> </param>
 		void OnStackTraceChanged(string stackTrace);

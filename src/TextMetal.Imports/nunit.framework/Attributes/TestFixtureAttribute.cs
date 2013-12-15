@@ -11,9 +11,9 @@ namespace NUnit.Framework
 	using System;
 
 	/// <example>
-	/// 	[TestFixture]
-	/// 	public class ExampleClass 
-	/// 	{}
+	/// [TestFixture]
+	/// public class ExampleClass
+	/// {}
 	/// </example>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 	public class TestFixtureAttribute : Attribute
@@ -30,7 +30,7 @@ namespace NUnit.Framework
 #endif
 
 		/// <summary>
-		/// 	Default constructor
+		/// Default constructor
 		/// </summary>
 		public TestFixtureAttribute()
 			: this(null)
@@ -38,16 +38,16 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Construct with a object[] representing a set of arguments. 
-		/// 	In .NET 2.0, the arguments may later be separated into
-		/// 	type arguments and constructor arguments.
+		/// Construct with a object[] representing a set of arguments.
+		/// In .NET 2.0, the arguments may later be separated into
+		/// type arguments and constructor arguments.
 		/// </summary>
 		/// <param name="arguments"> </param>
 		public TestFixtureAttribute(params object[] arguments)
 		{
 			this.arguments = arguments == null
-				                 ? new object[0]
-				                 : arguments;
+				? new object[0]
+				: arguments;
 
 			for (int i = 0; i < this.arguments.Length; i++)
 			{
@@ -57,7 +57,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Descriptive text for this fixture
+		/// Descriptive text for this fixture
 		/// </summary>
 		public string Description
 		{
@@ -72,8 +72,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets and sets the category for this fixture.
-		/// 	May be a comma-separated list of categories.
+		/// Gets and sets the category for this fixture.
+		/// May be a comma-separated list of categories.
 		/// </summary>
 		public string Category
 		{
@@ -88,7 +88,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets a list of categories for this fixture
+		/// Gets a list of categories for this fixture
 		/// </summary>
 		public IList Categories
 		{
@@ -99,7 +99,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	The arguments originally provided to the attribute
+		/// The arguments originally provided to the attribute
 		/// </summary>
 		public object[] Arguments
 		{
@@ -110,9 +110,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets a value indicating whether this <see cref="TestFixtureAttribute" /> should be ignored.
+		/// Gets or sets a value indicating whether this <see cref="TestFixtureAttribute" /> should be ignored.
 		/// </summary>
-		/// <value> <c>true</c> if ignore; otherwise, <c>false</c> . </value>
+		/// <value> <c> true </c> if ignore; otherwise, <c> false </c> . </value>
 		public bool Ignore
 		{
 			get
@@ -126,7 +126,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets the ignore reason. May set Ignored as a side effect.
+		/// Gets or sets the ignore reason. May set Ignored as a side effect.
 		/// </summary>
 		/// <value> The ignore reason. </value>
 		public string IgnoreReason
@@ -144,9 +144,9 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Get or set the type arguments. If not set
-		/// 	explicitly, any leading arguments that are
-		/// 	Types are taken as type arguments.
+		/// Get or set the type arguments. If not set
+		/// explicitly, any leading arguments that are
+		/// Types are taken as type arguments.
 		/// </summary>
 		public Type[] TypeArgs
 		{

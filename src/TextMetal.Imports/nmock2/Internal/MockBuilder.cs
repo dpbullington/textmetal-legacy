@@ -29,38 +29,38 @@ namespace NMock2.Internal
 	using System;
 
 	/// <summary>
-	/// 	Allows a mock object to be incrementally defined, and then finally created.
+	/// Allows a mock object to be incrementally defined, and then finally created.
 	/// </summary>
 	public class MockBuilder : IMockDefinitionSyntax
 	{
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	A single empty array instance that is used as a default value
-		/// 	for constructor arguments.
+		/// A single empty array instance that is used as a default value
+		/// for constructor arguments.
 		/// </summary>
 		private static readonly object[] EmptyArgsArray = new object[0];
 
 		/// <summary>
-		/// 	Constructor arguments for any class type that this mock might subclass.
-		/// 	If not subclassing, or if using a default constructor, then this should
-		/// 	be an empty array.
+		/// Constructor arguments for any class type that this mock might subclass.
+		/// If not subclassing, or if using a default constructor, then this should
+		/// be an empty array.
 		/// </summary>
 		private object[] constructorArgs = EmptyArgsArray;
 
 		/// <summary>
-		/// 	The MockStyle for the mock. If not specified, this will ultimately be
-		/// 	assumed to be MockStyle.Default.
+		/// The MockStyle for the mock. If not specified, this will ultimately be
+		/// assumed to be MockStyle.Default.
 		/// </summary>
 		private MockStyle? mockStyle = null;
 
 		/// <summary>
-		/// 	The name of the mock object. Null is a valid value.
+		/// The name of the mock object. Null is a valid value.
 		/// </summary>
 		private string name = null;
 
 		/// <summary>
-		/// 	The types that the mock object needs to implement.
+		/// The types that the mock object needs to implement.
 		/// </summary>
 		private List<Type> types = new List<Type>();
 
@@ -69,7 +69,7 @@ namespace NMock2.Internal
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Checks that interfaces do not contain ToString method declarations.
+		/// Checks that interfaces do not contain ToString method declarations.
 		/// </summary>
 		/// <param name="mockedTypes"> The types that are to be mocked. </param>
 		private static void CheckInterfacesDoNotContainToStringMethodDeclaration(CompositeType mockedTypes)
@@ -82,7 +82,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Finds the first lower case char in the specified string.
+		/// Finds the first lower case char in the specified string.
 		/// </summary>
 		/// <param name="s"> The string to inspect. </param>
 		/// <returns> the first lower case char in the specified string. </returns>
@@ -96,7 +96,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	This method supports NMock2 infrastructure and is not intended to be called directly from your code.
+		/// This method supports NMock2 infrastructure and is not intended to be called directly from your code.
 		/// </summary>
 		/// <param name="primaryType"> The primary type that is being mocked. </param>
 		/// <param name="mockery"> The current <see cref="Mockery" /> instance. </param>
@@ -126,7 +126,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Returns the default name for a type that is used to name mocks.
+		/// Returns the default name for a type that is used to name mocks.
 		/// </summary>
 		/// <param name="type"> The type to get the default name for. </param>
 		/// <returns> Default name for the specified type. </returns>
@@ -136,13 +136,13 @@ namespace NMock2.Internal
 			int firstLower = FirstLowerCaseChar(name);
 
 			return firstLower == name.Length ?
-				                                 name.ToLower() :
-					                                                name.Substring(firstLower - 1, 1).ToLower() + name.Substring(firstLower);
+				name.ToLower() :
+				name.Substring(firstLower - 1, 1).ToLower() + name.Substring(firstLower);
 		}
 
 		/// <summary>
-		/// 	Specifies a type that this mock should implement. This may be a class or interface,
-		/// 	but there can only be a maximum of one class implemented by a mock.
+		/// Specifies a type that this mock should implement. This may be a class or interface,
+		/// but there can only be a maximum of one class implemented by a mock.
 		/// </summary>
 		/// <typeparam name="T"> The type to implement. </typeparam>
 		/// <returns> The mock object definition. </returns>
@@ -154,8 +154,8 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Specifies the types that this mock should implement. These may be a class or interface,
-		/// 	but there can only be a maximum of one class implemented by a mock.
+		/// Specifies the types that this mock should implement. These may be a class or interface,
+		/// but there can only be a maximum of one class implemented by a mock.
 		/// </summary>
 		/// <param name="types"> The types to implement. </param>
 		/// <returns> The mock object definition. </returns>
@@ -167,9 +167,9 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Specifies a name for the mock. This will be used in error messages,
-		/// 	and as the return value of ToString() if not mocking a class.
-		/// 	It is invalid to specify the name of a mock more than once.
+		/// Specifies a name for the mock. This will be used in error messages,
+		/// and as the return value of ToString() if not mocking a class.
+		/// It is invalid to specify the name of a mock more than once.
 		/// </summary>
 		/// <param name="name"> The name for the mock. </param>
 		/// <returns> The mock object definition. </returns>
@@ -184,8 +184,8 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Specifies how the mock object should behave when first created.
-		/// 	It is invalid to set the MockStyle of a mock more than once.
+		/// Specifies how the mock object should behave when first created.
+		/// It is invalid to set the MockStyle of a mock more than once.
 		/// </summary>
 		/// <param name="style"> A MockStyle value. </param>
 		/// <returns> The mock object definition. </returns>
@@ -200,9 +200,9 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Specifies the arguments for the constructor of the class to be mocked.
-		/// 	Only applicable when mocking a class with a non-default constructor.
-		/// 	It is invalid to specify the constructor arguments of a mock more than once.
+		/// Specifies the arguments for the constructor of the class to be mocked.
+		/// Only applicable when mocking a class with a non-default constructor.
+		/// It is invalid to specify the constructor arguments of a mock more than once.
 		/// </summary>
 		/// <param name="args"> The arguments for the class constructor. </param>
 		/// <returns> The mock object definition. </returns>

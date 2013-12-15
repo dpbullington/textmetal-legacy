@@ -11,7 +11,7 @@ using NUnit.UiException.Properties;
 namespace NUnit.UiException.Controls
 {
 	/// <summary>
-	/// 	Implements IErrorListRenderer.
+	/// Implements IErrorListRenderer.
 	/// </summary>
 	public class DefaultErrorListRenderer :
 		IErrorListRenderer
@@ -148,55 +148,55 @@ namespace NUnit.UiException.Controls
 			font = (hover == true) ? this._fontUnderlined : this._font;
 
 			g.DrawImage(Resources.ImageErrorList,
-			            new Rectangle(0, y, viewport.Width, this._itemHeight), src,
-			            GraphicsUnit.Pixel);
+				new Rectangle(0, y, viewport.Width, this._itemHeight), src,
+				GraphicsUnit.Pixel);
 
 			if (selected)
 			{
 				g.DrawImage(Resources.ImageErrorList,
-				            new Rectangle(0, y + 1, viewport.Width, this._itemHeight),
-				            this._rectSelectionMiddle, GraphicsUnit.Pixel);
+					new Rectangle(0, y + 1, viewport.Width, this._itemHeight),
+					this._rectSelectionMiddle, GraphicsUnit.Pixel);
 			}
 
 			if (item.HasSourceAttachment)
 			{
 				g.DrawImage(Resources.ImageErrorList, new Rectangle(x + 1, y + 2 + font.Height, 14, 15),
-				            this._rectIconCSharp, GraphicsUnit.Pixel);
+					this._rectIconCSharp, GraphicsUnit.Pixel);
 				g.DrawImage(Resources.ImageErrorList,
-				            new Rectangle(TEXT_MARGIN_X - 3 + x, y + 5 + 2 * font.Height, 9, 5),
-				            this._rectIconArrow, GraphicsUnit.Pixel);
+					new Rectangle(TEXT_MARGIN_X - 3 + x, y + 5 + 2 * font.Height, 9, 5),
+					this._rectIconArrow, GraphicsUnit.Pixel);
 
 				g.DrawString(String.Format("Line {0}", item.LineNumber),
-				             font, this._brushGray, this._offsetLine, y + 2);
+					font, this._brushGray, this._offsetLine, y + 2);
 				g.DrawString(item.ClassName, font, this._brushBlue, x + TEXT_MARGIN_X, y + 2 + font.Height);
 				g.DrawString(item.BaseMethodName + "()", font, this._brushBlue,
-				             x + TEXT_MARGIN_X + 5, y + 2 + 2 * font.Height);
+					x + TEXT_MARGIN_X + 5, y + 2 + 2 * font.Height);
 				g.DrawString(item.FileName, font, this._brushGray,
-				             x + TEXT_MARGIN_X, y + 2 + 3 * this._font.Height);
+					x + TEXT_MARGIN_X, y + 2 + 3 * this._font.Height);
 			}
 			else
 			{
 				g.DrawImage(Resources.ImageErrorList, new Rectangle(x + 1, y + 2 + font.Height, 16, 15),
-				            this._rectIconDll, GraphicsUnit.Pixel);
+					this._rectIconDll, GraphicsUnit.Pixel);
 
 				g.DrawString("N/A", font, this._brushGray, this._offsetLine, y + 2);
 				g.DrawString(item.ClassName, font, this._brushGray,
-				             x + TEXT_MARGIN_X, y + 2 + font.Height);
+					x + TEXT_MARGIN_X, y + 2 + font.Height);
 				g.DrawString(item.BaseMethodName + "()", font, this._brushGray,
-				             x + TEXT_MARGIN_X, y + 2 + 2 * font.Height);
+					x + TEXT_MARGIN_X, y + 2 + 2 * font.Height);
 			}
 
 			if (!last)
 				return;
 
 			PaintTile(Resources.ImageErrorList, g, this._rectListShadow,
-			          new Rectangle(0, y + this._itemHeight, viewport.Width, 9));
+				new Rectangle(0, y + this._itemHeight, viewport.Width, 9));
 
 			return;
 		}
 
 		public void DrawToGraphics(ErrorItemCollection items,
-		                           ErrorItem selected, Graphics g, Rectangle viewport)
+			ErrorItem selected, Graphics g, Rectangle viewport)
 		{
 			SizeF sizeLineSource;
 			int last;
@@ -211,7 +211,7 @@ namespace NUnit.UiException.Controls
 				this._paintData = new PaintData(items, selected, viewport, g);
 
 				PaintBackground(Resources.ImageErrorList, this._paintData.WorkingGraphics,
-				                this._rectListBackground, viewport);
+					this._rectListBackground, viewport);
 
 				sizeLineSource = g.MeasureString("Line 9999", this._font);
 				this._offsetLine = viewport.Width - sizeLineSource.Width;
@@ -220,7 +220,7 @@ namespace NUnit.UiException.Controls
 				for (i = this.FirstIndexVisible(items.Count, viewport); i <= last; ++i)
 				{
 					this.DrawItem(items[i], i, selected == items[i], i == items.Count - 1, false,
-					              this._paintData.WorkingGraphics, viewport);
+						this._paintData.WorkingGraphics, viewport);
 				}
 
 				//_paintData.WorkingGraphics.DrawImage(Resources.ErrorList,
@@ -276,7 +276,7 @@ namespace NUnit.UiException.Controls
 		private int LastIndexVisible(int count, Rectangle viewport)
 		{
 			return (Math.Min(count - 1,
-			                 this.FirstIndexVisible(count, viewport) + 1 + viewport.Height / this._itemHeight));
+				this.FirstIndexVisible(count, viewport) + 1 + viewport.Height / this._itemHeight));
 		}
 
 		protected SizeF MeasureItem(Graphics g, ErrorItem item)
@@ -356,8 +356,8 @@ namespace NUnit.UiException.Controls
 				ErrorItem first = ((items.Count > 0) ? items[0] : null);
 
 				return (this.viewport.Equals(rectangle) &&
-				        ReferenceEquals(item, this.selection) &&
-				        ReferenceEquals(first, this._firstItem));
+						ReferenceEquals(item, this.selection) &&
+						ReferenceEquals(first, this._firstItem));
 			}
 
 			public void PaintTo(Graphics g)

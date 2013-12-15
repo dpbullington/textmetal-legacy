@@ -6,242 +6,201 @@
 // 
 
 using System;
-using System.Xml;
-using System.Configuration;
-using System.Collections.Specialized;
 using System.Collections.Generic;
-using Intelligencia.UrlRewriter.Utilities;
+using System.Collections.Specialized;
+using System.Configuration;
+using System.Xml;
+
 using Intelligencia.UrlRewriter.Errors;
-using Intelligencia.UrlRewriter.Transforms;
 using Intelligencia.UrlRewriter.Logging;
+using Intelligencia.UrlRewriter.Transforms;
+using Intelligencia.UrlRewriter.Utilities;
 
 namespace Intelligencia.UrlRewriter.Configuration
 {
-    /// <summary>
-    /// Reads configuration from an XML Node.
-    /// </summary>
-    public static class RewriterConfigurationReader
-    {
-        /// <summary>
-        /// Reads configuration information from the given XML Node.
-        /// </summary>
-        /// <param name="config">The rewriter configuration object to populate.</param>
-        /// <param name="section">The XML node to read configuration from.</param>
-        /// <returns>The configuration information.</returns>
-        public static void Read(RewriterConfiguration config, XmlNode section)
-        {
-            if (section == null)
-            {
-                throw new ArgumentNullException("section");
-            }
+	/// <summary>
+	/// Reads configuration from an XML Node.
+	/// </summary>
+	public static class RewriterConfigurationReader
+	{
+		#region Methods/Operators
 
-            foreach (XmlNode node in section.ChildNodes)
-            {
-                if (node.NodeType == XmlNodeType.Element)
-                {
-                    if (node.LocalName == Constants.ElementErrorHandler)
-                    {
-                        ReadErrorHandler(node, config);
-                    }
-                    else if (node.LocalName == Constants.ElementDefaultDocuments)
-                    {
-                        ReadDefaultDocuments(node, config);
-                    }
-                    else if (node.LocalName == Constants.ElementRegister)
-                    {
-                        if (node.Attributes[Constants.AttrParser] != null)
-                        {
-                            ReadRegisterParser(node, config);
-                        }
-                        else if (node.Attributes[Constants.AttrTransform] != null)
-                        {
-                            ReadRegisterTransform(node, config);
-                        }
-                        else if (node.Attributes[Constants.AttrLogger] != null)
-                        {
-                            ReadRegisterLogger(node, config);
-                        }
-                    }
-                    else if (node.LocalName == Constants.ElementMapping)
-                    {
-                        ReadMapping(node, config);
-                    }
-                    else
-                    {
-                        ReadRule(node, config);
-                    }
-                }
-            }
-        }
+		/// <summary>
+		/// Reads configuration information from the given XML Node.
+		/// </summary>
+		/// <param name="config"> The rewriter configuration object to populate. </param>
+		/// <param name="section"> The XML node to read configuration from. </param>
+		/// <returns> The configuration information. </returns>
+		public static void Read(RewriterConfiguration config, XmlNode section)
+		{
+			if (section == null)
+				throw new ArgumentNullException("section");
 
-        private static void ReadRegisterTransform(XmlNode node, RewriterConfiguration config)
-        {
-            if (node.ChildNodes.Count > 0)
-            {
-                throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.ElementNoElements, Constants.ElementRegister), node);
-            }
+			foreach (XmlNode node in section.ChildNodes)
+			{
+				if (node.NodeType == XmlNodeType.Element)
+				{
+					if (node.LocalName == Constants.ElementErrorHandler)
+						ReadErrorHandler(node, config);
+					else if (node.LocalName == Constants.ElementDefaultDocuments)
+						ReadDefaultDocuments(node, config);
+					else if (node.LocalName == Constants.ElementRegister)
+					{
+						if (node.Attributes[Constants.AttrParser] != null)
+							ReadRegisterParser(node, config);
+						else if (node.Attributes[Constants.AttrTransform] != null)
+							ReadRegisterTransform(node, config);
+						else if (node.Attributes[Constants.AttrLogger] != null)
+							ReadRegisterLogger(node, config);
+					}
+					else if (node.LocalName == Constants.ElementMapping)
+						ReadMapping(node, config);
+					else
+						ReadRule(node, config);
+				}
+			}
+		}
 
-            string type = node.GetRequiredAttribute(Constants.AttrTransform);
+		private static void ReadDefaultDocuments(XmlNode node, RewriterConfiguration config)
+		{
+			foreach (XmlNode childNode in node.ChildNodes)
+			{
+				if (childNode.NodeType == XmlNodeType.Element && childNode.LocalName == Constants.ElementDocument)
+					config.DefaultDocuments.Add(childNode.InnerText);
+			}
+		}
 
-            // Transform type specified.
-            // Create an instance and add it as the mapper handler for this map.
-            IRewriteTransform transform = TypeHelper.Activate(type, null) as IRewriteTransform;
-            if (transform == null)
-            {
-                throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.InvalidTypeSpecified, type, typeof(IRewriteTransform)), node);
-            }
+		private static void ReadErrorHandler(XmlNode node, RewriterConfiguration config)
+		{
+			string code = node.GetRequiredAttribute(Constants.AttrCode);
 
-            config.TransformFactory.AddTransform(transform);
-        }
+			XmlNode typeNode = node.Attributes[Constants.AttrType];
+			XmlNode urlNode = node.Attributes[Constants.AttrUrl];
+			if (typeNode == null && urlNode == null)
+				throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.AttributeRequired, Constants.AttrUrl), node);
 
-        private static void ReadRegisterLogger(XmlNode node, RewriterConfiguration config)
-        {
-            if (node.ChildNodes.Count > 0)
-            {
-                throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.ElementNoElements, Constants.ElementRegister), node);
-            }
+			IRewriteErrorHandler handler = null;
+			if (typeNode != null)
+			{
+				// <error-handler code="500" url="/oops.aspx" />
+				handler = TypeHelper.Activate(typeNode.Value, null) as IRewriteErrorHandler;
+				if (handler == null)
+					throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.InvalidTypeSpecified, typeNode.Value, typeof(IRewriteErrorHandler)), node);
+			}
+			else
+				handler = new DefaultErrorHandler(urlNode.Value);
 
-            string type = node.GetRequiredAttribute(Constants.AttrLogger);
+			int statusCode;
+			if (!Int32.TryParse(code, out statusCode))
+				throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.InvalidHttpStatusCode, code), node);
 
-            // Logger type specified.  Create an instance and add it
-            // as the mapper handler for this map.
-            IRewriteLogger logger = TypeHelper.Activate(type, null) as IRewriteLogger;
-            if (logger != null)
-            {
-                config.Logger = logger;
-            }
-        }
+			config.ErrorHandlers.Add(statusCode, handler);
+		}
 
-        private static void ReadRegisterParser(XmlNode node, RewriterConfiguration config)
-        {
-            if (node.ChildNodes.Count > 0)
-            {
-                throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.ElementNoElements, Constants.ElementRegister), node);
-            }
+		private static void ReadMapping(XmlNode node, RewriterConfiguration config)
+		{
+			// Name attribute.
+			XmlNode nameNode = node.Attributes[Constants.AttrName];
 
-            string type = node.GetRequiredAttribute(Constants.AttrParser);
+			// Mapper type not specified.  Load in the hash map.
+			StringDictionary map = new StringDictionary();
+			foreach (XmlNode mapNode in node.ChildNodes)
+			{
+				if (mapNode.NodeType == XmlNodeType.Element)
+				{
+					if (mapNode.LocalName == Constants.ElementMap)
+					{
+						string fromValue = mapNode.GetRequiredAttribute(Constants.AttrFrom, true);
+						string toValue = mapNode.GetRequiredAttribute(Constants.AttrTo, true);
 
-            object parser = TypeHelper.Activate(type, null);
-            IRewriteActionParser actionParser = parser as IRewriteActionParser;
-            if (actionParser != null)
-            {
-                config.ActionParserFactory.AddParser(actionParser);
-            }
+						map.Add(fromValue, toValue);
+					}
+					else
+						throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.ElementNotAllowed, mapNode.LocalName), node);
+				}
+			}
 
-            IRewriteConditionParser conditionParser = parser as IRewriteConditionParser;
-            if (conditionParser != null)
-            {
-                config.ConditionParserPipeline.AddParser(conditionParser);
-            }
-        }
+			config.TransformFactory.AddTransform(new StaticMappingTransform(nameNode.Value, map));
+		}
 
-        private static void ReadDefaultDocuments(XmlNode node, RewriterConfiguration config)
-        {
-            foreach (XmlNode childNode in node.ChildNodes)
-            {
-                if (childNode.NodeType == XmlNodeType.Element && childNode.LocalName == Constants.ElementDocument)
-                {
-                    config.DefaultDocuments.Add(childNode.InnerText);
-                }
-            }
-        }
+		private static void ReadRegisterLogger(XmlNode node, RewriterConfiguration config)
+		{
+			if (node.ChildNodes.Count > 0)
+				throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.ElementNoElements, Constants.ElementRegister), node);
 
-        private static void ReadErrorHandler(XmlNode node, RewriterConfiguration config)
-        {
-            string code = node.GetRequiredAttribute(Constants.AttrCode);
+			string type = node.GetRequiredAttribute(Constants.AttrLogger);
 
-            XmlNode typeNode = node.Attributes[Constants.AttrType];
-            XmlNode urlNode = node.Attributes[Constants.AttrUrl];
-            if (typeNode == null && urlNode == null)
-            {
-                throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.AttributeRequired, Constants.AttrUrl), node);
-            }
+			// Logger type specified.  Create an instance and add it
+			// as the mapper handler for this map.
+			IRewriteLogger logger = TypeHelper.Activate(type, null) as IRewriteLogger;
+			if (logger != null)
+				config.Logger = logger;
+		}
 
-            IRewriteErrorHandler handler = null;
-            if (typeNode != null)
-            {
-                // <error-handler code="500" url="/oops.aspx" />
-                handler = TypeHelper.Activate(typeNode.Value, null) as IRewriteErrorHandler;
-                if (handler == null)
-                {
-                    throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.InvalidTypeSpecified, typeNode.Value, typeof(IRewriteErrorHandler)), node);
-                }
-            }
-            else
-            {
-                handler = new DefaultErrorHandler(urlNode.Value);
-            }
+		private static void ReadRegisterParser(XmlNode node, RewriterConfiguration config)
+		{
+			if (node.ChildNodes.Count > 0)
+				throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.ElementNoElements, Constants.ElementRegister), node);
 
-            int statusCode;
-            if (!Int32.TryParse(code, out statusCode))
-            {
-                throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.InvalidHttpStatusCode, code), node);
-            }
+			string type = node.GetRequiredAttribute(Constants.AttrParser);
 
-            config.ErrorHandlers.Add(statusCode, handler);
-        }
+			object parser = TypeHelper.Activate(type, null);
+			IRewriteActionParser actionParser = parser as IRewriteActionParser;
+			if (actionParser != null)
+				config.ActionParserFactory.AddParser(actionParser);
 
-        private static void ReadMapping(XmlNode node, RewriterConfiguration config)
-        {
-            // Name attribute.
-            XmlNode nameNode = node.Attributes[Constants.AttrName];
+			IRewriteConditionParser conditionParser = parser as IRewriteConditionParser;
+			if (conditionParser != null)
+				config.ConditionParserPipeline.AddParser(conditionParser);
+		}
 
-            // Mapper type not specified.  Load in the hash map.
-            StringDictionary map = new StringDictionary();
-            foreach (XmlNode mapNode in node.ChildNodes)
-            {
-                if (mapNode.NodeType == XmlNodeType.Element)
-                {
-                    if (mapNode.LocalName == Constants.ElementMap)
-                    {
-                        string fromValue = mapNode.GetRequiredAttribute(Constants.AttrFrom, true);
-                        string toValue = mapNode.GetRequiredAttribute(Constants.AttrTo, true);
+		private static void ReadRegisterTransform(XmlNode node, RewriterConfiguration config)
+		{
+			if (node.ChildNodes.Count > 0)
+				throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.ElementNoElements, Constants.ElementRegister), node);
 
-                        map.Add(fromValue, toValue);
-                    }
-                    else
-                    {
-                        throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.ElementNotAllowed, mapNode.LocalName), node);
-                    }
-                }
-            }
+			string type = node.GetRequiredAttribute(Constants.AttrTransform);
 
-            config.TransformFactory.AddTransform(new StaticMappingTransform(nameNode.Value, map));
-        }
+			// Transform type specified.
+			// Create an instance and add it as the mapper handler for this map.
+			IRewriteTransform transform = TypeHelper.Activate(type, null) as IRewriteTransform;
+			if (transform == null)
+				throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.InvalidTypeSpecified, type, typeof(IRewriteTransform)), node);
 
-        private static void ReadRule(XmlNode node, RewriterConfiguration config)
-        {
-            bool parsed = false;
-            IList<IRewriteActionParser> parsers = config.ActionParserFactory.GetParsers(node.LocalName);
-            if (parsers != null)
-            {
-                foreach (IRewriteActionParser parser in parsers)
-                {
-                    if (!parser.AllowsNestedActions && node.ChildNodes.Count > 0)
-                    {
-                        throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.ElementNoElements, parser.Name), node);
-                    }
+			config.TransformFactory.AddTransform(transform);
+		}
 
-                    if (!parser.AllowsAttributes && node.Attributes.Count > 0)
-                    {
-                        throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.ElementNoAttributes, parser.Name), node);
-                    }
+		private static void ReadRule(XmlNode node, RewriterConfiguration config)
+		{
+			bool parsed = false;
+			IList<IRewriteActionParser> parsers = config.ActionParserFactory.GetParsers(node.LocalName);
+			if (parsers != null)
+			{
+				foreach (IRewriteActionParser parser in parsers)
+				{
+					if (!parser.AllowsNestedActions && node.ChildNodes.Count > 0)
+						throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.ElementNoElements, parser.Name), node);
 
-                    IRewriteAction rule = parser.Parse(node, config);
-                    if (rule != null)
-                    {
-                        config.Rules.Add(rule);
-                        parsed = true;
-                        break;
-                    }
-                }
-            }
+					if (!parser.AllowsAttributes && node.Attributes.Count > 0)
+						throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.ElementNoAttributes, parser.Name), node);
 
-            if (!parsed)
-            {
-                // No parsers recognised to handle this node.
-                throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.ElementNotAllowed, node.LocalName), node);
-            }
-        }
-    }
+					IRewriteAction rule = parser.Parse(node, config);
+					if (rule != null)
+					{
+						config.Rules.Add(rule);
+						parsed = true;
+						break;
+					}
+				}
+			}
+
+			if (!parsed)
+			{
+				// No parsers recognised to handle this node.
+				throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.ElementNotAllowed, node.LocalName), node);
+			}
+		}
+
+		#endregion
+	}
 }

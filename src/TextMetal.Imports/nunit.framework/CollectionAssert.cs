@@ -13,14 +13,14 @@ using NUnit.Framework.Constraints;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	A set of Assert methods operationg on one or more collections
+	/// A set of Assert methods operationg on one or more collections
 	/// </summary>
 	public class CollectionAssert
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Asserts that all items contained in collection are of the type specified by expectedType.
+		/// Asserts that all items contained in collection are of the type specified by expectedType.
 		/// </summary>
 		/// <param name="collection"> IEnumerable containing objects to be considered </param>
 		/// <param name="expectedType"> System.Type that all objects in collection must be instances of </param>
@@ -30,7 +30,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that all items contained in collection are of the type specified by expectedType.
+		/// Asserts that all items contained in collection are of the type specified by expectedType.
 		/// </summary>
 		/// <param name="collection"> IEnumerable containing objects to be considered </param>
 		/// <param name="expectedType"> System.Type that all objects in collection must be instances of </param>
@@ -41,7 +41,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that all items contained in collection are of the type specified by expectedType.
+		/// Asserts that all items contained in collection are of the type specified by expectedType.
 		/// </summary>
 		/// <param name="collection"> IEnumerable containing objects to be considered </param>
 		/// <param name="expectedType"> System.Type that all objects in collection must be instances of </param>
@@ -53,7 +53,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that all items contained in collection are not equal to null.
+		/// Asserts that all items contained in collection are not equal to null.
 		/// </summary>
 		/// <param name="collection"> IEnumerable containing objects to be considered </param>
 		public static void AllItemsAreNotNull(IEnumerable collection)
@@ -62,7 +62,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that all items contained in collection are not equal to null.
+		/// Asserts that all items contained in collection are not equal to null.
 		/// </summary>
 		/// <param name="collection"> IEnumerable containing objects to be considered </param>
 		/// <param name="message"> The message that will be displayed on failure </param>
@@ -72,7 +72,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that all items contained in collection are not equal to null.
+		/// Asserts that all items contained in collection are not equal to null.
 		/// </summary>
 		/// <param name="collection"> IEnumerable of objects to be considered </param>
 		/// <param name="message"> The message that will be displayed on failure </param>
@@ -83,8 +83,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Ensures that every object contained in collection exists within the collection
-		/// 	once and only once.
+		/// Ensures that every object contained in collection exists within the collection
+		/// once and only once.
 		/// </summary>
 		/// <param name="collection"> IEnumerable of objects to be considered </param>
 		public static void AllItemsAreUnique(IEnumerable collection)
@@ -93,8 +93,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Ensures that every object contained in collection exists within the collection
-		/// 	once and only once.
+		/// Ensures that every object contained in collection exists within the collection
+		/// once and only once.
 		/// </summary>
 		/// <param name="collection"> IEnumerable of objects to be considered </param>
 		/// <param name="message"> The message that will be displayed on failure </param>
@@ -104,8 +104,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Ensures that every object contained in collection exists within the collection
-		/// 	once and only once.
+		/// Ensures that every object contained in collection exists within the collection
+		/// once and only once.
 		/// </summary>
 		/// <param name="collection"> IEnumerable of objects to be considered </param>
 		/// <param name="message"> The message that will be displayed on failure </param>
@@ -116,8 +116,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that expected and actual are exactly equal.  The collections must have the same count, 
-		/// 	and contain the exact same objects in the same order.
+		/// Asserts that expected and actual are exactly equal.  The collections must have the same count,
+		/// and contain the exact same objects in the same order.
 		/// </summary>
 		/// <param name="expected"> The first IEnumerable of objects to be considered </param>
 		/// <param name="actual"> The second IEnumerable of objects to be considered </param>
@@ -128,9 +128,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that expected and actual are exactly equal.  The collections must have the same count, 
-		/// 	and contain the exact same objects in the same order.
-		/// 	If comparer is not null then it will be used to compare the objects.
+		/// Asserts that expected and actual are exactly equal.  The collections must have the same count,
+		/// and contain the exact same objects in the same order.
+		/// If comparer is not null then it will be used to compare the objects.
 		/// </summary>
 		/// <param name="expected"> The first IEnumerable of objects to be considered </param>
 		/// <param name="actual"> The second IEnumerable of objects to be considered </param>
@@ -141,8 +141,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that expected and actual are exactly equal.  The collections must have the same count, 
-		/// 	and contain the exact same objects in the same order.
+		/// Asserts that expected and actual are exactly equal.  The collections must have the same count,
+		/// and contain the exact same objects in the same order.
 		/// </summary>
 		/// <param name="expected"> The first IEnumerable of objects to be considered </param>
 		/// <param name="actual"> The second IEnumerable of objects to be considered </param>
@@ -154,9 +154,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that expected and actual are exactly equal.  The collections must have the same count, 
-		/// 	and contain the exact same objects in the same order.
-		/// 	If comparer is not null then it will be used to compare the objects.
+		/// Asserts that expected and actual are exactly equal.  The collections must have the same count,
+		/// and contain the exact same objects in the same order.
+		/// If comparer is not null then it will be used to compare the objects.
 		/// </summary>
 		/// <param name="expected"> The first IEnumerable of objects to be considered </param>
 		/// <param name="actual"> The second IEnumerable of objects to be considered </param>
@@ -168,8 +168,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that expected and actual are exactly equal.  The collections must have the same count, 
-		/// 	and contain the exact same objects in the same order.
+		/// Asserts that expected and actual are exactly equal.  The collections must have the same count,
+		/// and contain the exact same objects in the same order.
 		/// </summary>
 		/// <param name="expected"> The first IEnumerable of objects to be considered </param>
 		/// <param name="actual"> The second IEnumerable of objects to be considered </param>
@@ -182,9 +182,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that expected and actual are exactly equal.  The collections must have the same count, 
-		/// 	and contain the exact same objects in the same order.
-		/// 	If comparer is not null then it will be used to compare the objects.
+		/// Asserts that expected and actual are exactly equal.  The collections must have the same count,
+		/// and contain the exact same objects in the same order.
+		/// If comparer is not null then it will be used to compare the objects.
 		/// </summary>
 		/// <param name="expected"> The first IEnumerable of objects to be considered </param>
 		/// <param name="actual"> The second IEnumerable of objects to be considered </param>
@@ -197,7 +197,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that expected and actual are equivalent, containing the same objects but the match may be in any order.
+		/// Asserts that expected and actual are equivalent, containing the same objects but the match may be in any order.
 		/// </summary>
 		/// <param name="expected"> The first IEnumerable of objects to be considered </param>
 		/// <param name="actual"> The second IEnumerable of objects to be considered </param>
@@ -207,7 +207,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that expected and actual are equivalent, containing the same objects but the match may be in any order.
+		/// Asserts that expected and actual are equivalent, containing the same objects but the match may be in any order.
 		/// </summary>
 		/// <param name="expected"> The first IEnumerable of objects to be considered </param>
 		/// <param name="actual"> The second IEnumerable of objects to be considered </param>
@@ -218,7 +218,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that expected and actual are equivalent, containing the same objects but the match may be in any order.
+		/// Asserts that expected and actual are equivalent, containing the same objects but the match may be in any order.
 		/// </summary>
 		/// <param name="expected"> The first IEnumerable of objects to be considered </param>
 		/// <param name="actual"> The second IEnumerable of objects to be considered </param>
@@ -230,7 +230,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that expected and actual are not exactly equal.
+		/// Asserts that expected and actual are not exactly equal.
 		/// </summary>
 		/// <param name="expected"> The first IEnumerable of objects to be considered </param>
 		/// <param name="actual"> The second IEnumerable of objects to be considered </param>
@@ -240,8 +240,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that expected and actual are not exactly equal.
-		/// 	If comparer is not null then it will be used to compare the objects.
+		/// Asserts that expected and actual are not exactly equal.
+		/// If comparer is not null then it will be used to compare the objects.
 		/// </summary>
 		/// <param name="expected"> The first IEnumerable of objects to be considered </param>
 		/// <param name="actual"> The second IEnumerable of objects to be considered </param>
@@ -252,7 +252,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that expected and actual are not exactly equal.
+		/// Asserts that expected and actual are not exactly equal.
 		/// </summary>
 		/// <param name="expected"> The first IEnumerable of objects to be considered </param>
 		/// <param name="actual"> The second IEnumerable of objects to be considered </param>
@@ -263,8 +263,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that expected and actual are not exactly equal.
-		/// 	If comparer is not null then it will be used to compare the objects.
+		/// Asserts that expected and actual are not exactly equal.
+		/// If comparer is not null then it will be used to compare the objects.
 		/// </summary>
 		/// <param name="expected"> The first IEnumerable of objects to be considered </param>
 		/// <param name="actual"> The second IEnumerable of objects to be considered </param>
@@ -276,7 +276,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that expected and actual are not exactly equal.
+		/// Asserts that expected and actual are not exactly equal.
 		/// </summary>
 		/// <param name="expected"> The first IEnumerable of objects to be considered </param>
 		/// <param name="actual"> The second IEnumerable of objects to be considered </param>
@@ -290,8 +290,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that expected and actual are not exactly equal.
-		/// 	If comparer is not null then it will be used to compare the objects.
+		/// Asserts that expected and actual are not exactly equal.
+		/// If comparer is not null then it will be used to compare the objects.
 		/// </summary>
 		/// <param name="expected"> The first IEnumerable of objects to be considered </param>
 		/// <param name="actual"> The second IEnumerable of objects to be considered </param>
@@ -304,7 +304,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that expected and actual are not equivalent.
+		/// Asserts that expected and actual are not equivalent.
 		/// </summary>
 		/// <param name="expected"> The first IEnumerable of objects to be considered </param>
 		/// <param name="actual"> The second IEnumerable of objects to be considered </param>
@@ -314,7 +314,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that expected and actual are not equivalent.
+		/// Asserts that expected and actual are not equivalent.
 		/// </summary>
 		/// <param name="expected"> The first IEnumerable of objects to be considered </param>
 		/// <param name="actual"> The second IEnumerable of objects to be considered </param>
@@ -325,7 +325,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that expected and actual are not equivalent.
+		/// Asserts that expected and actual are not equivalent.
 		/// </summary>
 		/// <param name="expected"> The first IEnumerable of objects to be considered </param>
 		/// <param name="actual"> The second IEnumerable of objects to be considered </param>
@@ -337,7 +337,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that collection contains actual as an item.
+		/// Asserts that collection contains actual as an item.
 		/// </summary>
 		/// <param name="collection"> IEnumerable of objects to be considered </param>
 		/// <param name="actual"> Object to be found within collection </param>
@@ -347,7 +347,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that collection contains actual as an item.
+		/// Asserts that collection contains actual as an item.
 		/// </summary>
 		/// <param name="collection"> IEnumerable of objects to be considered </param>
 		/// <param name="actual"> Object to be found within collection </param>
@@ -358,7 +358,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that collection contains actual as an item.
+		/// Asserts that collection contains actual as an item.
 		/// </summary>
 		/// <param name="collection"> IEnumerable of objects to be considered </param>
 		/// <param name="actual"> Object to be found within collection </param>
@@ -370,7 +370,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that collection does not contain actual as an item.
+		/// Asserts that collection does not contain actual as an item.
 		/// </summary>
 		/// <param name="collection"> IEnumerable of objects to be considered </param>
 		/// <param name="actual"> Object that cannot exist within collection </param>
@@ -380,7 +380,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that collection does not contain actual as an item.
+		/// Asserts that collection does not contain actual as an item.
 		/// </summary>
 		/// <param name="collection"> IEnumerable of objects to be considered </param>
 		/// <param name="actual"> Object that cannot exist within collection </param>
@@ -391,7 +391,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that collection does not contain actual as an item.
+		/// Asserts that collection does not contain actual as an item.
 		/// </summary>
 		/// <param name="collection"> IEnumerable of objects to be considered </param>
 		/// <param name="actual"> Object that cannot exist within collection </param>
@@ -403,8 +403,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	The Equals method throws an AssertionException. This is done 
-		/// 	to make sure there is no mistake by calling this function.
+		/// The Equals method throws an AssertionException. This is done
+		/// to make sure there is no mistake by calling this function.
 		/// </summary>
 		/// <param name="a"> </param>
 		/// <param name="b"> </param>
@@ -415,7 +415,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that an array, list or other collection is empty
+		/// Assert that an array, list or other collection is empty
 		/// </summary>
 		/// <param name="collection"> An array, list or other collection implementing IEnumerable </param>
 		/// <param name="message"> The message to be displayed on failure </param>
@@ -426,7 +426,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that an array, list or other collection is empty
+		/// Assert that an array, list or other collection is empty
 		/// </summary>
 		/// <param name="collection"> An array, list or other collection implementing IEnumerable </param>
 		/// <param name="message"> The message to be displayed on failure </param>
@@ -436,7 +436,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that an array,list or other collection is empty
+		/// Assert that an array,list or other collection is empty
 		/// </summary>
 		/// <param name="collection"> An array, list or other collection implementing IEnumerable </param>
 		public static void IsEmpty(IEnumerable collection)
@@ -445,7 +445,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that an array, list or other collection is empty
+		/// Assert that an array, list or other collection is empty
 		/// </summary>
 		/// <param name="collection"> An array, list or other collection implementing IEnumerable </param>
 		/// <param name="message"> The message to be displayed on failure </param>
@@ -456,7 +456,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that an array, list or other collection is empty
+		/// Assert that an array, list or other collection is empty
 		/// </summary>
 		/// <param name="collection"> An array, list or other collection implementing IEnumerable </param>
 		/// <param name="message"> The message to be displayed on failure </param>
@@ -466,7 +466,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that an array,list or other collection is empty
+		/// Assert that an array,list or other collection is empty
 		/// </summary>
 		/// <param name="collection"> An array, list or other collection implementing IEnumerable </param>
 		public static void IsNotEmpty(IEnumerable collection)
@@ -475,7 +475,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that superset is not a subject of subset.
+		/// Asserts that superset is not a subject of subset.
 		/// </summary>
 		/// <param name="subset"> The IEnumerable superset to be considered </param>
 		/// <param name="superset"> The IEnumerable subset to be considered </param>
@@ -485,7 +485,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that superset is not a subject of subset.
+		/// Asserts that superset is not a subject of subset.
 		/// </summary>
 		/// <param name="subset"> The IEnumerable superset to be considered </param>
 		/// <param name="superset"> The IEnumerable subset to be considered </param>
@@ -496,7 +496,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that superset is not a subject of subset.
+		/// Asserts that superset is not a subject of subset.
 		/// </summary>
 		/// <param name="subset"> The IEnumerable superset to be considered </param>
 		/// <param name="superset"> The IEnumerable subset to be considered </param>
@@ -508,7 +508,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that an array, list or other collection is ordered
+		/// Assert that an array, list or other collection is ordered
 		/// </summary>
 		/// <param name="collection"> An array, list or other collection implementing IEnumerable </param>
 		/// <param name="message"> The message to be displayed on failure </param>
@@ -519,7 +519,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that an array, list or other collection is ordered
+		/// Assert that an array, list or other collection is ordered
 		/// </summary>
 		/// <param name="collection"> An array, list or other collection implementing IEnumerable </param>
 		/// <param name="message"> The message to be displayed on failure </param>
@@ -529,7 +529,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that an array, list or other collection is ordered
+		/// Assert that an array, list or other collection is ordered
 		/// </summary>
 		/// <param name="collection"> An array, list or other collection implementing IEnumerable </param>
 		public static void IsOrdered(IEnumerable collection)
@@ -538,7 +538,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that an array, list or other collection is ordered
+		/// Assert that an array, list or other collection is ordered
 		/// </summary>
 		/// <param name="collection"> An array, list or other collection implementing IEnumerable </param>
 		/// <param name="comparer"> A custom comparer to perform the comparisons </param>
@@ -550,7 +550,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that an array, list or other collection is ordered
+		/// Assert that an array, list or other collection is ordered
 		/// </summary>
 		/// <param name="collection"> An array, list or other collection implementing IEnumerable </param>
 		/// <param name="comparer"> A custom comparer to perform the comparisons </param>
@@ -561,7 +561,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that an array, list or other collection is ordered
+		/// Assert that an array, list or other collection is ordered
 		/// </summary>
 		/// <param name="collection"> An array, list or other collection implementing IEnumerable </param>
 		/// <param name="comparer"> A custom comparer to perform the comparisons </param>
@@ -571,7 +571,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that superset is a subset of subset.
+		/// Asserts that superset is a subset of subset.
 		/// </summary>
 		/// <param name="subset"> The IEnumerable superset to be considered </param>
 		/// <param name="superset"> The IEnumerable subset to be considered </param>
@@ -581,7 +581,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that superset is a subset of subset.
+		/// Asserts that superset is a subset of subset.
 		/// </summary>
 		/// <param name="subset"> The IEnumerable superset to be considered </param>
 		/// <param name="superset"> The IEnumerable subset to be considered </param>
@@ -592,7 +592,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that superset is a subset of subset.
+		/// Asserts that superset is a subset of subset.
 		/// </summary>
 		/// <param name="subset"> The IEnumerable superset to be considered </param>
 		/// <param name="superset"> The IEnumerable subset to be considered </param>
@@ -604,9 +604,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	override the default ReferenceEquals to throw an AssertionException. This 
-		/// 	implementation makes sure there is no mistake in calling this function 
-		/// 	as part of Assert.
+		/// override the default ReferenceEquals to throw an AssertionException. This
+		/// implementation makes sure there is no mistake in calling this function
+		/// as part of Assert.
 		/// </summary>
 		/// <param name="a"> </param>
 		/// <param name="b"> </param>

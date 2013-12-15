@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Castle.DynamicProxy.Generators;
+using Castle.DynamicProxy.Generators.Emitters;
+using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Castle.DynamicProxy.Internal;
+using Castle.DynamicProxy.Serialization;
+using Castle.DynamicProxy.Tokens;
+
 namespace Castle.DynamicProxy.Contributors
 {
 	using System;
 #if !SILVERLIGHT
 	using System.Runtime.Serialization;
 #endif
-
-	using Castle.DynamicProxy.Generators;
-	using Castle.DynamicProxy.Generators.Emitters;
-	using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
-	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-	using Castle.DynamicProxy.Internal;
-	using Castle.DynamicProxy.Serialization;
-	using Castle.DynamicProxy.Tokens;
 
 	public abstract class ProxyInstanceContributor : ITypeContributor
 	{
@@ -48,13 +48,11 @@ namespace Castle.DynamicProxy.Contributors
 		{
 			var interceptors = @class.GetField("__interceptors");
 #if !SILVERLIGHT
-			ImplementGetObjectData(@class);
+			this.ImplementGetObjectData(@class);
 #endif
-			ImplementProxyTargetAccessor(@class, interceptors);
-			foreach (var attribute in targetType.GetNonInheritableAttributes())
-			{
+			this.ImplementProxyTargetAccessor(@class, interceptors);
+			foreach (var attribute in this.targetType.GetNonInheritableAttributes())
 				@class.DefineCustomAttribute(attribute);
-			}
 		}
 
 		protected void ImplementProxyTargetAccessor(ClassEmitter emitter, FieldReference interceptorsField)
@@ -62,7 +60,7 @@ namespace Castle.DynamicProxy.Contributors
 			var dynProxyGetTarget = emitter.CreateMethod("DynProxyGetTarget", typeof(object));
 
 			dynProxyGetTarget.CodeBuilder.AddStatement(
-				new ReturnStatement(new ConvertExpression(typeof(object), targetType, GetTargetReferenceExpression(emitter))));
+				new ReturnStatement(new ConvertExpression(typeof(object), this.targetType, this.GetTargetReferenceExpression(emitter))));
 
 			var getInterceptors = emitter.CreateMethod("GetInterceptors", typeof(IInterceptor[]));
 
@@ -75,7 +73,7 @@ namespace Castle.DynamicProxy.Contributors
 		protected void ImplementGetObjectData(ClassEmitter emitter)
 		{
 			var getObjectData = emitter.CreateMethod("GetObjectData", typeof(void),
-			                                         new[] { typeof(SerializationInfo), typeof(StreamingContext) });
+				new[] { typeof(SerializationInfo), typeof(StreamingContext) });
 			var info = getObjectData.Arguments[0];
 
 			var typeLocal = getObjectData.CodeBuilder.DeclareLocal(typeof(Type));
@@ -100,14 +98,10 @@ namespace Castle.DynamicProxy.Contributors
 			foreach (var field in emitter.GetAllFields())
 			{
 				if (field.Reference.IsStatic)
-				{
 					continue;
-				}
 				if (field.Reference.IsNotSerialized)
-				{
 					continue;
-				}
-				AddAddValueInvocation(info, getObjectData, field);
+				this.AddAddValueInvocation(info, getObjectData, field);
 			}
 
 			var interfacesLocal = getObjectData.CodeBuilder.DeclareLocal(typeof(string[]));
@@ -115,15 +109,15 @@ namespace Castle.DynamicProxy.Contributors
 			getObjectData.CodeBuilder.AddStatement(
 				new AssignStatement(
 					interfacesLocal,
-					new NewArrayExpression(interfaces.Length, typeof(string))));
+					new NewArrayExpression(this.interfaces.Length, typeof(string))));
 
-			for (var i = 0; i < interfaces.Length; i++)
+			for (var i = 0; i < this.interfaces.Length; i++)
 			{
 				getObjectData.CodeBuilder.AddStatement(
 					new AssignArrayStatement(
 						interfacesLocal,
 						i,
-						new ConstReference(interfaces[i].AssemblyQualifiedName).ToExpression()));
+						new ConstReference(this.interfaces[i].AssemblyQualifiedName).ToExpression()));
 			}
 
 			getObjectData.CodeBuilder.AddStatement(
@@ -153,17 +147,17 @@ namespace Castle.DynamicProxy.Contributors
 			getObjectData.CodeBuilder.AddStatement(
 				new ExpressionStatement(
 					new MethodInvocationExpression(info,
-					                               SerializationInfoMethods.AddValue_Object,
-					                               new ConstReference("__proxyTypeId").ToExpression(),
-					                               new ConstReference(proxyTypeId).ToExpression())));
+						SerializationInfoMethods.AddValue_Object,
+						new ConstReference("__proxyTypeId").ToExpression(),
+						new ConstReference(this.proxyTypeId).ToExpression())));
 
-			CustomizeGetObjectData(getObjectData.CodeBuilder, info, getObjectData.Arguments[1], emitter);
+			this.CustomizeGetObjectData(getObjectData.CodeBuilder, info, getObjectData.Arguments[1], emitter);
 
 			getObjectData.CodeBuilder.AddStatement(new ReturnStatement());
 		}
 
 		protected virtual void AddAddValueInvocation(ArgumentReference serializationInfo, MethodEmitter getObjectData,
-		                                             FieldReference field)
+			FieldReference field)
 		{
 			getObjectData.CodeBuilder.AddStatement(
 				new ExpressionStatement(
@@ -176,7 +170,7 @@ namespace Castle.DynamicProxy.Contributors
 		}
 
 		protected abstract void CustomizeGetObjectData(AbstractCodeBuilder builder, ArgumentReference serializationInfo,
-		                                               ArgumentReference streamingContext, ClassEmitter emitter);
+			ArgumentReference streamingContext, ClassEmitter emitter);
 #endif
 
 		public void CollectElementsToProxy(IProxyGenerationHook hook, MetaType model)

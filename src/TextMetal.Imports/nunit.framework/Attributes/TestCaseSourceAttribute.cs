@@ -9,8 +9,8 @@ using System;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	FactoryAttribute indicates the source to be used to
-	/// 	provide test cases for a test method.
+	/// FactoryAttribute indicates the source to be used to
+	/// provide test cases for a test method.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
 	public class TestCaseSourceAttribute : Attribute
@@ -18,8 +18,8 @@ namespace NUnit.Framework
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct with the name of the factory - for use with languages
-		/// 	that don't support params arrays.
+		/// Construct with the name of the factory - for use with languages
+		/// that don't support params arrays.
 		/// </summary>
 		/// <param name="sourceName"> An array of the names of the factories that will provide data </param>
 		public TestCaseSourceAttribute(string sourceName)
@@ -28,8 +28,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Construct with a Type and name - for use with languages
-		/// 	that don't support params arrays.
+		/// Construct with a Type and name - for use with languages
+		/// that don't support params arrays.
 		/// </summary>
 		/// <param name="sourceType"> The Type that will provide data </param>
 		/// <param name="sourceName"> The name of the method, property or field that will provide data </param>
@@ -52,8 +52,8 @@ namespace NUnit.Framework
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets or sets the category associated with this test.
-		/// 	May be a single category or a comma-separated list.
+		/// Gets or sets the category associated with this test.
+		/// May be a single category or a comma-separated list.
 		/// </summary>
 		public string Category
 		{
@@ -68,7 +68,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	The name of a the method, property or fiend to be used as a source
+		/// The name of a the method, property or fiend to be used as a source
 		/// </summary>
 		public string SourceName
 		{
@@ -79,7 +79,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	A Type to be used as a source
+		/// A Type to be used as a source
 		/// </summary>
 		public Type SourceType
 		{

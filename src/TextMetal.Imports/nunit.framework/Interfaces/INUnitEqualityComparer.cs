@@ -17,7 +17,7 @@ namespace NUnit.Framework
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Compares two objects for equality within a tolerance
+		/// Compares two objects for equality within a tolerance
 		/// </summary>
 		/// <param name="x"> The first object to compare </param>
 		/// <param name="y"> The second object to compare </param>
@@ -37,7 +37,7 @@ namespace NUnit.Framework
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Compares two objects of a given Type for equality within a tolerance
+		/// Compares two objects of a given Type for equality within a tolerance
 		/// </summary>
 		/// <param name="x"> The first object to compare </param>
 		/// <param name="y"> The second object to compare </param>

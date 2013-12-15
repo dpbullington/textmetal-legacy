@@ -9,7 +9,7 @@ using System;
 namespace NUnit.Framework.Constraints
 {
 	/// <summary>
-	/// 	The Numerics class contains common operations on numeric values.
+	/// The Numerics class contains common operations on numeric values.
 	/// </summary>
 	public class Numerics
 	{
@@ -24,9 +24,9 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Test two numeric values for equality, performing the usual numeric 
-		/// 	conversions and using a provided or default tolerance. If the tolerance 
-		/// 	provided is Empty, this method may set it to a default tolerance.
+		/// Test two numeric values for equality, performing the usual numeric
+		/// conversions and using a provided or default tolerance. If the tolerance
+		/// provided is Empty, this method may set it to a default tolerance.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -278,7 +278,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Compare two numeric values, performing the usual numeric conversions.
+		/// Compare two numeric values, performing the usual numeric conversions.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -307,8 +307,8 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Checks the type of the object, returning true if
-		/// 	the object is a fixed point numeric type.
+		/// Checks the type of the object, returning true if
+		/// the object is a fixed point numeric type.
 		/// </summary>
 		/// <param name="obj"> The object to check </param>
 		/// <returns> true if the object is a fixed point numeric type </returns>
@@ -339,8 +339,8 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Checks the type of the object, returning true if
-		/// 	the object is a floating point numeric type.
+		/// Checks the type of the object, returning true if
+		/// the object is a floating point numeric type.
 		/// </summary>
 		/// <param name="obj"> The object to check </param>
 		/// <returns> true if the object is a floating point numeric type </returns>
@@ -357,8 +357,8 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Checks the type of the object, returning true if
-		/// 	the object is a numeric type.
+		/// Checks the type of the object, returning true if
+		/// the object is a numeric type.
 		/// </summary>
 		/// <param name="obj"> The object to check </param>
 		/// <returns> true if the object is a numeric type </returns>

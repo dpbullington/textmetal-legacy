@@ -7,14 +7,15 @@
 
 using System.Collections.Generic;
 using System.Reflection;
+
 #if CLR_2_0 || CLR_4_0
 #endif
 
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	ParameterizedMethodSuite holds a collection of individual
-	/// 	TestMethods with their arguments applied.
+	/// ParameterizedMethodSuite holds a collection of individual
+	/// TestMethods with their arguments applied.
 	/// </summary>
 	public class ParameterizedMethodSuite : TestSuite
 	{
@@ -22,7 +23,7 @@ namespace NUnit.Core
 		private MethodInfo method;
 
 		/// <summary>
-		/// 	Construct from a MethodInfo
+		/// Construct from a MethodInfo
 		/// </summary>
 		/// <param name="method"> </param>
 		public ParameterizedMethodSuite(MethodInfo method)
@@ -34,21 +35,21 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets a string representing the kind of test
-		/// 	that this object represents, for use in display.
+		/// Gets a string representing the kind of test
+		/// that this object represents, for use in display.
 		/// </summary>
 		public override string TestType
 		{
 			get
 			{
 				return this.isTheory
-					       ? "Theory"
-					       : "ParameterizedTest";
+					? "Theory"
+					: "ParameterizedTest";
 			}
 		}
 
 		/// <summary>
-		/// 	Override Run, setting Fixture to that of the Parent.
+		/// Override Run, setting Fixture to that of the Parent.
 		/// </summary>
 		/// <param name="listener"> </param>
 		/// <param name="filter"> </param>
@@ -95,8 +96,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Override DoOneTimeSetUp to avoid executing any
-		/// 	TestFixtureSetUp method for this suite
+		/// Override DoOneTimeSetUp to avoid executing any
+		/// TestFixtureSetUp method for this suite
 		/// </summary>
 		/// <param name="suiteResult"> </param>
 		protected override void DoOneTimeSetUp(TestResult suiteResult)
@@ -104,8 +105,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Override DoOneTimeTearDown to avoid executing any
-		/// 	TestFixtureTearDown method for this suite.
+		/// Override DoOneTimeTearDown to avoid executing any
+		/// TestFixtureTearDown method for this suite.
 		/// </summary>
 		/// <param name="suiteResult"> </param>
 		protected override void DoOneTimeTearDown(TestResult suiteResult)

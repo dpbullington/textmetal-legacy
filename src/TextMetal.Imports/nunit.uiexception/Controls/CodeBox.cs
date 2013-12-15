@@ -22,7 +22,7 @@ using NUnit.UiException.CodeFormatters;
 namespace NUnit.UiException.Controls
 {
 	/// <summary>
-	/// 	A control that implements ICodeView.
+	/// A control that implements ICodeView.
 	/// </summary>
 	public class CodeBox : UserControl, ICodeView
 	{
@@ -87,7 +87,7 @@ namespace NUnit.UiException.Controls
 			set
 			{
 				float y = this._renderer.LineIndexToYCoordinate(value,
-				                                                this._workingContext.Graphics, this._workingContext.Font);
+					this._workingContext.Graphics, this._workingContext.Font);
 
 				y -= this.Height / 2;
 
@@ -99,7 +99,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	If ShowCurrentLine is set, this set the current line's background color.
+		/// If ShowCurrentLine is set, this set the current line's background color.
 		/// </summary>
 		public Color CurrentLineBackColor
 		{
@@ -115,7 +115,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	If ShowCurrentLine is set, this set current line's foreground color.
+		/// If ShowCurrentLine is set, this set current line's foreground color.
 		/// </summary>
 		public Color CurrentLineForeColor
 		{
@@ -157,8 +157,8 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gets or sets a value telling whether or not displaying a special
-		/// 	feature for the current line at drawing time.
+		/// Gets or sets a value telling whether or not displaying a special
+		/// feature for the current line at drawing time.
 		/// </summary>
 		public bool ShowCurrentLine
 		{
@@ -230,7 +230,7 @@ namespace NUnit.UiException.Controls
 			this._workingContext.CurrentLine = (this._showCurrentLine ? this._currentLine : -1);
 
 			this._renderer.DrawToGraphics(this._formattedCode, this._workingContext,
-			                              new Rectangle(-this.AutoScrollPosition.X, -this.AutoScrollPosition.Y, this.Width, this.Height));
+				new Rectangle(-this.AutoScrollPosition.X, -this.AutoScrollPosition.Y, this.Width, this.Height));
 
 			this._workingContext.Graphics = backup;
 

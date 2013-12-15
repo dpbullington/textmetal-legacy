@@ -26,11 +26,12 @@ using NMock2.Internal;
 namespace NMock2.Monitoring
 {
 	using System;
-		//using Castle.Core.Interceptor;
+
+	//using Castle.Core.Interceptor;
 
 	/// <summary>
-	/// 	Class that creates mocks for interfaces and classes (virtual members only) using the
-	/// 	Castle proxy generator.
+	/// Class that creates mocks for interfaces and classes (virtual members only) using the
+	/// Castle proxy generator.
 	/// </summary>
 	public class CastleMockObjectFactory : IMockObjectFactory
 	{
@@ -55,7 +56,7 @@ namespace NMock2.Monitoring
 		}
 
 		/// <summary>
-		/// 	Creates a mock of the specified type(s).
+		/// Creates a mock of the specified type(s).
 		/// </summary>
 		/// <param name="mockery"> The mockery used to create this mock instance. </param>
 		/// <param name="typesToMock"> The type(s) to include in the mock. </param>
@@ -130,15 +131,15 @@ namespace NMock2.Monitoring
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		/// <summary>
-		/// 	Used as a base for interface mocks in order to provide a holder
-		/// 	for a meaningful ToString() value.
+		/// Used as a base for interface mocks in order to provide a holder
+		/// for a meaningful ToString() value.
 		/// </summary>
 		public class InterfaceMockBase
 		{
 			#region Constructors/Destructors
 
 			/// <summary>
-			/// 	Initializes a new instance of the <see cref="InterfaceMockBase" /> class.
+			/// Initializes a new instance of the <see cref="InterfaceMockBase" /> class.
 			/// </summary>
 			/// <param name="stringValue"> The string value. </param>
 			public InterfaceMockBase(string stringValue)

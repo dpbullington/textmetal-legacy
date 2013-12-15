@@ -10,7 +10,7 @@ using System.Collections;
 namespace NUnit.Core.Filters
 {
 	/// <summary>
-	/// 	Summary description for NameFilter.
+	/// Summary description for NameFilter.
 	/// </summary>
 	[Serializable]
 	public class NameFilter : TestFilter
@@ -18,14 +18,14 @@ namespace NUnit.Core.Filters
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct an empty NameFilter
+		/// Construct an empty NameFilter
 		/// </summary>
 		public NameFilter()
 		{
 		}
 
 		/// <summary>
-		/// 	Construct a NameFilter for a single TestName
+		/// Construct a NameFilter for a single TestName
 		/// </summary>
 		/// <param name="testName"> </param>
 		public NameFilter(TestName testName)
@@ -44,7 +44,7 @@ namespace NUnit.Core.Filters
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Add a TestName to a NameFilter
+		/// Add a TestName to a NameFilter
 		/// </summary>
 		/// <param name="testName"> </param>
 		public void Add(TestName testName)
@@ -53,7 +53,7 @@ namespace NUnit.Core.Filters
 		}
 
 		/// <summary>
-		/// 	Check if a test matches the filter
+		/// Check if a test matches the filter
 		/// </summary>
 		/// <param name="test"> The test to match </param>
 		/// <returns> True if it matches, false if not </returns>

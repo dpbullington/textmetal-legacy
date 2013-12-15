@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections;
+using System.Linq;
+
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
-	using System.Linq;
-	using System.Collections;
 
 	/// <summary>
 	/// Removes a property if matches value.
@@ -24,39 +25,77 @@ namespace Castle.Components.DictionaryAdapter
 	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Property, AllowMultiple = true)]
 	public class RemoveIfAttribute : DictionaryBehaviorAttribute, IDictionaryPropertySetter
 	{
-		private ICondition condition;
+		#region Constructors/Destructors
 
 		public RemoveIfAttribute()
 		{
-			ExecutionOrder += 10;
+			this.ExecutionOrder += 10;
 		}
 
-		public RemoveIfAttribute(params object[] values) : this()
+		public RemoveIfAttribute(params object[] values)
+			: this()
 		{
 			values = values ?? new object[] { null };
-			condition = new ValueCondition(values, null);
+			this.condition = new ValueCondition(values, null);
 		}
 
-		public RemoveIfAttribute(object[] values, Type comparerType) : this()
+		public RemoveIfAttribute(object[] values, Type comparerType)
+			: this()
 		{
 			var comparer = Construct<IEqualityComparer>(comparerType, "comparerType");
-			condition = new ValueCondition(values, comparer);
+			this.condition = new ValueCondition(values, comparer);
 		}
 
-		protected RemoveIfAttribute(ICondition condition) : this()
+		protected RemoveIfAttribute(ICondition condition)
+			: this()
 		{
 			this.condition = condition;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private ICondition condition;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
 		public Type Condition
 		{
-			set { condition = Construct<ICondition>(value, "value"); }
+			set
+			{
+				this.condition = Construct<ICondition>(value, "value");
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		private static TBase Construct<TBase>(Type type, string paramName)
+			where TBase : class
+		{
+			if (type == null)
+				throw new ArgumentNullException(paramName);
+
+			if (type.IsAbstract == false && typeof(TBase).IsAssignableFrom(type))
+			{
+				var constructor = type.GetConstructor(Type.EmptyTypes);
+				if (constructor != null)
+					return (TBase)constructor.Invoke(new object[0]);
+			}
+
+			throw new ArgumentException(string.Format(
+				"{0} is not a concrete type implementing {1} with a default constructor",
+				type.FullName, typeof(TBase).FullName));
 		}
 
 		bool IDictionaryPropertySetter.SetPropertyValue(IDictionaryAdapter dictionaryAdapter,
 			string key, ref object value, PropertyDescriptor property)
 		{
-			if (ShouldRemove(value))
+			if (this.ShouldRemove(value))
 			{
 				dictionaryAdapter.ClearProperty(property, key);
 				return false;
@@ -66,37 +105,16 @@ namespace Castle.Components.DictionaryAdapter
 
 		internal bool ShouldRemove(object value)
 		{
-			return condition != null && condition.SatisfiedBy(value);
+			return this.condition != null && this.condition.SatisfiedBy(value);
 		}
 
-		private static TBase Construct<TBase>(Type type, string paramName)
-			where TBase : class
+		#endregion
+
+		#region Classes/Structs/Interfaces/Enums/Delegates
+
+		private class ValueCondition : ICondition
 		{
-			if (type == null)
-			{
-				throw new ArgumentNullException(paramName);
-			}
-
-			if (type.IsAbstract == false && typeof(TBase).IsAssignableFrom(type))
-			{
-				var constructor = type.GetConstructor(Type.EmptyTypes);
-				if (constructor != null)
-				{
-					return (TBase)constructor.Invoke(new object[0]);
-				}
-			}
-				
-			throw new ArgumentException(string.Format(
-				"{0} is not a concrete type implementing {1} with a default constructor",
-				type.FullName, typeof(TBase).FullName));
-		}
-
-		#region Nested Class: ValueCondition
-
-		class ValueCondition : ICondition
-		{
-			private readonly object[] values;
-			private readonly IEqualityComparer comparer;
+			#region Constructors/Destructors
 
 			public ValueCondition(object[] values, IEqualityComparer comparer)
 			{
@@ -104,17 +122,28 @@ namespace Castle.Components.DictionaryAdapter
 				this.comparer = comparer;
 			}
 
+			#endregion
+
+			#region Fields/Constants
+
+			private readonly IEqualityComparer comparer;
+			private readonly object[] values;
+
+			#endregion
+
+			#region Methods/Operators
+
 			public bool SatisfiedBy(object value)
 			{
-				return values.Any(valueToMatch =>
-				{
-					if (comparer == null)
-					{
-						return Equals(value, valueToMatch);
-					}
-					return comparer.Equals(value, valueToMatch);
-				});
+				return this.values.Any(valueToMatch =>
+										{
+											if (this.comparer == null)
+												return Equals(value, valueToMatch);
+											return this.comparer.Equals(value, valueToMatch);
+										});
 			}
+
+			#endregion
 		}
 
 		#endregion

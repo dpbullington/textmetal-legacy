@@ -27,14 +27,15 @@ using NMock2.Internal;
 namespace NMock2.Monitoring
 {
 	using System;
-		//using Castle.Core.Interceptor;
+
+	//using Castle.Core.Interceptor;
 
 	internal class MockObjectInterceptor : MockObject, IInterceptor
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes static members of the <see cref="MockObjectInterceptor" /> class.
+		/// Initializes static members of the <see cref="MockObjectInterceptor" /> class.
 		/// </summary>
 		static MockObjectInterceptor()
 		{
@@ -49,7 +50,7 @@ namespace NMock2.Monitoring
 		}
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="MockObjectInterceptor" /> class.
+		/// Initializes a new instance of the <see cref="MockObjectInterceptor" /> class.
 		/// </summary>
 		/// <param name="mockery"> The mockery. </param>
 		/// <param name="mockedType"> Type of the mocked. </param>
@@ -133,7 +134,7 @@ namespace NMock2.Monitoring
 		{
 			// Only transparent mocks of classes can have their implemenation invoked
 			if (this.MockStyle == MockStyle.Transparent
-			    && !this.MockedTypes.PrimaryType.IsInterface)
+				&& !this.MockedTypes.PrimaryType.IsInterface)
 			{
 				// The implementation should only be invoked if no expectations
 				// have been set for this method

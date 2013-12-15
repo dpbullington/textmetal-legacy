@@ -12,16 +12,16 @@ using NUnit.Framework.Constraints;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	Helper class with properties and methods that supply
-	/// 	a number of constraints used in Asserts.
+	/// Helper class with properties and methods that supply
+	/// a number of constraints used in Asserts.
 	/// </summary>
 	public class Is
 	{
 		#region Not
 
 		/// <summary>
-		/// 	Returns a ConstraintExpression that negates any
-		/// 	following constraint.
+		/// Returns a ConstraintExpression that negates any
+		/// following constraint.
 		/// </summary>
 		public static ConstraintExpression Not
 		{
@@ -36,9 +36,9 @@ namespace NUnit.Framework
 		#region All
 
 		/// <summary>
-		/// 	Returns a ConstraintExpression, which will apply
-		/// 	the following constraint to all members of a collection,
-		/// 	succeeding if all of them succeed.
+		/// Returns a ConstraintExpression, which will apply
+		/// the following constraint to all members of a collection,
+		/// succeeding if all of them succeed.
 		/// </summary>
 		public static ConstraintExpression All
 		{
@@ -53,7 +53,7 @@ namespace NUnit.Framework
 		#region Null
 
 		/// <summary>
-		/// 	Returns a constraint that tests for null
+		/// Returns a constraint that tests for null
 		/// </summary>
 		public static NullConstraint Null
 		{
@@ -68,7 +68,7 @@ namespace NUnit.Framework
 		#region True
 
 		/// <summary>
-		/// 	Returns a constraint that tests for True
+		/// Returns a constraint that tests for True
 		/// </summary>
 		public static TrueConstraint True
 		{
@@ -83,7 +83,7 @@ namespace NUnit.Framework
 		#region False
 
 		/// <summary>
-		/// 	Returns a constraint that tests for False
+		/// Returns a constraint that tests for False
 		/// </summary>
 		public static FalseConstraint False
 		{
@@ -98,7 +98,7 @@ namespace NUnit.Framework
 		#region Positive
 
 		/// <summary>
-		/// 	Returns a constraint that tests for a positive value
+		/// Returns a constraint that tests for a positive value
 		/// </summary>
 		public static GreaterThanConstraint Positive
 		{
@@ -113,7 +113,7 @@ namespace NUnit.Framework
 		#region Negative
 
 		/// <summary>
-		/// 	Returns a constraint that tests for a negative value
+		/// Returns a constraint that tests for a negative value
 		/// </summary>
 		public static LessThanConstraint Negative
 		{
@@ -128,7 +128,7 @@ namespace NUnit.Framework
 		#region NaN
 
 		/// <summary>
-		/// 	Returns a constraint that tests for NaN
+		/// Returns a constraint that tests for NaN
 		/// </summary>
 		public static NaNConstraint NaN
 		{
@@ -143,7 +143,7 @@ namespace NUnit.Framework
 		#region Empty
 
 		/// <summary>
-		/// 	Returns a constraint that tests for empty
+		/// Returns a constraint that tests for empty
 		/// </summary>
 		public static EmptyConstraint Empty
 		{
@@ -158,8 +158,8 @@ namespace NUnit.Framework
 		#region Unique
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether a collection 
-		/// 	contains all unique items.
+		/// Returns a constraint that tests whether a collection
+		/// contains all unique items.
 		/// </summary>
 		public static UniqueItemsConstraint Unique
 		{
@@ -174,7 +174,7 @@ namespace NUnit.Framework
 		#region BinarySerializable
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether an object graph is serializable in binary format.
+		/// Returns a constraint that tests whether an object graph is serializable in binary format.
 		/// </summary>
 		public static BinarySerializableConstraint BinarySerializable
 		{
@@ -189,7 +189,7 @@ namespace NUnit.Framework
 		#region XmlSerializable
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether an object graph is serializable in xml format.
+		/// Returns a constraint that tests whether an object graph is serializable in xml format.
 		/// </summary>
 		public static XmlSerializableConstraint XmlSerializable
 		{
@@ -204,7 +204,7 @@ namespace NUnit.Framework
 		#region EqualTo
 
 		/// <summary>
-		/// 	Returns a constraint that tests two items for equality
+		/// Returns a constraint that tests two items for equality
 		/// </summary>
 		public static EqualConstraint EqualTo(object expected)
 		{
@@ -216,7 +216,7 @@ namespace NUnit.Framework
 		#region SameAs
 
 		/// <summary>
-		/// 	Returns a constraint that tests that two references are the same object
+		/// Returns a constraint that tests that two references are the same object
 		/// </summary>
 		public static SameAsConstraint SameAs(object expected)
 		{
@@ -228,8 +228,8 @@ namespace NUnit.Framework
 		#region GreaterThan
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether the
-		/// 	actual value is greater than the suppled argument
+		/// Returns a constraint that tests whether the
+		/// actual value is greater than the suppled argument
 		/// </summary>
 		public static GreaterThanConstraint GreaterThan(object expected)
 		{
@@ -241,8 +241,8 @@ namespace NUnit.Framework
 		#region GreaterThanOrEqualTo
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether the
-		/// 	actual value is greater than or equal to the suppled argument
+		/// Returns a constraint that tests whether the
+		/// actual value is greater than or equal to the suppled argument
 		/// </summary>
 		public static GreaterThanOrEqualConstraint GreaterThanOrEqualTo(object expected)
 		{
@@ -250,8 +250,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether the
-		/// 	actual value is greater than or equal to the suppled argument
+		/// Returns a constraint that tests whether the
+		/// actual value is greater than or equal to the suppled argument
 		/// </summary>
 		public static GreaterThanOrEqualConstraint AtLeast(object expected)
 		{
@@ -263,8 +263,8 @@ namespace NUnit.Framework
 		#region LessThan
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether the
-		/// 	actual value is less than the suppled argument
+		/// Returns a constraint that tests whether the
+		/// actual value is less than the suppled argument
 		/// </summary>
 		public static LessThanConstraint LessThan(object expected)
 		{
@@ -276,8 +276,8 @@ namespace NUnit.Framework
 		#region LessThanOrEqualTo
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether the
-		/// 	actual value is less than or equal to the suppled argument
+		/// Returns a constraint that tests whether the
+		/// actual value is less than or equal to the suppled argument
 		/// </summary>
 		public static LessThanOrEqualConstraint LessThanOrEqualTo(object expected)
 		{
@@ -285,8 +285,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether the
-		/// 	actual value is less than or equal to the suppled argument
+		/// Returns a constraint that tests whether the
+		/// actual value is less than or equal to the suppled argument
 		/// </summary>
 		public static LessThanOrEqualConstraint AtMost(object expected)
 		{
@@ -298,8 +298,8 @@ namespace NUnit.Framework
 		#region TypeOf
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether the actual
-		/// 	value is of the exact type supplied as an argument.
+		/// Returns a constraint that tests whether the actual
+		/// value is of the exact type supplied as an argument.
 		/// </summary>
 		public static ExactTypeConstraint TypeOf(Type expectedType)
 		{
@@ -308,8 +308,8 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Returns a constraint that tests whether the actual
-		/// 	value is of the exact type supplied as an argument.
+		/// Returns a constraint that tests whether the actual
+		/// value is of the exact type supplied as an argument.
 		/// </summary>
 		public static ExactTypeConstraint TypeOf<T>()
 		{
@@ -322,8 +322,8 @@ namespace NUnit.Framework
 		#region InstanceOf
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether the actual value
-		/// 	is of the type supplied as an argument or a derived type.
+		/// Returns a constraint that tests whether the actual value
+		/// is of the type supplied as an argument or a derived type.
 		/// </summary>
 		public static InstanceOfTypeConstraint InstanceOf(Type expectedType)
 		{
@@ -332,8 +332,8 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Returns a constraint that tests whether the actual value
-		/// 	is of the type supplied as an argument or a derived type.
+		/// Returns a constraint that tests whether the actual value
+		/// is of the type supplied as an argument or a derived type.
 		/// </summary>
 		public static InstanceOfTypeConstraint InstanceOf<T>()
 		{
@@ -342,8 +342,8 @@ namespace NUnit.Framework
 #endif
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether the actual value
-		/// 	is of the type supplied as an argument or a derived type.
+		/// Returns a constraint that tests whether the actual value
+		/// is of the type supplied as an argument or a derived type.
 		/// </summary>
 		[Obsolete("Use InstanceOf(expectedType)")]
 		public static InstanceOfTypeConstraint InstanceOfType(Type expectedType)
@@ -353,8 +353,8 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Returns a constraint that tests whether the actual value
-		/// 	is of the type supplied as an argument or a derived type.
+		/// Returns a constraint that tests whether the actual value
+		/// is of the type supplied as an argument or a derived type.
 		/// </summary>
 		[Obsolete("Use InstanceOf<T>()")]
 		public static InstanceOfTypeConstraint InstanceOfType<T>()
@@ -368,8 +368,8 @@ namespace NUnit.Framework
 		#region AssignableFrom
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether the actual value
-		/// 	is assignable from the type supplied as an argument.
+		/// Returns a constraint that tests whether the actual value
+		/// is assignable from the type supplied as an argument.
 		/// </summary>
 		public static AssignableFromConstraint AssignableFrom(Type expectedType)
 		{
@@ -378,8 +378,8 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Returns a constraint that tests whether the actual value
-		/// 	is assignable from the type supplied as an argument.
+		/// Returns a constraint that tests whether the actual value
+		/// is assignable from the type supplied as an argument.
 		/// </summary>
 		public static AssignableFromConstraint AssignableFrom<T>()
 		{
@@ -392,8 +392,8 @@ namespace NUnit.Framework
 		#region AssignableTo
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether the actual value
-		/// 	is assignable from the type supplied as an argument.
+		/// Returns a constraint that tests whether the actual value
+		/// is assignable from the type supplied as an argument.
 		/// </summary>
 		public static AssignableToConstraint AssignableTo(Type expectedType)
 		{
@@ -402,8 +402,8 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Returns a constraint that tests whether the actual value
-		/// 	is assignable from the type supplied as an argument.
+		/// Returns a constraint that tests whether the actual value
+		/// is assignable from the type supplied as an argument.
 		/// </summary>
 		public static AssignableToConstraint AssignableTo<T>()
 		{
@@ -416,9 +416,9 @@ namespace NUnit.Framework
 		#region EquivalentTo
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether the actual value
-		/// 	is a collection containing the same elements as the 
-		/// 	collection supplied as an argument.
+		/// Returns a constraint that tests whether the actual value
+		/// is a collection containing the same elements as the
+		/// collection supplied as an argument.
 		/// </summary>
 		public static CollectionEquivalentConstraint EquivalentTo(IEnumerable expected)
 		{
@@ -430,8 +430,8 @@ namespace NUnit.Framework
 		#region SubsetOf
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether the actual value
-		/// 	is a subset of the collection supplied as an argument.
+		/// Returns a constraint that tests whether the actual value
+		/// is a subset of the collection supplied as an argument.
 		/// </summary>
 		public static CollectionSubsetConstraint SubsetOf(IEnumerable expected)
 		{
@@ -443,7 +443,7 @@ namespace NUnit.Framework
 		#region Ordered
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether a collection is ordered
+		/// Returns a constraint that tests whether a collection is ordered
 		/// </summary>
 		public static CollectionOrderedConstraint Ordered
 		{
@@ -458,8 +458,8 @@ namespace NUnit.Framework
 		#region StringContaining
 
 		/// <summary>
-		/// 	Returns a constraint that succeeds if the actual
-		/// 	value contains the substring supplied as an argument.
+		/// Returns a constraint that succeeds if the actual
+		/// value contains the substring supplied as an argument.
 		/// </summary>
 		public static SubstringConstraint StringContaining(string expected)
 		{
@@ -471,8 +471,8 @@ namespace NUnit.Framework
 		#region StringStarting
 
 		/// <summary>
-		/// 	Returns a constraint that succeeds if the actual
-		/// 	value starts with the substring supplied as an argument.
+		/// Returns a constraint that succeeds if the actual
+		/// value starts with the substring supplied as an argument.
 		/// </summary>
 		public static StartsWithConstraint StringStarting(string expected)
 		{
@@ -484,8 +484,8 @@ namespace NUnit.Framework
 		#region StringEnding
 
 		/// <summary>
-		/// 	Returns a constraint that succeeds if the actual
-		/// 	value ends with the substring supplied as an argument.
+		/// Returns a constraint that succeeds if the actual
+		/// value ends with the substring supplied as an argument.
 		/// </summary>
 		public static EndsWithConstraint StringEnding(string expected)
 		{
@@ -497,8 +497,8 @@ namespace NUnit.Framework
 		#region StringMatching
 
 		/// <summary>
-		/// 	Returns a constraint that succeeds if the actual
-		/// 	value matches the Regex pattern supplied as an argument.
+		/// Returns a constraint that succeeds if the actual
+		/// value matches the Regex pattern supplied as an argument.
 		/// </summary>
 		public static RegexConstraint StringMatching(string pattern)
 		{
@@ -510,8 +510,8 @@ namespace NUnit.Framework
 		#region SamePath
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether the path provided 
-		/// 	is the same as an expected path after canonicalization.
+		/// Returns a constraint that tests whether the path provided
+		/// is the same as an expected path after canonicalization.
 		/// </summary>
 		public static SamePathConstraint SamePath(string expected)
 		{
@@ -523,8 +523,8 @@ namespace NUnit.Framework
 		#region SubPath
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether the path provided 
-		/// 	is the same path or under an expected path after canonicalization.
+		/// Returns a constraint that tests whether the path provided
+		/// is the same path or under an expected path after canonicalization.
 		/// </summary>
 		public static SubPathConstraint SubPath(string expected)
 		{
@@ -536,8 +536,8 @@ namespace NUnit.Framework
 		#region SamePathOrUnder
 
 		/// <summary>
-		/// 	Returns a constraint that tests whether the path provided 
-		/// 	is the same path or under an expected path after canonicalization.
+		/// Returns a constraint that tests whether the path provided
+		/// is the same path or under an expected path after canonicalization.
 		/// </summary>
 		public static SamePathOrUnderConstraint SamePathOrUnder(string expected)
 		{
@@ -565,8 +565,8 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Returns a constraint that tests whether the actual value falls 
-		/// 	within a specified range.
+		/// Returns a constraint that tests whether the actual value falls
+		/// within a specified range.
 		/// </summary>
 		public static RangeConstraint<T> InRange<T>(T from, T to) where T : IComparable<T>
 		{

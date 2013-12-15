@@ -7,6 +7,7 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 
 using NUnit.Util;
@@ -14,7 +15,7 @@ using NUnit.Util;
 namespace NUnit.UiKit
 {
 	/// <summary>
-	/// 	Summary description for OptionsDialogBase.
+	/// Summary description for OptionsDialogBase.
 	/// </summary>
 	public class SettingsDialogBase : NUnitFormBase
 	{
@@ -40,7 +41,7 @@ namespace NUnit.UiKit
 		protected Button cancelButton;
 
 		/// <summary>
-		/// 	Required designer variable.
+		/// Required designer variable.
 		/// </summary>
 		private Container components = null;
 
@@ -90,7 +91,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Clean up any resources being used.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose(bool disposing)
 		{
@@ -103,50 +104,50 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Required method for Designer support - do not modify
-		/// 	the contents of this method with the code editor.
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.cancelButton = new System.Windows.Forms.Button();
-			this.okButton = new System.Windows.Forms.Button();
+			this.cancelButton = new Button();
+			this.okButton = new Button();
 			this.SuspendLayout();
 			// 
 			// cancelButton
 			// 
-			this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.cancelButton.Anchor = ((AnchorStyles)((AnchorStyles.Bottom | AnchorStyles.Right)));
 			this.cancelButton.CausesValidation = false;
-			this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.cancelButton.Location = new System.Drawing.Point(256, 424);
+			this.cancelButton.DialogResult = DialogResult.Cancel;
+			this.cancelButton.Location = new Point(256, 424);
 			this.cancelButton.Name = "cancelButton";
-			this.cancelButton.Size = new System.Drawing.Size(72, 24);
+			this.cancelButton.Size = new Size(72, 24);
 			this.cancelButton.TabIndex = 18;
 			this.cancelButton.Text = "Cancel";
 			// 
 			// okButton
 			// 
-			this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.okButton.Location = new System.Drawing.Point(168, 424);
+			this.okButton.Anchor = ((AnchorStyles)((AnchorStyles.Bottom | AnchorStyles.Right)));
+			this.okButton.Location = new Point(168, 424);
 			this.okButton.Name = "okButton";
-			this.okButton.Size = new System.Drawing.Size(72, 24);
+			this.okButton.Size = new Size(72, 24);
 			this.okButton.TabIndex = 17;
 			this.okButton.Text = "OK";
-			this.okButton.Click += new System.EventHandler(this.okButton_Click);
+			this.okButton.Click += new EventHandler(this.okButton_Click);
 			// 
 			// SettingsDialogBase
 			// 
-			this.ClientSize = new System.Drawing.Size(336, 458);
+			this.ClientSize = new Size(336, 458);
 			this.Controls.Add(this.cancelButton);
 			this.Controls.Add(this.okButton);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.FormBorderStyle = FormBorderStyle.FixedDialog;
 			this.HelpButton = true;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "SettingsDialogBase";
 			this.ShowInTaskbar = false;
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+			this.StartPosition = FormStartPosition.CenterParent;
 			this.Text = "Settings";
-			this.Closed += new System.EventHandler(this.SettingsDialogBase_Closed);
+			this.Closed += new EventHandler(this.SettingsDialogBase_Closed);
 			this.ResumeLayout(false);
 		}
 

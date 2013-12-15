@@ -13,8 +13,8 @@ namespace NUnit.Core
 	using System;
 
 	/// <summary>
-	/// 	Class adapted from NUnitAddin for use in handling assemblies that are not
-	/// 	found in the test AppDomain.
+	/// Class adapted from NUnitAddin for use in handling assemblies that are not
+	/// found in the test AppDomain.
 	/// </summary>
 	public class AssemblyResolver : MarshalByRefObject, IDisposable
 	{

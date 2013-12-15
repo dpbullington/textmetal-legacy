@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
 
 	public class XmlKnownType : IXmlKnownType
 	{
-		private readonly XmlName name;
-		private readonly XmlName xsiType;
-		private readonly Type    clrType;
+		#region Constructors/Destructors
 
 		public XmlKnownType(XmlName name, XmlName xsiType, Type clrType)
 		{
@@ -30,34 +30,59 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			if (clrType == null)
 				throw Error.ArgumentNull("clrType");
 
-			this.name    = name;
+			this.name = name;
 			this.xsiType = xsiType;
 			this.clrType = clrType;
 		}
 
 		public XmlKnownType(string nameLocalName, string nameNamespaceUri, string xsiTypeLocalName, string xsiTypeNamespaceUri, Type clrType)
 			: this
-			(
-				new XmlName(nameLocalName,    nameNamespaceUri),
+				(
+				new XmlName(nameLocalName, nameNamespaceUri),
 				new XmlName(xsiTypeLocalName, xsiTypeNamespaceUri),
 				clrType
-			)
-		{ }
+				)
+		{
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly Type clrType;
+		private readonly XmlName name;
+		private readonly XmlName xsiType;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public Type ClrType
+		{
+			get
+			{
+				return this.clrType;
+			}
+		}
 
 		public XmlName Name
 		{
-			get { return name; }
+			get
+			{
+				return this.name;
+			}
 		}
 
 		public XmlName XsiType
 		{
-			get { return xsiType; }
+			get
+			{
+				return this.xsiType;
+			}
 		}
 
-		public Type ClrType
-		{
-			get { return clrType; }
-		}
+		#endregion
 	}
 }
+
 #endif

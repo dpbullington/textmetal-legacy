@@ -26,25 +26,25 @@ using NMock2.Monitoring;
 namespace NMock2
 {
 	/// <summary>
-	/// 	Represents an expectation.
+	/// Represents an expectation.
 	/// </summary>
 	public interface IExpectation
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets a value indicating whether this instance has been met.
+		/// Gets a value indicating whether this instance has been met.
 		/// </summary>
-		/// <value> <c>true</c> if this instance has been met; otherwise, <c>false</c> . </value>
+		/// <value> <c> true </c> if this instance has been met; otherwise, <c> false </c> . </value>
 		bool HasBeenMet
 		{
 			get;
 		}
 
 		/// <summary>
-		/// 	Gets a value indicating whether this instance is active.
+		/// Gets a value indicating whether this instance is active.
 		/// </summary>
-		/// <value> <c>true</c> if this instance is active; otherwise, <c>false</c> . </value>
+		/// <value> <c> true </c> if this instance is active; otherwise, <c> false </c> . </value>
 		bool IsActive
 		{
 			get;
@@ -55,39 +55,39 @@ namespace NMock2
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes the active expectations to.
+		/// Describes the active expectations to.
 		/// </summary>
 		/// <param name="writer"> The writer. </param>
 		void DescribeActiveExpectationsTo(TextWriter writer);
 
 		/// <summary>
-		/// 	Describes the unmet expectations to.
+		/// Describes the unmet expectations to.
 		/// </summary>
 		/// <param name="writer"> The writer. </param>
 		void DescribeUnmetExpectationsTo(TextWriter writer);
 
 		/// <summary>
-		/// 	Checks whether stored expectations matches the specified invocation.
+		/// Checks whether stored expectations matches the specified invocation.
 		/// </summary>
 		/// <param name="invocation"> The invocation to check. </param>
 		/// <returns> Returns whether one of the stored expectations has met the specified invocation. </returns>
 		bool Matches(Invocation invocation);
 
 		/// <summary>
-		/// 	Matcheses the ignoring is active.
+		/// Matcheses the ignoring is active.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
 		/// <returns> </returns>
 		bool MatchesIgnoringIsActive(Invocation invocation);
 
 		/// <summary>
-		/// 	Performs the specified invocation.
+		/// Performs the specified invocation.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
 		void Perform(Invocation invocation);
 
 		/// <summary>
-		/// 	Adds all expectations to <paramref name="result" /> that are associated to <paramref name="mock" />.
+		/// Adds all expectations to <paramref name="result" /> that are associated to <paramref name="mock" />.
 		/// </summary>
 		/// <param name="mock"> The mock for which expectations are queried. </param>
 		/// <param name="result"> The result to add matching expectations to. </param>

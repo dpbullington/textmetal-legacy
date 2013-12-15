@@ -9,14 +9,14 @@ using System;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	The SpecialValue enum is used to represent TestCase arguments
-	/// 	that cannot be used as arguments to an Attribute.
+	/// The SpecialValue enum is used to represent TestCase arguments
+	/// that cannot be used as arguments to an Attribute.
 	/// </summary>
 	public enum SpecialValue
 	{
 		/// <summary>
-		/// 	Null represents a null value, which cannot be used as an 
-		/// 	argument to an attriute under .NET 1.x
+		/// Null represents a null value, which cannot be used as an
+		/// argument to an attriute under .NET 1.x
 		/// </summary>
 		Null
 	}

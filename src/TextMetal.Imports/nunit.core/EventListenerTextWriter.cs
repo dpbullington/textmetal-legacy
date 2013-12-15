@@ -63,7 +63,7 @@ namespace NUnit.Core
 	}
 
 	/// <summary>
-	/// 	This wrapper adds buffering to improve cross-domain performance.
+	/// This wrapper adds buffering to improve cross-domain performance.
 	/// </summary>
 	public class BufferedEventListenerTextWriter : TextWriter
 	{

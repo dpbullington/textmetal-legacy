@@ -9,9 +9,9 @@ using System;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	ITestEvents interface defines events related to loading
-	/// 	and unloading of test projects and loading, unloading and
-	/// 	running tests.
+	/// ITestEvents interface defines events related to loading
+	/// and unloading of test projects and loading, unloading and
+	/// running tests.
 	/// </summary>
 	public interface ITestEvents
 	{
@@ -41,8 +41,8 @@ namespace NUnit.Util
 		event TestEventHandler SuiteStarting;
 
 		/// <summary>
-		/// 	An unhandled exception was thrown during a test run,
-		/// 	and it cannot be associated with a particular test failure.
+		/// An unhandled exception was thrown during a test run,
+		/// and it cannot be associated with a particular test failure.
 		/// </summary>
 		event TestEventHandler TestException;
 
@@ -52,7 +52,7 @@ namespace NUnit.Util
 		event TestEventHandler TestLoading;
 
 		/// <summary>
-		/// 	Console Out/Error
+		/// Console Out/Error
 		/// </summary>
 		event TestEventHandler TestOutput;
 

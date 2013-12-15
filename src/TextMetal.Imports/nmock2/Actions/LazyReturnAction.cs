@@ -24,14 +24,14 @@ using NMock2.Monitoring;
 namespace NMock2.Actions
 {
 	/// <summary>
-	/// 	Action that sets the result value on an invocation. The value is aquired by calling the delegate specified in the constructor.
+	/// Action that sets the result value on an invocation. The value is aquired by calling the delegate specified in the constructor.
 	/// </summary>
 	public class LazyReturnAction : IAction
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="LazyReturnAction" /> class.
+		/// Initializes a new instance of the <see cref="LazyReturnAction" /> class.
 		/// </summary>
 		/// <param name="evaluate"> The delegate used to aquire the return value. </param>
 		public LazyReturnAction(Evaluate evaluate)
@@ -44,7 +44,7 @@ namespace NMock2.Actions
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Stores the evaluate delegate for this action.
+		/// Stores the evaluate delegate for this action.
 		/// </summary>
 		private readonly Evaluate evaluate;
 
@@ -53,7 +53,7 @@ namespace NMock2.Actions
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public void DescribeTo(TextWriter writer)
@@ -62,7 +62,7 @@ namespace NMock2.Actions
 		}
 
 		/// <summary>
-		/// 	Invokes this object.
+		/// Invokes this object.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
 		public void Invoke(Invocation invocation)
@@ -75,7 +75,7 @@ namespace NMock2.Actions
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		/// <summary>
-		/// 	Delegate that is used to get the return value.
+		/// Delegate that is used to get the return value.
 		/// </summary>
 		/// <returns> Returns an object... </returns>
 		public delegate object Evaluate();

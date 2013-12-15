@@ -12,13 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	public interface IXmlNamespaceSource
 	{
-		string GetElementPrefix  (IXmlNode node, string namespaceUri);
+		#region Methods/Operators
+
 		string GetAttributePrefix(IXmlNode node, string namespaceUri);
+
+		string GetElementPrefix(IXmlNode node, string namespaceUri);
+
+		#endregion
 	}
 }
+
 #endif

@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Xml.XPath;
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
 #if !SL3
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
-	using System.Xml.XPath;
 
 	public class XPathReadOnlyCursor : XPathNode, IXmlCursor
 	{
-		private XPathNodeIterator iterator;
-		private readonly IXmlIncludedTypeMap includedTypes;
-		private readonly CursorFlags flags;
+		#region Constructors/Destructors
 
 		public XPathReadOnlyCursor(IXmlNode parent, CompiledXPath path,
 			IXmlIncludedTypeMap includedTypes, IXmlNamespaceSource namespaces, CursorFlags flags)
@@ -37,16 +37,36 @@ namespace Castle.Components.DictionaryAdapter.Xml
 				throw Error.ArgumentNull("includedTypes");
 
 			this.includedTypes = includedTypes;
-			this.flags         = flags;
+			this.flags = flags;
 
-			Reset();
+			this.Reset();
 		}
-			
-		public void Reset()
+
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly CursorFlags flags;
+		private readonly IXmlIncludedTypeMap includedTypes;
+		private XPathNodeIterator iterator;
+
+		#endregion
+
+		#region Methods/Operators
+
+		public void Coerce(Type type)
 		{
-			var source = Parent.RequireRealizable<XPathNavigator>();
-			if (source.IsReal)
-				iterator = source.Value.Select(xpath.Path);
+			throw Error.CursorNotMutable();
+		}
+
+		public void Create(Type type)
+		{
+			throw Error.CursorNotMutable();
+		}
+
+		public void MakeNext(Type type)
+		{
+			throw Error.CursorNotMutable();
 		}
 
 		public bool MoveNext()
@@ -54,34 +74,15 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			for (;;)
 			{
 				var hasNext
-					= iterator != null
-					&& iterator.MoveNext()
-					&& (flags.AllowsMultipleItems() || !iterator.MoveNext());
+					= this.iterator != null
+					&& this.iterator.MoveNext()
+					&& (this.flags.AllowsMultipleItems() || !this.iterator.MoveNext());
 
 				if (!hasNext)
-					return SetAtEnd();
-				if (SetAtNext())
+					return this.SetAtEnd();
+				if (this.SetAtNext())
 					return true;
 			}
-		}
-
-		private bool SetAtEnd()
-		{
-			node = null;
-			type = null;
-			return false;
-		}
-
-		private bool SetAtNext()
-		{
-			node = iterator.Current;
-
-			IXmlIncludedType includedType;
-			if (!includedTypes.TryGet(XsiType, out includedType))
-				return false;
-
-			type = includedType.ClrType;
-			return true;
 		}
 
 		public void MoveTo(IXmlNode position)
@@ -92,36 +93,31 @@ namespace Castle.Components.DictionaryAdapter.Xml
 
 			var positionNode = source.Value;
 
-			Reset();
+			this.Reset();
 
-			if (iterator != null)
-				while (iterator.MoveNext())
-					if (iterator.Current.IsSamePosition(positionNode))
-						{ SetAtNext(); return; }
+			if (this.iterator != null)
+			{
+				while (this.iterator.MoveNext())
+				{
+					if (this.iterator.Current.IsSamePosition(positionNode))
+					{
+						this.SetAtNext();
+						return;
+					}
+				}
+			}
 
 			throw Error.CursorCannotMoveToGivenNode();
 		}
 
 		public void MoveToEnd()
 		{
-			if (iterator != null)
-				while (iterator.MoveNext()) ;
-			SetAtEnd();
-		}
-
-		public void MakeNext(Type type)
-		{
-			throw Error.CursorNotMutable();
-		}
-
-		public void Create(Type type)
-		{
-			throw Error.CursorNotMutable();
-		}
-
-		public void Coerce(Type type)
-		{
-			throw Error.CursorNotMutable();
+			if (this.iterator != null)
+			{
+				while (this.iterator.MoveNext())
+					;
+			}
+			this.SetAtEnd();
 		}
 
 		public void Remove()
@@ -134,11 +130,40 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			throw Error.CursorNotMutable();
 		}
 
+		public void Reset()
+		{
+			var source = this.Parent.RequireRealizable<XPathNavigator>();
+			if (source.IsReal)
+				this.iterator = source.Value.Select(this.xpath.Path);
+		}
+
 		public override IXmlNode Save()
 		{
-			return new XPathNode(node.Clone(), type, Namespaces);
+			return new XPathNode(this.node.Clone(), this.type, this.Namespaces);
 		}
+
+		private bool SetAtEnd()
+		{
+			this.node = null;
+			this.type = null;
+			return false;
+		}
+
+		private bool SetAtNext()
+		{
+			this.node = this.iterator.Current;
+
+			IXmlIncludedType includedType;
+			if (!this.includedTypes.TryGet(this.XsiType, out includedType))
+				return false;
+
+			this.type = includedType.ClrType;
+			return true;
+		}
+
+		#endregion
 	}
 }
+
 #endif
 #endif

@@ -9,15 +9,15 @@ using System;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	ParameterizedFixtureSuite serves as a container for the set of test 
-	/// 	fixtures created from a given Type using various parameters.
+	/// ParameterizedFixtureSuite serves as a container for the set of test
+	/// fixtures created from a given Type using various parameters.
 	/// </summary>
 	public class ParameterizedFixtureSuite : TestSuite
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="ParameterizedFixtureSuite" /> class.
+		/// Initializes a new instance of the <see cref="ParameterizedFixtureSuite" /> class.
 		/// </summary>
 		/// <param name="type"> The type. </param>
 		public ParameterizedFixtureSuite(Type type)
@@ -37,7 +37,7 @@ namespace NUnit.Core
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the Type represented by this suite.
+		/// Gets the Type represented by this suite.
 		/// </summary>
 		/// <value> A Sysetm.Type. </value>
 		public Type ParameterizedType
@@ -49,7 +49,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the type of the test.
+		/// Gets the type of the test.
 		/// </summary>
 		/// <value> The type of the test. </value>
 		public override string TestType

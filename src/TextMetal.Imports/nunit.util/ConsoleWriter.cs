@@ -12,7 +12,7 @@ namespace NUnit.Util
 	using System;
 
 	/// <summary>
-	/// 	Class used for receiving console output from the running test and displaying it.
+	/// Class used for receiving console output from the running test and displaying it.
 	/// </summary>
 	public class ConsoleWriter : TextWriter
 	{

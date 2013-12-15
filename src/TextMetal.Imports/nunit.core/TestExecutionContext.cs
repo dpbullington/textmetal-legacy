@@ -15,23 +15,21 @@ using System.Threading;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Helper class used to save and restore certain static or
-	/// 	singleton settings in the environment that affect tests 
-	/// 	or which might be changed by the user tests.
-	/// 
-	/// 	An internal class is used to hold settings and a stack
-	/// 	of these objects is pushed and popped as Save and Restore
-	/// 	are called.
-	/// 
-	/// 	Static methods for each setting forward to the internal 
-	/// 	object on the top of the stack.
+	/// Helper class used to save and restore certain static or
+	/// singleton settings in the environment that affect tests
+	/// or which might be changed by the user tests.
+	/// An internal class is used to hold settings and a stack
+	/// of these objects is pushed and popped as Save and Restore
+	/// are called.
+	/// Static methods for each setting forward to the internal
+	/// object on the top of the stack.
 	/// </summary>
 	public class TestExecutionContext
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="TestExecutionContext" /> class.
+		/// Initializes a new instance of the <see cref="TestExecutionContext" /> class.
 		/// </summary>
 		public TestExecutionContext()
 		{
@@ -53,7 +51,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="TestExecutionContext" /> class.
+		/// Initializes a new instance of the <see cref="TestExecutionContext" /> class.
 		/// </summary>
 		/// <param name="other"> An existing instance of TestExecutionContext. </param>
 		public TestExecutionContext(TestExecutionContext other)
@@ -84,48 +82,48 @@ namespace NUnit.Core
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The current context, head of the list of saved contexts.
+		/// The current context, head of the list of saved contexts.
 		/// </summary>
 		private static TestExecutionContext current = new TestExecutionContext();
 
 		/// <summary>
-		/// 	Context dictionary used to provide test access
-		/// 	to this TestExecutionContext
+		/// Context dictionary used to provide test access
+		/// to this TestExecutionContext
 		/// </summary>
 		private ContextDictionary contextDictionary;
 
 		/// <summary>
-		/// 	The current culture
+		/// The current culture
 		/// </summary>
 		private CultureInfo currentCulture;
 
 		/// <summary>
-		/// 	The current working directory
+		/// The current working directory
 		/// </summary>
 		private string currentDirectory;
 
 		/// <summary>
-		/// 	The current Principal.
+		/// The current Principal.
 		/// </summary>
 		private IPrincipal currentPrincipal;
 
 		/// <summary>
-		/// 	The active TestResult for the current test
+		/// The active TestResult for the current test
 		/// </summary>
 		private TestResult currentResult;
 
 		/// <summary>
-		/// 	The currently executing test
+		/// The currently executing test
 		/// </summary>
 		private Test currentTest;
 
 		/// <summary>
-		/// 	The current UI culture
+		/// The current UI culture
 		/// </summary>
 		private CultureInfo currentUICulture;
 
 		/// <summary>
-		/// 	Destination for standard error
+		/// Destination for standard error
 		/// </summary>
 		private TextWriter errorWriter;
 
@@ -133,35 +131,35 @@ namespace NUnit.Core
 
 		//private bool logging;
 		/// <summary>
-		/// 	Indicates whether logging is enabled
+		/// Indicates whether logging is enabled
 		/// </summary>
 		/// <summary>
-		/// 	Destination for standard output
+		/// Destination for standard output
 		/// </summary>
 		private TextWriter outWriter;
 
 		/// <summary>
-		/// 	Link to a prior saved context
+		/// Link to a prior saved context
 		/// </summary>
 		public TestExecutionContext prior;
 
 		/// <summary>
-		/// 	Default timeout for test cases
+		/// Default timeout for test cases
 		/// </summary>
 		private int testCaseTimeout;
 
 		/// <summary>
-		/// 	The TestPackage being executed
+		/// The TestPackage being executed
 		/// </summary>
 		private TestPackage testPackage;
 
 		/// <summary>
-		/// 	Destination for Trace output
+		/// Destination for Trace output
 		/// </summary>
 		private TextWriter traceWriter;
 
 		/// <summary>
-		/// 	Indicates whether trace is enabled
+		/// Indicates whether trace is enabled
 		/// </summary>
 		private bool tracing;
 
@@ -170,7 +168,7 @@ namespace NUnit.Core
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the current context.
+		/// Gets the current context.
 		/// </summary>
 		/// <value> The current context. </value>
 		public static TestExecutionContext CurrentContext
@@ -182,7 +180,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Saves or restores the CurrentCulture
+		/// Saves or restores the CurrentCulture
 		/// </summary>
 		public CultureInfo CurrentCulture
 		{
@@ -198,7 +196,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Saves and restores the CurrentDirectory
+		/// Saves and restores the CurrentDirectory
 		/// </summary>
 		public string CurrentDirectory
 		{
@@ -214,7 +212,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets or sets the current <see cref="IPrincipal" /> for the Thread.
+		/// Gets or sets the current <see cref="IPrincipal" /> for the Thread.
 		/// </summary>
 		public IPrincipal CurrentPrincipal
 		{
@@ -230,7 +228,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets or sets the current test result
+		/// Gets or sets the current test result
 		/// </summary>
 		public TestResult CurrentResult
 		{
@@ -245,7 +243,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets or sets the current test
+		/// Gets or sets the current test
 		/// </summary>
 		public Test CurrentTest
 		{
@@ -260,7 +258,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Saves or restores the CurrentUICulture
+		/// Saves or restores the CurrentUICulture
 		/// </summary>
 		public CultureInfo CurrentUICulture
 		{
@@ -276,7 +274,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Controls where Console.Error is directed
+		/// Controls where Console.Error is directed
 		/// </summary>
 		public TextWriter Error
 		{
@@ -308,15 +306,14 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets or sets the Log writer, which is actually held by a log4net 
-		/// 	TextWriterAppender. When first set, the appender will be created
-		/// 	and will thereafter send any log events to the writer.
-		///  
-		/// 	In normal operation, LogWriter is set to an EventListenerTextWriter
-		/// 	connected to the EventQueue in the test domain. The events are
-		/// 	subsequently captured in the Gui an the output displayed in
-		/// 	the Log tab. The application under test does not need to define
-		/// 	any additional appenders.
+		/// Gets or sets the Log writer, which is actually held by a log4net
+		/// TextWriterAppender. When first set, the appender will be created
+		/// and will thereafter send any log events to the writer.
+		/// In normal operation, LogWriter is set to an EventListenerTextWriter
+		/// connected to the EventQueue in the test domain. The events are
+		/// subsequently captured in the Gui an the output displayed in
+		/// the Log tab. The application under test does not need to define
+		/// any additional appenders.
 		/// </summary>
 		public TextWriter LogWriter
 		{
@@ -331,7 +328,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Controls where Console.Out is directed
+		/// Controls where Console.Out is directed
 		/// </summary>
 		public TextWriter Out
 		{
@@ -351,7 +348,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets or sets the test case timeout value
+		/// Gets or sets the test case timeout value
 		/// </summary>
 		public int TestCaseTimeout
 		{
@@ -366,7 +363,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the test package currently being run
+		/// Gets the test package currently being run
 		/// </summary>
 		public TestPackage TestPackage
 		{
@@ -381,7 +378,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Controls where Trace output is directed
+		/// Controls where Trace output is directed
 		/// </summary>
 		public TextWriter TraceWriter
 		{
@@ -405,8 +402,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Controls whether trace and debug output are written
-		/// 	to the standard output.
+		/// Controls whether trace and debug output are written
+		/// to the standard output.
 		/// </summary>
 		public bool Tracing
 		{
@@ -434,8 +431,8 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Restores the last saved context and puts
-		/// 	any saved settings back into effect.
+		/// Restores the last saved context and puts
+		/// any saved settings back into effect.
 		/// </summary>
 		public static void Restore()
 		{
@@ -449,8 +446,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Saves the old context and makes a fresh one 
-		/// 	current without changing any settings.
+		/// Saves the old context and makes a fresh one
+		/// current without changing any settings.
 		/// </summary>
 		public static void Save()
 		{
@@ -463,8 +460,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Used to restore settings to their prior
-		/// 	values before reverting to a prior context.
+		/// Used to restore settings to their prior
+		/// values before reverting to a prior context.
 		/// </summary>
 		public void ReverseChanges()
 		{
@@ -493,7 +490,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Record any changed values in the current context
+		/// Record any changed values in the current context
 		/// </summary>
 		public void Update()
 		{

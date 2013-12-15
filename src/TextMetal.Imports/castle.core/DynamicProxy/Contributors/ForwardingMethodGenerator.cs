@@ -12,35 +12,47 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Castle.DynamicProxy.Generators;
+using Castle.DynamicProxy.Generators.Emitters;
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+
 namespace Castle.DynamicProxy.Contributors
 {
-	using Castle.DynamicProxy.Generators;
-	using Castle.DynamicProxy.Generators.Emitters;
-	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-
 	public class ForwardingMethodGenerator : MethodGenerator
 	{
-		private readonly GetTargetReferenceDelegate getTargetReference;
+		#region Constructors/Destructors
 
 		public ForwardingMethodGenerator(MetaMethod method, OverrideMethodDelegate overrideMethod,
-		                                 GetTargetReferenceDelegate getTargetReference)
+			GetTargetReferenceDelegate getTargetReference)
 			: base(method, overrideMethod)
 		{
 			this.getTargetReference = getTargetReference;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly GetTargetReferenceDelegate getTargetReference;
+
+		#endregion
+
+		#region Methods/Operators
+
 		protected override MethodEmitter BuildProxiedMethodBody(MethodEmitter emitter, ClassEmitter @class,
-		                                                        ProxyGenerationOptions options, INamingScope namingScope)
+			ProxyGenerationOptions options, INamingScope namingScope)
 		{
-			var targetReference = getTargetReference(@class, MethodToOverride);
-			var arguments = ArgumentsUtil.ConvertToArgumentReferenceExpression(MethodToOverride.GetParameters());
+			var targetReference = this.getTargetReference(@class, this.MethodToOverride);
+			var arguments = ArgumentsUtil.ConvertToArgumentReferenceExpression(this.MethodToOverride.GetParameters());
 
 			emitter.CodeBuilder.AddStatement(new ReturnStatement(
-			                                 	new MethodInvocationExpression(
-			                                 		targetReference,
-			                                 		MethodToOverride,
-			                                 		arguments) { VirtualCall = true }));
+				new MethodInvocationExpression(
+					targetReference,
+					this.MethodToOverride,
+					arguments) { VirtualCall = true }));
 			return emitter;
 		}
+
+		#endregion
 	}
 }

@@ -13,7 +13,7 @@ using NUnit.Framework.Constraints;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	Summary description for DirectoryAssert
+	/// Summary description for DirectoryAssert
 	/// </summary>
 	[Obsolete("Use Assert with constraint-based syntax")]
 	public class DirectoryAssert
@@ -21,9 +21,9 @@ namespace NUnit.Framework
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	We don't actually want any instances of this object, but some people
-		/// 	like to inherit from it to add other static methods. Hence, the
-		/// 	protected constructor disallows any instances of this object.
+		/// We don't actually want any instances of this object, but some people
+		/// like to inherit from it to add other static methods. Hence, the
+		/// protected constructor disallows any instances of this object.
 		/// </summary>
 		protected DirectoryAssert()
 		{
@@ -34,9 +34,9 @@ namespace NUnit.Framework
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Verifies that two directories are equal.  Two directories are considered
-		/// 	equal if both are null, or if both have the same value byte for byte.
-		/// 	If they are not equal an <see cref="AssertionException" /> is thrown.
+		/// Verifies that two directories are equal.  Two directories are considered
+		/// equal if both are null, or if both have the same value byte for byte.
+		/// If they are not equal an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> A directory containing the value that is expected </param>
 		/// <param name="actual"> A directory containing the actual value </param>
@@ -48,9 +48,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two directories are equal.  Two directories are considered
-		/// 	equal if both are null, or if both have the same value byte for byte.
-		/// 	If they are not equal an <see cref="AssertionException" /> is thrown.
+		/// Verifies that two directories are equal.  Two directories are considered
+		/// equal if both are null, or if both have the same value byte for byte.
+		/// If they are not equal an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> A directory containing the value that is expected </param>
 		/// <param name="actual"> A directory containing the actual value </param>
@@ -61,9 +61,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two directories are equal.  Two directories are considered
-		/// 	equal if both are null, or if both have the same value byte for byte.
-		/// 	If they are not equal an <see cref="AssertionException" /> is thrown.
+		/// Verifies that two directories are equal.  Two directories are considered
+		/// equal if both are null, or if both have the same value byte for byte.
+		/// If they are not equal an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> A directory containing the value that is expected </param>
 		/// <param name="actual"> A directory containing the actual value </param>
@@ -73,9 +73,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two directories are equal.  Two directories are considered
-		/// 	equal if both are null, or if both have the same value byte for byte.
-		/// 	If they are not equal an <see cref="AssertionException" /> is thrown.
+		/// Verifies that two directories are equal.  Two directories are considered
+		/// equal if both are null, or if both have the same value byte for byte.
+		/// If they are not equal an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> A directory path string containing the value that is expected </param>
 		/// <param name="actual"> A directory path string containing the actual value </param>
@@ -93,9 +93,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two directories are equal.  Two directories are considered
-		/// 	equal if both are null, or if both have the same value byte for byte.
-		/// 	If they are not equal an <see cref="AssertionException" /> is thrown.
+		/// Verifies that two directories are equal.  Two directories are considered
+		/// equal if both are null, or if both have the same value byte for byte.
+		/// If they are not equal an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> A directory path string containing the value that is expected </param>
 		/// <param name="actual"> A directory path string containing the actual value </param>
@@ -106,9 +106,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two directories are equal.  Two directories are considered
-		/// 	equal if both are null, or if both have the same value byte for byte.
-		/// 	If they are not equal an <see cref="AssertionException" /> is thrown.
+		/// Verifies that two directories are equal.  Two directories are considered
+		/// equal if both are null, or if both have the same value byte for byte.
+		/// If they are not equal an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> A directory path string containing the value that is expected </param>
 		/// <param name="actual"> A directory path string containing the actual value </param>
@@ -118,8 +118,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that two directories are not equal. If they are equal
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that two directories are not equal. If they are equal
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> A directory containing the value that is expected </param>
 		/// <param name="actual"> A directory containing the actual value </param>
@@ -131,8 +131,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that two directories are not equal. If they are equal
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that two directories are not equal. If they are equal
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> A directory containing the value that is expected </param>
 		/// <param name="actual"> A directory containing the actual value </param>
@@ -143,8 +143,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that two directories are not equal. If they are equal
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that two directories are not equal. If they are equal
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> A directory containing the value that is expected </param>
 		/// <param name="actual"> A directory containing the actual value </param>
@@ -154,8 +154,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that two directories are not equal. If they are equal
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that two directories are not equal. If they are equal
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> A directory path string containing the value that is expected </param>
 		/// <param name="actual"> A directory path string containing the actual value </param>
@@ -173,8 +173,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that two directories are not equal. If they are equal
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that two directories are not equal. If they are equal
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> A directory path string containing the value that is expected </param>
 		/// <param name="actual"> A directory path string containing the actual value </param>
@@ -185,8 +185,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that two directories are not equal. If they are equal
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that two directories are not equal. If they are equal
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> A directory path string containing the value that is expected </param>
 		/// <param name="actual"> A directory path string containing the actual value </param>
@@ -196,8 +196,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	The Equals method throws an AssertionException. This is done 
-		/// 	to make sure there is no mistake by calling this function.
+		/// The Equals method throws an AssertionException. This is done
+		/// to make sure there is no mistake by calling this function.
 		/// </summary>
 		/// <param name="a"> </param>
 		/// <param name="b"> </param>
@@ -208,8 +208,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that the directory is empty. If it is not empty
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that the directory is empty. If it is not empty
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="message"> The message to display if directories are not equal </param>
@@ -220,8 +220,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that the directory is empty. If it is not empty
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that the directory is empty. If it is not empty
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="message"> The message to display if directories are not equal </param>
@@ -231,8 +231,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that the directory is empty. If it is not empty
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that the directory is empty. If it is not empty
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		public static void IsEmpty(DirectoryInfo directory)
@@ -241,8 +241,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that the directory is empty. If it is not empty
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that the directory is empty. If it is not empty
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="message"> The message to display if directories are not equal </param>
@@ -253,8 +253,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that the directory is empty. If it is not empty
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that the directory is empty. If it is not empty
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="message"> The message to display if directories are not equal </param>
@@ -264,8 +264,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that the directory is empty. If it is not empty
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that the directory is empty. If it is not empty
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		public static void IsEmpty(string directory)
@@ -274,8 +274,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that the directory is not empty. If it is empty
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that the directory is not empty. If it is empty
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="message"> The message to display if directories are not equal </param>
@@ -286,8 +286,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that the directory is not empty. If it is empty
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that the directory is not empty. If it is empty
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="message"> The message to display if directories are not equal </param>
@@ -297,8 +297,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that the directory is not empty. If it is empty
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that the directory is not empty. If it is empty
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		public static void IsNotEmpty(DirectoryInfo directory)
@@ -307,8 +307,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that the directory is not empty. If it is empty
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that the directory is not empty. If it is empty
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="message"> The message to display if directories are not equal </param>
@@ -320,8 +320,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that the directory is not empty. If it is empty
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that the directory is not empty. If it is empty
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="message"> The message to display if directories are not equal </param>
@@ -331,8 +331,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that the directory is not empty. If it is empty
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that the directory is not empty. If it is empty
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		public static void IsNotEmpty(string directory)
@@ -341,8 +341,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that path does not contain actual as a subdirectory or
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that path does not contain actual as a subdirectory or
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="actual"> sub-directory asserted to exist under directory </param>
@@ -359,8 +359,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that path does not contain actual as a subdirectory or
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that path does not contain actual as a subdirectory or
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="actual"> sub-directory asserted to exist under directory </param>
@@ -376,8 +376,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that path does not contain actual as a subdirectory or
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that path does not contain actual as a subdirectory or
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="actual"> sub-directory asserted to exist under directory </param>
@@ -392,8 +392,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that path does not contain actual as a subdirectory or
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that path does not contain actual as a subdirectory or
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="actual"> sub-directory asserted to exist under directory </param>
@@ -405,8 +405,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that path does not contain actual as a subdirectory or
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that path does not contain actual as a subdirectory or
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="actual"> sub-directory asserted to exist under directory </param>
@@ -417,8 +417,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that path does not contain actual as a subdirectory or
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that path does not contain actual as a subdirectory or
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="actual"> sub-directory asserted to exist under directory </param>
@@ -428,8 +428,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that path contains actual as a subdirectory or
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that path contains actual as a subdirectory or
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="actual"> sub-directory asserted to exist under directory </param>
@@ -446,8 +446,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that path contains actual as a subdirectory or
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that path contains actual as a subdirectory or
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="actual"> sub-directory asserted to exist under directory </param>
@@ -463,8 +463,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that path contains actual as a subdirectory or
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that path contains actual as a subdirectory or
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="actual"> sub-directory asserted to exist under directory </param>
@@ -479,8 +479,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that path contains actual as a subdirectory or
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that path contains actual as a subdirectory or
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="actual"> sub-directory asserted to exist under directory </param>
@@ -492,8 +492,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that path contains actual as a subdirectory or
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that path contains actual as a subdirectory or
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="actual"> sub-directory asserted to exist under directory </param>
@@ -504,8 +504,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that path contains actual as a subdirectory or
-		/// 	an <see cref="AssertionException" /> is thrown.
+		/// Asserts that path contains actual as a subdirectory or
+		/// an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="directory"> A directory to search </param>
 		/// <param name="actual"> sub-directory asserted to exist under directory </param>
@@ -515,9 +515,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	override the default ReferenceEquals to throw an AssertionException. This 
-		/// 	implementation makes sure there is no mistake in calling this function 
-		/// 	as part of Assert.
+		/// override the default ReferenceEquals to throw an AssertionException. This
+		/// implementation makes sure there is no mistake in calling this function
+		/// as part of Assert.
 		/// </summary>
 		/// <param name="a"> </param>
 		/// <param name="b"> </param>

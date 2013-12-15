@@ -12,22 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System.Reflection.Emit;
-
 	public class LiteralIntExpression : Expression
 	{
-		private readonly int value;
+		#region Constructors/Destructors
 
 		public LiteralIntExpression(int value)
 		{
 			this.value = value;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly int value;
+
+		#endregion
+
+		#region Methods/Operators
+
 		public override void Emit(IMemberEmitter member, ILGenerator gen)
 		{
-			switch (value)
+			switch (this.value)
 			{
 				case -1:
 					gen.Emit(OpCodes.Ldc_I4_M1);
@@ -60,9 +70,11 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 					gen.Emit(OpCodes.Ldc_I4_8);
 					break;
 				default:
-					gen.Emit(OpCodes.Ldc_I4, value);
+					gen.Emit(OpCodes.Ldc_I4, this.value);
 					break;
 			}
 		}
+
+		#endregion
 	}
 }

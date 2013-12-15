@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace NUnit.UiException
 {
 	/// <summary>
-	/// 	This is a default implementation of ITextManager interface.
+	/// This is a default implementation of ITextManager interface.
 	/// </summary>
 	public class DefaultTextManager :
 		IEnumerable,
@@ -19,7 +19,7 @@ namespace NUnit.UiException
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Builds a new instance of TextManager.
+		/// Builds a new instance of TextManager.
 		/// </summary>
 		public DefaultTextManager()
 		{
@@ -34,17 +34,17 @@ namespace NUnit.UiException
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Array of strings where each string is a line in this text.
+		/// Array of strings where each string is a line in this text.
 		/// </summary>
 		private List<string> _lines;
 
 		/// <summary>
-		/// 	Stores the character count of the longest line in this text.
+		/// Stores the character count of the longest line in this text.
 		/// </summary>
 		private int _maxLength;
 
 		/// <summary>
-		/// 	Hold the text to be managed by this instance.
+		/// Hold the text to be managed by this instance.
 		/// </summary>
 		private string _text;
 
@@ -53,7 +53,7 @@ namespace NUnit.UiException
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the number of lines in the text.
+		/// Gets the number of lines in the text.
 		/// </summary>
 		public int LineCount
 		{
@@ -64,7 +64,7 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Gets the character count of the longest line in this text.
+		/// Gets the character count of the longest line in this text.
 		/// </summary>
 		public int MaxLength
 		{
@@ -75,7 +75,7 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Gets or sets the text to be managed by this object.
+		/// Gets or sets the text to be managed by this object.
 		/// </summary>
 		public string Text
 		{
@@ -98,8 +98,8 @@ namespace NUnit.UiException
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Gets an IEnumerator that iterate through each line of the
-		/// 	current text.
+		/// Gets an IEnumerator that iterate through each line of the
+		/// current text.
 		/// </summary>
 		/// <returns> An IEnumerator that iterate through each line of this text. </returns>
 		public IEnumerator GetEnumerator()
@@ -108,8 +108,8 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Gets the line of text at the specified startingPosition.
-		/// 	(zero based startingPosition).
+		/// Gets the line of text at the specified startingPosition.
+		/// (zero based startingPosition).
 		/// </summary>
 		/// <param name="lineIndex"> The startingPosition of the line to get. </param>
 		/// <returns> A string that represents the content of the specified line without the trailing characters. </returns>
@@ -119,7 +119,7 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	setup member data with the input text.
+		/// setup member data with the input text.
 		/// </summary>
 		private void _populateLineCollection(string text)
 		{

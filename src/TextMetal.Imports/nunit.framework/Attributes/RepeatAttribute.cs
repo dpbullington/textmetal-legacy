@@ -9,8 +9,8 @@ using System;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	RepeatAttribute may be applied to test case in order
-	/// 	to run it multiple times.
+	/// RepeatAttribute may be applied to test case in order
+	/// to run it multiple times.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
 	public class RepeatAttribute : PropertyAttribute
@@ -18,7 +18,7 @@ namespace NUnit.Framework
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a RepeatAttribute
+		/// Construct a RepeatAttribute
 		/// </summary>
 		/// <param name="count"> The number of times to run the test </param>
 		public RepeatAttribute(int count)

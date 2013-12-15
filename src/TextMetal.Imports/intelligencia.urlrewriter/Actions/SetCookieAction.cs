@@ -10,62 +10,78 @@ using System.Web;
 
 namespace Intelligencia.UrlRewriter.Actions
 {
-    /// <summary>
-    /// Action that sets a cookie.
-    /// </summary>
-    public class SetCookieAction : IRewriteAction
-    {
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        /// <param name="cookieName">The cookie name.</param>
-        /// <param name="cookieValue">The cookie value.</param>
-        public SetCookieAction(string cookieName, string cookieValue)
-        {
-            if (cookieName == null)
-            {
-                throw new ArgumentNullException("cookieName");
-            }
-            if (cookieValue == null)
-            {
-                throw new ArgumentNullException("cookieValue");
-            }
-            _name = cookieName;
-            _value = cookieValue;
-        }
+	/// <summary>
+	/// Action that sets a cookie.
+	/// </summary>
+	public class SetCookieAction : IRewriteAction
+	{
+		#region Constructors/Destructors
 
-        /// <summary>
-        /// The name of the variable.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-        }
+		/// <summary>
+		/// Default constructor.
+		/// </summary>
+		/// <param name="cookieName"> The cookie name. </param>
+		/// <param name="cookieValue"> The cookie value. </param>
+		public SetCookieAction(string cookieName, string cookieValue)
+		{
+			if (cookieName == null)
+				throw new ArgumentNullException("cookieName");
+			if (cookieValue == null)
+				throw new ArgumentNullException("cookieValue");
+			this._name = cookieName;
+			this._value = cookieValue;
+		}
 
-        /// <summary>
-        /// The value of the variable.
-        /// </summary>
-        public string Value
-        {
-            get { return _value; }
-        }
+		#endregion
 
-        /// <summary>
-        /// Executes the action.
-        /// </summary>
-        /// <param name="context">The rewrite context.</param>
-        public RewriteProcessing Execute(RewriteContext context)
-        {
-            if (context == null)
-            {
-                throw new ArgumentNullException("context");
-            }
-            HttpCookie cookie = new HttpCookie(Name, Value);
-            context.ResponseCookies.Add(cookie);
-            return RewriteProcessing.ContinueProcessing;
-        }
+		#region Fields/Constants
 
-        private string _name;
-        private string _value;
-    }
+		private string _name;
+		private string _value;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		/// <summary>
+		/// The name of the variable.
+		/// </summary>
+		public string Name
+		{
+			get
+			{
+				return this._name;
+			}
+		}
+
+		/// <summary>
+		/// The value of the variable.
+		/// </summary>
+		public string Value
+		{
+			get
+			{
+				return this._value;
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		/// <summary>
+		/// Executes the action.
+		/// </summary>
+		/// <param name="context"> The rewrite context. </param>
+		public RewriteProcessing Execute(RewriteContext context)
+		{
+			if (context == null)
+				throw new ArgumentNullException("context");
+			HttpCookie cookie = new HttpCookie(this.Name, this.Value);
+			context.ResponseCookies.Add(cookie);
+			return RewriteProcessing.ContinueProcessing;
+		}
+
+		#endregion
+	}
 }

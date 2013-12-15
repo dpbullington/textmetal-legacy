@@ -10,8 +10,8 @@ using System.Threading;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	InternalTraceLevel is an enumeration controlling the
-	/// 	level of detailed presented in the internal log.
+	/// InternalTraceLevel is an enumeration controlling the
+	/// level of detailed presented in the internal log.
 	/// </summary>
 	public enum InternalTraceLevel
 	{
@@ -24,7 +24,7 @@ namespace NUnit.Core
 	}
 
 	/// <summary>
-	/// 	Summary description for Logger.
+	/// Summary description for Logger.
 	/// </summary>
 	public class InternalTrace
 	{
@@ -136,15 +136,15 @@ namespace NUnit.Core
 		public static void Log(InternalTraceLevel level, string message, string category, Exception ex)
 		{
 			Writer.WriteLine("{0} {1,-5} [{2,2}] {3}: {4}",
-			                 DateTime.Now.ToString(TIME_FMT),
-			                 level == InternalTraceLevel.Verbose ? "Debug" : level.ToString(),
+				DateTime.Now.ToString(TIME_FMT),
+				level == InternalTraceLevel.Verbose ? "Debug" : level.ToString(),
 #if CLR_2_0 || CLR_4_0
-			                 Thread.CurrentThread.ManagedThreadId,
+				Thread.CurrentThread.ManagedThreadId,
 #else
                 AppDomain.GetCurrentThreadId(),
 #endif
-			                 category,
-			                 message);
+				category,
+				message);
 
 			if (ex != null)
 				Writer.WriteLine(ex.ToString());

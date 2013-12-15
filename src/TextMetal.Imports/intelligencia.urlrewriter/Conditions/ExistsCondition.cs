@@ -10,49 +10,57 @@ using System.IO;
 
 namespace Intelligencia.UrlRewriter.Conditions
 {
-    /// <summary>
-    /// Condition that tests the existence of a file.
-    /// </summary>
-    public class ExistsCondition : IRewriteCondition
-    {
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="location">The file location</param>
-        public ExistsCondition(string location)
-        {
-            if (location == null)
-            {
-                throw new ArgumentNullException("location");
-            }
-            _location = location;
-        }
+	/// <summary>
+	/// Condition that tests the existence of a file.
+	/// </summary>
+	public class ExistsCondition : IRewriteCondition
+	{
+		#region Constructors/Destructors
 
-        /// <summary>
-        /// Determines if the condition is matched.
-        /// </summary>
-        /// <param name="context">The rewriting context.</param>
-        /// <returns>True if the condition is met.</returns>
-        public bool IsMatch(RewriteContext context)
-        {
-            if (context == null)
-            {
-                throw new ArgumentNullException("context");
-            }
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="location"> The file location </param>
+		public ExistsCondition(string location)
+		{
+			if (location == null)
+				throw new ArgumentNullException("location");
+			this._location = location;
+		}
 
-            try
-            {
-                string filename = context.MapPath(context.Expand(_location));
-                return File.Exists(filename) || Directory.Exists(filename);
-            }
-            catch
-            {
-                // An HTTP exception or an I/O exception indicates that the file definitely
-                // does not exist.
-                return false;
-            }
-        }
+		#endregion
 
-        private string _location;
-    }
+		#region Fields/Constants
+
+		private string _location;
+
+		#endregion
+
+		#region Methods/Operators
+
+		/// <summary>
+		/// Determines if the condition is matched.
+		/// </summary>
+		/// <param name="context"> The rewriting context. </param>
+		/// <returns> True if the condition is met. </returns>
+		public bool IsMatch(RewriteContext context)
+		{
+			if (context == null)
+				throw new ArgumentNullException("context");
+
+			try
+			{
+				string filename = context.MapPath(context.Expand(this._location));
+				return File.Exists(filename) || Directory.Exists(filename);
+			}
+			catch
+			{
+				// An HTTP exception or an I/O exception indicates that the file definitely
+				// does not exist.
+				return false;
+			}
+		}
+
+		#endregion
+	}
 }

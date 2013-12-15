@@ -12,202 +12,136 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
-    using System;
-    using System.Collections.Generic;
+	using System;
 
 	internal class XmlCollectionAdapter<T> : ICollectionAdapter<T>, IXmlNodeSource
-    {
-        private List<XmlCollectionItem<T>>  items;
-        private List<XmlCollectionItem<T>>  snapshot;
+	{
+		#region Constructors/Destructors
+
+		public XmlCollectionAdapter(
+			IXmlNode parentNode,
+			IDictionaryAdapter parentObject,
+			IXmlCollectionAccessor accessor)
+		{
+			this.items = new List<XmlCollectionItem<T>>();
+
+			this.accessor = accessor;
+			this.cursor = accessor.SelectCollectionItems(parentNode, true);
+			this.parentNode = parentNode;
+			this.parentObject = parentObject;
+			this.references = XmlAdapter.For(parentObject).References;
+
+			while (this.cursor.MoveNext())
+				this.items.Add(new XmlCollectionItem<T>(this.cursor.Save()));
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly IXmlCollectionAccessor accessor;
+		private readonly IXmlCursor cursor;
+		private readonly IXmlNode parentNode;
+		private readonly IDictionaryAdapter parentObject;
+		private readonly XmlReferenceManager references;
 		private ICollectionAdapterObserver<T> advisor;
+		private List<XmlCollectionItem<T>> items;
+		private List<XmlCollectionItem<T>> snapshot;
 
-        private readonly IXmlCursor             cursor;
-        private readonly IXmlCollectionAccessor accessor;
-        private readonly IXmlNode               parentNode;
-        private readonly IDictionaryAdapter     parentObject;
-        private readonly XmlReferenceManager    references;
+		#endregion
 
-        public XmlCollectionAdapter(
-            IXmlNode parentNode,
-            IDictionaryAdapter parentObject,
-            IXmlCollectionAccessor accessor)
-        {
-            items = new List<XmlCollectionItem<T>>();
-
-            this.accessor     = accessor;
-            this.cursor       = accessor.SelectCollectionItems(parentNode, true);
-            this.parentNode   = parentNode;
-            this.parentObject = parentObject;
-            this.references   = XmlAdapter.For(parentObject).References;
-
-            while (cursor.MoveNext())
-                items.Add(new XmlCollectionItem<T>(cursor.Save()));
-        }
-
-        public IXmlNode Node
-        {
-            get { return parentNode; }
-        }
-
-        public XmlReferenceManager References
-        {
-            get { return references; }
-        }
-
-		public int Count
-		{
-			get { return items.Count; }
-		}
-
-		public void Initialize(ICollectionAdapterObserver<T> advisor)
-		{
-			this.advisor = advisor;
-		}
+		#region Properties/Indexers/Events
 
 		public T this[int index]
 		{
-		    get
-		    {
-		        var item = items[index];
+			get
+			{
+				var item = this.items[index];
 
-		        if (!item.HasValue)
-		            items[index] = item = item.WithValue(GetValue(item.Node));
+				if (!item.HasValue)
+					this.items[index] = item = item.WithValue(this.GetValue(item.Node));
 
-		        return item.Value;
-		    }
-		    set
-		    {
-		        var item = items[index];
-		        cursor.MoveTo(item.Node);
-		        SetValue(cursor, item.Value, ref value);
+				return item.Value;
+			}
+			set
+			{
+				var item = this.items[index];
+				this.cursor.MoveTo(item.Node);
+				this.SetValue(this.cursor, item.Value, ref value);
 
-		        if (advisor.OnReplacing(item.Value, value))
-		        {
+				if (this.advisor.OnReplacing(item.Value, value))
+				{
 					// Commit the replacement
-		            items[index] = item.WithValue(value);
-					advisor.OnReplaced(item.Value, value, index);
-		        }
-		        else
-		        {
+					this.items[index] = item.WithValue(value);
+					this.advisor.OnReplaced(item.Value, value, index);
+				}
+				else
+				{
 					// Rollback the replacement
-		            var oldValue = item.Value;
-		            SetValue(cursor, value, ref oldValue);
-		            items[index] = item.WithValue(oldValue);
-		        }
-		    }
+					var oldValue = item.Value;
+					this.SetValue(this.cursor, value, ref oldValue);
+					this.items[index] = item.WithValue(oldValue);
+				}
+			}
 		}
 
-		public T AddNew()
+		public IEqualityComparer<T> Comparer
 		{
-			cursor.MoveToEnd();
-			cursor.Create(typeof(T));
-
-			var node  = cursor.Save();
-			var value = GetValue(node);
-			var index = items.Count;
-
-			CommitInsert(index, node, value, true);
-			return (T) value;
+			get
+			{
+				return null;
+			}
 		}
 
-		public bool Add(T value)
+		public int Count
 		{
-			return InsertCore(Count, value, append: true);
+			get
+			{
+				return this.items.Count;
+			}
 		}
 
-		public bool Insert(int index, T value)
+		public bool HasSnapshot
 		{
-			return InsertCore(index, value, append: false);
+			get
+			{
+				return this.snapshot != null;
+			}
 		}
 
-		private bool InsertCore(int index, T value, bool append)
+		public IXmlNode Node
 		{
-			if (append)
-				cursor.MoveToEnd();
-			else
-				cursor.MoveTo(items[index].Node);
-
-			cursor.Create(GetTypeOrDefault(value));
-			var node = cursor.Save();
-			SetValue(cursor, default(T), ref value);
-
-			return advisor.OnInserting(value)
-				? CommitInsert(index, node, value, append)
-				: RollbackInsert();
+			get
+			{
+				return this.parentNode;
+			}
 		}
 
-		private bool CommitInsert(int index, IXmlNode node, T value, bool append)
+		public XmlReferenceManager References
 		{
-			var item = new XmlCollectionItem<T>(node, value);
-
-			if (append)
-				items.Add(item);
-			else
-				items.Insert(index, item);
-
-			advisor.OnInserted(value, index);
-			return true;
+			get
+			{
+				return this.references;
+			}
 		}
 
-		private bool RollbackInsert()
+		public int SnapshotCount
 		{
-			cursor.Remove();
-			return false;
+			get
+			{
+				return this.snapshot.Count;
+			}
 		}
 
-		public void Remove(int index)
-		{
-			var item = items[index];
-			OnRemoving(item);
+		#endregion
 
-			cursor.MoveTo(item.Node);
-			cursor.Remove();
-			items.RemoveAt(index);
-
-			advisor.OnRemoved(item.Value, index);
-		}
-
-		public void Clear()
-		{
-			foreach (var item in items)
-				OnRemoving(item);
-
-			cursor.Reset();
-			cursor.RemoveAllNext();
-			items.Clear();
-
-			// Don't call OnRemoved. Caller is already going to fire a Reset shortly.
-		}
-
-		public void ClearReferences()
-		{
-			if (accessor.IsReference)
-				foreach (var item in items)
-					references.OnAssigningNull(item.Node, item.Value);
-		}
-
-		private void OnRemoving(XmlCollectionItem<T> item)
-		{
-			advisor.OnRemoving(item.Value);
-
-			if (accessor.IsReference)
-				references.OnAssigningNull(item.Node, item.Value);
-		}
-
-		private T GetValue(IXmlNode node)
-		{
-			return (T) (accessor.GetValue(node, parentObject, references, true, true) ?? default(T));
-		}
-
-		private void SetValue(IXmlCursor cursor, object oldValue, ref T value)
-		{
-			object obj = value;
-			accessor.SetValue(cursor, parentObject, references, true, oldValue, ref obj);
-			value = (T) (obj ?? default(T));
-		}
+		#region Methods/Operators
 
 		private static Type GetTypeOrDefault(T value)
 		{
@@ -216,45 +150,149 @@ namespace Castle.Components.DictionaryAdapter.Xml
 				: value.GetComponentType();
 		}
 
-		public IEqualityComparer<T> Comparer
+		public bool Add(T value)
 		{
-			get { return null; }
+			return this.InsertCore(this.Count, value, append: true);
 		}
 
-		public bool HasSnapshot
+		public T AddNew()
 		{
-			get { return snapshot != null; }
+			this.cursor.MoveToEnd();
+			this.cursor.Create(typeof(T));
+
+			var node = this.cursor.Save();
+			var value = this.GetValue(node);
+			var index = this.items.Count;
+
+			this.CommitInsert(index, node, value, true);
+			return (T)value;
 		}
 
-		public int SnapshotCount
+		public void Clear()
 		{
-			get { return snapshot.Count; }
+			foreach (var item in this.items)
+				this.OnRemoving(item);
+
+			this.cursor.Reset();
+			this.cursor.RemoveAllNext();
+			this.items.Clear();
+
+			// Don't call OnRemoved. Caller is already going to fire a Reset shortly.
 		}
 
-		public T GetCurrentItem(int index)
+		public void ClearReferences()
 		{
-			return items[index].Value;
+			if (this.accessor.IsReference)
+			{
+				foreach (var item in this.items)
+					this.references.OnAssigningNull(item.Node, item.Value);
+			}
 		}
 
-		public T GetSnapshotItem(int index)
+		private bool CommitInsert(int index, IXmlNode node, T value, bool append)
 		{
-			return snapshot[index].Value;
-		}
+			var item = new XmlCollectionItem<T>(node, value);
 
-		public void SaveSnapshot()
-		{
-			snapshot = new List<XmlCollectionItem<T>>(items);
-		}
+			if (append)
+				this.items.Add(item);
+			else
+				this.items.Insert(index, item);
 
-		public void LoadSnapshot()
-		{
-			items = snapshot;
+			this.advisor.OnInserted(value, index);
+			return true;
 		}
 
 		public void DropSnapshot()
 		{
-			snapshot = null;
+			this.snapshot = null;
 		}
+
+		public T GetCurrentItem(int index)
+		{
+			return this.items[index].Value;
+		}
+
+		public T GetSnapshotItem(int index)
+		{
+			return this.snapshot[index].Value;
+		}
+
+		private T GetValue(IXmlNode node)
+		{
+			return (T)(this.accessor.GetValue(node, this.parentObject, this.references, true, true) ?? default(T));
+		}
+
+		public void Initialize(ICollectionAdapterObserver<T> advisor)
+		{
+			this.advisor = advisor;
+		}
+
+		public bool Insert(int index, T value)
+		{
+			return this.InsertCore(index, value, append: false);
+		}
+
+		private bool InsertCore(int index, T value, bool append)
+		{
+			if (append)
+				this.cursor.MoveToEnd();
+			else
+				this.cursor.MoveTo(this.items[index].Node);
+
+			this.cursor.Create(GetTypeOrDefault(value));
+			var node = this.cursor.Save();
+			this.SetValue(this.cursor, default(T), ref value);
+
+			return this.advisor.OnInserting(value)
+				? this.CommitInsert(index, node, value, append)
+				: this.RollbackInsert();
+		}
+
+		public void LoadSnapshot()
+		{
+			this.items = this.snapshot;
+		}
+
+		private void OnRemoving(XmlCollectionItem<T> item)
+		{
+			this.advisor.OnRemoving(item.Value);
+
+			if (this.accessor.IsReference)
+				this.references.OnAssigningNull(item.Node, item.Value);
+		}
+
+		public void Remove(int index)
+		{
+			var item = this.items[index];
+			this.OnRemoving(item);
+
+			this.cursor.MoveTo(item.Node);
+			this.cursor.Remove();
+			this.items.RemoveAt(index);
+
+			this.advisor.OnRemoved(item.Value, index);
+		}
+
+		private bool RollbackInsert()
+		{
+			this.cursor.Remove();
+			return false;
+		}
+
+		public void SaveSnapshot()
+		{
+			this.snapshot = new List<XmlCollectionItem<T>>(this.items);
+		}
+
+		private void SetValue(IXmlCursor cursor, object oldValue, ref T value)
+		{
+			object obj = value;
+			this.accessor.SetValue(cursor, this.parentObject, this.references, true, oldValue, ref obj);
+			value = (T)(obj ?? default(T));
+		}
+
+		#endregion
 	}
 }
+
 #endif

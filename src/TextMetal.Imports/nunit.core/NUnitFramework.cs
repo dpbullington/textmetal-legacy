@@ -14,10 +14,10 @@ using NUnit.Core.Extensibility;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Static methods that implement aspects of the NUnit framework that cut 
-	/// 	across individual test types, extensions, etc. Some of these use the 
-	/// 	methods of the Reflect class to implement operations specific to the 
-	/// 	NUnit Framework.
+	/// Static methods that implement aspects of the NUnit framework that cut
+	/// across individual test types, extensions, etc. Some of these use the
+	/// methods of the Reflect class to implement operations specific to the
+	/// NUnit Framework.
 	/// </summary>
 	public class NUnitFramework
 	{
@@ -85,7 +85,7 @@ namespace NUnit.Core
 					foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
 					{
 						if (assembly.GetName().Name == "nunit.framework" ||
-						    assembly.GetName().Name == "NUnitLite")
+							assembly.GetName().Name == "NUnitLite")
 						{
 							frameworkAssembly = assembly;
 							break;
@@ -104,8 +104,8 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Modify a newly constructed test based on a type or method by 
-		/// 	applying any of NUnit's common attributes.
+		/// Modify a newly constructed test based on a type or method by
+		/// applying any of NUnit's common attributes.
 		/// </summary>
 		/// <param name="member"> The type or method from which the test was constructed </param>
 		/// <param name="test"> The test to which the attributes apply </param>
@@ -115,8 +115,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Modify a newly constructed test based on an assembly by applying 
-		/// 	any of NUnit's common attributes.
+		/// Modify a newly constructed test based on an assembly by applying
+		/// any of NUnit's common attributes.
 		/// </summary>
 		/// <param name="assembly"> The assembly from which the test was constructed </param>
 		/// <param name="test"> The test to which the attributes apply </param>
@@ -126,13 +126,14 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Modify a newly constructed test by applying any of NUnit's common
-		/// 	attributes, based on an input array of attributes. This method checks
-		/// 	for all attributes, relying on the fact that specific attributes can only
-		/// 	occur on those constructs on which they are allowed.
+		/// Modify a newly constructed test by applying any of NUnit's common
+		/// attributes, based on an input array of attributes. This method checks
+		/// for all attributes, relying on the fact that specific attributes can only
+		/// occur on those constructs on which they are allowed.
 		/// </summary>
-		/// <param name="attributes"> An array of attributes possibly including NUnit attributes
-		/// 	<param name="test"> The test to which the attributes apply </param>
+		/// <param name="attributes">
+		/// An array of attributes possibly including NUnit attributes
+		/// <param name="test"> The test to which the attributes apply </param>
 		public static void ApplyCommonAttributes(Attribute[] attributes, Test test)
 		{
 			foreach (Attribute attribute in attributes)
@@ -241,11 +242,12 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Modify a newly constructed test by checking for ExpectedExceptionAttribute
-		/// 	and setting properties on the test accordingly.
+		/// Modify a newly constructed test by checking for ExpectedExceptionAttribute
+		/// and setting properties on the test accordingly.
 		/// </summary>
-		/// <param name="attributes"> An array of attributes possibly including NUnit attributes
-		/// 	<param name="test"> The test to which the attributes apply </param>
+		/// <param name="attributes">
+		/// An array of attributes possibly including NUnit attributes
+		/// <param name="test"> The test to which the attributes apply </param>
 		public static void ApplyExpectedExceptionAttribute(MethodInfo method, TestMethod testMethod)
 		{
 			Attribute attribute = Reflect.GetAttribute(
@@ -260,9 +262,9 @@ namespace NUnit.Core
 			foreach (MethodInfo theMethod in Reflect.GetMethodsWithAttribute(fixtureType, attributeName, true))
 			{
 				if (theMethod.IsAbstract ||
-				    !theMethod.IsPublic && !theMethod.IsFamily ||
-				    theMethod.GetParameters().Length > 0 ||
-				    !theMethod.ReturnType.Equals(typeof(void)))
+					!theMethod.IsPublic && !theMethod.IsFamily ||
+					theMethod.GetParameters().Length > 0 ||
+					!theMethod.ReturnType.Equals(typeof(void)))
 				{
 					reason = string.Format("Invalid signature for SetUp or TearDown method: {0}", theMethod.Name);
 					return false;
@@ -273,7 +275,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Method to return the description from an source
+		/// Method to return the description from an source
 		/// </summary>
 		/// <param name="source"> The source to check </param>
 		/// <returns> The description, if any, or null </returns>
@@ -288,9 +290,9 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Returns a result state for a special exception.
-		/// 	If the exception is not handled specially, returns
-		/// 	ResultState.Error.
+		/// Returns a result state for a special exception.
+		/// If the exception is not handled specially, returns
+		/// ResultState.Error.
 		/// </summary>
 		/// <param name="ex"> The exception to be examined </param>
 		/// <returns> A ResultState </returns>
@@ -327,23 +329,23 @@ namespace NUnit.Core
 		public static bool IsSuiteBuilder(Type type)
 		{
 			return Reflect.HasAttribute(type, SuiteBuilderAttribute, false)
-			       && Reflect.HasInterface(type, SuiteBuilderInterface);
+					&& Reflect.HasInterface(type, SuiteBuilderInterface);
 		}
 
 		public static bool IsTestCaseBuilder(Type type)
 		{
 			return Reflect.HasAttribute(type, TestCaseBuilderAttributeName, false)
-			       && Reflect.HasInterface(type, TestCaseBuilderInterfaceName);
+					&& Reflect.HasInterface(type, TestCaseBuilderInterfaceName);
 		}
 
 		public static bool IsTestDecorator(Type type)
 		{
 			return Reflect.HasAttribute(type, TestDecoratorAttributeName, false)
-			       && Reflect.HasInterface(type, TestDecoratorInterfaceName);
+					&& Reflect.HasInterface(type, TestDecoratorInterfaceName);
 		}
 
 		/// <summary>
-		/// 	Returns true if the category name is valid
+		/// Returns true if the category name is valid
 		/// </summary>
 		public static bool IsValidCategoryName(string name)
 		{
@@ -355,9 +357,9 @@ namespace NUnit.Core
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		/// <summary>
-		/// 	NUnitFramework.Assert is a nested class that implements
-		/// 	a few of the framework operations by reflection, 
-		/// 	using whatever framework version is available.
+		/// NUnitFramework.Assert is a nested class that implements
+		/// a few of the framework operations by reflection,
+		/// using whatever framework version is available.
 		/// </summary>
 		public class Assert
 		{
@@ -422,7 +424,7 @@ namespace NUnit.Core
 			#region Methods/Operators
 
 			/// <summary>
-			/// 	Invoke Assert.AreEqual by reflection
+			/// Invoke Assert.AreEqual by reflection
 			/// </summary>
 			/// <param name="expected"> The expected value </param>
 			/// <param name="actual"> The actual value </param>
@@ -443,15 +445,15 @@ namespace NUnit.Core
 			}
 
 			/// <summary>
-			/// 	Get the assertion counter. It clears itself automatically
-			/// 	on each call.
+			/// Get the assertion counter. It clears itself automatically
+			/// on each call.
 			/// </summary>
 			/// <returns> Count of number of asserts since last call </returns>
 			public static int GetAssertCount()
 			{
 				return CounterProperty == null
-					       ? 0
-					       : (int)CounterProperty.GetValue(null, new object[0]);
+					? 0
+					: (int)CounterProperty.GetValue(null, new object[0]);
 			}
 
 			#endregion

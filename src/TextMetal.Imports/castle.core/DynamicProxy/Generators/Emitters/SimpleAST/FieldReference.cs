@@ -12,84 +12,94 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Diagnostics;
+using System.Reflection;
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System.Diagnostics;
-	using System.Reflection;
-	using System.Reflection.Emit;
-
 	[DebuggerDisplay("{fieldbuilder.Name} ({fieldbuilder.FieldType})")]
 	public class FieldReference : Reference
 	{
-		private readonly FieldInfo field;
-		private readonly FieldBuilder fieldbuilder;
-		private readonly bool isStatic;
+		#region Constructors/Destructors
 
 		public FieldReference(FieldInfo field)
 		{
 			this.field = field;
 			if ((field.Attributes & FieldAttributes.Static) != 0)
 			{
-				isStatic = true;
-				owner = null;
+				this.isStatic = true;
+				this.owner = null;
 			}
 		}
 
 		public FieldReference(FieldBuilder fieldbuilder)
 		{
 			this.fieldbuilder = fieldbuilder;
-			field = fieldbuilder;
+			this.field = fieldbuilder;
 			if ((fieldbuilder.Attributes & FieldAttributes.Static) != 0)
 			{
-				isStatic = true;
-				owner = null;
+				this.isStatic = true;
+				this.owner = null;
 			}
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly FieldInfo field;
+		private readonly FieldBuilder fieldbuilder;
+		private readonly bool isStatic;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
 		public FieldBuilder Fieldbuilder
 		{
-			get { return fieldbuilder; }
+			get
+			{
+				return this.fieldbuilder;
+			}
 		}
 
 		public FieldInfo Reference
 		{
-			get { return field; }
+			get
+			{
+				return this.field;
+			}
 		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		public override void LoadAddressOfReference(ILGenerator gen)
 		{
-			if (isStatic)
-			{
-				gen.Emit(OpCodes.Ldsflda, Reference);
-			}
+			if (this.isStatic)
+				gen.Emit(OpCodes.Ldsflda, this.Reference);
 			else
-			{
-				gen.Emit(OpCodes.Ldflda, Reference);
-			}
+				gen.Emit(OpCodes.Ldflda, this.Reference);
 		}
 
 		public override void LoadReference(ILGenerator gen)
 		{
-			if (isStatic)
-			{
-				gen.Emit(OpCodes.Ldsfld, Reference);
-			}
+			if (this.isStatic)
+				gen.Emit(OpCodes.Ldsfld, this.Reference);
 			else
-			{
-				gen.Emit(OpCodes.Ldfld, Reference);
-			}
+				gen.Emit(OpCodes.Ldfld, this.Reference);
 		}
 
 		public override void StoreReference(ILGenerator gen)
 		{
-			if (isStatic)
-			{
-				gen.Emit(OpCodes.Stsfld, Reference);
-			}
+			if (this.isStatic)
+				gen.Emit(OpCodes.Stsfld, this.Reference);
 			else
-			{
-				gen.Emit(OpCodes.Stfld, Reference);
-			}
+				gen.Emit(OpCodes.Stfld, this.Reference);
 		}
+
+		#endregion
 	}
 }

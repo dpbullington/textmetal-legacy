@@ -44,7 +44,7 @@ namespace NUnit.Core.Builders
 		public bool HasDataFor(ParameterInfo parameter)
 		{
 			return Reflect.HasAttribute(parameter, ParameterDataAttribute, false)
-			       || Reflect.HasAttribute(parameter, NUnitLiteDataAttribute, false);
+					|| Reflect.HasAttribute(parameter, NUnitLiteDataAttribute, false);
 		}
 
 		#endregion

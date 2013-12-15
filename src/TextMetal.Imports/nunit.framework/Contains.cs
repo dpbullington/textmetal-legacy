@@ -11,14 +11,14 @@ using NUnit.Framework.Constraints;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	Static helper class used in the constraint-based syntax
+	/// Static helper class used in the constraint-based syntax
 	/// </summary>
 	public class Contains
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Creates a new CollectionContainsConstraint.
+		/// Creates a new CollectionContainsConstraint.
 		/// </summary>
 		/// <param name="item"> The item that should be found. </param>
 		/// <returns> A new CollectionContainsConstraint </returns>
@@ -28,7 +28,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Creates a new SubstringConstraint
+		/// Creates a new SubstringConstraint
 		/// </summary>
 		/// <param name="substring"> The value of the substring </param>
 		/// <returns> A SubstringConstraint </returns>

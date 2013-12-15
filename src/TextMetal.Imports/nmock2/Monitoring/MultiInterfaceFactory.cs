@@ -32,7 +32,7 @@ namespace NMock2.Monitoring
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="MultiInterfaceFactory" /> class.
+		/// Initializes a new instance of the <see cref="MultiInterfaceFactory" /> class.
 		/// </summary>
 		/// <param name="name"> The name of the assembly to generate. </param>
 		public MultiInterfaceFactory(string name)
@@ -96,7 +96,7 @@ namespace NMock2.Monitoring
 			#region Constructors/Destructors
 
 			/// <summary>
-			/// 	Initializes a new instance of the <see cref="TypeId" /> class.
+			/// Initializes a new instance of the <see cref="TypeId" /> class.
 			/// </summary>
 			/// <param name="types"> The types. </param>
 			public TypeId(params Type[] types)
@@ -131,7 +131,7 @@ namespace NMock2.Monitoring
 			public override bool Equals(object obj)
 			{
 				return obj is TypeId
-				       && this.ContainsSameTypesAs((TypeId)obj);
+						&& this.ContainsSameTypesAs((TypeId)obj);
 			}
 
 			public override int GetHashCode()

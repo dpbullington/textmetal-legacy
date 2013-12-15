@@ -26,14 +26,14 @@ namespace NMock2.Actions
 	using System;
 
 	/// <summary>
-	/// 	Action that set the result value of an invocation to a clone of the specified prototype.
+	/// Action that set the result value of an invocation to a clone of the specified prototype.
 	/// </summary>
 	public class ReturnCloneAction : IAction
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="ReturnCloneAction" /> class.
+		/// Initializes a new instance of the <see cref="ReturnCloneAction" /> class.
 		/// </summary>
 		/// <param name="prototype"> The prototype. </param>
 		public ReturnCloneAction(ICloneable prototype)
@@ -46,7 +46,7 @@ namespace NMock2.Actions
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Stores the prototype that will be cloned.
+		/// Stores the prototype that will be cloned.
 		/// </summary>
 		private readonly ICloneable prototype;
 
@@ -55,7 +55,7 @@ namespace NMock2.Actions
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public void DescribeTo(TextWriter writer)
@@ -65,7 +65,7 @@ namespace NMock2.Actions
 		}
 
 		/// <summary>
-		/// 	Invokes this object. Sets the result value of the invocation to a clone of the prototype.
+		/// Invokes this object. Sets the result value of the invocation to a clone of the prototype.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
 		public void Invoke(Invocation invocation)

@@ -12,23 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System.Reflection.Emit;
-
 	public class ExpressionStatement : Statement
 	{
-		private readonly Expression expression;
+		#region Constructors/Destructors
 
 		public ExpressionStatement(Expression expression)
 		{
 			this.expression = expression;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly Expression expression;
+
+		#endregion
+
+		#region Methods/Operators
+
 		public override void Emit(IMemberEmitter member, ILGenerator gen)
 		{
 			// TODO: Should it discard any possible return value with a pop?
-			expression.Emit(member, gen);
+			this.expression.Emit(member, gen);
 		}
+
+		#endregion
 	}
 }

@@ -1,4 +1,5 @@
 ﻿#region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,64 +22,78 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
-using System.Reflection;
-using Newtonsoft.Json.Utilities;
 using System.Globalization;
+using System.Reflection;
+
+using Newtonsoft.Json.Utilities;
 
 namespace Newtonsoft.Json.Serialization
 {
-  /// <summary>
-  /// Get and set values for a <see cref="MemberInfo"/> using reflection.
-  /// </summary>
-  public class ReflectionValueProvider : IValueProvider
-  {
-    private readonly MemberInfo _memberInfo;
+	/// <summary>
+	/// Get and set values for a <see cref="MemberInfo" /> using reflection.
+	/// </summary>
+	public class ReflectionValueProvider : IValueProvider
+	{
+		#region Constructors/Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ReflectionValueProvider"/> class.
-    /// </summary>
-    /// <param name="memberInfo">The member info.</param>
-    public ReflectionValueProvider(MemberInfo memberInfo)
-    {
-      ValidationUtils.ArgumentNotNull(memberInfo, "memberInfo");
-      _memberInfo = memberInfo;
-    }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ReflectionValueProvider" /> class.
+		/// </summary>
+		/// <param name="memberInfo"> The member info. </param>
+		public ReflectionValueProvider(MemberInfo memberInfo)
+		{
+			ValidationUtils.ArgumentNotNull(memberInfo, "memberInfo");
+			this._memberInfo = memberInfo;
+		}
 
-    /// <summary>
-    /// Sets the value.
-    /// </summary>
-    /// <param name="target">The target to set the value on.</param>
-    /// <param name="value">The value to set on the target.</param>
-    public void SetValue(object target, object value)
-    {
-      try
-      {
-        ReflectionUtils.SetMemberValue(_memberInfo, target, value);
-      }
-      catch (Exception ex)
-      {
-        throw new JsonSerializationException("Error setting value to '{0}' on '{1}'.".FormatWith(CultureInfo.InvariantCulture, _memberInfo.Name, target.GetType()), ex);
-      }
-    }
+		#endregion
 
-    /// <summary>
-    /// Gets the value.
-    /// </summary>
-    /// <param name="target">The target to get the value from.</param>
-    /// <returns>The value.</returns>
-    public object GetValue(object target)
-    {
-      try
-      {
-        return ReflectionUtils.GetMemberValue(_memberInfo, target);
-      }
-      catch (Exception ex)
-      {
-        throw new JsonSerializationException("Error getting value from '{0}' on '{1}'.".FormatWith(CultureInfo.InvariantCulture, _memberInfo.Name, target.GetType()), ex);
-      }
-    }
-  }
+		#region Fields/Constants
+
+		private readonly MemberInfo _memberInfo;
+
+		#endregion
+
+		#region Methods/Operators
+
+		/// <summary>
+		/// Gets the value.
+		/// </summary>
+		/// <param name="target"> The target to get the value from. </param>
+		/// <returns> The value. </returns>
+		public object GetValue(object target)
+		{
+			try
+			{
+				return ReflectionUtils.GetMemberValue(this._memberInfo, target);
+			}
+			catch (Exception ex)
+			{
+				throw new JsonSerializationException("Error getting value from '{0}' on '{1}'.".FormatWith(CultureInfo.InvariantCulture, this._memberInfo.Name, target.GetType()), ex);
+			}
+		}
+
+		/// <summary>
+		/// Sets the value.
+		/// </summary>
+		/// <param name="target"> The target to set the value on. </param>
+		/// <param name="value"> The value to set on the target. </param>
+		public void SetValue(object target, object value)
+		{
+			try
+			{
+				ReflectionUtils.SetMemberValue(this._memberInfo, target, value);
+			}
+			catch (Exception ex)
+			{
+				throw new JsonSerializationException("Error setting value to '{0}' on '{1}'.".FormatWith(CultureInfo.InvariantCulture, this._memberInfo.Name, target.GetType()), ex);
+			}
+		}
+
+		#endregion
+	}
 }

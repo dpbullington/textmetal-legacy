@@ -1,4 +1,4 @@
-// ****************************************************************
+﻿// ****************************************************************
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
@@ -10,15 +10,15 @@ using NUnit.UiException.StackTraceAnalyzers;
 namespace NUnit.UiException.StackTraceAnalysers
 {
 	/// <summary>
-	/// 	This class is responsible for locating and initializing
-	/// 	RawError.Function property with the function name as it
-	/// 	is mentioned in the stack trace line.
-	/// 	To work correclty, the class makes some
-	/// 	assumptions concerning the function format.
-	/// 	A function name is made of two parts: [name][args]
-	/// 	where [name] refers to a string of characters that doesn't
-	/// 	contain ' ' and [args] refers to a string delimited by
-	/// 	'(' and ')'.
+	/// This class is responsible for locating and initializing
+	/// RawError.Function property with the function name as it
+	/// is mentioned in the stack trace line.
+	/// To work correclty, the class makes some
+	/// assumptions concerning the function format.
+	/// A function name is made of two parts: [name][args]
+	/// where [name] refers to a string of characters that doesn't
+	/// contain ' ' and [args] refers to a string delimited by
+	/// '(' and ')'.
 	/// </summary>
 	public class FunctionParser :
 		IErrorParser
@@ -26,9 +26,9 @@ namespace NUnit.UiException.StackTraceAnalysers
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Try to match a function name by reading RawError.Input.
-		/// 	If a match is found, the method outputs the result into
-		/// 	RawError.Function and returns true.
+		/// Try to match a function name by reading RawError.Input.
+		/// If a match is found, the method outputs the result into
+		/// RawError.Function and returns true.
 		/// </summary>
 		/// <param name="parser"> An instance of parser, this parameter cannot be null. </param>
 		/// <param name="args"> An instance of RawError. This parameter cannot be null. </param>
@@ -49,7 +49,7 @@ namespace NUnit.UiException.StackTraceAnalysers
 			posOpeningParenthesis = args.Input.LastIndexOf("(");
 
 			if (posEndingParenthesis == -1 || posOpeningParenthesis == -1 ||
-			    posOpeningParenthesis > posEndingParenthesis)
+				posOpeningParenthesis > posEndingParenthesis)
 				return (false);
 
 			endName = posOpeningParenthesis;

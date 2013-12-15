@@ -25,14 +25,14 @@ namespace NMock2
 	using System;
 
 	/// <summary>
-	/// 	Fires a mocked event.
+	/// Fires a mocked event.
 	/// </summary>
 	public sealed class Fire
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Fires the specified event.
+		/// Fires the specified event.
 		/// </summary>
 		/// <param name="eventName"> Name of the event. </param>
 		/// <returns> Returns the event mock corresponding to the given <paramref name="eventName" /> . </returns>
@@ -43,7 +43,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Defines the mock the event is fired on.
+		/// Defines the mock the event is fired on.
 		/// </summary>
 		/// <param name="mock"> The mock the event is fired on. </param>
 		/// <returns> Returns the event fire syntax. </returns>

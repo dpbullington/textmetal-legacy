@@ -14,12 +14,12 @@ using NUnit.Core;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	AssemblyWatcher keeps track of one or more assemblies to 
-	/// 	see if they have changed. It incorporates a delayed notification
-	/// 	and uses a standard event to notify any interested parties
-	/// 	about the change. The path to the assembly is provided as
-	/// 	an argument to the event handler so that one routine can
-	/// 	be used to handle events from multiple watchers.
+	/// AssemblyWatcher keeps track of one or more assemblies to
+	/// see if they have changed. It incorporates a delayed notification
+	/// and uses a standard event to notify any interested parties
+	/// about the change. The path to the assembly is provided as
+	/// an argument to the event handler so that one routine can
+	/// be used to handle events from multiple watchers.
 	/// </summary>
 	public class AssemblyWatcher : IAssemblyWatcher
 	{

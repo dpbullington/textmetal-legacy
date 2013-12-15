@@ -18,9 +18,15 @@ namespace Castle.Core.Resource
 
 	public class UncResourceFactory : IResourceFactory
 	{
+		#region Constructors/Destructors
+
 		public UncResourceFactory()
 		{
 		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		public bool Accept(CustomUri uri)
 		{
@@ -36,5 +42,7 @@ namespace Castle.Core.Resource
 		{
 			return new UncResource(uri, basePath);
 		}
+
+		#endregion
 	}
 }

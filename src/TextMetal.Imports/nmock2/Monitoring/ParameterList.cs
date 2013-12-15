@@ -25,14 +25,14 @@ namespace NMock2.Monitoring
 	using System;
 
 	/// <summary>
-	/// 	Manages a list of parameters for a mocked method together with the parameter's values.
+	/// Manages a list of parameters for a mocked method together with the parameter's values.
 	/// </summary>
 	public class ParameterList
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="ParameterList" /> class.
+		/// Initializes a new instance of the <see cref="ParameterList" /> class.
 		/// </summary>
 		/// <param name="method"> The method to be mocked. </param>
 		/// <param name="values"> The values of the parameters. </param>
@@ -52,17 +52,17 @@ namespace NMock2.Monitoring
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Holds a boolean for each value if it was set or not.
+		/// Holds a boolean for each value if it was set or not.
 		/// </summary>
 		private readonly BitArray isValueSet;
 
 		/// <summary>
-		/// 	Holds the method to be mocked.
+		/// Holds the method to be mocked.
 		/// </summary>
 		private readonly MethodInfo method;
 
 		/// <summary>
-		/// 	An array holding the values of the parameters.
+		/// An array holding the values of the parameters.
 		/// </summary>
 		private readonly object[] values;
 
@@ -71,7 +71,7 @@ namespace NMock2.Monitoring
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets or sets the <see cref="System.Object" /> with the specified index.
+		/// Gets or sets the <see cref="System.Object" /> with the specified index.
 		/// </summary>
 		/// <param name="index"> The index of the value to be get or set. </param>
 		/// <value> The value of a parameter specified by its <paramref name="index" /> . </value>
@@ -98,7 +98,7 @@ namespace NMock2.Monitoring
 		}
 
 		/// <summary>
-		/// 	Gets the values as array.
+		/// Gets the values as array.
 		/// </summary>
 		/// <value> Values as array. </value>
 		internal object[] AsArray
@@ -110,7 +110,7 @@ namespace NMock2.Monitoring
 		}
 
 		/// <summary>
-		/// 	Gets the number of values.
+		/// Gets the number of values.
 		/// </summary>
 		/// <value> The number of values. </value>
 		public int Count
@@ -126,17 +126,17 @@ namespace NMock2.Monitoring
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Determines whether the parameter specified by index can be set.
+		/// Determines whether the parameter specified by index can be set.
 		/// </summary>
 		/// <param name="index"> The index of the parameter. </param>
-		/// <returns> Returns <c>true</c> if the parameter specified by index can be set; otherwise, <c>false</c> . </returns>
+		/// <returns> Returns <c> true </c> if the parameter specified by index can be set; otherwise, <c> false </c> . </returns>
 		private bool CanValueBeSet(int index)
 		{
 			return !this.method.GetParameters()[index].IsIn;
 		}
 
 		/// <summary>
-		/// 	Gets the parameter name by index.
+		/// Gets the parameter name by index.
 		/// </summary>
 		/// <param name="index"> The index of the parameter name to get. </param>
 		/// <returns> Returns the parameter name with the given index. </returns>
@@ -146,17 +146,17 @@ namespace NMock2.Monitoring
 		}
 
 		/// <summary>
-		/// 	Determines whether the value specified by index was set.
+		/// Determines whether the value specified by index was set.
 		/// </summary>
 		/// <param name="index"> The index. </param>
-		/// <returns> Returns <c>true</c> if value specified by index was set; otherwise, <c>false</c> . </returns>
+		/// <returns> Returns <c> true </c> if value specified by index was set; otherwise, <c> false </c> . </returns>
 		public bool IsValueSet(int index)
 		{
 			return this.isValueSet[index];
 		}
 
 		/// <summary>
-		/// 	Marks all values as set.
+		/// Marks all values as set.
 		/// </summary>
 		internal void MarkAllValuesAsSet()
 		{

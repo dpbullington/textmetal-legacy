@@ -12,76 +12,86 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Globalization;
+using System.IO;
+
 namespace Castle.Core.Resource
 {
 	using System;
-	using System.Globalization;
-	using System.IO;
 
 	/// <summary>
-	/// 
 	/// </summary>
 	public class FileResource : AbstractStreamResource
 	{
-		private string filePath;
-		private String basePath;
+		#region Constructors/Destructors
 
 		public FileResource(CustomUri resource)
 		{
-			CreateStream = delegate
-			{
-				return CreateStreamFromUri(resource, DefaultBasePath);
-			};
+			this.CreateStream = delegate
+								{
+									return this.CreateStreamFromUri(resource, DefaultBasePath);
+								};
 		}
 
 		public FileResource(CustomUri resource, String basePath)
 		{
-			CreateStream = delegate
-			{
-				return CreateStreamFromUri(resource, basePath);
-			};
+			this.CreateStream = delegate
+								{
+									return this.CreateStreamFromUri(resource, basePath);
+								};
 		}
 
 		public FileResource(String resourceName)
 		{
-			CreateStream = delegate
-			{
-				return CreateStreamFromPath(resourceName, DefaultBasePath);
-			};
+			this.CreateStream = delegate
+								{
+									return this.CreateStreamFromPath(resourceName, DefaultBasePath);
+								};
 		}
 
 		public FileResource(String resourceName, String basePath)
 		{
-			CreateStream = delegate
-			{
-				return CreateStreamFromPath(resourceName, basePath);
-			};
+			this.CreateStream = delegate
+								{
+									return this.CreateStreamFromPath(resourceName, basePath);
+								};
 		}
 
-		public override string ToString()
-		{
-			return String.Format(CultureInfo.CurrentCulture, "FileResource: [{0}] [{1}]", filePath, basePath);
-		}
+		#endregion
+
+		#region Fields/Constants
+
+		private String basePath;
+		private string filePath;
+
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		public override String FileBasePath
 		{
-			get { return basePath; }
+			get
+			{
+				return this.basePath;
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		private static void CheckFileExists(String path)
+		{
+			if (!File.Exists(path))
+			{
+				String message = String.Format(CultureInfo.InvariantCulture, "File {0} could not be found", new FileInfo(path).FullName);
+				throw new ResourceException(message);
+			}
 		}
 
 		public override IResource CreateRelative(String relativePath)
 		{
-			return new FileResource(relativePath, basePath);
-		}
-
-		private Stream CreateStreamFromUri(CustomUri resource, String rootPath)
-		{
-			if (resource == null) throw new ArgumentNullException("resource");
-			if (rootPath == null) throw new ArgumentNullException("rootPath");
-
-			if (!resource.IsFile)
-				throw new ArgumentException("The specified resource is not a file", "resource");
-
-			return CreateStreamFromPath(resource.Path, rootPath);
+			return new FileResource(relativePath, this.basePath);
 		}
 
 		private Stream CreateStreamFromPath(String resourcePath, String rootPath)
@@ -107,13 +117,24 @@ namespace Castle.Core.Resource
 			return File.OpenRead(resourcePath);
 		}
 
-		private static void CheckFileExists(String path)
+		private Stream CreateStreamFromUri(CustomUri resource, String rootPath)
 		{
-			if (!File.Exists(path))
-			{
-				String message = String.Format(CultureInfo.InvariantCulture, "File {0} could not be found", new FileInfo(path).FullName);
-				throw new ResourceException(message);
-			}
+			if (resource == null)
+				throw new ArgumentNullException("resource");
+			if (rootPath == null)
+				throw new ArgumentNullException("rootPath");
+
+			if (!resource.IsFile)
+				throw new ArgumentException("The specified resource is not a file", "resource");
+
+			return this.CreateStreamFromPath(resource.Path, rootPath);
 		}
+
+		public override string ToString()
+		{
+			return String.Format(CultureInfo.CurrentCulture, "FileResource: [{0}] [{1}]", this.filePath, this.basePath);
+		}
+
+		#endregion
 	}
 }

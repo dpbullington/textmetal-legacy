@@ -24,14 +24,14 @@ namespace NMock2.Internal
 	using System;
 
 	/// <summary>
-	/// 	Builder for event invocations.
+	/// Builder for event invocations.
 	/// </summary>
 	public class EventInvocationBuilder : IEventSyntax, IEventArgumentSyntax
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="EventInvocationBuilder" /> class.
+		/// Initializes a new instance of the <see cref="EventInvocationBuilder" /> class.
 		/// </summary>
 		/// <param name="eventName"> Name of the event. </param>
 		public EventInvocationBuilder(string eventName)
@@ -44,12 +44,12 @@ namespace NMock2.Internal
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Stores the event name to be mocked.
+		/// Stores the event name to be mocked.
 		/// </summary>
 		private readonly string eventName;
 
 		/// <summary>
-		/// 	Stores the mock when called in the On mehtod.
+		/// Stores the mock when called in the On mehtod.
 		/// </summary>
 		private IMockObject mock;
 
@@ -58,7 +58,7 @@ namespace NMock2.Internal
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Specifies the mock on which the event is fired.
+		/// Specifies the mock on which the event is fired.
 		/// </summary>
 		/// <param name="o"> The mock on which the event is fired. </param>
 		/// <returns> Event argument sytax defining the arguments passed to the event. </returns>
@@ -72,7 +72,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Specifies the event arguments that are passed to the event and fires the event.
+		/// Specifies the event arguments that are passed to the event and fires the event.
 		/// </summary>
 		/// <param name="args"> The args to be passed to raise the event. </param>
 		public void With(params object[] args)
@@ -87,14 +87,14 @@ namespace NMock2.Internal
 	}
 
 	/// <summary>
-	/// 	Builder for event invocations.
+	/// Builder for event invocations.
 	/// </summary>
 	public class NewEventInvocationBuilder : INewEventSyntax, IEventArgumentSyntax
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="NewEventInvocationBuilder" /> class.
+		/// Initializes a new instance of the <see cref="NewEventInvocationBuilder" /> class.
 		/// </summary>
 		/// <param name="mock"> The mock. </param>
 		public NewEventInvocationBuilder(object mock)
@@ -110,12 +110,12 @@ namespace NMock2.Internal
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Stores the event name to be mocked.
+		/// Stores the event name to be mocked.
 		/// </summary>
 		private string eventName;
 
 		/// <summary>
-		/// 	Stores the mock when called in the On method.
+		/// Stores the mock when called in the On method.
 		/// </summary>
 		private IMockObject mock;
 
@@ -124,7 +124,7 @@ namespace NMock2.Internal
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Defines the event to fire.
+		/// Defines the event to fire.
 		/// </summary>
 		/// <param name="eventName"> Name of the event. </param>
 		/// <returns> Event argument syntax defining the arguments passed to the event. </returns>
@@ -135,7 +135,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Specifies the event arguments that are passed to the event and fires the event.
+		/// Specifies the event arguments that are passed to the event and fires the event.
 		/// </summary>
 		/// <param name="args"> The args to be passed to raise the event. </param>
 		public void With(params object[] args)

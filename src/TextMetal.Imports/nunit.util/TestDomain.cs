@@ -32,12 +32,12 @@ namespace NUnit.Util
 		private static Logger log = InternalTrace.GetLogger(typeof(TestDomain));
 
 		/// <summary>
-		/// 	The TestAgent in the domain
+		/// The TestAgent in the domain
 		/// </summary>
 		private DomainAgent agent;
 
 		/// <summary>
-		/// 	The appdomain used  to load tests
+		/// The appdomain used  to load tests
 		/// </summary>
 		private AppDomain domain;
 

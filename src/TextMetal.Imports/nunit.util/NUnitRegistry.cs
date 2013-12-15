@@ -11,15 +11,15 @@ namespace NUnit.Util
 	using System;
 
 	/// <summary>
-	/// 	NUnitRegistry provides static properties for NUnit's
-	/// 	subkey under CurrentUser.
+	/// NUnitRegistry provides static properties for NUnit's
+	/// subkey under CurrentUser.
 	/// </summary>
 	public class NUnitRegistry
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Prevent construction of object
+		/// Prevent construction of object
 		/// </summary>
 		private NUnitRegistry()
 		{
@@ -45,7 +45,7 @@ namespace NUnit.Util
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Registry subkey for the current user
+		/// Registry subkey for the current user
 		/// </summary>
 		public static RegistryKey CurrentUser
 		{
@@ -87,7 +87,7 @@ namespace NUnit.Util
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Static function that clears out the contents of a key
+		/// Static function that clears out the contents of a key
 		/// </summary>
 		/// <param name="key"> Key to be cleared </param>
 		public static void ClearKey(RegistryKey key)
@@ -107,7 +107,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Static helper method that clears out the contents of a subkey
+		/// Static helper method that clears out the contents of a subkey
 		/// </summary>
 		/// <param name="baseKey"> Base key for the subkey </param>
 		/// <param name="subKey"> Name of the subkey </param>
@@ -127,7 +127,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Static method that copies the contents of one key to another
+		/// Static method that copies the contents of one key to another
 		/// </summary>
 		/// <param name="fromKey"> The source key for the copy </param>
 		/// <param name="toKey"> The target key for the copy </param>

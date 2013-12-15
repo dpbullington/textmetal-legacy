@@ -9,16 +9,16 @@ using System;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	TestFixtureBuilder contains static methods for building
-	/// 	TestFixtures from types. It uses builtin SuiteBuilders
-	/// 	and any installed extensions to do it.
+	/// TestFixtureBuilder contains static methods for building
+	/// TestFixtures from types. It uses builtin SuiteBuilders
+	/// and any installed extensions to do it.
 	/// </summary>
 	public class TestFixtureBuilder
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Private constructor to prevent instantiation
+		/// Private constructor to prevent instantiation
 		/// </summary>
 		private TestFixtureBuilder()
 		{
@@ -29,7 +29,7 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Build a test fixture from a given type.
+		/// Build a test fixture from a given type.
 		/// </summary>
 		/// <param name="type"> The type to be used for the fixture </param>
 		/// <returns> A TestSuite if the fixture can be built, null if not </returns>
@@ -44,7 +44,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Build a fixture from an object.
+		/// Build a fixture from an object.
 		/// </summary>
 		/// <param name="fixture"> The object to be used for the fixture </param>
 		/// <returns> A TestSuite if fixture type can be built, null if not </returns>
@@ -58,7 +58,7 @@ namespace NUnit.Core
 
 				// TODO: Integrate building from an object as part of NUnitTestFixtureBuilder
 				if (suite.RunState == RunState.NotRunnable &&
-				    Reflect.GetConstructor(fixture.GetType()) == null)
+					Reflect.GetConstructor(fixture.GetType()) == null)
 				{
 					suite.RunState = RunState.Runnable;
 					suite.IgnoreReason = null;

@@ -18,20 +18,37 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 
 	public abstract class TypeReference : Reference
 	{
-		private readonly Type type;
+		#region Constructors/Destructors
 
-		protected TypeReference(Type argumentType) : this(null, argumentType)
+		protected TypeReference(Type argumentType)
+			: this(null, argumentType)
 		{
 		}
 
-		protected TypeReference(Reference owner, Type type) : base(owner)
+		protected TypeReference(Reference owner, Type type)
+			: base(owner)
 		{
 			this.type = type;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly Type type;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
 		public Type Type
 		{
-			get { return type; }
+			get
+			{
+				return this.type;
+			}
 		}
+
+		#endregion
 	}
 }

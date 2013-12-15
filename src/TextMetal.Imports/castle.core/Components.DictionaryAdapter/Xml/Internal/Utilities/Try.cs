@@ -12,26 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Diagnostics;
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
-	using System.Diagnostics;
+	public static class Try
+	{
+		#region Methods/Operators
 
-    public static class Try
-    {
-        [DebuggerHidden]
-        public static bool Failure<T>(out T result)
-        {
-            result = default(T);
-            return false;
-        }
+		[DebuggerHidden]
+		public static bool Failure<T>(out T result)
+		{
+			result = default(T);
+			return false;
+		}
 
-        [DebuggerHidden]
-        public static bool Success<T>(out T result, T value)
-        {
-            result = value;
-            return true;
-        }
-    }
+		[DebuggerHidden]
+		public static bool Success<T>(out T result, T value)
+		{
+			result = value;
+			return true;
+		}
+
+		#endregion
+	}
 }
+
 #endif

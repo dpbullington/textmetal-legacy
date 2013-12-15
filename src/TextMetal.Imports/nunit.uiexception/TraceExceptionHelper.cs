@@ -9,17 +9,16 @@ using System.Diagnostics;
 namespace NUnit.UiException
 {
 	/// <summary>
-	/// 	(formerly named TraceExceptionHelper)
-	/// 
-	/// 	Exposes static methods to assert predicates and throw exceptions
-	/// 	as needed.
+	/// (formerly named TraceExceptionHelper)
+	/// Exposes static methods to assert predicates and throw exceptions
+	/// as needed.
 	/// </summary>
 	public class UiExceptionHelper
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Asserts that 'test' is false or throws an ArgumentException.
+		/// Asserts that 'test' is false or throws an ArgumentException.
 		/// </summary>
 		/// <param name="test"> The boolean to be tested. </param>
 		/// <param name="message"> The error message. </param>
@@ -34,8 +33,8 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Asserts that reference is not null; otherwise throws an
-		/// 	ArgumentNullException.
+		/// Asserts that reference is not null; otherwise throws an
+		/// ArgumentNullException.
 		/// </summary>
 		/// <param name="value"> The reference to be tested. </param>
 		/// <param name="paramName"> The name of this reference </param>
@@ -49,7 +48,7 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Asserts that 'test' is true or throws an ArgumentException.
+		/// Asserts that 'test' is true or throws an ArgumentException.
 		/// </summary>
 		/// <param name="test"> The boolean to be tested. </param>
 		/// <param name="message"> The error message. </param>
@@ -64,7 +63,7 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Throws an ApplicationException with the given message.
+		/// Throws an ApplicationException with the given message.
 		/// </summary>
 		/// <param name="message"> The error message. </param>
 		[DebuggerStepThrough]

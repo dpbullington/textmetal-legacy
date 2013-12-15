@@ -41,60 +41,60 @@ namespace CP.Windows.Forms
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Time before automatically closing
+		/// Time before automatically closing
 		/// </summary>
 		private int autoCloseDelay = 0;
 
 		/// <summary>
-		/// 	Timer used for auto-close
+		/// Timer used for auto-close
 		/// </summary>
 		private Timer autoCloseTimer;
 
 		/// <summary>
-		/// 	The control for which we are showing expanded text
+		/// The control for which we are showing expanded text
 		/// </summary>
 		private Control control;
 
 		/// <summary>
-		/// 	Directions we are allowed to expand
+		/// Directions we are allowed to expand
 		/// </summary>
 		private ExpansionStyle expansion = ExpansionStyle.Horizontal;
 
 		/// <summary>
-		/// 	Rectangle representing bounds to overlay. For a listbox, this
-		/// 	is a single item rectangle. For other controls, it is usually
-		/// 	the entire client area.
+		/// Rectangle representing bounds to overlay. For a listbox, this
+		/// is a single item rectangle. For other controls, it is usually
+		/// the entire client area.
 		/// </summary>
 		private Rectangle itemBounds;
 
 		/// <summary>
-		/// 	Time to wait for after mouse leaves
-		/// 	the window or the label before closing.
+		/// Time to wait for after mouse leaves
+		/// the window or the label before closing.
 		/// </summary>
 		private int mouseLeaveDelay = 300;
 
 		/// <summary>
-		/// 	Timer used for mouse leave delay
+		/// Timer used for mouse leave delay
 		/// </summary>
 		private Timer mouseLeaveTimer;
 
 		/// <summary>
-		/// 	True if we may overlay control or item
+		/// True if we may overlay control or item
 		/// </summary>
 		private bool overlay = true;
 
 		/// <summary>
-		/// 	Rectangle used to display text
+		/// Rectangle used to display text
 		/// </summary>
 		private Rectangle textRect;
 
 		/// <summary>
-		/// 	Text we are displaying
+		/// Text we are displaying
 		/// </summary>
 		private string tipText;
 
 		/// <summary>
-		/// 	Indicates whether any clicks should be passed to the underlying control
+		/// Indicates whether any clicks should be passed to the underlying control
 		/// </summary>
 		private bool wantClicks = false;
 
@@ -344,7 +344,7 @@ namespace CP.Windows.Forms
 		}
 
 		/// <summary>
-		/// 	The form our label is on closed, so we should.
+		/// The form our label is on closed, so we should.
 		/// </summary>
 		private void control_FormClosed(object sender, EventArgs e)
 		{
@@ -352,9 +352,9 @@ namespace CP.Windows.Forms
 		}
 
 		/// <summary>
-		/// 	The mouse left the label. We ignore if we are
-		/// 	overlaying the label but otherwise start a
-		/// 	delay for closing the window
+		/// The mouse left the label. We ignore if we are
+		/// overlaying the label but otherwise start a
+		/// delay for closing the window
 		/// </summary>
 		private void control_MouseLeave(object sender, EventArgs e)
 		{
@@ -373,7 +373,7 @@ namespace CP.Windows.Forms
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		/// <summary>
-		/// 	Direction in which to expand
+		/// Direction in which to expand
 		/// </summary>
 		public enum ExpansionStyle
 		{

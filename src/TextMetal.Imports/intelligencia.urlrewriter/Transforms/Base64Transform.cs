@@ -7,31 +7,43 @@
 
 using System;
 using System.Text;
+
 using Intelligencia.UrlRewriter.Utilities;
 
 namespace Intelligencia.UrlRewriter.Transforms
 {
-    /// <summary>
-    /// Base 64 encodes the input.
-    /// </summary>
-    public sealed class Base64DecodeTransform : IRewriteTransform
-    {
-        /// <summary>
-        /// Applies a transformation to the input string.
-        /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <returns>The transformed string.</returns>
-        public string ApplyTransform(string input)
-        {
-            return Encoding.UTF8.GetString(Convert.FromBase64String(input));
-        }
+	/// <summary>
+	/// Base 64 encodes the input.
+	/// </summary>
+	public sealed class Base64DecodeTransform : IRewriteTransform
+	{
+		#region Properties/Indexers/Events
 
-        /// <summary>
-        /// The name of the action.
-        /// </summary>
-        public string Name
-        {
-            get { return Constants.TransformBase64; }
-        }
-    }
+		/// <summary>
+		/// The name of the action.
+		/// </summary>
+		public string Name
+		{
+			get
+			{
+				return Constants.TransformBase64;
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		/// <summary>
+		/// Applies a transformation to the input string.
+		/// </summary>
+		/// <param name="input"> The input string. </param>
+		/// <returns> The transformed string. </returns>
+		public string ApplyTransform(string input)
+		{
+			return Encoding.UTF8.GetString(Convert.FromBase64String(input));
+		}
+
+		#endregion
+	}
 }

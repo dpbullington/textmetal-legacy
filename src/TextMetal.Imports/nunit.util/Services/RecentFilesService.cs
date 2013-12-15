@@ -11,7 +11,7 @@ using NUnit.Core;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Summary description for RecentFilesService.
+	/// Summary description for RecentFilesService.
 	/// </summary>
 	public class RecentFilesService : RecentFiles, IService
 	{

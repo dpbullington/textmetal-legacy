@@ -55,8 +55,8 @@ namespace NUnit.Core
 						return AssemblyHelper.GetDirectoryName(this._context.CurrentTest.FixtureType.Assembly);
 					case "WorkDirectory":
 						return this._context.TestPackage.Settings.Contains("WorkDirectory")
-							       ? this._context.TestPackage.Settings["WorkDirectory"]
-							       : Environment.CurrentDirectory;
+							? this._context.TestPackage.Settings["WorkDirectory"]
+							: Environment.CurrentDirectory;
 					default:
 						return this._storage[key];
 				}

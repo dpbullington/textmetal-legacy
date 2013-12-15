@@ -16,16 +16,28 @@ namespace Castle.Core.Internal
 {
 	internal class NoOpUpgradeableLock : IUpgradeableLockHolder
 	{
+		#region Fields/Constants
+
 		public static readonly IUpgradeableLockHolder Lock = new NoOpUpgradeableLock();
 
-		public void Dispose()
-		{
+		#endregion
 
-		}
+		#region Properties/Indexers/Events
 
 		public bool LockAcquired
 		{
-			get { return true; }
+			get
+			{
+				return true;
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		public void Dispose()
+		{
 		}
 
 		public ILockHolder Upgrade()
@@ -37,5 +49,7 @@ namespace Castle.Core.Internal
 		{
 			return NoOpLock.Lock;
 		}
+
+		#endregion
 	}
 }

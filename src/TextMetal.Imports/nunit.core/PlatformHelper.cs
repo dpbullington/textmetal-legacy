@@ -18,7 +18,7 @@ namespace NUnit.Core
 		private string reason = string.Empty;
 
 		/// <summary>
-		/// 	Comma-delimited list of all supported OS platform constants
+		/// Comma-delimited list of all supported OS platform constants
 		/// </summary>
 		public static readonly string OSPlatforms =
 #if CLR_2_0 || CLR_4_0
@@ -28,14 +28,14 @@ namespace NUnit.Core
 #endif
 
 		/// <summary>
-		/// 	Comma-delimited list of all supported Runtime platform constants
+		/// Comma-delimited list of all supported Runtime platform constants
 		/// </summary>
 		public static readonly string RuntimePlatforms =
 			"Net,NetCF,SSCLI,Rotor,Mono";
 
 		/// <summary>
-		/// 	Default constructor uses the operating system and
-		/// 	common language runtime of the system.
+		/// Default constructor uses the operating system and
+		/// common language runtime of the system.
 		/// </summary>
 		public PlatformHelper()
 		{
@@ -44,8 +44,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Contruct a PlatformHelper for a particular operating
-		/// 	system and common language runtime. Used in testing.
+		/// Contruct a PlatformHelper for a particular operating
+		/// system and common language runtime. Used in testing.
 		/// </summary>
 		/// <param name="os"> OperatingSystem to be used </param>
 		public PlatformHelper(OSPlatform os, RuntimeFramework rt)
@@ -55,8 +55,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Test to determine if one of a collection of platforms
-		/// 	is being used currently.
+		/// Test to determine if one of a collection of platforms
+		/// is being used currently.
 		/// </summary>
 		/// <param name="platforms"> </param>
 		/// <returns> </returns>
@@ -72,8 +72,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Tests to determine if the current platform is supported
-		/// 	based on a platform attribute.
+		/// Tests to determine if the current platform is supported
+		/// based on a platform attribute.
 		/// </summary>
 		/// <param name="platformAttribute"> The attribute to examine </param>
 		/// <returns> </returns>
@@ -112,8 +112,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Test to determine if the a particular platform or comma-
-		/// 	delimited set of platforms is in use.
+		/// Test to determine if the a particular platform or comma-
+		/// delimited set of platforms is in use.
 		/// </summary>
 		/// <param name="platform"> Name of the platform or comma-separated list of platform names </param>
 		/// <returns> True if the platform is in use on the system </returns>
@@ -225,9 +225,9 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return the last failure reason. Results are not
-		/// 	defined if called before IsSupported( Attribute )
-		/// 	is called.
+		/// Return the last failure reason. Results are not
+		/// defined if called before IsSupported( Attribute )
+		/// is called.
 		/// </summary>
 		public string Reason
 		{
@@ -270,8 +270,8 @@ namespace NUnit.Core
 		private bool IsRuntimeSupported(RuntimeType runtime, string versionSpecification)
 		{
 			Version version = versionSpecification == null
-				                  ? RuntimeFramework.DefaultVersion
-				                  : new Version(versionSpecification);
+				? RuntimeFramework.DefaultVersion
+				: new Version(versionSpecification);
 
 			RuntimeFramework target = new RuntimeFramework(runtime, version);
 

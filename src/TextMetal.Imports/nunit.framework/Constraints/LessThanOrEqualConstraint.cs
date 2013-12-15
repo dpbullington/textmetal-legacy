@@ -9,14 +9,14 @@ using System;
 namespace NUnit.Framework.Constraints
 {
 	/// <summary>
-	/// 	Tests whether a value is less than or equal to the value supplied to its constructor
+	/// Tests whether a value is less than or equal to the value supplied to its constructor
 	/// </summary>
 	public class LessThanOrEqualConstraint : ComparisonConstraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:LessThanOrEqualConstraint" /> class.
+		/// Initializes a new instance of the <see cref="T:LessThanOrEqualConstraint" /> class.
 		/// </summary>
 		/// <param name="expected"> The expected value. </param>
 		public LessThanOrEqualConstraint(object expected)
@@ -30,7 +30,7 @@ namespace NUnit.Framework.Constraints
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The value against which a comparison is to be made
+		/// The value against which a comparison is to be made
 		/// </summary>
 		private object expected;
 
@@ -39,7 +39,7 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Test whether the constraint is satisfied by a given value
+		/// Test whether the constraint is satisfied by a given value
 		/// </summary>
 		/// <param name="actual"> The value to be tested </param>
 		/// <returns> True for success, false for failure </returns>
@@ -54,7 +54,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write the constraint description to a MessageWriter
+		/// Write the constraint description to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The writer on which the description is displayed </param>
 		public override void WriteDescriptionTo(MessageWriter writer)

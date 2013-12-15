@@ -25,9 +25,9 @@ namespace Castle.DynamicProxy
 	{
 		public void Intercept(IInvocation invocation)
 		{
-			PreProceed(invocation);
-			PerformProceed(invocation);
-			PostProceed(invocation);
+			this.PreProceed(invocation);
+			this.PerformProceed(invocation);
+			this.PostProceed(invocation);
 		}
 
 		protected virtual void PerformProceed(IInvocation invocation)

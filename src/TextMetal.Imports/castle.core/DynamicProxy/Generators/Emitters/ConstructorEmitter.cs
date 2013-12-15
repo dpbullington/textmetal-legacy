@@ -12,21 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection;
+using System.Reflection.Emit;
+
+using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+
 namespace Castle.DynamicProxy.Generators.Emitters
 {
 	using System;
-	using System.Reflection;
-	using System.Reflection.Emit;
-
-	using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
-	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
 	public class ConstructorEmitter : IMemberEmitter
 	{
-		private readonly ConstructorBuilder builder;
-		private readonly AbstractTypeEmitter maintype;
-
-		private ConstructorCodeBuilder constructorCodeBuilder;
+		#region Constructors/Destructors
 
 		protected internal ConstructorEmitter(AbstractTypeEmitter maintype, ConstructorBuilder builder)
 		{
@@ -40,63 +38,89 @@ namespace Castle.DynamicProxy.Generators.Emitters
 
 			var args = ArgumentsUtil.InitializeAndConvert(arguments);
 
-			builder = maintype.TypeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, args);
+			this.builder = maintype.TypeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, args);
 		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly ConstructorBuilder builder;
+		private readonly AbstractTypeEmitter maintype;
+
+		private ConstructorCodeBuilder constructorCodeBuilder;
+
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		public virtual ConstructorCodeBuilder CodeBuilder
 		{
 			get
 			{
-				if (constructorCodeBuilder == null)
+				if (this.constructorCodeBuilder == null)
 				{
-					constructorCodeBuilder = new ConstructorCodeBuilder(
-						maintype.BaseType, builder.GetILGenerator());
+					this.constructorCodeBuilder = new ConstructorCodeBuilder(
+						this.maintype.BaseType, this.builder.GetILGenerator());
 				}
-				return constructorCodeBuilder;
+				return this.constructorCodeBuilder;
 			}
 		}
 
 		public ConstructorBuilder ConstructorBuilder
 		{
-			get { return builder; }
-		}
-
-		public MemberInfo Member
-		{
-			get { return builder; }
-		}
-
-		public Type ReturnType
-		{
-			get { return typeof(void); }
+			get
+			{
+				return this.builder;
+			}
 		}
 
 		private bool ImplementedByRuntime
 		{
 			get
 			{
-				var attributes = builder.GetMethodImplementationFlags();
+				var attributes = this.builder.GetMethodImplementationFlags();
 				return (attributes & MethodImplAttributes.Runtime) != 0;
 			}
 		}
 
+		public MemberInfo Member
+		{
+			get
+			{
+				return this.builder;
+			}
+		}
+
+		public Type ReturnType
+		{
+			get
+			{
+				return typeof(void);
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
 		public virtual void EnsureValidCodeBlock()
 		{
-			if (ImplementedByRuntime == false && CodeBuilder.IsEmpty)
+			if (this.ImplementedByRuntime == false && this.CodeBuilder.IsEmpty)
 			{
-				CodeBuilder.InvokeBaseConstructor();
-				CodeBuilder.AddStatement(new ReturnStatement());
+				this.CodeBuilder.InvokeBaseConstructor();
+				this.CodeBuilder.AddStatement(new ReturnStatement());
 			}
 		}
 
 		public virtual void Generate()
 		{
-			if (ImplementedByRuntime)
-			{
+			if (this.ImplementedByRuntime)
 				return;
-			}
 
-			CodeBuilder.Generate(this, builder.GetILGenerator());
+			this.CodeBuilder.Generate(this, this.builder.GetILGenerator());
 		}
+
+		#endregion
 	}
 }

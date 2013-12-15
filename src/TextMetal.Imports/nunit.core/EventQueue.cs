@@ -16,20 +16,24 @@ namespace NUnit.Core
 	#region Individual Event Classes
 
 	/// <summary>
-	/// 	NUnit.Core.Event is the abstract base for all stored events.
-	/// 	An Event is the stored representation of a call to the 
-	/// 	EventListener interface and is used to record such calls
-	/// 	or to queue them for forwarding on another thread or at
-	/// 	a later time.
+	/// NUnit.Core.Event is the abstract base for all stored events.
+	/// An Event is the stored representation of a call to the
+	/// EventListener interface and is used to record such calls
+	/// or to queue them for forwarding on another thread or at
+	/// a later time.
 	/// </summary>
 	public abstract class Event
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets a value indicating whether this event is delivered synchronously by the NUnit <see cref="EventPump" />.
-		/// 	<para> If <c>true</c> , and if <see cref="EventQueue.SetWaitHandleForSynchronizedEvents" /> has been used to set a WaitHandle, <see
-		/// 	 cref="EventQueue.Enqueue" /> blocks its calling thread until the <see cref="EventPump" /> thread has delivered the event and sets the WaitHandle. </para>
+		/// Gets a value indicating whether this event is delivered synchronously by the NUnit <see cref="EventPump" />.
+		/// <para>
+		/// If <c> true </c> , and if <see cref="EventQueue.SetWaitHandleForSynchronizedEvents" /> has been used to set a WaitHandle,
+		/// <see
+		///     cref="EventQueue.Enqueue" />
+		/// blocks its calling thread until the <see cref="EventPump" /> thread has delivered the event and sets the WaitHandle.
+		/// </para>
 		/// </summary>
 		public virtual bool IsSynchronous
 		{
@@ -342,8 +346,8 @@ namespace NUnit.Core
 	#endregion
 
 	/// <summary>
-	/// 	Implements a queue of work items each of which
-	/// 	is queued as a WaitCallback.
+	/// Implements a queue of work items each of which
+	/// is queued as a WaitCallback.
 	/// </summary>
 	public class EventQueue
 	{
@@ -363,8 +367,8 @@ namespace NUnit.Core
 		private bool stopped;
 
 		/// <summary>
-		/// 	WaitHandle for synchronous event delivery in <see cref="Enqueue" />.
-		/// 	<para> Having just one handle for the whole <see cref="EventQueue" /> implies that there may be only one producer (the test thread) for synchronous events. If there can be multiple producers for synchronous events, one would have to introduce one WaitHandle per event. </para>
+		/// WaitHandle for synchronous event delivery in <see cref="Enqueue" />.
+		/// <para> Having just one handle for the whole <see cref="EventQueue" /> implies that there may be only one producer (the test thread) for synchronous events. If there can be multiple producers for synchronous events, one would have to introduce one WaitHandle per event. </para>
 		/// </summary>
 		private AutoResetEvent synchronousEventSent;
 
@@ -388,28 +392,37 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Removes the first element from the queue and returns it (or <c>null</c>).
+		/// Removes the first element from the queue and returns it (or <c> null </c>).
 		/// </summary>
-		/// <param name="blockWhenEmpty"> If <c>true</c> and the queue is empty, the calling thread is blocked until either an element is enqueued, or <see
-		/// 	 cref="Stop" /> is called. </param>
-		/// <returns> <list type="bullet">
-		/// 	          <item>
-		/// 		          <term>If the queue not empty</term>
-		/// 		          <description>the first element.</description>
-		/// 	          </item>
-		/// 	          <item>
-		/// 		          <term>otherwise, if
-		/// 			          <paramref name="blockWhenEmpty" />
-		/// 			          ==
-		/// 			          <c>false</c>
-		/// 			          or
-		/// 			          <see cref="Stop" />
-		/// 			          has been called</term>
-		/// 		          <description>
-		/// 			          <c>null</c>
-		/// 			          .</description>
-		/// 	          </item>
-		///           </list> </returns>
+		/// <param name="blockWhenEmpty">
+		/// If <c> true </c> and the queue is empty, the calling thread is blocked until either an element is enqueued, or
+		/// <see
+		///     cref="Stop" />
+		/// is called.
+		/// </param>
+		/// <returns>
+		///     <list type="bullet">
+		///         <item>
+		///             <term> If the queue not empty </term>
+		///             <description> the first element. </description>
+		///         </item>
+		///         <item>
+		///             <term>
+		/// otherwise, if
+		/// <paramref name="blockWhenEmpty" />
+		/// ==
+		/// <c> false </c>
+		/// or
+		/// <see cref="Stop" />
+		/// has been called
+		///             </term>
+		///             <description>
+		/// <c> null </c>
+		/// .
+		///             </description>
+		///         </item>
+		///     </list>
+		/// </returns>
 		public Event Dequeue(bool blockWhenEmpty)
 		{
 			lock (this.syncRoot)
@@ -441,12 +454,15 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Sets a handle on which to wait, when <see cref="Enqueue" /> is called
-		/// 	for an <see cref="Event" /> with <see cref="Event.IsSynchronous" /> == true.
+		/// Sets a handle on which to wait, when <see cref="Enqueue" /> is called
+		/// for an <see cref="Event" /> with <see cref="Event.IsSynchronous" /> == true.
 		/// </summary>
-		/// <param name="synchronousEventWaitHandle"> The wait handle on which to wait, when <see cref="Enqueue" /> is called for an <see
-		/// 	 cref="Event" /> with <see cref="Event.IsSynchronous" /> == true.
-		/// 	<para> The caller is responsible for disposing this wait handle. </para>
+		/// <param name="synchronousEventWaitHandle">
+		/// The wait handle on which to wait, when <see cref="Enqueue" /> is called for an
+		/// <see
+		///     cref="Event" />
+		/// with <see cref="Event.IsSynchronous" /> == true.
+		/// <para> The caller is responsible for disposing this wait handle. </para>
 		/// </param>
 		public void SetWaitHandleForSynchronizedEvents(AutoResetEvent synchronousEventWaitHandle)
 		{

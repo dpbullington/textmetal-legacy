@@ -20,8 +20,8 @@ namespace NUnit.UiException.Controls
 		private static readonly float MEASURECHAR_BIG_HEIGHT = 100f;
 
 		/// <summary>
-		/// 	These constants below address an issue at measure text time
-		/// 	that sometimes can cause big lines of text to be misaligned.
+		/// These constants below address an issue at measure text time
+		/// that sometimes can cause big lines of text to be misaligned.
 		/// </summary>
 		private static readonly float MEASURECHAR_BIG_WIDTH = 5000f;
 
@@ -67,10 +67,10 @@ namespace NUnit.UiException.Controls
 						token = line[i];
 
 						args.Graphics.DrawString(token.Text, args.Font, args.GetBrush(token.Tag),
-						                         paintLine.Location.X + x, paintLine.Location.Y);
+							paintLine.Location.X + x, paintLine.Location.Y);
 
 						tk_width = this.measureStringWidth(args.Graphics, args.Font, text,
-						                                   token.IndexStart, token.Text.Length);
+							token.IndexStart, token.Text.Length);
 
 						x += tk_width;
 					}
@@ -146,9 +146,9 @@ namespace NUnit.UiException.Controls
 
 				list.Add(
 					new PaintLineLocation(lineIndex, code.GetTextAt(lineIndex),
-					                      new PointF(-viewport.Left,
-					                                 this.LineIndexToYCoordinate(lineIndex, fontHeight) -
-					                                 viewport.Top)));
+						new PointF(-viewport.Left,
+							this.LineIndexToYCoordinate(lineIndex, fontHeight) -
+							viewport.Top)));
 			}
 
 			return (list.ToArray());
@@ -160,7 +160,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Utility method that measures a region of text in the given string.
+		/// Utility method that measures a region of text in the given string.
 		/// </summary>
 		/// <param name="g"> The graphics instance used to render this text. </param>
 		/// <param name="font"> The font instance used to render this text. </param>
@@ -194,7 +194,7 @@ namespace NUnit.UiException.Controls
 
 			regions = g.MeasureCharacterRanges(
 				text, font, new RectangleF(
-					            0, 0, MEASURECHAR_BIG_WIDTH, MEASURECHAR_BIG_HEIGHT), sf);
+					0, 0, MEASURECHAR_BIG_WIDTH, MEASURECHAR_BIG_HEIGHT), sf);
 
 			return (regions[0].GetBounds(g).Width);
 		}

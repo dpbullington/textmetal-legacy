@@ -13,23 +13,23 @@ using NUnit.Framework.Constraints;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	Delegate used by tests that execute code and
-	/// 	capture any thrown exception.
+	/// Delegate used by tests that execute code and
+	/// capture any thrown exception.
 	/// </summary>
 	public delegate void TestDelegate();
 
 	/// <summary>
-	/// 	The Assert class contains a collection of static methods that
-	/// 	implement the most common assertions used in NUnit.
+	/// The Assert class contains a collection of static methods that
+	/// implement the most common assertions used in NUnit.
 	/// </summary>
 	public class Assert
 	{
 		#region Constructor
 
 		/// <summary>
-		/// 	We don't actually want any instances of this object, but some people
-		/// 	like to inherit from it to add other static methods. Hence, the
-		/// 	protected constructor disallows any instances of this object.
+		/// We don't actually want any instances of this object, but some people
+		/// like to inherit from it to add other static methods. Hence, the
+		/// protected constructor disallows any instances of this object.
 		/// </summary>
 		protected Assert()
 		{
@@ -42,8 +42,8 @@ namespace NUnit.Framework
 		private static int counter = 0;
 
 		/// <summary>
-		/// 	Gets the number of assertions executed so far and 
-		/// 	resets the counter to zero.
+		/// Gets the number of assertions executed so far and
+		/// resets the counter to zero.
 		/// </summary>
 		public static int Counter
 		{
@@ -65,8 +65,8 @@ namespace NUnit.Framework
 		#region Equals and ReferenceEquals
 
 		/// <summary>
-		/// 	The Equals method throws an AssertionException. This is done 
-		/// 	to make sure there is no mistake by calling this function.
+		/// The Equals method throws an AssertionException. This is done
+		/// to make sure there is no mistake by calling this function.
 		/// </summary>
 		/// <param name="a"> </param>
 		/// <param name="b"> </param>
@@ -78,9 +78,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	override the default ReferenceEquals to throw an AssertionException. This 
-		/// 	implementation makes sure there is no mistake in calling this function 
-		/// 	as part of Assert.
+		/// override the default ReferenceEquals to throw an AssertionException. This
+		/// implementation makes sure there is no mistake in calling this function
+		/// as part of Assert.
 		/// </summary>
 		/// <param name="a"> </param>
 		/// <param name="b"> </param>
@@ -94,8 +94,8 @@ namespace NUnit.Framework
 		#region Helper Methods
 
 		/// <summary>
-		/// 	Helper for Assert.AreEqual(double expected, double actual, ...)
-		/// 	allowing code generation to work consistently.
+		/// Helper for Assert.AreEqual(double expected, double actual, ...)
+		/// allowing code generation to work consistently.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -117,9 +117,9 @@ namespace NUnit.Framework
 		#region Pass
 
 		/// <summary>
-		/// 	Throws a <see cref="SuccessException" /> with the message and arguments 
-		/// 	that are passed in. This allows a test to be cut short, with a result
-		/// 	of success returned to NUnit.
+		/// Throws a <see cref="SuccessException" /> with the message and arguments
+		/// that are passed in. This allows a test to be cut short, with a result
+		/// of success returned to NUnit.
 		/// </summary>
 		/// <param name="message"> The message to initialize the <see cref="AssertionException" /> with. </param>
 		/// <param name="args"> Arguments to be used in formatting the message </param>
@@ -134,9 +134,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Throws a <see cref="SuccessException" /> with the message and arguments 
-		/// 	that are passed in. This allows a test to be cut short, with a result
-		/// 	of success returned to NUnit.
+		/// Throws a <see cref="SuccessException" /> with the message and arguments
+		/// that are passed in. This allows a test to be cut short, with a result
+		/// of success returned to NUnit.
 		/// </summary>
 		/// <param name="message"> The message to initialize the <see cref="AssertionException" /> with. </param>
 		public static void Pass(string message)
@@ -145,9 +145,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Throws a <see cref="SuccessException" /> with the message and arguments 
-		/// 	that are passed in. This allows a test to be cut short, with a result
-		/// 	of success returned to NUnit.
+		/// Throws a <see cref="SuccessException" /> with the message and arguments
+		/// that are passed in. This allows a test to be cut short, with a result
+		/// of success returned to NUnit.
 		/// </summary>
 		public static void Pass()
 		{
@@ -159,8 +159,8 @@ namespace NUnit.Framework
 		#region Fail
 
 		/// <summary>
-		/// 	Throws an <see cref="AssertionException" /> with the message and arguments 
-		/// 	that are passed in. This is used by the other Assert functions.
+		/// Throws an <see cref="AssertionException" /> with the message and arguments
+		/// that are passed in. This is used by the other Assert functions.
 		/// </summary>
 		/// <param name="message"> The message to initialize the <see cref="AssertionException" /> with. </param>
 		/// <param name="args"> Arguments to be used in formatting the message </param>
@@ -175,8 +175,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Throws an <see cref="AssertionException" /> with the message that is 
-		/// 	passed in. This is used by the other Assert functions.
+		/// Throws an <see cref="AssertionException" /> with the message that is
+		/// passed in. This is used by the other Assert functions.
 		/// </summary>
 		/// <param name="message"> The message to initialize the <see cref="AssertionException" /> with. </param>
 		public static void Fail(string message)
@@ -185,8 +185,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Throws an <see cref="AssertionException" />. 
-		/// 	This is used by the other Assert functions.
+		/// Throws an <see cref="AssertionException" />.
+		/// This is used by the other Assert functions.
 		/// </summary>
 		public static void Fail()
 		{
@@ -198,8 +198,8 @@ namespace NUnit.Framework
 		#region Ignore
 
 		/// <summary>
-		/// 	Throws an <see cref="IgnoreException" /> with the message and arguments 
-		/// 	that are passed in.  This causes the test to be reported as ignored.
+		/// Throws an <see cref="IgnoreException" /> with the message and arguments
+		/// that are passed in.  This causes the test to be reported as ignored.
 		/// </summary>
 		/// <param name="message"> The message to initialize the <see cref="AssertionException" /> with. </param>
 		/// <param name="args"> Arguments to be used in formatting the message </param>
@@ -214,8 +214,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Throws an <see cref="IgnoreException" /> with the message that is 
-		/// 	passed in. This causes the test to be reported as ignored.
+		/// Throws an <see cref="IgnoreException" /> with the message that is
+		/// passed in. This causes the test to be reported as ignored.
 		/// </summary>
 		/// <param name="message"> The message to initialize the <see cref="AssertionException" /> with. </param>
 		public static void Ignore(string message)
@@ -224,8 +224,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Throws an <see cref="IgnoreException" />. 
-		/// 	This causes the test to be reported as ignored.
+		/// Throws an <see cref="IgnoreException" />.
+		/// This causes the test to be reported as ignored.
 		/// </summary>
 		public static void Ignore()
 		{
@@ -237,8 +237,8 @@ namespace NUnit.Framework
 		#region InConclusive
 
 		/// <summary>
-		/// 	Throws an <see cref="InconclusiveException" /> with the message and arguments 
-		/// 	that are passed in.  This causes the test to be reported as inconclusive.
+		/// Throws an <see cref="InconclusiveException" /> with the message and arguments
+		/// that are passed in.  This causes the test to be reported as inconclusive.
 		/// </summary>
 		/// <param name="message"> The message to initialize the <see cref="InconclusiveException" /> with. </param>
 		/// <param name="args"> Arguments to be used in formatting the message </param>
@@ -253,8 +253,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Throws an <see cref="InconclusiveException" /> with the message that is 
-		/// 	passed in. This causes the test to be reported as inconclusive.
+		/// Throws an <see cref="InconclusiveException" /> with the message that is
+		/// passed in. This causes the test to be reported as inconclusive.
 		/// </summary>
 		/// <param name="message"> The message to initialize the <see cref="InconclusiveException" /> with. </param>
 		public static void Inconclusive(string message)
@@ -263,8 +263,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Throws an <see cref="InconclusiveException" />. 
-		/// 	This causes the test to be reported as Inconclusive.
+		/// Throws an <see cref="InconclusiveException" />.
+		/// This causes the test to be reported as Inconclusive.
 		/// </summary>
 		public static void Inconclusive()
 		{
@@ -280,8 +280,8 @@ namespace NUnit.Framework
 		#region Object
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure.
 		/// </summary>
 		/// <param name="expression"> A Constraint to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -291,8 +291,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure.
 		/// </summary>
 		/// <param name="expression"> A Constraint to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -303,8 +303,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure.
 		/// </summary>
 		/// <param name="expression"> A Constraint expression to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -328,8 +328,8 @@ namespace NUnit.Framework
 		#region ActualValueDelegate
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure.
 		/// </summary>
 		/// <param name="expr"> A Constraint expression to be applied </param>
 		/// <param name="del"> An ActualValueDelegate returning the value to be tested </param>
@@ -339,8 +339,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure.
 		/// </summary>
 		/// <param name="expr"> A Constraint expression to be applied </param>
 		/// <param name="del"> An ActualValueDelegate returning the value to be tested </param>
@@ -351,8 +351,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure.
 		/// </summary>
 		/// <param name="del"> An ActualValueDelegate returning the value to be tested </param>
 		/// <param name="expr"> A Constraint expression to be applied </param>
@@ -377,8 +377,8 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Apply a constraint to a referenced value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure.
+		/// Apply a constraint to a referenced value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure.
 		/// </summary>
 		/// <param name="expression"> A Constraint to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -388,8 +388,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to a referenced value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure.
+		/// Apply a constraint to a referenced value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure.
 		/// </summary>
 		/// <param name="expression"> A Constraint to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -400,8 +400,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to a referenced value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure.
+		/// Apply a constraint to a referenced value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure.
 		/// </summary>
 		/// <param name="expression"> A Constraint to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -470,8 +470,8 @@ namespace NUnit.Framework
 		#region Boolean
 
 		/// <summary>
-		/// 	Asserts that a condition is true. If the condition is false the method throws
-		/// 	an <see cref="AssertionException" />.
+		/// Asserts that a condition is true. If the condition is false the method throws
+		/// an <see cref="AssertionException" />.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		/// <param name="message"> The message to display if the condition is false </param>
@@ -482,8 +482,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a condition is true. If the condition is false the method throws
-		/// 	an <see cref="AssertionException" />.
+		/// Asserts that a condition is true. If the condition is false the method throws
+		/// an <see cref="AssertionException" />.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		/// <param name="message"> The message to display if the condition is false </param>
@@ -493,8 +493,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a condition is true. If the condition is false the method throws
-		/// 	an <see cref="AssertionException" />.
+		/// Asserts that a condition is true. If the condition is false the method throws
+		/// an <see cref="AssertionException" />.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		public static void That(bool condition)
@@ -505,8 +505,8 @@ namespace NUnit.Framework
 		#endregion
 
 		/// <summary>
-		/// 	Asserts that the code represented by a delegate throws an exception
-		/// 	that satisfies the constraint provided.
+		/// Asserts that the code represented by a delegate throws an exception
+		/// that satisfies the constraint provided.
 		/// </summary>
 		/// <param name="code"> A TestDelegate to be executed </param>
 		/// <param name="constraint"> A ThrowsConstraint used in the test </param>
@@ -520,10 +520,10 @@ namespace NUnit.Framework
 		#region Assert.ByVal
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure.
-		/// 	Used as a synonym for That in rare cases where a private setter 
-		/// 	causes a Visual Basic compilation error.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure.
+		/// Used as a synonym for That in rare cases where a private setter
+		/// causes a Visual Basic compilation error.
 		/// </summary>
 		/// <param name="expression"> A Constraint to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -533,10 +533,10 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure.
-		/// 	Used as a synonym for That in rare cases where a private setter 
-		/// 	causes a Visual Basic compilation error.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure.
+		/// Used as a synonym for That in rare cases where a private setter
+		/// causes a Visual Basic compilation error.
 		/// </summary>
 		/// <param name="expression"> A Constraint to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -547,14 +547,14 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure. 
-		/// 	Used as a synonym for That in rare cases where a private setter 
-		/// 	causes a Visual Basic compilation error.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure.
+		/// Used as a synonym for That in rare cases where a private setter
+		/// causes a Visual Basic compilation error.
 		/// </summary>
 		/// <remarks>
-		/// 	This method is provided for use by VB developers needing to test
-		/// 	the value of properties with private setters.
+		/// This method is provided for use by VB developers needing to test
+		/// the value of properties with private setters.
 		/// </remarks>
 		/// <param name="expression"> A Constraint expression to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -572,7 +572,7 @@ namespace NUnit.Framework
 		#region Throws
 
 		/// <summary>
-		/// 	Verifies that a delegate throws a particular exception when called.
+		/// Verifies that a delegate throws a particular exception when called.
 		/// </summary>
 		/// <param name="expression"> A constraint to be satisfied by the exception </param>
 		/// <param name="code"> A TestSnippet delegate </param>
@@ -597,7 +597,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that a delegate throws a particular exception when called.
+		/// Verifies that a delegate throws a particular exception when called.
 		/// </summary>
 		/// <param name="expression"> A constraint to be satisfied by the exception </param>
 		/// <param name="code"> A TestSnippet delegate </param>
@@ -608,7 +608,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that a delegate throws a particular exception when called.
+		/// Verifies that a delegate throws a particular exception when called.
 		/// </summary>
 		/// <param name="expression"> A constraint to be satisfied by the exception </param>
 		/// <param name="code"> A TestSnippet delegate </param>
@@ -618,7 +618,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that a delegate throws a particular exception when called.
+		/// Verifies that a delegate throws a particular exception when called.
 		/// </summary>
 		/// <param name="expectedExceptionType"> The exception Type expected </param>
 		/// <param name="code"> A TestSnippet delegate </param>
@@ -630,7 +630,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that a delegate throws a particular exception when called.
+		/// Verifies that a delegate throws a particular exception when called.
 		/// </summary>
 		/// <param name="expectedExceptionType"> The exception Type expected </param>
 		/// <param name="code"> A TestSnippet delegate </param>
@@ -641,7 +641,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that a delegate throws a particular exception when called.
+		/// Verifies that a delegate throws a particular exception when called.
 		/// </summary>
 		/// <param name="expectedExceptionType"> The exception Type expected </param>
 		/// <param name="code"> A TestSnippet delegate </param>
@@ -656,7 +656,7 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Verifies that a delegate throws a particular exception when called.
+		/// Verifies that a delegate throws a particular exception when called.
 		/// </summary>
 		/// <typeparam name="T"> Type of the expected exception </typeparam>
 		/// <param name="code"> A TestSnippet delegate </param>
@@ -668,7 +668,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that a delegate throws a particular exception when called.
+		/// Verifies that a delegate throws a particular exception when called.
 		/// </summary>
 		/// <typeparam name="T"> Type of the expected exception </typeparam>
 		/// <param name="code"> A TestSnippet delegate </param>
@@ -679,7 +679,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that a delegate throws a particular exception when called.
+		/// Verifies that a delegate throws a particular exception when called.
 		/// </summary>
 		/// <typeparam name="T"> Type of the expected exception </typeparam>
 		/// <param name="code"> A TestSnippet delegate </param>
@@ -694,8 +694,8 @@ namespace NUnit.Framework
 		#region Catch
 
 		/// <summary>
-		/// 	Verifies that a delegate throws an exception when called
-		/// 	and returns it.
+		/// Verifies that a delegate throws an exception when called
+		/// and returns it.
 		/// </summary>
 		/// <param name="code"> A TestDelegate </param>
 		/// <param name="message"> The message that will be displayed on failure </param>
@@ -706,8 +706,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that a delegate throws an exception when called
-		/// 	and returns it.
+		/// Verifies that a delegate throws an exception when called
+		/// and returns it.
 		/// </summary>
 		/// <param name="code"> A TestDelegate </param>
 		/// <param name="message"> The message that will be displayed on failure </param>
@@ -717,8 +717,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that a delegate throws an exception when called
-		/// 	and returns it.
+		/// Verifies that a delegate throws an exception when called
+		/// and returns it.
 		/// </summary>
 		/// <param name="code"> A TestDelegate </param>
 		public static Exception Catch(TestDelegate code)
@@ -727,8 +727,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that a delegate throws an exception of a certain Type
-		/// 	or one derived from it when called and returns it.
+		/// Verifies that a delegate throws an exception of a certain Type
+		/// or one derived from it when called and returns it.
 		/// </summary>
 		/// <param name="expectedExceptionType"> The expected Exception Type </param>
 		/// <param name="code"> A TestDelegate </param>
@@ -740,8 +740,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that a delegate throws an exception of a certain Type
-		/// 	or one derived from it when called and returns it.
+		/// Verifies that a delegate throws an exception of a certain Type
+		/// or one derived from it when called and returns it.
 		/// </summary>
 		/// <param name="expectedExceptionType"> The expected Exception Type </param>
 		/// <param name="code"> A TestDelegate </param>
@@ -752,8 +752,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that a delegate throws an exception of a certain Type
-		/// 	or one derived from it when called and returns it.
+		/// Verifies that a delegate throws an exception of a certain Type
+		/// or one derived from it when called and returns it.
 		/// </summary>
 		/// <param name="expectedExceptionType"> The expected Exception Type </param>
 		/// <param name="code"> A TestDelegate </param>
@@ -768,8 +768,8 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Verifies that a delegate throws an exception of a certain Type
-		/// 	or one derived from it when called and returns it.
+		/// Verifies that a delegate throws an exception of a certain Type
+		/// or one derived from it when called and returns it.
 		/// </summary>
 		/// <typeparam name="T"> The expected Exception Type </typeparam>
 		/// <param name="code"> A TestDelegate </param>
@@ -781,8 +781,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that a delegate throws an exception of a certain Type
-		/// 	or one derived from it when called and returns it.
+		/// Verifies that a delegate throws an exception of a certain Type
+		/// or one derived from it when called and returns it.
 		/// </summary>
 		/// <typeparam name="T"> The expected Exception Type </typeparam>
 		/// <param name="code"> A TestDelegate </param>
@@ -793,8 +793,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that a delegate throws an exception of a certain Type
-		/// 	or one derived from it when called and returns it.
+		/// Verifies that a delegate throws an exception of a certain Type
+		/// or one derived from it when called and returns it.
 		/// </summary>
 		/// <typeparam name="T"> The expected Exception Type </typeparam>
 		/// <param name="code"> A TestDelegate </param>
@@ -809,7 +809,7 @@ namespace NUnit.Framework
 		#region DoesNotThrow
 
 		/// <summary>
-		/// 	Verifies that a delegate does not throw an exception
+		/// Verifies that a delegate does not throw an exception
 		/// </summary>
 		/// <param name="code"> A TestSnippet delegate </param>
 		/// <param name="message"> The message that will be displayed on failure </param>
@@ -820,7 +820,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that a delegate does not throw an exception.
+		/// Verifies that a delegate does not throw an exception.
 		/// </summary>
 		/// <param name="code"> A TestSnippet delegate </param>
 		/// <param name="message"> The message that will be displayed on failure </param>
@@ -830,7 +830,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that a delegate does not throw an exception.
+		/// Verifies that a delegate does not throw an exception.
 		/// </summary>
 		/// <param name="code"> A TestSnippet delegate </param>
 		public static void DoesNotThrow(TestDelegate code)
@@ -845,8 +845,8 @@ namespace NUnit.Framework
 		#region True
 
 		/// <summary>
-		/// 	Asserts that a condition is true. If the condition is false the method throws
-		/// 	an <see cref="AssertionException" />.
+		/// Asserts that a condition is true. If the condition is false the method throws
+		/// an <see cref="AssertionException" />.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -857,8 +857,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a condition is true. If the condition is false the method throws
-		/// 	an <see cref="AssertionException" />.
+		/// Asserts that a condition is true. If the condition is false the method throws
+		/// an <see cref="AssertionException" />.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -868,8 +868,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a condition is true. If the condition is false the method throws
-		/// 	an <see cref="AssertionException" />.
+		/// Asserts that a condition is true. If the condition is false the method throws
+		/// an <see cref="AssertionException" />.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		public static void True(bool condition)
@@ -878,8 +878,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a condition is true. If the condition is false the method throws
-		/// 	an <see cref="AssertionException" />.
+		/// Asserts that a condition is true. If the condition is false the method throws
+		/// an <see cref="AssertionException" />.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -890,8 +890,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a condition is true. If the condition is false the method throws
-		/// 	an <see cref="AssertionException" />.
+		/// Asserts that a condition is true. If the condition is false the method throws
+		/// an <see cref="AssertionException" />.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -901,8 +901,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a condition is true. If the condition is false the method throws
-		/// 	an <see cref="AssertionException" />.
+		/// Asserts that a condition is true. If the condition is false the method throws
+		/// an <see cref="AssertionException" />.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		public static void IsTrue(bool condition)
@@ -915,8 +915,8 @@ namespace NUnit.Framework
 		#region False
 
 		/// <summary>
-		/// 	Asserts that a condition is false. If the condition is true the method throws
-		/// 	an <see cref="AssertionException" />.
+		/// Asserts that a condition is false. If the condition is true the method throws
+		/// an <see cref="AssertionException" />.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -927,8 +927,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a condition is false. If the condition is true the method throws
-		/// 	an <see cref="AssertionException" />.
+		/// Asserts that a condition is false. If the condition is true the method throws
+		/// an <see cref="AssertionException" />.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -938,8 +938,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a condition is false. If the condition is true the method throws
-		/// 	an <see cref="AssertionException" />.
+		/// Asserts that a condition is false. If the condition is true the method throws
+		/// an <see cref="AssertionException" />.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		public static void False(bool condition)
@@ -948,8 +948,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a condition is false. If the condition is true the method throws
-		/// 	an <see cref="AssertionException" />.
+		/// Asserts that a condition is false. If the condition is true the method throws
+		/// an <see cref="AssertionException" />.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -960,8 +960,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a condition is false. If the condition is true the method throws
-		/// 	an <see cref="AssertionException" />.
+		/// Asserts that a condition is false. If the condition is true the method throws
+		/// an <see cref="AssertionException" />.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -971,8 +971,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a condition is false. If the condition is true the method throws
-		/// 	an <see cref="AssertionException" />.
+		/// Asserts that a condition is false. If the condition is true the method throws
+		/// an <see cref="AssertionException" />.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		public static void IsFalse(bool condition)
@@ -985,9 +985,9 @@ namespace NUnit.Framework
 		#region NotNull
 
 		/// <summary>
-		/// 	Verifies that the object that is passed in is not equal to <code>null</code>
-		/// 	If the object is <code>null</code> then an <see cref="AssertionException" />
-		/// 	is thrown.
+		/// Verifies that the object that is passed in is not equal to <code>null</code>
+		/// If the object is <code>null</code> then an <see cref="AssertionException" />
+		/// is thrown.
 		/// </summary>
 		/// <param name="anObject"> The object that is to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -998,9 +998,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the object that is passed in is not equal to <code>null</code>
-		/// 	If the object is <code>null</code> then an <see cref="AssertionException" />
-		/// 	is thrown.
+		/// Verifies that the object that is passed in is not equal to <code>null</code>
+		/// If the object is <code>null</code> then an <see cref="AssertionException" />
+		/// is thrown.
 		/// </summary>
 		/// <param name="anObject"> The object that is to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1010,9 +1010,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the object that is passed in is not equal to <code>null</code>
-		/// 	If the object is <code>null</code> then an <see cref="AssertionException" />
-		/// 	is thrown.
+		/// Verifies that the object that is passed in is not equal to <code>null</code>
+		/// If the object is <code>null</code> then an <see cref="AssertionException" />
+		/// is thrown.
 		/// </summary>
 		/// <param name="anObject"> The object that is to be tested </param>
 		public static void NotNull(object anObject)
@@ -1021,9 +1021,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the object that is passed in is not equal to <code>null</code>
-		/// 	If the object is <code>null</code> then an <see cref="AssertionException" />
-		/// 	is thrown.
+		/// Verifies that the object that is passed in is not equal to <code>null</code>
+		/// If the object is <code>null</code> then an <see cref="AssertionException" />
+		/// is thrown.
 		/// </summary>
 		/// <param name="anObject"> The object that is to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1034,9 +1034,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the object that is passed in is not equal to <code>null</code>
-		/// 	If the object is <code>null</code> then an <see cref="AssertionException" />
-		/// 	is thrown.
+		/// Verifies that the object that is passed in is not equal to <code>null</code>
+		/// If the object is <code>null</code> then an <see cref="AssertionException" />
+		/// is thrown.
 		/// </summary>
 		/// <param name="anObject"> The object that is to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1046,9 +1046,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the object that is passed in is not equal to <code>null</code>
-		/// 	If the object is <code>null</code> then an <see cref="AssertionException" />
-		/// 	is thrown.
+		/// Verifies that the object that is passed in is not equal to <code>null</code>
+		/// If the object is <code>null</code> then an <see cref="AssertionException" />
+		/// is thrown.
 		/// </summary>
 		/// <param name="anObject"> The object that is to be tested </param>
 		public static void IsNotNull(object anObject)
@@ -1061,9 +1061,9 @@ namespace NUnit.Framework
 		#region Null
 
 		/// <summary>
-		/// 	Verifies that the object that is passed in is equal to <code>null</code>
-		/// 	If the object is not <code>null</code> then an <see cref="AssertionException" />
-		/// 	is thrown.
+		/// Verifies that the object that is passed in is equal to <code>null</code>
+		/// If the object is not <code>null</code> then an <see cref="AssertionException" />
+		/// is thrown.
 		/// </summary>
 		/// <param name="anObject"> The object that is to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1074,9 +1074,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the object that is passed in is equal to <code>null</code>
-		/// 	If the object is not <code>null</code> then an <see cref="AssertionException" />
-		/// 	is thrown.
+		/// Verifies that the object that is passed in is equal to <code>null</code>
+		/// If the object is not <code>null</code> then an <see cref="AssertionException" />
+		/// is thrown.
 		/// </summary>
 		/// <param name="anObject"> The object that is to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1086,9 +1086,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the object that is passed in is equal to <code>null</code>
-		/// 	If the object is not <code>null</code> then an <see cref="AssertionException" />
-		/// 	is thrown.
+		/// Verifies that the object that is passed in is equal to <code>null</code>
+		/// If the object is not <code>null</code> then an <see cref="AssertionException" />
+		/// is thrown.
 		/// </summary>
 		/// <param name="anObject"> The object that is to be tested </param>
 		public static void Null(object anObject)
@@ -1097,9 +1097,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the object that is passed in is equal to <code>null</code>
-		/// 	If the object is not <code>null</code> then an <see cref="AssertionException" />
-		/// 	is thrown.
+		/// Verifies that the object that is passed in is equal to <code>null</code>
+		/// If the object is not <code>null</code> then an <see cref="AssertionException" />
+		/// is thrown.
 		/// </summary>
 		/// <param name="anObject"> The object that is to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1110,9 +1110,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the object that is passed in is equal to <code>null</code>
-		/// 	If the object is not <code>null</code> then an <see cref="AssertionException" />
-		/// 	is thrown.
+		/// Verifies that the object that is passed in is equal to <code>null</code>
+		/// If the object is not <code>null</code> then an <see cref="AssertionException" />
+		/// is thrown.
 		/// </summary>
 		/// <param name="anObject"> The object that is to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1122,9 +1122,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the object that is passed in is equal to <code>null</code>
-		/// 	If the object is not <code>null</code> then an <see cref="AssertionException" />
-		/// 	is thrown.
+		/// Verifies that the object that is passed in is equal to <code>null</code>
+		/// If the object is not <code>null</code> then an <see cref="AssertionException" />
+		/// is thrown.
 		/// </summary>
 		/// <param name="anObject"> The object that is to be tested </param>
 		public static void IsNull(object anObject)
@@ -1137,9 +1137,9 @@ namespace NUnit.Framework
 		#region IsNaN
 
 		/// <summary>
-		/// 	Verifies that the double that is passed in is an <code>NaN</code> value.
-		/// 	If the object is not <code>NaN</code> then an <see cref="AssertionException" />
-		/// 	is thrown.
+		/// Verifies that the double that is passed in is an <code>NaN</code> value.
+		/// If the object is not <code>NaN</code> then an <see cref="AssertionException" />
+		/// is thrown.
 		/// </summary>
 		/// <param name="aDouble"> The value that is to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1150,9 +1150,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the double that is passed in is an <code>NaN</code> value.
-		/// 	If the object is not <code>NaN</code> then an <see cref="AssertionException" />
-		/// 	is thrown.
+		/// Verifies that the double that is passed in is an <code>NaN</code> value.
+		/// If the object is not <code>NaN</code> then an <see cref="AssertionException" />
+		/// is thrown.
 		/// </summary>
 		/// <param name="aDouble"> The value that is to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1162,9 +1162,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the double that is passed in is an <code>NaN</code> value.
-		/// 	If the object is not <code>NaN</code> then an <see cref="AssertionException" />
-		/// 	is thrown.
+		/// Verifies that the double that is passed in is an <code>NaN</code> value.
+		/// If the object is not <code>NaN</code> then an <see cref="AssertionException" />
+		/// is thrown.
 		/// </summary>
 		/// <param name="aDouble"> The value that is to be tested </param>
 		public static void IsNaN(double aDouble)
@@ -1174,9 +1174,9 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Verifies that the double that is passed in is an <code>NaN</code> value.
-		/// 	If the object is not <code>NaN</code> then an <see cref="AssertionException" />
-		/// 	is thrown.
+		/// Verifies that the double that is passed in is an <code>NaN</code> value.
+		/// If the object is not <code>NaN</code> then an <see cref="AssertionException" />
+		/// is thrown.
 		/// </summary>
 		/// <param name="aDouble"> The value that is to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1187,9 +1187,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the double that is passed in is an <code>NaN</code> value.
-		/// 	If the object is not <code>NaN</code> then an <see cref="AssertionException" />
-		/// 	is thrown.
+		/// Verifies that the double that is passed in is an <code>NaN</code> value.
+		/// If the object is not <code>NaN</code> then an <see cref="AssertionException" />
+		/// is thrown.
 		/// </summary>
 		/// <param name="aDouble"> The value that is to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1199,9 +1199,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the double that is passed in is an <code>NaN</code> value.
-		/// 	If the object is not <code>NaN</code> then an <see cref="AssertionException" />
-		/// 	is thrown.
+		/// Verifies that the double that is passed in is an <code>NaN</code> value.
+		/// If the object is not <code>NaN</code> then an <see cref="AssertionException" />
+		/// is thrown.
 		/// </summary>
 		/// <param name="aDouble"> The value that is to be tested </param>
 		public static void IsNaN(double? aDouble)
@@ -1215,7 +1215,7 @@ namespace NUnit.Framework
 		#region IsEmpty
 
 		/// <summary>
-		/// 	Assert that a string is empty - that is equal to string.Empty
+		/// Assert that a string is empty - that is equal to string.Empty
 		/// </summary>
 		/// <param name="aString"> The string to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1226,7 +1226,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that a string is empty - that is equal to string.Empty
+		/// Assert that a string is empty - that is equal to string.Empty
 		/// </summary>
 		/// <param name="aString"> The string to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1236,7 +1236,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that a string is empty - that is equal to string.Empty
+		/// Assert that a string is empty - that is equal to string.Empty
 		/// </summary>
 		/// <param name="aString"> The string to be tested </param>
 		public static void IsEmpty(string aString)
@@ -1249,7 +1249,7 @@ namespace NUnit.Framework
 		#region IsEmpty
 
 		/// <summary>
-		/// 	Assert that an array, list or other collection is empty
+		/// Assert that an array, list or other collection is empty
 		/// </summary>
 		/// <param name="collection"> An array, list or other collection implementing ICollection </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1260,7 +1260,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that an array, list or other collection is empty
+		/// Assert that an array, list or other collection is empty
 		/// </summary>
 		/// <param name="collection"> An array, list or other collection implementing ICollection </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1270,7 +1270,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that an array, list or other collection is empty
+		/// Assert that an array, list or other collection is empty
 		/// </summary>
 		/// <param name="collection"> An array, list or other collection implementing ICollection </param>
 		public static void IsEmpty(IEnumerable collection)
@@ -1283,7 +1283,7 @@ namespace NUnit.Framework
 		#region IsNotEmpty
 
 		/// <summary>
-		/// 	Assert that a string is not empty - that is not equal to string.Empty
+		/// Assert that a string is not empty - that is not equal to string.Empty
 		/// </summary>
 		/// <param name="aString"> The string to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1294,7 +1294,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that a string is not empty - that is not equal to string.Empty
+		/// Assert that a string is not empty - that is not equal to string.Empty
 		/// </summary>
 		/// <param name="aString"> The string to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1304,7 +1304,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that a string is not empty - that is not equal to string.Empty
+		/// Assert that a string is not empty - that is not equal to string.Empty
 		/// </summary>
 		/// <param name="aString"> The string to be tested </param>
 		public static void IsNotEmpty(string aString)
@@ -1317,7 +1317,7 @@ namespace NUnit.Framework
 		#region IsNotEmpty
 
 		/// <summary>
-		/// 	Assert that an array, list or other collection is not empty
+		/// Assert that an array, list or other collection is not empty
 		/// </summary>
 		/// <param name="collection"> An array, list or other collection implementing ICollection </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1328,7 +1328,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that an array, list or other collection is not empty
+		/// Assert that an array, list or other collection is not empty
 		/// </summary>
 		/// <param name="collection"> An array, list or other collection implementing ICollection </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1338,7 +1338,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that an array, list or other collection is not empty
+		/// Assert that an array, list or other collection is not empty
 		/// </summary>
 		/// <param name="collection"> An array, list or other collection implementing ICollection </param>
 		public static void IsNotEmpty(IEnumerable collection)
@@ -1351,7 +1351,7 @@ namespace NUnit.Framework
 		#region IsNullOrEmpty
 
 		/// <summary>
-		/// 	Assert that a string is either null or equal to string.Empty
+		/// Assert that a string is either null or equal to string.Empty
 		/// </summary>
 		/// <param name="aString"> The string to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1362,7 +1362,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that a string is either null or equal to string.Empty
+		/// Assert that a string is either null or equal to string.Empty
 		/// </summary>
 		/// <param name="aString"> The string to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1372,7 +1372,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that a string is either null or equal to string.Empty
+		/// Assert that a string is either null or equal to string.Empty
 		/// </summary>
 		/// <param name="aString"> The string to be tested </param>
 		public static void IsNullOrEmpty(string aString)
@@ -1385,7 +1385,7 @@ namespace NUnit.Framework
 		#region IsNotNullOrEmpty
 
 		/// <summary>
-		/// 	Assert that a string is not null or empty
+		/// Assert that a string is not null or empty
 		/// </summary>
 		/// <param name="aString"> The string to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1396,7 +1396,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that a string is not null or empty
+		/// Assert that a string is not null or empty
 		/// </summary>
 		/// <param name="aString"> The string to be tested </param>
 		/// <param name="message"> The message to display in case of failure </param>
@@ -1406,7 +1406,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Assert that a string is not null or empty
+		/// Assert that a string is not null or empty
 		/// </summary>
 		/// <param name="aString"> The string to be tested </param>
 		public static void IsNotNullOrEmpty(string aString)
@@ -1419,7 +1419,7 @@ namespace NUnit.Framework
 		#region IsAssignableFrom
 
 		/// <summary>
-		/// 	Asserts that an object may be assigned a  value of a given Type.
+		/// Asserts that an object may be assigned a  value of a given Type.
 		/// </summary>
 		/// <param name="expected"> The expected Type. </param>
 		/// <param name="actual"> The object under examination </param>
@@ -1431,7 +1431,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object may be assigned a  value of a given Type.
+		/// Asserts that an object may be assigned a  value of a given Type.
 		/// </summary>
 		/// <param name="expected"> The expected Type. </param>
 		/// <param name="actual"> The object under examination </param>
@@ -1442,7 +1442,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object may be assigned a  value of a given Type.
+		/// Asserts that an object may be assigned a  value of a given Type.
 		/// </summary>
 		/// <param name="expected"> The expected Type. </param>
 		/// <param name="actual"> The object under examination </param>
@@ -1457,7 +1457,7 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Asserts that an object may be assigned a  value of a given Type.
+		/// Asserts that an object may be assigned a  value of a given Type.
 		/// </summary>
 		/// <typeparam name="T"> The expected Type. </typeparam>
 		/// <param name="actual"> The object under examination </param>
@@ -1469,7 +1469,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object may be assigned a  value of a given Type.
+		/// Asserts that an object may be assigned a  value of a given Type.
 		/// </summary>
 		/// <typeparam name="T"> The expected Type. </typeparam>
 		/// <param name="actual"> The object under examination </param>
@@ -1480,7 +1480,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object may be assigned a  value of a given Type.
+		/// Asserts that an object may be assigned a  value of a given Type.
 		/// </summary>
 		/// <typeparam name="T"> The expected Type. </typeparam>
 		/// <param name="actual"> The object under examination </param>
@@ -1495,7 +1495,7 @@ namespace NUnit.Framework
 		#region IsNotAssignableFrom
 
 		/// <summary>
-		/// 	Asserts that an object may not be assigned a  value of a given Type.
+		/// Asserts that an object may not be assigned a  value of a given Type.
 		/// </summary>
 		/// <param name="expected"> The expected Type. </param>
 		/// <param name="actual"> The object under examination </param>
@@ -1507,7 +1507,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object may not be assigned a  value of a given Type.
+		/// Asserts that an object may not be assigned a  value of a given Type.
 		/// </summary>
 		/// <param name="expected"> The expected Type. </param>
 		/// <param name="actual"> The object under examination </param>
@@ -1518,7 +1518,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object may not be assigned a  value of a given Type.
+		/// Asserts that an object may not be assigned a  value of a given Type.
 		/// </summary>
 		/// <param name="expected"> The expected Type. </param>
 		/// <param name="actual"> The object under examination </param>
@@ -1533,7 +1533,7 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Asserts that an object may not be assigned a  value of a given Type.
+		/// Asserts that an object may not be assigned a  value of a given Type.
 		/// </summary>
 		/// <typeparam name="T"> The expected Type. </typeparam>
 		/// <param name="actual"> The object under examination </param>
@@ -1545,7 +1545,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object may not be assigned a  value of a given Type.
+		/// Asserts that an object may not be assigned a  value of a given Type.
 		/// </summary>
 		/// <typeparam name="T"> The expected Type. </typeparam>
 		/// <param name="actual"> The object under examination </param>
@@ -1556,7 +1556,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object may not be assigned a  value of a given Type.
+		/// Asserts that an object may not be assigned a  value of a given Type.
 		/// </summary>
 		/// <typeparam name="T"> The expected Type. </typeparam>
 		/// <param name="actual"> The object under examination </param>
@@ -1571,7 +1571,7 @@ namespace NUnit.Framework
 		#region IsInstanceOf
 
 		/// <summary>
-		/// 	Asserts that an object is an instance of a given type.
+		/// Asserts that an object is an instance of a given type.
 		/// </summary>
 		/// <param name="expected"> The expected Type </param>
 		/// <param name="actual"> The object being examined </param>
@@ -1583,7 +1583,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object is an instance of a given type.
+		/// Asserts that an object is an instance of a given type.
 		/// </summary>
 		/// <param name="expected"> The expected Type </param>
 		/// <param name="actual"> The object being examined </param>
@@ -1594,7 +1594,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object is an instance of a given type.
+		/// Asserts that an object is an instance of a given type.
 		/// </summary>
 		/// <param name="expected"> The expected Type </param>
 		/// <param name="actual"> The object being examined </param>
@@ -1604,7 +1604,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object is an instance of a given type.
+		/// Asserts that an object is an instance of a given type.
 		/// </summary>
 		/// <param name="expected"> The expected Type </param>
 		/// <param name="actual"> The object being examined </param>
@@ -1617,7 +1617,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object is an instance of a given type.
+		/// Asserts that an object is an instance of a given type.
 		/// </summary>
 		/// <param name="expected"> The expected Type </param>
 		/// <param name="actual"> The object being examined </param>
@@ -1629,7 +1629,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object is an instance of a given type.
+		/// Asserts that an object is an instance of a given type.
 		/// </summary>
 		/// <param name="expected"> The expected Type </param>
 		/// <param name="actual"> The object being examined </param>
@@ -1645,7 +1645,7 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Asserts that an object is an instance of a given type.
+		/// Asserts that an object is an instance of a given type.
 		/// </summary>
 		/// <typeparam name="T"> The expected Type </typeparam>
 		/// <param name="actual"> The object being examined </param>
@@ -1657,7 +1657,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object is an instance of a given type.
+		/// Asserts that an object is an instance of a given type.
 		/// </summary>
 		/// <typeparam name="T"> The expected Type </typeparam>
 		/// <param name="actual"> The object being examined </param>
@@ -1668,7 +1668,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object is an instance of a given type.
+		/// Asserts that an object is an instance of a given type.
 		/// </summary>
 		/// <typeparam name="T"> The expected Type </typeparam>
 		/// <param name="actual"> The object being examined </param>
@@ -1683,7 +1683,7 @@ namespace NUnit.Framework
 		#region IsNotInstanceOf
 
 		/// <summary>
-		/// 	Asserts that an object is not an instance of a given type.
+		/// Asserts that an object is not an instance of a given type.
 		/// </summary>
 		/// <param name="expected"> The expected Type </param>
 		/// <param name="actual"> The object being examined </param>
@@ -1695,7 +1695,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object is not an instance of a given type.
+		/// Asserts that an object is not an instance of a given type.
 		/// </summary>
 		/// <param name="expected"> The expected Type </param>
 		/// <param name="actual"> The object being examined </param>
@@ -1706,7 +1706,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object is not an instance of a given type.
+		/// Asserts that an object is not an instance of a given type.
 		/// </summary>
 		/// <param name="expected"> The expected Type </param>
 		/// <param name="actual"> The object being examined </param>
@@ -1716,7 +1716,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object is not an instance of a given type.
+		/// Asserts that an object is not an instance of a given type.
 		/// </summary>
 		/// <param name="expected"> The expected Type </param>
 		/// <param name="actual"> The object being examined </param>
@@ -1729,7 +1729,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object is not an instance of a given type.
+		/// Asserts that an object is not an instance of a given type.
 		/// </summary>
 		/// <param name="expected"> The expected Type </param>
 		/// <param name="actual"> The object being examined </param>
@@ -1741,7 +1741,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object is not an instance of a given type.
+		/// Asserts that an object is not an instance of a given type.
 		/// </summary>
 		/// <param name="expected"> The expected Type </param>
 		/// <param name="actual"> The object being examined </param>
@@ -1757,7 +1757,7 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Asserts that an object is not an instance of a given type.
+		/// Asserts that an object is not an instance of a given type.
 		/// </summary>
 		/// <typeparam name="T"> The expected Type </typeparam>
 		/// <param name="actual"> The object being examined </param>
@@ -1769,7 +1769,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object is not an instance of a given type.
+		/// Asserts that an object is not an instance of a given type.
 		/// </summary>
 		/// <typeparam name="T"> The expected Type </typeparam>
 		/// <param name="actual"> The object being examined </param>
@@ -1780,7 +1780,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object is not an instance of a given type.
+		/// Asserts that an object is not an instance of a given type.
 		/// </summary>
 		/// <typeparam name="T"> The expected Type </typeparam>
 		/// <param name="actual"> The object being examined </param>
@@ -1795,8 +1795,8 @@ namespace NUnit.Framework
 		#region AreEqual
 
 		/// <summary>
-		/// 	Verifies that two values are equal. If they are not, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are equal. If they are not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -1808,8 +1808,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are equal. If they are not, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are equal. If they are not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -1820,8 +1820,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are equal. If they are not, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are equal. If they are not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -1831,8 +1831,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are equal. If they are not, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are equal. If they are not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -1844,8 +1844,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are equal. If they are not, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are equal. If they are not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -1856,8 +1856,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are equal. If they are not, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are equal. If they are not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -1867,8 +1867,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are equal. If they are not, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are equal. If they are not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -1881,8 +1881,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are equal. If they are not, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are equal. If they are not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -1894,8 +1894,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are equal. If they are not, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are equal. If they are not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -1906,8 +1906,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are equal. If they are not, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are equal. If they are not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -1920,8 +1920,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are equal. If they are not, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are equal. If they are not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -1933,8 +1933,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are equal. If they are not, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are equal. If they are not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -1945,8 +1945,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are equal. If they are not, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are equal. If they are not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -1958,8 +1958,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are equal. If they are not, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are equal. If they are not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -1970,8 +1970,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are equal. If they are not, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are equal. If they are not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -1985,10 +1985,10 @@ namespace NUnit.Framework
 		#region AreEqual
 
 		/// <summary>
-		/// 	Verifies that two doubles are equal considering a delta. If the
-		/// 	expected value is infinity then the delta value is ignored. If 
-		/// 	they are not equal then an <see cref="AssertionException" /> is
-		/// 	thrown.
+		/// Verifies that two doubles are equal considering a delta. If the
+		/// expected value is infinity then the delta value is ignored. If
+		/// they are not equal then an <see cref="AssertionException" /> is
+		/// thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2001,10 +2001,10 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two doubles are equal considering a delta. If the
-		/// 	expected value is infinity then the delta value is ignored. If 
-		/// 	they are not equal then an <see cref="AssertionException" /> is
-		/// 	thrown.
+		/// Verifies that two doubles are equal considering a delta. If the
+		/// expected value is infinity then the delta value is ignored. If
+		/// they are not equal then an <see cref="AssertionException" /> is
+		/// thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2016,10 +2016,10 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two doubles are equal considering a delta. If the
-		/// 	expected value is infinity then the delta value is ignored. If 
-		/// 	they are not equal then an <see cref="AssertionException" /> is
-		/// 	thrown.
+		/// Verifies that two doubles are equal considering a delta. If the
+		/// expected value is infinity then the delta value is ignored. If
+		/// they are not equal then an <see cref="AssertionException" /> is
+		/// thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2031,10 +2031,10 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Verifies that two doubles are equal considering a delta. If the
-		/// 	expected value is infinity then the delta value is ignored. If 
-		/// 	they are not equal then an <see cref="AssertionException" /> is
-		/// 	thrown.
+		/// Verifies that two doubles are equal considering a delta. If the
+		/// expected value is infinity then the delta value is ignored. If
+		/// they are not equal then an <see cref="AssertionException" /> is
+		/// thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2047,10 +2047,10 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two doubles are equal considering a delta. If the
-		/// 	expected value is infinity then the delta value is ignored. If 
-		/// 	they are not equal then an <see cref="AssertionException" /> is
-		/// 	thrown.
+		/// Verifies that two doubles are equal considering a delta. If the
+		/// expected value is infinity then the delta value is ignored. If
+		/// they are not equal then an <see cref="AssertionException" /> is
+		/// thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2062,10 +2062,10 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two doubles are equal considering a delta. If the
-		/// 	expected value is infinity then the delta value is ignored. If 
-		/// 	they are not equal then an <see cref="AssertionException" /> is
-		/// 	thrown.
+		/// Verifies that two doubles are equal considering a delta. If the
+		/// expected value is infinity then the delta value is ignored. If
+		/// they are not equal then an <see cref="AssertionException" /> is
+		/// thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2081,10 +2081,10 @@ namespace NUnit.Framework
 		#region AreEqual
 
 		/// <summary>
-		/// 	Verifies that two objects are equal.  Two objects are considered
-		/// 	equal if both are null, or if both have the same value. NUnit
-		/// 	has special semantics for some object types.
-		/// 	If they are not equal an <see cref="AssertionException" /> is thrown.
+		/// Verifies that two objects are equal.  Two objects are considered
+		/// equal if both are null, or if both have the same value. NUnit
+		/// has special semantics for some object types.
+		/// If they are not equal an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The value that is expected </param>
 		/// <param name="actual"> The actual value </param>
@@ -2096,10 +2096,10 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two objects are equal.  Two objects are considered
-		/// 	equal if both are null, or if both have the same value. NUnit
-		/// 	has special semantics for some object types.
-		/// 	If they are not equal an <see cref="AssertionException" /> is thrown.
+		/// Verifies that two objects are equal.  Two objects are considered
+		/// equal if both are null, or if both have the same value. NUnit
+		/// has special semantics for some object types.
+		/// If they are not equal an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The value that is expected </param>
 		/// <param name="actual"> The actual value </param>
@@ -2110,10 +2110,10 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two objects are equal.  Two objects are considered
-		/// 	equal if both are null, or if both have the same value. NUnit
-		/// 	has special semantics for some object types.
-		/// 	If they are not equal an <see cref="AssertionException" /> is thrown.
+		/// Verifies that two objects are equal.  Two objects are considered
+		/// equal if both are null, or if both have the same value. NUnit
+		/// has special semantics for some object types.
+		/// If they are not equal an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The value that is expected </param>
 		/// <param name="actual"> The actual value </param>
@@ -2127,8 +2127,8 @@ namespace NUnit.Framework
 		#region AreNotEqual
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2140,8 +2140,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2152,8 +2152,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2163,8 +2163,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2176,8 +2176,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2188,8 +2188,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2199,8 +2199,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2213,8 +2213,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2226,8 +2226,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2238,8 +2238,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2252,8 +2252,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2265,8 +2265,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2277,8 +2277,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2290,8 +2290,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2302,8 +2302,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2313,8 +2313,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2326,8 +2326,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2338,8 +2338,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2349,8 +2349,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2362,8 +2362,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2374,8 +2374,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two values are not equal. If they are equal, then an 
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that two values are not equal. If they are equal, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value </param>
@@ -2389,10 +2389,10 @@ namespace NUnit.Framework
 		#region AreNotEqual
 
 		/// <summary>
-		/// 	Verifies that two objects are not equal.  Two objects are considered
-		/// 	equal if both are null, or if both have the same value. NUnit
-		/// 	has special semantics for some object types.
-		/// 	If they are equal an <see cref="AssertionException" /> is thrown.
+		/// Verifies that two objects are not equal.  Two objects are considered
+		/// equal if both are null, or if both have the same value. NUnit
+		/// has special semantics for some object types.
+		/// If they are equal an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The value that is expected </param>
 		/// <param name="actual"> The actual value </param>
@@ -2404,10 +2404,10 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two objects are not equal.  Two objects are considered
-		/// 	equal if both are null, or if both have the same value. NUnit
-		/// 	has special semantics for some object types.
-		/// 	If they are equal an <see cref="AssertionException" /> is thrown.
+		/// Verifies that two objects are not equal.  Two objects are considered
+		/// equal if both are null, or if both have the same value. NUnit
+		/// has special semantics for some object types.
+		/// If they are equal an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The value that is expected </param>
 		/// <param name="actual"> The actual value </param>
@@ -2418,10 +2418,10 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that two objects are not equal.  Two objects are considered
-		/// 	equal if both are null, or if both have the same value. NUnit
-		/// 	has special semantics for some object types.
-		/// 	If they are equal an <see cref="AssertionException" /> is thrown.
+		/// Verifies that two objects are not equal.  Two objects are considered
+		/// equal if both are null, or if both have the same value. NUnit
+		/// has special semantics for some object types.
+		/// If they are equal an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The value that is expected </param>
 		/// <param name="actual"> The actual value </param>
@@ -2435,8 +2435,8 @@ namespace NUnit.Framework
 		#region AreSame
 
 		/// <summary>
-		/// 	Asserts that two objects refer to the same object. If they
-		/// 	are not the same an <see cref="AssertionException" /> is thrown.
+		/// Asserts that two objects refer to the same object. If they
+		/// are not the same an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected object </param>
 		/// <param name="actual"> The actual object </param>
@@ -2448,8 +2448,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that two objects refer to the same object. If they
-		/// 	are not the same an <see cref="AssertionException" /> is thrown.
+		/// Asserts that two objects refer to the same object. If they
+		/// are not the same an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected object </param>
 		/// <param name="actual"> The actual object </param>
@@ -2460,8 +2460,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that two objects refer to the same object. If they
-		/// 	are not the same an <see cref="AssertionException" /> is thrown.
+		/// Asserts that two objects refer to the same object. If they
+		/// are not the same an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected object </param>
 		/// <param name="actual"> The actual object </param>
@@ -2475,8 +2475,8 @@ namespace NUnit.Framework
 		#region AreNotSame
 
 		/// <summary>
-		/// 	Asserts that two objects do not refer to the same object. If they
-		/// 	are the same an <see cref="AssertionException" /> is thrown.
+		/// Asserts that two objects do not refer to the same object. If they
+		/// are the same an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected object </param>
 		/// <param name="actual"> The actual object </param>
@@ -2488,8 +2488,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that two objects do not refer to the same object. If they
-		/// 	are the same an <see cref="AssertionException" /> is thrown.
+		/// Asserts that two objects do not refer to the same object. If they
+		/// are the same an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected object </param>
 		/// <param name="actual"> The actual object </param>
@@ -2500,8 +2500,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that two objects do not refer to the same object. If they
-		/// 	are the same an <see cref="AssertionException" /> is thrown.
+		/// Asserts that two objects do not refer to the same object. If they
+		/// are the same an <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="expected"> The expected object </param>
 		/// <param name="actual"> The actual object </param>
@@ -2515,9 +2515,9 @@ namespace NUnit.Framework
 		#region Greater
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2529,9 +2529,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2542,9 +2542,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2554,9 +2554,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2569,9 +2569,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2583,9 +2583,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2596,9 +2596,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2610,9 +2610,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2623,9 +2623,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2635,9 +2635,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2650,9 +2650,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2664,9 +2664,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2677,9 +2677,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2691,9 +2691,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2704,9 +2704,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2716,9 +2716,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2730,9 +2730,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2743,9 +2743,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2755,9 +2755,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2769,9 +2769,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2782,9 +2782,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2794,9 +2794,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2808,9 +2808,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2821,9 +2821,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -2837,9 +2837,9 @@ namespace NUnit.Framework
 		#region Less
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -2851,9 +2851,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -2864,9 +2864,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -2876,9 +2876,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -2891,9 +2891,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -2905,9 +2905,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -2918,9 +2918,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -2932,9 +2932,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -2945,9 +2945,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -2957,9 +2957,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -2972,9 +2972,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -2986,9 +2986,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -2999,9 +2999,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3013,9 +3013,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3026,9 +3026,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3038,9 +3038,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3052,9 +3052,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3065,9 +3065,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3077,9 +3077,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3091,9 +3091,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3104,9 +3104,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3116,9 +3116,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3130,9 +3130,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3143,9 +3143,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3159,9 +3159,9 @@ namespace NUnit.Framework
 		#region GreaterOrEqual
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3173,9 +3173,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3186,9 +3186,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3198,9 +3198,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3213,9 +3213,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3227,9 +3227,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3240,9 +3240,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3254,9 +3254,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3267,9 +3267,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3279,9 +3279,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3294,9 +3294,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3308,9 +3308,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3321,9 +3321,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3335,9 +3335,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3348,9 +3348,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3360,9 +3360,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3374,9 +3374,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3387,9 +3387,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3399,9 +3399,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3413,9 +3413,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3426,9 +3426,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3438,9 +3438,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3452,9 +3452,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3465,9 +3465,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is greater than or equal tothe second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is greater than or equal tothe second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be greater </param>
 		/// <param name="arg2"> The second value, expected to be less </param>
@@ -3481,9 +3481,9 @@ namespace NUnit.Framework
 		#region LessOrEqual
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3495,9 +3495,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3508,9 +3508,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3520,9 +3520,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3535,9 +3535,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3549,9 +3549,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3562,9 +3562,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3576,9 +3576,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3589,9 +3589,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3601,9 +3601,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3616,9 +3616,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3630,9 +3630,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3643,9 +3643,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3657,9 +3657,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3670,9 +3670,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3682,9 +3682,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3696,9 +3696,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3709,9 +3709,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3721,9 +3721,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3735,9 +3735,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3748,9 +3748,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3760,9 +3760,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3774,9 +3774,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3787,9 +3787,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Verifies that the first value is less than or equal to the second
-		/// 	value. If it is not, then an
-		/// 	<see cref="AssertionException" /> is thrown.
+		/// Verifies that the first value is less than or equal to the second
+		/// value. If it is not, then an
+		/// <see cref="AssertionException" /> is thrown.
 		/// </summary>
 		/// <param name="arg1"> The first value, expected to be less </param>
 		/// <param name="arg2"> The second value, expected to be greater </param>
@@ -3803,7 +3803,7 @@ namespace NUnit.Framework
 		#region Contains
 
 		/// <summary>
-		/// 	Asserts that an object is contained in a list.
+		/// Asserts that an object is contained in a list.
 		/// </summary>
 		/// <param name="expected"> The expected object </param>
 		/// <param name="actual"> The list to be examined </param>
@@ -3815,7 +3815,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object is contained in a list.
+		/// Asserts that an object is contained in a list.
 		/// </summary>
 		/// <param name="expected"> The expected object </param>
 		/// <param name="actual"> The list to be examined </param>
@@ -3826,7 +3826,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that an object is contained in a list.
+		/// Asserts that an object is contained in a list.
 		/// </summary>
 		/// <param name="expected"> The expected object </param>
 		/// <param name="actual"> The list to be examined </param>

@@ -12,38 +12,49 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection;
+
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Castle.DynamicProxy.Internal;
+using Castle.DynamicProxy.Tokens;
+
 namespace Castle.DynamicProxy.Generators
 {
 	using System;
-	using System.Reflection;
-
-	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-	using Castle.DynamicProxy.Internal;
-	using Castle.DynamicProxy.Tokens;
 
 	public class InheritanceInvocationTypeGenerator : InvocationTypeGenerator
 	{
-		public static readonly Type BaseType = typeof(InheritanceInvocation);
+		#region Constructors/Destructors
 
 		public InheritanceInvocationTypeGenerator(Type targetType, MetaMethod method, MethodInfo callback,
-		                                          IInvocationCreationContributor contributor)
+			IInvocationCreationContributor contributor)
 			: base(targetType, method, callback, false, contributor)
 		{
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		public static readonly Type BaseType = typeof(InheritanceInvocation);
+
+		#endregion
+
+		#region Methods/Operators
+
 		protected override ArgumentReference[] GetBaseCtorArguments(Type targetFieldType,
-		                                                            ProxyGenerationOptions proxyGenerationOptions,
-		                                                            out ConstructorInfo baseConstructor)
+			ProxyGenerationOptions proxyGenerationOptions,
+			out ConstructorInfo baseConstructor)
 		{
 			baseConstructor = InvocationMethods.InheritanceInvocationConstructor;
 			return new[]
-			{
-				new ArgumentReference(typeof(Type)),
-				new ArgumentReference(typeof(object)),
-				new ArgumentReference(typeof(IInterceptor[])),
-				new ArgumentReference(typeof(MethodInfo)),
-				new ArgumentReference(typeof(object[]))
-			};
+					{
+						new ArgumentReference(typeof(Type)),
+						new ArgumentReference(typeof(object)),
+						new ArgumentReference(typeof(IInterceptor[])),
+						new ArgumentReference(typeof(MethodInfo)),
+						new ArgumentReference(typeof(object[]))
+					};
 		}
 
 		protected override Type GetBaseType()
@@ -55,5 +66,7 @@ namespace Castle.DynamicProxy.Generators
 		{
 			return new FieldReference(InvocationMethods.ProxyObject);
 		}
+
+		#endregion
 	}
 }

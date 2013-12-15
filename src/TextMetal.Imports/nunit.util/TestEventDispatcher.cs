@@ -11,7 +11,7 @@ using NUnit.Core;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Helper class used to dispatch test events
+	/// Helper class used to dispatch test events
 	/// </summary>
 	public class TestEventDispatcher : ITestEvents
 	{

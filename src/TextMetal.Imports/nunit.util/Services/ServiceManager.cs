@@ -12,7 +12,7 @@ using NUnit.Core;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Summary description for ServiceManger.
+	/// Summary description for ServiceManger.
 	/// </summary>
 	public class ServiceManager
 	{

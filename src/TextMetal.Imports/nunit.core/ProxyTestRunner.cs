@@ -11,17 +11,16 @@ namespace NUnit.Core
 	using System;
 
 	/// <summary>
-	/// 	DelegatingTestRUnner is the abstract base for core TestRunner
-	/// 	implementations that operate by controlling a downstream
-	/// 	TestRunner. All calls are simply passed on to the
-	/// 	TestRunner that is provided to the constructor.
-	/// 
-	/// 	Although the class is abstract, it has no abstract 
-	/// 	methods specified because each implementation will
-	/// 	need to override different methods. All methods are
-	/// 	specified using interface syntax and the derived class
-	/// 	must explicitly implement TestRunner in order to 
-	/// 	redefine the selected methods.
+	/// DelegatingTestRUnner is the abstract base for core TestRunner
+	/// implementations that operate by controlling a downstream
+	/// TestRunner. All calls are simply passed on to the
+	/// TestRunner that is provided to the constructor.
+	/// Although the class is abstract, it has no abstract
+	/// methods specified because each implementation will
+	/// need to override different methods. All methods are
+	/// specified using interface syntax and the derived class
+	/// must explicitly implement TestRunner in order to
+	/// redefine the selected methods.
 	/// </summary>
 	public abstract class ProxyTestRunner : MarshalByRefObject, TestRunner
 	{
@@ -34,8 +33,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Protected constructor for runners that delay creation
-		/// 	of their downstream runner.
+		/// Protected constructor for runners that delay creation
+		/// of their downstream runner.
 		/// </summary>
 		protected ProxyTestRunner(int runnerID)
 		{
@@ -47,17 +46,17 @@ namespace NUnit.Core
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The event listener for the currently running test
+		/// The event listener for the currently running test
 		/// </summary>
 		protected EventListener listener;
 
 		/// <summary>
-		/// 	Our runner ID
+		/// Our runner ID
 		/// </summary>
 		protected int runnerID;
 
 		/// <summary>
-		/// 	The downstream TestRunner
+		/// The downstream TestRunner
 		/// </summary>
 		private TestRunner testRunner;
 
@@ -106,9 +105,9 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Protected property copies any settings to the downstream test runner
-		/// 	when it is set. Derived runners overriding this should call the base
-		/// 	or copy the settings themselves.
+		/// Protected property copies any settings to the downstream test runner
+		/// when it is set. Derived runners overriding this should call the base
+		/// or copy the settings themselves.
 		/// </summary>
 		protected virtual TestRunner TestRunner
 		{

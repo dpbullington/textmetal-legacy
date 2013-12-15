@@ -12,9 +12,9 @@ using NUnit.Core.Extensibility;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Ignore Decorator is an alternative method of marking tests to
-	/// 	be ignored. It is currently not used, since the test builders
-	/// 	take care of the ignore attribute.
+	/// Ignore Decorator is an alternative method of marking tests to
+	/// be ignored. It is currently not used, since the test builders
+	/// take care of the ignore attribute.
 	/// </summary>
 	public class IgnoreDecorator : ITestDecorator
 	{

@@ -9,30 +9,29 @@ using System.Collections.Generic;
 
 namespace NUnit.UiException.CodeFormatters
 {
-	///<summary>
-	///	TokenDictionary is responsible for defining and identifying a set of basic
-	///	strings in a given text that have a particular meaning. For instance:
-	///	- Separator, (ex: "{" ";" "]" ...)
-	///	- comment markers, (ex: "//" "/*" "*/")
-	///	- string markers, (ex: '"' '\'')
-	///	- Other -> "Text" (all other strings but the ones aboves).
-	///	To achieve this, TokenDictionary firstly defines methods to register and query which
-	///	strings have been registered. Secondly it defines a convenient method: TryMatch()
-	///	responsible for splitting a given string in one or two parts where the first one will
-	///	fall in one of the above categories. When calling TryMatch() iteratively --see Lexer--,
-	///	one can tag a text into a list of tokens that might server for a semantic analysis.
-	///
-	///	TokenDictionary and Lexer are both responsible for dealing with the lexical analysis
-	///	job that is the first step to make basic syntax coloring.
-	///</summary>
-	///<see cref="Lexer">Front class for the lexical analysis.</see>
+	/// <summary>
+	/// TokenDictionary is responsible for defining and identifying a set of basic
+	/// strings in a given text that have a particular meaning. For instance:
+	/// - Separator, (ex: "{" ";" "]" ...)
+	/// - comment markers, (ex: "//" "/*" "*/")
+	/// - string markers, (ex: '"' '\'')
+	/// - Other -> "Text" (all other strings but the ones aboves).
+	/// To achieve this, TokenDictionary firstly defines methods to register and query which
+	/// strings have been registered. Secondly it defines a convenient method: TryMatch()
+	/// responsible for splitting a given string in one or two parts where the first one will
+	/// fall in one of the above categories. When calling TryMatch() iteratively --see Lexer--,
+	/// one can tag a text into a list of tokens that might server for a semantic analysis.
+	/// TokenDictionary and Lexer are both responsible for dealing with the lexical analysis
+	/// job that is the first step to make basic syntax coloring.
+	/// </summary>
+	/// <see cref="Lexer"> Front class for the lexical analysis. </see>
 	public class TokenDictionary :
 		IEnumerable
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Build an empty instance of TokenDictionary.
+		/// Build an empty instance of TokenDictionary.
 		/// </summary>
 		public TokenDictionary()
 		{
@@ -54,7 +53,7 @@ namespace NUnit.UiException.CodeFormatters
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the token at the given index.
+		/// Gets the token at the given index.
 		/// </summary>
 		/// <param name="index"> Index of the token to be returned. </param>
 		/// <returns> The token at the specified index. </returns>
@@ -67,7 +66,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Gets the token count defined in this instance.
+		/// Gets the token count defined in this instance.
 		/// </summary>
 		public int Count
 		{
@@ -82,9 +81,9 @@ namespace NUnit.UiException.CodeFormatters
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Build a new token and add it to the list of tokens known by TokenDictionary.
-		/// 	Tokens must be added from the longest text value to the shortest otherwise
-		/// 	an exception will be raised.
+		/// Build a new token and add it to the list of tokens known by TokenDictionary.
+		/// Tokens must be added from the longest text value to the shortest otherwise
+		/// an exception will be raised.
 		/// </summary>
 		/// <param name="value"> The token's text value. It must not be null nor empty. It must not be already defined neither. If there are tokens already defined, value's length must not be longer than the previous added token. </param>
 		/// <param name="tag"> The token's tag value. </param>
@@ -94,7 +93,7 @@ namespace NUnit.UiException.CodeFormatters
 
 			UiExceptionHelper.CheckNotNull(value, "value");
 			UiExceptionHelper.CheckFalse(value == "",
-			                             "Token value must not be empty.", "value");
+				"Token value must not be empty.", "value");
 			UiExceptionHelper.CheckFalse(
 				this.Contains(value),
 				String.Format("Token '{0}' is already defined.", value),
@@ -124,7 +123,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Tests whether the given string matches a token known by this instance.
+		/// Tests whether the given string matches a token known by this instance.
 		/// </summary>
 		/// <param name="value"> A string to be identify with a token in this instance. </param>
 		/// <returns> True if the string matches a token's text value in this instance, false otherwise. </returns>
@@ -144,7 +143,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Builds the list of all LexToken which text value starts with the one in starter.
+		/// Builds the list of all LexToken which text value starts with the one in starter.
 		/// </summary>
 		/// <param name="starter"> The token that the reference text. </param>
 		/// <param name="output"> The list of tokens which text starts with the one in starter. </param>
@@ -164,25 +163,24 @@ namespace NUnit.UiException.CodeFormatters
 			return;
 		}
 
-		///<summary>
-		///	Try to match in "text" + "prediction" a token previously defined with the Add() method.
-		///	Since TryMatch() may return null, it should be called from a loop that scans iteratively
-		///	all characters of an input text.
-		///
-		///	TryMatch() can put the caller in the two following situations: 
-		///	1) if parameters "text"+"prediction" don't hold any token, null will be returned. In this
-		///	case caller is expected to append to "text" one character more and to shift "prediction"
-		///	by one character ahead before calling TryMatch() again.
-		///	2) if parameters "text"+"prediction" look like [data]TOKEN --where [data] is any other string
-		///	but the ones in tokens-- TryMatch() will return an instance of LexToken which LexToken.Text
-		///	and LexToken.Tag properties will be setup with identified data. In this case caller is
-		///	expected to shift its reading position by the lenght of text put in LexToken.Text. Besides
-		///	"text" parameter should reset its length to 1 again.
-		///</summary>
-		///<param name="text"> At the very beginning, text should be of size 1 and set up with the first character from the input text. Each time TryMatch() return null, the following character from the input text should be appended to "text". Once a token is returned, this parameter should reset its size to 1 and be filled with the character coming just after the identified string. This parameter cannot be null. </param>
-		///<param name="prediction"> This parameter represents a constant sized string that goes just before the data in "text". If the caller reach the end of the text and there are not enough character to fill "prediction" completely this parameter can be filled with remaining character and eventually becoming empty. The size of this string should be equal to the lenght of the longest token defined in this instance of TokenDictionary. This parameter cannot be null. </param>
-		///<returns> The first identifiable LexToken in "text"+"prediction". Returns may be null. </returns>
-		///<see cref="Lexer.Next()">To have a look on the loop implementation..</see>
+		/// <summary>
+		/// Try to match in "text" + "prediction" a token previously defined with the Add() method.
+		/// Since TryMatch() may return null, it should be called from a loop that scans iteratively
+		/// all characters of an input text.
+		/// TryMatch() can put the caller in the two following situations:
+		/// 1) if parameters "text"+"prediction" don't hold any token, null will be returned. In this
+		/// case caller is expected to append to "text" one character more and to shift "prediction"
+		/// by one character ahead before calling TryMatch() again.
+		/// 2) if parameters "text"+"prediction" look like [data]TOKEN --where [data] is any other string
+		/// but the ones in tokens-- TryMatch() will return an instance of LexToken which LexToken.Text
+		/// and LexToken.Tag properties will be setup with identified data. In this case caller is
+		/// expected to shift its reading position by the lenght of text put in LexToken.Text. Besides
+		/// "text" parameter should reset its length to 1 again.
+		/// </summary>
+		/// <param name="text"> At the very beginning, text should be of size 1 and set up with the first character from the input text. Each time TryMatch() return null, the following character from the input text should be appended to "text". Once a token is returned, this parameter should reset its size to 1 and be filled with the character coming just after the identified string. This parameter cannot be null. </param>
+		/// <param name="prediction"> This parameter represents a constant sized string that goes just before the data in "text". If the caller reach the end of the text and there are not enough character to fill "prediction" completely this parameter can be filled with remaining character and eventually becoming empty. The size of this string should be equal to the lenght of the longest token defined in this instance of TokenDictionary. This parameter cannot be null. </param>
+		/// <returns> The first identifiable LexToken in "text"+"prediction". Returns may be null. </returns>
+		/// <see cref="Lexer.Next()"> To have a look on the loop implementation.. </see>
 		public LexToken TryMatch(string text, string prediction)
 		{
 			UiExceptionHelper.CheckNotNull(text, "text");
@@ -220,10 +218,10 @@ namespace NUnit.UiException.CodeFormatters
 						for (i = 1; i < this._working.Count; ++i)
 						{
 							if (this._working[i].Text.Length <= text.Length ||
-							    this._working[i].Text.Length > text.Length + prediction.Length)
+								this._working[i].Text.Length > text.Length + prediction.Length)
 								continue;
 							pattern = text + prediction.Substring(0,
-							                                      this._working[i].Text.Length - text.Length);
+								this._working[i].Text.Length - text.Length);
 							if (this._working[i].Text == pattern)
 								return (this._working[i]);
 						}
@@ -248,8 +246,8 @@ namespace NUnit.UiException.CodeFormatters
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		/// <summary>
-		/// 	Inherits of LexToken and add a public array that holds the list of all other tokens
-		/// 	which text values start with the one in the current instance.
+		/// Inherits of LexToken and add a public array that holds the list of all other tokens
+		/// which text values start with the one in the current instance.
 		/// </summary>
 		private class InternalLexToken :
 			LexToken
@@ -257,7 +255,7 @@ namespace NUnit.UiException.CodeFormatters
 			#region Constructors/Destructors
 
 			/// <summary>
-			/// 	Build a new instance of InternalLexToken with the given data.
+			/// Build a new instance of InternalLexToken with the given data.
 			/// </summary>
 			/// <param name="value"> The token's text value. </param>
 			/// <param name="tag"> The token's tag value. </param>
@@ -277,9 +275,9 @@ namespace NUnit.UiException.CodeFormatters
 			#region Fields/Constants
 
 			/// <summary>
-			/// 	Holds the list of all other tokens which text values start like the one
-			/// 	in this instance. This array is used to solve ambiguity when finding a
-			/// 	string that could possibly represents more than one token.
+			/// Holds the list of all other tokens which text values start like the one
+			/// in this instance. This array is used to solve ambiguity when finding a
+			/// string that could possibly represents more than one token.
 			/// </summary>
 			public List<LexToken> StartingWith;
 

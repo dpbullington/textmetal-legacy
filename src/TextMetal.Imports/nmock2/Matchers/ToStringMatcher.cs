@@ -22,15 +22,15 @@ using System.IO;
 namespace NMock2.Matchers
 {
 	/// <summary>
-	/// 	Matcher that checks whether the actual value in string representation (actual.ToString())
-	/// 	matches with the wrapped matcher.
+	/// Matcher that checks whether the actual value in string representation (actual.ToString())
+	/// matches with the wrapped matcher.
 	/// </summary>
 	public class ToStringMatcher : Matcher
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="ToStringMatcher" /> class.
+		/// Initializes a new instance of the <see cref="ToStringMatcher" /> class.
 		/// </summary>
 		/// <param name="matcher"> The wrapped matcher. </param>
 		public ToStringMatcher(Matcher matcher)
@@ -43,7 +43,7 @@ namespace NMock2.Matchers
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Holds the wrapped matcher.
+		/// Holds the wrapped matcher.
 		/// </summary>
 		private readonly Matcher matcher;
 
@@ -52,7 +52,7 @@ namespace NMock2.Matchers
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public override void DescribeTo(TextWriter writer)
@@ -62,7 +62,7 @@ namespace NMock2.Matchers
 		}
 
 		/// <summary>
-		/// 	Matches the specified object to this matcher and returns whether it matches.
+		/// Matches the specified object to this matcher and returns whether it matches.
 		/// </summary>
 		/// <param name="o"> The object to match. </param>
 		/// <returns> Whether the object in string representation (o.ToString()) matches the wrapped matcher. </returns>

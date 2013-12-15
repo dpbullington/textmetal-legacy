@@ -22,16 +22,16 @@ namespace NMock2.Monitoring
 	using System;
 
 	/// <summary>
-	/// 	An invoker invokes an <see cref="Invocation" /> on a target if
-	/// 	it is responsible for the target type, otherwise the invocation is passed
-	/// 	to the next invoker in the 'next' chain.
+	/// An invoker invokes an <see cref="Invocation" /> on a target if
+	/// it is responsible for the target type, otherwise the invocation is passed
+	/// to the next invoker in the 'next' chain.
 	/// </summary>
 	public class Invoker : IInvokable
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="Invoker" /> class.
+		/// Initializes a new instance of the <see cref="Invoker" /> class.
 		/// </summary>
 		/// <param name="targetType"> Type of the target. Can not be inferred from <paramref name="target" /> because it could be a base type. </param>
 		/// <param name="target"> The target. </param>
@@ -48,18 +48,18 @@ namespace NMock2.Monitoring
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Holds the next <see cref="IInvokable" /> to pass the invocation to, 
-		/// 	if this instance is not responsible for the target type on an invocation.
+		/// Holds the next <see cref="IInvokable" /> to pass the invocation to,
+		/// if this instance is not responsible for the target type on an invocation.
 		/// </summary>
 		private readonly IInvokable next;
 
 		/// <summary>
-		/// 	Holds the target.
+		/// Holds the target.
 		/// </summary>
 		private readonly object target;
 
 		/// <summary>
-		/// 	Holds the type of the target. Can not be inferred from target because it could be a base type.
+		/// Holds the type of the target. Can not be inferred from target because it could be a base type.
 		/// </summary>
 		private readonly Type targetType;
 
@@ -68,9 +68,9 @@ namespace NMock2.Monitoring
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Executes the <paramref name="invocation" /> on the target of this instance
-		/// 	if the targetType of this instance matches the invocation, otherwise the invocation
-		/// 	is passed to the next <see cref="IInvokable" /> specified in the constructor.
+		/// Executes the <paramref name="invocation" /> on the target of this instance
+		/// if the targetType of this instance matches the invocation, otherwise the invocation
+		/// is passed to the next <see cref="IInvokable" /> specified in the constructor.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
 		public void Invoke(Invocation invocation)

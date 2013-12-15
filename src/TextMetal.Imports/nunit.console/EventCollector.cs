@@ -18,7 +18,7 @@ using NUnit.Util;
 namespace NUnit.ConsoleRunner
 {
 	/// <summary>
-	/// 	Summary description for EventCollector.
+	/// Summary description for EventCollector.
 	/// </summary>
 	public class EventCollector : MarshalByRefObject, EventListener
 	{

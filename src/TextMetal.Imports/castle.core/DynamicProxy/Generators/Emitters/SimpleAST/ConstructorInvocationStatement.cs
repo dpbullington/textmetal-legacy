@@ -12,42 +12,49 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection;
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
 	using System;
-	using System.Reflection;
-	using System.Reflection.Emit;
 
 	public class ConstructorInvocationStatement : Statement
 	{
-		private readonly Expression[] args;
-		private readonly ConstructorInfo cmethod;
+		#region Constructors/Destructors
 
 		public ConstructorInvocationStatement(ConstructorInfo method, params Expression[] args)
 		{
 			if (method == null)
-			{
 				throw new ArgumentNullException("method");
-			}
 			if (args == null)
-			{
 				throw new ArgumentNullException("args");
-			}
 
-			cmethod = method;
+			this.cmethod = method;
 			this.args = args;
 		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly Expression[] args;
+		private readonly ConstructorInfo cmethod;
+
+		#endregion
+
+		#region Methods/Operators
 
 		public override void Emit(IMemberEmitter member, ILGenerator gen)
 		{
 			gen.Emit(OpCodes.Ldarg_0);
 
-			foreach (var exp in args)
-			{
+			foreach (var exp in this.args)
 				exp.Emit(member, gen);
-			}
 
-			gen.Emit(OpCodes.Call, cmethod);
+			gen.Emit(OpCodes.Call, this.cmethod);
 		}
+
+		#endregion
 	}
 }

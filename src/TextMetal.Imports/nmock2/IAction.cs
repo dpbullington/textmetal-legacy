@@ -22,8 +22,8 @@ using NMock2.Monitoring;
 namespace NMock2
 {
 	/// <summary>
-	/// 	An action defines something that has to be done.
-	/// 	For example the action to return a result value.
+	/// An action defines something that has to be done.
+	/// For example the action to return a result value.
 	/// </summary>
 	public interface IAction : IInvokable, ISelfDescribing
 	{

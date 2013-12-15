@@ -16,6 +16,10 @@ namespace Castle.Components.DictionaryAdapter
 {
 	public interface IVirtualTarget<TNode, TMember>
 	{
+		#region Methods/Operators
+
 		void OnRealizing(TNode node, TMember member);
+
+		#endregion
 	}
 }

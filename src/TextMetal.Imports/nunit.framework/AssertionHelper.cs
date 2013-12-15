@@ -12,11 +12,11 @@ using NUnit.Framework.Constraints;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	AssertionHelper is an optional base class for user tests,
-	/// 	allowing the use of shorter names for constraints and
-	/// 	asserts and avoiding conflict with the definition of 
-	/// 	<see cref="Is" />, from which it inherits much of its
-	/// 	behavior, in certain mock object frameworks.
+	/// AssertionHelper is an optional base class for user tests,
+	/// allowing the use of shorter names for constraints and
+	/// asserts and avoiding conflict with the definition of
+	/// <see cref="Is" />, from which it inherits much of its
+	/// behavior, in certain mock object frameworks.
 	/// </summary>
 	public class AssertionHelper : ConstraintFactory
 	{
@@ -35,9 +35,9 @@ namespace NUnit.Framework
 		#region Object
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure. Works
-		/// 	identically to Assert.That
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure. Works
+		/// identically to Assert.That
 		/// </summary>
 		/// <param name="constraint"> A Constraint to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -47,9 +47,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure. Works
-		/// 	identically to Assert.That.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure. Works
+		/// identically to Assert.That.
 		/// </summary>
 		/// <param name="constraint"> A Constraint to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -60,9 +60,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure. Works
-		/// 	identically to Assert.That
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure. Works
+		/// identically to Assert.That
 		/// </summary>
 		/// <param name="constraint"> A Constraint to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -78,8 +78,8 @@ namespace NUnit.Framework
 		#region ActualValueDelegate
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure.
 		/// </summary>
 		/// <param name="expr"> A Constraint expression to be applied </param>
 		/// <param name="del"> An ActualValueDelegate returning the value to be tested </param>
@@ -89,8 +89,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure.
 		/// </summary>
 		/// <param name="expr"> A Constraint expression to be applied </param>
 		/// <param name="del"> An ActualValueDelegate returning the value to be tested </param>
@@ -101,8 +101,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to an actual value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure.
+		/// Apply a constraint to an actual value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure.
 		/// </summary>
 		/// <param name="del"> An ActualValueDelegate returning the value to be tested </param>
 		/// <param name="expr"> A Constraint expression to be applied </param>
@@ -119,8 +119,8 @@ namespace NUnit.Framework
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Apply a constraint to a referenced value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure.
+		/// Apply a constraint to a referenced value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure.
 		/// </summary>
 		/// <param name="constraint"> A Constraint to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -130,8 +130,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to a referenced value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure.
+		/// Apply a constraint to a referenced value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure.
 		/// </summary>
 		/// <param name="constraint"> A Constraint to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -142,8 +142,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Apply a constraint to a referenced value, succeeding if the constraint
-		/// 	is satisfied and throwing an assertion exception on failure.
+		/// Apply a constraint to a referenced value, succeeding if the constraint
+		/// is satisfied and throwing an assertion exception on failure.
 		/// </summary>
 		/// <param name="expression"> A Constraint to be applied </param>
 		/// <param name="actual"> The actual value to test </param>
@@ -196,8 +196,8 @@ namespace NUnit.Framework
 		#region Boolean
 
 		/// <summary>
-		/// 	Asserts that a condition is true. If the condition is false the method throws
-		/// 	an <see cref="AssertionException" />. Works Identically to Assert.That.
+		/// Asserts that a condition is true. If the condition is false the method throws
+		/// an <see cref="AssertionException" />. Works Identically to Assert.That.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		/// <param name="message"> The message to display if the condition is false </param>
@@ -208,8 +208,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a condition is true. If the condition is false the method throws
-		/// 	an <see cref="AssertionException" />. Works Identically to Assert.That.
+		/// Asserts that a condition is true. If the condition is false the method throws
+		/// an <see cref="AssertionException" />. Works Identically to Assert.That.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		/// <param name="message"> The message to display if the condition is false </param>
@@ -219,8 +219,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a condition is true. If the condition is false the method throws
-		/// 	an <see cref="AssertionException" />. Works Identically Assert.That.
+		/// Asserts that a condition is true. If the condition is false the method throws
+		/// an <see cref="AssertionException" />. Works Identically Assert.That.
 		/// </summary>
 		/// <param name="condition"> The evaluated condition </param>
 		public void Expect(bool condition)
@@ -231,8 +231,8 @@ namespace NUnit.Framework
 		#endregion
 
 		/// <summary>
-		/// 	Asserts that the code represented by a delegate throws an exception
-		/// 	that satisfies the constraint provided.
+		/// Asserts that the code represented by a delegate throws an exception
+		/// that satisfies the constraint provided.
 		/// </summary>
 		/// <param name="code"> A TestDelegate to be executed </param>
 		/// <param name="constraint"> A ThrowsConstraint used in the test </param>
@@ -246,7 +246,7 @@ namespace NUnit.Framework
 		#region Map
 
 		/// <summary>
-		/// 	Returns a ListMapper based on a collection.
+		/// Returns a ListMapper based on a collection.
 		/// </summary>
 		/// <param name="original"> The original collection </param>
 		/// <returns> </returns>

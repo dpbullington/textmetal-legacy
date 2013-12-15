@@ -12,13 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	public class XmlPositionComparer
 	{
+		#region Fields/Constants
+
 		public static readonly XmlPositionComparer
 			Instance = new XmlPositionComparer();
+
+		#endregion
+
+		#region Methods/Operators
 
 		public bool Equals(IXmlNode nodeA, IXmlNode nodeB)
 		{
@@ -37,10 +45,14 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			}
 		}
 
+		#endregion
+
+		#region Classes/Structs/Interfaces/Enums/Delegates
+
 		private struct ComparandIterator
 		{
 			public IXmlNode Node;
-			public XmlName  Name;
+			public XmlName Name;
 #if !SL3
 			public CompiledXPathNode Step;
 #endif
@@ -49,30 +61,30 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			{
 				return
 #if !SL3
-					Step != null ? ConsumeStep() :
+					this.Step != null ? this.ConsumeStep() :
 #endif
-					Node != null ? ConsumeNode() :
-					Stop();
+						this.Node != null ? this.ConsumeNode() :
+							this.Stop();
 			}
 
 			private bool ConsumeNode()
 			{
 				var result = true;
 #if !SL3
-				var path = Node.Path;
+				var path = this.Node.Path;
 				if (path != null)
-					result = ConsumeFirstStep(path);
+					result = this.ConsumeFirstStep(path);
 				else
 #endif
-					Name = Node.Name;
+					this.Name = this.Node.Name;
 
-				Node = Node.Parent;
+				this.Node = this.Node.Parent;
 				return result;
 			}
 
 			private bool Stop()
 			{
-				Name = XmlName.Empty;
+				this.Name = XmlName.Empty;
 				return false;
 			}
 
@@ -82,23 +94,26 @@ namespace Castle.Components.DictionaryAdapter.Xml
 				if (!path.IsCreatable)
 					return false;
 
-				Step = path.LastStep;
-				return ConsumeStep();
+				this.Step = path.LastStep;
+				return this.ConsumeStep();
 			}
 
 			private bool ConsumeStep()
 			{
-				Name = new XmlName
-				(
-					Step.LocalName,
-					Node.LookupNamespaceUri(Step.Prefix)
-				);
+				this.Name = new XmlName
+					(
+					this.Step.LocalName,
+					this.Node.LookupNamespaceUri(this.Step.Prefix)
+					);
 
-				Step = Step.PreviousNode;
+				this.Step = this.Step.PreviousNode;
 				return true;
 			}
 #endif
 		}
+
+		#endregion
 	}
 }
+
 #endif

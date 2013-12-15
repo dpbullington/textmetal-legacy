@@ -12,27 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Reflection;
+
 namespace Castle.DynamicProxy.Generators
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Reflection;
 
 	/// <summary>
-	///   Returns the methods implemented by a type. Use this instead of Type.GetMethods() to work around a CLR issue
-	///   where duplicate MethodInfos are returned by Type.GetMethods() after a token of a generic type's method was loaded.
+	/// Returns the methods implemented by a type. Use this instead of Type.GetMethods() to work around a CLR issue
+	/// where duplicate MethodInfos are returned by Type.GetMethods() after a token of a generic type's method was loaded.
 	/// </summary>
 	public class MethodFinder
 	{
+		#region Fields/Constants
+
 		private static readonly Dictionary<Type, object> cachedMethodInfosByType = new Dictionary<Type, object>();
 		private static readonly object lockObject = new object();
+
+		#endregion
+
+		#region Methods/Operators
 
 		public static MethodInfo[] GetAllInstanceMethods(Type type, BindingFlags flags)
 		{
 			if ((flags & ~(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) != 0)
-			{
 				throw new ArgumentException("MethodFinder only supports the Public, NonPublic, and Instance binding flags.", "flags");
-			}
 
 			MethodInfo[] methodsInCache;
 
@@ -55,9 +60,7 @@ namespace Castle.DynamicProxy.Generators
 		private static MethodInfo[] MakeFilteredCopy(MethodInfo[] methodsInCache, BindingFlags visibilityFlags)
 		{
 			if ((visibilityFlags & ~(BindingFlags.Public | BindingFlags.NonPublic)) != 0)
-			{
 				throw new ArgumentException("Only supports BindingFlags.Public and NonPublic.", "visibilityFlags");
-			}
 
 			var includePublic = (visibilityFlags & BindingFlags.Public) == BindingFlags.Public;
 			var includeNonPublic = (visibilityFlags & BindingFlags.NonPublic) == BindingFlags.NonPublic;
@@ -68,9 +71,7 @@ namespace Castle.DynamicProxy.Generators
 			foreach (var method in methodsInCache)
 			{
 				if ((method.IsPublic && includePublic) || (!method.IsPublic && includeNonPublic))
-				{
 					result.Add(method);
-				}
 			}
 
 			return result.ToArray();
@@ -82,13 +83,13 @@ namespace Castle.DynamicProxy.Generators
 			foreach (var info in infos)
 			{
 				if (!uniqueInfos.ContainsKey(info))
-				{
 					uniqueInfos.Add(info, null);
-				}
 			}
 			var result = new MethodInfo[uniqueInfos.Count];
 			uniqueInfos.Keys.CopyTo(result, 0);
 			return result;
 		}
+
+		#endregion
 	}
 }

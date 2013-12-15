@@ -11,15 +11,15 @@ using NUnit.Core;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	A Test Runner factory can supply a suitable test runner for a given package
+	/// A Test Runner factory can supply a suitable test runner for a given package
 	/// </summary>
 	public interface ITestRunnerFactory
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Return true if the provided runner is suitable for reuse in loading
-		/// 	the test package provided. Otherwise, return false.
+		/// Return true if the provided runner is suitable for reuse in loading
+		/// the test package provided. Otherwise, return false.
 		/// </summary>
 		/// <param name="package"> </param>
 		/// <param name="runner"> </param>
@@ -27,7 +27,7 @@ namespace NUnit.Util
 		bool CanReuse(TestRunner runner, TestPackage package);
 
 		/// <summary>
-		/// 	Return a suitable runner for the package provided as an argument
+		/// Return a suitable runner for the package provided as an argument
 		/// </summary>
 		/// <param name="package"> The test package to be loaded by the runner </param>
 		/// <returns> A TestRunner </returns>

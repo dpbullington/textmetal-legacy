@@ -20,14 +20,14 @@
 namespace NMock2.Syntax
 {
 	/// <summary>
-	/// 	Syntax defining an indexer get operation.
+	/// Syntax defining an indexer get operation.
 	/// </summary>
 	public interface IGetIndexerSyntax
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Defines the indexer.
+		/// Defines the indexer.
 		/// </summary>
 		/// <value> Match syntax to define a matcher for the object returned by the indexer. </value>
 		/// <param name="args"> The arguments of the matcher. </param>

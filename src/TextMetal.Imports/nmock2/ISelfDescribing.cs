@@ -22,14 +22,14 @@ using System.IO;
 namespace NMock2
 {
 	/// <summary>
-	/// 	This interface is used to get a description of the implementator.
+	/// This interface is used to get a description of the implementator.
 	/// </summary>
 	public interface ISelfDescribing
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		void DescribeTo(TextWriter writer);

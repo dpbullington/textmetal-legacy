@@ -10,9 +10,9 @@ using System.Reflection;
 namespace NUnit.Core.Extensibility
 {
 	/// <summary>
-	/// 	TestDecoratorCollection is an ExtensionPoint for TestDecorators and
-	/// 	implements the ITestDecorator interface itself, passing calls 
-	/// 	on to the individual decorators.
+	/// TestDecoratorCollection is an ExtensionPoint for TestDecorators and
+	/// implements the ITestDecorator interface itself, passing calls
+	/// on to the individual decorators.
 	/// </summary>
 	public class TestDecoratorCollection : ExtensionPoint, IExtensionPoint2, ITestDecorator
 	{

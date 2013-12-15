@@ -39,7 +39,7 @@ namespace NUnit.Core.Builders
 				return new SequentialStrategy(sources);
 
 			if (Reflect.HasAttribute(method, PairwiseAttribute, false) &&
-			    method.GetParameters().Length > 2)
+				method.GetParameters().Length > 2)
 				return new PairwiseStrategy(sources);
 
 			return new CombinatorialStrategy(sources);

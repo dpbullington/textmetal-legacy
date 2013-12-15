@@ -10,7 +10,7 @@ using System.Collections;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Summary description for ProjectConfigCollection.
+	/// Summary description for ProjectConfigCollection.
 	/// </summary>
 	public class ProjectConfigCollection : CollectionBase
 	{

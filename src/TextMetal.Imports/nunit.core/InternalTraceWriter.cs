@@ -12,8 +12,8 @@ using System.Text;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	A trace listener that writes to a separate file per domain
-	/// 	and process using it.
+	/// A trace listener that writes to a separate file per domain
+	/// and process using it.
 	/// </summary>
 	public class InternalTraceWriter : TextWriter
 	{

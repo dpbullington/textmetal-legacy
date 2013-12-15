@@ -11,8 +11,8 @@ namespace NUnit.Core
 	using System;
 
 	/// <summary>
-	/// 	The EventPumpState enum represents the state of an
-	/// 	EventPump.
+	/// The EventPumpState enum represents the state of an
+	/// EventPump.
 	/// </summary>
 	public enum EventPumpState
 	{
@@ -22,17 +22,17 @@ namespace NUnit.Core
 	}
 
 	/// <summary>
-	/// 	EventPump pulls events out of an EventQueue and sends
-	/// 	them to a listener. It is used to send events back to
-	/// 	the client without using the CallContext of the test
-	/// 	runner thread.
+	/// EventPump pulls events out of an EventQueue and sends
+	/// them to a listener. It is used to send events back to
+	/// the client without using the CallContext of the test
+	/// runner thread.
 	/// </summary>
 	public class EventPump : IDisposable
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Constructor
+		/// Constructor
 		/// </summary>
 		/// <param name="eventListener"> The EventListener to receive events </param>
 		/// <param name="events"> The event queue to pull events from </param>
@@ -52,35 +52,35 @@ namespace NUnit.Core
 		private static Logger log = InternalTrace.GetLogger(typeof(EventPump));
 
 		/// <summary>
-		/// 	The handle on which a thread enqueuing an event with <see cref="Event.IsSynchronous" /> == <c>true</c>
-		/// 	waits, until the EventPump has sent the event to its listeners.
+		/// The handle on which a thread enqueuing an event with <see cref="Event.IsSynchronous" /> == <c> true </c>
+		/// waits, until the EventPump has sent the event to its listeners.
 		/// </summary>
 		private readonly AutoResetEvent synchronousEventSent = new AutoResetEvent(false);
 
 		/// <summary>
-		/// 	If true, stop after sending RunFinished
+		/// If true, stop after sending RunFinished
 		/// </summary>
 		private bool autostop;
 
 		/// <summary>
-		/// 	The downstream listener to which we send events
+		/// The downstream listener to which we send events
 		/// </summary>
 		private EventListener eventListener;
 
 		/// <summary>
-		/// 	The queue that holds our events
+		/// The queue that holds our events
 		/// </summary>
 		private EventQueue events;
 
 		private string name;
 
 		/// <summary>
-		/// 	The current state of the eventpump
+		/// The current state of the eventpump
 		/// </summary>
 		private volatile EventPumpState pumpState = EventPumpState.Stopped;
 
 		/// <summary>
-		/// 	Thread to do the pumping
+		/// Thread to do the pumping
 		/// </summary>
 		private Thread pumpThread;
 
@@ -89,8 +89,8 @@ namespace NUnit.Core
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets or sets the name of this EventPump
-		/// 	(used only internally and for testing).
+		/// Gets or sets the name of this EventPump
+		/// (used only internally and for testing).
 		/// </summary>
 		public string Name
 		{
@@ -105,11 +105,11 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets or sets the current state of the pump
+		/// Gets or sets the current state of the pump
 		/// </summary>
 		/// <remarks>
-		/// 	On <c>volatile</c> and <see cref="Thread.MemoryBarrier" />, see
-		/// 	"http://www.albahari.com/threading/part4.aspx".
+		/// On <c> volatile </c> and <see cref="Thread.MemoryBarrier" />, see
+		/// "http://www.albahari.com/threading/part4.aspx".
 		/// </remarks>
 		public EventPumpState PumpState
 		{
@@ -131,8 +131,8 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Disposes and stops the pump.
-		/// 	Disposes the used WaitHandle, too.
+		/// Disposes and stops the pump.
+		/// Disposes the used WaitHandle, too.
 		/// </summary>
 		public void Dispose()
 		{
@@ -141,10 +141,10 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Our thread proc for removing items from the event
-		/// 	queue and sending them on. Note that this would
-		/// 	need to do more locking if any other thread were
-		/// 	removing events from the queue.
+		/// Our thread proc for removing items from the event
+		/// queue and sending them on. Note that this would
+		/// need to do more locking if any other thread were
+		/// removing events from the queue.
 		/// </summary>
 		private void PumpThreadProc()
 		{
@@ -187,7 +187,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Start the pump
+		/// Start the pump
 		/// </summary>
 		public void Start()
 		{
@@ -202,7 +202,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Tell the pump to stop after emptying the queue.
+		/// Tell the pump to stop after emptying the queue.
 		/// </summary>
 		public void Stop()
 		{

@@ -11,14 +11,14 @@ using NUnit.Framework.Constraints;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	Basic Asserts on strings.
+	/// Basic Asserts on strings.
 	/// </summary>
 	public class StringAssert
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Asserts that two strings are equal, without regard to case.
+		/// Asserts that two strings are equal, without regard to case.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The actual string </param>
@@ -30,7 +30,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that two strings are equal, without regard to case.
+		/// Asserts that two strings are equal, without regard to case.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The actual string </param>
@@ -41,7 +41,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that two strings are equal, without regard to case.
+		/// Asserts that two strings are equal, without regard to case.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The actual string </param>
@@ -51,7 +51,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that two strings are not equal, without regard to case.
+		/// Asserts that two strings are not equal, without regard to case.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The actual string </param>
@@ -63,7 +63,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that two strings are Notequal, without regard to case.
+		/// Asserts that two strings are Notequal, without regard to case.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The actual string </param>
@@ -74,7 +74,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that two strings are not equal, without regard to case.
+		/// Asserts that two strings are not equal, without regard to case.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The actual string </param>
@@ -84,7 +84,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string is found within another string.
+		/// Asserts that a string is found within another string.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The string to be examined </param>
@@ -96,7 +96,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string is found within another string.
+		/// Asserts that a string is found within another string.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The string to be examined </param>
@@ -107,7 +107,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string is found within another string.
+		/// Asserts that a string is found within another string.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The string to be examined </param>
@@ -117,7 +117,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string is not found within another string.
+		/// Asserts that a string is not found within another string.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The string to be examined </param>
@@ -129,7 +129,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string is found within another string.
+		/// Asserts that a string is found within another string.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The string to be examined </param>
@@ -140,7 +140,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string is found within another string.
+		/// Asserts that a string is found within another string.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The string to be examined </param>
@@ -150,7 +150,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string does not end with another string.
+		/// Asserts that a string does not end with another string.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The string to be examined </param>
@@ -162,7 +162,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string does not end with another string.
+		/// Asserts that a string does not end with another string.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The string to be examined </param>
@@ -173,7 +173,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string does not end with another string.
+		/// Asserts that a string does not end with another string.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The string to be examined </param>
@@ -183,7 +183,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string does not match an expected regular expression pattern.
+		/// Asserts that a string does not match an expected regular expression pattern.
 		/// </summary>
 		/// <param name="pattern"> The regex pattern to be used </param>
 		/// <param name="actual"> The actual string </param>
@@ -195,7 +195,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string does not match an expected regular expression pattern.
+		/// Asserts that a string does not match an expected regular expression pattern.
 		/// </summary>
 		/// <param name="pattern"> The regex pattern to be used </param>
 		/// <param name="actual"> The actual string </param>
@@ -206,7 +206,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string does not match an expected regular expression pattern.
+		/// Asserts that a string does not match an expected regular expression pattern.
 		/// </summary>
 		/// <param name="pattern"> The regex pattern to be used </param>
 		/// <param name="actual"> The actual string </param>
@@ -216,7 +216,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string does not start with another string.
+		/// Asserts that a string does not start with another string.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The string to be examined </param>
@@ -228,7 +228,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string does not start with another string.
+		/// Asserts that a string does not start with another string.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The string to be examined </param>
@@ -239,7 +239,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string does not start with another string.
+		/// Asserts that a string does not start with another string.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The string to be examined </param>
@@ -249,7 +249,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string ends with another string.
+		/// Asserts that a string ends with another string.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The string to be examined </param>
@@ -261,7 +261,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string ends with another string.
+		/// Asserts that a string ends with another string.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The string to be examined </param>
@@ -272,7 +272,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string ends with another string.
+		/// Asserts that a string ends with another string.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The string to be examined </param>
@@ -282,8 +282,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	The Equals method throws an AssertionException. This is done 
-		/// 	to make sure there is no mistake by calling this function.
+		/// The Equals method throws an AssertionException. This is done
+		/// to make sure there is no mistake by calling this function.
 		/// </summary>
 		/// <param name="a"> </param>
 		/// <param name="b"> </param>
@@ -294,7 +294,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string matches an expected regular expression pattern.
+		/// Asserts that a string matches an expected regular expression pattern.
 		/// </summary>
 		/// <param name="pattern"> The regex pattern to be matched </param>
 		/// <param name="actual"> The actual string </param>
@@ -306,7 +306,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string matches an expected regular expression pattern.
+		/// Asserts that a string matches an expected regular expression pattern.
 		/// </summary>
 		/// <param name="pattern"> The regex pattern to be matched </param>
 		/// <param name="actual"> The actual string </param>
@@ -317,7 +317,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string matches an expected regular expression pattern.
+		/// Asserts that a string matches an expected regular expression pattern.
 		/// </summary>
 		/// <param name="pattern"> The regex pattern to be matched </param>
 		/// <param name="actual"> The actual string </param>
@@ -327,9 +327,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	override the default ReferenceEquals to throw an AssertionException. This 
-		/// 	implementation makes sure there is no mistake in calling this function 
-		/// 	as part of Assert.
+		/// override the default ReferenceEquals to throw an AssertionException. This
+		/// implementation makes sure there is no mistake in calling this function
+		/// as part of Assert.
 		/// </summary>
 		/// <param name="a"> </param>
 		/// <param name="b"> </param>
@@ -339,7 +339,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string starts with another string.
+		/// Asserts that a string starts with another string.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The string to be examined </param>
@@ -351,7 +351,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string starts with another string.
+		/// Asserts that a string starts with another string.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The string to be examined </param>
@@ -362,7 +362,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Asserts that a string starts with another string.
+		/// Asserts that a string starts with another string.
 		/// </summary>
 		/// <param name="expected"> The expected string </param>
 		/// <param name="actual"> The string to be examined </param>

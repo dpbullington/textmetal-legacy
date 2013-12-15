@@ -14,15 +14,15 @@ namespace NUnit.Framework.Constraints
 	#region PathConstraint
 
 	/// <summary>
-	/// 	PathConstraint serves as the abstract base of constraints
-	/// 	that operate on paths and provides several helper methods.
+	/// PathConstraint serves as the abstract base of constraints
+	/// that operate on paths and provides several helper methods.
 	/// </summary>
 	public abstract class PathConstraint : Constraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a PathConstraint for a give expected path
+		/// Construct a PathConstraint for a give expected path
 		/// </summary>
 		/// <param name="expected"> The expected path </param>
 		protected PathConstraint(string expected)
@@ -38,17 +38,17 @@ namespace NUnit.Framework.Constraints
 		private static readonly char[] DirectorySeparatorChars = new char[] { '\\', '/' };
 
 		/// <summary>
-		/// 	The actual path being tested
+		/// The actual path being tested
 		/// </summary>
 		protected string actualPath;
 
 		/// <summary>
-		/// 	Flag indicating whether a caseInsensitive comparison should be made
+		/// Flag indicating whether a caseInsensitive comparison should be made
 		/// </summary>
 		protected bool caseInsensitive = Path.DirectorySeparatorChar == '\\';
 
 		/// <summary>
-		/// 	The expected path used in the constraint
+		/// The expected path used in the constraint
 		/// </summary>
 		protected string expectedPath;
 
@@ -57,8 +57,8 @@ namespace NUnit.Framework.Constraints
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Modifies the current instance to be case-insensitve
-		/// 	and returns it.
+		/// Modifies the current instance to be case-insensitve
+		/// and returns it.
 		/// </summary>
 		public PathConstraint IgnoreCase
 		{
@@ -70,8 +70,8 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Modifies the current instance to be case-sensitve
-		/// 	and returns it.
+		/// Modifies the current instance to be case-sensitve
+		/// and returns it.
 		/// </summary>
 		public PathConstraint RespectCase
 		{
@@ -87,7 +87,7 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Canonicalize the provided path
+		/// Canonicalize the provided path
 		/// </summary>
 		/// <param name="path"> </param>
 		/// <returns> The path in standardized form </returns>
@@ -132,7 +132,7 @@ namespace NUnit.Framework.Constraints
 				parts.RemoveAt(parts.Count - 1);
 
 			string result = String.Join(Path.DirectorySeparatorChar.ToString(),
-			                            (string[])parts.ToArray(typeof(string)));
+				(string[])parts.ToArray(typeof(string)));
 
 			if (initialSeparator)
 				result = Path.DirectorySeparatorChar.ToString() + result;
@@ -141,7 +141,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Test whether two paths are the same
+		/// Test whether two paths are the same
 		/// </summary>
 		/// <param name="path1"> The first path </param>
 		/// <param name="path2"> The second path </param>
@@ -153,7 +153,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Test whether one path is under another path
+		/// Test whether one path is under another path
 		/// </summary>
 		/// <param name="path1"> The first path - supposed to be the parent path </param>
 		/// <param name="path2"> The second path - supposed to be the child path </param>
@@ -174,11 +174,11 @@ namespace NUnit.Framework.Constraints
 
 			// must match through or up to a directory separator boundary
 			return path2[length1 - 1] == Path.DirectorySeparatorChar ||
-			       length2 > length1 && path2[length1] == Path.DirectorySeparatorChar;
+					length2 > length1 && path2[length1] == Path.DirectorySeparatorChar;
 		}
 
 		/// <summary>
-		/// 	Returns the string representation of this constraint
+		/// Returns the string representation of this constraint
 		/// </summary>
 		protected override string GetStringRepresentation()
 		{
@@ -186,12 +186,12 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Returns true if the expected path and actual path match
+		/// Returns true if the expected path and actual path match
 		/// </summary>
 		protected abstract bool IsMatch(string expectedPath, string actualPath);
 
 		/// <summary>
-		/// 	Test whether one path is the same as or under another path
+		/// Test whether one path is the same as or under another path
 		/// </summary>
 		/// <param name="path1"> The first path - supposed to be the parent path </param>
 		/// <param name="path2"> The second path - supposed to be the child path </param>
@@ -215,11 +215,11 @@ namespace NUnit.Framework.Constraints
 
 			// must match through or up to a directory separator boundary
 			return path2[length1 - 1] == Path.DirectorySeparatorChar ||
-			       path2[length1] == Path.DirectorySeparatorChar;
+					path2[length1] == Path.DirectorySeparatorChar;
 		}
 
 		/// <summary>
-		/// 	Test whether the constraint is satisfied by a given value
+		/// Test whether the constraint is satisfied by a given value
 		/// </summary>
 		/// <param name="actual"> The value to be tested </param>
 		/// <returns> True for success, false for failure </returns>
@@ -242,14 +242,14 @@ namespace NUnit.Framework.Constraints
 	#region SamePathConstraint
 
 	/// <summary>
-	/// 	Summary description for SamePathConstraint.
+	/// Summary description for SamePathConstraint.
 	/// </summary>
 	public class SamePathConstraint : PathConstraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:SamePathConstraint" /> class.
+		/// Initializes a new instance of the <see cref="T:SamePathConstraint" /> class.
 		/// </summary>
 		/// <param name="expected"> The expected path </param>
 		public SamePathConstraint(string expected)
@@ -262,7 +262,7 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Test whether the constraint is satisfied by a given value
+		/// Test whether the constraint is satisfied by a given value
 		/// </summary>
 		/// <param name="expectedPath"> The expected path </param>
 		/// <param name="actualPath"> The actual path </param>
@@ -273,7 +273,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write the constraint description to a MessageWriter
+		/// Write the constraint description to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The writer on which the description is displayed </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -290,14 +290,14 @@ namespace NUnit.Framework.Constraints
 	#region SubPathConstraint
 
 	/// <summary>
-	/// 	SubPathConstraint tests that the actual path is under the expected path
+	/// SubPathConstraint tests that the actual path is under the expected path
 	/// </summary>
 	public class SubPathConstraint : PathConstraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:SubPathConstraint" /> class.
+		/// Initializes a new instance of the <see cref="T:SubPathConstraint" /> class.
 		/// </summary>
 		/// <param name="expected"> The expected path </param>
 		public SubPathConstraint(string expected)
@@ -310,7 +310,7 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Test whether the constraint is satisfied by a given value
+		/// Test whether the constraint is satisfied by a given value
 		/// </summary>
 		/// <param name="expectedPath"> The expected path </param>
 		/// <param name="actualPath"> The actual path </param>
@@ -324,7 +324,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write the constraint description to a MessageWriter
+		/// Write the constraint description to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The writer on which the description is displayed </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -341,14 +341,14 @@ namespace NUnit.Framework.Constraints
 	#region SamePathOrUnderConstraint
 
 	/// <summary>
-	/// 	SamePathOrUnderConstraint tests that one path is under another
+	/// SamePathOrUnderConstraint tests that one path is under another
 	/// </summary>
 	public class SamePathOrUnderConstraint : PathConstraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:SamePathOrUnderConstraint" /> class.
+		/// Initializes a new instance of the <see cref="T:SamePathOrUnderConstraint" /> class.
 		/// </summary>
 		/// <param name="expected"> The expected path </param>
 		public SamePathOrUnderConstraint(string expected)
@@ -361,7 +361,7 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Test whether the constraint is satisfied by a given value
+		/// Test whether the constraint is satisfied by a given value
 		/// </summary>
 		/// <param name="expectedPath"> The expected path </param>
 		/// <param name="actualPath"> The actual path </param>
@@ -374,7 +374,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write the constraint description to a MessageWriter
+		/// Write the constraint description to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The writer on which the description is displayed </param>
 		public override void WriteDescriptionTo(MessageWriter writer)

@@ -9,8 +9,8 @@ using System;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	QueuingEventListener uses an EventQueue to store any
-	/// 	events received on its EventListener interface.
+	/// QueuingEventListener uses an EventQueue to store any
+	/// events received on its EventListener interface.
 	/// </summary>
 	public class QueuingEventListener : EventListener
 	{
@@ -23,7 +23,7 @@ namespace NUnit.Core
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	The EvenQueue created and filled by this listener
+		/// The EvenQueue created and filled by this listener
 		/// </summary>
 		public EventQueue Events
 		{
@@ -38,7 +38,7 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Run finished successfully
+		/// Run finished successfully
 		/// </summary>
 		/// <param name="results"> Array of test results </param>
 		public void RunFinished(TestResult result)
@@ -47,7 +47,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Run was terminated due to an exception
+		/// Run was terminated due to an exception
 		/// </summary>
 		/// <param name="exception"> Exception that was thrown </param>
 		public void RunFinished(Exception exception)
@@ -56,7 +56,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Run is starting
+		/// Run is starting
 		/// </summary>
 		/// <param name="tests"> Array of tests to be run </param>
 		public void RunStarted(string name, int testCount)
@@ -65,7 +65,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	A suite finished
+		/// A suite finished
 		/// </summary>
 		/// <param name="result"> Result of the suite </param>
 		public void SuiteFinished(TestResult result)
@@ -74,7 +74,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	A suite is starting
+		/// A suite is starting
 		/// </summary>
 		/// <param name="suite"> The suite that is starting </param>
 		public void SuiteStarted(TestName testName)
@@ -83,7 +83,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	A test case finished
+		/// A test case finished
 		/// </summary>
 		/// <param name="result"> Result of the test case </param>
 		public void TestFinished(TestResult result)
@@ -92,7 +92,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	A message has been output to the console.
+		/// A message has been output to the console.
 		/// </summary>
 		/// <param name="testOutput"> A console message </param>
 		public void TestOutput(TestOutput output)
@@ -101,7 +101,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	A single test case is starting
+		/// A single test case is starting
 		/// </summary>
 		/// <param name="testCase"> The test case </param>
 		public void TestStarted(TestName testName)
@@ -110,8 +110,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	An unhandled exception occured while running a test,
-		/// 	but the test was not terminated.
+		/// An unhandled exception occured while running a test,
+		/// but the test was not terminated.
 		/// </summary>
 		/// <param name="exception"> </param>
 		public void UnhandledException(Exception exception)

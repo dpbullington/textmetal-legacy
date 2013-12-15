@@ -20,13 +20,7 @@ namespace Castle.Components.DictionaryAdapter
 
 	public class BindingListInitializer<T> : IValueInitializer
 	{
-		private readonly Func<object> addNew;
-		private readonly Func<int, object, object> addAt;
-		private readonly Func<int, object, object> setAt;
-		private readonly Action<int> removeAt;
-		private readonly Action reset;
-
-		private bool addingNew;
+		#region Constructors/Destructors
 
 		public BindingListInitializer(Func<int, object, object> addAt, Func<object> addNew, Func<int, object, object> setAt, Action<int> removeAt, Action reset)
 		{
@@ -37,80 +31,110 @@ namespace Castle.Components.DictionaryAdapter
 			this.reset = reset;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly Func<int, object, object> addAt;
+		private readonly Func<object> addNew;
+		private readonly Action<int> removeAt;
+		private readonly Action reset;
+		private readonly Func<int, object, object> setAt;
+
+		private bool addingNew;
+
+		#endregion
+
+		#region Methods/Operators
+
 		public void Initialize(IDictionaryAdapter dictionaryAdapter, object value)
 		{
 			var bindingList = (System.ComponentModel.BindingList<T>)value;
-			if (addNew != null)
+			if (this.addNew != null)
 			{
 				bindingList.AddingNew += (sender, args) =>
-				{
-					args.NewObject = addNew();
-					addingNew = true;
-				};
+										{
+											args.NewObject = this.addNew();
+											this.addingNew = true;
+										};
 			}
 			bindingList.ListChanged += (sender, args) =>
-			{
-				switch (args.ListChangedType)
-				{
-					case ListChangedType.ItemAdded:
-						if (addingNew == false && addAt != null)
-						{
-							var item = addAt(args.NewIndex, bindingList[args.NewIndex]);
-							if (item != null)
-							{
-								using (new SuppressListChangedEvents(bindingList))
-								{
-									bindingList[args.NewIndex] = (T)item;									
-								}
-							}
-						}
-						addingNew = false;
-						break;
+										{
+											switch (args.ListChangedType)
+											{
+												case ListChangedType.ItemAdded:
+													if (this.addingNew == false && this.addAt != null)
+													{
+														var item = this.addAt(args.NewIndex, bindingList[args.NewIndex]);
+														if (item != null)
+														{
+															using (new SuppressListChangedEvents(bindingList))
+																bindingList[args.NewIndex] = (T)item;
+														}
+													}
+													this.addingNew = false;
+													break;
 
-					case ListChangedType.ItemChanged:
-						if (setAt != null)
-						{
-							var item = setAt(args.NewIndex, bindingList[args.NewIndex]);
-							if (item != null)
-							{
-								using (new SuppressListChangedEvents(bindingList))
-								{
-									bindingList[args.NewIndex] = (T)item;
-								}
-							}
-						}
-						break;
+												case ListChangedType.ItemChanged:
+													if (this.setAt != null)
+													{
+														var item = this.setAt(args.NewIndex, bindingList[args.NewIndex]);
+														if (item != null)
+														{
+															using (new SuppressListChangedEvents(bindingList))
+																bindingList[args.NewIndex] = (T)item;
+														}
+													}
+													break;
 
-					case ListChangedType.ItemDeleted:
-						if (removeAt != null)
-							removeAt(args.NewIndex);
-						break;
+												case ListChangedType.ItemDeleted:
+													if (this.removeAt != null)
+														this.removeAt(args.NewIndex);
+													break;
 
-					case ListChangedType.Reset:
-						if (reset != null)
-							reset();
-						break;
-				}
-			};
+												case ListChangedType.Reset:
+													if (this.reset != null)
+														this.reset();
+													break;
+											}
+										};
 		}
 
-		class SuppressListChangedEvents : IDisposable
+		#endregion
+
+		#region Classes/Structs/Interfaces/Enums/Delegates
+
+		private class SuppressListChangedEvents : IDisposable
 		{
-			private readonly bool raiseEvents;
-			private readonly System.ComponentModel.BindingList<T> bindingList;
+			#region Constructors/Destructors
 
 			public SuppressListChangedEvents(System.ComponentModel.BindingList<T> bindingList)
 			{
 				this.bindingList = bindingList;
-				raiseEvents = this.bindingList.RaiseListChangedEvents;
+				this.raiseEvents = this.bindingList.RaiseListChangedEvents;
 				this.bindingList.RaiseListChangedEvents = false;
 			}
 
+			#endregion
+
+			#region Fields/Constants
+
+			private readonly System.ComponentModel.BindingList<T> bindingList;
+			private readonly bool raiseEvents;
+
+			#endregion
+
+			#region Methods/Operators
+
 			public void Dispose()
 			{
-				bindingList.RaiseListChangedEvents = raiseEvents;
+				this.bindingList.RaiseListChangedEvents = this.raiseEvents;
 			}
+
+			#endregion
 		}
+
+		#endregion
 	}
 
 #endif

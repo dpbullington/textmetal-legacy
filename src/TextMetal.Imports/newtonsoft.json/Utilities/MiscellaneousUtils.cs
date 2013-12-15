@@ -1,4 +1,5 @@
 #region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,120 +22,120 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Reflection;
-using System.Text;
 using System.Globalization;
 
 namespace Newtonsoft.Json.Utilities
 {
-  internal delegate T Creator<T>();
+	internal delegate T Creator<T>();
 
-  internal static class MiscellaneousUtils
-  {
-    public static bool ValueEquals(object objA, object objB)
-    {
-      if (objA == null && objB == null)
-        return true;
-      if (objA != null && objB == null)
-        return false;
-      if (objA == null && objB != null)
-        return false;
+	internal static class MiscellaneousUtils
+	{
+		#region Methods/Operators
 
-      // comparing an Int32 and Int64 both of the same value returns false
-      // make types the same then compare
-      if (objA.GetType() != objB.GetType())
-      {
-        if (ConvertUtils.IsInteger(objA) && ConvertUtils.IsInteger(objB))
-          return Convert.ToDecimal(objA, CultureInfo.CurrentCulture).Equals(Convert.ToDecimal(objB, CultureInfo.CurrentCulture));
-        else if ((objA is double || objA is float || objA is decimal) && (objB is double || objB is float || objB is decimal))
-          return MathUtils.ApproxEquals(Convert.ToDouble(objA, CultureInfo.CurrentCulture), Convert.ToDouble(objB, CultureInfo.CurrentCulture));
-        else
-          return false;
-      }
+		public static int ByteArrayCompare(byte[] a1, byte[] a2)
+		{
+			int lengthCompare = a1.Length.CompareTo(a2.Length);
+			if (lengthCompare != 0)
+				return lengthCompare;
 
-      return objA.Equals(objB);
-    }
+			for (int i = 0; i < a1.Length; i++)
+			{
+				int valueCompare = a1[i].CompareTo(a2[i]);
+				if (valueCompare != 0)
+					return valueCompare;
+			}
 
-    public static ArgumentOutOfRangeException CreateArgumentOutOfRangeException(string paramName, object actualValue, string message)
-    {
-      string newMessage = message + Environment.NewLine + @"Actual value was {0}.".FormatWith(CultureInfo.InvariantCulture, actualValue);
+			return 0;
+		}
 
-      return new ArgumentOutOfRangeException(paramName, newMessage);
-    }
+		public static ArgumentOutOfRangeException CreateArgumentOutOfRangeException(string paramName, object actualValue, string message)
+		{
+			string newMessage = message + Environment.NewLine + @"Actual value was {0}.".FormatWith(CultureInfo.InvariantCulture, actualValue);
 
-    public static string ToString(object value)
-    {
-      if (value == null)
-        return "{null}";
+			return new ArgumentOutOfRangeException(paramName, newMessage);
+		}
 
-      return (value is string) ? @"""" + value.ToString() + @"""" : value.ToString();
-    }
+		internal static string FormatValueForPrint(object value)
+		{
+			if (value == null)
+				return "{null}";
 
-    public static int ByteArrayCompare(byte[] a1, byte[] a2)
-    {
-      int lengthCompare = a1.Length.CompareTo(a2.Length);
-      if (lengthCompare != 0)
-        return lengthCompare;
+			if (value is string)
+				return @"""" + value + @"""";
 
-      for (int i = 0; i < a1.Length; i++)
-      {
-        int valueCompare = a1[i].CompareTo(a2[i]);
-        if (valueCompare != 0)
-          return valueCompare;
-      }
+			return value.ToString();
+		}
 
-      return 0;
-    }
+		public static string GetLocalName(string qualifiedName)
+		{
+			string prefix;
+			string localName;
+			GetQualifiedNameParts(qualifiedName, out prefix, out localName);
 
-    public static string GetPrefix(string qualifiedName)
-    {
-      string prefix;
-      string localName;
-      GetQualifiedNameParts(qualifiedName, out prefix, out localName);
+			return localName;
+		}
 
-      return prefix;
-    }
+		public static string GetPrefix(string qualifiedName)
+		{
+			string prefix;
+			string localName;
+			GetQualifiedNameParts(qualifiedName, out prefix, out localName);
 
-    public static string GetLocalName(string qualifiedName)
-    {
-      string prefix;
-      string localName;
-      GetQualifiedNameParts(qualifiedName, out prefix, out localName);
+			return prefix;
+		}
 
-      return localName;
-    }
+		public static void GetQualifiedNameParts(string qualifiedName, out string prefix, out string localName)
+		{
+			int colonPosition = qualifiedName.IndexOf(':');
 
-    public static void GetQualifiedNameParts(string qualifiedName, out string prefix, out string localName)
-    {
-      int colonPosition = qualifiedName.IndexOf(':');
+			if ((colonPosition == -1 || colonPosition == 0) || (qualifiedName.Length - 1) == colonPosition)
+			{
+				prefix = null;
+				localName = qualifiedName;
+			}
+			else
+			{
+				prefix = qualifiedName.Substring(0, colonPosition);
+				localName = qualifiedName.Substring(colonPosition + 1);
+			}
+		}
 
-      if ((colonPosition == -1 || colonPosition == 0) || (qualifiedName.Length - 1) == colonPosition)
-      {
-        prefix = null;
-        localName = qualifiedName;
-      }
-      else
-      {
-        prefix = qualifiedName.Substring(0, colonPosition);
-        localName = qualifiedName.Substring(colonPosition + 1);
-      }
-    }
+		public static string ToString(object value)
+		{
+			if (value == null)
+				return "{null}";
 
-    internal static string FormatValueForPrint(object value)
-    {
-      if (value == null)
-        return "{null}";
+			return (value is string) ? @"""" + value.ToString() + @"""" : value.ToString();
+		}
 
-      if (value is string)
-        return @"""" + value + @"""";
+		public static bool ValueEquals(object objA, object objB)
+		{
+			if (objA == null && objB == null)
+				return true;
+			if (objA != null && objB == null)
+				return false;
+			if (objA == null && objB != null)
+				return false;
 
-      return value.ToString();
-    }
-  }
+			// comparing an Int32 and Int64 both of the same value returns false
+			// make types the same then compare
+			if (objA.GetType() != objB.GetType())
+			{
+				if (ConvertUtils.IsInteger(objA) && ConvertUtils.IsInteger(objB))
+					return Convert.ToDecimal(objA, CultureInfo.CurrentCulture).Equals(Convert.ToDecimal(objB, CultureInfo.CurrentCulture));
+				else if ((objA is double || objA is float || objA is decimal) && (objB is double || objB is float || objB is decimal))
+					return MathUtils.ApproxEquals(Convert.ToDouble(objA, CultureInfo.CurrentCulture), Convert.ToDouble(objB, CultureInfo.CurrentCulture));
+				else
+					return false;
+			}
+
+			return objA.Equals(objB);
+		}
+
+		#endregion
+	}
 }

@@ -1,4 +1,5 @@
 #region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,6 +22,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System.Collections;
@@ -28,162 +30,183 @@ using System.Collections.Generic;
 
 namespace Newtonsoft.Json.Utilities
 {
-  internal interface IWrappedList : IList
-  {
-    object UnderlyingList { get; }
-  }
+	internal interface IWrappedList : IList
+	{
+		#region Properties/Indexers/Events
 
-  internal class ListWrapper<T> : CollectionWrapper<T>, IList<T>, IWrappedList
-  {
-    private readonly IList<T> _genericList;
+		object UnderlyingList
+		{
+			get;
+		}
 
-    public ListWrapper(IList list)
-      : base(list)
-    {
-      ValidationUtils.ArgumentNotNull(list, "list");
+		#endregion
+	}
 
-      if (list is IList<T>)
-        _genericList = (IList<T>) list;
-    }
+	internal class ListWrapper<T> : CollectionWrapper<T>, IList<T>, IWrappedList
+	{
+		#region Constructors/Destructors
 
-    public ListWrapper(IList<T> list)
-      : base(list)
-    {
-      ValidationUtils.ArgumentNotNull(list, "list");
+		public ListWrapper(IList list)
+			: base(list)
+		{
+			ValidationUtils.ArgumentNotNull(list, "list");
 
-      _genericList = list;
-    }
+			if (list is IList<T>)
+				this._genericList = (IList<T>)list;
+		}
 
-    public int IndexOf(T item)
-    {
-      if (_genericList != null)
-        return _genericList.IndexOf(item);
-      else
-        return ((IList)this).IndexOf(item);
-    }
+		public ListWrapper(IList<T> list)
+			: base(list)
+		{
+			ValidationUtils.ArgumentNotNull(list, "list");
 
-    public void Insert(int index, T item)
-    {
-      if (_genericList != null)
-        _genericList.Insert(index, item);
-      else
-        ((IList)this).Insert(index, item);
-    }
+			this._genericList = list;
+		}
 
-    public void RemoveAt(int index)
-    {
-      if (_genericList != null)
-        _genericList.RemoveAt(index);
-      else
-        ((IList)this).RemoveAt(index);
-    }
+		#endregion
 
-    public T this[int index]
-    {
-      get
-      {
-        if (_genericList != null)
-          return _genericList[index];
-        else
-          return (T)((IList)this)[index];
-      }
-      set
-      {
-        if (_genericList != null)
-          _genericList[index] = value;
-        else
-          ((IList)this)[index] = value;
-      }
-    }
+		#region Fields/Constants
 
-    public override void Add(T item)
-    {
-      if (_genericList != null)
-        _genericList.Add(item);
-      else
-        base.Add(item);
-    }
+		private readonly IList<T> _genericList;
 
-    public override void Clear()
-    {
-      if (_genericList != null)
-        _genericList.Clear();
-      else
-        base.Clear();
-    }
+		#endregion
 
-    public override bool Contains(T item)
-    {
-      if (_genericList != null)
-        return _genericList.Contains(item);
-      else
-        return base.Contains(item);
-    }
+		#region Properties/Indexers/Events
 
-    public override void CopyTo(T[] array, int arrayIndex)
-    {
-      if (_genericList != null)
-        _genericList.CopyTo(array, arrayIndex);
-      else
-        base.CopyTo(array, arrayIndex);
-    }
+		public T this[int index]
+		{
+			get
+			{
+				if (this._genericList != null)
+					return this._genericList[index];
+				else
+					return (T)((IList)this)[index];
+			}
+			set
+			{
+				if (this._genericList != null)
+					this._genericList[index] = value;
+				else
+					((IList)this)[index] = value;
+			}
+		}
 
-    public override int Count
-    {
-      get
-      {
-        if (_genericList != null)
-          return _genericList.Count;
-        else
-          return base.Count;
-      }
-    }
+		public override int Count
+		{
+			get
+			{
+				if (this._genericList != null)
+					return this._genericList.Count;
+				else
+					return base.Count;
+			}
+		}
 
-    public override bool IsReadOnly
-    {
-      get
-      {
-        if (_genericList != null)
-          return _genericList.IsReadOnly;
-        else
-          return base.IsReadOnly;
-      }
-    }
+		public override bool IsReadOnly
+		{
+			get
+			{
+				if (this._genericList != null)
+					return this._genericList.IsReadOnly;
+				else
+					return base.IsReadOnly;
+			}
+		}
 
-    public override bool Remove(T item)
-    {
-      if (_genericList != null)
-      {
-        return _genericList.Remove(item);
-      }
-      else
-      {
-        bool contains = base.Contains(item);
+		public object UnderlyingList
+		{
+			get
+			{
+				if (this._genericList != null)
+					return this._genericList;
+				else
+					return this.UnderlyingCollection;
+			}
+		}
 
-        if (contains)
-          base.Remove(item);
+		#endregion
 
-        return contains;
-      }
-    }
+		#region Methods/Operators
 
-    public override IEnumerator<T> GetEnumerator()
-    {
-      if (_genericList != null)
-        return _genericList.GetEnumerator();
+		public override void Add(T item)
+		{
+			if (this._genericList != null)
+				this._genericList.Add(item);
+			else
+				base.Add(item);
+		}
 
-      return base.GetEnumerator();
-    }
+		public override void Clear()
+		{
+			if (this._genericList != null)
+				this._genericList.Clear();
+			else
+				base.Clear();
+		}
 
-    public object UnderlyingList
-    {
-      get
-      {
-        if (_genericList != null)
-          return _genericList;
-        else
-          return UnderlyingCollection;
-      }
-    }
-  }
+		public override bool Contains(T item)
+		{
+			if (this._genericList != null)
+				return this._genericList.Contains(item);
+			else
+				return base.Contains(item);
+		}
+
+		public override void CopyTo(T[] array, int arrayIndex)
+		{
+			if (this._genericList != null)
+				this._genericList.CopyTo(array, arrayIndex);
+			else
+				base.CopyTo(array, arrayIndex);
+		}
+
+		public override IEnumerator<T> GetEnumerator()
+		{
+			if (this._genericList != null)
+				return this._genericList.GetEnumerator();
+
+			return base.GetEnumerator();
+		}
+
+		public int IndexOf(T item)
+		{
+			if (this._genericList != null)
+				return this._genericList.IndexOf(item);
+			else
+				return ((IList)this).IndexOf(item);
+		}
+
+		public void Insert(int index, T item)
+		{
+			if (this._genericList != null)
+				this._genericList.Insert(index, item);
+			else
+				((IList)this).Insert(index, item);
+		}
+
+		public override bool Remove(T item)
+		{
+			if (this._genericList != null)
+				return this._genericList.Remove(item);
+			else
+			{
+				bool contains = base.Contains(item);
+
+				if (contains)
+					base.Remove(item);
+
+				return contains;
+			}
+		}
+
+		public void RemoveAt(int index)
+		{
+			if (this._genericList != null)
+				this._genericList.RemoveAt(index);
+			else
+				((IList)this).RemoveAt(index);
+		}
+
+		#endregion
+	}
 }

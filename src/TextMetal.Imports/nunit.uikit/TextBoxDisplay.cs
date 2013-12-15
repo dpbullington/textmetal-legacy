@@ -16,8 +16,8 @@ using NUnit.Util;
 namespace NUnit.UiKit
 {
 	/// <summary>
-	/// 	TextBoxDisplay is an adapter that allows accessing a 
-	/// 	System.Windows.Forms.TextBox using the TextDisplay interface.
+	/// TextBoxDisplay is an adapter that allows accessing a
+	/// System.Windows.Forms.TextBox using the TextDisplay interface.
 	/// </summary>
 	public class TextBoxDisplay : RichTextBox, TextDisplay, TestObserver
 	{
@@ -179,7 +179,7 @@ namespace NUnit.UiKit
 			this.Font = font;
 			TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
 			Services.UserSettings.SaveSetting("Gui.FixedFont",
-			                                  converter.ConvertToString(null, CultureInfo.InvariantCulture, font));
+				converter.ConvertToString(null, CultureInfo.InvariantCulture, font));
 		}
 
 		private void copyMenuItem_Click(object sender, EventArgs e)

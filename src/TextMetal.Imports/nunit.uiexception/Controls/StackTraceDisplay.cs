@@ -11,7 +11,7 @@ using NUnit.UiException.Properties;
 namespace NUnit.UiException.Controls
 {
 	/// <summary>
-	/// 	Implements IErrorDisplay to show the actual stack trace in a TextBox control.
+	/// Implements IErrorDisplay to show the actual stack trace in a TextBox control.
 	/// </summary>
 	public class StackTraceDisplay :
 		UserControl,
@@ -20,7 +20,7 @@ namespace NUnit.UiException.Controls
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Builds a new instance of StackTraceDisplay.
+		/// Builds a new instance of StackTraceDisplay.
 		/// </summary>
 		public StackTraceDisplay()
 		{
@@ -76,7 +76,7 @@ namespace NUnit.UiException.Controls
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Copies the actual stack trace to the clipboard.
+		/// Copies the actual stack trace to the clipboard.
 		/// </summary>
 		public void CopyToClipBoard()
 		{

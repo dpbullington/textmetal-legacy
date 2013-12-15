@@ -12,49 +12,53 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection;
+using System.Runtime.Serialization;
 
 #if !SILVERLIGHT
 
 namespace Castle.DynamicProxy.Tokens
 {
 	using System;
-	using System.Reflection;
-	using System.Runtime.Serialization;
 
 	/// <summary>
-	///   Holds <see cref = "MethodInfo" /> objects representing methods of <see cref = "SerializationInfo" /> class.
+	/// Holds <see cref="MethodInfo" /> objects representing methods of <see cref="SerializationInfo" /> class.
 	/// </summary>
 	public static class SerializationInfoMethods
 	{
+		#region Fields/Constants
+
 		/// <summary>
-		///   <see cref = "SerializationInfo.AddValue(string,bool)" />
+		///     <see cref="SerializationInfo.AddValue(string,bool)" />
 		/// </summary>
 		public static readonly MethodInfo AddValue_Bool =
 			typeof(SerializationInfo).GetMethod("AddValue", new[] { typeof(String), typeof(bool) });
 
 		/// <summary>
-		///   <see cref = "SerializationInfo.AddValue(string,int)" />
+		///     <see cref="SerializationInfo.AddValue(string,int)" />
 		/// </summary>
 		public static readonly MethodInfo AddValue_Int32 =
 			typeof(SerializationInfo).GetMethod("AddValue", new[] { typeof(String), typeof(int) });
 
 		/// <summary>
-		///   <see cref = "SerializationInfo.AddValue(string,object)" />
+		///     <see cref="SerializationInfo.AddValue(string,object)" />
 		/// </summary>
 		public static readonly MethodInfo AddValue_Object =
 			typeof(SerializationInfo).GetMethod("AddValue", new[] { typeof(String), typeof(Object) });
 
 		/// <summary>
-		///   <see cref = "SerializationInfo.GetValue" />
+		///     <see cref="SerializationInfo.GetValue" />
 		/// </summary>
 		public static readonly MethodInfo GetValue =
 			typeof(SerializationInfo).GetMethod("GetValue", new[] { typeof(String), typeof(Type) });
 
 		/// <summary>
-		///   <see cref = "SerializationInfo.SetType" />
+		///     <see cref="SerializationInfo.SetType" />
 		/// </summary>
 		public static readonly MethodInfo SetType =
 			typeof(SerializationInfo).GetMethod("SetType");
+
+		#endregion
 	}
 }
 

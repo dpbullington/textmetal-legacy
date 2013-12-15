@@ -28,7 +28,7 @@ namespace NMock2
 	using System;
 
 	/// <summary>
-	/// 	Delegate used to override default type returned in stub behavior.
+	/// Delegate used to override default type returned in stub behavior.
 	/// </summary>
 	/// <param name="mock"> The mock that has to return a value. </param>
 	/// <param name="requestedType"> Type of the return value. </param>
@@ -36,17 +36,17 @@ namespace NMock2
 	public delegate object ResolveTypeDelegate(object mock, Type requestedType);
 
 	/// <summary>
-	/// 	The mockery is used to create dynamic mocks and check that all expectations were met during a unit test.
+	/// The mockery is used to create dynamic mocks and check that all expectations were met during a unit test.
 	/// </summary>
 	/// <remarks>
-	/// 	Name inspired by Ivan Moore.
+	/// Name inspired by Ivan Moore.
 	/// </remarks>
 	public class Mockery : IDisposable
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes static members of the <see cref="NMock2.Mockery" /> class.
+		/// Initializes static members of the <see cref="NMock2.Mockery" /> class.
 		/// </summary>
 		static Mockery()
 		{
@@ -54,8 +54,8 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="NMock2.Mockery" /> class.
-		/// 	Clears all expectations.
+		/// Initializes a new instance of the <see cref="NMock2.Mockery" /> class.
+		/// Clears all expectations.
 		/// </summary>
 		public Mockery()
 		{
@@ -69,49 +69,49 @@ namespace NMock2
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	In the rare case where the default mock object factory is replaced, we hold on to the
-		/// 	previous factory (or factories) in case we need to switch back to them.
+		/// In the rare case where the default mock object factory is replaced, we hold on to the
+		/// previous factory (or factories) in case we need to switch back to them.
 		/// </summary>
 		private static readonly Dictionary<Type, IMockObjectFactory> availableMockObjectFactories = new Dictionary<Type, IMockObjectFactory>();
 
 		/// <summary>
-		/// 	The mock object factory that will be used when a new Mockery instance is created
+		/// The mock object factory that will be used when a new Mockery instance is created
 		/// </summary>
 		private static IMockObjectFactory defaultMockObjectFactory;
 
 		/// <summary>
-		/// 	The mock object factory that is being used by this Mockery instance.
+		/// The mock object factory that is being used by this Mockery instance.
 		/// </summary>
 		private readonly IMockObjectFactory currentMockObjectFactory;
 
 		/// <summary>
-		/// 	Holds all mapping from mocks/types to mock styles.
+		/// Holds all mapping from mocks/types to mock styles.
 		/// </summary>
 		private readonly StubMockStyleDictionary stubMockStyleDictionary = new StubMockStyleDictionary();
 
 		/// <summary>
-		/// 	Depth of cascaded ordered, unordered expectation blocks.
+		/// Depth of cascaded ordered, unordered expectation blocks.
 		/// </summary>
 		private int depth;
 
 		/// <summary>
-		/// 	All expectations.
+		/// All expectations.
 		/// </summary>
 		private IExpectationOrdering expectations;
 
 		/// <summary>
-		/// 	The delegate used to resolve the default type returned as return value in calls to mocks with stub behavior.
+		/// The delegate used to resolve the default type returned as return value in calls to mocks with stub behavior.
 		/// </summary>
 		private ResolveTypeDelegate resolveTypeDelegate;
 
 		/// <summary>
-		/// 	If an unexpected invocation exception is thrown then it is stored here to re-throw it in the 
-		/// 	<see cref="VerifyAllExpectationsHaveBeenMet" /> method - exception cannot be swallowed by tested code.
+		/// If an unexpected invocation exception is thrown then it is stored here to re-throw it in the
+		/// <see cref="VerifyAllExpectationsHaveBeenMet" /> method - exception cannot be swallowed by tested code.
 		/// </summary>
 		private ExpectationException thrownUnexpectedInvocationException;
 
 		/// <summary>
-		/// 	Expectations at current cascade level.
+		/// Expectations at current cascade level.
 		/// </summary>
 		private IExpectationOrdering topOrdering;
 
@@ -120,11 +120,15 @@ namespace NMock2
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets a disposable object and tells the mockery that the following expectations are ordered, i.e. they have to be met in the specified order.
-		/// 	Dispose the returned value to return to previous mode.
+		/// Gets a disposable object and tells the mockery that the following expectations are ordered, i.e. they have to be met in the specified order.
+		/// Dispose the returned value to return to previous mode.
 		/// </summary>
-		/// <value> Disposable object. When this object is disposed then the ordered expectation mode is set back to the mode it was previously to call to <see
-		/// 	 cref="Ordered" /> . </value>
+		/// <value>
+		/// Disposable object. When this object is disposed then the ordered expectation mode is set back to the mode it was previously to call to
+		/// <see
+		///     cref="Ordered" />
+		/// .
+		/// </value>
 		public IDisposable Ordered
 		{
 			get
@@ -134,11 +138,15 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Gets a disposable object and tells the mockery that the following expectations are unordered, i.e. they can be met in any order.
-		/// 	Dispose the returned value to return to previous mode.
+		/// Gets a disposable object and tells the mockery that the following expectations are unordered, i.e. they can be met in any order.
+		/// Dispose the returned value to return to previous mode.
 		/// </summary>
-		/// <value> Disposable object. When this object is disposed then the unordered expectation mode is set back to the mode it was previously to the call to <see
-		/// 	 cref="Unordered" /> . </value>
+		/// <value>
+		/// Disposable object. When this object is disposed then the unordered expectation mode is set back to the mode it was previously to the call to
+		/// <see
+		///     cref="Unordered" />
+		/// .
+		/// </value>
 		public IDisposable Unordered
 		{
 			get
@@ -152,17 +160,20 @@ namespace NMock2
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Casts the argument to <see cref="IMockObject" />.
+		/// Casts the argument to <see cref="IMockObject" />.
 		/// </summary>
 		/// <param name="mock"> The object to cast. </param>
 		/// <returns> The argument casted to <see cref="IMockObject" /> </returns>
-		/// <throws cref="ArgumentNullException">Thrown if
-		/// 	<paramref name="mock" />
-		/// 	is null</throws>
-		/// <throws cref="ArgumentException">Thrown if
-		/// 	<paramref name="mock" />
-		/// 	is not a
-		/// 	<see cref="IMockObject" />
+		/// <throws cref="ArgumentNullException">
+		/// Thrown if
+		/// <paramref name="mock" />
+		/// is null
+		/// </throws>
+		/// <throws cref="ArgumentException">
+		/// Thrown if
+		/// <paramref name="mock" />
+		/// is not a
+		/// <see cref="IMockObject" />
 		/// </throws>
 		private static IMockObject CastToMockObject(object mock)
 		{
@@ -178,10 +189,14 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Allows the default <see cref="IMockObjectFactory" /> to be replaced with a different implementation.
+		/// Allows the default <see cref="IMockObjectFactory" /> to be replaced with a different implementation.
 		/// </summary>
-		/// <param name="factoryType"> The System.Type of the <see cref="IMockObjectFactory" /> implementation to use. This is expected to implement <see
-		/// 	 cref="IMockObjectFactory" /> and have a default constructor. </param>
+		/// <param name="factoryType">
+		/// The System.Type of the <see cref="IMockObjectFactory" /> implementation to use. This is expected to implement
+		/// <see
+		///     cref="IMockObjectFactory" />
+		/// and have a default constructor.
+		/// </param>
 		public static void ChangeDefaultMockObjectFactory(Type factoryType)
 		{
 			if (!typeof(IMockObjectFactory).IsAssignableFrom(factoryType))
@@ -205,7 +220,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Adds the expectation.
+		/// Adds the expectation.
 		/// </summary>
 		/// <param name="expectation"> The expectation. </param>
 		internal void AddExpectation(IExpectation expectation)
@@ -214,7 +229,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Clears all expectation on the specified mock.
+		/// Clears all expectation on the specified mock.
 		/// </summary>
 		/// <param name="mock"> The mock for which all expectations are cleared. </param>
 		public void ClearExpectation(object mock)
@@ -228,7 +243,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Clears the expectations.
+		/// Clears the expectations.
 		/// </summary>
 		private void ClearExpectations()
 		{
@@ -238,7 +253,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Dispatches the specified invocation.
+		/// Dispatches the specified invocation.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
 		internal void Dispatch(Invocation invocation)
@@ -250,7 +265,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Disposes the mockery be verifying that all expectations were met.
+		/// Disposes the mockery be verifying that all expectations were met.
 		/// </summary>
 		public void Dispose()
 		{
@@ -258,7 +273,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Throws an exception indicating that the specified invocation is not expected.
+		/// Throws an exception indicating that the specified invocation is not expected.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
 		private void FailUnexpectedInvocation(Invocation invocation)
@@ -285,7 +300,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Throws an exception listing all unmet expectations.
+		/// Throws an exception listing all unmet expectations.
 		/// </summary>
 		private void FailUnmetExpectations()
 		{
@@ -298,7 +313,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Gets the mock style to be used for a mock created for a return value of a call to mock with stub behavior.
+		/// Gets the mock style to be used for a mock created for a return value of a call to mock with stub behavior.
 		/// </summary>
 		/// <param name="mock"> The mock that wants to create a mock. </param>
 		/// <param name="requestedType"> The type of the requested mock. </param>
@@ -310,10 +325,10 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Determines whether there exist expectations for the specified invocation.
+		/// Determines whether there exist expectations for the specified invocation.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
-		/// <returns> <c>true</c> if there exist expectations for the specified invocation; otherwise, <c>false</c> . </returns>
+		/// <returns> <c> true </c> if there exist expectations for the specified invocation; otherwise, <c> false </c> . </returns>
 		internal bool HasExpectationFor(Invocation invocation)
 		{
 			return this.expectations.Matches(invocation);
@@ -325,7 +340,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Creates a new dynamic mock of the specified type using the supplied definition.
+		/// Creates a new dynamic mock of the specified type using the supplied definition.
 		/// </summary>
 		/// <param name="mockedType"> The type to mock. </param>
 		/// <param name="definition"> An <see cref="IMockDefinition" /> to create the mock from. </param>
@@ -336,7 +351,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Creates a new dynamic mock of the specified type.
+		/// Creates a new dynamic mock of the specified type.
 		/// </summary>
 		/// <param name="mockedType"> The type to mock. </param>
 		/// <param name="constructorArgs"> The arguments for the constructor of the class to be mocked. Only applicable when mocking classes with non-default constructors. </param>
@@ -347,7 +362,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Creates a new dynamic mock of the specified type.
+		/// Creates a new dynamic mock of the specified type.
 		/// </summary>
 		/// <param name="mockedType"> The type to mock. </param>
 		/// <param name="mockStyle"> Specifies how the mock object should behave when first created. </param>
@@ -359,7 +374,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Creates a new dynamic mock of the specified type using the supplied definition.
+		/// Creates a new dynamic mock of the specified type using the supplied definition.
 		/// </summary>
 		/// <typeparam name="TMockedType"> The type to mock. </typeparam>
 		/// <param name="definition"> An <see cref="IMockDefinition" /> to create the mock from. </param>
@@ -370,7 +385,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Creates a new dynamic mock of the specified type.
+		/// Creates a new dynamic mock of the specified type.
 		/// </summary>
 		/// <typeparam name="TMockedType"> The type to mock. </typeparam>
 		/// <param name="constructorArgs"> The arguments for the constructor of the class to be mocked. Only applicable when mocking classes with non-default constructors. </param>
@@ -381,7 +396,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Creates a new dynamic mock of the specified type.
+		/// Creates a new dynamic mock of the specified type.
 		/// </summary>
 		/// <typeparam name="TMockedType"> The type to mock. </typeparam>
 		/// <param name="mockStyle"> Specifies how the mock object should behave when first created. </param>
@@ -393,7 +408,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Creates a new named dynamic mock of the specified type.
+		/// Creates a new named dynamic mock of the specified type.
 		/// </summary>
 		/// <param name="mockedType"> The type to mock. </param>
 		/// <param name="name"> A name for the mock that will be used in error messages. </param>
@@ -405,8 +420,8 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Creates a new named dynamic mock of the specified type and allows the style
-		/// 	of the mock to be specified.
+		/// Creates a new named dynamic mock of the specified type and allows the style
+		/// of the mock to be specified.
 		/// </summary>
 		/// <param name="mockedType"> The type to mock. </param>
 		/// <param name="name"> A name for the mock that will be used in error messages. </param>
@@ -419,7 +434,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Creates a new named dynamic mock of the specified type.
+		/// Creates a new named dynamic mock of the specified type.
 		/// </summary>
 		/// <typeparam name="TMockedType"> The type to mock. </typeparam>
 		/// <param name="name"> A name for the mock that will be used in error messages. </param>
@@ -431,8 +446,8 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Creates a new named dynamic mock of the specified type and allows the style
-		/// 	of the mock to be specified.
+		/// Creates a new named dynamic mock of the specified type and allows the style
+		/// of the mock to be specified.
 		/// </summary>
 		/// <typeparam name="TMockedType"> The type to mock. </typeparam>
 		/// <param name="name"> A name for the mock that will be used in error messages. </param>
@@ -445,7 +460,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Pops the specified old ordering from the expectations stack.
+		/// Pops the specified old ordering from the expectations stack.
 		/// </summary>
 		/// <param name="oldOrdering"> The old ordering. </param>
 		private void Pop(IExpectationOrdering oldOrdering)
@@ -455,7 +470,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Pushes the specified new ordering on the expectations stack.
+		/// Pushes the specified new ordering on the expectations stack.
 		/// </summary>
 		/// <param name="newOrdering"> The new ordering. </param>
 		/// <returns> Disposable popper. </returns>
@@ -469,7 +484,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Resolves the return value to be used in a call to a mock with stub behavior.
+		/// Resolves the return value to be used in a call to a mock with stub behavior.
 		/// </summary>
 		/// <param name="mock"> The mock on which the call is made. </param>
 		/// <param name="requestedType"> The type of the return value. </param>
@@ -480,7 +495,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Sets the resolve type handler used to override default values returned by stubs.
+		/// Sets the resolve type handler used to override default values returned by stubs.
 		/// </summary>
 		/// <param name="resolveTypeHandler"> The resolve type handler. </param>
 		public void SetResolveTypeHandler(ResolveTypeDelegate resolveTypeHandler)
@@ -489,8 +504,8 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Sets the mock style used for all properties and methods returning a value of any type of the <paramref name="mock" />.
-		/// 	Can be overridden with a type specific mock style with <see cref="SetStubMockStyle{TStub}" />.
+		/// Sets the mock style used for all properties and methods returning a value of any type of the <paramref name="mock" />.
+		/// Can be overridden with a type specific mock style with <see cref="SetStubMockStyle{TStub}" />.
 		/// </summary>
 		/// <param name="mock"> The mock (with mock style Stub). </param>
 		/// <param name="nestedMockStyle"> The nested mock style. </param>
@@ -501,8 +516,8 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Sets the mock style used for all properties and methods returning a value of type <typeparamref name="TStub" />
-		/// 	of the <paramref name="mock" />.
+		/// Sets the mock style used for all properties and methods returning a value of type <typeparamref name="TStub" />
+		/// of the <paramref name="mock" />.
 		/// </summary>
 		/// <typeparam name="TStub"> The type of the stub. </typeparam>
 		/// <param name="mock"> The mock (with mock style Stub). </param>
@@ -513,8 +528,8 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Sets the mock style used for all properties and methods returning a value of type <paramref name="nestedMockType" />
-		/// 	of the <paramref name="mock" />.
+		/// Sets the mock style used for all properties and methods returning a value of type <paramref name="nestedMockType" />
+		/// of the <paramref name="mock" />.
 		/// </summary>
 		/// <param name="mock"> The mock (with mock style Stub). </param>
 		/// <param name="nestedMockType"> Type of the nested mock. </param>
@@ -526,8 +541,8 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Verifies that all expectations have been met.
-		/// 	Will be called in <see cref="Dispose" />, too.
+		/// Verifies that all expectations have been met.
+		/// Will be called in <see cref="Dispose" />, too.
 		/// </summary>
 		public void VerifyAllExpectationsHaveBeenMet()
 		{
@@ -548,14 +563,14 @@ namespace NMock2
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		/// <summary>
-		/// 	A popper pops an expectation ordering from the expectations stack on disposal.
+		/// A popper pops an expectation ordering from the expectations stack on disposal.
 		/// </summary>
 		private class Popper : IDisposable
 		{
 			#region Constructors/Destructors
 
 			/// <summary>
-			/// 	Initializes a new instance of the <see cref="Popper" /> class.
+			/// Initializes a new instance of the <see cref="Popper" /> class.
 			/// </summary>
 			/// <param name="mockery"> The mockery. </param>
 			/// <param name="previous"> The previous. </param>
@@ -570,12 +585,12 @@ namespace NMock2
 			#region Fields/Constants
 
 			/// <summary>
-			/// 	The mockery.
+			/// The mockery.
 			/// </summary>
 			private readonly Mockery mockery;
 
 			/// <summary>
-			/// 	The previous expectation ordering.
+			/// The previous expectation ordering.
 			/// </summary>
 			private readonly IExpectationOrdering previous;
 
@@ -584,7 +599,7 @@ namespace NMock2
 			#region Methods/Operators
 
 			/// <summary>
-			/// 	Pops the expectation ordering from the stack.
+			/// Pops the expectation ordering from the stack.
 			/// </summary>
 			public void Dispose()
 			{

@@ -12,15 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System.Reflection.Emit;
-
 	public class IfNullExpression : Expression
 	{
-		private readonly IILEmitter ifNotNull;
-		private readonly IILEmitter ifNull;
-		private readonly Reference reference;
+		#region Constructors/Destructors
 
 		public IfNullExpression(Reference reference, IILEmitter ifNull, IILEmitter ifNotNull = null)
 		{
@@ -29,17 +27,29 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 			this.ifNotNull = ifNotNull;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly IILEmitter ifNotNull;
+		private readonly IILEmitter ifNull;
+		private readonly Reference reference;
+
+		#endregion
+
+		#region Methods/Operators
+
 		public override void Emit(IMemberEmitter member, ILGenerator gen)
 		{
-			ArgumentsUtil.EmitLoadOwnerAndReference(reference, gen);
+			ArgumentsUtil.EmitLoadOwnerAndReference(this.reference, gen);
 			var notNull = gen.DefineLabel();
 			gen.Emit(OpCodes.Brtrue_S, notNull);
-			ifNull.Emit(member, gen);
+			this.ifNull.Emit(member, gen);
 			gen.MarkLabel(notNull);
-			if (ifNotNull != null) // yeah, I know that reads funny :)
-			{
-				ifNotNull.Emit(member, gen);
-			}
+			if (this.ifNotNull != null) // yeah, I know that reads funny :)
+				this.ifNotNull.Emit(member, gen);
 		}
+
+		#endregion
 	}
 }

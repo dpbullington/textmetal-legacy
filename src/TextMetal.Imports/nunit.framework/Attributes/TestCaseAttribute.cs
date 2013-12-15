@@ -10,8 +10,8 @@ using System.Collections;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	TestCaseAttribute is used to mark parameterized test cases
-	/// 	and provide them with their arguments.
+	/// TestCaseAttribute is used to mark parameterized test cases
+	/// and provide them with their arguments.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
 	public class TestCaseAttribute : Attribute, ITestCaseData
@@ -19,8 +19,8 @@ namespace NUnit.Framework
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a TestCaseAttribute with a list of arguments.
-		/// 	This constructor is not CLS-Compliant
+		/// Construct a TestCaseAttribute with a list of arguments.
+		/// This constructor is not CLS-Compliant
 		/// </summary>
 		/// <param name="arguments"> </param>
 		public TestCaseAttribute(params object[] arguments)
@@ -32,7 +32,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Construct a TestCaseAttribute with a single argument
+		/// Construct a TestCaseAttribute with a single argument
 		/// </summary>
 		/// <param name="arg"> </param>
 		public TestCaseAttribute(object arg)
@@ -41,7 +41,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Construct a TestCaseAttribute with a two arguments
+		/// Construct a TestCaseAttribute with a two arguments
 		/// </summary>
 		/// <param name="arg1"> </param>
 		/// <param name="arg2"> </param>
@@ -51,7 +51,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Construct a TestCaseAttribute with a three arguments
+		/// Construct a TestCaseAttribute with a three arguments
 		/// </summary>
 		/// <param name="arg1"> </param>
 		/// <param name="arg2"> </param>
@@ -84,7 +84,7 @@ namespace NUnit.Framework
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the list of arguments to a test case
+		/// Gets the list of arguments to a test case
 		/// </summary>
 		public object[] Arguments
 		{
@@ -95,7 +95,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets a list of categories associated with this test;
+		/// Gets a list of categories associated with this test;
 		/// </summary>
 		public IList Categories
 		{
@@ -106,8 +106,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets the category associated with this test.
-		/// 	May be a single category or a comma-separated list.
+		/// Gets or sets the category associated with this test.
+		/// May be a single category or a comma-separated list.
 		/// </summary>
 		public string Category
 		{
@@ -122,7 +122,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets the description.
+		/// Gets or sets the description.
 		/// </summary>
 		/// <value> The description. </value>
 		public string Description
@@ -138,7 +138,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets the expected exception.
+		/// Gets or sets the expected exception.
 		/// </summary>
 		/// <value> The expected exception. </value>
 		public Type ExpectedException
@@ -155,7 +155,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets the name the expected exception.
+		/// Gets or sets the name the expected exception.
 		/// </summary>
 		/// <value> The expected name of the exception. </value>
 		public string ExpectedExceptionName
@@ -172,7 +172,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets the expected message of the expected exception
+		/// Gets or sets the expected message of the expected exception
 		/// </summary>
 		/// <value> The expected message of the exception. </value>
 		public string ExpectedMessage
@@ -188,7 +188,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets the expected result.
+		/// Gets the expected result.
 		/// </summary>
 		/// <value> The result. </value>
 		public object ExpectedResult
@@ -200,7 +200,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets the explicit status of the test
+		/// Gets or sets the explicit status of the test
 		/// </summary>
 		public bool Explicit
 		{
@@ -215,8 +215,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets a flag indicating whether an expected
-		/// 	result has been set.
+		/// Gets a flag indicating whether an expected
+		/// result has been set.
 		/// </summary>
 		public bool HasExpectedResult
 		{
@@ -227,7 +227,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets the ignored status of the test
+		/// Gets or sets the ignored status of the test
 		/// </summary>
 		public bool Ignore
 		{
@@ -242,8 +242,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets the reason for not running the test.
-		/// 	Set has the side effect of marking the test as ignored.
+		/// Gets or sets the reason for not running the test.
+		/// Set has the side effect of marking the test as ignored.
 		/// </summary>
 		/// <value> The ignore reason. </value>
 		public string IgnoreReason
@@ -260,7 +260,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets the ignored status of the test
+		/// Gets or sets the ignored status of the test
 		/// </summary>
 		public bool Ignored
 		{
@@ -275,7 +275,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets the type of match to be performed on the expected message
+		/// Gets or sets the type of match to be performed on the expected message
 		/// </summary>
 		public MessageMatch MatchType
 		{
@@ -290,7 +290,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets the reason for not running the test
+		/// Gets or sets the reason for not running the test
 		/// </summary>
 		public string Reason
 		{
@@ -305,7 +305,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets the expected result.
+		/// Gets or sets the expected result.
 		/// </summary>
 		/// <value> The result. </value>
 		public object Result
@@ -322,7 +322,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Gets or sets the name of the test.
+		/// Gets or sets the name of the test.
 		/// </summary>
 		/// <value> The name of the test. </value>
 		public string TestName

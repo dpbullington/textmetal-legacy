@@ -33,7 +33,7 @@ namespace NMock2.Internal
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="BuildableExpectation" /> class.
+		/// Initializes a new instance of the <see cref="BuildableExpectation" /> class.
 		/// </summary>
 		/// <param name="expectationDescription"> The expectation description. </param>
 		/// <param name="requiredCountMatcher"> The required count matcher. </param>
@@ -141,8 +141,8 @@ namespace NMock2.Internal
 		private static bool IsEventAccessorMethod(Invocation invocation)
 		{
 			return invocation.Method.IsSpecialName &&
-			       (invocation.Method.Name.StartsWith(AddEventHandlerPrefix) ||
-			        invocation.Method.Name.StartsWith(RemoveEventHandlerPrefix));
+					(invocation.Method.Name.StartsWith(AddEventHandlerPrefix) ||
+					invocation.Method.Name.StartsWith(RemoveEventHandlerPrefix));
 		}
 
 		private static void MockEventHandler(Invocation invocation, IMockObject mockObject)
@@ -258,27 +258,27 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Checks whether stored expectations matches the specified invocation.
+		/// Checks whether stored expectations matches the specified invocation.
 		/// </summary>
 		/// <param name="invocation"> The invocation to check. </param>
 		/// <returns> Returns whether one of the stored expectations has met the specified invocation. </returns>
 		public bool Matches(Invocation invocation)
 		{
 			return this.IsActive
-			       && this.receiver == invocation.Receiver
-			       && this.methodMatcher.Matches(invocation.Method)
-			       && this.argumentsMatcher.Matches(invocation)
-			       && this.ExtraMatchersMatch(invocation)
-			       && this.GenericMethodTypeMatcher.Matches(invocation);
+					&& this.receiver == invocation.Receiver
+					&& this.methodMatcher.Matches(invocation.Method)
+					&& this.argumentsMatcher.Matches(invocation)
+					&& this.ExtraMatchersMatch(invocation)
+					&& this.GenericMethodTypeMatcher.Matches(invocation);
 		}
 
 		public bool MatchesIgnoringIsActive(Invocation invocation)
 		{
 			return this.receiver == invocation.Receiver
-			       && this.methodMatcher.Matches(invocation.Method)
-			       && this.argumentsMatcher.Matches(invocation)
-			       && this.ExtraMatchersMatch(invocation)
-			       && this.GenericMethodTypeMatcher.Matches(invocation);
+					&& this.methodMatcher.Matches(invocation.Method)
+					&& this.argumentsMatcher.Matches(invocation)
+					&& this.ExtraMatchersMatch(invocation)
+					&& this.GenericMethodTypeMatcher.Matches(invocation);
 		}
 
 		public void Perform(Invocation invocation)
@@ -290,8 +290,8 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Adds itself to the <paramref name="result" /> if the <see cref="Receiver" /> matches
-		/// 	the specified <paramref name="mock" />.
+		/// Adds itself to the <paramref name="result" /> if the <see cref="Receiver" /> matches
+		/// the specified <paramref name="mock" />.
 		/// </summary>
 		/// <param name="mock"> The mock for which expectations are queried. </param>
 		/// <param name="result"> The result to add matching expectations to. </param>

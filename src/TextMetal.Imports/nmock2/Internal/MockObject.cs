@@ -34,8 +34,8 @@ namespace NMock2.Internal
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="MockObject" /> class.
-		/// 	This constructor is needed by the <see cref="InterfaceOnlyMockObjectFactory" /> (the IL generation has to be changed!)
+		/// Initializes a new instance of the <see cref="MockObject" /> class.
+		/// This constructor is needed by the <see cref="InterfaceOnlyMockObjectFactory" /> (the IL generation has to be changed!)
 		/// </summary>
 		/// <param name="mockery"> The mockery. </param>
 		/// <param name="mockedType"> Type of the mocked. </param>
@@ -46,7 +46,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="MockObject" /> class.
+		/// Initializes a new instance of the <see cref="MockObject" /> class.
 		/// </summary>
 		/// <param name="mockery"> The mockery. </param>
 		/// <param name="mockedType"> Type of the mocked. </param>
@@ -66,34 +66,34 @@ namespace NMock2.Internal
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Results that have been explicitly assigned via a call to a property setter.
-		/// 	These will be returned for all subsequent calls to the matching property getter.
+		/// Results that have been explicitly assigned via a call to a property setter.
+		/// These will be returned for all subsequent calls to the matching property getter.
 		/// </summary>
 		private readonly Dictionary<string, object> assignedPropertyResults = new Dictionary<string, object>();
 
 		/// <summary>
-		/// 	Stores the event handlers that could be added to the mock object.
+		/// Stores the event handlers that could be added to the mock object.
 		/// </summary>
 		private readonly IDictionary eventHandlers;
 
 		/// <summary>
-		/// 	Stores the mocked type(s).
+		/// Stores the mocked type(s).
 		/// </summary>
 		private readonly CompositeType mockedTypes;
 
 		/// <summary>
-		/// 	Stores the backlink to the mockery which created this mock object.
+		/// Stores the backlink to the mockery which created this mock object.
 		/// </summary>
 		private readonly Mockery mockery;
 
 		/// <summary>
-		/// 	Stores the name of the mock object.
+		/// Stores the name of the mock object.
 		/// </summary>
 		private readonly string name;
 
 		/// <summary>
-		/// 	Results that have been generated for methods or property getters.
-		/// 	These will be returned for all subsequent calls to the same member.
+		/// Results that have been generated for methods or property getters.
+		/// These will be returned for all subsequent calls to the same member.
 		/// </summary>
 		private readonly Dictionary<MethodInfo, object> rememberedMethodResults = new Dictionary<MethodInfo, object>();
 
@@ -110,7 +110,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Gets the mock style of this mock.
+		/// Gets the mock style of this mock.
 		/// </summary>
 		protected MockStyle MockStyle
 		{
@@ -158,7 +158,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Gets the name of the member to be used as the name for a mock returned an a call to a stub.
+		/// Gets the name of the member to be used as the name for a mock returned an a call to a stub.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
 		/// <returns> Name of the mock created as a result value on a call to a stub. </returns>
@@ -175,7 +175,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Gets the default result for an invocation.
+		/// Gets the default result for an invocation.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
 		/// <returns> The default value to return as result of the invocation. <see cref="Missing.Value" /> if no default value was provided. </returns>

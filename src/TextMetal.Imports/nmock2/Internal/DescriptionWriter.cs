@@ -22,14 +22,14 @@ using System.IO;
 namespace NMock2.Internal
 {
 	/// <summary>
-	/// 	Used to describe Matchers and other classes for exception handling.
+	/// Used to describe Matchers and other classes for exception handling.
 	/// </summary>
 	public class DescriptionWriter : StringWriter
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Replaces backslashes with three escaped backslashes.
+		/// Replaces backslashes with three escaped backslashes.
 		/// </summary>
 		/// <param name="s"> The string to replace backslashes. </param>
 		/// <returns> Returns the escaped string. </returns>
@@ -42,7 +42,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Formats the given <paramref name="value" /> depending on null and the type of the value.
+		/// Formats the given <paramref name="value" /> depending on null and the type of the value.
 		/// </summary>
 		/// <param name="value"> The value to format. </param>
 		/// <returns> Returns the formatted string. </returns>
@@ -57,13 +57,15 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Writes the text representation of an object to the text stream by calling ToString on that object.
+		/// Writes the text representation of an object to the text stream by calling ToString on that object.
 		/// </summary>
 		/// <param name="value"> The object to write. </param>
-		/// <exception cref="T:System.ObjectDisposedException">The
-		/// 	<see cref="T:System.IO.TextWriter" />
-		/// 	is closed.</exception>
-		/// <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+		/// <exception cref="T:System.ObjectDisposedException">
+		/// The
+		/// <see cref="T:System.IO.TextWriter" />
+		/// is closed.
+		/// </exception>
+		/// <exception cref="T:System.IO.IOException"> An I/O error occurs. </exception>
 		public override void Write(object value)
 		{
 			this.Write(this.FormatValue(value));

@@ -10,14 +10,14 @@ using NUnit.UiException.StackTraceAnalyzers;
 namespace NUnit.UiException.StackTraceAnalysers
 {
 	/// <summary>
-	/// 	This class is responsible for extracting a Windows like path value
-	/// 	from a line of the given stack trace. This class bases its work
-	/// 	on the following assumptions:
-	/// 	- paths are supposed to be absolute,
-	/// 	- paths are supposed to be made of two parts: [drive][path]
-	/// 	Where [drive] refers to a sequence like: "C:\\"
-	/// 	and [path] a non empty string of characters that extends to the
-	/// 	trailing ':' (as given in stack trace).
+	/// This class is responsible for extracting a Windows like path value
+	/// from a line of the given stack trace. This class bases its work
+	/// on the following assumptions:
+	/// - paths are supposed to be absolute,
+	/// - paths are supposed to be made of two parts: [drive][path]
+	/// Where [drive] refers to a sequence like: "C:\\"
+	/// and [path] a non empty string of characters that extends to the
+	/// trailing ':' (as given in stack trace).
 	/// </summary>
 	public class WindowsPathParser :
 		IErrorParser
@@ -25,8 +25,8 @@ namespace NUnit.UiException.StackTraceAnalysers
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Locates and fills RawError.Path property with the first
-		/// 	Windows path values found from RawError.Input property.
+		/// Locates and fills RawError.Path property with the first
+		/// Windows path values found from RawError.Input property.
 		/// </summary>
 		/// <param name="parser"> The stack trace parser. This parameter must not be null. </param>
 		/// <param name="args"> The RawError from which retrieving and filling Input and Path properties. This parameter cannot not be null. </param>
@@ -66,9 +66,9 @@ namespace NUnit.UiException.StackTraceAnalysers
 			for (i = startIndex; i < error.Length - 2; ++i)
 			{
 				if (((error[i] >= 'a' && error[i] <= 'z') ||
-				     (error[i] >= 'A' && error[i] <= 'Z')) &&
-				    error[i + 1] == ':' &&
-				    error[i + 2] == '\\')
+					(error[i] >= 'A' && error[i] <= 'Z')) &&
+					error[i + 1] == ':' &&
+					error[i + 2] == '\\')
 					return (i);
 			}
 

@@ -18,6 +18,10 @@ namespace Castle.Components.DictionaryAdapter
 
 	public interface IDictionaryCoerceStrategy
 	{
+		#region Methods/Operators
+
 		object Coerce(IDictionaryAdapter adapter, Type type);
+
+		#endregion
 	}
 }

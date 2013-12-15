@@ -12,44 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Diagnostics;
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
 	using System;
-	using System.Diagnostics;
-	using System.Reflection.Emit;
 
 	/// <summary>
-	///   Wraps a reference that is passed 
-	///   ByRef and provides indirect load/store support.
+	/// Wraps a reference that is passed
+	/// ByRef and provides indirect load/store support.
 	/// </summary>
 	[DebuggerDisplay("&{OwnerReference}")]
 	public class IndirectReference : TypeReference
 	{
-		public IndirectReference(TypeReference byRefReference) :
-			base(byRefReference, byRefReference.Type.GetElementType())
+		#region Constructors/Destructors
+
+		public IndirectReference(TypeReference byRefReference)
+			:
+				base(byRefReference, byRefReference.Type.GetElementType())
 		{
 			if (!byRefReference.Type.IsByRef)
-			{
 				throw new ArgumentException("Expected an IsByRef reference", "byRefReference");
-			}
 		}
 
-		public override void LoadAddressOfReference(ILGenerator gen)
-		{
-			// Load of owner reference takes care of this.
-		}
+		#endregion
 
-		// TODO: Better name
-
-		public override void LoadReference(ILGenerator gen)
-		{
-			OpCodeUtil.EmitLoadIndirectOpCodeForType(gen, Type);
-		}
-
-		public override void StoreReference(ILGenerator gen)
-		{
-			OpCodeUtil.EmitStoreIndirectOpCodeForType(gen, Type);
-		}
+		#region Methods/Operators
 
 		public static TypeReference WrapIfByRef(TypeReference reference)
 		{
@@ -62,11 +51,28 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 			var result = new TypeReference[references.Length];
 
 			for (var i = 0; i < references.Length; i++)
-			{
 				result[i] = WrapIfByRef(references[i]);
-			}
 
 			return result;
 		}
+
+		public override void LoadAddressOfReference(ILGenerator gen)
+		{
+			// Load of owner reference takes care of this.
+		}
+
+		// TODO: Better name
+
+		public override void LoadReference(ILGenerator gen)
+		{
+			OpCodeUtil.EmitLoadIndirectOpCodeForType(gen, this.Type);
+		}
+
+		public override void StoreReference(ILGenerator gen)
+		{
+			OpCodeUtil.EmitStoreIndirectOpCodeForType(gen, this.Type);
+		}
+
+		#endregion
 	}
 }

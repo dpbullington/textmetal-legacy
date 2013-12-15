@@ -12,13 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Runtime.Remoting;
+
 namespace Castle.DynamicProxy
 {
 	using System;
-	using System.Runtime.Remoting;
 
 	public class ProxyUtil
 	{
+		#region Methods/Operators
+
 		public static object GetUnproxiedInstance(object instance)
 		{
 #if (!SILVERLIGHT)
@@ -27,9 +30,7 @@ namespace Castle.DynamicProxy
 			{
 				var accessor = instance as IProxyTargetAccessor;
 				if (accessor != null)
-				{
 					instance = accessor.DynProxyGetTarget();
-				}
 			}
 
 			return instance;
@@ -50,9 +51,7 @@ namespace Castle.DynamicProxy
 					if (target != null)
 					{
 						if (ReferenceEquals(target, instance))
-						{
 							return instance.GetType().BaseType;
-						}
 
 						instance = target;
 					}
@@ -66,9 +65,7 @@ namespace Castle.DynamicProxy
 		{
 #if (!SILVERLIGHT)
 			if (RemotingServices.IsTransparentProxy(instance))
-			{
 				return true;
-			}
 #endif
 			return instance is IProxyTargetAccessor;
 		}
@@ -77,5 +74,7 @@ namespace Castle.DynamicProxy
 		{
 			return typeof(IProxyTargetAccessor).IsAssignableFrom(type);
 		}
+
+		#endregion
 	}
 }

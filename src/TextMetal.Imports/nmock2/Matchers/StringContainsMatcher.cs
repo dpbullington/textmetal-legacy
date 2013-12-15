@@ -22,14 +22,14 @@ using System.IO;
 namespace NMock2.Matchers
 {
 	/// <summary>
-	/// 	Matcher that checks whether the actual value contains the expected substring.
+	/// Matcher that checks whether the actual value contains the expected substring.
 	/// </summary>
 	public class StringContainsMatcher : Matcher
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="StringContainsMatcher" /> class.
+		/// Initializes a new instance of the <see cref="StringContainsMatcher" /> class.
 		/// </summary>
 		/// <param name="substring"> The substring that is expected. </param>
 		public StringContainsMatcher(string substring)
@@ -48,7 +48,7 @@ namespace NMock2.Matchers
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public override void DescribeTo(TextWriter writer)
@@ -58,15 +58,15 @@ namespace NMock2.Matchers
 		}
 
 		/// <summary>
-		/// 	Matches the specified object to this matcher and returns whether it matches.
+		/// Matches the specified object to this matcher and returns whether it matches.
 		/// </summary>
 		/// <param name="o"> The object to match. </param>
 		/// <returns> Whether the object is a string and contains the expected substring. </returns>
 		public override bool Matches(object o)
 		{
 			return o != null
-			       && o is string
-			       && ((string)o).IndexOf(this.substring) >= 0;
+					&& o is string
+					&& ((string)o).IndexOf(this.substring) >= 0;
 		}
 
 		#endregion

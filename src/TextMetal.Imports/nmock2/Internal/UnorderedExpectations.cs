@@ -31,7 +31,7 @@ namespace NMock2.Internal
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="UnorderedExpectations" /> class.
+		/// Initializes a new instance of the <see cref="UnorderedExpectations" /> class.
 		/// </summary>
 		public UnorderedExpectations()
 		{
@@ -40,7 +40,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="UnorderedExpectations" /> class.
+		/// Initializes a new instance of the <see cref="UnorderedExpectations" /> class.
 		/// </summary>
 		/// <param name="depth"> The calling depth. </param>
 		public UnorderedExpectations(int depth)
@@ -54,17 +54,17 @@ namespace NMock2.Internal
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Stores the calling depth for the document writer output.
+		/// Stores the calling depth for the document writer output.
 		/// </summary>
 		private int depth;
 
 		/// <summary>
-		/// 	Stores the expectations that could be added.
+		/// Stores the expectations that could be added.
 		/// </summary>
 		private List<IExpectation> expectations = new List<IExpectation>();
 
 		/// <summary>
-		/// 	Stores the string to be presented whe describing the expectation.
+		/// Stores the string to be presented whe describing the expectation.
 		/// </summary>
 		private string prompt;
 
@@ -73,9 +73,9 @@ namespace NMock2.Internal
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets a value indicating whether this instance has been met.
+		/// Gets a value indicating whether this instance has been met.
 		/// </summary>
-		/// <value> <c>true</c> if this instance has been met; otherwise, <c>false</c> . </value>
+		/// <value> <c> true </c> if this instance has been met; otherwise, <c> false </c> . </value>
 		public bool HasBeenMet
 		{
 			get
@@ -91,9 +91,9 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Gets a value indicating whether this instance is active.
+		/// Gets a value indicating whether this instance is active.
 		/// </summary>
-		/// <value> <c>true</c> if this instance is active; otherwise, <c>false</c> . </value>
+		/// <value> <c> true </c> if this instance is active; otherwise, <c> false </c> . </value>
 		public bool IsActive
 		{
 			get
@@ -152,7 +152,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Checks whether stored expectations matches the specified invocation.
+		/// Checks whether stored expectations matches the specified invocation.
 		/// </summary>
 		/// <param name="invocation"> The invocation to check. </param>
 		/// <returns> Returns whether one of the stored expectations has met the specified invocation. </returns>
@@ -179,7 +179,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Performs the specified invocation on the corresponding expectation if a match was found.
+		/// Performs the specified invocation on the corresponding expectation if a match was found.
 		/// </summary>
 		/// <param name="invocation"> The invocation to match. </param>
 		public void Perform(Invocation invocation)
@@ -197,7 +197,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Adds all expectations to <paramref name="result" /> that are associated to <paramref name="mock" />.
+		/// Adds all expectations to <paramref name="result" /> that are associated to <paramref name="mock" />.
 		/// </summary>
 		/// <param name="mock"> The mock for which expectations are queried. </param>
 		/// <param name="result"> The result to add matching expectations to. </param>

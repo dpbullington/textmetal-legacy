@@ -9,15 +9,15 @@ using System;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	TestAssembly is a TestSuite that represents the execution
-	/// 	of tests in a managed assembly.
+	/// TestAssembly is a TestSuite that represents the execution
+	/// of tests in a managed assembly.
 	/// </summary>
 	public class NamespaceSuite : TestSuite
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="NamespaceSuite" /> class.
+		/// Initializes a new instance of the <see cref="NamespaceSuite" /> class.
 		/// </summary>
 		/// <param name="path"> The path. </param>
 		public NamespaceSuite(string path)
@@ -26,7 +26,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="NamespaceSuite" /> class.
+		/// Initializes a new instance of the <see cref="NamespaceSuite" /> class.
 		/// </summary>
 		/// <param name="parentNamespace"> The parent namespace. </param>
 		/// <param name="suiteName"> Name of the suite. </param>
@@ -40,7 +40,7 @@ namespace NUnit.Core
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the type of the test.
+		/// Gets the type of the test.
 		/// </summary>
 		public override string TestType
 		{

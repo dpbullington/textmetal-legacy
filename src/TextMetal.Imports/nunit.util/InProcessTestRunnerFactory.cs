@@ -11,9 +11,9 @@ using NUnit.Core;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	InProcessTestRunnerFactory handles creation of a suitable test 
-	/// 	runner for a given package to be loaded and run within the
-	/// 	same process.
+	/// InProcessTestRunnerFactory handles creation of a suitable test
+	/// runner for a given package to be loaded and run within the
+	/// same process.
 	/// </summary>
 	public class InProcessTestRunnerFactory : ITestRunnerFactory
 	{
@@ -25,10 +25,10 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Returns a test runner based on the settings in a TestPackage.
-		/// 	Any setting that is "consumed" by the factory is removed, so
-		/// 	that downstream runners using the factory will not repeatedly
-		/// 	create the same type of runner.
+		/// Returns a test runner based on the settings in a TestPackage.
+		/// Any setting that is "consumed" by the factory is removed, so
+		/// that downstream runners using the factory will not repeatedly
+		/// create the same type of runner.
 		/// </summary>
 		/// <param name="package"> The TestPackage to be loaded and run </param>
 		/// <returns> A TestRunner </returns>

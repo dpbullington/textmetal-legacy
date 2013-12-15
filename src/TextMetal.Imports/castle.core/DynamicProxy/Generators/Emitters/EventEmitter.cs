@@ -12,88 +12,99 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection;
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters
 {
 	using System;
-	using System.Reflection;
-	using System.Reflection.Emit;
 
 	public class EventEmitter : IMemberEmitter
 	{
+		#region Constructors/Destructors
+
+		public EventEmitter(AbstractTypeEmitter typeEmitter, string name, EventAttributes attributes, Type type)
+		{
+			if (name == null)
+				throw new ArgumentNullException("name");
+			if (type == null)
+				throw new ArgumentNullException("type");
+			this.typeEmitter = typeEmitter;
+			this.type = type;
+			this.eventBuilder = typeEmitter.TypeBuilder.DefineEvent(name, attributes, type);
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
 		private readonly EventBuilder eventBuilder;
 		private readonly Type type;
 		private readonly AbstractTypeEmitter typeEmitter;
 		private MethodEmitter addMethod;
 		private MethodEmitter removeMethod;
 
-		public EventEmitter(AbstractTypeEmitter typeEmitter, string name, EventAttributes attributes, Type type)
-		{
-			if (name == null)
-			{
-				throw new ArgumentNullException("name");
-			}
-			if (type == null)
-			{
-				throw new ArgumentNullException("type");
-			}
-			this.typeEmitter = typeEmitter;
-			this.type = type;
-			eventBuilder = typeEmitter.TypeBuilder.DefineEvent(name, attributes, type);
-		}
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		public MemberInfo Member
 		{
-			get { return null; }
+			get
+			{
+				return null;
+			}
 		}
 
 		public Type ReturnType
 		{
-			get { return type; }
+			get
+			{
+				return this.type;
+			}
 		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		public MethodEmitter CreateAddMethod(string addMethodName, MethodAttributes attributes, MethodInfo methodToOverride)
 		{
-			if (addMethod != null)
-			{
+			if (this.addMethod != null)
 				throw new InvalidOperationException("An add method exists");
-			}
 
-			addMethod = new MethodEmitter(typeEmitter, addMethodName, attributes, methodToOverride);
-			return addMethod;
+			this.addMethod = new MethodEmitter(this.typeEmitter, addMethodName, attributes, methodToOverride);
+			return this.addMethod;
 		}
 
 		public MethodEmitter CreateRemoveMethod(string removeMethodName, MethodAttributes attributes,
-		                                        MethodInfo methodToOverride)
+			MethodInfo methodToOverride)
 		{
-			if (removeMethod != null)
-			{
+			if (this.removeMethod != null)
 				throw new InvalidOperationException("A remove method exists");
-			}
-			removeMethod = new MethodEmitter(typeEmitter, removeMethodName, attributes, methodToOverride);
-			return removeMethod;
+			this.removeMethod = new MethodEmitter(this.typeEmitter, removeMethodName, attributes, methodToOverride);
+			return this.removeMethod;
 		}
 
 		public void EnsureValidCodeBlock()
 		{
-			addMethod.EnsureValidCodeBlock();
-			removeMethod.EnsureValidCodeBlock();
+			this.addMethod.EnsureValidCodeBlock();
+			this.removeMethod.EnsureValidCodeBlock();
 		}
 
 		public void Generate()
 		{
-			if (addMethod == null)
-			{
+			if (this.addMethod == null)
 				throw new InvalidOperationException("Event add method was not created");
-			}
-			if (removeMethod == null)
-			{
+			if (this.removeMethod == null)
 				throw new InvalidOperationException("Event remove method was not created");
-			}
-			addMethod.Generate();
-			eventBuilder.SetAddOnMethod(addMethod.MethodBuilder);
+			this.addMethod.Generate();
+			this.eventBuilder.SetAddOnMethod(this.addMethod.MethodBuilder);
 
-			removeMethod.Generate();
-			eventBuilder.SetRemoveOnMethod(removeMethod.MethodBuilder);
+			this.removeMethod.Generate();
+			this.eventBuilder.SetRemoveOnMethod(this.removeMethod.MethodBuilder);
 		}
+
+		#endregion
 	}
 }

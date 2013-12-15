@@ -12,66 +12,66 @@ using System.IO;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Represents the manner in which test assemblies are
-	/// 	distributed across processes.
+	/// Represents the manner in which test assemblies are
+	/// distributed across processes.
 	/// </summary>
 	public enum ProcessModel
 	{
 		/// <summary>
-		/// 	Use the default setting, depending on the runner
-		/// 	and the nature of the tests to be loaded.
+		/// Use the default setting, depending on the runner
+		/// and the nature of the tests to be loaded.
 		/// </summary>
 		Default,
 
 		/// <summary>
-		/// 	Run tests directly in the NUnit process
+		/// Run tests directly in the NUnit process
 		/// </summary>
 		Single,
 
 		/// <summary>
-		/// 	Run tests in a single separate process
+		/// Run tests in a single separate process
 		/// </summary>
 		Separate,
 
 		/// <summary>
-		/// 	Run tests in a separate process per assembly
+		/// Run tests in a separate process per assembly
 		/// </summary>
 		Multiple
 	}
 
 	/// <summary>
-	/// 	Represents the manner in which test assemblies use
-	/// 	AppDomains to provide isolation
+	/// Represents the manner in which test assemblies use
+	/// AppDomains to provide isolation
 	/// </summary>
 	public enum DomainUsage
 	{
 		/// <summary>
-		/// 	Use the default setting, depending on the runner
-		/// 	and the nature of the tests to be loaded.
+		/// Use the default setting, depending on the runner
+		/// and the nature of the tests to be loaded.
 		/// </summary>
 		Default,
 
 		/// <summary>
-		/// 	Don't create a test domain - run in the primary AppDomain
+		/// Don't create a test domain - run in the primary AppDomain
 		/// </summary>
 		None,
 
 		/// <summary>
-		/// 	Run tests in a single separate test domain
+		/// Run tests in a single separate test domain
 		/// </summary>
 		Single,
 
 		/// <summary>
-		/// 	Run tests in a separate domain per assembly
+		/// Run tests in a separate domain per assembly
 		/// </summary>
 		Multiple
 	}
 
 	/// <summary>
-	/// 	TestPackage holds information about a set of tests to
-	/// 	be loaded by a TestRunner. It may represent a single
-	/// 	assembly or a set of assemblies. It supports selection
-	/// 	of a single test fixture for loading.
+	/// TestPackage holds information about a set of tests to
+	/// be loaded by a TestRunner. It may represent a single
+	/// assembly or a set of assemblies. It supports selection
+	/// of a single test fixture for loading.
 	/// </summary>
 	[Serializable]
 	public class TestPackage
@@ -79,10 +79,10 @@ namespace NUnit.Core
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a package, specifying the name of the package.
-		/// 	If the package name is an assembly file type (dll or exe)
-		/// 	then the resulting package represents a single assembly.
-		/// 	Otherwise it is a container for multiple assemblies.
+		/// Construct a package, specifying the name of the package.
+		/// If the package name is an assembly file type (dll or exe)
+		/// then the resulting package represents a single assembly.
+		/// Otherwise it is a container for multiple assemblies.
 		/// </summary>
 		/// <param name="name"> The name of the package </param>
 		public TestPackage(string name)
@@ -101,8 +101,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Construct a package, specifying the name to be used
-		/// 	and a list of assemblies.
+		/// Construct a package, specifying the name to be used
+		/// and a list of assemblies.
 		/// </summary>
 		/// <param name="name"> The package name, used to name the top-level test node </param>
 		/// <param name="assemblies"> The list of assemblies comprising the package </param>
@@ -141,7 +141,7 @@ namespace NUnit.Core
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Assemblies to be loaded. At least one must be specified.
+		/// Assemblies to be loaded. At least one must be specified.
 		/// </summary>
 		public IList Assemblies
 		{
@@ -152,8 +152,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Indicates whether the probing path should be generated
-		/// 	automatically based on the list of assemblies.
+		/// Indicates whether the probing path should be generated
+		/// automatically based on the list of assemblies.
 		/// </summary>
 		public bool AutoBinPath
 		{
@@ -168,7 +168,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	The BasePath to be used in loading the assemblies
+		/// The BasePath to be used in loading the assemblies
 		/// </summary>
 		public string BasePath
 		{
@@ -183,7 +183,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	The configuration file to be used
+		/// The configuration file to be used
 		/// </summary>
 		public string ConfigurationFile
 		{
@@ -198,8 +198,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the full name of the package, which is usually
-		/// 	the path to the NUnit project used to create the it
+		/// Gets the full name of the package, which is usually
+		/// the path to the NUnit project used to create the it
 		/// </summary>
 		public string FullName
 		{
@@ -210,8 +210,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the package represents a single assembly.
-		/// 	No root node is displayed in that case.
+		/// Return true if the package represents a single assembly.
+		/// No root node is displayed in that case.
 		/// </summary>
 		public bool IsSingleAssembly
 		{
@@ -222,7 +222,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the name of the package
+		/// Gets the name of the package
 		/// </summary>
 		public string Name
 		{
@@ -233,7 +233,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Addditional directories to be probed when loading assemblies
+		/// Addditional directories to be probed when loading assemblies
 		/// </summary>
 		public string PrivateBinPath
 		{
@@ -248,7 +248,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the dictionary of settings for this TestPackage
+		/// Gets the dictionary of settings for this TestPackage
 		/// </summary>
 		public IDictionary Settings
 		{
@@ -259,8 +259,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Fully qualified name of test to be loaded. If not 
-		/// 	specified, all the tests in the assemblies are loaded.
+		/// Fully qualified name of test to be loaded. If not
+		/// specified, all the tests in the assemblies are loaded.
 		/// </summary>
 		public string TestName
 		{
@@ -285,7 +285,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return the value of a setting or a default.
+		/// Return the value of a setting or a default.
 		/// </summary>
 		/// <param name="name"> The name of the setting </param>
 		/// <param name="defaultSetting"> The default value </param>
@@ -298,7 +298,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return the value of a string setting or a default.
+		/// Return the value of a string setting or a default.
 		/// </summary>
 		/// <param name="name"> The name of the setting </param>
 		/// <param name="defaultSetting"> The default value </param>
@@ -311,7 +311,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return the value of a bool setting or a default.
+		/// Return the value of a bool setting or a default.
 		/// </summary>
 		/// <param name="name"> The name of the setting </param>
 		/// <param name="defaultSetting"> The default value </param>
@@ -324,7 +324,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return the value of an int setting or a default.
+		/// Return the value of an int setting or a default.
 		/// </summary>
 		/// <param name="name"> The name of the setting </param>
 		/// <param name="defaultSetting"> The default value </param>
@@ -337,7 +337,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return the value of a enum setting or a default.
+		/// Return the value of a enum setting or a default.
 		/// </summary>
 		/// <param name="name"> The name of the setting </param>
 		/// <param name="defaultSetting"> The default value </param>

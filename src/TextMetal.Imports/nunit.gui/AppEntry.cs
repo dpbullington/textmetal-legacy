@@ -16,7 +16,7 @@ using NUnit.Util;
 namespace NUnit.Gui
 {
 	/// <summary>
-	/// 	Class to manage application startup.
+	/// Class to manage application startup.
 	/// </summary>
 	public class AppEntry
 	{
@@ -41,7 +41,7 @@ namespace NUnit.Gui
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	The main entry point for the application.
+		/// The main entry point for the application.
 		/// </summary>
 		[STAThread]
 		public static int Main(string[] args)

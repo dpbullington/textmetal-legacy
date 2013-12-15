@@ -10,17 +10,21 @@ using System.Net;
 
 namespace Intelligencia.UrlRewriter.Actions
 {
-    /// <summary>
-    /// Returns a 501 Not Implemented HTTP status code.
-    /// </summary>
-    public sealed class NotImplementedAction : SetStatusAction
-    {
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public NotImplementedAction()
-            : base(HttpStatusCode.NotImplemented)
-        {
-        }
-    }
+	/// <summary>
+	/// Returns a 501 Not Implemented HTTP status code.
+	/// </summary>
+	public sealed class NotImplementedAction : SetStatusAction
+	{
+		#region Constructors/Destructors
+
+		/// <summary>
+		/// Default constructor.
+		/// </summary>
+		public NotImplementedAction()
+			: base(HttpStatusCode.NotImplemented)
+		{
+		}
+
+		#endregion
+	}
 }

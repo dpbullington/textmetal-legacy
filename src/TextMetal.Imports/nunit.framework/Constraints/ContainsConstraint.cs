@@ -7,6 +7,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 #if CLR_2_0 || CLR_4_0
 
 #endif
@@ -15,11 +16,11 @@ namespace NUnit.Framework.Constraints
 {
 	// TODO Needs tests
 	/// <summary>
-	/// 	ContainsConstraint tests a whether a string contains a substring
-	/// 	or a collection contains an object. It postpones the decision of
-	/// 	which test to use until the type of the actual argument is known.
-	/// 	This allows testing whether a string is contained in a collection
-	/// 	or as a substring of another string using the same syntax.
+	/// ContainsConstraint tests a whether a string contains a substring
+	/// or a collection contains an object. It postpones the decision of
+	/// which test to use until the type of the actual argument is known.
+	/// This allows testing whether a string is contained in a collection
+	/// or as a substring of another string using the same syntax.
 	/// </summary>
 	public class ContainsConstraint : Constraint
 	{
@@ -62,7 +63,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:ContainsConstraint" /> class.
+		/// Initializes a new instance of the <see cref="T:ContainsConstraint" /> class.
 		/// </summary>
 		/// <param name="expected"> The expected. </param>
 		public ContainsConstraint(object expected)
@@ -72,7 +73,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Flag the constraint to ignore case and return self.
+		/// Flag the constraint to ignore case and return self.
 		/// </summary>
 		public ContainsConstraint IgnoreCase
 		{
@@ -84,7 +85,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Test whether the constraint is satisfied by a given value
+		/// Test whether the constraint is satisfied by a given value
 		/// </summary>
 		/// <param name="actual"> The value to be tested </param>
 		/// <returns> True for success, false for failure </returns>
@@ -95,7 +96,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write the constraint description to a MessageWriter
+		/// Write the constraint description to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The writer on which the description is displayed </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -104,7 +105,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Flag the constraint to use the supplied IComparer object.
+		/// Flag the constraint to use the supplied IComparer object.
 		/// </summary>
 		/// <param name="comparer"> The IComparer object to use. </param>
 		/// <returns> Self. </returns>
@@ -116,7 +117,7 @@ namespace NUnit.Framework.Constraints
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Flag the constraint to use the supplied IComparer object.
+		/// Flag the constraint to use the supplied IComparer object.
 		/// </summary>
 		/// <param name="comparer"> The IComparer object to use. </param>
 		/// <returns> Self. </returns>
@@ -127,7 +128,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Flag the constraint to use the supplied Comparison object.
+		/// Flag the constraint to use the supplied Comparison object.
 		/// </summary>
 		/// <param name="comparer"> The IComparer object to use. </param>
 		/// <returns> Self. </returns>
@@ -138,7 +139,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Flag the constraint to use the supplied IEqualityComparer object.
+		/// Flag the constraint to use the supplied IEqualityComparer object.
 		/// </summary>
 		/// <param name="comparer"> The IComparer object to use. </param>
 		/// <returns> Self. </returns>
@@ -149,7 +150,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Flag the constraint to use the supplied IEqualityComparer object.
+		/// Flag the constraint to use the supplied IEqualityComparer object.
 		/// </summary>
 		/// <param name="comparer"> The IComparer object to use. </param>
 		/// <returns> Self. </returns>

@@ -9,24 +9,23 @@ using System.IO;
 namespace NUnit.UiException
 {
 	/// <summary>
-	/// 	(Formerly named ExceptionItem)
-	/// 
-	/// 	This is the output analysis of one error line coming from
-	/// 	a stack trace that still gathers the same data but in more
-	/// 	convenient way to be read from.
-	/// 	An ErrorItem represents one error with possible location
-	/// 	informations such as:
-	/// 	- filename where the error has occured
-	/// 	- file's line number
-	/// 	- method name
+	/// (Formerly named ExceptionItem)
+	/// This is the output analysis of one error line coming from
+	/// a stack trace that still gathers the same data but in more
+	/// convenient way to be read from.
+	/// An ErrorItem represents one error with possible location
+	/// informations such as:
+	/// - filename where the error has occured
+	/// - file's line number
+	/// - method name
 	/// </summary>
 	public class ErrorItem
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Create an instance of ErrorItem that
-		/// 	has source code attachments.
+		/// Create an instance of ErrorItem that
+		/// has source code attachments.
 		/// </summary>
 		public ErrorItem(string path, int lineNumber)
 		{
@@ -39,7 +38,7 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Create a new exception item.
+		/// Create a new exception item.
 		/// </summary>
 		/// <param name="path"> An absolute path to the source code file. </param>
 		/// <param name="fullMethodName"> A full qualified name of a member method. </param>
@@ -54,8 +53,8 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Create an instance of ErrorItem that doesn't have
-		/// 	any source code attachments.
+		/// Create an instance of ErrorItem that doesn't have
+		/// any source code attachments.
 		/// </summary>
 		public ErrorItem()
 		{
@@ -67,22 +66,22 @@ namespace NUnit.UiException
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The full qualified name of the member method referred by this item.
+		/// The full qualified name of the member method referred by this item.
 		/// </summary>
 		private string _fullyQualifiedMethodName;
 
 		/// <summary>
-		/// 	The line index where the exception occured.
+		/// The line index where the exception occured.
 		/// </summary>
 		private int _line;
 
 		/// <summary>
-		/// 	An access path to the source file referred by this item.
+		/// An access path to the source file referred by this item.
 		/// </summary>
 		private string _path;
 
 		/// <summary>
-		/// 	Store the content of the file pointed by _path.
+		/// Store the content of the file pointed by _path.
 		/// </summary>
 		private string _text;
 
@@ -91,7 +90,7 @@ namespace NUnit.UiException
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the method name without the argument list.
+		/// Gets the method name without the argument list.
 		/// </summary>
 		public string BaseMethodName
 		{
@@ -108,7 +107,7 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Reads and returns the class part from the FullyQualifiedMethodName.
+		/// Reads and returns the class part from the FullyQualifiedMethodName.
 		/// </summary>
 		public string ClassName
 		{
@@ -121,7 +120,7 @@ namespace NUnit.UiException
 					return ("");
 
 				if ((end_index = this.FullyQualifiedMethodName.LastIndexOf(".",
-				                                                           StringComparison.Ordinal)) == -1)
+					StringComparison.Ordinal)) == -1)
 					return ("");
 
 				start_index = end_index - 1;
@@ -136,8 +135,8 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Returns the file language - e.g.: the string after
-		/// 	the last dot or null -
+		/// Returns the file language - e.g.: the string after
+		/// the last dot or null -
 		/// </summary>
 		public string FileExtension
 		{
@@ -157,8 +156,8 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Reads and returns the part of Path that contains the filename
-		/// 	of the source code file.
+		/// Reads and returns the part of Path that contains the filename
+		/// of the source code file.
 		/// </summary>
 		public string FileName
 		{
@@ -169,7 +168,7 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Gets the full qualified name of the member method.
+		/// Gets the full qualified name of the member method.
 		/// </summary>
 		public string FullyQualifiedMethodName
 		{
@@ -180,8 +179,8 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Gets a boolean that says whether this item has source
-		/// 	code localization attachments.
+		/// Gets a boolean that says whether this item has source
+		/// code localization attachments.
 		/// </summary>
 		public bool HasSourceAttachment
 		{
@@ -192,7 +191,7 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Gets the line number where the exception occured.
+		/// Gets the line number where the exception occured.
 		/// </summary>
 		public int LineNumber
 		{
@@ -203,8 +202,8 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Reads and return the method part from the FullyQualifiedMethodName.
-		/// 	The value contains the signature of the method.
+		/// Reads and return the method part from the FullyQualifiedMethodName.
+		/// The value contains the signature of the method.
 		/// </summary>
 		public string MethodName
 		{
@@ -216,7 +215,7 @@ namespace NUnit.UiException
 					return ("");
 
 				if ((index = this.FullyQualifiedMethodName.LastIndexOf(".",
-				                                                       StringComparison.Ordinal)) == -1)
+					StringComparison.Ordinal)) == -1)
 					return (this.FullyQualifiedMethodName);
 
 				return (this.FullyQualifiedMethodName.Substring(index + 1));
@@ -224,7 +223,7 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Gets the absolute path to the source code file.
+		/// Gets the absolute path to the source code file.
 		/// </summary>
 		public string Path
 		{
@@ -246,8 +245,8 @@ namespace NUnit.UiException
 				return (false);
 
 			return (this._path == item._path &&
-			        this._fullyQualifiedMethodName == item._fullyQualifiedMethodName &&
-			        this._line == item._line);
+					this._fullyQualifiedMethodName == item._fullyQualifiedMethodName &&
+					this._line == item._line);
 		}
 
 		public override int GetHashCode()
@@ -256,8 +255,8 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Read and return the content of the underlying file. If the file
-		/// 	cannot be found or read an exception is raised.
+		/// Read and return the content of the underlying file. If the file
+		/// cannot be found or read an exception is raised.
 		/// </summary>
 		public string ReadFile()
 		{

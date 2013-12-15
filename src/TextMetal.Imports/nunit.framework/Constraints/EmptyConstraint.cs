@@ -10,9 +10,9 @@ using System.IO;
 namespace NUnit.Framework.Constraints
 {
 	/// <summary>
-	/// 	EmptyConstraint tests a whether a string or collection is empty,
-	/// 	postponing the decision about which test is applied until the
-	/// 	type of the actual argument is known.
+	/// EmptyConstraint tests a whether a string or collection is empty,
+	/// postponing the decision about which test is applied until the
+	/// type of the actual argument is known.
 	/// </summary>
 	public class EmptyConstraint : Constraint
 	{
@@ -36,7 +36,7 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Test whether the constraint is satisfied by a given value
+		/// Test whether the constraint is satisfied by a given value
 		/// </summary>
 		/// <param name="actual"> The value to be tested </param>
 		/// <returns> True for success, false for failure </returns>
@@ -51,7 +51,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write the constraint description to a MessageWriter
+		/// Write the constraint description to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The writer on which the description is displayed </param>
 		public override void WriteDescriptionTo(MessageWriter writer)

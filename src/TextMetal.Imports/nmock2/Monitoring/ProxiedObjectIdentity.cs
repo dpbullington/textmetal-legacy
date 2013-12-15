@@ -28,7 +28,7 @@ namespace NMock2.Monitoring
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="ProxiedObjectIdentity" /> class.
+		/// Initializes a new instance of the <see cref="ProxiedObjectIdentity" /> class.
 		/// </summary>
 		/// <param name="identityProvider"> The identity provider. </param>
 		/// <param name="next"> The next object to be invoked. </param>

@@ -27,12 +27,12 @@ namespace NUnit.UiKit
 	public delegate void CheckedTestChangedHandler(ITest[] tests);
 
 	/// <summary>
-	/// 	TestSuiteTreeView is a tree view control
-	/// 	specialized for displaying the tests
-	/// 	in an assembly. Clients should always
-	/// 	use TestNode rather than TreeNode when
-	/// 	dealing with this class to be sure of
-	/// 	calling the proper methods.
+	/// TestSuiteTreeView is a tree view control
+	/// specialized for displaying the tests
+	/// in an assembly. Clients should always
+	/// use TestNode rather than TreeNode when
+	/// dealing with this class to be sure of
+	/// calling the proper methods.
 	/// </summary>
 	public class TestSuiteTreeView : TreeView
 	{
@@ -59,36 +59,36 @@ namespace NUnit.UiKit
 		private IContainer components;
 
 		/// <summary>
-		/// 	Whether or not we track progress of tests visibly in the tree
+		/// Whether or not we track progress of tests visibly in the tree
 		/// </summary>
 		private bool displayProgress = true;
 
 		/// <summary>
-		/// 	The TestNode on which a right click was done
+		/// The TestNode on which a right click was done
 		/// </summary>
 		private TestSuiteTreeNode explicitlySelectedNode;
 
 		private bool fixtureLoaded = false;
 
 		/// <summary>
-		/// 	Source of events that the tree responds to and
-		/// 	target for the run command.
+		/// Source of events that the tree responds to and
+		/// target for the run command.
 		/// </summary>
 		private ITestLoader loader;
 
 		/// <summary>
-		/// 	The properties dialog if displayed
+		/// The properties dialog if displayed
 		/// </summary>
 		private TestPropertiesDialog propertiesDialog;
 
 		/// <summary>
-		/// 	True if the UI should allow a run command to be selected
+		/// True if the UI should allow a run command to be selected
 		/// </summary>
 		private bool runCommandEnabled = false;
 
 		/// <summary>
-		/// 	Whether the browser supports running tests,
-		/// 	or just loading and examining them
+		/// Whether the browser supports running tests,
+		/// or just loading and examining them
 		/// </summary>
 		private bool runCommandSupported = true;
 
@@ -99,7 +99,7 @@ namespace NUnit.UiKit
 		public ImageList treeImages;
 
 		/// <summary>
-		/// 	Hashtable provides direct access to TestNodes
+		/// Hashtable provides direct access to TestNodes
 		/// </summary>
 		private Hashtable treeMap = new Hashtable();
 
@@ -120,7 +120,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Test node corresponding to a test
+		/// Test node corresponding to a test
 		/// </summary>
 		private TestSuiteTreeNode this[ITest test]
 		{
@@ -131,7 +131,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Test node corresponding to a TestResultInfo
+		/// Test node corresponding to a TestResultInfo
 		/// </summary>
 		private TestSuiteTreeNode this[TestResult result]
 		{
@@ -171,8 +171,8 @@ namespace NUnit.UiKit
 				if (base.CheckBoxes != value)
 				{
 					VisualState visualState = !value && this.TopNode != null
-						                          ? new VisualState(this)
-						                          : null;
+						? new VisualState(this)
+						: null;
 
 					base.CheckBoxes = value;
 
@@ -208,8 +208,8 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Property determining whether tree should reDraw nodes
-		/// 	as tests are complete in order to show progress.
+		/// Property determining whether tree should reDraw nodes
+		/// as tests are complete in order to show progress.
 		/// </summary>
 		[Category("Behavior")]
 		[DefaultValue(true)]
@@ -238,9 +238,9 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Property determining whether the run command
-		/// 	is supported from the tree context menu and
-		/// 	by double-clicking test cases.
+		/// Property determining whether the run command
+		/// is supported from the tree context menu and
+		/// by double-clicking test cases.
 		/// </summary>
 		[Category("Behavior")]
 		[DefaultValue(true)]
@@ -258,7 +258,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	The currently selected test.
+		/// The currently selected test.
 		/// </summary>
 		[Browsable(false)]
 		public ITest SelectedTest
@@ -271,7 +271,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	The currently selected test result or null
+		/// The currently selected test result or null
 		/// </summary>
 		[Browsable(false)]
 		public TestResult SelectedTestResult
@@ -341,7 +341,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Add nodes to the tree constructed from a test
+		/// Add nodes to the tree constructed from a test
 		/// </summary>
 		/// <param name="nodes"> The TreeNodeCollection to which the new node should be added </param>
 		/// <param name="rootTest"> The test for which a node is to be built </param>
@@ -394,7 +394,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Clear all the info in the tree.
+		/// Clear all the info in the tree.
 		/// </summary>
 		public void Clear()
 		{
@@ -403,7 +403,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Clear all the results in the tree.
+		/// Clear all the results in the tree.
 		/// </summary>
 		public void ClearAllResults()
 		{
@@ -423,7 +423,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Build treeview context menu dynamically on popup
+		/// Build treeview context menu dynamically on popup
 		/// </summary>
 		private void ContextMenu_Popup(object sender, EventArgs e)
 		{
@@ -441,7 +441,7 @@ namespace NUnit.UiKit
 
 				MenuItem runMenuItem = new MenuItem("&Run", new EventHandler(this.runMenuItem_Click));
 				runMenuItem.DefaultItem = runMenuItem.Enabled = this.runCommandEnabled && targetNode.Included &&
-				                                                (targetNode.Test.RunState == RunState.Runnable || targetNode.Test.RunState == RunState.Explicit);
+																(targetNode.Test.RunState == RunState.Runnable || targetNode.Test.RunState == RunState.Explicit);
 
 				this.ContextMenu.MenuItems.Add(runMenuItem);
 
@@ -502,14 +502,14 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Helper used to figure out the display style
-		/// 	to use when the setting is Auto
+		/// Helper used to figure out the display style
+		/// to use when the setting is Auto
 		/// </summary>
 		/// <returns> DisplayStyle to be used </returns>
 		private DisplayStyle GetDisplayStyle()
 		{
 			DisplayStyle initialDisplay = (DisplayStyle)
-			                              Services.UserSettings.GetSetting("Gui.TestTree.InitialTreeDisplay", DisplayStyle.Auto);
+				Services.UserSettings.GetSetting("Gui.TestTree.InitialTreeDisplay", DisplayStyle.Auto);
 
 			if (initialDisplay != DisplayStyle.Auto)
 				return initialDisplay;
@@ -529,7 +529,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Helper collapses all fixtures under a node
+		/// Helper collapses all fixtures under a node
 		/// </summary>
 		/// <param name="node"> Node under which to collapse fixtures </param>
 		private void HideTestsUnderNode(TestSuiteTreeNode node)
@@ -591,9 +591,9 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Helper method to determine if an IDataObject is valid
-		/// 	for dropping on the tree view. It must be a the drop
-		/// 	of a single file with a valid assembly file type.
+		/// Helper method to determine if an IDataObject is valid
+		/// for dropping on the tree view. It must be a the drop
+		/// of a single file with a valid assembly file type.
 		/// </summary>
 		/// <param name="data"> IDataObject to be tested </param>
 		/// <returns> True if dropping is allowed </returns>
@@ -632,7 +632,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Load the tree with a test hierarchy
+		/// Load the tree with a test hierarchy
 		/// </summary>
 		/// <param name="test"> Test to be loaded </param>
 		public void Load(TestNode test)
@@ -660,7 +660,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Load the tree from a test result
+		/// Load the tree from a test result
 		/// </summary>
 		/// <param name="result"> </param>
 		public void Load(TestResult result)
@@ -781,9 +781,9 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Handles right mouse button down by
-		/// 	remembering the proper context item
-		/// 	and implements multiple select with the left button.
+		/// Handles right mouse button down by
+		/// remembering the proper context item
+		/// and implements multiple select with the left button.
 		/// </summary>
 		/// <param name="e"> MouseEventArgs structure with information about the mouse position and button state </param>
 		protected override void OnMouseDown(MouseEventArgs e)
@@ -888,8 +888,8 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Reload the tree with a changed test hierarchy
-		/// 	while maintaining as much gui state as possible.
+		/// Reload the tree with a changed test hierarchy
+		/// while maintaining as much gui state as possible.
 		/// </summary>
 		/// <param name="test"> Test suite to be loaded </param>
 		public void Reload(TestNode test)
@@ -913,7 +913,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Remove a node from the tree itself and the hashtable
+		/// Remove a node from the tree itself and the hashtable
 		/// </summary>
 		/// <param name="node"> Node to remove </param>
 		private void RemoveNode(TestSuiteTreeNode node)
@@ -978,8 +978,8 @@ namespace NUnit.UiKit
 				this.runningTests = tests;
 
 				ITestFilter filter = ignoreCategories
-					                     ? this.MakeNameFilter(tests)
-					                     : this.MakeFilter(tests);
+					? this.MakeNameFilter(tests)
+					: this.MakeFilter(tests);
 
 				this.loader.RunTests(filter);
 			}
@@ -1007,7 +1007,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Add the result of a test to the tree
+		/// Add the result of a test to the tree
 		/// </summary>
 		/// <param name="result"> The result of the test </param>
 		public void SetTestResult(TestResult result)
@@ -1115,7 +1115,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	When Collapse context menu item is clicked, collapse the node
+		/// When Collapse context menu item is clicked, collapse the node
 		/// </summary>
 		private void collapseMenuItem_Click(object sender, EventArgs e)
 		{
@@ -1132,7 +1132,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	When Expand context menu item is clicked, expand the node
+		/// When Expand context menu item is clicked, expand the node
 		/// </summary>
 		private void expandMenuItem_Click(object sender, EventArgs e)
 		{
@@ -1191,8 +1191,8 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	When Run context menu item is clicked, run the test that
-		/// 	was selected when the right click was done.
+		/// When Run context menu item is clicked, run the test that
+		/// was selected when the right click was done.
 		/// </summary>
 		private void runMenuItem_Click(object sender, EventArgs e)
 		{
@@ -1218,7 +1218,7 @@ namespace NUnit.UiKit
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		/// <summary>
-		/// 	Indicates how a tree should be displayed
+		/// Indicates how a tree should be displayed
 		/// </summary>
 		public enum DisplayStyle
 		{
@@ -1230,8 +1230,8 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Delegate for use in invoking the tree loader
-		/// 	from the watcher thread.
+		/// Delegate for use in invoking the tree loader
+		/// from the watcher thread.
 		/// </summary>
 		private delegate void LoadHandler(TestNode test);
 
@@ -1279,8 +1279,8 @@ namespace NUnit.UiKit
 		public override void Visit(TestSuiteTreeNode node)
 		{
 			if (!node.Test.IsSuite && node.HasResult &&
-			    (node.Result.ResultState == ResultState.Failure ||
-			     node.Result.ResultState == ResultState.Error))
+				(node.Result.ResultState == ResultState.Failure ||
+				node.Result.ResultState == ResultState.Error))
 			{
 				node.Checked = true;
 				node.EnsureVisible();
@@ -1321,8 +1321,8 @@ namespace NUnit.UiKit
 		public override void Visit(TestSuiteTreeNode node)
 		{
 			if (!node.Test.IsSuite && node.HasResult &&
-			    (node.Result.ResultState == ResultState.Failure ||
-			     node.Result.ResultState == ResultState.Error))
+				(node.Result.ResultState == ResultState.Failure ||
+				node.Result.ResultState == ResultState.Error))
 				this.tests.Add(node.Test);
 		}
 

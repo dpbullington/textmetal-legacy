@@ -20,14 +20,14 @@
 namespace NMock2.Matchers
 {
 	/// <summary>
-	/// 	BinaryOperator is an abstract base class for matchers that combine two matchers into a single matcher.
+	/// BinaryOperator is an abstract base class for matchers that combine two matchers into a single matcher.
 	/// </summary>
 	public abstract class BinaryOperator : Matcher
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="BinaryOperator" /> class.
+		/// Initializes a new instance of the <see cref="BinaryOperator" /> class.
 		/// </summary>
 		/// <param name="left"> The left operand. </param>
 		/// <param name="right"> The right operand. </param>
@@ -42,12 +42,12 @@ namespace NMock2.Matchers
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The left hand side of the binary operator.
+		/// The left hand side of the binary operator.
 		/// </summary>
 		protected readonly Matcher Left;
 
 		/// <summary>
-		/// 	The right hand side of the binary operator.
+		/// The right hand side of the binary operator.
 		/// </summary>
 		protected readonly Matcher Right;
 

@@ -11,21 +11,20 @@ using Microsoft.Win32;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Implementation of SettingsStorage for NUnit user settings,
-	/// 	based on storage of settings in the registry.
-	/// 
-	/// 	Setting names containing a dot are interpreted as a 
-	/// 	reference to a subkey. Only the first dot is used
-	/// 	in this way, since the feature is only intended
-	/// 	to support legacy registry settings, which are not
-	/// 	nested any deeper.
+	/// Implementation of SettingsStorage for NUnit user settings,
+	/// based on storage of settings in the registry.
+	/// Setting names containing a dot are interpreted as a
+	/// reference to a subkey. Only the first dot is used
+	/// in this way, since the feature is only intended
+	/// to support legacy registry settings, which are not
+	/// nested any deeper.
 	/// </summary>
 	public class RegistrySettingsStorage : ISettingsStorage
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a storage on top of a pre-created registry key
+		/// Construct a storage on top of a pre-created registry key
 		/// </summary>
 		/// <param name="storageKey"> </param>
 		public RegistrySettingsStorage(RegistryKey storageKey)
@@ -38,7 +37,7 @@ namespace NUnit.Util
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	If not null, the registry key for this storage
+		/// If not null, the registry key for this storage
 		/// </summary>
 		private RegistryKey storageKey;
 
@@ -47,7 +46,7 @@ namespace NUnit.Util
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	The registry key used to hold this storage
+		/// The registry key used to hold this storage
 		/// </summary>
 		public RegistryKey StorageKey
 		{
@@ -62,7 +61,7 @@ namespace NUnit.Util
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Dispose of this object by closing the storage key, if any
+		/// Dispose of this object by closing the storage key, if any
 		/// </summary>
 		public void Dispose()
 		{
@@ -71,7 +70,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Load a setting from this storage
+		/// Load a setting from this storage
 		/// </summary>
 		/// <param name="settingName"> Name of the setting to load </param>
 		/// <returns> Value of the setting </returns>
@@ -91,15 +90,15 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	LoadSettings does nothing in this implementation, since the
-		/// 	registry is accessed directly.
+		/// LoadSettings does nothing in this implementation, since the
+		/// registry is accessed directly.
 		/// </summary>
 		public void LoadSettings()
 		{
 		}
 
 		/// <summary>
-		/// 	Make a new child storage under this one
+		/// Make a new child storage under this one
 		/// </summary>
 		/// <param name="storageName"> Name of the child storage to make </param>
 		/// <returns> New storage </returns>
@@ -114,7 +113,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Remove a setting from the storage
+		/// Remove a setting from the storage
 		/// </summary>
 		/// <param name="settingName"> Name of the setting to remove </param>
 		public void RemoveSetting(string settingName)
@@ -133,7 +132,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Save a setting in this storage
+		/// Save a setting in this storage
 		/// </summary>
 		/// <param name="settingName"> Name of the setting to save </param>
 		/// <param name="settingValue"> Value to be saved </param>
@@ -154,8 +153,8 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	SaveSettings does nothing in this implementation, since the
-		/// 	registry is accessed directly.
+		/// SaveSettings does nothing in this implementation, since the
+		/// registry is accessed directly.
 		/// </summary>
 		public void SaveSettings()
 		{

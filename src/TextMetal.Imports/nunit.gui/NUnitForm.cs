@@ -232,8 +232,8 @@ namespace NUnit.Gui
 			this.runAllMenuItem.Enabled = enable;
 			this.runSelectedMenuItem.Enabled = enable;
 			this.runFailedMenuItem.Enabled = enable && this.TestLoader.TestResult != null &&
-			                                 (this.TestLoader.TestResult.ResultState == ResultState.Failure ||
-			                                  this.TestLoader.TestResult.ResultState == ResultState.Error);
+											(this.TestLoader.TestResult.ResultState == ResultState.Failure ||
+											this.TestLoader.TestResult.ResultState == ResultState.Error);
 		}
 
 		private void EnableStopCommand(bool enable)
@@ -243,86 +243,86 @@ namespace NUnit.Gui
 		}
 
 		/// <summary>
-		/// 	Required method for Designer support - do not modify
-		/// 	the contents of this method with the code editor.
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NUnitForm));
-			this.statusBar = new NUnit.UiKit.StatusBar();
-			this.mainMenu = new System.Windows.Forms.MainMenu(this.components);
-			this.fileMenu = new System.Windows.Forms.MenuItem();
-			this.newMenuItem = new System.Windows.Forms.MenuItem();
-			this.openMenuItem = new System.Windows.Forms.MenuItem();
-			this.closeMenuItem = new System.Windows.Forms.MenuItem();
-			this.fileMenuSeparator1 = new System.Windows.Forms.MenuItem();
-			this.saveMenuItem = new System.Windows.Forms.MenuItem();
-			this.saveAsMenuItem = new System.Windows.Forms.MenuItem();
-			this.fileMenuSeparator2 = new System.Windows.Forms.MenuItem();
-			this.reloadProjectMenuItem = new System.Windows.Forms.MenuItem();
-			this.reloadTestsMenuItem = new System.Windows.Forms.MenuItem();
-			this.runtimeMenuItem = new System.Windows.Forms.MenuItem();
-			this.menuItem2 = new System.Windows.Forms.MenuItem();
-			this.recentProjectsMenu = new System.Windows.Forms.MenuItem();
-			this.fileMenuSeparator4 = new System.Windows.Forms.MenuItem();
-			this.exitMenuItem = new System.Windows.Forms.MenuItem();
-			this.viewMenu = new System.Windows.Forms.MenuItem();
-			this.fullGuiMenuItem = new System.Windows.Forms.MenuItem();
-			this.miniGuiMenuItem = new System.Windows.Forms.MenuItem();
-			this.viewMenuSeparator1 = new System.Windows.Forms.MenuItem();
-			this.viewMenuSeparator2 = new System.Windows.Forms.MenuItem();
-			this.guiFontMenuItem = new System.Windows.Forms.MenuItem();
-			this.increaseFontMenuItem = new System.Windows.Forms.MenuItem();
-			this.decreaseFontMenuItem = new System.Windows.Forms.MenuItem();
-			this.fontMenuSeparator = new System.Windows.Forms.MenuItem();
-			this.fontChangeMenuItem = new System.Windows.Forms.MenuItem();
-			this.defaultFontMenuItem = new System.Windows.Forms.MenuItem();
-			this.fixedFontMenuItem = new System.Windows.Forms.MenuItem();
-			this.increaseFixedFontMenuItem = new System.Windows.Forms.MenuItem();
-			this.decreaseFixedFontMenuItem = new System.Windows.Forms.MenuItem();
-			this.menuItem1 = new System.Windows.Forms.MenuItem();
-			this.restoreFixedFontMenuItem = new System.Windows.Forms.MenuItem();
-			this.viewMenuSeparator3 = new System.Windows.Forms.MenuItem();
-			this.statusBarMenuItem = new System.Windows.Forms.MenuItem();
-			this.projectMenu = new System.Windows.Forms.MenuItem();
-			this.configMenuItem = new System.Windows.Forms.MenuItem();
-			this.projectMenuSeparator1 = new System.Windows.Forms.MenuItem();
-			this.addAssemblyMenuItem = new System.Windows.Forms.MenuItem();
-			this.addVSProjectMenuItem = new System.Windows.Forms.MenuItem();
-			this.projectMenuSeparator2 = new System.Windows.Forms.MenuItem();
-			this.editProjectMenuItem = new System.Windows.Forms.MenuItem();
-			this.testMenu = new System.Windows.Forms.MenuItem();
-			this.runAllMenuItem = new System.Windows.Forms.MenuItem();
-			this.runSelectedMenuItem = new System.Windows.Forms.MenuItem();
-			this.runFailedMenuItem = new System.Windows.Forms.MenuItem();
-			this.testMenuSeparator = new System.Windows.Forms.MenuItem();
-			this.stopRunMenuItem = new System.Windows.Forms.MenuItem();
-			this.toolsMenu = new System.Windows.Forms.MenuItem();
-			this.assemblyDetailsMenuItem = new System.Windows.Forms.MenuItem();
-			this.saveXmlResultsMenuItem = new System.Windows.Forms.MenuItem();
-			this.exceptionDetailsMenuItem = new System.Windows.Forms.MenuItem();
-			this.openLogDirectoryMenuItem = new System.Windows.Forms.MenuItem();
-			this.toolsMenuSeparator1 = new System.Windows.Forms.MenuItem();
-			this.settingsMenuItem = new System.Windows.Forms.MenuItem();
-			this.toolsMenuSeparator2 = new System.Windows.Forms.MenuItem();
-			this.addinInfoMenuItem = new System.Windows.Forms.MenuItem();
-			this.helpItem = new System.Windows.Forms.MenuItem();
-			this.helpMenuItem = new System.Windows.Forms.MenuItem();
-			this.helpMenuSeparator1 = new System.Windows.Forms.MenuItem();
-			this.aboutMenuItem = new System.Windows.Forms.MenuItem();
-			this.treeSplitter = new System.Windows.Forms.Splitter();
-			this.rightPanel = new System.Windows.Forms.Panel();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.suiteName = new CP.Windows.Forms.ExpandingLabel();
-			this.runCount = new CP.Windows.Forms.ExpandingLabel();
-			this.stopButton = new System.Windows.Forms.Button();
-			this.runButton = new System.Windows.Forms.Button();
-			this.progressBar = new NUnit.UiKit.TestProgressBar();
-			this.resultTabs = new NUnit.UiKit.ResultTabs();
-			this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-			this.testTree = new NUnit.UiKit.TestTree();
-			this.leftPanel = new System.Windows.Forms.Panel();
+			this.components = new Container();
+			ComponentResourceManager resources = new ComponentResourceManager(typeof(NUnitForm));
+			this.statusBar = new StatusBar();
+			this.mainMenu = new MainMenu(this.components);
+			this.fileMenu = new MenuItem();
+			this.newMenuItem = new MenuItem();
+			this.openMenuItem = new MenuItem();
+			this.closeMenuItem = new MenuItem();
+			this.fileMenuSeparator1 = new MenuItem();
+			this.saveMenuItem = new MenuItem();
+			this.saveAsMenuItem = new MenuItem();
+			this.fileMenuSeparator2 = new MenuItem();
+			this.reloadProjectMenuItem = new MenuItem();
+			this.reloadTestsMenuItem = new MenuItem();
+			this.runtimeMenuItem = new MenuItem();
+			this.menuItem2 = new MenuItem();
+			this.recentProjectsMenu = new MenuItem();
+			this.fileMenuSeparator4 = new MenuItem();
+			this.exitMenuItem = new MenuItem();
+			this.viewMenu = new MenuItem();
+			this.fullGuiMenuItem = new MenuItem();
+			this.miniGuiMenuItem = new MenuItem();
+			this.viewMenuSeparator1 = new MenuItem();
+			this.viewMenuSeparator2 = new MenuItem();
+			this.guiFontMenuItem = new MenuItem();
+			this.increaseFontMenuItem = new MenuItem();
+			this.decreaseFontMenuItem = new MenuItem();
+			this.fontMenuSeparator = new MenuItem();
+			this.fontChangeMenuItem = new MenuItem();
+			this.defaultFontMenuItem = new MenuItem();
+			this.fixedFontMenuItem = new MenuItem();
+			this.increaseFixedFontMenuItem = new MenuItem();
+			this.decreaseFixedFontMenuItem = new MenuItem();
+			this.menuItem1 = new MenuItem();
+			this.restoreFixedFontMenuItem = new MenuItem();
+			this.viewMenuSeparator3 = new MenuItem();
+			this.statusBarMenuItem = new MenuItem();
+			this.projectMenu = new MenuItem();
+			this.configMenuItem = new MenuItem();
+			this.projectMenuSeparator1 = new MenuItem();
+			this.addAssemblyMenuItem = new MenuItem();
+			this.addVSProjectMenuItem = new MenuItem();
+			this.projectMenuSeparator2 = new MenuItem();
+			this.editProjectMenuItem = new MenuItem();
+			this.testMenu = new MenuItem();
+			this.runAllMenuItem = new MenuItem();
+			this.runSelectedMenuItem = new MenuItem();
+			this.runFailedMenuItem = new MenuItem();
+			this.testMenuSeparator = new MenuItem();
+			this.stopRunMenuItem = new MenuItem();
+			this.toolsMenu = new MenuItem();
+			this.assemblyDetailsMenuItem = new MenuItem();
+			this.saveXmlResultsMenuItem = new MenuItem();
+			this.exceptionDetailsMenuItem = new MenuItem();
+			this.openLogDirectoryMenuItem = new MenuItem();
+			this.toolsMenuSeparator1 = new MenuItem();
+			this.settingsMenuItem = new MenuItem();
+			this.toolsMenuSeparator2 = new MenuItem();
+			this.addinInfoMenuItem = new MenuItem();
+			this.helpItem = new MenuItem();
+			this.helpMenuItem = new MenuItem();
+			this.helpMenuSeparator1 = new MenuItem();
+			this.aboutMenuItem = new MenuItem();
+			this.treeSplitter = new Splitter();
+			this.rightPanel = new Panel();
+			this.groupBox1 = new GroupBox();
+			this.suiteName = new ExpandingLabel();
+			this.runCount = new ExpandingLabel();
+			this.stopButton = new Button();
+			this.runButton = new Button();
+			this.progressBar = new TestProgressBar();
+			this.resultTabs = new ResultTabs();
+			this.toolTip = new ToolTip(this.components);
+			this.testTree = new TestTree();
+			this.leftPanel = new Panel();
 			this.rightPanel.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.leftPanel.SuspendLayout();
@@ -331,67 +331,67 @@ namespace NUnit.Gui
 			// statusBar
 			// 
 			this.statusBar.DisplayTestProgress = true;
-			this.statusBar.Location = new System.Drawing.Point(0, 407);
+			this.statusBar.Location = new Point(0, 407);
 			this.statusBar.Name = "statusBar";
 			this.statusBar.ShowPanels = true;
-			this.statusBar.Size = new System.Drawing.Size(744, 24);
+			this.statusBar.Size = new Size(744, 24);
 			this.statusBar.TabIndex = 0;
 			this.statusBar.Text = "Status";
 			// 
 			// mainMenu
 			// 
-			this.mainMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
-			                                 {
-				                                 this.fileMenu,
-				                                 this.viewMenu,
-				                                 this.projectMenu,
-				                                 this.testMenu,
-				                                 this.toolsMenu,
-				                                 this.helpItem
-			                                 });
+			this.mainMenu.MenuItems.AddRange(new MenuItem[]
+											{
+												this.fileMenu,
+												this.viewMenu,
+												this.projectMenu,
+												this.testMenu,
+												this.toolsMenu,
+												this.helpItem
+											});
 			// 
 			// fileMenu
 			// 
 			this.fileMenu.Index = 0;
-			this.fileMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
-			                                 {
-				                                 this.newMenuItem,
-				                                 this.openMenuItem,
-				                                 this.closeMenuItem,
-				                                 this.fileMenuSeparator1,
-				                                 this.saveMenuItem,
-				                                 this.saveAsMenuItem,
-				                                 this.fileMenuSeparator2,
-				                                 this.reloadProjectMenuItem,
-				                                 this.reloadTestsMenuItem,
-				                                 this.runtimeMenuItem,
-				                                 this.menuItem2,
-				                                 this.recentProjectsMenu,
-				                                 this.fileMenuSeparator4,
-				                                 this.exitMenuItem
-			                                 });
+			this.fileMenu.MenuItems.AddRange(new MenuItem[]
+											{
+												this.newMenuItem,
+												this.openMenuItem,
+												this.closeMenuItem,
+												this.fileMenuSeparator1,
+												this.saveMenuItem,
+												this.saveAsMenuItem,
+												this.fileMenuSeparator2,
+												this.reloadProjectMenuItem,
+												this.reloadTestsMenuItem,
+												this.runtimeMenuItem,
+												this.menuItem2,
+												this.recentProjectsMenu,
+												this.fileMenuSeparator4,
+												this.exitMenuItem
+											});
 			this.fileMenu.Text = "&File";
-			this.fileMenu.Popup += new System.EventHandler(this.fileMenu_Popup);
+			this.fileMenu.Popup += new EventHandler(this.fileMenu_Popup);
 			// 
 			// newMenuItem
 			// 
 			this.newMenuItem.Index = 0;
-			this.newMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlN;
+			this.newMenuItem.Shortcut = Shortcut.CtrlN;
 			this.newMenuItem.Text = "&New Project...";
-			this.newMenuItem.Click += new System.EventHandler(this.newMenuItem_Click);
+			this.newMenuItem.Click += new EventHandler(this.newMenuItem_Click);
 			// 
 			// openMenuItem
 			// 
 			this.openMenuItem.Index = 1;
-			this.openMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlO;
+			this.openMenuItem.Shortcut = Shortcut.CtrlO;
 			this.openMenuItem.Text = "&Open Project...";
-			this.openMenuItem.Click += new System.EventHandler(this.openMenuItem_Click);
+			this.openMenuItem.Click += new EventHandler(this.openMenuItem_Click);
 			// 
 			// closeMenuItem
 			// 
 			this.closeMenuItem.Index = 2;
 			this.closeMenuItem.Text = "&Close";
-			this.closeMenuItem.Click += new System.EventHandler(this.closeMenuItem_Click);
+			this.closeMenuItem.Click += new EventHandler(this.closeMenuItem_Click);
 			// 
 			// fileMenuSeparator1
 			// 
@@ -401,15 +401,15 @@ namespace NUnit.Gui
 			// saveMenuItem
 			// 
 			this.saveMenuItem.Index = 4;
-			this.saveMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlS;
+			this.saveMenuItem.Shortcut = Shortcut.CtrlS;
 			this.saveMenuItem.Text = "&Save";
-			this.saveMenuItem.Click += new System.EventHandler(this.saveMenuItem_Click);
+			this.saveMenuItem.Click += new EventHandler(this.saveMenuItem_Click);
 			// 
 			// saveAsMenuItem
 			// 
 			this.saveAsMenuItem.Index = 5;
 			this.saveAsMenuItem.Text = "Save &As...";
-			this.saveAsMenuItem.Click += new System.EventHandler(this.saveAsMenuItem_Click);
+			this.saveAsMenuItem.Click += new EventHandler(this.saveAsMenuItem_Click);
 			// 
 			// fileMenuSeparator2
 			// 
@@ -419,16 +419,16 @@ namespace NUnit.Gui
 			// reloadProjectMenuItem
 			// 
 			this.reloadProjectMenuItem.Index = 7;
-			this.reloadProjectMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlL;
+			this.reloadProjectMenuItem.Shortcut = Shortcut.CtrlL;
 			this.reloadProjectMenuItem.Text = "Re&load Project";
-			this.reloadProjectMenuItem.Click += new System.EventHandler(this.reloadProjectMenuItem_Click);
+			this.reloadProjectMenuItem.Click += new EventHandler(this.reloadProjectMenuItem_Click);
 			// 
 			// reloadTestsMenuItem
 			// 
 			this.reloadTestsMenuItem.Index = 8;
-			this.reloadTestsMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlR;
+			this.reloadTestsMenuItem.Shortcut = Shortcut.CtrlR;
 			this.reloadTestsMenuItem.Text = "&Reload Tests";
-			this.reloadTestsMenuItem.Click += new System.EventHandler(this.reloadTestsMenuItem_Click);
+			this.reloadTestsMenuItem.Click += new EventHandler(this.reloadTestsMenuItem_Click);
 			// 
 			// runtimeMenuItem
 			// 
@@ -454,24 +454,24 @@ namespace NUnit.Gui
 			// 
 			this.exitMenuItem.Index = 13;
 			this.exitMenuItem.Text = "E&xit";
-			this.exitMenuItem.Click += new System.EventHandler(this.exitMenuItem_Click);
+			this.exitMenuItem.Click += new EventHandler(this.exitMenuItem_Click);
 			// 
 			// viewMenu
 			// 
 			this.viewMenu.Index = 1;
-			this.viewMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
-			                                 {
-				                                 this.fullGuiMenuItem,
-				                                 this.miniGuiMenuItem,
-				                                 this.viewMenuSeparator1,
-				                                 this.viewMenuSeparator2,
-				                                 this.guiFontMenuItem,
-				                                 this.fixedFontMenuItem,
-				                                 this.viewMenuSeparator3,
-				                                 this.statusBarMenuItem
-			                                 });
+			this.viewMenu.MenuItems.AddRange(new MenuItem[]
+											{
+												this.fullGuiMenuItem,
+												this.miniGuiMenuItem,
+												this.viewMenuSeparator1,
+												this.viewMenuSeparator2,
+												this.guiFontMenuItem,
+												this.fixedFontMenuItem,
+												this.viewMenuSeparator3,
+												this.statusBarMenuItem
+											});
 			this.viewMenu.Text = "&View";
-			this.viewMenu.Popup += new System.EventHandler(this.viewMenu_Popup);
+			this.viewMenu.Popup += new EventHandler(this.viewMenu_Popup);
 			// 
 			// fullGuiMenuItem
 			// 
@@ -479,14 +479,14 @@ namespace NUnit.Gui
 			this.fullGuiMenuItem.Index = 0;
 			this.fullGuiMenuItem.RadioCheck = true;
 			this.fullGuiMenuItem.Text = "&Full GUI";
-			this.fullGuiMenuItem.Click += new System.EventHandler(this.fullGuiMenuItem_Click);
+			this.fullGuiMenuItem.Click += new EventHandler(this.fullGuiMenuItem_Click);
 			// 
 			// miniGuiMenuItem
 			// 
 			this.miniGuiMenuItem.Index = 1;
 			this.miniGuiMenuItem.RadioCheck = true;
 			this.miniGuiMenuItem.Text = "&Mini GUI";
-			this.miniGuiMenuItem.Click += new System.EventHandler(this.miniGuiMenuItem_Click);
+			this.miniGuiMenuItem.Click += new EventHandler(this.miniGuiMenuItem_Click);
 			// 
 			// viewMenuSeparator1
 			// 
@@ -501,27 +501,27 @@ namespace NUnit.Gui
 			// guiFontMenuItem
 			// 
 			this.guiFontMenuItem.Index = 4;
-			this.guiFontMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
-			                                        {
-				                                        this.increaseFontMenuItem,
-				                                        this.decreaseFontMenuItem,
-				                                        this.fontMenuSeparator,
-				                                        this.fontChangeMenuItem,
-				                                        this.defaultFontMenuItem
-			                                        });
+			this.guiFontMenuItem.MenuItems.AddRange(new MenuItem[]
+													{
+														this.increaseFontMenuItem,
+														this.decreaseFontMenuItem,
+														this.fontMenuSeparator,
+														this.fontChangeMenuItem,
+														this.defaultFontMenuItem
+													});
 			this.guiFontMenuItem.Text = "GUI Fo&nt";
 			// 
 			// increaseFontMenuItem
 			// 
 			this.increaseFontMenuItem.Index = 0;
 			this.increaseFontMenuItem.Text = "&Increase";
-			this.increaseFontMenuItem.Click += new System.EventHandler(this.increaseFontMenuItem_Click);
+			this.increaseFontMenuItem.Click += new EventHandler(this.increaseFontMenuItem_Click);
 			// 
 			// decreaseFontMenuItem
 			// 
 			this.decreaseFontMenuItem.Index = 1;
 			this.decreaseFontMenuItem.Text = "&Decrease";
-			this.decreaseFontMenuItem.Click += new System.EventHandler(this.decreaseFontMenuItem_Click);
+			this.decreaseFontMenuItem.Click += new EventHandler(this.decreaseFontMenuItem_Click);
 			// 
 			// fontMenuSeparator
 			// 
@@ -532,37 +532,37 @@ namespace NUnit.Gui
 			// 
 			this.fontChangeMenuItem.Index = 3;
 			this.fontChangeMenuItem.Text = "&Change...";
-			this.fontChangeMenuItem.Click += new System.EventHandler(this.fontChangeMenuItem_Click);
+			this.fontChangeMenuItem.Click += new EventHandler(this.fontChangeMenuItem_Click);
 			// 
 			// defaultFontMenuItem
 			// 
 			this.defaultFontMenuItem.Index = 4;
 			this.defaultFontMenuItem.Text = "&Restore";
-			this.defaultFontMenuItem.Click += new System.EventHandler(this.defaultFontMenuItem_Click);
+			this.defaultFontMenuItem.Click += new EventHandler(this.defaultFontMenuItem_Click);
 			// 
 			// fixedFontMenuItem
 			// 
 			this.fixedFontMenuItem.Index = 5;
-			this.fixedFontMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
-			                                          {
-				                                          this.increaseFixedFontMenuItem,
-				                                          this.decreaseFixedFontMenuItem,
-				                                          this.menuItem1,
-				                                          this.restoreFixedFontMenuItem
-			                                          });
+			this.fixedFontMenuItem.MenuItems.AddRange(new MenuItem[]
+													{
+														this.increaseFixedFontMenuItem,
+														this.decreaseFixedFontMenuItem,
+														this.menuItem1,
+														this.restoreFixedFontMenuItem
+													});
 			this.fixedFontMenuItem.Text = "Fi&xed Font";
 			// 
 			// increaseFixedFontMenuItem
 			// 
 			this.increaseFixedFontMenuItem.Index = 0;
 			this.increaseFixedFontMenuItem.Text = "&Increase";
-			this.increaseFixedFontMenuItem.Click += new System.EventHandler(this.increaseFixedFontMenuItem_Click);
+			this.increaseFixedFontMenuItem.Click += new EventHandler(this.increaseFixedFontMenuItem_Click);
 			// 
 			// decreaseFixedFontMenuItem
 			// 
 			this.decreaseFixedFontMenuItem.Index = 1;
 			this.decreaseFixedFontMenuItem.Text = "&Decrease";
-			this.decreaseFixedFontMenuItem.Click += new System.EventHandler(this.decreaseFixedFontMenuItem_Click);
+			this.decreaseFixedFontMenuItem.Click += new EventHandler(this.decreaseFixedFontMenuItem_Click);
 			// 
 			// menuItem1
 			// 
@@ -573,7 +573,7 @@ namespace NUnit.Gui
 			// 
 			this.restoreFixedFontMenuItem.Index = 3;
 			this.restoreFixedFontMenuItem.Text = "&Restore";
-			this.restoreFixedFontMenuItem.Click += new System.EventHandler(this.restoreFixedFontMenuItem_Click);
+			this.restoreFixedFontMenuItem.Click += new EventHandler(this.restoreFixedFontMenuItem_Click);
 			// 
 			// viewMenuSeparator3
 			// 
@@ -585,23 +585,23 @@ namespace NUnit.Gui
 			this.statusBarMenuItem.Checked = true;
 			this.statusBarMenuItem.Index = 7;
 			this.statusBarMenuItem.Text = "&Status Bar";
-			this.statusBarMenuItem.Click += new System.EventHandler(this.statusBarMenuItem_Click);
+			this.statusBarMenuItem.Click += new EventHandler(this.statusBarMenuItem_Click);
 			// 
 			// projectMenu
 			// 
 			this.projectMenu.Index = 2;
-			this.projectMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
-			                                    {
-				                                    this.configMenuItem,
-				                                    this.projectMenuSeparator1,
-				                                    this.addAssemblyMenuItem,
-				                                    this.addVSProjectMenuItem,
-				                                    this.projectMenuSeparator2,
-				                                    this.editProjectMenuItem
-			                                    });
+			this.projectMenu.MenuItems.AddRange(new MenuItem[]
+												{
+													this.configMenuItem,
+													this.projectMenuSeparator1,
+													this.addAssemblyMenuItem,
+													this.addVSProjectMenuItem,
+													this.projectMenuSeparator2,
+													this.editProjectMenuItem
+												});
 			this.projectMenu.Text = "&Project";
 			this.projectMenu.Visible = false;
-			this.projectMenu.Popup += new System.EventHandler(this.projectMenu_Popup);
+			this.projectMenu.Popup += new EventHandler(this.projectMenu_Popup);
 			// 
 			// configMenuItem
 			// 
@@ -617,13 +617,13 @@ namespace NUnit.Gui
 			// 
 			this.addAssemblyMenuItem.Index = 2;
 			this.addAssemblyMenuItem.Text = "Add Assembly...";
-			this.addAssemblyMenuItem.Click += new System.EventHandler(this.addAssemblyMenuItem_Click);
+			this.addAssemblyMenuItem.Click += new EventHandler(this.addAssemblyMenuItem_Click);
 			// 
 			// addVSProjectMenuItem
 			// 
 			this.addVSProjectMenuItem.Index = 3;
 			this.addVSProjectMenuItem.Text = "Add VS Project...";
-			this.addVSProjectMenuItem.Click += new System.EventHandler(this.addVSProjectMenuItem_Click);
+			this.addVSProjectMenuItem.Click += new EventHandler(this.addVSProjectMenuItem_Click);
 			// 
 			// projectMenuSeparator2
 			// 
@@ -634,42 +634,42 @@ namespace NUnit.Gui
 			// 
 			this.editProjectMenuItem.Index = 5;
 			this.editProjectMenuItem.Text = "Edit...";
-			this.editProjectMenuItem.Click += new System.EventHandler(this.editProjectMenuItem_Click);
+			this.editProjectMenuItem.Click += new EventHandler(this.editProjectMenuItem_Click);
 			// 
 			// testMenu
 			// 
 			this.testMenu.Index = 3;
-			this.testMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
-			                                 {
-				                                 this.runAllMenuItem,
-				                                 this.runSelectedMenuItem,
-				                                 this.runFailedMenuItem,
-				                                 this.testMenuSeparator,
-				                                 this.stopRunMenuItem
-			                                 });
+			this.testMenu.MenuItems.AddRange(new MenuItem[]
+											{
+												this.runAllMenuItem,
+												this.runSelectedMenuItem,
+												this.runFailedMenuItem,
+												this.testMenuSeparator,
+												this.stopRunMenuItem
+											});
 			this.testMenu.Text = "&Tests";
 			// 
 			// runAllMenuItem
 			// 
 			this.runAllMenuItem.Index = 0;
-			this.runAllMenuItem.Shortcut = System.Windows.Forms.Shortcut.F5;
+			this.runAllMenuItem.Shortcut = Shortcut.F5;
 			this.runAllMenuItem.Text = "&Run All";
-			this.runAllMenuItem.Click += new System.EventHandler(this.runAllMenuItem_Click);
+			this.runAllMenuItem.Click += new EventHandler(this.runAllMenuItem_Click);
 			// 
 			// runSelectedMenuItem
 			// 
 			this.runSelectedMenuItem.Index = 1;
-			this.runSelectedMenuItem.Shortcut = System.Windows.Forms.Shortcut.F6;
+			this.runSelectedMenuItem.Shortcut = Shortcut.F6;
 			this.runSelectedMenuItem.Text = "Run &Selected";
-			this.runSelectedMenuItem.Click += new System.EventHandler(this.runSelectedMenuItem_Click);
+			this.runSelectedMenuItem.Click += new EventHandler(this.runSelectedMenuItem_Click);
 			// 
 			// runFailedMenuItem
 			// 
 			this.runFailedMenuItem.Enabled = false;
 			this.runFailedMenuItem.Index = 2;
-			this.runFailedMenuItem.Shortcut = System.Windows.Forms.Shortcut.F7;
+			this.runFailedMenuItem.Shortcut = Shortcut.F7;
 			this.runFailedMenuItem.Text = "Run &Failed";
-			this.runFailedMenuItem.Click += new System.EventHandler(this.runFailedMenuItem_Click);
+			this.runFailedMenuItem.Click += new EventHandler(this.runFailedMenuItem_Click);
 			// 
 			// testMenuSeparator
 			// 
@@ -680,48 +680,48 @@ namespace NUnit.Gui
 			// 
 			this.stopRunMenuItem.Index = 4;
 			this.stopRunMenuItem.Text = "S&top Run";
-			this.stopRunMenuItem.Click += new System.EventHandler(this.stopRunMenuItem_Click);
+			this.stopRunMenuItem.Click += new EventHandler(this.stopRunMenuItem_Click);
 			// 
 			// toolsMenu
 			// 
 			this.toolsMenu.Index = 4;
-			this.toolsMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
-			                                  {
-				                                  this.assemblyDetailsMenuItem,
-				                                  this.saveXmlResultsMenuItem,
-				                                  this.exceptionDetailsMenuItem,
-				                                  this.openLogDirectoryMenuItem,
-				                                  this.toolsMenuSeparator1,
-				                                  this.settingsMenuItem,
-				                                  this.toolsMenuSeparator2,
-				                                  this.addinInfoMenuItem
-			                                  });
+			this.toolsMenu.MenuItems.AddRange(new MenuItem[]
+											{
+												this.assemblyDetailsMenuItem,
+												this.saveXmlResultsMenuItem,
+												this.exceptionDetailsMenuItem,
+												this.openLogDirectoryMenuItem,
+												this.toolsMenuSeparator1,
+												this.settingsMenuItem,
+												this.toolsMenuSeparator2,
+												this.addinInfoMenuItem
+											});
 			this.toolsMenu.Text = "T&ools";
-			this.toolsMenu.Popup += new System.EventHandler(this.toolsMenu_Popup);
+			this.toolsMenu.Popup += new EventHandler(this.toolsMenu_Popup);
 			// 
 			// assemblyDetailsMenuItem
 			// 
 			this.assemblyDetailsMenuItem.Index = 0;
 			this.assemblyDetailsMenuItem.Text = "&Test Assemblies...";
-			this.assemblyDetailsMenuItem.Click += new System.EventHandler(this.assemblyDetailsMenuItem_Click);
+			this.assemblyDetailsMenuItem.Click += new EventHandler(this.assemblyDetailsMenuItem_Click);
 			// 
 			// saveXmlResultsMenuItem
 			// 
 			this.saveXmlResultsMenuItem.Index = 1;
 			this.saveXmlResultsMenuItem.Text = "&Save Results as XML...";
-			this.saveXmlResultsMenuItem.Click += new System.EventHandler(this.saveXmlResultsMenuItem_Click);
+			this.saveXmlResultsMenuItem.Click += new EventHandler(this.saveXmlResultsMenuItem_Click);
 			// 
 			// exceptionDetailsMenuItem
 			// 
 			this.exceptionDetailsMenuItem.Index = 2;
 			this.exceptionDetailsMenuItem.Text = "&Exception Details...";
-			this.exceptionDetailsMenuItem.Click += new System.EventHandler(this.exceptionDetailsMenuItem_Click);
+			this.exceptionDetailsMenuItem.Click += new EventHandler(this.exceptionDetailsMenuItem_Click);
 			// 
 			// openLogDirectoryMenuItem
 			// 
 			this.openLogDirectoryMenuItem.Index = 3;
 			this.openLogDirectoryMenuItem.Text = "Open &Log Directory...";
-			this.openLogDirectoryMenuItem.Click += new System.EventHandler(this.openLogDirectoryMenuItem_Click);
+			this.openLogDirectoryMenuItem.Click += new EventHandler(this.openLogDirectoryMenuItem_Click);
 			// 
 			// toolsMenuSeparator1
 			// 
@@ -732,7 +732,7 @@ namespace NUnit.Gui
 			// 
 			this.settingsMenuItem.Index = 5;
 			this.settingsMenuItem.Text = "&Settings...";
-			this.settingsMenuItem.Click += new System.EventHandler(this.settingsMenuItem_Click);
+			this.settingsMenuItem.Click += new EventHandler(this.settingsMenuItem_Click);
 			// 
 			// toolsMenuSeparator2
 			// 
@@ -743,25 +743,25 @@ namespace NUnit.Gui
 			// 
 			this.addinInfoMenuItem.Index = 7;
 			this.addinInfoMenuItem.Text = "Addins...";
-			this.addinInfoMenuItem.Click += new System.EventHandler(this.addinInfoMenuItem_Click);
+			this.addinInfoMenuItem.Click += new EventHandler(this.addinInfoMenuItem_Click);
 			// 
 			// helpItem
 			// 
 			this.helpItem.Index = 5;
-			this.helpItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
-			                                 {
-				                                 this.helpMenuItem,
-				                                 this.helpMenuSeparator1,
-				                                 this.aboutMenuItem
-			                                 });
+			this.helpItem.MenuItems.AddRange(new MenuItem[]
+											{
+												this.helpMenuItem,
+												this.helpMenuSeparator1,
+												this.aboutMenuItem
+											});
 			this.helpItem.Text = "&Help";
 			// 
 			// helpMenuItem
 			// 
 			this.helpMenuItem.Index = 0;
-			this.helpMenuItem.Shortcut = System.Windows.Forms.Shortcut.F1;
+			this.helpMenuItem.Shortcut = Shortcut.F1;
 			this.helpMenuItem.Text = "NUnit &Help...";
-			this.helpMenuItem.Click += new System.EventHandler(this.helpMenuItem_Click);
+			this.helpMenuItem.Click += new EventHandler(this.helpMenuItem_Click);
 			// 
 			// helpMenuSeparator1
 			// 
@@ -772,26 +772,26 @@ namespace NUnit.Gui
 			// 
 			this.aboutMenuItem.Index = 2;
 			this.aboutMenuItem.Text = "&About NUnit...";
-			this.aboutMenuItem.Click += new System.EventHandler(this.aboutMenuItem_Click);
+			this.aboutMenuItem.Click += new EventHandler(this.aboutMenuItem_Click);
 			// 
 			// treeSplitter
 			// 
-			this.treeSplitter.Location = new System.Drawing.Point(240, 0);
+			this.treeSplitter.Location = new Point(240, 0);
 			this.treeSplitter.MinSize = 240;
 			this.treeSplitter.Name = "treeSplitter";
-			this.treeSplitter.Size = new System.Drawing.Size(6, 407);
+			this.treeSplitter.Size = new Size(6, 407);
 			this.treeSplitter.TabIndex = 2;
 			this.treeSplitter.TabStop = false;
 			// 
 			// rightPanel
 			// 
-			this.rightPanel.BackColor = System.Drawing.SystemColors.Control;
+			this.rightPanel.BackColor = SystemColors.Control;
 			this.rightPanel.Controls.Add(this.groupBox1);
 			this.rightPanel.Controls.Add(this.resultTabs);
-			this.rightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.rightPanel.Location = new System.Drawing.Point(246, 0);
+			this.rightPanel.Dock = DockStyle.Fill;
+			this.rightPanel.Location = new Point(246, 0);
 			this.rightPanel.Name = "rightPanel";
-			this.rightPanel.Size = new System.Drawing.Size(498, 407);
+			this.rightPanel.Size = new Size(498, 407);
 			this.rightPanel.TabIndex = 3;
 			// 
 			// groupBox1
@@ -801,114 +801,114 @@ namespace NUnit.Gui
 			this.groupBox1.Controls.Add(this.stopButton);
 			this.groupBox1.Controls.Add(this.runButton);
 			this.groupBox1.Controls.Add(this.progressBar);
-			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.groupBox1.Location = new System.Drawing.Point(0, 0);
+			this.groupBox1.Dock = DockStyle.Top;
+			this.groupBox1.Location = new Point(0, 0);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(498, 120);
+			this.groupBox1.Size = new Size(498, 120);
 			this.groupBox1.TabIndex = 0;
 			this.groupBox1.TabStop = false;
 			// 
 			// suiteName
 			// 
-			this.suiteName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-			                                                              | System.Windows.Forms.AnchorStyles.Right)));
+			this.suiteName.Anchor = ((AnchorStyles)(((AnchorStyles.Top | AnchorStyles.Left)
+													| AnchorStyles.Right)));
 			this.suiteName.AutoEllipsis = true;
-			this.suiteName.Location = new System.Drawing.Point(145, 21);
+			this.suiteName.Location = new Point(145, 21);
 			this.suiteName.Name = "suiteName";
-			this.suiteName.Size = new System.Drawing.Size(343, 23);
+			this.suiteName.Size = new Size(343, 23);
 			this.suiteName.TabIndex = 1;
 			// 
 			// runCount
 			// 
-			this.runCount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-			                                                             | System.Windows.Forms.AnchorStyles.Right)));
+			this.runCount.Anchor = ((AnchorStyles)(((AnchorStyles.Top | AnchorStyles.Left)
+													| AnchorStyles.Right)));
 			this.runCount.AutoEllipsis = true;
-			this.runCount.Location = new System.Drawing.Point(8, 89);
+			this.runCount.Location = new Point(8, 89);
 			this.runCount.Name = "runCount";
-			this.runCount.Size = new System.Drawing.Size(480, 21);
+			this.runCount.Size = new Size(480, 21);
 			this.runCount.TabIndex = 5;
 			// 
 			// stopButton
 			// 
 			this.stopButton.AutoSize = true;
-			this.stopButton.Location = new System.Drawing.Point(75, 16);
+			this.stopButton.Location = new Point(75, 16);
 			this.stopButton.Name = "stopButton";
-			this.stopButton.Size = new System.Drawing.Size(64, 31);
+			this.stopButton.Size = new Size(64, 31);
 			this.stopButton.TabIndex = 4;
 			this.stopButton.Text = "&Stop";
-			this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
+			this.stopButton.Click += new EventHandler(this.stopButton_Click);
 			// 
 			// runButton
 			// 
-			this.runButton.Location = new System.Drawing.Point(8, 16);
+			this.runButton.Location = new Point(8, 16);
 			this.runButton.Name = "runButton";
-			this.runButton.Size = new System.Drawing.Size(64, 31);
+			this.runButton.Size = new Size(64, 31);
 			this.runButton.TabIndex = 3;
 			this.runButton.Text = "&Run";
-			this.runButton.Click += new System.EventHandler(this.runButton_Click);
+			this.runButton.Click += new EventHandler(this.runButton_Click);
 			// 
 			// progressBar
 			// 
-			this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-			                                                                | System.Windows.Forms.AnchorStyles.Right)));
-			this.progressBar.BackColor = System.Drawing.SystemColors.Control;
+			this.progressBar.Anchor = ((AnchorStyles)(((AnchorStyles.Top | AnchorStyles.Left)
+														| AnchorStyles.Right)));
+			this.progressBar.BackColor = SystemColors.Control;
 			this.progressBar.CausesValidation = false;
 			this.progressBar.Enabled = false;
-			this.progressBar.ForeColor = System.Drawing.SystemColors.Highlight;
-			this.progressBar.Location = new System.Drawing.Point(8, 54);
+			this.progressBar.ForeColor = SystemColors.Highlight;
+			this.progressBar.Location = new Point(8, 54);
 			this.progressBar.Maximum = 100;
 			this.progressBar.Minimum = 0;
 			this.progressBar.Name = "progressBar";
 			this.progressBar.Segmented = true;
-			this.progressBar.Size = new System.Drawing.Size(480, 28);
+			this.progressBar.Size = new Size(480, 28);
 			this.progressBar.Step = 1;
 			this.progressBar.TabIndex = 0;
 			this.progressBar.Value = 0;
 			// 
 			// resultTabs
 			// 
-			this.resultTabs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-			                                                                | System.Windows.Forms.AnchorStyles.Left)
-			                                                               | System.Windows.Forms.AnchorStyles.Right)));
-			this.resultTabs.Location = new System.Drawing.Point(0, 120);
+			this.resultTabs.Anchor = ((AnchorStyles)((((AnchorStyles.Top | AnchorStyles.Bottom)
+														| AnchorStyles.Left)
+													| AnchorStyles.Right)));
+			this.resultTabs.Location = new Point(0, 120);
 			this.resultTabs.Name = "resultTabs";
-			this.resultTabs.Size = new System.Drawing.Size(498, 284);
+			this.resultTabs.Size = new Size(498, 284);
 			this.resultTabs.TabIndex = 2;
 			// 
 			// testTree
 			// 
-			this.testTree.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.testTree.Location = new System.Drawing.Point(0, 0);
+			this.testTree.Dock = DockStyle.Fill;
+			this.testTree.Location = new Point(0, 0);
 			this.testTree.Name = "testTree";
 			this.testTree.ShowCheckBoxes = false;
-			this.testTree.Size = new System.Drawing.Size(240, 407);
+			this.testTree.Size = new Size(240, 407);
 			this.testTree.TabIndex = 0;
-			this.testTree.SelectedTestsChanged += new NUnit.UiKit.SelectedTestsChangedEventHandler(this.testTree_SelectedTestsChanged);
+			this.testTree.SelectedTestsChanged += new SelectedTestsChangedEventHandler(this.testTree_SelectedTestsChanged);
 			// 
 			// leftPanel
 			// 
 			this.leftPanel.Controls.Add(this.testTree);
-			this.leftPanel.Dock = System.Windows.Forms.DockStyle.Left;
-			this.leftPanel.Location = new System.Drawing.Point(0, 0);
+			this.leftPanel.Dock = DockStyle.Left;
+			this.leftPanel.Location = new Point(0, 0);
 			this.leftPanel.Name = "leftPanel";
-			this.leftPanel.Size = new System.Drawing.Size(240, 407);
+			this.leftPanel.Size = new Size(240, 407);
 			this.leftPanel.TabIndex = 4;
 			// 
 			// NUnitForm
 			// 
-			this.ClientSize = new System.Drawing.Size(744, 431);
+			this.ClientSize = new Size(744, 431);
 			this.Controls.Add(this.rightPanel);
 			this.Controls.Add(this.treeSplitter);
 			this.Controls.Add(this.leftPanel);
 			this.Controls.Add(this.statusBar);
-			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.Icon = ((Icon)(resources.GetObject("$this.Icon")));
 			this.Menu = this.mainMenu;
-			this.MinimumSize = new System.Drawing.Size(160, 32);
+			this.MinimumSize = new Size(160, 32);
 			this.Name = "NUnitForm";
-			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+			this.StartPosition = FormStartPosition.Manual;
 			this.Text = "NUnit";
-			this.Load += new System.EventHandler(this.NUnitForm_Load);
-			this.Closing += new System.ComponentModel.CancelEventHandler(this.NUnitForm_Closing);
+			this.Load += new EventHandler(this.NUnitForm_Load);
+			this.Closing += new CancelEventHandler(this.NUnitForm_Closing);
 			this.rightPanel.ResumeLayout(false);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
@@ -983,12 +983,12 @@ namespace NUnit.Gui
 			}
 		}
 
-		///<summary>
-		///	Form is about to close, first see if we 
-		///	have a test run going on and if so whether
-		///	we should cancel it. Then unload the 
-		///	test and save the latest form position.
-		///</summary>
+		/// <summary>
+		/// Form is about to close, first see if we
+		/// have a test run going on and if so whether
+		/// we should cancel it. Then unload the
+		/// test and save the latest form position.
+		/// </summary>
 		private void NUnitForm_Closing(object sender, CancelEventArgs e)
 		{
 			if (this.IsTestRunning)
@@ -1003,12 +1003,12 @@ namespace NUnit.Gui
 			}
 
 			if (!e.Cancel && this.IsProjectLoaded &&
-			    this.presenter.CloseProject() == DialogResult.Cancel)
+				this.presenter.CloseProject() == DialogResult.Cancel)
 				e.Cancel = true;
 		}
 
 		/// <summary>
-		/// 	Get saved options when form loads
+		/// Get saved options when form loads
 		/// </summary>
 		private void NUnitForm_Load(object sender, EventArgs e)
 		{
@@ -1197,8 +1197,8 @@ namespace NUnit.Gui
 			this.EnableRunCommand(true);
 
 			if (e.Result.ResultState == ResultState.Failure ||
-			    e.Result.ResultState == ResultState.Error ||
-			    e.Result.ResultState == ResultState.Cancelled)
+				e.Result.ResultState == ResultState.Error ||
+				e.Result.ResultState == ResultState.Cancelled)
 				this.Activate();
 		}
 
@@ -1211,9 +1211,9 @@ namespace NUnit.Gui
 		}
 
 		/// <summary>
-		/// 	The current test suite has changed in some way,
-		/// 	so update the info in the UI and clear the
-		/// 	test results, since they are no longer valid.
+		/// The current test suite has changed in some way,
+		/// so update the info in the UI and clear the
+		/// test results, since they are no longer valid.
 		/// </summary>
 		private void OnTestChanged(object sender, TestEventArgs e)
 		{
@@ -1232,8 +1232,8 @@ namespace NUnit.Gui
 		}
 
 		/// <summary>
-		/// 	Event handler for assembly load failures. We do this via
-		/// 	an event since some errors may occur asynchronously.
+		/// Event handler for assembly load failures. We do this via
+		/// an event since some errors may occur asynchronously.
 		/// </summary>
 		private void OnTestLoadFailure(object sender, TestEventArgs e)
 		{
@@ -1244,17 +1244,17 @@ namespace NUnit.Gui
 			}
 
 			string message = e.Action == TestAction.TestReloadFailed
-				                 ? "Test reload failed!"
-				                 : "Test load failed!";
+				? "Test reload failed!"
+				: "Test load failed!";
 			string NL = Environment.NewLine;
 			if (e.Exception is BadImageFormatException)
 			{
 				message += string.Format(NL + NL +
-				                         "The assembly could not be loaded by NUnit. PossibleProblems include:" + NL + NL +
-				                         "1. The assembly may not be a valid .NET assembly." + NL + NL +
-				                         "2. You may be attempting to load an assembly built with a later version of the CLR than the version under which NUnit is currently running ({0})." + NL + NL +
-				                         "3. You may be attempting to load a 64-bit assembly into a 32-bit process.",
-				                         Environment.Version.ToString(3));
+										"The assembly could not be loaded by NUnit. PossibleProblems include:" + NL + NL +
+										"1. The assembly may not be a valid .NET assembly." + NL + NL +
+										"2. You may be attempting to load an assembly built with a later version of the CLR than the version under which NUnit is currently running ({0})." + NL + NL +
+										"3. You may be attempting to load a 64-bit assembly into a 32-bit process.",
+					Environment.Version.ToString(3));
 			}
 
 			this.MessageDisplay.Error(message, e.Exception);
@@ -1272,8 +1272,8 @@ namespace NUnit.Gui
 		}
 
 		/// <summary>
-		/// 	A test suite has been loaded, so update 
-		/// 	recent assemblies and display the tests in the UI
+		/// A test suite has been loaded, so update
+		/// recent assemblies and display the tests in the UI
 		/// </summary>
 		private void OnTestLoaded(object sender, TestEventArgs e)
 		{
@@ -1340,8 +1340,8 @@ namespace NUnit.Gui
 		}
 
 		/// <summary>
-		/// 	A test suite has been unloaded, so clear the UI
-		/// 	and remove any references to the suite.
+		/// A test suite has been unloaded, so clear the UI
+		/// and remove any references to the suite.
 		/// </summary>
 		private void OnTestUnloaded(object sender, TestEventArgs e)
 		{
@@ -1352,14 +1352,14 @@ namespace NUnit.Gui
 		}
 
 		/// <summary>
-		/// 	Set the title bar based on the loaded file or project
+		/// Set the title bar based on the loaded file or project
 		/// </summary>
 		/// <param name="fileName"> </param>
 		private void SetTitleBar(string fileName)
 		{
 			this.Text = fileName == null
-				            ? "NUnit"
-				            : string.Format("{0} - NUnit", Path.GetFileName(fileName));
+				? "NUnit"
+				: string.Format("{0} - NUnit", Path.GetFileName(fileName));
 		}
 
 		private void SubscribeToTestEvents()
@@ -1385,7 +1385,7 @@ namespace NUnit.Gui
 		}
 
 		/// <summary>
-		/// 	Display the about box when menu item is selected
+		/// Display the about box when menu item is selected
 		/// </summary>
 		private void aboutMenuItem_Click(object sender, EventArgs e)
 		{
@@ -1436,8 +1436,8 @@ namespace NUnit.Gui
 		{
 			this.Font = font;
 			this.runCount.Font = font.FontFamily.IsStyleAvailable(FontStyle.Bold)
-				                     ? new Font(font, FontStyle.Bold)
-				                     : font;
+				? new Font(font, FontStyle.Bold)
+				: font;
 			TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
 			this.userSettings.SaveSetting(
 				this.displayFormat == "Mini" ? "Gui.MiniForm.Font" : "Gui.MainForm.Font",
@@ -1596,9 +1596,9 @@ namespace NUnit.Gui
 
 			this.reloadTestsMenuItem.Enabled = this.IsTestLoaded && !this.IsTestRunning;
 			this.reloadProjectMenuItem.Enabled = this.runtimeMenuItem.Enabled =
-			                                     this.IsProjectLoaded &&
-			                                     File.Exists(this.TestProject.ProjectPath) &&
-			                                     !this.IsTestRunning;
+				this.IsProjectLoaded &&
+				File.Exists(this.TestProject.ProjectPath) &&
+				!this.IsTestRunning;
 
 			RuntimeFramework current = this.TestLoader.CurrentFramework;
 			RuntimeFramework[] frameworks = RuntimeFramework.AvailableFrameworks;
@@ -1700,8 +1700,8 @@ namespace NUnit.Gui
 		}
 
 		/// <summary>
-		/// 	When the project menu pops up, we populate the
-		/// 	submenu for configurations dynamically.
+		/// When the project menu pops up, we populate the
+		/// submenu for configurations dynamically.
 		/// </summary>
 		private void projectMenu_Popup(object sender, EventArgs e)
 		{
@@ -1721,10 +1721,10 @@ namespace NUnit.Gui
 			this.configMenuItem.MenuItems.Add("-");
 
 			this.configMenuItem.MenuItems.Add("&Add...",
-			                                  new EventHandler(this.addConfigurationMenuItem_Click));
+				new EventHandler(this.addConfigurationMenuItem_Click));
 
 			this.configMenuItem.MenuItems.Add("&Edit...",
-			                                  new EventHandler(this.editConfigurationsMenuItem_Click));
+				new EventHandler(this.editConfigurationsMenuItem_Click));
 
 			this.addVSProjectMenuItem.Visible = this.userSettings.GetSetting("Options.TestLoader.VisualStudioSupport", false);
 			this.addAssemblyMenuItem.Enabled = this.TestProject.Configs.Count > 0;
@@ -1751,7 +1751,7 @@ namespace NUnit.Gui
 		}
 
 		/// <summary>
-		/// 	When the Run Button is clicked, run the selected test.
+		/// When the Run Button is clicked, run the selected test.
 		/// </summary>
 		private void runButton_Click(object sender, EventArgs e)
 		{
@@ -1801,7 +1801,7 @@ namespace NUnit.Gui
 		}
 
 		/// <summary>
-		/// 	When the Stop Button is clicked, cancel running test
+		/// When the Stop Button is clicked, cancel running test
 		/// </summary>
 		private void stopButton_Click(object sender, EventArgs e)
 		{

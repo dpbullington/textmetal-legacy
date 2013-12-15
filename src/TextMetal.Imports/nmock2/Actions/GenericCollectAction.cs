@@ -24,7 +24,7 @@ using NMock2.Monitoring;
 namespace NMock2.Actions
 {
 	/// <summary>
-	/// 	Action that calls the collect delegate passed to constructor with the n-th element of the arguments to an invocation.
+	/// Action that calls the collect delegate passed to constructor with the n-th element of the arguments to an invocation.
 	/// </summary>
 	/// <typeparam name="T"> Type of the argument to collect. </typeparam>
 	public class CollectAction<T> : IAction
@@ -32,7 +32,7 @@ namespace NMock2.Actions
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="CollectAction&lt;T&gt;" /> class.
+		/// Initializes a new instance of the <see cref="CollectAction&lt;T&gt;" /> class.
 		/// </summary>
 		/// <param name="argumentIndex"> Index of the argument. </param>
 		/// <param name="collectDelegate"> The collect delegate. </param>
@@ -47,12 +47,12 @@ namespace NMock2.Actions
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Stores the index of the argument.
+		/// Stores the index of the argument.
 		/// </summary>
 		private readonly int argumentIndex;
 
 		/// <summary>
-		/// 	Stores the collect delegate.
+		/// Stores the collect delegate.
 		/// </summary>
 		private readonly Collect collectDelegate;
 
@@ -61,7 +61,7 @@ namespace NMock2.Actions
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public void DescribeTo(TextWriter writer)
@@ -71,7 +71,7 @@ namespace NMock2.Actions
 		}
 
 		/// <summary>
-		/// 	Invokes this object.
+		/// Invokes this object.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
 		public void Invoke(Invocation invocation)
@@ -84,7 +84,7 @@ namespace NMock2.Actions
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		/// <summary>
-		/// 	Delegate that is called on collecting an argument.
+		/// Delegate that is called on collecting an argument.
 		/// </summary>
 		/// <param name="collectedParameter"> The collected generic parameter. </param>
 		public delegate void Collect(T collectedParameter);

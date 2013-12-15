@@ -10,9 +10,9 @@ using System.Collections;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	A simple collection to hold VSProjectConfigs. Originally,
-	/// 	we used the (NUnit) ProjectConfigCollection, but the
-	/// 	classes have since diverged.
+	/// A simple collection to hold VSProjectConfigs. Originally,
+	/// we used the (NUnit) ProjectConfigCollection, but the
+	/// classes have since diverged.
 	/// </summary>
 	public class VSProjectConfigCollection : CollectionBase
 	{

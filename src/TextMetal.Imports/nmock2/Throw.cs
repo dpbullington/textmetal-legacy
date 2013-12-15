@@ -24,14 +24,14 @@ namespace NMock2
 	using System;
 
 	/// <summary>
-	/// 	Defines action for throwing actions.
+	/// Defines action for throwing actions.
 	/// </summary>
 	public class Throw
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Throws an exeception when the action is invoked.
+		/// Throws an exeception when the action is invoked.
 		/// </summary>
 		/// <param name="exception"> The exception to throw when invoked. </param>
 		/// <returns> Returns a new instance of the <see cref="ThrowAction" /> class. </returns>

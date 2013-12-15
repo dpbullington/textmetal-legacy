@@ -20,21 +20,21 @@
 namespace NMock2.Syntax
 {
 	/// <summary>
-	/// 	Syntax defining a value.
+	/// Syntax defining a value.
 	/// </summary>
 	public interface IValueSyntax
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Defines a value.
+		/// Defines a value.
 		/// </summary>
 		/// <param name="valueMatcher"> The value matcher. </param>
 		/// <returns> Match syntax defining the behavior of the value. </returns>
 		IMatchSyntax To(Matcher valueMatcher);
 
 		/// <summary>
-		/// 	Defines a value.
+		/// Defines a value.
 		/// </summary>
 		/// <param name="equalValue"> The value. </param>
 		/// <returns> Match syntax defining the behavior of the value. </returns>

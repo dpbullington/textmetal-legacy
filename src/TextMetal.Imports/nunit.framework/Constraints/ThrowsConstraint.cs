@@ -12,16 +12,16 @@ namespace NUnit.Framework.Constraints
 	#region ThrowsConstraint
 
 	/// <summary>
-	/// 	ThrowsConstraint is used to test the exception thrown by 
-	/// 	a delegate by applying a constraint to it.
+	/// ThrowsConstraint is used to test the exception thrown by
+	/// a delegate by applying a constraint to it.
 	/// </summary>
 	public class ThrowsConstraint : PrefixConstraint
 	{
 		private Exception caughtException;
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:ThrowsConstraint" /> class,
-		/// 	using a constraint to be applied to the exception.
+		/// Initializes a new instance of the <see cref="T:ThrowsConstraint" /> class,
+		/// using a constraint to be applied to the exception.
 		/// </summary>
 		/// <param name="baseConstraint"> A constraint to apply to the caught exception. </param>
 		public ThrowsConstraint(Constraint baseConstraint)
@@ -30,7 +30,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Get the actual exception thrown - used by Assert.Throws.
+		/// Get the actual exception thrown - used by Assert.Throws.
 		/// </summary>
 		public Exception ActualException
 		{
@@ -43,9 +43,9 @@ namespace NUnit.Framework.Constraints
 		#region Constraint Overrides
 
 		/// <summary>
-		/// 	Executes the code of the delegate and captures any exception.
-		/// 	If a non-null base constraint was provided, it applies that
-		/// 	constraint to the exception.
+		/// Executes the code of the delegate and captures any exception.
+		/// If a non-null base constraint was provided, it applies that
+		/// constraint to the exception.
 		/// </summary>
 		/// <param name="actual"> A delegate representing the code to be tested </param>
 		/// <returns> True if an exception is thrown and the constraint succeeds, otherwise false </returns>
@@ -77,23 +77,23 @@ namespace NUnit.Framework.Constraints
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Converts an ActualValueDelegate to a TestDelegate
-		/// 	before calling the primary overload.
+		/// Converts an ActualValueDelegate to a TestDelegate
+		/// before calling the primary overload.
 		/// </summary>
 		/// <param name="del"> </param>
 		/// <returns> </returns>
 		public override bool Matches(ActualValueDelegate del)
 		{
 			TestDelegate testDelegate = new TestDelegate(delegate
-			                                             {
-				                                             del();
-			                                             });
+														{
+															del();
+														});
 			return this.Matches((object)testDelegate);
 		}
 #endif
 
 		/// <summary>
-		/// 	Write the constraint description to a MessageWriter
+		/// Write the constraint description to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The writer on which the description is displayed </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -105,10 +105,10 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write the actual value for a failing constraint test to a
-		/// 	MessageWriter. The default implementation simply writes
-		/// 	the raw value of actual, leaving it to the writer to
-		/// 	perform any formatting.
+		/// Write the actual value for a failing constraint test to a
+		/// MessageWriter. The default implementation simply writes
+		/// the raw value of actual, leaving it to the writer to
+		/// perform any formatting.
 		/// </summary>
 		/// <param name="writer"> The writer on which the actual value is displayed </param>
 		public override void WriteActualValueTo(MessageWriter writer)
@@ -124,7 +124,7 @@ namespace NUnit.Framework.Constraints
 		#endregion
 
 		/// <summary>
-		/// 	Returns the string representation of this constraint
+		/// Returns the string representation of this constraint
 		/// </summary>
 		protected override string GetStringRepresentation()
 		{
@@ -140,15 +140,15 @@ namespace NUnit.Framework.Constraints
 	#region ThrowsNothingConstraint
 
 	/// <summary>
-	/// 	ThrowsNothingConstraint tests that a delegate does not
-	/// 	throw an exception.
+	/// ThrowsNothingConstraint tests that a delegate does not
+	/// throw an exception.
 	/// </summary>
 	public class ThrowsNothingConstraint : Constraint
 	{
 		private Exception caughtException;
 
 		/// <summary>
-		/// 	Test whether the constraint is satisfied by a given value
+		/// Test whether the constraint is satisfied by a given value
 		/// </summary>
 		/// <param name="actual"> The value to be tested </param>
 		/// <returns> True if no exception is thrown, otherwise false </returns>
@@ -174,23 +174,23 @@ namespace NUnit.Framework.Constraints
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Converts an ActualValueDelegate to a TestDelegate
-		/// 	before calling the primary overload.
+		/// Converts an ActualValueDelegate to a TestDelegate
+		/// before calling the primary overload.
 		/// </summary>
 		/// <param name="del"> </param>
 		/// <returns> </returns>
 		public override bool Matches(ActualValueDelegate del)
 		{
 			TestDelegate testDelegate = new TestDelegate(delegate
-			                                             {
-				                                             del();
-			                                             });
+														{
+															del();
+														});
 			return this.Matches((object)testDelegate);
 		}
 #endif
 
 		/// <summary>
-		/// 	Write the constraint description to a MessageWriter
+		/// Write the constraint description to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The writer on which the description is displayed </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -199,10 +199,10 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write the actual value for a failing constraint test to a
-		/// 	MessageWriter. The default implementation simply writes
-		/// 	the raw value of actual, leaving it to the writer to
-		/// 	perform any formatting.
+		/// Write the actual value for a failing constraint test to a
+		/// MessageWriter. The default implementation simply writes
+		/// the raw value of actual, leaving it to the writer to
+		/// perform any formatting.
 		/// </summary>
 		/// <param name="writer"> The writer on which the actual value is displayed </param>
 		public override void WriteActualValueTo(MessageWriter writer)

@@ -9,7 +9,7 @@ using System;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Summary description for UnhandledExceptionCatcher.
+	/// Summary description for UnhandledExceptionCatcher.
 	/// </summary>
 	public class TestExceptionHandler : IDisposable
 	{

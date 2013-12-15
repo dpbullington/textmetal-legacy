@@ -12,17 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml.Core
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Text;
 
 	public interface IReferenceSet
 	{
-		ICollection<object> Objects { get; }
+		#region Properties/Indexers/Events
+
+		ICollection<object> Objects
+		{
+			get;
+		}
+
+		#endregion
 	}
 }
+
 #endif

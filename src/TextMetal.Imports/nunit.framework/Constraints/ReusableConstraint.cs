@@ -9,15 +9,15 @@ using System;
 namespace NUnit.Framework.Constraints
 {
 	/// <summary>
-	/// 	ReusableConstraint wraps a resolved constraint so that it
-	/// 	may be saved and reused as needed.
+	/// ReusableConstraint wraps a resolved constraint so that it
+	/// may be saved and reused as needed.
 	/// </summary>
 	public class ReusableConstraint : IResolveConstraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a ReusableConstraint
+		/// Construct a ReusableConstraint
 		/// </summary>
 		/// <param name="c"> The constraint or expression to be reused </param>
 		public ReusableConstraint(IResolveConstraint c)
@@ -36,8 +36,8 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Resolves the ReusableConstraint by returning the constraint
-		/// 	that it originally wrapped.
+		/// Resolves the ReusableConstraint by returning the constraint
+		/// that it originally wrapped.
 		/// </summary>
 		/// <returns> A resolved constraint </returns>
 		public Constraint Resolve()
@@ -46,7 +46,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Returns the string representation of the constraint.
+		/// Returns the string representation of the constraint.
 		/// </summary>
 		/// <returns> A string representing the constraint </returns>
 		public override string ToString()
@@ -55,7 +55,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Conversion operator from a normal constraint to a ReusableConstraint.
+		/// Conversion operator from a normal constraint to a ReusableConstraint.
 		/// </summary>
 		/// <param name="c"> The original constraint to be wrapped as a ReusableConstraint </param>
 		/// <returns> </returns>

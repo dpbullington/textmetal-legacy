@@ -34,7 +34,7 @@ namespace NMock2.Monitoring
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="MockObjectFactory" /> class.
+		/// Initializes a new instance of the <see cref="MockObjectFactory" /> class.
 		/// </summary>
 		/// <param name="name"> The name of the assembly to generate. </param>
 		public MockObjectFactory(string name)
@@ -104,21 +104,25 @@ namespace NMock2.Monitoring
 		}
 
 		/// <summary>
-		/// 	Defines proxy method for the target object.
+		/// Defines proxy method for the target object.
 		/// </summary>
 		/// <param name="typeBuilder"> The type builder. </param>
 		/// <param name="method"> The method to proxy. </param>
-		/// <param name="explicitImplementation"> <see langword="true" /> if the supplied <paramref name="intfMethod" /> is to be implemented explicitly; otherwise <see
-		/// 	 langword="false" /> . </param>
+		/// <param name="explicitImplementation">
+		/// <see langword="true" /> if the supplied <paramref name="intfMethod" /> is to be implemented explicitly; otherwise
+		/// <see
+		///     langword="false" />
+		/// .
+		/// </param>
 		/// <returns> The <see cref="System.Reflection.Emit.MethodBuilder" /> for the proxy method. </returns>
 		/// <remarks>
-		/// 	Original code from Spring.Net http://springnet.cvs.sourceforge.net/springnet/Spring.Net/src/Spring/Spring.Core/Proxy/AbstractProxyMethodBuilder.cs
+		/// Original code from Spring.Net http://springnet.cvs.sourceforge.net/springnet/Spring.Net/src/Spring/Spring.Core/Proxy/AbstractProxyMethodBuilder.cs
 		/// </remarks>
 		private static MethodBuilder DefineMethod(TypeBuilder typeBuilder, MethodInfo method, bool explicitImplementation)
 		{
 			string name = method.Name;
 			MethodAttributes attributes = MethodAttributes.Public | MethodAttributes.ReuseSlot
-			                              | MethodAttributes.HideBySig | MethodAttributes.Virtual;
+										| MethodAttributes.HideBySig | MethodAttributes.Virtual;
 
 			if (method.IsSpecialName)
 				attributes |= MethodAttributes.SpecialName;
@@ -161,7 +165,7 @@ namespace NMock2.Monitoring
 		}
 
 		/// <summary>
-		/// 	Defines method parameters based on proxied method metadata.
+		/// Defines method parameters based on proxied method metadata.
 		/// </summary>
 		/// <param name="methodBuilder"> The <see cref="System.Reflection.Emit.MethodBuilder" /> to use. </param>
 		/// <param name="method"> The method to proxy. </param>
@@ -205,8 +209,8 @@ namespace NMock2.Monitoring
 		}
 
 		/// <summary>
-		/// 	Returns an array of <see langword="string" />s that represent
-		/// 	the names of the generic type parameter.
+		/// Returns an array of <see langword="string" />s that represent
+		/// the names of the generic type parameter.
 		/// </summary>
 		/// <param name="args"> The parameter info array. </param>
 		/// <returns> An array containing parameter names. </returns>
@@ -220,8 +224,8 @@ namespace NMock2.Monitoring
 		}
 
 		/// <summary>
-		/// 	Returns an array of parameter <see cref="System.Type" />s for the
-		/// 	specified parameter info array.
+		/// Returns an array of parameter <see cref="System.Type" />s for the
+		/// specified parameter info array.
 		/// </summary>
 		/// <param name="args"> The parameter info array. </param>
 		/// <returns> An array containing parameter <see cref="System.Type" /> s. </returns>
@@ -247,7 +251,7 @@ namespace NMock2.Monitoring
 					this.GetMockedType(
 						Id(new Type[] { mockedType, typeof(IMockObject) }), mockedType),
 					new object[] { mockery, mockedType, name })
-				as MockObject;
+					as MockObject;
 		}
 
 		private Type CreateType(string typeName, Type mockedType)
@@ -286,7 +290,7 @@ namespace NMock2.Monitoring
 			#region Constructors/Destructors
 
 			/// <summary>
-			/// 	Initializes a new instance of the <see cref="TypeId" /> class.
+			/// Initializes a new instance of the <see cref="TypeId" /> class.
 			/// </summary>
 			/// <param name="types"> The types. </param>
 			public TypeId(params Type[] types)

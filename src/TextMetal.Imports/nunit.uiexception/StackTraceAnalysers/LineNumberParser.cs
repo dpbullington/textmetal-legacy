@@ -10,13 +10,13 @@ using NUnit.UiException.StackTraceAnalyzers;
 namespace NUnit.UiException.StackTraceAnalysers
 {
 	/// <summary>
-	/// 	LineNumberParser tries to match a line number information
-	/// 	given in a stack trace line. It relies on the following
-	/// 	assumptions:
-	/// 	- the line number is located after the last ':' character,
-	/// 	- the line number is not part of a word,
-	/// 	- there cannot be more than one line number after the last ':'
-	/// 	- the line number must be > 0
+	/// LineNumberParser tries to match a line number information
+	/// given in a stack trace line. It relies on the following
+	/// assumptions:
+	/// - the line number is located after the last ':' character,
+	/// - the line number is not part of a word,
+	/// - there cannot be more than one line number after the last ':'
+	/// - the line number must be > 0
 	/// </summary>
 	public class LineNumberParser :
 		IErrorParser
@@ -24,9 +24,9 @@ namespace NUnit.UiException.StackTraceAnalysers
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Reads args.Input and try to locate a line number information.
-		/// 	If a match occurs the method fills args.Line with the identified
-		/// 	integer.
+		/// Reads args.Input and try to locate a line number information.
+		/// If a match occurs the method fills args.Line with the identified
+		/// integer.
 		/// </summary>
 		/// <param name="parser"> The StackTraceParser instance. The parameter cannot be null. </param>
 		/// <param name="args"> The RawError instance from where read and write Input and Line properties. The parameter cannot be null. </param>
@@ -65,8 +65,8 @@ namespace NUnit.UiException.StackTraceAnalysers
 					// but rejects values like: "line42"
 
 					if (startIndex > 0 &&
-					    error[startIndex - 1] != ' ' &&
-					    error[startIndex - 1] != ':')
+						error[startIndex - 1] != ' ' &&
+						error[startIndex - 1] != ':')
 						return (-1);
 
 					break;

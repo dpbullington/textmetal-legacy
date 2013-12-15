@@ -12,11 +12,11 @@ using NUnit.Core.Extensibility;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	ExtensionHost is the abstract base class used for
-	/// 	all extension hosts. It provides an array of 
-	/// 	extension points and a FrameworkRegistry and
-	/// 	implements the IExtensionHost interface. Derived
-	/// 	classes must initialize the extension points.
+	/// ExtensionHost is the abstract base class used for
+	/// all extension hosts. It provides an array of
+	/// extension points and a FrameworkRegistry and
+	/// implements the IExtensionHost interface. Derived
+	/// classes must initialize the extension points.
 	/// </summary>
 	public abstract class ExtensionHost : IExtensionHost
 	{

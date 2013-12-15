@@ -7,6 +7,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 #if CLR_2_0 || CLR_4_0
 
 #endif
@@ -14,15 +15,15 @@ using System.Collections.Generic;
 namespace NUnit.Framework.Constraints
 {
 	/// <summary>
-	/// 	ComparisonAdapter class centralizes all comparisons of
-	/// 	values in NUnit, adapting to the use of any provided
-	/// 	IComparer, IComparer&lt;T&gt; or Comparison&lt;T&gt;
+	/// ComparisonAdapter class centralizes all comparisons of
+	/// values in NUnit, adapting to the use of any provided
+	/// IComparer, IComparer&lt;T&gt; or Comparison&lt;T&gt;
 	/// </summary>
 	public abstract class ComparisonAdapter
 	{
 		/// <summary>
-		/// 	Gets the default ComparisonAdapter, which wraps an
-		/// 	NUnitComparer object.
+		/// Gets the default ComparisonAdapter, which wraps an
+		/// NUnitComparer object.
 		/// </summary>
 		public static ComparisonAdapter Default
 		{
@@ -33,7 +34,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Returns a ComparisonAdapter that wraps an IComparer
+		/// Returns a ComparisonAdapter that wraps an IComparer
 		/// </summary>
 		public static ComparisonAdapter For(IComparer comparer)
 		{
@@ -42,7 +43,7 @@ namespace NUnit.Framework.Constraints
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Returns a ComparisonAdapter that wraps an IComparer&lt;T&gt;
+		/// Returns a ComparisonAdapter that wraps an IComparer&lt;T&gt;
 		/// </summary>
 		public static ComparisonAdapter For<T>(IComparer<T> comparer)
 		{
@@ -50,7 +51,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Returns a ComparisonAdapter that wraps a Comparison&lt;T&gt;
+		/// Returns a ComparisonAdapter that wraps a Comparison&lt;T&gt;
 		/// </summary>
 		public static ComparisonAdapter For<T>(Comparison<T> comparer)
 		{
@@ -59,7 +60,7 @@ namespace NUnit.Framework.Constraints
 #endif
 
 		/// <summary>
-		/// 	Compares two objects
+		/// Compares two objects
 		/// </summary>
 		public abstract int Compare(object expected, object actual);
 
@@ -68,7 +69,7 @@ namespace NUnit.Framework.Constraints
 			#region Constructors/Destructors
 
 			/// <summary>
-			/// 	Construct a default ComparisonAdapter
+			/// Construct a default ComparisonAdapter
 			/// </summary>
 			public DefaultComparisonAdapter()
 				: base(NUnitComparer.Default)
@@ -83,7 +84,7 @@ namespace NUnit.Framework.Constraints
 			#region Constructors/Destructors
 
 			/// <summary>
-			/// 	Construct a ComparisonAdapter for an IComparer
+			/// Construct a ComparisonAdapter for an IComparer
 			/// </summary>
 			public ComparerAdapter(IComparer comparer)
 			{
@@ -101,7 +102,7 @@ namespace NUnit.Framework.Constraints
 			#region Methods/Operators
 
 			/// <summary>
-			/// 	Compares two objects
+			/// Compares two objects
 			/// </summary>
 			/// <param name="expected"> </param>
 			/// <param name="actual"> </param>
@@ -116,16 +117,16 @@ namespace NUnit.Framework.Constraints
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	ComparisonAdapter&lt;T&gt; extends ComparisonAdapter and
-		/// 	allows use of an IComparer&lt;T&gt; or Comparison&lt;T&gt;
-		/// 	to actually perform the comparison.
+		/// ComparisonAdapter&lt;T&gt; extends ComparisonAdapter and
+		/// allows use of an IComparer&lt;T&gt; or Comparison&lt;T&gt;
+		/// to actually perform the comparison.
 		/// </summary>
 		private class ComparerAdapter<T> : ComparisonAdapter
 		{
 			#region Constructors/Destructors
 
 			/// <summary>
-			/// 	Construct a ComparisonAdapter for an IComparer&lt;T&gt;
+			/// Construct a ComparisonAdapter for an IComparer&lt;T&gt;
 			/// </summary>
 			public ComparerAdapter(IComparer<T> comparer)
 			{
@@ -143,7 +144,7 @@ namespace NUnit.Framework.Constraints
 			#region Methods/Operators
 
 			/// <summary>
-			/// 	Compare a Type T to an object
+			/// Compare a Type T to an object
 			/// </summary>
 			public override int Compare(object expected, object actual)
 			{
@@ -164,7 +165,7 @@ namespace NUnit.Framework.Constraints
 			#region Constructors/Destructors
 
 			/// <summary>
-			/// 	Construct a ComparisonAdapter for a Comparison&lt;T&gt;
+			/// Construct a ComparisonAdapter for a Comparison&lt;T&gt;
 			/// </summary>
 			public ComparisonAdapterForComparison(Comparison<T> comparer)
 			{
@@ -182,7 +183,7 @@ namespace NUnit.Framework.Constraints
 			#region Methods/Operators
 
 			/// <summary>
-			/// 	Compare a Type T to an object
+			/// Compare a Type T to an object
 			/// </summary>
 			public override int Compare(object expected, object actual)
 			{

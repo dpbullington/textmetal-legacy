@@ -49,8 +49,8 @@ namespace NUnit.Core
 
 				default:
 					return char.IsControl(c) || (int)c > 128
-						       ? string.Format("\\x{0:X4}", (int)c)
-						       : c.ToString();
+						? string.Format("\\x{0:X4}", (int)c)
+						: c.ToString();
 			}
 		}
 
@@ -93,8 +93,8 @@ namespace NUnit.Core
 		private static string GetDisplayString(object arg)
 		{
 			string display = arg == null
-				                 ? "null"
-				                 : Convert.ToString(arg, CultureInfo.InvariantCulture);
+				? "null"
+				: Convert.ToString(arg, CultureInfo.InvariantCulture);
 
 			if (arg is double)
 			{

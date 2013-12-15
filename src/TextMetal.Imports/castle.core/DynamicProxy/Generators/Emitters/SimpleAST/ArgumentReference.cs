@@ -12,28 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Diagnostics;
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
 	using System;
-	using System.Diagnostics;
-	using System.Reflection.Emit;
 
 	[DebuggerDisplay("argument {Type}")]
 	public class ArgumentReference : TypeReference
 	{
+		#region Constructors/Destructors
+
 		public ArgumentReference(Type argumentType)
 			: base(argumentType)
 		{
-			Position = -1;
+			this.Position = -1;
 		}
 
 		public ArgumentReference(Type argumentType, int position)
 			: base(argumentType)
 		{
-			Position = position;
+			this.Position = position;
 		}
 
-		internal int Position { get; set; }
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		internal int Position
+		{
+			get;
+			set;
+		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		public override void LoadAddressOfReference(ILGenerator gen)
 		{
@@ -42,11 +57,9 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 
 		public override void LoadReference(ILGenerator gen)
 		{
-			if (Position == -1)
-			{
+			if (this.Position == -1)
 				throw new ProxyGenerationException("ArgumentReference unitialized");
-			}
-			switch (Position)
+			switch (this.Position)
 			{
 				case 0:
 					gen.Emit(OpCodes.Ldarg_0);
@@ -61,18 +74,18 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 					gen.Emit(OpCodes.Ldarg_3);
 					break;
 				default:
-					gen.Emit(OpCodes.Ldarg_S, Position);
+					gen.Emit(OpCodes.Ldarg_S, this.Position);
 					break;
 			}
 		}
 
 		public override void StoreReference(ILGenerator gen)
 		{
-			if (Position == -1)
-			{
+			if (this.Position == -1)
 				throw new ProxyGenerationException("ArgumentReference unitialized");
-			}
-			gen.Emit(OpCodes.Starg, Position);
+			gen.Emit(OpCodes.Starg, this.Position);
 		}
+
+		#endregion
 	}
 }

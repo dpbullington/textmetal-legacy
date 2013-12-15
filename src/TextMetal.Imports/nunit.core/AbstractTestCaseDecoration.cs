@@ -11,8 +11,8 @@ using System.Collections.Specialized;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	TestDecorator is used to add functionality to
-	/// 	another Test, which it aggregates.
+	/// TestDecorator is used to add functionality to
+	/// another Test, which it aggregates.
 	/// </summary>
 	public abstract class TestDecorator : TestMethod
 	{

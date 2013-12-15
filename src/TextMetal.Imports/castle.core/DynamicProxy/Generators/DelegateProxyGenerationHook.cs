@@ -12,25 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection;
+
 namespace Castle.DynamicProxy.Generators
 {
 	using System;
-	using System.Reflection;
 
 	public class DelegateProxyGenerationHook : IProxyGenerationHook
 	{
+		#region Methods/Operators
+
 		public override bool Equals(object obj)
 		{
 			if (ReferenceEquals(null, obj))
-			{
 				return false;
-			}
 			return obj.GetType() == typeof(DelegateProxyGenerationHook);
 		}
 
 		public override int GetHashCode()
 		{
-			return GetType().GetHashCode();
+			return this.GetType().GetHashCode();
 		}
 
 		public void MethodsInspected()
@@ -45,5 +46,7 @@ namespace Castle.DynamicProxy.Generators
 		{
 			return methodInfo.Name.Equals("Invoke");
 		}
+
+		#endregion
 	}
 }

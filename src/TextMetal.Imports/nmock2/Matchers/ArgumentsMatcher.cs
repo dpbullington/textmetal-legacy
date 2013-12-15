@@ -25,14 +25,14 @@ using NMock2.Monitoring;
 namespace NMock2.Matchers
 {
 	/// <summary>
-	/// 	Matcher that checks whether parameters of a method match with the specified list of matchers.
+	/// Matcher that checks whether parameters of a method match with the specified list of matchers.
 	/// </summary>
 	public class ArgumentsMatcher : Matcher
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="ArgumentsMatcher" /> class.
+		/// Initializes a new instance of the <see cref="ArgumentsMatcher" /> class.
 		/// </summary>
 		/// <param name="valueMatchers"> The value matchers. This is an ordered list of matchers, each matching a single method argument. </param>
 		public ArgumentsMatcher(params Matcher[] valueMatchers)
@@ -45,12 +45,12 @@ namespace NMock2.Matchers
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Stores the out parameter.
+		/// Stores the out parameter.
 		/// </summary>
 		private static readonly object OutParameter = new object();
 
 		/// <summary>
-		/// 	Stores the valuematchers given at initialization.
+		/// Stores the valuematchers given at initialization.
 		/// </summary>
 		private readonly Matcher[] valueMatchers;
 
@@ -59,7 +59,7 @@ namespace NMock2.Matchers
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public override void DescribeTo(TextWriter writer)
@@ -70,7 +70,7 @@ namespace NMock2.Matchers
 		}
 
 		/// <summary>
-		/// 	Returns the last argument matcher.
+		/// Returns the last argument matcher.
 		/// </summary>
 		/// <returns> Argument matcher </returns>
 		protected Matcher LastMatcher()
@@ -79,7 +79,7 @@ namespace NMock2.Matchers
 		}
 
 		/// <summary>
-		/// 	Number of argument matchers.
+		/// Number of argument matchers.
 		/// </summary>
 		/// <returns> Returns the number of argument matchers. </returns>
 		protected int MatcherCount()
@@ -88,7 +88,7 @@ namespace NMock2.Matchers
 		}
 
 		/// <summary>
-		/// 	Matches the specified object to this matcher and returns whether it matches.
+		/// Matches the specified object to this matcher and returns whether it matches.
 		/// </summary>
 		/// <param name="o"> The object to match. </param>
 		/// <returns> Whether the object is an <see cref="Invocation" /> and all method arguments match their corresponding matcher. </returns>
@@ -115,11 +115,11 @@ namespace NMock2.Matchers
 		private bool MatchesArguments(Invocation invocation)
 		{
 			return invocation.Parameters.Count == this.valueMatchers.Length
-			       && this.MatchesArgumentValues(invocation);
+					&& this.MatchesArgumentValues(invocation);
 		}
 
 		/// <summary>
-		/// 	Writes the list of matchers to a <see cref="TextWriter" />.
+		/// Writes the list of matchers to a <see cref="TextWriter" />.
 		/// </summary>
 		/// <param name="listLength"> Length of the list. </param>
 		/// <param name="writer"> The writer. </param>
@@ -139,14 +139,14 @@ namespace NMock2.Matchers
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		/// <summary>
-		/// 	Matcher that matches method out parameters.
+		/// Matcher that matches method out parameters.
 		/// </summary>
 		public class OutMatcher : Matcher
 		{
 			#region Methods/Operators
 
 			/// <summary>
-			/// 	Describes this object.
+			/// Describes this object.
 			/// </summary>
 			/// <param name="writer"> The text writer the description is added to. </param>
 			public override void DescribeTo(TextWriter writer)
@@ -155,7 +155,7 @@ namespace NMock2.Matchers
 			}
 
 			/// <summary>
-			/// 	Matches the specified object to this matcher and returns whether it matches.
+			/// Matches the specified object to this matcher and returns whether it matches.
 			/// </summary>
 			/// <param name="o"> The object to match. </param>
 			/// <returns> Whether the object mached is an out parameter. </returns>

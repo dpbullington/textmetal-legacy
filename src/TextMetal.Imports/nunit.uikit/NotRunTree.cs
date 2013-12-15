@@ -13,7 +13,7 @@ using NUnit.Util;
 namespace NUnit.UiKit
 {
 	/// <summary>
-	/// 	Summary description for NotRunTree.
+	/// Summary description for NotRunTree.
 	/// </summary>
 	public class NotRunTree : TreeView, TestObserver
 	{

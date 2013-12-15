@@ -8,56 +8,55 @@
 using System;
 using System.Configuration;
 using System.Xml;
+
 using Intelligencia.UrlRewriter.Utilities;
 
 namespace Intelligencia.UrlRewriter
 {
-    /// <summary>
-    /// Extension methods for the XmlNode class.
-    /// </summary>
-    internal static class XmlNodeExtensions
-    {
-        /// <summary>
-        /// Gets a required attribute from an XML node.
-        /// Throws an error if the required attribute is missing or empty (blank).
-        /// </summary>
-        /// <param name="node">The XML node</param>
-        /// <param name="attributeName">The XML attribute name</param>
-        /// <returns>The attribute value</returns>
-        public static string GetRequiredAttribute(this XmlNode node, string attributeName)
-        {
-            return node.GetRequiredAttribute(attributeName, false);
-        }
+	/// <summary>
+	/// Extension methods for the XmlNode class.
+	/// </summary>
+	internal static class XmlNodeExtensions
+	{
+		#region Methods/Operators
 
-        /// <summary>
-        /// Gets a required attribute from an XML node.
-        /// Throws an error if the required attribute is missing.
-        /// Throws an error if the required attribute is empty (blank) and allowBlank is set to false.
-        /// or empty (blank).
-        /// </summary>
-        /// <param name="node">The XML node</param>
-        /// <param name="attributeName">The XML attribute name</param>
-        /// <param name="allowBlank">Blank (empty) values okay?</param>
-        /// <returns>The attribute value</returns>
-        public static string GetRequiredAttribute(this XmlNode node, string attributeName, bool allowBlank)
-        {
-            if (node == null)
-            {
-                throw new ArgumentNullException("node");
-            }
+		/// <summary>
+		/// Gets a required attribute from an XML node.
+		/// Throws an error if the required attribute is missing or empty (blank).
+		/// </summary>
+		/// <param name="node"> The XML node </param>
+		/// <param name="attributeName"> The XML attribute name </param>
+		/// <returns> The attribute value </returns>
+		public static string GetRequiredAttribute(this XmlNode node, string attributeName)
+		{
+			return node.GetRequiredAttribute(attributeName, false);
+		}
 
-            XmlNode attribute = node.Attributes.GetNamedItem(attributeName);
-            if (attribute == null)
-            {
-                throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.AttributeRequired, attributeName), node);
-            }
+		/// <summary>
+		/// Gets a required attribute from an XML node.
+		/// Throws an error if the required attribute is missing.
+		/// Throws an error if the required attribute is empty (blank) and allowBlank is set to false.
+		/// or empty (blank).
+		/// </summary>
+		/// <param name="node"> The XML node </param>
+		/// <param name="attributeName"> The XML attribute name </param>
+		/// <param name="allowBlank"> Blank (empty) values okay? </param>
+		/// <returns> The attribute value </returns>
+		public static string GetRequiredAttribute(this XmlNode node, string attributeName, bool allowBlank)
+		{
+			if (node == null)
+				throw new ArgumentNullException("node");
 
-            if (attribute.Value.Length == 0 && !allowBlank)
-            {
-                throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.AttributeCannotBeBlank, attributeName), node);
-            }
+			XmlNode attribute = node.Attributes.GetNamedItem(attributeName);
+			if (attribute == null)
+				throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.AttributeRequired, attributeName), node);
 
-            return attribute.Value;
-        }
-    }
+			if (attribute.Value.Length == 0 && !allowBlank)
+				throw new ConfigurationErrorsException(MessageProvider.FormatString(Message.AttributeCannotBeBlank, attributeName), node);
+
+			return attribute.Value;
+		}
+
+		#endregion
+	}
 }

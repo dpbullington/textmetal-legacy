@@ -12,22 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
 namespace Castle.DynamicProxy.Generators.Emitters
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Reflection;
 #if !SILVERLIGHT
 	using System.Security;
 	using System.Security.Permissions;
+
 #endif
 
 	public static class StrongNameUtil
 	{
 		private static readonly IDictionary<Assembly, bool> signedAssemblyCache = new Dictionary<Assembly, bool>();
 		private static readonly object lockObject = new object();
-
 
 #if DOTNET40
 		[SecuritySafeCritical]
@@ -49,7 +50,6 @@ namespace Castle.DynamicProxy.Generators.Emitters
 			}
 #endif
 		}
-
 
 		public static bool IsAssemblySigned(this Assembly assembly)
 		{
@@ -78,13 +78,15 @@ namespace Castle.DynamicProxy.Generators.Emitters
 		public static bool IsAnyTypeFromUnsignedAssembly(Type baseType, IEnumerable<Type> interfaces)
 		{
 			if (baseType != null && baseType.Assembly.IsAssemblySigned() == false)
-			{
 				return true;
-			}
 
 			return IsAnyTypeFromUnsignedAssembly(interfaces);
 		}
 
-		public static bool CanStrongNameAssembly { get; set; }
+		public static bool CanStrongNameAssembly
+		{
+			get;
+			set;
+		}
 	}
 }

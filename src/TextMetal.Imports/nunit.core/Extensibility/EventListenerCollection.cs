@@ -9,8 +9,8 @@ using System;
 namespace NUnit.Core.Extensibility
 {
 	/// <summary>
-	/// 	EventListenerCollection holds multiple event listeners
-	/// 	and relays all event calls to each of them.
+	/// EventListenerCollection holds multiple event listeners
+	/// and relays all event calls to each of them.
 	/// </summary>
 	public class EventListenerCollection : ExtensionPoint, EventListener
 	{

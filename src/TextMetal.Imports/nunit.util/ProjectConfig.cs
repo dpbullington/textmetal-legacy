@@ -34,42 +34,42 @@ namespace NUnit.Util
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	List of the names of the assemblies
+		/// List of the names of the assemblies
 		/// </summary>
 		private AssemblyList assemblies;
 
 		/// <summary>
-		/// 	Base path specific to this configuration
+		/// Base path specific to this configuration
 		/// </summary>
 		private string basePath;
 
 		/// <summary>
-		/// 	Private bin path, if specified
+		/// Private bin path, if specified
 		/// </summary>
 		private string binPath;
 
 		/// <summary>
-		/// 	True if assembly paths should be added to bin path
+		/// True if assembly paths should be added to bin path
 		/// </summary>
 		private BinPathType binPathType = BinPathType.Auto;
 
 		/// <summary>
-		/// 	Our configuration file, if specified
+		/// Our configuration file, if specified
 		/// </summary>
 		private string configFile;
 
 		/// <summary>
-		/// 	The name of this config
+		/// The name of this config
 		/// </summary>
 		private string name;
 
 		/// <summary>
-		/// 	IProject interface of containing project
+		/// IProject interface of containing project
 		/// </summary>
 		protected NUnitProject project = null;
 
 		/// <summary>
-		/// 	The CLR under which tests are to be run
+		/// The CLR under which tests are to be run
 		/// </summary>
 		private RuntimeFramework runtimeFramework;
 
@@ -78,7 +78,7 @@ namespace NUnit.Util
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Return our AssemblyList
+		/// Return our AssemblyList
 		/// </summary>
 		public AssemblyList Assemblies
 		{
@@ -89,8 +89,8 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	The base directory for this config - used
-		/// 	as the application base for loading tests.
+		/// The base directory for this config - used
+		/// as the application base for loading tests.
 		/// </summary>
 		public string BasePath
 		{
@@ -123,7 +123,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	How our PrivateBinPath is generated
+		/// How our PrivateBinPath is generated
 		/// </summary>
 		public BinPathType BinPathType
 		{
@@ -146,8 +146,8 @@ namespace NUnit.Util
 			get
 			{
 				return this.configFile == null && this.project != null
-					       ? this.project.ConfigurationFile
-					       : this.configFile;
+					? this.project.ConfigurationFile
+					: this.configFile;
 			}
 			set
 			{
@@ -164,8 +164,8 @@ namespace NUnit.Util
 			get
 			{
 				return this.BasePath != null && this.ConfigurationFile != null
-					       ? Path.Combine(this.BasePath, this.ConfigurationFile)
-					       : this.ConfigurationFile;
+					? Path.Combine(this.BasePath, this.ConfigurationFile)
+					: this.ConfigurationFile;
 			}
 		}
 
@@ -194,8 +194,8 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	The Path.PathSeparator-separated path containing all the
-		/// 	assemblies in the list.
+		/// The Path.PathSeparator-separated path containing all the
+		/// assemblies in the list.
 		/// </summary>
 		public string PrivateBinPath
 		{
@@ -231,7 +231,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	The base path relative to the project base
+		/// The base path relative to the project base
 		/// </summary>
 		public string RelativeBasePath
 		{

@@ -12,15 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System.Reflection.Emit;
-
 	public class AssignArrayStatement : Statement
 	{
-		private readonly Reference targetArray;
-		private readonly int targetPosition;
-		private readonly Expression value;
+		#region Constructors/Destructors
 
 		public AssignArrayStatement(Reference targetArray, int targetPosition, Expression value)
 		{
@@ -29,15 +27,29 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 			this.value = value;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly Reference targetArray;
+		private readonly int targetPosition;
+		private readonly Expression value;
+
+		#endregion
+
+		#region Methods/Operators
+
 		public override void Emit(IMemberEmitter member, ILGenerator il)
 		{
-			ArgumentsUtil.EmitLoadOwnerAndReference(targetArray, il);
+			ArgumentsUtil.EmitLoadOwnerAndReference(this.targetArray, il);
 
-			il.Emit(OpCodes.Ldc_I4, targetPosition);
+			il.Emit(OpCodes.Ldc_I4, this.targetPosition);
 
-			value.Emit(member, il);
+			this.value.Emit(member, il);
 
 			il.Emit(OpCodes.Stelem_Ref);
 		}
+
+		#endregion
 	}
 }

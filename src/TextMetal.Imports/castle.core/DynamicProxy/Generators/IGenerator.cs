@@ -12,12 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Castle.DynamicProxy.Generators.Emitters;
+
 namespace Castle.DynamicProxy.Generators
 {
-	using Castle.DynamicProxy.Generators.Emitters;
-
 	public interface IGenerator<T>
 	{
+		#region Methods/Operators
+
 		T Generate(ClassEmitter @class, ProxyGenerationOptions options, INamingScope namingScope);
+
+		#endregion
 	}
 }

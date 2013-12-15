@@ -12,16 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections;
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
-	using System.Collections;
 
 	public interface IXmlCollectionAccessor : IXmlAccessor
 	{
+		#region Methods/Operators
+
+		void GetCollectionItems(IXmlNode parentNode, IDictionaryAdapter parentObject, XmlReferenceManager references, IList values);
+
 		IXmlCursor SelectCollectionItems(IXmlNode parentNode, bool mutable);
-		void       GetCollectionItems   (IXmlNode parentNode, IDictionaryAdapter parentObject, XmlReferenceManager references, IList values);
+
+		#endregion
 	}
 }
+
 #endif

@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System.Reflection.Emit;
-
 	public abstract class Reference
 	{
-		protected Reference owner = SelfReference.Self;
+		#region Constructors/Destructors
 
 		protected Reference()
 		{
@@ -29,10 +29,34 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 			this.owner = owner;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		protected Reference owner = SelfReference.Self;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
 		public Reference OwnerReference
 		{
-			get { return owner; }
-			set { owner = value; }
+			get
+			{
+				return this.owner;
+			}
+			set
+			{
+				this.owner = value;
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		public virtual void Generate(ILGenerator gen)
+		{
 		}
 
 		public abstract void LoadAddressOfReference(ILGenerator gen);
@@ -40,10 +64,6 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 		public abstract void LoadReference(ILGenerator gen);
 
 		public abstract void StoreReference(ILGenerator gen);
-
-		public virtual void Generate(ILGenerator gen)
-		{
-		}
 
 		public virtual Expression ToAddressOfExpression()
 		{
@@ -54,5 +74,7 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 		{
 			return new ReferenceExpression(this);
 		}
+
+		#endregion
 	}
 }

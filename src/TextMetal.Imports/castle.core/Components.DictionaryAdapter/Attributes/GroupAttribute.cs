@@ -22,27 +22,39 @@ namespace Castle.Components.DictionaryAdapter
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
 	public class GroupAttribute : Attribute
 	{
+		#region Constructors/Destructors
+
 		/// <summary>
 		/// Constructs a group assignment.
 		/// </summary>
-		/// <param name="group">The group name.</param>
+		/// <param name="group"> The group name. </param>
 		public GroupAttribute(object group)
 		{
-			Group = new [] { group };
+			this.Group = new[] { group };
 		}
 
 		/// <summary>
 		/// Constructs a group assignment.
 		/// </summary>
-		/// <param name="group">The group name.</param>
+		/// <param name="group"> The group name. </param>
 		public GroupAttribute(params object[] group)
 		{
-			Group = group;
+			this.Group = group;
 		}
+
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		/// <summary>
 		/// Gets the group the property is assigned to.
 		/// </summary>
-		public object[] Group { get; private set; }
+		public object[] Group
+		{
+			get;
+			private set;
+		}
+
+		#endregion
 	}
 }

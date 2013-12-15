@@ -12,15 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.ComponentModel;
+
 namespace Castle.Components.DictionaryAdapter
 {
-	using System.ComponentModel;
-
 	public class PropertyChangingEventArgsEx : PropertyChangingEventArgs
 	{
-		private readonly object oldValue;
-		private readonly object newValue;
-		private bool            cancel;
+		#region Constructors/Destructors
 
 		public PropertyChangingEventArgsEx(string propertyName, object oldValue, object newValue)
 			: base(propertyName)
@@ -29,20 +27,46 @@ namespace Castle.Components.DictionaryAdapter
 			this.newValue = newValue;
 		}
 
-		public object OldValue
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly object newValue;
+		private readonly object oldValue;
+		private bool cancel;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public bool Cancel
 		{
-			get { return oldValue; }
+			get
+			{
+				return this.cancel;
+			}
+			set
+			{
+				this.cancel = value;
+			}
 		}
 
 		public object NewValue
 		{
-			get { return newValue; }
+			get
+			{
+				return this.newValue;
+			}
 		}
 
-		public bool Cancel
+		public object OldValue
 		{
-			get { return cancel; }
-			set { cancel = value; }
+			get
+			{
+				return this.oldValue;
+			}
 		}
+
+		#endregion
 	}
 }

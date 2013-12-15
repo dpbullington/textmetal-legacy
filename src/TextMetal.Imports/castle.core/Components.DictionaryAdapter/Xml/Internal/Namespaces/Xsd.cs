@@ -12,17 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	public static class Xsd
 	{
+		#region Fields/Constants
+
 		public const string
-			Prefix       = "xsd",
 			NamespaceUri = "http://www.w3.org/2001/XMLSchema";
+
+		public const string
+			Prefix = "xsd";
 
 		internal static readonly XmlNamespaceAttribute
 			Namespace = new XmlNamespaceAttribute(NamespaceUri, Prefix) { Root = true };
+
+		#endregion
 	}
 }
+
 #endif

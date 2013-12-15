@@ -9,7 +9,7 @@ using System;
 namespace NUnit.Core.Extensibility
 {
 	/// <summary>
-	/// 	Summary description for TestFramework.
+	/// Summary description for TestFramework.
 	/// </summary>
 	[Serializable]
 	public class TestFramework
@@ -17,7 +17,7 @@ namespace NUnit.Core.Extensibility
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Constructs a TestFramwork object given its name and assembly name.
+		/// Constructs a TestFramwork object given its name and assembly name.
 		/// </summary>
 		/// <param name="frameworkName"> </param>
 		/// <param name="assemblyName"> </param>
@@ -32,12 +32,12 @@ namespace NUnit.Core.Extensibility
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The file name of the assembly that defines the framwork
+		/// The file name of the assembly that defines the framwork
 		/// </summary>
 		public string AssemblyName;
 
 		/// <summary>
-		/// 	The name of the framework
+		/// The name of the framework
 		/// </summary>
 		public string Name;
 

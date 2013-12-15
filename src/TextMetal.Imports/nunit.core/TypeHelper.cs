@@ -65,8 +65,8 @@ namespace NUnit.Core
 #endif
 			int lastdot = type.FullName.LastIndexOf('.');
 			return lastdot >= 0
-				       ? type.FullName.Substring(lastdot + 1)
-				       : type.FullName;
+				? type.FullName.Substring(lastdot + 1)
+				: type.FullName;
 		}
 
 		public static string GetDisplayName(Type type, object[] arglist)
@@ -181,16 +181,16 @@ namespace NUnit.Core
 		public static bool IsNumeric(Type type)
 		{
 			return type == typeof(double) ||
-			       type == typeof(float) ||
-			       type == typeof(decimal) ||
-			       type == typeof(Int64) ||
-			       type == typeof(Int32) ||
-			       type == typeof(Int16) ||
-			       type == typeof(UInt64) ||
-			       type == typeof(UInt32) ||
-			       type == typeof(UInt16) ||
-			       type == typeof(byte) ||
-			       type == typeof(sbyte);
+					type == typeof(float) ||
+					type == typeof(decimal) ||
+					type == typeof(Int64) ||
+					type == typeof(Int32) ||
+					type == typeof(Int16) ||
+					type == typeof(UInt64) ||
+					type == typeof(UInt32) ||
+					type == typeof(UInt16) ||
+					type == typeof(byte) ||
+					type == typeof(sbyte);
 		}
 
 #if CLR_2_0 || CLR_4_0

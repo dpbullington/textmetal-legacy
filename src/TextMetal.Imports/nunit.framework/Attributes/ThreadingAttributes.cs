@@ -10,10 +10,10 @@ using System.Threading;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	Used on a method, marks the test with a timeout value in milliseconds. 
-	/// 	The test will be run in a separate thread and is cancelled if the timeout 
-	/// 	is exceeded. Used on a method or assembly, sets the default timeout 
-	/// 	for all contained test methods.
+	/// Used on a method, marks the test with a timeout value in milliseconds.
+	/// The test will be run in a separate thread and is cancelled if the timeout
+	/// is exceeded. Used on a method or assembly, sets the default timeout
+	/// for all contained test methods.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
 	public class TimeoutAttribute : PropertyAttribute
@@ -21,7 +21,7 @@ namespace NUnit.Framework
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a TimeoutAttribute given a time in milliseconds
+		/// Construct a TimeoutAttribute given a time in milliseconds
 		/// </summary>
 		/// <param name="timeout"> The timeout value in milliseconds </param>
 		public TimeoutAttribute(int timeout)
@@ -33,11 +33,10 @@ namespace NUnit.Framework
 	}
 
 	/// <summary>
-	/// 	Marks a test that must run in the STA, causing it
-	/// 	to run in a separate thread if necessary.
-	/// 
-	/// 	On methods, you may also use STAThreadAttribute
-	/// 	to serve the same purpose.
+	/// Marks a test that must run in the STA, causing it
+	/// to run in a separate thread if necessary.
+	/// On methods, you may also use STAThreadAttribute
+	/// to serve the same purpose.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
 	public class RequiresSTAAttribute : PropertyAttribute
@@ -45,7 +44,7 @@ namespace NUnit.Framework
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a RequiresSTAAttribute
+		/// Construct a RequiresSTAAttribute
 		/// </summary>
 		public RequiresSTAAttribute()
 		{
@@ -56,11 +55,10 @@ namespace NUnit.Framework
 	}
 
 	/// <summary>
-	/// 	Marks a test that must run in the MTA, causing it
-	/// 	to run in a separate thread if necessary.
-	/// 
-	/// 	On methods, you may also use MTAThreadAttribute
-	/// 	to serve the same purpose.
+	/// Marks a test that must run in the MTA, causing it
+	/// to run in a separate thread if necessary.
+	/// On methods, you may also use MTAThreadAttribute
+	/// to serve the same purpose.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
 	public class RequiresMTAAttribute : PropertyAttribute
@@ -68,7 +66,7 @@ namespace NUnit.Framework
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a RequiresMTAAttribute
+		/// Construct a RequiresMTAAttribute
 		/// </summary>
 		public RequiresMTAAttribute()
 		{
@@ -79,7 +77,7 @@ namespace NUnit.Framework
 	}
 
 	/// <summary>
-	/// 	Marks a test that must run on a separate thread.
+	/// Marks a test that must run on a separate thread.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
 	public class RequiresThreadAttribute : PropertyAttribute
@@ -87,7 +85,7 @@ namespace NUnit.Framework
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a RequiresThreadAttribute
+		/// Construct a RequiresThreadAttribute
 		/// </summary>
 		public RequiresThreadAttribute()
 			: base(true)
@@ -95,7 +93,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Construct a RequiresThreadAttribute, specifying the apartment
+		/// Construct a RequiresThreadAttribute, specifying the apartment
 		/// </summary>
 		public RequiresThreadAttribute(ApartmentState apartment)
 			: base(true)

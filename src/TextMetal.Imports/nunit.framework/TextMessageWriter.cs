@@ -13,25 +13,25 @@ using NUnit.Framework.Constraints;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	TextMessageWriter writes constraint descriptions and messages
-	/// 	in displayable form as a text stream. It tailors the display
-	/// 	of individual message components to form the standard message
-	/// 	format of NUnit assertion failure messages.
+	/// TextMessageWriter writes constraint descriptions and messages
+	/// in displayable form as a text stream. It tailors the display
+	/// of individual message components to form the standard message
+	/// format of NUnit assertion failure messages.
 	/// </summary>
 	public class TextMessageWriter : MessageWriter
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a TextMessageWriter
+		/// Construct a TextMessageWriter
 		/// </summary>
 		public TextMessageWriter()
 		{
 		}
 
 		/// <summary>
-		/// 	Construct a TextMessageWriter, specifying a user message
-		/// 	and optional formatting arguments.
+		/// Construct a TextMessageWriter, specifying a user message
+		/// and optional formatting arguments.
 		/// </summary>
 		/// <param name="userMessage"> </param>
 		/// <param name="args"> </param>
@@ -67,17 +67,17 @@ namespace NUnit.Framework
 		private static readonly string Fmt_ValueType = "{0}";
 
 		/// <summary>
-		/// 	Prefix used for the actual value line of a message
+		/// Prefix used for the actual value line of a message
 		/// </summary>
 		public static readonly string Pfx_Actual = "  But was:  ";
 
 		/// <summary>
-		/// 	Prefix used for the expected value line of a message
+		/// Prefix used for the expected value line of a message
 		/// </summary>
 		public static readonly string Pfx_Expected = "  Expected: ";
 
 		/// <summary>
-		/// 	Length of a message prefix
+		/// Length of a message prefix
 		/// </summary>
 		public static readonly int PrefixLength = Pfx_Expected.Length;
 
@@ -88,7 +88,7 @@ namespace NUnit.Framework
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets or sets the maximum line length for this writer
+		/// Gets or sets the maximum line length for this writer
 		/// </summary>
 		public override int MaxLineLength
 		{
@@ -107,9 +107,9 @@ namespace NUnit.Framework
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Display Expected and Actual lines for a constraint. This
-		/// 	is called by MessageWriter's default implementation of 
-		/// 	WriteMessageTo and provides the generic two-line display.
+		/// Display Expected and Actual lines for a constraint. This
+		/// is called by MessageWriter's default implementation of
+		/// WriteMessageTo and provides the generic two-line display.
 		/// </summary>
 		/// <param name="constraint"> The constraint that failed </param>
 		public override void DisplayDifferences(Constraint constraint)
@@ -119,10 +119,10 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Display Expected and Actual lines for given values. This
-		/// 	method may be called by constraints that need more control over
-		/// 	the display of actual and expected values than is provided
-		/// 	by the default implementation.
+		/// Display Expected and Actual lines for given values. This
+		/// method may be called by constraints that need more control over
+		/// the display of actual and expected values than is provided
+		/// by the default implementation.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value causing the failure </param>
@@ -133,8 +133,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Display Expected and Actual lines for given values, including
-		/// 	a tolerance value on the expected line.
+		/// Display Expected and Actual lines for given values, including
+		/// a tolerance value on the expected line.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="actual"> The actual value causing the failure </param>
@@ -146,9 +146,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Display the expected and actual string values on separate lines.
-		/// 	If the mismatch parameter is >=0, an additional line is displayed
-		/// 	line containing a caret that points to the mismatch point.
+		/// Display the expected and actual string values on separate lines.
+		/// If the mismatch parameter is >=0, an additional line is displayed
+		/// line containing a caret that points to the mismatch point.
 		/// </summary>
 		/// <param name="expected"> The expected string value </param>
 		/// <param name="actual"> The actual string value </param>
@@ -159,8 +159,8 @@ namespace NUnit.Framework
 		{
 			// Maximum string we can display without truncating
 			int maxDisplayLength = this.MaxLineLength
-			                       - PrefixLength // Allow for prefix
-			                       - 2; // 2 quotation marks
+									- PrefixLength // Allow for prefix
+									- 2; // 2 quotation marks
 
 			if (clipping)
 				MsgUtils.ClipExpectedAndActual(ref expected, ref actual, maxDisplayLength, mismatch);
@@ -183,7 +183,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Write the generic 'Actual' line for a constraint
+		/// Write the generic 'Actual' line for a constraint
 		/// </summary>
 		/// <param name="constraint"> The constraint for which the actual value is to be written </param>
 		private void WriteActualLine(Constraint constraint)
@@ -194,7 +194,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Write the generic 'Actual' line for a given value
+		/// Write the generic 'Actual' line for a given value
 		/// </summary>
 		/// <param name="actual"> The actual value causing a failure </param>
 		private void WriteActualLine(object actual)
@@ -205,7 +205,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Writes the text for an actual value.
+		/// Writes the text for an actual value.
 		/// </summary>
 		/// <param name="actual"> The actual value. </param>
 		public override void WriteActualValue(object actual)
@@ -267,8 +267,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Writes the text for a collection value,
-		/// 	starting at a particular point, to a max length
+		/// Writes the text for a collection value,
+		/// starting at a particular point, to a max length
 		/// </summary>
 		/// <param name="collection"> The collection containing elements to write. </param>
 		/// <param name="start"> The starting point of the elements to write </param>
@@ -302,7 +302,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Writes the text for a connector.
+		/// Writes the text for a connector.
 		/// </summary>
 		/// <param name="connector"> The connector. </param>
 		public override void WriteConnector(string connector)
@@ -336,7 +336,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Write the generic 'Expected' line for a constraint
+		/// Write the generic 'Expected' line for a constraint
 		/// </summary>
 		/// <param name="constraint"> The constraint that failed </param>
 		private void WriteExpectedLine(Constraint constraint)
@@ -347,7 +347,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Write the generic 'Expected' line for a given value
+		/// Write the generic 'Expected' line for a given value
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		private void WriteExpectedLine(object expected)
@@ -356,8 +356,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Write the generic 'Expected' line for a given value
-		/// 	and tolerance.
+		/// Write the generic 'Expected' line for a given value
+		/// and tolerance.
 		/// </summary>
 		/// <param name="expected"> The expected value </param>
 		/// <param name="tolerance"> The tolerance within which the test was made </param>
@@ -378,7 +378,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Writes the text for an expected value.
+		/// Writes the text for an expected value.
 		/// </summary>
 		/// <param name="expected"> The expected value. </param>
 		public override void WriteExpectedValue(object expected)
@@ -402,9 +402,9 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Method to write single line  message with optional args, usually
-		/// 	written to precede the general failure message, at a givel 
-		/// 	indentation level.
+		/// Method to write single line  message with optional args, usually
+		/// written to precede the general failure message, at a givel
+		/// indentation level.
 		/// </summary>
 		/// <param name="level"> The indentation level of the message </param>
 		/// <param name="message"> The message to be written </param>
@@ -424,7 +424,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Write the text for a modifier.
+		/// Write the text for a modifier.
 		/// </summary>
 		/// <param name="modifier"> The modifier. </param>
 		public override void WriteModifier(string modifier)
@@ -433,7 +433,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Writes the text for a predicate.
+		/// Writes the text for a predicate.
 		/// </summary>
 		/// <param name="predicate"> The predicate. </param>
 		public override void WritePredicate(string predicate)
@@ -450,7 +450,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Writes the text for a generalized value.
+		/// Writes the text for a generalized value.
 		/// </summary>
 		/// <param name="val"> The value. </param>
 		public override void WriteValue(object val)

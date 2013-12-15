@@ -10,71 +10,85 @@ using System.Collections.Generic;
 
 namespace Intelligencia.UrlRewriter.Actions
 {
-    /// <summary>
-    /// A Conditional Action
-    /// </summary>
-    public class ConditionalAction : IRewriteAction, IRewriteCondition
-    {
-        /// <summary>
-        /// Conditions that must hold for the rule to fire.
-        /// </summary>
-        public IList<IRewriteCondition> Conditions
-        {
-            get { return _conditions; }
-        }
+	/// <summary>
+	/// A Conditional Action
+	/// </summary>
+	public class ConditionalAction : IRewriteAction, IRewriteCondition
+	{
+		#region Fields/Constants
 
-        /// <summary>
-        /// Child rules.
-        /// </summary>
-        public IList<IRewriteAction> Actions
-        {
-            get { return _actions; }
-        }
+		private IList<IRewriteAction> _actions = new List<IRewriteAction>();
+		private IList<IRewriteCondition> _conditions = new List<IRewriteCondition>();
 
-        /// <summary>
-        /// Determines if the action matches the current context.
-        /// </summary>
-        /// <param name="context">The context to match on.</param>
-        /// <returns>True if the condition matches.</returns>
-        public virtual bool IsMatch(RewriteContext context)
-        {
-            // Ensure the conditions are met.
-            foreach (IRewriteCondition condition in Conditions)
-            {
-                if (!condition.IsMatch(context))
-                {
-                    return false;
-                }
-            }
+		#endregion
 
-            return true;
-        }
+		#region Properties/Indexers/Events
 
-        /// <summary>
-        /// Executes the rule.
-        /// </summary>
-        /// <param name="context">The rewrite context</param>
-        public virtual RewriteProcessing Execute(RewriteContext context)
-        {
-            // Execute the actions.
-            for (int i = 0; i < Actions.Count; i++)
-            {
-                IRewriteCondition condition = Actions[i] as IRewriteCondition;
-                if (condition == null || condition.IsMatch(context))
-                {
-                    IRewriteAction action = Actions[i];
-                    RewriteProcessing processing = action.Execute(context);
-                    if (processing != RewriteProcessing.ContinueProcessing)
-                    {
-                        return processing;
-                    }
-                }
-            }
+		/// <summary>
+		/// Child rules.
+		/// </summary>
+		public IList<IRewriteAction> Actions
+		{
+			get
+			{
+				return this._actions;
+			}
+		}
 
-            return RewriteProcessing.ContinueProcessing;
-        }
+		/// <summary>
+		/// Conditions that must hold for the rule to fire.
+		/// </summary>
+		public IList<IRewriteCondition> Conditions
+		{
+			get
+			{
+				return this._conditions;
+			}
+		}
 
-        private IList<IRewriteAction> _actions = new List<IRewriteAction>();
-        private IList<IRewriteCondition> _conditions = new List<IRewriteCondition>();
-    }
+		#endregion
+
+		#region Methods/Operators
+
+		/// <summary>
+		/// Executes the rule.
+		/// </summary>
+		/// <param name="context"> The rewrite context </param>
+		public virtual RewriteProcessing Execute(RewriteContext context)
+		{
+			// Execute the actions.
+			for (int i = 0; i < this.Actions.Count; i++)
+			{
+				IRewriteCondition condition = this.Actions[i] as IRewriteCondition;
+				if (condition == null || condition.IsMatch(context))
+				{
+					IRewriteAction action = this.Actions[i];
+					RewriteProcessing processing = action.Execute(context);
+					if (processing != RewriteProcessing.ContinueProcessing)
+						return processing;
+				}
+			}
+
+			return RewriteProcessing.ContinueProcessing;
+		}
+
+		/// <summary>
+		/// Determines if the action matches the current context.
+		/// </summary>
+		/// <param name="context"> The context to match on. </param>
+		/// <returns> True if the condition matches. </returns>
+		public virtual bool IsMatch(RewriteContext context)
+		{
+			// Ensure the conditions are met.
+			foreach (IRewriteCondition condition in this.Conditions)
+			{
+				if (!condition.IsMatch(context))
+					return false;
+			}
+
+			return true;
+		}
+
+		#endregion
+	}
 }

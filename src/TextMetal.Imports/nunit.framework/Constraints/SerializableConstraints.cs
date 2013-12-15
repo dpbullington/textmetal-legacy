@@ -9,6 +9,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
+
 #if !NETCF
 #endif
 
@@ -19,8 +20,8 @@ namespace NUnit.Framework.Constraints
 	#region BinarySerializableConstraint
 
 	/// <summary>
-	/// 	BinarySerializableConstraint tests whether 
-	/// 	an object is serializable in binary format.
+	/// BinarySerializableConstraint tests whether
+	/// an object is serializable in binary format.
 	/// </summary>
 	public class BinarySerializableConstraint : Constraint
 	{
@@ -33,7 +34,7 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Returns the string representation
+		/// Returns the string representation
 		/// </summary>
 		protected override string GetStringRepresentation()
 		{
@@ -41,7 +42,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Test whether the constraint is satisfied by a given value
+		/// Test whether the constraint is satisfied by a given value
 		/// </summary>
 		/// <param name="actual"> The value to be tested </param>
 		/// <returns> True for success, false for failure </returns>
@@ -71,10 +72,10 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write the actual value for a failing constraint test to a
-		/// 	MessageWriter. The default implementation simply writes
-		/// 	the raw value of actual, leaving it to the writer to
-		/// 	perform any formatting.
+		/// Write the actual value for a failing constraint test to a
+		/// MessageWriter. The default implementation simply writes
+		/// the raw value of actual, leaving it to the writer to
+		/// perform any formatting.
 		/// </summary>
 		/// <param name="writer"> The writer on which the actual value is displayed </param>
 		public override void WriteActualValueTo(MessageWriter writer)
@@ -83,7 +84,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write the constraint description to a MessageWriter
+		/// Write the constraint description to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The writer on which the description is displayed </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -103,8 +104,8 @@ namespace NUnit.Framework.Constraints
 	#region XmlSerializableConstraint
 
 	/// <summary>
-	/// 	BinarySerializableConstraint tests whether 
-	/// 	an object is serializable in binary format.
+	/// BinarySerializableConstraint tests whether
+	/// an object is serializable in binary format.
 	/// </summary>
 	public class XmlSerializableConstraint : Constraint
 	{
@@ -117,7 +118,7 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Returns the string representation of this constraint
+		/// Returns the string representation of this constraint
 		/// </summary>
 		protected override string GetStringRepresentation()
 		{
@@ -125,7 +126,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Test whether the constraint is satisfied by a given value
+		/// Test whether the constraint is satisfied by a given value
 		/// </summary>
 		/// <param name="actual"> The value to be tested </param>
 		/// <returns> True for success, false for failure </returns>
@@ -161,10 +162,10 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write the actual value for a failing constraint test to a
-		/// 	MessageWriter. The default implementation simply writes
-		/// 	the raw value of actual, leaving it to the writer to
-		/// 	perform any formatting.
+		/// Write the actual value for a failing constraint test to a
+		/// MessageWriter. The default implementation simply writes
+		/// the raw value of actual, leaving it to the writer to
+		/// perform any formatting.
 		/// </summary>
 		/// <param name="writer"> The writer on which the actual value is displayed </param>
 		public override void WriteActualValueTo(MessageWriter writer)
@@ -173,7 +174,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write the constraint description to a MessageWriter
+		/// Write the constraint description to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The writer on which the description is displayed </param>
 		public override void WriteDescriptionTo(MessageWriter writer)

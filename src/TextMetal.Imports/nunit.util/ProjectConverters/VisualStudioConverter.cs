@@ -13,7 +13,7 @@ using NUnit.Util.Extensibility;
 namespace NUnit.Util.ProjectConverters
 {
 	/// <summary>
-	/// 	Summary description for VSProjectLoader.
+	/// Summary description for VSProjectLoader.
 	/// </summary>
 	public class VisualStudioConverter : IProjectConverter
 	{
@@ -142,8 +142,8 @@ namespace NUnit.Util.ProjectConverters
 			else if (VSProject.IsSolutionFile(path))
 			{
 				return Services.UserSettings.GetSetting("Options.TestLoader.VisualStudio.UseSolutionConfigs", true)
-					       ? ConvertVSSolution(path)
-					       : LegacyConvertVSSolution(path);
+					? ConvertVSSolution(path)
+					: LegacyConvertVSSolution(path);
 			}
 
 			return null;

@@ -11,19 +11,17 @@ using System.Reflection;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Helper methods for inspecting a type by reflection. 
-	/// 
-	/// 	Many of these methods take ICustomAttributeProvider as an 
-	/// 	argument to avoid duplication, even though certain attributes can 
-	/// 	only appear on specific types of members, like MethodInfo or Type.
-	/// 
-	/// 	In the case where a type is being examined for the presence of
-	/// 	an attribute, interface or named member, the Reflect methods
-	/// 	operate with the full name of the member being sought. This
-	/// 	removes the necessity of the caller having a reference to the
-	/// 	assembly that defines the item being sought and allows the
-	/// 	NUnit core to inspect assemblies that reference an older
-	/// 	version of the NUnit framework.
+	/// Helper methods for inspecting a type by reflection.
+	/// Many of these methods take ICustomAttributeProvider as an
+	/// argument to avoid duplication, even though certain attributes can
+	/// only appear on specific types of members, like MethodInfo or Type.
+	/// In the case where a type is being examined for the presence of
+	/// an attribute, interface or named member, the Reflect methods
+	/// operate with the full name of the member being sought. This
+	/// removes the necessity of the caller having a reference to the
+	/// assembly that defines the item being sought and allows the
+	/// NUnit core to inspect assemblies that reference an older
+	/// version of the NUnit framework.
 	/// </summary>
 	public class Reflect
 	{
@@ -32,7 +30,7 @@ namespace NUnit.Core
 		#region Attributes 
 
 		/// <summary>
-		/// 	Check presence of attribute of a given type on a member.
+		/// Check presence of attribute of a given type on a member.
 		/// </summary>
 		/// <param name="member"> The member to examine </param>
 		/// <param name="attrName"> The FullName of the attribute type to look for </param>
@@ -49,8 +47,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Get attribute of a given type on a member. If multiple attributes
-		/// 	of a type are present, the first one found is returned.
+		/// Get attribute of a given type on a member. If multiple attributes
+		/// of a type are present, the first one found is returned.
 		/// </summary>
 		/// <param name="member"> The member to examine </param>
 		/// <param name="attrName"> The FullName of the attribute type to look for </param>
@@ -67,7 +65,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Get all attributes of a given type on a member.
+		/// Get all attributes of a given type on a member.
 		/// </summary>
 		/// <param name="member"> The member to examine </param>
 		/// <param name="attrName"> The FullName of the attribute type to look for </param>
@@ -86,7 +84,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Get all attributes on a member.
+		/// Get all attributes on a member.
 		/// </summary>
 		/// <param name="member"> The member to examine </param>
 		/// <param name="inherit"> True to include inherited attributes </param>
@@ -108,7 +106,7 @@ namespace NUnit.Core
 		#region Interfaces
 
 		/// <summary>
-		/// 	Check to see if a type implements a named interface.
+		/// Check to see if a type implements a named interface.
 		/// </summary>
 		/// <param name="fixtureType"> The type to examine </param>
 		/// <param name="interfaceName"> The FullName of the interface to check for </param>
@@ -129,7 +127,7 @@ namespace NUnit.Core
 
 		//SHMARYA: [ 10/12/2005 ]
 		/// <summary>
-		/// 	Checks to see if a type inherits from a named type.
+		/// Checks to see if a type inherits from a named type.
 		/// </summary>
 		/// <param name="type"> The type to examine </param>
 		/// <param name="parentType"> The FullName of the inherited type to look for </param>
@@ -161,7 +159,7 @@ namespace NUnit.Core
 		#region Get Methods of a type
 
 		/// <summary>
-		/// 	Find the default constructor on a type
+		/// Find the default constructor on a type
 		/// </summary>
 		/// <param name="fixtureType"> </param>
 		/// <returns> </returns>
@@ -171,8 +169,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Examine a fixture type and return an array of methods having a 
-		/// 	particular attribute. The array is order with base methods first.
+		/// Examine a fixture type and return an array of methods having a
+		/// particular attribute. The array is order with base methods first.
 		/// </summary>
 		/// <param name="fixtureType"> The type to examine </param>
 		/// <param name="attributeName"> The FullName of the attribute to look for </param>
@@ -226,8 +224,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Examine a fixture type and return true if it has a method with
-		/// 	a particular attribute.
+		/// Examine a fixture type and return true if it has a method with
+		/// a particular attribute.
 		/// </summary>
 		/// <param name="fixtureType"> The type to examine </param>
 		/// <param name="attributeName"> The FullName of the attribute to look for </param>
@@ -244,8 +242,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Examine a fixture type and get a method with a particular name.
-		/// 	In the case of overloads, the first one found is returned.
+		/// Examine a fixture type and get a method with a particular name.
+		/// In the case of overloads, the first one found is returned.
 		/// </summary>
 		/// <param name="fixtureType"> The type to examine </param>
 		/// <param name="methodName"> The name of the method </param>
@@ -262,15 +260,15 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Examine a fixture type and get a method with a particular name and list
-		/// 	of arguments. In the case of overloads, the first one found is returned.
+		/// Examine a fixture type and get a method with a particular name and list
+		/// of arguments. In the case of overloads, the first one found is returned.
 		/// </summary>
 		/// <param name="fixtureType"> The type to examine </param>
 		/// <param name="methodName"> The name of the method </param>
 		/// <param name="argTypes"> The full names of the argument types to search for </param>
 		/// <returns> A MethodInfo or null </returns>
 		public static MethodInfo GetNamedMethod(Type fixtureType, string methodName,
-		                                        string[] argTypes)
+			string[] argTypes)
 		{
 			foreach (MethodInfo method in GetMethods(fixtureType))
 			{
@@ -303,8 +301,8 @@ namespace NUnit.Core
 		#region Get Properties of a type
 
 		/// <summary>
-		/// 	Examine a type and return a property having a particular attribute.
-		/// 	In the case of multiple methods, the first one found is returned.
+		/// Examine a type and return a property having a particular attribute.
+		/// In the case of multiple methods, the first one found is returned.
 		/// </summary>
 		/// <param name="fixtureType"> The type to examine </param>
 		/// <param name="attributeName"> The FullName of the attribute to look for </param>
@@ -321,8 +319,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Examine a type and get a property with a particular name.
-		/// 	In the case of overloads, the first one found is returned.
+		/// Examine a type and get a property with a particular name.
+		/// In the case of overloads, the first one found is returned.
 		/// </summary>
 		/// <param name="type"> The type to examine </param>
 		/// <param name="bindingFlags"> BindingFlags to use </param>
@@ -333,7 +331,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Get the value of a named property on an object using binding flags of Public and Instance
+		/// Get the value of a named property on an object using binding flags of Public and Instance
 		/// </summary>
 		/// <param name="obj"> The object for which the property value is needed </param>
 		/// <param name="name"> The name of a non-indexed property of the object </param>
@@ -344,7 +342,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Get the value of a named property on an object
+		/// Get the value of a named property on an object
 		/// </summary>
 		/// <param name="obj"> The object for which the property value is needed </param>
 		/// <param name="name"> The name of a non-indexed property of the object </param>
@@ -364,7 +362,7 @@ namespace NUnit.Core
 		#region Invoke Methods
 
 		/// <summary>
-		/// 	Invoke the default constructor on a Type
+		/// Invoke the default constructor on a Type
 		/// </summary>
 		/// <param name="type"> The Type to be constructed </param>
 		/// <returns> An instance of the Type </returns>
@@ -378,7 +376,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Invoke a constructor on a Type with arguments
+		/// Invoke a constructor on a Type with arguments
 		/// </summary>
 		/// <param name="type"> The Type to be constructed </param>
 		/// <param name="arguments"> Arguments to the constructor </param>
@@ -404,9 +402,9 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Returns an array of types from an array of objects.
-		/// 	Used because the compact framework doesn't support
-		/// 	Type.GetTypeArray()
+		/// Returns an array of types from an array of objects.
+		/// Used because the compact framework doesn't support
+		/// Type.GetTypeArray()
 		/// </summary>
 		/// <param name="objects"> An array of objects </param>
 		/// <returns> An array of Types </returns>
@@ -420,7 +418,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Invoke a parameterless method returning void on an object.
+		/// Invoke a parameterless method returning void on an object.
 		/// </summary>
 		/// <param name="method"> A MethodInfo for the method to be invoked </param>
 		/// <param name="fixture"> The object on which to invoke the method </param>
@@ -430,8 +428,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Invoke a method returning void, converting any TargetInvocationException
-		/// 	to an NUnitException
+		/// Invoke a method returning void, converting any TargetInvocationException
+		/// to an NUnitException
 		/// </summary>
 		/// <param name="method"> A MethodInfo for the method to be invoked </param>
 		/// <param name="fixture"> The object on which to invoke the method </param>

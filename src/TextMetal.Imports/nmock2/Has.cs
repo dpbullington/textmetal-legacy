@@ -22,14 +22,14 @@ using NMock2.Matchers;
 namespace NMock2
 {
 	/// <summary>
-	/// 	Provides shortcuts to matchers.
+	/// Provides shortcuts to matchers.
 	/// </summary>
 	public class Has
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Returns a matcher for checking field values.
+		/// Returns a matcher for checking field values.
 		/// </summary>
 		/// <param name="fieldName"> Name of the field. </param>
 		/// <param name="valueMatcher"> The value matcher. </param>
@@ -40,7 +40,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Returns a matcher for checking property values.
+		/// Returns a matcher for checking property values.
 		/// </summary>
 		/// <param name="propertyName"> Name of the property. </param>
 		/// <param name="valueMatcher"> The value matcher. </param>
@@ -51,7 +51,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Returns a matcher for testing string representation of objects.
+		/// Returns a matcher for testing string representation of objects.
 		/// </summary>
 		/// <param name="matcher"> The wrapped matcher. </param>
 		/// <returns> Returns a <see cref="ToStringMatcher" /> for testing string representation of objects. </returns>

@@ -16,7 +16,7 @@ using NUnit.Core.Filters;
 namespace NUnit.UiKit
 {
 	/// <summary>
-	/// 	The VisualState class holds the latest visual state for a project.
+	/// The VisualState class holds the latest visual state for a project.
 	/// </summary>
 	[Serializable]
 	public class VisualState

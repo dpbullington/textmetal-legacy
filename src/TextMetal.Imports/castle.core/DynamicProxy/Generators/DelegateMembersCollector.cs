@@ -12,22 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection;
+
+using Castle.DynamicProxy.Contributors;
+
 namespace Castle.DynamicProxy.Generators
 {
 	using System;
-	using System.Reflection;
-
-	using Castle.DynamicProxy.Contributors;
 
 	public class DelegateMembersCollector : MembersCollector
 	{
-		public DelegateMembersCollector(Type type) : base(type)
+		#region Constructors/Destructors
+
+		public DelegateMembersCollector(Type type)
+			: base(type)
 		{
 		}
 
+		#endregion
+
+		#region Methods/Operators
+
 		protected override MetaMethod GetMethodToGenerate(MethodInfo method, IProxyGenerationHook hook, bool isStandalone)
 		{
-			var accepted = AcceptMethod(method, true, hook);
+			var accepted = this.AcceptMethod(method, true, hook);
 			if (accepted == false)
 			{
 				//we don't need to do anything...
@@ -36,5 +44,7 @@ namespace Castle.DynamicProxy.Generators
 
 			return new MetaMethod(method, method, isStandalone, true, !method.IsAbstract);
 		}
+
+		#endregion
 	}
 }

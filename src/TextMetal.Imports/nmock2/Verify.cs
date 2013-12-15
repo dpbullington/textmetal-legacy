@@ -24,20 +24,20 @@ using NMock2.Internal;
 namespace NMock2
 {
 	/// <summary>
-	/// 	Verify that a condition is met.
+	/// Verify that a condition is met.
 	/// </summary>
 	public static class Verify
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Verifies that the <paramref name="actualValue" /> is matched by the <paramref name="matcher" />.
+		/// Verifies that the <paramref name="actualValue" /> is matched by the <paramref name="matcher" />.
 		/// </summary>
 		/// <param name="actualValue"> The actual value to match. </param>
 		/// <param name="matcher"> The matcher. </param>
 		/// <param name="message"> The error message. </param>
 		/// <param name="formatArgs"> The format args for the error message. </param>
-		/// <exception cref="ExpectationException">Thrown if value does not match.</exception>
+		/// <exception cref="ExpectationException"> Thrown if value does not match. </exception>
 		public static void That(object actualValue, Matcher matcher, string message, params object[] formatArgs)
 		{
 			if (!matcher.Matches(actualValue))
@@ -51,11 +51,11 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Verifies that the <paramref name="actualValue" /> is matched by the <paramref name="matcher" />.
+		/// Verifies that the <paramref name="actualValue" /> is matched by the <paramref name="matcher" />.
 		/// </summary>
 		/// <param name="actualValue"> The actual value. </param>
 		/// <param name="matcher"> The matcher. </param>
-		/// <exception cref="ExpectationException">Thrown if value does not match.</exception>
+		/// <exception cref="ExpectationException"> Thrown if value does not match. </exception>
 		public static void That(object actualValue, Matcher matcher)
 		{
 			if (!matcher.Matches(actualValue))
@@ -68,7 +68,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Writes the description of a failed match to the specified <paramref name="writer" />.
+		/// Writes the description of a failed match to the specified <paramref name="writer" />.
 		/// </summary>
 		/// <param name="writer"> The <see cref="TextWriter" /> where the description is written to. </param>
 		/// <param name="actualValue"> The actual value to be written. </param>

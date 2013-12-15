@@ -12,58 +12,66 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection;
+
+using Castle.DynamicProxy.Generators;
+using Castle.DynamicProxy.Internal;
+
 namespace Castle.DynamicProxy.Contributors
 {
 	using System;
-	using System.Reflection;
-
-	using Castle.DynamicProxy.Generators;
-	using Castle.DynamicProxy.Internal;
 
 	public class InterfaceMembersOnClassCollector : MembersCollector
 	{
-		private readonly InterfaceMapping map;
-		private readonly bool onlyProxyVirtual;
+		#region Constructors/Destructors
 
-		public InterfaceMembersOnClassCollector(Type type, bool onlyProxyVirtual, InterfaceMapping map) : base(type)
+		public InterfaceMembersOnClassCollector(Type type, bool onlyProxyVirtual, InterfaceMapping map)
+			: base(type)
 		{
 			this.onlyProxyVirtual = onlyProxyVirtual;
 			this.map = map;
 		}
 
-		protected override MetaMethod GetMethodToGenerate(MethodInfo method, IProxyGenerationHook hook, bool isStandalone)
-		{
-			if (method.IsAccessible() == false)
-			{
-				return null;
-			}
+		#endregion
 
-			if (onlyProxyVirtual && IsVirtuallyImplementedInterfaceMethod(method))
-			{
-				return null;
-			}
+		#region Fields/Constants
 
-			var methodOnTarget = GetMethodOnTarget(method);
+		private readonly InterfaceMapping map;
+		private readonly bool onlyProxyVirtual;
 
-			var proxyable = AcceptMethod(method, onlyProxyVirtual, hook);
-			return new MetaMethod(method, methodOnTarget, isStandalone, proxyable, methodOnTarget.IsPrivate == false);
-		}
+		#endregion
+
+		#region Methods/Operators
 
 		private MethodInfo GetMethodOnTarget(MethodInfo method)
 		{
-			var index = Array.IndexOf(map.InterfaceMethods, method);
+			var index = Array.IndexOf(this.map.InterfaceMethods, method);
 			if (index == -1)
-			{
 				return null;
-			}
 
-			return map.TargetMethods[index];
+			return this.map.TargetMethods[index];
+		}
+
+		protected override MetaMethod GetMethodToGenerate(MethodInfo method, IProxyGenerationHook hook, bool isStandalone)
+		{
+			if (method.IsAccessible() == false)
+				return null;
+
+			if (this.onlyProxyVirtual && this.IsVirtuallyImplementedInterfaceMethod(method))
+				return null;
+
+			var methodOnTarget = this.GetMethodOnTarget(method);
+
+			var proxyable = this.AcceptMethod(method, this.onlyProxyVirtual, hook);
+			return new MetaMethod(method, methodOnTarget, isStandalone, proxyable, methodOnTarget.IsPrivate == false);
 		}
 
 		private bool IsVirtuallyImplementedInterfaceMethod(MethodInfo method)
 		{
-			var info = GetMethodOnTarget(method);
+			var info = this.GetMethodOnTarget(method);
 			return info != null && info.IsFinal == false;
 		}
+
+		#endregion
 	}
 }

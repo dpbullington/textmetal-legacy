@@ -24,14 +24,14 @@ namespace NMock2.Matchers
 	using System;
 
 	/// <summary>
-	/// 	Matcher that checks whether the actual object can be assigned to the expected type.
+	/// Matcher that checks whether the actual object can be assigned to the expected type.
 	/// </summary>
 	public class TypeMatcher : Matcher
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="TypeMatcher" /> class.
+		/// Initializes a new instance of the <see cref="TypeMatcher" /> class.
 		/// </summary>
 		/// <param name="type"> The expected type. </param>
 		public TypeMatcher(Type type)
@@ -50,7 +50,7 @@ namespace NMock2.Matchers
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public override void DescribeTo(TextWriter writer)
@@ -60,7 +60,7 @@ namespace NMock2.Matchers
 		}
 
 		/// <summary>
-		/// 	Matches the specified object to this matcher and returns whether it matches.
+		/// Matches the specified object to this matcher and returns whether it matches.
 		/// </summary>
 		/// <param name="o"> The object to match. </param>
 		/// <returns> Whether the object castable to the expected type. </returns>

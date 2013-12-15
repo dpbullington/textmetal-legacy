@@ -21,40 +21,45 @@ namespace Castle.Components.DictionaryAdapter
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 	public class ComponentAttribute : DictionaryBehaviorAttribute, IDictionaryKeyBuilder,
-									  IDictionaryPropertyGetter, IDictionaryPropertySetter
+		IDictionaryPropertyGetter, IDictionaryPropertySetter
 	{
+		#region Properties/Indexers/Events
+
 		/// <summary>
 		/// Applies no prefix.
 		/// </summary>
 		public bool NoPrefix
 		{
-			get { return Prefix == ""; }
+			get
+			{
+				return this.Prefix == "";
+			}
 			set
 			{
 				if (value)
-				{
-					Prefix = "";
-				}
+					this.Prefix = "";
 			}
 		}
 
 		/// <summary>
 		/// Gets or sets the prefix.
 		/// </summary>
-		/// <value>The prefix.</value>
-		public string Prefix { get; set; }
-
-		#region IDictionaryKeyBuilder Members
-
-		string IDictionaryKeyBuilder.GetKey(IDictionaryAdapter dictionaryAdapter, string key,
-		                                    PropertyDescriptor property)
+		/// <value> The prefix. </value>
+		public string Prefix
 		{
-			return Prefix ?? key + "_";
+			get;
+			set;
 		}
 
 		#endregion
 
-		#region IDictionaryPropertyGetter
+		#region Methods/Operators
+
+		string IDictionaryKeyBuilder.GetKey(IDictionaryAdapter dictionaryAdapter, string key,
+			PropertyDescriptor property)
+		{
+			return this.Prefix ?? key + "_";
+		}
 
 		object IDictionaryPropertyGetter.GetPropertyValue(IDictionaryAdapter dictionaryAdapter,
 			string key, object storedValue, PropertyDescriptor property, bool ifExists)
@@ -77,10 +82,6 @@ namespace Castle.Components.DictionaryAdapter
 
 			return storedValue;
 		}
-
-		#endregion
-
-		#region IDictionaryPropertySetter Members
 
 		public bool SetPropertyValue(IDictionaryAdapter dictionaryAdapter,
 			string key, ref object value, PropertyDescriptor property)

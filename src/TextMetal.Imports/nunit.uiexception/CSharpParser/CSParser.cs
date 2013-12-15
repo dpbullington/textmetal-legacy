@@ -9,9 +9,8 @@ using System.Text;
 namespace NUnit.UiException.CodeFormatters
 {
 	/// <summary>
-	/// 	(formerly named CSParser)
-	/// 
-	/// 	Helper class to build and setup FormattedCode instances from formatted C# texts.
+	/// (formerly named CSParser)
+	/// Helper class to build and setup FormattedCode instances from formatted C# texts.
 	/// </summary>
 	public class CSharpCodeFormatter :
 		ICodeFormatter
@@ -19,7 +18,7 @@ namespace NUnit.UiException.CodeFormatters
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Builds a new instance of CSharpCodeFormatter.
+		/// Builds a new instance of CSharpCodeFormatter.
 		/// </summary>
 		public CSharpCodeFormatter()
 		{
@@ -33,7 +32,7 @@ namespace NUnit.UiException.CodeFormatters
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The underlying data object of a FormattedCode instance.
+		/// The underlying data object of a FormattedCode instance.
 		/// </summary>
 		private FormattedCode.CodeInfo _info;
 
@@ -42,9 +41,9 @@ namespace NUnit.UiException.CodeFormatters
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets a new instance of FormattedCode.
-		/// 	To get useful FormattedCode instances, caller should ensure
-		/// 	that TryParse() was invoked first.
+		/// Gets a new instance of FormattedCode.
+		/// To get useful FormattedCode instances, caller should ensure
+		/// that TryParse() was invoked first.
 		/// </summary>
 		public FormattedCode CSCode
 		{
@@ -55,7 +54,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Returns "C#"
+		/// Returns "C#"
 		/// </summary>
 		public string Language
 		{
@@ -70,8 +69,8 @@ namespace NUnit.UiException.CodeFormatters
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Interprets and highlight the given string as C# code
-		/// 	and return the resulting FormattedCode instance.
+		/// Interprets and highlight the given string as C# code
+		/// and return the resulting FormattedCode instance.
 		/// </summary>
 		/// <param name="csharpCode"> A string read as C# code. This parameter must not be null. </param>
 		/// <returns> A FormattedCode instance containing data to highlight the text with basic syntax coloring. </returns>
@@ -87,9 +86,9 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Analyzes the input text as C# code. This method doesn't return anything.
-		/// 	Callers may retrieve the result of this process by querying the FormattedCode property.
-		/// 	Passing null results in raising an exception.
+		/// Analyzes the input text as C# code. This method doesn't return anything.
+		/// Callers may retrieve the result of this process by querying the FormattedCode property.
+		/// Passing null results in raising an exception.
 		/// </summary>
 		/// <param name="csharp"> The text to be analyzed. </param>
 		protected void Parse(string csharp)
@@ -123,7 +122,7 @@ namespace NUnit.UiException.CodeFormatters
 				// we flush csToken into _info and build a new instance
 				// from the current tag.
 				if (csToken == null ||
-				    !csToken.CanMerge(this._info.LineArray.Count, tag))
+					!csToken.CanMerge(this._info.LineArray.Count, tag))
 				{
 					this._flushToken(csToken, this._info);
 					csToken = new ConcreteToken(
@@ -148,7 +147,7 @@ namespace NUnit.UiException.CodeFormatters
 			this._flushToken(csToken, this._info);
 
 			if (csToken != null &&
-			    this._info.LineArray.Count == 0)
+				this._info.LineArray.Count == 0)
 				this._info.LineArray.Add(tokenIndex);
 
 			this._info.Text = csharp;
@@ -157,7 +156,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Prepare input text for the parsing stage.
+		/// Prepare input text for the parsing stage.
 		/// </summary>
 		/// <param name="text"> The text to be pre-processed. </param>
 		/// <returns> A string ready to be parsed. </returns>
@@ -176,7 +175,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Appends data in token at the end of output.
+		/// Appends data in token at the end of output.
 		/// </summary>
 		/// <param name="token"> Token to be merged with output. </param>
 		/// <param name="output"> Target location. </param>
@@ -196,7 +195,7 @@ namespace NUnit.UiException.CodeFormatters
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		/// <summary>
-		/// 	Implements ClassifiedToken.
+		/// Implements ClassifiedToken.
 		/// </summary>
 		private class ConcreteToken :
 			ClassifiedToken
@@ -204,7 +203,7 @@ namespace NUnit.UiException.CodeFormatters
 			#region Constructors/Destructors
 
 			/// <summary>
-			/// 	Builds and setup a new instance of ClassifiedToken.
+			/// Builds and setup a new instance of ClassifiedToken.
 			/// </summary>
 			/// <param name="text"> The text in this token. </param>
 			/// <param name="tag"> The smState tag. </param>
@@ -231,8 +230,8 @@ namespace NUnit.UiException.CodeFormatters
 			#region Methods/Operators
 
 			/// <summary>
-			/// 	Tests whether or not the given lineIndex and tag are compatible with
-			/// 	the ones in the current Token.
+			/// Tests whether or not the given lineIndex and tag are compatible with
+			/// the ones in the current Token.
 			/// </summary>
 			/// <param name="lineIndex"> A line startingPosition. </param>
 			/// <param name="tag"> A smState tag. </param>
@@ -246,7 +245,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Implements FormattedCode.
+		/// Implements FormattedCode.
 		/// </summary>
 		private class InternalFormattedCode :
 			FormattedCode

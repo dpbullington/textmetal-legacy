@@ -22,37 +22,43 @@ namespace Castle.Components.DictionaryAdapter
 	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 	public class StringValuesAttribute : DictionaryBehaviorAttribute, IDictionaryPropertySetter
 	{
+		#region Properties/Indexers/Events
+
 		/// <summary>
 		/// Gets or sets the format.
 		/// </summary>
-		/// <value>The format.</value>
-		public string Format { get; set; }
+		/// <value> The format. </value>
+		public string Format
+		{
+			get;
+			set;
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		private string GetPropertyAsString(PropertyDescriptor property, object value)
+		{
+			if (string.IsNullOrEmpty(this.Format) == false)
+				return String.Format(this.Format, value);
+
+			var converter = property.TypeConverter;
+
+			if (converter != null && converter.CanConvertTo(typeof(string)))
+				return (string)converter.ConvertTo(value, typeof(string));
+
+			return value.ToString();
+		}
 
 		bool IDictionaryPropertySetter.SetPropertyValue(IDictionaryAdapter dictionaryAdapter,
 			string key, ref object value, PropertyDescriptor property)
 		{
 			if (value != null)
-			{
-				value = GetPropertyAsString(property, value);
-			}
+				value = this.GetPropertyAsString(property, value);
 			return true;
 		}
 
-		private string GetPropertyAsString(PropertyDescriptor property, object value)
-		{
-			if (string.IsNullOrEmpty(Format) == false)
-			{
-				return String.Format(Format, value);
-			}
-
-			var converter = property.TypeConverter;
-
-			if (converter != null && converter.CanConvertTo(typeof(string)))
-			{
-				return (string) converter.ConvertTo(value, typeof(string));
-			}
-
-			return value.ToString();
-		}
+		#endregion
 	}
 }

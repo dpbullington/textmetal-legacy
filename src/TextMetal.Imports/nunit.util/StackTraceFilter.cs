@@ -11,7 +11,7 @@ namespace NUnit.Util
 	using System;
 
 	/// <summary>
-	/// 	Summary description for StackTraceFilter.
+	/// Summary description for StackTraceFilter.
 	/// </summary>
 	public class StackTraceFilter
 	{
@@ -43,16 +43,16 @@ namespace NUnit.Util
 		private static bool FilterLine(string line)
 		{
 			string[] patterns = new string[]
-			                    {
-				                    "NUnit.Core.TestCase",
-				                    "NUnit.Core.ExpectedExceptionTestCase",
-				                    "NUnit.Core.TemplateTestCase",
-				                    "NUnit.Core.TestResult",
-				                    "NUnit.Core.TestSuite",
-				                    "NUnit.Framework.Assertion",
-				                    "NUnit.Framework.Assert",
-				                    "System.Reflection.MonoMethod"
-			                    };
+								{
+									"NUnit.Core.TestCase",
+									"NUnit.Core.ExpectedExceptionTestCase",
+									"NUnit.Core.TemplateTestCase",
+									"NUnit.Core.TestResult",
+									"NUnit.Core.TestSuite",
+									"NUnit.Framework.Assertion",
+									"NUnit.Framework.Assert",
+									"System.Reflection.MonoMethod"
+								};
 
 			for (int i = 0; i < patterns.Length; i++)
 			{

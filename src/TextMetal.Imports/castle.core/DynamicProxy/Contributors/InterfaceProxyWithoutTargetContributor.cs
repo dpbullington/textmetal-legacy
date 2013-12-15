@@ -12,30 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Diagnostics;
+
+using Castle.DynamicProxy.Generators;
+using Castle.DynamicProxy.Generators.Emitters;
+
 namespace Castle.DynamicProxy.Contributors
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Diagnostics;
-
-	using Castle.DynamicProxy.Generators;
-	using Castle.DynamicProxy.Generators.Emitters;
 
 	public class InterfaceProxyWithoutTargetContributor : CompositeTypeContributor
 	{
-		private readonly GetTargetExpressionDelegate getTargetExpression;
-		protected bool canChangeTarget = false;
+		#region Constructors/Destructors
 
 		public InterfaceProxyWithoutTargetContributor(INamingScope namingScope, GetTargetExpressionDelegate getTarget)
 			: base(namingScope)
 		{
-			getTargetExpression = getTarget;
+			this.getTargetExpression = getTarget;
 		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly GetTargetExpressionDelegate getTargetExpression;
+		protected bool canChangeTarget = false;
+
+		#endregion
+
+		#region Methods/Operators
 
 		protected override IEnumerable<MembersCollector> CollectElementsToProxyInternal(IProxyGenerationHook hook)
 		{
 			Debug.Assert(hook != null, "hook != null");
-			foreach (var @interface in interfaces)
+			foreach (var @interface in this.interfaces)
 			{
 				var item = new InterfaceMembersCollector(@interface);
 				item.CollectMembersToProxy(hook);
@@ -43,57 +54,51 @@ namespace Castle.DynamicProxy.Contributors
 			}
 		}
 
-		protected override MethodGenerator GetMethodGenerator(MetaMethod method, ClassEmitter @class,
-		                                                      ProxyGenerationOptions options,
-		                                                      OverrideMethodDelegate overrideMethod)
-		{
-			if (!method.Proxyable)
-			{
-				return new MinimialisticMethodGenerator(method, overrideMethod);
-			}
-
-			var invocation = GetInvocationType(method, @class, options);
-			return new MethodWithInvocationGenerator(method,
-			                                         @class.GetField("__interceptors"),
-			                                         invocation,
-			                                         getTargetExpression,
-			                                         overrideMethod,
-			                                         null);
-		}
-
 		private Type GetInvocationType(MetaMethod method, ClassEmitter emitter, ProxyGenerationOptions options)
 		{
 			var scope = emitter.ModuleScope;
 			Type[] invocationInterfaces;
-			if (canChangeTarget)
-			{
+			if (this.canChangeTarget)
 				invocationInterfaces = new[] { typeof(IInvocation), typeof(IChangeProxyTarget) };
-			}
 			else
-			{
 				invocationInterfaces = new[] { typeof(IInvocation) };
-			}
 			var key = new CacheKey(method.Method, CompositionInvocationTypeGenerator.BaseType, invocationInterfaces, null);
 
 			// no locking required as we're already within a lock
 
 			var invocation = scope.GetFromCache(key);
 			if (invocation != null)
-			{
 				return invocation;
-			}
 
 			invocation = new CompositionInvocationTypeGenerator(method.Method.DeclaringType,
-																method,
-																method.Method,
-																canChangeTarget,
-																null)
-				.Generate(emitter, options, namingScope)
+				method,
+				method.Method,
+				this.canChangeTarget,
+				null)
+				.Generate(emitter, options, this.namingScope)
 				.BuildType();
 
 			scope.RegisterInCache(key, invocation);
 
 			return invocation;
 		}
+
+		protected override MethodGenerator GetMethodGenerator(MetaMethod method, ClassEmitter @class,
+			ProxyGenerationOptions options,
+			OverrideMethodDelegate overrideMethod)
+		{
+			if (!method.Proxyable)
+				return new MinimialisticMethodGenerator(method, overrideMethod);
+
+			var invocation = this.GetInvocationType(method, @class, options);
+			return new MethodWithInvocationGenerator(method,
+				@class.GetField("__interceptors"),
+				invocation,
+				this.getTargetExpression,
+				overrideMethod,
+				null);
+		}
+
+		#endregion
 	}
 }

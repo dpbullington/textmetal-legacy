@@ -25,14 +25,14 @@ namespace NMock2.Matchers
 	using System;
 
 	/// <summary>
-	/// 	Matcher that checks whether the expected and actual value are equal.
+	/// Matcher that checks whether the expected and actual value are equal.
 	/// </summary>
 	public class EqualMatcher : Matcher
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="EqualMatcher" /> class.
+		/// Initializes a new instance of the <see cref="EqualMatcher" /> class.
 		/// </summary>
 		/// <param name="expected"> The expected value. </param>
 		public EqualMatcher(object expected)
@@ -79,8 +79,8 @@ namespace NMock2.Matchers
 			else
 			{
 				for (indices[dimension] = 0;
-				     indices[dimension] < a1.GetLength(dimension);
-				     indices[dimension]++)
+					indices[dimension] < a1.GetLength(dimension);
+					indices[dimension]++)
 				{
 					if (!this.ArrayElementsEqual(a1, a2, indices, dimension + 1))
 						return false;
@@ -93,12 +93,12 @@ namespace NMock2.Matchers
 		private bool ArraysEqual(Array a1, Array a2)
 		{
 			return a1.Rank == a2.Rank
-			       && this.ArrayDimensionsEqual(a1, a2)
-			       && this.ArrayElementsEqual(a1, a2, new int[a1.Rank], 0);
+					&& this.ArrayDimensionsEqual(a1, a2)
+					&& this.ArrayElementsEqual(a1, a2, new int[a1.Rank], 0);
 		}
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public override void DescribeTo(TextWriter writer)
@@ -124,7 +124,7 @@ namespace NMock2.Matchers
 		}
 
 		/// <summary>
-		/// 	Matcheses the specified actual.
+		/// Matcheses the specified actual.
 		/// </summary>
 		/// <param name="actual"> The actual value. </param>
 		/// <returns> Whether the expected value is equal to the actual value. </returns>

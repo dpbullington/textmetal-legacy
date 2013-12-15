@@ -252,7 +252,7 @@ namespace NUnit.UiKit
 			{
 				sizeNeeded = g.MeasureString(shortText, this.Font);
 				this.statusPanel.Text = this.statusPanel.Width >= (int)sizeNeeded.Width
-					                        ? shortText : e.TestName.Name;
+					? shortText : e.TestName.Name;
 				this.statusPanel.ToolTipText = e.TestName.FullName;
 			}
 		}

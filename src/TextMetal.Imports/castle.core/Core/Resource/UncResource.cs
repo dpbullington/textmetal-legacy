@@ -12,58 +12,83 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.IO;
+
 namespace Castle.Core.Resource
 {
 	using System;
-	using System.Globalization;
-	using System.IO;
 
 	/// <summary>
 	/// Enable access to files on network shares
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Unc")]
+	[SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Unc")]
 	public class UncResource : AbstractStreamResource
 	{
-		private String basePath;
-		private string filePath;
+		#region Constructors/Destructors
 
 		public UncResource(CustomUri resource)
 		{
-			CreateStream = delegate
-			{
-				return CreateStreamFromUri(resource, DefaultBasePath);
-			};
+			this.CreateStream = delegate
+								{
+									return this.CreateStreamFromUri(resource, DefaultBasePath);
+								};
 		}
 
 		public UncResource(CustomUri resource, String basePath)
 		{
-			CreateStream = delegate
-			{
-				return CreateStreamFromUri(resource, basePath);
-			};
+			this.CreateStream = delegate
+								{
+									return this.CreateStreamFromUri(resource, basePath);
+								};
 		}
 
-		public UncResource(String resourceName) : this(new CustomUri(resourceName))
+		public UncResource(String resourceName)
+			: this(new CustomUri(resourceName))
 		{
 		}
 
-		public UncResource(String resourceName, String basePath) : this(new CustomUri(resourceName), basePath)
+		public UncResource(String resourceName, String basePath)
+			: this(new CustomUri(resourceName), basePath)
 		{
 		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private String basePath;
+		private string filePath;
+
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		public override String FileBasePath
 		{
-			get { return basePath; }
+			get
+			{
+				return this.basePath;
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		private static void CheckFileExists(String path)
+		{
+			if (!File.Exists(path))
+			{
+				String message = String.Format(CultureInfo.InvariantCulture, "File {0} could not be found", path);
+				throw new ResourceException(message);
+			}
 		}
 
 		public override IResource CreateRelative(String relativePath)
 		{
-			return new UncResource(Path.Combine(basePath, relativePath));
-		}
-
-		public override string ToString()
-		{
-			return String.Format(CultureInfo.CurrentCulture, "UncResource: [{0}] [{1}]", filePath, basePath);
+			return new UncResource(Path.Combine(this.basePath, relativePath));
 		}
 
 		private Stream CreateStreamFromUri(CustomUri resource, String rootPath)
@@ -78,25 +103,21 @@ namespace Castle.Core.Resource
 			String resourcePath = resource.Path;
 
 			if (!File.Exists(resourcePath) && rootPath != null)
-			{
 				resourcePath = Path.Combine(rootPath, resourcePath);
-			}
 
-			filePath = Path.GetFileName(resourcePath);
-			basePath = Path.GetDirectoryName(resourcePath);
+			this.filePath = Path.GetFileName(resourcePath);
+			this.basePath = Path.GetDirectoryName(resourcePath);
 
 			CheckFileExists(resourcePath);
 
 			return File.OpenRead(resourcePath);
 		}
 
-		private static void CheckFileExists(String path)
+		public override string ToString()
 		{
-			if (!File.Exists(path))
-			{
-				String message = String.Format(CultureInfo.InvariantCulture, "File {0} could not be found", path);
-				throw new ResourceException(message);
-			}
+			return String.Format(CultureInfo.CurrentCulture, "UncResource: [{0}] [{1}]", this.filePath, this.basePath);
 		}
+
+		#endregion
 	}
 }

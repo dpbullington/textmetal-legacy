@@ -16,7 +16,7 @@ using NUnit.Util;
 namespace NUnit.UiKit
 {
 	/// <summary>
-	/// 	Summary description for ResultTabs.
+	/// Summary description for ResultTabs.
 	/// </summary>
 	public class ResultTabs : UserControl, TestObserver
 	{
@@ -72,7 +72,7 @@ namespace NUnit.UiKit
 		private static Logger log = InternalTrace.GetLogger(typeof(ResultTabs));
 
 		/// <summary>
-		/// 	Required designer variable.
+		/// Required designer variable.
 		/// </summary>
 		private Container components = null;
 
@@ -133,7 +133,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Clean up any resources being used.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose(bool disposing)
 		{
@@ -146,17 +146,17 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Required method for Designer support - do not modify 
-		/// 	the contents of this method with the code editor.
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.tabControl = new System.Windows.Forms.TabControl();
-			this.errorTab = new System.Windows.Forms.TabPage();
-			this.errorDisplay = new NUnit.UiKit.ErrorDisplay();
-			this.notRunTab = new System.Windows.Forms.TabPage();
-			this.notRunTree = new NUnit.UiKit.NotRunTree();
-			this.copyDetailMenuItem = new System.Windows.Forms.MenuItem();
+			this.tabControl = new TabControl();
+			this.errorTab = new TabPage();
+			this.errorDisplay = new ErrorDisplay();
+			this.notRunTab = new TabPage();
+			this.notRunTree = new NotRunTree();
+			this.copyDetailMenuItem = new MenuItem();
 			this.tabControl.SuspendLayout();
 			this.errorTab.SuspendLayout();
 			this.notRunTab.SuspendLayout();
@@ -164,55 +164,55 @@ namespace NUnit.UiKit
 			// 
 			// tabControl
 			// 
-			this.tabControl.Alignment = System.Windows.Forms.TabAlignment.Bottom;
+			this.tabControl.Alignment = TabAlignment.Bottom;
 			this.tabControl.Controls.Add(this.errorTab);
 			this.tabControl.Controls.Add(this.notRunTab);
-			this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tabControl.Location = new System.Drawing.Point(0, 0);
+			this.tabControl.Dock = DockStyle.Fill;
+			this.tabControl.Location = new Point(0, 0);
 			this.tabControl.Name = "tabControl";
 			this.tabControl.SelectedIndex = 0;
-			this.tabControl.Size = new System.Drawing.Size(488, 280);
+			this.tabControl.Size = new Size(488, 280);
 			this.tabControl.TabIndex = 3;
-			this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
+			this.tabControl.SelectedIndexChanged += new EventHandler(this.tabControl_SelectedIndexChanged);
 			// 
 			// errorTab
 			// 
 			this.errorTab.Controls.Add(this.errorDisplay);
-			this.errorTab.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.errorTab.Location = new System.Drawing.Point(4, 4);
+			this.errorTab.ForeColor = SystemColors.ControlText;
+			this.errorTab.Location = new Point(4, 4);
 			this.errorTab.Name = "errorTab";
-			this.errorTab.Size = new System.Drawing.Size(480, 254);
+			this.errorTab.Size = new Size(480, 254);
 			this.errorTab.TabIndex = 0;
 			this.errorTab.Text = "Errors and Failures";
 			// 
 			// errorDisplay
 			// 
-			this.errorDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.errorDisplay.Location = new System.Drawing.Point(0, 0);
+			this.errorDisplay.Dock = DockStyle.Fill;
+			this.errorDisplay.Location = new Point(0, 0);
 			this.errorDisplay.Name = "errorDisplay";
-			this.errorDisplay.Size = new System.Drawing.Size(480, 254);
+			this.errorDisplay.Size = new Size(480, 254);
 			this.errorDisplay.TabIndex = 0;
 			// 
 			// notRunTab
 			// 
 			this.notRunTab.Controls.Add(this.notRunTree);
-			this.notRunTab.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.notRunTab.Location = new System.Drawing.Point(4, 4);
+			this.notRunTab.ForeColor = SystemColors.ControlText;
+			this.notRunTab.Location = new Point(4, 4);
 			this.notRunTab.Name = "notRunTab";
-			this.notRunTab.Size = new System.Drawing.Size(480, 254);
+			this.notRunTab.Size = new Size(480, 254);
 			this.notRunTab.TabIndex = 1;
 			this.notRunTab.Text = "Tests Not Run";
 			this.notRunTab.Visible = false;
 			// 
 			// notRunTree
 			// 
-			this.notRunTree.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.notRunTree.Dock = DockStyle.Fill;
 			this.notRunTree.ImageIndex = -1;
 			this.notRunTree.Indent = 19;
-			this.notRunTree.Location = new System.Drawing.Point(0, 0);
+			this.notRunTree.Location = new Point(0, 0);
 			this.notRunTree.Name = "notRunTree";
 			this.notRunTree.SelectedImageIndex = -1;
-			this.notRunTree.Size = new System.Drawing.Size(480, 254);
+			this.notRunTree.Size = new Size(480, 254);
 			this.notRunTree.TabIndex = 0;
 			// 
 			// copyDetailMenuItem
@@ -224,7 +224,7 @@ namespace NUnit.UiKit
 			// 
 			this.Controls.Add(this.tabControl);
 			this.Name = "ResultTabs";
-			this.Size = new System.Drawing.Size(488, 280);
+			this.Size = new Size(488, 280);
 			this.tabControl.ResumeLayout(false);
 			this.errorTab.ResumeLayout(false);
 			this.notRunTab.ResumeLayout(false);
@@ -313,8 +313,8 @@ namespace NUnit.UiKit
 		private void UserSettings_Changed(object sender, SettingsEventArgs e)
 		{
 			if (e.SettingName.StartsWith("Gui.ResultTabs.Display") ||
-			    e.SettingName == "Gui.TextOutput.TabList" ||
-			    e.SettingName.StartsWith("Gui.TextOut") && e.SettingName.EndsWith("Enabled"))
+				e.SettingName == "Gui.TextOutput.TabList" ||
+				e.SettingName.StartsWith("Gui.TextOut") && e.SettingName.EndsWith("Enabled"))
 				this.UpdateTabPages();
 		}
 
@@ -430,8 +430,8 @@ namespace NUnit.UiKit
 				ISettings settings = Services.UserSettings;
 
 				return settings == null
-					       ? new Font(FontFamily.GenericMonospace, 8.0f)
-					       : settings.GetSetting("Gui.FixedFont", new Font(FontFamily.GenericMonospace, 8.0f));
+					? new Font(FontFamily.GenericMonospace, 8.0f)
+					: settings.GetSetting("Gui.FixedFont", new Font(FontFamily.GenericMonospace, 8.0f));
 			}
 
 			public void Clear()

@@ -27,14 +27,14 @@ namespace NMock2.Actions
 	using System;
 
 	/// <summary>
-	/// 	Responsible for handling the results of an invocation.
+	/// Responsible for handling the results of an invocation.
 	/// </summary>
 	public class ResultSynthesizer : IAction
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes static members of the <see cref="ResultSynthesizer" /> class.
+		/// Initializes static members of the <see cref="ResultSynthesizer" /> class.
 		/// </summary>
 		static ResultSynthesizer()
 		{
@@ -51,12 +51,12 @@ namespace NMock2.Actions
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Stores the default results.
+		/// Stores the default results.
 		/// </summary>
 		private static readonly Hashtable defaultResults = new Hashtable();
 
 		/// <summary>
-		/// 	Stores the results.
+		/// Stores the results.
 		/// </summary>
 		private readonly Hashtable results = new Hashtable();
 
@@ -65,7 +65,7 @@ namespace NMock2.Actions
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Gets a new the empty array of the specified <paramref name="arrayType" />.
+		/// Gets a new the empty array of the specified <paramref name="arrayType" />.
 		/// </summary>
 		/// <param name="arrayType"> Type of the array to be returned. </param>
 		/// <returns> Returns a new empty array of the specified <paramref name="arrayType" /> . </returns>
@@ -78,7 +78,7 @@ namespace NMock2.Actions
 		}
 
 		/// <summary>
-		/// 	Describes this object to the specified <paramref name="writer" />.
+		/// Describes this object to the specified <paramref name="writer" />.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public void DescribeTo(TextWriter writer)
@@ -87,11 +87,15 @@ namespace NMock2.Actions
 		}
 
 		/// <summary>
-		/// 	Gets the action of the specified <paramref name="returnType" />.
+		/// Gets the action of the specified <paramref name="returnType" />.
 		/// </summary>
 		/// <param name="returnType"> Type of the returned action. </param>
-		/// <param name="results"> The results to get the action from. This is used as a parameter for the <see
-		/// 	 cref="defaultResults" /> . </param>
+		/// <param name="results">
+		/// The results to get the action from. This is used as a parameter for the
+		/// <see
+		///     cref="defaultResults" />
+		/// .
+		/// </param>
 		/// <returns> Returns the action of the specified <paramref name="returnType" /> out of the <paramref name="results" /> . </returns>
 		private IAction GetAction(Type returnType, Hashtable results)
 		{
@@ -99,7 +103,7 @@ namespace NMock2.Actions
 		}
 
 		/// <summary>
-		/// 	Invokes this object.
+		/// Invokes this object.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
 		public void Invoke(Invocation invocation)
@@ -128,7 +132,7 @@ namespace NMock2.Actions
 		}
 
 		/// <summary>
-		/// 	Sets the action of the specified <paramref name="returnType" />.
+		/// Sets the action of the specified <paramref name="returnType" />.
 		/// </summary>
 		/// <param name="returnType"> Type of the action to be set. </param>
 		/// <param name="action"> The action to be set. </param>
@@ -138,7 +142,7 @@ namespace NMock2.Actions
 		}
 
 		/// <summary>
-		/// 	Sets the result of the specified <paramref name="returnType" />.
+		/// Sets the result of the specified <paramref name="returnType" />.
 		/// </summary>
 		/// <param name="returnType"> The type to be returned as a result. </param>
 		/// <param name="result"> The result to be set. </param>

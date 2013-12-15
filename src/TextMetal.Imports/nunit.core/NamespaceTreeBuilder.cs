@@ -9,8 +9,8 @@ using System.Collections;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Class that can build a tree of automatic namespace
-	/// 	suites from a group of fixtures.
+	/// Class that can build a tree of automatic namespace
+	/// suites from a group of fixtures.
 	/// </summary>
 	public class NamespaceTreeBuilder
 	{
@@ -26,13 +26,13 @@ namespace NUnit.Core
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Hashtable of all test suites we have created to represent namespaces.
-		/// 	Used to locate namespace parent suites for fixtures.
+		/// Hashtable of all test suites we have created to represent namespaces.
+		/// Used to locate namespace parent suites for fixtures.
 		/// </summary>
 		private Hashtable namespaceSuites = new Hashtable();
 
 		/// <summary>
-		/// 	The root of the test suite being created by this builder.
+		/// The root of the test suite being created by this builder.
 		/// </summary>
 		private TestSuite rootSuite;
 

@@ -1,4 +1,5 @@
 ﻿#region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,6 +22,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
@@ -29,65 +31,77 @@ using System.Globalization;
 
 namespace Newtonsoft.Json.Utilities
 {
-  internal class BidirectionalDictionary<TFirst, TSecond>
-  {
-    private readonly IDictionary<TFirst, TSecond> _firstToSecond;
-    private readonly IDictionary<TSecond, TFirst> _secondToFirst;
-    private readonly string _duplicateFirstErrorMessage;
-    private readonly string _duplicateSecondErrorMessage;
+	internal class BidirectionalDictionary<TFirst, TSecond>
+	{
+		#region Constructors/Destructors
 
-    public BidirectionalDictionary()
-      : this(EqualityComparer<TFirst>.Default, EqualityComparer<TSecond>.Default)
-    {
-    }
+		public BidirectionalDictionary()
+			: this(EqualityComparer<TFirst>.Default, EqualityComparer<TSecond>.Default)
+		{
+		}
 
-    public BidirectionalDictionary(IEqualityComparer<TFirst> firstEqualityComparer, IEqualityComparer<TSecond> secondEqualityComparer)
-      : this(
-          firstEqualityComparer,
-          secondEqualityComparer,
-          "Duplicate item already exists for '{0}'.",
-          "Duplicate item already exists for '{0}'.")
-    {
-    }
+		public BidirectionalDictionary(IEqualityComparer<TFirst> firstEqualityComparer, IEqualityComparer<TSecond> secondEqualityComparer)
+			: this(
+				firstEqualityComparer,
+				secondEqualityComparer,
+				"Duplicate item already exists for '{0}'.",
+				"Duplicate item already exists for '{0}'.")
+		{
+		}
 
-    public BidirectionalDictionary(IEqualityComparer<TFirst> firstEqualityComparer, IEqualityComparer<TSecond> secondEqualityComparer,
-      string duplicateFirstErrorMessage, string duplicateSecondErrorMessage)
-    {
-      _firstToSecond = new Dictionary<TFirst, TSecond>(firstEqualityComparer);
-      _secondToFirst = new Dictionary<TSecond, TFirst>(secondEqualityComparer);
-      _duplicateFirstErrorMessage = duplicateFirstErrorMessage;
-      _duplicateSecondErrorMessage = duplicateSecondErrorMessage;
-    }
+		public BidirectionalDictionary(IEqualityComparer<TFirst> firstEqualityComparer, IEqualityComparer<TSecond> secondEqualityComparer,
+			string duplicateFirstErrorMessage, string duplicateSecondErrorMessage)
+		{
+			this._firstToSecond = new Dictionary<TFirst, TSecond>(firstEqualityComparer);
+			this._secondToFirst = new Dictionary<TSecond, TFirst>(secondEqualityComparer);
+			this._duplicateFirstErrorMessage = duplicateFirstErrorMessage;
+			this._duplicateSecondErrorMessage = duplicateSecondErrorMessage;
+		}
 
-    public void Set(TFirst first, TSecond second)
-    {
-      TFirst existingFirst;
-      TSecond existingSecond;
+		#endregion
 
-      if (_firstToSecond.TryGetValue(first, out existingSecond))
-      {
-        if (!existingSecond.Equals(second))
-          throw new ArgumentException(_duplicateFirstErrorMessage.FormatWith(CultureInfo.InvariantCulture, first));
-      }
+		#region Fields/Constants
 
-      if (_secondToFirst.TryGetValue(second, out existingFirst))
-      {
-        if (!existingFirst.Equals(first))
-          throw new ArgumentException(_duplicateSecondErrorMessage.FormatWith(CultureInfo.InvariantCulture, second));
-      }
+		private readonly string _duplicateFirstErrorMessage;
+		private readonly string _duplicateSecondErrorMessage;
+		private readonly IDictionary<TFirst, TSecond> _firstToSecond;
+		private readonly IDictionary<TSecond, TFirst> _secondToFirst;
 
-      _firstToSecond.Add(first, second);
-      _secondToFirst.Add(second, first);
-    }
+		#endregion
 
-    public bool TryGetByFirst(TFirst first, out TSecond second)
-    {
-      return _firstToSecond.TryGetValue(first, out second);
-    }
+		#region Methods/Operators
 
-    public bool TryGetBySecond(TSecond second, out TFirst first)
-    {
-      return _secondToFirst.TryGetValue(second, out first);
-    }
-  }
+		public void Set(TFirst first, TSecond second)
+		{
+			TFirst existingFirst;
+			TSecond existingSecond;
+
+			if (this._firstToSecond.TryGetValue(first, out existingSecond))
+			{
+				if (!existingSecond.Equals(second))
+					throw new ArgumentException(this._duplicateFirstErrorMessage.FormatWith(CultureInfo.InvariantCulture, first));
+			}
+
+			if (this._secondToFirst.TryGetValue(second, out existingFirst))
+			{
+				if (!existingFirst.Equals(first))
+					throw new ArgumentException(this._duplicateSecondErrorMessage.FormatWith(CultureInfo.InvariantCulture, second));
+			}
+
+			this._firstToSecond.Add(first, second);
+			this._secondToFirst.Add(second, first);
+		}
+
+		public bool TryGetByFirst(TFirst first, out TSecond second)
+		{
+			return this._firstToSecond.TryGetValue(first, out second);
+		}
+
+		public bool TryGetBySecond(TSecond second, out TFirst first)
+		{
+			return this._secondToFirst.TryGetValue(second, out first);
+		}
+
+		#endregion
+	}
 }

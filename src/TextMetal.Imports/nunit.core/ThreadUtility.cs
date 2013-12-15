@@ -22,7 +22,7 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Do our best to Kill a thread
+		/// Do our best to Kill a thread
 		/// </summary>
 		/// <param name="thread"> The thread to kill </param>
 		public static void Kill(Thread thread)
@@ -31,7 +31,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Do our best to kill a thread, passing state info
+		/// Do our best to kill a thread, passing state info
 		/// </summary>
 		/// <param name="thread"> The thread to kill </param>
 		/// <param name="stateInfo"> Info for the ThreadAbortException handler </param>

@@ -41,10 +41,8 @@ namespace Castle.Core.Logging
 
 		public ILogger Create(String name)
 		{
-			if (level.HasValue)
-			{
-				return Create(name, level.Value);
-			}
+			if (this.level.HasValue)
+				return Create(name, this.level.Value);
 			return new ConsoleLogger(name);
 		}
 

@@ -12,24 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection;
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters
 {
 	using System;
-	using System.Reflection;
-	using System.Reflection.Emit;
 
 	public class NestedClassEmitter : AbstractTypeEmitter
 	{
+		#region Constructors/Destructors
+
 		public NestedClassEmitter(AbstractTypeEmitter maintype, String name, Type baseType, Type[] interfaces)
 			: this(
 				maintype,
 				CreateTypeBuilder(maintype, name, TypeAttributes.Sealed | TypeAttributes.NestedPublic | TypeAttributes.Class,
-				                  baseType, interfaces))
+					baseType, interfaces))
 		{
 		}
 
 		public NestedClassEmitter(AbstractTypeEmitter maintype, String name, TypeAttributes attributes, Type baseType,
-		                          Type[] interfaces)
+			Type[] interfaces)
 			: this(maintype, CreateTypeBuilder(maintype, name, attributes, baseType, interfaces))
 		{
 		}
@@ -40,13 +43,19 @@ namespace Castle.DynamicProxy.Generators.Emitters
 			maintype.Nested.Add(this);
 		}
 
+		#endregion
+
+		#region Methods/Operators
+
 		private static TypeBuilder CreateTypeBuilder(AbstractTypeEmitter maintype, string name, TypeAttributes attributes,
-		                                             Type baseType, Type[] interfaces)
+			Type baseType, Type[] interfaces)
 		{
 			return maintype.TypeBuilder.DefineNestedType(
 				name,
 				attributes,
 				baseType, interfaces);
 		}
+
+		#endregion
 	}
 }

@@ -11,11 +11,11 @@ using NUnit.Core.Builders;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	This is the master suite builder for NUnit. It builds a test suite from
-	/// 	one or more assemblies using a list of internal and external suite builders 
-	/// 	to create fixtures from the qualified types in each assembly. It implements
-	/// 	the ISuiteBuilder interface itself, allowing it to be used by other classes
-	/// 	for queries and suite construction.
+	/// This is the master suite builder for NUnit. It builds a test suite from
+	/// one or more assemblies using a list of internal and external suite builders
+	/// to create fixtures from the qualified types in each assembly. It implements
+	/// the ISuiteBuilder interface itself, allowing it to be used by other classes
+	/// for queries and suite construction.
 	/// </summary>
 	/// D:\Dev\NUnit\nunit20\src\NUnitFramework\core\TestBuilderAttribute.cs
 	public class TestSuiteBuilder
@@ -56,7 +56,7 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Build a suite based on a TestPackage
+		/// Build a suite based on a TestPackage
 		/// </summary>
 		/// <param name="package"> The TestPackage </param>
 		/// <returns> A TestSuite </returns>

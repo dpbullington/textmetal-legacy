@@ -12,20 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection;
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Tokens
 {
 	using System;
-	using System.Reflection;
-	using System.Reflection.Emit;
 
 	public static class TypeBuilderMethods
 	{
+		#region Fields/Constants
+
 		public static readonly MethodInfo DefineProperty =
 			typeof(TypeBuilder).GetMethod("DefineProperty",
-			                              new[]
-			                              {
-			                              	typeof(string), typeof(PropertyAttributes), typeof(CallingConventions), typeof(Type),
-			                              	typeof(Type[]), typeof(Type[]), typeof(Type[]), typeof(Type[][]), typeof(Type[][])
-			                              });
+				new[]
+				{
+					typeof(string), typeof(PropertyAttributes), typeof(CallingConventions), typeof(Type),
+					typeof(Type[]), typeof(Type[]), typeof(Type[]), typeof(Type[][]), typeof(Type[][])
+				});
+
+		#endregion
 	}
 }

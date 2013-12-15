@@ -29,7 +29,7 @@ namespace NMock2.Internal
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="OrderedExpectations" /> class.
+		/// Initializes a new instance of the <see cref="OrderedExpectations" /> class.
 		/// </summary>
 		/// <param name="depth"> The depth. </param>
 		public OrderedExpectations(int depth)
@@ -50,7 +50,7 @@ namespace NMock2.Internal
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the current expectation.
+		/// Gets the current expectation.
 		/// </summary>
 		/// <value> The current expectation. </value>
 		private IExpectation CurrentExpectation
@@ -62,9 +62,9 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Gets a value indicating whether this instance has been met.
+		/// Gets a value indicating whether this instance has been met.
 		/// </summary>
-		/// <value> <c>true</c> if this instance has been met; otherwise, <c>false</c> . </value>
+		/// <value> <c> true </c> if this instance has been met; otherwise, <c> false </c> . </value>
 		public bool HasBeenMet
 		{
 			get
@@ -72,14 +72,14 @@ namespace NMock2.Internal
 				// Count == 0 fixes issue 1912662 of NMock
 				// (http://sourceforge.net/tracker/index.php?func=detail&aid=1912662&group_id=66591&atid=515017)
 				return this.expectations.Count == 0
-				       || (this.CurrentExpectation.HasBeenMet && this.NextExpectationHasBeenMet());
+						|| (this.CurrentExpectation.HasBeenMet && this.NextExpectationHasBeenMet());
 			}
 		}
 
 		/// <summary>
-		/// 	Gets a value indicating whether this instance has next expectation.
+		/// Gets a value indicating whether this instance has next expectation.
 		/// </summary>
-		/// <value> <c>true</c> if this instance has next expectation; otherwise, <c>false</c> . </value>
+		/// <value> <c> true </c> if this instance has next expectation; otherwise, <c> false </c> . </value>
 		private bool HasNextExpectation
 		{
 			get
@@ -89,9 +89,9 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Gets a value indicating whether this instance is active.
+		/// Gets a value indicating whether this instance is active.
 		/// </summary>
-		/// <value> <c>true</c> if this instance is active; otherwise, <c>false</c> . </value>
+		/// <value> <c> true </c> if this instance is active; otherwise, <c> false </c> . </value>
 		public bool IsActive
 		{
 			get
@@ -101,7 +101,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Gets the next expectation.
+		/// Gets the next expectation.
 		/// </summary>
 		/// <value> The next expectation. </value>
 		private IExpectation NextExpectation
@@ -160,22 +160,22 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Checks whether stored expectations matches the specified invocation.
+		/// Checks whether stored expectations matches the specified invocation.
 		/// </summary>
 		/// <param name="invocation"> The invocation to check. </param>
 		/// <returns> Returns whether one of the stored expectations has met the specified invocation. </returns>
 		public bool Matches(Invocation invocation)
 		{
 			return this.expectations.Count != 0 &&
-			       (this.CurrentExpectation.Matches(invocation) ||
-			        (this.CurrentExpectation.HasBeenMet && this.NextExpectationMatches(invocation)));
+					(this.CurrentExpectation.Matches(invocation) ||
+					(this.CurrentExpectation.HasBeenMet && this.NextExpectationMatches(invocation)));
 		}
 
 		public bool MatchesIgnoringIsActive(Invocation invocation)
 		{
 			return this.expectations.Count != 0 &&
-			       (this.CurrentExpectation.MatchesIgnoringIsActive(invocation) ||
-			        (this.CurrentExpectation.HasBeenMet && this.NextExpectationMatchesIgnoringIsActive(invocation)));
+					(this.CurrentExpectation.MatchesIgnoringIsActive(invocation) ||
+					(this.CurrentExpectation.HasBeenMet && this.NextExpectationMatchesIgnoringIsActive(invocation)));
 		}
 
 		private bool NextExpectationHasBeenMet()
@@ -204,7 +204,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Adds all expectations to <paramref name="result" /> that are associated to <paramref name="mock" />.
+		/// Adds all expectations to <paramref name="result" /> that are associated to <paramref name="mock" />.
 		/// </summary>
 		/// <param name="mock"> The mock for which expectations are queried. </param>
 		/// <param name="result"> The result to add matching expectations to. </param>

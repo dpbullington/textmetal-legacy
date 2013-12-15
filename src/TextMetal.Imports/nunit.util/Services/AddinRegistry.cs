@@ -13,7 +13,7 @@ using NUnit.Core.Extensibility;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Summary description for AddinRegistry.
+	/// Summary description for AddinRegistry.
 	/// </summary>
 	public class AddinRegistry : MarshalByRefObject, IAddinRegistry, IService
 	{

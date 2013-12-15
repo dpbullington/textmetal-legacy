@@ -12,16 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections;
+
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
-	using System.Collections;
 
 	/// <summary>
 	/// Contract for creating additional Dictionary adapters.
 	/// </summary>
 	public interface IDictionaryCreate
 	{
+		#region Methods/Operators
+
 		T Create<T>();
 
 		object Create(Type type);
@@ -33,5 +36,7 @@ namespace Castle.Components.DictionaryAdapter
 		T Create<T>(Action<T> init);
 
 		T Create<T>(IDictionary dictionary, Action<T> init);
+
+		#endregion
 	}
 }

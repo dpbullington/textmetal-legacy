@@ -15,7 +15,7 @@ using NUnit.Core;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Summary description for UserSettingsService.
+	/// Summary description for UserSettingsService.
 	/// </summary>
 	public class SettingsService : SettingsGroup, IService
 	{

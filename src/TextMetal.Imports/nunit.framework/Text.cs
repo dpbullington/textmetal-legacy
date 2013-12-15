@@ -11,8 +11,8 @@ using NUnit.Framework.Constraints;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	Helper class with static methods used to supply constraints
-	/// 	that operate on strings.
+	/// Helper class with static methods used to supply constraints
+	/// that operate on strings.
 	/// </summary>
 	[Obsolete("Use Is class for string constraints")]
 	public class Text
@@ -20,9 +20,9 @@ namespace NUnit.Framework
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Returns a ConstraintExpression, which will apply
-		/// 	the following constraint to all members of a collection,
-		/// 	succeeding if all of them succeed.
+		/// Returns a ConstraintExpression, which will apply
+		/// the following constraint to all members of a collection,
+		/// succeeding if all of them succeed.
 		/// </summary>
 		[Obsolete("Use Is.All")]
 		public static ConstraintExpression All
@@ -38,8 +38,8 @@ namespace NUnit.Framework
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Returns a constraint that succeeds if the actual
-		/// 	value contains the substring supplied as an argument.
+		/// Returns a constraint that succeeds if the actual
+		/// value contains the substring supplied as an argument.
 		/// </summary>
 		[Obsolete("Use Is.StringContaining")]
 		public static SubstringConstraint Contains(string expected)
@@ -48,8 +48,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Returns a constraint that fails if the actual
-		/// 	value contains the substring supplied as an argument.
+		/// Returns a constraint that fails if the actual
+		/// value contains the substring supplied as an argument.
 		/// </summary>
 		[Obsolete("Use Is.Not.StringContaining")]
 		public static SubstringConstraint DoesNotContain(string expected)
@@ -58,8 +58,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Returns a constraint that fails if the actual
-		/// 	value ends with the substring supplied as an argument.
+		/// Returns a constraint that fails if the actual
+		/// value ends with the substring supplied as an argument.
 		/// </summary>
 		public static EndsWithConstraint DoesNotEndWith(string expected)
 		{
@@ -67,8 +67,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Returns a constraint that fails if the actual
-		/// 	value matches the pattern supplied as an argument.
+		/// Returns a constraint that fails if the actual
+		/// value matches the pattern supplied as an argument.
 		/// </summary>
 		[Obsolete]
 		public static RegexConstraint DoesNotMatch(string pattern)
@@ -77,8 +77,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Returns a constraint that fails if the actual
-		/// 	value starts with the substring supplied as an argument.
+		/// Returns a constraint that fails if the actual
+		/// value starts with the substring supplied as an argument.
 		/// </summary>
 		public static StartsWithConstraint DoesNotStartWith(string expected)
 		{
@@ -86,8 +86,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Returns a constraint that succeeds if the actual
-		/// 	value ends with the substring supplied as an argument.
+		/// Returns a constraint that succeeds if the actual
+		/// value ends with the substring supplied as an argument.
 		/// </summary>
 		[Obsolete("Use Is.StringEnding")]
 		public static EndsWithConstraint EndsWith(string expected)
@@ -96,8 +96,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Returns a constraint that succeeds if the actual
-		/// 	value matches the Regex pattern supplied as an argument.
+		/// Returns a constraint that succeeds if the actual
+		/// value matches the Regex pattern supplied as an argument.
 		/// </summary>
 		[Obsolete("Use Is.StringMatching")]
 		public static RegexConstraint Matches(string pattern)
@@ -106,8 +106,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Returns a constraint that succeeds if the actual
-		/// 	value starts with the substring supplied as an argument.
+		/// Returns a constraint that succeeds if the actual
+		/// value starts with the substring supplied as an argument.
 		/// </summary>
 		[Obsolete("Use Is.StringStarting")]
 		public static StartsWithConstraint StartsWith(string expected)

@@ -1,4 +1,5 @@
 ﻿#region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,71 +22,84 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
-using System.Collections.Generic;
 #if NET20
 using Newtonsoft.Json.Utilities.LinqBridge;
 #endif
+using System.Collections.Generic;
 using System.Threading;
-using Newtonsoft.Json.Serialization;
 
 namespace Newtonsoft.Json.Utilities
 {
-  internal class ThreadSafeStore<TKey, TValue>
-  {
-    private readonly object _lock = new object();
-    private Dictionary<TKey, TValue> _store;
-    private readonly Func<TKey, TValue> _creator;
+	internal class ThreadSafeStore<TKey, TValue>
+	{
+		#region Constructors/Destructors
 
-    public ThreadSafeStore(Func<TKey, TValue> creator)
-    {
-      if (creator == null)
-        throw new ArgumentNullException("creator");
+		public ThreadSafeStore(Func<TKey, TValue> creator)
+		{
+			if (creator == null)
+				throw new ArgumentNullException("creator");
 
-      _creator = creator;
-      _store = new Dictionary<TKey, TValue>();
-    }
+			this._creator = creator;
+			this._store = new Dictionary<TKey, TValue>();
+		}
 
-    public TValue Get(TKey key)
-    {
-      TValue value;
-      if (!_store.TryGetValue(key, out value))
-        return AddValue(key);
+		#endregion
 
-      return value;
-    }
+		#region Fields/Constants
 
-    private TValue AddValue(TKey key)
-    {
-      TValue value = _creator(key);
+		private readonly Func<TKey, TValue> _creator;
 
-      lock (_lock)
-      {
-        if (_store == null)
-        {
-          _store = new Dictionary<TKey, TValue>();
-          _store[key] = value;
-        }
-        else
-        {
-          // double check locking
-          TValue checkValue;
-          if (_store.TryGetValue(key, out checkValue))
-            return checkValue;
+		private readonly object _lock = new object();
+		private Dictionary<TKey, TValue> _store;
 
-          Dictionary<TKey, TValue> newStore = new Dictionary<TKey, TValue>(_store);
-          newStore[key] = value;
+		#endregion
+
+		#region Methods/Operators
+
+		private TValue AddValue(TKey key)
+		{
+			TValue value = this._creator(key);
+
+			lock (this._lock)
+			{
+				if (this._store == null)
+				{
+					this._store = new Dictionary<TKey, TValue>();
+					this._store[key] = value;
+				}
+				else
+				{
+					// double check locking
+					TValue checkValue;
+					if (this._store.TryGetValue(key, out checkValue))
+						return checkValue;
+
+					Dictionary<TKey, TValue> newStore = new Dictionary<TKey, TValue>(this._store);
+					newStore[key] = value;
 
 #if !(NETFX_CORE || PORTABLE)
-          Thread.MemoryBarrier();
+					Thread.MemoryBarrier();
 #endif
-          _store = newStore;
-        }
+					this._store = newStore;
+				}
 
-        return value;
-      }
-    }
-  }
+				return value;
+			}
+		}
+
+		public TValue Get(TKey key)
+		{
+			TValue value;
+			if (!this._store.TryGetValue(key, out value))
+				return this.AddValue(key);
+
+			return value;
+		}
+
+		#endregion
+	}
 }

@@ -10,12 +10,11 @@ using System.Reflection;
 namespace NUnit.Core.Extensibility
 {
 	/// <summary>
-	/// 	TestCaseBuilderCollection is an ExtensionPoint for TestCaseBuilders 
-	/// 	and implements the ITestCaseBuilder interface itself, passing calls 
-	/// 	on to the individual builders.
-	/// 
-	/// 	The builders are added to the collection by inserting them at
-	/// 	the start, as to take precedence over those added earlier.
+	/// TestCaseBuilderCollection is an ExtensionPoint for TestCaseBuilders
+	/// and implements the ITestCaseBuilder interface itself, passing calls
+	/// on to the individual builders.
+	/// The builders are added to the collection by inserting them at
+	/// the start, as to take precedence over those added earlier.
 	/// </summary>
 	public class TestCaseBuilderCollection : ExtensionPoint, ITestCaseBuilder2
 	{
@@ -31,7 +30,7 @@ namespace NUnit.Core.Extensibility
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Build a Test from the method provided.
+		/// Build a Test from the method provided.
 		/// </summary>
 		/// <param name="method"> The method to be used </param>
 		/// <returns> A Test or null </returns>
@@ -47,7 +46,7 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Build a Test from the method provided.
+		/// Build a Test from the method provided.
 		/// </summary>
 		/// <param name="method"> The method to be used </param>
 		/// <returns> A Test or null </returns>
@@ -69,8 +68,8 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Examine the method and determine if it is suitable for
-		/// 	any TestCaseBuilder to use in building a Test
+		/// Examine the method and determine if it is suitable for
+		/// any TestCaseBuilder to use in building a Test
 		/// </summary>
 		/// <param name="method"> The method to be used as a test case </param>
 		/// <returns> True if the method can be used to build a Test </returns>
@@ -85,8 +84,8 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Examine the method and determine if it is suitable for
-		/// 	any TestCaseBuilder to use in building a Test
+		/// Examine the method and determine if it is suitable for
+		/// any TestCaseBuilder to use in building a Test
 		/// </summary>
 		/// <param name="method"> The method to be used as a test case </param>
 		/// <returns> True if the method can be used to build a Test </returns>

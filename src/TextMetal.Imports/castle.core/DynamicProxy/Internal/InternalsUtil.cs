@@ -12,52 +12,73 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
+using Castle.Core.Internal;
+
 namespace Castle.DynamicProxy.Internal
 {
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Reflection;
-	using System.Runtime.CompilerServices;
-
-	using Castle.Core.Internal;
-
 	public static class InternalsUtil
 	{
+		#region Fields/Constants
+
 		private static readonly IDictionary<Assembly, bool> internalsToDynProxy = new Dictionary<Assembly, bool>();
 		private static readonly Lock internalsToDynProxyLock = Lock.Create();
 
+		#endregion
+
+		#region Methods/Operators
+
 		/// <summary>
-		///   Determines whether the specified method is internal.
+		/// Checks if the method is public or protected.
 		/// </summary>
-		/// <param name = "method">The method.</param>
+		/// <param name="method"> </param>
+		/// <returns> </returns>
+		public static bool IsAccessible(this MethodBase method)
+		{
+			// Accessibility supported by the full framework and CoreCLR
+			if (method.IsPublic || method.IsFamily || method.IsFamilyOrAssembly)
+				return true;
+
+			if (method.IsFamilyAndAssembly)
+				return true;
+
+			if (method.DeclaringType.Assembly.IsInternalToDynamicProxy() && method.IsAssembly)
+				return true;
+			return false;
+		}
+
+		/// <summary>
+		/// Determines whether the specified method is internal.
+		/// </summary>
+		/// <param name="method"> The method. </param>
 		/// <returns>
-		///   <c>true</c> if the specified method is internal; otherwise, <c>false</c>.
+		/// <c> true </c> if the specified method is internal; otherwise, <c> false </c>.
 		/// </returns>
 		public static bool IsInternal(this MethodBase method)
 		{
 			return method.IsAssembly || (method.IsFamilyAndAssembly
-			                             && !method.IsFamilyOrAssembly);
+										&& !method.IsFamilyOrAssembly);
 		}
 
 		/// <summary>
-		///   Determines whether this assembly has internals visible to dynamic proxy.
+		/// Determines whether this assembly has internals visible to dynamic proxy.
 		/// </summary>
-		/// <param name = "asm">The assembly to inspect.</param>
+		/// <param name="asm"> The assembly to inspect. </param>
 		public static bool IsInternalToDynamicProxy(this Assembly asm)
 		{
 			using (var locker = internalsToDynProxyLock.ForReadingUpgradeable())
 			{
 				if (internalsToDynProxy.ContainsKey(asm))
-				{
 					return internalsToDynProxy[asm];
-				}
 
 				locker.Upgrade();
 
 				if (internalsToDynProxy.ContainsKey(asm))
-				{
 					return internalsToDynProxy[asm];
-				}
 
 				var internalsVisibleTo = asm.GetAttributes<InternalsVisibleToAttribute>();
 				var found = internalsVisibleTo.Any(VisibleToDynamicProxy);
@@ -72,29 +93,6 @@ namespace Castle.DynamicProxy.Internal
 			return attribute.AssemblyName.Contains(ModuleScope.DEFAULT_ASSEMBLY_NAME);
 		}
 
-		/// <summary>
-		///   Checks if the method is public or protected.
-		/// </summary>
-		/// <param name = "method"></param>
-		/// <returns></returns>
-		public static bool IsAccessible(this MethodBase method)
-		{
-			// Accessibility supported by the full framework and CoreCLR
-			if (method.IsPublic || method.IsFamily || method.IsFamilyOrAssembly)
-			{
-				return true;
-			}
-
-			if (method.IsFamilyAndAssembly)
-			{
-				return true;
-			}
-
-			if (method.DeclaringType.Assembly.IsInternalToDynamicProxy() && method.IsAssembly)
-			{
-				return true;
-			}
-			return false;
-		}
+		#endregion
 	}
 }

@@ -6,6 +6,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 
 using NUnit.Util;
@@ -13,8 +14,8 @@ using NUnit.Util;
 namespace NUnit.UiKit
 {
 	/// <summary>
-	/// 	NUnitSettingsPage is the base class for all pages used
-	/// 	in a tabbed or tree-structured SettingsDialog.
+	/// NUnitSettingsPage is the base class for all pages used
+	/// in a tabbed or tree-structured SettingsDialog.
 	/// </summary>
 	public class SettingsPage : UserControl
 	{
@@ -46,7 +47,7 @@ namespace NUnit.UiKit
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Required designer variable.
+		/// Required designer variable.
 		/// </summary>
 		private Container components = null;
 
@@ -55,7 +56,7 @@ namespace NUnit.UiKit
 		private MessageDisplay messageDisplay;
 
 		/// <summary>
-		/// 	Settings are available to derived classes
+		/// Settings are available to derived classes
 		/// </summary>
 		protected ISettings settings;
 
@@ -116,7 +117,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Clean up any resources being used.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose(bool disposing)
 		{
@@ -129,8 +130,8 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Required method for Designer support - do not modify 
-		/// 	the contents of this method with the code editor.
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
@@ -138,7 +139,7 @@ namespace NUnit.UiKit
 			// SettingsPage
 			// 
 			this.Name = "SettingsPage";
-			this.Size = new System.Drawing.Size(456, 336);
+			this.Size = new Size(456, 336);
 		}
 
 		public virtual void LoadSettings()

@@ -10,7 +10,7 @@ using System.Windows.Forms;
 namespace NUnit.UiException.Controls
 {
 	/// <summary>
-	/// 	Displays a control which implements IStackTraceView.
+	/// Displays a control which implements IStackTraceView.
 	/// </summary>
 	public class ErrorList :
 		UserControl,
@@ -19,7 +19,7 @@ namespace NUnit.UiException.Controls
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Builds a new instance of ErrorList.
+		/// Builds a new instance of ErrorList.
 		/// </summary>
 		public ErrorList()
 			:
@@ -82,7 +82,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gives access to the item collection.
+		/// Gives access to the item collection.
 		/// </summary>
 		public ErrorItemCollection Items
 		{
@@ -119,7 +119,7 @@ namespace NUnit.UiException.Controls
 				bool fireEvent;
 
 				if (value != null &&
-				    (!this._items.Contains(value) || !value.HasSourceAttachment))
+					(!this._items.Contains(value) || !value.HasSourceAttachment))
 					return;
 
 				fireEvent = (this._selection != value);
@@ -145,7 +145,7 @@ namespace NUnit.UiException.Controls
 				candidate = this.PopulateList(value);
 
 				if (!String.IsNullOrEmpty(value) &&
-				    this._items.Count == 0)
+					this._items.Count == 0)
 					this._items.Add(new ErrorItem(null, "Fail to parse stack trace", -1));
 
 				this.AutoScrollMinSize = this._renderer.GetDocumentSize(this._items, this._workingGraphics);
@@ -250,13 +250,13 @@ namespace NUnit.UiException.Controls
 			base.OnPaint(e);
 
 			viewport = new Rectangle(-this.AutoScrollPosition.X, -this.AutoScrollPosition.Y,
-			                         this.ClientRectangle.Width, this.ClientRectangle.Height);
+				this.ClientRectangle.Width, this.ClientRectangle.Height);
 			this._renderer.DrawToGraphics(this._items, this._selection, e.Graphics, viewport);
 
 			if (this._hoveredIndex != -1)
 			{
 				this._renderer.DrawItem(this._items[this._hoveredIndex], this._hoveredIndex, true,
-				                        this._items[this._hoveredIndex] == this._selection, e.Graphics, viewport);
+					this._items[this._hoveredIndex] == this._selection, e.Graphics, viewport);
 			}
 
 			return;

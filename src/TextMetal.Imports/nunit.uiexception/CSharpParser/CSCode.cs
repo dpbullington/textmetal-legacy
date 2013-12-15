@@ -9,10 +9,9 @@ using System.Collections.Generic;
 namespace NUnit.UiException.CodeFormatters
 {
 	/// <summary>
-	/// 	(Formerly named CSCode)
-	/// 
-	/// 	Implements ITextManager and adds new behaviors to provide support for basic
-	/// 	syntax coloring.
+	/// (Formerly named CSCode)
+	/// Implements ITextManager and adds new behaviors to provide support for basic
+	/// syntax coloring.
 	/// </summary>
 	public class FormattedCode :
 		ITextManager
@@ -20,7 +19,7 @@ namespace NUnit.UiException.CodeFormatters
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Builds a new instance of FormattedCode.
+		/// Builds a new instance of FormattedCode.
 		/// </summary>
 		public FormattedCode()
 		{
@@ -61,12 +60,12 @@ namespace NUnit.UiException.CodeFormatters
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Keeps tracks of the text and the data used by the syntax coloring feature.
+		/// Keeps tracks of the text and the data used by the syntax coloring feature.
 		/// </summary>
 		protected CodeInfo _codeInfo;
 
 		/// <summary>
-		/// 	Stores the character count of the longest line in this text.
+		/// Stores the character count of the longest line in this text.
 		/// </summary>
 		private int _maxLength;
 
@@ -75,7 +74,7 @@ namespace NUnit.UiException.CodeFormatters
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gives access to the collection of ClassifiedToken at the specified lineIndex.
+		/// Gives access to the collection of ClassifiedToken at the specified lineIndex.
 		/// </summary>
 		/// <param name="lineIndex"> A zero based startingPosition. </param>
 		/// <returns> The ClassifiedTokenCollection instance at this startingPosition. </returns>
@@ -96,8 +95,8 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Gets the line count in the text currently
-		/// 	managed by this object.
+		/// Gets the line count in the text currently
+		/// managed by this object.
 		/// </summary>
 		public int LineCount
 		{
@@ -108,8 +107,8 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Gets the character count of the longest line
-		/// 	in this text.
+		/// Gets the character count of the longest line
+		/// in this text.
 		/// </summary>
 		public int MaxLength
 		{
@@ -128,7 +127,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Gets the text currently managed by this object.
+		/// Gets the text currently managed by this object.
 		/// </summary>
 		public string Text
 		{
@@ -143,8 +142,8 @@ namespace NUnit.UiException.CodeFormatters
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	An utility method that check data consistency. The operation
-		/// 	raises an exception if an error is found.
+		/// An utility method that check data consistency. The operation
+		/// raises an exception if an error is found.
 		/// </summary>
 		public static void CheckData(FormattedCode data)
 		{
@@ -184,7 +183,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Builds a new instance of CodeInfo.
+		/// Builds a new instance of CodeInfo.
 		/// </summary>
 		public static CodeInfo NewCodeInfo()
 		{
@@ -204,9 +203,9 @@ namespace NUnit.UiException.CodeFormatters
 			FormattedCode copy;
 
 			copy = new FormattedCode(this._codeInfo.Text,
-			                         this._codeInfo.IndexArray.ToArray(),
-			                         this._codeInfo.TagArray.ToArray(),
-			                         this._codeInfo.LineArray.ToArray());
+				this._codeInfo.IndexArray.ToArray(),
+				this._codeInfo.TagArray.ToArray(),
+				this._codeInfo.LineArray.ToArray());
 
 			return (copy._codeInfo);
 		}
@@ -217,15 +216,15 @@ namespace NUnit.UiException.CodeFormatters
 			int i;
 
 			if (obj == null ||
-			    !(obj is FormattedCode))
+				!(obj is FormattedCode))
 				return (false);
 
 			arg = obj as FormattedCode;
 
 			if (arg._codeInfo.Text != this._codeInfo.Text ||
-			    arg._codeInfo.IndexArray.Count != this._codeInfo.IndexArray.Count ||
-			    arg._codeInfo.TagArray.Count != this._codeInfo.TagArray.Count ||
-			    arg._codeInfo.LineArray.Count != this._codeInfo.LineArray.Count)
+				arg._codeInfo.IndexArray.Count != this._codeInfo.IndexArray.Count ||
+				arg._codeInfo.TagArray.Count != this._codeInfo.TagArray.Count ||
+				arg._codeInfo.LineArray.Count != this._codeInfo.LineArray.Count)
 				return (false);
 
 			for (i = 0; i < arg._codeInfo.IndexArray.Count; ++i)
@@ -255,7 +254,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Gets the text at the specified line.
+		/// Gets the text at the specified line.
 		/// </summary>
 		/// <param name="lineIndex"> A zero based startingPosition. </param>
 		/// <returns> The text at the specified line startingPosition. </returns>
@@ -309,65 +308,63 @@ namespace NUnit.UiException.CodeFormatters
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		/// <summary>
-		/// 	A naive attempt to modelize a structure of data that manages the text to be
-		/// 	displayed and extra data to make basic syntax coloring at rendering time,
-		/// 	while keeping a low memory footprint.
-		/// 
-		/// 	At rendering time, CodeInfo is used to make a link between the text to be drawn
-		/// 	and the brush color to be used during the process. So it is possible to distinguishes
-		/// 	code, comments, keywords and strings.
-		/// 	Currently, CodeInfo is used to split the text into a collection of couple of data,
-		/// 	where each couple is composed of:
-		/// 	- a string of characters
-		/// 	- a value (called tag) that classifies this string from 0 to 3.
-		/// 	Where 0 corresponds to 'Code', 1 to 'Keyword' and so on.
-		/// 	These couples are named 'ClassifiedToken'. At rendering time, the process can link each
-		/// 	of these values to a particular System.Drawing.Brush instance and display text
-		/// 	differently.
-		///  
-		/// 	However, keeping track of all these couples at any time could have a significative
-		/// 	impact on memory especially for big files. Therefore, instead of storing all theses couples,
-		/// 	CodeInfo stores just primitive information that allow to build ClassifiedToken instances on the fly.
+		/// A naive attempt to modelize a structure of data that manages the text to be
+		/// displayed and extra data to make basic syntax coloring at rendering time,
+		/// while keeping a low memory footprint.
+		/// At rendering time, CodeInfo is used to make a link between the text to be drawn
+		/// and the brush color to be used during the process. So it is possible to distinguishes
+		/// code, comments, keywords and strings.
+		/// Currently, CodeInfo is used to split the text into a collection of couple of data,
+		/// where each couple is composed of:
+		/// - a string of characters
+		/// - a value (called tag) that classifies this string from 0 to 3.
+		/// Where 0 corresponds to 'Code', 1 to 'Keyword' and so on.
+		/// These couples are named 'ClassifiedToken'. At rendering time, the process can link each
+		/// of these values to a particular System.Drawing.Brush instance and display text
+		/// differently.
+		/// However, keeping track of all these couples at any time could have a significative
+		/// impact on memory especially for big files. Therefore, instead of storing all theses couples,
+		/// CodeInfo stores just primitive information that allow to build ClassifiedToken instances on the fly.
 		/// </summary>
 		public class CodeInfo
 		{
 			#region Fields/Constants
 
 			/// <summary>
-			/// 	Array of character indexes that refers to
-			/// 	the field "Text". Each value in this array
-			/// 	must be interpreted as the starting index position
-			/// 	in the string into Text.
+			/// Array of character indexes that refers to
+			/// the field "Text". Each value in this array
+			/// must be interpreted as the starting index position
+			/// in the string into Text.
 			/// </summary>
 			public List<int> IndexArray;
 
 			/// <summary>
-			/// 	This index_array is used to easily locate the start of each
-			/// 	line of text, for instance: startingPosition[0] refers to line startingPosition 0,
-			/// 	startingPosition[1] refers to line startingPosition 1 and so on...
-			/// 	However, there is a small indirection in that this index_array
-			/// 	doesn't directly hold string indexes but refers to the startingPosition
-			/// 	of the item to be used in 'IndexArray'.
-			/// 	Therefore, LineArray[0] gives access to the startingPosition of the
-			/// 	IndexArray's item to be used to get the corresponding character
-			/// 	position. Hence, line 0 starts at: IndexArray[LineArray[0]]
-			/// 	line 1: IndexArray[LineArray[1]] and so on...
+			/// This index_array is used to easily locate the start of each
+			/// line of text, for instance: startingPosition[0] refers to line startingPosition 0,
+			/// startingPosition[1] refers to line startingPosition 1 and so on...
+			/// However, there is a small indirection in that this index_array
+			/// doesn't directly hold string indexes but refers to the startingPosition
+			/// of the item to be used in 'IndexArray'.
+			/// Therefore, LineArray[0] gives access to the startingPosition of the
+			/// IndexArray's item to be used to get the corresponding character
+			/// position. Hence, line 0 starts at: IndexArray[LineArray[0]]
+			/// line 1: IndexArray[LineArray[1]] and so on...
 			/// </summary>
 			public List<int> LineArray;
 
 			/// <summary>
-			/// 	Array of ClassificationTag values held as a
-			/// 	byte array. There is a one-to-one correspondance
-			/// 	with 'IndexArray'. i.e.: TagArray[0] refers to the
-			/// 	ClassificationTag value for string sequence at
-			/// 	IndexArray[0]. TagArray[1] refers value to IndexArray[1] and
-			/// 	so on... Hence, the following condition:
-			/// 	- IndexArray.Count == TagArray.Count must be verified.
+			/// Array of ClassificationTag values held as a
+			/// byte array. There is a one-to-one correspondance
+			/// with 'IndexArray'. i.e.: TagArray[0] refers to the
+			/// ClassificationTag value for string sequence at
+			/// IndexArray[0]. TagArray[1] refers value to IndexArray[1] and
+			/// so on... Hence, the following condition:
+			/// - IndexArray.Count == TagArray.Count must be verified.
 			/// </summary>
 			public List<byte> TagArray;
 
 			/// <summary>
-			/// 	Holds the entire text as a simple string.
+			/// Holds the entire text as a simple string.
 			/// </summary>
 			public string Text;
 

@@ -1,4 +1,5 @@
 ﻿#region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,6 +22,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
@@ -29,203 +31,215 @@ using System.Collections.ObjectModel;
 
 namespace Newtonsoft.Json.Linq
 {
-  internal class JPropertyKeyedCollection : Collection<JToken>
-  {
-    private static readonly IEqualityComparer<string> Comparer = StringComparer.Ordinal;
+	internal class JPropertyKeyedCollection : Collection<JToken>
+	{
+		#region Fields/Constants
 
-    private Dictionary<string, JToken> _dictionary;
+		private static readonly IEqualityComparer<string> Comparer = StringComparer.Ordinal;
 
-    private void AddKey(string key, JToken item)
-    {
-      EnsureDictionary();
-      _dictionary[key] = item;
-    }
+		private Dictionary<string, JToken> _dictionary;
 
-    protected void ChangeItemKey(JToken item, string newKey)
-    {
-      if (!ContainsItem(item))
-        throw new ArgumentException("The specified item does not exist in this KeyedCollection.");
+		#endregion
 
-      string keyForItem = GetKeyForItem(item);
-      if (!Comparer.Equals(keyForItem, newKey))
-      {
-        if (newKey != null)
-          AddKey(newKey, item);
+		#region Properties/Indexers/Events
 
-        if (keyForItem != null)
-          RemoveKey(keyForItem);
-      }
-    }
+		public JToken this[string key]
+		{
+			get
+			{
+				if (key == null)
+					throw new ArgumentNullException("key");
 
-    protected override void ClearItems()
-    {
-      base.ClearItems();
+				if (this._dictionary != null)
+					return this._dictionary[key];
 
-      if (_dictionary != null)
-        _dictionary.Clear();
-    }
+				throw new KeyNotFoundException();
+			}
+		}
 
-    public bool Contains(string key)
-    {
-      if (key == null)
-        throw new ArgumentNullException("key");
+		public ICollection<string> Keys
+		{
+			get
+			{
+				this.EnsureDictionary();
+				return this._dictionary.Keys;
+			}
+		}
 
-      if (_dictionary != null)
-        return _dictionary.ContainsKey(key);
+		public ICollection<JToken> Values
+		{
+			get
+			{
+				this.EnsureDictionary();
+				return this._dictionary.Values;
+			}
+		}
 
-      return false;
-    }
+		#endregion
 
-    private bool ContainsItem(JToken item)
-    {
-      if (_dictionary == null)
-        return false;
+		#region Methods/Operators
 
-      string key = GetKeyForItem(item);
-      JToken value;
-      return _dictionary.TryGetValue(key, out value);
-    }
+		private void AddKey(string key, JToken item)
+		{
+			this.EnsureDictionary();
+			this._dictionary[key] = item;
+		}
 
-    private void EnsureDictionary()
-    {
-      if (_dictionary == null)
-        _dictionary = new Dictionary<string, JToken>(Comparer);
-    }
+		protected void ChangeItemKey(JToken item, string newKey)
+		{
+			if (!this.ContainsItem(item))
+				throw new ArgumentException("The specified item does not exist in this KeyedCollection.");
 
-    private string GetKeyForItem(JToken item)
-    {
-      return ((JProperty)item).Name;
-    }
+			string keyForItem = this.GetKeyForItem(item);
+			if (!Comparer.Equals(keyForItem, newKey))
+			{
+				if (newKey != null)
+					this.AddKey(newKey, item);
 
-    protected override void InsertItem(int index, JToken item)
-    {
-      AddKey(GetKeyForItem(item), item);
-      base.InsertItem(index, item);
-    }
+				if (keyForItem != null)
+					this.RemoveKey(keyForItem);
+			}
+		}
 
-    public bool Remove(string key)
-    {
-      if (key == null)
-        throw new ArgumentNullException("key");
+		protected override void ClearItems()
+		{
+			base.ClearItems();
 
-      if (_dictionary != null)
-        return _dictionary.ContainsKey(key) && Remove(_dictionary[key]);
+			if (this._dictionary != null)
+				this._dictionary.Clear();
+		}
 
-      return false;
-    }
+		public bool Compare(JPropertyKeyedCollection other)
+		{
+			if (this == other)
+				return true;
 
-    protected override void RemoveItem(int index)
-    {
-      string keyForItem = GetKeyForItem(Items[index]);
-      RemoveKey(keyForItem);
-      base.RemoveItem(index);
-    }
+			// dictionaries in JavaScript aren't ordered
+			// ignore order when comparing properties
+			Dictionary<string, JToken> d1 = this._dictionary;
+			Dictionary<string, JToken> d2 = other._dictionary;
 
-    private void RemoveKey(string key)
-    {
-      if (_dictionary != null)
-        _dictionary.Remove(key);
-    }
+			if (d1 == null && d2 == null)
+				return true;
 
-    protected override void SetItem(int index, JToken item)
-    {
-      string keyForItem = GetKeyForItem(item);
-      string keyAtIndex = GetKeyForItem(Items[index]);
+			if (d1 == null)
+				return (d2.Count == 0);
 
-      if (Comparer.Equals(keyAtIndex, keyForItem))
-      {
-        if (_dictionary != null)
-          _dictionary[keyForItem] = item;
-      }
-      else
-      {
-        AddKey(keyForItem, item);
+			if (d2 == null)
+				return (d1.Count == 0);
 
-        if (keyAtIndex != null)
-          RemoveKey(keyAtIndex);
-      }
-      base.SetItem(index, item);
-    }
+			if (d1.Count != d2.Count)
+				return false;
 
-    public JToken this[string key]
-    {
-      get
-      {
-        if (key == null)
-          throw new ArgumentNullException("key");
+			foreach (KeyValuePair<string, JToken> keyAndProperty in d1)
+			{
+				JToken secondValue;
+				if (!d2.TryGetValue(keyAndProperty.Key, out secondValue))
+					return false;
 
-        if (_dictionary != null)
-          return _dictionary[key];
+				JProperty p1 = (JProperty)keyAndProperty.Value;
+				JProperty p2 = (JProperty)secondValue;
 
-        throw new KeyNotFoundException();
-      }
-    }
+				if (!p1.Value.DeepEquals(p2.Value))
+					return false;
+			}
 
-    public bool TryGetValue(string key, out JToken value)
-    {
-      if (_dictionary == null)
-      {
-        value = null;
-        return false;
-      }
+			return true;
+		}
 
-      return _dictionary.TryGetValue(key, out value);
-    }
+		public bool Contains(string key)
+		{
+			if (key == null)
+				throw new ArgumentNullException("key");
 
-    public ICollection<string> Keys
-    {
-      get
-      {
-        EnsureDictionary();
-        return _dictionary.Keys;
-      }
-    }
+			if (this._dictionary != null)
+				return this._dictionary.ContainsKey(key);
 
-    public ICollection<JToken> Values
-    {
-      get
-      {
-        EnsureDictionary();
-        return _dictionary.Values;
-      }
-    }
+			return false;
+		}
 
-    public bool Compare(JPropertyKeyedCollection other)
-    {
-      if (this == other)
-        return true;
+		private bool ContainsItem(JToken item)
+		{
+			if (this._dictionary == null)
+				return false;
 
-      // dictionaries in JavaScript aren't ordered
-      // ignore order when comparing properties
-      Dictionary<string, JToken> d1 = _dictionary;
-      Dictionary<string, JToken> d2 = other._dictionary;
+			string key = this.GetKeyForItem(item);
+			JToken value;
+			return this._dictionary.TryGetValue(key, out value);
+		}
 
-      if (d1 == null && d2 == null)
-        return true;
+		private void EnsureDictionary()
+		{
+			if (this._dictionary == null)
+				this._dictionary = new Dictionary<string, JToken>(Comparer);
+		}
 
-      if (d1 == null)
-        return (d2.Count == 0);
+		private string GetKeyForItem(JToken item)
+		{
+			return ((JProperty)item).Name;
+		}
 
-      if (d2 == null)
-        return (d1.Count == 0);
+		protected override void InsertItem(int index, JToken item)
+		{
+			this.AddKey(this.GetKeyForItem(item), item);
+			base.InsertItem(index, item);
+		}
 
-      if (d1.Count != d2.Count)
-        return false;
+		public bool Remove(string key)
+		{
+			if (key == null)
+				throw new ArgumentNullException("key");
 
-      foreach (KeyValuePair<string, JToken> keyAndProperty in d1)
-      {
-        JToken secondValue;
-        if (!d2.TryGetValue(keyAndProperty.Key, out secondValue))
-          return false;
+			if (this._dictionary != null)
+				return this._dictionary.ContainsKey(key) && this.Remove(this._dictionary[key]);
 
-        JProperty p1 = (JProperty)keyAndProperty.Value;
-        JProperty p2 = (JProperty)secondValue;
+			return false;
+		}
 
-        if (!p1.Value.DeepEquals(p2.Value))
-          return false;
-      }
+		protected override void RemoveItem(int index)
+		{
+			string keyForItem = this.GetKeyForItem(this.Items[index]);
+			this.RemoveKey(keyForItem);
+			base.RemoveItem(index);
+		}
 
-      return true;
-    }
-  }
+		private void RemoveKey(string key)
+		{
+			if (this._dictionary != null)
+				this._dictionary.Remove(key);
+		}
+
+		protected override void SetItem(int index, JToken item)
+		{
+			string keyForItem = this.GetKeyForItem(item);
+			string keyAtIndex = this.GetKeyForItem(this.Items[index]);
+
+			if (Comparer.Equals(keyAtIndex, keyForItem))
+			{
+				if (this._dictionary != null)
+					this._dictionary[keyForItem] = item;
+			}
+			else
+			{
+				this.AddKey(keyForItem, item);
+
+				if (keyAtIndex != null)
+					this.RemoveKey(keyAtIndex);
+			}
+			base.SetItem(index, item);
+		}
+
+		public bool TryGetValue(string key, out JToken value)
+		{
+			if (this._dictionary == null)
+			{
+				value = null;
+				return false;
+			}
+
+			return this._dictionary.TryGetValue(key, out value);
+		}
+
+		#endregion
+	}
 }

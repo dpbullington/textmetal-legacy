@@ -22,7 +22,7 @@ namespace Castle.Core.Logging
 #if !SILVERLIGHT
 
 	/// <summary>
-	///   Used to create the TraceLogger implementation of ILogger interface. See <see cref = "TraceLogger" />.
+	/// Used to create the TraceLogger implementation of ILogger interface. See <see cref="TraceLogger" />.
 	/// </summary>
 	public class TraceLoggerFactory : AbstractLoggerFactory
 	{
@@ -31,7 +31,7 @@ namespace Castle.Core.Logging
 #endif
 		public override ILogger Create(string name)
 		{
-			return InternalCreate(name);
+			return this.InternalCreate(name);
 		}
 
 #if DOTNET40
@@ -47,7 +47,7 @@ namespace Castle.Core.Logging
 #endif
 		public override ILogger Create(string name, LoggerLevel level)
 		{
-			return InternalCreate(name, level);
+			return this.InternalCreate(name, level);
 		}
 
 #if DOTNET40

@@ -1,4 +1,5 @@
 #region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,75 +22,91 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
-using Newtonsoft.Json.Serialization;
 using System.Reflection;
+
 #if NET20
 using Newtonsoft.Json.Utilities.LinqBridge;
 #endif
 
 namespace Newtonsoft.Json.Utilities
 {
-  internal class LateBoundReflectionDelegateFactory : ReflectionDelegateFactory
-  {
-    private static readonly LateBoundReflectionDelegateFactory _instance = new LateBoundReflectionDelegateFactory();
+	internal class LateBoundReflectionDelegateFactory : ReflectionDelegateFactory
+	{
+		#region Fields/Constants
 
-    internal static ReflectionDelegateFactory Instance
-    {
-      get { return _instance; }
-    }
+		private static readonly LateBoundReflectionDelegateFactory _instance = new LateBoundReflectionDelegateFactory();
 
-    public override MethodCall<T, object> CreateMethodCall<T>(MethodBase method)
-    {
-      ValidationUtils.ArgumentNotNull(method, "method");
+		#endregion
 
-      ConstructorInfo c = method as ConstructorInfo;
-      if (c != null)
-        return (o, a) => c.Invoke(a);
+		#region Properties/Indexers/Events
 
-      return (o, a) => method.Invoke(o, a);
-    }
+		internal static ReflectionDelegateFactory Instance
+		{
+			get
+			{
+				return _instance;
+			}
+		}
 
-    public override Func<T> CreateDefaultConstructor<T>(Type type)
-    {
-      ValidationUtils.ArgumentNotNull(type, "type");
+		#endregion
 
-      if (type.IsValueType())
-        return () => (T)Activator.CreateInstance(type);
+		#region Methods/Operators
 
-      ConstructorInfo constructorInfo = ReflectionUtils.GetDefaultConstructor(type, true);
+		public override Func<T> CreateDefaultConstructor<T>(Type type)
+		{
+			ValidationUtils.ArgumentNotNull(type, "type");
 
-      return () => (T)constructorInfo.Invoke(null);
-    }
+			if (type.IsValueType())
+				return () => (T)Activator.CreateInstance(type);
 
-    public override Func<T, object> CreateGet<T>(PropertyInfo propertyInfo)
-    {
-      ValidationUtils.ArgumentNotNull(propertyInfo, "propertyInfo");
+			ConstructorInfo constructorInfo = ReflectionUtils.GetDefaultConstructor(type, true);
 
-      return o => propertyInfo.GetValue(o, null);
-    }
+			return () => (T)constructorInfo.Invoke(null);
+		}
 
-    public override Func<T, object> CreateGet<T>(FieldInfo fieldInfo)
-    {
-      ValidationUtils.ArgumentNotNull(fieldInfo, "fieldInfo");
+		public override Func<T, object> CreateGet<T>(PropertyInfo propertyInfo)
+		{
+			ValidationUtils.ArgumentNotNull(propertyInfo, "propertyInfo");
 
-      return o => fieldInfo.GetValue(o);
-    }
+			return o => propertyInfo.GetValue(o, null);
+		}
 
-    public override Action<T, object> CreateSet<T>(FieldInfo fieldInfo)
-    {
-      ValidationUtils.ArgumentNotNull(fieldInfo, "fieldInfo");
+		public override Func<T, object> CreateGet<T>(FieldInfo fieldInfo)
+		{
+			ValidationUtils.ArgumentNotNull(fieldInfo, "fieldInfo");
 
-      return (o, v) => fieldInfo.SetValue(o, v);
-    }
+			return o => fieldInfo.GetValue(o);
+		}
 
-    public override Action<T, object> CreateSet<T>(PropertyInfo propertyInfo)
-    {
-      ValidationUtils.ArgumentNotNull(propertyInfo, "propertyInfo");
+		public override MethodCall<T, object> CreateMethodCall<T>(MethodBase method)
+		{
+			ValidationUtils.ArgumentNotNull(method, "method");
 
-      return (o, v) => propertyInfo.SetValue(o, v, null);
-    }
-  }
+			ConstructorInfo c = method as ConstructorInfo;
+			if (c != null)
+				return (o, a) => c.Invoke(a);
+
+			return (o, a) => method.Invoke(o, a);
+		}
+
+		public override Action<T, object> CreateSet<T>(FieldInfo fieldInfo)
+		{
+			ValidationUtils.ArgumentNotNull(fieldInfo, "fieldInfo");
+
+			return (o, v) => fieldInfo.SetValue(o, v);
+		}
+
+		public override Action<T, object> CreateSet<T>(PropertyInfo propertyInfo)
+		{
+			ValidationUtils.ArgumentNotNull(propertyInfo, "propertyInfo");
+
+			return (o, v) => propertyInfo.SetValue(o, v, null);
+		}
+
+		#endregion
+	}
 }

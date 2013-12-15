@@ -23,13 +23,18 @@ namespace Castle.Core.Configuration
 	[Serializable]
 	public class ConfigurationAttributeCollection : NameValueCollection
 	{
+		#region Constructors/Destructors
+
 		public ConfigurationAttributeCollection()
 		{
 		}
 
-		protected ConfigurationAttributeCollection(SerializationInfo info, StreamingContext context) : base(info, context)
+		protected ConfigurationAttributeCollection(SerializationInfo info, StreamingContext context)
+			: base(info, context)
 		{
 		}
+
+		#endregion
 	}
 #else
 

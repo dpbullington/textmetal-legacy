@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Diagnostics;
+
+using Castle.DynamicProxy.Generators;
+using Castle.DynamicProxy.Generators.Emitters;
+
 namespace Castle.DynamicProxy.Contributors
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Diagnostics;
-
-	using Castle.DynamicProxy.Generators;
-	using Castle.DynamicProxy.Generators.Emitters;
 
 	public class InterfaceProxyTargetContributor : CompositeTypeContributor
 	{
-		private readonly bool canChangeTarget;
-		private readonly Type proxyTargetType;
+		#region Constructors/Destructors
 
 		public InterfaceProxyTargetContributor(Type proxyTargetType, bool canChangeTarget, INamingScope namingScope)
 			: base(namingScope)
@@ -33,14 +33,25 @@ namespace Castle.DynamicProxy.Contributors
 			this.canChangeTarget = canChangeTarget;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly bool canChangeTarget;
+		private readonly Type proxyTargetType;
+
+		#endregion
+
+		#region Methods/Operators
+
 		protected override IEnumerable<MembersCollector> CollectElementsToProxyInternal(IProxyGenerationHook hook)
 		{
 			Debug.Assert(hook != null, "hook != null");
 
-			foreach (var @interface in interfaces)
+			foreach (var @interface in this.interfaces)
 			{
-				var item = GetCollectorForInterface(@interface);
-				item.Logger = Logger;
+				var item = this.GetCollectorForInterface(@interface);
+				item.Logger = this.Logger;
 				item.CollectMembersToProxy(hook);
 				yield return item;
 			}
@@ -48,28 +59,7 @@ namespace Castle.DynamicProxy.Contributors
 
 		protected virtual MembersCollector GetCollectorForInterface(Type @interface)
 		{
-			return new InterfaceMembersOnClassCollector(@interface, false, proxyTargetType.GetInterfaceMap(@interface));
-		}
-
-		protected override MethodGenerator GetMethodGenerator(MetaMethod method, ClassEmitter @class,
-		                                                      ProxyGenerationOptions options,
-		                                                      OverrideMethodDelegate overrideMethod)
-		{
-			if (!method.Proxyable)
-			{
-				return new ForwardingMethodGenerator(method,
-				                                     overrideMethod,
-				                                     (c, m) => c.GetField("__target"));
-			}
-
-			var invocation = GetInvocationType(method, @class, options);
-
-			return new MethodWithInvocationGenerator(method,
-			                                         @class.GetField("__interceptors"),
-			                                         invocation,
-			                                         (c, m) => c.GetField("__target").ToExpression(),
-			                                         overrideMethod,
-			                                         null);
+			return new InterfaceMembersOnClassCollector(@interface, false, this.proxyTargetType.GetInterfaceMap(@interface));
 		}
 
 		private Type GetInvocationType(MetaMethod method, ClassEmitter @class, ProxyGenerationOptions options)
@@ -77,14 +67,10 @@ namespace Castle.DynamicProxy.Contributors
 			var scope = @class.ModuleScope;
 
 			Type[] invocationInterfaces;
-			if (canChangeTarget)
-			{
+			if (this.canChangeTarget)
 				invocationInterfaces = new[] { typeof(IInvocation), typeof(IChangeProxyTarget) };
-			}
 			else
-			{
 				invocationInterfaces = new[] { typeof(IInvocation) };
-			}
 
 			var key = new CacheKey(method.Method, CompositionInvocationTypeGenerator.BaseType, invocationInterfaces, null);
 
@@ -92,20 +78,41 @@ namespace Castle.DynamicProxy.Contributors
 
 			var invocation = scope.GetFromCache(key);
 			if (invocation != null)
-			{
 				return invocation;
-			}
 
 			invocation = new CompositionInvocationTypeGenerator(method.Method.DeclaringType,
-			                                                    method,
-			                                                    method.Method,
-			                                                    canChangeTarget,
-			                                                    null)
-				.Generate(@class, options, namingScope).BuildType();
+				method,
+				method.Method,
+				this.canChangeTarget,
+				null)
+				.Generate(@class, options, this.namingScope).BuildType();
 
 			scope.RegisterInCache(key, invocation);
 
 			return invocation;
 		}
+
+		protected override MethodGenerator GetMethodGenerator(MetaMethod method, ClassEmitter @class,
+			ProxyGenerationOptions options,
+			OverrideMethodDelegate overrideMethod)
+		{
+			if (!method.Proxyable)
+			{
+				return new ForwardingMethodGenerator(method,
+					overrideMethod,
+					(c, m) => c.GetField("__target"));
+			}
+
+			var invocation = this.GetInvocationType(method, @class, options);
+
+			return new MethodWithInvocationGenerator(method,
+				@class.GetField("__interceptors"),
+				invocation,
+				(c, m) => c.GetField("__target").ToExpression(),
+				overrideMethod,
+				null);
+		}
+
+		#endregion
 	}
 }

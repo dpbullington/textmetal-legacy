@@ -14,15 +14,15 @@ namespace NUnit.UiKit
 	using System;
 
 	/// <summary>
-	/// 	Type safe TreeNode for use in the TestSuiteTreeView. 
-	/// 	NOTE: Hides some methods and properties of base class.
+	/// Type safe TreeNode for use in the TestSuiteTreeView.
+	/// NOTE: Hides some methods and properties of base class.
 	/// </summary>
 	public class TestSuiteTreeNode : TreeNode
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a TestNode given a test
+		/// Construct a TestNode given a test
 		/// </summary>
 		public TestSuiteTreeNode(TestInfo test)
 			: base(test.TestName.Name)
@@ -32,7 +32,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Construct a TestNode given a TestResult
+		/// Construct a TestNode given a TestResult
 		/// </summary>
 		public TestSuiteTreeNode(TestResult result)
 			: base(result.Test.TestName.Name)
@@ -51,8 +51,8 @@ namespace NUnit.UiKit
 		public const int InconclusiveIndex = 4;
 
 		/// <summary>
-		/// 	Image indices for various test states - the values 
-		/// 	must match the indices of the image list used
+		/// Image indices for various test states - the values
+		/// must match the indices of the image list used
 		/// </summary>
 		public const int InitIndex = 0;
 
@@ -60,19 +60,19 @@ namespace NUnit.UiKit
 		public const int SuccessIndex = 2;
 
 		/// <summary>
-		/// 	Private field used for inclusion by category
+		/// Private field used for inclusion by category
 		/// </summary>
 		private bool included = true;
 
 		/// <summary>
-		/// 	The result from the last run of the test
+		/// The result from the last run of the test
 		/// </summary>
 		private TestResult result;
 
 		private bool showFailedAssumptions = false;
 
 		/// <summary>
-		/// 	The testcase or testsuite represented by this node
+		/// The testcase or testsuite represented by this node
 		/// </summary>
 		private ITest test;
 
@@ -99,7 +99,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Return true if the node has a result, otherwise false.
+		/// Return true if the node has a result, otherwise false.
 		/// </summary>
 		public bool HasResult
 		{
@@ -123,7 +123,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Test result for this node
+		/// Test result for this node
 		/// </summary>
 		public TestResult Result
 		{
@@ -168,7 +168,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Test represented by this node
+		/// Test represented by this node
 		/// </summary>
 		public ITest Test
 		{
@@ -202,7 +202,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Calculate the image index based on the node contents
+		/// Calculate the image index based on the node contents
 		/// </summary>
 		/// <returns> Image index for this node </returns>
 		private int CalcImageIndex()
@@ -251,7 +251,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Clear the result of this node and all its children
+		/// Clear the result of this node and all its children
 		/// </summary>
 		public void ClearResults()
 		{
@@ -263,11 +263,11 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Gets the Theory node associated with the current
-		/// 	node. If the current node is a Theory, then the
-		/// 	current node is returned. Otherwise, if the current
-		/// 	node is a test case under a theory node, then that
-		/// 	node is returned. Otherwise, null is returned.
+		/// Gets the Theory node associated with the current
+		/// node. If the current node is a Theory, then the
+		/// current node is returned. Otherwise, if the current
+		/// node is a test case under a theory node, then that
+		/// node is returned. Otherwise, null is returned.
 		/// </summary>
 		/// <returns> </returns>
 		public TestSuiteTreeNode GetTheoryNode()
@@ -283,8 +283,8 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Regenerate the test cases under a theory, respecting
-		/// 	the current setting for ShowFailedAssumptions
+		/// Regenerate the test cases under a theory, respecting
+		/// the current setting for ShowFailedAssumptions
 		/// </summary>
 		public void RepopulateTheoryNode()
 		{
@@ -302,7 +302,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	UPdate the image index based on the result field
+		/// UPdate the image index based on the result field
 		/// </summary>
 		public void UpdateImageIndex()
 		{

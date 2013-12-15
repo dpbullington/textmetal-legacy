@@ -24,14 +24,14 @@ namespace NMock2
 	using System;
 
 	/// <summary>
-	/// 	Defines the return value of a mocked method call.
+	/// Defines the return value of a mocked method call.
 	/// </summary>
 	public class Return
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Returns a clone as method return value.
+		/// Returns a clone as method return value.
 		/// </summary>
 		/// <param name="prototype"> The prototype to clone. </param>
 		/// <returns> Action defining the return value of a method. </returns>
@@ -41,7 +41,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Defines the value returned by an out parameter.
+		/// Defines the value returned by an out parameter.
 		/// </summary>
 		/// <param name="parameterName"> Name of the parameter. </param>
 		/// <param name="value"> The value to return. </param>
@@ -52,7 +52,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Defines the value returned by an out parameter.
+		/// Defines the value returned by an out parameter.
 		/// </summary>
 		/// <param name="parameterIndex"> Index of the parameter. </param>
 		/// <param name="value"> The value to return. </param>
@@ -63,7 +63,7 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Returns a value as method return value.
+		/// Returns a value as method return value.
 		/// </summary>
 		/// <param name="result"> The result value. </param>
 		/// <returns> Action defining the return value of a method. </returns>

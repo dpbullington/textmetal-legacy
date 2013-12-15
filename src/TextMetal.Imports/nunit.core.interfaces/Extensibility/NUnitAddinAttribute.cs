@@ -9,8 +9,8 @@ using System;
 namespace NUnit.Core.Extensibility
 {
 	/// <summary>
-	/// 	NUnitAddinAttribute is used to mark all add-ins. The marked class
-	/// 	must implement the IAddin interface.
+	/// NUnitAddinAttribute is used to mark all add-ins. The marked class
+	/// must implement the IAddin interface.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
 	public sealed class NUnitAddinAttribute : Attribute
@@ -18,7 +18,7 @@ namespace NUnit.Core.Extensibility
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Default Constructor
+		/// Default Constructor
 		/// </summary>
 		public NUnitAddinAttribute()
 		{
@@ -30,17 +30,17 @@ namespace NUnit.Core.Extensibility
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	A description for the addin
+		/// A description for the addin
 		/// </summary>
 		public string Description;
 
 		/// <summary>
-		/// 	The name of this addin
+		/// The name of this addin
 		/// </summary>
 		public string Name;
 
 		/// <summary>
-		/// 	The type of extension provided
+		/// The type of extension provided
 		/// </summary>
 		public ExtensionType Type;
 

@@ -33,7 +33,7 @@ namespace NMock2.Internal
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="ExpectationBuilder" /> class.
+		/// Initializes a new instance of the <see cref="ExpectationBuilder" /> class.
 		/// </summary>
 		/// <param name="description"> The description. </param>
 		/// <param name="requiredCountMatcher"> The required count matcher. </param>
@@ -55,7 +55,7 @@ namespace NMock2.Internal
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets an indexer (get operation).
+		/// Gets an indexer (get operation).
 		/// </summary>
 		/// <value> Get indexer syntax defining the value returned by the indexer. </value>
 		public IGetIndexerSyntax Get
@@ -72,7 +72,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Gets an indexer (set operation).
+		/// Gets an indexer (set operation).
 		/// </summary>
 		/// <value> Set indexer syntax defining the value the indexer is set to. </value>
 		public ISetIndexerSyntax Set
@@ -93,7 +93,7 @@ namespace NMock2.Internal
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Arguments the matchers.
+		/// Arguments the matchers.
 		/// </summary>
 		/// <param name="expectedArguments"> The expected arguments. </param>
 		/// <returns> </returns>
@@ -110,7 +110,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	News the method name matcher.
+		/// News the method name matcher.
 		/// </summary>
 		/// <param name="description"> The description. </param>
 		/// <param name="methodName"> Name of the method. </param>
@@ -121,7 +121,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Adds a comment for the expectation that is added to the error message if the expectation is not met.
+		/// Adds a comment for the expectation that is added to the error message if the expectation is not met.
 		/// </summary>
 		/// <param name="comment"> The comment that is shown in the error message if this expectation is not met. You can describe here why this expectation has to be met. </param>
 		public void Comment(string comment)
@@ -130,7 +130,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Ensures the matching method exists on mock.
+		/// Ensures the matching method exists on mock.
 		/// </summary>
 		/// <param name="methodMatcher"> The method matcher. </param>
 		/// <param name="methodDescription"> The method description. </param>
@@ -154,7 +154,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Defines an event registration.
+		/// Defines an event registration.
 		/// </summary>
 		/// <param name="eventName"> Name of the event. </param>
 		/// <returns> Match syntax defining the behavior of the event adder. </returns>
@@ -164,7 +164,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Defines an event registration.
+		/// Defines an event registration.
 		/// </summary>
 		/// <param name="eventName"> Name of the event. </param>
 		/// <param name="listenerMatcher"> The listener matcher. </param>
@@ -181,7 +181,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Defines an event registration.
+		/// Defines an event registration.
 		/// </summary>
 		/// <param name="eventName"> Name of the event. </param>
 		/// <param name="equalListener"> Delegate defining compatible listeners. </param>
@@ -192,7 +192,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Defines an event deregistration.
+		/// Defines an event deregistration.
 		/// </summary>
 		/// <param name="eventName"> Name of the event. </param>
 		/// <param name="listenerMatcher"> The listener matcher. </param>
@@ -209,7 +209,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Defines an event deregistration.
+		/// Defines an event deregistration.
 		/// </summary>
 		/// <param name="eventName"> Name of the event. </param>
 		/// <returns> Match syntax defining the behavior of the event remover. </returns>
@@ -219,7 +219,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Defines an event deregistration.
+		/// Defines an event deregistration.
 		/// </summary>
 		/// <param name="eventName"> Name of the event. </param>
 		/// <param name="equalListener"> Delegate defining compatible listeners. </param>
@@ -230,7 +230,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Gets the property.
+		/// Gets the property.
 		/// </summary>
 		/// <param name="propertyName"> Name of the property. </param>
 		/// <returns> </returns>
@@ -247,7 +247,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Defines a matching criteria.
+		/// Defines a matching criteria.
 		/// </summary>
 		/// <param name="matcher"> The matcher. </param>
 		/// <returns> Action syntax defining the action to take. </returns>
@@ -258,7 +258,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Methods the specified method name.
+		/// Methods the specified method name.
 		/// </summary>
 		/// <param name="methodName"> Name of the method. </param>
 		/// <param name="typeParams"> The type params. </param>
@@ -269,7 +269,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Defines a method.
+		/// Defines a method.
 		/// </summary>
 		/// <param name="method"> The method. </param>
 		/// <param name="typeParams"> The generic type params to match. </param>
@@ -280,7 +280,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Methods the specified method matcher.
+		/// Methods the specified method matcher.
 		/// </summary>
 		/// <param name="methodMatcher"> The method matcher. </param>
 		/// <param name="typeParams"> The type params. </param>
@@ -301,7 +301,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Defines a method.
+		/// Defines a method.
 		/// </summary>
 		/// <param name="methodMatcher"> Matcher for matching the method on an invocation. </param>
 		/// <param name="typeParamsMatcher"> Matchers for matching type parameters. </param>
@@ -317,7 +317,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Defines the receiver.
+		/// Defines the receiver.
 		/// </summary>
 		/// <param name="receiver"> The dynamic mock on which the expectation or stub is applied. </param>
 		/// <returns> Method syntax defining the method, property or event. </returns>
@@ -337,7 +337,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Sets the property.
+		/// Sets the property.
 		/// </summary>
 		/// <param name="propertyName"> Name of the property. </param>
 		/// <returns> </returns>
@@ -352,7 +352,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Defines what will happen.
+		/// Defines what will happen.
 		/// </summary>
 		/// <param name="actions"> The actions to take. </param>
 		/// <returns> Returns the comment syntax defined after will. </returns>
@@ -365,7 +365,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Defines the arguments that are expected on the method call.
+		/// Defines the arguments that are expected on the method call.
 		/// </summary>
 		/// <param name="expectedArguments"> The expected arguments. </param>
 		/// <returns> Matcher syntax. </returns>
@@ -376,7 +376,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Defines that all arguments are allowed on the method call.
+		/// Defines that all arguments are allowed on the method call.
 		/// </summary>
 		/// <returns> Matcher syntax. </returns>
 		public IMatchSyntax WithAnyArguments()
@@ -386,7 +386,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Defines that no arguments are expected on the method call.
+		/// Defines that no arguments are expected on the method call.
 		/// </summary>
 		/// <returns> Matcher syntax. </returns>
 		public IMatchSyntax WithNoArguments()
@@ -403,7 +403,7 @@ namespace NMock2.Internal
 			#region Constructors/Destructors
 
 			/// <summary>
-			/// 	Initializes a new instance of the <see cref="IndexGetterBuilder" /> class.
+			/// Initializes a new instance of the <see cref="IndexGetterBuilder" /> class.
 			/// </summary>
 			/// <param name="expectation"> The expectation. </param>
 			/// <param name="builder"> The builder. </param>
@@ -418,7 +418,7 @@ namespace NMock2.Internal
 			#region Fields/Constants
 
 			/// <summary>
-			/// 	Holds the instance to the <see cref="ExpectationBuilder" />.
+			/// Holds the instance to the <see cref="ExpectationBuilder" />.
 			/// </summary>
 			private readonly ExpectationBuilder builder;
 
@@ -445,7 +445,7 @@ namespace NMock2.Internal
 			#region Constructors/Destructors
 
 			/// <summary>
-			/// 	Initializes a new instance of the <see cref="IndexSetterBuilder" /> class.
+			/// Initializes a new instance of the <see cref="IndexSetterBuilder" /> class.
 			/// </summary>
 			/// <param name="expectation"> The expectation. </param>
 			/// <param name="builder"> The builder. </param>
@@ -508,7 +508,7 @@ namespace NMock2.Internal
 			#region Constructors/Destructors
 
 			/// <summary>
-			/// 	Initializes a new instance of the <see cref="PropertyValueBuilder" /> class.
+			/// Initializes a new instance of the <see cref="PropertyValueBuilder" /> class.
 			/// </summary>
 			/// <param name="builder"> The builder. </param>
 			public PropertyValueBuilder(ExpectationBuilder builder)

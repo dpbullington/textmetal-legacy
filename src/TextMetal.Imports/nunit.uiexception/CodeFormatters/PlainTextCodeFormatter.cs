@@ -8,9 +8,9 @@ using System;
 namespace NUnit.UiException.CodeFormatters
 {
 	/// <summary>
-	/// 	Create a default FormattedCode for any string value.
-	/// 	This should be used as a last resort when there is not ICodeFormatter
-	/// 	that fit source code for an ErrorItem.
+	/// Create a default FormattedCode for any string value.
+	/// This should be used as a last resort when there is not ICodeFormatter
+	/// that fit source code for an ErrorItem.
 	/// </summary>
 	public class PlainTextCodeFormatter :
 		ICodeFormatter
@@ -18,7 +18,7 @@ namespace NUnit.UiException.CodeFormatters
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Returns "Plain text"
+		/// Returns "Plain text"
 		/// </summary>
 		public string Language
 		{
@@ -81,7 +81,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Prepare input text for the parsing stage.
+		/// Prepare input text for the parsing stage.
 		/// </summary>
 		/// <param name="text"> The text to be pre-processed. </param>
 		/// <returns> A string ready to be parsed. </returns>

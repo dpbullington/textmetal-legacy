@@ -5,6 +5,7 @@
 // ****************************************************************
 
 using System;
+
 #if CLR_2_0 || CLR_4_0
 
 #endif
@@ -12,8 +13,8 @@ using System;
 namespace NUnit.Framework.Constraints
 {
 	/// <summary>
-	/// 	RangeConstraint tests whethe two values are within a 
-	/// 	specified range.
+	/// RangeConstraint tests whethe two values are within a
+	/// specified range.
 	/// </summary>
 #if CLR_2_0 || CLR_4_0
 	public class RangeConstraint<T> : ComparisonConstraint
@@ -23,7 +24,7 @@ namespace NUnit.Framework.Constraints
 		private T to;
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:RangeConstraint" /> class.
+		/// Initializes a new instance of the <see cref="T:RangeConstraint" /> class.
 		/// </summary>
 		/// <param name="from"> From. </param>
 		/// <param name="to"> To. </param>
@@ -36,7 +37,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Test whether the constraint is satisfied by a given value
+		/// Test whether the constraint is satisfied by a given value
 		/// </summary>
 		/// <param name="actual"> The value to be tested </param>
 		/// <returns> True for success, false for failure </returns>
@@ -48,11 +49,11 @@ namespace NUnit.Framework.Constraints
 				throw new ArgumentException("Cannot compare using a null reference", "expected");
 
 			return this.comparer.Compare(this.@from, actual) <= 0 &&
-			       this.comparer.Compare(this.to, actual) >= 0;
+					this.comparer.Compare(this.to, actual) >= 0;
 		}
 
 		/// <summary>
-		/// 	Write the constraint description to a MessageWriter
+		/// Write the constraint description to a MessageWriter
 		/// </summary>
 		/// <param name="writer"> The writer on which the description is displayed </param>
 		public override void WriteDescriptionTo(MessageWriter writer)

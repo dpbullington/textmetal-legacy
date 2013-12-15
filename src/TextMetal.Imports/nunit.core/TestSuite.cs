@@ -12,12 +12,13 @@ using System.Reflection;
 namespace NUnit.Core
 {
 	using System;
+
 #if CLR_2_0 || CLR_4_0
 
 #endif
 
 	/// <summary>
-	/// 	Summary description for TestSuite.
+	/// Summary description for TestSuite.
 	/// </summary>
 	[Serializable]
 	public class TestSuite : Test
@@ -27,54 +28,54 @@ namespace NUnit.Core
 		private static Logger log = InternalTrace.GetLogger(typeof(TestSuite));
 
 		/// <summary>
-		/// 	Our collection of child tests
+		/// Our collection of child tests
 		/// </summary>
 		private ArrayList tests = new ArrayList();
 
 		/// <summary>
-		/// 	The fixture setup methods for this suite
+		/// The fixture setup methods for this suite
 		/// </summary>
 		protected MethodInfo[] fixtureSetUpMethods;
 
 		/// <summary>
-		/// 	The fixture teardown methods for this suite
+		/// The fixture teardown methods for this suite
 		/// </summary>
 		protected MethodInfo[] fixtureTearDownMethods;
 
 		/// <summary>
-		/// 	The setup methods for this suite
+		/// The setup methods for this suite
 		/// </summary>
 		protected MethodInfo[] setUpMethods;
 
 		/// <summary>
-		/// 	The teardown methods for this suite
+		/// The teardown methods for this suite
 		/// </summary>
 		protected MethodInfo[] tearDownMethods;
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	The actions for this suite
+		/// The actions for this suite
 		/// </summary>
 		protected TestAction[] actions;
 #endif
 
 		/// <summary>
-		/// 	Set to true to suppress sorting this suite's contents
+		/// Set to true to suppress sorting this suite's contents
 		/// </summary>
 		protected bool maintainTestOrder;
 
 		/// <summary>
-		/// 	Arguments for use in creating a parameterized fixture
+		/// Arguments for use in creating a parameterized fixture
 		/// </summary>
 		internal object[] arguments;
 
 		/// <summary>
-		/// 	The System.Type of the fixture for this test suite, if there is one
+		/// The System.Type of the fixture for this test suite, if there is one
 		/// </summary>
 		private Type fixtureType;
 
 		/// <summary>
-		/// 	The fixture object, if it has been created
+		/// The fixture object, if it has been created
 		/// </summary>
 		private object fixture;
 
@@ -272,8 +273,8 @@ namespace NUnit.Core
 			long startTime = DateTime.Now.Ticks;
 
 			TestResult suiteResult = this.RunState == RunState.Runnable || this.RunState == RunState.Explicit
-				                         ? this.RunSuiteInContext(listener, filter)
-				                         : this.SkipSuite(listener, filter);
+				? this.RunSuiteInContext(listener, filter)
+				: this.SkipSuite(listener, filter);
 
 			long stopTime = DateTime.Now.Ticks;
 			double time = ((double)(stopTime - startTime)) / (double)TimeSpan.TicksPerSecond;
@@ -313,8 +314,8 @@ namespace NUnit.Core
 			try
 			{
 				return this.ShouldRunOnOwnThread
-					       ? new TestSuiteThread(this).Run(listener, filter)
-					       : this.RunSuite(listener, filter);
+					? new TestSuiteThread(this).Run(listener, filter)
+					: this.RunSuite(listener, filter);
 			}
 			finally
 			{
@@ -667,8 +668,8 @@ namespace NUnit.Core
 				listener.SuiteStarted(test.TestName);
 				TestResult result = new TestResult(new TestInfo(test));
 				string msg = this.FixtureType == null
-					             ? "Parent SetUp failed"
-					             : string.Format("Parent SetUp failed in {0}", this.FixtureType.Name);
+					? "Parent SetUp failed"
+					: string.Format("Parent SetUp failed in {0}", this.FixtureType.Name);
 
 				result.Failure(msg, null, FailureSite.Parent);
 				this.MarkTestsFailed(test.Tests, result, listener, filter);
@@ -680,8 +681,8 @@ namespace NUnit.Core
 				listener.TestStarted(test.TestName);
 				TestResult result = new TestResult(new TestInfo(test));
 				string msg = this.FixtureType == null
-					             ? "TestFixtureSetUp failed"
-					             : string.Format("TestFixtureSetUp failed in {0}", this.FixtureType.Name);
+					? "TestFixtureSetUp failed"
+					: string.Format("TestFixtureSetUp failed in {0}", this.FixtureType.Name);
 				result.Failure(msg, null, FailureSite.Parent);
 				suiteResult.AddResult(result);
 				listener.TestFinished(result);

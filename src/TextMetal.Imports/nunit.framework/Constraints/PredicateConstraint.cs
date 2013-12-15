@@ -10,15 +10,15 @@ using System;
 namespace NUnit.Framework.Constraints
 {
 	/// <summary>
-	/// 	Predicate constraint wraps a Predicate in a constraint,
-	/// 	returning success if the predicate is true.
+	/// Predicate constraint wraps a Predicate in a constraint,
+	/// returning success if the predicate is true.
 	/// </summary>
 	public class PredicateConstraint<T> : Constraint
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a PredicateConstraint from a predicate
+		/// Construct a PredicateConstraint from a predicate
 		/// </summary>
 		public PredicateConstraint(Predicate<T> predicate)
 		{
@@ -36,8 +36,8 @@ namespace NUnit.Framework.Constraints
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Determines whether the predicate succeeds when applied
-		/// 	to the actual value.
+		/// Determines whether the predicate succeeds when applied
+		/// to the actual value.
 		/// </summary>
 		public override bool Matches(object actual)
 		{
@@ -50,14 +50,14 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Writes the description to a MessageWriter
+		/// Writes the description to a MessageWriter
 		/// </summary>
 		public override void WriteDescriptionTo(MessageWriter writer)
 		{
 			writer.WritePredicate("value matching");
 			writer.Write(this.predicate.Method.Name.StartsWith("<")
-				             ? "lambda expression"
-				             : this.predicate.Method.Name);
+				? "lambda expression"
+				: this.predicate.Method.Name);
 		}
 
 		#endregion

@@ -12,23 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.IO;
+using System.Text;
+
 namespace Castle.Core.Resource
 {
 	using System;
-	using System.IO;
-	using System.Text;
 
 	public abstract class AbstractResource : IResource
 	{
 #if SILVERLIGHT
         protected static readonly String DefaultBasePath = String.Empty;
 #else
-        protected static readonly String DefaultBasePath = AppDomain.CurrentDomain.BaseDirectory;
+		protected static readonly String DefaultBasePath = AppDomain.CurrentDomain.BaseDirectory;
 #endif
 
 		public virtual String FileBasePath
 		{
-			get { return DefaultBasePath; }
+			get
+			{
+				return DefaultBasePath;
+			}
 		}
 
 		public abstract TextReader GetStreamReader();
@@ -39,11 +43,12 @@ namespace Castle.Core.Resource
 
 		public void Dispose()
 		{
-			Dispose(true);
+			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
 		protected virtual void Dispose(bool disposing)
-		{}
+		{
+		}
 	}
 }

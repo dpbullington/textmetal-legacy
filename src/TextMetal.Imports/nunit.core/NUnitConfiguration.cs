@@ -13,8 +13,8 @@ using Microsoft.Win32;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Provides static methods for accessing the NUnit config
-	/// 	file
+	/// Provides static methods for accessing the NUnit config
+	/// file
 	/// </summary>
 	public class NUnitConfiguration
 	{
@@ -135,8 +135,8 @@ namespace NUnit.Core
 				if (monoExePath == null)
 				{
 					string[] searchNames = IsWindows()
-						                       ? new string[] { "mono.bat", "mono.cmd", "mono.exe" }
-						                       : new string[] { "mono", "mono.exe" };
+						? new string[] { "mono.bat", "mono.cmd", "mono.exe" }
+						: new string[] { "mono", "mono.exe" };
 
 					monoExePath = FindOneOnPath(searchNames);
 
@@ -202,8 +202,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the path to the lib directory for the version and build
-		/// 	of NUnit currently executing.
+		/// Gets the path to the lib directory for the version and build
+		/// of NUnit currently executing.
 		/// </summary>
 		public static string NUnitLibDirectory
 		{

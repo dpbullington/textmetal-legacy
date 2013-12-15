@@ -1,4 +1,5 @@
 #region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,6 +22,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System.Collections;
@@ -28,130 +30,257 @@ using System.Collections.Generic;
 
 namespace Newtonsoft.Json.Bson
 {
-  internal abstract class BsonToken
-  {
-    public abstract BsonType Type { get; }
-    public BsonToken Parent { get; set; }
-    public int CalculatedSize { get; set; }
-  }
+	internal abstract class BsonToken
+	{
+		#region Properties/Indexers/Events
 
-  internal class BsonObject : BsonToken, IEnumerable<BsonProperty>
-  {
-    private readonly List<BsonProperty> _children = new List<BsonProperty>();
+		public int CalculatedSize
+		{
+			get;
+			set;
+		}
 
-    public void Add(string name, BsonToken token)
-    {
-      _children.Add(new BsonProperty { Name = new BsonString(name, false), Value = token });
-      token.Parent = this;
-    }
+		public BsonToken Parent
+		{
+			get;
+			set;
+		}
 
-    public override BsonType Type
-    {
-      get { return BsonType.Object; }
-    }
+		public abstract BsonType Type
+		{
+			get;
+		}
 
-    public IEnumerator<BsonProperty> GetEnumerator()
-    {
-      return _children.GetEnumerator();
-    }
+		#endregion
+	}
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-      return GetEnumerator();
-    }
-  }
+	internal class BsonObject : BsonToken, IEnumerable<BsonProperty>
+	{
+		#region Fields/Constants
 
-  internal class BsonArray : BsonToken, IEnumerable<BsonToken>
-  {
-    private readonly List<BsonToken> _children = new List<BsonToken>();
+		private readonly List<BsonProperty> _children = new List<BsonProperty>();
 
-    public void Add(BsonToken token)
-    {
-      _children.Add(token);
-      token.Parent = this;
-    }
+		#endregion
 
-    public override BsonType Type
-    {
-      get { return BsonType.Array; }
-    }
+		#region Properties/Indexers/Events
 
-    public IEnumerator<BsonToken> GetEnumerator()
-    {
-      return _children.GetEnumerator();
-    }
+		public override BsonType Type
+		{
+			get
+			{
+				return BsonType.Object;
+			}
+		}
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-      return GetEnumerator();
-    }
-  }
+		#endregion
 
-  internal class BsonValue : BsonToken
-  {
-    private readonly object _value;
-    private readonly BsonType _type;
+		#region Methods/Operators
 
-    public BsonValue(object value, BsonType type)
-    {
-      _value = value;
-      _type = type;
-    }
+		public void Add(string name, BsonToken token)
+		{
+			this._children.Add(new BsonProperty { Name = new BsonString(name, false), Value = token });
+			token.Parent = this;
+		}
 
-    public object Value
-    {
-      get { return _value; }
-    }
+		public IEnumerator<BsonProperty> GetEnumerator()
+		{
+			return this._children.GetEnumerator();
+		}
 
-    public override BsonType Type
-    {
-      get { return _type; }
-    }
-  }
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return this.GetEnumerator();
+		}
 
-  internal class BsonString : BsonValue
-  {
-    public int ByteCount { get; set; }
-    public bool IncludeLength { get; set; }
+		#endregion
+	}
 
-    public BsonString(object value, bool includeLength)
-      : base(value, BsonType.String)
-    {
-      IncludeLength = includeLength;
-    }
-  }
+	internal class BsonArray : BsonToken, IEnumerable<BsonToken>
+	{
+		#region Fields/Constants
 
-  internal class BsonBinary : BsonValue
-  {
-    public BsonBinaryType BinaryType { get; set; }
+		private readonly List<BsonToken> _children = new List<BsonToken>();
 
-    public BsonBinary(byte[] value, BsonBinaryType binaryType)
-      : base(value, BsonType.Binary)
-    {
-      BinaryType = binaryType;
-    }
-  }
+		#endregion
 
-  internal class BsonRegex : BsonToken
-  {
-    public BsonString Pattern { get; set; }
-    public BsonString Options { get; set; }
+		#region Properties/Indexers/Events
 
-    public BsonRegex(string pattern, string options)
-    {
-      Pattern = new BsonString(pattern, false);
-      Options = new BsonString(options, false);
-    }
+		public override BsonType Type
+		{
+			get
+			{
+				return BsonType.Array;
+			}
+		}
 
-    public override BsonType Type
-    {
-      get { return BsonType.Regex; }
-    }
-  }
+		#endregion
 
-  internal class BsonProperty
-  {
-    public BsonString Name { get; set; }
-    public BsonToken Value { get; set; }
-  }
+		#region Methods/Operators
+
+		public void Add(BsonToken token)
+		{
+			this._children.Add(token);
+			token.Parent = this;
+		}
+
+		public IEnumerator<BsonToken> GetEnumerator()
+		{
+			return this._children.GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return this.GetEnumerator();
+		}
+
+		#endregion
+	}
+
+	internal class BsonValue : BsonToken
+	{
+		#region Constructors/Destructors
+
+		public BsonValue(object value, BsonType type)
+		{
+			this._value = value;
+			this._type = type;
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly BsonType _type;
+		private readonly object _value;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public override BsonType Type
+		{
+			get
+			{
+				return this._type;
+			}
+		}
+
+		public object Value
+		{
+			get
+			{
+				return this._value;
+			}
+		}
+
+		#endregion
+	}
+
+	internal class BsonString : BsonValue
+	{
+		#region Constructors/Destructors
+
+		public BsonString(object value, bool includeLength)
+			: base(value, BsonType.String)
+		{
+			this.IncludeLength = includeLength;
+		}
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public int ByteCount
+		{
+			get;
+			set;
+		}
+
+		public bool IncludeLength
+		{
+			get;
+			set;
+		}
+
+		#endregion
+	}
+
+	internal class BsonBinary : BsonValue
+	{
+		#region Constructors/Destructors
+
+		public BsonBinary(byte[] value, BsonBinaryType binaryType)
+			: base(value, BsonType.Binary)
+		{
+			this.BinaryType = binaryType;
+		}
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public BsonBinaryType BinaryType
+		{
+			get;
+			set;
+		}
+
+		#endregion
+	}
+
+	internal class BsonRegex : BsonToken
+	{
+		#region Constructors/Destructors
+
+		public BsonRegex(string pattern, string options)
+		{
+			this.Pattern = new BsonString(pattern, false);
+			this.Options = new BsonString(options, false);
+		}
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public BsonString Options
+		{
+			get;
+			set;
+		}
+
+		public BsonString Pattern
+		{
+			get;
+			set;
+		}
+
+		public override BsonType Type
+		{
+			get
+			{
+				return BsonType.Regex;
+			}
+		}
+
+		#endregion
+	}
+
+	internal class BsonProperty
+	{
+		#region Properties/Indexers/Events
+
+		public BsonString Name
+		{
+			get;
+			set;
+		}
+
+		public BsonToken Value
+		{
+			get;
+			set;
+		}
+
+		#endregion
+	}
 }

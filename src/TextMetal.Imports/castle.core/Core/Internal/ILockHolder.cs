@@ -16,8 +16,15 @@ namespace Castle.Core.Internal
 {
 	using System;
 
-	public interface ILockHolder:IDisposable
+	public interface ILockHolder : IDisposable
 	{
-		bool LockAcquired { get; }
+		#region Properties/Indexers/Events
+
+		bool LockAcquired
+		{
+			get;
+		}
+
+		#endregion
 	}
 }

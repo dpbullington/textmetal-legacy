@@ -27,14 +27,14 @@ namespace NMock2.Actions
 	using System;
 
 	/// <summary>
-	/// 	Action that sets the parameter of the invocation with the specified name to the specified value.
+	/// Action that sets the parameter of the invocation with the specified name to the specified value.
 	/// </summary>
 	public class SetNamedParameterAction : IAction
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="SetNamedParameterAction" /> class.
+		/// Initializes a new instance of the <see cref="SetNamedParameterAction" /> class.
 		/// </summary>
 		/// <param name="name"> The name of the parameter to set. </param>
 		/// <param name="value"> The value. </param>
@@ -49,12 +49,12 @@ namespace NMock2.Actions
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Stores the name of the parameter when the class gets initialized.
+		/// Stores the name of the parameter when the class gets initialized.
 		/// </summary>
 		private readonly string name;
 
 		/// <summary>
-		/// 	Stores the value of the parameter when the class gets initialized.
+		/// Stores the value of the parameter when the class gets initialized.
 		/// </summary>
 		private readonly object value;
 
@@ -63,7 +63,7 @@ namespace NMock2.Actions
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public void DescribeTo(TextWriter writer)
@@ -75,7 +75,7 @@ namespace NMock2.Actions
 		}
 
 		/// <summary>
-		/// 	Invokes this object. Sets the value of the parameter with the specified name of the invocation.
+		/// Invokes this object. Sets the value of the parameter with the specified name of the invocation.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
 		public void Invoke(Invocation invocation)

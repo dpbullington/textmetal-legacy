@@ -12,27 +12,51 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
 
 	public class XmlEnumerationSerializer : XmlStringSerializer
 	{
-		public static readonly new XmlEnumerationSerializer
+		#region Constructors/Destructors
+
+		protected XmlEnumerationSerializer()
+		{
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		public new static readonly XmlEnumerationSerializer
 			Instance = new XmlEnumerationSerializer();
 
-		protected XmlEnumerationSerializer() { }
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		public override XmlTypeKind Kind
 		{
-			get { return XmlTypeKind.Simple; }
+			get
+			{
+				return XmlTypeKind.Simple;
+			}
 		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		public override object GetValue(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor)
 		{
 			return Enum.Parse(node.ClrType, node.Value, true);
 		}
+
+		#endregion
 	}
 }
+
 #endif

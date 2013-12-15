@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.IO;
+using System.Text;
+
 namespace Castle.Core.Resource
 {
 	using System;
-	using System.IO;
-	using System.Text;
 
 	/// <summary>
 	/// Represents a 'streamable' resource. Can
@@ -24,14 +25,31 @@ namespace Castle.Core.Resource
 	/// </summary>
 	public interface IResource : IDisposable
 	{
+		#region Properties/Indexers/Events
+
 		/// <summary>
-		/// 
 		/// </summary>
 		/// <remarks>
 		/// Only valid for resources that
 		/// can be obtained through relative paths
 		/// </remarks>
-		String FileBasePath { get; }
+		String FileBasePath
+		{
+			get;
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		/// <summary>
+		/// Returns an instance of <see cref="IResource" />
+		/// created according to the <c> relativePath </c>
+		/// using itself as the root.
+		/// </summary>
+		/// <param name="relativePath"> </param>
+		/// <returns> </returns>
+		IResource CreateRelative(String relativePath);
 
 		/// <summary>
 		/// Returns a reader for the stream
@@ -39,7 +57,7 @@ namespace Castle.Core.Resource
 		/// <remarks>
 		/// It's up to the caller to dispose the reader.
 		/// </remarks>
-		/// <returns></returns>
+		/// <returns> </returns>
 		TextReader GetStreamReader();
 
 		/// <summary>
@@ -48,17 +66,10 @@ namespace Castle.Core.Resource
 		/// <remarks>
 		/// It's up to the caller to dispose the reader.
 		/// </remarks>
-		/// <param name="encoding"></param>
-		/// <returns></returns>
+		/// <param name="encoding"> </param>
+		/// <returns> </returns>
 		TextReader GetStreamReader(Encoding encoding);
 
-		/// <summary>
-		/// Returns an instance of <see cref="IResource"/>
-		/// created according to the <c>relativePath</c>
-		/// using itself as the root.
-		/// </summary>
-		/// <param name="relativePath"></param>
-		/// <returns></returns>
-		IResource CreateRelative(String relativePath);
+		#endregion
 	}
 }

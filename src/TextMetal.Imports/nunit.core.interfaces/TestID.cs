@@ -9,13 +9,13 @@ using System;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	TestID encapsulates a unique identifier for tests. As
-	/// 	currently implemented, this is an integer and is unique
-	/// 	within the AppDomain. TestID is one component of a 
-	/// 	TestName. We use this object, rather than a raw int,
-	/// 	for two reasons: (1) to hide the implementation so
-	/// 	it may be changed later if necessary and (2) so that the
-	/// 	id may be null in a "weak" TestName.
+	/// TestID encapsulates a unique identifier for tests. As
+	/// currently implemented, this is an integer and is unique
+	/// within the AppDomain. TestID is one component of a
+	/// TestName. We use this object, rather than a raw int,
+	/// for two reasons: (1) to hide the implementation so
+	/// it may be changed later if necessary and (2) so that the
+	/// id may be null in a "weak" TestName.
 	/// </summary>
 	[Serializable]
 	public class TestID : ICloneable
@@ -23,7 +23,7 @@ namespace NUnit.Core
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a new TestID
+		/// Construct a new TestID
 		/// </summary>
 		public TestID()
 		{
@@ -31,10 +31,10 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Construct a TestID with a given value.
-		/// 	Used in parsing test names and in order
-		/// 	to construct an artificial test node for
-		/// 	aggregating multiple test runners.
+		/// Construct a TestID with a given value.
+		/// Used in parsing test names and in order
+		/// to construct an artificial test node for
+		/// aggregating multiple test runners.
 		/// </summary>
 		/// <param name="id"> </param>
 		public TestID(int id)
@@ -47,14 +47,14 @@ namespace NUnit.Core
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Static value to seed ids. It's started at 1000 so any
-		/// 	uninitialized ids will stand out.
+		/// Static value to seed ids. It's started at 1000 so any
+		/// uninitialized ids will stand out.
 		/// </summary>
 		private static int nextID = 1000;
 
 		/// <summary>
-		/// 	The int key that distinguishes this test from all others created
-		/// 	by the same runner.
+		/// The int key that distinguishes this test from all others created
+		/// by the same runner.
 		/// </summary>
 		private int id;
 
@@ -63,7 +63,7 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Parse a TestID from it's string representation
+		/// Parse a TestID from it's string representation
 		/// </summary>
 		/// <param name="s"> </param>
 		/// <returns> </returns>
@@ -74,7 +74,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Clone this TestID
+		/// Clone this TestID
 		/// </summary>
 		/// <returns> An identical TestID </returns>
 		public object Clone()
@@ -83,7 +83,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Override of Equals method to allow comparison of TestIDs
+		/// Override of Equals method to allow comparison of TestIDs
 		/// </summary>
 		/// <param name="obj"> </param>
 		/// <returns> </returns>
@@ -97,7 +97,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Override of GetHashCode for TestIDs
+		/// Override of GetHashCode for TestIDs
 		/// </summary>
 		/// <returns> </returns>
 		public override int GetHashCode()
@@ -106,7 +106,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Override ToString() to display the int id
+		/// Override ToString() to display the int id
 		/// </summary>
 		/// <returns> </returns>
 		public override string ToString()
@@ -115,7 +115,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Operator == override
+		/// Operator == override
 		/// </summary>
 		/// <param name="id1"> </param>
 		/// <param name="id2"> </param>
@@ -129,7 +129,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Operator != override
+		/// Operator != override
 		/// </summary>
 		/// <param name="id1"> </param>
 		/// <param name="id2"> </param>

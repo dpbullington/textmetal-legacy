@@ -12,32 +12,55 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Threading;
+
 namespace Castle.Core.Internal
 {
-	using System.Threading;
-
 	internal class MonitorUpgradeableLockHolder : IUpgradeableLockHolder
 	{
-		private readonly object locker;
-		private bool lockAcquired;
+		#region Constructors/Destructors
 
 		public MonitorUpgradeableLockHolder(object locker, bool waitForLock)
 		{
 			this.locker = locker;
-			if(waitForLock)
+			if (waitForLock)
 			{
 				Monitor.Enter(locker);
-				lockAcquired = true;
+				this.lockAcquired = true;
 				return;
 			}
-			lockAcquired = Monitor.TryEnter(locker, 0);
+			this.lockAcquired = Monitor.TryEnter(locker, 0);
 		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly object locker;
+		private bool lockAcquired;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public bool LockAcquired
+		{
+			get
+			{
+				return this.lockAcquired;
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		public void Dispose()
 		{
-			if (!LockAcquired) return;
-			Monitor.Exit(locker);
-			lockAcquired = false;
+			if (!this.LockAcquired)
+				return;
+			Monitor.Exit(this.locker);
+			this.lockAcquired = false;
 		}
 
 		public ILockHolder Upgrade()
@@ -50,9 +73,6 @@ namespace Castle.Core.Internal
 			return NoOpLock.Lock;
 		}
 
-		public bool LockAcquired
-		{
-			get { return lockAcquired; }
-		}
+		#endregion
 	}
 }

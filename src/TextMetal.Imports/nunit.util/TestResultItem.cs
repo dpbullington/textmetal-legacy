@@ -11,7 +11,7 @@ using NUnit.Core;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Summary description for TestResultItem.
+	/// Summary description for TestResultItem.
 	/// </summary>
 	public class TestResultItem
 	{

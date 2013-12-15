@@ -12,37 +12,47 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Linq;
 
 	public class XmlIgnoreBehaviorAccessor : XmlAccessor
 	{
+		#region Constructors/Destructors
+
+		private XmlIgnoreBehaviorAccessor()
+			: base(typeof(object), DummyContext.Instance)
+		{
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
 		public static readonly XmlIgnoreBehaviorAccessor
 			Instance = new XmlIgnoreBehaviorAccessor();
 
-		private XmlIgnoreBehaviorAccessor()
-			: base(typeof(object), DummyContext.Instance) { }
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		public override bool IsIgnored
 		{
-			get { return true; }
+			get
+			{
+				return true;
+			}
 		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		public override IXmlCollectionAccessor GetCollectionAccessor(Type itemType)
-		{
-			throw Error.NotSupported();
-		}
-
-		public override IXmlCursor SelectPropertyNode(IXmlNode node, bool mutable)
-		{
-			throw Error.NotSupported();
-		}
-
-		public override IXmlCursor SelectCollectionNode(IXmlNode node, bool mutable)
 		{
 			throw Error.NotSupported();
 		}
@@ -52,15 +62,34 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			throw Error.NotSupported();
 		}
 
+		public override IXmlCursor SelectCollectionNode(IXmlNode node, bool mutable)
+		{
+			throw Error.NotSupported();
+		}
+
+		public override IXmlCursor SelectPropertyNode(IXmlNode node, bool mutable)
+		{
+			throw Error.NotSupported();
+		}
+
+		#endregion
+
+		#region Classes/Structs/Interfaces/Enums/Delegates
+
 		private sealed class DummyContext : IXmlContext
 		{
 			public static DummyContext Instance = new DummyContext();
 
-			private DummyContext() { }
+			private DummyContext()
+			{
+			}
 
 			public string ChildNamespaceUri
 			{
-			    get { return null; }
+				get
+				{
+					return null;
+				}
 			}
 
 			public IXmlContext Clone()
@@ -82,12 +111,14 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			{
 				throw Error.NotSupported();
 			}
+
 #if !SL3
 			public void Enlist(CompiledXPath path)
 			{
 				throw Error.NotSupported();
 			}
 #endif
+
 			public string GetElementPrefix(IXmlNode node, string namespaceUri)
 			{
 				throw Error.NotSupported();
@@ -108,6 +139,9 @@ namespace Castle.Components.DictionaryAdapter.Xml
 				throw Error.NotSupported();
 			}
 		}
+
+		#endregion
 	}
 }
+
 #endif

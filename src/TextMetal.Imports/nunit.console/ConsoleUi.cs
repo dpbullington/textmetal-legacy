@@ -17,7 +17,7 @@ namespace NUnit.ConsoleRunner
 	using System;
 
 	/// <summary>
-	/// 	Summary description for ConsoleUi.
+	/// Summary description for ConsoleUi.
 	/// </summary>
 	public class ConsoleUi
 	{
@@ -176,16 +176,16 @@ namespace NUnit.ConsoleRunner
 			TestPackage package = this.MakeTestPackage(options);
 
 			ProcessModel processModel = package.Settings.Contains("ProcessModel")
-				                            ? (ProcessModel)package.Settings["ProcessModel"]
-				                            : ProcessModel.Default;
+				? (ProcessModel)package.Settings["ProcessModel"]
+				: ProcessModel.Default;
 
 			DomainUsage domainUsage = package.Settings.Contains("DomainUsage")
-				                          ? (DomainUsage)package.Settings["DomainUsage"]
-				                          : DomainUsage.Default;
+				? (DomainUsage)package.Settings["DomainUsage"]
+				: DomainUsage.Default;
 
 			RuntimeFramework framework = package.Settings.Contains("RuntimeFramework")
-				                             ? (RuntimeFramework)package.Settings["RuntimeFramework"]
-				                             : RuntimeFramework.CurrentFramework;
+				? (RuntimeFramework)package.Settings["RuntimeFramework"]
+				: RuntimeFramework.CurrentFramework;
 
 #if CLR_2_0 || CLR_4_0
 			Console.WriteLine("ProcessModel: {0}    DomainUsage: {1}", processModel, domainUsage);
@@ -277,7 +277,7 @@ namespace NUnit.ConsoleRunner
 						{
 							// Write xml output here
 							string xmlResultFile = options.result == null || options.result == string.Empty
-								                       ? "TestResult.xml" : options.result;
+								? "TestResult.xml" : options.result;
 
 							using (StreamWriter writer = new StreamWriter(Path.Combine(this.workDir, xmlResultFile)))
 								writer.Write(xmlOutput);
@@ -431,8 +431,8 @@ namespace NUnit.ConsoleRunner
 		private void WriteSingleResult(TestResult result)
 		{
 			string status = result.IsFailure || result.IsError
-				                ? string.Format("{0} {1}", result.FailureSite, result.ResultState)
-				                : result.ResultState.ToString();
+				? string.Format("{0} {1}", result.FailureSite, result.ResultState)
+				: result.ResultState.ToString();
 
 			Console.WriteLine("{0}) {1} : {2}", ++this.reportIndex, status, result.FullName);
 
@@ -442,8 +442,8 @@ namespace NUnit.ConsoleRunner
 			if (result.StackTrace != null && result.StackTrace != string.Empty)
 			{
 				Console.WriteLine(result.IsFailure
-					                  ? StackTraceFilter.Filter(result.StackTrace)
-					                  : result.StackTrace + Environment.NewLine);
+					? StackTraceFilter.Filter(result.StackTrace)
+					: result.StackTrace + Environment.NewLine);
 			}
 		}
 

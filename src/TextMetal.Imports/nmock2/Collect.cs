@@ -22,16 +22,18 @@ using NMock2.Actions;
 namespace NMock2
 {
 	/// <summary>
-	/// 	Gather information about invocations.
+	/// Gather information about invocations.
 	/// </summary>
 	public class Collect
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Calls the specified <paramref name="collectDelegate" /> with the method argument at index <paramref
-		/// 	 name="argumentIndex" />.
-		/// 	Can only be used as action of an expectation on a method call.
+		/// Calls the specified <paramref name="collectDelegate" /> with the method argument at index
+		/// <paramref
+		///     name="argumentIndex" />
+		/// .
+		/// Can only be used as action of an expectation on a method call.
 		/// </summary>
 		/// <typeparam name="TArgument"> The type of the argument. </typeparam>
 		/// <param name="argumentIndex"> Index of the argument. </param>
@@ -43,8 +45,8 @@ namespace NMock2
 		}
 
 		/// <summary>
-		/// 	Calls the specified <paramref name="collectDelegate" /> with the value that is set to the property.
-		/// 	Can only be used as action of an expectation on a property setter.
+		/// Calls the specified <paramref name="collectDelegate" /> with the value that is set to the property.
+		/// Can only be used as action of an expectation on a property setter.
 		/// </summary>
 		/// <typeparam name="TValue"> The type of the value. </typeparam>
 		/// <param name="collectDelegate"> The collect delegate. </param>

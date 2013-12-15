@@ -12,9 +12,9 @@ namespace NUnit.Core
 {
 	using System;
 
-	///<summary>
-	///	Test Class.
-	///</summary>
+	/// <summary>
+	/// Test Class.
+	/// </summary>
 	public abstract class Test : ITest, IComparable
 	{
 		//private static readonly string SETCULTURE = "_SETCULTURE";
@@ -22,7 +22,7 @@ namespace NUnit.Core
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Constructs a test given its name
+		/// Constructs a test given its name
 		/// </summary>
 		/// <param name="name"> The name of the test </param>
 		protected Test(string name)
@@ -36,8 +36,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Constructs a test given the path through the
-		/// 	test hierarchy to its parent and a name.
+		/// Constructs a test given the path through the
+		/// test hierarchy to its parent and a name.
 		/// </summary>
 		/// <param name="pathName"> The parent tests full name </param>
 		/// <param name="name"> The name of the test </param>
@@ -45,7 +45,7 @@ namespace NUnit.Core
 		{
 			this.testName = new TestName();
 			this.testName.FullName = pathName == null || pathName == string.Empty
-				                         ? name : pathName + "." + name;
+				? name : pathName + "." + name;
 			this.testName.Name = name;
 			this.testName.TestID = new TestID();
 
@@ -53,7 +53,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Constructs a test given a TestName object
+		/// Constructs a test given a TestName object
 		/// </summary>
 		/// <param name="testName"> The TestName for this test </param>
 		protected Test(TestName testName)
@@ -73,23 +73,23 @@ namespace NUnit.Core
 		private static readonly string IGNOREREASON = "_IGNOREREASON";
 
 		/// <summary>
-		/// 	Test suite containing this test, or null
+		/// Test suite containing this test, or null
 		/// </summary>
 		private Test parent;
 
 		/// <summary>
-		/// 	A dictionary of properties, used to add information
-		/// 	to tests without requiring the class to change.
+		/// A dictionary of properties, used to add information
+		/// to tests without requiring the class to change.
 		/// </summary>
 		private IDictionary properties;
 
 		/// <summary>
-		/// 	Indicates whether the test should be executed
+		/// Indicates whether the test should be executed
 		/// </summary>
 		private RunState runState;
 
 		/// <summary>
-		/// 	TestName that identifies this test
+		/// TestName that identifies this test
 		/// </summary>
 		private TestName testName;
 
@@ -98,20 +98,20 @@ namespace NUnit.Core
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Get the desired apartment state for running the test
+		/// Get the desired apartment state for running the test
 		/// </summary>
 		public ApartmentState ApartmentState
 		{
 			get
 			{
 				return this.Properties.Contains("APARTMENT_STATE")
-					       ? (ApartmentState)this.Properties["APARTMENT_STATE"]
-					       : this.GetCurrentApartment();
+					? (ApartmentState)this.Properties["APARTMENT_STATE"]
+					: this.GetCurrentApartment();
 			}
 		}
 
 		/// <summary>
-		/// 	Gets a list of categories associated with this test.
+		/// Gets a list of categories associated with this test.
 		/// </summary>
 		public IList Categories
 		{
@@ -129,8 +129,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the name of the class containing this test. Returns
-		/// 	null if the test is not associated with a class.
+		/// Gets the name of the class containing this test. Returns
+		/// null if the test is not associated with a class.
 		/// </summary>
 		public string ClassName
 		{
@@ -151,7 +151,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets a description associated with this test.
+		/// Gets a description associated with this test.
 		/// </summary>
 		public String Description
 		{
@@ -169,7 +169,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets or sets a fixture object for running this test
+		/// Gets or sets a fixture object for running this test
 		/// </summary>
 		public abstract object Fixture
 		{
@@ -178,7 +178,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the Type of the fixture used in running this test
+		/// Gets the Type of the fixture used in running this test
 		/// </summary>
 		public virtual Type FixtureType
 		{
@@ -189,7 +189,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Reason for not running the test, if applicable
+		/// Reason for not running the test, if applicable
 		/// </summary>
 		public string IgnoreReason
 		{
@@ -207,7 +207,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Indicates whether this test is a suite
+		/// Indicates whether this test is a suite
 		/// </summary>
 		public virtual bool IsSuite
 		{
@@ -218,8 +218,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the name of the method implementing this test.
-		/// 	Returns null if the test is not implemented as a method.
+		/// Gets the name of the method implementing this test.
+		/// Returns null if the test is not implemented as a method.
 		/// </summary>
 		public virtual string MethodName
 		{
@@ -230,7 +230,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the parent test of this test
+		/// Gets the parent test of this test
 		/// </summary>
 		ITest ITest.Parent
 		{
@@ -241,8 +241,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the parent as a Test object.
-		/// 	Used by the core to set the parent.
+		/// Gets the parent as a Test object.
+		/// Used by the core to set the parent.
 		/// </summary>
 		public Test Parent
 		{
@@ -257,7 +257,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the property dictionary for this test
+		/// Gets the property dictionary for this test
 		/// </summary>
 		public IDictionary Properties
 		{
@@ -275,7 +275,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the test requires a thread
+		/// Return true if the test requires a thread
 		/// </summary>
 		public bool RequiresThread
 		{
@@ -286,7 +286,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Whether or not the test should be run
+		/// Whether or not the test should be run
 		/// </summary>
 		public RunState RunState
 		{
@@ -301,22 +301,22 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets a boolean value indicating whether this 
-		/// 	test should run on it's own thread.
+		/// Gets a boolean value indicating whether this
+		/// test should run on it's own thread.
 		/// </summary>
 		protected virtual bool ShouldRunOnOwnThread
 		{
 			get
 			{
 				return this.RequiresThread
-				       || this.ApartmentState != ApartmentState.Unknown
-				       && this.ApartmentState != this.GetCurrentApartment();
+						|| this.ApartmentState != ApartmentState.Unknown
+						&& this.ApartmentState != this.GetCurrentApartment();
 			}
 		}
 
 		/// <summary>
-		/// 	Gets a count of test cases represented by
-		/// 	or contained under this test.
+		/// Gets a count of test cases represented by
+		/// or contained under this test.
 		/// </summary>
 		public virtual int TestCount
 		{
@@ -327,7 +327,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the TestName of the test
+		/// Gets the TestName of the test
 		/// </summary>
 		public TestName TestName
 		{
@@ -338,8 +338,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets a string representing the kind of test
-		/// 	that this object represents, for use in display.
+		/// Gets a string representing the kind of test
+		/// that this object represents, for use in display.
 		/// </summary>
 		public abstract string TestType
 		{
@@ -347,7 +347,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets this test's child tests
+		/// Gets this test's child tests
 		/// </summary>
 		public virtual IList Tests
 		{
@@ -362,7 +362,7 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Compares this test to another test for sorting purposes
+		/// Compares this test to another test for sorting purposes
 		/// </summary>
 		/// <param name="obj"> The other test </param>
 		/// <returns> Value of -1, 0 or +1 depending on whether the current test is less than, equal to or greater than the other test </returns>
@@ -377,8 +377,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets a count of test cases that would be run using
-		/// 	the specified filter.
+		/// Gets a count of test cases that would be run using
+		/// the specified filter.
 		/// </summary>
 		/// <param name="filter"> </param>
 		/// <returns> </returns>
@@ -391,7 +391,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Get the current apartment state of the test
+		/// Get the current apartment state of the test
 		/// </summary>
 		protected ApartmentState GetCurrentApartment()
 		{
@@ -403,8 +403,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Runs the test under a particular filter, sending
-		/// 	notifications to a listener.
+		/// Runs the test under a particular filter, sending
+		/// notifications to a listener.
 		/// </summary>
 		/// <param name="listener"> An event listener to receive notifications </param>
 		/// <param name="filter"> A filter used in running the test </param>
@@ -412,7 +412,7 @@ namespace NUnit.Core
 		public abstract TestResult Run(EventListener listener, ITestFilter filter);
 
 		/// <summary>
-		/// 	Sets the runner id of a test and optionally its children
+		/// Sets the runner id of a test and optionally its children
 		/// </summary>
 		/// <param name="runnerID"> The runner id to be used </param>
 		/// <param name="recursive"> True if all children should get the same id </param>

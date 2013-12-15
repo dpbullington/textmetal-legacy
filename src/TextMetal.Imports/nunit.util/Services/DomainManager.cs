@@ -21,8 +21,8 @@ using NUnit.Core;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	The DomainManager class handles the creation and unloading
-	/// 	of domains as needed and keeps track of all existing domains.
+	/// The DomainManager class handles the creation and unloading
+	/// of domains as needed and keeps track of all existing domains.
 	/// </summary>
 	public class DomainManager : IService
 	{
@@ -58,12 +58,11 @@ namespace NUnit.Util
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Helper method to delete the cache dir. This method deals 
-		/// 	with a bug that occurs when files are marked read-only
-		/// 	and deletes each file separately in order to give better 
-		/// 	exception information when problems occur.
-		/// 
-		/// 	TODO: This entire method is problematic. Should we be doing it?
+		/// Helper method to delete the cache dir. This method deals
+		/// with a bug that occurs when files are marked read-only
+		/// and deletes each file separately in order to give better
+		/// exception information when problems occur.
+		/// TODO: This entire method is problematic. Should we be doing it?
 		/// </summary>
 		/// <param name="cacheDir"> </param>
 		private static void DeleteCacheDir(DirectoryInfo cacheDir)
@@ -153,7 +152,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Construct an application domain for running a test package
+		/// Construct an application domain for running a test package
 		/// </summary>
 		/// <param name="package"> The TestPackage to be run </param>
 		public AppDomain CreateDomain(TestPackage package)
@@ -164,8 +163,8 @@ namespace NUnit.Util
 			setup.ApplicationName = "Tests" + "_" + Environment.TickCount;
 
 			FileInfo testFile = package.FullName != null && package.FullName != string.Empty
-				                    ? new FileInfo(package.FullName)
-				                    : null;
+				? new FileInfo(package.FullName)
+				: null;
 
 			string appBase = package.BasePath;
 			string configFile = package.ConfigurationFile;
@@ -179,8 +178,8 @@ namespace NUnit.Util
 				if (configFile == null || configFile == string.Empty)
 				{
 					configFile = Services.ProjectService.CanLoadProject(testFile.Name)
-						             ? Path.GetFileNameWithoutExtension(testFile.Name) + ".config"
-						             : testFile.Name + ".config";
+						? Path.GetFileNameWithoutExtension(testFile.Name) + ".config"
+						: testFile.Name + ".config";
 				}
 			}
 			else if (appBase == null || appBase == string.Empty)
@@ -193,8 +192,8 @@ namespace NUnit.Util
 			setup.ApplicationBase = appBase;
 			// TODO: Check whether Mono still needs full path to config file...
 			setup.ConfigurationFile = appBase != null && configFile != null
-				                          ? Path.Combine(appBase, configFile)
-				                          : configFile;
+				? Path.Combine(appBase, configFile)
+				: configFile;
 
 			if (package.AutoBinPath)
 				binPath = GetPrivateBinPath(appBase, package.Assemblies);
@@ -259,7 +258,7 @@ namespace NUnit.Util
 
 			// HACK: Under nunit-console, direct use of the enum fails
 			int traceLevel = this.IsTestDomain(AppDomain.CurrentDomain)
-				                 ? (int)InternalTraceLevel.Off : (int)InternalTrace.Level;
+				? (int)InternalTraceLevel.Off : (int)InternalTrace.Level;
 
 			initializer.InitializeDomain(traceLevel);
 
@@ -267,7 +266,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Get the location for caching and delete any old cache info
+		/// Get the location for caching and delete any old cache info
 		/// </summary>
 		private string GetCachePath()
 		{

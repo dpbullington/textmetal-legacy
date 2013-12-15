@@ -24,14 +24,14 @@ using NMock2.Monitoring;
 namespace NMock2.Actions
 {
 	/// <summary>
-	/// 	Action that returns the n-th element of the arguments to an invocation.
+	/// Action that returns the n-th element of the arguments to an invocation.
 	/// </summary>
 	public class CollectAction : IAction
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="CollectAction" /> class.
+		/// Initializes a new instance of the <see cref="CollectAction" /> class.
 		/// </summary>
 		/// <param name="argumentIndex"> Index of the argument to collect. </param>
 		public CollectAction(int argumentIndex)
@@ -44,12 +44,12 @@ namespace NMock2.Actions
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Stores the index of the argument.
+		/// Stores the index of the argument.
 		/// </summary>
 		private readonly int argumentIndex;
 
 		/// <summary>
-		/// 	Stores the parameter when this action gets invoked.
+		/// Stores the parameter when this action gets invoked.
 		/// </summary>
 		private object collectedArgumentValue;
 
@@ -58,7 +58,7 @@ namespace NMock2.Actions
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the collected parameter.
+		/// Gets the collected parameter.
 		/// </summary>
 		/// <value> The collected parameter (n-th parameter of parameter list of the method's call. </value>
 		public object Parameter
@@ -74,7 +74,7 @@ namespace NMock2.Actions
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public void DescribeTo(TextWriter writer)
@@ -84,7 +84,7 @@ namespace NMock2.Actions
 		}
 
 		/// <summary>
-		/// 	Invokes this object.
+		/// Invokes this object.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
 		public void Invoke(Invocation invocation)

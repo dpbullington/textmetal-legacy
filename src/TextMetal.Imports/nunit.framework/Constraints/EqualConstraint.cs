@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+
 #if CLR_2_0 || CLR_4_0
 
 #endif
@@ -15,10 +16,10 @@ using System.IO;
 namespace NUnit.Framework.Constraints
 {
 	/// <summary>
-	/// 	EqualConstraint is able to compare an actual value with the
-	/// 	expected value provided in its constructor. Two objects are 
-	/// 	considered equal if both are null, or if both have the same 
-	/// 	value. NUnit has special semantics for some object types.
+	/// EqualConstraint is able to compare an actual value with the
+	/// expected value provided in its constructor. Two objects are
+	/// considered equal if both are null, or if both have the same
+	/// value. NUnit has special semantics for some object types.
 	/// </summary>
 	public class EqualConstraint : Constraint
 	{
@@ -29,12 +30,12 @@ namespace NUnit.Framework.Constraints
 		private Tolerance tolerance = Tolerance.Empty;
 
 		/// <summary>
-		/// 	If true, strings in error messages will be clipped
+		/// If true, strings in error messages will be clipped
 		/// </summary>
 		private bool clipStrings = true;
 
 		/// <summary>
-		/// 	NUnitEqualityComparer used to test equality.
+		/// NUnitEqualityComparer used to test equality.
 		/// </summary>
 		private NUnitEqualityComparer comparer = new NUnitEqualityComparer();
 
@@ -71,7 +72,7 @@ namespace NUnit.Framework.Constraints
 		#region Constructor
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="EqualConstraint" /> class.
+		/// Initializes a new instance of the <see cref="EqualConstraint" /> class.
 		/// </summary>
 		/// <param name="expected"> The expected value. </param>
 		public EqualConstraint(object expected)
@@ -85,7 +86,7 @@ namespace NUnit.Framework.Constraints
 		#region Constraint Modifiers
 
 		/// <summary>
-		/// 	Flag the constraint to ignore case and return self.
+		/// Flag the constraint to ignore case and return self.
 		/// </summary>
 		public EqualConstraint IgnoreCase
 		{
@@ -97,8 +98,8 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Flag the constraint to suppress string clipping 
-		/// 	and return self.
+		/// Flag the constraint to suppress string clipping
+		/// and return self.
 		/// </summary>
 		public EqualConstraint NoClip
 		{
@@ -110,8 +111,8 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Flag the constraint to compare arrays as collections
-		/// 	and return self.
+		/// Flag the constraint to compare arrays as collections
+		/// and return self.
 		/// </summary>
 		public EqualConstraint AsCollection
 		{
@@ -123,7 +124,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Flag the constraint to use a tolerance when determining equality.
+		/// Flag the constraint to use a tolerance when determining equality.
 		/// </summary>
 		/// <param name="amount"> Tolerance value to be used </param>
 		/// <returns> Self. </returns>
@@ -137,18 +138,18 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Switches the .Within() modifier to interpret its tolerance as
-		/// 	a distance in representable values (see remarks).
+		/// Switches the .Within() modifier to interpret its tolerance as
+		/// a distance in representable values (see remarks).
 		/// </summary>
 		/// <returns> Self. </returns>
 		/// <remarks>
-		/// 	Ulp stands for "unit in the last place" and describes the minimum
-		/// 	amount a given value can change. For any integers, an ulp is 1 whole
-		/// 	digit. For floating point values, the accuracy of which is better
-		/// 	for smaller numbers and worse for larger numbers, an ulp depends
-		/// 	on the size of the number. Using ulps for comparison of floating
-		/// 	point results instead of fixed tolerances is safer because it will
-		/// 	automatically compensate for the added inaccuracy of larger numbers.
+		/// Ulp stands for "unit in the last place" and describes the minimum
+		/// amount a given value can change. For any integers, an ulp is 1 whole
+		/// digit. For floating point values, the accuracy of which is better
+		/// for smaller numbers and worse for larger numbers, an ulp depends
+		/// on the size of the number. Using ulps for comparison of floating
+		/// point results instead of fixed tolerances is safer because it will
+		/// automatically compensate for the added inaccuracy of larger numbers.
 		/// </remarks>
 		public EqualConstraint Ulps
 		{
@@ -160,9 +161,9 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Switches the .Within() modifier to interpret its tolerance as
-		/// 	a percentage that the actual values is allowed to deviate from
-		/// 	the expected value.
+		/// Switches the .Within() modifier to interpret its tolerance as
+		/// a percentage that the actual values is allowed to deviate from
+		/// the expected value.
 		/// </summary>
 		/// <returns> Self </returns>
 		public EqualConstraint Percent
@@ -175,7 +176,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Causes the tolerance to be interpreted as a TimeSpan in days.
+		/// Causes the tolerance to be interpreted as a TimeSpan in days.
 		/// </summary>
 		/// <returns> Self </returns>
 		public EqualConstraint Days
@@ -188,7 +189,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Causes the tolerance to be interpreted as a TimeSpan in hours.
+		/// Causes the tolerance to be interpreted as a TimeSpan in hours.
 		/// </summary>
 		/// <returns> Self </returns>
 		public EqualConstraint Hours
@@ -201,7 +202,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Causes the tolerance to be interpreted as a TimeSpan in minutes.
+		/// Causes the tolerance to be interpreted as a TimeSpan in minutes.
 		/// </summary>
 		/// <returns> Self </returns>
 		public EqualConstraint Minutes
@@ -214,7 +215,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Causes the tolerance to be interpreted as a TimeSpan in seconds.
+		/// Causes the tolerance to be interpreted as a TimeSpan in seconds.
 		/// </summary>
 		/// <returns> Self </returns>
 		public EqualConstraint Seconds
@@ -227,7 +228,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Causes the tolerance to be interpreted as a TimeSpan in milliseconds.
+		/// Causes the tolerance to be interpreted as a TimeSpan in milliseconds.
 		/// </summary>
 		/// <returns> Self </returns>
 		public EqualConstraint Milliseconds
@@ -240,7 +241,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Causes the tolerance to be interpreted as a TimeSpan in clock ticks.
+		/// Causes the tolerance to be interpreted as a TimeSpan in clock ticks.
 		/// </summary>
 		/// <returns> Self </returns>
 		public EqualConstraint Ticks
@@ -253,7 +254,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Flag the constraint to use the supplied IComparer object.
+		/// Flag the constraint to use the supplied IComparer object.
 		/// </summary>
 		/// <param name="comparer"> The IComparer object to use. </param>
 		/// <returns> Self. </returns>
@@ -264,7 +265,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Flag the constraint to use the supplied IComparer object.
+		/// Flag the constraint to use the supplied IComparer object.
 		/// </summary>
 		/// <param name="comparer"> The IComparer object to use. </param>
 		/// <returns> Self. </returns>
@@ -276,7 +277,7 @@ namespace NUnit.Framework.Constraints
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Flag the constraint to use the supplied IComparer object.
+		/// Flag the constraint to use the supplied IComparer object.
 		/// </summary>
 		/// <param name="comparer"> The IComparer object to use. </param>
 		/// <returns> Self. </returns>
@@ -287,7 +288,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Flag the constraint to use the supplied Comparison object.
+		/// Flag the constraint to use the supplied Comparison object.
 		/// </summary>
 		/// <param name="comparer"> The IComparer object to use. </param>
 		/// <returns> Self. </returns>
@@ -298,7 +299,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Flag the constraint to use the supplied IEqualityComparer object.
+		/// Flag the constraint to use the supplied IEqualityComparer object.
 		/// </summary>
 		/// <param name="comparer"> The IComparer object to use. </param>
 		/// <returns> Self. </returns>
@@ -309,7 +310,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Flag the constraint to use the supplied IEqualityComparer object.
+		/// Flag the constraint to use the supplied IEqualityComparer object.
 		/// </summary>
 		/// <param name="comparer"> The IComparer object to use. </param>
 		/// <returns> Self. </returns>
@@ -325,7 +326,7 @@ namespace NUnit.Framework.Constraints
 		#region Public Methods
 
 		/// <summary>
-		/// 	Test whether the constraint is satisfied by a given value
+		/// Test whether the constraint is satisfied by a given value
 		/// </summary>
 		/// <param name="actual"> The value to be tested </param>
 		/// <returns> True for success, false for failure </returns>
@@ -337,8 +338,8 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write a failure message. Overridden to provide custom 
-		/// 	failure messages for EqualConstraint.
+		/// Write a failure message. Overridden to provide custom
+		/// failure messages for EqualConstraint.
 		/// </summary>
 		/// <param name="writer"> The MessageWriter to write to </param>
 		public override void WriteMessageTo(MessageWriter writer)
@@ -347,7 +348,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Write description of this constraint
+		/// Write description of this constraint
 		/// </summary>
 		/// <param name="writer"> The MessageWriter to write to </param>
 		public override void WriteDescriptionTo(MessageWriter writer)
@@ -418,7 +419,7 @@ namespace NUnit.Framework.Constraints
 		#region DisplayCollectionDifferences
 
 		/// <summary>
-		/// 	Display the failure information for two collections that did not match.
+		/// Display the failure information for two collections that did not match.
 		/// </summary>
 		/// <param name="writer"> The MessageWriter on which to display </param>
 		/// <param name="expected"> The expected collection. </param>
@@ -456,9 +457,9 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Displays a single line showing the types and sizes of the expected
-		/// 	and actual enumerations, collections or arrays. If both are identical, 
-		/// 	the value is only shown once.
+		/// Displays a single line showing the types and sizes of the expected
+		/// and actual enumerations, collections or arrays. If both are identical,
+		/// the value is only shown once.
 		/// </summary>
 		/// <param name="writer"> The MessageWriter on which to display </param>
 		/// <param name="expected"> The expected collection or array </param>
@@ -481,9 +482,9 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Displays a single line showing the point in the expected and actual
-		/// 	arrays at which the comparison failed. If the arrays have different
-		/// 	structures or dimensions, both values are shown.
+		/// Displays a single line showing the point in the expected and actual
+		/// arrays at which the comparison failed. If the arrays have different
+		/// structures or dimensions, both values are shown.
 		/// </summary>
 		/// <param name="writer"> The MessageWriter on which to display </param>
 		/// <param name="expected"> The expected array </param>
@@ -516,7 +517,7 @@ namespace NUnit.Framework.Constraints
 			{
 				int[] actualIndices = MsgUtils.GetArrayIndicesFromCollectionIndex(actual, failurePoint.Position);
 				writer.WriteMessageLine(indent, ValuesDiffer_2,
-				                        MsgUtils.GetArrayIndicesAsString(expectedIndices), MsgUtils.GetArrayIndicesAsString(actualIndices));
+					MsgUtils.GetArrayIndicesAsString(expectedIndices), MsgUtils.GetArrayIndicesAsString(actualIndices));
 			}
 		}
 
@@ -544,7 +545,7 @@ namespace NUnit.Framework.Constraints
 		#region DisplayEnumerableDifferences
 
 		/// <summary>
-		/// 	Display the failure information for two IEnumerables that did not match.
+		/// Display the failure information for two IEnumerables that did not match.
 		/// </summary>
 		/// <param name="writer"> The MessageWriter on which to display </param>
 		/// <param name="expected"> The expected enumeration. </param>

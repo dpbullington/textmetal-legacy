@@ -7,38 +7,38 @@
 
 using System;
 using System.Xml;
-using System.Configuration;
+
 using Intelligencia.UrlRewriter.Conditions;
 using Intelligencia.UrlRewriter.Utilities;
 
 namespace Intelligencia.UrlRewriter.Parsers
 {
-    /// <summary>
-    /// Parser for property match conditions.
-    /// </summary>
-    public sealed class PropertyMatchConditionParser : IRewriteConditionParser
-    {
-        /// <summary>
-        /// Parses the condition.
-        /// </summary>
-        /// <param name="node">The node to parse.</param>
-        /// <returns>The condition parsed, or null if nothing parsed.</returns>
-        public IRewriteCondition Parse(XmlNode node)
-        {
-            if (node == null)
-            {
-                throw new ArgumentNullException("node");
-            }
+	/// <summary>
+	/// Parser for property match conditions.
+	/// </summary>
+	public sealed class PropertyMatchConditionParser : IRewriteConditionParser
+	{
+		#region Methods/Operators
 
-            XmlNode propertyAttr = node.Attributes.GetNamedItem(Constants.AttrProperty);
-            if (propertyAttr == null)
-            {
-                return null;
-            }
+		/// <summary>
+		/// Parses the condition.
+		/// </summary>
+		/// <param name="node"> The node to parse. </param>
+		/// <returns> The condition parsed, or null if nothing parsed. </returns>
+		public IRewriteCondition Parse(XmlNode node)
+		{
+			if (node == null)
+				throw new ArgumentNullException("node");
 
-            string match = node.GetRequiredAttribute(Constants.AttrMatch, true);
+			XmlNode propertyAttr = node.Attributes.GetNamedItem(Constants.AttrProperty);
+			if (propertyAttr == null)
+				return null;
 
-            return new PropertyMatchCondition(propertyAttr.Value, match);
-        }
-    }
+			string match = node.GetRequiredAttribute(Constants.AttrMatch, true);
+
+			return new PropertyMatchCondition(propertyAttr.Value, match);
+		}
+
+		#endregion
+	}
 }

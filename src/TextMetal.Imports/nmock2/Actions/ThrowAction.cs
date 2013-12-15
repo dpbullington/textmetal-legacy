@@ -26,14 +26,14 @@ namespace NMock2.Actions
 	using System;
 
 	/// <summary>
-	/// 	Action that sets the exception of an invocation.
+	/// Action that sets the exception of an invocation.
 	/// </summary>
 	public class ThrowAction : IAction
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="ThrowAction" /> class.
+		/// Initializes a new instance of the <see cref="ThrowAction" /> class.
 		/// </summary>
 		/// <param name="exception"> The exception. </param>
 		public ThrowAction(Exception exception)
@@ -46,7 +46,7 @@ namespace NMock2.Actions
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Stores the exception to be thrown.
+		/// Stores the exception to be thrown.
 		/// </summary>
 		private readonly Exception exception;
 
@@ -55,7 +55,7 @@ namespace NMock2.Actions
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public void DescribeTo(TextWriter writer)
@@ -65,7 +65,7 @@ namespace NMock2.Actions
 		}
 
 		/// <summary>
-		/// 	Invokes this object. Sets the exception the invocation will throw.
+		/// Invokes this object. Sets the exception the invocation will throw.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
 		public void Invoke(Invocation invocation)

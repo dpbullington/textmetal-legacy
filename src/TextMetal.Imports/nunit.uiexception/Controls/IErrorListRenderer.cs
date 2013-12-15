@@ -9,17 +9,16 @@ using System.Drawing;
 namespace NUnit.UiException.Controls
 {
 	/// <summary>
-	/// 	The interface through which ErrorList interacts with a painter to paint itself.
-	/// 
-	/// 	Direct implementation is:
-	/// 	- DefaultErrorListRenderer
+	/// The interface through which ErrorList interacts with a painter to paint itself.
+	/// Direct implementation is:
+	/// - DefaultErrorListRenderer
 	/// </summary>
 	public interface IErrorListRenderer
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets and sets the font for this renderer
+		/// Gets and sets the font for this renderer
 		/// </summary>
 		Font Font
 		{
@@ -32,7 +31,7 @@ namespace NUnit.UiException.Controls
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Draw the given item on the given graphics object.
+		/// Draw the given item on the given graphics object.
 		/// </summary>
 		/// <param name="item"> The item to be painted </param>
 		/// <param name="index"> The item's index </param>
@@ -43,7 +42,7 @@ namespace NUnit.UiException.Controls
 		void DrawItem(ErrorItem item, int index, bool hovered, bool selected, Graphics g, Rectangle viewport);
 
 		/// <summary>
-		/// 	Draws the list on the given graphics.
+		/// Draws the list on the given graphics.
 		/// </summary>
 		/// <param name="items"> The item collection to paint on the graphics object </param>
 		/// <param name="selected"> The item to paint with selection feature </param>
@@ -52,8 +51,8 @@ namespace NUnit.UiException.Controls
 		void DrawToGraphics(ErrorItemCollection items, ErrorItem selected, Graphics g, Rectangle viewport);
 
 		/// <summary>
-		/// 	Given a collection of items and a graphics object, this method
-		/// 	measures in pixels the size of the collection.
+		/// Given a collection of items and a graphics object, this method
+		/// measures in pixels the size of the collection.
 		/// </summary>
 		/// <param name="items"> The collection </param>
 		/// <param name="g"> The target graphics object </param>
@@ -61,7 +60,7 @@ namespace NUnit.UiException.Controls
 		Size GetDocumentSize(ErrorItemCollection items, Graphics g);
 
 		/// <summary>
-		/// 	Gets the Item right under point.
+		/// Gets the Item right under point.
 		/// </summary>
 		/// <param name="items"> A collection of items </param>
 		/// <param name="g"> The target graphics object </param>

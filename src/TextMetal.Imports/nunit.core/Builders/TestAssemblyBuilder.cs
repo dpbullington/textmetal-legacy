@@ -15,7 +15,7 @@ using NUnit.Core.Extensibility;
 namespace NUnit.Core.Builders
 {
 	/// <summary>
-	/// 	Class that builds a TestSuite from an assembly
+	/// Class that builds a TestSuite from an assembly
 	/// </summary>
 	public class TestAssemblyBuilder
 	{
@@ -35,15 +35,15 @@ namespace NUnit.Core.Builders
 		private static Logger log = InternalTrace.GetLogger("TestAssemblyBuilder");
 
 		/// <summary>
-		/// 	The loaded assembly
+		/// The loaded assembly
 		/// </summary>
 		private Assembly assembly;
 
 		private TestAssemblyInfo assemblyInfo = null;
 
 		/// <summary>
-		/// 	Our LegacySuite builder, which is only used when a 
-		/// 	fixture has been passed by name on the command line.
+		/// Our LegacySuite builder, which is only used when a
+		/// fixture has been passed by name on the command line.
 		/// </summary>
 		private ISuiteBuilder legacySuiteBuilder;
 
@@ -134,7 +134,7 @@ namespace NUnit.Core.Builders
 			else if (TestFixtureBuilder.CanBuildFrom(testType))
 			{
 				return this.BuildTestAssembly(assembly, assemblyName,
-				                              new Test[] { TestFixtureBuilder.BuildFrom(testType) }, autoSuites);
+					new Test[] { TestFixtureBuilder.BuildFrom(testType) }, autoSuites);
 			}
 			return null;
 		}

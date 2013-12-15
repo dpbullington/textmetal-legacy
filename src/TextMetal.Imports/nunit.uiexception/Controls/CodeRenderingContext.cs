@@ -11,7 +11,7 @@ using NUnit.UiException.CodeFormatters;
 namespace NUnit.UiException.Controls
 {
 	/// <summary>
-	/// 	Encapsulates basic colors settings to format a text according a language.
+	/// Encapsulates basic colors settings to format a text according a language.
 	/// </summary>
 	public class CodeRenderingContext
 	{
@@ -20,16 +20,16 @@ namespace NUnit.UiException.Controls
 		public CodeRenderingContext()
 		{
 			this._colors = new ColorMaterial[]
-			               {
-				               new ColorMaterial(Color.Black), // code color
-				               new ColorMaterial(Color.Blue), // keyword color
-				               new ColorMaterial(Color.Green), // comment color
-				               new ColorMaterial(Color.Red), // string color
+							{
+								new ColorMaterial(Color.Black), // code color
+								new ColorMaterial(Color.Blue), // keyword color
+								new ColorMaterial(Color.Green), // comment color
+								new ColorMaterial(Color.Red), // string color
 
-				               new ColorMaterial(Color.White), // background
-				               new ColorMaterial(Color.Red), // current line back color
-				               new ColorMaterial(Color.White), // current line fore color                
-			               };
+								new ColorMaterial(Color.White), // background
+								new ColorMaterial(Color.Red), // current line back color
+								new ColorMaterial(Color.White), // current line fore color                
+							};
 
 			return;
 		}

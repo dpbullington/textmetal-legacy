@@ -12,28 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
+
+using Castle.DynamicProxy.Generators.Emitters;
+
 namespace Castle.DynamicProxy.Internal
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Diagnostics;
-	using System.Reflection;
-
-	using Castle.DynamicProxy.Generators.Emitters;
 
 	public static class TypeUtil
 	{
+		#region Methods/Operators
+
+		private static bool CloseGenericParametersIfAny(AbstractTypeEmitter emitter, Type[] arguments)
+		{
+			var hasAnyGenericParameters = false;
+			for (var i = 0; i < arguments.Length; i++)
+			{
+				var newType = GetClosedParameterType(emitter, arguments[i]);
+				if (!ReferenceEquals(newType, arguments[i]))
+				{
+					arguments[i] = newType;
+					hasAnyGenericParameters = true;
+				}
+			}
+			return hasAnyGenericParameters;
+		}
+
 		public static FieldInfo[] GetAllFields(this Type type)
 		{
 			if (type == null)
-			{
 				throw new ArgumentNullException("type");
-			}
 
 			if (type.IsClass == false)
-			{
 				throw new ArgumentException(string.Format("Type {0} is not a class type. This method supports only classes", type));
-			}
 
 			var fields = new List<FieldInfo>();
 			var currentType = type;
@@ -49,32 +63,26 @@ namespace Castle.DynamicProxy.Internal
 		}
 
 		/// <summary>
-		///   Returns list of all unique interfaces implemented given types, including their base interfaces.
+		/// Returns list of all unique interfaces implemented given types, including their base interfaces.
 		/// </summary>
 		/// <param name="types"> </param>
 		/// <returns> </returns>
 		public static Type[] GetAllInterfaces(params Type[] types)
 		{
 			if (types == null)
-			{
 				return Type.EmptyTypes;
-			}
 
 			var interfaces = new HashSet<Type>();
 			for (var index = 0; index < types.Length; index++)
 			{
 				var type = types[index];
 				if (type == null)
-				{
 					continue;
-				}
 
 				if (type.IsInterface)
 				{
 					if (interfaces.Add(type) == false)
-					{
 						continue;
-					}
 				}
 
 				var innerInterfaces = type.GetInterfaces();
@@ -96,23 +104,17 @@ namespace Castle.DynamicProxy.Internal
 		public static Type GetClosedParameterType(this AbstractTypeEmitter type, Type parameter)
 		{
 			if (parameter.IsGenericTypeDefinition)
-			{
 				return parameter.GetGenericTypeDefinition().MakeGenericType(type.GetGenericArgumentsFor(parameter));
-			}
 
 			if (parameter.IsGenericType)
 			{
 				var arguments = parameter.GetGenericArguments();
 				if (CloseGenericParametersIfAny(type, arguments))
-				{
 					return parameter.GetGenericTypeDefinition().MakeGenericType(arguments);
-				}
 			}
 
 			if (parameter.IsGenericParameter)
-			{
 				return type.GetGenericArgument(parameter.Name);
-			}
 
 			if (parameter.IsArray)
 			{
@@ -132,9 +134,7 @@ namespace Castle.DynamicProxy.Internal
 		public static Type GetTypeOrNull(object target)
 		{
 			if (target == null)
-			{
 				return null;
-			}
 			return target.GetType();
 		}
 
@@ -180,9 +180,7 @@ namespace Castle.DynamicProxy.Internal
 			catch (TargetInvocationException e) // yes, this is not documented in MSDN. Yay for documentation
 			{
 				if ((e.InnerException is TypeInitializationException) == false)
-				{
 					throw;
-				}
 				throw new ProxyGenerationException(
 					string.Format(
 						"There was an error in static constructor on type {0}. This is likely a bug in DynamicProxy. Please report it.",
@@ -198,21 +196,6 @@ namespace Castle.DynamicProxy.Internal
 			return sortedMembers;
 		}
 
-		private static bool CloseGenericParametersIfAny(AbstractTypeEmitter emitter, Type[] arguments)
-		{
-			var hasAnyGenericParameters = false;
-			for (var i = 0; i < arguments.Length; i++)
-			{
-				var newType = GetClosedParameterType(emitter, arguments[i]);
-				if (!ReferenceEquals(newType, arguments[i]))
-				{
-					arguments[i] = newType;
-					hasAnyGenericParameters = true;
-				}
-			}
-			return hasAnyGenericParameters;
-		}
-
 		private static Type[] Sort(ICollection<Type> types)
 		{
 			var array = new Type[types.Count];
@@ -221,5 +204,7 @@ namespace Castle.DynamicProxy.Internal
 			Array.Sort(array, (l, r) => string.Compare(l.AssemblyQualifiedName, r.AssemblyQualifiedName, StringComparison.OrdinalIgnoreCase));
 			return array;
 		}
+
+		#endregion
 	}
 }

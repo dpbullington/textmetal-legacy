@@ -17,18 +17,18 @@ using NUnit.Core;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	RemoteTestAgent represents a remote agent executing in another process
-	/// 	and communicating with NUnit by TCP. Although it is similar to a
-	/// 	TestServer, it does not publish a Uri at which clients may connect 
-	/// 	to it. Rather, it reports back to the sponsoring TestAgency upon 
-	/// 	startup so that the agency may in turn provide it to clients for use.
+	/// RemoteTestAgent represents a remote agent executing in another process
+	/// and communicating with NUnit by TCP. Although it is similar to a
+	/// TestServer, it does not publish a Uri at which clients may connect
+	/// to it. Rather, it reports back to the sponsoring TestAgency upon
+	/// startup so that the agency may in turn provide it to clients for use.
 	/// </summary>
 	public class RemoteTestAgent : TestAgent
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a RemoteTestAgent
+		/// Construct a RemoteTestAgent
 		/// </summary>
 		public RemoteTestAgent(Guid agentId, TestAgency agency)
 			: base(agentId, agency)

@@ -9,8 +9,8 @@ using System;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	SetUpFixture extends TestSuite and supports
-	/// 	Setup and TearDown methods.
+	/// SetUpFixture extends TestSuite and supports
+	/// Setup and TearDown methods.
 	/// </summary>
 	public class SetUpFixture : TestSuite
 	{
@@ -39,8 +39,8 @@ namespace NUnit.Core
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets a string representing the kind of test
-		/// 	that this object represents, for use in display.
+		/// Gets a string representing the kind of test
+		/// that this object represents, for use in display.
 		/// </summary>
 		public override string TestType
 		{

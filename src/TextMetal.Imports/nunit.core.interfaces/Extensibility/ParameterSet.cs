@@ -14,9 +14,9 @@ using NUnit.Framework;
 namespace NUnit.Core.Extensibility
 {
 	/// <summary>
-	/// 	ParameterSet encapsulates method arguments and
-	/// 	other selected parameters needed for constructing
-	/// 	a parameterized test case.
+	/// ParameterSet encapsulates method arguments and
+	/// other selected parameters needed for constructing
+	/// a parameterized test case.
 	/// </summary>
 	public class ParameterSet : ITestCaseData
 	{
@@ -25,8 +25,8 @@ namespace NUnit.Core.Extensibility
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a non-runnable ParameterSet, specifying
-		/// 	the provider excetpion that made it invalid.
+		/// Construct a non-runnable ParameterSet, specifying
+		/// the provider excetpion that made it invalid.
 		/// </summary>
 		public ParameterSet(Exception exception)
 		{
@@ -36,8 +36,8 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Construct an empty parameter set, which
-		/// 	defaults to being Runnable.
+		/// Construct an empty parameter set, which
+		/// defaults to being Runnable.
 		/// </summary>
 		public ParameterSet()
 		{
@@ -64,8 +64,8 @@ namespace NUnit.Core.Extensibility
 		private object[] originalArguments;
 
 		/// <summary>
-		/// 	A dictionary of properties, used to add information
-		/// 	to tests without requiring the class to change.
+		/// A dictionary of properties, used to add information
+		/// to tests without requiring the class to change.
 		/// </summary>
 		private IDictionary properties;
 
@@ -78,8 +78,8 @@ namespace NUnit.Core.Extensibility
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	The arguments to be used in running the test,
-		/// 	which must match the method signature.
+		/// The arguments to be used in running the test,
+		/// which must match the method signature.
 		/// </summary>
 		public object[] Arguments
 		{
@@ -97,7 +97,7 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Gets a list of categories associated with this test.
+		/// Gets a list of categories associated with this test.
 		/// </summary>
 		public IList Categories
 		{
@@ -111,7 +111,7 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	A description to be applied to this test case
+		/// A description to be applied to this test case
 		/// </summary>
 		public string Description
 		{
@@ -129,7 +129,7 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	The Type of any exception that is expected.
+		/// The Type of any exception that is expected.
 		/// </summary>
 		public Type ExpectedException
 		{
@@ -144,7 +144,7 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	The FullName of any exception that is expected
+		/// The FullName of any exception that is expected
 		/// </summary>
 		public string ExpectedExceptionName
 		{
@@ -159,7 +159,7 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	The Message of any exception that is expected
+		/// The Message of any exception that is expected
 		/// </summary>
 		public string ExpectedMessage
 		{
@@ -174,9 +174,9 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Gets or sets a value indicating whether this <see cref="ParameterSet" /> is explicit.
+		/// Gets or sets a value indicating whether this <see cref="ParameterSet" /> is explicit.
 		/// </summary>
-		/// <value> <c>true</c> if explicit; otherwise, <c>false</c> . </value>
+		/// <value> <c> true </c> if explicit; otherwise, <c> false </c> . </value>
 		public bool Explicit
 		{
 			get
@@ -190,8 +190,8 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Returns true if an expected result has been 
-		/// 	specified for this parameter set.
+		/// Returns true if an expected result has been
+		/// specified for this parameter set.
 		/// </summary>
 		public bool HasExpectedResult
 		{
@@ -202,7 +202,7 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Gets or sets the ignore reason.
+		/// Gets or sets the ignore reason.
 		/// </summary>
 		/// <value> The ignore reason. </value>
 		public string IgnoreReason
@@ -218,9 +218,9 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Gets or sets a value indicating whether this <see cref="ParameterSet" /> is ignored.
+		/// Gets or sets a value indicating whether this <see cref="ParameterSet" /> is ignored.
 		/// </summary>
-		/// <value> <c>true</c> if ignored; otherwise, <c>false</c> . </value>
+		/// <value> <c> true </c> if ignored; otherwise, <c> false </c> . </value>
 		public bool Ignored
 		{
 			get
@@ -234,7 +234,7 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Gets or sets the type of match to be performed on the expected message
+		/// Gets or sets the type of match to be performed on the expected message
 		/// </summary>
 		public string MatchType
 		{
@@ -249,8 +249,8 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	The original arguments supplied by the user,
-		/// 	used for display purposes.
+		/// The original arguments supplied by the user,
+		/// used for display purposes.
 		/// </summary>
 		public object[] OriginalArguments
 		{
@@ -261,7 +261,7 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Gets the property dictionary for this test
+		/// Gets the property dictionary for this test
 		/// </summary>
 		public IDictionary Properties
 		{
@@ -275,7 +275,7 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Holds any exception thrown by the parameter provider
+		/// Holds any exception thrown by the parameter provider
 		/// </summary>
 		public Exception ProviderException
 		{
@@ -286,8 +286,8 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	The expected result of the test, which
-		/// 	must match the method return type.
+		/// The expected result of the test, which
+		/// must match the method return type.
 		/// </summary>
 		public object Result
 		{
@@ -303,7 +303,7 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	The RunState for this set of parameters.
+		/// The RunState for this set of parameters.
 		/// </summary>
 		public RunState RunState
 		{
@@ -318,9 +318,9 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	A name to be used for this test case in lieu
-		/// 	of the standard generated name containing
-		/// 	the argument list.
+		/// A name to be used for this test case in lieu
+		/// of the standard generated name containing
+		/// the argument list.
 		/// </summary>
 		public string TestName
 		{
@@ -339,9 +339,9 @@ namespace NUnit.Core.Extensibility
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Constructs a ParameterSet from another object, accessing properties 
-		/// 	by reflection. The object must expose at least an Arguments property
-		/// 	in order for the test to be runnable.
+		/// Constructs a ParameterSet from another object, accessing properties
+		/// by reflection. The object must expose at least an Arguments property
+		/// in order for the test to be runnable.
 		/// </summary>
 		/// <param name="source"> </param>
 		public static ParameterSet FromDataSource(object source)

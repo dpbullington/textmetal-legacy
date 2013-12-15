@@ -24,14 +24,14 @@ using NMock2.Monitoring;
 namespace NMock2.Actions
 {
 	/// <summary>
-	/// 	Action that executes the delegate passed to the constructor.
+	/// Action that executes the delegate passed to the constructor.
 	/// </summary>
 	public class DelegateAction : IAction
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="DelegateAction" /> class.
+		/// Initializes a new instance of the <see cref="DelegateAction" /> class.
 		/// </summary>
 		/// <param name="actionHandler"> The action handler. </param>
 		public DelegateAction(Handler actionHandler)
@@ -44,7 +44,7 @@ namespace NMock2.Actions
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Stores the handler of the delegate action.
+		/// Stores the handler of the delegate action.
 		/// </summary>
 		private readonly Handler handler;
 
@@ -53,7 +53,7 @@ namespace NMock2.Actions
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public void DescribeTo(TextWriter writer)
@@ -62,7 +62,7 @@ namespace NMock2.Actions
 		}
 
 		/// <summary>
-		/// 	Invokes this object.
+		/// Invokes this object.
 		/// </summary>
 		/// <param name="invocation"> The invocation. </param>
 		public void Invoke(Invocation invocation)
@@ -75,7 +75,7 @@ namespace NMock2.Actions
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		/// <summary>
-		/// 	Delegate that is executed on invocation of the action.
+		/// Delegate that is executed on invocation of the action.
 		/// </summary>
 		public delegate void Handler();
 

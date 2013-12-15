@@ -27,18 +27,16 @@ using NUnit.UiException.Properties;
 namespace NUnit.UiException.Controls
 {
 	/// <summary>
-	/// 	Implements a place holder that can be splitted either horizontally or vertically.
-	/// 	The SplitterBox is layouted with two place holders, respectively named Control1
-	/// 	and Control2 where clients can put their controls.
-	/// 
-	/// 	Unlike SplitContainer, the place holders in SplitterBox are the client controls
-	/// 	itself. The direct consequence is the layout policy will be to dock the client
-	/// 	controls in filling the maximum possible space.
-	/// 
-	/// 	SplitterBox also add three buttons on the splitter bar that to change the split
-	/// 	orientation and collapse either Control1 or Control2. The example below shows
-	/// 	how to intialize and set up SplitterBox with two controls.
-	/// 	<code>// creates a new SplitterBox, with a vertical split
+	/// Implements a place holder that can be splitted either horizontally or vertically.
+	/// The SplitterBox is layouted with two place holders, respectively named Control1
+	/// and Control2 where clients can put their controls.
+	/// Unlike SplitContainer, the place holders in SplitterBox are the client controls
+	/// itself. The direct consequence is the layout policy will be to dock the client
+	/// controls in filling the maximum possible space.
+	/// SplitterBox also add three buttons on the splitter bar that to change the split
+	/// orientation and collapse either Control1 or Control2. The example below shows
+	/// how to intialize and set up SplitterBox with two controls.
+	/// <code>// creates a new SplitterBox, with a vertical split
 	/// 		// and position splitter to appear in the middle of the window
 	/// 		SplitterBox splitter = new SplitterBox();
 	/// 		splitter.Orientation = Orientation.Vertical;
@@ -51,7 +49,7 @@ namespace NUnit.UiException.Controls
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Creates a new SplitterBox.
+		/// Creates a new SplitterBox.
 		/// </summary>
 		public SplitterBox()
 		{
@@ -143,13 +141,13 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gets or sets the "first" control to be shown. This control will appear
-		/// 	either at the top or on the left when the orientation is respectively
-		/// 	vertical or horizontal.
-		/// 	If the value is not null, the control will automatically be added
-		/// 	to the SplitterBox's hierarchy of controls.
-		/// 	If the value is null, the former control is removed and replaced
-		/// 	by a default and empty area.
+		/// Gets or sets the "first" control to be shown. This control will appear
+		/// either at the top or on the left when the orientation is respectively
+		/// vertical or horizontal.
+		/// If the value is not null, the control will automatically be added
+		/// to the SplitterBox's hierarchy of controls.
+		/// If the value is null, the former control is removed and replaced
+		/// by a default and empty area.
 		/// </summary>
 		public Control Control1
 		{
@@ -174,13 +172,13 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gets or sets the "second" control to be shown. This control will appear
-		/// 	either at the bottom or on the right when the orientation is respectively
-		/// 	vertical or horizontal.
-		/// 	If the value is not null, the control will automatically be added
-		/// 	to the SplitterBox's hierarchy of controls.
-		/// 	If the value is null, the former control is removed and replaced
-		/// 	by a default and empty area.
+		/// Gets or sets the "second" control to be shown. This control will appear
+		/// either at the bottom or on the right when the orientation is respectively
+		/// vertical or horizontal.
+		/// If the value is not null, the control will automatically be added
+		/// to the SplitterBox's hierarchy of controls.
+		/// If the value is null, the former control is removed and replaced
+		/// by a default and empty area.
 		/// </summary>
 		public Control Control2
 		{
@@ -214,7 +212,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gets or sets the orientation of the splitter in the SplitterBox.
+		/// Gets or sets the orientation of the splitter in the SplitterBox.
 		/// </summary>
 		public Orientation Orientation
 		{
@@ -230,13 +228,12 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gets or sets the splitter distance expressed as a float number in the
-		/// 	range [0 - 1]. A value of 0 collapses Control1 and makes Control2 take
-		/// 	the whole space in the window. A value of 1 collapses Control2 and makes
-		/// 	Control1 take the whole space in the window. A value of 0.5 makes the
-		/// 	splitter appear in the middle of the window.
-		/// 
-		/// 	Values that don't fall in [0 - 1] are automatically clipped to this range.
+		/// Gets or sets the splitter distance expressed as a float number in the
+		/// range [0 - 1]. A value of 0 collapses Control1 and makes Control2 take
+		/// the whole space in the window. A value of 1 collapses Control2 and makes
+		/// Control1 take the whole space in the window. A value of 0.5 makes the
+		/// splitter appear in the middle of the window.
+		/// Values that don't fall in [0 - 1] are automatically clipped to this range.
 		/// </summary>
 		public float SplitterDistance
 		{
@@ -256,7 +253,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Gets the rectangle occupied with the splitter.
+		/// Gets the rectangle occupied with the splitter.
 		/// </summary>
 		public Rectangle SplitterRectangle
 		{
@@ -271,7 +268,7 @@ namespace NUnit.UiException.Controls
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Collapses Control1.
+		/// Collapses Control1.
 		/// </summary>
 		public void CollapseControl1()
 		{
@@ -279,7 +276,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Collapses Control2.
+		/// Collapses Control2.
 		/// </summary>
 		public void CollapseControl2()
 		{
@@ -339,8 +336,8 @@ namespace NUnit.UiException.Controls
 				return (false);
 
 			return (this._collapse1Rectangle.Contains(x, y) ||
-			        this._collapse2Rectangle.Contains(x, y) ||
-			        this._directionRectangle.Contains(x, y));
+					this._collapse2Rectangle.Contains(x, y) ||
+					this._directionRectangle.Contains(x, y));
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)
@@ -411,8 +408,8 @@ namespace NUnit.UiException.Controls
 				if (this._directionRectangle.Contains(e.X, e.Y))
 				{
 					this.Orientation = (this._orientation == Orientation.Vertical) ?
-						                                                               Orientation.Horizontal :
-							                                                                                      Orientation.Vertical;
+						Orientation.Horizontal :
+						Orientation.Vertical;
 
 					this.FireOrientationChanged();
 
@@ -432,46 +429,46 @@ namespace NUnit.UiException.Controls
 			if (this.Orientation == Orientation.Vertical)
 			{
 				e.Graphics.DrawLine(this._pen, this._splitterRectangle.Left, 0,
-				                    this.SplitterRectangle.Left, this._splitterRectangle.Height);
+					this.SplitterRectangle.Left, this._splitterRectangle.Height);
 				e.Graphics.DrawLine(this._pen, this._splitterRectangle.Right - 1, 0,
-				                    this.SplitterRectangle.Right - 1, this._splitterRectangle.Height);
+					this.SplitterRectangle.Right - 1, this._splitterRectangle.Height);
 
 				e.Graphics.DrawImage(Resources.ImageSplitterBox,
-				                     this._collapse1Rectangle,
-				                     this._rVerticalCollapse1,
-				                     GraphicsUnit.Pixel);
+					this._collapse1Rectangle,
+					this._rVerticalCollapse1,
+					GraphicsUnit.Pixel);
 
 				e.Graphics.DrawImage(Resources.ImageSplitterBox,
-				                     this._directionRectangle,
-				                     this._rVerticalDirection,
-				                     GraphicsUnit.Pixel);
+					this._directionRectangle,
+					this._rVerticalDirection,
+					GraphicsUnit.Pixel);
 
 				e.Graphics.DrawImage(Resources.ImageSplitterBox,
-				                     this._collapse2Rectangle,
-				                     this._rVerticalCollapse2,
-				                     GraphicsUnit.Pixel);
+					this._collapse2Rectangle,
+					this._rVerticalCollapse2,
+					GraphicsUnit.Pixel);
 			}
 			else
 			{
 				e.Graphics.DrawLine(this._pen, 0, this._splitterRectangle.Top,
-				                    this.Width, this._splitterRectangle.Top);
+					this.Width, this._splitterRectangle.Top);
 				e.Graphics.DrawLine(this._pen, 0, this._splitterRectangle.Bottom - 1,
-				                    this.Width, this._splitterRectangle.Bottom - 1);
+					this.Width, this._splitterRectangle.Bottom - 1);
 
 				e.Graphics.DrawImage(Resources.ImageSplitterBox,
-				                     this._collapse1Rectangle,
-				                     this._rHorizontalCollapse1,
-				                     GraphicsUnit.Pixel);
+					this._collapse1Rectangle,
+					this._rHorizontalCollapse1,
+					GraphicsUnit.Pixel);
 
 				e.Graphics.DrawImage(Resources.ImageSplitterBox,
-				                     this._directionRectangle,
-				                     this._rHorizontalDirection,
-				                     GraphicsUnit.Pixel);
+					this._directionRectangle,
+					this._rHorizontalDirection,
+					GraphicsUnit.Pixel);
 
 				e.Graphics.DrawImage(Resources.ImageSplitterBox,
-				                     this._collapse2Rectangle,
-				                     this._rHorizontalCollapse2,
-				                     GraphicsUnit.Pixel);
+					this._collapse2Rectangle,
+					this._rHorizontalCollapse2,
+					GraphicsUnit.Pixel);
 			}
 
 			base.OnPaint(e);
@@ -487,7 +484,7 @@ namespace NUnit.UiException.Controls
 		}
 
 		/// <summary>
-		/// 	Sets a new location for the splitter expressed as client coordinate.
+		/// Sets a new location for the splitter expressed as client coordinate.
 		/// </summary>
 		/// <param name="x"> The new location in pixels when orientation is set to Vertical. </param>
 		/// <param name="y"> The new location in pixels when orientation is set to Horizontal. </param>
@@ -512,7 +509,7 @@ namespace NUnit.UiException.Controls
 		private void UpdateCursor(int x, int y)
 		{
 			if (!this.SplitterRectangle.Contains(x, y) ||
-			    this.HoveringButtons(x, y))
+				this.HoveringButtons(x, y))
 			{
 				this.Cursor = Cursors.Default;
 				return;

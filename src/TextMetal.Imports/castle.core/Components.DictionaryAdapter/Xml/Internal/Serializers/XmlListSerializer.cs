@@ -12,22 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
 
 	public class XmlListSerializer : XmlCollectionSerializer
 	{
+		#region Constructors/Destructors
+
+		protected XmlListSerializer()
+		{
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
 		public static readonly XmlListSerializer
 			Instance = new XmlListSerializer();
 
-		protected XmlListSerializer() { }
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		public override Type ListTypeConstructor
 		{
-			get { return typeof(XmlNodeList<>); }
+			get
+			{
+				return typeof(XmlNodeList<>);
+			}
 		}
+
+		#endregion
 	}
 }
+
 #endif

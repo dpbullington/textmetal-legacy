@@ -12,19 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection;
+
 namespace Castle.DynamicProxy.Generators.Emitters
 {
 	using System;
-	using System.Reflection;
 
 	public interface IMemberEmitter
 	{
-		MemberInfo Member { get; }
+		#region Properties/Indexers/Events
 
-		Type ReturnType { get; }
+		MemberInfo Member
+		{
+			get;
+		}
+
+		Type ReturnType
+		{
+			get;
+		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		void EnsureValidCodeBlock();
 
 		void Generate();
+
+		#endregion
 	}
 }

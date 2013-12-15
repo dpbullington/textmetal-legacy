@@ -12,21 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
 
 	public interface IXmlIncludedTypeMap
 	{
-		IXmlIncludedType Default { get; }
+		#region Properties/Indexers/Events
+
+		IXmlIncludedType Default
+		{
+			get;
+		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		bool TryGet(XmlName xsiType, out IXmlIncludedType includedType);
-		bool TryGet(Type    clrType, out IXmlIncludedType includedType);
+
+		bool TryGet(Type clrType, out IXmlIncludedType includedType);
+
+		#endregion
 	}
 
 	public static class XmlIncludedTypeMapExtensions
 	{
+		#region Methods/Operators
+
 		public static IXmlIncludedType Require(this IXmlIncludedTypeMap includedTypes, Type clrType)
 		{
 			IXmlIncludedType includedType;
@@ -35,6 +51,9 @@ namespace Castle.Components.DictionaryAdapter.Xml
 
 			throw Error.NotXmlKnownType(clrType);
 		}
+
+		#endregion
 	}
 }
+
 #endif

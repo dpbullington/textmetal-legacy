@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System.Reflection.Emit;
-
 	public class AssignArgumentStatement : Statement
 	{
-		private readonly ArgumentReference argument;
-		private readonly Expression expression;
+		#region Constructors/Destructors
 
 		public AssignArgumentStatement(ArgumentReference argument, Expression expression)
 		{
@@ -27,10 +26,23 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 			this.expression = expression;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly ArgumentReference argument;
+		private readonly Expression expression;
+
+		#endregion
+
+		#region Methods/Operators
+
 		public override void Emit(IMemberEmitter member, ILGenerator gen)
 		{
-			ArgumentsUtil.EmitLoadOwnerAndReference(argument, gen);
-			expression.Emit(member, gen);
+			ArgumentsUtil.EmitLoadOwnerAndReference(this.argument, gen);
+			this.expression.Emit(member, gen);
 		}
+
+		#endregion
 	}
 }

@@ -14,10 +14,10 @@ using NUnit.Core.Extensibility;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	CoreExtensions is a singleton class that groups together all 
-	/// 	the extension points that are supported in the test domain.
-	/// 	It also provides access to the test builders and decorators
-	/// 	by other parts of the NUnit core.
+	/// CoreExtensions is a singleton class that groups together all
+	/// the extension points that are supported in the test domain.
+	/// It also provides access to the test builders and decorators
+	/// by other parts of the NUnit core.
 	/// </summary>
 	public class CoreExtensions : ExtensionHost, IService
 	{
@@ -94,7 +94,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Our AddinRegistry may be set from outside or passed into the domain
+		/// Our AddinRegistry may be set from outside or passed into the domain
 		/// </summary>
 		public IAddinRegistry AddinRegistry
 		{

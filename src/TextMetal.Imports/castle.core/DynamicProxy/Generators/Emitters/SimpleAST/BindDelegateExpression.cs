@@ -12,45 +12,54 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection;
+using System.Reflection.Emit;
+
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
 	using System;
-	using System.Reflection;
-	using System.Reflection.Emit;
 
 	public class BindDelegateExpression : Expression
 	{
-		private readonly ConstructorInfo delegateCtor;
-		private readonly MethodInfo methodToBindTo;
-		private readonly Expression owner;
+		#region Constructors/Destructors
 
 		public BindDelegateExpression(Type @delegate, Expression owner, MethodInfo methodToBindTo,
-		                              GenericTypeParameterBuilder[] genericTypeParams)
+			GenericTypeParameterBuilder[] genericTypeParams)
 		{
-			delegateCtor = @delegate.GetConstructors()[0];
+			this.delegateCtor = @delegate.GetConstructors()[0];
 			this.methodToBindTo = methodToBindTo;
 			if (@delegate.IsGenericTypeDefinition)
 			{
 				var closedDelegate = @delegate.MakeGenericType(genericTypeParams);
-				delegateCtor = TypeBuilder.GetConstructor(closedDelegate, delegateCtor);
+				this.delegateCtor = TypeBuilder.GetConstructor(closedDelegate, this.delegateCtor);
 				this.methodToBindTo = methodToBindTo.MakeGenericMethod(genericTypeParams);
 			}
 			this.owner = owner;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly ConstructorInfo delegateCtor;
+		private readonly MethodInfo methodToBindTo;
+		private readonly Expression owner;
+
+		#endregion
+
+		#region Methods/Operators
+
 		public override void Emit(IMemberEmitter member, ILGenerator gen)
 		{
-			owner.Emit(member, gen);
+			this.owner.Emit(member, gen);
 			gen.Emit(OpCodes.Dup);
-			if (methodToBindTo.IsFinal)
-			{
-				gen.Emit(OpCodes.Ldftn, methodToBindTo);
-			}
+			if (this.methodToBindTo.IsFinal)
+				gen.Emit(OpCodes.Ldftn, this.methodToBindTo);
 			else
-			{
-				gen.Emit(OpCodes.Ldvirtftn, methodToBindTo);
-			}
-			gen.Emit(OpCodes.Newobj, delegateCtor);
+				gen.Emit(OpCodes.Ldvirtftn, this.methodToBindTo);
+			gen.Emit(OpCodes.Newobj, this.delegateCtor);
 		}
+
+		#endregion
 	}
 }

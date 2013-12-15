@@ -12,40 +12,60 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Threading;
+
 namespace Castle.Core.Internal
 {
-	using System.Threading;
-
 #if !SILVERLIGHT
 
 	internal class SlimReadLockHolder : ILockHolder
 	{
-		private readonly ReaderWriterLockSlim locker;
-		private bool lockAcquired;
+		#region Constructors/Destructors
 
 		public SlimReadLockHolder(ReaderWriterLockSlim locker, bool waitForLock)
 		{
 			this.locker = locker;
-			if(waitForLock)
+			if (waitForLock)
 			{
 				locker.EnterReadLock();
-				lockAcquired = true;
+				this.lockAcquired = true;
 				return;
 			}
-			lockAcquired = locker.TryEnterReadLock(0);
+			this.lockAcquired = locker.TryEnterReadLock(0);
 		}
 
-		public void Dispose()
-		{
-			if (!LockAcquired) return;
-			locker.ExitReadLock();
-			lockAcquired = false;
-		}
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly ReaderWriterLockSlim locker;
+		private bool lockAcquired;
+
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		public bool LockAcquired
 		{
-			get { return lockAcquired; }
+			get
+			{
+				return this.lockAcquired;
+			}
 		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		public void Dispose()
+		{
+			if (!this.LockAcquired)
+				return;
+			this.locker.ExitReadLock();
+			this.lockAcquired = false;
+		}
+
+		#endregion
 	}
 #endif
 }

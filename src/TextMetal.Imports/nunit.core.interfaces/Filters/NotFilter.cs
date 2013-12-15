@@ -9,7 +9,7 @@ using System;
 namespace NUnit.Core.Filters
 {
 	/// <summary>
-	/// 	NotFilter negates the operation of another filter
+	/// NotFilter negates the operation of another filter
 	/// </summary>
 	[Serializable]
 	public class NotFilter : TestFilter
@@ -17,9 +17,9 @@ namespace NUnit.Core.Filters
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a not filter on another filter. The topLevel
-		/// 	argument is used to trigger special handling when tests
-		/// 	are being excluded.
+		/// Construct a not filter on another filter. The topLevel
+		/// argument is used to trigger special handling when tests
+		/// are being excluded.
 		/// </summary>
 		/// <param name="baseFilter"> The filter to be negated </param>
 		public NotFilter(ITestFilter baseFilter)
@@ -28,9 +28,9 @@ namespace NUnit.Core.Filters
 		}
 
 		/// <summary>
-		/// 	Construct a not filter on another filter. The topLevel
-		/// 	argument is used to trigger special handling when tests
-		/// 	are being excluded.
+		/// Construct a not filter on another filter. The topLevel
+		/// argument is used to trigger special handling when tests
+		/// are being excluded.
 		/// </summary>
 		/// <param name="baseFilter"> The filter to be negated </param>
 		/// <param name="topLevel"> Indicates whether this is a top level NotFilter </param>
@@ -52,7 +52,7 @@ namespace NUnit.Core.Filters
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the base filter
+		/// Gets the base filter
 		/// </summary>
 		public ITestFilter BaseFilter
 		{
@@ -63,8 +63,8 @@ namespace NUnit.Core.Filters
 		}
 
 		/// <summary>
-		/// 	Indicates whether this is a top-level NotFilter,
-		/// 	requiring special handling of Explicit
+		/// Indicates whether this is a top-level NotFilter,
+		/// requiring special handling of Explicit
 		/// </summary>
 		public bool TopLevel
 		{
@@ -83,7 +83,7 @@ namespace NUnit.Core.Filters
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Check whether the filter matches a test
+		/// Check whether the filter matches a test
 		/// </summary>
 		/// <param name="test"> The test to be matched </param>
 		/// <returns> True if it matches, otherwise false </returns>
@@ -96,7 +96,7 @@ namespace NUnit.Core.Filters
 		}
 
 		/// <summary>
-		/// 	Determine whether any descendant of the test matches the filter criteria.
+		/// Determine whether any descendant of the test matches the filter criteria.
 		/// </summary>
 		/// <param name="test"> The test to be matched </param>
 		/// <returns> True if at least one descendant matches the filter criteria </returns>
@@ -115,7 +115,7 @@ namespace NUnit.Core.Filters
 		}
 
 		/// <summary>
-		/// 	Return string representation of the filter
+		/// Return string representation of the filter
 		/// </summary>
 		public override string ToString()
 		{

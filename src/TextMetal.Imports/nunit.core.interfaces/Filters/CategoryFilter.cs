@@ -11,8 +11,8 @@ using System.Text;
 namespace NUnit.Core.Filters
 {
 	/// <summary>
-	/// 	CategoryFilter is able to select or exclude tests
-	/// 	based on their categories.
+	/// CategoryFilter is able to select or exclude tests
+	/// based on their categories.
 	/// </summary>
 	[Serializable]
 	public class CategoryFilter : TestFilter
@@ -20,7 +20,7 @@ namespace NUnit.Core.Filters
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct an empty CategoryFilter
+		/// Construct an empty CategoryFilter
 		/// </summary>
 		public CategoryFilter()
 		{
@@ -28,7 +28,7 @@ namespace NUnit.Core.Filters
 		}
 
 		/// <summary>
-		/// 	Construct a CategoryFilter using a single category name
+		/// Construct a CategoryFilter using a single category name
 		/// </summary>
 		/// <param name="name"> A category name </param>
 		public CategoryFilter(string name)
@@ -39,7 +39,7 @@ namespace NUnit.Core.Filters
 		}
 
 		/// <summary>
-		/// 	Construct a CategoryFilter using an array of category names
+		/// Construct a CategoryFilter using an array of category names
 		/// </summary>
 		/// <param name="names"> An array of category names </param>
 		public CategoryFilter(string[] names)
@@ -60,7 +60,7 @@ namespace NUnit.Core.Filters
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the list of categories from this filter
+		/// Gets the list of categories from this filter
 		/// </summary>
 		public IList Categories
 		{
@@ -75,7 +75,7 @@ namespace NUnit.Core.Filters
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Add a category name to the filter
+		/// Add a category name to the filter
 		/// </summary>
 		/// <param name="name"> A category name </param>
 		public void AddCategory(string name)
@@ -84,7 +84,7 @@ namespace NUnit.Core.Filters
 		}
 
 		/// <summary>
-		/// 	Check whether the filter matches a test
+		/// Check whether the filter matches a test
 		/// </summary>
 		/// <param name="test"> The test to be matched </param>
 		/// <returns> </returns>
@@ -103,7 +103,7 @@ namespace NUnit.Core.Filters
 		}
 
 		/// <summary>
-		/// 	Return the string representation of a category filter
+		/// Return the string representation of a category filter
 		/// </summary>
 		/// <returns> </returns>
 		public override string ToString()

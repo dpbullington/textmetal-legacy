@@ -9,8 +9,8 @@ namespace NUnit.Framework
 	using System;
 
 	/// <summary>
-	/// 	Attribute used to mark a static (shared in VB) property
-	/// 	that returns a list of tests.
+	/// Attribute used to mark a static (shared in VB) property
+	/// that returns a list of tests.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
 	public class SuiteAttribute : Attribute

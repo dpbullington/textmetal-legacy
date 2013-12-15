@@ -7,6 +7,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 #if CLR_2_0 || CLR_4_0
 
 #endif
@@ -14,19 +15,19 @@ using System.Collections.Generic;
 namespace NUnit.Framework.Constraints
 {
 	/// <summary>
-	/// 	Abstract base class for constraints that compare values to
-	/// 	determine if one is greater than, equal to or less than
-	/// 	the other. This class supplies the Using modifiers.
+	/// Abstract base class for constraints that compare values to
+	/// determine if one is greater than, equal to or less than
+	/// the other. This class supplies the Using modifiers.
 	/// </summary>
 	public abstract class ComparisonConstraint : Constraint
 	{
 		/// <summary>
-		/// 	ComparisonAdapter to be used in making the comparison
+		/// ComparisonAdapter to be used in making the comparison
 		/// </summary>
 		protected ComparisonAdapter comparer = ComparisonAdapter.Default;
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:ComparisonConstraint" /> class.
+		/// Initializes a new instance of the <see cref="T:ComparisonConstraint" /> class.
 		/// </summary>
 		public ComparisonConstraint(object arg)
 			: base(arg)
@@ -34,7 +35,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="T:ComparisonConstraint" /> class.
+		/// Initializes a new instance of the <see cref="T:ComparisonConstraint" /> class.
 		/// </summary>
 		public ComparisonConstraint(object arg1, object arg2)
 			: base(arg1, arg2)
@@ -42,7 +43,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Modifies the constraint to use an IComparer and returns self
+		/// Modifies the constraint to use an IComparer and returns self
 		/// </summary>
 		public ComparisonConstraint Using(IComparer comparer)
 		{
@@ -52,7 +53,7 @@ namespace NUnit.Framework.Constraints
 
 #if CLR_2_0 || CLR_4_0
 		/// <summary>
-		/// 	Modifies the constraint to use an IComparer&lt;T&gt; and returns self
+		/// Modifies the constraint to use an IComparer&lt;T&gt; and returns self
 		/// </summary>
 		public ComparisonConstraint Using<T>(IComparer<T> comparer)
 		{
@@ -61,7 +62,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Modifies the constraint to use a Comparison&lt;T&gt; and returns self
+		/// Modifies the constraint to use a Comparison&lt;T&gt; and returns self
 		/// </summary>
 		public ComparisonConstraint Using<T>(Comparison<T> comparer)
 		{

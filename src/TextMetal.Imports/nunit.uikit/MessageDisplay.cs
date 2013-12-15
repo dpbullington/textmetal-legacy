@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace NUnit.UiKit
 {
 	/// <summary>
-	/// 	Summary description for MessageDisplay.
+	/// Summary description for MessageDisplay.
 	/// </summary>
 	public class MessageDisplay : IMessageDisplay
 	{
@@ -60,8 +60,8 @@ namespace NUnit.UiKit
 			string msg = message + Environment.NewLine + Environment.NewLine + BuildMessage(exception);
 
 			return isFatal
-				       ? msg
-				       : msg + Environment.NewLine + Environment.NewLine + "For further information, use the Exception Details menu item.";
+				? msg
+				: msg + Environment.NewLine + Environment.NewLine + "For further information, use the Exception Details menu item.";
 		}
 
 		public DialogResult Ask(string message)

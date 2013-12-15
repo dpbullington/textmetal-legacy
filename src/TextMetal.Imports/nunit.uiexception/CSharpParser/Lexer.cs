@@ -8,14 +8,14 @@ using System;
 namespace NUnit.UiException.CodeFormatters
 {
 	/// <summary>
-	/// 	Splits a text formatted as C# code into a list of identified tokens.
+	/// Splits a text formatted as C# code into a list of identified tokens.
 	/// </summary>
 	public class Lexer
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Builds a new instance of Lexer.
+		/// Builds a new instance of Lexer.
 		/// </summary>
 		public Lexer()
 		{
@@ -56,22 +56,22 @@ namespace NUnit.UiException.CodeFormatters
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Holds pre-defined sequences.
+		/// Holds pre-defined sequences.
 		/// </summary>
 		private TokenDictionary _dictionary;
 
 		/// <summary>
-		/// 	Reading position in the current text.
+		/// Reading position in the current text.
 		/// </summary>
 		private int _position;
 
 		/// <summary>
-		/// 	Text where to fetch tokens.
+		/// Text where to fetch tokens.
 		/// </summary>
 		private string _text;
 
 		/// <summary>
-		/// 	Last identified token.
+		/// Last identified token.
 		/// </summary>
 		private InternalToken _token;
 
@@ -80,8 +80,8 @@ namespace NUnit.UiException.CodeFormatters
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the token identifed after a call to Next().
-		/// 	The value may be null if the end of the text has been reached.
+		/// Gets the token identifed after a call to Next().
+		/// The value may be null if the end of the text has been reached.
 		/// </summary>
 		public LexToken CurrentToken
 		{
@@ -104,7 +104,7 @@ namespace NUnit.UiException.CodeFormatters
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Clear all previously defined sequences.
+		/// Clear all previously defined sequences.
 		/// </summary>
 		protected void Clear()
 		{
@@ -114,7 +114,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Checks whether there are none visited tokens.
+		/// Checks whether there are none visited tokens.
 		/// </summary>
 		public bool HasNext()
 		{
@@ -122,11 +122,11 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Call this method to visit iteratively all tokens in the source text.
-		/// 	Each time a token has been identifier, the method returns true and the
-		/// 	identified Token is place under the CurrentToken property.
-		/// 	When there is not more token to visit, the method returns false
-		/// 	and null is set in CurrentToken property.
+		/// Call this method to visit iteratively all tokens in the source text.
+		/// Each time a token has been identifier, the method returns true and the
+		/// identified Token is place under the CurrentToken property.
+		/// When there is not more token to visit, the method returns false
+		/// and null is set in CurrentToken property.
 		/// </summary>
 		public bool Next()
 		{
@@ -177,10 +177,9 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Setup the text to be splitted in tokens. 
-		/// 
-		/// 	Client code must call Next() first before getting
-		/// 	the first available token (if any).
+		/// Setup the text to be splitted in tokens.
+		/// Client code must call Next() first before getting
+		/// the first available token (if any).
 		/// </summary>
 		public void Parse(string codeCSharp)
 		{
@@ -202,8 +201,8 @@ namespace NUnit.UiException.CodeFormatters
 			#region Constructors/Destructors
 
 			/// <summary>
-			/// 	Builds a concrete instance of LexToken. By default, created instance
-			/// 	are setup with LexerTag.Text value.
+			/// Builds a concrete instance of LexToken. By default, created instance
+			/// are setup with LexerTag.Text value.
 			/// </summary>
 			/// <param name="startingPosition"> The starting startingPosition of this token in the text. </param>
 			public InternalToken(int index)
@@ -220,7 +219,7 @@ namespace NUnit.UiException.CodeFormatters
 			#region Methods/Operators
 
 			/// <summary>
-			/// 	Appends this character to this token.
+			/// Appends this character to this token.
 			/// </summary>
 			public void AppendsChar(char c)
 			{
@@ -228,7 +227,7 @@ namespace NUnit.UiException.CodeFormatters
 			}
 
 			/// <summary>
-			/// 	Removes the "count" ending character of this token.
+			/// Removes the "count" ending character of this token.
 			/// </summary>
 			public void PopChars(int count)
 			{
@@ -241,7 +240,7 @@ namespace NUnit.UiException.CodeFormatters
 			}
 
 			/// <summary>
-			/// 	Set a new value to the Tag property.
+			/// Set a new value to the Tag property.
 			/// </summary>
 			public void SetLexerTag(LexerTag tag)
 			{

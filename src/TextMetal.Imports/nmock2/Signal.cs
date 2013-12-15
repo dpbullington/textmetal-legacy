@@ -26,14 +26,14 @@ namespace NMock2
 	using System;
 
 	/// <summary>
-	/// 	Defines that an <see cref="EventWaitHandle" /> should be signaled.
+	/// Defines that an <see cref="EventWaitHandle" /> should be signaled.
 	/// </summary>
 	public class Signal
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Signals an <see cref="EventWaitHandle" /> to synchronizes threads.
+		/// Signals an <see cref="EventWaitHandle" /> to synchronizes threads.
 		/// </summary>
 		/// <param name="signal"> The signal to set. </param>
 		/// <returns> Action that signals an <see cref="EventWaitHandle" /> . </returns>

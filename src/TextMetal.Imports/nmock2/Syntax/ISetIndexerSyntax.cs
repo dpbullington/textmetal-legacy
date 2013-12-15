@@ -20,14 +20,14 @@
 namespace NMock2.Syntax
 {
 	/// <summary>
-	/// 	Syntax defining an indexer set operation.
+	/// Syntax defining an indexer set operation.
 	/// </summary>
 	public interface ISetIndexerSyntax
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Defines the indexer.
+		/// Defines the indexer.
 		/// </summary>
 		/// <value> Defines the value the indexer is set to. </value>
 		/// <param name="args"> The argument list. </param>

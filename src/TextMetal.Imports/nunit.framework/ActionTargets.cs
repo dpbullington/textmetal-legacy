@@ -10,23 +10,23 @@ using System;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	The different targets a test action attribute can be applied to
+	/// The different targets a test action attribute can be applied to
 	/// </summary>
 	[Flags]
 	public enum ActionTargets
 	{
 		/// <summary>
-		/// 	Default target, which is determined by where the action attribute is attached
+		/// Default target, which is determined by where the action attribute is attached
 		/// </summary>
 		Default = 0,
 
 		/// <summary>
-		/// 	Target a individual test case
+		/// Target a individual test case
 		/// </summary>
 		Test = 1,
 
 		/// <summary>
-		/// 	Target a suite of test cases
+		/// Target a suite of test cases
 		/// </summary>
 		Suite = 2
 	}

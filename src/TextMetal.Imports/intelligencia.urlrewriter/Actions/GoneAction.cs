@@ -10,17 +10,21 @@ using System.Net;
 
 namespace Intelligencia.UrlRewriter.Actions
 {
-    /// <summary>
-    /// Returns a 410 Gone HTTP status code.
-    /// </summary>
-    public sealed class GoneAction : SetStatusAction
-    {
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public GoneAction()
-            : base(HttpStatusCode.Gone)
-        {
-        }
-    }
+	/// <summary>
+	/// Returns a 410 Gone HTTP status code.
+	/// </summary>
+	public sealed class GoneAction : SetStatusAction
+	{
+		#region Constructors/Destructors
+
+		/// <summary>
+		/// Default constructor.
+		/// </summary>
+		public GoneAction()
+			: base(HttpStatusCode.Gone)
+		{
+		}
+
+		#endregion
+	}
 }

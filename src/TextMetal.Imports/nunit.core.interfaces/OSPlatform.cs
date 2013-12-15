@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	OSPlatform represents a particular operating system platform
+	/// OSPlatform represents a particular operating system platform
 	/// </summary>
 	public class OSPlatform
 	{
@@ -23,17 +23,17 @@ namespace NUnit.Core
 		private static OSPlatform currentPlatform;
 
 		/// <summary>
-		/// 	Platform ID for Unix as defined by Microsoft .NET 2.0 and greater
+		/// Platform ID for Unix as defined by Microsoft .NET 2.0 and greater
 		/// </summary>
 		public static readonly PlatformID UnixPlatformID_Microsoft = (PlatformID)4;
 
 		/// <summary>
-		/// 	Platform ID for Unix as defined by Mono
+		/// Platform ID for Unix as defined by Mono
 		/// </summary>
 		public static readonly PlatformID UnixPlatformID_Mono = (PlatformID)128;
 
 		/// <summary>
-		/// 	Get the OSPlatform under which we are currently running
+		/// Get the OSPlatform under which we are currently running
 		/// </summary>
 		public static OSPlatform CurrentPlatform
 		{
@@ -63,27 +63,27 @@ namespace NUnit.Core
 		#region Members used for Win32NT platform only
 
 		/// <summary>
-		/// 	Product Type Enumeration used for Windows
+		/// Product Type Enumeration used for Windows
 		/// </summary>
 		public enum ProductType
 		{
 			/// <summary>
-			/// 	Product type is unknown or unspecified
+			/// Product type is unknown or unspecified
 			/// </summary>
 			Unknown,
 
 			/// <summary>
-			/// 	Product type is Workstation
+			/// Product type is Workstation
 			/// </summary>
 			WorkStation,
 
 			/// <summary>
-			/// 	Product type is Domain Controller
+			/// Product type is Domain Controller
 			/// </summary>
 			DomainController,
 
 			/// <summary>
-			/// 	Product type is Server
+			/// Product type is Server
 			/// </summary>
 			Server,
 		}
@@ -113,7 +113,7 @@ namespace NUnit.Core
 		#endregion
 
 		/// <summary>
-		/// 	Construct from a platform ID and version
+		/// Construct from a platform ID and version
 		/// </summary>
 		public OSPlatform(PlatformID platform, Version version)
 		{
@@ -122,7 +122,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Construct from a platform ID, version and product type
+		/// Construct from a platform ID, version and product type
 		/// </summary>
 		public OSPlatform(PlatformID platform, Version version, ProductType product)
 			: this(platform, version)
@@ -131,7 +131,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Get the platform ID of this instance
+		/// Get the platform ID of this instance
 		/// </summary>
 		public PlatformID Platform
 		{
@@ -142,7 +142,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Get the Version of this instance
+		/// Get the Version of this instance
 		/// </summary>
 		public Version Version
 		{
@@ -153,7 +153,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Get the Product Type of this instance
+		/// Get the Product Type of this instance
 		/// </summary>
 		public ProductType Product
 		{
@@ -164,33 +164,33 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if this is a windows platform
+		/// Return true if this is a windows platform
 		/// </summary>
 		public bool IsWindows
 		{
 			get
 			{
 				return this.platform == PlatformID.Win32NT
-				       || this.platform == PlatformID.Win32Windows
-				       || this.platform == PlatformID.Win32S
-				       || this.platform == PlatformID.WinCE;
+						|| this.platform == PlatformID.Win32Windows
+						|| this.platform == PlatformID.Win32S
+						|| this.platform == PlatformID.WinCE;
 			}
 		}
 
 		/// <summary>
-		/// 	Return true if this is a Unix or Linux platform
+		/// Return true if this is a Unix or Linux platform
 		/// </summary>
 		public bool IsUnix
 		{
 			get
 			{
 				return this.platform == UnixPlatformID_Microsoft
-				       || this.platform == UnixPlatformID_Mono;
+						|| this.platform == UnixPlatformID_Mono;
 			}
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is Win32S
+		/// Return true if the platform is Win32S
 		/// </summary>
 		public bool IsWin32S
 		{
@@ -201,7 +201,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is Win32Windows
+		/// Return true if the platform is Win32Windows
 		/// </summary>
 		public bool IsWin32Windows
 		{
@@ -212,7 +212,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is Win32NT
+		/// Return true if the platform is Win32NT
 		/// </summary>
 		public bool IsWin32NT
 		{
@@ -223,7 +223,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is Windows CE
+		/// Return true if the platform is Windows CE
 		/// </summary>
 		public bool IsWinCE
 		{
@@ -235,7 +235,7 @@ namespace NUnit.Core
 
 #if (CLR_2_0 || CLR_4_0) && !NETCF
 		/// <summary>
-		/// 	Return true if the platform is Xbox
+		/// Return true if the platform is Xbox
 		/// </summary>
 		public bool IsXbox
 		{
@@ -246,7 +246,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is MacOSX
+		/// Return true if the platform is MacOSX
 		/// </summary>
 		public bool IsMacOSX
 		{
@@ -258,7 +258,7 @@ namespace NUnit.Core
 #endif
 
 		/// <summary>
-		/// 	Return true if the platform is Windows 95
+		/// Return true if the platform is Windows 95
 		/// </summary>
 		public bool IsWin95
 		{
@@ -269,7 +269,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is Windows 98
+		/// Return true if the platform is Windows 98
 		/// </summary>
 		public bool IsWin98
 		{
@@ -280,7 +280,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is Windows ME
+		/// Return true if the platform is Windows ME
 		/// </summary>
 		public bool IsWinME
 		{
@@ -291,7 +291,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is NT 3
+		/// Return true if the platform is NT 3
 		/// </summary>
 		public bool IsNT3
 		{
@@ -302,7 +302,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is NT 4
+		/// Return true if the platform is NT 4
 		/// </summary>
 		public bool IsNT4
 		{
@@ -313,7 +313,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is NT 5
+		/// Return true if the platform is NT 5
 		/// </summary>
 		public bool IsNT5
 		{
@@ -324,7 +324,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is Windows 2000
+		/// Return true if the platform is Windows 2000
 		/// </summary>
 		public bool IsWin2K
 		{
@@ -335,7 +335,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is Windows XP
+		/// Return true if the platform is Windows XP
 		/// </summary>
 		public bool IsWinXP
 		{
@@ -346,7 +346,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is Windows 2003 Server
+		/// Return true if the platform is Windows 2003 Server
 		/// </summary>
 		public bool IsWin2003Server
 		{
@@ -357,7 +357,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is NT 6
+		/// Return true if the platform is NT 6
 		/// </summary>
 		public bool IsNT6
 		{
@@ -368,7 +368,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is Vista
+		/// Return true if the platform is Vista
 		/// </summary>
 		public bool IsVista
 		{
@@ -379,7 +379,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is Windows 2008 Server (original or R2)
+		/// Return true if the platform is Windows 2008 Server (original or R2)
 		/// </summary>
 		public bool IsWin2008Server
 		{
@@ -390,7 +390,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is Windows 2008 Server (original)
+		/// Return true if the platform is Windows 2008 Server (original)
 		/// </summary>
 		public bool IsWin2008ServerR1
 		{
@@ -401,7 +401,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is Windows 2008 Server R2
+		/// Return true if the platform is Windows 2008 Server R2
 		/// </summary>
 		public bool IsWin2008ServerR2
 		{
@@ -412,7 +412,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is Windows 2012 Server
+		/// Return true if the platform is Windows 2012 Server
 		/// </summary>
 		public bool IsWin2012Server
 		{
@@ -423,7 +423,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is Windows 7
+		/// Return true if the platform is Windows 7
 		/// </summary>
 		public bool IsWindows7
 		{
@@ -434,7 +434,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return true if the platform is Windows 8
+		/// Return true if the platform is Windows 8
 		/// </summary>
 		public bool IsWindows8
 		{

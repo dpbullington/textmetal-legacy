@@ -11,45 +11,53 @@ using System.Web.UI;
 
 namespace Intelligencia.UrlRewriter
 {
-    /// <summary>
-    /// The HTML Text Writer to use for rewriting form actions.
-    /// </summary>
-    public class RewriteFormHtmlTextWriter : HtmlTextWriter
-    {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="writer">The writer to use.</param>
-        public RewriteFormHtmlTextWriter(HtmlTextWriter writer)
-            : base(writer)
-        {
-            InnerWriter = writer.InnerWriter;
-        }
+	/// <summary>
+	/// The HTML Text Writer to use for rewriting form actions.
+	/// </summary>
+	public class RewriteFormHtmlTextWriter : HtmlTextWriter
+	{
+		#region Constructors/Destructors
 
-        /// <summary>
-        /// Writes an attribute
-        /// </summary>
-        /// <param name="name">Name of the attribute</param>
-        /// <param name="value">Value of the attribute</param>
-        /// <param name="fEncode"></param>
-        public override void WriteAttribute(string name, string value, bool fEncode)
-        {
-            // If the attribute we are writing is the "action" attribute, and we are not on a sub-control, 
-            // then replace the value to write with the raw URL of the request - which ensures that we'll
-            // preserve the PathInfo value on postback scenarios
-            if (name == "action")
-            {
-                if (HttpContext.Current.Items["ActionAlreadyWritten"] == null)
-                {
-                    value = RewriterHttpModule.RawUrl;
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="writer"> The writer to use. </param>
+		public RewriteFormHtmlTextWriter(HtmlTextWriter writer)
+			: base(writer)
+		{
+			this.InnerWriter = writer.InnerWriter;
+		}
 
-                    // Indicate that we've already rewritten the <form>'s action attribute to prevent
-                    // us from rewriting a sub-control under the <form> control
-                    HttpContext.Current.Items["ActionAlreadyWritten"] = true;
-                }
-            }
+		#endregion
 
-            base.WriteAttribute(name, value, fEncode);
-        }
-    }
+		#region Methods/Operators
+
+		/// <summary>
+		/// Writes an attribute
+		/// </summary>
+		/// <param name="name"> Name of the attribute </param>
+		/// <param name="value"> Value of the attribute </param>
+		/// <param name="fEncode"> </param>
+		public override void WriteAttribute(string name, string value, bool fEncode)
+		{
+			// If the attribute we are writing is the "action" attribute, and we are not on a sub-control, 
+			// then replace the value to write with the raw URL of the request - which ensures that we'll
+			// preserve the PathInfo value on postback scenarios
+			if (name == "action")
+			{
+				if (HttpContext.Current.Items["ActionAlreadyWritten"] == null)
+				{
+					value = RewriterHttpModule.RawUrl;
+
+					// Indicate that we've already rewritten the <form>'s action attribute to prevent
+					// us from rewriting a sub-control under the <form> control
+					HttpContext.Current.Items["ActionAlreadyWritten"] = true;
+				}
+			}
+
+			base.WriteAttribute(name, value, fEncode);
+		}
+
+		#endregion
+	}
 }

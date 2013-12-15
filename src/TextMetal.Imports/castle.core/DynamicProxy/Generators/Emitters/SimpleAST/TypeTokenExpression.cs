@@ -12,26 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection.Emit;
+
+using Castle.DynamicProxy.Tokens;
+
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
 	using System;
-	using System.Reflection.Emit;
-
-	using Castle.DynamicProxy.Tokens;
 
 	public class TypeTokenExpression : Expression
 	{
-		private readonly Type type;
+		#region Constructors/Destructors
 
 		public TypeTokenExpression(Type type)
 		{
 			this.type = type;
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly Type type;
+
+		#endregion
+
+		#region Methods/Operators
+
 		public override void Emit(IMemberEmitter member, ILGenerator gen)
 		{
-			gen.Emit(OpCodes.Ldtoken, type);
+			gen.Emit(OpCodes.Ldtoken, this.type);
 			gen.Emit(OpCodes.Call, TypeMethods.GetTypeFromHandle);
 		}
+
+		#endregion
 	}
 }

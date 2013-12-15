@@ -9,17 +9,17 @@ using System;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	Interface implemented by a user fixture in order to
-	/// 	validate any expected exceptions. It is only called
-	/// 	for test methods marked with the ExpectedException
-	/// 	attribute.
+	/// Interface implemented by a user fixture in order to
+	/// validate any expected exceptions. It is only called
+	/// for test methods marked with the ExpectedException
+	/// attribute.
 	/// </summary>
 	public interface IExpectException
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Method to handle an expected exception
+		/// Method to handle an expected exception
 		/// </summary>
 		/// <param name="ex"> The exception to be handled </param>
 		void HandleException(Exception ex);

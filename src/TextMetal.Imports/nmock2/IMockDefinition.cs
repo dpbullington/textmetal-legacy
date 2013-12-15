@@ -26,19 +26,19 @@ namespace NMock2
 	using System;
 
 	/// <summary>
-	/// 	The definition of a mock object.
+	/// The definition of a mock object.
 	/// </summary>
 	/// <remarks>
-	/// 	Implementations of this interface encapsulate the details of
-	/// 	how a mock object is defined, and provide the ability to be able to
-	/// 	instantiate an instance of it.
+	/// Implementations of this interface encapsulate the details of
+	/// how a mock object is defined, and provide the ability to be able to
+	/// instantiate an instance of it.
 	/// </remarks>
 	public interface IMockDefinition
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	This method supports NMock2 infrastructure and is not intended to be called directly from your code.
+		/// This method supports NMock2 infrastructure and is not intended to be called directly from your code.
 		/// </summary>
 		/// <param name="primaryType"> The primary type that is being mocked. </param>
 		/// <param name="mockery"> The current <see cref="Mockery" /> instance. </param>

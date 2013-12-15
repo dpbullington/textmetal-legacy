@@ -14,7 +14,7 @@
 
 namespace Castle.Core.Smtp
 {
-	#if !SILVERLIGHT
+#if !SILVERLIGHT
 
 	using System.Collections.Generic;
 	using System.Net.Mail;
@@ -24,26 +24,30 @@ namespace Castle.Core.Smtp
 	/// </summary>
 	public interface IEmailSender
 	{
+		#region Methods/Operators
+
 		/// <summary>
 		/// Sends a mail message.
 		/// </summary>
-		/// <param name="from">From field</param>
-		/// <param name="to">To field</param>
-		/// <param name="subject">E-mail's subject</param>
-		/// <param name="messageText">message's body</param>
+		/// <param name="from"> From field </param>
+		/// <param name="to"> To field </param>
+		/// <param name="subject"> E-mail's subject </param>
+		/// <param name="messageText"> message's body </param>
 		void Send(string from, string to, string subject, string messageText);
 
 		/// <summary>
-		/// Sends a <see cref="MailMessage">message</see>. 
+		/// Sends a <see cref="MailMessage"> message </see>.
 		/// </summary>
-		/// <param name="message"><see cref="MailMessage">Message</see> instance</param>
+		/// <param name="message"> <see cref="MailMessage"> Message </see> instance </param>
 		void Send(MailMessage message);
 
 		/// <summary>
-		/// Sends multiple <see cref="MailMessage">messages</see>. 
+		/// Sends multiple <see cref="MailMessage"> messages </see>.
 		/// </summary>
-		/// <param name="messages">List of <see cref="MailMessage">messages</see></param>
+		/// <param name="messages"> List of <see cref="MailMessage"> messages </see> </param>
 		void Send(IEnumerable<MailMessage> messages);
+
+		#endregion
 	}
-	#endif
+#endif
 }

@@ -21,10 +21,10 @@ namespace NUnit.Util
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Selects a target runtime framework for a TestPackage based on
-		/// 	the settings in the package and the assemblies themselves.
-		/// 	The package RuntimeFramework setting may be updated as a 
-		/// 	result and the selected runtime is returned.
+		/// Selects a target runtime framework for a TestPackage based on
+		/// the settings in the package and the assemblies themselves.
+		/// The package RuntimeFramework setting may be updated as a
+		/// result and the selected runtime is returned.
 		/// </summary>
 		/// <param name="package"> A TestPackage </param>
 		/// <returns> The selected RuntimeFramework </returns>
@@ -40,11 +40,11 @@ namespace NUnit.Util
 				log.Debug("Requested framework is {0}", requestedFramework);
 
 			RuntimeType targetRuntime = requestedFramework == null
-				                            ? RuntimeType.Any
-				                            : requestedFramework.Runtime;
+				? RuntimeType.Any
+				: requestedFramework.Runtime;
 			Version targetVersion = requestedFramework == null
-				                        ? RuntimeFramework.DefaultVersion
-				                        : requestedFramework.FrameworkVersion;
+				? RuntimeFramework.DefaultVersion
+				: requestedFramework.FrameworkVersion;
 
 			if (targetRuntime == RuntimeType.Any)
 				targetRuntime = currentFramework.Runtime;

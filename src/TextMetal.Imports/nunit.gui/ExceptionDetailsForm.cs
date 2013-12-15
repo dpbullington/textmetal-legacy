@@ -13,7 +13,7 @@ using System.Windows.Forms;
 namespace NUnit.Gui
 {
 	/// <summary>
-	/// 	Summary description for ExceptionDetailsForm.
+	/// Summary description for ExceptionDetailsForm.
 	/// </summary>
 	public class ExceptionDetailsForm : Form
 	{
@@ -37,7 +37,7 @@ namespace NUnit.Gui
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Required designer variable.
+		/// Required designer variable.
 		/// </summary>
 		private Container components = null;
 
@@ -62,7 +62,7 @@ namespace NUnit.Gui
 		}
 
 		/// <summary>
-		/// 	Clean up any resources being used.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose(bool disposing)
 		{
@@ -113,57 +113,57 @@ namespace NUnit.Gui
 		}
 
 		/// <summary>
-		/// 	Required method for Designer support - do not modify
-		/// 	the contents of this method with the code editor.
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.okButton = new System.Windows.Forms.Button();
-			this.stackTrace = new System.Windows.Forms.RichTextBox();
-			this.message = new System.Windows.Forms.Label();
+			this.okButton = new Button();
+			this.stackTrace = new RichTextBox();
+			this.message = new Label();
 			this.SuspendLayout();
 			// 
 			// okButton
 			// 
-			this.okButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-			this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.okButton.Location = new System.Drawing.Point(434, 512);
+			this.okButton.Anchor = AnchorStyles.Bottom;
+			this.okButton.DialogResult = DialogResult.Cancel;
+			this.okButton.Location = new Point(434, 512);
 			this.okButton.Name = "okButton";
-			this.okButton.Size = new System.Drawing.Size(90, 27);
+			this.okButton.Size = new Size(90, 27);
 			this.okButton.TabIndex = 1;
 			this.okButton.Text = "OK";
 			// 
 			// stackTrace
 			// 
-			this.stackTrace.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-			                                                                | System.Windows.Forms.AnchorStyles.Left)
-			                                                               | System.Windows.Forms.AnchorStyles.Right)));
-			this.stackTrace.Location = new System.Drawing.Point(10, 65);
+			this.stackTrace.Anchor = ((AnchorStyles)((((AnchorStyles.Top | AnchorStyles.Bottom)
+														| AnchorStyles.Left)
+													| AnchorStyles.Right)));
+			this.stackTrace.Location = new Point(10, 65);
 			this.stackTrace.Name = "stackTrace";
 			this.stackTrace.ReadOnly = true;
-			this.stackTrace.Size = new System.Drawing.Size(940, 433);
+			this.stackTrace.Size = new Size(940, 433);
 			this.stackTrace.TabIndex = 3;
 			this.stackTrace.Text = "";
 			// 
 			// message
 			// 
-			this.message.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-			                                                            | System.Windows.Forms.AnchorStyles.Right)));
-			this.message.Location = new System.Drawing.Point(19, 9);
+			this.message.Anchor = ((AnchorStyles)(((AnchorStyles.Top | AnchorStyles.Left)
+													| AnchorStyles.Right)));
+			this.message.Location = new Point(19, 9);
 			this.message.Name = "message";
-			this.message.Size = new System.Drawing.Size(931, 46);
+			this.message.Size = new Size(931, 46);
 			this.message.TabIndex = 2;
 			// 
 			// ExceptionDetailsForm
 			// 
-			this.ClientSize = new System.Drawing.Size(969, 551);
+			this.ClientSize = new Size(969, 551);
 			this.Controls.Add(this.stackTrace);
 			this.Controls.Add(this.message);
 			this.Controls.Add(this.okButton);
 			this.Name = "ExceptionDetailsForm";
 			this.Text = "Exception Details";
-			this.Resize += new System.EventHandler(this.ExceptionDetailsForm_Resize);
-			this.Load += new System.EventHandler(this.ExceptionDetailsForm_Load);
+			this.Resize += new EventHandler(this.ExceptionDetailsForm_Resize);
+			this.Load += new EventHandler(this.ExceptionDetailsForm_Load);
 			this.ResumeLayout(false);
 		}
 

@@ -7,6 +7,8 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Drawing;
+using System.Resources;
 using System.Windows.Forms;
 
 using NUnit.Core.Extensibility;
@@ -15,7 +17,7 @@ using NUnit.Util;
 namespace NUnit.Gui
 {
 	/// <summary>
-	/// 	Summary description for AddinDialog.
+	/// Summary description for AddinDialog.
 	/// </summary>
 	public class AddinDialog : Form
 	{
@@ -44,7 +46,7 @@ namespace NUnit.Gui
 		private Button button1;
 
 		/// <summary>
-		/// 	Required designer variable.
+		/// Required designer variable.
 		/// </summary>
 		private Container components = null;
 
@@ -84,7 +86,7 @@ namespace NUnit.Gui
 		}
 
 		/// <summary>
-		/// 	Clean up any resources being used.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose(bool disposing)
 		{
@@ -97,42 +99,42 @@ namespace NUnit.Gui
 		}
 
 		/// <summary>
-		/// 	Required method for Designer support - do not modify
-		/// 	the contents of this method with the code editor.
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(AddinDialog));
-			this.addinListView = new System.Windows.Forms.ListView();
-			this.addinNameColumn = new System.Windows.Forms.ColumnHeader();
-			this.addinStatusColumn = new System.Windows.Forms.ColumnHeader();
-			this.descriptionTextBox = new System.Windows.Forms.TextBox();
-			this.label1 = new System.Windows.Forms.Label();
-			this.button1 = new System.Windows.Forms.Button();
-			this.label2 = new System.Windows.Forms.Label();
-			this.messageTextBox = new System.Windows.Forms.TextBox();
+			ResourceManager resources = new ResourceManager(typeof(AddinDialog));
+			this.addinListView = new ListView();
+			this.addinNameColumn = new ColumnHeader();
+			this.addinStatusColumn = new ColumnHeader();
+			this.descriptionTextBox = new TextBox();
+			this.label1 = new Label();
+			this.button1 = new Button();
+			this.label2 = new Label();
+			this.messageTextBox = new TextBox();
 			this.SuspendLayout();
 			// 
 			// addinListView
 			// 
-			this.addinListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-			                                                                   | System.Windows.Forms.AnchorStyles.Left)
-			                                                                  | System.Windows.Forms.AnchorStyles.Right)));
-			this.addinListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[]
-			                                    {
-				                                    this.addinNameColumn,
-				                                    this.addinStatusColumn
-			                                    });
+			this.addinListView.Anchor = ((AnchorStyles)((((AnchorStyles.Top | AnchorStyles.Bottom)
+														| AnchorStyles.Left)
+														| AnchorStyles.Right)));
+			this.addinListView.Columns.AddRange(new ColumnHeader[]
+												{
+													this.addinNameColumn,
+													this.addinStatusColumn
+												});
 			this.addinListView.FullRowSelect = true;
-			this.addinListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-			this.addinListView.Location = new System.Drawing.Point(8, 8);
+			this.addinListView.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+			this.addinListView.Location = new Point(8, 8);
 			this.addinListView.MultiSelect = false;
 			this.addinListView.Name = "addinListView";
-			this.addinListView.Size = new System.Drawing.Size(448, 136);
+			this.addinListView.Size = new Size(448, 136);
 			this.addinListView.TabIndex = 0;
-			this.addinListView.View = System.Windows.Forms.View.Details;
-			this.addinListView.Resize += new System.EventHandler(this.addinListView_Resize);
-			this.addinListView.SelectedIndexChanged += new System.EventHandler(this.addinListView_SelectedIndexChanged);
+			this.addinListView.View = View.Details;
+			this.addinListView.Resize += new EventHandler(this.addinListView_Resize);
+			this.addinListView.SelectedIndexChanged += new EventHandler(this.addinListView_SelectedIndexChanged);
 			// 
 			// addinNameColumn
 			// 
@@ -146,69 +148,69 @@ namespace NUnit.Gui
 			// 
 			// descriptionTextBox
 			// 
-			this.descriptionTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-			                                                                       | System.Windows.Forms.AnchorStyles.Right)));
-			this.descriptionTextBox.Location = new System.Drawing.Point(8, 184);
+			this.descriptionTextBox.Anchor = ((AnchorStyles)(((AnchorStyles.Bottom | AnchorStyles.Left)
+															| AnchorStyles.Right)));
+			this.descriptionTextBox.Location = new Point(8, 184);
 			this.descriptionTextBox.Multiline = true;
 			this.descriptionTextBox.Name = "descriptionTextBox";
-			this.descriptionTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.descriptionTextBox.Size = new System.Drawing.Size(448, 56);
+			this.descriptionTextBox.ScrollBars = ScrollBars.Vertical;
+			this.descriptionTextBox.Size = new Size(448, 56);
 			this.descriptionTextBox.TabIndex = 1;
 			this.descriptionTextBox.Text = "";
 			// 
 			// label1
 			// 
-			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.label1.Location = new System.Drawing.Point(8, 160);
+			this.label1.Anchor = ((AnchorStyles)((AnchorStyles.Bottom | AnchorStyles.Left)));
+			this.label1.Location = new Point(8, 160);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(304, 16);
+			this.label1.Size = new Size(304, 16);
 			this.label1.TabIndex = 2;
 			this.label1.Text = "Description:";
 			// 
 			// button1
 			// 
-			this.button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-			this.button1.Location = new System.Drawing.Point(192, 344);
+			this.button1.Anchor = AnchorStyles.Bottom;
+			this.button1.Location = new Point(192, 344);
 			this.button1.Name = "button1";
 			this.button1.TabIndex = 3;
 			this.button1.Text = "OK";
-			this.button1.Click += new System.EventHandler(this.button1_Click);
+			this.button1.Click += new EventHandler(this.button1_Click);
 			// 
 			// label2
 			// 
-			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.label2.Location = new System.Drawing.Point(8, 256);
+			this.label2.Anchor = ((AnchorStyles)((AnchorStyles.Bottom | AnchorStyles.Left)));
+			this.label2.Location = new Point(8, 256);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(304, 16);
+			this.label2.Size = new Size(304, 16);
 			this.label2.TabIndex = 5;
 			this.label2.Text = " Message:";
 			// 
 			// messageTextBox
 			// 
-			this.messageTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-			                                                                   | System.Windows.Forms.AnchorStyles.Right)));
-			this.messageTextBox.Location = new System.Drawing.Point(8, 280);
+			this.messageTextBox.Anchor = ((AnchorStyles)(((AnchorStyles.Bottom | AnchorStyles.Left)
+														| AnchorStyles.Right)));
+			this.messageTextBox.Location = new Point(8, 280);
 			this.messageTextBox.Multiline = true;
 			this.messageTextBox.Name = "messageTextBox";
-			this.messageTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.messageTextBox.Size = new System.Drawing.Size(448, 56);
+			this.messageTextBox.ScrollBars = ScrollBars.Vertical;
+			this.messageTextBox.Size = new Size(448, 56);
 			this.messageTextBox.TabIndex = 4;
 			this.messageTextBox.Text = "";
 			// 
 			// AddinDialog
 			// 
-			this.ClientSize = new System.Drawing.Size(464, 376);
+			this.ClientSize = new Size(464, 376);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.messageTextBox);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.descriptionTextBox);
 			this.Controls.Add(this.addinListView);
-			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.Icon = ((Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "AddinDialog";
 			this.ShowInTaskbar = false;
 			this.Text = "Registered Addins";
-			this.Load += new System.EventHandler(this.AddinDialog_Load);
+			this.Load += new EventHandler(this.AddinDialog_Load);
 			this.ResumeLayout(false);
 		}
 

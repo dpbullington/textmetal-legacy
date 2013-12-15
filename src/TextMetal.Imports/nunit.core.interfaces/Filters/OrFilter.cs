@@ -11,8 +11,8 @@ using System.Text;
 namespace NUnit.Core.Filters
 {
 	/// <summary>
-	/// 	Combines multiple filters so that a test must pass one 
-	/// 	of them in order to pass this filter.
+	/// Combines multiple filters so that a test must pass one
+	/// of them in order to pass this filter.
 	/// </summary>
 	[Serializable]
 	public class OrFilter : TestFilter
@@ -20,14 +20,14 @@ namespace NUnit.Core.Filters
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Constructs an empty OrFilter
+		/// Constructs an empty OrFilter
 		/// </summary>
 		public OrFilter()
 		{
 		}
 
 		/// <summary>
-		/// 	Constructs an AndFilter from an array of filters
+		/// Constructs an AndFilter from an array of filters
 		/// </summary>
 		/// <param name="filters"> </param>
 		public OrFilter(params ITestFilter[] filters)
@@ -46,7 +46,7 @@ namespace NUnit.Core.Filters
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Return an array of the composing filters
+		/// Return an array of the composing filters
 		/// </summary>
 		public ITestFilter[] Filters
 		{
@@ -61,7 +61,7 @@ namespace NUnit.Core.Filters
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Adds a filter to the list of filters
+		/// Adds a filter to the list of filters
 		/// </summary>
 		/// <param name="filter"> The filter to be added </param>
 		public void Add(ITestFilter filter)
@@ -70,7 +70,7 @@ namespace NUnit.Core.Filters
 		}
 
 		/// <summary>
-		/// 	Checks whether the OrFilter is matched by a test
+		/// Checks whether the OrFilter is matched by a test
 		/// </summary>
 		/// <param name="test"> The test to be matched </param>
 		/// <returns> True if any of the component filters match, otherwise false </returns>
@@ -86,7 +86,7 @@ namespace NUnit.Core.Filters
 		}
 
 		/// <summary>
-		/// 	Checks whether the OrFilter is matched by a test
+		/// Checks whether the OrFilter is matched by a test
 		/// </summary>
 		/// <param name="test"> The test to be matched </param>
 		/// <returns> True if any of the component filters pass, otherwise false </returns>
@@ -102,7 +102,7 @@ namespace NUnit.Core.Filters
 		}
 
 		/// <summary>
-		/// 	Return the string representation of an or filter
+		/// Return the string representation of an or filter
 		/// </summary>
 		/// <returns> </returns>
 		public override string ToString()

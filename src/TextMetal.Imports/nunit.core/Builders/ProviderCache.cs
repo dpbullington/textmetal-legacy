@@ -37,8 +37,8 @@ namespace NUnit.Core.Builders
 
 			object instance = instances[entry];
 			return instance == null
-				       ? instances[entry] = Reflect.Construct(providerType)
-				       : instance;
+				? instances[entry] = Reflect.Construct(providerType)
+				: instance;
 		}
 
 		#endregion

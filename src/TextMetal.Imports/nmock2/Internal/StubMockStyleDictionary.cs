@@ -24,20 +24,22 @@ namespace NMock2.Internal
 	using System;
 
 	/// <summary>
-	/// 	Provides functionality to map stubs and specific types of a stub to mock styles.
+	/// Provides functionality to map stubs and specific types of a stub to mock styles.
 	/// </summary>
 	public class StubMockStyleDictionary
 	{
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	holds mappings from stub to mock style (holds for all types unless there is a mapping defined in <see
-		/// 	 cref="mockStyleForType" />.
+		/// holds mappings from stub to mock style (holds for all types unless there is a mapping defined in
+		/// <see
+		///     cref="mockStyleForType" />
+		/// .
 		/// </summary>
 		private readonly Dictionary<IMockObject, MockStyle?> mockStyleForStub = new Dictionary<IMockObject, MockStyle?>();
 
 		/// <summary>
-		/// 	holds mappings from stub.type to mock style.
+		/// holds mappings from stub.type to mock style.
 		/// </summary>
 		private readonly Dictionary<Key, MockStyle?> mockStyleForType = new Dictionary<Key, MockStyle?>();
 
@@ -46,7 +48,7 @@ namespace NMock2.Internal
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets or sets the mock style for the specified mock.
+		/// Gets or sets the mock style for the specified mock.
 		/// </summary>
 		/// <param name="mock"> the mock object </param>
 		/// <value> mock style. null if no value defined. </value>
@@ -64,7 +66,7 @@ namespace NMock2.Internal
 		}
 
 		/// <summary>
-		/// 	Gets or sets the mock style for the specified mock and type.
+		/// Gets or sets the mock style for the specified mock and type.
 		/// </summary>
 		/// <param name="mock"> the mock object </param>
 		/// <param name="nestedMockType"> the type of the nested mock. </param>
@@ -94,14 +96,14 @@ namespace NMock2.Internal
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		/// <summary>
-		/// 	Key into the <see cref="StubMockStyleDictionary.mockStyleForType" /> dictionary.
+		/// Key into the <see cref="StubMockStyleDictionary.mockStyleForType" /> dictionary.
 		/// </summary>
 		private class Key
 		{
 			#region Constructors/Destructors
 
 			/// <summary>
-			/// 	Initializes a new instance of the <see cref="Key" /> class.
+			/// Initializes a new instance of the <see cref="Key" /> class.
 			/// </summary>
 			/// <param name="mock"> The mock object. </param>
 			/// <param name="nestedMockType"> Type of the nested mock. </param>
@@ -116,7 +118,7 @@ namespace NMock2.Internal
 			#region Properties/Indexers/Events
 
 			/// <summary>
-			/// 	Gets the mock.
+			/// Gets the mock.
 			/// </summary>
 			/// <value> The mock object. </value>
 			public IMockObject Mock
@@ -126,7 +128,7 @@ namespace NMock2.Internal
 			}
 
 			/// <summary>
-			/// 	Gets the type of the nested mock.
+			/// Gets the type of the nested mock.
 			/// </summary>
 			/// <value> The type of the nested mock. </value>
 			public Type NestedMockType
@@ -140,7 +142,7 @@ namespace NMock2.Internal
 			#region Methods/Operators
 
 			/// <summary>
-			/// 	Whether this instance equals the specified other.
+			/// Whether this instance equals the specified other.
 			/// </summary>
 			/// <param name="other"> The other to compare to. </param>
 			/// <returns> A value indicating whether both instances are equal. </returns>
@@ -150,7 +152,7 @@ namespace NMock2.Internal
 			}
 
 			/// <summary>
-			/// 	Whether this instance equals the specified other.
+			/// Whether this instance equals the specified other.
 			/// </summary>
 			/// <param name="other"> The other to compare to. </param>
 			/// <returns> A value indicating whether both instances are equal. </returns>
@@ -160,7 +162,7 @@ namespace NMock2.Internal
 			}
 
 			/// <summary>
-			/// 	Serves as a hash function for a particular type.
+			/// Serves as a hash function for a particular type.
 			/// </summary>
 			/// <returns> A hash code for the current <see cref="T:System.Object" /> . </returns>
 			public override int GetHashCode()

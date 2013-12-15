@@ -12,13 +12,13 @@ using System.Xml;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	This class allows loading information about
-	/// 	configurations and assemblies in a Visual
-	/// 	Studio project file and inspecting them.
-	/// 	Only the most common project types are
-	/// 	supported and an exception is thrown if
-	/// 	an attempt is made to load an invalid
-	/// 	file or one of an unknown type.
+	/// This class allows loading information about
+	/// configurations and assemblies in a Visual
+	/// Studio project file and inspecting them.
+	/// Only the most common project types are
+	/// supported and an exception is thrown if
+	/// an attempt is made to load an invalid
+	/// file or one of an unknown type.
 	/// </summary>
 	public class VSProject
 	{
@@ -37,22 +37,22 @@ namespace NUnit.Util
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	VS Solution extension
+		/// VS Solution extension
 		/// </summary>
 		private static readonly string solutionExtension = ".sln";
 
 		/// <summary>
-		/// 	VS Project extentions
+		/// VS Project extentions
 		/// </summary>
 		private static readonly string[] validExtensions = { ".csproj", ".vbproj", ".vjsproj", ".vcproj" };
 
 		/// <summary>
-		/// 	Collection of configs for the project
+		/// Collection of configs for the project
 		/// </summary>
 		private VSProjectConfigCollection configs;
 
 		/// <summary>
-		/// 	Path to the file storing this project
+		/// Path to the file storing this project
 		/// </summary>
 		private string projectPath;
 
@@ -61,7 +61,7 @@ namespace NUnit.Util
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Our collection of configurations
+		/// Our collection of configurations
 		/// </summary>
 		public VSProjectConfigCollection Configs
 		{
@@ -72,7 +72,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	The name of the project.
+		/// The name of the project.
 		/// </summary>
 		public string Name
 		{
@@ -83,7 +83,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	The path to the project
+		/// The path to the project
 		/// </summary>
 		public string ProjectPath
 		{
@@ -351,14 +351,14 @@ namespace NUnit.Util
 		{
 			throw new ArgumentException(
 				string.Format("Invalid project file type: {0}",
-				              Path.GetFileName(projectPath)));
+					Path.GetFileName(projectPath)));
 		}
 
 		private void ThrowInvalidFormat(string projectPath, Exception e)
 		{
 			throw new ArgumentException(
 				string.Format("Invalid project file format: {0}",
-				              Path.GetFileName(projectPath)), e);
+					Path.GetFileName(projectPath)), e);
 		}
 
 		#endregion

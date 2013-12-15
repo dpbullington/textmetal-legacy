@@ -11,11 +11,11 @@ using System.Threading;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	SimpleTestRunner is the simplest direct-running TestRunner. It
-	/// 	passes the event listener interface that is provided on to the tests
-	/// 	to use directly and does nothing to redirect text output. Both
-	/// 	Run and BeginRun are actually synchronous, although the client
-	/// 	can usually ignore this. BeginRun + EndRun operates as expected.
+	/// SimpleTestRunner is the simplest direct-running TestRunner. It
+	/// passes the event listener interface that is provided on to the tests
+	/// to use directly and does nothing to redirect text output. Both
+	/// Run and BeginRun are actually synchronous, although the client
+	/// can usually ignore this. BeginRun + EndRun operates as expected.
 	/// </summary>
 	public class SimpleTestRunner : MarshalByRefObject, TestRunner
 	{
@@ -38,31 +38,31 @@ namespace NUnit.Core
 		private static Logger log = InternalTrace.GetLogger(typeof(SimpleTestRunner));
 
 		/// <summary>
-		/// 	The builder we use to load tests, created for each load
+		/// The builder we use to load tests, created for each load
 		/// </summary>
 		private TestSuiteBuilder builder;
 
 		/// <summary>
-		/// 	The thread on which Run was called. Set to the
-		/// 	current thread while a run is in process.
+		/// The thread on which Run was called. Set to the
+		/// current thread while a run is in process.
 		/// </summary>
 		private Thread runThread;
 
 		/// <summary>
-		/// 	Identifier for this runner. Must be unique among all
-		/// 	active runners in order to locate tests. Default
-		/// 	value of 0 is adequate in applications with a single
-		/// 	runner or a non-branching chain of runners.
+		/// Identifier for this runner. Must be unique among all
+		/// active runners in order to locate tests. Default
+		/// value of 0 is adequate in applications with a single
+		/// runner or a non-branching chain of runners.
 		/// </summary>
 		private int runnerID = 0;
 
 		/// <summary>
-		/// 	The loaded test suite
+		/// The loaded test suite
 		/// </summary>
 		private Test test;
 
 		/// <summary>
-		/// 	Results from the last test run
+		/// Results from the last test run
 		/// </summary>
 		private TestResult testResult;
 
@@ -103,7 +103,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Results from the last test run
+		/// Results from the last test run
 		/// </summary>
 		public TestResult TestResult
 		{
@@ -155,7 +155,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Load a TestPackage
+		/// Load a TestPackage
 		/// </summary>
 		/// <param name="package"> The package to be loaded </param>
 		/// <returns> True on success, false on failure </returns>
@@ -208,7 +208,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Unload all tests previously loaded
+		/// Unload all tests previously loaded
 		/// </summary>
 		public void Unload()
 		{
@@ -217,7 +217,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Wait is a NOP for SimpleTestRunner
+		/// Wait is a NOP for SimpleTestRunner
 		/// </summary>
 		public virtual void Wait()
 		{

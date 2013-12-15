@@ -10,8 +10,8 @@ using System.Collections;
 namespace NUnit.ConsoleRunner
 {
 	/// <summary>
-	/// 	TestNameParser is used to parse the arguments to the 
-	/// 	-run option, separating testnames at the correct point.
+	/// TestNameParser is used to parse the arguments to the
+	/// -run option, separating testnames at the correct point.
 	/// </summary>
 	public class TestNameParser
 	{
@@ -72,7 +72,7 @@ namespace NUnit.ConsoleRunner
 		}
 
 		/// <summary>
-		/// 	Parse the -run argument and return an array of argument
+		/// Parse the -run argument and return an array of argument
 		/// </summary>
 		/// <param name="argument"> argument </param>
 		/// <returns> </returns>

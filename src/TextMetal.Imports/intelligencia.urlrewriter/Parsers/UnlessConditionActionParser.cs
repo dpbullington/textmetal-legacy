@@ -6,21 +6,29 @@
 // 
 
 using System;
+
 using Intelligencia.UrlRewriter.Utilities;
 
 namespace Intelligencia.UrlRewriter.Parsers
 {
-    /// <summary>
-    /// Parses the IFNOT node.
-    /// </summary>
-    public class UnlessConditionActionParser : IfConditionActionParser
-    {
-        /// <summary>
-        /// The name of the action.
-        /// </summary>
-        public override string Name
-        {
-            get { return Constants.ElementUnless; }
-        }
-    }
+	/// <summary>
+	/// Parses the IFNOT node.
+	/// </summary>
+	public class UnlessConditionActionParser : IfConditionActionParser
+	{
+		#region Properties/Indexers/Events
+
+		/// <summary>
+		/// The name of the action.
+		/// </summary>
+		public override string Name
+		{
+			get
+			{
+				return Constants.ElementUnless;
+			}
+		}
+
+		#endregion
+	}
 }

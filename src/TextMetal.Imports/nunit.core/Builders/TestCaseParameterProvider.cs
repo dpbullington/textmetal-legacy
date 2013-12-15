@@ -18,9 +18,9 @@ namespace NUnit.Core.Builders
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Performs several special conversions allowed by NUnit in order to
-		/// 	permit arguments with types that cannot be used in the constructor
-		/// 	of an Attribute such as TestCaseAttribute or to simplify their use.
+		/// Performs several special conversions allowed by NUnit in order to
+		/// permit arguments with types that cannot be used in the constructor
+		/// of an Attribute such as TestCaseAttribute or to simplify their use.
 		/// </summary>
 		/// <param name="arglist"> The arguments to be converted </param>
 		/// <param name="parameters"> The ParameterInfo array for the method </param>
@@ -35,7 +35,7 @@ namespace NUnit.Core.Builders
 					continue;
 
 				if (arg.GetType().FullName == "NUnit.Framework.SpecialValue" &&
-				    arg.ToString() == "Null")
+					arg.ToString() == "Null")
 				{
 					arglist[i] = null;
 					continue;
@@ -65,8 +65,8 @@ namespace NUnit.Core.Builders
 		}
 
 		/// <summary>
-		/// 	Return an IEnumerable providing test cases for use in
-		/// 	running a parameterized test.
+		/// Return an IEnumerable providing test cases for use in
+		/// running a parameterized test.
 		/// </summary>
 		/// <param name="method"> </param>
 		/// <returns> </returns>
@@ -132,7 +132,7 @@ namespace NUnit.Core.Builders
 					if (argsNeeded == 1 && method.GetParameters()[0].ParameterType == typeof(object[]))
 					{
 						if (argsProvided > 1 ||
-						    argsProvided == 1 && parms.Arguments[0].GetType() != typeof(object[]))
+							argsProvided == 1 && parms.Arguments[0].GetType() != typeof(object[]))
 							parms.Arguments = new object[] { parms.Arguments };
 					}
 
@@ -151,7 +151,7 @@ namespace NUnit.Core.Builders
 		}
 
 		/// <summary>
-		/// 	Determine whether any test cases are available for a parameterized method.
+		/// Determine whether any test cases are available for a parameterized method.
 		/// </summary>
 		/// <param name="method"> A MethodInfo representing a parameterized test </param>
 		/// <returns> True if any cases are available, otherwise false. </returns>

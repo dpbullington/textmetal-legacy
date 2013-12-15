@@ -24,14 +24,14 @@ namespace NMock2.Syntax
 	using System;
 
 	/// <summary>
-	/// 	Syntax defining a method, property or event (de)registration.
+	/// Syntax defining a method, property or event (de)registration.
 	/// </summary>
 	public interface IMethodSyntax
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets an indexer (get operation).
+		/// Gets an indexer (get operation).
 		/// </summary>
 		/// <value> Get indexer syntax defining the value returned by the indexer. </value>
 		IGetIndexerSyntax Get
@@ -40,7 +40,7 @@ namespace NMock2.Syntax
 		}
 
 		/// <summary>
-		/// 	Gets an indexer (set operation).
+		/// Gets an indexer (set operation).
 		/// </summary>
 		/// <value> Set indexer syntax defining the value the indexer is set to. </value>
 		ISetIndexerSyntax Set
@@ -53,14 +53,14 @@ namespace NMock2.Syntax
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Defines an event registration.
+		/// Defines an event registration.
 		/// </summary>
 		/// <param name="eventName"> Name of the event. </param>
 		/// <returns> Match syntax defining the behavior of the event adder. </returns>
 		IMatchSyntax EventAdd(string eventName);
 
 		/// <summary>
-		/// 	Defines an event registration.
+		/// Defines an event registration.
 		/// </summary>
 		/// <param name="eventName"> Name of the event. </param>
 		/// <param name="listenerMatcher"> The listener matcher. </param>
@@ -68,7 +68,7 @@ namespace NMock2.Syntax
 		IMatchSyntax EventAdd(string eventName, Matcher listenerMatcher);
 
 		/// <summary>
-		/// 	Defines an event registration.
+		/// Defines an event registration.
 		/// </summary>
 		/// <param name="eventName"> Name of the event. </param>
 		/// <param name="equalListener"> Delegate defining compatible listeners. </param>
@@ -76,14 +76,14 @@ namespace NMock2.Syntax
 		IMatchSyntax EventAdd(string eventName, Delegate equalListener);
 
 		/// <summary>
-		/// 	Defines an event deregistration.
+		/// Defines an event deregistration.
 		/// </summary>
 		/// <param name="eventName"> Name of the event. </param>
 		/// <returns> Match syntax defining the behavior of the event remover. </returns>
 		IMatchSyntax EventRemove(string eventName);
 
 		/// <summary>
-		/// 	Defines an event deregistration.
+		/// Defines an event deregistration.
 		/// </summary>
 		/// <param name="eventName"> Name of the event. </param>
 		/// <param name="listenerMatcher"> The listener matcher. </param>
@@ -91,7 +91,7 @@ namespace NMock2.Syntax
 		IMatchSyntax EventRemove(string eventName, Matcher listenerMatcher);
 
 		/// <summary>
-		/// 	Defines an event deregistration.
+		/// Defines an event deregistration.
 		/// </summary>
 		/// <param name="eventName"> Name of the event. </param>
 		/// <param name="equalListener"> Delegate defining compatible listeners. </param>
@@ -99,14 +99,14 @@ namespace NMock2.Syntax
 		IMatchSyntax EventRemove(string eventName, Delegate equalListener);
 
 		/// <summary>
-		/// 	Defines a property getter.
+		/// Defines a property getter.
 		/// </summary>
 		/// <param name="name"> The name of the property. </param>
 		/// <returns> Match Syntax defining the property behavior. </returns>
 		IMatchSyntax GetProperty(string name);
 
 		/// <summary>
-		/// 	Defines a method.
+		/// Defines a method.
 		/// </summary>
 		/// <param name="name"> The name of the method. </param>
 		/// <param name="typeParams"> The generic type params to match. </param>
@@ -114,7 +114,7 @@ namespace NMock2.Syntax
 		IArgumentSyntax Method(string name, params Type[] typeParams);
 
 		/// <summary>
-		/// 	Defines a method.
+		/// Defines a method.
 		/// </summary>
 		/// <param name="nameMatcher"> Matcher defining the method. </param>
 		/// <param name="typeParams"> The generic type params to match. </param>
@@ -122,7 +122,7 @@ namespace NMock2.Syntax
 		IArgumentSyntax Method(Matcher nameMatcher, params Type[] typeParams);
 
 		/// <summary>
-		/// 	Defines a method.
+		/// Defines a method.
 		/// </summary>
 		/// <param name="method"> The method. </param>
 		/// <param name="typeParams"> The generic type params to match. </param>
@@ -130,7 +130,7 @@ namespace NMock2.Syntax
 		IArgumentSyntax Method(MethodInfo method, params Type[] typeParams);
 
 		/// <summary>
-		/// 	Defines a method.
+		/// Defines a method.
 		/// </summary>
 		/// <param name="methodMatcher"> Matcher for matching the method on an invocation. </param>
 		/// <param name="typeParamsMatcher"> Matchers for matching type parameters. </param>
@@ -138,7 +138,7 @@ namespace NMock2.Syntax
 		IArgumentSyntax Method(Matcher methodMatcher, Matcher typeParamsMatcher);
 
 		/// <summary>
-		/// 	Defines a property setter.
+		/// Defines a property setter.
 		/// </summary>
 		/// <param name="name"> The name of the property. </param>
 		/// <returns> Value syntax defining the value of the property. </returns>

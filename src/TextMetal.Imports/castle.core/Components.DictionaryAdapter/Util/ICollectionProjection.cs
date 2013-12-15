@@ -12,14 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections;
+
 namespace Castle.Components.DictionaryAdapter
 {
-	using System.Collections;
-
 	public interface ICollectionProjection : ICollection
 	{
-		void Replace(IEnumerable source);
+		#region Methods/Operators
+
 		void Clear();
+
 		void ClearReferences();
+
+		void Replace(IEnumerable source);
+
+		#endregion
 	}
 }

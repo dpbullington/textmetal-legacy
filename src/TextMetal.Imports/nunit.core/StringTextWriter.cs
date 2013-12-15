@@ -15,9 +15,9 @@ namespace NUnit.Core
 	#region StringTextWriter
 
 	/// <summary>
-	/// 	Use this wrapper to ensure that only strings get passed accross the AppDomain
-	/// 	boundary.  Otherwise tests will break when non-remotable objects are passed to
-	/// 	Console.Write/WriteLine.
+	/// Use this wrapper to ensure that only strings get passed accross the AppDomain
+	/// boundary.  Otherwise tests will break when non-remotable objects are passed to
+	/// Console.Write/WriteLine.
 	/// </summary>
 	public class StringTextWriter : TextWriter
 	{
@@ -84,9 +84,9 @@ namespace NUnit.Core
 	#region BufferedStringTextWriter
 
 	/// <summary>
-	/// 	This wrapper derives from StringTextWriter and adds buffering
-	/// 	to improve cross-domain performance. The buffer is flushed whenever
-	/// 	it reaches or exceeds a maximum size or when Flush is called.
+	/// This wrapper derives from StringTextWriter and adds buffering
+	/// to improve cross-domain performance. The buffer is flushed whenever
+	/// it reaches or exceeds a maximum size or when Flush is called.
 	/// </summary>
 	public class BufferedStringTextWriter : StringTextWriter
 	{

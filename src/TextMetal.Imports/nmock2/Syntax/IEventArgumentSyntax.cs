@@ -20,14 +20,14 @@
 namespace NMock2.Syntax
 {
 	/// <summary>
-	/// 	Syntax for defining event arguments.
+	/// Syntax for defining event arguments.
 	/// </summary>
 	public interface IEventArgumentSyntax
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Defines the event arguments.
+		/// Defines the event arguments.
 		/// </summary>
 		/// <param name="args"> The event args. </param>
 		void With(params object[] args);

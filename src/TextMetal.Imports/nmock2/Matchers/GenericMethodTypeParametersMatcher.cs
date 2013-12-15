@@ -26,14 +26,14 @@ namespace NMock2.Matchers
 	using System;
 
 	/// <summary>
-	/// 	Matcher that checks whether parameters of a method match with the specified list of matchers.
+	/// Matcher that checks whether parameters of a method match with the specified list of matchers.
 	/// </summary>
 	public class GenericMethodTypeParametersMatcher : Matcher
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="GenericMethodTypeParametersMatcher" /> class.
+		/// Initializes a new instance of the <see cref="GenericMethodTypeParametersMatcher" /> class.
 		/// </summary>
 		/// <param name="typeMatchers"> The value matchers. This is an ordered list of matchers, each matching a single method argument. </param>
 		public GenericMethodTypeParametersMatcher(params Matcher[] typeMatchers)
@@ -46,7 +46,7 @@ namespace NMock2.Matchers
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	An ordered list of type <see cref="Matcher" />'s each matching a single method argument.
+		/// An ordered list of type <see cref="Matcher" />'s each matching a single method argument.
 		/// </summary>
 		private readonly Matcher[] typeMatchers;
 
@@ -55,7 +55,7 @@ namespace NMock2.Matchers
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Describes this object.
+		/// Describes this object.
 		/// </summary>
 		/// <param name="writer"> The text writer the description is added to. </param>
 		public override void DescribeTo(TextWriter writer)
@@ -66,7 +66,7 @@ namespace NMock2.Matchers
 		}
 
 		/// <summary>
-		/// 	Returns the last argument matcher.
+		/// Returns the last argument matcher.
 		/// </summary>
 		/// <returns> Argument matcher </returns>
 		protected Matcher LastMatcher()
@@ -75,7 +75,7 @@ namespace NMock2.Matchers
 		}
 
 		/// <summary>
-		/// 	Number of argument matchers.
+		/// Number of argument matchers.
 		/// </summary>
 		/// <returns> Returns the number of argument matchers. </returns>
 		protected int MatcherCount()
@@ -84,7 +84,7 @@ namespace NMock2.Matchers
 		}
 
 		/// <summary>
-		/// 	Matches the specified object to this matcher and returns whether it matches.
+		/// Matches the specified object to this matcher and returns whether it matches.
 		/// </summary>
 		/// <param name="o"> The object to match. </param>
 		/// <returns> Whether the object is an <see cref="Invocation" /> and all method arguments match their corresponding matcher. </returns>
@@ -94,7 +94,7 @@ namespace NMock2.Matchers
 		}
 
 		/// <summary>
-		/// 	Determines whether all argument types of the generic method matches the invocation.
+		/// Determines whether all argument types of the generic method matches the invocation.
 		/// </summary>
 		/// <param name="invocation"> The invocation to match against the initial argument types. </param>
 		/// <returns> Returns true if invocation types matches the inital argument types; false otherwise. </returns>
@@ -112,18 +112,18 @@ namespace NMock2.Matchers
 		}
 
 		/// <summary>
-		/// 	Determines whether the arguments of the invocation matches the initial arguments.
+		/// Determines whether the arguments of the invocation matches the initial arguments.
 		/// </summary>
 		/// <param name="invocation"> The invocation to match against the initial arguments. </param>
 		/// <returns> Returns true if invocation matches the initial arguments; false otherwise. </returns>
 		private bool MatchesTypes(Invocation invocation)
 		{
 			return invocation.Method.GetGenericArguments().Length == this.typeMatchers.Length
-			       && this.MatchesTypeValues(invocation);
+					&& this.MatchesTypeValues(invocation);
 		}
 
 		/// <summary>
-		/// 	Writes the list of matchers to a <see cref="TextWriter" />.
+		/// Writes the list of matchers to a <see cref="TextWriter" />.
 		/// </summary>
 		/// <param name="listLength"> Length of the list. </param>
 		/// <param name="writer"> The writer. </param>

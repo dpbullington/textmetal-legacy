@@ -12,16 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Reflection;
+using System.Runtime.Serialization;
 
 #if !SILVERLIGHT
 
 namespace Castle.DynamicProxy.Serialization
 {
 	using System;
-	using System.Reflection;
-	using System.Runtime.Serialization;
 #if DOTNET40
 	using System.Security;
+
 #endif
 
 	[Serializable]
@@ -36,82 +37,109 @@ namespace Castle.DynamicProxy.Serialization
 
 		protected RemotableInvocation(SerializationInfo info, StreamingContext context)
 		{
-			parent = (IInvocation)info.GetValue("invocation", typeof(IInvocation));
+			this.parent = (IInvocation)info.GetValue("invocation", typeof(IInvocation));
 		}
 
 		public void SetArgumentValue(int index, object value)
 		{
-			parent.SetArgumentValue(index, value);
+			this.parent.SetArgumentValue(index, value);
 		}
 
 		public object GetArgumentValue(int index)
 		{
-			return parent.GetArgumentValue(index);
+			return this.parent.GetArgumentValue(index);
 		}
 
 		public Type[] GenericArguments
 		{
-			get { return parent.GenericArguments; }
+			get
+			{
+				return this.parent.GenericArguments;
+			}
 		}
 
 		/// <summary>
 		/// </summary>
-		/// <returns></returns>
+		/// <returns> </returns>
 		public void Proceed()
 		{
-			parent.Proceed();
+			this.parent.Proceed();
 		}
 
 		public object Proxy
 		{
-			get { return parent.Proxy; }
+			get
+			{
+				return this.parent.Proxy;
+			}
 		}
 
 		public object InvocationTarget
 		{
-			get { return parent.InvocationTarget; }
+			get
+			{
+				return this.parent.InvocationTarget;
+			}
 		}
 
 		public Type TargetType
 		{
-			get { return parent.TargetType; }
+			get
+			{
+				return this.parent.TargetType;
+			}
 		}
 
 		public object[] Arguments
 		{
-			get { return parent.Arguments; }
+			get
+			{
+				return this.parent.Arguments;
+			}
 		}
 
 		/// <summary>
 		/// </summary>
 		public MethodInfo Method
 		{
-			get { return parent.Method; }
+			get
+			{
+				return this.parent.Method;
+			}
 		}
 
 		public MethodInfo GetConcreteMethod()
 		{
-			return parent.GetConcreteMethod();
+			return this.parent.GetConcreteMethod();
 		}
 
 		/// <summary>
-		///   For interface proxies, this will point to the
-		///   <see cref = "MethodInfo" /> on the target class
+		/// For interface proxies, this will point to the
+		/// <see cref="MethodInfo" /> on the target class
 		/// </summary>
 		public MethodInfo MethodInvocationTarget
 		{
-			get { return parent.MethodInvocationTarget; }
+			get
+			{
+				return this.parent.MethodInvocationTarget;
+			}
 		}
 
 		public MethodInfo GetConcreteMethodInvocationTarget()
 		{
-			return parent.GetConcreteMethodInvocationTarget();
+			return this.parent.GetConcreteMethodInvocationTarget();
 		}
 
 		public object ReturnValue
 		{
-			get { return parent.ReturnValue; }
-			set { parent.ReturnValue = value; }
+			get
+			{
+				return this.parent.ReturnValue;
+			}
+			set
+			{
+				this.parent.ReturnValue = value;
+			}
 		}
 
 #if DOTNET40

@@ -82,7 +82,7 @@ namespace NUnit.Util
 				try
 				{
 					return new RecentFileEntry(text.Substring(0, sepIndex),
-					                           new Version(text.Substring(sepIndex + 1)));
+						new Version(text.Substring(sepIndex + 1)));
 				}
 				catch
 				{

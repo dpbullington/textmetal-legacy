@@ -9,17 +9,17 @@ using System.Collections;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Common interface supported by all representations
-	/// 	of a test. Only includes informational fields.
-	/// 	The Run method is specifically excluded to allow
-	/// 	for data-only representations of a test.
+	/// Common interface supported by all representations
+	/// of a test. Only includes informational fields.
+	/// The Run method is specifically excluded to allow
+	/// for data-only representations of a test.
 	/// </summary>
 	public interface ITest
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Categories available for this test
+		/// Categories available for this test
 		/// </summary>
 		IList Categories
 		{
@@ -27,8 +27,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the name of the class containing this test. Returns
-		/// 	null if the test is not associated with a class.
+		/// Gets the name of the class containing this test. Returns
+		/// null if the test is not associated with a class.
 		/// </summary>
 		string ClassName
 		{
@@ -36,7 +36,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return the description field.
+		/// Return the description field.
 		/// </summary>
 		string Description
 		{
@@ -45,7 +45,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Reason for not running the test, if applicable
+		/// Reason for not running the test, if applicable
 		/// </summary>
 		string IgnoreReason
 		{
@@ -54,7 +54,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	True if this is a suite
+		/// True if this is a suite
 		/// </summary>
 		bool IsSuite
 		{
@@ -62,8 +62,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the name of the method implementing this test.
-		/// 	Returns null if the test is not implemented as a method.
+		/// Gets the name of the method implementing this test.
+		/// Returns null if the test is not implemented as a method.
 		/// </summary>
 		string MethodName
 		{
@@ -71,7 +71,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the parent test of this test
+		/// Gets the parent test of this test
 		/// </summary>
 		ITest Parent
 		{
@@ -79,7 +79,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Return additional properties of the test
+		/// Return additional properties of the test
 		/// </summary>
 		IDictionary Properties
 		{
@@ -87,8 +87,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Indicates whether the test can be run using
-		/// 	the RunState enum.
+		/// Indicates whether the test can be run using
+		/// the RunState enum.
 		/// </summary>
 		RunState RunState
 		{
@@ -97,7 +97,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Count of the test cases ( 1 if this is a test case )
+		/// Count of the test cases ( 1 if this is a test case )
 		/// </summary>
 		int TestCount
 		{
@@ -105,8 +105,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets the completely specified name of the test
-		/// 	encapsulated in a TestName object.
+		/// Gets the completely specified name of the test
+		/// encapsulated in a TestName object.
 		/// </summary>
 		TestName TestName
 		{
@@ -114,7 +114,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Gets a string representing the type of test, e.g.: "Test Case"
+		/// Gets a string representing the type of test, e.g.: "Test Case"
 		/// </summary>
 		string TestType
 		{
@@ -122,8 +122,8 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	For a test suite, the child tests or suites
-		/// 	Null if this is not a test suite
+		/// For a test suite, the child tests or suites
+		/// Null if this is not a test suite
 		/// </summary>
 		IList Tests
 		{
@@ -135,9 +135,9 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Count the test cases that pass a filter. The
-		/// 	result should match those that would execute
-		/// 	when passing the same filter to Run.
+		/// Count the test cases that pass a filter. The
+		/// result should match those that would execute
+		/// when passing the same filter to Run.
 		/// </summary>
 		/// <param name="filter"> The filter to apply </param>
 		/// <returns> The count of test cases </returns>

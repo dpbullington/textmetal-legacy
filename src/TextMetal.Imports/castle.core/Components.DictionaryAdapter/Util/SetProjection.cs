@@ -12,150 +12,166 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Linq;
+
 #if DOTNET40
+
 namespace Castle.Components.DictionaryAdapter
 {
-	using System.Collections.Generic;
-	using System.Diagnostics;
-	using System.Linq;
-
 	public class SetProjection<T> : ListProjection<T>, ISet<T>
 	{
-		private readonly HashSet<T> set;
+		#region Constructors/Destructors
 
 		public SetProjection(ICollectionAdapter<T> adapter)
 			: base(adapter)
 		{
-			set = new HashSet<T>();
-			Repopulate();
+			this.set = new HashSet<T>();
+			this.Repopulate();
 		}
 
-		public override bool Contains(T item)
-		{
-			return set.Contains(item);
-		}
+		#endregion
 
-		public bool IsSubsetOf(IEnumerable<T> other)
-		{
-			return set.IsSubsetOf(other);
-		}
+		#region Fields/Constants
 
-		public bool IsSupersetOf(IEnumerable<T> other)
-		{
-			return set.IsSupersetOf(other);
-		}
+		private readonly HashSet<T> set;
 
-		public bool IsProperSubsetOf(IEnumerable<T> other)
-		{
-			return set.IsProperSubsetOf(other);
-		}
+		#endregion
 
-		public bool IsProperSupersetOf(IEnumerable<T> other)
-		{
-			return set.IsProperSupersetOf(other);
-		}
+		#region Methods/Operators
 
-		public bool Overlaps(IEnumerable<T> other)
-		{
-			return set.Overlaps(other);
-		}
-
-		public bool SetEquals(IEnumerable<T> other)
-		{
-			return set.SetEquals(other);
-		}
-
-		private void Repopulate()
-		{
-			SuspendEvents();
-
-			var count = Count;
-			for (var index = 0; index < count;)
-			{
-				var value = this[index];
-
-				if (!set.Add(value))
-					{ RemoveAt(index); count--; }
-				else
-					index++;
-			}
-
-			ResumeEvents();
-		}
-
-		public override void EndNew(int index)
-		{
-			if (IsNew(index) && OnInserting(this[index]))
-				base.EndNew(index);
-			else
-				CancelNew(index);
-		}
-		
 		public override bool Add(T item)
 		{
-			return !set.Contains(item)
-				&& base.Add(item);
-		}
-
-		protected override bool OnInserting(T value)
-		{
-			return set.Add(value);
-		}
-
-		protected override bool OnReplacing(T oldValue, T newValue)
-		{
-			if (!set.Add(newValue))
-				return false;
-
-			set.Remove(oldValue);
-			return true;
-		}
-
-		public override bool Remove(T item)
-		{
-			return set .Remove(item)
-				&& base.Remove(item);
-		}
-
-		public override void RemoveAt(int index)
-		{
-			set .Remove  (this[index]);
-			base.RemoveAt(index);
+			return !this.set.Contains(item)
+					&& base.Add(item);
 		}
 
 		public override void Clear()
 		{
-			set .Clear();
+			this.set.Clear();
 			base.Clear();
 		}
 
-		public void UnionWith(IEnumerable<T> other)
+		public override bool Contains(T item)
 		{
-			foreach (var value in other)
-				Add(value);
+			return this.set.Contains(item);
+		}
+
+		public override void EndNew(int index)
+		{
+			if (this.IsNew(index) && this.OnInserting(this[index]))
+				base.EndNew(index);
+			else
+				this.CancelNew(index);
 		}
 
 		public void ExceptWith(IEnumerable<T> other)
 		{
 			foreach (var value in other)
-				Remove(value);
+				this.Remove(value);
 		}
 
 		public void IntersectWith(IEnumerable<T> other)
 		{
-			var removals = set.Except(other).ToArray();
+			var removals = this.set.Except(other).ToArray();
 
-			ExceptWith(removals);
+			this.ExceptWith(removals);
+		}
+
+		public bool IsProperSubsetOf(IEnumerable<T> other)
+		{
+			return this.set.IsProperSubsetOf(other);
+		}
+
+		public bool IsProperSupersetOf(IEnumerable<T> other)
+		{
+			return this.set.IsProperSupersetOf(other);
+		}
+
+		public bool IsSubsetOf(IEnumerable<T> other)
+		{
+			return this.set.IsSubsetOf(other);
+		}
+
+		public bool IsSupersetOf(IEnumerable<T> other)
+		{
+			return this.set.IsSupersetOf(other);
+		}
+
+		protected override bool OnInserting(T value)
+		{
+			return this.set.Add(value);
+		}
+
+		protected override bool OnReplacing(T oldValue, T newValue)
+		{
+			if (!this.set.Add(newValue))
+				return false;
+
+			this.set.Remove(oldValue);
+			return true;
+		}
+
+		public bool Overlaps(IEnumerable<T> other)
+		{
+			return this.set.Overlaps(other);
+		}
+
+		public override bool Remove(T item)
+		{
+			return this.set.Remove(item)
+					&& base.Remove(item);
+		}
+
+		public override void RemoveAt(int index)
+		{
+			this.set.Remove(this[index]);
+			base.RemoveAt(index);
+		}
+
+		private void Repopulate()
+		{
+			this.SuspendEvents();
+
+			var count = this.Count;
+			for (var index = 0; index < count;)
+			{
+				var value = this[index];
+
+				if (!this.set.Add(value))
+				{
+					this.RemoveAt(index);
+					count--;
+				}
+				else
+					index++;
+			}
+
+			this.ResumeEvents();
+		}
+
+		public bool SetEquals(IEnumerable<T> other)
+		{
+			return this.set.SetEquals(other);
 		}
 
 		public void SymmetricExceptWith(IEnumerable<T> other)
 		{
-			var removals  = set.Intersect(other).ToArray();
+			var removals = this.set.Intersect(other).ToArray();
 			var additions = other.Except(removals);
 
-			ExceptWith(removals);
-			UnionWith(additions);
+			this.ExceptWith(removals);
+			this.UnionWith(additions);
 		}
+
+		public void UnionWith(IEnumerable<T> other)
+		{
+			foreach (var value in other)
+				this.Add(value);
+		}
+
+		#endregion
 	}
 }
+
 #endif

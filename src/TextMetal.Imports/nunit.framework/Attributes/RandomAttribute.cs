@@ -11,16 +11,16 @@ using System.Reflection;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	RandomAttribute is used to supply a set of random values
-	/// 	to a single parameter of a parameterized test.
+	/// RandomAttribute is used to supply a set of random values
+	/// to a single parameter of a parameterized test.
 	/// </summary>
 	public class RandomAttribute : ValuesAttribute
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a set of doubles from 0.0 to 1.0,
-		/// 	specifying only the count.
+		/// Construct a set of doubles from 0.0 to 1.0,
+		/// specifying only the count.
 		/// </summary>
 		/// <param name="count"> </param>
 		public RandomAttribute(int count)
@@ -30,7 +30,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Construct a set of doubles from min to max
+		/// Construct a set of doubles from min to max
 		/// </summary>
 		/// <param name="min"> </param>
 		/// <param name="max"> </param>
@@ -44,7 +44,7 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Construct a set of ints from min to max
+		/// Construct a set of ints from min to max
 		/// </summary>
 		/// <param name="min"> </param>
 		/// <param name="max"> </param>
@@ -73,7 +73,7 @@ namespace NUnit.Framework
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Get the collection of values to be used as arguments
+		/// Get the collection of values to be used as arguments
 		/// </summary>
 		public override IEnumerable GetData(ParameterInfo parameter)
 		{

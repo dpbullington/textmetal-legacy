@@ -31,7 +31,7 @@ namespace NMock2.Monitoring
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the <see cref="ProxyInvokableAdapter" /> class.
+		/// Initializes a new instance of the <see cref="ProxyInvokableAdapter" /> class.
 		/// </summary>
 		/// <param name="proxyType"> Type of the proxy. </param>
 		/// <param name="invokable"> The invokable. </param>

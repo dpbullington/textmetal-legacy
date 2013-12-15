@@ -12,129 +12,196 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.XPath;
+using System.Xml.Xsl;
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
 #if !SL3
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Xml.XPath;
-	using System.Xml.Xsl;
 
 	public class CompiledXPathNode
 	{
-		private string prefix;
-		private string localName;
-		private bool isAttribute;
-		private XPathExpression value;
-		private CompiledXPathNode next;
-		private CompiledXPathNode previous;
-		private IList<CompiledXPathNode> dependencies;
+		#region Constructors/Destructors
 
-		internal CompiledXPathNode() { }
-
-		public string Prefix
+		internal CompiledXPathNode()
 		{
-			get { return prefix; }
-			internal set { prefix = value; }
 		}
 
-		public string LocalName
-		{
-			get { return localName; }
-			internal set { localName = value; }
-		}
+		#endregion
 
-		public bool IsAttribute
-		{
-			get { return isAttribute; }
-			internal set { isAttribute = value; }
-		}
-
-		public bool IsSelfReference
-		{
-			get { return localName == null; }
-		}
-
-		public bool IsSimple
-		{
-			get { return next == null && HasNoRealDependencies(); }
-		}
-
-		public XPathExpression Value
-		{
-			get { return value ?? GetSelfReferenceValue(); }
-			internal set { this.value = value; }
-		}
-
-		public CompiledXPathNode NextNode
-		{
-			get { return next; }
-			internal set { next = value; }
-		}
-
-		public CompiledXPathNode PreviousNode
-		{
-			get { return previous; }
-			internal set { previous = value; }
-		}
-
-		public IList<CompiledXPathNode> Dependencies
-		{
-			get { return dependencies ?? (dependencies = new List<CompiledXPathNode>()); }
-		}
+		#region Fields/Constants
 
 		private static readonly IList<CompiledXPathNode>
 			NoDependencies = Array.AsReadOnly(new CompiledXPathNode[0]);
 
-		private bool HasNoRealDependencies()
+		private IList<CompiledXPathNode> dependencies;
+
+		private bool isAttribute;
+		private string localName;
+		private CompiledXPathNode next;
+		private string prefix;
+		private CompiledXPathNode previous;
+		private XPathExpression value;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public IList<CompiledXPathNode> Dependencies
 		{
-			return
-			(
-				dependencies == null ||
-				dependencies.Count == 0 ||
-				(
-					dependencies.Count == 1 &&
-					dependencies[0].IsSelfReference
-				)
-			);
+			get
+			{
+				return this.dependencies ?? (this.dependencies = new List<CompiledXPathNode>());
+			}
 		}
+
+		public bool IsAttribute
+		{
+			get
+			{
+				return this.isAttribute;
+			}
+			internal set
+			{
+				this.isAttribute = value;
+			}
+		}
+
+		public bool IsSelfReference
+		{
+			get
+			{
+				return this.localName == null;
+			}
+		}
+
+		public bool IsSimple
+		{
+			get
+			{
+				return this.next == null && this.HasNoRealDependencies();
+			}
+		}
+
+		public string LocalName
+		{
+			get
+			{
+				return this.localName;
+			}
+			internal set
+			{
+				this.localName = value;
+			}
+		}
+
+		public CompiledXPathNode NextNode
+		{
+			get
+			{
+				return this.next;
+			}
+			internal set
+			{
+				this.next = value;
+			}
+		}
+
+		public string Prefix
+		{
+			get
+			{
+				return this.prefix;
+			}
+			internal set
+			{
+				this.prefix = value;
+			}
+		}
+
+		public CompiledXPathNode PreviousNode
+		{
+			get
+			{
+				return this.previous;
+			}
+			internal set
+			{
+				this.previous = value;
+			}
+		}
+
+		public XPathExpression Value
+		{
+			get
+			{
+				return this.value ?? this.GetSelfReferenceValue();
+			}
+			internal set
+			{
+				this.value = value;
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		private XPathExpression GetSelfReferenceValue()
 		{
-			return dependencies != null
-				&& dependencies.Count == 1
-				&& dependencies[0].IsSelfReference
-				 ? dependencies[0].value
-				 : null;
+			return this.dependencies != null
+					&& this.dependencies.Count == 1
+					&& this.dependencies[0].IsSelfReference
+				? this.dependencies[0].value
+				: null;
+		}
+
+		private bool HasNoRealDependencies()
+		{
+			return
+				(
+					this.dependencies == null ||
+					this.dependencies.Count == 0 ||
+					(
+						this.dependencies.Count == 1 &&
+						this.dependencies[0].IsSelfReference
+						)
+					);
 		}
 
 		internal virtual void Prepare()
 		{
-			dependencies = (dependencies != null)
-				? Array.AsReadOnly(dependencies.ToArray())
+			this.dependencies = (this.dependencies != null)
+				? Array.AsReadOnly(this.dependencies.ToArray())
 				: NoDependencies;
 
-			foreach (var child in dependencies)
+			foreach (var child in this.dependencies)
 				child.Prepare();
 
-			if (next != null)
-				next.Prepare();
+			if (this.next != null)
+				this.next.Prepare();
 		}
 
 		internal virtual void SetContext(XsltContext context)
 		{
-			if (value != null)
-				value.SetContext(context);
+			if (this.value != null)
+				this.value.SetContext(context);
 
-			foreach (var child in dependencies)
+			foreach (var child in this.dependencies)
 				child.SetContext(context);
 
-			if (next != null)
-				next.SetContext(context);
+			if (this.next != null)
+				this.next.SetContext(context);
 		}
+
+		#endregion
 	}
 }
+
 #endif
 #endif

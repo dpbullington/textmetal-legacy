@@ -7,6 +7,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 #if CLR_2_0 || CLR_4_0
 
 #endif
@@ -14,20 +15,20 @@ using System.Collections.Generic;
 namespace NUnit.Framework.Constraints
 {
 	/// <summary>
-	/// 	EqualityAdapter class handles all equality comparisons
-	/// 	that use an IEqualityComparer, IEqualityComparer&lt;T&gt;
-	/// 	or a ComparisonAdapter.
+	/// EqualityAdapter class handles all equality comparisons
+	/// that use an IEqualityComparer, IEqualityComparer&lt;T&gt;
+	/// or a ComparisonAdapter.
 	/// </summary>
 	public abstract class EqualityAdapter
 	{
 		/// <summary>
-		/// 	Compares two objects, returning true if they are equal
+		/// Compares two objects, returning true if they are equal
 		/// </summary>
 		public abstract bool AreEqual(object x, object y);
 
 		/// <summary>
-		/// 	Returns true if the two objects can be compared by this adapter.
-		/// 	The base adapter cannot handle IEnumerables except for strings.
+		/// Returns true if the two objects can be compared by this adapter.
+		/// The base adapter cannot handle IEnumerables except for strings.
 		/// </summary>
 		public virtual bool CanCompare(object x, object y)
 		{
@@ -43,7 +44,7 @@ namespace NUnit.Framework.Constraints
 		#region Nested IComparer Adapter
 
 		/// <summary>
-		/// 	Returns an EqualityAdapter that wraps an IComparer.
+		/// Returns an EqualityAdapter that wraps an IComparer.
 		/// </summary>
 		public static EqualityAdapter For(IComparer comparer)
 		{
@@ -51,7 +52,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	EqualityAdapter that wraps an IComparer.
+		/// EqualityAdapter that wraps an IComparer.
 		/// </summary>
 		private class ComparerAdapter : EqualityAdapter
 		{
@@ -87,7 +88,7 @@ namespace NUnit.Framework.Constraints
 		#region Nested IEqualityComparer Adapter
 
 		/// <summary>
-		/// 	Returns an EqualityAdapter that wraps an IEqualityComparer.
+		/// Returns an EqualityAdapter that wraps an IEqualityComparer.
 		/// </summary>
 		public static EqualityAdapter For(IEqualityComparer comparer)
 		{
@@ -130,13 +131,13 @@ namespace NUnit.Framework.Constraints
 			#region Methods/Operators
 
 			/// <summary>
-			/// 	Returns true if the two objects can be compared by this adapter.
-			/// 	Generic adapter requires objects of the specified type.
+			/// Returns true if the two objects can be compared by this adapter.
+			/// Generic adapter requires objects of the specified type.
 			/// </summary>
 			public override bool CanCompare(object x, object y)
 			{
 				return typeof(T).IsAssignableFrom(x.GetType())
-				       && typeof(T).IsAssignableFrom(y.GetType());
+						&& typeof(T).IsAssignableFrom(y.GetType());
 			}
 
 			protected void ThrowIfNotCompatible(object x, object y)
@@ -156,7 +157,7 @@ namespace NUnit.Framework.Constraints
 		#region Nested IEqualityComparer<T> Adapter
 
 		/// <summary>
-		/// 	Returns an EqualityAdapter that wraps an IEqualityComparer&lt;T&gt;.
+		/// Returns an EqualityAdapter that wraps an IEqualityComparer&lt;T&gt;.
 		/// </summary>
 		public static EqualityAdapter For<T>(IEqualityComparer<T> comparer)
 		{
@@ -196,7 +197,7 @@ namespace NUnit.Framework.Constraints
 		#region Nested IComparer<T> Adapter
 
 		/// <summary>
-		/// 	Returns an EqualityAdapter that wraps an IComparer&lt;T&gt;.
+		/// Returns an EqualityAdapter that wraps an IComparer&lt;T&gt;.
 		/// </summary>
 		public static EqualityAdapter For<T>(IComparer<T> comparer)
 		{
@@ -204,7 +205,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	EqualityAdapter that wraps an IComparer.
+		/// EqualityAdapter that wraps an IComparer.
 		/// </summary>
 		private class ComparerAdapter<T> : GenericEqualityAdapter<T>
 		{
@@ -239,7 +240,7 @@ namespace NUnit.Framework.Constraints
 		#region Nested Comparison<T> Adapter
 
 		/// <summary>
-		/// 	Returns an EqualityAdapter that wraps a Comparison&lt;T&gt;.
+		/// Returns an EqualityAdapter that wraps a Comparison&lt;T&gt;.
 		/// </summary>
 		public static EqualityAdapter For<T>(Comparison<T> comparer)
 		{

@@ -12,34 +12,70 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Xml.XPath;
+using System.Xml.Xsl;
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
 #if !SL3
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Xml.XPath;
-	using System.Xml.Xsl;
 
 	public class CompiledXPath
 	{
-		private XPathExpression path;
-		private CompiledXPathStep firstStep;
-		private int depth;
+		#region Constructors/Destructors
 
-		internal CompiledXPath() { }
-
-		public XPathExpression Path
+		internal CompiledXPath()
 		{
-			get { return path; }
-			internal set { path = value; }
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private static readonly IList<CompiledXPathStep>
+			NoSteps = Array.AsReadOnly(new CompiledXPathStep[0]);
+
+		private int depth;
+		private CompiledXPathStep firstStep;
+		private XPathExpression path;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public int Depth
+		{
+			get
+			{
+				return this.depth;
+			}
+			internal set
+			{
+				this.depth = value;
+			}
 		}
 
 		public CompiledXPathStep FirstStep
 		{
-			get { return firstStep; }
-			internal set { firstStep = value; }
+			get
+			{
+				return this.firstStep;
+			}
+			internal set
+			{
+				this.firstStep = value;
+			}
+		}
+
+		public bool IsCreatable
+		{
+			get
+			{
+				return this.firstStep != null;
+			}
 		}
 
 		public CompiledXPathStep LastStep
@@ -47,7 +83,7 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			get
 			{
 				var step = null as CompiledXPathStep;
-				var next = firstStep;
+				var next = this.firstStep;
 
 				while (next != null)
 				{
@@ -59,40 +95,45 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			}
 		}
 
-		public int Depth
+		public XPathExpression Path
 		{
-			get { return depth; }
-			internal set { depth = value; }
+			get
+			{
+				return this.path;
+			}
+			internal set
+			{
+				this.path = value;
+			}
 		}
 
-		public bool IsCreatable
-		{
-			get { return firstStep != null; }
-		}
+		#endregion
+
+		#region Methods/Operators
 
 		internal void MakeNotCreatable()
 		{
-			firstStep = null;
-			depth = 0;
+			this.firstStep = null;
+			this.depth = 0;
 		}
 
 		internal void Prepare()
 		{
-			if (firstStep != null)
-				firstStep.Prepare();
+			if (this.firstStep != null)
+				this.firstStep.Prepare();
 		}
 
 		public void SetContext(XsltContext context)
 		{
-			path.SetContext(context);
+			this.path.SetContext(context);
 
-			if (firstStep != null)
-				firstStep.SetContext(context);
+			if (this.firstStep != null)
+				this.firstStep.SetContext(context);
 		}
 
-		private static readonly IList<CompiledXPathStep>
-			NoSteps = Array.AsReadOnly(new CompiledXPathStep[0]);
+		#endregion
 	}
 }
+
 #endif
 #endif

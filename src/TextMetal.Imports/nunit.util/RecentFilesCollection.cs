@@ -10,7 +10,7 @@ using System.Collections;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Summary description for RecentFilesCollection.
+	/// Summary description for RecentFilesCollection.
 	/// </summary>
 	public class RecentFilesCollection : ReadOnlyCollectionBase
 	{

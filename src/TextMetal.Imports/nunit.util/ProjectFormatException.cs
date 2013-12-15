@@ -9,8 +9,8 @@ using System;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Exception raised when loading a project file with
-	/// 	an invalid format.
+	/// Exception raised when loading a project file with
+	/// an invalid format.
 	/// </summary>
 	public class ProjectFormatException : ApplicationException
 	{

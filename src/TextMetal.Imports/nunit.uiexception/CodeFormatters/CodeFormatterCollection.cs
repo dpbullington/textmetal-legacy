@@ -11,9 +11,9 @@ using System.Collections.Specialized;
 namespace NUnit.UiException.CodeFormatters
 {
 	/// <summary>
-	/// 	Makes the link between a file language and an ICodeFormatter.
-	/// 	This class is used to know which formatter need to be call
-	/// 	when displaying an ErrorItem.
+	/// Makes the link between a file language and an ICodeFormatter.
+	/// This class is used to know which formatter need to be call
+	/// when displaying an ErrorItem.
 	/// </summary>
 	public class CodeFormatterCollection :
 		IEnumerable
@@ -21,7 +21,7 @@ namespace NUnit.UiException.CodeFormatters
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Builds an empty CodeFormatterCollection.
+		/// Builds an empty CodeFormatterCollection.
 		/// </summary>
 		public CodeFormatterCollection()
 		{
@@ -35,7 +35,7 @@ namespace NUnit.UiException.CodeFormatters
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	Maps language files to ICodeFormatters.
+		/// Maps language files to ICodeFormatters.
 		/// </summary>
 		private Dictionary<string, ICodeFormatter> _toFormatter;
 
@@ -44,7 +44,7 @@ namespace NUnit.UiException.CodeFormatters
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Returns the ICodeFormatter that fit the given language.
+		/// Returns the ICodeFormatter that fit the given language.
 		/// </summary>
 		/// <param name="language"> A language name, such as: "C#" or "Java". This parameter cannot be null. </param>
 		/// <returns> The ICodeFormatter that fit this language. </returns>
@@ -66,7 +66,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Gets the size of the collection.
+		/// Gets the size of the collection.
 		/// </summary>
 		public int Count
 		{
@@ -77,7 +77,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Returns a string collection with all registered extensions.
+		/// Returns a string collection with all registered extensions.
 		/// </summary>
 		public StringCollection Extensions
 		{
@@ -98,7 +98,7 @@ namespace NUnit.UiException.CodeFormatters
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Removes all formatters.
+		/// Removes all formatters.
 		/// </summary>
 		public void Clear()
 		{
@@ -106,7 +106,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Returns an IEnumerator on all registered ICodeFormatter.
+		/// Returns an IEnumerator on all registered ICodeFormatter.
 		/// </summary>
 		public IEnumerator GetEnumerator()
 		{
@@ -114,7 +114,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Gets the ICodeFormatter that has been assigned to this extension.
+		/// Gets the ICodeFormatter that has been assigned to this extension.
 		/// </summary>
 		/// <param name="extension"> The file extension. This parameter cannot be null. </param>
 		/// <returns> The ICodeFormatter assigned to. </returns>
@@ -126,8 +126,8 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Checks whether there is a formatter that has been
-		/// 	assigned to the given file extension.
+		/// Checks whether there is a formatter that has been
+		/// assigned to the given file extension.
 		/// </summary>
 		/// <param name="language"> A file extension such as: "cs". </param>
 		/// <returns> True if there is such formatter, false otherwise. </returns>
@@ -142,7 +142,7 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Tests whether the collection contains a formatter for the given language.
+		/// Tests whether the collection contains a formatter for the given language.
 		/// </summary>
 		/// <param name="language"> A language name. Ex: "C#", "Java" </param>
 		/// <returns> True if such formatter exists. </returns>
@@ -161,8 +161,8 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Registers an ICodeFormatter for the given language. The system
-		/// 	is not case sensitive.
+		/// Registers an ICodeFormatter for the given language. The system
+		/// is not case sensitive.
 		/// </summary>
 		/// <param name="formatter"> A non null formatter. </param>
 		/// <param name="language"> A non null file language. The value must not be empty nor contain '.' and must not have been already registered. </param>
@@ -174,12 +174,12 @@ namespace NUnit.UiException.CodeFormatters
 			extension = extension.ToLower();
 
 			UiExceptionHelper.CheckTrue(extension.Length > 0,
-			                            "language cannot be empty", "language");
+				"language cannot be empty", "language");
 			UiExceptionHelper.CheckTrue(extension.LastIndexOf('.') == -1,
-			                            "language cannot contain '.'", "language");
+				"language cannot contain '.'", "language");
 			UiExceptionHelper.CheckFalse(this._toFormatter.ContainsKey(extension),
-			                             "language '" + extension + "' has already an handler. Remove handler first.",
-			                             "language");
+				"language '" + extension + "' has already an handler. Remove handler first.",
+				"language");
 
 			this._toFormatter.Add(extension, formatter);
 
@@ -187,8 +187,8 @@ namespace NUnit.UiException.CodeFormatters
 		}
 
 		/// <summary>
-		/// 	Removes the formatter for the given file language.
-		/// 	The language is not case sensitive.
+		/// Removes the formatter for the given file language.
+		/// The language is not case sensitive.
 		/// </summary>
 		/// <param name="language"> A file language. </param>
 		public void Remove(string extension)

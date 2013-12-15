@@ -12,26 +12,44 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+
 namespace Castle.Core
 {
 	using System;
-	using System.Collections;
-	using System.Collections.Generic;
-	using System.Runtime.CompilerServices;
 
 	[Serializable]
 	public class ReferenceEqualityComparer<T> : IEqualityComparer, IEqualityComparer<T>
 	{
-		private static readonly ReferenceEqualityComparer<T> instance = new ReferenceEqualityComparer<T>();
+		#region Constructors/Destructors
 
 		private ReferenceEqualityComparer()
 		{
 		}
 
-		public int GetHashCode(object obj)
+		#endregion
+
+		#region Fields/Constants
+
+		private static readonly ReferenceEqualityComparer<T> instance = new ReferenceEqualityComparer<T>();
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public static ReferenceEqualityComparer<T> Instance
 		{
-			return RuntimeHelpers.GetHashCode(obj);
+			get
+			{
+				return instance;
+			}
 		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		bool IEqualityComparer.Equals(object x, object y)
 		{
@@ -43,14 +61,16 @@ namespace Castle.Core
 			return ReferenceEquals(x, y);
 		}
 
+		public int GetHashCode(object obj)
+		{
+			return RuntimeHelpers.GetHashCode(obj);
+		}
+
 		int IEqualityComparer<T>.GetHashCode(T obj)
 		{
 			return RuntimeHelpers.GetHashCode(obj);
 		}
 
-		public static ReferenceEqualityComparer<T> Instance
-		{
-			get { return instance; }
-		}
+		#endregion
 	}
 }

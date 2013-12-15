@@ -10,24 +10,24 @@ using System.Reflection;
 namespace NUnit.Core.Extensibility
 {
 	/// <summary>
-	/// 	The ITestCaseProvider interface is used by extensions
-	/// 	that provide data for parameterized tests, along with
-	/// 	certain flags and other indicators used in the test.
+	/// The ITestCaseProvider interface is used by extensions
+	/// that provide data for parameterized tests, along with
+	/// certain flags and other indicators used in the test.
 	/// </summary>
 	public interface ITestCaseProvider
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Return an IEnumerable providing test cases for use in
-		/// 	running a paramterized test.
+		/// Return an IEnumerable providing test cases for use in
+		/// running a paramterized test.
 		/// </summary>
 		/// <param name="method"> </param>
 		/// <returns> </returns>
 		IEnumerable GetTestCasesFor(MethodInfo method);
 
 		/// <summary>
-		/// 	Determine whether any test cases are available for a parameterized method.
+		/// Determine whether any test cases are available for a parameterized method.
 		/// </summary>
 		/// <param name="method"> A MethodInfo representing a parameterized test </param>
 		/// <returns> True if any cases are available, otherwise false. </returns>
@@ -37,18 +37,18 @@ namespace NUnit.Core.Extensibility
 	}
 
 	/// <summary>
-	/// 	ITestCaseProvider2 extends ITestCaseProvider with methods
-	/// 	that include the suite for which the test case is being
-	/// 	built. TestCaseProviders not needing the suite can
-	/// 	continue to implement ITestCaseBuilder.
+	/// ITestCaseProvider2 extends ITestCaseProvider with methods
+	/// that include the suite for which the test case is being
+	/// built. TestCaseProviders not needing the suite can
+	/// continue to implement ITestCaseBuilder.
 	/// </summary>
 	public interface ITestCaseProvider2 : ITestCaseProvider
 	{
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Return an IEnumerable providing test cases for use in
-		/// 	running a paramterized test.
+		/// Return an IEnumerable providing test cases for use in
+		/// running a paramterized test.
 		/// </summary>
 		/// <param name="method"> </param>
 		/// <param name="suite"> The suite for which the test case is being built </param>
@@ -56,7 +56,7 @@ namespace NUnit.Core.Extensibility
 		IEnumerable GetTestCasesFor(MethodInfo method, Test suite);
 
 		/// <summary>
-		/// 	Determine whether any test cases are available for a parameterized method.
+		/// Determine whether any test cases are available for a parameterized method.
 		/// </summary>
 		/// <param name="method"> A MethodInfo representing a parameterized test </param>
 		/// <param name="suite"> The suite for which the test case is being built </param>

@@ -13,7 +13,7 @@ using NUnit.Core.Extensibility;
 namespace NUnit.Core.Builders
 {
 	/// <summary>
-	/// 	Built-in SuiteBuilder for LegacySuite
+	/// Built-in SuiteBuilder for LegacySuite
 	/// </summary>
 	public class LegacySuiteBuilder : ISuiteBuilder
 	{
@@ -73,8 +73,8 @@ namespace NUnit.Core.Builders
 		}
 
 		/// <summary>
-		/// 	Checks to see if the fixture type has the a property
-		/// 	with the SuiteAttribute.
+		/// Checks to see if the fixture type has the a property
+		/// with the SuiteAttribute.
 		/// </summary>
 		/// <param name="type"> The fixture type to check </param>
 		/// <returns> True if the fixture can be built, false if not </returns>

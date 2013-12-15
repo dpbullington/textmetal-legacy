@@ -9,7 +9,7 @@ using System;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	Attribute used to apply a category to a test
+	/// Attribute used to apply a category to a test
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Assembly, AllowMultiple = true, Inherited = true)]
 	public class CategoryAttribute : Attribute
@@ -17,14 +17,14 @@ namespace NUnit.Framework
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct attribute for a given category based on
-		/// 	a name. The name may not contain the characters ',',
-		/// 	'+', '-' or '!'. However, this is not checked in the
-		/// 	constructor since it would cause an error to arise at
-		/// 	as the test was loaded without giving a clear indication
-		/// 	of where the problem is located. The error is handled
-		/// 	in NUnitFramework.cs by marking the test as not
-		/// 	runnable.
+		/// Construct attribute for a given category based on
+		/// a name. The name may not contain the characters ',',
+		/// '+', '-' or '!'. However, this is not checked in the
+		/// constructor since it would cause an error to arise at
+		/// as the test was loaded without giving a clear indication
+		/// of where the problem is located. The error is handled
+		/// in NUnitFramework.cs by marking the test as not
+		/// runnable.
 		/// </summary>
 		/// <param name="name"> The name of the category </param>
 		public CategoryAttribute(string name)
@@ -33,8 +33,8 @@ namespace NUnit.Framework
 		}
 
 		/// <summary>
-		/// 	Protected constructor uses the Type name as the name
-		/// 	of the category.
+		/// Protected constructor uses the Type name as the name
+		/// of the category.
 		/// </summary>
 		protected CategoryAttribute()
 		{
@@ -48,7 +48,7 @@ namespace NUnit.Framework
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The name of the category
+		/// The name of the category
 		/// </summary>
 		protected string categoryName;
 
@@ -57,7 +57,7 @@ namespace NUnit.Framework
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	The name of the category
+		/// The name of the category
 		/// </summary>
 		public string Name
 		{

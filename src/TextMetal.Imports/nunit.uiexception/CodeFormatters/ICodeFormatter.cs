@@ -8,16 +8,16 @@ using System;
 namespace NUnit.UiException.CodeFormatters
 {
 	/// <summary>
-	/// 	ICodeFormatter is the interface to make the syntax
-	/// 	coloring of a string for a specific developpment language.
+	/// ICodeFormatter is the interface to make the syntax
+	/// coloring of a string for a specific developpment language.
 	/// </summary>
 	public interface ICodeFormatter
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	The language name handled by this formatter.
-		/// 	Ex: "C#", "Java", "C++" and so on...
+		/// The language name handled by this formatter.
+		/// Ex: "C#", "Java", "C++" and so on...
 		/// </summary>
 		string Language
 		{
@@ -29,7 +29,7 @@ namespace NUnit.UiException.CodeFormatters
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Makes the coloring syntax of the given text.
+		/// Makes the coloring syntax of the given text.
 		/// </summary>
 		/// <param name="code"> The text to be formatted. This parameter cannot be null. </param>
 		/// <returns> A FormattedCode instance. </returns>

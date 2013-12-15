@@ -6,6 +6,8 @@
 
 using System;
 using System.ComponentModel;
+using System.Drawing;
+using System.Resources;
 using System.Windows.Forms;
 
 using NUnit.Util;
@@ -70,7 +72,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Clean up any resources being used.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose(bool disposing)
 		{
@@ -98,8 +100,8 @@ namespace NUnit.UiKit
 				if (node.Text == key)
 				{
 					return tail == null
-						       ? node
-						       : this.FindNode(node.Nodes, tail);
+						? node
+						: this.FindNode(node.Nodes, tail);
 				}
 			}
 
@@ -120,72 +122,72 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Required method for Designer support - do not modify
-		/// 	the contents of this method with the code editor.
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(TreeBasedSettingsDialog));
-			this.treeView1 = new System.Windows.Forms.TreeView();
-			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.components = new Container();
+			ResourceManager resources = new ResourceManager(typeof(TreeBasedSettingsDialog));
+			this.treeView1 = new TreeView();
+			this.imageList1 = new ImageList(this.components);
+			this.panel1 = new Panel();
+			this.groupBox1 = new GroupBox();
 			this.SuspendLayout();
 			// 
 			// cancelButton
 			// 
-			this.cancelButton.Location = new System.Drawing.Point(592, 392);
+			this.cancelButton.Location = new Point(592, 392);
 			this.cancelButton.Name = "cancelButton";
 			// 
 			// okButton
 			// 
-			this.okButton.Location = new System.Drawing.Point(504, 392);
+			this.okButton.Location = new Point(504, 392);
 			this.okButton.Name = "okButton";
 			// 
 			// treeView1
 			// 
-			this.treeView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.treeView1.BorderStyle = BorderStyle.FixedSingle;
 			this.treeView1.HideSelection = false;
 			this.treeView1.ImageList = this.imageList1;
-			this.treeView1.Location = new System.Drawing.Point(16, 16);
+			this.treeView1.Location = new Point(16, 16);
 			this.treeView1.Name = "treeView1";
 			this.treeView1.PathSeparator = ".";
-			this.treeView1.Size = new System.Drawing.Size(176, 350);
+			this.treeView1.Size = new Size(176, 350);
 			this.treeView1.TabIndex = 19;
-			this.treeView1.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterExpand);
-			this.treeView1.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCollapse);
-			this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+			this.treeView1.AfterExpand += new TreeViewEventHandler(this.treeView1_AfterExpand);
+			this.treeView1.AfterCollapse += new TreeViewEventHandler(this.treeView1_AfterCollapse);
+			this.treeView1.AfterSelect += new TreeViewEventHandler(this.treeView1_AfterSelect);
 			// 
 			// imageList1
 			// 
-			this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
-			this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-			this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+			this.imageList1.ImageSize = new Size(16, 16);
+			this.imageList1.ImageStream = ((ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+			this.imageList1.TransparentColor = Color.Transparent;
 			// 
 			// panel1
 			// 
-			this.panel1.Location = new System.Drawing.Point(208, 16);
+			this.panel1.Location = new Point(208, 16);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(456, 336);
+			this.panel1.Size = new Size(456, 336);
 			this.panel1.TabIndex = 20;
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Location = new System.Drawing.Point(208, 360);
+			this.groupBox1.Location = new Point(208, 360);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(456, 8);
+			this.groupBox1.Size = new Size(456, 8);
 			this.groupBox1.TabIndex = 21;
 			this.groupBox1.TabStop = false;
 			// 
 			// TreeBasedSettingsDialog
 			// 
-			this.ClientSize = new System.Drawing.Size(682, 426);
+			this.ClientSize = new Size(682, 426);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.treeView1);
 			this.Name = "TreeBasedSettingsDialog";
-			this.Load += new System.EventHandler(this.TreeBasedSettingsDialog_Load);
+			this.Load += new EventHandler(this.TreeBasedSettingsDialog_Load);
 			this.Controls.SetChildIndex(this.treeView1, 0);
 			this.Controls.SetChildIndex(this.okButton, 0);
 			this.Controls.SetChildIndex(this.cancelButton, 0);

@@ -10,7 +10,7 @@ using System;
 namespace NUnit.Framework
 {
 	/// <summary>
-	/// 	Provide actions to execute before and after tests.
+	/// Provide actions to execute before and after tests.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
 	public abstract class TestActionAttribute : Attribute, ITestAction

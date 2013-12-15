@@ -10,17 +10,21 @@ using System.Net;
 
 namespace Intelligencia.UrlRewriter.Actions
 {
-    /// <summary>
-    /// Returns a 404 Not Found HTTP status code.
-    /// </summary>
-    public sealed class NotFoundAction : SetStatusAction
-    {
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public NotFoundAction()
-            : base(HttpStatusCode.NotFound)
-        {
-        }
-    }
+	/// <summary>
+	/// Returns a 404 Not Found HTTP status code.
+	/// </summary>
+	public sealed class NotFoundAction : SetStatusAction
+	{
+		#region Constructors/Destructors
+
+		/// <summary>
+		/// Default constructor.
+		/// </summary>
+		public NotFoundAction()
+			: base(HttpStatusCode.NotFound)
+		{
+		}
+
+		#endregion
+	}
 }

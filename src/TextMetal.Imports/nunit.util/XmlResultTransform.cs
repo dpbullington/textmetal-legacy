@@ -13,7 +13,7 @@ using System.Xml.Xsl;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Summary description for XmlResultTransform.
+	/// Summary description for XmlResultTransform.
 	/// </summary>
 	public class XmlResultTransform
 	{

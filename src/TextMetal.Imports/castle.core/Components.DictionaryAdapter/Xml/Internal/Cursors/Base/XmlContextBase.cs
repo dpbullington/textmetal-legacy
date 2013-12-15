@@ -12,15 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Xml;
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Xml;
 #if !SL3
 	using System.Xml.XPath;
 	using System.Xml.Xsl;
+
 #endif
 
 #if !SL3
@@ -41,14 +44,14 @@ namespace Castle.Components.DictionaryAdapter.Xml
 		public XmlContextBase()
 			: base(new NameTable())
 		{
-			AddNamespace(Xsd .Namespace);
-			AddNamespace(Xsi .Namespace);
-			AddNamespace(Wsdl.Namespace);
-			AddNamespace(XRef.Namespace);
+			this.AddNamespace(Xsd.Namespace);
+			this.AddNamespace(Xsi.Namespace);
+			this.AddNamespace(Wsdl.Namespace);
+			this.AddNamespace(XRef.Namespace);
 		}
 
 		protected XmlContextBase(XmlContextBase parent)
-		    : base(GetNameTable(parent))
+			: base(GetNameTable(parent))
 		{
 			this.parent = parent;
 		}
@@ -68,51 +71,51 @@ namespace Castle.Components.DictionaryAdapter.Xml
 		public void AddNamespace(XmlNamespaceAttribute attribute)
 		{
 			var prefix = attribute.Prefix;
-			var uri    = attribute.NamespaceUri;
+			var uri = attribute.NamespaceUri;
 
 			if (string.IsNullOrEmpty(uri))
 				throw Error.InvalidNamespaceUri();
 
 			if (attribute.Default)
-				AddNamespace(string.Empty, uri);
+				this.AddNamespace(string.Empty, uri);
 
 			if (string.IsNullOrEmpty(prefix))
 				return;
 
-			AddNamespace(prefix, uri);
+			this.AddNamespace(prefix, uri);
 
 			if (attribute.Root)
-				EnsureRootNamespaces().Add(prefix, uri);
+				this.EnsureRootNamespaces().Add(prefix, uri);
 		}
 
 		public override void AddNamespace(string prefix, string uri)
 		{
 			base.AddNamespace(prefix, uri);
-			hasNamespaces = true;
+			this.hasNamespaces = true;
 		}
 
 		private Dictionary<string, string> EnsureRootNamespaces()
 		{
-			return rootNamespaces ??
-			(
-				rootNamespaces = parent != null
-					? new Dictionary<string, string>(parent.EnsureRootNamespaces())
-					: new Dictionary<string, string>()
-			);
+			return this.rootNamespaces ??
+					(
+						this.rootNamespaces = this.parent != null
+							? new Dictionary<string, string>(this.parent.EnsureRootNamespaces())
+							: new Dictionary<string, string>()
+						);
 		}
 
 		public override string LookupNamespace(string prefix)
 		{
-			return hasNamespaces
-				? base  .LookupNamespace(prefix)
-				: parent.LookupNamespace(prefix);
+			return this.hasNamespaces
+				? base.LookupNamespace(prefix)
+				: this.parent.LookupNamespace(prefix);
 		}
 
 		public override string LookupPrefix(string uri)
 		{
-			return hasNamespaces
-				? base  .LookupPrefix(uri)
-				: parent.LookupPrefix(uri);
+			return this.hasNamespaces
+				? base.LookupPrefix(uri)
+				: this.parent.LookupPrefix(uri);
 		}
 
 		public string GetElementPrefix(IXmlNode node, string namespaceUri)
@@ -122,9 +125,9 @@ namespace Castle.Components.DictionaryAdapter.Xml
 				return string.Empty;
 			if (TryGetDefinedPrefix(node, namespaceUri, out prefix))
 				return prefix;
-			if (!TryGetPreferredPrefix(node, namespaceUri, out prefix))
+			if (!this.TryGetPreferredPrefix(node, namespaceUri, out prefix))
 				return string.Empty;
-			if (!ShouldDefineOnRoot(prefix, namespaceUri))
+			if (!this.ShouldDefineOnRoot(prefix, namespaceUri))
 				return string.Empty;
 
 			node.DefineNamespace(prefix, namespaceUri, true);
@@ -135,13 +138,13 @@ namespace Castle.Components.DictionaryAdapter.Xml
 		{
 			string prefix;
 			if (string.IsNullOrEmpty(namespaceUri)) // was: namespaceUri == node.Name.NamespaceUri
-			    return string.Empty;
+				return string.Empty;
 			if (TryGetDefinedPrefix(node, namespaceUri, out prefix))
 				return prefix;
-			if (!TryGetPreferredPrefix(node, namespaceUri, out prefix))
+			if (!this.TryGetPreferredPrefix(node, namespaceUri, out prefix))
 				prefix = GeneratePrefix(node);
 
-			var root = ShouldDefineOnRoot(prefix, namespaceUri);
+			var root = this.ShouldDefineOnRoot(prefix, namespaceUri);
 			node.DefineNamespace(prefix, namespaceUri, root);
 			return prefix;
 		}
@@ -162,13 +165,13 @@ namespace Castle.Components.DictionaryAdapter.Xml
 
 			namespaceUri = node.LookupNamespaceUri(prefix);
 			return string.IsNullOrEmpty(namespaceUri)
-				? true                     // Can use preferred prefix
+				? true // Can use preferred prefix
 				: Try.Failure(out prefix); // Preferred prefix already in use
 		}
 
 		private static string GeneratePrefix(IXmlNode node)
 		{
-			for (var i = 0; ; i++)
+			for (var i = 0;; i++)
 			{
 				var prefix = "p" + i;
 				var namespaceUri = node.LookupNamespaceUri(prefix);
@@ -179,27 +182,33 @@ namespace Castle.Components.DictionaryAdapter.Xml
 
 		private bool ShouldDefineOnRoot(string prefix, string uri)
 		{
-			return rootNamespaces != null
-				? ShouldDefineOnRootCore   (prefix, uri)
-				: parent.ShouldDefineOnRoot(prefix, uri);
+			return this.rootNamespaces != null
+				? this.ShouldDefineOnRootCore(prefix, uri)
+				: this.parent.ShouldDefineOnRoot(prefix, uri);
 		}
 
 		private bool ShouldDefineOnRootCore(string prefix, string uri)
 		{
 			string candidate;
-			return rootNamespaces.TryGetValue(prefix, out candidate)
-				&& candidate == uri;
+			return this.rootNamespaces.TryGetValue(prefix, out candidate)
+					&& candidate == uri;
 		}
 
 #if !SL3
 		private XPathContext XPathContext
 		{
-			get { return xPathContext ?? (xPathContext = new XPathContext(this)); }
+			get
+			{
+				return this.xPathContext ?? (this.xPathContext = new XPathContext(this));
+			}
 		}
 
 		public override bool Whitespace
 		{
-			get { return true; }
+			get
+			{
+				return true;
+			}
 		}
 
 		public override bool PreserveWhitespace(XPathNavigator node)
@@ -215,76 +224,76 @@ namespace Castle.Components.DictionaryAdapter.Xml
 		public void AddVariable(string prefix, string name, IXsltContextVariable variable)
 		{
 			var key = new XmlName(name, prefix ?? string.Empty);
-			AddVariable(key, variable);
+			this.AddVariable(key, variable);
 		}
 
 		public void AddFunction(string prefix, string name, IXsltContextFunction function)
 		{
 			var key = new XmlName(name, prefix ?? string.Empty);
-			AddFunction(key, function);
+			this.AddFunction(key, function);
 		}
 
 		public void AddVariable(XPathVariableAttribute attribute)
 		{
-			AddVariable(attribute.Name, attribute);
+			this.AddVariable(attribute.Name, attribute);
 		}
 
 		public void AddFunction(XPathFunctionAttribute attribute)
 		{
-			AddFunction(attribute.Name, attribute);
+			this.AddFunction(attribute.Name, attribute);
 		}
 
 		public void AddVariable(XmlName name, IXsltContextVariable variable)
 		{
-			EnsureVariables()[name] = variable;
+			this.EnsureVariables()[name] = variable;
 		}
 
 		public void AddFunction(XmlName name, IXsltContextFunction function)
 		{
-			EnsureFunctions()[name] = function;
+			this.EnsureFunctions()[name] = function;
 		}
 
 		private Dictionary<XmlName, IXsltContextVariable> EnsureVariables()
 		{
-			return variables ??
-			(
-				variables = (parent != null)
-					? new Dictionary<XmlName, IXsltContextVariable>(parent.EnsureVariables())
-					: new Dictionary<XmlName, IXsltContextVariable>()
-			);
+			return this.variables ??
+					(
+						this.variables = (this.parent != null)
+							? new Dictionary<XmlName, IXsltContextVariable>(this.parent.EnsureVariables())
+							: new Dictionary<XmlName, IXsltContextVariable>()
+						);
 		}
 
 		private Dictionary<XmlName, IXsltContextFunction> EnsureFunctions()
 		{
-			return functions ??
-			(
-				functions = (parent != null)
-					? new Dictionary<XmlName, IXsltContextFunction>(parent.EnsureFunctions())
-					: new Dictionary<XmlName, IXsltContextFunction>()
-			);
+			return this.functions ??
+					(
+						this.functions = (this.parent != null)
+							? new Dictionary<XmlName, IXsltContextFunction>(this.parent.EnsureFunctions())
+							: new Dictionary<XmlName, IXsltContextFunction>()
+						);
 		}
 
 		public override IXsltContextVariable ResolveVariable(string prefix, string name)
 		{
 			return
-				variables != null ? ResolveVariableCore   (prefix, name) :
-				parent    != null ? parent.ResolveVariable(prefix, name) :
-				null;
+				this.variables != null ? this.ResolveVariableCore(prefix, name) :
+					this.parent != null ? this.parent.ResolveVariable(prefix, name) :
+						null;
 		}
 
 		public override IXsltContextFunction ResolveFunction(string prefix, string name, XPathResultType[] argTypes)
 		{
 			return
-				functions != null ? ResolveFunctionCore   (prefix, name, argTypes) :
-				parent    != null ? parent.ResolveFunction(prefix, name, argTypes) :
-				null;
+				this.functions != null ? this.ResolveFunctionCore(prefix, name, argTypes) :
+					this.parent != null ? this.parent.ResolveFunction(prefix, name, argTypes) :
+						null;
 		}
 
 		private IXsltContextVariable ResolveVariableCore(string prefix, string name)
 		{
 			IXsltContextVariable variable;
 			var key = new XmlName(name, prefix ?? string.Empty);
-			variables.TryGetValue(key, out variable);
+			this.variables.TryGetValue(key, out variable);
 			return variable;
 		}
 
@@ -292,15 +301,16 @@ namespace Castle.Components.DictionaryAdapter.Xml
 		{
 			IXsltContextFunction function;
 			var key = new XmlName(name, prefix ?? string.Empty);
-			functions.TryGetValue(key, out function);
+			this.functions.TryGetValue(key, out function);
 			return function;
 		}
 
 		public void Enlist(CompiledXPath path)
 		{
-			path.SetContext(XPathContext);
+			path.SetContext(this.XPathContext);
 		}
 #endif
 	}
 }
+
 #endif

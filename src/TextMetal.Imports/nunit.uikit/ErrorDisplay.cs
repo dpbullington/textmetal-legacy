@@ -19,7 +19,7 @@ using NUnit.Util;
 namespace NUnit.UiKit
 {
 	/// <summary>
-	/// 	Summary description for ErrorDisplay.
+	/// Summary description for ErrorDisplay.
 	/// </summary>
 	public class ErrorDisplay : UserControl, TestObserver
 	{
@@ -38,7 +38,7 @@ namespace NUnit.UiKit
 		private static readonly Font DefaultFixedFont = new Font(FontFamily.GenericMonospace, 8.0F);
 
 		/// <summary>
-		/// 	Required designer variable.
+		/// Required designer variable.
 		/// </summary>
 		private Container components = null;
 
@@ -97,7 +97,7 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Clean up any resources being used.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose(bool disposing)
 		{
@@ -110,84 +110,84 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	Required method for Designer support - do not modify 
-		/// 	the contents of this method with the code editor.
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.detailList = new System.Windows.Forms.ListBox();
-			this.tabSplitter = new System.Windows.Forms.Splitter();
+			this.detailList = new ListBox();
+			this.tabSplitter = new Splitter();
 
-			this.errorBrowser = new NUnit.UiException.Controls.ErrorBrowser();
-			this.sourceCode = new UiException.Controls.SourceCodeDisplay();
-			this.stackTraceDisplay = new UiException.Controls.StackTraceDisplay();
-			this.detailListContextMenu = new System.Windows.Forms.ContextMenu();
-			this.copyDetailMenuItem = new System.Windows.Forms.MenuItem();
+			this.errorBrowser = new ErrorBrowser();
+			this.sourceCode = new SourceCodeDisplay();
+			this.stackTraceDisplay = new StackTraceDisplay();
+			this.detailListContextMenu = new ContextMenu();
+			this.copyDetailMenuItem = new MenuItem();
 			this.SuspendLayout();
 			// 
 			// detailList
 			// 
-			this.detailList.Dock = System.Windows.Forms.DockStyle.Top;
-			this.detailList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+			this.detailList.Dock = DockStyle.Top;
+			this.detailList.DrawMode = DrawMode.OwnerDrawVariable;
 			this.detailList.Font = DefaultFixedFont;
 			this.detailList.HorizontalExtent = 2000;
 			this.detailList.HorizontalScrollbar = true;
 			this.detailList.ItemHeight = 16;
-			this.detailList.Location = new System.Drawing.Point(0, 0);
+			this.detailList.Location = new Point(0, 0);
 			this.detailList.Name = "detailList";
 			this.detailList.ScrollAlwaysVisible = true;
-			this.detailList.Size = new System.Drawing.Size(496, 128);
+			this.detailList.Size = new Size(496, 128);
 			this.detailList.TabIndex = 1;
-			this.detailList.Resize += new System.EventHandler(this.detailList_Resize);
-			this.detailList.MouseHover += new System.EventHandler(this.OnMouseHover);
-			this.detailList.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.detailList_MeasureItem);
-			this.detailList.MouseMove += new System.Windows.Forms.MouseEventHandler(this.detailList_MouseMove);
-			this.detailList.MouseLeave += new System.EventHandler(this.detailList_MouseLeave);
-			this.detailList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.detailList_DrawItem);
-			this.detailList.SelectedIndexChanged += new System.EventHandler(this.detailList_SelectedIndexChanged);
+			this.detailList.Resize += new EventHandler(this.detailList_Resize);
+			this.detailList.MouseHover += new EventHandler(this.OnMouseHover);
+			this.detailList.MeasureItem += new MeasureItemEventHandler(this.detailList_MeasureItem);
+			this.detailList.MouseMove += new MouseEventHandler(this.detailList_MouseMove);
+			this.detailList.MouseLeave += new EventHandler(this.detailList_MouseLeave);
+			this.detailList.DrawItem += new DrawItemEventHandler(this.detailList_DrawItem);
+			this.detailList.SelectedIndexChanged += new EventHandler(this.detailList_SelectedIndexChanged);
 			// 
 			// tabSplitter
 			// 
-			this.tabSplitter.Dock = System.Windows.Forms.DockStyle.Top;
-			this.tabSplitter.Location = new System.Drawing.Point(0, 128);
+			this.tabSplitter.Dock = DockStyle.Top;
+			this.tabSplitter.Location = new Point(0, 128);
 			this.tabSplitter.MinSize = 100;
 			this.tabSplitter.Name = "tabSplitter";
-			this.tabSplitter.Size = new System.Drawing.Size(496, 9);
+			this.tabSplitter.Size = new Size(496, 9);
 			this.tabSplitter.TabIndex = 3;
 			this.tabSplitter.TabStop = false;
-			this.tabSplitter.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.tabSplitter_SplitterMoved);
+			this.tabSplitter.SplitterMoved += new SplitterEventHandler(this.tabSplitter_SplitterMoved);
 			// 
 			// errorBrowser
 			// 
-			this.errorBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.errorBrowser.Location = new System.Drawing.Point(0, 137);
+			this.errorBrowser.Dock = DockStyle.Fill;
+			this.errorBrowser.Location = new Point(0, 137);
 			this.errorBrowser.Name = "errorBrowser";
-			this.errorBrowser.Size = new System.Drawing.Size(496, 151);
+			this.errorBrowser.Size = new Size(496, 151);
 			this.errorBrowser.StackTraceSource = null;
 			this.errorBrowser.TabIndex = 4;
 			//
 			// configure and register SourceCodeDisplay
 			//
 			this.sourceCode.AutoSelectFirstItem = true;
-			this.sourceCode.ListOrderPolicy = UiException.Controls.ErrorListOrderPolicy.ReverseOrder;
+			this.sourceCode.ListOrderPolicy = ErrorListOrderPolicy.ReverseOrder;
 			this.sourceCode.SplitOrientation = Orientation.Vertical;
 			this.sourceCode.SplitterDistance = 0.3f;
 			this.stackTraceDisplay.Font = DefaultFixedFont;
-			this.errorBrowser.RegisterDisplay(sourceCode);
-			this.errorBrowser.RegisterDisplay(stackTraceDisplay);
+			this.errorBrowser.RegisterDisplay(this.sourceCode);
+			this.errorBrowser.RegisterDisplay(this.stackTraceDisplay);
 			//
 			// detailListContextMenu
 			// 
-			this.detailListContextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
-			                                              {
-				                                              this.copyDetailMenuItem
-			                                              });
+			this.detailListContextMenu.MenuItems.AddRange(new MenuItem[]
+														{
+															this.copyDetailMenuItem
+														});
 			// 
 			// copyDetailMenuItem
 			// 
 			this.copyDetailMenuItem.Index = 0;
 			this.copyDetailMenuItem.Text = "Copy";
-			this.copyDetailMenuItem.Click += new System.EventHandler(this.copyDetailMenuItem_Click);
+			this.copyDetailMenuItem.Click += new EventHandler(this.copyDetailMenuItem_Click);
 			// 
 			// ErrorDisplay
 			// 
@@ -195,7 +195,7 @@ namespace NUnit.UiKit
 			this.Controls.Add(this.tabSplitter);
 			this.Controls.Add(this.detailList);
 			this.Name = "ErrorDisplay";
-			this.Size = new System.Drawing.Size(496, 288);
+			this.Size = new Size(496, 288);
 			this.ResumeLayout(false);
 		}
 
@@ -234,13 +234,13 @@ namespace NUnit.UiKit
 				this.WordWrap = this.settings.GetSetting("Gui.ResultTabs.ErrorsTab.WordWrapEnabled", true);
 
 				this.detailList.Font = this.stackTraceDisplay.Font =
-				                       this.settings.GetSetting("Gui.FixedFont", DefaultFixedFont);
+					this.settings.GetSetting("Gui.FixedFont", DefaultFixedFont);
 
 				Orientation splitOrientation = (Orientation)this.settings.GetSetting(
 					"Gui.ResultTabs.ErrorBrowser.SplitterOrientation", Orientation.Vertical);
 				float splitterDistance = splitOrientation == Orientation.Vertical
-					                         ? this.settings.GetSetting("Gui.ResultTabs.ErrorBrowser.VerticalPosition", 0.3f)
-					                         : this.settings.GetSetting("Gui.ResultTabs.ErrorBrowser.HorizontalPosition", 0.3f);
+					? this.settings.GetSetting("Gui.ResultTabs.ErrorBrowser.VerticalPosition", 0.3f)
+					: this.settings.GetSetting("Gui.ResultTabs.ErrorBrowser.HorizontalPosition", 0.3f);
 
 				this.sourceCode.SplitOrientation = splitOrientation;
 				this.sourceCode.SplitterDistance = splitterDistance;
@@ -309,7 +309,7 @@ namespace NUnit.UiKit
 		private void OnTestException(object sender, TestEventArgs args)
 		{
 			string msg = string.Format("An unhandled {0} was thrown while executing this test : {1}",
-			                           args.Exception.GetType().FullName, args.Exception.Message);
+				args.Exception.GetType().FullName, args.Exception.Message);
 			TestResultItem item = new TestResultItem(args.Name, msg, args.Exception.StackTrace);
 
 			InsertTestResultItem(item);
@@ -356,7 +356,7 @@ namespace NUnit.UiKit
 		{
 			this.WordWrap = this.settings.GetSetting("Gui.ResultTabs.ErrorsTab.WordWrapEnabled", true);
 			Font newFont = this.stackTraceDisplay.Font = this.sourceCode.CodeDisplayFont
-			                                             = this.settings.GetSetting("Gui.FixedFont", DefaultFixedFont);
+				= this.settings.GetSetting("Gui.FixedFont", DefaultFixedFont);
 			if (newFont != this.detailList.Font)
 			{
 				this.detailList.Font = newFont;
@@ -390,8 +390,8 @@ namespace NUnit.UiKit
 			TestResultItem item = (TestResultItem)this.detailList.Items[e.Index];
 			//string s = item.ToString();
 			SizeF size = this.WordWrap
-				             ? e.Graphics.MeasureString(item.ToString(), this.detailList.Font, this.detailList.ClientSize.Width)
-				             : e.Graphics.MeasureString(item.ToString(), this.detailList.Font);
+				? e.Graphics.MeasureString(item.ToString(), this.detailList.Font, this.detailList.ClientSize.Width)
+				: e.Graphics.MeasureString(item.ToString(), this.detailList.Font);
 			e.ItemHeight = (int)size.Height;
 			e.ItemWidth = (int)size.Width;
 		}
@@ -432,8 +432,8 @@ namespace NUnit.UiKit
 		}
 
 		/// <summary>
-		/// 	When one of the detail failure items is selected, display
-		/// 	the stack trace and set up the tool tip for that item.
+		/// When one of the detail failure items is selected, display
+		/// the stack trace and set up the tool tip for that item.
 		/// </summary>
 		private void detailList_SelectedIndexChanged(object sender, EventArgs e)
 		{
@@ -445,7 +445,7 @@ namespace NUnit.UiKit
 		private void errorBrowser_StackTraceDisplayChanged(object sender, EventArgs e)
 		{
 			this.settings.SaveSetting("Gui.ResultTabs.ErrorBrowser.SourceCodeDisplay",
-			                          this.errorBrowser.SelectedDisplay == this.sourceCode);
+				this.errorBrowser.SelectedDisplay == this.sourceCode);
 		}
 
 		private void sourceCode_SplitOrientationChanged(object sender, EventArgs e)
@@ -453,14 +453,14 @@ namespace NUnit.UiKit
 			this.settings.SaveSetting("Gui.ResultTabs.ErrorBrowser.SplitterOrientation", this.sourceCode.SplitOrientation);
 
 			string distanceSetting = this.sourceCode.SplitOrientation == Orientation.Vertical
-				                         ? "Gui.ResultTabs.ErrorBrowser.VerticalPosition" : "Gui.ResultTabs.ErrorBrowser.HorizontalPosition";
+				? "Gui.ResultTabs.ErrorBrowser.VerticalPosition" : "Gui.ResultTabs.ErrorBrowser.HorizontalPosition";
 			this.sourceCode.SplitterDistance = this.settings.GetSetting(distanceSetting, 0.3f);
 		}
 
 		private void sourceCode_SplitterDistanceChanged(object sender, EventArgs e)
 		{
 			string distanceSetting = this.sourceCode.SplitOrientation == Orientation.Vertical
-				                         ? "Gui.ResultTabs.ErrorBrowser.VerticalPosition" : "Gui.ResultTabs.ErrorBrowser.HorizontalPosition";
+				? "Gui.ResultTabs.ErrorBrowser.VerticalPosition" : "Gui.ResultTabs.ErrorBrowser.HorizontalPosition";
 			this.settings.SaveSetting(distanceSetting, this.sourceCode.SplitterDistance);
 		}
 

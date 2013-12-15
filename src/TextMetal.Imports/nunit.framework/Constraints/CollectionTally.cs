@@ -10,8 +10,8 @@ using System.Collections;
 namespace NUnit.Framework.Constraints
 {
 	/// <summary>
-	/// 	CollectionTally counts (tallies) the number of
-	/// 	occurences of each object in one or more enumerations.
+	/// CollectionTally counts (tallies) the number of
+	/// occurences of each object in one or more enumerations.
 	/// </summary>
 	public class CollectionTally
 	{
@@ -20,7 +20,7 @@ namespace NUnit.Framework.Constraints
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Construct a CollectionTally object from a comparer and a collection
+		/// Construct a CollectionTally object from a comparer and a collection
 		/// </summary>
 		public CollectionTally(NUnitEqualityComparer comparer, IEnumerable c)
 		{
@@ -42,7 +42,7 @@ namespace NUnit.Framework.Constraints
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	The number of objects remaining in the tally
+		/// The number of objects remaining in the tally
 		/// </summary>
 		public int Count
 		{
@@ -63,7 +63,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Try to remove an object from the tally
+		/// Try to remove an object from the tally
 		/// </summary>
 		/// <param name="o"> The object to remove </param>
 		/// <returns> True if successful, false if the object was not found </returns>
@@ -82,7 +82,7 @@ namespace NUnit.Framework.Constraints
 		}
 
 		/// <summary>
-		/// 	Try to remove a set of objects from the tally
+		/// Try to remove a set of objects from the tally
 		/// </summary>
 		/// <param name="c"> The objects to remove </param>
 		/// <returns> True if successful, false if any object was not found </returns>

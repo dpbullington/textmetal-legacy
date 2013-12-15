@@ -13,10 +13,10 @@ namespace NUnit.Core
 	using System;
 
 	/// <summary>
-	/// 	RemoteTestRunner is tailored for use as the initial runner to
-	/// 	receive control in a remote domain. It provides isolation for the return
-	/// 	value by using a ThreadedTestRunner and for the events through use of
-	/// 	an EventPump.
+	/// RemoteTestRunner is tailored for use as the initial runner to
+	/// receive control in a remote domain. It provides isolation for the return
+	/// value by using a ThreadedTestRunner and for the events through use of
+	/// an EventPump.
 	/// </summary>
 	public class RemoteTestRunner : ProxyTestRunner
 	{
@@ -43,9 +43,9 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Returns a RemoteTestRunner in the target domain. This method
-		/// 	is used in the domain that wants to get a reference to 
-		/// 	a RemoteTestRunnner and not in the test domain itself.
+		/// Returns a RemoteTestRunner in the target domain. This method
+		/// is used in the domain that wants to get a reference to
+		/// a RemoteTestRunnner and not in the test domain itself.
 		/// </summary>
 		/// <param name="targetDomain"> AppDomain in which to create the runner </param>
 		/// <param name="ID"> Id for the new runner to use </param>

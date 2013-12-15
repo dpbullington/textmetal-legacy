@@ -12,17 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
 
 	internal static class StringExtensions
 	{
+		#region Methods/Operators
+
 		public static string NonEmpty(this string s)
 		{
 			return string.IsNullOrEmpty(s) ? null : s;
 		}
+
+		#endregion
 	}
 }
+
 #endif

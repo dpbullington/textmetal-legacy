@@ -12,24 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.ComponentModel;
+
 namespace Castle.Components.DictionaryAdapter
 {
-	using System.Collections.Generic;
-	using System.ComponentModel;
-
 	/// <summary>
 	/// Contract for validating Dictionary adapter.
 	/// </summary>
 	public interface IDictionaryValidate : IDataErrorInfo
 	{
-		bool CanValidate { get; set; }
+		#region Properties/Indexers/Events
 
-		bool IsValid { get; }
+		bool CanValidate
+		{
+			get;
+			set;
+		}
+
+		bool IsValid
+		{
+			get;
+		}
+
+		IEnumerable<IDictionaryValidator> Validators
+		{
+			get;
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		void AddValidator(IDictionaryValidator validator);
 
 		DictionaryValidateGroup ValidateGroups(params object[] groups);
 
-		IEnumerable<IDictionaryValidator> Validators { get; }
-
-		void AddValidator(IDictionaryValidator validator);
+		#endregion
 	}
 }

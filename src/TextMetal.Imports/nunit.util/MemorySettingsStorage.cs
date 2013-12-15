@@ -10,9 +10,9 @@ using System.Collections;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	MemorySettingsStorage is used to hold settings for
-	/// 	the NUnit tests and also serves as the base class
-	/// 	for XmlSettingsStorage.
+	/// MemorySettingsStorage is used to hold settings for
+	/// the NUnit tests and also serves as the base class
+	/// for XmlSettingsStorage.
 	/// </summary>
 	public class MemorySettingsStorage : ISettingsStorage
 	{

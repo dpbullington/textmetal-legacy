@@ -1,4 +1,5 @@
 ﻿#region License
+
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,28 +22,49 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 namespace Newtonsoft.Json.Utilities
 {
-  internal class EnumValue<T> where T : struct
-  {
-    private readonly string _name;
-    private readonly T _value;
+	internal class EnumValue<T>
+		where T : struct
+	{
+		#region Constructors/Destructors
 
-    public string Name
-    {
-      get { return _name; }
-    }
-    public T Value
-    {
-      get { return _value; }
-    }
+		public EnumValue(string name, T value)
+		{
+			this._name = name;
+			this._value = value;
+		}
 
-    public EnumValue(string name, T value)
-    {
-      _name = name;
-      _value = value;
-    }
-  }
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly string _name;
+		private readonly T _value;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public string Name
+		{
+			get
+			{
+				return this._name;
+			}
+		}
+
+		public T Value
+		{
+			get
+			{
+				return this._value;
+			}
+		}
+
+		#endregion
+	}
 }

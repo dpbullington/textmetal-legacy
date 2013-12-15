@@ -13,8 +13,8 @@ using NUnit.Core.Extensibility;
 namespace NUnit.Core.Builders
 {
 	/// <summary>
-	/// 	ValueSourceProvider supplies data items for individual parameters
-	/// 	from named data sources in the test class or a separate class.
+	/// ValueSourceProvider supplies data items for individual parameters
+	/// from named data sources in the test class or a separate class.
 	/// </summary>
 	public class ValueSourceProvider : IDataPointProvider2
 	{
@@ -49,8 +49,8 @@ namespace NUnit.Core.Builders
 		}
 
 		/// <summary>
-		/// 	Return an IEnumerable providing test data for use with
-		/// 	one parameter of a parameterized test.
+		/// Return an IEnumerable providing test data for use with
+		/// one parameter of a parameterized test.
 		/// </summary>
 		/// <param name="parameter"> </param>
 		/// <returns> </returns>
@@ -60,8 +60,8 @@ namespace NUnit.Core.Builders
 		}
 
 		/// <summary>
-		/// 	Return an IEnumerable providing test data for use with
-		/// 	one parameter of a parameterized test.
+		/// Return an IEnumerable providing test data for use with
+		/// one parameter of a parameterized test.
 		/// </summary>
 		/// <param name="parameter"> </param>
 		/// <param name="parentSuite"> The test suite for which the test is being built </param>
@@ -84,7 +84,7 @@ namespace NUnit.Core.Builders
 		}
 
 		/// <summary>
-		/// 	Determine whether any data sources are available for a parameter.
+		/// Determine whether any data sources are available for a parameter.
 		/// </summary>
 		/// <param name="parameter"> A ParameterInfo test parameter </param>
 		/// <returns> True if any data is available, otherwise false. </returns>
@@ -94,7 +94,7 @@ namespace NUnit.Core.Builders
 		}
 
 		/// <summary>
-		/// 	Determine whether any data sources are available for a parameter.
+		/// Determine whether any data sources are available for a parameter.
 		/// </summary>
 		/// <param name="parameter"> A ParameterInfo test parameter </param>
 		/// <param name="parentSuite"> The test suite for which the test is being built </param>

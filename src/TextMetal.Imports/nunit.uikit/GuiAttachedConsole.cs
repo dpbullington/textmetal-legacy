@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 namespace NUnit.UiKit
 {
 	/// <summary>
-	/// 	Summary description for GuiAttachedConsole.
+	/// Summary description for GuiAttachedConsole.
 	/// </summary>
 	public class GuiAttachedConsole
 	{

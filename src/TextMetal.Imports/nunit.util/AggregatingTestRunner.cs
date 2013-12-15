@@ -16,8 +16,8 @@ namespace NUnit.Util
 	#region AggregatingTestRunner
 
 	/// <summary>
-	/// 	AggregatingTestRunner allows running multiple TestRunners
-	/// 	and combining the results.
+	/// AggregatingTestRunner allows running multiple TestRunners
+	/// and combining the results.
 	/// </summary>
 	public abstract class AggregatingTestRunner : MarshalByRefObject, TestRunner, EventListener
 	{
@@ -44,36 +44,36 @@ namespace NUnit.Util
 		private static int AggregateTestID = 1000;
 
 		/// <summary>
-		/// 	The loaded test suite
+		/// The loaded test suite
 		/// </summary>
 		protected TestNode aggregateTest;
 
 		/// <summary>
-		/// 	The event listener for the currently running test
+		/// The event listener for the currently running test
 		/// </summary>
 		protected EventListener listener;
 
 		private Logger log;
 
 		/// <summary>
-		/// 	Indicates whether we should run test assemblies in parallel
+		/// Indicates whether we should run test assemblies in parallel
 		/// </summary>
 		private bool runInParallel;
 
 		/// <summary>
-		/// 	Our runner ID
+		/// Our runner ID
 		/// </summary>
 		protected int runnerID;
 
 		/// <summary>
-		/// 	The downstream TestRunners
+		/// The downstream TestRunners
 		/// </summary>
 		protected ArrayList runners;
 
 		protected TestName testName;
 
 		/// <summary>
-		/// 	The result of the last run
+		/// The result of the last run
 		/// </summary>
 		private TestResult testResult;
 
@@ -428,7 +428,7 @@ namespace NUnit.Util
 	#region MultipleTestDomainRunner
 
 	/// <summary>
-	/// 	Summary description for MultipleTestDomainRunner.
+	/// Summary description for MultipleTestDomainRunner.
 	/// </summary>
 	public class MultipleTestDomainRunner : AggregatingTestRunner
 	{

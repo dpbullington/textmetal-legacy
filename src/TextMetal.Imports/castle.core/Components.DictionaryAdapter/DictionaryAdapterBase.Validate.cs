@@ -12,53 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Linq;
 
 	public partial class DictionaryAdapterBase : IDictionaryValidate
 	{
+		#region Fields/Constants
+
 		private ICollection<IDictionaryValidator> validators;
 
-		public bool CanValidate { get; set; }
+		#endregion
 
-		public bool IsValid
-		{
-			get 
-			{
-				if (CanValidate && validators != null)
-				{
-					return !validators.Any(v => !v.IsValid(this));
-				}
-				return !CanValidate;
-			}
-		}
-
-		public string Error
-		{
-			get
-			{
-				if (CanValidate && validators != null)
-				{
-					return string.Join(Environment.NewLine, validators.Select(
-						v => v.Validate(this)).Where(e => !string.IsNullOrEmpty(e)).ToArray());
-				}
-				return String.Empty;
-			}
-		}
+		#region Properties/Indexers/Events
 
 		public string this[String columnName]
 		{
 			get
 			{
-				if (CanValidate && validators != null)
+				if (this.CanValidate && this.validators != null)
 				{
 					PropertyDescriptor property;
-					if (This.Properties.TryGetValue(columnName, out property))
+					if (this.This.Properties.TryGetValue(columnName, out property))
 					{
-						return string.Join(Environment.NewLine, validators.Select(
+						return string.Join(Environment.NewLine, this.validators.Select(
 							v => v.Validate(this, property)).Where(e => !string.IsNullOrEmpty(e))
 							.ToArray());
 					}
@@ -67,39 +47,73 @@ namespace Castle.Components.DictionaryAdapter
 			}
 		}
 
-		public DictionaryValidateGroup ValidateGroups(params object[] groups)
+		public bool CanValidate
 		{
-			return new DictionaryValidateGroup(groups, this);
+			get;
+			set;
+		}
+
+		public string Error
+		{
+			get
+			{
+				if (this.CanValidate && this.validators != null)
+				{
+					return string.Join(Environment.NewLine, this.validators.Select(
+						v => v.Validate(this)).Where(e => !string.IsNullOrEmpty(e)).ToArray());
+				}
+				return String.Empty;
+			}
+		}
+
+		public bool IsValid
+		{
+			get
+			{
+				if (this.CanValidate && this.validators != null)
+					return !this.validators.Any(v => !v.IsValid(this));
+				return !this.CanValidate;
+			}
 		}
 
 		public IEnumerable<IDictionaryValidator> Validators
 		{
 			get
 			{
-				return validators ?? Enumerable.Empty<IDictionaryValidator>();
+				return this.validators ?? Enumerable.Empty<IDictionaryValidator>();
 			}
 		}
 
+		#endregion
+
+		#region Methods/Operators
+
 		public void AddValidator(IDictionaryValidator validator)
 		{
-			if (validators == null)
-			{
-				validators = new HashSet<IDictionaryValidator>();
-			}
-			validators.Add(validator);
+			if (this.validators == null)
+				this.validators = new HashSet<IDictionaryValidator>();
+			this.validators.Add(validator);
 		}
 
 		protected internal void Invalidate()
 		{
-			if (CanValidate)
+			if (this.CanValidate)
 			{
-				if (validators != null) foreach (var validator in validators)
+				if (this.validators != null)
 				{
-					validator.Invalidate(this);
+					foreach (var validator in this.validators)
+						validator.Invalidate(this);
 				}
 
-				NotifyPropertyChanged("IsValid");
+				this.NotifyPropertyChanged("IsValid");
 			}
 		}
+
+		public DictionaryValidateGroup ValidateGroups(params object[] groups)
+		{
+			return new DictionaryValidateGroup(groups, this);
+		}
+
+		#endregion
 	}
 }

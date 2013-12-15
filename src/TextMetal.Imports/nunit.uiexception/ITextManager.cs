@@ -8,15 +8,15 @@ using System;
 namespace NUnit.UiException
 {
 	/// <summary>
-	/// 	Provides an abstract way to manipulate a text as a whole and as separate
-	/// 	sequences that can randomly be accessed one line at a time.
+	/// Provides an abstract way to manipulate a text as a whole and as separate
+	/// sequences that can randomly be accessed one line at a time.
 	/// </summary>
 	public interface ITextManager
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the number of line in text managed by this object.
+		/// Gets the number of line in text managed by this object.
 		/// </summary>
 		int LineCount
 		{
@@ -24,8 +24,8 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Gets the character count of the longest line in the text managed
-		/// 	by this object.
+		/// Gets the character count of the longest line in the text managed
+		/// by this object.
 		/// </summary>
 		int MaxLength
 		{
@@ -33,7 +33,7 @@ namespace NUnit.UiException
 		}
 
 		/// <summary>
-		/// 	Gets the complete text managed by this object.
+		/// Gets the complete text managed by this object.
 		/// </summary>
 		string Text
 		{
@@ -45,8 +45,8 @@ namespace NUnit.UiException
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Gets a string filled with all characters in the line
-		/// 	at the specified startingPosition without the trailing '\r\n' characters.
+		/// Gets a string filled with all characters in the line
+		/// at the specified startingPosition without the trailing '\r\n' characters.
 		/// </summary>
 		/// <param name="lineIndex"> </param>
 		/// <returns> </returns>

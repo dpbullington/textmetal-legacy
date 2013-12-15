@@ -12,15 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections;
+
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
+
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
-	using System.Linq;
-	using System.Collections;
 
 	public static class DictionaryAdapterExtensions
 	{
+		#region Fields/Constants
+
+		private const string
+			XmlAccessorKey = "XmlAccessor",
+			XmlMetaKey = "XmlMeta",
+			XmlTypeKey = "XmlType";
+
+		#endregion
+
+		#region Methods/Operators
+
 		public static object CreateChildAdapter(this IDictionaryAdapter parent, Type type, XmlAdapter adapter)
 		{
 			return CreateChildAdapter(parent, type, adapter, null);
@@ -32,10 +44,25 @@ namespace Castle.Components.DictionaryAdapter.Xml
 				dictionary = new Hashtable();
 
 			var descriptor = parent.Meta.CreateDescriptor();
-		    parent.This.Descriptor.CopyBehaviors(descriptor);
-		    descriptor.AddBehavior(adapter);
+			parent.This.Descriptor.CopyBehaviors(descriptor);
+			descriptor.AddBehavior(adapter);
 
-		    return parent.This.Factory.GetAdapter(type, dictionary, descriptor);
+			return parent.This.Factory.GetAdapter(type, dictionary, descriptor);
+		}
+
+		public static XmlAccessor GetAccessor(this PropertyDescriptor property)
+		{
+			return (XmlAccessor)property.ExtendedProperties[XmlAccessorKey];
+		}
+
+		public static XmlMetadata GetXmlMeta(this DictionaryAdapterMeta meta)
+		{
+			return (XmlMetadata)meta.ExtendedProperties[XmlMetaKey];
+		}
+
+		public static string GetXmlType(this DictionaryAdapterMeta meta)
+		{
+			return (string)meta.ExtendedProperties[XmlTypeKey];
 		}
 
 		public static bool HasAccessor(this PropertyDescriptor property)
@@ -43,29 +70,9 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			return property.ExtendedProperties.Contains(XmlAccessorKey);
 		}
 
-		public static XmlAccessor GetAccessor(this PropertyDescriptor property)
-		{
-		    return (XmlAccessor) property.ExtendedProperties[XmlAccessorKey];
-		}
-
-		public static void SetAccessor(this PropertyDescriptor property, XmlAccessor accessor)
-		{
-		    property.ExtendedProperties[XmlAccessorKey] = accessor;
-		}
-
 		public static bool HasXmlMeta(this DictionaryAdapterMeta meta)
 		{
 			return meta.ExtendedProperties.Contains(XmlMetaKey);
-		}
-
-		public static XmlMetadata GetXmlMeta(this DictionaryAdapterMeta meta)
-		{
-			return (XmlMetadata) meta.ExtendedProperties[XmlMetaKey];
-		}
-
-		public static void SetXmlMeta(this DictionaryAdapterMeta meta, XmlMetadata xmlMeta)
-		{
-			meta.ExtendedProperties[XmlMetaKey] = xmlMeta;
 		}
 
 		public static bool HasXmlType(this DictionaryAdapterMeta meta)
@@ -73,9 +80,14 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			return meta.ExtendedProperties.Contains(XmlTypeKey);
 		}
 
-		public static string GetXmlType(this DictionaryAdapterMeta meta)
+		public static void SetAccessor(this PropertyDescriptor property, XmlAccessor accessor)
 		{
-			return (string) meta.ExtendedProperties[XmlTypeKey];
+			property.ExtendedProperties[XmlAccessorKey] = accessor;
+		}
+
+		public static void SetXmlMeta(this DictionaryAdapterMeta meta, XmlMetadata xmlMeta)
+		{
+			meta.ExtendedProperties[XmlMetaKey] = xmlMeta;
 		}
 
 		public static void SetXmlType(this DictionaryAdapterMeta meta, string value)
@@ -83,10 +95,8 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			meta.ExtendedProperties[XmlTypeKey] = value;
 		}
 
-		private const string
-			XmlAccessorKey  = "XmlAccessor",
-			XmlMetaKey      = "XmlMeta",
-			XmlTypeKey      = "XmlType";
+		#endregion
 	}
 }
+
 #endif

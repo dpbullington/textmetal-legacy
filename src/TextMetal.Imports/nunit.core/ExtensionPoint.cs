@@ -65,7 +65,7 @@ namespace NUnit.Core
 			if (level < 0 || level >= this.lists.Length)
 			{
 				throw new ArgumentOutOfRangeException("level", level,
-				                                      "Value must be between 0 and " + this.lists.Length);
+					"Value must be between 0 and " + this.lists.Length);
 			}
 
 			if (this.lists[level] == null)
@@ -155,8 +155,8 @@ namespace NUnit.Core
 	}
 
 	/// <summary>
-	/// 	ExtensionPoint is used as a base class for all 
-	/// 	extension points.
+	/// ExtensionPoint is used as a base class for all
+	/// extension points.
 	/// </summary>
 	public abstract class ExtensionPoint : IExtensionPoint
 	{
@@ -195,7 +195,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Get the host that provides this extension point
+		/// Get the host that provides this extension point
 		/// </summary>
 		public IExtensionHost Host
 		{
@@ -206,7 +206,7 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Get the name of this extension point
+		/// Get the name of this extension point
 		/// </summary>
 		public string Name
 		{
@@ -221,9 +221,9 @@ namespace NUnit.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Install an extension at this extension point. If the
-		/// 	extension object does not meet the requirements for
-		/// 	this extension point, an exception is thrown.
+		/// Install an extension at this extension point. If the
+		/// extension object does not meet the requirements for
+		/// this extension point, an exception is thrown.
 		/// </summary>
 		/// <param name="extension"> The extension to install </param>
 		public void Install(object extension)
@@ -238,12 +238,12 @@ namespace NUnit.Core
 		}
 
 		/// <summary>
-		/// 	Install an extension at this extension point specifying
-		/// 	an integer priority value for the extension.If the
-		/// 	extension object does not meet the requirements for
-		/// 	this extension point, or if the extension point does
-		/// 	not support the requested priority level, an exception 
-		/// 	is thrown.
+		/// Install an extension at this extension point specifying
+		/// an integer priority value for the extension.If the
+		/// extension object does not meet the requirements for
+		/// this extension point, or if the extension point does
+		/// not support the requested priority level, an exception
+		/// is thrown.
 		/// </summary>
 		/// <param name="extension"> The extension to install </param>
 		/// <param name="priority"> The priority level for this extension </param>
@@ -264,9 +264,9 @@ namespace NUnit.Core
 		protected abstract bool IsValidExtension(object extension);
 
 		/// <summary>
-		/// 	Removes an extension from this extension point. If the
-		/// 	extension object is not present, the method returns
-		/// 	without error.
+		/// Removes an extension from this extension point. If the
+		/// extension object is not present, the method returns
+		/// without error.
 		/// </summary>
 		/// <param name="extension"> </param>
 		public void Remove(object extension)

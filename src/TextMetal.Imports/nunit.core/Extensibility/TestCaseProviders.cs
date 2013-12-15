@@ -24,8 +24,8 @@ namespace NUnit.Core.Extensibility
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Return an enumeration providing test cases for use in
-		/// 	running a paramterized test.
+		/// Return an enumeration providing test cases for use in
+		/// running a paramterized test.
 		/// </summary>
 		/// <param name="method"> </param>
 		/// <returns> </returns>
@@ -57,8 +57,8 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Return an enumeration providing test cases for use in
-		/// 	running a paramterized test.
+		/// Return an enumeration providing test cases for use in
+		/// running a paramterized test.
 		/// </summary>
 		/// <param name="method"> A MethodInfo representing a parameterized test </param>
 		/// <param name="suite"> The suite for which the test case is being built </param>
@@ -100,7 +100,7 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Determine whether any test cases are available for a parameterized method.
+		/// Determine whether any test cases are available for a parameterized method.
 		/// </summary>
 		/// <param name="method"> A MethodInfo representing a parameterized test </param>
 		/// <returns> True if any cases are available, otherwise false. </returns>
@@ -116,7 +116,7 @@ namespace NUnit.Core.Extensibility
 		}
 
 		/// <summary>
-		/// 	Determine whether any test cases are available for a parameterized method.
+		/// Determine whether any test cases are available for a parameterized method.
 		/// </summary>
 		/// <param name="method"> A MethodInfo representing a parameterized test </param>
 		/// <param name="suite"> The suite for which the test case is being built </param>

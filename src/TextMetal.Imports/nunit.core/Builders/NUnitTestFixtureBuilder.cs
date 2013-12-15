@@ -13,14 +13,14 @@ using NUnit.Core.Extensibility;
 namespace NUnit.Core.Builders
 {
 	/// <summary>
-	/// 	Built-in SuiteBuilder for NUnit TestFixture
+	/// Built-in SuiteBuilder for NUnit TestFixture
 	/// </summary>
 	public class NUnitTestFixtureBuilder : ISuiteBuilder
 	{
 		#region Fields/Constants
 
 		/// <summary>
-		/// 	The NUnitTestFixture being constructed;
+		/// The NUnitTestFixture being constructed;
 		/// </summary>
 		private NUnitTestFixture fixture;
 
@@ -38,11 +38,11 @@ namespace NUnit.Core.Builders
 		}
 
 		/// <summary>
-		/// 	Get TestFixtureAttributes following a somewhat obscure
-		/// 	set of rules to eliminate spurious duplication of fixtures.
-		/// 	1. If there are any attributes with args, they are the only
-		/// 	ones returned and those without args are ignored.
-		/// 	2. No more than one attribute without args is ever returned.
+		/// Get TestFixtureAttributes following a somewhat obscure
+		/// set of rules to eliminate spurious duplication of fixtures.
+		/// 1. If there are any attributes with args, they are the only
+		/// ones returned and those without args are ignored.
+		/// 2. No more than one attribute without args is ever returned.
 		/// </summary>
 		private static Attribute[] GetTestFixtureAttributes(Type type)
 		{
@@ -99,11 +99,11 @@ namespace NUnit.Core.Builders
 		}
 
 		/// <summary>
-		/// 	Method to add test cases to the newly constructed fixture.
-		/// 	The default implementation looks at each candidate method
-		/// 	and tries to build a test case from it. It will only need
-		/// 	to be overridden if some other approach, such as reading a 
-		/// 	datafile is used to generate test cases.
+		/// Method to add test cases to the newly constructed fixture.
+		/// The default implementation looks at each candidate method
+		/// and tries to build a test case from it. It will only need
+		/// to be overridden if some other approach, such as reading a
+		/// datafile is used to generate test cases.
 		/// </summary>
 		/// <param name="fixtureType"> </param>
 		protected virtual void AddTestCases(Type fixtureType)
@@ -121,7 +121,7 @@ namespace NUnit.Core.Builders
 		}
 
 		/// <summary>
-		/// 	Build a TestSuite from type provided.
+		/// Build a TestSuite from type provided.
 		/// </summary>
 		/// <param name="type"> </param>
 		/// <returns> </returns>
@@ -141,8 +141,8 @@ namespace NUnit.Core.Builders
 				case 1:
 					object[] args = GetArgsFromAttribute(attrs[0]);
 					return args == null || args.Length == 0
-						       ? this.BuildSingleFixture(type, attrs[0])
-						       : this.BuildMultipleFixtures(type, attrs);
+						? this.BuildSingleFixture(type, attrs[0])
+						: this.BuildMultipleFixtures(type, attrs);
 				default:
 					return this.BuildMultipleFixtures(type, attrs);
 			}
@@ -206,7 +206,7 @@ namespace NUnit.Core.Builders
 					}
 
 					if (typeArgs.Length > 0 ||
-					    TypeHelper.CanDeduceTypeArgsFromArgs(type, arguments, ref typeArgs))
+						TypeHelper.CanDeduceTypeArgsFromArgs(type, arguments, ref typeArgs))
 						type = TypeHelper.MakeGenericType(type, typeArgs);
 				}
 #endif
@@ -239,17 +239,16 @@ namespace NUnit.Core.Builders
 		}
 
 		/// <summary>
-		/// 	Method to create a test case from a MethodInfo and add
-		/// 	it to the fixture being built. It first checks to see if
-		/// 	any global TestCaseBuilder addin wants to build the
-		/// 	test case. If not, it uses the internal builder
-		/// 	collection maintained by this fixture builder. After
-		/// 	building the test case, it applies any decorators
-		/// 	that have been installed.
-		/// 
-		/// 	The default implementation has no test case builders.
-		/// 	Derived classes should add builders to the collection
-		/// 	in their constructor.
+		/// Method to create a test case from a MethodInfo and add
+		/// it to the fixture being built. It first checks to see if
+		/// any global TestCaseBuilder addin wants to build the
+		/// test case. If not, it uses the internal builder
+		/// collection maintained by this fixture builder. After
+		/// building the test case, it applies any decorators
+		/// that have been installed.
+		/// The default implementation has no test case builders.
+		/// Derived classes should add builders to the collection
+		/// in their constructor.
 		/// </summary>
 		/// <param name="method"> </param>
 		/// <returns> </returns>
@@ -264,7 +263,7 @@ namespace NUnit.Core.Builders
 		}
 
 		/// <summary>
-		/// 	Checks to see if the fixture type has the TestFixtureAttribute
+		/// Checks to see if the fixture type has the TestFixtureAttribute
 		/// </summary>
 		/// <param name="type"> The fixture type to check </param>
 		/// <returns> True if the fixture can be built, false if not </returns>
@@ -274,10 +273,10 @@ namespace NUnit.Core.Builders
 				return false;
 
 			return Reflect.HasAttribute(type, NUnitFramework.TestFixtureAttribute, true) ||
-			       Reflect.HasMethodWithAttribute(type, NUnitFramework.TestAttribute, true) ||
-			       Reflect.HasMethodWithAttribute(type, NUnitFramework.TestCaseAttribute, true) ||
-			       Reflect.HasMethodWithAttribute(type, NUnitFramework.TestCaseSourceAttribute, true) ||
-			       Reflect.HasMethodWithAttribute(type, NUnitFramework.TheoryAttribute, true);
+					Reflect.HasMethodWithAttribute(type, NUnitFramework.TestAttribute, true) ||
+					Reflect.HasMethodWithAttribute(type, NUnitFramework.TestCaseAttribute, true) ||
+					Reflect.HasMethodWithAttribute(type, NUnitFramework.TestCaseSourceAttribute, true) ||
+					Reflect.HasMethodWithAttribute(type, NUnitFramework.TheoryAttribute, true);
 		}
 
 		private void CheckTestFixtureIsValid(TestFixture fixture)
@@ -306,9 +305,9 @@ namespace NUnit.Core.Builders
 		}
 
 		/// <summary>
-		/// 	Check that the fixture type is valid. This method ensures that 
-		/// 	the type is not abstract and that there is no more than one of 
-		/// 	each setup or teardown method and that their signatures are correct.
+		/// Check that the fixture type is valid. This method ensures that
+		/// the type is not abstract and that there is no more than one of
+		/// each setup or teardown method and that their signatures are correct.
 		/// </summary>
 		/// <param name="fixtureType"> The type of the fixture to check </param>
 		/// <param name="reason"> A message indicating why the fixture is invalid </param>
@@ -325,16 +324,16 @@ namespace NUnit.Core.Builders
 			if (fixtureType.ContainsGenericParameters)
 			{
 				reason = "Fixture type contains generic parameters. You must either provide "
-				         + "Type arguments or specify constructor arguments that allow NUnit "
-				         + "to deduce the Type arguments.";
+						+ "Type arguments or specify constructor arguments that allow NUnit "
+						+ "to deduce the Type arguments.";
 				return false;
 			}
 #endif
 
 			return NUnitFramework.CheckSetUpTearDownMethods(fixtureType, NUnitFramework.SetUpAttribute, ref reason)
-			       && NUnitFramework.CheckSetUpTearDownMethods(fixtureType, NUnitFramework.TearDownAttribute, ref reason)
-			       && NUnitFramework.CheckSetUpTearDownMethods(fixtureType, NUnitFramework.FixtureSetUpAttribute, ref reason)
-			       && NUnitFramework.CheckSetUpTearDownMethods(fixtureType, NUnitFramework.FixtureTearDownAttribute, ref reason);
+					&& NUnitFramework.CheckSetUpTearDownMethods(fixtureType, NUnitFramework.TearDownAttribute, ref reason)
+					&& NUnitFramework.CheckSetUpTearDownMethods(fixtureType, NUnitFramework.FixtureSetUpAttribute, ref reason)
+					&& NUnitFramework.CheckSetUpTearDownMethods(fixtureType, NUnitFramework.FixtureTearDownAttribute, ref reason);
 		}
 
 		#endregion

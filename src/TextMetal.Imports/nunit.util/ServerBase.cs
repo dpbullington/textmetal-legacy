@@ -14,7 +14,7 @@ using System.Threading;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// 	Summary description for ServerBase.
+	/// Summary description for ServerBase.
 	/// </summary>
 	public abstract class ServerBase : MarshalByRefObject, IDisposable
 	{
@@ -25,7 +25,7 @@ namespace NUnit.Util
 		}
 
 		/// <summary>
-		/// 	Constructor used to provide
+		/// Constructor used to provide
 		/// </summary>
 		/// <param name="uri"> </param>
 		/// <param name="port"> </param>

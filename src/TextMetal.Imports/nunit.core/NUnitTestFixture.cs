@@ -9,7 +9,7 @@ using System;
 namespace NUnit.Core
 {
 	/// <summary>
-	/// 	Class to implement an NUnit test fixture
+	/// Class to implement an NUnit test fixture
 	/// </summary>
 	public class NUnitTestFixture : TestFixture
 	{
