@@ -117,7 +117,7 @@ namespace TextMetal.Common.Solder.RuntimeInterception.RemotingImpl
 		public bool CanCastTo(Type fromType, object o)
 		{
 			return fromType == typeof(IDisposable) ||
-			       fromType == typeof(TTransparentProxy);
+					fromType == typeof(TTransparentProxy);
 		}
 
 		/// <summary>

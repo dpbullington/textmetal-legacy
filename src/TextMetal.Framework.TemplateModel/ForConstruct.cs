@@ -154,10 +154,10 @@ namespace TextMetal.Framework.TemplateModel
 					expressionContainerConstruct = new ExpressionContainerConstruct();
 
 					valueConstruct = new ValueConstruct()
-					{
-						Type = typeof(int).FullName,
-						__ = index
-					};
+									{
+										Type = typeof(int).FullName,
+										__ = index
+									};
 
 					((IContentContainerXmlObject<IExpressionXmlObject>)expressionContainerConstruct).Content = valueConstruct;
 

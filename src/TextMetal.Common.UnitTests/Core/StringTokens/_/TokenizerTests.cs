@@ -236,23 +236,23 @@ namespace TextMetal.Common.UnitTests.Core.StringTokens._
 
 			tokenizedValue = "...${myUnkSemanticToken}...";
 			capturedException = Assert.Throws<InvalidOperationException>(delegate
-			                                                             {
-				                                                             expandedValue = tokenizer.ExpandTokens(tokenizedValue);
-			                                                             });
+																		{
+																			expandedValue = tokenizer.ExpandTokens(tokenizedValue);
+																		});
 			Assert.IsNotNull(capturedException);
 
 			tokenizedValue = "...${myErrSemanticToken}...";
 			capturedException = Assert.Throws<InvalidOperationException>(delegate
-			                                                             {
-				                                                             expandedValue = tokenizer.ExpandTokens(tokenizedValue);
-			                                                             });
+																		{
+																			expandedValue = tokenizer.ExpandTokens(tokenizedValue);
+																		});
 			Assert.IsNotNull(capturedException);
 
 			tokenizedValue = "...${a}...${c}...${b}...${d}...";
 			capturedException = Assert.Throws<InvalidOperationException>(delegate
-			                                                             {
-				                                                             expandedValue = tokenizer.ExpandTokens(tokenizedValue);
-			                                                             });
+																		{
+																			expandedValue = tokenizer.ExpandTokens(tokenizedValue);
+																		});
 			Assert.IsNotNull(capturedException);
 
 			Assert.IsNotNull(tokenizer.OrderedPreviousExpansionTokens);

@@ -68,10 +68,10 @@ namespace TextMetal.Common.Core
 				else
 				{
 					message += "\r\n" +
-					           new string('\t', indent) + "+++ BEGIN INNER EXECPTION +++" + "\r\n" +
-					           new string('\t', indent) + "Type: " + exception.GetType().FullName + "\r\n" +
-					           new string('\t', indent) + "Message: " + exception.Message + "\r\n" +
-					           new string('\t', indent) + "Stack: \r\n" + new string('\t', indent) + exception.StackTrace + "\r\n\r\n";
+								new string('\t', indent) + "+++ BEGIN INNER EXECPTION +++" + "\r\n" +
+								new string('\t', indent) + "Type: " + exception.GetType().FullName + "\r\n" +
+								new string('\t', indent) + "Message: " + exception.Message + "\r\n" +
+								new string('\t', indent) + "Stack: \r\n" + new string('\t', indent) + exception.StackTrace + "\r\n\r\n";
 				}
 
 				exceptionType = exception.GetType();
@@ -82,7 +82,7 @@ namespace TextMetal.Common.Core
 					foreach (PropertyInfo propertyInfo in propertyInfos)
 					{
 						if (propertyInfo.CanRead &&
-						    exceptionEnumerableType.IsAssignableFrom(propertyInfo.PropertyType))
+							exceptionEnumerableType.IsAssignableFrom(propertyInfo.PropertyType))
 						{
 							propertyValue = propertyInfo.GetValue(exception, null);
 
@@ -160,7 +160,7 @@ namespace TextMetal.Common.Core
 				targetDictionary = targetInstance as IDictionary;
 
 				if ((object)targetDictionary != null &&
-				    targetDictionary.Contains(propertyName))
+					targetDictionary.Contains(propertyName))
 				{
 					propertyValue = targetDictionary[propertyName];
 
@@ -205,7 +205,7 @@ namespace TextMetal.Common.Core
 				propertyInfo = targetType.GetLowestProperty(propertyName);
 
 				if ((object)propertyInfo != null &&
-				    propertyInfo.CanRead)
+					propertyInfo.CanRead)
 				{
 					propertyValue = propertyInfo.GetValue(targetInstance, null);
 					trigger = true;
@@ -218,7 +218,7 @@ namespace TextMetal.Common.Core
 				targetDictionary = targetInstance as IDictionary;
 
 				if ((object)targetDictionary != null &&
-				    targetDictionary.Contains(propertyName))
+					targetDictionary.Contains(propertyName))
 				{
 					propertyValue = targetDictionary[propertyName];
 					trigger = true;
@@ -319,8 +319,8 @@ namespace TextMetal.Common.Core
 			openNullableType = typeof(Nullable<>);
 
 			if (conversionType.IsGenericType &&
-			    !conversionType.IsGenericTypeDefinition &&
-			    conversionType.GetGenericTypeDefinition() == typeof(Nullable<>))
+				!conversionType.IsGenericTypeDefinition &&
+				conversionType.GetGenericTypeDefinition() == typeof(Nullable<>))
 				return conversionType.GetGenericArguments()[0];
 
 			if (conversionType.IsValueType)
@@ -347,8 +347,8 @@ namespace TextMetal.Common.Core
 				return conversionType;
 
 			if (conversionType.IsGenericType &&
-			    !conversionType.IsGenericTypeDefinition &&
-			    conversionType.GetGenericTypeDefinition() == typeof(Nullable<>))
+				!conversionType.IsGenericTypeDefinition &&
+				conversionType.GetGenericTypeDefinition() == typeof(Nullable<>))
 				return conversionType;
 
 			closedNullableType = openNullableType.MakeGenericType(conversionType);
@@ -398,7 +398,7 @@ namespace TextMetal.Common.Core
 				propertyInfo = targetType.GetLowestProperty(propertyName);
 
 				if ((object)propertyInfo != null &&
-				    propertyInfo.CanWrite)
+					propertyInfo.CanWrite)
 				{
 					propertyValue = DataType.ChangeType(propertyValue, propertyInfo.PropertyType);
 					propertyInfo.SetValue(targetInstance, propertyValue, null);

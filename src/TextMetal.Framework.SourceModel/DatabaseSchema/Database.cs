@@ -12,7 +12,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
 	[XmlRoot(ElementName = "Database", Namespace = "http://www.textmetal.com/api/v5.0.0")]
-	public class Database
+	public class Database : DatabaseSchemaModelBase
 	{
 		#region Constructors/Destructors
 
@@ -82,7 +82,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			get
 			{
 				if (!string.IsNullOrEmpty(this.MachineName) &&
-				    !string.IsNullOrEmpty(this.MachineName))
+					!string.IsNullOrEmpty(this.MachineName))
 					return string.Format("{0}\\{1}", this.MachineName, this.InstanceName);
 				else
 					return this.MachineName;

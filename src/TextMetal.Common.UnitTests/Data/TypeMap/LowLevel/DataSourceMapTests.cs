@@ -88,9 +88,9 @@ namespace TextMetal.Common.UnitTests.Data.TypeMap.LowLevel
 			dataSourceMap.SelectOne = new Command();
 
 			dataSourceMap.SelectFors.Add(new For()
-			                             {
-				                             Command = new Command()
-			                             });
+										{
+											Command = new Command()
+										});
 
 			xmlSerializer = new XmlSerializer(typeof(DataSourceMap));
 

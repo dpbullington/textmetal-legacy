@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <DataSourceMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-               xmlns="http://www.textmetal.com/api/v5.0.0">
+				xmlns="http://www.textmetal.com/api/v5.0.0">
 	<Insert text="" type="Text" timeout="" prepare="false">
 		<Parameters>
 			<Parameter prepare="Input" name="" property="" size="0" type="Object" />

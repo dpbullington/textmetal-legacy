@@ -85,7 +85,7 @@ namespace TextMetal.HostImpl.VsIdeConv.ConsoleTool
 					throw new InvalidOperationException("Invalid root working copy path");
 
 				if (!File.Exists(ConversionConfig.ConversionSettings.RootWorkingCopyPath) &&
-				    !Directory.Exists(ConversionConfig.ConversionSettings.RootWorkingCopyPath))
+					!Directory.Exists(ConversionConfig.ConversionSettings.RootWorkingCopyPath))
 					throw new InvalidOperationException("Root working copy path directory path does not exist");
 
 				fse = new FileSystemEnumerator();

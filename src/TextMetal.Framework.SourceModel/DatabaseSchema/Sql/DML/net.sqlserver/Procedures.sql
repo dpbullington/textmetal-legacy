@@ -4,7 +4,8 @@
 */
 
 -- procedures[schema]
-select	
+select
+	cast(null as int) as ObjectId,
 	sys_s.name as SchemaName,
 	sys_p.name as ProcedureName
 from

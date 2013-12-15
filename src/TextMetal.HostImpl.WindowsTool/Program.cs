@@ -42,7 +42,7 @@ namespace TextMetal.HostImpl.WindowsTool
 			get
 			{
 				return !Debugger.IsAttached &&
-				       AppConfig.GetAppSetting<bool>("TextMetal.HostImpl.WindowsTool::HookUnhandledExceptionEvents");
+						AppConfig.GetAppSetting<bool>("TextMetal.HostImpl.WindowsTool::HookUnhandledExceptionEvents");
 			}
 		}
 

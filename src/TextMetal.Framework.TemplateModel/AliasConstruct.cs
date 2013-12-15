@@ -100,10 +100,10 @@ namespace TextMetal.Framework.TemplateModel
 				throw new InvalidOperationException(string.Format("Failed to load the aliased type '{0}' via Type.GetType(..).", aqtn));
 
 			templatingContext.AddReference(new XmlName()
-			                               {
-				                               LocalName = localName,
-				                               NamespaceUri = namespaceUri
-			                               }, aliasedType);
+											{
+												LocalName = localName,
+												NamespaceUri = namespaceUri
+											}, aliasedType);
 		}
 
 		#endregion

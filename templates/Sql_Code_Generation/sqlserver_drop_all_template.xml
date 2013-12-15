@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	Copyright ©2002-2013 Daniel Bullington (dpbullington@gmail.com)
+	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+-->
+<Template xmlns="http://www.textmetal.com/api/v5.0.0">
+
+	<OutputScope name="DropAll.g.sql">
+<![CDATA[
+-- DROP ALL OBJECTS FROM DATABASE
+]]>
+	
+	<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
+		<ForEach.Filter>
+			<BinaryExpression operator="Ne">
+				<BinaryExpression.LeftExpression>
+					<Facet name="SchemaName" />
+				</BinaryExpression.LeftExpression>
+				<BinaryExpression.RightExpression>
+					<Facet name="HistorySchemaName" />
+				</BinaryExpression.RightExpression>
+			</BinaryExpression>
+		</ForEach.Filter>
+		
+		<ForEach.Body>
+		
+<![CDATA[USE [${SchemaName}]
+GO
+
+]]>
+
+			<ForEach in="Tables" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach.Filter>
+					<BinaryExpression operator="Eq">
+						<BinaryExpression.LeftExpression>
+							<Facet name="IsView" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Value type="System.Boolean" data="False" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</ForEach.Filter>
+				<ForEach.Body>
+
+<![CDATA[ALTER TABLE [${SchemaName}].[${TableName}] DROP CONSTRAINT [${PrimaryKeyName}]
+GO
+	
+]]>
+
+					<ForEach in="ForeignKeys" var-ct="#LoopCount" var-ix="#LoopIndex">
+						<ForEach.Filter />
+						<ForEach.Body>
+						
+<![CDATA[ALTER TABLE [${SchemaName}].[${TableName}] DROP CONSTRAINT [${ForeignKeyName}]
+GO
+	
+]]>
+						
+						</ForEach.Body>
+					</ForEach>
+				
+					<ForEach in="UniqueKeys" var-ct="#LoopCount" var-ix="#LoopIndex">
+						<ForEach.Filter>
+						</ForEach.Filter>
+						<ForEach.Body>
+						
+<![CDATA[ALTER TABLE [${SchemaName}].[${TableName}] DROP CONSTRAINT [${UniqueKeyName}]
+GO
+	
+]]>
+						
+						</ForEach.Body>
+					</ForEach>
+				
+					<!--<ForEach in="Triggers" var-ct="#LoopCount" var-ix="#LoopIndex">
+						<ForEach.Filter>
+						</ForEach.Filter>
+						<ForEach.Body>
+						
+<![CDATA[DROP TRIGGER [${SchemaName}].[${TriggerName}]
+GO
+	
+]]>
+						
+						</ForEach.Body>
+					</ForEach>-->
+				
+				
+				
+				
+<![CDATA[DROP TABLE [${SchemaName}].[${TableName}]
+GO
+	
+]]>
+				
+				</ForEach.Body>
+			</ForEach>
+			
+			<ForEach in="Tables" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach.Filter>
+					<BinaryExpression operator="Eq">
+						<BinaryExpression.LeftExpression>
+							<Facet name="IsView" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Value type="System.Boolean" data="True" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</ForEach.Filter>
+				<ForEach.Body>
+				
+<![CDATA[DROP VIEW [${SchemaName}].[${TableName}]
+GO
+	
+]]>
+				
+				</ForEach.Body>
+			</ForEach>
+			
+<![CDATA[DROP SCHEMA [${SchemaName}]
+GO
+
+]]>
+
+		</ForEach.Body>
+	</ForEach>
+	</OutputScope>
+</Template>

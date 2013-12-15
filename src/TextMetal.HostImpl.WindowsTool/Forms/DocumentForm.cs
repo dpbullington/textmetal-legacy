@@ -116,10 +116,10 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			base.CoreShown();
 
 			dialogResult = BackgroundTaskForm.Show(this, "Loading document...", o =>
-			                                                                    {
-				                                                                    //Thread.Sleep(1000);
-				                                                                    return this.DocumentStrategy.LoadDocument(this.DocumentFilePath);
-			                                                                    }, null, out asyncWasCanceled, out asyncExceptionOrNull, out asyncResult);
+																				{
+																					//Thread.Sleep(1000);
+																					return this.DocumentStrategy.LoadDocument(this.DocumentFilePath);
+																				}, null, out asyncWasCanceled, out asyncExceptionOrNull, out asyncResult);
 
 			if (asyncWasCanceled || dialogResult == DialogResult.Cancel)
 				this.Close(); // direct
@@ -165,10 +165,10 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			if (messages.Length != 0)
 			{
 				using (MessageForm messageForm = new MessageForm()
-				                                 {
-					                                 Message = "",
-					                                 Messages = messages
-				                                 })
+												{
+													Message = "",
+													Messages = messages
+												})
 					messageForm.ShowDialog(this);
 
 				return false;
@@ -210,7 +210,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			dialogResult = this.sfdMain.ShowDialog(this);
 
 			if (dialogResult != DialogResult.OK ||
-			    DataType.IsNullOrWhiteSpace(this.sfdMain.FileName))
+				DataType.IsNullOrWhiteSpace(this.sfdMain.FileName))
 				return false;
 
 			filePath = Path.GetFullPath(this.sfdMain.FileName);

@@ -26,9 +26,9 @@ namespace TextMetal.HostImpl.AspNetSample.Controllers
 		public ActionResult IndexGet()
 		{
 			return this.View(new
-			                 {
-				                 X = new Random().Next()
-			                 });
+							{
+								X = new Random().Next()
+							});
 		}
 
 		#endregion

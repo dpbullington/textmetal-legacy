@@ -131,7 +131,7 @@ namespace TextMetal.Framework.InputOutputModel
 		protected void SetLogTextWriter(TextWriter activeLogTextWriter)
 		{
 			if ((object)this.LogTextWriter != null &&
-			    (object)this.LogTextWriter != activeLogTextWriter)
+				(object)this.LogTextWriter != activeLogTextWriter)
 			{
 				this.LogTextWriter.Flush();
 				this.LogTextWriter.Dispose();

@@ -88,10 +88,10 @@ namespace TextMetal.Framework.TemplateModel
 				expressionContainerConstruct = new ExpressionContainerConstruct();
 
 				valueConstruct = new ValueConstruct()
-				                 {
-					                 Type = typeof(string).FullName,
-					                 __ = name
-				                 };
+								{
+									Type = typeof(string).FullName,
+									__ = name
+								};
 
 				((IContentContainerXmlObject<IExpressionXmlObject>)expressionContainerConstruct).Content = valueConstruct;
 

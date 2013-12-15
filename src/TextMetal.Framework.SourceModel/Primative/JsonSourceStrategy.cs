@@ -40,9 +40,9 @@ namespace TextMetal.Framework.SourceModel.Primative
 
 			//serializer = new DataContractJsonSerializer(typeof(Sketch), knownShapes);
 			serializer = JsonSerializer.Create(new JsonSerializerSettings()
-			                                   {
-				                                   TypeNameHandling = TypeNameHandling.Objects
-			                                   });
+												{
+													TypeNameHandling = TypeNameHandling.Objects
+												});
 
 			using (StreamReader streamReader = new StreamReader(stream))
 			{

@@ -252,10 +252,10 @@ namespace TextMetal.Framework.TemplateModel
 				expressionContainerConstruct = new ExpressionContainerConstruct();
 
 				valueConstruct = new ValueConstruct()
-				                 {
-					                 Type = typeof(int).FullName,
-					                 __ = count
-				                 };
+								{
+									Type = typeof(int).FullName,
+									__ = count
+								};
 
 				((IContentContainerXmlObject<IExpressionXmlObject>)expressionContainerConstruct).Content = valueConstruct;
 
@@ -278,9 +278,9 @@ namespace TextMetal.Framework.TemplateModel
 						expressionContainerConstruct = new ExpressionContainerConstruct();
 
 						valueConstruct = new ValueConstruct()
-						                 {
-							                 __ = value
-						                 };
+										{
+											__ = value
+										};
 
 						((IContentContainerXmlObject<IExpressionXmlObject>)expressionContainerConstruct).Content = valueConstruct;
 
@@ -299,10 +299,10 @@ namespace TextMetal.Framework.TemplateModel
 						expressionContainerConstruct = new ExpressionContainerConstruct();
 
 						valueConstruct = new ValueConstruct()
-						                 {
-							                 Type = typeof(int).FullName,
-							                 __ = index
-						                 };
+										{
+											Type = typeof(int).FullName,
+											__ = index
+										};
 
 						((IContentContainerXmlObject<IExpressionXmlObject>)expressionContainerConstruct).Content = valueConstruct;
 

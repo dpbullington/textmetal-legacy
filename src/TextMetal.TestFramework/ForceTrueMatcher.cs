@@ -1,4 +1,4 @@
-/*
+﻿/*
 	Copyright ©2002-2012 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
@@ -11,7 +11,7 @@ using NMock2;
 namespace TestingFramework.Core.Customization
 {
 	/// <summary>
-	/// 	Forces a true match.
+	/// Forces a true match.
 	/// </summary>
 	public class ForceTrueMatcher : Matcher
 	{
@@ -32,7 +32,7 @@ namespace TestingFramework.Core.Customization
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Gets the singleton instance.
+		/// Gets the singleton instance.
 		/// </summary>
 		public static ForceTrueMatcher Instance
 		{
@@ -47,7 +47,7 @@ namespace TestingFramework.Core.Customization
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Not documented on purpose.
+		/// Not documented on purpose.
 		/// </summary>
 		/// <param name="writer"> Not documented on purpose. </param>
 		public override void DescribeTo(TextWriter writer)
@@ -55,7 +55,7 @@ namespace TestingFramework.Core.Customization
 		}
 
 		/// <summary>
-		/// 	Not documented on purpose.
+		/// Not documented on purpose.
 		/// </summary>
 		/// <param name="o"> Not documented on purpose. </param>
 		/// <returns> Not documented on purpose. </returns>

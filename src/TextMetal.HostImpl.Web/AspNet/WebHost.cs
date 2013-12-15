@@ -98,7 +98,6 @@ namespace TextMetal.HostImpl.Web.AspNet
 							template.ExpandTemplate(templatingContext);
 							templatingContext.IteratorModels.Pop();
 							templatingContext.VariableTables.Pop();
-
 						}
 						finally
 						{

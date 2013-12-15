@@ -26,6 +26,7 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 		/// </summary>
 		public DebuggerBreakpointConstruct()
 		{
+			//LaunchDebugger(); // new behavior to break on PARSE!
 		}
 
 		#endregion
@@ -116,6 +117,16 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 
 		#region Methods/Operators
 
+		private static void LaunchDebugger()
+		{
+			if (!Debugger.IsAttached)
+			{
+				Console.WriteLine("debugger before launch;");
+				Debugger.Launch();
+				Console.WriteLine("debugger after launch;");
+			}
+		}
+
 		/// <summary>
 		/// Evaluates at run-time, an expression tree yielding an object value result.
 		/// </summary>
@@ -123,8 +134,7 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 		/// <returns> An expression return value or null. </returns>
 		public object EvaluateExpression(ITemplatingContext templatingContext)
 		{
-			if (!Debugger.IsAttached)
-				Debugger.Break();
+			LaunchDebugger();
 
 			return null;
 		}
@@ -137,8 +147,7 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 		/// <returns> </returns>
 		public IEnumerable EvaluateSort(ITemplatingContext templatingContext, IEnumerable values)
 		{
-			if (!Debugger.IsAttached)
-				Debugger.Break();
+			LaunchDebugger();
 
 			return values;
 		}
@@ -149,8 +158,7 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 		/// <param name="templatingContext"> The templating context. </param>
 		public void ExpandTemplate(ITemplatingContext templatingContext)
 		{
-			if (!Debugger.IsAttached)
-				Debugger.Break();
+			LaunchDebugger();
 		}
 
 		/// <summary>
@@ -186,8 +194,7 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 		/// <returns> A value or null. </returns>
 		public object GetAssociativeObjectValue()
 		{
-			if (!Debugger.IsAttached)
-				Debugger.Break();
+			LaunchDebugger();
 
 			return this;
 		}

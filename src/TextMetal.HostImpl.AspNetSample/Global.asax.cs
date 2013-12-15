@@ -61,9 +61,9 @@ namespace TextMetal.HostImpl.AspNetSample
 
 			Repository.TryWriteEventLogEntry(Reflexion.GetErrors(ex, 0));
 			Repository.TrySendEmailTemplate(EmailTemplateResourceNames.EVENT_LOG, new
-			                                                                      {
-				                                                                      Error = Reflexion.GetErrors(ex, 0)
-			                                                                      });
+																				{
+																					Error = Reflexion.GetErrors(ex, 0)
+																				});
 		}
 
 		protected void Application_Start()

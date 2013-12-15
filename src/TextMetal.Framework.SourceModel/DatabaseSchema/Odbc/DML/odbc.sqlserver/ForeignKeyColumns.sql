@@ -5,6 +5,7 @@
 
 -- foreign key columns (refs)[schema, foreign key]
 select
+	cast(null as int) as ObjectId,
 	sys_s_fs.name as SchemaName,
 	sys_t_fs.name as TableName,
 	sys_fk.name as ForeignKeyName,

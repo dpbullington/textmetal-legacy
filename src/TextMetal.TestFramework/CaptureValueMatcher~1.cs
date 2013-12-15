@@ -1,4 +1,4 @@
-/*
+﻿/*
 	Copyright ©2002-2012 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
@@ -11,7 +11,7 @@ using NMock2;
 namespace TestingFramework.Core.Customization
 {
 	/// <summary>
-	/// 	Captures the value matched forlater examination.
+	/// Captures the value matched forlater examination.
 	/// </summary>
 	/// <typeparam name="TCaptureValue"> The type of the value to capture. </typeparam>
 	public class CaptureValueMatcher<TCaptureValue> : Matcher
@@ -19,7 +19,7 @@ namespace TestingFramework.Core.Customization
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// 	Initializes a new instance of the CaptureValueMatcher`1 class.
+		/// Initializes a new instance of the CaptureValueMatcher`1 class.
 		/// </summary>
 		public CaptureValueMatcher()
 		{
@@ -36,12 +36,12 @@ namespace TestingFramework.Core.Customization
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// 	Event raised when the value is captured on this instance.
+		/// Event raised when the value is captured on this instance.
 		/// </summary>
 		public event EventHandler ValueCaptured;
 
 		/// <summary>
-		/// 	Gets the captured value.
+		/// Gets the captured value.
 		/// </summary>
 		public TCaptureValue CapturedValue
 		{
@@ -60,7 +60,7 @@ namespace TestingFramework.Core.Customization
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Not documented on purpose.
+		/// Not documented on purpose.
 		/// </summary>
 		/// <param name="writer"> Not documented on purpose. </param>
 		public override void DescribeTo(TextWriter writer)
@@ -68,7 +68,7 @@ namespace TestingFramework.Core.Customization
 		}
 
 		/// <summary>
-		/// 	Not documented on purpose.
+		/// Not documented on purpose.
 		/// </summary>
 		/// <param name="o"> Not documented on purpose. </param>
 		/// <returns> Not documented on purpose. </returns>

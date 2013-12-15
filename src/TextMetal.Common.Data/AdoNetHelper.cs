@@ -256,8 +256,8 @@ namespace TextMetal.Common.Data
 			if (clrType.IsByRef /* || type.IsPointer || type.IsArray */)
 				return InferDbTypeForClrType(clrType.GetElementType());
 			else if (clrType.IsGenericType &&
-			         !clrType.IsGenericTypeDefinition &&
-			         clrType.GetGenericTypeDefinition() == typeof(Nullable<>))
+					!clrType.IsGenericTypeDefinition &&
+					clrType.GetGenericTypeDefinition() == typeof(Nullable<>))
 				return InferDbTypeForClrType(Nullable.GetUnderlyingType(clrType));
 			else if (clrType.IsEnum)
 				return InferDbTypeForClrType(Enum.GetUnderlyingType(clrType));

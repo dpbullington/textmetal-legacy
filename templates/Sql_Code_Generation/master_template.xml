@@ -7,5 +7,6 @@
 <Template xmlns="http://www.textmetal.com/api/v5.0.0">
 	
 	<Import name="sqlserver_cdc_template.xml" />
+	<Import name="sqlserver_drop_all_template.xml" />
 	
 </Template>

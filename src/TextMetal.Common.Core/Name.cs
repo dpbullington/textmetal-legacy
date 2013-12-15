@@ -160,17 +160,17 @@ namespace TextMetal.Common.Core
 				return value;
 
 			if ((value.EndsWith("x", StringComparison.OrdinalIgnoreCase) ||
-			     value.EndsWith("ch", StringComparison.OrdinalIgnoreCase)) ||
-			    (value.EndsWith("ss", StringComparison.OrdinalIgnoreCase) ||
-			     value.EndsWith("sh", StringComparison.OrdinalIgnoreCase)))
+				value.EndsWith("ch", StringComparison.OrdinalIgnoreCase)) ||
+				(value.EndsWith("ss", StringComparison.OrdinalIgnoreCase) ||
+				value.EndsWith("sh", StringComparison.OrdinalIgnoreCase)))
 			{
 				value = value + "es";
 				return value;
 			}
 
 			if ((value.EndsWith("y", StringComparison.OrdinalIgnoreCase) &&
-			     (value.Length > 1)) &&
-			    !IsVowel(value[value.Length - 2]))
+				(value.Length > 1)) &&
+				!IsVowel(value[value.Length - 2]))
 			{
 				value = value.Remove(value.Length - 1, 1);
 				value = value + "ies";
@@ -220,8 +220,8 @@ namespace TextMetal.Common.Core
 				}
 
 				if ((value.EndsWith("ches", StringComparison.OrdinalIgnoreCase) ||
-				     value.EndsWith("xes", StringComparison.OrdinalIgnoreCase)) ||
-				    value.EndsWith("sses", StringComparison.OrdinalIgnoreCase))
+					value.EndsWith("xes", StringComparison.OrdinalIgnoreCase)) ||
+					value.EndsWith("sses", StringComparison.OrdinalIgnoreCase))
 				{
 					value = value.Remove(value.Length - 2, 2);
 					return value;
@@ -231,8 +231,8 @@ namespace TextMetal.Common.Core
 					return value;
 
 				if (((value.Length > 1) && value.EndsWith("s", StringComparison.OrdinalIgnoreCase)) &&
-				    (!value.EndsWith("ss", StringComparison.OrdinalIgnoreCase) &&
-				     !value.EndsWith("us", StringComparison.OrdinalIgnoreCase)))
+					(!value.EndsWith("ss", StringComparison.OrdinalIgnoreCase) &&
+					!value.EndsWith("us", StringComparison.OrdinalIgnoreCase)))
 					value = value.Remove(value.Length - 1, 1);
 			}
 			return value;

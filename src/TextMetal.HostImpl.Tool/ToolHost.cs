@@ -49,7 +49,7 @@ namespace TextMetal.HostImpl.Tool
 		/// <param name="strictMatching"> A value indicating whether to use strict matching semantics for tokens. </param>
 		/// <param name="properties"> Arbitrary dictionary of string lists used to further customize the text templating process. The individual components or template files can use the properties as they see fit. </param>
 		public void Host(string templateFilePath, string sourceFilePath, string baseDirectoryPath,
-		                 string sourceStrategyAssemblyQualifiedTypeName, bool strictMatching, IDictionary<string, IList<string>> properties)
+			string sourceStrategyAssemblyQualifiedTypeName, bool strictMatching, IDictionary<string, IList<string>> properties)
 		{
 			DateTime startUtc = DateTime.UtcNow, endUtc;
 			IXmlPersistEngine xpe;

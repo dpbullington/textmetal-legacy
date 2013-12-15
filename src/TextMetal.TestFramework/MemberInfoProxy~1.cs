@@ -1,4 +1,4 @@
-/*
+﻿/*
 	Copyright ©2002-2012 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
@@ -12,7 +12,7 @@ using System.Runtime.Remoting.Proxies;
 namespace TestingFramework.Core.Customization
 {
 	/// <summary>
-	/// 	Provides a mechanism to obtain the MemberInfo of a member using a dummy invocation inside of an anonymous delegate call, useful for mocking scenarios.
+	/// Provides a mechanism to obtain the MemberInfo of a member using a dummy invocation inside of an anonymous delegate call, useful for mocking scenarios.
 	/// </summary>
 	/// <typeparam name="T"> The type of the interface declaring the member (method, property, event) for which to obtain a MemberInfo. </typeparam>
 	public sealed class MemberInfoProxy<T> : RealProxy
@@ -52,7 +52,7 @@ namespace TestingFramework.Core.Customization
 		#region Methods/Operators
 
 		/// <summary>
-		/// 	Obtains the MemberInfo of a member using a dummy invocation inside of the spcified anonymous delegate call, useful for mocking scenarios.
+		/// Obtains the MemberInfo of a member using a dummy invocation inside of the spcified anonymous delegate call, useful for mocking scenarios.
 		/// </summary>
 		/// <param name="exec"> A method which makes a dummy call onto a member of the provided action parameter. </param>
 		/// <returns> A MemberInfo of the dummy invocation. </returns>
@@ -119,7 +119,7 @@ namespace TestingFramework.Core.Customization
 		}
 
 		/// <summary>
-		/// 	Run-time real proxy invocation.
+		/// Run-time real proxy invocation.
 		/// </summary>
 		/// <param name="msg"> Invocation call message </param>
 		/// <returns> Invocation return message. </returns>

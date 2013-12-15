@@ -84,7 +84,7 @@ namespace TextMetal.Framework.TemplateModel
 				foreach (Type exportedType in exportedTypes)
 				{
 					if (!exportedType.IsAbstract &&
-					    typeof(IXmlObject).IsAssignableFrom(exportedType))
+						typeof(IXmlObject).IsAssignableFrom(exportedType))
 					{
 						if (typeof(IXmlTextObject).IsAssignableFrom(exportedType))
 							templatingContext.SetReference(exportedType);

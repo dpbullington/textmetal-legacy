@@ -94,8 +94,8 @@ namespace TextMetal.Common.Data.TypeMap
 				throw new ArgumentNullException("obj");
 
 			if (obj.ObjectState == ObjectState.Consistent ||
-			    obj.ObjectState == ObjectState.Obsoleted ||
-			    (obj.ObjectState == ObjectState.Removed && obj.IsNew))
+				obj.ObjectState == ObjectState.Obsoleted ||
+				(obj.ObjectState == ObjectState.Removed && obj.IsNew))
 				dataOperation = DataOperation.None;
 			else if (obj.ObjectState == ObjectState.Removed && !obj.IsNew)
 				dataOperation = DataOperation.Delete;

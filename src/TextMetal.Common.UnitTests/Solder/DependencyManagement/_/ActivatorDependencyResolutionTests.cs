@@ -33,7 +33,7 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 			IDependencyManager mockDependencyManager;
 			Mockery mockery;
 			object result;
-			
+
 			mockery = new Mockery();
 			mockDependencyManager = mockery.NewMock<IDependencyManager>();
 
@@ -84,7 +84,7 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 
 			mockery = new Mockery();
 			mockDependencyManager = mockery.NewMock<IDependencyManager>();
-			
+
 			value = typeof(int);
 
 			activatorDependencyResolution = new ActivatorDependencyResolution(value);

@@ -56,8 +56,8 @@ namespace TextMetal.Common.Solder.RuntimeInterception
 			bool proceed = false;
 
 			if (!((object)invokedMethodInfo != null &&
-			      invokedMethodInfo.DeclaringType == typeof(IDisposable)) &&
-			    base.Disposed) // always forward dispose invocations
+				invokedMethodInfo.DeclaringType == typeof(IDisposable)) &&
+				base.Disposed) // always forward dispose invocations
 				throw new ObjectDisposedException(typeof(AspectDynamicInvoker).FullName);
 
 			// sanity checks

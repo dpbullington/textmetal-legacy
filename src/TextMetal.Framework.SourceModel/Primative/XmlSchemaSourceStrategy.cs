@@ -60,7 +60,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 				if ((object)xmlSchemaElement != null)
 				{
 					if (DataType.IsNullOrWhiteSpace(xmlSchemaElement.Name) &&
-					    !DataType.IsNullOrWhiteSpace(xmlSchemaElement.RefName.Name))
+						!DataType.IsNullOrWhiteSpace(xmlSchemaElement.RefName.Name))
 					{
 						propertyConstruct00 = new PropertyConstruct();
 						propertyConstruct00.Name = "XmlSchemaElementIsRef";

@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	public class Table
+	public class Table : DatabaseSchemaModelBase
 	{
 		#region Constructors/Destructors
 
@@ -31,6 +31,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private readonly List<UniqueKey> uniqueKeys = new List<UniqueKey>();
 		private bool hasNoDefinedPrimaryKeyColumns;
 		private bool isView;
+		private string primaryKeyName;
+		private string primaryKeyNameCamelCase;
+		private string primaryKeyNameConstantCase;
+		private string primaryKeyNamePascalCase;
+		private string primaryKeyNamePluralCamelCase;
+		private string primaryKeyNamePluralConstantCase;
+		private string primaryKeyNamePluralPascalCase;
+		private string primaryKeyNameSingularCamelCase;
+		private string primaryKeyNameSingularConstantCase;
+		private string primaryKeyNameSingularPascalCase;
 		private string tableName;
 		private string tableNameCamelCase;
 		private string tableNameConstantCase;
@@ -106,6 +116,136 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.isView = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string PrimaryKeyName
+		{
+			get
+			{
+				return this.primaryKeyName;
+			}
+			set
+			{
+				this.primaryKeyName = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string PrimaryKeyNameCamelCase
+		{
+			get
+			{
+				return this.primaryKeyNameCamelCase;
+			}
+			set
+			{
+				this.primaryKeyNameCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string PrimaryKeyNameConstantCase
+		{
+			get
+			{
+				return this.primaryKeyNameConstantCase;
+			}
+			set
+			{
+				this.primaryKeyNameConstantCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string PrimaryKeyNamePascalCase
+		{
+			get
+			{
+				return this.primaryKeyNamePascalCase;
+			}
+			set
+			{
+				this.primaryKeyNamePascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string PrimaryKeyNamePluralCamelCase
+		{
+			get
+			{
+				return this.primaryKeyNamePluralCamelCase;
+			}
+			set
+			{
+				this.primaryKeyNamePluralCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string PrimaryKeyNamePluralConstantCase
+		{
+			get
+			{
+				return this.primaryKeyNamePluralConstantCase;
+			}
+			set
+			{
+				this.primaryKeyNamePluralConstantCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string PrimaryKeyNamePluralPascalCase
+		{
+			get
+			{
+				return this.primaryKeyNamePluralPascalCase;
+			}
+			set
+			{
+				this.primaryKeyNamePluralPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string PrimaryKeyNameSingularCamelCase
+		{
+			get
+			{
+				return this.primaryKeyNameSingularCamelCase;
+			}
+			set
+			{
+				this.primaryKeyNameSingularCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string PrimaryKeyNameSingularConstantCase
+		{
+			get
+			{
+				return this.primaryKeyNameSingularConstantCase;
+			}
+			set
+			{
+				this.primaryKeyNameSingularConstantCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string PrimaryKeyNameSingularPascalCase
+		{
+			get
+			{
+				return this.primaryKeyNameSingularPascalCase;
+			}
+			set
+			{
+				this.primaryKeyNameSingularPascalCase = value;
 			}
 		}
 

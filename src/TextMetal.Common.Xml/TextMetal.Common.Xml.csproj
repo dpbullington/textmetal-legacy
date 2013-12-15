@@ -61,6 +61,7 @@
     <Compile Include="XmlObject.cs" />
     <Compile Include="XmlObjectCollection.cs" />
     <Compile Include="XmlPersistEngine.cs" />
+    <Compile Include="XoExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TextMetal.snk">

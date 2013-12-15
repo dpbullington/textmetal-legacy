@@ -130,8 +130,8 @@ namespace TextMetal.Common.Xml
 
 					// is this mapped as a text element?
 					if (xmlChildElementMappingAttribute.ChildElementType == ChildElementType.TextValue &&
-					    xmlChildElementMappingAttribute.LocalName == xmlName.LocalName &&
-					    xmlChildElementMappingAttribute.NamespaceUri == xmlName.NamespaceUri)
+						xmlChildElementMappingAttribute.LocalName == xmlName.LocalName &&
+						xmlChildElementMappingAttribute.NamespaceUri == xmlName.NamespaceUri)
 						return true;
 				}
 			}
@@ -305,7 +305,7 @@ namespace TextMetal.Common.Xml
 					parentPropertyToChildElementMapping = parentPropertyToChildElementMappings
 						.Where(x => x.Value.ChildElementType == ChildElementType.TextValue)
 						.Select(x => (KeyValuePair<PropertyInfo, XmlChildElementMappingAttribute>?)x).Where(x => x.Value.Value.LocalName == overrideCurrentXmlTextObject.Name.LocalName &&
-						                                                                                         x.Value.Value.NamespaceUri == overrideCurrentXmlTextObject.Name.NamespaceUri).SingleOrDefault();
+																												x.Value.Value.NamespaceUri == overrideCurrentXmlTextObject.Name.NamespaceUri).SingleOrDefault();
 
 					// sanity check
 					if ((object)parentPropertyToChildElementMapping == null)
@@ -348,8 +348,8 @@ namespace TextMetal.Common.Xml
 
 				// sanity check to ensure local names match if parent DOT property convention is used
 				if ((object)previousElementXmlName != null &&
-				    (object)parentName != null &&
-				    parentName != previousElementXmlName.LocalName)
+					(object)parentName != null &&
+					parentName != previousElementXmlName.LocalName)
 					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
 				// resolve the mapping to get child element property
@@ -357,7 +357,7 @@ namespace TextMetal.Common.Xml
 					.Where(x => x.Value.ChildElementType != ChildElementType.TextValue)
 					.Select(x => (KeyValuePair<PropertyInfo, XmlChildElementMappingAttribute>?)x)
 					.Where(x => (x.Value.Value.NamespaceUri == currentElementXmlName.NamespaceUri &&
-					             x.Value.Value.LocalName == propertyName)).SingleOrDefault();
+								x.Value.Value.LocalName == propertyName)).SingleOrDefault();
 
 				if ((object)parentPropertyToChildElementMapping != null)
 				{
@@ -391,7 +391,7 @@ namespace TextMetal.Common.Xml
 
 			// does the current object allow it to be a child of the parent type?
 			if ((object)parentType != null && // is this a non-root node?
-			    currentXmlObject.AllowedParentTypes.Count(t => t.IsAssignableFrom(parentType)) <= 0)
+				currentXmlObject.AllowedParentTypes.Count(t => t.IsAssignableFrom(parentType)) <= 0)
 				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
 			// dpbullington@gmail.com / 2012-10-29 (Issue #32): no longer need to explicitly assign parent
@@ -455,8 +455,8 @@ namespace TextMetal.Common.Xml
 
 					// get the raw string value
 					svalue = attributes.Where(a => a.Key.LocalName == _currentPropertyToAttributeMapping.Value.LocalName &&
-					                               a.Key.NamespaceUri == _currentPropertyToAttributeMapping.Value.NamespaceUri)
-					                   .Select(a => a.Value).SingleOrDefault();
+													a.Key.NamespaceUri == _currentPropertyToAttributeMapping.Value.NamespaceUri)
+						.Select(a => a.Value).SingleOrDefault();
 
 					// convert to strongly-typed value
 					if (!DataType.TryParse(currentPropertyToAttributeMapping.Key.PropertyType, svalue, out ovalue))
@@ -544,7 +544,7 @@ namespace TextMetal.Common.Xml
 			{
 				// determine node type
 				if (xmlTextReader.NodeType == XmlNodeType.CDATA ||
-				    xmlTextReader.NodeType == XmlNodeType.Text) // textual node
+					xmlTextReader.NodeType == XmlNodeType.Text) // textual node
 				{
 					// clear previous attributes
 					attributes.Clear();
@@ -564,14 +564,19 @@ namespace TextMetal.Common.Xml
 					Debug.WriteLine(string.Format("{2} <{0}{1}>", xmlTextReader.LocalName, xmlTextReader.IsEmptyElement ? " /" : "", xmlTextReader.IsEmptyElement ? "empty" : "begin"));
 
 					// stash away previous element
-					previousElementXmlName = elementXmlName;
+					//previousElementXmlName = elementXmlName;
+					// fixes a bug here
+					if (contextStack.Count > 0)
+						previousElementXmlName = contextStack.Peek().GetXmlName();
+					else
+						previousElementXmlName = null;
 
 					// create the element XML name
 					elementXmlName = new XmlName()
-					                 {
-						                 LocalName = xmlTextReader.LocalName,
-						                 NamespaceUri = xmlTextReader.NamespaceURI
-					                 };
+									{
+										LocalName = xmlTextReader.LocalName,
+										NamespaceUri = xmlTextReader.NamespaceURI
+									};
 
 					// is this an empty element?
 					isEmptyElement = xmlTextReader.IsEmptyElement;
@@ -590,10 +595,10 @@ namespace TextMetal.Common.Xml
 
 						// create the attribute XML name
 						attributeXmlName = new XmlName()
-						                   {
-							                   LocalName = xmlTextReader.LocalName,
-							                   NamespaceUri = xmlTextReader.NamespaceURI
-						                   };
+											{
+												LocalName = xmlTextReader.LocalName,
+												NamespaceUri = xmlTextReader.NamespaceURI
+											};
 
 						// append to attribute collection
 						attributes.Add(attributeXmlName, xmlTextReader.Value);
@@ -631,10 +636,10 @@ namespace TextMetal.Common.Xml
 
 					// create the element XML name
 					elementXmlName = new XmlName()
-					                 {
-						                 LocalName = xmlTextReader.LocalName,
-						                 NamespaceUri = xmlTextReader.NamespaceURI
-					                 };
+									{
+										LocalName = xmlTextReader.LocalName,
+										NamespaceUri = xmlTextReader.NamespaceURI
+									};
 
 					// is this a text element?
 					isTextElement = IsTextElement(contextStack, elementXmlName);
@@ -804,10 +809,10 @@ namespace TextMetal.Common.Xml
 				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
 			xmlName = new XmlName()
-			          {
-				          LocalName = xmlElementMappingAttribute.LocalName,
-				          NamespaceUri = xmlElementMappingAttribute.NamespaceUri
-			          };
+					{
+						LocalName = xmlElementMappingAttribute.LocalName,
+						NamespaceUri = xmlElementMappingAttribute.NamespaceUri
+					};
 
 			this.RegisterKnownXmlObject(xmlName, targetType);
 		}
@@ -996,7 +1001,7 @@ namespace TextMetal.Common.Xml
 			{
 				// write as CDATA if name is invalid (expected)
 				if ((object)currentXmlTextObject.Name == null ||
-				    DataType.IsNullOrWhiteSpace(currentXmlTextObject.Name.LocalName))
+					DataType.IsNullOrWhiteSpace(currentXmlTextObject.Name.LocalName))
 				{
 					xmlTextWriter.WriteCData(currentXmlTextObject.Text);
 					return;
@@ -1048,7 +1053,7 @@ namespace TextMetal.Common.Xml
 
 			// begin current element
 			if ((object)overrideXmlName != null &&
-			    !DataType.IsNullOrWhiteSpace(overrideXmlName.LocalName)) // overriden element is special case for parent DOT property convention
+				!DataType.IsNullOrWhiteSpace(overrideXmlName.LocalName)) // overriden element is special case for parent DOT property convention
 			{
 				// write the start of the element
 				xmlTextWriter.WriteStartElement(overrideXmlName.LocalName, overrideXmlName.NamespaceUri);
@@ -1133,22 +1138,22 @@ namespace TextMetal.Common.Xml
 						{
 							// parent DOT property convention
 							xmlName = new XmlName()
-							          {
-								          LocalName = string.Format("{0}.{1}",
-								                                    currentXmlElementMappingAttribute.LocalName,
-								                                    currentPropertyToChildElementMapping.Value.LocalName),
-								          NamespaceUri = currentXmlElementMappingAttribute.NamespaceUri
-							          };
+									{
+										LocalName = string.Format("{0}.{1}",
+											currentXmlElementMappingAttribute.LocalName,
+											currentPropertyToChildElementMapping.Value.LocalName),
+										NamespaceUri = currentXmlElementMappingAttribute.NamespaceUri
+									};
 						}
 						else if (currentPropertyToChildElementMapping.Value.ChildElementType == ChildElementType.Unqualified)
 						{
 							// normal convention
 							xmlName = new XmlName()
-							          {
-								          LocalName = string.Format("{0}",
-								                                    currentPropertyToChildElementMapping.Value.LocalName),
-								          NamespaceUri = currentXmlElementMappingAttribute.NamespaceUri
-							          };
+									{
+										LocalName = string.Format("{0}",
+											currentPropertyToChildElementMapping.Value.LocalName),
+										NamespaceUri = currentXmlElementMappingAttribute.NamespaceUri
+									};
 						}
 						else
 							throw new InvalidOperationException("TODO (enhancement): add meaningful message");
@@ -1161,14 +1166,14 @@ namespace TextMetal.Common.Xml
 
 			// write anonymous child elements (depending on element model)
 			if (currentXmlElementMappingAttribute.ChildElementModel == ChildElementModel.Items &&
-			    (object)currentXmlObject.Items != null)
+				(object)currentXmlObject.Items != null)
 			{
 				// anonymous 0..n child elements
 				foreach (IXmlObject childElement in currentXmlObject.Items)
 					this.SerializeToXml(xmlTextWriter, childElement, null);
 			}
 			else if (currentXmlElementMappingAttribute.ChildElementModel == ChildElementModel.Content &&
-			         (object)currentXmlObject.Content != null)
+					(object)currentXmlObject.Content != null)
 			{
 				// anonymous 0..1 child element
 				this.SerializeToXml(xmlTextWriter, currentXmlObject.Content, null);
@@ -1212,10 +1217,10 @@ namespace TextMetal.Common.Xml
 				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
 			xmlName = new XmlName()
-			          {
-				          LocalName = xmlElementMappingAttribute.LocalName,
-				          NamespaceUri = xmlElementMappingAttribute.NamespaceUri
-			          };
+					{
+						LocalName = xmlElementMappingAttribute.LocalName,
+						NamespaceUri = xmlElementMappingAttribute.NamespaceUri
+					};
 
 			if (retval = this.KnownXmlObjectTypeRegistrations.ContainsKey(xmlName))
 				this.KnownXmlObjectTypeRegistrations.Remove(xmlName);

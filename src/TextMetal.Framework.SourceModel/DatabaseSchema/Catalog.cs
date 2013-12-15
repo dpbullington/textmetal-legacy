@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	public class Catalog
+	public class Catalog : DatabaseSchemaModelBase
 	{
 		#region Constructors/Destructors
 

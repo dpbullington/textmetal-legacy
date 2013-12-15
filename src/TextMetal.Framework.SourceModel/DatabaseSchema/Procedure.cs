@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	public class Procedure
+	public class Procedure : DatabaseSchemaModelBase
 	{
 		#region Constructors/Destructors
 

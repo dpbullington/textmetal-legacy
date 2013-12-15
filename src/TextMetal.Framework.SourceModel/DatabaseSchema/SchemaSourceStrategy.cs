@@ -76,6 +76,41 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			return sqlText;
 		}
 
+		private void ApplyExtendedProperties(IUnitOfWorkContext unitOfWorkContext, DatabaseSchemaModelBase model, string dataSourceTag, string objectTypeName, IEnumerable<IDataParameter> dataParameters)
+		{
+			int recordsAffected;
+
+			if ((object)unitOfWorkContext == null)
+				throw new ArgumentNullException("unitOfWorkContext");
+
+			if ((object)model == null)
+				throw new ArgumentNullException("model");
+
+			if ((object)dataSourceTag == null)
+				throw new ArgumentNullException("dataSourceTag");
+
+			if ((object)objectTypeName == null)
+				throw new ArgumentNullException("objectTypeName");
+
+			if ((object)dataParameters == null)
+				throw new ArgumentNullException("dataParameters");
+
+			var dataReaderExtProps = unitOfWorkContext.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, objectTypeName), dataParameters, out recordsAffected);
+			{
+				foreach (var drReaderExtProps in dataReaderExtProps)
+				{
+					var name = DataType.ChangeType<string>(drReaderExtProps["PropertyName"]);
+					var value = DataType.ChangeType<string>(drReaderExtProps["PropertyValue"]);
+
+					model.ExtendedProperties.Add(new ExtendedProperty()
+												{
+													Name = name,
+													Value = value
+												});
+				}
+			}
+		}
+
 		protected abstract int CoreCalculateColumnSize(string dataSourceTag, Column column);
 
 		protected abstract int CoreCalculateParameterSize(string dataSourceTag, Parameter parameter);
@@ -192,7 +227,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 				var dataReaderDatabase = unitOfWorkContext.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Database"), this.CoreGetDatabaseParameters(unitOfWorkContext, dataSourceTag), out recordsAffected);
 				{
 					if ((object)dataReaderDatabase != null &&
-					    dataReaderDatabase.Count == 1)
+						dataReaderDatabase.Count == 1)
 					{
 						database.InitialCatalogName = DataType.ChangeType<string>(dataReaderDatabase[0]["InitialCatalogName"]);
 						database.InstanceName = DataType.ChangeType<string>(dataReaderDatabase[0]["InstanceName"]);
@@ -259,6 +294,20 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 									table.TableNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(table.TableName));
 									table.TableNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(table.TableName));
 									table.TableNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(table.TableName));
+									table.PrimaryKeyName = DataType.ChangeType<string>(drTable["PrimaryKeyName"]);
+
+									if (!DataType.IsNullOrWhiteSpace(table.PrimaryKeyName))
+									{
+										table.PrimaryKeyNamePascalCase = Name.GetPascalCase(table.PrimaryKeyName);
+										table.PrimaryKeyNameCamelCase = Name.GetCamelCase(table.PrimaryKeyName);
+										table.PrimaryKeyNameConstantCase = Name.GetConstantCase(table.PrimaryKeyName);
+										table.PrimaryKeyNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(table.PrimaryKeyName));
+										table.PrimaryKeyNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(table.PrimaryKeyName));
+										table.PrimaryKeyNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(table.PrimaryKeyName));
+										table.PrimaryKeyNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(table.PrimaryKeyName));
+										table.PrimaryKeyNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(table.PrimaryKeyName));
+										table.PrimaryKeyNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(table.PrimaryKeyName));
+									}
 
 									schema.Tables.Add(table);
 

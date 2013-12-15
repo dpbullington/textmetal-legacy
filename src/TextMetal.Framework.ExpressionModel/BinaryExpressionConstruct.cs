@@ -136,30 +136,30 @@ namespace TextMetal.Framework.ExpressionModel
 			Func<object> onDemandRightExpressionEvaluator;
 
 			Type[] numericTypes = new Type[]
-			                      {
-				                      typeof(Byte),
-				                      typeof(Int16),
-				                      typeof(Int32),
-				                      typeof(Int64),
-				                      typeof(SByte),
-				                      typeof(UInt16),
-				                      typeof(UInt32),
-				                      typeof(UInt64),
-				                      typeof(Single),
-				                      typeof(Double),
-				                      typeof(Decimal),
-				                      typeof(Byte?),
-				                      typeof(Int16?),
-				                      typeof(Int32?),
-				                      typeof(Int64?),
-				                      typeof(SByte?),
-				                      typeof(UInt16?),
-				                      typeof(UInt32?),
-				                      typeof(UInt64?),
-				                      typeof(Single?),
-				                      typeof(Double?),
-				                      typeof(Decimal?)
-			                      };
+								{
+									typeof(Byte),
+									typeof(Int16),
+									typeof(Int32),
+									typeof(Int64),
+									typeof(SByte),
+									typeof(UInt16),
+									typeof(UInt32),
+									typeof(UInt64),
+									typeof(Single),
+									typeof(Double),
+									typeof(Decimal),
+									typeof(Byte?),
+									typeof(Int16?),
+									typeof(Int32?),
+									typeof(Int64?),
+									typeof(SByte?),
+									typeof(UInt16?),
+									typeof(UInt32?),
+									typeof(UInt64?),
+									typeof(Single?),
+									typeof(Double?),
+									typeof(Decimal?)
+								};
 
 			if ((object)templatingContext == null)
 				throw new ArgumentNullException("templatingContext");
@@ -171,12 +171,12 @@ namespace TextMetal.Framework.ExpressionModel
 				leftObj = this.LeftExpression.EvaluateExpression(templatingContext);
 
 			onDemandRightExpressionEvaluator = () =>
-			                                   {
-				                                   if ((object)this.RightExpression != null)
-					                                   return this.RightExpression.EvaluateExpression(templatingContext);
-				                                   else
-					                                   return null;
-			                                   };
+												{
+													if ((object)this.RightExpression != null)
+														return this.RightExpression.EvaluateExpression(templatingContext);
+													else
+														return null;
+												};
 
 			if ((object)leftObj == null)
 				return null;
@@ -197,12 +197,12 @@ namespace TextMetal.Framework.ExpressionModel
 					if (numericTypes.Count(t => t == leftType) == 1 && numericTypes.Count(t => t == rightType) == 1)
 					{
 						if (leftType == typeof(Decimal) || leftType == typeof(Decimal?) ||
-						    rightType == typeof(Decimal) || rightType == typeof(Decimal?))
+							rightType == typeof(Decimal) || rightType == typeof(Decimal?))
 						{
 							if (leftType != typeof(Single) && leftType != typeof(Single?) &&
-							    rightType != typeof(Single) && rightType != typeof(Single?) &&
-							    leftType != typeof(Double) && leftType != typeof(Double?) &&
-							    rightType != typeof(Double) && rightType != typeof(Double?))
+								rightType != typeof(Single) && rightType != typeof(Single?) &&
+								leftType != typeof(Double) && leftType != typeof(Double?) &&
+								rightType != typeof(Double) && rightType != typeof(Double?))
 							{
 								Decimal lhs, rhs;
 
@@ -217,7 +217,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Double) || leftType == typeof(Double?) ||
-						         rightType == typeof(Double) || rightType == typeof(Double?))
+								rightType == typeof(Double) || rightType == typeof(Double?))
 						{
 							Double lhs, rhs;
 
@@ -227,7 +227,7 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs == rhs;
 						}
 						else if (leftType == typeof(Single) || leftType == typeof(Single?) ||
-						         rightType == typeof(Single) || rightType == typeof(Single?))
+								rightType == typeof(Single) || rightType == typeof(Single?))
 						{
 							Single lhs, rhs;
 
@@ -237,16 +237,16 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs == rhs;
 						}
 						else if (leftType == typeof(UInt64) || leftType == typeof(UInt64?) ||
-						         rightType == typeof(UInt64) || rightType == typeof(UInt64?))
+								rightType == typeof(UInt64) || rightType == typeof(UInt64?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?) &&
-							    leftType != typeof(Int64) && leftType != typeof(Int64?) &&
-							    rightType != typeof(Int64) && rightType != typeof(Int64?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?) &&
+								leftType != typeof(Int64) && leftType != typeof(Int64?) &&
+								rightType != typeof(Int64) && rightType != typeof(Int64?))
 							{
 								UInt64 lhs, rhs;
 
@@ -261,7 +261,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Int64) || leftType == typeof(Int64?) ||
-						         rightType == typeof(Int64) || rightType == typeof(Int64?))
+								rightType == typeof(Int64) || rightType == typeof(Int64?))
 						{
 							Int64 lhs, rhs;
 
@@ -271,14 +271,14 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs == rhs;
 						}
 						else if (leftType == typeof(UInt32) || leftType == typeof(UInt32?) ||
-						         rightType == typeof(UInt32) || rightType == typeof(UInt32?))
+								rightType == typeof(UInt32) || rightType == typeof(UInt32?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?))
 							{
 								UInt32 lhs, rhs;
 
@@ -308,9 +308,9 @@ namespace TextMetal.Framework.ExpressionModel
 						}
 					}
 					else if (typeof(IComparable).IsAssignableFrom(leftType) &&
-					         typeof(IComparable).IsAssignableFrom(rightType) &&
-					         rightType.IsAssignableFrom(leftType) &&
-					         leftType.IsAssignableFrom(rightType))
+							typeof(IComparable).IsAssignableFrom(rightType) &&
+							rightType.IsAssignableFrom(leftType) &&
+							leftType.IsAssignableFrom(rightType))
 					{
 						IComparable lhs, rhs;
 						int crv;
@@ -338,12 +338,12 @@ namespace TextMetal.Framework.ExpressionModel
 					if (numericTypes.Count(t => t == leftType) == 1 && numericTypes.Count(t => t == rightType) == 1)
 					{
 						if (leftType == typeof(Decimal) || leftType == typeof(Decimal?) ||
-						    rightType == typeof(Decimal) || rightType == typeof(Decimal?))
+							rightType == typeof(Decimal) || rightType == typeof(Decimal?))
 						{
 							if (leftType != typeof(Single) && leftType != typeof(Single?) &&
-							    rightType != typeof(Single) && rightType != typeof(Single?) &&
-							    leftType != typeof(Double) && leftType != typeof(Double?) &&
-							    rightType != typeof(Double) && rightType != typeof(Double?))
+								rightType != typeof(Single) && rightType != typeof(Single?) &&
+								leftType != typeof(Double) && leftType != typeof(Double?) &&
+								rightType != typeof(Double) && rightType != typeof(Double?))
 							{
 								Decimal lhs, rhs;
 
@@ -358,7 +358,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Double) || leftType == typeof(Double?) ||
-						         rightType == typeof(Double) || rightType == typeof(Double?))
+								rightType == typeof(Double) || rightType == typeof(Double?))
 						{
 							Double lhs, rhs;
 
@@ -368,7 +368,7 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs != rhs;
 						}
 						else if (leftType == typeof(Single) || leftType == typeof(Single?) ||
-						         rightType == typeof(Single) || rightType == typeof(Single?))
+								rightType == typeof(Single) || rightType == typeof(Single?))
 						{
 							Single lhs, rhs;
 
@@ -378,16 +378,16 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs != rhs;
 						}
 						else if (leftType == typeof(UInt64) || leftType == typeof(UInt64?) ||
-						         rightType == typeof(UInt64) || rightType == typeof(UInt64?))
+								rightType == typeof(UInt64) || rightType == typeof(UInt64?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?) &&
-							    leftType != typeof(Int64) && leftType != typeof(Int64?) &&
-							    rightType != typeof(Int64) && rightType != typeof(Int64?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?) &&
+								leftType != typeof(Int64) && leftType != typeof(Int64?) &&
+								rightType != typeof(Int64) && rightType != typeof(Int64?))
 							{
 								UInt64 lhs, rhs;
 
@@ -402,7 +402,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Int64) || leftType == typeof(Int64?) ||
-						         rightType == typeof(Int64) || rightType == typeof(Int64?))
+								rightType == typeof(Int64) || rightType == typeof(Int64?))
 						{
 							Int64 lhs, rhs;
 
@@ -412,14 +412,14 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs != rhs;
 						}
 						else if (leftType == typeof(UInt32) || leftType == typeof(UInt32?) ||
-						         rightType == typeof(UInt32) || rightType == typeof(UInt32?))
+								rightType == typeof(UInt32) || rightType == typeof(UInt32?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?))
 							{
 								UInt32 lhs, rhs;
 
@@ -449,9 +449,9 @@ namespace TextMetal.Framework.ExpressionModel
 						}
 					}
 					else if (typeof(IComparable).IsAssignableFrom(leftType) &&
-					         typeof(IComparable).IsAssignableFrom(rightType) &&
-					         rightType.IsAssignableFrom(leftType) &&
-					         leftType.IsAssignableFrom(rightType))
+							typeof(IComparable).IsAssignableFrom(rightType) &&
+							rightType.IsAssignableFrom(leftType) &&
+							leftType.IsAssignableFrom(rightType))
 					{
 						IComparable lhs, rhs;
 						int crv;
@@ -479,12 +479,12 @@ namespace TextMetal.Framework.ExpressionModel
 					if (numericTypes.Count(t => t == leftType) == 1 && numericTypes.Count(t => t == rightType) == 1)
 					{
 						if (leftType == typeof(Decimal) || leftType == typeof(Decimal?) ||
-						    rightType == typeof(Decimal) || rightType == typeof(Decimal?))
+							rightType == typeof(Decimal) || rightType == typeof(Decimal?))
 						{
 							if (leftType != typeof(Single) && leftType != typeof(Single?) &&
-							    rightType != typeof(Single) && rightType != typeof(Single?) &&
-							    leftType != typeof(Double) && leftType != typeof(Double?) &&
-							    rightType != typeof(Double) && rightType != typeof(Double?))
+								rightType != typeof(Single) && rightType != typeof(Single?) &&
+								leftType != typeof(Double) && leftType != typeof(Double?) &&
+								rightType != typeof(Double) && rightType != typeof(Double?))
 							{
 								Decimal lhs, rhs;
 
@@ -499,7 +499,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Double) || leftType == typeof(Double?) ||
-						         rightType == typeof(Double) || rightType == typeof(Double?))
+								rightType == typeof(Double) || rightType == typeof(Double?))
 						{
 							Double lhs, rhs;
 
@@ -509,7 +509,7 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs < rhs;
 						}
 						else if (leftType == typeof(Single) || leftType == typeof(Single?) ||
-						         rightType == typeof(Single) || rightType == typeof(Single?))
+								rightType == typeof(Single) || rightType == typeof(Single?))
 						{
 							Single lhs, rhs;
 
@@ -519,16 +519,16 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs < rhs;
 						}
 						else if (leftType == typeof(UInt64) || leftType == typeof(UInt64?) ||
-						         rightType == typeof(UInt64) || rightType == typeof(UInt64?))
+								rightType == typeof(UInt64) || rightType == typeof(UInt64?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?) &&
-							    leftType != typeof(Int64) && leftType != typeof(Int64?) &&
-							    rightType != typeof(Int64) && rightType != typeof(Int64?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?) &&
+								leftType != typeof(Int64) && leftType != typeof(Int64?) &&
+								rightType != typeof(Int64) && rightType != typeof(Int64?))
 							{
 								UInt64 lhs, rhs;
 
@@ -543,7 +543,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Int64) || leftType == typeof(Int64?) ||
-						         rightType == typeof(Int64) || rightType == typeof(Int64?))
+								rightType == typeof(Int64) || rightType == typeof(Int64?))
 						{
 							Int64 lhs, rhs;
 
@@ -553,14 +553,14 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs < rhs;
 						}
 						else if (leftType == typeof(UInt32) || leftType == typeof(UInt32?) ||
-						         rightType == typeof(UInt32) || rightType == typeof(UInt32?))
+								rightType == typeof(UInt32) || rightType == typeof(UInt32?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?))
 							{
 								UInt32 lhs, rhs;
 
@@ -590,9 +590,9 @@ namespace TextMetal.Framework.ExpressionModel
 						}
 					}
 					else if (typeof(IComparable).IsAssignableFrom(leftType) &&
-					         typeof(IComparable).IsAssignableFrom(rightType) &&
-					         rightType.IsAssignableFrom(leftType) &&
-					         leftType.IsAssignableFrom(rightType))
+							typeof(IComparable).IsAssignableFrom(rightType) &&
+							rightType.IsAssignableFrom(leftType) &&
+							leftType.IsAssignableFrom(rightType))
 					{
 						IComparable lhs, rhs;
 						int crv;
@@ -620,12 +620,12 @@ namespace TextMetal.Framework.ExpressionModel
 					if (numericTypes.Count(t => t == leftType) == 1 && numericTypes.Count(t => t == rightType) == 1)
 					{
 						if (leftType == typeof(Decimal) || leftType == typeof(Decimal?) ||
-						    rightType == typeof(Decimal) || rightType == typeof(Decimal?))
+							rightType == typeof(Decimal) || rightType == typeof(Decimal?))
 						{
 							if (leftType != typeof(Single) && leftType != typeof(Single?) &&
-							    rightType != typeof(Single) && rightType != typeof(Single?) &&
-							    leftType != typeof(Double) && leftType != typeof(Double?) &&
-							    rightType != typeof(Double) && rightType != typeof(Double?))
+								rightType != typeof(Single) && rightType != typeof(Single?) &&
+								leftType != typeof(Double) && leftType != typeof(Double?) &&
+								rightType != typeof(Double) && rightType != typeof(Double?))
 							{
 								Decimal lhs, rhs;
 
@@ -640,7 +640,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Double) || leftType == typeof(Double?) ||
-						         rightType == typeof(Double) || rightType == typeof(Double?))
+								rightType == typeof(Double) || rightType == typeof(Double?))
 						{
 							Double lhs, rhs;
 
@@ -650,7 +650,7 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs <= rhs;
 						}
 						else if (leftType == typeof(Single) || leftType == typeof(Single?) ||
-						         rightType == typeof(Single) || rightType == typeof(Single?))
+								rightType == typeof(Single) || rightType == typeof(Single?))
 						{
 							Single lhs, rhs;
 
@@ -660,16 +660,16 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs <= rhs;
 						}
 						else if (leftType == typeof(UInt64) || leftType == typeof(UInt64?) ||
-						         rightType == typeof(UInt64) || rightType == typeof(UInt64?))
+								rightType == typeof(UInt64) || rightType == typeof(UInt64?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?) &&
-							    leftType != typeof(Int64) && leftType != typeof(Int64?) &&
-							    rightType != typeof(Int64) && rightType != typeof(Int64?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?) &&
+								leftType != typeof(Int64) && leftType != typeof(Int64?) &&
+								rightType != typeof(Int64) && rightType != typeof(Int64?))
 							{
 								UInt64 lhs, rhs;
 
@@ -684,7 +684,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Int64) || leftType == typeof(Int64?) ||
-						         rightType == typeof(Int64) || rightType == typeof(Int64?))
+								rightType == typeof(Int64) || rightType == typeof(Int64?))
 						{
 							Int64 lhs, rhs;
 
@@ -694,14 +694,14 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs <= rhs;
 						}
 						else if (leftType == typeof(UInt32) || leftType == typeof(UInt32?) ||
-						         rightType == typeof(UInt32) || rightType == typeof(UInt32?))
+								rightType == typeof(UInt32) || rightType == typeof(UInt32?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?))
 							{
 								UInt32 lhs, rhs;
 
@@ -731,9 +731,9 @@ namespace TextMetal.Framework.ExpressionModel
 						}
 					}
 					else if (typeof(IComparable).IsAssignableFrom(leftType) &&
-					         typeof(IComparable).IsAssignableFrom(rightType) &&
-					         rightType.IsAssignableFrom(leftType) &&
-					         leftType.IsAssignableFrom(rightType))
+							typeof(IComparable).IsAssignableFrom(rightType) &&
+							rightType.IsAssignableFrom(leftType) &&
+							leftType.IsAssignableFrom(rightType))
 					{
 						IComparable lhs, rhs;
 						int crv;
@@ -761,12 +761,12 @@ namespace TextMetal.Framework.ExpressionModel
 					if (numericTypes.Count(t => t == leftType) == 1 && numericTypes.Count(t => t == rightType) == 1)
 					{
 						if (leftType == typeof(Decimal) || leftType == typeof(Decimal?) ||
-						    rightType == typeof(Decimal) || rightType == typeof(Decimal?))
+							rightType == typeof(Decimal) || rightType == typeof(Decimal?))
 						{
 							if (leftType != typeof(Single) && leftType != typeof(Single?) &&
-							    rightType != typeof(Single) && rightType != typeof(Single?) &&
-							    leftType != typeof(Double) && leftType != typeof(Double?) &&
-							    rightType != typeof(Double) && rightType != typeof(Double?))
+								rightType != typeof(Single) && rightType != typeof(Single?) &&
+								leftType != typeof(Double) && leftType != typeof(Double?) &&
+								rightType != typeof(Double) && rightType != typeof(Double?))
 							{
 								Decimal lhs, rhs;
 
@@ -781,7 +781,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Double) || leftType == typeof(Double?) ||
-						         rightType == typeof(Double) || rightType == typeof(Double?))
+								rightType == typeof(Double) || rightType == typeof(Double?))
 						{
 							Double lhs, rhs;
 
@@ -791,7 +791,7 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs > rhs;
 						}
 						else if (leftType == typeof(Single) || leftType == typeof(Single?) ||
-						         rightType == typeof(Single) || rightType == typeof(Single?))
+								rightType == typeof(Single) || rightType == typeof(Single?))
 						{
 							Single lhs, rhs;
 
@@ -801,16 +801,16 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs > rhs;
 						}
 						else if (leftType == typeof(UInt64) || leftType == typeof(UInt64?) ||
-						         rightType == typeof(UInt64) || rightType == typeof(UInt64?))
+								rightType == typeof(UInt64) || rightType == typeof(UInt64?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?) &&
-							    leftType != typeof(Int64) && leftType != typeof(Int64?) &&
-							    rightType != typeof(Int64) && rightType != typeof(Int64?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?) &&
+								leftType != typeof(Int64) && leftType != typeof(Int64?) &&
+								rightType != typeof(Int64) && rightType != typeof(Int64?))
 							{
 								UInt64 lhs, rhs;
 
@@ -825,7 +825,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Int64) || leftType == typeof(Int64?) ||
-						         rightType == typeof(Int64) || rightType == typeof(Int64?))
+								rightType == typeof(Int64) || rightType == typeof(Int64?))
 						{
 							Int64 lhs, rhs;
 
@@ -835,14 +835,14 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs > rhs;
 						}
 						else if (leftType == typeof(UInt32) || leftType == typeof(UInt32?) ||
-						         rightType == typeof(UInt32) || rightType == typeof(UInt32?))
+								rightType == typeof(UInt32) || rightType == typeof(UInt32?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?))
 							{
 								UInt32 lhs, rhs;
 
@@ -872,9 +872,9 @@ namespace TextMetal.Framework.ExpressionModel
 						}
 					}
 					else if (typeof(IComparable).IsAssignableFrom(leftType) &&
-					         typeof(IComparable).IsAssignableFrom(rightType) &&
-					         rightType.IsAssignableFrom(leftType) &&
-					         leftType.IsAssignableFrom(rightType))
+							typeof(IComparable).IsAssignableFrom(rightType) &&
+							rightType.IsAssignableFrom(leftType) &&
+							leftType.IsAssignableFrom(rightType))
 					{
 						IComparable lhs, rhs;
 						int crv;
@@ -902,12 +902,12 @@ namespace TextMetal.Framework.ExpressionModel
 					if (numericTypes.Count(t => t == leftType) == 1 && numericTypes.Count(t => t == rightType) == 1)
 					{
 						if (leftType == typeof(Decimal) || leftType == typeof(Decimal?) ||
-						    rightType == typeof(Decimal) || rightType == typeof(Decimal?))
+							rightType == typeof(Decimal) || rightType == typeof(Decimal?))
 						{
 							if (leftType != typeof(Single) && leftType != typeof(Single?) &&
-							    rightType != typeof(Single) && rightType != typeof(Single?) &&
-							    leftType != typeof(Double) && leftType != typeof(Double?) &&
-							    rightType != typeof(Double) && rightType != typeof(Double?))
+								rightType != typeof(Single) && rightType != typeof(Single?) &&
+								leftType != typeof(Double) && leftType != typeof(Double?) &&
+								rightType != typeof(Double) && rightType != typeof(Double?))
 							{
 								Decimal lhs, rhs;
 
@@ -922,7 +922,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Double) || leftType == typeof(Double?) ||
-						         rightType == typeof(Double) || rightType == typeof(Double?))
+								rightType == typeof(Double) || rightType == typeof(Double?))
 						{
 							Double lhs, rhs;
 
@@ -932,7 +932,7 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs >= rhs;
 						}
 						else if (leftType == typeof(Single) || leftType == typeof(Single?) ||
-						         rightType == typeof(Single) || rightType == typeof(Single?))
+								rightType == typeof(Single) || rightType == typeof(Single?))
 						{
 							Single lhs, rhs;
 
@@ -942,16 +942,16 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs >= rhs;
 						}
 						else if (leftType == typeof(UInt64) || leftType == typeof(UInt64?) ||
-						         rightType == typeof(UInt64) || rightType == typeof(UInt64?))
+								rightType == typeof(UInt64) || rightType == typeof(UInt64?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?) &&
-							    leftType != typeof(Int64) && leftType != typeof(Int64?) &&
-							    rightType != typeof(Int64) && rightType != typeof(Int64?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?) &&
+								leftType != typeof(Int64) && leftType != typeof(Int64?) &&
+								rightType != typeof(Int64) && rightType != typeof(Int64?))
 							{
 								UInt64 lhs, rhs;
 
@@ -966,7 +966,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Int64) || leftType == typeof(Int64?) ||
-						         rightType == typeof(Int64) || rightType == typeof(Int64?))
+								rightType == typeof(Int64) || rightType == typeof(Int64?))
 						{
 							Int64 lhs, rhs;
 
@@ -976,14 +976,14 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs >= rhs;
 						}
 						else if (leftType == typeof(UInt32) || leftType == typeof(UInt32?) ||
-						         rightType == typeof(UInt32) || rightType == typeof(UInt32?))
+								rightType == typeof(UInt32) || rightType == typeof(UInt32?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?))
 							{
 								UInt32 lhs, rhs;
 
@@ -1013,9 +1013,9 @@ namespace TextMetal.Framework.ExpressionModel
 						}
 					}
 					else if (typeof(IComparable).IsAssignableFrom(leftType) &&
-					         typeof(IComparable).IsAssignableFrom(rightType) &&
-					         rightType.IsAssignableFrom(leftType) &&
-					         leftType.IsAssignableFrom(rightType))
+							typeof(IComparable).IsAssignableFrom(rightType) &&
+							rightType.IsAssignableFrom(leftType) &&
+							leftType.IsAssignableFrom(rightType))
 					{
 						IComparable lhs, rhs;
 						int crv;
@@ -1043,12 +1043,12 @@ namespace TextMetal.Framework.ExpressionModel
 					if (numericTypes.Count(t => t == leftType) == 1 && numericTypes.Count(t => t == rightType) == 1)
 					{
 						if (leftType == typeof(Decimal) || leftType == typeof(Decimal?) ||
-						    rightType == typeof(Decimal) || rightType == typeof(Decimal?))
+							rightType == typeof(Decimal) || rightType == typeof(Decimal?))
 						{
 							if (leftType != typeof(Single) && leftType != typeof(Single?) &&
-							    rightType != typeof(Single) && rightType != typeof(Single?) &&
-							    leftType != typeof(Double) && leftType != typeof(Double?) &&
-							    rightType != typeof(Double) && rightType != typeof(Double?))
+								rightType != typeof(Single) && rightType != typeof(Single?) &&
+								leftType != typeof(Double) && leftType != typeof(Double?) &&
+								rightType != typeof(Double) && rightType != typeof(Double?))
 							{
 								Decimal lhs, rhs;
 
@@ -1063,7 +1063,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Double) || leftType == typeof(Double?) ||
-						         rightType == typeof(Double) || rightType == typeof(Double?))
+								rightType == typeof(Double) || rightType == typeof(Double?))
 						{
 							Double lhs, rhs;
 
@@ -1073,7 +1073,7 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs + rhs;
 						}
 						else if (leftType == typeof(Single) || leftType == typeof(Single?) ||
-						         rightType == typeof(Single) || rightType == typeof(Single?))
+								rightType == typeof(Single) || rightType == typeof(Single?))
 						{
 							Single lhs, rhs;
 
@@ -1083,16 +1083,16 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs + rhs;
 						}
 						else if (leftType == typeof(UInt64) || leftType == typeof(UInt64?) ||
-						         rightType == typeof(UInt64) || rightType == typeof(UInt64?))
+								rightType == typeof(UInt64) || rightType == typeof(UInt64?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?) &&
-							    leftType != typeof(Int64) && leftType != typeof(Int64?) &&
-							    rightType != typeof(Int64) && rightType != typeof(Int64?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?) &&
+								leftType != typeof(Int64) && leftType != typeof(Int64?) &&
+								rightType != typeof(Int64) && rightType != typeof(Int64?))
 							{
 								UInt64 lhs, rhs;
 
@@ -1107,7 +1107,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Int64) || leftType == typeof(Int64?) ||
-						         rightType == typeof(Int64) || rightType == typeof(Int64?))
+								rightType == typeof(Int64) || rightType == typeof(Int64?))
 						{
 							Int64 lhs, rhs;
 
@@ -1117,14 +1117,14 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs + rhs;
 						}
 						else if (leftType == typeof(UInt32) || leftType == typeof(UInt32?) ||
-						         rightType == typeof(UInt32) || rightType == typeof(UInt32?))
+								rightType == typeof(UInt32) || rightType == typeof(UInt32?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?))
 							{
 								UInt32 lhs, rhs;
 
@@ -1168,12 +1168,12 @@ namespace TextMetal.Framework.ExpressionModel
 					if (numericTypes.Count(t => t == leftType) == 1 && numericTypes.Count(t => t == rightType) == 1)
 					{
 						if (leftType == typeof(Decimal) || leftType == typeof(Decimal?) ||
-						    rightType == typeof(Decimal) || rightType == typeof(Decimal?))
+							rightType == typeof(Decimal) || rightType == typeof(Decimal?))
 						{
 							if (leftType != typeof(Single) && leftType != typeof(Single?) &&
-							    rightType != typeof(Single) && rightType != typeof(Single?) &&
-							    leftType != typeof(Double) && leftType != typeof(Double?) &&
-							    rightType != typeof(Double) && rightType != typeof(Double?))
+								rightType != typeof(Single) && rightType != typeof(Single?) &&
+								leftType != typeof(Double) && leftType != typeof(Double?) &&
+								rightType != typeof(Double) && rightType != typeof(Double?))
 							{
 								Decimal lhs, rhs;
 
@@ -1188,7 +1188,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Double) || leftType == typeof(Double?) ||
-						         rightType == typeof(Double) || rightType == typeof(Double?))
+								rightType == typeof(Double) || rightType == typeof(Double?))
 						{
 							Double lhs, rhs;
 
@@ -1198,7 +1198,7 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs - rhs;
 						}
 						else if (leftType == typeof(Single) || leftType == typeof(Single?) ||
-						         rightType == typeof(Single) || rightType == typeof(Single?))
+								rightType == typeof(Single) || rightType == typeof(Single?))
 						{
 							Single lhs, rhs;
 
@@ -1208,16 +1208,16 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs - rhs;
 						}
 						else if (leftType == typeof(UInt64) || leftType == typeof(UInt64?) ||
-						         rightType == typeof(UInt64) || rightType == typeof(UInt64?))
+								rightType == typeof(UInt64) || rightType == typeof(UInt64?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?) &&
-							    leftType != typeof(Int64) && leftType != typeof(Int64?) &&
-							    rightType != typeof(Int64) && rightType != typeof(Int64?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?) &&
+								leftType != typeof(Int64) && leftType != typeof(Int64?) &&
+								rightType != typeof(Int64) && rightType != typeof(Int64?))
 							{
 								UInt64 lhs, rhs;
 
@@ -1232,7 +1232,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Int64) || leftType == typeof(Int64?) ||
-						         rightType == typeof(Int64) || rightType == typeof(Int64?))
+								rightType == typeof(Int64) || rightType == typeof(Int64?))
 						{
 							Int64 lhs, rhs;
 
@@ -1242,14 +1242,14 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs - rhs;
 						}
 						else if (leftType == typeof(UInt32) || leftType == typeof(UInt32?) ||
-						         rightType == typeof(UInt32) || rightType == typeof(UInt32?))
+								rightType == typeof(UInt32) || rightType == typeof(UInt32?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?))
 							{
 								UInt32 lhs, rhs;
 
@@ -1293,12 +1293,12 @@ namespace TextMetal.Framework.ExpressionModel
 					if (numericTypes.Count(t => t == leftType) == 1 && numericTypes.Count(t => t == rightType) == 1)
 					{
 						if (leftType == typeof(Decimal) || leftType == typeof(Decimal?) ||
-						    rightType == typeof(Decimal) || rightType == typeof(Decimal?))
+							rightType == typeof(Decimal) || rightType == typeof(Decimal?))
 						{
 							if (leftType != typeof(Single) && leftType != typeof(Single?) &&
-							    rightType != typeof(Single) && rightType != typeof(Single?) &&
-							    leftType != typeof(Double) && leftType != typeof(Double?) &&
-							    rightType != typeof(Double) && rightType != typeof(Double?))
+								rightType != typeof(Single) && rightType != typeof(Single?) &&
+								leftType != typeof(Double) && leftType != typeof(Double?) &&
+								rightType != typeof(Double) && rightType != typeof(Double?))
 							{
 								Decimal lhs, rhs;
 
@@ -1313,7 +1313,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Double) || leftType == typeof(Double?) ||
-						         rightType == typeof(Double) || rightType == typeof(Double?))
+								rightType == typeof(Double) || rightType == typeof(Double?))
 						{
 							Double lhs, rhs;
 
@@ -1323,7 +1323,7 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs * rhs;
 						}
 						else if (leftType == typeof(Single) || leftType == typeof(Single?) ||
-						         rightType == typeof(Single) || rightType == typeof(Single?))
+								rightType == typeof(Single) || rightType == typeof(Single?))
 						{
 							Single lhs, rhs;
 
@@ -1333,16 +1333,16 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs * rhs;
 						}
 						else if (leftType == typeof(UInt64) || leftType == typeof(UInt64?) ||
-						         rightType == typeof(UInt64) || rightType == typeof(UInt64?))
+								rightType == typeof(UInt64) || rightType == typeof(UInt64?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?) &&
-							    leftType != typeof(Int64) && leftType != typeof(Int64?) &&
-							    rightType != typeof(Int64) && rightType != typeof(Int64?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?) &&
+								leftType != typeof(Int64) && leftType != typeof(Int64?) &&
+								rightType != typeof(Int64) && rightType != typeof(Int64?))
 							{
 								UInt64 lhs, rhs;
 
@@ -1357,7 +1357,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Int64) || leftType == typeof(Int64?) ||
-						         rightType == typeof(Int64) || rightType == typeof(Int64?))
+								rightType == typeof(Int64) || rightType == typeof(Int64?))
 						{
 							Int64 lhs, rhs;
 
@@ -1367,14 +1367,14 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs * rhs;
 						}
 						else if (leftType == typeof(UInt32) || leftType == typeof(UInt32?) ||
-						         rightType == typeof(UInt32) || rightType == typeof(UInt32?))
+								rightType == typeof(UInt32) || rightType == typeof(UInt32?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?))
 							{
 								UInt32 lhs, rhs;
 
@@ -1418,12 +1418,12 @@ namespace TextMetal.Framework.ExpressionModel
 					if (numericTypes.Count(t => t == leftType) == 1 && numericTypes.Count(t => t == rightType) == 1)
 					{
 						if (leftType == typeof(Decimal) || leftType == typeof(Decimal?) ||
-						    rightType == typeof(Decimal) || rightType == typeof(Decimal?))
+							rightType == typeof(Decimal) || rightType == typeof(Decimal?))
 						{
 							if (leftType != typeof(Single) && leftType != typeof(Single?) &&
-							    rightType != typeof(Single) && rightType != typeof(Single?) &&
-							    leftType != typeof(Double) && leftType != typeof(Double?) &&
-							    rightType != typeof(Double) && rightType != typeof(Double?))
+								rightType != typeof(Single) && rightType != typeof(Single?) &&
+								leftType != typeof(Double) && leftType != typeof(Double?) &&
+								rightType != typeof(Double) && rightType != typeof(Double?))
 							{
 								Decimal lhs, rhs;
 
@@ -1438,7 +1438,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Double) || leftType == typeof(Double?) ||
-						         rightType == typeof(Double) || rightType == typeof(Double?))
+								rightType == typeof(Double) || rightType == typeof(Double?))
 						{
 							Double lhs, rhs;
 
@@ -1448,7 +1448,7 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs / rhs;
 						}
 						else if (leftType == typeof(Single) || leftType == typeof(Single?) ||
-						         rightType == typeof(Single) || rightType == typeof(Single?))
+								rightType == typeof(Single) || rightType == typeof(Single?))
 						{
 							Single lhs, rhs;
 
@@ -1458,16 +1458,16 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs / rhs;
 						}
 						else if (leftType == typeof(UInt64) || leftType == typeof(UInt64?) ||
-						         rightType == typeof(UInt64) || rightType == typeof(UInt64?))
+								rightType == typeof(UInt64) || rightType == typeof(UInt64?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?) &&
-							    leftType != typeof(Int64) && leftType != typeof(Int64?) &&
-							    rightType != typeof(Int64) && rightType != typeof(Int64?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?) &&
+								leftType != typeof(Int64) && leftType != typeof(Int64?) &&
+								rightType != typeof(Int64) && rightType != typeof(Int64?))
 							{
 								UInt64 lhs, rhs;
 
@@ -1482,7 +1482,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Int64) || leftType == typeof(Int64?) ||
-						         rightType == typeof(Int64) || rightType == typeof(Int64?))
+								rightType == typeof(Int64) || rightType == typeof(Int64?))
 						{
 							Int64 lhs, rhs;
 
@@ -1492,14 +1492,14 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs / rhs;
 						}
 						else if (leftType == typeof(UInt32) || leftType == typeof(UInt32?) ||
-						         rightType == typeof(UInt32) || rightType == typeof(UInt32?))
+								rightType == typeof(UInt32) || rightType == typeof(UInt32?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?))
 							{
 								UInt32 lhs, rhs;
 
@@ -1543,12 +1543,12 @@ namespace TextMetal.Framework.ExpressionModel
 					if (numericTypes.Count(t => t == leftType) == 1 && numericTypes.Count(t => t == rightType) == 1)
 					{
 						if (leftType == typeof(Decimal) || leftType == typeof(Decimal?) ||
-						    rightType == typeof(Decimal) || rightType == typeof(Decimal?))
+							rightType == typeof(Decimal) || rightType == typeof(Decimal?))
 						{
 							if (leftType != typeof(Single) && leftType != typeof(Single?) &&
-							    rightType != typeof(Single) && rightType != typeof(Single?) &&
-							    leftType != typeof(Double) && leftType != typeof(Double?) &&
-							    rightType != typeof(Double) && rightType != typeof(Double?))
+								rightType != typeof(Single) && rightType != typeof(Single?) &&
+								leftType != typeof(Double) && leftType != typeof(Double?) &&
+								rightType != typeof(Double) && rightType != typeof(Double?))
 							{
 								Decimal lhs, rhs;
 
@@ -1563,7 +1563,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Double) || leftType == typeof(Double?) ||
-						         rightType == typeof(Double) || rightType == typeof(Double?))
+								rightType == typeof(Double) || rightType == typeof(Double?))
 						{
 							Double lhs, rhs;
 
@@ -1573,7 +1573,7 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs % rhs;
 						}
 						else if (leftType == typeof(Single) || leftType == typeof(Single?) ||
-						         rightType == typeof(Single) || rightType == typeof(Single?))
+								rightType == typeof(Single) || rightType == typeof(Single?))
 						{
 							Single lhs, rhs;
 
@@ -1583,16 +1583,16 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs % rhs;
 						}
 						else if (leftType == typeof(UInt64) || leftType == typeof(UInt64?) ||
-						         rightType == typeof(UInt64) || rightType == typeof(UInt64?))
+								rightType == typeof(UInt64) || rightType == typeof(UInt64?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?) &&
-							    leftType != typeof(Int64) && leftType != typeof(Int64?) &&
-							    rightType != typeof(Int64) && rightType != typeof(Int64?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?) &&
+								leftType != typeof(Int64) && leftType != typeof(Int64?) &&
+								rightType != typeof(Int64) && rightType != typeof(Int64?))
 							{
 								UInt64 lhs, rhs;
 
@@ -1607,7 +1607,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Int64) || leftType == typeof(Int64?) ||
-						         rightType == typeof(Int64) || rightType == typeof(Int64?))
+								rightType == typeof(Int64) || rightType == typeof(Int64?))
 						{
 							Int64 lhs, rhs;
 
@@ -1617,14 +1617,14 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs % rhs;
 						}
 						else if (leftType == typeof(UInt32) || leftType == typeof(UInt32?) ||
-						         rightType == typeof(UInt32) || rightType == typeof(UInt32?))
+								rightType == typeof(UInt32) || rightType == typeof(UInt32?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?))
 							{
 								UInt32 lhs, rhs;
 
@@ -1668,16 +1668,16 @@ namespace TextMetal.Framework.ExpressionModel
 					if (numericTypes.Count(t => t == leftType) == 1 && numericTypes.Count(t => t == rightType) == 1)
 					{
 						if (leftType == typeof(UInt64) || leftType == typeof(UInt64?) ||
-						    rightType == typeof(UInt64) || rightType == typeof(UInt64?))
+							rightType == typeof(UInt64) || rightType == typeof(UInt64?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?) &&
-							    leftType != typeof(Int64) && leftType != typeof(Int64?) &&
-							    rightType != typeof(Int64) && rightType != typeof(Int64?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?) &&
+								leftType != typeof(Int64) && leftType != typeof(Int64?) &&
+								rightType != typeof(Int64) && rightType != typeof(Int64?))
 							{
 								UInt64 lhs, rhs;
 
@@ -1692,7 +1692,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Int64) || leftType == typeof(Int64?) ||
-						         rightType == typeof(Int64) || rightType == typeof(Int64?))
+								rightType == typeof(Int64) || rightType == typeof(Int64?))
 						{
 							Int64 lhs, rhs;
 
@@ -1702,14 +1702,14 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs & rhs;
 						}
 						else if (leftType == typeof(UInt32) || leftType == typeof(UInt32?) ||
-						         rightType == typeof(UInt32) || rightType == typeof(UInt32?))
+								rightType == typeof(UInt32) || rightType == typeof(UInt32?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?))
 							{
 								UInt32 lhs, rhs;
 
@@ -1753,16 +1753,16 @@ namespace TextMetal.Framework.ExpressionModel
 					if (numericTypes.Count(t => t == leftType) == 1 && numericTypes.Count(t => t == rightType) == 1)
 					{
 						if (leftType == typeof(UInt64) || leftType == typeof(UInt64?) ||
-						    rightType == typeof(UInt64) || rightType == typeof(UInt64?))
+							rightType == typeof(UInt64) || rightType == typeof(UInt64?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?) &&
-							    leftType != typeof(Int64) && leftType != typeof(Int64?) &&
-							    rightType != typeof(Int64) && rightType != typeof(Int64?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?) &&
+								leftType != typeof(Int64) && leftType != typeof(Int64?) &&
+								rightType != typeof(Int64) && rightType != typeof(Int64?))
 							{
 								UInt64 lhs, rhs;
 
@@ -1777,7 +1777,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Int64) || leftType == typeof(Int64?) ||
-						         rightType == typeof(Int64) || rightType == typeof(Int64?))
+								rightType == typeof(Int64) || rightType == typeof(Int64?))
 						{
 							Int64 lhs, rhs;
 
@@ -1787,14 +1787,14 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs | rhs;
 						}
 						else if (leftType == typeof(UInt32) || leftType == typeof(UInt32?) ||
-						         rightType == typeof(UInt32) || rightType == typeof(UInt32?))
+								rightType == typeof(UInt32) || rightType == typeof(UInt32?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?))
 							{
 								UInt32 lhs, rhs;
 
@@ -1838,16 +1838,16 @@ namespace TextMetal.Framework.ExpressionModel
 					if (numericTypes.Count(t => t == leftType) == 1 && numericTypes.Count(t => t == rightType) == 1)
 					{
 						if (leftType == typeof(UInt64) || leftType == typeof(UInt64?) ||
-						    rightType == typeof(UInt64) || rightType == typeof(UInt64?))
+							rightType == typeof(UInt64) || rightType == typeof(UInt64?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?) &&
-							    leftType != typeof(Int64) && leftType != typeof(Int64?) &&
-							    rightType != typeof(Int64) && rightType != typeof(Int64?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?) &&
+								leftType != typeof(Int64) && leftType != typeof(Int64?) &&
+								rightType != typeof(Int64) && rightType != typeof(Int64?))
 							{
 								UInt64 lhs, rhs;
 
@@ -1862,7 +1862,7 @@ namespace TextMetal.Framework.ExpressionModel
 							}
 						}
 						else if (leftType == typeof(Int64) || leftType == typeof(Int64?) ||
-						         rightType == typeof(Int64) || rightType == typeof(Int64?))
+								rightType == typeof(Int64) || rightType == typeof(Int64?))
 						{
 							Int64 lhs, rhs;
 
@@ -1872,14 +1872,14 @@ namespace TextMetal.Framework.ExpressionModel
 							return lhs ^ rhs;
 						}
 						else if (leftType == typeof(UInt32) || leftType == typeof(UInt32?) ||
-						         rightType == typeof(UInt32) || rightType == typeof(UInt32?))
+								rightType == typeof(UInt32) || rightType == typeof(UInt32?))
 						{
 							if (leftType != typeof(SByte) && leftType != typeof(SByte?) &&
-							    rightType != typeof(SByte) && rightType != typeof(SByte?) &&
-							    leftType != typeof(Int16) && leftType != typeof(Int16?) &&
-							    rightType != typeof(Int16) && rightType != typeof(Int16?) &&
-							    leftType != typeof(Int32) && leftType != typeof(Int32?) &&
-							    rightType != typeof(Int32) && rightType != typeof(Int32?))
+								rightType != typeof(SByte) && rightType != typeof(SByte?) &&
+								leftType != typeof(Int16) && leftType != typeof(Int16?) &&
+								rightType != typeof(Int16) && rightType != typeof(Int16?) &&
+								leftType != typeof(Int32) && leftType != typeof(Int32?) &&
+								rightType != typeof(Int32) && rightType != typeof(Int32?))
 							{
 								UInt32 lhs, rhs;
 
@@ -1923,7 +1923,7 @@ namespace TextMetal.Framework.ExpressionModel
 					if (numericTypes.Count(t => t == leftType) == 1 && numericTypes.Count(t => t == rightType) == 1)
 					{
 						if ((leftType == typeof(Int32) || leftType == typeof(Int32?)) &&
-						    (rightType == typeof(Int32) || rightType == typeof(Int32?)))
+							(rightType == typeof(Int32) || rightType == typeof(Int32?)))
 						{
 							Int32 lhs, rhs;
 
@@ -1948,7 +1948,7 @@ namespace TextMetal.Framework.ExpressionModel
 					if (numericTypes.Count(t => t == leftType) == 1 && numericTypes.Count(t => t == rightType) == 1)
 					{
 						if ((leftType == typeof(Int32) || leftType == typeof(Int32?)) &&
-						    (rightType == typeof(Int32) || rightType == typeof(Int32?)))
+							(rightType == typeof(Int32) || rightType == typeof(Int32?)))
 						{
 							Int32 lhs, rhs;
 
@@ -1973,7 +1973,7 @@ namespace TextMetal.Framework.ExpressionModel
 					if (numericTypes.Count(t => t == leftType) == 1 && numericTypes.Count(t => t == rightType) == 1)
 					{
 						if ((leftType == typeof(Int32) || leftType == typeof(Int32?)) &&
-						    (rightType == typeof(Int32) || rightType == typeof(Int32?)))
+							(rightType == typeof(Int32) || rightType == typeof(Int32?)))
 						{
 							Int32 lhs, rhs;
 
@@ -1998,7 +1998,7 @@ namespace TextMetal.Framework.ExpressionModel
 					if (numericTypes.Count(t => t == leftType) == 1 && numericTypes.Count(t => t == rightType) == 1)
 					{
 						if ((leftType == typeof(Int32) || leftType == typeof(Int32?)) &&
-						    (rightType == typeof(Int32) || rightType == typeof(Int32?)))
+							(rightType == typeof(Int32) || rightType == typeof(Int32?)))
 						{
 							Int32 lhs, rhs;
 
@@ -2244,10 +2244,10 @@ namespace TextMetal.Framework.ExpressionModel
 						expressionContainerConstruct = new ExpressionContainerConstruct();
 
 						valueConstruct = new ValueConstruct()
-						                 {
-							                 Type = (object)rightType != null ? rightType.FullName : null,
-							                 __ = rightObj
-						                 };
+										{
+											Type = (object)rightType != null ? rightType.FullName : null,
+											__ = rightObj
+										};
 
 						((IContentContainerXmlObject<IExpressionXmlObject>)expressionContainerConstruct).Content = valueConstruct;
 

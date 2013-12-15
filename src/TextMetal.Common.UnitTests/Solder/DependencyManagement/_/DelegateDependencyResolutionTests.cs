@@ -63,7 +63,7 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 
 			mockery = new Mockery();
 			mockDependencyManager = mockery.NewMock<IDependencyManager>();
-			
+
 			value = () => 11;
 
 			delegateDependencyResolution = new DelegateDependencyResolution(value);

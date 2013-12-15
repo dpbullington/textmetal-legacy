@@ -127,7 +127,7 @@ namespace TextMetal.Common.Core.StringTokens
 
 					if ((object)targetType == null)
 						throw new InvalidOperationException(string.Format("StaticPropertyResolver paramter at index '{0}' with value '{1}' was not a valid, loadable CLR type.", 0, parameters[0]));
-					
+
 					index++;
 				}
 				else if (index == 1) // property-name
@@ -144,9 +144,7 @@ namespace TextMetal.Common.Core.StringTokens
 					index++;
 				}
 				else
-				{
 					throw new InvalidOperationException(string.Format("StaticPropertyResolver paramter at index '{0}' cannot be specified for properties.", index));
-				}
 			}
 
 			return propertyValue;

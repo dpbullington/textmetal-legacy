@@ -5,6 +5,7 @@
 
 -- unique key columns (refs)[schema, unique key]
 select
+	cast(null as int) as ObjectId,
 	sys_s_us.name as SchemaName,	
 	sys_t_us.name as TableName,
 	sys_kc.name as UniqueKeyName,	

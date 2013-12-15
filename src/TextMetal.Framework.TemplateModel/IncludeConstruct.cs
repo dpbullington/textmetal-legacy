@@ -69,9 +69,9 @@ namespace TextMetal.Framework.TemplateModel
 
 			expressionContainerConstruct = new ExpressionContainerConstruct();
 			((IContentContainerXmlObject<IExpressionXmlObject>)expressionContainerConstruct).Content = new ValueConstruct()
-			                                       {
-				                                       __ = content
-			                                       };
+																										{
+																											__ = content
+																										};
 
 			new WriteConstruct()
 			{

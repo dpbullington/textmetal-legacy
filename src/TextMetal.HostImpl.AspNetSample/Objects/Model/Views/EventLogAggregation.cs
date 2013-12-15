@@ -11,7 +11,7 @@ using TextMetal.Common.Core;
 namespace TextMetal.HostImpl.AspNetSample.Objects.Model.Views
 {
 	public partial class EventLogAggregation
-	{		
+	{
 		#region Methods/Operators
 
 		public void Mark()
@@ -21,7 +21,7 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model.Views
 		public virtual Message[] Validate()
 		{
 			List<Message> messages;
-			
+
 			messages = new List<Message>();
 
 			return messages.ToArray();

@@ -12,7 +12,7 @@ using TextMetal.Common.Core;
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	public class Parameter
+	public class Parameter : DatabaseSchemaModelBase
 	{
 		#region Constructors/Destructors
 

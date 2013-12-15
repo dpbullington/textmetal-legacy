@@ -5,6 +5,7 @@
 
 -- columns[schema, table|view]
 select
+	cast(null as int) as ObjectId,
 	sys_s.name as SchemaName,
 	sys_o.name as TableName,
 	sys_c.name as ColumnName,

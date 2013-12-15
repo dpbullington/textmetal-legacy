@@ -5,6 +5,7 @@
 
 -- database (not catalog, actual dataabse)
 select
+	cast(null as int) as ObjectId,
 	SERVERPROPERTY('MachineName') as MachineName,
 	SERVERPROPERTY('InstanceName') as InstanceName,
 	SERVERPROPERTY('productversion') as ServerVersion,

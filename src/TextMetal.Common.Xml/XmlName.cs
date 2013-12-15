@@ -77,7 +77,7 @@ namespace TextMetal.Common.Xml
 		private static bool TestEquals(XmlName a, XmlName b)
 		{
 			return (a.LocalName == b.LocalName) &&
-			       (a.NamespaceUri == b.NamespaceUri);
+					(a.NamespaceUri == b.NamespaceUri);
 		}
 
 		/// <summary>

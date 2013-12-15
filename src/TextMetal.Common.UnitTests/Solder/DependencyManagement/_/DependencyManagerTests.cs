@@ -989,7 +989,7 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 			mockDependencyResolution = mockery.NewMock<IDependencyResolution>();
 
 			Expect.Once.On(mockDependencyResolution).Method("Resolve").With(dependencyManager).Will(Return.Value(1));
-			
+
 			targetType = typeof(object);
 			selectorKey = "x";
 

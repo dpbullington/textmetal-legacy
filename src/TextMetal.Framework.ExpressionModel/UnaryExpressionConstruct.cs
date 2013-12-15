@@ -112,8 +112,8 @@ namespace TextMetal.Framework.ExpressionModel
 			}
 
 			if ((object)theObj == null &&
-			    this.UnaryOperator != UnaryOperator.IsNull &&
-			    this.UnaryOperator != UnaryOperator.IsNotNull)
+				this.UnaryOperator != UnaryOperator.IsNull &&
+				this.UnaryOperator != UnaryOperator.IsNotNull)
 				return null;
 
 			switch (this.UnaryOperator)
@@ -159,7 +159,7 @@ namespace TextMetal.Framework.ExpressionModel
 				case UnaryOperator.BComp:
 				{
 					if (theType == typeof(SByte) || theType == typeof(Byte) || theType == typeof(Int16) || theType == typeof(UInt16) || theType == typeof(Char) ||
-					    theType == typeof(SByte?) || theType == typeof(Byte?) || theType == typeof(Int16?) || theType == typeof(UInt16?) || theType == typeof(Char?))
+						theType == typeof(SByte?) || theType == typeof(Byte?) || theType == typeof(Int16?) || theType == typeof(UInt16?) || theType == typeof(Char?))
 					{
 						// promote to Int32
 						theType = typeof(Int32);
@@ -167,7 +167,7 @@ namespace TextMetal.Framework.ExpressionModel
 					}
 
 					if (theType == typeof(Int32) ||
-					    theType == typeof(Int32?))
+						theType == typeof(Int32?))
 					{
 						Int32 ths;
 
@@ -213,7 +213,7 @@ namespace TextMetal.Framework.ExpressionModel
 				case UnaryOperator.Decr:
 				{
 					if (theType == typeof(SByte) || theType == typeof(Byte) || theType == typeof(Int16) || theType == typeof(UInt16) || theType == typeof(Char) ||
-					    theType == typeof(SByte?) || theType == typeof(Byte?) || theType == typeof(Int16?) || theType == typeof(UInt16?) || theType == typeof(Char?))
+						theType == typeof(SByte?) || theType == typeof(Byte?) || theType == typeof(Int16?) || theType == typeof(UInt16?) || theType == typeof(Char?))
 					{
 						// promote to Int32
 						theType = typeof(Int32);
@@ -221,7 +221,7 @@ namespace TextMetal.Framework.ExpressionModel
 					}
 
 					if (theType == typeof(Int32) ||
-					    theType == typeof(Int32?))
+						theType == typeof(Int32?))
 					{
 						Int32 ths;
 
@@ -291,7 +291,7 @@ namespace TextMetal.Framework.ExpressionModel
 				case UnaryOperator.Incr:
 				{
 					if (theType == typeof(SByte) || theType == typeof(Byte) || theType == typeof(Int16) || theType == typeof(UInt16) || theType == typeof(Char) ||
-					    theType == typeof(SByte?) || theType == typeof(Byte?) || theType == typeof(Int16?) || theType == typeof(UInt16?) || theType == typeof(Char?))
+						theType == typeof(SByte?) || theType == typeof(Byte?) || theType == typeof(Int16?) || theType == typeof(UInt16?) || theType == typeof(Char?))
 					{
 						// promote to Int32
 						theType = typeof(Int32);
@@ -299,7 +299,7 @@ namespace TextMetal.Framework.ExpressionModel
 					}
 
 					if (theType == typeof(Int32) ||
-					    theType == typeof(Int32?))
+						theType == typeof(Int32?))
 					{
 						Int32 ths;
 
@@ -369,7 +369,7 @@ namespace TextMetal.Framework.ExpressionModel
 				case UnaryOperator.Neg:
 				{
 					if (theType == typeof(SByte) || theType == typeof(Byte) || theType == typeof(Int16) || theType == typeof(UInt16) || theType == typeof(Char) ||
-					    theType == typeof(SByte?) || theType == typeof(Byte?) || theType == typeof(Int16?) || theType == typeof(UInt16?) || theType == typeof(Char?))
+						theType == typeof(SByte?) || theType == typeof(Byte?) || theType == typeof(Int16?) || theType == typeof(UInt16?) || theType == typeof(Char?))
 					{
 						// promote to Int32
 						theType = typeof(Int32);
@@ -377,7 +377,7 @@ namespace TextMetal.Framework.ExpressionModel
 					}
 
 					if (theType == typeof(UInt32) ||
-					    theType == typeof(UInt32?))
+						theType == typeof(UInt32?))
 					{
 						// promote to Int64
 						theType = typeof(Int64);
@@ -385,7 +385,7 @@ namespace TextMetal.Framework.ExpressionModel
 					}
 
 					if (theType == typeof(Int32) ||
-					    theType == typeof(Int32?))
+						theType == typeof(Int32?))
 					{
 						Int32 ths;
 
@@ -455,7 +455,7 @@ namespace TextMetal.Framework.ExpressionModel
 				case UnaryOperator.Pos:
 				{
 					if (theType == typeof(SByte) || theType == typeof(Byte) || theType == typeof(Int16) || theType == typeof(UInt16) || theType == typeof(Char) ||
-					    theType == typeof(SByte?) || theType == typeof(Byte?) || theType == typeof(Int16?) || theType == typeof(UInt16?) || theType == typeof(Char?))
+						theType == typeof(SByte?) || theType == typeof(Byte?) || theType == typeof(Int16?) || theType == typeof(UInt16?) || theType == typeof(Char?))
 					{
 						// promote to Int32
 						theType = typeof(Int32);
@@ -463,7 +463,7 @@ namespace TextMetal.Framework.ExpressionModel
 					}
 
 					if (theType == typeof(Int32) ||
-					    theType == typeof(Int32?))
+						theType == typeof(Int32?))
 					{
 						Int32 ths;
 

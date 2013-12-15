@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Xml;
-using System.Xml.Linq;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
@@ -38,16 +37,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 				throw new ArgumentNullException("column");
 
 			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-			    dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
 			{
 				return column.ColumnSqlType == "image" ||
-				       column.ColumnSqlType == "text" ||
-				       column.ColumnSqlType == "ntext" ? (int)0 :
-					       (column.ColumnDbType == DbType.String &&
-					        column.ColumnSqlType.SafeToString().StartsWith("n") &&
-					        column.ColumnSize != 0 ?
-						        (int)(column.ColumnSize / 2) :
-						        column.ColumnSize);
+						column.ColumnSqlType == "text" ||
+						column.ColumnSqlType == "ntext" ? (int)0 :
+					(column.ColumnDbType == DbType.String &&
+					column.ColumnSqlType.SafeToString().StartsWith("n") &&
+					column.ColumnSize != 0 ?
+						(int)(column.ColumnSize / 2) :
+						column.ColumnSize);
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -62,16 +61,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 				throw new ArgumentNullException("parameter");
 
 			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-			    dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
 			{
 				return parameter.ParameterSqlType == "image" ||
-				       parameter.ParameterSqlType == "text" ||
-				       parameter.ParameterSqlType == "ntext" ? (int)0 :
-					       (parameter.ParameterDbType == DbType.String &&
-					        parameter.ParameterSqlType.SafeToString().StartsWith("n") &&
-					        parameter.ParameterSize != 0 ?
-						        (int)(parameter.ParameterSize / 2) :
-						        parameter.ParameterSize);
+						parameter.ParameterSqlType == "text" ||
+						parameter.ParameterSqlType == "ntext" ? (int)0 :
+					(parameter.ParameterDbType == DbType.String &&
+					parameter.ParameterSqlType.SafeToString().StartsWith("n") &&
+					parameter.ParameterSize != 0 ?
+						(int)(parameter.ParameterSize / 2) :
+						parameter.ParameterSize);
 			}
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
@@ -94,13 +93,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 				throw new ArgumentNullException("table");
 
 			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-			    dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
 			{
 				return new IDataParameter[]
-				       {
-					       unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
-					       unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableOrViewName", table.TableName)
-				       };
+						{
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableOrViewName", table.TableName)
+						};
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -115,7 +114,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 				throw new ArgumentNullException("dataSourceTag");
 
 			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-			    dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
 				return null;
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -127,7 +126,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 				throw new ArgumentNullException("dataSourceTag");
 
 			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-			    dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
 				return true;
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -154,14 +153,14 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 				throw new ArgumentNullException("foreignKey");
 
 			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-			    dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
 			{
 				return new IDataParameter[]
-				       {
-					       unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
-					       unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName),
-					       unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ForeignKeyName", foreignKey.ForeignKeyName)
-				       };
+						{
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName),
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ForeignKeyName", foreignKey.ForeignKeyName)
+						};
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -185,13 +184,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 				throw new ArgumentNullException("table");
 
 			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-			    dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
 			{
 				return new IDataParameter[]
-				       {
-					       unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
-					       unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName)
-				       };
+						{
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName)
+						};
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -215,13 +214,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 				throw new ArgumentNullException("procedure");
 
 			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-			    dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
 			{
 				return new IDataParameter[]
-				       {
-					       unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
-					       unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ProcedureName", procedure.ProcedureName)
-				       };
+						{
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ProcedureName", procedure.ProcedureName)
+						};
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -233,7 +232,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 				throw new ArgumentNullException("dataSourceTag");
 
 			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-			    dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
 				return "@";
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -254,7 +253,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 				throw new ArgumentNullException("schema");
 
 			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-			    dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
 				return new IDataParameter[] { unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName) };
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -266,7 +265,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 				throw new ArgumentNullException("database");
 
 			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-			    dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
 				return null;
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -287,7 +286,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 				throw new ArgumentNullException("schema");
 
 			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-			    dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
 				return new IDataParameter[] { unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName) };
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -314,14 +313,14 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 				throw new ArgumentNullException("uniqueKey");
 
 			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-			    dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
 			{
 				return new IDataParameter[]
-				       {
-					       unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
-					       unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName),
-					       unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@UniqueKeyName", uniqueKey.UniqueKeyName)
-				       };
+						{
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName),
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@UniqueKeyName", uniqueKey.UniqueKeyName)
+						};
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -345,13 +344,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 				throw new ArgumentNullException("table");
 
 			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-			    dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
 			{
 				return new IDataParameter[]
-				       {
-					       unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
-					       unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName)
-				       };
+						{
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName)
+						};
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -363,7 +362,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 				throw new ArgumentNullException("dataSourceTag");
 
 			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-			    dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
 			{
 				switch (sqlType = sqlType.SafeToString().ToUpper())
 				{

@@ -1,4 +1,4 @@
-/*
+﻿/*
 	Copyright ©2002-2012 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
@@ -53,8 +53,8 @@ namespace TestingFramework.Core.Customization
 			if (valueType.IsArray)
 				return Array.CreateInstance(valueType.GetElementType(), random.Next(0, 99));
 			else if (valueType.IsGenericType &&
-			         !valueType.IsGenericTypeDefinition &&
-			         valueType.GetGenericTypeDefinition().Equals(openNullableType))
+					!valueType.IsGenericTypeDefinition &&
+					valueType.GetGenericTypeDefinition().Equals(openNullableType))
 				return GetNextValue(valueType.GetGenericArguments()[0]);
 			else if (valueType == typeof(String))
 				return new string((Char)random.Next(33, 127), random.Next(1, 100));

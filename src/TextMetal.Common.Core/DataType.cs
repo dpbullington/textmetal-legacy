@@ -43,8 +43,8 @@ namespace TextMetal.Common.Core
 				return value;
 
 			if (conversionType.IsGenericType &&
-			    !conversionType.IsGenericTypeDefinition &&
-			    conversionType.GetGenericTypeDefinition() == typeof(Nullable<>))
+				!conversionType.IsGenericTypeDefinition &&
+				conversionType.GetGenericTypeDefinition() == typeof(Nullable<>))
 				conversionType = Nullable.GetUnderlyingType(conversionType);
 
 			return Convert.ChangeType(value, conversionType);
@@ -195,8 +195,8 @@ namespace TextMetal.Common.Core
 			result = null;
 
 			if (valueType.IsGenericType &&
-			    !valueType.IsGenericTypeDefinition &&
-			    valueType.GetGenericTypeDefinition().Equals(openNullableType))
+				!valueType.IsGenericTypeDefinition &&
+				valueType.GetGenericTypeDefinition().Equals(openNullableType))
 			{
 				if ((object)value == null)
 					return true;

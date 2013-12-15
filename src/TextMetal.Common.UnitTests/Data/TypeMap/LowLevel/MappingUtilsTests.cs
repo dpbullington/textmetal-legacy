@@ -53,11 +53,11 @@ namespace TextMetal.Common.UnitTests.Data.TypeMap.LowLevel
 			targetInstance = new MockPlainObject();
 
 			mockCommand.Parameters.Add(new Parameter()
-			                           {
-				                           Direction = ParameterDirection.Output,
-				                           Name = "@waxman",
-				                           Property = "waxman_dne"
-			                           });
+										{
+											Direction = ParameterDirection.Output,
+											Name = "@waxman",
+											Property = "waxman_dne"
+										});
 
 			Expect.Once.On(mockDataParameters).Method("GetEnumerator").WithNoArguments().Will(Return.Value(mockEnumerator));
 			Expect.Once.On(mockEnumerator).Method("Dispose").WithNoArguments();
@@ -88,10 +88,10 @@ namespace TextMetal.Common.UnitTests.Data.TypeMap.LowLevel
 			targetInstance = new MockPlainObject();
 
 			mockCommand.Fields.Add(new Field()
-			                       {
-				                       Name = "@waxman",
-				                       Property = "waxman_dne"
-			                       });
+									{
+										Name = "@waxman",
+										Property = "waxman_dne"
+									});
 
 			Expect.Once.On(mockDataRecord).Get["@waxman"].Will(Return.Value("waxman_dne"));
 
@@ -118,11 +118,11 @@ namespace TextMetal.Common.UnitTests.Data.TypeMap.LowLevel
 			mockUnitOfWorkContext = mockery.NewMock<IUnitOfWorkContext>();
 
 			mockCommand.Parameters.Add(new Parameter()
-			                           {
-				                           Direction = ParameterDirection.Input,
-				                           Name = "@waxman",
-				                           Property = "waxman_dne"
-			                           });
+										{
+											Direction = ParameterDirection.Input,
+											Name = "@waxman",
+											Property = "waxman_dne"
+										});
 
 			MappingUtils.MapObjectToInputParameters(mockDataParameters, mockCommand, dataOperation, targetInstance, mockUnitOfWorkContext);
 		}
@@ -149,11 +149,11 @@ namespace TextMetal.Common.UnitTests.Data.TypeMap.LowLevel
 			mockDataParameter = mockery.NewMock<IDataParameter>();
 
 			mockCommand.Parameters.Add(new Parameter()
-			                           {
-				                           Direction = ParameterDirection.Output,
-				                           Name = "@GetOnly",
-				                           Property = "MyGetOnlyProp"
-			                           });
+										{
+											Direction = ParameterDirection.Output,
+											Name = "@GetOnly",
+											Property = "MyGetOnlyProp"
+										});
 
 			Expect.Once.On(mockDataParameters).Method("GetEnumerator").WithNoArguments().Will(Return.Value(mockEnumerator));
 			Expect.Once.On(mockEnumerator).Method("Dispose").WithNoArguments();
@@ -186,11 +186,11 @@ namespace TextMetal.Common.UnitTests.Data.TypeMap.LowLevel
 			mockUnitOfWorkContext = mockery.NewMock<IUnitOfWorkContext>();
 
 			mockCommand.Parameters.Add(new Parameter()
-			                           {
-				                           Direction = ParameterDirection.Input,
-				                           Name = "@SetOnly",
-				                           Property = "MySetOnlyProp"
-			                           });
+										{
+											Direction = ParameterDirection.Input,
+											Name = "@SetOnly",
+											Property = "MySetOnlyProp"
+										});
 
 			MappingUtils.MapObjectToInputParameters(mockDataParameters, mockCommand, dataOperation, targetInstance, mockUnitOfWorkContext);
 		}
@@ -213,10 +213,10 @@ namespace TextMetal.Common.UnitTests.Data.TypeMap.LowLevel
 			targetInstance = new MockPlainObject();
 
 			mockCommand.Fields.Add(new Field()
-			                       {
-				                       Name = "@GetOnly",
-				                       Property = "MyGetOnlyProp"
-			                       });
+									{
+										Name = "@GetOnly",
+										Property = "MyGetOnlyProp"
+									});
 
 			Expect.Once.On(mockDataRecord).Get["@GetOnly"].Will(Return.Value("junk"));
 
@@ -489,90 +489,6 @@ namespace TextMetal.Common.UnitTests.Data.TypeMap.LowLevel
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullUnitOfWorkContextMapObjectToInputParametersNoTargetInstanceTest()
-		{
-			Mockery mockery;
-			IList<IDataParameter> mockDataParameters;
-			Command mockCommand;
-			DataOperation dataOperation;
-			IUnitOfWorkContext mockUnitOfWorkContext;
-
-			mockery = new Mockery();
-
-			mockDataParameters = mockery.NewMock<IList<IDataParameter>>();
-			mockCommand = new Command();
-			dataOperation = DataOperation.None;
-			mockUnitOfWorkContext = null;
-
-			MappingUtils.MapObjectToInputParameters(mockDataParameters, mockCommand, dataOperation, mockUnitOfWorkContext);
-		}
-
-		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullUnitOfWorkContextMapObjectToInputParametersTest()
-		{
-			Mockery mockery;
-			IList<IDataParameter> mockDataParameters;
-			Command mockCommand;
-			DataOperation dataOperation;
-			object targetInstance;
-			IUnitOfWorkContext mockUnitOfWorkContext;
-
-			mockery = new Mockery();
-
-			mockDataParameters = mockery.NewMock<IList<IDataParameter>>();
-			mockCommand = new Command();
-			dataOperation = DataOperation.None;
-			targetInstance = new object();
-			mockUnitOfWorkContext = null;
-
-			MappingUtils.MapObjectToInputParameters(mockDataParameters, mockCommand, dataOperation, targetInstance, mockUnitOfWorkContext);
-		}
-
-		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullUnitOfWorkContextMapObjectToOutputParametersNoTargetInstanceTest()
-		{
-			Mockery mockery;
-			IList<IDataParameter> mockDataParameters;
-			Command mockCommand;
-			DataOperation dataOperation;
-			IUnitOfWorkContext mockUnitOfWorkContext;
-
-			mockery = new Mockery();
-
-			mockDataParameters = mockery.NewMock<IList<IDataParameter>>();
-			mockCommand = new Command();
-			dataOperation = DataOperation.None;
-			mockUnitOfWorkContext = null;
-
-			MappingUtils.MapObjectToOutputParameters(mockDataParameters, mockCommand, dataOperation, mockUnitOfWorkContext);
-		}
-
-		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullUnitOfWorkContextMapObjectToOutputParametersTest()
-		{
-			Mockery mockery;
-			IList<IDataParameter> mockDataParameters;
-			Command mockCommand;
-			DataOperation dataOperation;
-			object targetInstance;
-			IUnitOfWorkContext mockUnitOfWorkContext;
-
-			mockery = new Mockery();
-
-			mockDataParameters = mockery.NewMock<IList<IDataParameter>>();
-			mockCommand = new Command();
-			dataOperation = DataOperation.None;
-			targetInstance = new object();
-			mockUnitOfWorkContext = null;
-
-			MappingUtils.MapObjectToOutputParameters(mockDataParameters, mockCommand, dataOperation, targetInstance, mockUnitOfWorkContext);
-		}
-
-		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullTargetInstanceMapObjectFromOutputParametersTest()
 		{
 			Mockery mockery;
@@ -657,6 +573,90 @@ namespace TextMetal.Common.UnitTests.Data.TypeMap.LowLevel
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullUnitOfWorkContextMapObjectToInputParametersNoTargetInstanceTest()
+		{
+			Mockery mockery;
+			IList<IDataParameter> mockDataParameters;
+			Command mockCommand;
+			DataOperation dataOperation;
+			IUnitOfWorkContext mockUnitOfWorkContext;
+
+			mockery = new Mockery();
+
+			mockDataParameters = mockery.NewMock<IList<IDataParameter>>();
+			mockCommand = new Command();
+			dataOperation = DataOperation.None;
+			mockUnitOfWorkContext = null;
+
+			MappingUtils.MapObjectToInputParameters(mockDataParameters, mockCommand, dataOperation, mockUnitOfWorkContext);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullUnitOfWorkContextMapObjectToInputParametersTest()
+		{
+			Mockery mockery;
+			IList<IDataParameter> mockDataParameters;
+			Command mockCommand;
+			DataOperation dataOperation;
+			object targetInstance;
+			IUnitOfWorkContext mockUnitOfWorkContext;
+
+			mockery = new Mockery();
+
+			mockDataParameters = mockery.NewMock<IList<IDataParameter>>();
+			mockCommand = new Command();
+			dataOperation = DataOperation.None;
+			targetInstance = new object();
+			mockUnitOfWorkContext = null;
+
+			MappingUtils.MapObjectToInputParameters(mockDataParameters, mockCommand, dataOperation, targetInstance, mockUnitOfWorkContext);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullUnitOfWorkContextMapObjectToOutputParametersNoTargetInstanceTest()
+		{
+			Mockery mockery;
+			IList<IDataParameter> mockDataParameters;
+			Command mockCommand;
+			DataOperation dataOperation;
+			IUnitOfWorkContext mockUnitOfWorkContext;
+
+			mockery = new Mockery();
+
+			mockDataParameters = mockery.NewMock<IList<IDataParameter>>();
+			mockCommand = new Command();
+			dataOperation = DataOperation.None;
+			mockUnitOfWorkContext = null;
+
+			MappingUtils.MapObjectToOutputParameters(mockDataParameters, mockCommand, dataOperation, mockUnitOfWorkContext);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullUnitOfWorkContextMapObjectToOutputParametersTest()
+		{
+			Mockery mockery;
+			IList<IDataParameter> mockDataParameters;
+			Command mockCommand;
+			DataOperation dataOperation;
+			object targetInstance;
+			IUnitOfWorkContext mockUnitOfWorkContext;
+
+			mockery = new Mockery();
+
+			mockDataParameters = mockery.NewMock<IList<IDataParameter>>();
+			mockCommand = new Command();
+			dataOperation = DataOperation.None;
+			targetInstance = new object();
+			mockUnitOfWorkContext = null;
+
+			MappingUtils.MapObjectToOutputParameters(mockDataParameters, mockCommand, dataOperation, targetInstance, mockUnitOfWorkContext);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNulldataRecordMapObjectFromRecordTest()
 		{
 			Mockery mockery;
@@ -697,18 +697,18 @@ namespace TextMetal.Common.UnitTests.Data.TypeMap.LowLevel
 			mockDataParameter = mockery.NewMock<IDataParameter>();
 
 			mockCommand.Parameters.Add(new Parameter()
-			                           {
-				                           Direction = ParameterDirection.Output,
-				                           Name = "@FirstName",
-				                           Property = "FirstName"
-			                           });
+										{
+											Direction = ParameterDirection.Output,
+											Name = "@FirstName",
+											Property = "FirstName"
+										});
 
 			mockCommand.Parameters.Add(new Parameter()
-			                           {
-				                           Direction = ParameterDirection.Input,
-				                           Name = "@OutJunks",
-				                           Property = "OutJunks"
-			                           });
+										{
+											Direction = ParameterDirection.Input,
+											Name = "@OutJunks",
+											Property = "OutJunks"
+										});
 
 			Expect.Once.On(mockDataParameters).Method("GetEnumerator").WithNoArguments().Will(Return.Value(mockEnumerator));
 			Expect.Once.On(mockEnumerator).Method("Dispose").WithNoArguments();
@@ -735,10 +735,10 @@ namespace TextMetal.Common.UnitTests.Data.TypeMap.LowLevel
 			targetInstance = new MockPlainObject();
 
 			mockCommand.Fields.Add(new Field()
-			                       {
-				                       Name = "@FirstName",
-				                       Property = "FirstName"
-			                       });
+									{
+										Name = "@FirstName",
+										Property = "FirstName"
+									});
 
 			Expect.Once.On(mockDataRecord).Get["@FirstName"].Will(Throw.Exception(new IndexOutOfRangeException()));
 
@@ -764,18 +764,18 @@ namespace TextMetal.Common.UnitTests.Data.TypeMap.LowLevel
 			mockDataParameter = mockery.NewMock<IDataParameter>();
 
 			mockCommand.Parameters.Add(new Parameter()
-			                           {
-				                           Direction = ParameterDirection.Output,
-				                           Name = "@FirstName",
-				                           Property = "FirstName"
-			                           });
+										{
+											Direction = ParameterDirection.Output,
+											Name = "@FirstName",
+											Property = "FirstName"
+										});
 
 			mockCommand.Parameters.Add(new Parameter()
-			                           {
-				                           Direction = ParameterDirection.Input,
-				                           Name = "@OutJunks",
-				                           Property = "OutJunks"
-			                           });
+										{
+											Direction = ParameterDirection.Input,
+											Name = "@OutJunks",
+											Property = "OutJunks"
+										});
 
 			MappingUtils.MapObjectFromOutputParameters(mockDataParameters, mockCommand, dataOperation);
 
@@ -803,18 +803,18 @@ namespace TextMetal.Common.UnitTests.Data.TypeMap.LowLevel
 			mockDataParameter = mockery.NewMock<IDataParameter>();
 
 			mockCommand.Parameters.Add(new Parameter()
-			                           {
-				                           Direction = ParameterDirection.Output,
-				                           Name = "@FirstName",
-				                           Property = "FirstName"
-			                           });
+										{
+											Direction = ParameterDirection.Output,
+											Name = "@FirstName",
+											Property = "FirstName"
+										});
 
 			mockCommand.Parameters.Add(new Parameter()
-			                           {
-				                           Direction = ParameterDirection.Input,
-				                           Name = "@OutJunks",
-				                           Property = "OutJunks"
-			                           });
+										{
+											Direction = ParameterDirection.Input,
+											Name = "@OutJunks",
+											Property = "OutJunks"
+										});
 
 			Expect.Once.On(mockDataParameters).Method("GetEnumerator").WithNoArguments().Will(Return.Value(mockEnumerator));
 			Expect.Once.On(mockEnumerator).Method("Dispose").WithNoArguments();
@@ -850,10 +850,10 @@ namespace TextMetal.Common.UnitTests.Data.TypeMap.LowLevel
 			targetInstance = new MockPlainObject();
 
 			mockCommand.Fields.Add(new Field()
-			                       {
-				                       Name = "@FirstName",
-				                       Property = "FirstName"
-			                       });
+									{
+										Name = "@FirstName",
+										Property = "FirstName"
+									});
 
 			Expect.Once.On(mockDataRecord).Get["@FirstName"].Will(Return.Value("junk"));
 
@@ -885,18 +885,18 @@ namespace TextMetal.Common.UnitTests.Data.TypeMap.LowLevel
 			mockDataParameter = mockery.NewMock<IDataParameter>();
 
 			mockCommand.Parameters.Add(new Parameter()
-			                           {
-				                           Direction = ParameterDirection.Input,
-				                           Name = "@FirstName",
-				                           Property = "FirstName"
-			                           });
+										{
+											Direction = ParameterDirection.Input,
+											Name = "@FirstName",
+											Property = "FirstName"
+										});
 
 			mockCommand.Parameters.Add(new Parameter()
-			                           {
-				                           Direction = ParameterDirection.Output,
-				                           Name = "@OutJunks",
-				                           Property = "OutJunks"
-			                           });
+										{
+											Direction = ParameterDirection.Output,
+											Name = "@OutJunks",
+											Property = "OutJunks"
+										});
 
 			Expect.Once.On(mockUnitOfWorkContext).Method("CreateParameter").With(mockCommand.Parameters[0].Direction, mockCommand.Parameters[0].Type, mockCommand.Parameters[0].Size, mockCommand.Parameters[0].Precision, mockCommand.Parameters[0].Scale, mockCommand.Parameters[0].Nullable, mockCommand.Parameters[0].Name, null).Will(Return.Value(mockDataParameter));
 			Expect.Once.On(mockDataParameters).Method("Add").With(mockDataParameter);
@@ -927,18 +927,18 @@ namespace TextMetal.Common.UnitTests.Data.TypeMap.LowLevel
 			mockDataParameter = mockery.NewMock<IDataParameter>();
 
 			mockCommand.Parameters.Add(new Parameter()
-			                           {
-				                           Direction = ParameterDirection.Input,
-				                           Name = "@FirstName",
-				                           Property = "FirstName"
-			                           });
+										{
+											Direction = ParameterDirection.Input,
+											Name = "@FirstName",
+											Property = "FirstName"
+										});
 
 			mockCommand.Parameters.Add(new Parameter()
-			                           {
-				                           Direction = ParameterDirection.Output,
-				                           Name = "@OutJunks",
-				                           Property = "OutJunks"
-			                           });
+										{
+											Direction = ParameterDirection.Output,
+											Name = "@OutJunks",
+											Property = "OutJunks"
+										});
 
 			Expect.Once.On(mockUnitOfWorkContext).Method("CreateParameter").With(mockCommand.Parameters[0].Direction, mockCommand.Parameters[0].Type, mockCommand.Parameters[0].Size, mockCommand.Parameters[0].Precision, mockCommand.Parameters[0].Scale, mockCommand.Parameters[0].Nullable, mockCommand.Parameters[0].Name, targetInstance.FirstName).Will(Return.Value(mockDataParameter));
 			Expect.Once.On(mockDataParameters).Method("Add").With(mockDataParameter);
@@ -967,18 +967,18 @@ namespace TextMetal.Common.UnitTests.Data.TypeMap.LowLevel
 			mockDataParameter = mockery.NewMock<IDataParameter>();
 
 			mockCommand.Parameters.Add(new Parameter()
-			                           {
-				                           Direction = ParameterDirection.Output,
-				                           Name = "@OutJunks",
-				                           Property = "OutJunks"
-			                           });
+										{
+											Direction = ParameterDirection.Output,
+											Name = "@OutJunks",
+											Property = "OutJunks"
+										});
 
 			mockCommand.Parameters.Add(new Parameter()
-			                           {
-				                           Direction = ParameterDirection.Input,
-				                           Name = "@FirstName",
-				                           Property = "FirstName"
-			                           });
+										{
+											Direction = ParameterDirection.Input,
+											Name = "@FirstName",
+											Property = "FirstName"
+										});
 
 			Expect.Once.On(mockUnitOfWorkContext).Method("CreateParameter").With(mockCommand.Parameters[0].Direction, mockCommand.Parameters[0].Type, mockCommand.Parameters[0].Size, mockCommand.Parameters[0].Precision, mockCommand.Parameters[0].Scale, mockCommand.Parameters[0].Nullable, mockCommand.Parameters[0].Name, null).Will(Return.Value(mockDataParameter));
 			Expect.Once.On(mockDataParameters).Method("Add").With(mockDataParameter);
@@ -1009,18 +1009,18 @@ namespace TextMetal.Common.UnitTests.Data.TypeMap.LowLevel
 			mockDataParameter = mockery.NewMock<IDataParameter>();
 
 			mockCommand.Parameters.Add(new Parameter()
-			                           {
-				                           Direction = ParameterDirection.Output,
-				                           Name = "@OutJunks",
-				                           Property = "OutJunks"
-			                           });
+										{
+											Direction = ParameterDirection.Output,
+											Name = "@OutJunks",
+											Property = "OutJunks"
+										});
 
 			mockCommand.Parameters.Add(new Parameter()
-			                           {
-				                           Direction = ParameterDirection.Input,
-				                           Name = "@FirstName",
-				                           Property = "FirstName"
-			                           });
+										{
+											Direction = ParameterDirection.Input,
+											Name = "@FirstName",
+											Property = "FirstName"
+										});
 
 			Expect.Once.On(mockUnitOfWorkContext).Method("CreateParameter").With(mockCommand.Parameters[0].Direction, mockCommand.Parameters[0].Type, mockCommand.Parameters[0].Size, mockCommand.Parameters[0].Precision, mockCommand.Parameters[0].Scale, mockCommand.Parameters[0].Nullable, mockCommand.Parameters[0].Name, targetInstance.FirstName).Will(Return.Value(mockDataParameter));
 			Expect.Once.On(mockDataParameters).Method("Add").With(mockDataParameter);

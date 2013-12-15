@@ -132,8 +132,8 @@ namespace TextMetal.Common.Data.Advanced
 				assemblyInformation = new AssemblyInformation(assembly);
 
 				if ((object)assemblyInformation.Company != null &&
-				    (object)assemblyInformation.Product != null &&
-				    (object)assemblyInformation.Win32FileVersion != null)
+					(object)assemblyInformation.Product != null &&
+					(object)assemblyInformation.Win32FileVersion != null)
 				{
 					userSpecificDirectoryPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 					userSpecificDirectoryPath = Path.Combine(userSpecificDirectoryPath, assemblyInformation.Company);

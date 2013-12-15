@@ -145,17 +145,17 @@ namespace TextMetal.Common.Xml
 
 		/// <summary>
 		/// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an
-		///     <see
-		///         cref="T:System.Array" />
+		/// <see
+		///     cref="T:System.Array" />
 		/// , starting at a particular
-		///     <see
-		///         cref="T:System.Array" />
+		/// <see
+		///     cref="T:System.Array" />
 		/// index.
 		/// </summary>
 		/// <param name="array">
 		/// The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from
-		///     <see
-		///         cref="T:System.Collections.Generic.ICollection`1" />
+		/// <see
+		///     cref="T:System.Collections.Generic.ICollection`1" />
 		/// . The <see cref="T:System.Array" /> must have zero-based indexing.
 		/// </param>
 		/// <param name="arrayIndex">
@@ -225,11 +225,11 @@ namespace TextMetal.Common.Xml
 		/// </summary>
 		/// <returns>
 		/// true if <paramref name="item" /> was successfully removed from the
-		///     <see
-		///         cref="T:System.Collections.Generic.ICollection`1" />
+		/// <see
+		///     cref="T:System.Collections.Generic.ICollection`1" />
 		/// ; otherwise, false. This method also returns false if
-		///     <paramref
-		///         name="item" />
+		/// <paramref
+		///     name="item" />
 		/// is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" /> .
 		/// </returns>
 		/// <param name="item">

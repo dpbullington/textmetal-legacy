@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	public class UniqueKeyColumnRef
+	public class UniqueKeyColumnRef : DatabaseSchemaModelBase
 	{
 		#region Constructors/Destructors
 

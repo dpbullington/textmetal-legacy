@@ -4,8 +4,7 @@
 */
 
 using System;
-using System.IO;
-using System.Xml.Serialization;
+
 using TextMetal.Common.Core;
 
 namespace TextMetal.Common.Data.TypeMap.LowLevel
@@ -21,7 +20,7 @@ namespace TextMetal.Common.Data.TypeMap.LowLevel
 		#endregion
 
 		#region Methods/Operators
-		
+
 		public virtual DataSourceMap GetMap<TPlainObject>(object obj) where TPlainObject : class, IPlainObject, new()
 		{
 			Type targetType;

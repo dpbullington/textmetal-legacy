@@ -159,13 +159,13 @@ namespace TextMetal.Common.UnitTests.Solder.RuntimeInterception.RemotingImpl._
 			mockMessage = mockery.NewMock<IMethodCallMessage>();
 
 			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec =>
-			                                                                               {
-				                                                                               byte bdummy = default(byte);
-				                                                                               int idummy = default(int);
-				                                                                               string sdummy = default(string);
-				                                                                               object odummy = default(object);
-				                                                                               bdummy = exec.SomeMethodWithVarietyOfParameters(idummy, out sdummy, ref odummy);
-			                                                                               });
+																							{
+																								byte bdummy = default(byte);
+																								int idummy = default(int);
+																								string sdummy = default(string);
+																								object odummy = default(object);
+																								bdummy = exec.SomeMethodWithVarietyOfParameters(idummy, out sdummy, ref odummy);
+																							});
 
 			Expect.Once.On(mockMessage).GetProperty("Args").Will(Return.Value(null));
 			Expect.Exactly(2).On(mockMessage).GetProperty("MethodBase").Will(Return.Value(invokedMethodInfo));
@@ -262,13 +262,13 @@ namespace TextMetal.Common.UnitTests.Solder.RuntimeInterception.RemotingImpl._
 			mockMessage = mockery.NewMock<IMethodCallMessage>();
 
 			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec =>
-			                                                                               {
-				                                                                               byte bdummy = default(byte);
-				                                                                               int idummy = default(int);
-				                                                                               string sdummy = default(string);
-				                                                                               object odummy = default(object);
-				                                                                               bdummy = exec.SomeMethodWithVarietyOfParameters(idummy, out sdummy, ref odummy);
-			                                                                               });
+																							{
+																								byte bdummy = default(byte);
+																								int idummy = default(int);
+																								string sdummy = default(string);
+																								object odummy = default(object);
+																								bdummy = exec.SomeMethodWithVarietyOfParameters(idummy, out sdummy, ref odummy);
+																							});
 
 			Expect.Once.On(mockMessage).GetProperty("Args").Will(Return.Value(new object[] { 10, "100", (object)"1000" }));
 			Expect.Exactly(2).On(mockMessage).GetProperty("MethodBase").Will(Return.Value(invokedMethodInfo));

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	Copyright ©2002-2013 Daniel Bullington (dpbullington@gmail.com)
+	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+-->
+<Template xmlns="http://www.textmetal.com/api/v5.0.0">
+	
+	<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
+		<ForEach.Filter />
+		
+		<ForEach.Body>
+			<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach.Filter />
+				
+				<ForEach.Body>
+				</ForEach.Body>
+							
+			</ForEach>
+		</ForEach.Body>
+					
+	</ForEach>
+	
+</Template>

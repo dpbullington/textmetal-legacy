@@ -199,7 +199,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			dialogResult = this.ofdMain.ShowDialog(this);
 
 			if (dialogResult != DialogResult.OK ||
-			    DataType.IsNullOrWhiteSpace(this.ofdMain.FileName))
+				DataType.IsNullOrWhiteSpace(this.ofdMain.FileName))
 				return false;
 
 			filePath = Path.GetFullPath(this.ofdMain.FileName);

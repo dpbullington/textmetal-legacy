@@ -5,6 +5,7 @@
 
 -- schemas
 select
+	cast(null as int) as ObjectId,
     sys_s.name as SchemaName	
 from
     sys.schemas sys_s

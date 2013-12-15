@@ -43,16 +43,16 @@ namespace TextMetal.Framework.AssociativeModel
 		/// <returns> The element with the specified key. </returns>
 		/// <param name="key"> The key of the element to get or set. </param>
 		/// <exception cref="T:System.ArgumentNullException">
-		///     <paramref name="key" />
+		/// <paramref name="key" />
 		/// is null.
 		/// </exception>
 		/// <exception cref="T:System.NotSupportedException">
 		/// The property is set and the
-		///     <see cref="T:System.Collections.IDictionary" />
+		/// <see cref="T:System.Collections.IDictionary" />
 		/// object is read-only.-or- The property is set,
-		///     <paramref name="key" />
+		/// <paramref name="key" />
 		/// does not exist in the collection, and the
-		///     <see cref="T:System.Collections.IDictionary" />
+		/// <see cref="T:System.Collections.IDictionary" />
 		/// has a fixed size.
 		/// </exception>
 		/// <filterpriority> 2 </filterpriority>
@@ -79,17 +79,17 @@ namespace TextMetal.Framework.AssociativeModel
 		/// <returns> The element with the specified key. </returns>
 		/// <param name="key"> The key of the element to get or set. </param>
 		/// <exception cref="T:System.ArgumentNullException">
-		///     <paramref name="key" />
+		/// <paramref name="key" />
 		/// is null.
 		/// </exception>
 		/// <exception cref="T:System.Collections.Generic.KeyNotFoundException">
 		/// The property is retrieved and
-		///     <paramref name="key" />
+		/// <paramref name="key" />
 		/// is not found.
 		/// </exception>
 		/// <exception cref="T:System.NotSupportedException">
 		/// The property is set and the
-		///     <see cref="T:System.Collections.Generic.IDictionary`2" />
+		/// <see cref="T:System.Collections.Generic.IDictionary`2" />
 		/// is read-only.
 		/// </exception>
 		object IDictionary<string, object>.this[string key]
@@ -153,7 +153,7 @@ namespace TextMetal.Framework.AssociativeModel
 					foreach (IAssociativeXmlObject item in this.Items)
 					{
 						if (!DataType.IsNullOrWhiteSpace(item.Name) &&
-						    !dictionary.ContainsKey(item.Name))
+							!dictionary.ContainsKey(item.Name))
 							dictionary.Add(item.Name, item.GetAssociativeObjectValue());
 					}
 				}
@@ -220,14 +220,14 @@ namespace TextMetal.Framework.AssociativeModel
 
 		/// <summary>
 		/// Gets an <see cref="T:System.Collections.ICollection" /> object containing the keys of the
-		///     <see
-		///         cref="T:System.Collections.IDictionary" />
+		/// <see
+		///     cref="T:System.Collections.IDictionary" />
 		/// object.
 		/// </summary>
 		/// <returns>
 		/// An <see cref="T:System.Collections.ICollection" /> object containing the keys of the
-		///     <see
-		///         cref="T:System.Collections.IDictionary" />
+		/// <see
+		///     cref="T:System.Collections.IDictionary" />
 		/// object.
 		/// </returns>
 		ICollection IDictionary.Keys
@@ -240,14 +240,14 @@ namespace TextMetal.Framework.AssociativeModel
 
 		/// <summary>
 		/// Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the
-		///     <see
-		///         cref="T:System.Collections.Generic.IDictionary`2" />
+		/// <see
+		///     cref="T:System.Collections.Generic.IDictionary`2" />
 		/// .
 		/// </summary>
 		/// <returns>
 		/// An <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the object that implements
-		///     <see
-		///         cref="T:System.Collections.Generic.IDictionary`2" />
+		/// <see
+		///     cref="T:System.Collections.Generic.IDictionary`2" />
 		/// .
 		/// </returns>
 		ICollection<string> IDictionary<string, object>.Keys
@@ -290,14 +290,14 @@ namespace TextMetal.Framework.AssociativeModel
 
 		/// <summary>
 		/// Gets an <see cref="T:System.Collections.ICollection" /> object containing the values in the
-		///     <see
-		///         cref="T:System.Collections.IDictionary" />
+		/// <see
+		///     cref="T:System.Collections.IDictionary" />
 		/// object.
 		/// </summary>
 		/// <returns>
 		/// An <see cref="T:System.Collections.ICollection" /> object containing the values in the
-		///     <see
-		///         cref="T:System.Collections.IDictionary" />
+		/// <see
+		///     cref="T:System.Collections.IDictionary" />
 		/// object.
 		/// </returns>
 		ICollection IDictionary.Values
@@ -310,14 +310,14 @@ namespace TextMetal.Framework.AssociativeModel
 
 		/// <summary>
 		/// Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the values in the
-		///     <see
-		///         cref="T:System.Collections.Generic.IDictionary`2" />
+		/// <see
+		///     cref="T:System.Collections.Generic.IDictionary`2" />
 		/// .
 		/// </summary>
 		/// <returns>
 		/// An <see cref="T:System.Collections.Generic.ICollection`1" /> containing the values in the object that implements
-		///     <see
-		///         cref="T:System.Collections.Generic.IDictionary`2" />
+		/// <see
+		///     cref="T:System.Collections.Generic.IDictionary`2" />
 		/// .
 		/// </returns>
 		ICollection<object> IDictionary<string, object>.Values
@@ -342,19 +342,19 @@ namespace TextMetal.Framework.AssociativeModel
 		/// The <see cref="T:System.Object" /> to use as the value of the element to add.
 		/// </param>
 		/// <exception cref="T:System.ArgumentNullException">
-		///     <paramref name="key" />
+		/// <paramref name="key" />
 		/// is null.
 		/// </exception>
 		/// <exception cref="T:System.ArgumentException">
 		/// An element with the same key already exists in the
-		///     <see cref="T:System.Collections.IDictionary" />
+		/// <see cref="T:System.Collections.IDictionary" />
 		/// object.
 		/// </exception>
 		/// <exception cref="T:System.NotSupportedException">
 		/// The
-		///     <see cref="T:System.Collections.IDictionary" />
+		/// <see cref="T:System.Collections.IDictionary" />
 		/// is read-only.-or- The
-		///     <see cref="T:System.Collections.IDictionary" />
+		/// <see cref="T:System.Collections.IDictionary" />
 		/// has a fixed size.
 		/// </exception>
 		/// <filterpriority> 2 </filterpriority>
@@ -369,17 +369,17 @@ namespace TextMetal.Framework.AssociativeModel
 		/// <param name="key"> The object to use as the key of the element to add. </param>
 		/// <param name="value"> The object to use as the value of the element to add. </param>
 		/// <exception cref="T:System.ArgumentNullException">
-		///     <paramref name="key" />
+		/// <paramref name="key" />
 		/// is null.
 		/// </exception>
 		/// <exception cref="T:System.ArgumentException">
 		/// An element with the same key already exists in the
-		///     <see cref="T:System.Collections.Generic.IDictionary`2" />
+		/// <see cref="T:System.Collections.Generic.IDictionary`2" />
 		/// .
 		/// </exception>
 		/// <exception cref="T:System.NotSupportedException">
 		/// The
-		///     <see cref="T:System.Collections.Generic.IDictionary`2" />
+		/// <see cref="T:System.Collections.Generic.IDictionary`2" />
 		/// is read-only.
 		/// </exception>
 		void IDictionary<string, object>.Add(string key, object value)
@@ -395,7 +395,7 @@ namespace TextMetal.Framework.AssociativeModel
 		/// </param>
 		/// <exception cref="T:System.NotSupportedException">
 		/// The
-		///     <see cref="T:System.Collections.Generic.ICollection`1" />
+		/// <see cref="T:System.Collections.Generic.ICollection`1" />
 		/// is read-only.
 		/// </exception>
 		void ICollection<KeyValuePair<string, object>>.Add(KeyValuePair<string, object> item)
@@ -429,7 +429,7 @@ namespace TextMetal.Framework.AssociativeModel
 		/// The key to locate in the <see cref="T:System.Collections.IDictionary" /> object.
 		/// </param>
 		/// <exception cref="T:System.ArgumentNullException">
-		///     <paramref name="key" />
+		/// <paramref name="key" />
 		/// is null.
 		/// </exception>
 		/// <filterpriority> 2 </filterpriority>
@@ -462,7 +462,7 @@ namespace TextMetal.Framework.AssociativeModel
 		/// The key to locate in the <see cref="T:System.Collections.Generic.IDictionary`2" /> .
 		/// </param>
 		/// <exception cref="T:System.ArgumentNullException">
-		///     <paramref name="key" />
+		/// <paramref name="key" />
 		/// is null.
 		/// </exception>
 		bool IDictionary<string, object>.ContainsKey(string key)
@@ -472,42 +472,42 @@ namespace TextMetal.Framework.AssociativeModel
 
 		/// <summary>
 		/// Copies the elements of the <see cref="T:System.Collections.ICollection" /> to an <see cref="T:System.Array" /> , starting at a particular
-		///     <see
-		///         cref="T:System.Array" />
+		/// <see
+		///     cref="T:System.Array" />
 		/// index.
 		/// </summary>
 		/// <param name="array">
 		/// The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from
-		///     <see
-		///         cref="T:System.Collections.ICollection" />
+		/// <see
+		///     cref="T:System.Collections.ICollection" />
 		/// . The <see cref="T:System.Array" /> must have zero-based indexing.
 		/// </param>
 		/// <param name="index">
 		/// The zero-based index in <paramref name="array" /> at which copying begins.
 		/// </param>
 		/// <exception cref="T:System.ArgumentNullException">
-		///     <paramref name="array" />
+		/// <paramref name="array" />
 		/// is null.
 		/// </exception>
 		/// <exception cref="T:System.ArgumentOutOfRangeException">
-		///     <paramref name="index" />
+		/// <paramref name="index" />
 		/// is less than zero.
 		/// </exception>
 		/// <exception cref="T:System.ArgumentException">
-		///     <paramref name="array" />
+		/// <paramref name="array" />
 		/// is multidimensional.-or- The number of elements in the source
-		///     <see cref="T:System.Collections.ICollection" />
+		/// <see cref="T:System.Collections.ICollection" />
 		/// is greater than the available space from
-		///     <paramref name="index" />
+		/// <paramref name="index" />
 		/// to the end of the destination
-		///     <paramref name="array" />
+		/// <paramref name="array" />
 		/// .
 		/// </exception>
 		/// <exception cref="T:System.ArgumentException">
 		/// The type of the source
-		///     <see cref="T:System.Collections.ICollection" />
+		/// <see cref="T:System.Collections.ICollection" />
 		/// cannot be cast automatically to the type of the destination
-		///     <paramref name="array" />
+		/// <paramref name="array" />
 		/// .
 		/// </exception>
 		/// <filterpriority> 2 </filterpriority>
@@ -518,42 +518,42 @@ namespace TextMetal.Framework.AssociativeModel
 
 		/// <summary>
 		/// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an
-		///     <see
-		///         cref="T:System.Array" />
+		/// <see
+		///     cref="T:System.Array" />
 		/// , starting at a particular
-		///     <see
-		///         cref="T:System.Array" />
+		/// <see
+		///     cref="T:System.Array" />
 		/// index.
 		/// </summary>
 		/// <param name="array">
 		/// The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from
-		///     <see
-		///         cref="T:System.Collections.Generic.ICollection`1" />
+		/// <see
+		///     cref="T:System.Collections.Generic.ICollection`1" />
 		/// . The <see cref="T:System.Array" /> must have zero-based indexing.
 		/// </param>
 		/// <param name="arrayIndex">
 		/// The zero-based index in <paramref name="array" /> at which copying begins.
 		/// </param>
 		/// <exception cref="T:System.ArgumentNullException">
-		///     <paramref name="array" />
+		/// <paramref name="array" />
 		/// is null.
 		/// </exception>
 		/// <exception cref="T:System.ArgumentOutOfRangeException">
-		///     <paramref name="arrayIndex" />
+		/// <paramref name="arrayIndex" />
 		/// is less than 0.
 		/// </exception>
 		/// <exception cref="T:System.ArgumentException">
-		///     <paramref name="array" />
+		/// <paramref name="array" />
 		/// is multidimensional.-or-The number of elements in the source
-		///     <see cref="T:System.Collections.Generic.ICollection`1" />
+		/// <see cref="T:System.Collections.Generic.ICollection`1" />
 		/// is greater than the available space from
-		///     <paramref name="arrayIndex" />
+		/// <paramref name="arrayIndex" />
 		/// to the end of the destination
-		///     <paramref name="array" />
+		/// <paramref name="array" />
 		/// .-or-Type
-		///     <paramref name="T" />
+		/// <paramref name="T" />
 		/// cannot be cast automatically to the type of the destination
-		///     <paramref name="array" />
+		/// <paramref name="array" />
 		/// .
 		/// </exception>
 		void ICollection<KeyValuePair<string, object>>.CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
@@ -637,14 +637,14 @@ namespace TextMetal.Framework.AssociativeModel
 
 		/// <summary>
 		/// Returns an <see cref="T:System.Collections.IDictionaryEnumerator" /> object for the
-		///     <see
-		///         cref="T:System.Collections.IDictionary" />
+		/// <see
+		///     cref="T:System.Collections.IDictionary" />
 		/// object.
 		/// </summary>
 		/// <returns>
 		/// An <see cref="T:System.Collections.IDictionaryEnumerator" /> object for the
-		///     <see
-		///         cref="T:System.Collections.IDictionary" />
+		/// <see
+		///     cref="T:System.Collections.IDictionary" />
 		/// object.
 		/// </returns>
 		IDictionaryEnumerator IDictionary.GetEnumerator()
@@ -679,14 +679,14 @@ namespace TextMetal.Framework.AssociativeModel
 		/// </summary>
 		/// <param name="key"> The key of the element to remove. </param>
 		/// <exception cref="T:System.ArgumentNullException">
-		///     <paramref name="key" />
+		/// <paramref name="key" />
 		/// is null.
 		/// </exception>
 		/// <exception cref="T:System.NotSupportedException">
 		/// The
-		///     <see cref="T:System.Collections.IDictionary" />
+		/// <see cref="T:System.Collections.IDictionary" />
 		/// object is read-only.-or- The
-		///     <see cref="T:System.Collections.IDictionary" />
+		/// <see cref="T:System.Collections.IDictionary" />
 		/// has a fixed size.
 		/// </exception>
 		/// <filterpriority> 2 </filterpriority>
@@ -700,18 +700,18 @@ namespace TextMetal.Framework.AssociativeModel
 		/// </summary>
 		/// <returns>
 		/// true if the element is successfully removed; otherwise, false. This method also returns false if
-		///     <paramref
-		///         name="key" />
+		/// <paramref
+		///     name="key" />
 		/// was not found in the original <see cref="T:System.Collections.Generic.IDictionary`2" /> .
 		/// </returns>
 		/// <param name="key"> The key of the element to remove. </param>
 		/// <exception cref="T:System.ArgumentNullException">
-		///     <paramref name="key" />
+		/// <paramref name="key" />
 		/// is null.
 		/// </exception>
 		/// <exception cref="T:System.NotSupportedException">
 		/// The
-		///     <see cref="T:System.Collections.Generic.IDictionary`2" />
+		/// <see cref="T:System.Collections.Generic.IDictionary`2" />
 		/// is read-only.
 		/// </exception>
 		bool IDictionary<string, object>.Remove(string key)
@@ -724,11 +724,11 @@ namespace TextMetal.Framework.AssociativeModel
 		/// </summary>
 		/// <returns>
 		/// true if <paramref name="item" /> was successfully removed from the
-		///     <see
-		///         cref="T:System.Collections.Generic.ICollection`1" />
+		/// <see
+		///     cref="T:System.Collections.Generic.ICollection`1" />
 		/// ; otherwise, false. This method also returns false if
-		///     <paramref
-		///         name="item" />
+		/// <paramref
+		///     name="item" />
 		/// is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" /> .
 		/// </returns>
 		/// <param name="item">
@@ -736,7 +736,7 @@ namespace TextMetal.Framework.AssociativeModel
 		/// </param>
 		/// <exception cref="T:System.NotSupportedException">
 		/// The
-		///     <see cref="T:System.Collections.Generic.ICollection`1" />
+		/// <see cref="T:System.Collections.Generic.ICollection`1" />
 		/// is read-only.
 		/// </exception>
 		bool ICollection<KeyValuePair<string, object>>.Remove(KeyValuePair<string, object> item)
@@ -753,12 +753,12 @@ namespace TextMetal.Framework.AssociativeModel
 		/// <param name="key"> The key whose value to get. </param>
 		/// <param name="value">
 		/// When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the
-		///     <paramref
-		///         name="value" />
+		/// <paramref
+		///     name="value" />
 		/// parameter. This parameter is passed uninitialized.
 		/// </param>
 		/// <exception cref="T:System.ArgumentNullException">
-		///     <paramref name="key" />
+		/// <paramref name="key" />
 		/// is null.
 		/// </exception>
 		bool IDictionary<string, object>.TryGetValue(string key, out object value)

@@ -27,7 +27,7 @@ namespace TextMetal.Common.Solder.DependencyManagement
 		#region Fields/Constants
 
 		private string selectorKey = "";
-		
+
 		#endregion
 
 		#region Properties/Indexers/Events

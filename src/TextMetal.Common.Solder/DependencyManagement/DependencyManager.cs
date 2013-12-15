@@ -490,7 +490,7 @@ namespace TextMetal.Common.Solder.DependencyManagement
 				traitsToRemove = new List<KeyValuePair<Type, string>>();
 
 				return this.DependencyResolutionRegistrations.Keys.Count(x => x.Key == targetType
-				                                                              && ((object)selectorKey == null || x.Value == selectorKey)) > 0;
+																			&& ((object)selectorKey == null || x.Value == selectorKey)) > 0;
 			}
 			finally
 			{
