@@ -119,6 +119,10 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		protected abstract IEnumerable<IDataParameter> CoreGetDatabaseParameters(IUnitOfWorkContext unitOfWorkContext, string dataSourceTag);
 
+		protected abstract IEnumerable<IDataParameter> CoreGetDdlTriggerParameters(IUnitOfWorkContext unitOfWorkContext, string dataSourceTag, Database database);
+
+		protected abstract IEnumerable<IDataParameter> CoreGetDmlTriggerParameters(IUnitOfWorkContext unitOfWorkContext, string dataSourceTag, Database database, Schema schema, Table table);
+
 		protected abstract bool CoreGetEmitImplicitReturnParameter(string dataSourceTag);
 
 		protected abstract IEnumerable<IDataParameter> CoreGetForeignKeyColumnParameters(IUnitOfWorkContext unitOfWorkContext, string dataSourceTag, Database database, Schema schema, Table table, ForeignKey foreignKey);
@@ -229,21 +233,59 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 					if ((object)dataReaderDatabase != null &&
 						dataReaderDatabase.Count == 1)
 					{
-						database.InitialCatalogName = DataType.ChangeType<string>(dataReaderDatabase[0]["InitialCatalogName"]);
+						Catalog initialCatalog;
+
 						database.InstanceName = DataType.ChangeType<string>(dataReaderDatabase[0]["InstanceName"]);
 						database.MachineName = DataType.ChangeType<string>(dataReaderDatabase[0]["MachineName"]);
 						database.ServerEdition = DataType.ChangeType<string>(dataReaderDatabase[0]["ServerEdition"]);
 						database.ServerLevel = DataType.ChangeType<string>(dataReaderDatabase[0]["ServerLevel"]);
 						database.ServerVersion = DataType.ChangeType<string>(dataReaderDatabase[0]["ServerVersion"]);
-						database.InitialCatalogNamePascalCase = Name.GetPascalCase(database.InitialCatalogName);
-						database.InitialCatalogNameCamelCase = Name.GetCamelCase(database.InitialCatalogName);
-						database.InitialCatalogNameConstantCase = Name.GetConstantCase(database.InitialCatalogName);
-						database.InitialCatalogNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(database.InitialCatalogName));
-						database.InitialCatalogNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(database.InitialCatalogName));
-						database.InitialCatalogNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(database.InitialCatalogName));
-						database.InitialCatalogNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(database.InitialCatalogName));
-						database.InitialCatalogNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(database.InitialCatalogName));
-						database.InitialCatalogNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(database.InitialCatalogName));
+						database.InitialCatalogName = DataType.ChangeType<string>(dataReaderDatabase[0]["InitialCatalogName"]);
+
+						initialCatalog = new Catalog();
+						initialCatalog.CatalogName = DataType.ChangeType<string>(dataReaderDatabase[0]["InitialCatalogName"]);
+						initialCatalog.CatalogNamePascalCase = Name.GetPascalCase(initialCatalog.CatalogName);
+						initialCatalog.CatalogNameCamelCase = Name.GetCamelCase(initialCatalog.CatalogName);
+						initialCatalog.CatalogNameConstantCase = Name.GetConstantCase(initialCatalog.CatalogName);
+						initialCatalog.CatalogNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(initialCatalog.CatalogName));
+						initialCatalog.CatalogNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(initialCatalog.CatalogName));
+						initialCatalog.CatalogNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(initialCatalog.CatalogName));
+						initialCatalog.CatalogNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(initialCatalog.CatalogName));
+						initialCatalog.CatalogNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(initialCatalog.CatalogName));
+						initialCatalog.CatalogNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(initialCatalog.CatalogName));
+
+						database.Catalogs.Add(initialCatalog);
+					}
+				}
+
+				var dataReaderDdlTrigger = unitOfWorkContext.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DdlTriggers"), this.CoreGetDdlTriggerParameters(unitOfWorkContext, dataSourceTag, database), out recordsAffected);
+				{
+					if ((object)dataReaderDdlTrigger != null)
+					{
+						foreach (var drTrigger in dataReaderDdlTrigger)
+						{
+							Trigger trigger;
+
+							trigger = new Trigger();
+
+							trigger.ObjectId = DataType.ChangeType<int>(drTrigger["ObjectId"]);
+							trigger.TriggerName = DataType.ChangeType<string>(drTrigger["TriggerName"]);
+							trigger.IsClrTrigger = DataType.ChangeType<bool>(drTrigger["IsClrTrigger"]);
+							trigger.IsTriggerDisabled = DataType.ChangeType<bool>(drTrigger["IsTriggerDisabled"]);
+							trigger.IsTriggerNotForReplication = DataType.ChangeType<bool>(drTrigger["IsTriggerNotForReplication"]);
+							trigger.IsInsteadOfTrigger = DataType.ChangeType<bool>(drTrigger["IsInsteadOfTrigger"]);
+							trigger.TriggerNamePascalCase = Name.GetPascalCase(trigger.TriggerName);
+							trigger.TriggerNameCamelCase = Name.GetCamelCase(trigger.TriggerName);
+							trigger.TriggerNameConstantCase = Name.GetConstantCase(trigger.TriggerName);
+							trigger.TriggerNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(trigger.TriggerName));
+							trigger.TriggerNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(trigger.TriggerName));
+							trigger.TriggerNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(trigger.TriggerName));
+							trigger.TriggerNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(trigger.TriggerName));
+							trigger.TriggerNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(trigger.TriggerName));
+							trigger.TriggerNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(trigger.TriggerName));
+
+							database.Triggers.Add(trigger);
+						}
 					}
 				}
 
@@ -367,6 +409,37 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 									{
 										table.HasNoDefinedPrimaryKeyColumns = true;
 										table.Columns.ForEach(c => c.ColumnIsPrimaryKey = true);
+									}
+
+									var dataReaderDmlTrigger = unitOfWorkContext.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DmlTriggers"), this.CoreGetDmlTriggerParameters(unitOfWorkContext, dataSourceTag, database, schema, table), out recordsAffected);
+									{
+										if ((object)dataReaderDmlTrigger != null)
+										{
+											foreach (var drTrigger in dataReaderDmlTrigger)
+											{
+												Trigger trigger;
+
+												trigger = new Trigger();
+
+												trigger.ObjectId = DataType.ChangeType<int>(drTrigger["ObjectId"]);
+												trigger.TriggerName = DataType.ChangeType<string>(drTrigger["TriggerName"]);
+												trigger.IsClrTrigger = DataType.ChangeType<bool>(drTrigger["IsClrTrigger"]);
+												trigger.IsTriggerDisabled = DataType.ChangeType<bool>(drTrigger["IsTriggerDisabled"]);
+												trigger.IsTriggerNotForReplication = DataType.ChangeType<bool>(drTrigger["IsTriggerNotForReplication"]);
+												trigger.IsInsteadOfTrigger = DataType.ChangeType<bool>(drTrigger["IsInsteadOfTrigger"]);
+												trigger.TriggerNamePascalCase = Name.GetPascalCase(trigger.TriggerName);
+												trigger.TriggerNameCamelCase = Name.GetCamelCase(trigger.TriggerName);
+												trigger.TriggerNameConstantCase = Name.GetConstantCase(trigger.TriggerName);
+												trigger.TriggerNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(trigger.TriggerName));
+												trigger.TriggerNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(trigger.TriggerName));
+												trigger.TriggerNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(trigger.TriggerName));
+												trigger.TriggerNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(trigger.TriggerName));
+												trigger.TriggerNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(trigger.TriggerName));
+												trigger.TriggerNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(trigger.TriggerName));
+
+												table.Triggers.Add(trigger);
+											}
+										}
 									}
 
 									var dataReaderForeignKey = unitOfWorkContext.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeys"), this.CoreGetForeignKeyParameters(unitOfWorkContext, dataSourceTag, database, schema, table), out recordsAffected);

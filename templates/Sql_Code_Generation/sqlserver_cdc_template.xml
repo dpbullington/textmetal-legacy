@@ -45,8 +45,6 @@ BEGIN
 		AS BIGINT)
 END
 GO
-
-
 ]]>
 	
 	<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
@@ -108,8 +106,8 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 					</ForEach.Filter>
 					<ForEach.Body>
 						<![CDATA[	[${ColumnName}] [${ColumnSqlType}]${rb(`
-	if ["varchar", "nvarchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
-		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") != 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
+	if ["varchar", "nvarchar", "varbinary"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
 	else
 		""
 	end
@@ -163,8 +161,8 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 					</ForEach.Filter>
 					<ForEach.Body>
 						<![CDATA[	[${ColumnName}] [${ColumnSqlType}]${rb(`
-	if ["varchar", "nvarchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
-		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") != 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
+	if ["varchar", "nvarchar", "varbinary"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
 	else
 		""
 	end
@@ -551,7 +549,6 @@ AS
 <![CDATA[
 	END
 GO
-
 ]]>
 					
 				</ForEach.Body>

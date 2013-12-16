@@ -48,6 +48,7 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="DatabaseSchema\Trigger.cs" />
     <Compile Include="DatabaseSchema\ExtendedProperty.cs" />
     <Compile Include="DatabaseSchema\DatabaseSchemaModelBase.cs" />
     <Compile Include="Primative\FileSystemSourceStrategy.cs" />
@@ -223,6 +224,28 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\UniqueKeyExtProps.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\DmlTriggers.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\DmlTriggerExtProps.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\DmlTriggerExtProps.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\DmlTriggers.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\DdlTriggers.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\DdlTriggerExtProps.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\DdlTriggerExtProps.sql" />
+    <Content Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\DdlTriggers.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

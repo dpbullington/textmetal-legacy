@@ -28,6 +28,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		private readonly List<Column> columns = new List<Column>();
 		private readonly List<ForeignKey> foreignKeys = new List<ForeignKey>();
+		private readonly List<Trigger> triggers = new List<Trigger>();
 		private readonly List<UniqueKey> uniqueKeys = new List<UniqueKey>();
 		private bool hasNoDefinedPrimaryKeyColumns;
 		private bool isView;
@@ -376,6 +377,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.tableNameSingularPascalCase = value;
+			}
+		}
+
+		[XmlArray(ElementName = "Triggers")]
+		[XmlArrayItem(ElementName = "Trigger")]
+		public List<Trigger> Triggers
+		{
+			get
+			{
+				return this.triggers;
 			}
 		}
 

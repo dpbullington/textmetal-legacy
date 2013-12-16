@@ -133,6 +133,60 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
+		protected override IEnumerable<IDataParameter> CoreGetDdlTriggerParameters(IUnitOfWorkContext unitOfWorkContext, string dataSourceTag, Database database)
+		{
+			if ((object)unitOfWorkContext == null)
+				throw new ArgumentNullException("unitOfWorkContext");
+
+			if ((object)dataSourceTag == null)
+				throw new ArgumentNullException("dataSourceTag");
+
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
+				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+				return null;
+
+			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
+		}
+
+		protected override IEnumerable<IDataParameter> CoreGetDmlTriggerParameters(IUnitOfWorkContext unitOfWorkContext, string dataSourceTag, Database database, Schema schema, Table table)
+		{
+			if ((object)unitOfWorkContext == null)
+				throw new ArgumentNullException("unitOfWorkContext");
+
+			if ((object)dataSourceTag == null)
+				throw new ArgumentNullException("dataSourceTag");
+
+			if ((object)database == null)
+				throw new ArgumentNullException("database");
+
+			if ((object)schema == null)
+				throw new ArgumentNullException("schema");
+
+			if ((object)table == null)
+				throw new ArgumentNullException("table");
+
+			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			{
+				return new IDataParameter[]
+						{
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", schema.SchemaName),
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", table.TableName),
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
+						};
+			}
+			else if (dataSourceTag.SafeToString().ToLower() == "odbc.sybaseiq")
+			{
+				return new IDataParameter[]
+						{
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", schema.SchemaName),
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", table.TableName),
+						};
+			}
+
+			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
+		}
+
 		protected override bool CoreGetEmitImplicitReturnParameter(string dataSourceTag)
 		{
 			if ((object)dataSourceTag == null)

@@ -120,6 +120,51 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
+		protected override IEnumerable<IDataParameter> CoreGetDdlTriggerParameters(IUnitOfWorkContext unitOfWorkContext, string dataSourceTag, Database database)
+		{
+			if ((object)unitOfWorkContext == null)
+				throw new ArgumentNullException("unitOfWorkContext");
+
+			if ((object)dataSourceTag == null)
+				throw new ArgumentNullException("dataSourceTag");
+
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
+				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+				return null;
+
+			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
+		}
+
+		protected override IEnumerable<IDataParameter> CoreGetDmlTriggerParameters(IUnitOfWorkContext unitOfWorkContext, string dataSourceTag, Database database, Schema schema, Table table)
+		{
+			if ((object)unitOfWorkContext == null)
+				throw new ArgumentNullException("unitOfWorkContext");
+
+			if ((object)dataSourceTag == null)
+				throw new ArgumentNullException("dataSourceTag");
+
+			if ((object)database == null)
+				throw new ArgumentNullException("database");
+
+			if ((object)schema == null)
+				throw new ArgumentNullException("schema");
+
+			if ((object)table == null)
+				throw new ArgumentNullException("table");
+
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
+				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+			{
+				return new IDataParameter[]
+						{
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
+							unitOfWorkContext.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableOrViewName", table.TableName)
+						};
+			}
+
+			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
+		}
+
 		protected override bool CoreGetEmitImplicitReturnParameter(string dataSourceTag)
 		{
 			if ((object)dataSourceTag == null)

@@ -27,19 +27,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Fields/Constants
 
+		private readonly List<Catalog> catalogs = new List<Catalog>();
 		private readonly List<Schema> schemas = new List<Schema>();
+		private readonly List<Trigger> triggers = new List<Trigger>();
 		private string connectionString;
 		private string connectionType;
 		private string initialCatalogName;
-		private string initialCatalogNameCamelCase;
-		private string initialCatalogNameConstantCase;
-		private string initialCatalogNamePascalCase;
-		private string initialCatalogNamePluralCamelCase;
-		private string initialCatalogNamePluralConstantCase;
-		private string initialCatalogNamePluralPascalCase;
-		private string initialCatalogNameSingularCamelCase;
-		private string initialCatalogNameSingularConstantCase;
-		private string initialCatalogNameSingularPascalCase;
 		private string instanceName;
 		private string machineName;
 		private string serverEdition;
@@ -49,6 +42,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		[XmlArray(ElementName = "Catalogs")]
+		[XmlArrayItem(ElementName = "Catalog")]
+		public List<Catalog> Catalogs
+		{
+			get
+			{
+				return this.catalogs;
+			}
+		}
 
 		[XmlAttribute]
 		public string ConnectionString
@@ -90,6 +93,24 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		}
 
 		[XmlIgnore]
+		public bool HasCatalogs
+		{
+			get
+			{
+				return this.Catalogs.Count() > 0;
+			}
+		}
+
+		[XmlIgnore]
+		public bool HasInitialCatalog
+		{
+			get
+			{
+				return (object)this.InitialCatalog != null;
+			}
+		}
+
+		[XmlIgnore]
 		public bool HasProcedures
 		{
 			get
@@ -116,6 +137,15 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 		}
 
+		[XmlIgnore]
+		public Catalog InitialCatalog
+		{
+			get
+			{
+				return this.Catalogs.FirstOrDefault(c => c.CatalogName == this.InitialCatalogName);
+			}
+		}
+
 		[XmlAttribute]
 		public string InitialCatalogName
 		{
@@ -126,123 +156,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.initialCatalogName = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string InitialCatalogNameCamelCase
-		{
-			get
-			{
-				return this.initialCatalogNameCamelCase;
-			}
-			set
-			{
-				this.initialCatalogNameCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string InitialCatalogNameConstantCase
-		{
-			get
-			{
-				return this.initialCatalogNameConstantCase;
-			}
-			set
-			{
-				this.initialCatalogNameConstantCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string InitialCatalogNamePascalCase
-		{
-			get
-			{
-				return this.initialCatalogNamePascalCase;
-			}
-			set
-			{
-				this.initialCatalogNamePascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string InitialCatalogNamePluralCamelCase
-		{
-			get
-			{
-				return this.initialCatalogNamePluralCamelCase;
-			}
-			set
-			{
-				this.initialCatalogNamePluralCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string InitialCatalogNamePluralConstantCase
-		{
-			get
-			{
-				return this.initialCatalogNamePluralConstantCase;
-			}
-			set
-			{
-				this.initialCatalogNamePluralConstantCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string InitialCatalogNamePluralPascalCase
-		{
-			get
-			{
-				return this.initialCatalogNamePluralPascalCase;
-			}
-			set
-			{
-				this.initialCatalogNamePluralPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string InitialCatalogNameSingularCamelCase
-		{
-			get
-			{
-				return this.initialCatalogNameSingularCamelCase;
-			}
-			set
-			{
-				this.initialCatalogNameSingularCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string InitialCatalogNameSingularConstantCase
-		{
-			get
-			{
-				return this.initialCatalogNameSingularConstantCase;
-			}
-			set
-			{
-				this.initialCatalogNameSingularConstantCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string InitialCatalogNameSingularPascalCase
-		{
-			get
-			{
-				return this.initialCatalogNameSingularPascalCase;
-			}
-			set
-			{
-				this.initialCatalogNameSingularPascalCase = value;
 			}
 		}
 
@@ -318,6 +231,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.serverVersion = value;
+			}
+		}
+
+		[XmlArray(ElementName = "Triggers")]
+		[XmlArrayItem(ElementName = "Trigger")]
+		public List<Trigger> Triggers
+		{
+			get
+			{
+				return this.triggers;
 			}
 		}
 
