@@ -9,6 +9,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 
+using TextMetal.Common.Cerealization;
 using TextMetal.Common.Core;
 using TextMetal.Common.Core.StringTokens;
 using TextMetal.Common.Data;

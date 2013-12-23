@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
+using TextMetal.Common.Cerealization;
 using TextMetal.Common.Core;
 using TextMetal.Common.Core.StringTokens;
 using TextMetal.Common.Xml;
@@ -118,8 +119,10 @@ namespace TextMetal.HostImpl.Tool
 
 			objectConstruct = source as ObjectConstruct;
 
+			// this will always use the XPE
 			xpe.SerializeToXml(template, Path.Combine(baseDirectoryPath, "#template.xml"));
 
+			// this should support XML, JSON, and BSON
 			if ((object)objectConstruct != null)
 				xpe.SerializeToXml(objectConstruct, Path.Combine(baseDirectoryPath, "#source.xml"));
 			else if ((object)source != null && (object)Reflexion.GetOneAttribute<SerializableAttribute>(source.GetType()) != null)
@@ -133,41 +136,32 @@ namespace TextMetal.HostImpl.Tool
 
 					using (ITemplatingContext templatingContext = new TemplatingContext(xpe, new Tokenizer(strictMatching), inputMechanism, outputMechanism))
 					{
-						try
+						templatingContext.Tokenizer.TokenReplacementStrategies.Add("StaticPropertyResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticPropertyResolver));
+						templatingContext.Tokenizer.TokenReplacementStrategies.Add("StaticMethodResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticMethodResolver));
+						templatingContext.Tokenizer.TokenReplacementStrategies.Add("rb", new ContextualDynamicValueTokenReplacementStrategy(RubyConstruct.RubyExpressionResolver, new object[] { templatingContext }));
+
+						// globals
+						templatingContext.VariableTables.Push(globalVariableTable = new Dictionary<string, object>());
+						globalVariableTable.Add("ToolVersion", toolVersion);
+
+						foreach (KeyValuePair<string, IList<string>> property in properties)
 						{
-							TemplatingContext.Current = templatingContext; // set ambient context
+							if (property.Value.Count == 0)
+								continue;
 
-							templatingContext.Tokenizer.TokenReplacementStrategies.Add("StaticPropertyResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticPropertyResolver));
-							templatingContext.Tokenizer.TokenReplacementStrategies.Add("StaticMethodResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticMethodResolver));
-							templatingContext.Tokenizer.TokenReplacementStrategies.Add("rb", new DynamicValueTokenReplacementStrategy(RubyConstruct.RubyExpressionResolver));
-
-							// globals
-							templatingContext.VariableTables.Push(globalVariableTable = new Dictionary<string, object>());
-							globalVariableTable.Add("ToolVersion", toolVersion);
-
-							foreach (KeyValuePair<string, IList<string>> property in properties)
-							{
-								if (property.Value.Count == 0)
-									continue;
-
-								if (property.Value.Count == 1)
-									globalVariableTable.Add(property.Key, property.Value[0]);
-								else
-									globalVariableTable.Add(property.Key, property.Value);
-							}
-
-							templatingContext.IteratorModels.Push(source);
-							template.ExpandTemplate(templatingContext);
-							templatingContext.IteratorModels.Pop();
-							templatingContext.VariableTables.Pop();
-
-							endUtc = DateTime.UtcNow;
-							outputMechanism.LogTextWriter.WriteLine("['{0:O}' (UTC)]\tText templating completed with duration: '{1}'.", endUtc, (endUtc - startUtc));
+							if (property.Value.Count == 1)
+								globalVariableTable.Add(property.Key, property.Value[0]);
+							else
+								globalVariableTable.Add(property.Key, property.Value);
 						}
-						finally
-						{
-							TemplatingContext.Current = null; // unset ambient context
-						}
+
+						templatingContext.IteratorModels.Push(source);
+						template.ExpandTemplate(templatingContext);
+						templatingContext.IteratorModels.Pop();
+						templatingContext.VariableTables.Pop();
+
+						endUtc = DateTime.UtcNow;
+						outputMechanism.LogTextWriter.WriteLine("['{0:O}' (UTC)]\tText templating completed with duration: '{1}'.", endUtc, (endUtc - startUtc));
 					}
 				}
 			}

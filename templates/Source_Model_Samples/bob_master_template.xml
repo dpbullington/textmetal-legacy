@@ -34,6 +34,13 @@
 	
 	<Alias local-name="Scrizzle" namespace-uri="http://www.textmetal.com/api/v5.0.0" aqt-name="TextMetal.Framework.TemplateModel.WriteConstruct, TextMetal.Framework.TemplateModel" />
 
+	<!-- FAILS BY DESIGN -->
+	<!--<Scrizzle newline="true">
+		<Scrizzle.Text>
+			<Value data="${test}" type="System.String" />
+		</Scrizzle.Text>
+	</Scrizzle>-->
+	
 	<Import name="bob_import_template.xml" />
 	
 	<![CDATA[

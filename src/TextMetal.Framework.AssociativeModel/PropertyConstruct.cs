@@ -138,7 +138,7 @@ namespace TextMetal.Framework.AssociativeModel
 		}
 
 		/// <summary>
-		/// Gets a string represnetation for an associative XML object value.
+		/// Gets a string representation for an associative XML object value.
 		/// </summary>
 		/// <param name="associativeXmlObject"> The associative XML object used to get a string representation. </param>
 		/// <returns> The string representation of the associative XML object's value. </returns>

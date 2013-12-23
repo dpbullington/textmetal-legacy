@@ -194,7 +194,7 @@ namespace TextMetal.Common.Data.Advanced
 					this.EnsureDatabaseFile();
 				}
 
-				if (!Cerealization.TryGetFromAssemblyResource<DatabaseHistory>(revisionHistoryResourceAssemblyType, revisionHistoryResourceName, out history))
+				if (!Cerealization.Cerealization.TryGetFromAssemblyResource<DatabaseHistory>(revisionHistoryResourceAssemblyType, revisionHistoryResourceName, out history))
 					throw new InvalidOperationException(string.Format("Unable to deserialize instance of '{0}' from the manifest resource name '{1}' in the assembly '{2}'.", typeof(DatabaseHistory).FullName, revisionHistoryResourceName, revisionHistoryResourceAssemblyType.Assembly.FullName));
 
 				using (IUnitOfWorkContext unitOfWorkContext = unitOfWorkContextFactory.GetUnitOfWorkContext())

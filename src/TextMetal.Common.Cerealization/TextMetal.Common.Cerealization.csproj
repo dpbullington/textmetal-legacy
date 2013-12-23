@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D1860A67-7EFB-4C0F-89CD-A641D99DCC2A}</ProjectGuid>
+    <ProjectGuid>{384A2559-5C35-4279-9F69-FE0D643B1014}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TextMetal.Common.Core</RootNamespace>
-    <AssemblyName>TextMetal.Common.Core</AssemblyName>
+    <RootNamespace>TextMetal.Common.Cerealization</RootNamespace>
+    <AssemblyName>TextMetal.Common.Cerealization</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\TextMetal.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -25,7 +25,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\TextMetal.Common.Core.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\TextMetal.Common.Cerealization.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,41 +34,41 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\TextMetal.Common.Core.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\TextMetal.Common.Cerealization.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AppConfig.cs" />
-    <Compile Include="AssemblyInformation.cs" />
-    <Compile Include="ComparableComparer.cs" />
-    <Compile Include="DataType.cs" />
-    <Compile Include="DataType.IntImpl.cs" />
-    <Compile Include="ExecutionPathStorage.cs" />
-    <Compile Include="Message.cs" />
-    <Compile Include="Name.cs" />
-    <Compile Include="Reflexion.cs" />
-    <Compile Include="Severity.cs" />
-    <Compile Include="ProjectAssemblyInfo.cs" />
-    <Compile Include="StringTokens\ContextualDynamicValueTokenReplacementStrategy.cs" />
-    <Compile Include="StringTokens\DynamicValueTokenReplacementStrategy.cs" />
-    <Compile Include="StringTokens\DynamicWildcardTokenReplacementStrategy.cs" />
-    <Compile Include="StringTokens\ITokenReplacementStrategy.cs" />
-    <Compile Include="StringTokens\IWildcardTokenReplacementStrategy.cs" />
-    <Compile Include="StringTokens\StaticValueTokenReplacementStrategy.cs" />
-    <Compile Include="StringTokens\Tokenizer.cs" />
+    <Compile Include="Cerealization.cs" />
+    <Compile Include="ISerializationStrategy.cs" />
+    <Compile Include="IBinarySerializationStrategy.cs" />
+    <Compile Include="ITextSerializationStrategy.cs" />
+    <Compile Include="IXmlSerializationStrategy.cs" />
+    <Compile Include="XmlSerializationStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TextMetal.snk">
       <Link>TextMetal.snk</Link>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TextMetal.Common.Core\TextMetal.Common.Core.csproj">
+      <Project>{D1860A67-7EFB-4C0F-89CD-A641D99DCC2A}</Project>
+      <Name>TextMetal.Common.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Common.Xml\TextMetal.Common.Xml.csproj">
+      <Project>{CEF6C9D5-D5F2-4F4E-81DD-0BFDF81A2C93}</Project>
+      <Name>TextMetal.Common.Xml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Imports\TextMetal.Imports.csproj">
+      <Project>{40e6902d-3881-4271-bdf3-7d88db7cf230}</Project>
+      <Name>TextMetal.Imports</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

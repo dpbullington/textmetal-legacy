@@ -3,366 +3,6 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-PRINT 'TextMetalWebHostSample database setup...'	
-GO
-
-
-USE master
-GO
-
-
-IF EXISTS (SELECT * FROM sysdatabases WHERE name = 'TextMetalWebHostSample')
-BEGIN
-
-	PRINT 'Database [TextMetalWebHostSample] exists...'	
-	
-	PRINT 'Setting single user access on database [TextMetalWebHostSample]...'
-
-	ALTER DATABASE [TextMetalWebHostSample] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
-	
-	PRINT 'Dropping database [TextMetalWebHostSample]...'
-	
-	DROP DATABASE [TextMetalWebHostSample]
-	
-END
-GO
-
-
-IF EXISTS (SELECT * FROM master.dbo.syslogins WHERE loginname = N'TextMetalWebHostSampleLogin')
-BEGIN
-
-	PRINT 'Login [TextMetalWebHostSampleLogin] exists...'	
-	
-	PRINT 'Dropping login [TextMetalWebHostSampleLogin]...'
-	
-	DROP LOGIN [TextMetalWebHostSampleLogin]
-	
-END
-GO
-
-
-PRINT 'Creating database [TextMetalWebHostSample]...'
-GO
-
-
-CREATE DATABASE [TextMetalWebHostSample]
-GO
-
-
-PRINT N'Creating login [TextMetalWebHostSampleLogin]...'
-GO
-
-	
-CREATE LOGIN [TextMetalWebHostSampleLogin] WITH PASSWORD = 'LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH', CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF, DEFAULT_LANGUAGE=[us_english]
-GO
-
-
-PRINT N'Granting connect to login [TextMetalWebHostSampleLogin]...'
-GO
-	
-
-GRANT CONNECT SQL TO [TextMetalWebHostSampleLogin]
-GO
-
-
-USE [TextMetalWebHostSample]
-GO
-
-
-PRINT N'Creating user in database...'
-GO
-
-
-CREATE USER [TextMetalWebHostSampleUser] FOR LOGIN [TextMetalWebHostSampleLogin] WITH DEFAULT_SCHEMA=[dbo]
-GO
-
-
-EXEC sp_addrolemember 'db_owner', 'TextMetalWebHostSampleUser'
-GO
-
-
-PRINT N'Altering login [TextMetalWebHostSampleLogin]...'
-GO	
-
-
-ALTER LOGIN [TextMetalWebHostSampleLogin] WITH DEFAULT_DATABASE=[TextMetalWebHostSample]
-GO
-
-
-PRINT 'TextMetalWebHostSample database complete.'	
-GO
-
-
-CREATE SCHEMA [TxtMtl]
-GO
-
-
-CREATE TABLE [TxtMtl].[SexualChocolate]
-(
-	[SexualChocolateId] [int] IDENTITY(1,1) NOT NULL,
-	[EM] [nvarchar](MAX) NOT NULL,	
-	[Blob] [varbinary](MAX) NOT NULL,
-	[CreationTimestamp] [datetime] NOT NULL,
-	[ModificationTimestamp] [datetime] NOT NULL,
-	[LogicalDelete] [bit] NOT NULL DEFAULT(0),
-	
-	CONSTRAINT [pk_SexualChocolate] PRIMARY KEY
-	(
-		[SexualChocolateId]
-	)	
-)
-GO
-
-
-CREATE TABLE [EventLog]
-(
-	[EventLogId] [int] IDENTITY(1,1) NOT NULL,
-	[EventText] [nvarchar](MAX) NOT NULL,	
-	[CreationTimestamp] [datetime] NOT NULL,
-	[ModificationTimestamp] [datetime] NOT NULL,
-	[LogicalDelete] [bit] NOT NULL DEFAULT(0),
-	
-	CONSTRAINT [pk_EventLog] PRIMARY KEY
-	(
-		[EventLogId]
-	)	
-)
-GO
-
-
-CREATE TABLE [EmailMessage]
-(
-	[EmailMessageId] [int] IDENTITY(1,1) NOT NULL,
-	[From] [nvarchar](2047) NOT NULL,
-	[Sender] [nvarchar](2047) NULL,
-	[ReplyTo] [nvarchar](2047) NULL,
-	[To] [nvarchar](2047) NOT NULL,
-	[CarbonCopy] [nvarchar](2047) NULL,
-	[BlindCarbonCopy] [nvarchar](2047) NULL,
-	[Subject] [nvarchar](2047) NOT NULL,	
-	[IsBodyHtml] [bit] NOT NULL DEFAULT(0),
-	[Body] [nvarchar](MAX) NOT NULL,
-	[Processed] [bit] NOT NULL,
-	[CreationTimestamp] [datetime] NOT NULL,
-	[ModificationTimestamp] [datetime] NOT NULL,
-	[LogicalDelete] [bit] NOT NULL DEFAULT(0),
-
-	CONSTRAINT [pk_EmailMessage] PRIMARY KEY
-	(
-		[EmailMessageId]
-	)
-)
-GO
-
-
-CREATE TABLE [EmailAttachment]
-(
-	[EmailAttachmentId] [int] IDENTITY(1,1) NOT NULL,
-	[EmailMessageId] [int] NOT NULL,
-	[MimeType] [nvarchar](2047) NOT NULL,
-	[AttachmentBits] [image] NOT NULL,	
-	[CreationTimestamp] [datetime] NOT NULL,
-	[ModificationTimestamp] [datetime] NOT NULL,
-	[LogicalDelete] [bit] NOT NULL DEFAULT(0),
-
-	CONSTRAINT [pk_EmailAttachment] PRIMARY KEY
-	(
-		[EmailAttachmentId]
-	),
-
-	CONSTRAINT [fk_EmailAttachment_EmailMessage] FOREIGN KEY
-	(
-		[EmailMessageId]
-	)
-	REFERENCES [EmailMessage]
-	(
-		[EmailMessageId]
-	)
-)
-GO
-
-
-CREATE TABLE [TableWithPrimaryKeyAsIdentity]
-(
-	[PkId] [int] IDENTITY(1,1) NOT NULL,
-	[Data01] [BIT] NULL,
-	[Data02] [DATETIME] NULL,
-	[Data03] [INT] NULL,
-	[Data04] [NVARCHAR](100) NULL,
-	
-	CONSTRAINT [pk_TableWithPrimaryKeyAsIdentity] PRIMARY KEY
-	(
-		[PkId]
-	)	
-)
-GO
-
-
-CREATE TABLE [TableWithPrimaryKeyAsDefault]
-(
-	[PkDf] [UNIQUEIDENTIFIER] NOT NULL DEFAULT(newsequentialid()),
-	[Data01] [BIT] NULL,
-	[Data02] [DATETIME] NULL,
-	[Data03] [INT] NULL,
-	[Data04] [NVARCHAR](100) NULL,
-	
-	CONSTRAINT [pk_TableWithPrimaryKeyAsDefault] PRIMARY KEY
-	(
-		[PkDf]
-	)	
-)
-GO
-
-
-CREATE TABLE [TableWithPrimaryKeyWithDiffIdentity]
-(
-	[Pk] [int] NOT NULL,
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Data01] [BIT] NULL,
-	[Data02] [DATETIME] NULL,
-	[Data03] [INT] NULL,
-	[Data04] [NVARCHAR](100) NULL,
-	
-	CONSTRAINT [pk_TableWithPrimaryKeyWithDiffIdentity] PRIMARY KEY
-	(
-		[Pk]
-	)	
-)
-GO
-
-
-CREATE TABLE [TableNoPrimaryKeyWithIdentity]
-(
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Data01] [BIT] NULL,
-	[Data02] [DATETIME] NULL,
-	[Data03] [INT] NULL,
-	[Data04] [NVARCHAR](100) NULL
-)
-GO
-
-
-CREATE TABLE [TableWithPrimaryKeyNoIdentity]
-(
-	[Pk] [int] NOT NULL,
-	[Data01] [BIT] NULL,
-	[Data02] [DATETIME] NULL,
-	[Data03] [INT] NULL,
-	[Data04] [NVARCHAR](100) NULL,
-	
-	CONSTRAINT [pk_TableWithPrimaryKeyNoIdentity] PRIMARY KEY
-	(
-		[Pk]
-	)	
-)
-GO
-
-
-CREATE TABLE [TableWithCompositePrimaryKeyNoIdentity]
-(
-	[Pk0] [int] NOT NULL,
-	[Pk1] [int] NOT NULL,
-	[Pk2] [int] NOT NULL,
-	[Pk3] [int] NOT NULL,
-	[Data01] [BIT] NULL,
-	[Data02] [DATETIME] NULL,
-	[Data03] [INT] NULL,
-	[Data04] [NVARCHAR](100) NULL,
-	
-	CONSTRAINT [pk_TableWithCompositePrimaryKeyNoIdentity] PRIMARY KEY
-	(
-		[Pk0],[Pk1],[Pk2],[Pk3]
-	)	
-)
-GO
-
-
-CREATE TABLE [TableNoPrimaryKeyNoIdentity]
-(
-	[Value] [int] NOT NULL,
-	[Data01] [BIT] NULL,
-	[Data02] [DATETIME] NULL,
-	[Data03] [INT] NULL,
-	[Data04] [NVARCHAR](100) NULL
-)
-GO
-
-
-CREATE TABLE [TableTypeTest]
-(
-	[PkId] [int] IDENTITY(1,1) NOT NULL,
-	[Data00] [BIGINT] NULL,
-	[Data01] [BINARY] NULL,
-	[Data02] [BIT] NULL,
-	[Data03] [CHAR] NULL,
-	--[Data04] [CURSOR] NULL,
-	[Data05] [DATE] NULL,
-	[Data06] [DATETIME] NULL,
-	[Data07] [DATETIME2] NULL,
-	[Data08] [DATETIMEOFFSET] NULL,
-	[Data09] [DECIMAL] NULL,
-	[Data10] [FLOAT] NULL,
-	--[Data11] [HIERARCHYID] NULL,
-	[Data12] [IMAGE] NULL,
-	[Data13] [INT] NULL,
-	[Data14] [MONEY] NULL,
-	[Data15] [NCHAR] NULL,
-	[Data16] [nvarchar](MAX) NULL,
-	[Data17] [NUMERIC] NULL,
-	[Data18] [NVARCHAR] NULL,
-	[Data19] [REAL] NULL,
-	[Data20] [SMALLDATETIME] NULL,
-	[Data21] [SMALLINT] NULL,
-	[Data22] [SMALLMONEY] NULL,
-	--[Data23] [SQL_VARIANT] NULL,
-	--[Data24] [SYSNAME] NULL,
-	--[Data25] [TABLE] NULL,
-	[Data26] [TEXT] NULL,
-	[Data27] [TIME] NULL,
-	--[Data28] [TIMESTAMP] NULL,
-	[Data29] [TINYINT] NULL,
-	[Data30] [UNIQUEIDENTIFIER] NULL,
-	[Data31] [VARBINARY] NULL,
-	[Data32] [VARCHAR] NULL,
-	--[Data33] [XML] NULL,
-	
-	CONSTRAINT [pk_TableTypeTest] PRIMARY KEY
-	(
-		[PkId]
-	)	
-)
-GO
-
-
-CREATE VIEW [dbo].[EventLogAggregation] AS
-	select
-	min([CreationTimestamp]) as [MinCreationTimestamp],
-	max([ModificationTimestamp]) as [MaxModificationTimestamp]
-	from [dbo].[EventLog]
-GO
-
-
-CREATE PROCEDURE [dbo].[GetBlahBlahBlah]
-(
-	@pInt as int,
-	@pImage as image,
-	@pVarchar varchar(100) output
-)
-AS
-BEGIN
-	set @pVarchar = 'TEXTMETAL'
-
-	SELECT 1 as a, 2 as b, @pInt as c, @pImage as d
-	union all
-	SELECT 1 as a, 2 as b, @pInt as c, @pImage as d 
-
-	return 16
-END
-GO
-
-
--- **************************
-
 
 USE [TextMetalWebHostSample]
 GO
@@ -380,20 +20,118 @@ RETURNS [bigint]
 AS
 BEGIN
 	RETURN
-	CAST( (CAST(DATEPART(YYYY,@DateTime) AS VARCHAR) + '' +
-	CAST(DATEPART(MM,@DateTime) AS VARCHAR) + '' +
-	CAST(DATEPART(DD,@DateTime) AS VARCHAR) + '' +
-	CAST(DATEPART(HH,@DateTime) AS VARCHAR) + '' +
-	CAST(DATEPART(MI,@DateTime) AS VARCHAR) + '' +
-	CAST(DATEPART(SS,@DateTime) AS VARCHAR) + '' +
-	CASE WHEN DATEPART(MS,@DateTime) < 10 THEN '00'
-		WHEN DATEPART(MS,@DateTime) < 100 THEN '0'
+	CAST( 
+	( CAST(DATEPART(YYYY,@DateTime) AS VARCHAR) + '' +
+	(CASE WHEN DATEPART(MM,@DateTime) < 10 THEN '0'
 		ELSE '' END +
-		CAST(DATEPART(MS,@DateTime) AS VARCHAR) ) AS BIGINT)
+		CAST(DATEPART(MM,@DateTime) AS VARCHAR)) + '' +
+	(CASE WHEN DATEPART(DD,@DateTime) < 10 THEN '0'
+		ELSE '' END +
+		CAST(DATEPART(DD,@DateTime) AS VARCHAR)) + '' +
+	(CASE WHEN DATEPART(HH,@DateTime) < 10 THEN '0'
+		ELSE '' END +
+		CAST(DATEPART(HH,@DateTime) AS VARCHAR)) + '' +
+	(CASE WHEN DATEPART(MI,@DateTime) < 10 THEN '0'
+		ELSE '' END +
+		CAST(DATEPART(MI,@DateTime) AS VARCHAR)) + '' +
+	(CASE WHEN DATEPART(SS,@DateTime) < 10 THEN '0'
+		ELSE '' END +
+		CAST(DATEPART(SS,@DateTime) AS VARCHAR)) + '' +
+	(CASE WHEN DATEPART(MS,@DateTime) < 10 THEN '000'
+		WHEN DATEPART(MS,@DateTime) < 100 THEN '00'
+		ELSE '0' END +
+		CAST(DATEPART(MS,@DateTime) AS VARCHAR)) )
+		AS BIGINT)
 END
 GO
 
 
+CREATE TABLE [history].[UserHistory]
+(
+	[TimestampId] [bigint] NOT NULL,	
+	[UserId] [int] NOT NULL,
+
+	[EmailAddress] [nvarchar](255) NULL,
+	[UserName] [nvarchar](255) NULL,
+	[SaltValue] [nvarchar](255) NULL,
+	[PasswordHash] [nvarchar](255) NULL,
+	[Question] [nvarchar](255) NULL,
+	[AnswerHash] [nvarchar](255) NULL,
+	[LastLoginSuccessTimestamp] [datetime] NULL,
+	[LastLoginFailureTimestamp] [datetime] NULL,
+	[FailedLoginCount] [smallint] NULL,
+	[MustChangePassword] [bit] NULL,
+	[SortOrder] [tinyint] NULL,
+	[CreationTimestamp] [datetime] NULL,
+	[ModificationTimestamp] [datetime] NULL,
+	[CreationUserId] [int] NULL,
+	[ModificationUserId] [int] NULL,
+	[LogicalDelete] [bit] NULL,
+
+	CONSTRAINT [pk_UserHistory] PRIMARY KEY
+	(
+		[TimestampId],
+		[UserId]
+	)
+)
+GO
+
+
+CREATE TRIGGER [dbo].[OnUserChange] ON [dbo].[User] AFTER INSERT, UPDATE, DELETE
+AS
+	BEGIN
+		SET NOCOUNT ON;
+
+		INSERT INTO [history].[UserHistory]
+		SELECT
+			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			i.[UserId],
+
+			i.[EmailAddress],
+			i.[UserName],
+			i.[SaltValue],
+			i.[PasswordHash],
+			i.[Question],
+			i.[AnswerHash],
+			i.[LastLoginSuccessTimestamp],
+			i.[LastLoginFailureTimestamp],
+			i.[FailedLoginCount],
+			i.[MustChangePassword],
+			i.[SortOrder],
+			i.[CreationTimestamp],
+			i.[ModificationTimestamp],
+			i.[CreationUserId],
+			i.[ModificationUserId],
+			i.[LogicalDelete]
+		FROM [inserted] i
+
+		UNION ALL
+
+		SELECT
+			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			d.[UserId],
+
+			NULL AS [EmailAddress],
+			NULL AS [UserName],
+			NULL AS [SaltValue],
+			NULL AS [PasswordHash],
+			NULL AS [Question],
+			NULL AS [AnswerHash],
+			NULL AS [LastLoginSuccessTimestamp],
+			NULL AS [LastLoginFailureTimestamp],
+			NULL AS [FailedLoginCount],
+			NULL AS [MustChangePassword],
+			NULL AS [SortOrder],
+			NULL AS [CreationTimestamp],
+			NULL AS [ModificationTimestamp],
+			NULL AS [CreationUserId],
+			NULL AS [ModificationUserId],
+			NULL AS [LogicalDelete]
+		FROM [deleted] d
+		LEFT OUTER JOIN [inserted] i ON i.[UserId] = d.[UserId]
+		WHERE i.[UserId] IS NULL
+	END
+GO
 
 
 CREATE TABLE [history].[EventLogHistory]
@@ -402,8 +140,11 @@ CREATE TABLE [history].[EventLogHistory]
 	[EventLogId] [int] NOT NULL,
 
 	[EventText] [nvarchar](MAX) NULL,
+	[SortOrder] [tinyint] NULL,
 	[CreationTimestamp] [datetime] NULL,
 	[ModificationTimestamp] [datetime] NULL,
+	[CreationUserId] [int] NULL,
+	[ModificationUserId] [int] NULL,
 	[LogicalDelete] [bit] NULL,
 
 	CONSTRAINT [pk_EventLogHistory] PRIMARY KEY
@@ -426,8 +167,11 @@ AS
 			i.[EventLogId],
 
 			i.[EventText],
+			i.[SortOrder],
 			i.[CreationTimestamp],
 			i.[ModificationTimestamp],
+			i.[CreationUserId],
+			i.[ModificationUserId],
 			i.[LogicalDelete]
 		FROM [inserted] i
 
@@ -438,15 +182,17 @@ AS
 			d.[EventLogId],
 
 			NULL AS [EventText],
+			NULL AS [SortOrder],
 			NULL AS [CreationTimestamp],
 			NULL AS [ModificationTimestamp],
+			NULL AS [CreationUserId],
+			NULL AS [ModificationUserId],
 			NULL AS [LogicalDelete]
 		FROM [deleted] d
 		LEFT OUTER JOIN [inserted] i ON i.[EventLogId] = d.[EventLogId]
 		WHERE i.[EventLogId] IS NULL
 	END
 GO
-
 
 
 CREATE TABLE [history].[EmailMessageHistory]
@@ -464,8 +210,11 @@ CREATE TABLE [history].[EmailMessageHistory]
 	[IsBodyHtml] [bit] NULL,
 	[Body] [nvarchar](MAX) NULL,
 	[Processed] [bit] NULL,
+	[SortOrder] [tinyint] NULL,
 	[CreationTimestamp] [datetime] NULL,
 	[ModificationTimestamp] [datetime] NULL,
+	[CreationUserId] [int] NULL,
+	[ModificationUserId] [int] NULL,
 	[LogicalDelete] [bit] NULL,
 
 	CONSTRAINT [pk_EmailMessageHistory] PRIMARY KEY
@@ -497,8 +246,11 @@ AS
 			i.[IsBodyHtml],
 			i.[Body],
 			i.[Processed],
+			i.[SortOrder],
 			i.[CreationTimestamp],
 			i.[ModificationTimestamp],
+			i.[CreationUserId],
+			i.[ModificationUserId],
 			i.[LogicalDelete]
 		FROM [inserted] i
 
@@ -518,8 +270,11 @@ AS
 			NULL AS [IsBodyHtml],
 			NULL AS [Body],
 			NULL AS [Processed],
+			NULL AS [SortOrder],
 			NULL AS [CreationTimestamp],
 			NULL AS [ModificationTimestamp],
+			NULL AS [CreationUserId],
+			NULL AS [ModificationUserId],
 			NULL AS [LogicalDelete]
 		FROM [deleted] d
 		LEFT OUTER JOIN [inserted] i ON i.[EmailMessageId] = d.[EmailMessageId]
@@ -528,23 +283,27 @@ AS
 GO
 
 
-
 CREATE TABLE [history].[EmailAttachmentHistory]
 (
 	[TimestampId] [bigint] NOT NULL,	
-	[EmailAttachmentId] [int] NOT NULL,
+	[EmailMessageId] [int] NOT NULL,
 
-	[EmailMessageId] [int] NULL,
-	[MimeType] [nvarchar](2047) NULL,
-	[AttachmentBits] [image] NULL,
+	[EmailAttachmentId] [int] NULL,
+	[FileName] [nvarchar](255) NULL,
+	[FileSize] [bigint] NULL,
+	[MimeType] [nvarchar](255) NULL,
+	[AttachmentBits] [varbinary](MAX) NULL,
+	[SortOrder] [tinyint] NULL,
 	[CreationTimestamp] [datetime] NULL,
 	[ModificationTimestamp] [datetime] NULL,
+	[CreationUserId] [int] NULL,
+	[ModificationUserId] [int] NULL,
 	[LogicalDelete] [bit] NULL,
 
 	CONSTRAINT [pk_EmailAttachmentHistory] PRIMARY KEY
 	(
 		[TimestampId],
-		[EmailAttachmentId]
+		[EmailMessageId]
 	)
 )
 GO
@@ -558,13 +317,18 @@ AS
 		INSERT INTO [history].[EmailAttachmentHistory]
 		SELECT
 			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
-			i.[EmailAttachmentId],
-
 			i.[EmailMessageId],
+
+			i.[EmailAttachmentId],
+			i.[FileName],
+			i.[FileSize],
 			i.[MimeType],
 			i.[AttachmentBits],
+			i.[SortOrder],
 			i.[CreationTimestamp],
 			i.[ModificationTimestamp],
+			i.[CreationUserId],
+			i.[ModificationUserId],
 			i.[LogicalDelete]
 		FROM [inserted] i
 
@@ -572,20 +336,24 @@ AS
 
 		SELECT
 			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
-			d.[EmailAttachmentId],
+			d.[EmailMessageId],
 
-			NULL AS [EmailMessageId],
+			NULL AS [EmailAttachmentId],
+			NULL AS [FileName],
+			NULL AS [FileSize],
 			NULL AS [MimeType],
 			NULL AS [AttachmentBits],
+			NULL AS [SortOrder],
 			NULL AS [CreationTimestamp],
 			NULL AS [ModificationTimestamp],
+			NULL AS [CreationUserId],
+			NULL AS [ModificationUserId],
 			NULL AS [LogicalDelete]
 		FROM [deleted] d
-		LEFT OUTER JOIN [inserted] i ON i.[EmailAttachmentId] = d.[EmailAttachmentId]
-		WHERE i.[EmailAttachmentId] IS NULL
+		LEFT OUTER JOIN [inserted] i ON i.[EmailMessageId] = d.[EmailMessageId]
+		WHERE i.[EmailMessageId] IS NULL
 	END
 GO
-
 
 
 CREATE TABLE [history].[TableWithPrimaryKeyAsIdentityHistory]
@@ -640,7 +408,6 @@ AS
 GO
 
 
-
 CREATE TABLE [history].[TableWithPrimaryKeyAsDefaultHistory]
 (
 	[TimestampId] [bigint] NOT NULL,	
@@ -691,7 +458,6 @@ AS
 		WHERE i.[PkDf] IS NULL
 	END
 GO
-
 
 
 CREATE TABLE [history].[TableWithPrimaryKeyWithDiffIdentityHistory]
@@ -747,7 +513,6 @@ AS
 		WHERE i.[Pk] IS NULL
 	END
 GO
-
 
 
 CREATE TABLE [history].[TableNoPrimaryKeyWithIdentityHistory]
@@ -809,7 +574,6 @@ AS
 GO
 
 
-
 CREATE TABLE [history].[TableWithPrimaryKeyNoIdentityHistory]
 (
 	[TimestampId] [bigint] NOT NULL,	
@@ -860,7 +624,6 @@ AS
 		WHERE i.[Pk] IS NULL
 	END
 GO
-
 
 
 CREATE TABLE [history].[TableWithCompositePrimaryKeyNoIdentityHistory]
@@ -927,7 +690,6 @@ AS
 GO
 
 
-
 CREATE TABLE [history].[TableNoPrimaryKeyNoIdentityHistory]
 (
 	[TimestampId] [bigint] NOT NULL,	
@@ -987,7 +749,6 @@ AS
 GO
 
 
-
 CREATE TABLE [history].[TableTypeTestHistory]
 (
 	[TimestampId] [bigint] NOT NULL,	
@@ -1018,7 +779,7 @@ CREATE TABLE [history].[TableTypeTestHistory]
 	[Data27] [time] NULL,
 	[Data29] [tinyint] NULL,
 	[Data30] [uniqueidentifier] NULL,
-	[Data31] [varbinary] NULL,
+	[Data31] [varbinary](1) NULL,
 	[Data32] [varchar](1) NULL,
 
 	CONSTRAINT [pk_TableTypeTestHistory] PRIMARY KEY
@@ -1109,14 +870,13 @@ AS
 GO
 
 
-
 CREATE TABLE [history].[SexualChocolateHistory]
 (
 	[TimestampId] [bigint] NOT NULL,	
 	[SexualChocolateId] [int] NOT NULL,
 
 	[EM] [nvarchar](MAX) NULL,
-	[Blob] [varbinary] NULL,
+	[Blob] [varbinary](MAX) NULL,
 	[CreationTimestamp] [datetime] NULL,
 	[ModificationTimestamp] [datetime] NULL,
 	[LogicalDelete] [bit] NULL,
@@ -1163,4 +923,3 @@ AS
 		WHERE i.[SexualChocolateId] IS NULL
 	END
 GO
-

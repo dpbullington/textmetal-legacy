@@ -101,7 +101,7 @@ namespace TextMetal.Common.Xml
 		/// Serializes an XML object graph to the specified XmlTextWriter.
 		/// </summary>
 		/// <param name="document"> The document root XML object. </param>
-		/// <param name="xmlTextWriter"> The XmlTextWriter to save. </param>
+		/// <param name="xmlTextWriter"> The XML text writer to save. </param>
 		void SerializeToXml(IXmlObject document, XmlTextWriter xmlTextWriter);
 
 		/// <summary>

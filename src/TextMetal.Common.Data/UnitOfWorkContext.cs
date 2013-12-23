@@ -20,8 +20,10 @@ namespace TextMetal.Common.Data
 		/// <summary>
 		/// Initializes a new instance of the UnitOfWorkContext class.
 		/// </summary>
-		private UnitOfWorkContext()
+		private UnitOfWorkContext(IDbConnection connection, IDbTransaction transaction)
 		{
+			this.connection = connection;
+			this.transaction = transaction;
 		}
 
 		#endregion
@@ -29,12 +31,12 @@ namespace TextMetal.Common.Data
 		#region Fields/Constants
 
 		private static readonly string UNIT_OF_WORK_CONTEXT_CURRENT_KEY = typeof(UnitOfWorkContext).GUID.SafeToString();
+		private readonly IDbConnection connection;
+		private readonly IDbTransaction transaction;
 		private bool completed;
-		private IDbConnection connection;
 		private IDisposable context;
 		private bool disposed;
 		private bool diverged;
-		private IDbTransaction transaction;
 
 		#endregion
 
@@ -81,10 +83,6 @@ namespace TextMetal.Common.Data
 					throw new ObjectDisposedException(typeof(UnitOfWorkContext).FullName);
 
 				return this.connection;
-			}
-			private set
-			{
-				this.connection = value;
 			}
 		}
 
@@ -148,10 +146,6 @@ namespace TextMetal.Common.Data
 
 				return this.transaction;
 			}
-			private set
-			{
-				this.transaction = value;
-			}
 		}
 
 		#endregion
@@ -164,10 +158,13 @@ namespace TextMetal.Common.Data
 		/// <param name="connectionType"> The run-time type of the connection to use. </param>
 		/// <param name="connectionString"> The ADO.NET provider connection string to use. </param>
 		/// <param name="transactional"> A value indicating whether a new local data source transaction isstarted on the connection. </param>
+		/// <param name="isolationLevel"> A value indicating the transaction isolation level. </param>
 		/// <returns> An instance of teh UnitOfWorkContext ready for execution of operations. This should be wrapped in a using(...){} block for an optimal usage scenario. </returns>
-		public static IUnitOfWorkContext Create(Type connectionType, string connectionString, bool transactional)
+		public static IUnitOfWorkContext Create(Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel = IsolationLevel.Unspecified)
 		{
 			UnitOfWorkContext unitOfWorkContext;
+			IDbConnection connection;
+			IDbTransaction transaction;
 			const bool OPEN = true;
 
 			if ((object)connectionType == null)
@@ -179,17 +176,20 @@ namespace TextMetal.Common.Data
 			if (DataType.IsWhiteSpace(connectionString))
 				throw new ArgumentOutOfRangeException("connectionString");
 
-			unitOfWorkContext = new UnitOfWorkContext();
-			unitOfWorkContext.Connection = (IDbConnection)Activator.CreateInstance(connectionType);
+			connection = (IDbConnection)Activator.CreateInstance(connectionType);
 
 			if (OPEN)
 			{
-				unitOfWorkContext.Connection.ConnectionString = connectionString;
-				unitOfWorkContext.Connection.Open();
+				connection.ConnectionString = connectionString;
+				connection.Open();
 
 				if (transactional)
-					unitOfWorkContext.Transaction = unitOfWorkContext.Connection.BeginTransaction();
+					transaction = connection.BeginTransaction(isolationLevel);
+				else
+					transaction = null;
 			}
+
+			unitOfWorkContext = new UnitOfWorkContext(connection, transaction);
 
 			return unitOfWorkContext;
 		}
@@ -213,24 +213,15 @@ namespace TextMetal.Common.Data
 			{
 				// destroy and tear-down the context
 				if ((object)this.Context != null)
-				{
 					this.Context.Dispose();
-					this.Context = null;
-				}
 
 				// destroy and tear-down the transaction
 				if ((object)this.Transaction != null)
-				{
 					this.Transaction.Dispose();
-					this.Transaction = null;
-				}
 
 				// destroy and tear-down the connection
 				if ((object)this.Connection != null)
-				{
 					this.Connection.Dispose();
-					this.Connection = null;
-				}
 			}
 		}
 

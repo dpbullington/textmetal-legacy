@@ -47,7 +47,6 @@ namespace TextMetal.Framework.Core
 
 		#region Fields/Constants
 
-		private static readonly string TEMPLATING_CONTEXT_CURRENT_KEY = typeof(TemplatingContext).GUID.SafeToString();
 		private readonly IInputMechanism input;
 		private readonly Stack<object> iteratorModels = new Stack<object>();
 		private readonly IOutputMechanism output;
@@ -59,21 +58,6 @@ namespace TextMetal.Framework.Core
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Gets the current ambient templating context active on the current thread and application domain.
-		/// </summary>
-		public static ITemplatingContext Current
-		{
-			get
-			{
-				return (ITemplatingContext)ExecutionPathStorage.GetValue(TEMPLATING_CONTEXT_CURRENT_KEY);
-			}
-			set
-			{
-				ExecutionPathStorage.SetValue(TEMPLATING_CONTEXT_CURRENT_KEY, value);
-			}
-		}
 
 		public IDictionary<string, object> CurrentVariableTable
 		{

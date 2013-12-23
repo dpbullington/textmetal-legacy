@@ -60,6 +60,7 @@
     <Compile Include="AdoNetHelper.cs" />
     <Compile Include="IUnitOfWorkContext.cs" />
     <Compile Include="IUnitOfWorkContextFactory.cs" />
+    <Compile Include="UnitOfWorkContextScopeOption.cs" />
     <None Include="TypeMap\HighLevel\Contracts\CommandContractAttribute.cs" />
     <None Include="TypeMap\HighLevel\Contracts\DatabaseContractAttribute.cs" />
     <None Include="TypeMap\HighLevel\Contracts\DynamicDatabaseClient.cs" />
@@ -78,6 +79,7 @@
     <None Include="TypeMap\HighLevel\SuppressMappingAttribute.cs" />
     <None Include="TypeMap\HighLevel\TableMappingAttribute.cs" />
     <None Include="TypeMap\HighLevel\TypeInferReflectionDataSourceMapFactory.cs" />
+    <Compile Include="UnitOfWorkContextScope.cs" />
     <Compile Include="TypeMap\LowLevel\AssemblyResourceDataSourceMapFactory.cs" />
     <Compile Include="TypeMap\LowLevel\Command.cs" />
     <Compile Include="TypeMap\LowLevel\DataSourceMap.cs" />
@@ -105,6 +107,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TextMetal.Common.Cerealization\TextMetal.Common.Cerealization.csproj">
+      <Project>{384A2559-5C35-4279-9F69-FE0D643B1014}</Project>
+      <Name>TextMetal.Common.Cerealization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.Core\TextMetal.Common.Core.csproj">
       <Project>{d1860a67-7efb-4c0f-89cd-a641d99dcc2a}</Project>
       <Name>TextMetal.Common.Core</Name>

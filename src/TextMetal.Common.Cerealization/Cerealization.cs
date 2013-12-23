@@ -5,13 +5,13 @@
 
 using System;
 using System.IO;
-using System.Xml.Serialization;
 
-namespace TextMetal.Common.Core
+namespace TextMetal.Common.Cerealization
 {
 	/// <summary>
 	/// Provides static helper and/or extension methods for serialization/deserialization.
 	/// </summary>
+	[Obsolete]
 	public static class Cerealization
 	{
 		#region Methods/Operators
@@ -24,21 +24,7 @@ namespace TextMetal.Common.Core
 		/// <returns> An object of the target type or null. </returns>
 		public static object GetObjectFromFile(string inputFilePath, Type targetType)
 		{
-			object obj;
-
-			if ((object)inputFilePath == null)
-				throw new ArgumentNullException("inputFilePath");
-
-			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
-
-			if (DataType.IsWhiteSpace(inputFilePath))
-				throw new ArgumentOutOfRangeException("inputFilePath");
-
-			using (Stream stream = File.Open(inputFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-				obj = GetObjectFromStream(stream, targetType);
-
-			return obj;
+			return XmlSerializationStrategy.Instance.GetObjectFromFile(inputFilePath, targetType);
 		}
 
 		/// <summary>
@@ -49,19 +35,7 @@ namespace TextMetal.Common.Core
 		/// <returns> An object of the target type or null. </returns>
 		public static TObject GetObjectFromFile<TObject>(string inputFilePath)
 		{
-			TObject obj;
-			Type targetType;
-
-			if ((object)inputFilePath == null)
-				throw new ArgumentNullException("inputFilePath");
-
-			if (DataType.IsWhiteSpace(inputFilePath))
-				throw new ArgumentOutOfRangeException("inputFilePath");
-
-			targetType = typeof(TObject);
-			obj = (TObject)GetObjectFromFile(inputFilePath, targetType);
-
-			return obj;
+			return XmlSerializationStrategy.Instance.GetObjectFromFile<TObject>(inputFilePath);
 		}
 
 		/// <summary>
@@ -72,19 +46,7 @@ namespace TextMetal.Common.Core
 		/// <returns> An object of the target type or null. </returns>
 		public static object GetObjectFromStream(Stream stream, Type targetType)
 		{
-			XmlSerializer xmlSerializer;
-			object obj;
-
-			if ((object)stream == null)
-				throw new ArgumentNullException("stream");
-
-			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
-
-			xmlSerializer = new XmlSerializer(targetType);
-			obj = xmlSerializer.Deserialize(stream);
-
-			return obj;
+			return XmlSerializationStrategy.Instance.GetObjectFromStream(stream, targetType);
 		}
 
 		/// <summary>
@@ -95,16 +57,7 @@ namespace TextMetal.Common.Core
 		/// <returns> An object of the target type or null. </returns>
 		public static TObject GetObjectFromStream<TObject>(Stream stream)
 		{
-			TObject obj;
-			Type targetType;
-
-			if ((object)stream == null)
-				throw new ArgumentNullException("stream");
-
-			targetType = typeof(TObject);
-			obj = (TObject)GetObjectFromStream(stream, targetType);
-
-			return obj;
+			return XmlSerializationStrategy.Instance.GetObjectFromStream<TObject>(stream);
 		}
 
 		/// <summary>
@@ -115,16 +68,7 @@ namespace TextMetal.Common.Core
 		/// <param name="obj"> The object graph to serialize. </param>
 		public static void SetObjectToFile<TObject>(string outputFilePath, TObject obj)
 		{
-			if ((object)outputFilePath == null)
-				throw new ArgumentNullException("outputFilePath");
-
-			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
-
-			if (DataType.IsWhiteSpace(outputFilePath))
-				throw new ArgumentOutOfRangeException("outputFilePath");
-
-			SetObjectToFile(outputFilePath, (object)obj);
+			XmlSerializationStrategy.Instance.SetObjectToFile<TObject>(outputFilePath, obj);
 		}
 
 		/// <summary>
@@ -134,17 +78,7 @@ namespace TextMetal.Common.Core
 		/// <param name="obj"> The object graph to serialize. </param>
 		public static void SetObjectToFile(string outputFilePath, object obj)
 		{
-			if ((object)outputFilePath == null)
-				throw new ArgumentNullException("outputFilePath");
-
-			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
-
-			if (DataType.IsWhiteSpace(outputFilePath))
-				throw new ArgumentOutOfRangeException("outputFilePath");
-
-			using (Stream stream = File.Open(outputFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
-				SetObjectToStream(stream, obj);
+			XmlSerializationStrategy.Instance.SetObjectToFile(outputFilePath, obj);
 		}
 
 		/// <summary>
@@ -154,18 +88,7 @@ namespace TextMetal.Common.Core
 		/// <param name="obj"> The object graph to serialize. </param>
 		public static void SetObjectToStream(Stream stream, object obj)
 		{
-			XmlSerializer xmlSerializer;
-			Type targetType;
-
-			if ((object)stream == null)
-				throw new ArgumentNullException("stream");
-
-			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
-
-			targetType = obj.GetType();
-			xmlSerializer = new XmlSerializer(targetType);
-			xmlSerializer.Serialize(stream, obj);
+			XmlSerializationStrategy.Instance.SetObjectToStream(stream, obj);
 		}
 
 		/// <summary>
@@ -176,13 +99,7 @@ namespace TextMetal.Common.Core
 		/// <param name="obj"> The object graph to serialize. </param>
 		public static void SetObjectToStream<TObject>(Stream stream, TObject obj)
 		{
-			if ((object)stream == null)
-				throw new ArgumentNullException("stream");
-
-			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
-
-			SetObjectToStream(stream, (object)obj);
+			XmlSerializationStrategy.Instance.SetObjectToStream<TObject>(stream, obj);
 		}
 
 		/// <summary>
@@ -195,28 +112,7 @@ namespace TextMetal.Common.Core
 		/// <returns> A value indicating whether the manifest resource name was found in the target type's assembly. </returns>
 		public static bool TryGetFromAssemblyResource<TObject>(Type resourceType, string resourceName, out TObject result)
 		{
-			Type targetType;
-			bool retval;
-
-			if ((object)resourceType == null)
-				throw new ArgumentNullException("resourceType");
-
-			if ((object)resourceName == null)
-				throw new ArgumentNullException("resourceName");
-
-			if (DataType.IsWhiteSpace(resourceName))
-				throw new ArgumentOutOfRangeException("resourceName");
-
-			result = default(TObject);
-			targetType = typeof(TObject);
-
-			using (Stream stream = resourceType.Assembly.GetManifestResourceStream(resourceName))
-			{
-				if (retval = ((object)stream != null))
-					result = (TObject)GetObjectFromStream(stream, targetType);
-			}
-
-			return retval;
+			return XmlSerializationStrategy.Instance.TryGetFromAssemblyResource<TObject>(resourceType, resourceName, out result);
 		}
 
 		/// <summary>
@@ -228,29 +124,7 @@ namespace TextMetal.Common.Core
 		/// <returns> A value indicating whether the manifest resource name was found in the target type's assembly. </returns>
 		public static bool TryGetStringFromAssemblyResource(Type resourceType, string resourceName, out string result)
 		{
-			bool retval;
-
-			if ((object)resourceType == null)
-				throw new ArgumentNullException("resourceType");
-
-			if ((object)resourceName == null)
-				throw new ArgumentNullException("resourceName");
-
-			if (DataType.IsWhiteSpace(resourceName))
-				throw new ArgumentOutOfRangeException("resourceName");
-
-			result = null;
-
-			using (Stream stream = resourceType.Assembly.GetManifestResourceStream(resourceName))
-			{
-				if (retval = (object)stream != null)
-				{
-					using (StreamReader streamReader = new StreamReader(stream))
-						result = streamReader.ReadToEnd();
-				}
-			}
-
-			return retval;
+			return XmlSerializationStrategy.Instance.TryGetStringFromAssemblyResource(resourceType, resourceName, out result);
 		}
 
 		#endregion

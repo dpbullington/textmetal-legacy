@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
-
+using TextMetal.Common.Cerealization;
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
 

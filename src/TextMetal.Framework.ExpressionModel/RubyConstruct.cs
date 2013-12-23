@@ -115,18 +115,25 @@ namespace TextMetal.Framework.ExpressionModel
 
 		#region Methods/Operators
 
-		public static object RubyExpressionResolver(string[] parameters)
+		public static object RubyExpressionResolver(object[] context, string[] parameters)
 		{
+			ITemplatingContext templatingContext;
+
+			if ((object)context == null)
+				throw new ArgumentNullException("context");
+
 			if ((object)parameters == null)
 				throw new ArgumentNullException("parameters");
 
-			if ((object)TemplatingContext.Current == null)
-				throw new InvalidOperationException(string.Format("RubyExpressionResolver requires an ambient TemplatingContext."));
+			if (context.Length != 1)
+				throw new InvalidOperationException(string.Format("RubyExpressionResolver requires a contextual TemplatingContext."));
 
 			if (parameters.Length > 1)
 				throw new InvalidOperationException(string.Format("RubyExpressionResolver parameter count '{0}' exceeds limit of '{1}'.", parameters.Length, 1));
 
-			return new RubyConstruct() { Src = RubySource.Expr, Expr = parameters[0] }.CoreEvaluateExpression(TemplatingContext.Current);
+			templatingContext = (ITemplatingContext)context[0];
+
+			return new RubyConstruct() { Src = RubySource.Expr, Expr = parameters[0] }.CoreEvaluateExpression(templatingContext);
 		}
 
 		protected override object CoreEvaluateExpression(ITemplatingContext templatingContext)

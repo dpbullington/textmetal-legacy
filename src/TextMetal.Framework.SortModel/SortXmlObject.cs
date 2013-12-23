@@ -30,7 +30,7 @@ namespace TextMetal.Framework.SortModel
 
 		public IEnumerable EvaluateSort(ITemplatingContext templatingContext, IEnumerable values)
 		{
-			return this.EvaluateSort(templatingContext, values);
+			return this.CoreEvaluateSort(templatingContext, values);
 		}
 
 		#endregion

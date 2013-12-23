@@ -43,7 +43,7 @@ namespace TextMetal.Common.Data.TypeMap.LowLevel
 
 			resourceName = string.Format("{0}.xml", targetType.FullName);
 
-			if (!Cerealization.TryGetFromAssemblyResource<DataSourceMap>(targetType, resourceName, out dataSourceMap))
+			if (!Cerealization.Cerealization.TryGetFromAssemblyResource<DataSourceMap>(targetType, resourceName, out dataSourceMap))
 				throw new InvalidOperationException(string.Format("Unable to deserialize instance of '{0}' from the manifest resource name '{1}' in the assembly '{2}'.", typeof(DataSourceMap).FullName, resourceName, targetType.Assembly.FullName));
 
 			return dataSourceMap;

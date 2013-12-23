@@ -66,20 +66,16 @@ namespace TextMetal.HostImpl.Web.AspNet
 				{
 					using (ITemplatingContext templatingContext = new TemplatingContext(xpe, new Tokenizer(true), inputMechanism, outputMechanism))
 					{
-						try
-						{
-							TemplatingContext.Current = templatingContext; // set ambient context
+						templatingContext.Tokenizer.TokenReplacementStrategies.Add("StaticPropertyResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticPropertyResolver));
+						templatingContext.Tokenizer.TokenReplacementStrategies.Add("StaticMethodResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticMethodResolver));
+						templatingContext.Tokenizer.TokenReplacementStrategies.Add("rb", new ContextualDynamicValueTokenReplacementStrategy(RubyConstruct.RubyExpressionResolver, new object[] { templatingContext }));
 
-							templatingContext.Tokenizer.TokenReplacementStrategies.Add("StaticPropertyResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticPropertyResolver));
-							templatingContext.Tokenizer.TokenReplacementStrategies.Add("StaticMethodResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticMethodResolver));
-							templatingContext.Tokenizer.TokenReplacementStrategies.Add("rb", new DynamicValueTokenReplacementStrategy(RubyConstruct.RubyExpressionResolver));
+						// globals
+						templatingContext.VariableTables.Push(globalVariableTable = new Dictionary<string, object>());
+						globalVariableTable.Add("ToolVersion", toolVersion);
 
-							// globals
-							templatingContext.VariableTables.Push(globalVariableTable = new Dictionary<string, object>());
-							globalVariableTable.Add("ToolVersion", toolVersion);
-
-							// TODO add all Request cookies, querystring, etc in here
-							/*
+						// TODO add all Request cookies, querystring, etc in here
+						/*
 						if ((object)properties != null)
 						{
 							foreach (KeyValuePair<string, IList<string>> property in properties)
@@ -94,15 +90,10 @@ namespace TextMetal.HostImpl.Web.AspNet
 							}
 						}*/
 
-							templatingContext.IteratorModels.Push(source);
-							template.ExpandTemplate(templatingContext);
-							templatingContext.IteratorModels.Pop();
-							templatingContext.VariableTables.Pop();
-						}
-						finally
-						{
-							TemplatingContext.Current = null; // unset ambient context
-						}
+						templatingContext.IteratorModels.Push(source);
+						template.ExpandTemplate(templatingContext);
+						templatingContext.IteratorModels.Pop();
+						templatingContext.VariableTables.Pop();
 					}
 				}
 			}

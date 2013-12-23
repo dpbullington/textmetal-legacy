@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{61D501CE-BF7D-40FD-8BE7-86B7CE326A73}"
 	ProjectSection(SolutionItems) = preProject
 		SolutionAssemblyInfo.cs = SolutionAssemblyInfo.cs
@@ -67,6 +69,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Imports.nunit.console.exe", "TextMetal.Imports.nunit.console.exe\TextMetal.Imports.nunit.console.exe.csproj", "{4E399D56-B89D-4072-9E1D-14D3E28E5AC7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Imports.nunit.gui.exe", "TextMetal.Imports.nunit.gui.exe\TextMetal.Imports.nunit.gui.exe.csproj", "{E3B59006-BBD5-44F2-B11C-A3BE2270BA7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Common.Cerealization", "TextMetal.Common.Cerealization\TextMetal.Common.Cerealization.csproj", "{384A2559-5C35-4279-9F69-FE0D643B1014}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -182,6 +186,10 @@ Global
 		{E3B59006-BBD5-44F2-B11C-A3BE2270BA7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3B59006-BBD5-44F2-B11C-A3BE2270BA7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3B59006-BBD5-44F2-B11C-A3BE2270BA7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{384A2559-5C35-4279-9F69-FE0D643B1014}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{384A2559-5C35-4279-9F69-FE0D643B1014}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{384A2559-5C35-4279-9F69-FE0D643B1014}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{384A2559-5C35-4279-9F69-FE0D643B1014}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -204,6 +212,7 @@ Global
 		{3B0EFC3C-AA91-4FB4-B2EE-BD8727230A94} = {63BCA757-EED3-4BF2-BA47-6FCE7BF23E49}
 		{A0917FE0-AAF8-4388-87D5-59F90B602BAF} = {63BCA757-EED3-4BF2-BA47-6FCE7BF23E49}
 		{CEF6C9D5-D5F2-4F4E-81DD-0BFDF81A2C93} = {63BCA757-EED3-4BF2-BA47-6FCE7BF23E49}
+		{384A2559-5C35-4279-9F69-FE0D643B1014} = {63BCA757-EED3-4BF2-BA47-6FCE7BF23E49}
 		{059BC844-6711-4A7E-A716-446E54D8E33B} = {16F2C045-568A-4FFE-A03A-647C1667FAF0}
 		{32997ECF-2B2F-4BDB-AF4F-6E389C9F8235} = {16F2C045-568A-4FFE-A03A-647C1667FAF0}
 		{579ADD09-25FD-4776-8CF1-829BAAB46519} = {16F2C045-568A-4FFE-A03A-647C1667FAF0}
