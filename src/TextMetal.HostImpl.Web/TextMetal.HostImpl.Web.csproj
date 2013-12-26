@@ -48,6 +48,7 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AspNet\IWebHost.cs" />
     <Compile Include="AspNet\TextMetalHttpHandler.cs" />
     <Compile Include="AspNet\TextMetalView.cs" />
     <Compile Include="AspNet\TextMetalViewEngine.cs" />

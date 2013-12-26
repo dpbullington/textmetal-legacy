@@ -7,4 +7,5 @@
 <Template xmlns="http://www.textmetal.com/api/v5.0.0">
 	<![CDATA[${ToolVersion}<br />]]>
 	X = ${X}
+	<![CDATA[<br/>${HTTP_HOST}<br />]]>
 </Template>

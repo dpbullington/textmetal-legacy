@@ -9,7 +9,8 @@
 	<InvokeSourceStrategy aqt-name="TextMetal.HostImpl.AspNetSample.Pages.Index, TextMetal.HostImpl.AspNetSample">
 	<![CDATA[${ToolVersion}<br />]]>
 	<![CDATA[Y = ${Y}<br />]]>
-	<![CDATA[CT = ${CT}<br />]]>	
+	<![CDATA[CT = ${CT}<br />]]>
+	<![CDATA[<br/>${HTTP_HOST}<br />]]>
 	</InvokeSourceStrategy>
 	
 </Template>

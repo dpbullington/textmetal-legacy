@@ -91,7 +91,7 @@ namespace TextMetal.HostImpl.Web.AspNet
 			if (!string.IsNullOrEmpty(this.MasterName))
 				masterPageFilePath = viewContext.HttpContext.Server.MapPath(this.MasterName);
 
-			new WebHost().Host(viewFilePath, viewContext.ViewData.Model, writer);
+			new WebHost().Host(viewContext.HttpContext.ApplicationInstance.Context, viewFilePath, viewContext.ViewData.Model, writer);
 		}
 
 		#endregion

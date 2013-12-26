@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Web;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Core.StringTokens;
@@ -19,7 +20,7 @@ using TextMetal.Framework.TemplateModel;
 
 namespace TextMetal.HostImpl.Web.AspNet
 {
-	public sealed class WebHost
+	public sealed class WebHost : IWebHost
 	{
 		#region Constructors/Destructors
 
@@ -34,7 +35,7 @@ namespace TextMetal.HostImpl.Web.AspNet
 
 		#region Methods/Operators
 
-		public void Host(string templateFilePath, object source, TextWriter textWriter)
+		public void Host(HttpContext httpContext, string templateFilePath, object source, TextWriter textWriter)
 		{
 			IXmlPersistEngine xpe;
 			TemplateConstruct template;
@@ -74,21 +75,12 @@ namespace TextMetal.HostImpl.Web.AspNet
 						templatingContext.VariableTables.Push(globalVariableTable = new Dictionary<string, object>());
 						globalVariableTable.Add("ToolVersion", toolVersion);
 
-						// TODO add all Request cookies, querystring, etc in here
-						/*
-						if ((object)properties != null)
+						// add HTTP request properties to GVT
+						foreach (string key in httpContext.Request.Params.AllKeys)
 						{
-							foreach (KeyValuePair<string, IList<string>> property in properties)
-							{
-								if (property.Value.Count == 0)
-									continue;
-
-								if (property.Value.Count == 1)
-									globalVariableTable.Add(property.Key, property.Value[0]);
-								else
-									globalVariableTable.Add(property.Key, property.Value);
-							}
-						}*/
+							string value = httpContext.Request.Params[key];
+							globalVariableTable.Add(key, value);
+						}
 
 						templatingContext.IteratorModels.Push(source);
 						template.ExpandTemplate(templatingContext);

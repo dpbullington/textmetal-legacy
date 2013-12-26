@@ -45,7 +45,7 @@ namespace TextMetal.HostImpl.Web.AspNet
 			originalPath = context.Request.Path.SafeToString();
 			viewFilePath = context.Server.MapPath(originalPath);
 
-			new WebHost().Host(viewFilePath, new object(), context.Response.Output);
+			new WebHost().Host(context, viewFilePath, new object(), context.Response.Output);
 		}
 
 		#endregion
