@@ -77,25 +77,6 @@ namespace TextMetal.Common.Cerealization
 		/// <param name="obj"> The object graph to serialize. </param>
 		void SetObjectToStream<TObject>(Stream stream, TObject obj);
 
-		/// <summary>
-		/// Deserializes an object from an assembly manifest resource.
-		/// </summary>
-		/// <typeparam name="TObject"> The run-time type of the object root to deserialize. </typeparam>
-		/// <param name="resourceType"> A type within the source assembly where the manifest resource lives. </param>
-		/// <param name="resourceName"> The fully qualified manifest resource name to load. </param>
-		/// <param name="result"> A valid object of the specified type or null if the manifest resource name was not found in the assembly of the resource type. </param>
-		/// <returns> A value indicating whether the manifest resource name was found in the target type's assembly. </returns>
-		bool TryGetFromAssemblyResource<TObject>(Type resourceType, string resourceName, out TObject result);
-
-		/// <summary>
-		/// Deserializes a string from an assembly manifest resource.
-		/// </summary>
-		/// <param name="resourceType"> A type within the source assembly where the manifest resource lives. </param>
-		/// <param name="resourceName"> The fully qualified manifest resource name to load. </param>
-		/// <param name="result"> A valid string or null if the manifest resource name was not found in the assembly of the resource type. </param>
-		/// <returns> A value indicating whether the manifest resource name was found in the target type's assembly. </returns>
-		bool TryGetStringFromAssemblyResource(Type resourceType, string resourceName, out string result);
-
 		#endregion
 	}
 }

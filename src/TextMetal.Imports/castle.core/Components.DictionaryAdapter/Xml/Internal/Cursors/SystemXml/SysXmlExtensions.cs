@@ -20,6 +20,7 @@ using System.Xml;
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+
 #if !SL3
 
 #endif

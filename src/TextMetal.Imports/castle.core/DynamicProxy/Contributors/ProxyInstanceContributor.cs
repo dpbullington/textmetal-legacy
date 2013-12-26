@@ -25,6 +25,7 @@ namespace Castle.DynamicProxy.Contributors
 	using System;
 #if !SILVERLIGHT
 	using System.Runtime.Serialization;
+
 #endif
 
 	public abstract class ProxyInstanceContributor : ITypeContributor

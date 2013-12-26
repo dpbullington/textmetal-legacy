@@ -36,11 +36,18 @@ namespace TextMetal.Common.Xml
 		IXmlObject DeserializeFromXml(Stream stream);
 
 		/// <summary>
-		/// Deserialize an XML object graph from the specified XML text reader.
+		/// Deserialize an XML object graph from the specified XML reader.
 		/// </summary>
-		/// <param name="xmlTextReader"> The XML text reader to load. </param>
+		/// <param name="xmlReader"> The XML reader to load. </param>
 		/// <returns> An XML object graph. </returns>
-		IXmlObject DeserializeFromXml(XmlTextReader xmlTextReader);
+		IXmlObject DeserializeFromXml(XmlReader xmlReader);
+
+		/// <summary>
+		/// Deserialize an XML object graph from the specified text reader.
+		/// </summary>
+		/// <param name="textReader"> The text reader to load. </param>
+		/// <returns> An XML object graph. </returns>
+		IXmlObject DeserializeFromXml(TextReader textReader);
 
 		/// <summary>
 		/// Registers a known XML object by target type and explicit XML name (local name and namespace URI). This is the generic overload.
@@ -98,11 +105,18 @@ namespace TextMetal.Common.Xml
 		void SerializeToXml(IXmlObject document, Stream stream);
 
 		/// <summary>
-		/// Serializes an XML object graph to the specified XmlTextWriter.
+		/// Serializes an XML object graph to the specified XML writer.
 		/// </summary>
 		/// <param name="document"> The document root XML object. </param>
-		/// <param name="xmlTextWriter"> The XML text writer to save. </param>
-		void SerializeToXml(IXmlObject document, XmlTextWriter xmlTextWriter);
+		/// <param name="xmlWriter"> The XML writer to save. </param>
+		void SerializeToXml(IXmlObject document, XmlWriter xmlWriter);
+
+		/// <summary>
+		/// Serializes an XML object graph to the specified text writer.
+		/// </summary>
+		/// <param name="document"> The document root XML object. </param>
+		/// <param name="textWriter"> The text writer to save. </param>
+		void SerializeToXml(IXmlObject document, TextWriter textWriter);
 
 		/// <summary>
 		/// Unregisters a known XML object by target type. This is the generic overload.

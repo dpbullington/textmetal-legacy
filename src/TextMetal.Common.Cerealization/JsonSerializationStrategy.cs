@@ -5,18 +5,18 @@
 
 using System;
 using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
+
+using Newtonsoft.Json;
 
 using TextMetal.Common.Core;
 
 namespace TextMetal.Common.Cerealization
 {
-	public class XmlSerializationStrategy : IXmlSerializationStrategy, ITextSerializationStrategy
+	public class JsonSerializationStrategy : IBinarySerializationStrategy, ITextSerializationStrategy
 	{
 		#region Constructors/Destructors
 
-		public XmlSerializationStrategy()
+		public JsonSerializationStrategy()
 		{
 		}
 
@@ -24,13 +24,13 @@ namespace TextMetal.Common.Cerealization
 
 		#region Fields/Constants
 
-		private static readonly XmlSerializationStrategy instance = new XmlSerializationStrategy();
+		private static readonly JsonSerializationStrategy instance = new JsonSerializationStrategy();
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		public static XmlSerializationStrategy Instance
+		public static JsonSerializationStrategy Instance
 		{
 			get
 			{
@@ -41,6 +41,28 @@ namespace TextMetal.Common.Cerealization
 		#endregion
 
 		#region Methods/Operators
+
+		/// <summary>
+		/// Deserializes an object from the specified byte array value.
+		/// </summary>
+		/// <param name="value"> The byte array value to deserialize. </param>
+		/// <param name="targetType"> The target run-time type of the root of the deserialized object graph. </param>
+		/// <returns> An object of the target type or null. </returns>
+		public object GetObjectFromBytes(byte[] value, Type targetType)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Deserializes an object from the specified byte array value. This is the generic overload.
+		/// </summary>
+		/// <typeparam name="TObject"> The target run-time type of the root of the deserialized object graph. </typeparam>
+		/// <param name="value"> The byte array value to deserialize. </param>
+		/// <returns> An object of the target type or null. </returns>
+		public TObject GetObjectFromBytes<TObject>(byte[] value)
+		{
+			throw new NotImplementedException();
+		}
 
 		/// <summary>
 		/// Deserializes an object from the specified input file.
@@ -91,49 +113,6 @@ namespace TextMetal.Common.Cerealization
 		}
 
 		/// <summary>
-		/// Deserializes an object from the specified xml reader.
-		/// </summary>
-		/// <param name="xmlReader"> The xml reader to deserialize. </param>
-		/// <param name="targetType"> The target run-time type of the root of the deserialized object graph. </param>
-		/// <returns> An object of the target type or null. </returns>
-		public object GetObjectFromReader(XmlReader xmlReader, Type targetType)
-		{
-			XmlSerializer xmlSerializer;
-			object obj;
-
-			if ((object)xmlReader == null)
-				throw new ArgumentNullException("xmlReader");
-
-			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
-
-			xmlSerializer = new XmlSerializer(targetType);
-			obj = xmlSerializer.Deserialize(xmlReader);
-
-			return obj;
-		}
-
-		/// <summary>
-		/// Deserializes an object from the specified xml reader. This is the generic overload.
-		/// </summary>
-		/// <typeparam name="TObject"> The target run-time type of the root of the deserialized object graph. </typeparam>
-		/// <param name="xmlReader"> The xml reader to deserialize. </param>
-		/// <returns> An object of the target type or null. </returns>
-		public TObject GetObjectFromReader<TObject>(XmlReader xmlReader)
-		{
-			TObject obj;
-			Type targetType;
-
-			if ((object)xmlReader == null)
-				throw new ArgumentNullException("xmlReader");
-
-			targetType = typeof(TObject);
-			obj = (TObject)this.GetObjectFromReader(xmlReader, targetType);
-
-			return obj;
-		}
-
-		/// <summary>
 		/// Deserializes an object from the specified text reader.
 		/// </summary>
 		/// <param name="textReader"> The text reader to deserialize. </param>
@@ -141,7 +120,7 @@ namespace TextMetal.Common.Cerealization
 		/// <returns> An object of the target type or null. </returns>
 		public object GetObjectFromReader(TextReader textReader, Type targetType)
 		{
-			XmlSerializer xmlSerializer;
+			JsonSerializer serializer;
 			object obj;
 
 			if ((object)textReader == null)
@@ -150,8 +129,13 @@ namespace TextMetal.Common.Cerealization
 			if ((object)targetType == null)
 				throw new ArgumentNullException("targetType");
 
-			xmlSerializer = new XmlSerializer(targetType);
-			obj = xmlSerializer.Deserialize(textReader);
+			serializer = JsonSerializer.Create(new JsonSerializerSettings()
+												{
+													TypeNameHandling = TypeNameHandling.Objects
+												});
+
+			using (JsonReader jsonReader = new JsonTextReader(textReader))
+				obj = (object)serializer.Deserialize(jsonReader, targetType);
 
 			return obj;
 		}
@@ -177,6 +161,28 @@ namespace TextMetal.Common.Cerealization
 		}
 
 		/// <summary>
+		/// Deserializes an object from the specified binary reader.
+		/// </summary>
+		/// <param name="binaryReader"> The binary reader to deserialize. </param>
+		/// <param name="targetType"> The target run-time type of the root of the deserialized object graph. </param>
+		/// <returns> An object of the target type or null. </returns>
+		public object GetObjectFromReader(BinaryReader binaryReader, Type targetType)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Deserializes an object from the specified binary reader. This is the generic overload.
+		/// </summary>
+		/// <typeparam name="TObject"> The target run-time type of the root of the deserialized object graph. </typeparam>
+		/// <param name="binaryReader"> The binary reader to deserialize. </param>
+		/// <returns> An object of the target type or null. </returns>
+		public TObject GetObjectFromReader<TObject>(BinaryReader binaryReader)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
 		/// Deserializes an object from the specified readable stream.
 		/// </summary>
 		/// <param name="stream"> The readable stream to deserialize. </param>
@@ -184,7 +190,7 @@ namespace TextMetal.Common.Cerealization
 		/// <returns> An object of the target type or null. </returns>
 		public object GetObjectFromStream(Stream stream, Type targetType)
 		{
-			XmlSerializer xmlSerializer;
+			JsonSerializer serializer;
 			object obj;
 
 			if ((object)stream == null)
@@ -193,8 +199,16 @@ namespace TextMetal.Common.Cerealization
 			if ((object)targetType == null)
 				throw new ArgumentNullException("targetType");
 
-			xmlSerializer = new XmlSerializer(targetType);
-			obj = xmlSerializer.Deserialize(stream);
+			serializer = JsonSerializer.Create(new JsonSerializerSettings()
+												{
+													TypeNameHandling = TypeNameHandling.Objects
+												});
+
+			using (StreamReader streamReader = new StreamReader(stream))
+			{
+				using (JsonReader jsonReader = new JsonTextReader(streamReader))
+					obj = (object)serializer.Deserialize(jsonReader, targetType);
+			}
 
 			return obj;
 		}
@@ -255,6 +269,26 @@ namespace TextMetal.Common.Cerealization
 			obj = (TObject)this.GetObjectFromString(value, targetType);
 
 			return obj;
+		}
+
+		/// <summary>
+		/// Serializes an object to a byte array value.
+		/// </summary>
+		/// <param name="obj"> The object graph to serialize. </param>
+		/// <returns> A byte array representation of the object graph. </returns>
+		public byte[] SetObjectToBytes(object obj)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Serializes an object to a byte array value. This is the generic overload.
+		/// </summary>
+		/// <param name="obj"> The object graph to serialize. </param>
+		/// <returns> A byte array representation of the object graph. </returns>
+		public byte[] SetObjectToBytes<TObject>(TObject obj)
+		{
+			throw new NotImplementedException();
 		}
 
 		/// <summary>
@@ -321,7 +355,7 @@ namespace TextMetal.Common.Cerealization
 		/// <param name="obj"> The object graph to serialize. </param>
 		public void SetObjectToStream(Stream stream, object obj)
 		{
-			XmlSerializer xmlSerializer;
+			JsonSerializer serializer;
 			Type targetType;
 
 			if ((object)stream == null)
@@ -331,8 +365,17 @@ namespace TextMetal.Common.Cerealization
 				throw new ArgumentNullException("obj");
 
 			targetType = obj.GetType();
-			xmlSerializer = new XmlSerializer(targetType);
-			xmlSerializer.Serialize(stream, obj);
+
+			serializer = JsonSerializer.Create(new JsonSerializerSettings()
+												{
+													TypeNameHandling = TypeNameHandling.Objects
+												});
+
+			using (StreamWriter streamWriter = new StreamWriter(stream))
+			{
+				using (JsonWriter jsonWriter = new JsonTextWriter(streamWriter))
+					serializer.Serialize(jsonWriter, obj, targetType);
+			}
 		}
 
 		/// <summary>
@@ -368,61 +411,30 @@ namespace TextMetal.Common.Cerealization
 		}
 
 		/// <summary>
-		/// Serializes an object to the specified xml writer.
-		/// </summary>
-		/// <param name="xmlWriter"> The xml writer to serialize. </param>
-		/// <param name="obj"> The object graph to serialize. </param>
-		public void SetObjectToWriter(XmlWriter xmlWriter, object obj)
-		{
-			XmlSerializer xmlSerializer;
-			Type targetType;
-
-			if ((object)xmlWriter == null)
-				throw new ArgumentNullException("xmlWriter");
-
-			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
-
-			targetType = obj.GetType();
-			xmlSerializer = new XmlSerializer(targetType);
-			xmlSerializer.Serialize(xmlWriter, obj);
-		}
-
-		/// <summary>
-		/// Serializes an object to the specified xml writer. This is the generic overload.
-		/// </summary>
-		/// <param name="xmlWriter"> The xml writer to serialize. </param>
-		/// <param name="obj"> The object graph to serialize. </param>
-		public void SetObjectToWriter<TObject>(XmlWriter xmlWriter, TObject obj)
-		{
-			if ((object)xmlWriter == null)
-				throw new ArgumentNullException("xmlWriter");
-
-			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
-
-			this.SetObjectToWriter(xmlWriter, (object)obj);
-		}
-
-		/// <summary>
 		/// Serializes an object to the specified text writer.
 		/// </summary>
 		/// <param name="textWriter"> The text writer to serialize. </param>
 		/// <param name="obj"> The object graph to serialize. </param>
 		public void SetObjectToWriter(TextWriter textWriter, object obj)
 		{
-			XmlSerializer xmlSerializer;
+			JsonSerializer serializer;
 			Type targetType;
 
 			if ((object)textWriter == null)
-				throw new ArgumentNullException("textWriter");
+				throw new ArgumentNullException("stream");
 
 			if ((object)obj == null)
 				throw new ArgumentNullException("obj");
 
 			targetType = obj.GetType();
-			xmlSerializer = new XmlSerializer(targetType);
-			xmlSerializer.Serialize(textWriter, obj);
+
+			serializer = JsonSerializer.Create(new JsonSerializerSettings()
+												{
+													TypeNameHandling = TypeNameHandling.Objects
+												});
+
+			using (JsonWriter jsonWriter = new JsonTextWriter(textWriter))
+				serializer.Serialize(jsonWriter, obj, targetType);
 		}
 
 		/// <summary>
@@ -439,6 +451,26 @@ namespace TextMetal.Common.Cerealization
 				throw new ArgumentNullException("obj");
 
 			this.SetObjectToWriter(textWriter, (object)obj);
+		}
+
+		/// <summary>
+		/// Serializes an object to the specified binary writer.
+		/// </summary>
+		/// <param name="binaryWriter"> The binary writer to serialize. </param>
+		/// <param name="obj"> The object graph to serialize. </param>
+		public void SetObjectToWriter(BinaryWriter binaryWriter, object obj)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Serializes an object to the specified binary writer. This is the generic overload.
+		/// </summary>
+		/// <param name="binaryWriter"> The binary writer to serialize. </param>
+		/// <param name="obj"> The object graph to serialize. </param>
+		public void SetObjectToWriter<TObject>(BinaryWriter binaryWriter, TObject obj)
+		{
+			throw new NotImplementedException();
 		}
 
 		#endregion

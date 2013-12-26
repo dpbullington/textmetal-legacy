@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using TextMetal.Common.Data;
 using TextMetal.Framework.AssociativeModel;
-using TextMetal.Framework.SourceModel.Primative;
 using TextMetal.Framework.TemplateModel;
 
 namespace TextMetal.HostImpl.Tool

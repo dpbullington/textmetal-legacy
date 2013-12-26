@@ -60,6 +60,7 @@
     <Compile Include="AdoNetHelper.cs" />
     <Compile Include="IUnitOfWorkContext.cs" />
     <Compile Include="IUnitOfWorkContextFactory.cs" />
+    <Compile Include="SqlQuery.cs" />
     <Compile Include="UnitOfWorkContextScopeOption.cs" />
     <None Include="TypeMap\HighLevel\Contracts\CommandContractAttribute.cs" />
     <None Include="TypeMap\HighLevel\Contracts\DatabaseContractAttribute.cs" />

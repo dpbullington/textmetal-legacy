@@ -29,6 +29,7 @@ namespace Castle.DynamicProxy
 	using System.Security.Permissions;
 
 	using Core.Internal;
+
 #endif
 
 	/// <summary>

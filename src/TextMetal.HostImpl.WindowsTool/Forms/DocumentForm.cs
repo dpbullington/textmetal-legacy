@@ -8,8 +8,8 @@ using System.IO;
 using System.Windows.Forms;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Data;
 using TextMetal.Framework.AssociativeModel;
-using TextMetal.Framework.SourceModel.Primative;
 using TextMetal.Framework.TemplateModel;
 using TextMetal.HostImpl.Tool;
 

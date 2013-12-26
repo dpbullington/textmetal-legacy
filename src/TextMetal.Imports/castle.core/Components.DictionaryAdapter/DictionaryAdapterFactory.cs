@@ -34,6 +34,7 @@ namespace Castle.Components.DictionaryAdapter
 #endif
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
 	using Xml;
+
 #endif
 
 	/// <summary>

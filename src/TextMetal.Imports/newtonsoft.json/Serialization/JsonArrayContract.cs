@@ -32,6 +32,7 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 
 using Newtonsoft.Json.Utilities;
+
 #if NET20
 using Newtonsoft.Json.Utilities.LinqBridge;
 #else

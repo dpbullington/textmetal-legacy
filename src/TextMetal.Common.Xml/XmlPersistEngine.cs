@@ -517,11 +517,11 @@ namespace TextMetal.Common.Xml
 		}
 
 		/// <summary>
-		/// Deserialize an XML object graph from the specified XML text reader.
+		/// Deserialize an XML object graph from the specified XML reader.
 		/// </summary>
-		/// <param name="xmlTextReader"> The XML text reader to load. </param>
+		/// <param name="xmlReader"> The XML reader to load. </param>
 		/// <returns> An XML object graph. </returns>
-		public IXmlObject DeserializeFromXml(XmlTextReader xmlTextReader)
+		public IXmlObject DeserializeFromXml(XmlReader xmlReader)
 		{
 			XmlName elementXmlName = null, attributeXmlName, previousElementXmlName;
 
@@ -532,19 +532,19 @@ namespace TextMetal.Common.Xml
 			bool isEmptyElement, isTextElement;
 			Dictionary<XmlName, string> attributes;
 
-			if ((object)xmlTextReader == null)
-				throw new ArgumentNullException("xmlTextReader");
+			if ((object)xmlReader == null)
+				throw new ArgumentNullException("xmlReader");
 
 			// setup contextual data
 			attributes = new Dictionary<XmlName, string>();
 			contextStack = new Stack<IXmlObject>();
 
 			// walk the XML document
-			while (xmlTextReader.Read())
+			while (xmlReader.Read())
 			{
 				// determine node type
-				if (xmlTextReader.NodeType == XmlNodeType.CDATA ||
-					xmlTextReader.NodeType == XmlNodeType.Text) // textual node
+				if (xmlReader.NodeType == XmlNodeType.CDATA ||
+					xmlReader.NodeType == XmlNodeType.Text) // textual node
 				{
 					// clear previous attributes
 					attributes.Clear();
@@ -553,15 +553,15 @@ namespace TextMetal.Common.Xml
 					isTextElement = IsTextElement(contextStack, elementXmlName ?? new XmlName());
 
 					// get the current XML object as XML text object
-					currentXmlObject = this.DeserializeFromXmlText(contextStack, xmlTextReader.Value, isTextElement ? elementXmlName : null);
+					currentXmlObject = this.DeserializeFromXmlText(contextStack, xmlReader.Value, isTextElement ? elementXmlName : null);
 
 					// is this a text element? if so, deserialize into it in a special maner
 					if (isTextElement)
 						this.DeserializeFromXml(contextStack, null, elementXmlName, attributes, (IXmlTextObject)currentXmlObject);
 				}
-				else if (xmlTextReader.NodeType == XmlNodeType.Element) // actual elements
+				else if (xmlReader.NodeType == XmlNodeType.Element) // actual elements
 				{
-					Debug.WriteLine(string.Format("{2} <{0}{1}>", xmlTextReader.LocalName, xmlTextReader.IsEmptyElement ? " /" : "", xmlTextReader.IsEmptyElement ? "empty" : "begin"));
+					Debug.WriteLine(string.Format("{2} <{0}{1}>", xmlReader.LocalName, xmlReader.IsEmptyElement ? " /" : "", xmlReader.IsEmptyElement ? "empty" : "begin"));
 
 					// stash away previous element
 					//previousElementXmlName = elementXmlName;
@@ -574,12 +574,12 @@ namespace TextMetal.Common.Xml
 					// create the element XML name
 					elementXmlName = new XmlName()
 									{
-										LocalName = xmlTextReader.LocalName,
-										NamespaceUri = xmlTextReader.NamespaceURI
+										LocalName = xmlReader.LocalName,
+										NamespaceUri = xmlReader.NamespaceURI
 									};
 
 					// is this an empty element?
-					isEmptyElement = xmlTextReader.IsEmptyElement;
+					isEmptyElement = xmlReader.IsEmptyElement;
 
 					// is this a text element?
 					isTextElement = IsTextElement(contextStack, elementXmlName);
@@ -588,20 +588,20 @@ namespace TextMetal.Common.Xml
 					attributes.Clear();
 
 					// iterate over attributes of current element
-					for (int ai = 0; ai < xmlTextReader.AttributeCount; ai++)
+					for (int ai = 0; ai < xmlReader.AttributeCount; ai++)
 					{
 						// traverse to next attribute
-						xmlTextReader.MoveToAttribute(ai);
+						xmlReader.MoveToAttribute(ai);
 
 						// create the attribute XML name
 						attributeXmlName = new XmlName()
 											{
-												LocalName = xmlTextReader.LocalName,
-												NamespaceUri = xmlTextReader.NamespaceURI
+												LocalName = xmlReader.LocalName,
+												NamespaceUri = xmlReader.NamespaceURI
 											};
 
 						// append to attribute collection
-						attributes.Add(attributeXmlName, xmlTextReader.Value);
+						attributes.Add(attributeXmlName, xmlReader.Value);
 					}
 
 					// clear attribute name
@@ -630,15 +630,15 @@ namespace TextMetal.Common.Xml
 					if (!isEmptyElement)
 						contextStack.Push(currentXmlObject);
 				}
-				else if (xmlTextReader.NodeType == XmlNodeType.EndElement) // closing element
+				else if (xmlReader.NodeType == XmlNodeType.EndElement) // closing element
 				{
-					Debug.WriteLine(string.Format("end <{0}>", xmlTextReader.LocalName));
+					Debug.WriteLine(string.Format("end <{0}>", xmlReader.LocalName));
 
 					// create the element XML name
 					elementXmlName = new XmlName()
 									{
-										LocalName = xmlTextReader.LocalName,
-										NamespaceUri = xmlTextReader.NamespaceURI
+										LocalName = xmlReader.LocalName,
+										NamespaceUri = xmlReader.NamespaceURI
 									};
 
 					// is this a text element?
@@ -662,6 +662,11 @@ namespace TextMetal.Common.Xml
 
 			// ...and I'm spent!
 			return documentXmlObject;
+		}
+
+		public IXmlObject DeserializeFromXml(TextReader textReader)
+		{
+			throw new NotImplementedException();
 		}
 
 		/// <summary>
@@ -947,31 +952,42 @@ namespace TextMetal.Common.Xml
 
 			// DO NOT USE A USING BLOCK HERE (CALLER OWNS STREAM) !!!
 			xmlTextWriter = new XmlTextWriter(stream, Encoding.UTF8);
+			xmlTextWriter.Formatting = Formatting.Indented;
+			xmlTextWriter.Indentation = 1;
+			xmlTextWriter.IndentChar = '\t';
+
 			this.SerializeToXml(document, xmlTextWriter);
 			xmlTextWriter.Flush();
 		}
 
 		/// <summary>
-		/// Serializes an XML object graph to the specified XmlTextWriter.
+		/// Serializes an XML object graph to the specified XML writer.
 		/// </summary>
 		/// <param name="document"> The document root XML object. </param>
-		/// <param name="xmlTextWriter"> The XML text writer to save. </param>
-		public void SerializeToXml(IXmlObject document, XmlTextWriter xmlTextWriter)
+		/// <param name="xmlWriter"> The XML writer to save. </param>
+		public void SerializeToXml(IXmlObject document, XmlWriter xmlWriter)
 		{
+			XmlTextWriter xmlTextWriter;
+
 			if ((object)document == null)
 				throw new ArgumentNullException("document");
 
-			if ((object)xmlTextWriter == null)
-				throw new ArgumentNullException("xmlTextWriter");
+			if ((object)xmlWriter == null)
+				throw new ArgumentNullException("xmlWriter");
 
-			xmlTextWriter.Formatting = Formatting.Indented;
-			xmlTextWriter.Indentation = 1;
-			xmlTextWriter.IndentChar = '\t';
+			xmlTextWriter = xmlWriter as XmlTextWriter;
 
-			this.SerializeToXml(xmlTextWriter, document, null);
+			if ((object)xmlTextWriter != null)
+			{
+				xmlTextWriter.Formatting = Formatting.Indented;
+				xmlTextWriter.Indentation = 1;
+				xmlTextWriter.IndentChar = '\t';
+			}
+
+			this.SerializeToXml(xmlWriter, document, null);
 		}
 
-		private void SerializeToXml(XmlTextWriter xmlTextWriter, IXmlObject currentXmlObject, XmlName overrideXmlName)
+		private void SerializeToXml(XmlWriter xmlWriter, IXmlObject currentXmlObject, XmlName overrideXmlName)
 		{
 			IXmlTextObject currentXmlTextObject;
 			Type currentType;
@@ -988,8 +1004,8 @@ namespace TextMetal.Common.Xml
 			object ovalue;
 			string svalue;
 
-			if ((object)xmlTextWriter == null)
-				throw new ArgumentNullException("xmlTextWriter");
+			if ((object)xmlWriter == null)
+				throw new ArgumentNullException("xmlWriter");
 
 			if ((object)currentXmlObject == null)
 				throw new ArgumentNullException("currentXmlObject");
@@ -1003,7 +1019,7 @@ namespace TextMetal.Common.Xml
 				if ((object)currentXmlTextObject.Name == null ||
 					DataType.IsNullOrWhiteSpace(currentXmlTextObject.Name.LocalName))
 				{
-					xmlTextWriter.WriteCData(currentXmlTextObject.Text);
+					xmlWriter.WriteCData(currentXmlTextObject.Text);
 					return;
 				}
 			}
@@ -1056,7 +1072,7 @@ namespace TextMetal.Common.Xml
 				!DataType.IsNullOrWhiteSpace(overrideXmlName.LocalName)) // overriden element is special case for parent DOT property convention
 			{
 				// write the start of the element
-				xmlTextWriter.WriteStartElement(overrideXmlName.LocalName, overrideXmlName.NamespaceUri);
+				xmlWriter.WriteStartElement(overrideXmlName.LocalName, overrideXmlName.NamespaceUri);
 			}
 			else
 			{
@@ -1065,7 +1081,7 @@ namespace TextMetal.Common.Xml
 					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
 				// write the start of the element
-				xmlTextWriter.WriteStartElement(currentXmlElementMappingAttribute.LocalName, currentXmlElementMappingAttribute.NamespaceUri);
+				xmlWriter.WriteStartElement(currentXmlElementMappingAttribute.LocalName, currentXmlElementMappingAttribute.NamespaceUri);
 			}
 
 			// iterate over attributes of current element
@@ -1085,9 +1101,9 @@ namespace TextMetal.Common.Xml
 					svalue = ovalue.SafeToString();
 
 					// write the attribute and value
-					xmlTextWriter.WriteStartAttribute(currentPropertyToAttributeMapping.Value.LocalName, currentPropertyToAttributeMapping.Value.NamespaceUri);
-					xmlTextWriter.WriteString(svalue);
-					xmlTextWriter.WriteEndAttribute();
+					xmlWriter.WriteStartAttribute(currentPropertyToAttributeMapping.Value.LocalName, currentPropertyToAttributeMapping.Value.NamespaceUri);
+					xmlWriter.WriteString(svalue);
+					xmlWriter.WriteEndAttribute();
 				}
 			}
 
@@ -1107,7 +1123,7 @@ namespace TextMetal.Common.Xml
 
 					svalue = ovalue.SafeToString();
 
-					xmlTextWriter.WriteElementString("", currentPropertyToChildElementMapping.Value.LocalName, currentPropertyToChildElementMapping.Value.NamespaceUri, svalue);
+					xmlWriter.WriteElementString("", currentPropertyToChildElementMapping.Value.LocalName, currentPropertyToChildElementMapping.Value.NamespaceUri, svalue);
 				}
 
 				// write child elements
@@ -1159,7 +1175,7 @@ namespace TextMetal.Common.Xml
 							throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
 						// recursively write the child element and so forth
-						this.SerializeToXml(xmlTextWriter, childElement, xmlName);
+						this.SerializeToXml(xmlWriter, childElement, xmlName);
 					}
 				}
 			}
@@ -1170,17 +1186,22 @@ namespace TextMetal.Common.Xml
 			{
 				// anonymous 0..n child elements
 				foreach (IXmlObject childElement in currentXmlObject.Items)
-					this.SerializeToXml(xmlTextWriter, childElement, null);
+					this.SerializeToXml(xmlWriter, childElement, null);
 			}
 			else if (currentXmlElementMappingAttribute.ChildElementModel == ChildElementModel.Content &&
 					(object)currentXmlObject.Content != null)
 			{
 				// anonymous 0..1 child element
-				this.SerializeToXml(xmlTextWriter, currentXmlObject.Content, null);
+				this.SerializeToXml(xmlWriter, currentXmlObject.Content, null);
 			}
 
 			// write the end of the (current) element
-			xmlTextWriter.WriteEndElement();
+			xmlWriter.WriteEndElement();
+		}
+
+		public void SerializeToXml(IXmlObject document, TextWriter textWriter)
+		{
+			throw new NotImplementedException();
 		}
 
 		/// <summary>

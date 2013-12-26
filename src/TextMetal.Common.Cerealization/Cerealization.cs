@@ -6,6 +6,8 @@
 using System;
 using System.IO;
 
+using TextMetal.Common.Core;
+
 namespace TextMetal.Common.Cerealization
 {
 	/// <summary>
@@ -116,6 +118,43 @@ namespace TextMetal.Common.Cerealization
 		}
 
 		/// <summary>
+		/// Deserializes an object from an assembly manifest resource.
+		/// </summary>
+		/// <typeparam name="TObject"> The run-time type of the object root to deserialize. </typeparam>
+		/// <param name="resourceType"> A type within the source assembly where the manifest resource lives. </param>
+		/// <param name="resourceName"> The fully qualified manifest resource name to load. </param>
+		/// <param name="result"> A valid object of the specified type or null if the manifest resource name was not found in the assembly of the resource type. </param>
+		/// <returns> A value indicating whether the manifest resource name was found in the target type's assembly. </returns>
+		public static bool TryGetFromAssemblyResource<TObject>(this ISerializationStrategy serializationStrategy, Type resourceType, string resourceName, out TObject result)
+		{
+			Type targetType;
+			bool retval;
+
+			if ((object)serializationStrategy == null)
+				throw new ArgumentNullException("serializationStrategy");
+
+			if ((object)resourceType == null)
+				throw new ArgumentNullException("resourceType");
+
+			if ((object)resourceName == null)
+				throw new ArgumentNullException("resourceName");
+
+			if (DataType.IsWhiteSpace(resourceName))
+				throw new ArgumentOutOfRangeException("resourceName");
+
+			result = default(TObject);
+			targetType = typeof(TObject);
+
+			using (Stream stream = resourceType.Assembly.GetManifestResourceStream(resourceName))
+			{
+				if (retval = ((object)stream != null))
+					result = (TObject)serializationStrategy.GetObjectFromStream(stream, targetType);
+			}
+
+			return retval;
+		}
+
+		/// <summary>
 		/// Deserializes a string from an assembly manifest resource.
 		/// </summary>
 		/// <param name="resourceType"> A type within the source assembly where the manifest resource lives. </param>
@@ -124,7 +163,29 @@ namespace TextMetal.Common.Cerealization
 		/// <returns> A value indicating whether the manifest resource name was found in the target type's assembly. </returns>
 		public static bool TryGetStringFromAssemblyResource(Type resourceType, string resourceName, out string result)
 		{
-			return XmlSerializationStrategy.Instance.TryGetStringFromAssemblyResource(resourceType, resourceName, out result);
+			bool retval;
+
+			if ((object)resourceType == null)
+				throw new ArgumentNullException("resourceType");
+
+			if ((object)resourceName == null)
+				throw new ArgumentNullException("resourceName");
+
+			if (DataType.IsWhiteSpace(resourceName))
+				throw new ArgumentOutOfRangeException("resourceName");
+
+			result = null;
+
+			using (Stream stream = resourceType.Assembly.GetManifestResourceStream(resourceName))
+			{
+				if (retval = (object)stream != null)
+				{
+					using (StreamReader streamReader = new StreamReader(stream))
+						result = streamReader.ReadToEnd();
+				}
+			}
+
+			return retval;
 		}
 
 		#endregion

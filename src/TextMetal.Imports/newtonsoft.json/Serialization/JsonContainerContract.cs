@@ -28,6 +28,7 @@
 using System;
 
 using Newtonsoft.Json.Utilities;
+
 #if NET20
 using Newtonsoft.Json.Utilities.LinqBridge;
 #else

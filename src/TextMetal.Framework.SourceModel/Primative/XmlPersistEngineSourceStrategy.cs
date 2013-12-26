@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
+using TextMetal.Common.Cerealization;
 using TextMetal.Common.Core;
 using TextMetal.Common.Xml;
 
@@ -48,7 +49,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
 
-			retval = xpe.DeserializeFromXml(sourceFilePath);
+			retval = new XpeSerializationStrategy(xpe).GetObjectFromFile<object>(sourceFilePath);
 
 			return retval;
 		}

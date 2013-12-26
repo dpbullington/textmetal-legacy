@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 
-using TextMetal.Common.Core;
 using TextMetal.Common.Core.StringTokens;
 using TextMetal.Common.Xml;
 

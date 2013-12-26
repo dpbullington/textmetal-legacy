@@ -7,8 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-using Newtonsoft.Json;
-
+using TextMetal.Common.Cerealization;
 using TextMetal.Common.Core;
 
 namespace TextMetal.Framework.SourceModel.Primative
@@ -28,50 +27,6 @@ namespace TextMetal.Framework.SourceModel.Primative
 
 		#region Methods/Operators
 
-		private static object LoadFrom(Stream stream)
-		{
-			object obj;
-			//DataContractJsonSerializer serializer;
-			JsonSerializer serializer;
-			string jsonText;
-
-			if ((object)stream == null)
-				throw new ArgumentNullException("stream");
-
-			//serializer = new DataContractJsonSerializer(typeof(Sketch), knownShapes);
-			serializer = JsonSerializer.Create(new JsonSerializerSettings()
-												{
-													TypeNameHandling = TypeNameHandling.Objects
-												});
-
-			using (StreamReader streamReader = new StreamReader(stream))
-			{
-				using (JsonReader jsonReader = new JsonTextReader(streamReader))
-					obj = (object)serializer.Deserialize<object>(jsonReader);
-			}
-
-			return obj;
-		}
-
-		private static object LoadFromFile(string filePath)
-		{
-			object obj;
-
-			if ((object)filePath == null)
-				throw new ArgumentNullException("filePath");
-
-			if (DataType.IsWhiteSpace(filePath))
-				throw new ArgumentOutOfRangeException("filePath");
-
-			if (!File.Exists(filePath))
-				return null;
-
-			using (Stream stream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-				obj = LoadFrom(stream);
-
-			return obj;
-		}
-
 		protected override object CoreGetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties)
 		{
 			object retval;
@@ -87,7 +42,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
 
-			retval = LoadFromFile(sourceFilePath);
+			retval = JsonSerializationStrategy.Instance.GetObjectFromFile<object>(sourceFilePath);
 
 			return retval;
 		}

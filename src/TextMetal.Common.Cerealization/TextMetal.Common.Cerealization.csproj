@@ -49,6 +49,8 @@
     <Compile Include="IBinarySerializationStrategy.cs" />
     <Compile Include="ITextSerializationStrategy.cs" />
     <Compile Include="IXmlSerializationStrategy.cs" />
+    <Compile Include="JsonSerializationStrategy.cs" />
+    <Compile Include="XpeSerializationStrategy.cs" />
     <Compile Include="XmlSerializationStrategy.cs" />
   </ItemGroup>
   <ItemGroup>

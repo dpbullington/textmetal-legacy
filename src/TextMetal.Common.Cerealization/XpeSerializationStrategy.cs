@@ -6,35 +6,53 @@
 using System;
 using System.IO;
 using System.Xml;
-using System.Xml.Serialization;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Xml;
 
 namespace TextMetal.Common.Cerealization
 {
-	public class XmlSerializationStrategy : IXmlSerializationStrategy, ITextSerializationStrategy
+	public class XpeSerializationStrategy : XmlSerializationStrategy, ITextSerializationStrategy
 	{
 		#region Constructors/Destructors
 
-		public XmlSerializationStrategy()
+		public XpeSerializationStrategy()
+			: this(new XmlPersistEngine())
 		{
+		}
+
+		public XpeSerializationStrategy(IXmlPersistEngine xpe)
+		{
+			if ((object)xpe == null)
+				throw new ArgumentNullException("xpe");
+
+			this.xpe = xpe;
 		}
 
 		#endregion
 
 		#region Fields/Constants
 
-		private static readonly XmlSerializationStrategy instance = new XmlSerializationStrategy();
+		private static readonly XpeSerializationStrategy instance = new XpeSerializationStrategy();
+		private readonly IXmlPersistEngine xpe;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		public static XmlSerializationStrategy Instance
+		public static XpeSerializationStrategy Instance
 		{
 			get
 			{
 				return instance;
+			}
+		}
+
+		private IXmlPersistEngine Xpe
+		{
+			get
+			{
+				return this.xpe;
 			}
 		}
 
@@ -50,21 +68,7 @@ namespace TextMetal.Common.Cerealization
 		/// <returns> An object of the target type or null. </returns>
 		public object GetObjectFromFile(string inputFilePath, Type targetType)
 		{
-			object obj;
-
-			if ((object)inputFilePath == null)
-				throw new ArgumentNullException("inputFilePath");
-
-			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
-
-			if (DataType.IsWhiteSpace(inputFilePath))
-				throw new ArgumentOutOfRangeException("inputFilePath");
-
-			using (Stream stream = File.Open(inputFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-				obj = this.GetObjectFromStream(stream, targetType);
-
-			return obj;
+			return this.Xpe.DeserializeFromXml(inputFilePath);
 		}
 
 		/// <summary>
@@ -98,19 +102,7 @@ namespace TextMetal.Common.Cerealization
 		/// <returns> An object of the target type or null. </returns>
 		public object GetObjectFromReader(XmlReader xmlReader, Type targetType)
 		{
-			XmlSerializer xmlSerializer;
-			object obj;
-
-			if ((object)xmlReader == null)
-				throw new ArgumentNullException("xmlReader");
-
-			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
-
-			xmlSerializer = new XmlSerializer(targetType);
-			obj = xmlSerializer.Deserialize(xmlReader);
-
-			return obj;
+			return this.Xpe.DeserializeFromXml(xmlReader);
 		}
 
 		/// <summary>
@@ -141,19 +133,7 @@ namespace TextMetal.Common.Cerealization
 		/// <returns> An object of the target type or null. </returns>
 		public object GetObjectFromReader(TextReader textReader, Type targetType)
 		{
-			XmlSerializer xmlSerializer;
-			object obj;
-
-			if ((object)textReader == null)
-				throw new ArgumentNullException("textReader");
-
-			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
-
-			xmlSerializer = new XmlSerializer(targetType);
-			obj = xmlSerializer.Deserialize(textReader);
-
-			return obj;
+			return this.Xpe.DeserializeFromXml(textReader);
 		}
 
 		/// <summary>
@@ -184,19 +164,7 @@ namespace TextMetal.Common.Cerealization
 		/// <returns> An object of the target type or null. </returns>
 		public object GetObjectFromStream(Stream stream, Type targetType)
 		{
-			XmlSerializer xmlSerializer;
-			object obj;
-
-			if ((object)stream == null)
-				throw new ArgumentNullException("stream");
-
-			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
-
-			xmlSerializer = new XmlSerializer(targetType);
-			obj = xmlSerializer.Deserialize(stream);
-
-			return obj;
+			return this.Xpe.DeserializeFromXml(stream);
 		}
 
 		/// <summary>
@@ -321,18 +289,7 @@ namespace TextMetal.Common.Cerealization
 		/// <param name="obj"> The object graph to serialize. </param>
 		public void SetObjectToStream(Stream stream, object obj)
 		{
-			XmlSerializer xmlSerializer;
-			Type targetType;
-
-			if ((object)stream == null)
-				throw new ArgumentNullException("stream");
-
-			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
-
-			targetType = obj.GetType();
-			xmlSerializer = new XmlSerializer(targetType);
-			xmlSerializer.Serialize(stream, obj);
+			this.Xpe.SerializeToXml((IXmlObject)obj, stream);
 		}
 
 		/// <summary>
@@ -374,18 +331,7 @@ namespace TextMetal.Common.Cerealization
 		/// <param name="obj"> The object graph to serialize. </param>
 		public void SetObjectToWriter(XmlWriter xmlWriter, object obj)
 		{
-			XmlSerializer xmlSerializer;
-			Type targetType;
-
-			if ((object)xmlWriter == null)
-				throw new ArgumentNullException("xmlWriter");
-
-			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
-
-			targetType = obj.GetType();
-			xmlSerializer = new XmlSerializer(targetType);
-			xmlSerializer.Serialize(xmlWriter, obj);
+			this.Xpe.SerializeToXml((IXmlObject)obj, xmlWriter);
 		}
 
 		/// <summary>
@@ -411,18 +357,7 @@ namespace TextMetal.Common.Cerealization
 		/// <param name="obj"> The object graph to serialize. </param>
 		public void SetObjectToWriter(TextWriter textWriter, object obj)
 		{
-			XmlSerializer xmlSerializer;
-			Type targetType;
-
-			if ((object)textWriter == null)
-				throw new ArgumentNullException("textWriter");
-
-			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
-
-			targetType = obj.GetType();
-			xmlSerializer = new XmlSerializer(targetType);
-			xmlSerializer.Serialize(textWriter, obj);
+			this.Xpe.SerializeToXml((IXmlObject)obj, textWriter);
 		}
 
 		/// <summary>

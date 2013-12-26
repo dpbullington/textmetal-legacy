@@ -27,6 +27,7 @@ namespace Castle.DynamicProxy.Generators
 	using System;
 #if !SILVERLIGHT
 	using System.Xml.Serialization;
+
 #endif
 
 	public class ClassProxyWithTargetGenerator : BaseProxyGenerator

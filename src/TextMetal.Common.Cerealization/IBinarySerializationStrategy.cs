@@ -16,6 +16,22 @@ namespace TextMetal.Common.Cerealization
 		#region Methods/Operators
 
 		/// <summary>
+		/// Deserializes an object from the specified byte array value.
+		/// </summary>
+		/// <param name="value"> The byte array value to deserialize. </param>
+		/// <param name="targetType"> The target run-time type of the root of the deserialized object graph. </param>
+		/// <returns> An object of the target type or null. </returns>
+		object GetObjectFromBytes(byte[] value, Type targetType);
+
+		/// <summary>
+		/// Deserializes an object from the specified byte array value. This is the generic overload.
+		/// </summary>
+		/// <typeparam name="TObject"> The target run-time type of the root of the deserialized object graph. </typeparam>
+		/// <param name="value"> The byte array value to deserialize. </param>
+		/// <returns> An object of the target type or null. </returns>
+		TObject GetObjectFromBytes<TObject>(byte[] value);
+
+		/// <summary>
 		/// Deserializes an object from the specified binary reader.
 		/// </summary>
 		/// <param name="binaryReader"> The binary reader to deserialize. </param>
@@ -32,34 +48,18 @@ namespace TextMetal.Common.Cerealization
 		TObject GetObjectFromReader<TObject>(BinaryReader binaryReader);
 
 		/// <summary>
-		/// Deserializes an object from the specified string value.
-		/// </summary>
-		/// <param name="value"> The string value to deserialize. </param>
-		/// <param name="targetType"> The target run-time type of the root of the deserialized object graph. </param>
-		/// <returns> An object of the target type or null. </returns>
-		object GetObjectFromString(string value, Type targetType);
-
-		/// <summary>
-		/// Deserializes an object from the specified binary value. This is the generic overload.
-		/// </summary>
-		/// <typeparam name="TObject"> The target run-time type of the root of the deserialized object graph. </typeparam>
-		/// <param name="value"> The string value to deserialize. </param>
-		/// <returns> An object of the target type or null. </returns>
-		TObject GetObjectFromString<TObject>(string value);
-
-		/// <summary>
-		/// Serializes an object to a string value.
+		/// Serializes an object to a byte array value.
 		/// </summary>
 		/// <param name="obj"> The object graph to serialize. </param>
-		/// <returns> A string representation of the object graph. </returns>
-		string SetObjectToString(object obj);
+		/// <returns> A byte array representation of the object graph. </returns>
+		byte[] SetObjectToBytes(object obj);
 
 		/// <summary>
-		/// Serializes an object to a string value. This is the generic overload.
+		/// Serializes an object to a byte array value. This is the generic overload.
 		/// </summary>
 		/// <param name="obj"> The object graph to serialize. </param>
-		/// <returns> A string representation of the object graph. </returns>
-		object SetObjectToString<TObject>(TObject obj);
+		/// <returns> A byte array representation of the object graph. </returns>
+		byte[] SetObjectToBytes<TObject>(TObject obj);
 
 		/// <summary>
 		/// Serializes an object to the specified binary writer.

@@ -38,7 +38,7 @@ namespace TextMetal.Common.Core.StringTokens
 		#endregion
 
 		#region Properties/Indexers/Events
-		
+
 		/// <summary>
 		/// Gets the context object array used during token replacement.
 		/// </summary>

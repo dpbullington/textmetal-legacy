@@ -27,6 +27,7 @@ namespace Castle.DynamicProxy.Serialization
 	using System;
 #if DOTNET40
 	using System.Security;
+
 #endif
 
 	/// <summary>

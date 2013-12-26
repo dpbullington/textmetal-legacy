@@ -59,7 +59,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
 
-			retval = Cerealization.GetObjectFromFile(sourceFilePath, xmlSerializedObjectType);
+			retval = XmlSerializationStrategy.Instance.GetObjectFromFile(sourceFilePath, xmlSerializedObjectType);
 
 			return retval;
 		}

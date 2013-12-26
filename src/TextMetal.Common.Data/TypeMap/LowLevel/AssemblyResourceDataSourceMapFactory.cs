@@ -5,8 +5,6 @@
 
 using System;
 
-using TextMetal.Common.Core;
-
 namespace TextMetal.Common.Data.TypeMap.LowLevel
 {
 	public class AssemblyResourceDataSourceMapFactory : IDataSourceMapFactory
