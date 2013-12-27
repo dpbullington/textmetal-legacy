@@ -32,7 +32,7 @@ namespace TextMetal.Common.Data.LinqToSql
 
 		#region Fields/Constants
 
-		private TContext context;
+		private readonly TContext context;
 		private bool disposed;
 
 		#endregion
@@ -50,10 +50,6 @@ namespace TextMetal.Common.Data.LinqToSql
 					throw new ObjectDisposedException(typeof(ContextWrapper<TContext>).FullName);
 
 				return this.context;
-			}
-			private set
-			{
-				this.context = value;
 			}
 		}
 
@@ -98,10 +94,7 @@ namespace TextMetal.Common.Data.LinqToSql
 			try
 			{
 				if (this.ShouldDisposeResources)
-				{
 					this.Context.Dispose();
-					this.Context = null;
-				}
 			}
 			finally
 			{
