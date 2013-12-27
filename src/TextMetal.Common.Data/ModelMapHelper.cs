@@ -55,17 +55,17 @@ namespace TextMetal.Common.Data
 			{
 				// concurrency failure
 				unitOfWorkContext.Divergent();
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Data concurrency failure occurred during a CUD request-result-response execution; expected records affected '{0}', actual records affected '{1}'.", thisOrThatRecordsAffected, recordsAffected));
 			}
 			else if (!executeAsCud && recordsAffected != thisOrThatRecordsAffected)
 			{
 				// idempotency failure
 				unitOfWorkContext.Divergent();
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Data concurrency failure occurred during a non-CUD request-result-response execution; expected records affected '{0}', actual records affected '{1}'.", thisOrThatRecordsAffected, recordsAffected));
 			}
 
 			if ((object)results == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Results collection was invalid."));
 
 			response = new TResponse();
 
@@ -116,11 +116,11 @@ namespace TextMetal.Common.Data
 			{
 				// idempotency failure
 				unitOfWorkContext.Divergent();
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Data concurrency failure occurred during a fetch-model execution; expected records affected '{0}', actual records affected '{1}'.", queryExpectedRecordsAffected, recordsAffected));
 			}
 
 			if ((object)results == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Results collection was invalid."));
 
 			if (results.Count != 1)
 				return null;
@@ -187,14 +187,14 @@ namespace TextMetal.Common.Data
 			{
 				// idempotency failure
 				unitOfWorkContext.Divergent();
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Data concurrency failure occurred during a fill-model execution; expected records affected '{0}', actual records affected '{1}'.", queryExpectedRecordsAffected, recordsAffected));
 			}
 
 			if ((object)results == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Results collection was invalid."));
 
 			if (results.Count != 1)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Results collection count was not equal to one; count is equal to '{0}'.", results.Count));
 
 			mapToCallback(results[0], model);
 		}
@@ -233,7 +233,7 @@ namespace TextMetal.Common.Data
 			}
 
 			if ((object)results == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Results collection was invalid."));
 
 			if (results.Count == 1)
 				mapToCallback(results[0], model);
@@ -270,11 +270,11 @@ namespace TextMetal.Common.Data
 			{
 				// idempotency failure
 				unitOfWorkContext.Divergent();
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Data concurrency failure occurred during a query-model execution; expected records affected '{0}', actual records affected '{1}'.", queryExpectedRecordsAffected, recordsAffected));
 			}
 
 			if ((object)results == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Results collection was invalid."));
 
 			models = new List<TModel>();
 

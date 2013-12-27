@@ -4,7 +4,9 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace TextMetal.Common.Core.StringTokens
 {
@@ -53,99 +55,135 @@ namespace TextMetal.Common.Core.StringTokens
 		#region Methods/Operators
 
 		/// <summary>
-		/// Used by the token model to execute public, static methods with zero parameters in a dynamic manner.
+		/// Used by the token model to execute public, static methods with zero or more parameters in a dynamic manner.
 		/// </summary>
-		/// <param name="parameters"> An array of parameters in the form: assembly-qualified-type-name, method-name, [argument-value, ...] </param>
+		/// <param name="parameters"> An array of parameters in the form: assembly-qualified-type-name, method-name, [parameter-assembly-qualified-type-name, argument-value, ...] </param>
 		/// <returns> The return value of the executed method. </returns>
 		public static object StaticMethodResolver(string[] parameters)
 		{
-			int index = 0;
-			Type targetType = null;
+			Type targetType, parameterType = null;
+			List<Type> parameterTypes;
 			MethodInfo methodInfo;
-			object methodValue = null;
+			ParameterInfo[] parameterInfos;
+			object returnValue, argumentValue;
+			List<object> argumentValues;
 
 			if ((object)parameters == null)
 				throw new ArgumentNullException("parameters");
 
-			foreach (string parameter in parameters)
+			if (parameters.Length < 2)
+				throw new InvalidOperationException(string.Format("StaticMethodResolver requires at least two parameters but was invoked with '{0}'. USAGE: StaticMethodResolver(`assembly-qualified-type-name`, `static-method-name`, [`type0`, `arg0`...])", parameters.Length));
+
+			if ((parameters.Length % 2) != 0)
+				throw new InvalidOperationException(string.Format("StaticMethodResolver was invoked with an odd number '{0}' of parameters.", parameters.Length));
+
+			parameterTypes = new List<Type>();
+			argumentValues = new List<object>();
+
+			// assembly-qualified-type-name
+			targetType = Type.GetType(parameters[0], false);
+
+			if ((object)targetType == null)
+				throw new InvalidOperationException(string.Format("StaticMethodResolver parameter at index '{0}' with value '{1}' was not a valid, loadable CLR type.", 0, parameters[0]));
+
+			// skip first two parameters
+			for (int i = 2; i < parameters.Length; i++)
 			{
-				if (DataType.IsNullOrWhiteSpace(parameter))
-					throw new InvalidOperationException(string.Format("StaticMethodResolver paramter at index '{0}' was either null or zero length.", index));
-
-				if (index == 0) // assembly-qualified-type-name
+				if ((i % 2) == 0) // parameter type
 				{
-					targetType = Type.GetType(parameter, false);
+					// assembly-qualified-type-name
+					parameterType = Type.GetType(parameters[i], false);
 
-					if ((object)targetType == null)
-						throw new InvalidOperationException(string.Format("StaticMethodResolver paramter at index '{0}' with value '{1}' was not a valid, loadable CLR type.", 0, parameters[0]));
+					if ((object)parameterType == null)
+						throw new InvalidOperationException(string.Format("StaticMethodResolver parameter at index '{0}' with value '{1}' was not a valid, loadable CLR type (for method call parameter).", i, parameters[i]));
 
-					index++;
+					parameterTypes.Add(parameterType);
 				}
-				else if (index == 1) // method-name
+				else // argument value
 				{
-					methodInfo = targetType.GetMethod(parameter, BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static, null, new Type[] { }, null);
+					if (!DataType.TryParse(parameterType, parameters[i], out argumentValue))
+						throw new InvalidOperationException(string.Format("StaticMethodResolver parameter at index '{0}' with value '{1}' was not a valid '{2}'.", i, parameters[i], parameterType.FullName));
 
-					if ((object)methodInfo == null)
-						throw new InvalidOperationException(string.Format("StaticMethodResolver paramter at index '{0}' with value '{1}' was not a valid, executable method name.", 1, parameters[1]));
-
-					methodValue = methodInfo.Invoke(null, null);
-					index++;
-				}
-				else // argument-value[0...n]
-				{
-					// TODO: Add support for method parameters and type coersion and edit documentation.
-					throw new NotImplementedException();
+					argumentValues.Add(argumentValue);
 				}
 			}
 
-			return methodValue;
+			// method-name
+			methodInfo = targetType.GetMethod(parameters[1], BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static, null, parameterTypes.ToArray(), null);
+
+			if ((object)methodInfo == null)
+				throw new InvalidOperationException(string.Format("StaticMethodResolver parameter at index '{0}' with value '{1}' was not a valid, executable method name of type '{2}'.", 1, parameters[1], targetType.FullName));
+
+			parameterInfos = methodInfo.GetParameters();
+
+			if (parameterInfos.Length != ((parameters.Length - 2) / 2))
+				throw new InvalidOperationException(string.Format("StaticMethodResolver was invoked with '{0}' but the static method '{1}' of type '{2}' requires '{3}' parameters.", ((parameters.Length - 2) / 2), methodInfo.Name, targetType.FullName, parameterInfos.Length));
+
+			returnValue = methodInfo.Invoke(null, argumentValues.ToArray());
+
+			return returnValue;
 		}
 
 		/// <summary>
-		/// Used by the token model to get the value of public, static properties with zero parameters in a dynamic manner.
+		/// FOR TESTING USE ONLY
 		/// </summary>
-		/// <param name="parameters"> An array of parameters in the form: assembly-qualified-type-name, property-name </param>
+		/// <returns> A value. </returns>
+		public static object StaticMethodResolverPing()
+		{
+			return DateTime.UtcNow.Ticks;
+		}
+
+		/// <summary>
+		/// FOR TESTING USE ONLY
+		/// </summary>
+		/// <returns> A value. </returns>
+		public static object StaticMethodResolverPing(int? value)
+		{
+			return DateTime.UtcNow.Ticks / value;
+		}
+
+		/// <summary>
+		/// FOR TESTING USE ONLY
+		/// </summary>
+		/// <returns> A value. </returns>
+		public static object StaticMethodResolverPing(string value)
+		{
+			return (value ?? "").ToUpper();
+		}
+
+		/// <summary>
+		/// Used by the token model to get the value of public, static properties with zero or more parameters in a dynamic manner.
+		/// </summary>
+		/// <param name="parameters"> An array of parameters in the form: assembly-qualified-type-name, property-name, [parameter-assembly-qualified-type-name, indexer-value, ...]</param>
 		/// <returns> The return value of the property getter. </returns>
 		public static object StaticPropertyResolver(string[] parameters)
 		{
-			int index = 0;
-			Type targetType = null;
+			Type targetType;
 			PropertyInfo propertyInfo;
 			object propertyValue = null;
-
+			
 			if ((object)parameters == null)
 				throw new ArgumentNullException("parameters");
 
-			foreach (string parameter in parameters)
-			{
-				if (DataType.IsNullOrWhiteSpace(parameter))
-					throw new InvalidOperationException(string.Format("StaticPropertyResolver paramter at index '{0}' was either null or zero length.", index));
+			if (parameters.Length != 2)
+				throw new InvalidOperationException(string.Format("StaticPropertyResolver requires at most two parameters but was invoked with '{0}'. USAGE: StaticPropertyResolver(`assembly-qualified-type-name`, `static-property-name`)", parameters.Length));
 
-				if (index == 0) // assembly-qualified-type-name
-				{
-					targetType = Type.GetType(parameter, false);
+			// assembly-qualified-type-name
+			targetType = Type.GetType(parameters[0], false);
 
-					if ((object)targetType == null)
-						throw new InvalidOperationException(string.Format("StaticPropertyResolver paramter at index '{0}' with value '{1}' was not a valid, loadable CLR type.", 0, parameters[0]));
+			if ((object)targetType == null)
+				throw new InvalidOperationException(string.Format("StaticPropertyResolver parameter at index '{0}' with value '{1}' was not a valid, loadable CLR type.", 0, parameters[0]));
 
-					index++;
-				}
-				else if (index == 1) // property-name
-				{
-					propertyInfo = targetType.GetProperty(parameter, BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static, null, null, new Type[] { }, null);
+			// property-name
+			propertyInfo = targetType.GetProperty(parameters[1], BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static, null, null, new Type[] { }, null);
 
-					if ((object)propertyInfo == null)
-						throw new InvalidOperationException(string.Format("StaticPropertyResolver paramter at index '{0}' with value '{1}' was not a valid, executable property name.", 1, parameters[1]));
+			if ((object)propertyInfo == null)
+				throw new InvalidOperationException(string.Format("StaticPropertyResolver parameter at index '{0}' with value '{1}' was not a valid, executable property name of type '{2}'.", 1, parameters[1], targetType.FullName));
 
-					if (!propertyInfo.CanRead)
-						throw new InvalidOperationException(string.Format("StaticPropertyResolver paramter at index '{0}' with value '{1}' was not a valid, readable property name.", 1, parameters[1]));
+			if (!propertyInfo.CanRead)
+				throw new InvalidOperationException(string.Format("StaticPropertyResolver parameter at index '{0}' with value '{1}' was not a valid, readable property name of type '{2}'.", 1, parameters[1], targetType.FullName));
 
-					propertyValue = propertyInfo.GetValue(null, null);
-					index++;
-				}
-				else
-					throw new InvalidOperationException(string.Format("StaticPropertyResolver paramter at index '{0}' cannot be specified for properties.", index));
-			}
+			propertyValue = propertyInfo.GetValue(null, new object[] { });
 
 			return propertyValue;
 		}

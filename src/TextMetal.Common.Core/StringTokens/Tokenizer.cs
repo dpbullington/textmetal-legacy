@@ -136,6 +136,10 @@ namespace TextMetal.Common.Core.StringTokens
 
 			args = call.Split('`');
 
+			// fix-up escaped backtick
+			for (int i = 0; i < args.Length; i++)
+				args[i] = args[i].Replace("\\'", "`");
+
 			return args;
 		}
 

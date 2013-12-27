@@ -190,15 +190,15 @@ namespace TextMetal.HostImpl.Web.Email
 				throw new ArgumentNullException("saveMethod");
 
 			if (!Cerealization.TryGetFromAssemblyResource<MessageTemplate>(templateResourceType, templateResourceName, out messageTemplate))
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Unable to deserialize instance of '{0}' from the manifest resource name '{1}' in the assembly '{2}'.", typeof(MessageTemplate).FullName, templateResourceName, templateResourceType.Assembly.FullName));
 
 			emailMessage = messageTemplate.Resolve<TEmailMessage>(modelObject);
 
 			if ((object)emailMessage == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Resolved email message was invalid."));
 
 			if (!saveMethod(emailMessage))
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Save method callback returned false during email template send processing; possible data concurrency failure."));
 
 			// no longer hardcoded, uses standard config file
 			smtpClient = new SmtpClient();

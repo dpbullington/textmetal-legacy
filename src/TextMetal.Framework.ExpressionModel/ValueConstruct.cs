@@ -101,10 +101,10 @@ namespace TextMetal.Framework.ExpressionModel
 				valueType = System.Type.GetType(this.Type, false);
 
 			if ((object)valueType == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("The value run-time type failed to load for type '{0}'.", this.Type));
 
 			if (!DataType.TryParse(valueType, data, out value))
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException(string.Format("Could not parse the value '{0}' as type '{1}'.", data, valueType.FullName));
 
 			this._ = value;
 		}

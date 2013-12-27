@@ -8,7 +8,7 @@ using System;
 namespace TextMetal.Common.Core.StringTokens
 {
 	/// <summary>
-	/// Provides a wldcard token replacement strategy which returns the data using reflection or dictionary semantics against an object property token.
+	/// Provides a wildcard token replacement strategy which returns the data using reflection or dictionary semantics against an object property token.
 	/// </summary>
 	public class DynamicWildcardTokenReplacementStrategy : IWildcardTokenReplacementStrategy
 	{
