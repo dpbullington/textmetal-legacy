@@ -1,12 +1,12 @@
 ﻿/*
-	Copyright ©2002-2013 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
 /*
 	Import Sources:
 	Unified framework
-		Copyright ©2002-2013 Daniel Bullington (dpbullington@gmail.com)
+		Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
 	Actual frameworks
 		Copyright © others: see license files in source or imports raw source.
 */
@@ -23,7 +23,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyCompany("Daniel Bullington")]
 [assembly: AssemblyProduct("TextMetal")]
-[assembly: AssemblyCopyright("©2002-2013 Daniel Bullington")]
+[assembly: AssemblyCopyright("©2002-2014 Daniel Bullington")]
 [assembly: AssemblyDescription("Distributed under the MIT license:\r\nhttp://www.opensource.org/licenses/mit-license.php")]
 [assembly: AssemblyTrademark("π")]
 [assembly: AssemblyCulture("")]

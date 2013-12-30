@@ -1,6 +1,6 @@
 ﻿TextMetal
 
-Copyright ©2002-2013 Daniel Bullington (dpbullington@gmail.com)
+Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
 
 TextMetal is released under the MIT License
 
@@ -27,6 +27,6 @@ THE SOFTWARE.
 
 Import Sources:
 Unified framework
-	Copyright ©2002-2013 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
 Actual frameworks
 	Copyright © others: see license files in source or imports raw source.
