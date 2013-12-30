@@ -16,10 +16,10 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model
 	{
 		#region Methods/Operators
 
-		partial void OnPreInsertEmailAttachment(IUnitOfWorkContext unitOfWorkContext, EmailAttachment emailAttachment)
+		partial void OnPreInsertEmailAttachment(IUnitOfWork unitOfWork, EmailAttachment emailAttachment)
 		{
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			if ((object)emailAttachment == null)
 				throw new ArgumentNullException("emailAttachment");
@@ -27,10 +27,10 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model
 			emailAttachment.Mark();
 		}
 
-		partial void OnPreInsertEmailMessage(IUnitOfWorkContext unitOfWorkContext, EmailMessage emailMessage)
+		partial void OnPreInsertEmailMessage(IUnitOfWork unitOfWork, EmailMessage emailMessage)
 		{
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			if ((object)emailMessage == null)
 				throw new ArgumentNullException("emailMessage");
@@ -38,10 +38,10 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model
 			emailMessage.Mark();
 		}
 
-		partial void OnPreInsertEventLog(IUnitOfWorkContext unitOfWorkContext, EventLog eventLog)
+		partial void OnPreInsertEventLog(IUnitOfWork unitOfWork, EventLog eventLog)
 		{
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			if ((object)eventLog == null)
 				throw new ArgumentNullException("eventLog");
@@ -49,10 +49,10 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model
 			eventLog.Mark();
 		}
 
-		partial void OnPreUpdateEmailAttachment(IUnitOfWorkContext unitOfWorkContext, EmailAttachment emailAttachment)
+		partial void OnPreUpdateEmailAttachment(IUnitOfWork unitOfWork, EmailAttachment emailAttachment)
 		{
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			if ((object)emailAttachment == null)
 				throw new ArgumentNullException("emailAttachment");
@@ -60,10 +60,10 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model
 			emailAttachment.Mark();
 		}
 
-		partial void OnPreUpdateEmailMessage(IUnitOfWorkContext unitOfWorkContext, EmailMessage emailMessage)
+		partial void OnPreUpdateEmailMessage(IUnitOfWork unitOfWork, EmailMessage emailMessage)
 		{
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			if ((object)emailMessage == null)
 				throw new ArgumentNullException("emailMessage");
@@ -71,10 +71,10 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model
 			emailMessage.Mark();
 		}
 
-		partial void OnPreUpdateEventLog(IUnitOfWorkContext unitOfWorkContext, EventLog eventLog)
+		partial void OnPreUpdateEventLog(IUnitOfWork unitOfWork, EventLog eventLog)
 		{
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			if ((object)eventLog == null)
 				throw new ArgumentNullException("eventLog");

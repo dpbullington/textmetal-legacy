@@ -31,7 +31,7 @@ using System.Xml;
 
 using NUnit.Framework;
 
-using TestingFramework.Core.Customization;
+using TextMetal.TestFramework;
 ]]>
 						<If>
 							<If.Condition>

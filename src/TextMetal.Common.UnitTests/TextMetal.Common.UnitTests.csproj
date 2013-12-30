@@ -55,7 +55,7 @@
     <Compile Include="Data\AdoNetHelperTests.cs" />
     <None Include="App.config" />
     <None Include="Data\UnitOfWorkContextTests.cs" />
-    <Compile Include="Data\LinqToSql\ContextWrapperTests.cs" />
+    <Compile Include="Data\AmbientUnitOfWorkAwareDisposableWrapperTests.cs" />
     <None Include="Data\LinqToSql\LinqToSqlHelperTests.cs" />
     <Compile Include="Data\LinqToSql\MulticastContextTests.cs" />
     <Compile Include="Data\TypeMap\LowLevel\AssemblyResourceDataSourceMapFactoryTests.cs" />

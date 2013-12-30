@@ -23,11 +23,11 @@ using TextMetal.Common.Core;
 
 namespace TextMetal.HostImpl.AspNetSample.Objects.Model.Tables
 {
-	public partial class EmailAttachmentHistory : Object
+	public partial class UserHistory : Object
 	{		
 		#region Constructors/Destructors
 		
-		public EmailAttachmentHistory()
+		public UserHistory()
 		{
 		}
 		
@@ -37,12 +37,17 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model.Tables
 
 		private bool isNew = true;
 		private Nullable<Int64> @timestampId;
-		private Nullable<Int32> @emailMessageId;
-		private Nullable<Int32> @emailAttachmentId;
-		private String @fileName;
-		private Nullable<Int64> @fileSize;
-		private String @mimeType;
-		private Byte[] @attachmentBits;
+		private Nullable<Int32> @userId;
+		private String @emailAddress;
+		private String @userName;
+		private String @saltValue;
+		private String @passwordHash;
+		private String @question;
+		private String @answerHash;
+		private Nullable<DateTime> @lastLoginSuccessTimestamp;
+		private Nullable<DateTime> @lastLoginFailureTimestamp;
+		private Nullable<Int16> @failedLoginCount;
+		private Nullable<Boolean> @mustChangePassword;
 		private Nullable<Byte> @sortOrder;
 		private Nullable<DateTime> @creationTimestamp;
 		private Nullable<DateTime> @modificationTimestamp;
@@ -80,75 +85,135 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model.Tables
 		}
 		
 		/* PRIMARY_KEY */
-		public Nullable<Int32> @EmailMessageId
+		public Nullable<Int32> @UserId
 		{
 			get
 			{
-				return this.@emailMessageId;
+				return this.@userId;
 			}
 			set
 			{
-				this.@emailMessageId = value;
+				this.@userId = value;
 			}
 		}
 		
-		public Nullable<Int32> @EmailAttachmentId
+		public String @EmailAddress
 		{
 			get
 			{
-				return this.@emailAttachmentId;
+				return this.@emailAddress;
 			}
 			set
 			{
-				this.@emailAttachmentId = value;
+				this.@emailAddress = value;
 			}
 		}
 		
-		public String @FileName
+		public String @UserName
 		{
 			get
 			{
-				return this.@fileName;
+				return this.@userName;
 			}
 			set
 			{
-				this.@fileName = value;
+				this.@userName = value;
 			}
 		}
 		
-		public Nullable<Int64> @FileSize
+		public String @SaltValue
 		{
 			get
 			{
-				return this.@fileSize;
+				return this.@saltValue;
 			}
 			set
 			{
-				this.@fileSize = value;
+				this.@saltValue = value;
 			}
 		}
 		
-		public String @MimeType
+		public String @PasswordHash
 		{
 			get
 			{
-				return this.@mimeType;
+				return this.@passwordHash;
 			}
 			set
 			{
-				this.@mimeType = value;
+				this.@passwordHash = value;
 			}
 		}
 		
-		public Byte[] @AttachmentBits
+		public String @Question
 		{
 			get
 			{
-				return this.@attachmentBits;
+				return this.@question;
 			}
 			set
 			{
-				this.@attachmentBits = value;
+				this.@question = value;
+			}
+		}
+		
+		public String @AnswerHash
+		{
+			get
+			{
+				return this.@answerHash;
+			}
+			set
+			{
+				this.@answerHash = value;
+			}
+		}
+		
+		public Nullable<DateTime> @LastLoginSuccessTimestamp
+		{
+			get
+			{
+				return this.@lastLoginSuccessTimestamp;
+			}
+			set
+			{
+				this.@lastLoginSuccessTimestamp = value;
+			}
+		}
+		
+		public Nullable<DateTime> @LastLoginFailureTimestamp
+		{
+			get
+			{
+				return this.@lastLoginFailureTimestamp;
+			}
+			set
+			{
+				this.@lastLoginFailureTimestamp = value;
+			}
+		}
+		
+		public Nullable<Int16> @FailedLoginCount
+		{
+			get
+			{
+				return this.@failedLoginCount;
+			}
+			set
+			{
+				this.@failedLoginCount = value;
+			}
+		}
+		
+		public Nullable<Boolean> @MustChangePassword
+		{
+			get
+			{
+				return this.@mustChangePassword;
+			}
+			set
+			{
+				this.@mustChangePassword = value;
 			}
 		}
 		

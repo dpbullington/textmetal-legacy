@@ -13,14 +13,14 @@ namespace TextMetal.Common.Data
 	/// <summary>
 	/// Represents an atomic set of data operations on a single connection/transaction.
 	/// </summary>
-	public sealed class UnitOfWorkContext : IUnitOfWorkContext
+	public sealed class UnitOfWork : IUnitOfWork
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the UnitOfWorkContext class.
+		/// Initializes a new instance of the unitOfWork class.
 		/// </summary>
-		private UnitOfWorkContext(IDbConnection connection, IDbTransaction transaction)
+		private UnitOfWork(IDbConnection connection, IDbTransaction transaction)
 		{
 			this.connection = connection;
 			this.transaction = transaction;
@@ -30,7 +30,7 @@ namespace TextMetal.Common.Data
 
 		#region Fields/Constants
 
-		private static readonly string UNIT_OF_WORK_CONTEXT_CURRENT_KEY = typeof(UnitOfWorkContext).GUID.SafeToString();
+		private static readonly string UNIT_OF_WORK_CONTEXT_CURRENT_KEY = typeof(UnitOfWork).GUID.SafeToString();
 		private readonly IDbConnection connection;
 		private readonly IDbTransaction transaction;
 		private bool completed;
@@ -43,13 +43,13 @@ namespace TextMetal.Common.Data
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// Gets the current ambient unit of work context active on the current thread and application domain.
+		/// Gets the current ambient unit of work active on the current thread and application domain.
 		/// </summary>
-		public static IUnitOfWorkContext Current
+		public static IUnitOfWork Current
 		{
 			get
 			{
-				return (IUnitOfWorkContext)ExecutionPathStorage.GetValue(UNIT_OF_WORK_CONTEXT_CURRENT_KEY);
+				return (IUnitOfWork)ExecutionPathStorage.GetValue(UNIT_OF_WORK_CONTEXT_CURRENT_KEY);
 			}
 			set
 			{
@@ -80,7 +80,7 @@ namespace TextMetal.Common.Data
 			get
 			{
 				if (this.Disposed)
-					throw new ObjectDisposedException(typeof(UnitOfWorkContext).FullName);
+					throw new ObjectDisposedException(typeof(UnitOfWork).FullName);
 
 				return this.connection;
 			}
@@ -94,7 +94,7 @@ namespace TextMetal.Common.Data
 			get
 			{
 				if (this.Disposed)
-					throw new ObjectDisposedException(typeof(UnitOfWorkContext).FullName);
+					throw new ObjectDisposedException(typeof(UnitOfWork).FullName);
 
 				return this.context;
 			}
@@ -142,7 +142,7 @@ namespace TextMetal.Common.Data
 			get
 			{
 				if (this.Disposed)
-					throw new ObjectDisposedException(typeof(UnitOfWorkContext).FullName);
+					throw new ObjectDisposedException(typeof(UnitOfWork).FullName);
 
 				return this.transaction;
 			}
@@ -153,16 +153,16 @@ namespace TextMetal.Common.Data
 		#region Methods/Operators
 
 		/// <summary>
-		/// Creates a new unit of work context (and opens the underlying connection) for the given connection type and connection string with an optional transaction started.
+		/// Creates a new unit of work (and opens the underlying connection) for the given connection type and connection string with an optional transaction started.
 		/// </summary>
 		/// <param name="connectionType"> The run-time type of the connection to use. </param>
 		/// <param name="connectionString"> The ADO.NET provider connection string to use. </param>
 		/// <param name="transactional"> A value indicating whether a new local data source transaction isstarted on the connection. </param>
 		/// <param name="isolationLevel"> A value indicating the transaction isolation level. </param>
-		/// <returns> An instance of teh UnitOfWorkContext ready for execution of operations. This should be wrapped in a using(...){} block for an optimal usage scenario. </returns>
-		public static IUnitOfWorkContext Create(Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel = IsolationLevel.Unspecified)
+		/// <returns> An instance of teh unitOfWork ready for execution of operations. This should be wrapped in a using(...){} block for an optimal usage scenario. </returns>
+		public static IUnitOfWork Create(Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel = IsolationLevel.Unspecified)
 		{
-			UnitOfWorkContext unitOfWorkContext;
+			UnitOfWork unitOfWork;
 			IDbConnection connection;
 			IDbTransaction transaction;
 			const bool OPEN = true;
@@ -189,13 +189,13 @@ namespace TextMetal.Common.Data
 					transaction = null;
 			}
 
-			unitOfWorkContext = new UnitOfWorkContext(connection, transaction);
+			unitOfWork = new UnitOfWork(connection, transaction);
 
-			return unitOfWorkContext;
+			return unitOfWork;
 		}
 
 		/// <summary>
-		/// Contains the logic to 'adjudicate' or realize a transaction based on state of the current unit of work context instance.
+		/// Contains the logic to 'adjudicate' or realize a transaction based on state of the current unit of work instance.
 		/// </summary>
 		private void Adjudicate()
 		{
@@ -226,21 +226,21 @@ namespace TextMetal.Common.Data
 		}
 
 		/// <summary>
-		/// Indicates that all operations within the unit of work context have completed successfully. This method should only be called once.
+		/// Indicates that all operations within the unit of work have completed successfully. This method should only be called once.
 		/// </summary>
 		public void Complete()
 		{
 			if (this.Disposed)
-				throw new ObjectDisposedException(typeof(UnitOfWorkContext).FullName);
+				throw new ObjectDisposedException(typeof(UnitOfWork).FullName);
 
 			if (this.Completed)
-				throw new InvalidOperationException("The current unit of work context is already complete. You should dispose of the unit of work context.");
+				throw new InvalidOperationException("The current unit of work is already complete. You should dispose of the unit of work.");
 
 			this.Completed = true;
 		}
 
 		/// <summary>
-		/// Dispose of the unit of work context.
+		/// Dispose of the unit of work.
 		/// </summary>
 		public void Dispose()
 		{
@@ -259,12 +259,12 @@ namespace TextMetal.Common.Data
 		}
 
 		/// <summary>
-		/// Indicates that at least one operation within the unit of work context cause a failure in data concurrency or idempotency. This forces the entire unit of work to yield an incomplete status. This method can be called any number of times.
+		/// Indicates that at least one operation within the unit of work cause a failure in data concurrency or idempotency. This forces the entire unit of work to yield an incomplete status. This method can be called any number of times.
 		/// </summary>
 		public void Divergent()
 		{
 			if (this.Disposed)
-				throw new ObjectDisposedException(typeof(UnitOfWorkContext).FullName);
+				throw new ObjectDisposedException(typeof(UnitOfWork).FullName);
 
 			this.Diverged = true;
 		}

@@ -69,7 +69,7 @@ namespace ${ClrNamespace}
 					<ForEach.Body>
 						<![CDATA[		${ProcedureNameSingularPascalCase}_Response Execute_${ProcedureNameSingularPascalCase}(${ProcedureNameSingularPascalCase}_Request request);
 						
-		${ProcedureNameSingularPascalCase}_Response Execute_${ProcedureNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ${ProcedureNameSingularPascalCase}_Request request);
+		${ProcedureNameSingularPascalCase}_Response Execute_${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, ${ProcedureNameSingularPascalCase}_Request request);
 ]]>
 						<If>
 							<If.Condition>

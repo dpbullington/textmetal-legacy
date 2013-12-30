@@ -163,7 +163,7 @@ namespace ${ClrNamespace}
 						</ForEach>
 <![CDATA[);
 
-		${TableNameSingularPascalCase} Load${TableNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ]]>
+		${TableNameSingularPascalCase} Load${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ]]>
 						<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Or">
@@ -210,17 +210,17 @@ namespace ${ClrNamespace}
 						</ForEach>
 						<![CDATA[);
 						
-		IList<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(Query ${TableNameSingularCamelCase}Query);
+		IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(Query ${TableNameSingularCamelCase}Query);
 		
-		IList<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(IUnitOfWorkContext unitOfWorkContext, Query ${TableNameSingularCamelCase}Query);
+		IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(IUnitOfWork unitOfWork, Query ${TableNameSingularCamelCase}Query);
 		
 		bool Save${TableNameSingularPascalCase}(${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		bool Save${TableNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		bool Save${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
 		bool Discard${TableNameSingularPascalCase}(${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		bool Discard${TableNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		bool Discard${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 ]]>
 						<If>
 							<If.Condition>

@@ -163,9 +163,13 @@ namespace ${ClrNamespace}
 						</ForEach>
 						<![CDATA[)
 		{
-			${TableNameSingularPascalCase} retval;
-						
-			retval = Ambient.ExecuteAmbientUnitOfWorkAware(Repository.UowcFactory.Instance, (uowc, ]]>
+			${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
+			
+			if ((object)UnitOfWork.Current == null)
+			{
+				using (IUnitOfWork unitOfWork = Repository.DefaultUnitOfWorkFactory.Instance.GetUnitOfWork())
+				{
+					@${TableNameSingularCamelCase} = this.Load${TableNameSingularPascalCase}(unitOfWork, ]]>
 						<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Or">
@@ -192,7 +196,7 @@ namespace ${ClrNamespace}
 								</BinaryExpression>
 							</ForEach.Filter>
 							<ForEach.Body>
-								<![CDATA[p${#LoopIndex}]]>
+								<![CDATA[@${ColumnNameCamelCase}]]>
 								<If>
 									<If.Condition>
 										<BinaryExpression operator="Ne">
@@ -210,52 +214,13 @@ namespace ${ClrNamespace}
 								</If>
 							</ForEach.Body>
 						</ForEach>
-						<![CDATA[) => this.Load${TableNameSingularPascalCase}(uowc, ]]>
-						<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
-							<ForEach.Filter>
-								<BinaryExpression operator="Or">
-									<BinaryExpression.LeftExpression>
-										<BinaryExpression operator="Eq">
-											<BinaryExpression.LeftExpression>
-												<Facet name="ColumnIsPrimaryKey" />
-											</BinaryExpression.LeftExpression>
-											<BinaryExpression.RightExpression>
-												<Value type="System.Boolean" data="True" />
-											</BinaryExpression.RightExpression>
-										</BinaryExpression>
-									</BinaryExpression.LeftExpression>
-									<BinaryExpression.RightExpression>
-										<BinaryExpression operator="Eq">
-											<BinaryExpression.LeftExpression>
-												<Facet name="HasNoDefinedPrimaryKeyColumns" />
-											</BinaryExpression.LeftExpression>
-											<BinaryExpression.RightExpression>
-												<Value type="System.Boolean" data="True" />
-											</BinaryExpression.RightExpression>
-										</BinaryExpression>
-									</BinaryExpression.RightExpression>
-								</BinaryExpression>
-							</ForEach.Filter>
-							<ForEach.Body>
-								<![CDATA[p${#LoopIndex}]]>
-								<If>
-									<If.Condition>
-										<BinaryExpression operator="Ne">
-											<BinaryExpression.LeftExpression>
-												<Facet name="#LoopCount" />
-											</BinaryExpression.LeftExpression>
-											<BinaryExpression.RightExpression>
-												<Facet name="#LoopIndex" />
-											</BinaryExpression.RightExpression>
-										</BinaryExpression>
-									</If.Condition>
-									<If.True>
-										<![CDATA[, ]]>
-									</If.True>
-								</If>
-							</ForEach.Body>
-						</ForEach>
-						<![CDATA[), ]]>
+						<![CDATA[);
+
+					unitOfWork.Complete();
+				}
+			}
+			else
+				@${TableNameSingularCamelCase} = this.Load${TableNameSingularPascalCase}(UnitOfWork.Current, ]]>
 						<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Or">
@@ -302,12 +267,12 @@ namespace ${ClrNamespace}
 						</ForEach>
 						<![CDATA[);
 			
-			return retval;
+			return @${TableNameSingularCamelCase};
 		}
 		
 ]]>
 				
-<![CDATA[		public ${TableNameSingularPascalCase} Load${TableNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ]]>
+<![CDATA[		public ${TableNameSingularPascalCase} Load${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ]]>
 						<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Or">
@@ -357,12 +322,12 @@ namespace ${ClrNamespace}
 			${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
 			${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase} query;
 			
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 										
-			using (ContextWrapper<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}> ctx = unitOfWorkContext.GetContext<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}>())
+			using (AmbientUnitOfWorkAwareDisposableWrapper<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}> wrapper = unitOfWork.GetContext<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}>())
 			{					
-				query = ctx.Context.${TableNamePluralPascalCase}.SingleOrDefault(lo => ]]>
+				query = wrapper.Disposable.${TableNamePluralPascalCase}.SingleOrDefault(lo => ]]>
 					<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
 						<ForEach.Filter>
 							<BinaryExpression operator="Or">
@@ -427,7 +392,7 @@ namespace ${ClrNamespace}
 					<Ruby src="Script" expr="" file="">
 						<Script>
 							type = textMetal.EvaluateToken.invoke("ColumnSqlType");
-							return ["image", "varbinary"].include?(type);
+							return ["image", "varbinary", "binary"].include?(type);
 						</Script>
 					</Ruby>
 				</If.Condition>
@@ -460,38 +425,52 @@ namespace ${ClrNamespace}
 <![CDATA[
 								};	
 
-				this.OnSelect${TableNameSingularPascalCase}(unitOfWorkContext, @${TableNameSingularCamelCase});
+				this.OnSelect${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
 
 				return @${TableNameSingularCamelCase};
 			}
 		}
 		
-		public IList<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(Func<IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}>, IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}>> callback)
+		public IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(Func<IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}>, IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}>> callback)
 		{
-			IList<${TableNameSingularPascalCase}> @${TableNamePluralCamelCase};
+			IEnumerable<${TableNameSingularPascalCase}> @${TableNamePluralCamelCase};
 			
-			@${TableNamePluralCamelCase} = Ambient.ExecuteAmbientUnitOfWorkAware(Repository.UowcFactory.Instance, (uowc, e) => this.Find${TableNamePluralPascalCase}(uowc, e), callback);
-			
-			return @${TableNamePluralCamelCase};
+			if ((object)UnitOfWork.Current == null)
+			{
+				using (IUnitOfWork unitOfWork = Repository.DefaultUnitOfWorkFactory.Instance.GetUnitOfWork())
+				{
+					@${TableNamePluralCamelCase} = this.Find${TableNamePluralPascalCase}(unitOfWork, callback);
+
+					unitOfWork.Complete();
+					
+					return @${TableNamePluralCamelCase}.ToList(); // FORCE EAGER LOAD
+				}
+			}
+			else
+			{
+				@${TableNamePluralCamelCase} = this.Find${TableNamePluralPascalCase}(UnitOfWork.Current, callback);
+				
+				return @${TableNamePluralCamelCase}; // DO NOT FORCE EAGER LOAD
+			}
 		}
 		
-		public IList<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(IUnitOfWorkContext unitOfWorkContext, Func<IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}>, IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}>> callback)
+		public IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(IUnitOfWork unitOfWork, Func<IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}>, IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}>> callback)
 		{
-			IList<${TableNameSingularPascalCase}> @${TableNamePluralCamelCase};			
+			IEnumerable<${TableNameSingularPascalCase}> @${TableNamePluralCamelCase};			
 			IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}> queryable;			
 			
-			if ((object)unitOfWorkContext == null)		
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)		
+				throw new ArgumentNullException("unitOfWork");
 				
 			if ((object)callback == null)
 				throw new ArgumentNullException("callback");
 				
-			using (ContextWrapper<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}> ctx = unitOfWorkContext.GetContext<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}>())
+			using (AmbientUnitOfWorkAwareDisposableWrapper<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}> wrapper = unitOfWork.GetContext<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}>())
 			{
-				queryable = callback(ctx.Context.@${TableNamePluralPascalCase});
+				queryable = callback(wrapper.Disposable.@${TableNamePluralPascalCase});
 				
 				if ((object)queryable == null)
-					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+					throw new InvalidOperationException(string.Format("The queryable returned was invalid."));
 				
 				@${TableNamePluralCamelCase} = queryable.Select(lo => new ${TableNameSingularPascalCase}()
 												 {
@@ -508,7 +487,7 @@ namespace ${ClrNamespace}
 					<Ruby src="Script" expr="" file="">
 						<Script>
 							type = textMetal.EvaluateToken.invoke("ColumnSqlType");
-							return ["image", "varbinary"].include?(type);
+							return ["image", "varbinary", "binary"].include?(type);
 						</Script>
 					</Ruby>
 				</If.Condition>
@@ -539,52 +518,64 @@ namespace ${ClrNamespace}
 		</ForEach.Body>
 	 </ForEach>
 <![CDATA[
-												 }).ToList(); // force execution against store
+												 }); // DOES NOT FORCE EXECUTION AGAINST STORE
 
 				foreach (${TableNameSingularPascalCase} @${TableNameSingularCamelCase} in @${TableNamePluralCamelCase})
-					this.OnSelect${TableNameSingularPascalCase}(unitOfWorkContext, @${TableNameSingularCamelCase});
-				
-				return @${TableNamePluralCamelCase};
+				{
+					this.OnSelect${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
+					
+					yield return @${TableNameSingularCamelCase}; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
+				}				
 			}			
 		}
 		
 		public bool Save${TableNameSingularPascalCase}(${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
-			bool retval;					
-			
-			retval = Ambient.ExecuteAmbientUnitOfWorkAware(Repository.UowcFactory.Instance, (uowc, e) => this.Save${TableNameSingularPascalCase}(uowc, e), @${TableNameSingularCamelCase});
+			bool retval;
+
+			if ((object)UnitOfWork.Current == null)
+			{
+				using (IUnitOfWork unitOfWork = Repository.DefaultUnitOfWorkFactory.Instance.GetUnitOfWork())
+				{
+					retval = this.Save${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
+
+					unitOfWork.Complete();
+				}
+			}
+			else
+				retval = this.Save${TableNameSingularPascalCase}(UnitOfWork.Current, @${TableNameSingularCamelCase});
 			
 			return retval;
 		}
 		
-		public bool Save${TableNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
+		public bool Save${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase} query;
 			bool wasNew;
 			
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 			
 			if ((object)@${TableNameSingularCamelCase} == null)
 				throw new ArgumentNullException("${TableNameSingularCamelCase}");
 				
-			using (ContextWrapper<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}> ctx = unitOfWorkContext.GetContext<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}>())
+			using (AmbientUnitOfWorkAwareDisposableWrapper<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}> wrapper = unitOfWork.GetContext<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}>())
 			{
 				wasNew = @${TableNameSingularCamelCase}.IsNew;
 
 				if (wasNew)
 				{
-					this.OnPreInsert${TableNameSingularPascalCase}(unitOfWorkContext, @${TableNameSingularCamelCase});
+					this.OnPreInsert${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
 					
 					query = new ${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}();
 
-					ctx.Context.${TableNamePluralPascalCase}.InsertOnSubmit(query);
+					wrapper.Disposable.${TableNamePluralPascalCase}.InsertOnSubmit(query);
 				}
 				else
 				{
-					this.OnPreUpdate${TableNameSingularPascalCase}(unitOfWorkContext, @${TableNameSingularCamelCase});
+					this.OnPreUpdate${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
 					
-					query = ctx.Context.${TableNamePluralPascalCase}.SingleOrDefault(lo => ]]>
+					query = wrapper.Disposable.${TableNamePluralPascalCase}.SingleOrDefault(lo => ]]>
 						<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Or">
@@ -632,7 +623,7 @@ namespace ${ClrNamespace}
 						<![CDATA[);
 
 					if((object)query == null)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException(string.Format("The queryable returned was invalid."));
 				}
 
 				// map caller POCO changes to L2S object
@@ -693,11 +684,11 @@ namespace ${ClrNamespace}
 				
 				try
 				{
-					ctx.Context.SubmitChanges(ConflictMode.FailOnFirstConflict);
+					wrapper.Disposable.SubmitChanges(ConflictMode.FailOnFirstConflict);
 				}
 				catch (ChangeConflictException ccex)
 				{
-					this.OnSaveConflict${TableNameSingularPascalCase}(unitOfWorkContext, @${TableNameSingularCamelCase});
+					this.OnSaveConflict${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
 					
 					return false;
 				}
@@ -723,7 +714,7 @@ namespace ${ClrNamespace}
 					<Ruby src="Script" expr="" file="">
 						<Script>
 							type = textMetal.EvaluateToken.invoke("ColumnSqlType");
-							return ["image", "varbinary"].include?(type);
+							return ["image", "varbinary", "binary"].include?(type);
 						</Script>
 					</Ruby>
 				</If.Condition>
@@ -776,11 +767,11 @@ namespace ${ClrNamespace}
 <![CDATA[						
 				if (wasNew)
 				{
-					this.OnPostInsert${TableNameSingularPascalCase}(unitOfWorkContext, @${TableNameSingularCamelCase});
+					this.OnPostInsert${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
 				}
 				else
 				{
-					this.OnPostUpdate${TableNameSingularPascalCase}(unitOfWorkContext, @${TableNameSingularCamelCase});
+					this.OnPostUpdate${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
 				}
 
 				return true;
@@ -791,17 +782,27 @@ namespace ${ClrNamespace}
 		{
 			bool retval;
 			
-			retval = Ambient.ExecuteAmbientUnitOfWorkAware(Repository.UowcFactory.Instance, (uowc, e) => this.Discard${TableNameSingularPascalCase}(uowc, e), @${TableNameSingularCamelCase});
+			if ((object)UnitOfWork.Current == null)
+			{
+				using (IUnitOfWork unitOfWork = Repository.DefaultUnitOfWorkFactory.Instance.GetUnitOfWork())
+				{
+					retval = this.Discard${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
+
+					unitOfWork.Complete();
+				}
+			}
+			else
+				retval = this.Discard${TableNameSingularPascalCase}(UnitOfWork.Current, @${TableNameSingularCamelCase});
 			
 			return retval;
 		}
 		
-		public bool Discard${TableNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
+		public bool Discard${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase} query;
 			
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 			
 			if ((object)@${TableNameSingularCamelCase} == null)
 				throw new ArgumentNullException("${TableNameSingularCamelCase}");
@@ -809,11 +810,11 @@ namespace ${ClrNamespace}
 			if (@${TableNameSingularCamelCase}.IsNew)
 				return true;
 				
-			using (ContextWrapper<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}> ctx = unitOfWorkContext.GetContext<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}>())
+			using (AmbientUnitOfWorkAwareDisposableWrapper<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}> wrapper = unitOfWork.GetContext<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}>())
 			{				
-				this.OnPreDelete${TableNameSingularPascalCase}(unitOfWorkContext, @${TableNameSingularCamelCase});
+				this.OnPreDelete${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
 				
-				query = ctx.Context.@${TableNamePluralPascalCase}.SingleOrDefault(lo => ]]>
+				query = wrapper.Disposable.@${TableNamePluralPascalCase}.SingleOrDefault(lo => ]]>
 					<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
 						<ForEach.Filter>
 							<BinaryExpression operator="Or">
@@ -861,22 +862,22 @@ namespace ${ClrNamespace}
 					<![CDATA[);
 
 				if((object)query == null)
-					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+					throw new InvalidOperationException(string.Format("The queryable returned was invalid."));
 				
-				ctx.Context.@${TableNamePluralPascalCase}.DeleteOnSubmit(query);
+				wrapper.Disposable.@${TableNamePluralPascalCase}.DeleteOnSubmit(query);
 				
 				try
 				{
-					ctx.Context.SubmitChanges(ConflictMode.FailOnFirstConflict);
+					wrapper.Disposable.SubmitChanges(ConflictMode.FailOnFirstConflict);
 				}
 				catch (ChangeConflictException ccex)
 				{
-					this.OnDiscardConflict${TableNameSingularPascalCase}(unitOfWorkContext, @${TableNameSingularCamelCase});
+					this.OnDiscardConflict${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
 					
 					return false;
 				}
 
-				this.OnPostDelete${TableNameSingularPascalCase}(unitOfWorkContext, @${TableNameSingularCamelCase});
+				this.OnPostDelete${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
 				
 				@${TableNameSingularCamelCase}.IsNew = false;				
 
@@ -884,23 +885,23 @@ namespace ${ClrNamespace}
 			}
 		}
 		
-		partial void OnPreInsert${TableNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnPreInsert${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnPostInsert${TableNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnPostInsert${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnPreUpdate${TableNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnPreUpdate${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnPostUpdate${TableNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnPostUpdate${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnSaveConflict${TableNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnPreDelete${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnDiscardConflict${TableNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
-				
-		partial void OnPreDelete${TableNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnPostDelete${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnPostDelete${TableNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnSaveConflict${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnSelect${TableNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});		
+		partial void OnDiscardConflict${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		
+		partial void OnSelect${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});		
 ]]>
 						<If>
 							<If.Condition>

@@ -16,19 +16,19 @@ namespace TextMetal.Common.Data.Advanced
 	{
 		#region Constructors/Destructors
 
-		public SqlExpressionVisitor(IDataSourceTagSpecific dataSourceTagSpecific, IUnitOfWorkContext unitOfWorkContext, IList<IDataParameter> commandParameters)
+		public SqlExpressionVisitor(IDataSourceTagSpecific dataSourceTagSpecific, IUnitOfWork unitOfWork, IList<IDataParameter> commandParameters)
 		{
 			if ((object)dataSourceTagSpecific == null)
 				throw new ArgumentNullException("dataSourceTagSpecific");
 
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			if ((object)commandParameters == null)
 				throw new ArgumentNullException("commandParameters");
 
 			this.dataSourceTagSpecific = dataSourceTagSpecific;
-			this.unitOfWorkContext = unitOfWorkContext;
+			this.unitOfWork = unitOfWork;
 			this.commandParameters = commandParameters;
 		}
 
@@ -39,7 +39,7 @@ namespace TextMetal.Common.Data.Advanced
 		private readonly IList<IDataParameter> commandParameters;
 		private readonly IDataSourceTagSpecific dataSourceTagSpecific;
 		private readonly StringBuilder strings = new StringBuilder();
-		private readonly IUnitOfWorkContext unitOfWorkContext;
+		private readonly IUnitOfWork unitOfWork;
 
 		#endregion
 
@@ -69,11 +69,11 @@ namespace TextMetal.Common.Data.Advanced
 			}
 		}
 
-		private IUnitOfWorkContext UnitOfWorkContext
+		private IUnitOfWork UnitOfWork
 		{
 			get
 			{
-				return this.unitOfWorkContext;
+				return this.unitOfWork;
 			}
 		}
 
@@ -81,7 +81,7 @@ namespace TextMetal.Common.Data.Advanced
 
 		#region Methods/Operators
 
-		public static string GetFilterText(IDataSourceTagSpecific dataSourceTagSpecific, IUnitOfWorkContext unitOfWorkContext, IList<IDataParameter> commandParameters, IExpression expression)
+		public static string GetFilterText(IDataSourceTagSpecific dataSourceTagSpecific, IUnitOfWork unitOfWork, IList<IDataParameter> commandParameters, IExpression expression)
 		{
 			SqlExpressionVisitor expressionVisitor;
 			string expressionText;
@@ -89,8 +89,8 @@ namespace TextMetal.Common.Data.Advanced
 			if ((object)dataSourceTagSpecific == null)
 				throw new ArgumentNullException("dataSourceTagSpecific");
 
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			if ((object)commandParameters == null)
 				throw new ArgumentNullException("commandParameters");
@@ -98,14 +98,14 @@ namespace TextMetal.Common.Data.Advanced
 			if ((object)expression == null)
 				throw new ArgumentNullException("expression");
 
-			expressionVisitor = new SqlExpressionVisitor(dataSourceTagSpecific, unitOfWorkContext, commandParameters);
+			expressionVisitor = new SqlExpressionVisitor(dataSourceTagSpecific, unitOfWork, commandParameters);
 			expressionVisitor.Visit(expression);
 			expressionText = expressionVisitor.Strings.ToString();
 
 			return expressionText;
 		}
 
-		public static string GetSortText(IDataSourceTagSpecific dataSourceTagSpecific, IUnitOfWorkContext unitOfWorkContext, IList<IDataParameter> commandParameters, Order[] orders)
+		public static string GetSortText(IDataSourceTagSpecific dataSourceTagSpecific, IUnitOfWork unitOfWork, IList<IDataParameter> commandParameters, Order[] orders)
 		{
 			string expressionText;
 			List<string> sortNames;
@@ -113,8 +113,8 @@ namespace TextMetal.Common.Data.Advanced
 			if ((object)dataSourceTagSpecific == null)
 				throw new ArgumentNullException("dataSourceTagSpecific");
 
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			if ((object)commandParameters == null)
 				throw new ArgumentNullException("commandParameters");
@@ -322,7 +322,7 @@ namespace TextMetal.Common.Data.Advanced
 			parameterName = this.DataSourceTagSpecific.GetParameterName(string.Format("expr_{0}", Guid.NewGuid().ToString("N")));
 			valueType = value.__.GetType();
 
-			commandParameter = this.UnitOfWorkContext.CreateParameter(ParameterDirection.Input, AdoNetHelper.InferDbTypeForClrType(valueType), 0, 0, 0, true, parameterName, value.__);
+			commandParameter = this.UnitOfWork.CreateParameter(ParameterDirection.Input, AdoNetHelper.InferDbTypeForClrType(valueType), 0, 0, 0, true, parameterName, value.__);
 			this.commandParameters.Add(commandParameter);
 
 			this.Strings.Append(parameterName);

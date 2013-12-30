@@ -19,7 +19,7 @@ namespace TextMetal.Common.Data
 	{
 		#region Methods/Operators
 
-		public static TResponse ExecuteReReRe<TRequest, TResult, TResponse>(this IUnitOfWorkContext unitOfWorkContext, TRequest request, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, bool executeAsCud, int thisOrThatRecordsAffected, Action<IDictionary<string, object>, TResult> mapToCallback)
+		public static TResponse ExecuteReReRe<TRequest, TResult, TResponse>(this IUnitOfWork unitOfWork, TRequest request, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, bool executeAsCud, int thisOrThatRecordsAffected, Action<IDictionary<string, object>, TResult> mapToCallback)
 			where TRequest : class, new()
 			where TResult : class, new()
 			where TResponse : class, new()
@@ -31,8 +31,8 @@ namespace TextMetal.Common.Data
 			IList<TResult> list = null;
 			object value;
 
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			if ((object)request == null)
 				throw new ArgumentNullException("request");
@@ -49,18 +49,18 @@ namespace TextMetal.Common.Data
 			if (DataType.IsNullOrWhiteSpace(commandText))
 				throw new ArgumentOutOfRangeException("commandText");
 
-			results = unitOfWorkContext.ExecuteDictionary(commandType, commandText, commandParameters, out recordsAffected);
+			results = unitOfWork.ExecuteDictionary(commandType, commandText, commandParameters, out recordsAffected);
 
 			if (executeAsCud && recordsAffected <= thisOrThatRecordsAffected)
 			{
 				// concurrency failure
-				unitOfWorkContext.Divergent();
+				unitOfWork.Divergent();
 				throw new InvalidOperationException(string.Format("Data concurrency failure occurred during a CUD request-result-response execution; expected records affected '{0}', actual records affected '{1}'.", thisOrThatRecordsAffected, recordsAffected));
 			}
 			else if (!executeAsCud && recordsAffected != thisOrThatRecordsAffected)
 			{
 				// idempotency failure
-				unitOfWorkContext.Divergent();
+				unitOfWork.Divergent();
 				throw new InvalidOperationException(string.Format("Data concurrency failure occurred during a non-CUD request-result-response execution; expected records affected '{0}', actual records affected '{1}'.", thisOrThatRecordsAffected, recordsAffected));
 			}
 
@@ -88,15 +88,15 @@ namespace TextMetal.Common.Data
 			return response;
 		}
 
-		public static TModel FetchModel<TModel>(this IUnitOfWorkContext unitOfWorkContext, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, int queryExpectedRecordsAffected, Action<IDictionary<string, object>, TModel> mapToCallback)
+		public static TModel FetchModel<TModel>(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, int queryExpectedRecordsAffected, Action<IDictionary<string, object>, TModel> mapToCallback)
 			where TModel : class, new()
 		{
 			TModel model;
 			int recordsAffected;
 			IList<IDictionary<string, object>> results;
 
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			if ((object)commandText == null)
 				throw new ArgumentNullException("commandText");
@@ -110,12 +110,12 @@ namespace TextMetal.Common.Data
 			if (DataType.IsNullOrWhiteSpace(commandText))
 				throw new ArgumentOutOfRangeException("commandText");
 
-			results = unitOfWorkContext.ExecuteDictionary(commandType, commandText, commandParameters, out recordsAffected);
+			results = unitOfWork.ExecuteDictionary(commandType, commandText, commandParameters, out recordsAffected);
 
 			if (recordsAffected != queryExpectedRecordsAffected)
 			{
 				// idempotency failure
-				unitOfWorkContext.Divergent();
+				unitOfWork.Divergent();
 				throw new InvalidOperationException(string.Format("Data concurrency failure occurred during a fetch-model execution; expected records affected '{0}', actual records affected '{1}'.", queryExpectedRecordsAffected, recordsAffected));
 			}
 
@@ -133,21 +133,21 @@ namespace TextMetal.Common.Data
 		}
 
 		/// <summary>
-		/// Allows for easy scalar query execution over a UnitOfWorkContext.
+		/// Allows for easy scalar query execution over a unitOfWork.
 		/// </summary>
 		/// <typeparam name="TValue"> The scalar type. </typeparam>
-		/// <param name="unitOfWorkContext"> The target UnitOfWorkContext. </param>
+		/// <param name="unitOfWork"> The target unitOfWork. </param>
 		/// <param name="commandType"> The type of the command. </param>
 		/// <param name="commandText"> The SQL text or stored procedure name. </param>
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
 		/// <returns> The scalar value (with type conversion) or null. </returns>
-		public static TValue FetchScalar<TValue>(this IUnitOfWorkContext unitOfWorkContext, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters)
+		public static TValue FetchScalar<TValue>(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters)
 		{
 			int recordsAffected;
 			IList<IDictionary<string, object>> results;
 			object dbValue;
 
-			results = unitOfWorkContext.ExecuteDictionary(commandType, commandText, commandParameters, out recordsAffected);
+			results = unitOfWork.ExecuteDictionary(commandType, commandText, commandParameters, out recordsAffected);
 
 			if ((object)results == null || results.Count != 1 || results[0].Count != 1)
 				return default(TValue);
@@ -157,14 +157,14 @@ namespace TextMetal.Common.Data
 			return dbValue.ChangeType<TValue>();
 		}
 
-		public static void FillModel<TModel>(this IUnitOfWorkContext unitOfWorkContext, TModel model, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, int queryExpectedRecordsAffected, Action<IDictionary<string, object>, TModel> mapToCallback)
+		public static void FillModel<TModel>(this IUnitOfWork unitOfWork, TModel model, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, int queryExpectedRecordsAffected, Action<IDictionary<string, object>, TModel> mapToCallback)
 			where TModel : class, new()
 		{
 			int recordsAffected;
 			IList<IDictionary<string, object>> results;
 
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			if ((object)model == null)
 				throw new ArgumentNullException("model");
@@ -181,12 +181,12 @@ namespace TextMetal.Common.Data
 			if (DataType.IsNullOrWhiteSpace(commandText))
 				throw new ArgumentOutOfRangeException("commandText");
 
-			results = unitOfWorkContext.ExecuteDictionary(commandType, commandText, commandParameters, out recordsAffected);
+			results = unitOfWork.ExecuteDictionary(commandType, commandText, commandParameters, out recordsAffected);
 
 			if (recordsAffected != queryExpectedRecordsAffected)
 			{
 				// idempotency failure
-				unitOfWorkContext.Divergent();
+				unitOfWork.Divergent();
 				throw new InvalidOperationException(string.Format("Data concurrency failure occurred during a fill-model execution; expected records affected '{0}', actual records affected '{1}'.", queryExpectedRecordsAffected, recordsAffected));
 			}
 
@@ -199,14 +199,14 @@ namespace TextMetal.Common.Data
 			mapToCallback(results[0], model);
 		}
 
-		public static bool PersistModel<TModel>(this IUnitOfWorkContext unitOfWorkContext, TModel model, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, int persistNotExpectedRecordsAffected, Action<IDictionary<string, object>, TModel> mapToCallback)
+		public static bool PersistModel<TModel>(this IUnitOfWork unitOfWork, TModel model, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, int persistNotExpectedRecordsAffected, Action<IDictionary<string, object>, TModel> mapToCallback)
 			where TModel : class, new()
 		{
 			int recordsAffected;
 			IList<IDictionary<string, object>> results;
 
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			if ((object)model == null)
 				throw new ArgumentNullException("model");
@@ -223,12 +223,12 @@ namespace TextMetal.Common.Data
 			if (DataType.IsNullOrWhiteSpace(commandText))
 				throw new ArgumentOutOfRangeException("commandText");
 
-			results = unitOfWorkContext.ExecuteDictionary(commandType, commandText, commandParameters, out recordsAffected);
+			results = unitOfWork.ExecuteDictionary(commandType, commandText, commandParameters, out recordsAffected);
 
 			if (recordsAffected <= persistNotExpectedRecordsAffected)
 			{
 				// concurrency failure
-				unitOfWorkContext.Divergent();
+				unitOfWork.Divergent();
 				return false;
 			}
 
@@ -241,7 +241,7 @@ namespace TextMetal.Common.Data
 			return true;
 		}
 
-		public static IList<TModel> QueryModel<TModel>(this IUnitOfWorkContext unitOfWorkContext, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, int queryExpectedRecordsAffected, Action<IDictionary<string, object>, TModel> mapToCallback)
+		public static IList<TModel> QueryModel<TModel>(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, int queryExpectedRecordsAffected, Action<IDictionary<string, object>, TModel> mapToCallback)
 			where TModel : class, new()
 		{
 			IList<TModel> models;
@@ -249,8 +249,8 @@ namespace TextMetal.Common.Data
 			int recordsAffected;
 			IList<IDictionary<string, object>> results;
 
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			if ((object)commandText == null)
 				throw new ArgumentNullException("commandText");
@@ -264,12 +264,12 @@ namespace TextMetal.Common.Data
 			if (DataType.IsNullOrWhiteSpace(commandText))
 				throw new ArgumentOutOfRangeException("commandText");
 
-			results = unitOfWorkContext.ExecuteDictionary(commandType, commandText, commandParameters, out recordsAffected);
+			results = unitOfWork.ExecuteDictionary(commandType, commandText, commandParameters, out recordsAffected);
 
 			if (recordsAffected != queryExpectedRecordsAffected)
 			{
 				// idempotency failure
-				unitOfWorkContext.Divergent();
+				unitOfWork.Divergent();
 				throw new InvalidOperationException(string.Format("Data concurrency failure occurred during a query-model execution; expected records affected '{0}', actual records affected '{1}'.", queryExpectedRecordsAffected, recordsAffected));
 			}
 

@@ -92,24 +92,24 @@ namespace ${ClrNamespace}
 		{
 			${ProcedureNameSingularPascalCase}_Response retval;
 			
-			if ((object)UnitOfWorkContext.Current == null)
+			if ((object)UnitOfWork.Current == null)
 			{
-				using (IUnitOfWorkContext unitOfWorkContext = Repository.GetUnitOfWorkContext())
+				using (IUnitOfWork unitOfWork = Repository.GetUnitOfWork())
 				{
-					retval = this.Execute_${ProcedureNameSingularPascalCase}(unitOfWorkContext, request${ProcedureNameSingularPascalCase});
+					retval = this.Execute_${ProcedureNameSingularPascalCase}(unitOfWork, request${ProcedureNameSingularPascalCase});
 						
-					unitOfWorkContext.Complete();
+					unitOfWork.Complete();
 					
 					return retval;
 				}
 			}			
 			else
 			{
-				return this.Execute_${ProcedureNameSingularPascalCase}(UnitOfWorkContext.Current, request${ProcedureNameSingularPascalCase});
+				return this.Execute_${ProcedureNameSingularPascalCase}(UnitOfWork.Current, request${ProcedureNameSingularPascalCase});
 			}
 		}
 						
-		public ${ProcedureNameSingularPascalCase}_Response Execute_${ProcedureNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ${ProcedureNameSingularPascalCase}_Request request${ProcedureNameSingularPascalCase})
+		public ${ProcedureNameSingularPascalCase}_Response Execute_${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, ${ProcedureNameSingularPascalCase}_Request request${ProcedureNameSingularPascalCase})
 		{	
 			${ProcedureNameSingularPascalCase}_Response response${ProcedureNameSingularPascalCase};						
 			IDataParameter commandParameter;
@@ -119,13 +119,13 @@ namespace ${ClrNamespace}
 			bool executeAsCud;
 			int thisOrThatRecordsAffected;
 			
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 				
 			if ((object)request${ProcedureNameSingularPascalCase} == null)
 				throw new ArgumentNullException("request${ProcedureNameSingularPascalCase}");
 
-			this.OnPreExecute${ProcedureNameSingularPascalCase}(unitOfWorkContext, request${ProcedureNameSingularPascalCase});
+			this.OnPreExecute${ProcedureNameSingularPascalCase}(unitOfWork, request${ProcedureNameSingularPascalCase});
 			
 			commandParameters = new List<IDataParameter>();
 
@@ -142,9 +142,9 @@ namespace ${ClrNamespace}
 			</BinaryExpression>
 		</ForEach.Filter>
 		<ForEach.Body>
-<![CDATA[			commandParameter = unitOfWorkContext.CreateParameter(ParameterDirection.${ParameterDirection}, DbType.${ParameterDbType}, ${ParameterSize}, ${ParameterPrecision}, ${ParameterScale}, ${ParameterCSharpNullableLiteral}, GetDataSourceTagSpecificInstance().GetParameterName(${ProcedureNameSingularPascalCase}_Request.PARAMETER_NAME_${ParameterNameConstantCase}), request${ProcedureNameSingularPascalCase}.${ParameterNamePascalCase});
+<![CDATA[			commandParameter = unitOfWork.CreateParameter(ParameterDirection.${ParameterDirection}, DbType.${ParameterDbType}, ${ParameterSize}, ${ParameterPrecision}, ${ParameterScale}, ${ParameterCSharpNullableLiteral}, GetDataSourceTagSpecificInstance().GetParameterName(${ProcedureNameSingularPascalCase}_Request.PARAMETER_NAME_${ParameterNameConstantCase}), request${ProcedureNameSingularPascalCase}.${ParameterNamePascalCase});
 			commandParameters.Add(commandParameter);
-			GetDataSourceTagSpecificInstance().ParameterMagic(unitOfWorkContext, commandParameter, "${ParameterSqlType}");]]>
+			GetDataSourceTagSpecificInstance().ParameterMagic(unitOfWork, commandParameter, "${ParameterSqlType}");]]>
 			
 			<If>
 				<If.Condition>
@@ -182,9 +182,9 @@ namespace ${ClrNamespace}
 			</BinaryExpression>
 		</ForEach.Filter>
 		<ForEach.Body>
-<![CDATA[			commandParameter = unitOfWorkContext.CreateParameter(ParameterDirection.${ParameterDirection}, DbType.${ParameterDbType}, ${ParameterSize}, ${ParameterPrecision}, ${ParameterScale}, ${ParameterCSharpNullableLiteral}, GetDataSourceTagSpecificInstance().GetParameterName(${ProcedureNameSingularPascalCase}_Request.PARAMETER_NAME_${ParameterNameConstantCase}), null);
+<![CDATA[			commandParameter = unitOfWork.CreateParameter(ParameterDirection.${ParameterDirection}, DbType.${ParameterDbType}, ${ParameterSize}, ${ParameterPrecision}, ${ParameterScale}, ${ParameterCSharpNullableLiteral}, GetDataSourceTagSpecificInstance().GetParameterName(${ProcedureNameSingularPascalCase}_Request.PARAMETER_NAME_${ParameterNameConstantCase}), null);
 			commandParameters.Add(commandParameter);
-			GetDataSourceTagSpecificInstance().ParameterMagic(unitOfWorkContext, commandParameter, "${ParameterSqlType}");]]>
+			GetDataSourceTagSpecificInstance().ParameterMagic(unitOfWork, commandParameter, "${ParameterSqlType}");]]>
 			
 			<If>
 				<If.Condition>
@@ -235,14 +235,14 @@ namespace ${ClrNamespace}
 			]]>
 			<Import name="import_execute.xml" />
 <![CDATA[
-			GetDataSourceTagSpecificInstance().CommandMagic(unitOfWorkContext, executeAsCud, out thisOrThatRecordsAffected);
+			GetDataSourceTagSpecificInstance().CommandMagic(unitOfWork, executeAsCud, out thisOrThatRecordsAffected);
 
 			OnProfileCommand(typeof(${ProcedureNameSingularPascalCase}_Result), CommandType.StoredProcedure, commandText, commandParameters, executeAsCud, thisOrThatRecordsAffected);
 
-			response${ProcedureNameSingularPascalCase} = unitOfWorkContext.ExecuteReReRe<${ProcedureNameSingularPascalCase}_Request, ${ProcedureNameSingularPascalCase}_Result, ${ProcedureNameSingularPascalCase}_Response>(request${ProcedureNameSingularPascalCase}, CommandType.StoredProcedure, commandText, commandParameters, executeAsCud, thisOrThatRecordsAffected, MapTo${ProcedureNameSingularPascalCase}_Result);	
+			response${ProcedureNameSingularPascalCase} = unitOfWork.ExecuteReReRe<${ProcedureNameSingularPascalCase}_Request, ${ProcedureNameSingularPascalCase}_Result, ${ProcedureNameSingularPascalCase}_Response>(request${ProcedureNameSingularPascalCase}, CommandType.StoredProcedure, commandText, commandParameters, executeAsCud, thisOrThatRecordsAffected, MapTo${ProcedureNameSingularPascalCase}_Result);	
 			
 			foreach (${ProcedureNameSingularPascalCase}_Result result${ProcedureNameSingularPascalCase}2 in response${ProcedureNameSingularPascalCase}.Results)
-				this.OnExecuteResult${ProcedureNameSingularPascalCase}(unitOfWorkContext, result${ProcedureNameSingularPascalCase}2);
+				this.OnExecuteResult${ProcedureNameSingularPascalCase}(unitOfWork, result${ProcedureNameSingularPascalCase}2);
 			
 ]]>
 	
@@ -300,7 +300,7 @@ namespace ${ClrNamespace}
 
 <![CDATA[				
 			
-			this.OnPostExecute${ProcedureNameSingularPascalCase}(unitOfWorkContext, response${ProcedureNameSingularPascalCase});
+			this.OnPostExecute${ProcedureNameSingularPascalCase}(unitOfWork, response${ProcedureNameSingularPascalCase});
 			
 			return response${ProcedureNameSingularPascalCase};
 		}
@@ -343,11 +343,11 @@ namespace ${ClrNamespace}
 	 </ForEach>
 <![CDATA[		}
 		
-		partial void OnPreExecute${ProcedureNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ${ProcedureNameSingularPascalCase}_Request request${ProcedureNameSingularPascalCase});
+		partial void OnPreExecute${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, ${ProcedureNameSingularPascalCase}_Request request${ProcedureNameSingularPascalCase});
 		
-		partial void OnExecuteResult${ProcedureNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ${ProcedureNameSingularPascalCase}_Result result${ProcedureNameSingularPascalCase});
+		partial void OnExecuteResult${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, ${ProcedureNameSingularPascalCase}_Result result${ProcedureNameSingularPascalCase});
 		
-		partial void OnPostExecute${ProcedureNameSingularPascalCase}(IUnitOfWorkContext unitOfWorkContext, ${ProcedureNameSingularPascalCase}_Response response${ProcedureNameSingularPascalCase});
+		partial void OnPostExecute${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, ${ProcedureNameSingularPascalCase}_Response response${ProcedureNameSingularPascalCase});
 ]]>
 
 						<If>

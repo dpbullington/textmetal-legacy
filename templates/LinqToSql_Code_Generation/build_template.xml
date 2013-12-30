@@ -459,8 +459,11 @@ EndGlobal
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Xml.dll</HintPath>
     </Reference>
 	
-	<Reference Include="TestingFramework.Core">
-      <HintPath>..\..\lib\PrivateBuilt\TestingFramework.Core.dll</HintPath>
+	<Reference Include="TextMetal.Imports">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Imports.dll</HintPath>
+    </Reference>
+	<Reference Include="TextMetal.TestFramework">
+      <HintPath>..\..\lib\TextMetal\TextMetal.TestFramework.dll</HintPath>
     </Reference>
 	
 	<ProjectReference Include="..\${ClrNamespace}\${ClrNamespace}.csproj">
@@ -598,8 +601,11 @@ EndGlobal
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Xml.dll</HintPath>
     </Reference>
 	
-	<Reference Include="TestingFramework.Core">
-      <HintPath>..\..\lib\PrivateBuilt\TestingFramework.Core.dll</HintPath>
+	<Reference Include="TextMetal.Imports">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Imports.dll</HintPath>
+    </Reference>	
+	<Reference Include="TextMetal.TestFramework">
+      <HintPath>..\..\lib\TextMetal\TextMetal.TestFramework.dll</HintPath>
     </Reference>
 	
 	<ProjectReference Include="..\${ClrNamespace}\${ClrNamespace}.csproj">

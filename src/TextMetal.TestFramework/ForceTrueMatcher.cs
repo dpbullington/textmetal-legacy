@@ -8,7 +8,7 @@ using System.IO;
 
 using NMock2;
 
-namespace TestingFramework.Core.Customization
+namespace TextMetal.TestFramework
 {
 	/// <summary>
 	/// Forces a true match.

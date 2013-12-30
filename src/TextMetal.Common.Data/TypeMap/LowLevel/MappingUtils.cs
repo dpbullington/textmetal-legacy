@@ -151,7 +151,7 @@ namespace TextMetal.Common.Data.TypeMap.LowLevel
 			}
 		}
 
-		public static void MapObjectToInputParameters(IList<IDataParameter> dataParameters, Command command, DataOperation dataOperation, object targetInstance, IUnitOfWorkContext unitOfWorkContext)
+		public static void MapObjectToInputParameters(IList<IDataParameter> dataParameters, Command command, DataOperation dataOperation, object targetInstance, IUnitOfWork unitOfWork)
 		{
 			Type targetType;
 			object parameterValue;
@@ -166,8 +166,8 @@ namespace TextMetal.Common.Data.TypeMap.LowLevel
 			if ((object)targetInstance == null)
 				throw new ArgumentNullException("targetInstance");
 
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			targetType = targetInstance.GetType();
 
@@ -176,13 +176,13 @@ namespace TextMetal.Common.Data.TypeMap.LowLevel
 				if (!Reflexion.GetLogicalPropertyValue(targetInstance, inputParameter.Property, out parameterValue))
 					throw new InvalidOperationException(string.Format("Failed to obtain a readable, public instance property '{2}' for the type '{0}' specified in the data source (input) parameter mapping for the data source command '{1}'.", targetType.FullName, dataOperation, inputParameter.Property));
 
-				dataParameter = unitOfWorkContext.CreateParameter(inputParameter.Direction, inputParameter.Type, inputParameter.Size, inputParameter.Precision, inputParameter.Scale, inputParameter.Nullable, inputParameter.Name, parameterValue);
+				dataParameter = unitOfWork.CreateParameter(inputParameter.Direction, inputParameter.Type, inputParameter.Size, inputParameter.Precision, inputParameter.Scale, inputParameter.Nullable, inputParameter.Name, parameterValue);
 
 				dataParameters.Add(dataParameter);
 			}
 		}
 
-		public static void MapObjectToInputParameters(IList<IDataParameter> dataParameters, Command command, DataOperation dataOperation, IUnitOfWorkContext unitOfWorkContext)
+		public static void MapObjectToInputParameters(IList<IDataParameter> dataParameters, Command command, DataOperation dataOperation, IUnitOfWork unitOfWork)
 		{
 			IDataParameter dataParameter;
 
@@ -192,18 +192,18 @@ namespace TextMetal.Common.Data.TypeMap.LowLevel
 			if ((object)command == null)
 				throw new ArgumentNullException("command");
 
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			foreach (Parameter inputParameter in command.Parameters.Where(p => p.Direction == ParameterDirection.Input || p.Direction == ParameterDirection.InputOutput))
 			{
-				dataParameter = unitOfWorkContext.CreateParameter(inputParameter.Direction, inputParameter.Type, inputParameter.Size, inputParameter.Precision, inputParameter.Scale, inputParameter.Nullable, inputParameter.Name, null);
+				dataParameter = unitOfWork.CreateParameter(inputParameter.Direction, inputParameter.Type, inputParameter.Size, inputParameter.Precision, inputParameter.Scale, inputParameter.Nullable, inputParameter.Name, null);
 
 				dataParameters.Add(dataParameter);
 			}
 		}
 
-		public static void MapObjectToOutputParameters(IList<IDataParameter> dataParameters, Command command, DataOperation dataOperation, object targetInstance, IUnitOfWorkContext unitOfWorkContext)
+		public static void MapObjectToOutputParameters(IList<IDataParameter> dataParameters, Command command, DataOperation dataOperation, object targetInstance, IUnitOfWork unitOfWork)
 		{
 			IDataParameter dataParameter;
 
@@ -216,18 +216,18 @@ namespace TextMetal.Common.Data.TypeMap.LowLevel
 			if ((object)targetInstance == null)
 				throw new ArgumentNullException("targetInstance");
 
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			foreach (Parameter inputParameter in command.Parameters.Where(p => p.Direction == ParameterDirection.Output || p.Direction == ParameterDirection.ReturnValue))
 			{
-				dataParameter = unitOfWorkContext.CreateParameter(inputParameter.Direction, inputParameter.Type, inputParameter.Size, inputParameter.Precision, inputParameter.Scale, inputParameter.Nullable, inputParameter.Name, null);
+				dataParameter = unitOfWork.CreateParameter(inputParameter.Direction, inputParameter.Type, inputParameter.Size, inputParameter.Precision, inputParameter.Scale, inputParameter.Nullable, inputParameter.Name, null);
 
 				dataParameters.Add(dataParameter);
 			}
 		}
 
-		public static void MapObjectToOutputParameters(IList<IDataParameter> dataParameters, Command command, DataOperation dataOperation, IUnitOfWorkContext unitOfWorkContext)
+		public static void MapObjectToOutputParameters(IList<IDataParameter> dataParameters, Command command, DataOperation dataOperation, IUnitOfWork unitOfWork)
 		{
 			IDataParameter dataParameter;
 
@@ -237,12 +237,12 @@ namespace TextMetal.Common.Data.TypeMap.LowLevel
 			if ((object)command == null)
 				throw new ArgumentNullException("command");
 
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			foreach (Parameter inputParameter in command.Parameters.Where(p => p.Direction == ParameterDirection.Output || p.Direction == ParameterDirection.ReturnValue))
 			{
-				dataParameter = unitOfWorkContext.CreateParameter(inputParameter.Direction, inputParameter.Type, inputParameter.Size, inputParameter.Precision, inputParameter.Scale, inputParameter.Nullable, inputParameter.Name, null);
+				dataParameter = unitOfWork.CreateParameter(inputParameter.Direction, inputParameter.Type, inputParameter.Size, inputParameter.Precision, inputParameter.Scale, inputParameter.Nullable, inputParameter.Name, null);
 
 				dataParameters.Add(dataParameter);
 			}

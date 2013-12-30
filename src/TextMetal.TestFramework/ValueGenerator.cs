@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TestingFramework.Core.Customization
+namespace TextMetal.TestFramework
 {
 	public static class ValueGenerator
 	{

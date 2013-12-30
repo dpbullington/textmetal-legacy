@@ -327,11 +327,11 @@ namespace ${ClrNamespace}.${FolderName}
 		{
 			get
 			{
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new NotSupportedException(string.Format("The model type '{0}' does not support the IsNew property.", this.GetType().FullName));
 			}
 			set
 			{
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new NotSupportedException(string.Format("The model type '{0}' does not support the IsNew property.", this.GetType().FullName));
 			}
 		}
 		]]>

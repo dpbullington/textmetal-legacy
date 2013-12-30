@@ -1,343 +1,409 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
-<Database Name="TextMetalWebHostSample" EntityNamespace="TextMetal.HostImpl.AspNetSample.Objects.Model.L2S"
-		ContextNamespace="TextMetal.HostImpl.AspNetSample.Objects.Model.L2S" Class="TxtMtlPrimaryDataContext"
-		xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-	<Table Name="dbo.EmailAttachment" Member="EmailAttachments">
-		<Type Name="EmailAttachment">
-			<Column Name="EmailAttachmentId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true"
-					IsDbGenerated="true" CanBeNull="true" />
-			<Column Name="EmailMessageId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="true" />
-			<Column Name="MimeType" Type="System.String" DbType="NVarChar(2047) NOT NULL" CanBeNull="true" />
-			<Column Name="AttachmentBits" Type="System.Data.Linq.Binary" DbType="Image NOT NULL" CanBeNull="true"
-					UpdateCheck="Never" />
-			<Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
-			<Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
-			<Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
-			<Association Name="fk_EmailAttachment_EmailMessage" Member="EmailMessage" ThisKey="EmailMessageId"
-						OtherKey="EmailMessageId" Type="EmailMessage" IsForeignKey="true" />
-		</Type>
-	</Table>
-	<Table Name="history.EmailAttachmentHistory" Member="EmailAttachmentHistories">
-		<Type Name="EmailAttachmentHistory">
-			<Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="EmailAttachmentId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="EmailMessageId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="MimeType" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
-			<Column Name="AttachmentBits" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
-			<Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="dbo.EmailMessage" Member="EmailMessages">
-		<Type Name="EmailMessage">
-			<Column Name="EmailMessageId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true"
-					IsDbGenerated="true" CanBeNull="true" />
-			<Column Name="From" Type="System.String" DbType="NVarChar(2047) NOT NULL" CanBeNull="true" />
-			<Column Name="Sender" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
-			<Column Name="ReplyTo" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
-			<Column Name="To" Type="System.String" DbType="NVarChar(2047) NOT NULL" CanBeNull="true" />
-			<Column Name="CarbonCopy" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
-			<Column Name="BlindCarbonCopy" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
-			<Column Name="Subject" Type="System.String" DbType="NVarChar(2047) NOT NULL" CanBeNull="true" />
-			<Column Name="IsBodyHtml" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
-			<Column Name="Body" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="true" UpdateCheck="Never" />
-			<Column Name="Processed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
-			<Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
-			<Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
-			<Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
-			<Association Name="fk_EmailAttachment_EmailMessage" Member="EmailAttachments" ThisKey="EmailMessageId"
-						OtherKey="EmailMessageId" Type="EmailAttachment" DeleteRule="NO ACTION" />
-		</Type>
-	</Table>
-	<Table Name="history.EmailMessageHistory" Member="EmailMessageHistories">
-		<Type Name="EmailMessageHistory">
-			<Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="EmailMessageId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="From" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
-			<Column Name="Sender" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
-			<Column Name="ReplyTo" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
-			<Column Name="To" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
-			<Column Name="CarbonCopy" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
-			<Column Name="BlindCarbonCopy" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
-			<Column Name="Subject" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
-			<Column Name="IsBodyHtml" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-			<Column Name="Body" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" UpdateCheck="Never" />
-			<Column Name="Processed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-			<Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="dbo.EventLog" Member="EventLogs">
-		<Type Name="EventLog">
-			<Column Name="EventLogId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true"
-					IsDbGenerated="true" CanBeNull="true" />
-			<Column Name="EventText" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="true" UpdateCheck="Never" />
-			<Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
-			<Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
-			<Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="dbo.EventLogAggregation" Member="EventLogAggregations">
-		<Type Name="EventLogAggregation">
-			<Column Name="MinCreationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="MaxModificationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="history.EventLogHistory" Member="EventLogHistories">
-		<Type Name="EventLogHistory">
-			<Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="EventLogId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="EventText" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" UpdateCheck="Never" />
-			<Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="TxtMtl.SexualChocolate" Member="SexualChocolates">
-		<Type Name="SexualChocolate">
-			<Column Name="SexualChocolateId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true"
-					IsDbGenerated="true" CanBeNull="true" />
-			<Column Member="Em" Name="EM" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="true"
-					UpdateCheck="Never" />
-			<Column Name="Blob" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX) NOT NULL" CanBeNull="true"
-					UpdateCheck="Never" />
-			<Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
-			<Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
-			<Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="history.SexualChocolateHistory" Member="SexualChocolateHistories">
-		<Type Name="SexualChocolateHistory">
-			<Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="SexualChocolateId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Member="Em" Name="EM" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" UpdateCheck="Never" />
-			<Column Name="Blob" Type="System.Data.Linq.Binary" DbType="VarBinary(1)" CanBeNull="true" />
-			<Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="dbo.TableNoPrimaryKeyNoIdentity" Member="TableNoPrimaryKeyNoIdentities">
-		<Type Name="TableNoPrimaryKeyNoIdentity">
-			<Column Name="Value" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="true" />
-			<Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-			<Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="history.TableNoPrimaryKeyNoIdentityHistory" Member="TableNoPrimaryKeyNoIdentityHistories">
-		<Type Name="TableNoPrimaryKeyNoIdentityHistory">
-			<Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Value" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Data01" Type="System.Boolean" DbType="Bit NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Data02" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Data03" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Data04" Type="System.String" DbType="NVarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="dbo.TableNoPrimaryKeyWithIdentity" Member="TableNoPrimaryKeyWithIdentities">
-		<Type Name="TableNoPrimaryKeyWithIdentity">
-			<Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="true" />
-			<Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-			<Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="history.TableNoPrimaryKeyWithIdentityHistory" Member="TableNoPrimaryKeyWithIdentityHistories">
-		<Type Name="TableNoPrimaryKeyWithIdentityHistory">
-			<Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Data01" Type="System.Boolean" DbType="Bit NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Data02" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Data03" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Data04" Type="System.String" DbType="NVarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="dbo.TableTypeTest" Member="TableTypeTests">
-		<Type Name="TableTypeTest">
-			<Column Name="PkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true"
-					CanBeNull="true" />
-			<Column Name="Data00" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
-			<Column Name="Data01" Type="System.Data.Linq.Binary" DbType="Binary(1)" CanBeNull="true" />
-			<Column Name="Data02" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-			<Column Name="Data03" Type="System.String" DbType="Char(1)" CanBeNull="true" />
-			<Column Name="Data05" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-			<Column Name="Data06" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="Data07" Type="System.DateTime" DbType="DateTime2(7)" CanBeNull="true" />
-			<Column Name="Data08" Type="System.DateTimeOffset" DbType="DateTimeOffset(7)" CanBeNull="true" />
-			<Column Name="Data09" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-			<Column Name="Data10" Type="System.Double" DbType="Float" CanBeNull="true" />
-			<Column Name="Data12" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
-			<Column Name="Data13" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="Data14" Type="System.Decimal" DbType="Money" CanBeNull="true" />
-			<Column Name="Data15" Type="System.String" DbType="NChar(1)" CanBeNull="true" />
-			<Column Name="Data16" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" UpdateCheck="Never" />
-			<Column Name="Data17" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-			<Column Name="Data18" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
-			<Column Name="Data19" Type="System.Single" DbType="Real" CanBeNull="true" />
-			<Column Name="Data20" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
-			<Column Name="Data21" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
-			<Column Name="Data22" Type="System.Decimal" DbType="SmallMoney" CanBeNull="true" />
-			<Column Name="Data26" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-			<Column Name="Data27" Type="System.TimeSpan" DbType="Time(7)" CanBeNull="true" />
-			<Column Name="Data29" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
-			<Column Name="Data30" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-			<Column Name="Data31" Type="System.Data.Linq.Binary" DbType="VarBinary(1)" CanBeNull="true" />
-			<Column Name="Data32" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="history.TableTypeTestHistory" Member="TableTypeTestHistories">
-		<Type Name="TableTypeTestHistory">
-			<Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="PkId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Data00" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
-			<Column Name="Data01" Type="System.Data.Linq.Binary" DbType="Binary(1)" CanBeNull="true" />
-			<Column Name="Data02" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-			<Column Name="Data03" Type="System.String" DbType="Char(1)" CanBeNull="true" />
-			<Column Name="Data05" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-			<Column Name="Data06" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="Data07" Type="System.DateTime" DbType="DateTime2(7)" CanBeNull="true" />
-			<Column Name="Data08" Type="System.DateTimeOffset" DbType="DateTimeOffset(7)" CanBeNull="true" />
-			<Column Name="Data09" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-			<Column Name="Data10" Type="System.Double" DbType="Float" CanBeNull="true" />
-			<Column Name="Data12" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
-			<Column Name="Data13" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="Data14" Type="System.Decimal" DbType="Money" CanBeNull="true" />
-			<Column Name="Data15" Type="System.String" DbType="NChar(1)" CanBeNull="true" />
-			<Column Name="Data16" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" UpdateCheck="Never" />
-			<Column Name="Data17" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-			<Column Name="Data18" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
-			<Column Name="Data19" Type="System.Single" DbType="Real" CanBeNull="true" />
-			<Column Name="Data20" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
-			<Column Name="Data21" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
-			<Column Name="Data22" Type="System.Decimal" DbType="SmallMoney" CanBeNull="true" />
-			<Column Name="Data26" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-			<Column Name="Data27" Type="System.TimeSpan" DbType="Time(7)" CanBeNull="true" />
-			<Column Name="Data29" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
-			<Column Name="Data30" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-			<Column Name="Data31" Type="System.Data.Linq.Binary" DbType="VarBinary(1)" CanBeNull="true" />
-			<Column Name="Data32" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="dbo.TableWithCompositePrimaryKeyNoIdentity" Member="TableWithCompositePrimaryKeyNoIdentities">
-		<Type Name="TableWithCompositePrimaryKeyNoIdentity">
-			<Column Name="Pk0" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Pk1" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Pk2" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Pk3" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-			<Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="history.TableWithCompositePrimaryKeyNoIdentityHistory"
-			Member="TableWithCompositePrimaryKeyNoIdentityHistories">
-		<Type Name="TableWithCompositePrimaryKeyNoIdentityHistory">
-			<Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Pk0" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Pk1" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Pk2" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Pk3" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-			<Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="dbo.TableWithPrimaryKeyAsDefault" Member="TableWithPrimaryKeyAsDefaults">
-		<Type Name="TableWithPrimaryKeyAsDefault">
-			<Column Name="PkDf" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-			<Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="history.TableWithPrimaryKeyAsDefaultHistory" Member="TableWithPrimaryKeyAsDefaultHistories">
-		<Type Name="TableWithPrimaryKeyAsDefaultHistory">
-			<Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="PkDf" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-			<Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="dbo.TableWithPrimaryKeyAsIdentity" Member="TableWithPrimaryKeyAsIdentities">
-		<Type Name="TableWithPrimaryKeyAsIdentity">
-			<Column Name="PkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true"
-					CanBeNull="true" />
-			<Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-			<Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="history.TableWithPrimaryKeyAsIdentityHistory" Member="TableWithPrimaryKeyAsIdentityHistories">
-		<Type Name="TableWithPrimaryKeyAsIdentityHistory">
-			<Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="PkId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-			<Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="dbo.TableWithPrimaryKeyNoIdentity" Member="TableWithPrimaryKeyNoIdentities">
-		<Type Name="TableWithPrimaryKeyNoIdentity">
-			<Column Name="Pk" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-			<Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="history.TableWithPrimaryKeyNoIdentityHistory" Member="TableWithPrimaryKeyNoIdentityHistories">
-		<Type Name="TableWithPrimaryKeyNoIdentityHistory">
-			<Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Pk" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-			<Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="dbo.TableWithPrimaryKeyWithDiffIdentity" Member="TableWithPrimaryKeyWithDiffIdentities">
-		<Type Name="TableWithPrimaryKeyWithDiffIdentity">
-			<Column Name="Pk" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="true" />
-			<Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-			<Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Table Name="history.TableWithPrimaryKeyWithDiffIdentityHistory" Member="TableWithPrimaryKeyWithDiffIdentityHistories">
-		<Type Name="TableWithPrimaryKeyWithDiffIdentityHistory">
-			<Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Pk" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
-			<Column Name="Id" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-			<Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-			<Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-		</Type>
-	</Table>
-	<Function Name="dbo.GetBlahBlahBlah" Method="GetBlahBlahBlah">
-		<Parameter Name="pInt" Type="System.Int32" DbType="Int" />
-		<Parameter Name="pImage" Type="System.Data.Linq.Binary" DbType="Image" />
-		<Parameter Name="pVarchar" Type="System.String" DbType="VarChar(100)" Direction="InOut" />
-		<ElementType Name="GetBlahBlahBlahResult">
-			<Column Name="a" Member="A" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="b" Member="B" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="c" Member="C" Type="System.Int32" DbType="Int" CanBeNull="true" />
-			<Column Name="d" Member="D" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" />
-		</ElementType>
-	</Function>
+<Database Name="TextMetalWebHostSample" EntityNamespace="TextMetal.HostImpl.AspNetSample.Objects.Model.L2S" ContextNamespace="TextMetal.HostImpl.AspNetSample.Objects.Model.L2S" Class="TxtMtlPrimaryDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="dbo.EmailAttachment" Member="EmailAttachments">
+    <Type Name="EmailAttachment">
+      <Column Name="EmailAttachmentId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="true" />
+      <Column Name="EmailMessageId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="FileName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="true" />
+      <Column Name="FileSize" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="true" />
+      <Column Name="MimeType" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="true" />
+      <Column Name="AttachmentBits" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="SortOrder" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
+      <Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
+      <Column Name="CreationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ModificationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
+      <Association Name="fk_EmailAttachment_EmailMessage" Member="EmailMessage" ThisKey="EmailMessageId" OtherKey="EmailMessageId" Type="EmailMessage" IsForeignKey="true" />
+      <Association Name="fk_EmailAttachment_User_creation" Member="User" ThisKey="CreationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+      <Association Name="fk_EmailAttachment_User_modification" Member="ModificationUser" ThisKey="ModificationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="history.EmailAttachmentHistory" Member="EmailAttachmentHistories">
+    <Type Name="EmailAttachmentHistory">
+      <Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="EmailMessageId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="EmailAttachmentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FileName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="FileSize" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="MimeType" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="AttachmentBits" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="SortOrder" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CreationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ModificationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EmailMessage" Member="EmailMessages">
+    <Type Name="EmailMessage">
+      <Column Name="EmailMessageId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="true" />
+      <Column Name="From" Type="System.String" DbType="NVarChar(2047) NOT NULL" CanBeNull="true" />
+      <Column Name="Sender" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
+      <Column Name="ReplyTo" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
+      <Column Name="To" Type="System.String" DbType="NVarChar(2047) NOT NULL" CanBeNull="true" />
+      <Column Name="CarbonCopy" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
+      <Column Name="BlindCarbonCopy" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
+      <Column Name="Subject" Type="System.String" DbType="NVarChar(2047) NOT NULL" CanBeNull="true" />
+      <Column Name="IsBodyHtml" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
+      <Column Name="Body" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Processed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
+      <Column Name="SortOrder" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
+      <Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
+      <Column Name="CreationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ModificationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
+      <Association Name="fk_EmailAttachment_EmailMessage" Member="EmailAttachment" ThisKey="EmailMessageId" OtherKey="EmailMessageId" Type="EmailAttachment" Cardinality="One" DeleteRule="NO ACTION" />
+      <Association Name="fk_EmailMessage_User_creation" Member="User" ThisKey="CreationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+      <Association Name="fk_EmailMessage_User_modification" Member="ModificationUser" ThisKey="ModificationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="history.EmailMessageHistory" Member="EmailMessageHistories">
+    <Type Name="EmailMessageHistory">
+      <Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="EmailMessageId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="From" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
+      <Column Name="Sender" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
+      <Column Name="ReplyTo" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
+      <Column Name="To" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
+      <Column Name="CarbonCopy" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
+      <Column Name="BlindCarbonCopy" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
+      <Column Name="Subject" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
+      <Column Name="IsBodyHtml" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Body" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Processed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SortOrder" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CreationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ModificationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EventLog" Member="EventLogs">
+    <Type Name="EventLog">
+      <Column Name="EventLogId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="true" />
+      <Column Name="EventText" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="SortOrder" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
+      <Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
+      <Column Name="CreationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ModificationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
+      <Association Name="fk_EventLog_User_creation" Member="User" ThisKey="CreationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+      <Association Name="fk_EventLog_User_modification" Member="ModificationUser" ThisKey="ModificationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EventLogAggregation" Member="EventLogAggregations">
+    <Type Name="EventLogAggregation">
+      <Column Name="MinCreationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="MaxModificationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="history.EventLogHistory" Member="EventLogHistories">
+    <Type Name="EventLogHistory">
+      <Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="EventLogId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="EventText" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="SortOrder" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CreationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ModificationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="TxtMtl.SexualChocolate" Member="SexualChocolates">
+    <Type Name="SexualChocolate">
+      <Column Name="SexualChocolateId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="true" />
+      <Column Name="EM" Member="Em" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Blob" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX) NOT NULL" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
+      <Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
+      <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="history.SexualChocolateHistory" Member="SexualChocolateHistories">
+    <Type Name="SexualChocolateHistory">
+      <Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="SexualChocolateId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="EM" Member="Em" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Blob" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TableNoPrimaryKeyNoIdentity" Member="TableNoPrimaryKeyNoIdentities">
+    <Type Name="TableNoPrimaryKeyNoIdentity">
+      <Column Name="Value" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="true" />
+      <Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="history.TableNoPrimaryKeyNoIdentityHistory" Member="TableNoPrimaryKeyNoIdentityHistories">
+    <Type Name="TableNoPrimaryKeyNoIdentityHistory">
+      <Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Value" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Data01" Type="System.Boolean" DbType="Bit NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Data02" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Data03" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Data04" Type="System.String" DbType="NVarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TableNoPrimaryKeyWithIdentity" Member="TableNoPrimaryKeyWithIdentities">
+    <Type Name="TableNoPrimaryKeyWithIdentity">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="true" />
+      <Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="history.TableNoPrimaryKeyWithIdentityHistory" Member="TableNoPrimaryKeyWithIdentityHistories">
+    <Type Name="TableNoPrimaryKeyWithIdentityHistory">
+      <Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Data01" Type="System.Boolean" DbType="Bit NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Data02" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Data03" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Data04" Type="System.String" DbType="NVarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TableTypeTest" Member="TableTypeTests">
+    <Type Name="TableTypeTest">
+      <Column Name="PkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="true" />
+      <Column Name="Data00" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="Data01" Type="System.Data.Linq.Binary" DbType="Binary(1)" CanBeNull="true" />
+      <Column Name="Data02" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Data03" Type="System.String" DbType="Char(1)" CanBeNull="true" />
+      <Column Name="Data05" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="Data06" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Data07" Type="System.DateTime" DbType="DateTime2(7)" CanBeNull="true" />
+      <Column Name="Data08" Type="System.DateTimeOffset" DbType="DateTimeOffset(7)" CanBeNull="true" />
+      <Column Name="Data09" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="Data10" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Data12" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Data13" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Data14" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="Data15" Type="System.String" DbType="NChar(1)" CanBeNull="true" />
+      <Column Name="Data16" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Data17" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="Data18" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
+      <Column Name="Data19" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="Data20" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="Data21" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="Data22" Type="System.Decimal" DbType="SmallMoney" CanBeNull="true" />
+      <Column Name="Data26" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Data27" Type="System.TimeSpan" DbType="Time(7)" CanBeNull="true" />
+      <Column Name="Data29" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Data30" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="Data31" Type="System.Data.Linq.Binary" DbType="VarBinary(1)" CanBeNull="true" />
+      <Column Name="Data32" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="history.TableTypeTestHistory" Member="TableTypeTestHistories">
+    <Type Name="TableTypeTestHistory">
+      <Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="PkId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Data00" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="Data01" Type="System.Data.Linq.Binary" DbType="Binary(1)" CanBeNull="true" />
+      <Column Name="Data02" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Data03" Type="System.String" DbType="Char(1)" CanBeNull="true" />
+      <Column Name="Data05" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="Data06" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Data07" Type="System.DateTime" DbType="DateTime2(7)" CanBeNull="true" />
+      <Column Name="Data08" Type="System.DateTimeOffset" DbType="DateTimeOffset(7)" CanBeNull="true" />
+      <Column Name="Data09" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="Data10" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Data12" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Data13" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Data14" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="Data15" Type="System.String" DbType="NChar(1)" CanBeNull="true" />
+      <Column Name="Data16" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Data17" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="Data18" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
+      <Column Name="Data19" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="Data20" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="Data21" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="Data22" Type="System.Decimal" DbType="SmallMoney" CanBeNull="true" />
+      <Column Name="Data26" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Data27" Type="System.TimeSpan" DbType="Time(7)" CanBeNull="true" />
+      <Column Name="Data29" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Data30" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="Data31" Type="System.Data.Linq.Binary" DbType="VarBinary(1)" CanBeNull="true" />
+      <Column Name="Data32" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TableWithCompositePrimaryKeyNoIdentity" Member="TableWithCompositePrimaryKeyNoIdentities">
+    <Type Name="TableWithCompositePrimaryKeyNoIdentity">
+      <Column Name="Pk0" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Pk1" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Pk2" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Pk3" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="history.TableWithCompositePrimaryKeyNoIdentityHistory" Member="TableWithCompositePrimaryKeyNoIdentityHistories">
+    <Type Name="TableWithCompositePrimaryKeyNoIdentityHistory">
+      <Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Pk0" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Pk1" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Pk2" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Pk3" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TableWithPrimaryKeyAsDefault" Member="TableWithPrimaryKeyAsDefaults">
+    <Type Name="TableWithPrimaryKeyAsDefault">
+      <Column Name="PkDf" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="history.TableWithPrimaryKeyAsDefaultHistory" Member="TableWithPrimaryKeyAsDefaultHistories">
+    <Type Name="TableWithPrimaryKeyAsDefaultHistory">
+      <Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="PkDf" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TableWithPrimaryKeyAsIdentity" Member="TableWithPrimaryKeyAsIdentities">
+    <Type Name="TableWithPrimaryKeyAsIdentity">
+      <Column Name="PkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="true" />
+      <Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="history.TableWithPrimaryKeyAsIdentityHistory" Member="TableWithPrimaryKeyAsIdentityHistories">
+    <Type Name="TableWithPrimaryKeyAsIdentityHistory">
+      <Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="PkId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TableWithPrimaryKeyNoIdentity" Member="TableWithPrimaryKeyNoIdentities">
+    <Type Name="TableWithPrimaryKeyNoIdentity">
+      <Column Name="Pk" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="history.TableWithPrimaryKeyNoIdentityHistory" Member="TableWithPrimaryKeyNoIdentityHistories">
+    <Type Name="TableWithPrimaryKeyNoIdentityHistory">
+      <Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Pk" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TableWithPrimaryKeyWithDiffIdentity" Member="TableWithPrimaryKeyWithDiffIdentities">
+    <Type Name="TableWithPrimaryKeyWithDiffIdentity">
+      <Column Name="Pk" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="true" />
+      <Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="history.TableWithPrimaryKeyWithDiffIdentityHistory" Member="TableWithPrimaryKeyWithDiffIdentityHistories">
+    <Type Name="TableWithPrimaryKeyWithDiffIdentityHistory">
+      <Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Pk" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="Id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Data01" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Data02" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Data03" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Data04" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.User" Member="Users">
+    <Type Name="User">
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="true" />
+      <Column Name="EmailAddress" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="true" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="true" />
+      <Column Name="SaltValue" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="true" />
+      <Column Name="PasswordHash" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="true" />
+      <Column Name="Question" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="true" />
+      <Column Name="AnswerHash" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="true" />
+      <Column Name="LastLoginSuccessTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LastLoginFailureTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FailedLoginCount" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="true" />
+      <Column Name="MustChangePassword" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
+      <Column Name="SortOrder" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
+      <Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
+      <Column Name="CreationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ModificationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
+      <Association Name="fk_EmailAttachment_User_creation" Member="EmailAttachments" ThisKey="UserId" OtherKey="CreationUserId" Type="EmailAttachment" DeleteRule="NO ACTION" />
+      <Association Name="fk_EmailAttachment_User_modification" Member="Users" ThisKey="UserId" OtherKey="ModificationUserId" Type="EmailAttachment" DeleteRule="NO ACTION" />
+      <Association Name="fk_EmailMessage_User_creation" Member="EmailMessages" ThisKey="UserId" OtherKey="CreationUserId" Type="EmailMessage" DeleteRule="NO ACTION" />
+      <Association Name="fk_EmailMessage_User_modification" Member="EmailMessage_User_modifications" ThisKey="UserId" OtherKey="ModificationUserId" Type="EmailMessage" DeleteRule="NO ACTION" />
+      <Association Name="fk_EventLog_User_creation" Member="EventLogs" ThisKey="UserId" OtherKey="CreationUserId" Type="EventLog" DeleteRule="NO ACTION" />
+      <Association Name="fk_EventLog_User_modification" Member="EventLog_User_modifications" ThisKey="UserId" OtherKey="ModificationUserId" Type="EventLog" DeleteRule="NO ACTION" />
+      <Association Name="fk_User_User_creation" Member="CreationUser" ThisKey="CreationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+      <Association Name="fk_User_User_creation" Member="User_User_creations" ThisKey="UserId" OtherKey="CreationUserId" Type="User" DeleteRule="NO ACTION" />
+      <Association Name="fk_User_User_modification" Member="ModificationUser" ThisKey="ModificationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+      <Association Name="fk_User_User_modification" Member="User_User_modifications" ThisKey="UserId" OtherKey="ModificationUserId" Type="User" DeleteRule="NO ACTION" />
+    </Type>
+  </Table>
+  <Table Name="history.UserHistory" Member="UserHistories">
+    <Type Name="UserHistory">
+      <Column Name="TimestampId" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="EmailAddress" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SaltValue" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="PasswordHash" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Question" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="AnswerHash" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="LastLoginSuccessTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LastLoginFailureTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FailedLoginCount" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="MustChangePassword" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SortOrder" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CreationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ModificationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.GetBlahBlahBlah" Method="GetBlahBlahBlah">
+    <Parameter Name="pInt" Type="System.Int32" DbType="Int" />
+    <Parameter Name="pImage" Type="System.Data.Linq.Binary" DbType="Image" />
+    <Parameter Name="pVarchar" Type="System.String" DbType="VarChar(100)" Direction="InOut" />
+    <ElementType Name="GetBlahBlahBlahResult">
+      <Column Name="a" Member="A" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="b" Member="B" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="c" Member="C" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="d" Member="D" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" />
+    </ElementType>
+  </Function>
 </Database>

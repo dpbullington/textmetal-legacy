@@ -21,7 +21,7 @@ namespace TextMetal.Common.Data
 		/// <summary>
 		/// An extension method to create a new data parameter from the data source.
 		/// </summary>
-		/// <param name="unitOfWorkContext"> The target unit of work context. </param>
+		/// <param name="unitOfWork"> The target unit of work. </param>
 		/// <param name="direction"> Specifies the parameter direction. </param>
 		/// <param name="type"> Specifies the parameter provider-(in)dependent type. </param>
 		/// <param name="size"> Specifies the parameter size. </param>
@@ -31,17 +31,17 @@ namespace TextMetal.Common.Data
 		/// <param name="name"> Specifies the parameter name. </param>
 		/// <param name="value"> Specifies the parameter value. </param>
 		/// <returns> The data parameter with the specified properties set. </returns>
-		public static IDataParameter CreateParameter(this IUnitOfWorkContext unitOfWorkContext, ParameterDirection direction, DbType type, int size, byte precision, byte scale, bool nullable, string name, object value)
+		public static IDataParameter CreateParameter(this IUnitOfWork unitOfWork, ParameterDirection direction, DbType type, int size, byte precision, byte scale, bool nullable, string name, object value)
 		{
 			IDbDataParameter dbDataParameter;
 
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)unitOfWorkContext.Connection == null)
-				throw new InvalidOperationException("There is not a valid connection associated with the current unit of work context.");
+			if ((object)unitOfWork.Connection == null)
+				throw new InvalidOperationException("There is not a valid connection associated with the current unit of work.");
 
-			using (IDbCommand dbCommand = unitOfWorkContext.Connection.CreateCommand())
+			using (IDbCommand dbCommand = unitOfWork.Connection.CreateCommand())
 				dbDataParameter = dbCommand.CreateParameter();
 
 			dbDataParameter.ParameterName = name;
@@ -57,15 +57,15 @@ namespace TextMetal.Common.Data
 		}
 
 		/// <summary>
-		/// An extension method to execute a dictionary query operation against a target UnitOfWorkContext.
+		/// An extension method to execute a dictionary query operation against a target unitOfWork.
 		/// </summary>
-		/// <param name="unitOfWorkContext"> The target UnitOfWorkContext. </param>
+		/// <param name="unitOfWork"> The target unitOfWork. </param>
 		/// <param name="commandType"> The type of the command. </param>
 		/// <param name="commandText"> The SQL text or stored procedure name. </param>
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
 		/// <param name="recordsAffected"> The output count of records affected. </param>
 		/// <returns> A list of dictionary instances, containing key/value pairs of data. </returns>
-		public static IList<IDictionary<string, object>> ExecuteDictionary(this IUnitOfWorkContext unitOfWorkContext, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters, out int recordsAffected)
+		public static IList<IDictionary<string, object>> ExecuteDictionary(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters, out int recordsAffected)
 		{
 			IList<IDictionary<string, object>> objs;
 			IDictionary<string, object> obj;
@@ -73,19 +73,19 @@ namespace TextMetal.Common.Data
 			const bool COMMAND_PREPARE = false;
 			/* const */
 			int? COMMAND_TIMEOUT = null;
-			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default; // force command behavior to default; the unit of work context will manage connection lifetime
+			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default; // force command behavior to default; the unit of work will manage connection lifetime
 
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)unitOfWorkContext.Connection == null)
-				throw new InvalidOperationException("There is not a valid connection associated with the current unit of work context.");
+			if ((object)unitOfWork.Connection == null)
+				throw new InvalidOperationException("There is not a valid connection associated with the current unit of work.");
 
 			objs = new List<IDictionary<string, object>>();
 
 			try
 			{
-				using (dataReader = ExecuteReader(unitOfWorkContext.Connection, unitOfWorkContext.Transaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, COMMAND_TIMEOUT, COMMAND_PREPARE))
+				using (dataReader = ExecuteReader(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, COMMAND_TIMEOUT, COMMAND_PREPARE))
 				{
 					while (dataReader.Read())
 					{
@@ -111,7 +111,7 @@ namespace TextMetal.Common.Data
 			finally
 			{
 				// DO NOT DISPOSE OF UNIT_OF_WORK_CONTEXT - UP TO THE CALLER
-				unitOfWorkContext.SafeToString();
+				unitOfWork.SafeToString();
 			}
 
 			return objs;
@@ -182,30 +182,30 @@ namespace TextMetal.Common.Data
 		}
 
 		/// <summary>
-		/// An extension method to execute a schema query operation against a target UnitOfWorkContext.
+		/// An extension method to execute a schema query operation against a target unitOfWork.
 		/// </summary>
-		/// <param name="unitOfWorkContext"> The target UnitOfWorkContext. </param>
+		/// <param name="unitOfWork"> The target unitOfWork. </param>
 		/// <param name="commandType"> The type of the command. </param>
 		/// <param name="commandText"> The SQL text or stored procedure name. </param>
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
 		/// <returns> A list of dictionary instances, containing key/value pairs of schema data. </returns>
-		public static IList<IDictionary<string, object>> ExecuteSchema(this IUnitOfWorkContext unitOfWorkContext, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters)
+		public static IList<IDictionary<string, object>> ExecuteSchema(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters)
 		{
 			IList<IDictionary<string, object>> objs;
 			IDictionary<string, object> obj;
 
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)unitOfWorkContext.Connection == null)
-				throw new InvalidOperationException("There is not a valid connection associated with the current unit of work context.");
+			if ((object)unitOfWork.Connection == null)
+				throw new InvalidOperationException("There is not a valid connection associated with the current unit of work.");
 
 			objs = new List<IDictionary<string, object>>();
 
 			try
 			{
 				// 2011-09-07 (dpbullington@gmail.com / issue #12): found quirk if CommandBehavior == KeyInfo, hidden columns in views get returned; reverting to CommandBehavior == SchemaOnly
-				using (IDataReader dataReader = ExecuteReader(unitOfWorkContext.Connection, unitOfWorkContext.Transaction, commandType, commandText, commandParameters, CommandBehavior.SchemaOnly, null, false))
+				using (IDataReader dataReader = ExecuteReader(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, CommandBehavior.SchemaOnly, null, false))
 				{
 					using (DataTable dataTable = dataReader.GetSchemaTable())
 					{
@@ -236,7 +236,7 @@ namespace TextMetal.Common.Data
 			finally
 			{
 				// DO NOT DISPOSE OF UNIT_OF_WORK_CONTEXT - UP TO THE CALLER
-				unitOfWorkContext.SafeToString();
+				unitOfWork.SafeToString();
 			}
 
 			return objs;

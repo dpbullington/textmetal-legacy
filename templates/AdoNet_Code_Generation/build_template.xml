@@ -320,7 +320,7 @@ EndGlobal
 	<Reference Include="System.Web" />
 	<Reference Include="System.Xml" />
 	<Reference Include="System.Data.SQLite">
-      <HintPath>..\..\lib\SQLite\System.Data.SQLite.dll</HintPath>
+      <HintPath>..\..\lib\SQLite\x64\System.Data.SQLite.dll</HintPath>
     </Reference>
 	
 	<Reference Include="TextMetal.Common.Core">
@@ -506,8 +506,11 @@ EndGlobal
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Xml.dll</HintPath>
     </Reference>
 	
-	<Reference Include="TestingFramework.Core">
-      <HintPath>..\..\lib\PrivateBuilt\TestingFramework.Core.dll</HintPath>
+	<Reference Include="TextMetal.Imports">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Imports.dll</HintPath>
+    </Reference>
+	<Reference Include="TextMetal.TestFramework">
+      <HintPath>..\..\lib\TextMetal\TextMetal.TestFramework.dll</HintPath>
     </Reference>
 	
 	<ProjectReference Include="..\${ClrNamespace}\${ClrNamespace}.csproj">
@@ -652,7 +655,7 @@ EndGlobal
 	<Reference Include="System.Xml" />
 	
 	<Reference Include="System.Data.SQLite">
-      <HintPath>..\..\lib\SQLite\System.Data.SQLite.dll</HintPath>
+      <HintPath>..\..\lib\SQLite\x64\System.Data.SQLite.dll</HintPath>
     </Reference>
 	
 	<Reference Include="TextMetal.Common.Core">
@@ -678,8 +681,11 @@ EndGlobal
       <HintPath>..\..\lib\TextMetal\TextMetal.Framework.ExpressionModel.dll</HintPath>
     </Reference>
 	
-	<Reference Include="TestingFramework.Core">
-      <HintPath>..\..\lib\PrivateBuilt\TestingFramework.Core.dll</HintPath>
+	<Reference Include="TextMetal.Imports">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Imports.dll</HintPath>
+    </Reference>
+	<Reference Include="TextMetal.TestFramework">
+      <HintPath>..\..\lib\TextMetal\TextMetal.TestFramework.dll</HintPath>
     </Reference>
 	
 	<ProjectReference Include="..\${ClrNamespace}\${ClrNamespace}.csproj">

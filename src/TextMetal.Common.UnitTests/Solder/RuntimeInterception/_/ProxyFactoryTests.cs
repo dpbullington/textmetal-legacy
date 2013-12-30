@@ -10,10 +10,9 @@ using NMock2;
 
 using NUnit.Framework;
 
-using TestingFramework.Core.Customization;
-
 using TextMetal.Common.Solder.RuntimeInterception;
 using TextMetal.Common.UnitTests.TestingInfrastructure;
+using TextMetal.TestFramework;
 
 namespace TextMetal.Common.UnitTests.Solder.RuntimeInterception._
 {

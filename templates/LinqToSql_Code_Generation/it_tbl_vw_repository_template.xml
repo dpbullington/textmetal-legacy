@@ -15,7 +15,7 @@ using System.Xml;
 
 using NUnit.Framework;
 
-using TestingFramework.Core.Customization;
+using TextMetal.TestFramework;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
@@ -134,22 +134,16 @@ namespace ${ClrNamespace}.IntegrationTests
 			${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
 			bool result;
 			
-			Assert.IsNull(UnitOfWorkContext.Current);
+			Assert.IsNull(UnitOfWork.Current);
 			
 			repository = new Repository();
 				
-			using (IUnitOfWorkContext unitOfWorkContext = Repository.GetUnitOfWorkContext())
+			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(Repository.DefaultUnitOfWorkFactory.Instance))
 			{
-				try
-				{
-					UnitOfWorkContext.Current = unitOfWorkContext;
-					
-					Assert.IsNotNull(UnitOfWorkContext.Current);
-					
-					// do INSERT first
-					
-					@${TableNameSingularCamelCase} = new ${TableNameSingularPascalCase}();
-					Assert.IsTrue(@${TableNameSingularCamelCase}.IsNew);
+				Assert.IsNotNull(UnitOfWork.Current);
+
+				@${TableNameSingularCamelCase} = new ${TableNameSingularPascalCase}();
+
 ]]>
 
 								<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
@@ -165,7 +159,7 @@ namespace ${ClrNamespace}.IntegrationTests
 									</ForEach.Filter>
 									<ForEach.Body>
 
-<![CDATA[					@${TableNameSingularCamelCase}.@${ColumnNamePascalCase} = ValueGenerator.GetNextValue<${ColumnCSharpClrType}>();]]>
+<![CDATA[				@${TableNameSingularCamelCase}.@${ColumnNamePascalCase} = ValueGenerator.GetNextValue<${ColumnCSharpClrType}>();]]>
 
 										<If>
 											<If.Condition>
@@ -188,9 +182,12 @@ namespace ${ClrNamespace}.IntegrationTests
 
 <![CDATA[
 
-					result = repository.Save${TableNameSingularPascalCase}(@${TableNameSingularCamelCase});
+				// do INSERT first
+				Assert.IsTrue(@${TableNameSingularCamelCase}.IsNew);
+				
+				result = repository.Save${TableNameSingularPascalCase}(@${TableNameSingularCamelCase});
 
-					Assert.IsTrue(result);
+				Assert.IsTrue(result);
 					
 ]]>
 
@@ -207,7 +204,7 @@ namespace ${ClrNamespace}.IntegrationTests
 									</ForEach.Filter>
 									<ForEach.Body>
 
-<![CDATA[					${TableNameSingularCamelCase}.@${ColumnNamePascalCase} = ValueGenerator.GetNextValue<${ColumnCSharpClrType}>();]]>
+<![CDATA[				${TableNameSingularCamelCase}.@${ColumnNamePascalCase} = ValueGenerator.GetNextValue<${ColumnCSharpClrType}>();]]>
 
 										<If>
 											<If.Condition>
@@ -230,22 +227,17 @@ namespace ${ClrNamespace}.IntegrationTests
 
 <![CDATA[
 
-					// do UPDATE next
-					Assert.IsFalse(@${TableNameSingularCamelCase}.IsNew);
-					
-					result = repository.Save${TableNameSingularPascalCase}(@${TableNameSingularCamelCase});
+				// do UPDATE next
+				Assert.IsFalse(@${TableNameSingularCamelCase}.IsNew);
+				
+				result = repository.Save${TableNameSingularPascalCase}(@${TableNameSingularCamelCase});
 
-					Assert.IsTrue(result);
-					
-					unitOfWorkContext.Complete();
-				}
-				finally
-				{
-					UnitOfWorkContext.Current = null;
-				}				
+				Assert.IsTrue(result);
+				
+				scope.ScopeComplete();
 			}
 			
-			Assert.IsNull(UnitOfWorkContext.Current);
+			Assert.IsNull(UnitOfWork.Current);
 		}
 		
 ]]>
@@ -255,7 +247,118 @@ namespace ${ClrNamespace}.IntegrationTests
 						<![CDATA[		[Test]
 		public void ShouldLoad${TableNameSingularPascalCase}Test()
 		{
-			throw new NotImplementedException();
+			Repository repository;
+			${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
+]]>
+	<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+		<ForEach.Filter>
+			<BinaryExpression operator="Or">
+				<BinaryExpression.LeftExpression>
+					<BinaryExpression operator="Eq">
+						<BinaryExpression.LeftExpression>
+							<Facet name="ColumnIsPrimaryKey" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Value type="System.Boolean" data="True" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</BinaryExpression.LeftExpression>
+				<BinaryExpression.RightExpression>
+					<BinaryExpression operator="Eq">
+						<BinaryExpression.LeftExpression>
+							<Facet name="HasNoDefinedPrimaryKeyColumns" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Value type="System.Boolean" data="True" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</BinaryExpression.RightExpression>
+			</BinaryExpression>
+		</ForEach.Filter>
+		<ForEach.Body>
+			<![CDATA[			${ColumnCSharpClrType} @${ColumnNameCamelCase} = ValueGenerator.GetNextValue<${ColumnCSharpClrType}>();]]>
+			<If>
+				<If.Condition>
+					<BinaryExpression operator="Ne">
+						<BinaryExpression.LeftExpression>
+							<Facet name="#LoopCount" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Facet name="#LoopIndex" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</If.Condition>
+				<If.True>
+<![CDATA[
+]]>
+				</If.True>
+			</If>
+		</ForEach.Body>
+	</ForEach>
+	<![CDATA[
+
+			Assert.IsNull(UnitOfWork.Current);
+
+			repository = new Repository();
+
+			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(Repository.DefaultUnitOfWorkFactory.Instance))
+			{
+				Assert.IsNotNull(UnitOfWork.Current);
+
+				${TableNameSingularCamelCase} = repository.Load${TableNameSingularPascalCase}(]]>
+						<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+							<ForEach.Filter>
+								<BinaryExpression operator="Or">
+									<BinaryExpression.LeftExpression>
+										<BinaryExpression operator="Eq">
+											<BinaryExpression.LeftExpression>
+												<Facet name="ColumnIsPrimaryKey" />
+											</BinaryExpression.LeftExpression>
+											<BinaryExpression.RightExpression>
+												<Value type="System.Boolean" data="True" />
+											</BinaryExpression.RightExpression>
+										</BinaryExpression>
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<BinaryExpression operator="Eq">
+											<BinaryExpression.LeftExpression>
+												<Facet name="HasNoDefinedPrimaryKeyColumns" />
+											</BinaryExpression.LeftExpression>
+											<BinaryExpression.RightExpression>
+												<Value type="System.Boolean" data="True" />
+											</BinaryExpression.RightExpression>
+										</BinaryExpression>
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</ForEach.Filter>
+							<ForEach.Body>
+								<![CDATA[@${ColumnNameCamelCase}]]>
+								<If>
+									<If.Condition>
+										<BinaryExpression operator="Ne">
+											<BinaryExpression.LeftExpression>
+												<Facet name="#LoopCount" />
+											</BinaryExpression.LeftExpression>
+											<BinaryExpression.RightExpression>
+												<Facet name="#LoopIndex" />
+											</BinaryExpression.RightExpression>
+										</BinaryExpression>
+									</If.Condition>
+									<If.True>
+										<![CDATA[, ]]>
+									</If.True>
+								</If>
+							</ForEach.Body>
+						</ForEach>
+						<![CDATA[);
+
+				Assert.IsNotNull(@${TableNameSingularCamelCase});
+				Assert.IsFalse(@${TableNameSingularCamelCase}.IsNew);
+
+				scope.ScopeComplete();
+			}
+
+			Assert.IsNull(UnitOfWork.Current);
 		}
 		
 		[Test]

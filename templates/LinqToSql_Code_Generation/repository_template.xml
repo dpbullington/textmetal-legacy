@@ -96,9 +96,9 @@ namespace ${ClrNamespace}
 		
 		#region Methods/Operators
 		
-		public static IUnitOfWorkContext GetUnitOfWorkContext()
+		public static IUnitOfWork GetUnitOfWork()
 		{
-			return UnitOfWorkContext.Create(ConnectionType, ConnectionString, true);
+			return UnitOfWork.Create(ConnectionType, ConnectionString, true);
 		}
 
 		static partial void OnPreProcessConnectionString(ref string connectionString);
@@ -107,11 +107,11 @@ namespace ${ClrNamespace}
 		
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
-		public sealed class UowcFactory : IUnitOfWorkContextFactory
+		public sealed class DefaultUnitOfWorkFactory : IUnitOfWorkFactory
 		{
 			#region Constructors/Destructors
 
-			private UowcFactory()
+			private DefaultUnitOfWorkFactory()
 			{
 			}
 
@@ -119,13 +119,13 @@ namespace ${ClrNamespace}
 
 			#region Fields/Constants
 
-			private static readonly IUnitOfWorkContextFactory instance = new UowcFactory();
+			private static readonly IUnitOfWorkFactory instance = new DefaultUnitOfWorkFactory();
 
 			#endregion
 
 			#region Properties/Indexers/Events
 
-			public static IUnitOfWorkContextFactory Instance
+			public static IUnitOfWorkFactory Instance
 			{
 				get
 				{
@@ -137,9 +137,9 @@ namespace ${ClrNamespace}
 
 			#region Methods/Operators
 
-			public IUnitOfWorkContext GetUnitOfWorkContext()
+			public IUnitOfWork GetUnitOfWork()
 			{
-				return Repository.GetUnitOfWorkContext();
+				return Repository.GetUnitOfWork();
 			}
 
 			#endregion

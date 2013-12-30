@@ -7,11 +7,11 @@ using System;
 
 namespace TextMetal.Common.Data
 {
-	public interface IUnitOfWorkContextFactory
+	public interface IUnitOfWorkFactory
 	{
 		#region Methods/Operators
 
-		IUnitOfWorkContext GetUnitOfWorkContext();
+		IUnitOfWork GetUnitOfWork();
 
 		#endregion
 	}

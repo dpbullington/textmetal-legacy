@@ -138,6 +138,8 @@
     <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyWithDiffIdentity.g.cs" />
     <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyWithDiffIdentityHistory.cs" />
     <Compile Include="Objects\Model\Tables\TableWithPrimaryKeyWithDiffIdentityHistory.g.cs" />
+    <Compile Include="Objects\Model\Tables\User.g.cs" />
+    <Compile Include="Objects\Model\Tables\UserHistory.g.cs" />
     <Compile Include="Objects\Model\Views\EventLogAggregation.cs" />
     <Compile Include="Objects\Model\Views\EventLogAggregation.g.cs" />
     <Compile Include="Pages\Index.tmpx.cs" />
@@ -149,7 +151,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <EmbeddedResource Include="Email\EventLogEntry.xml" />
     <Content Include="Global.asax" />
-    <Content Include="Objects\Model\SQL\_setup_sql_server_db.sql" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

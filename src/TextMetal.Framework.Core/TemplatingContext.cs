@@ -158,7 +158,7 @@ namespace TextMetal.Framework.Core
 		}
 
 		/// <summary>
-		/// Dispose of the unit of work context.
+		/// Dispose of the unit of work.
 		/// </summary>
 		public void Dispose()
 		{

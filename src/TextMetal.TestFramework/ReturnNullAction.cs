@@ -9,7 +9,7 @@ using System.IO;
 using NMock2;
 using NMock2.Monitoring;
 
-namespace TestingFramework.Core.Customization
+namespace TextMetal.TestFramework
 {
 	/// <summary>
 	/// Circumvents nullable issue in NMock2.

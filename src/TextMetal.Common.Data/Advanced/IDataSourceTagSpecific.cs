@@ -20,7 +20,7 @@ namespace TextMetal.Common.Data.Advanced
 
 		#region Methods/Operators
 
-		void CommandMagic(IUnitOfWorkContext unitOfWorkContext, bool executeAsCud, out int thisOrThatRecordsAffected);
+		void CommandMagic(IUnitOfWork unitOfWork, bool executeAsCud, out int thisOrThatRecordsAffected);
 
 		string GetAliasedColumnName(string tableAlias, string columnName);
 
@@ -34,7 +34,7 @@ namespace TextMetal.Common.Data.Advanced
 
 		string GetTableName(string schemaName, string tableName);
 
-		void ParameterMagic(IUnitOfWorkContext unitOfWorkContext, IDataParameter commandParameter, string generatedFromColumnNativeType);
+		void ParameterMagic(IUnitOfWork unitOfWork, IDataParameter commandParameter, string generatedFromColumnNativeType);
 
 		#endregion
 	}

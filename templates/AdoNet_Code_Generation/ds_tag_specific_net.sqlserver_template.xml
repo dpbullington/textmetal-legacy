@@ -90,10 +90,10 @@ namespace ${ClrNamespace}
 
 		#region Methods/Operators
 
-		public void CommandMagic(IUnitOfWorkContext unitOfWorkContext, bool executeAsCud, out int thisOrThatRecordsAffected)
+		public void CommandMagic(IUnitOfWork unitOfWork, bool executeAsCud, out int thisOrThatRecordsAffected)
 		{
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 			
 			if (executeAsCud)
 				thisOrThatRecordsAffected = NET_SQL_SERVER_PERSIST_NOT_EXPECTED_RECORDS_AFFECTED;
@@ -157,10 +157,10 @@ namespace ${ClrNamespace}
 			return retVal;
 		}
 
-		public void ParameterMagic(IUnitOfWorkContext unitOfWorkContext, IDataParameter commandParameter, string generatedFromColumnNativeType)
+		public void ParameterMagic(IUnitOfWork unitOfWork, IDataParameter commandParameter, string generatedFromColumnNativeType)
 		{
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			if ((object)commandParameter == null)
 				throw new ArgumentNullException("commandParameter");

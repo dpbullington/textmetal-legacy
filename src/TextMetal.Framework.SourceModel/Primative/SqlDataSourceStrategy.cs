@@ -69,12 +69,12 @@ namespace TextMetal.Framework.SourceModel.Primative
 
 				commandText = tokenizer.ExpandTokens(sqlQuery.Text, new DynamicWildcardTokenReplacementStrategy(new object[] { parentAssociativeXmlObject }));
 
-				using (IUnitOfWorkContext unitOfWorkContext = UnitOfWorkContext.Create(connectionType, connectionString, false))
+				using (IUnitOfWork unitOfWork = UnitOfWork.Create(connectionType, connectionString, false))
 				{
 					if (!getSchemaOnly)
-						objs = unitOfWorkContext.ExecuteDictionary(sqlQuery.Type, commandText, null, out rcecordsAffected);
+						objs = unitOfWork.ExecuteDictionary(sqlQuery.Type, commandText, null, out rcecordsAffected);
 					else
-						objs = unitOfWorkContext.ExecuteSchema(sqlQuery.Type, commandText, null);
+						objs = unitOfWork.ExecuteSchema(sqlQuery.Type, commandText, null);
 				}
 
 				if ((object)objs != null)

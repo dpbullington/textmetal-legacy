@@ -165,12 +165,12 @@ namespace TextMetal.Common.Data.Advanced
 			return retval;
 		}
 
-		public void InitializeFromRevisionHistoryResource(IUnitOfWorkContextFactory unitOfWorkContextFactory, Type revisionHistoryResourceAssemblyType, string revisionHistoryResourceName)
+		public void InitializeFromRevisionHistoryResource(IUnitOfWorkFactory unitOfWorkFactory, Type revisionHistoryResourceAssemblyType, string revisionHistoryResourceName)
 		{
 			DatabaseHistory history;
 
-			if ((object)unitOfWorkContextFactory == null)
-				throw new ArgumentNullException("unitOfWorkContextFactory");
+			if ((object)unitOfWorkFactory == null)
+				throw new ArgumentNullException("unitOfWorkFactory");
 
 			if ((object)revisionHistoryResourceAssemblyType == null)
 				throw new ArgumentNullException("revisionHistoryResourceAssemblyType");
@@ -197,11 +197,11 @@ namespace TextMetal.Common.Data.Advanced
 				if (!Cerealization.Cerealization.TryGetFromAssemblyResource<DatabaseHistory>(revisionHistoryResourceAssemblyType, revisionHistoryResourceName, out history))
 					throw new InvalidOperationException(string.Format("Unable to deserialize instance of '{0}' from the manifest resource name '{1}' in the assembly '{2}'.", typeof(DatabaseHistory).FullName, revisionHistoryResourceName, revisionHistoryResourceAssemblyType.Assembly.FullName));
 
-				using (IUnitOfWorkContext unitOfWorkContext = unitOfWorkContextFactory.GetUnitOfWorkContext())
+				using (IUnitOfWork unitOfWork = unitOfWorkFactory.GetUnitOfWork())
 				{
-					history.PerformSchemaUpgrade(unitOfWorkContext);
+					history.PerformSchemaUpgrade(unitOfWork);
 
-					unitOfWorkContext.Complete();
+					unitOfWork.Complete();
 				}
 			}
 		}

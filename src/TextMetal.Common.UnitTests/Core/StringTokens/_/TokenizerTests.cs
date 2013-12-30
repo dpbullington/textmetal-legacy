@@ -13,9 +13,8 @@ using NMock2.Matchers;
 
 using NUnit.Framework;
 
-using TestingFramework.Core.Customization;
-
 using TextMetal.Common.Core.StringTokens;
+using TextMetal.TestFramework;
 
 namespace TextMetal.Common.UnitTests.Core.StringTokens._
 {

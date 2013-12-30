@@ -8,9 +8,8 @@ using System.Reflection;
 
 using NUnit.Framework;
 
-using TestingFramework.Core.Customization;
-
 using TextMetal.Common.UnitTests.TestingInfrastructure;
+using TextMetal.TestFramework;
 
 namespace TextMetal.Common.UnitTests.Solder.RuntimeInterception._
 {

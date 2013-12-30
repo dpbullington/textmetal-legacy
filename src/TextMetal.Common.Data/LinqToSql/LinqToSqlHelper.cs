@@ -20,55 +20,55 @@ namespace TextMetal.Common.Data.LinqToSql
 		#region Methods/Operators
 
 		/// <summary>
-		/// For a given UnitOfWorkContext, this method returns a ContextWrapper`1 for a target data context type.
+		/// For a given unitOfWork, this method returns a AmbientUnitOfWorkAwareDisposableWrapper`1 for a target data context type.
 		/// </summary>
 		/// <typeparam name="TContext"> The desired data context type. </typeparam>
-		/// <param name="unitOfWorkContext"> The target UnitOfWorkContext. </param>
-		/// <returns> An instance of a ContextWrapper`1 for the requested data context type, associated withthe UnitOfWorkContext. </returns>
-		public static ContextWrapper<TContext> GetContext<TContext>(this IUnitOfWorkContext unitOfWorkContext)
+		/// <param name="unitOfWork"> The target unitOfWork. </param>
+		/// <returns> An instance of a AmbientUnitOfWorkAwareDisposableWrapper`1 for the requested data context type, associated withthe unitOfWork. </returns>
+		public static AmbientUnitOfWorkAwareDisposableWrapper<TContext> GetContext<TContext>(this IUnitOfWork unitOfWork)
 			where TContext : class, IDisposable
 		{
 			Type contextType, dataContextType;
 			TContext dataContext;
-			ContextWrapper<TContext> contextWrapper;
+			AmbientUnitOfWorkAwareDisposableWrapper<TContext> ambientUnitOfWorkAwareDisposableWrapper;
 
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
-			// assumption: LINQ to SQL DataContext derived context types are only supported
+			// assumption: LINQ to SQL DataContext derived ambientUnitOfWorkAwareDisposable types are only supported
 			// will support Entity Framework *Context types later, if possible.
 			dataContextType = typeof(DataContext);
 			contextType = typeof(TContext);
 
 			if (!dataContextType.IsAssignableFrom(contextType))
-				throw new NotSupportedException(string.Format("The (data) context type '{0}' is not supported.", contextType.FullName));
+				throw new NotSupportedException(string.Format("The (data) ambientUnitOfWorkAwareDisposable type '{0}' is not supported.", contextType.FullName));
 
-			dataContext = (TContext)(object)GetDataContext(unitOfWorkContext, contextType);
-			contextWrapper = new ContextWrapper<TContext>(dataContext);
+			dataContext = (TContext)(object)GetDataContext(unitOfWork, contextType);
+			ambientUnitOfWorkAwareDisposableWrapper = new AmbientUnitOfWorkAwareDisposableWrapper<TContext>(unitOfWork, dataContext);
 
-			return contextWrapper;
+			return ambientUnitOfWorkAwareDisposableWrapper;
 		}
 
 		/// <summary>
-		/// For a given UnitOfWorkContext, this method returns a DataContext of the target data context type.
+		/// For a given unitOfWork, this method returns a DataContext of the target data context type.
 		/// </summary>
-		/// <param name="unitOfWorkContext"> The target UnitOfWorkContext. </param>
+		/// <param name="unitOfWork"> The target unitOfWork. </param>
 		/// <param name="dataContextType"> The desired data context type. </param>
-		/// <returns> An instance of the requested data context type, associated withthe UnitOfWorkContext. </returns>
-		private static DataContext GetDataContext(IUnitOfWorkContext unitOfWorkContext, Type dataContextType)
+		/// <returns> An instance of the requested data context type, associated withthe unitOfWork. </returns>
+		private static DataContext GetDataContext(IUnitOfWork unitOfWork, Type dataContextType)
 		{
 			DataContext dataContext;
 			MulticastContext<DataContext> multicastContext;
 
-			if ((object)unitOfWorkContext == null)
-				throw new ArgumentNullException("unitOfWorkContext");
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
 
 			if ((object)dataContextType == null)
 				throw new ArgumentNullException("dataContextType");
 
-			if ((object)unitOfWorkContext.Context != null)
+			if ((object)unitOfWork.Context != null)
 			{
-				multicastContext = unitOfWorkContext.Context as MulticastContext<DataContext>;
+				multicastContext = unitOfWork.Context as MulticastContext<DataContext>;
 
 				// will fail if not correct type (e.g. DataContext, ObjectContext, etc.)
 				if ((object)multicastContext == null)
@@ -77,7 +77,7 @@ namespace TextMetal.Common.Data.LinqToSql
 				if (!multicastContext.HasContext(dataContextType))
 				{
 					// create DC and add to existing MCC
-					dataContext = GetDataContext(dataContextType, unitOfWorkContext.Connection, unitOfWorkContext.Transaction);
+					dataContext = GetDataContext(dataContextType, unitOfWork.Connection, unitOfWork.Transaction);
 					multicastContext.SetContext(dataContextType, dataContext);
 				}
 				else
@@ -90,21 +90,21 @@ namespace TextMetal.Common.Data.LinqToSql
 			{
 				// create DC and add to new MCC
 				multicastContext = new MulticastContext<DataContext>();
-				dataContext = GetDataContext(dataContextType, unitOfWorkContext.Connection, unitOfWorkContext.Transaction);
+				dataContext = GetDataContext(dataContextType, unitOfWork.Connection, unitOfWork.Transaction);
 				multicastContext.SetContext(dataContextType, dataContext);
-				unitOfWorkContext.Context = multicastContext;
+				unitOfWork.Context = multicastContext;
 			}
 
 			return dataContext;
 		}
 
 		/// <summary>
-		/// For a given UnitOfWorkContext, this method returns a DataContext of the target data context type.
+		/// For a given unitOfWork, this method returns a DataContext of the target data context type.
 		/// </summary>
 		/// <param name="dataContextType"> The desired data context type. </param>
 		/// <param name="dbConnection"> The target database connection. </param>
 		/// <param name="dbTransaction"> The target database transaction. </param>
-		/// <returns> An instance of the requested data context type, associated withthe UnitOfWorkContext. </returns>
+		/// <returns> An instance of the requested data context type, associated withthe unitOfWork. </returns>
 		/// <returns> </returns>
 		private static DataContext GetDataContext(Type dataContextType, IDbConnection dbConnection, IDbTransaction dbTransaction)
 		{

@@ -47,7 +47,6 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Ambient.cs" />
     <Compile Include="Advanced\DatabaseFileManager.cs" />
     <Compile Include="Advanced\DatabaseHistory.cs" />
     <Compile Include="Advanced\DatabaseRevision.cs" />
@@ -58,10 +57,9 @@
     <Compile Include="Advanced\Query.cs" />
     <Compile Include="Advanced\SqlExpressionVisitor.cs" />
     <Compile Include="AdoNetHelper.cs" />
-    <Compile Include="IUnitOfWorkContext.cs" />
-    <Compile Include="IUnitOfWorkContextFactory.cs" />
+    <Compile Include="IUnitOfWork.cs" />
+    <Compile Include="IUnitOfWorkFactory.cs" />
     <Compile Include="SqlQuery.cs" />
-    <Compile Include="UnitOfWorkContextScopeOption.cs" />
     <None Include="TypeMap\HighLevel\Contracts\CommandContractAttribute.cs" />
     <None Include="TypeMap\HighLevel\Contracts\DatabaseContractAttribute.cs" />
     <None Include="TypeMap\HighLevel\Contracts\DynamicDatabaseClient.cs" />
@@ -80,7 +78,7 @@
     <None Include="TypeMap\HighLevel\SuppressMappingAttribute.cs" />
     <None Include="TypeMap\HighLevel\TableMappingAttribute.cs" />
     <None Include="TypeMap\HighLevel\TypeInferReflectionDataSourceMapFactory.cs" />
-    <Compile Include="UnitOfWorkContextScope.cs" />
+    <Compile Include="AmbientUnitOfWorkScope.cs" />
     <Compile Include="TypeMap\LowLevel\AssemblyResourceDataSourceMapFactory.cs" />
     <Compile Include="TypeMap\LowLevel\Command.cs" />
     <Compile Include="TypeMap\LowLevel\DataSourceMap.cs" />
@@ -96,10 +94,10 @@
     <Compile Include="TypeMap\ObjectState.cs" />
     <Compile Include="TypeMap\PlainObject.cs" />
     <None Include="TypeMap\TypeMapHelper.cs" />
-    <Compile Include="UnitOfWorkContext.cs" />
-    <Compile Include="LinqToSql\ContextWrapper~1.cs" />
+    <Compile Include="UnitOfWork.cs" />
+    <Compile Include="AmbientUnitOfWorkAwareDisposableWrapper~1.cs" />
     <Compile Include="LinqToSql\LinqToSqlHelper.cs" />
-    <Compile Include="LinqToSql\MulticastContext.cs" />
+    <Compile Include="LinqToSql\MulticastContext~1.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
