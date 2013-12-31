@@ -441,17 +441,19 @@ namespace ${ClrNamespace}
 				{
 					@${TableNamePluralCamelCase} = this.Find${TableNamePluralPascalCase}(unitOfWork, callback);
 
-					unitOfWork.Complete();
+					@${TableNamePluralCamelCase} = @${TableNamePluralCamelCase}.ToList(); // FORCE EAGER LOAD
 					
-					return @${TableNamePluralCamelCase}.ToList(); // FORCE EAGER LOAD
+					unitOfWork.Complete();
 				}
 			}
 			else
 			{
 				@${TableNamePluralCamelCase} = this.Find${TableNamePluralPascalCase}(UnitOfWork.Current, callback);
 				
-				return @${TableNamePluralCamelCase}; // DO NOT FORCE EAGER LOAD
+				// DO NOT FORCE EAGER LOAD
 			}
+			
+			return @${TableNamePluralCamelCase};
 		}
 		
 		public IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(IUnitOfWork unitOfWork, Func<IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}>, IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}>> callback)

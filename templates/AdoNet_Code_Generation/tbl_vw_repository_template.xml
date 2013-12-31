@@ -408,12 +408,18 @@ namespace ${ClrNamespace}
 				{
 					@${TableNamePluralCamelCase} = this.Find${TableNamePluralPascalCase}(unitOfWork, ${TableNameSingularCamelCase}Query);
 
+					@${TableNamePluralCamelCase} = @${TableNamePluralCamelCase}.ToList(); // FORCE EAGER LOAD
+					
 					unitOfWork.Complete();
 				}
 			}
 			else
+			{
 				@${TableNamePluralCamelCase} = this.Find${TableNamePluralPascalCase}(UnitOfWork.Current, ${TableNameSingularCamelCase}Query);
 			
+				// DO NOT FORCE EAGER LOAD
+			}
+
 			return @${TableNamePluralCamelCase};
 		}
 		
@@ -450,9 +456,11 @@ namespace ${ClrNamespace}
 			@${TableNamePluralCamelCase} = unitOfWork.QueryModel<${TableNameSingularPascalCase}>(CommandType.Text, commandText, commandParameters, queryExpectedRecordsAffected, MapTo${TableNameSingularPascalCase});			
 			
 			foreach (${TableNameSingularPascalCase} @${TableNameSingularCamelCase} in @${TableNamePluralCamelCase})
+			{
 				this.OnSelect${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
-							
-			return @${TableNamePluralCamelCase};
+				
+				yield return @${TableNameSingularCamelCase}; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
+			}
 		}
 		
 		public bool Save${TableNameSingularPascalCase}(${TableNameSingularPascalCase} @${TableNameSingularCamelCase})

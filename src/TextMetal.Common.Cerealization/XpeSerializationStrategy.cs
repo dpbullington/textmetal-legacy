@@ -12,7 +12,7 @@ using TextMetal.Common.Xml;
 
 namespace TextMetal.Common.Cerealization
 {
-	public class XpeSerializationStrategy : XmlSerializationStrategy, ITextSerializationStrategy
+	public class XpeSerializationStrategy : IXmlSerializationStrategy, ITextSerializationStrategy
 	{
 		#region Constructors/Destructors
 

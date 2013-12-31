@@ -40,6 +40,7 @@ goto pkgDir
 
 :pkgDir
 
+
 IF NOT EXIST %PACKAGE_DIR_EXISTS% GOTO noPkgDir
 goto delPkgDir
 
@@ -67,7 +68,7 @@ goto pkgBuild
 
 :delPkgDir
 @echo Cleaning pkg directory...
-del "%PACKAGE_DIR%\*.*" /Q /S
+rmdir "%PACKAGE_DIR%\*.*" /Q /S
 rem IF %ERRORLEVEL% NEQ 0 goto pkgError
 goto pkgBuild
 
@@ -101,6 +102,8 @@ IF %ERRORLEVEL% NEQ 0 goto pkgError
 copy ".\lib\SQLite\x64\*.*" "%PACKAGE_DIR%\SQLite\x64\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
+robocopy ".\templates" "%PACKAGE_DIR%\TextMetal\templates"
+IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 copy ".\src\TextMetal.Common.Cerealization\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Cerealization.dll" "%PACKAGE_DIR%\TextMetal\."

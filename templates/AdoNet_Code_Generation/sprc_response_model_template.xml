@@ -62,7 +62,7 @@ namespace ${ClrNamespace}.${FolderName}
 		
 		#region Fields/Constants
 			
-		private readonly IList<${ProcedureNameSingularPascalCase}_Result> results = new List<${ProcedureNameSingularPascalCase}_Result>();
+		private readonly IEnumerable<${ProcedureNameSingularPascalCase}_Result> results = new List<${ProcedureNameSingularPascalCase}_Result>();
 ]]>
 
 						<ForEach in="Parameters" var-ct="#LoopCount" var-ix="#LoopIndex">
@@ -119,7 +119,7 @@ namespace ${ClrNamespace}.${FolderName}
 			
 		#region Properties/Indexers/Events
 			
-		public IList<${ProcedureNameSingularPascalCase}_Result> Results
+		public IEnumerable<${ProcedureNameSingularPascalCase}_Result> Results
 		{
 			get
 			{
