@@ -59,6 +59,16 @@ namespace TextMetal.Framework.TemplateModel
 
 		#region Methods/Operators
 
+		private static void LaunchDebugger()
+		{
+			if (!Debugger.IsAttached)
+			{
+				Console.WriteLine("debugger before launch;");
+				Debugger.Launch();
+				Console.WriteLine("debugger after launch;");
+			}
+		}
+
 		protected override void CoreExpandTemplate(ITemplatingContext templatingContext)
 		{
 			DynamicWildcardTokenReplacementStrategy dynamicWildcardTokenReplacementStrategy;
@@ -66,8 +76,8 @@ namespace TextMetal.Framework.TemplateModel
 			if ((object)templatingContext == null)
 				throw new ArgumentNullException("templatingContext");
 
-			if (this.Debug && !Debugger.IsAttached)
-				Debugger.Break();
+			if (this.Debug)
+				LaunchDebugger();
 
 			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy();
 

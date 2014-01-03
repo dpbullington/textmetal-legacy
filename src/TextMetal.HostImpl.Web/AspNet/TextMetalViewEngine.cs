@@ -18,32 +18,36 @@ namespace TextMetal.HostImpl.Web.AspNet
 		{
 			base.MasterLocationFormats = new string[]
 										{
+											"~/Views/{1}/{0}" + this.TEXT_METAL_PAGE_EXTENSION,
 											"~/Views/{1}/{0}.master",
+											"~/Views/Shared/{0}" + this.TEXT_METAL_PAGE_EXTENSION,
 											"~/Views/Shared/{0}.master"
 										};
 
 			base.AreaMasterLocationFormats = new string[]
 											{
+												"~/Areas/{2}/Views/{1}/{0}" + this.TEXT_METAL_PAGE_EXTENSION,
 												"~/Areas/{2}/Views/{1}/{0}.master",
+												"~/Areas/{2}/Views/Shared/{0}" + this.TEXT_METAL_PAGE_EXTENSION,
 												"~/Areas/{2}/Views/Shared/{0}.master"
 											};
 
 			base.ViewLocationFormats = new string[]
 										{
-											"~/Views/{1}/{0}.tm",
+											"~/Views/{1}/{0}" + this.TEXT_METAL_PAGE_EXTENSION,
 											"~/Views/{1}/{0}.aspx",
 											"~/Views/{1}/{0}.ascx",
-											"~/Views/Shared/{0}.tm",
+											"~/Views/Shared/{0}" + this.TEXT_METAL_PAGE_EXTENSION,
 											"~/Views/Shared/{0}.aspx",
 											"~/Views/Shared/{0}.ascx"
 										};
 
 			base.AreaViewLocationFormats = new string[]
 											{
-												"~/Areas/{2}/Views/{1}/{0}.tm",
+												"~/Areas/{2}/Views/{1}/{0}" + this.TEXT_METAL_PAGE_EXTENSION,
 												"~/Areas/{2}/Views/{1}/{0}.aspx",
 												"~/Areas/{2}/Views/{1}/{0}.ascx",
-												"~/Areas/{2}/Views/Shared/{0}.tm",
+												"~/Areas/{2}/Views/Shared/{0}" + this.TEXT_METAL_PAGE_EXTENSION,
 												"~/Areas/{2}/Views/Shared/{0}.aspx",
 												"~/Areas/{2}/Views/Shared/{0}.ascx"
 											};
@@ -51,6 +55,12 @@ namespace TextMetal.HostImpl.Web.AspNet
 			base.PartialViewLocationFormats = base.ViewLocationFormats;
 			base.AreaPartialViewLocationFormats = base.AreaViewLocationFormats;
 		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly string TEXT_METAL_PAGE_EXTENSION = ".tmpx";
 
 		#endregion
 
@@ -73,7 +83,7 @@ namespace TextMetal.HostImpl.Web.AspNet
 			if (DataType.IsWhiteSpace(partialPath))
 				throw new ArgumentOutOfRangeException("partialPath");
 
-			if (partialPath.EndsWith(".tm"))
+			if (partialPath.EndsWith(this.TEXT_METAL_PAGE_EXTENSION))
 				return new TextMetalView(partialPath);
 			else
 				return new WebFormView(controllerContext, partialPath, null);
@@ -93,9 +103,9 @@ namespace TextMetal.HostImpl.Web.AspNet
 			if (DataType.IsWhiteSpace(viewPath))
 				throw new ArgumentOutOfRangeException("viewPath");
 
-			if (viewPath.EndsWith(".tm") && DataType.IsNullOrWhiteSpace(masterPath))
+			if (viewPath.EndsWith(this.TEXT_METAL_PAGE_EXTENSION) && DataType.IsNullOrWhiteSpace(masterPath))
 				return new TextMetalView(viewPath);
-			else if (viewPath.EndsWith(".tm") && !String.IsNullOrEmpty(masterPath))
+			else if (viewPath.EndsWith(this.TEXT_METAL_PAGE_EXTENSION) && !String.IsNullOrEmpty(masterPath))
 				return new TextMetalView(viewPath, masterPath);
 			else
 				return new WebFormView(controllerContext, viewPath, masterPath);

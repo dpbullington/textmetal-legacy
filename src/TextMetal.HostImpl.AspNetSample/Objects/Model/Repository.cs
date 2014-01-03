@@ -82,15 +82,22 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model
 			eventLog.Mark();
 		}
 
-		public bool TrySendEmailTemplate(string templateReosurceName, object modelObject)
+		public bool TrySendEmailTemplate(string templateResourceName, object modelObject)
 		{
 			EmailMessage emailMessage;
 
+			if ((object)templateResourceName == null)
+				throw new ArgumentNullException("templateResourceName");
+
+			if ((object)modelObject == null)
+				throw new ArgumentNullException("modelObject");
+
 			try
 			{
-				emailMessage = MessageTemplate.SendEmailTemplate<EmailMessage>(typeof(Repository), templateReosurceName, modelObject, (em) => this.SaveEmailMessage(em));
+				emailMessage = MessageTemplate.SendEmailTemplate<EmailMessage>(typeof(Repository), templateResourceName,
+					modelObject, (em) => this.SaveEmailMessage(em));
 
-				if ((object)emailMessage == null)
+				if (emailMessage == null)
 					throw new InvalidOperationException("bad stuff happended");
 
 				return true;
@@ -107,6 +114,9 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model
 		{
 			EventLog eventLog;
 			bool result;
+
+			if ((object)eventText == null)
+				throw new ArgumentNullException("eventText");
 
 			try
 			{

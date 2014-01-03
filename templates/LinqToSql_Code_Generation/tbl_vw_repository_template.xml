@@ -107,8 +107,7 @@ namespace ${ClrNamespace}
 {
 	public partial class Repository
 	{		
-		#region Methods/Operators
-		
+		#region Methods/Operators		
 ]]>
 
 		<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">			

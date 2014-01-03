@@ -77,6 +77,23 @@ namespace ${ClrNamespace}.${FolderName}
 	public partial class ${TableNameSingularPascalCase}
 	{		
 		#region Methods/Operators
+		
+		public static bool Exists(${TableNameSingularPascalCase} ${TableNameSingularCamelCase})
+		{
+			IEnumerable<${TableNameSingularPascalCase}> ${TableNamePluralCamelCase};
+
+			if ((object)${TableNameSingularCamelCase} == null)
+				throw new ArgumentNullException("${TableNameSingularCamelCase}");
+
+			${TableNamePluralCamelCase} =
+				Stuff.Get<IRepository>("").Find${TableNamePluralPascalCase}(
+					q =>
+						q.Where(
+							z =>
+								(z.XXX == ${TableNameSingularCamelCase}.XXX) && ((object)${TableNameSingularCamelCase}.${TableNameSingularPascalCase}Id == null || z.${TableNameSingularPascalCase}Id != ${TableNameSingularCamelCase}.${TableNameSingularPascalCase}Id)));
+
+			return ${TableNamePluralCamelCase}.Count() > 0;
+		}
 
 		public void Mark()
 		{
@@ -86,18 +103,30 @@ namespace ${ClrNamespace}.${FolderName}
 
 			this.CreationTimestamp = this.CreationTimestamp ?? now;
 			this.ModificationTimestamp = !this.IsNew ? now : this.CreationTimestamp;
-			this.CreationUserId = User.CurrentUserId ?? null;
-			this.ModificationUserId = !this.IsNew ? User.CurrentUserId : this.CreationUserId;
+			this.CreationUserId = Current.UserId ?? null;
+			this.ModificationUserId = !this.IsNew ? Current.UserId : this.CreationUserId;
 			this.LogicalDelete = this.LogicalDelete ?? false;
 
-			this.CompanyId = this.CompanyId ?? (int)Company.CurrentCompanyId;
+			this.CompanyId = this.CompanyId ?? (int)Current.CompanyId;
 		}
 
 		public virtual Message[] Validate()
 		{
+			bool exists;
 			List<Message> messages;
-			
+
 			messages = new List<Message>();
+
+			if (DataType.IsNullOrWhiteSpace(this.XXX))
+				messages.Add(new Message("", "XXX is required for the ${TableNameSingularPascalCase}.", Severity.Error));
+				
+			if (messages.Count > 0)
+				return messages.ToArray();
+
+			exists = ${TableNameSingularPascalCase}Exists(this);
+
+			if (exists)
+				messages.Add(new Message("", "${TableNameSingularPascalCase} must be unique.", Severity.Error));
 
 			return messages.ToArray();
 		}

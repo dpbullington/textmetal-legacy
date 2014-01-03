@@ -175,7 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\SiteBase.Master" />
-    <Content Include="Views\Test\Index.tm" />
+    <Content Include="Views\Test\Index.tmpx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TextMetal.Common.Core\TextMetal.Common.Core.csproj">

@@ -100,6 +100,12 @@ namespace ${ClrNamespace}
 		{
 			return UnitOfWork.Create(ConnectionType, ConnectionString, true);
 		}
+		
+		public static void InitDatabase()
+		{
+			// do nothing
+			throw new NotSupportedException("LINQ to SQL is being used.");
+		}
 
 		static partial void OnPreProcessConnectionString(ref string connectionString);
 		
