@@ -53,6 +53,8 @@
     <Compile Include="AspNet\TextMetalView.cs" />
     <Compile Include="AspNet\TextMetalViewEngine.cs" />
     <Compile Include="AspNet\WebHost.cs" />
+    <Compile Include="Email\EmailHost.cs" />
+    <Compile Include="Email\IEmailHost.cs" />
     <Compile Include="Email\IEmailAttachment.cs" />
     <Compile Include="Email\IEmailMessage.cs" />
     <Compile Include="Email\MessageTemplate.cs" />

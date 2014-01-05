@@ -18,10 +18,12 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model.Tables
 		{
 			DateTime now;
 
-			now = DateTime.Now;
+			now = DateTime.UtcNow;
 
 			this.CreationTimestamp = this.CreationTimestamp ?? now;
 			this.ModificationTimestamp = !this.IsNew ? now : this.CreationTimestamp;
+			//this.CreationUserId = Current.UserId ?? null;
+			//this.ModificationUserId = !this.IsNew ? Current.UserId : this.CreationUserId;
 			this.LogicalDelete = this.LogicalDelete ?? false;
 		}
 

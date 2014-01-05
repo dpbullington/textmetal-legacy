@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.IO;
 
 namespace TextMetal.HostImpl.Web.Email
 {
@@ -20,6 +21,12 @@ namespace TextMetal.HostImpl.Web.Email
 		IEmailMessage EmailMessage
 		{
 			get;
+		}
+
+		string FileName
+		{
+			get;
+			set;
 		}
 
 		string MimeType

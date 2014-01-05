@@ -4,7 +4,9 @@
 */
 
 using System;
+using System.Text;
 
+using TextMetal.Common.Cerealization;
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
 using TextMetal.HostImpl.AspNetSample.Objects.Model.Tables;
@@ -15,6 +17,88 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model
 	public partial class Repository
 	{
 		#region Methods/Operators
+
+		partial void OnPostInsertEmailAttachment(IUnitOfWork unitOfWork, EmailAttachment emailAttachment)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)emailAttachment == null)
+				throw new ArgumentNullException("emailAttachment");
+		}
+
+		partial void OnPostInsertEmailMessage(IUnitOfWork unitOfWork, EmailMessage emailMessage)
+		{
+			bool result;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)emailMessage == null)
+				throw new ArgumentNullException("emailMessage");
+
+			if ((object)emailMessage.EmailAttachments != null)
+			{
+				foreach (EmailAttachment emailAttachment in emailMessage.EmailAttachments)
+				{
+					emailAttachment.EmailMessageId = emailMessage.EmailMessageId;
+					result = this.SaveEmailAttachment(unitOfWork, emailAttachment);
+
+					if (!result)
+						throw new InvalidOperationException("bad stuff happened");
+				}
+			}
+		}
+
+		partial void OnPostInsertEventLog(IUnitOfWork unitOfWork, EventLog eventLog)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)eventLog == null)
+				throw new ArgumentNullException("eventLog");
+		}
+
+		partial void OnPostUpdateEmailAttachment(IUnitOfWork unitOfWork, EmailAttachment emailAttachment)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)emailAttachment == null)
+				throw new ArgumentNullException("emailAttachment");
+		}
+
+		partial void OnPostUpdateEmailMessage(IUnitOfWork unitOfWork, EmailMessage emailMessage)
+		{
+			bool result;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)emailMessage == null)
+				throw new ArgumentNullException("emailMessage");
+
+			if ((object)emailMessage.EmailAttachments != null)
+			{
+				foreach (EmailAttachment emailAttachment in emailMessage.EmailAttachments)
+				{
+					emailAttachment.EmailMessageId = emailMessage.EmailMessageId;
+					result = this.SaveEmailAttachment(unitOfWork, emailAttachment);
+
+					if (!result)
+						throw new InvalidOperationException("bad stuff happened");
+				}
+			}
+		}
+
+		partial void OnPostUpdateEventLog(IUnitOfWork unitOfWork, EventLog eventLog)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)eventLog == null)
+				throw new ArgumentNullException("eventLog");
+		}
 
 		partial void OnPreInsertEmailAttachment(IUnitOfWork unitOfWork, EmailAttachment emailAttachment)
 		{
@@ -84,7 +168,10 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model
 
 		public bool TrySendEmailTemplate(string templateResourceName, object modelObject)
 		{
+			Type templateResourceType;
+			MessageTemplate messageTemplate;
 			EmailMessage emailMessage;
+			EmailAttachment emailAttachment;
 
 			if ((object)templateResourceName == null)
 				throw new ArgumentNullException("templateResourceName");
@@ -94,11 +181,21 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model
 
 			try
 			{
-				emailMessage = MessageTemplate.SendEmailTemplate<EmailMessage>(typeof(Repository), templateResourceName,
-					modelObject, (em) => this.SaveEmailMessage(em));
+				templateResourceType = typeof(Repository);
+				if (!Cerealization.TryGetFromAssemblyResource<MessageTemplate>(templateResourceType, templateResourceName, out messageTemplate))
+					throw new InvalidOperationException(string.Format("Unable to deserialize instance of '{0}' from the manifest resource name '{1}' in the assembly '{2}'.", typeof(MessageTemplate).FullName, templateResourceName, templateResourceType.Assembly.FullName));
 
-				if (emailMessage == null)
-					throw new InvalidOperationException("bad stuff happended");
+				emailMessage = new EmailMessage();
+				emailAttachment = new EmailAttachment( /*emailMessage*/);
+				emailAttachment.FileName = "data.txt";
+				emailAttachment.MimeType = "text/plain";
+				emailAttachment.AttachmentBits = Encoding.UTF8.GetBytes("some sample data");
+
+				emailMessage.EmailAttachments.Add(emailAttachment);
+
+				new EmailHost().Host(messageTemplate, modelObject, emailMessage);
+
+				this.SaveEmailMessage(emailMessage);
 
 				return true;
 			}

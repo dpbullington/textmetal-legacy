@@ -13,13 +13,19 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model.Tables
 {
 	public partial class EmailMessage : IEmailMessage
 	{
+		#region Fields/Constants
+
+		private readonly IList<IEmailAttachment> emailAttachments = new List<IEmailAttachment>();
+
+		#endregion
+
 		#region Properties/Indexers/Events
 
 		public IList<IEmailAttachment> EmailAttachments
 		{
 			get
 			{
-				return null;
+				return this.emailAttachments;
 			}
 		}
 
@@ -29,6 +35,18 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model.Tables
 
 		public void Mark()
 		{
+			DateTime now;
+
+			now = DateTime.UtcNow;
+
+			this.CreationTimestamp = this.CreationTimestamp ?? now;
+			this.ModificationTimestamp = !this.IsNew ? now : this.CreationTimestamp;
+			//this.CreationUserId = Current.UserId ?? null;
+			//this.ModificationUserId = !this.IsNew ? Current.UserId : this.CreationUserId;
+			this.LogicalDelete = this.LogicalDelete ?? false;
+
+			this.Processed = this.Processed ?? false;
+			this.IsBodyHtml = this.IsBodyHtml ?? false;
 		}
 
 		public virtual Message[] Validate()

@@ -22,6 +22,13 @@ namespace TextMetal.HostImpl.AspNetSample.Controllers
 		#region Methods/Operators
 
 		[AcceptVerbs(HttpVerbs.Get)]
+		[ActionName("error")]
+		public ActionResult ErrorGet()
+		{
+			throw new Exception("go boom!");
+		}
+
+		[AcceptVerbs(HttpVerbs.Get)]
 		[ActionName("index")]
 		public ActionResult IndexGet()
 		{

@@ -22,13 +22,13 @@
 		<Template xmlns="http://www.textmetal.com/api/v5.0.0"><![CDATA[bob@example.com]]></Template>
 	</To>
 
-	<CC>
+	<CarbonCopy>
 		<Template xmlns="http://www.textmetal.com/api/v5.0.0" />
-	</CC>
+	</CarbonCopy>
 
-	<BCC>
+	<BlindCarbonCopy>
 		<Template xmlns="http://www.textmetal.com/api/v5.0.0" />
-	</BCC>
+	</BlindCarbonCopy>
 
 	<Subject>
 		<Template xmlns="http://www.textmetal.com/api/v5.0.0"><![CDATA[Unhandled Exception]]></Template>

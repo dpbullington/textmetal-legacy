@@ -11,7 +11,7 @@ namespace TextMetal.HostImpl.AspNetSample.Objects
 	{
 		#region Fields/Constants
 
-		public const string EVENT_LOG = "TextMetal.WebHostSample.Email.EventLogEntry.xml";
+		public const string EVENT_LOG = "TextMetal.HostImpl.AspNetSample.Email.EventLogEntry.xml";
 
 		#endregion
 	}
