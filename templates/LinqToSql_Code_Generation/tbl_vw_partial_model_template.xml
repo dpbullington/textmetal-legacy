@@ -99,7 +99,7 @@ namespace ${ClrNamespace}.${FolderName}
 		{
 			DateTime now;
 
-			now = DateTime.Now;
+			now = DateTime.UtcNow;
 
 			this.CreationTimestamp = this.CreationTimestamp ?? now;
 			this.ModificationTimestamp = !this.IsNew ? now : this.CreationTimestamp;
@@ -118,12 +118,12 @@ namespace ${ClrNamespace}.${FolderName}
 			messages = new List<Message>();
 
 			if (DataType.IsNullOrWhiteSpace(this.XXX))
-				messages.Add(new Message("", "XXX is required for the ${TableNameSingularPascalCase}.", Severity.Error));
+				messages.Add(new Message("", "XXX is required.", Severity.Error));
 				
 			if (messages.Count > 0)
 				return messages.ToArray();
 
-			exists = ${TableNameSingularPascalCase}Exists(this);
+			exists = Exists(this);
 
 			if (exists)
 				messages.Add(new Message("", "${TableNameSingularPascalCase} must be unique.", Severity.Error));

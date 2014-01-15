@@ -50,7 +50,7 @@ namespace TextMetal.HostImpl.VsIdeConv.ConsoleTool
 			DateTime start, end;
 			TimeSpan duration;
 
-			start = DateTime.Now;
+			start = DateTime.UtcNow;
 
 			RegisteredFileExtensionHandlers.Add(".testrunconfig", ChainFileHandler.GetChain(FsClearRoFileHandler.Instance));
 			RegisteredFileExtensionHandlers.Add(".vsmdi", ChainFileHandler.GetChain(FsClearRoFileHandler.Instance));
@@ -107,7 +107,7 @@ namespace TextMetal.HostImpl.VsIdeConv.ConsoleTool
 			}
 			finally
 			{
-				end = DateTime.Now;
+				end = DateTime.UtcNow;
 				duration = end - start;
 				Console.WriteLine("Operation duration: {0}", duration);
 			}

@@ -17,7 +17,7 @@ namespace TextMetal.Common.Data.TypeMap.HighLevel
 
 		protected AutoDomainObject()
 		{
-			this.CreationTimestamp = DateTime.Now;
+			this.CreationTimestamp = DateTime.UtcNow;
 		}
 
 		#endregion
@@ -131,7 +131,7 @@ namespace TextMetal.Common.Data.TypeMap.HighLevel
 				    (value == ObjectState.Modified || value == ObjectState.Removed))
 				{
 					this.PreviousModificationTimestamp = this.ModificationTimestamp;
-					this.ModificationTimestamp = DateTime.Now;
+					this.ModificationTimestamp = DateTime.UtcNow;
 				}
 				else if (this.ObjectState == ObjectState.Modified &&
 				         value == ObjectState.Consistent)
