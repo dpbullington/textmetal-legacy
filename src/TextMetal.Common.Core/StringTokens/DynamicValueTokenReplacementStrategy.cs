@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace TextMetal.Common.Core.StringTokens
 {
@@ -154,14 +153,14 @@ namespace TextMetal.Common.Core.StringTokens
 		/// <summary>
 		/// Used by the token model to get the value of public, static properties with zero or more parameters in a dynamic manner.
 		/// </summary>
-		/// <param name="parameters"> An array of parameters in the form: assembly-qualified-type-name, property-name, [parameter-assembly-qualified-type-name, indexer-value, ...]</param>
+		/// <param name="parameters"> An array of parameters in the form: assembly-qualified-type-name, property-name, [parameter-assembly-qualified-type-name, indexer-value, ...] </param>
 		/// <returns> The return value of the property getter. </returns>
 		public static object StaticPropertyResolver(string[] parameters)
 		{
 			Type targetType;
 			PropertyInfo propertyInfo;
 			object propertyValue = null;
-			
+
 			if ((object)parameters == null)
 				throw new ArgumentNullException("parameters");
 

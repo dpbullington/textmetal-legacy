@@ -58,14 +58,6 @@
     <Compile Include="Data\AmbientUnitOfWorkAwareDisposableWrapperTests.cs" />
     <None Include="Data\LinqToSql\LinqToSqlHelperTests.cs" />
     <Compile Include="Data\LinqToSql\MulticastContextTests.cs" />
-    <Compile Include="Data\TypeMap\LowLevel\AssemblyResourceDataSourceMapFactoryTests.cs" />
-    <Compile Include="Data\TypeMap\LowLevel\CommandTests.cs" />
-    <Compile Include="Data\TypeMap\LowLevel\DataSourceMapTests.cs" />
-    <Compile Include="Data\TypeMap\LowLevel\FieldTests.cs" />
-    <Compile Include="Data\TypeMap\LowLevel\ForTests.cs" />
-    <Compile Include="Data\TypeMap\LowLevel\MappingUtilsTests.cs" />
-    <Compile Include="Data\TypeMap\LowLevel\ParameterTests.cs" />
-    <Compile Include="Data\TypeMap\PlainObjectTests.cs" />
     <Compile Include="Solder\DependencyManagement\_\ActivatorDependencyResolutionTests.cs" />
     <Compile Include="Solder\DependencyManagement\_\ConstructorDependencyResolutionTests.cs" />
     <Compile Include="Solder\DependencyManagement\_\DelegateDependencyResolutionTests.cs" />
@@ -87,7 +79,6 @@
     <Compile Include="TestingInfrastructure\MockMultipleTestAttibute.cs" />
     <Compile Include="TestingInfrastructure\MockObject.cs" />
     <Compile Include="TestingInfrastructure\MockPlainObject.cs" />
-    <Compile Include="TestingInfrastructure\MockPlainObjectNoMap.cs" />
     <Compile Include="TestingInfrastructure\MockProxyFactory.cs" />
     <Compile Include="TestingInfrastructure\MockSingleTestAttibute.cs" />
     <Compile Include="TestingInfrastructure\MockTestAttributedClass.cs" />
@@ -128,9 +119,6 @@
       <Project>{3155f5f3-7b0b-4b3b-b5bc-11df80fe2148}</Project>
       <Name>TextMetal.TestFramework</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestingInfrastructure\MockPlainObject.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

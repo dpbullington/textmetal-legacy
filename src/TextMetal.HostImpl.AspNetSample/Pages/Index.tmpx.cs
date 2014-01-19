@@ -23,7 +23,7 @@ namespace TextMetal.HostImpl.AspNetSample.Pages
 			int ct;
 
 			repository = new Repository();
-			
+
 			repository.TryWriteEventLogEntry(Guid.NewGuid().ToString());
 
 			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(Repository.DefaultUnitOfWorkFactory.Instance))
@@ -38,9 +38,9 @@ namespace TextMetal.HostImpl.AspNetSample.Pages
 			}
 
 			return new
-			{
-				Y = "deez nizzles", CT = ct
-			};
+					{
+						Y = "deez nizzles", CT = ct
+					};
 		}
 
 		#endregion

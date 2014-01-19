@@ -14,7 +14,5 @@ namespace TextMetal.HostImpl.Web.Email
 		void Host(MessageTemplate messageTemplate, object modelObject, IEmailMessage emailMessage);
 
 		#endregion
-
-
 	}
 }

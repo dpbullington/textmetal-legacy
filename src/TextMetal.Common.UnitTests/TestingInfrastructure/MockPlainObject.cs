@@ -4,12 +4,14 @@
 */
 
 using System;
+using System.Collections.Generic;
 
-using TextMetal.Common.Data.TypeMap;
+using TextMetal.Common.Core;
+using TextMetal.Common.Data;
 
 namespace TextMetal.Common.UnitTests.TestingInfrastructure
 {
-	public class MockPlainObject : PlainObject
+	public class MockPlainObject : IPlainObject
 	{
 		#region Constructors/Destructors
 
@@ -43,7 +45,7 @@ namespace TextMetal.Common.UnitTests.TestingInfrastructure
 			}
 		}
 
-		public override bool IsNew
+		public bool IsNew
 		{
 			get
 			{
@@ -117,6 +119,20 @@ namespace TextMetal.Common.UnitTests.TestingInfrastructure
 			{
 				this.suffix = value;
 			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		public void Mark()
+		{
+			throw new NotImplementedException();
+		}
+
+		public IEnumerable<Message> Validate()
+		{
+			throw new NotImplementedException();
 		}
 
 		#endregion

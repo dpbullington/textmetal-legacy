@@ -4,7 +4,6 @@
 */
 
 using System;
-using System.IO;
 
 namespace TextMetal.HostImpl.Web.Email
 {

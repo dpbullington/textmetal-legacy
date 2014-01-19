@@ -4,8 +4,11 @@
 */
 
 using System;
+using System.Collections.Generic;
 
-namespace TextMetal.Common.Data.TypeMap
+using TextMetal.Common.Core;
+
+namespace TextMetal.Common.Data
 {
 	/// <summary>
 	/// Provides a contract for plain objects (domain, transfer, etc.).
@@ -24,14 +27,20 @@ namespace TextMetal.Common.Data.TypeMap
 			set;
 		}
 
+		#endregion
+
+		#region Methods/Operators
+
 		/// <summary>
-		/// Gets or sets the current plain object state.
+		/// Mark an instance prior to a data operation.
 		/// </summary>
-		ObjectState ObjectState
-		{
-			get;
-			set;
-		}
+		void Mark();
+
+		/// <summary>
+		/// Validate the current plain object, returning an enumerable of messages.
+		/// </summary>
+		/// <returns> An enumerable of messages. </returns>
+		IEnumerable<Message> Validate();
 
 		#endregion
 	}
