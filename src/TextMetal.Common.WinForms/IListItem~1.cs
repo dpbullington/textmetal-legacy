@@ -3,7 +3,7 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-namespace TextMetal.HostImpl.WindowsTool
+namespace TextMetal.Common.WinForms
 {
 	/// <summary>
 	/// Represents a list item with a strongly typed value.

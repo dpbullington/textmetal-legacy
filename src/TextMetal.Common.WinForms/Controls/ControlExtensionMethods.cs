@@ -9,9 +9,9 @@ using System.Drawing;
 using System.Windows.Forms;
 
 using TextMetal.Common.Core;
-using TextMetal.HostImpl.WindowsTool.Forms;
+using TextMetal.Common.WinForms.Forms;
 
-namespace TextMetal.HostImpl.WindowsTool.Controls
+namespace TextMetal.Common.WinForms.Controls
 {
 	public static class ControlExtensionMethods
 	{
@@ -23,7 +23,7 @@ namespace TextMetal.HostImpl.WindowsTool.Controls
 
 		#region Methods/Operators
 
-		public static void CoreBindSelectionItems<TValue>(this ComboBox comboBox, IListItem<TValue>[] listItems, bool useZerothItemIndex)
+		public static void CoreBindSelectionItems<TValue>(this ComboBox comboBox, IEnumerable<IListItem<TValue>> listItems, bool useZerothItemIndex)
 		{
 			List<IListItem<TValue>> tempListItems;
 

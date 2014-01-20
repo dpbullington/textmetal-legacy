@@ -42,7 +42,12 @@ goto pkgDir
 
 
 IF NOT EXIST %PACKAGE_DIR_EXISTS% GOTO noPkgDir
-goto delPkgDir
+
+@echo Cleaning pkg directory...
+rmdir "%PACKAGE_DIR%" /Q /S
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+
 
 :noPkgDir
 @echo Creating pkg directories...
@@ -65,14 +70,6 @@ mkdir "%PACKAGE_DIR%\TextMetal"
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 goto pkgBuild
-
-:delPkgDir
-@echo Cleaning pkg directory...
-rmdir "%PACKAGE_DIR%\*.*" /Q /S
-rem IF %ERRORLEVEL% NEQ 0 goto pkgError
-goto pkgBuild
-
-
 
 
 
@@ -157,6 +154,17 @@ copy ".\src\TextMetal.Common.Solder\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Sold
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 copy ".\src\TextMetal.Common.Solder\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Solder.pdb" "%PACKAGE_DIR%\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+
+
+copy ".\src\TextMetal.Common.WinForms\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.WinForms.dll" "%PACKAGE_DIR%\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy ".\src\TextMetal.Common.WinForms\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.WinForms.xml" "%PACKAGE_DIR%\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy ".\src\TextMetal.Common.WinForms\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.WinForms.pdb" "%PACKAGE_DIR%\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 

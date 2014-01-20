@@ -5,7 +5,7 @@
 
 using System;
 
-namespace TextMetal.HostImpl.WindowsTool
+namespace TextMetal.Common.WinForms
 {
 	/// <summary>
 	/// Represents a list item with a strongly typed value.

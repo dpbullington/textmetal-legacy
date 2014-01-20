@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 using TextMetal.Common.Core;
 
-namespace TextMetal.HostImpl.WindowsTool.Forms
+namespace TextMetal.Common.WinForms.Forms
 {
 	public partial class TmForm : Form
 	{
@@ -79,6 +79,16 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			set
 			{
 				this.coreIsDirtyIndicator = value;
+			}
+		}
+
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		protected TmForm CoreParentForm
+		{
+			get
+			{
+				return (TmForm)this.ParentForm;
 			}
 		}
 

@@ -6,7 +6,8 @@
 using System;
 using System.Windows.Forms;
 
-using TextMetal.HostImpl.WindowsTool.Controls;
+using TextMetal.Common.WinForms.Controls;
+using TextMetal.Common.WinForms.Forms;
 
 namespace TextMetal.HostImpl.WindowsTool.Forms
 {
@@ -55,7 +56,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		{
 			base.CoreSetup();
 
-			this.CoreText = string.Format("{0} Studio", Program.AssemblyInformation.Product);
+			this.CoreText = string.Format("{0} Studio", Program.Instance.AssemblyInformation.Product);
 		}
 
 		private void Okay()

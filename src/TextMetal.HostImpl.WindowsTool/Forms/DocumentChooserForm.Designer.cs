@@ -26,12 +26,12 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DocumentChooserForm));
-			this.btnOkay = new TextMetal.HostImpl.WindowsTool.Controls.TmButton();
-			this.btnCancel = new TextMetal.HostImpl.WindowsTool.Controls.TmButton();
+			this.btnOkay = new TextMetal.Common.WinForms.Controls.TmButton();
+			this.btnCancel = new TextMetal.Common.WinForms.Controls.TmButton();
 			this.gbChoice = new System.Windows.Forms.GroupBox();
-			this.rdoSqlQuery = new TextMetal.HostImpl.WindowsTool.Controls.TmRadioButton();
-			this.rdoAssociativeModel = new TextMetal.HostImpl.WindowsTool.Controls.TmRadioButton();
-			this.rdoTemplate = new TextMetal.HostImpl.WindowsTool.Controls.TmRadioButton();
+			this.rdoSqlQuery = new TextMetal.Common.WinForms.Controls.TmRadioButton();
+			this.rdoAssociativeModel = new TextMetal.Common.WinForms.Controls.TmRadioButton();
+			this.rdoTemplate = new TextMetal.Common.WinForms.Controls.TmRadioButton();
 			this.gbChoice.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -126,11 +126,11 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			this.ResumeLayout(false);
 
 		}
-		internal TextMetal.HostImpl.WindowsTool.Controls.TmButton btnOkay;
-		internal TextMetal.HostImpl.WindowsTool.Controls.TmButton btnCancel;
+		internal TextMetal.Common.WinForms.Controls.TmButton btnOkay;
+		internal TextMetal.Common.WinForms.Controls.TmButton btnCancel;
 		private System.Windows.Forms.GroupBox gbChoice;
-		private Controls.TmRadioButton rdoSqlQuery;
-		private Controls.TmRadioButton rdoAssociativeModel;
-		private Controls.TmRadioButton rdoTemplate;
+		private TextMetal.Common.WinForms.Controls.TmRadioButton rdoSqlQuery;
+		private TextMetal.Common.WinForms.Controls.TmRadioButton rdoAssociativeModel;
+		private TextMetal.Common.WinForms.Controls.TmRadioButton rdoTemplate;
 	}
 }

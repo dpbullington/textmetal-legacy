@@ -10,6 +10,7 @@ using System.Linq;
 using System.Windows.Forms;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.WinForms.Forms;
 
 namespace TextMetal.HostImpl.WindowsTool.Forms
 {
@@ -98,7 +99,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 			if (dirtyCount > 0)
 			{
-				if (MessageBox.Show(this, string.Format("Do you want {1} without saving the {0} modified document(s)?", dirtyCount, verb), Program.AssemblyInformation.Product, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+				if (MessageBox.Show(this, string.Format("Do you want {1} without saving the {0} modified document(s)?", dirtyCount, verb), Program.Instance.AssemblyInformation.Product, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
 				{
 					cancel = true;
 					return;
@@ -128,14 +129,14 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		{
 			base.CoreShown();
 
-			this.CoreText = string.Format("{0} Studio", Program.AssemblyInformation.Product);
+			this.CoreText = string.Format("{0} Studio", Program.Instance.AssemblyInformation.Product);
 
 			this.RefreshControlState();
 		}
 
 		private void HelpTopics()
 		{
-			MessageBox.Show(this, "Help is not available in this release.", Program.AssemblyInformation.Product, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			MessageBox.Show(this, "Help is not available in this release.", Program.Instance.AssemblyInformation.Product, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 		}
 
 		private void NewDocument()

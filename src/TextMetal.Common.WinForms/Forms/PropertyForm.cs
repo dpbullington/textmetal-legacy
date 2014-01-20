@@ -6,7 +6,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace TextMetal.HostImpl.WindowsTool.Forms
+namespace TextMetal.Common.WinForms.Forms
 {
 	public partial class PropertyForm : TmForm
 	{

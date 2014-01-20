@@ -5,17 +5,18 @@
 
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 
 using TextMetal.Common.Core;
 
-namespace TextMetal.HostImpl.WindowsTool.Controls
+namespace TextMetal.Common.WinForms.Controls
 {
-	public class TmComboBox : ComboBox
+	public class TmTextBox : TextBox
 	{
 		#region Constructors/Destructors
 
-		public TmComboBox()
+		public TmTextBox()
 		{
 		}
 
@@ -24,6 +25,7 @@ namespace TextMetal.HostImpl.WindowsTool.Controls
 		#region Fields/Constants
 
 		private bool isInputValid = true;
+		private Color? oldBackColor;
 		private string valueType;
 
 		#endregion
@@ -39,6 +41,18 @@ namespace TextMetal.HostImpl.WindowsTool.Controls
 			set
 			{
 				this.isInputValid = value;
+			}
+		}
+
+		private Color? OldBackColor
+		{
+			get
+			{
+				return this.oldBackColor;
+			}
+			set
+			{
+				this.oldBackColor = value;
 			}
 		}
 
@@ -86,25 +100,22 @@ namespace TextMetal.HostImpl.WindowsTool.Controls
 			base.OnKeyPress(e);
 		}
 
-		protected override void OnSelectedIndexChanged(EventArgs e)
+		protected override void OnReadOnlyChanged(EventArgs e)
 		{
-			base.OnSelectedIndexChanged(e);
+			base.OnReadOnlyChanged(e);
 
-			this.CoreSetParentFormDirty(true);
-		}
+			if (this.ReadOnly)
+			{
+				this.OldBackColor = base.BackColor;
+				this.BackColor = SystemColors.Control;
+			}
+			else
+			{
+				if (this.OldBackColor != null)
+					this.BackColor = (Color)this.OldBackColor;
 
-		protected override void OnSelectedItemChanged(EventArgs e)
-		{
-			base.OnSelectedItemChanged(e);
-
-			this.CoreSetParentFormDirty(true);
-		}
-
-		protected override void OnSelectedValueChanged(EventArgs e)
-		{
-			base.OnSelectedValueChanged(e);
-
-			this.CoreSetParentFormDirty(true);
+				this.OldBackColor = null;
+			}
 		}
 
 		protected override void OnTextChanged(EventArgs e)

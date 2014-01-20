@@ -30,7 +30,7 @@
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SplashForm));
 			this.pbAppLogo = new System.Windows.Forms.PictureBox();
-			this.btnOK = new TextMetal.HostImpl.WindowsTool.Controls.TmButton();
+			this.btnOK = new TextMetal.Common.WinForms.Controls.TmButton();
 			this.pnlMain = new System.Windows.Forms.Panel();
 			this.pbMain = new System.Windows.Forms.ProgressBar();
 			this.tmrMain = new System.Windows.Forms.Timer(this.components);
@@ -113,7 +113,7 @@
 		#endregion
 
 		private System.Windows.Forms.PictureBox pbAppLogo;
-		private TextMetal.HostImpl.WindowsTool.Controls.TmButton btnOK;
+		private TextMetal.Common.WinForms.Controls.TmButton btnOK;
 		private System.Windows.Forms.Panel pnlMain;
 		private System.Windows.Forms.ProgressBar pbMain;
 		private System.Windows.Forms.Timer tmrMain;

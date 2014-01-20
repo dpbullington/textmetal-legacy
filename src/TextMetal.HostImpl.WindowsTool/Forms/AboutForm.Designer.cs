@@ -29,17 +29,17 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
 			this.pbAppLogo = new System.Windows.Forms.PictureBox();
-			this.lblProduct = new TextMetal.HostImpl.WindowsTool.Controls.TmLabel();
-			this.lblVersion = new TextMetal.HostImpl.WindowsTool.Controls.TmLabel();
-			this.lblCopyright = new TextMetal.HostImpl.WindowsTool.Controls.TmLabel();
-			this.lblCompany = new TextMetal.HostImpl.WindowsTool.Controls.TmLabel();
+			this.lblProduct = new TextMetal.Common.WinForms.Controls.TmLabel();
+			this.lblVersion = new TextMetal.Common.WinForms.Controls.TmLabel();
+			this.lblCopyright = new TextMetal.Common.WinForms.Controls.TmLabel();
+			this.lblCompany = new TextMetal.Common.WinForms.Controls.TmLabel();
 			this.txtBxDescription = new System.Windows.Forms.TextBox();
-			this.btnOK = new TextMetal.HostImpl.WindowsTool.Controls.TmButton();
-			this.lblWin32FileVersion = new TextMetal.HostImpl.WindowsTool.Controls.TmLabel();
-			this.lblTrademark = new TextMetal.HostImpl.WindowsTool.Controls.TmLabel();
-			this.lblTitle = new TextMetal.HostImpl.WindowsTool.Controls.TmLabel();
-			this.lblInformationalVersion = new TextMetal.HostImpl.WindowsTool.Controls.TmLabel();
-			this.lblConfiguration = new TextMetal.HostImpl.WindowsTool.Controls.TmLabel();
+			this.btnOK = new TextMetal.Common.WinForms.Controls.TmButton();
+			this.lblWin32FileVersion = new TextMetal.Common.WinForms.Controls.TmLabel();
+			this.lblTrademark = new TextMetal.Common.WinForms.Controls.TmLabel();
+			this.lblTitle = new TextMetal.Common.WinForms.Controls.TmLabel();
+			this.lblInformationalVersion = new TextMetal.Common.WinForms.Controls.TmLabel();
+			this.lblConfiguration = new TextMetal.Common.WinForms.Controls.TmLabel();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			((System.ComponentModel.ISupportInitialize)(this.pbAppLogo)).BeginInit();
 			this.tableLayoutPanel1.SuspendLayout();
@@ -243,17 +243,17 @@
 		#endregion
 
 		private System.Windows.Forms.PictureBox pbAppLogo;
-		private TextMetal.HostImpl.WindowsTool.Controls.TmLabel lblProduct;
-		private TextMetal.HostImpl.WindowsTool.Controls.TmLabel lblVersion;
-		private TextMetal.HostImpl.WindowsTool.Controls.TmLabel lblCopyright;
-		private TextMetal.HostImpl.WindowsTool.Controls.TmLabel lblCompany;
+		private TextMetal.Common.WinForms.Controls.TmLabel lblProduct;
+		private TextMetal.Common.WinForms.Controls.TmLabel lblVersion;
+		private TextMetal.Common.WinForms.Controls.TmLabel lblCopyright;
+		private TextMetal.Common.WinForms.Controls.TmLabel lblCompany;
 		private System.Windows.Forms.TextBox txtBxDescription;
-		private TextMetal.HostImpl.WindowsTool.Controls.TmButton btnOK;
-		private TextMetal.HostImpl.WindowsTool.Controls.TmLabel lblWin32FileVersion;
-		private TextMetal.HostImpl.WindowsTool.Controls.TmLabel lblTrademark;
-		private TextMetal.HostImpl.WindowsTool.Controls.TmLabel lblTitle;
-		private TextMetal.HostImpl.WindowsTool.Controls.TmLabel lblInformationalVersion;
-		private TextMetal.HostImpl.WindowsTool.Controls.TmLabel lblConfiguration;
+		private TextMetal.Common.WinForms.Controls.TmButton btnOK;
+		private TextMetal.Common.WinForms.Controls.TmLabel lblWin32FileVersion;
+		private TextMetal.Common.WinForms.Controls.TmLabel lblTrademark;
+		private TextMetal.Common.WinForms.Controls.TmLabel lblTitle;
+		private TextMetal.Common.WinForms.Controls.TmLabel lblInformationalVersion;
+		private TextMetal.Common.WinForms.Controls.TmLabel lblConfiguration;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 	}
 }

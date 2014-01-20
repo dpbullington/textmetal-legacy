@@ -7,11 +7,11 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 
-using TextMetal.HostImpl.WindowsTool.Controls;
+using TextMetal.Common.WinForms.Controls;
 
 using Message = TextMetal.Common.Core.Message;
 
-namespace TextMetal.HostImpl.WindowsTool.Forms
+namespace TextMetal.Common.WinForms.Forms
 {
 	public partial class MessageForm : TmForm
 	{
@@ -70,7 +70,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		{
 			base.CoreSetup();
 
-			this.CoreText = string.Format("{0} Studio", Program.AssemblyInformation.Product);
+			this.CoreText = string.Format("{0}", this.CoreParentForm.CoreText);
 
 			this.RefreshMessages();
 		}

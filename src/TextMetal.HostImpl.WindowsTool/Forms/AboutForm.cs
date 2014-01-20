@@ -8,6 +8,8 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
+using TextMetal.Common.WinForms.Forms;
+
 namespace TextMetal.HostImpl.WindowsTool.Forms
 {
 	internal partial class AboutForm : TmForm
@@ -30,18 +32,18 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 			base.CoreSetup();
 
-			this.CoreText = string.Format("About {0} Studio", Program.AssemblyInformation.Product);
+			this.CoreText = string.Format("About {0} Studio", Program.Instance.AssemblyInformation.Product);
 
-			this.lblVersion.Text = Program.AssemblyInformation.AssemblyVersion;
-			this.lblCompany.Text = Program.AssemblyInformation.Company;
-			this.lblConfiguration.Text = Program.AssemblyInformation.Configuration;
-			this.lblCopyright.Text = Program.AssemblyInformation.Copyright;
-			this.lblInformationalVersion.Text = Program.AssemblyInformation.InformationalVersion;
-			this.lblProduct.Text = string.Format("{0} Studio", Program.AssemblyInformation.Product);
-			this.lblTitle.Text = Program.AssemblyInformation.Title;
-			this.lblTrademark.Text = Program.AssemblyInformation.Trademark;
-			this.lblWin32FileVersion.Text = Program.AssemblyInformation.Win32FileVersion;
-			this.txtBxDescription.Text = Program.AssemblyInformation.Description;
+			this.lblVersion.Text = Program.Instance.AssemblyInformation.AssemblyVersion;
+			this.lblCompany.Text = Program.Instance.AssemblyInformation.Company;
+			this.lblConfiguration.Text = Program.Instance.AssemblyInformation.Configuration;
+			this.lblCopyright.Text = Program.Instance.AssemblyInformation.Copyright;
+			this.lblInformationalVersion.Text = Program.Instance.AssemblyInformation.InformationalVersion;
+			this.lblProduct.Text = string.Format("{0} Studio", Program.Instance.AssemblyInformation.Product);
+			this.lblTitle.Text = Program.Instance.AssemblyInformation.Title;
+			this.lblTrademark.Text = Program.Instance.AssemblyInformation.Trademark;
+			this.lblWin32FileVersion.Text = Program.Instance.AssemblyInformation.Win32FileVersion;
+			this.txtBxDescription.Text = Program.Instance.AssemblyInformation.Description;
 
 			stream = this.GetType().Assembly.GetManifestResourceStream("TextMetal.HostImpl.WindowsTool.Images.SplashScreen.png");
 

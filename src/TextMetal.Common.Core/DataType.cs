@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Net.Mail;
 
 namespace TextMetal.Common.Core
 {
@@ -71,6 +72,24 @@ namespace TextMetal.Common.Core
 		public static bool IsNullOrWhiteSpace(string value)
 		{
 			return (object)value == null || IsWhiteSpace(value);
+		}
+
+		/// <summary>
+		/// Determines if a string value is a valid email address.
+		/// </summary>
+		/// <param name="value"> The string value to check. </param>
+		/// <returns> A boolean value indicating whether the value is a valid email address. </returns>
+		public static bool IsValidEmailAddress(string value)
+		{
+			try
+			{
+				new MailAddress(value);
+				return true;
+			}
+			catch (FormatException)
+			{
+				return false;
+			}
 		}
 
 		/// <summary>

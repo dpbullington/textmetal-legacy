@@ -31,7 +31,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;CLR_4_0;NETFX40;PHYSICALASSEMBLY DOTNET DOTNET40 CLIENTPROFILE</DefineConstants>
+    <DefineConstants>TRACE;CLR_4_0;NETFX40;PHYSICALASSEMBLY DOTNET DOTNET40 CLIENTPROFILE;PORTABLE40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\TextMetal.Imports.XML</DocumentationFile>
@@ -1356,7 +1356,7 @@
   <ItemGroup>
     <None Include="..\TextMetal.snk">
       <Link>TextMetal.snk</Link>
-    </None>    
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -1367,11 +1367,10 @@
   </Target>
   -->
   <ItemGroup>
-	<Content Include="nunit.gui\Logo.ico" />
-	<None Include="nunit.util\Transform.resx" />
+    <Content Include="nunit.gui\Logo.ico" />
+    <None Include="nunit.util\Transform.resx" />
     <None Include="nunit.core\Summary.xslt" />
-	
-	<EmbeddedResource Include="castle.core\DynamicProxy\DynProxy.snk">
+    <EmbeddedResource Include="castle.core\DynamicProxy\DynProxy.snk">
       <LogicalName>Castle.DynamicProxy.DynProxy.snk</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="newtonsoft.json\Dynamic.snk">
@@ -1382,7 +1381,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="nmock2\Properties\Resources.resx">
       <SubType>Designer</SubType>
-	  <LogicalName>NMock2.Properties.Resources.resources</LogicalName>
+      <LogicalName>NMock2.Properties.Resources.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.gui\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
@@ -1445,7 +1444,7 @@
       <LogicalName>NUnit.Gui.VisualStudioSettingsPage.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.uiexception\Properties\Resources.resx">
-	  <LogicalName>NUnit.Gui.UiException.Properties.Resources.resources</LogicalName>
+      <LogicalName>NUnit.Gui.UiException.Properties.Resources.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.uikit\AddConfigurationDialog.resx">
       <DependentUpon>AddConfigurationDialog.cs</DependentUpon>

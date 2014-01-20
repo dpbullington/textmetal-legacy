@@ -6,7 +6,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace TextMetal.HostImpl.WindowsTool.Controls
+namespace TextMetal.Common.WinForms.Controls
 {
 	public class TmGdiPaintSurface : UserControl
 	{

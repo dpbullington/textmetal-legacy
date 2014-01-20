@@ -7,7 +7,7 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace TextMetal.HostImpl.WindowsTool.Forms
+namespace TextMetal.Common.WinForms.Forms
 {
 	public partial class BackgroundTaskForm : TmForm
 	{
@@ -151,7 +151,8 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		{
 			base.CoreSetup();
 
-			this.CoreText = string.Format("{0}", Program.AssemblyInformation.Product);
+			this.CoreText = string.Format("{0}", this.CoreParentForm.CoreText);
+			
 			this.tmrMain.Enabled = true;
 		}
 

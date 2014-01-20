@@ -3,7 +3,9 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-namespace TextMetal.HostImpl.WindowsTool.Forms
+using TextMetal.Common.WinForms.Controls;
+
+namespace TextMetal.Common.WinForms.Forms
 {
 	partial class MessageForm
 	{
@@ -27,11 +29,11 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MessageForm));
-			this.lblMessage = new TextMetal.HostImpl.WindowsTool.Controls.TmLabel();
+			this.lblMessage = new TmLabel();
 			this.ilMain = new System.Windows.Forms.ImageList(this.components);
-			this.btnOkay = new TextMetal.HostImpl.WindowsTool.Controls.TmButton();
+			this.btnOkay = new TmButton();
 			this.tvMessages = new System.Windows.Forms.TreeView();
-			this.btnCancel = new TextMetal.HostImpl.WindowsTool.Controls.TmButton();
+			this.btnCancel = new TmButton();
 			this.SuspendLayout();
 			// 
 			// lblMessage
@@ -107,10 +109,10 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			this.PerformLayout();
 
 		}
-		internal TextMetal.HostImpl.WindowsTool.Controls.TmLabel lblMessage;
-		internal TextMetal.HostImpl.WindowsTool.Controls.TmButton btnOkay;
+		internal TmLabel lblMessage;
+		internal TmButton btnOkay;
 		internal System.Windows.Forms.ImageList ilMain;
 		internal System.Windows.Forms.TreeView tvMessages;
-		internal TextMetal.HostImpl.WindowsTool.Controls.TmButton btnCancel;
+		internal TmButton btnCancel;
 	}
 }

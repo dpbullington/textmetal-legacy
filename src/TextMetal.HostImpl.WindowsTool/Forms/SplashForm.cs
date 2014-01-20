@@ -8,6 +8,8 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
+using TextMetal.Common.WinForms.Forms;
+
 namespace TextMetal.HostImpl.WindowsTool.Forms
 {
 	internal partial class SplashForm : TmForm
@@ -30,7 +32,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 			base.CoreSetup();
 
-			this.CoreText = string.Format("{0}", Program.AssemblyInformation.Product);
+			this.CoreText = string.Format("{0}", Program.Instance.AssemblyInformation.Product);
 
 			stream = this.GetType().Assembly.GetManifestResourceStream("TextMetal.HostImpl.WindowsTool.Images.SplashScreen.png");
 

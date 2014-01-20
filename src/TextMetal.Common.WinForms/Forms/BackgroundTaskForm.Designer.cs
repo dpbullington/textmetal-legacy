@@ -3,7 +3,9 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-namespace TextMetal.HostImpl.WindowsTool.Forms
+using TextMetal.Common.WinForms.Controls;
+
+namespace TextMetal.Common.WinForms.Forms
 {
 	partial class BackgroundTaskForm
 	{
@@ -18,9 +20,9 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing && (components != null))
+			if (disposing && (this.components != null))
 			{
-				components.Dispose();
+				this.components.Dispose();
 			}
 			base.Dispose(disposing);
 		}
@@ -37,9 +39,9 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BackgroundTaskForm));
 			this.pbarMain = new System.Windows.Forms.ProgressBar();
 			this.tmrMain = new System.Windows.Forms.Timer(this.components);
-			this.btnCancel = new TextMetal.HostImpl.WindowsTool.Controls.TmButton();
+			this.btnCancel = new TmButton();
 			this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
-			this.lblCaption = new TextMetal.HostImpl.WindowsTool.Controls.TmLabel();
+			this.lblCaption = new TmLabel();
 			this.SuspendLayout();
 			// 
 			// pbarMain
@@ -103,8 +105,8 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 		private System.Windows.Forms.ProgressBar pbarMain;
 		private System.Windows.Forms.Timer tmrMain;
-		private TextMetal.HostImpl.WindowsTool.Controls.TmButton btnCancel;
+		private TmButton btnCancel;
 		private System.ComponentModel.BackgroundWorker backgroundWorker;
-		private TextMetal.HostImpl.WindowsTool.Controls.TmLabel lblCaption;
+		private TmLabel lblCaption;
 	}
 }

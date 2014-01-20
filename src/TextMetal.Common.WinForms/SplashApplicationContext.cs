@@ -6,9 +6,9 @@
 using System;
 using System.Windows.Forms;
 
-namespace TextMetal.HostImpl.WindowsTool
+namespace TextMetal.Common.WinForms
 {
-	internal class SplashApplicationContext : ApplicationContext
+	public sealed class SplashApplicationContext : ApplicationContext
 	{
 		#region Constructors/Destructors
 
