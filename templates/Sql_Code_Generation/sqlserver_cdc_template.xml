@@ -15,7 +15,7 @@ GO
 
 CREATE FUNCTION [${HistorySchemaName}].[GetTimestampId]
 (
-	@DateTime as [datetime]
+	@DateTime as [datetime2]
 )
 RETURNS [bigint]
 AS
@@ -251,7 +251,7 @@ AS
 
 		INSERT INTO [${HistorySchemaName}].[${TableName}History]
 		SELECT
-			[${HistorySchemaName}].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			[${HistorySchemaName}].GetTimestampId(SYSUTCDATETIME()) AS [TimestampId],
 ]]>
 				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
 					<ForEach.Filter>
@@ -354,7 +354,7 @@ AS
 		UNION ALL
 
 		SELECT
-			[${HistorySchemaName}].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			[${HistorySchemaName}].GetTimestampId(SYSUTCDATETIME()) AS [TimestampId],
 ]]>
 				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
 					<ForEach.Filter>
