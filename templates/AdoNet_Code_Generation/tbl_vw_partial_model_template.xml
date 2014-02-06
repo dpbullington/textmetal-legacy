@@ -103,8 +103,8 @@ namespace ${ClrNamespace}.${FolderName}
 
 			this.CreationTimestamp = this.CreationTimestamp ?? now;
 			this.ModificationTimestamp = !this.IsNew ? now : this.CreationTimestamp;
-			this.CreationUserId = Current.UserId ?? null;
-			this.ModificationUserId = !this.IsNew ? Current.UserId : this.CreationUserId;
+			this.CreationUserId = ((this.IsNew ? Current.UserId : this.CreationUserId) ?? this.CreationUserId) ?? User.SYSTEM_USER_ID;
+			this.ModificationUserId = ((!this.IsNew ? Current.UserId : this.CreationUserId) ?? this.ModificationUserId) ?? User.SYSTEM_USER_ID;
 			this.LogicalDelete = this.LogicalDelete ?? false;
 
 			this.CompanyId = this.CompanyId ?? (int)Current.CompanyId;

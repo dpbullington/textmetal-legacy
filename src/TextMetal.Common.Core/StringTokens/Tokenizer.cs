@@ -51,7 +51,7 @@ namespace TextMetal.Common.Core.StringTokens
 			@"(?: [ ]* \( ( [ ]* (?: ` [^`]* ` [ ]* (?: , [ ]* ` [^`]* ` [ ]* )* ){0,1} ){0,1} \) ){0,1}" +
 			@"[ ]* \}";
 
-		private const string TOKEN_ID_REGEX = @"[a-zA-Z_#\.\:][a-zA-Z_0-9]{0,1023}";
+		private const string TOKEN_ID_REGEX = @"[a-zA-Z_\.][a-zA-Z_\.0-9]{0,1023}";
 
 		private readonly List<string> previousExpansionTokens = new List<string>();
 		private readonly bool strictMatching;
@@ -195,25 +195,36 @@ namespace TextMetal.Common.Core.StringTokens
 		/// <returns> The token-resolved string value. </returns>
 		private string ReplacementMatcherEx(Match match, IWildcardTokenReplacementStrategy wildcardTokenReplacementStrategy)
 		{
-			// ${ token (`arg0`, ..) }
+			// ${ .token.token.token_end (`arg0`, ..) }
 
-			string token = null;
+			string firstToken, rawToken = null;
+			string[] tokens;
 			string[] argumentList = null;
-			object replacementValue = null;
+			object tokenLogicalValue, tokenReplacementValue = null;
 			ITokenReplacementStrategy tokenReplacementStrategy;
 			bool keyNotFound, tryWildcard;
 
-			token = match.Groups[1].Success ? match.Groups[1].Value : null;
+			rawToken = match.Groups[1].Success ? match.Groups[1].Value : null;
 
 			argumentList = match.Groups[2].Success ? GetArgs(match.Groups[2].Value) : null;
 
-			if (DataType.IsNullOrWhiteSpace(token))
+			if (DataType.IsNullOrWhiteSpace(rawToken))
 				return GetOriginalValueOrThrowExecption(this.StrictMatching, match.Value, "token missing");
 
-			// add to token collection
-			this.PreviousExpansionTokens.Add(token);
+			// break any token paths into token list
+			tokens = rawToken.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
 
-			keyNotFound = !this.TokenReplacementStrategies.TryGetValue(token, out tokenReplacementStrategy);
+			if ((object)tokens == null ||
+				tokens.Length <= 0)
+				return null;
+
+			firstToken = tokens[0];
+			tokens = tokens.Skip(1).ToArray();
+
+			// add to token collection
+			this.PreviousExpansionTokens.Add(firstToken);
+
+			keyNotFound = !this.TokenReplacementStrategies.TryGetValue(firstToken, out tokenReplacementStrategy);
 			tryWildcard = keyNotFound && (object)wildcardTokenReplacementStrategy != null;
 
 			if (keyNotFound && !tryWildcard)
@@ -222,16 +233,28 @@ namespace TextMetal.Common.Core.StringTokens
 			try
 			{
 				if (!tryWildcard)
-					replacementValue = tokenReplacementStrategy.Evaluate(argumentList);
+					tokenReplacementValue = tokenReplacementStrategy.Evaluate(argumentList);
 				else
-					replacementValue = wildcardTokenReplacementStrategy.Evaluate(token, argumentList);
+					tokenReplacementValue = wildcardTokenReplacementStrategy.Evaluate(firstToken, argumentList);
 			}
 			catch (Exception ex)
 			{
 				return GetOriginalValueOrThrowExecption(this.StrictMatching, match.Value, string.Format("function exception {{{0}}}", ex.Message));
 			}
 
-			return replacementValue.SafeToString();
+			if ((object)tokens == null ||
+				tokens.Length <= 0)
+				return tokenReplacementValue.SafeToString();
+
+			tokenLogicalValue = tokenReplacementValue;
+			foreach (string token in tokens)
+			{
+				// only do logical lookup here
+				if (!Reflexion.GetLogicalPropertyValue(tokenLogicalValue, token, out tokenLogicalValue))
+					return GetOriginalValueOrThrowExecption(this.StrictMatching, match.Value, string.Format("logical property expansion failed {{{0}}}", token));
+			}
+
+			return tokenLogicalValue.SafeToString();
 		}
 
 		#endregion

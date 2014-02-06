@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+-->
+<Template xmlns="http://www.textmetal.com/api/v5.0.0">
+
+	<OutputScope name="DM.g.sql">
+
+	
+	<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
+		<ForEach.Filter>
+		</ForEach.Filter>
+		
+		<ForEach.Body>
+		
+<![CDATA[
+
+CREATE SCHEMA [${SchemaName}]
+GO
+
+
+CREATE FUNCTION [${SchemaName}].[GetMaskedData]
+(
+	@Path as [nvarchar](2000),
+	@Value as [nvarchar](2000)
+)
+RETURNS [nvarchar](2000)
+AS
+BEGIN
+
+	DECLARE @mask [int]
+	
+	SELECT @mask = COUNT(*) FROM [${SchemaName}].[MaskedDataConfig] WHERE [Path] = @Path AND [IsMasked] = 1
+
+	CASE
+		WHEN @mask > 0 THEN RETURN REVERSE(@Value)
+		ELSE RETURN @Value
+	END
+	
+END
+GO
+]]>
+
+			<ForEach in="Tables" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach.Filter>
+				</ForEach.Filter>
+				<ForEach.Body>
+<![CDATA[
+
+CREATE VIEW [${SchemaName}].[${TableName}]
+AS
+
+	SELECT
+]]>
+				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
+					<ForEach.Sort>
+						<Ascending>
+							<Ascending.Compare>
+								<Facet name="ColumnOrdinal" />
+							</Ascending.Compare>
+						</Ascending>
+					</ForEach.Sort>
+					<ForEach.Body>
+						<![CDATA[	[${SchemaName}].[GetMaskedData]('[${SchemaName}].[${TableName}].[${ColumnName}]', [${ColumnName}]) as [${ColumnName}]]]>
+							
+						<If>
+							<If.Condition>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="_LoopCount" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Facet name="_LoopIndex" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</If.Condition>
+							<If.True>
+<![CDATA[,
+]]>
+							</If.True>
+						</If>
+					</ForEach.Body>
+				</ForEach>
+<![CDATA[
+	FROM [${InitialCatalogName}].[${SchemaName}].[${TableName}]
+
+END
+GO
+]]>
+					
+				</ForEach.Body>
+			</ForEach>
+
+		</ForEach.Body>
+	</ForEach>
+	</OutputScope>
+</Template>

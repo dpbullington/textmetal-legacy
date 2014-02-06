@@ -185,6 +185,7 @@ namespace TextMetal.Framework.Core
 			List<object> temp;
 			List<Dictionary<string, object>> temp2;
 
+			// need to review how top level objects are accessed?
 			temp = new List<object>(this.IteratorModels);
 			temp2 = new List<Dictionary<string, object>>(this.VariableTables);
 

@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Linq;
 
 namespace TextMetal.Common.Core.StringTokens
 {
@@ -93,21 +94,72 @@ namespace TextMetal.Common.Core.StringTokens
 		/// <param name="token"> The logical token (i.e. property name, dictionary key, etc.) to lookup. </param>
 		/// <param name="value"> The output value or null if the token was not found. </param>
 		/// <returns> A value indicating whether the token was found in the array of target objects. </returns>
-		public bool GetByToken(string token, out object value)
+		public bool GetByToken(string _token, out object value)
 		{
-			value = null;
+			string firstToken, rawToken = null;
+			string[] tokens;
+			object tokenLogicalValue, tokenReplacementValue = null;
 
+			value = null;
+			rawToken = _token;
+
+			if (DataType.IsNullOrWhiteSpace(rawToken))
+			{
+				if (this.Strict)
+					throw new InvalidOperationException(string.Format("Failed to get value for empty token"));
+				else
+					return false;
+			}
+			
+			// break any token paths into token list
+			tokens = rawToken.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+
+			if ((object)tokens == null ||
+				tokens.Length <= 0)
+			{
+				if (this.Strict)
+					throw new InvalidOperationException(string.Format("Failed to get value for empty token"));
+				else
+					return false;
+			}
+
+			firstToken = tokens[0];
+			tokens = tokens.Skip(1).ToArray();
+			
 			if ((object)this.Targets != null)
 			{
 				foreach (object target in this.Targets)
 				{
-					if (Reflexion.GetLogicalPropertyValue(target, token, out value))
+					if (Reflexion.GetLogicalPropertyValue(target, firstToken, out tokenReplacementValue))
+					{
+						if ((object)tokens == null ||
+							tokens.Length <= 0)
+						{
+							value = tokenReplacementValue;
+							return true;
+						}
+
+						tokenLogicalValue = tokenReplacementValue;
+						foreach (string token in tokens)
+						{
+							// only do logical lookup here
+							if (!Reflexion.GetLogicalPropertyValue(tokenLogicalValue, token, out tokenLogicalValue))
+							{
+								if (this.Strict)
+									throw new InvalidOperationException(string.Format("Failed to get value for token '{0}'", _token));
+								else
+									return false;
+							}
+						}
+
+						value = tokenLogicalValue;
 						return true;
+					}
 				}
 			}
 
 			if (this.Strict)
-				throw new InvalidOperationException(string.Format("Failed to get value for token '{0}'", token));
+				throw new InvalidOperationException(string.Format("Failed to get value for token '{0}'", _token));
 
 			return false;
 		}

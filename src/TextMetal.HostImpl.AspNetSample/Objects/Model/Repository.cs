@@ -193,9 +193,14 @@ namespace TextMetal.HostImpl.AspNetSample.Objects.Model
 
 				emailMessage.EmailAttachments.Add(emailAttachment);
 
-				new EmailHost().Host(messageTemplate, modelObject, emailMessage);
-
-				this.SaveEmailMessage(emailMessage);
+				try
+				{
+					new EmailHost().Host(true, messageTemplate, modelObject, emailMessage);
+				}
+				finally
+				{
+					this.SaveEmailMessage(emailMessage);
+				}
 
 				return true;
 			}

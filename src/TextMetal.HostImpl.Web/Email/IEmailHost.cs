@@ -11,7 +11,7 @@ namespace TextMetal.HostImpl.Web.Email
 	{
 		#region Methods/Operators
 
-		void Host(MessageTemplate messageTemplate, object modelObject, IEmailMessage emailMessage);
+		void Host(bool strictMatching, MessageTemplate messageTemplate, object modelObject, IEmailMessage emailMessage);
 
 		#endregion
 	}

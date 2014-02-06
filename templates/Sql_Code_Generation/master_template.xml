@@ -8,5 +8,6 @@
 	
 	<Import name="sqlserver_cdc_template.xml" />
 	<Import name="sqlserver_drop_all_template.xml" />
+	<Import name="sqlserver_mask_proxy_template.xml" />
 	
 </Template>

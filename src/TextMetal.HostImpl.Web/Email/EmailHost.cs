@@ -30,7 +30,7 @@ namespace TextMetal.HostImpl.Web.Email
 
 		#region Methods/Operators
 
-		public void Host(MessageTemplate messageTemplate, object modelObject, IEmailMessage emailMessage)
+		public void Host(bool strictMatching, MessageTemplate messageTemplate, object modelObject, IEmailMessage emailMessage)
 		{
 			SmtpClient smtpClient;
 			string[] addresses;
@@ -45,7 +45,7 @@ namespace TextMetal.HostImpl.Web.Email
 				throw new ArgumentNullException("modelObject");
 
 			// run templating over message template and apply to email maessage
-			this.ResolveApply(messageTemplate, emailMessage, modelObject);
+			this.ResolveApply(strictMatching, messageTemplate, emailMessage, modelObject);
 
 			// no longer hardcoded, uses standard config file
 			smtpClient = new SmtpClient();
@@ -150,7 +150,7 @@ namespace TextMetal.HostImpl.Web.Email
 			}
 		}
 
-		private void ResolveApply(MessageTemplate messageTemplate, IEmailMessage emailMessage, object source)
+		private void ResolveApply(bool strictMatching, MessageTemplate messageTemplate, IEmailMessage emailMessage, object source)
 		{
 			XmlPersistEngine xpe;
 			TemplateConstruct template;
@@ -173,7 +173,7 @@ namespace TextMetal.HostImpl.Web.Email
 			{
 				using (StringOutputMechanism stringOutputMechanism = new StringOutputMechanism())
 				{
-					using (templatingContext = new TemplatingContext(xpe, new Tokenizer(true), nullInputMechanism, stringOutputMechanism))
+					using (templatingContext = new TemplatingContext(xpe, new Tokenizer(strictMatching), nullInputMechanism, stringOutputMechanism))
 					{
 						// FROM
 						using (templateXmlTextReader = new XmlTextReader(new StringReader(messageTemplate.FromXml.OuterXml)))
