@@ -10,7 +10,7 @@
 	
 	<![CDATA[commandText = @"UPDATE " + GetDataSourceTagSpecificInstance().GetTableName(${TableNameSingularPascalCase}.SCHEMA_NAME, ${TableNameSingularPascalCase}.TABLE_NAME) + @" SET "]]>
 	
-	<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
 			<BinaryExpression operator="Ne">
 				<BinaryExpression.LeftExpression>
@@ -27,10 +27,10 @@
 				<If.Condition>
 					<BinaryExpression operator="Ne">
 						<BinaryExpression.LeftExpression>
-							<Facet name="#LoopCount" />
+							<Facet name="_LoopCount" />
 						</BinaryExpression.LeftExpression>
 						<BinaryExpression.RightExpression>
-							<Facet name="#LoopIndex" />
+							<Facet name="_LoopIndex" />
 						</BinaryExpression.RightExpression>
 					</BinaryExpression>
 				</If.Condition>
@@ -43,7 +43,7 @@
 
 	<![CDATA[ + @" WHERE "]]>
 
-	<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
 			<BinaryExpression operator="Or">
 				<BinaryExpression.LeftExpression>
@@ -74,10 +74,10 @@
 				<If.Condition>
 					<BinaryExpression operator="Ne">
 						<BinaryExpression.LeftExpression>
-							<Facet name="#LoopCount" />
+							<Facet name="_LoopCount" />
 						</BinaryExpression.LeftExpression>
 						<BinaryExpression.RightExpression>
-							<Facet name="#LoopIndex" />
+							<Facet name="_LoopIndex" />
 						</BinaryExpression.RightExpression>
 					</BinaryExpression>
 				</If.Condition>

@@ -47,7 +47,7 @@ END
 GO
 ]]>
 	
-	<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
+	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
 			<BinaryExpression operator="Ne">
 				<BinaryExpression.LeftExpression>
@@ -61,7 +61,7 @@ GO
 		
 		<ForEach.Body>
 
-			<ForEach in="Tables" var-ct="#LoopCount" var-ix="#LoopIndex">
+			<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 				<ForEach.Filter>
 					<BinaryExpression operator="Eq">
 						<BinaryExpression.LeftExpression>
@@ -79,7 +79,7 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 (
 	[TimestampId] [bigint] NOT NULL,	
 ]]>
-				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter>
 						<BinaryExpression operator="Or">
 							<BinaryExpression.LeftExpression>
@@ -117,10 +117,10 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 							<If.Condition>
 								<BinaryExpression operator="Ne">
 									<BinaryExpression.LeftExpression>
-										<Facet name="#LoopCount" />
+										<Facet name="_LoopCount" />
 									</BinaryExpression.LeftExpression>
 									<BinaryExpression.RightExpression>
-										<Facet name="#LoopIndex" />
+										<Facet name="_LoopIndex" />
 									</BinaryExpression.RightExpression>
 								</BinaryExpression>
 							</If.Condition>
@@ -134,7 +134,7 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 <![CDATA[
 
 ]]>
-				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">							
+				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
 					<ForEach.Filter>
 						<BinaryExpression operator="And">
 							<BinaryExpression.LeftExpression>
@@ -172,10 +172,10 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 							<If.Condition>
 								<BinaryExpression operator="Ne">
 									<BinaryExpression.LeftExpression>
-										<Facet name="#LoopCount" />
+										<Facet name="_LoopCount" />
 									</BinaryExpression.LeftExpression>
 									<BinaryExpression.RightExpression>
-										<Facet name="#LoopIndex" />
+										<Facet name="_LoopIndex" />
 									</BinaryExpression.RightExpression>
 								</BinaryExpression>
 							</If.Condition>
@@ -192,7 +192,7 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 	(
 		[TimestampId],
 ]]>
-				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter>
 						<BinaryExpression operator="Or">
 							<BinaryExpression.LeftExpression>
@@ -224,10 +224,10 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 							<If.Condition>
 								<BinaryExpression operator="Ne">
 									<BinaryExpression.LeftExpression>
-										<Facet name="#LoopCount" />
+										<Facet name="_LoopCount" />
 									</BinaryExpression.LeftExpression>
 									<BinaryExpression.RightExpression>
-										<Facet name="#LoopIndex" />
+										<Facet name="_LoopIndex" />
 									</BinaryExpression.RightExpression>
 								</BinaryExpression>
 							</If.Condition>
@@ -253,7 +253,7 @@ AS
 		SELECT
 			[${HistorySchemaName}].GetTimestampId(SYSUTCDATETIME()) AS [TimestampId],
 ]]>
-				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter>
 						<BinaryExpression operator="Or">
 							<BinaryExpression.LeftExpression>
@@ -285,10 +285,10 @@ AS
 							<If.Condition>
 								<BinaryExpression operator="Ne">
 									<BinaryExpression.LeftExpression>
-										<Facet name="#LoopCount" />
+										<Facet name="_LoopCount" />
 									</BinaryExpression.LeftExpression>
 									<BinaryExpression.RightExpression>
-										<Facet name="#LoopIndex" />
+										<Facet name="_LoopIndex" />
 									</BinaryExpression.RightExpression>
 								</BinaryExpression>
 							</If.Condition>
@@ -302,7 +302,7 @@ AS
 <![CDATA[
 
 ]]>		
-				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">							
+				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
 					<ForEach.Filter>
 						<BinaryExpression operator="And">
 							<BinaryExpression.LeftExpression>
@@ -334,10 +334,10 @@ AS
 							<If.Condition>
 								<BinaryExpression operator="Ne">
 									<BinaryExpression.LeftExpression>
-										<Facet name="#LoopCount" />
+										<Facet name="_LoopCount" />
 									</BinaryExpression.LeftExpression>
 									<BinaryExpression.RightExpression>
-										<Facet name="#LoopIndex" />
+										<Facet name="_LoopIndex" />
 									</BinaryExpression.RightExpression>
 								</BinaryExpression>
 							</If.Condition>
@@ -356,7 +356,7 @@ AS
 		SELECT
 			[${HistorySchemaName}].GetTimestampId(SYSUTCDATETIME()) AS [TimestampId],
 ]]>
-				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter>
 						<BinaryExpression operator="Or">
 							<BinaryExpression.LeftExpression>
@@ -388,10 +388,10 @@ AS
 							<If.Condition>
 								<BinaryExpression operator="Ne">
 									<BinaryExpression.LeftExpression>
-										<Facet name="#LoopCount" />
+										<Facet name="_LoopCount" />
 									</BinaryExpression.LeftExpression>
 									<BinaryExpression.RightExpression>
-										<Facet name="#LoopIndex" />
+										<Facet name="_LoopIndex" />
 									</BinaryExpression.RightExpression>
 								</BinaryExpression>
 							</If.Condition>
@@ -405,7 +405,7 @@ AS
 <![CDATA[
 
 ]]>		
-				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">							
+				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
 					<ForEach.Filter>
 						<BinaryExpression operator="And">
 							<BinaryExpression.LeftExpression>
@@ -437,10 +437,10 @@ AS
 							<If.Condition>
 								<BinaryExpression operator="Ne">
 									<BinaryExpression.LeftExpression>
-										<Facet name="#LoopCount" />
+										<Facet name="_LoopCount" />
 									</BinaryExpression.LeftExpression>
 									<BinaryExpression.RightExpression>
-										<Facet name="#LoopIndex" />
+										<Facet name="_LoopIndex" />
 									</BinaryExpression.RightExpression>
 								</BinaryExpression>
 							</If.Condition>
@@ -454,7 +454,7 @@ AS
 <![CDATA[
 		FROM [deleted] d
 		LEFT OUTER JOIN [inserted] i ON ]]>
-				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter>
 						<BinaryExpression operator="Or">
 							<BinaryExpression.LeftExpression>
@@ -486,10 +486,10 @@ AS
 							<If.Condition>
 								<BinaryExpression operator="Ne">
 									<BinaryExpression.LeftExpression>
-										<Facet name="#LoopCount" />
+										<Facet name="_LoopCount" />
 									</BinaryExpression.LeftExpression>
 									<BinaryExpression.RightExpression>
-										<Facet name="#LoopIndex" />
+										<Facet name="_LoopIndex" />
 									</BinaryExpression.RightExpression>
 								</BinaryExpression>
 							</If.Condition>
@@ -501,7 +501,7 @@ AS
 				</ForEach>
 <![CDATA[
 		WHERE ]]>
-				<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter>
 						<BinaryExpression operator="Or">
 							<BinaryExpression.LeftExpression>
@@ -533,10 +533,10 @@ AS
 							<If.Condition>
 								<BinaryExpression operator="Ne">
 									<BinaryExpression.LeftExpression>
-										<Facet name="#LoopCount" />
+										<Facet name="_LoopCount" />
 									</BinaryExpression.LeftExpression>
 									<BinaryExpression.RightExpression>
-										<Facet name="#LoopIndex" />
+										<Facet name="_LoopIndex" />
 									</BinaryExpression.RightExpression>
 								</BinaryExpression>
 							</If.Condition>

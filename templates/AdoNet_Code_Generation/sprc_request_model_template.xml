@@ -14,11 +14,11 @@
 		</Assign.Expression>
 	</Assign>
 
-	<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
+	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter></ForEach.Filter>
 		<ForEach.Body>
 
-			<ForEach in="Procedures" var-ct="#LoopCount" var-ix="#LoopIndex">
+			<ForEach in="Procedures" var-ct="_LoopCount" var-ix="_LoopIndex">
 				<ForEach.Filter></ForEach.Filter>
 				<ForEach.Body>
 
@@ -38,9 +38,9 @@ using System.Xml;
 								</UnaryExpression>
 							</If.Condition>
 							<If.True>
-								<ForEach in="ClrUsingNamespaces" var-ct="#LoopCount" var-ix="#LoopIndex" var-item="#item">
+								<ForEach in="ClrUsingNamespaces" var-ct="_LoopCount" var-ix="_LoopIndex" var-item="_LoopItem">
 									<ForEach.Body>
-										<![CDATA[using ${#item};
+										<![CDATA[using ${_LoopItem};
 ]]>
 									</ForEach.Body>
 								</ForEach>
@@ -66,7 +66,7 @@ namespace ${ClrNamespace}.${FolderName}
 		
 ]]>
 
-					<ForEach in="Parameters" var-ct="#LoopCount" var-ix="#LoopIndex">							
+					<ForEach in="Parameters" var-ct="_LoopCount" var-ix="_LoopIndex">							
 						<ForEach.Body>
 							<![CDATA[		public const string PARAMETER_NAME_${ParameterNameConstantCase} = "${ParameterName}";]]>
 							
@@ -74,10 +74,10 @@ namespace ${ClrNamespace}.${FolderName}
 								<If.Condition>
 									<BinaryExpression operator="Ne">
 										<BinaryExpression.LeftExpression>
-											<Facet name="#LoopCount" />
+											<Facet name="_LoopCount" />
 										</BinaryExpression.LeftExpression>
 										<BinaryExpression.RightExpression>
-											<Facet name="#LoopIndex" />
+											<Facet name="_LoopIndex" />
 										</BinaryExpression.RightExpression>
 									</BinaryExpression>
 								</If.Condition>
@@ -93,7 +93,7 @@ namespace ${ClrNamespace}.${FolderName}
 
 ]]>
 
-						<ForEach in="Parameters" var-ct="#LoopCount" var-ix="#LoopIndex">
+						<ForEach in="Parameters" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Eq">
 									<BinaryExpression.LeftExpression>
@@ -112,10 +112,10 @@ namespace ${ClrNamespace}.${FolderName}
 									<If.Condition>
 										<BinaryExpression operator="Ne">
 											<BinaryExpression.LeftExpression>
-												<Facet name="#LoopCount" />
+												<Facet name="_LoopCount" />
 											</BinaryExpression.LeftExpression>
 											<BinaryExpression.RightExpression>
-												<Facet name="#LoopIndex" />
+												<Facet name="_LoopIndex" />
 											</BinaryExpression.RightExpression>
 										</BinaryExpression>
 									</If.Condition>
@@ -133,7 +133,7 @@ namespace ${ClrNamespace}.${FolderName}
 
 		#region Properties/Indexers/Events
 ]]>
-						<ForEach in="Parameters" var-ct="#LoopCount" var-ix="#LoopIndex">
+						<ForEach in="Parameters" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Eq">
 									<BinaryExpression.LeftExpression>

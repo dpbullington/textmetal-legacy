@@ -22,9 +22,9 @@ using System.Xml;
 				</UnaryExpression>
 			</If.Condition>
 			<If.True>
-				<ForEach in="ClrUsingNamespaces" var-ct="#LoopCount" var-ix="#LoopIndex" var-item="#item">
+				<ForEach in="ClrUsingNamespaces" var-ct="_LoopCount" var-ix="_LoopIndex" var-item="_LoopItem">
 					<ForEach.Body>
-						<![CDATA[using ${#item};
+						<![CDATA[using ${_LoopItem};
 ]]>
 					</ForEach.Body>
 				</ForEach>

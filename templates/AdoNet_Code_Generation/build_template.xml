@@ -361,11 +361,11 @@ EndGlobal
 	
 ]]>
 
-		<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
+		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 			<ForEach.Filter></ForEach.Filter>
 			<ForEach.Body>
 
-				<ForEach in="Tables" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter></ForEach.Filter>
 					<ForEach.Body>
 
@@ -411,11 +411,11 @@ EndGlobal
 			</Assign.Expression>
 		</Assign>
 
-		<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
+		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 			<ForEach.Filter></ForEach.Filter>
 			<ForEach.Body>
 
-				<ForEach in="Procedures" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach in="Procedures" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter></ForEach.Filter>
 					<ForEach.Body>
 						<![CDATA[    <Compile Include="${FolderName}\${ProcedureNameSingularPascalCase}_Request.g.cs" />
@@ -529,11 +529,11 @@ EndGlobal
 	<None Include="UnitTests.nunit" />
 ]]>
 
-		<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
+		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 			<ForEach.Filter></ForEach.Filter>
 			<ForEach.Body>
 
-				<ForEach in="Tables" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter></ForEach.Filter>
 					<ForEach.Body>
 
@@ -579,11 +579,11 @@ EndGlobal
 			</Assign.Expression>
 		</Assign>
 
-		<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
+		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 			<ForEach.Filter></ForEach.Filter>
 			<ForEach.Body>
 
-				<ForEach in="Procedures" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach in="Procedures" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter></ForEach.Filter>
 					<ForEach.Body>
 						<![CDATA[    <Compile Include="${FolderName}\${ProcedureNameSingularPascalCase}_RequestTests.g.cs" />

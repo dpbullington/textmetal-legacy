@@ -24,9 +24,9 @@ using NUnit.Framework;
 				</UnaryExpression>
 			</If.Condition>
 			<If.True>
-				<ForEach in="ClrUsingNamespaces" var-ct="#LoopCount" var-ix="#LoopIndex" var-item="#item">
+				<ForEach in="ClrUsingNamespaces" var-ct="_LoopCount" var-ix="_LoopIndex" var-item="_LoopItem">
 					<ForEach.Body>
-						<![CDATA[using ${#item};
+						<![CDATA[using ${_LoopItem};
 ]]>
 					</ForEach.Body>
 				</ForEach>
@@ -105,11 +105,11 @@ namespace ${ClrNamespace}.UnitTests
 		
 ]]>
 
-		<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
+		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 			<ForEach.Filter></ForEach.Filter>
 			<ForEach.Body>
 
-				<ForEach in="Tables" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter></ForEach.Filter>
 					<ForEach.Body>
 						<![CDATA[		[Test]
@@ -134,10 +134,10 @@ namespace ${ClrNamespace}.UnitTests
 							<If.Condition>
 								<BinaryExpression operator="Ne">
 									<BinaryExpression.LeftExpression>
-										<Facet name="#LoopCount" />
+										<Facet name="_LoopCount" />
 									</BinaryExpression.LeftExpression>
 									<BinaryExpression.RightExpression>
-										<Facet name="#LoopIndex" />
+										<Facet name="_LoopIndex" />
 									</BinaryExpression.RightExpression>
 								</BinaryExpression>
 							</If.Condition>

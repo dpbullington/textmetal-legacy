@@ -7,11 +7,11 @@
 <Template xmlns="http://www.textmetal.com/api/v5.0.0">
 	<Alloc token="FolderName" />
 
-	<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
+	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter></ForEach.Filter>
 		<ForEach.Body>
 
-			<ForEach in="Tables" var-ct="#LoopCount" var-ix="#LoopIndex">
+			<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 				<ForEach.Filter></ForEach.Filter>
 				<ForEach.Body>
 
@@ -66,9 +66,9 @@ using TextMetal.Common.Expressions;
 								</UnaryExpression>
 							</If.Condition>
 							<If.True>
-								<ForEach in="ClrUsingNamespaces" var-ct="#LoopCount" var-ix="#LoopIndex" var-item="#item">
+								<ForEach in="ClrUsingNamespaces" var-ct="_LoopCount" var-ix="_LoopIndex" var-item="_LoopItem">
 									<ForEach.Body>
-										<![CDATA[using ${#item};
+										<![CDATA[using ${_LoopItem};
 ]]>
 									</ForEach.Body>
 								</ForEach>
@@ -114,7 +114,7 @@ namespace ${ClrNamespace}.${FolderName}
 						</If.False>
 					</If>
 
-					<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">							
+					<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
 						<ForEach.Body>
 							<![CDATA[		public const string COLUMN_NAME_${ColumnNameConstantCase} = "${ColumnName}";]]>
 							
@@ -122,10 +122,10 @@ namespace ${ClrNamespace}.${FolderName}
 								<If.Condition>
 									<BinaryExpression operator="Ne">
 										<BinaryExpression.LeftExpression>
-											<Facet name="#LoopCount" />
+											<Facet name="_LoopCount" />
 										</BinaryExpression.LeftExpression>
 										<BinaryExpression.RightExpression>
-											<Facet name="#LoopIndex" />
+											<Facet name="_LoopIndex" />
 										</BinaryExpression.RightExpression>
 									</BinaryExpression>
 								</If.Condition>
@@ -171,7 +171,7 @@ namespace ${ClrNamespace}.${FolderName}
 							</If.True>
 						</If>
 
-						<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">							
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
 							<ForEach.Body>
 								<![CDATA[
 		private ${ColumnCSharpClrNullableType} @${ColumnNameCamelCase};]]>
@@ -258,7 +258,7 @@ namespace ${ClrNamespace}.${FolderName}
 			{
 				return ]]>
 				
-								<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+								<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 									<ForEach.Filter>
 										<BinaryExpression operator="Eq">
 											<BinaryExpression.LeftExpression>
@@ -275,10 +275,10 @@ namespace ${ClrNamespace}.${FolderName}
 											<If.Condition>
 												<BinaryExpression operator="Ne">
 													<BinaryExpression.LeftExpression>
-														<Facet name="#LoopCount" />
+														<Facet name="_LoopCount" />
 													</BinaryExpression.LeftExpression>
 													<BinaryExpression.RightExpression>
-														<Facet name="#LoopIndex" />
+														<Facet name="_LoopIndex" />
 													</BinaryExpression.RightExpression>
 												</BinaryExpression>
 											</If.Condition>
@@ -290,10 +290,10 @@ namespace ${ClrNamespace}.${FolderName}
 											<If.Condition>
 												<BinaryExpression operator="Eq">
 													<BinaryExpression.LeftExpression>
-														<Facet name="#LoopCount" />
+														<Facet name="_LoopCount" />
 													</BinaryExpression.LeftExpression>
 													<BinaryExpression.RightExpression>
-														<Facet name="#LoopIndex" />
+														<Facet name="_LoopIndex" />
 													</BinaryExpression.RightExpression>
 												</BinaryExpression>
 											</If.Condition>
@@ -311,7 +311,7 @@ namespace ${ClrNamespace}.${FolderName}
 				if(value)
 					]]>	
 								
-								<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+								<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 									<ForEach.Filter>
 										<BinaryExpression operator="Eq">
 											<BinaryExpression.LeftExpression>
@@ -328,10 +328,10 @@ namespace ${ClrNamespace}.${FolderName}
 											<If.Condition>
 												<BinaryExpression operator="Ne">
 													<BinaryExpression.LeftExpression>
-														<Facet name="#LoopCount" />
+														<Facet name="_LoopCount" />
 													</BinaryExpression.LeftExpression>
 													<BinaryExpression.RightExpression>
-														<Facet name="#LoopIndex" />
+														<Facet name="_LoopIndex" />
 													</BinaryExpression.RightExpression>
 												</BinaryExpression>
 											</If.Condition>
@@ -343,10 +343,10 @@ namespace ${ClrNamespace}.${FolderName}
 											<If.Condition>
 												<BinaryExpression operator="Eq">
 													<BinaryExpression.LeftExpression>
-														<Facet name="#LoopCount" />
+														<Facet name="_LoopCount" />
 													</BinaryExpression.LeftExpression>
 													<BinaryExpression.RightExpression>
-														<Facet name="#LoopIndex" />
+														<Facet name="_LoopIndex" />
 													</BinaryExpression.RightExpression>
 												</BinaryExpression>
 											</If.Condition>
@@ -392,7 +392,7 @@ namespace ${ClrNamespace}.${FolderName}
 							</If.True>
 						</If>
 
-						<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">							
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
 							<ForEach.Body>
 								<If>
 									<If.Condition>

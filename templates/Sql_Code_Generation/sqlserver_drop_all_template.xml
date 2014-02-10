@@ -11,7 +11,7 @@
 -- DROP ALL OBJECTS FROM DATABASE
 ]]>
 	
-	<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
+	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
 			<BinaryExpression operator="Ne">
 				<BinaryExpression.LeftExpression>
@@ -29,7 +29,7 @@
 
 ]]>
 
-			<ForEach in="Tables" var-ct="#LoopCount" var-ix="#LoopIndex">
+			<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 				<ForEach.Filter>
 					<BinaryExpression operator="Eq">
 						<BinaryExpression.LeftExpression>
@@ -47,7 +47,7 @@ GO
 	
 ]]>
 
-					<ForEach in="ForeignKeys" var-ct="#LoopCount" var-ix="#LoopIndex">
+					<ForEach in="ForeignKeys" var-ct="_LoopCount" var-ix="_LoopIndex">
 						<ForEach.Filter />
 						<ForEach.Body>
 						
@@ -59,7 +59,7 @@ GO
 						</ForEach.Body>
 					</ForEach>
 				
-					<ForEach in="UniqueKeys" var-ct="#LoopCount" var-ix="#LoopIndex">
+					<ForEach in="UniqueKeys" var-ct="_LoopCount" var-ix="_LoopIndex">
 						<ForEach.Filter>
 						</ForEach.Filter>
 						<ForEach.Body>
@@ -72,7 +72,7 @@ GO
 						</ForEach.Body>
 					</ForEach>
 				
-					<ForEach in="Triggers" var-ct="#LoopCount" var-ix="#LoopIndex">
+					<ForEach in="Triggers" var-ct="_LoopCount" var-ix="_LoopIndex">
 						<ForEach.Filter>
 						</ForEach.Filter>
 						<ForEach.Body>
@@ -96,7 +96,7 @@ GO
 				</ForEach.Body>
 			</ForEach>
 			
-			<ForEach in="Tables" var-ct="#LoopCount" var-ix="#LoopIndex">
+			<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 				<ForEach.Filter>
 					<BinaryExpression operator="Eq">
 						<BinaryExpression.LeftExpression>

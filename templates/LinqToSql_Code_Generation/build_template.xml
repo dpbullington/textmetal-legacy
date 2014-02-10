@@ -340,11 +340,11 @@ EndGlobal
 	<Compile Include="Repository.tv.g.cs" />
 ]]>
 
-		<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
+		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 			<ForEach.Filter></ForEach.Filter>
 			<ForEach.Body>
 
-				<ForEach in="Tables" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter></ForEach.Filter>
 					<ForEach.Body>
 
@@ -481,11 +481,11 @@ EndGlobal
 	<None Include="UnitTests.nunit" />
 ]]>
 
-		<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
+		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 			<ForEach.Filter></ForEach.Filter>
 			<ForEach.Body>
 
-				<ForEach in="Tables" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter></ForEach.Filter>
 					<ForEach.Body>
 

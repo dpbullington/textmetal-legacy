@@ -17,7 +17,7 @@
 	
 	<![CDATA[commandText = @"SELECT " + GetDataSourceTagSpecificInstance().GetIdentityCommand() + @" AS "]]>
 	
-	<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
 			<BinaryExpression operator="Eq">
 				<BinaryExpression.LeftExpression>
@@ -33,7 +33,7 @@
 				<If.Condition>
 					<BinaryExpression operator="Eq">
 						<BinaryExpression.LeftExpression>
-							<Facet name="#LoopIndex" />
+							<Facet name="_LoopIndex" />
 						</BinaryExpression.LeftExpression>
 						<BinaryExpression.RightExpression>
 							<Value type="System.Int32" data="1" />

@@ -17,17 +17,17 @@
 	
 	<![CDATA[commandText = @"SELECT "]]>
 
-	<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Body>
 			<![CDATA[ + GetDataSourceTagSpecificInstance().GetAliasedColumnName("${TableAlias}", ${TableNameSingularPascalCase}.COLUMN_NAME_${ColumnNameConstantCase}) + @" AS " + GetDataSourceTagSpecificInstance().GetColumnName(${TableNameSingularPascalCase}.COLUMN_NAME_${ColumnNameConstantCase})]]>
 			<If>
 				<If.Condition>
 					<BinaryExpression operator="Ne">
 						<BinaryExpression.LeftExpression>
-							<Facet name="#LoopCount" />
+							<Facet name="_LoopCount" />
 						</BinaryExpression.LeftExpression>
 						<BinaryExpression.RightExpression>
-							<Facet name="#LoopIndex" />
+							<Facet name="_LoopIndex" />
 						</BinaryExpression.RightExpression>
 					</BinaryExpression>
 				</If.Condition>

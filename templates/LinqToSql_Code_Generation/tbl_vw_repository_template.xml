@@ -30,9 +30,9 @@ using TextMetal.Common.Data.LinqToSql;
 				</UnaryExpression>
 			</If.Condition>
 			<If.True>
-				<ForEach in="ClrUsingNamespaces" var-ct="#LoopCount" var-ix="#LoopIndex" var-item="#item">
+				<ForEach in="ClrUsingNamespaces" var-ct="_LoopCount" var-ix="_LoopIndex" var-item="_LoopItem">
 					<ForEach.Body>
-						<![CDATA[using ${#item};
+						<![CDATA[using ${_LoopItem};
 ]]>
 					</ForEach.Body>
 				</ForEach>
@@ -110,13 +110,13 @@ namespace ${ClrNamespace}
 		#region Methods/Operators		
 ]]>
 
-		<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">			
+		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">			
 			<ForEach.Body>
 				
-				<ForEach in="Tables" var-ct="#LoopCount" var-ix="#LoopIndex">
+				<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Body>
 						<![CDATA[		public ${TableNameSingularPascalCase} Load${TableNameSingularPascalCase}(]]>
-						<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Or">
 									<BinaryExpression.LeftExpression>
@@ -147,10 +147,10 @@ namespace ${ClrNamespace}
 									<If.Condition>
 										<BinaryExpression operator="Ne">
 											<BinaryExpression.LeftExpression>
-												<Facet name="#LoopCount" />
+												<Facet name="_LoopCount" />
 											</BinaryExpression.LeftExpression>
 											<BinaryExpression.RightExpression>
-												<Facet name="#LoopIndex" />
+												<Facet name="_LoopIndex" />
 											</BinaryExpression.RightExpression>
 										</BinaryExpression>
 									</If.Condition>
@@ -169,7 +169,7 @@ namespace ${ClrNamespace}
 				using (IUnitOfWork unitOfWork = Repository.DefaultUnitOfWorkFactory.Instance.GetUnitOfWork())
 				{
 					@${TableNameSingularCamelCase} = this.Load${TableNameSingularPascalCase}(unitOfWork, ]]>
-						<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Or">
 									<BinaryExpression.LeftExpression>
@@ -200,10 +200,10 @@ namespace ${ClrNamespace}
 									<If.Condition>
 										<BinaryExpression operator="Ne">
 											<BinaryExpression.LeftExpression>
-												<Facet name="#LoopCount" />
+												<Facet name="_LoopCount" />
 											</BinaryExpression.LeftExpression>
 											<BinaryExpression.RightExpression>
-												<Facet name="#LoopIndex" />
+												<Facet name="_LoopIndex" />
 											</BinaryExpression.RightExpression>
 										</BinaryExpression>
 									</If.Condition>
@@ -220,7 +220,7 @@ namespace ${ClrNamespace}
 			}
 			else
 				@${TableNameSingularCamelCase} = this.Load${TableNameSingularPascalCase}(UnitOfWork.Current, ]]>
-						<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Or">
 									<BinaryExpression.LeftExpression>
@@ -251,10 +251,10 @@ namespace ${ClrNamespace}
 									<If.Condition>
 										<BinaryExpression operator="Ne">
 											<BinaryExpression.LeftExpression>
-												<Facet name="#LoopCount" />
+												<Facet name="_LoopCount" />
 											</BinaryExpression.LeftExpression>
 											<BinaryExpression.RightExpression>
-												<Facet name="#LoopIndex" />
+												<Facet name="_LoopIndex" />
 											</BinaryExpression.RightExpression>
 										</BinaryExpression>
 									</If.Condition>
@@ -272,7 +272,7 @@ namespace ${ClrNamespace}
 ]]>
 				
 <![CDATA[		public ${TableNameSingularPascalCase} Load${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ]]>
-						<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Or">
 									<BinaryExpression.LeftExpression>
@@ -303,10 +303,10 @@ namespace ${ClrNamespace}
 									<If.Condition>
 										<BinaryExpression operator="Ne">
 											<BinaryExpression.LeftExpression>
-												<Facet name="#LoopCount" />
+												<Facet name="_LoopCount" />
 											</BinaryExpression.LeftExpression>
 											<BinaryExpression.RightExpression>
-												<Facet name="#LoopIndex" />
+												<Facet name="_LoopIndex" />
 											</BinaryExpression.RightExpression>
 										</BinaryExpression>
 									</If.Condition>
@@ -327,7 +327,7 @@ namespace ${ClrNamespace}
 			using (AmbientUnitOfWorkAwareDisposableWrapper<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}> wrapper = unitOfWork.GetContext<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}>())
 			{					
 				query = wrapper.Disposable.${TableNamePluralPascalCase}.SingleOrDefault(lo => ]]>
-					<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+					<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 						<ForEach.Filter>
 							<BinaryExpression operator="Or">
 								<BinaryExpression.LeftExpression>
@@ -358,10 +358,10 @@ namespace ${ClrNamespace}
 								<If.Condition>
 									<BinaryExpression operator="Ne">
 										<BinaryExpression.LeftExpression>
-											<Facet name="#LoopCount" />
+											<Facet name="_LoopCount" />
 										</BinaryExpression.LeftExpression>
 										<BinaryExpression.RightExpression>
-											<Facet name="#LoopIndex" />
+											<Facet name="_LoopIndex" />
 										</BinaryExpression.RightExpression>
 									</BinaryExpression>
 								</If.Condition>
@@ -380,7 +380,7 @@ namespace ${ClrNamespace}
 								{
 									// map result to POCO from L2S object
 ]]>
-	<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>			
 		</ForEach.Filter>
 		<ForEach.Body>
@@ -407,10 +407,10 @@ namespace ${ClrNamespace}
 				<If.Condition>
 					<BinaryExpression operator="Ne">
 						<BinaryExpression.LeftExpression>
-							<Facet name="#LoopCount" />
+							<Facet name="_LoopCount" />
 						</BinaryExpression.LeftExpression>
 						<BinaryExpression.RightExpression>
-							<Facet name="#LoopIndex" />
+							<Facet name="_LoopIndex" />
 						</BinaryExpression.RightExpression>
 					</BinaryExpression>
 				</If.Condition>
@@ -477,7 +477,7 @@ namespace ${ClrNamespace}
 												 {
 													// map results to POCOs from L2S objects
 ]]>
-	<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>			
 		</ForEach.Filter>
 		<ForEach.Body>
@@ -504,10 +504,10 @@ namespace ${ClrNamespace}
 				<If.Condition>
 					<BinaryExpression operator="Ne">
 						<BinaryExpression.LeftExpression>
-							<Facet name="#LoopCount" />
+							<Facet name="_LoopCount" />
 						</BinaryExpression.LeftExpression>
 						<BinaryExpression.RightExpression>
-							<Facet name="#LoopIndex" />
+							<Facet name="_LoopIndex" />
 						</BinaryExpression.RightExpression>
 					</BinaryExpression>
 				</If.Condition>
@@ -577,7 +577,7 @@ namespace ${ClrNamespace}
 					this.OnPreUpdate${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
 					
 					query = wrapper.Disposable.${TableNamePluralPascalCase}.SingleOrDefault(lo => ]]>
-						<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Or">
 									<BinaryExpression.LeftExpression>
@@ -608,10 +608,10 @@ namespace ${ClrNamespace}
 									<If.Condition>
 										<BinaryExpression operator="Ne">
 											<BinaryExpression.LeftExpression>
-												<Facet name="#LoopCount" />
+												<Facet name="_LoopCount" />
 											</BinaryExpression.LeftExpression>
 											<BinaryExpression.RightExpression>
-												<Facet name="#LoopIndex" />
+												<Facet name="_LoopIndex" />
 											</BinaryExpression.RightExpression>
 										</BinaryExpression>
 									</If.Condition>
@@ -629,7 +629,7 @@ namespace ${ClrNamespace}
 
 				// map caller POCO changes to L2S object
 ]]>
-	<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>						
 			<BinaryExpression operator="Ne">
 				<BinaryExpression.LeftExpression>
@@ -666,10 +666,10 @@ namespace ${ClrNamespace}
 				<If.Condition>
 					<BinaryExpression operator="Ne">
 						<BinaryExpression.LeftExpression>
-							<Facet name="#LoopCount" />
+							<Facet name="_LoopCount" />
 						</BinaryExpression.LeftExpression>
 						<BinaryExpression.RightExpression>
-							<Facet name="#LoopIndex" />
+							<Facet name="_LoopIndex" />
 						</BinaryExpression.RightExpression>
 					</BinaryExpression>
 				</If.Condition>
@@ -696,7 +696,7 @@ namespace ${ClrNamespace}
 
 				// map server changes back to POCO from L2S object
 ]]>
-	<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>						
 			<!--<BinaryExpression operator="Eq">
 				<BinaryExpression.LeftExpression>
@@ -732,10 +732,10 @@ namespace ${ClrNamespace}
 				<If.Condition>
 					<BinaryExpression operator="Ne">
 						<BinaryExpression.LeftExpression>
-							<Facet name="#LoopCount" />
+							<Facet name="_LoopCount" />
 						</BinaryExpression.LeftExpression>
 						<BinaryExpression.RightExpression>
-							<Facet name="#LoopIndex" />
+							<Facet name="_LoopIndex" />
 						</BinaryExpression.RightExpression>
 					</BinaryExpression>
 				</If.Condition>
@@ -750,10 +750,10 @@ namespace ${ClrNamespace}
 				<If.Condition>
 					<BinaryExpression operator="Eq">
 						<BinaryExpression.LeftExpression>
-							<Facet name="#LoopCount" />
+							<Facet name="_LoopCount" />
 						</BinaryExpression.LeftExpression>
 						<BinaryExpression.RightExpression>
-							<Facet name="#LoopIndex" />
+							<Facet name="_LoopIndex" />
 						</BinaryExpression.RightExpression>
 					</BinaryExpression>
 				</If.Condition>
@@ -816,7 +816,7 @@ namespace ${ClrNamespace}
 				this.OnPreDelete${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
 				
 				query = wrapper.Disposable.@${TableNamePluralPascalCase}.SingleOrDefault(lo => ]]>
-					<ForEach in="Columns" var-ct="#LoopCount" var-ix="#LoopIndex">
+					<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 						<ForEach.Filter>
 							<BinaryExpression operator="Or">
 								<BinaryExpression.LeftExpression>
@@ -847,10 +847,10 @@ namespace ${ClrNamespace}
 								<If.Condition>
 									<BinaryExpression operator="Ne">
 										<BinaryExpression.LeftExpression>
-											<Facet name="#LoopCount" />
+											<Facet name="_LoopCount" />
 										</BinaryExpression.LeftExpression>
 										<BinaryExpression.RightExpression>
-											<Facet name="#LoopIndex" />
+											<Facet name="_LoopIndex" />
 										</BinaryExpression.RightExpression>
 									</BinaryExpression>
 								</If.Condition>
@@ -908,10 +908,10 @@ namespace ${ClrNamespace}
 							<If.Condition>
 								<BinaryExpression operator="Ne">
 									<BinaryExpression.LeftExpression>
-										<Facet name="#LoopCount" />
+										<Facet name="_LoopCount" />
 									</BinaryExpression.LeftExpression>
 									<BinaryExpression.RightExpression>
-										<Facet name="#LoopIndex" />
+										<Facet name="_LoopIndex" />
 									</BinaryExpression.RightExpression>
 								</BinaryExpression>
 							</If.Condition>

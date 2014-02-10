@@ -6,7 +6,7 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v5.0.0">
 	<OutputScope name="get_bat_copy_frags_template_pkg.g.txt">
-		<ForEach in="TextFileLines" var-ct="#LoopCount" var-ix="#LoopIndex" var-item="#item">
+		<ForEach in="TextFileLines" var-ct="_LoopCount" var-ix="_LoopIndex" var-item="_LoopItem">
 			<ForEach.Body>		
 <![CDATA[
 
@@ -25,7 +25,7 @@ IF %ERRORLEVEL% NEQ 0 goto pkgError
 	</OutputScope>
 	
 	<OutputScope name="get_bat_copy_frags_template_tmpl.g.txt">
-		<ForEach in="TextFileLines" var-ct="#LoopCount" var-ix="#LoopIndex" var-item="#item">
+		<ForEach in="TextFileLines" var-ct="_LoopCount" var-ix="_LoopIndex" var-item="_LoopItem">
 			<ForEach.Body>		
 <![CDATA[
 

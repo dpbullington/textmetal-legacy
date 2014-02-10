@@ -8,8 +8,151 @@
 
 	<OutputScope name="DM.g.sql">
 
+<![CDATA[
+
+USE [master]
+GO
+
+
+IF EXISTS (SELECT * FROM sysdatabases WHERE name = '${DataObfuscationProxyCatalogName}')
+BEGIN
+
+	ALTER DATABASE [${DataObfuscationProxyCatalogName}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
 	
-	<ForEach in="Schemas" var-ct="#LoopCount" var-ix="#LoopIndex">
+	DROP DATABASE [${DataObfuscationProxyCatalogName}]
+	
+END
+GO
+
+
+CREATE DATABASE [${DataObfuscationProxyCatalogName}]
+GO
+
+
+USE [${DataObfuscationProxyCatalogName}]
+GO
+
+
+CREATE TABLE [dbo].[DataObfuscationStoredProcedureParameterConfig]
+(
+	[DataObfuscationStoredProcedureParameterConfigId] [int] IDENTITY(1,1) NOT NULL,
+
+	[CatalogName] [nvarchar](64) NOT NULL, -- skimping here to prevent index warning exceed 900 bytes
+	[SchemaName] [nvarchar](128) NOT NULL,
+	[ProcedureName] [nvarchar](128) NOT NULL,
+	[ParameterName] [nvarchar](128) NOT NULL, -- output paramters only
+	
+	[IsMasked] [bit] NOT NULL,
+	[MaskType] [int] NULL,
+
+	CONSTRAINT [pk_DataObfuscationStoredProcedureParameterConfig] PRIMARY KEY
+	(
+		[DataObfuscationStoredProcedureParameterConfigId]
+	),
+	
+	CONSTRAINT [uk_DataObfuscationStoredProcedureParameterConfig] UNIQUE
+	(
+		[CatalogName],
+		[SchemaName],
+		[ProcedureName],
+		[ParameterName]
+	)
+)	
+GO
+
+
+CREATE TABLE [dbo].[DataObfuscationStoredProcedureColumnConfig]
+(
+	[DataObfuscationStoredProcedureColumnConfigId] [int] IDENTITY(1,1) NOT NULL,
+
+	[CatalogName] [nvarchar](64) NOT NULL, -- skimping here to prevent index warning exceed 900 bytes
+	[SchemaName] [nvarchar](128) NOT NULL,
+	[ProcedureName] [nvarchar](128) NOT NULL,
+	[ColumnName] [nvarchar](128) NOT NULL, -- output resultset columns only
+	
+	[IsMasked] [bit] NOT NULL,
+	[MaskType] [int] NULL,
+
+	CONSTRAINT [pk_DataObfuscationStoredProcedureColumnConfig] PRIMARY KEY
+	(
+		[DataObfuscationStoredProcedureColumnConfigId]
+	),
+	
+	CONSTRAINT [uk_DataObfuscationStoredProcedureColumnConfig] UNIQUE
+	(
+		[CatalogName],
+		[SchemaName],
+		[ProcedureName],
+		[ColumnName]
+	)
+)	
+GO
+
+
+CREATE TABLE [dbo].[DataObfuscationTableViewColumnConfig]
+(
+	[DataObfuscationTableViewColumnConfigId] [int] IDENTITY(1,1) NOT NULL,
+
+	[CatalogName] [nvarchar](64) NOT NULL, -- skimping here to prevent index warning exceed 900 bytes
+	[SchemaName] [nvarchar](128) NOT NULL,
+	[TableName] [nvarchar](128) NOT NULL,
+	[ColumnName] [nvarchar](128) NOT NULL,
+	
+	[IsMasked] [bit] NOT NULL,
+	[MaskType] [int] NULL,
+
+	CONSTRAINT [pk_DataObfuscationTableViewColumnConfig] PRIMARY KEY
+	(
+		[DataObfuscationTableViewColumnConfigId]
+	),
+	
+	CONSTRAINT [uk_DataObfuscationTableViewColumnConfig] UNIQUE
+	(
+		[CatalogName],
+		[SchemaName],
+		[TableName],
+		[ColumnName]
+	)
+)	
+GO
+
+
+CREATE FUNCTION [dbo].[GetObfuscatedTableViewColumnData]
+(
+	@CatalogName as [nvarchar](64),
+	@SchemaName as [nvarchar](128),
+	@TableName as [nvarchar](128),
+	@ColumnName as [nvarchar](128),
+	@Value as [nvarchar](4000)
+)
+RETURNS [nvarchar](4000)
+AS
+BEGIN
+
+	DECLARE @count [int]
+	
+	SELECT @count = COUNT(t.[DataObfuscationTableViewColumnConfigId]) FROM [dbo].[DataObfuscationTableViewColumnConfig] t
+	WHERE
+	t.[CatalogName] = @CatalogName AND
+	t.[SchemaName] = @SchemaName AND
+	t.[TableName] = @TableName AND
+	t.[ColumnName] = @ColumnName AND
+	t.[IsMasked] = 1;
+
+	SET @Value = CASE
+		WHEN @count = 1 THEN UPPER(REVERSE(@Value))
+		ELSE @Value
+	END
+
+	RETURN @Value
+	
+END
+GO
+
+
+]]>
+
+	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
 		</ForEach.Filter>
 		
@@ -20,30 +163,9 @@
 CREATE SCHEMA [${SchemaName}]
 GO
 
-
-CREATE FUNCTION [${SchemaName}].[GetMaskedData]
-(
-	@Path as [nvarchar](2000),
-	@Value as [nvarchar](2000)
-)
-RETURNS [nvarchar](2000)
-AS
-BEGIN
-
-	DECLARE @mask [int]
-	
-	SELECT @mask = COUNT(*) FROM [${SchemaName}].[MaskedDataConfig] WHERE [Path] = @Path AND [IsMasked] = 1
-
-	CASE
-		WHEN @mask > 0 THEN RETURN REVERSE(@Value)
-		ELSE RETURN @Value
-	END
-	
-END
-GO
 ]]>
 
-			<ForEach in="Tables" var-ct="#LoopCount" var-ix="#LoopIndex">
+			<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 				<ForEach.Filter>
 				</ForEach.Filter>
 				<ForEach.Body>
@@ -63,7 +185,26 @@ AS
 						</Ascending>
 					</ForEach.Sort>
 					<ForEach.Body>
-						<![CDATA[	[${SchemaName}].[GetMaskedData]('[${SchemaName}].[${TableName}].[${ColumnName}]', [${ColumnName}]) as [${ColumnName}]]]>
+					
+<![CDATA[${rb(`
+	if ["varchar", "nvarchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+		"	[dbo].[GetObfuscatedTableViewColumnData]('" +
+		textMetal.EvaluateToken.invoke("InitialCatalogName") +
+		"', '" +
+		textMetal.EvaluateToken.invoke("SchemaName") +
+		"', '" +
+		textMetal.EvaluateToken.invoke("TableName") +
+		"', '" +
+		textMetal.EvaluateToken.invoke("ColumnName") +
+		"', t.[" +
+		textMetal.EvaluateToken.invoke("ColumnName") +
+		"]) as [" +
+		textMetal.EvaluateToken.invoke("ColumnName") +
+		"]"
+	else
+		"	t.[" +	textMetal.EvaluateToken.invoke("ColumnName") + "]"
+	end
+`)}]]>
 							
 						<If>
 							<If.Condition>
@@ -84,9 +225,8 @@ AS
 					</ForEach.Body>
 				</ForEach>
 <![CDATA[
-	FROM [${InitialCatalogName}].[${SchemaName}].[${TableName}]
+	FROM [${InitialCatalogName}].[${SchemaName}].[${TableName}] t
 
-END
 GO
 ]]>
 					
