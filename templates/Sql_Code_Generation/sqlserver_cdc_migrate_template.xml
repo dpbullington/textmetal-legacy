@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+-->
+<Template xmlns="http://www.textmetal.com/api/v5.0.0">
+
+	<OutputScope name="CDC_old.g.sql">
+	
+	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
+		<ForEach.Filter>
+			<BinaryExpression operator="Ne">
+				<BinaryExpression.LeftExpression>
+					<Facet name="SchemaName" />
+				</BinaryExpression.LeftExpression>
+				<BinaryExpression.RightExpression>
+					<Facet name="HistorySchemaName" />
+				</BinaryExpression.RightExpression>
+			</BinaryExpression>
+		</ForEach.Filter>
+		
+		<ForEach.Body>
+
+			<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
+				<ForEach.Filter>
+					<BinaryExpression operator="Eq">
+						<BinaryExpression.LeftExpression>
+							<Facet name="IsView" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Value type="System.Boolean" data="False" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</ForEach.Filter>
+				<ForEach.Body>
+<![CDATA[
+
+-- RENAME OBJECTS TO POSTFIX UNDERSCORE OLD
+
+DROP TRIGGER [${SchemaName}].[On${TableName}Change] ON [${SchemaName}].[${TableName}]
+GO
+
+EXEC sp_rename '${HistorySchemaName}.${TableName}History', '${TableName}History_OLD'
+GO
+
+EXEC sp_rename '${HistorySchemaName}.${TableName}History_OLD.pk_${TableName}History', 'pk_${TableName}History_OLD'
+GO
+
+-- ADD NEW CDC OBJECTS HERE
+
+
+-- MIGRATE DATA
+
+	INSERT INTO [${HistorySchemaName}].[${TableName}History]
+	SELECT
+		-- NULL AS [${TableName}HistoryId],
+		CAST(
+		SUBSTRING(CAST(t.[TimestampId] AS [nvarchar](32)), 5, 2)
+		+ '/' +
+		SUBSTRING(CAST(t.[TimestampId] AS [nvarchar](32)), 7, 2)
+		+ '/' +
+		SUBSTRING(CAST(t.[TimestampId] AS [nvarchar](32)), 1, 4)
+		+ ' ' +
+		SUBSTRING(CAST(t.[TimestampId] AS [nvarchar](32)), 9, 2)
+		+ ':' +
+		SUBSTRING(CAST(t.[TimestampId] AS [nvarchar](32)), 11, 2)
+		+ ':' +
+		SUBSTRING(CAST(t.[TimestampId] AS [nvarchar](32)), 13, 2)
+		+ '.' +
+		SUBSTRING(CAST(t.[TimestampId] AS [nvarchar](32)), 15, 3)
+		AS [datetime]) AS [${TableName}HistoryTs],
+]]>
+				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
+					<ForEach.Filter>
+						<BinaryExpression operator="Or">
+							<BinaryExpression.LeftExpression>
+								<BinaryExpression operator="Eq">
+									<BinaryExpression.LeftExpression>
+										<Facet name="ColumnIsPrimaryKey" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.LeftExpression>
+							<BinaryExpression.RightExpression>
+								<BinaryExpression operator="Eq">
+									<BinaryExpression.LeftExpression>
+										<Facet name="HasNoDefinedPrimaryKeyColumns" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.RightExpression>
+						</BinaryExpression>
+					</ForEach.Filter>
+					<ForEach.Body>
+						<![CDATA[		t.[${ColumnName}],]]>
+							
+						<If>
+							<If.Condition>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="_LoopCount" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Facet name="_LoopIndex" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</If.Condition>
+							<If.True>
+<![CDATA[
+]]>
+							</If.True>
+						</If>
+					</ForEach.Body>
+				</ForEach>
+<![CDATA[
+
+]]>		
+				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
+					<ForEach.Filter>
+						<BinaryExpression operator="And">
+							<BinaryExpression.LeftExpression>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="ColumnIsPrimaryKey" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.LeftExpression>
+							<BinaryExpression.RightExpression>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="HasNoDefinedPrimaryKeyColumns" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="True" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.RightExpression>
+						</BinaryExpression>
+					</ForEach.Filter>
+					<ForEach.Body>
+						<![CDATA[		t.[${ColumnName}]]]>
+						
+						<If>
+							<If.Condition>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="_LoopCount" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Facet name="_LoopIndex" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</If.Condition>
+							<If.True>
+<![CDATA[,
+]]>
+							</If.True>
+						</If>
+					</ForEach.Body>
+				</ForEach>
+<![CDATA[
+	FROM [${HistorySchemaName}].[${TableName}History_OLD] t ORDER BY t.[TimestampId] ASC
+GO
+]]>
+					
+				</ForEach.Body>
+			</ForEach>
+
+		</ForEach.Body>
+	</ForEach>
+	</OutputScope>
+</Template>
