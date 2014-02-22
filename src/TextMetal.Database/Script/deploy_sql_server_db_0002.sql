@@ -12,43 +12,10 @@ CREATE SCHEMA [history]
 GO
 
 
-CREATE FUNCTION [history].[GetTimestampId]
-(
-	@DateTime as [datetime]
-)
-RETURNS [bigint]
-AS
-BEGIN
-	RETURN
-	CAST( 
-	( CAST(DATEPART(YYYY,@DateTime) AS VARCHAR) + '' +
-	(CASE WHEN DATEPART(MM,@DateTime) < 10 THEN '0'
-		ELSE '' END +
-		CAST(DATEPART(MM,@DateTime) AS VARCHAR)) + '' +
-	(CASE WHEN DATEPART(DD,@DateTime) < 10 THEN '0'
-		ELSE '' END +
-		CAST(DATEPART(DD,@DateTime) AS VARCHAR)) + '' +
-	(CASE WHEN DATEPART(HH,@DateTime) < 10 THEN '0'
-		ELSE '' END +
-		CAST(DATEPART(HH,@DateTime) AS VARCHAR)) + '' +
-	(CASE WHEN DATEPART(MI,@DateTime) < 10 THEN '0'
-		ELSE '' END +
-		CAST(DATEPART(MI,@DateTime) AS VARCHAR)) + '' +
-	(CASE WHEN DATEPART(SS,@DateTime) < 10 THEN '0'
-		ELSE '' END +
-		CAST(DATEPART(SS,@DateTime) AS VARCHAR)) + '' +
-	(CASE WHEN DATEPART(MS,@DateTime) < 10 THEN '000'
-		WHEN DATEPART(MS,@DateTime) < 100 THEN '00'
-		ELSE '0' END +
-		CAST(DATEPART(MS,@DateTime) AS VARCHAR)) )
-		AS BIGINT)
-END
-GO
-
-
 CREATE TABLE [history].[UserHistory]
 (
-	[TimestampId] [bigint] NOT NULL,	
+	[UserHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
+	[UserHistoryTs] [datetime2] NOT NULL,
 	[UserId] [int] NOT NULL,
 
 	[EmailAddress] [nvarchar](255) NULL,
@@ -70,10 +37,16 @@ CREATE TABLE [history].[UserHistory]
 
 	CONSTRAINT [pk_UserHistory] PRIMARY KEY
 	(
-		[TimestampId],
-		[UserId]
+		[UserHistoryId]
 	)
 )
+GO
+
+CREATE NONCLUSTERED INDEX [ix_UserHistory] ON [history].[UserHistory]
+(
+	[UserHistoryTs] ASC,
+	[UserId] ASC
+) ON [PRIMARY]
 GO
 
 
@@ -81,10 +54,14 @@ CREATE TRIGGER [dbo].[OnUserChange] ON [dbo].[User] AFTER INSERT, UPDATE, DELETE
 AS
 	BEGIN
 		SET NOCOUNT ON;
+		
+		DECLARE @ThisMoment [datetime2]
+		
+		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[UserHistory]
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [UserHistoryTs],
 			i.[UserId],
 
 			i.[EmailAddress],
@@ -108,7 +85,7 @@ AS
 		UNION ALL
 
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [UserHistoryTs],
 			d.[UserId],
 
 			NULL AS [EmailAddress],
@@ -136,7 +113,8 @@ GO
 
 CREATE TABLE [history].[EventLogHistory]
 (
-	[TimestampId] [bigint] NOT NULL,	
+	[EventLogHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
+	[EventLogHistoryTs] [datetime2] NOT NULL,
 	[EventLogId] [int] NOT NULL,
 
 	[EventText] [nvarchar](MAX) NULL,
@@ -149,10 +127,16 @@ CREATE TABLE [history].[EventLogHistory]
 
 	CONSTRAINT [pk_EventLogHistory] PRIMARY KEY
 	(
-		[TimestampId],
-		[EventLogId]
+		[EventLogHistoryId]
 	)
 )
+GO
+
+CREATE NONCLUSTERED INDEX [ix_EventLogHistory] ON [history].[EventLogHistory]
+(
+	[EventLogHistoryTs] ASC,
+	[EventLogId] ASC
+) ON [PRIMARY]
 GO
 
 
@@ -160,10 +144,14 @@ CREATE TRIGGER [dbo].[OnEventLogChange] ON [dbo].[EventLog] AFTER INSERT, UPDATE
 AS
 	BEGIN
 		SET NOCOUNT ON;
+		
+		DECLARE @ThisMoment [datetime2]
+		
+		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[EventLogHistory]
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [EventLogHistoryTs],
 			i.[EventLogId],
 
 			i.[EventText],
@@ -178,7 +166,7 @@ AS
 		UNION ALL
 
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [EventLogHistoryTs],
 			d.[EventLogId],
 
 			NULL AS [EventText],
@@ -197,7 +185,8 @@ GO
 
 CREATE TABLE [history].[EmailMessageHistory]
 (
-	[TimestampId] [bigint] NOT NULL,	
+	[EmailMessageHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
+	[EmailMessageHistoryTs] [datetime2] NOT NULL,
 	[EmailMessageId] [int] NOT NULL,
 
 	[From] [nvarchar](2047) NULL,
@@ -219,10 +208,16 @@ CREATE TABLE [history].[EmailMessageHistory]
 
 	CONSTRAINT [pk_EmailMessageHistory] PRIMARY KEY
 	(
-		[TimestampId],
-		[EmailMessageId]
+		[EmailMessageHistoryId]
 	)
 )
+GO
+
+CREATE NONCLUSTERED INDEX [ix_EmailMessageHistory] ON [history].[EmailMessageHistory]
+(
+	[EmailMessageHistoryTs] ASC,
+	[EmailMessageId] ASC
+) ON [PRIMARY]
 GO
 
 
@@ -230,10 +225,14 @@ CREATE TRIGGER [dbo].[OnEmailMessageChange] ON [dbo].[EmailMessage] AFTER INSERT
 AS
 	BEGIN
 		SET NOCOUNT ON;
+		
+		DECLARE @ThisMoment [datetime2]
+		
+		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[EmailMessageHistory]
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [EmailMessageHistoryTs],
 			i.[EmailMessageId],
 
 			i.[From],
@@ -257,7 +256,7 @@ AS
 		UNION ALL
 
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [EmailMessageHistoryTs],
 			d.[EmailMessageId],
 
 			NULL AS [From],
@@ -285,7 +284,8 @@ GO
 
 CREATE TABLE [history].[EmailAttachmentHistory]
 (
-	[TimestampId] [bigint] NOT NULL,	
+	[EmailAttachmentHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
+	[EmailAttachmentHistoryTs] [datetime2] NOT NULL,
 	[EmailMessageId] [int] NOT NULL,
 
 	[EmailAttachmentId] [int] NULL,
@@ -302,10 +302,16 @@ CREATE TABLE [history].[EmailAttachmentHistory]
 
 	CONSTRAINT [pk_EmailAttachmentHistory] PRIMARY KEY
 	(
-		[TimestampId],
-		[EmailMessageId]
+		[EmailAttachmentHistoryId]
 	)
 )
+GO
+
+CREATE NONCLUSTERED INDEX [ix_EmailAttachmentHistory] ON [history].[EmailAttachmentHistory]
+(
+	[EmailAttachmentHistoryTs] ASC,
+	[EmailMessageId] ASC
+) ON [PRIMARY]
 GO
 
 
@@ -313,10 +319,14 @@ CREATE TRIGGER [dbo].[OnEmailAttachmentChange] ON [dbo].[EmailAttachment] AFTER 
 AS
 	BEGIN
 		SET NOCOUNT ON;
+		
+		DECLARE @ThisMoment [datetime2]
+		
+		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[EmailAttachmentHistory]
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [EmailAttachmentHistoryTs],
 			i.[EmailMessageId],
 
 			i.[EmailAttachmentId],
@@ -335,7 +345,7 @@ AS
 		UNION ALL
 
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [EmailAttachmentHistoryTs],
 			d.[EmailMessageId],
 
 			NULL AS [EmailAttachmentId],
@@ -358,7 +368,8 @@ GO
 
 CREATE TABLE [history].[TableWithPrimaryKeyAsIdentityHistory]
 (
-	[TimestampId] [bigint] NOT NULL,	
+	[TableWithPrimaryKeyAsIdentityHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
+	[TableWithPrimaryKeyAsIdentityHistoryTs] [datetime2] NOT NULL,
 	[PkId] [int] NOT NULL,
 
 	[Data01] [bit] NULL,
@@ -368,10 +379,16 @@ CREATE TABLE [history].[TableWithPrimaryKeyAsIdentityHistory]
 
 	CONSTRAINT [pk_TableWithPrimaryKeyAsIdentityHistory] PRIMARY KEY
 	(
-		[TimestampId],
-		[PkId]
+		[TableWithPrimaryKeyAsIdentityHistoryId]
 	)
 )
+GO
+
+CREATE NONCLUSTERED INDEX [ix_TableWithPrimaryKeyAsIdentityHistory] ON [history].[TableWithPrimaryKeyAsIdentityHistory]
+(
+	[TableWithPrimaryKeyAsIdentityHistoryTs] ASC,
+	[PkId] ASC
+) ON [PRIMARY]
 GO
 
 
@@ -379,10 +396,14 @@ CREATE TRIGGER [dbo].[OnTableWithPrimaryKeyAsIdentityChange] ON [dbo].[TableWith
 AS
 	BEGIN
 		SET NOCOUNT ON;
+		
+		DECLARE @ThisMoment [datetime2]
+		
+		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[TableWithPrimaryKeyAsIdentityHistory]
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [TableWithPrimaryKeyAsIdentityHistoryTs],
 			i.[PkId],
 
 			i.[Data01],
@@ -394,7 +415,7 @@ AS
 		UNION ALL
 
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [TableWithPrimaryKeyAsIdentityHistoryTs],
 			d.[PkId],
 
 			NULL AS [Data01],
@@ -410,7 +431,8 @@ GO
 
 CREATE TABLE [history].[TableWithPrimaryKeyAsDefaultHistory]
 (
-	[TimestampId] [bigint] NOT NULL,	
+	[TableWithPrimaryKeyAsDefaultHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
+	[TableWithPrimaryKeyAsDefaultHistoryTs] [datetime2] NOT NULL,
 	[PkDf] [uniqueidentifier] NOT NULL,
 
 	[Data01] [bit] NULL,
@@ -420,10 +442,16 @@ CREATE TABLE [history].[TableWithPrimaryKeyAsDefaultHistory]
 
 	CONSTRAINT [pk_TableWithPrimaryKeyAsDefaultHistory] PRIMARY KEY
 	(
-		[TimestampId],
-		[PkDf]
+		[TableWithPrimaryKeyAsDefaultHistoryId]
 	)
 )
+GO
+
+CREATE NONCLUSTERED INDEX [ix_TableWithPrimaryKeyAsDefaultHistory] ON [history].[TableWithPrimaryKeyAsDefaultHistory]
+(
+	[TableWithPrimaryKeyAsDefaultHistoryTs] ASC,
+	[PkDf] ASC
+) ON [PRIMARY]
 GO
 
 
@@ -431,10 +459,14 @@ CREATE TRIGGER [dbo].[OnTableWithPrimaryKeyAsDefaultChange] ON [dbo].[TableWithP
 AS
 	BEGIN
 		SET NOCOUNT ON;
+		
+		DECLARE @ThisMoment [datetime2]
+		
+		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[TableWithPrimaryKeyAsDefaultHistory]
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [TableWithPrimaryKeyAsDefaultHistoryTs],
 			i.[PkDf],
 
 			i.[Data01],
@@ -446,7 +478,7 @@ AS
 		UNION ALL
 
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [TableWithPrimaryKeyAsDefaultHistoryTs],
 			d.[PkDf],
 
 			NULL AS [Data01],
@@ -462,7 +494,8 @@ GO
 
 CREATE TABLE [history].[TableWithPrimaryKeyWithDiffIdentityHistory]
 (
-	[TimestampId] [bigint] NOT NULL,	
+	[TableWithPrimaryKeyWithDiffIdentityHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
+	[TableWithPrimaryKeyWithDiffIdentityHistoryTs] [datetime2] NOT NULL,
 	[Pk] [int] NOT NULL,
 
 	[Id] [int] NULL,
@@ -473,10 +506,16 @@ CREATE TABLE [history].[TableWithPrimaryKeyWithDiffIdentityHistory]
 
 	CONSTRAINT [pk_TableWithPrimaryKeyWithDiffIdentityHistory] PRIMARY KEY
 	(
-		[TimestampId],
-		[Pk]
+		[TableWithPrimaryKeyWithDiffIdentityHistoryId]
 	)
 )
+GO
+
+CREATE NONCLUSTERED INDEX [ix_TableWithPrimaryKeyWithDiffIdentityHistory] ON [history].[TableWithPrimaryKeyWithDiffIdentityHistory]
+(
+	[TableWithPrimaryKeyWithDiffIdentityHistoryTs] ASC,
+	[Pk] ASC
+) ON [PRIMARY]
 GO
 
 
@@ -484,10 +523,14 @@ CREATE TRIGGER [dbo].[OnTableWithPrimaryKeyWithDiffIdentityChange] ON [dbo].[Tab
 AS
 	BEGIN
 		SET NOCOUNT ON;
+		
+		DECLARE @ThisMoment [datetime2]
+		
+		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[TableWithPrimaryKeyWithDiffIdentityHistory]
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [TableWithPrimaryKeyWithDiffIdentityHistoryTs],
 			i.[Pk],
 
 			i.[Id],
@@ -500,7 +543,7 @@ AS
 		UNION ALL
 
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [TableWithPrimaryKeyWithDiffIdentityHistoryTs],
 			d.[Pk],
 
 			NULL AS [Id],
@@ -517,7 +560,8 @@ GO
 
 CREATE TABLE [history].[TableNoPrimaryKeyWithIdentityHistory]
 (
-	[TimestampId] [bigint] NOT NULL,	
+	[TableNoPrimaryKeyWithIdentityHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
+	[TableNoPrimaryKeyWithIdentityHistoryTs] [datetime2] NOT NULL,
 	[Id] [int] NOT NULL,
 	[Data01] [bit] NOT NULL,
 	[Data02] [datetime] NOT NULL,
@@ -528,14 +572,20 @@ CREATE TABLE [history].[TableNoPrimaryKeyWithIdentityHistory]
 
 	CONSTRAINT [pk_TableNoPrimaryKeyWithIdentityHistory] PRIMARY KEY
 	(
-		[TimestampId],
-		[Id],
-		[Data01],
-		[Data02],
-		[Data03],
-		[Data04]
+		[TableNoPrimaryKeyWithIdentityHistoryId]
 	)
 )
+GO
+
+CREATE NONCLUSTERED INDEX [ix_TableNoPrimaryKeyWithIdentityHistory] ON [history].[TableNoPrimaryKeyWithIdentityHistory]
+(
+	[TableNoPrimaryKeyWithIdentityHistoryTs] ASC,
+	[Id] ASC,
+	[Data01] ASC,
+	[Data02] ASC,
+	[Data03] ASC,
+	[Data04] ASC
+) ON [PRIMARY]
 GO
 
 
@@ -543,10 +593,14 @@ CREATE TRIGGER [dbo].[OnTableNoPrimaryKeyWithIdentityChange] ON [dbo].[TableNoPr
 AS
 	BEGIN
 		SET NOCOUNT ON;
+		
+		DECLARE @ThisMoment [datetime2]
+		
+		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[TableNoPrimaryKeyWithIdentityHistory]
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [TableNoPrimaryKeyWithIdentityHistoryTs],
 			i.[Id],
 			i.[Data01],
 			i.[Data02],
@@ -559,7 +613,7 @@ AS
 		UNION ALL
 
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [TableNoPrimaryKeyWithIdentityHistoryTs],
 			d.[Id],
 			d.[Data01],
 			d.[Data02],
@@ -576,7 +630,8 @@ GO
 
 CREATE TABLE [history].[TableWithPrimaryKeyNoIdentityHistory]
 (
-	[TimestampId] [bigint] NOT NULL,	
+	[TableWithPrimaryKeyNoIdentityHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
+	[TableWithPrimaryKeyNoIdentityHistoryTs] [datetime2] NOT NULL,
 	[Pk] [int] NOT NULL,
 
 	[Data01] [bit] NULL,
@@ -586,10 +641,16 @@ CREATE TABLE [history].[TableWithPrimaryKeyNoIdentityHistory]
 
 	CONSTRAINT [pk_TableWithPrimaryKeyNoIdentityHistory] PRIMARY KEY
 	(
-		[TimestampId],
-		[Pk]
+		[TableWithPrimaryKeyNoIdentityHistoryId]
 	)
 )
+GO
+
+CREATE NONCLUSTERED INDEX [ix_TableWithPrimaryKeyNoIdentityHistory] ON [history].[TableWithPrimaryKeyNoIdentityHistory]
+(
+	[TableWithPrimaryKeyNoIdentityHistoryTs] ASC,
+	[Pk] ASC
+) ON [PRIMARY]
 GO
 
 
@@ -597,10 +658,14 @@ CREATE TRIGGER [dbo].[OnTableWithPrimaryKeyNoIdentityChange] ON [dbo].[TableWith
 AS
 	BEGIN
 		SET NOCOUNT ON;
+		
+		DECLARE @ThisMoment [datetime2]
+		
+		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[TableWithPrimaryKeyNoIdentityHistory]
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [TableWithPrimaryKeyNoIdentityHistoryTs],
 			i.[Pk],
 
 			i.[Data01],
@@ -612,7 +677,7 @@ AS
 		UNION ALL
 
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [TableWithPrimaryKeyNoIdentityHistoryTs],
 			d.[Pk],
 
 			NULL AS [Data01],
@@ -628,7 +693,8 @@ GO
 
 CREATE TABLE [history].[TableWithCompositePrimaryKeyNoIdentityHistory]
 (
-	[TimestampId] [bigint] NOT NULL,	
+	[TableWithCompositePrimaryKeyNoIdentityHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
+	[TableWithCompositePrimaryKeyNoIdentityHistoryTs] [datetime2] NOT NULL,
 	[Pk0] [int] NOT NULL,
 	[Pk1] [int] NOT NULL,
 	[Pk2] [int] NOT NULL,
@@ -641,13 +707,19 @@ CREATE TABLE [history].[TableWithCompositePrimaryKeyNoIdentityHistory]
 
 	CONSTRAINT [pk_TableWithCompositePrimaryKeyNoIdentityHistory] PRIMARY KEY
 	(
-		[TimestampId],
-		[Pk0],
-		[Pk1],
-		[Pk2],
-		[Pk3]
+		[TableWithCompositePrimaryKeyNoIdentityHistoryId]
 	)
 )
+GO
+
+CREATE NONCLUSTERED INDEX [ix_TableWithCompositePrimaryKeyNoIdentityHistory] ON [history].[TableWithCompositePrimaryKeyNoIdentityHistory]
+(
+	[TableWithCompositePrimaryKeyNoIdentityHistoryTs] ASC,
+	[Pk0] ASC,
+	[Pk1] ASC,
+	[Pk2] ASC,
+	[Pk3] ASC
+) ON [PRIMARY]
 GO
 
 
@@ -655,10 +727,14 @@ CREATE TRIGGER [dbo].[OnTableWithCompositePrimaryKeyNoIdentityChange] ON [dbo].[
 AS
 	BEGIN
 		SET NOCOUNT ON;
+		
+		DECLARE @ThisMoment [datetime2]
+		
+		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[TableWithCompositePrimaryKeyNoIdentityHistory]
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [TableWithCompositePrimaryKeyNoIdentityHistoryTs],
 			i.[Pk0],
 			i.[Pk1],
 			i.[Pk2],
@@ -673,7 +749,7 @@ AS
 		UNION ALL
 
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [TableWithCompositePrimaryKeyNoIdentityHistoryTs],
 			d.[Pk0],
 			d.[Pk1],
 			d.[Pk2],
@@ -692,7 +768,8 @@ GO
 
 CREATE TABLE [history].[TableNoPrimaryKeyNoIdentityHistory]
 (
-	[TimestampId] [bigint] NOT NULL,	
+	[TableNoPrimaryKeyNoIdentityHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
+	[TableNoPrimaryKeyNoIdentityHistoryTs] [datetime2] NOT NULL,
 	[Value] [int] NOT NULL,
 	[Data01] [bit] NOT NULL,
 	[Data02] [datetime] NOT NULL,
@@ -703,14 +780,20 @@ CREATE TABLE [history].[TableNoPrimaryKeyNoIdentityHistory]
 
 	CONSTRAINT [pk_TableNoPrimaryKeyNoIdentityHistory] PRIMARY KEY
 	(
-		[TimestampId],
-		[Value],
-		[Data01],
-		[Data02],
-		[Data03],
-		[Data04]
+		[TableNoPrimaryKeyNoIdentityHistoryId]
 	)
 )
+GO
+
+CREATE NONCLUSTERED INDEX [ix_TableNoPrimaryKeyNoIdentityHistory] ON [history].[TableNoPrimaryKeyNoIdentityHistory]
+(
+	[TableNoPrimaryKeyNoIdentityHistoryTs] ASC,
+	[Value] ASC,
+	[Data01] ASC,
+	[Data02] ASC,
+	[Data03] ASC,
+	[Data04] ASC
+) ON [PRIMARY]
 GO
 
 
@@ -718,10 +801,14 @@ CREATE TRIGGER [dbo].[OnTableNoPrimaryKeyNoIdentityChange] ON [dbo].[TableNoPrim
 AS
 	BEGIN
 		SET NOCOUNT ON;
+		
+		DECLARE @ThisMoment [datetime2]
+		
+		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[TableNoPrimaryKeyNoIdentityHistory]
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [TableNoPrimaryKeyNoIdentityHistoryTs],
 			i.[Value],
 			i.[Data01],
 			i.[Data02],
@@ -734,7 +821,7 @@ AS
 		UNION ALL
 
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [TableNoPrimaryKeyNoIdentityHistoryTs],
 			d.[Value],
 			d.[Data01],
 			d.[Data02],
@@ -751,7 +838,8 @@ GO
 
 CREATE TABLE [history].[TableTypeTestHistory]
 (
-	[TimestampId] [bigint] NOT NULL,	
+	[TableTypeTestHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
+	[TableTypeTestHistoryTs] [datetime2] NOT NULL,
 	[PkId] [int] NOT NULL,
 
 	[Data00] [bigint] NULL,
@@ -784,10 +872,16 @@ CREATE TABLE [history].[TableTypeTestHistory]
 
 	CONSTRAINT [pk_TableTypeTestHistory] PRIMARY KEY
 	(
-		[TimestampId],
-		[PkId]
+		[TableTypeTestHistoryId]
 	)
 )
+GO
+
+CREATE NONCLUSTERED INDEX [ix_TableTypeTestHistory] ON [history].[TableTypeTestHistory]
+(
+	[TableTypeTestHistoryTs] ASC,
+	[PkId] ASC
+) ON [PRIMARY]
 GO
 
 
@@ -795,10 +889,14 @@ CREATE TRIGGER [dbo].[OnTableTypeTestChange] ON [dbo].[TableTypeTest] AFTER INSE
 AS
 	BEGIN
 		SET NOCOUNT ON;
+		
+		DECLARE @ThisMoment [datetime2]
+		
+		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[TableTypeTestHistory]
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [TableTypeTestHistoryTs],
 			i.[PkId],
 
 			i.[Data00],
@@ -833,7 +931,7 @@ AS
 		UNION ALL
 
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [TableTypeTestHistoryTs],
 			d.[PkId],
 
 			NULL AS [Data00],
@@ -872,7 +970,8 @@ GO
 
 CREATE TABLE [history].[SexualChocolateHistory]
 (
-	[TimestampId] [bigint] NOT NULL,	
+	[SexualChocolateHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
+	[SexualChocolateHistoryTs] [datetime2] NOT NULL,
 	[SexualChocolateId] [int] NOT NULL,
 
 	[EM] [nvarchar](MAX) NULL,
@@ -883,10 +982,16 @@ CREATE TABLE [history].[SexualChocolateHistory]
 
 	CONSTRAINT [pk_SexualChocolateHistory] PRIMARY KEY
 	(
-		[TimestampId],
-		[SexualChocolateId]
+		[SexualChocolateHistoryId]
 	)
 )
+GO
+
+CREATE NONCLUSTERED INDEX [ix_SexualChocolateHistory] ON [history].[SexualChocolateHistory]
+(
+	[SexualChocolateHistoryTs] ASC,
+	[SexualChocolateId] ASC
+) ON [PRIMARY]
 GO
 
 
@@ -894,10 +999,14 @@ CREATE TRIGGER [TxtMtl].[OnSexualChocolateChange] ON [TxtMtl].[SexualChocolate] 
 AS
 	BEGIN
 		SET NOCOUNT ON;
+		
+		DECLARE @ThisMoment [datetime2]
+		
+		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[SexualChocolateHistory]
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [SexualChocolateHistoryTs],
 			i.[SexualChocolateId],
 
 			i.[EM],
@@ -910,7 +1019,7 @@ AS
 		UNION ALL
 
 		SELECT
-			[history].GetTimestampId(GetUtcDate()) AS [TimestampId],
+			@ThisMoment AS [SexualChocolateHistoryTs],
 			d.[SexualChocolateId],
 
 			NULL AS [EM],

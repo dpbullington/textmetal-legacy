@@ -117,6 +117,49 @@ CREATE TABLE [dbo].[DataObfuscationTableViewColumnConfig]
 GO
 
 
+--SELECT [dbo].[GetHash] (33, 100, 5381, N'TEXTMETAL') = 77
+CREATE FUNCTION [dbo].[GetHash]
+(
+	@MULTIPLIER [bigint],
+	@HASH_BUCKET_SIZE [int],
+	@SEED [bigint],
+
+	@value [nvarchar](MAX)
+)
+RETURNS [int]
+AS
+BEGIN	
+	DECLARE @buffer [varbinary](MAX)
+	DECLARE @hashcode [bigint]
+	DECLARE @index [int]
+	DECLARE @length [int]
+	DECLARE @octet [bigint]
+	DECLARE @MINOR_UPPER_BOUND [bigint]
+	DECLARE @MAJOR_UPPER_BOUND [bigint]
+	
+	SET @MINOR_UPPER_BOUND = 2147483648
+	SET @MAJOR_UPPER_BOUND = 4294967296
+		
+	SET @buffer = CAST(@value AS VARBINARY(MAX))
+	SET @length = LEN(@buffer)
+	SET @index = 1
+
+	SET @hashcode = @SEED
+	WHILE @index <= (@length)
+	BEGIN
+		SET @octet = SUBSTRING(@buffer, @index, 1)
+		SET @index = @index + 1
+		SET @hashcode = ((@hashcode * @MULTIPLIER) + @octet) % @MAJOR_UPPER_BOUND	
+	END
+
+	SET @hashcode = CASE WHEN @hashcode >= @MINOR_UPPER_BOUND THEN @hashcode - @MAJOR_UPPER_BOUND ELSE @hashcode END
+	SET @hashcode = CASE WHEN @hashcode < 0 THEN @hashcode + @MINOR_UPPER_BOUND ELSE @hashcode END % @HASH_BUCKET_SIZE
+
+	RETURN CAST(@hashcode AS [int])	
+END
+GO
+
+
 CREATE FUNCTION [dbo].[GetObfuscatedTableViewColumnData]
 (
 	@CatalogName as [nvarchar](64),

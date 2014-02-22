@@ -11,40 +11,6 @@
 
 CREATE SCHEMA [${HistorySchemaName}]
 GO
-
-
-CREATE FUNCTION [${HistorySchemaName}].[GetTimestampId]
-(
-	@DateTime as [datetime2]
-)
-RETURNS [bigint]
-AS
-BEGIN
-	RETURN
-	CAST( 
-	( CAST(DATEPART(YYYY,@DateTime) AS VARCHAR) + '' +
-	(CASE WHEN DATEPART(MM,@DateTime) < 10 THEN '0'
-		ELSE '' END +
-		CAST(DATEPART(MM,@DateTime) AS VARCHAR)) + '' +
-	(CASE WHEN DATEPART(DD,@DateTime) < 10 THEN '0'
-		ELSE '' END +
-		CAST(DATEPART(DD,@DateTime) AS VARCHAR)) + '' +
-	(CASE WHEN DATEPART(HH,@DateTime) < 10 THEN '0'
-		ELSE '' END +
-		CAST(DATEPART(HH,@DateTime) AS VARCHAR)) + '' +
-	(CASE WHEN DATEPART(MI,@DateTime) < 10 THEN '0'
-		ELSE '' END +
-		CAST(DATEPART(MI,@DateTime) AS VARCHAR)) + '' +
-	(CASE WHEN DATEPART(SS,@DateTime) < 10 THEN '0'
-		ELSE '' END +
-		CAST(DATEPART(SS,@DateTime) AS VARCHAR)) + '' +
-	(CASE WHEN DATEPART(MS,@DateTime) < 10 THEN '000'
-		WHEN DATEPART(MS,@DateTime) < 100 THEN '00'
-		ELSE '0' END +
-		CAST(DATEPART(MS,@DateTime) AS VARCHAR)) )
-		AS BIGINT)
-END
-GO
 ]]>
 	
 	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -77,7 +43,8 @@ GO
 
 CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 (
-	[TimestampId] [bigint] NOT NULL,	
+	[${TableName}HistoryId] [bigint] IDENTITY(1,1) NOT NULL,
+	[${TableName}HistoryTs] [datetime2] NOT NULL,
 ]]>
 				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter>
@@ -190,7 +157,14 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 
 	CONSTRAINT [pk_${TableName}History] PRIMARY KEY
 	(
-		[TimestampId],
+		[${TableName}HistoryId]
+	)
+)
+GO
+
+CREATE NONCLUSTERED INDEX [ix_${TableName}History] ON [${HistorySchemaName}].[${TableName}History]
+(
+	[${TableName}HistoryTs] ASC,
 ]]>
 				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter>
@@ -218,7 +192,7 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 						</BinaryExpression>
 					</ForEach.Filter>
 					<ForEach.Body>
-						<![CDATA[		[${ColumnName}]]]>
+						<![CDATA[	[${ColumnName}] ASC]]>
 							
 						<If>
 							<If.Condition>
@@ -239,8 +213,7 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 					</ForEach.Body>
 				</ForEach>
 <![CDATA[
-	)
-)
+) ON [PRIMARY]
 GO
 
 
@@ -248,10 +221,14 @@ CREATE TRIGGER [${SchemaName}].[On${TableName}Change] ON [${SchemaName}].[${Tabl
 AS
 	BEGIN
 		SET NOCOUNT ON;
+		
+		DECLARE @ThisMoment [datetime2]
+		
+		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [${HistorySchemaName}].[${TableName}History]
 		SELECT
-			[${HistorySchemaName}].GetTimestampId(SYSUTCDATETIME()) AS [TimestampId],
+			@ThisMoment AS [${TableName}HistoryTs],
 ]]>
 				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter>
@@ -354,7 +331,7 @@ AS
 		UNION ALL
 
 		SELECT
-			[${HistorySchemaName}].GetTimestampId(SYSUTCDATETIME()) AS [TimestampId],
+			@ThisMoment AS [${TableName}HistoryTs],
 ]]>
 				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter>
