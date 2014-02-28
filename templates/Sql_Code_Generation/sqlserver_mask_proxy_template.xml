@@ -33,157 +33,334 @@ USE [${DataObfuscationProxyCatalogName}]
 GO
 
 
-CREATE TABLE [dbo].[DataObfuscationStoredProcedureParameterConfig]
+CREATE SCHEMA [DataObfuscation]
+GO
+
+
+/*CREATE TABLE [DataObfuscation].[xxxDictionary]
 (
-	[DataObfuscationStoredProcedureParameterConfigId] [int] IDENTITY(1,1) NOT NULL,
+	[xxxDictionaryKey] [int] IDENTITY(1,1) NOT NULL,
+	[xxxDictionaryValue] [nvarchar](255) NOT NULL,
+	
+	CONSTRAINT [pk_xxxDictionary] PRIMARY KEY
+	(
+		[xxxDictionaryKey]
+	),
+	
+	CONSTRAINT [uk_xxxDictionary] UNIQUE
+	(
+		[xxxDictionaryValue]
+	)
+)	
+GO*/
+
+
+CREATE VIEW [DataObfuscation].[Associative]
+AS
+-- TODO: need to implement this based on your custom needs (using [DataObfuscation].[xxxDictionary] if so inclined)
+SELECT -1000 as [DictionaryId], 1 as [Key], 'apple' as [Value]
+UNION
+SELECT -1000 as [DictionaryId], 2 as [Key], 'orange' as [Value]
+UNION
+SELECT -1000 as [DictionaryId], 3 as [Key], 'lemon' as [Value]
+UNION
+SELECT -1000 as [DictionaryId], 4 as [Key], 'lime' as [Value]
+UNION
+SELECT -1000 as [DictionaryId], 5 as [Key], 'grape' as [Value]
+GO
+
+
+CREATE TABLE [DataObfuscation].[Dictionary]
+(
+	[DictionaryId] [int] NOT NULL,
+	[DictionaryName] [nvarchar](64) NOT NULL,
+	
+	[HashMultiplier] [bigint] NOT NULL,
+	[HashBucketSize] [int] NOT NULL,
+	[HashSeed] [bigint] NOT NULL,
+	
+	CONSTRAINT [pk_Dictionary] PRIMARY KEY
+	(
+		[DictionaryId]
+	),
+	
+	CONSTRAINT [uk_Dictionary] UNIQUE
+	(
+		[DictionaryName]
+	)
+)	
+GO
+
+
+INSERT INTO [DataObfuscation].[Dictionary] VALUES (-1000, 'TextMetal Fruit Dictionary', 33, 5, 5381)
+GO
+
+
+CREATE TABLE [DataObfuscation].[Strategy]
+(
+	[StrategyId] [int] NOT NULL,
+	[StrategyName] [nvarchar](64) NOT NULL,
+	[StrategyDesc] [nvarchar](1023) NOT NULL,
+
+	CONSTRAINT [pk_Strategy] PRIMARY KEY
+	(
+		[StrategyId]
+	),
+	
+	CONSTRAINT [uk_Strategy] UNIQUE
+	(
+		[StrategyName]
+	)
+)	
+GO
+
+
+CREATE TABLE [DataObfuscation].[StoredProcedureParameterConfig]
+(
+	[StoredProcedureParameterConfigId] [int] IDENTITY(1,1) NOT NULL,
 
 	[CatalogName] [nvarchar](64) NOT NULL, -- skimping here to prevent index warning exceed 900 bytes
 	[SchemaName] [nvarchar](128) NOT NULL,
 	[ProcedureName] [nvarchar](128) NOT NULL,
 	[ParameterName] [nvarchar](128) NOT NULL, -- output paramters only
 	
-	[IsMasked] [bit] NOT NULL,
-	[MaskType] [int] NULL,
+	[StrategyId] [int] NOT NULL,
+	
+	[DictionaryId] [int] NULL,
 
-	CONSTRAINT [pk_DataObfuscationStoredProcedureParameterConfig] PRIMARY KEY
+	CONSTRAINT [pk_StoredProcedureParameterConfig] PRIMARY KEY
 	(
-		[DataObfuscationStoredProcedureParameterConfigId]
+		[StoredProcedureParameterConfigId]
 	),
 	
-	CONSTRAINT [uk_DataObfuscationStoredProcedureParameterConfig] UNIQUE
+	CONSTRAINT [uk_StoredProcedureParameterConfig] UNIQUE
 	(
 		[CatalogName],
 		[SchemaName],
 		[ProcedureName],
 		[ParameterName]
+	),
+	
+	CONSTRAINT [fk_StoredProcedureParameterConfig_Strategy] FOREIGN KEY
+	(
+		[StrategyId]
+	)
+	REFERENCES [DataObfuscation].[Strategy]
+	(
+		[StrategyId]
+	),
+	
+	CONSTRAINT [fk_StoredProcedureParameterConfig_Dictionary] FOREIGN KEY
+	(
+		[DictionaryId]
+	)
+	REFERENCES [DataObfuscation].[Dictionary]
+	(
+		[DictionaryId]
 	)
 )	
 GO
 
 
-CREATE TABLE [dbo].[DataObfuscationStoredProcedureColumnConfig]
+CREATE TABLE [DataObfuscation].[StoredProcedureColumnConfig]
 (
-	[DataObfuscationStoredProcedureColumnConfigId] [int] IDENTITY(1,1) NOT NULL,
+	[StoredProcedureColumnConfigId] [int] IDENTITY(1,1) NOT NULL,
 
 	[CatalogName] [nvarchar](64) NOT NULL, -- skimping here to prevent index warning exceed 900 bytes
 	[SchemaName] [nvarchar](128) NOT NULL,
 	[ProcedureName] [nvarchar](128) NOT NULL,
 	[ColumnName] [nvarchar](128) NOT NULL, -- output resultset columns only
 	
-	[IsMasked] [bit] NOT NULL,
-	[MaskType] [int] NULL,
+	[StrategyId] [int] NOT NULL,
+	
+	[DictionaryId] [int] NULL,
 
-	CONSTRAINT [pk_DataObfuscationStoredProcedureColumnConfig] PRIMARY KEY
+	CONSTRAINT [pk_StoredProcedureColumnConfig] PRIMARY KEY
 	(
-		[DataObfuscationStoredProcedureColumnConfigId]
+		[StoredProcedureColumnConfigId]
 	),
 	
-	CONSTRAINT [uk_DataObfuscationStoredProcedureColumnConfig] UNIQUE
+	CONSTRAINT [uk_StoredProcedureColumnConfig] UNIQUE
 	(
 		[CatalogName],
 		[SchemaName],
 		[ProcedureName],
 		[ColumnName]
+	),
+	
+	CONSTRAINT [fk_StoredProcedureColumnConfig_Strategy] FOREIGN KEY
+	(
+		[StrategyId]
+	)
+	REFERENCES [DataObfuscation].[Strategy]
+	(
+		[StrategyId]
+	),
+	
+	CONSTRAINT [fk_StoredProcedureColumnConfig_Dictionary] FOREIGN KEY
+	(
+		[DictionaryId]
+	)
+	REFERENCES [DataObfuscation].[Dictionary]
+	(
+		[DictionaryId]
 	)
 )	
 GO
 
 
-CREATE TABLE [dbo].[DataObfuscationTableViewColumnConfig]
+CREATE TABLE [DataObfuscation].[TableViewColumnConfig]
 (
-	[DataObfuscationTableViewColumnConfigId] [int] IDENTITY(1,1) NOT NULL,
+	[TableViewColumnConfigId] [int] IDENTITY(1,1) NOT NULL,
 
 	[CatalogName] [nvarchar](64) NOT NULL, -- skimping here to prevent index warning exceed 900 bytes
 	[SchemaName] [nvarchar](128) NOT NULL,
 	[TableName] [nvarchar](128) NOT NULL,
 	[ColumnName] [nvarchar](128) NOT NULL,
 	
-	[IsMasked] [bit] NOT NULL,
-	[MaskType] [int] NULL,
+	[StrategyId] [int] NOT NULL,
+	
+	[DictionaryId] [int] NULL,
 
-	CONSTRAINT [pk_DataObfuscationTableViewColumnConfig] PRIMARY KEY
+	CONSTRAINT [pk_TableViewColumnConfig] PRIMARY KEY
 	(
-		[DataObfuscationTableViewColumnConfigId]
+		[TableViewColumnConfigId]
 	),
 	
-	CONSTRAINT [uk_DataObfuscationTableViewColumnConfig] UNIQUE
+	CONSTRAINT [uk_TableViewColumnConfig] UNIQUE
 	(
 		[CatalogName],
 		[SchemaName],
 		[TableName],
 		[ColumnName]
+	),
+	
+	CONSTRAINT [fk_TableViewColumnConfig_Strategy] FOREIGN KEY
+	(
+		[StrategyId]
+	)
+	REFERENCES [DataObfuscation].[Strategy]
+	(
+		[StrategyId]
+	),
+	
+	CONSTRAINT [fk_TableViewColumnConfig_Dictionary] FOREIGN KEY
+	(
+		[DictionaryId]
+	)
+	REFERENCES [DataObfuscation].[Dictionary]
+	(
+		[DictionaryId]
 	)
 )	
 GO
 
 
---SELECT [dbo].[GetHash] (33, 100, 5381, N'TEXTMETAL') = 77
-CREATE FUNCTION [dbo].[GetHash]
+CREATE FUNCTION [DataObfuscation].[GetHash]
 (
 	@MULTIPLIER [bigint],
 	@HASH_BUCKET_SIZE [int],
 	@SEED [bigint],
 
-	@value [nvarchar](MAX)
+	@Value [nvarchar](MAX)
 )
 RETURNS [int]
 AS
 BEGIN	
-	DECLARE @buffer [varbinary](MAX)
 	DECLARE @hashcode [bigint]
-	DECLARE @index [int]
-	DECLARE @length [int]
-	DECLARE @octet [bigint]
 	DECLARE @MINOR_UPPER_BOUND [bigint]
 	DECLARE @MAJOR_UPPER_BOUND [bigint]
 	
 	SET @MINOR_UPPER_BOUND = 2147483648
 	SET @MAJOR_UPPER_BOUND = 4294967296
-		
-	SET @buffer = CAST(@value AS VARBINARY(MAX))
-	SET @length = LEN(@buffer)
-	SET @index = 1
-
-	SET @hashcode = @SEED
-	WHILE @index <= (@length)
-	BEGIN
-		SET @octet = SUBSTRING(@buffer, @index, 1)
-		SET @index = @index + 1
-		SET @hashcode = ((@hashcode * @MULTIPLIER) + @octet) % @MAJOR_UPPER_BOUND	
-	END
-
-	SET @hashcode = CASE WHEN @hashcode >= @MINOR_UPPER_BOUND THEN @hashcode - @MAJOR_UPPER_BOUND ELSE @hashcode END
-	SET @hashcode = CASE WHEN @hashcode < 0 THEN @hashcode + @MINOR_UPPER_BOUND ELSE @hashcode END % @HASH_BUCKET_SIZE
-
+	
+	SET @hashcode = @SEED;
+	SELECT @hashcode = (@hashcode * @MULTIPLIER + (SUBSTRING(CAST(@Value AS VARBINARY(MAX)), [BinaryTable].[Index], 1))) % @MAJOR_UPPER_BOUND
+		FROM (SELECT TOP(LEN(CAST(@Value AS VARBINARY(MAX)))) ROW_NUMBER() OVER (ORDER BY GETDATE()) AS [Index] FROM sys.all_objects) AS [BinaryTable];
+ 	
+	SET @hashcode =	CASE WHEN @hashcode >= @MINOR_UPPER_BOUND THEN @hashcode - @MAJOR_UPPER_BOUND ELSE @hashcode END;
+	SET @hashcode = CASE WHEN @hashcode < 0	THEN @hashcode + @MINOR_UPPER_BOUND ELSE @hashcode END % @HASH_BUCKET_SIZE;
+ 
 	RETURN CAST(@hashcode AS [int])	
 END
 GO
 
 
-CREATE FUNCTION [dbo].[GetObfuscatedTableViewColumnData]
+CREATE FUNCTION [DataObfuscation].[GetHashSubstitution]
+(
+	@DictionaryId [int],
+	
+	@Value [nvarchar](MAX)
+)
+RETURNS [nvarchar](MAX)
+AS
+BEGIN
+
+	DECLARE @hashMultiplier [bigint]
+	DECLARE @hashBucketSize [int]
+	DECLARE @hashSeed [bigint]	
+	
+	DECLARE @dictionaryKey [int]
+	DECLARE @dictionaryValue [nvarchar](MAX)
+	
+	
+	SELECT
+	@hashMultiplier = [HashMultiplier],
+	@hashBucketSize = [HashBucketSize],
+	@hashSeed = [HashSeed]
+	FROM [DataObfuscation].[Dictionary] t
+	WHERE t.[DictionaryId] = @DictionaryId;
+	
+	SET @dictionaryKey = [DataObfuscation].[GetHash] (@hashMultiplier, @hashBucketSize, @hashSeed, @Value);
+	
+	SELECT
+	@dictionaryValue = t.[Value]
+	FROM [DataObfuscation].[Associative] t
+	WHERE t.[DictionaryId] = @DictionaryId AND t.[Key] = @dictionaryKey
+	
+	RETURN @dictionaryValue	
+END
+GO
+
+
+INSERT INTO [DataObfuscation].[Strategy] VALUES (0, 'None', 'Performs no obfuscation.');
+INSERT INTO [DataObfuscation].[Strategy] VALUES (1, 'Substitution', 'Returns an alternate value for the real data using a hash appoach.');
+INSERT INTO [DataObfuscation].[Strategy] VALUES (2, 'Shuffling', 'Returns an alternate value for the real data using a shuffle appoach.');
+INSERT INTO [DataObfuscation].[Strategy] VALUES (3, 'Variance', 'Returns a value within +/- (10% | 120d) of the real data');
+INSERT INTO [DataObfuscation].[Strategy] VALUES (4, 'Cipher', 'Returns an encrypted value for all real data.');
+INSERT INTO [DataObfuscation].[Strategy] VALUES (5, 'Nulling', 'Return a null value instead of the real data.');
+INSERT INTO [DataObfuscation].[Strategy] VALUES (6, 'Masking', 'Returns a mask value for most but not all of the real data.');
+GO
+
+
+CREATE FUNCTION [DataObfuscation].[GetObfuscatedTableViewColumnData]
 (
 	@CatalogName as [nvarchar](64),
 	@SchemaName as [nvarchar](128),
 	@TableName as [nvarchar](128),
 	@ColumnName as [nvarchar](128),
-	@Value as [nvarchar](4000)
+	@Value as [nvarchar](MAX)
 )
-RETURNS [nvarchar](4000)
+RETURNS [nvarchar](MAX)
 AS
 BEGIN
 
-	DECLARE @count [int]
+	DECLARE @strategyId [int]
+	DECLARE @dictionaryId [int]
 	
-	SELECT @count = COUNT(t.[DataObfuscationTableViewColumnConfigId]) FROM [dbo].[DataObfuscationTableViewColumnConfig] t
-	WHERE
-	t.[CatalogName] = @CatalogName AND
-	t.[SchemaName] = @SchemaName AND
-	t.[TableName] = @TableName AND
-	t.[ColumnName] = @ColumnName AND
-	t.[IsMasked] = 1;
+	SELECT @strategyId = t.[StrategyId], @dictionaryId = t.[DictionaryId]
+	FROM [DataObfuscation].[TableViewColumnConfig] t
+	WHERE t.[CatalogName] = @CatalogName AND t.[SchemaName] = @SchemaName AND t.[TableName] = @TableName AND t.[ColumnName] = @ColumnName;
 
 	SET @Value = CASE
-		WHEN @count = 1 THEN UPPER(REVERSE(@Value))
+		WHEN @strategyId IS NULL OR
+			@strategyId = 0 THEN @Value
+		WHEN @strategyId = 1 THEN [DataObfuscation].[GetHashSubstitution](@dictionaryId, @Value)
+		--WHEN @strategyId = 2 THEN @Value
+		--WHEN @strategyId = 3 THEN @Value
+		WHEN @strategyId = 4 THEN ENCRYPTBYPASSPHRASE('TEXTMETAL', @Value)
+		WHEN @strategyId = 5 THEN null
+		--WHEN @strategyId = 6 THEN @Value
 		ELSE @Value
 	END
 
@@ -231,7 +408,7 @@ AS
 					
 <![CDATA[${rb(`
 	if ["varchar", "nvarchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
-		"	[dbo].[GetObfuscatedTableViewColumnData]('" +
+		"	[DataObfuscation].[GetObfuscatedTableViewColumnData]('" +
 		textMetal.EvaluateToken.invoke("InitialCatalogName") +
 		"', '" +
 		textMetal.EvaluateToken.invoke("SchemaName") +
@@ -268,7 +445,7 @@ AS
 					</ForEach.Body>
 				</ForEach>
 <![CDATA[
-	FROM [${InitialCatalogName}].[${SchemaName}].[${TableName}] t
+	FROM [${DataObfuscationTargetServerName}].[${InitialCatalogName}].[${SchemaName}].[${TableName}] t
 
 GO
 ]]>
