@@ -348,6 +348,8 @@ BEGIN
 	DECLARE @strategyId [int]
 	DECLARE @dictionaryId [int]
 	
+	IF @Value IS NULL OR LEN(@Value) = 0 BEGIN RETURN @Value END;
+	
 	SELECT @strategyId = t.[StrategyId], @dictionaryId = t.[DictionaryId]
 	FROM [DataObfuscation].[TableViewColumnConfig] t
 	WHERE t.[CatalogName] = @CatalogName AND t.[SchemaName] = @SchemaName AND t.[TableName] = @TableName AND t.[ColumnName] = @ColumnName;
@@ -408,7 +410,7 @@ AS
 					
 <![CDATA[${rb(`
 	if ["varchar", "nvarchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
-		"	[DataObfuscation].[GetObfuscatedTableViewColumnData]('" +
+		"	CAST( [DataObfuscation].[GetObfuscatedTableViewColumnData]('" +
 		textMetal.EvaluateToken.invoke("InitialCatalogName") +
 		"', '" +
 		textMetal.EvaluateToken.invoke("SchemaName") +
@@ -418,7 +420,11 @@ AS
 		textMetal.EvaluateToken.invoke("ColumnName") +
 		"', t.[" +
 		textMetal.EvaluateToken.invoke("ColumnName") +
-		"]) as [" +
+		"]) AS [" +
+		textMetal.EvaluateToken.invoke("ColumnSqlType") +
+		"](" +
+		textMetal.EvaluateToken.invoke("ColumnSize").to_s() +
+		") ) as [" +
 		textMetal.EvaluateToken.invoke("ColumnName") +
 		"]"
 	else
