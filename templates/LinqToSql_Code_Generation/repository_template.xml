@@ -49,7 +49,9 @@ namespace ${ClrNamespace}
 		
 		#region Fields/Constants
 		
+		private const string APP_CONFIG_PREFIX = "${ClrNamespace}";
 		private const string CONNECTION_STRING_NAME = "${ClrNamespace}::ConnectionString";
+		private const string DATA_SOURCE_TAG = "${ClrNamespace}::DataSourceTag";
 						
 		#endregion
 		
@@ -61,11 +63,24 @@ namespace ${ClrNamespace}
 			{
 				string connectionString;
 
-				connectionString = AppConfig.GetConnectionString(CONNECTION_STRING_NAME);
+				connectionString = AppConfig.GetConnectionString(ConnectionStringName);
 
 				OnPreProcessConnectionString(ref connectionString);
-				
+
 				return connectionString;
+			}
+		}
+
+		public static string ConnectionStringName
+		{
+			get
+			{
+				string connectionStringName;
+
+				connectionStringName = CONNECTION_STRING_NAME;
+				OnPreProcessConnectionStringName(ref connectionStringName);
+
+				return connectionStringName;
 			}
 		}
 		
@@ -73,7 +88,7 @@ namespace ${ClrNamespace}
 		{
 			get
 			{
-				return Type.GetType(AppConfig.GetConnectionProvider(CONNECTION_STRING_NAME), true);
+				return Type.GetType(AppConfig.GetConnectionProvider(ConnectionStringName), true);
 			}
 		}
 		
@@ -83,10 +98,10 @@ namespace ${ClrNamespace}
 			{
 				string value;
 
-				if (!AppConfig.HasAppSetting("${ClrNamespace}::DataSourceTag"))
+				if (!AppConfig.HasAppSetting(DATA_SOURCE_TAG))
 					return null;
 
-				value = AppConfig.GetAppSetting<string>("${ClrNamespace}::DataSourceTag");
+				value = AppConfig.GetAppSetting<string>(DATA_SOURCE_TAG);
 
 				return value;
 			}
@@ -108,6 +123,8 @@ namespace ${ClrNamespace}
 		}
 
 		static partial void OnPreProcessConnectionString(ref string connectionString);
+		
+		static partial void OnPreProcessConnectionStringName(ref string connectionStringName);
 		
 		#endregion
 		

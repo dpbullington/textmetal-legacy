@@ -54,6 +54,8 @@ namespace ${ClrNamespace}
 		#region Fields/Constants
 		
 		private const string APP_CONFIG_PREFIX = "${ClrNamespace}";
+		private const string CONNECTION_STRING_NAME = "${ClrNamespace}::ConnectionString";
+		private const string DATA_SOURCE_TAG = "${ClrNamespace}::DataSourceTag";
 		private const string RESOURCE_NAME_FORMAT = "${ClrNamespace}.SQL.RevisionHistory({0}).xml";
 		
 		private static readonly DatabaseFileManager databaseFileManager = new DatabaseFileManager(APP_CONFIG_PREFIX, NetSqliteSpecific.Instance);
@@ -68,11 +70,24 @@ namespace ${ClrNamespace}
 			{
 				string connectionString;
 
-				connectionString = AppConfig.GetConnectionString(string.Format("{0}::ConnectionString", APP_CONFIG_PREFIX));
+				connectionString = AppConfig.GetConnectionString(ConnectionStringName);
 
 				OnPreProcessConnectionString(ref connectionString);
-				
+
 				return connectionString;
+			}
+		}
+
+		public static string ConnectionStringName
+		{
+			get
+			{
+				string connectionStringName;
+
+				connectionStringName = CONNECTION_STRING_NAME;
+				OnPreProcessConnectionStringName(ref connectionStringName);
+
+				return connectionStringName;
 			}
 		}
 		
@@ -80,7 +95,7 @@ namespace ${ClrNamespace}
 		{
 			get
 			{
-				return Type.GetType(AppConfig.GetConnectionProvider(string.Format("{0}::ConnectionString", APP_CONFIG_PREFIX)), true);
+				return Type.GetType(AppConfig.GetConnectionProvider(ConnectionStringName), true);
 			}
 		}
 
@@ -98,10 +113,10 @@ namespace ${ClrNamespace}
 			{
 				string value;
 
-				if (!AppConfig.HasAppSetting(string.Format("{0}::DataSourceTag", APP_CONFIG_PREFIX)))
+				if (!AppConfig.HasAppSetting(DATA_SOURCE_TAG))
 					return null;
 
-				value = AppConfig.GetAppSetting<string>(string.Format("{0}::DataSourceTag", APP_CONFIG_PREFIX));
+				value = AppConfig.GetAppSetting<string>(DATA_SOURCE_TAG);
 
 				return value;
 			}
@@ -181,6 +196,8 @@ namespace ${ClrNamespace}
 		static partial void OnProfileCommand(Type modelType, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, bool executeAsCud, int thisOrThatRecordsAffected);
 		
 		static partial void OnPreProcessConnectionString(ref string connectionString);
+		
+		static partial void OnPreProcessConnectionStringName(ref string connectionStringName);
 		
 		#endregion
 		
