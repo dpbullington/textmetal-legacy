@@ -65,7 +65,7 @@ namespace TextMetal.Framework.InputOutputModel
 
 		#region Methods/Operators
 
-		protected override void CoreEnter(string scopeName)
+		protected override void CoreEnter(string scopeName, bool appendMode)
 		{
 			FileStream stream;
 			TextWriter textWriter;
@@ -83,7 +83,7 @@ namespace TextMetal.Framework.InputOutputModel
 				Directory.CreateDirectory(fullDirectoryPath);
 
 			// do not dispose here!
-			stream = new FileStream(fullFilePath, FileMode.Create, FileAccess.Write, FileShare.None);
+			stream = new FileStream(fullFilePath, appendMode ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.None);
 			textWriter = new StreamWriter(stream, Encoding.UTF8);
 
 			base.TextWriters.Push(textWriter);

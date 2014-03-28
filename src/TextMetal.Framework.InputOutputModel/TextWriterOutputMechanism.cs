@@ -27,7 +27,7 @@ namespace TextMetal.Framework.InputOutputModel
 
 		#region Methods/Operators
 
-		protected override void CoreEnter(string scopeName)
+		protected override void CoreEnter(string scopeName, bool appendMode)
 		{
 		}
 

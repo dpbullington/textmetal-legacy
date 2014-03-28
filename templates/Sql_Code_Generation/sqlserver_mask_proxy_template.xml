@@ -6,9 +6,12 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v5.0.0">
 
-	<OutputScope name="DM.g.sql">
+	<OutputScope name="ObfucationLayer.g.sql">
 
 <![CDATA[
+
+SET NOCOUNT ON
+GO
 
 USE [master]
 GO
@@ -37,62 +40,185 @@ CREATE SCHEMA [DataObfuscation]
 GO
 
 
-/*CREATE TABLE [DataObfuscation].[xxxDictionary]
+-- template for custom dictionary
+CREATE TABLE [DataObfuscation].[CrayonColorDictionary]
 (
-	[xxxDictionaryKey] [int] IDENTITY(1,1) NOT NULL,
-	[xxxDictionaryValue] [nvarchar](255) NOT NULL,
+	[CrayonColorDictionaryKey] [int] IDENTITY(1,1) NOT NULL,
+	[CrayonColorDictionaryValue] [nvarchar](255) NOT NULL,
 	
-	CONSTRAINT [pk_xxxDictionary] PRIMARY KEY
+	CONSTRAINT [pk_CrayonColorDictionary] PRIMARY KEY
 	(
-		[xxxDictionaryKey]
+		[CrayonColorDictionaryKey]
 	),
 	
-	CONSTRAINT [uk_xxxDictionary] UNIQUE
+	-- optional
+	CONSTRAINT [uk_CrayonColorDictionary] UNIQUE
 	(
-		[xxxDictionaryValue]
+		[CrayonColorDictionaryValue]
 	)
 )	
-GO*/
-
-
-CREATE VIEW [DataObfuscation].[Associative]
-AS
--- TODO: need to implement this based on your custom needs (using [DataObfuscation].[xxxDictionary] if so inclined)
-SELECT -1000 as [DictionaryId], 1 as [Key], 'apple' as [Value]
-UNION
-SELECT -1000 as [DictionaryId], 2 as [Key], 'orange' as [Value]
-UNION
-SELECT -1000 as [DictionaryId], 3 as [Key], 'lemon' as [Value]
-UNION
-SELECT -1000 as [DictionaryId], 4 as [Key], 'lime' as [Value]
-UNION
-SELECT -1000 as [DictionaryId], 5 as [Key], 'grape' as [Value]
 GO
 
 
-CREATE TABLE [DataObfuscation].[Dictionary]
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Almond')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Antique Brass')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Apricot')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Aquamarine')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Asparagus')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Atomic Tangerine')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Banana Mania')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Beaver')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Bittersweet')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Black')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Blue')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Blue Bell')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Blue Green')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Blue Violet')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Blush')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Brick Red')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Brown')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Burnt Orange')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Burnt Sienna')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Cadet Blue')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Canary')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Caribbean Green')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Carnation Pink')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Cerise')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Cerulean')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Chestnut')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Copper')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Cornflower')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Cotton Candy')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Dandelion')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Denim')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Desert Sand')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Eggplant')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Electric Lime')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Fern')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Forest Green')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Fuchsia')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Fuzzy Wuzzy Brown')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Gold')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Goldenrod')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Granny Smith Apple')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Gray')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Green')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Green Yellow')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Hot Magenta')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Inch Worm')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Indigo')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Jazzberry Jam')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Jungle Green')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Laser Lemon')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Lavender')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Macaroni and Cheese')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Magenta')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Mahogany')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Manatee')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Mango Tango')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Maroon')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Mauvelous')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Melon')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Midnight Blue')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Mountain Meadow')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Navy Blue')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Neon Carrot')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Olive Green')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Orange')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Orchid')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Outer Space')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Outrageous Orange')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Pacific Blue')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Peach')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Periwinkle')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Piggy Pink')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Pine Green')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Pink Flamingo')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Pink Sherbet')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Plum')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Purple Heart')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Purple Mountains’ Majesty')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Purple Pizzazz')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Radical Red')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Raw Sienna')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Razzle Dazzle Rose')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Razzmatazz')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Red')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Red Orange')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Red Violet')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Robin Egg Blue')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Royal Purple')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Salmon')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Scarlet')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Screamin Green')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Sea Green')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Sepia')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Shadow')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Shamrock')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Shocking Pink')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Silver')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Sky Blue')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Spring Green')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Sunglow')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Sunset Orange')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Tan')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Tickle Me Pink')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Timberwolf')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Tropical Rain Forest')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Tumbleweed')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Turquoise Blue')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Unmellow Yellow')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Violet (Purple)')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Violet Red')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Vivid Tangerine')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Vivid Violet')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('White')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Wild Blue Yonder')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Wild Strawberry')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Wild Watermelon')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Wisteria')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Yellow')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Yellow Green')
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Yellow Orange')
+GO
+
+
+CREATE VIEW [DataObfuscation].[MasterDictionary]
+AS
+SELECT -1000 as [DictionaryConfigId], t.[CrayonColorDictionaryKey] as [Key], t.[CrayonColorDictionaryValue] as [Value]
+	FROM [DataObfuscation].[CrayonColorDictionary] t
+--	UNION ALL
+-- more dictionaries
+GO
+
+
+CREATE TABLE [DataObfuscation].[DictionaryConfig]
 (
-	[DictionaryId] [int] NOT NULL,
-	[DictionaryName] [nvarchar](64) NOT NULL,
+	[DictionaryConfigId] [int] NOT NULL,
+	[DictionaryConfigName] [nvarchar](64) NOT NULL,
+	[IsWellKnown] [bit] NOT NULL,
 	
 	[HashMultiplier] [bigint] NOT NULL,
-	[HashBucketSize] [int] NOT NULL,
+	[HashBucketSize] [bigint] NOT NULL,
 	[HashSeed] [bigint] NOT NULL,
 	
-	CONSTRAINT [pk_Dictionary] PRIMARY KEY
+	CONSTRAINT [pk_DictionaryConfig] PRIMARY KEY
 	(
-		[DictionaryId]
+		[DictionaryConfigId]
 	),
 	
-	CONSTRAINT [uk_Dictionary] UNIQUE
+	CONSTRAINT [uk_DictionaryConfig] UNIQUE
 	(
-		[DictionaryName]
+		[DictionaryConfigName]
 	)
 )	
 GO
 
 
-INSERT INTO [DataObfuscation].[Dictionary] VALUES (-1000, 'TextMetal Fruit Dictionary', 33, 5, 5381)
+INSERT INTO [DataObfuscation].[DictionaryConfig] VALUES (0, 'TextMetal Numeric Sign Dictionary', 1, 33, 1000000, 5381)
+INSERT INTO [DataObfuscation].[DictionaryConfig] VALUES (-1000, 'TextMetal Crayon Color Dictionary', 0, 33, 120, 5381)
+INSERT INTO [DataObfuscation].[DictionaryConfig] VALUES (-1100, 'TextMetal Variance Numeric Dictionary', 0, 33, 10, 5381)
+INSERT INTO [DataObfuscation].[DictionaryConfig] VALUES (-1200, 'TextMetal Variance Date Dictionary', 0, 33, 120, 5381)
 GO
 
 
@@ -115,6 +241,16 @@ CREATE TABLE [DataObfuscation].[Strategy]
 GO
 
 
+INSERT INTO [DataObfuscation].[Strategy] VALUES (0, 'None', 'Performs no obfuscation.');
+INSERT INTO [DataObfuscation].[Strategy] VALUES (1, 'Substitution', 'Returns an alternate value for the real data using a hash appoach.');
+INSERT INTO [DataObfuscation].[Strategy] VALUES (2, 'Shuffling', 'Returns an alternate value for the real data using a shuffle appoach.');
+INSERT INTO [DataObfuscation].[Strategy] VALUES (3, 'Variance', 'Returns a value within +/- (x% | xd) of the real data.');
+INSERT INTO [DataObfuscation].[Strategy] VALUES (4, 'Cipher', 'Returns an encrypted value for all real data.');
+INSERT INTO [DataObfuscation].[Strategy] VALUES (5, 'Nulling', 'Return a null value instead of the real data.');
+INSERT INTO [DataObfuscation].[Strategy] VALUES (6, 'Masking', 'Returns a mask value for most but not all of the real data.');
+GO
+
+
 CREATE TABLE [DataObfuscation].[StoredProcedureParameterConfig]
 (
 	[StoredProcedureParameterConfigId] [int] IDENTITY(1,1) NOT NULL,
@@ -126,7 +262,7 @@ CREATE TABLE [DataObfuscation].[StoredProcedureParameterConfig]
 	
 	[StrategyId] [int] NOT NULL,
 	
-	[DictionaryId] [int] NULL,
+	[DictionaryConfigId] [int] NULL,
 
 	CONSTRAINT [pk_StoredProcedureParameterConfig] PRIMARY KEY
 	(
@@ -150,13 +286,13 @@ CREATE TABLE [DataObfuscation].[StoredProcedureParameterConfig]
 		[StrategyId]
 	),
 	
-	CONSTRAINT [fk_StoredProcedureParameterConfig_Dictionary] FOREIGN KEY
+	CONSTRAINT [fk_StoredProcedureParameterConfig_DictionaryConfig] FOREIGN KEY
 	(
-		[DictionaryId]
+		[DictionaryConfigId]
 	)
-	REFERENCES [DataObfuscation].[Dictionary]
+	REFERENCES [DataObfuscation].[DictionaryConfig]
 	(
-		[DictionaryId]
+		[DictionaryConfigId]
 	)
 )	
 GO
@@ -173,7 +309,7 @@ CREATE TABLE [DataObfuscation].[StoredProcedureColumnConfig]
 	
 	[StrategyId] [int] NOT NULL,
 	
-	[DictionaryId] [int] NULL,
+	[DictionaryConfigId] [int] NULL,
 
 	CONSTRAINT [pk_StoredProcedureColumnConfig] PRIMARY KEY
 	(
@@ -197,13 +333,13 @@ CREATE TABLE [DataObfuscation].[StoredProcedureColumnConfig]
 		[StrategyId]
 	),
 	
-	CONSTRAINT [fk_StoredProcedureColumnConfig_Dictionary] FOREIGN KEY
+	CONSTRAINT [fk_StoredProcedureColumnConfig_DictionaryConfig] FOREIGN KEY
 	(
-		[DictionaryId]
+		[DictionaryConfigId]
 	)
-	REFERENCES [DataObfuscation].[Dictionary]
+	REFERENCES [DataObfuscation].[DictionaryConfig]
 	(
-		[DictionaryId]
+		[DictionaryConfigId]
 	)
 )	
 GO
@@ -220,7 +356,7 @@ CREATE TABLE [DataObfuscation].[TableViewColumnConfig]
 	
 	[StrategyId] [int] NOT NULL,
 	
-	[DictionaryId] [int] NULL,
+	[DictionaryConfigId] [int] NULL,
 
 	CONSTRAINT [pk_TableViewColumnConfig] PRIMARY KEY
 	(
@@ -244,131 +380,183 @@ CREATE TABLE [DataObfuscation].[TableViewColumnConfig]
 		[StrategyId]
 	),
 	
-	CONSTRAINT [fk_TableViewColumnConfig_Dictionary] FOREIGN KEY
+	CONSTRAINT [fk_TableViewColumnConfig_DictionaryConfig] FOREIGN KEY
 	(
-		[DictionaryId]
+		[DictionaryConfigId]
 	)
-	REFERENCES [DataObfuscation].[Dictionary]
+	REFERENCES [DataObfuscation].[DictionaryConfig]
 	(
-		[DictionaryId]
+		[DictionaryConfigId]
 	)
 )	
 GO
 
 
-CREATE FUNCTION [DataObfuscation].[GetHash]
-(
-	@MULTIPLIER [bigint],
-	@HASH_BUCKET_SIZE [int],
-	@SEED [bigint],
+CREATE ASSEMBLY [TextMetal.Common.SqlServerClr]
+AUTHORIZATION [dbo]
+FROM 'D:\development\textmetal\src\TextMetal.Common.SqlServerClr\bin\Debug\TextMetal.Common.SqlServerClr.dll'
+WITH PERMISSION_SET = SAFE
+GO
 
-	@Value [nvarchar](MAX)
+
+CREATE FUNCTION [DataObfuscation].[fn_GetNull]
+(
+	@blank as [bit],
+	@value [nvarchar](MAX)
+)
+RETURNS [nvarchar](MAX)
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetNull]
+GO
+
+
+CREATE FUNCTION [DataObfuscation].[fn_GetHash]
+(
+	@hashMultiplier [bigint],
+	@hashBucketSize [bigint],
+	@hashSeed [bigint],
+	@value [sql_variant]
 )
 RETURNS [int]
-AS
-BEGIN	
-	DECLARE @hashcode [bigint]
-	DECLARE @MINOR_UPPER_BOUND [bigint]
-	DECLARE @MAJOR_UPPER_BOUND [bigint]
-	
-	SET @MINOR_UPPER_BOUND = 2147483648
-	SET @MAJOR_UPPER_BOUND = 4294967296
-	
-	SET @hashcode = @SEED;
-	SELECT @hashcode = (@hashcode * @MULTIPLIER + (SUBSTRING(CAST(@Value AS VARBINARY(MAX)), [BinaryTable].[Index], 1))) % @MAJOR_UPPER_BOUND
-		FROM (SELECT TOP(LEN(CAST(@Value AS VARBINARY(MAX)))) ROW_NUMBER() OVER (ORDER BY GETDATE()) AS [Index] FROM sys.all_objects) AS [BinaryTable];
- 	
-	SET @hashcode =	CASE WHEN @hashcode >= @MINOR_UPPER_BOUND THEN @hashcode - @MAJOR_UPPER_BOUND ELSE @hashcode END;
-	SET @hashcode = CASE WHEN @hashcode < 0	THEN @hashcode + @MINOR_UPPER_BOUND ELSE @hashcode END % @HASH_BUCKET_SIZE;
- 
-	RETURN CAST(@hashcode AS [int])	
-END
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetHash]
 GO
 
 
-CREATE FUNCTION [DataObfuscation].[GetHashSubstitution]
+CREATE FUNCTION [DataObfuscation].[fn_GetVariance]
 (
-	@DictionaryId [int],
-	
-	@Value [nvarchar](MAX)
+	@varianceFactor as [float],
+	@value [sql_variant]
+)
+RETURNS [sql_variant]
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetVariance]
+GO
+
+
+CREATE FUNCTION [DataObfuscation].[fn_GetMask]
+(
+	@maskFactor as [float],
+	@value [nvarchar](MAX)
 )
 RETURNS [nvarchar](MAX)
-AS
-BEGIN
-
-	DECLARE @hashMultiplier [bigint]
-	DECLARE @hashBucketSize [int]
-	DECLARE @hashSeed [bigint]	
-	
-	DECLARE @dictionaryKey [int]
-	DECLARE @dictionaryValue [nvarchar](MAX)
-	
-	
-	SELECT
-	@hashMultiplier = [HashMultiplier],
-	@hashBucketSize = [HashBucketSize],
-	@hashSeed = [HashSeed]
-	FROM [DataObfuscation].[Dictionary] t
-	WHERE t.[DictionaryId] = @DictionaryId;
-	
-	SET @dictionaryKey = [DataObfuscation].[GetHash] (@hashMultiplier, @hashBucketSize, @hashSeed, @Value);
-	
-	SELECT
-	@dictionaryValue = t.[Value]
-	FROM [DataObfuscation].[Associative] t
-	WHERE t.[DictionaryId] = @DictionaryId AND t.[Key] = @dictionaryKey
-	
-	RETURN @dictionaryValue	
-END
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetMask]
 GO
 
 
-INSERT INTO [DataObfuscation].[Strategy] VALUES (0, 'None', 'Performs no obfuscation.');
-INSERT INTO [DataObfuscation].[Strategy] VALUES (1, 'Substitution', 'Returns an alternate value for the real data using a hash appoach.');
-INSERT INTO [DataObfuscation].[Strategy] VALUES (2, 'Shuffling', 'Returns an alternate value for the real data using a shuffle appoach.');
-INSERT INTO [DataObfuscation].[Strategy] VALUES (3, 'Variance', 'Returns a value within +/- (10% | 120d) of the real data');
-INSERT INTO [DataObfuscation].[Strategy] VALUES (4, 'Cipher', 'Returns an encrypted value for all real data.');
-INSERT INTO [DataObfuscation].[Strategy] VALUES (5, 'Nulling', 'Return a null value instead of the real data.');
-INSERT INTO [DataObfuscation].[Strategy] VALUES (6, 'Masking', 'Returns a mask value for most but not all of the real data.');
-GO
-
-
-CREATE FUNCTION [DataObfuscation].[GetObfuscatedTableViewColumnData]
+CREATE FUNCTION [DataObfuscation].[fn_GetShuffle]
 (
-	@CatalogName as [nvarchar](64),
-	@SchemaName as [nvarchar](128),
-	@TableName as [nvarchar](128),
-	@ColumnName as [nvarchar](128),
-	@Value as [nvarchar](MAX)
+	@hashSeed [bigint],
+	@value [nvarchar](MAX)
 )
 RETURNS [nvarchar](MAX)
-AS
-BEGIN
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetShuffle]
+GO
 
-	DECLARE @strategyId [int]
-	DECLARE @dictionaryId [int]
-	
-	IF @Value IS NULL OR LEN(@Value) = 0 BEGIN RETURN @Value END;
-	
-	SELECT @strategyId = t.[StrategyId], @dictionaryId = t.[DictionaryId]
-	FROM [DataObfuscation].[TableViewColumnConfig] t
-	WHERE t.[CatalogName] = @CatalogName AND t.[SchemaName] = @SchemaName AND t.[TableName] = @TableName AND t.[ColumnName] = @ColumnName;
 
-	SET @Value = CASE
-		WHEN @strategyId IS NULL OR
-			@strategyId = 0 THEN @Value
-		WHEN @strategyId = 1 THEN [DataObfuscation].[GetHashSubstitution](@dictionaryId, @Value)
-		--WHEN @strategyId = 2 THEN @Value
-		--WHEN @strategyId = 3 THEN @Value
-		WHEN @strategyId = 4 THEN ENCRYPTBYPASSPHRASE('TEXTMETAL', @Value)
-		WHEN @strategyId = 5 THEN null
-		--WHEN @strategyId = 6 THEN @Value
-		ELSE @Value
-	END
+CREATE FUNCTION [DataObfuscation].[fn_ExecuteHashSubstitution]
+(
+	@dictionaryConfigId [int],
+	@value [sql_variant]
+)
+RETURNS [nvarchar](MAX)
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_ExecuteHashSubstitution]
+GO
 
-	RETURN @Value
-	
-END
+
+CREATE FUNCTION [DataObfuscation].[fn_ExecuteHashShuffle]
+(
+	@dictionaryConfigId [int],
+	@value [sql_variant]
+)
+RETURNS [nvarchar](MAX)
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_ExecuteHashShuffle]
+GO
+
+
+CREATE FUNCTION [DataObfuscation].[fn_ExecuteHashVariance]
+(
+	@dictionaryConfigId [int],
+	@value [sql_variant]
+)
+RETURNS [sql_variant]
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_ExecuteHashVariance]
+GO
+
+
+CREATE FUNCTION [DataObfuscation].[fn_ExecuteStrategy]
+(
+	@strategyId [int],
+	@dictionaryConfigId [int],
+	@value [sql_variant]
+)
+RETURNS [sql_variant]
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_ExecuteStrategy]
+GO
+
+
+CREATE FUNCTION [DataObfuscation].[fn_GetObfuscatedTableViewColumnData]
+(
+	@catalogName as [nvarchar](64),
+	@schemaName as [nvarchar](128),
+	@tableName as [nvarchar](128),
+	@columnName as [nvarchar](128),
+	@value [sql_variant]
+)
+RETURNS [sql_variant]
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetObfuscatedTableViewColumnData]
+GO
+
+
+
+
+
+
+
+
+
+
+
+-- TESTS
+PRINT [DataObfuscation].[fn_GetHash](33, 1000, 5381, 'textmetal')
+PRINT [DataObfuscation].[fn_GetHash](33, 1000, 5381, null)
+PRINT [DataObfuscation].[fn_GetHash](33, 5, 5381, 'textmetal')
+
+PRINT CAST([DataObfuscation].[fn_GetVariance](0.30, CAST('1/1/2014' AS [datetime])) AS NVARCHAR)
+PRINT CAST([DataObfuscation].[fn_GetVariance](-0.30, CAST('1/1/2014' AS [datetime])) AS NVARCHAR)
+PRINT CAST([DataObfuscation].[fn_GetVariance](-0.20, 25) AS NVARCHAR)
+PRINT CAST([DataObfuscation].[fn_GetVariance](+0.5, 25.0) AS NVARCHAR)
+
+PRINT [DataObfuscation].[fn_GetOneFouthMask]('5900123496001500')
+
+-- DB SELECTS
+PRINT [DataObfuscation].[fn_ExecuteHashSubstitution](-1000, 'textmetal')
+
+PRINT CAST([DataObfuscation].[fn_ExecuteHashVariance](-1100, 25) AS NVARCHAR)
+PRINT CAST([DataObfuscation].[fn_ExecuteHashVariance](-1100, 25.0) AS NVARCHAR)
+PRINT CAST([DataObfuscation].[fn_ExecuteHashVariance](-1200, CAST('1/1/2014' AS [datetime])) AS NVARCHAR)
+
+PRINT CAST([DataObfuscation].[fn_ExecuteHashShuffle](-1200, 'textmetal') AS NVARCHAR)
+
+PRINT CAST([DataObfuscation].fn_ExecuteStrategy(0, -1000, 'textmetal') AS NVARCHAR)
+PRINT CAST([DataObfuscation].fn_ExecuteStrategy(1, -1000, 'textmetal') AS NVARCHAR)
+PRINT CAST([DataObfuscation].fn_ExecuteStrategy(2, -1000, 'textmetal') AS NVARCHAR)
+PRINT CAST([DataObfuscation].fn_ExecuteStrategy(3, -1000, 1000) AS NVARCHAR)
+PRINT CAST([DataObfuscation].fn_ExecuteStrategy(4, -1000, 'textmetal') AS NVARCHAR)
+PRINT CAST([DataObfuscation].fn_ExecuteStrategy(5, -1000, 'textmetal') AS NVARCHAR)
+PRINT CAST([DataObfuscation].fn_ExecuteStrategy(6, -1000, 'textmetal') AS NVARCHAR)
+
+/*
+153
+-1
+3
+Pine Green
+Jan 31 2014 12:00AM
+Dec  2 2013 12:00AM
+20
+37.50
+26
+26.500
+Apr  8 2014 12:00AM
+************1500
+*/
 GO
 
 
@@ -376,6 +564,11 @@ GO
 
 	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
+			<Ruby src="Script">
+				<Script>!["db_accessadmin", "db_backupoperator", "db_datareader",
+				"db_datawriter", "db_ddladmin", "db_denydatareader", "db_denydatawriter",
+				"db_owner", "db_securityadmin", "dbo", "sys"].include?(textMetal.EvaluateToken.invoke("SchemaName"));</Script>
+			</Ruby>	
 		</ForEach.Filter>
 		
 		<ForEach.Body>
@@ -410,7 +603,7 @@ AS
 					
 <![CDATA[${rb(`
 	if ["varchar", "nvarchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
-		"	CAST( [DataObfuscation].[GetObfuscatedTableViewColumnData]('" +
+		"	CAST( [DataObfuscation].[fn_GetObfuscatedTableViewColumnData]('" +
 		textMetal.EvaluateToken.invoke("InitialCatalogName") +
 		"', '" +
 		textMetal.EvaluateToken.invoke("SchemaName") +
@@ -431,7 +624,13 @@ AS
 		"	t.[" +	textMetal.EvaluateToken.invoke("ColumnName") + "]"
 	end
 `)}]]>
-							
+
+						<OutputScope name="ObfucationLayer.tvcfg.g.sql" append="true">
+						<![CDATA[
+INSERT INTO [DataObfuscation].[TableViewColumnConfig] VALUES ('${InitialCatalogName}', '${SchemaName}', '${TableName}', '${ColumnName}', 0, -1000);
+						]]>
+						</OutputScope>
+					
 						<If>
 							<If.Condition>
 								<BinaryExpression operator="Ne">
@@ -461,5 +660,7 @@ GO
 
 		</ForEach.Body>
 	</ForEach>
+	
+	
 	</OutputScope>
 </Template>

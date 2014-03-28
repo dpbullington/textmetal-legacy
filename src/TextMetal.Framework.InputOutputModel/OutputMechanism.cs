@@ -81,7 +81,7 @@ namespace TextMetal.Framework.InputOutputModel
 
 		#region Methods/Operators
 
-		protected abstract void CoreEnter(string scopeName);
+		protected abstract void CoreEnter(string scopeName, bool appendMode);
 
 		protected abstract void CoreLeave(string scopeName);
 
@@ -118,9 +118,9 @@ namespace TextMetal.Framework.InputOutputModel
 			}
 		}
 
-		public void EnterScope(string scopeName)
+		public void EnterScope(string scopeName, bool appendMode)
 		{
-			this.CoreEnter(scopeName);
+			this.CoreEnter(scopeName, appendMode);
 		}
 
 		public void LeaveScope(string scopeName)

@@ -6,7 +6,7 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v5.0.0">
 
-	<OutputScope name="CDC_old.g.sql">
+	<OutputScope name="ChangeCapture_Migrate.g.sql">
 	
 	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>

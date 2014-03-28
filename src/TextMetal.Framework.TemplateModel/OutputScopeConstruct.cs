@@ -30,6 +30,7 @@ namespace TextMetal.Framework.TemplateModel
 		#region Fields/Constants
 
 		private string name;
+		private bool append;
 
 		#endregion
 
@@ -53,6 +54,19 @@ namespace TextMetal.Framework.TemplateModel
 			set
 			{
 				this.name = value;
+			}
+		}
+
+		[XmlAttributeMapping(LocalName = "append", NamespaceUri = "")]
+		public bool Append
+		{
+			get
+			{
+				return this.append;
+			}
+			set
+			{
+				this.append = value;
 			}
 		}
 
@@ -103,7 +117,7 @@ namespace TextMetal.Framework.TemplateModel
 			}
 
 			templatingContext.Output.LogTextWriter.WriteLine("['{0:O}' (UTC)]\tEntering output scope '{1}'.", DateTime.UtcNow, name);
-			templatingContext.Output.EnterScope(name);
+			templatingContext.Output.EnterScope(name, this.Append);
 
 			if ((object)this.Items != null)
 			{

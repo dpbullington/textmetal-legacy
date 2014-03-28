@@ -39,7 +39,7 @@ namespace TextMetal.Framework.Core
 		/// Enters (pushes) an output scope as deliniated by scope name. Scope name semantics is implementation specific.
 		/// </summary>
 		/// <param name="scopeName"> The scope name to push. </param>
-		void EnterScope(string scopeName);
+		void EnterScope(string scopeName, bool appendMode);
 
 		/// <summary>
 		/// Leaves (pops) an output scope as deliniated by scope name. Scope name semantics is implementation specific.
