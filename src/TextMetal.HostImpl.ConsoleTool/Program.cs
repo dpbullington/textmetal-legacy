@@ -100,6 +100,7 @@ namespace TextMetal.HostImpl.ConsoleTool
 			bool strictMatching;
 			IDictionary<string, IList<string>> properties;
 			IList<string> _arguments;
+			IList<string> propertyValues;
 
 			const string CMDLN_TOKEN_TEMPLATEFILE = "templatefile";
 			const string CMDLN_TOKEN_SOURCEFILE = "sourcefile";
@@ -128,13 +129,33 @@ namespace TextMetal.HostImpl.ConsoleTool
 			}
 
 			// required
+			properties = new Dictionary<string, IList<string>>();
+
 			templateFilePath = arguments[CMDLN_TOKEN_TEMPLATEFILE].Single();
 			sourceFilePath = arguments[CMDLN_TOKEN_SOURCEFILE].Single();
 			baseDirectoryPath = arguments[CMDLN_TOKEN_BASEDIR].Single();
 			sourceStrategyAssemblyQualifiedTypeName = arguments[CMDLN_TOKEN_SOURCESTRATEGY_AQTN].Single();
 			DataType.TryParse<bool>(arguments[CMDLN_TOKEN_STRICT].Single(), out strictMatching);
 
-			properties = new Dictionary<string, IList<string>>();
+			propertyValues = new List<string>();
+			propertyValues.Add(templateFilePath);
+			properties.Add(string.Format("argument_{0}", CMDLN_TOKEN_TEMPLATEFILE), propertyValues);
+
+			propertyValues = new List<string>();
+			propertyValues.Add(sourceFilePath);
+			properties.Add(string.Format("argument_{0}", CMDLN_TOKEN_SOURCEFILE), propertyValues);
+
+			propertyValues = new List<string>();
+			propertyValues.Add(baseDirectoryPath);
+			properties.Add(string.Format("argument_{0}", CMDLN_TOKEN_BASEDIR), propertyValues);
+
+			propertyValues = new List<string>();
+			propertyValues.Add(sourceStrategyAssemblyQualifiedTypeName);
+			properties.Add(string.Format("argument_{0}", CMDLN_TOKEN_SOURCESTRATEGY_AQTN), propertyValues);
+
+			propertyValues = new List<string>();
+			propertyValues.Add(strictMatching.ToString());
+			properties.Add(string.Format("argument_{0}", CMDLN_TOKEN_STRICT), propertyValues);
 
 			if (arguments.TryGetValue(CMDLN_TOKEN_PROPERTY, out _arguments))
 			{
@@ -142,16 +163,15 @@ namespace TextMetal.HostImpl.ConsoleTool
 				{
 					foreach (string argument in _arguments)
 					{
-						IList<string> propertyValues;
 						string key, value;
 
 						if (!AppConfig.TryParseCommandLineArgumentProperty(argument, out key, out value))
 							continue;
 
 						if (!properties.ContainsKey(key))
-							properties.Add(key, new List<string>());
-
-						propertyValues = properties[key];
+							properties.Add(key, propertyValues = new List<string>());
+						else
+							propertyValues = properties[key];
 
 						// duplicate values are ignored
 						if (propertyValues.Contains(value))

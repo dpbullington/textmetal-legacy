@@ -6,9 +6,9 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v5.0.0">
 	
-	<Import name="sqlserver_cdc_template.xml" />
-	<Import name="sqlserver_cdc_migrate_template.xml" />
+	<Import name="sqlserver_history_template.xml" />
+	<Import name="sqlserver_history_migrate_rev01_template.xml" />
 	<Import name="sqlserver_drop_all_template.xml" />
-	<Import name="sqlserver_mask_proxy_template.xml" />
+	<Import name="sqlserver_obfuscation_template.xml" />
 	
 </Template>

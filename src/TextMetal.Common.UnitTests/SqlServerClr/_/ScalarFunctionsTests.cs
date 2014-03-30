@@ -40,7 +40,7 @@ namespace TextMetal.Common.UnitTests.SqlServerClr._
 		[Test]
 		public void ShouldTest1()
 		{
-			int hashCode;
+			int? hashCode;
 
 			hashCode = ScalarFunctions.GetHash(33, 1000, 5381, "textmetal");
 

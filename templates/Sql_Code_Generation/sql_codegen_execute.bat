@@ -33,6 +33,12 @@ goto pkgBuild
 
 :pkgBuild
 
+copy "..\..\src\TextMetal.Common.SqlServerClr\bin\Debug\TextMetal.Common.SqlServerClr.dll" "%PACKAGE_DIR%\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+powershell -command "'0x' + [System.BitConverter]::ToString([System.IO.File]::ReadAllBytes('..\..\src\TextMetal.Common.SqlServerClr\bin\Debug\TextMetal.Common.SqlServerClr.dll')).Replace('-', '')" > "%PACKAGE_DIR%\TextMetal.Common.SqlServerClr.dll.txt"
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
 echo *** sql_codegen_execute ***
 "..\..\src\TextMetal.HostImpl.ConsoleTool\bin\Debug\TextMetal.exe" ^
 	-templatefile:"master_template.xml" ^

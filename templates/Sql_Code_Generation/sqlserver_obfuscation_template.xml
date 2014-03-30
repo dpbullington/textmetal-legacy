@@ -6,7 +6,20 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v5.0.0">
 
-	<OutputScope name="ObfucationLayer.g.sql">
+	<OutputScope name="Obfucation_TableViewConfig_Baseline.g.sql" append="false">
+<![CDATA[
+
+SET NOCOUNT ON
+GO
+
+USE [${DataObfuscationProxyCatalogName}]
+GO
+
+
+]]>
+	</OutputScope>
+
+	<OutputScope name="Obfucation.g.sql">
 
 <![CDATA[
 
@@ -185,7 +198,7 @@ GO
 
 CREATE VIEW [DataObfuscation].[MasterDictionary]
 AS
-SELECT -1000 as [DictionaryConfigId], t.[CrayonColorDictionaryKey] as [Key], t.[CrayonColorDictionaryValue] as [Value]
+SELECT 1001 as [DictionaryConfigId], t.[CrayonColorDictionaryKey] as [Key], t.[CrayonColorDictionaryValue] as [Value]
 	FROM [DataObfuscation].[CrayonColorDictionary] t
 --	UNION ALL
 -- more dictionaries
@@ -195,7 +208,7 @@ GO
 CREATE TABLE [DataObfuscation].[DictionaryConfig]
 (
 	[DictionaryConfigId] [int] NOT NULL,
-	[DictionaryConfigName] [nvarchar](64) NOT NULL,
+	[DictionaryConfigName] [nvarchar](255) NOT NULL,
 	[IsWellKnown] [bit] NOT NULL,
 	
 	[HashMultiplier] [bigint] NOT NULL,
@@ -215,10 +228,13 @@ CREATE TABLE [DataObfuscation].[DictionaryConfig]
 GO
 
 
-INSERT INTO [DataObfuscation].[DictionaryConfig] VALUES (0, 'TextMetal Numeric Sign Dictionary', 1, 33, 1000000, 5381)
-INSERT INTO [DataObfuscation].[DictionaryConfig] VALUES (-1000, 'TextMetal Crayon Color Dictionary', 0, 33, 120, 5381)
-INSERT INTO [DataObfuscation].[DictionaryConfig] VALUES (-1100, 'TextMetal Variance Numeric Dictionary', 0, 33, 10, 5381)
-INSERT INTO [DataObfuscation].[DictionaryConfig] VALUES (-1200, 'TextMetal Variance Date Dictionary', 0, 33, 120, 5381)
+INSERT INTO [DataObfuscation].[DictionaryConfig] VALUES (0, 'TextMetal Virtual Null Dictionary (well-known/required)', 1, 0, 0, 0)
+INSERT INTO [DataObfuscation].[DictionaryConfig] VALUES (1, 'TextMetal Virtual Numeric Sign Dictionary (well-known/required)', 1, 33, 1000000, 5381)
+INSERT INTO [DataObfuscation].[DictionaryConfig] VALUES (2, 'TextMetal In-memory Crayon Color Dictionary (well-known/required)', 1, 33, 120, 5381)
+
+INSERT INTO [DataObfuscation].[DictionaryConfig] VALUES (1001, 'TextMetal Table-based Crayon Color Dictionary (custom/example)', 0, 33, 120, 5381)
+INSERT INTO [DataObfuscation].[DictionaryConfig] VALUES (1002, 'TextMetal Virtual Variance Numeric +/- 10% Dictionary (custom/example)', 0, 33, 10, 5381)
+INSERT INTO [DataObfuscation].[DictionaryConfig] VALUES (1003, 'TextMetal Virtual Variance Date +/- 120d Dictionary (custom/example)', 0, 33, 120, 5381)
 GO
 
 
@@ -394,18 +410,20 @@ GO
 
 CREATE ASSEMBLY [TextMetal.Common.SqlServerClr]
 AUTHORIZATION [dbo]
-FROM 'D:\development\textmetal\src\TextMetal.Common.SqlServerClr\bin\Debug\TextMetal.Common.SqlServerClr.dll'
-WITH PERMISSION_SET = SAFE
+FROM
+]]>
+		<Include name="${argument_basedir}\TextMetal.Common.SqlServerClr.dll.txt" />
+<![CDATA[WITH PERMISSION_SET = SAFE
 GO
 
 
-CREATE FUNCTION [DataObfuscation].[fn_GetNull]
+CREATE FUNCTION [DataObfuscation].[fn_GetCipher]
 (
-	@blank as [bit],
+	@sharedSecret [nvarchar](MAX),
 	@value [nvarchar](MAX)
 )
 RETURNS [nvarchar](MAX)
-AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetNull]
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetCipher]
 GO
 
 
@@ -414,20 +432,10 @@ CREATE FUNCTION [DataObfuscation].[fn_GetHash]
 	@hashMultiplier [bigint],
 	@hashBucketSize [bigint],
 	@hashSeed [bigint],
-	@value [sql_variant]
+	@value [nvarchar](MAX)
 )
 RETURNS [int]
 AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetHash]
-GO
-
-
-CREATE FUNCTION [DataObfuscation].[fn_GetVariance]
-(
-	@varianceFactor as [float],
-	@value [sql_variant]
-)
-RETURNS [sql_variant]
-AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetVariance]
 GO
 
 
@@ -441,9 +449,18 @@ AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.
 GO
 
 
+CREATE FUNCTION [DataObfuscation].[fn_GetNull]
+(
+	@value [sql_variant]
+)
+RETURNS [sql_variant]
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetNull]
+GO
+
+
 CREATE FUNCTION [DataObfuscation].[fn_GetShuffle]
 (
-	@hashSeed [bigint],
+	@randomSeed [bigint],
 	@value [nvarchar](MAX)
 )
 RETURNS [nvarchar](MAX)
@@ -451,23 +468,45 @@ AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.
 GO
 
 
-CREATE FUNCTION [DataObfuscation].[fn_ExecuteHashSubstitution]
+CREATE FUNCTION [DataObfuscation].[fn_GetVariance]
 (
-	@dictionaryConfigId [int],
+	@varianceFactor as [float],
 	@value [sql_variant]
 )
+RETURNS [sql_variant]
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetVariance]
+GO
+
+
+
+
+CREATE FUNCTION [DataObfuscation].[fn_ExecuteHashCipher]
+(
+	@dictionaryConfigId [int],
+	@value [nvarchar](MAX)
+)
 RETURNS [nvarchar](MAX)
-AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_ExecuteHashSubstitution]
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_ExecuteHashCipher]
 GO
 
 
 CREATE FUNCTION [DataObfuscation].[fn_ExecuteHashShuffle]
 (
 	@dictionaryConfigId [int],
-	@value [sql_variant]
+	@value [nvarchar](MAX)
 )
 RETURNS [nvarchar](MAX)
 AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_ExecuteHashShuffle]
+GO
+
+
+CREATE FUNCTION [DataObfuscation].[fn_ExecuteHashSubstitution]
+(
+	@dictionaryConfigId [int],
+	@value [nvarchar](MAX)
+)
+RETURNS [nvarchar](MAX)
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_ExecuteHashSubstitution]
 GO
 
 
@@ -492,7 +531,7 @@ AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.
 GO
 
 
-CREATE FUNCTION [DataObfuscation].[fn_GetObfuscatedTableViewColumnData]
+CREATE FUNCTION [DataObfuscation].[fn_ObfuscateTableViewColumnValue]
 (
 	@catalogName as [nvarchar](64),
 	@schemaName as [nvarchar](128),
@@ -501,64 +540,8 @@ CREATE FUNCTION [DataObfuscation].[fn_GetObfuscatedTableViewColumnData]
 	@value [sql_variant]
 )
 RETURNS [sql_variant]
-AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetObfuscatedTableViewColumnData]
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_ObfuscateTableViewColumnValue]
 GO
-
-
-
-
-
-
-
-
-
-
-
--- TESTS
-PRINT [DataObfuscation].[fn_GetHash](33, 1000, 5381, 'textmetal')
-PRINT [DataObfuscation].[fn_GetHash](33, 1000, 5381, null)
-PRINT [DataObfuscation].[fn_GetHash](33, 5, 5381, 'textmetal')
-
-PRINT CAST([DataObfuscation].[fn_GetVariance](0.30, CAST('1/1/2014' AS [datetime])) AS NVARCHAR)
-PRINT CAST([DataObfuscation].[fn_GetVariance](-0.30, CAST('1/1/2014' AS [datetime])) AS NVARCHAR)
-PRINT CAST([DataObfuscation].[fn_GetVariance](-0.20, 25) AS NVARCHAR)
-PRINT CAST([DataObfuscation].[fn_GetVariance](+0.5, 25.0) AS NVARCHAR)
-
-PRINT [DataObfuscation].[fn_GetOneFouthMask]('5900123496001500')
-
--- DB SELECTS
-PRINT [DataObfuscation].[fn_ExecuteHashSubstitution](-1000, 'textmetal')
-
-PRINT CAST([DataObfuscation].[fn_ExecuteHashVariance](-1100, 25) AS NVARCHAR)
-PRINT CAST([DataObfuscation].[fn_ExecuteHashVariance](-1100, 25.0) AS NVARCHAR)
-PRINT CAST([DataObfuscation].[fn_ExecuteHashVariance](-1200, CAST('1/1/2014' AS [datetime])) AS NVARCHAR)
-
-PRINT CAST([DataObfuscation].[fn_ExecuteHashShuffle](-1200, 'textmetal') AS NVARCHAR)
-
-PRINT CAST([DataObfuscation].fn_ExecuteStrategy(0, -1000, 'textmetal') AS NVARCHAR)
-PRINT CAST([DataObfuscation].fn_ExecuteStrategy(1, -1000, 'textmetal') AS NVARCHAR)
-PRINT CAST([DataObfuscation].fn_ExecuteStrategy(2, -1000, 'textmetal') AS NVARCHAR)
-PRINT CAST([DataObfuscation].fn_ExecuteStrategy(3, -1000, 1000) AS NVARCHAR)
-PRINT CAST([DataObfuscation].fn_ExecuteStrategy(4, -1000, 'textmetal') AS NVARCHAR)
-PRINT CAST([DataObfuscation].fn_ExecuteStrategy(5, -1000, 'textmetal') AS NVARCHAR)
-PRINT CAST([DataObfuscation].fn_ExecuteStrategy(6, -1000, 'textmetal') AS NVARCHAR)
-
-/*
-153
--1
-3
-Pine Green
-Jan 31 2014 12:00AM
-Dec  2 2013 12:00AM
-20
-37.50
-26
-26.500
-Apr  8 2014 12:00AM
-************1500
-*/
-GO
-
 
 ]]>
 
@@ -567,7 +550,8 @@ GO
 			<Ruby src="Script">
 				<Script>!["db_accessadmin", "db_backupoperator", "db_datareader",
 				"db_datawriter", "db_ddladmin", "db_denydatareader", "db_denydatawriter",
-				"db_owner", "db_securityadmin", "dbo", "sys"].include?(textMetal.EvaluateToken.invoke("SchemaName"));</Script>
+				"db_owner", "db_securityadmin", "dbo", "sys",
+				"INFORMATION_SCHEMA", "guest"].include?(textMetal.EvaluateToken.invoke("SchemaName"));</Script>
 			</Ruby>	
 		</ForEach.Filter>
 		
@@ -602,8 +586,20 @@ AS
 					<ForEach.Body>
 					
 <![CDATA[${rb(`
-	if ["varchar", "nvarchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
-		"	CAST( [DataObfuscation].[fn_GetObfuscatedTableViewColumnData]('" +
+	temp1 = ["text", "ntext", "image", "xml", "timestamp", "rowversion", "sql_variant", "geography", "hierarchyid", "geometry", "datetimeoffset"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"));
+	temp2 = ["varchar", "nvarchar", "varbinary"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+	temp3 = textMetal.EvaluateToken.invoke("ColumnSize") <= 0
+	temp4 = !(temp1 || (temp2 && temp3))
+	
+	#puts(textMetal.EvaluateToken.invoke("ColumnSqlType") + (temp3 ? "(MAX)" : textMetal.EvaluateToken.invoke("ColumnSize").to_s()))
+	#puts(temp1)
+	#puts(temp2)
+	#puts(temp3)
+	#puts(temp4)
+	
+	if !(temp1 || (temp2 && temp3)) then
+	
+		"	CAST( [DataObfuscation].[fn_ObfuscateTableViewColumnValue]('" +
 		textMetal.EvaluateToken.invoke("InitialCatalogName") +
 		"', '" +
 		textMetal.EvaluateToken.invoke("SchemaName") +
@@ -615,20 +611,34 @@ AS
 		textMetal.EvaluateToken.invoke("ColumnName") +
 		"]) AS [" +
 		textMetal.EvaluateToken.invoke("ColumnSqlType") +
-		"](" +
-		textMetal.EvaluateToken.invoke("ColumnSize").to_s() +
-		") ) as [" +
+		"]" +
+		
+		if
+		(
+			["varchar", "nvarchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+		)
+		then
+		(
+			"(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
+		)
+		else
+		(
+		""
+		)
+		end +
+
+		" ) as [" +
 		textMetal.EvaluateToken.invoke("ColumnName") +
 		"]"
+	
 	else
 		"	t.[" +	textMetal.EvaluateToken.invoke("ColumnName") + "]"
 	end
 `)}]]>
 
-						<OutputScope name="ObfucationLayer.tvcfg.g.sql" append="true">
-						<![CDATA[
-INSERT INTO [DataObfuscation].[TableViewColumnConfig] VALUES ('${InitialCatalogName}', '${SchemaName}', '${TableName}', '${ColumnName}', 0, -1000);
-						]]>
+						<OutputScope name="Obfucation_TableViewConfig_Baseline.g.sql" append="true">
+<![CDATA[INSERT INTO [DataObfuscation].[TableViewColumnConfig] VALUES ('${InitialCatalogName}', '${SchemaName}', '${TableName}', '${ColumnName}', 0, 0);
+]]>
 						</OutputScope>
 					
 						<If>
@@ -662,5 +672,127 @@ GO
 	</ForEach>
 	
 	
+	</OutputScope>
+	
+	<OutputScope name="Obfucation_Tests.g.sql" append="true">
+<![CDATA[
+
+SET NOCOUNT ON
+GO
+
+
+USE [${DataObfuscationProxyCatalogName}]
+GO
+
+
+-- TEST: raw underlying functions
+PRINT [DataObfuscation].[fn_GetCipher]('shhhh!', null)
+PRINT [DataObfuscation].[fn_GetCipher]('shhhh!', 'textmetal')
+
+PRINT [DataObfuscation].[fn_GetHash](33, 1000, 5381, null)
+PRINT [DataObfuscation].[fn_GetHash](33, 1000, 5381, 'textmetal')
+PRINT [DataObfuscation].[fn_GetHash](33, 5, 5381, 'textmetal')
+PRINT [DataObfuscation].[fn_GetHash](33, -5, 5381, 'textmetal')
+PRINT [DataObfuscation].[fn_GetHash](33, 10, 5381, 1000) / 100.0
+PRINT [DataObfuscation].[fn_GetHash](33, 120, 5381, CAST('1/1/2000' AS [datetime])) / 100.0
+
+PRINT [DataObfuscation].[fn_GetMask](0.25, '5900123496001500')
+PRINT [DataObfuscation].[fn_GetMask](-0.25, '5900123496001500')
+PRINT [DataObfuscation].[fn_GetMask](0.5, null)
+PRINT [DataObfuscation].[fn_GetMask](-0.5, null)
+PRINT [DataObfuscation].[fn_GetMask](1, '5900123496001500')
+PRINT [DataObfuscation].[fn_GetMask](-1, '5900123496001500')
+
+PRINT CAST([DataObfuscation].[fn_GetNull]('textmetal') AS NVARCHAR)
+PRINT CAST([DataObfuscation].[fn_GetNull](1000) AS NVARCHAR)
+
+PRINT [DataObfuscation].[fn_GetShuffle](1000, null)
+PRINT [DataObfuscation].[fn_GetShuffle](1000, 'textmetal')
+PRINT [DataObfuscation].[fn_GetShuffle](1000, 'text-metal')
+PRINT [DataObfuscation].[fn_GetShuffle](1000, '8008675309')
+PRINT [DataObfuscation].[fn_GetShuffle](1000, '800-867-5309')
+
+PRINT CAST([DataObfuscation].[fn_GetVariance](0.30, CAST('1/1/2014' AS [datetime])) AS NVARCHAR)
+PRINT CAST([DataObfuscation].[fn_GetVariance](-0.30, CAST('1/1/2014' AS [datetime])) AS NVARCHAR)
+PRINT CAST([DataObfuscation].[fn_GetVariance](0.20, null) AS NVARCHAR)
+PRINT CAST([DataObfuscation].[fn_GetVariance](0.20, null) AS NVARCHAR)
+PRINT CAST([DataObfuscation].[fn_GetVariance](0.20, 25) AS NVARCHAR)
+PRINT CAST([DataObfuscation].[fn_GetVariance](-0.20, 25) AS NVARCHAR)
+
+
+-- TEST: database connected underlying functions
+PRINT [DataObfuscation].[fn_ExecuteHashCipher](1, null)
+PRINT [DataObfuscation].[fn_ExecuteHashCipher](1, 'textmetal')
+
+PRINT CAST([DataObfuscation].[fn_ExecuteHashShuffle](1001, 'textmetal') AS NVARCHAR)
+
+PRINT [DataObfuscation].[fn_ExecuteHashSubstitution](1001, 'textmetal')
+
+PRINT CAST([DataObfuscation].[fn_ExecuteHashVariance](1002, 25.0) AS NVARCHAR)
+PRINT CAST([DataObfuscation].[fn_ExecuteHashVariance](1002, 25) AS NVARCHAR)
+PRINT CAST([DataObfuscation].[fn_ExecuteHashVariance](1003, CAST('1/1/2014' AS [datetime])) AS NVARCHAR)
+PRINT CAST([DataObfuscation].[fn_ExecuteHashVariance](1003, CAST('1/1/2014 01:23:45 PM' AS [datetime])) AS NVARCHAR)
+
+PRINT CAST([DataObfuscation].fn_ExecuteStrategy(0, 0, 'textmetal') AS NVARCHAR)
+PRINT CAST([DataObfuscation].fn_ExecuteStrategy(1, 1001, 'textmetal') AS NVARCHAR)
+PRINT CAST([DataObfuscation].fn_ExecuteStrategy(2, 1001, 'textmetal') AS NVARCHAR)
+PRINT CAST([DataObfuscation].fn_ExecuteStrategy(3, 1002, 1000) AS NVARCHAR)
+PRINT CAST([DataObfuscation].fn_ExecuteStrategy(3, 1003, CAST('1/1/2000' AS [datetime])) AS NVARCHAR)
+PRINT CAST([DataObfuscation].fn_ExecuteStrategy(4, 1001, 'textmetal') AS NVARCHAR)
+PRINT CAST([DataObfuscation].fn_ExecuteStrategy(5, 0, 'textmetal') AS NVARCHAR)
+PRINT CAST([DataObfuscation].fn_ExecuteStrategy(6, 1001, 'textmetal') AS NVARCHAR)
+
+
+/*
+ 
+ぅ鷾ĉꊆ㇌篤胑Ꮘ횓㶒爆㯾檄
+ 
+153
+3
+3
+0.080000
+0.460000
+****123496001500
+590012349600****
+ 
+ 
+****************
+****************
+ 
+ 
+ 
+tateemlxt
+tlttem-axe
+8938076005
+-03-89068507
+Jan 31 2014 12:00AM
+Dec  2 2013 12:00AM
+ 
+ 
+30
+20
+ 
+춿歊᢭쑭뙥뮗跒嚏∃龁楳釩㢱킲ࡓ
+latmeetxt
+Pine Green
+26.500
+26
+Apr  8 2014 12:00AM
+Mar 11 2014  1:23PM
+textmetal
+Pine Green
+latmeetxt
+1080
+Apr  6 2000 12:00AM
+ڜ⛺ṩ✊滂䏮淰䵂꒕ݳ끜什Ꜫ죱Ꮳ
+ 
+**xtmetal
+*/
+
+GO
+
+
+
+]]>
 	</OutputScope>
 </Template>

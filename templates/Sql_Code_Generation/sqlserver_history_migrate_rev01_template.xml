@@ -6,7 +6,7 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v5.0.0">
 
-	<OutputScope name="ChangeCapture_Migrate.g.sql">
+	<OutputScope name="History_Migration_rev01.g.sql">
 	
 	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
@@ -35,6 +35,8 @@
 				</ForEach.Filter>
 				<ForEach.Body>
 <![CDATA[
+
+-- this script will migrate old CDC (pre- e6943bbeb72427ba97a0fc6333b33dc2c7815977) to the new CDC implementation)
 
 -- RENAME OBJECTS TO POSTFIX UNDERSCORE OLD
 
