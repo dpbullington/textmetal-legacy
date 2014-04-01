@@ -25,131 +25,138 @@ namespace TextMetal.Common.SqlServerClr
 
 		static ScalarFunctions()
 		{
-			Dictionary<long, string> wellKnownDictionary;
+			string[] wellKnownInMemoryDictionary;
 
-			wellKnownDictionary = new Dictionary<long, string>();
-			wellKnownDictionary.Add(1, "Almond");
-			wellKnownDictionary.Add(2, "Antique Brass");
-			wellKnownDictionary.Add(3, "Apricot");
-			wellKnownDictionary.Add(4, "Aquamarine");
-			wellKnownDictionary.Add(5, "Asparagus");
-			wellKnownDictionary.Add(6, "Atomic Tangerine");
-			wellKnownDictionary.Add(7, "Banana Mania");
-			wellKnownDictionary.Add(8, "Beaver");
-			wellKnownDictionary.Add(9, "Bittersweet");
-			wellKnownDictionary.Add(10, "Black");
-			wellKnownDictionary.Add(11, "Blue");
-			wellKnownDictionary.Add(12, "Blue Bell");
-			wellKnownDictionary.Add(13, "Blue Green");
-			wellKnownDictionary.Add(14, "Blue Violet");
-			wellKnownDictionary.Add(15, "Blush");
-			wellKnownDictionary.Add(16, "Brick Red");
-			wellKnownDictionary.Add(17, "Brown");
-			wellKnownDictionary.Add(18, "Burnt Orange");
-			wellKnownDictionary.Add(19, "Burnt Sienna");
-			wellKnownDictionary.Add(20, "Cadet Blue");
-			wellKnownDictionary.Add(21, "Canary");
-			wellKnownDictionary.Add(22, "Caribbean Green");
-			wellKnownDictionary.Add(23, "Carnation Pink");
-			wellKnownDictionary.Add(24, "Cerise");
-			wellKnownDictionary.Add(25, "Cerulean");
-			wellKnownDictionary.Add(26, "Chestnut");
-			wellKnownDictionary.Add(27, "Copper");
-			wellKnownDictionary.Add(28, "Cornflower");
-			wellKnownDictionary.Add(29, "Cotton Candy");
-			wellKnownDictionary.Add(30, "Dandelion");
-			wellKnownDictionary.Add(31, "Denim");
-			wellKnownDictionary.Add(32, "Desert Sand");
-			wellKnownDictionary.Add(33, "Eggplant");
-			wellKnownDictionary.Add(34, "Electric Lime");
-			wellKnownDictionary.Add(35, "Fern");
-			wellKnownDictionary.Add(36, "Forest Green");
-			wellKnownDictionary.Add(37, "Fuchsia");
-			wellKnownDictionary.Add(38, "Fuzzy Wuzzy Brown");
-			wellKnownDictionary.Add(39, "Gold");
-			wellKnownDictionary.Add(40, "Goldenrod");
-			wellKnownDictionary.Add(41, "Granny Smith Apple");
-			wellKnownDictionary.Add(42, "Gray");
-			wellKnownDictionary.Add(43, "Green");
-			wellKnownDictionary.Add(44, "Green Yellow");
-			wellKnownDictionary.Add(45, "Hot Magenta");
-			wellKnownDictionary.Add(46, "Inch Worm");
-			wellKnownDictionary.Add(47, "Indigo");
-			wellKnownDictionary.Add(48, "Jazzberry Jam");
-			wellKnownDictionary.Add(49, "Jungle Green");
-			wellKnownDictionary.Add(50, "Laser Lemon");
-			wellKnownDictionary.Add(51, "Lavender");
-			wellKnownDictionary.Add(52, "Macaroni and Cheese");
-			wellKnownDictionary.Add(53, "Magenta");
-			wellKnownDictionary.Add(54, "Mahogany");
-			wellKnownDictionary.Add(55, "Manatee");
-			wellKnownDictionary.Add(56, "Mango Tango");
-			wellKnownDictionary.Add(57, "Maroon");
-			wellKnownDictionary.Add(58, "Mauvelous");
-			wellKnownDictionary.Add(59, "Melon");
-			wellKnownDictionary.Add(60, "Midnight Blue");
-			wellKnownDictionary.Add(61, "Mountain Meadow");
-			wellKnownDictionary.Add(62, "Navy Blue");
-			wellKnownDictionary.Add(63, "Neon Carrot");
-			wellKnownDictionary.Add(64, "Olive Green");
-			wellKnownDictionary.Add(65, "Orange");
-			wellKnownDictionary.Add(66, "Orchid");
-			wellKnownDictionary.Add(67, "Outer Space");
-			wellKnownDictionary.Add(68, "Outrageous Orange");
-			wellKnownDictionary.Add(69, "Pacific Blue");
-			wellKnownDictionary.Add(70, "Peach");
-			wellKnownDictionary.Add(71, "Periwinkle");
-			wellKnownDictionary.Add(72, "Piggy Pink");
-			wellKnownDictionary.Add(73, "Pine Green");
-			wellKnownDictionary.Add(74, "Pink Flamingo");
-			wellKnownDictionary.Add(75, "Pink Sherbet");
-			wellKnownDictionary.Add(76, "Plum");
-			wellKnownDictionary.Add(77, "Purple Heart");
-			wellKnownDictionary.Add(78, "Purple Mountains’ Majesty");
-			wellKnownDictionary.Add(79, "Purple Pizzazz");
-			wellKnownDictionary.Add(80, "Radical Red");
-			wellKnownDictionary.Add(81, "Raw Sienna");
-			wellKnownDictionary.Add(82, "Razzle Dazzle Rose");
-			wellKnownDictionary.Add(83, "Razzmatazz");
-			wellKnownDictionary.Add(84, "Red");
-			wellKnownDictionary.Add(85, "Red Orange");
-			wellKnownDictionary.Add(86, "Red Violet");
-			wellKnownDictionary.Add(87, "Robin Egg Blue");
-			wellKnownDictionary.Add(88, "Royal Purple");
-			wellKnownDictionary.Add(89, "Salmon");
-			wellKnownDictionary.Add(90, "Scarlet");
-			wellKnownDictionary.Add(91, "Screamin Green");
-			wellKnownDictionary.Add(92, "Sea Green");
-			wellKnownDictionary.Add(93, "Sepia");
-			wellKnownDictionary.Add(94, "Shadow");
-			wellKnownDictionary.Add(95, "Shamrock");
-			wellKnownDictionary.Add(96, "Shocking Pink");
-			wellKnownDictionary.Add(97, "Silver");
-			wellKnownDictionary.Add(98, "Sky Blue");
-			wellKnownDictionary.Add(99, "Spring Green");
-			wellKnownDictionary.Add(100, "Sunglow");
-			wellKnownDictionary.Add(101, "Sunset Orange");
-			wellKnownDictionary.Add(102, "Tan");
-			wellKnownDictionary.Add(103, "Tickle Me Pink");
-			wellKnownDictionary.Add(104, "Timberwolf");
-			wellKnownDictionary.Add(105, "Tropical Rain Forest");
-			wellKnownDictionary.Add(106, "Tumbleweed");
-			wellKnownDictionary.Add(107, "Turquoise Blue");
-			wellKnownDictionary.Add(108, "Unmellow Yellow");
-			wellKnownDictionary.Add(109, "Violet (Purple)");
-			wellKnownDictionary.Add(110, "Violet Red");
-			wellKnownDictionary.Add(111, "Vivid Tangerine");
-			wellKnownDictionary.Add(112, "Vivid Violet");
-			wellKnownDictionary.Add(113, "White");
-			wellKnownDictionary.Add(114, "Wild Blue Yonder");
-			wellKnownDictionary.Add(115, "Wild Strawberry");
-			wellKnownDictionary.Add(116, "Wild Watermelon");
-			wellKnownDictionary.Add(117, "Wisteria");
-			wellKnownDictionary.Add(118, "Yellow");
-			wellKnownDictionary.Add(119, "Yellow Green");
-			wellKnownDictionary.Add(120, "Yellow Orange");
+			wellKnownInMemoryDictionary = new string[0];
+			WellKnownInMemoryDictionaries[(int)WellKnownDictionary.Null] = wellKnownInMemoryDictionary;
 
-			wellKnownInMemoryDictionaries.Add((int)WellKnownDictionary.InMemoryCrayonColor, wellKnownDictionary);
+			wellKnownInMemoryDictionary = new string[0];
+			WellKnownInMemoryDictionaries[(int)WellKnownDictionary.Sign] = wellKnownInMemoryDictionary;
+
+			wellKnownInMemoryDictionary = new string[121];
+			wellKnownInMemoryDictionary[0] = "Transparent";
+			wellKnownInMemoryDictionary[1] = "Almond";
+			wellKnownInMemoryDictionary[2] = "Antique Brass";
+			wellKnownInMemoryDictionary[3] = "Apricot";
+			wellKnownInMemoryDictionary[4] = "Aquamarine";
+			wellKnownInMemoryDictionary[5] = "Asparagus";
+			wellKnownInMemoryDictionary[6] = "Atomic Tangerine";
+			wellKnownInMemoryDictionary[7] = "Banana Mania";
+			wellKnownInMemoryDictionary[8] = "Beaver";
+			wellKnownInMemoryDictionary[9] = "Bittersweet";
+			wellKnownInMemoryDictionary[10] = "Black";
+			wellKnownInMemoryDictionary[11] = "Blue";
+			wellKnownInMemoryDictionary[12] = "Blue Bell";
+			wellKnownInMemoryDictionary[13] = "Blue Green";
+			wellKnownInMemoryDictionary[14] = "Blue Violet";
+			wellKnownInMemoryDictionary[15] = "Blush";
+			wellKnownInMemoryDictionary[16] = "Brick Red";
+			wellKnownInMemoryDictionary[17] = "Brown";
+			wellKnownInMemoryDictionary[18] = "Burnt Orange";
+			wellKnownInMemoryDictionary[19] = "Burnt Sienna";
+			wellKnownInMemoryDictionary[20] = "Cadet Blue";
+			wellKnownInMemoryDictionary[21] = "Canary";
+			wellKnownInMemoryDictionary[22] = "Caribbean Green";
+			wellKnownInMemoryDictionary[23] = "Carnation Pink";
+			wellKnownInMemoryDictionary[24] = "Cerise";
+			wellKnownInMemoryDictionary[25] = "Cerulean";
+			wellKnownInMemoryDictionary[26] = "Chestnut";
+			wellKnownInMemoryDictionary[27] = "Copper";
+			wellKnownInMemoryDictionary[28] = "Cornflower";
+			wellKnownInMemoryDictionary[29] = "Cotton Candy";
+			wellKnownInMemoryDictionary[30] = "Dandelion";
+			wellKnownInMemoryDictionary[31] = "Denim";
+			wellKnownInMemoryDictionary[32] = "Desert Sand";
+			wellKnownInMemoryDictionary[33] = "Eggplant";
+			wellKnownInMemoryDictionary[34] = "Electric Lime";
+			wellKnownInMemoryDictionary[35] = "Fern";
+			wellKnownInMemoryDictionary[36] = "Forest Green";
+			wellKnownInMemoryDictionary[37] = "Fuchsia";
+			wellKnownInMemoryDictionary[38] = "Fuzzy Wuzzy Brown";
+			wellKnownInMemoryDictionary[39] = "Gold";
+			wellKnownInMemoryDictionary[40] = "Goldenrod";
+			wellKnownInMemoryDictionary[41] = "Granny Smith Apple";
+			wellKnownInMemoryDictionary[42] = "Gray";
+			wellKnownInMemoryDictionary[43] = "Green";
+			wellKnownInMemoryDictionary[44] = "Green Yellow";
+			wellKnownInMemoryDictionary[45] = "Hot Magenta";
+			wellKnownInMemoryDictionary[46] = "Inch Worm";
+			wellKnownInMemoryDictionary[47] = "Indigo";
+			wellKnownInMemoryDictionary[48] = "Jazzberry Jam";
+			wellKnownInMemoryDictionary[49] = "Jungle Green";
+			wellKnownInMemoryDictionary[50] = "Laser Lemon";
+			wellKnownInMemoryDictionary[51] = "Lavender";
+			wellKnownInMemoryDictionary[52] = "Macaroni and Cheese";
+			wellKnownInMemoryDictionary[53] = "Magenta";
+			wellKnownInMemoryDictionary[54] = "Mahogany";
+			wellKnownInMemoryDictionary[55] = "Manatee";
+			wellKnownInMemoryDictionary[56] = "Mango Tango";
+			wellKnownInMemoryDictionary[57] = "Maroon";
+			wellKnownInMemoryDictionary[58] = "Mauvelous";
+			wellKnownInMemoryDictionary[59] = "Melon";
+			wellKnownInMemoryDictionary[60] = "Midnight Blue";
+			wellKnownInMemoryDictionary[61] = "Mountain Meadow";
+			wellKnownInMemoryDictionary[62] = "Navy Blue";
+			wellKnownInMemoryDictionary[63] = "Neon Carrot";
+			wellKnownInMemoryDictionary[64] = "Olive Green";
+			wellKnownInMemoryDictionary[65] = "Orange";
+			wellKnownInMemoryDictionary[66] = "Orchid";
+			wellKnownInMemoryDictionary[67] = "Outer Space";
+			wellKnownInMemoryDictionary[68] = "Outrageous Orange";
+			wellKnownInMemoryDictionary[69] = "Pacific Blue";
+			wellKnownInMemoryDictionary[70] = "Peach";
+			wellKnownInMemoryDictionary[71] = "Periwinkle";
+			wellKnownInMemoryDictionary[72] = "Piggy Pink";
+			wellKnownInMemoryDictionary[73] = "Pine Green";
+			wellKnownInMemoryDictionary[74] = "Pink Flamingo";
+			wellKnownInMemoryDictionary[75] = "Pink Sherbet";
+			wellKnownInMemoryDictionary[76] = "Plum";
+			wellKnownInMemoryDictionary[77] = "Purple Heart";
+			wellKnownInMemoryDictionary[78] = "Purple Mountains’ Majesty";
+			wellKnownInMemoryDictionary[79] = "Purple Pizzazz";
+			wellKnownInMemoryDictionary[80] = "Radical Red";
+			wellKnownInMemoryDictionary[81] = "Raw Sienna";
+			wellKnownInMemoryDictionary[82] = "Razzle Dazzle Rose";
+			wellKnownInMemoryDictionary[83] = "Razzmatazz";
+			wellKnownInMemoryDictionary[84] = "Red";
+			wellKnownInMemoryDictionary[85] = "Red Orange";
+			wellKnownInMemoryDictionary[86] = "Red Violet";
+			wellKnownInMemoryDictionary[87] = "Robin Egg Blue";
+			wellKnownInMemoryDictionary[88] = "Royal Purple";
+			wellKnownInMemoryDictionary[89] = "Salmon";
+			wellKnownInMemoryDictionary[90] = "Scarlet";
+			wellKnownInMemoryDictionary[91] = "Screamin Green";
+			wellKnownInMemoryDictionary[92] = "Sea Green";
+			wellKnownInMemoryDictionary[93] = "Sepia";
+			wellKnownInMemoryDictionary[94] = "Shadow";
+			wellKnownInMemoryDictionary[95] = "Shamrock";
+			wellKnownInMemoryDictionary[96] = "Shocking Pink";
+			wellKnownInMemoryDictionary[97] = "Silver";
+			wellKnownInMemoryDictionary[98] = "Sky Blue";
+			wellKnownInMemoryDictionary[99] = "Spring Green";
+			wellKnownInMemoryDictionary[100] = "Sunglow";
+			wellKnownInMemoryDictionary[101] = "Sunset Orange";
+			wellKnownInMemoryDictionary[102] = "Tan";
+			wellKnownInMemoryDictionary[103] = "Tickle Me Pink";
+			wellKnownInMemoryDictionary[104] = "Timberwolf";
+			wellKnownInMemoryDictionary[105] = "Tropical Rain Forest";
+			wellKnownInMemoryDictionary[106] = "Tumbleweed";
+			wellKnownInMemoryDictionary[107] = "Turquoise Blue";
+			wellKnownInMemoryDictionary[108] = "Unmellow Yellow";
+			wellKnownInMemoryDictionary[109] = "Violet (Purple";
+			wellKnownInMemoryDictionary[110] = "Violet Red";
+			wellKnownInMemoryDictionary[111] = "Vivid Tangerine";
+			wellKnownInMemoryDictionary[112] = "Vivid Violet";
+			wellKnownInMemoryDictionary[113] = "White";
+			wellKnownInMemoryDictionary[114] = "Wild Blue Yonder";
+			wellKnownInMemoryDictionary[115] = "Wild Strawberry";
+			wellKnownInMemoryDictionary[116] = "Wild Watermelon";
+			wellKnownInMemoryDictionary[117] = "Wisteria";
+			wellKnownInMemoryDictionary[118] = "Yellow";
+			wellKnownInMemoryDictionary[119] = "Yellow Green";
+			wellKnownInMemoryDictionary[120] = "Yellow Orange";
+
+			WellKnownInMemoryDictionaries[(int)WellKnownDictionary.InMemoryCrayonColor] = wellKnownInMemoryDictionary;
 		}
 
 		#endregion
@@ -157,13 +164,13 @@ namespace TextMetal.Common.SqlServerClr
 		#region Fields/Constants
 
 		private const string CONTEXT_CONNECTION_STRING = "context connection=true";
-		private static readonly IDictionary<int, IDictionary<long, string>> wellKnownInMemoryDictionaries = new Dictionary<int, IDictionary<long, string>>();
+		private static readonly object[][] wellKnownInMemoryDictionaries = new object[100][];
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		private static IDictionary<int, IDictionary<long, string>> WellKnownInMemoryDictionaries
+		private static object[][] WellKnownInMemoryDictionaries
 		{
 			get
 			{
@@ -340,15 +347,21 @@ namespace TextMetal.Common.SqlServerClr
 
 				if (isWellKnown)
 				{
-					IDictionary<long, string> wellKnownDictionary;
+					string[] wellKnownInMemoryDictionary;
 					bool inMemoryMatch = false;
 
 					substitutionValue = null;
-					if (WellKnownInMemoryDictionaries.TryGetValue((int)(WellKnownDictionary)dictionaryConfigId, out wellKnownDictionary))
+
+					if ((int)(WellKnownDictionary)dictionaryConfigId < WellKnownInMemoryDictionaries.Length)
 					{
-						if ((object)wellKnownDictionary != null &&
-							wellKnownDictionary.TryGetValue(dictionaryKey, out substitutionValue))
+						wellKnownInMemoryDictionary = (string[])WellKnownInMemoryDictionaries[(int)(WellKnownDictionary)dictionaryConfigId];
+
+						if ((object)wellKnownInMemoryDictionary != null &&
+							dictionaryKey < wellKnownInMemoryDictionary.Length)
+						{
+							substitutionValue = wellKnownInMemoryDictionary[dictionaryKey];
 							inMemoryMatch = true; // all good
+						}
 					}
 
 					if (!inMemoryMatch)

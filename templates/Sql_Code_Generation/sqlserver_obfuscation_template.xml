@@ -56,7 +56,7 @@ GO
 -- template for custom dictionary
 CREATE TABLE [DataObfuscation].[CrayonColorDictionary]
 (
-	[CrayonColorDictionaryKey] [int] IDENTITY(1,1) NOT NULL,
+	[CrayonColorDictionaryKey] [int] IDENTITY(0,1) NOT NULL,
 	[CrayonColorDictionaryValue] [nvarchar](255) NOT NULL,
 	
 	CONSTRAINT [pk_CrayonColorDictionary] PRIMARY KEY
@@ -73,6 +73,7 @@ CREATE TABLE [DataObfuscation].[CrayonColorDictionary]
 GO
 
 
+INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Transparent')
 INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Almond')
 INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Antique Brass')
 INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Apricot')

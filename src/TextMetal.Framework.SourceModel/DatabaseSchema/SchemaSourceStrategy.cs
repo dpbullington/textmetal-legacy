@@ -144,11 +144,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			const string PROP_TOKEN_CONNECTION_STRING = "ConnectionString";
 			const string PROP_TOKEN_DATA_SOURCE_TAG = "DataSourceTag";
 			const string PROP_TOKEN_SCHEMA_FILTER = "SchemaFilter";
+			const string PROP_DISABLE_PROCEDURE_SCHEMA_DISCOVERY = "DisableProcedureSchemaDiscovery";
 			string connectionAqtn;
 			Type connectionType = null;
 			string connectionString = null;
 			string dataSourceTag;
 			string[] schemaFilter;
+			bool disableProcSchDisc;
 			IList<string> values;
 
 			if ((object)sourceFilePath == null)
@@ -199,7 +201,14 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 					schemaFilter = values.ToArray();
 			}
 
-			return this.GetSchemaModel(connectionString, connectionType, dataSourceTag, schemaFilter);
+			disableProcSchDisc = false;
+			if (properties.TryGetValue(PROP_DISABLE_PROCEDURE_SCHEMA_DISCOVERY, out values))
+			{
+				if ((object)values != null && values.Count > 0)
+					DataType.TryParse<bool>(values[0], out disableProcSchDisc);
+			}
+
+			return this.GetSchemaModel(connectionString, connectionType, dataSourceTag, schemaFilter, disableProcSchDisc);
 		}
 
 		protected abstract IEnumerable<IDataParameter> CoreGetTableParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema);
@@ -210,7 +219,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		protected abstract Type CoreInferClrTypeForSqlType(string dataSourceTag, string sqlType, int sqlPrecision);
 
-		private object GetSchemaModel(string connectionString, Type connectionType, string dataSourceTag, string[] schemaFilter)
+		private object GetSchemaModel(string connectionString, Type connectionType, string dataSourceTag, string[] schemaFilter, bool disableProcSchDisc)
 		{
 			Database database;
 			int recordsAffected;
@@ -723,68 +732,71 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 												procedure.Parameters.Remove(columnParameter);
 											}
 										}
-
-										// REFERENCE:
-										// http://connect.microsoft.com/VisualStudio/feedback/details/314650/sqm1014-sqlmetal-ignores-stored-procedures-that-use-temp-tables
-										IDataParameter[] parameters;
-										parameters = procedure.Parameters.Where(p => !p.ParameterIsReturnValue && !p.ParameterIsResultColumn).Select(p => unitOfWork.CreateParameter(p.ParameterIsOutput ? ParameterDirection.Output : ParameterDirection.Input, p.ParameterDbType, p.ParameterSize, (byte)p.ParameterPrecision, (byte)p.ParameterScale, p.ParameterNullable, p.ParameterName, null)).ToArray();
-
-										try
+										
+										if (!disableProcSchDisc)
 										{
-											var dataReaderMetadata = AdoNetHelper.ExecuteSchema(unitOfWork, CommandType.StoredProcedure, string.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), schema.SchemaName, procedure.ProcedureName), parameters);
+											// REFERENCE:
+											// http://connect.microsoft.com/VisualStudio/feedback/details/314650/sqm1014-sqlmetal-ignores-stored-procedures-that-use-temp-tables
+											IDataParameter[] parameters;
+											parameters = procedure.Parameters.Where(p => !p.ParameterIsReturnValue && !p.ParameterIsResultColumn).Select(p => unitOfWork.CreateParameter(p.ParameterIsOutput ? ParameterDirection.Output : ParameterDirection.Input, p.ParameterDbType, p.ParameterSize, (byte)p.ParameterPrecision, (byte)p.ParameterScale, p.ParameterNullable, p.ParameterName, null)).ToArray();
+
+											try
 											{
-												if ((object)dataReaderMetadata != null)
+												var dataReaderMetadata = AdoNetHelper.ExecuteSchema(unitOfWork, CommandType.StoredProcedure, string.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), schema.SchemaName, procedure.ProcedureName), parameters);
 												{
-													foreach (var drMetadata in dataReaderMetadata)
+													if ((object)dataReaderMetadata != null)
 													{
-														Column column;
+														foreach (var drMetadata in dataReaderMetadata)
+														{
+															Column column;
 
-														column = new Column();
+															column = new Column();
 
-														column.ColumnName = DataType.ChangeType<string>(drMetadata["ColumnName"]);
-														column.ColumnOrdinal = DataType.ChangeType<int>(drMetadata["ColumnOrdinal"]);
-														column.ColumnNullable = DataType.ChangeType<bool>(drMetadata["AllowDBNull"]);
-														column.ColumnSize = DataType.ChangeType<int>(drMetadata["ColumnSize"]);
-														column.ColumnPrecision = DataType.ChangeType<int>(drMetadata["NumericPrecision"]);
-														column.ColumnScale = DataType.ChangeType<int>(drMetadata["NumericScale"]);
-														// TODO FIX
-														//column.ColumnSqlType = DataType.ChangeType<string>(drMetadata["DataTypeName"]);
-														//column.ColumnIsIdentity = DataType.ChangeType<bool>(drMetadata["IsIdentity"]);
-														//column.ColumnIsComputed = DataType.ChangeType<bool>(drMetadata["IsReadOnly"]);
-														//column.ColumnHasDefault = DataType.ChangeType<bool>(drMetadata["ColumnHasDefault"]);
-														//column.ColumnHasCheck = DataType.ChangeType<bool>(drMetadata["ColumnHasCheck"]);
-														//column.ColumnIsPrimaryKey = DataType.ChangeType<bool>(drMetadata["IsKey"]);
-														column.ColumnNamePascalCase = Name.GetPascalCase(column.ColumnName);
-														column.ColumnNameCamelCase = Name.GetCamelCase(column.ColumnName);
-														column.ColumnNameConstantCase = Name.GetConstantCase(column.ColumnName);
-														column.ColumnNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(column.ColumnName));
-														column.ColumnNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(column.ColumnName));
-														column.ColumnNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(column.ColumnName));
-														column.ColumnNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(column.ColumnName));
-														column.ColumnNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(column.ColumnName));
-														column.ColumnNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(column.ColumnName));
+															column.ColumnName = DataType.ChangeType<string>(drMetadata["ColumnName"]);
+															column.ColumnOrdinal = DataType.ChangeType<int>(drMetadata["ColumnOrdinal"]);
+															column.ColumnNullable = DataType.ChangeType<bool>(drMetadata["AllowDBNull"]);
+															column.ColumnSize = DataType.ChangeType<int>(drMetadata["ColumnSize"]);
+															column.ColumnPrecision = DataType.ChangeType<int>(drMetadata["NumericPrecision"]);
+															column.ColumnScale = DataType.ChangeType<int>(drMetadata["NumericScale"]);
+															// TODO FIX
+															//column.ColumnSqlType = DataType.ChangeType<string>(drMetadata["DataTypeName"]);
+															//column.ColumnIsIdentity = DataType.ChangeType<bool>(drMetadata["IsIdentity"]);
+															//column.ColumnIsComputed = DataType.ChangeType<bool>(drMetadata["IsReadOnly"]);
+															//column.ColumnHasDefault = DataType.ChangeType<bool>(drMetadata["ColumnHasDefault"]);
+															//column.ColumnHasCheck = DataType.ChangeType<bool>(drMetadata["ColumnHasCheck"]);
+															//column.ColumnIsPrimaryKey = DataType.ChangeType<bool>(drMetadata["IsKey"]);
+															column.ColumnNamePascalCase = Name.GetPascalCase(column.ColumnName);
+															column.ColumnNameCamelCase = Name.GetCamelCase(column.ColumnName);
+															column.ColumnNameConstantCase = Name.GetConstantCase(column.ColumnName);
+															column.ColumnNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(column.ColumnName));
+															column.ColumnNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(column.ColumnName));
+															column.ColumnNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(column.ColumnName));
+															column.ColumnNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(column.ColumnName));
+															column.ColumnNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(column.ColumnName));
+															column.ColumnNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(column.ColumnName));
 
-														clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType, column.ColumnPrecision);
-														column.ColumnDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
-														column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
+															clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType, column.ColumnPrecision);
+															column.ColumnDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
+															column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
-														column.ColumnClrType = clrType ?? typeof(object);
-														column.ColumnClrNullableType = Reflexion.MakeNullableType(clrType);
-														column.ColumnClrNonNullableType = Reflexion.MakeNonNullableType(clrType);
-														column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
-														column.ColumnCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
-														column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
-														column.ColumnCSharpClrNullableType = (object)column.ColumnClrNullableType != null ? FormatCSharpType(column.ColumnClrNullableType) : FormatCSharpType(typeof(object));
-														column.ColumnCSharpClrNonNullableType = (object)column.ColumnClrNonNullableType != null ? FormatCSharpType(column.ColumnClrNonNullableType) : FormatCSharpType(typeof(object));
+															column.ColumnClrType = clrType ?? typeof(object);
+															column.ColumnClrNullableType = Reflexion.MakeNullableType(clrType);
+															column.ColumnClrNonNullableType = Reflexion.MakeNonNullableType(clrType);
+															column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
+															column.ColumnCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
+															column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
+															column.ColumnCSharpClrNullableType = (object)column.ColumnClrNullableType != null ? FormatCSharpType(column.ColumnClrNullableType) : FormatCSharpType(typeof(object));
+															column.ColumnCSharpClrNonNullableType = (object)column.ColumnClrNonNullableType != null ? FormatCSharpType(column.ColumnClrNonNullableType) : FormatCSharpType(typeof(object));
 
-														procedure.Columns.Add(column);
+															procedure.Columns.Add(column);
+														}
 													}
 												}
 											}
-										}
-										catch (Exception ex)
-										{
-											Console.Error.WriteLine(Reflexion.GetErrors(ex, 0));
+											catch (Exception ex)
+											{
+												Console.Error.WriteLine(Reflexion.GetErrors(ex, 0));
+											}
 										}
 									}
 								}
