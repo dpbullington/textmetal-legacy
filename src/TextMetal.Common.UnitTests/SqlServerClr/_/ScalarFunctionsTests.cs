@@ -27,26 +27,8 @@ namespace TextMetal.Common.UnitTests.SqlServerClr._
 		[Test]
 		public void ShouldTest0()
 		{
-			int hashCode;
-
-			var r = new Random(1);
-			hashCode = r.Next(-10, 10);
-			Console.WriteLine(hashCode);
-			hashCode = r.Next(-10, 10);
-
-			Console.WriteLine(hashCode);
 		}
 
-		[Test]
-		public void ShouldTest1()
-		{
-			int? hashCode;
-
-			hashCode = ScalarFunctions.GetHash(33, 1000, 5381, "textmetal");
-
-			Assert.AreEqual(153, hashCode);
-		}
-	
 		#endregion
 	}
 }
