@@ -420,6 +420,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 						return typeof(Byte[]);
 					case "BIT":
 						return typeof(Boolean);
+					case "CHARACTER":
 					case "CHAR":
 						return typeof(String);
 					case "CURSOR":
@@ -432,28 +433,43 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 						return typeof(DateTime);
 					case "DATETIMEOFFSET":
 						return typeof(DateTimeOffset);
+					case "DEC":
 					case "DECIMAL":
 						return typeof(Decimal);
+					case "DOUBLE PRECISION":
 					case "FLOAT":
-						return sqlPrecision >= 0 && sqlPrecision <= 24 ? typeof(Single) : (sqlPrecision >= 25 && sqlPrecision <= 54 ? typeof(Double) : typeof(Object));
+						return sqlPrecision >= 0 && sqlPrecision <= 24 ? typeof(Single) : (sqlPrecision >= 25 && sqlPrecision <= 53 ? typeof(Double) : typeof(Object));
+					case "GEOGRAPHY":
+						return typeof(Object);
+					case "GEOMETRY":
+						return typeof(Object);
 					case "HIERARCHYID":
 						return typeof(Object);
 					case "IMAGE":
 						return typeof(Byte[]);
+					case "INTEGER":
 					case "INT":
 						return typeof(Int32);
 					case "MONEY":
 						return typeof(Decimal);
+					case "NATIONAL CHARACTER":
+					case "NATIONAL CHAR":
 					case "NCHAR":
 						return typeof(String);
+					case "NATIONAL TEXT":
 					case "NTEXT":
 						return typeof(String);
 					case "NUMERIC":
 						return typeof(Decimal);
+					case "NATIONAL CHARACTER VARYING":
+					case "NATIONAL CHAR VARYING":
 					case "NVARCHAR":
 						return typeof(String);
 					case "REAL":
 						return typeof(Single);
+					case "TIMESTAMP":
+					case "ROWVERSION":
+						return typeof(Byte[]);
 					case "SMALLDATETIME":
 						return typeof(DateTime);
 					case "SMALLINT":
@@ -462,26 +478,27 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 						return typeof(Decimal);
 					case "SQL_VARIANT":
 						return typeof(Object);
+					case "SYSNAME":
+						return typeof(String);
 					case "TABLE":
 						return typeof(Object);
 					case "TEXT":
 						return typeof(String);
 					case "TIME":
 						return typeof(TimeSpan);
-					case "TIMESTAMP":
-						return typeof(Byte[]);
 					case "TINYINT":
 						return typeof(Byte);
 					case "UNIQUEIDENTIFIER":
 						return typeof(Guid);
+					case "BINARY VARYING":
 					case "VARBINARY":
 						return typeof(Byte[]);
+					case "CHARACTER VARYING":
+					case "CHAR VARYING":
 					case "VARCHAR":
 						return typeof(String);
 					case "XML":
 						return typeof(XmlDocument);
-					case "SYSNAME":
-						return typeof(String);
 					default:
 						throw new ArgumentOutOfRangeException(string.Format("sqlType: '{0}'", sqlType));
 				}

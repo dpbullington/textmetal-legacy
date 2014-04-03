@@ -1,0 +1,68 @@
+{
+  "TablesViews": [
+    {
+      "CatalogName": "",
+      "SchemaName": "",
+      "TableName": "",
+	  "ColumnName": "",
+	  "StrategyId": 0,
+	  "DictionaryId": 0,
+	  "HashSeed": 0,
+	  "HashSize": 0
+    },
+    {
+      "CatalogName": "",
+      "SchemaName": "",
+      "TableName": "",
+	  "ColumnName": "",
+	  "StrategyId": 0,
+	  "DictionaryId": 0,
+	  "HashSeed": 0,
+	  "HashSize": 0
+    }
+  ],
+  "ProcOutParams": [
+    {
+      "CatalogName": "",
+      "SchemaName": "",
+      "ProcedureName": "",
+	  "ParameterName": "",
+	  "StrategyId": 0,
+	  "DictionaryId": 0,
+	  "HashSeed": 0,
+	  "HashSize": 0
+    },
+    {
+      "CatalogName": "",
+      "SchemaName": "",
+      "ProcedureName": "",
+	  "ParameterName": "",
+	  "StrategyId": 0,
+	  "DictionaryId": 0,
+	  "HashSeed": 0,
+	  "HashSize": 0
+    }
+  ],
+  "ProcResColumns": [
+    {
+      "CatalogName": "",
+      "SchemaName": "",
+      "ProcedureName": "",
+	  "ColumnName": "",
+	  "StrategyId": 0,
+	  "DictionaryId": 0,
+	  "HashSeed": 0,
+	  "HashSize": 0
+    },
+    {
+      "CatalogName": "",
+      "SchemaName": "",
+      "ProcedureName": "",
+	  "ColumnName": "",
+	  "StrategyId": 0,
+	  "DictionaryId": 0,
+	  "HashSeed": 0,
+	  "HashSize": 0
+    }
+  ]
+}

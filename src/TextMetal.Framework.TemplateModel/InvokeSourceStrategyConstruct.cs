@@ -4,11 +4,12 @@
 */
 
 using System;
-using System.Collections.Generic;
 
+using TextMetal.Common.Core;
 using TextMetal.Common.Core.StringTokens;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
+using TextMetal.Framework.ExpressionModel;
 
 namespace TextMetal.Framework.TemplateModel
 {
@@ -29,6 +30,9 @@ namespace TextMetal.Framework.TemplateModel
 		#region Fields/Constants
 
 		private string assemblyQualifiedTypeName;
+		private string sourceFilePath;
+		private bool useAlloc;
+		private string var;
 
 		#endregion
 
@@ -47,6 +51,45 @@ namespace TextMetal.Framework.TemplateModel
 			}
 		}
 
+		[XmlAttributeMapping(LocalName = "src", NamespaceUri = "")]
+		public string SourceFilePath
+		{
+			get
+			{
+				return this.sourceFilePath;
+			}
+			set
+			{
+				this.sourceFilePath = value;
+			}
+		}
+
+		[XmlAttributeMapping(LocalName = "alloc", NamespaceUri = "")]
+		public bool UseAlloc
+		{
+			get
+			{
+				return this.useAlloc;
+			}
+			set
+			{
+				this.useAlloc = value;
+			}
+		}
+
+		[XmlAttributeMapping(LocalName = "var", NamespaceUri = "")]
+		public string Var
+		{
+			get
+			{
+				return this.var;
+			}
+			set
+			{
+				this.var = value;
+			}
+		}
+
 		#endregion
 
 		#region Methods/Operators
@@ -57,6 +100,7 @@ namespace TextMetal.Framework.TemplateModel
 			DynamicWildcardTokenReplacementStrategy dynamicWildcardTokenReplacementStrategy;
 			ISourceStrategy sourceStrategy;
 			Type sourceStrategyType;
+			string sourceFilePath, var;
 			object source;
 
 			if ((object)templatingContext == null)
@@ -65,6 +109,8 @@ namespace TextMetal.Framework.TemplateModel
 			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy();
 
 			aqtn = templatingContext.Tokenizer.ExpandTokens(this.AssemblyQualifiedTypeName, dynamicWildcardTokenReplacementStrategy);
+			sourceFilePath = templatingContext.Tokenizer.ExpandTokens(this.SourceFilePath, dynamicWildcardTokenReplacementStrategy);
+			var = templatingContext.Tokenizer.ExpandTokens(this.Var, dynamicWildcardTokenReplacementStrategy);
 
 			sourceStrategyType = Type.GetType(aqtn, false);
 
@@ -76,17 +122,48 @@ namespace TextMetal.Framework.TemplateModel
 
 			sourceStrategy = (ISourceStrategy)Activator.CreateInstance(sourceStrategyType);
 
-			source = sourceStrategy.GetSourceObject("", new Dictionary<string, IList<string>>());
+			source = sourceStrategy.GetSourceObject(sourceFilePath, templatingContext.Properties);
 
-			templatingContext.IteratorModels.Push(source);
-
-			if ((object)this.Items != null)
+			if (!this.UseAlloc)
 			{
-				foreach (ITemplateMechanism templateMechanism in this.Items)
-					templateMechanism.ExpandTemplate(templatingContext);
-			}
+				templatingContext.IteratorModels.Push(source);
 
-			templatingContext.IteratorModels.Pop();
+				if ((object)this.Items != null)
+				{
+					foreach (ITemplateMechanism templateMechanism in this.Items)
+						templateMechanism.ExpandTemplate(templatingContext);
+				}
+
+				templatingContext.IteratorModels.Pop();
+			}
+			else
+			{
+				if (!DataType.IsNullOrWhiteSpace(var))
+				{
+					IExpressionContainerConstruct expressionContainerConstruct;
+					ValueConstruct valueConstruct;
+
+					new AllocConstruct()
+					{
+						Token = var
+					}.ExpandTemplate(templatingContext);
+
+					expressionContainerConstruct = new ExpressionContainerConstruct();
+
+					valueConstruct = new ValueConstruct()
+									{
+										__ = source
+									};
+
+					((IContentContainerXmlObject<IExpressionXmlObject>)expressionContainerConstruct).Content = valueConstruct;
+
+					new AssignConstruct()
+					{
+						Token = var,
+						Expression = expressionContainerConstruct
+					}.ExpandTemplate(templatingContext);
+				}
+			}
 		}
 
 		#endregion

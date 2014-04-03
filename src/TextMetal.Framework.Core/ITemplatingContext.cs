@@ -35,6 +35,11 @@ namespace TextMetal.Framework.Core
 			get;
 		}
 
+		IDictionary<string, IList<string>> Properties
+		{
+			get;
+		}
+
 		Tokenizer Tokenizer
 		{
 			get;

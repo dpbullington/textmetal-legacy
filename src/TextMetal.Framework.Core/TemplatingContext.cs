@@ -22,7 +22,8 @@ namespace TextMetal.Framework.Core
 		/// <param name="tokenizer"> The tokenizer in-efect. </param>
 		/// <param name="input"> The input mechanism in-effect. </param>
 		/// <param name="output"> The output mechanism in-effect. </param>
-		public TemplatingContext(IXmlPersistEngine xpe, Tokenizer tokenizer, IInputMechanism input, IOutputMechanism output)
+		/// <param name="properties"> The properties in-effect. </param>
+		public TemplatingContext(IXmlPersistEngine xpe, Tokenizer tokenizer, IInputMechanism input, IOutputMechanism output, IDictionary<string, IList<string>> properties)
 		{
 			if ((object)xpe == null)
 				throw new ArgumentNullException("xpe");
@@ -36,10 +37,14 @@ namespace TextMetal.Framework.Core
 			if ((object)output == null)
 				throw new ArgumentNullException("output");
 
+			if ((object)properties == null)
+				throw new ArgumentNullException("properties");
+
 			this.xpe = xpe;
 			this.tokenizer = tokenizer;
 			this.input = input;
 			this.output = output;
+			this.properties = properties;
 		}
 
 		#endregion
@@ -49,6 +54,7 @@ namespace TextMetal.Framework.Core
 		private readonly IInputMechanism input;
 		private readonly Stack<object> iteratorModels = new Stack<object>();
 		private readonly IOutputMechanism output;
+		private readonly IDictionary<string, IList<string>> properties;
 		private readonly Tokenizer tokenizer;
 		private readonly Stack<Dictionary<string, object>> variableTables = new Stack<Dictionary<string, object>>();
 		private readonly IXmlPersistEngine xpe;
@@ -102,6 +108,14 @@ namespace TextMetal.Framework.Core
 			get
 			{
 				return this.output;
+			}
+		}
+
+		public IDictionary<string, IList<string>> Properties
+		{
+			get
+			{
+				return this.properties;
 			}
 		}
 

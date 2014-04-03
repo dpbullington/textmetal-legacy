@@ -6,16 +6,12 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v5.0.0">
 
-	<OutputScope name="Obfucation_TableViewConfig_Baseline.g.sql" append="false">
+	<InvokeSourceStrategy src="${ObfuscationConfigFilePath}" alloc="true" var="obfuCfg" aqt-name="TextMetal.Framework.SourceModel.Primative.JsonSourceStrategy, TextMetal.Framework.SourceModel" />
+
+	<OutputScope name="${ObfuscationConfigFilePath}.g" append="false">
 <![CDATA[
-
-SET NOCOUNT ON
-GO
-
-USE [${DataObfuscationProxyCatalogName}]
-GO
-
-
+{
+  "TablesViews": [
 ]]>
 	</OutputScope>
 
@@ -25,6 +21,7 @@ GO
 
 SET NOCOUNT ON
 GO
+
 
 USE [master]
 GO
@@ -197,164 +194,6 @@ INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Yellow Orange')
 GO
 
 
-CREATE VIEW [DataObfuscation].[Dictionary]
-AS
-SELECT 1001 as [DictionaryId], t.[CrayonColorDictionaryKey] as [DictionaryKey], t.[CrayonColorDictionaryValue] as [DictionaryValue]
-	FROM [DataObfuscation].[CrayonColorDictionary] t
---	UNION ALL
--- more dictionaries
-GO
-
-
-CREATE TABLE [DataObfuscation].[Strategy]
-(
-	[StrategyId] [int] NOT NULL,
-	[StrategyName] [nvarchar](64) NOT NULL,
-	[StrategyDesc] [nvarchar](1023) NOT NULL,
-
-	CONSTRAINT [pk_Strategy] PRIMARY KEY
-	(
-		[StrategyId]
-	),
-	
-	CONSTRAINT [uk_Strategy] UNIQUE
-	(
-		[StrategyName]
-	)
-)	
-GO
-
-
-INSERT INTO [DataObfuscation].[Strategy] VALUES (0, 'None', 'Performs no obfuscation.');
-INSERT INTO [DataObfuscation].[Strategy] VALUES (1, 'Substitution', 'Returns an alternate value for the real data using a hash appoach.');
-INSERT INTO [DataObfuscation].[Strategy] VALUES (2, 'Shuffling', 'Returns an alternate value for the real data using a shuffle appoach.');
-INSERT INTO [DataObfuscation].[Strategy] VALUES (3, 'Variance', 'Returns a value within +/- (x% | xd) of the real data.');
-INSERT INTO [DataObfuscation].[Strategy] VALUES (4, 'Cipher', 'Returns an encrypted value for all real data.');
-INSERT INTO [DataObfuscation].[Strategy] VALUES (5, 'Nulling', 'Return a null value instead of the real data.');
-INSERT INTO [DataObfuscation].[Strategy] VALUES (6, 'Masking', 'Returns a mask value for most but not all of the real data.');
-GO
-
-
-CREATE TABLE [DataObfuscation].[StoredProcedureParameterConfig]
-(
-	[StoredProcedureParameterConfigId] [int] IDENTITY(1,1) NOT NULL,
-
-	[CatalogName] [nvarchar](64) NOT NULL, -- skimping here to prevent index warning exceed 900 bytes
-	[SchemaName] [nvarchar](128) NOT NULL,
-	[ProcedureName] [nvarchar](128) NOT NULL,
-	[ParameterName] [nvarchar](128) NOT NULL, -- output paramters only
-	
-	[StrategyId] [int] NOT NULL,
-	[DictionaryId] [int] NOT NULL,
-	
-	[HashSeed] [bigint] NOT NULL,
-	[HashSize] [bigint] NOT NULL,
-
-	CONSTRAINT [pk_StoredProcedureParameterConfig] PRIMARY KEY
-	(
-		[StoredProcedureParameterConfigId]
-	),
-	
-	CONSTRAINT [uk_StoredProcedureParameterConfig] UNIQUE
-	(
-		[CatalogName],
-		[SchemaName],
-		[ProcedureName],
-		[ParameterName]
-	),
-	
-	CONSTRAINT [fk_StoredProcedureParameterConfig_Strategy] FOREIGN KEY
-	(
-		[StrategyId]
-	)
-	REFERENCES [DataObfuscation].[Strategy]
-	(
-		[StrategyId]
-	)
-)	
-GO
-
-
-CREATE TABLE [DataObfuscation].[StoredProcedureColumnConfig]
-(
-	[StoredProcedureColumnConfigId] [int] IDENTITY(1,1) NOT NULL,
-
-	[CatalogName] [nvarchar](64) NOT NULL, -- skimping here to prevent index warning exceed 900 bytes
-	[SchemaName] [nvarchar](128) NOT NULL,
-	[ProcedureName] [nvarchar](128) NOT NULL,
-	[ColumnName] [nvarchar](128) NOT NULL, -- output resultset columns only
-	
-	[StrategyId] [int] NOT NULL,
-	[DictionaryId] [int] NOT NULL,
-	
-	[HashSeed] [bigint] NOT NULL,
-	[HashSize] [bigint] NOT NULL,
-
-	CONSTRAINT [pk_StoredProcedureColumnConfig] PRIMARY KEY
-	(
-		[StoredProcedureColumnConfigId]
-	),
-	
-	CONSTRAINT [uk_StoredProcedureColumnConfig] UNIQUE
-	(
-		[CatalogName],
-		[SchemaName],
-		[ProcedureName],
-		[ColumnName]
-	),
-	
-	CONSTRAINT [fk_StoredProcedureColumnConfig_Strategy] FOREIGN KEY
-	(
-		[StrategyId]
-	)
-	REFERENCES [DataObfuscation].[Strategy]
-	(
-		[StrategyId]
-	)
-)	
-GO
-
-
-CREATE TABLE [DataObfuscation].[TableViewColumnConfig]
-(
-	[TableViewColumnConfigId] [int] IDENTITY(1,1) NOT NULL,
-
-	[CatalogName] [nvarchar](64) NOT NULL, -- skimping here to prevent index warning exceed 900 bytes
-	[SchemaName] [nvarchar](128) NOT NULL,
-	[TableName] [nvarchar](128) NOT NULL,
-	[ColumnName] [nvarchar](128) NOT NULL,
-	
-	[StrategyId] [int] NOT NULL,
-	[DictionaryId] [int] NOT NULL,
-	
-	[HashSeed] [bigint] NOT NULL,
-	[HashSize] [bigint] NOT NULL,
-
-	CONSTRAINT [pk_TableViewColumnConfig] PRIMARY KEY
-	(
-		[TableViewColumnConfigId]
-	),
-	
-	CONSTRAINT [uk_TableViewColumnConfig] UNIQUE
-	(
-		[CatalogName],
-		[SchemaName],
-		[TableName],
-		[ColumnName]
-	),
-	
-	CONSTRAINT [fk_TableViewColumnConfig_Strategy] FOREIGN KEY
-	(
-		[StrategyId]
-	)
-	REFERENCES [DataObfuscation].[Strategy]
-	(
-		[StrategyId]
-	)
-)	
-GO
-
-
 CREATE ASSEMBLY [TextMetal.Common.SqlServerClr]
 AUTHORIZATION [dbo]
 FROM
@@ -371,6 +210,18 @@ CREATE FUNCTION [DataObfuscation].[fn_GetCipher]
 )
 RETURNS [sql_variant]
 AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetCipher]
+GO
+
+
+CREATE FUNCTION [DataObfuscation].[fn_GetHash]
+(
+	@hashMultiplier [bigint],
+	@hashBucketSize [bigint],
+	@hashSeed [bigint],
+	@value [nvarchar](MAX)
+)
+RETURNS [int]
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetHash]
 GO
 
 
@@ -402,7 +253,6 @@ CREATE FUNCTION [DataObfuscation].[fn_GetVariance]
 RETURNS [sql_variant]
 AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetVariance]
 GO
-
 ]]>
 
 	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -410,17 +260,37 @@ GO
 			<Ruby src="Script">
 				<Script>!["db_accessadmin", "db_backupoperator", "db_datareader",
 				"db_datawriter", "db_ddladmin", "db_denydatareader", "db_denydatawriter",
-				"db_owner", "db_securityadmin", "dbo", "sys",
+				"db_owner", "db_securityadmin", "sys",
 				"INFORMATION_SCHEMA", "guest"].include?(textMetal.EvaluateToken.invoke("SchemaName"));</Script>
 			</Ruby>	
 		</ForEach.Filter>
 		
 		<ForEach.Body>
-		
+			<If>
+				<If.Condition>
+					<BinaryExpression operator="Ne">
+						<BinaryExpression.LeftExpression>
+							<Facet name="SchemaName" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Value type="System.String" data="dbo" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</If.Condition>
+				<If.True>
 <![CDATA[
+
 CREATE SCHEMA [${SchemaName}]
 GO
 ]]>
+				</If.True>
+				<If.False>
+<![CDATA[
+
+-- DO NOT CREATE SCHEMA [${SchemaName}]
+]]>
+				</If.False>
+			</If>	
 
 			<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 				<ForEach.Filter>
@@ -428,48 +298,9 @@ GO
 				<ForEach.Body>
 <![CDATA[
 
-CREATE FUNCTION [${SchemaName}].[iltv_fn_${TableName}]
-(
-]]>
-				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
-					<ForEach.Sort>
-						<Ascending>
-							<Ascending.Compare>
-								<Facet name="ColumnOrdinal" />
-							</Ascending.Compare>
-						</Ascending>
-					</ForEach.Sort>
-					<ForEach.Body>
-					
-<![CDATA[	@${ColumnNamePascalCase} [${ColumnSqlType}]${rb(`
-	if ["varchar", "nvarchar", "varbinary"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
-		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
-	else
-		""
-	end
-`)}]]>
-						<If>
-							<If.Condition>
-								<BinaryExpression operator="Ne">
-									<BinaryExpression.LeftExpression>
-										<Facet name="_LoopCount" />
-									</BinaryExpression.LeftExpression>
-									<BinaryExpression.RightExpression>
-										<Facet name="_LoopIndex" />
-									</BinaryExpression.RightExpression>
-								</BinaryExpression>
-							</If.Condition>
-							<If.True>
-<![CDATA[,
-]]>
-							</If.True>
-						</If>
-					</ForEach.Body>
-				</ForEach>
-<![CDATA[
-)
-RETURNS TABLE 
-RETURN
+CREATE VIEW [${SchemaName}].[${TableName}]
+AS
+	${rb(`textMetal.EvaluateToken.invoke("obfuCfg")`)}
 	SELECT
 ]]>
 				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -481,75 +312,17 @@ RETURN
 						</Ascending>
 					</ForEach.Sort>
 					<ForEach.Body>
-<!-- TODO HANDLE NUM VS STR HERE-->
-
-	<If>
-		<If.Condition>
-			<Ruby src="Script">
-				<Script>
-<![CDATA[
-	temp1 = ["text", "ntext", "image", "xml", "timestamp", "rowversion", "sql_variant", "geography", "hierarchyid", "geometry", "datetimeoffset"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"));
-	temp2 = ["varchar", "nvarchar", "varbinary"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
-	temp3 = textMetal.EvaluateToken.invoke("ColumnSize") <= 0
-	temp4 = !(temp1 || (temp2 && temp3))
-	
-	temp4
-]]>
-				</Script>
-			</Ruby>
-		</If.Condition>
-		<If.True>
-<![CDATA[
-
-	CAST(
-		(SELECT TOP 1
-		CASE
-			WHEN t.[StrategyId] IS NULL OR -- UNKNOWN
-				t.[StrategyId] = 0 -- NONE
-				THEN @${ColumnNamePascalCase}
-			WHEN t.[StrategyId] = 1 -- SUBSTITUTION
-				THEN d.[DictionaryValue]
-			WHEN t.[StrategyId] = 2 -- SHUFFLING
-				THEN [DataObfuscation].[fn_GetShuffle](ABS(CHECKSUM(@${ColumnNamePascalCase}, t.[HashSeed]) % t.[HashSize]), @${ColumnNamePascalCase})
-			WHEN t.[StrategyId] = 3 -- VARIANCE
-				THEN [DataObfuscation].[fn_GetVariance]((CHECKSUM(@${ColumnNamePascalCase}, t.[HashSeed]) % t.[HashSize]) / 100.0, @${ColumnNamePascalCase})
-			WHEN t.[StrategyId] = 4 -- CIPHER
-				THEN [DataObfuscation].[fn_GetCipher](CAST(ABS(CHECKSUM(@${ColumnNamePascalCase}, t.[HashSeed]) % t.[HashSize]) AS [nvarchar](MAX)), @${ColumnNamePascalCase})
-			WHEN t.[StrategyId] = 5 -- NULLING
-				THEN NULL
-			WHEN t.[StrategyId] = 6 -- MASKING
-				THEN [DataObfuscation].[fn_GetMask](0.25, @${ColumnNamePascalCase})
-			ELSE -- ?default?
-				NULL
-		END
-		FROM [DataObfuscation].[TableViewColumnConfig] t
-		INNER JOIN [DataObfuscation].[Strategy] s ON s.[StrategyId] = t.[StrategyId]
-		LEFT OUTER JOIN [DataObfuscation].[Dictionary] d ON d.[DictionaryId] = t.[DictionaryId]
-			AND d.[DictionaryKey] = ABS(CHECKSUM(@${ColumnNamePascalCase}, t.[HashSeed]) % t.[HashSize])
-		WHERE t.[CatalogName] = '${InitialCatalogName}' AND t.[SchemaName] = '${SchemaName}'
-			AND t.[TableName] = '${TableName}' AND t.[ColumnName] = '${ColumnName}')
-	AS [${ColumnSqlType}]${rb(`
+					
+<![CDATA[	CAST( t.[${ColumnName}] AS ${rb(`
+	"[" + textMetal.EvaluateToken.invoke("ColumnSqlType") + "]" +	
 	if ["varchar", "nvarchar", "varbinary"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
 		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
 	else
 		""
-	end
-`)} ) as [${ColumnName}]]]>
-		</If.True>
-		
-		<If.False>
-<![CDATA[
+	end + " ) as [" + textMetal.EvaluateToken.invoke("ColumnName") + "]"
+`)}]]>
 
-	CAST( @${ColumnNamePascalCase} AS [${ColumnSqlType}]${rb(`
-	if ["varchar", "nvarchar", "varbinary"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
-		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
-	else
-		""
-	end
-`)} ) as [${ColumnName}]]]>
-		</If.False>
-	</If>
-
+						
 
 						<If>
 							<If.Condition>
@@ -568,64 +341,41 @@ RETURN
 							</If.True>
 						</If>
 						
-						<OutputScope name="Obfucation_TableViewConfig_Baseline.g.sql" append="true">
-<![CDATA[INSERT INTO [DataObfuscation].[TableViewColumnConfig] VALUES ('${InitialCatalogName}', '${SchemaName}', '${TableName}', '${ColumnName}', 0, 1001, 5381, 120);
+						
+						<OutputScope name="${ObfuscationConfigFilePath}.g" append="true">
+<![CDATA[
+	{
+      "CatalogName": "${InitialCatalogName}",
+      "SchemaName": "${SchemaName}",
+      "TableName": "${TableName}",
+	  "ColumnName": "${ColumnName}",
+	  "StrategyId": 0,
+	  "DictionaryId": 0,
+	  "HashSeed": 0,
+	  "HashSize": 0
+    },
 ]]>
 						</OutputScope>
 					</ForEach.Body>
 				</ForEach>
 <![CDATA[
-GO
-
-
-CREATE VIEW [${SchemaName}].[${TableName}]
-AS
-	SELECT 
-	z.*
 	FROM [${DataObfuscationTargetServerName}].[${InitialCatalogName}].[${SchemaName}].[${TableName}] t
-	CROSS APPLY [${DataObfuscationProxyCatalogName}].[${SchemaName}].[iltv_fn_${TableName}]
-	(
-]]>
-				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
-					<ForEach.Sort>
-						<Ascending>
-							<Ascending.Compare>
-								<Facet name="ColumnOrdinal" />
-							</Ascending.Compare>
-						</Ascending>
-					</ForEach.Sort>
-					<ForEach.Body>
-					
-<![CDATA[		t.[${ColumnName}]]]>
-						<If>
-							<If.Condition>
-								<BinaryExpression operator="Ne">
-									<BinaryExpression.LeftExpression>
-										<Facet name="_LoopCount" />
-									</BinaryExpression.LeftExpression>
-									<BinaryExpression.RightExpression>
-										<Facet name="_LoopIndex" />
-									</BinaryExpression.RightExpression>
-								</BinaryExpression>
-							</If.Condition>
-							<If.True>
-<![CDATA[,
-]]>
-							</If.True>
-						</If>
-						</ForEach.Body>
-				</ForEach>
-<![CDATA[
-	) z
 
-GO 
+GO
 ]]>
+
 				</ForEach.Body>
 			</ForEach>
 
 		</ForEach.Body>
 	</ForEach>
 		
+	</OutputScope>
+	
+	<OutputScope name="${ObfuscationConfigFilePath}.g" append="true">
+<![CDATA[	]
+}
+]]>
 	</OutputScope>
 	
 </Template>

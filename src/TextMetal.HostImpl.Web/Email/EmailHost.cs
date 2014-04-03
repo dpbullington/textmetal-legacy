@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Mail;
 using System.Xml;
@@ -173,7 +174,7 @@ namespace TextMetal.HostImpl.Web.Email
 			{
 				using (StringOutputMechanism stringOutputMechanism = new StringOutputMechanism())
 				{
-					using (templatingContext = new TemplatingContext(xpe, new Tokenizer(strictMatching), nullInputMechanism, stringOutputMechanism))
+					using (templatingContext = new TemplatingContext(xpe, new Tokenizer(strictMatching), nullInputMechanism, stringOutputMechanism, new Dictionary<string, IList<string>>()))
 					{
 						// FROM
 						using (templateXmlTextReader = new XmlTextReader(new StringReader(messageTemplate.FromXml.OuterXml)))
