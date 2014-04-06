@@ -117,7 +117,7 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 
 		#region Methods/Operators
 
-		private static void LaunchDebugger()
+		public static void LaunchDebugger()
 		{
 			if (!Debugger.IsAttached)
 			{

@@ -239,7 +239,7 @@ namespace TextMetal.Common.Core.StringTokens
 			}
 			catch (Exception ex)
 			{
-				return GetOriginalValueOrThrowExecption(this.StrictMatching, match.Value, string.Format("function exception {{{0}}}", ex.Message));
+				return GetOriginalValueOrThrowExecption(this.StrictMatching, match.Value, string.Format("function exception {{\r\n{0}\r\n}}", Reflexion.GetErrors(ex, 0)));
 			}
 
 			if ((object)tokens == null ||

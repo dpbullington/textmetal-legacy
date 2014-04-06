@@ -14,6 +14,7 @@ using TextMetal.Common.Core;
 using TextMetal.Common.Core.StringTokens;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
+using TextMetal.Framework.DebuggerProfilerModel;
 
 namespace TextMetal.Framework.ExpressionModel
 {
@@ -148,6 +149,7 @@ namespace TextMetal.Framework.ExpressionModel
 			dynamic textMetal;
 			dynamic dvalue;
 			Func<string, object> func;
+			Action action;
 
 			if ((object)templatingContext == null)
 				throw new ArgumentNullException("templatingContext");
@@ -176,6 +178,9 @@ namespace TextMetal.Framework.ExpressionModel
 			textMetal.EvaluateToken = func;
 			//TODO: templatingContext.Tokenizer.ExpandTokens(tokenizedValue, dynamicWildcardTokenReplacementStrategy);
 
+			action = () => DebuggerBreakpointConstruct.LaunchDebugger();
+			textMetal.DebuggerBreakpoint = action;
+			
 			scriptScope.SetVariable("textMetal", textMetal);
 
 			foreach (KeyValuePair<string, object> variableEntry in templatingContext.CurrentVariableTable)

@@ -300,7 +300,11 @@ GO
 
 CREATE VIEW [${SchemaName}].[${TableName}]
 AS
-	${rb(`textMetal.EvaluateToken.invoke("obfuCfg")`)}
+	${rb(`
+	#textMetal.DebuggerBreakpoint.invoke()
+	x = textMetal.EvaluateToken.invoke("obfuCfg")
+	y = x["TablesViews".to_clr_string()]
+	`)}
 	SELECT
 ]]>
 				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">

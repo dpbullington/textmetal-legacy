@@ -93,6 +93,10 @@
       <Project>{72DACF93-04D7-42A3-B851-2717915FFF89}</Project>
       <Name>TextMetal.Framework.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Framework.DebuggerProfilerModel\TextMetal.Framework.DebuggerProfilerModel.csproj">
+      <Project>{1E908932-4891-466E-8429-A17AB71CF0B2}</Project>
+      <Name>TextMetal.Framework.DebuggerProfilerModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
