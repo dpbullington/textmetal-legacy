@@ -15,11 +15,11 @@ set SRC_DIR=%PACKAGE_DIR%\src
 set LIB_DIR=%PACKAGE_DIR%\lib
 set PACKAGE_DIR_EXISTS=%PACKAGE_DIR%\nul
 
-set CLR_NAMESPACE=TextMetal.HostImpl.AspNetSample.Objects.Model
-set ADO_NET_CONNECTION_STRING=Data Source=(local);User ID=TextMetalWebHostSampleLogin;Password=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Initial Catalog=TextMetalWebHostSample
+set CLR_NAMESPACE=TextMetal.HostImpl.AspNetSample.DomainModel
+set ADO_NET_CONNECTION_STRING=Data Source=(local);User ID=textmetal_mssql_dev_login;Password=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Initial Catalog=textmetal_ods_dev
 
 set SQL_METAL_EXE=C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\SqlMetal.exe
-set L2S_DIR=%SRC_DIR%\TextMetal.HostImpl.AspNetSample.Objects.Model\L2S
+set L2S_DIR=%SRC_DIR%\TextMetal.HostImpl.AspNetSample.DomainModel\L2S
 set L2S_DIR_EXISTS=%L2S_DIR%\nul
 set L2S_CLR_NAMESPACE=%CLR_NAMESPACE%.L2S
 set L2S_DATA_CONTEXT_NAME=TxtMtlPrimaryDataContext
@@ -377,14 +377,14 @@ echo *** linqtosql_dbmlgen_execute ***
 	/namespace:"%L2S_CLR_NAMESPACE%" ^
 	/context:"%L2S_DATA_CONTEXT_NAME%" ^
 	/dbml:"%L2S_DBML_FILE_PATH%" ^
-	/conn:"%ADO_NET_CONNECTION_STRING%"
+	/conn:"%ADO_NET_CONNECTION_STRING%" > "%PACKAGE_DIR%\SqlMetal_LOG.txt
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 "%SQL_METAL_EXE%" ^
 	/language:"C#" ^
 	/code:"%L2S_DESIGNER_CS_FILE_PATH%" ^
-	"%L2S_DBML_FILE_PATH%"
+	"%L2S_DBML_FILE_PATH%" >> "%PACKAGE_DIR%\SqlMetal_LOG.txt
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 

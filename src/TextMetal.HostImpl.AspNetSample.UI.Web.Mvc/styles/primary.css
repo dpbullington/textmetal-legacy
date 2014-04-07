@@ -1,0 +1,394 @@
+body
+{
+	font-family: Verdana;
+	font-size: 10pt;
+	/*background-image: url(/images/richmond-va-usa.JPG);
+	background-repeat:no-repeat;
+	background-position:center;*/
+}
+
+.txtmtl-header
+{
+	border-bottom: 1px solid black;
+}
+
+.txtmtl-header-family-text
+{
+	font-family: Verdana;
+	font-size: 32pt;
+}
+
+.txtmtl-header-family-slogan
+{
+	font-family: Verdana;
+	font-size: 10pt;
+	font-style: italic;
+	font-weight: bold;
+	padding: 10px;
+	text-align: center;
+}
+
+.txtmtl-header-family-branding
+{
+	text-align: center;
+	vertical-align: central;
+}
+
+.txtmtl-header-logo
+{
+	float: right;
+}
+
+.txtmtl-family-logo
+{
+	/
+	/
+	border: 1px solid lightgray;
+	float: right;
+	padding: 8px 8px 8px 8px;
+}
+
+.txtmtl-main-banner
+{
+	float: right;
+}
+
+.txtmtl-content-wrapper
+{
+	background-color: #f0f0f0;
+	margin: 8px 8px 8px 8px;
+	padding: 8px 8px 8px 8px;
+	width: 800px;
+}
+
+.txtmtl-page-title-wrapper
+{
+	font-family: Verdana;
+	font-size: 18pt;
+	margin: 8px 8px 8px 0px;
+	padding: 8px 8px 8px 0px;
+	text-align: right;
+}
+
+.txtmtl-ctxnav-wrapper
+{
+	background-color: white;
+	border: 1px solid black;
+	margin: 8px 8px 8px 8px;
+	padding: 8px 8px 8px 8px;
+}
+
+.txtmtl-footer
+{
+	font-size: x-small;
+	margin-top: 16px;
+	text-align: center;
+}
+
+.txtmtl-callout-text
+{
+	color: #28C;
+	font-family: Arial;
+	font-size: 16pt;
+}
+
+.txtmtl-navigation-wrapper
+{
+	margin-top: 32px
+}
+
+.txtmtl-input-text
+{
+	border: 3px solid #DDD;
+	font-family: Verdana;
+	height: 18px;
+	width: 200px;
+}
+
+.txtmtl-input-textarea
+{
+	border: 3px solid #DDD;
+	font-family: Verdana;
+	height: 100px;
+	width: 600px;
+}
+
+.txtmtl-input-button
+{
+	height: 22px;
+	width: 100px;
+}
+
+.txtmtl-data-label
+{
+	font-weight: bold;
+	margin: 2px 2px 2px 2px;
+	padding: 2px 2px 2px 2px;
+}
+
+.txtmtl-data-field
+{
+	margin: 4px 4px 4px 4px;
+	padding: 4px 4px 4px 4px;
+}
+
+.txtmtl-data-button
+{
+	padding-bottom: 8px;
+	padding-top: 8px;
+}
+
+.txtmtl-input-select
+{
+	border: 3px solid #DDD;
+	height: 25px;
+	width: 205px;
+}
+
+.txtmtl-results
+{
+	border: 2px solid #ffffff;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.txtmtl-results-header
+{
+	border: 2px solid #ffffff;
+	text-align: left;
+	vertical-align: bottom;
+}
+
+.txtmtl-results-sortby
+{
+	color: #00A9D3;
+}
+
+.txtmtl-results-row
+{
+	border: 2px solid #ffffff;
+}
+
+.txtmtl-results-altrow
+{
+	border: 2px solid #ffffff;
+}
+
+.txtmtl-results-footer
+{
+	border: 2px solid #ffffff;
+}
+
+.txtmtl-family-wrapper
+{
+	border: 2px solid #ffffff;
+}
+
+.txtmtl-family-name
+{
+	font-size: 12pt;
+	font-style: italic;
+	font-weight: bold;
+}
+
+.txtmtl-family-subtext
+{
+	font-size: 8pt;
+	font-style: italic;
+}
+
+.txtmtl-section-text
+{
+	border-bottom: 1px solid Gray;
+	color: Gray;
+	display: block;
+	font-size: 10pt;
+	font-weight: bold;
+	margin: 8px 8px 8px 0px;
+	padding: 8px 8px 8px 0px;
+}
+
+.txtmtl-circle-title
+{
+	font-size: 12pt;
+	font-style: italic;
+	font-weight: bold;
+}
+
+.txtmtl-circle-subtext
+{
+	font-size: 8pt;
+	font-style: italic;
+}
+
+.txtmtl-input-textbox-in-jquery-dialog
+{
+	width: 400px;
+}
+
+.txtmtl-input-button-in-jquery-dialog
+{
+	width: 100px;
+}
+
+.txtmtl-input-select-in-jquery-dialog
+{
+	width: 402px;
+}
+
+.txtmtl-callout-text
+{
+	color: #28C;
+	font-family: Arial;
+	font-size: 16pt;
+}
+
+.txtmtl-data-field-help
+{
+	background-color: InfoBackground;
+	border: solid 2px #ddd;
+	color: InfoText;
+	display: none;
+	float: right;
+	font-size: 13px;
+	font-style: italic;
+	padding: 8px 8px 8px 8px;
+	position: relative;
+	top: 0;
+	width: 400px;
+}
+
+.txtmtl-data-field-help-tooltip-image
+{
+	float: right;
+}
+
+.txtmtl-circle-total-text
+{
+	color: green;
+	font-family: Arial;
+	font-size: 16pt;
+}
+
+.txtmtl-child-logo
+{
+	border: 1px solid lightgray;
+	float: right;
+	padding: 8px 8px 8px 8px;
+}
+
+.txtmtl-child-wrapper
+{
+	border: 2px solid #ffffff;
+}
+
+.txtmtl-child-name
+{
+	font-size: 12pt;
+	font-style: italic;
+	font-weight: bold;
+}
+
+.txtmtl-child-subtext
+{
+	font-size: 8pt;
+	font-style: italic;
+}
+
+.txtmtl-terms-text
+{
+	font-size: 18pt;
+	font-style: italic;
+	font-weight: bold;
+}
+
+.txtmtl-channel-links
+{
+	background-color: azure;
+	color: #28C;
+	font-family: Arial;
+	font-size: 12pt;
+	font-weight: bolder;
+	padding: 8px 8px 8px 8px;
+	text-align: right;
+}
+
+.txtmtl-competition-table
+{
+	border: 2px solid black;
+}
+
+.txtmtl-competition-table thead
+{
+	background-color: #e0e0e0;
+	font-weight: bold;
+}
+
+.txtmtl-competition-table tbody
+{
+}
+
+.txtmtl-competition-table td
+{
+	border: 1px dotted black;
+}
+
+.txtmtl-feature-comparison-table
+{
+	border: 2px solid black;
+}
+
+.txtmtl-feature-comparison-table thead
+{
+	background-color: #e0e0e0;
+	font-weight: bold;
+}
+
+.txtmtl-feature-comparison-table tbody
+{
+}
+
+.txtmtl-feature-comparison-table td
+{
+	border: 1px dotted black;
+}
+
+.txtmtl-offerings
+{
+}
+
+.txtmtl-offerings-list
+{
+}
+
+.txtmtl-offering-item
+{
+	padding: 16px 16px 16px 16px;
+}
+
+.txtmtl-offering-name
+{
+	color: #28C;
+	font-family: Arial;
+	font-size: 16pt;
+}
+
+.txtmtl-offering-description
+{
+}
+
+.txtmtl-offering-cost
+{
+}
+
+.txtmtl-offering-store
+{
+}
+
+.txtmtl-order-now-button
+{
+	float: left;
+	left: -6px;
+	position: relative;
+	top: -6px;
+}

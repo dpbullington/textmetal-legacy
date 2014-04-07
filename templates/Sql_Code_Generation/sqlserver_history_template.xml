@@ -73,8 +73,10 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 					</ForEach.Filter>
 					<ForEach.Body>
 						<![CDATA[	[${ColumnName}] [${ColumnSqlType}]${rb(`
-	if ["varchar", "nvarchar", "varbinary"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+	if ["binary", "char", "float", "nchar", "nvarchar", "varbinary", "varchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
 		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
+	elsif ["decimal", "numeric"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+		"(" + textMetal.EvaluateToken.invoke("ColumnPrecision").to_s() + ", " + textMetal.EvaluateToken.invoke("ColumnScale").to_s() + ")"
 	else
 		""
 	end
@@ -128,8 +130,10 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 					</ForEach.Filter>
 					<ForEach.Body>
 						<![CDATA[	[${ColumnName}] [${ColumnSqlType}]${rb(`
-	if ["varchar", "nvarchar", "varbinary"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+	if ["binary", "char", "float", "nchar", "nvarchar", "varbinary", "varchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
 		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
+	elsif ["decimal", "numeric"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+		"(" + textMetal.EvaluateToken.invoke("ColumnPrecision").to_s() + ", " + textMetal.EvaluateToken.invoke("ColumnScale").to_s() + ")"
 	else
 		""
 	end

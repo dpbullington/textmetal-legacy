@@ -47,8 +47,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 						(int)(column.ColumnSize / 2) :
 						column.ColumnSize);
 			}
-			else if (dataSourceTag.SafeToString().ToLower() == "odbc.sybaseiq")
-				return 0;
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
@@ -72,8 +70,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 						(int)(parameter.ParameterSize / 2) :
 						parameter.ParameterSize);
 			}
-			else if (dataSourceTag.SafeToString().ToLower() == "odbc.sybaseiq")
-				return 0;
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
@@ -105,14 +101,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};
 			}
-			else if (dataSourceTag.SafeToString().ToLower() == "odbc.sybaseiq")
-			{
-				return new IDataParameter[]
-						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", table.TableName),
-						};
-			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
@@ -127,8 +115,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 
 			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
 				return null;
-			else if (dataSourceTag.SafeToString().ToLower() == "odbc.sybaseiq")
-				return null;
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
@@ -141,8 +127,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
 				return null;
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -175,14 +160,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};
 			}
-			else if (dataSourceTag.SafeToString().ToLower() == "odbc.sybaseiq")
-			{
-				return new IDataParameter[]
-						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", table.TableName),
-						};
-			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
@@ -194,8 +171,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 
 			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
 				return true;
-			else if (dataSourceTag.SafeToString().ToLower() == "odbc.sybaseiq")
-				return false;
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
@@ -221,15 +196,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 				throw new ArgumentNullException("foreignKey");
 
 			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
-			{
-				return new IDataParameter[]
-						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", table.TableName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", foreignKey.ForeignKeyName)
-						};
-			}
-			else if (dataSourceTag.SafeToString().ToLower() == "odbc.sybaseiq")
 			{
 				return new IDataParameter[]
 						{
@@ -267,14 +233,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", table.TableName)
 						};
 			}
-			else if (dataSourceTag.SafeToString().ToLower() == "odbc.sybaseiq")
-			{
-				return new IDataParameter[]
-						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", table.TableName)
-						};
-			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
@@ -304,14 +262,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", procedure.ProcedureName)
 						};
 			}
-			else if (dataSourceTag.SafeToString().ToLower() == "odbc.sybaseiq")
-			{
-				return new IDataParameter[]
-						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", procedure.ProcedureName)
-						};
-			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
@@ -323,8 +273,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 
 			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
 				return "@";
-			else if (dataSourceTag.SafeToString().ToLower() == "odbc.sybaseiq")
-				return "?";
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
@@ -345,8 +293,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 
 			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
 				return new IDataParameter[] { unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", schema.SchemaName) };
-			else if (dataSourceTag.SafeToString().ToLower() == "odbc.sybaseiq")
-				return new IDataParameter[] { unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", schema.SchemaName) };
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
@@ -364,8 +310,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 
 			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
 				return null;
-			else if (dataSourceTag.SafeToString().ToLower() == "odbc.sybaseiq")
-				return null;
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
@@ -380,8 +324,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 
 			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
 				return new IDataParameter[] { unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", schema.SchemaName), unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", schema.SchemaName) };
-			else if (dataSourceTag.SafeToString().ToLower() == "odbc.sybaseiq")
-				return new IDataParameter[] { unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", schema.SchemaName) };
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
@@ -415,15 +357,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", uniqueKey.UniqueKeyName)
 						};
 			}
-			else if (dataSourceTag.SafeToString().ToLower() == "odbc.sybaseiq")
-			{
-				return new IDataParameter[]
-						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", table.TableName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", uniqueKey.UniqueKeyName)
-						};
-			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
@@ -446,14 +379,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 				throw new ArgumentNullException("table");
 
 			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
-			{
-				return new IDataParameter[]
-						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", table.TableName)
-						};
-			}
-			else if (dataSourceTag.SafeToString().ToLower() == "odbc.sybaseiq")
 			{
 				return new IDataParameter[]
 						{

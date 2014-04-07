@@ -11,7 +11,16 @@
 	<OutputScope name="${ObfuscationConfigFilePath}.g" append="false">
 <![CDATA[
 {
-  "TablesViews": [
+	"MaskFactor": 0.50,
+	
+	"NumericSign":
+	{
+		"HashMultiplier": 5381, 
+		"HashBucketSize": 1000000,
+		"HashSeed": 33
+	},
+	
+	"TablesViews": [
 ]]>
 	</OutputScope>
 
@@ -21,6 +30,20 @@
 
 SET NOCOUNT ON
 GO
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+--	STRATEGY		DATA TYPE	DESCRIPTION
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+--	none			any			Returns un-obfuscated, original value.
+--	substitution	string		Returns an alternate value using a hashed lookup into a dictionary.
+--	shuffling		string		Returns an alternate value using a hashed shuffle of alphanumeric characters (while preserving other characters).
+--	variance		numeric		Returns an alternate value within +/- (x%) of the original value.
+--					temporal	Returns an alternate value within +/- (x%:365.25d) of the original value.
+--	cipher			string		Returns an alternate value that is a binary encryption of the original value.
+--	nulling			any			Returns an alternate value that is always NULL.
+--	masking			string		Returns an alternate value that is a +/- (%) mask of the original value.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 USE [master]
@@ -300,11 +323,7 @@ GO
 
 CREATE VIEW [${SchemaName}].[${TableName}]
 AS
-	${rb(`
-	#textMetal.DebuggerBreakpoint.invoke()
-	x = textMetal.EvaluateToken.invoke("obfuCfg")
-	y = x["TablesViews".to_clr_string()]
-	`)}
+	
 	SELECT
 ]]>
 				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -317,10 +336,75 @@ AS
 					</ForEach.Sort>
 					<ForEach.Body>
 					
-<![CDATA[	CAST( t.[${ColumnName}] AS ${rb(`
+<![CDATA[	CAST( ${rb(`
+	#textMetal.DebuggerBreakpoint.invoke()
+	obfuCfg = textMetal.EvaluateToken.invoke("obfuCfg")
+	tblCfg = obfuCfg["TablesViews".to_clr_string()].select{|obj|
+		obj["CatalogName".to_clr_string()] == textMetal.EvaluateToken.invoke("InitialCatalogName") &&
+		obj["SchemaName".to_clr_string()] == textMetal.EvaluateToken.invoke("SchemaName") &&
+		obj["TableName".to_clr_string()] == textMetal.EvaluateToken.invoke("TableName") &&
+		obj["ColumnName".to_clr_string()] == textMetal.EvaluateToken.invoke("ColumnName")
+		}.first()
+		
+	numSgn = obfuCfg["NumericSign".to_clr_string()]
+				
+	if tblCfg.nil?
+		"t.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]"
+	else
+		strategy = tblCfg["StrategyTag".to_clr_string()]
+		
+		case strategy.to_s()
+			when "substitution"
+				dctCfg = tblCfg["Dictionary".to_clr_string()]
+				
+				"/* SUBSTITUTION */ (SELECT z.[" +
+					dctCfg["ValueColumnName".to_clr_string()].to_s() + "] FROM [" +
+					dctCfg["CatalogName".to_clr_string()].to_s() + "].[" +
+					dctCfg["SchemaName".to_clr_string()].to_s() + "].[" +
+					dctCfg["TableName".to_clr_string()].to_s() + "] z WHERE z.[" +
+					dctCfg["KeyColumnName".to_clr_string()].to_s() + "] = ([DataObfuscation].[fn_GetHash](" +
+					tblCfg["HashMultiplier".to_clr_string()].to_s() + ", " +
+					tblCfg["HashBucketSize".to_clr_string()].to_s() + ", " +
+					tblCfg["HashSeed".to_clr_string()].to_s() + ", t.[" + textMetal.EvaluateToken.invoke("ColumnName") + "])))"
+			when "shuffling"
+				"/* SHUFFLING */ ([DataObfuscation].[fn_GetShuffle]([DataObfuscation].[fn_GetHash](" +
+					tblCfg["HashMultiplier".to_clr_string()].to_s() + ", " +
+					tblCfg["HashBucketSize".to_clr_string()].to_s() + ", " +
+					tblCfg["HashSeed".to_clr_string()].to_s() + ", t.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]), t.[" +
+					textMetal.EvaluateToken.invoke("ColumnName") + "]))"
+			when "variance"
+				"/* VARIANCE */ ([DataObfuscation].[fn_GetVariance]((([DataObfuscation].[fn_GetHash](" +
+					tblCfg["HashMultiplier".to_clr_string()].to_s() + ", " +
+					tblCfg["HashBucketSize".to_clr_string()].to_s() + ", " +
+					tblCfg["HashSeed".to_clr_string()].to_s() + ", CAST(t.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] AS [nvarchar](MAX))) * CASE WHEN ([DataObfuscation].[fn_GetHash](" +
+					numSgn["HashMultiplier".to_clr_string()].to_s() + ", " +
+					numSgn["HashBucketSize".to_clr_string()].to_s() + ", " +
+					numSgn["HashSeed".to_clr_string()].to_s() + ", CAST(t.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] AS [nvarchar](MAX))) % 2) = 0 THEN 1 ELSE -1 END) / 100.0), t.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]))"
+			when "cipher"
+				"/* CIPHER */ (CASE WHEN t.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] IS NULL OR LEN(t.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]) = 0 THEN t.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] ELSE " +
+					"[DataObfuscation].[fn_GetCipher]([DataObfuscation].[fn_GetHash](" +
+					tblCfg["HashMultiplier".to_clr_string()].to_s() + ", " +
+					tblCfg["HashBucketSize".to_clr_string()].to_s() + ", " +
+					tblCfg["HashSeed".to_clr_string()].to_s() + ", t.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]), t.[" +
+					textMetal.EvaluateToken.invoke("ColumnName") + "]) END)"
+			when "nulling"
+				"/* NULLING */ (NULL)"
+			when "masking"
+				maskFactor = obfuCfg["MaskFactor".to_clr_string()]
+				
+				"/* MASKING */ (CASE WHEN t.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] IS NULL OR LEN(t.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]) = 0 THEN t.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] ELSE " +
+					"[DataObfuscation].[fn_GetMask](" + maskFactor.to_s() + ", t.[" +
+					textMetal.EvaluateToken.invoke("ColumnName") + "]) END)"
+			else #none
+				"/* NONE */ (t.[" + textMetal.EvaluateToken.invoke("ColumnName") + "])"
+		end
+	end
+	`)} AS ${rb(`
 	"[" + textMetal.EvaluateToken.invoke("ColumnSqlType") + "]" +	
-	if ["varchar", "nvarchar", "varbinary"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+	if ["binary", "char", "float", "nchar", "nvarchar", "varbinary", "varchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
 		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
+	elsif ["decimal", "numeric"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+		"(" + textMetal.EvaluateToken.invoke("ColumnPrecision").to_s() + ", " + textMetal.EvaluateToken.invoke("ColumnScale").to_s() + ")"
 	else
 		""
 	end + " ) as [" + textMetal.EvaluateToken.invoke("ColumnName") + "]"
@@ -349,15 +433,23 @@ AS
 						<OutputScope name="${ObfuscationConfigFilePath}.g" append="true">
 <![CDATA[
 	{
-      "CatalogName": "${InitialCatalogName}",
-      "SchemaName": "${SchemaName}",
-      "TableName": "${TableName}",
-	  "ColumnName": "${ColumnName}",
-	  "StrategyId": 0,
-	  "DictionaryId": 0,
-	  "HashSeed": 0,
-	  "HashSize": 0
-    },
+		"CatalogName": "${InitialCatalogName}",
+		"SchemaName": "${SchemaName}",
+		"TableName": "${TableName}",
+		"ColumnName": "${ColumnName}",
+		"StrategyTag": 0,
+		"Dictionary":
+		{
+			"CatalogName": "${InitialCatalogName}",
+			"SchemaName": "DataObfuscation",
+			"TableName": "CrayonColorDictionary",
+			"KeyColumnName": "CrayonColorDictionaryKey",
+			"ValueColumnName": "CrayonColorDictionaryValue"
+		},
+		"HashMultiplier": 5381,
+		"HashBucketSize": 120,
+		"HashSeed": 33
+	},
 ]]>
 						</OutputScope>
 					</ForEach.Body>

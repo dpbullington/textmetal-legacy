@@ -15,8 +15,8 @@ set SRC_DIR=%PACKAGE_DIR%\src
 set LIB_DIR=%PACKAGE_DIR%\lib
 set PACKAGE_DIR_EXISTS=%PACKAGE_DIR%\nul
 
-set CLR_NAMESPACE=TextMetal.HostImpl.AspNetSample.Objects.Model
-set ADO_NET_CONNECTION_STRING=Driver={SQL Server Native Client 11.0};Server=(local);UID=TextMetalWebHostSampleLogin;PWD=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Database=TextMetalWebHostSample
+set CLR_NAMESPACE=TextMetal.HostImpl.AspNetSample.ModelDomain
+set ADO_NET_CONNECTION_STRING=Driver={SQL Server Native Client 11.0};Server=(local);UID=textmetal_mssql_dev_login;PWD=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Database=textmetal_ods_dev
 
 :pkgDir
 

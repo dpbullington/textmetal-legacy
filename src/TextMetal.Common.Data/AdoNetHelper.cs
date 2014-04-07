@@ -299,6 +299,8 @@ namespace TextMetal.Common.Data
 				return DbType.Byte;
 			else if (clrType == typeof(String))
 				return DbType.String;
+			else if (clrType == typeof(System.Xml.XmlDocument))
+				return DbType.Xml;
 			else if (clrType == typeof(Object))
 				return DbType.Object;
 			else

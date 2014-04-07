@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5C3FDAEC-AB83-4808-BCCC-6022260C8B61}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TextMetal.HostImpl.AspNetSample.ServiceModel</RootNamespace>
+    <AssemblyName>TextMetal.HostImpl.AspNetSample.ServiceModel</AssemblyName>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <!--<DocumentationFile>bin\Debug\TextMetal.HostImpl.AspNetSample.ServiceModel.XML</DocumentationFile>-->
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <!--<DocumentationFile>bin\Release\TextMetal.HostImpl.AspNetSample.ServiceModel.XML</DocumentationFile>-->
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SolutionAssemblyInfo.cs">
+      <Link>SolutionAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="ResponseBase~1.cs" />
+    <Compile Include="ResultBase.cs" />
+    <Compile Include="SignUp\SignUpService.cs" />
+    <Compile Include="SignUp\ISignUpService.cs" />
+    <Compile Include="SignUp\SignUpRequest.cs" />
+    <Compile Include="SignUp\SignUpResponse.cs" />
+    <Compile Include="User\ForgotPasswordRequest.cs" />
+    <Compile Include="User\ForgotPasswordResponse.cs" />
+    <Compile Include="User\ForgotUsernameRequest.cs" />
+    <Compile Include="User\ForgotUsernameResponse.cs" />
+    <Compile Include="User\EditUserRequest.cs" />
+    <Compile Include="User\EditUserResponse.cs" />
+    <Compile Include="User\AuthenticateUserRequest.cs" />
+    <Compile Include="User\AuthenticateUserResponse.cs" />
+    <Compile Include="User\CreateUserResponse.cs" />
+    <Compile Include="User\CreateUserRequest.cs" />
+    <Compile Include="User\IUserService.cs" />
+    <Compile Include="User\LoadUserRequest.cs" />
+    <Compile Include="User\LoadUserResponse.cs" />
+    <Compile Include="ResponseBase.cs" />
+    <Compile Include="RequestBase.cs" />
+    <Compile Include="ProjectAssemblyInfo.cs" />
+    <Compile Include="User\SuspendAccountRequest.cs" />
+    <Compile Include="User\SuspendAccountResponse.cs" />
+    <Compile Include="User\UserService.cs" />
+    <Compile Include="ServiceBase.cs" />
+    <Compile Include="Welcome\IWelcomeService.cs" />
+    <Compile Include="Welcome\WelcomeService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TextMetal.Common.Core\TextMetal.Common.Core.csproj">
+      <Project>{d1860a67-7efb-4c0f-89cd-a641d99dcc2a}</Project>
+      <Name>TextMetal.Common.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Common.Data\TextMetal.Common.Data.csproj">
+      <Project>{e41e2352-4249-458e-b4f2-dbdf9b564bf5}</Project>
+      <Name>TextMetal.Common.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.HostImpl.AspNetSample.Common\TextMetal.HostImpl.AspNetSample.Common.csproj">
+      <Project>{D3907109-3E81-41AB-8BDD-4E287BFB984C}</Project>
+      <Name>TextMetal.HostImpl.AspNetSample.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.HostImpl.AspNetSample.DomainModel\TextMetal.HostImpl.AspNetSample.DomainModel.csproj">
+      <Project>{A7AC63B5-F5B8-44B1-B05C-7F6008846626}</Project>
+      <Name>TextMetal.HostImpl.AspNetSample.DomainModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

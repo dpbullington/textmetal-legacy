@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+-->
+<MessageTemplate xmlns="http://www.textmetal.com/api/v5.0.0">
+
+	<From>
+		<Template xmlns="http://www.textmetal.com/api/v5.0.0"><![CDATA[noreply@textmetal.com]]></Template>
+	</From>
+
+	<Sender>
+		<Template xmlns="http://www.textmetal.com/api/v5.0.0" />
+	</Sender>
+
+	<ReplyTo>
+		<Template xmlns="http://www.textmetal.com/api/v5.0.0" />
+	</ReplyTo>
+
+	<To>
+		<Template xmlns="http://www.textmetal.com/api/v5.0.0"><![CDATA[support@textmetal.com]]></Template>
+	</To>
+
+	<CarbonCopy>
+		<Template xmlns="http://www.textmetal.com/api/v5.0.0" />
+	</CarbonCopy>
+
+	<BlindCarbonCopy>
+		<Template xmlns="http://www.textmetal.com/api/v5.0.0" />
+	</BlindCarbonCopy>
+
+	<Subject>
+		<Template xmlns="http://www.textmetal.com/api/v5.0.0"><![CDATA[TextMetal - Unhandled Exception]]></Template>
+	</Subject>
+
+	<IsBodyHtml>false</IsBodyHtml>
+
+	<Body>
+		<Template xmlns="http://www.textmetal.com/api/v5.0.0">
+			<![CDATA[The following error occured:
+
+${Error}
+
+###############################################################################
+
+${Context}
+
+Sincerely,
+
+TextMetal
+]]>
+		</Template>
+	</Body>
+
+</MessageTemplate>

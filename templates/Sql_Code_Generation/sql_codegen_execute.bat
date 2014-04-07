@@ -9,7 +9,7 @@ set PACKAGE_DIR=.\output
 set PACKAGE_DIR_EXISTS=%PACKAGE_DIR%\nul
 
 set HISTORY_SCHEMA_NAME=history
-set ADO_NET_CONNECTION_STRING=Data Source=(local);User ID=TextMetalWebHostSampleLogin;Password=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Initial Catalog=TextMetalWebHostSample
+set ADO_NET_CONNECTION_STRING=Data Source=(local);User ID=textmetal_mssql_dev_login;Password=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Initial Catalog=textmetal_ods_dev
 set DATA_OBFUSCATION_PROXY_CATALOG_NAME=TextMetalWebHostSample_Proxy
 set DATA_OBFUSCATION_TARGET_SERVER_NAME=FRAMEWORK
 set OBFUSCATION_CONFIG_FILE_PATH=TextMetalWebHostSample_obscfg.json
