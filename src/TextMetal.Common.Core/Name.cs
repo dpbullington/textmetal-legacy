@@ -4,8 +4,10 @@
 */
 
 using System;
+using System.Globalization;
 using System.Text;
-using System.Text.RegularExpressions;
+
+using Microsoft.CSharp;
 
 namespace TextMetal.Common.Core
 {
@@ -14,27 +16,6 @@ namespace TextMetal.Common.Core
 	/// </summary>
 	public static class Name
 	{
-		#region Fields/Constants
-
-		private const string CSHARP_ID_REGEX = @"[a-zA-Z_\@][a-zA-Z_0-9]{0,1023}";
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Gets the C# identifier regular expression pattern.
-		/// </summary>
-		public static string CSharpIdentifierRegEx
-		{
-			get
-			{
-				return CSHARP_ID_REGEX;
-			}
-		}
-
-		#endregion
-
 		#region Methods/Operators
 
 		/// <summary>
@@ -120,7 +101,7 @@ namespace TextMetal.Common.Core
 		}
 
 		/// <summary>
-		/// Gets the Pascal (e.g. 'myVariableName') form of a name. This method strips underscores.
+		/// Gets the Pascal (e.g. 'MyVariableName') form of a name. This method strips underscores.
 		/// </summary>
 		/// <param name="value"> The value to which to get the Pascal case form. </param>
 		/// <returns> The Pascal case, valid C# identifier form of the specified value. </returns>
@@ -159,25 +140,18 @@ namespace TextMetal.Common.Core
 			if (value.Length < 1)
 				return value;
 
-			if ((value.EndsWith("x", StringComparison.OrdinalIgnoreCase) ||
-				value.EndsWith("ch", StringComparison.OrdinalIgnoreCase)) ||
+			if (value.EndsWith("x", StringComparison.OrdinalIgnoreCase) ||
+				value.EndsWith("ch", StringComparison.OrdinalIgnoreCase) ||
 				(value.EndsWith("ss", StringComparison.OrdinalIgnoreCase) ||
 				value.EndsWith("sh", StringComparison.OrdinalIgnoreCase)))
-			{
 				value = value + "es";
-				return value;
-			}
-
-			if ((value.EndsWith("y", StringComparison.OrdinalIgnoreCase) &&
-				(value.Length > 1)) &&
-				!IsVowel(value[value.Length - 2]))
+			else if (value.EndsWith("y", StringComparison.OrdinalIgnoreCase) && value.Length > 1 &&
+					!IsVowel(value[value.Length - 2]))
 			{
 				value = value.Remove(value.Length - 1, 1);
 				value = value + "ies";
-				return value;
 			}
-
-			if (!value.EndsWith("s", StringComparison.OrdinalIgnoreCase))
+			else if (!value.EndsWith("s", StringComparison.OrdinalIgnoreCase))
 				value = value + "s";
 
 			return value;
@@ -198,44 +172,103 @@ namespace TextMetal.Common.Core
 			if (value.Length < 1)
 				return value;
 
-			if (string.Compare(value, "series", StringComparison.OrdinalIgnoreCase) != 0)
+			if (string.Compare(value, "series", StringComparison.OrdinalIgnoreCase) == 0)
+				return value;
+
+			if (string.Compare(value, "wines", StringComparison.OrdinalIgnoreCase) == 0)
+				return value.Remove(value.Length - 1, 1);
+
+			if (value.Length > 3 && value.EndsWith("ies", StringComparison.OrdinalIgnoreCase))
 			{
-				if (string.Compare(value, "wines", StringComparison.OrdinalIgnoreCase) == 0)
-					return value.Remove(value.Length - 1, 1);
-
-				if ((value.Length > 3) && value.EndsWith("ies", StringComparison.OrdinalIgnoreCase))
+				if (!IsVowel(value[value.Length - 4]))
 				{
-					if (!IsVowel(value[value.Length - 4]))
-					{
-						value = value.Remove(value.Length - 3, 3);
-						value = value + 'y';
-					}
-					return value;
+					value = value.Remove(value.Length - 3, 3);
+					value = value + 'y';
 				}
-
-				if (value.EndsWith("ees", StringComparison.OrdinalIgnoreCase))
-				{
-					value = value.Remove(value.Length - 1, 1);
-					return value;
-				}
-
-				if ((value.EndsWith("ches", StringComparison.OrdinalIgnoreCase) ||
-					value.EndsWith("xes", StringComparison.OrdinalIgnoreCase)) ||
-					value.EndsWith("sses", StringComparison.OrdinalIgnoreCase))
-				{
-					value = value.Remove(value.Length - 2, 2);
-					return value;
-				}
-
-				if (string.Compare(value, "gas", StringComparison.OrdinalIgnoreCase) == 0)
-					return value;
-
-				if (((value.Length > 1) && value.EndsWith("s", StringComparison.OrdinalIgnoreCase)) &&
-					(!value.EndsWith("ss", StringComparison.OrdinalIgnoreCase) &&
-					!value.EndsWith("us", StringComparison.OrdinalIgnoreCase)))
-					value = value.Remove(value.Length - 1, 1);
 			}
+			else if (value.EndsWith("ees", StringComparison.OrdinalIgnoreCase))
+				value = value.Remove(value.Length - 1, 1);
+			else if (value.EndsWith("ches", StringComparison.OrdinalIgnoreCase) || value.EndsWith("xes", StringComparison.OrdinalIgnoreCase) || value.EndsWith("sses", StringComparison.OrdinalIgnoreCase))
+				value = value.Remove(value.Length - 2, 2);
+			else
+			{
+				if (string.Compare(value, "gas", StringComparison.OrdinalIgnoreCase) == 0 || value.Length <= 1 || (!value.EndsWith("s", StringComparison.OrdinalIgnoreCase) || value.EndsWith("ss", StringComparison.OrdinalIgnoreCase)) || value.EndsWith("us", StringComparison.OrdinalIgnoreCase))
+					return value;
+				value = value.Remove(value.Length - 1, 1);
+			}
+
 			return value;
+		}
+
+		/// <summary>
+		/// Gets the camel (e.g. 'myVariableName') form of a name. This method mimics SqlMetal.exe.
+		/// </summary>
+		/// <param name="value"> The value to which to get the camel case form. </param>
+		/// <returns> The camel case, valid C# identifier form of the specified value. </returns>
+		public static string GetSqlMetalCamelCase(string value)
+		{
+			StringBuilder sb;
+			bool flag = true;
+
+			if ((object)value == null)
+				throw new ArgumentNullException("value");
+
+			value = GetValidCSharpIdentifier(value);
+
+			if (value.Length < 1)
+				return value;
+
+			sb = new StringBuilder();
+
+			for (int index = 0; index < value.Length; ++index)
+			{
+				char ch = value[index];
+
+				if ((int)ch >= 97 && (int)ch <= 122 ||
+					(int)ch >= 65 && (int)ch <= 90 ||
+					((int)ch >= 48 && (int)ch <= 57 ||
+					(int)ch == 95))
+				{
+					if (flag)
+						ch = char.ToUpper(ch, CultureInfo.InvariantCulture);
+
+					flag = false;
+					sb.Append(ch);
+				}
+				else
+				{
+					flag = true;
+					sb.Append(ch);
+				}
+			}
+
+			value = sb.ToString();
+			return value;
+		}
+
+		/// <summary>
+		/// Gets the Pascal (e.g. 'MyVariableName') form of a name. This method mimics SqlMetal.exe.
+		/// </summary>
+		/// <param name="value"> The value to which to get the Pascal case form. </param>
+		/// <returns> The Pascal case, valid C# identifier form of the specified value. </returns>
+		public static string GetSqlMetalPascalCase(string value)
+		{
+			StringBuilder sb;
+
+			if ((object)value == null)
+				throw new ArgumentNullException("value");
+
+			value = GetValidCSharpIdentifier(value);
+
+			if (value.Length < 1)
+				return value;
+
+			value = GetSqlMetalCamelCase(value);
+			sb = new StringBuilder(value);
+
+			sb[0] = char.ToUpper(sb[0]);
+
+			return sb.ToString();
 		}
 
 		/// <summary>
@@ -245,6 +278,7 @@ namespace TextMetal.Common.Core
 		/// <returns> The valid C# identifier form of the specified value. </returns>
 		private static string GetValidCSharpIdentifier(string value)
 		{
+			bool first = true;
 			StringBuilder sb;
 
 			if ((object)value == null)
@@ -254,10 +288,14 @@ namespace TextMetal.Common.Core
 
 			foreach (char curr in value)
 			{
-				if (char.IsLetterOrDigit(curr) || curr == '_')
+				if (!(first && char.IsDigit(curr)) && (char.IsLetterOrDigit(curr) || curr == '_'))
 					sb.Append(curr);
-				else if (curr == ' ')
+				else if ((first && char.IsDigit(curr)) || curr == ' ')
 					sb.Append('_');
+				else
+					; // skip
+
+				first = false;
 			}
 
 			return sb.ToString();
@@ -270,7 +308,7 @@ namespace TextMetal.Common.Core
 		/// <returns> True if the specified value is a valid C# identifier; otherwise false. </returns>
 		public static bool IsValidCSharpIdentifier(string value)
 		{
-			return Regex.IsMatch(value, CSharpIdentifierRegEx, RegexOptions.IgnorePatternWhitespace);
+			return new CSharpCodeProvider().IsValidIdentifier(value);
 		}
 
 		/// <summary>

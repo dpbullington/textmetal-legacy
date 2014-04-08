@@ -320,14 +320,14 @@ namespace ${ClrNamespace}
 						<![CDATA[)
 		{			
 			${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
-			${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase} query;
+			${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase} query;
 			
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 										
 			using (AmbientUnitOfWorkAwareDisposableWrapper<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}> wrapper = unitOfWork.GetContext<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}>())
 			{					
-				query = wrapper.Disposable.${TableNamePluralPascalCase}.SingleOrDefault(lo => ]]>
+				query = wrapper.Disposable.${TableNameSqlMetalPluralPascalCase}.SingleOrDefault(lo => ]]>
 					<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 						<ForEach.Filter>
 							<BinaryExpression operator="Or">
@@ -354,7 +354,39 @@ namespace ${ClrNamespace}
 							</BinaryExpression>
 						</ForEach.Filter>
 						<ForEach.Body>
-							<![CDATA[lo.@${ColumnNamePascalCase} == @${ColumnNameCamelCase}]]>
+							
+							<If>
+								<If.Condition>
+									<Ruby src="Script" expr="" file="">
+										<Script>
+											type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+											return ["image", "varbinary", "binary", "rowversion", "timestamp"].include?(type);
+										</Script>
+									</Ruby>
+								</If.Condition>
+								<If.True>
+									<![CDATA[lo.@${ColumnNameSqlMetalPascalCase}.ToArray() == @${ColumnNameCamelCase}]]>
+								</If.True>
+								<If.False>
+									<If>
+										<If.Condition>
+											<Ruby src="Script" expr="" file="">
+												<Script>
+													type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+													return ["xml"].include?(type);
+												</Script>
+											</Ruby>
+										</If.Condition>
+										<If.True>
+											<![CDATA[lo.@${ColumnNameSqlMetalPascalCase} == ToXElement(@${ColumnNameCamelCase})]]>
+										</If.True>
+										<If.False>
+											<![CDATA[lo.@${ColumnNameSqlMetalPascalCase} == @${ColumnNameCamelCase}]]>
+										</If.False>
+									</If>
+								</If.False>
+							</If>
+							
 							<If>
 								<If.Condition>
 									<BinaryExpression operator="Ne">
@@ -392,17 +424,33 @@ namespace ${ClrNamespace}
 					<Ruby src="Script" expr="" file="">
 						<Script>
 							type = textMetal.EvaluateToken.invoke("ColumnSqlType");
-							return ["image", "varbinary", "binary"].include?(type);
+							return ["image", "varbinary", "binary", "rowversion", "timestamp"].include?(type);
 						</Script>
 					</Ruby>
 				</If.Condition>
 				<If.True>
-					<![CDATA[(object)query.${ColumnNamePascalCase} != null ? query.@${ColumnNamePascalCase}.ToArray() : null]]>
+					<![CDATA[(object)query.${ColumnNameSqlMetalPascalCase} != null ? query.@${ColumnNameSqlMetalPascalCase}.ToArray() : null]]>
 				</If.True>
 				<If.False>
-					<![CDATA[query.@${ColumnNamePascalCase}]]>
+					<If>
+						<If.Condition>
+							<Ruby src="Script" expr="" file="">
+								<Script>
+									type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+									return ["xml"].include?(type);
+								</Script>
+							</Ruby>
+						</If.Condition>
+						<If.True>
+							<![CDATA[(object)query.${ColumnNameSqlMetalPascalCase} != null ? ToXmlDocument(query.@${ColumnNameSqlMetalPascalCase}) : null]]>
+						</If.True>
+						<If.False>
+							<![CDATA[query.@${ColumnNameSqlMetalPascalCase}]]>
+						</If.False>
+					</If>
 				</If.False>
 			</If>
+			
 			
 			<If>
 				<If.Condition>
@@ -431,7 +479,7 @@ namespace ${ClrNamespace}
 			}
 		}
 		
-		public IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(Func<IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}>, IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}>> callback)
+		public IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(Func<IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}>, IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}>> callback)
 		{
 			IEnumerable<${TableNameSingularPascalCase}> @${TableNamePluralCamelCase};
 			
@@ -456,10 +504,10 @@ namespace ${ClrNamespace}
 			return @${TableNamePluralCamelCase};
 		}
 		
-		public IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(IUnitOfWork unitOfWork, Func<IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}>, IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}>> callback)
+		public IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(IUnitOfWork unitOfWork, Func<IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}>, IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}>> callback)
 		{
 			IEnumerable<${TableNameSingularPascalCase}> @${TableNamePluralCamelCase};			
-			IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}> queryable;			
+			IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}> queryable;			
 			
 			if ((object)unitOfWork == null)		
 				throw new ArgumentNullException("unitOfWork");
@@ -469,7 +517,7 @@ namespace ${ClrNamespace}
 				
 			using (AmbientUnitOfWorkAwareDisposableWrapper<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}> wrapper = unitOfWork.GetContext<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}>())
 			{
-				queryable = callback(wrapper.Disposable.@${TableNamePluralPascalCase});
+				queryable = callback(wrapper.Disposable.@${TableNameSqlMetalPluralPascalCase});
 				
 				if ((object)queryable == null)
 					throw new InvalidOperationException(string.Format("The queryable returned was invalid."));
@@ -489,15 +537,30 @@ namespace ${ClrNamespace}
 					<Ruby src="Script" expr="" file="">
 						<Script>
 							type = textMetal.EvaluateToken.invoke("ColumnSqlType");
-							return ["image", "varbinary", "binary"].include?(type);
+							return ["image", "varbinary", "binary", "rowversion", "timestamp"].include?(type);
 						</Script>
 					</Ruby>
 				</If.Condition>
 				<If.True>
-					<![CDATA[(object)lo.@${ColumnNamePascalCase} != null ? lo.@${ColumnNamePascalCase}.ToArray() : null]]>
+					<![CDATA[(object)lo.${ColumnNameSqlMetalPascalCase} != null ? lo.@${ColumnNameSqlMetalPascalCase}.ToArray() : null]]>
 				</If.True>
 				<If.False>
-					<![CDATA[lo.@${ColumnNamePascalCase}]]>
+					<If>
+						<If.Condition>
+							<Ruby src="Script" expr="" file="">
+								<Script>
+									type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+									return ["xml"].include?(type);
+								</Script>
+							</Ruby>
+						</If.Condition>
+						<If.True>
+							<![CDATA[(object)lo.${ColumnNameSqlMetalPascalCase} != null ? ToXmlDocument(lo.@${ColumnNameSqlMetalPascalCase}) : null]]>
+						</If.True>
+						<If.False>
+							<![CDATA[lo.@${ColumnNameSqlMetalPascalCase}]]>
+						</If.False>
+					</If>
 				</If.False>
 			</If>
 			
@@ -552,7 +615,7 @@ namespace ${ClrNamespace}
 		
 		public bool Save${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
-			${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase} query;
+			${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase} query;
 			bool wasNew;
 			
 			if ((object)unitOfWork == null)
@@ -569,15 +632,15 @@ namespace ${ClrNamespace}
 				{
 					this.OnPreInsert${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
 					
-					query = new ${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}();
+					query = new ${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}();
 
-					wrapper.Disposable.${TableNamePluralPascalCase}.InsertOnSubmit(query);
+					wrapper.Disposable.${TableNameSqlMetalPluralPascalCase}.InsertOnSubmit(query);
 				}
 				else
 				{
 					this.OnPreUpdate${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
 					
-					query = wrapper.Disposable.${TableNamePluralPascalCase}.SingleOrDefault(lo => ]]>
+					query = wrapper.Disposable.${TableNameSqlMetalPluralPascalCase}.SingleOrDefault(lo => ]]>
 						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Or">
@@ -604,7 +667,37 @@ namespace ${ClrNamespace}
 								</BinaryExpression>
 							</ForEach.Filter>
 							<ForEach.Body>
-								<![CDATA[lo.@${ColumnNamePascalCase} == @${TableNameSingularCamelCase}.@${ColumnNamePascalCase}]]>
+								<If>
+									<If.Condition>
+										<Ruby src="Script" expr="" file="">
+											<Script>
+												type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+												return ["image", "varbinary", "binary", "rowversion", "timestamp"].include?(type);
+											</Script>
+										</Ruby>
+									</If.Condition>
+									<If.True>
+										<![CDATA[lo.@${ColumnNameSqlMetalPascalCase}.ToArray() == @${TableNameSingularCamelCase}.@${ColumnNamePascalCase}]]>
+									</If.True>
+									<If.False>
+										<If>
+											<If.Condition>
+												<Ruby src="Script" expr="" file="">
+													<Script>
+														type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+														return ["xml"].include?(type);
+													</Script>
+												</Ruby>
+											</If.Condition>
+											<If.True>
+												<![CDATA[lo.@${ColumnNameSqlMetalPascalCase} == ToXElement(@${TableNameSingularCamelCase}.@${ColumnNamePascalCase})]]>
+											</If.True>
+											<If.False>
+												<![CDATA[lo.@${ColumnNameSqlMetalPascalCase} == @${TableNameSingularCamelCase}.@${ColumnNamePascalCase}]]>
+											</If.False>
+										</If>
+									</If.False>
+								</If>
 								<If>
 									<If.Condition>
 										<BinaryExpression operator="Ne">
@@ -645,21 +738,35 @@ namespace ${ClrNamespace}
 		
 			<If>
 				<If.Condition>
-					<BinaryExpression operator="Eq">
-						<BinaryExpression.LeftExpression>
-							<Facet name="ColumnSqlType" />
-						</BinaryExpression.LeftExpression>
-						<BinaryExpression.RightExpression>
-							<Value type="System.String" data="image" />
-						</BinaryExpression.RightExpression>
-					</BinaryExpression>
+					<Ruby src="Script" expr="" file="">
+						<Script>
+							type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+							return ["image", "varbinary", "binary", "rowversion", "timestamp"].include?(type);
+						</Script>
+					</Ruby>
 				</If.Condition>
 				<If.True>
 					<![CDATA[				if ((object)@${TableNameSingularCamelCase}.@${ColumnNamePascalCase} != null) // prevent implicit conversion of null -> exception
-					query.@${ColumnNamePascalCase} = @${TableNameSingularCamelCase}.@${ColumnNamePascalCase};]]>
+					query.@${ColumnNameSqlMetalPascalCase} = @${TableNameSingularCamelCase}.@${ColumnNamePascalCase};]]>
 				</If.True>
 				<If.False>
-					<![CDATA[				query.@${ColumnNamePascalCase} = @${TableNameSingularCamelCase}.@${ColumnNamePascalCase};]]>
+					<If>
+						<If.Condition>
+							<Ruby src="Script" expr="" file="">
+								<Script>
+									type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+									return ["xml"].include?(type);
+								</Script>
+							</Ruby>
+						</If.Condition>
+						<If.True>
+							<![CDATA[				if ((object)@${TableNameSingularCamelCase}.@${ColumnNamePascalCase} != null) // prevent implicit conversion of null -> exception
+					query.@${ColumnNameSqlMetalPascalCase} = ToXElement(@${TableNameSingularCamelCase}.@${ColumnNamePascalCase});]]>
+						</If.True>
+						<If.False>
+							<![CDATA[				query.@${ColumnNameSqlMetalPascalCase} = @${TableNameSingularCamelCase}.@${ColumnNamePascalCase};]]>
+						</If.False>
+					</If>
 				</If.False>
 			</If>
 			
@@ -716,15 +823,30 @@ namespace ${ClrNamespace}
 					<Ruby src="Script" expr="" file="">
 						<Script>
 							type = textMetal.EvaluateToken.invoke("ColumnSqlType");
-							return ["image", "varbinary", "binary"].include?(type);
+							return ["image", "varbinary", "binary", "rowversion", "timestamp"].include?(type);
 						</Script>
 					</Ruby>
 				</If.Condition>
 				<If.True>
-					<![CDATA[(object)query.@${ColumnNamePascalCase} != null ? query.@${ColumnNamePascalCase}.ToArray() : null;]]>
+					<![CDATA[(object)query.@${ColumnNameSqlMetalPascalCase} != null ? query.@${ColumnNameSqlMetalPascalCase}.ToArray() : null;]]>
 				</If.True>
 				<If.False>
-					<![CDATA[query.@${ColumnNamePascalCase};]]>
+					<If>
+						<If.Condition>
+							<Ruby src="Script" expr="" file="">
+								<Script>
+									type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+									return ["xml"].include?(type);
+								</Script>
+							</Ruby>
+						</If.Condition>
+						<If.True>
+							<![CDATA[(object)query.@${ColumnNameSqlMetalPascalCase} != null ? ToXmlDocument(query.@${ColumnNameSqlMetalPascalCase}) : null;]]>
+						</If.True>
+						<If.False>
+							<![CDATA[query.@${ColumnNameSqlMetalPascalCase};]]>
+						</If.False>
+					</If>
 				</If.False>
 			</If>
 
@@ -801,7 +923,7 @@ namespace ${ClrNamespace}
 		
 		public bool Discard${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
-			${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase} query;
+			${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase} query;
 			
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -816,7 +938,7 @@ namespace ${ClrNamespace}
 			{				
 				this.OnPreDelete${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
 				
-				query = wrapper.Disposable.@${TableNamePluralPascalCase}.SingleOrDefault(lo => ]]>
+				query = wrapper.Disposable.@${TableNameSqlMetalPluralPascalCase}.SingleOrDefault(lo => ]]>
 					<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 						<ForEach.Filter>
 							<BinaryExpression operator="Or">
@@ -843,7 +965,37 @@ namespace ${ClrNamespace}
 							</BinaryExpression>
 						</ForEach.Filter>
 						<ForEach.Body>
-							<![CDATA[lo.@${ColumnNamePascalCase} == @${TableNameSingularCamelCase}.@${ColumnNamePascalCase}]]>
+							<If>
+								<If.Condition>
+									<Ruby src="Script" expr="" file="">
+										<Script>
+											type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+											return ["image", "varbinary", "binary", "rowversion", "timestamp"].include?(type);
+										</Script>
+									</Ruby>
+								</If.Condition>
+								<If.True>
+									<![CDATA[lo.@${ColumnNameSqlMetalPascalCase}.ToArray() == @${TableNameSingularCamelCase}.@${ColumnNamePascalCase}]]>
+								</If.True>
+								<If.False>
+									<If>
+										<If.Condition>
+											<Ruby src="Script" expr="" file="">
+												<Script>
+													type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+													return ["xml"].include?(type);
+												</Script>
+											</Ruby>
+										</If.Condition>
+										<If.True>
+											<![CDATA[lo.@${ColumnNameSqlMetalPascalCase} == ToXElement(@${TableNameSingularCamelCase}.@${ColumnNamePascalCase})]]>
+										</If.True>
+										<If.False>
+											<![CDATA[lo.@${ColumnNameSqlMetalPascalCase} == @${TableNameSingularCamelCase}.@${ColumnNamePascalCase}]]>
+										</If.False>
+									</If>
+								</If.False>
+							</If>
 							<If>
 								<If.Condition>
 									<BinaryExpression operator="Ne">
@@ -866,7 +1018,7 @@ namespace ${ClrNamespace}
 				if((object)query == null)
 					throw new InvalidOperationException(string.Format("The queryable returned was invalid."));
 				
-				wrapper.Disposable.@${TableNamePluralPascalCase}.DeleteOnSubmit(query);
+				wrapper.Disposable.@${TableNameSqlMetalPluralPascalCase}.DeleteOnSubmit(query);
 				
 				try
 				{

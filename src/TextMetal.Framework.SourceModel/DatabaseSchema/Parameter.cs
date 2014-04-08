@@ -53,6 +53,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string parameterNameSingularCamelCase;
 		private string parameterNameSingularConstantCase;
 		private string parameterNameSingularPascalCase;
+		private string parameterNameSqlMetalCamelCase;
+		private string parameterNameSqlMetalPascalCase;
+		private string parameterNameSqlMetalPluralCamelCase;
+		private string parameterNameSqlMetalPluralPascalCase;
+		private string parameterNameSqlMetalSingularCamelCase;
+		private string parameterNameSqlMetalSingularPascalCase;
 		private bool parameterNullable;
 		private int parameterOrdinal;
 		private int parameterPrecision;
@@ -400,6 +406,84 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.parameterNameSingularPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ParameterNameSqlMetalCamelCase
+		{
+			get
+			{
+				return this.parameterNameSqlMetalCamelCase;
+			}
+			set
+			{
+				this.parameterNameSqlMetalCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ParameterNameSqlMetalPascalCase
+		{
+			get
+			{
+				return this.parameterNameSqlMetalPascalCase;
+			}
+			set
+			{
+				this.parameterNameSqlMetalPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ParameterNameSqlMetalPluralCamelCase
+		{
+			get
+			{
+				return this.parameterNameSqlMetalPluralCamelCase;
+			}
+			set
+			{
+				this.parameterNameSqlMetalPluralCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ParameterNameSqlMetalPluralPascalCase
+		{
+			get
+			{
+				return this.parameterNameSqlMetalPluralPascalCase;
+			}
+			set
+			{
+				this.parameterNameSqlMetalPluralPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ParameterNameSqlMetalSingularCamelCase
+		{
+			get
+			{
+				return this.parameterNameSqlMetalSingularCamelCase;
+			}
+			set
+			{
+				this.parameterNameSqlMetalSingularCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ParameterNameSqlMetalSingularPascalCase
+		{
+			get
+			{
+				return this.parameterNameSqlMetalSingularPascalCase;
+			}
+			set
+			{
+				this.parameterNameSqlMetalSingularPascalCase = value;
 			}
 		}
 

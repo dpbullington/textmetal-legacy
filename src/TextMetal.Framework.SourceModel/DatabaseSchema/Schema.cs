@@ -37,6 +37,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string schemaNameSingularCamelCase;
 		private string schemaNameSingularConstantCase;
 		private string schemaNameSingularPascalCase;
+		private string schemaNameSqlMetalCamelCase;
+		private string schemaNameSqlMetalPascalCase;
+		private string schemaNameSqlMetalPluralCamelCase;
+		private string schemaNameSqlMetalPluralPascalCase;
+		private string schemaNameSqlMetalSingularCamelCase;
+		private string schemaNameSqlMetalSingularPascalCase;
 
 		#endregion
 
@@ -179,6 +185,84 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.schemaNameSingularPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string SchemaNameSqlMetalCamelCase
+		{
+			get
+			{
+				return this.schemaNameSqlMetalCamelCase;
+			}
+			set
+			{
+				this.schemaNameSqlMetalCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string SchemaNameSqlMetalPascalCase
+		{
+			get
+			{
+				return this.schemaNameSqlMetalPascalCase;
+			}
+			set
+			{
+				this.schemaNameSqlMetalPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string SchemaNameSqlMetalPluralCamelCase
+		{
+			get
+			{
+				return this.schemaNameSqlMetalPluralCamelCase;
+			}
+			set
+			{
+				this.schemaNameSqlMetalPluralCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string SchemaNameSqlMetalPluralPascalCase
+		{
+			get
+			{
+				return this.schemaNameSqlMetalPluralPascalCase;
+			}
+			set
+			{
+				this.schemaNameSqlMetalPluralPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string SchemaNameSqlMetalSingularCamelCase
+		{
+			get
+			{
+				return this.schemaNameSqlMetalSingularCamelCase;
+			}
+			set
+			{
+				this.schemaNameSqlMetalSingularCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string SchemaNameSqlMetalSingularPascalCase
+		{
+			get
+			{
+				return this.schemaNameSqlMetalSingularPascalCase;
+			}
+			set
+			{
+				this.schemaNameSqlMetalSingularPascalCase = value;
 			}
 		}
 

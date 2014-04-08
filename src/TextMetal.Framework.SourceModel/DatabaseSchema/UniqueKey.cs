@@ -37,6 +37,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string uniqueKeyNameSingularCamelCase;
 		private string uniqueKeyNameSingularConstantCase;
 		private string uniqueKeyNameSingularPascalCase;
+		private string uniqueKeyNameSqlMetalCamelCase;
+		private string uniqueKeyNameSqlMetalPascalCase;
+		private string uniqueKeyNameSqlMetalPluralCamelCase;
+		private string uniqueKeyNameSqlMetalPluralPascalCase;
+		private string uniqueKeyNameSqlMetalSingularCamelCase;
+		private string uniqueKeyNameSqlMetalSingularPascalCase;
 
 		#endregion
 
@@ -192,6 +198,84 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.uniqueKeyNameSingularPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string UniqueKeyNameSqlMetalCamelCase
+		{
+			get
+			{
+				return this.uniqueKeyNameSqlMetalCamelCase;
+			}
+			set
+			{
+				this.uniqueKeyNameSqlMetalCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string UniqueKeyNameSqlMetalPascalCase
+		{
+			get
+			{
+				return this.uniqueKeyNameSqlMetalPascalCase;
+			}
+			set
+			{
+				this.uniqueKeyNameSqlMetalPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string UniqueKeyNameSqlMetalPluralCamelCase
+		{
+			get
+			{
+				return this.uniqueKeyNameSqlMetalPluralCamelCase;
+			}
+			set
+			{
+				this.uniqueKeyNameSqlMetalPluralCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string UniqueKeyNameSqlMetalPluralPascalCase
+		{
+			get
+			{
+				return this.uniqueKeyNameSqlMetalPluralPascalCase;
+			}
+			set
+			{
+				this.uniqueKeyNameSqlMetalPluralPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string UniqueKeyNameSqlMetalSingularCamelCase
+		{
+			get
+			{
+				return this.uniqueKeyNameSqlMetalSingularCamelCase;
+			}
+			set
+			{
+				this.uniqueKeyNameSqlMetalSingularCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string UniqueKeyNameSqlMetalSingularPascalCase
+		{
+			get
+			{
+				return this.uniqueKeyNameSqlMetalSingularPascalCase;
+			}
+			set
+			{
+				this.uniqueKeyNameSqlMetalSingularPascalCase = value;
 			}
 		}
 

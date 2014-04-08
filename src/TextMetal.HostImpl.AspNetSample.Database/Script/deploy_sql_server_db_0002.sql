@@ -8,11 +8,11 @@ SET NOCOUNT ON
 GO
 
 
-CREATE SCHEMA [cdc]
+CREATE SCHEMA [history]
 GO
 
 
-CREATE TABLE [cdc].[UserHistory]
+CREATE TABLE [history].[UserHistory]
 (
 	[UserHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
 	[UserHistoryTs] [datetime2] NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE [cdc].[UserHistory]
 )
 GO
 
-CREATE NONCLUSTERED INDEX [ix_UserHistory] ON [cdc].[UserHistory]
+CREATE NONCLUSTERED INDEX [ix_UserHistory] ON [history].[UserHistory]
 (
 	[UserHistoryTs] ASC,
 	[UserId] ASC
@@ -59,7 +59,7 @@ AS
 		
 		SET @ThisMoment = SYSUTCDATETIME()
 
-		INSERT INTO [cdc].[UserHistory]
+		INSERT INTO [history].[UserHistory]
 		SELECT
 			@ThisMoment AS [UserHistoryTs],
 			i.[UserId],
@@ -111,7 +111,7 @@ AS
 GO
 
 
-CREATE TABLE [cdc].[PropertyBagHistory]
+CREATE TABLE [history].[PropertyBagHistory]
 (
 	[PropertyBagHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
 	[PropertyBagHistoryTs] [datetime2] NOT NULL,
@@ -134,7 +134,7 @@ CREATE TABLE [cdc].[PropertyBagHistory]
 )
 GO
 
-CREATE NONCLUSTERED INDEX [ix_PropertyBagHistory] ON [cdc].[PropertyBagHistory]
+CREATE NONCLUSTERED INDEX [ix_PropertyBagHistory] ON [history].[PropertyBagHistory]
 (
 	[PropertyBagHistoryTs] ASC,
 	[PropertyBagId] ASC
@@ -151,7 +151,7 @@ AS
 		
 		SET @ThisMoment = SYSUTCDATETIME()
 
-		INSERT INTO [cdc].[PropertyBagHistory]
+		INSERT INTO [history].[PropertyBagHistory]
 		SELECT
 			@ThisMoment AS [PropertyBagHistoryTs],
 			i.[PropertyBagId],
@@ -189,7 +189,7 @@ AS
 GO
 
 
-CREATE TABLE [cdc].[EventLogHistory]
+CREATE TABLE [history].[EventLogHistory]
 (
 	[EventLogHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
 	[EventLogHistoryTs] [datetime2] NOT NULL,
@@ -210,7 +210,7 @@ CREATE TABLE [cdc].[EventLogHistory]
 )
 GO
 
-CREATE NONCLUSTERED INDEX [ix_EventLogHistory] ON [cdc].[EventLogHistory]
+CREATE NONCLUSTERED INDEX [ix_EventLogHistory] ON [history].[EventLogHistory]
 (
 	[EventLogHistoryTs] ASC,
 	[EventLogId] ASC
@@ -227,7 +227,7 @@ AS
 		
 		SET @ThisMoment = SYSUTCDATETIME()
 
-		INSERT INTO [cdc].[EventLogHistory]
+		INSERT INTO [history].[EventLogHistory]
 		SELECT
 			@ThisMoment AS [EventLogHistoryTs],
 			i.[EventLogId],
@@ -261,7 +261,7 @@ AS
 GO
 
 
-CREATE TABLE [cdc].[EmailMessageHistory]
+CREATE TABLE [history].[EmailMessageHistory]
 (
 	[EmailMessageHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
 	[EmailMessageHistoryTs] [datetime2] NOT NULL,
@@ -291,7 +291,7 @@ CREATE TABLE [cdc].[EmailMessageHistory]
 )
 GO
 
-CREATE NONCLUSTERED INDEX [ix_EmailMessageHistory] ON [cdc].[EmailMessageHistory]
+CREATE NONCLUSTERED INDEX [ix_EmailMessageHistory] ON [history].[EmailMessageHistory]
 (
 	[EmailMessageHistoryTs] ASC,
 	[EmailMessageId] ASC
@@ -308,7 +308,7 @@ AS
 		
 		SET @ThisMoment = SYSUTCDATETIME()
 
-		INSERT INTO [cdc].[EmailMessageHistory]
+		INSERT INTO [history].[EmailMessageHistory]
 		SELECT
 			@ThisMoment AS [EmailMessageHistoryTs],
 			i.[EmailMessageId],
@@ -360,7 +360,7 @@ AS
 GO
 
 
-CREATE TABLE [cdc].[EmailAttachmentHistory]
+CREATE TABLE [history].[EmailAttachmentHistory]
 (
 	[EmailAttachmentHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
 	[EmailAttachmentHistoryTs] [datetime2] NOT NULL,
@@ -385,7 +385,7 @@ CREATE TABLE [cdc].[EmailAttachmentHistory]
 )
 GO
 
-CREATE NONCLUSTERED INDEX [ix_EmailAttachmentHistory] ON [cdc].[EmailAttachmentHistory]
+CREATE NONCLUSTERED INDEX [ix_EmailAttachmentHistory] ON [history].[EmailAttachmentHistory]
 (
 	[EmailAttachmentHistoryTs] ASC,
 	[EmailMessageId] ASC
@@ -402,7 +402,7 @@ AS
 		
 		SET @ThisMoment = SYSUTCDATETIME()
 
-		INSERT INTO [cdc].[EmailAttachmentHistory]
+		INSERT INTO [history].[EmailAttachmentHistory]
 		SELECT
 			@ThisMoment AS [EmailAttachmentHistoryTs],
 			i.[EmailMessageId],

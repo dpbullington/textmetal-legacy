@@ -39,6 +39,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SolutionAssemblyInfo.cs">
@@ -47,10 +48,10 @@
     <Compile Include="Current.cs" />
     <Compile Include="ISummary~1.cs" />
     <Compile Include="IRepository.cs" />
-    <Compile Include="L2S\TxtMtlPrimaryDataContext.designer.cs">
+    <Compile Include="L2S\TextMetalOdsDataContext.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>TxtMtlPrimaryDataContext.dbml</DependentUpon>
+      <DependentUpon>TextMetalOdsDataContext.dbml</DependentUpon>
     </Compile>
     <Compile Include="Repository.cs" />
     <Compile Include="Tables\EmailAttachment.cs" />
@@ -100,8 +101,8 @@
     <EmbeddedResource Include="Email\ForgotPassword.xml" />
     <EmbeddedResource Include="Email\ForgotUsername.xml" />
     <EmbeddedResource Include="Email\NewSignUp.xml" />
-    <None Include="L2S\TxtMtlPrimaryDataContext.dbml.layout">
-      <DependentUpon>TxtMtlPrimaryDataContext.dbml</DependentUpon>
+    <None Include="L2S\TextMetalOdsDataContext.dbml.layout">
+      <DependentUpon>TextMetalOdsDataContext.dbml</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -141,9 +142,9 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="L2S\TxtMtlPrimaryDataContext.dbml">
+    <None Include="L2S\TextMetalOdsDataContext.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>TxtMtlPrimaryDataContext.designer.cs</LastGenOutput>
+      <LastGenOutput>TextMetalOdsDataContext.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

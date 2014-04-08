@@ -21,15 +21,15 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("Release")]
 #endif
 
-[assembly: AssemblyCompany("Daniel Bullington")]
+[assembly: AssemblyCompany("textmetal.com")]
 [assembly: AssemblyProduct("TextMetal")]
-[assembly: AssemblyCopyright("©2002-2014 Daniel Bullington")]
+[assembly: AssemblyCopyright("©2002-2014 Daniel Bullington (dpbullington@gmail.com)")]
 [assembly: AssemblyDescription("Distributed under the MIT license:\r\nhttp://www.opensource.org/licenses/mit-license.php")]
 [assembly: AssemblyTrademark("π")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("5.0.6.*")]
-[assembly: AssemblyFileVersion("5.0.6.0")]
-[assembly: AssemblyInformationalVersion("2014.03.28")]
+[assembly: AssemblyVersion("5.1.0.*")]
+[assembly: AssemblyFileVersion("5.1.0.0")]
+[assembly: AssemblyInformationalVersion("2014.04.08/unstable")]
 [assembly: AssemblyDelaySign(false)]
 [assembly: ComVisible(false)]
 

@@ -23,7 +23,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 	
 	
 	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="textmetal_ods_dev")]
-	public partial class TxtMtlPrimaryDataContext : System.Data.Linq.DataContext
+	public partial class TextMetalOdsDataContext : System.Data.Linq.DataContext
 	{
 		
 		private static System.Data.Linq.Mapping.MappingSource mappingSource = new AttributeMappingSource();
@@ -77,25 +77,25 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
     partial void DeleteUserHistory(UserHistory instance);
     #endregion
 		
-		public TxtMtlPrimaryDataContext(string connection) : 
+		public TextMetalOdsDataContext(string connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public TxtMtlPrimaryDataContext(System.Data.IDbConnection connection) : 
+		public TextMetalOdsDataContext(System.Data.IDbConnection connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public TxtMtlPrimaryDataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+		public TextMetalOdsDataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public TxtMtlPrimaryDataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+		public TextMetalOdsDataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
@@ -433,7 +433,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AttachmentBits", DbType="VarBinary(MAX)", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AttachmentBits", DbType="VarBinary(MAX)", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary AttachmentBits
 		{
 			get
@@ -704,7 +704,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="cdc.EmailAttachmentHistory")]
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="history.EmailAttachmentHistory")]
 	public partial class EmailAttachmentHistory : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -917,7 +917,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AttachmentBits", DbType="VarBinary(MAX)", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AttachmentBits", DbType="VarBinary(MAX)", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary AttachmentBits
 		{
 			get
@@ -1638,7 +1638,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="cdc.EmailMessageHistory")]
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="history.EmailMessageHistory")]
 	public partial class EmailMessageHistory : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -2507,7 +2507,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="cdc.EventLogHistory")]
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="history.EventLogHistory")]
 	public partial class EventLogHistory : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -3145,7 +3145,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="cdc.PropertyBagHistory")]
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="history.PropertyBagHistory")]
 	public partial class PropertyBagHistory : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -3557,7 +3557,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_binary", Storage="_Col_binary", DbType="Binary(1)", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_binary", Storage="_Col_binary", DbType="Binary(1)", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_binary
 		{
 			get
@@ -3701,7 +3701,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_image", Storage="_Col_image", DbType="Image", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_image", Storage="_Col_image", DbType="Image", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_image
 		{
 			get
@@ -3829,7 +3829,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_rowversion", Storage="_Col_rowversion", AutoSync=AutoSync.Always, DbType="rowversion", CanBeNull=true, IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_rowversion", Storage="_Col_rowversion", AutoSync=AutoSync.Always, DbType="rowversion", IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_rowversion
 		{
 			get
@@ -3989,7 +3989,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_varbinary", Storage="_Col_varbinary", DbType="VarBinary(1)", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_varbinary", Storage="_Col_varbinary", DbType="VarBinary(1)", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_varbinary
 		{
 			get
@@ -4295,7 +4295,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_binary", Storage="_Col_binary", DbType="Binary(1)", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_binary", Storage="_Col_binary", DbType="Binary(1)", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_binary
 		{
 			get
@@ -4475,7 +4475,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_image", Storage="_Col_image", DbType="Image", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_image", Storage="_Col_image", DbType="Image", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_image
 		{
 			get
@@ -4635,7 +4635,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_rowversion", Storage="_Col_rowversion", AutoSync=AutoSync.Always, DbType="rowversion", CanBeNull=true, IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_rowversion", Storage="_Col_rowversion", AutoSync=AutoSync.Always, DbType="rowversion", IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_rowversion
 		{
 			get
@@ -4835,7 +4835,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_varbinary", Storage="_Col_varbinary", DbType="VarBinary(1)", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_varbinary", Storage="_Col_varbinary", DbType="VarBinary(1)", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_varbinary
 		{
 			get
@@ -5020,7 +5020,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_binary", Storage="_Col_binary", DbType="Binary(1)", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_binary", Storage="_Col_binary", DbType="Binary(1)", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_binary
 		{
 			get
@@ -5164,7 +5164,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_image", Storage="_Col_image", DbType="Image", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_image", Storage="_Col_image", DbType="Image", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_image
 		{
 			get
@@ -5292,7 +5292,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_rowversion", Storage="_Col_rowversion", AutoSync=AutoSync.Always, DbType="rowversion", CanBeNull=true, IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_rowversion", Storage="_Col_rowversion", AutoSync=AutoSync.Always, DbType="rowversion", IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_rowversion
 		{
 			get
@@ -5452,7 +5452,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_varbinary", Storage="_Col_varbinary", DbType="VarBinary(1)", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_varbinary", Storage="_Col_varbinary", DbType="VarBinary(1)", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_varbinary
 		{
 			get
@@ -5686,7 +5686,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_binary", Storage="_Col_binary", DbType="Binary(1)", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_binary", Storage="_Col_binary", DbType="Binary(1)", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_binary
 		{
 			get
@@ -5866,7 +5866,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_image", Storage="_Col_image", DbType="Image", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_image", Storage="_Col_image", DbType="Image", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_image
 		{
 			get
@@ -6026,7 +6026,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_rowversion", Storage="_Col_rowversion", AutoSync=AutoSync.Always, DbType="rowversion", CanBeNull=true, IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_rowversion", Storage="_Col_rowversion", AutoSync=AutoSync.Always, DbType="rowversion", IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_rowversion
 		{
 			get
@@ -6226,7 +6226,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_varbinary", Storage="_Col_varbinary", DbType="VarBinary(1)", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_varbinary", Storage="_Col_varbinary", DbType="VarBinary(1)", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_varbinary
 		{
 			get
@@ -6492,7 +6492,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_binary", Storage="_Col_binary", DbType="Binary(1)", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_binary", Storage="_Col_binary", DbType="Binary(1)", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_binary
 		{
 			get
@@ -6672,7 +6672,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_image", Storage="_Col_image", DbType="Image", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_image", Storage="_Col_image", DbType="Image", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_image
 		{
 			get
@@ -6832,7 +6832,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_rowversion", Storage="_Col_rowversion", AutoSync=AutoSync.Always, DbType="rowversion", CanBeNull=true, IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_rowversion", Storage="_Col_rowversion", AutoSync=AutoSync.Always, DbType="rowversion", IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_rowversion
 		{
 			get
@@ -7032,7 +7032,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_varbinary", Storage="_Col_varbinary", DbType="VarBinary(1)", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_varbinary", Storage="_Col_varbinary", DbType="VarBinary(1)", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_varbinary
 		{
 			get
@@ -7298,7 +7298,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_binary", Storage="_Col_binary", DbType="Binary(1)", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_binary", Storage="_Col_binary", DbType="Binary(1)", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_binary
 		{
 			get
@@ -7478,7 +7478,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_image", Storage="_Col_image", DbType="Image", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_image", Storage="_Col_image", DbType="Image", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_image
 		{
 			get
@@ -7638,7 +7638,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_rowversion", Storage="_Col_rowversion", AutoSync=AutoSync.Always, DbType="rowversion", CanBeNull=true, IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_rowversion", Storage="_Col_rowversion", AutoSync=AutoSync.Always, DbType="rowversion", IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_rowversion
 		{
 			get
@@ -7838,7 +7838,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_varbinary", Storage="_Col_varbinary", DbType="VarBinary(1)", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_varbinary", Storage="_Col_varbinary", DbType="VarBinary(1)", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_varbinary
 		{
 			get
@@ -8128,7 +8128,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_binary", Storage="_Col_binary", DbType="Binary(1)", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_binary", Storage="_Col_binary", DbType="Binary(1)", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_binary
 		{
 			get
@@ -8308,7 +8308,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_image", Storage="_Col_image", DbType="Image", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_image", Storage="_Col_image", DbType="Image", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_image
 		{
 			get
@@ -8468,7 +8468,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_rowversion", Storage="_Col_rowversion", AutoSync=AutoSync.Always, DbType="rowversion", CanBeNull=true, IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_rowversion", Storage="_Col_rowversion", AutoSync=AutoSync.Always, DbType="rowversion", IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_rowversion
 		{
 			get
@@ -8668,7 +8668,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_varbinary", Storage="_Col_varbinary", DbType="VarBinary(1)", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_varbinary", Storage="_Col_varbinary", DbType="VarBinary(1)", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Col_varbinary
 		{
 			get
@@ -9557,7 +9557,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="cdc.UserHistory")]
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="history.UserHistory")]
 	public partial class UserHistory : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		

@@ -264,6 +264,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 						initialCatalog.CatalogNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(initialCatalog.CatalogName));
 						initialCatalog.CatalogNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(initialCatalog.CatalogName));
 
+						initialCatalog.CatalogNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(initialCatalog.CatalogName);
+						initialCatalog.CatalogNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(initialCatalog.CatalogName);
+						initialCatalog.CatalogNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(initialCatalog.CatalogName));
+						initialCatalog.CatalogNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(initialCatalog.CatalogName));
+						initialCatalog.CatalogNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(initialCatalog.CatalogName));
+						initialCatalog.CatalogNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(initialCatalog.CatalogName));
+
 						database.Catalogs.Add(initialCatalog);
 					}
 				}
@@ -294,6 +301,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 							trigger.TriggerNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(trigger.TriggerName));
 							trigger.TriggerNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(trigger.TriggerName));
 
+							trigger.TriggerNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(trigger.TriggerName);
+							trigger.TriggerNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(trigger.TriggerName);
+							trigger.TriggerNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(trigger.TriggerName));
+							trigger.TriggerNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(trigger.TriggerName));
+							trigger.TriggerNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(trigger.TriggerName));
+							trigger.TriggerNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(trigger.TriggerName));
+
 							database.Triggers.Add(trigger);
 						}
 					}
@@ -318,6 +332,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 							schema.SchemaNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(schema.SchemaName));
 							schema.SchemaNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(schema.SchemaName));
 							schema.SchemaNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(schema.SchemaName));
+
+							schema.SchemaNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(schema.SchemaName);
+							schema.SchemaNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(schema.SchemaName);
+							schema.SchemaNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(schema.SchemaName));
+							schema.SchemaNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(schema.SchemaName));
+							schema.SchemaNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(schema.SchemaName));
+							schema.SchemaNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(schema.SchemaName));
 
 							// filter unwanted schemas
 							if ((object)schemaFilter != null)
@@ -346,6 +367,14 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 									table.TableNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(table.TableName));
 									table.TableNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(table.TableName));
 									table.TableNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(table.TableName));
+
+									table.TableNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(table.TableName);
+									table.TableNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(table.TableName);
+									table.TableNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(table.TableName));
+									table.TableNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(table.TableName));
+									table.TableNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(table.TableName));
+									table.TableNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(table.TableName));
+
 									table.PrimaryKeyName = DataType.ChangeType<string>(drTable["PrimaryKeyName"]);
 
 									if (!DataType.IsNullOrWhiteSpace(table.PrimaryKeyName))
@@ -359,6 +388,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 										table.PrimaryKeyNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(table.PrimaryKeyName));
 										table.PrimaryKeyNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(table.PrimaryKeyName));
 										table.PrimaryKeyNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(table.PrimaryKeyName));
+
+										table.PrimaryKeyNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(table.PrimaryKeyName);
+										table.PrimaryKeyNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(table.PrimaryKeyName);
+										table.PrimaryKeyNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(table.PrimaryKeyName));
+										table.PrimaryKeyNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(table.PrimaryKeyName));
+										table.PrimaryKeyNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(table.PrimaryKeyName));
+										table.PrimaryKeyNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(table.PrimaryKeyName));
 									}
 
 									schema.Tables.Add(table);
@@ -396,6 +432,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 												column.ColumnNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(column.ColumnName));
 												column.ColumnNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(column.ColumnName));
 												column.ColumnNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(column.ColumnName));
+
+												column.ColumnNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(column.ColumnName);
+												column.ColumnNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(column.ColumnName);
+												column.ColumnNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(column.ColumnName));
+												column.ColumnNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(column.ColumnName));
+												column.ColumnNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(column.ColumnName));
+												column.ColumnNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(column.ColumnName));
 
 												clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType, column.ColumnPrecision);
 												column.ColumnDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
@@ -447,6 +490,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 												trigger.TriggerNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(trigger.TriggerName));
 												trigger.TriggerNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(trigger.TriggerName));
 
+												trigger.TriggerNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(trigger.TriggerName);
+												trigger.TriggerNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(trigger.TriggerName);
+												trigger.TriggerNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(trigger.TriggerName));
+												trigger.TriggerNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(trigger.TriggerName));
+												trigger.TriggerNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(trigger.TriggerName));
+												trigger.TriggerNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(trigger.TriggerName));
+
 												table.Triggers.Add(trigger);
 											}
 										}
@@ -478,6 +528,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 												foreignKey.ForeignKeyNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(foreignKey.ForeignKeyName));
 												foreignKey.ForeignKeyNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(foreignKey.ForeignKeyName));
 												foreignKey.ForeignKeyNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(foreignKey.ForeignKeyName));
+
+												foreignKey.ForeignKeyNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(foreignKey.ForeignKeyName);
+												foreignKey.ForeignKeyNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(foreignKey.ForeignKeyName);
+												foreignKey.ForeignKeyNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(foreignKey.ForeignKeyName));
+												foreignKey.ForeignKeyNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(foreignKey.ForeignKeyName));
+												foreignKey.ForeignKeyNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(foreignKey.ForeignKeyName));
+												foreignKey.ForeignKeyNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(foreignKey.ForeignKeyName));
 
 												table.ForeignKeys.Add(foreignKey);
 
@@ -531,6 +588,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 												uniqueKey.UniqueKeyNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(uniqueKey.UniqueKeyName));
 												uniqueKey.UniqueKeyNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(uniqueKey.UniqueKeyName));
 
+												uniqueKey.UniqueKeyNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(uniqueKey.UniqueKeyName);
+												uniqueKey.UniqueKeyNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(uniqueKey.UniqueKeyName);
+												uniqueKey.UniqueKeyNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(uniqueKey.UniqueKeyName));
+												uniqueKey.UniqueKeyNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(uniqueKey.UniqueKeyName));
+												uniqueKey.UniqueKeyNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(uniqueKey.UniqueKeyName));
+												uniqueKey.UniqueKeyNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(uniqueKey.UniqueKeyName));
+
 												table.UniqueKeys.Add(uniqueKey);
 
 												var dataReaderUniqueKeyColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeyColumns"), this.CoreGetUniqueKeyColumnParameters(unitOfWork, dataSourceTag, database, schema, table, uniqueKey), out recordsAffected);
@@ -578,6 +642,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 										procedure.ProcedureNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(procedure.ProcedureName));
 										procedure.ProcedureNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(procedure.ProcedureName));
 
+										procedure.ProcedureNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(procedure.ProcedureName);
+										procedure.ProcedureNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(procedure.ProcedureName);
+										procedure.ProcedureNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(procedure.ProcedureName));
+										procedure.ProcedureNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(procedure.ProcedureName));
+										procedure.ProcedureNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(procedure.ProcedureName));
+										procedure.ProcedureNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(procedure.ProcedureName));
+
 										schema.Procedures.Add(procedure);
 
 										var dataReaderParameter = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Parameters"), this.CoreGetParameterParameters(unitOfWork, dataSourceTag, database, schema, procedure), out recordsAffected);
@@ -612,6 +683,14 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 													parameter.ParameterNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(parameter.ParameterName));
 													parameter.ParameterNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(parameter.ParameterName));
 													parameter.ParameterNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(parameter.ParameterName));
+
+													parameter.ParameterNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(parameter.ParameterName);
+													parameter.ParameterNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(parameter.ParameterName);
+													parameter.ParameterNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(parameter.ParameterName));
+													parameter.ParameterNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(parameter.ParameterName));
+													parameter.ParameterNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(parameter.ParameterName));
+													parameter.ParameterNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(parameter.ParameterName));
+													
 													parameter.ParameterNullable = true;
 													parameter.ParameterDirection = (parameter.ParameterIsOutput || parameter.ParameterIsReadOnly) ? ParameterDirection.Output : ParameterDirection.Input;
 
@@ -661,6 +740,14 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 												parameter.ParameterNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(RETURN_VALUE));
 												parameter.ParameterNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(RETURN_VALUE));
 												parameter.ParameterNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(RETURN_VALUE));
+
+												parameter.ParameterNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(RETURN_VALUE);
+												parameter.ParameterNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(RETURN_VALUE);
+												parameter.ParameterNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(RETURN_VALUE));
+												parameter.ParameterNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(RETURN_VALUE));
+												parameter.ParameterNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(RETURN_VALUE));
+												parameter.ParameterNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(RETURN_VALUE));
+
 												parameter.ParameterNullable = true;
 												parameter.ParameterDirection = ParameterDirection.ReturnValue;
 
@@ -714,6 +801,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 												column.ColumnNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(columnParameter.ParameterName));
 												column.ColumnNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(columnParameter.ParameterName));
 												column.ColumnNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(columnParameter.ParameterName));
+
+												column.ColumnNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(columnParameter.ParameterName);
+												column.ColumnNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(columnParameter.ParameterName);
+												column.ColumnNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(columnParameter.ParameterName));
+												column.ColumnNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(columnParameter.ParameterName));
+												column.ColumnNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(columnParameter.ParameterName));
+												column.ColumnNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(columnParameter.ParameterName));
 
 												clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, columnParameter.ParameterSqlType, columnParameter.ParameterPrecision);
 												column.ColumnDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
@@ -774,6 +868,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 															column.ColumnNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(column.ColumnName));
 															column.ColumnNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(column.ColumnName));
 															column.ColumnNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(column.ColumnName));
+
+															column.ColumnNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(column.ColumnName);
+															column.ColumnNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(column.ColumnName);
+															column.ColumnNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(column.ColumnName));
+															column.ColumnNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(column.ColumnName));
+															column.ColumnNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(column.ColumnName));
+															column.ColumnNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(column.ColumnName));
 
 															clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType, column.ColumnPrecision);
 															column.ColumnDbType = AdoNetHelper.InferDbTypeForClrType(clrType);

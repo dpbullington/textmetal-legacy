@@ -51,6 +51,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string columnNameSingularCamelCase;
 		private string columnNameSingularConstantCase;
 		private string columnNameSingularPascalCase;
+		private string columnNameSqlMetalCamelCase;
+		private string columnNameSqlMetalPascalCase;
+		private string columnNameSqlMetalPluralCamelCase;
+		private string columnNameSqlMetalPluralPascalCase;
+		private string columnNameSqlMetalSingularCamelCase;
+		private string columnNameSqlMetalSingularPascalCase;
 		private bool columnNullable;
 		private int columnOrdinal;
 		private int columnPrecision;
@@ -373,6 +379,84 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.columnNameSingularPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ColumnNameSqlMetalCamelCase
+		{
+			get
+			{
+				return this.columnNameSqlMetalCamelCase;
+			}
+			set
+			{
+				this.columnNameSqlMetalCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ColumnNameSqlMetalPascalCase
+		{
+			get
+			{
+				return this.columnNameSqlMetalPascalCase;
+			}
+			set
+			{
+				this.columnNameSqlMetalPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ColumnNameSqlMetalPluralCamelCase
+		{
+			get
+			{
+				return this.columnNameSqlMetalPluralCamelCase;
+			}
+			set
+			{
+				this.columnNameSqlMetalPluralCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ColumnNameSqlMetalPluralPascalCase
+		{
+			get
+			{
+				return this.columnNameSqlMetalPluralPascalCase;
+			}
+			set
+			{
+				this.columnNameSqlMetalPluralPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ColumnNameSqlMetalSingularCamelCase
+		{
+			get
+			{
+				return this.columnNameSqlMetalSingularCamelCase;
+			}
+			set
+			{
+				this.columnNameSqlMetalSingularCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ColumnNameSqlMetalSingularPascalCase
+		{
+			get
+			{
+				return this.columnNameSqlMetalSingularPascalCase;
+			}
+			set
+			{
+				this.columnNameSqlMetalSingularPascalCase = value;
 			}
 		}
 

@@ -38,6 +38,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string foreignKeyNameSingularCamelCase;
 		private string foreignKeyNameSingularConstantCase;
 		private string foreignKeyNameSingularPascalCase;
+		private string foreignKeyNameSqlMetalCamelCase;
+		private string foreignKeyNameSqlMetalPascalCase;
+		private string foreignKeyNameSqlMetalPluralCamelCase;
+		private string foreignKeyNameSqlMetalPluralPascalCase;
+		private string foreignKeyNameSqlMetalSingularCamelCase;
+		private string foreignKeyNameSqlMetalSingularPascalCase;
 		private byte foreignKeyOnDeleteRefIntAction;
 		private string foreignKeyOnDeleteRefIntActionSqlName;
 		private byte foreignKeyOnUpdateRefIntAction;
@@ -210,6 +216,84 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.foreignKeyNameSingularPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ForeignKeyNameSqlMetalCamelCase
+		{
+			get
+			{
+				return this.foreignKeyNameSqlMetalCamelCase;
+			}
+			set
+			{
+				this.foreignKeyNameSqlMetalCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ForeignKeyNameSqlMetalPascalCase
+		{
+			get
+			{
+				return this.foreignKeyNameSqlMetalPascalCase;
+			}
+			set
+			{
+				this.foreignKeyNameSqlMetalPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ForeignKeyNameSqlMetalPluralCamelCase
+		{
+			get
+			{
+				return this.foreignKeyNameSqlMetalPluralCamelCase;
+			}
+			set
+			{
+				this.foreignKeyNameSqlMetalPluralCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ForeignKeyNameSqlMetalPluralPascalCase
+		{
+			get
+			{
+				return this.foreignKeyNameSqlMetalPluralPascalCase;
+			}
+			set
+			{
+				this.foreignKeyNameSqlMetalPluralPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ForeignKeyNameSqlMetalSingularCamelCase
+		{
+			get
+			{
+				return this.foreignKeyNameSqlMetalSingularCamelCase;
+			}
+			set
+			{
+				this.foreignKeyNameSqlMetalSingularCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ForeignKeyNameSqlMetalSingularPascalCase
+		{
+			get
+			{
+				return this.foreignKeyNameSqlMetalSingularPascalCase;
+			}
+			set
+			{
+				this.foreignKeyNameSqlMetalSingularPascalCase = value;
 			}
 		}
 

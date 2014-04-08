@@ -11,62 +11,18 @@ using TextMetal.Common.Core;
 namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 {
 	public partial class TabWithPrimaryKeyAsIdentity
-	{		
-		#region Methods/Operators
-		
-		public static bool Exists(TabWithPrimaryKeyAsIdentity tabWithPrimaryKeyAsIdentity)
-		{
-			IEnumerable<TabWithPrimaryKeyAsIdentity> tabWithPrimaryKeyAsIdentities;
-
-			if ((object)tabWithPrimaryKeyAsIdentity == null)
-				throw new ArgumentNullException("tabWithPrimaryKeyAsIdentity");
-
-			tabWithPrimaryKeyAsIdentities =
-				Stuff.Get<IRepository>("").FindTabWithPrimaryKeyAsIdentities(
-					q =>
-						q.Where(
-							z =>
-								(z.XXX == tabWithPrimaryKeyAsIdentity.XXX) && ((object)tabWithPrimaryKeyAsIdentity.TabWithPrimaryKeyAsIdentityId == null || z.TabWithPrimaryKeyAsIdentityId != tabWithPrimaryKeyAsIdentity.TabWithPrimaryKeyAsIdentityId)));
-
-			return tabWithPrimaryKeyAsIdentities.Count() > 0;
-		}
-
+	{
 		public void Mark()
 		{
-			DateTime now;
-
-			now = DateTime.UtcNow;
-
-			this.CreationTimestamp = this.CreationTimestamp ?? now;
-			this.ModificationTimestamp = !this.IsNew ? now : this.CreationTimestamp;
-			this.CreationUserId = ((this.IsNew ? Current.UserId : this.CreationUserId) ?? this.CreationUserId) ?? User.SYSTEM_USER_ID;
-			this.ModificationUserId = ((!this.IsNew ? Current.UserId : this.CreationUserId) ?? this.ModificationUserId) ?? User.SYSTEM_USER_ID;
-			this.LogicalDelete = this.LogicalDelete ?? false;
-
-			this.CompanyId = this.CompanyId ?? (int)Current.CompanyId;
 		}
 
 		public virtual Message[] Validate()
 		{
-			bool exists;
 			List<Message> messages;
 
 			messages = new List<Message>();
 
-			if (DataType.IsNullOrWhiteSpace(this.XXX))
-				messages.Add(new Message("", "XXX is required.", Severity.Error));
-				
-			if (messages.Count > 0)
-				return messages.ToArray();
-
-			exists = Exists(this);
-
-			if (exists)
-				messages.Add(new Message("", "TabWithPrimaryKeyAsIdentity must be unique.", Severity.Error));
-
 			return messages.ToArray();
 		}
-
-		#endregion
 	}
 }

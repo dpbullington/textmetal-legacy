@@ -34,6 +34,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string catalogNameSingularCamelCase;
 		private string catalogNameSingularConstantCase;
 		private string catalogNameSingularPascalCase;
+		private string catalogNameSqlMetalCamelCase;
+		private string catalogNameSqlMetalPascalCase;
+		private string catalogNameSqlMetalPluralCamelCase;
+		private string catalogNameSqlMetalPluralPascalCase;
+		private string catalogNameSqlMetalSingularCamelCase;
+		private string catalogNameSqlMetalSingularPascalCase;
 
 		#endregion
 
@@ -166,6 +172,84 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.catalogNameSingularPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string CatalogNameSqlMetalCamelCase
+		{
+			get
+			{
+				return this.catalogNameSqlMetalCamelCase;
+			}
+			set
+			{
+				this.catalogNameSqlMetalCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string CatalogNameSqlMetalPascalCase
+		{
+			get
+			{
+				return this.catalogNameSqlMetalPascalCase;
+			}
+			set
+			{
+				this.catalogNameSqlMetalPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string CatalogNameSqlMetalPluralCamelCase
+		{
+			get
+			{
+				return this.catalogNameSqlMetalPluralCamelCase;
+			}
+			set
+			{
+				this.catalogNameSqlMetalPluralCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string CatalogNameSqlMetalPluralPascalCase
+		{
+			get
+			{
+				return this.catalogNameSqlMetalPluralPascalCase;
+			}
+			set
+			{
+				this.catalogNameSqlMetalPluralPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string CatalogNameSqlMetalSingularCamelCase
+		{
+			get
+			{
+				return this.catalogNameSqlMetalSingularCamelCase;
+			}
+			set
+			{
+				this.catalogNameSqlMetalSingularCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string CatalogNameSqlMetalSingularPascalCase
+		{
+			get
+			{
+				return this.catalogNameSqlMetalSingularPascalCase;
+			}
+			set
+			{
+				this.catalogNameSqlMetalSingularPascalCase = value;
 			}
 		}
 

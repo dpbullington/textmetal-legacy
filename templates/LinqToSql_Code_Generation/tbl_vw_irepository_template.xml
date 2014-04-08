@@ -212,9 +212,9 @@ namespace ${ClrNamespace}
 						</ForEach>
 						<![CDATA[);
 						
-		IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(Func<IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}>, IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}>> callback);
+		IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(Func<IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}>, IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}>> callback);
 		
-		IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(IUnitOfWork unitOfWork, Func<IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}>, IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSingularPascalCase}>> callback);
+		IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(IUnitOfWork unitOfWork, Func<IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}>, IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}>> callback);
 		
 		bool Save${TableNameSingularPascalCase}(${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		

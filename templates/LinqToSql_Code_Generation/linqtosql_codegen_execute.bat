@@ -22,7 +22,7 @@ set SQL_METAL_EXE=C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 
 set L2S_DIR=%SRC_DIR%\TextMetal.HostImpl.AspNetSample.DomainModel\L2S
 set L2S_DIR_EXISTS=%L2S_DIR%\nul
 set L2S_CLR_NAMESPACE=%CLR_NAMESPACE%.L2S
-set L2S_DATA_CONTEXT_NAME=TxtMtlPrimaryDataContext
+set L2S_DATA_CONTEXT_NAME=TextMetalOdsDataContext
 
 set L2S_DBML_FILE_PATH=%L2S_DIR%\%L2S_DATA_CONTEXT_NAME%.dbml
 set L2S_DESIGNER_CS_FILE_PATH=%L2S_DIR%\%L2S_DATA_CONTEXT_NAME%.designer.cs

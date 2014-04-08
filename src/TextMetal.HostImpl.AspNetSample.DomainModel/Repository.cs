@@ -6,13 +6,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using TextMetal.HostImpl.AspNetSample.DomainModel.Tables;
+using System.Xml;
+using System.Xml.Linq;
 
 using TextMetal.Common.Cerealization;
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
 using TextMetal.Common.Data.LinqToSql;
+using TextMetal.HostImpl.AspNetSample.DomainModel.Tables;
+using TextMetal.HostImpl.AspNetSample.DomainModel.Views;
 using TextMetal.HostImpl.Web.Email;
 
 namespace TextMetal.HostImpl.AspNetSample.DomainModel
@@ -20,6 +22,33 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 	public partial class Repository
 	{
 		#region Methods/Operators
+
+		public static XElement ToXElement(XmlDocument xmlDocument)
+		{
+			if ((object)xmlDocument == null)
+				throw new ArgumentNullException("xmlDocument");
+
+			using (XmlNodeReader nodeReader = new XmlNodeReader(xmlDocument))
+			{
+				nodeReader.MoveToContent();
+				return XElement.Load(nodeReader);
+			}
+		}
+
+		public static XmlDocument ToXmlDocument(XElement xElement)
+		{
+			XmlDocument xmlDocument;
+
+			if ((object)xElement == null)
+				throw new ArgumentNullException("xElement");
+
+			xmlDocument = new XmlDocument();
+
+			using (XmlReader xmlReader = xElement.CreateReader())
+				xmlDocument.Load(xmlReader);
+
+			return xmlDocument;
+		}
 
 		public IEnumerable<TResultEntity> Find<TDataContext, TResultEntity>(TDataContext dummy, Func<TDataContext, IQueryable<TResultEntity>> callback)
 			where TDataContext : class, IDisposable
@@ -77,72 +106,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			}
 		}
 
-		partial void OnDiscardConflictChild(IUnitOfWork unitOfWork, Child @child)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@child == null)
-				throw new ArgumentNullException("@child");
-
-			// do nothing
-		}
-
-		partial void OnDiscardConflictChildHistory(IUnitOfWork unitOfWork, ChildHistory @childHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@childHistory == null)
-				throw new ArgumentNullException("@childHistory");
-
-			// do nothing
-		}
-
-		partial void OnDiscardConflictCircle(IUnitOfWork unitOfWork, Circle @circle)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circle == null)
-				throw new ArgumentNullException("@circle");
-
-			// do nothing
-		}
-
-		partial void OnDiscardConflictCircleFamily(IUnitOfWork unitOfWork, CircleFamily @circleFamily)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleFamily == null)
-				throw new ArgumentNullException("@circleFamily");
-
-			// do nothing
-		}
-
-		partial void OnDiscardConflictCircleFamilyHistory(IUnitOfWork unitOfWork, CircleFamilyHistory @circleFamilyHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleFamilyHistory == null)
-				throw new ArgumentNullException("@circleFamilyHistory");
-
-			// do nothing
-		}
-
-		partial void OnDiscardConflictCircleHistory(IUnitOfWork unitOfWork, CircleHistory @circleHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleHistory == null)
-				throw new ArgumentNullException("@circleHistory");
-
-			// do nothing
-		}
-
 		partial void OnDiscardConflictEmailAttachment(IUnitOfWork unitOfWork, EmailAttachment @emailAttachment)
 		{
 			if ((object)unitOfWork == null)
@@ -198,6 +161,17 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			// do nothing
 		}
 
+		partial void OnDiscardConflictEventLogExtent(IUnitOfWork unitOfWork, EventLogExtent @eventLogExtent)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@eventLogExtent == null)
+				throw new ArgumentNullException("@eventLogExtent");
+
+			// do nothing
+		}
+
 		partial void OnDiscardConflictEventLogHistory(IUnitOfWork unitOfWork, EventLogHistory @eventLogHistory)
 		{
 			if ((object)unitOfWork == null)
@@ -205,72 +179,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 
 			if ((object)@eventLogHistory == null)
 				throw new ArgumentNullException("@eventLogHistory");
-
-			// do nothing
-		}
-
-		partial void OnDiscardConflictFamily(IUnitOfWork unitOfWork, Family @family)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@family == null)
-				throw new ArgumentNullException("@family");
-
-			// do nothing
-		}
-
-		partial void OnDiscardConflictFamilyHistory(IUnitOfWork unitOfWork, FamilyHistory @familyHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@familyHistory == null)
-				throw new ArgumentNullException("@familyHistory");
-
-			// do nothing
-		}
-
-		partial void OnDiscardConflictNotifyMethodLookup(IUnitOfWork unitOfWork, NotifyMethodLookup @notifyMethodLookup)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@notifyMethodLookup == null)
-				throw new ArgumentNullException("@notifyMethodLookup");
-
-			// do nothing
-		}
-
-		partial void OnDiscardConflictNotifyMethodLookupHistory(IUnitOfWork unitOfWork, NotifyMethodLookupHistory @notifyMethodLookupHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@notifyMethodLookupHistory == null)
-				throw new ArgumentNullException("@notifyMethodLookupHistory");
-
-			// do nothing
-		}
-
-		partial void OnDiscardConflictParent(IUnitOfWork unitOfWork, Parent @parent)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@parent == null)
-				throw new ArgumentNullException("@parent");
-
-			// do nothing
-		}
-
-		partial void OnDiscardConflictParentHistory(IUnitOfWork unitOfWork, ParentHistory @parentHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@parentHistory == null)
-				throw new ArgumentNullException("@parentHistory");
 
 			// do nothing
 		}
@@ -297,24 +205,79 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			// do nothing
 		}
 
-		partial void OnDiscardConflictSexLookup(IUnitOfWork unitOfWork, SexLookup @sexLookup)
+		partial void OnDiscardConflictTabNoPrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabNoPrimaryKeyNoIdentity @tabNoPrimaryKeyNoIdentity)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)@sexLookup == null)
-				throw new ArgumentNullException("@sexLookup");
+			if ((object)@tabNoPrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabNoPrimaryKeyNoIdentity");
 
 			// do nothing
 		}
 
-		partial void OnDiscardConflictSexLookupHistory(IUnitOfWork unitOfWork, SexLookupHistory @sexLookupHistory)
+		partial void OnDiscardConflictTabWithCompositePrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabWithCompositePrimaryKeyNoIdentity @tabWithCompositePrimaryKeyNoIdentity)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)@sexLookupHistory == null)
-				throw new ArgumentNullException("@sexLookupHistory");
+			if ((object)@tabWithCompositePrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabWithCompositePrimaryKeyNoIdentity");
+
+			// do nothing
+		}
+
+		partial void OnDiscardConflictTabWithNoPrimaryKeyWithIdentity(IUnitOfWork unitOfWork, TabWithNoPrimaryKeyWithIdentity @tabWithNoPrimaryKeyWithIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithNoPrimaryKeyWithIdentity == null)
+				throw new ArgumentNullException("@tabWithNoPrimaryKeyWithIdentity");
+
+			// do nothing
+		}
+
+		partial void OnDiscardConflictTabWithPrimaryKeyAsDefault(IUnitOfWork unitOfWork, TabWithPrimaryKeyAsDefault @tabWithPrimaryKeyAsDefault)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyAsDefault == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyAsDefault");
+
+			// do nothing
+		}
+
+		partial void OnDiscardConflictTabWithPrimaryKeyAsIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyAsIdentity @tabWithPrimaryKeyAsIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyAsIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyAsIdentity");
+
+			// do nothing
+		}
+
+		partial void OnDiscardConflictTabWithPrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyNoIdentity @tabWithPrimaryKeyNoIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyNoIdentity");
+
+			// do nothing
+		}
+
+		partial void OnDiscardConflictTabWithPrimaryKeyWithDifferentIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyWithDifferentIdentity @tabWithPrimaryKeyWithDifferentIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyWithDifferentIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyWithDifferentIdentity");
 
 			// do nothing
 		}
@@ -337,72 +300,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 
 			if ((object)@userHistory == null)
 				throw new ArgumentNullException("@userHistory");
-
-			// do nothing
-		}
-
-		partial void OnPostDeleteChild(IUnitOfWork unitOfWork, Child @child)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@child == null)
-				throw new ArgumentNullException("@child");
-
-			// do nothing
-		}
-
-		partial void OnPostDeleteChildHistory(IUnitOfWork unitOfWork, ChildHistory @childHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@childHistory == null)
-				throw new ArgumentNullException("@childHistory");
-
-			// do nothing
-		}
-
-		partial void OnPostDeleteCircle(IUnitOfWork unitOfWork, Circle @circle)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circle == null)
-				throw new ArgumentNullException("@circle");
-
-			// do nothing
-		}
-
-		partial void OnPostDeleteCircleFamily(IUnitOfWork unitOfWork, CircleFamily @circleFamily)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleFamily == null)
-				throw new ArgumentNullException("@circleFamily");
-
-			// do nothing
-		}
-
-		partial void OnPostDeleteCircleFamilyHistory(IUnitOfWork unitOfWork, CircleFamilyHistory @circleFamilyHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleFamilyHistory == null)
-				throw new ArgumentNullException("@circleFamilyHistory");
-
-			// do nothing
-		}
-
-		partial void OnPostDeleteCircleHistory(IUnitOfWork unitOfWork, CircleHistory @circleHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleHistory == null)
-				throw new ArgumentNullException("@circleHistory");
 
 			// do nothing
 		}
@@ -462,6 +359,17 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			// do nothing
 		}
 
+		partial void OnPostDeleteEventLogExtent(IUnitOfWork unitOfWork, EventLogExtent @eventLogExtent)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@eventLogExtent == null)
+				throw new ArgumentNullException("@eventLogExtent");
+
+			// do nothing
+		}
+
 		partial void OnPostDeleteEventLogHistory(IUnitOfWork unitOfWork, EventLogHistory @eventLogHistory)
 		{
 			if ((object)unitOfWork == null)
@@ -469,72 +377,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 
 			if ((object)@eventLogHistory == null)
 				throw new ArgumentNullException("@eventLogHistory");
-
-			// do nothing
-		}
-
-		partial void OnPostDeleteFamily(IUnitOfWork unitOfWork, Family @family)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@family == null)
-				throw new ArgumentNullException("@family");
-
-			// do nothing
-		}
-
-		partial void OnPostDeleteFamilyHistory(IUnitOfWork unitOfWork, FamilyHistory @familyHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@familyHistory == null)
-				throw new ArgumentNullException("@familyHistory");
-
-			// do nothing
-		}
-
-		partial void OnPostDeleteNotifyMethodLookup(IUnitOfWork unitOfWork, NotifyMethodLookup @notifyMethodLookup)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@notifyMethodLookup == null)
-				throw new ArgumentNullException("@notifyMethodLookup");
-
-			// do nothing
-		}
-
-		partial void OnPostDeleteNotifyMethodLookupHistory(IUnitOfWork unitOfWork, NotifyMethodLookupHistory @notifyMethodLookupHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@notifyMethodLookupHistory == null)
-				throw new ArgumentNullException("@notifyMethodLookupHistory");
-
-			// do nothing
-		}
-
-		partial void OnPostDeleteParent(IUnitOfWork unitOfWork, Parent @parent)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@parent == null)
-				throw new ArgumentNullException("@parent");
-
-			// do nothing
-		}
-
-		partial void OnPostDeleteParentHistory(IUnitOfWork unitOfWork, ParentHistory @parentHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@parentHistory == null)
-				throw new ArgumentNullException("@parentHistory");
 
 			// do nothing
 		}
@@ -561,24 +403,79 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			// do nothing
 		}
 
-		partial void OnPostDeleteSexLookup(IUnitOfWork unitOfWork, SexLookup @sexLookup)
+		partial void OnPostDeleteTabNoPrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabNoPrimaryKeyNoIdentity @tabNoPrimaryKeyNoIdentity)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)@sexLookup == null)
-				throw new ArgumentNullException("@sexLookup");
+			if ((object)@tabNoPrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabNoPrimaryKeyNoIdentity");
 
 			// do nothing
 		}
 
-		partial void OnPostDeleteSexLookupHistory(IUnitOfWork unitOfWork, SexLookupHistory @sexLookupHistory)
+		partial void OnPostDeleteTabWithCompositePrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabWithCompositePrimaryKeyNoIdentity @tabWithCompositePrimaryKeyNoIdentity)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)@sexLookupHistory == null)
-				throw new ArgumentNullException("@sexLookupHistory");
+			if ((object)@tabWithCompositePrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabWithCompositePrimaryKeyNoIdentity");
+
+			// do nothing
+		}
+
+		partial void OnPostDeleteTabWithNoPrimaryKeyWithIdentity(IUnitOfWork unitOfWork, TabWithNoPrimaryKeyWithIdentity @tabWithNoPrimaryKeyWithIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithNoPrimaryKeyWithIdentity == null)
+				throw new ArgumentNullException("@tabWithNoPrimaryKeyWithIdentity");
+
+			// do nothing
+		}
+
+		partial void OnPostDeleteTabWithPrimaryKeyAsDefault(IUnitOfWork unitOfWork, TabWithPrimaryKeyAsDefault @tabWithPrimaryKeyAsDefault)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyAsDefault == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyAsDefault");
+
+			// do nothing
+		}
+
+		partial void OnPostDeleteTabWithPrimaryKeyAsIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyAsIdentity @tabWithPrimaryKeyAsIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyAsIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyAsIdentity");
+
+			// do nothing
+		}
+
+		partial void OnPostDeleteTabWithPrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyNoIdentity @tabWithPrimaryKeyNoIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyNoIdentity");
+
+			// do nothing
+		}
+
+		partial void OnPostDeleteTabWithPrimaryKeyWithDifferentIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyWithDifferentIdentity @tabWithPrimaryKeyWithDifferentIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyWithDifferentIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyWithDifferentIdentity");
 
 			// do nothing
 		}
@@ -601,72 +498,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 
 			if ((object)@userHistory == null)
 				throw new ArgumentNullException("@userHistory");
-
-			// do nothing
-		}
-
-		partial void OnPostInsertChild(IUnitOfWork unitOfWork, Child @child)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@child == null)
-				throw new ArgumentNullException("@child");
-
-			// do nothing
-		}
-
-		partial void OnPostInsertChildHistory(IUnitOfWork unitOfWork, ChildHistory @childHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@childHistory == null)
-				throw new ArgumentNullException("@childHistory");
-
-			// do nothing
-		}
-
-		partial void OnPostInsertCircle(IUnitOfWork unitOfWork, Circle @circle)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circle == null)
-				throw new ArgumentNullException("@circle");
-
-			// do nothing
-		}
-
-		partial void OnPostInsertCircleFamily(IUnitOfWork unitOfWork, CircleFamily @circleFamily)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleFamily == null)
-				throw new ArgumentNullException("@circleFamily");
-
-			// do nothing
-		}
-
-		partial void OnPostInsertCircleFamilyHistory(IUnitOfWork unitOfWork, CircleFamilyHistory @circleFamilyHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleFamilyHistory == null)
-				throw new ArgumentNullException("@circleFamilyHistory");
-
-			// do nothing
-		}
-
-		partial void OnPostInsertCircleHistory(IUnitOfWork unitOfWork, CircleHistory @circleHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleHistory == null)
-				throw new ArgumentNullException("@circleHistory");
 
 			// do nothing
 		}
@@ -726,6 +557,17 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			// do nothing
 		}
 
+		partial void OnPostInsertEventLogExtent(IUnitOfWork unitOfWork, EventLogExtent @eventLogExtent)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@eventLogExtent == null)
+				throw new ArgumentNullException("@eventLogExtent");
+
+			// do nothing
+		}
+
 		partial void OnPostInsertEventLogHistory(IUnitOfWork unitOfWork, EventLogHistory @eventLogHistory)
 		{
 			if ((object)unitOfWork == null)
@@ -733,72 +575,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 
 			if ((object)@eventLogHistory == null)
 				throw new ArgumentNullException("@eventLogHistory");
-
-			// do nothing
-		}
-
-		partial void OnPostInsertFamily(IUnitOfWork unitOfWork, Family @family)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@family == null)
-				throw new ArgumentNullException("@family");
-
-			// do nothing
-		}
-
-		partial void OnPostInsertFamilyHistory(IUnitOfWork unitOfWork, FamilyHistory @familyHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@familyHistory == null)
-				throw new ArgumentNullException("@familyHistory");
-
-			// do nothing
-		}
-
-		partial void OnPostInsertNotifyMethodLookup(IUnitOfWork unitOfWork, NotifyMethodLookup @notifyMethodLookup)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@notifyMethodLookup == null)
-				throw new ArgumentNullException("@notifyMethodLookup");
-
-			// do nothing
-		}
-
-		partial void OnPostInsertNotifyMethodLookupHistory(IUnitOfWork unitOfWork, NotifyMethodLookupHistory @notifyMethodLookupHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@notifyMethodLookupHistory == null)
-				throw new ArgumentNullException("@notifyMethodLookupHistory");
-
-			// do nothing
-		}
-
-		partial void OnPostInsertParent(IUnitOfWork unitOfWork, Parent @parent)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@parent == null)
-				throw new ArgumentNullException("@parent");
-
-			// do nothing
-		}
-
-		partial void OnPostInsertParentHistory(IUnitOfWork unitOfWork, ParentHistory @parentHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@parentHistory == null)
-				throw new ArgumentNullException("@parentHistory");
 
 			// do nothing
 		}
@@ -825,24 +601,79 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			// do nothing
 		}
 
-		partial void OnPostInsertSexLookup(IUnitOfWork unitOfWork, SexLookup @sexLookup)
+		partial void OnPostInsertTabNoPrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabNoPrimaryKeyNoIdentity @tabNoPrimaryKeyNoIdentity)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)@sexLookup == null)
-				throw new ArgumentNullException("@sexLookup");
+			if ((object)@tabNoPrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabNoPrimaryKeyNoIdentity");
 
 			// do nothing
 		}
 
-		partial void OnPostInsertSexLookupHistory(IUnitOfWork unitOfWork, SexLookupHistory @sexLookupHistory)
+		partial void OnPostInsertTabWithCompositePrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabWithCompositePrimaryKeyNoIdentity @tabWithCompositePrimaryKeyNoIdentity)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)@sexLookupHistory == null)
-				throw new ArgumentNullException("@sexLookupHistory");
+			if ((object)@tabWithCompositePrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabWithCompositePrimaryKeyNoIdentity");
+
+			// do nothing
+		}
+
+		partial void OnPostInsertTabWithNoPrimaryKeyWithIdentity(IUnitOfWork unitOfWork, TabWithNoPrimaryKeyWithIdentity @tabWithNoPrimaryKeyWithIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithNoPrimaryKeyWithIdentity == null)
+				throw new ArgumentNullException("@tabWithNoPrimaryKeyWithIdentity");
+
+			// do nothing
+		}
+
+		partial void OnPostInsertTabWithPrimaryKeyAsDefault(IUnitOfWork unitOfWork, TabWithPrimaryKeyAsDefault @tabWithPrimaryKeyAsDefault)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyAsDefault == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyAsDefault");
+
+			// do nothing
+		}
+
+		partial void OnPostInsertTabWithPrimaryKeyAsIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyAsIdentity @tabWithPrimaryKeyAsIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyAsIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyAsIdentity");
+
+			// do nothing
+		}
+
+		partial void OnPostInsertTabWithPrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyNoIdentity @tabWithPrimaryKeyNoIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyNoIdentity");
+
+			// do nothing
+		}
+
+		partial void OnPostInsertTabWithPrimaryKeyWithDifferentIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyWithDifferentIdentity @tabWithPrimaryKeyWithDifferentIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyWithDifferentIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyWithDifferentIdentity");
 
 			// do nothing
 		}
@@ -865,72 +696,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 
 			if ((object)@userHistory == null)
 				throw new ArgumentNullException("@userHistory");
-
-			// do nothing
-		}
-
-		partial void OnPostUpdateChild(IUnitOfWork unitOfWork, Child @child)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@child == null)
-				throw new ArgumentNullException("@child");
-
-			// do nothing
-		}
-
-		partial void OnPostUpdateChildHistory(IUnitOfWork unitOfWork, ChildHistory @childHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@childHistory == null)
-				throw new ArgumentNullException("@childHistory");
-
-			// do nothing
-		}
-
-		partial void OnPostUpdateCircle(IUnitOfWork unitOfWork, Circle @circle)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circle == null)
-				throw new ArgumentNullException("@circle");
-
-			// do nothing
-		}
-
-		partial void OnPostUpdateCircleFamily(IUnitOfWork unitOfWork, CircleFamily @circleFamily)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleFamily == null)
-				throw new ArgumentNullException("@circleFamily");
-
-			// do nothing
-		}
-
-		partial void OnPostUpdateCircleFamilyHistory(IUnitOfWork unitOfWork, CircleFamilyHistory @circleFamilyHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleFamilyHistory == null)
-				throw new ArgumentNullException("@circleFamilyHistory");
-
-			// do nothing
-		}
-
-		partial void OnPostUpdateCircleHistory(IUnitOfWork unitOfWork, CircleHistory @circleHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleHistory == null)
-				throw new ArgumentNullException("@circleHistory");
 
 			// do nothing
 		}
@@ -990,6 +755,17 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			// do nothing
 		}
 
+		partial void OnPostUpdateEventLogExtent(IUnitOfWork unitOfWork, EventLogExtent @eventLogExtent)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@eventLogExtent == null)
+				throw new ArgumentNullException("@eventLogExtent");
+
+			// do nothing
+		}
+
 		partial void OnPostUpdateEventLogHistory(IUnitOfWork unitOfWork, EventLogHistory @eventLogHistory)
 		{
 			if ((object)unitOfWork == null)
@@ -997,72 +773,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 
 			if ((object)@eventLogHistory == null)
 				throw new ArgumentNullException("@eventLogHistory");
-
-			// do nothing
-		}
-
-		partial void OnPostUpdateFamily(IUnitOfWork unitOfWork, Family @family)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@family == null)
-				throw new ArgumentNullException("@family");
-
-			// do nothing
-		}
-
-		partial void OnPostUpdateFamilyHistory(IUnitOfWork unitOfWork, FamilyHistory @familyHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@familyHistory == null)
-				throw new ArgumentNullException("@familyHistory");
-
-			// do nothing
-		}
-
-		partial void OnPostUpdateNotifyMethodLookup(IUnitOfWork unitOfWork, NotifyMethodLookup @notifyMethodLookup)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@notifyMethodLookup == null)
-				throw new ArgumentNullException("@notifyMethodLookup");
-
-			// do nothing
-		}
-
-		partial void OnPostUpdateNotifyMethodLookupHistory(IUnitOfWork unitOfWork, NotifyMethodLookupHistory @notifyMethodLookupHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@notifyMethodLookupHistory == null)
-				throw new ArgumentNullException("@notifyMethodLookupHistory");
-
-			// do nothing
-		}
-
-		partial void OnPostUpdateParent(IUnitOfWork unitOfWork, Parent @parent)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@parent == null)
-				throw new ArgumentNullException("@parent");
-
-			// do nothing
-		}
-
-		partial void OnPostUpdateParentHistory(IUnitOfWork unitOfWork, ParentHistory @parentHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@parentHistory == null)
-				throw new ArgumentNullException("@parentHistory");
 
 			// do nothing
 		}
@@ -1089,24 +799,79 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			// do nothing
 		}
 
-		partial void OnPostUpdateSexLookup(IUnitOfWork unitOfWork, SexLookup @sexLookup)
+		partial void OnPostUpdateTabNoPrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabNoPrimaryKeyNoIdentity @tabNoPrimaryKeyNoIdentity)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)@sexLookup == null)
-				throw new ArgumentNullException("@sexLookup");
+			if ((object)@tabNoPrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabNoPrimaryKeyNoIdentity");
 
 			// do nothing
 		}
 
-		partial void OnPostUpdateSexLookupHistory(IUnitOfWork unitOfWork, SexLookupHistory @sexLookupHistory)
+		partial void OnPostUpdateTabWithCompositePrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabWithCompositePrimaryKeyNoIdentity @tabWithCompositePrimaryKeyNoIdentity)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)@sexLookupHistory == null)
-				throw new ArgumentNullException("@sexLookupHistory");
+			if ((object)@tabWithCompositePrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabWithCompositePrimaryKeyNoIdentity");
+
+			// do nothing
+		}
+
+		partial void OnPostUpdateTabWithNoPrimaryKeyWithIdentity(IUnitOfWork unitOfWork, TabWithNoPrimaryKeyWithIdentity @tabWithNoPrimaryKeyWithIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithNoPrimaryKeyWithIdentity == null)
+				throw new ArgumentNullException("@tabWithNoPrimaryKeyWithIdentity");
+
+			// do nothing
+		}
+
+		partial void OnPostUpdateTabWithPrimaryKeyAsDefault(IUnitOfWork unitOfWork, TabWithPrimaryKeyAsDefault @tabWithPrimaryKeyAsDefault)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyAsDefault == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyAsDefault");
+
+			// do nothing
+		}
+
+		partial void OnPostUpdateTabWithPrimaryKeyAsIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyAsIdentity @tabWithPrimaryKeyAsIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyAsIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyAsIdentity");
+
+			// do nothing
+		}
+
+		partial void OnPostUpdateTabWithPrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyNoIdentity @tabWithPrimaryKeyNoIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyNoIdentity");
+
+			// do nothing
+		}
+
+		partial void OnPostUpdateTabWithPrimaryKeyWithDifferentIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyWithDifferentIdentity @tabWithPrimaryKeyWithDifferentIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyWithDifferentIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyWithDifferentIdentity");
 
 			// do nothing
 		}
@@ -1129,72 +894,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 
 			if ((object)@userHistory == null)
 				throw new ArgumentNullException("@userHistory");
-
-			// do nothing
-		}
-
-		partial void OnPreDeleteChild(IUnitOfWork unitOfWork, Child @child)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@child == null)
-				throw new ArgumentNullException("@child");
-
-			// do nothing
-		}
-
-		partial void OnPreDeleteChildHistory(IUnitOfWork unitOfWork, ChildHistory @childHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@childHistory == null)
-				throw new ArgumentNullException("@childHistory");
-
-			// do nothing
-		}
-
-		partial void OnPreDeleteCircle(IUnitOfWork unitOfWork, Circle @circle)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circle == null)
-				throw new ArgumentNullException("@circle");
-
-			// do nothing
-		}
-
-		partial void OnPreDeleteCircleFamily(IUnitOfWork unitOfWork, CircleFamily @circleFamily)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleFamily == null)
-				throw new ArgumentNullException("@circleFamily");
-
-			// do nothing
-		}
-
-		partial void OnPreDeleteCircleFamilyHistory(IUnitOfWork unitOfWork, CircleFamilyHistory @circleFamilyHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleFamilyHistory == null)
-				throw new ArgumentNullException("@circleFamilyHistory");
-
-			// do nothing
-		}
-
-		partial void OnPreDeleteCircleHistory(IUnitOfWork unitOfWork, CircleHistory @circleHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleHistory == null)
-				throw new ArgumentNullException("@circleHistory");
 
 			// do nothing
 		}
@@ -1254,6 +953,17 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			// do nothing
 		}
 
+		partial void OnPreDeleteEventLogExtent(IUnitOfWork unitOfWork, EventLogExtent @eventLogExtent)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@eventLogExtent == null)
+				throw new ArgumentNullException("@eventLogExtent");
+
+			// do nothing
+		}
+
 		partial void OnPreDeleteEventLogHistory(IUnitOfWork unitOfWork, EventLogHistory @eventLogHistory)
 		{
 			if ((object)unitOfWork == null)
@@ -1261,72 +971,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 
 			if ((object)@eventLogHistory == null)
 				throw new ArgumentNullException("@eventLogHistory");
-
-			// do nothing
-		}
-
-		partial void OnPreDeleteFamily(IUnitOfWork unitOfWork, Family @family)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@family == null)
-				throw new ArgumentNullException("@family");
-
-			// do nothing
-		}
-
-		partial void OnPreDeleteFamilyHistory(IUnitOfWork unitOfWork, FamilyHistory @familyHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@familyHistory == null)
-				throw new ArgumentNullException("@familyHistory");
-
-			// do nothing
-		}
-
-		partial void OnPreDeleteNotifyMethodLookup(IUnitOfWork unitOfWork, NotifyMethodLookup @notifyMethodLookup)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@notifyMethodLookup == null)
-				throw new ArgumentNullException("@notifyMethodLookup");
-
-			// do nothing
-		}
-
-		partial void OnPreDeleteNotifyMethodLookupHistory(IUnitOfWork unitOfWork, NotifyMethodLookupHistory @notifyMethodLookupHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@notifyMethodLookupHistory == null)
-				throw new ArgumentNullException("@notifyMethodLookupHistory");
-
-			// do nothing
-		}
-
-		partial void OnPreDeleteParent(IUnitOfWork unitOfWork, Parent @parent)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@parent == null)
-				throw new ArgumentNullException("@parent");
-
-			// do nothing
-		}
-
-		partial void OnPreDeleteParentHistory(IUnitOfWork unitOfWork, ParentHistory @parentHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@parentHistory == null)
-				throw new ArgumentNullException("@parentHistory");
 
 			// do nothing
 		}
@@ -1353,24 +997,79 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			// do nothing
 		}
 
-		partial void OnPreDeleteSexLookup(IUnitOfWork unitOfWork, SexLookup @sexLookup)
+		partial void OnPreDeleteTabNoPrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabNoPrimaryKeyNoIdentity @tabNoPrimaryKeyNoIdentity)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)@sexLookup == null)
-				throw new ArgumentNullException("@sexLookup");
+			if ((object)@tabNoPrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabNoPrimaryKeyNoIdentity");
 
 			// do nothing
 		}
 
-		partial void OnPreDeleteSexLookupHistory(IUnitOfWork unitOfWork, SexLookupHistory @sexLookupHistory)
+		partial void OnPreDeleteTabWithCompositePrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabWithCompositePrimaryKeyNoIdentity @tabWithCompositePrimaryKeyNoIdentity)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)@sexLookupHistory == null)
-				throw new ArgumentNullException("@sexLookupHistory");
+			if ((object)@tabWithCompositePrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabWithCompositePrimaryKeyNoIdentity");
+
+			// do nothing
+		}
+
+		partial void OnPreDeleteTabWithNoPrimaryKeyWithIdentity(IUnitOfWork unitOfWork, TabWithNoPrimaryKeyWithIdentity @tabWithNoPrimaryKeyWithIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithNoPrimaryKeyWithIdentity == null)
+				throw new ArgumentNullException("@tabWithNoPrimaryKeyWithIdentity");
+
+			// do nothing
+		}
+
+		partial void OnPreDeleteTabWithPrimaryKeyAsDefault(IUnitOfWork unitOfWork, TabWithPrimaryKeyAsDefault @tabWithPrimaryKeyAsDefault)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyAsDefault == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyAsDefault");
+
+			// do nothing
+		}
+
+		partial void OnPreDeleteTabWithPrimaryKeyAsIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyAsIdentity @tabWithPrimaryKeyAsIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyAsIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyAsIdentity");
+
+			// do nothing
+		}
+
+		partial void OnPreDeleteTabWithPrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyNoIdentity @tabWithPrimaryKeyNoIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyNoIdentity");
+
+			// do nothing
+		}
+
+		partial void OnPreDeleteTabWithPrimaryKeyWithDifferentIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyWithDifferentIdentity @tabWithPrimaryKeyWithDifferentIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyWithDifferentIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyWithDifferentIdentity");
 
 			// do nothing
 		}
@@ -1395,72 +1094,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 				throw new ArgumentNullException("@userHistory");
 
 			// do nothing
-		}
-
-		partial void OnPreInsertChild(IUnitOfWork unitOfWork, Child @child)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@child == null)
-				throw new ArgumentNullException("@child");
-
-			@child.Mark();
-		}
-
-		partial void OnPreInsertChildHistory(IUnitOfWork unitOfWork, ChildHistory @childHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@childHistory == null)
-				throw new ArgumentNullException("@childHistory");
-
-			@childHistory.Mark();
-		}
-
-		partial void OnPreInsertCircle(IUnitOfWork unitOfWork, Circle @circle)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circle == null)
-				throw new ArgumentNullException("@circle");
-
-			@circle.Mark();
-		}
-
-		partial void OnPreInsertCircleFamily(IUnitOfWork unitOfWork, CircleFamily @circleFamily)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleFamily == null)
-				throw new ArgumentNullException("@circleFamily");
-
-			@circleFamily.Mark();
-		}
-
-		partial void OnPreInsertCircleFamilyHistory(IUnitOfWork unitOfWork, CircleFamilyHistory @circleFamilyHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleFamilyHistory == null)
-				throw new ArgumentNullException("@circleFamilyHistory");
-
-			@circleFamilyHistory.Mark();
-		}
-
-		partial void OnPreInsertCircleHistory(IUnitOfWork unitOfWork, CircleHistory @circleHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleHistory == null)
-				throw new ArgumentNullException("@circleHistory");
-
-			@circleHistory.Mark();
 		}
 
 		partial void OnPreInsertEmailAttachment(IUnitOfWork unitOfWork, EmailAttachment @emailAttachment)
@@ -1518,6 +1151,17 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			@eventLog.Mark();
 		}
 
+		partial void OnPreInsertEventLogExtent(IUnitOfWork unitOfWork, EventLogExtent @eventLogExtent)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@eventLogExtent == null)
+				throw new ArgumentNullException("@eventLogExtent");
+
+			@eventLogExtent.Mark();
+		}
+
 		partial void OnPreInsertEventLogHistory(IUnitOfWork unitOfWork, EventLogHistory @eventLogHistory)
 		{
 			if ((object)unitOfWork == null)
@@ -1527,72 +1171,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 				throw new ArgumentNullException("@eventLogHistory");
 
 			@eventLogHistory.Mark();
-		}
-
-		partial void OnPreInsertFamily(IUnitOfWork unitOfWork, Family @family)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@family == null)
-				throw new ArgumentNullException("@family");
-
-			@family.Mark();
-		}
-
-		partial void OnPreInsertFamilyHistory(IUnitOfWork unitOfWork, FamilyHistory @familyHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@familyHistory == null)
-				throw new ArgumentNullException("@familyHistory");
-
-			@familyHistory.Mark();
-		}
-
-		partial void OnPreInsertNotifyMethodLookup(IUnitOfWork unitOfWork, NotifyMethodLookup @notifyMethodLookup)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@notifyMethodLookup == null)
-				throw new ArgumentNullException("@notifyMethodLookup");
-
-			@notifyMethodLookup.Mark();
-		}
-
-		partial void OnPreInsertNotifyMethodLookupHistory(IUnitOfWork unitOfWork, NotifyMethodLookupHistory @notifyMethodLookupHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@notifyMethodLookupHistory == null)
-				throw new ArgumentNullException("@notifyMethodLookupHistory");
-
-			@notifyMethodLookupHistory.Mark();
-		}
-
-		partial void OnPreInsertParent(IUnitOfWork unitOfWork, Parent @parent)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@parent == null)
-				throw new ArgumentNullException("@parent");
-
-			@parent.Mark();
-		}
-
-		partial void OnPreInsertParentHistory(IUnitOfWork unitOfWork, ParentHistory @parentHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@parentHistory == null)
-				throw new ArgumentNullException("@parentHistory");
-
-			@parentHistory.Mark();
 		}
 
 		partial void OnPreInsertPropertyBag(IUnitOfWork unitOfWork, PropertyBag @propertyBag)
@@ -1617,26 +1195,81 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			@propertyBagHistory.Mark();
 		}
 
-		partial void OnPreInsertSexLookup(IUnitOfWork unitOfWork, SexLookup @sexLookup)
+		partial void OnPreInsertTabNoPrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabNoPrimaryKeyNoIdentity @tabNoPrimaryKeyNoIdentity)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)@sexLookup == null)
-				throw new ArgumentNullException("@sexLookup");
+			if ((object)@tabNoPrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabNoPrimaryKeyNoIdentity");
 
-			@sexLookup.Mark();
+			@tabNoPrimaryKeyNoIdentity.Mark();
 		}
 
-		partial void OnPreInsertSexLookupHistory(IUnitOfWork unitOfWork, SexLookupHistory @sexLookupHistory)
+		partial void OnPreInsertTabWithCompositePrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabWithCompositePrimaryKeyNoIdentity @tabWithCompositePrimaryKeyNoIdentity)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)@sexLookupHistory == null)
-				throw new ArgumentNullException("@sexLookupHistory");
+			if ((object)@tabWithCompositePrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabWithCompositePrimaryKeyNoIdentity");
 
-			@sexLookupHistory.Mark();
+			@tabWithCompositePrimaryKeyNoIdentity.Mark();
+		}
+
+		partial void OnPreInsertTabWithNoPrimaryKeyWithIdentity(IUnitOfWork unitOfWork, TabWithNoPrimaryKeyWithIdentity @tabWithNoPrimaryKeyWithIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithNoPrimaryKeyWithIdentity == null)
+				throw new ArgumentNullException("@tabWithNoPrimaryKeyWithIdentity");
+
+			@tabWithNoPrimaryKeyWithIdentity.Mark();
+		}
+
+		partial void OnPreInsertTabWithPrimaryKeyAsDefault(IUnitOfWork unitOfWork, TabWithPrimaryKeyAsDefault @tabWithPrimaryKeyAsDefault)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyAsDefault == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyAsDefault");
+
+			@tabWithPrimaryKeyAsDefault.Mark();
+		}
+
+		partial void OnPreInsertTabWithPrimaryKeyAsIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyAsIdentity @tabWithPrimaryKeyAsIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyAsIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyAsIdentity");
+
+			@tabWithPrimaryKeyAsIdentity.Mark();
+		}
+
+		partial void OnPreInsertTabWithPrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyNoIdentity @tabWithPrimaryKeyNoIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyNoIdentity");
+
+			@tabWithPrimaryKeyNoIdentity.Mark();
+		}
+
+		partial void OnPreInsertTabWithPrimaryKeyWithDifferentIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyWithDifferentIdentity @tabWithPrimaryKeyWithDifferentIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyWithDifferentIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyWithDifferentIdentity");
+
+			@tabWithPrimaryKeyWithDifferentIdentity.Mark();
 		}
 
 		partial void OnPreInsertUser(IUnitOfWork unitOfWork, User @user)
@@ -1659,72 +1292,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 				throw new ArgumentNullException("@userHistory");
 
 			@userHistory.Mark();
-		}
-
-		partial void OnPreUpdateChild(IUnitOfWork unitOfWork, Child @child)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@child == null)
-				throw new ArgumentNullException("@child");
-
-			@child.Mark();
-		}
-
-		partial void OnPreUpdateChildHistory(IUnitOfWork unitOfWork, ChildHistory @childHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@childHistory == null)
-				throw new ArgumentNullException("@childHistory");
-
-			@childHistory.Mark();
-		}
-
-		partial void OnPreUpdateCircle(IUnitOfWork unitOfWork, Circle @circle)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circle == null)
-				throw new ArgumentNullException("@circle");
-
-			@circle.Mark();
-		}
-
-		partial void OnPreUpdateCircleFamily(IUnitOfWork unitOfWork, CircleFamily @circleFamily)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleFamily == null)
-				throw new ArgumentNullException("@circleFamily");
-
-			@circleFamily.Mark();
-		}
-
-		partial void OnPreUpdateCircleFamilyHistory(IUnitOfWork unitOfWork, CircleFamilyHistory @circleFamilyHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleFamilyHistory == null)
-				throw new ArgumentNullException("@circleFamilyHistory");
-
-			@circleFamilyHistory.Mark();
-		}
-
-		partial void OnPreUpdateCircleHistory(IUnitOfWork unitOfWork, CircleHistory @circleHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleHistory == null)
-				throw new ArgumentNullException("@circleHistory");
-
-			@circleHistory.Mark();
 		}
 
 		partial void OnPreUpdateEmailAttachment(IUnitOfWork unitOfWork, EmailAttachment @emailAttachment)
@@ -1782,6 +1349,17 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			@eventLog.Mark();
 		}
 
+		partial void OnPreUpdateEventLogExtent(IUnitOfWork unitOfWork, EventLogExtent @eventLogExtent)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@eventLogExtent == null)
+				throw new ArgumentNullException("@eventLogExtent");
+
+			@eventLogExtent.Mark();
+		}
+
 		partial void OnPreUpdateEventLogHistory(IUnitOfWork unitOfWork, EventLogHistory @eventLogHistory)
 		{
 			if ((object)unitOfWork == null)
@@ -1791,72 +1369,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 				throw new ArgumentNullException("@eventLogHistory");
 
 			@eventLogHistory.Mark();
-		}
-
-		partial void OnPreUpdateFamily(IUnitOfWork unitOfWork, Family @family)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@family == null)
-				throw new ArgumentNullException("@family");
-
-			@family.Mark();
-		}
-
-		partial void OnPreUpdateFamilyHistory(IUnitOfWork unitOfWork, FamilyHistory @familyHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@familyHistory == null)
-				throw new ArgumentNullException("@familyHistory");
-
-			@familyHistory.Mark();
-		}
-
-		partial void OnPreUpdateNotifyMethodLookup(IUnitOfWork unitOfWork, NotifyMethodLookup @notifyMethodLookup)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@notifyMethodLookup == null)
-				throw new ArgumentNullException("@notifyMethodLookup");
-
-			@notifyMethodLookup.Mark();
-		}
-
-		partial void OnPreUpdateNotifyMethodLookupHistory(IUnitOfWork unitOfWork, NotifyMethodLookupHistory @notifyMethodLookupHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@notifyMethodLookupHistory == null)
-				throw new ArgumentNullException("@notifyMethodLookupHistory");
-
-			@notifyMethodLookupHistory.Mark();
-		}
-
-		partial void OnPreUpdateParent(IUnitOfWork unitOfWork, Parent @parent)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@parent == null)
-				throw new ArgumentNullException("@parent");
-
-			@parent.Mark();
-		}
-
-		partial void OnPreUpdateParentHistory(IUnitOfWork unitOfWork, ParentHistory @parentHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@parentHistory == null)
-				throw new ArgumentNullException("@parentHistory");
-
-			@parentHistory.Mark();
 		}
 
 		partial void OnPreUpdatePropertyBag(IUnitOfWork unitOfWork, PropertyBag @propertyBag)
@@ -1881,26 +1393,81 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			@propertyBagHistory.Mark();
 		}
 
-		partial void OnPreUpdateSexLookup(IUnitOfWork unitOfWork, SexLookup @sexLookup)
+		partial void OnPreUpdateTabNoPrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabNoPrimaryKeyNoIdentity @tabNoPrimaryKeyNoIdentity)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)@sexLookup == null)
-				throw new ArgumentNullException("@sexLookup");
+			if ((object)@tabNoPrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabNoPrimaryKeyNoIdentity");
 
-			@sexLookup.Mark();
+			@tabNoPrimaryKeyNoIdentity.Mark();
 		}
 
-		partial void OnPreUpdateSexLookupHistory(IUnitOfWork unitOfWork, SexLookupHistory @sexLookupHistory)
+		partial void OnPreUpdateTabWithCompositePrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabWithCompositePrimaryKeyNoIdentity @tabWithCompositePrimaryKeyNoIdentity)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)@sexLookupHistory == null)
-				throw new ArgumentNullException("@sexLookupHistory");
+			if ((object)@tabWithCompositePrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabWithCompositePrimaryKeyNoIdentity");
 
-			@sexLookupHistory.Mark();
+			@tabWithCompositePrimaryKeyNoIdentity.Mark();
+		}
+
+		partial void OnPreUpdateTabWithNoPrimaryKeyWithIdentity(IUnitOfWork unitOfWork, TabWithNoPrimaryKeyWithIdentity @tabWithNoPrimaryKeyWithIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithNoPrimaryKeyWithIdentity == null)
+				throw new ArgumentNullException("@tabWithNoPrimaryKeyWithIdentity");
+
+			@tabWithNoPrimaryKeyWithIdentity.Mark();
+		}
+
+		partial void OnPreUpdateTabWithPrimaryKeyAsDefault(IUnitOfWork unitOfWork, TabWithPrimaryKeyAsDefault @tabWithPrimaryKeyAsDefault)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyAsDefault == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyAsDefault");
+
+			@tabWithPrimaryKeyAsDefault.Mark();
+		}
+
+		partial void OnPreUpdateTabWithPrimaryKeyAsIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyAsIdentity @tabWithPrimaryKeyAsIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyAsIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyAsIdentity");
+
+			@tabWithPrimaryKeyAsIdentity.Mark();
+		}
+
+		partial void OnPreUpdateTabWithPrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyNoIdentity @tabWithPrimaryKeyNoIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyNoIdentity");
+
+			@tabWithPrimaryKeyNoIdentity.Mark();
+		}
+
+		partial void OnPreUpdateTabWithPrimaryKeyWithDifferentIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyWithDifferentIdentity @tabWithPrimaryKeyWithDifferentIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyWithDifferentIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyWithDifferentIdentity");
+
+			@tabWithPrimaryKeyWithDifferentIdentity.Mark();
 		}
 
 		partial void OnPreUpdateUser(IUnitOfWork unitOfWork, User @user)
@@ -1923,72 +1490,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 				throw new ArgumentNullException("@userHistory");
 
 			@userHistory.Mark();
-		}
-
-		partial void OnSaveConflictChild(IUnitOfWork unitOfWork, Child @child)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@child == null)
-				throw new ArgumentNullException("@child");
-
-			// do nothing
-		}
-
-		partial void OnSaveConflictChildHistory(IUnitOfWork unitOfWork, ChildHistory @childHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@childHistory == null)
-				throw new ArgumentNullException("@childHistory");
-
-			// do nothing
-		}
-
-		partial void OnSaveConflictCircle(IUnitOfWork unitOfWork, Circle @circle)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circle == null)
-				throw new ArgumentNullException("@circle");
-
-			// do nothing
-		}
-
-		partial void OnSaveConflictCircleFamily(IUnitOfWork unitOfWork, CircleFamily @circleFamily)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleFamily == null)
-				throw new ArgumentNullException("@circleFamily");
-
-			// do nothing
-		}
-
-		partial void OnSaveConflictCircleFamilyHistory(IUnitOfWork unitOfWork, CircleFamilyHistory @circleFamilyHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleFamilyHistory == null)
-				throw new ArgumentNullException("@circleFamilyHistory");
-
-			// do nothing
-		}
-
-		partial void OnSaveConflictCircleHistory(IUnitOfWork unitOfWork, CircleHistory @circleHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleHistory == null)
-				throw new ArgumentNullException("@circleHistory");
-
-			// do nothing
 		}
 
 		partial void OnSaveConflictEmailAttachment(IUnitOfWork unitOfWork, EmailAttachment @emailAttachment)
@@ -2046,6 +1547,17 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			// do nothing
 		}
 
+		partial void OnSaveConflictEventLogExtent(IUnitOfWork unitOfWork, EventLogExtent @eventLogExtent)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@eventLogExtent == null)
+				throw new ArgumentNullException("@eventLogExtent");
+
+			// do nothing
+		}
+
 		partial void OnSaveConflictEventLogHistory(IUnitOfWork unitOfWork, EventLogHistory @eventLogHistory)
 		{
 			if ((object)unitOfWork == null)
@@ -2053,72 +1565,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 
 			if ((object)@eventLogHistory == null)
 				throw new ArgumentNullException("@eventLogHistory");
-
-			// do nothing
-		}
-
-		partial void OnSaveConflictFamily(IUnitOfWork unitOfWork, Family @family)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@family == null)
-				throw new ArgumentNullException("@family");
-
-			// do nothing
-		}
-
-		partial void OnSaveConflictFamilyHistory(IUnitOfWork unitOfWork, FamilyHistory @familyHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@familyHistory == null)
-				throw new ArgumentNullException("@familyHistory");
-
-			// do nothing
-		}
-
-		partial void OnSaveConflictNotifyMethodLookup(IUnitOfWork unitOfWork, NotifyMethodLookup @notifyMethodLookup)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@notifyMethodLookup == null)
-				throw new ArgumentNullException("@notifyMethodLookup");
-
-			// do nothing
-		}
-
-		partial void OnSaveConflictNotifyMethodLookupHistory(IUnitOfWork unitOfWork, NotifyMethodLookupHistory @notifyMethodLookupHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@notifyMethodLookupHistory == null)
-				throw new ArgumentNullException("@notifyMethodLookupHistory");
-
-			// do nothing
-		}
-
-		partial void OnSaveConflictParent(IUnitOfWork unitOfWork, Parent @parent)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@parent == null)
-				throw new ArgumentNullException("@parent");
-
-			// do nothing
-		}
-
-		partial void OnSaveConflictParentHistory(IUnitOfWork unitOfWork, ParentHistory @parentHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@parentHistory == null)
-				throw new ArgumentNullException("@parentHistory");
 
 			// do nothing
 		}
@@ -2145,24 +1591,79 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			// do nothing
 		}
 
-		partial void OnSaveConflictSexLookup(IUnitOfWork unitOfWork, SexLookup @sexLookup)
+		partial void OnSaveConflictTabNoPrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabNoPrimaryKeyNoIdentity @tabNoPrimaryKeyNoIdentity)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)@sexLookup == null)
-				throw new ArgumentNullException("@sexLookup");
+			if ((object)@tabNoPrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabNoPrimaryKeyNoIdentity");
 
 			// do nothing
 		}
 
-		partial void OnSaveConflictSexLookupHistory(IUnitOfWork unitOfWork, SexLookupHistory @sexLookupHistory)
+		partial void OnSaveConflictTabWithCompositePrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabWithCompositePrimaryKeyNoIdentity @tabWithCompositePrimaryKeyNoIdentity)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)@sexLookupHistory == null)
-				throw new ArgumentNullException("@sexLookupHistory");
+			if ((object)@tabWithCompositePrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabWithCompositePrimaryKeyNoIdentity");
+
+			// do nothing
+		}
+
+		partial void OnSaveConflictTabWithNoPrimaryKeyWithIdentity(IUnitOfWork unitOfWork, TabWithNoPrimaryKeyWithIdentity @tabWithNoPrimaryKeyWithIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithNoPrimaryKeyWithIdentity == null)
+				throw new ArgumentNullException("@tabWithNoPrimaryKeyWithIdentity");
+
+			// do nothing
+		}
+
+		partial void OnSaveConflictTabWithPrimaryKeyAsDefault(IUnitOfWork unitOfWork, TabWithPrimaryKeyAsDefault @tabWithPrimaryKeyAsDefault)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyAsDefault == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyAsDefault");
+
+			// do nothing
+		}
+
+		partial void OnSaveConflictTabWithPrimaryKeyAsIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyAsIdentity @tabWithPrimaryKeyAsIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyAsIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyAsIdentity");
+
+			// do nothing
+		}
+
+		partial void OnSaveConflictTabWithPrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyNoIdentity @tabWithPrimaryKeyNoIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyNoIdentity");
+
+			// do nothing
+		}
+
+		partial void OnSaveConflictTabWithPrimaryKeyWithDifferentIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyWithDifferentIdentity @tabWithPrimaryKeyWithDifferentIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyWithDifferentIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyWithDifferentIdentity");
 
 			// do nothing
 		}
@@ -2185,72 +1686,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 
 			if ((object)@userHistory == null)
 				throw new ArgumentNullException("@userHistory");
-
-			// do nothing
-		}
-
-		partial void OnSelectChild(IUnitOfWork unitOfWork, Child @child)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@child == null)
-				throw new ArgumentNullException("@child");
-
-			// do nothing
-		}
-
-		partial void OnSelectChildHistory(IUnitOfWork unitOfWork, ChildHistory @childHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@childHistory == null)
-				throw new ArgumentNullException("@childHistory");
-
-			// do nothing
-		}
-
-		partial void OnSelectCircle(IUnitOfWork unitOfWork, Circle @circle)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circle == null)
-				throw new ArgumentNullException("@circle");
-
-			// do nothing
-		}
-
-		partial void OnSelectCircleFamily(IUnitOfWork unitOfWork, CircleFamily @circleFamily)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleFamily == null)
-				throw new ArgumentNullException("@circleFamily");
-
-			// do nothing
-		}
-
-		partial void OnSelectCircleFamilyHistory(IUnitOfWork unitOfWork, CircleFamilyHistory @circleFamilyHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleFamilyHistory == null)
-				throw new ArgumentNullException("@circleFamilyHistory");
-
-			// do nothing
-		}
-
-		partial void OnSelectCircleHistory(IUnitOfWork unitOfWork, CircleHistory @circleHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@circleHistory == null)
-				throw new ArgumentNullException("@circleHistory");
 
 			// do nothing
 		}
@@ -2310,6 +1745,17 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			// do nothing
 		}
 
+		partial void OnSelectEventLogExtent(IUnitOfWork unitOfWork, EventLogExtent @eventLogExtent)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@eventLogExtent == null)
+				throw new ArgumentNullException("@eventLogExtent");
+
+			// do nothing
+		}
+
 		partial void OnSelectEventLogHistory(IUnitOfWork unitOfWork, EventLogHistory @eventLogHistory)
 		{
 			if ((object)unitOfWork == null)
@@ -2317,72 +1763,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 
 			if ((object)@eventLogHistory == null)
 				throw new ArgumentNullException("@eventLogHistory");
-
-			// do nothing
-		}
-
-		partial void OnSelectFamily(IUnitOfWork unitOfWork, Family @family)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@family == null)
-				throw new ArgumentNullException("@family");
-
-			// do nothing
-		}
-
-		partial void OnSelectFamilyHistory(IUnitOfWork unitOfWork, FamilyHistory @familyHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@familyHistory == null)
-				throw new ArgumentNullException("@familyHistory");
-
-			// do nothing
-		}
-
-		partial void OnSelectNotifyMethodLookup(IUnitOfWork unitOfWork, NotifyMethodLookup @notifyMethodLookup)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@notifyMethodLookup == null)
-				throw new ArgumentNullException("@notifyMethodLookup");
-
-			// do nothing
-		}
-
-		partial void OnSelectNotifyMethodLookupHistory(IUnitOfWork unitOfWork, NotifyMethodLookupHistory @notifyMethodLookupHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@notifyMethodLookupHistory == null)
-				throw new ArgumentNullException("@notifyMethodLookupHistory");
-
-			// do nothing
-		}
-
-		partial void OnSelectParent(IUnitOfWork unitOfWork, Parent @parent)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@parent == null)
-				throw new ArgumentNullException("@parent");
-
-			// do nothing
-		}
-
-		partial void OnSelectParentHistory(IUnitOfWork unitOfWork, ParentHistory @parentHistory)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)@parentHistory == null)
-				throw new ArgumentNullException("@parentHistory");
 
 			// do nothing
 		}
@@ -2409,24 +1789,79 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			// do nothing
 		}
 
-		partial void OnSelectSexLookup(IUnitOfWork unitOfWork, SexLookup @sexLookup)
+		partial void OnSelectTabNoPrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabNoPrimaryKeyNoIdentity @tabNoPrimaryKeyNoIdentity)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)@sexLookup == null)
-				throw new ArgumentNullException("@sexLookup");
+			if ((object)@tabNoPrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabNoPrimaryKeyNoIdentity");
 
 			// do nothing
 		}
 
-		partial void OnSelectSexLookupHistory(IUnitOfWork unitOfWork, SexLookupHistory @sexLookupHistory)
+		partial void OnSelectTabWithCompositePrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabWithCompositePrimaryKeyNoIdentity @tabWithCompositePrimaryKeyNoIdentity)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)@sexLookupHistory == null)
-				throw new ArgumentNullException("@sexLookupHistory");
+			if ((object)@tabWithCompositePrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabWithCompositePrimaryKeyNoIdentity");
+
+			// do nothing
+		}
+
+		partial void OnSelectTabWithNoPrimaryKeyWithIdentity(IUnitOfWork unitOfWork, TabWithNoPrimaryKeyWithIdentity @tabWithNoPrimaryKeyWithIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithNoPrimaryKeyWithIdentity == null)
+				throw new ArgumentNullException("@tabWithNoPrimaryKeyWithIdentity");
+
+			// do nothing
+		}
+
+		partial void OnSelectTabWithPrimaryKeyAsDefault(IUnitOfWork unitOfWork, TabWithPrimaryKeyAsDefault @tabWithPrimaryKeyAsDefault)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyAsDefault == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyAsDefault");
+
+			// do nothing
+		}
+
+		partial void OnSelectTabWithPrimaryKeyAsIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyAsIdentity @tabWithPrimaryKeyAsIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyAsIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyAsIdentity");
+
+			// do nothing
+		}
+
+		partial void OnSelectTabWithPrimaryKeyNoIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyNoIdentity @tabWithPrimaryKeyNoIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyNoIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyNoIdentity");
+
+			// do nothing
+		}
+
+		partial void OnSelectTabWithPrimaryKeyWithDifferentIdentity(IUnitOfWork unitOfWork, TabWithPrimaryKeyWithDifferentIdentity @tabWithPrimaryKeyWithDifferentIdentity)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)@tabWithPrimaryKeyWithDifferentIdentity == null)
+				throw new ArgumentNullException("@tabWithPrimaryKeyWithDifferentIdentity");
 
 			// do nothing
 		}

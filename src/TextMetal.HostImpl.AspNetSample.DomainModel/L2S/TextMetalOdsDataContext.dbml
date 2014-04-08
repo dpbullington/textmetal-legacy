@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Database Name="textmetal_ods_dev" EntityNamespace="TextMetal.HostImpl.AspNetSample.DomainModel.L2S" ContextNamespace="TextMetal.HostImpl.AspNetSample.DomainModel.L2S" Class="TxtMtlPrimaryDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+<Database Name="textmetal_ods_dev" EntityNamespace="TextMetal.HostImpl.AspNetSample.DomainModel.L2S" ContextNamespace="TextMetal.HostImpl.AspNetSample.DomainModel.L2S" Class="TextMetalOdsDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Table Name="global.EmailAttachment" Member="EmailAttachments">
     <Type Name="EmailAttachment">
       <Column Name="EmailAttachmentId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="true" />
@@ -19,7 +19,7 @@
       <Association Name="fk_EmailAttachment_User_modification" Member="ModificationUser" ThisKey="ModificationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="cdc.EmailAttachmentHistory" Member="EmailAttachmentHistories">
+  <Table Name="history.EmailAttachmentHistory" Member="EmailAttachmentHistories">
     <Type Name="EmailAttachmentHistory">
       <Column Name="EmailAttachmentHistoryId" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="true" />
       <Column Name="EmailAttachmentHistoryTs" Type="System.DateTime" DbType="DateTime2(7) NOT NULL" CanBeNull="true" />
@@ -61,7 +61,7 @@
       <Association Name="fk_EmailMessage_User_modification" Member="ModificationUser" ThisKey="ModificationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="cdc.EmailMessageHistory" Member="EmailMessageHistories">
+  <Table Name="history.EmailMessageHistory" Member="EmailMessageHistories">
     <Type Name="EmailMessageHistory">
       <Column Name="EmailMessageHistoryId" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="true" />
       <Column Name="EmailMessageHistoryTs" Type="System.DateTime" DbType="DateTime2(7) NOT NULL" CanBeNull="true" />
@@ -105,7 +105,7 @@
       <Column Name="MaxModificationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
     </Type>
   </Table>
-  <Table Name="cdc.EventLogHistory" Member="EventLogHistories">
+  <Table Name="history.EventLogHistory" Member="EventLogHistories">
     <Type Name="EventLogHistory">
       <Column Name="EventLogHistoryId" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="true" />
       <Column Name="EventLogHistoryTs" Type="System.DateTime" DbType="DateTime2(7) NOT NULL" CanBeNull="true" />
@@ -135,7 +135,7 @@
       <Association Name="fk_PropertyBag_User_modification" Member="ModificationUser" ThisKey="ModificationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="cdc.PropertyBagHistory" Member="PropertyBagHistories">
+  <Table Name="history.PropertyBagHistory" Member="PropertyBagHistories">
     <Type Name="PropertyBagHistory">
       <Column Name="PropertyBagHistoryId" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="true" />
       <Column Name="PropertyBagHistoryTs" Type="System.DateTime" DbType="DateTime2(7) NOT NULL" CanBeNull="true" />
@@ -439,7 +439,7 @@
       <Association Name="fk_User_User_modification" Member="User_User_modifications" ThisKey="UserId" OtherKey="ModificationUserId" Type="User" DeleteRule="NO ACTION" />
     </Type>
   </Table>
-  <Table Name="cdc.UserHistory" Member="UserHistories">
+  <Table Name="history.UserHistory" Member="UserHistories">
     <Type Name="UserHistory">
       <Column Name="UserHistoryId" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="true" />
       <Column Name="UserHistoryTs" Type="System.DateTime" DbType="DateTime2(7) NOT NULL" CanBeNull="true" />

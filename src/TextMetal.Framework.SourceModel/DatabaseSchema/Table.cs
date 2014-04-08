@@ -42,6 +42,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string primaryKeyNameSingularCamelCase;
 		private string primaryKeyNameSingularConstantCase;
 		private string primaryKeyNameSingularPascalCase;
+		private string primaryKeyNameSqlMetalCamelCase;
+		private string primaryKeyNameSqlMetalPascalCase;
+		private string primaryKeyNameSqlMetalPluralCamelCase;
+		private string primaryKeyNameSqlMetalPluralPascalCase;
+		private string primaryKeyNameSqlMetalSingularCamelCase;
+		private string primaryKeyNameSqlMetalSingularPascalCase;
 		private string tableName;
 		private string tableNameCamelCase;
 		private string tableNameConstantCase;
@@ -52,6 +58,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string tableNameSingularCamelCase;
 		private string tableNameSingularConstantCase;
 		private string tableNameSingularPascalCase;
+		private string tableNameSqlMetalCamelCase;
+		private string tableNameSqlMetalPascalCase;
+		private string tableNameSqlMetalPluralCamelCase;
+		private string tableNameSqlMetalPluralPascalCase;
+		private string tableNameSqlMetalSingularCamelCase;
+		private string tableNameSqlMetalSingularPascalCase;
 
 		#endregion
 
@@ -251,6 +263,84 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		}
 
 		[XmlAttribute]
+		public string PrimaryKeyNameSqlMetalCamelCase
+		{
+			get
+			{
+				return this.primaryKeyNameSqlMetalCamelCase;
+			}
+			set
+			{
+				this.primaryKeyNameSqlMetalCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string PrimaryKeyNameSqlMetalPascalCase
+		{
+			get
+			{
+				return this.primaryKeyNameSqlMetalPascalCase;
+			}
+			set
+			{
+				this.primaryKeyNameSqlMetalPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string PrimaryKeyNameSqlMetalPluralCamelCase
+		{
+			get
+			{
+				return this.primaryKeyNameSqlMetalPluralCamelCase;
+			}
+			set
+			{
+				this.primaryKeyNameSqlMetalPluralCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string PrimaryKeyNameSqlMetalPluralPascalCase
+		{
+			get
+			{
+				return this.primaryKeyNameSqlMetalPluralPascalCase;
+			}
+			set
+			{
+				this.primaryKeyNameSqlMetalPluralPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string PrimaryKeyNameSqlMetalSingularCamelCase
+		{
+			get
+			{
+				return this.primaryKeyNameSqlMetalSingularCamelCase;
+			}
+			set
+			{
+				this.primaryKeyNameSqlMetalSingularCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string PrimaryKeyNameSqlMetalSingularPascalCase
+		{
+			get
+			{
+				return this.primaryKeyNameSqlMetalSingularPascalCase;
+			}
+			set
+			{
+				this.primaryKeyNameSqlMetalSingularPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
 		public string TableName
 		{
 			get
@@ -377,6 +467,84 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.tableNameSingularPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string TableNameSqlMetalCamelCase
+		{
+			get
+			{
+				return this.tableNameSqlMetalCamelCase;
+			}
+			set
+			{
+				this.tableNameSqlMetalCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string TableNameSqlMetalPascalCase
+		{
+			get
+			{
+				return this.tableNameSqlMetalPascalCase;
+			}
+			set
+			{
+				this.tableNameSqlMetalPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string TableNameSqlMetalPluralCamelCase
+		{
+			get
+			{
+				return this.tableNameSqlMetalPluralCamelCase;
+			}
+			set
+			{
+				this.tableNameSqlMetalPluralCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string TableNameSqlMetalPluralPascalCase
+		{
+			get
+			{
+				return this.tableNameSqlMetalPluralPascalCase;
+			}
+			set
+			{
+				this.tableNameSqlMetalPluralPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string TableNameSqlMetalSingularCamelCase
+		{
+			get
+			{
+				return this.tableNameSqlMetalSingularCamelCase;
+			}
+			set
+			{
+				this.tableNameSqlMetalSingularCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string TableNameSqlMetalSingularPascalCase
+		{
+			get
+			{
+				return this.tableNameSqlMetalSingularPascalCase;
+			}
+			set
+			{
+				this.tableNameSqlMetalSingularPascalCase = value;
 			}
 		}
 
