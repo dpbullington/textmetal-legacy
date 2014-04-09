@@ -13,8 +13,12 @@ namespace TextMetal.Common.Core
 	/// <summary>
 	/// Provides static helper and/or extension methods for reflection.
 	/// </summary>
+#if SQL_CLR
+    internal static class Reflexion
+#else
 	public static class Reflexion
-	{
+#endif
+    {
 		#region Methods/Operators
 
 		/// <summary>
@@ -306,16 +310,17 @@ namespace TextMetal.Common.Core
 
 		/// <summary>
 		/// Transforms a nullable type to its underlying non-nullable equivalent.
+		/// Simply returns an existing reference type
 		/// </summary>
 		/// <param name="conversionType"> The nullable run-time type to transform. </param>
-		/// <returns> Teh non-nullbale run-time type. </returns>
+		/// <returns> The non-nullbale run-time type. </returns>
 		public static Type MakeNonNullableType(Type conversionType)
 		{
 			Type openNullableType;
 
 			if ((object)conversionType == null)
 				throw new ArgumentNullException("conversionType");
-
+				
 			openNullableType = typeof(Nullable<>);
 
 			if (conversionType.IsGenericType &&
@@ -326,14 +331,14 @@ namespace TextMetal.Common.Core
 			if (conversionType.IsValueType)
 				return conversionType;
 
-			return null; // reference types cannot be non-nullable
+			return conversionType; // DPB (2014-04-09: change this behavior.)
 		}
 
 		/// <summary>
 		/// Transforms a nullable type to its underlying non-nullable equivalent.
 		/// </summary>
 		/// <param name="conversionType"> The nullable run-time type to transform. </param>
-		/// <returns> Teh non-nullbale run-time type. </returns>
+		/// <returns> The non-nullbale run-time type. </returns>
 		public static Type MakeNullableType(Type conversionType)
 		{
 			Type openNullableType, closedNullableType;

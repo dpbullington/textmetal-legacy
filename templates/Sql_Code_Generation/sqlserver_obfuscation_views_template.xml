@@ -24,7 +24,7 @@
 ]]>
 	</OutputScope>
 
-	<OutputScope name="Obfucation.g.sql">
+	<OutputScope name="Obfucation_Views.g.sql">
 
 <![CDATA[
 
@@ -40,8 +40,8 @@ GO
 --	shuffling		string		Returns an alternate value using a hashed shuffle of alphanumeric characters (while preserving other characters).
 --	variance		numeric		Returns an alternate value within +/- (x%) of the original value.
 --					temporal	Returns an alternate value within +/- (x%:365.25d) of the original value.
---	cipher			string		Returns an alternate value that is a binary encryption of the original value.
---	nulling			any			Returns an alternate value that is always NULL.
+--	ciphering		string		Returns an alternate value that is a binary encryption of the original value.
+--	defaulting		any			Returns an alternate value that is always NULL.
 --	masking			string		Returns an alternate value that is a +/- (%) mask of the original value.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -233,6 +233,16 @@ CREATE FUNCTION [DataObfuscation].[fn_GetCipher]
 )
 RETURNS [sql_variant]
 AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetCipher]
+GO
+
+
+CREATE FUNCTION [DataObfuscation].[fn_GetDefault]
+(
+	@isNullable [bit],
+	@sqlType [nvarchar](64)
+)
+RETURNS [sql_variant]
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetDefault]
 GO
 
 
@@ -437,15 +447,15 @@ RETURN
 					numSgn["HashMultiplier".to_clr_string()].to_s() + ", " +
 					numSgn["HashBucketSize".to_clr_string()].to_s() + ", " +
 					numSgn["HashSeed".to_clr_string()].to_s() + ", CAST(@" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + " AS [nvarchar](MAX))) % 2) = 0 THEN 1 ELSE -1 END) / 100.0), @" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + "))"
-			when "cipher"
-				"/* CIPHER */ (CASE WHEN @" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + " IS NULL OR LEN(@" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + ") = 0 THEN @" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + " ELSE " +
+			when "ciphering"
+				"/* CIPHERING */ (CASE WHEN @" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + " IS NULL OR LEN(@" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + ") = 0 THEN @" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + " ELSE " +
 					"[DataObfuscation].[fn_GetCipher]([DataObfuscation].[fn_GetHash](" +
 					tblCfg["HashMultiplier".to_clr_string()].to_s() + ", " +
 					tblCfg["HashBucketSize".to_clr_string()].to_s() + ", " +
 					tblCfg["HashSeed".to_clr_string()].to_s() + ", @" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + "), @" +
 					textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + ") END)"
-			when "nulling"
-				"/* NULLING */ (NULL)"
+			when "defaulting"
+				"/* DEFAULTING */ ([DataObfuscation].[fn_GetDefault](" + (textMetal.EvaluateToken.invoke("ColumnNullable") ? "1" : "0") + ", '" + textMetal.EvaluateToken.invoke("ColumnSqlType") + "'))"
 			when "masking"
 				maskFactor = obfuCfg["MaskFactor".to_clr_string()]
 				

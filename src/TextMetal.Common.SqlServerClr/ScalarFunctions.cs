@@ -14,6 +14,7 @@ using System.Text;
 using Microsoft.SqlServer.Server;
 
 using TextMetal.Common.Core;
+using System.Xml;
 
 namespace TextMetal.Common.SqlServerClr
 {
@@ -220,6 +221,104 @@ namespace TextMetal.Common.SqlServerClr
 
 			return Encoding.GetEncoding("UCS-2").GetString(cipherTextBytes);
 		}
+		
+		public static object GetDefault(bool isNullable, string sqlType)
+		{
+			if ((object)sqlType == null)
+				throw new ArgumentNullException("sqlType");
+
+			switch (sqlType = sqlType.SafeToString().ToUpper())
+			{
+				case "BIGINT":
+					return (isNullable ? (Int64?)null : (Int64)0);
+				case "BINARY":
+					return typeof(Byte[]);
+				case "BIT":
+					return (isNullable ? (Boolean?)null : (Boolean)false);
+				case "CHARACTER":
+				case "CHAR":
+					return (isNullable ? null : string.Empty);
+				case "CURSOR":
+					return (isNullable ? (Object)null : (Object)new object());
+				case "DATE":
+					return (isNullable ? (DateTime?)null : (DateTime)DateTime.MinValue);
+				case "DATETIME":
+					return (isNullable ? (DateTime?)null : (DateTime)DateTime.MinValue);
+				case "DATETIME2":
+					return (isNullable ? (DateTime?)null : (DateTime)DateTime.MinValue);
+				case "DATETIMEOFFSET":
+					return (isNullable ? (DateTimeOffset?)null : (DateTimeOffset)DateTimeOffset.MinValue);
+				case "DEC":
+				case "DECIMAL":
+					return (isNullable ? (Decimal?)null : (Decimal)0.0);
+				case "DOUBLE PRECISION":
+				case "FLOAT":
+                    // ignore precision
+                    return (isNullable ? (Single?)null : (Single)0.0);
+				case "GEOGRAPHY":
+					return (isNullable ? (Object)null : (Object)new object());
+				case "GEOMETRY":
+					return (isNullable ? (Object)null : (Object)new object());
+				case "HIERARCHYID":
+					return (isNullable ? (Object)null : (Object)new object());
+				case "IMAGE":
+					return (isNullable ? (Byte[])null : (Byte[])new byte[0]);
+				case "INTEGER":
+				case "INT":
+					return (isNullable ? (Int32?)null : (Int32)0);
+				case "MONEY":
+					return (isNullable ? (Decimal?)null : (Decimal)0.0);
+				case "NATIONAL CHARACTER":
+				case "NATIONAL CHAR":
+				case "NCHAR":
+                    return (isNullable ? null : string.Empty);
+				case "NATIONAL TEXT":
+				case "NTEXT":
+                    return (isNullable ? null : string.Empty);
+				case "NUMERIC":
+					return (isNullable ? (Decimal?)null : (Decimal)0.0);
+				case "NATIONAL CHARACTER VARYING":
+				case "NATIONAL CHAR VARYING":
+				case "NVARCHAR":
+                    return (isNullable ? null : string.Empty);
+				case "REAL":
+					return (isNullable ? (Single?)null : (Single)0.0);
+				case "TIMESTAMP":
+				case "ROWVERSION":
+					return typeof(Byte[]);
+				case "SMALLDATETIME":
+					return (isNullable ? (DateTime?)null : (DateTime)DateTime.MinValue);
+				case "SMALLINT":
+					return (isNullable ? (Int16?)null : (Int16)0);
+				case "SMALLMONEY":
+					return (isNullable ? (Decimal?)null : (Decimal)0.0);
+				case "SQL_VARIANT":
+					return (isNullable ? (Object)null : (Object)new object());
+				case "SYSNAME":
+                    return (isNullable ? null : string.Empty);
+				case "TABLE":
+					return (isNullable ? (Object)null : (Object)new object());
+				case "TEXT":
+                    return (isNullable ? null : string.Empty);
+				case "TIME":
+					return (isNullable ? (TimeSpan?)null : (TimeSpan)TimeSpan.Zero);
+				case "TINYINT":
+					return (isNullable ? (Byte?)null : (Byte)0);
+				case "UNIQUEIDENTIFIER":
+					return (isNullable ? (Guid?)null : (Guid)Guid.Empty);
+				case "BINARY VARYING":
+				case "VARBINARY":
+					return (isNullable ? (Byte[])null : (Byte[])new byte[0]);
+				case "CHARACTER VARYING":
+				case "CHAR VARYING":
+				case "VARCHAR":
+                    return (isNullable ? null : string.Empty);
+				case "XML":
+					return (isNullable ? (XmlDocument)null : (XmlDocument)new XmlDocument());
+				default:
+                    throw new ArgumentOutOfRangeException(string.Format("Unsupported parameter type: '{0}'.", sqlType));
+			}
+		}
 
 		public static int? GetHash(long hashMultiplier, long hashBucketSize, long hashSeed, string value)
 		{
@@ -385,6 +484,12 @@ namespace TextMetal.Common.SqlServerClr
 				return null;
 
 			return GetCipher(sharedSecret, value.SafeToString(null, null));
+		}
+		
+		[SqlFunction(DataAccess = DataAccessKind.None)]
+		public static object fn_GetDefault(bool isNullable, string sqlType)
+		{
+            return GetDefault(isNullable, sqlType);
 		}
 
 		[SqlFunction(DataAccess = DataAccessKind.None)]
