@@ -23,9 +23,8 @@
 	"TablesViews": [
 ]]>
 	</OutputScope>
-
-	<OutputScope name="Obfucation.g.sql">
-
+	
+	<OutputScope name="Obfuscation_Trigger.g.sql">
 <![CDATA[
 
 SET NOCOUNT ON
@@ -277,7 +276,7 @@ RETURNS [sql_variant]
 AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetVariance]
 GO
 ]]>
-
+	
 	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
 			<Ruby src="Script">
@@ -314,14 +313,22 @@ GO
 ]]>
 				</If.False>
 			</If>
-
+			
 			<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 				<ForEach.Filter>
+					<BinaryExpression operator="Eq">
+						<BinaryExpression.LeftExpression>
+							<Facet name="IsView" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Value type="System.Boolean" data="False" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
 				</ForEach.Filter>
 				<ForEach.Body>
 <![CDATA[
 
-CREATE FUNCTION [${SchemaName}].[iltv_fn_${TableName}]
+CREATE TABLE [${SchemaName}].[${TableName}]
 (
 ]]>
 				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -333,16 +340,83 @@ CREATE FUNCTION [${SchemaName}].[iltv_fn_${TableName}]
 						</Ascending>
 					</ForEach.Sort>
 					<ForEach.Body>
-					
-<![CDATA[	@${ColumnNamePascalCase} [${ColumnSqlType}]${rb(`
+						<![CDATA[	[${ColumnName}] [${ColumnSqlType}]${rb(`
+	x = ""
 	if ["binary", "char", "float", "nchar", "nvarchar", "varbinary", "varchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
-		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
+		x += "(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
 	elsif ["decimal", "numeric"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
-		"(" + textMetal.EvaluateToken.invoke("ColumnPrecision").to_s() + ", " + textMetal.EvaluateToken.invoke("ColumnScale").to_s() + ")"
+		x += "(" + textMetal.EvaluateToken.invoke("ColumnPrecision").to_s() + ", " + textMetal.EvaluateToken.invoke("ColumnScale").to_s() + ")"
 	else
-		""
+		x += ""
 	end
-`)}]]>
+		
+	if textMetal.EvaluateToken.invoke("ColumnIsIdentity")
+		x += "" #" IDENTITY(1,1)"
+	else
+		x += ""
+	end
+	
+	x
+`)} ${rb(`textMetal.EvaluateToken.invoke("ColumnNullable") ? "" : "NOT "`)}NULL,]]>
+							
+						<If>
+							<If.Condition>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="_LoopCount" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Facet name="_LoopIndex" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</If.Condition>
+							<If.True>
+<![CDATA[
+]]>
+							</If.True>
+						</If>
+					</ForEach.Body>
+				</ForEach>
+				
+				
+	<If>
+		<If.Condition>
+			<BinaryExpression operator="Ne">
+				<BinaryExpression.LeftExpression>
+					<Facet name="HasNoDefinedPrimaryKeyColumns" />
+				</BinaryExpression.LeftExpression>
+				<BinaryExpression.RightExpression>
+					<Value type="System.Boolean" data="True" />
+				</BinaryExpression.RightExpression>
+			</BinaryExpression>
+		</If.Condition>
+		<If.True>
+<![CDATA[
+
+	CONSTRAINT [pk_${TableName}] PRIMARY KEY
+	(
+]]>
+				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
+					<ForEach.Sort>
+						<Ascending>
+							<Ascending.Compare>
+								<Facet name="ColumnOrdinal" />
+							</Ascending.Compare>
+						</Ascending>
+					</ForEach.Sort>
+					<ForEach.Filter>
+						<BinaryExpression operator="Eq">
+							<BinaryExpression.LeftExpression>
+								<Facet name="ColumnIsPrimaryKey" />
+							</BinaryExpression.LeftExpression>
+							<BinaryExpression.RightExpression>
+								<Value type="System.Boolean" data="True" />
+							</BinaryExpression.RightExpression>
+						</BinaryExpression>
+					</ForEach.Filter>
+					<ForEach.Body>
+						<![CDATA[		[${ColumnName}]]]>
+							
 						<If>
 							<If.Condition>
 								<BinaryExpression operator="Ne">
@@ -362,10 +436,22 @@ CREATE FUNCTION [${SchemaName}].[iltv_fn_${TableName}]
 					</ForEach.Body>
 				</ForEach>
 <![CDATA[
+	)
+]]>
+		</If.True>
+	</If>
+<![CDATA[
 )
-RETURNS TABLE 
-RETURN
-	SELECT
+GO
+
+
+CREATE TRIGGER [${SchemaName}].[On${TableName}InsteadOfInsert] ON [${SchemaName}].[${TableName}] INSTEAD OF INSERT
+AS
+	BEGIN
+		SET NOCOUNT ON;
+		
+		INSERT INTO [${SchemaName}].[${TableName}]
+		(		
 ]]>
 				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Sort>
@@ -375,8 +461,88 @@ RETURN
 							</Ascending.Compare>
 						</Ascending>
 					</ForEach.Sort>
+					<ForEach.Filter>						
+						<BinaryExpression operator="And">
+							<BinaryExpression.LeftExpression>
+								<BinaryExpression operator="Eq">
+									<BinaryExpression.LeftExpression>
+										<Facet name="ColumnIsComputed" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="False" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.LeftExpression>
+							<BinaryExpression.RightExpression>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="ColumnSqlType" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.String" data="timestamp" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.RightExpression>
+						</BinaryExpression>
+					</ForEach.Filter>
 					<ForEach.Body>
-
+						<![CDATA[			[${ColumnName}]]]>
+							
+						<If>
+							<If.Condition>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="_LoopCount" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Facet name="_LoopIndex" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</If.Condition>
+							<If.True>
+<![CDATA[,
+]]>
+							</If.True>
+						</If>
+					</ForEach.Body>
+				</ForEach>
+<![CDATA[
+		)
+		SELECT
+]]>		
+				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
+					<ForEach.Sort>
+						<Ascending>
+							<Ascending.Compare>
+								<Facet name="ColumnOrdinal" />
+							</Ascending.Compare>
+						</Ascending>
+					</ForEach.Sort>
+					<ForEach.Filter>
+						<BinaryExpression operator="And">
+							<BinaryExpression.LeftExpression>
+								<BinaryExpression operator="Eq">
+									<BinaryExpression.LeftExpression>
+										<Facet name="ColumnIsComputed" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.Boolean" data="False" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.LeftExpression>
+							<BinaryExpression.RightExpression>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="ColumnSqlType" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Value type="System.String" data="timestamp" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</BinaryExpression.RightExpression>
+						</BinaryExpression>
+					</ForEach.Filter>
+					<ForEach.Body>
 	<If>
 		<If.Condition>
 			<Ruby src="Script">
@@ -387,13 +553,15 @@ RETURN
 	temp3 = textMetal.EvaluateToken.invoke("ColumnSize") <= 0
 	temp4 = !(temp1 || (temp2 && temp3))
 	
-	temp4
+	#temp4
+	
+	true
 ]]>
 				</Script>
 			</Ruby>
 		</If.Condition>
 		<If.True>
-<![CDATA[	CAST( ${rb(`
+<![CDATA[			CAST( ${rb(`
 	#textMetal.DebuggerBreakpoint.invoke()
 	obfuCfg = textMetal.EvaluateToken.invoke("obfuCfg")
 	tblCfg = obfuCfg["TablesViews".to_clr_string()].select{|obj|
@@ -406,7 +574,7 @@ RETURN
 	numSgn = obfuCfg["NumericSign".to_clr_string()]
 				
 	if tblCfg.nil?
-		"/* EXCLUDE_NO_CONFIG */ @" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + ""
+		"/* EXCLUDE_NO_CONFIG */ i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]"
 	else
 		strategy = tblCfg["StrategyTag".to_clr_string()]
 		
@@ -422,38 +590,38 @@ RETURN
 					dctCfg["KeyColumnName".to_clr_string()].to_s() + "] = ([DataObfuscation].[fn_GetHash](" +
 					tblCfg["HashMultiplier".to_clr_string()].to_s() + ", " +
 					tblCfg["HashBucketSize".to_clr_string()].to_s() + ", " +
-					tblCfg["HashSeed".to_clr_string()].to_s() + ", @" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + ")))"
+					tblCfg["HashSeed".to_clr_string()].to_s() + ", i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "])))"
 			when "shuffling"
 				"/* SHUFFLING */ ([DataObfuscation].[fn_GetShuffle]([DataObfuscation].[fn_GetHash](" +
 					tblCfg["HashMultiplier".to_clr_string()].to_s() + ", " +
 					tblCfg["HashBucketSize".to_clr_string()].to_s() + ", " +
-					tblCfg["HashSeed".to_clr_string()].to_s() + ", @" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + "), @" +
-					textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + "))"
+					tblCfg["HashSeed".to_clr_string()].to_s() + ", i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]), i.[" +
+					textMetal.EvaluateToken.invoke("ColumnName") + "]))"
 			when "variance"
 				"/* VARIANCE */ ([DataObfuscation].[fn_GetVariance]((([DataObfuscation].[fn_GetHash](" +
 					tblCfg["HashMultiplier".to_clr_string()].to_s() + ", " +
 					tblCfg["HashBucketSize".to_clr_string()].to_s() + ", " +
-					tblCfg["HashSeed".to_clr_string()].to_s() + ", CAST(@" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + " AS [nvarchar](MAX))) * CASE WHEN ([DataObfuscation].[fn_GetHash](" +
+					tblCfg["HashSeed".to_clr_string()].to_s() + ", CAST(i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] AS [nvarchar](MAX))) * CASE WHEN ([DataObfuscation].[fn_GetHash](" +
 					numSgn["HashMultiplier".to_clr_string()].to_s() + ", " +
 					numSgn["HashBucketSize".to_clr_string()].to_s() + ", " +
-					numSgn["HashSeed".to_clr_string()].to_s() + ", CAST(@" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + " AS [nvarchar](MAX))) % 2) = 0 THEN 1 ELSE -1 END) / 100.0), @" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + "))"
+					numSgn["HashSeed".to_clr_string()].to_s() + ", CAST(i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] AS [nvarchar](MAX))) % 2) = 0 THEN 1 ELSE -1 END) / 100.0), i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]))"
 			when "cipher"
-				"/* CIPHER */ (CASE WHEN @" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + " IS NULL OR LEN(@" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + ") = 0 THEN @" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + " ELSE " +
+				"/* CIPHER */ (CASE WHEN i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] IS NULL OR LEN(i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]) = 0 THEN i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] ELSE " +
 					"[DataObfuscation].[fn_GetCipher]([DataObfuscation].[fn_GetHash](" +
 					tblCfg["HashMultiplier".to_clr_string()].to_s() + ", " +
 					tblCfg["HashBucketSize".to_clr_string()].to_s() + ", " +
-					tblCfg["HashSeed".to_clr_string()].to_s() + ", @" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + "), @" +
-					textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + ") END)"
+					tblCfg["HashSeed".to_clr_string()].to_s() + ", i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]), i.[" +
+					textMetal.EvaluateToken.invoke("ColumnName") + "]) END)"
 			when "nulling"
 				"/* NULLING */ (NULL)"
 			when "masking"
 				maskFactor = obfuCfg["MaskFactor".to_clr_string()]
 				
-				"/* MASKING */ (CASE WHEN @" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + " IS NULL OR LEN(@" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + ") = 0 THEN @" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + " ELSE " +
-					"[DataObfuscation].[fn_GetMask](" + maskFactor.to_s() + ", @" +
-					textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + ") END)"
+				"/* MASKING */ (CASE WHEN i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] IS NULL OR LEN(i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]) = 0 THEN i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] ELSE " +
+					"[DataObfuscation].[fn_GetMask](" + maskFactor.to_s() + ", i.[" +
+					textMetal.EvaluateToken.invoke("ColumnName") + "]) END)"
 			else #none
-				"/* NONE */ (@" + textMetal.EvaluateToken.invoke("ColumnNamePascalCase") + ")"
+				"/* NONE */ (i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "])"
 		end
 	end
 	`)} AS ${rb(`
@@ -469,7 +637,7 @@ RETURN
 		</If.True>
 		
 		<If.False>
-<![CDATA[	CAST( /* EXCLUDE_BY_TYPE */ @${ColumnNamePascalCase} AS [${ColumnSqlType}]${rb(`
+<![CDATA[	CAST( /* EXCLUDE_BY_TYPE */ i.[${ColumnName}] AS [${ColumnSqlType}]${rb(`
 	if ["binary", "char", "float", "nchar", "nvarchar", "varbinary", "varchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
 		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
 	elsif ["decimal", "numeric"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
@@ -480,8 +648,6 @@ RETURN
 `)} ) as [${ColumnName}]]]>
 		</If.False>
 	</If>
-
-
 						<If>
 							<If.Condition>
 								<BinaryExpression operator="Ne">
@@ -501,94 +667,15 @@ RETURN
 					</ForEach.Body>
 				</ForEach>
 <![CDATA[
+		FROM [inserted] i
+	END
 GO
-
-
-CREATE VIEW [${SchemaName}].[${TableName}]
-AS
-	SELECT 
-	z.*
-	FROM [${DataObfuscationTargetServerName}].[${InitialCatalogName}].[${SchemaName}].[${TableName}] t
-	CROSS APPLY [${DataObfuscationProxyCatalogName}].[${SchemaName}].[iltv_fn_${TableName}]
-	(
 ]]>
-				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
-					<ForEach.Sort>
-						<Ascending>
-							<Ascending.Compare>
-								<Facet name="ColumnOrdinal" />
-							</Ascending.Compare>
-						</Ascending>
-					</ForEach.Sort>
-					<ForEach.Body>
 					
-<![CDATA[		t.[${ColumnName}]]]>
-						<If>
-							<If.Condition>
-								<BinaryExpression operator="Ne">
-									<BinaryExpression.LeftExpression>
-										<Facet name="_LoopCount" />
-									</BinaryExpression.LeftExpression>
-									<BinaryExpression.RightExpression>
-										<Facet name="_LoopIndex" />
-									</BinaryExpression.RightExpression>
-								</BinaryExpression>
-							</If.Condition>
-							<If.True>
-<![CDATA[,
-]]>
-							</If.True>
-						</If>
-						
-						
-						
-						
-						<OutputScope name="${ObfuscationConfigFilePath}.g" append="true">
-<![CDATA[
-	{
-		"CatalogName": "${InitialCatalogName}",
-		"SchemaName": "${SchemaName}",
-		"TableName": "${TableName}",
-		"ColumnName": "${ColumnName}",
-		"StrategyTag": 0,
-		"Dictionary":
-		{
-			"CatalogName": "${InitialCatalogName}",
-			"SchemaName": "DataObfuscation",
-			"TableName": "CrayonColorDictionary",
-			"KeyColumnName": "CrayonColorDictionaryKey",
-			"ValueColumnName": "CrayonColorDictionaryValue"
-		},
-		"HashMultiplier": 5381,
-		"HashBucketSize": 120,
-		"HashSeed": 33
-	},
-]]>
-						</OutputScope>
-						
-						
-						
-						
-						
-						</ForEach.Body>
-				</ForEach>
-<![CDATA[
-	) z
-
-GO 
-]]>
 				</ForEach.Body>
 			</ForEach>
 
 		</ForEach.Body>
 	</ForEach>
-		
 	</OutputScope>
-	
-	<OutputScope name="${ObfuscationConfigFilePath}.g" append="true">
-<![CDATA[	]
-}
-]]>
-	</OutputScope>
-	
 </Template>
