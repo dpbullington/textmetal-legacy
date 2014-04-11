@@ -8,22 +8,6 @@
 
 	<InvokeSourceStrategy src="${ObfuscationConfigFilePath}" alloc="true" var="obfuCfg" aqt-name="TextMetal.Framework.SourceModel.Primative.JsonSourceStrategy, TextMetal.Framework.SourceModel" />
 
-	<OutputScope name="${ObfuscationConfigFilePath}.g" append="false">
-<![CDATA[
-{
-	"MaskFactor": 0.50,
-	
-	"NumericSign":
-	{
-		"HashMultiplier": 5381, 
-		"HashBucketSize": 1000000,
-		"HashSeed": 33
-	},
-	
-	"TablesViews": [
-]]>
-	</OutputScope>
-	
 	<OutputScope name="Obfuscation_Triggers.g.sql">
 <![CDATA[
 

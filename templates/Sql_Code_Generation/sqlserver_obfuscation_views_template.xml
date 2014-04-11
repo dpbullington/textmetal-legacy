@@ -15,9 +15,9 @@
 	
 	"NumericSign":
 	{
-		"HashMultiplier": 5381, 
+		"HashMultiplier": 33, 
 		"HashBucketSize": 1000000,
-		"HashSeed": 33
+		"HashSeed": 5381
 	},
 	
 	"TablesViews": [
@@ -569,9 +569,9 @@ AS
 			"KeyColumnName": "CrayonColorDictionaryKey",
 			"ValueColumnName": "CrayonColorDictionaryValue"
 		},
-		"HashMultiplier": 5381,
+		"HashMultiplier": 33,
 		"HashBucketSize": 120,
-		"HashSeed": 33
+		"HashSeed": 5381
 	},
 ]]>
 						</OutputScope>
