@@ -8,7 +8,7 @@
 		});
 	</script>
 
-	<p>Creating a family parent (administrator role user) requires the following information. The parent you create below will have Administrator access and can change everything related to the family.</p>
+	<p>Creating an member (administrator role user) requires the following information. The member you create below will have Administrator access and can change everything related to the organization.</p>
 
 	<% using (this.Html.BeginForm())
 	   { %>
@@ -98,59 +98,11 @@
 			<hr/>
 			
 			<div class="txtmtl-data-label">
-				<%= this.Html.LabelFor(m => m.ParentPrefixName, "Parent Prefix") %>
+				<%= this.Html.LabelFor(m => m.MemberName, "Member Full Name") %>
 			</div>
 			<div class="txtmtl-data-field">
-				<%= this.Html.TextBoxFor(m => m.ParentPrefixName, new { @class = "txtmtl-input-text" }) %>
-				<%= this.Html.ValidationMessageFor(m => m.ParentPrefixName) %>
-			</div>
-
-			<div class="txtmtl-data-label">
-				<%= this.Html.LabelFor(m => m.ParentFirstName, "Parent First Name") %>
-			</div>
-			<div class="txtmtl-data-field">
-				<%= this.Html.TextBoxFor(m => m.ParentFirstName, new { @class = "txtmtl-input-text" }) %>
-				<%= this.Html.ValidationMessageFor(m => m.ParentFirstName) %>
-			</div>
-		
-			<div class="txtmtl-data-label">
-				<%= this.Html.LabelFor(m => m.ParentMiddleName, "Parent Middle Name") %>
-			</div>
-			<div class="txtmtl-data-field">
-				<%= this.Html.TextBoxFor(m => m.ParentMiddleName, new { @class = "txtmtl-input-text" }) %>
-				<%= this.Html.ValidationMessageFor(m => m.ParentMiddleName) %>
-			</div>
-
-			<div class="txtmtl-data-label">
-				<%= this.Html.LabelFor(m => m.ParentLastName, "Parent Last Name") %>
-			</div>
-			<div class="txtmtl-data-field">
-				<%= this.Html.TextBoxFor(m => m.ParentLastName, new { @class = "txtmtl-input-text" }) %>
-				<%= this.Html.ValidationMessageFor(m => m.ParentLastName) %>
-			</div>
-		
-			<div class="txtmtl-data-label">
-				<%= this.Html.LabelFor(m => m.ParentSuffixName, "Parent Suffix") %>
-			</div>
-			<div class="txtmtl-data-field">
-				<%= this.Html.TextBoxFor(m => m.ParentSuffixName, new { @class = "txtmtl-input-text" }) %>
-				<%= this.Html.ValidationMessageFor(m => m.ParentSuffixName) %>
-			</div>
-			
-			<div class="txtmtl-data-label">
-				<%= this.Html.LabelFor(m => m.ParentSmsTelephoneNumber, "Parent SMS Telephone Number") %>
-			</div>
-			<div class="txtmtl-data-field">
-				<%= this.Html.TextBoxFor(m => m.ParentSmsTelephoneNumber, new { @class = "txtmtl-input-text" }) %>
-				<%= this.Html.ValidationMessageFor(m => m.ParentSmsTelephoneNumber) %>
-			</div>
-			
-			<div class="txtmtl-data-label">
-				<%= this.Html.LabelFor(m => m.ParentDateOfBirth, "Parent Date of Birth") %>
-			</div>
-			<div class="txtmtl-data-field">
-				<%= this.Html.TextBoxFor(m => m.ParentDateOfBirth, new { @class = "txtmtl-input-text" }) %>
-				<%= this.Html.ValidationMessageFor(m => m.ParentDateOfBirth) %>
+				<%= this.Html.TextBoxFor(m => m.MemberName, new { @class = "txtmtl-input-text" }) %>
+				<%= this.Html.ValidationMessageFor(m => m.MemberName) %>
 			</div>
 
 			<div class="txtmtl-data-button">			

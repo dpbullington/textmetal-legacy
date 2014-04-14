@@ -10,14 +10,14 @@ namespace TextMetal.HostImpl.AspNetSample.Common
 	public enum SecurityRoleEnum : uint
 	{
 		None = 0,
-		FamilyOwner = 1,
-		FamilyDesigner = 2,
-		FamilyContributor = 3,
-		FamilyVisitor = 4,
+		OrganizationOwner = 1,
+		OrganizationDesigner = 2,
+		OrganizationContributor = 3,
+		OrganizationVisitor = 4,
 
-		Parent = FamilyOwner,
+		[Obsolete]
+		Master = OrganizationOwner,
 
-		Child = 0xAAAAAAAA,
 		Anonymous = 0xEEEEEEEE,
 		Authenticated = 0xFFFFFFFF
 	}

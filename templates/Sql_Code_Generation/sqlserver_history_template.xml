@@ -166,6 +166,7 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 )
 GO
 
+
 CREATE NONCLUSTERED INDEX [ix_${TableName}History] ON [${HistorySchemaName}].[${TableName}History]
 (
 	[${TableName}HistoryTs] ASC,

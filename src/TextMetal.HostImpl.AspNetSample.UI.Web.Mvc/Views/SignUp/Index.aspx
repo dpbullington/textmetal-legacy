@@ -2,21 +2,19 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MiddleContent" runat="server">
 
-	<p>It is easy and free to begin using TextMetal. This process will guide you through the two easy sign-up steps below. Once you are setup with a family and a parent, you can then explore the remaining customization options inside of TextMetal.</p>
+	<p>It is easy and free to begin using TextMetal. This process will guide you through the two easy sign-up steps below. Once you are setup with an organization and a member, you can then explore the remaining customization options inside of TextMetal.</p>
 	
 	<p style="margin-top: 32px" class="txtmtl-callout-text">TextMetal sign-up</p>
 	
 	<ol>
-		<li>Create a family (the container for parents and children).</li>
-		<li>Create a parent (user) which manages a family.</li>
+		<li>Create an organization.</li>
+		<li>Create a member (user) which manages a book of widgets.</li>
 	</ol>
 
 	<p style="margin-top: 32px" class="txtmtl-callout-text">After sign-up is complete, you can further customize TextMetal to your needs:</p>
 	<ol>
-		<li>Create additional parents in the family.</li>
-		<li>Create one or more children in the family.</li>
-		<li>Create or join a trusted play circle.</li>
-		<li>Send and respond to play requests.</li>
+		<li>Create additional members in the organization.</li>
+		<li>Create one or more ??? in the organization.</li>
 	</ol>
 	
 	<a href="<%= this.Url.Action("Step01", "SignUp") %>"><img style="margin: 2px 2px 2px 2px" src="<%= this.Url.Content("~/images/lets-begin-button.png") %>" alt="Let's begin the sign up process." /></a>

@@ -491,7 +491,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 						throw new ArgumentOutOfRangeException(string.Format("sqlType: '{0}'", sqlType));
 				}
 			}
-			
+
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 

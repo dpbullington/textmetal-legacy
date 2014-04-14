@@ -700,7 +700,7 @@ namespace TextMetal.Common.Xml
 			if ((object)currentXmlTextObject == null)
 				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
-			// grab the parant XML object
+			// grab the parent XML object
 			parentXmlObject = contextStack.Peek();
 
 			// sanity check

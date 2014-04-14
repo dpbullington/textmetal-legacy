@@ -6,12 +6,10 @@
 using System;
 using System.Linq;
 
-using TextMetal.HostImpl.AspNetSample.Common;
-using TextMetal.HostImpl.AspNetSample.DomainModel;
-using TextMetal.HostImpl.AspNetSample.DomainModel.Tables;
-
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
+using TextMetal.HostImpl.AspNetSample.Common;
+using TextMetal.HostImpl.AspNetSample.DomainModel;
 
 namespace TextMetal.HostImpl.AspNetSample.ServiceModel.SignUp
 {
@@ -22,9 +20,9 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.SignUp
 		public SignUpResponse SignUp(SignUpRequest request)
 		{
 			SignUpResponse response;
-			Family family;
+			DomainModel.Tables.Organization organization;
 			DomainModel.Tables.User user;
-			DomainModel.Tables.Parent parent;
+			DomainModel.Tables.Member member;
 
 			using (var scope = new AmbientUnitOfWorkScope(DomainModel.Repository.DefaultUnitOfWorkFactory.Instance))
 			{
@@ -65,19 +63,10 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.SignUp
 				}
 
 				// +++
-				family = new Family();
-				family.FamilyGuid = request.FamilyGuid;
-				family.FamilyName = request.FamilyName;
-				family.AddressLine1 = request.FamilyAddressLine1;
-				family.AddressLine2 = request.FamilyAddressLine2;
-				family.AddressLine3 = request.FamilyAddressLine3;
-				family.CityCountyLocality = request.FamilyCityCountyLocality;
-				family.StateProvince = request.FamilyStateProvince;
-				family.ZipPostalCode = request.FamilyZipPostalCode;
-				family.CountryTerritory = request.FamilyCountryTerritory;
-				family.VoiceTelephoneNumber = request.FamilyVoiceTelephoneNumber;
+				organization = new DomainModel.Tables.Organization();
+				organization.OrganizationName = request.OrganizationName;
 
-				response.Messages = family.Validate();
+				response.Messages = organization.Validate();
 
 				if ((object)response.Messages == null)
 					throw new InvalidOperationException();
@@ -85,25 +74,21 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.SignUp
 				if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 					return response;
 
-				if (!this.Repository.SaveFamily(family))
+				if (!this.Repository.SaveOrganization(organization))
 				{
 					response.Messages = new[] { new Message("", "A conflict error occured.", Severity.Error) };
 					return response;
 				}
 
 				// +++
-				parent = new DomainModel.Tables.Parent();
-				parent.ParentId = user.UserId;
-				parent.FamilyId = family.FamilyId;
-				parent.PrefixName = request.ParentPrefixName;
-				parent.FirstName = request.ParentFirstName;
-				parent.MiddleName = request.ParentMiddleName;
-				parent.LastName = request.ParentLastName;
-				parent.SuffixName = request.ParentSuffixName;
-				parent.SmsTelephoneNumber = request.ParentSmsTelephoneNumber;
-				parent.CreationUserId = user.UserId; // IMPORTANT (SAME AS PARENT ID)
+				member = new DomainModel.Tables.Member();
+				member.SecurityRoleId = this.Repository.FindSecurityRoles(q => q.Where(sr => sr.SecurityRoleName == "OrganizationOwner" && sr.LogicalDelete == false)).Select(x => x.SecurityRoleId).SingleOrDefault();
+				member.MemberId = user.UserId;
+				member.OrganizationId = organization.OrganizationId;
+				member.MemberName = request.MemberName;
+				member.CreationUserId = user.UserId; // IMPORTANT (SAME AS MEMBER ID)
 
-				response.Messages = parent.Validate();
+				response.Messages = member.Validate();
 
 				if ((object)response.Messages == null)
 					throw new InvalidOperationException();
@@ -111,21 +96,21 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.SignUp
 				if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 					return response;
 
-				if (!this.Repository.SaveParent(parent))
+				if (!this.Repository.SaveMember(member))
 				{
 					response.Messages = new[] { new Message("", "A conflict error occured.", Severity.Error) };
 					return response;
 				}
 
-				response.ParentId = parent.ParentId;
-				response.FamilyId = family.FamilyId;
+				response.MemberId = member.MemberId;
+				response.OrganizationId = organization.OrganizationId;
 				response.UserId = user.UserId;
 
 				Stuff.Get<IRepository>("").TrySendEmailTemplate(EmailTemplateResourceNames.NEW_SIGN_UP, new
 																										{
-																											ParentEmailAddress = user.EmailAddress,
-																											FamilyName = family.FamilyName,
-																											ParentFullName = parent.FullName
+																											MemberEmailAddress = user.EmailAddress,
+																											OrganizationName = organization.OrganizationName,
+																											MemberName = member.MemberName
 																										});
 
 				scope.ScopeComplete();

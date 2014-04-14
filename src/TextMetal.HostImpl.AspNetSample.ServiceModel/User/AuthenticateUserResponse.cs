@@ -12,9 +12,9 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 		#region Fields/Constants
 
 		private int failedLoginCount;
-		private int? familyId;
+		private int? memberId;
 		private bool mustChangePassword;
-		private int? parentId;
+		private int? organizationId;
 		private Tuple<int?, int?> rememberMeToken;
 		private int? userId;
 
@@ -34,15 +34,15 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 			}
 		}
 
-		public int? FamilyId
+		public int? MemberId
 		{
 			get
 			{
-				return this.familyId;
+				return this.memberId;
 			}
 			set
 			{
-				this.familyId = value;
+				this.memberId = value;
 			}
 		}
 
@@ -58,15 +58,15 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 			}
 		}
 
-		public int? ParentId
+		public int? OrganizationId
 		{
 			get
 			{
-				return this.parentId;
+				return this.organizationId;
 			}
 			set
 			{
-				this.parentId = value;
+				this.organizationId = value;
 			}
 		}
 

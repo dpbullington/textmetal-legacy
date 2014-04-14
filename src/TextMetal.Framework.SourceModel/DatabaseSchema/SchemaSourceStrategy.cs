@@ -690,7 +690,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 													parameter.ParameterNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(parameter.ParameterName));
 													parameter.ParameterNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(parameter.ParameterName));
 													parameter.ParameterNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(parameter.ParameterName));
-													
+
 													parameter.ParameterNullable = true;
 													parameter.ParameterDirection = (parameter.ParameterIsOutput || parameter.ParameterIsReadOnly) ? ParameterDirection.Output : ParameterDirection.Input;
 
@@ -826,7 +826,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 												procedure.Parameters.Remove(columnParameter);
 											}
 										}
-										
+
 										if (!disableProcSchDisc)
 										{
 											// REFERENCE:

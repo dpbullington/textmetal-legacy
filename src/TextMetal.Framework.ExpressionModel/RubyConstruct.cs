@@ -180,7 +180,7 @@ namespace TextMetal.Framework.ExpressionModel
 
 			action = () => DebuggerBreakpointConstruct.LaunchDebugger();
 			textMetal.DebuggerBreakpoint = action;
-			
+
 			scriptScope.SetVariable("textMetal", textMetal);
 
 			foreach (KeyValuePair<string, object> variableEntry in templatingContext.CurrentVariableTable)

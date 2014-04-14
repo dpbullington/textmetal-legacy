@@ -10,9 +10,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-using TextMetal.HostImpl.AspNetSample.Common;
-
 using TextMetal.Common.Core;
+using TextMetal.HostImpl.AspNetSample.Common;
 
 namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 {

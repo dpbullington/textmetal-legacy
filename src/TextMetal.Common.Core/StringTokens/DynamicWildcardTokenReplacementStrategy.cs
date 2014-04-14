@@ -110,7 +110,7 @@ namespace TextMetal.Common.Core.StringTokens
 				else
 					return false;
 			}
-			
+
 			// break any token paths into token list
 			tokens = rawToken.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -125,7 +125,7 @@ namespace TextMetal.Common.Core.StringTokens
 
 			firstToken = tokens[0];
 			tokens = tokens.Skip(1).ToArray();
-			
+
 			if ((object)this.Targets != null)
 			{
 				foreach (object target in this.Targets)

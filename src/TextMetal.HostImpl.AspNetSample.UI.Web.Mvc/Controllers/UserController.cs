@@ -8,13 +8,12 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 
+using TextMetal.Common.Core;
 using TextMetal.HostImpl.AspNetSample.Common;
 using TextMetal.HostImpl.AspNetSample.DomainModel;
 using TextMetal.HostImpl.AspNetSample.ServiceModel.User;
 using TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Models;
 using TextMetal.HostImpl.AspNetSample.UI.Web.Shared;
-
-using TextMetal.Common.Core;
 
 using _User = TextMetal.HostImpl.AspNetSample.DomainModel.Tables.User;
 
@@ -519,11 +518,11 @@ namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Controllers
 			}
 
 			Current.UserId = response.UserId;
-			Current.ParentId = response.ParentId;
-			Current.FamilyId = response.FamilyId;
+			Current.MemberId = response.MemberId;
+			Current.OrganizationId = response.OrganizationId;
 			Current.ShouldRememberMeToken = response.RememberMeToken;
 			Current.MustChangePassword = response.MustChangePassword;
-			Current.SignUpFamilyNotFinalized = null;
+			Current.SignUpOrganizationNotFinalized = null;
 
 			return
 				new RedirectToRouteResult(

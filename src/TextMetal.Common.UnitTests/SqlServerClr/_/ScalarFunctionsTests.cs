@@ -7,8 +7,6 @@ using System;
 
 using NUnit.Framework;
 
-using TextMetal.Common.SqlServerClr;
-
 namespace TextMetal.Common.UnitTests.SqlServerClr._
 {
 	[TestFixture]

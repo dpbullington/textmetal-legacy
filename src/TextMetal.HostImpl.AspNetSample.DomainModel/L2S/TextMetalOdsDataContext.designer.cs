@@ -48,12 +48,30 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
     partial void InsertEventLogHistory(EventLogHistory instance);
     partial void UpdateEventLogHistory(EventLogHistory instance);
     partial void DeleteEventLogHistory(EventLogHistory instance);
+    partial void InsertMember(Member instance);
+    partial void UpdateMember(Member instance);
+    partial void DeleteMember(Member instance);
+    partial void InsertMemberHistory(MemberHistory instance);
+    partial void UpdateMemberHistory(MemberHistory instance);
+    partial void DeleteMemberHistory(MemberHistory instance);
+    partial void InsertOrganization(Organization instance);
+    partial void UpdateOrganization(Organization instance);
+    partial void DeleteOrganization(Organization instance);
+    partial void InsertOrganizationHistory(OrganizationHistory instance);
+    partial void UpdateOrganizationHistory(OrganizationHistory instance);
+    partial void DeleteOrganizationHistory(OrganizationHistory instance);
     partial void InsertPropertyBag(PropertyBag instance);
     partial void UpdatePropertyBag(PropertyBag instance);
     partial void DeletePropertyBag(PropertyBag instance);
     partial void InsertPropertyBagHistory(PropertyBagHistory instance);
     partial void UpdatePropertyBagHistory(PropertyBagHistory instance);
     partial void DeletePropertyBagHistory(PropertyBagHistory instance);
+    partial void InsertSecurityRole(SecurityRole instance);
+    partial void UpdateSecurityRole(SecurityRole instance);
+    partial void DeleteSecurityRole(SecurityRole instance);
+    partial void InsertSecurityRoleHistory(SecurityRoleHistory instance);
+    partial void UpdateSecurityRoleHistory(SecurityRoleHistory instance);
+    partial void DeleteSecurityRoleHistory(SecurityRoleHistory instance);
     partial void InsertTab_with_composite_primary_key_no_identity(Tab_with_composite_primary_key_no_identity instance);
     partial void UpdateTab_with_composite_primary_key_no_identity(Tab_with_composite_primary_key_no_identity instance);
     partial void DeleteTab_with_composite_primary_key_no_identity(Tab_with_composite_primary_key_no_identity instance);
@@ -157,6 +175,38 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
+		public System.Data.Linq.Table<Member> Members
+		{
+			get
+			{
+				return this.GetTable<Member>();
+			}
+		}
+		
+		public System.Data.Linq.Table<MemberHistory> MemberHistories
+		{
+			get
+			{
+				return this.GetTable<MemberHistory>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Organization> Organizations
+		{
+			get
+			{
+				return this.GetTable<Organization>();
+			}
+		}
+		
+		public System.Data.Linq.Table<OrganizationHistory> OrganizationHistories
+		{
+			get
+			{
+				return this.GetTable<OrganizationHistory>();
+			}
+		}
+		
 		public System.Data.Linq.Table<PropertyBag> PropertyBags
 		{
 			get
@@ -170,6 +220,22 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			get
 			{
 				return this.GetTable<PropertyBagHistory>();
+			}
+		}
+		
+		public System.Data.Linq.Table<SecurityRole> SecurityRoles
+		{
+			get
+			{
+				return this.GetTable<SecurityRole>();
+			}
+		}
+		
+		public System.Data.Linq.Table<SecurityRoleHistory> SecurityRoleHistories
+		{
+			get
+			{
+				return this.GetTable<SecurityRoleHistory>();
 			}
 		}
 		
@@ -666,12 +732,12 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 					if ((previousValue != null))
 					{
 						this._ModificationUser.Entity = null;
-						previousValue.Users.Remove(this);
+						previousValue.EmailAttachment_User_modifications.Remove(this);
 					}
 					this._ModificationUser.Entity = value;
 					if ((value != null))
 					{
-						value.Users.Add(this);
+						value.EmailAttachment_User_modifications.Add(this);
 						this._ModificationUserId = value.UserId;
 					}
 					else
@@ -2785,6 +2851,1763 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="application.Member")]
+	public partial class Member : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Nullable<int> _MemberId;
+		
+		private System.Nullable<int> _OrganizationId;
+		
+		private System.Nullable<int> _ParentMemberId;
+		
+		private string _MemberName;
+		
+		private string _MemberTitle;
+		
+		private System.Nullable<int> _SecurityRoleId;
+		
+		private System.Nullable<byte> _SortOrder;
+		
+		private System.Nullable<System.DateTime> _CreationTimestamp;
+		
+		private System.Nullable<System.DateTime> _ModificationTimestamp;
+		
+		private System.Nullable<int> _CreationUserId;
+		
+		private System.Nullable<int> _ModificationUserId;
+		
+		private System.Nullable<bool> _LogicalDelete;
+		
+		private EntitySet<Member> _Members;
+		
+		private EntityRef<Member> _ParentMember;
+		
+		private EntityRef<Organization> _Organization;
+		
+		private EntityRef<SecurityRole> _SecurityRole;
+		
+		private EntityRef<User> _User;
+		
+		private EntityRef<User> _CreationUser;
+		
+		private EntityRef<User> _ModificationUser;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnMemberIdChanging(System.Nullable<int> value);
+    partial void OnMemberIdChanged();
+    partial void OnOrganizationIdChanging(System.Nullable<int> value);
+    partial void OnOrganizationIdChanged();
+    partial void OnParentMemberIdChanging(System.Nullable<int> value);
+    partial void OnParentMemberIdChanged();
+    partial void OnMemberNameChanging(string value);
+    partial void OnMemberNameChanged();
+    partial void OnMemberTitleChanging(string value);
+    partial void OnMemberTitleChanged();
+    partial void OnSecurityRoleIdChanging(System.Nullable<int> value);
+    partial void OnSecurityRoleIdChanged();
+    partial void OnSortOrderChanging(System.Nullable<byte> value);
+    partial void OnSortOrderChanged();
+    partial void OnCreationTimestampChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreationTimestampChanged();
+    partial void OnModificationTimestampChanging(System.Nullable<System.DateTime> value);
+    partial void OnModificationTimestampChanged();
+    partial void OnCreationUserIdChanging(System.Nullable<int> value);
+    partial void OnCreationUserIdChanged();
+    partial void OnModificationUserIdChanging(System.Nullable<int> value);
+    partial void OnModificationUserIdChanged();
+    partial void OnLogicalDeleteChanging(System.Nullable<bool> value);
+    partial void OnLogicalDeleteChanged();
+    #endregion
+		
+		public Member()
+		{
+			this._Members = new EntitySet<Member>(new Action<Member>(this.attach_Members), new Action<Member>(this.detach_Members));
+			this._ParentMember = default(EntityRef<Member>);
+			this._Organization = default(EntityRef<Organization>);
+			this._SecurityRole = default(EntityRef<SecurityRole>);
+			this._User = default(EntityRef<User>);
+			this._CreationUser = default(EntityRef<User>);
+			this._ModificationUser = default(EntityRef<User>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MemberId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public System.Nullable<int> MemberId
+		{
+			get
+			{
+				return this._MemberId;
+			}
+			set
+			{
+				if ((this._MemberId != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnMemberIdChanging(value);
+					this.SendPropertyChanging();
+					this._MemberId = value;
+					this.SendPropertyChanged("MemberId");
+					this.OnMemberIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrganizationId", DbType="Int NOT NULL")]
+		public System.Nullable<int> OrganizationId
+		{
+			get
+			{
+				return this._OrganizationId;
+			}
+			set
+			{
+				if ((this._OrganizationId != value))
+				{
+					if (this._Organization.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnOrganizationIdChanging(value);
+					this.SendPropertyChanging();
+					this._OrganizationId = value;
+					this.SendPropertyChanged("OrganizationId");
+					this.OnOrganizationIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ParentMemberId", DbType="Int")]
+		public System.Nullable<int> ParentMemberId
+		{
+			get
+			{
+				return this._ParentMemberId;
+			}
+			set
+			{
+				if ((this._ParentMemberId != value))
+				{
+					if (this._ParentMember.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnParentMemberIdChanging(value);
+					this.SendPropertyChanging();
+					this._ParentMemberId = value;
+					this.SendPropertyChanged("ParentMemberId");
+					this.OnParentMemberIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MemberName", DbType="NVarChar(255)")]
+		public string MemberName
+		{
+			get
+			{
+				return this._MemberName;
+			}
+			set
+			{
+				if ((this._MemberName != value))
+				{
+					this.OnMemberNameChanging(value);
+					this.SendPropertyChanging();
+					this._MemberName = value;
+					this.SendPropertyChanged("MemberName");
+					this.OnMemberNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MemberTitle", DbType="NVarChar(255)")]
+		public string MemberTitle
+		{
+			get
+			{
+				return this._MemberTitle;
+			}
+			set
+			{
+				if ((this._MemberTitle != value))
+				{
+					this.OnMemberTitleChanging(value);
+					this.SendPropertyChanging();
+					this._MemberTitle = value;
+					this.SendPropertyChanged("MemberTitle");
+					this.OnMemberTitleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SecurityRoleId", DbType="Int NOT NULL")]
+		public System.Nullable<int> SecurityRoleId
+		{
+			get
+			{
+				return this._SecurityRoleId;
+			}
+			set
+			{
+				if ((this._SecurityRoleId != value))
+				{
+					if (this._SecurityRole.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSecurityRoleIdChanging(value);
+					this.SendPropertyChanging();
+					this._SecurityRoleId = value;
+					this.SendPropertyChanged("SecurityRoleId");
+					this.OnSecurityRoleIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SortOrder", DbType="TinyInt")]
+		public System.Nullable<byte> SortOrder
+		{
+			get
+			{
+				return this._SortOrder;
+			}
+			set
+			{
+				if ((this._SortOrder != value))
+				{
+					this.OnSortOrderChanging(value);
+					this.SendPropertyChanging();
+					this._SortOrder = value;
+					this.SendPropertyChanged("SortOrder");
+					this.OnSortOrderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreationTimestamp", DbType="DateTime NOT NULL")]
+		public System.Nullable<System.DateTime> CreationTimestamp
+		{
+			get
+			{
+				return this._CreationTimestamp;
+			}
+			set
+			{
+				if ((this._CreationTimestamp != value))
+				{
+					this.OnCreationTimestampChanging(value);
+					this.SendPropertyChanging();
+					this._CreationTimestamp = value;
+					this.SendPropertyChanged("CreationTimestamp");
+					this.OnCreationTimestampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModificationTimestamp", DbType="DateTime NOT NULL")]
+		public System.Nullable<System.DateTime> ModificationTimestamp
+		{
+			get
+			{
+				return this._ModificationTimestamp;
+			}
+			set
+			{
+				if ((this._ModificationTimestamp != value))
+				{
+					this.OnModificationTimestampChanging(value);
+					this.SendPropertyChanging();
+					this._ModificationTimestamp = value;
+					this.SendPropertyChanged("ModificationTimestamp");
+					this.OnModificationTimestampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreationUserId", DbType="Int NOT NULL")]
+		public System.Nullable<int> CreationUserId
+		{
+			get
+			{
+				return this._CreationUserId;
+			}
+			set
+			{
+				if ((this._CreationUserId != value))
+				{
+					if (this._CreationUser.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCreationUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._CreationUserId = value;
+					this.SendPropertyChanged("CreationUserId");
+					this.OnCreationUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModificationUserId", DbType="Int NOT NULL")]
+		public System.Nullable<int> ModificationUserId
+		{
+			get
+			{
+				return this._ModificationUserId;
+			}
+			set
+			{
+				if ((this._ModificationUserId != value))
+				{
+					if (this._ModificationUser.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnModificationUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._ModificationUserId = value;
+					this.SendPropertyChanged("ModificationUserId");
+					this.OnModificationUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogicalDelete", DbType="Bit NOT NULL")]
+		public System.Nullable<bool> LogicalDelete
+		{
+			get
+			{
+				return this._LogicalDelete;
+			}
+			set
+			{
+				if ((this._LogicalDelete != value))
+				{
+					this.OnLogicalDeleteChanging(value);
+					this.SendPropertyChanging();
+					this._LogicalDelete = value;
+					this.SendPropertyChanged("LogicalDelete");
+					this.OnLogicalDeleteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_Member", Storage="_Members", ThisKey="MemberId", OtherKey="ParentMemberId")]
+		public EntitySet<Member> Members
+		{
+			get
+			{
+				return this._Members;
+			}
+			set
+			{
+				this._Members.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_Member", Storage="_ParentMember", ThisKey="ParentMemberId", OtherKey="MemberId", IsForeignKey=true)]
+		public Member ParentMember
+		{
+			get
+			{
+				return this._ParentMember.Entity;
+			}
+			set
+			{
+				Member previousValue = this._ParentMember.Entity;
+				if (((previousValue != value) 
+							|| (this._ParentMember.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ParentMember.Entity = null;
+						previousValue.Members.Remove(this);
+					}
+					this._ParentMember.Entity = value;
+					if ((value != null))
+					{
+						value.Members.Add(this);
+						this._ParentMemberId = value.MemberId;
+					}
+					else
+					{
+						this._ParentMemberId = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("ParentMember");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_Member", Storage="_Organization", ThisKey="OrganizationId", OtherKey="OrganizationId", IsForeignKey=true)]
+		public Organization Organization
+		{
+			get
+			{
+				return this._Organization.Entity;
+			}
+			set
+			{
+				Organization previousValue = this._Organization.Entity;
+				if (((previousValue != value) 
+							|| (this._Organization.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Organization.Entity = null;
+						previousValue.Members.Remove(this);
+					}
+					this._Organization.Entity = value;
+					if ((value != null))
+					{
+						value.Members.Add(this);
+						this._OrganizationId = value.OrganizationId;
+					}
+					else
+					{
+						this._OrganizationId = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Organization");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SecurityRole_Member", Storage="_SecurityRole", ThisKey="SecurityRoleId", OtherKey="SecurityRoleId", IsForeignKey=true)]
+		public SecurityRole SecurityRole
+		{
+			get
+			{
+				return this._SecurityRole.Entity;
+			}
+			set
+			{
+				SecurityRole previousValue = this._SecurityRole.Entity;
+				if (((previousValue != value) 
+							|| (this._SecurityRole.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._SecurityRole.Entity = null;
+						previousValue.Members.Remove(this);
+					}
+					this._SecurityRole.Entity = value;
+					if ((value != null))
+					{
+						value.Members.Add(this);
+						this._SecurityRoleId = value.SecurityRoleId;
+					}
+					else
+					{
+						this._SecurityRoleId = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("SecurityRole");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Member", Storage="_User", ThisKey="MemberId", OtherKey="UserId", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.Member = null;
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.Member = this;
+						this._MemberId = value.UserId;
+					}
+					else
+					{
+						this._MemberId = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Member1", Storage="_CreationUser", ThisKey="CreationUserId", OtherKey="UserId", IsForeignKey=true)]
+		public User CreationUser
+		{
+			get
+			{
+				return this._CreationUser.Entity;
+			}
+			set
+			{
+				User previousValue = this._CreationUser.Entity;
+				if (((previousValue != value) 
+							|| (this._CreationUser.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._CreationUser.Entity = null;
+						previousValue.Members.Remove(this);
+					}
+					this._CreationUser.Entity = value;
+					if ((value != null))
+					{
+						value.Members.Add(this);
+						this._CreationUserId = value.UserId;
+					}
+					else
+					{
+						this._CreationUserId = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("CreationUser");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Member2", Storage="_ModificationUser", ThisKey="ModificationUserId", OtherKey="UserId", IsForeignKey=true)]
+		public User ModificationUser
+		{
+			get
+			{
+				return this._ModificationUser.Entity;
+			}
+			set
+			{
+				User previousValue = this._ModificationUser.Entity;
+				if (((previousValue != value) 
+							|| (this._ModificationUser.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ModificationUser.Entity = null;
+						previousValue.Users.Remove(this);
+					}
+					this._ModificationUser.Entity = value;
+					if ((value != null))
+					{
+						value.Users.Add(this);
+						this._ModificationUserId = value.UserId;
+					}
+					else
+					{
+						this._ModificationUserId = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("ModificationUser");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Members(Member entity)
+		{
+			this.SendPropertyChanging();
+			entity.ParentMember = this;
+		}
+		
+		private void detach_Members(Member entity)
+		{
+			this.SendPropertyChanging();
+			entity.ParentMember = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="history.MemberHistory")]
+	public partial class MemberHistory : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Nullable<long> _MemberHistoryId;
+		
+		private System.Nullable<System.DateTime> _MemberHistoryTs;
+		
+		private System.Nullable<int> _MemberId;
+		
+		private System.Nullable<int> _OrganizationId;
+		
+		private System.Nullable<int> _ParentMemberId;
+		
+		private string _MemberName;
+		
+		private string _MemberTitle;
+		
+		private System.Nullable<int> _SecurityRoleId;
+		
+		private System.Nullable<byte> _SortOrder;
+		
+		private System.Nullable<System.DateTime> _CreationTimestamp;
+		
+		private System.Nullable<System.DateTime> _ModificationTimestamp;
+		
+		private System.Nullable<int> _CreationUserId;
+		
+		private System.Nullable<int> _ModificationUserId;
+		
+		private System.Nullable<bool> _LogicalDelete;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnMemberHistoryIdChanging(System.Nullable<long> value);
+    partial void OnMemberHistoryIdChanged();
+    partial void OnMemberHistoryTsChanging(System.Nullable<System.DateTime> value);
+    partial void OnMemberHistoryTsChanged();
+    partial void OnMemberIdChanging(System.Nullable<int> value);
+    partial void OnMemberIdChanged();
+    partial void OnOrganizationIdChanging(System.Nullable<int> value);
+    partial void OnOrganizationIdChanged();
+    partial void OnParentMemberIdChanging(System.Nullable<int> value);
+    partial void OnParentMemberIdChanged();
+    partial void OnMemberNameChanging(string value);
+    partial void OnMemberNameChanged();
+    partial void OnMemberTitleChanging(string value);
+    partial void OnMemberTitleChanged();
+    partial void OnSecurityRoleIdChanging(System.Nullable<int> value);
+    partial void OnSecurityRoleIdChanged();
+    partial void OnSortOrderChanging(System.Nullable<byte> value);
+    partial void OnSortOrderChanged();
+    partial void OnCreationTimestampChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreationTimestampChanged();
+    partial void OnModificationTimestampChanging(System.Nullable<System.DateTime> value);
+    partial void OnModificationTimestampChanged();
+    partial void OnCreationUserIdChanging(System.Nullable<int> value);
+    partial void OnCreationUserIdChanged();
+    partial void OnModificationUserIdChanging(System.Nullable<int> value);
+    partial void OnModificationUserIdChanged();
+    partial void OnLogicalDeleteChanging(System.Nullable<bool> value);
+    partial void OnLogicalDeleteChanged();
+    #endregion
+		
+		public MemberHistory()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MemberHistoryId", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public System.Nullable<long> MemberHistoryId
+		{
+			get
+			{
+				return this._MemberHistoryId;
+			}
+			set
+			{
+				if ((this._MemberHistoryId != value))
+				{
+					this.OnMemberHistoryIdChanging(value);
+					this.SendPropertyChanging();
+					this._MemberHistoryId = value;
+					this.SendPropertyChanged("MemberHistoryId");
+					this.OnMemberHistoryIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MemberHistoryTs", DbType="DateTime2(7) NOT NULL")]
+		public System.Nullable<System.DateTime> MemberHistoryTs
+		{
+			get
+			{
+				return this._MemberHistoryTs;
+			}
+			set
+			{
+				if ((this._MemberHistoryTs != value))
+				{
+					this.OnMemberHistoryTsChanging(value);
+					this.SendPropertyChanging();
+					this._MemberHistoryTs = value;
+					this.SendPropertyChanged("MemberHistoryTs");
+					this.OnMemberHistoryTsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MemberId", DbType="Int NOT NULL")]
+		public System.Nullable<int> MemberId
+		{
+			get
+			{
+				return this._MemberId;
+			}
+			set
+			{
+				if ((this._MemberId != value))
+				{
+					this.OnMemberIdChanging(value);
+					this.SendPropertyChanging();
+					this._MemberId = value;
+					this.SendPropertyChanged("MemberId");
+					this.OnMemberIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrganizationId", DbType="Int")]
+		public System.Nullable<int> OrganizationId
+		{
+			get
+			{
+				return this._OrganizationId;
+			}
+			set
+			{
+				if ((this._OrganizationId != value))
+				{
+					this.OnOrganizationIdChanging(value);
+					this.SendPropertyChanging();
+					this._OrganizationId = value;
+					this.SendPropertyChanged("OrganizationId");
+					this.OnOrganizationIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ParentMemberId", DbType="Int")]
+		public System.Nullable<int> ParentMemberId
+		{
+			get
+			{
+				return this._ParentMemberId;
+			}
+			set
+			{
+				if ((this._ParentMemberId != value))
+				{
+					this.OnParentMemberIdChanging(value);
+					this.SendPropertyChanging();
+					this._ParentMemberId = value;
+					this.SendPropertyChanged("ParentMemberId");
+					this.OnParentMemberIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MemberName", DbType="NVarChar(255)")]
+		public string MemberName
+		{
+			get
+			{
+				return this._MemberName;
+			}
+			set
+			{
+				if ((this._MemberName != value))
+				{
+					this.OnMemberNameChanging(value);
+					this.SendPropertyChanging();
+					this._MemberName = value;
+					this.SendPropertyChanged("MemberName");
+					this.OnMemberNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MemberTitle", DbType="NVarChar(255)")]
+		public string MemberTitle
+		{
+			get
+			{
+				return this._MemberTitle;
+			}
+			set
+			{
+				if ((this._MemberTitle != value))
+				{
+					this.OnMemberTitleChanging(value);
+					this.SendPropertyChanging();
+					this._MemberTitle = value;
+					this.SendPropertyChanged("MemberTitle");
+					this.OnMemberTitleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SecurityRoleId", DbType="Int")]
+		public System.Nullable<int> SecurityRoleId
+		{
+			get
+			{
+				return this._SecurityRoleId;
+			}
+			set
+			{
+				if ((this._SecurityRoleId != value))
+				{
+					this.OnSecurityRoleIdChanging(value);
+					this.SendPropertyChanging();
+					this._SecurityRoleId = value;
+					this.SendPropertyChanged("SecurityRoleId");
+					this.OnSecurityRoleIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SortOrder", DbType="TinyInt")]
+		public System.Nullable<byte> SortOrder
+		{
+			get
+			{
+				return this._SortOrder;
+			}
+			set
+			{
+				if ((this._SortOrder != value))
+				{
+					this.OnSortOrderChanging(value);
+					this.SendPropertyChanging();
+					this._SortOrder = value;
+					this.SendPropertyChanged("SortOrder");
+					this.OnSortOrderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreationTimestamp", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CreationTimestamp
+		{
+			get
+			{
+				return this._CreationTimestamp;
+			}
+			set
+			{
+				if ((this._CreationTimestamp != value))
+				{
+					this.OnCreationTimestampChanging(value);
+					this.SendPropertyChanging();
+					this._CreationTimestamp = value;
+					this.SendPropertyChanged("CreationTimestamp");
+					this.OnCreationTimestampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModificationTimestamp", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ModificationTimestamp
+		{
+			get
+			{
+				return this._ModificationTimestamp;
+			}
+			set
+			{
+				if ((this._ModificationTimestamp != value))
+				{
+					this.OnModificationTimestampChanging(value);
+					this.SendPropertyChanging();
+					this._ModificationTimestamp = value;
+					this.SendPropertyChanged("ModificationTimestamp");
+					this.OnModificationTimestampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreationUserId", DbType="Int")]
+		public System.Nullable<int> CreationUserId
+		{
+			get
+			{
+				return this._CreationUserId;
+			}
+			set
+			{
+				if ((this._CreationUserId != value))
+				{
+					this.OnCreationUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._CreationUserId = value;
+					this.SendPropertyChanged("CreationUserId");
+					this.OnCreationUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModificationUserId", DbType="Int")]
+		public System.Nullable<int> ModificationUserId
+		{
+			get
+			{
+				return this._ModificationUserId;
+			}
+			set
+			{
+				if ((this._ModificationUserId != value))
+				{
+					this.OnModificationUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._ModificationUserId = value;
+					this.SendPropertyChanged("ModificationUserId");
+					this.OnModificationUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogicalDelete", DbType="Bit")]
+		public System.Nullable<bool> LogicalDelete
+		{
+			get
+			{
+				return this._LogicalDelete;
+			}
+			set
+			{
+				if ((this._LogicalDelete != value))
+				{
+					this.OnLogicalDeleteChanging(value);
+					this.SendPropertyChanging();
+					this._LogicalDelete = value;
+					this.SendPropertyChanged("LogicalDelete");
+					this.OnLogicalDeleteChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="application.Organization")]
+	public partial class Organization : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Nullable<int> _OrganizationId;
+		
+		private System.Nullable<int> _ParentOrganizationId;
+		
+		private string _OrganizationName;
+		
+		private string _TimeZoneId;
+		
+		private System.Nullable<byte> _SortOrder;
+		
+		private System.Nullable<System.DateTime> _CreationTimestamp;
+		
+		private System.Nullable<System.DateTime> _ModificationTimestamp;
+		
+		private System.Nullable<int> _CreationUserId;
+		
+		private System.Nullable<int> _ModificationUserId;
+		
+		private System.Nullable<bool> _LogicalDelete;
+		
+		private EntitySet<Member> _Members;
+		
+		private EntitySet<Organization> _Organizations;
+		
+		private EntityRef<Organization> _ParentOrganization;
+		
+		private EntityRef<User> _User;
+		
+		private EntityRef<User> _ModificationUser;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnOrganizationIdChanging(System.Nullable<int> value);
+    partial void OnOrganizationIdChanged();
+    partial void OnParentOrganizationIdChanging(System.Nullable<int> value);
+    partial void OnParentOrganizationIdChanged();
+    partial void OnOrganizationNameChanging(string value);
+    partial void OnOrganizationNameChanged();
+    partial void OnTimeZoneIdChanging(string value);
+    partial void OnTimeZoneIdChanged();
+    partial void OnSortOrderChanging(System.Nullable<byte> value);
+    partial void OnSortOrderChanged();
+    partial void OnCreationTimestampChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreationTimestampChanged();
+    partial void OnModificationTimestampChanging(System.Nullable<System.DateTime> value);
+    partial void OnModificationTimestampChanged();
+    partial void OnCreationUserIdChanging(System.Nullable<int> value);
+    partial void OnCreationUserIdChanged();
+    partial void OnModificationUserIdChanging(System.Nullable<int> value);
+    partial void OnModificationUserIdChanged();
+    partial void OnLogicalDeleteChanging(System.Nullable<bool> value);
+    partial void OnLogicalDeleteChanged();
+    #endregion
+		
+		public Organization()
+		{
+			this._Members = new EntitySet<Member>(new Action<Member>(this.attach_Members), new Action<Member>(this.detach_Members));
+			this._Organizations = new EntitySet<Organization>(new Action<Organization>(this.attach_Organizations), new Action<Organization>(this.detach_Organizations));
+			this._ParentOrganization = default(EntityRef<Organization>);
+			this._User = default(EntityRef<User>);
+			this._ModificationUser = default(EntityRef<User>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrganizationId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public System.Nullable<int> OrganizationId
+		{
+			get
+			{
+				return this._OrganizationId;
+			}
+			set
+			{
+				if ((this._OrganizationId != value))
+				{
+					this.OnOrganizationIdChanging(value);
+					this.SendPropertyChanging();
+					this._OrganizationId = value;
+					this.SendPropertyChanged("OrganizationId");
+					this.OnOrganizationIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ParentOrganizationId", DbType="Int")]
+		public System.Nullable<int> ParentOrganizationId
+		{
+			get
+			{
+				return this._ParentOrganizationId;
+			}
+			set
+			{
+				if ((this._ParentOrganizationId != value))
+				{
+					if (this._ParentOrganization.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnParentOrganizationIdChanging(value);
+					this.SendPropertyChanging();
+					this._ParentOrganizationId = value;
+					this.SendPropertyChanged("ParentOrganizationId");
+					this.OnParentOrganizationIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrganizationName", DbType="NVarChar(255) NOT NULL")]
+		public string OrganizationName
+		{
+			get
+			{
+				return this._OrganizationName;
+			}
+			set
+			{
+				if ((this._OrganizationName != value))
+				{
+					this.OnOrganizationNameChanging(value);
+					this.SendPropertyChanging();
+					this._OrganizationName = value;
+					this.SendPropertyChanged("OrganizationName");
+					this.OnOrganizationNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TimeZoneId", DbType="NVarChar(255)")]
+		public string TimeZoneId
+		{
+			get
+			{
+				return this._TimeZoneId;
+			}
+			set
+			{
+				if ((this._TimeZoneId != value))
+				{
+					this.OnTimeZoneIdChanging(value);
+					this.SendPropertyChanging();
+					this._TimeZoneId = value;
+					this.SendPropertyChanged("TimeZoneId");
+					this.OnTimeZoneIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SortOrder", DbType="TinyInt")]
+		public System.Nullable<byte> SortOrder
+		{
+			get
+			{
+				return this._SortOrder;
+			}
+			set
+			{
+				if ((this._SortOrder != value))
+				{
+					this.OnSortOrderChanging(value);
+					this.SendPropertyChanging();
+					this._SortOrder = value;
+					this.SendPropertyChanged("SortOrder");
+					this.OnSortOrderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreationTimestamp", DbType="DateTime NOT NULL")]
+		public System.Nullable<System.DateTime> CreationTimestamp
+		{
+			get
+			{
+				return this._CreationTimestamp;
+			}
+			set
+			{
+				if ((this._CreationTimestamp != value))
+				{
+					this.OnCreationTimestampChanging(value);
+					this.SendPropertyChanging();
+					this._CreationTimestamp = value;
+					this.SendPropertyChanged("CreationTimestamp");
+					this.OnCreationTimestampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModificationTimestamp", DbType="DateTime NOT NULL")]
+		public System.Nullable<System.DateTime> ModificationTimestamp
+		{
+			get
+			{
+				return this._ModificationTimestamp;
+			}
+			set
+			{
+				if ((this._ModificationTimestamp != value))
+				{
+					this.OnModificationTimestampChanging(value);
+					this.SendPropertyChanging();
+					this._ModificationTimestamp = value;
+					this.SendPropertyChanged("ModificationTimestamp");
+					this.OnModificationTimestampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreationUserId", DbType="Int NOT NULL")]
+		public System.Nullable<int> CreationUserId
+		{
+			get
+			{
+				return this._CreationUserId;
+			}
+			set
+			{
+				if ((this._CreationUserId != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCreationUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._CreationUserId = value;
+					this.SendPropertyChanged("CreationUserId");
+					this.OnCreationUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModificationUserId", DbType="Int NOT NULL")]
+		public System.Nullable<int> ModificationUserId
+		{
+			get
+			{
+				return this._ModificationUserId;
+			}
+			set
+			{
+				if ((this._ModificationUserId != value))
+				{
+					if (this._ModificationUser.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnModificationUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._ModificationUserId = value;
+					this.SendPropertyChanged("ModificationUserId");
+					this.OnModificationUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogicalDelete", DbType="Bit NOT NULL")]
+		public System.Nullable<bool> LogicalDelete
+		{
+			get
+			{
+				return this._LogicalDelete;
+			}
+			set
+			{
+				if ((this._LogicalDelete != value))
+				{
+					this.OnLogicalDeleteChanging(value);
+					this.SendPropertyChanging();
+					this._LogicalDelete = value;
+					this.SendPropertyChanged("LogicalDelete");
+					this.OnLogicalDeleteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_Member", Storage="_Members", ThisKey="OrganizationId", OtherKey="OrganizationId")]
+		public EntitySet<Member> Members
+		{
+			get
+			{
+				return this._Members;
+			}
+			set
+			{
+				this._Members.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_Organization", Storage="_Organizations", ThisKey="OrganizationId", OtherKey="ParentOrganizationId")]
+		public EntitySet<Organization> Organizations
+		{
+			get
+			{
+				return this._Organizations;
+			}
+			set
+			{
+				this._Organizations.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_Organization", Storage="_ParentOrganization", ThisKey="ParentOrganizationId", OtherKey="OrganizationId", IsForeignKey=true)]
+		public Organization ParentOrganization
+		{
+			get
+			{
+				return this._ParentOrganization.Entity;
+			}
+			set
+			{
+				Organization previousValue = this._ParentOrganization.Entity;
+				if (((previousValue != value) 
+							|| (this._ParentOrganization.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ParentOrganization.Entity = null;
+						previousValue.Organizations.Remove(this);
+					}
+					this._ParentOrganization.Entity = value;
+					if ((value != null))
+					{
+						value.Organizations.Add(this);
+						this._ParentOrganizationId = value.OrganizationId;
+					}
+					else
+					{
+						this._ParentOrganizationId = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("ParentOrganization");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Organization", Storage="_User", ThisKey="CreationUserId", OtherKey="UserId", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.Organizations.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.Organizations.Add(this);
+						this._CreationUserId = value.UserId;
+					}
+					else
+					{
+						this._CreationUserId = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Organization1", Storage="_ModificationUser", ThisKey="ModificationUserId", OtherKey="UserId", IsForeignKey=true)]
+		public User ModificationUser
+		{
+			get
+			{
+				return this._ModificationUser.Entity;
+			}
+			set
+			{
+				User previousValue = this._ModificationUser.Entity;
+				if (((previousValue != value) 
+							|| (this._ModificationUser.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ModificationUser.Entity = null;
+						previousValue.Organization_User_modifications.Remove(this);
+					}
+					this._ModificationUser.Entity = value;
+					if ((value != null))
+					{
+						value.Organization_User_modifications.Add(this);
+						this._ModificationUserId = value.UserId;
+					}
+					else
+					{
+						this._ModificationUserId = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("ModificationUser");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Members(Member entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = this;
+		}
+		
+		private void detach_Members(Member entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = null;
+		}
+		
+		private void attach_Organizations(Organization entity)
+		{
+			this.SendPropertyChanging();
+			entity.ParentOrganization = this;
+		}
+		
+		private void detach_Organizations(Organization entity)
+		{
+			this.SendPropertyChanging();
+			entity.ParentOrganization = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="history.OrganizationHistory")]
+	public partial class OrganizationHistory : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Nullable<long> _OrganizationHistoryId;
+		
+		private System.Nullable<System.DateTime> _OrganizationHistoryTs;
+		
+		private System.Nullable<int> _OrganizationId;
+		
+		private System.Nullable<int> _ParentOrganizationId;
+		
+		private string _OrganizationName;
+		
+		private string _TimeZoneId;
+		
+		private System.Nullable<byte> _SortOrder;
+		
+		private System.Nullable<System.DateTime> _CreationTimestamp;
+		
+		private System.Nullable<System.DateTime> _ModificationTimestamp;
+		
+		private System.Nullable<int> _CreationUserId;
+		
+		private System.Nullable<int> _ModificationUserId;
+		
+		private System.Nullable<bool> _LogicalDelete;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnOrganizationHistoryIdChanging(System.Nullable<long> value);
+    partial void OnOrganizationHistoryIdChanged();
+    partial void OnOrganizationHistoryTsChanging(System.Nullable<System.DateTime> value);
+    partial void OnOrganizationHistoryTsChanged();
+    partial void OnOrganizationIdChanging(System.Nullable<int> value);
+    partial void OnOrganizationIdChanged();
+    partial void OnParentOrganizationIdChanging(System.Nullable<int> value);
+    partial void OnParentOrganizationIdChanged();
+    partial void OnOrganizationNameChanging(string value);
+    partial void OnOrganizationNameChanged();
+    partial void OnTimeZoneIdChanging(string value);
+    partial void OnTimeZoneIdChanged();
+    partial void OnSortOrderChanging(System.Nullable<byte> value);
+    partial void OnSortOrderChanged();
+    partial void OnCreationTimestampChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreationTimestampChanged();
+    partial void OnModificationTimestampChanging(System.Nullable<System.DateTime> value);
+    partial void OnModificationTimestampChanged();
+    partial void OnCreationUserIdChanging(System.Nullable<int> value);
+    partial void OnCreationUserIdChanged();
+    partial void OnModificationUserIdChanging(System.Nullable<int> value);
+    partial void OnModificationUserIdChanged();
+    partial void OnLogicalDeleteChanging(System.Nullable<bool> value);
+    partial void OnLogicalDeleteChanged();
+    #endregion
+		
+		public OrganizationHistory()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrganizationHistoryId", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public System.Nullable<long> OrganizationHistoryId
+		{
+			get
+			{
+				return this._OrganizationHistoryId;
+			}
+			set
+			{
+				if ((this._OrganizationHistoryId != value))
+				{
+					this.OnOrganizationHistoryIdChanging(value);
+					this.SendPropertyChanging();
+					this._OrganizationHistoryId = value;
+					this.SendPropertyChanged("OrganizationHistoryId");
+					this.OnOrganizationHistoryIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrganizationHistoryTs", DbType="DateTime2(7) NOT NULL")]
+		public System.Nullable<System.DateTime> OrganizationHistoryTs
+		{
+			get
+			{
+				return this._OrganizationHistoryTs;
+			}
+			set
+			{
+				if ((this._OrganizationHistoryTs != value))
+				{
+					this.OnOrganizationHistoryTsChanging(value);
+					this.SendPropertyChanging();
+					this._OrganizationHistoryTs = value;
+					this.SendPropertyChanged("OrganizationHistoryTs");
+					this.OnOrganizationHistoryTsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrganizationId", DbType="Int NOT NULL")]
+		public System.Nullable<int> OrganizationId
+		{
+			get
+			{
+				return this._OrganizationId;
+			}
+			set
+			{
+				if ((this._OrganizationId != value))
+				{
+					this.OnOrganizationIdChanging(value);
+					this.SendPropertyChanging();
+					this._OrganizationId = value;
+					this.SendPropertyChanged("OrganizationId");
+					this.OnOrganizationIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ParentOrganizationId", DbType="Int")]
+		public System.Nullable<int> ParentOrganizationId
+		{
+			get
+			{
+				return this._ParentOrganizationId;
+			}
+			set
+			{
+				if ((this._ParentOrganizationId != value))
+				{
+					this.OnParentOrganizationIdChanging(value);
+					this.SendPropertyChanging();
+					this._ParentOrganizationId = value;
+					this.SendPropertyChanged("ParentOrganizationId");
+					this.OnParentOrganizationIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrganizationName", DbType="NVarChar(255)")]
+		public string OrganizationName
+		{
+			get
+			{
+				return this._OrganizationName;
+			}
+			set
+			{
+				if ((this._OrganizationName != value))
+				{
+					this.OnOrganizationNameChanging(value);
+					this.SendPropertyChanging();
+					this._OrganizationName = value;
+					this.SendPropertyChanged("OrganizationName");
+					this.OnOrganizationNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TimeZoneId", DbType="NVarChar(255)")]
+		public string TimeZoneId
+		{
+			get
+			{
+				return this._TimeZoneId;
+			}
+			set
+			{
+				if ((this._TimeZoneId != value))
+				{
+					this.OnTimeZoneIdChanging(value);
+					this.SendPropertyChanging();
+					this._TimeZoneId = value;
+					this.SendPropertyChanged("TimeZoneId");
+					this.OnTimeZoneIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SortOrder", DbType="TinyInt")]
+		public System.Nullable<byte> SortOrder
+		{
+			get
+			{
+				return this._SortOrder;
+			}
+			set
+			{
+				if ((this._SortOrder != value))
+				{
+					this.OnSortOrderChanging(value);
+					this.SendPropertyChanging();
+					this._SortOrder = value;
+					this.SendPropertyChanged("SortOrder");
+					this.OnSortOrderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreationTimestamp", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CreationTimestamp
+		{
+			get
+			{
+				return this._CreationTimestamp;
+			}
+			set
+			{
+				if ((this._CreationTimestamp != value))
+				{
+					this.OnCreationTimestampChanging(value);
+					this.SendPropertyChanging();
+					this._CreationTimestamp = value;
+					this.SendPropertyChanged("CreationTimestamp");
+					this.OnCreationTimestampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModificationTimestamp", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ModificationTimestamp
+		{
+			get
+			{
+				return this._ModificationTimestamp;
+			}
+			set
+			{
+				if ((this._ModificationTimestamp != value))
+				{
+					this.OnModificationTimestampChanging(value);
+					this.SendPropertyChanging();
+					this._ModificationTimestamp = value;
+					this.SendPropertyChanged("ModificationTimestamp");
+					this.OnModificationTimestampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreationUserId", DbType="Int")]
+		public System.Nullable<int> CreationUserId
+		{
+			get
+			{
+				return this._CreationUserId;
+			}
+			set
+			{
+				if ((this._CreationUserId != value))
+				{
+					this.OnCreationUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._CreationUserId = value;
+					this.SendPropertyChanged("CreationUserId");
+					this.OnCreationUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModificationUserId", DbType="Int")]
+		public System.Nullable<int> ModificationUserId
+		{
+			get
+			{
+				return this._ModificationUserId;
+			}
+			set
+			{
+				if ((this._ModificationUserId != value))
+				{
+					this.OnModificationUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._ModificationUserId = value;
+					this.SendPropertyChanged("ModificationUserId");
+					this.OnModificationUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogicalDelete", DbType="Bit")]
+		public System.Nullable<bool> LogicalDelete
+		{
+			get
+			{
+				return this._LogicalDelete;
+			}
+			set
+			{
+				if ((this._LogicalDelete != value))
+				{
+					this.OnLogicalDeleteChanging(value);
+					this.SendPropertyChanging();
+					this._LogicalDelete = value;
+					this.SendPropertyChanged("LogicalDelete");
+					this.OnLogicalDeleteChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="global.PropertyBag")]
 	public partial class PropertyBag : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -2988,7 +4811,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreationUserId", DbType="Int")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreationUserId", DbType="Int NOT NULL")]
 		public System.Nullable<int> CreationUserId
 		{
 			get
@@ -3012,7 +4835,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModificationUserId", DbType="Int")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModificationUserId", DbType="Int NOT NULL")]
 		public System.Nullable<int> ModificationUserId
 		{
 			get
@@ -3326,6 +5149,624 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 					this._PropertyValue = value;
 					this.SendPropertyChanged("PropertyValue");
 					this.OnPropertyValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SortOrder", DbType="TinyInt")]
+		public System.Nullable<byte> SortOrder
+		{
+			get
+			{
+				return this._SortOrder;
+			}
+			set
+			{
+				if ((this._SortOrder != value))
+				{
+					this.OnSortOrderChanging(value);
+					this.SendPropertyChanging();
+					this._SortOrder = value;
+					this.SendPropertyChanged("SortOrder");
+					this.OnSortOrderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreationTimestamp", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CreationTimestamp
+		{
+			get
+			{
+				return this._CreationTimestamp;
+			}
+			set
+			{
+				if ((this._CreationTimestamp != value))
+				{
+					this.OnCreationTimestampChanging(value);
+					this.SendPropertyChanging();
+					this._CreationTimestamp = value;
+					this.SendPropertyChanged("CreationTimestamp");
+					this.OnCreationTimestampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModificationTimestamp", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ModificationTimestamp
+		{
+			get
+			{
+				return this._ModificationTimestamp;
+			}
+			set
+			{
+				if ((this._ModificationTimestamp != value))
+				{
+					this.OnModificationTimestampChanging(value);
+					this.SendPropertyChanging();
+					this._ModificationTimestamp = value;
+					this.SendPropertyChanged("ModificationTimestamp");
+					this.OnModificationTimestampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreationUserId", DbType="Int")]
+		public System.Nullable<int> CreationUserId
+		{
+			get
+			{
+				return this._CreationUserId;
+			}
+			set
+			{
+				if ((this._CreationUserId != value))
+				{
+					this.OnCreationUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._CreationUserId = value;
+					this.SendPropertyChanged("CreationUserId");
+					this.OnCreationUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModificationUserId", DbType="Int")]
+		public System.Nullable<int> ModificationUserId
+		{
+			get
+			{
+				return this._ModificationUserId;
+			}
+			set
+			{
+				if ((this._ModificationUserId != value))
+				{
+					this.OnModificationUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._ModificationUserId = value;
+					this.SendPropertyChanged("ModificationUserId");
+					this.OnModificationUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogicalDelete", DbType="Bit")]
+		public System.Nullable<bool> LogicalDelete
+		{
+			get
+			{
+				return this._LogicalDelete;
+			}
+			set
+			{
+				if ((this._LogicalDelete != value))
+				{
+					this.OnLogicalDeleteChanging(value);
+					this.SendPropertyChanging();
+					this._LogicalDelete = value;
+					this.SendPropertyChanged("LogicalDelete");
+					this.OnLogicalDeleteChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="global.SecurityRole")]
+	public partial class SecurityRole : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Nullable<int> _SecurityRoleId;
+		
+		private string _SecurityRoleName;
+		
+		private System.Nullable<byte> _SortOrder;
+		
+		private System.Nullable<System.DateTime> _CreationTimestamp;
+		
+		private System.Nullable<System.DateTime> _ModificationTimestamp;
+		
+		private System.Nullable<int> _CreationUserId;
+		
+		private System.Nullable<int> _ModificationUserId;
+		
+		private System.Nullable<bool> _LogicalDelete;
+		
+		private EntitySet<Member> _Members;
+		
+		private EntityRef<User> _User;
+		
+		private EntityRef<User> _ModificationUser;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSecurityRoleIdChanging(System.Nullable<int> value);
+    partial void OnSecurityRoleIdChanged();
+    partial void OnSecurityRoleNameChanging(string value);
+    partial void OnSecurityRoleNameChanged();
+    partial void OnSortOrderChanging(System.Nullable<byte> value);
+    partial void OnSortOrderChanged();
+    partial void OnCreationTimestampChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreationTimestampChanged();
+    partial void OnModificationTimestampChanging(System.Nullable<System.DateTime> value);
+    partial void OnModificationTimestampChanged();
+    partial void OnCreationUserIdChanging(System.Nullable<int> value);
+    partial void OnCreationUserIdChanged();
+    partial void OnModificationUserIdChanging(System.Nullable<int> value);
+    partial void OnModificationUserIdChanged();
+    partial void OnLogicalDeleteChanging(System.Nullable<bool> value);
+    partial void OnLogicalDeleteChanged();
+    #endregion
+		
+		public SecurityRole()
+		{
+			this._Members = new EntitySet<Member>(new Action<Member>(this.attach_Members), new Action<Member>(this.detach_Members));
+			this._User = default(EntityRef<User>);
+			this._ModificationUser = default(EntityRef<User>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SecurityRoleId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public System.Nullable<int> SecurityRoleId
+		{
+			get
+			{
+				return this._SecurityRoleId;
+			}
+			set
+			{
+				if ((this._SecurityRoleId != value))
+				{
+					this.OnSecurityRoleIdChanging(value);
+					this.SendPropertyChanging();
+					this._SecurityRoleId = value;
+					this.SendPropertyChanged("SecurityRoleId");
+					this.OnSecurityRoleIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SecurityRoleName", DbType="NVarChar(255) NOT NULL")]
+		public string SecurityRoleName
+		{
+			get
+			{
+				return this._SecurityRoleName;
+			}
+			set
+			{
+				if ((this._SecurityRoleName != value))
+				{
+					this.OnSecurityRoleNameChanging(value);
+					this.SendPropertyChanging();
+					this._SecurityRoleName = value;
+					this.SendPropertyChanged("SecurityRoleName");
+					this.OnSecurityRoleNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SortOrder", DbType="TinyInt")]
+		public System.Nullable<byte> SortOrder
+		{
+			get
+			{
+				return this._SortOrder;
+			}
+			set
+			{
+				if ((this._SortOrder != value))
+				{
+					this.OnSortOrderChanging(value);
+					this.SendPropertyChanging();
+					this._SortOrder = value;
+					this.SendPropertyChanged("SortOrder");
+					this.OnSortOrderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreationTimestamp", DbType="DateTime NOT NULL")]
+		public System.Nullable<System.DateTime> CreationTimestamp
+		{
+			get
+			{
+				return this._CreationTimestamp;
+			}
+			set
+			{
+				if ((this._CreationTimestamp != value))
+				{
+					this.OnCreationTimestampChanging(value);
+					this.SendPropertyChanging();
+					this._CreationTimestamp = value;
+					this.SendPropertyChanged("CreationTimestamp");
+					this.OnCreationTimestampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModificationTimestamp", DbType="DateTime NOT NULL")]
+		public System.Nullable<System.DateTime> ModificationTimestamp
+		{
+			get
+			{
+				return this._ModificationTimestamp;
+			}
+			set
+			{
+				if ((this._ModificationTimestamp != value))
+				{
+					this.OnModificationTimestampChanging(value);
+					this.SendPropertyChanging();
+					this._ModificationTimestamp = value;
+					this.SendPropertyChanged("ModificationTimestamp");
+					this.OnModificationTimestampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreationUserId", DbType="Int NOT NULL")]
+		public System.Nullable<int> CreationUserId
+		{
+			get
+			{
+				return this._CreationUserId;
+			}
+			set
+			{
+				if ((this._CreationUserId != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCreationUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._CreationUserId = value;
+					this.SendPropertyChanged("CreationUserId");
+					this.OnCreationUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModificationUserId", DbType="Int NOT NULL")]
+		public System.Nullable<int> ModificationUserId
+		{
+			get
+			{
+				return this._ModificationUserId;
+			}
+			set
+			{
+				if ((this._ModificationUserId != value))
+				{
+					if (this._ModificationUser.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnModificationUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._ModificationUserId = value;
+					this.SendPropertyChanged("ModificationUserId");
+					this.OnModificationUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogicalDelete", DbType="Bit NOT NULL")]
+		public System.Nullable<bool> LogicalDelete
+		{
+			get
+			{
+				return this._LogicalDelete;
+			}
+			set
+			{
+				if ((this._LogicalDelete != value))
+				{
+					this.OnLogicalDeleteChanging(value);
+					this.SendPropertyChanging();
+					this._LogicalDelete = value;
+					this.SendPropertyChanged("LogicalDelete");
+					this.OnLogicalDeleteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SecurityRole_Member", Storage="_Members", ThisKey="SecurityRoleId", OtherKey="SecurityRoleId")]
+		public EntitySet<Member> Members
+		{
+			get
+			{
+				return this._Members;
+			}
+			set
+			{
+				this._Members.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_SecurityRole", Storage="_User", ThisKey="CreationUserId", OtherKey="UserId", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.SecurityRoles.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.SecurityRoles.Add(this);
+						this._CreationUserId = value.UserId;
+					}
+					else
+					{
+						this._CreationUserId = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_SecurityRole1", Storage="_ModificationUser", ThisKey="ModificationUserId", OtherKey="UserId", IsForeignKey=true)]
+		public User ModificationUser
+		{
+			get
+			{
+				return this._ModificationUser.Entity;
+			}
+			set
+			{
+				User previousValue = this._ModificationUser.Entity;
+				if (((previousValue != value) 
+							|| (this._ModificationUser.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ModificationUser.Entity = null;
+						previousValue.SecurityRole_User_modifications.Remove(this);
+					}
+					this._ModificationUser.Entity = value;
+					if ((value != null))
+					{
+						value.SecurityRole_User_modifications.Add(this);
+						this._ModificationUserId = value.UserId;
+					}
+					else
+					{
+						this._ModificationUserId = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("ModificationUser");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Members(Member entity)
+		{
+			this.SendPropertyChanging();
+			entity.SecurityRole = this;
+		}
+		
+		private void detach_Members(Member entity)
+		{
+			this.SendPropertyChanging();
+			entity.SecurityRole = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="history.SecurityRoleHistory")]
+	public partial class SecurityRoleHistory : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Nullable<long> _SecurityRoleHistoryId;
+		
+		private System.Nullable<System.DateTime> _SecurityRoleHistoryTs;
+		
+		private System.Nullable<int> _SecurityRoleId;
+		
+		private string _SecurityRoleName;
+		
+		private System.Nullable<byte> _SortOrder;
+		
+		private System.Nullable<System.DateTime> _CreationTimestamp;
+		
+		private System.Nullable<System.DateTime> _ModificationTimestamp;
+		
+		private System.Nullable<int> _CreationUserId;
+		
+		private System.Nullable<int> _ModificationUserId;
+		
+		private System.Nullable<bool> _LogicalDelete;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSecurityRoleHistoryIdChanging(System.Nullable<long> value);
+    partial void OnSecurityRoleHistoryIdChanged();
+    partial void OnSecurityRoleHistoryTsChanging(System.Nullable<System.DateTime> value);
+    partial void OnSecurityRoleHistoryTsChanged();
+    partial void OnSecurityRoleIdChanging(System.Nullable<int> value);
+    partial void OnSecurityRoleIdChanged();
+    partial void OnSecurityRoleNameChanging(string value);
+    partial void OnSecurityRoleNameChanged();
+    partial void OnSortOrderChanging(System.Nullable<byte> value);
+    partial void OnSortOrderChanged();
+    partial void OnCreationTimestampChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreationTimestampChanged();
+    partial void OnModificationTimestampChanging(System.Nullable<System.DateTime> value);
+    partial void OnModificationTimestampChanged();
+    partial void OnCreationUserIdChanging(System.Nullable<int> value);
+    partial void OnCreationUserIdChanged();
+    partial void OnModificationUserIdChanging(System.Nullable<int> value);
+    partial void OnModificationUserIdChanged();
+    partial void OnLogicalDeleteChanging(System.Nullable<bool> value);
+    partial void OnLogicalDeleteChanged();
+    #endregion
+		
+		public SecurityRoleHistory()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SecurityRoleHistoryId", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public System.Nullable<long> SecurityRoleHistoryId
+		{
+			get
+			{
+				return this._SecurityRoleHistoryId;
+			}
+			set
+			{
+				if ((this._SecurityRoleHistoryId != value))
+				{
+					this.OnSecurityRoleHistoryIdChanging(value);
+					this.SendPropertyChanging();
+					this._SecurityRoleHistoryId = value;
+					this.SendPropertyChanged("SecurityRoleHistoryId");
+					this.OnSecurityRoleHistoryIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SecurityRoleHistoryTs", DbType="DateTime2(7) NOT NULL")]
+		public System.Nullable<System.DateTime> SecurityRoleHistoryTs
+		{
+			get
+			{
+				return this._SecurityRoleHistoryTs;
+			}
+			set
+			{
+				if ((this._SecurityRoleHistoryTs != value))
+				{
+					this.OnSecurityRoleHistoryTsChanging(value);
+					this.SendPropertyChanging();
+					this._SecurityRoleHistoryTs = value;
+					this.SendPropertyChanged("SecurityRoleHistoryTs");
+					this.OnSecurityRoleHistoryTsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SecurityRoleId", DbType="Int NOT NULL")]
+		public System.Nullable<int> SecurityRoleId
+		{
+			get
+			{
+				return this._SecurityRoleId;
+			}
+			set
+			{
+				if ((this._SecurityRoleId != value))
+				{
+					this.OnSecurityRoleIdChanging(value);
+					this.SendPropertyChanging();
+					this._SecurityRoleId = value;
+					this.SendPropertyChanged("SecurityRoleId");
+					this.OnSecurityRoleIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SecurityRoleName", DbType="NVarChar(255)")]
+		public string SecurityRoleName
+		{
+			get
+			{
+				return this._SecurityRoleName;
+			}
+			set
+			{
+				if ((this._SecurityRoleName != value))
+				{
+					this.OnSecurityRoleNameChanging(value);
+					this.SendPropertyChanging();
+					this._SecurityRoleName = value;
+					this.SendPropertyChanged("SecurityRoleName");
+					this.OnSecurityRoleNameChanged();
 				}
 			}
 		}
@@ -4021,7 +6462,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_xml", Storage="_Col_xml", DbType="Xml", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_xml", Storage="_Col_xml", DbType="Xml", UpdateCheck=UpdateCheck.Never)]
 		public System.Xml.Linq.XElement Col_xml
 		{
 			get
@@ -4875,7 +7316,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_xml", Storage="_Col_xml", DbType="Xml", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_xml", Storage="_Col_xml", DbType="Xml", UpdateCheck=UpdateCheck.Never)]
 		public System.Xml.Linq.XElement Col_xml
 		{
 			get
@@ -5484,7 +7925,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_xml", Storage="_Col_xml", DbType="Xml", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_xml", Storage="_Col_xml", DbType="Xml", UpdateCheck=UpdateCheck.Never)]
 		public System.Xml.Linq.XElement Col_xml
 		{
 			get
@@ -6266,7 +8707,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_xml", Storage="_Col_xml", DbType="Xml", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_xml", Storage="_Col_xml", DbType="Xml", UpdateCheck=UpdateCheck.Never)]
 		public System.Xml.Linq.XElement Col_xml
 		{
 			get
@@ -7072,7 +9513,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_xml", Storage="_Col_xml", DbType="Xml", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_xml", Storage="_Col_xml", DbType="Xml", UpdateCheck=UpdateCheck.Never)]
 		public System.Xml.Linq.XElement Col_xml
 		{
 			get
@@ -7878,7 +10319,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_xml", Storage="_Col_xml", DbType="Xml", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_xml", Storage="_Col_xml", DbType="Xml", UpdateCheck=UpdateCheck.Never)]
 		public System.Xml.Linq.XElement Col_xml
 		{
 			get
@@ -8708,7 +11149,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_xml", Storage="_Col_xml", DbType="Xml", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="col_xml", Storage="_Col_xml", DbType="Xml", UpdateCheck=UpdateCheck.Never)]
 		public System.Xml.Linq.XElement Col_xml
 		{
 			get
@@ -8791,7 +11232,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 		
 		private EntitySet<EmailAttachment> _EmailAttachments;
 		
-		private EntitySet<EmailAttachment> _Users;
+		private EntitySet<EmailAttachment> _EmailAttachment_User_modifications;
 		
 		private EntitySet<EmailMessage> _EmailMessages;
 		
@@ -8801,9 +11242,23 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 		
 		private EntitySet<EventLog> _EventLog_User_modifications;
 		
+		private EntityRef<Member> _Member;
+		
+		private EntitySet<Member> _Members;
+		
+		private EntitySet<Member> _Users;
+		
+		private EntitySet<Organization> _Organizations;
+		
+		private EntitySet<Organization> _Organization_User_modifications;
+		
 		private EntitySet<PropertyBag> _PropertyBags;
 		
 		private EntitySet<PropertyBag> _PropertyBag_User_modifications;
+		
+		private EntitySet<SecurityRole> _SecurityRoles;
+		
+		private EntitySet<SecurityRole> _SecurityRole_User_modifications;
 		
 		private EntitySet<User> _User_User_creations;
 		
@@ -8856,13 +11311,20 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 		public User()
 		{
 			this._EmailAttachments = new EntitySet<EmailAttachment>(new Action<EmailAttachment>(this.attach_EmailAttachments), new Action<EmailAttachment>(this.detach_EmailAttachments));
-			this._Users = new EntitySet<EmailAttachment>(new Action<EmailAttachment>(this.attach_Users), new Action<EmailAttachment>(this.detach_Users));
+			this._EmailAttachment_User_modifications = new EntitySet<EmailAttachment>(new Action<EmailAttachment>(this.attach_EmailAttachment_User_modifications), new Action<EmailAttachment>(this.detach_EmailAttachment_User_modifications));
 			this._EmailMessages = new EntitySet<EmailMessage>(new Action<EmailMessage>(this.attach_EmailMessages), new Action<EmailMessage>(this.detach_EmailMessages));
 			this._EmailMessage_User_modifications = new EntitySet<EmailMessage>(new Action<EmailMessage>(this.attach_EmailMessage_User_modifications), new Action<EmailMessage>(this.detach_EmailMessage_User_modifications));
 			this._EventLogs = new EntitySet<EventLog>(new Action<EventLog>(this.attach_EventLogs), new Action<EventLog>(this.detach_EventLogs));
 			this._EventLog_User_modifications = new EntitySet<EventLog>(new Action<EventLog>(this.attach_EventLog_User_modifications), new Action<EventLog>(this.detach_EventLog_User_modifications));
+			this._Member = default(EntityRef<Member>);
+			this._Members = new EntitySet<Member>(new Action<Member>(this.attach_Members), new Action<Member>(this.detach_Members));
+			this._Users = new EntitySet<Member>(new Action<Member>(this.attach_Users), new Action<Member>(this.detach_Users));
+			this._Organizations = new EntitySet<Organization>(new Action<Organization>(this.attach_Organizations), new Action<Organization>(this.detach_Organizations));
+			this._Organization_User_modifications = new EntitySet<Organization>(new Action<Organization>(this.attach_Organization_User_modifications), new Action<Organization>(this.detach_Organization_User_modifications));
 			this._PropertyBags = new EntitySet<PropertyBag>(new Action<PropertyBag>(this.attach_PropertyBags), new Action<PropertyBag>(this.detach_PropertyBags));
 			this._PropertyBag_User_modifications = new EntitySet<PropertyBag>(new Action<PropertyBag>(this.attach_PropertyBag_User_modifications), new Action<PropertyBag>(this.detach_PropertyBag_User_modifications));
+			this._SecurityRoles = new EntitySet<SecurityRole>(new Action<SecurityRole>(this.attach_SecurityRoles), new Action<SecurityRole>(this.detach_SecurityRoles));
+			this._SecurityRole_User_modifications = new EntitySet<SecurityRole>(new Action<SecurityRole>(this.attach_SecurityRole_User_modifications), new Action<SecurityRole>(this.detach_SecurityRole_User_modifications));
 			this._User_User_creations = new EntitySet<User>(new Action<User>(this.attach_User_User_creations), new Action<User>(this.detach_User_User_creations));
 			this._User_User_modifications = new EntitySet<User>(new Action<User>(this.attach_User_User_modifications), new Action<User>(this.detach_User_User_modifications));
 			this._CreationUser = default(EntityRef<User>);
@@ -9231,16 +11693,16 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_EmailAttachment1", Storage="_Users", ThisKey="UserId", OtherKey="ModificationUserId")]
-		public EntitySet<EmailAttachment> Users
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_EmailAttachment1", Storage="_EmailAttachment_User_modifications", ThisKey="UserId", OtherKey="ModificationUserId")]
+		public EntitySet<EmailAttachment> EmailAttachment_User_modifications
 		{
 			get
 			{
-				return this._Users;
+				return this._EmailAttachment_User_modifications;
 			}
 			set
 			{
-				this._Users.Assign(value);
+				this._EmailAttachment_User_modifications.Assign(value);
 			}
 		}
 		
@@ -9296,6 +11758,87 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Member", Storage="_Member", ThisKey="UserId", OtherKey="MemberId", IsUnique=true, IsForeignKey=false)]
+		public Member Member
+		{
+			get
+			{
+				return this._Member.Entity;
+			}
+			set
+			{
+				Member previousValue = this._Member.Entity;
+				if (((previousValue != value) 
+							|| (this._Member.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Member.Entity = null;
+						previousValue.User = null;
+					}
+					this._Member.Entity = value;
+					if ((value != null))
+					{
+						value.User = this;
+					}
+					this.SendPropertyChanged("Member");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Member1", Storage="_Members", ThisKey="UserId", OtherKey="CreationUserId")]
+		public EntitySet<Member> Members
+		{
+			get
+			{
+				return this._Members;
+			}
+			set
+			{
+				this._Members.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Member2", Storage="_Users", ThisKey="UserId", OtherKey="ModificationUserId")]
+		public EntitySet<Member> Users
+		{
+			get
+			{
+				return this._Users;
+			}
+			set
+			{
+				this._Users.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Organization", Storage="_Organizations", ThisKey="UserId", OtherKey="CreationUserId")]
+		public EntitySet<Organization> Organizations
+		{
+			get
+			{
+				return this._Organizations;
+			}
+			set
+			{
+				this._Organizations.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Organization1", Storage="_Organization_User_modifications", ThisKey="UserId", OtherKey="ModificationUserId")]
+		public EntitySet<Organization> Organization_User_modifications
+		{
+			get
+			{
+				return this._Organization_User_modifications;
+			}
+			set
+			{
+				this._Organization_User_modifications.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_PropertyBag", Storage="_PropertyBags", ThisKey="UserId", OtherKey="CreationUserId")]
 		public EntitySet<PropertyBag> PropertyBags
 		{
@@ -9319,6 +11862,32 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			set
 			{
 				this._PropertyBag_User_modifications.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_SecurityRole", Storage="_SecurityRoles", ThisKey="UserId", OtherKey="CreationUserId")]
+		public EntitySet<SecurityRole> SecurityRoles
+		{
+			get
+			{
+				return this._SecurityRoles;
+			}
+			set
+			{
+				this._SecurityRoles.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_SecurityRole1", Storage="_SecurityRole_User_modifications", ThisKey="UserId", OtherKey="ModificationUserId")]
+		public EntitySet<SecurityRole> SecurityRole_User_modifications
+		{
+			get
+			{
+				return this._SecurityRole_User_modifications;
+			}
+			set
+			{
+				this._SecurityRole_User_modifications.Assign(value);
 			}
 		}
 		
@@ -9448,13 +12017,13 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			entity.User = null;
 		}
 		
-		private void attach_Users(EmailAttachment entity)
+		private void attach_EmailAttachment_User_modifications(EmailAttachment entity)
 		{
 			this.SendPropertyChanging();
 			entity.ModificationUser = this;
 		}
 		
-		private void detach_Users(EmailAttachment entity)
+		private void detach_EmailAttachment_User_modifications(EmailAttachment entity)
 		{
 			this.SendPropertyChanging();
 			entity.ModificationUser = null;
@@ -9508,6 +12077,54 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 			entity.ModificationUser = null;
 		}
 		
+		private void attach_Members(Member entity)
+		{
+			this.SendPropertyChanging();
+			entity.CreationUser = this;
+		}
+		
+		private void detach_Members(Member entity)
+		{
+			this.SendPropertyChanging();
+			entity.CreationUser = null;
+		}
+		
+		private void attach_Users(Member entity)
+		{
+			this.SendPropertyChanging();
+			entity.ModificationUser = this;
+		}
+		
+		private void detach_Users(Member entity)
+		{
+			this.SendPropertyChanging();
+			entity.ModificationUser = null;
+		}
+		
+		private void attach_Organizations(Organization entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_Organizations(Organization entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
+		private void attach_Organization_User_modifications(Organization entity)
+		{
+			this.SendPropertyChanging();
+			entity.ModificationUser = this;
+		}
+		
+		private void detach_Organization_User_modifications(Organization entity)
+		{
+			this.SendPropertyChanging();
+			entity.ModificationUser = null;
+		}
+		
 		private void attach_PropertyBags(PropertyBag entity)
 		{
 			this.SendPropertyChanging();
@@ -9527,6 +12144,30 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.L2S
 		}
 		
 		private void detach_PropertyBag_User_modifications(PropertyBag entity)
+		{
+			this.SendPropertyChanging();
+			entity.ModificationUser = null;
+		}
+		
+		private void attach_SecurityRoles(SecurityRole entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_SecurityRoles(SecurityRole entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
+		private void attach_SecurityRole_User_modifications(SecurityRole entity)
+		{
+			this.SendPropertyChanging();
+			entity.ModificationUser = this;
+		}
+		
+		private void detach_SecurityRole_User_modifications(SecurityRole entity)
 		{
 			this.SendPropertyChanging();
 			entity.ModificationUser = null;

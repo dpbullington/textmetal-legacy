@@ -12,6 +12,170 @@ CREATE SCHEMA [history]
 GO
 
 
+CREATE TABLE [history].[OrganizationHistory]
+(
+	[OrganizationHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
+	[OrganizationHistoryTs] [datetime2] NOT NULL,
+	[OrganizationId] [int] NOT NULL,
+
+	[ParentOrganizationId] [int] NULL,
+	[OrganizationName] [nvarchar](255) NULL,
+	[TimeZoneId] [nvarchar](255) NULL,
+	[SortOrder] [tinyint] NULL,
+	[CreationTimestamp] [datetime] NULL,
+	[ModificationTimestamp] [datetime] NULL,
+	[CreationUserId] [int] NULL,
+	[ModificationUserId] [int] NULL,
+	[LogicalDelete] [bit] NULL,
+
+	CONSTRAINT [pk_OrganizationHistory] PRIMARY KEY
+	(
+		[OrganizationHistoryId]
+	)
+)
+GO
+
+
+CREATE NONCLUSTERED INDEX [ix_OrganizationHistory] ON [history].[OrganizationHistory]
+(
+	[OrganizationHistoryTs] ASC,
+	[OrganizationId] ASC
+) ON [PRIMARY]
+GO
+
+
+CREATE TRIGGER [application].[OnOrganizationChange] ON [application].[Organization] AFTER INSERT, UPDATE, DELETE
+AS
+	BEGIN
+		SET NOCOUNT ON;
+		
+		DECLARE @ThisMoment [datetime2]
+		
+		SET @ThisMoment = SYSUTCDATETIME()
+
+		INSERT INTO [history].[OrganizationHistory]
+		SELECT
+			@ThisMoment AS [OrganizationHistoryTs],
+			i.[OrganizationId],
+
+			i.[ParentOrganizationId],
+			i.[OrganizationName],
+			i.[TimeZoneId],
+			i.[SortOrder],
+			i.[CreationTimestamp],
+			i.[ModificationTimestamp],
+			i.[CreationUserId],
+			i.[ModificationUserId],
+			i.[LogicalDelete]
+		FROM [inserted] i
+
+		UNION ALL
+
+		SELECT
+			@ThisMoment AS [OrganizationHistoryTs],
+			d.[OrganizationId],
+
+			NULL AS [ParentOrganizationId],
+			NULL AS [OrganizationName],
+			NULL AS [TimeZoneId],
+			NULL AS [SortOrder],
+			NULL AS [CreationTimestamp],
+			NULL AS [ModificationTimestamp],
+			NULL AS [CreationUserId],
+			NULL AS [ModificationUserId],
+			NULL AS [LogicalDelete]
+		FROM [deleted] d
+		LEFT OUTER JOIN [inserted] i ON i.[OrganizationId] = d.[OrganizationId]
+		WHERE i.[OrganizationId] IS NULL
+	END
+GO
+
+
+CREATE TABLE [history].[MemberHistory]
+(
+	[MemberHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
+	[MemberHistoryTs] [datetime2] NOT NULL,
+	[MemberId] [int] NOT NULL,
+
+	[OrganizationId] [int] NULL,
+	[ParentMemberId] [int] NULL,
+	[MemberName] [nvarchar](255) NULL,
+	[MemberTitle] [nvarchar](255) NULL,
+	[SecurityRoleId] [int] NULL,
+	[SortOrder] [tinyint] NULL,
+	[CreationTimestamp] [datetime] NULL,
+	[ModificationTimestamp] [datetime] NULL,
+	[CreationUserId] [int] NULL,
+	[ModificationUserId] [int] NULL,
+	[LogicalDelete] [bit] NULL,
+
+	CONSTRAINT [pk_MemberHistory] PRIMARY KEY
+	(
+		[MemberHistoryId]
+	)
+)
+GO
+
+
+CREATE NONCLUSTERED INDEX [ix_MemberHistory] ON [history].[MemberHistory]
+(
+	[MemberHistoryTs] ASC,
+	[MemberId] ASC
+) ON [PRIMARY]
+GO
+
+
+CREATE TRIGGER [application].[OnMemberChange] ON [application].[Member] AFTER INSERT, UPDATE, DELETE
+AS
+	BEGIN
+		SET NOCOUNT ON;
+		
+		DECLARE @ThisMoment [datetime2]
+		
+		SET @ThisMoment = SYSUTCDATETIME()
+
+		INSERT INTO [history].[MemberHistory]
+		SELECT
+			@ThisMoment AS [MemberHistoryTs],
+			i.[MemberId],
+
+			i.[OrganizationId],
+			i.[ParentMemberId],
+			i.[MemberName],
+			i.[MemberTitle],
+			i.[SecurityRoleId],
+			i.[SortOrder],
+			i.[CreationTimestamp],
+			i.[ModificationTimestamp],
+			i.[CreationUserId],
+			i.[ModificationUserId],
+			i.[LogicalDelete]
+		FROM [inserted] i
+
+		UNION ALL
+
+		SELECT
+			@ThisMoment AS [MemberHistoryTs],
+			d.[MemberId],
+
+			NULL AS [OrganizationId],
+			NULL AS [ParentMemberId],
+			NULL AS [MemberName],
+			NULL AS [MemberTitle],
+			NULL AS [SecurityRoleId],
+			NULL AS [SortOrder],
+			NULL AS [CreationTimestamp],
+			NULL AS [ModificationTimestamp],
+			NULL AS [CreationUserId],
+			NULL AS [ModificationUserId],
+			NULL AS [LogicalDelete]
+		FROM [deleted] d
+		LEFT OUTER JOIN [inserted] i ON i.[MemberId] = d.[MemberId]
+		WHERE i.[MemberId] IS NULL
+	END
+GO
+
+
 CREATE TABLE [history].[UserHistory]
 (
 	[UserHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
@@ -41,6 +205,7 @@ CREATE TABLE [history].[UserHistory]
 	)
 )
 GO
+
 
 CREATE NONCLUSTERED INDEX [ix_UserHistory] ON [history].[UserHistory]
 (
@@ -111,6 +276,79 @@ AS
 GO
 
 
+CREATE TABLE [history].[SecurityRoleHistory]
+(
+	[SecurityRoleHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
+	[SecurityRoleHistoryTs] [datetime2] NOT NULL,
+	[SecurityRoleId] [int] NOT NULL,
+
+	[SecurityRoleName] [nvarchar](255) NULL,
+	[SortOrder] [tinyint] NULL,
+	[CreationTimestamp] [datetime] NULL,
+	[ModificationTimestamp] [datetime] NULL,
+	[CreationUserId] [int] NULL,
+	[ModificationUserId] [int] NULL,
+	[LogicalDelete] [bit] NULL,
+
+	CONSTRAINT [pk_SecurityRoleHistory] PRIMARY KEY
+	(
+		[SecurityRoleHistoryId]
+	)
+)
+GO
+
+
+CREATE NONCLUSTERED INDEX [ix_SecurityRoleHistory] ON [history].[SecurityRoleHistory]
+(
+	[SecurityRoleHistoryTs] ASC,
+	[SecurityRoleId] ASC
+) ON [PRIMARY]
+GO
+
+
+CREATE TRIGGER [global].[OnSecurityRoleChange] ON [global].[SecurityRole] AFTER INSERT, UPDATE, DELETE
+AS
+	BEGIN
+		SET NOCOUNT ON;
+		
+		DECLARE @ThisMoment [datetime2]
+		
+		SET @ThisMoment = SYSUTCDATETIME()
+
+		INSERT INTO [history].[SecurityRoleHistory]
+		SELECT
+			@ThisMoment AS [SecurityRoleHistoryTs],
+			i.[SecurityRoleId],
+
+			i.[SecurityRoleName],
+			i.[SortOrder],
+			i.[CreationTimestamp],
+			i.[ModificationTimestamp],
+			i.[CreationUserId],
+			i.[ModificationUserId],
+			i.[LogicalDelete]
+		FROM [inserted] i
+
+		UNION ALL
+
+		SELECT
+			@ThisMoment AS [SecurityRoleHistoryTs],
+			d.[SecurityRoleId],
+
+			NULL AS [SecurityRoleName],
+			NULL AS [SortOrder],
+			NULL AS [CreationTimestamp],
+			NULL AS [ModificationTimestamp],
+			NULL AS [CreationUserId],
+			NULL AS [ModificationUserId],
+			NULL AS [LogicalDelete]
+		FROM [deleted] d
+		LEFT OUTER JOIN [inserted] i ON i.[SecurityRoleId] = d.[SecurityRoleId]
+		WHERE i.[SecurityRoleId] IS NULL
+	END
+GO
+
+
 CREATE TABLE [history].[PropertyBagHistory]
 (
 	[PropertyBagHistoryId] [bigint] IDENTITY(1,1) NOT NULL,
@@ -133,6 +371,7 @@ CREATE TABLE [history].[PropertyBagHistory]
 	)
 )
 GO
+
 
 CREATE NONCLUSTERED INDEX [ix_PropertyBagHistory] ON [history].[PropertyBagHistory]
 (
@@ -209,6 +448,7 @@ CREATE TABLE [history].[EventLogHistory]
 	)
 )
 GO
+
 
 CREATE NONCLUSTERED INDEX [ix_EventLogHistory] ON [history].[EventLogHistory]
 (
@@ -290,6 +530,7 @@ CREATE TABLE [history].[EmailMessageHistory]
 	)
 )
 GO
+
 
 CREATE NONCLUSTERED INDEX [ix_EmailMessageHistory] ON [history].[EmailMessageHistory]
 (
@@ -385,6 +626,7 @@ CREATE TABLE [history].[EmailAttachmentHistory]
 )
 GO
 
+
 CREATE NONCLUSTERED INDEX [ix_EmailAttachmentHistory] ON [history].[EmailAttachmentHistory]
 (
 	[EmailAttachmentHistoryTs] ASC,
@@ -442,4 +684,3 @@ AS
 		WHERE i.[EmailMessageId] IS NULL
 	END
 GO
-

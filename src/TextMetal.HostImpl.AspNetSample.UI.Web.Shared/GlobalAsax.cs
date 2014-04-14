@@ -6,10 +6,9 @@
 using System;
 using System.Web;
 
+using TextMetal.Common.Core;
 using TextMetal.HostImpl.AspNetSample.Common;
 using TextMetal.HostImpl.AspNetSample.DomainModel;
-
-using TextMetal.Common.Core;
 
 namespace TextMetal.HostImpl.AspNetSample.UI.Web.Shared
 {

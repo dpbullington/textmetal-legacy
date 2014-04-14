@@ -48,6 +48,7 @@
     <Compile Include="BaseController.cs" />
     <Compile Include="LowercaseRoute.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
+    <Compile Include="RequiresCurrentAttribute.cs" />
     <Compile Include="SecureActionAttribute.cs" />
     <Compile Include="GlobalAsax.cs" />
     <Compile Include="BaseViewModel.cs" />

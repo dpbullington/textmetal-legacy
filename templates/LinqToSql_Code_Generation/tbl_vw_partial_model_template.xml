@@ -51,6 +51,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using TextMetal.Common.Core;
 ]]>
@@ -107,7 +108,7 @@ namespace ${ClrNamespace}.${FolderName}
 			this.ModificationUserId = ((!this.IsNew ? Current.UserId : this.CreationUserId) ?? this.ModificationUserId) ?? User.SYSTEM_USER_ID;
 			this.LogicalDelete = this.LogicalDelete ?? false;
 
-			this.CompanyId = this.CompanyId ?? (int)Current.CompanyId;
+			this.OrganizationId = this.OrganizationId ?? (int)Current.OrganizationId;
 		}
 
 		public virtual Message[] Validate()

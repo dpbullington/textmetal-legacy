@@ -7,9 +7,8 @@ using System;
 using System.Reflection;
 using System.Web.Mvc;
 
-using TextMetal.HostImpl.AspNetSample.DomainModel;
-
 using TextMetal.Common.Core;
+using TextMetal.HostImpl.AspNetSample.DomainModel;
 
 namespace TextMetal.HostImpl.AspNetSample.UI.Web.Shared
 {
@@ -45,6 +44,7 @@ namespace TextMetal.HostImpl.AspNetSample.UI.Web.Shared
 			}
 		}
 
+		[Obsolete]
 		protected IRepository Repository
 		{
 			get

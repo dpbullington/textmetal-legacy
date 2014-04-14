@@ -26,7 +26,7 @@ CREATE TABLE [global].[User]
 	[LastLoginFailureTimestamp] [datetime] NULL,
 	[FailedLoginCount] [smallint] NOT NULL,
 	[MustChangePassword] [bit] NOT NULL,
-	
+		
 	[SortOrder] [tinyint] NULL,
 	[CreationTimestamp] [datetime] NOT NULL,
 	[ModificationTimestamp] [datetime] NOT NULL,
@@ -95,6 +95,58 @@ ALTER TABLE [global].[User] ALTER COLUMN [ModificationUserId] [int] NOT NULL
 GO
 
 
+CREATE TABLE [global].[SecurityRole]
+(
+	[SecurityRoleId] [int] NOT NULL,
+	
+	[SecurityRoleName] [nvarchar](255) NOT NULL,
+	
+	[SortOrder] [tinyint] NULL,
+	[CreationTimestamp] [datetime] NOT NULL,
+	[ModificationTimestamp] [datetime] NOT NULL,
+	[CreationUserId] [int] NOT NULL,
+	[ModificationUserId] [int] NOT NULL,
+	[LogicalDelete] [bit] NOT NULL DEFAULT(0),
+
+	CONSTRAINT [pk_SecurityRole] PRIMARY KEY
+	(
+		[SecurityRoleId]
+	),
+
+	CONSTRAINT [uk_SecurityRole] UNIQUE
+	(
+		[SecurityRoleName]
+	),
+	
+	CONSTRAINT [fk_SecurityRole_User_creation] FOREIGN KEY
+	(
+		[CreationUserId]
+	)
+	REFERENCES [global].[User]
+	(
+		[UserId]
+	),
+	
+	CONSTRAINT [fk_SecurityRole_User_modification] FOREIGN KEY
+	(
+		[ModificationUserId]
+	)
+	REFERENCES [global].[User]
+	(
+		[UserId]
+	)
+)
+GO
+
+
+INSERT INTO [global].[SecurityRole] ([SecurityRoleId], [SecurityRoleName], [CreationTimestamp], [ModificationTimestamp], [CreationUserId], [ModificationUserId]) VALUES (0, 'None', GetUtcDate(), GetUtcDate(), 0, 0);
+INSERT INTO [global].[SecurityRole] ([SecurityRoleId], [SecurityRoleName], [CreationTimestamp], [ModificationTimestamp], [CreationUserId], [ModificationUserId]) VALUES (1, 'OrganizationOwner', GetUtcDate(), GetUtcDate(), 0, 0);
+INSERT INTO [global].[SecurityRole] ([SecurityRoleId], [SecurityRoleName], [CreationTimestamp], [ModificationTimestamp], [CreationUserId], [ModificationUserId]) VALUES (2, 'OrganizationDesigner', GetUtcDate(), GetUtcDate(), 0, 0);
+INSERT INTO [global].[SecurityRole] ([SecurityRoleId], [SecurityRoleName], [CreationTimestamp], [ModificationTimestamp], [CreationUserId], [ModificationUserId]) VALUES (3, 'OrganizationContributor', GetUtcDate(), GetUtcDate(), 0, 0);
+INSERT INTO [global].[SecurityRole] ([SecurityRoleId], [SecurityRoleName], [CreationTimestamp], [ModificationTimestamp], [CreationUserId], [ModificationUserId]) VALUES (4, 'OrganizationVisitor', GetUtcDate(), GetUtcDate(), 0, 0);
+GO
+
+
 CREATE TABLE [global].[PropertyBag]
 (
 	[PropertyBagId] [int] IDENTITY(1,1) NOT NULL,
@@ -106,8 +158,8 @@ CREATE TABLE [global].[PropertyBag]
 	[SortOrder] [tinyint] NULL,
 	[CreationTimestamp] [datetime] NOT NULL,
 	[ModificationTimestamp] [datetime] NOT NULL,
-	[CreationUserId] [int] NULL,
-	[ModificationUserId] [int] NULL,
+	[CreationUserId] [int] NOT NULL,
+	[ModificationUserId] [int] NOT NULL,
 	[LogicalDelete] [bit] NOT NULL DEFAULT(0),
 
 	CONSTRAINT [pk_PropertyBag] PRIMARY KEY
@@ -136,8 +188,8 @@ CREATE TABLE [global].[PropertyBag]
 GO
 
 
-INSERT INTO [global].[PropertyBag] ([PropertyKey], [PropertyValue], [CreationTimestamp], [ModificationTimestamp]) VALUES ('RepositoryGuid', NEWID(), GetUtcDate(), GetUtcDate());
-INSERT INTO [global].[PropertyBag] ([PropertyKey], [PropertyValue], [CreationTimestamp], [ModificationTimestamp]) VALUES ('SchemaRevision', '1', GetUtcDate(), GetUtcDate());
+INSERT INTO [global].[PropertyBag] ([PropertyKey], [PropertyValue], [CreationTimestamp], [ModificationTimestamp], [CreationUserId], [ModificationUserId]) VALUES ('RepositoryGuid', NEWID(), GetUtcDate(), GetUtcDate(), 0, 0);
+INSERT INTO [global].[PropertyBag] ([PropertyKey], [PropertyValue], [CreationTimestamp], [ModificationTimestamp], [CreationUserId], [ModificationUserId]) VALUES ('SchemaRevision', '1', GetUtcDate(), GetUtcDate(), 0, 0);
 GO
 
 
@@ -274,6 +326,150 @@ CREATE TABLE [global].[EmailAttachment]
 	),
 	
 	CONSTRAINT [fk_EmailAttachment_User_modification] FOREIGN KEY
+	(
+		[ModificationUserId]
+	)
+	REFERENCES [global].[User]
+	(
+		[UserId]
+	)
+)
+GO
+
+
+CREATE SCHEMA [application]
+GO
+
+
+CREATE TABLE [application].[Organization]
+(
+	[OrganizationId] [int] IDENTITY(1,1) NOT NULL,
+	[ParentOrganizationId] [int] NULL,
+	
+	[OrganizationName] [nvarchar](255) NOT NULL,
+	[TimeZoneId] [nvarchar](255) NULL,
+	
+	[SortOrder] [tinyint] NULL,
+	[CreationTimestamp] [datetime] NOT NULL,
+	[ModificationTimestamp] [datetime] NOT NULL,
+	[CreationUserId] [int] NOT NULL,
+	[ModificationUserId] [int] NOT NULL,
+	[LogicalDelete] [bit] NOT NULL DEFAULT(0),
+
+	CONSTRAINT [pk_Organization] PRIMARY KEY
+	(
+		[OrganizationId]
+	),
+	
+	CONSTRAINT [uk_Organization] UNIQUE
+	(
+		[OrganizationName]
+	),
+	
+	CONSTRAINT [fk_Organization_Organization_parent] FOREIGN KEY
+	(
+		[ParentOrganizationId]
+	)
+	REFERENCES [application].[Organization]
+	(
+		[OrganizationId]
+	),
+
+	CONSTRAINT [fk_Organization_User_creation] FOREIGN KEY
+	(
+		[CreationUserId]
+	)
+	REFERENCES [global].[User]
+	(
+		[UserId]
+	),
+	
+	CONSTRAINT [fk_Organization_User_modification] FOREIGN KEY
+	(
+		[ModificationUserId]
+	)
+	REFERENCES [global].[User]
+	(
+		[UserId]
+	)
+)
+GO
+
+
+CREATE TABLE [application].[Member]
+(
+	[MemberId] [int] NOT NULL, -- same as [User].[UserId]
+	[OrganizationId] [int] NOT NULL,
+	[ParentMemberId] [int] NULL,
+	
+	[MemberName] [nvarchar](255) NULL,
+	[MemberTitle] [nvarchar](255) NULL,
+	
+	[SecurityRoleId] [int] NOT NULL,
+			
+	[SortOrder] [tinyint] NULL,
+	[CreationTimestamp] [datetime] NOT NULL,
+	[ModificationTimestamp] [datetime] NOT NULL,
+	[CreationUserId] [int] NOT NULL,
+	[ModificationUserId] [int] NOT NULL,
+	[LogicalDelete] [bit] NOT NULL DEFAULT(0),
+	
+	CONSTRAINT [pk_Member] PRIMARY KEY
+	(
+		[MemberId]
+	),
+
+	CONSTRAINT [uk_Member] UNIQUE
+	(
+		[MemberName]
+	),
+
+	CONSTRAINT [fk_Member_User] FOREIGN KEY
+	(
+		[MemberId]
+	)
+	REFERENCES [global].[User]
+	(
+		[UserId]
+	),
+	
+	CONSTRAINT [fk_Member_Member_parent] FOREIGN KEY
+	(
+		[ParentMemberId]
+	)
+	REFERENCES [application].[Member]
+	(
+		[MemberId]
+	),
+	
+	CONSTRAINT [fk_Member_Organization] FOREIGN KEY
+	(
+		[OrganizationId]
+	)
+	REFERENCES [application].[Organization]
+	(
+		[OrganizationId]
+	),
+	
+	CONSTRAINT [fk_Member_SecurityRole] FOREIGN KEY
+	(
+		[SecurityRoleId]
+	)
+	REFERENCES [global].[SecurityRole]
+	(
+		[SecurityRoleId]
+	),
+	
+	CONSTRAINT [fk_Member_User_creation] FOREIGN KEY
+	(
+		[CreationUserId]
+	)
+	REFERENCES [global].[User]
+	(
+		[UserId]
+	),
+	
+	CONSTRAINT [fk_Member_User_modification] FOREIGN KEY
 	(
 		[ModificationUserId]
 	)

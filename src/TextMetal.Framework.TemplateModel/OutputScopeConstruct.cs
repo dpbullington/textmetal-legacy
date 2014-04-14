@@ -29,12 +29,25 @@ namespace TextMetal.Framework.TemplateModel
 
 		#region Fields/Constants
 
-		private string name;
 		private bool append;
+		private string name;
 
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		[XmlAttributeMapping(LocalName = "append", NamespaceUri = "")]
+		public bool Append
+		{
+			get
+			{
+				return this.append;
+			}
+			set
+			{
+				this.append = value;
+			}
+		}
 
 		protected override bool IsScopeBlock
 		{
@@ -54,19 +67,6 @@ namespace TextMetal.Framework.TemplateModel
 			set
 			{
 				this.name = value;
-			}
-		}
-
-		[XmlAttributeMapping(LocalName = "append", NamespaceUri = "")]
-		public bool Append
-		{
-			get
-			{
-				return this.append;
-			}
-			set
-			{
-				this.append = value;
 			}
 		}
 

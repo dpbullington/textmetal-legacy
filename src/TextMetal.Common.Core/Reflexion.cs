@@ -14,11 +14,11 @@ namespace TextMetal.Common.Core
 	/// Provides static helper and/or extension methods for reflection.
 	/// </summary>
 #if SQL_CLR
-    internal static class Reflexion
+	internal static class Reflexion
 #else
 	public static class Reflexion
 #endif
-    {
+	{
 		#region Methods/Operators
 
 		/// <summary>
@@ -320,7 +320,7 @@ namespace TextMetal.Common.Core
 
 			if ((object)conversionType == null)
 				throw new ArgumentNullException("conversionType");
-				
+
 			openNullableType = typeof(Nullable<>);
 
 			if (conversionType.IsGenericType &&

@@ -19,7 +19,7 @@
 	</ReplyTo>
 
 	<To>
-		<Template xmlns="http://www.textmetal.com/api/v5.0.0"><![CDATA[${ParentEmailAddress}]]></Template>
+		<Template xmlns="http://www.textmetal.com/api/v5.0.0"><![CDATA[${MemberEmailAddress}]]></Template>
 	</To>
 
 	<CarbonCopy>
@@ -31,16 +31,16 @@
 	</BlindCarbonCopy>
 
 	<Subject>
-		<Template xmlns="http://www.textmetal.com/api/v5.0.0"><![CDATA['${FamilyName}' - Welcome to TextMetal!]]></Template>
+		<Template xmlns="http://www.textmetal.com/api/v5.0.0"><![CDATA['${OrganizationName}' - Welcome to TextMetal!]]></Template>
 	</Subject>
 
 	<IsBodyHtml>false</IsBodyHtml>
 
 	<Body>
 		<Template xmlns="http://www.textmetal.com/api/v5.0.0">
-			<![CDATA[Dear ${ParentFullName},
+			<![CDATA[Dear ${MemberName},
 
-Welcome to the TextMetal (textmetal.com) community. We are excited to have you and hope that our services will help you propel your family to the next level. If you need support, please visit http://www.textmetal.com/welcome/contact for contact options. Thank you for choosing TextMetal.
+Welcome to the TextMetal (textmetal.com) community. We are excited to have you and hope that our services will help you propel your organization to the next level. If you need support, please visit http://www.textmetal.com/welcome/contact for contact options. Thank you for choosing TextMetal.
 
 Sincerely,
 

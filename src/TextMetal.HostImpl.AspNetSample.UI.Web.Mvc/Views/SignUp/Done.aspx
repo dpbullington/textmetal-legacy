@@ -5,7 +5,7 @@
 	<p style="margin-top: 32px" class="txtmtl-callout-text">TextMetal sign-up complete!</p>
 
 	<div class="txtmtl-ctxnav-wrapper">
-		<%= this.Html.ActionLink("Go to Family", "Dashboard", "Family") %>
+		<%= this.Html.ActionLink("Go to organization", "Dashboard", "Organization") %>
 	</div>
 
 </asp:Content>

@@ -12,6 +12,8 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 {
 	public partial class TabWithCompositePrimaryKeyNoIdentity
 	{
+		#region Methods/Operators
+
 		public void Mark()
 		{
 		}
@@ -24,5 +26,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 
 			return messages.ToArray();
 		}
+
+		#endregion
 	}
 }

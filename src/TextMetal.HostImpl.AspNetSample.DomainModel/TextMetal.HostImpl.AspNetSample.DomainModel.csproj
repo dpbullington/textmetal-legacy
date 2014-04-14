@@ -71,10 +71,22 @@
     <Compile Include="Tables\EmailAttachment.g.cs" />
     <Compile Include="Tables\EmailMessage.g.cs" />
     <Compile Include="Tables\EventLog.g.cs" />
+    <Compile Include="Tables\Member.cs" />
+    <Compile Include="Tables\Member.g.cs" />
+    <Compile Include="Tables\MemberHistory.cs" />
+    <Compile Include="Tables\MemberHistory.g.cs" />
+    <Compile Include="Tables\Organization.cs" />
+    <Compile Include="Tables\Organization.g.cs" />
+    <Compile Include="Tables\OrganizationHistory.cs" />
+    <Compile Include="Tables\OrganizationHistory.g.cs" />
     <Compile Include="Tables\PropertyBag.cs" />
     <Compile Include="Tables\PropertyBag.g.cs" />
     <Compile Include="Tables\PropertyBagHistory.cs" />
     <Compile Include="Tables\PropertyBagHistory.g.cs" />
+    <Compile Include="Tables\SecurityRole.cs" />
+    <Compile Include="Tables\SecurityRole.g.cs" />
+    <Compile Include="Tables\SecurityRoleHistory.cs" />
+    <Compile Include="Tables\SecurityRoleHistory.g.cs" />
     <Compile Include="Tables\TabNoPrimaryKeyNoIdentity.cs" />
     <Compile Include="Tables\TabNoPrimaryKeyNoIdentity.g.cs" />
     <Compile Include="Tables\TabWithCompositePrimaryKeyNoIdentity.cs" />
@@ -100,7 +112,9 @@
     <EmbeddedResource Include="Email\EventLogEntry.xml" />
     <EmbeddedResource Include="Email\ForgotPassword.xml" />
     <EmbeddedResource Include="Email\ForgotUsername.xml" />
-    <EmbeddedResource Include="Email\NewSignUp.xml" />
+    <EmbeddedResource Include="Email\NewSignUp.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="L2S\TextMetalOdsDataContext.dbml.layout">
       <DependentUpon>TextMetalOdsDataContext.dbml</DependentUpon>
     </None>

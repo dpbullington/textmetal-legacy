@@ -8,13 +8,12 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 
+using TextMetal.Common.Core;
 using TextMetal.HostImpl.AspNetSample.Common;
 using TextMetal.HostImpl.AspNetSample.DomainModel;
 using TextMetal.HostImpl.AspNetSample.ServiceModel.SignUp;
 using TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Models;
 using TextMetal.HostImpl.AspNetSample.UI.Web.Shared;
-
-using TextMetal.Common.Core;
 
 namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Controllers
 {
@@ -387,16 +386,7 @@ namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Controllers
 			request = new SignUpRequest()
 					{
 						// step 1
-						FamilyGuid = model.FamilyGuid ?? Guid.NewGuid(),
-						FamilyName = model.FamilyName ?? "",
-						FamilyAddressLine1 = model.FamilyAddressLine1 ?? "",
-						FamilyAddressLine2 = model.FamilyAddressLine2 ?? "",
-						FamilyAddressLine3 = model.FamilyAddressLine3 ?? "",
-						FamilyCityCountyLocality = model.FamilyCityCountyLocality ?? "",
-						FamilyStateProvince = model.FamilyStateProvince ?? "",
-						FamilyZipPostalCode = model.FamilyZipPostalCode ?? "",
-						FamilyCountryTerritory = model.FamilyCountryTerritory ?? "",
-						FamilyVoiceTelephoneNumber = model.FamilyVoiceTelephoneNumber ?? "",
+						OrganizationName = model.OrganizationName ?? "",
 						
 						// step 2
 						EmailAddress = model.EmailAddress ?? "",
@@ -404,12 +394,7 @@ namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Controllers
 						PasswordClearText = model.PasswordClearText ?? "",
 						SecurityQuestion = model.SecurityQuestion ?? "",
 						SecurityAnswerClearText = model.SecurityAnswerClearText ?? "",
-						ParentPrefixName = model.ParentPrefixName ?? "",
-						ParentFirstName = model.ParentFirstName ?? "",
-						ParentMiddleName = model.ParentMiddleName ?? "",
-						ParentLastName = model.ParentLastName ?? "",
-						ParentSuffixName = model.ParentSuffixName ?? "",
-						ParentSmsTelephoneNumber = model.ParentSmsTelephoneNumber ?? ""
+						MemberName = model.MemberName ?? ""
 					};
 
 			response = this.SignUpService.SignUp(request);
@@ -425,8 +410,8 @@ namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Controllers
 			}
 
 			Current.UserId = response.UserId;
-			Current.ParentId = response.ParentId;
-			Current.FamilyId = response.FamilyId;
+			Current.MemberId = response.MemberId;
+			Current.OrganizationId = response.OrganizationId;
 
 			model.SignUpCompleted = true;
 

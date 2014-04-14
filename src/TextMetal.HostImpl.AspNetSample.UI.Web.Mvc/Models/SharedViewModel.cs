@@ -6,9 +6,8 @@
 using System;
 using System.Reflection;
 
-using TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Controllers;
-
 using TextMetal.Common.Core;
+using TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Controllers;
 
 namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Models
 {

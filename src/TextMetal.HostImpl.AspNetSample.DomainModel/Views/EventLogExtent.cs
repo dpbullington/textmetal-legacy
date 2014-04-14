@@ -11,9 +11,9 @@ using TextMetal.Common.Core;
 namespace TextMetal.HostImpl.AspNetSample.DomainModel.Views
 {
 	public partial class EventLogExtent
-	{		
+	{
 		#region Methods/Operators
-		
+
 		public void Mark()
 		{
 		}

@@ -14,45 +14,12 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 	{
 		#region Fields/Constants
 
+		public static readonly object dummy = new object();
 		private static readonly Dictionary<string, Tuple<int?, int?>> volatileCookieToUserMap = new Dictionary<string, Tuple<int?, int?>>();
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		public static int? ChildId
-		{
-			get
-			{
-				int? value;
-
-				value = Stuff.Session.GetValue<int?>("CurrentChildId");
-
-				return value;
-			}
-			set
-			{
-				Stuff.Session.FreeValue("CurrentChildId");
-				Stuff.Session.SetValue<int?>("CurrentChildId", value);
-			}
-		}
-
-		public static int? CircleId
-		{
-			get
-			{
-				int? value;
-
-				value = Stuff.Session.GetValue<int?>("CurrentCircleId");
-
-				return value;
-			}
-			set
-			{
-				Stuff.Session.FreeValue("CurrentCircleId");
-				Stuff.Session.SetValue<int?>("CurrentCircleId", value);
-			}
-		}
 
 		public static int FailedLoginCount
 		{
@@ -71,20 +38,20 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			}
 		}
 
-		public static int? FamilyId
+		public static int? MemberId
 		{
 			get
 			{
 				int? value;
 
-				value = Stuff.Session.GetValue<int?>("CurrentFamilyId");
+				value = Stuff.Session.GetValue<int?>("CurrentMemberId");
 
-				return value ?? ShouldRememberMeFamilyId; // fallback
+				return value;
 			}
 			set
 			{
-				Stuff.Session.FreeValue("CurrentFamilyId");
-				Stuff.Session.SetValue<int?>("CurrentFamilyId", value);
+				Stuff.Session.FreeValue("CurrentMemberId");
+				Stuff.Session.SetValue<int?>("CurrentMemberId", value);
 			}
 		}
 
@@ -105,24 +72,24 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			}
 		}
 
-		public static int? ParentId
+		public static int? OrganizationId
 		{
 			get
 			{
 				int? value;
 
-				value = Stuff.Session.GetValue<int?>("CurrentParentId");
+				value = Stuff.Session.GetValue<int?>("CurrentOrganizationId");
 
-				return value;
+				return value ?? ShouldRememberMeOrganizationId; // fallback
 			}
 			set
 			{
-				Stuff.Session.FreeValue("CurrentParentId");
-				Stuff.Session.SetValue<int?>("CurrentParentId", value);
+				Stuff.Session.FreeValue("CurrentOrganizationId");
+				Stuff.Session.SetValue<int?>("CurrentOrganizationId", value);
 			}
 		}
 
-		public static int? ShouldRememberMeFamilyId
+		public static int? ShouldRememberMeOrganizationId
 		{
 			get
 			{
@@ -193,20 +160,20 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			}
 		}
 
-		public static bool? SignUpFamilyNotFinalized
+		public static bool? SignUpOrganizationNotFinalized
 		{
 			get
 			{
 				bool? value;
 
-				value = Stuff.Session.GetValue<bool?>("SignUpFamilyNotFinalized");
+				value = Stuff.Session.GetValue<bool?>("SignUpOrganizationNotFinalized");
 
 				return value ?? false;
 			}
 			set
 			{
-				Stuff.Session.FreeValue("SignUpFamilyNotFinalized");
-				Stuff.Session.SetValue<bool?>("SignUpFamilyNotFinalized", value);
+				Stuff.Session.FreeValue("SignUpOrganizationNotFinalized");
+				Stuff.Session.SetValue<bool?>("SignUpOrganizationNotFinalized", value);
 			}
 		}
 
@@ -227,6 +194,23 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			}
 		}
 
+		public static int? WidgetId
+		{
+			get
+			{
+				int? value;
+
+				value = Stuff.Session.GetValue<int?>("CurrentWidgetId");
+
+				return value;
+			}
+			set
+			{
+				Stuff.Session.FreeValue("CurrentWidgetId");
+				Stuff.Session.SetValue<int?>("CurrentWidgetId", value);
+			}
+		}
+
 		#endregion
 
 		#region Methods/Operators
@@ -236,10 +220,9 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 			ShouldRememberMeToken = null;
 
 			UserId = null;
-			FamilyId = null;
-			ChildId = null;
-			ParentId = null;
-			CircleId = null;
+			MemberId = null;
+			OrganizationId = null;
+			WidgetId = null;
 
 			FailedLoginCount = 0;
 			MustChangePassword = false;

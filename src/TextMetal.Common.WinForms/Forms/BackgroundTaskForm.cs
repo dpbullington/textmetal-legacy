@@ -152,7 +152,7 @@ namespace TextMetal.Common.WinForms.Forms
 			base.CoreSetup();
 
 			this.CoreText = string.Format("{0}", this.CoreParentForm.CoreText);
-			
+
 			this.tmrMain.Enabled = true;
 		}
 

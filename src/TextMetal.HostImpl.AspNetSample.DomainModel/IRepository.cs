@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using TextMetal.Common.Data;
+using TextMetal.HostImpl.AspNetSample.Common;
 
 namespace TextMetal.HostImpl.AspNetSample.DomainModel
 {
@@ -20,6 +21,8 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 
 		IEnumerable<TResultEntity> Find<TDataContext, TResultEntity>(TDataContext dummy, IUnitOfWork unitOfWork, Func<TDataContext, IQueryable<TResultEntity>> callback)
 			where TDataContext : class, IDisposable;
+
+		IEnumerable<IListItem<int?>> GetSecurityRoles();
 
 		bool TrySendEmailTemplate(string templateResourceName, object modelObject);
 

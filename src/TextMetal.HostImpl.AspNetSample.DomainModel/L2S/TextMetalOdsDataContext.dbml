@@ -119,6 +119,82 @@
       <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
     </Type>
   </Table>
+  <Table Name="application.Member" Member="Members">
+    <Type Name="Member">
+      <Column Name="MemberId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="OrganizationId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="true" />
+      <Column Name="ParentMemberId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MemberName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="MemberTitle" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SecurityRoleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="true" />
+      <Column Name="SortOrder" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
+      <Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
+      <Column Name="CreationUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="true" />
+      <Column Name="ModificationUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="true" />
+      <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
+      <Association Name="fk_Member_Member_parent" Member="ParentMember" ThisKey="ParentMemberId" OtherKey="MemberId" Type="Member" IsForeignKey="true" />
+      <Association Name="fk_Member_Member_parent" Member="Members" ThisKey="MemberId" OtherKey="ParentMemberId" Type="Member" DeleteRule="NO ACTION" />
+      <Association Name="fk_Member_Organization" Member="Organization" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" />
+      <Association Name="fk_Member_SecurityRole" Member="SecurityRole" ThisKey="SecurityRoleId" OtherKey="SecurityRoleId" Type="SecurityRole" IsForeignKey="true" />
+      <Association Name="fk_Member_User" Member="User" ThisKey="MemberId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+      <Association Name="fk_Member_User_creation" Member="CreationUser" ThisKey="CreationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+      <Association Name="fk_Member_User_modification" Member="ModificationUser" ThisKey="ModificationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="history.MemberHistory" Member="MemberHistories">
+    <Type Name="MemberHistory">
+      <Column Name="MemberHistoryId" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="true" />
+      <Column Name="MemberHistoryTs" Type="System.DateTime" DbType="DateTime2(7) NOT NULL" CanBeNull="true" />
+      <Column Name="MemberId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="true" />
+      <Column Name="OrganizationId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ParentMemberId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MemberName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="MemberTitle" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SecurityRoleId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SortOrder" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CreationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ModificationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="application.Organization" Member="Organizations">
+    <Type Name="Organization">
+      <Column Name="OrganizationId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="true" />
+      <Column Name="ParentOrganizationId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="OrganizationName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="true" />
+      <Column Name="TimeZoneId" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SortOrder" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
+      <Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
+      <Column Name="CreationUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="true" />
+      <Column Name="ModificationUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="true" />
+      <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
+      <Association Name="fk_Member_Organization" Member="Members" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Member" DeleteRule="NO ACTION" />
+      <Association Name="fk_Organization_Organization_parent" Member="ParentOrganization" ThisKey="ParentOrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" />
+      <Association Name="fk_Organization_Organization_parent" Member="Organizations" ThisKey="OrganizationId" OtherKey="ParentOrganizationId" Type="Organization" DeleteRule="NO ACTION" />
+      <Association Name="fk_Organization_User_creation" Member="User" ThisKey="CreationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+      <Association Name="fk_Organization_User_modification" Member="ModificationUser" ThisKey="ModificationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="history.OrganizationHistory" Member="OrganizationHistories">
+    <Type Name="OrganizationHistory">
+      <Column Name="OrganizationHistoryId" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="true" />
+      <Column Name="OrganizationHistoryTs" Type="System.DateTime" DbType="DateTime2(7) NOT NULL" CanBeNull="true" />
+      <Column Name="OrganizationId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="true" />
+      <Column Name="ParentOrganizationId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="OrganizationName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="TimeZoneId" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SortOrder" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CreationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ModificationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
   <Table Name="global.PropertyBag" Member="PropertyBags">
     <Type Name="PropertyBag">
       <Column Name="PropertyBagId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="true" />
@@ -128,8 +204,8 @@
       <Column Name="SortOrder" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
       <Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
-      <Column Name="CreationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ModificationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreationUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="true" />
+      <Column Name="ModificationUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="true" />
       <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
       <Association Name="fk_PropertyBag_User_creation" Member="User" ThisKey="CreationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
       <Association Name="fk_PropertyBag_User_modification" Member="ModificationUser" ThisKey="ModificationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
@@ -143,6 +219,35 @@
       <Column Name="PropertyKey" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="PropertyType" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="PropertyValue" Type="System.String" DbType="NVarChar(2047)" CanBeNull="true" />
+      <Column Name="SortOrder" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CreationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ModificationUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="global.SecurityRole" Member="SecurityRoles">
+    <Type Name="SecurityRole">
+      <Column Name="SecurityRoleId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="true" />
+      <Column Name="SecurityRoleName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="true" />
+      <Column Name="SortOrder" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
+      <Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
+      <Column Name="CreationUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="true" />
+      <Column Name="ModificationUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="true" />
+      <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
+      <Association Name="fk_Member_SecurityRole" Member="Members" ThisKey="SecurityRoleId" OtherKey="SecurityRoleId" Type="Member" DeleteRule="NO ACTION" />
+      <Association Name="fk_SecurityRole_User_creation" Member="User" ThisKey="CreationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+      <Association Name="fk_SecurityRole_User_modification" Member="ModificationUser" ThisKey="ModificationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="history.SecurityRoleHistory" Member="SecurityRoleHistories">
+    <Type Name="SecurityRoleHistory">
+      <Column Name="SecurityRoleHistoryId" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="true" />
+      <Column Name="SecurityRoleHistoryTs" Type="System.DateTime" DbType="DateTime2(7) NOT NULL" CanBeNull="true" />
+      <Column Name="SecurityRoleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="true" />
+      <Column Name="SecurityRoleName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="SortOrder" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Column Name="CreationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="ModificationTimestamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
@@ -425,14 +530,21 @@
       <Column Name="CreationUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="true" />
       <Column Name="ModificationUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="true" />
       <Column Name="LogicalDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="true" />
+      <Association Name="fk_Member_User" Member="Member" ThisKey="UserId" OtherKey="MemberId" Type="Member" Cardinality="One" DeleteRule="NO ACTION" />
+      <Association Name="fk_Member_User_creation" Member="Members" ThisKey="UserId" OtherKey="CreationUserId" Type="Member" DeleteRule="NO ACTION" />
+      <Association Name="fk_Member_User_modification" Member="Users" ThisKey="UserId" OtherKey="ModificationUserId" Type="Member" DeleteRule="NO ACTION" />
+      <Association Name="fk_Organization_User_creation" Member="Organizations" ThisKey="UserId" OtherKey="CreationUserId" Type="Organization" DeleteRule="NO ACTION" />
+      <Association Name="fk_Organization_User_modification" Member="Organization_User_modifications" ThisKey="UserId" OtherKey="ModificationUserId" Type="Organization" DeleteRule="NO ACTION" />
       <Association Name="fk_EmailAttachment_User_creation" Member="EmailAttachments" ThisKey="UserId" OtherKey="CreationUserId" Type="EmailAttachment" DeleteRule="NO ACTION" />
-      <Association Name="fk_EmailAttachment_User_modification" Member="Users" ThisKey="UserId" OtherKey="ModificationUserId" Type="EmailAttachment" DeleteRule="NO ACTION" />
+      <Association Name="fk_EmailAttachment_User_modification" Member="EmailAttachment_User_modifications" ThisKey="UserId" OtherKey="ModificationUserId" Type="EmailAttachment" DeleteRule="NO ACTION" />
       <Association Name="fk_EmailMessage_User_creation" Member="EmailMessages" ThisKey="UserId" OtherKey="CreationUserId" Type="EmailMessage" DeleteRule="NO ACTION" />
       <Association Name="fk_EmailMessage_User_modification" Member="EmailMessage_User_modifications" ThisKey="UserId" OtherKey="ModificationUserId" Type="EmailMessage" DeleteRule="NO ACTION" />
       <Association Name="fk_EventLog_User_creation" Member="EventLogs" ThisKey="UserId" OtherKey="CreationUserId" Type="EventLog" DeleteRule="NO ACTION" />
       <Association Name="fk_EventLog_User_modification" Member="EventLog_User_modifications" ThisKey="UserId" OtherKey="ModificationUserId" Type="EventLog" DeleteRule="NO ACTION" />
       <Association Name="fk_PropertyBag_User_creation" Member="PropertyBags" ThisKey="UserId" OtherKey="CreationUserId" Type="PropertyBag" DeleteRule="NO ACTION" />
       <Association Name="fk_PropertyBag_User_modification" Member="PropertyBag_User_modifications" ThisKey="UserId" OtherKey="ModificationUserId" Type="PropertyBag" DeleteRule="NO ACTION" />
+      <Association Name="fk_SecurityRole_User_creation" Member="SecurityRoles" ThisKey="UserId" OtherKey="CreationUserId" Type="SecurityRole" DeleteRule="NO ACTION" />
+      <Association Name="fk_SecurityRole_User_modification" Member="SecurityRole_User_modifications" ThisKey="UserId" OtherKey="ModificationUserId" Type="SecurityRole" DeleteRule="NO ACTION" />
       <Association Name="fk_User_User_creation" Member="CreationUser" ThisKey="CreationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
       <Association Name="fk_User_User_creation" Member="User_User_creations" ThisKey="UserId" OtherKey="CreationUserId" Type="User" DeleteRule="NO ACTION" />
       <Association Name="fk_User_User_modification" Member="ModificationUser" ThisKey="ModificationUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />

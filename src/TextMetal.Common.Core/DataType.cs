@@ -11,7 +11,6 @@ namespace TextMetal.Common.Core
 	/// <summary>
 	/// Provides static helper and/or extension methods for core data type functionality such as validation and parsing.
 	/// </summary>
-
 #if SQL_CLR
 	internal static partial class DataType
 #else

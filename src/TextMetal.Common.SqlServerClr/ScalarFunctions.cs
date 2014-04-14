@@ -10,11 +10,11 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Xml;
 
 using Microsoft.SqlServer.Server;
 
 using TextMetal.Common.Core;
-using System.Xml;
 
 namespace TextMetal.Common.SqlServerClr
 {
@@ -221,7 +221,7 @@ namespace TextMetal.Common.SqlServerClr
 
 			return Encoding.GetEncoding("UCS-2").GetString(cipherTextBytes);
 		}
-		
+
 		public static object GetDefault(bool isNullable, string sqlType)
 		{
 			if ((object)sqlType == null)
@@ -253,8 +253,8 @@ namespace TextMetal.Common.SqlServerClr
 					return (isNullable ? (Decimal?)null : (Decimal)0.0);
 				case "DOUBLE PRECISION":
 				case "FLOAT":
-                    // ignore precision
-                    return (isNullable ? (Single?)null : (Single)0.0);
+					// ignore precision
+					return (isNullable ? (Single?)null : (Single)0.0);
 				case "GEOGRAPHY":
 					return (isNullable ? (Object)null : (Object)new object());
 				case "GEOMETRY":
@@ -271,16 +271,16 @@ namespace TextMetal.Common.SqlServerClr
 				case "NATIONAL CHARACTER":
 				case "NATIONAL CHAR":
 				case "NCHAR":
-                    return (isNullable ? null : string.Empty);
+					return (isNullable ? null : string.Empty);
 				case "NATIONAL TEXT":
 				case "NTEXT":
-                    return (isNullable ? null : string.Empty);
+					return (isNullable ? null : string.Empty);
 				case "NUMERIC":
 					return (isNullable ? (Decimal?)null : (Decimal)0.0);
 				case "NATIONAL CHARACTER VARYING":
 				case "NATIONAL CHAR VARYING":
 				case "NVARCHAR":
-                    return (isNullable ? null : string.Empty);
+					return (isNullable ? null : string.Empty);
 				case "REAL":
 					return (isNullable ? (Single?)null : (Single)0.0);
 				case "TIMESTAMP":
@@ -295,11 +295,11 @@ namespace TextMetal.Common.SqlServerClr
 				case "SQL_VARIANT":
 					return (isNullable ? (Object)null : (Object)new object());
 				case "SYSNAME":
-                    return (isNullable ? null : string.Empty);
+					return (isNullable ? null : string.Empty);
 				case "TABLE":
 					return (isNullable ? (Object)null : (Object)new object());
 				case "TEXT":
-                    return (isNullable ? null : string.Empty);
+					return (isNullable ? null : string.Empty);
 				case "TIME":
 					return (isNullable ? (TimeSpan?)null : (TimeSpan)TimeSpan.Zero);
 				case "TINYINT":
@@ -312,11 +312,11 @@ namespace TextMetal.Common.SqlServerClr
 				case "CHARACTER VARYING":
 				case "CHAR VARYING":
 				case "VARCHAR":
-                    return (isNullable ? null : string.Empty);
+					return (isNullable ? null : string.Empty);
 				case "XML":
 					return (isNullable ? (XmlDocument)null : (XmlDocument)new XmlDocument());
 				default:
-                    throw new ArgumentOutOfRangeException(string.Format("Unsupported parameter type: '{0}'.", sqlType));
+					throw new ArgumentOutOfRangeException(string.Format("Unsupported parameter type: '{0}'.", sqlType));
 			}
 		}
 
@@ -485,11 +485,11 @@ namespace TextMetal.Common.SqlServerClr
 
 			return GetCipher(sharedSecret, value.SafeToString(null, null));
 		}
-		
+
 		[SqlFunction(DataAccess = DataAccessKind.None)]
 		public static object fn_GetDefault(bool isNullable, string sqlType)
 		{
-            return GetDefault(isNullable, sqlType);
+			return GetDefault(isNullable, sqlType);
 		}
 
 		[SqlFunction(DataAccess = DataAccessKind.None)]

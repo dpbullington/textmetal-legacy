@@ -6,4 +6,3 @@
 using System.Reflection;
 
 [assembly: AssemblyTitle("TextMetal.HostImpl.AspNetSample.com Domain Model Library")]
-

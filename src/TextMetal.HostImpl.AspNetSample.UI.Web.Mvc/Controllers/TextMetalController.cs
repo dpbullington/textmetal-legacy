@@ -8,12 +8,11 @@ using System.Net;
 using System.Web.Mvc;
 using System.Web.Routing;
 
+using TextMetal.Common.Core;
 using TextMetal.HostImpl.AspNetSample.Common;
 using TextMetal.HostImpl.AspNetSample.DomainModel;
 using TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Models;
 using TextMetal.HostImpl.AspNetSample.UI.Web.Shared;
-
-using TextMetal.Common.Core;
 
 namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Controllers
 {
@@ -55,20 +54,20 @@ namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Controllers
 
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
-			RequiresCircleAttribute requiresCircleAttribute;
+			RequiresCurrentAttribute requiresCurrentAttribute;
 
 			base.OnActionExecuting(filterContext);
 
-			requiresCircleAttribute = Reflexion.GetOneAttribute<RequiresCircleAttribute>(filterContext.ActionDescriptor);
+			requiresCurrentAttribute = Reflexion.GetOneAttribute<RequiresCurrentAttribute>(filterContext.ActionDescriptor);
 
-			if (requiresCircleAttribute != null &&
-				(object)Current.CircleId == null)
+			if (requiresCurrentAttribute != null &&
+				(object)Current.dummy == null)
 			{
 				filterContext.Result =
 					new RedirectToRouteResult(
 						new RouteValueDictionary(new
 												{
-													controller = "Circle",
+													controller = "Dummy",
 													action = "Choose"
 												}));
 

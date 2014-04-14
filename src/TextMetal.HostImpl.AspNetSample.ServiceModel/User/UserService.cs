@@ -7,10 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using TextMetal.HostImpl.AspNetSample.Common;
-using TextMetal.HostImpl.AspNetSample.DomainModel.Tables;
-
 using TextMetal.Common.Core;
+using TextMetal.HostImpl.AspNetSample.Common;
 
 namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 {
@@ -29,9 +27,9 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 			AuthenticateUserResponse response;
 			IEnumerable<DomainModel.Tables.User> users;
 			DomainModel.Tables.User user;
-			IEnumerable<DomainModel.Tables.Parent> parents;
-			DomainModel.Tables.Parent parent;
-			Family family;
+			IEnumerable<DomainModel.Tables.Member> members;
+			DomainModel.Tables.Member member;
+			DomainModel.Tables.Organization organization;
 			bool failed, locked = false;
 
 			if ((object)request == null)
@@ -97,26 +95,26 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 				response.UserId = user.UserId;
 				response.MustChangePassword = user.MustChangePassword ?? false;
 
-				parents = this.Repository.FindParents(q => q.Where(e => e.ParentId == user.UserId && e.LogicalDelete == false && e.Family.LogicalDelete == false));
-				parent = parents.SingleOrDefault();
+				members = this.Repository.FindMembers(q => q.Where(e => e.MemberId == user.UserId && e.LogicalDelete == false && e.Organization.LogicalDelete == false));
+				member = members.SingleOrDefault();
 
-				if ((object)parent == null)
+				if ((object)member == null)
 				{
-					response.Messages = new[] { new Message("", "The user is not associated with an active family.", Severity.Error) };
+					response.Messages = new[] { new Message("", "The user is not associated with an active organization.", Severity.Error) };
 					return response;
 				}
 
-				family = this.Repository.LoadFamily((int)parent.FamilyId);
+				organization = this.Repository.LoadOrganization((int)member.OrganizationId);
 
-				if ((object)family == null)
+				if ((object)organization == null)
 				{
-					response.Messages = new[] { new Message("", "The user is not associated with an active family.", Severity.Error) };
+					response.Messages = new[] { new Message("", "The user is not associated with an active organization.", Severity.Error) };
 					return response;
 				}
 
-				response.RememberMeToken = request.RememberMe ? new Tuple<int?, int?>(user.UserId, parent.FamilyId) : null;
-				response.ParentId = parent.ParentId;
-				response.FamilyId = parent.FamilyId;
+				response.RememberMeToken = request.RememberMe ? new Tuple<int?, int?>(user.UserId, member.OrganizationId) : null;
+				response.MemberId = member.MemberId;
+				response.OrganizationId = member.OrganizationId;
 			}
 
 			return response;

@@ -11,35 +11,35 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.SignUp
 	{
 		#region Fields/Constants
 
-		private int? familyId;
-		private int? parentId;
+		private int? memberId;
+		private int? organizationId;
 		private int? userId;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		public int? FamilyId
+		public int? MemberId
 		{
 			get
 			{
-				return this.familyId;
+				return this.memberId;
 			}
 			set
 			{
-				this.familyId = value;
+				this.memberId = value;
 			}
 		}
 
-		public int? ParentId
+		public int? OrganizationId
 		{
 			get
 			{
-				return this.parentId;
+				return this.organizationId;
 			}
 			set
 			{
-				this.parentId = value;
+				this.organizationId = value;
 			}
 		}
 

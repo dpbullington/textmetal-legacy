@@ -13,7 +13,6 @@ using System.Web.Routing;
 using TextMetal.HostImpl.AspNetSample.Common;
 using TextMetal.HostImpl.AspNetSample.DomainModel;
 using TextMetal.HostImpl.AspNetSample.UI.Web.Shared;
-
 using TextMetal.HostImpl.Web.AspNet;
 
 namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc

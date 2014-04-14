@@ -1,1 +1,0 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="TextMetal.HostImpl.AspNetSample.MvcApplication" Language="C#" %>

@@ -11,7 +11,7 @@ using TextMetal.Common.Core;
 namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 {
 	public partial class TabWithPrimaryKeyWithDifferentIdentity
-	{		
+	{
 		#region Methods/Operators
 
 		public void Mark()

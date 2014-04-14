@@ -25,4 +25,64 @@ INSERT INTO [global].[User]
 DECLARE @UserId [int]
 SET @UserId = SCOPE_IDENTITY()
 
+
+INSERT INTO [application].[Organization]
+	(
+		[OrganizationName],
+		[SortOrder],
+		[CreationTimestamp],
+		[ModificationTimestamp],
+		[CreationUserId],
+		[ModificationUserId],
+		[LogicalDelete]
+	)
+	VALUES
+	(
+		'Test Organization',
+		0,
+		GETUTCDATE(),
+		GETUTCDATE(),
+		@UserId,
+		@UserId,
+		0
+	);
+
+
+DECLARE @OrganizationId [int]
+SET @OrganizationId = SCOPE_IDENTITY()
+
+
+INSERT INTO [application].[Member]
+	(
+		[MemberId],
+		[OrganizationId],
+		[MemberName],
+		[MemberTitle],
+		[SecurityRoleId],
+		[SortOrder],
+		[CreationTimestamp],
+		[ModificationTimestamp],
+		[CreationUserId],
+		[ModificationUserId],
+		[LogicalDelete]
+	)
+	VALUES
+	(
+		@UserId,
+		@OrganizationId,
+		'Test Member Name',
+		'Test Member Title',
+		1,
+		0,
+		GETUTCDATE(),
+		GETUTCDATE(),
+		@UserId,
+		@UserId,
+		0
+	);
+	
+DECLARE @MemberId [int]
+SET @MemberId = SCOPE_IDENTITY()
+
+
 GO

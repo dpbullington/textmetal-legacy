@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Xml;
 
 using TextMetal.Common.Core;
 
@@ -299,7 +300,7 @@ namespace TextMetal.Common.Data
 				return DbType.Byte;
 			else if (clrType == typeof(String))
 				return DbType.String;
-			else if (clrType == typeof(System.Xml.XmlDocument))
+			else if (clrType == typeof(XmlDocument))
 				return DbType.Xml;
 			else if (clrType == typeof(Object))
 				return DbType.Object;
