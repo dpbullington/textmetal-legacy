@@ -73,275 +73,386 @@ IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
-copy "..\..\src\TextMetal.Common.Cerealization\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Cerealization.dll" "%LIB_DIR%\TextMetal\."
+
+
+copy "..\..\src\TextMetal.HostImpl.AspNetSample.Database\Script\*.*" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+
+
+copy "..\..\src\TextMetal.Common.Cerealization\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Cerealization.dll" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy "..\..\src\TextMetal.Common.Cerealization\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Cerealization.xml" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy "..\..\src\TextMetal.Common.Cerealization\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Cerealization.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+
+
+copy "..\..\src\TextMetal.Common.Core\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Core.dll" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy "..\..\src\TextMetal.Common.Core\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Core.xml" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy "..\..\src\TextMetal.Common.Core\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Core.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+
+
+copy "..\..\src\TextMetal.Common.Data\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Data.dll" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy "..\..\src\TextMetal.Common.Data\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Data.xml" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy "..\..\src\TextMetal.Common.Data\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Data.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+
+
+copy "..\..\src\TextMetal.Common.Expressions\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Expressions.dll" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy "..\..\src\TextMetal.Common.Expressions\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Expressions.xml" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy "..\..\src\TextMetal.Common.Expressions\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Expressions.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+
+
+copy "..\..\src\TextMetal.Common.Solder\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Solder.dll" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy "..\..\src\TextMetal.Common.Solder\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Solder.xml" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy "..\..\src\TextMetal.Common.Solder\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Solder.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Common.Cerealization\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Cerealization.xml" "%LIB_DIR%\TextMetal\."
+
+
+copy "..\..\src\TextMetal.Common.SqlServerClr\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.SqlServerClr.dll" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy "..\..\src\TextMetal.Common.SqlServerClr\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.SqlServerClr.xml" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy "..\..\src\TextMetal.Common.SqlServerClr\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.SqlServerClr.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+
+
+copy "..\..\src\TextMetal.Common.UnitTests\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.UnitTests.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Common.Cerealization\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Cerealization.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Common.UnitTests\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.UnitTests.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
+copy "..\..\src\TextMetal.Common.UnitTests\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.UnitTests.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
 
 
-copy "..\..\src\TextMetal.Common.Core\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Core.dll" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Common.WinForms\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.WinForms.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Common.Core\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Core.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Common.WinForms\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.WinForms.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Common.Core\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Core.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Common.WinForms\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.WinForms.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
-copy "..\..\src\TextMetal.Common.Data\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Data.dll" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Common.Xml\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Xml.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Common.Data\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Data.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Common.Xml\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Xml.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Common.Data\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Data.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Common.Xml\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Xml.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
-copy "..\..\src\TextMetal.Common.Expressions\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Expressions.dll" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.AssociativeModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.AssociativeModel.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Common.Expressions\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Expressions.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.AssociativeModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.AssociativeModel.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Common.Expressions\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Expressions.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.AssociativeModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.AssociativeModel.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
-copy "..\..\src\TextMetal.Common.Solder\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Solder.dll" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.Core\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.Core.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Common.Solder\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Solder.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.Core\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.Core.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Common.Solder\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Solder.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.Core\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.Core.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
-copy "..\..\src\TextMetal.Common.Xml\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Xml.dll" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.DebuggerProfilerModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.DebuggerProfilerModel.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Common.Xml\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Xml.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.DebuggerProfilerModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.DebuggerProfilerModel.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Common.Xml\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Xml.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.DebuggerProfilerModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.DebuggerProfilerModel.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
-copy "..\..\src\TextMetal.Framework.AssociativeModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.AssociativeModel.dll" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.ExpressionModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.ExpressionModel.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Framework.AssociativeModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.AssociativeModel.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.ExpressionModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.ExpressionModel.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Framework.AssociativeModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.AssociativeModel.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.ExpressionModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.ExpressionModel.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
-copy "..\..\src\TextMetal.Framework.Core\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.Core.dll" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.HostingModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.HostingModel.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Framework.Core\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.Core.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.HostingModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.HostingModel.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Framework.Core\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.Core.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.HostingModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.HostingModel.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
-copy "..\..\src\TextMetal.Framework.DebuggerProfilerModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.DebuggerProfilerModel.dll" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.InputOutputModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.InputOutputModel.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Framework.DebuggerProfilerModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.DebuggerProfilerModel.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.InputOutputModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.InputOutputModel.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Framework.DebuggerProfilerModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.DebuggerProfilerModel.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.InputOutputModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.InputOutputModel.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
-copy "..\..\src\TextMetal.Framework.ExpressionModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.ExpressionModel.dll" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.IntegrationTests\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.IntegrationTests.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Framework.ExpressionModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.ExpressionModel.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.IntegrationTests\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.IntegrationTests.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Framework.ExpressionModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.ExpressionModel.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.IntegrationTests\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.IntegrationTests.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
-copy "..\..\src\TextMetal.Framework.HostingModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.HostingModel.dll" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.SortModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.SortModel.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Framework.HostingModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.HostingModel.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.SortModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.SortModel.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Framework.HostingModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.HostingModel.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.SortModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.SortModel.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
-copy "..\..\src\TextMetal.Framework.InputOutputModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.InputOutputModel.dll" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.SourceModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.SourceModel.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Framework.InputOutputModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.InputOutputModel.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.SourceModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.SourceModel.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Framework.InputOutputModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.InputOutputModel.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.SourceModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.SourceModel.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
-copy "..\..\src\TextMetal.Framework.SortModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.SortModel.dll" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.TemplateModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.TemplateModel.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Framework.SortModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.SortModel.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.TemplateModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.TemplateModel.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Framework.SortModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.SortModel.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.TemplateModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.TemplateModel.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
-copy "..\..\src\TextMetal.Framework.SourceModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.SourceModel.dll" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.UnitTests\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.UnitTests.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Framework.SourceModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.SourceModel.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.UnitTests\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.UnitTests.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Framework.SourceModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.SourceModel.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Framework.UnitTests\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.UnitTests.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
-copy "..\..\src\TextMetal.Framework.TemplateModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.TemplateModel.dll" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.AspNetSample.Common\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.Common.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Framework.TemplateModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.TemplateModel.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.AspNetSample.Common\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.Common.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Framework.TemplateModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.Framework.TemplateModel.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.AspNetSample.Common\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.Common.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
+
+
+copy "..\..\src\TextMetal.HostImpl.AspNetSample.DomainModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.DomainModel.dll" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
 
+copy "..\..\src\TextMetal.HostImpl.AspNetSample.DomainModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.DomainModel.xml" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.HostImpl.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\TextMetal.exe" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.AspNetSample.DomainModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.DomainModel.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+
 
-copy "..\..\src\TextMetal.HostImpl.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\TextMetal.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.AspNetSample.ServiceModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.ServiceModel.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.HostImpl.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\TextMetal.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.AspNetSample.ServiceModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.ServiceModel.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.HostImpl.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\TextMetal.exe.config" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.AspNetSample.ServiceModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.ServiceModel.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
+
+
+copy "..\..\src\TextMetal.HostImpl.AspNetSample.UI.Web.Mvc\bin\TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.dll" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
 
+copy "..\..\src\TextMetal.HostImpl.AspNetSample.UI.Web.Mvc\bin\TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.xml" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.HostImpl.VsIdeConv.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\VisualStudioConversion.exe" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.AspNetSample.UI.Web.Mvc\bin\TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
+
 
-copy "..\..\src\TextMetal.HostImpl.VsIdeConv.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\VisualStudioConversion.xml" "%LIB_DIR%\TextMetal\."
+
+copy "..\..\src\TextMetal.HostImpl.AspNetSample.UI.Web.Shared\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.UI.Web.Shared.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.HostImpl.VsIdeConv.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\VisualStudioConversion.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.AspNetSample.UI.Web.Shared\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.UI.Web.Shared.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.HostImpl.VsIdeConv.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\VisualStudioConversion.exe.config" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.AspNetSample.UI.Web.Shared\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.UI.Web.Shared.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+
 
+copy "..\..\src\TextMetal.HostImpl.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\TextMetal.exe" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
 
+copy "..\..\src\TextMetal.HostImpl.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\TextMetal.xml" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.HostImpl.WindowsTool\bin\%BUILD_FLAVOR_DIR%\TextMetalStudio.exe" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\TextMetal.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.HostImpl.WindowsTool\bin\%BUILD_FLAVOR_DIR%\TextMetalStudio.xml" "%LIB_DIR%\TextMetal\."
+
+
+copy "..\..\src\TextMetal.HostImpl.Tool\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.Tool.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.HostImpl.WindowsTool\bin\%BUILD_FLAVOR_DIR%\TextMetalStudio.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.Tool\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.Tool.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.HostImpl.WindowsTool\bin\%BUILD_FLAVOR_DIR%\TextMetalStudio.exe.config" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.Tool\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.Tool.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
-copy "..\..\src\TextMetal.HostImpl.Tool\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.Tool.dll" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.VsIdeConv.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\VisualStudioConversion.exe" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.HostImpl.Tool\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.Tool.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.VsIdeConv.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\VisualStudioConversion.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.HostImpl.Tool\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.Tool.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.VsIdeConv.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\VisualStudioConversion.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
+
 
 
+copy "..\..\src\TextMetal.HostImpl.Web\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.Web.dll" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.HostImpl.Web\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.Web.dll" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.Web\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.Web.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.HostImpl.Web\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.Web.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.Web\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.Web.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
+
 
-copy "..\..\src\TextMetal.HostImpl.Web\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.Web.pdb" "%LIB_DIR%\TextMetal\."
+
+copy "..\..\src\TextMetal.HostImpl.WindowsTool\bin\%BUILD_FLAVOR_DIR%\TextMetalStudio.exe" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
+copy "..\..\src\TextMetal.HostImpl.WindowsTool\bin\%BUILD_FLAVOR_DIR%\TextMetalStudio.xml" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.TestFramework\bin\%BUILD_FLAVOR_DIR%\TextMetal.TestFramework.dll" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.HostImpl.WindowsTool\bin\%BUILD_FLAVOR_DIR%\TextMetalStudio.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
+
 
-copy "..\..\src\TextMetal.TestFramework\bin\%BUILD_FLAVOR_DIR%\TextMetal.TestFramework.xml" "%LIB_DIR%\TextMetal\."
+
+copy "..\..\src\TextMetal.Imports\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.TestFramework\bin\%BUILD_FLAVOR_DIR%\TextMetal.TestFramework.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Imports\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
+copy "..\..\src\TextMetal.Imports\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
-REM IMPORTS
 
-copy "..\..\src\TextMetal.Imports\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.dll" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Imports.nunit.console.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.console.exe" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Imports\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Imports.nunit.console.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.console.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Imports\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Imports.nunit.console.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.console.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
+
 
 
-copy "..\..\src\TextMetal.Imports.nunit.console.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.console.exe" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Imports.nunit.gui.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.gui.exe" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Imports.nunit.console.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.console.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Imports.nunit.gui.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.gui.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Imports.nunit.console.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.console.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.Imports.nunit.gui.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.gui.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
-copy "..\..\src\TextMetal.Imports.nunit.gui.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.gui.exe" "%LIB_DIR%\TextMetal\."
+
+copy "..\..\src\TextMetal.TestFramework\bin\%BUILD_FLAVOR_DIR%\TextMetal.TestFramework.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Imports.nunit.gui.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.gui.xml" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.TestFramework\bin\%BUILD_FLAVOR_DIR%\TextMetal.TestFramework.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\TextMetal.Imports.nunit.gui.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.gui.pdb" "%LIB_DIR%\TextMetal\."
+copy "..\..\src\TextMetal.TestFramework\bin\%BUILD_FLAVOR_DIR%\TextMetal.TestFramework.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+
 
 
 echo *** linqtosql_codegen_execute ***

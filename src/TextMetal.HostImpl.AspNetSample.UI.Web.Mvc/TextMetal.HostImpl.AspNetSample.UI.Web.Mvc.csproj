@@ -29,6 +29,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+	<DocumentationFile>bin\Debug\TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -37,6 +38,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+	<DocumentationFile>bin\Release\TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -104,6 +106,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Global.asax" />
     <Content Include="images\lets-begin-button.png" />
+    <Content Include="images\organization.png" />
     <Content Include="images\textmetal-logo.png" />
     <Content Include="robots.txt" />
     <Content Include="scripts\jquery-1.8.2.min.js" />
