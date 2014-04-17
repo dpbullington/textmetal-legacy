@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+-->
+<Template xmlns="http://www.textmetal.com/api/v5.0.0">
+
+	<OutputScope name="textmetal_ods_dev_Proxy.g.sql">
+
+<![CDATA[
+
+SET NOCOUNT ON
+GO
+
+
+USE [master]
+GO
+
+
+IF EXISTS (SELECT * FROM sysdatabases WHERE name = 'textmetal_ods_dev_Proxy')
+BEGIN
+
+	ALTER DATABASE [textmetal_ods_dev_Proxy] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
+	
+	DROP DATABASE [textmetal_ods_dev_Proxy]
+	
+END
+GO
+
+
+CREATE DATABASE [textmetal_ods_dev_Proxy]
+GO
+
+
+ALTER DATABASE [textmetal_ods_dev_Proxy] SET TRUSTWORTHY ON
+GO
+
+
+USE [textmetal_ods_dev_Proxy]
+GO
+
+
+CREATE ASSEMBLY [TextMetal.Common.SqlServerClr]
+AUTHORIZATION [dbo]
+FROM
+]]>
+		<Include name="${argument_basedir}\TextMetal.Common.SqlServerClr.dll.txt" />
+<![CDATA[WITH PERMISSION_SET = EXTERNAL_ACCESS
+GO
+
+
+ALTER ASSEMBLY [TextMetal.Common.SqlServerClr]
+ADD FILE
+FROM
+]]>
+		<Include name="${argument_basedir}\TextMetal.Common.SqlServerClr.pdb.txt" />
+<![CDATA[AS 'TextMetal.Common.SqlServerClr.pdb'
+GO
+
+
+CREATE FUNCTION [dbo].[stv_fn_GlobalUser]
+(
+	@top as [int]
+)
+RETURNS TABLE ([UserId] [int] NULL,
+				[EmailAddress] [nvarchar](255) NULL,
+				[UserName] [nvarchar](255) NULL,
+				[SaltValue] [nvarchar](255) NULL,
+				[PasswordHash] [nvarchar](255) NULL,	
+				[Question] [nvarchar](255) NULL,
+				[AnswerHash] [nvarchar](255) NULL,
+				[LastLoginSuccessTimestamp] [datetime] NULL,
+				[LastLoginFailureTimestamp] [datetime] NULL,
+				[FailedLoginCount] [smallint] NULL,
+				[MustChangePassword] [bit] NULL,
+				[SortOrder] [tinyint] NULL,
+				[CreationTimestamp] [datetime] NULL,
+				[ModificationTimestamp] [datetime] NULL,
+				[CreationUserId] [int] NULL,
+				[ModificationUserId] [int] NULL,
+				[LogicalDelete] [bit] NULL)
+WITH EXECUTE AS CALLER
+AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.TableValueFunctions].[stv_fn_GlobalUser]
+GO
+
+
+CREATE TABLE [dbo].[EventLog]
+(
+	[EventLogId] [int] IDENTITY(1,1) NOT NULL,
+	[EventText] [nvarchar](MAX) NOT NULL,	
+	[CreationTimestamp] [datetime] NOT NULL,
+	
+	CONSTRAINT [pk_EventLog] PRIMARY KEY
+	(
+		[EventLogId]
+	)
+)
+GO
+
+
+CREATE SCHEMA [global]
+GO
+
+
+CREATE VIEW [global].[User]
+AS
+	SELECT
+		t.[UserId],
+		t.[EmailAddress],
+		t.[UserName],
+		t.[SaltValue],
+		t.[PasswordHash],
+		t.[Question],
+		t.[AnswerHash],
+		t.[LastLoginSuccessTimestamp],
+		t.[LastLoginFailureTimestamp],
+		t.[FailedLoginCount],
+		t.[MustChangePassword],
+		t.[SortOrder],
+		t.[CreationTimestamp],
+		t.[ModificationTimestamp],
+		t.[CreationUserId],
+		t.[ModificationUserId],
+		t.[LogicalDelete]
+	FROM [dbo].[stv_fn_GlobalUser] (null) t
+GO
+]]>
+	</OutputScope>
+	
+</Template>

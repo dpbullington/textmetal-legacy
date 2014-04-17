@@ -168,7 +168,7 @@ namespace TextMetal.Common.SqlServerClr
 
 		#region Properties/Indexers/Events
 
-		private static object[][] WellKnownInMemoryDictionaries
+		internal static object[][] WellKnownInMemoryDictionaries
 		{
 			get
 			{
