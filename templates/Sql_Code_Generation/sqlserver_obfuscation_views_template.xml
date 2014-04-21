@@ -518,7 +518,7 @@ CREATE VIEW [${SchemaName}].[${TableName}]
 AS
 	SELECT 
 	z.*
-	FROM [${DataObfuscationTargetServerName}].[${InitialCatalogName}].[${SchemaName}].[${TableName}] t
+	FROM [${InitialCatalogName}].[${SchemaName}].[${TableName}] t
 	CROSS APPLY [${DataObfuscationProxyCatalogName}].[${SchemaName}].[iltv_fn_${TableName}]
 	(
 ]]>

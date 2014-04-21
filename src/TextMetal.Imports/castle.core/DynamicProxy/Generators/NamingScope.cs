@@ -12,14 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using System.Diagnostics;
-
 namespace Castle.DynamicProxy.Generators
 {
+	using System.Collections.Generic;
+	using System.Diagnostics;
+
 	public class NamingScope : INamingScope
 	{
-		#region Constructors/Destructors
+		private readonly IDictionary<string, int> names = new Dictionary<string, int>();
+		private readonly INamingScope parentScope;
 
 		public NamingScope()
 		{
@@ -27,46 +28,28 @@ namespace Castle.DynamicProxy.Generators
 
 		private NamingScope(INamingScope parent)
 		{
-			this.parentScope = parent;
+			parentScope = parent;
 		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly IDictionary<string, int> names = new Dictionary<string, int>();
-		private readonly INamingScope parentScope;
-
-		#endregion
-
-		#region Properties/Indexers/Events
 
 		public INamingScope ParentScope
 		{
-			get
-			{
-				return this.parentScope;
-			}
+			get { return parentScope; }
 		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		public string GetUniqueName(string suggestedName)
 		{
 			Debug.Assert(string.IsNullOrEmpty(suggestedName) == false,
-				"string.IsNullOrEmpty(suggestedName) == false");
+			             "string.IsNullOrEmpty(suggestedName) == false");
 
 			int counter;
-			if (!this.names.TryGetValue(suggestedName, out counter))
+			if (!names.TryGetValue(suggestedName, out counter))
 			{
-				this.names.Add(suggestedName, 0);
+				names.Add(suggestedName, 0);
 				return suggestedName;
 			}
 
 			counter++;
-			this.names[suggestedName] = counter;
+			names[suggestedName] = counter;
 			return suggestedName + "_" + counter.ToString();
 		}
 
@@ -74,7 +57,5 @@ namespace Castle.DynamicProxy.Generators
 		{
 			return new NamingScope(this);
 		}
-
-		#endregion
 	}
 }

@@ -3,10 +3,8 @@
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
-
 using System;
 using System.Collections;
-
 using NUnit.Core.Extensibility;
 
 namespace NUnit.Util.Extensibility
@@ -16,7 +14,7 @@ namespace NUnit.Util.Extensibility
 	/// </summary>
 	public class ProjectConverterCollection : IProjectConverter, IExtensionPoint
 	{
-		#region Constructors/Destructors
+		private ArrayList converters = new ArrayList();
 
 		public ProjectConverterCollection()
 		{
@@ -25,15 +23,44 @@ namespace NUnit.Util.Extensibility
 			//
 		}
 
+		#region IProjectConverter Members
+
+		public bool CanConvertFrom(string path)
+		{
+			foreach( IProjectConverter converter in converters )
+				if ( converter.CanConvertFrom( path ) )
+					return true;
+
+			return false;
+		}
+
+		public NUnitProject ConvertFrom(string path)
+		{
+			foreach( IProjectConverter converter in converters )
+				if ( converter.CanConvertFrom( path ) )
+					return converter.ConvertFrom( path );
+			
+			return null;
+		}
+
 		#endregion
 
-		#region Fields/Constants
+		#region IExtensionPoint Members
 
-		private ArrayList converters = new ArrayList();
+		public void Remove(object extension)
+		{
+			// TODO:  Add ProjectConverterCollection.Remove implementation
+		}
 
-		#endregion
+        public void Install(object extension)
+        {
+            // TODO:  Add ProjectConverterCollection.Install implementation
+        }
 
-		#region Properties/Indexers/Events
+        public void Install(object extension, int priority)
+        {
+            // TODO:  Add ProjectConverterCollection.Install implementation
+        }
 
 		public IExtensionHost Host
 		{
@@ -50,47 +77,6 @@ namespace NUnit.Util.Extensibility
 			{
 				return "Converters";
 			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		public bool CanConvertFrom(string path)
-		{
-			foreach (IProjectConverter converter in this.converters)
-			{
-				if (converter.CanConvertFrom(path))
-					return true;
-			}
-
-			return false;
-		}
-
-		public NUnitProject ConvertFrom(string path)
-		{
-			foreach (IProjectConverter converter in this.converters)
-			{
-				if (converter.CanConvertFrom(path))
-					return converter.ConvertFrom(path);
-			}
-
-			return null;
-		}
-
-		public void Install(object extension)
-		{
-			// TODO:  Add ProjectConverterCollection.Install implementation
-		}
-
-		public void Install(object extension, int priority)
-		{
-			// TODO:  Add ProjectConverterCollection.Install implementation
-		}
-
-		public void Remove(object extension)
-		{
-			// TODO:  Add ProjectConverterCollection.Remove implementation
 		}
 
 		#endregion

@@ -22,48 +22,31 @@ namespace Castle.Core.Configuration
 	[Serializable]
 	public class MutableConfiguration : AbstractConfiguration
 	{
-		#region Constructors/Destructors
-
 		/// <summary>
-		/// Initializes a new instance of the <see cref="MutableConfiguration" /> class.
+		/// Initializes a new instance of the <see cref="MutableConfiguration"/> class.
 		/// </summary>
-		/// <param name="name"> The name. </param>
-		public MutableConfiguration(String name)
-			: this(name, null)
+		/// <param name="name">The name.</param>
+		public MutableConfiguration(String name) : this(name, null)
 		{
 		}
 
 		public MutableConfiguration(String name, String value)
 		{
-			this.Name = name;
-			this.Value = value;
+			Name = name;
+			Value = value;
 		}
 
-		#endregion
-
-		#region Properties/Indexers/Events
-
 		/// <summary>
-		/// Gets the value of <see cref="IConfiguration" />.
+		/// Gets the value of <see cref="IConfiguration"/>.
 		/// </summary>
 		/// <value>
-		/// The Value of the <see cref="IConfiguration" />.
+		/// The Value of the <see cref="IConfiguration"/>.
 		/// </value>
 		public new string Value
 		{
-			get
-			{
-				return base.Value;
-			}
-			set
-			{
-				base.Value = value;
-			}
+			get { return base.Value; }
+			set { base.Value = value; }
 		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		public static MutableConfiguration Create(string name)
 		{
@@ -72,24 +55,22 @@ namespace Castle.Core.Configuration
 
 		public MutableConfiguration Attribute(string name, string value)
 		{
-			this.Attributes[name] = value;
+			Attributes[name] = value;
 			return this;
 		}
 
 		public MutableConfiguration CreateChild(string name)
 		{
 			MutableConfiguration child = new MutableConfiguration(name);
-			this.Children.Add(child);
+			Children.Add(child);
 			return child;
 		}
 
 		public MutableConfiguration CreateChild(string name, string value)
 		{
 			MutableConfiguration child = new MutableConfiguration(name, value);
-			this.Children.Add(child);
+			Children.Add(child);
 			return child;
 		}
-
-		#endregion
 	}
 }

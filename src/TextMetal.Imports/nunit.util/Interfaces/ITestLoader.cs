@@ -5,7 +5,7 @@
 // ****************************************************************
 
 using System;
-
+using System.Collections;
 using NUnit.Core;
 
 namespace NUnit.Util
@@ -16,89 +16,65 @@ namespace NUnit.Util
 	/// </summary>
 	public interface ITestLoader
 	{
+		#region Properties
+
 		// See if a project is loaded
-
-		#region Properties/Indexers/Events
-
-		bool IsProjectLoaded
-		{
-			get;
-		}
+		bool IsProjectLoaded { get; }
 
 		// See if a test has been loaded from the project
-		bool IsTestLoaded
-		{
-			get;
-		}
+		bool IsTestLoaded { get; }
 
 		// See if a test is running
-		bool Running
-		{
-			get;
-		}
+		bool Running { get; }
 
 		// The loaded test project
+		NUnitProject TestProject { get; }
 
-		string TestFileName
-		{
-			get;
-		}
-
-		NUnitProject TestProject
-		{
-			get;
-		}
+		string TestFileName { get; }
 
 		// Our last test results
-		TestResult TestResult
-		{
-			get;
-		}
+		TestResult TestResult { get; }
 
 		#endregion
 
-		#region Methods/Operators
-
-		void CancelTestRun();
+		#region Methods
 
 		// Create a new empty project using a default name
+		void NewProject();
+
+		// Create a new project given a filename
+		void NewProject( string filename );
 
 		// Load a project given a filename
-		void LoadProject(string filename);
+		void LoadProject( string filename );
 
 		// Load a project given a filename and config
-		void LoadProject(string filename, string configname);
+		void LoadProject( string filename, string configname );
 
 		// Load a project given an array of assemblies
-		void LoadProject(string[] assemblies);
+		void LoadProject( string[] assemblies );
 
 		// Unload current project
+		void UnloadProject();
 
 		// Load tests for current project and config
 		void LoadTest();
 
 		// Load a specific test for current project and config
-		void LoadTest(string testName);
-
-		void NewProject();
-
-		// Create a new project given a filename
-		void NewProject(string filename);
+		void LoadTest( string testName );
 
 		// Unload current test
-
+		void UnloadTest();
+		
 		// Reload current test
 		void ReloadTest();
 
 		// Run the tests
-		void RunTests(ITestFilter filter);
-
-		void UnloadProject();
-
-		void UnloadTest();
-
-		#endregion
+		void RunTests( ITestFilter filter );
 
 		// Cancel the running test
+		void CancelTestRun();
+
+		#endregion
 	}
 }

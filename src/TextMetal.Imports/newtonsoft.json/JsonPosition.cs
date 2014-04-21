@@ -1,5 +1,4 @@
 #region License
-
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -22,108 +21,95 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-
 #endregion
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-
 using Newtonsoft.Json.Utilities;
 
 namespace Newtonsoft.Json
 {
-	internal enum JsonContainerType
-	{
-		None,
-		Object,
-		Array,
-		Constructor
-	}
+    internal enum JsonContainerType
+    {
+        None,
+        Object,
+        Array,
+        Constructor
+    }
 
-	internal struct JsonPosition
-	{
-		#region Constructors/Destructors
+    internal struct JsonPosition
+    {
+        internal JsonContainerType Type;
+        internal int Position;
+        internal string PropertyName;
+        internal bool HasIndex;
 
-		public JsonPosition(JsonContainerType type)
-		{
-			this.Type = type;
-			this.HasIndex = TypeHasIndex(type);
-			this.Position = -1;
-			this.PropertyName = null;
-		}
+        public JsonPosition(JsonContainerType type)
+        {
+            Type = type;
+            HasIndex = TypeHasIndex(type);
+            Position = -1;
+            PropertyName = null;
+        }
 
-		#endregion
+        internal void WriteTo(StringBuilder sb)
+        {
+            switch (Type)
+            {
+                case JsonContainerType.Object:
+                    if (sb.Length > 0)
+                        sb.Append(".");
+                    sb.Append(PropertyName);
+                    break;
+                case JsonContainerType.Array:
+                case JsonContainerType.Constructor:
+                    sb.Append("[");
+                    sb.Append(Position);
+                    sb.Append("]");
+                    break;
+            }
+        }
 
-		#region Fields/Constants
+        internal static bool TypeHasIndex(JsonContainerType type)
+        {
+            return (type == JsonContainerType.Array || type == JsonContainerType.Constructor);
+        }
 
-		internal bool HasIndex;
+        internal static string BuildPath(IEnumerable<JsonPosition> positions)
+        {
+            StringBuilder sb = new StringBuilder();
 
-		internal int Position;
-		internal string PropertyName;
-		internal JsonContainerType Type;
+            foreach (JsonPosition state in positions)
+            {
+                state.WriteTo(sb);
+            }
 
-		#endregion
+            return sb.ToString();
+        }
 
-		#region Methods/Operators
+        internal static string FormatMessage(IJsonLineInfo lineInfo, string path, string message)
+        {
+            // don't add a fullstop and space when message ends with a new line
+            if (!message.EndsWith(Environment.NewLine))
+            {
+                message = message.Trim();
 
-		internal static string BuildPath(IEnumerable<JsonPosition> positions)
-		{
-			StringBuilder sb = new StringBuilder();
+                if (!message.EndsWith("."))
+                    message += ".";
 
-			foreach (JsonPosition state in positions)
-				state.WriteTo(sb);
+                message += " ";
+            }
 
-			return sb.ToString();
-		}
+            message += "Path '{0}'".FormatWith(CultureInfo.InvariantCulture, path);
 
-		internal static string FormatMessage(IJsonLineInfo lineInfo, string path, string message)
-		{
-			// don't add a fullstop and space when message ends with a new line
-			if (!message.EndsWith(Environment.NewLine))
-			{
-				message = message.Trim();
+            if (lineInfo != null && lineInfo.HasLineInfo())
+                message += ", line {0}, position {1}".FormatWith(CultureInfo.InvariantCulture, lineInfo.LineNumber, lineInfo.LinePosition);
 
-				if (!message.EndsWith("."))
-					message += ".";
+            message += ".";
 
-				message += " ";
-			}
-
-			message += "Path '{0}'".FormatWith(CultureInfo.InvariantCulture, path);
-
-			if (lineInfo != null && lineInfo.HasLineInfo())
-				message += ", line {0}, position {1}".FormatWith(CultureInfo.InvariantCulture, lineInfo.LineNumber, lineInfo.LinePosition);
-
-			message += ".";
-
-			return message;
-		}
-
-		internal static bool TypeHasIndex(JsonContainerType type)
-		{
-			return (type == JsonContainerType.Array || type == JsonContainerType.Constructor);
-		}
-
-		internal void WriteTo(StringBuilder sb)
-		{
-			switch (this.Type)
-			{
-				case JsonContainerType.Object:
-					if (sb.Length > 0)
-						sb.Append(".");
-					sb.Append(this.PropertyName);
-					break;
-				case JsonContainerType.Array:
-				case JsonContainerType.Constructor:
-					sb.Append("[");
-					sb.Append(this.Position);
-					sb.Append("]");
-					break;
-			}
-		}
-
-		#endregion
-	}
+            return message;
+        }
+    }
 }

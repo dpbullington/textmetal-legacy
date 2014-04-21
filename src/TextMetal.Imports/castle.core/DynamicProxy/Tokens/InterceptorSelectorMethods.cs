@@ -12,16 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection;
-
 namespace Castle.DynamicProxy.Tokens
 {
+	using System.Reflection;
+
 	public static class InterceptorSelectorMethods
 	{
-		#region Fields/Constants
-
 		public static readonly MethodInfo SelectInterceptors = typeof(IInterceptorSelector).GetMethod("SelectInterceptors", BindingFlags.Instance | BindingFlags.Public);
-
-		#endregion
 	}
 }

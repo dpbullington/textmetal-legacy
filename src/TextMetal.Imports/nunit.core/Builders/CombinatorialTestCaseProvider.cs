@@ -5,75 +5,71 @@
 // ****************************************************************
 
 using System;
-using System.Collections;
 using System.Reflection;
-
+using System.Collections;
 using NUnit.Core.Extensibility;
 
 namespace NUnit.Core.Builders
 {
-	public class CombinatorialTestCaseProvider : ITestCaseProvider2
-	{
-		//static readonly string CombinatorialAttribute = "NUnit.Framework.CombinatorialAttribute";
+    public class CombinatorialTestCaseProvider : ITestCaseProvider2
+    {
+        #region Static Members
+        static IDataPointProvider2 dataPointProvider =
+            (IDataPointProvider2)CoreExtensions.Host.GetExtensionPoint("DataPointProviders");
 
-		#region Fields/Constants
+        //static readonly string CombinatorialAttribute = "NUnit.Framework.CombinatorialAttribute";
+        static readonly string PairwiseAttribute = "NUnit.Framework.PairwiseAttribute";
+        static readonly string SequentialAttribute = "NUnit.Framework.SequentialAttribute";
+        #endregion
 
-		private static readonly string PairwiseAttribute = "NUnit.Framework.PairwiseAttribute";
-		private static readonly string SequentialAttribute = "NUnit.Framework.SequentialAttribute";
+        #region ITestCaseProvider Members
+        public bool HasTestCasesFor(System.Reflection.MethodInfo method)
+        {
+            if (method.GetParameters().Length == 0)
+                return false;
 
-		private static IDataPointProvider2 dataPointProvider =
-			(IDataPointProvider2)CoreExtensions.Host.GetExtensionPoint("DataPointProviders");
+            foreach (ParameterInfo parameter in method.GetParameters())
+                if (!dataPointProvider.HasDataFor(parameter))
+                    return false;
 
-		#endregion
+            return true;
+        }
 
-		#region Methods/Operators
+        public IEnumerable GetTestCasesFor(MethodInfo method)
+        {
+            return GetStrategy(method, null).GetTestCases();
+        }
+        #endregion
 
-		private CombiningStrategy GetStrategy(MethodInfo method, Test suite)
-		{
-			ParameterInfo[] parameters = method.GetParameters();
-			IEnumerable[] sources = new IEnumerable[parameters.Length];
-			for (int i = 0; i < parameters.Length; i++)
-				sources[i] = dataPointProvider.GetDataFor(parameters[i], suite);
+        #region ITestCaseProvider2 Members
+        public bool HasTestCasesFor(System.Reflection.MethodInfo method, Test suite)
+        {
+            return HasTestCasesFor(method);
+        }
 
-			if (Reflect.HasAttribute(method, SequentialAttribute, false))
-				return new SequentialStrategy(sources);
+        public IEnumerable GetTestCasesFor(MethodInfo method, Test suite)
+        {
+            return GetStrategy(method, suite).GetTestCases();
+        }
+        #endregion
 
-			if (Reflect.HasAttribute(method, PairwiseAttribute, false) &&
-				method.GetParameters().Length > 2)
-				return new PairwiseStrategy(sources);
+        #region GetStrategy
+        private CombiningStrategy GetStrategy(MethodInfo method, Test suite)
+        {
+            ParameterInfo[] parameters = method.GetParameters();
+            IEnumerable[] sources = new IEnumerable[parameters.Length];
+            for (int i = 0; i < parameters.Length; i++)
+                sources[i] = dataPointProvider.GetDataFor(parameters[i], suite);
 
-			return new CombinatorialStrategy(sources);
-		}
+            if (Reflect.HasAttribute(method, SequentialAttribute, false))
+                return new SequentialStrategy(sources);
 
-		public IEnumerable GetTestCasesFor(MethodInfo method)
-		{
-			return this.GetStrategy(method, null).GetTestCases();
-		}
+            if (Reflect.HasAttribute(method, PairwiseAttribute, false) &&
+                method.GetParameters().Length > 2)
+                    return new PairwiseStrategy(sources);
 
-		public IEnumerable GetTestCasesFor(MethodInfo method, Test suite)
-		{
-			return this.GetStrategy(method, suite).GetTestCases();
-		}
-
-		public bool HasTestCasesFor(MethodInfo method)
-		{
-			if (method.GetParameters().Length == 0)
-				return false;
-
-			foreach (ParameterInfo parameter in method.GetParameters())
-			{
-				if (!dataPointProvider.HasDataFor(parameter))
-					return false;
-			}
-
-			return true;
-		}
-
-		public bool HasTestCasesFor(MethodInfo method, Test suite)
-		{
-			return this.HasTestCasesFor(method);
-		}
-
-		#endregion
-	}
+            return new CombinatorialStrategy(sources);
+        }
+        #endregion
+    }
 }

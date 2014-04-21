@@ -22,35 +22,23 @@ namespace Castle.Components.DictionaryAdapter
 	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
 	public class KeySubstitutionAttribute : DictionaryBehaviorAttribute, IDictionaryKeyBuilder
 	{
-		#region Constructors/Destructors
+		private readonly string oldValue;
+		private readonly string newValue;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="KeySubstitutionAttribute" /> class.
+		/// Initializes a new instance of the <see cref="KeySubstitutionAttribute"/> class.
 		/// </summary>
-		/// <param name="oldValue"> The old value. </param>
-		/// <param name="newValue"> The new value. </param>
+		/// <param name="oldValue">The old value.</param>
+		/// <param name="newValue">The new value.</param>
 		public KeySubstitutionAttribute(string oldValue, string newValue)
 		{
 			this.oldValue = oldValue;
 			this.newValue = newValue;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly string newValue;
-		private readonly string oldValue;
-
-		#endregion
-
-		#region Methods/Operators
-
 		string IDictionaryKeyBuilder.GetKey(IDictionaryAdapter dictionaryAdapter, String key, PropertyDescriptor property)
 		{
-			return key.Replace(this.oldValue, this.newValue);
+			return key.Replace(oldValue, newValue);
 		}
-
-		#endregion
 	}
 }

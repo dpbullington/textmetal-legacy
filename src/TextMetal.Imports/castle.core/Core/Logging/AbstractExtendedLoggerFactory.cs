@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.IO;
-
 namespace Castle.Core.Logging
 {
 	using System;
+	using System.IO;
 
 #if SILVERLIGHT
 	public abstract class AbstractExtendedLoggerFactory : IExtendedLoggerFactory
@@ -25,39 +24,43 @@ namespace Castle.Core.Logging
 #endif
 	{
 		/// <summary>
-		/// Creates a new extended logger, getting the logger name from the specified type.
+		///   Creates a new extended logger, getting the logger name from the specified type.
 		/// </summary>
 		public virtual IExtendedLogger Create(Type type)
 		{
 			if (type == null)
+			{
 				throw new ArgumentNullException("type");
+			}
 
 			return Create(type.FullName);
 		}
 
 		/// <summary>
-		/// Creates a new extended logger.
+		///   Creates a new extended logger.
 		/// </summary>
 		public abstract IExtendedLogger Create(string name);
 
 		/// <summary>
-		/// Creates a new extended logger, getting the logger name from the specified type.
+		///   Creates a new extended logger, getting the logger name from the specified type.
 		/// </summary>
 		public virtual IExtendedLogger Create(Type type, LoggerLevel level)
 		{
 			if (type == null)
+			{
 				throw new ArgumentNullException("type");
+			}
 
 			return Create(type.FullName, level);
 		}
 
 		/// <summary>
-		/// Creates a new extended logger.
+		///   Creates a new extended logger.
 		/// </summary>
 		public abstract IExtendedLogger Create(string name, LoggerLevel level);
 
 		/// <summary>
-		/// Creates a new logger, getting the logger name from the specified type.
+		///   Creates a new logger, getting the logger name from the specified type.
 		/// </summary>
 		ILogger ILoggerFactory.Create(Type type)
 		{
@@ -65,7 +68,7 @@ namespace Castle.Core.Logging
 		}
 
 		/// <summary>
-		/// Creates a new logger.
+		///   Creates a new logger.
 		/// </summary>
 		ILogger ILoggerFactory.Create(string name)
 		{
@@ -73,7 +76,7 @@ namespace Castle.Core.Logging
 		}
 
 		/// <summary>
-		/// Creates a new logger, getting the logger name from the specified type.
+		///   Creates a new logger, getting the logger name from the specified type.
 		/// </summary>
 		ILogger ILoggerFactory.Create(Type type, LoggerLevel level)
 		{
@@ -81,7 +84,7 @@ namespace Castle.Core.Logging
 		}
 
 		/// <summary>
-		/// Creates a new logger.
+		///   Creates a new logger.
 		/// </summary>
 		ILogger ILoggerFactory.Create(string name, LoggerLevel level)
 		{
@@ -89,19 +92,23 @@ namespace Castle.Core.Logging
 		}
 
 		/// <summary>
-		/// Gets the configuration file.
+		///   Gets the configuration file.
 		/// </summary>
-		/// <param name="fileName"> i.e. log4net.config </param>
-		/// <returns> </returns>
+		/// <param name = "fileName">i.e. log4net.config</param>
+		/// <returns></returns>
 		protected static FileInfo GetConfigFile(string fileName)
 		{
 #if !SILVERLIGHT
 			FileInfo result;
 
 			if (Path.IsPathRooted(fileName))
+			{
 				result = new FileInfo(fileName);
+			}
 			else
+			{
 				result = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName));
+			}
 
 			return result;
 #else

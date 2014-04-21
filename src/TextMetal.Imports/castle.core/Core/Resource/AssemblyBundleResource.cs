@@ -12,34 +12,49 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Globalization;
-using System.IO;
-using System.Reflection;
-using System.Resources;
-using System.Text;
-
 namespace Castle.Core.Resource
 {
 	using System;
-
+	using System.Globalization;
+	using System.IO;
+	using System.Reflection;
+	using System.Resources;
+	using System.Text;
+	
 	public class AssemblyBundleResource : AbstractResource
 	{
-		#region Constructors/Destructors
+		private readonly CustomUri resource;
 
 		public AssemblyBundleResource(CustomUri resource)
 		{
 			this.resource = resource;
 		}
 
-		#endregion
+		public override TextReader GetStreamReader()
+		{
+			var assembly = ObtainAssembly(resource.Host);
 
-		#region Fields/Constants
+			var paths = resource.Path.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
+			if (paths.Length != 2)
+			{
+				throw new ResourceException("AssemblyBundleResource does not support paths with more than 2 levels in depth. See " +
+				                            resource.Path);
+			}
 
-		private readonly CustomUri resource;
+			var rm = new ResourceManager(paths[0], assembly);
 
-		#endregion
+			return new StringReader(rm.GetString(paths[1]));
+		}
 
-		#region Methods/Operators
+		public override TextReader GetStreamReader(Encoding encoding)
+		{
+			return GetStreamReader();
+		}
+
+		public override IResource CreateRelative(string relativePath)
+		{
+			throw new NotImplementedException();
+		}
 
 		private static Assembly ObtainAssembly(string assemblyName)
 		{
@@ -53,33 +68,5 @@ namespace Castle.Core.Resource
 				throw new ResourceException(message, ex);
 			}
 		}
-
-		public override IResource CreateRelative(string relativePath)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override TextReader GetStreamReader()
-		{
-			var assembly = ObtainAssembly(this.resource.Host);
-
-			var paths = this.resource.Path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-			if (paths.Length != 2)
-			{
-				throw new ResourceException("AssemblyBundleResource does not support paths with more than 2 levels in depth. See " +
-											this.resource.Path);
-			}
-
-			var rm = new ResourceManager(paths[0], assembly);
-
-			return new StringReader(rm.GetString(paths[1]));
-		}
-
-		public override TextReader GetStreamReader(Encoding encoding)
-		{
-			return this.GetStreamReader();
-		}
-
-		#endregion
 	}
 }

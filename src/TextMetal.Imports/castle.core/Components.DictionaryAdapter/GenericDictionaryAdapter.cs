@@ -12,80 +12,55 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
+	using System.Collections.Generic;
 
 	public class GenericDictionaryAdapter<TValue> : AbstractDictionaryAdapter
 	{
-		#region Constructors/Destructors
+		private readonly IDictionary<string, TValue> dictionary;
 
 		public GenericDictionaryAdapter(IDictionary<string, TValue> dictionary)
 		{
 			this.dictionary = dictionary;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly IDictionary<string, TValue> dictionary;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public override object this[object key]
-		{
-			get
-			{
-				TValue value;
-				return this.dictionary.TryGetValue(GetKey(key), out value) ? value : default(TValue);
-			}
-			set
-			{
-				this.dictionary[GetKey(key)] = (TValue)value;
-			}
-		}
-
 		public override bool IsReadOnly
 		{
-			get
-			{
-				return this.dictionary.IsReadOnly;
-			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		private static string GetKey(object key)
-		{
-			if (key == null)
-				throw new ArgumentNullException("key");
-			return key.ToString();
+			get { return dictionary.IsReadOnly; }
 		}
 
 		public override bool Contains(object key)
 		{
-			return this.dictionary.Keys.Contains(GetKey(key));
+			return dictionary.Keys.Contains(GetKey(key));
 		}
 
-		#endregion
+		public override object this[object key]
+		{
+			get 
+			{
+				TValue value;
+				return dictionary.TryGetValue(GetKey(key), out value) ? value : default(TValue);
+			}
+			set { dictionary[GetKey(key)] = (TValue)value; }
+		}
+
+		private static string GetKey(object key)
+		{
+			if (key == null)
+			{
+				throw new ArgumentNullException("key");
+			}
+			return key.ToString();
+		}
 	}
 
 	public static class GenericDictionaryAdapter
 	{
-		#region Methods/Operators
-
 		public static GenericDictionaryAdapter<TValue> ForDictionaryAdapter<TValue>(this IDictionary<string, TValue> dictionary)
 		{
 			return new GenericDictionaryAdapter<TValue>(dictionary);
 		}
-
-		#endregion
 	}
 }

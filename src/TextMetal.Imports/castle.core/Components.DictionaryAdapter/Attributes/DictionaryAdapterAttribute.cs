@@ -22,23 +22,11 @@ namespace Castle.Components.DictionaryAdapter
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
 	public class DictionaryAdapterAttribute : Attribute
 	{
-		#region Constructors/Destructors
-
 		public DictionaryAdapterAttribute(Type interfaceType)
 		{
-			this.InterfaceType = interfaceType;
+			InterfaceType = interfaceType;
 		}
 
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public Type InterfaceType
-		{
-			get;
-			private set;
-		}
-
-		#endregion
+		public Type InterfaceType { get; private set; }
 	}
 }

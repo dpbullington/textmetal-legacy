@@ -12,15 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
-
+	using System.Collections;
+	using System.Collections.Generic;
+	using System.ComponentModel;
+	using System.Diagnostics;
 	using SysPropertyDescriptor = System.ComponentModel.PropertyDescriptor;
 
 	[DebuggerDisplay("Count = {Count}, Adapter = {Adapter}")]
@@ -30,7 +28,7 @@ namespace Castle.Components.DictionaryAdapter
 #if SILVERLIGHT
 		IList,
 #else
-		IBindingList, // System
+		IBindingList,    // System
 #endif
 		IEditableObject,
 		IRevertibleChangeTracking,
@@ -38,8 +36,8 @@ namespace Castle.Components.DictionaryAdapter
 		ICollectionAdapterObserver<T>
 	{
 		private readonly ICollectionAdapter<T> adapter;
-		private int addNewIndex = NoIndex;
-		private int addedIndex = NoIndex;
+		private int addNewIndex  = NoIndex;
+		private int addedIndex   = NoIndex;
 		private int suspendLevel = 0;
 #if !SILVERLIGHT
 		private int changedIndex = NoIndex;
@@ -59,268 +57,90 @@ namespace Castle.Components.DictionaryAdapter
 
 		public int Count
 		{
-			get
-			{
-				return this.adapter.Count;
-			}
+			get { return adapter.Count; }
 		}
 
 #if !SILVERLIGHT
 		public IBindingList AsBindingList
 		{
-			get
-			{
-				return this;
-			}
+			get { return this; }
 		}
 #endif
 
 		public ICollectionAdapter<T> Adapter
 		{
-			get
-			{
-				return this.adapter;
-			}
+			get { return adapter; }
 		}
 
 		public IEqualityComparer<T> Comparer
 		{
-			get
-			{
-				return this.adapter.Comparer ?? EqualityComparer<T>.Default;
-			}
+			get { return adapter.Comparer ?? EqualityComparer<T>.Default; }
 		}
 
 		// Generic IBindingList Properties
-		bool IBindingList<T>.AllowEdit
-		{
-			get
-			{
-				return true;
-			}
-		}
-
-		bool IBindingList<T>.AllowNew
-		{
-			get
-			{
-				return true;
-			}
-		}
-
-		bool IBindingList<T>.AllowRemove
-		{
-			get
-			{
-				return true;
-			}
-		}
-
-		bool IBindingList<T>.SupportsChangeNotification
-		{
-			get
-			{
-				return true;
-			}
-		}
-
-		bool IBindingList<T>.SupportsSearching
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		bool IBindingList<T>.SupportsSorting
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		bool IBindingList<T>.IsSorted
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		SysPropertyDescriptor IBindingList<T>.SortProperty
-		{
-			get
-			{
-				return null;
-			}
-		}
-
-		ListSortDirection IBindingList<T>.SortDirection
-		{
-			get
-			{
-				return ListSortDirection.Ascending;
-			}
-		}
+		bool IBindingList<T>.AllowEdit                      { get { return true;  } }
+		bool IBindingList<T>.AllowNew                       { get { return true;  } }
+		bool IBindingList<T>.AllowRemove                    { get { return true;  } }
+		bool IBindingList<T>.SupportsChangeNotification     { get { return true;  } }
+		bool IBindingList<T>.SupportsSearching              { get { return false; } }
+		bool IBindingList<T>.SupportsSorting                { get { return false; } }
+		bool IBindingList<T>.IsSorted                       { get { return false; } }
+		SysPropertyDescriptor IBindingList<T>.SortProperty  { get { return null;  } }
+		ListSortDirection     IBindingList<T>.SortDirection { get { return ListSortDirection.Ascending; } }
 
 #if !SILVERLIGHT
 		// System IBindingList Properties
-		bool IBindingList.AllowEdit
-		{
-			get
-			{
-				return true;
-			}
-		}
-
-		bool IBindingList.AllowNew
-		{
-			get
-			{
-				return true;
-			}
-		}
-
-		bool IBindingList.AllowRemove
-		{
-			get
-			{
-				return true;
-			}
-		}
-
-		bool IBindingList.SupportsChangeNotification
-		{
-			get
-			{
-				return true;
-			}
-		}
-
-		bool IBindingList.SupportsSearching
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		bool IBindingList.SupportsSorting
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		bool IBindingList.IsSorted
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		SysPropertyDescriptor IBindingList.SortProperty
-		{
-			get
-			{
-				return null;
-			}
-		}
-
-		ListSortDirection IBindingList.SortDirection
-		{
-			get
-			{
-				return ListSortDirection.Ascending;
-			}
-		}
+		bool IBindingList.AllowEdit                      { get { return true;  } }
+		bool IBindingList.AllowNew                       { get { return true;  } }
+		bool IBindingList.AllowRemove                    { get { return true;  } }
+		bool IBindingList.SupportsChangeNotification     { get { return true;  } }
+		bool IBindingList.SupportsSearching              { get { return false; } }
+		bool IBindingList.SupportsSorting                { get { return false; } }
+		bool IBindingList.IsSorted                       { get { return false; } }
+		SysPropertyDescriptor IBindingList.SortProperty  { get { return null;  } }
+		ListSortDirection     IBindingList.SortDirection { get { return ListSortDirection.Ascending; } }
 
 		// Other Binding Properties
-		bool IRaiseItemChangedEvents.RaisesItemChangedEvents
-		{
-			get
-			{
-				return true;
-			}
-		}
+		bool IRaiseItemChangedEvents.RaisesItemChangedEvents { get { return true; } }
 #endif
 
 		// IList Properties
-		bool IList.IsFixedSize
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		bool IList.IsReadOnly
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		bool ICollection<T>.IsReadOnly
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		bool ICollection.IsSynchronized
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		object ICollection.SyncRoot
-		{
-			get
-			{
-				return this;
-			}
-		}
+		bool   IList.IsFixedSize          { get { return false; } }
+		bool   IList.IsReadOnly           { get { return false; } }
+		bool   ICollection<T>.IsReadOnly  { get { return false; } }
+		bool   ICollection.IsSynchronized { get { return false; } }
+		object ICollection.SyncRoot       { get { return this;  } }
 
 		public virtual bool Contains(T item)
 		{
-			return this.IndexOf(item) >= 0;
+			return IndexOf(item) >= 0;
 		}
 
 		bool IList.Contains(object item)
 		{
-			return this.Contains((T)item);
+			return Contains((T) item);
 		}
 
 		public int IndexOf(T item)
 		{
-			var count = this.Count;
-			var comparer = this.Comparer;
+			var count    = Count;
+			var comparer = Comparer;
 
 			for (var i = 0; i < count; i++)
-			{
 				if (comparer.Equals(this[i], item))
 					return i;
-			}
 
 			return -1;
 		}
 
 		int IList.IndexOf(object item)
 		{
-			return this.IndexOf((T)item);
+			return IndexOf((T) item);
 		}
 
 		public void CopyTo(T[] array, int index)
 		{
-			var count = this.Count;
+			var count = Count;
 
 			for (int i = 0, j = index; i < count; i++, j++)
 				array[j] = this[i];
@@ -328,12 +148,12 @@ namespace Castle.Components.DictionaryAdapter
 
 		void ICollection.CopyTo(Array array, int index)
 		{
-			this.CopyTo((T[])array, index);
+			CopyTo((T[]) array, index);
 		}
 
 		public IEnumerator<T> GetEnumerator()
 		{
-			var count = this.Count;
+			var count = Count;
 
 			for (var i = 0; i < count; i++)
 				yield return this[i];
@@ -341,31 +161,19 @@ namespace Castle.Components.DictionaryAdapter
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			return this.GetEnumerator();
+			return GetEnumerator();
 		}
 
 		public T this[int index]
 		{
-			get
-			{
-				return this.adapter[index];
-			}
-			set
-			{
-				this.adapter[index] = value;
-			}
+			get { return adapter[index]; }
+			set { adapter[index] = value; }
 		}
 
 		object IList.this[int index]
 		{
-			get
-			{
-				return this[index];
-			}
-			set
-			{
-				this[index] = (T)value;
-			}
+			get { return this[index]; }
+			set { this[index] = (T) value; }
 		}
 
 		public void Replace(IEnumerable<T> items)
@@ -375,17 +183,17 @@ namespace Castle.Components.DictionaryAdapter
 
 		void ICollectionProjection.Replace(IEnumerable items)
 		{
-			this.SuspendEvents();
-			try
-			{
-				this.Clear();
-				foreach (T item in items)
-					this.Add(item);
-			}
-			finally
-			{
-				this.ResumeEvents();
-			}
+		    SuspendEvents();
+		    try
+		    {
+		        Clear();
+		        foreach (T item in items)
+		            Add(item);
+		    }
+		    finally
+		    {
+		        ResumeEvents();
+		    }
 		}
 
 		protected virtual bool OnReplacing(T oldValue, T newValue)
@@ -395,70 +203,70 @@ namespace Castle.Components.DictionaryAdapter
 
 		bool ICollectionAdapterObserver<T>.OnReplacing(T oldValue, T newValue)
 		{
-			return this.OnReplacing(oldValue, newValue);
+			return OnReplacing(oldValue, newValue);
 		}
 
 		protected virtual void OnReplaced(T oldValue, T newValue, int index)
 		{
-			this.DetachPropertyChanged(oldValue);
-			this.AttachPropertyChanged(newValue);
-			this.NotifyListChanged(ListChangedType.ItemChanged, index);
+			DetachPropertyChanged(oldValue);
+			AttachPropertyChanged(newValue);
+			NotifyListChanged(ListChangedType.ItemChanged, index);
 		}
 
 		void ICollectionAdapterObserver<T>.OnReplaced(T oldValue, T newValue, int index)
 		{
-			this.OnReplaced(oldValue, newValue, index);
+			OnReplaced(oldValue, newValue, index);
 		}
 
 		public virtual T AddNew()
 		{
-			var item = (T)this.adapter.AddNew();
-			this.addNewIndex = this.addedIndex;
+			var item = (T) adapter.AddNew();
+			addNewIndex = addedIndex;
 			return item;
 		}
 
 #if !SILVERLIGHT
 		object IBindingList.AddNew()
 		{
-			return this.AddNew();
+			return AddNew();
 		}
 #endif
 
 		public bool IsNew(int index)
 		{
-			return index == this.addNewIndex
-					&& index >= 0;
+			return index == addNewIndex
+				&& index >= 0;
 		}
 
 		public virtual void EndNew(int index)
 		{
-			if (this.IsNew(index))
-				this.addNewIndex = NoIndex;
+			if (IsNew(index))
+				addNewIndex = NoIndex;
 		}
 
 		public virtual void CancelNew(int index)
 		{
-			if (this.IsNew(index))
+			if (IsNew(index))
 			{
-				this.RemoveAt(this.addNewIndex);
-				this.addNewIndex = NoIndex;
+				RemoveAt(addNewIndex);
+				addNewIndex = NoIndex;
 			}
 		}
 
 		public virtual bool Add(T item)
 		{
-			return this.adapter.Add(item);
+			return adapter.Add(item);
 		}
 
 		void ICollection<T>.Add(T item)
 		{
-			this.Add(item);
+			Add(item);
 		}
 
 		int IList.Add(object item)
 		{
-			this.Add((T)item);
-			return this.addedIndex;
+			Add((T) item);
+			return addedIndex;
 		}
 
 		public void Insert(int index, T item)
@@ -466,20 +274,20 @@ namespace Castle.Components.DictionaryAdapter
 			if (index < 0)
 				throw new ArgumentOutOfRangeException("index");
 
-			var count = this.Count;
+			var count = Count;
 			if (index > count)
 				throw new ArgumentOutOfRangeException("index");
 
-			this.EndNew(this.addNewIndex);
+			EndNew(addNewIndex);
 			if (index == count)
-				this.adapter.Add(item);
+				adapter.Add(item);
 			else
-				this.adapter.Insert(index, item);
+				adapter.Insert(index, item);
 		}
 
 		void IList.Insert(int index, object item)
 		{
-			this.Insert(index, (T)item);
+			Insert(index, (T) item);
 		}
 
 		protected virtual bool OnInserting(T value)
@@ -489,89 +297,88 @@ namespace Castle.Components.DictionaryAdapter
 
 		bool ICollectionAdapterObserver<T>.OnInserting(T value)
 		{
-			return this.OnInserting(value);
+			return OnInserting(value);
 		}
 
 		protected virtual void OnInserted(T newValue, int index)
 		{
-			this.addedIndex = index;
-			this.AttachPropertyChanged(newValue);
-			this.NotifyListChanged(ListChangedType.ItemAdded, index);
+			addedIndex = index;
+			AttachPropertyChanged(newValue);
+			NotifyListChanged(ListChangedType.ItemAdded, index);
 		}
 
 		void ICollectionAdapterObserver<T>.OnInserted(T newValue, int index)
 		{
-			this.OnInserted(newValue, index);
+			OnInserted(newValue, index);
 		}
 
 		public virtual bool Remove(T item)
 		{
-			var index = this.IndexOf(item);
-			if (index < 0)
-				return false;
-			this.RemoveAt(index);
+			var index = IndexOf(item);
+			if (index < 0) return false;
+			RemoveAt(index);
 			return true;
 		}
 
 		void IList.Remove(object value)
 		{
-			this.Remove((T)value);
+			Remove((T) value);
 		}
 
 		public virtual void RemoveAt(int index)
 		{
-			this.EndNew(this.addNewIndex);
-			this.adapter.Remove(index);
+			EndNew(addNewIndex);
+			adapter.Remove(index);
 		}
 
 		public virtual void Clear()
 		{
-			this.EndNew(this.addNewIndex);
-			this.adapter.Clear();
-			this.NotifyListReset();
+			EndNew(addNewIndex);
+			adapter.Clear();
+			NotifyListReset();
 		}
 
 		void ICollectionProjection.ClearReferences()
 		{
-			this.adapter.ClearReferences();
+			adapter.ClearReferences();
 		}
 
 		protected virtual void OnRemoving(T oldValue)
 		{
-			this.DetachPropertyChanged(oldValue);
+			DetachPropertyChanged(oldValue);
 		}
 
 		void ICollectionAdapterObserver<T>.OnRemoving(T oldValue)
 		{
-			this.OnRemoving(oldValue);
+			OnRemoving(oldValue);
 		}
 
 		protected virtual void OnRemoved(T oldValue, int index)
 		{
-			this.NotifyListChanged(ListChangedType.ItemDeleted, index);
+			NotifyListChanged(ListChangedType.ItemDeleted, index);
 		}
 
 		void ICollectionAdapterObserver<T>.OnRemoved(T oldValue, int index)
 		{
-			this.OnRemoved(oldValue, index);
+			OnRemoved(oldValue, index);
 		}
 
 		public bool IsChanged
 		{
 			get
 			{
-				if (this.adapter.HasSnapshot == false)
+				if (adapter.HasSnapshot == false)
 					return false;
 
-				var count = this.Count;
-				if (this.adapter.SnapshotCount != count)
+				var count = Count;
+				if (adapter.SnapshotCount != count)
 					return true;
 
-				var comparer = this.Comparer;
+				var comparer = Comparer;
 				for (var i = 0; i < count; i++)
 				{
-					var currentItem = this.adapter.GetCurrentItem(i);
-					var snapshotItem = this.adapter.GetSnapshotItem(i);
+					var currentItem  = adapter.GetCurrentItem (i);
+					var snapshotItem = adapter.GetSnapshotItem(i);
 
 					if (comparer.Equals(currentItem, snapshotItem) == false)
 						return true;
@@ -587,33 +394,33 @@ namespace Castle.Components.DictionaryAdapter
 
 		public void BeginEdit()
 		{
-			if (!this.adapter.HasSnapshot)
-				this.adapter.SaveSnapshot();
+			if (!adapter.HasSnapshot)
+				adapter.SaveSnapshot();
 		}
 
 		public void EndEdit()
 		{
-			this.adapter.DropSnapshot();
+			adapter.DropSnapshot();
 		}
 
 		public void CancelEdit()
 		{
-			if (this.adapter.HasSnapshot)
+			if (adapter.HasSnapshot)
 			{
-				this.adapter.LoadSnapshot();
-				this.adapter.DropSnapshot();
-				this.NotifyListReset();
+				adapter.LoadSnapshot();
+				adapter.DropSnapshot();
+				NotifyListReset();
 			}
 		}
 
 		public void AcceptChanges()
 		{
-			this.BeginEdit();
+			BeginEdit();
 		}
 
 		public void RejectChanges()
 		{
-			this.CancelEdit();
+			CancelEdit();
 		}
 
 #if SILVERLIGHT
@@ -632,10 +439,10 @@ namespace Castle.Components.DictionaryAdapter
 			if (notifier == null)
 				return;
 
-			if (this.propertyHandler == null)
-				this.propertyHandler = this.HandlePropertyChanged;
+			if (propertyHandler == null)
+				propertyHandler = HandlePropertyChanged;
 
-			notifier.PropertyChanged += this.propertyHandler;
+			notifier.PropertyChanged += propertyHandler;
 		}
 
 		private void DetachPropertyChanged(T value)
@@ -644,26 +451,26 @@ namespace Castle.Components.DictionaryAdapter
 				return;
 
 			var notifier = value as INotifyPropertyChanged;
-			if (notifier == null || this.propertyHandler == null)
+			if (notifier == null || propertyHandler == null)
 				return;
 
-			notifier.PropertyChanged -= this.propertyHandler;
+			notifier.PropertyChanged -= propertyHandler;
 		}
 
 		private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			T item;
 			var notify
-				= this.EventsEnabled
-				&& this.CanHandle(sender, e)
-				&& this.TryGetChangedItem(sender, out item)
-				&& this.TryGetChangedIndex(item);
+				=  EventsEnabled
+				&& CanHandle(sender, e)
+				&& TryGetChangedItem(sender, out item)
+				&& TryGetChangedIndex(item);
 
 			if (notify)
 			{
 				var property = GetChangedProperty(e);
-				var change = new ListChangedEventArgs(ListChangedType.ItemChanged, this.changedIndex, property);
-				this.OnListChanged(change);
+				var change   = new ListChangedEventArgs(ListChangedType.ItemChanged, changedIndex, property);
+				OnListChanged(change);
 			}
 		}
 
@@ -671,7 +478,7 @@ namespace Castle.Components.DictionaryAdapter
 		{
 			if (sender == null || e == null || string.IsNullOrEmpty(e.PropertyName))
 			{
-				this.NotifyListReset();
+				NotifyListReset();
 				return false;
 			}
 			return true;
@@ -681,12 +488,12 @@ namespace Castle.Components.DictionaryAdapter
 		{
 			try
 			{
-				item = (T)sender;
+				item = (T) sender;
 				return true;
 			}
 			catch (InvalidCastException)
 			{
-				this.NotifyListReset();
+				NotifyListReset();
 				item = default(T);
 				return false;
 			}
@@ -695,18 +502,18 @@ namespace Castle.Components.DictionaryAdapter
 		private bool TryGetChangedIndex(T item)
 		{
 			var isSameItem
-				= this.changedIndex >= 0
-				&& this.changedIndex < this.Count
-				&& this.Comparer.Equals(this[this.changedIndex], item);
+				=  changedIndex >= 0
+				&& changedIndex <  Count
+				&& Comparer.Equals(this[changedIndex], item);
 			if (isSameItem)
 				return true;
-
-			this.changedIndex = this.IndexOf(item);
-			if (this.changedIndex >= 0)
+			
+			changedIndex = IndexOf(item);
+			if (changedIndex >= 0)
 				return true;
 
-			this.DetachPropertyChanged(item);
-			this.NotifyListReset();
+			DetachPropertyChanged(item);
+			NotifyListReset();
 			return false;
 		}
 
@@ -721,10 +528,9 @@ namespace Castle.Components.DictionaryAdapter
 
 #if !SILVERLIGHT
 		public event ListChangedEventHandler ListChanged;
-
 		protected virtual void OnListChanged(ListChangedEventArgs args)
 		{
-			var handler = this.ListChanged;
+			var handler = ListChanged;
 			if (handler != null)
 				handler(this, args);
 		}
@@ -746,38 +552,35 @@ namespace Castle.Components.DictionaryAdapter
 #else
 		protected void NotifyListChanged(ListChangedType type, int index)
 		{
-			if (this.EventsEnabled)
-				this.OnListChanged(new ListChangedEventArgs(type, index));
+			if (EventsEnabled)
+				OnListChanged(new ListChangedEventArgs(type, index));
 		}
 
 		protected void NotifyListReset()
 		{
-			if (this.EventsEnabled)
-				this.OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
+			if (EventsEnabled)
+				OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
 		}
 #endif
 
 		public bool EventsEnabled
 		{
-			get
-			{
-				return this.suspendLevel == 0;
-			}
+			get { return suspendLevel == 0; }
 		}
 
 		public void SuspendEvents()
 		{
-			this.suspendLevel++;
+			suspendLevel++;
 		}
 
 		public bool ResumeEvents()
 		{
-			var enabled
-				= this.suspendLevel == 0
-				|| --this.suspendLevel == 0;
+			var enabled 
+				=    suspendLevel == 0
+				|| --suspendLevel == 0;
 
 			if (enabled)
-				this.NotifyListReset();
+				NotifyListReset();
 
 			return enabled;
 		}

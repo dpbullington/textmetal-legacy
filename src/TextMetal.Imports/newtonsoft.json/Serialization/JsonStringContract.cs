@@ -1,5 +1,4 @@
 #region License
-
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -22,30 +21,25 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-
 #endregion
 
 using System;
 
 namespace Newtonsoft.Json.Serialization
 {
-	/// <summary>
-	/// Contract details for a <see cref="Type" /> used by the <see cref="JsonSerializer" />.
-	/// </summary>
-	public class JsonStringContract : JsonPrimitiveContract
-	{
-		#region Constructors/Destructors
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="JsonStringContract" /> class.
-		/// </summary>
-		/// <param name="underlyingType"> The underlying type for the contract. </param>
-		public JsonStringContract(Type underlyingType)
-			: base(underlyingType)
-		{
-			this.ContractType = JsonContractType.String;
-		}
-
-		#endregion
-	}
+    /// <summary>
+    /// Contract details for a <see cref="Type"/> used by the <see cref="JsonSerializer"/>.
+    /// </summary>
+    public class JsonStringContract : JsonPrimitiveContract
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsonStringContract"/> class.
+        /// </summary>
+        /// <param name="underlyingType">The underlying type for the contract.</param>
+        public JsonStringContract(Type underlyingType)
+            : base(underlyingType)
+        {
+            ContractType = JsonContractType.String;
+        }
+    }
 }

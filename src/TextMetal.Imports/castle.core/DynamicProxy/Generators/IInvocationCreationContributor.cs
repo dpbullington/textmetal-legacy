@@ -12,26 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection;
-
-using Castle.DynamicProxy.Generators.Emitters;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-
 namespace Castle.DynamicProxy.Generators
 {
+	using System.Reflection;
+
+	using Castle.DynamicProxy.Generators.Emitters;
+	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+
 	public interface IInvocationCreationContributor
 	{
-		#region Methods/Operators
-
 		ConstructorEmitter CreateConstructor(ArgumentReference[] baseCtorArguments, AbstractTypeEmitter invocation);
 
 		MethodInfo GetCallbackMethod();
 
 		MethodInvocationExpression GetCallbackMethodInvocation(AbstractTypeEmitter invocation, Expression[] args,
-			Reference targetField, MethodEmitter invokeMethodOnTarget);
+		                                                       Reference targetField, MethodEmitter invokeMethodOnTarget);
 
 		Expression[] GetConstructorInvocationArguments(Expression[] arguments, ClassEmitter proxy);
-
-		#endregion
 	}
 }

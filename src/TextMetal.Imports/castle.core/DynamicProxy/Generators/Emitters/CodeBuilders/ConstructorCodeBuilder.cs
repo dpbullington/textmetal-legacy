@@ -12,62 +12,48 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection;
-using System.Reflection.Emit;
-
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-
 namespace Castle.DynamicProxy.Generators.Emitters.CodeBuilders
 {
 	using System;
+	using System.Reflection;
+	using System.Reflection.Emit;
+
+	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
 	public class ConstructorCodeBuilder : AbstractCodeBuilder
 	{
-		#region Constructors/Destructors
+		private readonly Type baseType;
 
-		public ConstructorCodeBuilder(Type baseType, ILGenerator generator)
-			: base(generator)
+		public ConstructorCodeBuilder(Type baseType, ILGenerator generator) : base(generator)
 		{
 			this.baseType = baseType;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly Type baseType;
-
-		#endregion
-
-		#region Methods/Operators
-
 		public void InvokeBaseConstructor()
 		{
-			var type = this.baseType;
+			var type = baseType;
 			if (type.ContainsGenericParameters)
 			{
 				type = type.GetGenericTypeDefinition();
-				// need to get generic type definition, otherwise the GetConstructor method might throw NotSupportedException
+					// need to get generic type definition, otherwise the GetConstructor method might throw NotSupportedException
 			}
 
 			var flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 			var baseDefaultCtor = type.GetConstructor(flags, null, new Type[0], null);
 
-			this.InvokeBaseConstructor(baseDefaultCtor);
+			InvokeBaseConstructor(baseDefaultCtor);
 		}
 
 		public void InvokeBaseConstructor(ConstructorInfo constructor)
 		{
-			this.AddStatement(new ConstructorInvocationStatement(constructor));
+			AddStatement(new ConstructorInvocationStatement(constructor));
 		}
 
 		public void InvokeBaseConstructor(ConstructorInfo constructor, params ArgumentReference[] arguments)
 		{
-			this.AddStatement(
+			AddStatement(
 				new ConstructorInvocationStatement(constructor,
-					ArgumentsUtil.ConvertArgumentReferenceToExpression(arguments)));
+				                                   ArgumentsUtil.ConvertArgumentReferenceToExpression(arguments)));
 		}
-
-		#endregion
 	}
 }

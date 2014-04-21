@@ -20,15 +20,13 @@ namespace Castle.Core.Logging
 	using System.Text;
 
 	/// <summary>
-	/// Creates <see cref="StreamLogger" /> outputing
-	/// to files. The name of the file is derived from the log name
-	/// plus the 'log' extension.
+	///   Creates <see cref = "StreamLogger" /> outputing 
+	///   to files. The name of the file is derived from the log name
+	///   plus the 'log' extension.
 	/// </summary>
 	[Serializable]
 	public class StreamLoggerFactory : AbstractLoggerFactory
 	{
-		#region Methods/Operators
-
 		public override ILogger Create(string name)
 		{
 			return new StreamLogger(name, new FileStream(name + ".log", FileMode.Append, FileAccess.Write), Encoding.Default);
@@ -41,8 +39,6 @@ namespace Castle.Core.Logging
 			logger.Level = level;
 			return logger;
 		}
-
-		#endregion
 	}
 
 #endif

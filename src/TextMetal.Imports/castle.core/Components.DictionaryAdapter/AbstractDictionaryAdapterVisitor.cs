@@ -12,51 +12,124 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections;
-using System.Collections.Generic;
-
-using Castle.Core;
-
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
+	using System.Linq;
+	using System.Collections;
+	using System.Collections.Generic;
+
+	using Castle.Core;
 
 	/// <summary>
-	/// Abstract implementation of <see cref="IDictionaryAdapterVisitor" />.
+	/// Abstract implementation of <see cref="IDictionaryAdapterVisitor"/>.
 	/// </summary>
 	public abstract class AbstractDictionaryAdapterVisitor : IDictionaryAdapterVisitor
 	{
-		#region Constructors/Destructors
+		private readonly Dictionary<IDictionaryAdapter, int> scopes;
 
 		protected AbstractDictionaryAdapterVisitor()
 		{
-			this.scopes = new Dictionary<IDictionaryAdapter, int>(ReferenceEqualityComparer<IDictionaryAdapter>.Instance);
+			scopes = new Dictionary<IDictionaryAdapter, int>(ReferenceEqualityComparer<IDictionaryAdapter>.Instance);
 		}
 
 		protected AbstractDictionaryAdapterVisitor(AbstractDictionaryAdapterVisitor parent)
 		{
-			this.scopes = parent.scopes;
+			scopes = parent.scopes;
 		}
 
-		#endregion
+		protected bool Cancelled { get; set; }
 
-		#region Fields/Constants
-
-		private readonly Dictionary<IDictionaryAdapter, int> scopes;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		protected bool Cancelled
+		public virtual bool VisitDictionaryAdapter(IDictionaryAdapter dictionaryAdapter, object state)
 		{
-			get;
-			set;
+			return VisitDictionaryAdapter(dictionaryAdapter, null, null);
 		}
 
-		#endregion
+		public virtual bool VisitDictionaryAdapter(IDictionaryAdapter dictionaryAdapter, Func<PropertyDescriptor, bool> selector, object state)
+		{
+			if (PushScope(dictionaryAdapter) == false)
+			{
+				return false;
+			}
 
-		#region Methods/Operators
+			try
+			{
+				foreach (var property in dictionaryAdapter.This.Properties.Values)
+				{
+					if (Cancelled) break;
+
+					if (selector != null && selector(property) == false)
+					{
+						continue;
+					}
+
+					Type collectionItemType;
+					if (IsCollection(property, out collectionItemType))
+					{
+						VisitCollection(dictionaryAdapter, property, collectionItemType, state);
+					}
+					else if (property.PropertyType.IsInterface)
+					{
+						VisitInterface(dictionaryAdapter, property, state);
+					}
+					else
+					{
+						VisitProperty(dictionaryAdapter, property, state);
+					}
+				}
+			}
+			finally
+			{
+				PopScope(dictionaryAdapter);
+			}
+
+			return true;
+		}
+
+		void IDictionaryAdapterVisitor.VisitProperty(IDictionaryAdapter dictionaryAdapter, PropertyDescriptor property, object state)
+		{
+			VisitProperty(dictionaryAdapter, property, state);
+		}
+
+		protected virtual void VisitProperty(IDictionaryAdapter dictionaryAdapter, PropertyDescriptor property, object state)
+		{
+		}
+
+		void IDictionaryAdapterVisitor.VisitInterface(IDictionaryAdapter dictionaryAdapter, PropertyDescriptor property, object state)
+		{
+
+			VisitInterface(dictionaryAdapter, property, state);
+		}
+
+		protected virtual void VisitInterface(IDictionaryAdapter dictionaryAdapter, PropertyDescriptor property, object state)
+		{
+			VisitProperty(dictionaryAdapter, property, state);
+		}
+
+		void IDictionaryAdapterVisitor.VisitCollection(IDictionaryAdapter dictionaryAdapter, PropertyDescriptor property, Type collectionItemType, object state)
+		{
+			VisitCollection(dictionaryAdapter, property, collectionItemType, state);
+		}
+
+		protected virtual void VisitCollection(IDictionaryAdapter dictionaryAdapter, PropertyDescriptor property, Type collectionItemType, object state)
+		{
+			VisitProperty(dictionaryAdapter, property, state);
+		}
+
+		private bool PushScope(IDictionaryAdapter dictionaryAdapter)
+		{
+			if (scopes.ContainsKey(dictionaryAdapter))
+			{
+				return false;
+			}
+			scopes.Add(dictionaryAdapter, 0);
+			return true;
+		}
+
+		private void PopScope(IDictionaryAdapter dictionaryAdapter)
+		{
+			scopes.Remove(dictionaryAdapter);
+		}
 
 		private static bool IsCollection(PropertyDescriptor property, out Type collectionItemType)
 		{
@@ -65,98 +138,21 @@ namespace Castle.Components.DictionaryAdapter
 			if (propertyType != typeof(string) && typeof(IEnumerable).IsAssignableFrom(propertyType))
 			{
 				if (propertyType.IsArray)
+				{
 					collectionItemType = propertyType.GetElementType();
+				}
 				else if (propertyType.IsGenericType)
 				{
 					var arguments = propertyType.GetGenericArguments();
 					collectionItemType = arguments[0];
 				}
 				else
+				{
 					collectionItemType = typeof(object);
+				}
 				return true;
 			}
 			return false;
 		}
-
-		private void PopScope(IDictionaryAdapter dictionaryAdapter)
-		{
-			this.scopes.Remove(dictionaryAdapter);
-		}
-
-		private bool PushScope(IDictionaryAdapter dictionaryAdapter)
-		{
-			if (this.scopes.ContainsKey(dictionaryAdapter))
-				return false;
-			this.scopes.Add(dictionaryAdapter, 0);
-			return true;
-		}
-
-		void IDictionaryAdapterVisitor.VisitCollection(IDictionaryAdapter dictionaryAdapter, PropertyDescriptor property, Type collectionItemType, object state)
-		{
-			this.VisitCollection(dictionaryAdapter, property, collectionItemType, state);
-		}
-
-		protected virtual void VisitCollection(IDictionaryAdapter dictionaryAdapter, PropertyDescriptor property, Type collectionItemType, object state)
-		{
-			this.VisitProperty(dictionaryAdapter, property, state);
-		}
-
-		public virtual bool VisitDictionaryAdapter(IDictionaryAdapter dictionaryAdapter, object state)
-		{
-			return this.VisitDictionaryAdapter(dictionaryAdapter, null, null);
-		}
-
-		public virtual bool VisitDictionaryAdapter(IDictionaryAdapter dictionaryAdapter, Func<PropertyDescriptor, bool> selector, object state)
-		{
-			if (this.PushScope(dictionaryAdapter) == false)
-				return false;
-
-			try
-			{
-				foreach (var property in dictionaryAdapter.This.Properties.Values)
-				{
-					if (this.Cancelled)
-						break;
-
-					if (selector != null && selector(property) == false)
-						continue;
-
-					Type collectionItemType;
-					if (IsCollection(property, out collectionItemType))
-						this.VisitCollection(dictionaryAdapter, property, collectionItemType, state);
-					else if (property.PropertyType.IsInterface)
-						this.VisitInterface(dictionaryAdapter, property, state);
-					else
-						this.VisitProperty(dictionaryAdapter, property, state);
-				}
-			}
-			finally
-			{
-				this.PopScope(dictionaryAdapter);
-			}
-
-			return true;
-		}
-
-		void IDictionaryAdapterVisitor.VisitInterface(IDictionaryAdapter dictionaryAdapter, PropertyDescriptor property, object state)
-		{
-			this.VisitInterface(dictionaryAdapter, property, state);
-		}
-
-		protected virtual void VisitInterface(IDictionaryAdapter dictionaryAdapter, PropertyDescriptor property, object state)
-		{
-			this.VisitProperty(dictionaryAdapter, property, state);
-		}
-
-		void IDictionaryAdapterVisitor.VisitProperty(IDictionaryAdapter dictionaryAdapter, PropertyDescriptor property, object state)
-		{
-			this.VisitProperty(dictionaryAdapter, property, state);
-		}
-
-		protected virtual void VisitProperty(IDictionaryAdapter dictionaryAdapter, PropertyDescriptor property, object state)
-		{
-		}
-
-		#endregion
 	}
 }

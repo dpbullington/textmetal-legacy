@@ -13,15 +13,19 @@ namespace CP.Windows.Forms
 	/// Utility class used to display a wait cursor
 	/// while a long operation takes place and
 	/// guarantee that it will be removed on exit.
+	/// 
 	/// Use as follows:
-	/// using ( new WaitCursor() )
-	/// {
-	/// // Long running operation goes here
-	/// }
+	/// 
+	///		using ( new WaitCursor() )
+	///		{
+	///			// Long running operation goes here
+	///		}
+	///		
 	/// </summary>
 	public class WaitCursor : IDisposable
 	{
-		#region Constructors/Destructors
+		private Cursor cursor;
+		private Control control;
 
 		public WaitCursor()
 		{
@@ -30,32 +34,19 @@ namespace CP.Windows.Forms
 			Cursor.Current = Cursors.WaitCursor;
 		}
 
-		public WaitCursor(Control control)
+		public WaitCursor( Control control )
 		{
 			this.control = control;
 			this.cursor = control.Cursor;
 			control.Cursor = Cursors.WaitCursor;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private Control control;
-		private Cursor cursor;
-
-		#endregion
-
-		#region Methods/Operators
-
 		public void Dispose()
 		{
-			if (this.control != null)
-				this.control.Cursor = this.cursor;
+			if ( control != null )
+				control.Cursor = this.cursor;
 			else
 				Cursor.Current = this.cursor;
 		}
-
-		#endregion
 	}
 }

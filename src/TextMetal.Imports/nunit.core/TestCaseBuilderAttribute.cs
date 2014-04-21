@@ -12,8 +12,7 @@ namespace NUnit.Core
 	/// TestBuilderAttribute is used to mark custom test case builders.
 	/// The class so marked must implement the ITestCaseBuilder interface.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-	public sealed class TestCaseBuilderAttribute : Attribute
-	{
-	}
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple=false)]
+	public sealed class TestCaseBuilderAttribute : System.Attribute
+	{}
 }

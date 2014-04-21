@@ -12,18 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Diagnostics;
-using System.Reflection;
-using System.Runtime.Serialization;
-
-using Castle.DynamicProxy.Serialization;
-
 namespace Castle.DynamicProxy
 {
 	using System;
+	using System.Diagnostics;
+	using System.Reflection;
+	using System.Runtime.Serialization;
+	using Castle.DynamicProxy.Serialization;
+
 #if DOTNET40
 	using System.Security;
-
 #endif
 
 	public abstract class AbstractInvocation : IInvocation
@@ -45,7 +43,7 @@ namespace Castle.DynamicProxy
 			object[] arguments)
 		{
 			Debug.Assert(proxiedMethod != null);
-			this.proxyObject = proxy;
+			proxyObject = proxy;
 			this.interceptors = interceptors;
 			this.proxiedMethod = proxiedMethod;
 			this.arguments = arguments;
@@ -53,120 +51,103 @@ namespace Castle.DynamicProxy
 
 		public void SetGenericMethodArguments(Type[] arguments)
 		{
-			this.genericMethodArguments = arguments;
+			genericMethodArguments = arguments;
 		}
 
-		public abstract object InvocationTarget
-		{
-			get;
-		}
+		public abstract object InvocationTarget { get; }
 
-		public abstract Type TargetType
-		{
-			get;
-		}
+		public abstract Type TargetType { get; }
 
-		public abstract MethodInfo MethodInvocationTarget
-		{
-			get;
-		}
+		public abstract MethodInfo MethodInvocationTarget { get; }
 
 		public Type[] GenericArguments
 		{
-			get
-			{
-				return this.genericMethodArguments;
-			}
+			get { return genericMethodArguments; }
 		}
 
 		public object Proxy
 		{
-			get
-			{
-				return this.proxyObject;
-			}
+			get { return proxyObject; }
 		}
 
 		public MethodInfo Method
 		{
-			get
-			{
-				return this.proxiedMethod;
-			}
+			get { return proxiedMethod; }
 		}
 
 		public MethodInfo GetConcreteMethod()
 		{
-			return this.EnsureClosedMethod(this.Method);
+			return EnsureClosedMethod(Method);
 		}
 
 		public MethodInfo GetConcreteMethodInvocationTarget()
 		{
 			// it is ensured by the InvocationHelper that method will be closed
-			var method = this.MethodInvocationTarget;
+			var method = MethodInvocationTarget;
 			Debug.Assert(method == null || method.IsGenericMethodDefinition == false,
-				"method == null || method.IsGenericMethodDefinition == false");
+			             "method == null || method.IsGenericMethodDefinition == false");
 			return method;
 		}
 
-		public object ReturnValue
-		{
-			get;
-			set;
-		}
+		public object ReturnValue { get; set; }
 
 		public object[] Arguments
 		{
-			get
-			{
-				return this.arguments;
-			}
+			get { return arguments; }
 		}
 
 		public void SetArgumentValue(int index, object value)
 		{
-			this.arguments[index] = value;
+			arguments[index] = value;
 		}
 
 		public object GetArgumentValue(int index)
 		{
-			return this.arguments[index];
+			return arguments[index];
 		}
 
 		public void Proceed()
 		{
-			if (this.interceptors == null)
+			if (interceptors == null)
 				// not yet fully initialized? probably, an intercepted method is called while we are being deserialized
 			{
-				this.InvokeMethodOnTarget();
+				InvokeMethodOnTarget();
 				return;
 			}
 
-			this.currentInterceptorIndex++;
+			currentInterceptorIndex++;
 			try
 			{
-				if (this.currentInterceptorIndex == this.interceptors.Length)
-					this.InvokeMethodOnTarget();
-				else if (this.currentInterceptorIndex > this.interceptors.Length)
+				if (currentInterceptorIndex == interceptors.Length)
+				{
+					InvokeMethodOnTarget();
+				}
+				else if (currentInterceptorIndex > interceptors.Length)
 				{
 					string interceptorsCount;
-					if (this.interceptors.Length > 1)
-						interceptorsCount = " each one of " + this.interceptors.Length + " interceptors";
+					if (interceptors.Length > 1)
+					{
+						interceptorsCount = " each one of " + interceptors.Length + " interceptors";
+					}
 					else
+					{
 						interceptorsCount = " interceptor";
+					}
 
 					var message = "This is a DynamicProxy2 error: invocation.Proceed() has been called more times than expected." +
-								"This usually signifies a bug in the calling code. Make sure that" + interceptorsCount +
-								" selected for the method '" + this.Method + "'" +
-								"calls invocation.Proceed() at most once.";
+					              "This usually signifies a bug in the calling code. Make sure that" + interceptorsCount +
+					              " selected for the method '" + Method + "'" +
+					              "calls invocation.Proceed() at most once.";
 					throw new InvalidOperationException(message);
 				}
 				else
-					this.interceptors[this.currentInterceptorIndex].Intercept(this);
+				{
+					interceptors[currentInterceptorIndex].Intercept(this);
+				}
 			}
 			finally
 			{
-				this.currentInterceptorIndex--;
+				currentInterceptorIndex--;
 			}
 		}
 
@@ -187,14 +168,18 @@ namespace Castle.DynamicProxy
 		{
 			// let's try to build as friendly message as we can
 			string interceptorsMessage;
-			if (this.interceptors.Length == 0)
+			if (interceptors.Length == 0)
+			{
 				interceptorsMessage = "There are no interceptors specified";
+			}
 			else
+			{
 				interceptorsMessage = "The interceptor attempted to 'Proceed'";
+			}
 
 			string methodKindIs;
 			string methodKindDescription;
-			if (this.Method.DeclaringType.IsClass && this.Method.IsAbstract)
+			if (Method.DeclaringType.IsClass && Method.IsAbstract)
 			{
 				methodKindIs = "is abstract";
 				methodKindDescription = "an abstract method";
@@ -206,10 +191,10 @@ namespace Castle.DynamicProxy
 			}
 
 			var message = string.Format("This is a DynamicProxy2 error: {0} for method '{1}' which {2}. " +
-										"When calling {3} there is no implementation to 'proceed' to and " +
-										"it is the responsibility of the interceptor to mimic the implementation " +
-										"(set return value, out arguments etc)",
-				interceptorsMessage, this.Method, methodKindIs, methodKindDescription);
+			                            "When calling {3} there is no implementation to 'proceed' to and " +
+			                            "it is the responsibility of the interceptor to mimic the implementation " +
+			                            "(set return value, out arguments etc)",
+			                            interceptorsMessage, Method, methodKindIs, methodKindDescription);
 
 			throw new NotImplementedException(message);
 		}
@@ -218,8 +203,8 @@ namespace Castle.DynamicProxy
 		{
 			if (method.ContainsGenericParameters)
 			{
-				Debug.Assert(this.genericMethodArguments != null);
-				return method.GetGenericMethodDefinition().MakeGenericMethod(this.genericMethodArguments);
+				Debug.Assert(genericMethodArguments != null);
+				return method.GetGenericMethodDefinition().MakeGenericMethod(genericMethodArguments);
 			}
 			return method;
 		}

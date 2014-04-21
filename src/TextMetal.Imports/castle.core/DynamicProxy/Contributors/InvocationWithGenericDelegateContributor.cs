@@ -12,21 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Diagnostics;
-using System.Reflection;
-
-using Castle.DynamicProxy.Generators;
-using Castle.DynamicProxy.Generators.Emitters;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Castle.DynamicProxy.Tokens;
-
 namespace Castle.DynamicProxy.Contributors
 {
 	using System;
+	using System.Diagnostics;
+	using System.Reflection;
+
+	using Castle.DynamicProxy.Generators;
+	using Castle.DynamicProxy.Generators.Emitters;
+	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+	using Castle.DynamicProxy.Tokens;
 
 	public class InvocationWithGenericDelegateContributor : IInvocationCreationContributor
 	{
-		#region Constructors/Destructors
+		private readonly Type delegateType;
+		private readonly MetaMethod method;
+		private readonly Reference targetReference;
 
 		public InvocationWithGenericDelegateContributor(Type delegateType, MetaMethod method, Reference targetReference)
 		{
@@ -36,18 +37,6 @@ namespace Castle.DynamicProxy.Contributors
 			this.targetReference = targetReference;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly Type delegateType;
-		private readonly MetaMethod method;
-		private readonly Reference targetReference;
-
-		#endregion
-
-		#region Methods/Operators
-
 		public ConstructorEmitter CreateConstructor(ArgumentReference[] baseCtorArguments, AbstractTypeEmitter invocation)
 		{
 			return invocation.CreateConstructor(baseCtorArguments);
@@ -55,15 +44,15 @@ namespace Castle.DynamicProxy.Contributors
 
 		public MethodInfo GetCallbackMethod()
 		{
-			return this.delegateType.GetMethod("Invoke");
+			return delegateType.GetMethod("Invoke");
 		}
 
 		public MethodInvocationExpression GetCallbackMethodInvocation(AbstractTypeEmitter invocation, Expression[] args,
-			Reference targetField,
-			MethodEmitter invokeMethodOnTarget)
+		                                                              Reference targetField,
+		                                                              MethodEmitter invokeMethodOnTarget)
 		{
-			var @delegate = this.GetDelegate(invocation, invokeMethodOnTarget);
-			return new MethodInvocationExpression(@delegate, this.GetCallbackMethod(), args);
+			var @delegate = GetDelegate(invocation, invokeMethodOnTarget);
+			return new MethodInvocationExpression(@delegate, GetCallbackMethod(), args);
 		}
 
 		public Expression[] GetConstructorInvocationArguments(Expression[] arguments, ClassEmitter proxy)
@@ -73,17 +62,17 @@ namespace Castle.DynamicProxy.Contributors
 
 		private Reference GetDelegate(AbstractTypeEmitter invocation, MethodEmitter invokeMethodOnTarget)
 		{
-			var closedDelegateType = this.delegateType.MakeGenericType(invocation.GenericTypeParams);
+			var closedDelegateType = delegateType.MakeGenericType(invocation.GenericTypeParams);
 			var localReference = invokeMethodOnTarget.CodeBuilder.DeclareLocal(closedDelegateType);
-			var closedMethodOnTarget = this.method.MethodOnTarget.MakeGenericMethod(invocation.GenericTypeParams);
-			var localTarget = new ReferenceExpression(this.targetReference);
+			var closedMethodOnTarget = method.MethodOnTarget.MakeGenericMethod(invocation.GenericTypeParams);
+			var localTarget = new ReferenceExpression(targetReference);
 			invokeMethodOnTarget.CodeBuilder.AddStatement(
-				this.SetDelegate(localReference, localTarget, closedDelegateType, closedMethodOnTarget));
+				SetDelegate(localReference, localTarget, closedDelegateType, closedMethodOnTarget));
 			return localReference;
 		}
 
 		private AssignStatement SetDelegate(LocalReference localDelegate, ReferenceExpression localTarget,
-			Type closedDelegateType, MethodInfo closedMethodOnTarget)
+		                                    Type closedDelegateType, MethodInfo closedMethodOnTarget)
 		{
 			var delegateCreateDelegate = new MethodInvocationExpression(
 				null,
@@ -93,7 +82,5 @@ namespace Castle.DynamicProxy.Contributors
 				new MethodTokenExpression(closedMethodOnTarget));
 			return new AssignStatement(localDelegate, new ConvertExpression(closedDelegateType, delegateCreateDelegate));
 		}
-
-		#endregion
 	}
 }

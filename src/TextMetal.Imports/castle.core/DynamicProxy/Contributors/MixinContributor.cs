@@ -12,83 +12,64 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using System.Diagnostics;
-
-using Castle.DynamicProxy.Generators;
-using Castle.DynamicProxy.Generators.Emitters;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-
 namespace Castle.DynamicProxy.Contributors
 {
 	using System;
+	using System.Collections.Generic;
+	using System.Diagnostics;
+
+	using Castle.DynamicProxy.Generators;
+	using Castle.DynamicProxy.Generators.Emitters;
+	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
 	public class MixinContributor : CompositeTypeContributor
 	{
-		#region Constructors/Destructors
-
-		public MixinContributor(INamingScope namingScope, bool canChangeTarget)
-			: base(namingScope)
-		{
-			this.canChangeTarget = canChangeTarget;
-			this.getTargetExpression = this.BuildGetTargetExpression();
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
 		private readonly bool canChangeTarget;
 		private readonly IList<Type> empty = new List<Type>();
 		private readonly IDictionary<Type, FieldReference> fields = new Dictionary<Type, FieldReference>();
 		private readonly GetTargetExpressionDelegate getTargetExpression;
 
-		#endregion
-
-		#region Properties/Indexers/Events
+		public MixinContributor(INamingScope namingScope, bool canChangeTarget)
+			: base(namingScope)
+		{
+			this.canChangeTarget = canChangeTarget;
+			getTargetExpression = BuildGetTargetExpression();
+		}
 
 		public IEnumerable<FieldReference> Fields
 		{
-			get
-			{
-				return this.fields.Values;
-			}
+			get { return fields.Values; }
 		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		public void AddEmptyInterface(Type @interface)
 		{
 			Debug.Assert(@interface != null, "@interface == null", "Shouldn't be adding empty interfaces...");
 			Debug.Assert(@interface.IsInterface, "@interface.IsInterface", "Should be adding interfaces only...");
-			Debug.Assert(!this.interfaces.Contains(@interface), "!interfaces.Contains(@interface)",
-				"Shouldn't be adding same interface twice...");
-			Debug.Assert(!this.empty.Contains(@interface), "!empty.Contains(@interface)",
-				"Shouldn't be adding same interface twice...");
-			this.empty.Add(@interface);
+			Debug.Assert(!interfaces.Contains(@interface), "!interfaces.Contains(@interface)",
+			             "Shouldn't be adding same interface twice...");
+			Debug.Assert(!empty.Contains(@interface), "!empty.Contains(@interface)",
+			             "Shouldn't be adding same interface twice...");
+			empty.Add(@interface);
 		}
 
-		private GetTargetExpressionDelegate BuildGetTargetExpression()
+		public override void Generate(ClassEmitter @class, ProxyGenerationOptions options)
 		{
-			if (!this.canChangeTarget)
-				return (c, m) => this.fields[m.DeclaringType].ToExpression();
+			foreach (var @interface in interfaces)
+			{
+				fields[@interface] = BuildTargetField(@class, @interface);
+			}
 
-			return (c, m) => new NullCoalescingOperatorExpression(
-				new AsTypeReference(c.GetField("__target"), m.DeclaringType).ToExpression(),
-				this.fields[m.DeclaringType].ToExpression());
-		}
+			foreach (var emptyInterface in empty)
+			{
+				fields[emptyInterface] = BuildTargetField(@class, emptyInterface);
+			}
 
-		private FieldReference BuildTargetField(ClassEmitter @class, Type type)
-		{
-			var name = "__mixin_" + type.FullName.Replace(".", "_");
-			return @class.CreateField(this.namingScope.GetUniqueName(name), type);
+			base.Generate(@class, options);
 		}
 
 		protected override IEnumerable<MembersCollector> CollectElementsToProxyInternal(IProxyGenerationHook hook)
 		{
-			foreach (var @interface in this.interfaces)
+			foreach (var @interface in interfaces)
 			{
 				var item = new InterfaceMembersCollector(@interface);
 				item.CollectMembersToProxy(hook);
@@ -96,66 +77,77 @@ namespace Castle.DynamicProxy.Contributors
 			}
 		}
 
-		public override void Generate(ClassEmitter @class, ProxyGenerationOptions options)
+		protected override MethodGenerator GetMethodGenerator(MetaMethod method, ClassEmitter @class,
+		                                                      ProxyGenerationOptions options,
+		                                                      OverrideMethodDelegate overrideMethod)
 		{
-			foreach (var @interface in this.interfaces)
-				this.fields[@interface] = this.BuildTargetField(@class, @interface);
+			if (!method.Proxyable)
+			{
+				return new ForwardingMethodGenerator(method,
+				                                     overrideMethod,
+				                                     (c, i) => fields[i.DeclaringType]);
+			}
 
-			foreach (var emptyInterface in this.empty)
-				this.fields[emptyInterface] = this.BuildTargetField(@class, emptyInterface);
+			var invocation = GetInvocationType(method, @class, options);
+			return new MethodWithInvocationGenerator(method,
+			                                         @class.GetField("__interceptors"),
+			                                         invocation,
+			                                         getTargetExpression,
+			                                         overrideMethod,
+			                                         null);
+		}
 
-			base.Generate(@class, options);
+		private GetTargetExpressionDelegate BuildGetTargetExpression()
+		{
+			if (!canChangeTarget)
+			{
+				return (c, m) => fields[m.DeclaringType].ToExpression();
+			}
+
+			return (c, m) => new NullCoalescingOperatorExpression(
+			                 	new AsTypeReference(c.GetField("__target"), m.DeclaringType).ToExpression(),
+			                 	fields[m.DeclaringType].ToExpression());
+		}
+
+		private FieldReference BuildTargetField(ClassEmitter @class, Type type)
+		{
+			var name = "__mixin_" + type.FullName.Replace(".", "_");
+			return @class.CreateField(namingScope.GetUniqueName(name), type);
 		}
 
 		private Type GetInvocationType(MetaMethod method, ClassEmitter emitter, ProxyGenerationOptions options)
 		{
 			var scope = emitter.ModuleScope;
 			Type[] invocationInterfaces;
-			if (this.canChangeTarget)
+			if (canChangeTarget)
+			{
 				invocationInterfaces = new[] { typeof(IInvocation), typeof(IChangeProxyTarget) };
+			}
 			else
+			{
 				invocationInterfaces = new[] { typeof(IInvocation) };
+			}
 			var key = new CacheKey(method.Method, CompositionInvocationTypeGenerator.BaseType, invocationInterfaces, null);
 
 			// no locking required as we're already within a lock
 
 			var invocation = scope.GetFromCache(key);
 			if (invocation != null)
+			{
 				return invocation;
+			}
 
 			invocation = new CompositionInvocationTypeGenerator(method.Method.DeclaringType,
-				method,
-				method.Method,
-				this.canChangeTarget,
-				null)
-				.Generate(emitter, options, this.namingScope)
+			                                                    method,
+			                                                    method.Method,
+			                                                    canChangeTarget,
+			                                                    null)
+				.Generate(emitter, options, namingScope)
 				.BuildType();
 
 			scope.RegisterInCache(key, invocation);
 
 			return invocation;
 		}
-
-		protected override MethodGenerator GetMethodGenerator(MetaMethod method, ClassEmitter @class,
-			ProxyGenerationOptions options,
-			OverrideMethodDelegate overrideMethod)
-		{
-			if (!method.Proxyable)
-			{
-				return new ForwardingMethodGenerator(method,
-					overrideMethod,
-					(c, i) => this.fields[i.DeclaringType]);
-			}
-
-			var invocation = this.GetInvocationType(method, @class, options);
-			return new MethodWithInvocationGenerator(method,
-				@class.GetField("__interceptors"),
-				invocation,
-				this.getTargetExpression,
-				overrideMethod,
-				null);
-		}
-
-		#endregion
 	}
 }

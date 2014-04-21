@@ -1,104 +1,65 @@
-// ****************************************************************
+﻿// ****************************************************************
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
 
 using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace NUnit.UiException.StackTraceAnalyzers
 {
-	public class RawError
-	{
-		#region Constructors/Destructors
+    public class RawError
+    {
+        private string _function;
+        private string _path;
+        private int _line;
+        private string _input;
 
-		public RawError(string input)
-		{
-			UiExceptionHelper.CheckNotNull(input, "input");
-			this._input = input;
+        public RawError(string input)
+        {
+            UiExceptionHelper.CheckNotNull(input, "input");
+            _input = input;
 
-			return;
-		}
+            return;
+        }
 
-		#endregion
+        public string Input
+        {
+            get { return (_input); }
+        }
 
-		#region Fields/Constants
+        public string Function
+        {
+            get { return (_function); }
+            set { _function = value; }
+        }
 
-		private string _function;
-		private string _input;
-		private int _line;
-		private string _path;
+        public string Path
+        {
+            get { return (_path); }
+            set { _path = value; }
+        }
 
-		#endregion
+        public int Line
+        {
+            get { return (_line); }
+            set { _line = value; }
+        }
 
-		#region Properties/Indexers/Events
+        public ErrorItem ToErrorItem()
+        {
+            UiExceptionHelper.CheckTrue(
+                _function != null,
+                "Cannot create instance of ErrorItem without a valid value in Function",
+                "Function");
 
-		public string Function
-		{
-			get
-			{
-				return (this._function);
-			}
-			set
-			{
-				this._function = value;
-			}
-		}
+            return (new ErrorItem(_path, _function, _line));
+        }
+    }
 
-		public string Input
-		{
-			get
-			{
-				return (this._input);
-			}
-		}
-
-		public int Line
-		{
-			get
-			{
-				return (this._line);
-			}
-			set
-			{
-				this._line = value;
-			}
-		}
-
-		public string Path
-		{
-			get
-			{
-				return (this._path);
-			}
-			set
-			{
-				this._path = value;
-			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		public ErrorItem ToErrorItem()
-		{
-			UiExceptionHelper.CheckTrue(
-				this._function != null,
-				"Cannot create instance of ErrorItem without a valid value in Function",
-				"Function");
-
-			return (new ErrorItem(this._path, this._function, this._line));
-		}
-
-		#endregion
-	}
-
-	public interface IErrorParser
-	{
-		#region Methods/Operators
-
-		bool TryParse(StackTraceParser parser, RawError args);
-
-		#endregion
-	}
+    public interface IErrorParser
+    {
+        bool TryParse(StackTraceParser parser, RawError args);
+    }
 }

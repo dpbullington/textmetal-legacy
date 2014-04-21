@@ -12,75 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-
 namespace Castle.Components.DictionaryAdapter
 {
+	using System.ComponentModel;
+	using System.Collections.Generic;
+
 	public interface ICollectionAdapter<T>
 	{
 		// Configuration
-
-		#region Properties/Indexers/Events
-
-		T this[int index]
-		{
-			get;
-			set;
-		}
-
-		IEqualityComparer<T> Comparer
-		{
-			get;
-		}
+		void Initialize(ICollectionAdapterObserver<T> advisor);
+		IEqualityComparer<T> Comparer { get; }
 
 		// Collection Access
-		int Count
-		{
-			get;
-		}
-
-		bool HasSnapshot
-		{
-			get;
-		}
-
-		int SnapshotCount
-		{
-			get;
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		bool Add(T value);
-
-		T AddNew();
-
-		void Clear();
-
-		void ClearReferences();
-
-		void DropSnapshot();
-
-		// A bit of a hack. Make this nicer in a future version.
+		int  Count  { get; }
+		T    this   [int index] { get; set; }
+		T    AddNew ();
+		bool Add    (T value);
+		bool Insert (int index, T value);
+		void Remove (int index);
+		void Clear  ();
+		void ClearReferences(); // A bit of a hack. Make this nicer in a future version.
 
 		// Snapshot Support
-
-		T GetCurrentItem(int index);
-
-		T GetSnapshotItem(int index);
-
-		void Initialize(ICollectionAdapterObserver<T> advisor);
-
-		bool Insert(int index, T value);
-
-		void LoadSnapshot();
-
-		void Remove(int index);
-
-		void SaveSnapshot();
-
-		#endregion
+		bool HasSnapshot     { get; }
+		int  SnapshotCount   { get; }
+		T    GetCurrentItem  (int index);
+		T    GetSnapshotItem (int index);
+		void SaveSnapshot    ();
+		void LoadSnapshot    ();
+		void DropSnapshot    ();
 	}
 }

@@ -1,5 +1,4 @@
 #region License
-
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -22,29 +21,28 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-
 #endregion
 
 namespace Newtonsoft.Json
 {
-	/// <summary>
-	/// Indicating whether a property is required.
-	/// </summary>
-	public enum Required
-	{
-		/// <summary>
-		/// The property is not required. The default state.
-		/// </summary>
-		Default,
+    /// <summary>
+    /// Indicating whether a property is required.
+    /// </summary>
+    public enum Required
+    {
+        /// <summary>
+        /// The property is not required. The default state.
+        /// </summary>
+        Default,
 
-		/// <summary>
-		/// The property must be defined in JSON but can be a null value.
-		/// </summary>
-		AllowNull,
+        /// <summary>
+        /// The property must be defined in JSON but can be a null value.
+        /// </summary>
+        AllowNull,
 
-		/// <summary>
-		/// The property must be defined in JSON and cannot be a null value.
-		/// </summary>
-		Always
-	}
+        /// <summary>
+        /// The property must be defined in JSON and cannot be a null value.
+        /// </summary>
+        Always
+    }
 }

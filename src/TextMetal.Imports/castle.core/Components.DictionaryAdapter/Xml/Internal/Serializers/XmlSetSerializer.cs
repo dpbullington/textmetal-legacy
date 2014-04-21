@@ -12,42 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #if DOTNET40
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
 
 	public class XmlSetSerializer : XmlCollectionSerializer
 	{
-		#region Constructors/Destructors
-
-		protected XmlSetSerializer()
-		{
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
 		public static readonly XmlSetSerializer
 			Instance = new XmlSetSerializer();
 
-		#endregion
-
-		#region Properties/Indexers/Events
+		protected XmlSetSerializer() { }
 
 		public override Type ListTypeConstructor
 		{
-			get
-			{
-				return typeof(XmlNodeSet<>);
-			}
+			get { return typeof(XmlNodeSet<>); }
 		}
-
-		#endregion
 	}
 }
-
 #endif

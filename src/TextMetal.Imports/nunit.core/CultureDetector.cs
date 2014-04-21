@@ -5,76 +5,46 @@
 // ****************************************************************
 
 using System;
-using System.Globalization;
 using System.Reflection;
-using System.Threading;
+using System.Globalization;
 
 namespace NUnit.Core
 {
 	public class CultureDetector
 	{
-		#region Constructors/Destructors
+		private CultureInfo currentCulture;
+
+		// Set whenever we fail to support a list of platforms
+		private string reason = string.Empty;
 
 		/// <summary>
 		/// Default constructor uses the current culutre.
 		/// </summary>
 		public CultureDetector()
 		{
-			this.currentCulture = Thread.CurrentThread.CurrentCulture;
+			this.currentCulture = System.Threading.Thread.CurrentThread.CurrentCulture;
 		}
 
 		/// <summary>
 		/// Contruct a CultureHelper for a particular culture for testing.
 		/// </summary>
-		/// <param name="culture"> The culture to be used </param>
-		public CultureDetector(string culture)
+		/// <param name="culture">The culture to be used</param>
+		public CultureDetector( string culture )
 		{
-			this.currentCulture = new CultureInfo(culture);
+			this.currentCulture = new CultureInfo( culture );
 		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private CultureInfo currentCulture;
-
-		// Set whenever we fail to support a list of platforms
-		private string reason = string.Empty;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Return the last failure reason. Results are not
-		/// defined if called before IsSupported( Attribute )
-		/// is called.
-		/// </summary>
-		public string Reason
-		{
-			get
-			{
-				return this.reason;
-			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		/// <summary>
 		/// Test to determine if one of a collection of culturess
 		/// is being used currently.
 		/// </summary>
-		/// <param name="cultures"> </param>
-		/// <returns> </returns>
-		public bool IsCultureSupported(string[] cultures)
+		/// <param name="cultures"></param>
+		/// <returns></returns>
+		public bool IsCultureSupported( string[] cultures )
 		{
-			foreach (string culture in cultures)
-			{
-				if (IsCultureSupported(culture))
+			foreach( string culture in cultures )
+				if ( IsCultureSupported( culture ) )
 					return true;
-			}
 
 			return false;
 		}
@@ -83,37 +53,37 @@ namespace NUnit.Core
 		/// Tests to determine if the current culture is supported
 		/// based on a culture attribute.
 		/// </summary>
-		/// <param name="platformAttribute"> The attribute to examine </param>
-		/// <returns> </returns>
-		public bool IsCultureSupported(Attribute cultureAttribute)
+		/// <param name="platformAttribute">The attribute to examine</param>
+		/// <returns></returns>
+		public bool IsCultureSupported( Attribute cultureAttribute )
 		{
 			//Use reflection to avoid dependency on a particular framework version
-			string include = (string)Reflect.GetPropertyValue(
-				cultureAttribute, "Include",
-				BindingFlags.Public | BindingFlags.Instance);
+			string include = (string)Reflect.GetPropertyValue( 
+				cultureAttribute, "Include", 
+				BindingFlags.Public | BindingFlags.Instance );
 
 			string exclude = (string)Reflect.GetPropertyValue(
-				cultureAttribute, "Exclude",
-				BindingFlags.Public | BindingFlags.Instance);
+				cultureAttribute, "Exclude", 
+				BindingFlags.Public | BindingFlags.Instance );
 
 			try
 			{
 				if (include != null && !IsCultureSupported(include))
 				{
-					this.reason = string.Format("Only supported under culture {0}", include);
+					reason = string.Format("Only supported under culture {0}", include);
 					return false;
 				}
 
 				if (exclude != null && IsCultureSupported(exclude))
 				{
-					this.reason = string.Format("Not supported under culture {0}", exclude);
+					reason = string.Format("Not supported under culture {0}", exclude);
 					return false;
 				}
 			}
-			catch (ArgumentException ex)
+			catch( ArgumentException ex )
 			{
-				this.reason = string.Format("Invalid culture: {0}", ex.ParamName);
-				return false;
+				reason = string.Format( "Invalid culture: {0}", ex.ParamName );
+				return false; 
 			}
 
 			return true;
@@ -123,20 +93,20 @@ namespace NUnit.Core
 		/// Test to determine if the a particular culture or comma-
 		/// delimited set of cultures is in use.
 		/// </summary>
-		/// <param name="platform"> Name of the culture or comma-separated list of culture names </param>
-		/// <returns> True if the culture is in use on the system </returns>
-		public bool IsCultureSupported(string culture)
+		/// <param name="platform">Name of the culture or comma-separated list of culture names</param>
+		/// <returns>True if the culture is in use on the system</returns>
+		public bool IsCultureSupported( string culture )
 		{
 			culture = culture.Trim();
 
-			if (culture.IndexOf(',') >= 0)
+			if ( culture.IndexOf( ',' ) >= 0 )
 			{
-				if (IsCultureSupported(culture.Split(new char[] { ',' })))
+				if ( IsCultureSupported( culture.Split( new char[] { ',' } ) ) )
 					return true;
 			}
 			else
 			{
-				if (this.currentCulture.Name == culture || this.currentCulture.TwoLetterISOLanguageName == culture)
+				if( this.currentCulture.Name == culture || this.currentCulture.TwoLetterISOLanguageName == culture)
 					return true;
 			}
 
@@ -144,6 +114,14 @@ namespace NUnit.Core
 			return false;
 		}
 
-		#endregion
+		/// <summary>
+		/// Return the last failure reason. Results are not
+		/// defined if called before IsSupported( Attribute )
+		/// is called.
+		/// </summary>
+		public string Reason
+		{
+			get { return reason; }
+		}
 	}
 }

@@ -15,38 +15,25 @@
 namespace Castle.Core.Logging
 {
 	/// <summary>
-	/// Provides an interface that supports <see cref="ILogger" /> and
-	/// allows the storage and retrieval of Contexts. These are supported in
-	/// both log4net and NLog.
+	///   Provides an interface that supports <see cref = "ILogger" /> and
+	///   allows the storage and retrieval of Contexts. These are supported in
+	///   both log4net and NLog.
 	/// </summary>
 	public interface IExtendedLogger : ILogger
 	{
-		#region Properties/Indexers/Events
+		/// <summary>
+		///   Exposes the Global Context of the extended logger.
+		/// </summary>
+		IContextProperties GlobalProperties { get; }
 
 		/// <summary>
-		/// Exposes the Global Context of the extended logger.
+		///   Exposes the Thread Context of the extended logger.
 		/// </summary>
-		IContextProperties GlobalProperties
-		{
-			get;
-		}
+		IContextProperties ThreadProperties { get; }
 
 		/// <summary>
-		/// Exposes the Thread Context of the extended logger.
+		///   Exposes the Thread Stack of the extended logger.
 		/// </summary>
-		IContextProperties ThreadProperties
-		{
-			get;
-		}
-
-		/// <summary>
-		/// Exposes the Thread Stack of the extended logger.
-		/// </summary>
-		IContextStacks ThreadStacks
-		{
-			get;
-		}
-
-		#endregion
+		IContextStacks ThreadStacks { get; }
 	}
 }

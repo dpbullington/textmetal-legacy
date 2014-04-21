@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.IO;
-
 namespace Castle.Core.Logging
 {
 	using System;
+	using System.IO;
 
 #if SILVERLIGHT
 	public abstract class AbstractLoggerFactory : ILoggerFactory
@@ -28,7 +27,9 @@ namespace Castle.Core.Logging
 		public virtual ILogger Create(Type type)
 		{
 			if (type == null)
+			{
 				throw new ArgumentNullException("type");
+			}
 
 			return Create(type.FullName);
 		}
@@ -36,7 +37,9 @@ namespace Castle.Core.Logging
 		public virtual ILogger Create(Type type, LoggerLevel level)
 		{
 			if (type == null)
+			{
 				throw new ArgumentNullException("type");
+			}
 
 			return Create(type.FullName, level);
 		}
@@ -46,19 +49,23 @@ namespace Castle.Core.Logging
 		public abstract ILogger Create(String name, LoggerLevel level);
 
 		/// <summary>
-		/// Gets the configuration file.
+		///   Gets the configuration file.
 		/// </summary>
-		/// <param name="fileName"> i.e. log4net.config </param>
-		/// <returns> </returns>
+		/// <param name = "fileName">i.e. log4net.config</param>
+		/// <returns></returns>
 		protected static FileInfo GetConfigFile(string fileName)
 		{
 #if !SILVERLIGHT
 			FileInfo result;
 
 			if (Path.IsPathRooted(fileName))
+			{
 				result = new FileInfo(fileName);
+			}
 			else
+			{
 				result = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName));
+			}
 
 			return result;
 #else

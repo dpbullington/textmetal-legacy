@@ -5,10 +5,10 @@
 // ****************************************************************
 
 using System;
-using System.Collections;
 using System.IO;
-using System.Text;
 using System.Xml;
+using System.Collections;
+using System.ComponentModel;
 
 namespace NUnit.Util
 {
@@ -17,88 +17,75 @@ namespace NUnit.Util
 	/// </summary>
 	public class XmlSettingsStorage : MemorySettingsStorage
 	{
-		#region Constructors/Destructors
-
-		public XmlSettingsStorage(string filePath)
-			: this(filePath, true)
-		{
-		}
-
-		public XmlSettingsStorage(string filePath, bool writeable)
-		{
-			this.filePath = filePath;
-			this.writeable = writeable;
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
 		private string filePath;
-		private bool writeable;
+        private bool writeable;
 
-		#endregion
+        public XmlSettingsStorage(string filePath) : this(filePath, true) { }
 
-		#region Methods/Operators
+		public XmlSettingsStorage( string filePath, bool writeable )
+		{
+            this.filePath = filePath;
+            this.writeable = writeable;
+		}
 
 		public override void LoadSettings()
 		{
-			FileInfo info = new FileInfo(this.filePath);
-			if (!info.Exists || info.Length == 0)
+			FileInfo info = new FileInfo(filePath);
+			if ( !info.Exists || info.Length == 0 )
 				return;
 
 			try
 			{
 				XmlDocument doc = new XmlDocument();
-				doc.Load(this.filePath);
+				doc.Load( filePath );
 
-				foreach (XmlElement element in doc.DocumentElement["Settings"].ChildNodes)
+				foreach( XmlElement element in doc.DocumentElement["Settings"].ChildNodes )
 				{
-					if (element.Name != "Setting")
-						throw new ApplicationException("Unknown element in settings file: " + element.Name);
+					if ( element.Name != "Setting" )
+						throw new ApplicationException( "Unknown element in settings file: " + element.Name );
 
-					if (!element.HasAttribute("name"))
-						throw new ApplicationException("Setting must have 'name' attribute");
+					if ( !element.HasAttribute( "name" ) )
+						throw new ApplicationException( "Setting must have 'name' attribute" );
 
-					if (!element.HasAttribute("value"))
-						throw new ApplicationException("Setting must have 'value' attribute");
+					if ( !element.HasAttribute( "value" ) )
+						throw new ApplicationException( "Setting must have 'value' attribute" );
 
-					this.settings[element.GetAttribute("name")] = element.GetAttribute("value");
+					settings[ element.GetAttribute( "name" ) ] = element.GetAttribute( "value" );
 				}
 			}
-			catch (Exception ex)
+			catch( Exception ex )
 			{
-				throw new ApplicationException("Error loading settings file", ex);
+				throw new ApplicationException( "Error loading settings file", ex );
 			}
 		}
 
 		public override void SaveSettings()
 		{
-			if (!this.writeable)
-				throw new InvalidOperationException("Attempted to write to a non-writeable Settings Storage");
+            if (!this.writeable)
+                throw new InvalidOperationException("Attempted to write to a non-writeable Settings Storage");
 
-			string dirPath = Path.GetDirectoryName(this.filePath);
-			if (!Directory.Exists(dirPath))
-				Directory.CreateDirectory(dirPath);
+			string dirPath = Path.GetDirectoryName( filePath );
+			if ( !Directory.Exists( dirPath ) )
+				Directory.CreateDirectory( dirPath );
 
-			XmlTextWriter writer = new XmlTextWriter(this.filePath, Encoding.UTF8);
+			XmlTextWriter writer = new XmlTextWriter(  filePath, System.Text.Encoding.UTF8 );
 			writer.Formatting = Formatting.Indented;
 
-			writer.WriteProcessingInstruction("xml", "version=\"1.0\"");
-			writer.WriteStartElement("NUnitSettings");
-			writer.WriteStartElement("Settings");
+			writer.WriteProcessingInstruction( "xml", "version=\"1.0\"" );
+			writer.WriteStartElement( "NUnitSettings" );
+			writer.WriteStartElement( "Settings" );
 
-			ArrayList keys = new ArrayList(this.settings.Keys);
+			ArrayList keys = new ArrayList( settings.Keys );
 			keys.Sort();
 
-			foreach (string name in keys)
+			foreach( string name in keys )
 			{
-				object val = this.settings[name];
-				if (val != null)
+				object val = settings[name];
+				if ( val != null )
 				{
-					writer.WriteStartElement("Setting");
-					writer.WriteAttributeString("name", name);
-					writer.WriteAttributeString("value", val.ToString());
+					writer.WriteStartElement( "Setting");
+					writer.WriteAttributeString( "name", name );
+					writer.WriteAttributeString( "value", val.ToString() );
 					writer.WriteEndElement();
 				}
 			}
@@ -107,7 +94,5 @@ namespace NUnit.Util
 			writer.WriteEndElement();
 			writer.Close();
 		}
-
-		#endregion
 	}
 }

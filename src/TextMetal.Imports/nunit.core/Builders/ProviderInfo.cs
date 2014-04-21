@@ -1,4 +1,4 @@
-// ****************************************************************
+﻿// ****************************************************************
 // Copyright 2008, Charlie Poole
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org.
@@ -10,118 +10,94 @@ using System.Reflection;
 
 namespace NUnit.Core.Builders
 {
-	internal class ProviderReference
-	{
-		#region Constructors/Destructors
+    class ProviderReference
+    {
+        private Type providerType;
+        private string providerName;
+        private object[] providerArgs;
+        private string category;
 
-		public ProviderReference(Type providerType, string providerName, string category)
-		{
-			if (providerType == null)
-				throw new ArgumentNullException("providerType");
-			if (providerName == null && providerType.GetInterface("System.Collections.IEnumerable") == null)
-				throw new ArgumentNullException("providerName");
+        public ProviderReference(Type providerType, string providerName, string category)
+        {
+            if (providerType == null)
+                throw new ArgumentNullException("providerType");
+            if (providerName == null && providerType.GetInterface("System.Collections.IEnumerable") == null)
+                throw new ArgumentNullException("providerName");
 
-			this.providerType = providerType;
-			this.providerName = providerName;
-			this.category = category;
-		}
+            this.providerType = providerType;
+            this.providerName = providerName;
+            this.category = category;
+        }
 
-		public ProviderReference(Type providerType, object[] args, string providerName, string category)
-			: this(providerType, providerName, category)
-		{
-			this.providerArgs = args;
-		}
+        public ProviderReference(Type providerType, object[] args, string providerName, string category)
+            : this(providerType, providerName, category)
+        {
+            this.providerArgs = args;
+        }
 
-		#endregion
+        public string Name
+        {
+            get { return this.providerName; }
+        }
 
-		#region Fields/Constants
+        public string Category
+        {
+            get { return this.category; }
+        }
 
-		private string category;
-		private object[] providerArgs;
-		private string providerName;
-		private Type providerType;
+        public IEnumerable GetInstance()
+        {
+            if (providerName != null)
+            {
+                MemberInfo[] members = providerType.GetMember(
+                    providerName,
+                    MemberTypes.Field | MemberTypes.Method | MemberTypes.Property,
+                    BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
-		#endregion
+                if (members.Length == 0)
+                    throw new Exception(string.Format(
+                        "Unable to locate {0}.{1}", providerType.FullName, providerName));
 
-		#region Properties/Indexers/Events
+                return (IEnumerable)GetProviderObjectFromMember(members[0]);
+            }
+            else
+                return Reflect.Construct(providerType) as IEnumerable;
+        }
 
-		public string Category
-		{
-			get
-			{
-				return this.category;
-			}
-		}
+        private object GetProviderObjectFromMember(MemberInfo member)
+        {
+            object providerObject = null;
+            object instance = null;
 
-		public string Name
-		{
-			get
-			{
-				return this.providerName;
-			}
-		}
+            switch (member.MemberType)
+            {
+                case MemberTypes.Property:
+                    PropertyInfo providerProperty = member as PropertyInfo;
+                    MethodInfo getMethod = providerProperty.GetGetMethod(true);
+                    if (!getMethod.IsStatic)
+                        //instance = ProviderCache.GetInstanceOf(providerType);
+                        instance = Reflect.Construct(providerType, providerArgs);
+                    providerObject = providerProperty.GetValue(instance, null);
+                    break;
 
-		#endregion
+                case MemberTypes.Method:
+                    MethodInfo providerMethod = member as MethodInfo;
+                    if (!providerMethod.IsStatic)
+                        //instance = ProviderCache.GetInstanceOf(providerType);
+                        instance = Reflect.Construct(providerType, providerArgs);
+                    providerObject = providerMethod.Invoke(instance, null);
+                    break;
 
-		#region Methods/Operators
+                case MemberTypes.Field:
+                    FieldInfo providerField = member as FieldInfo;
+                    if (!providerField.IsStatic)
+                        //instance = ProviderCache.GetInstanceOf(providerType);
+                        instance = Reflect.Construct(providerType, providerArgs);
+                    providerObject = providerField.GetValue(instance);
+                    break;
+            }
 
-		public IEnumerable GetInstance()
-		{
-			if (this.providerName != null)
-			{
-				MemberInfo[] members = this.providerType.GetMember(
-					this.providerName,
-					MemberTypes.Field | MemberTypes.Method | MemberTypes.Property,
-					BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-
-				if (members.Length == 0)
-				{
-					throw new Exception(string.Format(
-						"Unable to locate {0}.{1}", this.providerType.FullName, this.providerName));
-				}
-
-				return (IEnumerable)this.GetProviderObjectFromMember(members[0]);
-			}
-			else
-				return Reflect.Construct(this.providerType) as IEnumerable;
-		}
-
-		private object GetProviderObjectFromMember(MemberInfo member)
-		{
-			object providerObject = null;
-			object instance = null;
-
-			switch (member.MemberType)
-			{
-				case MemberTypes.Property:
-					PropertyInfo providerProperty = member as PropertyInfo;
-					MethodInfo getMethod = providerProperty.GetGetMethod(true);
-					if (!getMethod.IsStatic)
-						//instance = ProviderCache.GetInstanceOf(providerType);
-						instance = Reflect.Construct(this.providerType, this.providerArgs);
-					providerObject = providerProperty.GetValue(instance, null);
-					break;
-
-				case MemberTypes.Method:
-					MethodInfo providerMethod = member as MethodInfo;
-					if (!providerMethod.IsStatic)
-						//instance = ProviderCache.GetInstanceOf(providerType);
-						instance = Reflect.Construct(this.providerType, this.providerArgs);
-					providerObject = providerMethod.Invoke(instance, null);
-					break;
-
-				case MemberTypes.Field:
-					FieldInfo providerField = member as FieldInfo;
-					if (!providerField.IsStatic)
-						//instance = ProviderCache.GetInstanceOf(providerType);
-						instance = Reflect.Construct(this.providerType, this.providerArgs);
-					providerObject = providerField.GetValue(instance);
-					break;
-			}
-
-			return providerObject;
-		}
-
-		#endregion
-	}
+            return providerObject;
+        }
+    }
 }

@@ -12,54 +12,45 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using System.Reflection;
-
 namespace Castle.DynamicProxy
 {
 	using System;
+	using System.Collections.Generic;
+	using System.Reflection;
 
 	[Serializable]
 	public class AllMethodsHook : IProxyGenerationHook
 	{
-		#region Fields/Constants
-
 		protected static readonly ICollection<Type> SkippedTypes = new[]
-																	{
-																		typeof(object),
+		{
+			typeof(object),
 #if !SILVERLIGHT
-																		typeof(MarshalByRefObject),
-																		typeof(ContextBoundObject)
+			typeof(MarshalByRefObject),
+			typeof(ContextBoundObject)
 #endif
-																	};
-
-		#endregion
-
-		#region Methods/Operators
-
-		public override bool Equals(object obj)
-		{
-			return obj != null && obj.GetType() == this.GetType();
-		}
-
-		public override int GetHashCode()
-		{
-			return this.GetType().GetHashCode();
-		}
-
-		public virtual void MethodsInspected()
-		{
-		}
-
-		public virtual void NonProxyableMemberNotification(Type type, MemberInfo memberInfo)
-		{
-		}
+		};
 
 		public virtual bool ShouldInterceptMethod(Type type, MethodInfo methodInfo)
 		{
 			return SkippedTypes.Contains(methodInfo.DeclaringType) == false;
 		}
 
-		#endregion
+		public virtual void NonProxyableMemberNotification(Type type, MemberInfo memberInfo)
+		{
+		}
+
+		public virtual void MethodsInspected()
+		{
+		}
+
+		public override bool Equals(object obj)
+		{
+			return obj != null && obj.GetType() == GetType();
+		}
+
+		public override int GetHashCode()
+		{
+			return GetType().GetHashCode();
+		}
 	}
 }

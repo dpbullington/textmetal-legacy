@@ -19,20 +19,8 @@ namespace Castle.Components.DictionaryAdapter
 	[AttributeUsage(AttributeTargets.Interface)]
 	public class XmlDefaultsAttribute : Attribute
 	{
-		#region Properties/Indexers/Events
+		public bool Qualified { get; set; }
 
-		public bool IsNullable
-		{
-			get;
-			set;
-		}
-
-		public bool Qualified
-		{
-			get;
-			set;
-		}
-
-		#endregion
+		public bool IsNullable { get; set; }
 	}
 }

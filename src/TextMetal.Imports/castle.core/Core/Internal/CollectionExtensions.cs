@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-
 namespace Castle.Core.Internal
 {
 	using System;
+	using System.Collections;
+	using System.Collections.Generic;
+	using System.ComponentModel;
 
 #if SILVERLIGHT
 	using System.Linq;
@@ -27,8 +26,6 @@ namespace Castle.Core.Internal
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public static class CollectionExtensions
 	{
-		#region Methods/Operators
-
 		public static TResult[] ConvertAll<T, TResult>(this T[] items, Converter<T, TResult> transformation)
 		{
 #if SILVERLIGHT
@@ -36,6 +33,16 @@ namespace Castle.Core.Internal
 #else
 			return Array.ConvertAll(items, transformation);
 #endif
+		}
+
+		public static void ForEach<T>(this IEnumerable<T> items, Action<T> action)
+		{
+			if (items == null) return;
+
+			foreach (var item in items)
+			{
+				action(item);
+			}
 		}
 
 		public static T Find<T>(this T[] items, Predicate<T> predicate)
@@ -61,25 +68,14 @@ namespace Castle.Core.Internal
 #endif
 		}
 
-		public static void ForEach<T>(this IEnumerable<T> items, Action<T> action)
-		{
-			if (items == null)
-				return;
-
-			foreach (var item in items)
-				action(item);
-		}
-
 		/// <summary>
-		/// Checks whether or not collection is null or empty. Assumes colleciton can be safely enumerated multiple times.
+		///   Checks whether or not collection is null or empty. Assumes colleciton can be safely enumerated multiple times.
 		/// </summary>
-		/// <param name="this"> </param>
-		/// <returns> </returns>
+		/// <param name = "this"></param>
+		/// <returns></returns>
 		public static bool IsNullOrEmpty(this IEnumerable @this)
 		{
 			return @this == null || @this.GetEnumerator().MoveNext() == false;
 		}
-
-		#endregion
 	}
 }

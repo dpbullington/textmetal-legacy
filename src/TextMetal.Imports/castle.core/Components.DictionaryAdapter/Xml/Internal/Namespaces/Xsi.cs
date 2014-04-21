@@ -12,40 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
 
 	public static class Xsi
 	{
-		#region Fields/Constants
-
-		public const string
-			NamespaceUri = "http://www.w3.org/2001/XMLSchema-instance",
-			NilValue = "true";
-
-		public const string
-			Prefix = "xsi";
-
-		internal static readonly XmlNamespaceAttribute
-			Namespace = new XmlNamespaceAttribute(NamespaceUri, Prefix) { Root = true };
-
-		public static readonly XmlName
-			Nil = new XmlName("nil", NamespaceUri);
-
-		public static readonly XmlName
-			Type = new XmlName("type", NamespaceUri);
-
-		#endregion
-
-		#region Methods/Operators
-
 		public static XmlName GetXsiType(this IXmlNode node)
 		{
-			var type = node.GetAttribute(Type);
+			var type = node.GetAttribute(Xsi.Type);
 			if (type == null)
 				return XmlName.Empty;
 
@@ -58,9 +34,19 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			return xsiType;
 		}
 
+		public static void SetXsiType(this IXmlNode node, XmlName xsiType)
+		{
+			if (xsiType.NamespaceUri != null)
+			{
+				var prefix = node.Namespaces.GetAttributePrefix(node, xsiType.NamespaceUri);
+				xsiType = xsiType.WithNamespaceUri(prefix);
+			}
+			node.SetAttribute(Xsi.Type, xsiType.ToString());
+		}
+
 		public static bool IsXsiNil(this IXmlNode node)
 		{
-			return node.GetAttribute(Nil) == NilValue;
+			return node.GetAttribute(Xsi.Nil) == NilValue;
 		}
 
 		public static void SetXsiNil(this IXmlNode node, bool nil)
@@ -71,23 +57,21 @@ namespace Castle.Components.DictionaryAdapter.Xml
 				node.Clear();
 				value = NilValue;
 			}
-			else
-				value = null;
-			node.SetAttribute(Nil, value);
+			else value = null;
+			node.SetAttribute(Xsi.Nil, value);
 		}
 
-		public static void SetXsiType(this IXmlNode node, XmlName xsiType)
-		{
-			if (xsiType.NamespaceUri != null)
-			{
-				var prefix = node.Namespaces.GetAttributePrefix(node, xsiType.NamespaceUri);
-				xsiType = xsiType.WithNamespaceUri(prefix);
-			}
-			node.SetAttribute(Type, xsiType.ToString());
-		}
+		public const string
+			Prefix         = "xsi",
+			NamespaceUri   = "http://www.w3.org/2001/XMLSchema-instance",
+			NilValue       = "true";
 
-		#endregion
+		public static readonly XmlName
+			Type = new XmlName("type", NamespaceUri),
+			Nil  = new XmlName("nil",  NamespaceUri);
+
+		internal static readonly XmlNamespaceAttribute
+			Namespace = new XmlNamespaceAttribute(NamespaceUri, Prefix) { Root = true };
 	}
 }
-
 #endif

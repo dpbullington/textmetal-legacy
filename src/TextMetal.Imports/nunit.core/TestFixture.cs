@@ -14,44 +14,31 @@ namespace NUnit.Core
 	/// </summary>
 	public class TestFixture : TestSuite
 	{
-		#region Constructors/Destructors
+		#region Constructors
+        public TestFixture(Type fixtureType)
+            : base(fixtureType) { }
+        public TestFixture(Type fixtureType, object[] arguments)
+            : base(fixtureType, arguments) { }
+        #endregion
 
-		public TestFixture(Type fixtureType)
-			: base(fixtureType)
-		{
-		}
+		#region TestSuite Overrides
 
-		public TestFixture(Type fixtureType, object[] arguments)
-			: base(fixtureType, arguments)
-		{
-		}
+        /// <summary>
+        /// Gets a string representing the kind of test
+        /// that this object represents, for use in display.
+        /// </summary>
+        public override string TestType
+        {
+            get { return "TestFixture"; }
+        }
 
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Gets a string representing the kind of test
-		/// that this object represents, for use in display.
-		/// </summary>
-		public override string TestType
-		{
-			get
-			{
-				return "TestFixture";
-			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		public override TestResult Run(EventListener listener, ITestFilter filter)
-		{
-			using (new DirectorySwapper(AssemblyHelper.GetDirectoryName(this.FixtureType.Assembly)))
-				return base.Run(listener, filter);
-		}
-
+        public override TestResult Run(EventListener listener, ITestFilter filter)
+        {
+            using ( new DirectorySwapper( AssemblyHelper.GetDirectoryName( FixtureType.Assembly ) ) )
+            {
+                return base.Run(listener, filter);
+            }
+        }
 		#endregion
 	}
 }

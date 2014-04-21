@@ -12,45 +12,44 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Linq;
-
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
+	using System.Linq;
 
 	public abstract partial class DictionaryAdapterBase
 	{
-		#region Methods/Operators
-
 		public void CopyTo(IDictionaryAdapter other)
 		{
-			this.CopyTo(other, null);
+			CopyTo(other, null);
 		}
 
 		public void CopyTo(IDictionaryAdapter other, Func<PropertyDescriptor, bool> selector)
 		{
 			if (ReferenceEquals(this, other))
+			{
 				return;
+			}
 
-			if (other.Meta.Type.IsAssignableFrom(this.Meta.Type) == false)
+			if (other.Meta.Type.IsAssignableFrom(Meta.Type) == false)
 			{
 				throw new ArgumentException(string.Format(
 					"Unable to copy to {0}.  The type must be assignable from {1}.",
-					other.Meta.Type.FullName, this.Meta.Type.FullName));
+					other.Meta.Type.FullName, Meta.Type.FullName));
 			}
 
-			if (this.This.CopyStrategies.Aggregate(false, (copied, s) => copied | s.Copy(this, other, ref selector)))
+			if (This.CopyStrategies.Aggregate(false, (copied, s) => copied | s.Copy(this, other, ref selector)))
+			{
 				return;
+			}
 
 			selector = selector ?? (property => true);
 
-			foreach (var property in this.This.Properties.Values.Where(property => selector(property)))
+			foreach (var property in This.Properties.Values.Where(property => selector(property)))
 			{
-				var propertyValue = this.GetProperty(property.PropertyName, true);
+				var propertyValue = GetProperty(property.PropertyName, true);
 				other.SetProperty(property.PropertyName, ref propertyValue);
 			}
 		}
-
-		#endregion
 	}
 }

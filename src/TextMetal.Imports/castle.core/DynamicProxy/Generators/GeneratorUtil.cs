@@ -12,17 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection;
-
-using Castle.DynamicProxy.Generators.Emitters;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Castle.DynamicProxy.Tokens;
-
 namespace Castle.DynamicProxy.Generators
 {
+	using System.Reflection;
+
+	using Castle.DynamicProxy.Generators.Emitters;
+	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+	using Castle.DynamicProxy.Tokens;
+
 	public static class GeneratorUtil
 	{
-		#region Methods/Operators
+		public static void CopyOutAndRefParameters(TypeReference[] dereferencedArguments, LocalReference invocation,
+		                                           MethodInfo method, MethodEmitter emitter)
+		{
+			var parameters = method.GetParameters();
+			if (!ArgumentsUtil.IsAnyByRef(parameters))
+			{
+				return; //saving the need to create locals if there is no need
+			}
+
+			var arguments = StoreInvocationArgumentsInLocal(emitter, invocation);
+
+			for (var i = 0; i < parameters.Length; i++)
+			{
+				if (!parameters[i].ParameterType.IsByRef)
+				{
+					continue;
+				}
+
+				emitter.CodeBuilder.AddStatement(AssignArgument(dereferencedArguments, i, arguments));
+			}
+		}
 
 		private static ConvertExpression Argument(int i, LocalReference invocationArgs, TypeReference[] arguments)
 		{
@@ -30,27 +50,9 @@ namespace Castle.DynamicProxy.Generators
 		}
 
 		private static AssignStatement AssignArgument(TypeReference[] dereferencedArguments, int i,
-			LocalReference invocationArgs)
+		                                              LocalReference invocationArgs)
 		{
 			return new AssignStatement(dereferencedArguments[i], Argument(i, invocationArgs, dereferencedArguments));
-		}
-
-		public static void CopyOutAndRefParameters(TypeReference[] dereferencedArguments, LocalReference invocation,
-			MethodInfo method, MethodEmitter emitter)
-		{
-			var parameters = method.GetParameters();
-			if (!ArgumentsUtil.IsAnyByRef(parameters))
-				return; //saving the need to create locals if there is no need
-
-			var arguments = StoreInvocationArgumentsInLocal(emitter, invocation);
-
-			for (var i = 0; i < parameters.Length; i++)
-			{
-				if (!parameters[i].ParameterType.IsByRef)
-					continue;
-
-				emitter.CodeBuilder.AddStatement(AssignArgument(dereferencedArguments, i, arguments));
-			}
 		}
 
 		private static AssignStatement GetArguments(LocalReference invocationArgs, LocalReference invocation)
@@ -64,7 +66,5 @@ namespace Castle.DynamicProxy.Generators
 			emitter.CodeBuilder.AddStatement(GetArguments(invocationArgs, invocation));
 			return invocationArgs;
 		}
-
-		#endregion
 	}
 }

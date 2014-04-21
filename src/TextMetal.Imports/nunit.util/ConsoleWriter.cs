@@ -4,46 +4,33 @@
 // copyright ownership at http://nunit.org.
 // ****************************************************************
 
-using System.IO;
-using System.Text;
-
 namespace NUnit.Util
 {
 	using System;
+	using System.IO;
+	using System.Text;
 
 	/// <summary>
 	/// Class used for receiving console output from the running test and displaying it.
 	/// </summary>
 	public class ConsoleWriter : TextWriter
 	{
-		#region Constructors/Destructors
+		#region Private Fields
 
+		private TextWriter console;
+
+		#endregion
+
+		#region Constructors
+    			
 		public ConsoleWriter(TextWriter console)
 		{
 			this.console = console;
 		}
 
 		#endregion
-
-		#region Fields/Constants
-
-		private TextWriter console;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public override Encoding Encoding
-		{
-			get
-			{
-				return Encoding.Default;
-			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
+    			
+		#region TextWriter Overrides
 
 		public override void Close()
 		{
@@ -52,27 +39,33 @@ namespace NUnit.Util
 
 		public override void Flush()
 		{
-			this.console.Flush();
+			console.Flush ();
+		}
+
+
+		public override void Write(char c)
+		{
+			console.Write(c);
+		}
+
+		public override void Write(String s)
+		{
+			console.Write(s);
+		}
+
+		public override void WriteLine(string s)
+		{
+			console.WriteLine(s);
+		}
+
+		public override Encoding Encoding
+		{
+			get { return Encoding.Default; }
 		}
 
 		public override Object InitializeLifetimeService()
 		{
 			return null;
-		}
-
-		public override void Write(char c)
-		{
-			this.console.Write(c);
-		}
-
-		public override void Write(String s)
-		{
-			this.console.Write(s);
-		}
-
-		public override void WriteLine(string s)
-		{
-			this.console.WriteLine(s);
 		}
 
 		#endregion

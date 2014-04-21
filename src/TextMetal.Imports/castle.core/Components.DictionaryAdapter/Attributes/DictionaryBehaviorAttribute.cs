@@ -21,40 +21,20 @@ namespace Castle.Components.DictionaryAdapter
 	/// </summary>
 	public abstract class DictionaryBehaviorAttribute : Attribute, IDictionaryBehavior
 	{
-		#region Constructors/Destructors
+		public const int FirstExecutionOrder = 0;
+		public const int DefaultExecutionOrder = int.MaxValue / 2;
+		public const int LastExecutionOrder = int.MaxValue;
 
 		public DictionaryBehaviorAttribute()
 		{
-			this.ExecutionOrder = DefaultExecutionOrder;
+			ExecutionOrder = DefaultExecutionOrder;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		public const int DefaultExecutionOrder = int.MaxValue / 2;
-		public const int FirstExecutionOrder = 0;
-		public const int LastExecutionOrder = int.MaxValue;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public int ExecutionOrder
-		{
-			get;
-			set;
-		}
-
-		#endregion
-
-		#region Methods/Operators
+		public int ExecutionOrder { get; set; }
 
 		public virtual IDictionaryBehavior Copy()
 		{
 			return this;
 		}
-
-		#endregion
 	}
 }

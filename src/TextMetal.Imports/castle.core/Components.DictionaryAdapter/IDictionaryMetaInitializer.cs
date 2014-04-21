@@ -15,31 +15,29 @@
 namespace Castle.Components.DictionaryAdapter
 {
 	/// <summary>
-	/// Contract for dictionary meta-data initialization.
+	///  Contract for dictionary meta-data initialization.
 	/// </summary>
 	public interface IDictionaryMetaInitializer : IDictionaryBehavior
 	{
-		#region Methods/Operators
-
 		/// <summary>
-		/// Initializes the given <see cref="DictionaryAdapterMeta" /> object.
+		///		Initializes the given <see cref="DictionaryAdapterMeta"/> object.
 		/// </summary>
-		/// <param name="factory"> The dictionary adapter factory. </param>
-		/// <param name="dictionaryMeta"> The dictionary adapter meta. </param>
+		/// <param name="factory">The dictionary adapter factory.</param>
+		/// <param name="dictionaryMeta">The dictionary adapter meta.</param>
+		/// 
 		void Initialize(IDictionaryAdapterFactory factory, DictionaryAdapterMeta dictionaryMeta);
 
 		/// <summary>
-		/// Determines whether the given behavior should be included in a new
-		/// <see cref="DictionaryAdapterMeta" /> object.
+		///		Determines whether the given behavior should be included in a new
+		///		<see cref="DictionaryAdapterMeta"/> object.
 		/// </summary>
-		/// <param name="behavior"> A dictionary behavior or annotation. </param>
-		/// <returns> True if the behavior should be included; otherwise, false. </returns>
+		/// <param name="behavior">A dictionary behavior or annotation.</param>
+		/// <returns>True if the behavior should be included; otherwise, false.</returns>
 		/// <remarks>
-		/// <see cref="IDictionaryMetaInitializer" /> behaviors are always included,
-		/// regardless of the result of this method.
-		/// </remarks>
+		///		<see cref="IDictionaryMetaInitializer"/> behaviors are always included,
+		///		regardless of the result of this method.
+		///	</remarks>
+		/// 
 		bool ShouldHaveBehavior(object behavior);
-
-		#endregion
 	}
 }

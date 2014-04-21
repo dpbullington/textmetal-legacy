@@ -3,12 +3,12 @@
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
-
 using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
+using System.Data;
 using System.Windows.Forms;
-
 using NUnit.Util;
 
 namespace NUnit.UiKit
@@ -17,120 +17,100 @@ namespace NUnit.UiKit
 	/// NUnitSettingsPage is the base class for all pages used
 	/// in a tabbed or tree-structured SettingsDialog.
 	/// </summary>
-	public class SettingsPage : UserControl
+	public class SettingsPage : System.Windows.Forms.UserControl
 	{
-		#region Constructors/Destructors
-
-		public SettingsPage()
-		{
-			// This call is required by the Windows.Forms Form Designer.
-			this.InitializeComponent();
-
-			// TODO: Add any initialization after the InitializeComponent call
-		}
-
-		// Constructor we use in creating page for a Tabbed
-		// or TreeBased dialog.
-		public SettingsPage(string key)
-			: this()
-		{
-			this.key = key;
-			this.title = key;
-			int dot = key.LastIndexOf('.');
-			if (dot >= 0)
-				this.title = key.Substring(dot + 1);
-			this.messageDisplay = new MessageDisplay("NUnit Settings");
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		/// <summary>
+		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
-		private Container components = null;
-
-		private string key;
-
-		private MessageDisplay messageDisplay;
+		private System.ComponentModel.Container components = null;
 
 		/// <summary>
 		/// Settings are available to derived classes
 		/// </summary>
 		protected ISettings settings;
 
+		private string key;
 		private string title;
 
-		#endregion
+        private MessageDisplay messageDisplay;
 
 		// Constructor used by the Windows.Forms Designer
-
-		#region Properties/Indexers/Events
-
-		public virtual bool HasChangesRequiringReload
+		public SettingsPage()
 		{
-			get
-			{
-				return false;
-			}
+			// This call is required by the Windows.Forms Form Designer.
+			InitializeComponent();
+
+			// TODO: Add any initialization after the InitializeComponent call
 		}
+
+		// Constructor we use in creating page for a Tabbed
+		// or TreeBased dialog.
+		public SettingsPage( string key) : this()
+		{
+			this.key = key;
+			this.title = key;
+			int dot = key.LastIndexOf( '.' );
+			if ( dot >= 0 ) title = key.Substring(dot+1);
+            this.messageDisplay = new MessageDisplay("NUnit Settings");
+		}
+
+		/// <summary> 
+		/// Clean up any resources being used.
+		/// </summary>
+		protected override void Dispose( bool disposing )
+		{
+			if( disposing )
+			{
+				if(components != null)
+				{
+					components.Dispose();
+				}
+			}
+			base.Dispose( disposing );
+		}
+
+		#region Properties
 
 		public string Key
 		{
-			get
-			{
-				return this.key;
-			}
-		}
-
-		public IMessageDisplay MessageDisplay
-		{
-			get
-			{
-				return this.messageDisplay;
-			}
-		}
-
-		public bool SettingsLoaded
-		{
-			get
-			{
-				return this.settings != null;
-			}
+			get { return key; }
 		}
 
 		public string Title
 		{
-			get
-			{
-				return this.title;
-			}
+			get { return title; }
 		}
+
+		public bool SettingsLoaded
+		{
+			get { return settings != null; }
+		}
+
+		public virtual bool HasChangesRequiringReload
+		{
+			get { return false; }
+		}
+
+        public IMessageDisplay MessageDisplay
+        {
+            get { return messageDisplay; }
+        }
 
 		#endregion
 
-		#region Methods/Operators
+		#region Public Methods
+		public virtual void LoadSettings()
+		{
+		}
 
 		public virtual void ApplySettings()
 		{
 		}
+		#endregion
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-				if (this.components != null)
-					this.components.Dispose();
-			}
-			base.Dispose(disposing);
-		}
-
-		/// <summary>
-		/// Required method for Designer support - do not modify
+		#region Component Designer generated code
+		/// <summary> 
+		/// Required method for Designer support - do not modify 
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
@@ -139,24 +119,20 @@ namespace NUnit.UiKit
 			// SettingsPage
 			// 
 			this.Name = "SettingsPage";
-			this.Size = new Size(456, 336);
-		}
+			this.Size = new System.Drawing.Size(456, 336);
 
-		public virtual void LoadSettings()
-		{
 		}
+		#endregion
 
 		protected override void OnLoad(EventArgs e)
 		{
-			base.OnLoad(e);
+			base.OnLoad (e);
 
-			if (!this.DesignMode)
+			if ( !DesignMode )
 			{
 				this.settings = Services.UserSettings;
 				this.LoadSettings();
 			}
 		}
-
-		#endregion
 	}
 }

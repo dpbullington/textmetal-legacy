@@ -25,46 +25,30 @@ namespace Castle.Components.DictionaryAdapter
 	[AttributeUsage(AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
 	public class KeyPrefixAttribute : DictionaryBehaviorAttribute, IDictionaryKeyBuilder
 	{
-		#region Constructors/Destructors
-
 		/// <summary>
-		/// Initializes a default instance of the <see cref="KeyPrefixAttribute" /> class.
+		/// Initializes a default instance of the <see cref="KeyPrefixAttribute"/> class.
 		/// </summary>
 		public KeyPrefixAttribute()
 		{
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="KeyPrefixAttribute" /> class.
+		/// Initializes a new instance of the <see cref="KeyPrefixAttribute"/> class.
 		/// </summary>
-		/// <param name="keyPrefix"> The prefix for the keyed properties of the interface. </param>
+		/// <param name="keyPrefix">The prefix for the keyed properties of the interface.</param>
 		public KeyPrefixAttribute(String keyPrefix)
 		{
 			this.KeyPrefix = keyPrefix;
 		}
 
-		#endregion
-
-		#region Properties/Indexers/Events
-
 		/// <summary>
 		/// Gets the prefix key added to the properties of the interface.
 		/// </summary>
-		public String KeyPrefix
-		{
-			get;
-			set;
-		}
-
-		#endregion
-
-		#region Methods/Operators
+		public String KeyPrefix { get; set; }
 
 		String IDictionaryKeyBuilder.GetKey(IDictionaryAdapter dictionaryAdapter, String key, PropertyDescriptor property)
 		{
-			return this.KeyPrefix + key;
+			return KeyPrefix + key;
 		}
-
-		#endregion
 	}
 }

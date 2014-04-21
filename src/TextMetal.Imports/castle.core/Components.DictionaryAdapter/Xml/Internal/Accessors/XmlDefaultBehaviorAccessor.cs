@@ -12,59 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Xml;
 
 	public class XmlDefaultBehaviorAccessor : XmlNodeAccessor
 	{
-		#region Constructors/Destructors
-
-		public XmlDefaultBehaviorAccessor(Type type, IXmlContext context)
-			: base(type, context)
-		{
-		}
-
-		public XmlDefaultBehaviorAccessor(string name, Type type, IXmlContext context)
-			: base(name, type, context)
-		{
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
 		internal static readonly XmlAccessorFactory<XmlDefaultBehaviorAccessor>
 			Factory = (name, type, context) => new XmlDefaultBehaviorAccessor(name, type, context);
 
-		#endregion
+		public XmlDefaultBehaviorAccessor(Type type, IXmlContext context)
+			: base(type, context) { }
 
-		#region Methods/Operators
+		public XmlDefaultBehaviorAccessor(string name, Type type, IXmlContext context)
+			: base(name, type, context) { }
 
-		public override IXmlCursor SelectCollectionItems(IXmlNode node, bool mutable)
+		public override IXmlCursor SelectPropertyNode(IXmlNode node, bool mutable)
 		{
-			var flags = CursorFlags.Elements | CursorFlags.Multiple;
-			return node.SelectChildren(this.KnownTypes, this.Context, flags.MutableIf(mutable));
+			var flags = Serializer.Kind == XmlTypeKind.Simple
+				? CursorFlags.AllNodes
+				: CursorFlags.Elements;
+			return node.SelectChildren(KnownTypes, Context, flags.MutableIf(mutable));
 		}
 
 		public override IXmlCursor SelectCollectionNode(IXmlNode node, bool mutable)
 		{
-			return this.SelectPropertyNode(node, mutable);
+			return SelectPropertyNode(node, mutable);
 		}
 
-		public override IXmlCursor SelectPropertyNode(IXmlNode node, bool mutable)
+		public override IXmlCursor SelectCollectionItems(IXmlNode node, bool mutable)
 		{
-			var flags = this.Serializer.Kind == XmlTypeKind.Simple
-				? CursorFlags.AllNodes
-				: CursorFlags.Elements;
-			return node.SelectChildren(this.KnownTypes, this.Context, flags.MutableIf(mutable));
+			var flags = CursorFlags.Elements | CursorFlags.Multiple;
+			return node.SelectChildren(KnownTypes, Context, flags.MutableIf(mutable));
 		}
-
-		#endregion
 	}
 }
-
 #endif

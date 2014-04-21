@@ -10,153 +10,63 @@ using System.Reflection;
 namespace NUnit.Framework.Constraints
 {
 	/// <summary>
-	/// PropertyExistsConstraint tests that a named property
-	/// exists on the object provided through Match.
-	/// Originally, PropertyConstraint provided this feature
-	/// in addition to making optional tests on the vaue
-	/// of the property. The two constraints are now separate.
+	/// PropertyConstraint extracts a named property and uses
+    /// its value as the actual value for a chained constraint.
 	/// </summary>
-	public class PropertyExistsConstraint : Constraint
+	public class PropertyConstraint : PrefixConstraint
 	{
-		#region Constructors/Destructors
+		private readonly string name;
+		private object propValue;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="T:PropertyExistConstraint" /> class.
-		/// </summary>
-		/// <param name="name"> The name of the property. </param>
-		public PropertyExistsConstraint(string name)
-			: base(name)
-		{
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:PropertyConstraint"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="baseConstraint">The constraint to apply to the property.</param>
+        public PropertyConstraint(string name, Constraint baseConstraint)
+			: base( baseConstraint ) 
+		{ 
 			this.name = name;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private Type actualType;
-		private string name;
-
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Returns the string representation of the constraint.
-		/// </summary>
-		/// <returns> </returns>
-		protected override string GetStringRepresentation()
+        /// <summary>
+        /// Test whether the constraint is satisfied by a given value
+        /// </summary>
+        /// <param name="actual">The value to be tested</param>
+        /// <returns>True for success, false for failure</returns>
+        public override bool Matches(object actual)
 		{
-			return string.Format("<propertyexists {0}>", this.name);
-		}
+            this.actual = actual;
+            Guard.ArgumentNotNull(actual, "actual");
 
-		/// <summary>
-		/// Test whether the property exists for a given object
-		/// </summary>
-		/// <param name="actual"> The object to be tested </param>
-		/// <returns> True for success, false for failure </returns>
-		public override bool Matches(object actual)
-		{
-			this.actual = actual;
+            Type actualType = actual as Type;
+            if ( actualType == null )
+                actualType = actual.GetType();
 
-			if (actual == null)
-				throw new ArgumentNullException("actual");
+            PropertyInfo property = actualType.GetProperty(name,
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetProperty);
 
-			this.actualType = actual as Type;
-			if (this.actualType == null)
-				this.actualType = actual.GetType();
+            if (property == null)
+                throw new ArgumentException(string.Format("Property {0} was not found",name), "name");
 
-			PropertyInfo property = this.actualType.GetProperty(this.name,
-				BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetProperty);
-
-			return property != null;
-		}
-
-		/// <summary>
-		/// Write the actual value for a failing constraint test to a
-		/// MessageWriter.
-		/// </summary>
-		/// <param name="writer"> The writer on which the actual value is displayed </param>
-		public override void WriteActualValueTo(MessageWriter writer)
-		{
-			writer.WriteActualValue(this.actualType);
+			propValue = property.GetValue( actual, null );
+			return baseConstraint.Matches( propValue );
 		}
 
 		/// <summary>
 		/// Write the constraint description to a MessageWriter
 		/// </summary>
-		/// <param name="writer"> The writer on which the description is displayed </param>
+		/// <param name="writer">The writer on which the description is displayed</param>
 		public override void WriteDescriptionTo(MessageWriter writer)
 		{
-			writer.Write("property " + this.name);
-		}
-
-		#endregion
-	}
-
-	/// <summary>
-	/// PropertyConstraint extracts a named property and uses
-	/// its value as the actual value for a chained constraint.
-	/// </summary>
-	public class PropertyConstraint : PrefixConstraint
-	{
-		#region Constructors/Destructors
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="T:PropertyConstraint" /> class.
-		/// </summary>
-		/// <param name="name"> The name. </param>
-		/// <param name="baseConstraint"> The constraint to apply to the property. </param>
-		public PropertyConstraint(string name, Constraint baseConstraint)
-			: base(baseConstraint)
-		{
-			this.name = name;
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private string name;
-		private object propValue;
-
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Returns the string representation of the constraint.
-		/// </summary>
-		/// <returns> </returns>
-		protected override string GetStringRepresentation()
-		{
-			return string.Format("<property {0} {1}>", this.name, this.baseConstraint);
-		}
-
-		/// <summary>
-		/// Test whether the constraint is satisfied by a given value
-		/// </summary>
-		/// <param name="actual"> The value to be tested </param>
-		/// <returns> True for success, false for failure </returns>
-		public override bool Matches(object actual)
-		{
-			this.actual = actual;
-			if (actual == null)
-				throw new ArgumentNullException("actual");
-
-			Type actualType = actual as Type;
-			if (actualType == null)
-				actualType = actual.GetType();
-
-			PropertyInfo property = actualType.GetProperty(this.name,
-				BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetProperty);
-
-			if (property == null)
-				throw new ArgumentException(string.Format("Property {0} was not found", this.name), "name");
-
-			this.propValue = property.GetValue(actual, null);
-			return this.baseConstraint.Matches(this.propValue);
-		}
+			writer.WritePredicate( "property " + name );
+            if (baseConstraint != null)
+            {
+                if (baseConstraint is EqualConstraint)
+                    writer.WritePredicate("equal to");
+                baseConstraint.WriteDescriptionTo(writer);
+            }
+        }
 
 		/// <summary>
 		/// Write the actual value for a failing constraint test to a
@@ -164,27 +74,19 @@ namespace NUnit.Framework.Constraints
 		/// the raw value of actual, leaving it to the writer to
 		/// perform any formatting.
 		/// </summary>
-		/// <param name="writer"> The writer on which the actual value is displayed </param>
+		/// <param name="writer">The writer on which the actual value is displayed</param>
 		public override void WriteActualValueTo(MessageWriter writer)
 		{
-			writer.WriteActualValue(this.propValue);
+            writer.WriteActualValue(propValue);
 		}
 
-		/// <summary>
-		/// Write the constraint description to a MessageWriter
-		/// </summary>
-		/// <param name="writer"> The writer on which the description is displayed </param>
-		public override void WriteDescriptionTo(MessageWriter writer)
-		{
-			writer.WritePredicate("property " + this.name);
-			if (this.baseConstraint != null)
-			{
-				if (this.baseConstraint is EqualConstraint)
-					writer.WritePredicate("equal to");
-				this.baseConstraint.WriteDescriptionTo(writer);
-			}
-		}
-
-		#endregion
+        /// <summary>
+        /// Returns the string representation of the constraint.
+        /// </summary>
+        /// <returns></returns>
+        protected override string GetStringRepresentation()
+        {
+            return string.Format("<property {0} {1}>", name, baseConstraint);
+        }
 	}
 }

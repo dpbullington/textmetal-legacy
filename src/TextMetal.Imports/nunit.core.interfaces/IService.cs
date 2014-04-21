@@ -3,7 +3,6 @@
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
-
 using System;
 
 namespace NUnit.Core
@@ -13,8 +12,6 @@ namespace NUnit.Core
 	/// </summary>
 	public interface IService
 	{
-		#region Methods/Operators
-
 		/// <summary>
 		/// Initialize the Service
 		/// </summary>
@@ -24,7 +21,5 @@ namespace NUnit.Core
 		/// Do any cleanup needed before terminating the service
 		/// </summary>
 		void UnloadService();
-
-		#endregion
 	}
 }

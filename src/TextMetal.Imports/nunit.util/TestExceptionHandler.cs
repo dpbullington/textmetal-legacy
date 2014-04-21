@@ -13,9 +13,9 @@ namespace NUnit.Util
 	/// </summary>
 	public class TestExceptionHandler : IDisposable
 	{
-		#region Constructors/Destructors
+		private UnhandledExceptionEventHandler handler;
 
-		public TestExceptionHandler(UnhandledExceptionEventHandler handler)
+		public TestExceptionHandler( UnhandledExceptionEventHandler handler )
 		{
 			this.handler = handler;
 			AppDomain.CurrentDomain.UnhandledException += handler;
@@ -23,34 +23,24 @@ namespace NUnit.Util
 
 		~TestExceptionHandler()
 		{
-			if (this.handler != null)
+			if ( handler != null )
 			{
-				AppDomain.CurrentDomain.UnhandledException -= this.handler;
-				this.handler = null;
+				AppDomain.CurrentDomain.UnhandledException -= handler;
+				handler = null;
 			}
 		}
 
-		#endregion
 
-		#region Fields/Constants
-
-		private UnhandledExceptionEventHandler handler;
-
-		#endregion
-
-		#region Methods/Operators
 
 		public void Dispose()
 		{
-			if (this.handler != null)
+			if ( handler != null )
 			{
-				AppDomain.CurrentDomain.UnhandledException -= this.handler;
-				this.handler = null;
+				AppDomain.CurrentDomain.UnhandledException -= handler;
+				handler = null;
 			}
 
-			GC.SuppressFinalize(this);
+			System.GC.SuppressFinalize( this );
 		}
-
-		#endregion
 	}
 }

@@ -12,54 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
 
 	public interface IXmlAccessor
 	{
-		#region Properties/Indexers/Events
+		Type ClrType { get; }
+		XmlTypeSerializer Serializer { get; }
+		IXmlContext Context { get; }
+		bool IsNillable { get; }
+		bool IsReference { get; }
 
-		Type ClrType
-		{
-			get;
-		}
-
-		IXmlContext Context
-		{
-			get;
-		}
-
-		bool IsNillable
-		{
-			get;
-		}
-
-		bool IsReference
-		{
-			get;
-		}
-
-		XmlTypeSerializer Serializer
-		{
-			get;
-		}
-
-		#endregion
-
-		#region Methods/Operators
+		object GetValue(IXmlNode   node,   IDictionaryAdapter parentObject, XmlReferenceManager references, bool nodeExists, bool orStub);
+		void   SetValue(IXmlCursor cursor, IDictionaryAdapter parentObject, XmlReferenceManager references, bool hasCurrent, object oldValue, ref object newValue);
 
 		IXmlCollectionAccessor GetCollectionAccessor(Type itemType);
-
-		object GetValue(IXmlNode node, IDictionaryAdapter parentObject, XmlReferenceManager references, bool nodeExists, bool orStub);
-
-		void SetValue(IXmlCursor cursor, IDictionaryAdapter parentObject, XmlReferenceManager references, bool hasCurrent, object oldValue, ref object newValue);
-
-		#endregion
 	}
 }
-
 #endif

@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
@@ -31,48 +29,33 @@ namespace Castle.Components.DictionaryAdapter.Xml
 				throw Error.ArgumentNull("namespaces");
 
 			this.namespaces = namespaces;
-			this.parent = parent;
+			this.parent     = parent;
 		}
 
 		public virtual bool IsReal
 		{
-			get
-			{
-				return true;
-			}
+			get { return true; }
 		}
 
 		public virtual Type ClrType
 		{
-			get
-			{
-				return this.type;
-			}
+			get { return type; }
 		}
 
 		public IXmlNode Parent
 		{
-			get
-			{
-				return this.parent;
-			}
+			get { return parent; }
 		}
 
 		public IXmlNamespaceSource Namespaces
 		{
-			get
-			{
-				return this.namespaces;
-			}
+			get { return namespaces; }
 		}
 
 #if !SL3
 		public virtual CompiledXPath Path
 		{
-			get
-			{
-				return null;
-			}
+			get { return null; }
 		}
 #endif
 
@@ -88,20 +71,15 @@ namespace Castle.Components.DictionaryAdapter.Xml
 
 		void IVirtual.Realize()
 		{
-			this.Realize();
+			Realize();
 		}
 
 		public virtual event EventHandler Realized
 		{
 			// Default nodes never realize
-			add
-			{
-			}
-			remove
-			{
-			}
+			add    { }
+			remove { }
 		}
 	}
 }
-
 #endif

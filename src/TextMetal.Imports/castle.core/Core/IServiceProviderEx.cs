@@ -17,14 +17,10 @@ namespace Castle.Core
 	using System;
 
 	/// <summary>
-	/// Increments <c> IServiceProvider </c> with a generic service resolution operation.
+	/// Increments <c>IServiceProvider</c> with a generic service resolution operation.
 	/// </summary>
 	public interface IServiceProviderEx : IServiceProvider
 	{
-		#region Methods/Operators
-
 		T GetService<T>() where T : class;
-
-		#endregion
 	}
 }

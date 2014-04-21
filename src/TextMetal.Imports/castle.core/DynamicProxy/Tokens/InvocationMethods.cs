@@ -12,32 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection;
-
-using Castle.DynamicProxy.Internal;
-
 namespace Castle.DynamicProxy.Tokens
 {
 	using System;
+	using System.Reflection;
+
+	using Castle.DynamicProxy.Internal;
 
 	/// <summary>
-	/// Holds <see cref="MethodInfo" /> objects representing methods of <see cref="AbstractInvocation" /> class.
+	///   Holds <see cref = "MethodInfo" /> objects representing methods of <see cref = "AbstractInvocation" /> class.
 	/// </summary>
 	public static class InvocationMethods
 	{
-		#region Fields/Constants
-
 		public static readonly ConstructorInfo CompositionInvocationConstructor =
 			typeof(CompositionInvocation).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null,
-				new[]
-				{
-					typeof(object),
-					typeof(object),
-					typeof(IInterceptor[]),
-					typeof(MethodInfo),
-					typeof(object[])
-				},
-				null);
+			                                             new[]
+			                                             {
+			                                             	typeof(object),
+			                                             	typeof(object),
+			                                             	typeof(IInterceptor[]),
+			                                             	typeof(MethodInfo),
+			                                             	typeof(object[])
+			                                             },
+			                                             null);
 
 		public static readonly MethodInfo EnsureValidTarget =
 			typeof(CompositionInvocation).GetMethod("EnsureValidTarget", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -53,29 +50,29 @@ namespace Castle.DynamicProxy.Tokens
 
 		public static readonly ConstructorInfo InheritanceInvocationConstructor =
 			typeof(InheritanceInvocation).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null,
-				new[]
-				{
-					typeof(Type),
-					typeof(object),
-					typeof(IInterceptor[]),
-					typeof(MethodInfo),
-					typeof(object[])
-				},
-				null);
+			                                             new[]
+			                                             {
+			                                             	typeof(Type),
+			                                             	typeof(object),
+			                                             	typeof(IInterceptor[]),
+			                                             	typeof(MethodInfo),
+			                                             	typeof(object[])
+			                                             },
+			                                             null);
 
 		public static readonly ConstructorInfo InheritanceInvocationConstructorWithSelector =
 			typeof(InheritanceInvocation).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null,
-				new[]
-				{
-					typeof(Type),
-					typeof(object),
-					typeof(IInterceptor[]),
-					typeof(MethodInfo),
-					typeof(object[]),
-					typeof(IInterceptorSelector),
-					typeof(IInterceptor[]).MakeByRefType()
-				},
-				null);
+			                                             new[]
+			                                             {
+			                                             	typeof(Type),
+			                                             	typeof(object),
+			                                             	typeof(IInterceptor[]),
+			                                             	typeof(MethodInfo),
+			                                             	typeof(object[]),
+			                                             	typeof(IInterceptorSelector),
+			                                             	typeof(IInterceptor[]).MakeByRefType()
+			                                             },
+			                                             null);
 
 		public static readonly MethodInfo Proceed =
 			typeof(AbstractInvocation).GetMethod("Proceed", BindingFlags.Instance | BindingFlags.Public);
@@ -97,7 +94,5 @@ namespace Castle.DynamicProxy.Tokens
 
 		public static readonly MethodInfo ThrowOnNoTarget =
 			typeof(AbstractInvocation).GetMethod("ThrowOnNoTarget", BindingFlags.Instance | BindingFlags.NonPublic);
-
-		#endregion
 	}
 }

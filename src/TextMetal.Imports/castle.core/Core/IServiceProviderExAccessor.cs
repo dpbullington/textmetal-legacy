@@ -20,19 +20,12 @@ namespace Castle.Core
 	/// the container to different areas in the same application.
 	/// <para>
 	/// For example, in Web application, the (global) HttpApplication
-	/// subclasses should implement this interface to expose
+	/// subclasses should implement this interface to expose 
 	/// the configured container
 	/// </para>
 	/// </summary>
 	public interface IServiceProviderExAccessor
 	{
-		#region Properties/Indexers/Events
-
-		IServiceProviderEx ServiceProvider
-		{
-			get;
-		}
-
-		#endregion
+		IServiceProviderEx ServiceProvider { get; }
 	}
 }

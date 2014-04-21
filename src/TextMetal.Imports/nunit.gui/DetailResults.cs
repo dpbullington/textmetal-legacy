@@ -5,87 +5,72 @@
 // ****************************************************************
 
 using System;
-using System.Windows.Forms;
-
-using NUnit.Core;
-using NUnit.Util;
 
 namespace NUnit.Gui
 {
 	using System;
+	using System.Windows.Forms;
+	using NUnit.Core;
+	using NUnit.Util;
 
 	/// <summary>
 	/// Summary description for DetailResults
 	/// </summary>
 	public class DetailResults
 	{
-		#region Constructors/Destructors
+		private readonly ListBox testDetails;
+		private readonly TreeView notRunTree;
 
 		public DetailResults(ListBox listBox, TreeView notRun)
 		{
-			this.testDetails = listBox;
-			this.notRunTree = notRun;
+			testDetails = listBox;
+			notRunTree = notRun;
 		}
 
-		#endregion
+		public void DisplayResults( TestResult results )
+		{
+			notRunTree.BeginUpdate();
+			ProcessResults( results );
+			notRunTree.EndUpdate();
 
-		#region Fields/Constants
+			if( testDetails.Items.Count > 0 )
+				testDetails.SelectedIndex = 0;
+		}
 
-		private readonly TreeView notRunTree;
-		private readonly ListBox testDetails;
+		private void ProcessResults(TestResult result)
+		{
+			switch( result.ResultState )
+			{
+                case ResultState.Failure:
+                case ResultState.Error:
+                case ResultState.Cancelled:
+					TestResultItem item = new TestResultItem(result);
+					//string resultString = String.Format("{0}:{1}", result.Name, result.Message);
+					testDetails.BeginUpdate();
+					testDetails.Items.Insert(testDetails.Items.Count, item);
+					testDetails.EndUpdate();
+			        break;
+                case ResultState.Skipped:
+                case ResultState.NotRunnable:
+                case ResultState.Ignored:
+    				notRunTree.Nodes.Add(MakeNotRunNode(result));
+			        break;
+			}
 
-		#endregion
-
-		#region Methods/Operators
+			if ( result.HasResults )
+				foreach (TestResult childResult in result.Results)
+	                ProcessResults( childResult );
+        }
 
 		private static TreeNode MakeNotRunNode(TestResult result)
 		{
 			TreeNode node = new TreeNode(result.Name);
 
 			TreeNode reasonNode = new TreeNode("Reason: " + result.Message);
-
+			
 			node.Nodes.Add(reasonNode);
 
 			return node;
 		}
-
-		public void DisplayResults(TestResult results)
-		{
-			this.notRunTree.BeginUpdate();
-			this.ProcessResults(results);
-			this.notRunTree.EndUpdate();
-
-			if (this.testDetails.Items.Count > 0)
-				this.testDetails.SelectedIndex = 0;
-		}
-
-		private void ProcessResults(TestResult result)
-		{
-			switch (result.ResultState)
-			{
-				case ResultState.Failure:
-				case ResultState.Error:
-				case ResultState.Cancelled:
-					TestResultItem item = new TestResultItem(result);
-					//string resultString = String.Format("{0}:{1}", result.Name, result.Message);
-					this.testDetails.BeginUpdate();
-					this.testDetails.Items.Insert(this.testDetails.Items.Count, item);
-					this.testDetails.EndUpdate();
-					break;
-				case ResultState.Skipped:
-				case ResultState.NotRunnable:
-				case ResultState.Ignored:
-					this.notRunTree.Nodes.Add(MakeNotRunNode(result));
-					break;
-			}
-
-			if (result.HasResults)
-			{
-				foreach (TestResult childResult in result.Results)
-					this.ProcessResults(childResult);
-			}
-		}
-
-		#endregion
 	}
 }

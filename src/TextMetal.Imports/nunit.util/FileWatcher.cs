@@ -1,4 +1,4 @@
-// ****************************************************************
+﻿// ****************************************************************
 // Copyright 2011, Charlie Poole
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
@@ -10,100 +10,71 @@ using System.Timers;
 
 namespace NUnit.Util
 {
-	public delegate void FileChangedHandler(string filePath);
+    public delegate void FileChangedHandler(string filePath);
 
-	public interface IWatcher
-	{
-		#region Properties/Indexers/Events
+    public interface IWatcher
+    {
+        int Delay { get; set; }
 
-		event FileChangedHandler Changed;
+        void Start();
+        void Stop();
 
-		int Delay
-		{
-			get;
-			set;
-		}
+        event FileChangedHandler Changed;
+    }
 
-		#endregion
+    public class FileWatcher : IDisposable
+    {
+        private string filePath;
+        private FileSystemWatcher watcher;
+        private Timer timer;
 
-		#region Methods/Operators
+        public FileWatcher(string filePath, int delay)
+        {
+            this.filePath = filePath;
+            this.watcher = new FileSystemWatcher();
 
-		void Start();
+            watcher.Path = Path.GetDirectoryName(filePath);
+            watcher.Filter = Path.GetFileName(filePath);
+            watcher.NotifyFilter = NotifyFilters.Size | NotifyFilters.LastWrite;
+            watcher.EnableRaisingEvents = false;
+            watcher.Changed += new FileSystemEventHandler(OnChange);
 
-		void Stop();
+            timer = new Timer(delay);
+            timer.AutoReset = false;
+            timer.Enabled = false;
+            timer.Elapsed += new ElapsedEventHandler(OnTimer);
+        }
 
-		#endregion
-	}
+        public void Dispose()
+        {
+            watcher.Dispose();
+        }
 
-	public class FileWatcher : IDisposable
-	{
-		#region Constructors/Destructors
+        public void Start()
+        {
+            watcher.EnableRaisingEvents = true;
+        }
 
-		public FileWatcher(string filePath, int delay)
-		{
-			this.filePath = filePath;
-			this.watcher = new FileSystemWatcher();
+        public void Stop()
+        {
+            watcher.EnableRaisingEvents = false;
+        }
 
-			this.watcher.Path = Path.GetDirectoryName(filePath);
-			this.watcher.Filter = Path.GetFileName(filePath);
-			this.watcher.NotifyFilter = NotifyFilters.Size | NotifyFilters.LastWrite;
-			this.watcher.EnableRaisingEvents = false;
-			this.watcher.Changed += new FileSystemEventHandler(this.OnChange);
+        private void OnChange(object sender, FileSystemEventArgs e)
+        {
+            if (!timer.Enabled)
+                timer.Enabled = true;
+            timer.Start();
+        }
 
-			this.timer = new Timer(delay);
-			this.timer.AutoReset = false;
-			this.timer.Enabled = false;
-			this.timer.Elapsed += new ElapsedEventHandler(this.OnTimer);
-		}
+        private void OnTimer(object sender, ElapsedEventArgs e)
+        {
+            timer.Enabled = false;
 
-		#endregion
+            if (Changed != null)
+                Changed(filePath);
+        }
 
-		#region Fields/Constants
-
-		private string filePath;
-		private Timer timer;
-		private FileSystemWatcher watcher;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public event FileChangedHandler Changed;
-
-		#endregion
-
-		#region Methods/Operators
-
-		public void Dispose()
-		{
-			this.watcher.Dispose();
-		}
-
-		private void OnChange(object sender, FileSystemEventArgs e)
-		{
-			if (!this.timer.Enabled)
-				this.timer.Enabled = true;
-			this.timer.Start();
-		}
-
-		private void OnTimer(object sender, ElapsedEventArgs e)
-		{
-			this.timer.Enabled = false;
-
-			if (this.Changed != null)
-				this.Changed(this.filePath);
-		}
-
-		public void Start()
-		{
-			this.watcher.EnableRaisingEvents = true;
-		}
-
-		public void Stop()
-		{
-			this.watcher.EnableRaisingEvents = false;
-		}
-
-		#endregion
-	}
+        public event FileChangedHandler Changed;
+    }
 }

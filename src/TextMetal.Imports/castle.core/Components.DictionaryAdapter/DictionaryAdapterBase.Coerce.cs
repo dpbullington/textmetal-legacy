@@ -18,27 +18,22 @@ namespace Castle.Components.DictionaryAdapter
 
 	public abstract partial class DictionaryAdapterBase
 	{
-		#region Methods/Operators
-
 		public T Coerce<T>() where T : class
 		{
-			return (T)this.Coerce(typeof(T));
+			return (T)Coerce(typeof(T));
 		}
 
 		public object Coerce(Type type)
 		{
-			if (type.IsAssignableFrom(this.Meta.Type))
+			if (type.IsAssignableFrom(Meta.Type))
 				return this;
 
-			if (this.This.CoerceStrategy != null)
+			if (This.CoerceStrategy != null)
 			{
-				var coerced = this.This.CoerceStrategy.Coerce(this, type);
-				if (coerced != null)
-					return coerced;
+				var coerced = This.CoerceStrategy.Coerce(this, type);
+				if (coerced != null) return coerced;
 			}
-			return this.This.Factory.GetAdapter(type, this.This.Dictionary, this.This.Descriptor);
+			return This.Factory.GetAdapter(type, This.Dictionary, This.Descriptor);
 		}
-
-		#endregion
 	}
 }

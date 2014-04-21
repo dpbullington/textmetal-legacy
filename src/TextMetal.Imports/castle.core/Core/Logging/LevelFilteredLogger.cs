@@ -12,22 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Globalization;
-
 namespace Castle.Core.Logging
 {
 	using System;
+	using System.Globalization;
 #if DOTNET40
 	using System.Security;
-
 #else
 	using System.Security.Permissions;
 #endif
 
 	/// <summary>
-	/// The Level Filtered Logger class.  This is a base clase which
-	/// provides a LogLevel attribute and reroutes all functions into
-	/// one Log method.
+	///	The Level Filtered Logger class.  This is a base clase which
+	///	provides a LogLevel attribute and reroutes all functions into
+	///	one Log method.
 	/// </summary>
 #if SILVERLIGHT
 	public abstract class LevelFilteredLogger : ILogger
@@ -40,7 +38,7 @@ namespace Castle.Core.Logging
 		private String name = "unnamed";
 
 		/// <summary>
-		/// Creates a new <c> LevelFilteredLogger </c>.
+		///   Creates a new <c>LevelFilteredLogger</c>.
 		/// </summary>
 		protected LevelFilteredLogger()
 		{
@@ -48,25 +46,24 @@ namespace Castle.Core.Logging
 
 		protected LevelFilteredLogger(String name)
 		{
-			this.ChangeName(name);
+			ChangeName(name);
 		}
 
 		protected LevelFilteredLogger(LoggerLevel loggerLevel)
 		{
-			this.level = loggerLevel;
+			level = loggerLevel;
 		}
 
-		protected LevelFilteredLogger(String loggerName, LoggerLevel loggerLevel)
-			: this(loggerLevel)
+		protected LevelFilteredLogger(String loggerName, LoggerLevel loggerLevel) : this(loggerLevel)
 		{
-			this.ChangeName(loggerName);
+			ChangeName(loggerName);
 		}
 
 #if !SILVERLIGHT
 		/// <summary>
 		/// Keep the instance alive in a remoting scenario
 		/// </summary>
-		/// <returns> </returns>
+		/// <returns></returns>
 #if DOTNET40
 		[SecurityCritical]
 #else
@@ -81,31 +78,22 @@ namespace Castle.Core.Logging
 		public abstract ILogger CreateChildLogger(string loggerName);
 
 		/// <value>
-		/// The <c> LoggerLevel </c> that this logger
-		/// will be using. Defaults to <c> LoggerLevel.Off </c>
+		///   The <c>LoggerLevel</c> that this logger
+		///   will be using. Defaults to <c>LoggerLevel.Off</c>
 		/// </value>
 		public LoggerLevel Level
 		{
-			get
-			{
-				return this.level;
-			}
-			set
-			{
-				this.level = value;
-			}
+			get { return level; }
+			set { level = value; }
 		}
 
 		/// <value>
-		/// The name that this logger will be using.
-		/// Defaults to <c> String.Empty </c>
+		///   The name that this logger will be using. 
+		///   Defaults to <c>String.Empty</c>
 		/// </value>
 		public String Name
 		{
-			get
-			{
-				return this.name;
-			}
+			get { return name; }
 		}
 
 		#region ILogger implementation
@@ -113,92 +101,106 @@ namespace Castle.Core.Logging
 		#region Debug
 
 		/// <summary>
-		/// Logs a debug message.
+		///   Logs a debug message.
 		/// </summary>
-		/// <param name="message"> The message to log </param>
+		/// <param name = "message">The message to log</param>
 		public void Debug(string message)
 		{
-			if (!this.IsDebugEnabled)
+			if (!IsDebugEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Debug, message, null);
+			Log(LoggerLevel.Debug, message, null);
 		}
 
 		public void Debug(Func<string> messageFactory)
 		{
-			if (!this.IsDebugEnabled)
+			if (!IsDebugEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Debug, messageFactory.Invoke(), null);
+			Log(LoggerLevel.Debug, messageFactory.Invoke(), null);
 		}
 
 		/// <summary>
-		/// Logs a debug message.
+		///   Logs a debug message.
 		/// </summary>
-		/// <param name="exception"> The exception to log </param>
-		/// <param name="message"> The message to log </param>
+		/// <param name = "exception">The exception to log</param>
+		/// <param name = "message">The message to log</param>
 		public void Debug(string message, Exception exception)
 		{
-			if (!this.IsDebugEnabled)
+			if (!IsDebugEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Debug, message, exception);
+			Log(LoggerLevel.Debug, message, exception);
 		}
 
 		/// <summary>
-		/// Logs a debug message.
+		///   Logs a debug message.
 		/// </summary>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void DebugFormat(string format, params object[] args)
 		{
-			if (!this.IsDebugEnabled)
+			if (!IsDebugEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Debug, String.Format(CultureInfo.CurrentCulture, format, args), null);
+			Log(LoggerLevel.Debug, String.Format(CultureInfo.CurrentCulture, format, args), null);
 		}
 
 		/// <summary>
-		/// Logs a debug message.
+		///   Logs a debug message.
 		/// </summary>
-		/// <param name="exception"> The exception to log </param>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "exception">The exception to log</param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void DebugFormat(Exception exception, string format, params object[] args)
 		{
-			if (!this.IsDebugEnabled)
+			if (!IsDebugEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Debug, String.Format(CultureInfo.CurrentCulture, format, args), exception);
+			Log(LoggerLevel.Debug, String.Format(CultureInfo.CurrentCulture, format, args), exception);
 		}
 
 		/// <summary>
-		/// Logs a debug message.
+		///   Logs a debug message.
 		/// </summary>
-		/// <param name="formatProvider"> The format provider to use </param>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "formatProvider">The format provider to use</param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void DebugFormat(IFormatProvider formatProvider, string format, params object[] args)
 		{
-			if (!this.IsDebugEnabled)
+			if (!IsDebugEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Debug, String.Format(formatProvider, format, args), null);
+			Log(LoggerLevel.Debug, String.Format(formatProvider, format, args), null);
 		}
 
 		/// <summary>
-		/// Logs a debug message.
+		///   Logs a debug message.
 		/// </summary>
-		/// <param name="exception"> The exception to log </param>
-		/// <param name="formatProvider"> The format provider to use </param>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "exception">The exception to log</param>
+		/// <param name = "formatProvider">The format provider to use</param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void DebugFormat(Exception exception, IFormatProvider formatProvider, string format, params object[] args)
 		{
-			if (!this.IsDebugEnabled)
+			if (!IsDebugEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Debug, String.Format(formatProvider, format, args), exception);
+			Log(LoggerLevel.Debug, String.Format(formatProvider, format, args), exception);
 		}
 
 		#endregion
@@ -206,92 +208,106 @@ namespace Castle.Core.Logging
 		#region Info
 
 		/// <summary>
-		/// Logs an info message.
+		///   Logs an info message.
 		/// </summary>
-		/// <param name="message"> The message to log </param>
+		/// <param name = "message">The message to log</param>
 		public void Info(string message)
 		{
-			if (!this.IsInfoEnabled)
+			if (!IsInfoEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Info, message, null);
+			Log(LoggerLevel.Info, message, null);
 		}
 
 		public void Info(Func<string> messageFactory)
 		{
-			if (!this.IsInfoEnabled)
+			if (!IsInfoEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Info, messageFactory.Invoke(), null);
+			Log(LoggerLevel.Info, messageFactory.Invoke(), null);
 		}
 
 		/// <summary>
-		/// Logs an info message.
+		///   Logs an info message.
 		/// </summary>
-		/// <param name="exception"> The exception to log </param>
-		/// <param name="message"> The message to log </param>
+		/// <param name = "exception">The exception to log</param>
+		/// <param name = "message">The message to log</param>
 		public void Info(string message, Exception exception)
 		{
-			if (!this.IsInfoEnabled)
+			if (!IsInfoEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Info, message, exception);
+			Log(LoggerLevel.Info, message, exception);
 		}
 
 		/// <summary>
-		/// Logs an info message.
+		///   Logs an info message.
 		/// </summary>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void InfoFormat(string format, params object[] args)
 		{
-			if (!this.IsInfoEnabled)
+			if (!IsInfoEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Info, String.Format(CultureInfo.CurrentCulture, format, args), null);
+			Log(LoggerLevel.Info, String.Format(CultureInfo.CurrentCulture, format, args), null);
 		}
 
 		/// <summary>
-		/// Logs an info message.
+		///   Logs an info message.
 		/// </summary>
-		/// <param name="exception"> The exception to log </param>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "exception">The exception to log</param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void InfoFormat(Exception exception, string format, params object[] args)
 		{
-			if (!this.IsInfoEnabled)
+			if (!IsInfoEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Info, String.Format(CultureInfo.CurrentCulture, format, args), exception);
+			Log(LoggerLevel.Info, String.Format(CultureInfo.CurrentCulture, format, args), exception);
 		}
 
 		/// <summary>
-		/// Logs an info message.
+		///   Logs an info message.
 		/// </summary>
-		/// <param name="formatProvider"> The format provider to use </param>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "formatProvider">The format provider to use</param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void InfoFormat(IFormatProvider formatProvider, string format, params object[] args)
 		{
-			if (!this.IsInfoEnabled)
+			if (!IsInfoEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Info, String.Format(formatProvider, format, args), null);
+			Log(LoggerLevel.Info, String.Format(formatProvider, format, args), null);
 		}
 
 		/// <summary>
-		/// Logs an info message.
+		///   Logs an info message.
 		/// </summary>
-		/// <param name="exception"> The exception to log </param>
-		/// <param name="formatProvider"> The format provider to use </param>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "exception">The exception to log</param>
+		/// <param name = "formatProvider">The format provider to use</param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void InfoFormat(Exception exception, IFormatProvider formatProvider, string format, params object[] args)
 		{
-			if (!this.IsInfoEnabled)
+			if (!IsInfoEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Info, String.Format(formatProvider, format, args), exception);
+			Log(LoggerLevel.Info, String.Format(formatProvider, format, args), exception);
 		}
 
 		#endregion
@@ -299,92 +315,106 @@ namespace Castle.Core.Logging
 		#region Warn
 
 		/// <summary>
-		/// Logs a warn message.
+		///   Logs a warn message.
 		/// </summary>
-		/// <param name="message"> The message to log </param>
+		/// <param name = "message">The message to log</param>
 		public void Warn(string message)
 		{
-			if (!this.IsWarnEnabled)
+			if (!IsWarnEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Warn, message, null);
+			Log(LoggerLevel.Warn, message, null);
 		}
 
 		public void Warn(Func<string> messageFactory)
 		{
-			if (!this.IsWarnEnabled)
+			if (!IsWarnEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Warn, messageFactory.Invoke(), null);
+			Log(LoggerLevel.Warn, messageFactory.Invoke(), null);
 		}
 
 		/// <summary>
-		/// Logs a warn message.
+		///   Logs a warn message.
 		/// </summary>
-		/// <param name="exception"> The exception to log </param>
-		/// <param name="message"> The message to log </param>
+		/// <param name = "exception">The exception to log</param>
+		/// <param name = "message">The message to log</param>
 		public void Warn(string message, Exception exception)
 		{
-			if (!this.IsWarnEnabled)
+			if (!IsWarnEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Warn, message, exception);
+			Log(LoggerLevel.Warn, message, exception);
 		}
 
 		/// <summary>
-		/// Logs a warn message.
+		///   Logs a warn message.
 		/// </summary>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void WarnFormat(string format, params object[] args)
 		{
-			if (!this.IsWarnEnabled)
+			if (!IsWarnEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Warn, String.Format(CultureInfo.CurrentCulture, format, args), null);
+			Log(LoggerLevel.Warn, String.Format(CultureInfo.CurrentCulture, format, args), null);
 		}
 
 		/// <summary>
-		/// Logs a warn message.
+		///   Logs a warn message.
 		/// </summary>
-		/// <param name="exception"> The exception to log </param>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "exception">The exception to log</param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void WarnFormat(Exception exception, string format, params object[] args)
 		{
-			if (!this.IsWarnEnabled)
+			if (!IsWarnEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Warn, String.Format(CultureInfo.CurrentCulture, format, args), exception);
+			Log(LoggerLevel.Warn, String.Format(CultureInfo.CurrentCulture, format, args), exception);
 		}
 
 		/// <summary>
-		/// Logs a warn message.
+		///   Logs a warn message.
 		/// </summary>
-		/// <param name="formatProvider"> The format provider to use </param>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "formatProvider">The format provider to use</param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void WarnFormat(IFormatProvider formatProvider, string format, params object[] args)
 		{
-			if (!this.IsWarnEnabled)
+			if (!IsWarnEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Warn, String.Format(formatProvider, format, args), null);
+			Log(LoggerLevel.Warn, String.Format(formatProvider, format, args), null);
 		}
 
 		/// <summary>
-		/// Logs a warn message.
+		///   Logs a warn message.
 		/// </summary>
-		/// <param name="exception"> The exception to log </param>
-		/// <param name="formatProvider"> The format provider to use </param>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "exception">The exception to log</param>
+		/// <param name = "formatProvider">The format provider to use</param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void WarnFormat(Exception exception, IFormatProvider formatProvider, string format, params object[] args)
 		{
-			if (!this.IsWarnEnabled)
+			if (!IsWarnEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Warn, String.Format(formatProvider, format, args), exception);
+			Log(LoggerLevel.Warn, String.Format(formatProvider, format, args), exception);
 		}
 
 		#endregion
@@ -392,92 +422,106 @@ namespace Castle.Core.Logging
 		#region Error
 
 		/// <summary>
-		/// Logs an error message.
+		///   Logs an error message.
 		/// </summary>
-		/// <param name="message"> The message to log </param>
+		/// <param name = "message">The message to log</param>
 		public void Error(string message)
 		{
-			if (!this.IsErrorEnabled)
+			if (!IsErrorEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Error, message, null);
+			Log(LoggerLevel.Error, message, null);
 		}
 
 		public void Error(Func<string> messageFactory)
 		{
-			if (!this.IsErrorEnabled)
+			if (!IsErrorEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Error, messageFactory.Invoke(), null);
+			Log(LoggerLevel.Error, messageFactory.Invoke(), null);
 		}
 
 		/// <summary>
-		/// Logs an error message.
+		///   Logs an error message.
 		/// </summary>
-		/// <param name="exception"> The exception to log </param>
-		/// <param name="message"> The message to log </param>
+		/// <param name = "exception">The exception to log</param>
+		/// <param name = "message">The message to log</param>
 		public void Error(string message, Exception exception)
 		{
-			if (!this.IsErrorEnabled)
+			if (!IsErrorEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Error, message, exception);
+			Log(LoggerLevel.Error, message, exception);
 		}
 
 		/// <summary>
-		/// Logs an error message.
+		///   Logs an error message.
 		/// </summary>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void ErrorFormat(string format, params object[] args)
 		{
-			if (!this.IsErrorEnabled)
+			if (!IsErrorEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Error, String.Format(CultureInfo.CurrentCulture, format, args), null);
+			Log(LoggerLevel.Error, String.Format(CultureInfo.CurrentCulture, format, args), null);
 		}
 
 		/// <summary>
-		/// Logs an error message.
+		///   Logs an error message.
 		/// </summary>
-		/// <param name="exception"> The exception to log </param>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "exception">The exception to log</param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void ErrorFormat(Exception exception, string format, params object[] args)
 		{
-			if (!this.IsErrorEnabled)
+			if (!IsErrorEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Error, String.Format(CultureInfo.CurrentCulture, format, args), exception);
+			Log(LoggerLevel.Error, String.Format(CultureInfo.CurrentCulture, format, args), exception);
 		}
 
 		/// <summary>
-		/// Logs an error message.
+		///   Logs an error message.
 		/// </summary>
-		/// <param name="formatProvider"> The format provider to use </param>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "formatProvider">The format provider to use</param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void ErrorFormat(IFormatProvider formatProvider, string format, params object[] args)
 		{
-			if (!this.IsErrorEnabled)
+			if (!IsErrorEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Error, String.Format(formatProvider, format, args), null);
+			Log(LoggerLevel.Error, String.Format(formatProvider, format, args), null);
 		}
 
 		/// <summary>
-		/// Logs an error message.
+		///   Logs an error message.
 		/// </summary>
-		/// <param name="exception"> The exception to log </param>
-		/// <param name="formatProvider"> The format provider to use </param>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "exception">The exception to log</param>
+		/// <param name = "formatProvider">The format provider to use</param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void ErrorFormat(Exception exception, IFormatProvider formatProvider, string format, params object[] args)
 		{
-			if (!this.IsErrorEnabled)
+			if (!IsErrorEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Error, String.Format(formatProvider, format, args), exception);
+			Log(LoggerLevel.Error, String.Format(formatProvider, format, args), exception);
 		}
 
 		#endregion
@@ -485,179 +529,180 @@ namespace Castle.Core.Logging
 		#region Fatal
 
 		/// <summary>
-		/// Logs a fatal message.
+		///   Logs a fatal message.
 		/// </summary>
-		/// <param name="message"> The message to log </param>
+		/// <param name = "message">The message to log</param>
 		public void Fatal(string message)
 		{
-			if (!this.IsFatalEnabled)
+			if (!IsFatalEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Fatal, message, null);
+			Log(LoggerLevel.Fatal, message, null);
 		}
 
 		public void Fatal(Func<string> messageFactory)
 		{
-			if (!this.IsFatalEnabled)
+			if (!IsFatalEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Fatal, messageFactory.Invoke(), null);
+			Log(LoggerLevel.Fatal, messageFactory.Invoke(), null);
 		}
 
 		/// <summary>
-		/// Logs a fatal message.
+		///   Logs a fatal message.
 		/// </summary>
-		/// <param name="exception"> The exception to log </param>
-		/// <param name="message"> The message to log </param>
+		/// <param name = "exception">The exception to log</param>
+		/// <param name = "message">The message to log</param>
 		public void Fatal(string message, Exception exception)
 		{
-			if (!this.IsFatalEnabled)
+			if (!IsFatalEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Fatal, message, exception);
+			Log(LoggerLevel.Fatal, message, exception);
 		}
 
 		/// <summary>
-		/// Logs a fatal message.
+		///   Logs a fatal message.
 		/// </summary>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void FatalFormat(string format, params object[] args)
 		{
-			if (!this.IsFatalEnabled)
+			if (!IsFatalEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Fatal, String.Format(CultureInfo.CurrentCulture, format, args), null);
+			Log(LoggerLevel.Fatal, String.Format(CultureInfo.CurrentCulture, format, args), null);
 		}
 
 		/// <summary>
-		/// Logs a fatal message.
+		///   Logs a fatal message.
 		/// </summary>
-		/// <param name="exception"> The exception to log </param>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "exception">The exception to log</param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void FatalFormat(Exception exception, string format, params object[] args)
 		{
-			if (!this.IsFatalEnabled)
+			if (!IsFatalEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Fatal, String.Format(CultureInfo.CurrentCulture, format, args), exception);
+			Log(LoggerLevel.Fatal, String.Format(CultureInfo.CurrentCulture, format, args), exception);
 		}
 
 		/// <summary>
-		/// Logs a fatal message.
+		///   Logs a fatal message.
 		/// </summary>
-		/// <param name="formatProvider"> The format provider to use </param>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "formatProvider">The format provider to use</param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void FatalFormat(IFormatProvider formatProvider, string format, params object[] args)
 		{
-			if (!this.IsFatalEnabled)
+			if (!IsFatalEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Fatal, String.Format(formatProvider, format, args), null);
+			Log(LoggerLevel.Fatal, String.Format(formatProvider, format, args), null);
 		}
 
 		/// <summary>
-		/// Logs a fatal message.
+		///   Logs a fatal message.
 		/// </summary>
-		/// <param name="exception"> The exception to log </param>
-		/// <param name="formatProvider"> The format provider to use </param>
-		/// <param name="format"> Format string for the message to log </param>
-		/// <param name="args"> Format arguments for the message to log </param>
+		/// <param name = "exception">The exception to log</param>
+		/// <param name = "formatProvider">The format provider to use</param>
+		/// <param name = "format">Format string for the message to log</param>
+		/// <param name = "args">Format arguments for the message to log</param>
 		public void FatalFormat(Exception exception, IFormatProvider formatProvider, string format, params object[] args)
 		{
-			if (!this.IsFatalEnabled)
+			if (!IsFatalEnabled)
+			{
 				return;
+			}
 
-			this.Log(LoggerLevel.Fatal, String.Format(formatProvider, format, args), exception);
+			Log(LoggerLevel.Fatal, String.Format(formatProvider, format, args), exception);
 		}
 
 		#endregion
 
 		/// <summary>
-		/// Determines if messages of priority "debug" will be logged.
+		///   Determines if messages of priority "debug" will be logged.
 		/// </summary>
-		/// <value> <c> true </c> if log level flags include the <see cref="LoggerLevel.Debug" /> bit </value>
+		/// <value><c>true</c> if log level flags include the <see cref = "LoggerLevel.Debug" /> bit</value>
 		public bool IsDebugEnabled
 		{
-			get
-			{
-				return (this.Level >= LoggerLevel.Debug);
-			}
+			get { return (Level >= LoggerLevel.Debug); }
 		}
 
 		/// <summary>
-		/// Determines if messages of priority "info" will be logged.
+		///   Determines if messages of priority "info" will be logged.
 		/// </summary>
-		/// <value> <c> true </c> if log level flags include the <see cref="LoggerLevel.Info" /> bit </value>
+		/// <value><c>true</c> if log level flags include the <see cref = "LoggerLevel.Info" /> bit</value>
 		public bool IsInfoEnabled
 		{
-			get
-			{
-				return (this.Level >= LoggerLevel.Info);
-			}
+			get { return (Level >= LoggerLevel.Info); }
 		}
 
 		/// <summary>
-		/// Determines if messages of priority "warn" will be logged.
+		///   Determines if messages of priority "warn" will be logged.
 		/// </summary>
-		/// <value> <c> true </c> if log level flags include the <see cref="LoggerLevel.Warn" /> bit </value>
+		/// <value><c>true</c> if log level flags include the <see cref = "LoggerLevel.Warn" /> bit</value>
 		public bool IsWarnEnabled
 		{
-			get
-			{
-				return (this.Level >= LoggerLevel.Warn);
-			}
+			get { return (Level >= LoggerLevel.Warn); }
 		}
 
 		/// <summary>
-		/// Determines if messages of priority "error" will be logged.
+		///   Determines if messages of priority "error" will be logged.
 		/// </summary>
-		/// <value> <c> true </c> if log level flags include the <see cref="LoggerLevel.Error" /> bit </value>
+		/// <value><c>true</c> if log level flags include the <see cref = "LoggerLevel.Error" /> bit</value>
 		public bool IsErrorEnabled
 		{
-			get
-			{
-				return (this.Level >= LoggerLevel.Error);
-			}
+			get { return (Level >= LoggerLevel.Error); }
 		}
 
 		/// <summary>
-		/// Determines if messages of priority "fatal" will be logged.
+		///   Determines if messages of priority "fatal" will be logged.
 		/// </summary>
-		/// <value> <c> true </c> if log level flags include the <see cref="LoggerLevel.Fatal" /> bit </value>
+		/// <value><c>true</c> if log level flags include the <see cref = "LoggerLevel.Fatal" /> bit</value>
 		public bool IsFatalEnabled
 		{
-			get
-			{
-				return (this.Level >= LoggerLevel.Fatal);
-			}
+			get { return (Level >= LoggerLevel.Fatal); }
 		}
 
 		#endregion
 
 		/// <summary>
-		/// Implementors output the log content by implementing this method only.
-		/// Note that exception can be null
+		///   Implementors output the log content by implementing this method only.
+		///   Note that exception can be null
 		/// </summary>
-		/// <param name="loggerLevel"> </param>
-		/// <param name="loggerName"> </param>
-		/// <param name="message"> </param>
-		/// <param name="exception"> </param>
+		/// <param name = "loggerLevel"></param>
+		/// <param name = "loggerName"></param>
+		/// <param name = "message"></param>
+		/// <param name = "exception"></param>
 		protected abstract void Log(LoggerLevel loggerLevel, String loggerName, String message, Exception exception);
 
 		protected void ChangeName(String newName)
 		{
 			if (newName == null)
+			{
 				throw new ArgumentNullException("newName");
+			}
 
-			this.name = newName;
+			name = newName;
 		}
 
 		private void Log(LoggerLevel loggerLevel, String message, Exception exception)
 		{
-			this.Log(loggerLevel, this.Name, message, exception);
+			Log(loggerLevel, Name, message, exception);
 		}
 	}
 }

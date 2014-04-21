@@ -8,48 +8,33 @@ using System;
 
 namespace NUnit.Framework
 {
-	/// <summary>
-	/// RequiredAddinAttribute may be used to indicate the names of any addins
-	/// that must be present in order to run some or all of the tests in an
-	/// assembly. If the addin is not loaded, the entire assembly is marked
-	/// as NotRunnable.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true, Inherited = false)]
-	public class RequiredAddinAttribute : Attribute
-	{
-		#region Constructors/Destructors
+    /// <summary>
+    /// RequiredAddinAttribute may be used to indicate the names of any addins
+    /// that must be present in order to run some or all of the tests in an
+    /// assembly. If the addin is not loaded, the entire assembly is marked
+    /// as NotRunnable.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Assembly,AllowMultiple=true, Inherited=false)]
+    public class RequiredAddinAttribute : Attribute
+    {
+        private string requiredAddin;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="T:RequiredAddinAttribute" /> class.
-		/// </summary>
-		/// <param name="requiredAddin"> The required addin. </param>
-		public RequiredAddinAttribute(string requiredAddin)
-		{
-			this.requiredAddin = requiredAddin;
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:RequiredAddinAttribute"/> class.
+        /// </summary>
+        /// <param name="requiredAddin">The required addin.</param>
+        public RequiredAddinAttribute(string requiredAddin)
+        {
+            this.requiredAddin = requiredAddin;
+        }
 
-		#endregion
-
-		#region Fields/Constants
-
-		private string requiredAddin;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Gets the name of required addin.
-		/// </summary>
-		/// <value> The required addin name. </value>
-		public string RequiredAddin
-		{
-			get
-			{
-				return this.requiredAddin;
-			}
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Gets the name of required addin.
+        /// </summary>
+        /// <value>The required addin name.</value>
+        public string RequiredAddin
+        {
+            get { return requiredAddin; }
+        }
+    }
 }

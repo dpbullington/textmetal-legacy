@@ -1,5 +1,4 @@
 ﻿#region License
-
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -22,29 +21,28 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-
 #endregion
 
 namespace Newtonsoft.Json
 {
-	/// <summary>
-	/// Specifies how object creation is handled by the <see cref="JsonSerializer" />.
-	/// </summary>
-	public enum ObjectCreationHandling
-	{
-		/// <summary>
-		/// Reuse existing objects, create new objects when needed.
-		/// </summary>
-		Auto = 0,
+    /// <summary>
+    /// Specifies how object creation is handled by the <see cref="JsonSerializer"/>.
+    /// </summary>
+    public enum ObjectCreationHandling
+    {
+        /// <summary>
+        /// Reuse existing objects, create new objects when needed.
+        /// </summary>
+        Auto = 0,
 
-		/// <summary>
-		/// Only reuse existing objects.
-		/// </summary>
-		Reuse = 1,
+        /// <summary>
+        /// Only reuse existing objects.
+        /// </summary>
+        Reuse = 1,
 
-		/// <summary>
-		/// Always create new objects.
-		/// </summary>
-		Replace = 2
-	}
+        /// <summary>
+        /// Always create new objects.
+        /// </summary>
+        Replace = 2
+    }
 }

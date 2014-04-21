@@ -1,5 +1,4 @@
 ﻿#region License
-
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -22,52 +21,40 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-
 #endregion
 
-#if !SILVERLIGHT && !NET20 && !NETFX_CORE
+#if !NET20 && !NETFX_CORE
 using System;
-
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Newtonsoft.Json.Utilities;
-
 using System.Reflection;
 
 namespace Newtonsoft.Json.Serialization
 {
-	internal class LateBoundMetadataTypeAttribute : IMetadataTypeAttribute
-	{
-		#region Constructors/Destructors
+    internal class LateBoundMetadataTypeAttribute : IMetadataTypeAttribute
+    {
+        private static PropertyInfo _metadataClassTypeProperty;
 
-		public LateBoundMetadataTypeAttribute(object attribute)
-		{
-			this._attribute = attribute;
-		}
+        private readonly object _attribute;
 
-		#endregion
+        public LateBoundMetadataTypeAttribute(object attribute)
+        {
+            _attribute = attribute;
+        }
 
-		#region Fields/Constants
+        public Type MetadataClassType
+        {
+            get
+            {
+                if (_metadataClassTypeProperty == null)
+                    _metadataClassTypeProperty = _attribute.GetType().GetProperty("MetadataClassType");
 
-		private static PropertyInfo _metadataClassTypeProperty;
-
-		private readonly object _attribute;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public Type MetadataClassType
-		{
-			get
-			{
-				if (_metadataClassTypeProperty == null)
-					_metadataClassTypeProperty = this._attribute.GetType().GetProperty("MetadataClassType");
-
-				return (Type)ReflectionUtils.GetMemberValue(_metadataClassTypeProperty, this._attribute);
-			}
-		}
-
-		#endregion
-	}
+                return (Type)ReflectionUtils.GetMemberValue(_metadataClassTypeProperty, _attribute);
+            }
+        }
+    }
 }
 
 #endif

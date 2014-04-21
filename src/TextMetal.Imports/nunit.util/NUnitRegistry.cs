@@ -4,11 +4,12 @@
 // copyright ownership at http://nunit.org.
 // ****************************************************************
 
-using Microsoft.Win32;
-
 namespace NUnit.Util
 {
 	using System;
+	using System.IO;
+	using System.Text;
+	using Microsoft.Win32;
 
 	/// <summary>
 	/// NUnitRegistry provides static properties for NUnit's
@@ -16,84 +17,89 @@ namespace NUnit.Util
 	/// </summary>
 	public class NUnitRegistry
 	{
-		#region Constructors/Destructors
+		public static readonly string KEY = 
+			@"Software\nunit.org\Nunit\2.4";
+
+		public static readonly string LEGACY_KEY = 
+			@"Software\Nascent Software\Nunit\";
+
+		private static bool testMode = false;
+		public static readonly string TEST_KEY = 
+			@"Software\nunit.org\Nunit-Test";
+
 
 		/// <summary>
 		/// Prevent construction of object
 		/// </summary>
-		private NUnitRegistry()
+		private NUnitRegistry() { }
+
+		public static bool TestMode
 		{
+			get { return testMode; }
+			set { testMode = value; }
 		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		public static readonly string KEY =
-			@"Software\nunit.org\Nunit\2.4";
-
-		public static readonly string LEGACY_KEY =
-			@"Software\Nascent Software\Nunit\";
-
-		public static readonly string TEST_KEY =
-			@"Software\nunit.org\Nunit-Test";
-
-		private static bool testMode = false;
-
-		#endregion
-
-		#region Properties/Indexers/Events
 
 		/// <summary>
 		/// Registry subkey for the current user
 		/// </summary>
 		public static RegistryKey CurrentUser
 		{
-			get
+			get 
 			{
-				if (testMode)
-					return Registry.CurrentUser.CreateSubKey(TEST_KEY);
-
-				RegistryKey newKey = Registry.CurrentUser.OpenSubKey(KEY, true);
+				if ( testMode )
+					return Registry.CurrentUser.CreateSubKey( TEST_KEY );
+				
+				RegistryKey newKey = Registry.CurrentUser.OpenSubKey( KEY, true );
 				if (newKey == null)
 				{
-					newKey = Registry.CurrentUser.CreateSubKey(KEY);
-					RegistryKey oldKey = Registry.CurrentUser.OpenSubKey(LEGACY_KEY);
-					if (oldKey != null)
+					newKey = Registry.CurrentUser.CreateSubKey( KEY );
+					RegistryKey oldKey = Registry.CurrentUser.OpenSubKey( LEGACY_KEY );
+					if ( oldKey != null )
 					{
-						CopyKey(oldKey, newKey);
+						CopyKey( oldKey, newKey );
 						oldKey.Close();
 					}
 				}
 
-				return newKey;
+				return newKey; 
 			}
 		}
 
-		public static bool TestMode
+		public static bool KeyExists( string subkey )
 		{
-			get
+			using ( RegistryKey key = Registry.CurrentUser.OpenSubKey( subkey, true ) )
 			{
-				return testMode;
-			}
-			set
-			{
-				testMode = value;
-			}
+				return key != null;
+			} 
 		}
 
-		#endregion
+		public static void ClearTestKeys()
+		{
+			ClearSubKey( Registry.CurrentUser, TEST_KEY );
+			//ClearSubKey( Registry.LocalMachine, TEST_KEY );	
+		}
 
-		#region Methods/Operators
+		/// <summary>
+		/// Static helper method that clears out the contents of a subkey
+		/// </summary>
+		/// <param name="baseKey">Base key for the subkey</param>
+		/// <param name="subKey">Name of the subkey</param>
+		private static void ClearSubKey( RegistryKey baseKey, string subKey )
+		{
+			using( RegistryKey key = baseKey.OpenSubKey( subKey, true ) )
+			{
+				if ( key != null ) ClearKey( key );
+			}
+		}
 
 		/// <summary>
 		/// Static function that clears out the contents of a key
 		/// </summary>
-		/// <param name="key"> Key to be cleared </param>
-		public static void ClearKey(RegistryKey key)
+		/// <param name="key">Key to be cleared</param>
+		public static void ClearKey( RegistryKey key )
 		{
-			foreach (string name in key.GetValueNames())
-				key.DeleteValue(name);
+			foreach( string name in key.GetValueNames() )
+				key.DeleteValue( name );
 
 			// TODO: This throws under Mono - Restore when bug is fixed
 			//foreach( string name in key.GetSubKeyNames() )
@@ -102,56 +108,26 @@ namespace NUnit.Util
 			foreach (string name in key.GetSubKeyNames())
 			{
 				ClearSubKey(key, name);
-				key.DeleteSubKey(name);
+				key.DeleteSubKey( name );
 			}
-		}
-
-		/// <summary>
-		/// Static helper method that clears out the contents of a subkey
-		/// </summary>
-		/// <param name="baseKey"> Base key for the subkey </param>
-		/// <param name="subKey"> Name of the subkey </param>
-		private static void ClearSubKey(RegistryKey baseKey, string subKey)
-		{
-			using (RegistryKey key = baseKey.OpenSubKey(subKey, true))
-			{
-				if (key != null)
-					ClearKey(key);
-			}
-		}
-
-		public static void ClearTestKeys()
-		{
-			ClearSubKey(Registry.CurrentUser, TEST_KEY);
-			//ClearSubKey( Registry.LocalMachine, TEST_KEY );	
 		}
 
 		/// <summary>
 		/// Static method that copies the contents of one key to another
 		/// </summary>
-		/// <param name="fromKey"> The source key for the copy </param>
-		/// <param name="toKey"> The target key for the copy </param>
-		public static void CopyKey(RegistryKey fromKey, RegistryKey toKey)
+		/// <param name="fromKey">The source key for the copy</param>
+		/// <param name="toKey">The target key for the copy</param>
+		public static void CopyKey( RegistryKey fromKey, RegistryKey toKey )
 		{
-			foreach (string name in fromKey.GetValueNames())
-				toKey.SetValue(name, fromKey.GetValue(name));
+			foreach( string name in fromKey.GetValueNames() )
+				toKey.SetValue( name, fromKey.GetValue( name ) );
 
-			foreach (string name in fromKey.GetSubKeyNames())
-			{
-				using (RegistryKey fromSubKey = fromKey.OpenSubKey(name))
+			foreach( string name in fromKey.GetSubKeyNames() )
+				using( RegistryKey fromSubKey = fromKey.OpenSubKey( name ) )
+				using( RegistryKey toSubKey = toKey.CreateSubKey( name ) )
 				{
-					using (RegistryKey toSubKey = toKey.CreateSubKey(name))
-						CopyKey(fromSubKey, toSubKey);
+					CopyKey( fromSubKey, toSubKey );
 				}
-			}
 		}
-
-		public static bool KeyExists(string subkey)
-		{
-			using (RegistryKey key = Registry.CurrentUser.OpenSubKey(subkey, true))
-				return key != null;
-		}
-
-		#endregion
 	}
 }

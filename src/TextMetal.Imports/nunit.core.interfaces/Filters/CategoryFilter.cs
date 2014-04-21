@@ -5,8 +5,8 @@
 // ****************************************************************
 
 using System;
-using System.Collections;
 using System.Text;
+using System.Collections;
 
 namespace NUnit.Core.Filters
 {
@@ -14,110 +14,89 @@ namespace NUnit.Core.Filters
 	/// CategoryFilter is able to select or exclude tests
 	/// based on their categories.
 	/// </summary>
+	/// 
 	[Serializable]
 	public class CategoryFilter : TestFilter
 	{
-		#region Constructors/Destructors
+		ArrayList categories;
 
 		/// <summary>
 		/// Construct an empty CategoryFilter
 		/// </summary>
 		public CategoryFilter()
 		{
-			this.categories = new ArrayList();
+			categories = new ArrayList();
 		}
 
 		/// <summary>
 		/// Construct a CategoryFilter using a single category name
 		/// </summary>
-		/// <param name="name"> A category name </param>
-		public CategoryFilter(string name)
+		/// <param name="name">A category name</param>
+		public CategoryFilter( string name )
 		{
-			this.categories = new ArrayList();
-			if (name != null && name != string.Empty)
-				this.categories.Add(name);
+			categories = new ArrayList();
+			if ( name != null && name != string.Empty )
+				categories.Add( name );
 		}
 
 		/// <summary>
 		/// Construct a CategoryFilter using an array of category names
 		/// </summary>
-		/// <param name="names"> An array of category names </param>
-		public CategoryFilter(string[] names)
+		/// <param name="names">An array of category names</param>
+		public CategoryFilter( string[] names )
 		{
-			this.categories = new ArrayList();
-			if (names != null)
-				this.categories.AddRange(names);
+			categories = new ArrayList();
+			if ( names != null )
+				categories.AddRange( names );
 		}
 
-		#endregion
+		/// <summary>
+		/// Add a category name to the filter
+		/// </summary>
+		/// <param name="name">A category name</param>
+		public void AddCategory(string name) 
+		{
+			categories.Add( name );
+		}
 
-		#region Fields/Constants
+		/// <summary>
+		/// Check whether the filter matches a test
+		/// </summary>
+		/// <param name="test">The test to be matched</param>
+		/// <returns></returns>
+        public override bool Match(ITest test)
+        {
+			if ( test.Categories == null )
+				return false;
 
-		private ArrayList categories;
+			foreach( string cat in categories )
+				if ( test.Categories.Contains( cat ) )
+					return true;
 
-		#endregion
-
-		#region Properties/Indexers/Events
+			return false;
+        }
+		
+		/// <summary>
+		/// Return the string representation of a category filter
+		/// </summary>
+		/// <returns></returns>
+		public override string ToString()
+		{
+			StringBuilder sb = new StringBuilder();
+			for( int i = 0; i < categories.Count; i++ )
+			{
+				if ( i > 0 ) sb.Append( ',' );
+				sb.Append( categories[i] );
+			}
+			return sb.ToString();
+		}
 
 		/// <summary>
 		/// Gets the list of categories from this filter
 		/// </summary>
 		public IList Categories
 		{
-			get
-			{
-				return this.categories;
-			}
+			get { return categories; }
 		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Add a category name to the filter
-		/// </summary>
-		/// <param name="name"> A category name </param>
-		public void AddCategory(string name)
-		{
-			this.categories.Add(name);
-		}
-
-		/// <summary>
-		/// Check whether the filter matches a test
-		/// </summary>
-		/// <param name="test"> The test to be matched </param>
-		/// <returns> </returns>
-		public override bool Match(ITest test)
-		{
-			if (test.Categories == null)
-				return false;
-
-			foreach (string cat in this.categories)
-			{
-				if (test.Categories.Contains(cat))
-					return true;
-			}
-
-			return false;
-		}
-
-		/// <summary>
-		/// Return the string representation of a category filter
-		/// </summary>
-		/// <returns> </returns>
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < this.categories.Count; i++)
-			{
-				if (i > 0)
-					sb.Append(',');
-				sb.Append(this.categories[i]);
-			}
-			return sb.ToString();
-		}
-
-		#endregion
 	}
 }

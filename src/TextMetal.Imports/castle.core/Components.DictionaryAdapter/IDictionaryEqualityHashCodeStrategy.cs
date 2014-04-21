@@ -16,12 +16,8 @@ namespace Castle.Components.DictionaryAdapter
 {
 	public interface IDictionaryEqualityHashCodeStrategy
 	{
-		#region Methods/Operators
-
 		bool Equals(IDictionaryAdapter adapter1, IDictionaryAdapter adapter2);
 
 		bool GetHashCode(IDictionaryAdapter adapter, out int hashCode);
-
-		#endregion
 	}
 }

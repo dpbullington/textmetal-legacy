@@ -5,8 +5,9 @@
 // ****************************************************************
 
 using System;
+using System.Text;
+using System.Collections;
 using System.IO;
-
 using NUnit.Core;
 
 namespace NUnit.Util
@@ -20,43 +21,7 @@ namespace NUnit.Util
 
 	public class ProjectConfig
 	{
-		#region Constructors/Destructors
-
-		public ProjectConfig(string name)
-		{
-			this.name = name;
-			this.assemblies = new AssemblyList();
-			this.assemblies.Changed += new EventHandler(this.assemblies_Changed);
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		/// <summary>
-		/// List of the names of the assemblies
-		/// </summary>
-		private AssemblyList assemblies;
-
-		/// <summary>
-		/// Base path specific to this configuration
-		/// </summary>
-		private string basePath;
-
-		/// <summary>
-		/// Private bin path, if specified
-		/// </summary>
-		private string binPath;
-
-		/// <summary>
-		/// True if assembly paths should be added to bin path
-		/// </summary>
-		private BinPathType binPathType = BinPathType.Auto;
-
-		/// <summary>
-		/// Our configuration file, if specified
-		/// </summary>
-		private string configFile;
+		#region Instance Variables
 
 		/// <summary>
 		/// The name of this config
@@ -69,22 +34,71 @@ namespace NUnit.Util
 		protected NUnitProject project = null;
 
 		/// <summary>
-		/// The CLR under which tests are to be run
+		/// List of the names of the assemblies
 		/// </summary>
-		private RuntimeFramework runtimeFramework;
+		private AssemblyList assemblies;
+
+		/// <summary>
+		/// Base path specific to this configuration
+		/// </summary>
+		private string basePath;
+
+		/// <summary>
+		/// Our configuration file, if specified
+		/// </summary>
+		private string configFile;
+
+		/// <summary>
+		/// Private bin path, if specified
+		/// </summary>
+		private string binPath;
+
+		/// <summary>
+		/// True if assembly paths should be added to bin path
+		/// </summary>
+		private BinPathType binPathType = BinPathType.Auto;
+        
+        /// <summary>
+        /// The CLR under which tests are to be run
+        /// </summary>
+        private RuntimeFramework runtimeFramework;
 
 		#endregion
 
-		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Return our AssemblyList
-		/// </summary>
-		public AssemblyList Assemblies
+		#region Constructor
+		public ProjectConfig( string name )
 		{
-			get
+			this.name = name;
+			this.assemblies = new AssemblyList();
+			assemblies.Changed += new EventHandler( assemblies_Changed );
+		}
+		#endregion
+
+		#region Properties and Events
+
+		public NUnitProject Project
+		{
+			set { project = value; }
+		}
+
+		public string Name
+		{
+			get { return name; }
+			set 
 			{
-				return this.assemblies;
+				if ( name != value )
+				{
+					name = value;
+					NotifyProjectOfChange();
+				}
+			}
+		}
+
+		private bool BasePathSpecified
+		{
+			get 
+			{
+				return project.BasePathSpecified || this.basePath != null && this.basePath != "";
 			}
 		}
 
@@ -95,138 +109,22 @@ namespace NUnit.Util
 		public string BasePath
 		{
 			get
-			{
-				if (this.project == null || this.project.BasePath == null)
-					return this.basePath;
+			{ 
+				if ( project == null || project.BasePath == null )
+					return basePath;
 
-				if (this.basePath == null)
-					return this.project.BasePath;
+				if ( basePath == null )
+					return project.BasePath;
 
-				return Path.Combine(this.project.BasePath, this.basePath);
+				return Path.Combine( project.BasePath, basePath );
 			}
-			set
+			set 
 			{
-				if (this.BasePath != value)
+				if ( BasePath != value )
 				{
-					this.basePath = value;
-					this.NotifyProjectOfChange();
+					basePath = value;
+					NotifyProjectOfChange();
 				}
-			}
-		}
-
-		private bool BasePathSpecified
-		{
-			get
-			{
-				return this.project.BasePathSpecified || this.basePath != null && this.basePath != "";
-			}
-		}
-
-		/// <summary>
-		/// How our PrivateBinPath is generated
-		/// </summary>
-		public BinPathType BinPathType
-		{
-			get
-			{
-				return this.binPathType;
-			}
-			set
-			{
-				if (this.binPathType != value)
-				{
-					this.binPathType = value;
-					this.NotifyProjectOfChange();
-				}
-			}
-		}
-
-		public string ConfigurationFile
-		{
-			get
-			{
-				return this.configFile == null && this.project != null
-					? this.project.ConfigurationFile
-					: this.configFile;
-			}
-			set
-			{
-				if (this.ConfigurationFile != value)
-				{
-					this.configFile = value;
-					this.NotifyProjectOfChange();
-				}
-			}
-		}
-
-		public string ConfigurationFilePath
-		{
-			get
-			{
-				return this.BasePath != null && this.ConfigurationFile != null
-					? Path.Combine(this.BasePath, this.ConfigurationFile)
-					: this.ConfigurationFile;
-			}
-		}
-
-		private bool ConfigurationFileSpecified
-		{
-			get
-			{
-				return this.configFile != null;
-			}
-		}
-
-		public string Name
-		{
-			get
-			{
-				return this.name;
-			}
-			set
-			{
-				if (this.name != value)
-				{
-					this.name = value;
-					this.NotifyProjectOfChange();
-				}
-			}
-		}
-
-		/// <summary>
-		/// The Path.PathSeparator-separated path containing all the
-		/// assemblies in the list.
-		/// </summary>
-		public string PrivateBinPath
-		{
-			get
-			{
-				return this.binPath;
-			}
-			set
-			{
-				if (this.binPath != value)
-				{
-					this.binPath = value;
-					this.binPathType = this.binPath == null ? BinPathType.Auto : BinPathType.Manual;
-					this.NotifyProjectOfChange();
-				}
-			}
-		}
-
-		private bool PrivateBinPathSpecified
-		{
-			get
-			{
-				return this.binPath != null;
-			}
-		}
-
-		public NUnitProject Project
-		{
-			set
-			{
-				this.project = value;
 			}
 		}
 
@@ -237,44 +135,116 @@ namespace NUnit.Util
 		{
 			get
 			{
-				if (this.project == null || this.basePath == null || !Path.IsPathRooted(this.basePath))
-					return this.basePath;
+				if ( project == null || basePath == null || !Path.IsPathRooted( basePath ) )
+					return basePath;
 
-				return PathUtils.RelativePath(this.project.BasePath, this.basePath);
+				return PathUtils.RelativePath( project.BasePath, basePath );
 			}
 		}
 
-		public RuntimeFramework RuntimeFramework
+		private bool ConfigurationFileSpecified
 		{
-			get
-			{
-				return this.runtimeFramework;
+			get { return configFile != null; }
+		}
+
+		public string ConfigurationFile
+		{
+			get 
+			{ 
+				return configFile == null && project != null
+					? project.ConfigurationFile 
+					: configFile;
 			}
 			set
 			{
-				if (this.runtimeFramework != value)
+				if ( ConfigurationFile != value )
 				{
-					this.runtimeFramework = value;
-					this.NotifyProjectOfChange();
+					configFile = value;
+					NotifyProjectOfChange();
 				}
 			}
 		}
 
-		#endregion
+		public string ConfigurationFilePath
+		{
+			get
+			{		
+				return BasePath != null && ConfigurationFile != null
+					? Path.Combine( BasePath, ConfigurationFile )
+					: ConfigurationFile;
+			}
+		}
 
-		#region Methods/Operators
+		private bool PrivateBinPathSpecified
+		{
+			get { return binPath != null; }
+		}
+
+		/// <summary>
+		/// The Path.PathSeparator-separated path containing all the
+		/// assemblies in the list.
+		/// </summary>
+		public string PrivateBinPath
+		{
+			get	{ return binPath; }
+			set
+			{
+				if ( binPath != value )
+				{
+					binPath = value;
+					binPathType = binPath == null ? BinPathType.Auto : BinPathType.Manual;
+					NotifyProjectOfChange();
+				}
+			}
+		}
+
+		/// <summary>
+		/// How our PrivateBinPath is generated
+		/// </summary>
+		public BinPathType BinPathType
+		{
+			get { return binPathType; }
+			set 
+			{
+				if ( binPathType != value )
+				{
+					binPathType = value;
+					NotifyProjectOfChange();
+				}
+			}
+		}
+
+		/// <summary>
+		/// Return our AssemblyList
+		/// </summary>
+		public AssemblyList Assemblies
+		{
+			get { return assemblies; }
+		}
+
+        public RuntimeFramework RuntimeFramework
+        {
+            get { return runtimeFramework; }
+            set 
+			{
+				if ( runtimeFramework != value )
+				{
+					runtimeFramework = value; 
+					NotifyProjectOfChange();
+				}
+			}
+        }
+		#endregion
 
 		public TestPackage MakeTestPackage()
 		{
-			TestPackage package = new TestPackage(this.project.ProjectPath);
+			TestPackage package = new TestPackage( project.ProjectPath );
 
-			if (!this.project.IsAssemblyWrapper)
-			{
-				foreach (string assembly in this.Assemblies)
-					package.Assemblies.Add(assembly);
-			}
+			if ( !project.IsAssemblyWrapper )
+				foreach ( string assembly in this.Assemblies )
+					package.Assemblies.Add( assembly );
 
-			if (this.BasePathSpecified || this.PrivateBinPathSpecified || this.ConfigurationFileSpecified)
+			if ( this.BasePathSpecified || this.PrivateBinPathSpecified || this.ConfigurationFileSpecified )
 			{
 				package.BasePath = this.BasePath;
 				package.PrivateBinPath = this.PrivateBinPath;
@@ -282,33 +252,31 @@ namespace NUnit.Util
 			}
 
 			package.AutoBinPath = this.BinPathType == BinPathType.Auto;
-			if (this.RuntimeFramework != null)
-				package.Settings["RuntimeFramework"] = this.RuntimeFramework;
+            if (this.RuntimeFramework != null)
+                package.Settings["RuntimeFramework"] = this.RuntimeFramework;
 
-			if (this.project.ProcessModel != ProcessModel.Default)
-				package.Settings["ProcessModel"] = this.project.ProcessModel;
+            if (project.ProcessModel != ProcessModel.Default)
+                package.Settings["ProcessModel"] = project.ProcessModel;
 
-			if (this.project.DomainUsage != DomainUsage.Default)
-				package.Settings["DomainUsage"] = this.project.DomainUsage;
+            if (project.DomainUsage != DomainUsage.Default)
+                package.Settings["DomainUsage"] = project.DomainUsage;
 
 			return package;
 		}
 
-		private void NotifyProjectOfChange()
+		private void assemblies_Changed( object sender, EventArgs e )
 		{
-			if (this.project != null)
-			{
-				this.project.IsDirty = true;
-				if (ReferenceEquals(this, this.project.ActiveConfig))
-					this.project.HasChangesRequiringReload = true;
-			}
+			NotifyProjectOfChange();
 		}
 
-		private void assemblies_Changed(object sender, EventArgs e)
-		{
-			this.NotifyProjectOfChange();
-		}
-
-		#endregion
+        private void NotifyProjectOfChange()
+        {
+            if (project != null)
+            {
+                project.IsDirty = true;
+                if (ReferenceEquals(this, project.ActiveConfig))
+                    project.HasChangesRequiringReload = true;
+            }
+        }
 	}
 }

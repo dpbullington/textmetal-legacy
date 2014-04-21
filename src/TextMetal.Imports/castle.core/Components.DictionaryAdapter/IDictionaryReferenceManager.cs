@@ -12,25 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
 
 	public interface IDictionaryReferenceManager
 	{
-		#region Methods/Operators
-
-		void AddReference(object keyObject, object relatedObject, bool isInGraph);
-
 		bool IsReferenceProperty(IDictionaryAdapter dictionaryAdapter, string propertyName);
 
 		bool TryGetReference(object keyObject, out object inGraphObject);
-
-		#endregion
+		void    AddReference(object keyObject,     object relatedObject, bool isInGraph);
 	}
 }
-
 #endif

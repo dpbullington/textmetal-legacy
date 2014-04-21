@@ -12,25 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
 
 	public interface IXmlBehaviorSemantics<T>
 	{
-		#region Methods/Operators
-
-		Type GetClrType(T behavior);
-
-		string GetLocalName(T behavior);
-
+		string GetLocalName   (T behavior);
 		string GetNamespaceUri(T behavior);
-
-		#endregion
+		Type   GetClrType     (T behavior);
 	}
 }
-
 #endif

@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Security;
-using System.Security.Permissions;
-
 namespace Castle.Core.Internal
 {
 	using System;
-
+	using System.Security;
+	using System.Security.Permissions;
+	
 #if !SILVERLIGHT
 	public static class PermissionUtil
 	{

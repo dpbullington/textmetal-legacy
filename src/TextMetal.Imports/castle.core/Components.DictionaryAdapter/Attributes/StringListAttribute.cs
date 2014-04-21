@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
+	using System.Collections;
+	using System.Collections.Generic;
+	using System.ComponentModel;
+	using System.Text;
 
 	/// <summary>
 	/// Identifies a property should be represented as a delimited string value.
@@ -27,47 +26,17 @@ namespace Castle.Components.DictionaryAdapter
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 	public class StringListAttribute : DictionaryBehaviorAttribute, IDictionaryPropertyGetter, IDictionaryPropertySetter
 	{
-		#region Constructors/Destructors
-
 		public StringListAttribute()
 		{
-			this.Separator = ',';
+			Separator = ',';
 		}
-
-		#endregion
-
-		#region Properties/Indexers/Events
 
 		/// <summary>
 		/// Gets the separator.
 		/// </summary>
-		public char Separator
-		{
-			get;
-			set;
-		}
+		public char Separator { get; set; }
 
-		#endregion
-
-		#region Methods/Operators
-
-		internal static string BuildString(IEnumerable enumerable, char separator)
-		{
-			bool first = true;
-			var builder = new StringBuilder();
-
-			foreach (object item in enumerable)
-			{
-				if (first)
-					first = false;
-				else
-					builder.Append(separator);
-
-				builder.Append(item.ToString());
-			}
-
-			return builder.ToString();
-		}
+		#region IDictionaryPropertyGetter
 
 		object IDictionaryPropertyGetter.GetPropertyValue(IDictionaryAdapter dictionaryAdapter,
 			string key, object storedValue, PropertyDescriptor property, bool ifExists)
@@ -89,7 +58,7 @@ namespace Castle.Components.DictionaryAdapter
 						if (converter != null && converter.CanConvertFrom(typeof(string)))
 						{
 							var genericList = typeof(StringListWrapper<>).MakeGenericType(new[] { paramType });
-							return Activator.CreateInstance(genericList, key, storedValue, this.Separator, dictionaryAdapter.This.Dictionary);
+							return Activator.CreateInstance(genericList, key, storedValue, Separator, dictionaryAdapter.This.Dictionary);
 						}
 					}
 				}
@@ -98,121 +67,158 @@ namespace Castle.Components.DictionaryAdapter
 			return storedValue;
 		}
 
+		#endregion
+
+		#region IDictionaryPropertySetter Members
+
 		bool IDictionaryPropertySetter.SetPropertyValue(IDictionaryAdapter dictionaryAdapter,
 			string key, ref object value, PropertyDescriptor property)
 		{
 			var enumerable = value as IEnumerable;
 			if (enumerable != null)
-				value = BuildString(enumerable, this.Separator);
+			{
+				value = BuildString(enumerable, Separator);
+			}
 			return true;
 		}
 
 		#endregion
 
-		#region Classes/Structs/Interfaces/Enums/Delegates
-
-		private class StringListWrapper<T> : IList<T>
+		internal static string BuildString(IEnumerable enumerable, char separator)
 		{
-			#region Constructors/Destructors
+			bool first = true;
+			var builder = new StringBuilder();
+
+			foreach (object item in enumerable)
+			{
+				if (first)
+				{
+					first = false;
+				}
+				else
+				{
+					builder.Append(separator);
+				}
+
+				builder.Append(item.ToString());
+			}
+
+			return builder.ToString();
+		}
+
+		#region Nested Class: StringList
+
+		class StringListWrapper<T> : IList<T>
+		{
+			private readonly string key;
+			private readonly char separator;
+			private readonly IDictionary dictionary;
+			private readonly List<T> inner;
 
 			public StringListWrapper(string key, string list, char separator, IDictionary dictionary)
 			{
 				this.key = key;
 				this.separator = separator;
 				this.dictionary = dictionary;
-				this.inner = new List<T>();
+				inner = new List<T>();
 
-				this.ParseList(list);
+				ParseList(list);
 			}
 
-			#endregion
-
-			#region Fields/Constants
-
-			private readonly IDictionary dictionary;
-			private readonly List<T> inner;
-			private readonly string key;
-			private readonly char separator;
-
-			#endregion
-
-			#region Properties/Indexers/Events
-
-			public T this[int index]
-			{
-				get
-				{
-					return this.inner[index];
-				}
-				set
-				{
-					this.inner[index] = value;
-					this.SynchronizeDictionary();
-				}
-			}
-
-			public int Count
-			{
-				get
-				{
-					return this.inner.Count;
-				}
-			}
-
-			public bool IsReadOnly
-			{
-				get
-				{
-					return false;
-				}
-			}
-
-			#endregion
-
-			#region Methods/Operators
-
-			public void Add(T item)
-			{
-				this.inner.Add(item);
-				this.SynchronizeDictionary();
-			}
-
-			public void Clear()
-			{
-				this.inner.Clear();
-				this.SynchronizeDictionary();
-			}
-
-			public bool Contains(T item)
-			{
-				return this.inner.Contains(item);
-			}
-
-			public void CopyTo(T[] array, int arrayIndex)
-			{
-				this.inner.CopyTo(array, arrayIndex);
-			}
-
-			public IEnumerator<T> GetEnumerator()
-			{
-				return this.inner.GetEnumerator();
-			}
-
-			IEnumerator IEnumerable.GetEnumerator()
-			{
-				return this.inner.GetEnumerator();
-			}
+			#region IList<T> Members
 
 			public int IndexOf(T item)
 			{
-				return this.inner.IndexOf(item);
+				return inner.IndexOf(item);
 			}
 
 			public void Insert(int index, T item)
 			{
-				this.inner.Insert(index, item);
-				this.SynchronizeDictionary();
+				inner.Insert(index, item);
+				SynchronizeDictionary();
 			}
+
+			public void RemoveAt(int index)
+			{
+				inner.RemoveAt(index);
+				SynchronizeDictionary();
+			}
+
+			public T this[int index]
+			{
+				get { return inner[index]; }
+				set
+				{
+					inner[index] = value;
+					SynchronizeDictionary();
+				}
+			}
+
+			#endregion
+
+			#region ICollection<T> Members
+
+			public void Add(T item)
+			{
+				inner.Add(item);
+				SynchronizeDictionary();
+			}
+
+			public void Clear()
+			{
+				inner.Clear();
+				SynchronizeDictionary();
+			}
+
+			public bool Contains(T item)
+			{
+				return inner.Contains(item);
+			}
+
+			public void CopyTo(T[] array, int arrayIndex)
+			{
+				inner.CopyTo(array, arrayIndex);
+			}
+
+			public int Count
+			{
+				get { return inner.Count; }
+			}
+
+			public bool IsReadOnly
+			{
+				get { return false; }
+			}
+
+			public bool Remove(T item)
+			{
+				if (inner.Remove(item))
+				{
+					SynchronizeDictionary();
+					return true;
+				}
+				return false;
+			}
+
+			#endregion
+
+			#region IEnumerable<T> Members
+
+			public IEnumerator<T> GetEnumerator()
+			{
+				return inner.GetEnumerator();
+			}
+
+			#endregion
+
+			#region IEnumerable Members
+
+			IEnumerator IEnumerable.GetEnumerator()
+			{
+				return inner.GetEnumerator();
+			}
+
+			#endregion
 
 			private void ParseList(string list)
 			{
@@ -220,35 +226,19 @@ namespace Castle.Components.DictionaryAdapter
 				{
 					var converter = TypeDescriptor.GetConverter(typeof(T));
 
-					foreach (var item in list.Split(this.separator))
-						this.inner.Add((T)converter.ConvertFrom(item));
+					foreach (var item in list.Split(separator))
+					{
+						inner.Add((T)converter.ConvertFrom(item));
+					}
 				}
-			}
-
-			public bool Remove(T item)
-			{
-				if (this.inner.Remove(item))
-				{
-					this.SynchronizeDictionary();
-					return true;
-				}
-				return false;
-			}
-
-			public void RemoveAt(int index)
-			{
-				this.inner.RemoveAt(index);
-				this.SynchronizeDictionary();
 			}
 
 			private void SynchronizeDictionary()
 			{
-				this.dictionary[this.key] = BuildString(this.inner, this.separator);
+				dictionary[key] = StringListAttribute.BuildString(inner, separator);
 			}
-
-			#endregion
 		}
-
-		#endregion
 	}
+
+	#endregion
 }

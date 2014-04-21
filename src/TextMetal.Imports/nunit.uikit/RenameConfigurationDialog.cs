@@ -5,138 +5,113 @@
 // ****************************************************************
 
 using System;
-using System.ComponentModel;
 using System.Drawing;
+using System.Collections;
+using System.ComponentModel;
 using System.Windows.Forms;
-
 using NUnit.Util;
 
 namespace NUnit.UiKit
 {
 	/// <summary>
-	/// Displays a dialog for entry of a new name for an
-	/// existing configuration. This dialog collects and
-	/// validates the name. The caller is responsible for
-	/// actually renaming the cofiguration.
-	/// </summary>
-	public class RenameConfigurationDialog : NUnitFormBase
+    /// Displays a dialog for entry of a new name for an
+    /// existing configuration. This dialog collects and
+    /// validates the name. The caller is responsible for
+    /// actually renaming the cofiguration.
+    /// </summary>
+    public class RenameConfigurationDialog : NUnitFormBase
 	{
-		#region Constructors/Destructors
-
-		public RenameConfigurationDialog(NUnitProject project, string configurationName)
-		{
-			this.InitializeComponent();
-			this.project = project;
-			this.configurationName = configurationName;
-			this.originalName = configurationName;
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private Button cancelButton;
+		#region Instance Variables
 
 		/// <summary>
-		/// Required designer variable.
+		///  The project in which we are renaming a configuration
 		/// </summary>
-		private Container components = null;
+		private NUnitProject project;
 
 		/// <summary>
 		/// The new name to give the configuration
 		/// </summary>
 		private string configurationName;
 
-		private TextBox configurationNameTextBox;
-		private Button okButton;
-
 		/// <summary>
 		/// The original name of the configuration
 		/// </summary>
 		private string originalName;
 
+		private System.Windows.Forms.Button okButton;
+		private System.Windows.Forms.Button cancelButton;
+		private System.Windows.Forms.TextBox configurationNameTextBox;
+
 		/// <summary>
-		/// The project in which we are renaming a configuration
+		/// Required designer variable.
 		/// </summary>
-		private NUnitProject project;
+		private System.ComponentModel.Container components = null;
 
 		#endregion
 
-		#region Properties/Indexers/Events
+		#region Construction and Disposal
 
-		public string ConfigurationName
+		public RenameConfigurationDialog( NUnitProject project, string configurationName )
 		{
-			get
-			{
-				return this.configurationName;
-			}
-			set
-			{
-				this.configurationName = value;
-			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		private void ConfigurationNameDialog_Load(object sender, EventArgs e)
-		{
-			if (this.configurationName != null)
-			{
-				this.configurationNameTextBox.Text = this.configurationName;
-				this.configurationNameTextBox.SelectAll();
-			}
+			InitializeComponent();
+			this.project = project;
+			this.configurationName = configurationName;
+			this.originalName = configurationName;
 		}
 
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose(bool disposing)
+		protected override void Dispose( bool disposing )
 		{
-			if (disposing)
+			if( disposing )
 			{
-				if (this.components != null)
-					this.components.Dispose();
+				if(components != null)
+				{
+					components.Dispose();
+				}
 			}
-			base.Dispose(disposing);
+			base.Dispose( disposing );
 		}
 
+		#endregion
+
+		#region Windows Form Designer generated code
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.configurationNameTextBox = new TextBox();
-			this.okButton = new Button();
-			this.cancelButton = new Button();
+			this.configurationNameTextBox = new System.Windows.Forms.TextBox();
+			this.okButton = new System.Windows.Forms.Button();
+			this.cancelButton = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// configurationNameTextBox
 			// 
-			this.configurationNameTextBox.Location = new Point(16, 16);
+			this.configurationNameTextBox.Location = new System.Drawing.Point(16, 16);
 			this.configurationNameTextBox.Name = "configurationNameTextBox";
-			this.configurationNameTextBox.Size = new Size(264, 22);
+			this.configurationNameTextBox.Size = new System.Drawing.Size(264, 22);
 			this.configurationNameTextBox.TabIndex = 0;
 			this.configurationNameTextBox.Text = "";
-			this.configurationNameTextBox.TextChanged += new EventHandler(this.configurationNameTextBox_TextChanged);
+			this.configurationNameTextBox.TextChanged += new System.EventHandler(this.configurationNameTextBox_TextChanged);
 			// 
 			// okButton
 			// 
-			this.okButton.Location = new Point(56, 48);
+			this.okButton.Location = new System.Drawing.Point(56, 48);
 			this.okButton.Name = "okButton";
-			this.okButton.Size = new Size(75, 24);
+			this.okButton.Size = new System.Drawing.Size(75, 24);
 			this.okButton.TabIndex = 1;
 			this.okButton.Text = "OK";
-			this.okButton.Click += new EventHandler(this.okButton_Click);
+			this.okButton.Click += new System.EventHandler(this.okButton_Click);
 			// 
 			// cancelButton
 			// 
-			this.cancelButton.DialogResult = DialogResult.Cancel;
-			this.cancelButton.Location = new Point(160, 48);
+			this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.cancelButton.Location = new System.Drawing.Point(160, 48);
 			this.cancelButton.Name = "cancelButton";
-			this.cancelButton.Size = new Size(75, 24);
+			this.cancelButton.Size = new System.Drawing.Size(75, 24);
 			this.cancelButton.TabIndex = 2;
 			this.cancelButton.Text = "Cancel";
 			// 
@@ -144,37 +119,56 @@ namespace NUnit.UiKit
 			// 
 			this.AcceptButton = this.okButton;
 			this.CancelButton = this.cancelButton;
-			this.ClientSize = new Size(291, 79);
+			this.ClientSize = new System.Drawing.Size(291, 79);
 			this.Controls.Add(this.cancelButton);
 			this.Controls.Add(this.okButton);
 			this.Controls.Add(this.configurationNameTextBox);
-			this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "RenameConfigurationDialog";
 			this.ShowInTaskbar = false;
-			this.StartPosition = FormStartPosition.CenterParent;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Rename Configuration";
-			this.Load += new EventHandler(this.ConfigurationNameDialog_Load);
+			this.Load += new System.EventHandler(this.ConfigurationNameDialog_Load);
 			this.ResumeLayout(false);
+
+		}
+		#endregion
+
+		#region Properties & Methods
+
+		public string ConfigurationName
+		{
+			get{ return configurationName; }
+			set{ configurationName = value; }
 		}
 
-		private void configurationNameTextBox_TextChanged(object sender, EventArgs e)
+		private void ConfigurationNameDialog_Load(object sender, System.EventArgs e)
 		{
-			this.okButton.Enabled =
-				this.configurationNameTextBox.TextLength > 0 &&
-				this.configurationNameTextBox.Text != this.originalName;
+			if ( configurationName != null )
+			{
+				configurationNameTextBox.Text = configurationName;
+				configurationNameTextBox.SelectAll();
+			}
 		}
 
-		private void okButton_Click(object sender, EventArgs e)
+		private void okButton_Click(object sender, System.EventArgs e)
 		{
-			this.configurationName = this.configurationNameTextBox.Text;
-			if (this.project.Configs.Contains(this.configurationName))
+			configurationName = configurationNameTextBox.Text;		
+			if ( project.Configs.Contains( configurationName ) )
 				// TODO: Need general error message display
-				this.MessageDisplay.Error("A configuration with that name already exists");
+                MessageDisplay.Error("A configuration with that name already exists");
 			else
 			{
-				this.DialogResult = DialogResult.OK;
-				this.Close();
+				DialogResult = DialogResult.OK;
+				Close();
 			}
+		}
+
+		private void configurationNameTextBox_TextChanged(object sender, System.EventArgs e)
+		{
+			okButton.Enabled = 
+				configurationNameTextBox.TextLength > 0 &&
+				configurationNameTextBox.Text != originalName;
 		}
 
 		#endregion

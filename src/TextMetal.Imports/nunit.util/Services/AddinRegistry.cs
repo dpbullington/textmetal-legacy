@@ -6,7 +6,7 @@
 
 using System;
 using System.Collections;
-
+using System.Reflection;
 using NUnit.Core;
 using NUnit.Core.Extensibility;
 
@@ -16,71 +16,66 @@ namespace NUnit.Util
 	/// Summary description for AddinRegistry.
 	/// </summary>
 	public class AddinRegistry : MarshalByRefObject, IAddinRegistry, IService
-	{
-		#region Fields/Constants
-
-		private ArrayList addins = new ArrayList();
-
+    {
+        #region Instance Fields
+        private ArrayList addins = new ArrayList();
 		#endregion
 
-		#region Properties/Indexers/Events
-
-		public IList Addins
-		{
-			get
-			{
-				return this.addins;
-			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		private Addin FindAddinByName(string name)
-		{
-			foreach (Addin addin in this.addins)
-			{
-				if (addin.Name == name)
-					return addin;
-			}
-
-			return null;
-		}
-
-		public override object InitializeLifetimeService()
-		{
-			return null;
-		}
-
-		public void InitializeService()
-		{
-		}
-
-		public bool IsAddinRegistered(string name)
-		{
-			return this.FindAddinByName(name) != null;
-		}
+		#region IAddinRegistry Members
 
 		public void Register(Addin addin)
 		{
-			this.addins.Add(addin);
+			addins.Add( addin );
 		}
 
-		public void SetStatus(string name, AddinStatus status, string message)
+		public  IList Addins
 		{
-			Addin addin = this.FindAddinByName(name);
-			if (addin != null)
+			get
 			{
-				addin.Status = status;
-				addin.Message = message;
+				return addins;
 			}
+		}
+
+        public bool IsAddinRegistered(string name)
+        {
+            return FindAddinByName(name) != null;
+        }
+
+		public void SetStatus( string name, AddinStatus status, string message )
+		{
+            Addin addin = FindAddinByName(name);
+            if (addin != null)
+            {
+                addin.Status = status;
+                addin.Message = message;
+            }
+        }
+
+        private Addin FindAddinByName(string name)
+        {
+            foreach (Addin addin in addins)
+                if (addin.Name == name)
+                    return addin;
+
+            return null;
+        }
+		#endregion
+
+		#region IService Members
+		public void InitializeService()
+		{
 		}
 
 		public void UnloadService()
 		{
 		}
-
 		#endregion
-	}
+
+        #region InitializeLifetimeService
+        public override object InitializeLifetimeService()
+        {
+            return null;
+        }
+        #endregion
+    }
 }

@@ -12,57 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Xml.XPath;
-using System.Xml.Xsl;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
 #if !SL3
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
+	using System.Xml.XPath;
+	using System.Xml.Xsl;
+
 	internal class XPathContext : XsltContext
 	{
-		#region Constructors/Destructors
+		private readonly XsltContext context;
 
 		public XPathContext(XsltContext xpathContext)
 		{
 			this.context = xpathContext;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly XsltContext context;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
 		public override string DefaultNamespace
 		{
 			// Must be empty, or XPath evaluation will break
-			get
-			{
-				return string.Empty;
-			}
-		}
-
-		public override bool Whitespace
-		{
-			get
-			{
-				return this.context.Whitespace;
-			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		public override int CompareDocument(string baseUri, string nextbaseUri)
-		{
-			return this.context.CompareDocument(baseUri, nextbaseUri);
+			get { return string.Empty; }
 		}
 
 		public override string LookupNamespace(string prefix)
@@ -70,27 +39,34 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			// Must return empty uri for empty prefix, or XPath evaluation will break
 			return string.IsNullOrEmpty(prefix)
 				? string.Empty
-				: this.context.LookupNamespace(prefix);
+				: context.LookupNamespace(prefix);
+		}
+
+		public override bool Whitespace
+		{
+			get { return context.Whitespace; }
 		}
 
 		public override bool PreserveWhitespace(XPathNavigator node)
 		{
-			return this.context.PreserveWhitespace(node);
+			return context.PreserveWhitespace(node);
+		}
+
+		public override int CompareDocument(string baseUri, string nextbaseUri)
+		{
+			return context.CompareDocument(baseUri, nextbaseUri);
 		}
 
 		public override IXsltContextFunction ResolveFunction(string prefix, string name, XPathResultType[] argTypes)
 		{
-			return this.context.ResolveFunction(prefix, name, argTypes);
+			return context.ResolveFunction(prefix, name, argTypes);
 		}
 
 		public override IXsltContextVariable ResolveVariable(string prefix, string name)
 		{
-			return this.context.ResolveVariable(prefix, name);
+			return context.ResolveVariable(prefix, name);
 		}
-
-		#endregion
 	}
 }
-
 #endif
 #endif

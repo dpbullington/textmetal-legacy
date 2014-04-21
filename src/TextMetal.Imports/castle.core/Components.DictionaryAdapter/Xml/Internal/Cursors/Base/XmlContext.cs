@@ -12,17 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Collections.Generic;
 
 	public class XmlContext : XmlContextBase, IXmlContext
 	{
-		#region Constructors/Destructors
+		private readonly XmlMetadata metadata;
 
 		public XmlContext(XmlMetadata metadata)
 		{
@@ -32,56 +30,35 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			this.metadata = metadata;
 		}
 
-		protected XmlContext(XmlContext parent)
-			: base(parent)
+		protected XmlContext(XmlContext parent) : base(parent)
 		{
 			this.metadata = parent.metadata;
 		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly XmlMetadata metadata;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public string ChildNamespaceUri
-		{
-			get
-			{
-				return this.metadata.ChildNamespaceUri;
-			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		public IXmlContext Clone()
 		{
 			return new XmlContext(this);
 		}
 
-		public XmlName GetDefaultXsiType(Type clrType)
+		public string ChildNamespaceUri
 		{
-			return this.metadata.GetDefaultXsiType(clrType);
-		}
-
-		public IEnumerable<IXmlIncludedType> GetIncludedTypes(Type baseType)
-		{
-			return this.metadata.GetIncludedTypes(baseType);
+			get { return metadata.ChildNamespaceUri; }
 		}
 
 		public bool IsReservedNamespaceUri(string namespaceUri)
 		{
-			return this.metadata.IsReservedNamespaceUri(namespaceUri);
+			return metadata.IsReservedNamespaceUri(namespaceUri);
 		}
 
-		#endregion
+		public XmlName GetDefaultXsiType(Type clrType)
+		{
+			return metadata.GetDefaultXsiType(clrType);
+		}
+
+		public IEnumerable<IXmlIncludedType> GetIncludedTypes(Type baseType)
+		{
+			return metadata.GetIncludedTypes(baseType);
+		}
 	}
 }
-
 #endif

@@ -11,7 +11,6 @@ namespace NUnit.Core
 {
 	// TODO: This class is not currently being used. Review to
 	// see if we will use it again, otherwise drop it.
-
 	#region StringTextWriter
 
 	/// <summary>
@@ -21,62 +20,43 @@ namespace NUnit.Core
 	/// </summary>
 	public class StringTextWriter : TextWriter
 	{
-		#region Constructors/Destructors
-
-		public StringTextWriter(TextWriter aTextWriter)
+		public StringTextWriter( TextWriter aTextWriter )
 		{
-			this.theTextWriter = aTextWriter;
+			theTextWriter = aTextWriter;
 		}
-
-		#endregion
-
-		#region Fields/Constants
 
 		protected TextWriter theTextWriter;
 
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public override Encoding Encoding
+		override public void Write(char aChar)
 		{
-			get
-			{
-				return this.theTextWriter.Encoding;
-			}
+			theTextWriter.Write(aChar);
 		}
 
-		#endregion
+		override public void Write(string aString)
+		{
+			theTextWriter.Write(aString);
+		}
 
-		#region Methods/Operators
+		override public void WriteLine(string aString)
+		{
+			theTextWriter.WriteLine(aString);
+		}
+
+		override public System.Text.Encoding Encoding
+		{
+			get { return theTextWriter.Encoding; }
+		}
 
 		public override void Close()
 		{
 			this.Flush();
-			this.theTextWriter.Close();
+			theTextWriter.Close ();
 		}
 
 		public override void Flush()
 		{
-			this.theTextWriter.Flush();
+			theTextWriter.Flush ();
 		}
-
-		public override void Write(char aChar)
-		{
-			this.theTextWriter.Write(aChar);
-		}
-
-		public override void Write(string aString)
-		{
-			this.theTextWriter.Write(aString);
-		}
-
-		public override void WriteLine(string aString)
-		{
-			this.theTextWriter.WriteLine(aString);
-		}
-
-		#endregion
 	}
 
 	#endregion
@@ -90,73 +70,58 @@ namespace NUnit.Core
 	/// </summary>
 	public class BufferedStringTextWriter : StringTextWriter
 	{
-		#region Constructors/Destructors
-
-		public BufferedStringTextWriter(TextWriter aTextWriter)
-			: base(aTextWriter)
-		{
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
+		public BufferedStringTextWriter( TextWriter aTextWriter ) : base( aTextWriter ){ }
+	
 		private static readonly int MAX_BUFFER = 1000;
-		private StringBuilder sb = new StringBuilder(MAX_BUFFER);
+		private StringBuilder sb = new StringBuilder( MAX_BUFFER );
 
-		#endregion
-
-		#region Methods/Operators
-
-		private void CheckBuffer()
+		override public void Write(char aChar)
 		{
-			if (this.sb.Length >= MAX_BUFFER)
-				this.Flush();
+			lock( sb )
+			{
+				sb.Append( aChar );
+				this.CheckBuffer();
+			}
 		}
 
-		public override void Flush()
+		override public void Write(string aString)
 		{
-			if (this.sb.Length > 0)
+			lock( sb )
 			{
-				lock (this.sb)
+				sb.Append( aString );
+				this.CheckBuffer();
+			}
+		}
+
+		override public void WriteLine(string aString)
+		{
+			lock( sb )
+			{
+				sb.Append( aString );
+				sb.Append( '\n' );
+				this.CheckBuffer();
+			}
+		}
+
+		override public void Flush()
+		{
+			if ( sb.Length > 0 )
+			{
+				lock( sb )
 				{
-					this.theTextWriter.Write(this.sb.ToString());
-					this.sb.Length = 0;
+					theTextWriter.Write( sb.ToString() );
+					sb.Length = 0;
 				}
 			}
 
-			this.theTextWriter.Flush();
+			theTextWriter.Flush();
 		}
 
-		public override void Write(char aChar)
+		private void CheckBuffer()
 		{
-			lock (this.sb)
-			{
-				this.sb.Append(aChar);
-				this.CheckBuffer();
-			}
+			if ( sb.Length >= MAX_BUFFER )
+				this.Flush();
 		}
-
-		public override void Write(string aString)
-		{
-			lock (this.sb)
-			{
-				this.sb.Append(aString);
-				this.CheckBuffer();
-			}
-		}
-
-		public override void WriteLine(string aString)
-		{
-			lock (this.sb)
-			{
-				this.sb.Append(aString);
-				this.sb.Append('\n');
-				this.CheckBuffer();
-			}
-		}
-
-		#endregion
 	}
 
 	#endregion

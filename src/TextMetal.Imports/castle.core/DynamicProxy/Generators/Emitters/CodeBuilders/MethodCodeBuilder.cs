@@ -12,19 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection.Emit;
-
 namespace Castle.DynamicProxy.Generators.Emitters.CodeBuilders
 {
+	using System.Reflection.Emit;
+
 	public class MethodCodeBuilder : AbstractCodeBuilder
 	{
-		#region Constructors/Destructors
-
-		public MethodCodeBuilder(ILGenerator generator)
-			: base(generator)
+		public MethodCodeBuilder(ILGenerator generator) : base(generator)
 		{
 		}
-
-		#endregion
 	}
 }

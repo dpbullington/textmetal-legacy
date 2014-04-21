@@ -12,182 +12,153 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Xml.XPath;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
 #if !SL3
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Xml.XPath;
 
 	public class XPathBehaviorAccessor : XmlAccessor, IXmlIncludedType, IXmlIncludedTypeMap,
 		IConfigurable<XPathAttribute>,
 		IConfigurable<XPathVariableAttribute>,
 		IConfigurable<XPathFunctionAttribute>
 	{
-		#region Constructors/Destructors
-
-		protected XPathBehaviorAccessor(Type type, IXmlContext context)
-			: base(type, context)
-		{
-			this.includedTypes = new XmlIncludedTypeSet();
-
-			foreach (var includedType in context.GetIncludedTypes(this.ClrType))
-				this.includedTypes.Add(includedType);
-		}
-
-		#endregion
-
-		#region Fields/Constants
+	    private CompiledXPath path;
+		private XmlIncludedTypeSet includedTypes;
+		private XmlAccessor defaultAccessor;
+		private XmlAccessor itemAccessor;
 
 		internal static readonly XmlAccessorFactory<XPathBehaviorAccessor>
 			Factory = (name, type, context) => new XPathBehaviorAccessor(type, context);
 
-		private XmlAccessor defaultAccessor;
-		private XmlIncludedTypeSet includedTypes;
-		private XmlAccessor itemAccessor;
-		private CompiledXPath path;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		private bool CreatesAttributes
+	    protected XPathBehaviorAccessor(Type type, IXmlContext context)
+	        : base(type, context)
 		{
-			get
-			{
-				var step = this.path.LastStep;
-				return step != null && step.IsAttribute;
-			}
-		}
+			includedTypes = new XmlIncludedTypeSet();
 
-		IXmlIncludedType IXmlIncludedTypeMap.Default
-		{
-			get
-			{
-				return this;
-			}
-		}
-
-		private bool SelectsNodes
-		{
-			get
-			{
-				return this.path.Path.ReturnType == XPathResultType.NodeSet;
-			}
+			foreach (var includedType in context.GetIncludedTypes(ClrType))
+				includedTypes.Add(includedType);
 		}
 
 		XmlName IXmlIncludedType.XsiType
 		{
-			get
-			{
-				return XmlName.Empty;
-			}
+			get { return XmlName.Empty; }
 		}
 
-		#endregion
+		IXmlIncludedType IXmlIncludedTypeMap.Default
+		{
+			get { return this; }
+		}
 
-		#region Methods/Operators
+		private bool SelectsNodes
+		{
+			get { return path.Path.ReturnType == XPathResultType.NodeSet; }
+		}
+
+		private bool CreatesAttributes
+		{
+			get { var step = path.LastStep; return step != null && step.IsAttribute; }
+		}
 
 		public void Configure(XPathAttribute attribute)
 		{
-			if (this.path != null)
-				throw Error.AttributeConflict(this.path.Path.Expression);
+			if (path != null)
+				throw Error.AttributeConflict(path.Path.Expression);
 
-			this.path = attribute.SetPath;
+			path = attribute.SetPath;
 
-			if (this.path == attribute.GetPath)
+			if (path == attribute.GetPath)
 				return;
-			else if (this.Serializer.CanGetStub)
-				throw Error.SeparateGetterSetterOnComplexType(this.path.Path.Expression);
+			else if (Serializer.CanGetStub)
+				throw Error.SeparateGetterSetterOnComplexType(path.Path.Expression);
 
-			this.defaultAccessor = new DefaultAccessor(this, attribute.GetPath);
+			defaultAccessor = new DefaultAccessor(this, attribute.GetPath);
 		}
 
 		public void Configure(XPathVariableAttribute attribute)
 		{
-			this.CloneContext().AddVariable(attribute);
+			CloneContext().AddVariable(attribute);
 		}
 
 		public void Configure(XPathFunctionAttribute attribute)
 		{
-			this.CloneContext().AddFunction(attribute);
-		}
-
-		private object Evaluate(IXmlNode node)
-		{
-			var value = node.Evaluate(this.path);
-			return value != null
-				? Convert.ChangeType(value, this.ClrType)
-				: null;
-		}
-
-		public override IXmlCollectionAccessor GetCollectionAccessor(Type itemType)
-		{
-			return this.itemAccessor ?? (this.itemAccessor = new ItemAccessor(this));
-		}
-
-		private object GetDefaultPropertyValue(IXmlNode parentNode, IDictionaryAdapter parentObject, XmlReferenceManager references, bool orStub)
-		{
-			return this.defaultAccessor != null
-				? this.defaultAccessor.GetPropertyValue(parentNode, parentObject, references, orStub)
-				: null;
-		}
-
-		public override object GetPropertyValue(IXmlNode parentNode, IDictionaryAdapter parentObject, XmlReferenceManager references, bool orStub)
-		{
-			return this.GetPropertyValueCore(parentNode, parentObject, references, orStub)
-					?? this.GetDefaultPropertyValue(parentNode, parentObject, references, orStub);
-		}
-
-		private object GetPropertyValueCore(IXmlNode parentNode, IDictionaryAdapter parentObject, XmlReferenceManager references, bool orStub)
-		{
-			return this.SelectsNodes
-				? base.GetPropertyValue(parentNode, parentObject, references, orStub)
-				: this.Evaluate(parentNode);
-		}
-
-		public override bool IsPropertyDefined(IXmlNode parentNode)
-		{
-			return this.SelectsNodes
-					&& base.IsPropertyDefined(parentNode);
+			CloneContext().AddFunction(attribute);
 		}
 
 		public override void Prepare()
 		{
-			if (this.CreatesAttributes)
-				this.state &= ~States.Nillable;
+			if (CreatesAttributes)
+				state &= ~States.Nillable;
 
-			this.Context.Enlist(this.path);
+			Context.Enlist(path);
 
-			if (this.defaultAccessor != null)
-				this.defaultAccessor.Prepare();
+			if (defaultAccessor != null)
+				defaultAccessor.Prepare();
 		}
 
-		public override IXmlCursor SelectCollectionItems(IXmlNode node, bool create)
+		public override bool IsPropertyDefined(IXmlNode parentNode)
 		{
-			var flags = CursorFlags.AllNodes.MutableIf(create) | CursorFlags.Multiple;
-			return node.Select(this.path, this, this.Context, flags);
+			return SelectsNodes
+				&& base.IsPropertyDefined(parentNode);
 		}
 
-		public override IXmlCursor SelectCollectionNode(IXmlNode node, bool create)
+		public override object GetPropertyValue(IXmlNode parentNode, IDictionaryAdapter parentObject, XmlReferenceManager references, bool orStub)
 		{
-			return node.SelectSelf(this.ClrType);
+			return GetPropertyValueCore   (parentNode, parentObject, references, orStub)
+				?? GetDefaultPropertyValue(parentNode, parentObject, references, orStub);
+		}
+
+		private object GetPropertyValueCore(IXmlNode parentNode, IDictionaryAdapter parentObject, XmlReferenceManager references, bool orStub)
+		{
+			return SelectsNodes
+				? base.GetPropertyValue(parentNode, parentObject, references, orStub)
+				: Evaluate(parentNode);
+		}
+
+		private object GetDefaultPropertyValue(IXmlNode parentNode, IDictionaryAdapter parentObject, XmlReferenceManager references, bool orStub)
+		{
+			return defaultAccessor != null
+				? defaultAccessor.GetPropertyValue(parentNode, parentObject, references, orStub)
+				: null;
+		}
+
+		private object Evaluate(IXmlNode node)
+		{
+			var value = node.Evaluate(path);
+			return value != null
+				? Convert.ChangeType(value, ClrType)
+				: null;
+		}
+
+		public override void SetPropertyValue(IXmlNode parentNode, IDictionaryAdapter parentObject, XmlReferenceManager references, object oldValue, ref object value)
+		{
+			if (SelectsNodes)
+				base.SetPropertyValue(parentNode, parentObject, references, oldValue, ref value);
+			else
+				throw Error.XPathNotCreatable(path);
+		}
+
+		public override IXmlCollectionAccessor GetCollectionAccessor(Type itemType)
+		{
+			return itemAccessor ?? (itemAccessor = new ItemAccessor(this));
 		}
 
 		public override IXmlCursor SelectPropertyNode(IXmlNode node, bool create)
 		{
 			var flags = CursorFlags.AllNodes.MutableIf(create);
-			return node.Select(this.path, this, this.Context, flags);
+			return node.Select(path, this, Context, flags);
 		}
 
-		public override void SetPropertyValue(IXmlNode parentNode, IDictionaryAdapter parentObject, XmlReferenceManager references, object oldValue, ref object value)
+		public override IXmlCursor SelectCollectionNode(IXmlNode node, bool create)
 		{
-			if (this.SelectsNodes)
-				base.SetPropertyValue(parentNode, parentObject, references, oldValue, ref value);
-			else
-				throw Error.XPathNotCreatable(this.path);
+			return node.SelectSelf(ClrType);
+		}
+
+		public override IXmlCursor SelectCollectionItems(IXmlNode node, bool create)
+		{
+			var flags = CursorFlags.AllNodes.MutableIf(create) | CursorFlags.Multiple;
+			return node.Select(path, this, Context, flags);
 		}
 
 		public bool TryGet(XmlName xsiType, out IXmlIncludedType includedType)
@@ -195,10 +166,10 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			if (xsiType == XmlName.Empty || xsiType == this.XsiType)
 				return Try.Success(out includedType, this);
 
-			if (!this.includedTypes.TryGet(xsiType, out includedType))
+			if (!includedTypes.TryGet(xsiType, out includedType))
 				return false;
 
-			if (!this.ClrType.IsAssignableFrom(includedType.ClrType))
+			if (!ClrType.IsAssignableFrom(includedType.ClrType))
 				return Try.Failure(out includedType);
 
 			return true;
@@ -208,73 +179,46 @@ namespace Castle.Components.DictionaryAdapter.Xml
 		{
 			return clrType == this.ClrType
 				? Try.Success(out includedType, this)
-				: this.includedTypes.TryGet(clrType, out includedType);
+				: includedTypes.TryGet(clrType, out includedType);
 		}
-
-		#endregion
-
-		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		private class DefaultAccessor : XPathBehaviorAccessor
 		{
-			#region Constructors/Destructors
+			private readonly XPathBehaviorAccessor parent;
 
 			public DefaultAccessor(XPathBehaviorAccessor parent, CompiledXPath path)
 				: base(parent.ClrType, parent.Context)
 			{
 				this.parent = parent;
-				this.path = path;
+				this.path   = path;
 			}
-
-			#endregion
-
-			#region Fields/Constants
-
-			private readonly XPathBehaviorAccessor parent;
-
-			#endregion
-
-			#region Methods/Operators
 
 			public override void Prepare()
 			{
-				this.includedTypes = this.parent.includedTypes;
-				this.Context = this.parent.Context;
+				this.includedTypes = parent.includedTypes;
+				this.Context       = parent.Context;
 
 				base.Prepare();
 			}
-
-			#endregion
 		}
 
 		private class ItemAccessor : XPathBehaviorAccessor
 		{
-			#region Constructors/Destructors
-
 			public ItemAccessor(XPathBehaviorAccessor parent)
 				: base(parent.ClrType.GetCollectionItemType(), parent.Context)
 			{
-				this.includedTypes = parent.includedTypes;
-				this.path = parent.path;
+				includedTypes   = parent.includedTypes;
+				path            = parent.path;
 
-				this.ConfigureNillable(true);
+				ConfigureNillable(true);
 			}
-
-			#endregion
-
-			#region Methods/Operators
 
 			public override IXmlCollectionAccessor GetCollectionAccessor(Type itemType)
 			{
-				return this.GetDefaultCollectionAccessor(itemType);
+				return GetDefaultCollectionAccessor(itemType);
 			}
-
-			#endregion
 		}
-
-		#endregion
 	}
 }
-
 #endif
 #endif

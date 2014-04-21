@@ -19,10 +19,6 @@ namespace Castle.Components.DictionaryAdapter
 	/// </summary>
 	public interface ICondition
 	{
-		#region Methods/Operators
-
 		bool SatisfiedBy(object value);
-
-		#endregion
 	}
 }

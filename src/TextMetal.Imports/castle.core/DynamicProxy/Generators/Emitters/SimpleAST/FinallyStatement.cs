@@ -12,19 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection.Emit;
-
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
+	using System.Reflection.Emit;
+
 	public class FinallyStatement : Statement
 	{
-		#region Methods/Operators
-
 		public override void Emit(IMemberEmitter member, ILGenerator gen)
 		{
 			gen.BeginFinallyBlock();
 		}
-
-		#endregion
 	}
 }

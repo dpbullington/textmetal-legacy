@@ -16,30 +16,21 @@ namespace Castle.Components.DictionaryAdapter
 {
 	public abstract class DynamicValue<T> : IDynamicValue<T>
 	{
-		#region Properties/Indexers/Events
-
-		public abstract T Value
-		{
-			get;
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
 		object IDynamicValue.GetValue()
 		{
-			return this.Value;
+			return Value;
 		}
+
+		public abstract T Value { get; }
 
 		public override string ToString()
 		{
-			var value = this.Value;
+			var value = Value;
 			if (value != null)
+			{
 				return value.ToString();
+			}
 			return base.ToString();
 		}
-
-		#endregion
 	}
 }

@@ -1,4 +1,4 @@
-// ****************************************************************
+﻿// ****************************************************************
 // Copyright 2008, Charlie Poole
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org.
@@ -6,113 +6,30 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-using NUnit.Core.Extensibility;
-
 #if CLR_2_0 || CLR_4_0
+using System.Collections.Generic;
 #endif
+using System.Reflection;
+using System.Text;
+using NUnit.Core.Extensibility;
 
 namespace NUnit.Core.Builders
 {
 	public class PairwiseStrategy : CombiningStrategy
 	{
-		#region Constructors/Destructors
-
-		public PairwiseStrategy(IEnumerable[] sources)
-			: base(sources)
-		{
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		private int[] CreateDimensions(ArrayList[] valueSet)
-		{
-			int[] dimensions = new int[valueSet.Length];
-
-			for (int i = 0; i < valueSet.Length; i++)
-				dimensions[i] = valueSet[i].Count;
-
-			return dimensions;
-		}
-
-		private ArrayList[] CreateValueSet()
-		{
-			ArrayList[] valueSet = new ArrayList[this.Sources.Length];
-
-			for (int i = 0; i < valueSet.Length; i++)
-			{
-				ArrayList values = new ArrayList();
-
-				foreach (object value in this.Sources[i])
-					values.Add(value);
-
-				valueSet[i] = values;
-			}
-
-			return valueSet;
-		}
-
-		public override IEnumerable GetTestCases()
-		{
-			ArrayList[] valueSet = this.CreateValueSet();
-			int[] dimensions = this.CreateDimensions(valueSet);
-
-			IEnumerable pairwiseTestCases = new PairwiseTestCaseGenerator(dimensions).GetTestCases();
-
-#if CLR_2_0 || CLR_4_0
-			List<ParameterSet> testCases = new List<ParameterSet>();
-#else
-            ArrayList testCases = new ArrayList();
-#endif
-
-			foreach (TestCase pairwiseTestCase in pairwiseTestCases)
-			{
-				object[] testData = new object[pairwiseTestCase.Features.Length];
-
-				for (int i = 0; i < pairwiseTestCase.Features.Length; i++)
-					testData[i] = valueSet[i][pairwiseTestCase.Features[i]];
-
-				ParameterSet testCase = new ParameterSet();
-				testCase.Arguments = testData;
-
-				testCases.Add(testCase);
-			}
-
-			return testCases;
-		}
-
-		#endregion
-
-		#region Classes/Structs/Interfaces/Enums/Delegates
-
-		internal class FeatureInfo
-		{
-			public const string Names = "abcdefghijklmnopqrstuvwxyz";
-
-			public readonly int Dimension;
-			public readonly int Feature;
-
-			public FeatureInfo(int dimension, int feature)
-			{
-				this.Dimension = dimension;
-				this.Feature = feature;
-			}
-
-#if DEBUG
-			public override string ToString()
-			{
-				return (this.Dimension + 1).ToString() + Names[this.Feature];
-			}
-#endif
-		}
-
 		internal class FleaRand
 		{
-			#region Constructors/Destructors
+			private const int FleaRandSize = 256;
+
+			private uint b;
+			private uint c;
+			private uint d;
+			private uint z;
+
+			private uint[] m = new uint[FleaRandSize];
+			private uint[] r = new uint[FleaRandSize];
+
+			private uint q;
 
 			public FleaRand(uint seed)
 			{
@@ -122,33 +39,32 @@ namespace NUnit.Core.Builders
 				this.z = seed;
 
 				for (int i = 0; i < this.m.Length; i++)
+				{
 					this.m[i] = seed;
+				}
 
 				for (int i = 0; i < 10; i++)
+				{
 					this.Batch();
+				}
 
 				this.q = 0;
 			}
 
-			#endregion
+			public uint Next()
+			{
+				if (this.q == 0)
+				{
+					this.Batch();
+					this.q = (uint)this.r.Length - 1;
+				}
+				else
+				{
+					this.q--;
+				}
 
-			#region Fields/Constants
-
-			private const int FleaRandSize = 256;
-
-			private uint b;
-			private uint c;
-			private uint d;
-
-			private uint[] m = new uint[FleaRandSize];
-
-			private uint q;
-			private uint[] r = new uint[FleaRandSize];
-			private uint z;
-
-			#endregion
-
-			#region Methods/Operators
+				return this.r[this.q];
+			}
 
 			private void Batch()
 			{
@@ -171,26 +87,193 @@ namespace NUnit.Core.Builders
 				this.c = c;
 				this.d = d;
 			}
+		}
 
-			public uint Next()
+		internal class FeatureInfo
+		{
+			public const string Names = "abcdefghijklmnopqrstuvwxyz";
+
+			public readonly int Dimension;
+			public readonly int Feature;
+
+			public FeatureInfo(int dimension, int feature)
 			{
-				if (this.q == 0)
-				{
-					this.Batch();
-					this.q = (uint)this.r.Length - 1;
-				}
-				else
-					this.q--;
-
-				return this.r[this.q];
+				this.Dimension = dimension;
+				this.Feature = feature;
 			}
 
-			#endregion
+#if DEBUG
+			public override string ToString()
+			{
+				return (this.Dimension + 1).ToString() + FeatureInfo.Names[this.Feature];
+			}
+#endif
+		}
+
+		internal class Tuple
+		{
+			private readonly ArrayList features = new ArrayList();
+
+			public int Count
+			{
+				get
+				{
+					return this.features.Count;
+				}
+			}
+
+			public FeatureInfo this[int index]
+			{
+				get
+				{
+					return (FeatureInfo)this.features[index];
+				}
+			}
+
+			public void Add(FeatureInfo feature)
+			{
+				this.features.Add(feature);
+			}
+
+#if DEBUG
+			public override string ToString()
+			{
+				StringBuilder sb = new StringBuilder();
+
+				sb.Append('(');
+
+				for (int i = 0; i < this.features.Count; i++)
+				{
+					if (i > 0)
+					{
+						sb.Append(' ');
+					}
+
+					sb.Append(this.features[i].ToString());
+				}
+
+				sb.Append(')');
+
+				return sb.ToString();
+			}
+#endif
+		}
+
+		internal class TupleCollection
+		{
+			private readonly ArrayList tuples = new ArrayList();
+
+			public int Count
+			{
+				get
+				{
+					return this.tuples.Count;
+				}
+			}
+
+			public Tuple this[int index]
+			{
+				get
+				{
+					return (Tuple)this.tuples[index];
+				}
+			}
+
+			public void Add(Tuple tuple)
+			{
+				this.tuples.Add(tuple);
+			}
+
+			public void RemoveAt(int index)
+			{
+				this.tuples.RemoveAt(index);
+			}
+		}
+
+		internal class TestCase
+		{
+			public readonly int[] Features;
+
+			public TestCase(int numberOfDimensions)
+			{
+				this.Features = new int[numberOfDimensions];
+			}
+
+			public bool IsTupleCovered(Tuple tuple)
+			{
+				for (int i = 0; i < tuple.Count; i++)
+				{
+					if (this.Features[tuple[i].Dimension] != tuple[i].Feature)
+					{
+						return false;
+					}
+				}
+
+				return true;
+			}
+
+#if DEBUG
+			public override string ToString()
+			{
+				StringBuilder sb = new StringBuilder();
+
+				for (int i = 0; i < this.Features.Length; i++)
+				{
+					if (i > 0)
+					{
+						sb.Append(' ');
+					}
+
+					sb.Append(i + 1);
+					sb.Append(FeatureInfo.Names[this.Features[i]]);
+				}
+
+				return sb.ToString();
+			}
+#endif
+		}
+
+		internal class TestCaseCollection : IEnumerable
+		{
+			private readonly ArrayList testCases = new ArrayList();
+
+			public void Add(TestCase testCase)
+			{
+				this.testCases.Add(testCase);
+			}
+
+			public IEnumerator GetEnumerator()
+			{
+				return this.testCases.GetEnumerator();
+			}
+
+			public bool IsTupleCovered(Tuple tuple)
+			{
+				foreach (TestCase testCase in this.testCases)
+				{
+					if (testCase.IsTupleCovered(tuple))
+					{
+						return true;
+					}
+				}
+
+				return false;
+			}
 		}
 
 		internal class PairwiseTestCaseGenerator
 		{
-			#region Constructors/Destructors
+			private const int MaxTupleLength = 2;
+
+			private readonly FleaRand random = new FleaRand(0);
+
+			private readonly int[] dimensions;
+
+			private readonly TupleCollection[][] uncoveredTuples;
+
+			private readonly int[][] currentTupleLength;
+
+			private readonly TestCaseCollection testCases = new TestCaseCollection();
 
 			public PairwiseTestCaseGenerator(int[] dimensions)
 			{
@@ -203,58 +286,26 @@ namespace NUnit.Core.Builders
 					this.uncoveredTuples[d] = new TupleCollection[this.dimensions[d]];
 
 					for (int f = 0; f < this.dimensions[d]; f++)
+					{
 						this.uncoveredTuples[d][f] = new TupleCollection();
+					}
 				}
 
 				this.currentTupleLength = new int[this.dimensions.Length][];
 
 				for (int d = 0; d < this.dimensions.Length; d++)
-					this.currentTupleLength[d] = new int[this.dimensions[d]];
-			}
-
-			#endregion
-
-			#region Fields/Constants
-
-			private const int MaxTupleLength = 2;
-
-			private readonly int[][] currentTupleLength;
-			private readonly int[] dimensions;
-			private readonly FleaRand random = new FleaRand(0);
-
-			private readonly TestCaseCollection testCases = new TestCaseCollection();
-			private readonly TupleCollection[][] uncoveredTuples;
-
-			#endregion
-
-			#region Methods/Operators
-
-			private int CountTuplesCovered(TestCase test, int dimension, int feature)
-			{
-				int tuplesCovered = 0;
-
-				TupleCollection tuples = this.uncoveredTuples[dimension][feature];
-
-				for (int i = 0; i < tuples.Count; i++)
 				{
-					if (test.IsTupleCovered(tuples[i]))
-						tuplesCovered++;
+					this.currentTupleLength[d] = new int[this.dimensions[d]];
 				}
-
-				return tuplesCovered;
 			}
 
-			private int CreateTestCase(Tuple tuple, TestCase test)
+			public IEnumerable GetTestCases()
 			{
-				// Create a random test case...
-				for (int i = 0; i < test.Features.Length; i++)
-					test.Features[i] = (int)(this.random.Next() % this.dimensions[i]);
+				this.CreateTestCases();
 
-				// ...and inject the tuple into it!
-				for (int i = 0; i < tuple.Count; i++)
-					test.Features[tuple[i].Dimension] = tuple[i].Feature;
+				this.SelfTest();
 
-				return this.MaximizeCoverage(test, tuple);
+				return this.testCases;
 			}
 
 			private void CreateTestCases()
@@ -266,7 +317,9 @@ namespace NUnit.Core.Builders
 					Tuple tuple = this.FindTupleToCover();
 
 					if (tuple == null)
+					{
 						return;
+					}
 
 					TestCase testCase = this.FindGoodTestCase(tuple);
 
@@ -281,7 +334,9 @@ namespace NUnit.Core.Builders
 				for (int d = 0; d < this.dimensions.Length; d++)
 				{
 					for (int f = 0; f < this.dimensions[d]; f++)
+					{
 						this.ExtendTupleSet(d, f);
+					}
 				}
 			}
 
@@ -289,11 +344,15 @@ namespace NUnit.Core.Builders
 			{
 				// If tuples for [dimension][feature] already exists, it's no needs to add more tuples.
 				if (this.uncoveredTuples[dimension][feature].Count > 0)
+				{
 					return;
+				}
 
 				// If maximum tuple length for [dimension][feature] is reached, it's no needs to add more tuples.
 				if (this.currentTupleLength[dimension][feature] == MaxTupleLength)
+				{
 					return;
+				}
 
 				this.currentTupleLength[dimension][feature]++;
 
@@ -306,7 +365,9 @@ namespace NUnit.Core.Builders
 					tuple.Add(new FeatureInfo(dimension, feature));
 
 					if (this.testCases.IsTupleCovered(tuple))
+					{
 						return;
+					}
 
 					this.uncoveredTuples[dimension][feature].Add(tuple);
 				}
@@ -320,38 +381,21 @@ namespace NUnit.Core.Builders
 							tuple.Add(new FeatureInfo(d, f));
 
 							if (tuple[0].Dimension == dimension)
+							{
 								continue;
+							}
 
 							tuple.Add(new FeatureInfo(dimension, feature));
 
 							if (this.testCases.IsTupleCovered(tuple))
+							{
 								continue;
+							}
 
 							this.uncoveredTuples[dimension][feature].Add(tuple);
 						}
 					}
 				}
-			}
-
-			private TestCase FindGoodTestCase(Tuple tuple)
-			{
-				TestCase bestTest = null;
-				int bestCoverage = -1;
-
-				for (int i = 0; i < 5; i++)
-				{
-					TestCase test = new TestCase(this.dimensions.Length);
-
-					int coverage = this.CreateTestCase(tuple, test);
-
-					if (coverage > bestCoverage)
-					{
-						bestTest = test;
-						bestCoverage = coverage;
-					}
-				}
-
-				return bestTest;
 			}
 
 			private Tuple FindTupleToCover()
@@ -384,31 +428,42 @@ namespace NUnit.Core.Builders
 				return tuple;
 			}
 
-			private int[] GetMutableDimensions(Tuple tuple)
+			private TestCase FindGoodTestCase(Tuple tuple)
 			{
-				bool[] immutableDimensions = new bool[this.dimensions.Length];
+				TestCase bestTest = null;
+				int bestCoverage = -1;
 
-				for (int i = 0; i < tuple.Count; i++)
-					immutableDimensions[tuple[i].Dimension] = true;
-
-				ArrayList mutableDimensions = new ArrayList();
-
-				for (int i = 0; i < this.dimensions.Length; i++)
+				for (int i = 0; i < 5; i++)
 				{
-					if (!immutableDimensions[i])
-						mutableDimensions.Add(i);
+					TestCase test = new TestCase(this.dimensions.Length);
+
+					int coverage = this.CreateTestCase(tuple, test);
+
+					if (coverage > bestCoverage)
+					{
+						bestTest = test;
+						bestCoverage = coverage;
+					}
 				}
 
-				return (int[])mutableDimensions.ToArray(typeof(int));
+				return bestTest;
 			}
 
-			public IEnumerable GetTestCases()
+			private int CreateTestCase(Tuple tuple, TestCase test)
 			{
-				this.CreateTestCases();
+				// Create a random test case...
+				for (int i = 0; i < test.Features.Length; i++)
+				{
+					test.Features[i] = (int)(this.random.Next() % this.dimensions[i]);
+				}
 
-				this.SelfTest();
+				// ...and inject the tuple into it!
+				for (int i = 0; i < tuple.Count; i++)
+				{
+					test.Features[tuple[i].Dimension] = tuple[i].Feature;
+				}
 
-				return this.testCases;
+				return this.MaximizeCoverage(test, tuple);
 			}
 
 			private int MaximizeCoverage(TestCase test, Tuple tuple)
@@ -472,16 +527,61 @@ namespace NUnit.Core.Builders
 						}
 
 						if (bestFeatures.Count == 1)
+						{
 							test.Features[d] = (int)bestFeatures[0];
+						}
 						else
+						{
 							test.Features[d] = (int)bestFeatures[(int)(this.random.Next() % bestFeatures.Count)];
+						}
 
 						totalCoverage += bestCoverage;
 					}
 
 					if (!progress)
+					{
 						return totalCoverage;
+					}
 				}
+			}
+
+			private int[] GetMutableDimensions(Tuple tuple)
+			{
+				bool[] immutableDimensions = new bool[this.dimensions.Length];
+
+				for (int i = 0; i < tuple.Count; i++)
+				{
+					immutableDimensions[tuple[i].Dimension] = true;
+				}
+
+				ArrayList mutableDimensions = new ArrayList();
+
+				for (int i = 0; i < this.dimensions.Length; i++)
+				{
+					if (!immutableDimensions[i])
+					{
+						mutableDimensions.Add(i);
+					}
+				}
+
+				return (int[])mutableDimensions.ToArray(typeof(int));
+			}
+
+			private int CountTuplesCovered(TestCase test, int dimension, int feature)
+			{
+				int tuplesCovered = 0;
+
+				TupleCollection tuples = this.uncoveredTuples[dimension][feature];
+
+				for (int i = 0; i < tuples.Count; i++)
+				{
+					if (test.IsTupleCovered(tuples[i]))
+					{
+						tuplesCovered++;
+					}
+				}
+
+				return tuplesCovered;
 			}
 
 			private void RemoveTuplesCoveredBy(TestCase testCase)
@@ -495,7 +595,9 @@ namespace NUnit.Core.Builders
 						for (int i = tuples.Count - 1; i >= 0; i--)
 						{
 							if (testCase.IsTupleCovered(tuples[i]))
+							{
 								tuples.RemoveAt(i);
+							}
 						}
 					}
 				}
@@ -516,179 +618,78 @@ namespace NUnit.Core.Builders
 								tuple.Add(new FeatureInfo(d2, f2));
 
 								if (!this.testCases.IsTupleCovered(tuple))
+								{
 									throw new ApplicationException("PairwiseStrategy self-test failed : Not all pairs are covered!");
+								}
 							}
 						}
 					}
 				}
 			}
-
-			#endregion
 		}
 
-		internal class TestCase
+		public PairwiseStrategy(IEnumerable[] sources) : base(sources) { }
+
+		public override IEnumerable GetTestCases()
 		{
-			public readonly int[] Features;
+			ArrayList[] valueSet = CreateValueSet();
+			int[] dimensions = CreateDimensions(valueSet);
 
-			public TestCase(int numberOfDimensions)
-			{
-				this.Features = new int[numberOfDimensions];
-			}
+			IEnumerable pairwiseTestCases = new PairwiseTestCaseGenerator(dimensions).GetTestCases();
 
-			public bool IsTupleCovered(Tuple tuple)
-			{
-				for (int i = 0; i < tuple.Count; i++)
-				{
-					if (this.Features[tuple[i].Dimension] != tuple[i].Feature)
-						return false;
-				}
-
-				return true;
-			}
-
-#if DEBUG
-			public override string ToString()
-			{
-				StringBuilder sb = new StringBuilder();
-
-				for (int i = 0; i < this.Features.Length; i++)
-				{
-					if (i > 0)
-						sb.Append(' ');
-
-					sb.Append(i + 1);
-					sb.Append(FeatureInfo.Names[this.Features[i]]);
-				}
-
-				return sb.ToString();
-			}
+#if CLR_2_0 || CLR_4_0
+            List<ParameterSet> testCases = new List<ParameterSet>();
+#else
+            ArrayList testCases = new ArrayList();
 #endif
+
+			foreach (TestCase pairwiseTestCase in pairwiseTestCases)
+			{
+				object[] testData = new object[pairwiseTestCase.Features.Length];
+
+				for (int i = 0; i < pairwiseTestCase.Features.Length; i++)
+				{
+					testData[i] = valueSet[i][pairwiseTestCase.Features[i]];
+				}
+
+                ParameterSet testCase = new ParameterSet();
+                testCase.Arguments = testData;
+
+				testCases.Add(testCase);
+			}
+
+			return testCases;
 		}
 
-		internal class TestCaseCollection : IEnumerable
+		private ArrayList[] CreateValueSet()
 		{
-			#region Fields/Constants
+			ArrayList[] valueSet = new ArrayList[Sources.Length];
 
-			private readonly ArrayList testCases = new ArrayList();
-
-			#endregion
-
-			#region Methods/Operators
-
-			public void Add(TestCase testCase)
+			for (int i = 0; i < valueSet.Length; i++)
 			{
-				this.testCases.Add(testCase);
-			}
+				ArrayList values = new ArrayList();
 
-			public IEnumerator GetEnumerator()
-			{
-				return this.testCases.GetEnumerator();
-			}
-
-			public bool IsTupleCovered(Tuple tuple)
-			{
-				foreach (TestCase testCase in this.testCases)
+				foreach (object value in Sources[i])
 				{
-					if (testCase.IsTupleCovered(tuple))
-						return true;
+					values.Add(value);
 				}
 
-				return false;
+				valueSet[i] = values;
 			}
 
-			#endregion
+			return valueSet;
 		}
 
-		internal class Tuple
+		private int[] CreateDimensions(ArrayList[] valueSet)
 		{
-			private readonly ArrayList features = new ArrayList();
+			int[] dimensions = new int[valueSet.Length];
 
-			public int Count
+			for (int i = 0; i < valueSet.Length; i++)
 			{
-				get
-				{
-					return this.features.Count;
-				}
+				dimensions[i] = valueSet[i].Count;
 			}
 
-			public FeatureInfo this[int index]
-			{
-				get
-				{
-					return (FeatureInfo)this.features[index];
-				}
-			}
-
-			public void Add(FeatureInfo feature)
-			{
-				this.features.Add(feature);
-			}
-
-#if DEBUG
-			public override string ToString()
-			{
-				StringBuilder sb = new StringBuilder();
-
-				sb.Append('(');
-
-				for (int i = 0; i < this.features.Count; i++)
-				{
-					if (i > 0)
-						sb.Append(' ');
-
-					sb.Append(this.features[i].ToString());
-				}
-
-				sb.Append(')');
-
-				return sb.ToString();
-			}
-#endif
+			return dimensions;
 		}
-
-		internal class TupleCollection
-		{
-			#region Fields/Constants
-
-			private readonly ArrayList tuples = new ArrayList();
-
-			#endregion
-
-			#region Properties/Indexers/Events
-
-			public Tuple this[int index]
-			{
-				get
-				{
-					return (Tuple)this.tuples[index];
-				}
-			}
-
-			public int Count
-			{
-				get
-				{
-					return this.tuples.Count;
-				}
-			}
-
-			#endregion
-
-			#region Methods/Operators
-
-			public void Add(Tuple tuple)
-			{
-				this.tuples.Add(tuple);
-			}
-
-			public void RemoveAt(int index)
-			{
-				this.tuples.RemoveAt(index);
-			}
-
-			#endregion
-		}
-
-		#endregion
 	}
 }

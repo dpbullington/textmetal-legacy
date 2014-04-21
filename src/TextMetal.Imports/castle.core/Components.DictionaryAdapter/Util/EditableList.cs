@@ -12,45 +12,44 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-
 namespace Castle.Components.DictionaryAdapter
 {
+	using System.Collections;
+	using System.Collections.Generic;
+	using System.ComponentModel;
+
 	public class EditableList<T> : List<T>, IEditableObject, IRevertibleChangeTracking
 	{
-		#region Constructors/Destructors
+		private bool isEditing;
+		private List<T> snapshot;
 
 		public EditableList()
 		{
 		}
 
-		public EditableList(IEnumerable<T> collection)
+		public EditableList(IEnumerable<T> collection) 
 			: base(collection)
 		{
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private bool isEditing;
-		private List<T> snapshot;
-
-		#endregion
-
-		#region Properties/Indexers/Events
+		public void BeginEdit()
+		{
+			if (isEditing == false)
+			{
+				snapshot = new List<T>(this);
+				isEditing = true;
+			}
+		}
 
 		public bool IsChanged
 		{
 			get
 			{
-				if (this.snapshot == null || this.snapshot.Count != this.Count)
+				if (snapshot == null || snapshot.Count != Count)
 					return false;
 
-				var items = this.GetEnumerator();
-				var snapshotItems = this.snapshot.GetEnumerator();
+				var items = GetEnumerator();
+				var snapshotItems = snapshot.GetEnumerator();
 
 				while (items.MoveNext() && snapshotItems.MoveNext())
 				{
@@ -66,53 +65,36 @@ namespace Castle.Components.DictionaryAdapter
 			}
 		}
 
-		#endregion
-
-		#region Methods/Operators
-
-		public void AcceptChanges()
+		public void EndEdit()
 		{
-			this.BeginEdit();
-		}
-
-		public void BeginEdit()
-		{
-			if (this.isEditing == false)
-			{
-				this.snapshot = new List<T>(this);
-				this.isEditing = true;
-			}
+			isEditing = false;
+			snapshot = null;
 		}
 
 		public void CancelEdit()
 		{
-			if (this.isEditing)
+			if (isEditing)
 			{
-				this.Clear();
-				this.AddRange(this.snapshot);
-				this.snapshot = null;
-				this.isEditing = false;
+				Clear();
+				AddRange(snapshot);
+				snapshot = null;
+				isEditing = false;
 			}
 		}
 
-		public void EndEdit()
+		public void AcceptChanges()
 		{
-			this.isEditing = false;
-			this.snapshot = null;
+			BeginEdit();
 		}
 
 		public void RejectChanges()
 		{
-			this.CancelEdit();
+			CancelEdit();
 		}
-
-		#endregion
 	}
 
 	public class EditableList : EditableList<object>, IList
 	{
-		#region Constructors/Destructors
-
 		public EditableList()
 		{
 		}
@@ -121,7 +103,5 @@ namespace Castle.Components.DictionaryAdapter
 			: base(collection)
 		{
 		}
-
-		#endregion
 	}
 }

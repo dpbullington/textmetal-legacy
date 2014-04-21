@@ -15,23 +15,20 @@
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
+	using System.Collections;
 
 	/// <summary>
 	/// Defines the contract for building typed dictionary keys.
 	/// </summary>
 	public interface IDictionaryKeyBuilder : IDictionaryBehavior
 	{
-		#region Methods/Operators
-
 		/// <summary>
 		/// Builds the specified key.
 		/// </summary>
-		/// <param name="dictionaryAdapter"> The dictionary adapter. </param>
-		/// <param name="key"> The current key. </param>
-		/// <param name="property"> The property. </param>
-		/// <returns> The updated key </returns>
+		/// <param name="dictionaryAdapter">The dictionary adapter.</param>
+		/// <param name="key">The current key.</param>
+		/// <param name="property">The property.</param>
+		/// <returns>The updated key</returns>
 		String GetKey(IDictionaryAdapter dictionaryAdapter, String key, PropertyDescriptor property);
-
-		#endregion
 	}
 }

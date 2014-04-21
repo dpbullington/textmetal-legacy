@@ -12,53 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Diagnostics;
-using System.Reflection.Emit;
-
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
 	using System;
+	using System.Diagnostics;
+	using System.Reflection.Emit;
 
 	[DebuggerDisplay("local {Type}")]
 	public class LocalReference : TypeReference
 	{
-		#region Constructors/Destructors
+		private LocalBuilder localbuilder;
 
-		public LocalReference(Type type)
-			: base(type)
+		public LocalReference(Type type) : base(type)
 		{
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private LocalBuilder localbuilder;
-
-		#endregion
-
-		#region Methods/Operators
-
 		public override void Generate(ILGenerator gen)
 		{
-			this.localbuilder = gen.DeclareLocal(base.Type);
+			localbuilder = gen.DeclareLocal(base.Type);
 		}
 
 		public override void LoadAddressOfReference(ILGenerator gen)
 		{
-			gen.Emit(OpCodes.Ldloca, this.localbuilder);
+			gen.Emit(OpCodes.Ldloca, localbuilder);
 		}
 
 		public override void LoadReference(ILGenerator gen)
 		{
-			gen.Emit(OpCodes.Ldloc, this.localbuilder);
+			gen.Emit(OpCodes.Ldloc, localbuilder);
 		}
 
 		public override void StoreReference(ILGenerator gen)
 		{
-			gen.Emit(OpCodes.Stloc, this.localbuilder);
+			gen.Emit(OpCodes.Stloc, localbuilder);
 		}
-
-		#endregion
 	}
 }

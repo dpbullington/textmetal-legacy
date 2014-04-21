@@ -12,101 +12,83 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
+	using System.Collections;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Diagnostics;
 
 	[DebuggerDisplay("Type: {Type.FullName,nq}")]
 	public class DictionaryAdapterMeta
 	{
-		#region Constructors/Destructors
+		private IDictionary extendedProperties;
+		private readonly Func<DictionaryAdapterInstance, IDictionaryAdapter> creator;
 
-		public DictionaryAdapterMeta(Type type, Type implementation, object[] behaviors, IDictionaryMetaInitializer[] metaInitializers,
-			IDictionaryInitializer[] initializers, IDictionary<String, PropertyDescriptor> properties,
-			IDictionaryAdapterFactory factory, Func<DictionaryAdapterInstance, IDictionaryAdapter> creator)
+		public DictionaryAdapterMeta(Type type, Type implementation, object[] behaviors, IDictionaryMetaInitializer[] metaInitializers, 
+			                         IDictionaryInitializer[] initializers, IDictionary<String, PropertyDescriptor> properties,
+									 IDictionaryAdapterFactory factory, Func<DictionaryAdapterInstance, IDictionaryAdapter> creator)
 		{
-			this.Type = type;
-			this.Implementation = implementation;
-			this.Behaviors = behaviors;
-			this.MetaInitializers = metaInitializers;
-			this.Initializers = initializers;
-			this.Properties = properties;
-			this.Factory = factory;
+			Type = type;
+			Implementation = implementation;
+			Behaviors = behaviors;
+			MetaInitializers = metaInitializers;
+			Initializers = initializers;
+			Properties = properties;
+			Factory = factory;
 			this.creator = creator;
 
-			this.InitializeMeta();
+			InitializeMeta();
 		}
 
-		#endregion
+		public Type Type { get; private set; }
 
-		#region Fields/Constants
+		public Type Implementation { get; private set; }
 
-		private readonly Func<DictionaryAdapterInstance, IDictionaryAdapter> creator;
-		private IDictionary extendedProperties;
+		public object[] Behaviors { get; private set; }
 
-		#endregion
+		public IDictionaryAdapterFactory Factory { get; private set; }
 
-		#region Properties/Indexers/Events
+		public IDictionary<string, PropertyDescriptor> Properties { get; private set; }
 
-		public object[] Behaviors
-		{
-			get;
-			private set;
-		}
+		public IDictionaryMetaInitializer[] MetaInitializers { get; private set; }
+
+		public IDictionaryInitializer[] Initializers { get; private set; }
 
 		public IDictionary ExtendedProperties
 		{
 			get
 			{
-				if (this.extendedProperties == null)
-					this.extendedProperties = new Dictionary<object, object>();
-				return this.extendedProperties;
+				if (extendedProperties == null)
+				{
+					extendedProperties = new Dictionary<object, object>();
+				}
+				return extendedProperties;
 			}
 		}
 
-		public IDictionaryAdapterFactory Factory
+		public PropertyDescriptor CreateDescriptor()
 		{
-			get;
-			private set;
+			var metaInitializers   = MetaInitializers;
+			var sharedAnnotations  = CollectSharedBehaviors(Behaviors,    metaInitializers);
+			var sharedInitializers = CollectSharedBehaviors(Initializers, metaInitializers);
+
+			var descriptor = (sharedAnnotations != null)
+				? new PropertyDescriptor(sharedAnnotations.ToArray())
+				: new PropertyDescriptor();
+
+			descriptor.AddBehaviors(metaInitializers);
+
+			if (sharedInitializers != null)
+#if DOTNET40
+				descriptor.AddBehaviors(sharedInitializers);
+#else
+				descriptor.AddBehaviors(sharedInitializers.Cast<IDictionaryBehavior>());
+#endif
+
+			return descriptor;
 		}
-
-		public Type Implementation
-		{
-			get;
-			private set;
-		}
-
-		public IDictionaryInitializer[] Initializers
-		{
-			get;
-			private set;
-		}
-
-		public IDictionaryMetaInitializer[] MetaInitializers
-		{
-			get;
-			private set;
-		}
-
-		public IDictionary<string, PropertyDescriptor> Properties
-		{
-			get;
-			private set;
-		}
-
-		public Type Type
-		{
-			get;
-			private set;
-		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		private static List<T> CollectSharedBehaviors<T>(T[] source, IDictionaryMetaInitializer[] predicates)
 		{
@@ -130,45 +112,23 @@ namespace Castle.Components.DictionaryAdapter
 			return results;
 		}
 
-		public PropertyDescriptor CreateDescriptor()
+		public DictionaryAdapterMeta GetAdapterMeta(Type type)
 		{
-			var metaInitializers = this.MetaInitializers;
-			var sharedAnnotations = CollectSharedBehaviors(this.Behaviors, metaInitializers);
-			var sharedInitializers = CollectSharedBehaviors(this.Initializers, metaInitializers);
-
-			var descriptor = (sharedAnnotations != null)
-				? new PropertyDescriptor(sharedAnnotations.ToArray())
-				: new PropertyDescriptor();
-
-			descriptor.AddBehaviors(metaInitializers);
-
-			if (sharedInitializers != null)
-#if DOTNET40
-				descriptor.AddBehaviors(sharedInitializers);
-#else
-				descriptor.AddBehaviors(sharedInitializers.Cast<IDictionaryBehavior>());
-#endif
-
-			return descriptor;
+			return Factory.GetAdapterMeta(type, this);
 		}
 
 		public object CreateInstance(IDictionary dictionary, PropertyDescriptor descriptor)
 		{
-			var instance = new DictionaryAdapterInstance(dictionary, this, descriptor, this.Factory);
-			return this.creator(instance);
-		}
-
-		public DictionaryAdapterMeta GetAdapterMeta(Type type)
-		{
-			return this.Factory.GetAdapterMeta(type, this);
+			var instance = new DictionaryAdapterInstance(dictionary, this, descriptor, Factory);
+			return creator(instance);
 		}
 
 		private void InitializeMeta()
 		{
-			foreach (var metaInitializer in this.MetaInitializers)
-				metaInitializer.Initialize(this.Factory, this);
+			foreach (var metaInitializer in MetaInitializers)
+			{
+				metaInitializer.Initialize(Factory, this);
+			}
 		}
-
-		#endregion
 	}
 }

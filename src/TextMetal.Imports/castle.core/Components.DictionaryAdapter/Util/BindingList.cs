@@ -12,32 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections;
-using System.Collections.Generic;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
-
+	using System.Collections;
+	using System.Collections.Generic;
 	using SCM = System.ComponentModel;
 
 	/// <summary>
-	/// Provides a generic collection that supports data binding.
+	///   Provides a generic collection that supports data binding.
 	/// </summary>
 	/// <remarks>
-	/// This class wraps the CLR <see cref="System.ComponentModel.BindingList{T}" />
-	/// in order to implement the Castle-specific <see cref="IBindingList{T}" />.
+	///   This class wraps the CLR <see cref="System.ComponentModel.BindingList{T}"/>
+	///   in order to implement the Castle-specific <see cref="IBindingList{T}"/>.
 	/// </remarks>
-	/// <typeparam name="T"> The type of elements in the list. </typeparam>
+	/// <typeparam name="T">The type of elements in the list.</typeparam>
 	public class BindingList<T> : IBindingList<T>, IList
 	{
-		#region Constructors/Destructors
+		private readonly SCM.BindingList<T> list;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="BindingList{T}" /> class
-		/// using default values.
+		///   Initializes a new instance of the <see cref="BindingList{T}"/> class
+		///   using default values.
 		/// </summary>
 		public BindingList()
 		{
@@ -45,12 +42,12 @@ namespace Castle.Components.DictionaryAdapter
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="BindingList{T}" /> class
-		/// with the specified list.
+		///   Initializes a new instance of the <see cref="BindingList{T}"/> class
+		///   with the specified list.
 		/// </summary>
 		/// <param name="list">
-		/// An <see cref="IList{T}" /> of items
-		/// to be contained in the <see cref="BindingList{T}" />.
+		///   An <see cref="IList{T}"/> of items
+		///   to be contained in the <see cref="BindingList{T}"/>.
 		/// </param>
 		public BindingList(IList<T> list)
 		{
@@ -58,12 +55,12 @@ namespace Castle.Components.DictionaryAdapter
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="BindingList{T}" /> class
-		/// wrapping the specified <see cref="System.ComponentModel.BindingList{T}" /> instance.
+		///   Initializes a new instance of the <see cref="BindingList{T}"/> class
+		///   wrapping the specified <see cref="System.ComponentModel.BindingList{T}"/> instance.
 		/// </summary>
 		/// <param name="list">
-		/// A <see cref="System.ComponentModel.BindingList{T}" />
-		/// to be wrapped by the <see cref="BindingList{T}" />.
+		///   A <see cref="System.ComponentModel.BindingList{T}"/>
+		///   to be wrapped by the <see cref="BindingList{T}"/>.
 		/// </param>
 		public BindingList(SCM.BindingList<T> list)
 		{
@@ -73,368 +70,258 @@ namespace Castle.Components.DictionaryAdapter
 			this.list = list;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly SCM.BindingList<T> list;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public event SCM.AddingNewEventHandler AddingNew
+		public SCM.BindingList<T> InnerList
 		{
-			add
-			{
-				this.list.AddingNew += value;
-			}
-			remove
-			{
-				this.list.AddingNew -= value;
-			}
-		}
-
-		public event SCM.ListChangedEventHandler ListChanged
-		{
-			add
-			{
-				this.list.ListChanged += value;
-			}
-			remove
-			{
-				this.list.ListChanged -= value;
-			}
-		}
-
-		public T this[int index]
-		{
-			get
-			{
-				return this.list[index];
-			}
-			set
-			{
-				this.list[index] = value;
-			}
-		}
-
-		object IList.this[int index]
-		{
-			get
-			{
-				return ((IList)this.list)[index];
-			}
-			set
-			{
-				((IList)this.list)[index] = value;
-			}
-		}
-
-		public bool AllowEdit
-		{
-			get
-			{
-				return this.list.AllowEdit;
-			}
-			set
-			{
-				this.list.AllowEdit = value;
-			}
-		}
-
-		public bool AllowNew
-		{
-			get
-			{
-				return this.list.AllowNew;
-			}
-			set
-			{
-				this.list.AllowNew = value;
-			}
-		}
-
-		public bool AllowRemove
-		{
-			get
-			{
-				return this.list.AllowRemove;
-			}
-			set
-			{
-				this.list.AllowRemove = value;
-			}
+			get { return list; }
 		}
 
 		public SCM.IBindingList AsBindingList
 		{
-			get
-			{
-				return this.list;
-			}
+			get { return list; }
 		}
 
 		public int Count
 		{
-			get
-			{
-				return this.list.Count;
-			}
-		}
-
-		public SCM.BindingList<T> InnerList
-		{
-			get
-			{
-				return this.list;
-			}
-		}
-
-		bool IList.IsFixedSize
-		{
-			get
-			{
-				return ((IList)this.list).IsFixedSize;
-			}
+			get { return list.Count; }
 		}
 
 		bool ICollection<T>.IsReadOnly
 		{
-			get
-			{
-				return ((ICollection<T>)this.list).IsReadOnly;
-			}
+			get { return ((ICollection<T>) list).IsReadOnly; }
 		}
 
 		bool IList.IsReadOnly
 		{
-			get
-			{
-				return ((IList)this.list).IsReadOnly;
-			}
+			get { return ((IList) list).IsReadOnly; }
 		}
 
-		bool IBindingList<T>.IsSorted
+		bool IList.IsFixedSize
 		{
-			get
-			{
-				return this.AsBindingList.IsSorted;
-			}
+			get { return ((IList) list).IsFixedSize; }
 		}
 
 		bool ICollection.IsSynchronized
 		{
-			get
-			{
-				return ((ICollection)this.list).IsSynchronized;
-			}
-		}
-
-		public bool RaiseListChangedEvents
-		{
-			get
-			{
-				return this.list.RaiseListChangedEvents;
-			}
-			set
-			{
-				this.list.RaiseListChangedEvents = value;
-			}
-		}
-
-		bool SCM.IRaiseItemChangedEvents.RaisesItemChangedEvents
-		{
-			get
-			{
-				return ((SCM.IRaiseItemChangedEvents)this.list).RaisesItemChangedEvents;
-			}
-		}
-
-		SCM.ListSortDirection IBindingList<T>.SortDirection
-		{
-			get
-			{
-				return this.AsBindingList.SortDirection;
-			}
-		}
-
-		SCM.PropertyDescriptor IBindingList<T>.SortProperty
-		{
-			get
-			{
-				return this.AsBindingList.SortProperty;
-			}
-		}
-
-		bool IBindingList<T>.SupportsChangeNotification
-		{
-			get
-			{
-				return this.AsBindingList.SupportsChangeNotification;
-			}
-		}
-
-		bool IBindingList<T>.SupportsSearching
-		{
-			get
-			{
-				return this.AsBindingList.SupportsSearching;
-			}
-		}
-
-		bool IBindingList<T>.SupportsSorting
-		{
-			get
-			{
-				return this.AsBindingList.SupportsSorting;
-			}
+			get { return ((ICollection) list).IsSynchronized; }
 		}
 
 		object ICollection.SyncRoot
 		{
-			get
-			{
-				return ((ICollection)this.list).SyncRoot;
-			}
+			get { return ((ICollection) list).SyncRoot; }
 		}
 
-		#endregion
-
-		#region Methods/Operators
-
-		public void Add(T item)
+		public bool AllowNew
 		{
-			this.list.Add(item);
+			get { return list.AllowNew; }
+			set { list.AllowNew = value; }
 		}
 
-		int IList.Add(object item)
+		public bool AllowEdit
 		{
-			return ((IList)this.list).Add(item);
+			get { return list.AllowEdit; }
+			set { list.AllowEdit = value; }
 		}
 
-		void IBindingList<T>.AddIndex(SCM.PropertyDescriptor property)
+		public bool AllowRemove
 		{
-			this.AsBindingList.AddIndex(property);
+			get { return list.AllowRemove; }
+			set { list.AllowRemove = value; }
 		}
 
-		public T AddNew()
+		public bool RaiseListChangedEvents
 		{
-			return this.list.AddNew();
+			get { return list.RaiseListChangedEvents; }
+			set { list.RaiseListChangedEvents = value; }
 		}
 
-		void IBindingList<T>.ApplySort(SCM.PropertyDescriptor property, SCM.ListSortDirection direction)
+		bool SCM.IRaiseItemChangedEvents.RaisesItemChangedEvents
 		{
-			this.AsBindingList.ApplySort(property, direction);
+			get { return ((SCM.IRaiseItemChangedEvents) list).RaisesItemChangedEvents; }
 		}
 
-		public void CancelNew(int index)
+		bool IBindingList<T>.SupportsChangeNotification
 		{
-			this.list.CancelNew(index);
+			get { return AsBindingList.SupportsChangeNotification; }
 		}
 
-		public void Clear()
+		bool IBindingList<T>.SupportsSearching
 		{
-			this.list.Clear();
+			get { return AsBindingList.SupportsSearching; }
 		}
 
-		public bool Contains(T item)
+		bool IBindingList<T>.SupportsSorting
 		{
-			return this.list.Contains(item);
+			get { return AsBindingList.SupportsSorting; }
 		}
 
-		bool IList.Contains(object value)
+		bool IBindingList<T>.IsSorted
 		{
-			return ((IList)this.list).Contains(value);
+			get { return AsBindingList.IsSorted; }
 		}
 
-		public void CopyTo(T[] array, int index)
+		SCM.PropertyDescriptor IBindingList<T>.SortProperty
 		{
-			this.list.CopyTo(array, index);
+			get { return AsBindingList.SortProperty; }
 		}
 
-		void ICollection.CopyTo(Array array, int index)
+		SCM.ListSortDirection IBindingList<T>.SortDirection
 		{
-			((IList)this.list).CopyTo(array, index);
-		}
-
-		public void EndNew(int index)
-		{
-			this.list.EndNew(index);
+			get { return AsBindingList.SortDirection; }
 		}
 
 		int IBindingList<T>.Find(SCM.PropertyDescriptor property, object key)
 		{
-			return this.AsBindingList.Find(property, key);
+			return AsBindingList.Find(property, key);
 		}
 
-		public IEnumerator<T> GetEnumerator()
+		void IBindingList<T>.AddIndex(SCM.PropertyDescriptor property)
 		{
-			return this.list.GetEnumerator();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return this.list.GetEnumerator();
-		}
-
-		public int IndexOf(T item)
-		{
-			return this.list.IndexOf(item);
-		}
-
-		int IList.IndexOf(object value)
-		{
-			return ((IList)this.list).IndexOf(value);
-		}
-
-		public void Insert(int index, T item)
-		{
-			this.list.Insert(index, item);
-		}
-
-		void IList.Insert(int index, object item)
-		{
-			((IList)this.list).Insert(index, item);
-		}
-
-		public bool Remove(T item)
-		{
-			return this.list.Remove(item);
-		}
-
-		void IList.Remove(object item)
-		{
-			((IList)this.list).Remove(item);
-		}
-
-		public void RemoveAt(int index)
-		{
-			this.list.RemoveAt(index);
+			AsBindingList.AddIndex(property);
 		}
 
 		void IBindingList<T>.RemoveIndex(SCM.PropertyDescriptor property)
 		{
-			this.AsBindingList.RemoveIndex(property);
+			AsBindingList.RemoveIndex(property);
+		}
+
+		void IBindingList<T>.ApplySort(SCM.PropertyDescriptor property, SCM.ListSortDirection direction)
+		{
+			AsBindingList.ApplySort(property, direction);
 		}
 
 		void IBindingList<T>.RemoveSort()
 		{
-			this.AsBindingList.RemoveSort();
+			AsBindingList.RemoveSort();
+		}
+
+		public event SCM.AddingNewEventHandler AddingNew
+		{
+			add    { list.AddingNew += value; }
+			remove { list.AddingNew -= value; }
+		}
+
+		public event SCM.ListChangedEventHandler ListChanged
+		{
+			add    { list.ListChanged += value; }
+			remove { list.ListChanged -= value; }
+		}
+
+		public T this[int index]
+		{
+			get { return list[index]; }
+			set { list[index] = value; }
+		}
+
+		object IList.this[int index]
+		{
+			get { return ((IList) list)[index]; }
+			set { ((IList) list)[index] = value; }
+		}
+
+		public bool Contains(T item)
+		{
+			return list.Contains(item);
+		}
+
+		bool IList.Contains(object value)
+		{
+			return ((IList) list).Contains(value);
+		}
+
+		public int IndexOf(T item)
+		{
+			return list.IndexOf(item);
+		}
+
+		int IList.IndexOf(object value)
+		{
+			return ((IList) list).IndexOf(value);
+		}
+
+		public void CopyTo(T[] array, int index)
+		{
+			list.CopyTo(array, index);
+		}
+
+		void ICollection.CopyTo(Array array, int index)
+		{
+			((IList) list).CopyTo(array, index);
+		}
+
+		public IEnumerator<T> GetEnumerator()
+		{
+			return list.GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return list.GetEnumerator();
+		}
+
+		public T AddNew()
+		{
+			return list.AddNew();
+		}
+
+		public void CancelNew(int index)
+		{
+			list.CancelNew(index);
+		}
+
+		public void EndNew(int index)
+		{
+			list.EndNew(index);
+		}
+
+		public void Add(T item)
+		{
+			list.Add(item);
+		}
+
+		int IList.Add(object item)
+		{
+			return ((IList) list).Add(item);
+		}
+
+		public void Insert(int index, T item)
+		{
+			list.Insert(index, item);
+		}
+
+		void IList.Insert(int index, object item)
+		{
+			((IList) list).Insert(index, item);
+		}
+
+		public void RemoveAt(int index)
+		{
+			list.RemoveAt(index);
+		}
+
+		public bool Remove(T item)
+		{
+			return list.Remove(item);
+		}
+
+		void IList.Remove(object item)
+		{
+			((IList) list).Remove(item);
+		}
+
+		public void Clear()
+		{
+			list.Clear();
 		}
 
 		public void ResetBindings()
 		{
-			this.list.ResetBindings();
+			list.ResetBindings();
 		}
 
 		public void ResetItem(int index)
 		{
-			this.list.ResetItem(index);
+			list.ResetItem(index);
 		}
-
-		#endregion
 	}
 }
-
 #endif

@@ -13,13 +13,13 @@ namespace NUnit.Framework
 	/// Ignored tests result in a warning message when the
 	/// tests are run.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
+	[AttributeUsage(AttributeTargets.Method|AttributeTargets.Class|AttributeTargets.Assembly, AllowMultiple=false, Inherited=false)]
 	public class IgnoreAttribute : Attribute
 	{
-		#region Constructors/Destructors
+		private string reason;
 
 		/// <summary>
-		/// Constructs the attribute without giving a reason
+		/// Constructs the attribute without giving a reason 
 		/// for ignoring the test.
 		/// </summary>
 		public IgnoreAttribute()
@@ -30,33 +30,18 @@ namespace NUnit.Framework
 		/// <summary>
 		/// Constructs the attribute giving a reason for ignoring the test
 		/// </summary>
-		/// <param name="reason"> The reason for ignoring the test </param>
+		/// <param name="reason">The reason for ignoring the test</param>
 		public IgnoreAttribute(string reason)
 		{
 			this.reason = reason;
 		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private string reason;
-
-		#endregion
-
-		#region Properties/Indexers/Events
 
 		/// <summary>
 		/// The reason for ignoring a test
 		/// </summary>
 		public string Reason
 		{
-			get
-			{
-				return this.reason;
-			}
+			get { return reason; }
 		}
-
-		#endregion
 	}
 }

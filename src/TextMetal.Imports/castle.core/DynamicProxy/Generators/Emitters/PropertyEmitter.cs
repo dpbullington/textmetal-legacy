@@ -12,21 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection;
-using System.Reflection.Emit;
-
-using Castle.DynamicProxy.Tokens;
-
 namespace Castle.DynamicProxy.Generators.Emitters
 {
 	using System;
+	using System.Reflection;
+	using System.Reflection.Emit;
+
+	using Castle.DynamicProxy.Tokens;
 
 	public class PropertyEmitter : IMemberEmitter
 	{
-		#region Constructors/Destructors
+		private readonly PropertyBuilder builder;
+		private readonly AbstractTypeEmitter parentTypeEmitter;
+		private MethodEmitter getMethod;
+		private MethodEmitter setMethod;
+
+		// private ParameterInfo[] indexParameters;
 
 		public PropertyEmitter(AbstractTypeEmitter parentTypeEmitter, string name, PropertyAttributes attributes,
-			Type propertyType, Type[] arguments)
+		                       Type propertyType, Type[] arguments)
 		{
 			this.parentTypeEmitter = parentTypeEmitter;
 
@@ -39,132 +43,109 @@ namespace Castle.DynamicProxy.Generators.Emitters
 			if (TypeBuilderMethods.DefineProperty == null)
 			{
 				DefineProperty_Clr2_0 oldDefineProperty = parentTypeEmitter.TypeBuilder.DefineProperty;
-				this.builder = oldDefineProperty(name, attributes, propertyType, arguments);
+				builder = oldDefineProperty(name, attributes, propertyType, arguments);
 			}
 			else
 			{
 				var newDefinedProperty = (DefineProperty_Clr_2_0_SP1)
-					Delegate.CreateDelegate(typeof(DefineProperty_Clr_2_0_SP1),
-						parentTypeEmitter.TypeBuilder,
-						TypeBuilderMethods.DefineProperty);
-				this.builder = newDefinedProperty(
+				                         Delegate.CreateDelegate(typeof(DefineProperty_Clr_2_0_SP1),
+				                                                 parentTypeEmitter.TypeBuilder,
+				                                                 TypeBuilderMethods.DefineProperty);
+				builder = newDefinedProperty(
 					name, attributes, CallingConventions.HasThis, propertyType,
 					null, null, arguments, null, null);
 			}
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly PropertyBuilder builder;
-		private readonly AbstractTypeEmitter parentTypeEmitter;
-		private MethodEmitter getMethod;
-		private MethodEmitter setMethod;
-
-		#endregion
-
-		// private ParameterInfo[] indexParameters;
-
-		#region Properties/Indexers/Events
-
 		public MemberInfo Member
 		{
-			get
-			{
-				return null;
-			}
+			get { return null; }
 		}
 
 		public Type ReturnType
 		{
-			get
-			{
-				return this.builder.PropertyType;
-			}
+			get { return builder.PropertyType; }
 		}
 
-		#endregion
-
-		#region Methods/Operators
-
 		public MethodEmitter CreateGetMethod(string name, MethodAttributes attrs, MethodInfo methodToOverride,
-			params Type[] parameters)
+		                                     params Type[] parameters)
 		{
-			if (this.getMethod != null)
+			if (getMethod != null)
+			{
 				throw new InvalidOperationException("A get method exists");
+			}
 
-			this.getMethod = new MethodEmitter(this.parentTypeEmitter, name, attrs, methodToOverride);
-			return this.getMethod;
+			getMethod = new MethodEmitter(parentTypeEmitter, name, attrs, methodToOverride);
+			return getMethod;
 		}
 
 		public MethodEmitter CreateGetMethod(string name, MethodAttributes attributes, MethodInfo methodToOverride)
 		{
-			return this.CreateGetMethod(name, attributes, methodToOverride, Type.EmptyTypes);
+			return CreateGetMethod(name, attributes, methodToOverride, Type.EmptyTypes);
 		}
 
 		public MethodEmitter CreateSetMethod(string name, MethodAttributes attrs, MethodInfo methodToOverride,
-			params Type[] parameters)
+		                                     params Type[] parameters)
 		{
-			if (this.setMethod != null)
+			if (setMethod != null)
+			{
 				throw new InvalidOperationException("A set method exists");
+			}
 
-			this.setMethod = new MethodEmitter(this.parentTypeEmitter, name, attrs, methodToOverride);
-			return this.setMethod;
+			setMethod = new MethodEmitter(parentTypeEmitter, name, attrs, methodToOverride);
+			return setMethod;
 		}
 
 		public MethodEmitter CreateSetMethod(string name, MethodAttributes attributes, MethodInfo methodToOverride)
 		{
-			var method = this.CreateSetMethod(name, attributes, methodToOverride, Type.EmptyTypes);
+			var method = CreateSetMethod(name, attributes, methodToOverride, Type.EmptyTypes);
 			return method;
 		}
 
 		public void DefineCustomAttribute(CustomAttributeBuilder attribute)
 		{
-			this.builder.SetCustomAttribute(attribute);
+			builder.SetCustomAttribute(attribute);
 		}
 
 		public void EnsureValidCodeBlock()
 		{
-			if (this.setMethod != null)
-				this.setMethod.EnsureValidCodeBlock();
+			if (setMethod != null)
+			{
+				setMethod.EnsureValidCodeBlock();
+			}
 
-			if (this.getMethod != null)
-				this.getMethod.EnsureValidCodeBlock();
+			if (getMethod != null)
+			{
+				getMethod.EnsureValidCodeBlock();
+			}
 		}
 
 		public void Generate()
 		{
-			if (this.setMethod != null)
+			if (setMethod != null)
 			{
-				this.setMethod.Generate();
-				this.builder.SetSetMethod(this.setMethod.MethodBuilder);
+				setMethod.Generate();
+				builder.SetSetMethod(setMethod.MethodBuilder);
 			}
 
-			if (this.getMethod != null)
+			if (getMethod != null)
 			{
-				this.getMethod.Generate();
-				this.builder.SetGetMethod(this.getMethod.MethodBuilder);
+				getMethod.Generate();
+				builder.SetGetMethod(getMethod.MethodBuilder);
 			}
 		}
 
-		#endregion
-
-		#region Classes/Structs/Interfaces/Enums/Delegates
+		public delegate PropertyBuilder DefineProperty_Clr_2_0_SP1(string name,
+		                                                           PropertyAttributes attributes,
+		                                                           CallingConventions callingConvention,
+		                                                           Type returnType,
+		                                                           Type[] returnTypeRequiredCustomModifiers,
+		                                                           Type[] returnTypeOptionalCustomModifiers,
+		                                                           Type[] parameterTypes,
+		                                                           Type[][] parameterTypeRequiredCustomModifiers,
+		                                                           Type[][] parameterTypeOptionalCustomModifiers);
 
 		private delegate PropertyBuilder DefineProperty_Clr2_0(
 			string name, PropertyAttributes attributes, Type propertyType, Type[] parameters);
-
-		public delegate PropertyBuilder DefineProperty_Clr_2_0_SP1(string name,
-			PropertyAttributes attributes,
-			CallingConventions callingConvention,
-			Type returnType,
-			Type[] returnTypeRequiredCustomModifiers,
-			Type[] returnTypeOptionalCustomModifiers,
-			Type[] parameterTypes,
-			Type[][] parameterTypeRequiredCustomModifiers,
-			Type[][] parameterTypeOptionalCustomModifiers);
-
-		#endregion
 	}
 }

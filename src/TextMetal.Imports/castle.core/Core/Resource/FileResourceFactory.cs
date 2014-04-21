@@ -12,26 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #if !SILVERLIGHT
-
 namespace Castle.Core.Resource
 {
 	using System;
 
 	/// <summary>
+	/// 
 	/// </summary>
 	public class FileResourceFactory : IResourceFactory
 	{
-		#region Constructors/Destructors
-
 		public FileResourceFactory()
 		{
 		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		public bool Accept(CustomUri uri)
 		{
@@ -40,7 +33,7 @@ namespace Castle.Core.Resource
 
 		public IResource Create(CustomUri uri)
 		{
-			return this.Create(uri, null);
+			return Create(uri, null);
 		}
 
 		public IResource Create(CustomUri uri, String basePath)
@@ -50,9 +43,6 @@ namespace Castle.Core.Resource
 			else
 				return new FileResource(uri);
 		}
-
-		#endregion
 	}
 }
-
 #endif

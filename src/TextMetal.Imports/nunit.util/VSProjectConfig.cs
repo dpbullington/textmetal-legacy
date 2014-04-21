@@ -12,45 +12,28 @@ namespace NUnit.Util
 	/// <summary>
 	/// Originally, we used the same ProjectConfig class for both
 	/// NUnit and Visual Studio projects. Since we really do very
-	/// little with VS Projects, this class has been created to
+	/// little with VS Projects, this class has been created to 
 	/// hold the name and the collection of assembly paths.
 	/// </summary>
 	public class VSProjectConfig
 	{
-		#region Constructors/Destructors
+		private string name;
+		
+		private StringCollection assemblies = new StringCollection();
 
-		public VSProjectConfig(string name)
+		public VSProjectConfig( string name )
 		{
 			this.name = name;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private StringCollection assemblies = new StringCollection();
-		private string name;
-
-		#endregion
-
-		#region Properties/Indexers/Events
+		public string Name
+		{
+			get { return name; }
+		}
 
 		public StringCollection Assemblies
 		{
-			get
-			{
-				return this.assemblies;
-			}
+			get { return assemblies; }
 		}
-
-		public string Name
-		{
-			get
-			{
-				return this.name;
-			}
-		}
-
-		#endregion
 	}
 }

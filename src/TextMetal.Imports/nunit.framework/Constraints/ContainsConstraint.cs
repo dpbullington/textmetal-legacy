@@ -6,10 +6,8 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
-
 #if CLR_2_0 || CLR_4_0
-
+using System.Collections.Generic;
 #endif
 
 namespace NUnit.Framework.Constraints
@@ -24,141 +22,145 @@ namespace NUnit.Framework.Constraints
 	/// </summary>
 	public class ContainsConstraint : Constraint
 	{
-		private object expected;
-		private Constraint realConstraint;
-		private bool ignoreCase;
+		readonly object expected;
+		Constraint realConstraint;
+        bool ignoreCase;
 
-		private EqualityAdapter adapter = null;
+#if CLR_2_0 || CLR_4_0
+        private List<EqualityAdapter> equalityAdapters = new List<EqualityAdapter>();
+#else
+        private ArrayList equalityAdapters = new ArrayList();
+#endif
 
-		private Constraint RealConstraint
+        private Constraint RealConstraint
 		{
-			get
+			get 
 			{
-				if (this.realConstraint == null)
+				if ( realConstraint == null )
 				{
-					if (this.actual is string)
+                    if (actual is string)
+                    {
+                        StringConstraint constraint = new SubstringConstraint((string)expected);
+                        if (this.ignoreCase)
+                            constraint = constraint.IgnoreCase;
+                        this.realConstraint = constraint;
+                    }
+                    else
 					{
-						StringConstraint constraint = new SubstringConstraint((string)this.expected);
-						if (this.ignoreCase)
-							constraint = constraint.IgnoreCase;
-						this.realConstraint = constraint;
-					}
-					else
-					{
-						CollectionContainsConstraint constraint = new CollectionContainsConstraint(this.expected);
-
-						if (this.adapter != null)
-							constraint.comparer.ExternalComparers.Add(this.adapter);
-
+                        CollectionItemsEqualConstraint constraint = new CollectionContainsConstraint(expected);
+						
+						foreach (EqualityAdapter adapter in equalityAdapters)
+							constraint = constraint.Using(adapter);
+							
 						this.realConstraint = constraint;
 					}
 				}
-
-				return this.realConstraint;
+				
+				return realConstraint;
 			}
-			set
-			{
-				this.realConstraint = value;
+			set 
+			{ 
+				realConstraint = value; 
 			}
 		}
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="T:ContainsConstraint" /> class.
-		/// </summary>
-		/// <param name="expected"> The expected. </param>
-		public ContainsConstraint(object expected)
-			: base(expected)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContainsConstraint"/> class.
+        /// </summary>
+        /// <param name="expected">The expected.</param>
+		public ContainsConstraint( object expected ) : base(expected)
 		{
 			this.expected = expected;
 		}
 
-		/// <summary>
-		/// Flag the constraint to ignore case and return self.
-		/// </summary>
-		public ContainsConstraint IgnoreCase
-		{
-			get
-			{
-				this.ignoreCase = true;
-				return this;
-			}
-		}
+        /// <summary>
+        /// Flag the constraint to ignore case and return self.
+        /// </summary>
+        public ContainsConstraint IgnoreCase
+        {
+            get { this.ignoreCase = true; return this; }
+        }
 
-		/// <summary>
-		/// Test whether the constraint is satisfied by a given value
-		/// </summary>
-		/// <param name="actual"> The value to be tested </param>
-		/// <returns> True for success, false for failure </returns>
+        /// <summary>
+        /// Test whether the constraint is satisfied by a given value
+        /// </summary>
+        /// <param name="actual">The value to be tested</param>
+        /// <returns>True for success, false for failure</returns>
 		public override bool Matches(object actual)
 		{
-			this.actual = actual;
-			return this.RealConstraint.Matches(actual);
+            this.actual = actual;
+			return this.RealConstraint.Matches( actual );
 		}
 
-		/// <summary>
-		/// Write the constraint description to a MessageWriter
-		/// </summary>
-		/// <param name="writer"> The writer on which the description is displayed </param>
+        /// <summary>
+        /// Write the constraint description to a MessageWriter
+        /// </summary>
+        /// <param name="writer">The writer on which the description is displayed</param>
 		public override void WriteDescriptionTo(MessageWriter writer)
 		{
 			this.RealConstraint.WriteDescriptionTo(writer);
 		}
 
-		/// <summary>
-		/// Flag the constraint to use the supplied IComparer object.
-		/// </summary>
-		/// <param name="comparer"> The IComparer object to use. </param>
-		/// <returns> Self. </returns>
-		public ContainsConstraint Using(IComparer comparer)
-		{
-			this.adapter = EqualityAdapter.For(comparer);
-			return this;
-		}
+        /// <summary>
+        /// Flag the constraint to use the supplied IComparer object.
+        /// </summary>
+        /// <param name="comparer">The IComparer object to use.</param>
+        /// <returns>Self.</returns>
+        public ContainsConstraint Using(IComparer comparer)
+        {
+            return AddAdapter(EqualityAdapter.For(comparer));
+        }
 
 #if CLR_2_0 || CLR_4_0
-		/// <summary>
-		/// Flag the constraint to use the supplied IComparer object.
-		/// </summary>
-		/// <param name="comparer"> The IComparer object to use. </param>
-		/// <returns> Self. </returns>
-		public ContainsConstraint Using<T>(IComparer<T> comparer)
-		{
-			this.adapter = EqualityAdapter.For(comparer);
-			return this;
-		}
+        /// <summary>
+        /// Flag the constraint to use the supplied IComparer object.
+        /// </summary>
+        /// <param name="comparer">The IComparer object to use.</param>
+        /// <returns>Self.</returns>
+        public ContainsConstraint Using<T>(IComparer<T> comparer)
+        {
+            return AddAdapter(EqualityAdapter.For(comparer));
+        }
 
-		/// <summary>
-		/// Flag the constraint to use the supplied Comparison object.
-		/// </summary>
-		/// <param name="comparer"> The IComparer object to use. </param>
-		/// <returns> Self. </returns>
-		public ContainsConstraint Using<T>(Comparison<T> comparer)
-		{
-			this.adapter = EqualityAdapter.For(comparer);
-			return this;
-		}
+        /// <summary>
+        /// Flag the constraint to use the supplied Comparison object.
+        /// </summary>
+        /// <param name="comparer">The IComparer object to use.</param>
+        /// <returns>Self.</returns>
+        public ContainsConstraint Using<T>(Comparison<T> comparer)
+        {
+            return AddAdapter(EqualityAdapter.For(comparer));
+        }
 
-		/// <summary>
-		/// Flag the constraint to use the supplied IEqualityComparer object.
-		/// </summary>
-		/// <param name="comparer"> The IComparer object to use. </param>
-		/// <returns> Self. </returns>
-		public ContainsConstraint Using(IEqualityComparer comparer)
-		{
-			this.adapter = EqualityAdapter.For(comparer);
-			return this;
-		}
+        /// <summary>
+        /// Flag the constraint to use the supplied IEqualityComparer object.
+        /// </summary>
+        /// <param name="comparer">The IComparer object to use.</param>
+        /// <returns>Self.</returns>
+        public ContainsConstraint Using(IEqualityComparer comparer)
+        {
+            return AddAdapter(EqualityAdapter.For(comparer));
+        }
 
-		/// <summary>
-		/// Flag the constraint to use the supplied IEqualityComparer object.
-		/// </summary>
-		/// <param name="comparer"> The IComparer object to use. </param>
-		/// <returns> Self. </returns>
-		public ContainsConstraint Using<T>(IEqualityComparer<T> comparer)
-		{
-			this.adapter = EqualityAdapter.For(comparer);
-			return this;
-		}
+        /// <summary>
+        /// Flag the constraint to use the supplied IEqualityComparer object.
+        /// </summary>
+        /// <param name="comparer">The IComparer object to use.</param>
+        /// <returns>Self.</returns>
+        public ContainsConstraint Using<T>(IEqualityComparer<T> comparer)
+        {
+            return AddAdapter(EqualityAdapter.For(comparer));
+        }
 #endif
-	}
+
+        #region Helper Methods
+
+        private ContainsConstraint AddAdapter(EqualityAdapter adapter)
+        {
+            this.equalityAdapters.Add(adapter);
+            return this;
+        }
+
+        #endregion
+    }
 }

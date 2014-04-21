@@ -3,11 +3,8 @@
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org.
 // ****************************************************************
-
 using System;
 using System.Reflection;
-
-using NUnit.Core.Extensibility;
 
 namespace NUnit.Core
 {
@@ -16,26 +13,22 @@ namespace NUnit.Core
 	/// be ignored. It is currently not used, since the test builders
 	/// take care of the ignore attribute.
 	/// </summary>
-	public class IgnoreDecorator : ITestDecorator
+	public class IgnoreDecorator : Extensibility.ITestDecorator
 	{
-		#region Constructors/Destructors
-
-		public IgnoreDecorator(string ignoreAttributeType)
+		public IgnoreDecorator( string ignoreAttributeType )
 		{
 		}
 
-		#endregion
+		#region ITestDecorator Members
 
-		#region Methods/Operators
-
-		public Test Decorate(Test test, MemberInfo member)
+		public Test Decorate( Test test, MemberInfo member )
 		{
-			Attribute ignoreAttribute = Reflect.GetAttribute(member, NUnitFramework.IgnoreAttribute, false);
+			Attribute ignoreAttribute = Reflect.GetAttribute( member, NUnitFramework.IgnoreAttribute, false );
 
-			if (ignoreAttribute != null)
+			if ( ignoreAttribute != null )
 			{
 				test.RunState = RunState.Ignored;
-				test.IgnoreReason = NUnitFramework.GetIgnoreReason(ignoreAttribute);
+				test.IgnoreReason = NUnitFramework.GetIgnoreReason( ignoreAttribute );
 			}
 
 			return test;

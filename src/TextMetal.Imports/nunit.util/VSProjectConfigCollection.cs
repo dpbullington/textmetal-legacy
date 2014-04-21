@@ -16,50 +16,33 @@ namespace NUnit.Util
 	/// </summary>
 	public class VSProjectConfigCollection : CollectionBase
 	{
-		#region Properties/Indexers/Events
-
 		public VSProjectConfig this[int index]
 		{
-			get
-			{
-				return this.List[index] as VSProjectConfig;
-			}
+			get { return List[index] as VSProjectConfig; }
 		}
 
 		public VSProjectConfig this[string name]
 		{
 			get
 			{
-				foreach (VSProjectConfig config in this.InnerList)
-				{
-					if (config.Name == name)
-						return config;
-				}
+				foreach ( VSProjectConfig config in InnerList )
+					if ( config.Name == name ) return config;
 
 				return null;
 			}
 		}
 
-		#endregion
-
-		#region Methods/Operators
-
-		public void Add(VSProjectConfig config)
+		public void Add( VSProjectConfig config )
 		{
-			this.List.Add(config);
+			List.Add( config );
 		}
 
-		public bool Contains(string name)
+		public bool Contains( string name )
 		{
-			foreach (VSProjectConfig config in this.InnerList)
-			{
-				if (config.Name == name)
-					return true;
-			}
+			foreach( VSProjectConfig config in InnerList )
+				if ( config.Name == name ) return true;
 
 			return false;
 		}
-
-		#endregion
 	}
 }

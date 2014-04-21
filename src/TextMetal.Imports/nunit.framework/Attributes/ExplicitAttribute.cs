@@ -14,49 +14,34 @@ namespace NUnit.Framework
 	/// or if it is included by use of a filter. The test will not be
 	/// run simply because an enclosing suite is run.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
+	[AttributeUsage(AttributeTargets.Class|AttributeTargets.Method|AttributeTargets.Assembly, AllowMultiple=false, Inherited=false)]
 	public class ExplicitAttribute : Attribute
 	{
-		#region Constructors/Destructors
+        private string reason;
 
-		/// <summary>
+        /// <summary>
 		/// Default constructor
 		/// </summary>
 		public ExplicitAttribute()
 		{
-			this.reason = "";
-		}
+            this.reason = "";
+        }
 
-		/// <summary>
-		/// Constructor with a reason
-		/// </summary>
-		/// <param name="reason"> The reason test is marked explicit </param>
-		public ExplicitAttribute(string reason)
-		{
-			this.reason = reason;
-		}
+        /// <summary>
+        /// Constructor with a reason
+        /// </summary>
+        /// <param name="reason">The reason test is marked explicit</param>
+        public ExplicitAttribute(string reason)
+        {
+            this.reason = reason;
+        }
 
-		#endregion
-
-		#region Fields/Constants
-
-		private string reason;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// The reason test is marked explicit
-		/// </summary>
-		public string Reason
-		{
-			get
-			{
-				return this.reason;
-			}
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// The reason test is marked explicit
+        /// </summary>
+        public string Reason
+        {
+            get { return reason; }
+        }
+    }
 }

@@ -12,58 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Globalization;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Globalization;
 
 	public sealed class DefaultXmlReferenceFormat : IXmlReferenceFormat
 	{
-		#region Constructors/Destructors
-
-		private DefaultXmlReferenceFormat()
-		{
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private const NumberStyles
-			IntegerStyle = NumberStyles.Integer;
-
-		private static readonly IFormatProvider
-			Culture = CultureInfo.InvariantCulture;
-
 		public static readonly DefaultXmlReferenceFormat
 			Instance = new DefaultXmlReferenceFormat();
 
-		#endregion
-
-		#region Methods/Operators
-
-		public void ClearIdentity(IXmlNode node)
-		{
-			node.SetAttribute(XRef.Id, null);
-		}
-
-		public void ClearReference(IXmlNode node)
-		{
-			node.SetAttribute(XRef.Ref, null);
-		}
-
-		public void SetIdentity(IXmlNode node, int id)
-		{
-			node.SetAttribute(XRef.Id, id.ToString(Culture));
-		}
-
-		public void SetReference(IXmlNode node, int id)
-		{
-			node.SetAttribute(XRef.Ref, id.ToString(Culture));
-		}
+		private DefaultXmlReferenceFormat() { }
 
 		public bool TryGetIdentity(IXmlNode node, out int id)
 		{
@@ -77,8 +37,31 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			return int.TryParse(text, IntegerStyle, Culture, out id);
 		}
 
-		#endregion
+		public void SetIdentity(IXmlNode node, int id)
+		{
+			node.SetAttribute(XRef.Id, id.ToString(Culture));
+		}
+
+		public void SetReference(IXmlNode node, int id)
+		{
+			node.SetAttribute(XRef.Ref, id.ToString(Culture));
+		}
+
+		public void ClearIdentity(IXmlNode node)
+		{
+			node.SetAttribute(XRef.Id, null);
+		}
+
+		public void ClearReference(IXmlNode node)
+		{
+			node.SetAttribute(XRef.Ref, null);
+		}
+
+		private const NumberStyles
+			IntegerStyle = NumberStyles.Integer;
+
+		private static readonly IFormatProvider
+			Culture = CultureInfo.InvariantCulture;
 	}
 }
-
 #endif

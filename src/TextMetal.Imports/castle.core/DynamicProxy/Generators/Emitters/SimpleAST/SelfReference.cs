@@ -12,32 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Diagnostics;
-using System.Reflection.Emit;
-
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
 	using System;
+	using System.Diagnostics;
+	using System.Reflection.Emit;
 
 	[DebuggerDisplay("this")]
 	public class SelfReference : Reference
 	{
-		#region Constructors/Destructors
-
-		protected SelfReference()
-			: base(null)
-		{
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
 		public static readonly SelfReference Self = new SelfReference();
 
-		#endregion
-
-		#region Methods/Operators
+		protected SelfReference() : base(null)
+		{
+		}
 
 		public override void LoadAddressOfReference(ILGenerator gen)
 		{
@@ -53,7 +41,5 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 		{
 			gen.Emit(OpCodes.Ldarg_0);
 		}
-
-		#endregion
 	}
 }

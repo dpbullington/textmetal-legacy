@@ -13,25 +13,28 @@ namespace NUnit.Framework
 	public enum MessageMatch
 	{
 		/// Expect an exact match
-		Exact,
-
+		Exact,	
 		/// Expect a message containing the parameter string
 		Contains,
-
 		/// Match the regular expression provided as a parameter
 		Regex,
-
-		/// Expect a message that starts with the parameter string
-		StartsWith
+        /// Expect a message that starts with the parameter string
+        StartsWith
 	}
 
 	/// <summary>
 	/// ExpectedExceptionAttribute
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+	/// 
+	[AttributeUsage(AttributeTargets.Method, AllowMultiple=false, Inherited=false)]
 	public class ExpectedExceptionAttribute : Attribute
 	{
-		#region Constructors/Destructors
+		private Type expectedException;
+		private string expectedExceptionName;
+		private string expectedMessage;
+		private MessageMatch matchType;
+		private string userMessage;
+		private string handler;
 
 		/// <summary>
 		/// Constructor for a non-specific exception
@@ -43,7 +46,7 @@ namespace NUnit.Framework
 		/// <summary>
 		/// Constructor for a given type of exception
 		/// </summary>
-		/// <param name="exceptionType"> The type of the expected exception </param>
+		/// <param name="exceptionType">The type of the expected exception</param>
 		public ExpectedExceptionAttribute(Type exceptionType)
 		{
 			this.expectedException = exceptionType;
@@ -53,41 +56,23 @@ namespace NUnit.Framework
 		/// <summary>
 		/// Constructor for a given exception name
 		/// </summary>
-		/// <param name="exceptionName"> The full name of the expected exception </param>
+		/// <param name="exceptionName">The full name of the expected exception</param>
 		public ExpectedExceptionAttribute(string exceptionName)
 		{
 			this.expectedExceptionName = exceptionName;
 		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private Type expectedException;
-		private string expectedExceptionName;
-		private string expectedMessage;
-		private string handler;
-		private MessageMatch matchType;
-		private string userMessage;
-
-		#endregion
-
-		#region Properties/Indexers/Events
 
 		/// <summary>
 		/// Gets or sets the expected exception type
 		/// </summary>
 		public Type ExpectedException
 		{
-			get
-			{
-				return this.expectedException;
-			}
+			get{ return expectedException; }
 			set
-			{
-				this.expectedException = value;
-				this.expectedExceptionName = this.expectedException.FullName;
-			}
+            { 
+                expectedException = value;
+                expectedExceptionName = expectedException.FullName;
+            }
 		}
 
 		/// <summary>
@@ -95,59 +80,17 @@ namespace NUnit.Framework
 		/// </summary>
 		public string ExpectedExceptionName
 		{
-			get
-			{
-				return this.expectedExceptionName;
-			}
-			set
-			{
-				this.expectedExceptionName = value;
-			}
+			get{ return expectedExceptionName; }
+			set{ expectedExceptionName = value; }
 		}
 
 		/// <summary>
 		/// Gets or sets the expected message text
 		/// </summary>
-		public string ExpectedMessage
+		public string ExpectedMessage 
 		{
-			get
-			{
-				return this.expectedMessage;
-			}
-			set
-			{
-				this.expectedMessage = value;
-			}
-		}
-
-		/// <summary>
-		/// Gets the name of a method to be used as an exception handler
-		/// </summary>
-		public string Handler
-		{
-			get
-			{
-				return this.handler;
-			}
-			set
-			{
-				this.handler = value;
-			}
-		}
-
-		/// <summary>
-		/// Gets or sets the type of match to be performed on the expected message
-		/// </summary>
-		public MessageMatch MatchType
-		{
-			get
-			{
-				return this.matchType;
-			}
-			set
-			{
-				this.matchType = value;
-			}
+			get { return expectedMessage; }
+			set { expectedMessage = value; }
 		}
 
 		/// <summary>
@@ -155,16 +98,26 @@ namespace NUnit.Framework
 		/// </summary>
 		public string UserMessage
 		{
-			get
-			{
-				return this.userMessage;
-			}
-			set
-			{
-				this.userMessage = value;
-			}
+			get { return userMessage; }
+			set { userMessage = value; }
 		}
 
-		#endregion
+		/// <summary>
+		///  Gets or sets the type of match to be performed on the expected message
+		/// </summary>
+		public MessageMatch MatchType
+		{
+			get { return matchType; }
+			set { matchType = value; }
+		}
+
+		/// <summary>
+		///  Gets the name of a method to be used as an exception handler
+		/// </summary>
+		public string Handler
+		{
+			get { return handler; }
+			set { handler = value; }
+		}
 	}
 }

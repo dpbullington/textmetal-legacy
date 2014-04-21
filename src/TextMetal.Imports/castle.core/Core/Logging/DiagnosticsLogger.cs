@@ -20,56 +20,45 @@ namespace Castle.Core.Logging
 	using System.Globalization;
 
 	/// <summary>
-	/// The Logger using standart Diagnostics namespace.
+	///   The Logger using standart Diagnostics namespace.
 	/// </summary>
 	[Serializable]
 	public class DiagnosticsLogger : LevelFilteredLogger, IDisposable
 	{
-		#region Constructors/Destructors
+		[NonSerialized]
+		private EventLog eventLog;
 
 		/// <summary>
-		/// Creates a logger based on <see cref="EventLog" />.
+		///   Creates a logger based on <see cref = "EventLog" />.
 		/// </summary>
-		/// <param name="logName">
-		///     <see cref="EventLog.Log" />
-		/// </param>
-		public DiagnosticsLogger(string logName)
-			: this(logName, "default")
+		/// <param name = "logName"><see cref = "EventLog.Log" /></param>
+		public DiagnosticsLogger(string logName) : this(logName, "default")
 		{
 		}
 
 		/// <summary>
-		/// Creates a logger based on <see cref="EventLog" />.
+		///   Creates a logger based on <see cref = "EventLog" />.
 		/// </summary>
-		/// <param name="logName">
-		///     <see cref="EventLog.Log" />
-		/// </param>
-		/// <param name="source">
-		///     <see cref="EventLog.Source" />
-		/// </param>
-		public DiagnosticsLogger(string logName, string source)
-			: base(LoggerLevel.Debug)
+		/// <param name = "logName"><see cref = "EventLog.Log" /></param>
+		/// <param name = "source"><see cref = "EventLog.Source" /></param>
+		public DiagnosticsLogger(string logName, string source) : base(LoggerLevel.Debug)
 		{
 			// Create the source, if it does not already exist.
 			if (!EventLog.SourceExists(source))
+			{
 				EventLog.CreateEventSource(source, logName);
+			}
 
-			this.eventLog = new EventLog(logName);
-			this.eventLog.Source = source;
+			eventLog = new EventLog(logName);
+			eventLog.Source = source;
 		}
 
 		/// <summary>
-		/// Creates a logger based on <see cref="EventLog" />.
+		///   Creates a logger based on <see cref = "EventLog" />.
 		/// </summary>
-		/// <param name="logName">
-		///     <see cref="EventLog.Log" />
-		/// </param>
-		/// <param name="machineName">
-		///     <see cref="EventLog.MachineName" />
-		/// </param>
-		/// <param name="source">
-		///     <see cref="EventLog.Source" />
-		/// </param>
+		/// <param name = "logName"><see cref = "EventLog.Log" /></param>
+		/// <param name = "machineName"><see cref = "EventLog.MachineName" /></param>
+		/// <param name = "source"><see cref = "EventLog.Source" /></param>
 		public DiagnosticsLogger(string logName, string machineName, string source)
 		{
 			// Create the source, if it does not already exist.
@@ -80,24 +69,62 @@ namespace Castle.Core.Logging
 				EventLog.CreateEventSource(eventSourceCreationData);
 			}
 
-			this.eventLog = new EventLog(logName, machineName, source);
+			eventLog = new EventLog(logName, machineName, source);
+		}
+
+		public override ILogger CreateChildLogger(string loggerName)
+		{
+			return new DiagnosticsLogger(eventLog.Log, eventLog.MachineName, eventLog.Source);
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				if (eventLog != null)
+				{
+					eventLog.Close();
+					eventLog = null;
+				}
+			}
+		}
+
+		protected override void Log(LoggerLevel loggerLevel, string loggerName, string message, Exception exception)
+		{
+			if (eventLog == null)
+			{
+				return; // just in case it was disposed
+			}
+
+			var type = TranslateLevel(loggerLevel);
+
+			String contentToLog;
+
+			if (exception == null)
+			{
+				contentToLog = string.Format(CultureInfo.CurrentCulture, "[{0}] '{1}' message: {2}", loggerLevel, loggerName,
+				                             message);
+			}
+			else
+			{
+				contentToLog = string.Format(CultureInfo.CurrentCulture, "[{0}] '{1}' message: {2} exception: {3} {4} {5}",
+				                             loggerLevel, loggerName, message, exception.GetType(), exception.Message,
+				                             exception.StackTrace);
+			}
+
+			eventLog.WriteEntry(contentToLog, type);
 		}
 
 		~DiagnosticsLogger()
 		{
-			this.Dispose(false);
+			Dispose(false);
 		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		[NonSerialized]
-		private EventLog eventLog;
-
-		#endregion
-
-		#region Methods/Operators
 
 		private static EventLogEntryType TranslateLevel(LoggerLevel level)
 		{
@@ -112,55 +139,6 @@ namespace Castle.Core.Logging
 					return EventLogEntryType.Information;
 			}
 		}
-
-		public override ILogger CreateChildLogger(string loggerName)
-		{
-			return new DiagnosticsLogger(this.eventLog.Log, this.eventLog.MachineName, this.eventLog.Source);
-		}
-
-		public void Dispose()
-		{
-			this.Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-				if (this.eventLog != null)
-				{
-					this.eventLog.Close();
-					this.eventLog = null;
-				}
-			}
-		}
-
-		protected override void Log(LoggerLevel loggerLevel, string loggerName, string message, Exception exception)
-		{
-			if (this.eventLog == null)
-				return; // just in case it was disposed
-
-			var type = TranslateLevel(loggerLevel);
-
-			String contentToLog;
-
-			if (exception == null)
-			{
-				contentToLog = string.Format(CultureInfo.CurrentCulture, "[{0}] '{1}' message: {2}", loggerLevel, loggerName,
-					message);
-			}
-			else
-			{
-				contentToLog = string.Format(CultureInfo.CurrentCulture, "[{0}] '{1}' message: {2} exception: {3} {4} {5}",
-					loggerLevel, loggerName, message, exception.GetType(), exception.Message,
-					exception.StackTrace);
-			}
-
-			this.eventLog.WriteEntry(contentToLog, type);
-		}
-
-		#endregion
 	}
 #endif
 }

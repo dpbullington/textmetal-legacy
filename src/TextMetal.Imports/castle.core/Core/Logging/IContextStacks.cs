@@ -16,13 +16,6 @@ namespace Castle.Core.Logging
 {
 	public interface IContextStacks
 	{
-		#region Properties/Indexers/Events
-
-		IContextStack this[string key]
-		{
-			get;
-		}
-
-		#endregion
+		IContextStack this[string key] { get; }
 	}
 }

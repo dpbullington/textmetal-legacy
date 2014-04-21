@@ -5,99 +5,70 @@
 // ****************************************************************
 
 using System;
-using System.IO;
 
 namespace NUnit.Util
 {
 	public class RecentFileEntry
 	{
-		#region Constructors/Destructors
+		public static readonly char Separator = ',';
 
-		public RecentFileEntry(string path)
+		private string path;
+		
+		private Version clrVersion;
+
+		public RecentFileEntry( string path )
 		{
 			this.path = path;
 			this.clrVersion = Environment.Version;
 		}
 
-		public RecentFileEntry(string path, Version clrVersion)
+		public RecentFileEntry( string path, Version clrVersion )
 		{
 			this.path = path;
 			this.clrVersion = clrVersion;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		public static readonly char Separator = ',';
-		private Version clrVersion;
-		private string path;
-
-		#endregion
-
-		#region Properties/Indexers/Events
+		public string Path
+		{
+			get { return path; }
+		}
 
 		public Version CLRVersion
 		{
-			get
-			{
-				return this.clrVersion;
-			}
+			get { return clrVersion; }
 		}
 
 		public bool Exists
 		{
-			get
-			{
-				return this.path != null && File.Exists(this.path);
-			}
+			get { return path != null && System.IO.File.Exists( path ); }
 		}
 
 		public bool IsCompatibleCLRVersion
 		{
-			get
-			{
-				return this.clrVersion.Major <= Environment.Version.Major;
-			}
+			get { return clrVersion.Major <= Environment.Version.Major; }
 		}
 
-		public string Path
+		public override string ToString()
 		{
-			get
-			{
-				return this.path;
-			}
+			return Path + Separator + CLRVersion.ToString();
 		}
 
-		#endregion
-
-		#region Methods/Operators
-
-		public static RecentFileEntry Parse(string text)
+		public static RecentFileEntry Parse( string text )
 		{
-			int sepIndex = text.LastIndexOf(Separator);
+			int sepIndex = text.LastIndexOf( Separator );
 
-			if (sepIndex > 0)
-			{
+			if ( sepIndex > 0 )
 				try
 				{
-					return new RecentFileEntry(text.Substring(0, sepIndex),
-						new Version(text.Substring(sepIndex + 1)));
+					return new RecentFileEntry( text.Substring( 0, sepIndex ), 
+						new Version( text.Substring( sepIndex + 1 ) ) );
 				}
 				catch
 				{
 					//The last part was not a version, so fall through and return the whole text
 				}
-			}
-
-			return new RecentFileEntry(text);
+			
+			return new RecentFileEntry( text );
 		}
-
-		public override string ToString()
-		{
-			return this.Path + Separator + this.CLRVersion.ToString();
-		}
-
-		#endregion
 	}
 }

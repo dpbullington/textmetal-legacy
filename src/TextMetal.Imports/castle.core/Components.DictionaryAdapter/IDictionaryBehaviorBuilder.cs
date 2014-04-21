@@ -14,19 +14,17 @@
 
 namespace Castle.Components.DictionaryAdapter
 {
+	using System.Collections.Generic;
+
 	/// <summary>
-	/// Defines the contract for building <see cref="IDictionaryBehavior" />s.
+	/// Defines the contract for building <see cref="IDictionaryBehavior"/>s.
 	/// </summary>
 	public interface IDictionaryBehaviorBuilder
 	{
-		#region Methods/Operators
-
 		/// <summary>
 		/// Builds the dictionary behaviors.
 		/// </summary>
-		/// <returns> </returns>
+		/// <returns></returns>
 		object[] BuildBehaviors();
-
-		#endregion
 	}
 }

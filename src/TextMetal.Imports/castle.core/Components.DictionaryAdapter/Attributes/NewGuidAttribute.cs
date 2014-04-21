@@ -22,13 +22,7 @@ namespace Castle.Components.DictionaryAdapter
 	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Property, AllowMultiple = false)]
 	public class NewGuidAttribute : DictionaryBehaviorAttribute, IDictionaryPropertyGetter
 	{
-		#region Fields/Constants
-
 		private static readonly Guid UnassignedGuid = new Guid();
-
-		#endregion
-
-		#region Methods/Operators
 
 		public object GetPropertyValue(IDictionaryAdapter dictionaryAdapter,
 			string key, object storedValue, PropertyDescriptor property, bool ifExists)
@@ -41,7 +35,5 @@ namespace Castle.Components.DictionaryAdapter
 
 			return storedValue;
 		}
-
-		#endregion
 	}
 }

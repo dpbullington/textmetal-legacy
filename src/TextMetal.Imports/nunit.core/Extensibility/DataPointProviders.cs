@@ -5,120 +5,112 @@
 // ****************************************************************
 
 using System;
-using System.Collections;
 using System.Reflection;
+using System.Collections;
 
 namespace NUnit.Core.Extensibility
 {
-	internal class DataPointProviders : ExtensionPoint, IDataPointProvider2
-	{
-		#region Constructors/Destructors
+    class DataPointProviders : ExtensionPoint, IDataPointProvider2
+    {
+        public DataPointProviders(ExtensionHost host)
+            : base("DataPointProviders", host) { }
 
-		public DataPointProviders(ExtensionHost host)
-			: base("DataPointProviders", host)
-		{
-		}
+        #region IDataPointProvider Members
 
-		#endregion
+        /// <summary>
+        /// Determine whether any data is available for a parameter.
+        /// </summary>
+        /// <param name="parameter">A ParameterInfo representing one
+        /// argument to a parameterized test</param>
+        /// <returns>True if any data is available, otherwise false.</returns>
+        public bool HasDataFor(ParameterInfo parameter)
+        {
+            foreach (IDataPointProvider provider in Extensions)
+                if (provider.HasDataFor(parameter))
+                    return true;
 
-		#region Methods/Operators
+            return false;
+        }
 
-		/// <summary>
-		/// Return an IEnumerable providing data for use with the
-		/// supplied parameter.
-		/// </summary>
-		/// <param name="parameter"> A ParameterInfo representing one argument to a parameterized test </param>
-		/// <returns> An IEnumerable providing the required data </returns>
-		public IEnumerable GetDataFor(ParameterInfo parameter)
-		{
-			ArrayList list = new ArrayList();
+        /// <summary>
+        /// Return an IEnumerable providing data for use with the
+        /// supplied parameter.
+        /// </summary>
+        /// <param name="parameter">A ParameterInfo representing one
+        /// argument to a parameterized test</param>
+        /// <returns>An IEnumerable providing the required data</returns>
+        public IEnumerable GetDataFor(ParameterInfo parameter)
+        {
+            ArrayList list = new ArrayList();
 
-			foreach (IDataPointProvider provider in this.Extensions)
-			{
-				if (provider.HasDataFor(parameter))
-				{
-					foreach (object o in provider.GetDataFor(parameter))
-						list.Add(o);
-				}
-			}
+            foreach (IDataPointProvider provider in Extensions)
+                if (provider.HasDataFor(parameter))
+                    foreach (object o in provider.GetDataFor(parameter))
+                        list.Add(o);
 
-			return list;
-		}
+            return list;
+        }
+        #endregion
 
-		/// <summary>
-		/// Return an IEnumerable providing data for use with the
-		/// supplied parameter.
-		/// </summary>
-		/// <param name="parameter"> A ParameterInfo representing one argument to a parameterized test </param>
-		/// <returns> An IEnumerable providing the required data </returns>
-		public IEnumerable GetDataFor(ParameterInfo parameter, Test suite)
-		{
-			ArrayList list = new ArrayList();
+        #region IDataPointProvider2 Members
 
-			foreach (IDataPointProvider provider in this.Extensions)
-			{
-				if (provider is IDataPointProvider2)
-				{
-					IDataPointProvider2 provider2 = (IDataPointProvider2)provider;
-					if (provider2.HasDataFor(parameter, suite))
-					{
-						foreach (object o in provider2.GetDataFor(parameter, suite))
-							list.Add(o);
-					}
-				}
-				else if (provider.HasDataFor(parameter))
-				{
-					foreach (object o in provider.GetDataFor(parameter))
-						list.Add(o);
-				}
-			}
+        /// <summary>
+        /// Determine whether any data is available for a parameter.
+        /// </summary>
+        /// <param name="parameter">A ParameterInfo representing one
+        /// argument to a parameterized test</param>
+        /// <returns>True if any data is available, otherwise false.</returns>
+        public bool HasDataFor(ParameterInfo parameter, Test suite)
+        {
+            foreach (IDataPointProvider provider in Extensions)
+            {
+                if (provider is IDataPointProvider2)
+                {
+                    IDataPointProvider2 provider2 = (IDataPointProvider2)provider;
+                    if (provider2.HasDataFor(parameter, suite))
+                        return true;
+                }
+                else if (provider.HasDataFor(parameter))
+                    return true;
+            }
 
-			return list;
-		}
+            return false;
+        }
 
-		/// <summary>
-		/// Determine whether any data is available for a parameter.
-		/// </summary>
-		/// <param name="parameter"> A ParameterInfo representing one argument to a parameterized test </param>
-		/// <returns> True if any data is available, otherwise false. </returns>
-		public bool HasDataFor(ParameterInfo parameter)
-		{
-			foreach (IDataPointProvider provider in this.Extensions)
-			{
-				if (provider.HasDataFor(parameter))
-					return true;
-			}
+        /// <summary>
+        /// Return an IEnumerable providing data for use with the
+        /// supplied parameter.
+        /// </summary>
+        /// <param name="parameter">A ParameterInfo representing one
+        /// argument to a parameterized test</param>
+        /// <returns>An IEnumerable providing the required data</returns>
+        public IEnumerable GetDataFor(ParameterInfo parameter, Test suite)
+        {
+            ArrayList list = new ArrayList();
 
-			return false;
-		}
+            foreach (IDataPointProvider provider in Extensions)
+            {
+                if (provider is IDataPointProvider2)
+                {
+                    IDataPointProvider2 provider2 = (IDataPointProvider2)provider;
+                    if (provider2.HasDataFor(parameter, suite))
+                        foreach (object o in provider2.GetDataFor(parameter, suite))
+                            list.Add(o);
+                }
+                else if (provider.HasDataFor(parameter))
+                    foreach (object o in provider.GetDataFor(parameter))
+                        list.Add(o);
+            }
 
-		/// <summary>
-		/// Determine whether any data is available for a parameter.
-		/// </summary>
-		/// <param name="parameter"> A ParameterInfo representing one argument to a parameterized test </param>
-		/// <returns> True if any data is available, otherwise false. </returns>
-		public bool HasDataFor(ParameterInfo parameter, Test suite)
-		{
-			foreach (IDataPointProvider provider in this.Extensions)
-			{
-				if (provider is IDataPointProvider2)
-				{
-					IDataPointProvider2 provider2 = (IDataPointProvider2)provider;
-					if (provider2.HasDataFor(parameter, suite))
-						return true;
-				}
-				else if (provider.HasDataFor(parameter))
-					return true;
-			}
+            return list;
+        }
+        #endregion
 
-			return false;
-		}
-
-		protected override bool IsValidExtension(object extension)
-		{
-			return extension is IDataPointProvider;
-		}
-
-		#endregion
-	}
+        #region ExtensionPoint Overrides
+        protected override bool IsValidExtension(object extension)
+        {
+            return extension is IDataPointProvider;
+        }
+        #endregion
+    }
 }

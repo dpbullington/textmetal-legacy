@@ -11,59 +11,31 @@ namespace NUnit.Core
 	/// <summary>
 	/// Summary description for NullListener.
 	/// </summary>
+	/// 
 	[Serializable]
 	public class NullListener : EventListener
 	{
-		#region Properties/Indexers/Events
+		public void RunStarted( string name, int testCount ){ }
+
+		public void RunFinished( TestResult result ) { }
+
+		public void RunFinished( Exception exception ) { }
+
+		public void TestStarted(TestName testName){}
+			
+		public void TestFinished(TestResult result){}
+
+		public void SuiteStarted(TestName testName){}
+
+		public void SuiteFinished(TestResult result){}
+
+		public void UnhandledException( Exception exception ) {}
+
+		public void TestOutput(TestOutput testOutput) {}
 
 		public static EventListener NULL
 		{
-			get
-			{
-				return new NullListener();
-			}
+			get { return new NullListener();}
 		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		public void RunFinished(TestResult result)
-		{
-		}
-
-		public void RunFinished(Exception exception)
-		{
-		}
-
-		public void RunStarted(string name, int testCount)
-		{
-		}
-
-		public void SuiteFinished(TestResult result)
-		{
-		}
-
-		public void SuiteStarted(TestName testName)
-		{
-		}
-
-		public void TestFinished(TestResult result)
-		{
-		}
-
-		public void TestOutput(TestOutput testOutput)
-		{
-		}
-
-		public void TestStarted(TestName testName)
-		{
-		}
-
-		public void UnhandledException(Exception exception)
-		{
-		}
-
-		#endregion
 	}
 }

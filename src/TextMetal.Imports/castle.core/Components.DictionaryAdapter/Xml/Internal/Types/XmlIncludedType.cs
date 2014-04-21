@@ -12,16 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
 
 	public class XmlIncludedType : IXmlIncludedType
 	{
-		#region Constructors/Destructors
+		private readonly XmlName xsiType;
+		private readonly Type    clrType;
 
 		public XmlIncludedType(XmlName xsiType, Type clrType)
 		{
@@ -35,39 +34,17 @@ namespace Castle.Components.DictionaryAdapter.Xml
 		}
 
 		public XmlIncludedType(string localName, string namespaceUri, Type clrType)
-			: this(new XmlName(localName, namespaceUri), clrType)
-		{
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly Type clrType;
-		private readonly XmlName xsiType;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public Type ClrType
-		{
-			get
-			{
-				return this.clrType;
-			}
-		}
+			: this(new XmlName(localName, namespaceUri), clrType) { }
 
 		public XmlName XsiType
 		{
-			get
-			{
-				return this.xsiType;
-			}
+			get { return xsiType; }
 		}
 
-		#endregion
+		public Type ClrType
+		{
+			get { return clrType; }
+		}
 	}
 }
-
 #endif

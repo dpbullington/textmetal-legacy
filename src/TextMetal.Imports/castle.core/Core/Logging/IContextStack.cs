@@ -18,23 +18,12 @@ namespace Castle.Core.Logging
 
 	public interface IContextStack
 	{
-		#region Properties/Indexers/Events
-
-		int Count
-		{
-			get;
-		}
-
-		#endregion
-
-		#region Methods/Operators
+		int Count { get; }
 
 		void Clear();
 
 		string Pop();
 
 		IDisposable Push(string message);
-
-		#endregion
 	}
 }

@@ -5,93 +5,86 @@
 // ****************************************************************
 
 using System;
-using System.Collections;
 using System.IO;
+using System.Collections;
 
 namespace NUnit.Util
 {
 	/// <summary>
-	/// Represents a list of assemblies. It stores paths
+	/// Represents a list of assemblies. It stores paths 
 	/// that are added and fires an event whenevever it
 	/// changes. All paths must be added as absolute paths.
 	/// </summary>
 	public class AssemblyList : CollectionBase
 	{
-		#region Properties/Indexers/Events
-
-		public event EventHandler Changed;
-
+		#region Properties and Events
 		public string this[int index]
 		{
-			get
-			{
-				return (string)this.List[index];
-			}
-			set
-			{
-				if (!Path.IsPathRooted(value))
-					throw new ArgumentException("Assembly path must be absolute");
-				this.List[index] = value;
+			get { return (string)List[index]; }
+			set 
+			{ 
+				if ( !Path.IsPathRooted( value ) )
+					throw new ArgumentException( "Assembly path must be absolute" );
+				List[index] = value; 
 			}
 		}
 
+		public event EventHandler Changed;
 		#endregion
 
-		#region Methods/Operators
-
-		public void Add(string assemblyPath)
+		#region Methods
+		public string[] ToArray()
 		{
-			if (!Path.IsPathRooted(assemblyPath))
-				throw new ArgumentException("Assembly path must be absolute");
-			this.List.Add(assemblyPath);
+			return (string[])InnerList.ToArray( typeof( string ) );
 		}
 
-		public bool Contains(string assemblyPath)
+		public void Add( string assemblyPath )
 		{
-			for (int index = 0; index < this.Count; index++)
+			if ( !Path.IsPathRooted( assemblyPath ) )
+				throw new ArgumentException( "Assembly path must be absolute" );
+			List.Add( assemblyPath );
+		}
+
+		public void Remove( string assemblyPath )
+		{
+			for( int index = 0; index < this.Count; index++ )
 			{
-				if (this[index] == assemblyPath)
-					return true;
+				if ( this[index] == assemblyPath )
+					RemoveAt( index );
 			}
-
-			return false;
 		}
 
-		private void FireChangedEvent()
+        public bool Contains(string assemblyPath)
+        {
+            for (int index = 0; index < this.Count; index++)
+            {
+                if (this[index] == assemblyPath)
+                    return true;
+            }
+
+            return false;
+        }
+
+        protected override void OnRemoveComplete(int index, object value)
 		{
-			if (this.Changed != null)
-				this.Changed(this, EventArgs.Empty);
+			FireChangedEvent();
 		}
 
 		protected override void OnInsertComplete(int index, object value)
 		{
-			this.FireChangedEvent();
-		}
-
-		protected override void OnRemoveComplete(int index, object value)
-		{
-			this.FireChangedEvent();
+			FireChangedEvent();
 		}
 
 		protected override void OnSetComplete(int index, object oldValue, object newValue)
 		{
-			this.FireChangedEvent();
+			FireChangedEvent();
 		}
 
-		public void Remove(string assemblyPath)
+		private void FireChangedEvent()
 		{
-			for (int index = 0; index < this.Count; index++)
-			{
-				if (this[index] == assemblyPath)
-					this.RemoveAt(index);
-			}
+			if ( Changed != null )
+				Changed( this, EventArgs.Empty );
 		}
-
-		public string[] ToArray()
-		{
-			return (string[])this.InnerList.ToArray(typeof(string));
-		}
-
 		#endregion
 	}
 }

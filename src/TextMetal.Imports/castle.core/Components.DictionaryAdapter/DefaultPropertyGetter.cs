@@ -12,64 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.ComponentModel;
-
 namespace Castle.Components.DictionaryAdapter
 {
+	using System.ComponentModel;
+
 	/// <summary>
 	/// Manages conversion between property values.
 	/// </summary>
 	public class DefaultPropertyGetter : IDictionaryPropertyGetter
 	{
-		#region Constructors/Destructors
+		private readonly TypeConverter converter;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="DefaultPropertyGetter" /> class.
+		/// Initializes a new instance of the <see cref="DefaultPropertyGetter"/> class.
 		/// </summary>
-		/// <param name="converter"> The converter. </param>
+		/// <param name="converter">The converter.</param>
 		public DefaultPropertyGetter(TypeConverter converter)
 		{
 			this.converter = converter;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly TypeConverter converter;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
 		/// <summary>
+		/// 
 		/// </summary>
 		public int ExecutionOrder
 		{
-			get
-			{
-				return DictionaryBehaviorAttribute.LastExecutionOrder;
-			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		public IDictionaryBehavior Copy()
-		{
-			return this;
+			get { return DictionaryBehaviorAttribute.LastExecutionOrder; }
 		}
 
 		/// <summary>
 		/// Gets the effective dictionary value.
 		/// </summary>
-		/// <param name="dictionaryAdapter"> The dictionary adapter. </param>
-		/// <param name="key"> The key. </param>
-		/// <param name="storedValue"> The stored value. </param>
-		/// <param name="property"> The property. </param>
-		/// <param name="ifExists"> true if return only existing. </param>
-		/// <returns> The effective property value. </returns>
+		/// <param name="dictionaryAdapter">The dictionary adapter.</param>
+		/// <param name="key">The key.</param>
+		/// <param name="storedValue">The stored value.</param>
+		/// <param name="property">The property.</param>
+		/// <param name="ifExists">true if return only existing.</param>
+		/// <returns>The effective property value.</returns>
 		public object GetPropertyValue(IDictionaryAdapter dictionaryAdapter,
 			string key, object storedValue, PropertyDescriptor property, bool ifExists)
 		{
@@ -77,13 +56,18 @@ namespace Castle.Components.DictionaryAdapter
 
 			if (storedValue != null && propertyType.IsInstanceOfType(storedValue) == false)
 			{
-				if (this.converter != null && this.converter.CanConvertFrom(storedValue.GetType()))
-					return this.converter.ConvertFrom(storedValue);
+				if (converter != null && converter.CanConvertFrom(storedValue.GetType()))
+				{
+					return converter.ConvertFrom(storedValue);
+				}
 			}
 
 			return storedValue;
 		}
 
-		#endregion
+		public IDictionaryBehavior Copy()
+		{
+			return this;
+		}
 	}
 }

@@ -5,7 +5,7 @@
 // ****************************************************************
 
 using System;
-
+using NUnit.Core;
 using NUnit.Core.Extensibility;
 
 namespace NUnit.Util
@@ -18,126 +18,107 @@ namespace NUnit.Util
 	public class Services
 	{
 		#region AddinManager
-
 		private static AddinManager addinManager;
-
 		public static AddinManager AddinManager
 		{
-			get
+			get 
 			{
-				if (addinManager == null)
-					addinManager = (AddinManager)ServiceManager.Services.GetService(typeof(AddinManager));
+				if (addinManager == null )
+					addinManager = (AddinManager)ServiceManager.Services.GetService( typeof( AddinManager ) );
 
-				return addinManager;
+				return addinManager; 
 			}
 		}
-
 		#endregion
 
 		#region AddinRegistry
-
 		private static IAddinRegistry addinRegistry;
-
 		public static IAddinRegistry AddinRegistry
 		{
-			get
+			get 
 			{
 				if (addinRegistry == null)
-					addinRegistry = (IAddinRegistry)ServiceManager.Services.GetService(typeof(IAddinRegistry));
-
+					addinRegistry = (IAddinRegistry)ServiceManager.Services.GetService( typeof( IAddinRegistry ) );
+                
 				return addinRegistry;
 			}
 		}
-
 		#endregion
 
 		#region DomainManager
-
 		private static DomainManager domainManager;
-
 		public static DomainManager DomainManager
 		{
 			get
 			{
-				if (domainManager == null)
-					domainManager = (DomainManager)ServiceManager.Services.GetService(typeof(DomainManager));
+				if ( domainManager == null )
+					domainManager = (DomainManager)ServiceManager.Services.GetService( typeof( DomainManager ) );
 
 				return domainManager;
 			}
 		}
-
 		#endregion
 
 		#region UserSettings
-
 		private static ISettings userSettings;
-
 		public static ISettings UserSettings
 		{
-			get
-			{
-				if (userSettings == null)
-					userSettings = (ISettings)ServiceManager.Services.GetService(typeof(ISettings));
+			get 
+			{ 
+				if ( userSettings == null )
+					userSettings = (ISettings)ServiceManager.Services.GetService( typeof( ISettings ) );
 
 				// Temporary fix needed to run TestDomain tests in test AppDomain
 				// TODO: Figure out how to set up the test domain correctly
-				if (userSettings == null)
+				if ( userSettings == null )
 					userSettings = new SettingsService();
 
-				return userSettings;
+				return userSettings; 
 			}
 		}
-
+		
 		#endregion
 
 		#region RecentFilesService
-
 #if CLR_2_0 || CLR_4_0
 		private static RecentFiles recentFiles;
-
 		public static RecentFiles RecentFiles
 		{
 			get
 			{
-				if (recentFiles == null)
-					recentFiles = (RecentFiles)ServiceManager.Services.GetService(typeof(RecentFiles));
+				if ( recentFiles == null )
+					recentFiles = (RecentFiles)ServiceManager.Services.GetService( typeof( RecentFiles ) );
 
 				return recentFiles;
 			}
 		}
 #endif
-
 		#endregion
 
 		#region TestLoader
-
 #if CLR_2_0 || CLR_4_0
 		private static TestLoader loader;
-
 		public static TestLoader TestLoader
 		{
 			get
 			{
-				if (loader == null)
-					loader = (TestLoader)ServiceManager.Services.GetService(typeof(TestLoader));
+				if ( loader == null )
+					loader = (TestLoader)ServiceManager.Services.GetService( typeof( TestLoader ) );
 
 				return loader;
 			}
 		}
 #endif
-
 		#endregion
 
 		#region TestAgency
-
 		private static TestAgency agency;
-
 		public static TestAgency TestAgency
 		{
 			get
 			{
-				if (agency == null)
-					agency = (TestAgency)ServiceManager.Services.GetService(typeof(TestAgency));
+				if ( agency == null )
+					agency = (TestAgency)ServiceManager.Services.GetService( typeof( TestAgency ) );
 
 				// Temporary fix needed to run ProcessRunner tests in test AppDomain
 				// TODO: Figure out how to set up the test domain correctly
@@ -150,27 +131,21 @@ namespace NUnit.Util
 				return agency;
 			}
 		}
-
 		#endregion
 
 		#region ProjectLoader
-
 		private static ProjectService projectService;
-
 		public static ProjectService ProjectService
 		{
 			get
 			{
-				if (projectService == null)
-				{
+				if ( projectService == null )
 					projectService = (ProjectService)
-						ServiceManager.Services.GetService(typeof(ProjectService));
-				}
+						ServiceManager.Services.GetService( typeof( ProjectService ) );
 
 				return projectService;
 			}
 		}
-
 		#endregion
 	}
 }

@@ -18,10 +18,6 @@ namespace Castle.Components.DictionaryAdapter
 
 	public interface IDictionaryCopyStrategy
 	{
-		#region Methods/Operators
-
 		bool Copy(IDictionaryAdapter source, IDictionaryAdapter target, ref Func<PropertyDescriptor, bool> selector);
-
-		#endregion
 	}
 }

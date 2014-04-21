@@ -12,74 +12,52 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
+	using System.Collections.Generic;
+	using System.ComponentModel;
+	using System.Linq;
 
 	public class DictionaryValidateGroup : IDictionaryValidate, INotifyPropertyChanged, IDisposable
 	{
-		#region Constructors/Destructors
+		private readonly object[] groups;
+		private readonly IDictionaryAdapter adapter;
+		private readonly string[] propertyNames;
+		private readonly PropertyChangedEventHandler propertyChanged;
 
 		public DictionaryValidateGroup(object[] groups, IDictionaryAdapter adapter)
 		{
 			this.groups = groups;
 			this.adapter = adapter;
 
-			this.propertyNames = (from property in this.adapter.This.Properties.Values
-				from groupings in property.Annotations.OfType<GroupAttribute>()
-				where this.groups.Intersect(groupings.Group).Any()
-				select property.PropertyName).Distinct().ToArray();
+			propertyNames = (from property in this.adapter.This.Properties.Values
+					  from groupings in property.Annotations.OfType<GroupAttribute>()
+					  where this.groups.Intersect(groupings.Group).Any() 
+					  select property.PropertyName).Distinct().ToArray();
 
-			if (this.propertyNames.Length > 0 && adapter.CanNotify)
+			if (propertyNames.Length > 0 && adapter.CanNotify)
 			{
-				this.propertyChanged += (sender, args) =>
-										{
-											if (this.PropertyChanged != null)
-												this.PropertyChanged(this, args);
-										};
-				this.adapter.PropertyChanged += this.propertyChanged;
+				propertyChanged += (sender, args) =>
+				{
+					if (PropertyChanged != null)
+						PropertyChanged(this, args);
+				};
+				this.adapter.PropertyChanged += propertyChanged;
 			}
 		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly IDictionaryAdapter adapter;
-		private readonly object[] groups;
-		private readonly PropertyChangedEventHandler propertyChanged;
-		private readonly string[] propertyNames;
-
-		#endregion
-
-		#region Properties/Indexers/Events
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public string this[string columnName]
-		{
-			get
-			{
-				if (Array.IndexOf(this.propertyNames, columnName) >= 0)
-					return this.adapter[columnName];
-				return string.Empty;
-			}
-		}
-
 		public bool CanValidate
 		{
-			get
-			{
-				return this.adapter.CanValidate;
-			}
-			set
-			{
-				this.adapter.CanValidate = value;
-			}
+			get { return adapter.CanValidate; }
+			set { adapter.CanValidate = value; }
+		}
+
+		public bool IsValid
+		{
+			get { return string.IsNullOrEmpty(Error); }
 		}
 
 		public string Error
@@ -87,30 +65,33 @@ namespace Castle.Components.DictionaryAdapter
 			get
 			{
 				return string.Join(Environment.NewLine,
-					this.propertyNames.Select(propertyName => this.adapter[propertyName])
-						.Where(errors => !string.IsNullOrEmpty(errors)).ToArray());
+					propertyNames.Select(propertyName => adapter[propertyName])
+					.Where(errors => !string.IsNullOrEmpty(errors)).ToArray());
 			}
 		}
 
-		public bool IsValid
+		public string this[string columnName]
 		{
 			get
 			{
-				return string.IsNullOrEmpty(this.Error);
+				if (Array.IndexOf(propertyNames, columnName) >= 0)
+				{
+					return adapter[columnName];
+				}
+				return string.Empty;
 			}
+		}
+
+		public DictionaryValidateGroup ValidateGroups(params object[] groups)
+		{
+			groups = this.groups.Union(groups).ToArray();
+			return new DictionaryValidateGroup(groups, adapter);
 		}
 
 		public IEnumerable<IDictionaryValidator> Validators
 		{
-			get
-			{
-				return this.adapter.Validators;
-			}
+			get { return adapter.Validators; }
 		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		public void AddValidator(IDictionaryValidator validator)
 		{
@@ -119,15 +100,7 @@ namespace Castle.Components.DictionaryAdapter
 
 		public void Dispose()
 		{
-			this.adapter.PropertyChanged -= this.propertyChanged;
+			adapter.PropertyChanged -= propertyChanged;
 		}
-
-		public DictionaryValidateGroup ValidateGroups(params object[] groups)
-		{
-			groups = this.groups.Union(groups).ToArray();
-			return new DictionaryValidateGroup(groups, this.adapter);
-		}
-
-		#endregion
 	}
 }

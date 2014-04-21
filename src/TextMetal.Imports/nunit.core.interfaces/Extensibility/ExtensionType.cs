@@ -3,7 +3,6 @@
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
-
 using System;
 
 namespace NUnit.Core.Extensibility
@@ -21,16 +20,16 @@ namespace NUnit.Core.Extensibility
 		/// A Core extension is installed by the CoreExtensions
 		/// host in each test domain.
 		/// </summary>
-		Core = 1,
+		Core=1,
 
 		/// <summary>
 		/// A Client extension is installed by all clients
 		/// </summary>
-		Client = 2,
+		Client=2,
 
 		/// <summary>
 		/// A Gui extension is installed by the gui client
 		/// </summary>
-		Gui = 4
+		Gui=4
 	}
 }

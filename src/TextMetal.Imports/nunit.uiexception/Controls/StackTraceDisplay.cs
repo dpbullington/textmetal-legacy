@@ -1,113 +1,94 @@
-// ****************************************************************
+﻿// ****************************************************************
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
 
 using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Windows.Forms;
-
+using System.Drawing;
 using NUnit.UiException.Properties;
 
 namespace NUnit.UiException.Controls
 {
-	/// <summary>
-	/// Implements IErrorDisplay to show the actual stack trace in a TextBox control.
-	/// </summary>
-	public class StackTraceDisplay :
-		UserControl,
-		IErrorDisplay
-	{
-		#region Constructors/Destructors
+    /// <summary>
+    /// Implements IErrorDisplay to show the actual stack trace in a TextBox control.
+    /// </summary>
+    public class StackTraceDisplay :
+        UserControl,
+        IErrorDisplay
+    {
+        private TextBox _textContent;
+        private ToolStripButton _btnPlugin;
+        private ToolStripButton _btnCopy;
 
-		/// <summary>
-		/// Builds a new instance of StackTraceDisplay.
-		/// </summary>
-		public StackTraceDisplay()
-		{
-			this._btnPlugin = ErrorToolbar.NewStripButton(true, "Display actual stack trace", Resources.ImageStackTraceDisplay, null);
-			this._btnCopy = ErrorToolbar.NewStripButton(false, "Copy stack trace to clipboard", Resources.ImageCopyToClipboard, this.OnClick);
+        /// <summary>
+        /// Builds a new instance of StackTraceDisplay.
+        /// </summary>
+        public StackTraceDisplay()
+        {
+            _btnPlugin = ErrorToolbar.NewStripButton(true, "Display actual stack trace", Resources.ImageStackTraceDisplay, null);
+            _btnCopy = ErrorToolbar.NewStripButton(false, "Copy stack trace to clipboard", Resources.ImageCopyToClipboard, OnClick);
 
-			this._textContent = new TextBox();
-			this._textContent.ReadOnly = true;
-			this._textContent.Multiline = true;
-			this._textContent.ScrollBars = ScrollBars.Both;
+            _textContent = new TextBox();
+            _textContent.ReadOnly = true;
+            _textContent.Multiline = true;
+            _textContent.ScrollBars = ScrollBars.Both;
 
-			return;
-		}
+           return;
+        }
 
-		#endregion
+        protected override void OnFontChanged(EventArgs e)
+        {
+            _textContent.Font = this.Font;
 
-		#region Fields/Constants
+            base.OnFontChanged(e);
+        }
 
-		private ToolStripButton _btnCopy;
-		private ToolStripButton _btnPlugin;
-		private TextBox _textContent;
+        /// <summary>
+        /// Copies the actual stack trace to the clipboard.
+        /// </summary>
+        public void CopyToClipBoard()
+        {
+            if (String.IsNullOrEmpty(_textContent.Text))
+            {
+                Clipboard.Clear();
+                return;
+            }
 
-		#endregion
+            Clipboard.SetText(_textContent.Text);
 
-		#region Properties/Indexers/Events
+            return;
+        }
 
-		public Control Content
-		{
-			get
-			{
-				return (this._textContent);
-			}
-		}
+        #region IErrorDisplay Membres
 
-		public ToolStripItem[] OptionItems
-		{
-			get
-			{
-				return (new ToolStripItem[] { this._btnCopy });
-			}
-		}
+        public ToolStripButton PluginItem
+        {
+            get { return (_btnPlugin); }
+        }
 
-		public ToolStripButton PluginItem
-		{
-			get
-			{
-				return (this._btnPlugin);
-			}
-		}
+        public ToolStripItem[] OptionItems
+        {
+            get { return (new ToolStripItem[] { _btnCopy }); }
+        }
+        
+        public Control Content
+        {
+            get { return (_textContent); }
+        }
 
-		#endregion
+        public void OnStackTraceChanged(string stackTrace)
+        {
+            _textContent.Text = stackTrace;
+        }
 
-		#region Methods/Operators
+        #endregion
 
-		/// <summary>
-		/// Copies the actual stack trace to the clipboard.
-		/// </summary>
-		public void CopyToClipBoard()
-		{
-			if (String.IsNullOrEmpty(this._textContent.Text))
-			{
-				Clipboard.Clear();
-				return;
-			}
-
-			Clipboard.SetText(this._textContent.Text);
-
-			return;
-		}
-
-		private void OnClick(object sender, EventArgs args)
-		{
-			this.CopyToClipBoard();
-		}
-
-		protected override void OnFontChanged(EventArgs e)
-		{
-			this._textContent.Font = this.Font;
-
-			base.OnFontChanged(e);
-		}
-
-		public void OnStackTraceChanged(string stackTrace)
-		{
-			this._textContent.Text = stackTrace;
-		}
-
-		#endregion
-	}
+        private void OnClick(object sender, EventArgs args)
+        {
+            CopyToClipBoard();
+        }
+    }
 }

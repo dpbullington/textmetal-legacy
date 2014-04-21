@@ -6,7 +6,6 @@
 
 using System;
 using System.Collections;
-
 using NUnit.Core;
 
 namespace NUnit.Util
@@ -16,88 +15,60 @@ namespace NUnit.Util
 	/// </summary>
 	public class ServiceManager
 	{
-		#region Constructors/Destructors
-
-		private ServiceManager()
-		{
-		}
-
-		#endregion
-
-		#region Fields/Constants
+		private ArrayList services = new ArrayList();
+		private Hashtable serviceIndex = new Hashtable();
 
 		private static ServiceManager defaultServiceManager = new ServiceManager();
 
-		private static Logger log = InternalTrace.GetLogger(typeof(ServiceManager));
-		private Hashtable serviceIndex = new Hashtable();
-		private ArrayList services = new ArrayList();
-
-		#endregion
-
-		#region Properties/Indexers/Events
+		static Logger log = InternalTrace.GetLogger(typeof(ServiceManager));
 
 		public static ServiceManager Services
 		{
-			get
-			{
-				return defaultServiceManager;
-			}
+			get { return defaultServiceManager; }
 		}
 
-		#endregion
-
-		#region Methods/Operators
-
-		public void AddService(IService service)
+		public void AddService( IService service )
 		{
-			this.services.Add(service);
-			log.Debug("Added " + service.GetType().Name);
+			services.Add( service );
+			log.Debug( "Added " + service.GetType().Name );
 		}
 
-		public void ClearServices()
+		public IService GetService( Type serviceType )
 		{
-			log.Info("Clearing Service list");
-			this.services.Clear();
-		}
-
-		public IService GetService(Type serviceType)
-		{
-			IService theService = (IService)this.serviceIndex[serviceType];
-			if (theService == null)
-			{
-				foreach (IService service in this.services)
+			IService theService = (IService)serviceIndex[serviceType];
+			if ( theService == null )
+				foreach( IService service in services )
 				{
 					// TODO: Does this work on Mono?
-					if (serviceType.IsInstanceOfType(service))
+					if( serviceType.IsInstanceOfType( service ) )
 					{
-						this.serviceIndex[serviceType] = service;
+						serviceIndex[serviceType] = service;
 						theService = service;
 						break;
 					}
 				}
-			}
 
-			if (theService == null)
-				log.Error(string.Format("Requested service {0} was not found", serviceType.FullName));
+			if ( theService == null )
+				log.Error( string.Format( "Requested service {0} was not found", serviceType.FullName ) );
 			else
-				log.Debug(string.Format("Request for service {0} satisfied by {1}", serviceType.Name, theService.GetType().Name));
-
+				log.Debug( string.Format( "Request for service {0} satisfied by {1}", serviceType.Name, theService.GetType().Name ) );
+			
 			return theService;
 		}
 
 		public void InitializeServices()
 		{
-			foreach (IService service in this.services)
+			foreach( IService service in services )
 			{
-				log.Info("Initializing " + service.GetType().Name);
-				try
-				{
-					service.InitializeService();
-				}
-				catch (Exception ex)
-				{
-					log.Error("Failed to initialize service", ex);
-				}
+				log.Info( "Initializing " + service.GetType().Name );
+                try
+                {
+                    service.InitializeService();
+                }
+                catch (Exception ex)
+                {
+                    log.Error("Failed to initialize service", ex);
+                }
 			}
 		}
 
@@ -105,22 +76,28 @@ namespace NUnit.Util
 		{
 			// Stop services in reverse of initialization order
 			// TODO: Deal with dependencies explicitly
-			int index = this.services.Count;
-			while (--index >= 0)
-			{
-				IService service = this.services[index] as IService;
-				log.Info("Stopping " + service.GetType().Name);
-				try
-				{
-					service.UnloadService();
-				}
-				catch (Exception ex)
-				{
-					log.Error("Failure stopping service", ex);
-				}
-			}
+			int index = services.Count;
+            while (--index >= 0)
+            {
+                IService service = services[index] as IService;
+                log.Info( "Stopping " + service.GetType().Name );
+                try
+                {
+                    service.UnloadService();
+                }
+                catch (Exception ex)
+                {
+                    log.Error("Failure stopping service", ex);
+                }
+            }
 		}
 
-		#endregion
+		public void ClearServices()
+		{
+            log.Info("Clearing Service list");
+			services.Clear();
+		}
+
+		private ServiceManager() { }
 	}
 }

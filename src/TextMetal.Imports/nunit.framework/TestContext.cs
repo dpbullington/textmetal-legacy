@@ -1,250 +1,242 @@
-// ****************************************************************
+﻿// ****************************************************************
 // Copyright 2010, Charlie Poole
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
-
 using System;
 using System.Collections;
 using System.Runtime.Remoting.Messaging;
 
 namespace NUnit.Framework
 {
-	/// <summary>
-	/// Provide the context information of the current test
-	/// </summary>
-	public class TestContext
-	{
-		#region Constructors/Destructors
+    /// <summary>
+    /// Provide the context information of the current test
+    /// </summary>
+    public class TestContext
+    {
+        private const string contextKey = "NUnit.Framework.TestContext";
+        private const string stateKey = "Result.State";
 
-		/// <summary>
-		/// Constructs a TestContext using the provided context dictionary
-		/// </summary>
-		/// <param name="context"> A context dictionary </param>
-		public TestContext(IDictionary context)
-		{
-			this._context = context;
-		}
+        private IDictionary _context;
 
-		#endregion
+        private TestAdapter _test;
+        private ResultAdapter _result;
 
-		#region Fields/Constants
+        #region Constructor
 
-		private const string contextKey = "NUnit.Framework.TestContext";
-		private const string stateKey = "Result.State";
+        /// <summary>
+        /// Constructs a TestContext using the provided context dictionary
+        /// </summary>
+        /// <param name="context">A context dictionary</param>
+        public TestContext(IDictionary context)
+        {
+            _context = context;
+        }
 
-		private IDictionary _context;
+        #endregion
 
-		private ResultAdapter _result;
-		private TestAdapter _test;
+        #region Properties
 
-		#endregion
+        /// <summary>
+        /// Get the current test context. This is created
+        /// as needed. The user may save the context for
+        /// use within a test, but it should not be used
+        /// outside the test for which it is created.
+        /// </summary>
+        public static TestContext CurrentContext
+        {
+            get
+            {
+                return new TestContext((IDictionary)CallContext.GetData(contextKey));
+            }
+        }
 
-		#region Properties/Indexers/Events
+        /// <summary>
+        /// Gets a TestAdapter representing the currently executing test in this context.
+        /// </summary>
+        public TestAdapter Test
+        {
+            get
+            {
+                if (_test == null)
+                    _test = new TestAdapter(_context);
 
-		/// <summary>
-		/// Get the current test context. This is created
-		/// as needed. The user may save the context for
-		/// use within a test, but it should not be used
-		/// outside the test for which it is created.
-		/// </summary>
-		public static TestContext CurrentContext
-		{
-			get
-			{
-				return new TestContext((IDictionary)CallContext.GetData(contextKey));
-			}
-		}
+                return _test;
+            }
+        }
 
-		/// <summary>
-		/// Gets a ResultAdapter representing the current result for the test
-		/// executing in this context.
-		/// </summary>
-		public ResultAdapter Result
-		{
-			get
-			{
-				if (this._result == null)
-					this._result = new ResultAdapter(this._context);
+        /// <summary>
+        /// Gets a ResultAdapter representing the current result for the test 
+        /// executing in this context.
+        /// </summary>
+        public ResultAdapter Result
+        {
+            get
+            {
+                if (_result == null)
+                    _result = new ResultAdapter(_context);
 
-				return this._result;
-			}
-		}
+                return _result;
+            }
+        }
 
-		/// <summary>
-		/// Gets a TestAdapter representing the currently executing test in this context.
-		/// </summary>
-		public TestAdapter Test
-		{
-			get
-			{
-				if (this._test == null)
-					this._test = new TestAdapter(this._context);
+        /// <summary>
+        /// Gets the directory containing the current test assembly.
+        /// </summary>
+        public string TestDirectory
+        {
+            get
+            {
+                return (string)_context["TestDirectory"];
+            }
+        }
 
-				return this._test;
-			}
-		}
+        /// <summary>
+        /// Gets the directory to be used for outputing files created
+        /// by this test run.
+        /// </summary>
+        public string WorkDirectory
+        {
+            get
+            {
+                return (string)_context["WorkDirectory"];
+            }
+        }
 
-		/// <summary>
-		/// Gets the directory containing the current test assembly.
-		/// </summary>
-		public string TestDirectory
-		{
-			get
-			{
-				return (string)this._context["TestDirectory"];
-			}
-		}
+        #endregion
 
-		/// <summary>
-		/// Gets the directory to be used for outputing files created
-		/// by this test run.
-		/// </summary>
-		public string WorkDirectory
-		{
-			get
-			{
-				return (string)this._context["WorkDirectory"];
-			}
-		}
+        #region Nested TestAdapter Class
 
-		#endregion
+        /// <summary>
+        /// TestAdapter adapts a Test for consumption by
+        /// the user test code.
+        /// </summary>
+        public class TestAdapter
+        {
+            private IDictionary _context;
 
-		#region Classes/Structs/Interfaces/Enums/Delegates
+            #region Constructor
 
-		/// <summary>
-		/// ResultAdapter adapts a TestResult for consumption by
-		/// the user test code.
-		/// </summary>
-		public class ResultAdapter
-		{
-			#region Constructors/Destructors
+            /// <summary>
+            /// Constructs a TestAdapter for this context
+            /// </summary>
+            /// <param name="context">The context dictionary</param>
+            public TestAdapter(IDictionary context)
+            {
+                _context = context;
+            }
 
-			/// <summary>
-			/// Construct a ResultAdapter for a context
-			/// </summary>
-			/// <param name="context"> The context holding the result </param>
-			public ResultAdapter(IDictionary context)
-			{
-				this._context = context;
-			}
+            #endregion
 
-			#endregion
+            #region Properties
 
-			#region Fields/Constants
+            /// <summary>
+            /// The name of the test.
+            /// </summary>
+            public string Name
+            {
+                get
+                {
+                    return _context["Test.Name"] as string;
+                }
+            }
 
-			private IDictionary _context;
+            /// <summary>
+            /// The FullName of the test
+            /// </summary>
+            public string FullName
+            {
+                get
+                {
+                    return _context["Test.FullName"] as string;
+                }
+            }
 
-			#endregion
+            /// <summary>
+            /// The properties of the test.
+            /// </summary>
+            public IDictionary Properties
+            {
+                get
+                {
+                    return _context["Test.Properties"] as IDictionary;
+                }
+            }
 
-			#region Properties/Indexers/Events
+            #endregion
+        }
 
-			/// <summary>
-			/// The TestState of current test. This maps to the ResultState
-			/// used in nunit.core and is subject to change in the future.
-			/// </summary>
-			public TestState State
-			{
-				get
-				{
-					return (TestState)this._context["Result.State"];
-				}
-			}
+        #endregion
 
-			/// <summary>
-			/// The TestStatus of current test. This enum will be used
-			/// in future versions of NUnit and so is to be preferred
-			/// to the TestState value.
-			/// </summary>
-			public TestStatus Status
-			{
-				get
-				{
-					switch (this.State)
-					{
-						default:
-						case TestState.Inconclusive:
-							return TestStatus.Inconclusive;
-						case TestState.Skipped:
-						case TestState.Ignored:
-						case TestState.NotRunnable:
-							return TestStatus.Skipped;
-						case TestState.Success:
-							return TestStatus.Passed;
-						case TestState.Failure:
-						case TestState.Error:
-						case TestState.Cancelled:
-							return TestStatus.Failed;
-					}
-				}
-			}
+        #region Nested ResultAdapter Class
 
-			#endregion
-		}
+        /// <summary>
+        /// ResultAdapter adapts a TestResult for consumption by
+        /// the user test code.
+        /// </summary>
+        public class ResultAdapter
+        {
+            private IDictionary _context;
 
-		/// <summary>
-		/// TestAdapter adapts a Test for consumption by
-		/// the user test code.
-		/// </summary>
-		public class TestAdapter
-		{
-			#region Constructors/Destructors
+            #region Constructor
 
-			/// <summary>
-			/// Constructs a TestAdapter for this context
-			/// </summary>
-			/// <param name="context"> The context dictionary </param>
-			public TestAdapter(IDictionary context)
-			{
-				this._context = context;
-			}
+            /// <summary>
+            /// Construct a ResultAdapter for a context
+            /// </summary>
+            /// <param name="context">The context holding the result</param>
+            public ResultAdapter(IDictionary context)
+            {
+                this._context = context;
+            }
 
-			#endregion
+            #endregion
 
-			#region Fields/Constants
+            #region Properties
 
-			private IDictionary _context;
+            /// <summary>
+            /// The TestState of current test. This maps to the ResultState
+            /// used in nunit.core and is subject to change in the future.
+            /// </summary>
+            public TestState State
+            {
+                get
+                {
+                    return (TestState)_context["Result.State"];
+                }
+            }
 
-			#endregion
+            /// <summary>
+            /// The TestStatus of current test. This enum will be used
+            /// in future versions of NUnit and so is to be preferred
+            /// to the TestState value.
+            /// </summary>
+            public TestStatus Status
+            {
+                get
+                {
+                    switch (State)
+                    {
+                        default:
+                        case TestState.Inconclusive:
+                            return TestStatus.Inconclusive;
+                        case TestState.Skipped:
+                        case TestState.Ignored:
+                        case TestState.NotRunnable:
+                            return TestStatus.Skipped;
+                        case TestState.Success:
+                            return TestStatus.Passed;
+                        case TestState.Failure:
+                        case TestState.Error:
+                        case TestState.Cancelled:
+                            return TestStatus.Failed;
+                    }
+                }
+            }
 
-			#region Properties/Indexers/Events
 
-			/// <summary>
-			/// The FullName of the test
-			/// </summary>
-			public string FullName
-			{
-				get
-				{
-					return this._context["Test.FullName"] as string;
-				}
-			}
+            #endregion
+        }
 
-			/// <summary>
-			/// The name of the test.
-			/// </summary>
-			public string Name
-			{
-				get
-				{
-					return this._context["Test.Name"] as string;
-				}
-			}
-
-			/// <summary>
-			/// The properties of the test.
-			/// </summary>
-			public IDictionary Properties
-			{
-				get
-				{
-					return this._context["Test.Properties"] as IDictionary;
-				}
-			}
-
-			#endregion
-		}
-
-		#endregion
-	}
+        #endregion
+    }
 }

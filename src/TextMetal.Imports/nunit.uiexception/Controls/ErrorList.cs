@@ -1,295 +1,263 @@
-// ****************************************************************
+﻿// ****************************************************************
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
 
 using System;
-using System.Drawing;
+using System.Collections.Generic;
+using System.Text;
 using System.Windows.Forms;
+using System.Drawing;
+using System.Diagnostics;
 
 namespace NUnit.UiException.Controls
 {
-	/// <summary>
-	/// Displays a control which implements IStackTraceView.
-	/// </summary>
-	public class ErrorList :
-		UserControl,
-		IStackTraceView
-	{
-		#region Constructors/Destructors
+    /// <summary>
+    /// Displays a control which implements IStackTraceView.
+    /// </summary>
+    public class ErrorList :
+        UserControl,
+        IStackTraceView
+    {
+        public event EventHandler SelectedItemChanged;
 
-		/// <summary>
-		/// Builds a new instance of ErrorList.
-		/// </summary>
-		public ErrorList()
-			:
-				this(new DefaultErrorListRenderer())
-		{
-		}
+        private ErrorListOrderPolicy _listOrder;
+        private ErrorItemCollection _items;
+        private ErrorItem _selection;
+        private string _stackTrace;
+        protected IErrorListRenderer _renderer;
+        protected Graphics _workingGraphics;
+        protected int _hoveredIndex;
 
-		protected ErrorList(IErrorListRenderer renderer)
-		{
-			UiExceptionHelper.CheckNotNull(renderer, "display");
+        private Point _mouse;
+        private bool _autoSelectFirstItem;
 
-			this.SetStyle(ControlStyles.UserPaint, true);
-			this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-			this.DoubleBuffered = true;
+        /// <summary>
+        /// Builds a new instance of ErrorList.
+        /// </summary>
+        public ErrorList() :
+            this(new DefaultErrorListRenderer())
+        {
+        }
 
-			this._renderer = renderer;
-			this._items = new ErrorItemCollection();
-			this._stackTrace = null;
-			this._selection = null;
-			this._workingGraphics = this.CreateGraphics();
-			this._hoveredIndex = -1;
+        /// <summary>
+        /// Gives access to the item collection.
+        /// </summary>
+        public ErrorItemCollection Items
+        {
+            get { return (_items); }
+        }
 
-			this._autoSelectFirstItem = false;
-			this._listOrder = ErrorListOrderPolicy.InitialOrder;
+        #region IStackTraceView Members
 
-			return;
-		}
+        public bool AutoSelectFirstItem
+        {
+            get { return (_autoSelectFirstItem); }
+            set { _autoSelectFirstItem = value; }
+        }
 
-		#endregion
+        public string StackTrace
+        {
+            get { return (_stackTrace); }
+            set
+            {
+                ErrorItem candidate;
 
-		#region Fields/Constants
+                candidate = PopulateList(value);
 
-		private bool _autoSelectFirstItem;
-		protected int _hoveredIndex;
+                if (!String.IsNullOrEmpty(value) &&
+                    _items.Count == 0)
+                    _items.Add(new ErrorItem(null, "Fail to parse stack trace", -1));
 
-		private ErrorItemCollection _items;
-		private ErrorListOrderPolicy _listOrder;
-		private Point _mouse;
-		protected IErrorListRenderer _renderer;
-		private ErrorItem _selection;
-		private string _stackTrace;
-		protected Graphics _workingGraphics;
+                AutoScrollMinSize = _renderer.GetDocumentSize(_items, _workingGraphics);
 
-		#endregion
+                _hoveredIndex = -1;
+                SelectedItem = (AutoSelectFirstItem ? candidate : null);
+                Invalidate();
 
-		#region Properties/Indexers/Events
+                return;
+            }
+        }
 
-		public event EventHandler SelectedItemChanged;
+        public ErrorItem SelectedItem
+        {
+            get { return (_selection); }
+            set
+            {
+                bool fireEvent;
 
-		public bool AutoSelectFirstItem
-		{
-			get
-			{
-				return (this._autoSelectFirstItem);
-			}
-			set
-			{
-				this._autoSelectFirstItem = value;
-			}
-		}
+                if (value != null &&
+                    (!_items.Contains(value) || !value.HasSourceAttachment))
+                    return;
 
-		/// <summary>
-		/// Gives access to the item collection.
-		/// </summary>
-		public ErrorItemCollection Items
-		{
-			get
-			{
-				return (this._items);
-			}
-		}
+                fireEvent = (_selection != value);
+                _selection = value;
 
-		public ErrorListOrderPolicy ListOrderPolicy
-		{
-			get
-			{
-				return (this._listOrder);
-			}
-			set
-			{
-				if (this._listOrder == value)
-					return;
-				this._listOrder = value;
-				this._items.Reverse();
-				this.Invalidate();
-			}
-		}
+                if (fireEvent && SelectedItemChanged != null)
+                    SelectedItemChanged(this, new EventArgs());
 
-		public ErrorItem SelectedItem
-		{
-			get
-			{
-				return (this._selection);
-			}
-			set
-			{
-				bool fireEvent;
+                Invalidate();
+            }
+        }
 
-				if (value != null &&
-					(!this._items.Contains(value) || !value.HasSourceAttachment))
-					return;
+        public ErrorListOrderPolicy ListOrderPolicy
+        {
+            get { return (_listOrder); }
+            set
+            {
+                if (_listOrder == value)
+                    return;
+                _listOrder = value;
+                _items.Reverse();
+                Invalidate();
+            }
+        }
 
-				fireEvent = (this._selection != value);
-				this._selection = value;
+        #endregion
 
-				if (fireEvent && this.SelectedItemChanged != null)
-					this.SelectedItemChanged(this, new EventArgs());
+        protected ErrorList(IErrorListRenderer renderer)
+        {
+            UiExceptionHelper.CheckNotNull(renderer, "display");
 
-				this.Invalidate();
-			}
-		}
+            SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            DoubleBuffered = true;
 
-		public string StackTrace
-		{
-			get
-			{
-				return (this._stackTrace);
-			}
-			set
-			{
-				ErrorItem candidate;
+            _renderer = renderer;
+            _items = new ErrorItemCollection();
+            _stackTrace = null;
+            _selection = null;
+            _workingGraphics = CreateGraphics();
+            _hoveredIndex = -1;
 
-				candidate = this.PopulateList(value);
+            _autoSelectFirstItem = false;
+            _listOrder = ErrorListOrderPolicy.InitialOrder;
 
-				if (!String.IsNullOrEmpty(value) &&
-					this._items.Count == 0)
-					this._items.Add(new ErrorItem(null, "Fail to parse stack trace", -1));
+            return;
+        }
 
-				this.AutoScrollMinSize = this._renderer.GetDocumentSize(this._items, this._workingGraphics);
+        protected virtual void ItemEntered(int index)
+        {
+            Cursor = Cursors.Hand;
+        }
 
-				this._hoveredIndex = -1;
-				this.SelectedItem = (this.AutoSelectFirstItem ? candidate : null);
-				this.Invalidate();
+        protected virtual void ItemLeaved(int index)
+        {
+            Cursor = Cursors.Default;
+        }
 
-				return;
-			}
-		}
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            Rectangle viewport;
 
-		#endregion
+            base.OnPaint(e);
 
-		#region Methods/Operators
+            viewport = new Rectangle(-AutoScrollPosition.X, -AutoScrollPosition.Y, 
+                ClientRectangle.Width, ClientRectangle.Height);
+            _renderer.DrawToGraphics(_items, _selection, e.Graphics, viewport);
 
-		protected virtual void ItemEntered(int index)
-		{
-			this.Cursor = Cursors.Hand;
-		}
+            if (_hoveredIndex != -1)
+                _renderer.DrawItem(_items[_hoveredIndex], _hoveredIndex, true,
+                    _items[_hoveredIndex] == _selection, e.Graphics, viewport);
 
-		protected virtual void ItemLeaved(int index)
-		{
-			this.Cursor = Cursors.Default;
-		}
+            return;
+        }
 
-		protected override void OnClick(EventArgs e)
-		{
-			base.OnClick(e);
-			this.OnClick(this._mouse);
+        protected override void OnMouseHover(EventArgs e)
+        {
+            base.OnMouseHover(e);
+            Focus();
+        }
+       
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+            _mouse = new Point(e.X, e.Y - AutoScrollPosition.Y);
+        }
 
-			return;
-		}
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            ErrorItem item;
+            int itemIndex;
 
-		protected void OnClick(Point point)
-		{
-			this.SelectedItem = this._renderer.ItemAt(this._items, this._workingGraphics, point);
+            base.OnMouseMove(e);
 
-			return;
-		}
+            item = _renderer.ItemAt(_items, _workingGraphics, new Point(e.X, e.Y - AutoScrollPosition.Y));
 
-		protected override void OnFontChanged(EventArgs e)
-		{
-			this._renderer.Font = this.Font;
+            itemIndex = -1;
+            for (int i = 0; i < _items.Count; ++i)
+                if (Object.ReferenceEquals(_items[i], item))
+                {
+                    itemIndex = i;
+                    break;
+                }            
 
-			base.OnFontChanged(e);
-		}
+            if (itemIndex != _hoveredIndex)
+            {
+                if (_hoveredIndex != -1)
+                    ItemLeaved(_hoveredIndex);
 
-		protected override void OnMouseDown(MouseEventArgs e)
-		{
-			base.OnMouseDown(e);
-			this._mouse = new Point(e.X, e.Y - this.AutoScrollPosition.Y);
-		}
+                if (itemIndex != -1 && _items[itemIndex].HasSourceAttachment)
+                {
+                    ItemEntered(itemIndex);
+                    _hoveredIndex = itemIndex;
+                }
+                else
+                    _hoveredIndex = -1;
+                Invalidate();
+            }
 
-		protected override void OnMouseHover(EventArgs e)
-		{
-			base.OnMouseHover(e);
-			this.Focus();
-		}
+            return;
+        }
 
-		protected override void OnMouseMove(MouseEventArgs e)
-		{
-			ErrorItem item;
-			int itemIndex;
+        protected override void OnClick(EventArgs e)
+        {
+            base.OnClick(e);
+            OnClick(_mouse);
 
-			base.OnMouseMove(e);
+            return;
+        }
 
-			item = this._renderer.ItemAt(this._items, this._workingGraphics, new Point(e.X, e.Y - this.AutoScrollPosition.Y));
+        protected override void OnFontChanged(EventArgs e)
+        {
+            this._renderer.Font = this.Font;
 
-			itemIndex = -1;
-			for (int i = 0; i < this._items.Count; ++i)
-			{
-				if (ReferenceEquals(this._items[i], item))
-				{
-					itemIndex = i;
-					break;
-				}
-			}
+            base.OnFontChanged(e);
+        }
 
-			if (itemIndex != this._hoveredIndex)
-			{
-				if (this._hoveredIndex != -1)
-					this.ItemLeaved(this._hoveredIndex);
+        protected void OnClick(Point point)
+        {
+            SelectedItem = _renderer.ItemAt(_items, _workingGraphics, point);
 
-				if (itemIndex != -1 && this._items[itemIndex].HasSourceAttachment)
-				{
-					this.ItemEntered(itemIndex);
-					this._hoveredIndex = itemIndex;
-				}
-				else
-					this._hoveredIndex = -1;
-				this.Invalidate();
-			}
+            return;
+        }
 
-			return;
-		}
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
+            Invalidate();
+        }
 
-		protected override void OnPaint(PaintEventArgs e)
-		{
-			Rectangle viewport;
+        private ErrorItem PopulateList(string stackTrace)
+        {
+            StackTraceParser parser = new StackTraceParser();
+            ErrorItem candidate;
 
-			base.OnPaint(e);
+            _stackTrace = stackTrace;
+            parser.Parse(stackTrace);
+            if (_listOrder == ErrorListOrderPolicy.ReverseOrder)
+                parser.Items.Reverse();
 
-			viewport = new Rectangle(-this.AutoScrollPosition.X, -this.AutoScrollPosition.Y,
-				this.ClientRectangle.Width, this.ClientRectangle.Height);
-			this._renderer.DrawToGraphics(this._items, this._selection, e.Graphics, viewport);
+            candidate = null;
+            _items.Clear();
+            foreach (ErrorItem item in parser.Items)
+            {
+                if (candidate == null && item.HasSourceAttachment)
+                    candidate = item;
+                _items.Add(item);
+            }
 
-			if (this._hoveredIndex != -1)
-			{
-				this._renderer.DrawItem(this._items[this._hoveredIndex], this._hoveredIndex, true,
-					this._items[this._hoveredIndex] == this._selection, e.Graphics, viewport);
-			}
-
-			return;
-		}
-
-		protected override void OnSizeChanged(EventArgs e)
-		{
-			base.OnSizeChanged(e);
-			this.Invalidate();
-		}
-
-		private ErrorItem PopulateList(string stackTrace)
-		{
-			StackTraceParser parser = new StackTraceParser();
-			ErrorItem candidate;
-
-			this._stackTrace = stackTrace;
-			parser.Parse(stackTrace);
-			if (this._listOrder == ErrorListOrderPolicy.ReverseOrder)
-				parser.Items.Reverse();
-
-			candidate = null;
-			this._items.Clear();
-			foreach (ErrorItem item in parser.Items)
-			{
-				if (candidate == null && item.HasSourceAttachment)
-					candidate = item;
-				this._items.Add(item);
-			}
-
-			return (candidate);
-		}
-
-		#endregion
-	}
+            return (candidate);
+        }
+    }
 }

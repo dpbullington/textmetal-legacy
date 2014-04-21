@@ -1,5 +1,4 @@
 ﻿#region License
-
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -22,49 +21,35 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-
 #endregion
 
 using System;
-
 using Newtonsoft.Json.Utilities;
 
 namespace Newtonsoft.Json.Bson
 {
-	/// <summary>
-	/// Represents a BSON Oid (object id).
-	/// </summary>
-	public class BsonObjectId
-	{
-		#region Constructors/Destructors
+    /// <summary>
+    /// Represents a BSON Oid (object id).
+    /// </summary>
+    public class BsonObjectId
+    {
+        /// <summary>
+        /// Gets or sets the value of the Oid.
+        /// </summary>
+        /// <value>The value of the Oid.</value>
+        public byte[] Value { get; private set; }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="BsonObjectId" /> class.
-		/// </summary>
-		/// <param name="value"> The Oid value. </param>
-		public BsonObjectId(byte[] value)
-		{
-			ValidationUtils.ArgumentNotNull(value, "value");
-			if (value.Length != 12)
-				throw new ArgumentException("An ObjectId must be 12 bytes", "value");
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BsonObjectId"/> class.
+        /// </summary>
+        /// <param name="value">The Oid value.</param>
+        public BsonObjectId(byte[] value)
+        {
+            ValidationUtils.ArgumentNotNull(value, "value");
+            if (value.Length != 12)
+                throw new ArgumentException("An ObjectId must be 12 bytes", "value");
 
-			this.Value = value;
-		}
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Gets or sets the value of the Oid.
-		/// </summary>
-		/// <value> The value of the Oid. </value>
-		public byte[] Value
-		{
-			get;
-			private set;
-		}
-
-		#endregion
-	}
+            Value = value;
+        }
+    }
 }

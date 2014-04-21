@@ -1,5 +1,4 @@
 ﻿#region License
-
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -22,258 +21,238 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-
 #endregion
 
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json.Utilities;
 using System.Diagnostics;
 using System.Globalization;
 
-using Newtonsoft.Json.Utilities;
-
 namespace Newtonsoft.Json.Linq
 {
-	/// <summary>
-	/// Represents a JSON property.
-	/// </summary>
-	public class JProperty : JContainer
-	{
-		#region Constructors/Destructors
+    /// <summary>
+    /// Represents a JSON property.
+    /// </summary>
+    public class JProperty : JContainer
+    {
+        private readonly List<JToken> _content = new List<JToken>();
+        private readonly string _name;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="JProperty" /> class from another <see cref="JProperty" /> object.
-		/// </summary>
-		/// <param name="other"> A <see cref="JProperty" /> object to copy from. </param>
-		public JProperty(JProperty other)
-			: base(other)
-		{
-			this._name = other.Name;
-		}
+        /// <summary>
+        /// Gets the container's children tokens.
+        /// </summary>
+        /// <value>The container's children tokens.</value>
+        protected override IList<JToken> ChildrenTokens
+        {
+            get { return _content; }
+        }
 
-		internal JProperty(string name)
-		{
-			// called from JTokenWriter
-			ValidationUtils.ArgumentNotNull(name, "name");
+        /// <summary>
+        /// Gets the property name.
+        /// </summary>
+        /// <value>The property name.</value>
+        public string Name
+        {
+            [DebuggerStepThrough]
+            get { return _name; }
+        }
 
-			this._name = name;
-		}
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        /// <value>The property value.</value>
+        public JToken Value
+        {
+            [DebuggerStepThrough]
+            get { return (_content.Count > 0) ? _content[0] : null; }
+            set
+            {
+                CheckReentrancy();
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="JProperty" /> class.
-		/// </summary>
-		/// <param name="name"> The property name. </param>
-		/// <param name="content"> The property content. </param>
-		public JProperty(string name, params object[] content)
-			: this(name, (object)content)
-		{
-		}
+                JToken newValue = value ?? new JValue((object)null);
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="JProperty" /> class.
-		/// </summary>
-		/// <param name="name"> The property name. </param>
-		/// <param name="content"> The property content. </param>
-		public JProperty(string name, object content)
-		{
-			ValidationUtils.ArgumentNotNull(name, "name");
+                if (_content.Count == 0)
+                {
+                    InsertItem(0, newValue, false);
+                }
+                else
+                {
+                    SetItem(0, newValue);
+                }
+            }
+        }
 
-			this._name = name;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JProperty"/> class from another <see cref="JProperty"/> object.
+        /// </summary>
+        /// <param name="other">A <see cref="JProperty"/> object to copy from.</param>
+        public JProperty(JProperty other)
+            : base(other)
+        {
+            _name = other.Name;
+        }
 
-			this.Value = this.IsMultiContent(content)
-				? new JArray(content)
-				: this.CreateFromContent(content);
-		}
+        internal override JToken GetItem(int index)
+        {
+            if (index != 0)
+                throw new ArgumentOutOfRangeException();
 
-		#endregion
+            return Value;
+        }
 
-		#region Fields/Constants
+        internal override void SetItem(int index, JToken item)
+        {
+            if (index != 0)
+                throw new ArgumentOutOfRangeException();
 
-		private readonly List<JToken> _content = new List<JToken>();
-		private readonly string _name;
+            if (IsTokenUnchanged(Value, item))
+                return;
 
-		#endregion
+            if (Parent != null)
+                ((JObject)Parent).InternalPropertyChanging(this);
 
-		#region Properties/Indexers/Events
+            base.SetItem(0, item);
 
-		/// <summary>
-		/// Gets the container's children tokens.
-		/// </summary>
-		/// <value> The container's children tokens. </value>
-		protected override IList<JToken> ChildrenTokens
-		{
-			get
-			{
-				return this._content;
-			}
-		}
+            if (Parent != null)
+                ((JObject)Parent).InternalPropertyChanged(this);
+        }
 
-		/// <summary>
-		/// Gets the property name.
-		/// </summary>
-		/// <value> The property name. </value>
-		public string Name
-		{
-			[DebuggerStepThrough]
-			get
-			{
-				return this._name;
-			}
-		}
+        internal override bool RemoveItem(JToken item)
+        {
+            throw new JsonException("Cannot add or remove items from {0}.".FormatWith(CultureInfo.InvariantCulture, typeof(JProperty)));
+        }
 
-		/// <summary>
-		/// Gets the node type for this <see cref="JToken" />.
-		/// </summary>
-		/// <value> The type. </value>
-		public override JTokenType Type
-		{
-			[DebuggerStepThrough]
-			get
-			{
-				return JTokenType.Property;
-			}
-		}
+        internal override void RemoveItemAt(int index)
+        {
+            throw new JsonException("Cannot add or remove items from {0}.".FormatWith(CultureInfo.InvariantCulture, typeof(JProperty)));
+        }
 
-		/// <summary>
-		/// Gets or sets the property value.
-		/// </summary>
-		/// <value> The property value. </value>
-		public JToken Value
-		{
-			[DebuggerStepThrough]
-			get
-			{
-				return (this._content.Count > 0) ? this._content[0] : null;
-			}
-			set
-			{
-				this.CheckReentrancy();
+        internal override void InsertItem(int index, JToken item, bool skipParentCheck)
+        {
+            // don't add comments to JProperty
+            if (item != null && item.Type == JTokenType.Comment)
+                return;
 
-				JToken newValue = value ?? new JValue((object)null);
+            if (Value != null)
+                throw new JsonException("{0} cannot have multiple values.".FormatWith(CultureInfo.InvariantCulture, typeof(JProperty)));
 
-				if (this._content.Count == 0)
-					this.InsertItem(0, newValue, false);
-				else
-					this.SetItem(0, newValue);
-			}
-		}
+            base.InsertItem(0, item, false);
+        }
 
-		#endregion
+        internal override bool ContainsItem(JToken item)
+        {
+            return (Value == item);
+        }
 
-		#region Methods/Operators
+        internal override void ClearItems()
+        {
+            throw new JsonException("Cannot add or remove items from {0}.".FormatWith(CultureInfo.InvariantCulture, typeof(JProperty)));
+        }
 
-		/// <summary>
-		/// Loads an <see cref="JProperty" /> from a <see cref="JsonReader" />.
-		/// </summary>
-		/// <param name="reader"> A <see cref="JsonReader" /> that will be read for the content of the <see cref="JProperty" />. </param>
-		/// <returns> A <see cref="JProperty" /> that contains the JSON that was read from the specified <see cref="JsonReader" />. </returns>
-		public new static JProperty Load(JsonReader reader)
-		{
-			if (reader.TokenType == JsonToken.None)
-			{
-				if (!reader.Read())
-					throw JsonReaderException.Create(reader, "Error reading JProperty from JsonReader.");
-			}
+        internal override bool DeepEquals(JToken node)
+        {
+            JProperty t = node as JProperty;
+            return (t != null && _name == t.Name && ContentsEqual(t));
+        }
 
-			while (reader.TokenType == JsonToken.Comment)
-				reader.Read();
+        internal override JToken CloneToken()
+        {
+            return new JProperty(this);
+        }
 
-			if (reader.TokenType != JsonToken.PropertyName)
-				throw JsonReaderException.Create(reader, "Error reading JProperty from JsonReader. Current JsonReader item is not a property: {0}".FormatWith(CultureInfo.InvariantCulture, reader.TokenType));
+        /// <summary>
+        /// Gets the node type for this <see cref="JToken"/>.
+        /// </summary>
+        /// <value>The type.</value>
+        public override JTokenType Type
+        {
+            [DebuggerStepThrough]
+            get { return JTokenType.Property; }
+        }
 
-			JProperty p = new JProperty((string)reader.Value);
-			p.SetLineInfo(reader as IJsonLineInfo);
+        internal JProperty(string name)
+        {
+            // called from JTokenWriter
+            ValidationUtils.ArgumentNotNull(name, "name");
 
-			p.ReadTokenFrom(reader);
+            _name = name;
+        }
 
-			return p;
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JProperty"/> class.
+        /// </summary>
+        /// <param name="name">The property name.</param>
+        /// <param name="content">The property content.</param>
+        public JProperty(string name, params object[] content)
+            : this(name, (object)content)
+        {
+        }
 
-		internal override void ClearItems()
-		{
-			throw new JsonException("Cannot add or remove items from {0}.".FormatWith(CultureInfo.InvariantCulture, typeof(JProperty)));
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JProperty"/> class.
+        /// </summary>
+        /// <param name="name">The property name.</param>
+        /// <param name="content">The property content.</param>
+        public JProperty(string name, object content)
+        {
+            ValidationUtils.ArgumentNotNull(name, "name");
 
-		internal override JToken CloneToken()
-		{
-			return new JProperty(this);
-		}
+            _name = name;
 
-		internal override bool ContainsItem(JToken item)
-		{
-			return (this.Value == item);
-		}
+            Value = IsMultiContent(content)
+                ? new JArray(content)
+                : CreateFromContent(content);
+        }
 
-		internal override bool DeepEquals(JToken node)
-		{
-			JProperty t = node as JProperty;
-			return (t != null && this._name == t.Name && this.ContentsEqual(t));
-		}
+        /// <summary>
+        /// Writes this token to a <see cref="JsonWriter"/>.
+        /// </summary>
+        /// <param name="writer">A <see cref="JsonWriter"/> into which this method will write.</param>
+        /// <param name="converters">A collection of <see cref="JsonConverter"/> which will be used when writing the token.</param>
+        public override void WriteTo(JsonWriter writer, params JsonConverter[] converters)
+        {
+            writer.WritePropertyName(_name);
 
-		internal override int GetDeepHashCode()
-		{
-			return this._name.GetHashCode() ^ ((this.Value != null) ? this.Value.GetDeepHashCode() : 0);
-		}
+            JToken value = Value;
+            if (value != null)
+                value.WriteTo(writer, converters);
+            else
+                writer.WriteNull();
+        }
 
-		internal override JToken GetItem(int index)
-		{
-			if (index != 0)
-				throw new ArgumentOutOfRangeException();
+        internal override int GetDeepHashCode()
+        {
+            return _name.GetHashCode() ^ ((Value != null) ? Value.GetDeepHashCode() : 0);
+        }
 
-			return this.Value;
-		}
+        /// <summary>
+        /// Loads an <see cref="JProperty"/> from a <see cref="JsonReader"/>. 
+        /// </summary>
+        /// <param name="reader">A <see cref="JsonReader"/> that will be read for the content of the <see cref="JProperty"/>.</param>
+        /// <returns>A <see cref="JProperty"/> that contains the JSON that was read from the specified <see cref="JsonReader"/>.</returns>
+        public new static JProperty Load(JsonReader reader)
+        {
+            if (reader.TokenType == JsonToken.None)
+            {
+                if (!reader.Read())
+                    throw JsonReaderException.Create(reader, "Error reading JProperty from JsonReader.");
+            }
 
-		internal override void InsertItem(int index, JToken item, bool skipParentCheck)
-		{
-			if (this.Value != null)
-				throw new JsonException("{0} cannot have multiple values.".FormatWith(CultureInfo.InvariantCulture, typeof(JProperty)));
+            while (reader.TokenType == JsonToken.Comment)
+            {
+                reader.Read();
+            }
 
-			base.InsertItem(0, item, false);
-		}
+            if (reader.TokenType != JsonToken.PropertyName)
+                throw JsonReaderException.Create(reader, "Error reading JProperty from JsonReader. Current JsonReader item is not a property: {0}".FormatWith(CultureInfo.InvariantCulture, reader.TokenType));
 
-		internal override bool RemoveItem(JToken item)
-		{
-			throw new JsonException("Cannot add or remove items from {0}.".FormatWith(CultureInfo.InvariantCulture, typeof(JProperty)));
-		}
+            JProperty p = new JProperty((string)reader.Value);
+            p.SetLineInfo(reader as IJsonLineInfo);
 
-		internal override void RemoveItemAt(int index)
-		{
-			throw new JsonException("Cannot add or remove items from {0}.".FormatWith(CultureInfo.InvariantCulture, typeof(JProperty)));
-		}
+            p.ReadTokenFrom(reader);
 
-		internal override void SetItem(int index, JToken item)
-		{
-			if (index != 0)
-				throw new ArgumentOutOfRangeException();
-
-			if (IsTokenUnchanged(this.Value, item))
-				return;
-
-			if (this.Parent != null)
-				((JObject)this.Parent).InternalPropertyChanging(this);
-
-			base.SetItem(0, item);
-
-			if (this.Parent != null)
-				((JObject)this.Parent).InternalPropertyChanged(this);
-		}
-
-		/// <summary>
-		/// Writes this token to a <see cref="JsonWriter" />.
-		/// </summary>
-		/// <param name="writer"> A <see cref="JsonWriter" /> into which this method will write. </param>
-		/// <param name="converters"> A collection of <see cref="JsonConverter" /> which will be used when writing the token. </param>
-		public override void WriteTo(JsonWriter writer, params JsonConverter[] converters)
-		{
-			writer.WritePropertyName(this._name);
-
-			JToken value = this.Value;
-			if (value != null)
-				value.WriteTo(writer, converters);
-			else
-				writer.WriteNull();
-		}
-
-		#endregion
-	}
+            return p;
+        }
+    }
 }

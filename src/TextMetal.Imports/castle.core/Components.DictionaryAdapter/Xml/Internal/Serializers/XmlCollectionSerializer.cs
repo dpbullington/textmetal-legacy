@@ -12,40 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Collections;
 
 	public abstract class XmlCollectionSerializer : XmlTypeSerializer
 	{
-		#region Constructors/Destructors
-
-		protected XmlCollectionSerializer()
-		{
-		}
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public override bool CanGetStub
-		{
-			get
-			{
-				return true;
-			}
-		}
+		protected XmlCollectionSerializer() { }
 
 		public override XmlTypeKind Kind
 		{
-			get
-			{
-				return XmlTypeKind.Collection;
-			}
+			get { return XmlTypeKind.Collection; }
+		}
+
+		public override bool CanGetStub
+		{
+			get { return true; }
 		}
 
 		public abstract Type ListTypeConstructor
@@ -53,24 +37,20 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			get; // generic type constructor
 		}
 
-		#endregion
-
-		#region Methods/Operators
-
 		public override object GetStub(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor)
 		{
-			return this.GetValueCore(node, parent, accessor);
+			return GetValueCore(node, parent, accessor);
 		}
 
 		public override object GetValue(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor)
 		{
-			return this.GetValueCore(node.Save(), parent, accessor);
+			return GetValueCore(node.Save(), parent, accessor);
 		}
 
 		private object GetValueCore(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor)
 		{
-			var itemType = node.ClrType.GetGenericArguments()[0];
-			var listType = this.ListTypeConstructor.MakeGenericType(itemType);
+			var itemType    = node.ClrType.GetGenericArguments()[0];
+			var listType    = ListTypeConstructor.MakeGenericType(itemType);
 			var subaccessor = accessor.GetCollectionAccessor(itemType);
 			return Activator.CreateInstance(listType, node, parent, subaccessor);
 		}
@@ -89,13 +69,10 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			if (oldCollection != null)
 				oldCollection.ClearReferences();
 
-			var newCollection = (ICollectionProjection)this.GetValue(node, parent, accessor);
+			var newCollection = (ICollectionProjection) GetValue(node, parent, accessor);
 			newCollection.Replace(newItems);
 			value = newCollection;
 		}
-
-		#endregion
 	}
 }
-
 #endif

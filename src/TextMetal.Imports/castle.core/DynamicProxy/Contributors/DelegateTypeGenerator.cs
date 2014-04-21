@@ -12,20 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection;
-
-using Castle.DynamicProxy.Generators;
-using Castle.DynamicProxy.Generators.Emitters;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Castle.DynamicProxy.Internal;
-
 namespace Castle.DynamicProxy.Contributors
 {
 	using System;
+	using System.Reflection;
+
+	using Castle.DynamicProxy.Generators;
+	using Castle.DynamicProxy.Generators.Emitters;
+	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+	using Castle.DynamicProxy.Internal;
 
 	public class DelegateTypeGenerator : IGenerator<AbstractTypeEmitter>
 	{
-		#region Constructors/Destructors
+		private const TypeAttributes DelegateFlags = TypeAttributes.Class |
+		                                             TypeAttributes.Public |
+		                                             TypeAttributes.Sealed |
+		                                             TypeAttributes.AnsiClass |
+		                                             TypeAttributes.AutoClass;
+
+		private readonly MetaMethod method;
+		private readonly Type targetType;
 
 		public DelegateTypeGenerator(MetaMethod method, Type targetType)
 		{
@@ -33,86 +39,71 @@ namespace Castle.DynamicProxy.Contributors
 			this.targetType = targetType;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private const TypeAttributes DelegateFlags = TypeAttributes.Class |
-													TypeAttributes.Public |
-													TypeAttributes.Sealed |
-													TypeAttributes.AnsiClass |
-													TypeAttributes.AutoClass;
-
-		private readonly MetaMethod method;
-		private readonly Type targetType;
-
-		#endregion
-
-		#region Methods/Operators
+		public AbstractTypeEmitter Generate(ClassEmitter @class, ProxyGenerationOptions options, INamingScope namingScope)
+		{
+			var emitter = GetEmitter(@class, namingScope);
+			BuildConstructor(emitter);
+			BuildInvokeMethod(emitter);
+			return emitter;
+		}
 
 		private void BuildConstructor(AbstractTypeEmitter emitter)
 		{
 			var constructor = emitter.CreateConstructor(new ArgumentReference(typeof(object)),
-				new ArgumentReference(typeof(IntPtr)));
+			                                            new ArgumentReference(typeof(IntPtr)));
 			constructor.ConstructorBuilder.SetImplementationFlags(MethodImplAttributes.Runtime | MethodImplAttributes.Managed);
 		}
 
 		private void BuildInvokeMethod(AbstractTypeEmitter @delegate)
 		{
-			var paramTypes = this.GetParamTypes(@delegate);
+			var paramTypes = GetParamTypes(@delegate);
 			var invoke = @delegate.CreateMethod("Invoke",
-				MethodAttributes.Public |
-				MethodAttributes.HideBySig |
-				MethodAttributes.NewSlot |
-				MethodAttributes.Virtual,
-				@delegate.GetClosedParameterType(this.method.MethodOnTarget.ReturnType),
-				paramTypes);
+			                                    MethodAttributes.Public |
+			                                    MethodAttributes.HideBySig |
+			                                    MethodAttributes.NewSlot |
+			                                    MethodAttributes.Virtual,
+			                                    @delegate.GetClosedParameterType(method.MethodOnTarget.ReturnType),
+			                                    paramTypes);
 			invoke.MethodBuilder.SetImplementationFlags(MethodImplAttributes.Runtime | MethodImplAttributes.Managed);
-		}
-
-		public AbstractTypeEmitter Generate(ClassEmitter @class, ProxyGenerationOptions options, INamingScope namingScope)
-		{
-			var emitter = this.GetEmitter(@class, namingScope);
-			this.BuildConstructor(emitter);
-			this.BuildInvokeMethod(emitter);
-			return emitter;
 		}
 
 		private AbstractTypeEmitter GetEmitter(ClassEmitter @class, INamingScope namingScope)
 		{
-			var methodInfo = this.method.MethodOnTarget;
+			var methodInfo = method.MethodOnTarget;
 			var suggestedName = string.Format("Castle.Proxies.Delegates.{0}_{1}",
-				methodInfo.DeclaringType.Name,
-				this.method.Method.Name);
+			                                  methodInfo.DeclaringType.Name,
+			                                  method.Method.Name);
 			var uniqueName = namingScope.ParentScope.GetUniqueName(suggestedName);
 
 			var @delegate = new ClassEmitter(@class.ModuleScope,
-				uniqueName,
-				typeof(MulticastDelegate),
-				Type.EmptyTypes,
-				DelegateFlags);
-			@delegate.CopyGenericParametersFromMethod(this.method.Method);
+			                                 uniqueName,
+			                                 typeof(MulticastDelegate),
+			                                 Type.EmptyTypes,
+			                                 DelegateFlags);
+			@delegate.CopyGenericParametersFromMethod(method.Method);
 			return @delegate;
 		}
 
 		private Type[] GetParamTypes(AbstractTypeEmitter @delegate)
 		{
-			var parameters = this.method.MethodOnTarget.GetParameters();
+			var parameters = method.MethodOnTarget.GetParameters();
 			if (@delegate.TypeBuilder.IsGenericType)
 			{
 				var types = new Type[parameters.Length];
 
 				for (var i = 0; i < parameters.Length; i++)
+				{
 					types[i] = @delegate.GetClosedParameterType(parameters[i].ParameterType);
+				}
 				return types;
 			}
 			var paramTypes = new Type[parameters.Length + 1];
-			paramTypes[0] = this.targetType;
+			paramTypes[0] = targetType;
 			for (var i = 0; i < parameters.Length; i++)
+			{
 				paramTypes[i + 1] = @delegate.GetClosedParameterType(parameters[i].ParameterType);
+			}
 			return paramTypes;
 		}
-
-		#endregion
 	}
 }

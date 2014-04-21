@@ -12,51 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using System.Reflection;
-
-using Castle.DynamicProxy.Contributors;
-using Castle.DynamicProxy.Generators.Emitters;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Castle.DynamicProxy.Internal;
-using Castle.DynamicProxy.Serialization;
-
 namespace Castle.DynamicProxy.Generators
 {
 	using System;
+	using System.Collections.Generic;
+	using System.Reflection;
+
+	using Castle.DynamicProxy.Contributors;
+	using Castle.DynamicProxy.Generators.Emitters;
+	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+	using Castle.DynamicProxy.Internal;
+	using Castle.DynamicProxy.Serialization;
 
 	public class InterfaceProxyWithTargetInterfaceGenerator : InterfaceProxyWithTargetGenerator
 	{
-		#region Constructors/Destructors
-
 		public InterfaceProxyWithTargetInterfaceGenerator(ModuleScope scope, Type @interface)
 			: base(scope, @interface)
 		{
 		}
 
-		#endregion
-
-		#region Properties/Indexers/Events
-
 		protected override bool AllowChangeTarget
 		{
-			get
-			{
-				return true;
-			}
+			get { return true; }
 		}
 
 		protected override string GeneratorType
 		{
-			get
-			{
-				return ProxyTypeConstants.InterfaceWithTargetInterface;
-			}
+			get { return ProxyTypeConstants.InterfaceWithTargetInterface; }
 		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		protected override ITypeContributor AddMappingForTargetType(
 			IDictionary<Type, ITypeContributor> typeImplementerMapping, Type proxyTargetType, ICollection<Type> targetInterfaces,
@@ -64,12 +47,12 @@ namespace Castle.DynamicProxy.Generators
 		{
 			var contributor = new InterfaceProxyWithTargetInterfaceTargetContributor(
 				proxyTargetType,
-				this.AllowChangeTarget,
-				namingScope) { Logger = this.Logger };
-			foreach (var @interface in this.targetType.GetAllInterfaces())
+				AllowChangeTarget,
+				namingScope) { Logger = Logger };
+			foreach (var @interface in targetType.GetAllInterfaces())
 			{
 				contributor.AddInterfaceToProxy(@interface);
-				this.AddMappingNoCheck(@interface, contributor, typeImplementerMapping);
+				AddMappingNoCheck(@interface, contributor, typeImplementerMapping);
 			}
 
 			return contributor;
@@ -78,8 +61,8 @@ namespace Castle.DynamicProxy.Generators
 		protected override InterfaceProxyWithoutTargetContributor GetContributorForAdditionalInterfaces(
 			INamingScope namingScope)
 		{
-			return new InterfaceProxyWithOptionalTargetContributor(namingScope, this.GetTargetExpression, this.GetTarget)
-					{ Logger = this.Logger };
+			return new InterfaceProxyWithOptionalTargetContributor(namingScope, GetTargetExpression, GetTarget)
+			{ Logger = Logger };
 		}
 
 		private Reference GetTarget(ClassEmitter @class, MethodInfo method)
@@ -89,9 +72,7 @@ namespace Castle.DynamicProxy.Generators
 
 		private Expression GetTargetExpression(ClassEmitter @class, MethodInfo method)
 		{
-			return this.GetTarget(@class, method).ToExpression();
+			return GetTarget(@class, method).ToExpression();
 		}
-
-		#endregion
 	}
 }

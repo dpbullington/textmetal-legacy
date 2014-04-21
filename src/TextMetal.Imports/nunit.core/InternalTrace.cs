@@ -5,151 +5,125 @@
 // ****************************************************************
 
 using System;
-using System.Threading;
 
 namespace NUnit.Core
 {
-	/// <summary>
-	/// InternalTraceLevel is an enumeration controlling the
-	/// level of detailed presented in the internal log.
-	/// </summary>
-	public enum InternalTraceLevel
-	{
-		Default,
-		Off,
-		Error,
-		Warning,
-		Info,
-		Verbose
-	}
-
-	/// <summary>
+    /// <summary>
+    /// InternalTraceLevel is an enumeration controlling the
+    /// level of detailed presented in the internal log.
+    /// </summary>
+    public enum InternalTraceLevel
+    {
+        Default,
+        Off,
+        Error,
+        Warning,
+        Info,
+        Verbose
+    }
+    
+    /// <summary>
 	/// Summary description for Logger.
 	/// </summary>
 	public class InternalTrace
 	{
-		#region Fields/Constants
-
-		private static readonly string TIME_FMT = "HH:mm:ss.fff";
+        private readonly static string TIME_FMT = "HH:mm:ss.fff";
 
 		private static bool initialized;
 		private static InternalTraceLevel level;
-		private static string logName;
+        private static string logName;
 
-		private static InternalTraceWriter writer;
+        private static InternalTraceWriter writer;
+        public static InternalTraceWriter Writer
+        {
+            get { return writer; }
+        }
 
-		#endregion
+        private static string LogName
+        {
+            get { return logName; }
+            set { logName = value; }
+        }
 
-		#region Properties/Indexers/Events
+        public static InternalTraceLevel Level
+        {
+            get { return level; }
+            set 
+            {
+                if (level != value)
+                {
+                    level = value;
 
-		public static InternalTraceLevel Level
-		{
-			get
-			{
-				return level;
-			}
-			set
-			{
-				if (level != value)
-				{
-					level = value;
+                    if (writer == null && Level > InternalTraceLevel.Off)
+                    {
+                        writer = new InternalTraceWriter(logName);
+                        writer.WriteLine("InternalTrace: Initializing at level " + Level.ToString());
+                    }
+                }
+            }
+        }
 
-					if (writer == null && Level > InternalTraceLevel.Off)
-					{
-						writer = new InternalTraceWriter(logName);
-						writer.WriteLine("InternalTrace: Initializing at level " + Level.ToString());
-					}
-				}
-			}
-		}
+        //public static void Initialize(string logName)
+        //{
+        //    int lev = (int) new System.Diagnostics.TraceSwitch("NTrace", "NUnit internal trace").Level;
+        //    Initialize(logName, (InternalTraceLevel)lev);
+        //}
 
-		private static string LogName
-		{
-			get
-			{
-				return logName;
-			}
-			set
-			{
-				logName = value;
-			}
-		}
-
-		public static InternalTraceWriter Writer
-		{
-			get
-			{
-				return writer;
-			}
-		}
-
-		#endregion
-
-		//public static void Initialize(string logName)
-		//{
-		//    int lev = (int) new System.Diagnostics.TraceSwitch("NTrace", "NUnit internal trace").Level;
-		//    Initialize(logName, (InternalTraceLevel)lev);
-		//}
-
-		#region Methods/Operators
-
-		public static void Close()
-		{
-			if (writer != null)
-				writer.Close();
-
-			writer = null;
-		}
-
-		public static void Flush()
-		{
-			if (writer != null)
-				writer.Flush();
-		}
-
-		public static Logger GetLogger(string name)
-		{
-			return new Logger(name);
-		}
-
-		public static Logger GetLogger(Type type)
-		{
-			return new Logger(type.FullName);
-		}
-
-		public static void Initialize(string logName, InternalTraceLevel level)
-		{
+        public static void Initialize(string logName, InternalTraceLevel level)
+        {
 			if (!initialized)
 			{
-				LogName = logName;
+                LogName = logName;
 				Level = level;
 
 				initialized = true;
 			}
+        }
+
+        public static void Flush()
+        {
+            if (writer != null)
+                writer.Flush();
+        }
+
+        public static void Close()
+        {
+            if (writer != null)
+                writer.Close();
+
+            writer = null;
+        }
+
+        public static Logger GetLogger(string name)
+		{
+			return new Logger( name );
 		}
 
-		public static void Log(InternalTraceLevel level, string message, string category)
+		public static Logger GetLogger( Type type )
 		{
-			Log(level, message, category, null);
+			return new Logger( type.FullName );
 		}
 
-		public static void Log(InternalTraceLevel level, string message, string category, Exception ex)
-		{
-			Writer.WriteLine("{0} {1,-5} [{2,2}] {3}: {4}",
-				DateTime.Now.ToString(TIME_FMT),
-				level == InternalTraceLevel.Verbose ? "Debug" : level.ToString(),
+        public static void Log(InternalTraceLevel level, string message, string category)
+        {
+            Log(level, message, category, null);
+        }
+
+        public static void Log(InternalTraceLevel level, string message, string category, Exception ex)
+        {
+            Writer.WriteLine("{0} {1,-5} [{2,2}] {3}: {4}",
+                DateTime.Now.ToString(TIME_FMT),
+                level == InternalTraceLevel.Verbose ? "Debug" : level.ToString(),
 #if CLR_2_0 || CLR_4_0
-				Thread.CurrentThread.ManagedThreadId,
+                System.Threading.Thread.CurrentThread.ManagedThreadId,
 #else
                 AppDomain.GetCurrentThreadId(),
 #endif
-				category,
-				message);
+                category,
+                message);
 
-			if (ex != null)
-				Writer.WriteLine(ex.ToString());
-		}
-
-		#endregion
-	}
+            if (ex != null)
+                Writer.WriteLine(ex.ToString());
+        }
+    }
 }

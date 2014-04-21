@@ -12,64 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Xml.XPath;
-using System.Xml.Xsl;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
 #if !SL3
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Xml.XPath;
+	using System.Xml.Xsl;
 
 	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Property, AllowMultiple = true)]
 	public abstract class XPathVariableAttribute : Attribute, IXsltContextVariable
 	{
-		#region Constructors/Destructors
+		protected XPathVariableAttribute() { }
 
-		protected XPathVariableAttribute()
-		{
-		}
+		public abstract XmlName Name { get; }
+		public abstract XPathResultType VariableType { get; }
 
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		bool IXsltContextVariable.IsLocal
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		bool IXsltContextVariable.IsParam
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		public abstract XmlName Name
-		{
-			get;
-		}
-
-		public abstract XPathResultType VariableType
-		{
-			get;
-		}
-
-		#endregion
-
-		#region Methods/Operators
+		bool IXsltContextVariable.IsLocal { get { return false; } }
+		bool IXsltContextVariable.IsParam { get { return false; } }
 
 		public abstract object Evaluate(XsltContext context);
-
-		#endregion
 	}
 }
-
 #endif
 #endif

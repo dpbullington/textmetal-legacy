@@ -1,260 +1,233 @@
-// ****************************************************************
+﻿// ****************************************************************
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
 
 using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace NUnit.UiException.CodeFormatters
 {
-	/// <summary>
-	/// Splits a text formatted as C# code into a list of identified tokens.
-	/// </summary>
-	public class Lexer
-	{
-		#region Constructors/Destructors
+    /// <summary>
+    /// Splits a text formatted as C# code into a list of identified tokens.
+    /// </summary>
+    public class Lexer
+    {
+        /// <summary>
+        /// Reading position in the current text.
+        /// </summary>
+        private int _position;
 
-		/// <summary>
-		/// Builds a new instance of Lexer.
-		/// </summary>
-		public Lexer()
-		{
-			this._position = 0;
-			this._text = "";
+        /// <summary>
+        /// Text where to fetch tokens.
+        /// </summary>
+        private string _text;
 
-			this._dictionary = new TokenDictionary();
-			this._dictionary.Add("/*", LexerTag.CommentC_Open);
-			this._dictionary.Add("*/", LexerTag.CommentC_Close);
-			this._dictionary.Add("//", LexerTag.CommentCpp);
+        /// <summary>
+        /// Last identified token.
+        /// </summary>
+        private InternalToken _token;
 
-			// Here: definition of one lengthed sequences
-			this._dictionary.Add("\\", LexerTag.Text);
-			this._dictionary.Add(" ", LexerTag.Separator);
-			this._dictionary.Add("\t", LexerTag.Separator);
-			this._dictionary.Add("\r", LexerTag.Separator);
-			this._dictionary.Add(".", LexerTag.Separator);
-			this._dictionary.Add(";", LexerTag.Separator);
-			this._dictionary.Add("[", LexerTag.Separator);
-			this._dictionary.Add("]", LexerTag.Separator);
-			this._dictionary.Add("(", LexerTag.Separator);
-			this._dictionary.Add(")", LexerTag.Separator);
-			this._dictionary.Add("#", LexerTag.Separator);
-			this._dictionary.Add(":", LexerTag.Separator);
-			this._dictionary.Add("<", LexerTag.Separator);
-			this._dictionary.Add(">", LexerTag.Separator);
-			this._dictionary.Add("=", LexerTag.Separator);
-			this._dictionary.Add(",", LexerTag.Separator);
-			this._dictionary.Add("\n", LexerTag.EndOfLine);
-			this._dictionary.Add("'", LexerTag.SingleQuote);
-			this._dictionary.Add("\"", LexerTag.DoubleQuote);
+        /// <summary>
+        /// Holds pre-defined sequences.
+        /// </summary>
+        private TokenDictionary _dictionary;
 
-			return;
-		}
+        /// <summary>
+        /// Builds a new instance of Lexer.
+        /// </summary>
+        public Lexer()
+        {
+            _position = 0;
+            _text = "";
 
-		#endregion
+            _dictionary = new TokenDictionary();
+            _dictionary.Add("/*", LexerTag.CommentC_Open);
+            _dictionary.Add("*/", LexerTag.CommentC_Close);
+            _dictionary.Add("//", LexerTag.CommentCpp);
 
-		#region Fields/Constants
+            // Here: definition of one lengthed sequences
+            _dictionary.Add("\\", LexerTag.Text);
+            _dictionary.Add(" ", LexerTag.Separator);
+            _dictionary.Add("\t", LexerTag.Separator);
+            _dictionary.Add("\r", LexerTag.Separator);
+            _dictionary.Add(".", LexerTag.Separator);
+            _dictionary.Add(";", LexerTag.Separator);
+            _dictionary.Add("[", LexerTag.Separator);
+            _dictionary.Add("]", LexerTag.Separator);
+            _dictionary.Add("(", LexerTag.Separator);
+            _dictionary.Add(")", LexerTag.Separator);
+            _dictionary.Add("#", LexerTag.Separator);
+            _dictionary.Add(":", LexerTag.Separator);
+            _dictionary.Add("<", LexerTag.Separator);
+            _dictionary.Add(">", LexerTag.Separator);
+            _dictionary.Add("=", LexerTag.Separator);
+            _dictionary.Add(",", LexerTag.Separator);
+            _dictionary.Add("\n", LexerTag.EndOfLine);
+            _dictionary.Add("'", LexerTag.SingleQuote);
+            _dictionary.Add("\"", LexerTag.DoubleQuote);
 
-		/// <summary>
-		/// Holds pre-defined sequences.
-		/// </summary>
-		private TokenDictionary _dictionary;
+            return;
+        }
 
-		/// <summary>
-		/// Reading position in the current text.
-		/// </summary>
-		private int _position;
+        public TokenDictionary Dictionary
+        {
+            get { return (_dictionary); }
+        }
 
-		/// <summary>
-		/// Text where to fetch tokens.
-		/// </summary>
-		private string _text;
+        /// <summary>
+        /// Clear all previously defined sequences.
+        /// </summary>
+        protected void Clear()
+        {
+            _dictionary = new TokenDictionary();
 
-		/// <summary>
-		/// Last identified token.
-		/// </summary>
-		private InternalToken _token;
+            return;
+        }
 
-		#endregion
+        /// <summary>
+        /// Setup the text to be splitted in tokens. 
+        /// 
+        /// Client code must call Next() first before getting
+        /// the first available token (if any).
+        /// </summary>
+        public void Parse(string codeCSharp)
+        {
+            UiExceptionHelper.CheckNotNull(codeCSharp, "text");
 
-		#region Properties/Indexers/Events
+            _text = codeCSharp;
+            _position = 0;
 
-		/// <summary>
-		/// Gets the token identifed after a call to Next().
-		/// The value may be null if the end of the text has been reached.
-		/// </summary>
-		public LexToken CurrentToken
-		{
-			get
-			{
-				return (this._token);
-			}
-		}
+            return;
+        }
 
-		public TokenDictionary Dictionary
-		{
-			get
-			{
-				return (this._dictionary);
-			}
-		}
+        /// <summary>
+        /// Gets the token identifed after a call to Next().
+        /// The value may be null if the end of the text has been reached.
+        /// </summary>
+        public LexToken CurrentToken
+        {
+            get { return (_token); }
+        }
 
-		#endregion
+        /// <summary>
+        /// Checks whether there are none visited tokens.
+        /// </summary>
+        public bool HasNext()
+        {
+            return (_position < _text.Length);
+        }
 
-		#region Methods/Operators
+        /// <summary>
+        /// Call this method to visit iteratively all tokens in the source text.
+        /// Each time a token has been identifier, the method returns true and the
+        /// identified Token is place under the CurrentToken property.
+        ///   When there is not more token to visit, the method returns false
+        /// and null is set in CurrentToken property.
+        /// </summary>
+        public bool Next()
+        {
+            char c;
+            LexToken token;
+            string prediction;
+            int pos;
+            int count;
+            int prediction_length;
 
-		/// <summary>
-		/// Clear all previously defined sequences.
-		/// </summary>
-		protected void Clear()
-		{
-			this._dictionary = new TokenDictionary();
+            _token = null;
 
-			return;
-		}
+            if (!HasNext())
+                return (false);
 
-		/// <summary>
-		/// Checks whether there are none visited tokens.
-		/// </summary>
-		public bool HasNext()
-		{
-			return (this._position < this._text.Length);
-		}
+            pos = _position;
+            _token = new InternalToken(pos);
+            prediction_length = _dictionary[0].Text.Length;
 
-		/// <summary>
-		/// Call this method to visit iteratively all tokens in the source text.
-		/// Each time a token has been identifier, the method returns true and the
-		/// identified Token is place under the CurrentToken property.
-		/// When there is not more token to visit, the method returns false
-		/// and null is set in CurrentToken property.
-		/// </summary>
-		public bool Next()
-		{
-			char c;
-			LexToken token;
-			string prediction;
-			int pos;
-			int count;
-			int prediction_length;
+            while (pos < _text.Length)
+            {
+                c = _text[pos];
+                _token.AppendsChar(c);
 
-			this._token = null;
+                prediction = "";
+                if (pos + 1 < _text.Length)
+                {
+                    count = Math.Min(prediction_length, _text.Length - pos - 1);
+                    prediction = _text.Substring(pos + 1, count);
+                }
 
-			if (!this.HasNext())
-				return (false);
+                token = _dictionary.TryMatch(_token.Text, prediction);
 
-			pos = this._position;
-			this._token = new InternalToken(pos);
-			prediction_length = this._dictionary[0].Text.Length;
+                if (token != null)
+                {
+                    _token.SetText(token.Text);
+                    _token.SetIndex(_position);
+                    _token.SetLexerTag(token.Tag);
+                    _position += _token.Text.Length;
 
-			while (pos < this._text.Length)
-			{
-				c = this._text[pos];
-				this._token.AppendsChar(c);
+                    break;
+                }
 
-				prediction = "";
-				if (pos + 1 < this._text.Length)
-				{
-					count = Math.Min(prediction_length, this._text.Length - pos - 1);
-					prediction = this._text.Substring(pos + 1, count);
-				}
+                pos++;
+            }
 
-				token = this._dictionary.TryMatch(this._token.Text, prediction);
+            return (true);
+        }
 
-				if (token != null)
-				{
-					this._token.SetText(token.Text);
-					this._token.SetIndex(this._position);
-					this._token.SetLexerTag(token.Tag);
-					this._position += this._token.Text.Length;
+        #region InternalToken
 
-					break;
-				}
+        class InternalToken :
+            LexToken
+        {
+            /// <summary>
+            /// Builds a concrete instance of LexToken. By default, created instance
+            /// are setup with LexerTag.Text value.
+            /// </summary>
+            /// <param name="startingPosition">The starting startingPosition of this token in the text.</param>
+            public InternalToken(int index)
+            {
+                _tag = LexerTag.Text;
+                _text = "";
+                _start = index;
 
-				pos++;
-			}
+                return;
+            }
 
-			return (true);
-		}
+            /// <summary>
+            /// Appends this character to this token.
+            /// </summary>
+            public void AppendsChar(char c)
+            {
+                _text += c;
+            }
 
-		/// <summary>
-		/// Setup the text to be splitted in tokens.
-		/// Client code must call Next() first before getting
-		/// the first available token (if any).
-		/// </summary>
-		public void Parse(string codeCSharp)
-		{
-			UiExceptionHelper.CheckNotNull(codeCSharp, "text");
+            /// <summary>
+            /// Removes the "count" ending character of this token.
+            /// </summary>
+            public void PopChars(int count)
+            {
+                _text = _text.Remove(_text.Length - count);
+            }
 
-			this._text = codeCSharp;
-			this._position = 0;
+            /// <summary>
+            /// Set a new value to the Tag property.
+            /// </summary>
+            public void SetLexerTag(LexerTag tag)
+            {
+                _tag = tag;
+            }
 
-			return;
-		}
+            public void SetText(string text)
+            {
+                _text = text;
+            }
 
-		#endregion
+            public void SetIndex(int index)
+            {
+                _start = index;
+            }
+        }
 
-		#region Classes/Structs/Interfaces/Enums/Delegates
-
-		private class InternalToken :
-			LexToken
-		{
-			#region Constructors/Destructors
-
-			/// <summary>
-			/// Builds a concrete instance of LexToken. By default, created instance
-			/// are setup with LexerTag.Text value.
-			/// </summary>
-			/// <param name="startingPosition"> The starting startingPosition of this token in the text. </param>
-			public InternalToken(int index)
-			{
-				this._tag = LexerTag.Text;
-				this._text = "";
-				this._start = index;
-
-				return;
-			}
-
-			#endregion
-
-			#region Methods/Operators
-
-			/// <summary>
-			/// Appends this character to this token.
-			/// </summary>
-			public void AppendsChar(char c)
-			{
-				this._text += c;
-			}
-
-			/// <summary>
-			/// Removes the "count" ending character of this token.
-			/// </summary>
-			public void PopChars(int count)
-			{
-				this._text = this._text.Remove(this._text.Length - count);
-			}
-
-			public void SetIndex(int index)
-			{
-				this._start = index;
-			}
-
-			/// <summary>
-			/// Set a new value to the Tag property.
-			/// </summary>
-			public void SetLexerTag(LexerTag tag)
-			{
-				this._tag = tag;
-			}
-
-			public void SetText(string text)
-			{
-				this._text = text;
-			}
-
-			#endregion
-		}
-
-		#endregion
-	}
+        #endregion
+    }
 }

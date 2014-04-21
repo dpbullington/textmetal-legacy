@@ -16,12 +16,18 @@ namespace Castle.Core.Internal
 {
 	public abstract class Lock
 	{
-		#region Methods/Operators
+		public abstract IUpgradeableLockHolder ForReadingUpgradeable();
+		public abstract ILockHolder ForReading();
+		public abstract ILockHolder ForWriting();
+
+		public abstract IUpgradeableLockHolder ForReadingUpgradeable(bool waitForLock);
+		public abstract ILockHolder ForReading(bool waitForLock);
+		public abstract ILockHolder ForWriting(bool waitForLock);
 
 		/// <summary>
 		/// Creates a new lock.
 		/// </summary>
-		/// <returns> </returns>
+		/// <returns></returns>
 		public static Lock Create()
 		{
 #if SILVERLIGHT
@@ -30,19 +36,5 @@ namespace Castle.Core.Internal
 			return new SlimReadWriteLock();
 #endif
 		}
-
-		public abstract ILockHolder ForReading();
-
-		public abstract ILockHolder ForReading(bool waitForLock);
-
-		public abstract IUpgradeableLockHolder ForReadingUpgradeable();
-
-		public abstract IUpgradeableLockHolder ForReadingUpgradeable(bool waitForLock);
-
-		public abstract ILockHolder ForWriting();
-
-		public abstract ILockHolder ForWriting(bool waitForLock);
-
-		#endregion
 	}
 }

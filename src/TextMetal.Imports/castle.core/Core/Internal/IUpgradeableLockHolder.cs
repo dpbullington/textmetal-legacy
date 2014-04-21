@@ -16,12 +16,7 @@ namespace Castle.Core.Internal
 {
 	public interface IUpgradeableLockHolder : ILockHolder
 	{
-		#region Methods/Operators
-
 		ILockHolder Upgrade();
-
 		ILockHolder Upgrade(bool waitForLock);
-
-		#endregion
 	}
 }

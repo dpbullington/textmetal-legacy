@@ -5,38 +5,41 @@
 // ****************************************************************
 
 using System;
-
+using System.Collections;
 using NUnit.Framework.Constraints;
 
 namespace NUnit.Framework
 {
-	/// <summary>
-	/// Static helper class used in the constraint-based syntax
-	/// </summary>
-	public class Contains
-	{
-		#region Methods/Operators
+    /// <summary>
+    /// Helper class with properties and methods that supply
+    /// a number of constraints used in Asserts.
+    /// </summary>
+    public class Contains
+    {
+        #region Item
 
-		/// <summary>
-		/// Creates a new CollectionContainsConstraint.
-		/// </summary>
-		/// <param name="item"> The item that should be found. </param>
-		/// <returns> A new CollectionContainsConstraint </returns>
-		public static CollectionContainsConstraint Item(object item)
-		{
-			return new CollectionContainsConstraint(item);
-		}
+        /// <summary>
+        /// Returns a new CollectionContainsConstraint checking for the
+        /// presence of a particular object in the collection.
+        /// </summary>
+        public static CollectionContainsConstraint Item(object expected)
+        {
+            return new CollectionContainsConstraint(expected);
+        }
 
-		/// <summary>
-		/// Creates a new SubstringConstraint
-		/// </summary>
-		/// <param name="substring"> The value of the substring </param>
-		/// <returns> A SubstringConstraint </returns>
-		public static SubstringConstraint Substring(string substring)
-		{
-			return new SubstringConstraint(substring);
-		}
+        #endregion
 
-		#endregion
-	}
+        #region Substring
+
+        /// <summary>
+        /// Returns a constraint that succeeds if the actual
+        /// value contains the substring supplied as an argument.
+        /// </summary>
+        public static SubstringConstraint Substring(string expected)
+        {
+            return new SubstringConstraint(expected); ;
+        }
+
+        #endregion
+    }
 }

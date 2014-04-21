@@ -5,6 +5,8 @@
 // ****************************************************************
 
 using System;
+using System.Collections;
+using System.Reflection;
 
 namespace NUnit.Core
 {
@@ -13,17 +15,12 @@ namespace NUnit.Core
 	/// </summary>
 	public class LegacySuite : TestSuite
 	{
-		#region Constructors/Destructors
-
-		public LegacySuite(Type fixtureType)
-			: base(fixtureType)
+		public LegacySuite( Type fixtureType ) : base( fixtureType )
 		{
-			this.fixtureSetUpMethods =
-				Reflect.GetMethodsWithAttribute(fixtureType, NUnitFramework.FixtureSetUpAttribute, true);
-			this.fixtureTearDownMethods =
-				Reflect.GetMethodsWithAttribute(fixtureType, NUnitFramework.FixtureTearDownAttribute, true);
-		}
-
-		#endregion
+            this.fixtureSetUpMethods =
+                Reflect.GetMethodsWithAttribute(fixtureType, NUnitFramework.FixtureSetUpAttribute, true);
+            this.fixtureTearDownMethods =
+                Reflect.GetMethodsWithAttribute(fixtureType, NUnitFramework.FixtureTearDownAttribute, true);
+        }
 	}
 }

@@ -12,14 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Linq;
-
 namespace Castle.Components.DictionaryAdapter
 {
+	using System.Linq;
+
 	public static class DictionaryAdapterExtensions
 	{
-		#region Methods/Operators
-
 		public static IVirtual AsVirtual(this IDictionaryAdapter dictionaryAdapter)
 		{
 			var descriptor = dictionaryAdapter.This.Descriptor;
@@ -27,7 +25,5 @@ namespace Castle.Components.DictionaryAdapter
 				? descriptor.Getters.OfType<IVirtual>().FirstOrDefault()
 				: null;
 		}
-
-		#endregion
 	}
 }

@@ -5,9 +5,8 @@
 // ****************************************************************
 
 using System;
-
-using NUnit.Core;
 using NUnit.Util;
+using NUnit.Core;
 
 namespace NUnit.UiKit
 {
@@ -17,20 +16,10 @@ namespace NUnit.UiKit
 	/// </summary>
 	public interface TextDisplay : TestObserver
 	{
-		#region Properties/Indexers/Events
-
 		/// <summary>
-		/// The output types handled by this display
+		///  The output types handled by this display
 		/// </summary>
-		TextDisplayContent Content
-		{
-			get;
-			set;
-		}
-
-		#endregion
-
-		#region Methods/Operators
+		TextDisplayContent Content { get; set; }
 
 		/// <summary>
 		/// Clears the display
@@ -38,24 +27,22 @@ namespace NUnit.UiKit
 		void Clear();
 
 		/// <summary>
-		/// Gets the current text - used mainly for testing
-		/// </summary>
-		string GetText();
-
-		/// <summary>
 		/// Appends text to the display
 		/// </summary>
-		/// <param name="text"> The text to append </param>
-		void Write(string text);
-
-		void Write(TestOutput output);
+		/// <param name="text">The text to append</param>
+		void Write( string text );
 
 		/// <summary>
 		/// Appends text to the display followed by a newline
 		/// </summary>
-		/// <param name="text"> The text to append </param>
-		void WriteLine(string text);
+		/// <param name="text">The text to append</param>
+		void WriteLine( string text );
 
-		#endregion
+		void Write( NUnit.Core.TestOutput output );
+
+		/// <summary>
+		/// Gets the current text - used mainly for testing
+		/// </summary>
+		string GetText();
 	}
 }

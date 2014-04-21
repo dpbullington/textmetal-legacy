@@ -12,90 +12,75 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Threading;
-
 namespace Castle.Core.Internal
 {
+	using System.Threading;
+
 #if !SILVERLIGHT
 
 	internal class SlimUpgradeableReadLockHolder : IUpgradeableLockHolder
 	{
-		#region Constructors/Destructors
+		private readonly ReaderWriterLockSlim locker;
+		private bool lockAcquired;
+		private SlimWriteLockHolder writerLock;
+		private bool wasLockAlreadyHeld;
 
 		public SlimUpgradeableReadLockHolder(ReaderWriterLockSlim locker, bool waitForLock, bool wasLockAlreadyHelf)
 		{
 			this.locker = locker;
 			if (wasLockAlreadyHelf)
 			{
-				this.lockAcquired = true;
-				this.wasLockAlreadyHeld = true;
+				lockAcquired = true;
+				wasLockAlreadyHeld = true;
 				return;
 			}
 
-			if (waitForLock)
+			if(waitForLock)
 			{
 				locker.EnterUpgradeableReadLock();
-				this.lockAcquired = true;
+				lockAcquired = true;
 				return;
 			}
 
-			this.lockAcquired = locker.TryEnterUpgradeableReadLock(0);
+			lockAcquired = locker.TryEnterUpgradeableReadLock(0);
 		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly ReaderWriterLockSlim locker;
-		private bool lockAcquired;
-		private bool wasLockAlreadyHeld;
-		private SlimWriteLockHolder writerLock;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public bool LockAcquired
-		{
-			get
-			{
-				return this.lockAcquired;
-			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		public void Dispose()
 		{
-			if (this.writerLock != null && this.writerLock.LockAcquired)
+			if (writerLock != null && writerLock.LockAcquired)
 			{
-				this.writerLock.Dispose();
-				this.writerLock = null;
+				writerLock.Dispose();
+				writerLock = null;
 			}
-			if (!this.LockAcquired)
-				return;
-			if (!this.wasLockAlreadyHeld)
-				this.locker.ExitUpgradeableReadLock();
-			this.lockAcquired = false;
+			if (!LockAcquired) return;
+			if (!wasLockAlreadyHeld)
+			{
+				locker.ExitUpgradeableReadLock();
+			}
+			lockAcquired = false;
+			
 		}
 
 		public ILockHolder Upgrade()
 		{
-			return this.Upgrade(true);
+			return Upgrade(true);
 		}
 
 		public ILockHolder Upgrade(bool waitForLock)
 		{
-			if (this.locker.IsWriteLockHeld)
+			if(locker.IsWriteLockHeld)
+			{
 				return NoOpLock.Lock;
+			}
 
-			this.writerLock = new SlimWriteLockHolder(this.locker, waitForLock);
-			return this.writerLock;
+			writerLock = new SlimWriteLockHolder(locker, waitForLock);
+			return writerLock;
 		}
 
-		#endregion
+		public bool LockAcquired
+		{
+			get { return lockAcquired; }
+		}
 	}
 #endif
 }

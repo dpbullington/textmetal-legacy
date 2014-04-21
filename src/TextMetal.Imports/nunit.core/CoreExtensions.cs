@@ -5,42 +5,71 @@
 // ****************************************************************
 
 using System;
+using System.IO;
 using System.Collections;
 using System.Reflection;
-
 using NUnit.Core.Builders;
 using NUnit.Core.Extensibility;
 
 namespace NUnit.Core
 {
 	/// <summary>
-	/// CoreExtensions is a singleton class that groups together all
+	/// CoreExtensions is a singleton class that groups together all 
 	/// the extension points that are supported in the test domain.
 	/// It also provides access to the test builders and decorators
 	/// by other parts of the NUnit core.
 	/// </summary>
 	public class CoreExtensions : ExtensionHost, IService
 	{
-		#region Constructors/Destructors
+		static Logger log = InternalTrace.GetLogger("CoreExtensions");
 
-		public CoreExtensions()
+		#region Instance Fields
+		private IAddinRegistry addinRegistry;
+		private bool initialized;
+
+		private SuiteBuilderCollection suiteBuilders;
+		private TestCaseBuilderCollection testBuilders;
+		private TestDecoratorCollection testDecorators;
+		private EventListenerCollection listeners;
+		private FrameworkRegistry frameworks;
+	    private TestCaseProviders testcaseProviders;
+        private DataPointProviders dataPointProviders;
+
+		#endregion
+
+		#region CoreExtensions Singleton
+		private static CoreExtensions host;
+		public static CoreExtensions Host
+		{
+			get
+			{
+				if (host == null)
+					host = new CoreExtensions();
+
+				return host;
+			}
+		}
+		#endregion
+
+		#region Constructors
+		public CoreExtensions() 
 		{
 			this.suiteBuilders = new SuiteBuilderCollection(this);
 			this.testBuilders = new TestCaseBuilderCollection(this);
 			this.testDecorators = new TestDecoratorCollection(this);
 			this.listeners = new EventListenerCollection(this);
 			this.frameworks = new FrameworkRegistry(this);
-			this.testcaseProviders = new TestCaseProviders(this);
-			this.dataPointProviders = new DataPointProviders(this);
+            this.testcaseProviders = new TestCaseProviders(this);
+            this.dataPointProviders = new DataPointProviders(this);
 
-			this.extensions = new ArrayList();
-			this.extensions.Add(this.suiteBuilders);
-			this.extensions.Add(this.testBuilders);
-			this.extensions.Add(this.testDecorators);
-			this.extensions.Add(this.listeners);
-			this.extensions.Add(this.frameworks);
-			this.extensions.Add(this.testcaseProviders);
-			this.extensions.Add(this.dataPointProviders);
+		    this.extensions = new ArrayList();
+		    extensions.Add(suiteBuilders);
+		    extensions.Add(testBuilders);
+		    extensions.Add(testDecorators);
+		    extensions.Add(listeners);
+		    extensions.Add(frameworks);
+		    extensions.Add(testcaseProviders);
+            extensions.Add(dataPointProviders);
 
 			this.supportedTypes = ExtensionType.Core;
 
@@ -58,39 +87,13 @@ namespace NUnit.Core
 //			appender.Threshold = log4net.Core.Level.All;
 //			log4net.Config.BasicConfigurator.Configure(appender);
 		}
-
 		#endregion
 
-		#region Fields/Constants
+		#region Public Properties
 
-		private static CoreExtensions host;
-
-		private static Logger log = InternalTrace.GetLogger("CoreExtensions");
-
-		private IAddinRegistry addinRegistry;
-		private DataPointProviders dataPointProviders;
-		private FrameworkRegistry frameworks;
-		private bool initialized;
-		private EventListenerCollection listeners;
-
-		private SuiteBuilderCollection suiteBuilders;
-		private TestCaseBuilderCollection testBuilders;
-		private TestDecoratorCollection testDecorators;
-		private TestCaseProviders testcaseProviders;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public static CoreExtensions Host
+		public bool Initialized
 		{
-			get
-			{
-				if (host == null)
-					host = new CoreExtensions();
-
-				return host;
-			}
+			get { return initialized; }
 		}
 
 		/// <summary>
@@ -98,105 +101,87 @@ namespace NUnit.Core
 		/// </summary>
 		public IAddinRegistry AddinRegistry
 		{
-			get
+			get 
 			{
-				if (this.addinRegistry == null)
-					this.addinRegistry = AppDomain.CurrentDomain.GetData("AddinRegistry") as IAddinRegistry;
+				if ( addinRegistry == null )
+					addinRegistry = AppDomain.CurrentDomain.GetData( "AddinRegistry" ) as IAddinRegistry;
 
-				return this.addinRegistry;
+				return addinRegistry; 
 			}
-			set
-			{
-				this.addinRegistry = value;
-			}
+			set { addinRegistry = value; }
 		}
+		#endregion
 
-		public bool Initialized
-		{
-			get
-			{
-				return this.initialized;
-			}
-		}
-
-		internal EventListener Listeners
-		{
-			get
-			{
-				return this.listeners;
-			}
-		}
-
+		#region Internal Properties
 		internal ISuiteBuilder SuiteBuilders
 		{
-			get
-			{
-				return this.suiteBuilders;
-			}
+			get { return suiteBuilders; }
 		}
 
 		internal ITestCaseBuilder2 TestBuilders
 		{
-			get
-			{
-				return this.testBuilders;
-			}
-		}
-
-		internal TestCaseProviders TestCaseProviders
-		{
-			get
-			{
-				return this.testcaseProviders;
-			}
+			get { return testBuilders; }
 		}
 
 		internal ITestDecorator TestDecorators
 		{
-			get
-			{
-				return this.testDecorators;
-			}
+			get { return testDecorators; }
+		}
+
+		internal EventListener Listeners
+		{
+			get { return listeners; }
 		}
 
 		internal FrameworkRegistry TestFrameworks
 		{
-			get
-			{
-				return this.frameworks;
-			}
+			get { return frameworks; }
 		}
 
-		#endregion
+        internal TestCaseProviders TestCaseProviders
+	    {
+            get { return testcaseProviders; }
+	    }
 
-		#region Methods/Operators
+	    #endregion
 
-		public void InitializeService()
+		#region Public Methods	
+		public void InstallBuiltins()
 		{
-			this.InstallBuiltins();
-			this.InstallAddins();
+			log.Info( "Installing Builtins" );
 
-			this.initialized = true;
-		}
+			// Define NUnit Frameworks
+			frameworks.Register( "NUnit", "nunit.framework" );
+            frameworks.Register("NUnitLite", "NUnitLite");
 
-		private bool InstallAddin(Type type)
-		{
-			ConstructorInfo ctor = type.GetConstructor(Type.EmptyTypes);
-			object obj = ctor.Invoke(new object[0]);
-			IAddin theAddin = (IAddin)obj;
+			// Install builtin SuiteBuilders
+			suiteBuilders.Install( new NUnitTestFixtureBuilder() );
+			suiteBuilders.Install( new SetUpFixtureBuilder() );
 
-			return theAddin.Install(this);
+            // Install builtin TestCaseBuilder
+            testBuilders.Install( new NUnitTestCaseBuilder() );
+            //testBuilders.Install(new TheoryBuilder());
+
+            // Install builtin TestCaseProviders
+            testcaseProviders.Install(new TestCaseParameterProvider());
+            testcaseProviders.Install(new TestCaseSourceProvider());
+            testcaseProviders.Install(new CombinatorialTestCaseProvider());
+
+            // Install builtin DataPointProvider
+            dataPointProviders.Install(new InlineDataPointProvider());
+            dataPointProviders.Install(new ValueSourceProvider());
+            dataPointProviders.Install(new DatapointProvider());
 		}
 
 		public void InstallAddins()
 		{
-			log.Info("Installing Addins");
+			log.Info( "Installing Addins" );
 
-			if (this.AddinRegistry != null)
+			if( AddinRegistry != null )
 			{
-				foreach (Addin addin in this.AddinRegistry.Addins)
+				foreach (Addin addin in AddinRegistry.Addins)
 				{
-					if ((this.ExtensionTypes & addin.ExtensionType) != 0)
+					if ( (this.ExtensionTypes & addin.ExtensionType) != 0 )
 					{
 						AddinStatus status = AddinStatus.Unknown;
 						string message = null;
@@ -204,75 +189,72 @@ namespace NUnit.Core
 						try
 						{
 							Type type = Type.GetType(addin.TypeName);
-							if (type == null)
+							if ( type == null )
 							{
 								status = AddinStatus.Error;
-								message = string.Format("Unable to locate {0} Type", addin.TypeName);
+								message = string.Format( "Unable to locate {0} Type", addin.TypeName );
 							}
-							else if (!this.InstallAddin(type))
+							else if ( !InstallAddin( type ) )
 							{
 								status = AddinStatus.Error;
 								message = "Install method returned false";
 							}
 							else
+							{
 								status = AddinStatus.Loaded;
+							}
 						}
-						catch (Exception ex)
+						catch( Exception ex )
 						{
 							status = AddinStatus.Error;
-							message = ex.ToString();
+							message = ex.ToString(); 				
 						}
 
-						this.AddinRegistry.SetStatus(addin.Name, status, message);
-						if (status != AddinStatus.Loaded)
+						AddinRegistry.SetStatus( addin.Name, status, message );
+						if ( status != AddinStatus.Loaded )
 						{
-							log.Error("Failed to load {0}", addin.Name);
-							log.Error(message);
+							log.Error( "Failed to load {0}", addin.Name );
+							log.Error( message );
 						}
 					}
 				}
 			}
 		}
 
-		public void InstallAdhocExtensions(Assembly assembly)
+		public void InstallAdhocExtensions( Assembly assembly )
 		{
-			foreach (Type type in assembly.GetExportedTypes())
+			foreach ( Type type in assembly.GetExportedTypes() )
 			{
-				if (type.GetCustomAttributes(typeof(NUnitAddinAttribute), false).Length == 1)
-					this.InstallAddin(type);
+				if ( type.GetCustomAttributes(typeof(NUnitAddinAttribute), false).Length == 1 )
+					InstallAddin( type );
 			}
 		}
+		#endregion
 
-		public void InstallBuiltins()
+		#region Helper Methods
+		private bool InstallAddin( Type type )
 		{
-			log.Info("Installing Builtins");
+			ConstructorInfo ctor = type.GetConstructor(Type.EmptyTypes);
+			object obj = ctor.Invoke( new object[0] );
+			IAddin theAddin = (IAddin)obj;
 
-			// Define NUnit Frameworks
-			this.frameworks.Register("NUnit", "nunit.framework");
-			this.frameworks.Register("NUnitLite", "NUnitLite");
-
-			// Install builtin SuiteBuilders
-			this.suiteBuilders.Install(new NUnitTestFixtureBuilder());
-			this.suiteBuilders.Install(new SetUpFixtureBuilder());
-
-			// Install builtin TestCaseBuilder
-			this.testBuilders.Install(new NUnitTestCaseBuilder());
-			//testBuilders.Install(new TheoryBuilder());
-
-			// Install builtin TestCaseProviders
-			this.testcaseProviders.Install(new TestCaseParameterProvider());
-			this.testcaseProviders.Install(new TestCaseSourceProvider());
-			this.testcaseProviders.Install(new CombinatorialTestCaseProvider());
-
-			// Install builtin DataPointProvider
-			this.dataPointProviders.Install(new InlineDataPointProvider());
-			this.dataPointProviders.Install(new ValueSourceProvider());
-			this.dataPointProviders.Install(new DatapointProvider());
+			return theAddin.Install(this);
 		}
+		#endregion
+
+		#region IService Members
 
 		public void UnloadService()
 		{
 			// TODO:  Add CoreExtensions.UnloadService implementation
+		}
+
+		public void InitializeService()
+		{
+			InstallBuiltins();
+			InstallAddins();
+
+			initialized = true;
 		}
 
 		#endregion

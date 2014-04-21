@@ -17,80 +17,62 @@ namespace Castle.Core
 	using System;
 
 	/// <summary>
-	/// General purpose class to represent a standard pair of values.
+	/// General purpose class to represent a standard pair of values. 
 	/// </summary>
-	/// <typeparam name="TFirst"> Type of the first value </typeparam>
-	/// <typeparam name="TSecond"> Type of the second value </typeparam>
+	/// <typeparam name="TFirst">Type of the first value</typeparam>
+	/// <typeparam name="TSecond">Type of the second value</typeparam>
 	public class Pair<TFirst, TSecond> : IEquatable<Pair<TFirst, TSecond>>
 	{
-		#region Constructors/Destructors
+		private readonly TFirst first;
+		private readonly TSecond second;
 
 		/// <summary>
 		/// Constructs a pair with its values
 		/// </summary>
-		/// <param name="first"> </param>
-		/// <param name="second"> </param>
+		/// <param name="first"></param>
+		/// <param name="second"></param>
 		public Pair(TFirst first, TSecond second)
 		{
 			this.first = first;
 			this.second = second;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly TFirst first;
-		private readonly TSecond second;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
 		public TFirst First
 		{
-			get
-			{
-				return this.first;
-			}
+			get { return first; }
 		}
 
 		public TSecond Second
 		{
-			get
-			{
-				return this.second;
-			}
+			get { return second; }
 		}
 
-		#endregion
-
-		#region Methods/Operators
+		public override string ToString()
+		{
+			return first + " " + second;
+		}
 
 		public bool Equals(Pair<TFirst, TSecond> other)
 		{
 			if (other == null)
+			{
 				return false;
-			return Equals(this.first, other.first) && Equals(this.second, other.second);
+			}
+			return Equals(first, other.first) && Equals(second, other.second);
 		}
 
 		public override bool Equals(object obj)
 		{
 			if (ReferenceEquals(this, obj))
+			{
 				return true;
-			return this.Equals(obj as Pair<TFirst, TSecond>);
+			}
+			return Equals(obj as Pair<TFirst, TSecond>);
 		}
 
 		public override int GetHashCode()
 		{
-			return this.first.GetHashCode() + 29 * this.second.GetHashCode();
+			return first.GetHashCode() + 29 * second.GetHashCode();
 		}
-
-		public override string ToString()
-		{
-			return this.first + " " + this.second;
-		}
-
-		#endregion
 	}
 }

@@ -12,70 +12,46 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Xml.Serialization;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Xml.Serialization;
 
 	public class XmlDefaultSerializer : XmlTypeSerializer
 	{
-		#region Constructors/Destructors
+		private readonly XmlSerializer serializer;
 
 		public XmlDefaultSerializer(Type type)
 		{
-			this.serializer = new XmlSerializer(type, Root);
+			serializer = new XmlSerializer(type, Root);
 		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		public static readonly XmlRootAttribute
-			Root = new XmlRootAttribute
-					{
-						ElementName = "Root",
-						Namespace = string.Empty
-					};
-
-		private readonly XmlSerializer serializer;
-
-		#endregion
-
-		#region Properties/Indexers/Events
 
 		public override XmlTypeKind Kind
 		{
-			get
-			{
-				return XmlTypeKind.Complex;
-			}
+			get { return XmlTypeKind.Complex; }
 		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		public override object GetValue(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor)
 		{
-			using (var reader = new XmlSubtreeReader(node, Root))
-			{
-				return this.serializer.CanDeserialize(reader)
-					? this.serializer.Deserialize(reader)
-					: null;
-			}
+            using (var reader = new XmlSubtreeReader(node, Root))
+                return serializer.CanDeserialize(reader)
+                    ? serializer.Deserialize(reader)
+                    : null;
 		}
 
 		public override void SetValue(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor, object oldValue, ref object value)
 		{
-			using (var writer = new XmlSubtreeWriter(node))
-				this.serializer.Serialize(writer, value);
+		    using (var writer = new XmlSubtreeWriter(node))
+		        serializer.Serialize(writer, value);
 		}
 
-		#endregion
+		public static readonly XmlRootAttribute
+			Root = new XmlRootAttribute
+		{
+			ElementName = "Root",
+			Namespace   = string.Empty
+		};
 	}
 }
-
 #endif

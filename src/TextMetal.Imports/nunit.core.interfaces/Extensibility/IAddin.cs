@@ -3,7 +3,6 @@
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
-
 using System;
 
 namespace NUnit.Core.Extensibility
@@ -14,8 +13,6 @@ namespace NUnit.Core.Extensibility
 	/// </summary>
 	public interface IAddin
 	{
-		#region Methods/Operators
-
 		/// <summary>
 		/// When called, the add-in installs itself into
 		/// the host, if possible. Because NUnit uses separate
@@ -25,10 +22,8 @@ namespace NUnit.Core.Extensibility
 		/// extension points are supported by the host that is
 		/// passed to it and taking the appropriate action.
 		/// </summary>
-		/// <param name="host"> The host in which to install the add-in </param>
-		/// <returns> True if the add-in was installed, otehrwise false </returns>
-		bool Install(IExtensionHost host);
-
-		#endregion
+		/// <param name="host">The host in which to install the add-in</param>
+		/// <returns>True if the add-in was installed, otehrwise false</returns>
+		bool Install( IExtensionHost host );
 	}
 }

@@ -12,16 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Runtime.Serialization;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using SerializationException = System.Runtime.Serialization.SerializationException;
 #if !SL3
 	using System.Xml.XPath;
-
 #endif
 
 	internal static class Error
@@ -54,30 +51,30 @@ namespace Castle.Components.DictionaryAdapter.Xml
 		internal static Exception AttributeConflict(string propertyName)
 		{
 			var message = string.Format
-				(
-					"The behaviors defined for property '{0}' are ambiguous or conflicting.",
-					propertyName
-				);
+			(
+				"The behaviors defined for property '{0}' are ambiguous or conflicting.",
+				propertyName
+			);
 			return new InvalidOperationException(message);
 		}
 
 		internal static Exception SeparateGetterSetterOnComplexType(string propertyName)
 		{
 			var message = string.Format
-				(
-					"Cannot apply getter/setter behaviors for property '{0}'.  Separate getters/setters are supported for simple types only.",
-					propertyName
-				);
+			(
+				"Cannot apply getter/setter behaviors for property '{0}'.  Separate getters/setters are supported for simple types only.",
+				propertyName
+			);
 			return new InvalidOperationException(message);
 		}
 
 		internal static Exception XmlMetadataNotAvailable(Type clrType)
 		{
 			var message = string.Format
-				(
-					"XML metadata is not available for type '{0}'.",
-					clrType.FullName
-				);
+			(
+				"XML metadata is not available for type '{0}'.",
+				clrType.FullName
+			);
 			return new InvalidOperationException(message);
 		}
 
@@ -146,30 +143,30 @@ namespace Castle.Components.DictionaryAdapter.Xml
 		internal static Exception CannotSetAttribute(IXmlIdentity identity)
 		{
 			var message = string.Format
-				(
-					"Cannot set attribute on node '{0}'.",
-					identity.Name.ToString()
-				);
+			(
+				"Cannot set attribute on node '{0}'.",
+				identity.Name.ToString()
+			);
 			return new InvalidOperationException(message);
 		}
 
 		internal static Exception NotXmlKnownType(Type clrType)
 		{
 			var message = string.Format
-				(
-					"No XML type is defined for CLR type {0}.",
-					clrType.FullName
-				);
+			(
+				"No XML type is defined for CLR type {0}.",
+				clrType.FullName
+			);
 			return new SerializationException(message);
 		}
 
 		internal static Exception UnsupportedCollectionType(Type clrType)
 		{
 			var message = string.Format
-				(
-					"Unsupported collection type: {0}.",
-					clrType.FullName
-				);
+			(
+				"Unsupported collection type: {0}.",
+				clrType.FullName
+			);
 			return new SerializationException(message);
 		}
 
@@ -178,6 +175,7 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			var message = "The argument is not a valid collection type.";
 			return new ArgumentException(message, paramName);
 		}
+
 
 		internal static Exception InvalidLocalName()
 		{
@@ -196,7 +194,6 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			var message = "No default XML type exists in the given context.";
 			return new InvalidOperationException(message);
 		}
-
 #if !SL3
 		internal static Exception XPathNotCreatable(CompiledXPath path)
 		{
@@ -224,5 +221,4 @@ namespace Castle.Components.DictionaryAdapter.Xml
 		}
 	}
 }
-
 #endif

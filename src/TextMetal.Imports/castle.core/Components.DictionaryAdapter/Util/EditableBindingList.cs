@@ -20,7 +20,8 @@ namespace Castle.Components.DictionaryAdapter
 
 	public class EditableBindingList<T> : System.ComponentModel.BindingList<T>, IList<T>, IEditableObject, IRevertibleChangeTracking
 	{
-		#region Constructors/Destructors
+		private bool isEditing;
+		private List<T> snapshot;
 
 		public EditableBindingList()
 		{
@@ -31,26 +32,15 @@ namespace Castle.Components.DictionaryAdapter
 		{
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private bool isEditing;
-		private List<T> snapshot;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
 		public bool IsChanged
 		{
 			get
 			{
-				if (this.snapshot == null || this.snapshot.Count != this.Count)
+				if (snapshot == null || snapshot.Count != Count)
 					return false;
 
-				var items = this.GetEnumerator();
-				var snapshotItems = this.snapshot.GetEnumerator();
+				var items = GetEnumerator();
+				var snapshotItems = snapshot.GetEnumerator();
 
 				while (items.MoveNext() && snapshotItems.MoveNext())
 				{
@@ -66,48 +56,41 @@ namespace Castle.Components.DictionaryAdapter
 			}
 		}
 
-		#endregion
-
-		#region Methods/Operators
-
-		public void AcceptChanges()
-		{
-			this.BeginEdit();
-		}
-
 		public void BeginEdit()
 		{
-			if (this.isEditing == false)
+			if (isEditing == false)
 			{
-				this.snapshot = new List<T>(this);
-				this.isEditing = true;
-			}
-		}
-
-		public void CancelEdit()
-		{
-			if (this.isEditing)
-			{
-				this.Clear();
-				foreach (var item in this.snapshot)
-					this.Add(item);
-				this.snapshot = null;
-				this.isEditing = false;
+				snapshot = new List<T>(this);
+				isEditing = true;
 			}
 		}
 
 		public void EndEdit()
 		{
-			this.isEditing = false;
-			this.snapshot = null;
+			isEditing = false;
+			snapshot = null;
+		}
+
+		public void CancelEdit()
+		{
+			if (isEditing)
+			{
+				Clear();
+				foreach (var item in snapshot) Add(item);
+				snapshot = null;
+				isEditing = false;
+			}
+		}
+
+		public void AcceptChanges()
+		{
+			BeginEdit();
 		}
 
 		public void RejectChanges()
 		{
-			this.CancelEdit();
+			CancelEdit();
 		}
-
-		#endregion
 	}
 #endif
 }

@@ -12,39 +12,32 @@ namespace NUnit.Framework
 	/// RepeatAttribute may be applied to test case in order
 	/// to run it multiple times.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+	[AttributeUsage(AttributeTargets.Method, AllowMultiple=false, Inherited=false)]
 	public class RepeatAttribute : PropertyAttribute
 	{
-		#region Constructors/Destructors
+        /// <summary>
+        /// Construct a RepeatAttribute
+        /// </summary>
+        /// <param name="count">The number of times to run the test</param>
+        public RepeatAttribute(int count) : base(count) { }
 
-		/// <summary>
-		/// Construct a RepeatAttribute
-		/// </summary>
-		/// <param name="count"> The number of times to run the test </param>
-		public RepeatAttribute(int count)
-			: base(count)
-		{
-		}
+        //private int count;
 
-		#endregion
+        ///// <summary>
+        ///// Construct a RepeatAttribute
+        ///// </summary>
+        ///// <param name="count">The number of times to run the test</param>
+        //public RepeatAttribute(int count)
+        //{
+        //    this.count = count;
+        //}
 
-		//private int count;
-
-		///// <summary>
-		///// Construct a RepeatAttribute
-		///// </summary>
-		///// <param name="count">The number of times to run the test</param>
-		//public RepeatAttribute(int count)
-		//{
-		//    this.count = count;
-		//}
-
-		///// <summary>
-		///// Gets the number of times to run the test.
-		///// </summary>
-		//public int Count
-		//{
-		//    get { return count; }
-		//}
+        ///// <summary>
+        ///// Gets the number of times to run the test.
+        ///// </summary>
+        //public int Count
+        //{
+        //    get { return count; }
+        //}
 	}
 }

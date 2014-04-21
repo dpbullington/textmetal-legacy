@@ -4,45 +4,194 @@
 // copyright ownership at http://nunit.org.
 // ****************************************************************
 
-using System.IO;
-using System.Text;
-using System.Threading;
-
-using NUnit.Core;
-using NUnit.Core.Filters;
-using NUnit.Util;
+using System.Diagnostics;
 
 namespace NUnit.ConsoleRunner
 {
 	using System;
-
+	using System.IO;
+	using System.Reflection;
+	using System.Xml;
+	using System.Resources;
+	using System.Text;
+	using NUnit.Core;
+	using NUnit.Core.Filters;
+	using NUnit.Util;
+	
 	/// <summary>
 	/// Summary description for ConsoleUi.
 	/// </summary>
 	public class ConsoleUi
 	{
-		#region Constructors/Destructors
+		public static readonly int OK = 0;
+		public static readonly int INVALID_ARG = -1;
+		public static readonly int FILE_NOT_FOUND = -2;
+		public static readonly int FIXTURE_NOT_FOUND = -3;
+		public static readonly int UNEXPECTED_ERROR = -100;
+
+        private string workDir;
 
 		public ConsoleUi()
 		{
 		}
 
-		#endregion
+		public int Execute( ConsoleOptions options )
+		{
+            this.workDir = options.work;
+            if (workDir == null || workDir == string.Empty)
+                workDir = Environment.CurrentDirectory;
+            else
+            {
+                workDir = Path.GetFullPath(workDir);
+                if (!Directory.Exists(workDir))
+                    Directory.CreateDirectory(workDir);
+            }
 
-		#region Fields/Constants
+			TextWriter outWriter = Console.Out;
+			bool redirectOutput = options.output != null && options.output != string.Empty;
+			if ( redirectOutput )
+			{
+				StreamWriter outStreamWriter = new StreamWriter( Path.Combine(workDir, options.output) );
+				outStreamWriter.AutoFlush = true;
+				outWriter = outStreamWriter;
+			}
 
-		public static readonly int FILE_NOT_FOUND = -2;
-		public static readonly int FIXTURE_NOT_FOUND = -3;
-		public static readonly int INVALID_ARG = -1;
-		public static readonly int OK = 0;
-		public static readonly int UNEXPECTED_ERROR = -100;
-		private int reportIndex = 0;
+			TextWriter errorWriter = Console.Error;
+			bool redirectError = options.err != null && options.err != string.Empty;
+			if ( redirectError )
+			{
+				StreamWriter errorStreamWriter = new StreamWriter( Path.Combine(workDir, options.err) );
+				errorStreamWriter.AutoFlush = true;
+				errorWriter = errorStreamWriter;
+			}
 
-		private string workDir;
+            TestPackage package = MakeTestPackage(options);
 
-		#endregion
+            ProcessModel processModel = package.Settings.Contains("ProcessModel")
+                ? (ProcessModel)package.Settings["ProcessModel"]
+                : ProcessModel.Default;
 
-		#region Methods/Operators
+            DomainUsage domainUsage = package.Settings.Contains("DomainUsage")
+                ? (DomainUsage)package.Settings["DomainUsage"]
+                : DomainUsage.Default;
+
+            RuntimeFramework framework = package.Settings.Contains("RuntimeFramework")
+                ? (RuntimeFramework)package.Settings["RuntimeFramework"]
+                : RuntimeFramework.CurrentFramework;
+
+#if CLR_2_0 || CLR_4_0
+            Console.WriteLine("ProcessModel: {0}    DomainUsage: {1}", processModel, domainUsage);
+
+            Console.WriteLine("Execution Runtime: {0}", framework);
+#else
+            Console.WriteLine("DomainUsage: {0}", domainUsage);
+
+            if (processModel != ProcessModel.Default && processModel != ProcessModel.Single)
+                Console.WriteLine("Warning: Ignoring project setting 'processModel={0}'", processModel);
+
+            if (!RuntimeFramework.CurrentFramework.Supports(framework))
+                Console.WriteLine("Warning: Ignoring project setting 'runtimeFramework={0}'", framework);
+#endif
+
+            using (TestRunner testRunner = new DefaultTestRunnerFactory().MakeTestRunner(package))
+			{
+                testRunner.Load(package);
+
+                if (testRunner.Test == null)
+				{
+					testRunner.Unload();
+					Console.Error.WriteLine("Unable to locate fixture {0}", options.fixture);
+					return FIXTURE_NOT_FOUND;
+				}
+
+				EventCollector collector = new EventCollector( options, outWriter, errorWriter );
+
+				TestFilter testFilter;
+					
+				if(!CreateTestFilter(options, out testFilter))
+					return INVALID_ARG;
+
+				TestResult result = null;
+				string savedDirectory = Environment.CurrentDirectory;
+				TextWriter savedOut = Console.Out;
+				TextWriter savedError = Console.Error;
+
+				try
+				{
+					result = testRunner.Run( collector, testFilter, true, LoggingThreshold.Off );
+				}
+				finally
+				{
+					outWriter.Flush();
+					errorWriter.Flush();
+
+					if (redirectOutput)
+						outWriter.Close();
+
+					if (redirectError)
+						errorWriter.Close();
+
+					Environment.CurrentDirectory = savedDirectory;
+					Console.SetOut( savedOut );
+					Console.SetError( savedError );
+				}
+
+				Console.WriteLine();
+
+                int returnCode = UNEXPECTED_ERROR;
+
+                if (result != null)
+                {
+                    string xmlOutput = CreateXmlOutput(result);
+                    ResultSummarizer summary = new ResultSummarizer(result);
+
+                    if (options.xmlConsole)
+                    {
+                        Console.WriteLine(xmlOutput);
+                    }
+                    else
+                    {
+                        WriteSummaryReport(summary);
+
+                        bool hasErrors = summary.Errors > 0 || summary.Failures > 0 || result.IsError || result.IsFailure;
+
+                        if (options.stoponerror && (hasErrors || summary.NotRunnable > 0))
+                        {
+                            Console.WriteLine("Test run was stopped after first error, as requested.");
+                            Console.WriteLine();
+                        }
+
+                        if (hasErrors)
+                            WriteErrorsAndFailuresReport(result);
+
+                        if (summary.TestsNotRun > 0)
+                            WriteNotRunReport(result);
+
+                        if (!options.noresult)
+                        {
+                            // Write xml output here
+                            string xmlResultFile = options.result == null || options.result == string.Empty
+                                ? "TestResult.xml" : options.result;
+
+                            using (StreamWriter writer = new StreamWriter(Path.Combine(workDir, xmlResultFile)))
+                            {
+                                writer.Write(xmlOutput);
+                            }
+                        }
+                    }
+
+                    returnCode = summary.Errors + summary.Failures + summary.NotRunnable;
+                }
+
+				if (collector.HasExceptions)
+				{
+					collector.WriteExceptions();
+					returnCode = UNEXPECTED_ERROR;
+				}
+            
+				return returnCode;
+			}
+		}
 
 		internal static bool CreateTestFilter(ConsoleOptions options, out TestFilter testFilter)
 		{
@@ -63,7 +212,7 @@ namespace NUnit.ConsoleRunner
 			if (options.runlist != null && options.runlist != string.Empty)
 			{
 				Console.WriteLine("Run list: " + options.runlist);
-
+				
 				try
 				{
 					using (StreamReader rdr = new StreamReader(options.runlist))
@@ -111,206 +260,33 @@ namespace NUnit.ConsoleRunner
 				if (testFilter.IsEmpty)
 					testFilter = excludeFilter;
 				else if (testFilter is AndFilter)
-					((AndFilter)testFilter).Add(excludeFilter);
+					((AndFilter) testFilter).Add(excludeFilter);
 				else
 					testFilter = new AndFilter(testFilter, excludeFilter);
 			}
 
 			if (testFilter is NotFilter)
-				((NotFilter)testFilter).TopLevel = true;
+				((NotFilter) testFilter).TopLevel = true;
 
 			return true;
 		}
 
-		// TODO: See if this can be unified with the Gui's MakeTestPackage
-
-		private static string CreateXmlOutput(TestResult result)
-		{
-			StringBuilder builder = new StringBuilder();
-			new XmlResultWriter(new StringWriter(builder)).SaveTestResult(result);
-
-			return builder.ToString();
-		}
-
-		private static void WriteSummaryReport(ResultSummarizer summary)
-		{
-			Console.WriteLine(
-				"Tests run: {0}, Errors: {1}, Failures: {2}, Inconclusive: {3}, Time: {4} seconds",
-				summary.TestsRun, summary.Errors, summary.Failures, summary.Inconclusive, summary.Time);
-			Console.WriteLine(
-				"  Not run: {0}, Invalid: {1}, Ignored: {2}, Skipped: {3}",
-				summary.TestsNotRun, summary.NotRunnable, summary.Ignored, summary.Skipped);
-			Console.WriteLine();
-		}
-
-		public int Execute(ConsoleOptions options)
-		{
-			this.workDir = options.work;
-			if (this.workDir == null || this.workDir == string.Empty)
-				this.workDir = Environment.CurrentDirectory;
-			else
-			{
-				this.workDir = Path.GetFullPath(this.workDir);
-				if (!Directory.Exists(this.workDir))
-					Directory.CreateDirectory(this.workDir);
-			}
-
-			TextWriter outWriter = Console.Out;
-			bool redirectOutput = options.output != null && options.output != string.Empty;
-			if (redirectOutput)
-			{
-				StreamWriter outStreamWriter = new StreamWriter(Path.Combine(this.workDir, options.output));
-				outStreamWriter.AutoFlush = true;
-				outWriter = outStreamWriter;
-			}
-
-			TextWriter errorWriter = Console.Error;
-			bool redirectError = options.err != null && options.err != string.Empty;
-			if (redirectError)
-			{
-				StreamWriter errorStreamWriter = new StreamWriter(Path.Combine(this.workDir, options.err));
-				errorStreamWriter.AutoFlush = true;
-				errorWriter = errorStreamWriter;
-			}
-
-			TestPackage package = this.MakeTestPackage(options);
-
-			ProcessModel processModel = package.Settings.Contains("ProcessModel")
-				? (ProcessModel)package.Settings["ProcessModel"]
-				: ProcessModel.Default;
-
-			DomainUsage domainUsage = package.Settings.Contains("DomainUsage")
-				? (DomainUsage)package.Settings["DomainUsage"]
-				: DomainUsage.Default;
-
-			RuntimeFramework framework = package.Settings.Contains("RuntimeFramework")
-				? (RuntimeFramework)package.Settings["RuntimeFramework"]
-				: RuntimeFramework.CurrentFramework;
-
-#if CLR_2_0 || CLR_4_0
-			Console.WriteLine("ProcessModel: {0}    DomainUsage: {1}", processModel, domainUsage);
-
-			Console.WriteLine("Execution Runtime: {0}", framework);
-#else
-            Console.WriteLine("DomainUsage: {0}", domainUsage);
-
-            if (processModel != ProcessModel.Default && processModel != ProcessModel.Single)
-                Console.WriteLine("Warning: Ignoring project setting 'processModel={0}'", processModel);
-
-            if (!RuntimeFramework.CurrentFramework.Supports(framework))
-                Console.WriteLine("Warning: Ignoring project setting 'runtimeFramework={0}'", framework);
-#endif
-
-			using (TestRunner testRunner = new DefaultTestRunnerFactory().MakeTestRunner(package))
-			{
-				testRunner.Load(package);
-
-				if (testRunner.Test == null)
-				{
-					testRunner.Unload();
-					Console.Error.WriteLine("Unable to locate fixture {0}", options.fixture);
-					return FIXTURE_NOT_FOUND;
-				}
-
-				EventCollector collector = new EventCollector(options, outWriter, errorWriter);
-
-				TestFilter testFilter;
-
-				if (!CreateTestFilter(options, out testFilter))
-					return INVALID_ARG;
-
-				TestResult result = null;
-				string savedDirectory = Environment.CurrentDirectory;
-				TextWriter savedOut = Console.Out;
-				TextWriter savedError = Console.Error;
-
-				try
-				{
-					result = testRunner.Run(collector, testFilter, false, LoggingThreshold.Off);
-				}
-				finally
-				{
-					outWriter.Flush();
-					errorWriter.Flush();
-
-					if (redirectOutput)
-						outWriter.Close();
-
-					if (redirectError)
-						errorWriter.Close();
-
-					Environment.CurrentDirectory = savedDirectory;
-					Console.SetOut(savedOut);
-					Console.SetError(savedError);
-				}
-
-				Console.WriteLine();
-
-				int returnCode = UNEXPECTED_ERROR;
-
-				if (result != null)
-				{
-					string xmlOutput = CreateXmlOutput(result);
-					ResultSummarizer summary = new ResultSummarizer(result);
-
-					if (options.xmlConsole)
-						Console.WriteLine(xmlOutput);
-					else
-					{
-						WriteSummaryReport(summary);
-
-						bool hasErrors = summary.Errors > 0 || summary.Failures > 0 || result.IsError || result.IsFailure;
-
-						if (options.stoponerror && (hasErrors || summary.NotRunnable > 0))
-						{
-							Console.WriteLine("Test run was stopped after first error, as requested.");
-							Console.WriteLine();
-						}
-
-						if (hasErrors)
-							this.WriteErrorsAndFailuresReport(result);
-
-						if (summary.TestsNotRun > 0)
-							this.WriteNotRunReport(result);
-
-						if (!options.noresult)
-						{
-							// Write xml output here
-							string xmlResultFile = options.result == null || options.result == string.Empty
-								? "TestResult.xml" : options.result;
-
-							using (StreamWriter writer = new StreamWriter(Path.Combine(this.workDir, xmlResultFile)))
-								writer.Write(xmlOutput);
-						}
-					}
-
-					returnCode = summary.Errors + summary.Failures + summary.NotRunnable;
-				}
-
-				if (collector.HasExceptions)
-				{
-					collector.WriteExceptions();
-					returnCode = UNEXPECTED_ERROR;
-				}
-
-				return returnCode;
-			}
-		}
-
-		private TestPackage MakeTestPackage(ConsoleOptions options)
-		{
+		#region Helper Methods
+        // TODO: See if this can be unified with the Gui's MakeTestPackage
+        private TestPackage MakeTestPackage( ConsoleOptions options )
+        {
 			TestPackage package;
 			DomainUsage domainUsage = DomainUsage.Default;
-			ProcessModel processModel = ProcessModel.Default;
-			RuntimeFramework framework = null;
+            ProcessModel processModel = ProcessModel.Default;
+            RuntimeFramework framework = null;
 
-			string[] parameters = new string[options.ParameterCount];
-			for (int i = 0; i < options.ParameterCount; i++)
-				parameters[i] = Path.GetFullPath((string)options.Parameters[i]);
+            string[] parameters = new string[options.ParameterCount];
+            for (int i = 0; i < options.ParameterCount; i++)
+                parameters[i] = Path.GetFullPath((string)options.Parameters[i]);
 
 			if (options.IsTestProject)
 			{
-				NUnitProject project =
+				NUnitProject project = 
 					Services.ProjectService.LoadProject(parameters[0]);
 
 				string configName = options.config;
@@ -318,135 +294,153 @@ namespace NUnit.ConsoleRunner
 					project.SetActiveConfig(configName);
 
 				package = project.ActiveConfig.MakeTestPackage();
-				processModel = project.ProcessModel;
-				domainUsage = project.DomainUsage;
-				framework = project.ActiveConfig.RuntimeFramework;
+                processModel = project.ProcessModel;
+                domainUsage = project.DomainUsage;
+                framework = project.ActiveConfig.RuntimeFramework;
 			}
 			else if (parameters.Length == 1)
 			{
-				package = new TestPackage(parameters[0]);
+                package = new TestPackage(parameters[0]);
 				domainUsage = DomainUsage.Single;
 			}
 			else
 			{
-				// TODO: Figure out a better way to handle "anonymous" packages
+                // TODO: Figure out a better way to handle "anonymous" packages
 				package = new TestPackage(null, parameters);
-				package.AutoBinPath = true;
+                package.AutoBinPath = true;
 				domainUsage = DomainUsage.Multiple;
 			}
 
 			if (options.basepath != null && options.basepath != string.Empty)
-				package.BasePath = options.basepath;
-
-			if (options.privatebinpath != null && options.privatebinpath != string.Empty)
-			{
-				package.AutoBinPath = false;
+ 			{
+ 				package.BasePath = options.basepath;
+ 			}
+ 
+ 			if (options.privatebinpath != null && options.privatebinpath != string.Empty)
+ 			{
+ 				package.AutoBinPath = false;
 				package.PrivateBinPath = options.privatebinpath;
-			}
+ 			}
 
 #if CLR_2_0 || CLR_4_0
-			if (options.framework != null)
-				framework = RuntimeFramework.Parse(options.framework);
+            if (options.framework != null)
+                framework = RuntimeFramework.Parse(options.framework);
 
-			if (options.process != ProcessModel.Default)
-				processModel = options.process;
+            if (options.process != ProcessModel.Default)
+                processModel = options.process;
 #endif
 
 			if (options.domain != DomainUsage.Default)
 				domainUsage = options.domain;
 
 			package.TestName = options.fixture;
-
-			package.Settings["ProcessModel"] = processModel;
-			package.Settings["DomainUsage"] = domainUsage;
-
+            
+            package.Settings["ProcessModel"] = processModel;
+            package.Settings["DomainUsage"] = domainUsage;
+            
 			if (framework != null)
-				package.Settings["RuntimeFramework"] = framework;
+                package.Settings["RuntimeFramework"] = framework;
 
-			if (domainUsage == DomainUsage.None)
-			{
-				// Make sure that addins are available
-				CoreExtensions.Host.AddinRegistry = Services.AddinRegistry;
-			}
+            if (domainUsage == DomainUsage.None)
+            {
+                // Make sure that addins are available
+                CoreExtensions.Host.AddinRegistry = Services.AddinRegistry;
+            }
 
-			package.Settings["ShadowCopyFiles"] = !options.noshadow;
+            package.Settings["ShadowCopyFiles"] = !options.noshadow;
 			package.Settings["UseThreadedRunner"] = !options.nothread;
-			package.Settings["DefaultTimeout"] = options.timeout;
-			package.Settings["WorkDirectory"] = this.workDir;
-			package.Settings["StopOnError"] = options.stoponerror;
+            package.Settings["DefaultTimeout"] = options.timeout;
+            package.Settings["WorkDirectory"] = this.workDir;
+            package.Settings["StopOnError"] = options.stoponerror;
 
-			if (options.apartment != ApartmentState.Unknown)
-				package.Settings["ApartmentState"] = options.apartment;
+            if (options.apartment != System.Threading.ApartmentState.Unknown)
+                package.Settings["ApartmentState"] = options.apartment;
 
-			return package;
+            return package;
 		}
 
-		private void WriteErrorsAndFailures(TestResult result)
+		private static string CreateXmlOutput( TestResult result )
 		{
-			if (result.Executed)
-			{
-				if (result.HasResults)
-				{
-					if (result.IsFailure || result.IsError)
-					{
-						if (result.FailureSite == FailureSite.SetUp || result.FailureSite == FailureSite.TearDown)
-							this.WriteSingleResult(result);
-					}
+			StringBuilder builder = new StringBuilder();
+			new XmlResultWriter(new StringWriter( builder )).SaveTestResult(result);
 
-					foreach (TestResult childResult in result.Results)
-						this.WriteErrorsAndFailures(childResult);
-				}
-				else if (result.IsFailure || result.IsError)
-					this.WriteSingleResult(result);
-			}
+			return builder.ToString();
 		}
 
-		private void WriteErrorsAndFailuresReport(TestResult result)
+		private static void WriteSummaryReport( ResultSummarizer summary )
 		{
-			this.reportIndex = 0;
-			Console.WriteLine("Errors and Failures:");
-			this.WriteErrorsAndFailures(result);
-			Console.WriteLine();
-		}
+            Console.WriteLine(
+                "Tests run: {0}, Errors: {1}, Failures: {2}, Inconclusive: {3}, Time: {4} seconds",
+                summary.TestsRun, summary.Errors, summary.Failures, summary.Inconclusive, summary.Time);
+            Console.WriteLine(
+                "  Not run: {0}, Invalid: {1}, Ignored: {2}, Skipped: {3}",
+                summary.TestsNotRun, summary.NotRunnable, summary.Ignored, summary.Skipped);
+            Console.WriteLine();
+        }
 
-		private void WriteNotRunReport(TestResult result)
-		{
-			this.reportIndex = 0;
-			Console.WriteLine("Tests Not Run:");
-			this.WriteNotRunResults(result);
-			Console.WriteLine();
-		}
+        private void WriteErrorsAndFailuresReport(TestResult result)
+        {
+            reportIndex = 0;
+            Console.WriteLine("Errors and Failures:");
+            WriteErrorsAndFailures(result);
+            Console.WriteLine();
+        }
 
-		private void WriteNotRunResults(TestResult result)
-		{
-			if (result.HasResults)
-			{
-				foreach (TestResult childResult in result.Results)
-					this.WriteNotRunResults(childResult);
-			}
-			else if (!result.Executed)
-				this.WriteSingleResult(result);
-		}
+        private void WriteErrorsAndFailures(TestResult result)
+        {
+            if (result.Executed)
+            {
+                if (result.HasResults)
+                {
+                    if (result.IsFailure || result.IsError)
+                        if (result.FailureSite == FailureSite.SetUp || result.FailureSite == FailureSite.TearDown)
+                            WriteSingleResult(result);
 
-		private void WriteSingleResult(TestResult result)
-		{
-			string status = result.IsFailure || result.IsError
-				? string.Format("{0} {1}", result.FailureSite, result.ResultState)
-				: result.ResultState.ToString();
+                    foreach (TestResult childResult in result.Results)
+                        WriteErrorsAndFailures(childResult);
+                }
+                else if (result.IsFailure || result.IsError)
+                {
+                    WriteSingleResult(result);
+                }
+            }
+        }
 
-			Console.WriteLine("{0}) {1} : {2}", ++this.reportIndex, status, result.FullName);
+        private void WriteNotRunReport(TestResult result)
+        {
+	        reportIndex = 0;
+            Console.WriteLine("Tests Not Run:");
+	        WriteNotRunResults(result);
+            Console.WriteLine();
+        }
 
-			if (result.Message != null && result.Message != string.Empty)
-				Console.WriteLine("   {0}", result.Message);
+	    private int reportIndex = 0;
+        private void WriteNotRunResults(TestResult result)
+        {
+            if (result.HasResults)
+                foreach (TestResult childResult in result.Results)
+                    WriteNotRunResults(childResult);
+            else if (!result.Executed)
+                WriteSingleResult( result );
+        }
 
-			if (result.StackTrace != null && result.StackTrace != string.Empty)
-			{
-				Console.WriteLine(result.IsFailure
-					? StackTraceFilter.Filter(result.StackTrace)
-					: result.StackTrace + Environment.NewLine);
-			}
-		}
+        private void WriteSingleResult( TestResult result )
+        {
+            string status = result.IsFailure || result.IsError
+                ? string.Format("{0} {1}", result.FailureSite, result.ResultState)
+                : result.ResultState.ToString();
 
-		#endregion
+            Console.WriteLine("{0}) {1} : {2}", ++reportIndex, status, result.FullName);
+
+            if ( result.Message != null && result.Message != string.Empty )
+                 Console.WriteLine("   {0}", result.Message);
+
+            if (result.StackTrace != null && result.StackTrace != string.Empty)
+                Console.WriteLine( result.IsFailure
+                    ? StackTraceFilter.Filter(result.StackTrace)
+                    : result.StackTrace + Environment.NewLine );
+        }
+	    #endregion
 	}
 }
+

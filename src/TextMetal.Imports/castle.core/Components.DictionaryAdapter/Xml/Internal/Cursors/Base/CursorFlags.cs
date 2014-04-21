@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
@@ -22,26 +20,19 @@ namespace Castle.Components.DictionaryAdapter.Xml
 	[Flags]
 	public enum CursorFlags
 	{
-		None = 0,
-		Elements = 1,
+		None       = 0,
+		Elements   = 1,
 		Attributes = 2,
-		Multiple = 4,
-		Mutable = 8,
-		AllNodes = Elements | Attributes
+		Multiple   = 4,
+		Mutable    = 8,
+		AllNodes   = Elements | Attributes
 	}
 
 	public static class CursorFlagsExtensions
 	{
-		#region Methods/Operators
-
-		public static bool AllowsMultipleItems(this CursorFlags flags)
+		public static CursorFlags MutableIf(this CursorFlags flags, bool mutable)
 		{
-			return 0 != (flags & CursorFlags.Multiple);
-		}
-
-		public static bool IncludesAttributes(this CursorFlags flags)
-		{
-			return 0 != (flags & CursorFlags.Attributes);
+			return mutable ? (flags | CursorFlags.Mutable) : flags;
 		}
 
 		public static bool IncludesElements(this CursorFlags flags)
@@ -49,18 +40,20 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			return 0 != (flags & CursorFlags.Elements);
 		}
 
-		public static CursorFlags MutableIf(this CursorFlags flags, bool mutable)
+		public static bool IncludesAttributes(this CursorFlags flags)
 		{
-			return mutable ? (flags | CursorFlags.Mutable) : flags;
+			return 0 != (flags & CursorFlags.Attributes);
+		}
+
+		public static bool AllowsMultipleItems(this CursorFlags flags)
+		{
+			return 0 != (flags & CursorFlags.Multiple);
 		}
 
 		public static bool SupportsMutation(this CursorFlags flags)
 		{
 			return 0 != (flags & CursorFlags.Mutable);
 		}
-
-		#endregion
 	}
 }
-
 #endif

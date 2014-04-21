@@ -3,7 +3,6 @@
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
-
 using System;
 
 namespace NUnit.Core
@@ -15,37 +14,26 @@ namespace NUnit.Core
 	/// </summary>
 	public interface ITestFilter
 	{
-		#region Properties/Indexers/Events
-
 		/// <summary>
 		/// Indicates whether this is the EmptyFilter
 		/// </summary>
-		bool IsEmpty
-		{
-			get;
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Determine whether the test itself matches the filter criteria,
-		/// without examining either parents or descendants.
-		/// </summary>
-		/// <param name="test"> The test to which the filter is applied </param>
-		/// <returns> True if the filter matches the any parent of the test </returns>
-		bool Match(ITest test);
+		bool IsEmpty { get; }
 
 		/// <summary>
 		/// Determine if a particular test passes the filter criteria. Pass
 		/// may examine the parents and/or descendants of a test, depending
 		/// on the semantics of the particular filter
 		/// </summary>
-		/// <param name="test"> The test to which the filter is applied </param>
-		/// <returns> True if the test passes the filter, otherwise false </returns>
-		bool Pass(ITest test);
+		/// <param name="test">The test to which the filter is applied</param>
+		/// <returns>True if the test passes the filter, otherwise false</returns>
+		bool Pass( ITest test );
 
-		#endregion
+		/// <summary>
+		/// Determine whether the test itself matches the filter criteria,
+		/// without examining either parents or descendants.
+		/// </summary>
+		/// <param name="test">The test to which the filter is applied</param>
+		/// <returns>True if the filter matches the any parent of the test</returns>
+		bool Match( ITest test );
 	}
 }

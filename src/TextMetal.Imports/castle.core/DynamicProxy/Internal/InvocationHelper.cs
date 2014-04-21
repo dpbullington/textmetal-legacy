@@ -12,42 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
-
-using Castle.Core.Internal;
-using Castle.DynamicProxy.Generators;
-
 namespace Castle.DynamicProxy.Internal
 {
 	using System;
+	using System.Collections.Generic;
+	using System.Diagnostics;
+	using System.Reflection;
+
+	using Castle.Core.Internal;
+	using Castle.DynamicProxy.Generators;
 
 	public static class InvocationHelper
 	{
-		#region Fields/Constants
-
 		private static readonly Dictionary<KeyValuePair<MethodInfo, Type>, MethodInfo> cache =
 			new Dictionary<KeyValuePair<MethodInfo, Type>, MethodInfo>();
 
 		private static readonly Lock @lock = Lock.Create();
 
-		#endregion
-
-		#region Methods/Operators
-
-		private static MethodInfo GetFromCache(MethodInfo methodInfo, Type type)
-		{
-			var key = new KeyValuePair<MethodInfo, Type>(methodInfo, type);
-			MethodInfo method;
-			cache.TryGetValue(key, out method);
-			return method;
-		}
-
 		public static MethodInfo GetMethodOnObject(object target, MethodInfo proxiedMethod)
 		{
 			if (target == null)
+			{
 				return null;
+			}
 
 			return GetMethodOnType(target.GetType(), proxiedMethod);
 		}
@@ -55,24 +42,38 @@ namespace Castle.DynamicProxy.Internal
 		public static MethodInfo GetMethodOnType(Type type, MethodInfo proxiedMethod)
 		{
 			if (type == null)
+			{
 				throw new ArgumentNullException("type");
+			}
 
 			Debug.Assert(proxiedMethod.DeclaringType.IsAssignableFrom(type),
-				"proxiedMethod.DeclaringType.IsAssignableFrom(type)");
+			             "proxiedMethod.DeclaringType.IsAssignableFrom(type)");
 			using (var locker = @lock.ForReadingUpgradeable())
 			{
 				var methodOnTarget = GetFromCache(proxiedMethod, type);
 				if (methodOnTarget != null)
+				{
 					return methodOnTarget;
+				}
 				locker.Upgrade();
 
 				methodOnTarget = GetFromCache(proxiedMethod, type);
 				if (methodOnTarget != null)
+				{
 					return methodOnTarget;
+				}
 				methodOnTarget = ObtainMethod(proxiedMethod, type);
 				PutToCache(proxiedMethod, type, methodOnTarget);
 				return methodOnTarget;
 			}
+		}
+
+		private static MethodInfo GetFromCache(MethodInfo methodInfo, Type type)
+		{
+			var key = new KeyValuePair<MethodInfo, Type>(methodInfo, type);
+			MethodInfo method;
+			cache.TryGetValue(key, out method);
+			return method;
 		}
 
 		private static MethodInfo ObtainMethod(MethodInfo proxiedMethod, Type type)
@@ -109,11 +110,13 @@ namespace Castle.DynamicProxy.Internal
 			{
 				throw new ArgumentException(
 					string.Format("Could not find method overriding {0} on type {1}. This is most likely a bug. Please report it.",
-						proxiedMethod, type));
+					              proxiedMethod, type));
 			}
 
 			if (genericArguments == null)
+			{
 				return methodOnTarget;
+			}
 			return methodOnTarget.MakeGenericMethod(genericArguments);
 		}
 
@@ -122,7 +125,5 @@ namespace Castle.DynamicProxy.Internal
 			var key = new KeyValuePair<MethodInfo, Type>(methodInfo, type);
 			cache.Add(key, value);
 		}
-
-		#endregion
 	}
 }

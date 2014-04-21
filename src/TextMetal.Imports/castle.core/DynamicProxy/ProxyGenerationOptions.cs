@@ -12,16 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using System.Reflection.Emit;
-using System.Runtime.Serialization;
-
 namespace Castle.DynamicProxy
 {
 	using System;
+	using System.Collections.Generic;
+	using System.Reflection.Emit;
+	using System.Runtime.Serialization;
 #if DOTNET40
 	using System.Security;
-
 #endif
 
 #if SILVERLIGHT
@@ -40,20 +38,20 @@ namespace Castle.DynamicProxy
 #if !SILVERLIGHT
 		[NonSerialized]
 #endif
-			private MixinData mixinData; // this is calculated dynamically on proxy type creation
+		private MixinData mixinData; // this is calculated dynamically on proxy type creation
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="ProxyGenerationOptions" /> class.
+		///   Initializes a new instance of the <see cref = "ProxyGenerationOptions" /> class.
 		/// </summary>
-		/// <param name="hook"> The hook. </param>
+		/// <param name = "hook">The hook.</param>
 		public ProxyGenerationOptions(IProxyGenerationHook hook)
 		{
-			this.BaseTypeForInterfaceProxy = typeof(object);
-			this.Hook = hook;
+			BaseTypeForInterfaceProxy = typeof(object);
+			Hook = hook;
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="ProxyGenerationOptions" /> class.
+		///   Initializes a new instance of the <see cref = "ProxyGenerationOptions" /> class.
 		/// </summary>
 		public ProxyGenerationOptions()
 			: this(new AllMethodsHook())
@@ -63,20 +61,20 @@ namespace Castle.DynamicProxy
 #if !SILVERLIGHT
 		private ProxyGenerationOptions(SerializationInfo info, StreamingContext context)
 		{
-			this.Hook = (IProxyGenerationHook)info.GetValue("hook", typeof(IProxyGenerationHook));
-			this.Selector = (IInterceptorSelector)info.GetValue("selector", typeof(IInterceptorSelector));
-			this.mixins = (List<object>)info.GetValue("mixins", typeof(List<object>));
-			this.BaseTypeForInterfaceProxy = Type.GetType(info.GetString("baseTypeForInterfaceProxy.AssemblyQualifiedName"));
+			Hook = (IProxyGenerationHook)info.GetValue("hook", typeof(IProxyGenerationHook));
+			Selector = (IInterceptorSelector)info.GetValue("selector", typeof(IInterceptorSelector));
+			mixins = (List<object>)info.GetValue("mixins", typeof(List<object>));
+			BaseTypeForInterfaceProxy = Type.GetType(info.GetString("baseTypeForInterfaceProxy.AssemblyQualifiedName"));
 		}
 #endif
 
 		public void Initialize()
 		{
-			if (this.mixinData == null)
+			if (mixinData == null)
 			{
 				try
 				{
-					this.mixinData = new MixinData(this.mixins);
+					mixinData = new MixinData(mixins);
 				}
 				catch (ArgumentException ex)
 				{
@@ -92,121 +90,120 @@ namespace Castle.DynamicProxy
 #endif
 		public void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
-			info.AddValue("hook", this.Hook);
-			info.AddValue("selector", this.Selector);
-			info.AddValue("mixins", this.mixins);
-			info.AddValue("baseTypeForInterfaceProxy.AssemblyQualifiedName", this.BaseTypeForInterfaceProxy.AssemblyQualifiedName);
+			info.AddValue("hook", Hook);
+			info.AddValue("selector", Selector);
+			info.AddValue("mixins", mixins);
+			info.AddValue("baseTypeForInterfaceProxy.AssemblyQualifiedName", BaseTypeForInterfaceProxy.AssemblyQualifiedName);
 		}
 #endif
 
-		public IProxyGenerationHook Hook
-		{
-			get;
-			set;
-		}
+		public IProxyGenerationHook Hook { get; set; }
 
-		public IInterceptorSelector Selector
-		{
-			get;
-			set;
-		}
+		public IInterceptorSelector Selector { get; set; }
 
-		public Type BaseTypeForInterfaceProxy
-		{
-			get;
-			set;
-		}
+		public Type BaseTypeForInterfaceProxy { get; set; }
 
 		[Obsolete(
 			"This property is obsolete and will be removed in future versions. Use AdditionalAttributes property instead. " +
 			"You can use AttributeUtil class to simplify creating CustomAttributeBuilder instances for common cases.")]
 		public IList<Attribute> AttributesToAddToGeneratedTypes
 		{
-			get
-			{
-				return this.attributesToAddToGeneratedTypes;
-			}
+			get { return attributesToAddToGeneratedTypes; }
 		}
 
 		public IList<CustomAttributeBuilder> AdditionalAttributes
 		{
-			get
-			{
-				return this.additionalAttributes;
-			}
+			get { return additionalAttributes; }
 		}
 
 		public MixinData MixinData
 		{
 			get
 			{
-				if (this.mixinData == null)
+				if (mixinData == null)
+				{
 					throw new InvalidOperationException("Call Initialize before accessing the MixinData property.");
-				return this.mixinData;
+				}
+				return mixinData;
 			}
 		}
 
 		public void AddMixinInstance(object instance)
 		{
 			if (instance == null)
+			{
 				throw new ArgumentNullException("instance");
+			}
 
-			if (this.mixins == null)
-				this.mixins = new List<object>();
+			if (mixins == null)
+			{
+				mixins = new List<object>();
+			}
 
-			this.mixins.Add(instance);
-			this.mixinData = null;
+			mixins.Add(instance);
+			mixinData = null;
 		}
 
 		public object[] MixinsAsArray()
 		{
-			if (this.mixins == null)
+			if (mixins == null)
+			{
 				return new object[0];
+			}
 
-			return this.mixins.ToArray();
+			return mixins.ToArray();
 		}
 
 		public bool HasMixins
 		{
-			get
-			{
-				return this.mixins != null && this.mixins.Count != 0;
-			}
+			get { return mixins != null && mixins.Count != 0; }
 		}
 
 		public override bool Equals(object obj)
 		{
 			if (ReferenceEquals(this, obj))
+			{
 				return true;
+			}
 
 			var proxyGenerationOptions = obj as ProxyGenerationOptions;
 			if (ReferenceEquals(proxyGenerationOptions, null))
+			{
 				return false;
+			}
 
 			// ensure initialization before accessing MixinData
-			this.Initialize();
+			Initialize();
 			proxyGenerationOptions.Initialize();
 
-			if (!Equals(this.Hook, proxyGenerationOptions.Hook))
+			if (!Equals(Hook, proxyGenerationOptions.Hook))
+			{
 				return false;
-			if (!Equals(this.Selector == null, proxyGenerationOptions.Selector == null))
+			}
+			if (!Equals(Selector == null, proxyGenerationOptions.Selector == null))
+			{
 				return false;
-			if (!Equals(this.MixinData, proxyGenerationOptions.MixinData))
+			}
+			if (!Equals(MixinData, proxyGenerationOptions.MixinData))
+			{
 				return false;
-			if (!Equals(this.BaseTypeForInterfaceProxy, proxyGenerationOptions.BaseTypeForInterfaceProxy))
+			}
+			if (!Equals(BaseTypeForInterfaceProxy, proxyGenerationOptions.BaseTypeForInterfaceProxy))
+			{
 				return false;
+			}
 			return true;
 		}
 
 		public override int GetHashCode()
 		{
 			// ensure initialization before accessing MixinData
-			this.Initialize();
+			Initialize();
 
-			var result = this.Hook != null ? this.Hook.GetType().GetHashCode() : 0;
-			result = 29 * result + (this.Selector != null ? 1 : 0);
-			result = 29 * result + this.MixinData.GetHashCode();
-			result = 29 * result + (this.BaseTypeForInterfaceProxy != null ? this.BaseTypeForInterfaceProxy.GetHashCode() : 0);
+			var result = Hook != null ? Hook.GetType().GetHashCode() : 0;
+			result = 29*result + (Selector != null ? 1 : 0);
+			result = 29*result + MixinData.GetHashCode();
+			result = 29*result + (BaseTypeForInterfaceProxy != null ? BaseTypeForInterfaceProxy.GetHashCode() : 0);
 			return result;
 		}
 	}

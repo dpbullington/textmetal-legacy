@@ -18,8 +18,6 @@ namespace Castle.Core.Resource
 
 	public class AssemblyResourceFactory : IResourceFactory
 	{
-		#region Methods/Operators
-
 		public bool Accept(CustomUri uri)
 		{
 			return "assembly".Equals(uri.Scheme);
@@ -27,17 +25,17 @@ namespace Castle.Core.Resource
 
 		public IResource Create(CustomUri uri)
 		{
-			return this.Create(uri, null);
+			return Create(uri, null);
 		}
 
 		public IResource Create(CustomUri uri, String basePath)
 		{
 			if (basePath == null)
+			{
 				return new AssemblyResource(uri);
+			}
 
 			return new AssemblyResource(uri, basePath);
 		}
-
-		#endregion
 	}
 }

@@ -1,5 +1,4 @@
 #region License
-
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -22,110 +21,87 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-
 #endregion
 
 using System;
 
 namespace Newtonsoft.Json.Utilities
 {
-	/// <summary>
-	/// Builds a string. Unlike StringBuilder this class lets you reuse it's internal buffer.
-	/// </summary>
-	internal class StringBuffer
-	{
-		#region Constructors/Destructors
+    /// <summary>
+    /// Builds a string. Unlike StringBuilder this class lets you reuse it's internal buffer.
+    /// </summary>
+    internal class StringBuffer
+    {
+        private char[] _buffer;
+        private int _position;
 
-		public StringBuffer()
-		{
-			this._buffer = EmptyBuffer;
-		}
+        private static readonly char[] EmptyBuffer = new char[0];
 
-		public StringBuffer(int initalSize)
-		{
-			this._buffer = new char[initalSize];
-		}
+        public int Position
+        {
+            get { return _position; }
+            set { _position = value; }
+        }
 
-		#endregion
+        public StringBuffer()
+        {
+            _buffer = EmptyBuffer;
+        }
 
-		#region Fields/Constants
+        public StringBuffer(int initalSize)
+        {
+            _buffer = new char[initalSize];
+        }
 
-		private static readonly char[] EmptyBuffer = new char[0];
+        public void Append(char value)
+        {
+            // test if the buffer array is large enough to take the value
+            if (_position == _buffer.Length)
+                EnsureSize(1);
 
-		private char[] _buffer;
-		private int _position;
+            // set value and increment poisition
+            _buffer[_position++] = value;
+        }
 
-		#endregion
+        public void Append(char[] buffer, int startIndex, int count)
+        {
+            if (_position + count >= _buffer.Length)
+                EnsureSize(count);
 
-		#region Properties/Indexers/Events
+            Array.Copy(buffer, startIndex, _buffer, _position, count);
 
-		public int Position
-		{
-			get
-			{
-				return this._position;
-			}
-			set
-			{
-				this._position = value;
-			}
-		}
+            _position += count;
+        }
 
-		#endregion
+        public void Clear()
+        {
+            _buffer = EmptyBuffer;
+            _position = 0;
+        }
 
-		#region Methods/Operators
+        private void EnsureSize(int appendLength)
+        {
+            char[] newBuffer = new char[(_position + appendLength) * 2];
 
-		public void Append(char value)
-		{
-			// test if the buffer array is large enough to take the value
-			if (this._position == this._buffer.Length)
-				this.EnsureSize(1);
+            Array.Copy(_buffer, newBuffer, _position);
 
-			// set value and increment poisition
-			this._buffer[this._position++] = value;
-		}
+            _buffer = newBuffer;
+        }
 
-		public void Append(char[] buffer, int startIndex, int count)
-		{
-			if (this._position + count >= this._buffer.Length)
-				this.EnsureSize(count);
+        public override string ToString()
+        {
+            return ToString(0, _position);
+        }
 
-			Array.Copy(buffer, startIndex, this._buffer, this._position, count);
+        public string ToString(int start, int length)
+        {
+            // TODO: validation
+            return new string(_buffer, start, length);
+        }
 
-			this._position += count;
-		}
-
-		public void Clear()
-		{
-			this._buffer = EmptyBuffer;
-			this._position = 0;
-		}
-
-		private void EnsureSize(int appendLength)
-		{
-			char[] newBuffer = new char[(this._position + appendLength) * 2];
-
-			Array.Copy(this._buffer, newBuffer, this._position);
-
-			this._buffer = newBuffer;
-		}
-
-		public char[] GetInternalBuffer()
-		{
-			return this._buffer;
-		}
-
-		public override string ToString()
-		{
-			return this.ToString(0, this._position);
-		}
-
-		public string ToString(int start, int length)
-		{
-			// TODO: validation
-			return new string(this._buffer, start, length);
-		}
-
-		#endregion
-	}
+        public char[] GetInternalBuffer()
+        {
+            return _buffer;
+        }
+    }
 }

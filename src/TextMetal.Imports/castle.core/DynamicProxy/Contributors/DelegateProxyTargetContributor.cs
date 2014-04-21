@@ -12,42 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using System.Diagnostics;
-
-using Castle.DynamicProxy.Generators;
-using Castle.DynamicProxy.Generators.Emitters;
-
 namespace Castle.DynamicProxy.Contributors
 {
 	using System;
+	using System.Collections.Generic;
+	using System.Diagnostics;
+
+	using Castle.DynamicProxy.Generators;
+	using Castle.DynamicProxy.Generators.Emitters;
 
 	public class DelegateProxyTargetContributor : CompositeTypeContributor
 	{
-		#region Constructors/Destructors
+		private readonly Type targetType;
 
-		public DelegateProxyTargetContributor(Type targetType, INamingScope namingScope)
-			: base(namingScope)
+		public DelegateProxyTargetContributor(Type targetType, INamingScope namingScope) : base(namingScope)
 		{
 			this.targetType = targetType;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly Type targetType;
-
-		#endregion
-
-		#region Methods/Operators
-
 		protected override IEnumerable<MembersCollector> CollectElementsToProxyInternal(IProxyGenerationHook hook)
 		{
 			Debug.Assert(hook != null, "hook != null");
-			var targetItem = new DelegateMembersCollector(this.targetType) { Logger = this.Logger };
+			var targetItem = new DelegateMembersCollector(targetType) { Logger = Logger };
 			targetItem.CollectMembersToProxy(hook);
 			yield return targetItem;
+		}
+
+		protected override MethodGenerator GetMethodGenerator(MetaMethod method, ClassEmitter @class,
+		                                                      ProxyGenerationOptions options,
+		                                                      OverrideMethodDelegate overrideMethod)
+		{
+			var invocation = GetInvocationType(method, @class, options);
+			return new MethodWithInvocationGenerator(method,
+			                                         @class.GetField("__interceptors"),
+			                                         invocation,
+			                                         (c, m) => c.GetField("__target").ToExpression(),
+			                                         overrideMethod,
+			                                         null);
 		}
 
 		private Type GetInvocationType(MetaMethod method, ClassEmitter emitter, ProxyGenerationOptions options)
@@ -58,34 +59,21 @@ namespace Castle.DynamicProxy.Contributors
 			// no locking required as we're already within a lock
 			var invocation = scope.GetFromCache(key);
 			if (invocation != null)
+			{
 				return invocation;
+			}
 
 			invocation = new CompositionInvocationTypeGenerator(method.Method.DeclaringType,
-				method,
-				method.Method,
-				false,
-				null)
-				.Generate(emitter, options, this.namingScope)
+			                                                    method,
+			                                                    method.Method,
+			                                                    false,
+			                                                    null)
+				.Generate(emitter, options, namingScope)
 				.BuildType();
 
 			scope.RegisterInCache(key, invocation);
 
 			return invocation;
 		}
-
-		protected override MethodGenerator GetMethodGenerator(MetaMethod method, ClassEmitter @class,
-			ProxyGenerationOptions options,
-			OverrideMethodDelegate overrideMethod)
-		{
-			var invocation = this.GetInvocationType(method, @class, options);
-			return new MethodWithInvocationGenerator(method,
-				@class.GetField("__interceptors"),
-				invocation,
-				(c, m) => c.GetField("__target").ToExpression(),
-				overrideMethod,
-				null);
-		}
-
-		#endregion
 	}
 }

@@ -15,14 +15,10 @@
 namespace Castle.DynamicProxy
 {
 	/// <summary>
-	/// New interface that is going to be used by DynamicProxy 2
+	///   New interface that is going to be used by DynamicProxy 2
 	/// </summary>
 	public interface IInterceptor
 	{
-		#region Methods/Operators
-
 		void Intercept(IInvocation invocation);
-
-		#endregion
 	}
 }

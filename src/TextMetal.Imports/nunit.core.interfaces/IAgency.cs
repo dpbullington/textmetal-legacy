@@ -8,20 +8,16 @@ using System;
 
 namespace NUnit.Core
 {
-	/// <summary>
-	/// The IAgency interface is implemented by a TestAgency in
-	/// order to allow TestAgents to register with it.
-	/// </summary>
-	public interface IAgency
-	{
-		#region Methods/Operators
-
-		/// <summary>
-		/// Registers an agent with an agency
-		/// </summary>
-		/// <param name="agent"> </param>
-		void Register(TestAgent agent);
-
-		#endregion
-	}
+    /// <summary>
+    /// The IAgency interface is implemented by a TestAgency in 
+    /// order to allow TestAgents to register with it.
+    /// </summary>
+    public interface IAgency
+    {
+        /// <summary>
+        /// Registers an agent with an agency
+        /// </summary>
+        /// <param name="agent"></param>
+        void Register(TestAgent agent);
+    }
 }

@@ -15,134 +15,89 @@ namespace NUnit.Core
 	/// for data-only representations of a test.
 	/// </summary>
 	public interface ITest
-	{
-		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Categories available for this test
-		/// </summary>
-		IList Categories
-		{
-			get;
-		}
-
-		/// <summary>
-		/// Gets the name of the class containing this test. Returns
-		/// null if the test is not associated with a class.
-		/// </summary>
-		string ClassName
-		{
-			get;
-		}
-
-		/// <summary>
-		/// Return the description field.
-		/// </summary>
-		string Description
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
-		/// Reason for not running the test, if applicable
-		/// </summary>
-		string IgnoreReason
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
-		/// True if this is a suite
-		/// </summary>
-		bool IsSuite
-		{
-			get;
-		}
-
-		/// <summary>
-		/// Gets the name of the method implementing this test.
-		/// Returns null if the test is not implemented as a method.
-		/// </summary>
-		string MethodName
-		{
-			get;
-		}
-
-		/// <summary>
-		/// Gets the parent test of this test
-		/// </summary>
-		ITest Parent
-		{
-			get;
-		}
-
-		/// <summary>
-		/// Return additional properties of the test
-		/// </summary>
-		IDictionary Properties
-		{
-			get;
-		}
-
-		/// <summary>
-		/// Indicates whether the test can be run using
-		/// the RunState enum.
-		/// </summary>
-		RunState RunState
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
-		/// Count of the test cases ( 1 if this is a test case )
-		/// </summary>
-		int TestCount
-		{
-			get;
-		}
-
-		/// <summary>
+    {
+        #region Properties
+        /// <summary>
 		/// Gets the completely specified name of the test
 		/// encapsulated in a TestName object.
 		/// </summary>
-		TestName TestName
-		{
-			get;
-		}
+		TestName TestName { get; }
+
+        /// <summary>
+        /// Gets the name of the class containing this test. Returns
+        /// null if the test is not associated with a class.
+        /// </summary>
+        string ClassName { get; }
+
+        /// <summary>
+        /// Gets the name of the method implementing this test.
+        /// Returns null if the test is not implemented as a method.
+        /// </summary>
+        string MethodName { get; }
 
 		/// <summary>
 		/// Gets a string representing the type of test, e.g.: "Test Case"
 		/// </summary>
-		string TestType
-		{
-			get;
-		}
+		string TestType { get; }
+
+        /// <summary>
+        /// Indicates whether the test can be run using
+        /// the RunState enum.
+        /// </summary>
+		RunState RunState { get; set; }
+
+		/// <summary>
+		/// Reason for not running the test, if applicable
+		/// </summary>
+		string IgnoreReason { get; set; }
+		
+		/// <summary>
+		/// Count of the test cases ( 1 if this is a test case )
+		/// </summary>
+		int TestCount { get; }
+
+		/// <summary>
+		/// Categories available for this test
+		/// </summary>
+		IList Categories { get; }
+
+		/// <summary>
+		/// Return the description field. 
+		/// </summary>
+		string Description { get; set; }
+
+		/// <summary>
+		/// Return additional properties of the test
+		/// </summary>
+		IDictionary Properties { get; }
+
+		/// <summary>
+		/// True if this is a suite
+		/// </summary>
+		bool IsSuite { get; }
+
+		/// <summary>
+		///  Gets the parent test of this test
+		/// </summary>
+		ITest Parent { get; }
 
 		/// <summary>
 		/// For a test suite, the child tests or suites
 		/// Null if this is not a test suite
 		/// </summary>
-		IList Tests
-		{
-			get;
-		}
+		IList Tests { get; }
+        #endregion
 
-		#endregion
-
-		#region Methods/Operators
-
+        #region Methods
 		/// <summary>
 		/// Count the test cases that pass a filter. The
 		/// result should match those that would execute
 		/// when passing the same filter to Run.
 		/// </summary>
-		/// <param name="filter"> The filter to apply </param>
-		/// <returns> The count of test cases </returns>
-		int CountTestCases(ITestFilter filter);
-
-		#endregion
-	}
+		/// <param name="filter">The filter to apply</param>
+		/// <returns>The count of test cases</returns>
+        int CountTestCases(ITestFilter filter);
+        #endregion
+    }
 }
+

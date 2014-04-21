@@ -8,34 +8,19 @@ using System;
 
 namespace NUnit.Core
 {
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple=false)]
 	public class TestBuilderAttribute : Attribute
 	{
-		#region Constructors/Destructors
+		private Type builderType;
 
 		public TestBuilderAttribute(Type builderType)
 		{
 			this.builderType = builderType;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private Type builderType;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
 		public Type BuilderType
 		{
-			get
-			{
-				return this.builderType;
-			}
+			get { return builderType; }
 		}
-
-		#endregion
 	}
 }

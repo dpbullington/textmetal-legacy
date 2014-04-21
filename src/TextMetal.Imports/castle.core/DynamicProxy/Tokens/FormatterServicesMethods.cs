@@ -12,26 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection;
-using System.Runtime.Serialization;
 
 #if !SILVERLIGHT
 
 namespace Castle.DynamicProxy.Tokens
 {
 	using System;
+	using System.Reflection;
+	using System.Runtime.Serialization;
 
 	public static class FormatterServicesMethods
 	{
-		#region Fields/Constants
-
 		public static readonly MethodInfo GetObjectData =
 			typeof(FormatterServices).GetMethod("GetObjectData", new[] { typeof(object), typeof(MemberInfo[]) });
 
 		public static readonly MethodInfo GetSerializableMembers =
 			typeof(FormatterServices).GetMethod("GetSerializableMembers", new[] { typeof(Type) });
-
-		#endregion
 	}
 }
 

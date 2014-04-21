@@ -12,36 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Diagnostics;
-using System.Reflection.Emit;
-
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
 	using System;
+	using System.Diagnostics;
+	using System.Reflection.Emit;
 
 	[DebuggerDisplay("{value}")]
 	public class ConstReference : TypeReference
 	{
-		#region Constructors/Destructors
+		private readonly object value;
 
 		public ConstReference(object value)
 			: base(value.GetType())
 		{
 			if (!value.GetType().IsPrimitive && !(value is String))
+			{
 				throw new ProxyGenerationException("Invalid type to ConstReference");
+			}
 
 			this.value = value;
 		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly object value;
-
-		#endregion
-
-		#region Methods/Operators
 
 		public override void Generate(ILGenerator gen)
 		{
@@ -54,14 +45,12 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 
 		public override void LoadReference(ILGenerator gen)
 		{
-			OpCodeUtil.EmitLoadOpCodeForConstantValue(gen, this.value);
+			OpCodeUtil.EmitLoadOpCodeForConstantValue(gen, value);
 		}
 
 		public override void StoreReference(ILGenerator gen)
 		{
 			throw new NotImplementedException("ConstReference.StoreReference");
 		}
-
-		#endregion
 	}
 }

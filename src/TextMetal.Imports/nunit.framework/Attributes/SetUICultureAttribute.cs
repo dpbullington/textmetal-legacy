@@ -8,23 +8,16 @@ using System;
 
 namespace NUnit.Framework
 {
-	/// <summary>
-	/// Summary description for SetUICultureAttribute.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Assembly, AllowMultiple = true, Inherited = true)]
-	public class SetUICultureAttribute : PropertyAttribute
-	{
-		#region Constructors/Destructors
-
-		/// <summary>
-		/// Construct given the name of a culture
-		/// </summary>
-		/// <param name="culture"> </param>
-		public SetUICultureAttribute(string culture)
-			: base("_SETUICULTURE", culture)
-		{
-		}
-
-		#endregion
-	}
+    /// <summary>
+    /// Summary description for SetUICultureAttribute.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Assembly, AllowMultiple = false, Inherited=true)]
+    public class SetUICultureAttribute : PropertyAttribute
+    {
+        /// <summary>
+        /// Construct given the name of a culture
+        /// </summary>
+        /// <param name="culture"></param>
+        public SetUICultureAttribute(string culture) : base("_SETUICULTURE", culture) { }
+    }
 }

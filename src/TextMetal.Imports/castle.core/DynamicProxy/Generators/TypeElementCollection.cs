@@ -12,61 +12,62 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections;
-using System.Collections.Generic;
-
 namespace Castle.DynamicProxy.Generators
 {
 	using System;
+	using System.Collections;
+	using System.Collections.Generic;
 
 	public class TypeElementCollection<TElement> : ICollection<TElement>
 		where TElement : MetaTypeElement, IEquatable<TElement>
 	{
-		#region Fields/Constants
-
 		private readonly ICollection<TElement> items = new List<TElement>();
-
-		#endregion
-
-		#region Properties/Indexers/Events
 
 		public int Count
 		{
-			get
-			{
-				return this.items.Count;
-			}
+			get { return items.Count; }
 		}
 
 		bool ICollection<TElement>.IsReadOnly
 		{
-			get
-			{
-				return false;
-			}
+			get { return false; }
 		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		public void Add(TElement item)
 		{
 			if (item.CanBeImplementedExplicitly == false)
 			{
-				this.items.Add(item);
+				items.Add(item);
 				return;
 			}
-			if (this.Contains(item))
+			if (Contains(item))
 			{
 				item.SwitchToExplicitImplementation();
-				if (this.Contains(item))
+				if (Contains(item))
 				{
 					// there is something reaaaly wrong going on here
 					throw new ProxyGenerationException("Duplicate element: " + item);
 				}
 			}
-			this.items.Add(item);
+			items.Add(item);
+		}
+
+		public bool Contains(TElement item)
+		{
+			foreach (var element in items)
+			{
+				if (element.Equals(item))
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		public IEnumerator<TElement> GetEnumerator()
+		{
+			return items.GetEnumerator();
 		}
 
 		void ICollection<TElement>.Clear()
@@ -74,30 +75,9 @@ namespace Castle.DynamicProxy.Generators
 			throw new NotSupportedException();
 		}
 
-		public bool Contains(TElement item)
-		{
-			foreach (var element in this.items)
-			{
-				if (element.Equals(item))
-					return true;
-			}
-
-			return false;
-		}
-
 		void ICollection<TElement>.CopyTo(TElement[] array, int arrayIndex)
 		{
 			throw new NotSupportedException();
-		}
-
-		public IEnumerator<TElement> GetEnumerator()
-		{
-			return this.items.GetEnumerator();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return this.GetEnumerator();
 		}
 
 		bool ICollection<TElement>.Remove(TElement item)
@@ -105,6 +85,9 @@ namespace Castle.DynamicProxy.Generators
 			throw new NotSupportedException();
 		}
 
-		#endregion
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
 	}
 }

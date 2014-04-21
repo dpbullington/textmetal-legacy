@@ -3,9 +3,12 @@
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
-
 using System;
-
+using System.Threading;
+using System.Runtime.Remoting;
+using System.Runtime.Remoting.Services;
+using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting.Channels.Tcp;
 using NUnit.Core;
 
 namespace NUnit.Util
@@ -15,32 +18,16 @@ namespace NUnit.Util
 	/// </summary>
 	public class TestServer : ServerBase
 	{
-		#region Constructors/Destructors
+		private TestRunner runner;
 
-		public TestServer(string uri, int port)
-			: base(uri, port)
+		public TestServer( string uri, int port ) : base( uri, port )
 		{
 			this.runner = new TestDomain();
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private TestRunner runner;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
 		public TestRunner TestRunner
 		{
-			get
-			{
-				return this.runner;
-			}
+			get { return runner; }
 		}
-
-		#endregion
 	}
 }

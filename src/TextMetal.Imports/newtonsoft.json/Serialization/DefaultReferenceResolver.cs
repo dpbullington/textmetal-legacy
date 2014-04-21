@@ -1,5 +1,4 @@
 #region License
-
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -22,73 +21,63 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-
 #endregion
 
 using System;
-using System.Globalization;
-
 using Newtonsoft.Json.Utilities;
+using System.Globalization;
 
 namespace Newtonsoft.Json.Serialization
 {
-	internal class DefaultReferenceResolver : IReferenceResolver
-	{
-		#region Fields/Constants
+    internal class DefaultReferenceResolver : IReferenceResolver
+    {
+        private int _referenceCount;
 
-		private int _referenceCount;
+        private BidirectionalDictionary<string, object> GetMappings(object context)
+        {
+            JsonSerializerInternalBase internalSerializer;
 
-		#endregion
+            if (context is JsonSerializerInternalBase)
+                internalSerializer = (JsonSerializerInternalBase)context;
+            else if (context is JsonSerializerProxy)
+                internalSerializer = ((JsonSerializerProxy)context).GetInternalSerializer();
+            else
+                throw new JsonException("The DefaultReferenceResolver can only be used internally.");
 
-		#region Methods/Operators
+            return internalSerializer.DefaultReferenceMappings;
+        }
 
-		public void AddReference(object context, string reference, object value)
-		{
-			this.GetMappings(context).Set(reference, value);
-		}
+        public object ResolveReference(object context, string reference)
+        {
+            object value;
+            GetMappings(context).TryGetByFirst(reference, out value);
+            return value;
+        }
 
-		private BidirectionalDictionary<string, object> GetMappings(object context)
-		{
-			JsonSerializerInternalBase internalSerializer;
+        public string GetReference(object context, object value)
+        {
+            var mappings = GetMappings(context);
 
-			if (context is JsonSerializerInternalBase)
-				internalSerializer = (JsonSerializerInternalBase)context;
-			else if (context is JsonSerializerProxy)
-				internalSerializer = ((JsonSerializerProxy)context).GetInternalSerializer();
-			else
-				throw new JsonException("The DefaultReferenceResolver can only be used internally.");
+            string reference;
+            if (!mappings.TryGetBySecond(value, out reference))
+            {
+                _referenceCount++;
+                reference = _referenceCount.ToString(CultureInfo.InvariantCulture);
+                mappings.Set(reference, value);
+            }
 
-			return internalSerializer.DefaultReferenceMappings;
-		}
+            return reference;
+        }
 
-		public string GetReference(object context, object value)
-		{
-			var mappings = this.GetMappings(context);
+        public void AddReference(object context, string reference, object value)
+        {
+            GetMappings(context).Set(reference, value);
+        }
 
-			string reference;
-			if (!mappings.TryGetBySecond(value, out reference))
-			{
-				this._referenceCount++;
-				reference = this._referenceCount.ToString(CultureInfo.InvariantCulture);
-				mappings.Set(reference, value);
-			}
-
-			return reference;
-		}
-
-		public bool IsReferenced(object context, object value)
-		{
-			string reference;
-			return this.GetMappings(context).TryGetBySecond(value, out reference);
-		}
-
-		public object ResolveReference(object context, string reference)
-		{
-			object value;
-			this.GetMappings(context).TryGetByFirst(reference, out value);
-			return value;
-		}
-
-		#endregion
-	}
+        public bool IsReferenced(object context, object value)
+        {
+            string reference;
+            return GetMappings(context).TryGetBySecond(value, out reference);
+        }
+    }
 }

@@ -5,11 +5,12 @@
 // ****************************************************************
 
 using System;
+using System.Threading;
 using System.Runtime.Remoting;
+using System.Runtime.Remoting.Services;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
-using System.Runtime.Remoting.Messaging;
-using System.Threading;
+using NUnit.Core;
 
 namespace NUnit.Util
 {
@@ -18,7 +19,13 @@ namespace NUnit.Util
 	/// </summary>
 	public abstract class ServerBase : MarshalByRefObject, IDisposable
 	{
-		#region Constructors/Destructors
+		protected string uri;
+		protected int port;
+
+		private TcpChannel channel;
+		private bool isMarshalled;
+
+		private object theLock = new object();
 
 		protected ServerBase()
 		{
@@ -27,104 +34,86 @@ namespace NUnit.Util
 		/// <summary>
 		/// Constructor used to provide
 		/// </summary>
-		/// <param name="uri"> </param>
-		/// <param name="port"> </param>
+		/// <param name="uri"></param>
+		/// <param name="port"></param>
 		protected ServerBase(string uri, int port)
 		{
 			this.uri = uri;
 			this.port = port;
 		}
 
-		#endregion
+        public string ServerUrl
+        {
+            get { return string.Format("tcp://127.0.0.1:{0}/{1}", port, uri); }
+        }
 
-		#region Fields/Constants
-
-		private TcpChannel channel;
-		private bool isMarshalled;
-		protected int port;
-
-		private object theLock = new object();
-		protected string uri;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public string ServerUrl
+		public virtual void Start()
 		{
-			get
+            if (uri != null && uri != string.Empty)
+            {
+                lock (theLock)
+                {
+                    this.channel = ServerUtilities.GetTcpChannel(uri + "Channel", port, 100);
+
+                    RemotingServices.Marshal(this, uri);
+                    this.isMarshalled = true;
+                }
+
+                if (this.port == 0)
+                {
+                    ChannelDataStore store = this.channel.ChannelData as ChannelDataStore;
+                    if (store != null)
+                    {
+                        string channelUri = store.ChannelUris[0];
+                        this.port = int.Parse(channelUri.Substring(channelUri.LastIndexOf(':') + 1));
+                    }
+                }
+            }
+		}
+
+		[System.Runtime.Remoting.Messaging.OneWay]
+		public virtual void Stop()
+		{
+			lock( theLock )
 			{
-				return string.Format("tcp://127.0.0.1:{0}/{1}", this.port, this.uri);
+				if ( this.isMarshalled )
+				{
+					RemotingServices.Disconnect( this );
+					this.isMarshalled = false;
+				}
+
+				if ( this.channel != null )
+				{
+					ChannelServices.UnregisterChannel( this.channel );
+					this.channel = null;
+				}
+
+				Monitor.PulseAll( theLock );
 			}
 		}
 
-		#endregion
+		public void WaitForStop()
+		{
+			lock( theLock )
+			{
+				Monitor.Wait( theLock );
+			}
+		}
 
-		#region Methods/Operators
+		#region IDisposable Members
 
 		public void Dispose()
 		{
 			this.Stop();
 		}
 
+		#endregion
+
+		#region InitializeLifetimeService
 		public override object InitializeLifetimeService()
 		{
 			return null;
 		}
-
-		public virtual void Start()
-		{
-			if (this.uri != null && this.uri != string.Empty)
-			{
-				lock (this.theLock)
-				{
-					this.channel = ServerUtilities.GetTcpChannel(this.uri + "Channel", this.port, 100);
-
-					RemotingServices.Marshal(this, this.uri);
-					this.isMarshalled = true;
-				}
-
-				if (this.port == 0)
-				{
-					ChannelDataStore store = this.channel.ChannelData as ChannelDataStore;
-					if (store != null)
-					{
-						string channelUri = store.ChannelUris[0];
-						this.port = int.Parse(channelUri.Substring(channelUri.LastIndexOf(':') + 1));
-					}
-				}
-			}
-		}
-
-		[OneWay]
-		public virtual void Stop()
-		{
-			lock (this.theLock)
-			{
-				if (this.isMarshalled)
-				{
-					RemotingServices.Disconnect(this);
-					this.isMarshalled = false;
-				}
-
-				if (this.channel != null)
-				{
-					ChannelServices.UnregisterChannel(this.channel);
-					this.channel = null;
-				}
-
-				Monitor.PulseAll(this.theLock);
-			}
-		}
-
-		public void WaitForStop()
-		{
-			lock (this.theLock)
-			{
-				Monitor.Wait(this.theLock);
-			}
-		}
-
 		#endregion
 	}
 }

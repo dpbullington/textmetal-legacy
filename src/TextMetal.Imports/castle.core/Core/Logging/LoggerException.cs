@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Runtime.Serialization;
-
 namespace Castle.Core.Logging
 {
 	using System;
+	using System.Runtime.Serialization;
 
 	[Serializable]
 	public class LoggerException : Exception
@@ -25,19 +24,16 @@ namespace Castle.Core.Logging
 		{
 		}
 
-		public LoggerException(String message)
-			: base(message)
+		public LoggerException(String message) : base(message)
 		{
 		}
 
-		public LoggerException(String message, Exception innerException)
-			: base(message, innerException)
+		public LoggerException(String message, Exception innerException) : base(message, innerException)
 		{
 		}
 
 #if !SILVERLIGHT
-		protected LoggerException(SerializationInfo info, StreamingContext context)
-			: base(info, context)
+		protected LoggerException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 		}
 #endif

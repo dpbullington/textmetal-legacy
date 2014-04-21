@@ -12,15 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection;
-
 namespace Castle.DynamicProxy.Internal
 {
 	using System;
+	using System.Reflection;
 
 	public abstract class InheritanceInvocation : AbstractInvocation
 	{
-		#region Constructors/Destructors
+		private readonly Type targetType;
 
 		protected InheritanceInvocation(
 			Type targetType,
@@ -33,46 +32,21 @@ namespace Castle.DynamicProxy.Internal
 			this.targetType = targetType;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly Type targetType;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
 		public override object InvocationTarget
 		{
-			get
-			{
-				return this.Proxy;
-			}
+			get { return Proxy; }
 		}
 
 		public override MethodInfo MethodInvocationTarget
 		{
-			get
-			{
-				return InvocationHelper.GetMethodOnType(this.targetType, this.Method);
-			}
+			get { return InvocationHelper.GetMethodOnType(targetType, Method); }
 		}
 
 		public override Type TargetType
 		{
-			get
-			{
-				return this.targetType;
-			}
+			get { return targetType; }
 		}
 
-		#endregion
-
-		#region Methods/Operators
-
 		protected abstract override void InvokeMethodOnTarget();
-
-		#endregion
 	}
 }

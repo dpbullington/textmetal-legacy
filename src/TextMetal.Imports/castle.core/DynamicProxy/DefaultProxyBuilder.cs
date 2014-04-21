@@ -1,4 +1,4 @@
-// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
+// Copyright 2004-2014 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,25 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-
-using Castle.Core.Logging;
-using Castle.DynamicProxy.Generators;
-using Castle.DynamicProxy.Internal;
-
 namespace Castle.DynamicProxy
 {
 	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Reflection;
+
+	using Castle.Core.Internal;
+	using Castle.Core.Logging;
+	using Castle.DynamicProxy.Generators;
+	using Castle.DynamicProxy.Generators.Emitters;
+	using Castle.DynamicProxy.Internal;
+
 
 	/// <summary>
-	/// Default implementation of <see cref="IProxyBuilder" /> interface producing in-memory proxy assemblies.
+	///   Default implementation of <see cref = "IProxyBuilder" /> interface producing in-memory proxy assemblies.
 	/// </summary>
 	public class DefaultProxyBuilder : IProxyBuilder
 	{
-		#region Constructors/Destructors
+		private readonly ModuleScope scope;
+		private ILogger logger = NullLogger.Instance;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="DefaultProxyBuilder" /> class with new <see cref="ModuleScope" />.
+		///   Initializes a new instance of the <see cref = "DefaultProxyBuilder" /> class with new <see cref = "ModuleScope" />.
 		/// </summary>
 		public DefaultProxyBuilder()
 			: this(new ModuleScope())
@@ -38,71 +43,94 @@ namespace Castle.DynamicProxy
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="DefaultProxyBuilder" /> class.
+		///   Initializes a new instance of the <see cref = "DefaultProxyBuilder" /> class.
 		/// </summary>
-		/// <param name="scope"> The module scope for generated proxy types. </param>
+		/// <param name = "scope">The module scope for generated proxy types.</param>
 		public DefaultProxyBuilder(ModuleScope scope)
 		{
 			this.scope = scope;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly ModuleScope scope;
-		private ILogger logger = NullLogger.Instance;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
 		public ILogger Logger
 		{
-			get
-			{
-				return this.logger;
-			}
-			set
-			{
-				this.logger = value;
-			}
+			get { return logger; }
+			set { logger = value; }
 		}
 
 		public ModuleScope ModuleScope
 		{
-			get
-			{
-				return this.scope;
-			}
+			get { return scope; }
 		}
 
-		#endregion
-
-		#region Methods/Operators
-
-		private static bool IsInternal(Type target)
+		public Type CreateClassProxyType(Type classToProxy, Type[] additionalInterfacesToProxy, ProxyGenerationOptions options)
 		{
-			var isTargetNested = target.IsNested;
-			var isNestedAndInternal = isTargetNested && (target.IsNestedAssembly || target.IsNestedFamORAssem);
-			var isInternalNotNested = target.IsVisible == false && isTargetNested == false;
+			AssertValidType(classToProxy);
+			AssertValidTypes(additionalInterfacesToProxy);
 
-			return isInternalNotNested || isNestedAndInternal;
+			var generator = new ClassProxyGenerator(scope, classToProxy) { Logger = logger };
+			return generator.GenerateCode(additionalInterfacesToProxy, options);
+		}
+
+		public Type CreateClassProxyTypeWithTarget(Type classToProxy, Type[] additionalInterfacesToProxy,
+		                                           ProxyGenerationOptions options)
+		{
+			AssertValidType(classToProxy);
+			AssertValidTypes(additionalInterfacesToProxy);
+			var generator = new ClassProxyWithTargetGenerator(scope, classToProxy, additionalInterfacesToProxy, options)
+			{ Logger = logger };
+			return generator.GetGeneratedType();
+		}
+
+		public Type CreateInterfaceProxyTypeWithTarget(Type interfaceToProxy, Type[] additionalInterfacesToProxy,
+		                                               Type targetType,
+		                                               ProxyGenerationOptions options)
+		{
+			AssertValidType(interfaceToProxy);
+			AssertValidTypes(additionalInterfacesToProxy);
+
+			var generator = new InterfaceProxyWithTargetGenerator(scope, interfaceToProxy) { Logger = logger };
+			return generator.GenerateCode(targetType, additionalInterfacesToProxy, options);
+		}
+
+		public Type CreateInterfaceProxyTypeWithTargetInterface(Type interfaceToProxy, Type[] additionalInterfacesToProxy,
+		                                                        ProxyGenerationOptions options)
+		{
+			AssertValidType(interfaceToProxy);
+			AssertValidTypes(additionalInterfacesToProxy);
+
+			var generator = new InterfaceProxyWithTargetInterfaceGenerator(scope, interfaceToProxy) { Logger = logger };
+			return generator.GenerateCode(interfaceToProxy, additionalInterfacesToProxy, options);
+		}
+
+		public Type CreateInterfaceProxyTypeWithoutTarget(Type interfaceToProxy, Type[] additionalInterfacesToProxy,
+		                                                  ProxyGenerationOptions options)
+		{
+			AssertValidType(interfaceToProxy);
+			AssertValidTypes(additionalInterfacesToProxy);
+
+			var generator = new InterfaceProxyWithoutTargetGenerator(scope, interfaceToProxy) { Logger = logger };
+			return generator.GenerateCode(typeof(object), additionalInterfacesToProxy, options);
 		}
 
 		private void AssertValidType(Type target)
 		{
-			if (target.IsGenericTypeDefinition)
+			AssertValidTypeForTarget(target, target);
+		}
+
+		private void AssertValidTypeForTarget(Type type, Type target)
+		{
+			if (type.IsGenericTypeDefinition)
 			{
-				throw new GeneratorException("Type " + target.FullName + " is a generic type definition. " +
-											"Can not create proxy for open generic types.");
+				throw new GeneratorException(string.Format("Can not create proxy for type {0} because type {1} is an open generic type.",
+															target.GetBestName(), type.GetBestName()));
 			}
-			if (this.IsPublic(target) == false && this.IsAccessible(target) == false)
+			if (IsPublic(type) == false && IsAccessible(type) == false)
 			{
-				throw new GeneratorException("Type " + target.FullName + " is not visible to DynamicProxy. " +
-											"Can not create proxy for types that are not accessible. " +
-											"Make the type public, or internal and mark your assembly with " +
-											"[assembly: InternalsVisibleTo(InternalsVisible.ToDynamicProxyGenAssembly2)] attribute.");
+				throw new GeneratorException(ExceptionMessageBuilder.CreateMessageForInaccessibleType(type, target));
+			}
+			foreach (var typeArgument in type.GetGenericArguments())
+			{
+				AssertValidTypeForTarget(typeArgument, target);
 			}
 		}
 
@@ -111,58 +139,10 @@ namespace Castle.DynamicProxy
 			if (targetTypes != null)
 			{
 				foreach (var t in targetTypes)
-					this.AssertValidType(t);
+				{
+					AssertValidType(t);
+				}
 			}
-		}
-
-		public Type CreateClassProxyType(Type classToProxy, Type[] additionalInterfacesToProxy, ProxyGenerationOptions options)
-		{
-			this.AssertValidType(classToProxy);
-			this.AssertValidTypes(additionalInterfacesToProxy);
-
-			var generator = new ClassProxyGenerator(this.scope, classToProxy) { Logger = this.logger };
-			return generator.GenerateCode(additionalInterfacesToProxy, options);
-		}
-
-		public Type CreateClassProxyTypeWithTarget(Type classToProxy, Type[] additionalInterfacesToProxy,
-			ProxyGenerationOptions options)
-		{
-			this.AssertValidType(classToProxy);
-			this.AssertValidTypes(additionalInterfacesToProxy);
-			var generator = new ClassProxyWithTargetGenerator(this.scope, classToProxy, additionalInterfacesToProxy, options)
-							{ Logger = this.logger };
-			return generator.GetGeneratedType();
-		}
-
-		public Type CreateInterfaceProxyTypeWithTarget(Type interfaceToProxy, Type[] additionalInterfacesToProxy,
-			Type targetType,
-			ProxyGenerationOptions options)
-		{
-			this.AssertValidType(interfaceToProxy);
-			this.AssertValidTypes(additionalInterfacesToProxy);
-
-			var generator = new InterfaceProxyWithTargetGenerator(this.scope, interfaceToProxy) { Logger = this.logger };
-			return generator.GenerateCode(targetType, additionalInterfacesToProxy, options);
-		}
-
-		public Type CreateInterfaceProxyTypeWithTargetInterface(Type interfaceToProxy, Type[] additionalInterfacesToProxy,
-			ProxyGenerationOptions options)
-		{
-			this.AssertValidType(interfaceToProxy);
-			this.AssertValidTypes(additionalInterfacesToProxy);
-
-			var generator = new InterfaceProxyWithTargetInterfaceGenerator(this.scope, interfaceToProxy) { Logger = this.logger };
-			return generator.GenerateCode(interfaceToProxy, additionalInterfacesToProxy, options);
-		}
-
-		public Type CreateInterfaceProxyTypeWithoutTarget(Type interfaceToProxy, Type[] additionalInterfacesToProxy,
-			ProxyGenerationOptions options)
-		{
-			this.AssertValidType(interfaceToProxy);
-			this.AssertValidTypes(additionalInterfacesToProxy);
-
-			var generator = new InterfaceProxyWithoutTargetGenerator(this.scope, interfaceToProxy) { Logger = this.logger };
-			return generator.GenerateCode(typeof(object), additionalInterfacesToProxy, options);
 		}
 
 		private bool IsAccessible(Type target)
@@ -175,6 +155,13 @@ namespace Castle.DynamicProxy
 			return target.IsPublic || target.IsNestedPublic;
 		}
 
-		#endregion
+		private static bool IsInternal(Type target)
+		{
+			var isTargetNested = target.IsNested;
+			var isNestedAndInternal = isTargetNested && (target.IsNestedAssembly || target.IsNestedFamORAssem);
+			var isInternalNotNested = target.IsVisible == false && isTargetNested == false;
+
+			return isInternalNotNested || isNestedAndInternal;
+		}
 	}
 }

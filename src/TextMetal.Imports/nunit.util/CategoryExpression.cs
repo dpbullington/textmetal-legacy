@@ -3,9 +3,8 @@
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
-
 using System;
-
+using System.Collections;
 using NUnit.Core;
 using NUnit.Core.Filters;
 
@@ -15,82 +14,73 @@ namespace NUnit.Util
 	/// CategoryExpression parses strings representing boolean
 	/// combinations of categories according to the following
 	/// grammar:
-	/// CategoryName ::= string not containing any of ',', '&', '+', '-'
-	/// CategoryFilter ::= CategoryName | CategoryFilter ',' CategoryName
-	/// CategoryPrimitive ::= CategoryFilter | '-' CategoryPrimitive
-	/// CategoryTerm ::= CategoryPrimitive | CategoryTerm '&' CategoryPrimitive
+	///   CategoryName ::= string not containing any of ',', '&', '+', '-'
+	///   CategoryFilter ::= CategoryName | CategoryFilter ',' CategoryName
+	///   CategoryPrimitive ::= CategoryFilter | '-' CategoryPrimitive
+	///   CategoryTerm ::= CategoryPrimitive | CategoryTerm '&' CategoryPrimitive
 	/// </summary>
 	public class CategoryExpression
 	{
-		#region Constructors/Destructors
+		static readonly char[] ops = new char[] { ',', ';', '-', '|', '+', '(', ')' };
 
-		public CategoryExpression(string text)
-		{
-			this.text = text;
-			this.next = 0;
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private static readonly char[] ops = new char[] { ',', ';', '-', '|', '+', '(', ')' };
-		private TestFilter filter;
-
-		private int next;
 		private string text;
+		private int next;
 		private string token;
 
-		#endregion
+		private TestFilter filter;
 
-		#region Properties/Indexers/Events
+		public CategoryExpression(string text) 
+		{
+			this.text =  text;
+			this.next = 0;
+		}
 
 		public TestFilter Filter
 		{
 			get
 			{
-				if (this.filter == null)
+				if( filter == null )
 				{
-					this.filter = this.GetToken() == null
+					filter = GetToken() == null
 						? TestFilter.Empty
-						: this.GetExpression();
+						: GetExpression();
 				}
 
-				return this.filter;
+				return filter;
 			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		private bool EndOfText()
-		{
-			return this.next >= this.text.Length;
-		}
-
-		private CategoryFilter GetCategoryFilter()
-		{
-			CategoryFilter filter = new CategoryFilter(this.token);
-
-			while (this.GetToken() == "," || this.token == ";")
-				filter.AddCategory(this.GetToken());
-
-			return filter;
 		}
 
 		private TestFilter GetExpression()
 		{
-			TestFilter term = this.GetTerm();
-			if (this.token != "|")
+			TestFilter term = GetTerm();
+			if ( token != "|" )
 				return term;
 
-			OrFilter filter = new OrFilter(term);
-
-			while (this.token == "|")
+			OrFilter filter = new OrFilter( term );
+			
+			while ( token == "|" )
 			{
-				this.GetToken();
-				filter.Add(this.GetTerm());
+				GetToken();
+				filter.Add( GetTerm() );
+			}
+
+			return filter;
+		}
+
+		private TestFilter GetTerm()
+		{
+			TestFilter prim = GetPrimitive();
+			if ( token != "+" && token != "-" )
+				return prim;
+
+			AndFilter filter = new AndFilter( prim );
+			
+			while ( token == "+"|| token == "-" )
+			{
+				string tok = token;
+				GetToken();
+				prim = GetPrimitive();
+				filter.Add( tok == "-" ? new NotFilter( prim ) : prim );
 			}
 
 			return filter;
@@ -98,79 +88,70 @@ namespace NUnit.Util
 
 		private TestFilter GetPrimitive()
 		{
-			if (this.token == "-")
+			if( token == "-" )
 			{
-				this.GetToken();
-				return new NotFilter(this.GetPrimitive());
+				GetToken();
+				return new NotFilter( GetPrimitive() );
 			}
-			else if (this.token == "(")
+			else if( token == "(" )
 			{
-				this.GetToken();
-				TestFilter expr = this.GetExpression();
-				this.GetToken(); // Skip ')'
+				GetToken();
+				TestFilter expr = GetExpression();
+				GetToken(); // Skip ')'
 				return expr;
 			}
 
-			return this.GetCategoryFilter();
+			return GetCategoryFilter();
 		}
 
-		private TestFilter GetTerm()
+		private CategoryFilter GetCategoryFilter()
 		{
-			TestFilter prim = this.GetPrimitive();
-			if (this.token != "+" && this.token != "-")
-				return prim;
+			CategoryFilter filter = new CategoryFilter( token );
 
-			AndFilter filter = new AndFilter(prim);
-
-			while (this.token == "+" || this.token == "-")
-			{
-				string tok = this.token;
-				this.GetToken();
-				prim = this.GetPrimitive();
-				filter.Add(tok == "-" ? new NotFilter(prim) : prim);
-			}
+			while( GetToken() == "," || token == ";" )
+				filter.AddCategory( GetToken() );
 
 			return filter;
 		}
 
 		public string GetToken()
 		{
-			this.SkipWhiteSpace();
+			SkipWhiteSpace();
 
-			if (this.EndOfText())
-				this.token = null;
-			else if (this.NextIsOperator())
-				this.token = this.text.Substring(this.next++, 1);
+			if ( EndOfText() ) 
+				token = null;
+			else if ( NextIsOperator() )
+				token = text.Substring(next++, 1);
 			else
 			{
-				int index2 = this.text.IndexOfAny(ops, this.next);
-				if (index2 < 0)
-					index2 = this.text.Length;
+				int index2 = text.IndexOfAny( ops, next );
+				if ( index2 < 0 ) index2 = text.Length;
 
-				this.token = this.text.Substring(this.next, index2 - this.next).TrimEnd();
-				this.next = index2;
+				token = text.Substring( next, index2 - next ).TrimEnd();
+				next = index2;
 			}
 
-			return this.token;
-		}
-
-		private bool NextIsOperator()
-		{
-			foreach (char op in ops)
-			{
-				if (op == this.text[this.next])
-					return true;
-			}
-
-			return false;
+			return token;
 		}
 
 		private void SkipWhiteSpace()
 		{
-			while (this.next < this.text.Length && Char.IsWhiteSpace(this.text[this.next]))
-				++this.next;
+			while( next < text.Length && Char.IsWhiteSpace( text[next] ) )
+				++next;
 		}
 
-		#endregion
+		private bool EndOfText()
+		{
+			return next >= text.Length;
+		}
+
+		private bool NextIsOperator()
+		{
+			foreach( char op in ops )
+				if( op == text[next] )
+					return true;
+
+			return false;
+		}
 	}
 }

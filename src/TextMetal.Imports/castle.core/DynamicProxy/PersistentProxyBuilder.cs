@@ -16,41 +16,32 @@ namespace Castle.DynamicProxy
 {
 #if !SILVERLIGHT
 	/// <summary>
-	/// ProxyBuilder that persists the generated type.
+	///   ProxyBuilder that persists the generated type.
 	/// </summary>
 	/// <remarks>
-	/// The saved assembly contains just the last generated type.
+	///   The saved assembly contains just the last generated type.
 	/// </remarks>
 	public class PersistentProxyBuilder : DefaultProxyBuilder
 	{
-		#region Constructors/Destructors
-
 		/// <summary>
-		/// Initializes a new instance of the <see cref="PersistentProxyBuilder" /> class.
+		///   Initializes a new instance of the <see cref = "PersistentProxyBuilder" /> class.
 		/// </summary>
-		public PersistentProxyBuilder()
-			: base(new ModuleScope(true))
+		public PersistentProxyBuilder() : base(new ModuleScope(true))
 		{
 		}
 
-		#endregion
-
-		#region Methods/Operators
-
 		/// <summary>
-		/// Saves the generated assembly to a physical file. Note that this renders the <see cref="PersistentProxyBuilder" /> unusable.
+		///   Saves the generated assembly to a physical file. Note that this renders the <see cref = "PersistentProxyBuilder" /> unusable.
 		/// </summary>
-		/// <returns> The path of the generated assembly file, or null if no assembly has been generated. </returns>
+		/// <returns>The path of the generated assembly file, or null if no assembly has been generated.</returns>
 		/// <remarks>
-		/// This method does not support saving multiple files. If both a signed and an unsigned module have been generated, use the
-		/// respective methods of the <see cref="ModuleScope" />.
+		///   This method does not support saving multiple files. If both a signed and an unsigned module have been generated, use the 
+		///   respective methods of the <see cref = "ModuleScope" />.
 		/// </remarks>
 		public string SaveAssembly()
 		{
-			return this.ModuleScope.SaveAssembly();
+			return ModuleScope.SaveAssembly();
 		}
-
-		#endregion
 	}
 #endif
 }

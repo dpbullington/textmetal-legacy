@@ -19,42 +19,18 @@ namespace Castle.Components.DictionaryAdapter
 	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Property, AllowMultiple = true)]
 	public class XmlNamespaceAttribute : Attribute
 	{
-		#region Constructors/Destructors
-
 		public XmlNamespaceAttribute(string namespaceUri, string prefix)
 		{
-			this.NamespaceUri = namespaceUri;
-			this.Prefix = prefix;
+			NamespaceUri = namespaceUri;
+			Prefix = prefix;
 		}
 
-		#endregion
+		public bool Root { get; set; }
 
-		#region Properties/Indexers/Events
+		public bool Default { get; set; }
 
-		public bool Default
-		{
-			get;
-			set;
-		}
+		public string NamespaceUri { get; private set; }
 
-		public string NamespaceUri
-		{
-			get;
-			private set;
-		}
-
-		public string Prefix
-		{
-			get;
-			private set;
-		}
-
-		public bool Root
-		{
-			get;
-			set;
-		}
-
-		#endregion
+		public string Prefix { get; private set; }
 	}
 }

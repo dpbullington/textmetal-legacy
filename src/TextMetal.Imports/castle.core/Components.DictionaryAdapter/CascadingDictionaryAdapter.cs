@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections;
-
 namespace Castle.Components.DictionaryAdapter
 {
+	using System.Collections;
+
 	public class CascadingDictionaryAdapter : AbstractDictionaryAdapter
 	{
-		#region Constructors/Destructors
+		private readonly IDictionary primary;
+		private readonly IDictionary secondary;
 
 		public CascadingDictionaryAdapter(IDictionary primary, IDictionary secondary)
 		{
@@ -26,62 +27,30 @@ namespace Castle.Components.DictionaryAdapter
 			this.secondary = secondary;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly IDictionary primary;
-		private readonly IDictionary secondary;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public override object this[object key]
-		{
-			get
-			{
-				return this.primary[key] ?? this.secondary[key];
-			}
-			set
-			{
-				this.primary[key] = value;
-			}
-		}
-
-		public override bool IsReadOnly
-		{
-			get
-			{
-				return this.primary.IsReadOnly;
-			}
-		}
-
 		public IDictionary Primary
 		{
-			get
-			{
-				return this.primary;
-			}
+			get { return primary; }
 		}
 
 		public IDictionary Secondary
 		{
-			get
-			{
-				return this.secondary;
-			}
+			get { return secondary; }
 		}
 
-		#endregion
-
-		#region Methods/Operators
+		public override bool IsReadOnly
+		{
+			get { return primary.IsReadOnly; }
+		}
 
 		public override bool Contains(object key)
 		{
-			return this.primary.Contains(key) || this.secondary.Contains(key);
+			return primary.Contains(key) || secondary.Contains(key);
 		}
 
-		#endregion
+		public override object this[object key]
+		{
+			get { return primary[key] ?? secondary[key]; }
+			set { primary[key] = value; }
+		}
 	}
 }

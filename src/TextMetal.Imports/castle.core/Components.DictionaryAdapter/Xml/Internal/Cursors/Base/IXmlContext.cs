@@ -12,37 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Collections.Generic;
 
 	public interface IXmlContext : IXmlNamespaceSource
 	{
-		string ChildNamespaceUri
-		{
-			get;
-		}
+		string ChildNamespaceUri { get; }
 
 		IXmlContext Clone();
-
 		XmlName GetDefaultXsiType(Type clrType);
-
 		IEnumerable<IXmlIncludedType> GetIncludedTypes(Type baseType);
-
 		bool IsReservedNamespaceUri(string namespaceUri);
 
 #if !SL3
 		void AddVariable(XPathVariableAttribute attribute);
-
 		void AddFunction(XPathFunctionAttribute attribute);
-
 		void Enlist(CompiledXPath path);
 #endif
 	}
 }
-
 #endif

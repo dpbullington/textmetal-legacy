@@ -12,128 +12,88 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
+	using System.Collections;
+	using System.Collections.Generic;
+	using System.Linq;
+	using Castle.Core;
 
 	public class DictionaryAdapterInstance
 	{
-		#region Constructors/Destructors
+		private IDictionary extendedProperties;
+		private List<IDictionaryCopyStrategy> copyStrategies;
 
 		public DictionaryAdapterInstance(IDictionary dictionary, DictionaryAdapterMeta meta,
-			PropertyDescriptor descriptor, IDictionaryAdapterFactory factory)
+										 PropertyDescriptor descriptor, IDictionaryAdapterFactory factory)
 		{
-			this.Dictionary = dictionary;
-			this.Descriptor = descriptor;
-			this.Factory = factory;
+			Dictionary = dictionary;
+			Descriptor = descriptor;
+			Factory    = factory;
 
 			List<IDictionaryBehavior> behaviors;
 
 			if (null == descriptor || null == (behaviors = descriptor.BehaviorsInternal))
 			{
-				this.Initializers = meta.Initializers;
-				this.Properties = MergeProperties(meta.Properties);
+				Initializers = meta.Initializers;
+				Properties   = MergeProperties(meta.Properties);
 			}
 			else
 			{
-				this.Initializers = MergeInitializers(meta.Initializers, behaviors);
-				this.Properties = MergeProperties(meta.Properties, behaviors);
+				Initializers = MergeInitializers(meta.Initializers, behaviors);
+				Properties   = MergeProperties(meta.Properties, behaviors);
 			}
 		}
 
-		#endregion
+		internal int? OldHashCode { get; set; }
 
-		#region Fields/Constants
+		public IDictionary Dictionary { get; private set; }
 
-		private static readonly IDictionaryInitializer[]
-			NoInitializers = { };
+		public PropertyDescriptor Descriptor { get; private set; }
 
-		private List<IDictionaryCopyStrategy> copyStrategies;
-		private IDictionary extendedProperties;
+		public IDictionaryAdapterFactory Factory { get; private set; }
 
-		#endregion
+		public IDictionaryInitializer[] Initializers { get; private set; }
 
-		#region Properties/Indexers/Events
+		public IDictionary<string, PropertyDescriptor> Properties { get; private set; }
 
-		public IDictionaryCoerceStrategy CoerceStrategy
-		{
-			get;
-			set;
-		}
+		public IDictionaryEqualityHashCodeStrategy EqualityHashCodeStrategy { get; set; }
+
+		public IDictionaryCreateStrategy CreateStrategy { get; set; }
+
+		public IDictionaryCoerceStrategy CoerceStrategy { get; set; }
 
 		public IEnumerable<IDictionaryCopyStrategy> CopyStrategies
 		{
 			get
 			{
-				return this.copyStrategies ?? Enumerable.Empty<IDictionaryCopyStrategy>();
+				return copyStrategies ?? Enumerable.Empty<IDictionaryCopyStrategy>();
 			}
 		}
 
-		public IDictionaryCreateStrategy CreateStrategy
+		public void AddCopyStrategy(IDictionaryCopyStrategy copyStrategy)
 		{
-			get;
-			set;
-		}
+			if (copyStrategy == null)
+				throw new ArgumentNullException("copyStrategy");
 
-		public PropertyDescriptor Descriptor
-		{
-			get;
-			private set;
-		}
+			if (copyStrategies == null)
+				copyStrategies = new List<IDictionaryCopyStrategy>();
 
-		public IDictionary Dictionary
-		{
-			get;
-			private set;
-		}
-
-		public IDictionaryEqualityHashCodeStrategy EqualityHashCodeStrategy
-		{
-			get;
-			set;
+			copyStrategies.Add(copyStrategy);
 		}
 
 		public IDictionary ExtendedProperties
 		{
 			get
 			{
-				if (this.extendedProperties == null)
-					this.extendedProperties = new Dictionary<object, object>();
-				return this.extendedProperties;
+				if (extendedProperties == null)
+				{
+					extendedProperties = new Dictionary<object, object>();
+				}
+				return extendedProperties;
 			}
 		}
-
-		public IDictionaryAdapterFactory Factory
-		{
-			get;
-			private set;
-		}
-
-		public IDictionaryInitializer[] Initializers
-		{
-			get;
-			private set;
-		}
-
-		internal int? OldHashCode
-		{
-			get;
-			set;
-		}
-
-		public IDictionary<string, PropertyDescriptor> Properties
-		{
-			get;
-			private set;
-		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		private static IDictionaryInitializer[] MergeInitializers(
 			IDictionaryInitializer[] source, List<IDictionaryBehavior> behaviors)
@@ -148,10 +108,8 @@ namespace Castle.Components.DictionaryAdapter
 
 			count = behaviors.Count;
 			for (index = 0; index < count; index++)
-			{
 				if (null != (initializer = behaviors[index] as IDictionaryInitializer))
 					PropertyDescriptor.MergeBehavior(ref result, initializer);
-			}
 
 			return result == null
 				? NoInitializers
@@ -164,7 +122,9 @@ namespace Castle.Components.DictionaryAdapter
 			var properties = new Dictionary<string, PropertyDescriptor>();
 
 			foreach (var sourceProperty in source)
+			{
 				properties[sourceProperty.Key] = new PropertyDescriptor(sourceProperty.Value, true);
+			}
 
 			return properties;
 		}
@@ -188,17 +148,7 @@ namespace Castle.Components.DictionaryAdapter
 			return properties;
 		}
 
-		public void AddCopyStrategy(IDictionaryCopyStrategy copyStrategy)
-		{
-			if (copyStrategy == null)
-				throw new ArgumentNullException("copyStrategy");
-
-			if (this.copyStrategies == null)
-				this.copyStrategies = new List<IDictionaryCopyStrategy>();
-
-			this.copyStrategies.Add(copyStrategy);
-		}
-
-		#endregion
+		private static readonly IDictionaryInitializer[]
+			NoInitializers = { };
 	}
 }

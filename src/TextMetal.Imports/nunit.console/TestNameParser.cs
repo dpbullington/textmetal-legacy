@@ -1,4 +1,4 @@
-// ****************************************************************
+﻿// ****************************************************************
 // Copyright 2011, Charlie Poole
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
@@ -9,88 +9,84 @@ using System.Collections;
 
 namespace NUnit.ConsoleRunner
 {
-	/// <summary>
-	/// TestNameParser is used to parse the arguments to the
-	/// -run option, separating testnames at the correct point.
-	/// </summary>
-	public class TestNameParser
-	{
-		#region Methods/Operators
+    /// <summary>
+    /// TestNameParser is used to parse the arguments to the 
+    /// -run option, separating testnames at the correct point.
+    /// </summary>
+    public class TestNameParser
+    {
+        /// <summary>
+        /// Parse the -run argument and return an array of argument
+        /// </summary>
+        /// <param name="argument">argument</param>
+        /// <returns></returns>
+        public static string[] Parse(string argument)
+        {
+            ArrayList list = new ArrayList();
 
-		private static int GetSeparator(string argument, int index)
-		{
-			int nest = 0;
+            int index = 0;
+            while (index < argument.Length)
+            {
+                string name = GetTestName(argument, ref index);
+                if (name != null && name != string.Empty)
+                    list.Add(name);
+            }
 
-			while (index < argument.Length)
-			{
-				switch (argument[index])
-				{
-					case ',':
-						if (nest == 0)
-							return index;
-						break;
+            return (string[])list.ToArray(typeof(string));
+        }
 
-					case '"':
-						while (++index < argument.Length && argument[index] != '"')
-							;
-						break;
+        private static string GetTestName(string argument, ref int index)
+        {
+            int separator = GetSeparator(argument, index);
+            string result;
 
-					case '(':
-					case '<':
-						nest++;
-						break;
+            if (separator >= 0)
+            {
+                result = argument.Substring(index, separator - index).Trim();
+                index = separator + 1;
+            }
+            else
+            {
+                result = argument.Substring(index).Trim();
+                index = argument.Length;
+            }
 
-					case ')':
-					case '>':
-						nest--;
-						break;
-				}
+            return result;
+        }
 
-				index++;
-			}
+        private static int GetSeparator(string argument, int index)
+        {
+            int nest = 0;
 
-			return -1;
-		}
+            while (index < argument.Length)
+            {
+                switch (argument[index])
+                {
+                    case ',':
+                        if (nest == 0)
+                            return index;
+                        break;
 
-		private static string GetTestName(string argument, ref int index)
-		{
-			int separator = GetSeparator(argument, index);
-			string result;
+                    case '"':
+                        while (++index < argument.Length && argument[index] != '"')
+                            ;
+                        break;
 
-			if (separator >= 0)
-			{
-				result = argument.Substring(index, separator - index).Trim();
-				index = separator + 1;
-			}
-			else
-			{
-				result = argument.Substring(index).Trim();
-				index = argument.Length;
-			}
+                    case '(':
+                    case '<':
+                        nest++;
+                        break;
 
-			return result;
-		}
+                    case ')':
+                    case '>':
+                        nest--;
+                        break;
+                }
 
-		/// <summary>
-		/// Parse the -run argument and return an array of argument
-		/// </summary>
-		/// <param name="argument"> argument </param>
-		/// <returns> </returns>
-		public static string[] Parse(string argument)
-		{
-			ArrayList list = new ArrayList();
+                index++;
+            }
 
-			int index = 0;
-			while (index < argument.Length)
-			{
-				string name = GetTestName(argument, ref index);
-				if (name != null && name != string.Empty)
-					list.Add(name);
-			}
-
-			return (string[])list.ToArray(typeof(string));
-		}
-
-		#endregion
-	}
+            return -1;
+        }
+    }
 }

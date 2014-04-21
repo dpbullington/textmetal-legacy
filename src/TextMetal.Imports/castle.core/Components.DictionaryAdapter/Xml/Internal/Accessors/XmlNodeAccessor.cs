@@ -12,24 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Xml;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Collections;
+	using System.Collections.Generic;
+	using System.Xml;
 
 	public abstract class XmlNodeAccessor : XmlAccessor, IXmlKnownType, IXmlKnownTypeMap
 	{
-		#region Constructors/Destructors
+		private string localName;
+		private string namespaceUri;
+		private XmlKnownTypeSet knownTypes;
 
 		protected XmlNodeAccessor(Type type, IXmlContext context)
-			: this(context.GetDefaultXsiType(type).LocalName, type, context)
-		{
-		}
+			: this(context.GetDefaultXsiType(type).LocalName, type, context) { }
 
 		protected XmlNodeAccessor(string name, Type type, IXmlContext context)
 			: base(type, context)
@@ -39,71 +37,168 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			if (name == string.Empty)
 				throw Error.InvalidLocalName();
 
-			this.localName = XmlConvert.EncodeLocalName(name);
-			this.namespaceUri = context.ChildNamespaceUri;
+			localName    = XmlConvert.EncodeLocalName(name);
+			namespaceUri = context.ChildNamespaceUri;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		protected static readonly StringComparer
-			NameComparer = StringComparer.OrdinalIgnoreCase;
-
-		private XmlKnownTypeSet knownTypes;
-		private string localName;
-		private string namespaceUri;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		IXmlKnownType IXmlKnownTypeMap.Default
+		public XmlName Name
 		{
-			get
-			{
-				return this;
-			}
+			get { return new XmlName(localName, namespaceUri); }
+		}
+
+		XmlName IXmlIdentity.XsiType
+		{
+			get { return XmlName.Empty; }
 		}
 
 		protected IXmlKnownTypeMap KnownTypes
 		{
 			get
 			{
-				if (this.knownTypes != null)
-					return this.knownTypes;
+				if (knownTypes != null)
+					return knownTypes;
 				return this;
 			}
 		}
 
-		public XmlName Name
+		IXmlKnownType IXmlKnownTypeMap.Default
 		{
-			get
+			get { return this; }
+		}
+
+		public bool TryGet(IXmlIdentity xmlName, out IXmlKnownType knownType)
+		{
+			return IsMatch(xmlName)
+					? Try.Success(out knownType, this)
+					: Try.Failure(out knownType);
+		}
+
+		public bool TryGet(Type clrType, out IXmlKnownType knownType)
+		{
+			return IsMatch(clrType)
+					? Try.Success(out knownType, this)
+					: Try.Failure(out knownType);
+		}
+
+		protected virtual bool IsMatch(IXmlIdentity xmlIdentity)
+		{
+			return NameComparer.Equals(localName, xmlIdentity.Name.LocalName)
+				&& IsMatchOnNamespaceUri(xmlIdentity)
+				&& IsMatchOnXsiType     (xmlIdentity);
+		}
+
+		private bool IsMatchOnNamespaceUri(IXmlIdentity xmlIdentity)
+		{
+			var otherNamespaceUri = xmlIdentity.Name.NamespaceUri;
+			if (Context.IsReservedNamespaceUri(otherNamespaceUri))
+				return NameComparer.Equals(namespaceUri, otherNamespaceUri);
+			return namespaceUri == null
+				|| ShouldIgnoreAttributeNamespaceUri(xmlIdentity)
+				|| NameComparer.Equals(namespaceUri, otherNamespaceUri);
+		}
+
+		private bool IsMatchOnXsiType(IXmlIdentity xmlIdentity)
+		{
+			var otherXsiType = xmlIdentity.XsiType;
+			return otherXsiType == XmlName.Empty
+				|| otherXsiType == XsiType;
+		}
+
+		private bool ShouldIgnoreAttributeNamespaceUri(IXmlIdentity xmlName)
+		{
+			var xmlNode = xmlName as IXmlNode;
+			return xmlNode != null
+				&& xmlNode.IsAttribute
+				&& 0 == (state & States.ConfiguredNamespaceUri);
+		}
+
+		protected virtual bool IsMatch(Type clrType)
+		{
+			return clrType == this.ClrType
+				|| ( Serializer.Kind == XmlTypeKind.Collection
+				&&   typeof(IEnumerable).IsAssignableFrom(clrType) );
+		}
+
+		protected void ConfigureLocalName(string localName)
+		{
+			ConfigureField(ref this.localName, localName, States.ConfiguredLocalName);
+		}
+
+		protected void ConfigureNamespaceUri(string namespaceUri)
+		{
+			ConfigureField(ref this.namespaceUri, namespaceUri, States.ConfiguredNamespaceUri);
+		}
+
+		private void ConfigureField(ref string field, string value, States mask)
+		{
+			if (string.IsNullOrEmpty(value))
+				return;
+			if (0 != (state & mask))
+				throw Error.AttributeConflict(localName);
+			field  = value;
+			state |= mask;
+		}
+
+		protected void ConfigureKnownTypesFromParent(XmlNodeAccessor accessor)
+		{
+			if (knownTypes != null)
+				throw Error.AttributeConflict(localName);
+
+			knownTypes = accessor.knownTypes;
+		}
+
+		protected void ConfigureKnownTypesFromAttributes<T>(IEnumerable<T> attributes, IXmlBehaviorSemantics<T> semantics)
+		{
+			foreach (var attribute in attributes)
 			{
-				return new XmlName(this.localName, this.namespaceUri);
+				var clrType = semantics.GetClrType(attribute);
+				if (clrType != null)
+				{
+					var xsiType = Context.GetDefaultXsiType(clrType);
+
+					var name = new XmlName(
+						semantics.GetLocalName   (attribute).NonEmpty() ?? xsiType.LocalName,
+						semantics.GetNamespaceUri(attribute)            ?? namespaceUri);
+
+					AddKnownType(name, xsiType, clrType, true);
+				}
 			}
 		}
 
-		XmlName IXmlIdentity.XsiType
+		public override void Prepare()
 		{
-			get
-			{
-				return XmlName.Empty;
-			}
+			if (knownTypes == null)
+				ConfigureIncludedTypes(this);
+			else
+				ConfigureDefaultAndIncludedTypes();
 		}
 
-		#endregion
+		private void ConfigureDefaultAndIncludedTypes()
+		{
+			var configuredKnownTypes = knownTypes.ToArray();
 
-		#region Methods/Operators
+			knownTypes.AddXsiTypeDefaults();
+
+			foreach (var knownType in configuredKnownTypes)
+				ConfigureIncludedTypes(knownType);
+		}
+
+		private void ConfigureIncludedTypes(IXmlKnownType knownType)
+		{
+			var includedTypes = Context.GetIncludedTypes(knownType.ClrType);
+
+			foreach (var include in includedTypes)
+				AddKnownType(knownType.Name, include.XsiType, include.ClrType, false);
+		}
 
 		private void AddKnownType(XmlName name, XmlName xsiType, Type clrType, bool overwrite)
 		{
-			if (this.knownTypes == null)
+			if (knownTypes == null)
 			{
-				this.knownTypes = new XmlKnownTypeSet(this.ClrType);
-				this.AddSelfAsKnownType();
+				knownTypes = new XmlKnownTypeSet(ClrType);
+				AddSelfAsKnownType();
 			}
-			this.knownTypes.Add(new XmlKnownType(name, xsiType, clrType), overwrite);
+			knownTypes.Add(new XmlKnownType(name, xsiType, clrType), overwrite);
 		}
 
 		private void AddSelfAsKnownType()
@@ -114,142 +209,17 @@ namespace Castle.Components.DictionaryAdapter.Xml
 				| States.ConfiguredKnownTypes;
 
 			var selfIsKnownType
-				= (this.state & mask) != States.ConfiguredKnownTypes;
+				= (state & mask) != States.ConfiguredKnownTypes;
 
 			if (selfIsKnownType)
 			{
-				this.knownTypes.Add(new XmlKnownType(this.Name, this.XsiType, this.ClrType), true);
-				this.knownTypes.Add(new XmlKnownType(this.Name, XmlName.Empty, this.ClrType), true);
+				knownTypes.Add(new XmlKnownType(Name, XsiType,       ClrType), true);
+				knownTypes.Add(new XmlKnownType(Name, XmlName.Empty, ClrType), true);
 			}
 		}
 
-		private void ConfigureDefaultAndIncludedTypes()
-		{
-			var configuredKnownTypes = this.knownTypes.ToArray();
-
-			this.knownTypes.AddXsiTypeDefaults();
-
-			foreach (var knownType in configuredKnownTypes)
-				this.ConfigureIncludedTypes(knownType);
-		}
-
-		private void ConfigureField(ref string field, string value, States mask)
-		{
-			if (string.IsNullOrEmpty(value))
-				return;
-			if (0 != (this.state & mask))
-				throw Error.AttributeConflict(this.localName);
-			field = value;
-			this.state |= mask;
-		}
-
-		private void ConfigureIncludedTypes(IXmlKnownType knownType)
-		{
-			var includedTypes = this.Context.GetIncludedTypes(knownType.ClrType);
-
-			foreach (var include in includedTypes)
-				this.AddKnownType(knownType.Name, include.XsiType, include.ClrType, false);
-		}
-
-		protected void ConfigureKnownTypesFromAttributes<T>(IEnumerable<T> attributes, IXmlBehaviorSemantics<T> semantics)
-		{
-			foreach (var attribute in attributes)
-			{
-				var clrType = semantics.GetClrType(attribute);
-				if (clrType != null)
-				{
-					var xsiType = this.Context.GetDefaultXsiType(clrType);
-
-					var name = new XmlName(
-						semantics.GetLocalName(attribute).NonEmpty() ?? xsiType.LocalName,
-						semantics.GetNamespaceUri(attribute) ?? this.namespaceUri);
-
-					this.AddKnownType(name, xsiType, clrType, true);
-				}
-			}
-		}
-
-		protected void ConfigureKnownTypesFromParent(XmlNodeAccessor accessor)
-		{
-			if (this.knownTypes != null)
-				throw Error.AttributeConflict(this.localName);
-
-			this.knownTypes = accessor.knownTypes;
-		}
-
-		protected void ConfigureLocalName(string localName)
-		{
-			this.ConfigureField(ref this.localName, localName, States.ConfiguredLocalName);
-		}
-
-		protected void ConfigureNamespaceUri(string namespaceUri)
-		{
-			this.ConfigureField(ref this.namespaceUri, namespaceUri, States.ConfiguredNamespaceUri);
-		}
-
-		protected virtual bool IsMatch(IXmlIdentity xmlIdentity)
-		{
-			return NameComparer.Equals(this.localName, xmlIdentity.Name.LocalName)
-					&& this.IsMatchOnNamespaceUri(xmlIdentity)
-					&& this.IsMatchOnXsiType(xmlIdentity);
-		}
-
-		protected virtual bool IsMatch(Type clrType)
-		{
-			return clrType == this.ClrType
-					|| (this.Serializer.Kind == XmlTypeKind.Collection
-						&& typeof(IEnumerable).IsAssignableFrom(clrType));
-		}
-
-		private bool IsMatchOnNamespaceUri(IXmlIdentity xmlIdentity)
-		{
-			var otherNamespaceUri = xmlIdentity.Name.NamespaceUri;
-			if (this.Context.IsReservedNamespaceUri(otherNamespaceUri))
-				return NameComparer.Equals(this.namespaceUri, otherNamespaceUri);
-			return this.namespaceUri == null
-					|| this.ShouldIgnoreAttributeNamespaceUri(xmlIdentity)
-					|| NameComparer.Equals(this.namespaceUri, otherNamespaceUri);
-		}
-
-		private bool IsMatchOnXsiType(IXmlIdentity xmlIdentity)
-		{
-			var otherXsiType = xmlIdentity.XsiType;
-			return otherXsiType == XmlName.Empty
-					|| otherXsiType == this.XsiType;
-		}
-
-		public override void Prepare()
-		{
-			if (this.knownTypes == null)
-				this.ConfigureIncludedTypes(this);
-			else
-				this.ConfigureDefaultAndIncludedTypes();
-		}
-
-		private bool ShouldIgnoreAttributeNamespaceUri(IXmlIdentity xmlName)
-		{
-			var xmlNode = xmlName as IXmlNode;
-			return xmlNode != null
-					&& xmlNode.IsAttribute
-					&& 0 == (this.state & States.ConfiguredNamespaceUri);
-		}
-
-		public bool TryGet(IXmlIdentity xmlName, out IXmlKnownType knownType)
-		{
-			return IsMatch(xmlName)
-				? Try.Success(out knownType, this)
-				: Try.Failure(out knownType);
-		}
-
-		public bool TryGet(Type clrType, out IXmlKnownType knownType)
-		{
-			return this.IsMatch(clrType)
-				? Try.Success(out knownType, this)
-				: Try.Failure(out knownType);
-		}
-
-		#endregion
+		protected static readonly StringComparer
+			NameComparer = StringComparer.OrdinalIgnoreCase;
 	}
 }
-
 #endif

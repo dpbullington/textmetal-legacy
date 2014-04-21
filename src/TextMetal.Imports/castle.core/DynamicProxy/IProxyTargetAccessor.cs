@@ -16,20 +16,16 @@ namespace Castle.DynamicProxy
 {
 	public interface IProxyTargetAccessor
 	{
-		#region Methods/Operators
-
 		/// <summary>
-		/// Get the proxy target (note that null is a valid target!)
+		///   Get the proxy target (note that null is a valid target!)
 		/// </summary>
-		/// <returns> </returns>
+		/// <returns></returns>
 		object DynProxyGetTarget();
 
 		/// <summary>
-		/// Gets the interceptors for the proxy
+		///   Gets the interceptors for the proxy
 		/// </summary>
-		/// <returns> </returns>
+		/// <returns></returns>
 		IInterceptor[] GetInterceptors();
-
-		#endregion
 	}
 }

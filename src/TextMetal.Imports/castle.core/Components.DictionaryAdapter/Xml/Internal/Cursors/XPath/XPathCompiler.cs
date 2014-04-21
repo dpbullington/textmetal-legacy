@@ -12,30 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Xml;
-using System.Xml.XPath;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
 #if !SL3
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Xml;
+	using System.Xml.XPath;
 
 	public static class XPathCompiler
 	{
-		#region Fields/Constants
-
-		private static readonly Func<CompiledXPathNode>
-			NodeFactory = () => new CompiledXPathNode();
-
-		private static readonly Func<CompiledXPathStep>
-			StepFactory = () => new CompiledXPathStep();
-
-		#endregion
-
-		#region Methods/Operators
-
 		public static CompiledXPath Compile(string path)
 		{
 			if (null == path)
@@ -55,18 +41,85 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			return result;
 		}
 
-		private static bool Consume(Tokenizer source, Token token)
+		private static bool ParsePath(Tokenizer source, CompiledXPath path)
 		{
-			if (source.Token != token)
+			for (CompiledXPathStep step = null;;)
+			{
+				if (!ParseStep(source, path, ref step))
+					return false;
+				if (source.Token == Token.EndOfInput)
+					return true;
+				if (!Consume(source, Token.StepSeparator))
+					return false;
+				if (step.IsAttribute)
+					return false;
+			}
+		}
+
+		private static bool ParseStep(Tokenizer source, CompiledXPath path, ref CompiledXPathStep step)
+		{
+			var previous = step;
+			var start    = source.Index;
+
+			if (!ParseNodeCore(source, StepFactory, ref step))
 				return false;
-			source.Consume();
+
+			if (step != previous)
+			{
+				var text = source.GetConsumedText(start);
+				step.Path = XPathExpression.Compile(text);
+
+				if (previous == null)
+					path.FirstStep = step;
+				else
+					LinkNodes(previous, step);
+
+				path.Depth++;
+			}
 			return true;
 		}
 
-		private static void LinkNodes(CompiledXPathNode previous, CompiledXPathNode next)
+		private static bool ParseNodeCore<TNode>(Tokenizer source, Func<TNode> factory, ref TNode node)
+			where TNode : CompiledXPathNode
 		{
-			previous.NextNode = next;
-			next.PreviousNode = previous;
+			if (!Consume(source, Token.SelfReference))
+			{
+				node = factory();
+
+				if (Consume(source, Token.AttributeStart))
+					node.IsAttribute = true;
+
+				if (!ParseQualifiedName(source, node))
+					return false;
+			}
+
+			return node == null
+				? source.Token != Token.PredicateStart
+				: ParsePredicateList(source, node);
+		}
+
+		private static bool ParsePredicateList(Tokenizer source, CompiledXPathNode parent)
+		{
+			while (Consume(source, Token.PredicateStart))
+				if (!ParsePredicate(source, parent))
+					return false;
+
+			return true;
+		}
+
+		private static bool ParsePredicate(Tokenizer source, CompiledXPathNode parent)
+		{
+			// Don't need to check this; caller must have already checked it.
+			//if (!Consume(source, Token.PredicateStart))
+			//    return false;
+
+			if (!ParseAndExpression(source, parent))
+				return false;
+
+			if (!Consume(source, Token.PredicateEnd))
+				return false;
+
+			return true;
 		}
 
 		private static bool ParseAndExpression(Tokenizer source, CompiledXPathNode parent)
@@ -85,7 +138,7 @@ namespace Castle.Components.DictionaryAdapter.Xml
 		private static bool ParseExpression(Tokenizer source, CompiledXPathNode parent)
 		{
 			var isLeftToRight
-				= source.Token == Token.Name
+				=  source.Token == Token.Name
 				|| source.Token == Token.AttributeStart
 				|| source.Token == Token.SelfReference;
 
@@ -98,7 +151,7 @@ namespace Castle.Components.DictionaryAdapter.Xml
 		{
 			CompiledXPathNode node;
 			if (!ParseNestedPath(source, parent, out node))
-				return false;
+			    return false;
 
 			if (!Consume(source, Token.EqualsOperator))
 				return true;
@@ -111,12 +164,20 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			return true;
 		}
 
-		private static bool ParseName(Tokenizer source, out string name)
+		private static bool ParseRightToLeftExpression(Tokenizer source, CompiledXPathNode parent)
 		{
-			if (source.Token != Token.Name)
-				return Try.Failure(out name);
-			name = source.Text;
-			source.Consume();
+			XPathExpression value;
+			if (!ParseValue(source, out value))
+				return false;
+
+			if (!Consume(source, Token.EqualsOperator))
+				return false;
+
+			CompiledXPathNode node;
+			if (!ParseNestedPath(source, parent, out node))
+			    return false;
+
+			node.Value = value;
 			return true;
 		}
 
@@ -159,63 +220,21 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			return true;
 		}
 
-		private static bool ParseNodeCore<TNode>(Tokenizer source, Func<TNode> factory, ref TNode node)
-			where TNode : CompiledXPathNode
+		private static bool ParseValue(Tokenizer source, out XPathExpression value)
 		{
-			if (!Consume(source, Token.SelfReference))
-			{
-				node = factory();
+			var start = source.Index;
 
-				if (Consume(source, Token.AttributeStart))
-					node.IsAttribute = true;
+			var parsed =
+				Consume(source, Token.StringLiteral) ||
+				(
+					Consume(source, Token.VariableStart) &&
+					ParseQualifiedName(source, null)
+				);
+			if (!parsed)
+				return Try.Failure(out value);
 
-				if (!ParseQualifiedName(source, node))
-					return false;
-			}
-
-			return node == null
-				? source.Token != Token.PredicateStart
-				: ParsePredicateList(source, node);
-		}
-
-		private static bool ParsePath(Tokenizer source, CompiledXPath path)
-		{
-			for (CompiledXPathStep step = null;;)
-			{
-				if (!ParseStep(source, path, ref step))
-					return false;
-				if (source.Token == Token.EndOfInput)
-					return true;
-				if (!Consume(source, Token.StepSeparator))
-					return false;
-				if (step.IsAttribute)
-					return false;
-			}
-		}
-
-		private static bool ParsePredicate(Tokenizer source, CompiledXPathNode parent)
-		{
-			// Don't need to check this; caller must have already checked it.
-			//if (!Consume(source, Token.PredicateStart))
-			//    return false;
-
-			if (!ParseAndExpression(source, parent))
-				return false;
-
-			if (!Consume(source, Token.PredicateEnd))
-				return false;
-
-			return true;
-		}
-
-		private static bool ParsePredicateList(Tokenizer source, CompiledXPathNode parent)
-		{
-			while (Consume(source, Token.PredicateStart))
-			{
-				if (!ParsePredicate(source, parent))
-					return false;
-			}
-
+			var xpath = source.GetConsumedText(start);
+			value = XPathExpression.Compile(xpath);
 			return true;
 		}
 
@@ -238,73 +257,40 @@ namespace Castle.Components.DictionaryAdapter.Xml
 
 			if (node != null)
 			{
-				node.Prefix = nameA;
+				node.Prefix    = nameA;
 				node.LocalName = nameB;
 			}
 			return true;
 		}
 
-		private static bool ParseRightToLeftExpression(Tokenizer source, CompiledXPathNode parent)
+		private static bool ParseName(Tokenizer source, out string name)
 		{
-			XPathExpression value;
-			if (!ParseValue(source, out value))
-				return false;
-
-			if (!Consume(source, Token.EqualsOperator))
-				return false;
-
-			CompiledXPathNode node;
-			if (!ParseNestedPath(source, parent, out node))
-				return false;
-
-			node.Value = value;
+			if (source.Token != Token.Name)
+				return Try.Failure(out name);
+			name = source.Text;
+			source.Consume();
 			return true;
 		}
 
-		private static bool ParseStep(Tokenizer source, CompiledXPath path, ref CompiledXPathStep step)
+		private static bool Consume(Tokenizer source, Token token)
 		{
-			var previous = step;
-			var start = source.Index;
-
-			if (!ParseNodeCore(source, StepFactory, ref step))
+			if (source.Token != token)
 				return false;
-
-			if (step != previous)
-			{
-				var text = source.GetConsumedText(start);
-				step.Path = XPathExpression.Compile(text);
-
-				if (previous == null)
-					path.FirstStep = step;
-				else
-					LinkNodes(previous, step);
-
-				path.Depth++;
-			}
+			source.Consume();
 			return true;
 		}
 
-		private static bool ParseValue(Tokenizer source, out XPathExpression value)
+		private static void LinkNodes(CompiledXPathNode previous, CompiledXPathNode next)
 		{
-			var start = source.Index;
-
-			var parsed =
-				Consume(source, Token.StringLiteral) ||
-				(
-					Consume(source, Token.VariableStart) &&
-					ParseQualifiedName(source, null)
-					);
-			if (!parsed)
-				return Try.Failure(out value);
-
-			var xpath = source.GetConsumedText(start);
-			value = XPathExpression.Compile(xpath);
-			return true;
+			previous.NextNode = next;
+			next.PreviousNode = previous;
 		}
 
-		#endregion
+		private static readonly Func<CompiledXPathNode>
+			NodeFactory = () => new CompiledXPathNode();
 
-		#region Classes/Structs/Interfaces/Enums/Delegates
+		private static readonly Func<CompiledXPathStep>
+			StepFactory = () => new CompiledXPathStep();
 
 		private enum Token
 		{
@@ -328,75 +314,128 @@ namespace Castle.Components.DictionaryAdapter.Xml
 
 		private class Tokenizer
 		{
-			#region Constructors/Destructors
+			private readonly string input;
+
+			private State state;
+			private Token token;
+			private int   index;
+			private int   start;
+			private int   prior;
 
 			public Tokenizer(string input)
 			{
 				this.input = input;
 				this.state = State.Initial;
 				this.index = -1;
-				this.Consume();
+				Consume();
 			}
 
-			#endregion
-
-			#region Fields/Constants
-
-			private readonly string input;
-
-			private int index;
-			private int prior;
-			private int start;
-			private State state;
-			private Token token;
-
-			#endregion
-
-			// Index where current token starts
-
-			#region Properties/Indexers/Events
-
-			public int Index
-			{
-				get
-				{
-					return this.start;
-				}
-			}
-
-			public string Text
-			{
-				get
-				{
-					return this.input.Substring(this.start, this.index - this.start + 1);
-				}
-			}
-
+			// Type of the current token
 			public Token Token
 			{
-				get
-				{
-					return this.token;
-				}
+				get { return token; }
 			}
 
-			#endregion
+			// Text of the current token
+			public string Text
+			{
+				get { return input.Substring(start, index - start + 1); }
+			}
 
-			#region Methods/Operators
+			// Gets text that has been consumed previously
+			public string GetConsumedText(int start)
+			{
+				return input.Substring(start, prior - start + 1);
+			}
 
-			private static bool IsNameChar(char c)
+			// Index where current token starts
+			public int Index
+			{
+				get { return start; }
+			}
+
+			// Consider the current token consumed, and read next token
+			public void Consume()
+			{
+				prior = index;
+
+			    for(;;)
+			    {
+					var c = ReadChar();
+
+			        switch (state)
+			        {
+			            case State.Initial:
+							start = index;
+							switch (c)
+							{
+								case '.':  token = Token.SelfReference;     return;
+								case '/':  token = Token.StepSeparator;     return;
+								case ':':  token = Token.NameSeparator;     return;
+								case '@':  token = Token.AttributeStart;    return;
+								case '$':  token = Token.VariableStart;     return;
+								case '=':  token = Token.EqualsOperator;    return;
+								case '[':  token = Token.PredicateStart;    return;
+								case ']':  token = Token.PredicateEnd;      return;
+								case '\0': token = Token.EndOfInput;        return;
+								case '\'': state = State.SingleQuoteString; break;
+								case '\"': state = State.DoubleQuoteString; break;
+								default:
+									if      (IsNameStartChar(c)) { state = State.Name; }
+									else if (IsWhitespace(c))    { /* Ignore */ }
+									else                         { state = State.Failed; }
+									break;
+							}
+							break;
+
+			            case State.Name:
+							if (IsNameChar(c)) { break; }
+							RewindChar();
+							token = Token.Name;
+							state = State.Initial;
+							return;
+
+			            case State.SingleQuoteString:
+							if (c != '\'') { break; }
+						    token = Token.StringLiteral;
+						    state = State.Initial;
+						    return;
+						
+			            case State.DoubleQuoteString:
+							if (c != '\"') { break; }
+						    token = Token.StringLiteral;
+						    state = State.Initial;
+						    return;
+
+						case State.Failed:
+							token = Token.Error;
+							return;
+			        }
+			    }
+			}
+
+			private char ReadChar()
+			{
+				return (++index < input.Length)
+					? input[index]
+					: default(char); // EOF sentinel
+			}
+
+			private void RewindChar()
+			{
+				--index;
+			}
+
+			private static bool IsWhitespace(char c)
 			{
 #if DOTNET40
-				return XmlConvert.IsNCNameChar(c);
+				return XmlConvert.IsWhitespaceChar(c);
 #else
-	// Source: http://www.w3.org/TR/REC-xml/#NT-NameChar
-				return IsNameStartChar(c)
-					|| ('-' == c)
-					|| ('.' == c)
-					|| ('0' <= c && c <='9')
-					|| ('\u00B7' == c)
-					|| ('\u0300' <= c && c <= '\u036F')
-					|| ('\u203F' <= c && c <= '\u2040')
+				// Source: http://www.w3.org/TR/REC-xml/#NT-S
+				return ' '  == c
+					|| '\t' == c
+					|| '\r' == c
+					|| '\n' == c
 					;
 #endif
 			}
@@ -404,9 +443,9 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			private static bool IsNameStartChar(char c)
 			{
 #if DOTNET40
-				return XmlConvert.IsStartNCNameChar(c);
+			    return XmlConvert.IsStartNCNameChar(c);
 #else
-	// Source: http://www.w3.org/TR/REC-xml/#NT-NameStartChar
+				// Source: http://www.w3.org/TR/REC-xml/#NT-NameStartChar
 				return ('A' <= c && c <= 'Z')
 					|| ('a' <= c && c <= 'z')
 					|| ('_' == c)
@@ -426,130 +465,22 @@ namespace Castle.Components.DictionaryAdapter.Xml
 #endif
 			}
 
-			private static bool IsWhitespace(char c)
+			private static bool IsNameChar(char c)
 			{
 #if DOTNET40
-				return XmlConvert.IsWhitespaceChar(c);
+			    return XmlConvert.IsNCNameChar(c);
 #else
-	// Source: http://www.w3.org/TR/REC-xml/#NT-S
-				return ' '  == c
-					|| '\t' == c
-					|| '\r' == c
-					|| '\n' == c
+				// Source: http://www.w3.org/TR/REC-xml/#NT-NameChar
+				return IsNameStartChar(c)
+					|| ('-' == c)
+					|| ('.' == c)
+					|| ('0' <= c && c <='9')
+					|| ('\u00B7' == c)
+					|| ('\u0300' <= c && c <= '\u036F')
+					|| ('\u203F' <= c && c <= '\u2040')
 					;
 #endif
 			}
-
-			// Consider the current token consumed, and read next token
-			public void Consume()
-			{
-				this.prior = this.index;
-
-				for (;;)
-				{
-					var c = this.ReadChar();
-
-					switch (this.state)
-					{
-						case State.Initial:
-							this.start = this.index;
-							switch (c)
-							{
-								case '.':
-									this.token = Token.SelfReference;
-									return;
-								case '/':
-									this.token = Token.StepSeparator;
-									return;
-								case ':':
-									this.token = Token.NameSeparator;
-									return;
-								case '@':
-									this.token = Token.AttributeStart;
-									return;
-								case '$':
-									this.token = Token.VariableStart;
-									return;
-								case '=':
-									this.token = Token.EqualsOperator;
-									return;
-								case '[':
-									this.token = Token.PredicateStart;
-									return;
-								case ']':
-									this.token = Token.PredicateEnd;
-									return;
-								case '\0':
-									this.token = Token.EndOfInput;
-									return;
-								case '\'':
-									this.state = State.SingleQuoteString;
-									break;
-								case '\"':
-									this.state = State.DoubleQuoteString;
-									break;
-								default:
-									if (IsNameStartChar(c))
-										this.state = State.Name;
-									else if (IsWhitespace(c))
-									{
-										/* Ignore */
-									}
-									else
-										this.state = State.Failed;
-									break;
-							}
-							break;
-
-						case State.Name:
-							if (IsNameChar(c))
-								break;
-							this.RewindChar();
-							this.token = Token.Name;
-							this.state = State.Initial;
-							return;
-
-						case State.SingleQuoteString:
-							if (c != '\'')
-								break;
-							this.token = Token.StringLiteral;
-							this.state = State.Initial;
-							return;
-
-						case State.DoubleQuoteString:
-							if (c != '\"')
-								break;
-							this.token = Token.StringLiteral;
-							this.state = State.Initial;
-							return;
-
-						case State.Failed:
-							this.token = Token.Error;
-							return;
-					}
-				}
-			}
-
-			public string GetConsumedText(int start)
-			{
-				return this.input.Substring(start, this.prior - start + 1);
-			}
-
-			private char ReadChar()
-			{
-				return (++this.index < this.input.Length)
-					? this.input[this.index]
-					: default(char); // EOF sentinel
-			}
-
-			private void RewindChar()
-			{
-				--this.index;
-			}
-
-			#endregion
-
-			#region Classes/Structs/Interfaces/Enums/Delegates
 
 			private enum State
 			{
@@ -559,13 +490,8 @@ namespace Castle.Components.DictionaryAdapter.Xml
 				DoubleQuoteString,
 				Failed
 			}
-
-			#endregion
 		}
-
-		#endregion
 	}
 }
-
 #endif
 #endif

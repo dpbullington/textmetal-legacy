@@ -1,13 +1,16 @@
-// ****************************************************************
+﻿// ****************************************************************
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
-
 using NUnit.UiException.CodeFormatters;
+using System.Diagnostics;
 
 /// This control could have been replaced by a standard RichTextBox control, but
 /// it turned out that RichTextBox:
@@ -21,246 +24,204 @@ using NUnit.UiException.CodeFormatters;
 
 namespace NUnit.UiException.Controls
 {
-	/// <summary>
-	/// A control that implements ICodeView.
-	/// </summary>
-	public class CodeBox : UserControl, ICodeView
-	{
-		#region Constructors/Destructors
+    /// <summary>
+    /// A control that implements ICodeView.
+    /// </summary>
+    public class CodeBox : UserControl, ICodeView
+    {
+        protected CodeRenderingContext _workingContext;
+        protected FormattedCode _formattedCode;
 
-		public CodeBox()
-			:
-				this(new GeneralCodeFormatter(), new DefaultCodeRenderer())
-		{
-		}
+        private IFormatterCatalog _formatter;
+        private ICodeRenderer _renderer;
+        private string _language;
 
-		protected CodeBox(IFormatterCatalog formatter, ICodeRenderer renderer)
-		{
-			this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-			this.SetStyle(ControlStyles.UserPaint, true);
-			this.DoubleBuffered = true;
+        private bool _showCurrentLine;
+        private int _currentLine;
+        
+        public CodeBox() :
+            this(new GeneralCodeFormatter(), new DefaultCodeRenderer()) { }
 
-			this._formatter = formatter;
-			this._formattedCode = FormattedCode.Empty;
+        #region ICodeView Members
 
-			this._renderer = renderer;
+        public override string Text
+        {
+            get { return (_formattedCode.Text); }
+            set
+            {
+                if (value == null)
+                    value = "";
 
-			this._currentLine = -1;
-			this._showCurrentLine = false;
+                SizeF docSize;
 
-			this._language = "";
+                _formattedCode = _formatter.Format(value, _language);
+                docSize = _renderer.GetDocumentSize(
+                    _formattedCode, _workingContext.Graphics, _workingContext.Font);
+                AutoScrollMinSize = new Size((int)docSize.Width, (int)docSize.Height);
 
-			this.Font = new Font(FontFamily.GenericMonospace, 8);
-			this.BackColor = Color.White;
+                Invalidate();
 
-			this.createGraphics();
-			this.AutoScroll = true;
+                return;
+            }
+        }
 
-			return;
-		}
+        public string Language
+        {
+            get { return (_language); }
+            set
+            {
+                if (value == null)
+                    value = "";
+                if (_language == value)
+                    return;
 
-		#endregion
+                _language = value;
+                Text = Text;
+            }
+        }
 
-		#region Fields/Constants
+        public int CurrentLine
+        {
+            get { return (_currentLine); }
+            set
+            {
+                float y = _renderer.LineIndexToYCoordinate(value,
+                    _workingContext.Graphics, _workingContext.Font);
 
-		private int _currentLine;
+                y -= Height / 2;
 
-		protected FormattedCode _formattedCode;
+                _currentLine = value;
+                AutoScrollPosition = new Point(0, (int)y);
 
-		private IFormatterCatalog _formatter;
-		private string _language;
-		private ICodeRenderer _renderer;
+                Invalidate();
+            }
+        }
 
-		private bool _showCurrentLine;
-		protected CodeRenderingContext _workingContext;
+        public IFormatterCatalog Formatter
+        {
+            get { return (_formatter); }
+        }
 
-		#endregion
+        #endregion
 
-		#region Properties/Indexers/Events
+        /// <summary>
+        /// Gets or sets a value telling whether or not displaying a special
+        /// feature for the current line at drawing time.
+        /// </summary>        
+        public bool ShowCurrentLine
+        {
+            get { return (_showCurrentLine); }
+            set { _showCurrentLine = value; }
+        }
 
-		public int CurrentLine
-		{
-			get
-			{
-				return (this._currentLine);
-			}
-			set
-			{
-				float y = this._renderer.LineIndexToYCoordinate(value,
-					this._workingContext.Graphics, this._workingContext.Font);
+        /// <summary>
+        /// If ShowCurrentLine is set, this set the current line's background color.
+        /// </summary>
+        public Color CurrentLineBackColor
+        {
+            get { return (_workingContext.CurrentLineBackColor); }
+            set { 
+                _workingContext.CurrentLineBackColor = value;
+                Invalidate();
+            }
+        }
 
-				y -= this.Height / 2;
+        /// <summary>
+        /// If ShowCurrentLine is set, this set current line's foreground color.
+        /// </summary>
+        public Color CurrentLineForeColor
+        {
+            get { return (_workingContext.CurrentLineForeColor); }
+            set { 
+                _workingContext.CurrentLineForeColor = value;
+                Invalidate();
+            }
+        }
+       
+        protected CodeBox(IFormatterCatalog formatter, ICodeRenderer renderer)
+        {
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(ControlStyles.UserPaint, true);
+            DoubleBuffered = true;
 
-				this._currentLine = value;
-				this.AutoScrollPosition = new Point(0, (int)y);
+            _formatter = formatter;
+            _formattedCode = FormattedCode.Empty;
 
-				this.Invalidate();
-			}
-		}
+            _renderer = renderer;
 
-		/// <summary>
-		/// If ShowCurrentLine is set, this set the current line's background color.
-		/// </summary>
-		public Color CurrentLineBackColor
-		{
-			get
-			{
-				return (this._workingContext.CurrentLineBackColor);
-			}
-			set
-			{
-				this._workingContext.CurrentLineBackColor = value;
-				this.Invalidate();
-			}
-		}
+            _currentLine = -1;
+            _showCurrentLine = false;
 
-		/// <summary>
-		/// If ShowCurrentLine is set, this set current line's foreground color.
-		/// </summary>
-		public Color CurrentLineForeColor
-		{
-			get
-			{
-				return (this._workingContext.CurrentLineForeColor);
-			}
-			set
-			{
-				this._workingContext.CurrentLineForeColor = value;
-				this.Invalidate();
-			}
-		}
+            _language = "";
 
-		public IFormatterCatalog Formatter
-		{
-			get
-			{
-				return (this._formatter);
-			}
-		}
+            this.Font = new Font(FontFamily.GenericMonospace, 8);
+            this.BackColor = Color.White;
 
-		public string Language
-		{
-			get
-			{
-				return (this._language);
-			}
-			set
-			{
-				if (value == null)
-					value = "";
-				if (this._language == value)
-					return;
+            createGraphics();
+            AutoScroll = true;
 
-				this._language = value;
-				this.Text = this.Text;
-			}
-		}
+            return;
+        }
 
-		/// <summary>
-		/// Gets or sets a value telling whether or not displaying a special
-		/// feature for the current line at drawing time.
-		/// </summary>
-		public bool ShowCurrentLine
-		{
-			get
-			{
-				return (this._showCurrentLine);
-			}
-			set
-			{
-				this._showCurrentLine = value;
-			}
-		}
+        protected override void OnMouseHover(EventArgs e)
+        {
+            base.OnMouseHover(e);
+            Focus();
+        }
 
-		public override string Text
-		{
-			get
-			{
-				return (this._formattedCode.Text);
-			}
-			set
-			{
-				if (value == null)
-					value = "";
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            Graphics backup;
 
-				SizeF docSize;
+            base.OnPaint(e);
 
-				this._formattedCode = this._formatter.Format(value, this._language);
-				docSize = this._renderer.GetDocumentSize(
-					this._formattedCode, this._workingContext.Graphics, this._workingContext.Font);
-				this.AutoScrollMinSize = new Size((int)docSize.Width, (int)docSize.Height);
+            backup = _workingContext.Graphics;
+            _workingContext.Graphics = e.Graphics;
+            _workingContext.CurrentLine = (_showCurrentLine ? _currentLine : -1);
 
-				this.Invalidate();
+            _renderer.DrawToGraphics(_formattedCode, _workingContext,
+                new Rectangle(-AutoScrollPosition.X, -AutoScrollPosition.Y, Width, Height));
 
-				return;
-			}
-		}
+            _workingContext.Graphics = backup;
 
-		#endregion
+            return;
+        }
 
-		#region Methods/Operators
+        protected override void OnFontChanged(EventArgs e)
+        {
+            base.OnFontChanged(e);
 
-		protected override void OnFontChanged(EventArgs e)
-		{
-			base.OnFontChanged(e);
+            if (_workingContext != null)
+            {
+                _workingContext.Font = Font;
+                Text = Text;
+            }
 
-			if (this._workingContext != null)
-			{
-				this._workingContext.Font = this.Font;
-				this.Text = this.Text;
-			}
+            return;
+        }
 
-			return;
-		}
+        private void createGraphics()
+        {
+            Graphics gCurrent = CreateGraphics();
+            Image img = new Bitmap(10, 10, gCurrent);
+            Graphics gImg = Graphics.FromImage(img);
 
-		protected override void OnMouseHover(EventArgs e)
-		{
-			base.OnMouseHover(e);
-			this.Focus();
-		}
+            gCurrent.Dispose();
 
-		protected override void OnPaint(PaintEventArgs e)
-		{
-			Graphics backup;
+            _workingContext = new CodeRenderingContext();
+            _workingContext.Graphics = gImg;
+            _workingContext.Font = Font;
 
-			base.OnPaint(e);
+            _workingContext.CurrentLine = -1;
+            _workingContext.BackgroundColor = Color.White;
+            _workingContext.CurrentLineBackColor = Color.Red;
+            _workingContext.CurrentLineForeColor = Color.White;
+            _workingContext.CodeColor = Color.Black;
+            _workingContext.CommentColor = Color.Green;
+            _workingContext.KeywordColor = Color.Blue;
+            _workingContext.StringColor = Color.Red;
 
-			backup = this._workingContext.Graphics;
-			this._workingContext.Graphics = e.Graphics;
-			this._workingContext.CurrentLine = (this._showCurrentLine ? this._currentLine : -1);
-
-			this._renderer.DrawToGraphics(this._formattedCode, this._workingContext,
-				new Rectangle(-this.AutoScrollPosition.X, -this.AutoScrollPosition.Y, this.Width, this.Height));
-
-			this._workingContext.Graphics = backup;
-
-			return;
-		}
-
-		private void createGraphics()
-		{
-			Graphics gCurrent = this.CreateGraphics();
-			Image img = new Bitmap(10, 10, gCurrent);
-			Graphics gImg = Graphics.FromImage(img);
-
-			gCurrent.Dispose();
-
-			this._workingContext = new CodeRenderingContext();
-			this._workingContext.Graphics = gImg;
-			this._workingContext.Font = this.Font;
-
-			this._workingContext.CurrentLine = -1;
-			this._workingContext.BackgroundColor = Color.White;
-			this._workingContext.CurrentLineBackColor = Color.Red;
-			this._workingContext.CurrentLineForeColor = Color.White;
-			this._workingContext.CodeColor = Color.Black;
-			this._workingContext.CommentColor = Color.Green;
-			this._workingContext.KeywordColor = Color.Blue;
-			this._workingContext.StringColor = Color.Red;
-
-			return;
-		}
-
-		#endregion
-	}
+            return;
+        }
+    }    
 }

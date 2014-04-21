@@ -1,4 +1,4 @@
-// ****************************************************************
+﻿// ****************************************************************
 // Copyright 2008, Charlie Poole
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org.
@@ -6,63 +6,44 @@
 
 using System;
 using System.Collections;
-
+using System.Reflection;
 using NUnit.Core.Extensibility;
 
 namespace NUnit.Core.Builders
 {
-	public abstract class CombiningStrategy
-	{
-		#region Constructors/Destructors
+    public abstract class CombiningStrategy
+    {
+        protected IDataPointProvider dataPointProvider =
+            (IDataPointProvider)CoreExtensions.Host.GetExtensionPoint("DataPointProviders");
 
-		public CombiningStrategy(IEnumerable[] sources)
-		{
-			this.sources = sources;
-		}
+        private IEnumerable[] sources;
+        private IEnumerator[] enumerators;
 
-		#endregion
+        public CombiningStrategy(IEnumerable[] sources)
+        {
+            this.sources = sources;
+        }
 
-		#region Fields/Constants
+        public IEnumerable[] Sources
+        {
+            get { return sources; }
+        }
 
-		protected IDataPointProvider dataPointProvider =
-			(IDataPointProvider)CoreExtensions.Host.GetExtensionPoint("DataPointProviders");
+        public IEnumerator[] Enumerators
+        {
+            get
+            {
+                if (enumerators == null)
+                {
+                    enumerators = new IEnumerator[Sources.Length];
+                    for (int i = 0; i < Sources.Length; i++)
+                        enumerators[i] = Sources[i].GetEnumerator();
+                }
 
-		private IEnumerator[] enumerators;
-		private IEnumerable[] sources;
+                return enumerators;
+            }
+        }
 
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public IEnumerator[] Enumerators
-		{
-			get
-			{
-				if (this.enumerators == null)
-				{
-					this.enumerators = new IEnumerator[this.Sources.Length];
-					for (int i = 0; i < this.Sources.Length; i++)
-						this.enumerators[i] = this.Sources[i].GetEnumerator();
-				}
-
-				return this.enumerators;
-			}
-		}
-
-		public IEnumerable[] Sources
-		{
-			get
-			{
-				return this.sources;
-			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		public abstract IEnumerable GetTestCases();
-
-		#endregion
-	}
+        public abstract IEnumerable GetTestCases();
+    }
 }

@@ -9,10 +9,10 @@ namespace NUnit.Framework
 	using System;
 
 	/// <summary>
-	/// Attribute used to identify a method that is
+	/// Attribute used to identify a method that is 
 	/// called before any tests in a fixture are run.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+	[AttributeUsage(AttributeTargets.Method, AllowMultiple=false, Inherited=true)]
 	public class TestFixtureSetUpAttribute : Attribute
 	{
 	}

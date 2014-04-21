@@ -12,62 +12,47 @@ namespace NUnit.Core.Filters
 	/// <summary>
 	/// Summary description for NameFilter.
 	/// </summary>
+	/// 
 	[Serializable]
 	public class NameFilter : TestFilter
 	{
-		#region Constructors/Destructors
+		private ArrayList testNames = new ArrayList();
 
 		/// <summary>
 		/// Construct an empty NameFilter
 		/// </summary>
-		public NameFilter()
-		{
-		}
+		public NameFilter() { }
 
 		/// <summary>
 		/// Construct a NameFilter for a single TestName
 		/// </summary>
-		/// <param name="testName"> </param>
-		public NameFilter(TestName testName)
+		/// <param name="testName"></param>
+		public NameFilter( TestName testName )
 		{
-			this.testNames.Add(testName);
+			testNames.Add( testName );
 		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private ArrayList testNames = new ArrayList();
-
-		#endregion
-
-		#region Methods/Operators
 
 		/// <summary>
 		/// Add a TestName to a NameFilter
 		/// </summary>
-		/// <param name="testName"> </param>
-		public void Add(TestName testName)
+		/// <param name="testName"></param>
+		public void Add( TestName testName )
 		{
-			this.testNames.Add(testName);
+			testNames.Add( testName );
 		}
 
 		/// <summary>
 		/// Check if a test matches the filter
 		/// </summary>
-		/// <param name="test"> The test to match </param>
-		/// <returns> True if it matches, false if not </returns>
-		public override bool Match(ITest test)
+		/// <param name="test">The test to match</param>
+		/// <returns>True if it matches, false if not</returns>
+		public override bool Match( ITest test )
 		{
-			foreach (TestName testName in this.testNames)
-			{
-				if (test.TestName == testName)
+			foreach( TestName testName in testNames )
+				if ( test.TestName == testName )
 					return true;
-			}
 
 			return false;
 		}
-
-		#endregion
 	}
 }

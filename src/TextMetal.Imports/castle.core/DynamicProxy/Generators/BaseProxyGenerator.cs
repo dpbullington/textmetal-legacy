@@ -12,39 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-
-using Castle.Core.Internal;
-using Castle.Core.Logging;
-using Castle.DynamicProxy.Contributors;
-using Castle.DynamicProxy.Generators.Emitters;
-using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Castle.DynamicProxy.Internal;
-
 namespace Castle.DynamicProxy.Generators
 {
 	using System;
+	using System.Collections.Generic;
+	using System.Diagnostics;
+	using System.Linq;
+	using System.Reflection;
 #if !SILVERLIGHT
 	using System.Runtime.Serialization;
 	using System.Xml.Serialization;
-
 #endif
+
+	using Castle.Core.Internal;
+	using Castle.Core.Logging;
+	using Castle.DynamicProxy.Contributors;
+	using Castle.DynamicProxy.Generators.Emitters;
+	using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
+	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+	using Castle.DynamicProxy.Internal;
 
 #if SILVERLIGHT
 	using Castle.DynamicProxy.SilverlightExtensions;
 #endif
 
 	/// <summary>
-	/// Base class that exposes the common functionalities
-	/// to proxy generation.
+	///   Base class that exposes the common functionalities
+	///   to proxy generation.
 	/// </summary>
 	public abstract class BaseProxyGenerator
 	{
-		#region Constructors/Destructors
+		protected readonly Type targetType;
+		private readonly ModuleScope scope;
+		private ILogger logger = NullLogger.Instance;
+		private ProxyGenerationOptions proxyGenerationOptions;
 
 		protected BaseProxyGenerator(ModuleScope scope, Type targetType)
 		{
@@ -52,58 +53,36 @@ namespace Castle.DynamicProxy.Generators
 			this.targetType = targetType;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly ModuleScope scope;
-		protected readonly Type targetType;
-		private ILogger logger = NullLogger.Instance;
-		private ProxyGenerationOptions proxyGenerationOptions;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
 		public ILogger Logger
 		{
-			get
-			{
-				return this.logger;
-			}
-			set
-			{
-				this.logger = value;
-			}
+			get { return logger; }
+			set { logger = value; }
 		}
 
 		protected ProxyGenerationOptions ProxyGenerationOptions
 		{
 			get
 			{
-				if (this.proxyGenerationOptions == null)
+				if (proxyGenerationOptions == null)
+				{
 					throw new InvalidOperationException("ProxyGenerationOptions must be set before being retrieved.");
-				return this.proxyGenerationOptions;
+				}
+				return proxyGenerationOptions;
 			}
 			set
 			{
-				if (this.proxyGenerationOptions != null)
+				if (proxyGenerationOptions != null)
+				{
 					throw new InvalidOperationException("ProxyGenerationOptions can only be set once.");
-				this.proxyGenerationOptions = value;
+				}
+				proxyGenerationOptions = value;
 			}
 		}
 
 		protected ModuleScope Scope
 		{
-			get
-			{
-				return this.scope;
-			}
+			get { return scope; }
 		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		protected void AddMapping(Type @interface, ITypeContributor implementer, IDictionary<Type, ITypeContributor> mapping)
 		{
@@ -112,54 +91,62 @@ namespace Castle.DynamicProxy.Generators
 			Debug.Assert(@interface.IsInterface, "@interface.IsInterface");
 
 			if (!mapping.ContainsKey(@interface))
-				this.AddMappingNoCheck(@interface, implementer, mapping);
+			{
+				AddMappingNoCheck(@interface, implementer, mapping);
+			}
 		}
 
 		protected void AddMappingForISerializable(IDictionary<Type, ITypeContributor> typeImplementerMapping,
-			ITypeContributor instance)
+		                                          ITypeContributor instance)
 		{
 #if !SILVERLIGHT
-			this.AddMapping(typeof(ISerializable), instance, typeImplementerMapping);
+			AddMapping(typeof(ISerializable), instance, typeImplementerMapping);
 #endif
 		}
 
 		/// <summary>
-		/// It is safe to add mapping (no mapping for the interface exists)
+		///   It is safe to add mapping (no mapping for the interface exists)
 		/// </summary>
-		/// <param name="implementer"> </param>
-		/// <param name="interface"> </param>
-		/// <param name="mapping"> </param>
+		/// <param name = "implementer"></param>
+		/// <param name = "interface"></param>
+		/// <param name = "mapping"></param>
 		protected void AddMappingNoCheck(Type @interface, ITypeContributor implementer,
-			IDictionary<Type, ITypeContributor> mapping)
+		                                 IDictionary<Type, ITypeContributor> mapping)
 		{
 			mapping.Add(@interface, implementer);
 		}
 
 		protected void AddToCache(CacheKey key, Type type)
 		{
-			this.scope.RegisterInCache(key, type);
+			scope.RegisterInCache(key, type);
 		}
 
 		protected virtual ClassEmitter BuildClassEmitter(string typeName, Type parentType, IEnumerable<Type> interfaces)
 		{
-			this.CheckNotGenericTypeDefinition(parentType, "parentType");
-			this.CheckNotGenericTypeDefinitions(interfaces, "interfaces");
+			CheckNotGenericTypeDefinition(parentType, "parentType");
+			CheckNotGenericTypeDefinitions(interfaces, "interfaces");
 
-			return new ClassEmitter(this.Scope, typeName, parentType, interfaces);
+			return new ClassEmitter(Scope, typeName, parentType, interfaces);
 		}
 
 		protected void CheckNotGenericTypeDefinition(Type type, string argumentName)
 		{
 			if (type != null && type.IsGenericTypeDefinition)
+			{
 				throw new ArgumentException("Type cannot be a generic type definition. Type: " + type.FullName, argumentName);
+			}
 		}
 
 		protected void CheckNotGenericTypeDefinitions(IEnumerable<Type> types, string argumentName)
 		{
 			if (types == null)
+			{
 				return;
+			}
 			foreach (var t in types)
-				this.CheckNotGenericTypeDefinition(t, argumentName);
+			{
+				CheckNotGenericTypeDefinition(t, argumentName);
+			}
 		}
 
 		protected void CompleteInitCacheMethod(ConstructorCodeBuilder constCodeBuilder)
@@ -169,9 +156,9 @@ namespace Castle.DynamicProxy.Generators
 
 		protected virtual void CreateFields(ClassEmitter emitter)
 		{
-			this.CreateOptionsField(emitter);
-			this.CreateSelectorField(emitter);
-			this.CreateInterceptorsField(emitter);
+			CreateOptionsField(emitter);
+			CreateSelectorField(emitter);
+			CreateInterceptorsField(emitter);
 		}
 
 		protected void CreateInterceptorsField(ClassEmitter emitter)
@@ -190,30 +177,32 @@ namespace Castle.DynamicProxy.Generators
 
 		protected void CreateSelectorField(ClassEmitter emitter)
 		{
-			if (this.ProxyGenerationOptions.Selector == null)
+			if (ProxyGenerationOptions.Selector == null)
+			{
 				return;
+			}
 
 			emitter.CreateField("__selector", typeof(IInterceptorSelector));
 		}
 
 		protected virtual void CreateTypeAttributes(ClassEmitter emitter)
 		{
-			emitter.AddCustomAttributes(this.ProxyGenerationOptions);
+			emitter.AddCustomAttributes(ProxyGenerationOptions);
 #if !SILVERLIGHT
-			emitter.DefineCustomAttribute<XmlIncludeAttribute>(new object[] { this.targetType });
+			emitter.DefineCustomAttribute<XmlIncludeAttribute>(new object[] { targetType });
 #endif
 		}
 
 		protected void EnsureOptionsOverrideEqualsAndGetHashCode(ProxyGenerationOptions options)
 		{
-			if (this.Logger.IsWarnEnabled)
+			if (Logger.IsWarnEnabled)
 			{
 				// Check the proxy generation hook
-				if (!this.OverridesEqualsAndGetHashCode(options.Hook.GetType()))
+				if (!OverridesEqualsAndGetHashCode(options.Hook.GetType()))
 				{
-					this.Logger.WarnFormat("The IProxyGenerationHook type {0} does not override both Equals and GetHashCode. " +
-											"If these are not correctly overridden caching will fail to work causing performance problems.",
-						options.Hook.GetType().FullName);
+					Logger.WarnFormat("The IProxyGenerationHook type {0} does not override both Equals and GetHashCode. " +
+					                  "If these are not correctly overridden caching will fail to work causing performance problems.",
+					                  options.Hook.GetType().FullName);
 				}
 
 				// Interceptor selectors no longer need to override Equals and GetHashCode
@@ -221,13 +210,15 @@ namespace Castle.DynamicProxy.Generators
 		}
 
 		protected void GenerateConstructor(ClassEmitter emitter, ConstructorInfo baseConstructor,
-			params FieldReference[] fields)
+		                                   params FieldReference[] fields)
 		{
 			ArgumentReference[] args;
 			ParameterInfo[] baseConstructorParams = null;
 
 			if (baseConstructor != null)
+			{
 				baseConstructorParams = baseConstructor.GetParameters();
+			}
 
 			if (baseConstructorParams != null && baseConstructorParams.Length != 0)
 			{
@@ -241,10 +232,14 @@ namespace Castle.DynamicProxy.Generators
 				}
 			}
 			else
+			{
 				args = new ArgumentReference[fields.Length];
+			}
 
 			for (var i = 0; i < fields.Length; i++)
+			{
 				args[i] = new ArgumentReference(fields[i].Reference.FieldType);
+			}
 
 			var constructor = emitter.CreateConstructor(args);
 			if (baseConstructorParams != null && baseConstructorParams.Length != 0)
@@ -259,7 +254,9 @@ namespace Castle.DynamicProxy.Generators
 			}
 
 			for (var i = 0; i < fields.Length; i++)
+			{
 				constructor.CodeBuilder.AddStatement(new AssignStatement(fields[i], args[i].ToExpression()));
+			}
 
 			// Invoke base constructor
 
@@ -273,7 +270,9 @@ namespace Castle.DynamicProxy.Generators
 				constructor.CodeBuilder.InvokeBaseConstructor(baseConstructor, slice);
 			}
 			else
+			{
 				constructor.CodeBuilder.InvokeBaseConstructor();
+			}
 
 			constructor.CodeBuilder.AddStatement(new ReturnStatement());
 		}
@@ -285,33 +284,37 @@ namespace Castle.DynamicProxy.Generators
 
 			foreach (var constructor in constructors)
 			{
-				if (!this.IsConstructorVisible(constructor))
+				if (!IsConstructorVisible(constructor))
+				{
 					continue;
+				}
 
-				this.GenerateConstructor(emitter, constructor, fields);
+				GenerateConstructor(emitter, constructor, fields);
 			}
 		}
 
 		/// <summary>
-		/// Generates a parameters constructor that initializes the proxy
-		/// state with <see cref="StandardInterceptor" /> just to make it non-null.
-		/// <para>
-		/// This constructor is important to allow proxies to be XML serializable
-		/// </para>
+		///   Generates a parameters constructor that initializes the proxy
+		///   state with <see cref = "StandardInterceptor" /> just to make it non-null.
+		///   <para>
+		///     This constructor is important to allow proxies to be XML serializable
+		///   </para>
 		/// </summary>
 		protected void GenerateParameterlessConstructor(ClassEmitter emitter, Type baseClass, FieldReference interceptorField)
 		{
 			// Check if the type actually has a default constructor
 			var defaultConstructor = baseClass.GetConstructor(BindingFlags.Public | BindingFlags.Instance, null, Type.EmptyTypes,
-				null);
+			                                                  null);
 
 			if (defaultConstructor == null)
 			{
 				defaultConstructor = baseClass.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes,
-					null);
+				                                              null);
 
 				if (defaultConstructor == null || defaultConstructor.IsPrivate)
+				{
 					return;
+				}
 			}
 
 			var constructor = emitter.CreateConstructor();
@@ -319,7 +322,7 @@ namespace Castle.DynamicProxy.Generators
 			// initialize fields with an empty interceptor
 
 			constructor.CodeBuilder.AddStatement(new AssignStatement(interceptorField,
-				new NewArrayExpression(1, typeof(IInterceptor))));
+			                                                         new NewArrayExpression(1, typeof(IInterceptor))));
 			constructor.CodeBuilder.AddStatement(
 				new AssignArrayStatement(interceptorField, 0, new NewInstanceExpression(typeof(StandardInterceptor), new Type[0])));
 
@@ -337,11 +340,11 @@ namespace Castle.DynamicProxy.Generators
 
 		protected Type GetFromCache(CacheKey key)
 		{
-			return this.scope.GetFromCache(key);
+			return scope.GetFromCache(key);
 		}
 
 		protected void HandleExplicitlyPassedProxyTargetAccessor(ICollection<Type> targetInterfaces,
-			ICollection<Type> additionalInterfaces)
+		                                                         ICollection<Type> additionalInterfaces)
 		{
 			var interfaceName = typeof(IProxyTargetAccessor).ToString();
 			//ok, let's determine who tried to sneak the IProxyTargetAccessor in...
@@ -353,9 +356,9 @@ namespace Castle.DynamicProxy.Generators
 						"Target type for the proxy implements {0} which is a DynamicProxy infrastructure interface and you should never implement it yourself. Are you trying to proxy an existing proxy?",
 						interfaceName);
 			}
-			else if (this.ProxyGenerationOptions.MixinData.ContainsMixin(typeof(IProxyTargetAccessor)))
+			else if (ProxyGenerationOptions.MixinData.ContainsMixin(typeof(IProxyTargetAccessor)))
 			{
-				var mixinType = this.ProxyGenerationOptions.MixinData.GetMixinInstance(typeof(IProxyTargetAccessor)).GetType();
+				var mixinType = ProxyGenerationOptions.MixinData.GetMixinInstance(typeof(IProxyTargetAccessor)).GetType();
 				message =
 					string.Format(
 						"Mixin type {0} implements {1} which is a DynamicProxy infrastructure interface and you should never implement it yourself. Are you trying to mix in an existing proxy?",
@@ -372,36 +375,24 @@ namespace Castle.DynamicProxy.Generators
 			{
 				// this can technicaly never happen
 				message = string.Format("It looks like we have a bug with regards to how we handle {0}. Please report it.",
-					interfaceName);
+				                        interfaceName);
 			}
 			throw new ProxyGenerationException("This is a DynamicProxy2 error: " + message);
 		}
 
 		protected void InitializeStaticFields(Type builtType)
 		{
-			builtType.SetStaticField("proxyGenerationOptions", BindingFlags.Public, this.ProxyGenerationOptions);
-		}
-
-		private bool IsConstructorVisible(ConstructorInfo constructor)
-		{
-			return constructor.IsPublic
-					|| constructor.IsFamily
-					|| constructor.IsFamilyOrAssembly
-#if !Silverlight
-					|| (constructor.IsAssembly && InternalsUtil.IsInternalToDynamicProxy(constructor.DeclaringType.Assembly));
-#else
-            ;
-#endif
+			builtType.SetStaticField("proxyGenerationOptions", BindingFlags.Public, ProxyGenerationOptions);
 		}
 
 		protected Type ObtainProxyType(CacheKey cacheKey, Func<string, INamingScope, Type> factory)
 		{
-			using (var locker = this.Scope.Lock.ForReadingUpgradeable())
+			using (var locker = Scope.Lock.ForReadingUpgradeable())
 			{
-				var cacheType = this.GetFromCache(cacheKey);
+				var cacheType = GetFromCache(cacheKey);
 				if (cacheType != null)
 				{
-					this.Logger.DebugFormat("Found cached proxy type {0} for target type {1}.", cacheType.FullName, this.targetType.FullName);
+					Logger.DebugFormat("Found cached proxy type {0} for target type {1}.", cacheType.FullName, targetType.FullName);
 					return cacheType;
 				}
 
@@ -409,38 +400,52 @@ namespace Castle.DynamicProxy.Generators
 				// under heavy multithreaded load.
 				locker.Upgrade();
 
-				cacheType = this.GetFromCache(cacheKey);
+				cacheType = GetFromCache(cacheKey);
 				if (cacheType != null)
 				{
-					this.Logger.DebugFormat("Found cached proxy type {0} for target type {1}.", cacheType.FullName, this.targetType.FullName);
+					Logger.DebugFormat("Found cached proxy type {0} for target type {1}.", cacheType.FullName, targetType.FullName);
 					return cacheType;
 				}
 
 				// Log details about the cache miss
-				this.Logger.DebugFormat("No cached proxy type was found for target type {0}.", this.targetType.FullName);
-				this.EnsureOptionsOverrideEqualsAndGetHashCode(this.ProxyGenerationOptions);
+				Logger.DebugFormat("No cached proxy type was found for target type {0}.", targetType.FullName);
+				EnsureOptionsOverrideEqualsAndGetHashCode(ProxyGenerationOptions);
 
-				var name = this.Scope.NamingScope.GetUniqueName("Castle.Proxies." + this.targetType.Name + "Proxy");
-				var proxyType = factory.Invoke(name, this.Scope.NamingScope.SafeSubScope());
+				var name = Scope.NamingScope.GetUniqueName("Castle.Proxies." + targetType.Name + "Proxy");
+				var proxyType = factory.Invoke(name, Scope.NamingScope.SafeSubScope());
 
-				this.AddToCache(cacheKey, proxyType);
+				AddToCache(cacheKey, proxyType);
 				return proxyType;
 			}
+		}
+
+		private bool IsConstructorVisible(ConstructorInfo constructor)
+		{
+			return constructor.IsPublic
+			       || constructor.IsFamily
+			       || constructor.IsFamilyOrAssembly
+#if !Silverlight
+			       || (constructor.IsAssembly && InternalsUtil.IsInternalToDynamicProxy(constructor.DeclaringType.Assembly));
+#else
+            ;
+#endif
 		}
 
 		private bool OverridesEqualsAndGetHashCode(Type type)
 		{
 			var equalsMethod = type.GetMethod("Equals", BindingFlags.Public | BindingFlags.Instance);
 			if (equalsMethod == null || equalsMethod.DeclaringType == typeof(object) || equalsMethod.IsAbstract)
+			{
 				return false;
+			}
 
 			var getHashCodeMethod = type.GetMethod("GetHashCode", BindingFlags.Public | BindingFlags.Instance);
 			if (getHashCodeMethod == null || getHashCodeMethod.DeclaringType == typeof(object) || getHashCodeMethod.IsAbstract)
+			{
 				return false;
+			}
 
 			return true;
 		}
-
-		#endregion
 	}
 }

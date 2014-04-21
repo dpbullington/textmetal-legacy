@@ -12,56 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections;
-
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
+	using System.Collections;
 
 	/// <summary>
 	/// Removes a property if null or empty string, guid or collection.
 	/// </summary>
 	public class RemoveIfEmptyAttribute : RemoveIfAttribute
 	{
-		#region Constructors/Destructors
-
 		public RemoveIfEmptyAttribute()
 			: base(RemoveIfEmptyCondition.Instance)
 		{
 		}
 
-		#endregion
+		private new Type Condition { get; set; }
 
-		#region Properties/Indexers/Events
-
-		private new Type Condition
+		class RemoveIfEmptyCondition : ICondition
 		{
-			get;
-			set;
-		}
-
-		#endregion
-
-		#region Classes/Structs/Interfaces/Enums/Delegates
-
-		private class RemoveIfEmptyCondition : ICondition
-		{
-			#region Fields/Constants
-
 			public static readonly RemoveIfEmptyCondition Instance = new RemoveIfEmptyCondition();
 
-			#endregion
-
-			#region Methods/Operators
-
-			private static bool IsEmptyCollection(object value)
+			public bool SatisfiedBy(object value)
 			{
-				return (value is IEnumerable && ((IEnumerable)value).GetEnumerator().MoveNext() == false);
-			}
-
-			private static bool IsEmptyGuid(object value)
-			{
-				return (value is Guid && ((Guid)value) == Guid.Empty);
+				return value == null ||
+					   IsEmptyString(value) ||
+					   IsEmptyGuid(value) ||
+					   IsEmptyCollection(value);
 			}
 
 			private static bool IsEmptyString(object value)
@@ -69,17 +46,15 @@ namespace Castle.Components.DictionaryAdapter
 				return (value is string && ((string)value).Length == 0);
 			}
 
-			public bool SatisfiedBy(object value)
+			private static bool IsEmptyGuid(object value)
 			{
-				return value == null ||
-						IsEmptyString(value) ||
-						IsEmptyGuid(value) ||
-						IsEmptyCollection(value);
+				return (value is Guid && ((Guid)value) == Guid.Empty);
 			}
 
-			#endregion
+			private static bool IsEmptyCollection(object value)
+			{
+				return (value is IEnumerable && ((IEnumerable)value).GetEnumerator().MoveNext() == false);
+			}
 		}
-
-		#endregion
 	}
 }

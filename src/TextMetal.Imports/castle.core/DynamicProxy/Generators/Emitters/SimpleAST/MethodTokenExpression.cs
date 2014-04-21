@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection;
-using System.Reflection.Emit;
-
-using Castle.DynamicProxy.Tokens;
-
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
 	using System;
+	using System.Reflection;
+	using System.Reflection.Emit;
+
+	using Castle.DynamicProxy.Tokens;
 
 	public class MethodTokenExpression : Expression
 	{
@@ -32,17 +31,19 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 		{
 			this.method = method;
 #if !MONO
-			this.declaringType = method.DeclaringType;
+			declaringType = method.DeclaringType;
 #endif
 		}
 
 		public override void Emit(IMemberEmitter member, ILGenerator gen)
 		{
-			gen.Emit(OpCodes.Ldtoken, this.method);
+			gen.Emit(OpCodes.Ldtoken, method);
 #if !MONO
-			if (this.declaringType == null)
+			if (declaringType == null)
+			{
 				throw new GeneratorException("declaringType can't be null for this situation");
-			gen.Emit(OpCodes.Ldtoken, this.declaringType);
+			}
+			gen.Emit(OpCodes.Ldtoken, declaringType);
 #endif
 
 			var minfo = MethodBaseMethods.GetMethodFromHandle1;

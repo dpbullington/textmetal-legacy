@@ -14,105 +14,92 @@ namespace NUnit.Util
 	/// </summary>
 	public class ProjectConfigCollection : CollectionBase
 	{
-		#region Constructors/Destructors
+		protected NUnitProject project;
 
-		public ProjectConfigCollection(NUnitProject project)
-		{
+		public ProjectConfigCollection( NUnitProject project ) 
+		{ 
 			this.project = project;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		protected NUnitProject project;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
+		#region Properties
 		public ProjectConfig this[int index]
 		{
-			get
-			{
-				return (ProjectConfig)this.InnerList[index];
-			}
+			get { return (ProjectConfig)InnerList[index]; }
 		}
 
 		public ProjectConfig this[string name]
 		{
-			get
-			{
-				int index = this.IndexOf(name);
-				return index >= 0 ? (ProjectConfig)this.InnerList[index] : null;
+			get 
+			{ 
+				int index = IndexOf( name );
+				return index >= 0 ? (ProjectConfig)InnerList[index]: null;
 			}
 		}
-
 		#endregion
 
-		#region Methods/Operators
-
-		public void Add(ProjectConfig config)
+		#region Methods
+		public void Add( ProjectConfig config )
 		{
-			this.List.Add(config);
+			List.Add( config );
 			config.Project = this.project;
 		}
 
-		public void Add(string name)
+		public void Add( string name )
 		{
-			this.Add(new ProjectConfig(name));
+			Add( new ProjectConfig( name ) );
 		}
 
-		public bool Contains(ProjectConfig config)
+		public void Remove( string name )
 		{
-			return this.InnerList.Contains(config);
-		}
-
-		public bool Contains(string name)
-		{
-			return this.IndexOf(name) >= 0;
-		}
-
-		private int IndexOf(string name)
-		{
-			for (int index = 0; index < this.InnerList.Count; index++)
+			int index = IndexOf( name );
+			if ( index >= 0 )
 			{
-				ProjectConfig config = (ProjectConfig)this.InnerList[index];
-				if (config.Name == name)
+				RemoveAt( index );
+			}
+		}
+
+		private int IndexOf( string name )
+		{
+			for( int index = 0; index < InnerList.Count; index++ )
+			{
+				ProjectConfig config = (ProjectConfig)InnerList[index];
+				if( config.Name == name )
 					return index;
 			}
 
 			return -1;
 		}
 
-		protected override void OnInsertComplete(int index, object obj)
+		public bool Contains( ProjectConfig config )
 		{
-			if (this.project != null)
-			{
-				this.project.IsDirty = true;
-				if (this.Count == 1)
-					this.project.HasChangesRequiringReload = true;
-			}
+			return InnerList.Contains( config );
 		}
 
-		protected override void OnRemove(int index, object value)
+		public bool Contains( string name )
 		{
-			if (this.project != null)
-			{
-				ProjectConfig config = value as ProjectConfig;
-				this.project.IsDirty = true;
-				if (config.Name == this.project.ActiveConfigName)
-					this.project.HasChangesRequiringReload = true;
-			}
+			return IndexOf( name ) >= 0;
 		}
 
-		public void Remove(string name)
-		{
-			int index = this.IndexOf(name);
-			if (index >= 0)
-				this.RemoveAt(index);
-		}
+        protected override void OnRemove(int index, object value)
+        {
+            if (project != null)
+            {
+                ProjectConfig config = value as ProjectConfig;
+                project.IsDirty = true;
+                if ( config.Name == project.ActiveConfigName )
+                    project.HasChangesRequiringReload =  true;
+            }
+        }
 
+		protected override void OnInsertComplete( int index, object obj )
+		{
+            if (project != null)
+            {
+                project.IsDirty = true;
+                if (this.Count == 1)
+                    project.HasChangesRequiringReload = true;
+            }
+		}
 		#endregion
 	}
 }

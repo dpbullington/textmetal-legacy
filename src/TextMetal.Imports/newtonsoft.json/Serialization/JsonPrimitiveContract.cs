@@ -1,5 +1,4 @@
 #region License
-
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -22,45 +21,31 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-
 #endregion
 
 using System;
-
 using Newtonsoft.Json.Utilities;
 
 namespace Newtonsoft.Json.Serialization
 {
-	/// <summary>
-	/// Contract details for a <see cref="Type" /> used by the <see cref="JsonSerializer" />.
-	/// </summary>
-	public class JsonPrimitiveContract : JsonContract
-	{
-		#region Constructors/Destructors
+    /// <summary>
+    /// Contract details for a <see cref="Type"/> used by the <see cref="JsonSerializer"/>.
+    /// </summary>
+    public class JsonPrimitiveContract : JsonContract
+    {
+        internal PrimitiveTypeCode TypeCode { get; set; }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="JsonPrimitiveContract" /> class.
-		/// </summary>
-		/// <param name="underlyingType"> The underlying type for the contract. </param>
-		public JsonPrimitiveContract(Type underlyingType)
-			: base(underlyingType)
-		{
-			this.ContractType = JsonContractType.Primitive;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsonPrimitiveContract"/> class.
+        /// </summary>
+        /// <param name="underlyingType">The underlying type for the contract.</param>
+        public JsonPrimitiveContract(Type underlyingType)
+            : base(underlyingType)
+        {
+            ContractType = JsonContractType.Primitive;
 
-			this.TypeCode = ConvertUtils.GetTypeCode(underlyingType);
-			this.IsReadOnlyOrFixedSize = true;
-		}
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		internal PrimitiveTypeCode TypeCode
-		{
-			get;
-			set;
-		}
-
-		#endregion
-	}
+            TypeCode = ConvertUtils.GetTypeCode(underlyingType);
+            IsReadOnlyOrFixedSize = true;
+        }
+    }
 }

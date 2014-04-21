@@ -3,7 +3,6 @@
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
-
 using System;
 
 namespace NUnit.Core.Extensibility
@@ -12,38 +11,30 @@ namespace NUnit.Core.Extensibility
 	/// NUnitAddinAttribute is used to mark all add-ins. The marked class
 	/// must implement the IAddin interface.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple=false, Inherited=false)]
 	public sealed class NUnitAddinAttribute : Attribute
 	{
-		#region Constructors/Destructors
+        /// <summary>
+        /// The name of this addin
+        /// </summary>
+		public string Name;
 
-		/// <summary>
-		/// Default Constructor
-		/// </summary>
+        /// <summary>
+        /// A description for the addin
+        /// </summary>
+		public string Description;
+
+        /// <summary>
+        /// The type of extension provided
+        /// </summary>
+		public ExtensionType Type;
+
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
 		public NUnitAddinAttribute()
 		{
 			this.Type = ExtensionType.Core;
 		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		/// <summary>
-		/// A description for the addin
-		/// </summary>
-		public string Description;
-
-		/// <summary>
-		/// The name of this addin
-		/// </summary>
-		public string Name;
-
-		/// <summary>
-		/// The type of extension provided
-		/// </summary>
-		public ExtensionType Type;
-
-		#endregion
 	}
 }

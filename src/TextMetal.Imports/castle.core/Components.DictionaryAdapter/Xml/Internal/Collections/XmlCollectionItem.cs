@@ -12,51 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	internal struct XmlCollectionItem<T>
 	{
-		#region Constructors/Destructors
+		public readonly IXmlNode Node;
+		public readonly T        Value;
+		public readonly bool     HasValue;
 
 		public XmlCollectionItem(IXmlNode node)
-			: this(node, default(T), false)
-		{
-		}
+			: this(node, default(T), false) { }
 
 		public XmlCollectionItem(IXmlNode node, T value)
-			: this(node, value, true)
-		{
-		}
+			: this(node, value, true) { }
 
 		private XmlCollectionItem(IXmlNode node, T value, bool hasValue)
 		{
-			this.Node = node;
-			this.Value = value;
-			this.HasValue = hasValue;
+			Node     = node;
+			Value    = value;
+			HasValue = hasValue;
 		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		public readonly bool HasValue;
-		public readonly IXmlNode Node;
-		public readonly T Value;
-
-		#endregion
-
-		#region Methods/Operators
 
 		public XmlCollectionItem<T> WithValue(T value)
 		{
-			return new XmlCollectionItem<T>(this.Node, value);
+			return new XmlCollectionItem<T>(Node, value);
 		}
-
-		#endregion
 	}
 }
-
 #endif

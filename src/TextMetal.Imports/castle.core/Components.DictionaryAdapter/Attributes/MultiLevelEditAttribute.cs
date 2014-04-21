@@ -22,13 +22,9 @@ namespace Castle.Components.DictionaryAdapter
 	[AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
 	public class MultiLevelEditAttribute : DictionaryBehaviorAttribute, IDictionaryInitializer
 	{
-		#region Methods/Operators
-
 		public void Initialize(IDictionaryAdapter dictionaryAdapter, object[] behaviors)
 		{
 			dictionaryAdapter.SupportsMultiLevelEdit = true;
 		}
-
-		#endregion
 	}
 }

@@ -11,22 +11,25 @@ namespace NUnit.Framework
 	/// <summary>
 	/// Attribute used to apply a category to a test
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Assembly, AllowMultiple = true, Inherited = true)]
+	[AttributeUsage(AttributeTargets.Class|AttributeTargets.Method|AttributeTargets.Assembly, AllowMultiple=true, Inherited=true)]
 	public class CategoryAttribute : Attribute
 	{
-		#region Constructors/Destructors
+		/// <summary>
+		/// The name of the category
+		/// </summary>
+		protected string categoryName;
 
 		/// <summary>
 		/// Construct attribute for a given category based on
-		/// a name. The name may not contain the characters ',',
-		/// '+', '-' or '!'. However, this is not checked in the
-		/// constructor since it would cause an error to arise at
-		/// as the test was loaded without giving a clear indication
-		/// of where the problem is located. The error is handled
-		/// in NUnitFramework.cs by marking the test as not
-		/// runnable.
+        /// a name. The name may not contain the characters ',',
+        /// '+', '-' or '!'. However, this is not checked in the
+        /// constructor since it would cause an error to arise at
+        /// as the test was loaded without giving a clear indication
+        /// of where the problem is located. The error is handled
+        /// in NUnitFramework.cs by marking the test as not
+        /// runnable.
 		/// </summary>
-		/// <param name="name"> The name of the category </param>
+		/// <param name="name">The name of the category</param>
 		public CategoryAttribute(string name)
 		{
 			this.categoryName = name.Trim();
@@ -39,34 +42,16 @@ namespace NUnit.Framework
 		protected CategoryAttribute()
 		{
 			this.categoryName = this.GetType().Name;
-			if (this.categoryName.EndsWith("Attribute"))
-				this.categoryName = this.categoryName.Substring(0, this.categoryName.Length - 9);
+			if ( categoryName.EndsWith( "Attribute" ) )
+				categoryName = categoryName.Substring( 0, categoryName.Length - 9 );
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
 		/// <summary>
 		/// The name of the category
 		/// </summary>
-		protected string categoryName;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// The name of the category
-		/// </summary>
-		public string Name
+		public string Name 
 		{
-			get
-			{
-				return this.categoryName;
-			}
+			get { return categoryName; }
 		}
-
-		#endregion
 	}
 }

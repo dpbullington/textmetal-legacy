@@ -19,26 +19,15 @@ namespace Castle.Components.DictionaryAdapter
 	/// </summary>
 	public interface IDictionaryBehavior
 	{
-		#region Properties/Indexers/Events
-
 		/// <summary>
 		/// Determines relative order to apply related behaviors.
 		/// </summary>
-		int ExecutionOrder
-		{
-			get;
-		}
-
-		#endregion
-
-		#region Methods/Operators
+		int ExecutionOrder { get; }
 
 		/// <summary>
 		/// Copies the dictionary behavior.
 		/// </summary>
-		/// <returns> null if should not be copied.  Otherwise copy. </returns>
+		/// <returns>null if should not be copied.  Otherwise copy.</returns>
 		IDictionaryBehavior Copy();
-
-		#endregion
 	}
 }

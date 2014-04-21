@@ -21,39 +21,35 @@ namespace Castle.Core.Resource
 	/// </summary>
 	public interface IResourceFactory
 	{
-		#region Methods/Operators
-
 		/// <summary>
 		/// Used to check whether the resource factory
 		/// is able to deal with the given resource
 		/// identifier.
 		/// </summary>
 		/// <remarks>
-		/// Implementors should return <c> true </c>
+		/// Implementors should return <c>true</c>
 		/// only if the given identifier is supported
 		/// by the resource factory
 		/// </remarks>
-		/// <param name="uri"> </param>
-		/// <returns> </returns>
+		/// <param name="uri"></param>
+		/// <returns></returns>
 		bool Accept(CustomUri uri);
 
 		/// <summary>
-		/// Creates an <see cref="IResource" /> instance
+		/// Creates an <see cref="IResource"/> instance
 		/// for the given resource identifier
 		/// </summary>
-		/// <param name="uri"> </param>
-		/// <returns> </returns>
+		/// <param name="uri"></param>
+		/// <returns></returns>
 		IResource Create(CustomUri uri);
 
 		/// <summary>
-		/// Creates an <see cref="IResource" /> instance
+		/// Creates an <see cref="IResource"/> instance
 		/// for the given resource identifier
 		/// </summary>
-		/// <param name="uri"> </param>
-		/// <param name="basePath"> </param>
-		/// <returns> </returns>
+		/// <param name="uri"></param>
+		/// <param name="basePath"></param>
+		/// <returns></returns>
 		IResource Create(CustomUri uri, String basePath);
-
-		#endregion
 	}
 }

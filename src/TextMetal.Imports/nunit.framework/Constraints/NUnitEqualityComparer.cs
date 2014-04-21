@@ -1,463 +1,466 @@
-// ****************************************************************
+﻿// ****************************************************************
 // Copyright 2009, Charlie Poole
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
 
 using System;
-using System.Collections;
 using System.IO;
+using System.Collections;
 using System.Reflection;
-
 #if CLR_2_0 || CLR_4_0
-
+using System.Collections.Generic;
 #endif
 
 namespace NUnit.Framework.Constraints
 {
-	/// <summary>
-	/// NUnitEqualityComparer encapsulates NUnit's handling of
-	/// equality tests between objects.
-	/// </summary>
-	public class NUnitEqualityComparer : INUnitEqualityComparer
-	{
-		#region Static and Instance Fields
+    /// <summary>
+    /// NUnitEqualityComparer encapsulates NUnit's handling of
+    /// equality tests between objects.
+    /// </summary>
+    public class NUnitEqualityComparer : INUnitEqualityComparer
+    {
+        #region Static and Instance Fields
 
-		/// <summary>
-		/// If true, all string comparisons will ignore case
-		/// </summary>
-		private bool caseInsensitive;
+        /// <summary>
+        /// If true, all string comparisons will ignore case
+        /// </summary>
+        private bool caseInsensitive;
 
-		/// <summary>
-		/// If true, arrays will be treated as collections, allowing
-		/// those of different dimensions to be compared
-		/// </summary>
-		private bool compareAsCollection;
+        /// <summary>
+        /// If true, arrays will be treated as collections, allowing
+        /// those of different dimensions to be compared
+        /// </summary>
+        private bool compareAsCollection;
 
-		/// <summary>
-		/// Comparison objects used in comparisons for some constraints.
-		/// </summary>
-		private ArrayList externalComparers = new ArrayList();
+        /// <summary>
+        /// Comparison objects used in comparisons for some constraints.
+        /// </summary>
+        private EqualityAdapterList externalComparers = new EqualityAdapterList();
 
-		private ArrayList failurePoints;
+        /// <summary>
+        /// List of points at which a failure occured.
+        /// </summary>
+        private FailurePointList failurePoints;
 
-		private static readonly int BUFFER_SIZE = 4096;
+        /// <summary>
+        /// RecursionDetector used to check for recursion when
+        /// evaluating self-referencing enumerables.
+        /// </summary>
+        private RecursionDetector recursionDetector;
 
-		#endregion
+        private static readonly int BUFFER_SIZE = 4096;
 
-		#region Properties
+        #endregion
 
-		/// <summary>
-		/// Returns the default NUnitEqualityComparer
-		/// </summary>
-		public static NUnitEqualityComparer Default
-		{
-			get
-			{
-				return new NUnitEqualityComparer();
-			}
-		}
+        #region Properties
 
-		/// <summary>
-		/// Gets and sets a flag indicating whether case should
-		/// be ignored in determining equality.
-		/// </summary>
-		public bool IgnoreCase
-		{
-			get
-			{
-				return this.caseInsensitive;
-			}
-			set
-			{
-				this.caseInsensitive = value;
-			}
-		}
+        /// <summary>
+        /// Returns the default NUnitEqualityComparer
+        /// </summary>
+        public static NUnitEqualityComparer Default
+        {
+            get { return new NUnitEqualityComparer(); }
+        }
+        /// <summary>
+        /// Gets and sets a flag indicating whether case should
+        /// be ignored in determining equality.
+        /// </summary>
+        public bool IgnoreCase
+        {
+            get { return caseInsensitive; }
+            set { caseInsensitive = value; }
+        }
 
-		/// <summary>
-		/// Gets and sets a flag indicating that arrays should be
-		/// compared as collections, without regard to their shape.
-		/// </summary>
-		public bool CompareAsCollection
-		{
-			get
-			{
-				return this.compareAsCollection;
-			}
-			set
-			{
-				this.compareAsCollection = value;
-			}
-		}
+        /// <summary>
+        /// Gets and sets a flag indicating that arrays should be
+        /// compared as collections, without regard to their shape.
+        /// </summary>
+        public bool CompareAsCollection
+        {
+            get { return compareAsCollection; }
+            set { compareAsCollection = value; }
+        }
 
-		/// <summary>
-		/// Gets and sets an external comparer to be used to
-		/// test for equality. It is applied to members of
-		/// collections, in place of NUnit's own logic.
-		/// </summary>
-		public IList ExternalComparers
-		{
-			get
-			{
-				return this.externalComparers;
-			}
-		}
+        /// <summary>
+        /// Gets the list of external comparers to be used to
+        /// test for equality. They are applied to members of
+        /// collections, in place of NUnit's own logic.
+        /// </summary>
+#if CLR_2_0 || CLR_4_0
+        public IList<EqualityAdapter> ExternalComparers
+#else
+        public IList ExternalComparers
+#endif
+        {
+            get { return externalComparers; }
+        }
 
-		/// <summary>
-		/// Gets the list of failure points for the last Match performed.
-		/// </summary>
-		public IList FailurePoints
-		{
-			get
-			{
-				return this.failurePoints;
-			}
-		}
+        /// <summary>
+        /// Gets the list of failure points for the last Match performed.
+        /// The list consists of objects to be interpreted by the caller.
+        /// This generally means that the caller may only make use of
+        /// objects it has placed on the list at a particular depthy.
+        /// </summary>
+#if CLR_2_0 || CLR_4_0
+        public IList<FailurePoint> FailurePoints
+#else
+        public IList FailurePoints
+#endif
+        {
+            get { return failurePoints; }
+        }
 
-		#endregion
+        #endregion
 
-		#region Public Methods
+        #region Public Methods
 
-		/// <summary>
-		/// Compares two objects for equality within a tolerance.
-		/// </summary>
-		public bool AreEqual(object x, object y, ref Tolerance tolerance)
-		{
-			this.failurePoints = new ArrayList();
+        /// <summary>
+        /// Compares two objects for equality within a tolerance, setting
+        /// the tolerance to the actual tolerance used if an empty
+        /// tolerance is supplied.
+        /// </summary>
+        public bool AreEqual(object expected, object actual, ref Tolerance tolerance)
+        {
+            this.failurePoints = new FailurePointList();
+            this.recursionDetector = new RecursionDetector();
 
-			if (x == null && y == null)
-				return true;
+            return ObjectsEqual(expected, actual, ref tolerance);
+        }
 
-			if (x == null || y == null)
-				return false;
+        #endregion
 
-			if (ReferenceEquals(x, y))
-				return true;
+        #region Helper Methods
 
-			Type xType = x.GetType();
-			Type yType = y.GetType();
+        private bool ObjectsEqual(object expected, object actual, ref Tolerance tolerance)
+        {
+            if (expected == null && actual == null)
+                return true;
 
-			EqualityAdapter externalComparer = this.GetExternalComparer(x, y);
-			if (externalComparer != null)
-				return externalComparer.AreEqual(x, y);
+            if (expected == null || actual == null)
+                return false;
 
-			if (xType.IsArray && yType.IsArray && !this.compareAsCollection)
-				return this.ArraysEqual((Array)x, (Array)y, ref tolerance);
+            if (object.ReferenceEquals(expected, actual))
+                return true;
 
-			if (x is IDictionary && y is IDictionary)
-				return this.DictionariesEqual((IDictionary)x, (IDictionary)y, ref tolerance);
+            Type xType = expected.GetType();
+            Type yType = actual.GetType();
 
-			//if (x is ICollection && y is ICollection)
-			//    return CollectionsEqual((ICollection)x, (ICollection)y, ref tolerance);
+            EqualityAdapter externalComparer = GetExternalComparer(expected, actual);
+            if (externalComparer != null)
+                return externalComparer.AreEqual(expected, actual);
 
-			if (x is IEnumerable && y is IEnumerable && !(x is string && y is string))
-				return this.EnumerablesEqual((IEnumerable)x, (IEnumerable)y, ref tolerance);
+            if (xType.IsArray && yType.IsArray && !compareAsCollection)
+                return ArraysEqual((Array) expected, (Array) actual, ref tolerance);
 
-			if (x is string && y is string)
-				return this.StringsEqual((string)x, (string)y);
+            if (expected is IDictionary && actual is IDictionary)
+                return DictionariesEqual((IDictionary) expected, (IDictionary) actual, ref tolerance);
 
-			if (x is Stream && y is Stream)
-				return this.StreamsEqual((Stream)x, (Stream)y);
+            if (expected is IEnumerable && actual is IEnumerable && !(expected is string && actual is string))
+                return EnumerablesEqual((IEnumerable) expected, (IEnumerable) actual, ref tolerance);
 
-			if (x is DirectoryInfo && y is DirectoryInfo)
-				return this.DirectoriesEqual((DirectoryInfo)x, (DirectoryInfo)y);
+            if (expected is string && actual is string)
+                return StringsEqual((string) expected, (string) actual);
 
-			if (Numerics.IsNumericType(x) && Numerics.IsNumericType(y))
-				return Numerics.AreEqual(x, y, ref tolerance);
+            if (expected is Stream && actual is Stream)
+                return StreamsEqual((Stream) expected, (Stream) actual);
 
-			if (tolerance != null && tolerance.Value is TimeSpan)
-			{
-				TimeSpan amount = (TimeSpan)tolerance.Value;
+            if (expected is DirectoryInfo && actual is DirectoryInfo)
+                return DirectoriesEqual((DirectoryInfo) expected, (DirectoryInfo) actual);
 
-				if (x is DateTime && y is DateTime)
-					return ((DateTime)x - (DateTime)y).Duration() <= amount;
+            if (Numerics.IsNumericType(expected) && Numerics.IsNumericType(actual))
+                return Numerics.AreEqual(expected, actual, ref tolerance);
 
-				if (x is TimeSpan && y is TimeSpan)
-					return ((TimeSpan)x - (TimeSpan)y).Duration() <= amount;
-			}
+            if (tolerance != null && tolerance.Value is TimeSpan)
+            {
+                TimeSpan amount = (TimeSpan) tolerance.Value;
+
+                if (expected is DateTime && actual is DateTime)
+                    return ((DateTime) expected - (DateTime) actual).Duration() <= amount;
+
+                if (expected is TimeSpan && actual is TimeSpan)
+                    return ((TimeSpan) expected - (TimeSpan) actual).Duration() <= amount;
+            }
 
 #if CLR_2_0 || CLR_4_0
-			if (FirstImplementsIEquatableOfSecond(xType, yType))
-				return InvokeFirstIEquatableEqualsSecond(x, y);
-			else if (FirstImplementsIEquatableOfSecond(yType, xType))
-				return InvokeFirstIEquatableEqualsSecond(y, x);
+            if (FirstImplementsIEquatableOfSecond(xType, yType))
+                return InvokeFirstIEquatableEqualsSecond(expected, actual);
+            else if (FirstImplementsIEquatableOfSecond(yType, xType))
+                return InvokeFirstIEquatableEqualsSecond(actual, expected);
 #endif
 
-			return x.Equals(y);
-		}
+            return expected.Equals(actual);
+        }
 
 #if CLR_2_0 || CLR_4_0
-		private static bool FirstImplementsIEquatableOfSecond(Type first, Type second)
-		{
-			Type[] equatableArguments = GetEquatableGenericArguments(first);
+    	private static bool FirstImplementsIEquatableOfSecond(Type first, Type second)
+    	{
+    		Type[] equatableArguments = GetEquatableGenericArguments(first);
 
-			foreach (var xEquatableArgument in equatableArguments)
-			{
-				if (xEquatableArgument.Equals(second))
-					return true;
-			}
+    		foreach (var xEquatableArgument in equatableArguments)
+    			if (xEquatableArgument.Equals(second))
+    				return true;
 
-			return false;
-		}
+    		return false;
+    	}
 
-		private static Type[] GetEquatableGenericArguments(Type type)
-		{
-			return Array.ConvertAll(Array.FindAll(type.GetInterfaces(),
-				delegate(Type @interface)
-				{
-					return @interface.IsGenericType &&
-							@interface.GetGenericTypeDefinition().Equals(typeof(IEquatable<>));
-				}),
-				delegate(Type iEquatableInterface)
-				{
-					return iEquatableInterface.GetGenericArguments()[0];
-				});
-		}
+    	private static Type[] GetEquatableGenericArguments(Type type)
+    	{
+            foreach (Type @interface in type.GetInterfaces())
+                if (@interface.IsGenericType && @interface.GetGenericTypeDefinition().Equals(typeof(IEquatable<>)))
+                    return @interface.GetGenericArguments();
 
-		private static bool InvokeFirstIEquatableEqualsSecond(object first, object second)
-		{
-			MethodInfo equals = typeof(IEquatable<>).MakeGenericType(second.GetType()).GetMethod("Equals");
+            return new Type[0];
+    	}
 
-			return (bool)equals.Invoke(first, new object[] { second });
-		}
+    	private static bool InvokeFirstIEquatableEqualsSecond(object first, object second)
+    	{
+    		MethodInfo equals = typeof (IEquatable<>).MakeGenericType(second.GetType()).GetMethod("Equals");
+
+    		return (bool) equals.Invoke(first, new object[] {second});
+    	}
 #endif
 
-		#endregion
+        private EqualityAdapter GetExternalComparer(object x, object y)
+        {
+            foreach (EqualityAdapter adapter in externalComparers)
+                if (adapter.CanCompare(x, y))
+                    return adapter;
 
-		#region Helper Methods
+            return null;
+        }
 
-		private EqualityAdapter GetExternalComparer(object x, object y)
-		{
-			foreach (EqualityAdapter adapter in this.externalComparers)
-			{
-				if (adapter.CanCompare(x, y))
-					return adapter;
-			}
+        /// <summary>
+        /// Helper method to compare two arrays
+        /// </summary>
+        private bool ArraysEqual(Array expected, Array actual, ref Tolerance tolerance)
+        {
+            int rank = expected.Rank;
 
-			return null;
-		}
+            if (rank != actual.Rank)
+                return false;
 
-		/// <summary>
-		/// Helper method to compare two arrays
-		/// </summary>
-		private bool ArraysEqual(Array x, Array y, ref Tolerance tolerance)
-		{
-			int rank = x.Rank;
+            for (int r = 1; r < rank; r++)
+                if (expected.GetLength(r) != actual.GetLength(r))
+                    return false;
 
-			if (rank != y.Rank)
-				return false;
+            return EnumerablesEqual((IEnumerable)expected, (IEnumerable)actual, ref tolerance);
+        }
 
-			for (int r = 1; r < rank; r++)
-			{
-				if (x.GetLength(r) != y.GetLength(r))
-					return false;
-			}
+        private bool DictionariesEqual(IDictionary expected, IDictionary actual, ref Tolerance tolerance)
+        {
+            if (expected.Count != actual.Count)
+                return false;
 
-			return this.EnumerablesEqual((IEnumerable)x, (IEnumerable)y, ref tolerance);
-		}
+            CollectionTally tally = new CollectionTally(this, expected.Keys);
+            if (!tally.TryRemove(actual.Keys) || tally.Count > 0)
+                return false;
 
-		private bool DictionariesEqual(IDictionary x, IDictionary y, ref Tolerance tolerance)
-		{
-			if (x.Count != y.Count)
-				return false;
+            foreach (object key in expected.Keys)
+                if (!ObjectsEqual(expected[key], actual[key], ref tolerance))
+                    return false;
 
-			CollectionTally tally = new CollectionTally(this, x.Keys);
-			if (!tally.TryRemove(y.Keys) || tally.Count > 0)
-				return false;
+            return true;
+        }
 
-			foreach (object key in x.Keys)
-			{
-				if (!this.AreEqual(x[key], y[key], ref tolerance))
-					return false;
-			}
+        private bool StringsEqual(string expected, string actual)
+        {
+            string s1 = caseInsensitive ? expected.ToLower() : expected;
+            string s2 = caseInsensitive ? actual.ToLower() : actual;
 
-			return true;
-		}
+            return s1.Equals(s2);
+        }
+        
+        private bool EnumerablesEqual(IEnumerable expected, IEnumerable actual, ref Tolerance tolerance)
+        {
+            if (recursionDetector.CheckRecursion(expected, actual))
+                return false;
 
-		private bool CollectionsEqual(ICollection x, ICollection y, ref Tolerance tolerance)
-		{
-			IEnumerator expectedEnum = x.GetEnumerator();
-			IEnumerator actualEnum = y.GetEnumerator();
+            IEnumerator expectedEnum = expected.GetEnumerator();
+            IEnumerator actualEnum = actual.GetEnumerator();
 
-			int count;
-			for (count = 0;; count++)
-			{
-				bool expectedHasData = expectedEnum.MoveNext();
-				bool actualHasData = actualEnum.MoveNext();
+            int count;
+            for (count = 0; ; count++)
+            {
+                bool expectedHasData = expectedEnum.MoveNext();
+                bool actualHasData = actualEnum.MoveNext();
 
-				if (!expectedHasData && !actualHasData)
-					return true;
+                if (!expectedHasData && !actualHasData)
+                    return true;
 
-				if (expectedHasData != actualHasData ||
-					!this.AreEqual(expectedEnum.Current, actualEnum.Current, ref tolerance))
-				{
-					FailurePoint fp = new FailurePoint();
-					fp.Position = count;
-					fp.ExpectedHasData = expectedHasData;
-					if (expectedHasData)
-						fp.ExpectedValue = expectedEnum.Current;
-					fp.ActualHasData = actualHasData;
-					if (actualHasData)
-						fp.ActualValue = actualEnum.Current;
-					this.failurePoints.Insert(0, fp);
-					return false;
-				}
-			}
-		}
+                if (expectedHasData != actualHasData ||
+                    !ObjectsEqual(expectedEnum.Current, actualEnum.Current, ref tolerance))
+                {
+                    FailurePoint fp = new FailurePoint();
+                    fp.Position = count;
+                    fp.ExpectedHasData = expectedHasData;
+                    if (expectedHasData)
+                            fp.ExpectedValue = expectedEnum.Current;
+                    fp.ActualHasData = actualHasData;
+                    if (actualHasData)
+                        fp.ActualValue = actualEnum.Current;
+                    failurePoints.Insert(0, fp);
+                    return false;
+                }
+            }
+        }
 
-		private bool StringsEqual(string x, string y)
-		{
-			string s1 = this.caseInsensitive ? x.ToLower() : x;
-			string s2 = this.caseInsensitive ? y.ToLower() : y;
+        /// <summary>
+        /// Method to compare two DirectoryInfo objects
+        /// </summary>
+        /// <param name="expected">first directory to compare</param>
+        /// <param name="actual">second directory to compare</param>
+        /// <returns>true if equivalent, false if not</returns>
+        private static bool DirectoriesEqual(DirectoryInfo expected, DirectoryInfo actual)
+        {
+            // Do quick compares first
+            if (expected.Attributes != actual.Attributes ||
+                expected.CreationTime != actual.CreationTime ||
+                expected.LastAccessTime != actual.LastAccessTime)
+            {
+                return false;
+            }
 
-			return s1.Equals(s2);
-		}
+            // TODO: Find a cleaner way to do this
+            return new SamePathConstraint(expected.FullName).Matches(actual.FullName);
+        }
 
-		private bool EnumerablesEqual(IEnumerable x, IEnumerable y, ref Tolerance tolerance)
-		{
-			IEnumerator expectedEnum = x.GetEnumerator();
-			IEnumerator actualEnum = y.GetEnumerator();
+        private bool StreamsEqual(Stream expected, Stream actual)
+        {
+            if (expected == actual) return true;
 
-			int count;
-			for (count = 0;; count++)
-			{
-				bool expectedHasData = expectedEnum.MoveNext();
-				bool actualHasData = actualEnum.MoveNext();
+            if (!expected.CanRead)
+                throw new ArgumentException("Stream is not readable", "expected");
+            if (!actual.CanRead)
+                throw new ArgumentException("Stream is not readable", "actual");
+            if (!expected.CanSeek)
+                throw new ArgumentException("Stream is not seekable", "expected");
+            if (!actual.CanSeek)
+                throw new ArgumentException("Stream is not seekable", "actual");
 
-				if (!expectedHasData && !actualHasData)
-					return true;
+            if (expected.Length != actual.Length) return false;
 
-				if (expectedHasData != actualHasData ||
-					!this.AreEqual(expectedEnum.Current, actualEnum.Current, ref tolerance))
-				{
-					FailurePoint fp = new FailurePoint();
-					fp.Position = count;
-					fp.ExpectedHasData = expectedHasData;
-					if (expectedHasData)
-						fp.ExpectedValue = expectedEnum.Current;
-					fp.ActualHasData = actualHasData;
-					if (actualHasData)
-						fp.ActualValue = actualEnum.Current;
-					this.failurePoints.Insert(0, fp);
-					return false;
-				}
-			}
-		}
+            byte[] bufferExpected = new byte[BUFFER_SIZE];
+            byte[] bufferActual = new byte[BUFFER_SIZE];
 
-		/// <summary>
-		/// Method to compare two DirectoryInfo objects
-		/// </summary>
-		/// <param name="x"> first directory to compare </param>
-		/// <param name="y"> second directory to compare </param>
-		/// <returns> true if equivalent, false if not </returns>
-		private bool DirectoriesEqual(DirectoryInfo x, DirectoryInfo y)
-		{
-			// Do quick compares first
-			if (x.Attributes != y.Attributes ||
-				x.CreationTime != y.CreationTime ||
-				x.LastAccessTime != y.LastAccessTime)
-				return false;
+            BinaryReader binaryReaderExpected = new BinaryReader(expected);
+            BinaryReader binaryReaderActual = new BinaryReader(actual);
 
-			// TODO: Find a cleaner way to do this
-			return new SamePathConstraint(x.FullName).Matches(y.FullName);
-		}
+            long expectedPosition = expected.Position;
+            long actualPosition = actual.Position;
 
-		private bool StreamsEqual(Stream x, Stream y)
-		{
-			if (x == y)
-				return true;
+            try
+            {
+                binaryReaderExpected.BaseStream.Seek(0, SeekOrigin.Begin);
+                binaryReaderActual.BaseStream.Seek(0, SeekOrigin.Begin);
 
-			if (!x.CanRead)
-				throw new ArgumentException("Stream is not readable", "expected");
-			if (!y.CanRead)
-				throw new ArgumentException("Stream is not readable", "actual");
-			if (!x.CanSeek)
-				throw new ArgumentException("Stream is not seekable", "expected");
-			if (!y.CanSeek)
-				throw new ArgumentException("Stream is not seekable", "actual");
+                for (long readByte = 0; readByte < expected.Length; readByte += BUFFER_SIZE)
+                {
+                    binaryReaderExpected.Read(bufferExpected, 0, BUFFER_SIZE);
+                    binaryReaderActual.Read(bufferActual, 0, BUFFER_SIZE);
 
-			if (x.Length != y.Length)
-				return false;
+                    for (int count = 0; count < BUFFER_SIZE; ++count)
+                    {
+                        if (bufferExpected[count] != bufferActual[count])
+                        {
+                            FailurePoint fp = new FailurePoint();
+                            fp.Position = (int)readByte + count;
+                            failurePoints.Insert(0, fp);
+                            return false;
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                expected.Position = expectedPosition;
+                actual.Position = actualPosition;
+            }
 
-			byte[] bufferExpected = new byte[BUFFER_SIZE];
-			byte[] bufferActual = new byte[BUFFER_SIZE];
+            return true;
+        }
+        #endregion
 
-			BinaryReader binaryReaderExpected = new BinaryReader(x);
-			BinaryReader binaryReaderActual = new BinaryReader(y);
+        #region Nested RecursionDetector class
 
-			long expectedPosition = x.Position;
-			long actualPosition = y.Position;
+        /// <summary>
+        /// RecursionDetector detects when a comparison
+        /// between two enumerables has reached a point
+        /// where the same objects that were previously
+        /// compared are again being compared. This allows
+        /// the caller to stop the comparison if desired.
+        /// </summary>
+        class RecursionDetector
+        {
+#if CLR_2_0 || CLR_4_0
+            readonly Dictionary<UnorderedReferencePair, object> table = new Dictionary<UnorderedReferencePair, object>();
+#else
+            readonly Hashtable table = new Hashtable();
+#endif
 
-			try
-			{
-				binaryReaderExpected.BaseStream.Seek(0, SeekOrigin.Begin);
-				binaryReaderActual.BaseStream.Seek(0, SeekOrigin.Begin);
+            /// <summary>
+            /// Check whether two objects have previously
+            /// been compared, returning true if they have.
+            /// The two objects are remembered, so that a
+            /// second call will always return true.
+            /// </summary>
+            public bool CheckRecursion(IEnumerable expected, IEnumerable actual)
+            {
+                UnorderedReferencePair pair = new UnorderedReferencePair(expected, actual);
 
-				for (long readByte = 0; readByte < x.Length; readByte += BUFFER_SIZE)
-				{
-					binaryReaderExpected.Read(bufferExpected, 0, BUFFER_SIZE);
-					binaryReaderActual.Read(bufferActual, 0, BUFFER_SIZE);
+                if (ContainsPair(pair))
+                    return true;
 
-					for (int count = 0; count < BUFFER_SIZE; ++count)
-					{
-						if (bufferExpected[count] != bufferActual[count])
-						{
-							this.failurePoints.Insert(0, readByte + count);
-							//FailureMessage.WriteLine("\tIndex : {0}", readByte + count);
-							return false;
-						}
-					}
-				}
-			}
-			finally
-			{
-				x.Position = expectedPosition;
-				y.Position = actualPosition;
-			}
+                table.Add(pair, null);
+                return false;
+            }
 
-			return true;
-		}
+            private bool ContainsPair(UnorderedReferencePair pair)
+            {
+#if CLR_2_0 || CLR_4_0
+                return table.ContainsKey(pair);
+#else
+                return table.Contains(pair);
+#endif
+            }
 
-		#endregion
+#if CLR_2_0 || CLR_4_0
+            class UnorderedReferencePair : IEquatable<UnorderedReferencePair>
+#else
+            class UnorderedReferencePair
+#endif
+            {
+                private readonly object first;
+                private readonly object second;
 
-		#region Nested FailurePoint Class
+                public UnorderedReferencePair(object first, object second)
+                {
+                    this.first = first;
+                    this.second = second;
+                }
 
-		/// <summary>
-		/// FailurePoint class represents one point of failure
-		/// in an equality test.
-		/// </summary>
-		public class FailurePoint
-		{
-			#region Fields/Constants
+                public bool Equals(UnorderedReferencePair other)
+                {
+                    return (ReferenceEquals(first, other.first) && ReferenceEquals(second, other.second)) || 
+                           (ReferenceEquals(first, other.second) && ReferenceEquals(second, other.first));
+                }
 
-			/// <summary>
-			/// Indicates whether the actual value is valid
-			/// </summary>
-			public bool ActualHasData;
+                public override bool Equals(object obj)
+                {
+                    if (ReferenceEquals(null, obj)) return false;
+                    return obj is UnorderedReferencePair && Equals((UnorderedReferencePair) obj);
+                }
 
-			/// <summary>
-			/// The actual value
-			/// </summary>
-			public object ActualValue;
+                public override int GetHashCode()
+                {
+                    unchecked
+                    {
+                        return ((first != null ? first.GetHashCode() : 0)*397) ^ ((second != null ? second.GetHashCode() : 0)*397);
+                    }
+                }
+            }
+        }
 
-			/// <summary>
-			/// Indicates whether the expected value is valid
-			/// </summary>
-			public bool ExpectedHasData;
-
-			/// <summary>
-			/// The expected value
-			/// </summary>
-			public object ExpectedValue;
-
-			/// <summary>
-			/// The location of the failure
-			/// </summary>
-			public int Position;
-
-			#endregion
-		}
-
-		#endregion
-	}
+        #endregion
+    }
 }

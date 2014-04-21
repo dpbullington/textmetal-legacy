@@ -10,33 +10,45 @@ using System.Collections;
 namespace NUnit.Util
 {
 	/// <summary>
-	/// MemorySettingsStorage is used to hold settings for
-	/// the NUnit tests and also serves as the base class
-	/// for XmlSettingsStorage.
+	///  MemorySettingsStorage is used to hold settings for
+	///  the NUnit tests and also serves as the base class
+	///  for XmlSettingsStorage.
 	/// </summary>
 	public class MemorySettingsStorage : ISettingsStorage
 	{
-		#region Fields/Constants
-
 		protected Hashtable settings = new Hashtable();
 
-		#endregion
-
-		#region Methods/Operators
-
-		public void Dispose()
-		{
-			// TODO:  Add MemorySettingsStorage.Dispose implementation
-		}
+		#region ISettingsStorage Members
 
 		public object GetSetting(string settingName)
 		{
-			return this.settings[settingName];
+			return settings[settingName];
 		}
 
-		public virtual void LoadSettings()
+		public void RemoveSetting(string settingName)
 		{
-			// No action required
+			settings.Remove( settingName );
+		}
+
+		public void RemoveGroup( string groupName )
+		{
+			ArrayList keysToRemove = new ArrayList();
+
+			string prefix = groupName;
+			if ( !prefix.EndsWith(".") )
+				prefix = prefix + ".";
+
+			foreach( string key in settings.Keys )
+				if ( key.StartsWith( prefix ) )
+					keysToRemove.Add( key );
+
+			foreach( string key in keysToRemove )
+				settings.Remove( key );
+		}
+
+		public void SaveSetting(string settingName, object settingValue)
+		{
+			settings[settingName] = settingValue;
 		}
 
 		public ISettingsStorage MakeChildStorage(string name)
@@ -44,37 +56,22 @@ namespace NUnit.Util
 			return new MemorySettingsStorage();
 		}
 
-		public void RemoveGroup(string groupName)
+		public virtual void LoadSettings()
 		{
-			ArrayList keysToRemove = new ArrayList();
-
-			string prefix = groupName;
-			if (!prefix.EndsWith("."))
-				prefix = prefix + ".";
-
-			foreach (string key in this.settings.Keys)
-			{
-				if (key.StartsWith(prefix))
-					keysToRemove.Add(key);
-			}
-
-			foreach (string key in keysToRemove)
-				this.settings.Remove(key);
-		}
-
-		public void RemoveSetting(string settingName)
-		{
-			this.settings.Remove(settingName);
-		}
-
-		public void SaveSetting(string settingName, object settingValue)
-		{
-			this.settings[settingName] = settingValue;
+			// No action required
 		}
 
 		public virtual void SaveSettings()
 		{
 			// No action required
+		}
+		#endregion
+
+		#region IDisposable Members
+
+		public void Dispose()
+		{
+			// TODO:  Add MemorySettingsStorage.Dispose implementation
 		}
 
 		#endregion

@@ -1,4 +1,4 @@
-// ****************************************************************
+﻿// ****************************************************************
 // Copyright 2011, Charlie Poole
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
@@ -9,41 +9,27 @@ using System.Windows.Forms;
 
 namespace NUnit.UiKit
 {
-	public class NUnitFormBase : Form
-	{
-		#region Constructors/Destructors
+    public class NUnitFormBase : Form
+    {
+        private IMessageDisplay messageDisplay;
+        private string caption;
 
-		public NUnitFormBase()
-		{
-		}
+        public NUnitFormBase() { }
 
-		public NUnitFormBase(string caption)
-		{
-			this.caption = caption;
-		}
+        public NUnitFormBase(string caption)
+        {
+            this.caption = caption;
+        }
 
-		#endregion
+        public IMessageDisplay MessageDisplay
+        {
+            get
+            {
+                if (messageDisplay == null)
+                    messageDisplay = new MessageDisplay(caption == null ? Text : caption);
 
-		#region Fields/Constants
-
-		private string caption;
-		private IMessageDisplay messageDisplay;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public IMessageDisplay MessageDisplay
-		{
-			get
-			{
-				if (this.messageDisplay == null)
-					this.messageDisplay = new MessageDisplay(this.caption == null ? this.Text : this.caption);
-
-				return this.messageDisplay;
-			}
-		}
-
-		#endregion
-	}
+                return messageDisplay;
+            }
+        }
+    }
 }

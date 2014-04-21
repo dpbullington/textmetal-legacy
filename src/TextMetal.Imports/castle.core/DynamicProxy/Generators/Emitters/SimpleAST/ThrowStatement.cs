@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection.Emit;
-
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
 	using System;
+	using System.Reflection.Emit;
 
 	public class ThrowStatement : Statement
 	{
-		#region Constructors/Destructors
+		private readonly string errorMessage;
+		private readonly Type exceptionType;
 
 		public ThrowStatement(Type exceptionType, String errorMessage)
 		{
@@ -28,21 +28,10 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 			this.errorMessage = errorMessage;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly string errorMessage;
-		private readonly Type exceptionType;
-
-		#endregion
-
-		#region Methods/Operators
-
 		public override void Emit(IMemberEmitter member, ILGenerator gen)
 		{
-			var ci = this.exceptionType.GetConstructor(new[] { typeof(String) });
-			var constRef = new ConstReference(this.errorMessage);
+			var ci = exceptionType.GetConstructor(new[] { typeof(String) });
+			var constRef = new ConstReference(errorMessage);
 
 			var creationStmt = new NewInstanceExpression(ci, constRef.ToExpression());
 
@@ -50,7 +39,5 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 
 			gen.Emit(OpCodes.Throw);
 		}
-
-		#endregion
 	}
 }

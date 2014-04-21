@@ -12,45 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Xml;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
 #if !SILVERLIGHT
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Xml;
 
 	public class XmlXmlNodeSerializer : XmlTypeSerializer
 	{
-		#region Constructors/Destructors
-
-		private XmlXmlNodeSerializer()
-		{
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
 		public static readonly XmlXmlNodeSerializer
 			Instance = new XmlXmlNodeSerializer();
 
-		#endregion
-
-		#region Properties/Indexers/Events
+		private XmlXmlNodeSerializer() { }
 
 		public override XmlTypeKind Kind
 		{
-			get
-			{
-				return XmlTypeKind.Complex;
-			}
+			get { return XmlTypeKind.Complex; }
 		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		public override object GetValue(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor)
 		{
@@ -63,15 +42,12 @@ namespace Castle.Components.DictionaryAdapter.Xml
 
 		public override void SetValue(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor, object oldValue, ref object value)
 		{
-			var newNode = (XmlNode)value;
+			var newNode = (XmlNode) value;
 
 			using (var writer = new XmlSubtreeWriter(node))
 				newNode.WriteTo(writer);
 		}
-
-		#endregion
 	}
 }
-
 #endif
 #endif

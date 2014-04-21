@@ -12,31 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Castle.DynamicProxy.Generators;
-
 namespace Castle.DynamicProxy.Contributors
 {
 	using System;
 
+	using Castle.DynamicProxy.Generators;
+
 	public class InterfaceProxyWithTargetInterfaceTargetContributor : InterfaceProxyTargetContributor
 	{
-		#region Constructors/Destructors
-
 		public InterfaceProxyWithTargetInterfaceTargetContributor(Type proxyTargetType, bool allowChangeTarget,
-			INamingScope namingScope)
+		                                                          INamingScope namingScope)
 			: base(proxyTargetType, allowChangeTarget, namingScope)
 		{
 		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		protected override MembersCollector GetCollectorForInterface(Type @interface)
 		{
 			return new InterfaceMembersCollector(@interface);
 		}
-
-		#endregion
 	}
 }

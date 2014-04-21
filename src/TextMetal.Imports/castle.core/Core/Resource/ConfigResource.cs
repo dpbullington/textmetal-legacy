@@ -12,29 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Configuration;
-using System.Globalization;
-using System.IO;
-using System.Text;
-using System.Xml;
-
 #if !SILVERLIGHT
 
 namespace Castle.Core.Resource
 {
 	using System;
+	using System.Configuration;
+	using System.Globalization;
+	using System.IO;
+	using System.Text;
+	using System.Xml;
+
 
 	public class ConfigResource : AbstractResource
 	{
-		#region Constructors/Destructors
+		private readonly XmlNode configSectionNode;
+		private readonly string sectionName;
 
-		public ConfigResource()
-			: this("castle")
+		public ConfigResource() : this("castle")
 		{
 		}
 
-		public ConfigResource(CustomUri uri)
-			: this(uri.Host)
+		public ConfigResource(CustomUri uri) : this(uri.Host)
 		{
 		}
 
@@ -42,38 +41,22 @@ namespace Castle.Core.Resource
 		{
 			this.sectionName = sectionName;
 
-			XmlNode node = (XmlNode)ConfigurationManager.GetSection(sectionName);
+			XmlNode node = (XmlNode) ConfigurationManager.GetSection(sectionName);
 
 			if (node == null)
 			{
-				String message = String.Format(CultureInfo.InvariantCulture,
+				String message = String.Format(CultureInfo.InvariantCulture, 
 					"Could not find section '{0}' in the configuration file associated with this domain.", sectionName);
 				throw new ConfigurationErrorsException(message);
 			}
 
 			// TODO: Check whether it's CData section
-			this.configSectionNode = node;
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly XmlNode configSectionNode;
-		private readonly string sectionName;
-
-		#endregion
-
-		#region Methods/Operators
-
-		public override IResource CreateRelative(String relativePath)
-		{
-			return new ConfigResource(relativePath);
+			configSectionNode = node;
 		}
 
 		public override TextReader GetStreamReader()
 		{
-			return new StringReader(this.configSectionNode.OuterXml);
+			return new StringReader(configSectionNode.OuterXml);
 		}
 
 		public override TextReader GetStreamReader(Encoding encoding)
@@ -81,12 +64,15 @@ namespace Castle.Core.Resource
 			throw new NotSupportedException("Encoding is not supported");
 		}
 
-		public override string ToString()
+		public override IResource CreateRelative(String relativePath)
 		{
-			return String.Format(CultureInfo.CurrentCulture, "ConfigResource: [{0}]", this.sectionName);
+			return new ConfigResource(relativePath);
 		}
 
-		#endregion
+		public override string ToString()
+		{
+			return String.Format(CultureInfo.CurrentCulture, "ConfigResource: [{0}]", sectionName);
+		}
 	}
 }
 

@@ -17,90 +17,82 @@ namespace Castle.Components.DictionaryAdapter
 #if! SILVERLIGHT
 	using System;
 	using System.Collections.Specialized;
+	using System.Linq;
 
 	/// <summary>
+	/// 
 	/// </summary>
 	public class NameValueCollectionAdapter : AbstractDictionaryAdapter
 	{
-		#region Constructors/Destructors
+		private readonly NameValueCollection nameValues;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="NameValueCollectionAdapter" /> class.
+		/// Initializes a new instance of the <see cref="NameValueCollectionAdapter"/> class.
 		/// </summary>
-		/// <param name="nameValues"> The name values. </param>
+		/// <param name="nameValues">The name values.</param>
 		public NameValueCollectionAdapter(NameValueCollection nameValues)
 		{
 			this.nameValues = nameValues;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly NameValueCollection nameValues;
-
-		#endregion
-
-		#region Properties/Indexers/Events
+		/// <summary>
+		/// Gets a value indicating whether the <see cref="T:System.Collections.IDictionary"></see> object is read-only.
+		/// </summary>
+		/// <value></value>
+		/// <returns>true if the <see cref="T:System.Collections.IDictionary"></see> object is read-only; otherwise, false.</returns>
+		public override bool IsReadOnly
+		{
+			get { return false; }
+		}
 
 		/// <summary>
-		/// Gets or sets the <see cref="Object" /> with the specified key.
+		/// Determines whether the <see cref="T:System.Collections.IDictionary"></see> object contains an element with the specified key.
 		/// </summary>
-		/// <value> </value>
+		/// <param name="key">The key to locate in the <see cref="T:System.Collections.IDictionary"></see> object.</param>
+		/// <returns>
+		/// true if the <see cref="T:System.Collections.IDictionary"></see> contains an element with the key; otherwise, false.
+		/// </returns>
+		/// <exception cref="T:System.ArgumentNullException">key is null. </exception>
+		public override bool Contains(object key)
+		{
+			if (key == null)
+			{
+				throw new ArgumentNullException("key");
+			}
+
+			//Getting a value out is O(1), so in the case that the collection contains a non-null value for this key
+			//we can skip the O(n) key lookup.
+			if (this[key] != null)
+			{
+				return true;
+			}
+
+			return nameValues.AllKeys.Contains(key.ToString(), StringComparer.OrdinalIgnoreCase);
+		}
+
+		/// <summary>
+		/// Gets or sets the <see cref="Object"/> with the specified key.
+		/// </summary>
+		/// <value></value>
 		public override object this[object key]
 		{
-			get
-			{
-				return this.nameValues[key.ToString()];
-			}
+			get { return nameValues[key.ToString()]; }
 			set
 			{
 				String val = (value != null) ? value.ToString() : null;
-				this.nameValues[key.ToString()] = val;
+				nameValues[key.ToString()] = val;
 			}
 		}
-
-		/// <summary>
-		/// Gets a value indicating whether the <see cref="T:System.Collections.IDictionary"> </see> object is read-only.
-		/// </summary>
-		/// <value> </value>
-		/// <returns> true if the <see cref="T:System.Collections.IDictionary"> </see> object is read-only; otherwise, false. </returns>
-		public override bool IsReadOnly
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		/// <summary>
 		/// Adapts the specified name values.
 		/// </summary>
-		/// <param name="nameValues"> The name values. </param>
-		/// <returns> </returns>
+		/// <param name="nameValues">The name values.</param>
+		/// <returns></returns>
 		public static NameValueCollectionAdapter Adapt(NameValueCollection nameValues)
 		{
 			return new NameValueCollectionAdapter(nameValues);
 		}
-
-		/// <summary>
-		/// Determines whether the <see cref="T:System.Collections.IDictionary"> </see> object contains an element with the specified key.
-		/// </summary>
-		/// <param name="key"> The key to locate in the <see cref="T:System.Collections.IDictionary"> </see> object. </param>
-		/// <returns>
-		/// true if the <see cref="T:System.Collections.IDictionary"> </see> contains an element with the key; otherwise, false.
-		/// </returns>
-		/// <exception cref="T:System.ArgumentNullException"> key is null. </exception>
-		public override bool Contains(object key)
-		{
-			return Array.IndexOf(this.nameValues.AllKeys, key) >= 0;
-		}
-
-		#endregion
 	}
 #endif
 }

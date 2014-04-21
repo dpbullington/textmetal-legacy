@@ -6,8 +6,9 @@
 
 using System;
 using System.IO;
+using System.Diagnostics;
+using System.Collections;
 using System.Reflection;
-
 using NUnit.Core;
 using NUnit.Core.Extensibility;
 
@@ -15,31 +16,29 @@ namespace NUnit.Util
 {
 	public class AddinManager : IService
 	{
-		#region Constructors/Destructors
+		static Logger log = InternalTrace.GetLogger(typeof(AddinManager));
 
+		#region Instance Fields
+		IAddinRegistry addinRegistry;
+		#endregion
+
+		#region Constructor
 		public AddinManager()
 		{
 		}
-
 		#endregion
 
-		#region Fields/Constants
-
-		private static Logger log = InternalTrace.GetLogger(typeof(AddinManager));
-
-		private IAddinRegistry addinRegistry;
-
-		#endregion
-
-		#region Methods/Operators
-
-		public void InitializeService()
+		#region Addin Registration
+		public void RegisterAddins()
 		{
-			this.addinRegistry = Services.AddinRegistry;
-			this.RegisterAddins();
+			// Load any extensions in the addins directory
+			DirectoryInfo dir = new DirectoryInfo( NUnitConfiguration.AddinDirectory );
+			if ( dir.Exists )
+				foreach( FileInfo file in dir.GetFiles( "*.dll" ) )
+					Register( file.FullName );
 		}
 
-		public void Register(string path)
+		public void Register( string path )
 		{
 			try
 			{
@@ -47,40 +46,38 @@ namespace NUnit.Util
 				assemblyName.Name = Path.GetFileNameWithoutExtension(path);
 				assemblyName.CodeBase = path;
 				Assembly assembly = Assembly.Load(assemblyName);
-				log.Debug("Loaded " + Path.GetFileName(path));
+				log.Debug( "Loaded " + Path.GetFileName(path) );
 
-				foreach (Type type in assembly.GetExportedTypes())
+				foreach ( Type type in assembly.GetExportedTypes() )
 				{
-					if (type.GetCustomAttributes(typeof(NUnitAddinAttribute), false).Length == 1)
+					if ( type.GetCustomAttributes(typeof(NUnitAddinAttribute), false).Length == 1 )
 					{
-						Addin addin = new Addin(type);
-						if (this.addinRegistry.IsAddinRegistered(addin.Name))
-							log.Error("Addin {0} was already registered", addin.Name);
-						else
-						{
-							this.addinRegistry.Register(addin);
-							log.Debug("Registered addin: {0}", addin.Name);
-						}
+						Addin addin = new Addin( type );
+                        if ( addinRegistry.IsAddinRegistered(addin.Name) )
+                            log.Error( "Addin {0} was already registered", addin.Name );
+                        else
+                        {
+						    addinRegistry.Register( addin );
+						    log.Debug( "Registered addin: {0}", addin.Name );
+                        }
 					}
 				}
 			}
-			catch (Exception ex)
+			catch( Exception ex )
 			{
 				// NOTE: Since the gui isn't loaded at this point, 
 				// the trace output will only show up in Visual Studio
-				log.Error("Failed to load" + path, ex);
+				log.Error( "Failed to load" + path, ex  );
 			}
 		}
+		#endregion
 
-		public void RegisterAddins()
+		#region IService Members
+
+		public void InitializeService()
 		{
-			// Load any extensions in the addins directory
-			DirectoryInfo dir = new DirectoryInfo(NUnitConfiguration.AddinDirectory);
-			if (dir.Exists)
-			{
-				foreach (FileInfo file in dir.GetFiles("*.dll"))
-					this.Register(file.FullName);
-			}
+			addinRegistry = Services.AddinRegistry;
+			RegisterAddins();
 		}
 
 		public void UnloadService()

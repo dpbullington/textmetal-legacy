@@ -12,60 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Collections.Generic;
 
 	public class XmlNameComparer : IEqualityComparer<XmlName>
 	{
-		#region Constructors/Destructors
+		public static readonly XmlNameComparer
+			Default    = new XmlNameComparer(StringComparer.Ordinal),
+			IgnoreCase = new XmlNameComparer(StringComparer.OrdinalIgnoreCase);
+
+		private readonly StringComparer comparer;
 
 		private XmlNameComparer(StringComparer comparer)
 		{
 			this.comparer = comparer;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		public static readonly XmlNameComparer
-			Default = new XmlNameComparer(StringComparer.Ordinal),
-			IgnoreCase = new XmlNameComparer(StringComparer.OrdinalIgnoreCase);
-
-		private readonly StringComparer comparer;
-
-		#endregion
-
-		#region Methods/Operators
-
-		public bool Equals(XmlName x, XmlName y)
-		{
-			return this.comparer.Equals(x.LocalName, y.LocalName)
-					&& this.comparer.Equals(x.NamespaceUri, y.NamespaceUri);
-		}
-
 		public int GetHashCode(XmlName name)
 		{
 			var code = (name.LocalName != null)
-				? this.comparer.GetHashCode(name.LocalName)
+				? comparer.GetHashCode(name.LocalName)
 				: 0;
 
 			if (name.NamespaceUri != null)
-			{
 				code = (code << 7 | code >> 25)
-						^ this.comparer.GetHashCode(name.NamespaceUri);
-			}
+					 ^ comparer.GetHashCode(name.NamespaceUri);
 
 			return code;
 		}
 
-		#endregion
+		public bool Equals(XmlName x, XmlName y)
+		{
+			return comparer.Equals(x.LocalName,    y.LocalName)
+				&& comparer.Equals(x.NamespaceUri, y.NamespaceUri);
+		}
 	}
 }
-
 #endif

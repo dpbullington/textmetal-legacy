@@ -20,13 +20,7 @@ namespace Castle.Core.Logging
 	[Serializable]
 	public class DiagnosticsLoggerFactory : AbstractLoggerFactory
 	{
-		#region Fields/Constants
-
 		private const string DefaultLogName = "CastleDefaultLogger";
-
-		#endregion
-
-		#region Methods/Operators
 
 		public override ILogger Create(string name)
 		{
@@ -39,8 +33,6 @@ namespace Castle.Core.Logging
 			logger.Level = level;
 			return logger;
 		}
-
-		#endregion
 	}
 
 #endif

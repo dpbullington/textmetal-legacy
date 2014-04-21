@@ -22,45 +22,29 @@ namespace Castle.Components.DictionaryAdapter
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 	public class KeyAttribute : DictionaryBehaviorAttribute, IDictionaryKeyBuilder
 	{
-		#region Constructors/Destructors
-
 		/// <summary>
-		/// Initializes a new instance of the <see cref="KeyAttribute" /> class.
+		/// Initializes a new instance of the <see cref="KeyAttribute"/> class.
 		/// </summary>
-		/// <param name="key"> The key. </param>
+		/// <param name="key">The key.</param>
 		public KeyAttribute(String key)
 		{
-			this.Key = key;
+			Key = key;
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="KeyAttribute" /> class.
+		/// Initializes a new instance of the <see cref="KeyAttribute"/> class.
 		/// </summary>
-		/// <param name="keys"> The compound key. </param>
+		/// <param name="keys">The compound key.</param>
 		public KeyAttribute(String[] keys)
 		{
-			this.Key = string.Join(",", keys);
+			Key = string.Join(",", keys);
 		}
 
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public String Key
-		{
-			get;
-			private set;
-		}
-
-		#endregion
-
-		#region Methods/Operators
+		public String Key { get; private set; }
 
 		String IDictionaryKeyBuilder.GetKey(IDictionaryAdapter dictionaryAdapter, String key, PropertyDescriptor property)
 		{
-			return this.Key;
+			return Key;
 		}
-
-		#endregion
 	}
 }

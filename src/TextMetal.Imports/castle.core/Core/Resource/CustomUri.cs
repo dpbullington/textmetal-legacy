@@ -12,104 +12,77 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Text;
-
 namespace Castle.Core.Resource
 {
 	using System;
+	using System.Text;
 
 	[Serializable]
 	public sealed class CustomUri
 	{
-		#region Constructors/Destructors
+		public static readonly String SchemeDelimiter = "://";
+		public static readonly String UriSchemeFile = "file";
+		public static readonly String UriSchemeAssembly = "assembly";
+
+		private String scheme;
+		private String host;
+		private String path;
+		private bool isUnc;
+		private bool isFile;
+		private bool isAssembly;
 
 		public CustomUri(String resourceIdentifier)
 		{
 			if (resourceIdentifier == null)
+			{
 				throw new ArgumentNullException("resourceIdentifier");
+			}
 			if (resourceIdentifier == String.Empty)
+			{
 				throw new ArgumentException("Empty resource identifier is not allowed", "resourceIdentifier");
-
-			this.ParseIdentifier(resourceIdentifier);
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		public static readonly String SchemeDelimiter = "://";
-		public static readonly String UriSchemeAssembly = "assembly";
-		public static readonly String UriSchemeFile = "file";
-
-		private String host;
-		private bool isAssembly;
-		private bool isFile;
-		private bool isUnc;
-		private String path;
-		private String scheme;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public string Host
-		{
-			get
-			{
-				return this.host;
 			}
-		}
 
-		public bool IsAssembly
-		{
-			get
-			{
-				return this.isAssembly;
-			}
-		}
-
-		public bool IsFile
-		{
-			get
-			{
-				return this.isFile;
-			}
+			ParseIdentifier(resourceIdentifier);
 		}
 
 		public bool IsUnc
 		{
-			get
-			{
-				return this.isUnc;
-			}
+			get { return isUnc; }
 		}
 
-		public String Path
+		public bool IsFile
 		{
-			get
-			{
-				return this.path;
-			}
+			get { return isFile; }
+		}
+
+		public bool IsAssembly
+		{
+			get { return isAssembly; }
 		}
 
 		public string Scheme
 		{
-			get
-			{
-				return this.scheme;
-			}
+			get { return scheme; }
 		}
 
-		#endregion
+		public string Host
+		{
+			get { return host; }
+		}
 
-		#region Methods/Operators
+		public String Path
+		{
+			get { return path; }
+		}
 
 		private void ParseIdentifier(String identifier)
 		{
 			int comma = identifier.IndexOf(':');
 
 			if (comma == -1 && !(identifier[0] == '\\' && identifier[1] == '\\') && identifier[0] != '/')
+			{
 				throw new ArgumentException("Invalid Uri: no scheme delimiter found on " + identifier);
+			}
 
 			bool translateSlashes = true;
 
@@ -117,52 +90,52 @@ namespace Castle.Core.Resource
 			{
 				// Unc
 
-				this.isUnc = true;
-				this.isFile = true;
-				this.scheme = UriSchemeFile;
+				isUnc = true;
+				isFile = true;
+				scheme = UriSchemeFile;
 				translateSlashes = false;
 			}
 			else if (identifier[comma + 1] == '/' && identifier[comma + 2] == '/')
 			{
 				// Extract scheme
 
-				this.scheme = identifier.Substring(0, comma);
+				scheme = identifier.Substring(0, comma);
 
-				this.isFile = (this.scheme == UriSchemeFile);
-				this.isAssembly = (this.scheme == UriSchemeAssembly);
+				isFile = (scheme == UriSchemeFile);
+				isAssembly = (scheme == UriSchemeAssembly);
 
 				identifier = identifier.Substring(comma + SchemeDelimiter.Length);
 			}
 			else
 			{
-				this.isFile = true;
-				this.scheme = UriSchemeFile;
+				isFile = true;
+				scheme = UriSchemeFile;
 			}
 
 			var sb = new StringBuilder();
-			foreach (char ch in identifier.ToCharArray())
+			foreach(char ch in identifier.ToCharArray())
 			{
 				if (translateSlashes && (ch == '\\' || ch == '/'))
 				{
-					if (this.host == null && !this.IsFile)
+					if (host == null && !IsFile)
 					{
-						this.host = sb.ToString();
+						host = sb.ToString();
 						sb.Length = 0;
 					}
 
 					sb.Append('/');
 				}
 				else
+				{
 					sb.Append(ch);
+				}
 			}
 
 #if SILVERLIGHT
 			path = sb.ToString();
 #else
-			this.path = Environment.ExpandEnvironmentVariables(sb.ToString());
+			path = Environment.ExpandEnvironmentVariables(sb.ToString());
 #endif
 		}
-
-		#endregion
 	}
 }

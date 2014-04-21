@@ -12,17 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Security.Permissions;
-
 namespace Castle.DynamicProxy.Generators
 {
 	using System;
+	using System.Collections.Generic;
+	using System.Runtime.InteropServices;
+	using System.Security.Permissions;
 
 	public static class AttributesToAvoidReplicating
 	{
-		#region Constructors/Destructors
+		private static readonly IList<Type> attributes = new List<Type>();
 
 		static AttributesToAvoidReplicating()
 		{
@@ -35,20 +34,12 @@ namespace Castle.DynamicProxy.Generators
 #endif
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private static readonly IList<Type> attributes = new List<Type>();
-
-		#endregion
-
-		#region Methods/Operators
-
 		public static void Add(Type attribute)
 		{
 			if (attributes.Contains(attribute) == false)
+			{
 				attributes.Add(attribute);
+			}
 		}
 
 		public static void Add<T>()
@@ -60,7 +51,5 @@ namespace Castle.DynamicProxy.Generators
 		{
 			return attributes.Contains(type);
 		}
-
-		#endregion
 	}
 }

@@ -1,252 +1,232 @@
-// ****************************************************************
+﻿// ****************************************************************
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
-
+using System.Collections;
+using System.Drawing;
+using System.Diagnostics;
 using NUnit.UiException.Properties;
 
 namespace NUnit.UiException.Controls
 {
-	/// <summary>
-	/// A specialization of a ToolStrip to show instances of IErrorDisplay.
-	/// </summary>
-	public class ErrorToolbar :
-		ToolStrip,
-		IEnumerable
-	{
-		#region Constructors/Destructors
+    /// <summary>
+    /// A specialization of a ToolStrip to show instances of IErrorDisplay.
+    /// </summary>
+    public class ErrorToolbar :
+        ToolStrip,
+        IEnumerable
+    {
+        public event EventHandler SelectedRendererChanged;
 
-		public ErrorToolbar()
-		{
-			this._displays = new List<IErrorDisplay>();
+        private List<IErrorDisplay> _displays;
 
-			this._separator = this.CreateDefaultItem("-", null, null);
-			this.Items.Add(this._separator);
+        private ToolStripItem _separator;
+        private int _selection;
 
-			this._selection = -1;
+        public ErrorToolbar()
+        {
+            _displays = new List<IErrorDisplay>();
 
-			this.BackgroundImage = Resources.ImageErrorBrowserHeader;
-			this.BackgroundImageLayout = ImageLayout.Tile;
+            _separator = CreateDefaultItem("-", null, null);
+            Items.Add(_separator);
 
-			return;
-		}
+            _selection = -1;
+            
+            BackgroundImage = Resources.ImageErrorBrowserHeader;
+            BackgroundImageLayout = ImageLayout.Tile;
 
-		#endregion
+            return;
+        }
 
-		#region Fields/Constants
+        /// <summary>
+        /// Create and configure a ToolStripButton.
+        /// </summary>
+        public static ToolStripButton NewStripButton(
+            bool canCheck, string text, Image image, EventHandler onClick)
+        {
+            ToolStripButton button;
 
-		private List<IErrorDisplay> _displays;
+            button = new ToolStripButton(text, image, onClick);
+            button.CheckOnClick = canCheck;
+            button.Image = image;
+            button.ImageScaling = ToolStripItemImageScaling.None;
+            button.TextImageRelation = TextImageRelation.ImageBeforeText;
+            button.DisplayStyle = ToolStripItemDisplayStyle.Image;
 
-		private int _selection;
-		private ToolStripItem _separator;
+            return (button);
+        }
 
-		#endregion
+        /// <summary>
+        /// Gets the count of IErrorDisplay instances.
+        /// </summary>
+        public int Count
+        {
+            get { return (_displays.Count); }
+        }
 
-		#region Properties/Indexers/Events
+        /// <summary>
+        /// Gets the display at the given index.
+        /// </summary>
+        public IErrorDisplay this[int index]
+        {
+            get { return (_displays[index]); }
+        }
 
-		public event EventHandler SelectedRendererChanged;
+        /// <summary>
+        /// Gets or sets the IErrorDisplay to be selected.
+        /// </summary>
+        public IErrorDisplay SelectedDisplay
+        {
+            get {
+                if (_selection == -1)
+                    return (null);
+                return ((IErrorDisplay)Items[_selection].Tag); 
+            }
+            set
+            {
+                int index = IndexOf(value);
 
-		/// <summary>
-		/// Gets the display at the given index.
-		/// </summary>
-		public IErrorDisplay this[int index]
-		{
-			get
-			{
-				return (this._displays[index]);
-			}
-		}
+                UiExceptionHelper.CheckFalse(index == -1 && value != null,
+                    "Cannot select unregistered display.", "SelectedDisplay");
 
-		/// <summary>
-		/// Gets the count of IErrorDisplay instances.
-		/// </summary>
-		public int Count
-		{
-			get
-			{
-				return (this._displays.Count);
-			}
-		}
+                if (index == _selection)
+                    return;
 
-		/// <summary>
-		/// Gets or sets the IErrorDisplay to be selected.
-		/// </summary>
-		public IErrorDisplay SelectedDisplay
-		{
-			get
-			{
-				if (this._selection == -1)
-					return (null);
-				return ((IErrorDisplay)this.Items[this._selection].Tag);
-			}
-			set
-			{
-				int index = this.IndexOf(value);
+                _selection = index;
+                SetOrUnsetCheckedFlag(_selection);
+                ShowOrHideOptionItems(_selection);
+                
+                if (SelectedRendererChanged != null)
+                    SelectedRendererChanged(this, new EventArgs());
 
-				UiExceptionHelper.CheckFalse(index == -1 && value != null,
-					"Cannot select unregistered display.", "SelectedDisplay");
+                return;
+            }
+        }
 
-				if (index == this._selection)
-					return;
+        /// <summary>
+        /// Register a new IErrorDisplay in the toolbar.
+        /// </summary>
+        public void Register(IErrorDisplay display)
+        {
+            ToolStripItem item;
+            int sepIndex;
 
-				this._selection = index;
-				this.SetOrUnsetCheckedFlag(this._selection);
-				this.ShowOrHideOptionItems(this._selection);
+            UiExceptionHelper.CheckNotNull(display, "display");
+            UiExceptionHelper.CheckNotNull(display.PluginItem, "display.PluginItem");
 
-				if (this.SelectedRendererChanged != null)
-					this.SelectedRendererChanged(this, new EventArgs());
+            item = display.PluginItem;
+            item.Tag = display;
+            item.Click += new EventHandler(item_Click);
 
-				return;
-			}
-		}
+            _displays.Add(display);
+            sepIndex = Items.IndexOf(_separator);
+            Items.Insert(sepIndex, item);
 
-		#endregion
+            if (display.OptionItems != null)
+            {
+                ToolStripItem[] array = display.OptionItems;
+                foreach (ToolStripItem value in array)
+                {
+                    value.Visible = false;
+                    Items.Add(value);
+                }
+            }
 
-		#region Methods/Operators
+            if (_displays.Count == 1)
+                SelectedDisplay = display;
 
-		/// <summary>
-		/// Create and configure a ToolStripButton.
-		/// </summary>
-		public static ToolStripButton NewStripButton(
-			bool canCheck, string text, Image image, EventHandler onClick)
-		{
-			ToolStripButton button;
+            return;
+        }
 
-			button = new ToolStripButton(text, image, onClick);
-			button.CheckOnClick = canCheck;
-			button.Image = image;
-			button.ImageScaling = ToolStripItemImageScaling.None;
-			button.TextImageRelation = TextImageRelation.ImageBeforeText;
-			button.DisplayStyle = ToolStripItemDisplayStyle.Image;
+        /// <summary>
+        /// Clears all IErrorDisplay in the toolbar.
+        /// </summary>
+        public void Clear()
+        {
+            _displays.Clear();
+            Items.Clear();
+            Items.Add(_separator);
 
-			return (button);
-		}
+            return;
+        }        
 
-		/// <summary>
-		/// Clears all IErrorDisplay in the toolbar.
-		/// </summary>
-		public void Clear()
-		{
-			this._displays.Clear();
-			this.Items.Clear();
-			this.Items.Add(this._separator);
+        private void ShowOrHideOptionItems(int selectedIndex)
+        {
+            int index;
 
-			return;
-		}
+            foreach (IErrorDisplay item in _displays)
+            {
+                if ((index = IndexOf(item)) == -1)                     
+                    continue;
 
-		public IEnumerator GetEnumerator()
-		{
-			return (this._displays.GetEnumerator());
-		}
+                if (item.OptionItems == null)
+                    continue;
 
-		private int IndexOf(IErrorDisplay renderer)
-		{
-			int i;
+                foreach (ToolStripItem stripItem in item.OptionItems)
+                    stripItem.Visible = (index == selectedIndex);
+            }
 
-			if (renderer == null)
-				return (-1);
+            return;
+        }
 
-			for (i = 0; i < this.Items.Count; ++i)
-			{
-				if (ReferenceEquals(this.Items[i].Tag, renderer))
-					return (i);
-			}
+        private void SetOrUnsetCheckedFlag(int selectedIndex)
+        {
+            int index;
 
-			return (-1);
-		}
+            foreach (IErrorDisplay item in _displays)
+            {
+                index = IndexOf(item);
+                if (index == -1)
+                    continue;
+                item.PluginItem.Checked = (index == selectedIndex);
+            }
 
-		/// <summary>
-		/// Register a new IErrorDisplay in the toolbar.
-		/// </summary>
-		public void Register(IErrorDisplay display)
-		{
-			ToolStripItem item;
-			int sepIndex;
+            return;
+        }
 
-			UiExceptionHelper.CheckNotNull(display, "display");
-			UiExceptionHelper.CheckNotNull(display.PluginItem, "display.PluginItem");
+        private int IndexOf(IErrorDisplay renderer)
+        {
+            int i;
 
-			item = display.PluginItem;
-			item.Tag = display;
-			item.Click += new EventHandler(this.item_Click);
+            if (renderer == null)
+                return (-1);
 
-			this._displays.Add(display);
-			sepIndex = this.Items.IndexOf(this._separator);
-			this.Items.Insert(sepIndex, item);
+            for (i = 0; i < Items.Count; ++i)
+                if (object.ReferenceEquals(Items[i].Tag, renderer))
+                    return (i);
 
-			if (display.OptionItems != null)
-			{
-				ToolStripItem[] array = display.OptionItems;
-				foreach (ToolStripItem value in array)
-				{
-					value.Visible = false;
-					this.Items.Add(value);
-				}
-			}
+            return (-1);
+        }       
 
-			if (this._displays.Count == 1)
-				this.SelectedDisplay = display;
+        private void item_Click(object sender, EventArgs e)
+        {
+            ToolStripItem item = sender as ToolStripItem;
+            IErrorDisplay renderer;
 
-			return;
-		}
+            if (item == null || item.Tag == null)
+                return;
 
-		private void SetOrUnsetCheckedFlag(int selectedIndex)
-		{
-			int index;
+            renderer = item.Tag as IErrorDisplay;
+            if (renderer == null)
+                return;
 
-			foreach (IErrorDisplay item in this._displays)
-			{
-				index = this.IndexOf(item);
-				if (index == -1)
-					continue;
-				item.PluginItem.Checked = (index == selectedIndex);
-			}
+            SelectedDisplay = renderer;
 
-			return;
-		}
+            return;
+        }                
 
-		private void ShowOrHideOptionItems(int selectedIndex)
-		{
-			int index;
+        #region IEnumerable Membres
 
-			foreach (IErrorDisplay item in this._displays)
-			{
-				if ((index = this.IndexOf(item)) == -1)
-					continue;
+        public IEnumerator GetEnumerator()
+        {
+            return (_displays.GetEnumerator());
+        }
 
-				if (item.OptionItems == null)
-					continue;
-
-				foreach (ToolStripItem stripItem in item.OptionItems)
-					stripItem.Visible = (index == selectedIndex);
-			}
-
-			return;
-		}
-
-		private void item_Click(object sender, EventArgs e)
-		{
-			ToolStripItem item = sender as ToolStripItem;
-			IErrorDisplay renderer;
-
-			if (item == null || item.Tag == null)
-				return;
-
-			renderer = item.Tag as IErrorDisplay;
-			if (renderer == null)
-				return;
-
-			this.SelectedDisplay = renderer;
-
-			return;
-		}
-
-		#endregion
-	}
+        #endregion
+    }      
 }

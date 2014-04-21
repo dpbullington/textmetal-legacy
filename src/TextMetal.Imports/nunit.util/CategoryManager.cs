@@ -6,65 +6,43 @@
 
 using System;
 using System.Collections;
-
 using NUnit.Core;
 
 namespace NUnit.Util
 {
 	public class CategoryManager
 	{
-		#region Fields/Constants
-
 		private Hashtable categories = new Hashtable();
 
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public ICollection Categories
+		public void Add(string name) 
 		{
-			get
-			{
-				return this.categories.Values;
-			}
+			categories[name] = name;
 		}
 
-		#endregion
-
-		#region Methods/Operators
-
-		public void Add(string name)
+		public void AddCategories( ITest test )
 		{
-			this.categories[name] = name;
+            if (test.Categories != null)
+                foreach (string name in test.Categories)
+                    if (NUnitFramework.IsValidCategoryName(name))
+                        Add(name);
 		}
 
-		public void AddAllCategories(ITest test)
+		public void AddAllCategories( ITest test )
 		{
-			this.AddCategories(test);
-			if (test.IsSuite)
-			{
-				foreach (ITest child in test.Tests)
-					this.AddAllCategories(child);
-			}
+			AddCategories( test );
+			if ( test.IsSuite )
+				foreach( ITest child in test.Tests )
+					AddAllCategories( child );
 		}
 
-		public void AddCategories(ITest test)
+		public ICollection Categories 
 		{
-			if (test.Categories != null)
-			{
-				foreach (string name in test.Categories)
-				{
-					if (NUnitFramework.IsValidCategoryName(name))
-						this.Add(name);
-				}
-			}
+			get { return categories.Values; }
 		}
 
-		public void Clear()
+		public void Clear() 
 		{
-			this.categories = new Hashtable();
+			categories = new Hashtable();
 		}
-
-		#endregion
 	}
 }

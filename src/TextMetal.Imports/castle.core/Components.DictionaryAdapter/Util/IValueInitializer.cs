@@ -16,10 +16,6 @@ namespace Castle.Components.DictionaryAdapter
 {
 	public interface IValueInitializer
 	{
-		#region Methods/Operators
-
 		void Initialize(IDictionaryAdapter dictionaryAdapter, object value);
-
-		#endregion
 	}
 }

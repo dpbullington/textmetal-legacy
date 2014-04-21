@@ -4,11 +4,10 @@
 // copyright ownership at http://nunit.org.
 // ****************************************************************
 
-using System.Runtime.Serialization;
-
 namespace NUnit.Core
 {
 	using System;
+	using System.Runtime.Serialization;
 
 	/// <summary>
 	/// Summary description for NoTestFixtureException.
@@ -16,28 +15,14 @@ namespace NUnit.Core
 	[Serializable]
 	public class NoTestFixturesException : ApplicationException
 	{
-		#region Constructors/Destructors
+		public NoTestFixturesException() : base () {}
 
-		public NoTestFixturesException()
-			: base()
-		{
-		}
+		public NoTestFixturesException(string message) : base(message)
+		{}
 
-		public NoTestFixturesException(string message)
-			: base(message)
-		{
-		}
+		public NoTestFixturesException(string message, Exception inner) : base(message, inner) {}
 
-		public NoTestFixturesException(string message, Exception inner)
-			: base(message, inner)
-		{
-		}
-
-		protected NoTestFixturesException(SerializationInfo info, StreamingContext context)
-			: base(info, context)
-		{
-		}
-
-		#endregion
+		protected NoTestFixturesException(SerializationInfo info, StreamingContext context) : base(info, context)
+		{}
 	}
 }

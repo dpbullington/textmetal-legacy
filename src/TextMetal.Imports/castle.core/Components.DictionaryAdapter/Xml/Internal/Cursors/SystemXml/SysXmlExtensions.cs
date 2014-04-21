@@ -12,23 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Xml;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
 #if !SILVERLIGHT
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
-
+	using System.Collections.Generic;
+	using System.Xml;
+	using System.Xml.Serialization;
 #if !SL3
-
+	using System.Xml.XPath;
 #endif
 
 	public static class SysXmlExtensions
 	{
-		#region Methods/Operators
-
 		public static void DefineNamespace(this XmlElement node, string prefix, string namespaceUri)
 		{
 			var attribute = node.OwnerDocument.CreateAttribute(Xmlns.Prefix, prefix, Xmlns.NamespaceUri);
@@ -36,35 +33,31 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			node.SetAttributeNode(attribute);
 		}
 
+		public static bool IsNamespace(this XmlAttribute attribute)
+		{
+			return attribute.Prefix == Xmlns.Prefix ||
+			(
+				string.IsNullOrEmpty(attribute.Prefix) &&
+				attribute.LocalName == Xmlns.Prefix
+			);
+		}
+
 		public static XmlElement FindRoot(this XmlElement node)
 		{
 			for (;;)
 			{
 				var next = node.ParentNode as XmlElement;
-				if (next == null)
-					return node;
+				if (next == null) return node;
 				node = next;
 			}
 		}
 
-		public static bool IsNamespace(this XmlAttribute attribute)
-		{
-			return attribute.Prefix == Xmlns.Prefix ||
-					(
-						string.IsNullOrEmpty(attribute.Prefix) &&
-						attribute.LocalName == Xmlns.Prefix
-						);
-		}
-
 		public static bool IsXsiType(this XmlAttribute attribute)
 		{
-			return attribute.LocalName == Xsi.Type.LocalName
-					&& attribute.NamespaceURI == Xsi.NamespaceUri;
+		    return attribute.LocalName    == Xsi.Type.LocalName
+		        && attribute.NamespaceURI == Xsi.NamespaceUri;
 		}
-
-		#endregion
 	}
 }
-
 #endif
 #endif

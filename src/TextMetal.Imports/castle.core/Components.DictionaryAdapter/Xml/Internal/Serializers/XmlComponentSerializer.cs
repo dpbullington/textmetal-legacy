@@ -12,51 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Collections;
 
 	public class XmlComponentSerializer : XmlTypeSerializer
 	{
-		#region Constructors/Destructors
-
-		protected XmlComponentSerializer()
-		{
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
 		public static readonly XmlComponentSerializer
 			Instance = new XmlComponentSerializer();
 
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public override bool CanGetStub
-		{
-			get
-			{
-				return true;
-			}
-		}
+		protected XmlComponentSerializer() { }
 
 		public override XmlTypeKind Kind
 		{
-			get
-			{
-				return XmlTypeKind.Complex;
-			}
+			get { return XmlTypeKind.Complex; }
 		}
 
-		#endregion
-
-		#region Methods/Operators
+		public override bool CanGetStub
+		{
+			get { return true; }
+		}
 
 		public override object GetStub(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor)
 		{
@@ -87,15 +64,12 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			var targetAdapter = new XmlAdapter(node.Save(), XmlAdapter.For(parent).References);
 			if (sourceAdapter != null)
 				targetAdapter.References.UnionWith(sourceAdapter.References);
-			var component = (IDictionaryAdapter)parent.CreateChildAdapter(node.ClrType, targetAdapter);
+			var component = (IDictionaryAdapter) parent.CreateChildAdapter(node.ClrType, targetAdapter);
 
 			// Copy value onto fresh component
 			source.CopyTo(component);
 			value = component;
 		}
-
-		#endregion
 	}
 }
-
 #endif

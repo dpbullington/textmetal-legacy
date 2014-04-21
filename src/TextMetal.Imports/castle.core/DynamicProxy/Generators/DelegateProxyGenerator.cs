@@ -12,40 +12,67 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using System.Reflection;
-
-using Castle.DynamicProxy.Contributors;
-using Castle.DynamicProxy.Generators.Emitters;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Castle.DynamicProxy.Serialization;
-
 namespace Castle.DynamicProxy.Generators
 {
 	using System;
+	using System.Collections.Generic;
+	using System.Reflection;
 #if !SILVERLIGHT
 	using System.Xml.Serialization;
-
 #endif
+
+	using Castle.DynamicProxy.Contributors;
+	using Castle.DynamicProxy.Generators.Emitters;
+	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+	using Castle.DynamicProxy.Serialization;
 
 	public class DelegateProxyGenerator : BaseProxyGenerator
 	{
-		#region Constructors/Destructors
-
-		public DelegateProxyGenerator(ModuleScope scope, Type delegateType)
-			: base(scope, delegateType)
+		public DelegateProxyGenerator(ModuleScope scope, Type delegateType) : base(scope, delegateType)
 		{
-			this.ProxyGenerationOptions = new ProxyGenerationOptions(new DelegateProxyGenerationHook());
-			this.ProxyGenerationOptions.Initialize();
+			ProxyGenerationOptions = new ProxyGenerationOptions(new DelegateProxyGenerationHook());
+			ProxyGenerationOptions.Initialize();
 		}
 
-		#endregion
+		public Type GetProxyType()
+		{
+			var cacheKey = new CacheKey(targetType, null, null);
+			return ObtainProxyType(cacheKey, GenerateType);
+		}
 
-		#region Methods/Operators
+		protected virtual IEnumerable<Type> GetTypeImplementerMapping(out IEnumerable<ITypeContributor> contributors,
+		                                                              INamingScope namingScope)
+		{
+			var methodsToSkip = new List<MethodInfo>();
+			var proxyInstance = new ClassProxyInstanceContributor(targetType, methodsToSkip, Type.EmptyTypes,
+			                                                      ProxyTypeConstants.ClassWithTarget);
+			var proxyTarget = new DelegateProxyTargetContributor(targetType, namingScope) { Logger = Logger };
+			IDictionary<Type, ITypeContributor> typeImplementerMapping = new Dictionary<Type, ITypeContributor>();
+
+			// Order of interface precedence:
+			// 1. first target, target is not an interface so we do nothing
+			// 2. then mixins - we support none so we do nothing
+			// 3. then additional interfaces - we support none so we do nothing
+#if !SILVERLIGHT
+			// 4. plus special interfaces
+			if (targetType.IsSerializable)
+			{
+				AddMappingForISerializable(typeImplementerMapping, proxyInstance);
+			}
+#endif
+			AddMappingNoCheck(typeof(IProxyTargetAccessor), proxyInstance, typeImplementerMapping);
+
+			contributors = new List<ITypeContributor>
+			{
+				proxyTarget,
+				proxyInstance
+			};
+			return typeImplementerMapping.Keys;
+		}
 
 		private FieldReference CreateTargetField(ClassEmitter emitter)
 		{
-			var targetField = emitter.CreateField("__target", this.targetType);
+			var targetField = emitter.CreateField("__target", targetType);
 #if !SILVERLIGHT
 			emitter.DefineCustomAttributeFor<XmlIgnoreAttribute>(targetField);
 #endif
@@ -55,82 +82,52 @@ namespace Castle.DynamicProxy.Generators
 		private Type GenerateType(string name, INamingScope namingScope)
 		{
 			IEnumerable<ITypeContributor> contributors;
-			var implementedInterfaces = this.GetTypeImplementerMapping(out contributors, namingScope);
+			var implementedInterfaces = GetTypeImplementerMapping(out contributors, namingScope);
 
 			var model = new MetaType();
 			// Collect methods
 			foreach (var contributor in contributors)
-				contributor.CollectElementsToProxy(this.ProxyGenerationOptions.Hook, model);
-			this.ProxyGenerationOptions.Hook.MethodsInspected();
+			{
+				contributor.CollectElementsToProxy(ProxyGenerationOptions.Hook, model);
+			}
+			ProxyGenerationOptions.Hook.MethodsInspected();
 
-			var emitter = this.BuildClassEmitter(name, typeof(object), implementedInterfaces);
+			var emitter = BuildClassEmitter(name, typeof(object), implementedInterfaces);
 
-			this.CreateFields(emitter);
-			this.CreateTypeAttributes(emitter);
+			CreateFields(emitter);
+			CreateTypeAttributes(emitter);
 
 			// Constructor
-			var cctor = this.GenerateStaticConstructor(emitter);
+			var cctor = GenerateStaticConstructor(emitter);
 
-			var targetField = this.CreateTargetField(emitter);
+			var targetField = CreateTargetField(emitter);
 			var constructorArguments = new List<FieldReference> { targetField };
 
 			foreach (var contributor in contributors)
-				contributor.Generate(emitter, this.ProxyGenerationOptions);
+			{
+				contributor.Generate(emitter, ProxyGenerationOptions);
+			}
 
 			// constructor arguments
 			var interceptorsField = emitter.GetField("__interceptors");
 			constructorArguments.Add(interceptorsField);
 			var selector = emitter.GetField("__selector");
 			if (selector != null)
+			{
 				constructorArguments.Add(selector);
+			}
 
-			this.GenerateConstructor(emitter, null, constructorArguments.ToArray());
-			this.GenerateParameterlessConstructor(emitter, this.targetType, interceptorsField);
+			GenerateConstructor(emitter, null, constructorArguments.ToArray());
+			GenerateParameterlessConstructor(emitter, targetType, interceptorsField);
 
 			// Complete type initializer code body
-			this.CompleteInitCacheMethod(cctor.CodeBuilder);
+			CompleteInitCacheMethod(cctor.CodeBuilder);
 
 			// Crosses fingers and build type
 
 			var proxyType = emitter.BuildType();
-			this.InitializeStaticFields(proxyType);
+			InitializeStaticFields(proxyType);
 			return proxyType;
 		}
-
-		public Type GetProxyType()
-		{
-			var cacheKey = new CacheKey(this.targetType, null, null);
-			return this.ObtainProxyType(cacheKey, this.GenerateType);
-		}
-
-		protected virtual IEnumerable<Type> GetTypeImplementerMapping(out IEnumerable<ITypeContributor> contributors,
-			INamingScope namingScope)
-		{
-			var methodsToSkip = new List<MethodInfo>();
-			var proxyInstance = new ClassProxyInstanceContributor(this.targetType, methodsToSkip, Type.EmptyTypes,
-				ProxyTypeConstants.ClassWithTarget);
-			var proxyTarget = new DelegateProxyTargetContributor(this.targetType, namingScope) { Logger = this.Logger };
-			IDictionary<Type, ITypeContributor> typeImplementerMapping = new Dictionary<Type, ITypeContributor>();
-
-			// Order of interface precedence:
-			// 1. first target, target is not an interface so we do nothing
-			// 2. then mixins - we support none so we do nothing
-			// 3. then additional interfaces - we support none so we do nothing
-#if !SILVERLIGHT
-			// 4. plus special interfaces
-			if (this.targetType.IsSerializable)
-				this.AddMappingForISerializable(typeImplementerMapping, proxyInstance);
-#endif
-			this.AddMappingNoCheck(typeof(IProxyTargetAccessor), proxyInstance, typeImplementerMapping);
-
-			contributors = new List<ITypeContributor>
-							{
-								proxyTarget,
-								proxyInstance
-							};
-			return typeImplementerMapping.Keys;
-		}
-
-		#endregion
 	}
 }

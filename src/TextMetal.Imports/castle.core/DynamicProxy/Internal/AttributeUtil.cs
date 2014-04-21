@@ -12,16 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
-using System.Reflection.Emit;
-
-using Castle.DynamicProxy.Generators;
-
 namespace Castle.DynamicProxy.Internal
 {
 	using System;
+	using System.Collections.Generic;
+	using System.Diagnostics;
+	using System.Reflection;
+	using System.Reflection.Emit;
+
+	using Castle.DynamicProxy.Generators;
 
 	public static class AttributeUtil
 	{
@@ -32,29 +31,25 @@ namespace Castle.DynamicProxy.Internal
 
 		public static IAttributeDisassembler FallbackDisassembler
 		{
-			get
-			{
-				return fallbackDisassembler;
-			}
-			set
-			{
-				fallbackDisassembler = value;
-			}
+			get { return fallbackDisassembler; }
+			set { fallbackDisassembler = value; }
 		}
 
 		/// <summary>
-		/// Registers custom disassembler to handle disassembly of specified type of attributes.
+		///   Registers custom disassembler to handle disassembly of specified type of attributes.
 		/// </summary>
-		/// <typeparam name="TAttribute"> Type of attributes to handle </typeparam>
-		/// <param name="disassembler"> Disassembler converting existing instances of Attributes to CustomAttributeBuilders </param>
+		/// <typeparam name = "TAttribute">Type of attributes to handle</typeparam>
+		/// <param name = "disassembler">Disassembler converting existing instances of Attributes to CustomAttributeBuilders</param>
 		/// <remarks>
-		/// When disassembling an attribute Dynamic Proxy will first check if an custom disassembler has been registered to handle attributes of that type,
-		/// and if none is found, it'll use the <see cref="FallbackDisassembler" />.
+		///   When disassembling an attribute Dynamic Proxy will first check if an custom disassembler has been registered to handle attributes of that type, 
+		///   and if none is found, it'll use the <see cref = "FallbackDisassembler" />.
 		/// </remarks>
 		public static void AddDisassembler<TAttribute>(IAttributeDisassembler disassembler) where TAttribute : Attribute
 		{
 			if (disassembler == null)
+			{
 				throw new ArgumentNullException("disassembler");
+			}
 
 			disassemblers[typeof(TAttribute)] = disassembler;
 		}
@@ -71,18 +66,20 @@ namespace Castle.DynamicProxy.Internal
 			GetSettersAndFields(attribute.NamedArguments, out properties, out propertyValues, out fields, out fieldValues);
 			var constructorArgs = GetArguments(attribute.ConstructorArguments);
 			return new CustomAttributeBuilder(attribute.Constructor,
-				constructorArgs,
-				properties,
-				propertyValues,
-				fields,
-				fieldValues);
+			                                  constructorArgs,
+			                                  properties,
+			                                  propertyValues,
+			                                  fields,
+			                                  fieldValues);
 		}
 
 		private static object[] GetArguments(IList<CustomAttributeTypedArgument> constructorArguments)
 		{
 			var arguments = new object[constructorArguments.Count];
 			for (var i = 0; i < constructorArguments.Count; i++)
+			{
 				arguments[i] = ReadAttributeValue(constructorArguments[i]);
+			}
 
 			return arguments;
 		}
@@ -91,7 +88,9 @@ namespace Castle.DynamicProxy.Internal
 		{
 			var value = argument.Value;
 			if (argument.ArgumentType.IsArray == false)
+			{
 				return value;
+			}
 			//special case for handling arrays in attributes
 			var arguments = GetArguments((IList<CustomAttributeTypedArgument>)value);
 			var array = Array.CreateInstance(argument.ArgumentType.GetElementType() ?? typeof(object), arguments.Length);
@@ -100,8 +99,8 @@ namespace Castle.DynamicProxy.Internal
 		}
 
 		private static void GetSettersAndFields(IEnumerable<CustomAttributeNamedArgument> namedArguments,
-			out PropertyInfo[] properties, out object[] propertyValues,
-			out FieldInfo[] fields, out object[] fieldValues)
+		                                        out PropertyInfo[] properties, out object[] propertyValues,
+		                                        out FieldInfo[] fields, out object[] fieldValues)
 		{
 			var propertyList = new List<PropertyInfo>();
 			var propertyValuesList = new List<object>();
@@ -122,7 +121,7 @@ namespace Castle.DynamicProxy.Internal
 					default:
 						// NOTE: can this ever happen?
 						throw new ArgumentException(string.Format("Unexpected member type {0} in custom attribute.",
-							argument.MemberInfo.MemberType));
+						                                          argument.MemberInfo.MemberType));
 				}
 			}
 
@@ -132,7 +131,7 @@ namespace Castle.DynamicProxy.Internal
 			fieldValues = fieldValuesList.ToArray();
 		}
 #else
-	// CustomAttributeData is internal in Silverlight
+		// CustomAttributeData is internal in Silverlight
 #endif
 
 		public static IEnumerable<CustomAttributeBuilder> GetNonInheritableAttributes(this MemberInfo member)
@@ -154,7 +153,9 @@ namespace Castle.DynamicProxy.Internal
 					attribute.Constructor.DeclaringType;
 #endif
 				if (ShouldSkipAttributeReplication(attributeType))
+				{
 					continue;
+				}
 
 				CustomAttributeBuilder builder;
 				try
@@ -175,7 +176,9 @@ namespace Castle.DynamicProxy.Internal
 					throw new ProxyGenerationException(message, e);
 				}
 				if (builder != null)
+				{
 					yield return builder;
+				}
 			}
 		}
 
@@ -198,7 +201,9 @@ namespace Castle.DynamicProxy.Internal
 					attribute.Constructor.DeclaringType;
 #endif
 				if (ShouldSkipAttributeReplication(attributeType))
+				{
 					continue;
+				}
 
 				var builder = CreateBuilder(attribute
 #if SILVERLIGHT
@@ -206,22 +211,28 @@ namespace Castle.DynamicProxy.Internal
 #endif
 					);
 				if (builder != null)
+				{
 					yield return builder;
+				}
 			}
 		}
 
 		/// <summary>
-		/// Attributes should be replicated if they are non-inheritable,
-		/// but there are some special cases where the attributes means
-		/// something to the CLR, where they should be skipped.
+		///   Attributes should be replicated if they are non-inheritable,
+		///   but there are some special cases where the attributes means
+		///   something to the CLR, where they should be skipped.
 		/// </summary>
 		private static bool ShouldSkipAttributeReplication(Type attribute)
 		{
 			if (attribute.IsPublic == false)
+			{
 				return true;
+			}
 
 			if (SpecialCaseAttributThatShouldNotBeReplicated(attribute))
+			{
 				return true;
+			}
 
 			var attrs = attribute.GetCustomAttributes(typeof(AttributeUsageAttribute), true);
 
@@ -267,7 +278,9 @@ namespace Castle.DynamicProxy.Internal
 
 			IAttributeDisassembler disassembler;
 			if (disassemblers.TryGetValue(type, out disassembler))
+			{
 				return disassembler.Disassemble(attribute);
+			}
 			return FallbackDisassembler.Disassemble(attribute);
 		}
 
@@ -275,7 +288,9 @@ namespace Castle.DynamicProxy.Internal
 		{
 			var types = new Type[objects.Length];
 			for (var i = 0; i < types.Length; i++)
+			{
 				types[i] = objects[i].GetType();
+			}
 			return types;
 		}
 	}

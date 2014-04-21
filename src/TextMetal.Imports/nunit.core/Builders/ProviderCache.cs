@@ -1,4 +1,4 @@
-// ****************************************************************
+﻿// ****************************************************************
 // Copyright 2008, Charlie Poole
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org.
@@ -6,81 +6,57 @@
 
 using System;
 using System.Collections;
+using System.Text;
 
 namespace NUnit.Core.Builders
 {
-	internal class ProviderCache
-	{
-		#region Fields/Constants
+    class ProviderCache
+    {
+        private static IDictionary instances = new Hashtable();
 
-		private static IDictionary instances = new Hashtable();
+        public static object GetInstanceOf(Type providerType)
+        {
+            CacheEntry entry = new CacheEntry(providerType);
 
-		#endregion
+            object instance = instances[entry];
+            return instance == null
+                ? instances[entry] = Reflect.Construct(providerType)
+                : instance;
+        }
 
-		#region Methods/Operators
+        public static void Clear()
+        {
+            foreach (object key in instances.Keys)
+            {
+                IDisposable provider = instances[key] as IDisposable;
+                if (provider != null)
+                    provider.Dispose();
+            }
 
-		public static void Clear()
-		{
-			foreach (object key in instances.Keys)
-			{
-				IDisposable provider = instances[key] as IDisposable;
-				if (provider != null)
-					provider.Dispose();
-			}
+            instances.Clear();
+        }
 
-			instances.Clear();
-		}
+        class CacheEntry
+        {
+            private Type providerType;
 
-		public static object GetInstanceOf(Type providerType)
-		{
-			CacheEntry entry = new CacheEntry(providerType);
+            public CacheEntry(Type providerType)
+            {
+                this.providerType = providerType;
+            }
 
-			object instance = instances[entry];
-			return instance == null
-				? instances[entry] = Reflect.Construct(providerType)
-				: instance;
-		}
+            public override bool Equals(object obj)
+            {
+                CacheEntry other = obj as CacheEntry;
+                if (other == null) return false;
 
-		#endregion
+                return this.providerType == other.providerType;
+            }
 
-		#region Classes/Structs/Interfaces/Enums/Delegates
-
-		private class CacheEntry
-		{
-			#region Constructors/Destructors
-
-			public CacheEntry(Type providerType)
-			{
-				this.providerType = providerType;
-			}
-
-			#endregion
-
-			#region Fields/Constants
-
-			private Type providerType;
-
-			#endregion
-
-			#region Methods/Operators
-
-			public override bool Equals(object obj)
-			{
-				CacheEntry other = obj as CacheEntry;
-				if (other == null)
-					return false;
-
-				return this.providerType == other.providerType;
-			}
-
-			public override int GetHashCode()
-			{
-				return this.providerType.GetHashCode();
-			}
-
-			#endregion
-		}
-
-		#endregion
-	}
+            public override int GetHashCode()
+            {
+                return providerType.GetHashCode();
+            }
+        }
+    }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
+﻿	// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,48 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Xml.Serialization;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Xml.Serialization;
 
 	public class XmlCustomSerializer : XmlTypeSerializer
 	{
-		#region Constructors/Destructors
-
-		private XmlCustomSerializer()
-		{
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
 		public static readonly XmlCustomSerializer
 			Instance = new XmlCustomSerializer();
 
-		#endregion
-
-		#region Properties/Indexers/Events
+		private XmlCustomSerializer() { }
 
 		public override XmlTypeKind Kind
 		{
-			get
-			{
-				return XmlTypeKind.Complex;
-			}
+			get { return XmlTypeKind.Complex; }
 		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		public override object GetValue(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor)
 		{
-			var serializable = (IXmlSerializable)Activator.CreateInstance(node.ClrType);
+            var serializable = (IXmlSerializable) Activator.CreateInstance(node.ClrType);
 
 			using (var reader = new XmlSubtreeReader(node, XmlDefaultSerializer.Root))
 			{
@@ -62,12 +41,12 @@ namespace Castle.Components.DictionaryAdapter.Xml
 				serializable.ReadXml(reader);
 			}
 
-			return serializable;
+            return serializable;
 		}
 
 		public override void SetValue(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor, object oldValue, ref object value)
 		{
-			var serializable = (IXmlSerializable)value;
+		    var serializable = (IXmlSerializable) value;
 			var root = XmlDefaultSerializer.Root;
 
 			using (var writer = new XmlSubtreeWriter(node))
@@ -78,9 +57,6 @@ namespace Castle.Components.DictionaryAdapter.Xml
 				writer.WriteEndElement();
 			}
 		}
-
-		#endregion
 	}
 }
-
 #endif

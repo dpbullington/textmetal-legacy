@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using System.ComponentModel;
-
 namespace Castle.Components.DictionaryAdapter
 {
+	using System.Collections.Generic;
+	using System.ComponentModel;
 	using SysPropertyDescriptor = System.ComponentModel.PropertyDescriptor;
 
 	public interface IBindingList<T> : IList<T>
@@ -24,65 +23,25 @@ namespace Castle.Components.DictionaryAdapter
 		, IBindingListSource, ICancelAddNew, IRaiseItemChangedEvents
 #endif
 	{
-		bool AllowNew
-		{
-			get;
-		}
-
-		bool AllowEdit
-		{
-			get;
-		}
-
-		bool AllowRemove
-		{
-			get;
-		}
-
-		bool SupportsChangeNotification
-		{
-			get;
-		}
-
-		bool SupportsSearching
-		{
-			get;
-		}
-
-		bool SupportsSorting
-		{
-			get;
-		}
-
-		bool IsSorted
-		{
-			get;
-		}
-
-		SysPropertyDescriptor SortProperty
-		{
-			get;
-		}
-
-		ListSortDirection SortDirection
-		{
-			get;
-		}
+		bool AllowNew                      { get; }
+		bool AllowEdit                     { get; }
+		bool AllowRemove                   { get; }
+		bool SupportsChangeNotification    { get; }
+		bool SupportsSearching             { get; }
+		bool SupportsSorting               { get; }
+		bool IsSorted                      { get; }
+		SysPropertyDescriptor SortProperty { get; }
+		ListSortDirection SortDirection    { get; }
 
 #if !SILVERLIGHT
 		event ListChangedEventHandler ListChanged;
 #endif
 
-		T AddNew();
-
-		int Find(SysPropertyDescriptor property, object key);
-
-		void AddIndex(SysPropertyDescriptor property);
-
+		T    AddNew     ();
+		int  Find       (SysPropertyDescriptor property, object key);
+		void AddIndex   (SysPropertyDescriptor property);
 		void RemoveIndex(SysPropertyDescriptor property);
-
-		void ApplySort(SysPropertyDescriptor property, ListSortDirection direction);
-
-		void RemoveSort();
+		void ApplySort  (SysPropertyDescriptor property, ListSortDirection direction);
+		void RemoveSort ();
 	}
 }

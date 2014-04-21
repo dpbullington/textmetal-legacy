@@ -21,46 +21,32 @@ namespace Castle.Components.DictionaryAdapter
 	/// </summary>
 	public interface IDictionaryAdapter : IDictionaryEdit, IDictionaryNotify, IDictionaryValidate, IDictionaryCreate
 	{
-		#region Properties/Indexers/Events
+		DictionaryAdapterMeta Meta { get; }
 
-		DictionaryAdapterMeta Meta
-		{
-			get;
-		}
-
-		DictionaryAdapterInstance This
-		{
-			get;
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		void ClearProperty(PropertyDescriptor property, string key);
-
-		T Coerce<T>() where T : class;
-
-		object Coerce(Type type);
-
-		void CopyTo(IDictionaryAdapter other);
-
-		void CopyTo(IDictionaryAdapter other, Func<PropertyDescriptor, bool> selector);
+		DictionaryAdapterInstance This { get; }
 
 		string GetKey(string propertyName);
 
 		object GetProperty(string propertyName, bool ifExists);
 
-		T GetPropertyOfType<T>(string propertyName);
-
 		object ReadProperty(string key);
+
+		T GetPropertyOfType<T>(string propertyName);
 
 		bool SetProperty(string propertyName, ref object value);
 
-		bool ShouldClearProperty(PropertyDescriptor property, object value);
-
 		void StoreProperty(PropertyDescriptor property, string key, object value);
 
-		#endregion
+		void ClearProperty(PropertyDescriptor property, string key);
+
+		bool ShouldClearProperty(PropertyDescriptor property, object value);
+
+		void CopyTo(IDictionaryAdapter other);
+
+		void CopyTo(IDictionaryAdapter other, Func<PropertyDescriptor, bool> selector);
+
+		T Coerce<T>() where T : class;
+
+		object Coerce(Type type);
 	}
 }

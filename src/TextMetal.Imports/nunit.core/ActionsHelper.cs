@@ -1,4 +1,4 @@
-// ****************************************************************
+﻿// ****************************************************************
 // Copyright 2012, Charlie Poole
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
@@ -6,132 +6,120 @@
 
 #if CLR_2_0 || CLR_4_0
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace NUnit.Core
 {
-	internal class ActionsHelper
-	{
-		#region Constructors/Destructors
+    internal class ActionsHelper
+    {
+        private static Type _ActionInterfaceType = null;
 
-		static ActionsHelper()
-		{
-			_ActionInterfaceType = Type.GetType(NUnitFramework.TestActionInterface);
-		}
+        static ActionsHelper()
+        {
+            _ActionInterfaceType = Type.GetType(NUnitFramework.TestActionInterface);
+        }
 
-		#endregion
+        public static void ExecuteActions(ActionPhase phase, IEnumerable<TestAction> actions, ITest test)
+        {
+            if (actions == null)
+                return;
 
-		#region Fields/Constants
+            TestAction[] filteredActions = GetFilteredAndSortedActions(actions, phase);
 
-		private static Type _ActionInterfaceType = null;
+            foreach (TestAction action in filteredActions)
+            {
+                if(phase == ActionPhase.Before)
+                    action.ExecuteBefore(test);
+                else
+                    action.ExecuteAfter(test);
+            }
+        }
 
-		#endregion
+        public static TestAction[] GetActionsFromAttributeProvider(ICustomAttributeProvider attributeProvider)
+        {
+            if (attributeProvider == null || _ActionInterfaceType == null)
+                return new TestAction[0];
 
-		#region Methods/Operators
+            object[] targets = attributeProvider.GetCustomAttributes(_ActionInterfaceType, false);
 
-		public static void ExecuteActions(ActionPhase phase, IEnumerable<TestAction> actions, ITest test)
-		{
-			if (actions == null)
-				return;
+            List<TestAction> actions = new List<TestAction>();
 
-			TestAction[] filteredActions = GetFilteredAndSortedActions(actions, phase);
+            foreach (var target in targets)
+                actions.Add(new TestAction(target));
 
-			foreach (TestAction action in filteredActions)
-			{
-				if (phase == ActionPhase.Before)
-					action.ExecuteBefore(test);
-				else
-					action.ExecuteAfter(test);
-			}
-		}
+            actions.Sort(SortByTargetDescending);
 
-		public static TestAction[] GetActionsFromAttributeProvider(ICustomAttributeProvider attributeProvider)
-		{
-			if (attributeProvider == null || _ActionInterfaceType == null)
-				return new TestAction[0];
+            return actions.ToArray();
+        }
 
-			object[] targets = attributeProvider.GetCustomAttributes(_ActionInterfaceType, false);
+        public static TestAction[] GetActionsFromTypesAttributes(Type type)
+        {
+            if(type == null)
+                return new TestAction[0];
 
-			List<TestAction> actions = new List<TestAction>();
+            if(type == typeof(object))
+                return new TestAction[0];
 
-			foreach (var target in targets)
-				actions.Add(new TestAction(target));
+            List<TestAction> actions = new List<TestAction>();
 
-			actions.Sort(SortByTargetDescending);
+            actions.AddRange(GetActionsFromTypesAttributes(type.BaseType));
 
-			return actions.ToArray();
-		}
+            Type[] declaredInterfaces = GetDeclaredInterfaces(type);
 
-		public static TestAction[] GetActionsFromTypesAttributes(Type type)
-		{
-			if (type == null)
-				return new TestAction[0];
+            foreach(Type interfaceType in declaredInterfaces)
+                actions.AddRange(GetActionsFromAttributeProvider(interfaceType));
 
-			if (type == typeof(object))
-				return new TestAction[0];
+            actions.AddRange(GetActionsFromAttributeProvider(type));
 
-			List<TestAction> actions = new List<TestAction>();
+            return actions.ToArray();
+        }
 
-			actions.AddRange(GetActionsFromTypesAttributes(type.BaseType));
+        private static Type[] GetDeclaredInterfaces(Type type)
+        {
+            List<Type> interfaces = new List<Type>(type.GetInterfaces());
 
-			Type[] declaredInterfaces = GetDeclaredInterfaces(type);
+            if (type.BaseType == typeof(object))
+                return interfaces.ToArray();
 
-			foreach (Type interfaceType in declaredInterfaces)
-				actions.AddRange(GetActionsFromAttributeProvider(interfaceType));
+            List<Type> baseInterfaces = new List<Type>(type.BaseType.GetInterfaces());
+            List<Type> declaredInterfaces = new List<Type>();
 
-			actions.AddRange(GetActionsFromAttributeProvider(type));
+            foreach (Type interfaceType in interfaces)
+            {
+                if (!baseInterfaces.Contains(interfaceType))
+                    declaredInterfaces.Add(interfaceType);
+            }
 
-			return actions.ToArray();
-		}
+            return declaredInterfaces.ToArray();
+        }
 
-		private static Type[] GetDeclaredInterfaces(Type type)
-		{
-			List<Type> interfaces = new List<Type>(type.GetInterfaces());
+        private static TestAction[] GetFilteredAndSortedActions(IEnumerable<TestAction> actions, ActionPhase phase)
+        {
+            List<TestAction> filteredActions = new List<TestAction>();
+            foreach (TestAction actionItem in actions)
+            {
+                if (filteredActions.Contains(actionItem) != true)
+                    filteredActions.Add(actionItem);
+            }
 
-			if (type.BaseType == typeof(object))
-				return interfaces.ToArray();
+            if(phase == ActionPhase.After)
+                filteredActions.Reverse();
 
-			List<Type> baseInterfaces = new List<Type>(type.BaseType.GetInterfaces());
-			List<Type> declaredInterfaces = new List<Type>();
+            return filteredActions.ToArray();
+        }
 
-			foreach (Type interfaceType in interfaces)
-			{
-				if (!baseInterfaces.Contains(interfaceType))
-					declaredInterfaces.Add(interfaceType);
-			}
+        private static int SortByTargetDescending(TestAction x, TestAction y)
+        {
+            return y.Targets.CompareTo(x.Targets);
+        }
+    }
 
-			return declaredInterfaces.ToArray();
-		}
-
-		private static TestAction[] GetFilteredAndSortedActions(IEnumerable<TestAction> actions, ActionPhase phase)
-		{
-			List<TestAction> filteredActions = new List<TestAction>();
-			foreach (TestAction actionItem in actions)
-			{
-				if (filteredActions.Contains(actionItem) != true)
-					filteredActions.Add(actionItem);
-			}
-
-			if (phase == ActionPhase.After)
-				filteredActions.Reverse();
-
-			return filteredActions.ToArray();
-		}
-
-		private static int SortByTargetDescending(TestAction x, TestAction y)
-		{
-			return y.Targets.CompareTo(x.Targets);
-		}
-
-		#endregion
-	}
-
-	public enum ActionPhase
-	{
-		Before,
-		After
-	}
+    public enum ActionPhase
+    {
+        Before,
+        After
+    }
 }
-
 #endif

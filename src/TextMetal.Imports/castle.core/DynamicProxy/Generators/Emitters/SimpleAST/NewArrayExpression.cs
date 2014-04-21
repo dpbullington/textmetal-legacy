@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection.Emit;
-
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
 	using System;
+	using System.Reflection.Emit;
 
 	/// <summary>
-	/// Summary description for NewArrayExpression.
+	///   Summary description for NewArrayExpression.
 	/// </summary>
 	public class NewArrayExpression : Expression
 	{
-		#region Constructors/Destructors
+		private readonly Type arrayType;
+		private readonly int size;
 
 		public NewArrayExpression(int size, Type arrayType)
 		{
@@ -31,23 +31,10 @@ namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 			this.arrayType = arrayType;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly Type arrayType;
-		private readonly int size;
-
-		#endregion
-
-		#region Methods/Operators
-
 		public override void Emit(IMemberEmitter member, ILGenerator gen)
 		{
-			gen.Emit(OpCodes.Ldc_I4, this.size);
-			gen.Emit(OpCodes.Newarr, this.arrayType);
+			gen.Emit(OpCodes.Ldc_I4, size);
+			gen.Emit(OpCodes.Newarr, arrayType);
 		}
-
-		#endregion
 	}
 }

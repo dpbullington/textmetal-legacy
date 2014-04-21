@@ -5,16 +5,14 @@
 // ****************************************************************
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Timers;
-
 using NUnit.Core;
 
 namespace NUnit.Util
 {
 	/// <summary>
-	/// AssemblyWatcher keeps track of one or more assemblies to
+	/// AssemblyWatcher keeps track of one or more assemblies to 
 	/// see if they have changed. It incorporates a delayed notification
 	/// and uses a standard event to notify any interested parties
 	/// about the change. The path to the assembly is provided as
@@ -23,140 +21,140 @@ namespace NUnit.Util
 	/// </summary>
 	public class AssemblyWatcher : IAssemblyWatcher
 	{
-		private static Logger log = InternalTrace.GetLogger(typeof(AssemblyWatcher));
+        static Logger log = InternalTrace.GetLogger(typeof(AssemblyWatcher));
 
-		private FileSystemWatcher[] fileWatchers;
+        private FileSystemWatcher[] fileWatchers;
 		private FileInfo[] files;
 
-		protected Timer timer;
+		protected System.Timers.Timer timer;
 		protected string changedAssemblyPath;
 
 		protected FileInfo GetFileInfo(int index)
 		{
-			return this.files[index];
+			return files[index];
 		}
 
 		public void Setup(int delay, string assemblyFileName)
 		{
-			this.Setup(delay, new string[] { assemblyFileName });
+			Setup(delay, new string[] {assemblyFileName});
 		}
 
 #if CLR_2_0 || CLR_4_0
-		public void Setup(int delay, IList<string> assemblies)
+		public void Setup(int delay, System.Collections.Generic.IList<string> assemblies)
 #else
         public void Setup(int delay, System.Collections.IList assemblies)
 #endif
 		{
-			log.Info("Setting up watcher");
+            log.Info("Setting up watcher");
 
-			this.files = new FileInfo[assemblies.Count];
-			this.fileWatchers = new FileSystemWatcher[assemblies.Count];
+			files = new FileInfo[assemblies.Count];
+			fileWatchers = new FileSystemWatcher[assemblies.Count];
 
 			for (int i = 0; i < assemblies.Count; i++)
 			{
-				log.Debug("Setting up FileSystemWatcher for {0}", assemblies[i]);
+                log.Debug("Setting up FileSystemWatcher for {0}", assemblies[i]);
+                
+				files[i] = new FileInfo((string)assemblies[i]);
 
-				this.files[i] = new FileInfo((string)assemblies[i]);
-
-				this.fileWatchers[i] = new FileSystemWatcher();
-				this.fileWatchers[i].Path = this.files[i].DirectoryName;
-				this.fileWatchers[i].Filter = this.files[i].Name;
-				this.fileWatchers[i].NotifyFilter = NotifyFilters.Size | NotifyFilters.LastWrite;
-				this.fileWatchers[i].Changed += new FileSystemEventHandler(this.OnChanged);
-				this.fileWatchers[i].EnableRaisingEvents = false;
+				fileWatchers[i] = new FileSystemWatcher();
+				fileWatchers[i].Path = files[i].DirectoryName;
+				fileWatchers[i].Filter = files[i].Name;
+				fileWatchers[i].NotifyFilter = NotifyFilters.Size | NotifyFilters.LastWrite;
+				fileWatchers[i].Changed += new FileSystemEventHandler(OnChanged);
+				fileWatchers[i].EnableRaisingEvents = false;
 			}
 
-			this.timer = new Timer(delay);
-			this.timer.AutoReset = false;
-			this.timer.Enabled = false;
-			this.timer.Elapsed += new ElapsedEventHandler(this.OnTimer);
+			timer = new System.Timers.Timer(delay);
+			timer.AutoReset = false;
+			timer.Enabled = false;
+			timer.Elapsed += new ElapsedEventHandler(OnTimer);
 		}
 
 		public void Start()
 		{
-			this.EnableWatchers(true);
+			EnableWatchers( true );
 		}
 
 		public void Stop()
 		{
-			this.EnableWatchers(false);
+			EnableWatchers( false );
 		}
 
-		private void EnableWatchers(bool enable)
+		private void EnableWatchers( bool enable )
 		{
-			if (this.fileWatchers != null)
-			{
-				foreach (FileSystemWatcher watcher in this.fileWatchers)
-					watcher.EnableRaisingEvents = enable;
-			}
+            if (fileWatchers != null)
+    			foreach( FileSystemWatcher watcher in fileWatchers )
+	    			watcher.EnableRaisingEvents = enable;
 		}
 
 		public void FreeResources()
 		{
-			log.Info("FreeResources");
+            log.Info("FreeResources");
 
-			this.Stop();
+            Stop();
 
-			if (this.fileWatchers != null)
+			if (fileWatchers != null)
 			{
-				foreach (FileSystemWatcher watcher in this.fileWatchers)
+				foreach (FileSystemWatcher watcher in fileWatchers)
 				{
-					if (watcher != null)
-					{
-						watcher.Changed -= new FileSystemEventHandler(this.OnChanged);
-						watcher.Dispose();
-					}
+                    if (watcher != null)
+                    {
+                        watcher.Changed -= new FileSystemEventHandler(OnChanged);
+                        watcher.Dispose();
+                    }
 				}
 			}
 
-			if (this.timer != null)
+			if (timer != null)
 			{
-				this.timer.Stop();
-				this.timer.Close();
+				timer.Stop();
+				timer.Close();
 			}
 
-			this.fileWatchers = null;
-			this.timer = null;
+			fileWatchers = null;
+			timer = null;
 		}
 
 		public event AssemblyChangedHandler AssemblyChanged;
 
 		protected void OnTimer(Object source, ElapsedEventArgs e)
 		{
-			lock (this)
+			lock(this)
 			{
-				log.Info("Timer expired");
-				this.PublishEvent();
-				this.timer.Enabled = false;
+                log.Info("Timer expired");
+				PublishEvent();
+				timer.Enabled=false;
 			}
 		}
-
+		
 		protected void OnChanged(object source, FileSystemEventArgs e)
 		{
-			log.Info("File {0} changed", e.Name);
+            log.Info("File {0} changed", e.Name);
 
-			this.changedAssemblyPath = e.FullPath;
-			if (this.timer != null)
+			changedAssemblyPath = e.FullPath;
+			if ( timer != null )
 			{
-				lock (this)
+				lock(this)
 				{
-					if (!this.timer.Enabled)
-						this.timer.Enabled = true;
-					log.Info("Setting timer");
-					this.timer.Start();
+					if(!timer.Enabled)
+						timer.Enabled=true;
+                    log.Info("Setting timer");
+					timer.Start();
 				}
 			}
 			else
-				this.PublishEvent();
+			{
+				PublishEvent();
+			}
 		}
-
+	
 		protected void PublishEvent()
 		{
-			if (this.AssemblyChanged != null)
-			{
-				log.Debug("Publishing Event to {0} listeners", this.AssemblyChanged.GetInvocationList().Length);
-				this.AssemblyChanged(this.changedAssemblyPath);
-			}
+            if (AssemblyChanged != null)
+            {
+                log.Debug("Publishing Event to {0} listeners", AssemblyChanged.GetInvocationList().Length);
+                AssemblyChanged(changedAssemblyPath);
+            }
 		}
 	}
 }

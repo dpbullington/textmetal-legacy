@@ -14,13 +14,9 @@ namespace NUnit.Framework
 	/// </summary>
 	public class GlobalSettings
 	{
-		#region Fields/Constants
-
 		/// <summary>
 		/// Default tolerance for floating point equality
 		/// </summary>
 		public static double DefaultFloatingPointTolerance = 0.0d;
-
-		#endregion
 	}
 }

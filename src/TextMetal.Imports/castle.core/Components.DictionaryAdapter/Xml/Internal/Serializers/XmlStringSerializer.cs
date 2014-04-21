@@ -12,41 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	public class XmlStringSerializer : XmlTypeSerializer
 	{
-		#region Constructors/Destructors
-
-		protected XmlStringSerializer()
-		{
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
 		public static readonly XmlStringSerializer
 			Instance = new XmlStringSerializer();
 
-		#endregion
-
-		#region Properties/Indexers/Events
+		protected XmlStringSerializer() { }
 
 		public override XmlTypeKind Kind
 		{
-			get
-			{
-				return XmlTypeKind.Simple;
-			}
+			get { return XmlTypeKind.Simple; }
 		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		public override object GetValue(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor)
 		{
@@ -57,9 +36,6 @@ namespace Castle.Components.DictionaryAdapter.Xml
 		{
 			node.Value = value.ToString();
 		}
-
-		#endregion
 	}
 }
-
 #endif

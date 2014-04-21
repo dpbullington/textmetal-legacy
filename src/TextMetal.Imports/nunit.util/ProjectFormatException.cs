@@ -14,33 +14,7 @@ namespace NUnit.Util
 	/// </summary>
 	public class ProjectFormatException : ApplicationException
 	{
-		#region Constructors/Destructors
-
-		public ProjectFormatException()
-			: base()
-		{
-		}
-
-		public ProjectFormatException(string message)
-			: base(message)
-		{
-		}
-
-		public ProjectFormatException(string message, Exception inner)
-			: base(message, inner)
-		{
-		}
-
-		public ProjectFormatException(string message, int lineNumber, int linePosition)
-			: base(message)
-		{
-			this.lineNumber = lineNumber;
-			this.linePosition = linePosition;
-		}
-
-		#endregion
-
-		#region Fields/Constants
+		#region Instance Variables
 
 		private int lineNumber;
 
@@ -48,22 +22,35 @@ namespace NUnit.Util
 
 		#endregion
 
-		#region Properties/Indexers/Events
+		#region Constructors
+
+		public ProjectFormatException() : base() {}
+
+		public ProjectFormatException( string message )
+			: base( message ) {}
+
+		public ProjectFormatException( string message, Exception inner )
+			: base( message, inner ) {}
+
+		public ProjectFormatException( string message, int lineNumber, int linePosition )
+			: base( message )
+		{
+			this.lineNumber = lineNumber;
+			this.linePosition = linePosition;
+		}
+
+		#endregion
+
+		#region Properties
 
 		public int LineNumber
 		{
-			get
-			{
-				return this.lineNumber;
-			}
+			get { return lineNumber; }
 		}
 
 		public int LinePosition
 		{
-			get
-			{
-				return this.linePosition;
-			}
+			get { return linePosition; }
 		}
 
 		#endregion

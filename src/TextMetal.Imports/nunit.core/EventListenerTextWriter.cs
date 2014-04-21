@@ -3,63 +3,41 @@
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org.
 // ****************************************************************
-
-using System.IO;
-using System.Text;
-
 namespace NUnit.Core
 {
 	using System;
+	using System.IO;
+	using System.Text;
 
 	public class EventListenerTextWriter : TextWriter
 	{
-		#region Constructors/Destructors
+		private EventListener eventListener;
+		private TestOutputType type;
 
-		public EventListenerTextWriter(EventListener eventListener, TestOutputType type)
+		public EventListenerTextWriter( EventListener eventListener, TestOutputType type )
 		{
 			this.eventListener = eventListener;
 			this.type = type;
 		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private EventListener eventListener;
-		private TestOutputType type;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public override Encoding Encoding
+		override public void Write(char aChar)
 		{
-			get
-			{
-				return Encoding.Default;
-			}
+			this.eventListener.TestOutput( new TestOutput( aChar.ToString(), this.type ) );
 		}
 
-		#endregion
-
-		#region Methods/Operators
-
-		public override void Write(char aChar)
+		override public void Write(string aString)
 		{
-			this.eventListener.TestOutput(new TestOutput(aChar.ToString(), this.type));
+			this.eventListener.TestOutput( new TestOutput( aString, this.type ) );
 		}
 
-		public override void Write(string aString)
+		override public void WriteLine(string aString)
 		{
-			this.eventListener.TestOutput(new TestOutput(aString, this.type));
+			this.eventListener.TestOutput( new TestOutput( aString + this.NewLine, this.type ) );
 		}
 
-		public override void WriteLine(string aString)
+		override public System.Text.Encoding Encoding
 		{
-			this.eventListener.TestOutput(new TestOutput(aString + this.NewLine, this.type));
+			get { return Encoding.Default; }
 		}
-
-		#endregion
 	}
 
 	/// <summary>
@@ -67,26 +45,16 @@ namespace NUnit.Core
 	/// </summary>
 	public class BufferedEventListenerTextWriter : TextWriter
 	{
-		#region Constructors/Destructors
+		private EventListener eventListener;
+		private TestOutputType type;
+		private const int MAX_BUFFER = 1024;
+		private StringBuilder sb = new StringBuilder( MAX_BUFFER );
 
-		public BufferedEventListenerTextWriter(EventListener eventListener, TestOutputType type)
+		public BufferedEventListenerTextWriter( EventListener eventListener, TestOutputType type )
 		{
 			this.eventListener = eventListener;
 			this.type = type;
 		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private const int MAX_BUFFER = 1024;
-		private EventListener eventListener;
-		private StringBuilder sb = new StringBuilder(MAX_BUFFER);
-		private TestOutputType type;
-
-		#endregion
-
-		#region Properties/Indexers/Events
 
 		public override Encoding Encoding
 		{
@@ -95,58 +63,52 @@ namespace NUnit.Core
 				return Encoding.Default;
 			}
 		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		private void CheckBuffer()
+	
+		override public void Write(char ch)
 		{
-			if (this.sb.Length >= MAX_BUFFER)
-				this.Flush();
+			lock( sb )
+			{
+				sb.Append( ch );
+				this.CheckBuffer();
+			}
 		}
 
-		public override void Flush()
+		override public void Write(string str)
 		{
-			if (this.sb.Length > 0)
+			lock( sb )
 			{
-				lock (this.sb)
+				sb.Append( str );
+				this.CheckBuffer();
+			}
+		}
+
+		override public void WriteLine(string str)
+		{
+			lock( sb )
+			{
+				sb.Append( str );
+				sb.Append( base.NewLine );
+				this.CheckBuffer();
+			}
+		}
+
+		override public void Flush()
+		{
+			if ( sb.Length > 0 )
+			{
+				lock( sb )
 				{
-					TestOutput output = new TestOutput(this.sb.ToString(), this.type);
-					this.eventListener.TestOutput(output);
-					this.sb.Length = 0;
+					TestOutput output = new TestOutput(sb.ToString(), this.type);
+					this.eventListener.TestOutput( output );
+					sb.Length = 0;
 				}
 			}
 		}
 
-		public override void Write(char ch)
+		private void CheckBuffer()
 		{
-			lock (this.sb)
-			{
-				this.sb.Append(ch);
-				this.CheckBuffer();
-			}
+			if ( sb.Length >= MAX_BUFFER )
+				this.Flush();
 		}
-
-		public override void Write(string str)
-		{
-			lock (this.sb)
-			{
-				this.sb.Append(str);
-				this.CheckBuffer();
-			}
-		}
-
-		public override void WriteLine(string str)
-		{
-			lock (this.sb)
-			{
-				this.sb.Append(str);
-				this.sb.Append(base.NewLine);
-				this.CheckBuffer();
-			}
-		}
-
-		#endregion
 	}
 }

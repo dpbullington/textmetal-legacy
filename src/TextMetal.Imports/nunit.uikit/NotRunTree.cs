@@ -6,7 +6,6 @@
 
 using System;
 using System.Windows.Forms;
-
 using NUnit.Core;
 using NUnit.Util;
 
@@ -17,15 +16,23 @@ namespace NUnit.UiKit
 	/// </summary>
 	public class NotRunTree : TreeView, TestObserver
 	{
-		#region Methods/Operators
+		#region TestObserver Members and TestEventHandlers
 
-		private void AddNode(TestResult result)
+		public void Subscribe(ITestEvents events)
 		{
-			TreeNode node = new TreeNode(result.Name);
-			TreeNode reasonNode = new TreeNode("Reason: " + result.Message);
-			node.Nodes.Add(reasonNode);
+			events.TestLoaded += new TestEventHandler(ClearTreeNodes);
+			events.TestUnloaded += new TestEventHandler(ClearTreeNodes);
+			events.TestReloaded += new TestEventHandler(OnTestReloaded);
+			events.RunStarting += new TestEventHandler(ClearTreeNodes);
+			events.TestFinished += new TestEventHandler(OnTestFinished);
+			events.SuiteFinished += new TestEventHandler(OnTestFinished);
+		}
 
-			this.Nodes.Add(node);
+		private void OnTestFinished( object sender, TestEventArgs args )
+		{
+			TestResult result = args.Result;
+			if ( result.ResultState == ResultState.Skipped || result.ResultState == ResultState.Ignored)
+				this.AddNode( args.Result );
 		}
 
 		private void ClearTreeNodes(object sender, TestEventArgs args)
@@ -33,29 +40,20 @@ namespace NUnit.UiKit
 			this.Nodes.Clear();
 		}
 
-		private void OnTestFinished(object sender, TestEventArgs args)
-		{
-			TestResult result = args.Result;
-			if (result.ResultState == ResultState.Skipped || result.ResultState == ResultState.Ignored)
-				this.AddNode(args.Result);
-		}
-
 		private void OnTestReloaded(object sender, TestEventArgs args)
 		{
-			if (Services.UserSettings.GetSetting("Options.TestLoader.ClearResultsOnReload", false))
+			if ( Services.UserSettings.GetSetting( "Options.TestLoader.ClearResultsOnReload", false ) )
 				this.Nodes.Clear();
 		}
 
-		public void Subscribe(ITestEvents events)
+		private void AddNode( TestResult result )
 		{
-			events.TestLoaded += new TestEventHandler(this.ClearTreeNodes);
-			events.TestUnloaded += new TestEventHandler(this.ClearTreeNodes);
-			events.TestReloaded += new TestEventHandler(this.OnTestReloaded);
-			events.RunStarting += new TestEventHandler(this.ClearTreeNodes);
-			events.TestFinished += new TestEventHandler(this.OnTestFinished);
-			events.SuiteFinished += new TestEventHandler(this.OnTestFinished);
-		}
+			TreeNode node = new TreeNode(result.Name);
+			TreeNode reasonNode = new TreeNode("Reason: " + result.Message);
+			node.Nodes.Add(reasonNode);
 
+			Nodes.Add( node );
+		}
 		#endregion
 	}
 }

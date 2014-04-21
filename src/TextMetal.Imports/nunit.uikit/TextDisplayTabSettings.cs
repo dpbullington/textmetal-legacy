@@ -3,212 +3,160 @@
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
-
 using System;
-using System.Collections.Generic;
-using System.Text;
-
+using System.Collections;
 using NUnit.Util;
 
 namespace NUnit.UiKit
 {
 	public class TextDisplayTabSettings
 	{
-		#region Fields/Constants
+		private TabInfoCollection tabInfo;
+		private NUnit.Util.ISettings settings;
 
 		public static readonly string Prefix = "Gui.TextOutput.";
-		private ISettings settings;
-		private TabInfoCollection tabInfo;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public TabInfoCollection Tabs
-		{
-			get
-			{
-				return this.tabInfo;
-			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		public void ApplySettings()
-		{
-			StringBuilder tabNames = new StringBuilder();
-			foreach (TabInfo tab in this.tabInfo)
-			{
-				if (tabNames.Length > 0)
-					tabNames.Append(",");
-				tabNames.Append(tab.Name);
-
-				string prefix = Prefix + tab.Name;
-
-				this.settings.SaveSetting(prefix + ".Title", tab.Title);
-				this.settings.SaveSetting(prefix + ".Enabled", tab.Enabled);
-				tab.Content.SaveSettings(tab.Name);
-			}
-
-			string oldNames = this.settings.GetSetting(Prefix + "TabList", string.Empty);
-			this.settings.SaveSetting(Prefix + "TabList", tabNames.ToString());
-
-			if (oldNames != string.Empty)
-			{
-				string[] oldTabs = oldNames.Split(new char[] { ',' });
-				foreach (string tabName in oldTabs)
-				{
-					if (this.tabInfo[tabName] == null)
-						this.settings.RemoveGroup(Prefix + tabName);
-				}
-			}
-		}
-
-		public void LoadDefaults()
-		{
-			this.tabInfo = new TabInfoCollection();
-
-			TabInfo tab = this.tabInfo.AddNewTab("Text Output");
-			tab.Content = new TextDisplayContent();
-			tab.Content.Out = true;
-			tab.Content.Error = true;
-			tab.Content.Labels = TestLabelLevel.On;
-			tab.Enabled = true;
-		}
 
 		public void LoadSettings()
 		{
-			this.LoadSettings(Services.UserSettings);
+			LoadSettings( NUnit.Util.Services.UserSettings );
 		}
 
-		public void LoadSettings(ISettings settings)
+		public void LoadSettings(NUnit.Util.ISettings settings)
 		{
 			this.settings = settings;
 
 			TabInfoCollection info = new TabInfoCollection();
-			string tabList = (string)settings.GetSetting(Prefix + "TabList");
+			string tabList = (string)settings.GetSetting( Prefix + "TabList" );
 
-			if (tabList != null)
+			if ( tabList != null ) 
 			{
-				string[] tabNames = tabList.Split(new char[] { ',' });
-				foreach (string name in tabNames)
+				string[] tabNames = tabList.Split( new char[] { ',' } );
+				foreach( string name in tabNames )
 				{
 					string prefix = Prefix + name;
 					string text = (string)settings.GetSetting(prefix + ".Title");
-					if (text == null)
+					if ( text == null )
 						break;
 
-					TabInfo tab = new TabInfo(name, text);
+					TabInfo tab = new TabInfo( name, text );
 
-					tab.Content = TextDisplayContent.FromSettings(name);
-					tab.Enabled = settings.GetSetting(prefix + ".Enabled", true);
+                    tab.Content = TextDisplayContent.FromSettings(name);
+					tab.Enabled = settings.GetSetting( prefix + ".Enabled", true );
 
-					info.Add(tab);
+					info.Add( tab );
 				}
 			}
 
-			if (info.Count > 0)
-				this.tabInfo = info;
-			else
-				this.LoadDefaults();
+			if ( info.Count > 0 )		
+				tabInfo = info;
+			else 
+				LoadDefaults();
 		}
 
-		#endregion
-
-		#region Classes/Structs/Interfaces/Enums/Delegates
-
-		public class TabInfo
+		public void LoadDefaults()
 		{
-			#region Constructors/Destructors
+			tabInfo = new TabInfoCollection();
 
-			public TabInfo(string name, string title)
+            TabInfo tab = tabInfo.AddNewTab("Text Output");
+		    tab.Content = new TextDisplayContent();
+            tab.Content.Out = true;
+            tab.Content.Error = true;
+            tab.Content.Labels = TestLabelLevel.On;
+		    tab.Enabled = true;
+        }
+
+		public void ApplySettings()
+		{
+			System.Text.StringBuilder tabNames = new System.Text.StringBuilder();
+			foreach( TabInfo tab in tabInfo )
+			{
+				if ( tabNames.Length > 0 )
+					tabNames.Append(",");
+				tabNames.Append( tab.Name );
+
+				string prefix = Prefix + tab.Name;
+
+				settings.SaveSetting( prefix + ".Title", tab.Title );
+				settings.SaveSetting( prefix + ".Enabled", tab.Enabled );
+                tab.Content.SaveSettings(tab.Name);
+			}
+
+			string oldNames = settings.GetSetting( Prefix + "TabList", string.Empty );
+			settings.SaveSetting( Prefix + "TabList", tabNames.ToString() );
+
+			if (oldNames != string.Empty )
+			{
+				string[] oldTabs = oldNames.Split( new char[] { ',' } );
+				foreach( string tabName in oldTabs )
+					if ( tabInfo[tabName] == null )
+						settings.RemoveGroup( Prefix + tabName );
+			}
+		}
+
+		public TabInfoCollection Tabs
+		{
+			get { return tabInfo; }
+        }
+
+        #region Nested TabInfo Class
+
+        public class TabInfo
+		{
+			public TabInfo( string name, string title )
 			{
 				this.Name = name;
 				this.Title = title;
-				this.Enabled = true;
-				this.Content = new TextDisplayContent();
+                this.Enabled = true;
+                this.Content = new TextDisplayContent();
 			}
 
-			#endregion
+            public string Name { get; set; }
+            public string Title { get; set; }
+            public TextDisplayContent Content { get; set; }
+            public bool Enabled { get; set; }
+        }
 
-			#region Properties/Indexers/Events
+        #endregion
 
-			public TextDisplayContent Content
-			{
-				get;
-				set;
-			}
+        #region Nested TabInfoCollectionClass
 
-			public bool Enabled
-			{
-				get;
-				set;
-			}
-
-			public string Name
-			{
-				get;
-				set;
-			}
-
-			public string Title
-			{
-				get;
-				set;
-			}
-
-			#endregion
-		}
-
-		public class TabInfoCollection : List<TabInfo>
+        public class TabInfoCollection : System.Collections.Generic.List<TabInfo>
 		{
-			#region Properties/Indexers/Events
+			public TabInfo AddNewTab( string title )
+			{
+				TabInfo tabInfo = new TabInfo( GetNextName(), title );
+                this.Add(tabInfo);
+				return tabInfo;
+			}
+
+			private string GetNextName()
+			{
+				for( int i = 0;;i++ )
+				{
+					string name = string.Format( "Tab{0}", i );
+					if ( this[name] == null )
+						return name;
+				}
+			}
 
 			public TabInfo this[string name]
 			{
 				get
 				{
-					foreach (TabInfo info in this)
-					{
-						if (info.Name == name)
+					foreach ( TabInfo info in this )
+						if ( info.Name == name )
 							return info;
-					}
 
 					return null;
 				}
 			}
 
-			#endregion
-
-			#region Methods/Operators
-
-			public TabInfo AddNewTab(string title)
-			{
-				TabInfo tabInfo = new TabInfo(this.GetNextName(), title);
-				this.Add(tabInfo);
-				return tabInfo;
-			}
-
-			public bool Contains(string name)
+			public bool Contains( string name )
 			{
 				return this[name] != null;
 			}
+        }
 
-			private string GetNextName()
-			{
-				for (int i = 0;; i++)
-				{
-					string name = string.Format("Tab{0}", i);
-					if (this[name] == null)
-						return name;
-				}
-			}
-
-			#endregion
-		}
-
-		#endregion
-	}
+        #endregion
+    }
 }

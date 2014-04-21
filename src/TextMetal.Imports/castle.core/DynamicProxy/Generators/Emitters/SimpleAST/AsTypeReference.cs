@@ -12,59 +12,52 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Diagnostics;
-using System.Reflection.Emit;
-
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
 	using System;
+	using System.Diagnostics;
+	using System.Reflection.Emit;
 
 	[DebuggerDisplay("{reference} as {type}")]
 	public class AsTypeReference : Reference
 	{
-		#region Constructors/Destructors
+		private readonly Reference reference;
+		private readonly Type type;
 
 		public AsTypeReference(Reference reference, Type type)
 		{
 			if (reference == null)
+			{
 				throw new ArgumentNullException("reference");
+			}
 			if (type == null)
+			{
 				throw new ArgumentNullException("type");
+			}
 			this.reference = reference;
 			this.type = type;
-			if (reference == this.OwnerReference)
-				this.OwnerReference = null;
+			if (reference == OwnerReference)
+			{
+				OwnerReference = null;
+			}
 		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly Reference reference;
-		private readonly Type type;
-
-		#endregion
-
-		#region Methods/Operators
 
 		public override void LoadAddressOfReference(ILGenerator gen)
 		{
 			// NOTE: Or maybe throw new NotSupportedException() ?
-			this.reference.LoadAddressOfReference(gen);
+			reference.LoadAddressOfReference(gen);
 		}
 
 		public override void LoadReference(ILGenerator gen)
 		{
-			this.reference.LoadReference(gen);
-			gen.Emit(OpCodes.Isinst, this.type);
+			reference.LoadReference(gen);
+			gen.Emit(OpCodes.Isinst, type);
 		}
 
 		public override void StoreReference(ILGenerator gen)
 		{
 			// NOTE: Or maybe throw new NotSupportedException() ?
-			this.reference.StoreReference(gen);
+			reference.StoreReference(gen);
 		}
-
-		#endregion
 	}
 }

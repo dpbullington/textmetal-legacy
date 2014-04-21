@@ -5,7 +5,6 @@
 // ****************************************************************
 
 using System;
-using System.IO;
 
 namespace NUnit.Framework.Constraints
 {
@@ -16,49 +15,41 @@ namespace NUnit.Framework.Constraints
 	/// </summary>
 	public class EmptyConstraint : Constraint
 	{
-		#region Properties/Indexers/Events
-
 		private Constraint RealConstraint
 		{
-			get
+			get 
 			{
-				if (this.actual is string)
-					return new EmptyStringConstraint();
-				else if (this.actual is DirectoryInfo)
-					return new EmptyDirectoryContraint();
-				else
+                if (actual is string)
+                    return new EmptyStringConstraint();
+                else if (actual is System.IO.DirectoryInfo)
+                    return new EmptyDirectoryConstraint();
+                else
 					return new EmptyCollectionConstraint();
 			}
 		}
-
-		#endregion
-
-		#region Methods/Operators
-
+		
 		/// <summary>
-		/// Test whether the constraint is satisfied by a given value
-		/// </summary>
-		/// <param name="actual"> The value to be tested </param>
-		/// <returns> True for success, false for failure </returns>
+        /// Test whether the constraint is satisfied by a given value
+        /// </summary>
+        /// <param name="actual">The value to be tested</param>
+        /// <returns>True for success, false for failure</returns>
 		public override bool Matches(object actual)
 		{
 			this.actual = actual;
 
-			if (actual == null)
-				throw new ArgumentException("The actual value must be a non-null string, IEnumerable or DirectoryInfo", "actual");
+            if (actual == null)
+                throw new ArgumentException("The actual value must be a non-null string, IEnumerable or DirectoryInfo", "actual");
 
-			return this.RealConstraint.Matches(actual);
+			return this.RealConstraint.Matches( actual );
 		}
 
-		/// <summary>
-		/// Write the constraint description to a MessageWriter
-		/// </summary>
-		/// <param name="writer"> The writer on which the description is displayed </param>
+        /// <summary>
+        /// Write the constraint description to a MessageWriter
+        /// </summary>
+        /// <param name="writer">The writer on which the description is displayed</param>
 		public override void WriteDescriptionTo(MessageWriter writer)
 		{
-			this.RealConstraint.WriteDescriptionTo(writer);
+			this.RealConstraint.WriteDescriptionTo( writer );
 		}
-
-		#endregion
 	}
 }

@@ -1,4 +1,4 @@
-namespace NUnit.UiKit
+﻿namespace NUnit.UiKit
 {
     partial class TestPropertiesDialog
     {

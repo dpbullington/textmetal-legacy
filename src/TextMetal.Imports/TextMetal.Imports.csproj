@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;CLR_4_0;NETFX40;PHYSICALASSEMBLY DOTNET DOTNET40 CLIENTPROFILE;PORTABLE40</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CLR_4_0;NETFX40;PHYSICALASSEMBLY DOTNET DOTNET40 CLIENTPROFILE;PORTABLE40;NET40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\TextMetal.Imports.XML</DocumentationFile>
@@ -31,7 +31,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;CLR_4_0;NETFX40;PHYSICALASSEMBLY DOTNET DOTNET40 CLIENTPROFILE;PORTABLE40</DefineConstants>
+    <DefineConstants>TRACE;CLR_4_0;NETFX40;PHYSICALASSEMBLY DOTNET DOTNET40 CLIENTPROFILE;PORTABLE40;NET40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\TextMetal.Imports.XML</DocumentationFile>
@@ -248,6 +248,7 @@
     <Compile Include="castle.core\Core\Extensions\SimpleConverter.cs" />
     <Compile Include="castle.core\Core\Internal\AttributesUtil.cs" />
     <Compile Include="castle.core\Core\Internal\CollectionExtensions.cs" />
+    <Compile Include="castle.core\Core\Internal\ExceptionMessageBuilder .cs" />
     <Compile Include="castle.core\Core\Internal\ILockHolder.cs" />
     <Compile Include="castle.core\Core\Internal\InterfaceAttributeUtil.cs" />
     <Compile Include="castle.core\Core\Internal\InternalsVisible.cs" />
@@ -263,6 +264,7 @@
     <Compile Include="castle.core\Core\Internal\SlimReadWriteLock.cs" />
     <Compile Include="castle.core\Core\Internal\SlimUpgradeableReadLockHolder.cs" />
     <Compile Include="castle.core\Core\Internal\SlimWriteLockHolder.cs" />
+    <Compile Include="castle.core\Core\Internal\TypeExtensions.cs" />
     <Compile Include="castle.core\Core\Internal\WeakKey.cs" />
     <Compile Include="castle.core\Core\Internal\WeakKeyComparer.cs" />
     <Compile Include="castle.core\Core\Internal\WeakKeyDictionary.cs" />
@@ -319,6 +321,7 @@
     <Compile Include="castle.core\DynamicProxy\Contributors\ClassMembersCollector.cs" />
     <Compile Include="castle.core\DynamicProxy\Contributors\ClassProxyInstanceContributor.cs" />
     <Compile Include="castle.core\DynamicProxy\Contributors\ClassProxyTargetContributor.cs" />
+    <Compile Include="castle.core\DynamicProxy\Contributors\ClassProxyWithTargetInstanceContributor.cs" />
     <Compile Include="castle.core\DynamicProxy\Contributors\ClassProxyWithTargetTargetContributor.cs" />
     <Compile Include="castle.core\DynamicProxy\Contributors\CompositeTypeContributor.cs" />
     <Compile Include="castle.core\DynamicProxy\Contributors\DelegateProxyTargetContributor.cs" />
@@ -476,7 +479,6 @@
     <Compile Include="castle.core\DynamicProxy\Tokens\TypeBuilderMethods.cs" />
     <Compile Include="castle.core\DynamicProxy\Tokens\TypeMethods.cs" />
     <Compile Include="castle.core\DynamicProxy\Tokens\TypeUtilMethods.cs" />
-    <Compile Include="castle.core\Properties\InternalsVisibleToTests.cs" />
     <Compile Include="intelligencia.urlrewriter\Actions\AddHeaderAction.cs" />
     <Compile Include="intelligencia.urlrewriter\Actions\ConditionalAction.cs" />
     <Compile Include="intelligencia.urlrewriter\Actions\ForbiddenAction.cs" />
@@ -575,6 +577,7 @@
     <Compile Include="newtonsoft.json\Converters\DataSetConverter.cs" />
     <Compile Include="newtonsoft.json\Converters\DataTableConverter.cs" />
     <Compile Include="newtonsoft.json\Converters\DateTimeConverterBase.cs" />
+    <Compile Include="newtonsoft.json\Converters\DiscriminatedUnionConverter.cs" />
     <Compile Include="newtonsoft.json\Converters\EntityKeyMemberConverter.cs" />
     <Compile Include="newtonsoft.json\Converters\ExpandoObjectConverter.cs" />
     <Compile Include="newtonsoft.json\Converters\IsoDateTimeConverter.cs" />
@@ -626,11 +629,20 @@
     <Compile Include="newtonsoft.json\Linq\JContainer.cs" />
     <Compile Include="newtonsoft.json\Linq\JEnumerable.cs" />
     <Compile Include="newtonsoft.json\Linq\JObject.cs" />
-    <Compile Include="newtonsoft.json\Linq\JPath.cs" />
     <Compile Include="newtonsoft.json\Linq\JProperty.cs" />
     <Compile Include="newtonsoft.json\Linq\JPropertyDescriptor.cs" />
     <Compile Include="newtonsoft.json\Linq\JPropertyKeyedCollection.cs" />
     <Compile Include="newtonsoft.json\Linq\JRaw.cs" />
+    <Compile Include="newtonsoft.json\Linq\JsonPath\ArrayIndexFilter.cs" />
+    <Compile Include="newtonsoft.json\Linq\JsonPath\ArrayMultipleIndexFilter.cs" />
+    <Compile Include="newtonsoft.json\Linq\JsonPath\ArraySliceFilter.cs" />
+    <Compile Include="newtonsoft.json\Linq\JsonPath\FieldFilter.cs" />
+    <Compile Include="newtonsoft.json\Linq\JsonPath\FieldMultipleFilter.cs" />
+    <Compile Include="newtonsoft.json\Linq\JsonPath\JPath.cs" />
+    <Compile Include="newtonsoft.json\Linq\JsonPath\PathFilter.cs" />
+    <Compile Include="newtonsoft.json\Linq\JsonPath\QueryExpression.cs" />
+    <Compile Include="newtonsoft.json\Linq\JsonPath\QueryFilter.cs" />
+    <Compile Include="newtonsoft.json\Linq\JsonPath\ScanFilter.cs" />
     <Compile Include="newtonsoft.json\Linq\JToken.cs" />
     <Compile Include="newtonsoft.json\Linq\JTokenEqualityComparer.cs" />
     <Compile Include="newtonsoft.json\Linq\JTokenReader.cs" />
@@ -700,7 +712,7 @@
     <Compile Include="newtonsoft.json\Serialization\ReflectionValueProvider.cs" />
     <Compile Include="newtonsoft.json\Serialization\TraceJsonReader.cs" />
     <Compile Include="newtonsoft.json\Serialization\TraceJsonWriter.cs" />
-    <Compile Include="newtonsoft.json\StreamingContext.cs" />
+    <Compile Include="newtonsoft.json\SpecialPropertyHandling.cs" />
     <Compile Include="newtonsoft.json\StringEscapeHandling.cs" />
     <Compile Include="newtonsoft.json\TraceLevel.cs" />
     <Compile Include="newtonsoft.json\TypeNameHandling.cs" />
@@ -721,11 +733,12 @@
     <Compile Include="newtonsoft.json\Utilities\EnumValue.cs" />
     <Compile Include="newtonsoft.json\Utilities\EnumValues.cs" />
     <Compile Include="newtonsoft.json\Utilities\ExpressionReflectionDelegateFactory.cs" />
+    <Compile Include="newtonsoft.json\Utilities\FSharpUtils.cs" />
     <Compile Include="newtonsoft.json\Utilities\ILGeneratorExtensions.cs" />
+    <Compile Include="newtonsoft.json\Utilities\ImmutableCollectionsUtils.cs" />
     <Compile Include="newtonsoft.json\Utilities\JavaScriptUtils.cs" />
     <Compile Include="newtonsoft.json\Utilities\LateBoundReflectionDelegateFactory.cs" />
     <Compile Include="newtonsoft.json\Utilities\LinqBridge.cs" />
-    <Compile Include="newtonsoft.json\Utilities\ListWrapper.cs" />
     <Compile Include="newtonsoft.json\Utilities\MathUtils.cs" />
     <Compile Include="newtonsoft.json\Utilities\MethodCall.cs" />
     <Compile Include="newtonsoft.json\Utilities\MiscellaneousUtils.cs" />
@@ -883,7 +896,8 @@
     <Compile Include="nunit.core\AssemblyHelper.cs" />
     <Compile Include="nunit.core\AssemblyReader.cs" />
     <Compile Include="nunit.core\AssemblyResolver.cs" />
-    <Compile Include="nunit.core\AsyncSynchronizationContext.cs" />
+    <None Include="nunit.core\AsyncInvocationRegion.cs" />
+    <None Include="nunit.core\AsyncSynchronizationContext.cs" />
     <Compile Include="nunit.core\Builders\CombinatorialStrategy.cs" />
     <Compile Include="nunit.core\Builders\CombinatorialTestCaseProvider.cs" />
     <Compile Include="nunit.core\Builders\CombiningStrategy.cs" />
@@ -971,6 +985,8 @@
     <Compile Include="nunit.framework\Assert.cs" />
     <Compile Include="nunit.framework\AssertionHelper.cs" />
     <Compile Include="nunit.framework\Assume.cs" />
+    <Compile Include="nunit.framework\AsyncInvocationRegion.cs" />
+    <Compile Include="nunit.framework\AsyncSynchronizationContext.cs" />
     <Compile Include="nunit.framework\Attributes\CategoryAttribute.cs" />
     <Compile Include="nunit.framework\Attributes\DatapointAttributes.cs" />
     <Compile Include="nunit.framework\Attributes\DescriptionAttribute.cs" />
@@ -1003,49 +1019,102 @@
     <Compile Include="nunit.framework\Attributes\ValuesAttribute.cs" />
     <Compile Include="nunit.framework\Attributes\ValueSourceAttribute.cs" />
     <Compile Include="nunit.framework\CollectionAssert.cs" />
-    <Compile Include="nunit.framework\Constraints\AttributeConstraints.cs" />
-    <Compile Include="nunit.framework\Constraints\BasicConstraints.cs" />
-    <Compile Include="nunit.framework\Constraints\BinaryOperations.cs" />
-    <Compile Include="nunit.framework\Constraints\CollectionConstraints.cs" />
+    <Compile Include="nunit.framework\Constraints\AllItemsConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\AndConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\AssignableFromConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\AssignableToConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\AttributeConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\AttributeExistsConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\BasicConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\BinaryConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\BinarySerializableConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\CollectionConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\CollectionContainsConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\CollectionEquivalentConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\CollectionItemsEqualConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\CollectionOrderedConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\CollectionSubsetConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\CollectionTally.cs" />
     <Compile Include="nunit.framework\Constraints\ComparisonAdapter.cs" />
-    <Compile Include="nunit.framework\Constraints\ComparisonConstraints.cs" />
+    <Compile Include="nunit.framework\Constraints\ComparisonConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\Constraint.cs" />
     <Compile Include="nunit.framework\Constraints\ConstraintBuilder.cs" />
     <Compile Include="nunit.framework\Constraints\ConstraintExpression.cs" />
     <Compile Include="nunit.framework\Constraints\ConstraintExpressionBase.cs" />
     <Compile Include="nunit.framework\Constraints\ConstraintFactory.cs" />
-    <Compile Include="nunit.framework\Constraints\ConstraintOperators.cs" />
     <Compile Include="nunit.framework\Constraints\ContainsConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\DelayedConstraint.cs" />
-    <Compile Include="nunit.framework\Constraints\DirectoryConstraints.cs" />
+    <Compile Include="nunit.framework\Constraints\EmptyCollectionConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\EmptyConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\EmptyDirectoryConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\EmptyStringConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\EndsWithConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\EqualConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\EqualityAdapter.cs" />
+    <Compile Include="nunit.framework\Constraints\ExactCountConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\ExactTypeConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\ExceptionTypeConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\FailurePoint.cs" />
+    <Compile Include="nunit.framework\Constraints\FalseConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\FloatingPointNumerics.cs" />
     <Compile Include="nunit.framework\Constraints\GreaterThanConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\GreaterThanOrEqualConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\InstanceOfTypeConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\IResolveConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\LessThanConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\LessThanOrEqualConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\MessageWriter.cs" />
     <Compile Include="nunit.framework\Constraints\MsgUtils.cs" />
+    <Compile Include="nunit.framework\Constraints\NaNConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\NoItemConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\NotConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\NullConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\NullOrEmptyStringConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\Numerics.cs" />
     <Compile Include="nunit.framework\Constraints\NUnitComparer.cs" />
     <Compile Include="nunit.framework\Constraints\NUnitEqualityComparer.cs" />
-    <Compile Include="nunit.framework\Constraints\PathConstraints.cs" />
+    <Compile Include="nunit.framework\Constraints\Operators\AllOperator.cs" />
+    <Compile Include="nunit.framework\Constraints\Operators\AndOperator.cs" />
+    <Compile Include="nunit.framework\Constraints\Operators\AttributeOperator.cs" />
+    <Compile Include="nunit.framework\Constraints\Operators\BinaryOperator.cs" />
+    <Compile Include="nunit.framework\Constraints\Operators\CollectionOperator.cs" />
+    <Compile Include="nunit.framework\Constraints\Operators\ConstraintOperator.cs" />
+    <Compile Include="nunit.framework\Constraints\Operators\ExactCountOperator.cs" />
+    <Compile Include="nunit.framework\Constraints\Operators\NoneOperator.cs" />
+    <Compile Include="nunit.framework\Constraints\Operators\NotOperator.cs" />
+    <Compile Include="nunit.framework\Constraints\Operators\OrOperator.cs" />
+    <Compile Include="nunit.framework\Constraints\Operators\PrefixOperator.cs" />
+    <Compile Include="nunit.framework\Constraints\Operators\PropOperator.cs" />
+    <Compile Include="nunit.framework\Constraints\Operators\SelfResolvingOperator.cs" />
+    <Compile Include="nunit.framework\Constraints\Operators\SomeOperator.cs" />
+    <Compile Include="nunit.framework\Constraints\Operators\ThrowsOperator.cs" />
+    <Compile Include="nunit.framework\Constraints\Operators\WithOperator.cs" />
+    <Compile Include="nunit.framework\Constraints\OrConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\PathConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\PredicateConstraint.cs" />
-    <Compile Include="nunit.framework\Constraints\PrefixConstraints.cs" />
+    <Compile Include="nunit.framework\Constraints\PrefixConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\PropertyConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\PropertyExistsConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\RangeConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\RegexConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\ResolvableConstraintExpression.cs" />
     <Compile Include="nunit.framework\Constraints\ReusableConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\SameAsConstraint.cs" />
-    <Compile Include="nunit.framework\Constraints\SerializableConstraints.cs" />
-    <Compile Include="nunit.framework\Constraints\StringConstraints.cs" />
+    <Compile Include="nunit.framework\Constraints\SamePathConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\SamePathOrUnderConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\SomeItemsConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\StartsWithConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\StringConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\SubPathConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\SubstringConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\ThrowsConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\ThrowsNothingConstraint.cs" />
     <Compile Include="nunit.framework\Constraints\Tolerance.cs" />
-    <Compile Include="nunit.framework\Constraints\TypeConstraints.cs" />
+    <Compile Include="nunit.framework\Constraints\ToleranceMode.cs" />
+    <Compile Include="nunit.framework\Constraints\TrueConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\TypeConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\UniqueItemsConstraint.cs" />
+    <Compile Include="nunit.framework\Constraints\XmlSerializableConstraint.cs" />
     <Compile Include="nunit.framework\Contains.cs" />
     <Compile Include="nunit.framework\DirectoryAssert.cs" />
     <Compile Include="nunit.framework\Exceptions\AssertionException.cs" />
@@ -1054,6 +1123,7 @@
     <Compile Include="nunit.framework\Exceptions\SuccessException.cs" />
     <Compile Include="nunit.framework\FileAssert.cs" />
     <Compile Include="nunit.framework\GlobalSettings.cs" />
+    <Compile Include="nunit.framework\Guard.cs" />
     <Compile Include="nunit.framework\Has.cs" />
     <Compile Include="nunit.framework\IExpectException.cs" />
     <Compile Include="nunit.framework\Interfaces\INUnitEqualityComparer.cs" />
@@ -1178,6 +1248,7 @@
     <Compile Include="nunit.uiexception\CSharpParser\LexToken.cs" />
     <Compile Include="nunit.uiexception\CSharpParser\TokenClassifier.cs" />
     <Compile Include="nunit.uiexception\CSharpParser\TokenDictionary.cs" />
+    <Compile Include="nunit.uiexception\data\Resource.cs" />
     <Compile Include="nunit.uiexception\DefaultTextManager.cs" />
     <Compile Include="nunit.uiexception\ExceptionItem.cs" />
     <Compile Include="nunit.uiexception\ExceptionItemCollection.cs" />
@@ -1367,7 +1438,11 @@
   </Target>
   -->
   <ItemGroup>
+    <Content Include="nunit.console\App.ico" />
     <Content Include="nunit.gui\Logo.ico" />
+    <Content Include="nunit.uiexception\data\Image.png" />
+    <Content Include="nunit.uiexception\data\OneLine.txt" />
+    <Content Include="nunit.uiexception\data\test.txt" />
     <None Include="nunit.util\Transform.resx" />
     <None Include="nunit.core\Summary.xslt" />
     <EmbeddedResource Include="castle.core\DynamicProxy\DynProxy.snk">
@@ -1445,6 +1520,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.uiexception\Properties\Resources.resx">
       <LogicalName>NUnit.Gui.UiException.Properties.Resources.resources</LogicalName>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.uikit\AddConfigurationDialog.resx">
       <DependentUpon>AddConfigurationDialog.cs</DependentUpon>

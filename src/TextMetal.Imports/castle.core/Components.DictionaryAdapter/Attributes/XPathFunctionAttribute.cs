@@ -12,79 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Xml.XPath;
-using System.Xml.Xsl;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
 #if !SL3
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Xml.XPath;
+	using System.Xml.Xsl;
 
 	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Property, AllowMultiple = true)]
 	public abstract class XPathFunctionAttribute : Attribute, IXsltContextFunction
 	{
-		#region Constructors/Destructors
+		protected XPathFunctionAttribute() { }
 
-		protected XPathFunctionAttribute()
-		{
-		}
+		public abstract XmlName Name { get; }
+		public abstract XPathResultType ReturnType { get; }
 
-		#endregion
-
-		#region Fields/Constants
+		public virtual XPathResultType[] ArgTypes { get { return NoArgs; } }
+		public virtual int Maxargs { get { return ArgTypes.Length; } }
+		public virtual int Minargs { get { return ArgTypes.Length; } }
 
 		public static readonly XPathResultType[]
 			NoArgs = new XPathResultType[0];
 
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public virtual XPathResultType[] ArgTypes
-		{
-			get
-			{
-				return NoArgs;
-			}
-		}
-
-		public virtual int Maxargs
-		{
-			get
-			{
-				return this.ArgTypes.Length;
-			}
-		}
-
-		public virtual int Minargs
-		{
-			get
-			{
-				return this.ArgTypes.Length;
-			}
-		}
-
-		public abstract XmlName Name
-		{
-			get;
-		}
-
-		public abstract XPathResultType ReturnType
-		{
-			get;
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
 		public abstract object Invoke(XsltContext context, object[] args, XPathNavigator node);
-
-		#endregion
 	}
 }
-
 #endif
 #endif

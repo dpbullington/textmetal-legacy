@@ -1,5 +1,4 @@
 ﻿#region License
-
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -22,190 +21,181 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-
 #endregion
 
 using System;
 using System.Text.RegularExpressions;
-
 using Newtonsoft.Json.Bson;
+using System.Globalization;
 using Newtonsoft.Json.Serialization;
 
 namespace Newtonsoft.Json.Converters
 {
-	/// <summary>
-	/// Converts a <see cref="Regex" /> to and from JSON and BSON.
-	/// </summary>
-	public class RegexConverter : JsonConverter
-	{
-		#region Fields/Constants
+    /// <summary>
+    /// Converts a <see cref="Regex"/> to and from JSON and BSON.
+    /// </summary>
+    public class RegexConverter : JsonConverter
+    {
+        private const string PatternName = "Pattern";
+        private const string OptionsName = "Options";
 
-		private const string OptionsName = "Options";
-		private const string PatternName = "Pattern";
+        /// <summary>
+        /// Writes the JSON representation of the object.
+        /// </summary>
+        /// <param name="writer">The <see cref="JsonWriter"/> to write to.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="serializer">The calling serializer.</param>
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            Regex regex = (Regex)value;
 
-		#endregion
+            BsonWriter bsonWriter = writer as BsonWriter;
+            if (bsonWriter != null)
+                WriteBson(bsonWriter, regex);
+            else
+                WriteJson(writer, regex, serializer);
+        }
 
-		#region Methods/Operators
+        private bool HasFlag(RegexOptions options, RegexOptions flag)
+        {
+            return ((options & flag) == flag);
+        }
 
-		/// <summary>
-		/// Determines whether this instance can convert the specified object type.
-		/// </summary>
-		/// <param name="objectType"> Type of the object. </param>
-		/// <returns>
-		/// <c> true </c> if this instance can convert the specified object type; otherwise, <c> false </c>.
-		/// </returns>
-		public override bool CanConvert(Type objectType)
-		{
-			return (objectType == typeof(Regex));
-		}
+        private void WriteBson(BsonWriter writer, Regex regex)
+        {
+            // Regular expression - The first cstring is the regex pattern, the second
+            // is the regex options string. Options are identified by characters, which 
+            // must be stored in alphabetical order. Valid options are 'i' for case 
+            // insensitive matching, 'm' for multiline matching, 'x' for verbose mode, 
+            // 'l' to make \w, \W, etc. locale dependent, 's' for dotall mode 
+            // ('.' matches everything), and 'u' to make \w, \W, etc. match unicode.
 
-		private bool HasFlag(RegexOptions options, RegexOptions flag)
-		{
-			return ((options & flag) == flag);
-		}
+            string options = null;
 
-		/// <summary>
-		/// Reads the JSON representation of the object.
-		/// </summary>
-		/// <param name="reader"> The <see cref="JsonReader" /> to read from. </param>
-		/// <param name="objectType"> Type of the object. </param>
-		/// <param name="existingValue"> The existing value of object being read. </param>
-		/// <param name="serializer"> The calling serializer. </param>
-		/// <returns> The object value. </returns>
-		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-		{
-			if (reader.TokenType == JsonToken.StartObject)
-				return this.ReadRegexObject(reader, serializer);
+            if (HasFlag(regex.Options, RegexOptions.IgnoreCase))
+                options += "i";
 
-			if (reader.TokenType == JsonToken.String)
-				return this.ReadRegexString(reader);
+            if (HasFlag(regex.Options, RegexOptions.Multiline))
+                options += "m";
 
-			throw JsonSerializationException.Create(reader, "Unexpected token when reading Regex.");
-		}
+            if (HasFlag(regex.Options, RegexOptions.Singleline))
+                options += "s";
 
-		private Regex ReadRegexObject(JsonReader reader, JsonSerializer serializer)
-		{
-			string pattern = null;
-			RegexOptions? options = null;
+            options += "u";
 
-			while (reader.Read())
-			{
-				switch (reader.TokenType)
-				{
-					case JsonToken.PropertyName:
-						string propertyName = reader.Value.ToString();
+            if (HasFlag(regex.Options, RegexOptions.ExplicitCapture))
+                options += "x";
 
-						if (!reader.Read())
-							throw JsonSerializationException.Create(reader, "Unexpected end when reading Regex.");
+            writer.WriteRegex(regex.ToString(), options);
+        }
 
-						if (string.Equals(propertyName, PatternName, StringComparison.OrdinalIgnoreCase))
-							pattern = (string)reader.Value;
-						else if (string.Equals(propertyName, OptionsName, StringComparison.OrdinalIgnoreCase))
-							options = serializer.Deserialize<RegexOptions>(reader);
-						else
-							reader.Skip();
-						break;
-					case JsonToken.Comment:
-						break;
-					case JsonToken.EndObject:
-						if (pattern == null)
-							throw JsonSerializationException.Create(reader, "Error deserializing Regex. No pattern found.");
+        private void WriteJson(JsonWriter writer, Regex regex, JsonSerializer serializer)
+        {
+            DefaultContractResolver resolver = serializer.ContractResolver as DefaultContractResolver;
 
-						return new Regex(pattern, options ?? RegexOptions.None);
-				}
-			}
+            writer.WriteStartObject();
+            writer.WritePropertyName((resolver != null) ? resolver.GetResolvedPropertyName(PatternName) : PatternName);
+            writer.WriteValue(regex.ToString());
+            writer.WritePropertyName((resolver != null) ? resolver.GetResolvedPropertyName(OptionsName) : OptionsName);
+            serializer.Serialize(writer, regex.Options);
+            writer.WriteEndObject();
+        }
 
-			throw JsonSerializationException.Create(reader, "Unexpected end when reading Regex.");
-		}
+        /// <summary>
+        /// Reads the JSON representation of the object.
+        /// </summary>
+        /// <param name="reader">The <see cref="JsonReader"/> to read from.</param>
+        /// <param name="objectType">Type of the object.</param>
+        /// <param name="existingValue">The existing value of object being read.</param>
+        /// <param name="serializer">The calling serializer.</param>
+        /// <returns>The object value.</returns>
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.StartObject)
+                return ReadRegexObject(reader, serializer);
 
-		private object ReadRegexString(JsonReader reader)
-		{
-			string regexText = (string)reader.Value;
-			int patternOptionDelimiterIndex = regexText.LastIndexOf('/');
+            if (reader.TokenType == JsonToken.String)
+                return ReadRegexString(reader);
 
-			string patternText = regexText.Substring(1, patternOptionDelimiterIndex - 1);
-			string optionsText = regexText.Substring(patternOptionDelimiterIndex + 1);
+            throw JsonSerializationException.Create(reader, "Unexpected token when reading Regex.");
+        }
 
-			RegexOptions options = RegexOptions.None;
-			foreach (char c in optionsText)
-			{
-				switch (c)
-				{
-					case 'i':
-						options |= RegexOptions.IgnoreCase;
-						break;
-					case 'm':
-						options |= RegexOptions.Multiline;
-						break;
-					case 's':
-						options |= RegexOptions.Singleline;
-						break;
-					case 'x':
-						options |= RegexOptions.ExplicitCapture;
-						break;
-				}
-			}
+        private object ReadRegexString(JsonReader reader)
+        {
+            string regexText = (string)reader.Value;
+            int patternOptionDelimiterIndex = regexText.LastIndexOf('/');
 
-			return new Regex(patternText, options);
-		}
+            string patternText = regexText.Substring(1, patternOptionDelimiterIndex - 1);
+            string optionsText = regexText.Substring(patternOptionDelimiterIndex + 1);
 
-		private void WriteBson(BsonWriter writer, Regex regex)
-		{
-			// Regular expression - The first cstring is the regex pattern, the second
-			// is the regex options string. Options are identified by characters, which 
-			// must be stored in alphabetical order. Valid options are 'i' for case 
-			// insensitive matching, 'm' for multiline matching, 'x' for verbose mode, 
-			// 'l' to make \w, \W, etc. locale dependent, 's' for dotall mode 
-			// ('.' matches everything), and 'u' to make \w, \W, etc. match unicode.
+            RegexOptions options = RegexOptions.None;
+            foreach (char c in optionsText)
+            {
+                switch (c)
+                {
+                    case 'i':
+                        options |= RegexOptions.IgnoreCase;
+                        break;
+                    case 'm':
+                        options |= RegexOptions.Multiline;
+                        break;
+                    case 's':
+                        options |= RegexOptions.Singleline;
+                        break;
+                    case 'x':
+                        options |= RegexOptions.ExplicitCapture;
+                        break;
+                }
+            }
 
-			string options = null;
+            return new Regex(patternText, options);
+        }
 
-			if (this.HasFlag(regex.Options, RegexOptions.IgnoreCase))
-				options += "i";
+        private Regex ReadRegexObject(JsonReader reader, JsonSerializer serializer)
+        {
+            string pattern = null;
+            RegexOptions? options = null;
 
-			if (this.HasFlag(regex.Options, RegexOptions.Multiline))
-				options += "m";
+            while (reader.Read())
+            {
+                switch (reader.TokenType)
+                {
+                    case JsonToken.PropertyName:
+                        string propertyName = reader.Value.ToString();
 
-			if (this.HasFlag(regex.Options, RegexOptions.Singleline))
-				options += "s";
+                        if (!reader.Read())
+                            throw JsonSerializationException.Create(reader, "Unexpected end when reading Regex.");
 
-			options += "u";
+                        if (string.Equals(propertyName, PatternName, StringComparison.OrdinalIgnoreCase))
+                            pattern = (string)reader.Value;
+                        else if (string.Equals(propertyName, OptionsName, StringComparison.OrdinalIgnoreCase))
+                            options = serializer.Deserialize<RegexOptions>(reader);
+                        else
+                            reader.Skip();
+                        break;
+                    case JsonToken.Comment:
+                        break;
+                    case JsonToken.EndObject:
+                        if (pattern == null)
+                            throw JsonSerializationException.Create(reader, "Error deserializing Regex. No pattern found.");
 
-			if (this.HasFlag(regex.Options, RegexOptions.ExplicitCapture))
-				options += "x";
+                        return new Regex(pattern, options ?? RegexOptions.None);
+                }
+            }
 
-			writer.WriteRegex(regex.ToString(), options);
-		}
+            throw JsonSerializationException.Create(reader, "Unexpected end when reading Regex.");
+        }
 
-		/// <summary>
-		/// Writes the JSON representation of the object.
-		/// </summary>
-		/// <param name="writer"> The <see cref="JsonWriter" /> to write to. </param>
-		/// <param name="value"> The value. </param>
-		/// <param name="serializer"> The calling serializer. </param>
-		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-		{
-			Regex regex = (Regex)value;
-
-			BsonWriter bsonWriter = writer as BsonWriter;
-			if (bsonWriter != null)
-				this.WriteBson(bsonWriter, regex);
-			else
-				this.WriteJson(writer, regex, serializer);
-		}
-
-		private void WriteJson(JsonWriter writer, Regex regex, JsonSerializer serializer)
-		{
-			DefaultContractResolver resolver = serializer.ContractResolver as DefaultContractResolver;
-
-			writer.WriteStartObject();
-			writer.WritePropertyName((resolver != null) ? resolver.GetResolvedPropertyName(PatternName) : PatternName);
-			writer.WriteValue(regex.ToString());
-			writer.WritePropertyName((resolver != null) ? resolver.GetResolvedPropertyName(OptionsName) : OptionsName);
-			serializer.Serialize(writer, regex.Options);
-			writer.WriteEndObject();
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Determines whether this instance can convert the specified object type.
+        /// </summary>
+        /// <param name="objectType">Type of the object.</param>
+        /// <returns>
+        /// 	<c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool CanConvert(Type objectType)
+        {
+            return (objectType == typeof(Regex));
+        }
+    }
 }

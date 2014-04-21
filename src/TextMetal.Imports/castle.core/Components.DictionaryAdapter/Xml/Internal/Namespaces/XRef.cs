@@ -12,58 +12,44 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Collections.Generic;
 
 	public static class XRef
 	{
-		#region Fields/Constants
-
-		public const string
-			NamespaceUri = "urn:schemas-castle-org:xml-reference";
-
-		public const string
-			Prefix = "x";
-
-		public static readonly XmlName
-			Id = new XmlName("id", NamespaceUri);
-
-		internal static readonly XmlNamespaceAttribute
-			Namespace = new XmlNamespaceAttribute(NamespaceUri, Prefix) { Root = true };
-
-		public static readonly XmlName
-			Ref = new XmlName("ref", NamespaceUri);
-
-		#endregion
-
-		#region Methods/Operators
-
 		public static string GetId(this IXmlNode node)
 		{
-			return node.GetAttribute(Id);
-		}
-
-		public static string GetReference(this IXmlNode node)
-		{
-			return node.GetAttribute(Ref);
+			return node.GetAttribute(XRef.Id);
 		}
 
 		public static void SetId(this IXmlCursor node, string id)
 		{
-			node.SetAttribute(Id, id);
+			node.SetAttribute(XRef.Id, id);
+		}
+
+		public static string GetReference(this IXmlNode node)
+		{
+			return node.GetAttribute(XRef.Ref);
 		}
 
 		public static void SetReference(this IXmlCursor cursor, string id)
 		{
-			cursor.SetAttribute(Ref, id);
+			cursor.SetAttribute(XRef.Ref, id);
 		}
 
-		#endregion
+		public const string
+			Prefix       = "x",
+			NamespaceUri = "urn:schemas-castle-org:xml-reference";
+
+		public static readonly XmlName
+			Id  = new XmlName("id",  NamespaceUri),
+			Ref = new XmlName("ref", NamespaceUri);
+
+		internal static readonly XmlNamespaceAttribute
+			Namespace = new XmlNamespaceAttribute(NamespaceUri, Prefix) { Root = true };
 	}
 }
-
 #endif

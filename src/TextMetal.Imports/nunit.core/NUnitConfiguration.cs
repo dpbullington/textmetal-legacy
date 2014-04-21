@@ -7,240 +7,256 @@
 using System;
 using System.IO;
 using System.Reflection;
-
+using System.Configuration;
+using System.Collections.Specialized;
+using System.Threading;
 using Microsoft.Win32;
 
 namespace NUnit.Core
 {
-	/// <summary>
-	/// Provides static methods for accessing the NUnit config
-	/// file
-	/// </summary>
-	public class NUnitConfiguration
-	{
-		#region Fields/Constants
+    /// <summary>
+    /// Provides static methods for accessing the NUnit config
+    /// file 
+    /// </summary>
+    public class NUnitConfiguration
+    {
+        #region Public Properties
 
-		private static string addinDirectory;
-		private static string applicationDirectory;
-		private static string logDirectory;
-		private static string monoExePath;
-		private static string nunitBinDirectory;
-
-		private static string nunitDocDirectory;
-		private static string nunitLibDirectory;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public static string AddinDirectory
-		{
-			get
-			{
-				if (addinDirectory == null)
-					addinDirectory = Path.Combine(NUnitBinDirectory, "addins");
-
-				return addinDirectory;
-			}
-		}
-
-		public static string ApplicationDirectory
-		{
-			get
-			{
-				if (applicationDirectory == null)
-				{
-					applicationDirectory = Path.Combine(
-						Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-						"NUnit");
-				}
-
-				return applicationDirectory;
-			}
-		}
-
-		public static string BuildConfiguration
-		{
-			get
-			{
+        #region BuildConfiguration
+        public static string BuildConfiguration
+        {
+            get
+            {
 #if DEBUG
-				return "Debug";
+                    return "Debug";
 #else
 					return "Release";
 #endif
-			}
-		}
+            }
+        }
+        #endregion
 
-		public static string HelpUrl
-		{
-			get
-			{
-				string helpUrl = "http://nunit.org";
+        #region NUnitLibDirectory
+        private static string nunitLibDirectory;
+        /// <summary>
+        /// Gets the path to the lib directory for the version and build
+        /// of NUnit currently executing.
+        /// </summary>
+        public static string NUnitLibDirectory
+        {
+            get
+            {
+                if (nunitLibDirectory == null)
+                {
+                    nunitLibDirectory =
+                        AssemblyHelper.GetDirectoryName(Assembly.GetExecutingAssembly());
+                }
 
-				string dir = Path.GetDirectoryName(NUnitBinDirectory);
-				string docDir = null;
+                return nunitLibDirectory;
+            }
+        }
+        #endregion
 
-				while (dir != null)
-				{
-					docDir = Path.Combine(dir, "doc");
-					if (Directory.Exists(docDir))
-						break;
-					dir = Path.GetDirectoryName(dir);
-				}
+        #region NUnitBinDirectory
+        private static string nunitBinDirectory;
+        public static string NUnitBinDirectory
+        {
+            get
+            {
+                if (nunitBinDirectory == null)
+                {
+                    nunitBinDirectory = NUnitLibDirectory;
+                    if (Path.GetFileName(nunitBinDirectory).ToLower() == "lib")
+                        nunitBinDirectory = Path.GetDirectoryName(nunitBinDirectory);
+                }
 
-				if (docDir != null)
-				{
-					string localPath = Path.Combine(docDir, "index.html");
-					if (File.Exists(localPath))
-					{
-						UriBuilder uri = new UriBuilder();
-						uri.Scheme = "file";
-						uri.Host = "localhost";
-						uri.Path = localPath;
-						helpUrl = uri.ToString();
-					}
-				}
+                return nunitBinDirectory;
+            }
+        }
+        #endregion
 
-				return helpUrl;
-			}
-		}
+        #region NUnitDocDirectory
+        private static string nunitDocDirectory;
+        private static string NUnitDocDirectory
+        {
+            get
+            {
+                if (nunitDocDirectory == null)
+                {
+                    string dir = Path.GetDirectoryName(NUnitBinDirectory);
+                    nunitDocDirectory = Path.Combine(dir, "doc");
+                    if (!Directory.Exists(nunitDocDirectory))
+                    {
+                        dir = Path.GetDirectoryName(dir);
+                        nunitDocDirectory = Path.Combine(dir, "doc");
+                    }
+                }
 
-		public static string LogDirectory
-		{
-			get
-			{
-				if (logDirectory == null)
-					logDirectory = Path.Combine(ApplicationDirectory, "logs");
+                return nunitDocDirectory;
+            }
+        }
+        #endregion
 
-				return logDirectory;
-			}
-		}
+        #region AddinDirectory
+        private static string addinDirectory;
+        public static string AddinDirectory
+        {
+            get
+            {
+                if (addinDirectory == null)
+                {
+                    addinDirectory = Path.Combine(NUnitBinDirectory, "addins");
+                }
 
-		//private static string testAgentExePath;
-		//private static string TestAgentExePath
-		//{
-		//    get
-		//    {
-		//        if (testAgentExePath == null)
-		//            testAgentExePath = Path.Combine(NUnitBinDirectory, "nunit-agent.exe");
+                return addinDirectory;
+            }
+        }
+        #endregion
 
-		//        return testAgentExePath;
-		//    }
-		//}
+        #region TestAgentExePath
+        //private static string testAgentExePath;
+        //private static string TestAgentExePath
+        //{
+        //    get
+        //    {
+        //        if (testAgentExePath == null)
+        //            testAgentExePath = Path.Combine(NUnitBinDirectory, "nunit-agent.exe");
 
-		public static string MonoExePath
-		{
-			get
-			{
-				if (monoExePath == null)
-				{
-					string[] searchNames = IsWindows()
-						? new string[] { "mono.bat", "mono.cmd", "mono.exe" }
-						: new string[] { "mono", "mono.exe" };
+        //        return testAgentExePath;
+        //    }
+        //}
+        #endregion
 
-					monoExePath = FindOneOnPath(searchNames);
+        #region MonoExePath
+        private static string monoExePath;
+        public static string MonoExePath
+        {
+            get
+            {
+                if (monoExePath == null)
+                {
+                    string[] searchNames = IsWindows()
+                        ? new string[] { "mono.bat", "mono.cmd", "mono.exe" }
+                        : new string[] { "mono", "mono.exe" };
+                    
+                    monoExePath = FindOneOnPath(searchNames);
 
-					if (monoExePath == null && IsWindows())
-					{
-						RegistryKey key = Registry.LocalMachine.OpenSubKey(@"Software\Novell\Mono");
-						if (key != null)
-						{
-							string version = key.GetValue("DefaultCLR") as string;
-							if (version != null)
-							{
-								key = key.OpenSubKey(version);
-								if (key != null)
-								{
-									string installDir = key.GetValue("SdkInstallRoot") as string;
-									if (installDir != null)
-										monoExePath = Path.Combine(installDir, @"bin\mono.exe");
-								}
-							}
-						}
-					}
+                    if (monoExePath == null && IsWindows())
+                    {
+                        RegistryKey key = Registry.LocalMachine.OpenSubKey(@"Software\Novell\Mono");
+                        if (key != null)
+                        {
+                            string version = key.GetValue("DefaultCLR") as string;
+                            if (version != null)
+                            {
+                                key = key.OpenSubKey(version);
+                                if (key != null)
+                                {
+                                    string installDir = key.GetValue("SdkInstallRoot") as string;
+                                    if (installDir != null)
+                                        monoExePath = Path.Combine(installDir, @"bin\mono.exe");
+                                }
+                            }
+                        }
+                    }
 
-					if (monoExePath == null)
-						return "mono";
-				}
+                    if (monoExePath == null)
+                        return "mono";
+                }
 
-				return monoExePath;
-			}
-		}
+                return monoExePath;
+            }
+        }
 
-		public static string NUnitBinDirectory
-		{
-			get
-			{
-				if (nunitBinDirectory == null)
-				{
-					nunitBinDirectory = NUnitLibDirectory;
-					if (Path.GetFileName(nunitBinDirectory).ToLower() == "lib")
-						nunitBinDirectory = Path.GetDirectoryName(nunitBinDirectory);
-				}
+        private static string FindOneOnPath(string[] names)
+        {
+            //foreach (string dir in Environment.GetEnvironmentVariable("path").Split(new char[] { Path.PathSeparator }))
+            //    foreach (string name in names)
+            //    {
+            //        string fullPath = Path.Combine(dir, name);
+            //        if (File.Exists(fullPath))
+            //            return name;
+            //    }
 
-				return nunitBinDirectory;
-			}
-		}
+            return null;
+        }
 
-		private static string NUnitDocDirectory
-		{
-			get
-			{
-				if (nunitDocDirectory == null)
-				{
-					string dir = Path.GetDirectoryName(NUnitBinDirectory);
-					nunitDocDirectory = Path.Combine(dir, "doc");
-					if (!Directory.Exists(nunitDocDirectory))
-					{
-						dir = Path.GetDirectoryName(dir);
-						nunitDocDirectory = Path.Combine(dir, "doc");
-					}
-				}
+        private static bool IsWindows()
+        {
+            return Environment.OSVersion.Platform == PlatformID.Win32NT;
+        }
+        #endregion
 
-				return nunitDocDirectory;
-			}
-		}
+        #region ApplicationDataDirectory
+        private static string applicationDirectory;
+        public static string ApplicationDirectory
+        {
+            get
+            {
+                if (applicationDirectory == null)
+                {
+                    applicationDirectory = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        "NUnit");
+                }
 
-		/// <summary>
-		/// Gets the path to the lib directory for the version and build
-		/// of NUnit currently executing.
-		/// </summary>
-		public static string NUnitLibDirectory
-		{
-			get
-			{
-				if (nunitLibDirectory == null)
-				{
-					nunitLibDirectory =
-						AssemblyHelper.GetDirectoryName(Assembly.GetExecutingAssembly());
-				}
+                return applicationDirectory;
+            }
+        }
+        #endregion
 
-				return nunitLibDirectory;
-			}
-		}
+        #region LogDirectory
+        private static string logDirectory;
+        public static string LogDirectory
+        {
+            get
+            {
+                if (logDirectory == null)
+                {
+                    logDirectory = Path.Combine(ApplicationDirectory, "logs");
+                }
 
-		#endregion
+                return logDirectory;
+            }
+        }
+        #endregion
 
-		#region Methods/Operators
+        #region HelpUrl
+        public static string HelpUrl
+        {
+            get
+            {
+                string helpUrl = "http://nunit.org";
 
-		private static string FindOneOnPath(string[] names)
-		{
-			//foreach (string dir in Environment.GetEnvironmentVariable("path").Split(new char[] { Path.PathSeparator }))
-			//    foreach (string name in names)
-			//    {
-			//        string fullPath = Path.Combine(dir, name);
-			//        if (File.Exists(fullPath))
-			//            return name;
-			//    }
+                string dir = Path.GetDirectoryName(NUnitBinDirectory);
+                string docDir = null;
 
-			return null;
-		}
+                while (dir != null)
+                {
+                    docDir = Path.Combine(dir, "doc");
+                    if (Directory.Exists(docDir))
+                        break;
+                    dir = Path.GetDirectoryName(dir);
+                }
 
-		private static bool IsWindows()
-		{
-			return Environment.OSVersion.Platform == PlatformID.Win32NT;
-		}
+                if (docDir != null)
+                {
+                    string localPath = Path.Combine(docDir, "index.html");
+                    if (File.Exists(localPath))
+                    {
+                        UriBuilder uri = new UriBuilder();
+                        uri.Scheme = "file";
+                        uri.Host = "localhost";
+                        uri.Path = localPath;
+                        helpUrl = uri.ToString();
+                    }
+                }
 
-		#endregion
-	}
+                return helpUrl;
+            }
+        }
+        #endregion
+
+        #endregion
+    }
 }

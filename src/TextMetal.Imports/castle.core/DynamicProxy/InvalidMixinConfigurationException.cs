@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Runtime.Serialization;
-
 namespace Castle.DynamicProxy
 {
 	using System;
+	using System.Runtime.Serialization;
 
 	[Serializable]
 	public class InvalidMixinConfigurationException : Exception
@@ -26,14 +25,12 @@ namespace Castle.DynamicProxy
 		{
 		}
 
-		public InvalidMixinConfigurationException(string message, Exception innerException)
-			: base(message, innerException)
+		public InvalidMixinConfigurationException(string message, Exception innerException) : base(message, innerException)
 		{
 		}
 
 #if !SILVERLIGHT
-		protected InvalidMixinConfigurationException(SerializationInfo info, StreamingContext context)
-			: base(info, context)
+		protected InvalidMixinConfigurationException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 		}
 #endif

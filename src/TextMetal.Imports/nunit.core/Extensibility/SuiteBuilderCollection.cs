@@ -5,68 +5,64 @@
 // ****************************************************************
 
 using System;
+using System.Collections;
 
 namespace NUnit.Core.Extensibility
 {
 	/// <summary>
 	/// SuiteBuilderCollection is an ExtensionPoint for SuiteBuilders and
-	/// implements the ISuiteBuilder interface itself, passing calls
+	/// implements the ISuiteBuilder interface itself, passing calls 
 	/// on to the individual builders.
+	/// 
 	/// The builders are added to the collection by inserting them at
-	/// the start, as to take precedence over those added earlier.
+	/// the start, as to take precedence over those added earlier. 
 	/// </summary>
 	public class SuiteBuilderCollection : ExtensionPoint, ISuiteBuilder
 	{
-		#region Constructors/Destructors
-
+		#region Constructor
 		/// <summary>
 		/// Default constructor
 		/// </summary>
 		public SuiteBuilderCollection(IExtensionHost host)
-			: base("SuiteBuilders", host)
-		{
-		}
-
+			: base("SuiteBuilders", host ) { }
 		#endregion
 
-		#region Methods/Operators
-
-		/// <summary>
-		/// Build a TestSuite from type provided.
-		/// </summary>
-		/// <param name="type"> The type of the fixture to be used </param>
-		/// <returns> A TestSuite or null </returns>
-		public Test BuildFrom(Type type)
-		{
-			foreach (ISuiteBuilder builder in this.Extensions)
-			{
-				if (builder.CanBuildFrom(type))
-					return builder.BuildFrom(type);
-			}
-			return null;
-		}
+		#region ISuiteBuilder Members
 
 		/// <summary>
 		/// Examine the type and determine if it is suitable for
 		/// any SuiteBuilder to use in building a TestSuite
 		/// </summary>
-		/// <param name="type"> The type of the fixture to be used </param>
-		/// <returns> True if the type can be used to build a TestSuite </returns>
+		/// <param name="type">The type of the fixture to be used</param>
+		/// <returns>True if the type can be used to build a TestSuite</returns>
 		public bool CanBuildFrom(Type type)
 		{
-			foreach (ISuiteBuilder builder in this.Extensions)
-			{
-				if (builder.CanBuildFrom(type))
+			foreach( ISuiteBuilder builder in Extensions )
+				if ( builder.CanBuildFrom( type ) )
 					return true;
-			}
 			return false;
 		}
 
-		protected override bool IsValidExtension(object extension)
+		/// <summary>
+		/// Build a TestSuite from type provided.
+		/// </summary>
+		/// <param name="type">The type of the fixture to be used</param>
+		/// <returns>A TestSuite or null</returns>
+		public Test BuildFrom(Type type)
 		{
-			return extension is ISuiteBuilder;
+			foreach( ISuiteBuilder builder in Extensions )
+				if ( builder.CanBuildFrom( type ) )
+					return builder.BuildFrom( type );
+			return null;
 		}
 
+		#endregion
+
+		#region ExtensionPoint Overrides
+		protected override bool IsValidExtension(object extension)
+		{
+			return extension is ISuiteBuilder; 
+		}
 		#endregion
 	}
 }

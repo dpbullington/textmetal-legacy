@@ -12,108 +12,76 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using System.Xml.XPath;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
 #if !SL3
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Collections.Generic;
+	using System.Xml.XPath;
 
 	internal class XPathBufferedNodeIterator : XPathNodeIterator
 	{
-		#region Constructors/Destructors
+		private readonly IList<XPathNavigator> items;
+		private int index;
 
 		public XPathBufferedNodeIterator(XPathNodeIterator iterator)
 		{
-			this.items = new List<XPathNavigator>();
-			do
-				this.items.Add(iterator.Current.Clone());
+			items = new List<XPathNavigator>();
+			do items.Add(iterator.Current.Clone());
 			while (iterator.MoveNext());
 		}
 
 		private XPathBufferedNodeIterator(XPathBufferedNodeIterator iterator)
 		{
-			this.items = iterator.items;
-			this.index = iterator.index;
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly IList<XPathNavigator> items;
-		private int index;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public override int Count
-		{
-			get
-			{
-				return this.items.Count - 1;
-			}
-		}
-
-		public override XPathNavigator Current
-		{
-			get
-			{
-				return this.items[this.index];
-			}
+			items = iterator.items;
+			index = iterator.index;
 		}
 
 		public override int CurrentPosition
 		{
-			get
-			{
-				return this.index;
-			}
+			get { return index; }
+		}
+
+		public override int Count
+		{
+			get { return items.Count - 1; }
 		}
 
 		public bool IsEmpty
 		{
-			get
-			{
-				return this.items.Count == 1;
-			}
+			get { return items.Count == 1; }
 		}
 
-		#endregion
-
-		#region Methods/Operators
-
-		public override XPathNodeIterator Clone()
+		public override XPathNavigator Current
 		{
-			return new XPathBufferedNodeIterator(this);
+			get { return items[index]; }
+		}
+
+		public void Reset()
+		{
+			index = 0;
 		}
 
 		public override bool MoveNext()
 		{
-			if (++this.index < this.items.Count)
+			if (++index < items.Count)
 				return true;
-			if (this.index > this.items.Count)
-				this.index--;
+			if (index > items.Count)
+				index--;
 			return false;
 		}
 
 		public void MoveToEnd()
 		{
-			this.index = this.items.Count;
+			index = items.Count;
 		}
 
-		public void Reset()
+		public override XPathNodeIterator Clone()
 		{
-			this.index = 0;
+			return new XPathBufferedNodeIterator(this);
 		}
-
-		#endregion
 	}
 }
-
 #endif
 #endif

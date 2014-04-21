@@ -5,6 +5,7 @@
 // ****************************************************************
 
 using System;
+using System.Reflection;
 
 namespace NUnit.Core
 {
@@ -15,47 +16,39 @@ namespace NUnit.Core
 	/// </summary>
 	public class TestFixtureBuilder
 	{
-		#region Constructors/Destructors
-
-		/// <summary>
-		/// Private constructor to prevent instantiation
-		/// </summary>
-		private TestFixtureBuilder()
+		public static bool CanBuildFrom( Type type )
 		{
+			return CoreExtensions.Host.SuiteBuilders.CanBuildFrom( type );
 		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		/// <summary>
 		/// Build a test fixture from a given type.
 		/// </summary>
-		/// <param name="type"> The type to be used for the fixture </param>
-		/// <returns> A TestSuite if the fixture can be built, null if not </returns>
-		public static Test BuildFrom(Type type)
+		/// <param name="type">The type to be used for the fixture</param>
+		/// <returns>A TestSuite if the fixture can be built, null if not</returns>
+		public static Test BuildFrom( Type type )
 		{
-			Test suite = CoreExtensions.Host.SuiteBuilders.BuildFrom(type);
+			Test suite = CoreExtensions.Host.SuiteBuilders.BuildFrom( type );
 
-			if (suite != null)
-				suite = CoreExtensions.Host.TestDecorators.Decorate(suite, type);
+			if ( suite != null )
+				suite = CoreExtensions.Host.TestDecorators.Decorate( suite, type );
 
 			return suite;
 		}
 
 		/// <summary>
-		/// Build a fixture from an object.
+		/// Build a fixture from an object. 
 		/// </summary>
-		/// <param name="fixture"> The object to be used for the fixture </param>
-		/// <returns> A TestSuite if fixture type can be built, null if not </returns>
-		public static Test BuildFrom(object fixture)
+		/// <param name="fixture">The object to be used for the fixture</param>
+		/// <returns>A TestSuite if fixture type can be built, null if not</returns>
+		public static Test BuildFrom( object fixture )
 		{
-			Test suite = BuildFrom(fixture.GetType());
-
-			if (suite != null)
+			Test suite = BuildFrom( fixture.GetType() );
+			
+			if( suite != null)
 			{
 				suite.Fixture = fixture;
-
+				
 				// TODO: Integrate building from an object as part of NUnitTestFixtureBuilder
 				if (suite.RunState == RunState.NotRunnable &&
 					Reflect.GetConstructor(fixture.GetType()) == null)
@@ -64,15 +57,13 @@ namespace NUnit.Core
 					suite.IgnoreReason = null;
 				}
 			}
-
+			
 			return suite;
 		}
 
-		public static bool CanBuildFrom(Type type)
-		{
-			return CoreExtensions.Host.SuiteBuilders.CanBuildFrom(type);
-		}
-
-		#endregion
+		/// <summary>
+		/// Private constructor to prevent instantiation
+		/// </summary>
+		private TestFixtureBuilder() { }
 	}
 }

@@ -12,43 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Castle.DynamicProxy.Generators;
-using Castle.DynamicProxy.Generators.Emitters;
-
 namespace Castle.DynamicProxy.Contributors
 {
+	using Castle.DynamicProxy.Generators;
+	using Castle.DynamicProxy.Generators.Emitters;
+
 	public class InterfaceProxyWithOptionalTargetContributor : InterfaceProxyWithoutTargetContributor
 	{
-		#region Constructors/Destructors
+		private readonly GetTargetReferenceDelegate getTargetReference;
 
 		public InterfaceProxyWithOptionalTargetContributor(INamingScope namingScope, GetTargetExpressionDelegate getTarget,
-			GetTargetReferenceDelegate getTargetReference)
+		                                                   GetTargetReferenceDelegate getTargetReference)
 			: base(namingScope, getTarget)
 		{
 			this.getTargetReference = getTargetReference;
-			this.canChangeTarget = true;
+			canChangeTarget = true;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly GetTargetReferenceDelegate getTargetReference;
-
-		#endregion
-
-		#region Methods/Operators
-
 		protected override MethodGenerator GetMethodGenerator(MetaMethod method, ClassEmitter @class,
-			ProxyGenerationOptions options,
-			OverrideMethodDelegate overrideMethod)
+		                                                      ProxyGenerationOptions options,
+		                                                      OverrideMethodDelegate overrideMethod)
 		{
 			if (!method.Proxyable)
-				return new OptionallyForwardingMethodGenerator(method, overrideMethod, this.getTargetReference);
+			{
+				return new OptionallyForwardingMethodGenerator(method, overrideMethod, getTargetReference);
+			}
 
 			return base.GetMethodGenerator(method, @class, options, overrideMethod);
 		}
-
-		#endregion
 	}
 }

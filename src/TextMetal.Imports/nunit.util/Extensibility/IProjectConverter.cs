@@ -3,7 +3,6 @@
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
-
 using System;
 
 namespace NUnit.Util.Extensibility
@@ -15,23 +14,19 @@ namespace NUnit.Util.Extensibility
 	/// </summary>
 	public interface IProjectConverter
 	{
-		#region Methods/Operators
-
 		/// <summary>
 		/// Returns true if the file indicated is one that this
 		/// converter knows how to convert.
 		/// </summary>
-		/// <param name="path"> </param>
-		/// <returns> </returns>
-		bool CanConvertFrom(string path);
+		/// <param name="path"></param>
+		/// <returns></returns>
+		bool CanConvertFrom( string path );
 
 		/// <summary>
 		/// Converts an external project returning an NUnitProject
 		/// </summary>
-		/// <param name="path"> </param>
-		/// <returns> </returns>
-		NUnitProject ConvertFrom(string path);
-
-		#endregion
+		/// <param name="path"></param>
+		/// <returns></returns>
+		NUnitProject ConvertFrom( string path );
 	}
 }

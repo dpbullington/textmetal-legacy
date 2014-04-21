@@ -12,19 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Xml;
-using System.Xml.XPath;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
 #if !SL3
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Xml;
+	using System.Xml.XPath;
 
 	internal class XPathMutableCursor : XPathNode, IXmlCursor
 	{
-		#region Constructors/Destructors
+		private XPathBufferedNodeIterator iterator;
+		private CompiledXPathStep step;
+		private int depth;
+
+		private readonly IXmlIncludedTypeMap knownTypes;
+		private readonly CursorFlags flags;
 
 		public XPathMutableCursor(IXmlNode parent, CompiledXPath path,
 			IXmlIncludedTypeMap knownTypes, IXmlNamespaceSource namespaces, CursorFlags flags)
@@ -39,159 +42,113 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			if (!path.IsCreatable)
 				throw Error.XPathNotCreatable(path);
 
-			this.step = path.FirstStep;
+			this.step       = path.FirstStep;
 			this.knownTypes = knownTypes;
-			this.flags = flags;
+			this.flags      = flags;
 
 			var source = parent.RequireRealizable<XPathNavigator>();
 			if (source.IsReal)
-			{
-				this.iterator = new XPathBufferedNodeIterator(
+				iterator = new XPathBufferedNodeIterator(
 					source.Value.Select(path.FirstStep.Path));
-			}
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly CursorFlags flags;
-		private readonly IXmlIncludedTypeMap knownTypes;
-		private int depth;
-
-		private XPathBufferedNodeIterator iterator;
-		private CompiledXPathStep step;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public override event EventHandler Realized;
-
-		public override Type ClrType
-		{
-			get
-			{
-				return this.HasCurrent ? base.ClrType : this.knownTypes.Default.ClrType;
-			}
-		}
-
-		public bool HasCurrent
-		{
-			get
-			{
-				return this.depth == this.xpath.Depth;
-			}
-		}
-
-		public bool HasPartialOrCurrent
-		{
-			get
-			{
-				return null != this.node;
-			} // (_depth > 0 works also)
-		}
-
-		public override bool IsAttribute
-		{
-			get
-			{
-				return this.HasCurrent ? base.IsAttribute : !this.flags.IncludesElements();
-			}
-		}
-
-		public override bool IsElement
-		{
-			get
-			{
-				return this.HasCurrent ? base.IsElement : this.flags.IncludesElements();
-			}
-		}
-
-		public override bool IsNil
-		{
-			get
-			{
-				return this.HasCurrent && base.IsNil;
-			}
-			set
-			{
-				this.Realize();
-				base.IsNil = value;
-			}
 		}
 
 		public override bool IsReal
 		{
-			get
-			{
-				return this.HasCurrent;
-			}
+			get { return HasCurrent; }
+		}
+
+		public bool HasCurrent
+		{
+			get { return depth == xpath.Depth; }
+		}
+
+		public bool HasPartialOrCurrent
+		{
+			get { return null != node; } // (_depth > 0 works also)
+		}
+
+		public override Type ClrType
+		{
+			get { return HasCurrent ? base.ClrType : knownTypes.Default.ClrType; }
 		}
 
 		public override XmlName Name
 		{
-			get
-			{
-				return this.HasCurrent ? base.Name : XmlName.Empty;
-			}
-		}
-
-		public override string Value
-		{
-			get
-			{
-				return this.HasCurrent ? base.Value : string.Empty;
-			}
-			set
-			{
-				base.Value = value;
-			} // base sets IsNil, so no need to call Realize() here
-		}
-
-		public override string Xml
-		{
-			get
-			{
-				return this.HasCurrent ? base.Xml : null;
-			}
+			get { return HasCurrent ? base.Name : XmlName.Empty; }
 		}
 
 		public override XmlName XsiType
 		{
-			get
+			get { return HasCurrent ? base.XsiType : knownTypes.Default.XsiType; }
+		}
+
+		public override bool IsElement
+		{
+			get { return HasCurrent ? base.IsElement : flags.IncludesElements(); }
+		}
+
+		public override bool IsAttribute
+		{
+			get { return HasCurrent ? base.IsAttribute : !flags.IncludesElements(); }
+		}
+
+		public override bool IsNil
+		{
+			get { return HasCurrent && base.IsNil; }
+			set { Realize(); base.IsNil = value; }
+		}
+
+		public override string Value
+		{
+			get { return HasCurrent ? base.Value : string.Empty; }
+			set { base.Value = value; } // base sets IsNil, so no need to call Realize() here
+		}
+
+		public override string Xml
+		{
+			get { return HasCurrent ? base.Xml : null; }
+		}
+
+		public override object Evaluate(CompiledXPath path)
+		{
+			return HasCurrent ? base.Evaluate(path) : null;
+		}
+
+		public bool MoveNext()
+		{
+			ResetCurrent();
+
+			for (;;)
 			{
-				return this.HasCurrent ? base.XsiType : this.knownTypes.Default.XsiType;
+				var hasNext
+					=  iterator != null
+					&& iterator.MoveNext()
+					&& Consume(iterator, flags.AllowsMultipleItems());
+
+				if (!hasNext)
+					return SetAtEnd();
+				if (SeekCurrent())
+					return true;
 			}
 		}
 
-		#endregion
-
-		#region Methods/Operators
-
-		private void Append()
+		private bool SeekCurrent()
 		{
-			this.node = this.Parent.AsRealizable<XPathNavigator>().Value.Clone();
-			this.Parent.IsNil = false;
-			this.Complete();
-		}
+			while (depth < xpath.Depth)
+			{
+				var iterator = node.Select(step.Path);
+				if (!iterator.MoveNext())
+					return true; // Sought as far as possible
+				if (!Consume(iterator, false))
+					return false; // Problem: found multiple nodes
+			}
 
-		public void Coerce(Type clrType)
-		{
-			var includedType = this.knownTypes.Require(clrType);
-			this.SetXsiType(includedType.XsiType);
-			this.type = clrType;
-		}
+			IXmlIncludedType includedType;
+			if (!knownTypes.TryGet(XsiType, out includedType))
+				return false; // Problem: unrecognized xsi:type
 
-		private void Complete()
-		{
-			using (var writer = this.CreateWriterForAppend())
-				this.WriteNode(this.step, writer);
-
-			var moved = this.step.IsAttribute
-				? this.node.MoveToLastAttribute()
-				: this.node.MoveToLastChild();
-			this.SeekCurrentAfterCreate(moved);
+			type = includedType.ClrType;
+			return true; // Sought all the way
 		}
 
 		private bool Consume(XPathNodeIterator iterator, bool multiple)
@@ -200,78 +157,46 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			if (!multiple && iterator.MoveNext())
 				return false;
 
-			this.node = candidate;
-			this.Descend();
+			node = candidate;
+			Descend();
 			return true;
 		}
 
-		public void Create(Type type)
+		private bool SetAtEnd()
 		{
-			if (this.HasCurrent)
-				this.Insert();
-			else if (this.HasPartialOrCurrent)
-				this.Complete();
-			else
-				this.Append();
-
-			this.Coerce(type);
+			ResetCurrent();
+			return false;
 		}
 
-		private XmlWriter CreateWriterForAppend()
+		public void Reset()
 		{
-			return this.step.IsAttribute
-				? this.node.CreateAttributes()
-				: this.node.AppendChild();
+			ResetCurrent();
+			iterator.Reset();
+		}
+
+		public void MoveToEnd()
+		{
+			ResetCurrent();
+			iterator.MoveToEnd();
+		}
+
+		private void ResetCurrent()
+		{
+			node = null;
+			type = null;
+			ResetDepth();
+		}
+
+		private void ResetDepth()
+		{
+			step = xpath.FirstStep;
+			depth = 0;
 		}
 
 		private int Descend()
 		{
-			this.step = this.step.NextStep;
-			return ++this.depth;
-		}
-
-		public override object Evaluate(CompiledXPath path)
-		{
-			return this.HasCurrent ? base.Evaluate(path) : null;
-		}
-
-		private void Insert()
-		{
-			while (--this.depth > 0)
-				this.node.MoveToParent();
-			this.ResetDepth();
-
-			using (var writer = this.node.InsertBefore())
-				this.WriteNode(this.step, writer);
-
-			var moved = this.node.MoveToPrevious();
-			this.SeekCurrentAfterCreate(moved);
-		}
-
-		public void MakeNext(Type clrType)
-		{
-			if (this.MoveNext())
-				this.Coerce(clrType);
-			else
-				this.Create(clrType);
-		}
-
-		public bool MoveNext()
-		{
-			this.ResetCurrent();
-
-			for (;;)
-			{
-				var hasNext
-					= this.iterator != null
-					&& this.iterator.MoveNext()
-					&& this.Consume(this.iterator, this.flags.AllowsMultipleItems());
-
-				if (!hasNext)
-					return this.SetAtEnd();
-				if (this.SeekCurrent())
-					return true;
-			}
+			step = step.NextStep;
+			return ++depth;
 		}
 
 		public void MoveTo(IXmlNode position)
@@ -282,176 +207,125 @@ namespace Castle.Components.DictionaryAdapter.Xml
 
 			var positionNode = source.Value;
 
-			this.Reset();
-			while (this.MoveNext())
-			{
-				if (this.HasCurrent && this.node.IsSamePosition(positionNode))
+			Reset();
+			while (MoveNext())
+				if (HasCurrent && node.IsSamePosition(positionNode))
 					return;
-			}
 
 			throw Error.CursorCannotMoveToGivenNode();
 		}
 
-		public void MoveToEnd()
-		{
-			this.ResetCurrent();
-			this.iterator.MoveToEnd();
-		}
-
+		public override event EventHandler Realized;
 		protected virtual void OnRealized()
 		{
-			if (this.Realized != null)
-				this.Realized(this, EventArgs.Empty);
+			if (Realized != null)
+				Realized(this, EventArgs.Empty);
 		}
 
 		protected override void Realize()
 		{
-			if (this.HasCurrent)
+			if (HasCurrent)
 				return;
-			if (!(this.iterator == null || this.iterator.IsEmpty || this.HasPartialOrCurrent))
+			if (!(iterator == null || iterator.IsEmpty || HasPartialOrCurrent))
 				throw Error.CursorNotInRealizableState();
-			this.Create(this.knownTypes.Default.ClrType);
-			this.OnRealized();
+			Create(knownTypes.Default.ClrType);
+			OnRealized();
 		}
 
-		public void Remove()
+		public void MakeNext(Type clrType)
 		{
-			this.RequireRemovable();
-
-			var name = XmlName.Empty;
-
-			if (!this.HasCurrent)
-			{
-				var namespaceUri = this.LookupNamespaceUri(this.step.Prefix) ?? this.node.NamespaceURI;
-				name = new XmlName(this.step.LocalName, namespaceUri);
-			}
-
-			do
-			{
-				if (this.node.MoveToChild(name.LocalName, name.NamespaceUri))
-					break;
-
-				name = new XmlName(this.node.LocalName, this.node.NamespaceURI);
-				this.node.DeleteSelf();
-				this.depth--;
-			}
-			while (this.depth > 0);
-
-			this.ResetCurrent();
+			if (MoveNext())
+				Coerce(clrType);
+			else
+				Create(clrType);
 		}
 
-		public void RemoveAllNext()
+		public void Coerce(Type clrType)
 		{
-			while (this.MoveNext())
-				this.Remove();
+			var includedType = knownTypes.Require(clrType);
+			this.SetXsiType(includedType.XsiType);
+			this.type = clrType;
 		}
 
-		private void RequireMoved(bool result)
+		public void Create(Type type)
 		{
-			if (!result)
-				throw Error.XPathNavigationFailed(this.step.Path);
+			if (HasCurrent)
+				Insert();
+			else if (HasPartialOrCurrent)
+				Complete();
+			else
+				Append();
+
+			Coerce(type);
 		}
 
-		private void RequireRemovable()
+		private void Insert()
 		{
-			if (!this.HasPartialOrCurrent)
-				throw Error.CursorNotInRemovableState();
+			while (--depth > 0)
+				node.MoveToParent();
+			ResetDepth();
+
+			using (var writer = node.InsertBefore())
+				WriteNode(step, writer);
+
+			var moved = node.MoveToPrevious();
+			SeekCurrentAfterCreate(moved);
 		}
 
-		public void Reset()
+		private void Append()
 		{
-			this.ResetCurrent();
-			this.iterator.Reset();
+			node = Parent.AsRealizable<XPathNavigator>().Value.Clone();
+			Parent.IsNil = false;
+			Complete();
 		}
 
-		private void ResetCurrent()
+		private void Complete()
 		{
-			this.node = null;
-			this.type = null;
-			this.ResetDepth();
+			using (var writer = CreateWriterForAppend())
+				WriteNode(step, writer);
+
+			var moved = step.IsAttribute
+				? node.MoveToLastAttribute()
+				: node.MoveToLastChild();
+			SeekCurrentAfterCreate(moved);
 		}
 
-		private void ResetDepth()
+		private XmlWriter CreateWriterForAppend()
 		{
-			this.step = this.xpath.FirstStep;
-			this.depth = 0;
-		}
-
-		public override IXmlNode Save()
-		{
-			return this.HasCurrent ? new XPathNode(this.node.Clone(), this.type, this.Namespaces) : this;
-		}
-
-		private bool SeekCurrent()
-		{
-			while (this.depth < this.xpath.Depth)
-			{
-				var iterator = this.node.Select(this.step.Path);
-				if (!iterator.MoveNext())
-					return true; // Sought as far as possible
-				if (!this.Consume(iterator, false))
-					return false; // Problem: found multiple nodes
-			}
-
-			IXmlIncludedType includedType;
-			if (!this.knownTypes.TryGet(this.XsiType, out includedType))
-				return false; // Problem: unrecognized xsi:type
-
-			this.type = includedType.ClrType;
-			return true; // Sought all the way
-		}
-
-		private void SeekCurrentAfterCreate(bool moved)
-		{
-			this.RequireMoved(moved);
-			if (this.Descend() == this.xpath.Depth)
-				return;
-
-			do
-			{
-				moved = this.step.IsAttribute
-					? this.node.MoveToFirstAttribute()
-					: this.node.MoveToFirstChild();
-				this.RequireMoved(moved);
-			}
-			while (this.Descend() < this.xpath.Depth);
-		}
-
-		private bool SetAtEnd()
-		{
-			this.ResetCurrent();
-			return false;
-		}
-
-		private void WriteAttribute(CompiledXPathNode node, XmlWriter writer)
-		{
-			writer.WriteStartAttribute(node.Prefix, node.LocalName, null);
-			this.WriteValue(node, writer);
-			writer.WriteEndAttribute();
-		}
-
-		private void WriteComplexElement(CompiledXPathNode node, XmlWriter writer)
-		{
-			writer.WriteStartElement(node.Prefix, node.LocalName, null);
-			this.WriteSubnodes(node, writer, true);
-			this.WriteSubnodes(node, writer, false);
-			writer.WriteEndElement();
+			return step.IsAttribute
+				? node.CreateAttributes()
+				: node.AppendChild();
 		}
 
 		private void WriteNode(CompiledXPathNode node, XmlWriter writer)
 		{
 			if (node.IsAttribute)
-				this.WriteAttribute(node, writer);
+				WriteAttribute(node, writer);
 			else if (node.IsSimple)
-				this.WriteSimpleElement(node, writer);
+				WriteSimpleElement(node, writer);
 			else
-				this.WriteComplexElement(node, writer);
+				WriteComplexElement(node, writer);
+		}
+
+		private void WriteAttribute(CompiledXPathNode node, XmlWriter writer)
+		{
+			writer.WriteStartAttribute(node.Prefix, node.LocalName, null);
+			WriteValue(node, writer);
+			writer.WriteEndAttribute();
 		}
 
 		private void WriteSimpleElement(CompiledXPathNode node, XmlWriter writer)
 		{
 			writer.WriteStartElement(node.Prefix, node.LocalName, null);
-			this.WriteValue(node, writer);
+			WriteValue(node, writer);
+			writer.WriteEndElement();
+		}
+
+		private void WriteComplexElement(CompiledXPathNode node, XmlWriter writer)
+		{
+			writer.WriteStartElement(node.Prefix, node.LocalName, null);
+			WriteSubnodes(node, writer, true);
+			WriteSubnodes(node, writer, false);
 			writer.WriteEndElement();
 		}
 
@@ -459,13 +333,11 @@ namespace Castle.Components.DictionaryAdapter.Xml
 		{
 			var next = parent.NextNode;
 			if (next != null && next.IsAttribute == attributes)
-				this.WriteNode(next, writer);
+				WriteNode(next, writer);
 
 			foreach (var node in parent.Dependencies)
-			{
 				if (node.IsAttribute == attributes)
-					this.WriteNode(node, writer);
-			}
+					WriteNode(node, writer);
 		}
 
 		private void WriteValue(CompiledXPathNode node, XmlWriter writer)
@@ -473,13 +345,75 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			if (node.Value == null)
 				return;
 
-			var value = this.Parent.AsRealizable<XPathNavigator>().Value.Evaluate(node.Value);
+			var value = Parent.AsRealizable<XPathNavigator>().Value.Evaluate(node.Value);
 			writer.WriteValue(value);
 		}
 
-		#endregion
+		private void SeekCurrentAfterCreate(bool moved)
+		{
+			RequireMoved(moved);
+			if (Descend() == xpath.Depth)
+				return;
+
+			do
+			{
+				moved = step.IsAttribute
+					? node.MoveToFirstAttribute()
+					: node.MoveToFirstChild();
+				RequireMoved(moved);
+			}
+			while (Descend() < xpath.Depth);
+		}
+
+		public void RemoveAllNext()
+		{
+			while (MoveNext())
+				Remove();
+		}
+
+		public void Remove()
+		{
+			RequireRemovable();
+
+			var name = XmlName.Empty;
+
+			if (!HasCurrent)
+			{
+				var namespaceUri = LookupNamespaceUri(step.Prefix) ?? node.NamespaceURI;
+				name = new XmlName(step.LocalName, namespaceUri);
+			}
+
+			do
+			{
+				if (node.MoveToChild(name.LocalName, name.NamespaceUri))
+					break;
+
+				name = new XmlName(node.LocalName, node.NamespaceURI);
+				node.DeleteSelf();
+				depth--;
+			}
+			while (depth > 0);
+
+			ResetCurrent();
+		}
+
+		public override IXmlNode Save()
+		{
+			return HasCurrent ? new XPathNode(node.Clone(), type, Namespaces) : this;
+		}	
+
+		private void RequireRemovable()
+		{
+			if (!HasPartialOrCurrent)
+				throw Error.CursorNotInRemovableState();
+		}
+
+		private void RequireMoved(bool result)
+		{
+			if (!result)
+				throw Error.XPathNavigationFailed(step.Path);
+		}
 	}
 }
-
 #endif
 #endif

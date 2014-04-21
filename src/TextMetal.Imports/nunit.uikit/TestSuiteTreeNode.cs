@@ -4,122 +4,83 @@
 // copyright ownership at http://nunit.org.
 // ****************************************************************
 
-using System.Drawing;
-using System.Windows.Forms;
-
-using NUnit.Core;
-
 namespace NUnit.UiKit
 {
 	using System;
+	using System.Windows.Forms;
+	using System.Drawing;
+	using NUnit.Core;
+	using NUnit.Util;
 
-	/// <summary>
-	/// Type safe TreeNode for use in the TestSuiteTreeView.
+    /// <summary>
+	/// Type safe TreeNode for use in the TestSuiteTreeView. 
 	/// NOTE: Hides some methods and properties of base class.
 	/// </summary>
 	public class TestSuiteTreeNode : TreeNode
 	{
-		#region Constructors/Destructors
-
-		/// <summary>
-		/// Construct a TestNode given a test
-		/// </summary>
-		public TestSuiteTreeNode(TestInfo test)
-			: base(test.TestName.Name)
-		{
-			this.test = test;
-			this.UpdateImageIndex();
-		}
-
-		/// <summary>
-		/// Construct a TestNode given a TestResult
-		/// </summary>
-		public TestSuiteTreeNode(TestResult result)
-			: base(result.Test.TestName.Name)
-		{
-			this.test = result.Test;
-			this.result = result;
-			this.UpdateImageIndex();
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		public const int FailureIndex = 1;
-		public const int IgnoredIndex = 3;
-		public const int InconclusiveIndex = 4;
-
-		/// <summary>
-		/// Image indices for various test states - the values
-		/// must match the indices of the image list used
-		/// </summary>
-		public const int InitIndex = 0;
-
-		public const int SkippedIndex = 0;
-		public const int SuccessIndex = 2;
-
-		/// <summary>
-		/// Private field used for inclusion by category
-		/// </summary>
-		private bool included = true;
-
-		/// <summary>
-		/// The result from the last run of the test
-		/// </summary>
-		private TestResult result;
-
-		private bool showFailedAssumptions = false;
+		#region Instance variables and constant definitions
 
 		/// <summary>
 		/// The testcase or testsuite represented by this node
 		/// </summary>
 		private ITest test;
 
+		/// <summary>
+		/// The result from the last run of the test
+		/// </summary>
+		private TestResult result;
+
+		/// <summary>
+		/// Private field used for inclusion by category
+		/// </summary>
+		private bool included = true;
+
+        private bool showFailedAssumptions = false;
+
+		/// <summary>
+		/// Image indices for various test states - the values 
+		/// must match the indices of the image list used
+		/// </summary>
+		public const int InitIndex = 0;
+		public const int SkippedIndex = 0; 
+		public const int FailureIndex = 1;
+		public const int SuccessIndex = 2;
+		public const int IgnoredIndex = 3;
+	    public const int InconclusiveIndex = 4;
+
 		#endregion
 
-		#region Properties/Indexers/Events
+		#region Constructors
 
-		public bool HasInconclusiveResults
+		/// <summary>
+		/// Construct a TestNode given a test
+		/// </summary>
+		public TestSuiteTreeNode( TestInfo test ) : base(test.TestName.Name)
 		{
-			get
-			{
-				bool hasInconclusiveResults = false;
-				if (this.Result != null)
-				{
-					foreach (TestResult result in this.Result.Results)
-					{
-						hasInconclusiveResults |= result.ResultState == ResultState.Inconclusive;
-						if (hasInconclusiveResults)
-							break;
-					}
-				}
-				return hasInconclusiveResults;
-			}
+			this.test = test;
+			UpdateImageIndex();
 		}
 
 		/// <summary>
-		/// Return true if the node has a result, otherwise false.
+		/// Construct a TestNode given a TestResult
 		/// </summary>
-		public bool HasResult
+		public TestSuiteTreeNode( TestResult result ) : base( result.Test.TestName.Name )
 		{
-			get
-			{
-				return this.result != null;
-			}
+			this.test = result.Test;
+			this.result = result;
+			UpdateImageIndex();
 		}
 
-		public bool Included
+		#endregion
+
+		#region Properties	
+		/// <summary>
+		/// Test represented by this node
+		/// </summary>
+		public ITest Test
 		{
-			get
-			{
-				return this.included;
-			}
-			set
-			{
-				this.included = value;
-				this.ForeColor = this.included ? SystemColors.WindowText : Color.LightBlue;
-			}
+			get { return this.test; }
+			set	{ this.test = value; }
 		}
 
 		/// <summary>
@@ -127,127 +88,91 @@ namespace NUnit.UiKit
 		/// </summary>
 		public TestResult Result
 		{
-			get
-			{
-				return this.result;
-			}
-			set
-			{
+			get { return this.result; }
+			set 
+			{ 
 				this.result = value;
-				this.UpdateImageIndex();
+				UpdateImageIndex();
 			}
 		}
 
-		public bool ShowFailedAssumptions
-		{
-			get
-			{
-				return this.showFailedAssumptions;
-			}
-			set
-			{
-				if (value != this.showFailedAssumptions)
-				{
-					this.showFailedAssumptions = value;
+        /// <summary>
+        /// Return true if the node has a result, otherwise false.
+        /// </summary>
+        public bool HasResult
+        {
+            get { return this.result != null; }
+        }
 
-					if (this.HasInconclusiveResults)
-						this.RepopulateTheoryNode();
-				}
-			}
+		public string TestType
+		{
+			get { return test.TestType; }
 		}
 
 		public string StatusText
 		{
 			get
 			{
-				if (this.result == null)
-					return this.test.RunState.ToString();
+				if ( result == null )
+					return test.RunState.ToString();
 
-				return this.result.ResultState.ToString();
+				return result.ResultState.ToString();
 			}
 		}
 
-		/// <summary>
-		/// Test represented by this node
-		/// </summary>
-		public ITest Test
+		public bool Included
 		{
-			get
-			{
-				return this.test;
-			}
+			get { return included; }
 			set
-			{
-				this.test = value;
+			{ 
+				included = value;
+				this.ForeColor = included ? SystemColors.WindowText : Color.LightBlue;
 			}
 		}
 
-		public string TestType
-		{
-			get
-			{
-				return this.test.TestType;
-			}
-		}
+        public bool ShowFailedAssumptions
+        {
+            get { return showFailedAssumptions; }
+            set
+            {
+                if (value != showFailedAssumptions)
+                {
+                    showFailedAssumptions = value;
+
+                    if (HasInconclusiveResults)
+                        RepopulateTheoryNode();
+                }
+            }
+        }
+
+        public bool HasInconclusiveResults
+        {
+            get
+            {
+                bool hasInconclusiveResults = false;
+                if (Result != null)
+                {
+                    foreach (TestResult result in Result.Results)
+                    {
+                        hasInconclusiveResults |= result.ResultState == ResultState.Inconclusive;
+                        if (hasInconclusiveResults)
+                            break;
+                    }
+                }
+                return hasInconclusiveResults;
+            }
+        }
 
 		#endregion
 
-		#region Methods/Operators
-
-		internal void Accept(TestSuiteTreeNodeVisitor visitor)
-		{
-			visitor.Visit(this);
-			foreach (TestSuiteTreeNode node in this.Nodes)
-				node.Accept(visitor);
-		}
+		#region Methods
 
 		/// <summary>
-		/// Calculate the image index based on the node contents
+		/// UPdate the image index based on the result field
 		/// </summary>
-		/// <returns> Image index for this node </returns>
-		private int CalcImageIndex()
+		public void UpdateImageIndex()
 		{
-			if (this.result == null)
-			{
-				switch (this.test.RunState)
-				{
-					case RunState.Ignored:
-						return IgnoredIndex;
-					case RunState.NotRunnable:
-						return FailureIndex;
-					default:
-						return InitIndex;
-				}
-			}
-			else
-			{
-				switch (this.result.ResultState)
-				{
-					case ResultState.Inconclusive:
-						return InconclusiveIndex;
-					case ResultState.Skipped:
-						return SkippedIndex;
-					case ResultState.NotRunnable:
-					case ResultState.Failure:
-					case ResultState.Error:
-					case ResultState.Cancelled:
-						return FailureIndex;
-					case ResultState.Ignored:
-						return IgnoredIndex;
-					case ResultState.Success:
-						int resultIndex = SuccessIndex;
-						foreach (TestSuiteTreeNode node in this.Nodes)
-						{
-							if (node.ImageIndex == FailureIndex)
-								return FailureIndex; // Return FailureIndex if there is any failure
-							if (node.ImageIndex == IgnoredIndex)
-								resultIndex = IgnoredIndex; // Remember IgnoredIndex - we might still find a failure
-						}
-						return resultIndex;
-					default:
-						return InitIndex;
-				}
-			}
+			ImageIndex = SelectedImageIndex = CalcImageIndex();
 		}
 
 		/// <summary>
@@ -256,68 +181,113 @@ namespace NUnit.UiKit
 		public void ClearResults()
 		{
 			this.result = null;
-			this.ImageIndex = this.SelectedImageIndex = this.CalcImageIndex();
+			ImageIndex = SelectedImageIndex = CalcImageIndex();
 
-			foreach (TestSuiteTreeNode node in this.Nodes)
+			foreach(TestSuiteTreeNode node in Nodes)
 				node.ClearResults();
 		}
 
-		/// <summary>
-		/// Gets the Theory node associated with the current
-		/// node. If the current node is a Theory, then the
-		/// current node is returned. Otherwise, if the current
-		/// node is a test case under a theory node, then that
-		/// node is returned. Otherwise, null is returned.
+        /// <summary>
+        /// Gets the Theory node associated with the current
+        /// node. If the current node is a Theory, then the
+        /// current node is returned. Otherwise, if the current
+        /// node is a test case under a theory node, then that
+        /// node is returned. Otherwise, null is returned.
+        /// </summary>
+        /// <returns></returns>
+        public TestSuiteTreeNode GetTheoryNode()
+        {
+            if (this.Test.TestType == "Theory")
+                return this;
+
+            TestSuiteTreeNode parent = this.Parent as TestSuiteTreeNode;
+            if (parent != null && parent.Test.TestType == "Theory")
+                return parent;
+
+            return null;
+        }
+
+        /// <summary>
+        /// Regenerate the test cases under a theory, respecting
+        /// the current setting for ShowFailedAssumptions
+        /// </summary>
+        public void RepopulateTheoryNode()
+        {
+            // Ignore if it's not a theory or if it has not been run yet
+            if (this.Test.TestType == "Theory" && this.HasResult)
+            {
+                Nodes.Clear();
+
+                foreach (TestResult result in Result.Results)
+                    if (showFailedAssumptions || result.ResultState != ResultState.Inconclusive)
+                        Nodes.Add(new TestSuiteTreeNode(result));
+            }
+        }
+
+        /// <summary>
+		/// Calculate the image index based on the node contents
 		/// </summary>
-		/// <returns> </returns>
-		public TestSuiteTreeNode GetTheoryNode()
+		/// <returns>Image index for this node</returns>
+		private int CalcImageIndex()
 		{
-			if (this.Test.TestType == "Theory")
-				return this;
-
-			TestSuiteTreeNode parent = this.Parent as TestSuiteTreeNode;
-			if (parent != null && parent.Test.TestType == "Theory")
-				return parent;
-
-			return null;
+            if (this.result == null)
+            {
+                switch (this.test.RunState)
+                {
+                    case RunState.Ignored:
+                        return IgnoredIndex;
+                    case RunState.NotRunnable:
+                        return FailureIndex;
+                    default:
+                        return InitIndex;
+                }
+            }
+            else
+            {
+                switch (this.result.ResultState)
+                {
+                    case ResultState.Inconclusive:
+                        return InconclusiveIndex;
+                    case ResultState.Skipped:
+                        return SkippedIndex;
+                    case ResultState.NotRunnable:
+                    case ResultState.Failure:
+                    case ResultState.Error:
+                    case ResultState.Cancelled:
+                        return FailureIndex;
+                    case ResultState.Ignored:
+                        return IgnoredIndex;
+                    case ResultState.Success:
+                        int resultIndex = SuccessIndex;
+                        foreach (TestSuiteTreeNode node in this.Nodes)
+                        {
+                            if (node.ImageIndex == FailureIndex)
+                                return FailureIndex; // Return FailureIndex if there is any failure
+                            if (node.ImageIndex == IgnoredIndex)
+                                resultIndex = IgnoredIndex; // Remember IgnoredIndex - we might still find a failure
+                        }
+                        return resultIndex;
+                    default:
+                        return InitIndex;
+                }
+            }
 		}
 
-		/// <summary>
-		/// Regenerate the test cases under a theory, respecting
-		/// the current setting for ShowFailedAssumptions
-		/// </summary>
-		public void RepopulateTheoryNode()
+		internal void Accept(TestSuiteTreeNodeVisitor visitor) 
 		{
-			// Ignore if it's not a theory or if it has not been run yet
-			if (this.Test.TestType == "Theory" && this.HasResult)
+			visitor.Visit(this);
+			foreach (TestSuiteTreeNode node in this.Nodes) 
 			{
-				this.Nodes.Clear();
-
-				foreach (TestResult result in this.Result.Results)
-				{
-					if (this.showFailedAssumptions || result.ResultState != ResultState.Inconclusive)
-						this.Nodes.Add(new TestSuiteTreeNode(result));
-				}
+				node.Accept(visitor);
 			}
 		}
 
-		/// <summary>
-		/// UPdate the image index based on the result field
-		/// </summary>
-		public void UpdateImageIndex()
-		{
-			this.ImageIndex = this.SelectedImageIndex = this.CalcImageIndex();
-		}
-
 		#endregion
 	}
 
-	public abstract class TestSuiteTreeNodeVisitor
+	public abstract class TestSuiteTreeNodeVisitor 
 	{
-		#region Methods/Operators
-
 		public abstract void Visit(TestSuiteTreeNode node);
-
-		#endregion
 	}
 }
+

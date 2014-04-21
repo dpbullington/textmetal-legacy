@@ -1,5 +1,4 @@
 #region License
-
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -22,14 +21,13 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-
 #endregion
 
 namespace Newtonsoft.Json.Serialization
 {
-	/// <summary>
-	/// Represents a method that constructs an object.
-	/// </summary>
-	/// <typeparam name="T"> The object type to create. </typeparam>
-	public delegate object ObjectConstructor<T>(params object[] args);
+    /// <summary>
+    /// Represents a method that constructs an object.
+    /// </summary>
+    /// <typeparam name="T">The object type to create.</typeparam>
+    public delegate object ObjectConstructor<T>(params object[] args);
 }

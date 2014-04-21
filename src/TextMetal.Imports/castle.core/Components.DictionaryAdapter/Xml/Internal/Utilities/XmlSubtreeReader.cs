@@ -12,172 +12,132 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Threading;
-using System.Xml;
-using System.Xml.Serialization;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Threading;
+	using System.Xml;
+	using System.Xml.Serialization;
 
-	public class XmlSubtreeReader : XmlReader
-	{
-		private readonly string rootLocalName;
+    public class XmlSubtreeReader : XmlReader
+    {
+        private readonly string rootLocalName;
 		private readonly string rootNamespaceURI;
 		private string underlyingNamespaceURI;
-		private XmlReader reader;
+        private XmlReader reader;
 
 		public XmlSubtreeReader(IXmlNode node, XmlRootAttribute root)
-			: this(node, root.ElementName, root.Namespace)
-		{
-		}
+			: this(node, root.ElementName, root.Namespace) { }
 
-		public XmlSubtreeReader(IXmlNode node, string rootLocalName, string rootNamespaceUri)
-		{
-			if (null == node)
-				throw Error.ArgumentNull("node");
-			if (null == rootLocalName)
-				throw Error.ArgumentNull("rootLocalName");
+        public XmlSubtreeReader(IXmlNode node, string rootLocalName, string rootNamespaceUri)
+        {
+            if (null == node)
+                throw Error.ArgumentNull("node");
+            if (null == rootLocalName)
+                throw Error.ArgumentNull("rootLocalName");
 
-			this.reader = node.ReadSubtree();
-			this.rootLocalName = this.reader.NameTable.Add(rootLocalName);
+            this.reader           = node.ReadSubtree();
+            this.rootLocalName    = reader.NameTable.Add(rootLocalName);
 			this.rootNamespaceURI = rootNamespaceUri ?? string.Empty;
-		}
+        }
 
-		protected override void Dispose(bool managed)
-		{
-			try
-			{
-				if (managed)
-					this.DisposeReader();
-			}
-			finally
-			{
-				base.Dispose(managed);
-			}
-		}
+        protected override void Dispose(bool managed)
+        {
+            try { if (managed) DisposeReader(); }
+            finally { base.Dispose(managed); }
+        }
 
-		private void DisposeReader()
-		{
-			IDisposable value = Interlocked.Exchange(ref this.reader, null);
-			if (null != value)
-				value.Dispose();
-		}
+        private void DisposeReader()
+        {
+            IDisposable value = Interlocked.Exchange(ref reader, null);
+            if (null != value) value.Dispose();
+        }
 
-		public bool IsDisposed
-		{
-			get
-			{
-				return null == this.reader;
-			}
-		}
+        public bool IsDisposed
+        {
+            get { return null == reader; }
+        }
 
-		private void RequireNotDisposed()
-		{
-			if (this.IsDisposed)
-				throw Error.ObjectDisposed("XmlSubtreeReader");
-		}
+        private void RequireNotDisposed()
+        {
+            if (IsDisposed)
+                throw Error.ObjectDisposed("XmlSubtreeReader");
+        }
 
-		protected XmlReader Reader
-		{
-			get
-			{
-				this.RequireNotDisposed();
-				return this.reader;
-			}
-		}
+        protected XmlReader Reader
+        {
+            get { RequireNotDisposed(); return reader; }
+        }
 
-		public override ReadState ReadState
-		{
-			get
-			{
-				return this.IsDisposed ? ReadState.Closed : this.reader.ReadState;
-			}
-		}
+        public override ReadState ReadState
+        {
+            get { return IsDisposed ? ReadState.Closed : reader.ReadState; }
+        }
 
-		public override int Depth
-		{
-			get
-			{
-				return this.Reader.Depth;
-			}
-		}
+        public override int Depth
+        {
+            get { return Reader.Depth; }
+        }
 
-		public override XmlNodeType NodeType
-		{
-			get
-			{
-				return this.Reader.NodeType;
-			}
-		}
+        public override XmlNodeType NodeType
+        {
+            get { return Reader.NodeType; }
+        }
 
-		public bool IsAtRootElement
-		{
-			get
-			{
-				this.RequireNotDisposed();
-				return
-					this.reader.ReadState == ReadState.Interactive &&
-					this.reader.Depth == 0 &&
-					(
-						this.reader.NodeType == XmlNodeType.Element ||
-						this.reader.NodeType == XmlNodeType.EndElement
-						);
-			}
-		}
+        public bool IsAtRootElement
+        {
+            get
+            {
+                RequireNotDisposed();
+                return
+                    reader.ReadState == ReadState.Interactive &&
+                    reader.Depth == 0 &&
+                    (
+                        reader.NodeType == XmlNodeType.Element ||
+                        reader.NodeType == XmlNodeType.EndElement
+                    );
+            }
+        }
 
-		public override bool EOF
-		{
-			get
-			{
-				return this.Reader.EOF;
-			}
-		}
+        public override bool EOF
+        {
+            get { return Reader.EOF; }
+        }
 
-		public override string Prefix
-		{
-			get
-			{
-				return this.Reader.Prefix;
-			}
-		}
+        public override string Prefix
+        {
+            get { return Reader.Prefix; }
+        }
 
-		public override string LocalName
-		{
-			get
-			{
-				return this.IsAtRootElement ? this.rootLocalName : this.Reader.LocalName;
-			}
-		}
+        public override string LocalName
+        {
+            get { return IsAtRootElement ? rootLocalName : Reader.LocalName; }
+        }
 
-		public override string NamespaceURI
-		{
-			get
-			{
-				return this.IsAtRootElement ? this.CaptureNamespaceUri() : this.TranslateNamespaceURI();
-			}
-		}
+        public override string NamespaceURI
+        {
+            get { return IsAtRootElement ? CaptureNamespaceUri() : TranslateNamespaceURI(); }
+        }
 
 		private string CaptureNamespaceUri()
 		{
-			if (this.underlyingNamespaceURI == null)
-				this.underlyingNamespaceURI = this.Reader.NamespaceURI;
-			return this.rootNamespaceURI;
+			if (underlyingNamespaceURI == null)
+				underlyingNamespaceURI = Reader.NamespaceURI;
+			return rootNamespaceURI;
 		}
 
 		private string TranslateNamespaceURI()
 		{
-			var actualNamespaceURI = this.Reader.NamespaceURI;
-			return actualNamespaceURI == this.underlyingNamespaceURI
-				? this.rootNamespaceURI
+			var actualNamespaceURI = Reader.NamespaceURI;
+			return actualNamespaceURI == underlyingNamespaceURI
+				? rootNamespaceURI
 				: actualNamespaceURI;
 		}
 
 #if !DOTNET40
-	// Virtual in .NET 4.0, abstract in .NET 3.5
-	// Use default implementation from .NET 4.0
+		// Virtual in .NET 4.0, abstract in .NET 3.5
+		// Use default implementation from .NET 4.0
 		public override bool HasValue
 		{
 			get { return 0UL != (HasValueMask & (1UL << ((int)NodeType & 31))); }
@@ -185,112 +145,95 @@ namespace Castle.Components.DictionaryAdapter.Xml
 		private const ulong HasValueMask = 0x0002659CU;
 #endif
 
-		public override string Value
-		{
-			get
-			{
-				return this.Reader.Value;
-			}
-		}
+        public override string Value
+        {
+            get { return Reader.Value; }
+        }
 
-		public override bool IsEmptyElement
-		{
-			get
-			{
-				return this.Reader.IsEmptyElement;
-			}
-		}
+        public override bool IsEmptyElement
+        {
+            get { return Reader.IsEmptyElement; }
+        }
 
-		public override int AttributeCount
-		{
-			get
-			{
-				return this.Reader.AttributeCount;
-			}
-		}
+        public override int AttributeCount
+        {
+            get { return Reader.AttributeCount; }
+        }
 
-		public override string BaseURI
-		{
-			get
-			{
-				return this.Reader.BaseURI;
-			}
-		}
+        public override string BaseURI
+        {
+            get { return Reader.BaseURI; }
+        }
 
-		public override XmlNameTable NameTable
-		{
-			get
-			{
-				return this.Reader.NameTable;
-			}
-		}
+        public override XmlNameTable NameTable
+        {
+            get { return Reader.NameTable; }
+        }
 
-		public override bool Read()
-		{
-			return this.Reader.Read();
-		}
+        public override bool Read()
+        {
+            return Reader.Read();
+        }
 
-		public override bool MoveToElement()
-		{
-			return this.Reader.MoveToElement();
-		}
+        public override bool MoveToElement()
+        {
+            return Reader.MoveToElement();
+        }
 
-		public override bool MoveToFirstAttribute()
-		{
-			return this.Reader.MoveToFirstAttribute();
-		}
+        public override bool MoveToFirstAttribute()
+        {
+            return Reader.MoveToFirstAttribute();
+        }
 
-		public override bool MoveToNextAttribute()
-		{
-			return this.Reader.MoveToNextAttribute();
-		}
+        public override bool MoveToNextAttribute()
+        {
+            return Reader.MoveToNextAttribute();
+        }
 
-		public override bool MoveToAttribute(string name)
-		{
-			return this.Reader.MoveToAttribute(name);
-		}
+        public override bool MoveToAttribute(string name)
+        {
+            return Reader.MoveToAttribute(name);
+        }
 
-		public override bool MoveToAttribute(string name, string ns)
-		{
-			return this.Reader.MoveToAttribute(name, ns);
-		}
+        public override bool MoveToAttribute(string name, string ns)
+        {
+            return Reader.MoveToAttribute(name, ns);
+        }
 
-		public override bool ReadAttributeValue()
-		{
-			return this.Reader.ReadAttributeValue();
-		}
+        public override bool ReadAttributeValue()
+        {
+            return Reader.ReadAttributeValue();
+        }
 
-		public override string GetAttribute(int i)
-		{
-			return this.Reader.GetAttribute(i);
-		}
+        public override string GetAttribute(int i)
+        {
+            return Reader.GetAttribute(i);
+        }
 
-		public override string GetAttribute(string name)
-		{
-			return this.Reader.GetAttribute(name);
-		}
+        public override string GetAttribute(string name)
+        {
+            return Reader.GetAttribute(name);
+        }
 
-		public override string GetAttribute(string name, string namespaceURI)
-		{
-			return this.Reader.GetAttribute(name, namespaceURI);
-		}
+        public override string GetAttribute(string name, string namespaceURI)
+        {
+            return Reader.GetAttribute(name, namespaceURI);
+        }
 
-		public override string LookupNamespace(string prefix)
-		{
-			return this.Reader.LookupNamespace(prefix);
-		}
+        public override string LookupNamespace(string prefix)
+        {
+            return Reader.LookupNamespace(prefix);
+        }
 
-		public override void ResolveEntity()
-		{
-			this.Reader.ResolveEntity();
-		}
+        public override void ResolveEntity()
+        {
+            Reader.ResolveEntity();
+        }
 
-		public override void Close()
-		{
-			if (!this.IsDisposed)
-				this.reader.Close();
-		}
-	}
+        public override void Close()
+        {
+            if (!IsDisposed) reader.Close();
+        }
+    }
 }
-
 #endif

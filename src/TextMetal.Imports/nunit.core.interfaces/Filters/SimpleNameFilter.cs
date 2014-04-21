@@ -3,7 +3,6 @@
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
-
 using System;
 using System.Collections;
 
@@ -12,81 +11,65 @@ namespace NUnit.Core.Filters
 	/// <summary>
 	/// SimpleName filter selects tests based on their name
 	/// </summary>
-	[Serializable]
-	public class SimpleNameFilter : TestFilter
-	{
-		#region Constructors/Destructors
+    [Serializable]
+    public class SimpleNameFilter : TestFilter
+    {
+        private ArrayList names = new ArrayList();
 
 		/// <summary>
 		/// Construct an empty SimpleNameFilter
 		/// </summary>
-		public SimpleNameFilter()
-		{
-		}
+        public SimpleNameFilter() { }
 
-		/// <summary>
-		/// Construct a SimpleNameFilter for a single name
-		/// </summary>
-		/// <param name="name"> The name the filter will recognize. </param>
-		public SimpleNameFilter(string name)
-		{
-			this.names.Add(name);
-		}
+        /// <summary>
+        /// Construct a SimpleNameFilter for a single name
+        /// </summary>
+        /// <param name="name">The name the filter will recognize.</param>
+        public SimpleNameFilter(string name)
+        {
+            names.Add(name);
+        }
 
-		/// <summary>
-		/// Construct a SimpleNameFilter for an array of names
-		/// </summary>
-		/// <param names="nameToAdd"> The names the filter will recognize. </param>
-		public SimpleNameFilter(string[] namesToAdd)
-		{
-			this.names.AddRange(namesToAdd);
-		}
+        /// <summary>
+        /// Construct a SimpleNameFilter for an array of names
+        /// </summary>
+        /// <param names="nameToAdd">The names the filter will recognize.</param>
+        public SimpleNameFilter(string[] namesToAdd)
+        {
+            this.names.AddRange(namesToAdd);
+        }
 
-		#endregion
+        /// <summary>
+        /// Add a name to a SimpleNameFilter
+        /// </summary>
+        /// <param name="name">The name to be added.</param>
+        public void Add(string name)
+        {
+            names.Add(name);
+        }
 
-		#region Fields/Constants
+        /// <summary>
+        /// Add an array of names to a SimpleNameFilter
+        /// </summary>
+        /// <param name="namesToAdd">The name to be added.</param>
+        public void Add(string[] namesToAdd)
+        {
+            foreach (string name in namesToAdd)
+                names.Add(name);
+        }
 
-		private ArrayList names = new ArrayList();
-
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Add a name to a SimpleNameFilter
-		/// </summary>
-		/// <param name="name"> The name to be added. </param>
-		public void Add(string name)
-		{
-			this.names.Add(name);
-		}
-
-		/// <summary>
-		/// Add an array of names to a SimpleNameFilter
-		/// </summary>
-		/// <param name="namesToAdd"> The name to be added. </param>
-		public void Add(string[] namesToAdd)
-		{
-			foreach (string name in namesToAdd)
-				this.names.Add(name);
-		}
-
-		/// <summary>
+        /// <summary>
 		/// Check whether the filter matches a test
 		/// </summary>
-		/// <param name="test"> The test to be matched </param>
-		/// <returns> True if it matches, otherwise false </returns>
-		public override bool Match(ITest test)
+		/// <param name="test">The test to be matched</param>
+		/// <returns>True if it matches, otherwise false</returns>
+		public override bool Match( ITest test )
 		{
-			foreach (string name in this.names)
-			{
-				if (test.TestName.FullName == name)
+			foreach( string name in names )
+				if ( test.TestName.FullName == name )
 					return true;
-			}
 
 			return false;
 		}
-
-		#endregion
 	}
 }

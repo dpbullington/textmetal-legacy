@@ -1,4 +1,4 @@
-namespace NUnit.Gui.SettingsPages
+﻿namespace NUnit.Gui.SettingsPages
 {
     partial class InternalTraceSettingsPage
     {

@@ -12,45 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
-
-using Castle.DynamicProxy.Generators;
-using Castle.DynamicProxy.Internal;
-
 namespace Castle.DynamicProxy.Contributors
 {
 	using System;
+	using System.Reflection;
+	using System.Runtime.CompilerServices;
+
+	using Castle.DynamicProxy.Generators;
+	using Castle.DynamicProxy.Generators.Emitters;
+	using Castle.DynamicProxy.Internal;
 
 	public class WrappedClassMembersCollector : ClassMembersCollector
 	{
-		#region Constructors/Destructors
-
-		public WrappedClassMembersCollector(Type type)
-			: base(type)
+		public WrappedClassMembersCollector(Type type) : base(type)
 		{
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		private void CollectFields(IProxyGenerationHook hook)
-		{
-			var fields = this.type.GetAllFields();
-			foreach (var field in fields)
-			{
-				if (this.IsOKToBeOnProxy(field))
-					continue;
-
-				hook.NonProxyableMemberNotification(this.type, field);
-			}
 		}
 
 		public override void CollectMembersToProxy(IProxyGenerationHook hook)
 		{
 			base.CollectMembersToProxy(hook);
-			this.CollectFields(hook);
+			CollectFields(hook);
 			// TODO: perhaps we should also look for nested classes...
 		}
 
@@ -64,9 +45,11 @@ namespace Castle.DynamicProxy.Contributors
 			}
 #endif
 			if (method.IsAccessible() == false)
+			{
 				return null;
+			}
 
-			var accepted = this.AcceptMethod(method, true, hook);
+			var accepted = AcceptMethod(method, true, hook);
 			if (!accepted && !method.IsAbstract)
 			{
 				//we don't need to do anything...
@@ -84,9 +67,21 @@ namespace Castle.DynamicProxy.Contributors
 
 		protected virtual bool IsOKToBeOnProxy(FieldInfo field)
 		{
-			return this.IsGeneratedByTheCompiler(field);
+			return IsGeneratedByTheCompiler(field);
 		}
 
-		#endregion
+		private void CollectFields(IProxyGenerationHook hook)
+		{
+			var fields = type.GetAllFields();
+			foreach (var field in fields)
+			{
+				if (IsOKToBeOnProxy(field))
+				{
+					continue;
+				}
+
+				hook.NonProxyableMemberNotification(type, field);
+			}
+		}
 	}
 }

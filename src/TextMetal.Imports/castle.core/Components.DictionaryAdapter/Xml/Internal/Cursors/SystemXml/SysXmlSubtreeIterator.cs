@@ -12,18 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Xml;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
 #if !SILVERLIGHT
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Xml;
 
 	public class SysXmlSubtreeIterator : SysXmlNode, IXmlIterator
 	{
-		#region Constructors/Destructors
+		private State state;
 
 		public SysXmlSubtreeIterator(IXmlNode parent, IXmlNamespaceSource namespaces)
 			: base(namespaces, parent)
@@ -33,72 +31,50 @@ namespace Castle.Components.DictionaryAdapter.Xml
 
 			var source = parent.RequireRealizable<XmlNode>();
 			if (source.IsReal)
-				this.node = source.Value;
+				node = source.Value;
 
-			this.type = typeof(object);
+			type = typeof(object);
 		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private State state;
-
-		#endregion
-
-		#region Methods/Operators
 
 		public bool MoveNext()
 		{
-			switch (this.state)
+			switch (state)
 			{
-				case State.Initial:
-					return this.MoveToInitial();
-				case State.Current:
-					return this.MoveToSubsequent();
-				default:
-					return false;
+				case State.Initial: return MoveToInitial();
+				case State.Current: return MoveToSubsequent();
+				default:            return false;
 			}
-		}
-
-		private bool MoveToElement(XmlNode node)
-		{
-			for (; node != null; node = node.NextSibling)
-			{
-				if (node.NodeType == XmlNodeType.Element)
-					return this.SetNext(node);
-			}
-
-			return false;
 		}
 
 		private bool MoveToInitial()
 		{
-			if (this.node == null)
+			if (node == null)
 				return false;
 
-			this.state = State.Current;
+			state = State.Current;
 			return true;
 		}
 
 		private bool MoveToSubsequent()
 		{
-			if (this.MoveToElement(this.node.FirstChild))
+			if (MoveToElement(node.FirstChild))
 				return true;
 
-			for (; this.node != null; this.node = this.node.ParentNode)
-			{
-				if (this.MoveToElement(this.node.NextSibling))
+			for (; node != null; node = node.ParentNode)
+				if (MoveToElement(node.NextSibling))
 					return true;
-			}
 
-			this.state = State.End;
+			state = State.End;
 			return false;
 		}
 
-		public override IXmlNode Save()
+		private bool MoveToElement(XmlNode node)
 		{
-			return new SysXmlNode(this.node, this.type, this.Namespaces);
+			for (; node != null; node = node.NextSibling)
+				if (node.NodeType == XmlNodeType.Element)
+					return SetNext(node);
+
+			return false;
 		}
 
 		private bool SetNext(XmlNode node)
@@ -107,9 +83,10 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			return true;
 		}
 
-		#endregion
-
-		#region Classes/Structs/Interfaces/Enums/Delegates
+		public override IXmlNode Save()
+		{
+			return new SysXmlNode(node, type, Namespaces);
+		}
 
 		private enum State
 		{
@@ -117,10 +94,7 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			Current,
 			End
 		}
-
-		#endregion
 	}
 }
-
 #endif
 #endif

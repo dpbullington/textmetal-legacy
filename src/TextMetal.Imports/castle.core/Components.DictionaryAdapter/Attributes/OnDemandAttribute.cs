@@ -12,15 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-
 namespace Castle.Components.DictionaryAdapter
 {
 	using System;
+	using System.Collections;
+	using System.Collections.Generic;
+	using System.ComponentModel;
+	using System.Linq;
+	using System.Reflection;
 
 	/// <summary>
 	/// Support for on-demand value resolution.
@@ -28,8 +27,6 @@ namespace Castle.Components.DictionaryAdapter
 	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Property, AllowMultiple = false)]
 	public class OnDemandAttribute : DictionaryBehaviorAttribute, IDictionaryPropertyGetter
 	{
-		#region Constructors/Destructors
-
 		public OnDemandAttribute()
 		{
 		}
@@ -37,35 +34,113 @@ namespace Castle.Components.DictionaryAdapter
 		public OnDemandAttribute(Type type)
 		{
 			if (type.GetConstructor(Type.EmptyTypes) == null)
+			{
 				throw new ArgumentException("On-demand values must have a parameterless constructor");
+			}
 
-			this.Type = type;
+			Type = type;
 		}
 
 		public OnDemandAttribute(object value)
 		{
-			this.Value = value;
+			Value = value;
 		}
 
-		#endregion
+		public Type Type { get; private set; }
 
-		#region Properties/Indexers/Events
+		public object Value { get; private set; }
 
-		public Type Type
+		public object GetPropertyValue(IDictionaryAdapter dictionaryAdapter, string key,
+									   object storedValue, PropertyDescriptor property, bool ifExists)
 		{
-			get;
-			private set;
+			if (storedValue == null && ifExists == false)
+			{
+				IValueInitializer initializer = null;
+
+				if (Value != null)
+				{
+					storedValue = Value;
+				}
+				else
+				{
+					var type = Type ?? GetInferredType(dictionaryAdapter, property, out initializer);
+
+					if (IsAcceptedType(type))
+					{
+						if (type.IsInterface)
+						{
+							if (property.IsDynamicProperty == false)
+							{
+								if (storedValue == null)
+								{
+									storedValue = dictionaryAdapter.Create(property.PropertyType);
+								}
+							}
+						}
+						else if (type.IsArray)
+						{
+							storedValue = Array.CreateInstance(type.GetElementType(), 0);
+						}
+						else
+						{
+							if (storedValue == null)
+							{
+								object[] args = null;
+								ConstructorInfo constructor = null;
+
+								if (property.IsDynamicProperty)
+								{
+									constructor = 
+										(from ctor in type.GetConstructors()
+										 let parms = ctor.GetParameters()
+										 where parms.Length == 1 &&
+										       parms[0].ParameterType.IsAssignableFrom(dictionaryAdapter.Meta.Type)
+										  select ctor).FirstOrDefault();
+
+									if (constructor != null) args = new[] { dictionaryAdapter };
+								}
+
+								if (constructor == null)
+								{
+									constructor = type.GetConstructor(Type.EmptyTypes);
+								}
+
+								if (constructor != null)
+								{
+									storedValue = constructor.Invoke(args);
+								}
+							}
+						}
+					}
+				}
+
+				if (storedValue != null)
+				{
+					using (dictionaryAdapter.SuppressNotificationsBlock())
+					{
+						if (storedValue is ISupportInitialize)
+						{
+							((ISupportInitialize)storedValue).BeginInit();
+							((ISupportInitialize)storedValue).EndInit();
+						}
+						if (initializer != null)
+						{
+							initializer.Initialize(dictionaryAdapter, storedValue);
+						}
+
+						property.SetPropertyValue(dictionaryAdapter, property.PropertyName,
+												  ref storedValue, dictionaryAdapter.This.Descriptor);
+					}
+				}
+			}
+
+			return storedValue;
 		}
 
-		public object Value
+		private static bool IsAcceptedType(Type type)
 		{
-			get;
-			private set;
+			return type != null && type != typeof(String) && !type.IsPrimitive && !type.IsEnum;
 		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		private static Type GetInferredType(IDictionaryAdapter dictionaryAdapter, PropertyDescriptor property, out IValueInitializer initializer)
 		{
@@ -74,7 +149,9 @@ namespace Castle.Components.DictionaryAdapter
 
 			type = property.PropertyType;
 			if (typeof(IEnumerable).IsAssignableFrom(type) == false)
+			{
 				return type;
+			}
 
 			Type collectionType = null;
 
@@ -99,7 +176,7 @@ namespace Castle.Components.DictionaryAdapter
 						collectionType = isBindingList ? typeof(EditableBindingList<>) : typeof(EditableList<>);
 #endif
 					}
-
+					
 #if SILVERLIGHT //never true
 #else
 					if (isBindingList && genericArg.IsInterface)
@@ -112,98 +189,21 @@ namespace Castle.Components.DictionaryAdapter
 #endif
 				}
 				else if (genericDef == typeof(IList<>) || genericDef == typeof(ICollection<>))
+				{
 					collectionType = dictionaryAdapter.CanEdit ? typeof(EditableList<>) : typeof(List<>);
+				}
 
 				if (collectionType != null)
+				{
 					return collectionType.MakeGenericType(genericArg);
+				}
 			}
 			else if (type == typeof(IList) || type == typeof(ICollection))
+			{
 				return dictionaryAdapter.CanEdit ? typeof(EditableList) : typeof(List<object>);
+			}
 
 			return type;
 		}
-
-		private static bool IsAcceptedType(Type type)
-		{
-			return type != null && type != typeof(String) && !type.IsPrimitive && !type.IsEnum;
-		}
-
-		public object GetPropertyValue(IDictionaryAdapter dictionaryAdapter, string key,
-			object storedValue, PropertyDescriptor property, bool ifExists)
-		{
-			if (storedValue == null && ifExists == false)
-			{
-				IValueInitializer initializer = null;
-
-				if (this.Value != null)
-					storedValue = this.Value;
-				else
-				{
-					var type = this.Type ?? GetInferredType(dictionaryAdapter, property, out initializer);
-
-					if (IsAcceptedType(type))
-					{
-						if (type.IsInterface)
-						{
-							if (property.IsDynamicProperty == false)
-							{
-								if (storedValue == null)
-									storedValue = dictionaryAdapter.Create(property.PropertyType);
-							}
-						}
-						else if (type.IsArray)
-							storedValue = Array.CreateInstance(type.GetElementType(), 0);
-						else
-						{
-							if (storedValue == null)
-							{
-								object[] args = null;
-								ConstructorInfo constructor = null;
-
-								if (property.IsDynamicProperty)
-								{
-									constructor =
-										(from ctor in type.GetConstructors()
-											let parms = ctor.GetParameters()
-											where parms.Length == 1 &&
-												parms[0].ParameterType.IsAssignableFrom(dictionaryAdapter.Meta.Type)
-											select ctor).FirstOrDefault();
-
-									if (constructor != null)
-										args = new[] { dictionaryAdapter };
-								}
-
-								if (constructor == null)
-									constructor = type.GetConstructor(Type.EmptyTypes);
-
-								if (constructor != null)
-									storedValue = constructor.Invoke(args);
-							}
-						}
-					}
-				}
-
-				if (storedValue != null)
-				{
-					using (dictionaryAdapter.SuppressNotificationsBlock())
-					{
-						if (storedValue is ISupportInitialize)
-						{
-							((ISupportInitialize)storedValue).BeginInit();
-							((ISupportInitialize)storedValue).EndInit();
-						}
-						if (initializer != null)
-							initializer.Initialize(dictionaryAdapter, storedValue);
-
-						property.SetPropertyValue(dictionaryAdapter, property.PropertyName,
-							ref storedValue, dictionaryAdapter.This.Descriptor);
-					}
-				}
-			}
-
-			return storedValue;
-		}
-
-		#endregion
 	}
 }

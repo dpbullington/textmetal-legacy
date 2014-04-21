@@ -1,5 +1,4 @@
 #region License
-
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -22,74 +21,51 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-
 #endregion
 
 using System;
-
 using Newtonsoft.Json.Utilities;
 
 namespace Newtonsoft.Json.Schema
 {
-	/// <summary>
-	/// Returns detailed information related to the <see cref="ValidationEventHandler" />.
-	/// </summary>
-	public class ValidationEventArgs : EventArgs
-	{
-		#region Constructors/Destructors
+    /// <summary>
+    /// Returns detailed information related to the <see cref="ValidationEventHandler"/>.
+    /// </summary>
+    public class ValidationEventArgs : EventArgs
+    {
+        private readonly JsonSchemaException _ex;
 
-		internal ValidationEventArgs(JsonSchemaException ex)
-		{
-			ValidationUtils.ArgumentNotNull(ex, "ex");
-			this._ex = ex;
-		}
+        internal ValidationEventArgs(JsonSchemaException ex)
+        {
+            ValidationUtils.ArgumentNotNull(ex, "ex");
+            _ex = ex;
+        }
 
-		#endregion
+        /// <summary>
+        /// Gets the <see cref="JsonSchemaException"/> associated with the validation error.
+        /// </summary>
+        /// <value>The JsonSchemaException associated with the validation error.</value>
+        public JsonSchemaException Exception
+        {
+            get { return _ex; }
+        }
 
-		#region Fields/Constants
+        /// <summary>
+        /// Gets the path of the JSON location where the validation error occurred.
+        /// </summary>
+        /// <value>The path of the JSON location where the validation error occurred.</value>
+        public string Path
+        {
+            get { return _ex.Path; }
+        }
 
-		private readonly JsonSchemaException _ex;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Gets the <see cref="JsonSchemaException" /> associated with the validation error.
-		/// </summary>
-		/// <value> The JsonSchemaException associated with the validation error. </value>
-		public JsonSchemaException Exception
-		{
-			get
-			{
-				return this._ex;
-			}
-		}
-
-		/// <summary>
-		/// Gets the text description corresponding to the validation error.
-		/// </summary>
-		/// <value> The text description. </value>
-		public string Message
-		{
-			get
-			{
-				return this._ex.Message;
-			}
-		}
-
-		/// <summary>
-		/// Gets the path of the JSON location where the validation error occurred.
-		/// </summary>
-		/// <value> The path of the JSON location where the validation error occurred. </value>
-		public string Path
-		{
-			get
-			{
-				return this._ex.Path;
-			}
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Gets the text description corresponding to the validation error.
+        /// </summary>
+        /// <value>The text description.</value>
+        public string Message
+        {
+            get { return _ex.Message; }
+        }
+    }
 }

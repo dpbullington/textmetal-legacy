@@ -1,4 +1,4 @@
-// ****************************************************************
+﻿// ****************************************************************
 // Copyright 2012, Charlie Poole
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
@@ -8,62 +8,54 @@ using System;
 
 namespace NUnit.Framework.Constraints
 {
-	/// <summary>
-	/// ReusableConstraint wraps a resolved constraint so that it
-	/// may be saved and reused as needed.
-	/// </summary>
-	public class ReusableConstraint : IResolveConstraint
-	{
-		#region Constructors/Destructors
+    /// <summary>
+    /// ReusableConstraint wraps a constraint expression after 
+    /// resolving it so that it can be reused consistently.
+    /// </summary>
+    public class ReusableConstraint : IResolveConstraint
+    {
+        private readonly Constraint constraint;
 
-		/// <summary>
-		/// Construct a ReusableConstraint
-		/// </summary>
-		/// <param name="c"> The constraint or expression to be reused </param>
-		public ReusableConstraint(IResolveConstraint c)
-		{
-			this.constraint = c.Resolve();
-		}
+        /// <summary>
+        /// Construct a ReusableConstraint from a constraint expression
+        /// </summary>
+        /// <param name="c">The expression to be resolved and reused</param>
+        public ReusableConstraint(IResolveConstraint c)
+        {
+            this.constraint = c.Resolve();
+        }
 
-		#endregion
+        /// <summary>
+        /// Converts a constraint to a ReusableConstraint
+        /// </summary>
+        /// <param name="c">The constraint to be converted</param>
+        /// <returns>A ReusableConstraint</returns>
+        public static implicit operator ReusableConstraint(Constraint c)
+        {
+            return new ReusableConstraint(c);
+        }
 
-		#region Fields/Constants
+        /// <summary>
+        /// Returns the string representation of the constraint.
+        /// </summary>
+        /// <returns>A string representing the constraint</returns>
+        public override string ToString()
+        {
+            return constraint.ToString();
+        }
 
-		private Constraint constraint;
+        #region IResolveConstraint Members
 
-		#endregion
+        /// <summary>
+        /// Resolves the ReusableConstraint by returning the constraint
+        /// that it originally wrapped.
+        /// </summary>
+        /// <returns>A resolved constraint</returns>
+        public Constraint Resolve()
+        {
+            return constraint;
+        }
 
-		#region Methods/Operators
-
-		/// <summary>
-		/// Resolves the ReusableConstraint by returning the constraint
-		/// that it originally wrapped.
-		/// </summary>
-		/// <returns> A resolved constraint </returns>
-		public Constraint Resolve()
-		{
-			return this.constraint;
-		}
-
-		/// <summary>
-		/// Returns the string representation of the constraint.
-		/// </summary>
-		/// <returns> A string representing the constraint </returns>
-		public override string ToString()
-		{
-			return this.constraint.ToString();
-		}
-
-		/// <summary>
-		/// Conversion operator from a normal constraint to a ReusableConstraint.
-		/// </summary>
-		/// <param name="c"> The original constraint to be wrapped as a ReusableConstraint </param>
-		/// <returns> </returns>
-		public static implicit operator ReusableConstraint(Constraint c)
-		{
-			return new ReusableConstraint(c);
-		}
-
-		#endregion
-	}
+        #endregion
+    }
 }

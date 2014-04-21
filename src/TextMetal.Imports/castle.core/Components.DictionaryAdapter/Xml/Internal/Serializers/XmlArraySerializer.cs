@@ -12,58 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections;
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
+	using System.Collections;
+	using System.Collections.Generic;
 
 	public class XmlArraySerializer : XmlTypeSerializer
 	{
-		#region Constructors/Destructors
-
-		protected XmlArraySerializer()
-		{
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
 		public static readonly XmlArraySerializer
 			Instance = new XmlArraySerializer();
 
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public override bool CanGetStub
-		{
-			get
-			{
-				return true;
-			}
-		}
+		protected XmlArraySerializer() { }
 
 		public override XmlTypeKind Kind
 		{
-			get
-			{
-				return XmlTypeKind.Collection;
-			}
+			get { return XmlTypeKind.Collection; }
 		}
 
-		#endregion
-
-		#region Methods/Operators
-
-		private static object GetItemSafe(Array array, int index)
+		public override bool CanGetStub
 		{
-			return array != null && index >= 0 && index < array.Length
-				? array.GetValue(index)
-				: null;
+			get { return true; }
 		}
 
 		public override object GetStub(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor)
@@ -75,8 +45,8 @@ namespace Castle.Components.DictionaryAdapter.Xml
 
 		public override object GetValue(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor)
 		{
-			var items = new ArrayList();
-			var itemType = node.ClrType.GetElementType();
+			var items      = new ArrayList();
+			var itemType   = node.ClrType.GetElementType();
 			var references = XmlAdapter.For(parent).References;
 
 			accessor
@@ -88,14 +58,14 @@ namespace Castle.Components.DictionaryAdapter.Xml
 
 		public override void SetValue(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor, object oldValue, ref object value)
 		{
-			var source = (Array)value;
-			var target = (Array)null;
-			var originals = (Array)oldValue;
-			var itemType = source.GetType().GetElementType();
+			var source      = (Array) value;
+			var target      = (Array) null;
+			var originals   = (Array) oldValue;
+			var itemType    = source.GetType().GetElementType();
 			var subaccessor = accessor.GetCollectionAccessor(itemType);
-			var cursor = subaccessor.SelectCollectionItems(node, true);
-			var serializer = subaccessor.Serializer;
-			var references = XmlAdapter.For(parent).References;
+			var cursor      = subaccessor.SelectCollectionItems(node, true);
+			var serializer  = subaccessor.Serializer;
+			var references  = XmlAdapter.For(parent).References;
 
 			for (var i = 0; i < source.Length; i++)
 			{
@@ -106,7 +76,9 @@ namespace Castle.Components.DictionaryAdapter.Xml
 				subaccessor.SetValue(cursor, parent, references, cursor.MoveNext(), originalItem, ref assignedItem);
 
 				if (target != null)
+				{
 					target.SetValue(assignedItem, i);
+				}
 				else if (!Equals(assignedItem, providedItem))
 				{
 					target = Array.CreateInstance(itemType, source.Length);
@@ -121,8 +93,12 @@ namespace Castle.Components.DictionaryAdapter.Xml
 				value = target;
 		}
 
-		#endregion
+		private static object GetItemSafe(Array array, int index)
+		{
+			return array != null && index >= 0 && index < array.Length
+				? array.GetValue(index)
+				: null;
+		}
 	}
 }
-
 #endif

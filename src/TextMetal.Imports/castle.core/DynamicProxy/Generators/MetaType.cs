@@ -12,65 +12,45 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-
 namespace Castle.DynamicProxy.Generators
 {
+	using System.Collections.Generic;
+
 	public class MetaType
 	{
-		#region Fields/Constants
-
 		private readonly ICollection<MetaEvent> events = new TypeElementCollection<MetaEvent>();
 		private readonly ICollection<MetaMethod> methods = new TypeElementCollection<MetaMethod>();
 		private readonly ICollection<MetaProperty> properties = new TypeElementCollection<MetaProperty>();
 
-		#endregion
-
-		#region Properties/Indexers/Events
-
 		public IEnumerable<MetaEvent> Events
 		{
-			get
-			{
-				return this.events;
-			}
+			get { return events; }
 		}
 
 		public IEnumerable<MetaMethod> Methods
 		{
-			get
-			{
-				return this.methods; // NOTE: should be readonly 
+			get { return methods; // NOTE: should be readonly 
 			}
 		}
 
 		public IEnumerable<MetaProperty> Properties
 		{
-			get
-			{
-				return this.properties;
-			}
+			get { return properties; }
 		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		public void AddEvent(MetaEvent @event)
 		{
-			this.events.Add(@event);
+			events.Add(@event);
 		}
 
 		public void AddMethod(MetaMethod method)
 		{
-			this.methods.Add(method);
+			methods.Add(method);
 		}
 
 		public void AddProperty(MetaProperty property)
 		{
-			this.properties.Add(property);
+			properties.Add(property);
 		}
-
-		#endregion
 	}
 }

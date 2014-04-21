@@ -6,89 +6,73 @@
 
 using System;
 
-using NUnit.Core;
-
 namespace NUnit.Util
 {
+	using NUnit.Core;
+
 	/// <summary>
 	/// Summary description for TestResultItem.
 	/// </summary>
 	public class TestResultItem
 	{
-		#region Constructors/Destructors
+		private string testName;
+		private string message;
+		private string stackTrace;
 
-		public TestResultItem(TestResult result)
+		public TestResultItem(TestResult result )
 		{
-			this.testName = result.Test.TestName.FullName;
-			this.message = result.Message;
-			this.stackTrace = result.StackTrace;
+			testName = result.Test.TestName.FullName;
+			message = result.Message;
+			stackTrace = result.StackTrace;
 
-			if (result.Test.IsSuite && result.FailureSite == FailureSite.SetUp)
-				this.testName += " (TestFixtureSetUp)";
+			if ( result.Test.IsSuite && result.FailureSite == FailureSite.SetUp )
+				testName += " (TestFixtureSetUp)";
 		}
 
-		public TestResultItem(string testName, string message, string stackTrace)
+		public TestResultItem( string testName, string message, string stackTrace )
 		{
 			this.testName = testName;
 			this.message = message;
 			this.stackTrace = stackTrace;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private string message;
-		private string stackTrace;
-		private string testName;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public string StackTrace
+		public override string ToString()
 		{
-			get
-			{
-				return this.stackTrace == null ? null : StackTraceFilter.Filter(this.stackTrace);
+			if ( message.Length > 64000 )
+				return string.Format( "{0}:{1}{2}", testName, Environment.NewLine, message.Substring( 0, 64000 ) );
 
-				//string trace = "No stack trace is available";
-				//if(stackTrace != null)
-				//    trace = StackTraceFilter.Filter(stackTrace);
-
-				//return trace;
-			}
+			return GetMessage();
 		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		public string GetMessage()
 		{
-			return String.Format("{0}:{1}{2}", this.testName, Environment.NewLine, this.message);
+			return String.Format("{0}:{1}{2}", testName, Environment.NewLine, message);
 		}
 
-		public string GetToolTipMessage() //NRG 05/28/03 - Substitute spaces for tab characters
+        public string GetToolTipMessage()   //NRG 05/28/03 - Substitute spaces for tab characters
+        {
+            return (ReplaceTabs(GetMessage(), 8)); // Change each tab to 8 space characters
+        }
+
+        public string ReplaceTabs(string strOriginal, int nSpaces)  //NRG 05/28/03
+        {
+            string strSpaces = string.Empty;
+            strSpaces = strSpaces.PadRight(nSpaces, ' ');
+            return(strOriginal.Replace("\t", strSpaces));
+        }
+
+		public string StackTrace
 		{
-			return (this.ReplaceTabs(this.GetMessage(), 8)); // Change each tab to 8 space characters
+			get 
+			{
+                return stackTrace == null ? null : StackTraceFilter.Filter(stackTrace);
+
+                //string trace = "No stack trace is available";
+                //if(stackTrace != null)
+                //    trace = StackTraceFilter.Filter(stackTrace);
+
+                //return trace;
+			}
 		}
-
-		public string ReplaceTabs(string strOriginal, int nSpaces) //NRG 05/28/03
-		{
-			string strSpaces = string.Empty;
-			strSpaces = strSpaces.PadRight(nSpaces, ' ');
-			return (strOriginal.Replace("\t", strSpaces));
-		}
-
-		public override string ToString()
-		{
-			if (this.message.Length > 64000)
-				return string.Format("{0}:{1}{2}", this.testName, Environment.NewLine, this.message.Substring(0, 64000));
-
-			return this.GetMessage();
-		}
-
-		#endregion
 	}
 }

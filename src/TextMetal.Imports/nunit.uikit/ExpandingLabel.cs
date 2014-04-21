@@ -5,39 +5,43 @@
 // ****************************************************************
 
 using System;
+using System.Windows.Forms;
 using System.ComponentModel;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace CP.Windows.Forms
 {
 	/// <summary>
 	/// A special type of label which can display a tooltip-like
-	/// window to show the full extent of any text which doesn't
+	/// window to show the full extent of any text which doesn't 
 	/// fit. The window may be placed directly over the label
 	/// or immediately beneath it and will expand to fit in
 	/// a horizontal, vertical or both directions as needed.
 	/// </summary>
-	public class ExpandingLabel : Label
+	public class ExpandingLabel : System.Windows.Forms.Label
 	{
-		#region Fields/Constants
+		#region Instance Variables
 
+		/// <summary>
+		/// Our window for displaying expanded text
+		/// </summary>
+		private TipWindow tipWindow;
+		
+		/// <summary>
+		/// Direction of expansion
+		/// </summary>
+		private TipWindow.ExpansionStyle expansion = TipWindow.ExpansionStyle.Horizontal;
+		
+		/// <summary>
+		/// True if tipWindow may overlay the label
+		/// </summary>
+		private bool overlay = true;
+		
 		/// <summary>
 		/// Time in milliseconds that the tip window
 		/// will remain displayed.
 		/// </summary>
 		private int autoCloseDelay = 0;
-
-		/// <summary>
-		/// If true, a context menu with Copy is displayed which
-		/// allows copying contents to the clipboard.
-		/// </summary>
-		private bool copySupported = false;
-
-		/// <summary>
-		/// Direction of expansion
-		/// </summary>
-		private TipWindow.ExpansionStyle expansion = TipWindow.ExpansionStyle.Horizontal;
 
 		/// <summary>
 		/// Time in milliseconds that the window stays
@@ -46,76 +50,46 @@ namespace CP.Windows.Forms
 		private int mouseLeaveDelay = 300;
 
 		/// <summary>
-		/// True if tipWindow may overlay the label
+		/// If true, a context menu with Copy is displayed which
+		/// allows copying contents to the clipboard.
 		/// </summary>
-		private bool overlay = true;
-
-		/// <summary>
-		/// Our window for displaying expanded text
-		/// </summary>
-		private TipWindow tipWindow;
+		private bool copySupported = false;
 
 		#endregion
 
-		#region Properties/Indexers/Events
+		#region Properties
+
+		[Browsable( false )]
+		public bool Expanded
+		{
+			get { return tipWindow != null && tipWindow.Visible; }
+		}
+
+		[Category ( "Behavior"  ), DefaultValue( TipWindow.ExpansionStyle.Horizontal )]
+		public TipWindow.ExpansionStyle Expansion
+		{
+			get { return expansion; }
+			set { expansion = value; }
+		}
+
+		[Category( "Behavior" ), DefaultValue( true )]
+		[Description("Indicates whether the tip window should overlay the label")]
+		public bool Overlay
+		{
+			get { return overlay; }
+			set { overlay = value; }
+		}
 
 		/// <summary>
 		/// Time in milliseconds that the tip window
 		/// will remain displayed.
 		/// </summary>
-		[Category("Behavior")]
-		[DefaultValue(0)]
+		[Category( "Behavior" ), DefaultValue( 0 )]
 		[Description("Time in milliseconds that the tip is displayed. Zero indicates no automatic timeout.")]
 		public int AutoCloseDelay
 		{
-			get
-			{
-				return this.autoCloseDelay;
-			}
-			set
-			{
-				this.autoCloseDelay = value;
-			}
-		}
-
-		[Category("Behavior")]
-		[DefaultValue(false)]
-		[Description("If true, displays a context menu with Copy")]
-		public bool CopySupported
-		{
-			get
-			{
-				return this.copySupported;
-			}
-			set
-			{
-				this.copySupported = value;
-				if (this.copySupported)
-					base.ContextMenu = null;
-			}
-		}
-
-		[Browsable(false)]
-		public bool Expanded
-		{
-			get
-			{
-				return this.tipWindow != null && this.tipWindow.Visible;
-			}
-		}
-
-		[Category("Behavior")]
-		[DefaultValue(TipWindow.ExpansionStyle.Horizontal)]
-		public TipWindow.ExpansionStyle Expansion
-		{
-			get
-			{
-				return this.expansion;
-			}
-			set
-			{
-				this.expansion = value;
-			}
+			get { return autoCloseDelay; }
+			set { autoCloseDelay = value; }
 		}
 
 		/// <summary>
@@ -123,33 +97,24 @@ namespace CP.Windows.Forms
 		/// open after the mouse leaves the control.
 		/// Reentering the control resets this.
 		/// </summary>
-		[Category("Behavior")]
-		[DefaultValue(300)]
+		[Category( "Behavior" ), DefaultValue( 300 )]
 		[Description("Time in milliseconds that the tip is displayed after the mouse levaes the control")]
 		public int MouseLeaveDelay
 		{
-			get
-			{
-				return this.mouseLeaveDelay;
-			}
-			set
-			{
-				this.mouseLeaveDelay = value;
-			}
+			get { return mouseLeaveDelay; }
+			set { mouseLeaveDelay = value; }
 		}
 
-		[Category("Behavior")]
-		[DefaultValue(true)]
-		[Description("Indicates whether the tip window should overlay the label")]
-		public bool Overlay
+		[Category( "Behavior"), DefaultValue( false )]
+		[Description("If true, displays a context menu with Copy")]
+		public bool CopySupported
 		{
-			get
-			{
-				return this.overlay;
-			}
-			set
-			{
-				this.overlay = value;
+			get { return copySupported; }
+			set 
+			{ 
+				copySupported = value; 
+				if ( copySupported )
+					base.ContextMenu = null;
 			}
 		}
 
@@ -159,19 +124,16 @@ namespace CP.Windows.Forms
 		/// </summary>
 		public override string Text
 		{
-			get
-			{
-				return base.Text;
-			}
-			set
-			{
+			get { return base.Text; }
+			set 
+			{ 
 				base.Text = value;
 
-				if (this.copySupported)
+				if ( copySupported )
 				{
-					if (value == null || value == string.Empty)
+					if ( value == null || value == string.Empty )
 					{
-						if (this.ContextMenu != null)
+						if ( this.ContextMenu != null )
 						{
 							this.ContextMenu.Dispose();
 							this.ContextMenu = null;
@@ -179,9 +141,9 @@ namespace CP.Windows.Forms
 					}
 					else
 					{
-						this.ContextMenu = new ContextMenu();
-						MenuItem copyMenuItem = new MenuItem("Copy", new EventHandler(this.CopyToClipboard));
-						this.ContextMenu.MenuItems.Add(copyMenuItem);
+						this.ContextMenu = new System.Windows.Forms.ContextMenu();
+						MenuItem copyMenuItem = new MenuItem( "Copy", new EventHandler( CopyToClipboard ) );
+						this.ContextMenu.MenuItems.Add( copyMenuItem );
 					}
 				}
 			}
@@ -189,54 +151,59 @@ namespace CP.Windows.Forms
 
 		#endregion
 
-		#region Methods/Operators
-
-		/// <summary>
-		/// Copy contents to clipboard
-		/// </summary>
-		private void CopyToClipboard(object sender, EventArgs e)
-		{
-			Clipboard.SetDataObject(this.Text);
-		}
+		#region Public Methods
 
 		public void Expand()
 		{
-			if (!this.Expanded)
+			if ( !Expanded )
 			{
-				this.tipWindow = new TipWindow(this);
-				this.tipWindow.Closed += new EventHandler(this.tipWindow_Closed);
-				this.tipWindow.Expansion = this.Expansion;
-				this.tipWindow.Overlay = this.Overlay;
-				this.tipWindow.AutoCloseDelay = this.AutoCloseDelay;
-				this.tipWindow.MouseLeaveDelay = this.MouseLeaveDelay;
-				this.tipWindow.WantClicks = this.CopySupported;
-				this.tipWindow.Show();
+				tipWindow = new TipWindow( this );
+				tipWindow.Closed += new EventHandler( tipWindow_Closed );
+				tipWindow.Expansion = this.Expansion;
+				tipWindow.Overlay = this.Overlay;
+				tipWindow.AutoCloseDelay = this.AutoCloseDelay;
+				tipWindow.MouseLeaveDelay = this.MouseLeaveDelay;
+				tipWindow.WantClicks = this.CopySupported;
+				tipWindow.Show();
 			}
-		}
-
-		protected override void OnMouseHover(EventArgs e)
-		{
-			Graphics g = Graphics.FromHwnd(this.Handle);
-			SizeF sizeNeeded = g.MeasureString(this.Text, this.Font);
-			bool expansionNeeded =
-				this.Width < (int)sizeNeeded.Width ||
-				this.Height < (int)sizeNeeded.Height;
-
-			if (expansionNeeded)
-				this.Expand();
 		}
 
 		public void Unexpand()
 		{
-			if (this.Expanded)
-				this.tipWindow.Close();
+			if ( Expanded )
+			{
+				tipWindow.Close();
+			}
 		}
 
-		private void tipWindow_Closed(object sender, EventArgs e)
+		#endregion
+
+		#region Event Handlers
+
+		private void tipWindow_Closed( object sender, EventArgs e )
 		{
-			this.tipWindow = null;
+			tipWindow = null;
 		}
 
+		protected override void OnMouseHover(System.EventArgs e)
+		{
+			Graphics g = Graphics.FromHwnd( Handle );
+			SizeF sizeNeeded = g.MeasureString( Text, Font );
+			bool expansionNeeded = 
+				Width < (int)sizeNeeded.Width ||
+				Height < (int)sizeNeeded.Height;
+
+			if ( expansionNeeded ) Expand();
+		}
+
+		/// <summary>
+		/// Copy contents to clipboard
+		/// </summary>
+		private void CopyToClipboard( object sender, EventArgs e )
+		{
+			Clipboard.SetDataObject( this.Text );
+		}
+	
 		#endregion
 	}
 }

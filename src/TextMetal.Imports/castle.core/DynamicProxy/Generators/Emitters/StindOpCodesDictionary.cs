@@ -12,76 +12,59 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-using System.Reflection.Emit;
-
 namespace Castle.DynamicProxy.Generators.Emitters
 {
 	using System;
+	using System.Collections.Generic;
+	using System.Reflection.Emit;
 
 	/// <summary>
-	/// Provides appropriate Stind.X opcode
-	/// for the type of primitive value to be stored indirectly.
+	///   Provides appropriate Stind.X opcode 
+	///   for the type of primitive value to be stored indirectly.
 	/// </summary>
 	public sealed class StindOpCodesDictionary : Dictionary<Type, OpCode>
 	{
-		#region Constructors/Destructors
-
-		private StindOpCodesDictionary()
-		{
-			this.Add(typeof(bool), OpCodes.Stind_I1);
-			this.Add(typeof(char), OpCodes.Stind_I2);
-			this.Add(typeof(SByte), OpCodes.Stind_I1);
-			this.Add(typeof(Int16), OpCodes.Stind_I2);
-			this.Add(typeof(Int32), OpCodes.Stind_I4);
-			this.Add(typeof(Int64), OpCodes.Stind_I8);
-			this.Add(typeof(float), OpCodes.Stind_R4);
-			this.Add(typeof(double), OpCodes.Stind_R8);
-			this.Add(typeof(byte), OpCodes.Stind_I1);
-			this.Add(typeof(UInt16), OpCodes.Stind_I2);
-			this.Add(typeof(UInt32), OpCodes.Stind_I4);
-			this.Add(typeof(UInt64), OpCodes.Stind_I8);
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
 		private static readonly StindOpCodesDictionary dict = new StindOpCodesDictionary();
 
 		// has to be assigned explicitly to suppress compiler warning
 		private static readonly OpCode emptyOpCode = new OpCode();
 
-		#endregion
-
-		#region Properties/Indexers/Events
+		private StindOpCodesDictionary()
+		{
+			Add(typeof(bool), OpCodes.Stind_I1);
+			Add(typeof(char), OpCodes.Stind_I2);
+			Add(typeof(SByte), OpCodes.Stind_I1);
+			Add(typeof(Int16), OpCodes.Stind_I2);
+			Add(typeof(Int32), OpCodes.Stind_I4);
+			Add(typeof(Int64), OpCodes.Stind_I8);
+			Add(typeof(float), OpCodes.Stind_R4);
+			Add(typeof(double), OpCodes.Stind_R8);
+			Add(typeof(byte), OpCodes.Stind_I1);
+			Add(typeof(UInt16), OpCodes.Stind_I2);
+			Add(typeof(UInt32), OpCodes.Stind_I4);
+			Add(typeof(UInt64), OpCodes.Stind_I8);
+		}
 
 		public new OpCode this[Type type]
 		{
 			get
 			{
-				if (this.ContainsKey(type))
+				if (ContainsKey(type))
+				{
 					return base[type];
+				}
 				return EmptyOpCode;
 			}
 		}
 
 		public static OpCode EmptyOpCode
 		{
-			get
-			{
-				return emptyOpCode;
-			}
+			get { return emptyOpCode; }
 		}
 
 		public static StindOpCodesDictionary Instance
 		{
-			get
-			{
-				return dict;
-			}
+			get { return dict; }
 		}
-
-		#endregion
 	}
 }

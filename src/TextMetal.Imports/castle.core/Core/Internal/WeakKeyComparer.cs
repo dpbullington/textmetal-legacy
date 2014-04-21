@@ -12,18 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Generic;
-
 #if !SILVERLIGHT && !MONO
-
 namespace Castle.Core.Internal
 {
 	using System;
+	using System.Collections.Generic;
 
 	internal class WeakKeyComparer<TKey> : IEqualityComparer<object>
 		where TKey : class
 	{
-		#region Constructors/Destructors
+		public static readonly WeakKeyComparer<TKey>
+			Default = new WeakKeyComparer<TKey>(EqualityComparer<TKey>.Default);
+
+		private readonly IEqualityComparer<TKey> comparer;
 
 		public WeakKeyComparer(IEqualityComparer<TKey> comparer)
 		{
@@ -33,56 +34,40 @@ namespace Castle.Core.Internal
 			this.comparer = comparer;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		public static readonly WeakKeyComparer<TKey>
-			Default = new WeakKeyComparer<TKey>(EqualityComparer<TKey>.Default);
-
-		private readonly IEqualityComparer<TKey> comparer;
-
-		#endregion
-
-		#region Methods/Operators
-
-		public new bool Equals(object objA, object objB)
+		public object Wrap(TKey key)
 		{
-			var keyA = this.Unwrap(objA);
-			var keyB = this.Unwrap(objB);
-
-			return (keyA != null)
-				? (keyB != null)
-					? this.comparer.Equals(keyA, keyB)
-					: false // live object cannot equal a collected object
-				: (keyB != null)
-					? false // live object cannot equal a collected object
-					: ReferenceEquals(objA, objB);
-		}
-
-		public int GetHashCode(object obj)
-		{
-			var weak = obj as WeakKey;
-			return (weak != null)
-				? weak.GetHashCode()
-				: this.comparer.GetHashCode((TKey)obj);
+			return new WeakKey(key, comparer.GetHashCode(key));
 		}
 
 		public TKey Unwrap(object obj)
 		{
 			var weak = obj as WeakKey;
 			return (weak != null)
-				? (TKey)weak.Target
-				: (TKey)obj;
+				? (TKey) weak.Target
+				: (TKey) obj;
 		}
 
-		public object Wrap(TKey key)
+		public int GetHashCode(object obj)
 		{
-			return new WeakKey(key, this.comparer.GetHashCode(key));
+			var weak = obj as WeakKey;
+			return (weak != null)
+				? weak    .GetHashCode()
+				: comparer.GetHashCode((TKey) obj);
 		}
 
-		#endregion
+		public new bool Equals(object objA, object objB)
+		{
+			var keyA = Unwrap(objA);
+			var keyB = Unwrap(objB);
+
+			return (keyA != null)
+				? (keyB != null)
+					? comparer.Equals(keyA, keyB)
+					: false // live object cannot equal a collected object
+				: (keyB != null)
+					? false // live object cannot equal a collected object
+					: ReferenceEquals(objA, objB);
+		}
 	}
 }
-
 #endif

@@ -18,37 +18,18 @@ namespace Castle.DynamicProxy.Generators
 
 	public abstract class MetaTypeElement
 	{
-		#region Constructors/Destructors
+		protected readonly Type sourceType;
 
 		protected MetaTypeElement(Type sourceType)
 		{
 			this.sourceType = sourceType;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		protected readonly Type sourceType;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
 		internal bool CanBeImplementedExplicitly
 		{
-			get
-			{
-				return this.sourceType != null && this.sourceType.IsInterface;
-			}
+			get { return sourceType != null && sourceType.IsInterface; }
 		}
 
-		#endregion
-
-		#region Methods/Operators
-
 		internal abstract void SwitchToExplicitImplementation();
-
-		#endregion
 	}
 }

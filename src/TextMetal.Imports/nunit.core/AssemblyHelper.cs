@@ -1,53 +1,52 @@
-// ****************************************************************
+﻿// ****************************************************************
 // Copyright 2008, Charlie Poole
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org.
 // ****************************************************************
 
 using System;
-using System.IO;
 using System.Reflection;
 
 namespace NUnit.Core
 {
-	public class AssemblyHelper
-	{
-		#region GetAssemblyPath
+    public class AssemblyHelper
+    {
+        #region GetAssemblyPath
 
-		public static string GetAssemblyPath(Type type)
-		{
-			return GetAssemblyPath(type.Assembly);
-		}
+        public static string GetAssemblyPath(Type type)
+        {
+            return GetAssemblyPath(type.Assembly);
+        }
 
-		// There are two implementations of GetAssemblyPath,
-		// one for .NET 1.1 and one for later frameworks.
-		public static string GetAssemblyPath(Assembly assembly)
-		{
+        // There are two implementations of GetAssemblyPath,
+        // one for .NET 1.1 and one for later frameworks.
+        public static string GetAssemblyPath(Assembly assembly)
+        {
 #if CLR_2_0 || CLR_4_0
-			string codeBase = assembly.EscapedCodeBase;
-
-			if (IsFileUri(codeBase))
-				return GetAssemblyPathFromEscapedCodeBase(codeBase);
+            string codeBase = assembly.EscapedCodeBase;
+            
+            if (IsFileUri(codeBase))
+                return GetAssemblyPathFromEscapedCodeBase(codeBase);
 #else
             string codeBase = assembly.CodeBase;
 
             if (IsFileUri(codeBase))
                 return GetAssemblyPathFromCodeBase(codeBase);
 #endif
+            
+            return assembly.Location;
+        }
 
-			return assembly.Location;
-		}
+        #endregion
 
-		#endregion
-
-		#region
+        #region
 
 #if CLR_2_0 || CLR_4_0
-		// Public for testing purposes
-		public static string GetAssemblyPathFromEscapedCodeBase(string escapedCodeBase)
-		{
-			return new Uri(escapedCodeBase).LocalPath;
-		}
+        // Public for testing purposes
+        public static string GetAssemblyPathFromEscapedCodeBase(string escapedCodeBase)
+        {
+            return new Uri(escapedCodeBase).LocalPath;
+        }
 #else
         public static string GetAssemblyPathFromCodeBase(string codeBase)
         {
@@ -73,24 +72,22 @@ namespace NUnit.Core
         }
 #endif
 
-		#endregion
+        #endregion
 
-		#region GetDirectoryName
+        #region GetDirectoryName
+        public static string GetDirectoryName( Assembly assembly )
+        {
+            return System.IO.Path.GetDirectoryName(GetAssemblyPath(assembly));
+        }
+        #endregion
 
-		public static string GetDirectoryName(Assembly assembly)
-		{
-			return Path.GetDirectoryName(GetAssemblyPath(assembly));
-		}
+        #region Helper Methods
 
-		#endregion
+        private static bool IsFileUri(string uri)
+        {
+            return uri.ToLower().StartsWith(Uri.UriSchemeFile);
+        }
 
-		#region Helper Methods
-
-		private static bool IsFileUri(string uri)
-		{
-			return uri.ToLower().StartsWith(Uri.UriSchemeFile);
-		}
-
-		#endregion
-	}
+        #endregion
+    }
 }

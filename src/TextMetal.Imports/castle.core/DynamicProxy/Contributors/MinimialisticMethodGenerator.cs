@@ -12,36 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection;
-
-using Castle.DynamicProxy.Generators;
-using Castle.DynamicProxy.Generators.Emitters;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-
 namespace Castle.DynamicProxy.Contributors
 {
+	using System.Reflection;
+
+	using Castle.DynamicProxy.Generators;
+	using Castle.DynamicProxy.Generators.Emitters;
+	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+
 	public class MinimialisticMethodGenerator : MethodGenerator
 	{
-		#region Constructors/Destructors
-
 		public MinimialisticMethodGenerator(MetaMethod method, OverrideMethodDelegate overrideMethod)
 			: base(method, overrideMethod)
 		{
 		}
 
-		#endregion
-
-		#region Methods/Operators
-
 		protected override MethodEmitter BuildProxiedMethodBody(MethodEmitter emitter, ClassEmitter @class,
-			ProxyGenerationOptions options, INamingScope namingScope)
+		                                                        ProxyGenerationOptions options, INamingScope namingScope)
 		{
-			this.InitOutParameters(emitter, this.MethodToOverride.GetParameters());
+			InitOutParameters(emitter, MethodToOverride.GetParameters());
 
 			if (emitter.ReturnType == typeof(void))
+			{
 				emitter.CodeBuilder.AddStatement(new ReturnStatement());
+			}
 			else
+			{
 				emitter.CodeBuilder.AddStatement(new ReturnStatement(new DefaultValueExpression(emitter.ReturnType)));
+			}
 
 			return emitter;
 		}
@@ -55,11 +53,9 @@ namespace Castle.DynamicProxy.Contributors
 				{
 					emitter.CodeBuilder.AddStatement(
 						new AssignArgumentStatement(new ArgumentReference(parameter.ParameterType, index + 1),
-							new DefaultValueExpression(parameter.ParameterType)));
+						                            new DefaultValueExpression(parameter.ParameterType)));
 				}
 			}
 		}
-
-		#endregion
 	}
 }

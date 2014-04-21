@@ -7,8 +7,8 @@
 using System;
 using System.IO;
 using System.Xml;
-using System.Xml.XPath;
 using System.Xml.Xsl;
+using System.Xml.XPath;
 
 namespace NUnit.Util
 {
@@ -16,56 +16,54 @@ namespace NUnit.Util
 	/// Summary description for XmlResultTransform.
 	/// </summary>
 	public class XmlResultTransform
-	{
+    {
 #if CLR_2_0 || CLR_4_0
-		private XslCompiledTransform xslTransform = new XslCompiledTransform();
+        private XslCompiledTransform xslTransform = new XslCompiledTransform();
 #else
         private XslTransform xslTransform = new XslTransform();
 #endif
 
-		public XmlResultTransform()
+        public XmlResultTransform() { }
+
+		public XmlResultTransform( string stylesheet )
 		{
+			Load( stylesheet );
 		}
 
-		public XmlResultTransform(string stylesheet)
+		public XmlResultTransform( XmlReader reader )
 		{
-			Load(stylesheet);
+			Load( reader );
 		}
 
-		public XmlResultTransform(XmlReader reader)
+		public void Load( string stylesheet )
 		{
-			Load(reader);
+			xslTransform.Load( stylesheet );				
 		}
 
-		public void Load(string stylesheet)
-		{
-			this.xslTransform.Load(stylesheet);
-		}
-
-		public void Load(XmlReader reader)
+		public void Load( XmlReader reader )
 		{
 			// NOTE: Not compatable with .NET 1.0.
 			// xslTransform.Load(reader, null, null);
 
-			this.xslTransform.Load(reader);
-		}
+			xslTransform.Load(reader);
+	        }
 
-		public void Transform(string inputFile, string outputFile)
+		public void Transform( string inputFile, string outputFile )
 		{
-			this.Transform(new StreamReader(inputFile), new StreamWriter(outputFile));
+			Transform( new StreamReader( inputFile ), new StreamWriter( outputFile ) );
 		}
 
-		public void Transform(TextReader reader, TextWriter writer)
+		public void Transform( TextReader reader, TextWriter writer )
 		{
-			this.Transform(new XPathDocument(reader), writer);
+			Transform( new XPathDocument( reader ), writer );
 		}
 
-		public void Transform(IXPathNavigable xpnav, TextWriter writer)
+		public void Transform( IXPathNavigable xpnav, TextWriter writer )
 		{
 			// NOTE: Not compatable with .NET 1.0.
 			// xslTransform.Transform(xpnav, null, writer, null);
 
-			this.xslTransform.Transform(xpnav, null, writer);
+			xslTransform.Transform(xpnav, null, writer);
 		}
 	}
 }

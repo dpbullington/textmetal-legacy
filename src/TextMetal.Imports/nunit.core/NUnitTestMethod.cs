@@ -13,31 +13,27 @@ namespace NUnit.Core
 	/// </summary>
 	public class NUnitTestMethod : TestMethod
 	{
-		#region Constructors/Destructors
-
-		public NUnitTestMethod(MethodInfo method)
-			: base(method)
-		{
-		}
-
+		#region Constructor
+		public NUnitTestMethod(MethodInfo method) : base(method) 
+        {
+        }
 		#endregion
 
-		#region Methods/Operators
+		#region TestMethod Overrides
 
-		/// <summary>
+        /// <summary>
 		/// Run a test returning the result. Overrides TestMethod
 		/// to count assertions.
 		/// </summary>
-		/// <param name="testResult"> </param>
+		/// <param name="testResult"></param>
 		public override TestResult RunTest()
 		{
 			TestResult testResult = base.RunTest();
 
 			testResult.AssertCount = NUnitFramework.Assert.GetAssertCount();
-
+			
 			return testResult;
 		}
-
-		#endregion
+        #endregion
 	}
 }

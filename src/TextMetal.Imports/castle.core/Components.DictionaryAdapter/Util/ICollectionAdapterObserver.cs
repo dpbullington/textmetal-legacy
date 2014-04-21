@@ -16,20 +16,12 @@ namespace Castle.Components.DictionaryAdapter
 {
 	public interface ICollectionAdapterObserver<T>
 	{
-		#region Methods/Operators
+		bool OnInserting (            T newValue);
+		bool OnReplacing (T oldValue, T newValue);
+		void OnRemoving  (T oldValue            );
 
-		void OnInserted(T newValue, int index);
-
-		bool OnInserting(T newValue);
-
-		void OnRemoved(T oldValue, int index);
-
-		void OnRemoving(T oldValue);
-
-		void OnReplaced(T oldValue, T newValue, int index);
-
-		bool OnReplacing(T oldValue, T newValue);
-
-		#endregion
+		void OnInserted  (            T newValue, int index);
+		void OnReplaced  (T oldValue, T newValue, int index);
+		void OnRemoved   (T oldValue,             int index);
 	}
 }

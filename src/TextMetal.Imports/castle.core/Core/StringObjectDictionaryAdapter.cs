@@ -12,111 +12,63 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections;
-using System.Collections.Generic;
-
 namespace Castle.Core
 {
 	using System;
+	using System.Collections;
+	using System.Collections.Generic;
 
 	public sealed class StringObjectDictionaryAdapter : IDictionary<string, object>
 	{
-		#region Constructors/Destructors
+		private readonly IDictionary dictionary;
 
 		public StringObjectDictionaryAdapter(IDictionary dictionary)
 		{
 			this.dictionary = dictionary;
 		}
 
-		#endregion
+		bool IDictionary<string, object>.ContainsKey(string key)
+		{
+			return dictionary.Contains(key);
+		}
 
-		#region Fields/Constants
+		void IDictionary<string, object>.Add(string key, object value)
+		{
+			throw new NotImplementedException();
+		}
 
-		private readonly IDictionary dictionary;
+		bool IDictionary<string, object>.Remove(string key)
+		{
+			throw new NotImplementedException();
+		}
 
-		#endregion
-
-		#region Properties/Indexers/Events
+		bool IDictionary<string, object>.TryGetValue(string key, out object value)
+		{
+			value = null;
+			if (dictionary.Contains(key))
+			{
+				value = dictionary[key];
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
 
 		object IDictionary<string, object>.this[string key]
 		{
-			get
-			{
-				return this.dictionary[key];
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		public object this[object key]
-		{
-			get
-			{
-				return this.dictionary[key];
-			}
-			set
-			{
-				this.dictionary[key] = value;
-			}
-		}
-
-		public int Count
-		{
-			get
-			{
-				return this.dictionary.Count;
-			}
-		}
-
-		public bool IsFixedSize
-		{
-			get
-			{
-				return this.dictionary.IsFixedSize;
-			}
-		}
-
-		public bool IsReadOnly
-		{
-			get
-			{
-				return this.dictionary.IsReadOnly;
-			}
-		}
-
-		public bool IsSynchronized
-		{
-			get
-			{
-				return this.dictionary.IsSynchronized;
-			}
+			get { return dictionary[key]; }
+			set { throw new NotImplementedException(); }
 		}
 
 		ICollection<string> IDictionary<string, object>.Keys
 		{
 			get
 			{
-				string[] keys = new string[this.Count];
-				this.dictionary.Keys.CopyTo(keys, 0);
+				string[] keys = new string[Count];
+				dictionary.Keys.CopyTo(keys, 0);
 				return keys;
-			}
-		}
-
-		public ICollection Keys
-		{
-			get
-			{
-				return this.dictionary.Keys;
-			}
-		}
-
-		public object SyncRoot
-		{
-			get
-			{
-				return this.dictionary.SyncRoot;
 			}
 		}
 
@@ -124,27 +76,10 @@ namespace Castle.Core
 		{
 			get
 			{
-				object[] values = new object[this.Count];
-				this.dictionary.Values.CopyTo(values, 0);
+				object[] values = new object[Count];
+				dictionary.Values.CopyTo(values, 0);
 				return values;
 			}
-		}
-
-		public ICollection Values
-		{
-			get
-			{
-				return this.dictionary.Values;
-			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		void IDictionary<string, object>.Add(string key, object value)
-		{
-			throw new NotImplementedException();
 		}
 
 		void ICollection<KeyValuePair<string, object>>.Add(KeyValuePair<string, object> item)
@@ -152,52 +87,12 @@ namespace Castle.Core
 			throw new NotImplementedException();
 		}
 
-		public void Add(object key, object value)
-		{
-			this.dictionary.Add(key, value);
-		}
-
-		public void Clear()
-		{
-			this.dictionary.Clear();
-		}
-
 		bool ICollection<KeyValuePair<string, object>>.Contains(KeyValuePair<string, object> item)
 		{
 			throw new NotImplementedException();
 		}
 
-		public bool Contains(object key)
-		{
-			return this.dictionary.Contains(key);
-		}
-
-		bool IDictionary<string, object>.ContainsKey(string key)
-		{
-			return this.dictionary.Contains(key);
-		}
-
 		void ICollection<KeyValuePair<string, object>>.CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void CopyTo(Array array, int index)
-		{
-			this.dictionary.CopyTo(array, index);
-		}
-
-		IEnumerator<KeyValuePair<string, object>> IEnumerable<KeyValuePair<string, object>>.GetEnumerator()
-		{
-			return new EnumeratorAdapter(this);
-		}
-
-		public IEnumerator GetEnumerator()
-		{
-			return ((IEnumerable)this.dictionary).GetEnumerator();
-		}
-
-		bool IDictionary<string, object>.Remove(string key)
 		{
 			throw new NotImplementedException();
 		}
@@ -207,81 +102,101 @@ namespace Castle.Core
 			throw new NotImplementedException();
 		}
 
+		IEnumerator<KeyValuePair<string, object>> IEnumerable<KeyValuePair<string, object>>.GetEnumerator()
+		{
+			return new EnumeratorAdapter(this);
+		}
+
+		public bool Contains(object key)
+		{
+			return dictionary.Contains(key);
+		}
+
+		public void Add(object key, object value)
+		{
+			dictionary.Add(key, value);
+		}
+
+		public void Clear()
+		{
+			dictionary.Clear();
+		}
+
 		public void Remove(object key)
 		{
-			this.dictionary.Remove(key);
+			dictionary.Remove(key);
 		}
 
-		bool IDictionary<string, object>.TryGetValue(string key, out object value)
+		public object this[object key]
 		{
-			value = null;
-			if (this.dictionary.Contains(key))
-			{
-				value = this.dictionary[key];
-				return true;
-			}
-			else
-				return false;
+			get { return dictionary[key]; }
+			set { dictionary[key] = value; }
 		}
 
-		#endregion
+		public ICollection Keys
+		{
+			get { return dictionary.Keys; }
+		}
 
-		#region Classes/Structs/Interfaces/Enums/Delegates
+		public ICollection Values
+		{
+			get { return dictionary.Values; }
+		}
+
+		public bool IsReadOnly
+		{
+			get { return dictionary.IsReadOnly; }
+		}
+
+		public bool IsFixedSize
+		{
+			get { return dictionary.IsFixedSize; }
+		}
+
+		public void CopyTo(Array array, int index)
+		{
+			dictionary.CopyTo(array, index);
+		}
+
+		public int Count
+		{
+			get { return dictionary.Count; }
+		}
+
+		public object SyncRoot
+		{
+			get { return dictionary.SyncRoot; }
+		}
+
+		public bool IsSynchronized
+		{
+			get { return dictionary.IsSynchronized; }
+		}
+
+		public IEnumerator GetEnumerator()
+		{
+			return ((IEnumerable) dictionary).GetEnumerator();
+		}
 
 		internal class EnumeratorAdapter : IEnumerator<KeyValuePair<string, object>>
 		{
-			#region Constructors/Destructors
+			private readonly StringObjectDictionaryAdapter adapter;
+			private IEnumerator<string> keyEnumerator;
+			private string currentKey;
+			private object currentValue;
 
 			public EnumeratorAdapter(StringObjectDictionaryAdapter adapter)
 			{
 				this.adapter = adapter;
-				this.keyEnumerator = ((IDictionary<string, object>)adapter).Keys.GetEnumerator();
-			}
-
-			#endregion
-
-			#region Fields/Constants
-
-			private readonly StringObjectDictionaryAdapter adapter;
-			private string currentKey;
-			private object currentValue;
-			private IEnumerator<string> keyEnumerator;
-
-			#endregion
-
-			#region Properties/Indexers/Events
-
-			public object Current
-			{
-				get
-				{
-					return new KeyValuePair<string, object>(this.currentKey, this.currentValue);
-				}
-			}
-
-			KeyValuePair<string, object> IEnumerator<KeyValuePair<string, object>>.Current
-			{
-				get
-				{
-					return new KeyValuePair<string, object>(this.currentKey, this.currentValue);
-				}
-			}
-
-			#endregion
-
-			#region Methods/Operators
-
-			public void Dispose()
-			{
-				GC.SuppressFinalize(this);
+				keyEnumerator = ((IDictionary<string, object>) adapter).Keys.GetEnumerator();
 			}
 
 			public bool MoveNext()
 			{
-				if (this.keyEnumerator.MoveNext())
+				if (keyEnumerator.MoveNext())
 				{
-					this.currentKey = this.keyEnumerator.Current;
-					this.currentValue = this.adapter[this.currentKey];
+					currentKey = keyEnumerator.Current;
+					currentValue = adapter[currentKey];
 					return true;
 				}
 
@@ -290,12 +205,23 @@ namespace Castle.Core
 
 			public void Reset()
 			{
-				this.keyEnumerator.Reset();
+				keyEnumerator.Reset();
 			}
 
-			#endregion
-		}
+			public object Current
+			{
+				get { return new KeyValuePair<string, object>(currentKey, currentValue); }
+			}
 
-		#endregion
+			KeyValuePair<string, object> IEnumerator<KeyValuePair<string, object>>.Current
+			{
+				get { return new KeyValuePair<string, object>(currentKey, currentValue); }
+			}
+
+			public void Dispose()
+			{
+				GC.SuppressFinalize(this);
+			}
+		}
 	}
 }

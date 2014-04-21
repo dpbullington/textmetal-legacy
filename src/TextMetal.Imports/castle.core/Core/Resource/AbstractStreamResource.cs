@@ -12,64 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.IO;
-using System.Text;
-
 namespace Castle.Core.Resource
 {
+	using System.IO;
+	using System.Text;
+
 	public delegate Stream StreamFactory();
 
 	/// <summary>
+	/// 
 	/// </summary>
 	public abstract class AbstractStreamResource : AbstractResource
 	{
-		#region Constructors/Destructors
-
-		~AbstractStreamResource()
-		{
-			this.Dispose(false);
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
 		/// <summary>
 		/// This returns a new stream instance each time it is called.
 		/// It is the responsibility of the caller to dispose of this stream
 		/// </summary>
 		private StreamFactory createStream;
 
-		#endregion
-
-		#region Properties/Indexers/Events
+		~AbstractStreamResource()
+		{
+			Dispose(false);
+		}
 
 		public StreamFactory CreateStream
 		{
-			get
-			{
-				return this.createStream;
-			}
-			set
-			{
-				this.createStream = value;
-			}
+			get { return createStream; }
+			set { createStream = value; }
 		}
-
-		#endregion
-
-		#region Methods/Operators
 
 		public override TextReader GetStreamReader()
 		{
-			return new StreamReader(this.CreateStream());
+			return new StreamReader(CreateStream());
 		}
 
 		public override TextReader GetStreamReader(Encoding encoding)
 		{
-			return new StreamReader(this.CreateStream(), encoding);
+			return new StreamReader(CreateStream(), encoding);
 		}
-
-		#endregion
 	}
 }

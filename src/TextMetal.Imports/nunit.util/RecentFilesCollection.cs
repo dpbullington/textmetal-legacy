@@ -14,57 +14,44 @@ namespace NUnit.Util
 	/// </summary>
 	public class RecentFilesCollection : ReadOnlyCollectionBase
 	{
-		#region Properties/Indexers/Events
+		public void Add( RecentFileEntry entry )
+		{
+			InnerList.Add( entry );
+		}
+
+		public void Insert( int index, RecentFileEntry entry )
+		{
+			InnerList.Insert( index, entry );
+		}
+
+		public void Remove( string fileName )
+		{
+			int index = IndexOf( fileName );
+			if ( index != -1 )
+				RemoveAt( index );
+		}
+
+		public void RemoveAt( int index )
+		{
+			InnerList.RemoveAt( index );
+		}
+
+		public int IndexOf( string fileName )
+		{
+			for( int index = 0; index < InnerList.Count; index++ )
+				if ( this[index].Path == fileName )
+					return index;
+			return -1;
+		}
 
 		public RecentFileEntry this[int index]
 		{
-			get
-			{
-				return (RecentFileEntry)this.InnerList[index];
-			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		public void Add(RecentFileEntry entry)
-		{
-			this.InnerList.Add(entry);
+			get { return (RecentFileEntry)InnerList[index]; }
 		}
 
 		public void Clear()
 		{
-			this.InnerList.Clear();
+			InnerList.Clear();
 		}
-
-		public int IndexOf(string fileName)
-		{
-			for (int index = 0; index < this.InnerList.Count; index++)
-			{
-				if (this[index].Path == fileName)
-					return index;
-			}
-			return -1;
-		}
-
-		public void Insert(int index, RecentFileEntry entry)
-		{
-			this.InnerList.Insert(index, entry);
-		}
-
-		public void Remove(string fileName)
-		{
-			int index = this.IndexOf(fileName);
-			if (index != -1)
-				this.RemoveAt(index);
-		}
-
-		public void RemoveAt(int index)
-		{
-			this.InnerList.RemoveAt(index);
-		}
-
-		#endregion
 	}
 }

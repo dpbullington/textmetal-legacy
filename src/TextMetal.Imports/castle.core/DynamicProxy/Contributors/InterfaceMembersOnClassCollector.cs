@@ -12,66 +12,58 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Reflection;
-
-using Castle.DynamicProxy.Generators;
-using Castle.DynamicProxy.Internal;
-
 namespace Castle.DynamicProxy.Contributors
 {
 	using System;
+	using System.Reflection;
+
+	using Castle.DynamicProxy.Generators;
+	using Castle.DynamicProxy.Internal;
 
 	public class InterfaceMembersOnClassCollector : MembersCollector
 	{
-		#region Constructors/Destructors
+		private readonly InterfaceMapping map;
+		private readonly bool onlyProxyVirtual;
 
-		public InterfaceMembersOnClassCollector(Type type, bool onlyProxyVirtual, InterfaceMapping map)
-			: base(type)
+		public InterfaceMembersOnClassCollector(Type type, bool onlyProxyVirtual, InterfaceMapping map) : base(type)
 		{
 			this.onlyProxyVirtual = onlyProxyVirtual;
 			this.map = map;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly InterfaceMapping map;
-		private readonly bool onlyProxyVirtual;
-
-		#endregion
-
-		#region Methods/Operators
-
-		private MethodInfo GetMethodOnTarget(MethodInfo method)
-		{
-			var index = Array.IndexOf(this.map.InterfaceMethods, method);
-			if (index == -1)
-				return null;
-
-			return this.map.TargetMethods[index];
-		}
-
 		protected override MetaMethod GetMethodToGenerate(MethodInfo method, IProxyGenerationHook hook, bool isStandalone)
 		{
 			if (method.IsAccessible() == false)
+			{
 				return null;
+			}
 
-			if (this.onlyProxyVirtual && this.IsVirtuallyImplementedInterfaceMethod(method))
+			if (onlyProxyVirtual && IsVirtuallyImplementedInterfaceMethod(method))
+			{
 				return null;
+			}
 
-			var methodOnTarget = this.GetMethodOnTarget(method);
+			var methodOnTarget = GetMethodOnTarget(method);
 
-			var proxyable = this.AcceptMethod(method, this.onlyProxyVirtual, hook);
+			var proxyable = AcceptMethod(method, onlyProxyVirtual, hook);
 			return new MetaMethod(method, methodOnTarget, isStandalone, proxyable, methodOnTarget.IsPrivate == false);
+		}
+
+		private MethodInfo GetMethodOnTarget(MethodInfo method)
+		{
+			var index = Array.IndexOf(map.InterfaceMethods, method);
+			if (index == -1)
+			{
+				return null;
+			}
+
+			return map.TargetMethods[index];
 		}
 
 		private bool IsVirtuallyImplementedInterfaceMethod(MethodInfo method)
 		{
-			var info = this.GetMethodOnTarget(method);
+			var info = GetMethodOnTarget(method);
 			return info != null && info.IsFinal == false;
 		}
-
-		#endregion
 	}
 }

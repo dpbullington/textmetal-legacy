@@ -12,25 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Text;
-using System.Xml;
 
 #if !SILVERLIGHT
 
 namespace Castle.Core.Configuration.Xml
 {
+	using System.Text;
+	using System.Xml;
+
 	public class XmlConfigurationDeserializer
 	{
-		#region Methods/Operators
+		/// <summary>
+		///   Deserializes the specified node into an abstract representation of configuration.
+		/// </summary>
+		/// <param name = "node">The node.</param>
+		/// <returns></returns>
+		public IConfiguration Deserialize(XmlNode node)
+		{
+			return GetDeserializedNode(node);
+		}
 
 		/// <summary>
-		/// If a config value is an empty string we return null, this is to keep
-		/// backward compatibility with old code
+		///   If a config value is an empty string we return null, this is to keep
+		///   backward compatibility with old code
 		/// </summary>
 		public static string GetConfigValue(string value)
 		{
 			if (value == string.Empty)
+			{
 				return null;
+			}
 			return value;
 		}
 
@@ -44,15 +55,21 @@ namespace Castle.Core.Configuration.Xml
 				foreach (XmlNode child in node.ChildNodes)
 				{
 					if (IsTextNode(child))
+					{
 						configValue.Append(child.Value);
+					}
 					else if (child.NodeType == XmlNodeType.Element)
+					{
 						configChilds.Add(GetDeserializedNode(child));
+					}
 				}
 			}
 
 			var config = new MutableConfiguration(node.Name, GetConfigValue(configValue.ToString()));
 			foreach (XmlAttribute attribute in node.Attributes)
+			{
 				config.Attributes.Add(attribute.Name, attribute.Value);
+			}
 
 			config.Children.AddRange(configChilds);
 
@@ -63,18 +80,6 @@ namespace Castle.Core.Configuration.Xml
 		{
 			return node.NodeType == XmlNodeType.Text || node.NodeType == XmlNodeType.CDATA;
 		}
-
-		/// <summary>
-		/// Deserializes the specified node into an abstract representation of configuration.
-		/// </summary>
-		/// <param name="node"> The node. </param>
-		/// <returns> </returns>
-		public IConfiguration Deserialize(XmlNode node)
-		{
-			return GetDeserializedNode(node);
-		}
-
-		#endregion
 	}
 }
 

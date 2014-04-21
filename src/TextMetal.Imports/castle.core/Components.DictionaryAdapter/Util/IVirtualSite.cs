@@ -16,10 +16,6 @@ namespace Castle.Components.DictionaryAdapter
 {
 	public interface IVirtualSite<T>
 	{
-		#region Methods/Operators
-
 		void OnRealizing(T node);
-
-		#endregion
 	}
 }

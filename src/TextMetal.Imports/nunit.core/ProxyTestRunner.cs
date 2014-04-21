@@ -3,52 +3,28 @@
 // may obtain a copy of the license as well as information regarding
 // copyright ownership at http://nunit.org.
 // ****************************************************************
-
-using System.Collections;
-
 namespace NUnit.Core
 {
 	using System;
+	using System.Collections;
+	using System.IO;
 
 	/// <summary>
 	/// DelegatingTestRUnner is the abstract base for core TestRunner
 	/// implementations that operate by controlling a downstream
 	/// TestRunner. All calls are simply passed on to the
 	/// TestRunner that is provided to the constructor.
-	/// Although the class is abstract, it has no abstract
+	/// 
+	/// Although the class is abstract, it has no abstract 
 	/// methods specified because each implementation will
 	/// need to override different methods. All methods are
 	/// specified using interface syntax and the derived class
-	/// must explicitly implement TestRunner in order to
+	/// must explicitly implement TestRunner in order to 
 	/// redefine the selected methods.
 	/// </summary>
 	public abstract class ProxyTestRunner : MarshalByRefObject, TestRunner
 	{
-		#region Constructors/Destructors
-
-		public ProxyTestRunner(TestRunner testRunner)
-		{
-			this.testRunner = testRunner;
-			this.runnerID = testRunner.ID;
-		}
-
-		/// <summary>
-		/// Protected constructor for runners that delay creation
-		/// of their downstream runner.
-		/// </summary>
-		protected ProxyTestRunner(int runnerID)
-		{
-			this.runnerID = runnerID;
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		/// <summary>
-		/// The event listener for the currently running test
-		/// </summary>
-		protected EventListener listener;
+		#region Instance Variables
 
 		/// <summary>
 		/// Our runner ID
@@ -60,48 +36,54 @@ namespace NUnit.Core
 		/// </summary>
 		private TestRunner testRunner;
 
+		/// <summary>
+		/// The event listener for the currently running test
+		/// </summary>
+		protected EventListener listener;
+
 		#endregion
 
-		#region Properties/Indexers/Events
-
-		public virtual IList AssemblyInfo
+		#region Construction
+		public ProxyTestRunner(TestRunner testRunner)
 		{
-			get
-			{
-				return this.testRunner == null ? null : this.testRunner.AssemblyInfo;
-			}
+			this.testRunner = testRunner;
+			this.runnerID = testRunner.ID;
 		}
 
+		/// <summary>
+		/// Protected constructor for runners that delay creation
+		/// of their downstream runner.
+		/// </summary>
+		protected ProxyTestRunner( int runnerID )
+		{
+			this.runnerID = runnerID;
+		}
+		#endregion
+
+		#region Properties
 		public virtual int ID
 		{
-			get
-			{
-				return this.runnerID;
-			}
+			get { return runnerID; }
 		}
 
 		public virtual bool Running
 		{
-			get
-			{
-				return this.testRunner != null && this.testRunner.Running;
-			}
+			get { return testRunner != null && testRunner.Running; }
+		}
+
+		public virtual IList AssemblyInfo
+		{
+			get { return testRunner == null ? null : testRunner.AssemblyInfo; }
 		}
 
 		public virtual ITest Test
 		{
-			get
-			{
-				return this.testRunner == null ? null : this.testRunner.Test;
-			}
+			get { return testRunner == null ? null : testRunner.Test; }
 		}
 
 		public virtual TestResult TestResult
 		{
-			get
-			{
-				return this.testRunner == null ? null : this.testRunner.TestResult;
-			}
+			get { return testRunner == null ? null : testRunner.TestResult; }
 		}
 
 		/// <summary>
@@ -111,25 +93,50 @@ namespace NUnit.Core
 		/// </summary>
 		protected virtual TestRunner TestRunner
 		{
-			get
-			{
-				return this.testRunner;
-			}
-			set
-			{
-				this.testRunner = value;
-			}
+			get { return testRunner; }
+			set { testRunner = value; }
 		}
-
 		#endregion
 
-		#region Methods/Operators
-
-		public virtual void BeginRun(EventListener listener, ITestFilter filter, bool tracing, LoggingThreshold logLevel)
+		#region Load and Unload Methods
+		public virtual bool Load( TestPackage package )
 		{
-			// Save active listener for derived classes
-			this.listener = listener;
-			this.testRunner.BeginRun(listener, filter, tracing, logLevel);
+			return this.testRunner.Load( package );
+		}
+
+		public virtual void Unload()
+		{
+            if ( this.testRunner != null )
+			    this.testRunner.Unload();
+		}
+		#endregion
+
+		#region CountTestCases
+		public virtual int CountTestCases( ITestFilter filter )
+		{
+			return this.testRunner.CountTestCases( filter );
+		}
+		#endregion
+
+		#region Methods for Running Tests
+
+        public virtual TestResult Run(EventListener listener, ITestFilter filter, bool tracing, LoggingThreshold logLevel)
+        {
+            // Save active listener for derived classes
+            this.listener = listener;
+            return this.testRunner.Run(listener, filter, tracing, logLevel);
+        }
+
+        public virtual void BeginRun(EventListener listener, ITestFilter filter, bool tracing, LoggingThreshold logLevel)
+        {
+            // Save active listener for derived classes
+            this.listener = listener;
+            this.testRunner.BeginRun(listener, filter, tracing, logLevel);
+        }
+
+        public virtual TestResult EndRun()
+		{
+			return this.testRunner.EndRun();
 		}
 
 		public virtual void CancelRun()
@@ -137,50 +144,27 @@ namespace NUnit.Core
 			this.testRunner.CancelRun();
 		}
 
-		public virtual int CountTestCases(ITestFilter filter)
-		{
-			return this.testRunner.CountTestCases(filter);
-		}
-
-		public virtual void Dispose()
-		{
-			if (this.testRunner != null)
-				this.testRunner.Dispose();
-		}
-
-		public virtual TestResult EndRun()
-		{
-			return this.testRunner.EndRun();
-		}
-
-		public override object InitializeLifetimeService()
-		{
-			return null;
-		}
-
-		public virtual bool Load(TestPackage package)
-		{
-			return this.testRunner.Load(package);
-		}
-
-		public virtual TestResult Run(EventListener listener, ITestFilter filter, bool tracing, LoggingThreshold logLevel)
-		{
-			// Save active listener for derived classes
-			this.listener = listener;
-			return this.testRunner.Run(listener, filter, tracing, logLevel);
-		}
-
-		public virtual void Unload()
-		{
-			if (this.testRunner != null)
-				this.testRunner.Unload();
-		}
-
 		public virtual void Wait()
 		{
 			this.testRunner.Wait();
 		}
+        #endregion
 
+		#region InitializeLifetimeService Override
+		public override object InitializeLifetimeService()
+		{
+			return null;
+		}
 		#endregion
-	}
+
+        #region IDisposable Implementation
+
+        public virtual void Dispose()
+        {
+            if (testRunner != null)
+                testRunner.Dispose();
+        }
+
+        #endregion
+    }
 }

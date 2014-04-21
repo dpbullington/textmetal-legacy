@@ -5,8 +5,10 @@
 // ****************************************************************
 
 using System;
-using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
+using NUnit.Core;
+using NUnit.Util;
 
 namespace NUnit.UiKit
 {
@@ -15,53 +17,31 @@ namespace NUnit.UiKit
 	/// </summary>
 	public class TextDisplayTabPage : TabPage
 	{
-		#region Constructors/Destructors
+		private TextBoxDisplay display;
 
 		public TextDisplayTabPage()
 		{
 			this.display = new TextBoxDisplay();
-			this.display.Dock = DockStyle.Fill;
-			this.Controls.Add(this.display);
+			this.display.Dock = DockStyle.Fill;		
+			this.Controls.Add( display );
 		}
 
-		public TextDisplayTabPage(TextDisplayTabSettings.TabInfo tabInfo)
-			: this()
+		public System.Drawing.Font DisplayFont
+		{
+			get { return display.Font; }
+			set { display.Font = value; }
+		}
+
+		public TextDisplayTabPage( TextDisplayTabSettings.TabInfo tabInfo ) : this()
 		{
 			this.Name = tabInfo.Name;
 			this.Text = tabInfo.Title;
 			this.Display.Content = tabInfo.Content;
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private TextBoxDisplay display;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
 		public TextDisplay Display
 		{
-			get
-			{
-				return this.display;
-			}
+			get { return this.display; }
 		}
-
-		public Font DisplayFont
-		{
-			get
-			{
-				return this.display.Font;
-			}
-			set
-			{
-				this.display.Font = value;
-			}
-		}
-
-		#endregion
 	}
 }

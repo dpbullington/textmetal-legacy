@@ -12,58 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
 
 	public abstract class XmlTypeSerializer
 	{
-		#region Constructors/Destructors
-
-		protected XmlTypeSerializer()
-		{
-		}
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public virtual bool CanGetStub
-		{
-			get
-			{
-				return false;
-			}
-		}
+		protected XmlTypeSerializer() { }
 
 		public abstract XmlTypeKind Kind
 		{
 			get;
 		}
 
-		#endregion
+		public virtual bool CanGetStub
+		{
+			get { return false; }
+		}
 
-		#region Methods/Operators
+		public virtual  object GetStub (IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor) { throw Error.NotSupported(); }
+		public abstract object GetValue(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor);
+		public abstract void   SetValue(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor, object oldValue, ref object value);
 
 		public static XmlTypeSerializer For(Type type)
 		{
-			return XmlTypeSerializerCache.Instance[type];
+		    return XmlTypeSerializerCache.Instance[type];
 		}
-
-		public virtual object GetStub(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor)
-		{
-			throw Error.NotSupported();
-		}
-
-		public abstract object GetValue(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor);
-
-		public abstract void SetValue(IXmlNode node, IDictionaryAdapter parent, IXmlAccessor accessor, object oldValue, ref object value);
-
-		#endregion
 	}
 }
-
 #endif

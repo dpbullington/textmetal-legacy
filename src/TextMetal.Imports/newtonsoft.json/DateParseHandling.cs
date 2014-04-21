@@ -1,5 +1,4 @@
 ﻿#region License
-
 // Copyright (c) 2007 James Newton-King
 //
 // Permission is hereby granted, free of charge, to any person
@@ -22,30 +21,29 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-
 #endregion
 
 namespace Newtonsoft.Json
 {
-	/// <summary>
-	/// Specifies how date formatted strings, e.g. "\/Date(1198908717056)\/" and "2012-03-21T05:40Z", are parsed when reading JSON text.
-	/// </summary>
-	public enum DateParseHandling
-	{
-		/// <summary>
-		/// Date formatted strings are not parsed to a date type and are read as strings.
-		/// </summary>
-		None,
+    /// <summary>
+    /// Specifies how date formatted strings, e.g. "\/Date(1198908717056)\/" and "2012-03-21T05:40Z", are parsed when reading JSON text.
+    /// </summary>
+    public enum DateParseHandling
+    {
+        /// <summary>
+        /// Date formatted strings are not parsed to a date type and are read as strings.
+        /// </summary>
+        None,
 
-		/// <summary>
-		/// Date formatted strings, e.g. "\/Date(1198908717056)\/" and "2012-03-21T05:40Z", are parsed to <see cref="DateTime" />.
-		/// </summary>
-		DateTime,
+        /// <summary>
+        /// Date formatted strings, e.g. "\/Date(1198908717056)\/" and "2012-03-21T05:40Z", are parsed to <see cref="DateTime"/>.
+        /// </summary>
+        DateTime,
 #if !NET20
-		/// <summary>
-		/// Date formatted strings, e.g. "\/Date(1198908717056)\/" and "2012-03-21T05:40Z", are parsed to <see cref="DateTimeOffset" />.
-		/// </summary>
-		DateTimeOffset
+        /// <summary>
+        /// Date formatted strings, e.g. "\/Date(1198908717056)\/" and "2012-03-21T05:40Z", are parsed to <see cref="DateTimeOffset"/>.
+        /// </summary>
+        DateTimeOffset
 #endif
-	}
+    }
 }

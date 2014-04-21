@@ -15,10 +15,6 @@ namespace NUnit.Util
 	/// </summary>
 	public interface TestObserver
 	{
-		#region Methods/Operators
-
-		void Subscribe(ITestEvents events);
-
-		#endregion
+		void Subscribe( ITestEvents events );
 	}
 }

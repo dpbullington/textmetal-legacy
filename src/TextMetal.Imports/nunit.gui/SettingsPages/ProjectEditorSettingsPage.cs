@@ -1,83 +1,72 @@
-// ****************************************************************
+﻿// ****************************************************************
 // Copyright 2012, Charlie Poole
 // This is free software licensed under the NUnit license. You may
 // obtain a copy of the license at http://nunit.org
 // ****************************************************************
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
-
 using NUnit.UiKit;
 
 namespace NUnit.Gui.SettingsPages
 {
-	public partial class ProjectEditorSettingsPage : SettingsPage
-	{
-		#region Constructors/Destructors
+    public partial class ProjectEditorSettingsPage : SettingsPage
+    {
+        private static readonly string EDITOR_PATH_SETTING = "Options.ProjectEditor.EditorPath";
 
-		public ProjectEditorSettingsPage(string key)
-			: base(key)
-		{
-			this.InitializeComponent();
-		}
+        public ProjectEditorSettingsPage(string key) : base(key)
+        {
+            InitializeComponent();
+        }
 
-		#endregion
+        public override void LoadSettings()
+        {
+            string editorPath = (string)settings.GetSetting(EDITOR_PATH_SETTING);
 
-		#region Fields/Constants
+            if (editorPath != null)
+            {
+                useOtherEditorRadioButton.Checked = true;
+                editorPathTextBox.Text = editorPath;
+            }
+            else
+            {
+                useNUnitEditorRadioButton.Checked = true;
+                editorPathTextBox.Text = "";
+            }
+        }
 
-		private static readonly string EDITOR_PATH_SETTING = "Options.ProjectEditor.EditorPath";
+        public override void ApplySettings()
+        {
+            if (useNUnitEditorRadioButton.Checked)
+                settings.RemoveSetting(EDITOR_PATH_SETTING);
+            else
+                settings.SaveSetting(EDITOR_PATH_SETTING, editorPathTextBox.Text);
+        }
 
-		#endregion
+        private void editorPathTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (editorPathTextBox.TextLength == 0)
+                useNUnitEditorRadioButton.Checked = true;
+            else
+                useOtherEditorRadioButton.Checked = true;
+        }
 
-		#region Methods/Operators
-
-		public override void ApplySettings()
-		{
-			if (this.useNUnitEditorRadioButton.Checked)
-				this.settings.RemoveSetting(EDITOR_PATH_SETTING);
-			else
-				this.settings.SaveSetting(EDITOR_PATH_SETTING, this.editorPathTextBox.Text);
-		}
-
-		public override void LoadSettings()
-		{
-			string editorPath = (string)this.settings.GetSetting(EDITOR_PATH_SETTING);
-
-			if (editorPath != null)
-			{
-				this.useOtherEditorRadioButton.Checked = true;
-				this.editorPathTextBox.Text = editorPath;
-			}
-			else
-			{
-				this.useNUnitEditorRadioButton.Checked = true;
-				this.editorPathTextBox.Text = "";
-			}
-		}
-
-		private void editorPathBrowseButton_Click(object sender, EventArgs e)
-		{
+        private void editorPathBrowseButton_Click(object sender, EventArgs e)
+        {
 			OpenFileDialog dlg = new OpenFileDialog();
-			if (this.Site != null)
-				dlg.Site = this.Site;
+			if ( Site != null ) dlg.Site = Site;
 			dlg.Title = "Select Project Editor";
 
 			dlg.Filter = "Executable Files (*.exe)|*.exe";
 			dlg.FilterIndex = 1;
 			dlg.FileName = "";
 
-			if (dlg.ShowDialog(this) == DialogResult.OK)
-				this.editorPathTextBox.Text = dlg.FileName;
-		}
-
-		private void editorPathTextBox_TextChanged(object sender, EventArgs e)
-		{
-			if (this.editorPathTextBox.TextLength == 0)
-				this.useNUnitEditorRadioButton.Checked = true;
-			else
-				this.useOtherEditorRadioButton.Checked = true;
-		}
-
-		#endregion
-	}
+			if ( dlg.ShowDialog( this ) == DialogResult.OK ) 
+				editorPathTextBox.Text = dlg.FileName;
+        }
+    }
 }

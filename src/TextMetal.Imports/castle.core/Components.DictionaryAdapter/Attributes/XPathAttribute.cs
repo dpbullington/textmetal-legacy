@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #if !SILVERLIGHT && !MONO // Until support for other platforms is verified
 #if !SL3
-
 namespace Castle.Components.DictionaryAdapter.Xml
 {
 	using System;
@@ -23,7 +21,8 @@ namespace Castle.Components.DictionaryAdapter.Xml
 	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Property, AllowMultiple = true)]
 	public class XPathAttribute : Attribute
 	{
-		#region Constructors/Destructors
+		private readonly CompiledXPath getPath;
+		private readonly CompiledXPath setPath;
 
 		public XPathAttribute(string path)
 		{
@@ -45,42 +44,18 @@ namespace Castle.Components.DictionaryAdapter.Xml
 			this.setPath = XPathCompiler.Compile(set);
 		}
 
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly CompiledXPath getPath;
-		private readonly CompiledXPath setPath;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
 		public CompiledXPath GetPath
 		{
-			get
-			{
-				return this.getPath;
-			}
-		}
-
-		public bool Nullable
-		{
-			get;
-			set;
+			get { return getPath; }
 		}
 
 		public CompiledXPath SetPath
 		{
-			get
-			{
-				return this.setPath;
-			}
+			get { return setPath; }
 		}
 
-		#endregion
+		public bool Nullable { get; set; }
 	}
 }
-
 #endif
 #endif

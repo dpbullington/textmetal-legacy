@@ -6,20 +6,16 @@
 
 namespace NUnit.Framework.Constraints
 {
-	/// <summary>
-	/// The IConstraintExpression interface is implemented by all
-	/// complete and resolvable constraints and expressions.
-	/// </summary>
-	public interface IResolveConstraint
-	{
-		#region Methods/Operators
-
-		/// <summary>
-		/// Return the top-level constraint for this expression
-		/// </summary>
-		/// <returns> </returns>
-		Constraint Resolve();
-
-		#endregion
-	}
+    /// <summary>
+    /// The IConstraintExpression interface is implemented by all
+    /// complete and resolvable constraints and expressions.
+    /// </summary>
+    public interface IResolveConstraint
+    {
+        /// <summary>
+        /// Return the top-level constraint for this expression
+        /// </summary>
+        /// <returns></returns>
+        Constraint Resolve();
+    }
 }
