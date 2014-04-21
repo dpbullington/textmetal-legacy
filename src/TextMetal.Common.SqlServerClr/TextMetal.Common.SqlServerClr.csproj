@@ -52,11 +52,7 @@
     <Compile Include="..\TextMetal.Common.Core\DataType.IntImpl.cs">
       <Link>DataType.IntImpl.cs</Link>
     </Compile>
-    <Compile Include="..\TextMetal.Common.Core\Reflexion.cs">
-      <Link>Reflexion.cs</Link>
-    </Compile>
     <Compile Include="ProjectAssemblyInfo.cs" />
-    <Compile Include="TableValueFunctions.cs" />
     <Compile Include="ScalarFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
