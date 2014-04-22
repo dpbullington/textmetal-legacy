@@ -38,10 +38,10 @@ goto pkgBuild
 @echo BUILD_EXE=%BUILD_EXE%
 @echo BUILD_TOOL_CFG=%BUILD_TOOL_CFG%
 
-"%BUILD_EXE%" ".\src\TextMetal.sln" /t:clean /p:Configuration=%BUILD_TOOL_CFG%
+"%BUILD_EXE%" ".\src\TextMetal.sln" /t:clean /p:Configuration=%BUILD_TOOL_CFG% /p:VisualStudioVersion=12.0
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-"%BUILD_EXE%" ".\src\TextMetal.sln" /t:build /p:Configuration=%BUILD_TOOL_CFG%
+"%BUILD_EXE%" ".\src\TextMetal.sln" /t:build /p:Configuration=%BUILD_TOOL_CFG% /p:VisualStudioVersion=12.0
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 goto pkgSuccess
