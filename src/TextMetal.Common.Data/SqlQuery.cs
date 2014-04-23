@@ -16,7 +16,7 @@ namespace TextMetal.Common.Data
 	/// Represents an ordered, keyed set of N-level nested and corrolated SQL queries.
 	/// </summary>
 	[Serializable]
-	[XmlRoot(ElementName = "SqlQuery", Namespace = "http://www.textmetal.com/api/v5.0.0")]
+	[XmlRoot(ElementName = "SqlQuery", Namespace = "http://www.textmetal.com/api/v6.0.0")]
 	public sealed class SqlQuery
 	{
 		#region Constructors/Destructors

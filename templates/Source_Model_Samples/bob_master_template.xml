@@ -4,7 +4,7 @@
 	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 -->
-<Template xmlns="http://www.textmetal.com/api/v5.0.0">
+<Template xmlns="http://www.textmetal.com/api/v6.0.0">
 	
 	<!--<DebuggerBreakpoint />-->
 	
@@ -58,7 +58,7 @@
 
 	<Include name="bob_include_content.txt" />
 	
-	<Alias local-name="Scrizzle" namespace-uri="http://www.textmetal.com/api/v5.0.0" aqt-name="TextMetal.Framework.TemplateModel.WriteConstruct, TextMetal.Framework.TemplateModel" />
+	<Alias local-name="Scrizzle" namespace-uri="http://www.textmetal.com/api/v6.0.0" aqt-name="TextMetal.Framework.TemplateModel.WriteConstruct, TextMetal.Framework.TemplateModel" />
 
 	<!-- FAILS BY DESIGN -->
 	<!--<Scrizzle newline="true">

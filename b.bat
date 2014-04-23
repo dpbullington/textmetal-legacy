@@ -1,66 +1,82 @@
-@echo off
+@ECHO off
 
 REM
 REM	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
 REM	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 REM
 
-set BUILD_EXE=C:\WINDOWS\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe
+CD "."
+GOTO setEnv
 
-cd "."
 
-rem if "%1" == "" goto pkgUsage
-if "%1" == "" goto flavorDebug
-if /i %1 == -release       goto flavorRelease
-if /i %1 == -debug     goto flavorDebug
-goto pkgUsage
+:setEnv
 
+SET SRC_DIR=.\src
+SET BUILD_EXE=C:\WINDOWS\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe
+GOTO chooseBuildFlavor
+
+
+:chooseBuildFlavor
+
+IF "%1" == "" GOTO flavorRelease
+IF /i %1 == -release GOTO flavorRelease
+IF /i %1 == -debug GOTO flavorDebug
+GOTO pkgUsage
 
 
 :flavorRelease
 
-@echo Using [Release] build flavor directory...
-set BUILD_FLAVOR_DIR=Release
-set BUILD_TOOL_CFG=Release
-goto pkgBuild
+@ECHO Using [Release] build flavor...
+SET BUILD_FLAVOR_DIR=Release
+SET BUILD_TOOL_CFG=Release
+GOTO writeEnv
 
 
 :flavorDebug
 
-@echo Using [Debug] build flavor directory...
-set BUILD_FLAVOR_DIR=Debug
-set BUILD_TOOL_CFG=Debug
-goto pkgBuild
+@ECHO Using [Debug] build flavor...
+SET BUILD_FLAVOR_DIR=Debug
+SET BUILD_TOOL_CFG=Debug
+GOTO writeEnv
+
+
+:writeEnv
+
+@ECHO SRC_DIR=%SRC_DIR%
+@ECHO BUILD_EXE=%BUILD_EXE%
+@ECHO BUILD_FLAVOR_DIR=%BUILD_FLAVOR_DIR%
+@ECHO BUILD_TOOL_CFG=%BUILD_TOOL_CFG%
+GOTO pkgBuild
 
 
 :pkgBuild
 
-@echo BUILD_EXE=%BUILD_EXE%
-@echo BUILD_TOOL_CFG=%BUILD_TOOL_CFG%
+REM ADD SWITCHES FOR SKIPCLEAN, SKIPBUILD, SKIPCOPY
 
-"%BUILD_EXE%" ".\src\TextMetal.sln" /t:clean /p:Configuration=%BUILD_TOOL_CFG% /p:VisualStudioVersion=12.0
-IF %ERRORLEVEL% NEQ 0 goto pkgError
+"%BUILD_EXE%" /verbosity:quiet /consoleloggerparameters:ErrorsOnly "%SRC_DIR%\TextMetal.sln" /t:clean /p:Configuration=%BUILD_TOOL_CFG% /p:VisualStudioVersion=12.0
+IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
-"%BUILD_EXE%" ".\src\TextMetal.sln" /t:build /p:Configuration=%BUILD_TOOL_CFG% /p:VisualStudioVersion=12.0
-IF %ERRORLEVEL% NEQ 0 goto pkgError
+"%BUILD_EXE%" /verbosity:quiet /consoleloggerparameters:ErrorsOnly "%SRC_DIR%\TextMetal.sln" /t:build /p:Configuration=%BUILD_TOOL_CFG% /p:VisualStudioVersion=12.0
+IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
-goto pkgSuccess
+GOTO pkgSuccess
 
 
 :pkgError
-echo An error occured.
-goto :eof
+ECHO An error occured during the operation.
+GOTO :eof
+
 
 :pkgSuccess
-echo Completed successfully.
-goto :eof
+ECHO The operation completed successfully.
+GOTO :eof
 
 
 :pkgUsage
-echo Error in script usage. The correct usage is:
-echo     %0 [flavor]
-echo where [flavor] is: -release ^| -debug
-echo:
-echo For example:
-echo     %0 -debug
-goto :eof
+ECHO Error in script usage. The correct usage is:
+ECHO     %0 [flavor]
+ECHO where [flavor] is: -release ^| -debug
+ECHO:
+ECHO For example:
+ECHO     %0 -debug
+GOTO :eof

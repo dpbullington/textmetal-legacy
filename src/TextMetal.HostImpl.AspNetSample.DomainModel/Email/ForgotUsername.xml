@@ -4,40 +4,40 @@
 	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 -->
-<MessageTemplate xmlns="http://www.textmetal.com/api/v5.0.0">
+<MessageTemplate xmlns="http://www.textmetal.com/api/v6.0.0">
 
 	<From>
-		<Template xmlns="http://www.textmetal.com/api/v5.0.0"><![CDATA[noreply@textmetal.com]]></Template>
+		<Template xmlns="http://www.textmetal.com/api/v6.0.0"><![CDATA[noreply@textmetal.com]]></Template>
 	</From>
 
 	<Sender>
-		<Template xmlns="http://www.textmetal.com/api/v5.0.0" />
+		<Template xmlns="http://www.textmetal.com/api/v6.0.0" />
 	</Sender>
 
 	<ReplyTo>
-		<Template xmlns="http://www.textmetal.com/api/v5.0.0" />
+		<Template xmlns="http://www.textmetal.com/api/v6.0.0" />
 	</ReplyTo>
 
 	<To>
-		<Template xmlns="http://www.textmetal.com/api/v5.0.0"><![CDATA[${UserEmailAddress}]]></Template>
+		<Template xmlns="http://www.textmetal.com/api/v6.0.0"><![CDATA[${UserEmailAddress}]]></Template>
 	</To>
 
 	<CarbonCopy>
-		<Template xmlns="http://www.textmetal.com/api/v5.0.0" />
+		<Template xmlns="http://www.textmetal.com/api/v6.0.0" />
 	</CarbonCopy>
 
 	<BlindCarbonCopy>
-		<Template xmlns="http://www.textmetal.com/api/v5.0.0"><![CDATA[support@textmetal.com]]></Template>
+		<Template xmlns="http://www.textmetal.com/api/v6.0.0"><![CDATA[support@textmetal.com]]></Template>
 	</BlindCarbonCopy>
 
 	<Subject>
-		<Template xmlns="http://www.textmetal.com/api/v5.0.0"><![CDATA[TextMetal - Forgot Username]]></Template>
+		<Template xmlns="http://www.textmetal.com/api/v6.0.0"><![CDATA[TextMetal - Forgot Username]]></Template>
 	</Subject>
 
 	<IsBodyHtml>false</IsBodyHtml>
 
 	<Body>
-		<Template xmlns="http://www.textmetal.com/api/v5.0.0">
+		<Template xmlns="http://www.textmetal.com/api/v6.0.0">
 			<![CDATA[Thank you for contacting the TextMetal support team regarding your user account. A request has been made to retrieve the username associated with the user account. Your username is:
 
 ${UserName}

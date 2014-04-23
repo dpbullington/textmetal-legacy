@@ -13,7 +13,7 @@ using TextMetal.Framework.ExpressionModel;
 
 namespace TextMetal.Framework.TemplateModel
 {
-	[XmlElementMapping(LocalName = "InvokeSourceStrategy", NamespaceUri = "http://www.textmetal.com/api/v5.0.0", ChildElementModel = ChildElementModel.Items)]
+	[XmlElementMapping(LocalName = "InvokeSourceStrategy", NamespaceUri = "http://www.textmetal.com/api/v6.0.0", ChildElementModel = ChildElementModel.Items)]
 	public sealed class InvokeSourceStrategyConstruct : TemplateXmlObject
 	{
 		#region Constructors/Destructors

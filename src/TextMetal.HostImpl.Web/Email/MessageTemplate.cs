@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 namespace TextMetal.HostImpl.Web.Email
 {
 	[Serializable]
-	[XmlRoot(ElementName = "MessageTemplate", Namespace = "http://www.textmetal.com/api/v5.0.0")]
+	[XmlRoot(ElementName = "MessageTemplate", Namespace = "http://www.textmetal.com/api/v6.0.0")]
 	public class MessageTemplate
 	{
 		#region Constructors/Destructors

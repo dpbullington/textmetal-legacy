@@ -8,7 +8,7 @@ using TextMetal.Framework.Core;
 
 namespace TextMetal.Framework.SortModel
 {
-	[XmlKnownElementMapping(LocalName = "SortContainer", NamespaceUri = "http://www.textmetal.com/api/v5.0.0", ChildElementModel = ChildElementModel.Items)]
+	[XmlKnownElementMapping(LocalName = "SortContainer", NamespaceUri = "http://www.textmetal.com/api/v6.0.0", ChildElementModel = ChildElementModel.Items)]
 	public interface ISortContainerConstruct : IItemsContainerXmlObject<ISortXmlObject>, ISortXmlObject
 	{
 	}

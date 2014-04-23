@@ -10,11 +10,12 @@
 		<%--<title><asp:ContentPlaceHolder ID="TitleContent" runat="server" /><asp:Literal runat="server" Text=" | TextMetal" /></title>--%>
 
 		<%--<link href="~/styles/reset.css" type="text/css" rel="stylesheet" />--%>
-		<link href="~/styles/ui-lightness/jquery-ui-1.9.0.custom.css" type="text/css" rel="stylesheet" />	
+		<link href="~/styles/ui-lightness/jquery-ui-1.10.4.custom.css" type="text/css" rel="stylesheet" />	
 		<link href="~/styles/primary.css" type="text/css" rel="stylesheet" />
 
-		<script type="text/javascript" src="<%= this.Url.Content("~/scripts/jquery-1.8.2.min.js") %>"> </script>
-		<script type="text/javascript" src="<%= this.Url.Content("~/scripts/jquery-ui-1.9.0.custom.min.js") %>"> </script>
+		<script type="text/javascript" src="<%= this.Url.Content("~/scripts/jquery-1.11.0.min.js") %>"> </script>
+		<script type="text/javascript" src="<%= this.Url.Content("~/scripts/jquery-ui-1.10.4.custom.min.js") %>"> </script>
+		<%--<script type="text/javascript" src="<%= this.Url.Content("~/scripts/jquery.mobile-1.4.2.min.js") %>"> </script>--%>
 		<script type="text/javascript" src="<%= this.Url.Content("~/scripts/primary.js") %>"> </script>
 	
 		<meta http-equiv="Pragma" content="no-cache" />

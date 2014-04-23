@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Parent Logout" MasterPageFile="~/Views/Shared/SiteBase.Master" Language="C#" Inherits="System.Web.Mvc.ViewPage<TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Models.UserViewModel>" %>
+﻿<%@ Page Title="Member Logout" MasterPageFile="~/Views/Shared/SiteBase.Master" Language="C#" Inherits="System.Web.Mvc.ViewPage<TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Models.UserViewModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MiddleContent" runat="server">
 

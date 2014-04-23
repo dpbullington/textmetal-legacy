@@ -10,7 +10,7 @@ using TextMetal.Framework.Core;
 
 namespace TextMetal.Framework.AssociativeModel
 {
-	[XmlKnownElementMapping(LocalName = "AssociativeContainer", NamespaceUri = "http://www.textmetal.com/api/v5.0.0", ChildElementModel = ChildElementModel.Content)]
+	[XmlKnownElementMapping(LocalName = "AssociativeContainer", NamespaceUri = "http://www.textmetal.com/api/v6.0.0", ChildElementModel = ChildElementModel.Content)]
 	public interface IAssociativeContainerConstruct : IContentContainerXmlObject<IAssociativeXmlObject>, IAssociativeXmlObject
 	{
 	}

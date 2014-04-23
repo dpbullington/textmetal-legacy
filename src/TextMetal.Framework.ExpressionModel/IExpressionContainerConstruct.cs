@@ -11,7 +11,7 @@ using TextMetal.Framework.Core;
 
 namespace TextMetal.Framework.ExpressionModel
 {
-	[XmlKnownElementMapping(LocalName = "ExpressionContainer", NamespaceUri = "http://www.textmetal.com/api/v5.0.0", ChildElementModel = ChildElementModel.Content)]
+	[XmlKnownElementMapping(LocalName = "ExpressionContainer", NamespaceUri = "http://www.textmetal.com/api/v6.0.0", ChildElementModel = ChildElementModel.Content)]
 	public interface IExpressionContainerConstruct : IContentContainerXmlObject<IExpressionXmlObject>, IExpressionXmlObject, IExpression
 	{
 	}

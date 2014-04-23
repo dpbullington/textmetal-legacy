@@ -18,7 +18,7 @@ using TextMetal.Framework.DebuggerProfilerModel;
 
 namespace TextMetal.Framework.ExpressionModel
 {
-	[XmlElementMapping(LocalName = "Ruby", NamespaceUri = "http://www.textmetal.com/api/v5.0.0", ChildElementModel = ChildElementModel.Sterile)]
+	[XmlElementMapping(LocalName = "Ruby", NamespaceUri = "http://www.textmetal.com/api/v6.0.0", ChildElementModel = ChildElementModel.Sterile)]
 	public sealed class RubyConstruct : ExpressionXmlObject
 	{
 		#region Constructors/Destructors
@@ -69,7 +69,7 @@ namespace TextMetal.Framework.ExpressionModel
 			}
 		}
 
-		[XmlChildElementMapping(LocalName = "Script", NamespaceUri = "http://www.textmetal.com/api/v5.0.0", ChildElementType = ChildElementType.TextValue)]
+		[XmlChildElementMapping(LocalName = "Script", NamespaceUri = "http://www.textmetal.com/api/v6.0.0", ChildElementType = ChildElementType.TextValue)]
 		public string Script
 		{
 			get
