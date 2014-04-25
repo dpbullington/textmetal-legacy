@@ -50,22 +50,22 @@ USE [master]
 GO
 
 
-IF EXISTS (SELECT * FROM sysdatabases WHERE name = '${DataObfuscationProxyCatalogName}')
+IF EXISTS (SELECT * FROM sysdatabases WHERE name = '${DataObfuscationProxyDatabaseName}')
 BEGIN
 
-	ALTER DATABASE [${DataObfuscationProxyCatalogName}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
+	ALTER DATABASE [${DataObfuscationProxyDatabaseName}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
 	
-	DROP DATABASE [${DataObfuscationProxyCatalogName}]
+	DROP DATABASE [${DataObfuscationProxyDatabaseName}]
 	
 END
 GO
 
 
-CREATE DATABASE [${DataObfuscationProxyCatalogName}]
+CREATE DATABASE [${DataObfuscationProxyDatabaseName}]
 GO
 
 
-USE [${DataObfuscationProxyCatalogName}]
+USE [${DataObfuscationProxyDatabaseName}]
 GO
 
 
@@ -407,7 +407,7 @@ RETURN
 	#textMetal.DebuggerBreakpoint.invoke()
 	obfuCfg = textMetal.EvaluateToken.invoke("obfuCfg")
 	tblCfg = obfuCfg["TablesViews".to_clr_string()].select{|obj|
-		obj["CatalogName".to_clr_string()] == textMetal.EvaluateToken.invoke("InitialCatalogName") &&
+		obj["DatabaseName".to_clr_string()] == textMetal.EvaluateToken.invoke("DefaultDatabaseName") &&
 		obj["SchemaName".to_clr_string()] == textMetal.EvaluateToken.invoke("SchemaName") &&
 		obj["TableName".to_clr_string()] == textMetal.EvaluateToken.invoke("TableName") &&
 		obj["ColumnName".to_clr_string()] == textMetal.EvaluateToken.invoke("ColumnName")
@@ -426,7 +426,7 @@ RETURN
 				
 				"/* SUBSTITUTION */ (SELECT TOP 1 z.[" +
 					dctCfg["ValueColumnName".to_clr_string()].to_s() + "] FROM [" +
-					dctCfg["CatalogName".to_clr_string()].to_s() + "].[" +
+					dctCfg["DatabaseName".to_clr_string()].to_s() + "].[" +
 					dctCfg["SchemaName".to_clr_string()].to_s() + "].[" +
 					dctCfg["TableName".to_clr_string()].to_s() + "] z WHERE z.[" +
 					dctCfg["KeyColumnName".to_clr_string()].to_s() + "] = ([DataObfuscation].[fn_GetHash](" +
@@ -518,8 +518,8 @@ CREATE VIEW [${SchemaName}].[${TableName}]
 AS
 	SELECT 
 	z.*
-	FROM [${InitialCatalogName}].[${SchemaName}].[${TableName}] t
-	CROSS APPLY [${DataObfuscationProxyCatalogName}].[${SchemaName}].[iltv_fn_${TableName}]
+	FROM [${DefaultDatabaseName}].[${SchemaName}].[${TableName}] t
+	CROSS APPLY [${DataObfuscationProxyDatabaseName}].[${SchemaName}].[iltv_fn_${TableName}]
 	(
 ]]>
 				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -556,14 +556,14 @@ AS
 						<OutputScope name="${ObfuscationConfigFilePath}.g" append="true">
 <![CDATA[
 	{
-		"CatalogName": "${InitialCatalogName}",
+		"DatabaseName": "${DefaultDatabaseName}",
 		"SchemaName": "${SchemaName}",
 		"TableName": "${TableName}",
 		"ColumnName": "${ColumnName}",
 		"StrategyTag": 0,
 		"Dictionary":
 		{
-			"CatalogName": "${InitialCatalogName}",
+			"DatabaseName": "${DefaultDatabaseName}",
 			"SchemaName": "DataObfuscation",
 			"TableName": "CrayonColorDictionary",
 			"KeyColumnName": "CrayonColorDictionaryKey",

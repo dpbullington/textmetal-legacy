@@ -4,14 +4,11 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Serialization;
 
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	[XmlRoot(ElementName = "Database", Namespace = "http://www.textmetal.com/api/v6.0.0")]
 	public class Database : DatabaseSchemaModelBase
 	{
 		#region Constructors/Destructors
@@ -27,220 +24,232 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Fields/Constants
 
-		private readonly List<Catalog> catalogs = new List<Catalog>();
-		private readonly List<Schema> schemas = new List<Schema>();
-		private readonly List<Trigger> triggers = new List<Trigger>();
-		private string connectionString;
-		private string connectionType;
-		private string initialCatalogName;
-		private string instanceName;
-		private string machineName;
-		private string serverEdition;
-		private string serverLevel;
-		private string serverVersion;
+		private string databaseName;
+		private string databaseNameCamelCase;
+		private string databaseNameConstantCase;
+		private string databaseNamePascalCase;
+		private string databaseNamePluralCamelCase;
+		private string databaseNamePluralConstantCase;
+		private string databaseNamePluralPascalCase;
+		private string databaseNameSingularCamelCase;
+		private string databaseNameSingularConstantCase;
+		private string databaseNameSingularPascalCase;
+		private string databaseNameSqlMetalCamelCase;
+		private string databaseNameSqlMetalPascalCase;
+		private string databaseNameSqlMetalPluralCamelCase;
+		private string databaseNameSqlMetalPluralPascalCase;
+		private string databaseNameSqlMetalSingularCamelCase;
+		private string databaseNameSqlMetalSingularPascalCase;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		[XmlArray(ElementName = "Catalogs")]
-		[XmlArrayItem(ElementName = "Catalog")]
-		public List<Catalog> Catalogs
-		{
-			get
-			{
-				return this.catalogs;
-			}
-		}
-
 		[XmlAttribute]
-		public string ConnectionString
-		{
-			get
-			{
-				return this.connectionString;
-			}
-			set
-			{
-				this.connectionString = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ConnectionType
-		{
-			get
-			{
-				return this.connectionType;
-			}
-			set
-			{
-				this.connectionType = value;
-			}
-		}
-
-		[XmlIgnore]
 		public string DatabaseName
 		{
 			get
 			{
-				if (!string.IsNullOrEmpty(this.MachineName) &&
-					!string.IsNullOrEmpty(this.MachineName))
-					return string.Format("{0}\\{1}", this.MachineName, this.InstanceName);
-				else
-					return this.MachineName;
+				return this.databaseName;
 			}
-		}
-
-		[XmlIgnore]
-		public bool HasCatalogs
-		{
-			get
+			set
 			{
-				return this.Catalogs.Count() > 0;
-			}
-		}
-
-		[XmlIgnore]
-		public bool HasInitialCatalog
-		{
-			get
-			{
-				return (object)this.InitialCatalog != null;
-			}
-		}
-
-		[XmlIgnore]
-		public bool HasProcedures
-		{
-			get
-			{
-				return this.Schemas.Count(s => s.Procedures.Count() > 0) > 0;
-			}
-		}
-
-		[XmlIgnore]
-		public bool HasTables
-		{
-			get
-			{
-				return this.Schemas.Count(s => s.Tables.Count(t => !t.IsView) > 0) > 0;
-			}
-		}
-
-		[XmlIgnore]
-		public bool HasViews
-		{
-			get
-			{
-				return this.Schemas.Count(s => s.Tables.Count(t => t.IsView) > 0) > 0;
-			}
-		}
-
-		[XmlIgnore]
-		public Catalog InitialCatalog
-		{
-			get
-			{
-				return this.Catalogs.FirstOrDefault(c => c.CatalogName == this.InitialCatalogName);
+				this.databaseName = value;
 			}
 		}
 
 		[XmlAttribute]
-		public string InitialCatalogName
+		public string DatabaseNameCamelCase
 		{
 			get
 			{
-				return this.initialCatalogName;
+				return this.databaseNameCamelCase;
 			}
 			set
 			{
-				this.initialCatalogName = value;
+				this.databaseNameCamelCase = value;
 			}
 		}
 
 		[XmlAttribute]
-		public string InstanceName
+		public string DatabaseNameConstantCase
 		{
 			get
 			{
-				return this.instanceName;
+				return this.databaseNameConstantCase;
 			}
 			set
 			{
-				this.instanceName = value;
+				this.databaseNameConstantCase = value;
 			}
 		}
 
 		[XmlAttribute]
-		public string MachineName
+		public string DatabaseNamePascalCase
 		{
 			get
 			{
-				return this.machineName;
+				return this.databaseNamePascalCase;
 			}
 			set
 			{
-				this.machineName = value;
-			}
-		}
-
-		[XmlArray(ElementName = "Schemas")]
-		[XmlArrayItem(ElementName = "Schema")]
-		public List<Schema> Schemas
-		{
-			get
-			{
-				return this.schemas;
+				this.databaseNamePascalCase = value;
 			}
 		}
 
 		[XmlAttribute]
-		public string ServerEdition
+		public string DatabaseNamePluralCamelCase
 		{
 			get
 			{
-				return this.serverEdition;
+				return this.databaseNamePluralCamelCase;
 			}
 			set
 			{
-				this.serverEdition = value;
+				this.databaseNamePluralCamelCase = value;
 			}
 		}
 
 		[XmlAttribute]
-		public string ServerLevel
+		public string DatabaseNamePluralConstantCase
 		{
 			get
 			{
-				return this.serverLevel;
+				return this.databaseNamePluralConstantCase;
 			}
 			set
 			{
-				this.serverLevel = value;
+				this.databaseNamePluralConstantCase = value;
 			}
 		}
 
 		[XmlAttribute]
-		public string ServerVersion
+		public string DatabaseNamePluralPascalCase
 		{
 			get
 			{
-				return this.serverVersion;
+				return this.databaseNamePluralPascalCase;
 			}
 			set
 			{
-				this.serverVersion = value;
+				this.databaseNamePluralPascalCase = value;
 			}
 		}
 
-		[XmlArray(ElementName = "Triggers")]
-		[XmlArrayItem(ElementName = "Trigger")]
-		public List<Trigger> Triggers
+		[XmlAttribute]
+		public string DatabaseNameSingularCamelCase
 		{
 			get
 			{
-				return this.triggers;
+				return this.databaseNameSingularCamelCase;
+			}
+			set
+			{
+				this.databaseNameSingularCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string DatabaseNameSingularConstantCase
+		{
+			get
+			{
+				return this.databaseNameSingularConstantCase;
+			}
+			set
+			{
+				this.databaseNameSingularConstantCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string DatabaseNameSingularPascalCase
+		{
+			get
+			{
+				return this.databaseNameSingularPascalCase;
+			}
+			set
+			{
+				this.databaseNameSingularPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string DatabaseNameSqlMetalCamelCase
+		{
+			get
+			{
+				return this.databaseNameSqlMetalCamelCase;
+			}
+			set
+			{
+				this.databaseNameSqlMetalCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string DatabaseNameSqlMetalPascalCase
+		{
+			get
+			{
+				return this.databaseNameSqlMetalPascalCase;
+			}
+			set
+			{
+				this.databaseNameSqlMetalPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string DatabaseNameSqlMetalPluralCamelCase
+		{
+			get
+			{
+				return this.databaseNameSqlMetalPluralCamelCase;
+			}
+			set
+			{
+				this.databaseNameSqlMetalPluralCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string DatabaseNameSqlMetalPluralPascalCase
+		{
+			get
+			{
+				return this.databaseNameSqlMetalPluralPascalCase;
+			}
+			set
+			{
+				this.databaseNameSqlMetalPluralPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string DatabaseNameSqlMetalSingularCamelCase
+		{
+			get
+			{
+				return this.databaseNameSqlMetalSingularCamelCase;
+			}
+			set
+			{
+				this.databaseNameSqlMetalSingularCamelCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string DatabaseNameSqlMetalSingularPascalCase
+		{
+			get
+			{
+				return this.databaseNameSqlMetalSingularPascalCase;
+			}
+			set
+			{
+				this.databaseNameSqlMetalSingularPascalCase = value;
 			}
 		}
 

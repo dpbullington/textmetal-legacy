@@ -1,7 +1,7 @@
 {
   "TablesViews": [
     {
-      "CatalogName": "",
+      "DatabaseName": "",
       "SchemaName": "",
       "TableName": "",
 	  "ColumnName": "",
@@ -11,7 +11,7 @@
 	  "HashSize": 0
     },
     {
-      "CatalogName": "",
+      "DatabaseName": "",
       "SchemaName": "",
       "TableName": "",
 	  "ColumnName": "",
@@ -23,7 +23,7 @@
   ],
   "ProcOutParams": [
     {
-      "CatalogName": "",
+      "DatabaseName": "",
       "SchemaName": "",
       "ProcedureName": "",
 	  "ParameterName": "",
@@ -33,7 +33,7 @@
 	  "HashSize": 0
     },
     {
-      "CatalogName": "",
+      "DatabaseName": "",
       "SchemaName": "",
       "ProcedureName": "",
 	  "ParameterName": "",
@@ -45,7 +45,7 @@
   ],
   "ProcResColumns": [
     {
-      "CatalogName": "",
+      "DatabaseName": "",
       "SchemaName": "",
       "ProcedureName": "",
 	  "ColumnName": "",
@@ -55,7 +55,7 @@
 	  "HashSize": 0
     },
     {
-      "CatalogName": "",
+      "DatabaseName": "",
       "SchemaName": "",
       "ProcedureName": "",
 	  "ColumnName": "",

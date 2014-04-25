@@ -116,27 +116,27 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		protected abstract int CoreCalculateParameterSize(string dataSourceTag, Parameter parameter);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema, Table table);
+		protected abstract IEnumerable<IDataParameter> CoreGetColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table);
 
 		protected abstract IEnumerable<IDataParameter> CoreGetDatabaseParameters(IUnitOfWork unitOfWork, string dataSourceTag);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetDdlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database);
+		protected abstract IEnumerable<IDataParameter> CoreGetDdlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetDmlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema, Table table);
+		protected abstract IEnumerable<IDataParameter> CoreGetDmlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table);
 
 		protected abstract bool CoreGetEmitImplicitReturnParameter(string dataSourceTag);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetForeignKeyColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema, Table table, ForeignKey foreignKey);
+		protected abstract IEnumerable<IDataParameter> CoreGetForeignKeyColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table, ForeignKey foreignKey);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetForeignKeyParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema, Table table);
+		protected abstract IEnumerable<IDataParameter> CoreGetForeignKeyParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetParameterParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema, Procedure procedure);
+		protected abstract IEnumerable<IDataParameter> CoreGetParameterParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Procedure procedure);
 
 		protected abstract string CoreGetParameterPrefix(string dataSourceTag);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetProcedureParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema);
+		protected abstract IEnumerable<IDataParameter> CoreGetProcedureParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetSchemaParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database);
+		protected abstract IEnumerable<IDataParameter> CoreGetSchemaParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server);
 
 		protected override object CoreGetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties)
 		{
@@ -211,17 +211,17 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			return this.GetSchemaModel(connectionString, connectionType, dataSourceTag, schemaFilter, disableProcSchDisc);
 		}
 
-		protected abstract IEnumerable<IDataParameter> CoreGetTableParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema);
+		protected abstract IEnumerable<IDataParameter> CoreGetTableParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetUniqueKeyColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema, Table table, UniqueKey uniqueKey);
+		protected abstract IEnumerable<IDataParameter> CoreGetUniqueKeyColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table, UniqueKey uniqueKey);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetUniqueKeyParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema, Table table);
+		protected abstract IEnumerable<IDataParameter> CoreGetUniqueKeyParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table);
 
 		protected abstract Type CoreInferClrTypeForSqlType(string dataSourceTag, string sqlType, int sqlPrecision);
 
 		private object GetSchemaModel(string connectionString, Type connectionType, string dataSourceTag, string[] schemaFilter, bool disableProcSchDisc)
 		{
-			Database database;
+			Server server;
 			int recordsAffected;
 			const string RETURN_VALUE = "ReturnValue";
 			Type clrType;
@@ -234,48 +234,48 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 			using (IUnitOfWork unitOfWork = UnitOfWork.Create(connectionType, connectionString, false))
 			{
-				database = new Database();
-				database.ConnectionString = connectionString;
-				database.ConnectionType = connectionType.FullName;
+				server = new Server();
+				server.ConnectionString = connectionString;
+				server.ConnectionType = connectionType.FullName;
 
-				var dataReaderDatabase = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Database"), this.CoreGetDatabaseParameters(unitOfWork, dataSourceTag), out recordsAffected);
+				var dataReaderDatabase = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Server"), this.CoreGetDatabaseParameters(unitOfWork, dataSourceTag), out recordsAffected);
 				{
 					if ((object)dataReaderDatabase != null &&
 						dataReaderDatabase.Count == 1)
 					{
-						Catalog initialCatalog;
+						Database defaultDatabase;
 
-						database.InstanceName = DataType.ChangeType<string>(dataReaderDatabase[0]["InstanceName"]);
-						database.MachineName = DataType.ChangeType<string>(dataReaderDatabase[0]["MachineName"]);
-						database.ServerEdition = DataType.ChangeType<string>(dataReaderDatabase[0]["ServerEdition"]);
-						database.ServerLevel = DataType.ChangeType<string>(dataReaderDatabase[0]["ServerLevel"]);
-						database.ServerVersion = DataType.ChangeType<string>(dataReaderDatabase[0]["ServerVersion"]);
-						database.InitialCatalogName = DataType.ChangeType<string>(dataReaderDatabase[0]["InitialCatalogName"]);
+						server.InstanceName = DataType.ChangeType<string>(dataReaderDatabase[0]["InstanceName"]);
+						server.MachineName = DataType.ChangeType<string>(dataReaderDatabase[0]["MachineName"]);
+						server.ServerEdition = DataType.ChangeType<string>(dataReaderDatabase[0]["ServerEdition"]);
+						server.ServerLevel = DataType.ChangeType<string>(dataReaderDatabase[0]["ServerLevel"]);
+						server.ServerVersion = DataType.ChangeType<string>(dataReaderDatabase[0]["ServerVersion"]);
+						server.DefaultDatabaseName = DataType.ChangeType<string>(dataReaderDatabase[0]["DefaultDatabaseName"]);
 
-						initialCatalog = new Catalog();
-						initialCatalog.CatalogName = DataType.ChangeType<string>(dataReaderDatabase[0]["InitialCatalogName"]);
-						initialCatalog.CatalogNamePascalCase = Name.GetPascalCase(initialCatalog.CatalogName);
-						initialCatalog.CatalogNameCamelCase = Name.GetCamelCase(initialCatalog.CatalogName);
-						initialCatalog.CatalogNameConstantCase = Name.GetConstantCase(initialCatalog.CatalogName);
-						initialCatalog.CatalogNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(initialCatalog.CatalogName));
-						initialCatalog.CatalogNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(initialCatalog.CatalogName));
-						initialCatalog.CatalogNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(initialCatalog.CatalogName));
-						initialCatalog.CatalogNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(initialCatalog.CatalogName));
-						initialCatalog.CatalogNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(initialCatalog.CatalogName));
-						initialCatalog.CatalogNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(initialCatalog.CatalogName));
+						defaultDatabase = new Database();
+						defaultDatabase.DatabaseName = DataType.ChangeType<string>(dataReaderDatabase[0]["DefaultDatabaseName"]);
+						defaultDatabase.DatabaseNamePascalCase = Name.GetPascalCase(defaultDatabase.DatabaseName);
+						defaultDatabase.DatabaseNameCamelCase = Name.GetCamelCase(defaultDatabase.DatabaseName);
+						defaultDatabase.DatabaseNameConstantCase = Name.GetConstantCase(defaultDatabase.DatabaseName);
+						defaultDatabase.DatabaseNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(defaultDatabase.DatabaseName));
+						defaultDatabase.DatabaseNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(defaultDatabase.DatabaseName));
+						defaultDatabase.DatabaseNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(defaultDatabase.DatabaseName));
+						defaultDatabase.DatabaseNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(defaultDatabase.DatabaseName));
+						defaultDatabase.DatabaseNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(defaultDatabase.DatabaseName));
+						defaultDatabase.DatabaseNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(defaultDatabase.DatabaseName));
 
-						initialCatalog.CatalogNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(initialCatalog.CatalogName);
-						initialCatalog.CatalogNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(initialCatalog.CatalogName);
-						initialCatalog.CatalogNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(initialCatalog.CatalogName));
-						initialCatalog.CatalogNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(initialCatalog.CatalogName));
-						initialCatalog.CatalogNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(initialCatalog.CatalogName));
-						initialCatalog.CatalogNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(initialCatalog.CatalogName));
+						defaultDatabase.DatabaseNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(defaultDatabase.DatabaseName);
+						defaultDatabase.DatabaseNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(defaultDatabase.DatabaseName);
+						defaultDatabase.DatabaseNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(defaultDatabase.DatabaseName));
+						defaultDatabase.DatabaseNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(defaultDatabase.DatabaseName));
+						defaultDatabase.DatabaseNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(defaultDatabase.DatabaseName));
+						defaultDatabase.DatabaseNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(defaultDatabase.DatabaseName));
 
-						database.Catalogs.Add(initialCatalog);
+						server.Databases.Add(defaultDatabase);
 					}
 				}
 
-				var dataReaderDdlTrigger = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DdlTriggers"), this.CoreGetDdlTriggerParameters(unitOfWork, dataSourceTag, database), out recordsAffected);
+				var dataReaderDdlTrigger = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DdlTriggers"), this.CoreGetDdlTriggerParameters(unitOfWork, dataSourceTag, server), out recordsAffected);
 				{
 					if ((object)dataReaderDdlTrigger != null)
 					{
@@ -308,12 +308,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 							trigger.TriggerNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(trigger.TriggerName));
 							trigger.TriggerNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(trigger.TriggerName));
 
-							database.Triggers.Add(trigger);
+							server.Triggers.Add(trigger);
 						}
 					}
 				}
 
-				var dataReaderSchema = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Schemas"), this.CoreGetSchemaParameters(unitOfWork, dataSourceTag, database), out recordsAffected);
+				var dataReaderSchema = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Schemas"), this.CoreGetSchemaParameters(unitOfWork, dataSourceTag, server), out recordsAffected);
 				{
 					if ((object)dataReaderSchema != null)
 					{
@@ -347,9 +347,9 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 									continue;
 							}
 
-							database.Schemas.Add(schema);
+							server.Schemas.Add(schema);
 
-							var dataReaderTable = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Tables"), this.CoreGetTableParameters(unitOfWork, dataSourceTag, database, schema), out recordsAffected);
+							var dataReaderTable = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Tables"), this.CoreGetTableParameters(unitOfWork, dataSourceTag, server, schema), out recordsAffected);
 							{
 								foreach (var drTable in dataReaderTable)
 								{
@@ -399,7 +399,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 									schema.Tables.Add(table);
 
-									var dataReaderColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Columns"), this.CoreGetColumnParameters(unitOfWork, dataSourceTag, database, schema, table), out recordsAffected);
+									var dataReaderColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Columns"), this.CoreGetColumnParameters(unitOfWork, dataSourceTag, server, schema, table), out recordsAffected);
 									{
 										if ((object)dataReaderColumn != null)
 										{
@@ -464,7 +464,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 										table.Columns.ForEach(c => c.ColumnIsPrimaryKey = true);
 									}
 
-									var dataReaderDmlTrigger = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DmlTriggers"), this.CoreGetDmlTriggerParameters(unitOfWork, dataSourceTag, database, schema, table), out recordsAffected);
+									var dataReaderDmlTrigger = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DmlTriggers"), this.CoreGetDmlTriggerParameters(unitOfWork, dataSourceTag, server, schema, table), out recordsAffected);
 									{
 										if ((object)dataReaderDmlTrigger != null)
 										{
@@ -502,7 +502,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 										}
 									}
 
-									var dataReaderForeignKey = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeys"), this.CoreGetForeignKeyParameters(unitOfWork, dataSourceTag, database, schema, table), out recordsAffected);
+									var dataReaderForeignKey = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeys"), this.CoreGetForeignKeyParameters(unitOfWork, dataSourceTag, server, schema, table), out recordsAffected);
 									{
 										if ((object)dataReaderForeignKey != null)
 										{
@@ -538,7 +538,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 												table.ForeignKeys.Add(foreignKey);
 
-												var dataReaderForeignKeyColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeyColumns"), this.CoreGetForeignKeyColumnParameters(unitOfWork, dataSourceTag, database, schema, table, foreignKey), out recordsAffected);
+												var dataReaderForeignKeyColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeyColumns"), this.CoreGetForeignKeyColumnParameters(unitOfWork, dataSourceTag, server, schema, table, foreignKey), out recordsAffected);
 												{
 													if ((object)dataReaderForeignKeyColumn != null)
 													{
@@ -566,7 +566,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 										}
 									}
 
-									var dataReaderUniqueKey = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeys"), this.CoreGetUniqueKeyParameters(unitOfWork, dataSourceTag, database, schema, table), out recordsAffected);
+									var dataReaderUniqueKey = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeys"), this.CoreGetUniqueKeyParameters(unitOfWork, dataSourceTag, server, schema, table), out recordsAffected);
 									{
 										if ((object)dataReaderUniqueKey != null)
 										{
@@ -597,7 +597,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 												table.UniqueKeys.Add(uniqueKey);
 
-												var dataReaderUniqueKeyColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeyColumns"), this.CoreGetUniqueKeyColumnParameters(unitOfWork, dataSourceTag, database, schema, table, uniqueKey), out recordsAffected);
+												var dataReaderUniqueKeyColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeyColumns"), this.CoreGetUniqueKeyColumnParameters(unitOfWork, dataSourceTag, server, schema, table, uniqueKey), out recordsAffected);
 												{
 													if ((object)dataReaderUniqueKeyColumn != null)
 													{
@@ -622,7 +622,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 								}
 							}
 
-							var dataReaderProcedure = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Procedures"), this.CoreGetProcedureParameters(unitOfWork, dataSourceTag, database, schema), out recordsAffected);
+							var dataReaderProcedure = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Procedures"), this.CoreGetProcedureParameters(unitOfWork, dataSourceTag, server, schema), out recordsAffected);
 							{
 								if ((object)dataReaderProcedure != null)
 								{
@@ -651,7 +651,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 										schema.Procedures.Add(procedure);
 
-										var dataReaderParameter = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Parameters"), this.CoreGetParameterParameters(unitOfWork, dataSourceTag, database, schema, procedure), out recordsAffected);
+										var dataReaderParameter = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Parameters"), this.CoreGetParameterParameters(unitOfWork, dataSourceTag, server, schema, procedure), out recordsAffected);
 										{
 											if ((object)dataReaderParameter != null)
 											{
@@ -907,7 +907,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 				}
 			}
 
-			return database;
+			return server;
 		}
 
 		#endregion

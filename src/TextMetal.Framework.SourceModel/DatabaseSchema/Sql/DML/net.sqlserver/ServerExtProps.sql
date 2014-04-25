@@ -3,4 +3,4 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
--- extended properties for database (not catalog, actual dataabse)
+-- extended properties for server

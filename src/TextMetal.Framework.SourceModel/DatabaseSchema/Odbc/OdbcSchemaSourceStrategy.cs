@@ -74,7 +74,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema, Table table)
+		protected override IEnumerable<IDataParameter> CoreGetColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -82,8 +82,8 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if ((object)database == null)
-				throw new ArgumentNullException("database");
+			if ((object)server == null)
+				throw new ArgumentNullException("server");
 
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
@@ -119,7 +119,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetDdlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database)
+		protected override IEnumerable<IDataParameter> CoreGetDdlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -133,7 +133,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetDmlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema, Table table)
+		protected override IEnumerable<IDataParameter> CoreGetDmlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -141,8 +141,8 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if ((object)database == null)
-				throw new ArgumentNullException("database");
+			if ((object)server == null)
+				throw new ArgumentNullException("server");
 
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
@@ -175,7 +175,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetForeignKeyColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema, Table table, ForeignKey foreignKey)
+		protected override IEnumerable<IDataParameter> CoreGetForeignKeyColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table, ForeignKey foreignKey)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -183,8 +183,8 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if ((object)database == null)
-				throw new ArgumentNullException("database");
+			if ((object)server == null)
+				throw new ArgumentNullException("server");
 
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
@@ -208,7 +208,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetForeignKeyParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema, Table table)
+		protected override IEnumerable<IDataParameter> CoreGetForeignKeyParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -216,8 +216,8 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if ((object)database == null)
-				throw new ArgumentNullException("database");
+			if ((object)server == null)
+				throw new ArgumentNullException("server");
 
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
@@ -237,7 +237,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetParameterParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema, Procedure procedure)
+		protected override IEnumerable<IDataParameter> CoreGetParameterParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Procedure procedure)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -245,8 +245,8 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if ((object)database == null)
-				throw new ArgumentNullException("database");
+			if ((object)server == null)
+				throw new ArgumentNullException("server");
 
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
@@ -277,7 +277,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetProcedureParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema)
+		protected override IEnumerable<IDataParameter> CoreGetProcedureParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -285,8 +285,8 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if ((object)database == null)
-				throw new ArgumentNullException("database");
+			if ((object)server == null)
+				throw new ArgumentNullException("server");
 
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
@@ -297,7 +297,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetSchemaParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database)
+		protected override IEnumerable<IDataParameter> CoreGetSchemaParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -305,8 +305,8 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if ((object)database == null)
-				throw new ArgumentNullException("database");
+			if ((object)server == null)
+				throw new ArgumentNullException("server");
 
 			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
 				return null;
@@ -314,10 +314,10 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetTableParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema)
+		protected override IEnumerable<IDataParameter> CoreGetTableParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema)
 		{
-			if ((object)database == null)
-				throw new ArgumentNullException("database");
+			if ((object)server == null)
+				throw new ArgumentNullException("server");
 
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
@@ -328,7 +328,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetUniqueKeyColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema, Table table, UniqueKey uniqueKey)
+		protected override IEnumerable<IDataParameter> CoreGetUniqueKeyColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table, UniqueKey uniqueKey)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -336,8 +336,8 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if ((object)database == null)
-				throw new ArgumentNullException("database");
+			if ((object)server == null)
+				throw new ArgumentNullException("server");
 
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
@@ -361,7 +361,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetUniqueKeyParameters(IUnitOfWork unitOfWork, string dataSourceTag, Database database, Schema schema, Table table)
+		protected override IEnumerable<IDataParameter> CoreGetUniqueKeyParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -369,8 +369,8 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if ((object)database == null)
-				throw new ArgumentNullException("database");
+			if ((object)server == null)
+				throw new ArgumentNullException("server");
 
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");

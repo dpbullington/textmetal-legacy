@@ -65,9 +65,9 @@
     <Compile Include="Primative\XmlPersistEngineSourceStrategy.cs" />
     <Compile Include="Primative\XmlSchemaSourceStrategy.cs" />
     <Compile Include="Primative\XmlSerializerSourceStrategy.cs" />
-    <Compile Include="DatabaseSchema\Catalog.cs" />
-    <Compile Include="DatabaseSchema\Column.cs" />
     <Compile Include="DatabaseSchema\Database.cs" />
+    <Compile Include="DatabaseSchema\Column.cs" />
+    <Compile Include="DatabaseSchema\Server.cs" />
     <Compile Include="DatabaseSchema\ForeignKey.cs" />
     <Compile Include="DatabaseSchema\ForeignKeyColumnRef.cs" />
     <Compile Include="DatabaseSchema\Parameter.cs" />
@@ -87,7 +87,7 @@
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\Columns.sql" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\Database.sql" />
+    <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\Server.sql" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\ForeignKeyColumns.sql" />
@@ -117,7 +117,7 @@
     <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\Columns.sql" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\Database.sql" />
+    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\Server.sql" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ForeignKeyColumns.sql" />
@@ -180,7 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\ColumnExtProps.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\DatabaseExtProps.sql" />
+    <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\ServerExtProps.sql" />
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\ForeignKeyColumnExtProps.sql" />
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\ForeignKeyExtProps.sql" />
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\ParameterExtProps.sql" />
@@ -195,7 +195,7 @@
     <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ColumnExtProps.sql" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\DatabaseExtProps.sql" />
+    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ServerExtProps.sql" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ForeignKeyColumnExtProps.sql" />

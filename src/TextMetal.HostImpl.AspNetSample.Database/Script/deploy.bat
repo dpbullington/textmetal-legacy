@@ -10,7 +10,7 @@ REM
 	-S "%DB_SERVER%" ^
 	-U "%DB_SA_USERNAME%" ^
 	-P "%DB_SA_PASSWORD%" ^
-	-d "%DB_CATALOG_ODS%" ^
+	-d "%DB_DATABASE_ODS%" ^
 	-i ".\deploy_sql_server_db_0001.sql"
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
@@ -19,7 +19,7 @@ IF %ERRORLEVEL% NEQ 0 goto pkgError
 	-S "%DB_SERVER%" ^
 	-U "%DB_SA_USERNAME%" ^
 	-P "%DB_SA_PASSWORD%" ^
-	-d "%DB_CATALOG_ODS%" ^
+	-d "%DB_DATABASE_ODS%" ^
 	-i ".\deploy_sql_server_db_0002.sql"
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
@@ -30,7 +30,7 @@ REM goto skipAddSeedData
 	-S "%DB_SERVER%" ^
 	-U "%DB_SA_USERNAME%" ^
 	-P "%DB_SA_PASSWORD%" ^
-	-d "%DB_CATALOG_ODS%" ^
+	-d "%DB_DATABASE_ODS%" ^
 	-i ".\add_seed_data.sql"
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
