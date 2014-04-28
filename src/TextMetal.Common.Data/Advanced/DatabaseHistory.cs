@@ -119,7 +119,7 @@ namespace TextMetal.Common.Data.Advanced
 			string svalue;
 			int ivalue;
 			int schemaRevision, currentSchemaRevision, recordsAffected;
-			IList<IDictionary<string, object>> results;
+			IEnumerable<IDictionary<string, object>> results;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");

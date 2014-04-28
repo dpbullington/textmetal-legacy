@@ -58,9 +58,10 @@ namespace TextMetal.Common.Data
 		}
 
 		/// <summary>
-		/// An extension method to execute a dictionary query operation against a target unitOfWork.
+		/// An extension method to execute a dictionary query operation against a target unit of work.
+		/// DO NOT DISPOSE OF UNIT OF WORK CONTEXT - UP TO THE CALLER.
 		/// </summary>
-		/// <param name="unitOfWork"> The target unitOfWork. </param>
+		/// <param name="unitOfWork"> The target unit of work. </param>
 		/// <param name="commandType"> The type of the command. </param>
 		/// <param name="commandText"> The SQL text or stored procedure name. </param>
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
@@ -84,36 +85,28 @@ namespace TextMetal.Common.Data
 
 			objs = new List<IDictionary<string, object>>();
 
-			try
+			using (dataReader = ExecuteReader(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, COMMAND_TIMEOUT, COMMAND_PREPARE))
 			{
-				using (dataReader = ExecuteReader(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, COMMAND_TIMEOUT, COMMAND_PREPARE))
+				while (dataReader.Read())
 				{
-					while (dataReader.Read())
+					obj = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+
+					for (int index = 0; index < dataReader.FieldCount; index++)
 					{
-						obj = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+						string key;
+						object value;
 
-						for (int index = 0; index < dataReader.FieldCount; index++)
-						{
-							string key;
-							object value;
+						key = dataReader.GetName(index);
+						value = dataReader.GetValue(index);
 
-							key = dataReader.GetName(index);
-							value = dataReader.GetValue(index);
-
-							obj.Add(key, value);
-						}
-
-						objs.Add(obj);
+						obj.Add(key, value);
 					}
-				}
 
-				recordsAffected = dataReader.RecordsAffected;
+					objs.Add(obj);
+				}
 			}
-			finally
-			{
-				// DO NOT DISPOSE OF UNIT_OF_WORK_CONTEXT - UP TO THE CALLER
-				unitOfWork.SafeToString();
-			}
+
+			recordsAffected = dataReader.RecordsAffected;
 
 			return objs;
 		}
@@ -183,9 +176,10 @@ namespace TextMetal.Common.Data
 		}
 
 		/// <summary>
-		/// An extension method to execute a schema query operation against a target unitOfWork.
+		/// An extension method to execute a schema query operation against a target unit of work.
+		/// DO NOT DISPOSE OF UNIT OF WORK CONTEXT - UP TO THE CALLER.
 		/// </summary>
-		/// <param name="unitOfWork"> The target unitOfWork. </param>
+		/// <param name="unitOfWork"> The target unit of work. </param>
 		/// <param name="commandType"> The type of the command. </param>
 		/// <param name="commandText"> The SQL text or stored procedure name. </param>
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
@@ -203,41 +197,33 @@ namespace TextMetal.Common.Data
 
 			objs = new List<IDictionary<string, object>>();
 
-			try
+			// 2011-09-07 (dpbullington@gmail.com / issue #12): found quirk if CommandBehavior == KeyInfo, hidden columns in views get returned; reverting to CommandBehavior == SchemaOnly
+			using (IDataReader dataReader = ExecuteReader(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, CommandBehavior.SchemaOnly, null, false))
 			{
-				// 2011-09-07 (dpbullington@gmail.com / issue #12): found quirk if CommandBehavior == KeyInfo, hidden columns in views get returned; reverting to CommandBehavior == SchemaOnly
-				using (IDataReader dataReader = ExecuteReader(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, CommandBehavior.SchemaOnly, null, false))
+				using (DataTable dataTable = dataReader.GetSchemaTable())
 				{
-					using (DataTable dataTable = dataReader.GetSchemaTable())
+					if ((object)dataTable != null)
 					{
-						if ((object)dataTable != null)
+						//dataTable.WriteXml(@"out.xml");
+						foreach (DataRow dataRow in dataTable.Rows)
 						{
-							//dataTable.WriteXml(@"out.xml");
-							foreach (DataRow dataRow in dataTable.Rows)
+							obj = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+
+							for (int index = 0; index < dataTable.Columns.Count; index++)
 							{
-								obj = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+								string key;
+								object value;
 
-								for (int index = 0; index < dataTable.Columns.Count; index++)
-								{
-									string key;
-									object value;
+								key = dataTable.Columns[index].ColumnName;
+								value = dataRow[index];
 
-									key = dataTable.Columns[index].ColumnName;
-									value = dataRow[index];
-
-									obj.Add(key, value);
-								}
-
-								objs.Add(obj);
+								obj.Add(key, value);
 							}
+
+							objs.Add(obj);
 						}
 					}
 				}
-			}
-			finally
-			{
-				// DO NOT DISPOSE OF UNIT_OF_WORK_CONTEXT - UP TO THE CALLER
-				unitOfWork.SafeToString();
 			}
 
 			return objs;

@@ -27,7 +27,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		#region Fields/Constants
 
 		private readonly List<ExtendedProperty> extendedProperties = new List<ExtendedProperty>();
-		private int objectId;
 
 		#endregion
 
@@ -49,19 +48,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			get
 			{
 				return this.ExtendedProperties.Count() > 0;
-			}
-		}
-
-		[XmlAttribute]
-		public int ObjectId
-		{
-			get
-			{
-				return this.objectId;
-			}
-			set
-			{
-				this.objectId = value;
 			}
 		}
 

@@ -27,7 +27,7 @@ namespace TextMetal.Common.Data
 			TResponse response;
 			TResult result;
 			int recordsAffected;
-			IList<IDictionary<string, object>> results;
+			IEnumerable<IDictionary<string, object>> results;
 			IList<TResult> list = null;
 			object value;
 
@@ -70,7 +70,7 @@ namespace TextMetal.Common.Data
 			response = new TResponse();
 
 			if (Reflexion.GetLogicalPropertyValue(response, "Results", out value))
-				list = value as IList<TResult>;
+				list = value as IList<TResult>; // should this be IEnumerable?
 
 			if ((object)list != null)
 				list.Clear();
@@ -93,7 +93,8 @@ namespace TextMetal.Common.Data
 		{
 			TModel model;
 			int recordsAffected;
-			IList<IDictionary<string, object>> results;
+			IEnumerable<IDictionary<string, object>> results;
+			IDictionary<string, object> result;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -122,21 +123,23 @@ namespace TextMetal.Common.Data
 			if ((object)results == null)
 				throw new InvalidOperationException(string.Format("Results collection was invalid."));
 
-			if (results.Count != 1)
+			result = results.SingleOrDefault();
+
+			if ((object)result == null)
 				return null;
 
 			model = new TModel();
 
-			mapToCallback(results[0], model);
+			mapToCallback(result, model);
 
 			return model;
 		}
 
 		/// <summary>
-		/// Allows for easy scalar query execution over a unitOfWork.
+		/// Allows for easy scalar query execution over a unit of work.
 		/// </summary>
 		/// <typeparam name="TValue"> The scalar type. </typeparam>
-		/// <param name="unitOfWork"> The target unitOfWork. </param>
+		/// <param name="unitOfWork"> The target unit of work. </param>
 		/// <param name="commandType"> The type of the command. </param>
 		/// <param name="commandText"> The SQL text or stored procedure name. </param>
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
@@ -144,15 +147,27 @@ namespace TextMetal.Common.Data
 		public static TValue FetchScalar<TValue>(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters)
 		{
 			int recordsAffected;
-			IList<IDictionary<string, object>> results;
+			IEnumerable<IDictionary<string, object>> results;
+			IDictionary<string, object> result;
 			object dbValue;
 
 			results = unitOfWork.ExecuteDictionary(commandType, commandText, commandParameters, out recordsAffected);
 
-			if ((object)results == null || results.Count != 1 || results[0].Count != 1)
+			if ((object)results == null)
 				return default(TValue);
 
-			dbValue = results[0][results[0].Keys.First()];
+			result = results.SingleOrDefault();
+
+			if ((object)result == null)
+				return default(TValue);
+			
+			if (result.Count != 1)
+				return default(TValue);
+
+			if (result.Keys.Count != 1)
+				return default(TValue);
+
+			dbValue = result[result.Keys.First()];
 
 			return dbValue.ChangeType<TValue>();
 		}
@@ -161,7 +176,8 @@ namespace TextMetal.Common.Data
 			where TModel : class, new()
 		{
 			int recordsAffected;
-			IList<IDictionary<string, object>> results;
+			IEnumerable<IDictionary<string, object>> results;
+			IDictionary<string, object> result;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -193,17 +209,20 @@ namespace TextMetal.Common.Data
 			if ((object)results == null)
 				throw new InvalidOperationException(string.Format("Results collection was invalid."));
 
-			if (results.Count != 1)
-				throw new InvalidOperationException(string.Format("Results collection count was not equal to one; count is equal to '{0}'.", results.Count));
+			result = results.SingleOrDefault();
 
-			mapToCallback(results[0], model);
+			if ((object)result != null)
+				throw new InvalidOperationException(string.Format("Results collection count was not equal to one."));
+
+			mapToCallback(result, model);
 		}
 
 		public static bool PersistModel<TModel>(this IUnitOfWork unitOfWork, TModel model, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, int persistNotExpectedRecordsAffected, Action<IDictionary<string, object>, TModel> mapToCallback)
 			where TModel : class, new()
 		{
 			int recordsAffected;
-			IList<IDictionary<string, object>> results;
+			IEnumerable<IDictionary<string, object>> results;
+			IDictionary<string, object> result;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -235,8 +254,10 @@ namespace TextMetal.Common.Data
 			if ((object)results == null)
 				throw new InvalidOperationException(string.Format("Results collection was invalid."));
 
-			if (results.Count == 1)
-				mapToCallback(results[0], model);
+			result = results.SingleOrDefault();
+
+			if ((object)result != null)
+				mapToCallback(result, model);
 
 			return true;
 		}
@@ -247,7 +268,7 @@ namespace TextMetal.Common.Data
 			IList<TModel> models;
 			TModel model;
 			int recordsAffected;
-			IList<IDictionary<string, object>> results;
+			IEnumerable<IDictionary<string, object>> results;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");

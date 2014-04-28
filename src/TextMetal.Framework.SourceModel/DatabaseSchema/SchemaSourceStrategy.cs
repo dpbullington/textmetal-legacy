@@ -93,9 +93,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			if ((object)objectTypeName == null)
 				throw new ArgumentNullException("objectTypeName");
 
-			if ((object)dataParameters == null)
-				throw new ArgumentNullException("dataParameters");
-
 			var dataReaderExtProps = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, objectTypeName), dataParameters, out recordsAffected);
 			{
 				foreach (var drReaderExtProps in dataReaderExtProps)
@@ -116,27 +113,29 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		protected abstract int CoreCalculateParameterSize(string dataSourceTag, Parameter parameter);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table);
+		protected abstract IEnumerable<IDataParameter> CoreGetColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetDatabaseParameters(IUnitOfWork unitOfWork, string dataSourceTag);
+		protected abstract IEnumerable<IDataParameter> CoreGetServerParameters(IUnitOfWork unitOfWork, string dataSourceTag);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetDdlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server);
+		protected abstract IEnumerable<IDataParameter> CoreGetDatabaseParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetDmlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table);
+		protected abstract IEnumerable<IDataParameter> CoreGetDdlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database);
+
+		protected abstract IEnumerable<IDataParameter> CoreGetDmlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table);
 
 		protected abstract bool CoreGetEmitImplicitReturnParameter(string dataSourceTag);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetForeignKeyColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table, ForeignKey foreignKey);
+		protected abstract IEnumerable<IDataParameter> CoreGetForeignKeyColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table, ForeignKey foreignKey);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetForeignKeyParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table);
+		protected abstract IEnumerable<IDataParameter> CoreGetForeignKeyParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetParameterParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Procedure procedure);
+		protected abstract IEnumerable<IDataParameter> CoreGetParameterParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Procedure procedure);
 
 		protected abstract string CoreGetParameterPrefix(string dataSourceTag);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetProcedureParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema);
+		protected abstract IEnumerable<IDataParameter> CoreGetProcedureParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetSchemaParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server);
+		protected abstract IEnumerable<IDataParameter> CoreGetSchemaParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database);
 
 		protected override object CoreGetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties)
 		{
@@ -211,11 +210,11 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			return this.GetSchemaModel(connectionString, connectionType, dataSourceTag, schemaFilter, disableProcSchDisc);
 		}
 
-		protected abstract IEnumerable<IDataParameter> CoreGetTableParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema);
+		protected abstract IEnumerable<IDataParameter> CoreGetTableParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetUniqueKeyColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table, UniqueKey uniqueKey);
+		protected abstract IEnumerable<IDataParameter> CoreGetUniqueKeyColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table, UniqueKey uniqueKey);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetUniqueKeyParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table);
+		protected abstract IEnumerable<IDataParameter> CoreGetUniqueKeyParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table);
 
 		protected abstract Type CoreInferClrTypeForSqlType(string dataSourceTag, string sqlType, int sqlPrecision);
 
@@ -238,243 +237,69 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 				server.ConnectionString = connectionString;
 				server.ConnectionType = connectionType.FullName;
 
-				var dataReaderDatabase = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Server"), this.CoreGetDatabaseParameters(unitOfWork, dataSourceTag), out recordsAffected);
+				var dataReaderServer = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Server"), this.CoreGetServerParameters(unitOfWork, dataSourceTag), out recordsAffected);
 				{
-					if ((object)dataReaderDatabase != null &&
-						dataReaderDatabase.Count == 1)
+					if ((object)dataReaderServer != null &&
+						dataReaderServer.Count == 1)
 					{
-						Database defaultDatabase;
+						server.ServerId = DataType.ChangeType<int>(dataReaderServer[0]["ServerId"]);
+						server.ServerName = DataType.ChangeType<string>(dataReaderServer[0]["ServerName"]);
+						server.MachineName = DataType.ChangeType<string>(dataReaderServer[0]["MachineName"]);
+						server.InstanceName = DataType.ChangeType<string>(dataReaderServer[0]["InstanceName"]);
+						server.ServerVersion = DataType.ChangeType<string>(dataReaderServer[0]["ServerVersion"]);
+						server.ServerLevel = DataType.ChangeType<string>(dataReaderServer[0]["ServerLevel"]);
+						server.ServerEdition = DataType.ChangeType<string>(dataReaderServer[0]["ServerEdition"]);
+						server.DefaultDatabaseName = DataType.ChangeType<string>(dataReaderServer[0]["DefaultDatabaseName"]);
 
-						server.InstanceName = DataType.ChangeType<string>(dataReaderDatabase[0]["InstanceName"]);
-						server.MachineName = DataType.ChangeType<string>(dataReaderDatabase[0]["MachineName"]);
-						server.ServerEdition = DataType.ChangeType<string>(dataReaderDatabase[0]["ServerEdition"]);
-						server.ServerLevel = DataType.ChangeType<string>(dataReaderDatabase[0]["ServerLevel"]);
-						server.ServerVersion = DataType.ChangeType<string>(dataReaderDatabase[0]["ServerVersion"]);
-						server.DefaultDatabaseName = DataType.ChangeType<string>(dataReaderDatabase[0]["DefaultDatabaseName"]);
+						// each apply is 'off by one' for getting parameters
+						this.ApplyExtendedProperties(unitOfWork, server, dataSourceTag, "ServerExtProps", this.CoreGetDatabaseParameters(unitOfWork, dataSourceTag, server));
 
-						defaultDatabase = new Database();
-						defaultDatabase.DatabaseName = DataType.ChangeType<string>(dataReaderDatabase[0]["DefaultDatabaseName"]);
-						defaultDatabase.DatabaseNamePascalCase = Name.GetPascalCase(defaultDatabase.DatabaseName);
-						defaultDatabase.DatabaseNameCamelCase = Name.GetCamelCase(defaultDatabase.DatabaseName);
-						defaultDatabase.DatabaseNameConstantCase = Name.GetConstantCase(defaultDatabase.DatabaseName);
-						defaultDatabase.DatabaseNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(defaultDatabase.DatabaseName));
-						defaultDatabase.DatabaseNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(defaultDatabase.DatabaseName));
-						defaultDatabase.DatabaseNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(defaultDatabase.DatabaseName));
-						defaultDatabase.DatabaseNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(defaultDatabase.DatabaseName));
-						defaultDatabase.DatabaseNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(defaultDatabase.DatabaseName));
-						defaultDatabase.DatabaseNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(defaultDatabase.DatabaseName));
-
-						defaultDatabase.DatabaseNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(defaultDatabase.DatabaseName);
-						defaultDatabase.DatabaseNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(defaultDatabase.DatabaseName);
-						defaultDatabase.DatabaseNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(defaultDatabase.DatabaseName));
-						defaultDatabase.DatabaseNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(defaultDatabase.DatabaseName));
-						defaultDatabase.DatabaseNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(defaultDatabase.DatabaseName));
-						defaultDatabase.DatabaseNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(defaultDatabase.DatabaseName));
-
-						server.Databases.Add(defaultDatabase);
-					}
-				}
-
-				var dataReaderDdlTrigger = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DdlTriggers"), this.CoreGetDdlTriggerParameters(unitOfWork, dataSourceTag, server), out recordsAffected);
-				{
-					if ((object)dataReaderDdlTrigger != null)
-					{
-						foreach (var drTrigger in dataReaderDdlTrigger)
+						var dataReaderDatabase = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Databases"), this.CoreGetDatabaseParameters(unitOfWork, dataSourceTag, server), out recordsAffected);
 						{
-							Trigger trigger;
-
-							trigger = new Trigger();
-
-							trigger.ObjectId = DataType.ChangeType<int>(drTrigger["ObjectId"]);
-							trigger.TriggerName = DataType.ChangeType<string>(drTrigger["TriggerName"]);
-							trigger.IsClrTrigger = DataType.ChangeType<bool>(drTrigger["IsClrTrigger"]);
-							trigger.IsTriggerDisabled = DataType.ChangeType<bool>(drTrigger["IsTriggerDisabled"]);
-							trigger.IsTriggerNotForReplication = DataType.ChangeType<bool>(drTrigger["IsTriggerNotForReplication"]);
-							trigger.IsInsteadOfTrigger = DataType.ChangeType<bool>(drTrigger["IsInsteadOfTrigger"]);
-							trigger.TriggerNamePascalCase = Name.GetPascalCase(trigger.TriggerName);
-							trigger.TriggerNameCamelCase = Name.GetCamelCase(trigger.TriggerName);
-							trigger.TriggerNameConstantCase = Name.GetConstantCase(trigger.TriggerName);
-							trigger.TriggerNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(trigger.TriggerName));
-							trigger.TriggerNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(trigger.TriggerName));
-							trigger.TriggerNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(trigger.TriggerName));
-							trigger.TriggerNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(trigger.TriggerName));
-							trigger.TriggerNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(trigger.TriggerName));
-							trigger.TriggerNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(trigger.TriggerName));
-
-							trigger.TriggerNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(trigger.TriggerName);
-							trigger.TriggerNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(trigger.TriggerName);
-							trigger.TriggerNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(trigger.TriggerName));
-							trigger.TriggerNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(trigger.TriggerName));
-							trigger.TriggerNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(trigger.TriggerName));
-							trigger.TriggerNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(trigger.TriggerName));
-
-							server.Triggers.Add(trigger);
-						}
-					}
-				}
-
-				var dataReaderSchema = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Schemas"), this.CoreGetSchemaParameters(unitOfWork, dataSourceTag, server), out recordsAffected);
-				{
-					if ((object)dataReaderSchema != null)
-					{
-						foreach (var drSchema in dataReaderSchema)
-						{
-							Schema schema;
-
-							schema = new Schema();
-							schema.SchemaName = DataType.ChangeType<string>(drSchema["SchemaName"]);
-							schema.SchemaNamePascalCase = Name.GetPascalCase(schema.SchemaName);
-							schema.SchemaNameCamelCase = Name.GetCamelCase(schema.SchemaName);
-							schema.SchemaNameConstantCase = Name.GetConstantCase(schema.SchemaName);
-							schema.SchemaNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(schema.SchemaName));
-							schema.SchemaNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(schema.SchemaName));
-							schema.SchemaNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(schema.SchemaName));
-							schema.SchemaNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(schema.SchemaName));
-							schema.SchemaNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(schema.SchemaName));
-							schema.SchemaNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(schema.SchemaName));
-
-							schema.SchemaNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(schema.SchemaName);
-							schema.SchemaNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(schema.SchemaName);
-							schema.SchemaNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(schema.SchemaName));
-							schema.SchemaNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(schema.SchemaName));
-							schema.SchemaNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(schema.SchemaName));
-							schema.SchemaNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(schema.SchemaName));
-
-							// filter unwanted schemas
-							if ((object)schemaFilter != null)
+							if ((object)dataReaderDatabase != null)
 							{
-								if (!schemaFilter.Contains(schema.SchemaName))
-									continue;
-							}
-
-							server.Schemas.Add(schema);
-
-							var dataReaderTable = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Tables"), this.CoreGetTableParameters(unitOfWork, dataSourceTag, server, schema), out recordsAffected);
-							{
-								foreach (var drTable in dataReaderTable)
+								foreach (var drDatabase in dataReaderDatabase)
 								{
-									Table table;
+									Database database;
 
-									table = new Table();
-									table.IsView = DataType.ChangeType<bool>(drTable["IsView"]);
-									table.TableName = DataType.ChangeType<string>(drTable["TableName"]);
-									table.TableNamePascalCase = Name.GetPascalCase(table.TableName);
-									table.TableNameCamelCase = Name.GetCamelCase(table.TableName);
-									table.TableNameConstantCase = Name.GetConstantCase(table.TableName);
-									table.TableNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(table.TableName));
-									table.TableNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(table.TableName));
-									table.TableNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(table.TableName));
-									table.TableNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(table.TableName));
-									table.TableNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(table.TableName));
-									table.TableNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(table.TableName));
+									database = new Database();
+									database.DatabaseId = DataType.ChangeType<int>(drDatabase["DatabaseId"]);
+									database.DatabaseName = DataType.ChangeType<string>(drDatabase["DatabaseName"]);
+									database.DatabaseNamePascalCase = Name.GetPascalCase(database.DatabaseName);
+									database.DatabaseNameCamelCase = Name.GetCamelCase(database.DatabaseName);
+									database.DatabaseNameConstantCase = Name.GetConstantCase(database.DatabaseName);
+									database.DatabaseNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(database.DatabaseName));
+									database.DatabaseNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(database.DatabaseName));
+									database.DatabaseNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(database.DatabaseName));
+									database.DatabaseNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(database.DatabaseName));
+									database.DatabaseNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(database.DatabaseName));
+									database.DatabaseNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(database.DatabaseName));
 
-									table.TableNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(table.TableName);
-									table.TableNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(table.TableName);
-									table.TableNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(table.TableName));
-									table.TableNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(table.TableName));
-									table.TableNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(table.TableName));
-									table.TableNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(table.TableName));
+									database.DatabaseNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(database.DatabaseName);
+									database.DatabaseNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(database.DatabaseName);
+									database.DatabaseNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(database.DatabaseName));
+									database.DatabaseNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(database.DatabaseName));
+									database.DatabaseNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(database.DatabaseName));
+									database.DatabaseNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(database.DatabaseName));
 
-									table.PrimaryKeyName = DataType.ChangeType<string>(drTable["PrimaryKeyName"]);
+									server.Databases.Add(database);
 
-									if (!DataType.IsNullOrWhiteSpace(table.PrimaryKeyName))
+									if (database.DatabaseName.SafeToString().ToLower() != server.DefaultDatabaseName.SafeToString().ToLower())
+										continue; // TEMP HACK
+
+									this.ApplyExtendedProperties(unitOfWork, database, dataSourceTag, "DatabaseExtProps", this.CoreGetSchemaParameters(unitOfWork, dataSourceTag, server, database));
+
+									var dataReaderDdlTrigger = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DdlTriggers"), this.CoreGetDdlTriggerParameters(unitOfWork, dataSourceTag, server, database), out recordsAffected);
 									{
-										table.PrimaryKeyNamePascalCase = Name.GetPascalCase(table.PrimaryKeyName);
-										table.PrimaryKeyNameCamelCase = Name.GetCamelCase(table.PrimaryKeyName);
-										table.PrimaryKeyNameConstantCase = Name.GetConstantCase(table.PrimaryKeyName);
-										table.PrimaryKeyNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(table.PrimaryKeyName));
-										table.PrimaryKeyNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(table.PrimaryKeyName));
-										table.PrimaryKeyNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(table.PrimaryKeyName));
-										table.PrimaryKeyNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(table.PrimaryKeyName));
-										table.PrimaryKeyNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(table.PrimaryKeyName));
-										table.PrimaryKeyNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(table.PrimaryKeyName));
-
-										table.PrimaryKeyNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(table.PrimaryKeyName);
-										table.PrimaryKeyNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(table.PrimaryKeyName);
-										table.PrimaryKeyNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(table.PrimaryKeyName));
-										table.PrimaryKeyNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(table.PrimaryKeyName));
-										table.PrimaryKeyNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(table.PrimaryKeyName));
-										table.PrimaryKeyNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(table.PrimaryKeyName));
-									}
-
-									schema.Tables.Add(table);
-
-									var dataReaderColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Columns"), this.CoreGetColumnParameters(unitOfWork, dataSourceTag, server, schema, table), out recordsAffected);
-									{
-										if ((object)dataReaderColumn != null)
+										if ((object)dataReaderDdlTrigger != null)
 										{
-											foreach (var drColumn in dataReaderColumn)
-											{
-												Column column;
-
-												column = new Column();
-
-												column.ColumnName = DataType.ChangeType<string>(drColumn["ColumnName"]);
-												column.ColumnOrdinal = DataType.ChangeType<int>(drColumn["ColumnOrdinal"]);
-												column.ColumnNullable = DataType.ChangeType<bool>(drColumn["ColumnNullable"]);
-												column.ColumnSize = DataType.ChangeType<int>(drColumn["ColumnSize"]);
-												column.ColumnPrecision = DataType.ChangeType<int>(drColumn["ColumnPrecision"]);
-												column.ColumnScale = DataType.ChangeType<int>(drColumn["ColumnScale"]);
-												column.ColumnSqlType = DataType.ChangeType<string>(drColumn["ColumnSqlType"]);
-												column.ColumnIsIdentity = DataType.ChangeType<bool>(drColumn["ColumnIsIdentity"]);
-												column.ColumnIsComputed = DataType.ChangeType<bool>(drColumn["ColumnIsComputed"]);
-												column.ColumnHasDefault = DataType.ChangeType<bool>(drColumn["ColumnHasDefault"]);
-												column.ColumnHasCheck = DataType.ChangeType<bool>(drColumn["ColumnHasCheck"]);
-												column.ColumnIsPrimaryKey = DataType.ChangeType<bool>(drColumn["ColumnIsPrimaryKey"]);
-												column.PrimaryKeyName = DataType.ChangeType<string>(drColumn["PrimaryKeyName"]);
-												column.PrimaryKeyColumnOrdinal = DataType.ChangeType<int>(drColumn["PrimaryKeyColumnOrdinal"]);
-												column.ColumnNamePascalCase = Name.GetPascalCase(column.ColumnName);
-												column.ColumnNameCamelCase = Name.GetCamelCase(column.ColumnName);
-												column.ColumnNameConstantCase = Name.GetConstantCase(column.ColumnName);
-												column.ColumnNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(column.ColumnName));
-												column.ColumnNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(column.ColumnName));
-												column.ColumnNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(column.ColumnName));
-												column.ColumnNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(column.ColumnName));
-												column.ColumnNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(column.ColumnName));
-												column.ColumnNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(column.ColumnName));
-
-												column.ColumnNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(column.ColumnName);
-												column.ColumnNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(column.ColumnName);
-												column.ColumnNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(column.ColumnName));
-												column.ColumnNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(column.ColumnName));
-												column.ColumnNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(column.ColumnName));
-												column.ColumnNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(column.ColumnName));
-
-												clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType, column.ColumnPrecision);
-												column.ColumnDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
-												column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
-
-												column.ColumnClrType = clrType ?? typeof(object);
-												column.ColumnClrNullableType = Reflexion.MakeNullableType(clrType);
-												column.ColumnClrNonNullableType = Reflexion.MakeNonNullableType(clrType);
-												column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
-												column.ColumnCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
-												column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
-												column.ColumnCSharpClrNullableType = (object)column.ColumnClrNullableType != null ? FormatCSharpType(column.ColumnClrNullableType) : FormatCSharpType(typeof(object));
-												column.ColumnCSharpClrNonNullableType = (object)column.ColumnClrNonNullableType != null ? FormatCSharpType(column.ColumnClrNonNullableType) : FormatCSharpType(typeof(object));
-
-												table.Columns.Add(column);
-											}
-										}
-									}
-
-									if (table.Columns.Count(c => c.ColumnIsPrimaryKey) < 1)
-									{
-										table.HasNoDefinedPrimaryKeyColumns = true;
-										table.Columns.ForEach(c => c.ColumnIsPrimaryKey = true);
-									}
-
-									var dataReaderDmlTrigger = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DmlTriggers"), this.CoreGetDmlTriggerParameters(unitOfWork, dataSourceTag, server, schema, table), out recordsAffected);
-									{
-										if ((object)dataReaderDmlTrigger != null)
-										{
-											foreach (var drTrigger in dataReaderDmlTrigger)
+											foreach (var drTrigger in dataReaderDdlTrigger)
 											{
 												Trigger trigger;
 
 												trigger = new Trigger();
 
-												trigger.ObjectId = DataType.ChangeType<int>(drTrigger["ObjectId"]);
+												trigger.TriggerId = DataType.ChangeType<int>(drTrigger["ObjectId"]);
 												trigger.TriggerName = DataType.ChangeType<string>(drTrigger["TriggerName"]);
 												trigger.IsClrTrigger = DataType.ChangeType<bool>(drTrigger["IsClrTrigger"]);
 												trigger.IsTriggerDisabled = DataType.ChangeType<bool>(drTrigger["IsTriggerDisabled"]);
@@ -497,409 +322,605 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 												trigger.TriggerNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(trigger.TriggerName));
 												trigger.TriggerNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(trigger.TriggerName));
 
-												table.Triggers.Add(trigger);
+												database.Triggers.Add(trigger);
 											}
 										}
 									}
 
-									var dataReaderForeignKey = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeys"), this.CoreGetForeignKeyParameters(unitOfWork, dataSourceTag, server, schema, table), out recordsAffected);
+									var dataReaderSchema = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Schemas"), this.CoreGetSchemaParameters(unitOfWork, dataSourceTag, server, database), out recordsAffected);
 									{
-										if ((object)dataReaderForeignKey != null)
+										if ((object)dataReaderSchema != null)
 										{
-											foreach (var drForeignKey in dataReaderForeignKey)
+											foreach (var drSchema in dataReaderSchema)
 											{
-												ForeignKey foreignKey;
+												Schema schema;
 
-												foreignKey = new ForeignKey();
+												schema = new Schema();
+												schema.SchemaName = DataType.ChangeType<string>(drSchema["SchemaName"]);
+												schema.SchemaNamePascalCase = Name.GetPascalCase(schema.SchemaName);
+												schema.SchemaNameCamelCase = Name.GetCamelCase(schema.SchemaName);
+												schema.SchemaNameConstantCase = Name.GetConstantCase(schema.SchemaName);
+												schema.SchemaNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(schema.SchemaName));
+												schema.SchemaNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(schema.SchemaName));
+												schema.SchemaNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(schema.SchemaName));
+												schema.SchemaNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(schema.SchemaName));
+												schema.SchemaNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(schema.SchemaName));
+												schema.SchemaNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(schema.SchemaName));
 
-												foreignKey.ForeignKeyName = DataType.ChangeType<string>(drForeignKey["ForeignKeyName"]);
-												foreignKey.ForeignKeyIsDisabled = DataType.ChangeType<bool>(drForeignKey["ForeignKeyIsDisabled"]);
-												foreignKey.ForeignKeyIsForReplication = DataType.ChangeType<bool>(drForeignKey["ForeignKeyIsForReplication"]);
-												foreignKey.ForeignKeyOnDeleteRefIntAction = DataType.ChangeType<byte>(drForeignKey["ForeignKeyOnDeleteRefIntAction"]);
-												foreignKey.ForeignKeyOnDeleteRefIntActionSqlName = DataType.ChangeType<string>(drForeignKey["ForeignKeyOnDeleteRefIntActionSqlName"]);
-												foreignKey.ForeignKeyOnUpdateRefIntAction = DataType.ChangeType<byte>(drForeignKey["ForeignKeyOnUpdateRefIntAction"]);
-												foreignKey.ForeignKeyOnUpdateRefIntActionSqlName = DataType.ChangeType<string>(drForeignKey["ForeignKeyOnUpdateRefIntActionSqlName"]);
-												foreignKey.ForeignKeyNamePascalCase = Name.GetPascalCase(foreignKey.ForeignKeyName);
-												foreignKey.ForeignKeyNameCamelCase = Name.GetCamelCase(foreignKey.ForeignKeyName);
-												foreignKey.ForeignKeyNameConstantCase = Name.GetConstantCase(foreignKey.ForeignKeyName);
-												foreignKey.ForeignKeyNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(foreignKey.ForeignKeyName));
-												foreignKey.ForeignKeyNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(foreignKey.ForeignKeyName));
-												foreignKey.ForeignKeyNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(foreignKey.ForeignKeyName));
-												foreignKey.ForeignKeyNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(foreignKey.ForeignKeyName));
-												foreignKey.ForeignKeyNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(foreignKey.ForeignKeyName));
-												foreignKey.ForeignKeyNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(foreignKey.ForeignKeyName));
+												schema.SchemaNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(schema.SchemaName);
+												schema.SchemaNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(schema.SchemaName);
+												schema.SchemaNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(schema.SchemaName));
+												schema.SchemaNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(schema.SchemaName));
+												schema.SchemaNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(schema.SchemaName));
+												schema.SchemaNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(schema.SchemaName));
 
-												foreignKey.ForeignKeyNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(foreignKey.ForeignKeyName);
-												foreignKey.ForeignKeyNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(foreignKey.ForeignKeyName);
-												foreignKey.ForeignKeyNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(foreignKey.ForeignKeyName));
-												foreignKey.ForeignKeyNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(foreignKey.ForeignKeyName));
-												foreignKey.ForeignKeyNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(foreignKey.ForeignKeyName));
-												foreignKey.ForeignKeyNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(foreignKey.ForeignKeyName));
-
-												table.ForeignKeys.Add(foreignKey);
-
-												var dataReaderForeignKeyColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeyColumns"), this.CoreGetForeignKeyColumnParameters(unitOfWork, dataSourceTag, server, schema, table, foreignKey), out recordsAffected);
+												// filter unwanted schemas
+												if ((object)schemaFilter != null)
 												{
-													if ((object)dataReaderForeignKeyColumn != null)
+													if (!schemaFilter.Contains(schema.SchemaName))
+														continue;
+												}
+
+												this.ApplyExtendedProperties(unitOfWork, schema, dataSourceTag, "SchemaExtProps", this.CoreGetTableParameters(unitOfWork, dataSourceTag, server, database, schema));
+
+												database.Schemas.Add(schema);
+
+												var dataReaderTable = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Tables"), this.CoreGetTableParameters(unitOfWork, dataSourceTag, server, database, schema), out recordsAffected);
+												{
+													foreach (var drTable in dataReaderTable)
 													{
-														foreach (var drForeignKeyColumn in dataReaderForeignKeyColumn)
+														Table table;
+
+														table = new Table();
+														table.IsView = DataType.ChangeType<bool>(drTable["IsView"]);
+														table.TableName = DataType.ChangeType<string>(drTable["TableName"]);
+														table.TableNamePascalCase = Name.GetPascalCase(table.TableName);
+														table.TableNameCamelCase = Name.GetCamelCase(table.TableName);
+														table.TableNameConstantCase = Name.GetConstantCase(table.TableName);
+														table.TableNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(table.TableName));
+														table.TableNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(table.TableName));
+														table.TableNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(table.TableName));
+														table.TableNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(table.TableName));
+														table.TableNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(table.TableName));
+														table.TableNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(table.TableName));
+
+														table.TableNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(table.TableName);
+														table.TableNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(table.TableName);
+														table.TableNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(table.TableName));
+														table.TableNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(table.TableName));
+														table.TableNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(table.TableName));
+														table.TableNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(table.TableName));
+
+														table.PrimaryKeyName = DataType.ChangeType<string>(drTable["PrimaryKeyName"]);
+
+														if (!DataType.IsNullOrWhiteSpace(table.PrimaryKeyName))
 														{
-															ForeignKeyColumnRef foreignKeyColumnRef;
+															table.PrimaryKeyNamePascalCase = Name.GetPascalCase(table.PrimaryKeyName);
+															table.PrimaryKeyNameCamelCase = Name.GetCamelCase(table.PrimaryKeyName);
+															table.PrimaryKeyNameConstantCase = Name.GetConstantCase(table.PrimaryKeyName);
+															table.PrimaryKeyNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(table.PrimaryKeyName));
+															table.PrimaryKeyNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(table.PrimaryKeyName));
+															table.PrimaryKeyNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(table.PrimaryKeyName));
+															table.PrimaryKeyNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(table.PrimaryKeyName));
+															table.PrimaryKeyNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(table.PrimaryKeyName));
+															table.PrimaryKeyNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(table.PrimaryKeyName));
 
-															foreignKeyColumnRef = new ForeignKeyColumnRef();
+															table.PrimaryKeyNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(table.PrimaryKeyName);
+															table.PrimaryKeyNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(table.PrimaryKeyName);
+															table.PrimaryKeyNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(table.PrimaryKeyName));
+															table.PrimaryKeyNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(table.PrimaryKeyName));
+															table.PrimaryKeyNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(table.PrimaryKeyName));
+															table.PrimaryKeyNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(table.PrimaryKeyName));
+														}
 
-															foreignKeyColumnRef.ForeignKeyOrdinal = DataType.ChangeType<int>(drForeignKeyColumn["ForeignKeyOrdinal"]);
-															foreignKeyColumnRef.ColumnOrdinal = DataType.ChangeType<int>(drForeignKeyColumn["ColumnOrdinal"]);
-															foreignKeyColumnRef.ColumnName = DataType.ChangeType<string>(drForeignKeyColumn["ColumnName"]);
-															foreignKeyColumnRef.PrimarySchemaName = DataType.ChangeType<string>(drForeignKeyColumn["PrimarySchemaName"]);
-															foreignKeyColumnRef.PrimaryTableName = DataType.ChangeType<string>(drForeignKeyColumn["PrimaryTableName"]);
-															foreignKeyColumnRef.PrimaryKeyName = DataType.ChangeType<string>(drForeignKeyColumn["PrimaryKeyName"]);
-															foreignKeyColumnRef.PrimaryKeyOrdinal = DataType.ChangeType<int>(drForeignKeyColumn["PrimaryKeyOrdinal"]);
-															foreignKeyColumnRef.PrimaryKeyColumnOrdinal = DataType.ChangeType<int>(drForeignKeyColumn["PrimaryKeyColumnOrdinal"]);
-															foreignKeyColumnRef.PrimaryKeyColumnName = DataType.ChangeType<string>(drForeignKeyColumn["PrimaryKeyColumnName"]);
+														schema.Tables.Add(table);
 
-															foreignKey.ForeignKeyColumnRefs.Add(foreignKeyColumnRef);
+														var dataReaderColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Columns"), this.CoreGetColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table), out recordsAffected);
+														{
+															if ((object)dataReaderColumn != null)
+															{
+																foreach (var drColumn in dataReaderColumn)
+																{
+																	Column column;
+
+																	column = new Column();
+
+																	column.ColumnName = DataType.ChangeType<string>(drColumn["ColumnName"]);
+																	column.ColumnOrdinal = DataType.ChangeType<int>(drColumn["ColumnOrdinal"]);
+																	column.ColumnNullable = DataType.ChangeType<bool>(drColumn["ColumnNullable"]);
+																	column.ColumnSize = DataType.ChangeType<int>(drColumn["ColumnSize"]);
+																	column.ColumnPrecision = DataType.ChangeType<int>(drColumn["ColumnPrecision"]);
+																	column.ColumnScale = DataType.ChangeType<int>(drColumn["ColumnScale"]);
+																	column.ColumnSqlType = DataType.ChangeType<string>(drColumn["ColumnSqlType"]);
+																	column.ColumnIsIdentity = DataType.ChangeType<bool>(drColumn["ColumnIsIdentity"]);
+																	column.ColumnIsComputed = DataType.ChangeType<bool>(drColumn["ColumnIsComputed"]);
+																	column.ColumnHasDefault = DataType.ChangeType<bool>(drColumn["ColumnHasDefault"]);
+																	column.ColumnHasCheck = DataType.ChangeType<bool>(drColumn["ColumnHasCheck"]);
+																	column.ColumnIsPrimaryKey = DataType.ChangeType<bool>(drColumn["ColumnIsPrimaryKey"]);
+																	column.PrimaryKeyName = DataType.ChangeType<string>(drColumn["PrimaryKeyName"]);
+																	column.PrimaryKeyColumnOrdinal = DataType.ChangeType<int>(drColumn["PrimaryKeyColumnOrdinal"]);
+																	column.ColumnNamePascalCase = Name.GetPascalCase(column.ColumnName);
+																	column.ColumnNameCamelCase = Name.GetCamelCase(column.ColumnName);
+																	column.ColumnNameConstantCase = Name.GetConstantCase(column.ColumnName);
+																	column.ColumnNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(column.ColumnName));
+																	column.ColumnNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(column.ColumnName));
+																	column.ColumnNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(column.ColumnName));
+																	column.ColumnNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(column.ColumnName));
+																	column.ColumnNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(column.ColumnName));
+																	column.ColumnNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(column.ColumnName));
+
+																	column.ColumnNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(column.ColumnName);
+																	column.ColumnNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(column.ColumnName);
+																	column.ColumnNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(column.ColumnName));
+																	column.ColumnNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(column.ColumnName));
+																	column.ColumnNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(column.ColumnName));
+																	column.ColumnNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(column.ColumnName));
+
+																	clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType, column.ColumnPrecision);
+																	column.ColumnDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
+																	column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
+
+																	column.ColumnClrType = clrType ?? typeof(object);
+																	column.ColumnClrNullableType = Reflexion.MakeNullableType(clrType);
+																	column.ColumnClrNonNullableType = Reflexion.MakeNonNullableType(clrType);
+																	column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
+																	column.ColumnCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
+																	column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
+																	column.ColumnCSharpClrNullableType = (object)column.ColumnClrNullableType != null ? FormatCSharpType(column.ColumnClrNullableType) : FormatCSharpType(typeof(object));
+																	column.ColumnCSharpClrNonNullableType = (object)column.ColumnClrNonNullableType != null ? FormatCSharpType(column.ColumnClrNonNullableType) : FormatCSharpType(typeof(object));
+
+																	table.Columns.Add(column);
+																}
+															}
+														}
+
+														if (table.Columns.Count(c => c.ColumnIsPrimaryKey) < 1)
+														{
+															table.HasNoDefinedPrimaryKeyColumns = true;
+															table.Columns.ForEach(c => c.ColumnIsPrimaryKey = true);
+														}
+
+														var dataReaderDmlTrigger = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DmlTriggers"), this.CoreGetDmlTriggerParameters(unitOfWork, dataSourceTag, server, database, schema, table), out recordsAffected);
+														{
+															if ((object)dataReaderDmlTrigger != null)
+															{
+																foreach (var drTrigger in dataReaderDmlTrigger)
+																{
+																	Trigger trigger;
+
+																	trigger = new Trigger();
+
+																	trigger.TriggerId = DataType.ChangeType<int>(drTrigger["ObjectId"]);
+																	trigger.TriggerName = DataType.ChangeType<string>(drTrigger["TriggerName"]);
+																	trigger.IsClrTrigger = DataType.ChangeType<bool>(drTrigger["IsClrTrigger"]);
+																	trigger.IsTriggerDisabled = DataType.ChangeType<bool>(drTrigger["IsTriggerDisabled"]);
+																	trigger.IsTriggerNotForReplication = DataType.ChangeType<bool>(drTrigger["IsTriggerNotForReplication"]);
+																	trigger.IsInsteadOfTrigger = DataType.ChangeType<bool>(drTrigger["IsInsteadOfTrigger"]);
+																	trigger.TriggerNamePascalCase = Name.GetPascalCase(trigger.TriggerName);
+																	trigger.TriggerNameCamelCase = Name.GetCamelCase(trigger.TriggerName);
+																	trigger.TriggerNameConstantCase = Name.GetConstantCase(trigger.TriggerName);
+																	trigger.TriggerNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(trigger.TriggerName));
+																	trigger.TriggerNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(trigger.TriggerName));
+																	trigger.TriggerNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(trigger.TriggerName));
+																	trigger.TriggerNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(trigger.TriggerName));
+																	trigger.TriggerNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(trigger.TriggerName));
+																	trigger.TriggerNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(trigger.TriggerName));
+
+																	trigger.TriggerNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(trigger.TriggerName);
+																	trigger.TriggerNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(trigger.TriggerName);
+																	trigger.TriggerNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(trigger.TriggerName));
+																	trigger.TriggerNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(trigger.TriggerName));
+																	trigger.TriggerNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(trigger.TriggerName));
+																	trigger.TriggerNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(trigger.TriggerName));
+
+																	table.Triggers.Add(trigger);
+																}
+															}
+														}
+
+														var dataReaderForeignKey = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeys"), this.CoreGetForeignKeyParameters(unitOfWork, dataSourceTag, server, database, schema, table), out recordsAffected);
+														{
+															if ((object)dataReaderForeignKey != null)
+															{
+																foreach (var drForeignKey in dataReaderForeignKey)
+																{
+																	ForeignKey foreignKey;
+
+																	foreignKey = new ForeignKey();
+
+																	foreignKey.ForeignKeyName = DataType.ChangeType<string>(drForeignKey["ForeignKeyName"]);
+																	foreignKey.ForeignKeyIsDisabled = DataType.ChangeType<bool>(drForeignKey["ForeignKeyIsDisabled"]);
+																	foreignKey.ForeignKeyIsForReplication = DataType.ChangeType<bool>(drForeignKey["ForeignKeyIsForReplication"]);
+																	foreignKey.ForeignKeyOnDeleteRefIntAction = DataType.ChangeType<byte>(drForeignKey["ForeignKeyOnDeleteRefIntAction"]);
+																	foreignKey.ForeignKeyOnDeleteRefIntActionSqlName = DataType.ChangeType<string>(drForeignKey["ForeignKeyOnDeleteRefIntActionSqlName"]);
+																	foreignKey.ForeignKeyOnUpdateRefIntAction = DataType.ChangeType<byte>(drForeignKey["ForeignKeyOnUpdateRefIntAction"]);
+																	foreignKey.ForeignKeyOnUpdateRefIntActionSqlName = DataType.ChangeType<string>(drForeignKey["ForeignKeyOnUpdateRefIntActionSqlName"]);
+																	foreignKey.ForeignKeyNamePascalCase = Name.GetPascalCase(foreignKey.ForeignKeyName);
+																	foreignKey.ForeignKeyNameCamelCase = Name.GetCamelCase(foreignKey.ForeignKeyName);
+																	foreignKey.ForeignKeyNameConstantCase = Name.GetConstantCase(foreignKey.ForeignKeyName);
+																	foreignKey.ForeignKeyNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(foreignKey.ForeignKeyName));
+																	foreignKey.ForeignKeyNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(foreignKey.ForeignKeyName));
+																	foreignKey.ForeignKeyNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(foreignKey.ForeignKeyName));
+																	foreignKey.ForeignKeyNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(foreignKey.ForeignKeyName));
+																	foreignKey.ForeignKeyNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(foreignKey.ForeignKeyName));
+																	foreignKey.ForeignKeyNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(foreignKey.ForeignKeyName));
+
+																	foreignKey.ForeignKeyNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(foreignKey.ForeignKeyName);
+																	foreignKey.ForeignKeyNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(foreignKey.ForeignKeyName);
+																	foreignKey.ForeignKeyNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(foreignKey.ForeignKeyName));
+																	foreignKey.ForeignKeyNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(foreignKey.ForeignKeyName));
+																	foreignKey.ForeignKeyNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(foreignKey.ForeignKeyName));
+																	foreignKey.ForeignKeyNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(foreignKey.ForeignKeyName));
+
+																	table.ForeignKeys.Add(foreignKey);
+
+																	var dataReaderForeignKeyColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeyColumns"), this.CoreGetForeignKeyColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table, foreignKey), out recordsAffected);
+																	{
+																		if ((object)dataReaderForeignKeyColumn != null)
+																		{
+																			foreach (var drForeignKeyColumn in dataReaderForeignKeyColumn)
+																			{
+																				ForeignKeyColumnRef foreignKeyColumnRef;
+
+																				foreignKeyColumnRef = new ForeignKeyColumnRef();
+
+																				foreignKeyColumnRef.ForeignKeyOrdinal = DataType.ChangeType<int>(drForeignKeyColumn["ForeignKeyOrdinal"]);
+																				foreignKeyColumnRef.ColumnOrdinal = DataType.ChangeType<int>(drForeignKeyColumn["ColumnOrdinal"]);
+																				foreignKeyColumnRef.ColumnName = DataType.ChangeType<string>(drForeignKeyColumn["ColumnName"]);
+																				foreignKeyColumnRef.PrimarySchemaName = DataType.ChangeType<string>(drForeignKeyColumn["PrimarySchemaName"]);
+																				foreignKeyColumnRef.PrimaryTableName = DataType.ChangeType<string>(drForeignKeyColumn["PrimaryTableName"]);
+																				foreignKeyColumnRef.PrimaryKeyName = DataType.ChangeType<string>(drForeignKeyColumn["PrimaryKeyName"]);
+																				foreignKeyColumnRef.PrimaryKeyOrdinal = DataType.ChangeType<int>(drForeignKeyColumn["PrimaryKeyOrdinal"]);
+																				foreignKeyColumnRef.PrimaryKeyColumnOrdinal = DataType.ChangeType<int>(drForeignKeyColumn["PrimaryKeyColumnOrdinal"]);
+																				foreignKeyColumnRef.PrimaryKeyColumnName = DataType.ChangeType<string>(drForeignKeyColumn["PrimaryKeyColumnName"]);
+
+																				foreignKey.ForeignKeyColumnRefs.Add(foreignKeyColumnRef);
+																			}
+																		}
+																	}
+																}
+															}
+														}
+
+														var dataReaderUniqueKey = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeys"), this.CoreGetUniqueKeyParameters(unitOfWork, dataSourceTag, server, database, schema, table), out recordsAffected);
+														{
+															if ((object)dataReaderUniqueKey != null)
+															{
+																foreach (var drUniqueKey in dataReaderUniqueKey)
+																{
+																	UniqueKey uniqueKey;
+
+																	uniqueKey = new UniqueKey();
+
+																	uniqueKey.UniqueKeyName = DataType.ChangeType<string>(drUniqueKey["UniqueKeyName"]);
+																	uniqueKey.UniqueKeyIsDisabled = DataType.ChangeType<bool>(drUniqueKey["UniqueKeyIsDisabled"]);
+																	uniqueKey.UniqueKeyNamePascalCase = Name.GetPascalCase(uniqueKey.UniqueKeyName);
+																	uniqueKey.UniqueKeyNameCamelCase = Name.GetCamelCase(uniqueKey.UniqueKeyName);
+																	uniqueKey.UniqueKeyNameConstantCase = Name.GetConstantCase(uniqueKey.UniqueKeyName);
+																	uniqueKey.UniqueKeyNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(uniqueKey.UniqueKeyName));
+																	uniqueKey.UniqueKeyNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(uniqueKey.UniqueKeyName));
+																	uniqueKey.UniqueKeyNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(uniqueKey.UniqueKeyName));
+																	uniqueKey.UniqueKeyNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(uniqueKey.UniqueKeyName));
+																	uniqueKey.UniqueKeyNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(uniqueKey.UniqueKeyName));
+																	uniqueKey.UniqueKeyNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(uniqueKey.UniqueKeyName));
+
+																	uniqueKey.UniqueKeyNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(uniqueKey.UniqueKeyName);
+																	uniqueKey.UniqueKeyNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(uniqueKey.UniqueKeyName);
+																	uniqueKey.UniqueKeyNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(uniqueKey.UniqueKeyName));
+																	uniqueKey.UniqueKeyNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(uniqueKey.UniqueKeyName));
+																	uniqueKey.UniqueKeyNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(uniqueKey.UniqueKeyName));
+																	uniqueKey.UniqueKeyNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(uniqueKey.UniqueKeyName));
+
+																	table.UniqueKeys.Add(uniqueKey);
+
+																	var dataReaderUniqueKeyColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeyColumns"), this.CoreGetUniqueKeyColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table, uniqueKey), out recordsAffected);
+																	{
+																		if ((object)dataReaderUniqueKeyColumn != null)
+																		{
+																			foreach (var drUniqueKeyColumn in dataReaderUniqueKeyColumn)
+																			{
+																				UniqueKeyColumnRef uniqueKeyColumnRef;
+
+																				uniqueKeyColumnRef = new UniqueKeyColumnRef();
+
+																				uniqueKeyColumnRef.UniqueKeyOrdinal = DataType.ChangeType<int>(drUniqueKeyColumn["UniqueKeyOrdinal"]);
+																				uniqueKeyColumnRef.ColumnOrdinal = DataType.ChangeType<int>(drUniqueKeyColumn["ColumnOrdinal"]);
+																				uniqueKeyColumnRef.ColumnName = DataType.ChangeType<string>(drUniqueKeyColumn["ColumnName"]);
+																				uniqueKeyColumnRef.UniqueKeyColumnDescendingSort = DataType.ChangeType<bool>(drUniqueKeyColumn["UniqueKeyColumnDescendingSort"]);
+
+																				uniqueKey.UniqueKeyColumnRefs.Add(uniqueKeyColumnRef);
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+
+												var dataReaderProcedure = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Procedures"), this.CoreGetProcedureParameters(unitOfWork, dataSourceTag, server, database, schema), out recordsAffected);
+												{
+													if ((object)dataReaderProcedure != null)
+													{
+														foreach (var drProcedure in dataReaderProcedure)
+														{
+															Procedure procedure;
+
+															procedure = new Procedure();
+															procedure.ProcedureName = DataType.ChangeType<string>(drProcedure["ProcedureName"]);
+															procedure.ProcedureNamePascalCase = Name.GetPascalCase(procedure.ProcedureName);
+															procedure.ProcedureNameCamelCase = Name.GetCamelCase(procedure.ProcedureName);
+															procedure.ProcedureNameConstantCase = Name.GetConstantCase(procedure.ProcedureName);
+															procedure.ProcedureNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(procedure.ProcedureName));
+															procedure.ProcedureNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(procedure.ProcedureName));
+															procedure.ProcedureNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(procedure.ProcedureName));
+															procedure.ProcedureNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(procedure.ProcedureName));
+															procedure.ProcedureNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(procedure.ProcedureName));
+															procedure.ProcedureNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(procedure.ProcedureName));
+
+															procedure.ProcedureNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(procedure.ProcedureName);
+															procedure.ProcedureNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(procedure.ProcedureName);
+															procedure.ProcedureNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(procedure.ProcedureName));
+															procedure.ProcedureNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(procedure.ProcedureName));
+															procedure.ProcedureNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(procedure.ProcedureName));
+															procedure.ProcedureNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(procedure.ProcedureName));
+
+															schema.Procedures.Add(procedure);
+
+															var dataReaderParameter = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Parameters"), this.CoreGetParameterParameters(unitOfWork, dataSourceTag, server, database, schema, procedure), out recordsAffected);
+															{
+																if ((object)dataReaderParameter != null)
+																{
+																	foreach (var drParameter in dataReaderParameter)
+																	{
+																		Parameter parameter;
+
+																		parameter = new Parameter();
+
+																		parameter.ParameterPrefix = DataType.ChangeType<string>(drParameter["ParameterName"]).Substring(0, 1);
+																		parameter.ParameterName = DataType.ChangeType<string>(drParameter["ParameterName"]).Substring(1);
+																		parameter.ParameterOrdinal = DataType.ChangeType<int>(drParameter["ParameterOrdinal"]);
+																		parameter.ParameterSize = DataType.ChangeType<int>(drParameter["ParameterSize"]);
+																		parameter.ParameterPrecision = DataType.ChangeType<int>(drParameter["ParameterPrecision"]);
+																		parameter.ParameterScale = DataType.ChangeType<int>(drParameter["ParameterScale"]);
+																		parameter.ParameterSqlType = DataType.ChangeType<string>(drParameter["ParameterSqlType"]);
+																		parameter.ParameterIsOutput = DataType.ChangeType<bool>(drParameter["ParameterIsOutput"]);
+																		parameter.ParameterIsReadOnly = DataType.ChangeType<bool>(drParameter["ParameterIsReadOnly"]);
+																		parameter.ParameterIsCursorRef = DataType.ChangeType<bool>(drParameter["ParameterIsCursorRef"]);
+																		parameter.ParameterIsReturnValue = DataType.ChangeType<bool>(drParameter["ParameterIsReturnValue"]);
+																		parameter.ParameterDefaultValue = DataType.ChangeType<string>(drParameter["ParameterDefaultValue"]);
+																		parameter.ParameterIsResultColumn = DataType.ChangeType<bool>(drParameter["ParameterIsResultColumn"]);
+																		parameter.ParameterNamePascalCase = Name.GetPascalCase(parameter.ParameterName);
+																		parameter.ParameterNameCamelCase = Name.GetCamelCase(parameter.ParameterName);
+																		parameter.ParameterNameConstantCase = Name.GetConstantCase(parameter.ParameterName);
+																		parameter.ParameterNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(parameter.ParameterName));
+																		parameter.ParameterNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(parameter.ParameterName));
+																		parameter.ParameterNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(parameter.ParameterName));
+																		parameter.ParameterNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(parameter.ParameterName));
+																		parameter.ParameterNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(parameter.ParameterName));
+																		parameter.ParameterNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(parameter.ParameterName));
+
+																		parameter.ParameterNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(parameter.ParameterName);
+																		parameter.ParameterNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(parameter.ParameterName);
+																		parameter.ParameterNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(parameter.ParameterName));
+																		parameter.ParameterNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(parameter.ParameterName));
+																		parameter.ParameterNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(parameter.ParameterName));
+																		parameter.ParameterNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(parameter.ParameterName));
+
+																		parameter.ParameterNullable = true;
+																		parameter.ParameterDirection = (parameter.ParameterIsOutput || parameter.ParameterIsReadOnly) ? ParameterDirection.Output : ParameterDirection.Input;
+
+																		clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, parameter.ParameterSqlType, parameter.ParameterPrecision);
+																		parameter.ParameterDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
+																		parameter.ParameterSize = this.CoreCalculateParameterSize(dataSourceTag, parameter);
+
+																		parameter.ParameterClrType = clrType;
+																		parameter.ParameterClrNullableType = Reflexion.MakeNullableType(clrType);
+																		parameter.ParameterClrNonNullableType = Reflexion.MakeNonNullableType(clrType);
+																		parameter.ParameterCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, parameter.ParameterDbType);
+																		parameter.ParameterCSharpClrType = (object)parameter.ParameterClrType != null ? FormatCSharpType(parameter.ParameterClrType) : FormatCSharpType(typeof(object));
+																		parameter.ParameterCSharpClrNullableType = (object)parameter.ParameterClrNullableType != null ? FormatCSharpType(parameter.ParameterClrNullableType) : FormatCSharpType(typeof(object));
+																		parameter.ParameterCSharpClrNonNullableType = (object)parameter.ParameterClrNonNullableType != null ? FormatCSharpType(parameter.ParameterClrNonNullableType) : FormatCSharpType(typeof(object));
+																		parameter.ParameterCSharpNullableLiteral = parameter.ParameterNullable.ToString().ToLower();
+
+																		procedure.Parameters.Add(parameter);
+																	}
+																}
+
+																// implicit return value parameter
+																if (this.CoreGetEmitImplicitReturnParameter(dataSourceTag))
+																{
+																	Parameter parameter;
+
+																	parameter = new Parameter();
+
+																	parameter.ParameterPrefix = this.CoreGetParameterPrefix(dataSourceTag);
+																	parameter.ParameterName = RETURN_VALUE;
+																	parameter.ParameterOrdinal = int.MaxValue;
+																	parameter.ParameterSize = 0;
+																	parameter.ParameterPrecision = 0;
+																	parameter.ParameterScale = 0;
+																	parameter.ParameterSqlType = "int";
+																	parameter.ParameterIsOutput = true;
+																	parameter.ParameterIsReadOnly = true;
+																	parameter.ParameterIsCursorRef = false;
+																	parameter.ParameterIsReturnValue = true;
+																	parameter.ParameterDefaultValue = null;
+																	parameter.ParameterIsResultColumn = false;
+																	parameter.ParameterNamePascalCase = Name.GetPascalCase(RETURN_VALUE);
+																	parameter.ParameterNameCamelCase = Name.GetCamelCase(RETURN_VALUE);
+																	parameter.ParameterNameConstantCase = Name.GetConstantCase(RETURN_VALUE);
+																	parameter.ParameterNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(RETURN_VALUE));
+																	parameter.ParameterNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(RETURN_VALUE));
+																	parameter.ParameterNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(RETURN_VALUE));
+																	parameter.ParameterNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(RETURN_VALUE));
+																	parameter.ParameterNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(RETURN_VALUE));
+																	parameter.ParameterNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(RETURN_VALUE));
+
+																	parameter.ParameterNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(RETURN_VALUE);
+																	parameter.ParameterNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(RETURN_VALUE);
+																	parameter.ParameterNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(RETURN_VALUE));
+																	parameter.ParameterNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(RETURN_VALUE));
+																	parameter.ParameterNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(RETURN_VALUE));
+																	parameter.ParameterNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(RETURN_VALUE));
+
+																	parameter.ParameterNullable = true;
+																	parameter.ParameterDirection = ParameterDirection.ReturnValue;
+
+																	clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, parameter.ParameterSqlType, parameter.ParameterPrecision);
+																	parameter.ParameterDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
+																	parameter.ParameterSize = this.CoreCalculateParameterSize(dataSourceTag, parameter);
+
+																	parameter.ParameterClrType = clrType;
+																	parameter.ParameterClrNullableType = Reflexion.MakeNullableType(clrType);
+																	parameter.ParameterClrNonNullableType = Reflexion.MakeNonNullableType(clrType);
+																	parameter.ParameterCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, parameter.ParameterDbType);
+																	parameter.ParameterCSharpClrType = (object)parameter.ParameterClrType != null ? FormatCSharpType(parameter.ParameterClrType) : FormatCSharpType(typeof(object));
+																	parameter.ParameterCSharpClrNullableType = (object)parameter.ParameterClrNullableType != null ? FormatCSharpType(parameter.ParameterClrNullableType) : FormatCSharpType(typeof(object));
+																	parameter.ParameterCSharpClrNonNullableType = (object)parameter.ParameterClrNonNullableType != null ? FormatCSharpType(parameter.ParameterClrNonNullableType) : FormatCSharpType(typeof(object));
+																	parameter.ParameterCSharpNullableLiteral = parameter.ParameterNullable.ToString().ToLower();
+
+																	procedure.Parameters.Add(parameter);
+																}
+															}
+
+															// re-map result column parameters into first class columns
+															Parameter[] columnParameters;
+															columnParameters = procedure.Parameters.Where(p => p.ParameterIsResultColumn).ToArray();
+
+															if ((object)columnParameters != null && columnParameters.Length > 0)
+															{
+																foreach (Parameter columnParameter in columnParameters)
+																{
+																	Column column;
+
+																	column = new Column();
+
+																	column.ColumnName = columnParameter.ParameterName;
+																	column.ColumnOrdinal = columnParameter.ParameterOrdinal;
+																	column.ColumnNullable = columnParameter.ParameterNullable;
+																	column.ColumnSize = columnParameter.ParameterSize;
+																	column.ColumnPrecision = columnParameter.ParameterPrecision;
+																	column.ColumnScale = columnParameter.ParameterScale;
+																	column.ColumnSqlType = columnParameter.ParameterSqlType;
+																	column.ColumnIsIdentity = false;
+																	column.ColumnIsComputed = false;
+																	column.ColumnHasDefault = !DataType.IsNullOrWhiteSpace(columnParameter.ParameterDefaultValue);
+																	column.ColumnHasCheck = false;
+																	column.ColumnIsPrimaryKey = false;
+																	column.ColumnNamePascalCase = Name.GetPascalCase(columnParameter.ParameterName);
+																	column.ColumnNameCamelCase = Name.GetCamelCase(columnParameter.ParameterName);
+																	column.ColumnNameConstantCase = Name.GetConstantCase(columnParameter.ParameterName);
+																	column.ColumnNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(columnParameter.ParameterName));
+																	column.ColumnNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(columnParameter.ParameterName));
+																	column.ColumnNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(columnParameter.ParameterName));
+																	column.ColumnNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(columnParameter.ParameterName));
+																	column.ColumnNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(columnParameter.ParameterName));
+																	column.ColumnNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(columnParameter.ParameterName));
+
+																	column.ColumnNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(columnParameter.ParameterName);
+																	column.ColumnNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(columnParameter.ParameterName);
+																	column.ColumnNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(columnParameter.ParameterName));
+																	column.ColumnNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(columnParameter.ParameterName));
+																	column.ColumnNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(columnParameter.ParameterName));
+																	column.ColumnNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(columnParameter.ParameterName));
+
+																	clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, columnParameter.ParameterSqlType, columnParameter.ParameterPrecision);
+																	column.ColumnDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
+																	column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
+
+																	column.ColumnClrType = clrType ?? typeof(object);
+																	column.ColumnClrNullableType = Reflexion.MakeNullableType(clrType);
+																	column.ColumnClrNonNullableType = Reflexion.MakeNonNullableType(clrType);
+																	column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
+																	column.ColumnCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
+																	column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
+																	column.ColumnCSharpClrNullableType = (object)column.ColumnClrNullableType != null ? FormatCSharpType(column.ColumnClrNullableType) : FormatCSharpType(typeof(object));
+																	column.ColumnCSharpClrNonNullableType = (object)column.ColumnClrNonNullableType != null ? FormatCSharpType(column.ColumnClrNonNullableType) : FormatCSharpType(typeof(object));
+
+																	//procedure.Columns.Add(column);
+																	procedure.Parameters.Remove(columnParameter);
+																}
+															}
+
+															if (!disableProcSchDisc)
+															{
+																// REFERENCE:
+																// http://connect.microsoft.com/VisualStudio/feedback/details/314650/sqm1014-sqlmetal-ignores-stored-procedures-that-use-temp-tables
+																IDataParameter[] parameters;
+																parameters = procedure.Parameters.Where(p => !p.ParameterIsReturnValue && !p.ParameterIsResultColumn).Select(p => unitOfWork.CreateParameter(p.ParameterIsOutput ? ParameterDirection.Output : ParameterDirection.Input, p.ParameterDbType, p.ParameterSize, (byte)p.ParameterPrecision, (byte)p.ParameterScale, p.ParameterNullable, p.ParameterName, null)).ToArray();
+
+																try
+																{
+																	var dataReaderMetadata = AdoNetHelper.ExecuteSchema(unitOfWork, CommandType.StoredProcedure, string.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), schema.SchemaName, procedure.ProcedureName), parameters);
+																	{
+																		if ((object)dataReaderMetadata != null)
+																		{
+																			foreach (var drMetadata in dataReaderMetadata)
+																			{
+																				Column column;
+
+																				column = new Column();
+
+																				column.ColumnName = DataType.ChangeType<string>(drMetadata["ColumnName"]);
+																				column.ColumnOrdinal = DataType.ChangeType<int>(drMetadata["ColumnOrdinal"]);
+																				column.ColumnNullable = DataType.ChangeType<bool>(drMetadata["AllowDBNull"]);
+																				column.ColumnSize = DataType.ChangeType<int>(drMetadata["ColumnSize"]);
+																				column.ColumnPrecision = DataType.ChangeType<int>(drMetadata["NumericPrecision"]);
+																				column.ColumnScale = DataType.ChangeType<int>(drMetadata["NumericScale"]);
+																				// TODO FIX
+																				//column.ColumnSqlType = DataType.ChangeType<string>(drMetadata["DataTypeName"]);
+																				//column.ColumnIsIdentity = DataType.ChangeType<bool>(drMetadata["IsIdentity"]);
+																				//column.ColumnIsComputed = DataType.ChangeType<bool>(drMetadata["IsReadOnly"]);
+																				//column.ColumnHasDefault = DataType.ChangeType<bool>(drMetadata["ColumnHasDefault"]);
+																				//column.ColumnHasCheck = DataType.ChangeType<bool>(drMetadata["ColumnHasCheck"]);
+																				//column.ColumnIsPrimaryKey = DataType.ChangeType<bool>(drMetadata["IsKey"]);
+																				column.ColumnNamePascalCase = Name.GetPascalCase(column.ColumnName);
+																				column.ColumnNameCamelCase = Name.GetCamelCase(column.ColumnName);
+																				column.ColumnNameConstantCase = Name.GetConstantCase(column.ColumnName);
+																				column.ColumnNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(column.ColumnName));
+																				column.ColumnNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(column.ColumnName));
+																				column.ColumnNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(column.ColumnName));
+																				column.ColumnNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(column.ColumnName));
+																				column.ColumnNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(column.ColumnName));
+																				column.ColumnNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(column.ColumnName));
+
+																				column.ColumnNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(column.ColumnName);
+																				column.ColumnNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(column.ColumnName);
+																				column.ColumnNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(column.ColumnName));
+																				column.ColumnNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(column.ColumnName));
+																				column.ColumnNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(column.ColumnName));
+																				column.ColumnNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(column.ColumnName));
+
+																				clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType, column.ColumnPrecision);
+																				column.ColumnDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
+																				column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
+
+																				column.ColumnClrType = clrType ?? typeof(object);
+																				column.ColumnClrNullableType = Reflexion.MakeNullableType(clrType);
+																				column.ColumnClrNonNullableType = Reflexion.MakeNonNullableType(clrType);
+																				column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
+																				column.ColumnCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
+																				column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
+																				column.ColumnCSharpClrNullableType = (object)column.ColumnClrNullableType != null ? FormatCSharpType(column.ColumnClrNullableType) : FormatCSharpType(typeof(object));
+																				column.ColumnCSharpClrNonNullableType = (object)column.ColumnClrNonNullableType != null ? FormatCSharpType(column.ColumnClrNonNullableType) : FormatCSharpType(typeof(object));
+
+																				procedure.Columns.Add(column);
+																			}
+																		}
+																	}
+																}
+																catch (Exception ex)
+																{
+																	Console.Error.WriteLine(Reflexion.GetErrors(ex, 0));
+																}
+															}
 														}
 													}
 												}
 											}
 										}
-									}
-
-									var dataReaderUniqueKey = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeys"), this.CoreGetUniqueKeyParameters(unitOfWork, dataSourceTag, server, schema, table), out recordsAffected);
-									{
-										if ((object)dataReaderUniqueKey != null)
-										{
-											foreach (var drUniqueKey in dataReaderUniqueKey)
-											{
-												UniqueKey uniqueKey;
-
-												uniqueKey = new UniqueKey();
-
-												uniqueKey.UniqueKeyName = DataType.ChangeType<string>(drUniqueKey["UniqueKeyName"]);
-												uniqueKey.UniqueKeyIsDisabled = DataType.ChangeType<bool>(drUniqueKey["UniqueKeyIsDisabled"]);
-												uniqueKey.UniqueKeyNamePascalCase = Name.GetPascalCase(uniqueKey.UniqueKeyName);
-												uniqueKey.UniqueKeyNameCamelCase = Name.GetCamelCase(uniqueKey.UniqueKeyName);
-												uniqueKey.UniqueKeyNameConstantCase = Name.GetConstantCase(uniqueKey.UniqueKeyName);
-												uniqueKey.UniqueKeyNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(uniqueKey.UniqueKeyName));
-												uniqueKey.UniqueKeyNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(uniqueKey.UniqueKeyName));
-												uniqueKey.UniqueKeyNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(uniqueKey.UniqueKeyName));
-												uniqueKey.UniqueKeyNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(uniqueKey.UniqueKeyName));
-												uniqueKey.UniqueKeyNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(uniqueKey.UniqueKeyName));
-												uniqueKey.UniqueKeyNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(uniqueKey.UniqueKeyName));
-
-												uniqueKey.UniqueKeyNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(uniqueKey.UniqueKeyName);
-												uniqueKey.UniqueKeyNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(uniqueKey.UniqueKeyName);
-												uniqueKey.UniqueKeyNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(uniqueKey.UniqueKeyName));
-												uniqueKey.UniqueKeyNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(uniqueKey.UniqueKeyName));
-												uniqueKey.UniqueKeyNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(uniqueKey.UniqueKeyName));
-												uniqueKey.UniqueKeyNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(uniqueKey.UniqueKeyName));
-
-												table.UniqueKeys.Add(uniqueKey);
-
-												var dataReaderUniqueKeyColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeyColumns"), this.CoreGetUniqueKeyColumnParameters(unitOfWork, dataSourceTag, server, schema, table, uniqueKey), out recordsAffected);
-												{
-													if ((object)dataReaderUniqueKeyColumn != null)
-													{
-														foreach (var drUniqueKeyColumn in dataReaderUniqueKeyColumn)
-														{
-															UniqueKeyColumnRef uniqueKeyColumnRef;
-
-															uniqueKeyColumnRef = new UniqueKeyColumnRef();
-
-															uniqueKeyColumnRef.UniqueKeyOrdinal = DataType.ChangeType<int>(drUniqueKeyColumn["UniqueKeyOrdinal"]);
-															uniqueKeyColumnRef.ColumnOrdinal = DataType.ChangeType<int>(drUniqueKeyColumn["ColumnOrdinal"]);
-															uniqueKeyColumnRef.ColumnName = DataType.ChangeType<string>(drUniqueKeyColumn["ColumnName"]);
-															uniqueKeyColumnRef.UniqueKeyColumnDescendingSort = DataType.ChangeType<bool>(drUniqueKeyColumn["UniqueKeyColumnDescendingSort"]);
-
-															uniqueKey.UniqueKeyColumnRefs.Add(uniqueKeyColumnRef);
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-
-							var dataReaderProcedure = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Procedures"), this.CoreGetProcedureParameters(unitOfWork, dataSourceTag, server, schema), out recordsAffected);
-							{
-								if ((object)dataReaderProcedure != null)
-								{
-									foreach (var drProcedure in dataReaderProcedure)
-									{
-										Procedure procedure;
-
-										procedure = new Procedure();
-										procedure.ProcedureName = DataType.ChangeType<string>(drProcedure["ProcedureName"]);
-										procedure.ProcedureNamePascalCase = Name.GetPascalCase(procedure.ProcedureName);
-										procedure.ProcedureNameCamelCase = Name.GetCamelCase(procedure.ProcedureName);
-										procedure.ProcedureNameConstantCase = Name.GetConstantCase(procedure.ProcedureName);
-										procedure.ProcedureNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(procedure.ProcedureName));
-										procedure.ProcedureNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(procedure.ProcedureName));
-										procedure.ProcedureNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(procedure.ProcedureName));
-										procedure.ProcedureNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(procedure.ProcedureName));
-										procedure.ProcedureNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(procedure.ProcedureName));
-										procedure.ProcedureNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(procedure.ProcedureName));
-
-										procedure.ProcedureNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(procedure.ProcedureName);
-										procedure.ProcedureNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(procedure.ProcedureName);
-										procedure.ProcedureNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(procedure.ProcedureName));
-										procedure.ProcedureNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(procedure.ProcedureName));
-										procedure.ProcedureNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(procedure.ProcedureName));
-										procedure.ProcedureNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(procedure.ProcedureName));
-
-										schema.Procedures.Add(procedure);
-
-										var dataReaderParameter = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Parameters"), this.CoreGetParameterParameters(unitOfWork, dataSourceTag, server, schema, procedure), out recordsAffected);
-										{
-											if ((object)dataReaderParameter != null)
-											{
-												foreach (var drParameter in dataReaderParameter)
-												{
-													Parameter parameter;
-
-													parameter = new Parameter();
-
-													parameter.ParameterPrefix = DataType.ChangeType<string>(drParameter["ParameterName"]).Substring(0, 1);
-													parameter.ParameterName = DataType.ChangeType<string>(drParameter["ParameterName"]).Substring(1);
-													parameter.ParameterOrdinal = DataType.ChangeType<int>(drParameter["ParameterOrdinal"]);
-													parameter.ParameterSize = DataType.ChangeType<int>(drParameter["ParameterSize"]);
-													parameter.ParameterPrecision = DataType.ChangeType<int>(drParameter["ParameterPrecision"]);
-													parameter.ParameterScale = DataType.ChangeType<int>(drParameter["ParameterScale"]);
-													parameter.ParameterSqlType = DataType.ChangeType<string>(drParameter["ParameterSqlType"]);
-													parameter.ParameterIsOutput = DataType.ChangeType<bool>(drParameter["ParameterIsOutput"]);
-													parameter.ParameterIsReadOnly = DataType.ChangeType<bool>(drParameter["ParameterIsReadOnly"]);
-													parameter.ParameterIsCursorRef = DataType.ChangeType<bool>(drParameter["ParameterIsCursorRef"]);
-													parameter.ParameterIsReturnValue = DataType.ChangeType<bool>(drParameter["ParameterIsReturnValue"]);
-													parameter.ParameterDefaultValue = DataType.ChangeType<string>(drParameter["ParameterDefaultValue"]);
-													parameter.ParameterIsResultColumn = DataType.ChangeType<bool>(drParameter["ParameterIsResultColumn"]);
-													parameter.ParameterNamePascalCase = Name.GetPascalCase(parameter.ParameterName);
-													parameter.ParameterNameCamelCase = Name.GetCamelCase(parameter.ParameterName);
-													parameter.ParameterNameConstantCase = Name.GetConstantCase(parameter.ParameterName);
-													parameter.ParameterNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(parameter.ParameterName));
-													parameter.ParameterNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(parameter.ParameterName));
-													parameter.ParameterNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(parameter.ParameterName));
-													parameter.ParameterNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(parameter.ParameterName));
-													parameter.ParameterNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(parameter.ParameterName));
-													parameter.ParameterNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(parameter.ParameterName));
-
-													parameter.ParameterNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(parameter.ParameterName);
-													parameter.ParameterNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(parameter.ParameterName);
-													parameter.ParameterNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(parameter.ParameterName));
-													parameter.ParameterNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(parameter.ParameterName));
-													parameter.ParameterNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(parameter.ParameterName));
-													parameter.ParameterNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(parameter.ParameterName));
-
-													parameter.ParameterNullable = true;
-													parameter.ParameterDirection = (parameter.ParameterIsOutput || parameter.ParameterIsReadOnly) ? ParameterDirection.Output : ParameterDirection.Input;
-
-													clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, parameter.ParameterSqlType, parameter.ParameterPrecision);
-													parameter.ParameterDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
-													parameter.ParameterSize = this.CoreCalculateParameterSize(dataSourceTag, parameter);
-
-													parameter.ParameterClrType = clrType;
-													parameter.ParameterClrNullableType = Reflexion.MakeNullableType(clrType);
-													parameter.ParameterClrNonNullableType = Reflexion.MakeNonNullableType(clrType);
-													parameter.ParameterCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, parameter.ParameterDbType);
-													parameter.ParameterCSharpClrType = (object)parameter.ParameterClrType != null ? FormatCSharpType(parameter.ParameterClrType) : FormatCSharpType(typeof(object));
-													parameter.ParameterCSharpClrNullableType = (object)parameter.ParameterClrNullableType != null ? FormatCSharpType(parameter.ParameterClrNullableType) : FormatCSharpType(typeof(object));
-													parameter.ParameterCSharpClrNonNullableType = (object)parameter.ParameterClrNonNullableType != null ? FormatCSharpType(parameter.ParameterClrNonNullableType) : FormatCSharpType(typeof(object));
-													parameter.ParameterCSharpNullableLiteral = parameter.ParameterNullable.ToString().ToLower();
-
-													procedure.Parameters.Add(parameter);
-												}
-											}
-
-											// implicit return value parameter
-											if (this.CoreGetEmitImplicitReturnParameter(dataSourceTag))
-											{
-												Parameter parameter;
-
-												parameter = new Parameter();
-
-												parameter.ParameterPrefix = this.CoreGetParameterPrefix(dataSourceTag);
-												parameter.ParameterName = RETURN_VALUE;
-												parameter.ParameterOrdinal = int.MaxValue;
-												parameter.ParameterSize = 0;
-												parameter.ParameterPrecision = 0;
-												parameter.ParameterScale = 0;
-												parameter.ParameterSqlType = "int";
-												parameter.ParameterIsOutput = true;
-												parameter.ParameterIsReadOnly = true;
-												parameter.ParameterIsCursorRef = false;
-												parameter.ParameterIsReturnValue = true;
-												parameter.ParameterDefaultValue = null;
-												parameter.ParameterIsResultColumn = false;
-												parameter.ParameterNamePascalCase = Name.GetPascalCase(RETURN_VALUE);
-												parameter.ParameterNameCamelCase = Name.GetCamelCase(RETURN_VALUE);
-												parameter.ParameterNameConstantCase = Name.GetConstantCase(RETURN_VALUE);
-												parameter.ParameterNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(RETURN_VALUE));
-												parameter.ParameterNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(RETURN_VALUE));
-												parameter.ParameterNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(RETURN_VALUE));
-												parameter.ParameterNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(RETURN_VALUE));
-												parameter.ParameterNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(RETURN_VALUE));
-												parameter.ParameterNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(RETURN_VALUE));
-
-												parameter.ParameterNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(RETURN_VALUE);
-												parameter.ParameterNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(RETURN_VALUE);
-												parameter.ParameterNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(RETURN_VALUE));
-												parameter.ParameterNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(RETURN_VALUE));
-												parameter.ParameterNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(RETURN_VALUE));
-												parameter.ParameterNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(RETURN_VALUE));
-
-												parameter.ParameterNullable = true;
-												parameter.ParameterDirection = ParameterDirection.ReturnValue;
-
-												clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, parameter.ParameterSqlType, parameter.ParameterPrecision);
-												parameter.ParameterDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
-												parameter.ParameterSize = this.CoreCalculateParameterSize(dataSourceTag, parameter);
-
-												parameter.ParameterClrType = clrType;
-												parameter.ParameterClrNullableType = Reflexion.MakeNullableType(clrType);
-												parameter.ParameterClrNonNullableType = Reflexion.MakeNonNullableType(clrType);
-												parameter.ParameterCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, parameter.ParameterDbType);
-												parameter.ParameterCSharpClrType = (object)parameter.ParameterClrType != null ? FormatCSharpType(parameter.ParameterClrType) : FormatCSharpType(typeof(object));
-												parameter.ParameterCSharpClrNullableType = (object)parameter.ParameterClrNullableType != null ? FormatCSharpType(parameter.ParameterClrNullableType) : FormatCSharpType(typeof(object));
-												parameter.ParameterCSharpClrNonNullableType = (object)parameter.ParameterClrNonNullableType != null ? FormatCSharpType(parameter.ParameterClrNonNullableType) : FormatCSharpType(typeof(object));
-												parameter.ParameterCSharpNullableLiteral = parameter.ParameterNullable.ToString().ToLower();
-
-												procedure.Parameters.Add(parameter);
-											}
-										}
-
-										// re-map result column parameters into first class columns
-										Parameter[] columnParameters;
-										columnParameters = procedure.Parameters.Where(p => p.ParameterIsResultColumn).ToArray();
-
-										if ((object)columnParameters != null && columnParameters.Length > 0)
-										{
-											foreach (Parameter columnParameter in columnParameters)
-											{
-												Column column;
-
-												column = new Column();
-
-												column.ColumnName = columnParameter.ParameterName;
-												column.ColumnOrdinal = columnParameter.ParameterOrdinal;
-												column.ColumnNullable = columnParameter.ParameterNullable;
-												column.ColumnSize = columnParameter.ParameterSize;
-												column.ColumnPrecision = columnParameter.ParameterPrecision;
-												column.ColumnScale = columnParameter.ParameterScale;
-												column.ColumnSqlType = columnParameter.ParameterSqlType;
-												column.ColumnIsIdentity = false;
-												column.ColumnIsComputed = false;
-												column.ColumnHasDefault = !DataType.IsNullOrWhiteSpace(columnParameter.ParameterDefaultValue);
-												column.ColumnHasCheck = false;
-												column.ColumnIsPrimaryKey = false;
-												column.ColumnNamePascalCase = Name.GetPascalCase(columnParameter.ParameterName);
-												column.ColumnNameCamelCase = Name.GetCamelCase(columnParameter.ParameterName);
-												column.ColumnNameConstantCase = Name.GetConstantCase(columnParameter.ParameterName);
-												column.ColumnNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(columnParameter.ParameterName));
-												column.ColumnNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(columnParameter.ParameterName));
-												column.ColumnNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(columnParameter.ParameterName));
-												column.ColumnNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(columnParameter.ParameterName));
-												column.ColumnNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(columnParameter.ParameterName));
-												column.ColumnNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(columnParameter.ParameterName));
-
-												column.ColumnNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(columnParameter.ParameterName);
-												column.ColumnNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(columnParameter.ParameterName);
-												column.ColumnNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(columnParameter.ParameterName));
-												column.ColumnNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(columnParameter.ParameterName));
-												column.ColumnNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(columnParameter.ParameterName));
-												column.ColumnNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(columnParameter.ParameterName));
-
-												clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, columnParameter.ParameterSqlType, columnParameter.ParameterPrecision);
-												column.ColumnDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
-												column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
-
-												column.ColumnClrType = clrType ?? typeof(object);
-												column.ColumnClrNullableType = Reflexion.MakeNullableType(clrType);
-												column.ColumnClrNonNullableType = Reflexion.MakeNonNullableType(clrType);
-												column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
-												column.ColumnCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
-												column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
-												column.ColumnCSharpClrNullableType = (object)column.ColumnClrNullableType != null ? FormatCSharpType(column.ColumnClrNullableType) : FormatCSharpType(typeof(object));
-												column.ColumnCSharpClrNonNullableType = (object)column.ColumnClrNonNullableType != null ? FormatCSharpType(column.ColumnClrNonNullableType) : FormatCSharpType(typeof(object));
-
-												//procedure.Columns.Add(column);
-												procedure.Parameters.Remove(columnParameter);
-											}
-										}
-
-										if (!disableProcSchDisc)
-										{
-											// REFERENCE:
-											// http://connect.microsoft.com/VisualStudio/feedback/details/314650/sqm1014-sqlmetal-ignores-stored-procedures-that-use-temp-tables
-											IDataParameter[] parameters;
-											parameters = procedure.Parameters.Where(p => !p.ParameterIsReturnValue && !p.ParameterIsResultColumn).Select(p => unitOfWork.CreateParameter(p.ParameterIsOutput ? ParameterDirection.Output : ParameterDirection.Input, p.ParameterDbType, p.ParameterSize, (byte)p.ParameterPrecision, (byte)p.ParameterScale, p.ParameterNullable, p.ParameterName, null)).ToArray();
-
-											try
-											{
-												var dataReaderMetadata = AdoNetHelper.ExecuteSchema(unitOfWork, CommandType.StoredProcedure, string.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), schema.SchemaName, procedure.ProcedureName), parameters);
-												{
-													if ((object)dataReaderMetadata != null)
-													{
-														foreach (var drMetadata in dataReaderMetadata)
-														{
-															Column column;
-
-															column = new Column();
-
-															column.ColumnName = DataType.ChangeType<string>(drMetadata["ColumnName"]);
-															column.ColumnOrdinal = DataType.ChangeType<int>(drMetadata["ColumnOrdinal"]);
-															column.ColumnNullable = DataType.ChangeType<bool>(drMetadata["AllowDBNull"]);
-															column.ColumnSize = DataType.ChangeType<int>(drMetadata["ColumnSize"]);
-															column.ColumnPrecision = DataType.ChangeType<int>(drMetadata["NumericPrecision"]);
-															column.ColumnScale = DataType.ChangeType<int>(drMetadata["NumericScale"]);
-															// TODO FIX
-															//column.ColumnSqlType = DataType.ChangeType<string>(drMetadata["DataTypeName"]);
-															//column.ColumnIsIdentity = DataType.ChangeType<bool>(drMetadata["IsIdentity"]);
-															//column.ColumnIsComputed = DataType.ChangeType<bool>(drMetadata["IsReadOnly"]);
-															//column.ColumnHasDefault = DataType.ChangeType<bool>(drMetadata["ColumnHasDefault"]);
-															//column.ColumnHasCheck = DataType.ChangeType<bool>(drMetadata["ColumnHasCheck"]);
-															//column.ColumnIsPrimaryKey = DataType.ChangeType<bool>(drMetadata["IsKey"]);
-															column.ColumnNamePascalCase = Name.GetPascalCase(column.ColumnName);
-															column.ColumnNameCamelCase = Name.GetCamelCase(column.ColumnName);
-															column.ColumnNameConstantCase = Name.GetConstantCase(column.ColumnName);
-															column.ColumnNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(column.ColumnName));
-															column.ColumnNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(column.ColumnName));
-															column.ColumnNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(column.ColumnName));
-															column.ColumnNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(column.ColumnName));
-															column.ColumnNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(column.ColumnName));
-															column.ColumnNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(column.ColumnName));
-
-															column.ColumnNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(column.ColumnName);
-															column.ColumnNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(column.ColumnName);
-															column.ColumnNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(column.ColumnName));
-															column.ColumnNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(column.ColumnName));
-															column.ColumnNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(column.ColumnName));
-															column.ColumnNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(column.ColumnName));
-
-															clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType, column.ColumnPrecision);
-															column.ColumnDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
-															column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
-
-															column.ColumnClrType = clrType ?? typeof(object);
-															column.ColumnClrNullableType = Reflexion.MakeNullableType(clrType);
-															column.ColumnClrNonNullableType = Reflexion.MakeNonNullableType(clrType);
-															column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
-															column.ColumnCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
-															column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
-															column.ColumnCSharpClrNullableType = (object)column.ColumnClrNullableType != null ? FormatCSharpType(column.ColumnClrNullableType) : FormatCSharpType(typeof(object));
-															column.ColumnCSharpClrNonNullableType = (object)column.ColumnClrNonNullableType != null ? FormatCSharpType(column.ColumnClrNonNullableType) : FormatCSharpType(typeof(object));
-
-															procedure.Columns.Add(column);
-														}
-													}
-												}
-											}
-											catch (Exception ex)
-											{
-												Console.Error.WriteLine(Reflexion.GetErrors(ex, 0));
-											}
-										}
-									}
+									} // END SCHEMA
 								}
 							}
 						}

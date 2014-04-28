@@ -4,6 +4,8 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
@@ -23,6 +25,10 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		#endregion
 
 		#region Fields/Constants
+
+		private readonly List<Schema> schemas = new List<Schema>();
+		private readonly List<Trigger> triggers = new List<Trigger>();
+		private int databaseId;
 
 		private string databaseName;
 		private string databaseNameCamelCase;
@@ -44,6 +50,19 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		[XmlAttribute]
+		public int DatabaseId
+		{
+			get
+			{
+				return this.databaseId;
+			}
+			set
+			{
+				this.databaseId = value;
+			}
+		}
 
 		[XmlAttribute]
 		public string DatabaseName
@@ -250,6 +269,53 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.databaseNameSqlMetalSingularPascalCase = value;
+			}
+		}
+
+		[XmlIgnore]
+		public bool HasProcedures
+		{
+			get
+			{
+				return this.Schemas.Count(s => s.Procedures.Count() > 0) > 0;
+			}
+		}
+
+		[XmlIgnore]
+		public bool HasTables
+		{
+			get
+			{
+				return this.Schemas.Count(s => s.Tables.Count(t => !t.IsView) > 0) > 0;
+			}
+		}
+
+		[XmlIgnore]
+		public bool HasViews
+		{
+			get
+			{
+				return this.Schemas.Count(s => s.Tables.Count(t => t.IsView) > 0) > 0;
+			}
+		}
+
+		[XmlArray(ElementName = "Schemas")]
+		[XmlArrayItem(ElementName = "Schema")]
+		public List<Schema> Schemas
+		{
+			get
+			{
+				return this.schemas;
+			}
+		}
+
+		[XmlArray(ElementName = "Triggers")]
+		[XmlArrayItem(ElementName = "Trigger")]
+		public List<Trigger> Triggers
+		{
+			get
+			{
+				return this.triggers;
 			}
 		}
 

@@ -36,8 +36,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)column == null)
 				throw new ArgumentNullException("column");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
 			{
 				return column.ColumnSqlType == "image" ||
 						column.ColumnSqlType == "text" ||
@@ -60,8 +59,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)parameter == null)
 				throw new ArgumentNullException("parameter");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
 			{
 				return parameter.ParameterSqlType == "image" ||
 						parameter.ParameterSqlType == "text" ||
@@ -75,7 +73,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table)
+		protected override IEnumerable<IDataParameter> CoreGetColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -86,17 +84,21 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)server == null)
 				throw new ArgumentNullException("server");
 
+			if ((object)database == null)
+				throw new ArgumentNullException("database");
+
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
 
 			if ((object)table == null)
 				throw new ArgumentNullException("table");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
 			{
 				return new IDataParameter[]
 						{
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableOrViewName", table.TableName)
 						};
@@ -105,37 +107,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetDatabaseParameters(IUnitOfWork unitOfWork, string dataSourceTag)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
-
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
-				return null;
-
-			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
-		}
-
-		protected override IEnumerable<IDataParameter> CoreGetDdlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server)
-		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
-
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
-				return null;
-
-			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
-		}
-
-		protected override IEnumerable<IDataParameter> CoreGetDmlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table)
+		protected override IEnumerable<IDataParameter> CoreGetDatabaseParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -146,17 +118,63 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)server == null)
 				throw new ArgumentNullException("server");
 
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			{
+				return new IDataParameter[]
+						{
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName)
+						};
+			}
+
+			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
+		}
+
+		protected override IEnumerable<IDataParameter> CoreGetDdlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)dataSourceTag == null)
+				throw new ArgumentNullException("dataSourceTag");
+
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			{
+				return new IDataParameter[]
+						{
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName)
+						};
+			}
+
+			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
+		}
+
+		protected override IEnumerable<IDataParameter> CoreGetDmlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)dataSourceTag == null)
+				throw new ArgumentNullException("dataSourceTag");
+
+			if ((object)server == null)
+				throw new ArgumentNullException("server");
+
+			if ((object)database == null)
+				throw new ArgumentNullException("database");
+
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
 
 			if ((object)table == null)
 				throw new ArgumentNullException("table");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
 			{
 				return new IDataParameter[]
 						{
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableOrViewName", table.TableName)
 						};
@@ -170,14 +188,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
 				return true;
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetForeignKeyColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table, ForeignKey foreignKey)
+		protected override IEnumerable<IDataParameter> CoreGetForeignKeyColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table, ForeignKey foreignKey)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -187,6 +204,9 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 
 			if ((object)server == null)
 				throw new ArgumentNullException("server");
+
+			if ((object)database == null)
+				throw new ArgumentNullException("database");
 
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
@@ -197,11 +217,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)foreignKey == null)
 				throw new ArgumentNullException("foreignKey");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
 			{
 				return new IDataParameter[]
 						{
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ForeignKeyName", foreignKey.ForeignKeyName)
@@ -211,7 +232,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetForeignKeyParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table)
+		protected override IEnumerable<IDataParameter> CoreGetForeignKeyParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -222,17 +243,21 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)server == null)
 				throw new ArgumentNullException("server");
 
+			if ((object)database == null)
+				throw new ArgumentNullException("database");
+
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
 
 			if ((object)table == null)
 				throw new ArgumentNullException("table");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
 			{
 				return new IDataParameter[]
 						{
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName)
 						};
@@ -241,7 +266,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetParameterParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Procedure procedure)
+		protected override IEnumerable<IDataParameter> CoreGetParameterParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Procedure procedure)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -252,17 +277,21 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)server == null)
 				throw new ArgumentNullException("server");
 
+			if ((object)database == null)
+				throw new ArgumentNullException("database");
+
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
 
 			if ((object)procedure == null)
 				throw new ArgumentNullException("procedure");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
 			{
 				return new IDataParameter[]
 						{
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ProcedureName", procedure.ProcedureName)
 						};
@@ -276,14 +305,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
 				return "@";
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetProcedureParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema)
+		protected override IEnumerable<IDataParameter> CoreGetProcedureParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -294,29 +322,60 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)server == null)
 				throw new ArgumentNullException("server");
 
+			if ((object)database == null)
+				throw new ArgumentNullException("database");
+
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
-				return new IDataParameter[] { unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName) };
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			{
+				return new IDataParameter[]
+						{
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName)
+						};
+			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetSchemaParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server)
+		protected override IEnumerable<IDataParameter> CoreGetSchemaParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database)
 		{
 			if ((object)server == null)
 				throw new ArgumentNullException("server");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+			if ((object)database == null)
+				throw new ArgumentNullException("database");
+
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			{
+				return new IDataParameter[]
+						{
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName)
+						};
+			}
+
+			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
+		}
+
+		protected override IEnumerable<IDataParameter> CoreGetServerParameters(IUnitOfWork unitOfWork, string dataSourceTag)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)dataSourceTag == null)
+				throw new ArgumentNullException("dataSourceTag");
+
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
 				return null;
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetTableParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema)
+		protected override IEnumerable<IDataParameter> CoreGetTableParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -326,18 +385,27 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 
 			if ((object)server == null)
 				throw new ArgumentNullException("server");
+
+			if ((object)database == null)
+				throw new ArgumentNullException("database");
 
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
-				return new IDataParameter[] { unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName) };
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			{
+				return new IDataParameter[]
+						{
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName)
+						};
+			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetUniqueKeyColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table, UniqueKey uniqueKey)
+		protected override IEnumerable<IDataParameter> CoreGetUniqueKeyColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table, UniqueKey uniqueKey)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -347,6 +415,9 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 
 			if ((object)server == null)
 				throw new ArgumentNullException("server");
+
+			if ((object)database == null)
+				throw new ArgumentNullException("database");
 
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
@@ -357,11 +428,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)uniqueKey == null)
 				throw new ArgumentNullException("uniqueKey");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
 			{
 				return new IDataParameter[]
 						{
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@UniqueKeyName", uniqueKey.UniqueKeyName)
@@ -371,7 +443,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDataParameter> CoreGetUniqueKeyParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Schema schema, Table table)
+		protected override IEnumerable<IDataParameter> CoreGetUniqueKeyParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -382,17 +454,21 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)server == null)
 				throw new ArgumentNullException("server");
 
+			if ((object)database == null)
+				throw new ArgumentNullException("database");
+
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
 
 			if ((object)table == null)
 				throw new ArgumentNullException("table");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
 			{
 				return new IDataParameter[]
 						{
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName)
 						};
@@ -406,8 +482,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver" ||
-				dataSourceTag.SafeToString().ToLower() == "net.sqlce")
+			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
 			{
 				switch (sqlType = sqlType.SafeToString().ToUpper())
 				{

@@ -28,15 +28,15 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		#region Fields/Constants
 
 		private readonly List<Database> databases = new List<Database>();
-		private readonly List<Schema> schemas = new List<Schema>();
-		private readonly List<Trigger> triggers = new List<Trigger>();
 		private string connectionString;
 		private string connectionType;
 		private string defaultDatabaseName;
 		private string instanceName;
 		private string machineName;
 		private string serverEdition;
+		private int serverId;
 		private string serverLevel;
+		private string serverName;
 		private string serverVersion;
 
 		#endregion
@@ -119,33 +119,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 		}
 
-		[XmlIgnore]
-		public bool HasProcedures
-		{
-			get
-			{
-				return this.Schemas.Count(s => s.Procedures.Count() > 0) > 0;
-			}
-		}
-
-		[XmlIgnore]
-		public bool HasTables
-		{
-			get
-			{
-				return this.Schemas.Count(s => s.Tables.Count(t => !t.IsView) > 0) > 0;
-			}
-		}
-
-		[XmlIgnore]
-		public bool HasViews
-		{
-			get
-			{
-				return this.Schemas.Count(s => s.Tables.Count(t => t.IsView) > 0) > 0;
-			}
-		}
-
 		[XmlAttribute]
 		public string InstanceName
 		{
@@ -172,16 +145,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 		}
 
-		[XmlArray(ElementName = "Schemas")]
-		[XmlArrayItem(ElementName = "Schema")]
-		public List<Schema> Schemas
-		{
-			get
-			{
-				return this.schemas;
-			}
-		}
-
 		[XmlAttribute]
 		public string ServerEdition
 		{
@@ -192,6 +155,19 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.serverEdition = value;
+			}
+		}
+
+		[XmlAttribute]
+		public int ServerId
+		{
+			get
+			{
+				return this.serverId;
+			}
+			set
+			{
+				this.serverId = value;
 			}
 		}
 
@@ -208,16 +184,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 		}
 
-		[XmlIgnore]
+		[XmlAttribute]
 		public string ServerName
 		{
 			get
 			{
-				if (!string.IsNullOrEmpty(this.MachineName) &&
-					!string.IsNullOrEmpty(this.MachineName))
-					return string.Format("{0}\\{1}", this.MachineName, this.InstanceName);
-				else
-					return this.MachineName;
+				return this.serverName;
+			}
+			set
+			{
+				this.serverName = value;
 			}
 		}
 
@@ -231,16 +207,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.serverVersion = value;
-			}
-		}
-
-		[XmlArray(ElementName = "Triggers")]
-		[XmlArrayItem(ElementName = "Trigger")]
-		public List<Trigger> Triggers
-		{
-			get
-			{
-				return this.triggers;
 			}
 		}
 

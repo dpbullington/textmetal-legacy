@@ -246,6 +246,18 @@
     <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\DdlTriggerExtProps.sql" />
     <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\DdlTriggers.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\Databases.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\DatabaseExtProps.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\DatabaseExtProps.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\Databases.sql" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

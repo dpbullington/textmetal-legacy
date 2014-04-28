@@ -9,7 +9,6 @@ using System.Xml.Serialization;
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	[XmlRoot(ElementName = "ExtendedProperty", Namespace = "http://www.textmetal.com/api/v6.0.0")]
 	public class ExtendedProperty
 	{
 		#region Constructors/Destructors

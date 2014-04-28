@@ -5,8 +5,7 @@
 
 -- server
 SELECT
-	CAST(NULL AS [int]) as [ServerId],
-	SERVERPROPERTY('ServerName') AS [ServerName],
+	CAST(NULL AS [int]) as [ObjectId],
 	SERVERPROPERTY('MachineName') AS [MachineName],
 	SERVERPROPERTY('InstanceName') AS [InstanceName],
 	SERVERPROPERTY('ProductVersion') AS [ServerVersion],

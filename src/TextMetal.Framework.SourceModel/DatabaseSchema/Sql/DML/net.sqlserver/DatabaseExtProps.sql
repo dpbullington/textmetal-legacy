@@ -3,19 +3,17 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
--- extended properties for schema
+-- extended properties for database
 SELECT
 	sys_ep.[name] AS [PropertyName],
 	sys_ep.[value] AS [PropertyValue]
 FROM
     [sys].[extended_properties] sys_ep
-	INNER JOIN [sys].[schemas] sys_s ON sys_s.[schema_id] = sys_ep.[major_id]
 WHERE
 	@ServerName IS NOT NULL
 	AND @DatabaseName IS NOT NULL
-	AND sys_s.[name] = @SchemaName
-	AND sys_ep.[class] = 3 -- SCHEMA
-	--AND sys_ep.[major_id] = 0
-	--AND sys_ep.[minor_id] = 0
+	AND sys_ep.[class] = 0 -- DATABASE
+	AND sys_ep.[major_id] = 0
+	AND sys_ep.[minor_id] = 0
 ORDER BY
 	sys_ep.[name] ASC

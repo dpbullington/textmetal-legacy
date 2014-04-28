@@ -444,7 +444,7 @@ IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
-echo *** adonet_codegen_execute ***
+echo *** adonet-odbc_codegen_execute ***
 "..\..\src\TextMetal.HostImpl.ConsoleTool\bin\Debug\TextMetal.exe" ^
 	-templatefile:"master_template.xml" ^
 	-sourcefile:"%ADO_NET_CONNECTION_STRING%" ^

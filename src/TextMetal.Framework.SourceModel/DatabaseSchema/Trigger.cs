@@ -28,6 +28,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private bool isInsteadOfTrigger;
 		private bool isTriggerDisabled;
 		private bool isTriggerNotForReplication;
+		private int triggerId;
 
 		private string triggerName;
 		private string triggerNameCamelCase;
@@ -100,6 +101,18 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.isTriggerNotForReplication = value;
+			}
+		}
+
+		public int TriggerId
+		{
+			get
+			{
+				return this.triggerId;
+			}
+			set
+			{
+				this.triggerId = value;
 			}
 		}
 
