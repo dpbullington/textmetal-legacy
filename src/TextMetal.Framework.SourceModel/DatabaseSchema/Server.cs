@@ -119,6 +119,36 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 		}
 
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool HasProcedures
+		{
+			get
+			{
+				return this.Schemas.Count(s => s.Procedures.Count() > 0) > 0;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool HasTables
+		{
+			get
+			{
+				return this.Schemas.Count(s => s.Tables.Count(t => !t.IsView) > 0) > 0;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool HasViews
+		{
+			get
+			{
+				return this.Schemas.Count(s => s.Tables.Count(t => t.IsView) > 0) > 0;
+			}
+		}
+
 		[XmlAttribute]
 		public string InstanceName
 		{
@@ -142,6 +172,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.machineName = value;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public List<Schema> Schemas
+		{
+			get
+			{
+				return this.Databases.SingleOrDefault(db => db.DatabaseName == this.DefaultDatabaseName).Schemas;
 			}
 		}
 

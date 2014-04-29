@@ -145,13 +145,14 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			const string PROP_TOKEN_DATABASE_FILTER = "DatabaseFilter";
 			const string PROP_TOKEN_SCHEMA_FILTER = "SchemaFilter";
 			const string PROP_DISABLE_PROCEDURE_SCHEMA_DISCOVERY = "DisableProcedureSchemaDiscovery";
+			const string PROP_ENABLE_DATABASE_FILTER = "EnableDatabaseFilter";
 			string connectionAqtn;
 			Type connectionType = null;
 			string connectionString = null;
 			string dataSourceTag;
 			string[] databaseFilter;
 			string[] schemaFilter;
-			bool disableProcSchDisc;
+			bool disableProcSchDisc, enableDatabaseFilter;
 			IList<string> values;
 
 			if ((object)sourceFilePath == null)
@@ -216,7 +217,14 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 					DataType.TryParse<bool>(values[0], out disableProcSchDisc);
 			}
 
-			return this.GetSchemaModel(connectionString, connectionType, dataSourceTag, databaseFilter, schemaFilter, disableProcSchDisc);
+			enableDatabaseFilter = false;
+			if (properties.TryGetValue(PROP_ENABLE_DATABASE_FILTER, out values))
+			{
+				if ((object)values != null && values.Count > 0)
+					DataType.TryParse<bool>(values[0], out enableDatabaseFilter);
+			}
+
+			return this.GetSchemaModel(connectionString, connectionType, dataSourceTag, databaseFilter, schemaFilter, disableProcSchDisc, enableDatabaseFilter);
 		}
 
 		protected abstract IEnumerable<IDataParameter> CoreGetTableParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema);
@@ -227,14 +235,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		protected abstract Type CoreInferClrTypeForSqlType(string dataSourceTag, string sqlType, int sqlPrecision);
 
-		private object GetSchemaModel(string connectionString, Type connectionType, string dataSourceTag, string[] databaseFilter, string[] schemaFilter, bool disableProcSchDisc)
+		private object GetSchemaModel(string connectionString, Type connectionType, string dataSourceTag, string[] databaseFilter, string[] schemaFilter, bool disableProcSchDisc, bool enableDatabaseFilter)
 		{
 			Server server;
 			int recordsAffected;
 			const string RETURN_VALUE = "ReturnValue";
 			Type clrType;
-			bool enableDatabaseFilter = false;
-
+			
 			if ((object)connectionString == null)
 				throw new ArgumentNullException("connectionString");
 
@@ -313,6 +320,8 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 												continue;
 										}
 									}
+
+									unitOfWork.ExecuteDictionary(CommandType.Text, string.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UseDatabase"), server.ServerName, database.DatabaseName), null, out recordsAffected);
 
 									this.ApplyExtendedProperties(unitOfWork, database, dataSourceTag, "DatabaseExtProps", this.CoreGetSchemaParameters(unitOfWork, dataSourceTag, server, database));
 
@@ -879,7 +888,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 																try
 																{
-																	var dataReaderMetadata = AdoNetHelper.ExecuteSchema(unitOfWork, CommandType.StoredProcedure, string.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), schema.SchemaName, procedure.ProcedureName), parameters);
+																	var dataReaderMetadata = AdoNetHelper.ExecuteSchema(unitOfWork, CommandType.StoredProcedure, string.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), server.ServerName, database.DatabaseName, schema.SchemaName, procedure.ProcedureName), parameters);
 																	{
 																		if ((object)dataReaderMetadata != null)
 																		{
