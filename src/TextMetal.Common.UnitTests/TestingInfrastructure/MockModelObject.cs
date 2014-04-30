@@ -11,11 +11,11 @@ using TextMetal.Common.Data;
 
 namespace TextMetal.Common.UnitTests.TestingInfrastructure
 {
-	public class MockPlainObject : IPlainObject
+	public class MockModelObject : IModelObject
 	{
 		#region Constructors/Destructors
 
-		public MockPlainObject()
+		public MockModelObject()
 		{
 		}
 

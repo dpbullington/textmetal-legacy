@@ -11,14 +11,14 @@ using TextMetal.Common.Core;
 namespace TextMetal.Common.Data
 {
 	/// <summary>
-	/// Provides a contract for plain objects (domain, transfer, etc.).
-	/// </summary>
-	public interface IPlainObject
+	/// Provides a contract for model objects (domain, data, service, transfer, etc.).
+	/// </summary
+	public interface IModelObject
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// Gets or sets a value indicating whether the current plain object instance is
+		/// Gets or sets a value indicating whether the current model object instance is
 		/// new (never been persisted) or old (has been persisted).
 		/// </summary>
 		bool IsNew
@@ -32,14 +32,14 @@ namespace TextMetal.Common.Data
 		#region Methods/Operators
 
 		/// <summary>
-		/// Mark an instance prior to a data operation.
+		/// Called prior to any remote non-idempotent operation.
 		/// </summary>
 		void Mark();
 
 		/// <summary>
-		/// Validate the current plain object, returning an enumerable of messages.
+		/// Validates this model instance.
 		/// </summary>
-		/// <returns> An enumerable of messages. </returns>
+		/// <returns> A enumerable of zero or more messages. </returns>
 		IEnumerable<Message> Validate();
 
 		#endregion

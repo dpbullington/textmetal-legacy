@@ -19,16 +19,16 @@ namespace TextMetal.Common.Data
 	{
 		#region Methods/Operators
 
-		public static TResponse ExecuteReReRe<TRequest, TResult, TResponse>(this IUnitOfWork unitOfWork, TRequest request, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, bool executeAsCud, int thisOrThatRecordsAffected, Action<IDictionary<string, object>, TResult> mapToCallback)
-			where TRequest : class, new()
-			where TResult : class, new()
-			where TResponse : class, new()
+		public static TResponse ExecuteModel<TRequest, TResult, TResponse>(this IUnitOfWork unitOfWork, TRequest request, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, bool executeAsCud, int thisOrThatRecordsAffected, Action<IDictionary<string, object>, TResult> mapToCallback, Func<TResponse> createNewResponseCallback, Func<TResult> createNewResultCallback)
+			where TRequest : class, IRequestModelObject
+			where TResult : class, IResultModelObject
+			where TResponse : class, IResponseModelObject
 		{
 			TResponse response;
 			TResult result;
 			int recordsAffected;
 			IEnumerable<IDictionary<string, object>> results;
-			IList<TResult> list = null;
+			IList<TResult> list;
 			object value;
 
 			if ((object)unitOfWork == null)
@@ -45,6 +45,12 @@ namespace TextMetal.Common.Data
 
 			if ((object)mapToCallback == null)
 				throw new ArgumentNullException("mapToCallback");
+
+			if ((object)createNewResponseCallback == null)
+				throw new ArgumentNullException("createNewResponseCallback");
+
+			if ((object)createNewResultCallback == null)
+				throw new ArgumentNullException("createNewResultCallback");
 
 			if (DataType.IsNullOrWhiteSpace(commandText))
 				throw new ArgumentOutOfRangeException("commandText");
@@ -67,29 +73,27 @@ namespace TextMetal.Common.Data
 			if ((object)results == null)
 				throw new InvalidOperationException(string.Format("Results collection was invalid."));
 
-			response = new TResponse();
+			response = createNewResponseCallback();
 
-			if (Reflexion.GetLogicalPropertyValue(response, "Results", out value))
-				list = value as IList<TResult>; // should this be IEnumerable?
+			list = new List<TResult>();
 
-			if ((object)list != null)
-				list.Clear();
+			if (!Reflexion.SetLogicalPropertyValue(response, "Results", (IEnumerable<TResult>)list))
+				throw new InvalidOperationException(string.Format("Results enumerable was not found on type '{0}'.", typeof(TResponse)));
 
 			foreach (IDictionary<string, object> _result in results)
 			{
-				result = new TResult();
+				result = createNewResultCallback();
 
 				mapToCallback(_result, result);
 
-				if ((object)list != null)
-					list.Add(result);
+				list.Add(result);
 			}
 
 			return response;
 		}
 
-		public static TModel FetchModel<TModel>(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, int queryExpectedRecordsAffected, Action<IDictionary<string, object>, TModel> mapToCallback)
-			where TModel : class, new()
+		public static TModel FetchModel<TModel>(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, int queryExpectedRecordsAffected, Action<IDictionary<string, object>, TModel> mapToCallback, Func<TModel> createNewCallback)
+			where TModel : class, IModelObject
 		{
 			TModel model;
 			int recordsAffected;
@@ -107,6 +111,9 @@ namespace TextMetal.Common.Data
 
 			if ((object)mapToCallback == null)
 				throw new ArgumentNullException("mapToCallback");
+
+			if ((object)createNewCallback == null)
+				throw new ArgumentNullException("createNewCallback");
 
 			if (DataType.IsNullOrWhiteSpace(commandText))
 				throw new ArgumentOutOfRangeException("commandText");
@@ -128,7 +135,7 @@ namespace TextMetal.Common.Data
 			if ((object)result == null)
 				return null;
 
-			model = new TModel();
+			model = createNewCallback();
 
 			mapToCallback(result, model);
 
@@ -160,7 +167,7 @@ namespace TextMetal.Common.Data
 
 			if ((object)result == null)
 				return default(TValue);
-			
+
 			if (result.Count != 1)
 				return default(TValue);
 
@@ -173,7 +180,7 @@ namespace TextMetal.Common.Data
 		}
 
 		public static void FillModel<TModel>(this IUnitOfWork unitOfWork, TModel model, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, int queryExpectedRecordsAffected, Action<IDictionary<string, object>, TModel> mapToCallback)
-			where TModel : class, new()
+			where TModel : class, IModelObject
 		{
 			int recordsAffected;
 			IEnumerable<IDictionary<string, object>> results;
@@ -218,7 +225,7 @@ namespace TextMetal.Common.Data
 		}
 
 		public static bool PersistModel<TModel>(this IUnitOfWork unitOfWork, TModel model, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, int persistNotExpectedRecordsAffected, Action<IDictionary<string, object>, TModel> mapToCallback)
-			where TModel : class, new()
+			where TModel : class, IModelObject
 		{
 			int recordsAffected;
 			IEnumerable<IDictionary<string, object>> results;
@@ -262,8 +269,8 @@ namespace TextMetal.Common.Data
 			return true;
 		}
 
-		public static IList<TModel> QueryModel<TModel>(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, int queryExpectedRecordsAffected, Action<IDictionary<string, object>, TModel> mapToCallback)
-			where TModel : class, new()
+		public static IList<TModel> QueryModel<TModel>(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, int queryExpectedRecordsAffected, Action<IDictionary<string, object>, TModel> mapToCallback, Func<TModel> createNewCallback)
+			where TModel : class, IModelObject
 		{
 			IList<TModel> models;
 			TModel model;
@@ -281,6 +288,9 @@ namespace TextMetal.Common.Data
 
 			if ((object)mapToCallback == null)
 				throw new ArgumentNullException("mapToCallback");
+
+			if ((object)createNewCallback == null)
+				throw new ArgumentNullException("createNewCallback");
 
 			if (DataType.IsNullOrWhiteSpace(commandText))
 				throw new ArgumentOutOfRangeException("commandText");
@@ -301,7 +311,7 @@ namespace TextMetal.Common.Data
 
 			foreach (IDictionary<string, object> result in results)
 			{
-				model = new TModel();
+				model = createNewCallback();
 				mapToCallback(result, model);
 				models.Add(model);
 			}

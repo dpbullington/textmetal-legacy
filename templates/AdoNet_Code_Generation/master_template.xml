@@ -14,12 +14,16 @@
 	<Import name="ds_tag_specific_net.sqlserver_template.xml" />
 	<Import name="ds_tag_specific_odbc.sqlserver_template.xml" />
 	
+	<Import name="tbl_vw_imodel_template.xml" />
 	<Import name="tbl_vw_model_template.xml" />
 	<Import name="tbl_vw_partial_model_template.xml" />
 	
 	<Import name="tbl_vw_irepository_template.xml" />
 	<Import name="tbl_vw_repository_template.xml" />
 		
+	<Import name="sprc_request_imodel_template.xml" />
+	<Import name="sprc_response_imodel_template.xml" />
+	<Import name="sprc_result_imodel_template.xml" />
 	<Import name="sprc_request_model_template.xml" />
 	<Import name="sprc_response_model_template.xml" />
 	<Import name="sprc_result_model_template.xml" />

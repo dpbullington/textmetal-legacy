@@ -55,7 +55,6 @@
     <Compile Include="Message.cs" />
     <Compile Include="Name.cs" />
     <Compile Include="Reflexion.cs" />
-    <Compile Include="IModelManagement.cs" />
     <Compile Include="Severity.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
     <Compile Include="StringTokens\ContextualDynamicValueTokenReplacementStrategy.cs" />

@@ -8,6 +8,8 @@
 	
 	<Alloc token="vs_sln_file_version" />
 	<Alloc token="vs_sln_info_version" />
+	<Alloc token="visual_studio_version" />
+	<Alloc token="minimum_visual_studio_version" />
 	<Alloc token="csproj_product_version" />
 	<Alloc token="csproj_target_framework_version" />
 	<Alloc token="csproj_tools_version" />
@@ -19,9 +21,19 @@
 	</Assign>
 	<Assign token="vs_sln_info_version">
 		<Assign.Expression>
-			<Value data="2012" type="System.String" />
+			<Value data="2013" type="System.String" />
 		</Assign.Expression>
 	</Assign>
+	<Assign token="visual_studio_version">
+		<Assign.Expression>
+			<Value data="12.0.30110.0" type="System.String" />
+		</Assign.Expression>
+	</Assign>
+	<Assign token="minimum_visual_studio_version">
+		<Assign.Expression>
+			<Value data="10.0.40219.1" type="System.String" />
+		</Assign.Expression>
+	</Assign>	
 	<Assign token="csproj_product_version">
 		<Assign.Expression>
 			<Value data="8.0.30703" type="System.String" />
@@ -29,12 +41,12 @@
 	</Assign>
 	<Assign token="csproj_target_framework_version">
 		<Assign.Expression>
-			<Value data="v4.5" type="System.String" />
+			<Value data="v4.5.1" type="System.String" />
 		</Assign.Expression>
 	</Assign>
 	<Assign token="csproj_tools_version">
 		<Assign.Expression>
-			<Value data="4.0" type="System.String" />
+			<Value data="12.0" type="System.String" />
 		</Assign.Expression>
 	</Assign>
 		
@@ -169,6 +181,8 @@ using System.Reflection;
 		<![CDATA[
 Microsoft Visual Studio Solution File, Format Version ${vs_sln_file_version}
 # Visual Studio ${vs_sln_info_version}
+VisualStudioVersion = ${visual_studio_version}
+MinimumVisualStudioVersion = ${minimum_visual_studio_version}
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{11000000-0000-0000-0000-00000000FFFF}"
 	ProjectSection(SolutionItems) = preProject
 	EndProjectSection
@@ -399,7 +413,8 @@ EndGlobal
 							</If.True>
 						</If>
 					
-						<![CDATA[    <Compile Include="${FolderName}\${TableNameSingularPascalCase}.g.cs" />]]>
+						<![CDATA[    <Compile Include="${FolderName}\I${TableNameSingularPascalCase}.g.cs" />
+	<Compile Include="${FolderName}\${TableNameSingularPascalCase}.g.cs" />]]>
 					</ForEach.Body>
 				</ForEach>
 			</ForEach.Body>
@@ -418,7 +433,10 @@ EndGlobal
 				<ForEach in="Procedures" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter></ForEach.Filter>
 					<ForEach.Body>
-						<![CDATA[    <Compile Include="${FolderName}\${ProcedureNameSingularPascalCase}_Request.g.cs" />
+						<![CDATA[    <Compile Include="${FolderName}\I${ProcedureNameSingularPascalCase}_Request.g.cs" />
+    <Compile Include="${FolderName}\I${ProcedureNameSingularPascalCase}_Result.g.cs" />
+	<Compile Include="${FolderName}\I${ProcedureNameSingularPascalCase}_Response.g.cs" />
+	<Compile Include="${FolderName}\${ProcedureNameSingularPascalCase}_Request.g.cs" />
     <Compile Include="${FolderName}\${ProcedureNameSingularPascalCase}_Result.g.cs" />
 	<Compile Include="${FolderName}\${ProcedureNameSingularPascalCase}_Response.g.cs" />]]>
 					</ForEach.Body>

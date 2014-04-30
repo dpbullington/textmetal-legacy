@@ -67,9 +67,9 @@ namespace ${ClrNamespace}
 				<ForEach in="Procedures" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter></ForEach.Filter>
 					<ForEach.Body>
-						<![CDATA[		${ProcedureNameSingularPascalCase}_Response Execute_${ProcedureNameSingularPascalCase}(${ProcedureNameSingularPascalCase}_Request request);
+						<![CDATA[		I${ProcedureNameSingularPascalCase}_Response Execute_${ProcedureNameSingularPascalCase}(I${ProcedureNameSingularPascalCase}_Request request);
 						
-		${ProcedureNameSingularPascalCase}_Response Execute_${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, ${ProcedureNameSingularPascalCase}_Request request);
+		I${ProcedureNameSingularPascalCase}_Response Execute_${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, I${ProcedureNameSingularPascalCase}_Request request);
 ]]>
 						<If>
 							<If.Condition>

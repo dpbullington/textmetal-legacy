@@ -49,7 +49,7 @@ using System.Xml;
 						<![CDATA[
 namespace ${ClrNamespace}.${FolderName}
 {
-	public sealed class ${ProcedureNameSingularPascalCase}_Request
+	public sealed class ${ProcedureNameSingularPascalCase}_Request : ${ClrSuperType}, I${ProcedureNameSingularPascalCase}_Request
 	{		
 		#region Constructors/Destructors
 		

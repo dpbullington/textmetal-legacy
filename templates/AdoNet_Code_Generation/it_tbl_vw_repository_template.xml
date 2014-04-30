@@ -136,7 +136,7 @@ namespace ${ClrNamespace}.IntegrationTests
 		public void ShouldSave${TableNameSingularPascalCase}Test()
 		{
 			Repository repository;
-			${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
+			I${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
 			bool result;
 			
 			Assert.IsNull(UnitOfWork.Current);
@@ -252,7 +252,7 @@ namespace ${ClrNamespace}.IntegrationTests
 		public void ShouldLoad${TableNameSingularPascalCase}Test()
 		{
 			Repository repository;
-			${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
+			I${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
 ]]>
 	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
@@ -369,7 +369,7 @@ namespace ${ClrNamespace}.IntegrationTests
 		public void ShouldFind${TableNamePluralPascalCase}Test()
 		{
 			Repository repository;
-			IEnumerable<${TableNameSingularPascalCase}> @${TableNamePluralCamelCase};
+			IEnumerable<I${TableNameSingularPascalCase}> @${TableNamePluralCamelCase};
 
 			Assert.IsNull(UnitOfWork.Current);
 

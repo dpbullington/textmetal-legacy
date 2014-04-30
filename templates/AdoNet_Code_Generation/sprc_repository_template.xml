@@ -88,9 +88,9 @@ namespace ${ClrNamespace}
 				<ForEach in="Procedures" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter></ForEach.Filter>
 					<ForEach.Body>
-						<![CDATA[		public ${ProcedureNameSingularPascalCase}_Response Execute_${ProcedureNameSingularPascalCase}(${ProcedureNameSingularPascalCase}_Request request${ProcedureNameSingularPascalCase})
+						<![CDATA[		public I${ProcedureNameSingularPascalCase}_Response Execute_${ProcedureNameSingularPascalCase}(I${ProcedureNameSingularPascalCase}_Request request${ProcedureNameSingularPascalCase})
 		{
-			${ProcedureNameSingularPascalCase}_Response retval;
+			I${ProcedureNameSingularPascalCase}_Response retval;
 			
 			if ((object)UnitOfWork.Current == null)
 			{
@@ -109,9 +109,9 @@ namespace ${ClrNamespace}
 			}
 		}
 						
-		public ${ProcedureNameSingularPascalCase}_Response Execute_${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, ${ProcedureNameSingularPascalCase}_Request request${ProcedureNameSingularPascalCase})
+		public I${ProcedureNameSingularPascalCase}_Response Execute_${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, I${ProcedureNameSingularPascalCase}_Request request${ProcedureNameSingularPascalCase})
 		{	
-			${ProcedureNameSingularPascalCase}_Response response${ProcedureNameSingularPascalCase};						
+			I${ProcedureNameSingularPascalCase}_Response response${ProcedureNameSingularPascalCase};						
 			IDataParameter commandParameter;
 			List<IDataParameter> commandParameters;			
 			string commandText;
@@ -237,11 +237,11 @@ namespace ${ClrNamespace}
 <![CDATA[
 			GetDataSourceTagSpecificInstance().CommandMagic(unitOfWork, executeAsCud, out thisOrThatRecordsAffected);
 
-			OnProfileCommand(typeof(${ProcedureNameSingularPascalCase}_Result), CommandType.StoredProcedure, commandText, commandParameters, executeAsCud, thisOrThatRecordsAffected);
+			OnProfileCommand(typeof(I${ProcedureNameSingularPascalCase}_Result), CommandType.StoredProcedure, commandText, commandParameters, executeAsCud, thisOrThatRecordsAffected);
 
-			response${ProcedureNameSingularPascalCase} = unitOfWork.ExecuteReReRe<${ProcedureNameSingularPascalCase}_Request, ${ProcedureNameSingularPascalCase}_Result, ${ProcedureNameSingularPascalCase}_Response>(request${ProcedureNameSingularPascalCase}, CommandType.StoredProcedure, commandText, commandParameters, executeAsCud, thisOrThatRecordsAffected, MapTo${ProcedureNameSingularPascalCase}_Result);	
+			response${ProcedureNameSingularPascalCase} = unitOfWork.ExecuteModel<I${ProcedureNameSingularPascalCase}_Request, I${ProcedureNameSingularPascalCase}_Result, I${ProcedureNameSingularPascalCase}_Response>(request${ProcedureNameSingularPascalCase}, CommandType.StoredProcedure, commandText, commandParameters, executeAsCud, thisOrThatRecordsAffected, MapTo${ProcedureNameSingularPascalCase}_Result, () => new ${ProcedureNameSingularPascalCase}_Response(), () => new ${ProcedureNameSingularPascalCase}_Result());	
 			
-			foreach (${ProcedureNameSingularPascalCase}_Result result${ProcedureNameSingularPascalCase}2 in response${ProcedureNameSingularPascalCase}.Results)
+			foreach (I${ProcedureNameSingularPascalCase}_Result result${ProcedureNameSingularPascalCase}2 in response${ProcedureNameSingularPascalCase}.Results)
 				this.OnExecuteResult${ProcedureNameSingularPascalCase}(unitOfWork, result${ProcedureNameSingularPascalCase}2);
 			
 ]]>
@@ -305,7 +305,7 @@ namespace ${ClrNamespace}
 			return response${ProcedureNameSingularPascalCase};
 		}
 		
-		private static void MapTo${ProcedureNameSingularPascalCase}_Result(IDictionary<string, object> result, ${ProcedureNameSingularPascalCase}_Result result${ProcedureNameSingularPascalCase})
+		private static void MapTo${ProcedureNameSingularPascalCase}_Result(IDictionary<string, object> result, I${ProcedureNameSingularPascalCase}_Result result${ProcedureNameSingularPascalCase})
 		{
 			object value;
 			
@@ -343,11 +343,11 @@ namespace ${ClrNamespace}
 	 </ForEach>
 <![CDATA[		}
 		
-		partial void OnPreExecute${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, ${ProcedureNameSingularPascalCase}_Request request${ProcedureNameSingularPascalCase});
+		partial void OnPreExecute${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, I${ProcedureNameSingularPascalCase}_Request request${ProcedureNameSingularPascalCase});
 		
-		partial void OnExecuteResult${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, ${ProcedureNameSingularPascalCase}_Result result${ProcedureNameSingularPascalCase});
+		partial void OnExecuteResult${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, I${ProcedureNameSingularPascalCase}_Result result${ProcedureNameSingularPascalCase});
 		
-		partial void OnPostExecute${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, ${ProcedureNameSingularPascalCase}_Response response${ProcedureNameSingularPascalCase});
+		partial void OnPostExecute${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, I${ProcedureNameSingularPascalCase}_Response response${ProcedureNameSingularPascalCase});
 ]]>
 
 						<If>

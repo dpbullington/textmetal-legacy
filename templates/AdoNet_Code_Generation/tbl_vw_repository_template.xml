@@ -116,7 +116,7 @@ namespace ${ClrNamespace}
 				
 				<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Body>
-						<![CDATA[		public ${TableNameSingularPascalCase} Load${TableNameSingularPascalCase}(]]>
+						<![CDATA[		public I${TableNameSingularPascalCase} Load${TableNameSingularPascalCase}(]]>
 						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Or">
@@ -163,7 +163,7 @@ namespace ${ClrNamespace}
 						</ForEach>
 						<![CDATA[)
 		{
-			${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
+			I${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
 						
 			if ((object)UnitOfWork.Current == null)
 			{
@@ -272,7 +272,7 @@ namespace ${ClrNamespace}
 		
 ]]>
 				
-<![CDATA[		public ${TableNameSingularPascalCase} Load${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ]]>
+<![CDATA[		public I${TableNameSingularPascalCase} Load${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ]]>
 						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Or">
@@ -319,7 +319,7 @@ namespace ${ClrNamespace}
 						</ForEach>
 						<![CDATA[)
 		{			
-			${TableNameSingularPascalCase} @${TableNameSingularCamelCase};			
+			I${TableNameSingularPascalCase} @${TableNameSingularCamelCase};			
 			IDataParameter commandParameter;
 			List<IDataParameter> commandParameters;
 			string commandText;
@@ -389,18 +389,18 @@ namespace ${ClrNamespace}
 			
 			GetDataSourceTagSpecificInstance().CommandMagic(unitOfWork, false, out queryExpectedRecordsAffected);
 
-			OnProfileCommand(typeof(${TableNameSingularPascalCase}), CommandType.Text, commandText, commandParameters, false, queryExpectedRecordsAffected);			
+			OnProfileCommand(typeof(I${TableNameSingularPascalCase}), CommandType.Text, commandText, commandParameters, false, queryExpectedRecordsAffected);			
 			
-			@${TableNameSingularCamelCase} = unitOfWork.FetchModel<${TableNameSingularPascalCase}>(CommandType.Text, commandText, commandParameters, queryExpectedRecordsAffected, MapTo${TableNameSingularPascalCase});
+			@${TableNameSingularCamelCase} = unitOfWork.FetchModel<I${TableNameSingularPascalCase}>(CommandType.Text, commandText, commandParameters, queryExpectedRecordsAffected, MapTo${TableNameSingularPascalCase}, () => new ${TableNameSingularPascalCase}());
 							
 			this.OnSelect${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
 
 			return @${TableNameSingularCamelCase};
 		}
 		
-		public IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(Query ${TableNameSingularCamelCase}Query)
+		public IEnumerable<I${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(Query ${TableNameSingularCamelCase}Query)
 		{
-			IEnumerable<${TableNameSingularPascalCase}> @${TableNamePluralCamelCase};
+			IEnumerable<I${TableNameSingularPascalCase}> @${TableNamePluralCamelCase};
 			
 			if ((object)UnitOfWork.Current == null)
 			{
@@ -423,9 +423,9 @@ namespace ${ClrNamespace}
 			return @${TableNamePluralCamelCase};
 		}
 		
-		public IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(IUnitOfWork unitOfWork, Query ${TableNameSingularCamelCase}Query)
+		public IEnumerable<I${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(IUnitOfWork unitOfWork, Query ${TableNameSingularCamelCase}Query)
 		{
-			IEnumerable<${TableNameSingularPascalCase}> @${TableNamePluralCamelCase};			
+			IEnumerable<I${TableNameSingularPascalCase}> @${TableNamePluralCamelCase};			
 			List<IDataParameter> commandParameters;
 			string commandText, filterFragment, sortFragment;
 			int queryExpectedRecordsAffected;
@@ -451,11 +451,11 @@ namespace ${ClrNamespace}
 			
 			GetDataSourceTagSpecificInstance().CommandMagic(unitOfWork, false, out queryExpectedRecordsAffected);
 			
-			OnProfileCommand(typeof(${TableNameSingularPascalCase}), CommandType.Text, commandText, commandParameters, false, queryExpectedRecordsAffected);
+			OnProfileCommand(typeof(I${TableNameSingularPascalCase}), CommandType.Text, commandText, commandParameters, false, queryExpectedRecordsAffected);
 			
-			@${TableNamePluralCamelCase} = unitOfWork.QueryModel<${TableNameSingularPascalCase}>(CommandType.Text, commandText, commandParameters, queryExpectedRecordsAffected, MapTo${TableNameSingularPascalCase});			
+			@${TableNamePluralCamelCase} = unitOfWork.QueryModel<I${TableNameSingularPascalCase}>(CommandType.Text, commandText, commandParameters, queryExpectedRecordsAffected, MapTo${TableNameSingularPascalCase}, () => new ${TableNameSingularPascalCase}());
 			
-			foreach (${TableNameSingularPascalCase} @${TableNameSingularCamelCase} in @${TableNamePluralCamelCase})
+			foreach (I${TableNameSingularPascalCase} @${TableNameSingularCamelCase} in @${TableNamePluralCamelCase})
 			{
 				this.OnSelect${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
 				
@@ -463,7 +463,7 @@ namespace ${ClrNamespace}
 			}
 		}
 		
-		public bool Save${TableNameSingularPascalCase}(${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
+		public bool Save${TableNameSingularPascalCase}(I${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			bool retval;
 
@@ -482,7 +482,7 @@ namespace ${ClrNamespace}
 			return retval;
 		}
 		
-		public bool Save${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
+		public bool Save${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			IDataParameter commandParameter;
 			List<IDataParameter> commandParameters;
@@ -660,9 +660,9 @@ namespace ${ClrNamespace}
 				GetDataSourceTagSpecificInstance().CommandMagic(unitOfWork, true, out persistNotExpectedRecordsAffected);
 			}			
 			
-			OnProfileCommand(typeof(${TableNameSingularPascalCase}), CommandType.Text, commandText, commandParameters, true, persistNotExpectedRecordsAffected);
+			OnProfileCommand(typeof(I${TableNameSingularPascalCase}), CommandType.Text, commandText, commandParameters, true, persistNotExpectedRecordsAffected);
 			
-			retval = unitOfWork.PersistModel<${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase}, CommandType.Text, commandText, commandParameters, persistNotExpectedRecordsAffected, MapTo${TableNameSingularPascalCase});
+			retval = unitOfWork.PersistModel<I${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase}, CommandType.Text, commandText, commandParameters, persistNotExpectedRecordsAffected, MapTo${TableNameSingularPascalCase});
 		
 			if (!retval)
 			{
@@ -680,10 +680,10 @@ namespace ${ClrNamespace}
 				
 			if (${TableNameSingularPascalCase}.HAS_SINGLE_COLUMN_SERVER_GENERATED_PRIMARY_KEY && wasNew && !DataType.IsNullOrWhiteSpace(commandText))
 			{
-				OnProfileCommand(typeof(${TableNameSingularPascalCase}), CommandType.Text, commandText, commandParameters, false, queryExpectedRecordsAffected);
+				OnProfileCommand(typeof(I${TableNameSingularPascalCase}), CommandType.Text, commandText, commandParameters, false, queryExpectedRecordsAffected);
 				
 				// select the identity on the same connection
-				unitOfWork.FillModel<${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase}, CommandType.Text, commandText, commandParameters, queryExpectedRecordsAffected, MapTo${TableNameSingularPascalCase});
+				unitOfWork.FillModel<I${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase}, CommandType.Text, commandText, commandParameters, queryExpectedRecordsAffected, MapTo${TableNameSingularPascalCase});
 			}
 			
 			if (wasNew)
@@ -698,7 +698,7 @@ namespace ${ClrNamespace}
 			return retval;
 		}
 		
-		public bool Discard${TableNameSingularPascalCase}(${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
+		public bool Discard${TableNameSingularPascalCase}(I${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			bool retval;
 			
@@ -717,7 +717,7 @@ namespace ${ClrNamespace}
 			return retval;
 		}
 		
-		public bool Discard${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
+		public bool Discard${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			IDataParameter commandParameter;
 			List<IDataParameter> commandParameters;
@@ -796,9 +796,9 @@ namespace ${ClrNamespace}
 			
 			GetDataSourceTagSpecificInstance().CommandMagic(unitOfWork, true, out persistNotExpectedRecordsAffected);
 			
-			OnProfileCommand(typeof(${TableNameSingularPascalCase}), CommandType.Text, commandText, commandParameters, true, persistNotExpectedRecordsAffected);
+			OnProfileCommand(typeof(I${TableNameSingularPascalCase}), CommandType.Text, commandText, commandParameters, true, persistNotExpectedRecordsAffected);
 			
-			retval = unitOfWork.PersistModel<${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase}, CommandType.Text, commandText, commandParameters, persistNotExpectedRecordsAffected, MapTo${TableNameSingularPascalCase});
+			retval = unitOfWork.PersistModel<I${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase}, CommandType.Text, commandText, commandParameters, persistNotExpectedRecordsAffected, MapTo${TableNameSingularPascalCase});
 
 			if (!retval)
 			{
@@ -814,7 +814,7 @@ namespace ${ClrNamespace}
 			return retval;
 		}
 		
-		private static void MapTo${TableNameSingularPascalCase}(IDictionary<string, object> result, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
+		private static void MapTo${TableNameSingularPascalCase}(IDictionary<string, object> result, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			object value;
 			
@@ -849,23 +849,23 @@ namespace ${ClrNamespace}
 	 </ForEach>
 <![CDATA[		}
 		
-		partial void OnPreInsert${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnPreInsert${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnPostInsert${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnPostInsert${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnPreUpdate${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnPreUpdate${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnPostUpdate${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnPostUpdate${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnPreDelete${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnPreDelete${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnPostDelete${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnPostDelete${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnSaveConflict${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnSaveConflict${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnDiscardConflict${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnDiscardConflict${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnSelect${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});		
+		partial void OnSelect${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});		
 ]]>
 						<If>
 							<If.Condition>

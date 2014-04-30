@@ -116,7 +116,7 @@ namespace ${ClrNamespace}
 				<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter></ForEach.Filter>
 					<ForEach.Body>
-<![CDATA[		${TableNameSingularPascalCase} Load${TableNameSingularPascalCase}(]]>
+<![CDATA[		I${TableNameSingularPascalCase} Load${TableNameSingularPascalCase}(]]>
 						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Or">
@@ -163,7 +163,7 @@ namespace ${ClrNamespace}
 						</ForEach>
 <![CDATA[);
 
-		${TableNameSingularPascalCase} Load${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ]]>
+		I${TableNameSingularPascalCase} Load${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ]]>
 						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Or">
@@ -210,17 +210,17 @@ namespace ${ClrNamespace}
 						</ForEach>
 						<![CDATA[);
 						
-		IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(Query ${TableNameSingularCamelCase}Query);
+		IEnumerable<I${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(Query ${TableNameSingularCamelCase}Query);
 		
-		IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(IUnitOfWork unitOfWork, Query ${TableNameSingularCamelCase}Query);
+		IEnumerable<I${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(IUnitOfWork unitOfWork, Query ${TableNameSingularCamelCase}Query);
 		
-		bool Save${TableNameSingularPascalCase}(${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		bool Save${TableNameSingularPascalCase}(I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		bool Save${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		bool Save${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		bool Discard${TableNameSingularPascalCase}(${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		bool Discard${TableNameSingularPascalCase}(I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		bool Discard${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		bool Discard${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 ]]>
 						<If>
 							<If.Condition>

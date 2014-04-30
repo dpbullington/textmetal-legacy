@@ -25,7 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-	<DocumentationFile>bin\Debug\TextMetal.Common.UnitTests.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\TextMetal.Common.UnitTests.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,7 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-	<DocumentationFile>bin\Release\TextMetal.Common.UnitTests.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\TextMetal.Common.UnitTests.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -81,7 +81,7 @@
     <Compile Include="TestingInfrastructure\MockException.cs" />
     <Compile Include="TestingInfrastructure\MockMultipleTestAttibute.cs" />
     <Compile Include="TestingInfrastructure\MockObject.cs" />
-    <Compile Include="TestingInfrastructure\MockPlainObject.cs" />
+    <Compile Include="TestingInfrastructure\MockModelObject.cs" />
     <Compile Include="TestingInfrastructure\MockProxyFactory.cs" />
     <Compile Include="TestingInfrastructure\MockSingleTestAttibute.cs" />
     <Compile Include="TestingInfrastructure\MockTestAttributedClass.cs" />

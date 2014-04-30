@@ -50,6 +50,7 @@
 <![CDATA[
 
 using System;
+using System.Collections.Generic;
 using System.Xml;
 
 using TextMetal.Common.Core;
@@ -77,7 +78,7 @@ using TextMetal.Common.Expressions;
 						<![CDATA[
 namespace ${ClrNamespace}.${FolderName}
 {
-	public partial class ${TableNameSingularPascalCase} : ${ClrSuperType}
+	public partial class ${TableNameSingularPascalCase} : ${ClrSuperType}, I${TableNameSingularPascalCase}
 	{		
 		#region Constructors/Destructors
 		
@@ -442,6 +443,28 @@ namespace ${ClrNamespace}.${FolderName}
 						</ForEach>
 						<![CDATA[
 		#endregion
+		
+		#region Methods/Operators
+		
+		partial void OnMark();
+		
+		partial void OnValidate(ref IEnumerable<Message> messages);
+		
+		public virtual void Mark()
+		{
+			this.OnMark();
+		}
+		
+		public virtual IEnumerable<Message> Validate()
+		{
+			IEnumerable<Message> messages = null;
+			
+			this.OnValidate(ref messages);
+			
+			return messages ?? new Message[] { };
+		}
+		
+		#endregion	
 	}
 }
 ]]>

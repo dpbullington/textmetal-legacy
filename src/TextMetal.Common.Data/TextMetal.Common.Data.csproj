@@ -50,7 +50,10 @@
     <Compile Include="Advanced\DatabaseFileManager.cs" />
     <Compile Include="Advanced\DatabaseHistory.cs" />
     <Compile Include="Advanced\DatabaseRevision.cs" />
-    <Compile Include="ModelMapHelper.cs" />
+    <Compile Include="ModelMap\IResultModelObject.cs" />
+    <Compile Include="ModelMap\IResponseModelObject.cs" />
+    <Compile Include="ModelMap\IRequestModelObject.cs" />
+    <Compile Include="ModelMap\ModelMapHelper.cs" />
     <Compile Include="Advanced\IDataSourceTagSpecific.cs" />
     <Compile Include="Advanced\INativeDatabaseFileCreator.cs" />
     <Compile Include="Advanced\Order.cs" />
@@ -61,7 +64,7 @@
     <Compile Include="IUnitOfWorkFactory.cs" />
     <Compile Include="SqlQuery.cs" />
     <Compile Include="AmbientUnitOfWorkScope.cs" />
-    <Compile Include="IPlainObject.cs" />
+    <Compile Include="ModelMap\IModelObject.cs" />
     <Compile Include="UnitOfWork.cs" />
     <Compile Include="AmbientUnitOfWorkAwareDisposableWrapper~1.cs" />
     <Compile Include="LinqToSql\LinqToSqlHelper.cs" />
