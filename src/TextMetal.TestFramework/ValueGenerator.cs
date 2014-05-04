@@ -56,6 +56,8 @@ namespace TextMetal.TestFramework
 					!valueType.IsGenericTypeDefinition &&
 					valueType.GetGenericTypeDefinition().Equals(openNullableType))
 				return GetNextValue(valueType.GetGenericArguments()[0]);
+			else if (valueType == typeof(Object))
+				return new object();
 			else if (valueType == typeof(String))
 				return new string((Char)random.Next(33, 127), random.Next(1, 100));
 			else if (valueType == typeof(Boolean))

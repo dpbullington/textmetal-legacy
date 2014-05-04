@@ -96,6 +96,7 @@ namespace ${ClrNamespace}.UnitTests.${FolderName}
 		{			
 			I${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
 			
+			//@${TableNameSingularCamelCase} = repository.CreateModel<I${TableNameSingularPascalCase}>();
 			@${TableNameSingularCamelCase} = new ${TableNameSingularPascalCase}();
 
 ]]>

@@ -464,7 +464,7 @@ namespace ${ClrNamespace}.${FolderName}
 			return messages ?? new Message[] { };
 		}
 		
-		#endregion	
+		#endregion
 	}
 }
 ]]>

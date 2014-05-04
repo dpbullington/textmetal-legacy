@@ -19,6 +19,7 @@ using TextMetal.Common.Core;
 using TextMetal.Common.Data;
 using TextMetal.Common.Data.Advanced;
 using TextMetal.Common.Expressions;
+using TextMetal.Common.Solder.DependencyManagement;
 ]]>
 		<If>
 			<If.Condition>
@@ -37,10 +38,61 @@ using TextMetal.Common.Expressions;
 				</ForEach>
 			</If.True>
 		</If>
-				
-		<![CDATA[
+
+		<If>
+			<If.Condition>
+				<BinaryExpression operator="Eq">
+					<BinaryExpression.LeftExpression>
+						<Value type="System.Boolean" data="True" />
+					</BinaryExpression.LeftExpression>
+					<BinaryExpression.RightExpression>
+						<Facet name="HasTables" />
+					</BinaryExpression.RightExpression>
+				</BinaryExpression>
+			</If.Condition>
+			<If.True>
+				<![CDATA[using ${ClrNamespace}.Tables;
+]]>
+			</If.True>
+		</If>
+		<If>
+			<If.Condition>
+				<BinaryExpression operator="Eq">
+					<BinaryExpression.LeftExpression>
+						<Value type="System.Boolean" data="True" />
+					</BinaryExpression.LeftExpression>
+					<BinaryExpression.RightExpression>
+						<Facet name="HasViews" />
+					</BinaryExpression.RightExpression>
+				</BinaryExpression>
+			</If.Condition>
+			<If.True>
+				<![CDATA[using ${ClrNamespace}.Views;
+]]>
+			</If.True>
+		</If>
+		<If>
+			<If.Condition>
+				<BinaryExpression operator="Eq">
+					<BinaryExpression.LeftExpression>
+						<Value type="System.Boolean" data="True" />
+					</BinaryExpression.LeftExpression>
+					<BinaryExpression.RightExpression>
+						<Facet name="HasProcedures" />
+					</BinaryExpression.RightExpression>
+				</BinaryExpression>
+			</If.Condition>
+			<If.True>
+				<![CDATA[using ${ClrNamespace}.Procedures;
+]]>
+			</If.True>
+		</If>
+<![CDATA[
+[assembly: DependencyRegistration]
+
 namespace ${ClrNamespace}
 {
+	[DependencyRegistration]
 	public partial class Repository : IRepository
 	{		
 		#region Constructors/Destructors
@@ -126,6 +178,55 @@ namespace ${ClrNamespace}
 		
 		#region Methods/Operators
 		
+		public TModel CreateModel<TModel>()
+			where TModel : class, IModelObject
+		{
+			return DependencyManager.AppDomainInstance.ResolveDependency<TModel>("");
+		}
+		
+		public TModel CreateRequestModel<TModel>()
+			where TModel : class, IRequestModelObject
+		{
+			return DependencyManager.AppDomainInstance.ResolveDependency<TModel>("");
+		}
+			
+		public TModel CreateResultModel<TModel>()
+			where TModel : class, IResultModelObject
+		{
+			return DependencyManager.AppDomainInstance.ResolveDependency<TModel>("");
+		}
+			
+		public TModel CreateResponseModel<TModel>()
+			where TModel : class, IResponseModelObject
+		{
+			return DependencyManager.AppDomainInstance.ResolveDependency<TModel>("");
+		}
+		
+		[DependencyRegistration]
+		public static void OnDepenndencyRegistration()
+		{
+			DependencyManager.AppDomainInstance.AddResolution<IRepository>("", new ConstructorDependencyResolution<Repository>());
+]]>
+
+	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
+		<ForEach.Filter></ForEach.Filter>
+		<ForEach.Body>
+
+			<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
+				<ForEach.Filter></ForEach.Filter>
+				<ForEach.Body>
+<![CDATA[
+			DependencyManager.AppDomainInstance.AddResolution<I${TableNameSingularPascalCase}>("", DelegateDependencyResolution.FromFunc(() => new ${TableNameSingularPascalCase}()));]]>
+
+				</ForEach.Body>
+			</ForEach>
+			
+		</ForEach.Body>
+	</ForEach>
+
+<![CDATA[
+		}
+				
 		static partial void OnPreProcessConnectionString(ref string connectionString)
 		{
 			if (!DatabaseFileManager.UseDatabaseFile)

@@ -50,7 +50,7 @@ using System.Xml;
 						<![CDATA[
 namespace ${ClrNamespace}.${FolderName}
 {
-	public sealed class ${ProcedureNameSingularPascalCase}_Response : ${ClrSuperType}, I${ProcedureNameSingularPascalCase}_Response
+	public partial class ${ProcedureNameSingularPascalCase}_Response : ${ClrSuperType}, I${ProcedureNameSingularPascalCase}_Response
 	{		
 		#region Constructors/Destructors
 		
@@ -173,8 +173,8 @@ namespace ${ClrNamespace}.${FolderName}
 		]]>
 							</ForEach.Body>
 						</ForEach>
-						<![CDATA[
-		#endregion		
+<![CDATA[
+		#endregion
 	}
 }
 ]]>

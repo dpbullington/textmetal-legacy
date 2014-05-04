@@ -239,7 +239,7 @@ namespace ${ClrNamespace}
 
 			OnProfileCommand(typeof(I${ProcedureNameSingularPascalCase}_Result), CommandType.StoredProcedure, commandText, commandParameters, executeAsCud, thisOrThatRecordsAffected);
 
-			response${ProcedureNameSingularPascalCase} = unitOfWork.ExecuteModel<I${ProcedureNameSingularPascalCase}_Request, I${ProcedureNameSingularPascalCase}_Result, I${ProcedureNameSingularPascalCase}_Response>(request${ProcedureNameSingularPascalCase}, CommandType.StoredProcedure, commandText, commandParameters, executeAsCud, thisOrThatRecordsAffected, MapTo${ProcedureNameSingularPascalCase}_Result, () => new ${ProcedureNameSingularPascalCase}_Response(), () => new ${ProcedureNameSingularPascalCase}_Result());	
+			response${ProcedureNameSingularPascalCase} = unitOfWork.ExecuteModel<I${ProcedureNameSingularPascalCase}_Request, I${ProcedureNameSingularPascalCase}_Result, I${ProcedureNameSingularPascalCase}_Response>(request${ProcedureNameSingularPascalCase}, CommandType.StoredProcedure, commandText, commandParameters, executeAsCud, thisOrThatRecordsAffected, MapTo${ProcedureNameSingularPascalCase}_Result, () => this.CreateResponseModel<I${ProcedureNameSingularPascalCase}_Response>(), () => this.CreateResultModel<I${ProcedureNameSingularPascalCase}_Result>());	
 			
 			foreach (I${ProcedureNameSingularPascalCase}_Result result${ProcedureNameSingularPascalCase}2 in response${ProcedureNameSingularPascalCase}.Results)
 				this.OnExecuteResult${ProcedureNameSingularPascalCase}(unitOfWork, result${ProcedureNameSingularPascalCase}2);

@@ -391,7 +391,7 @@ namespace ${ClrNamespace}
 
 			OnProfileCommand(typeof(I${TableNameSingularPascalCase}), CommandType.Text, commandText, commandParameters, false, queryExpectedRecordsAffected);			
 			
-			@${TableNameSingularCamelCase} = unitOfWork.FetchModel<I${TableNameSingularPascalCase}>(CommandType.Text, commandText, commandParameters, queryExpectedRecordsAffected, MapTo${TableNameSingularPascalCase}, () => new ${TableNameSingularPascalCase}());
+			@${TableNameSingularCamelCase} = unitOfWork.FetchModel<I${TableNameSingularPascalCase}>(CommandType.Text, commandText, commandParameters, queryExpectedRecordsAffected, MapTo${TableNameSingularPascalCase}, () => this.CreateModel<I${TableNameSingularPascalCase}>());
 							
 			this.OnSelect${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
 
@@ -453,7 +453,7 @@ namespace ${ClrNamespace}
 			
 			OnProfileCommand(typeof(I${TableNameSingularPascalCase}), CommandType.Text, commandText, commandParameters, false, queryExpectedRecordsAffected);
 			
-			@${TableNamePluralCamelCase} = unitOfWork.QueryModel<I${TableNameSingularPascalCase}>(CommandType.Text, commandText, commandParameters, queryExpectedRecordsAffected, MapTo${TableNameSingularPascalCase}, () => new ${TableNameSingularPascalCase}());
+			@${TableNamePluralCamelCase} = unitOfWork.QueryModel<I${TableNameSingularPascalCase}>(CommandType.Text, commandText, commandParameters, queryExpectedRecordsAffected, MapTo${TableNameSingularPascalCase}, () => this.CreateModel<I${TableNameSingularPascalCase}>());
 			
 			foreach (I${TableNameSingularPascalCase} @${TableNameSingularCamelCase} in @${TableNamePluralCamelCase})
 			{

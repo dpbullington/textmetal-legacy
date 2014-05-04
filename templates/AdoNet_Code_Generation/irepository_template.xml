@@ -12,6 +12,8 @@
 
 using System;
 using System.Xml;
+
+using TextMetal.Common.Data;
 ]]>
 		<If>
 			<If.Condition>
@@ -34,7 +36,18 @@ using System.Xml;
 namespace ${ClrNamespace}
 {
 	public partial interface IRepository
-	{			
+	{
+		TModel CreateModel<TModel>()
+			where TModel : class, IModelObject;
+		
+		TModel CreateRequestModel<TModel>()
+			where TModel : class, IRequestModelObject;
+			
+		TModel CreateResultModel<TModel>()
+			where TModel : class, IResultModelObject;
+			
+		TModel CreateResponseModel<TModel>()
+			where TModel : class, IResponseModelObject;
 	}
 }
 ]]>

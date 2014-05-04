@@ -1519,7 +1519,7 @@
       <LogicalName>NUnit.Gui.VisualStudioSettingsPage.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.uiexception\Properties\Resources.resx">
-      <LogicalName>NUnit.Gui.UiException.Properties.Resources.resources</LogicalName>
+      <LogicalName>NUnit.UiException.Properties.Resources.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.uikit\AddConfigurationDialog.resx">

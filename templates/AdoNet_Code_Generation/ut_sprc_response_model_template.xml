@@ -72,11 +72,12 @@ namespace ${ClrNamespace}.UnitTests.${FolderName}
 		[Test]
 		public void ShouldCreate${ProcedureNameSingularPascalCase}Test()
 		{			
-			${ProcedureNameSingularPascalCase}_Response ${ProcedureNameSingularCamelCase}Response;
+			I${ProcedureNameSingularPascalCase}_Response ${ProcedureNameSingularCamelCase}Response;
 			
+			//${ProcedureNameSingularCamelCase}Response = repository.CreateResponseModel<I${ProcedureNameSingularPascalCase}_Response>();
 			${ProcedureNameSingularCamelCase}Response = new ${ProcedureNameSingularPascalCase}_Response();
 			
-			Assert.IsNotNull(${ProcedureNameSingularCamelCase}Response.Results);
+			Assert.IsNull(${ProcedureNameSingularCamelCase}Response.Results);
 
 ]]>
 

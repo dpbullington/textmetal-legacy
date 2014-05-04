@@ -147,7 +147,7 @@ namespace ${ClrNamespace}.IntegrationTests
 			{
 				Assert.IsNotNull(UnitOfWork.Current);
 
-				@${TableNameSingularCamelCase} = new ${TableNameSingularPascalCase}();
+				@${TableNameSingularCamelCase} = repository.CreateModel<I${TableNameSingularPascalCase}>();
 ]]>
 
 								<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">

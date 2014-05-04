@@ -71,8 +71,9 @@ namespace ${ClrNamespace}.UnitTests.${FolderName}
 		[Test]
 		public void ShouldCreate${ProcedureNameSingularPascalCase}Test()
 		{			
-			${ProcedureNameSingularPascalCase}_Result ${ProcedureNameSingularCamelCase}Result;
+			I${ProcedureNameSingularPascalCase}_Result ${ProcedureNameSingularCamelCase}Result;
 			
+			//${ProcedureNameSingularCamelCase}Result = repository.CreateResultModel<I${ProcedureNameSingularPascalCase}_Result>();
 			${ProcedureNameSingularCamelCase}Result = new ${ProcedureNameSingularPascalCase}_Result();
 
 ]]>

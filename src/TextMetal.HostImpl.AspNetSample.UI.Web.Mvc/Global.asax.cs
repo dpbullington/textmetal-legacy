@@ -4,27 +4,29 @@
 */
 
 using System;
-
-//[assembly: TextMetal.Common.Solder.DependencyManagement.DependencyRegistration]
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
+using TextMetal.Common.Solder.DependencyManagement;
 using TextMetal.HostImpl.AspNetSample.Common;
 using TextMetal.HostImpl.AspNetSample.DomainModel;
 using TextMetal.HostImpl.AspNetSample.UI.Web.Shared;
 using TextMetal.HostImpl.Web.AspNet;
+
+[assembly: DependencyRegistration]
 
 namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc
 {
 	/// <summary>
 	/// Note: For instructions on enabling IIS6 or IIS7 classic mode, visit http://go.microsoft.com/?LinkId=9394801
 	/// </summary>
-	//[TextMetal.Common.Solder.DependencyManagement.DependencyRegistration]
+	[DependencyRegistration]
 	public class MvcApplication : HttpApplication
 	{
 		#region Methods/Operators
 
+		[DependencyRegistration]
 		public static void OnDepenndencyRegistration()
 		{
 			Stuff.Set<IRepository, Repository>("");
@@ -45,7 +47,7 @@ namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc
 				GlobalFilters.Filters.Add(new RequireHttpsAttribute());
 
 			// PARTIAL TRUST HOSTING PREVENTS AUTO-WIRING
-			OnDepenndencyRegistration();
+			//OnDepenndencyRegistration();
 
 			AreaRegistration.RegisterAllAreas();
 
@@ -55,7 +57,5 @@ namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc
 		}
 
 		#endregion
-
-		//[TextMetal.Common.Solder.DependencyManagement.DependencyRegistration]
 	}
 }
