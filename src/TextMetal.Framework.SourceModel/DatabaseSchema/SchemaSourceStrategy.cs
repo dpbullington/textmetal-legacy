@@ -257,34 +257,36 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 				server.ConnectionString = connectionString;
 				server.ConnectionType = connectionType.FullName;
 
-				var dataReaderServer = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Server"), this.CoreGetServerParameters(unitOfWork, dataSourceTag), out recordsAffected);
+				var dictEnumServer = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Server"), this.CoreGetServerParameters(unitOfWork, dataSourceTag), out recordsAffected);
 				{
-					if ((object)dataReaderServer != null &&
-						dataReaderServer.Count == 1)
+					var dictDataServer = (IDictionary<string, object>)null;
+
+					if ((object)dictEnumServer != null &&
+						(object)(dictDataServer = dictEnumServer.SingleOrDefault()) != null)
 					{
-						server.ServerId = DataType.ChangeType<int>(dataReaderServer[0]["ServerId"]);
-						server.ServerName = DataType.ChangeType<string>(dataReaderServer[0]["ServerName"]);
-						server.MachineName = DataType.ChangeType<string>(dataReaderServer[0]["MachineName"]);
-						server.InstanceName = DataType.ChangeType<string>(dataReaderServer[0]["InstanceName"]);
-						server.ServerVersion = DataType.ChangeType<string>(dataReaderServer[0]["ServerVersion"]);
-						server.ServerLevel = DataType.ChangeType<string>(dataReaderServer[0]["ServerLevel"]);
-						server.ServerEdition = DataType.ChangeType<string>(dataReaderServer[0]["ServerEdition"]);
-						server.DefaultDatabaseName = DataType.ChangeType<string>(dataReaderServer[0]["DefaultDatabaseName"]);
+						server.ServerId = DataType.ChangeType<int>(dictDataServer["ServerId"]);
+						server.ServerName = DataType.ChangeType<string>(dictDataServer["ServerName"]);
+						server.MachineName = DataType.ChangeType<string>(dictDataServer["MachineName"]);
+						server.InstanceName = DataType.ChangeType<string>(dictDataServer["InstanceName"]);
+						server.ServerVersion = DataType.ChangeType<string>(dictDataServer["ServerVersion"]);
+						server.ServerLevel = DataType.ChangeType<string>(dictDataServer["ServerLevel"]);
+						server.ServerEdition = DataType.ChangeType<string>(dictDataServer["ServerEdition"]);
+						server.DefaultDatabaseName = DataType.ChangeType<string>(dictDataServer["DefaultDatabaseName"]);
 
 						// each apply is 'off by one' for getting parameters
 						this.ApplyExtendedProperties(unitOfWork, server, dataSourceTag, "ServerExtProps", this.CoreGetDatabaseParameters(unitOfWork, dataSourceTag, server));
 
-						var dataReaderDatabase = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Databases"), this.CoreGetDatabaseParameters(unitOfWork, dataSourceTag, server), out recordsAffected);
+						var dictEnumDatabase = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Databases"), this.CoreGetDatabaseParameters(unitOfWork, dataSourceTag, server), out recordsAffected);
 						{
-							if ((object)dataReaderDatabase != null)
+							if ((object)dictEnumDatabase != null)
 							{
-								foreach (var drDatabase in dataReaderDatabase)
+								foreach (var dictDataDatabase in dictEnumDatabase)
 								{
 									Database database;
 
 									database = new Database();
-									database.DatabaseId = DataType.ChangeType<int>(drDatabase["DatabaseId"]);
-									database.DatabaseName = DataType.ChangeType<string>(drDatabase["DatabaseName"]);
+									database.DatabaseId = DataType.ChangeType<int>(dictDataDatabase["DatabaseId"]);
+									database.DatabaseName = DataType.ChangeType<string>(dictDataDatabase["DatabaseName"]);
 									database.DatabaseNamePascalCase = Name.GetPascalCase(database.DatabaseName);
 									database.DatabaseNameCamelCase = Name.GetCamelCase(database.DatabaseName);
 									database.DatabaseNameConstantCase = Name.GetConstantCase(database.DatabaseName);
@@ -325,22 +327,22 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 									this.ApplyExtendedProperties(unitOfWork, database, dataSourceTag, "DatabaseExtProps", this.CoreGetSchemaParameters(unitOfWork, dataSourceTag, server, database));
 
-									var dataReaderDdlTrigger = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DdlTriggers"), this.CoreGetDdlTriggerParameters(unitOfWork, dataSourceTag, server, database), out recordsAffected);
+									var dictEnumDdlTrigger = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DdlTriggers"), this.CoreGetDdlTriggerParameters(unitOfWork, dataSourceTag, server, database), out recordsAffected);
 									{
-										if ((object)dataReaderDdlTrigger != null)
+										if ((object)dictEnumDdlTrigger != null)
 										{
-											foreach (var drTrigger in dataReaderDdlTrigger)
+											foreach (var dictDataTrigger in dictEnumDdlTrigger)
 											{
 												Trigger trigger;
 
 												trigger = new Trigger();
 
-												trigger.TriggerId = DataType.ChangeType<int>(drTrigger["ObjectId"]);
-												trigger.TriggerName = DataType.ChangeType<string>(drTrigger["TriggerName"]);
-												trigger.IsClrTrigger = DataType.ChangeType<bool>(drTrigger["IsClrTrigger"]);
-												trigger.IsTriggerDisabled = DataType.ChangeType<bool>(drTrigger["IsTriggerDisabled"]);
-												trigger.IsTriggerNotForReplication = DataType.ChangeType<bool>(drTrigger["IsTriggerNotForReplication"]);
-												trigger.IsInsteadOfTrigger = DataType.ChangeType<bool>(drTrigger["IsInsteadOfTrigger"]);
+												trigger.TriggerId = DataType.ChangeType<int>(dictDataTrigger["ObjectId"]);
+												trigger.TriggerName = DataType.ChangeType<string>(dictDataTrigger["TriggerName"]);
+												trigger.IsClrTrigger = DataType.ChangeType<bool>(dictDataTrigger["IsClrTrigger"]);
+												trigger.IsTriggerDisabled = DataType.ChangeType<bool>(dictDataTrigger["IsTriggerDisabled"]);
+												trigger.IsTriggerNotForReplication = DataType.ChangeType<bool>(dictDataTrigger["IsTriggerNotForReplication"]);
+												trigger.IsInsteadOfTrigger = DataType.ChangeType<bool>(dictDataTrigger["IsInsteadOfTrigger"]);
 												trigger.TriggerNamePascalCase = Name.GetPascalCase(trigger.TriggerName);
 												trigger.TriggerNameCamelCase = Name.GetCamelCase(trigger.TriggerName);
 												trigger.TriggerNameConstantCase = Name.GetConstantCase(trigger.TriggerName);
@@ -363,16 +365,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 										}
 									}
 
-									var dataReaderSchema = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Schemas"), this.CoreGetSchemaParameters(unitOfWork, dataSourceTag, server, database), out recordsAffected);
+									var dictEnumSchema = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Schemas"), this.CoreGetSchemaParameters(unitOfWork, dataSourceTag, server, database), out recordsAffected);
 									{
-										if ((object)dataReaderSchema != null)
+										if ((object)dictEnumSchema != null)
 										{
-											foreach (var drSchema in dataReaderSchema)
+											foreach (var dictDataSchema in dictEnumSchema)
 											{
 												Schema schema;
 
 												schema = new Schema();
-												schema.SchemaName = DataType.ChangeType<string>(drSchema["SchemaName"]);
+												schema.SchemaName = DataType.ChangeType<string>(dictDataSchema["SchemaName"]);
 												schema.SchemaNamePascalCase = Name.GetPascalCase(schema.SchemaName);
 												schema.SchemaNameCamelCase = Name.GetCamelCase(schema.SchemaName);
 												schema.SchemaNameConstantCase = Name.GetConstantCase(schema.SchemaName);
@@ -401,15 +403,15 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 												database.Schemas.Add(schema);
 
-												var dataReaderTable = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Tables"), this.CoreGetTableParameters(unitOfWork, dataSourceTag, server, database, schema), out recordsAffected);
+												var dictEnumTable = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Tables"), this.CoreGetTableParameters(unitOfWork, dataSourceTag, server, database, schema), out recordsAffected);
 												{
-													foreach (var drTable in dataReaderTable)
+													foreach (var dictDataTable in dictEnumTable)
 													{
 														Table table;
 
 														table = new Table();
-														table.IsView = DataType.ChangeType<bool>(drTable["IsView"]);
-														table.TableName = DataType.ChangeType<string>(drTable["TableName"]);
+														table.IsView = DataType.ChangeType<bool>(dictDataTable["IsView"]);
+														table.TableName = DataType.ChangeType<string>(dictDataTable["TableName"]);
 														table.TableNamePascalCase = Name.GetPascalCase(table.TableName);
 														table.TableNameCamelCase = Name.GetCamelCase(table.TableName);
 														table.TableNameConstantCase = Name.GetConstantCase(table.TableName);
@@ -427,7 +429,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 														table.TableNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(table.TableName));
 														table.TableNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(table.TableName));
 
-														table.PrimaryKeyName = DataType.ChangeType<string>(drTable["PrimaryKeyName"]);
+														table.PrimaryKeyName = DataType.ChangeType<string>(dictDataTable["PrimaryKeyName"]);
 
 														if (!DataType.IsNullOrWhiteSpace(table.PrimaryKeyName))
 														{
@@ -451,30 +453,30 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 														schema.Tables.Add(table);
 
-														var dataReaderColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Columns"), this.CoreGetColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table), out recordsAffected);
+														var dictEnumColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Columns"), this.CoreGetColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table), out recordsAffected);
 														{
-															if ((object)dataReaderColumn != null)
+															if ((object)dictEnumColumn != null)
 															{
-																foreach (var drColumn in dataReaderColumn)
+																foreach (var dictDataColumn in dictEnumColumn)
 																{
 																	Column column;
 
 																	column = new Column();
 
-																	column.ColumnName = DataType.ChangeType<string>(drColumn["ColumnName"]);
-																	column.ColumnOrdinal = DataType.ChangeType<int>(drColumn["ColumnOrdinal"]);
-																	column.ColumnNullable = DataType.ChangeType<bool>(drColumn["ColumnNullable"]);
-																	column.ColumnSize = DataType.ChangeType<int>(drColumn["ColumnSize"]);
-																	column.ColumnPrecision = DataType.ChangeType<int>(drColumn["ColumnPrecision"]);
-																	column.ColumnScale = DataType.ChangeType<int>(drColumn["ColumnScale"]);
-																	column.ColumnSqlType = DataType.ChangeType<string>(drColumn["ColumnSqlType"]);
-																	column.ColumnIsIdentity = DataType.ChangeType<bool>(drColumn["ColumnIsIdentity"]);
-																	column.ColumnIsComputed = DataType.ChangeType<bool>(drColumn["ColumnIsComputed"]);
-																	column.ColumnHasDefault = DataType.ChangeType<bool>(drColumn["ColumnHasDefault"]);
-																	column.ColumnHasCheck = DataType.ChangeType<bool>(drColumn["ColumnHasCheck"]);
-																	column.ColumnIsPrimaryKey = DataType.ChangeType<bool>(drColumn["ColumnIsPrimaryKey"]);
-																	column.PrimaryKeyName = DataType.ChangeType<string>(drColumn["PrimaryKeyName"]);
-																	column.PrimaryKeyColumnOrdinal = DataType.ChangeType<int>(drColumn["PrimaryKeyColumnOrdinal"]);
+																	column.ColumnName = DataType.ChangeType<string>(dictDataColumn["ColumnName"]);
+																	column.ColumnOrdinal = DataType.ChangeType<int>(dictDataColumn["ColumnOrdinal"]);
+																	column.ColumnNullable = DataType.ChangeType<bool>(dictDataColumn["ColumnNullable"]);
+																	column.ColumnSize = DataType.ChangeType<int>(dictDataColumn["ColumnSize"]);
+																	column.ColumnPrecision = DataType.ChangeType<int>(dictDataColumn["ColumnPrecision"]);
+																	column.ColumnScale = DataType.ChangeType<int>(dictDataColumn["ColumnScale"]);
+																	column.ColumnSqlType = DataType.ChangeType<string>(dictDataColumn["ColumnSqlType"]);
+																	column.ColumnIsIdentity = DataType.ChangeType<bool>(dictDataColumn["ColumnIsIdentity"]);
+																	column.ColumnIsComputed = DataType.ChangeType<bool>(dictDataColumn["ColumnIsComputed"]);
+																	column.ColumnHasDefault = DataType.ChangeType<bool>(dictDataColumn["ColumnHasDefault"]);
+																	column.ColumnHasCheck = DataType.ChangeType<bool>(dictDataColumn["ColumnHasCheck"]);
+																	column.ColumnIsPrimaryKey = DataType.ChangeType<bool>(dictDataColumn["ColumnIsPrimaryKey"]);
+																	column.PrimaryKeyName = DataType.ChangeType<string>(dictDataColumn["PrimaryKeyName"]);
+																	column.PrimaryKeyColumnOrdinal = DataType.ChangeType<int>(dictDataColumn["PrimaryKeyColumnOrdinal"]);
 																	column.ColumnNamePascalCase = Name.GetPascalCase(column.ColumnName);
 																	column.ColumnNameCamelCase = Name.GetCamelCase(column.ColumnName);
 																	column.ColumnNameConstantCase = Name.GetConstantCase(column.ColumnName);
@@ -516,22 +518,22 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 															table.Columns.ForEach(c => c.ColumnIsPrimaryKey = true);
 														}
 
-														var dataReaderDmlTrigger = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DmlTriggers"), this.CoreGetDmlTriggerParameters(unitOfWork, dataSourceTag, server, database, schema, table), out recordsAffected);
+														var dictEnumDmlTrigger = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DmlTriggers"), this.CoreGetDmlTriggerParameters(unitOfWork, dataSourceTag, server, database, schema, table), out recordsAffected);
 														{
-															if ((object)dataReaderDmlTrigger != null)
+															if ((object)dictEnumDmlTrigger != null)
 															{
-																foreach (var drTrigger in dataReaderDmlTrigger)
+																foreach (var dictDataTrigger in dictEnumDmlTrigger)
 																{
 																	Trigger trigger;
 
 																	trigger = new Trigger();
 
-																	trigger.TriggerId = DataType.ChangeType<int>(drTrigger["ObjectId"]);
-																	trigger.TriggerName = DataType.ChangeType<string>(drTrigger["TriggerName"]);
-																	trigger.IsClrTrigger = DataType.ChangeType<bool>(drTrigger["IsClrTrigger"]);
-																	trigger.IsTriggerDisabled = DataType.ChangeType<bool>(drTrigger["IsTriggerDisabled"]);
-																	trigger.IsTriggerNotForReplication = DataType.ChangeType<bool>(drTrigger["IsTriggerNotForReplication"]);
-																	trigger.IsInsteadOfTrigger = DataType.ChangeType<bool>(drTrigger["IsInsteadOfTrigger"]);
+																	trigger.TriggerId = DataType.ChangeType<int>(dictDataTrigger["ObjectId"]);
+																	trigger.TriggerName = DataType.ChangeType<string>(dictDataTrigger["TriggerName"]);
+																	trigger.IsClrTrigger = DataType.ChangeType<bool>(dictDataTrigger["IsClrTrigger"]);
+																	trigger.IsTriggerDisabled = DataType.ChangeType<bool>(dictDataTrigger["IsTriggerDisabled"]);
+																	trigger.IsTriggerNotForReplication = DataType.ChangeType<bool>(dictDataTrigger["IsTriggerNotForReplication"]);
+																	trigger.IsInsteadOfTrigger = DataType.ChangeType<bool>(dictDataTrigger["IsInsteadOfTrigger"]);
 																	trigger.TriggerNamePascalCase = Name.GetPascalCase(trigger.TriggerName);
 																	trigger.TriggerNameCamelCase = Name.GetCamelCase(trigger.TriggerName);
 																	trigger.TriggerNameConstantCase = Name.GetConstantCase(trigger.TriggerName);
@@ -554,23 +556,23 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 															}
 														}
 
-														var dataReaderForeignKey = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeys"), this.CoreGetForeignKeyParameters(unitOfWork, dataSourceTag, server, database, schema, table), out recordsAffected);
+														var dictEnumForeignKey = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeys"), this.CoreGetForeignKeyParameters(unitOfWork, dataSourceTag, server, database, schema, table), out recordsAffected);
 														{
-															if ((object)dataReaderForeignKey != null)
+															if ((object)dictEnumForeignKey != null)
 															{
-																foreach (var drForeignKey in dataReaderForeignKey)
+																foreach (var dictDataForeignKey in dictEnumForeignKey)
 																{
 																	ForeignKey foreignKey;
 
 																	foreignKey = new ForeignKey();
 
-																	foreignKey.ForeignKeyName = DataType.ChangeType<string>(drForeignKey["ForeignKeyName"]);
-																	foreignKey.ForeignKeyIsDisabled = DataType.ChangeType<bool>(drForeignKey["ForeignKeyIsDisabled"]);
-																	foreignKey.ForeignKeyIsForReplication = DataType.ChangeType<bool>(drForeignKey["ForeignKeyIsForReplication"]);
-																	foreignKey.ForeignKeyOnDeleteRefIntAction = DataType.ChangeType<byte>(drForeignKey["ForeignKeyOnDeleteRefIntAction"]);
-																	foreignKey.ForeignKeyOnDeleteRefIntActionSqlName = DataType.ChangeType<string>(drForeignKey["ForeignKeyOnDeleteRefIntActionSqlName"]);
-																	foreignKey.ForeignKeyOnUpdateRefIntAction = DataType.ChangeType<byte>(drForeignKey["ForeignKeyOnUpdateRefIntAction"]);
-																	foreignKey.ForeignKeyOnUpdateRefIntActionSqlName = DataType.ChangeType<string>(drForeignKey["ForeignKeyOnUpdateRefIntActionSqlName"]);
+																	foreignKey.ForeignKeyName = DataType.ChangeType<string>(dictDataForeignKey["ForeignKeyName"]);
+																	foreignKey.ForeignKeyIsDisabled = DataType.ChangeType<bool>(dictDataForeignKey["ForeignKeyIsDisabled"]);
+																	foreignKey.ForeignKeyIsForReplication = DataType.ChangeType<bool>(dictDataForeignKey["ForeignKeyIsForReplication"]);
+																	foreignKey.ForeignKeyOnDeleteRefIntAction = DataType.ChangeType<byte>(dictDataForeignKey["ForeignKeyOnDeleteRefIntAction"]);
+																	foreignKey.ForeignKeyOnDeleteRefIntActionSqlName = DataType.ChangeType<string>(dictDataForeignKey["ForeignKeyOnDeleteRefIntActionSqlName"]);
+																	foreignKey.ForeignKeyOnUpdateRefIntAction = DataType.ChangeType<byte>(dictDataForeignKey["ForeignKeyOnUpdateRefIntAction"]);
+																	foreignKey.ForeignKeyOnUpdateRefIntActionSqlName = DataType.ChangeType<string>(dictDataForeignKey["ForeignKeyOnUpdateRefIntActionSqlName"]);
 																	foreignKey.ForeignKeyNamePascalCase = Name.GetPascalCase(foreignKey.ForeignKeyName);
 																	foreignKey.ForeignKeyNameCamelCase = Name.GetCamelCase(foreignKey.ForeignKeyName);
 																	foreignKey.ForeignKeyNameConstantCase = Name.GetConstantCase(foreignKey.ForeignKeyName);
@@ -590,25 +592,25 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 																	table.ForeignKeys.Add(foreignKey);
 
-																	var dataReaderForeignKeyColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeyColumns"), this.CoreGetForeignKeyColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table, foreignKey), out recordsAffected);
+																	var dictEnumForeignKeyColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeyColumns"), this.CoreGetForeignKeyColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table, foreignKey), out recordsAffected);
 																	{
-																		if ((object)dataReaderForeignKeyColumn != null)
+																		if ((object)dictEnumForeignKeyColumn != null)
 																		{
-																			foreach (var drForeignKeyColumn in dataReaderForeignKeyColumn)
+																			foreach (var dictDataForeignKeyColumn in dictEnumForeignKeyColumn)
 																			{
 																				ForeignKeyColumnRef foreignKeyColumnRef;
 
 																				foreignKeyColumnRef = new ForeignKeyColumnRef();
 
-																				foreignKeyColumnRef.ForeignKeyOrdinal = DataType.ChangeType<int>(drForeignKeyColumn["ForeignKeyOrdinal"]);
-																				foreignKeyColumnRef.ColumnOrdinal = DataType.ChangeType<int>(drForeignKeyColumn["ColumnOrdinal"]);
-																				foreignKeyColumnRef.ColumnName = DataType.ChangeType<string>(drForeignKeyColumn["ColumnName"]);
-																				foreignKeyColumnRef.PrimarySchemaName = DataType.ChangeType<string>(drForeignKeyColumn["PrimarySchemaName"]);
-																				foreignKeyColumnRef.PrimaryTableName = DataType.ChangeType<string>(drForeignKeyColumn["PrimaryTableName"]);
-																				foreignKeyColumnRef.PrimaryKeyName = DataType.ChangeType<string>(drForeignKeyColumn["PrimaryKeyName"]);
-																				foreignKeyColumnRef.PrimaryKeyOrdinal = DataType.ChangeType<int>(drForeignKeyColumn["PrimaryKeyOrdinal"]);
-																				foreignKeyColumnRef.PrimaryKeyColumnOrdinal = DataType.ChangeType<int>(drForeignKeyColumn["PrimaryKeyColumnOrdinal"]);
-																				foreignKeyColumnRef.PrimaryKeyColumnName = DataType.ChangeType<string>(drForeignKeyColumn["PrimaryKeyColumnName"]);
+																				foreignKeyColumnRef.ForeignKeyOrdinal = DataType.ChangeType<int>(dictDataForeignKeyColumn["ForeignKeyOrdinal"]);
+																				foreignKeyColumnRef.ColumnOrdinal = DataType.ChangeType<int>(dictDataForeignKeyColumn["ColumnOrdinal"]);
+																				foreignKeyColumnRef.ColumnName = DataType.ChangeType<string>(dictDataForeignKeyColumn["ColumnName"]);
+																				foreignKeyColumnRef.PrimarySchemaName = DataType.ChangeType<string>(dictDataForeignKeyColumn["PrimarySchemaName"]);
+																				foreignKeyColumnRef.PrimaryTableName = DataType.ChangeType<string>(dictDataForeignKeyColumn["PrimaryTableName"]);
+																				foreignKeyColumnRef.PrimaryKeyName = DataType.ChangeType<string>(dictDataForeignKeyColumn["PrimaryKeyName"]);
+																				foreignKeyColumnRef.PrimaryKeyOrdinal = DataType.ChangeType<int>(dictDataForeignKeyColumn["PrimaryKeyOrdinal"]);
+																				foreignKeyColumnRef.PrimaryKeyColumnOrdinal = DataType.ChangeType<int>(dictDataForeignKeyColumn["PrimaryKeyColumnOrdinal"]);
+																				foreignKeyColumnRef.PrimaryKeyColumnName = DataType.ChangeType<string>(dictDataForeignKeyColumn["PrimaryKeyColumnName"]);
 
 																				foreignKey.ForeignKeyColumnRefs.Add(foreignKeyColumnRef);
 																			}
@@ -618,18 +620,18 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 															}
 														}
 
-														var dataReaderUniqueKey = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeys"), this.CoreGetUniqueKeyParameters(unitOfWork, dataSourceTag, server, database, schema, table), out recordsAffected);
+														var dictEnumUniqueKey = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeys"), this.CoreGetUniqueKeyParameters(unitOfWork, dataSourceTag, server, database, schema, table), out recordsAffected);
 														{
-															if ((object)dataReaderUniqueKey != null)
+															if ((object)dictEnumUniqueKey != null)
 															{
-																foreach (var drUniqueKey in dataReaderUniqueKey)
+																foreach (var dictDataUniqueKey in dictEnumUniqueKey)
 																{
 																	UniqueKey uniqueKey;
 
 																	uniqueKey = new UniqueKey();
 
-																	uniqueKey.UniqueKeyName = DataType.ChangeType<string>(drUniqueKey["UniqueKeyName"]);
-																	uniqueKey.UniqueKeyIsDisabled = DataType.ChangeType<bool>(drUniqueKey["UniqueKeyIsDisabled"]);
+																	uniqueKey.UniqueKeyName = DataType.ChangeType<string>(dictDataUniqueKey["UniqueKeyName"]);
+																	uniqueKey.UniqueKeyIsDisabled = DataType.ChangeType<bool>(dictDataUniqueKey["UniqueKeyIsDisabled"]);
 																	uniqueKey.UniqueKeyNamePascalCase = Name.GetPascalCase(uniqueKey.UniqueKeyName);
 																	uniqueKey.UniqueKeyNameCamelCase = Name.GetCamelCase(uniqueKey.UniqueKeyName);
 																	uniqueKey.UniqueKeyNameConstantCase = Name.GetConstantCase(uniqueKey.UniqueKeyName);
@@ -649,20 +651,20 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 																	table.UniqueKeys.Add(uniqueKey);
 
-																	var dataReaderUniqueKeyColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeyColumns"), this.CoreGetUniqueKeyColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table, uniqueKey), out recordsAffected);
+																	var dictEnumUniqueKeyColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeyColumns"), this.CoreGetUniqueKeyColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table, uniqueKey), out recordsAffected);
 																	{
-																		if ((object)dataReaderUniqueKeyColumn != null)
+																		if ((object)dictEnumUniqueKeyColumn != null)
 																		{
-																			foreach (var drUniqueKeyColumn in dataReaderUniqueKeyColumn)
+																			foreach (var dictDataUniqueKeyColumn in dictEnumUniqueKeyColumn)
 																			{
 																				UniqueKeyColumnRef uniqueKeyColumnRef;
 
 																				uniqueKeyColumnRef = new UniqueKeyColumnRef();
 
-																				uniqueKeyColumnRef.UniqueKeyOrdinal = DataType.ChangeType<int>(drUniqueKeyColumn["UniqueKeyOrdinal"]);
-																				uniqueKeyColumnRef.ColumnOrdinal = DataType.ChangeType<int>(drUniqueKeyColumn["ColumnOrdinal"]);
-																				uniqueKeyColumnRef.ColumnName = DataType.ChangeType<string>(drUniqueKeyColumn["ColumnName"]);
-																				uniqueKeyColumnRef.UniqueKeyColumnDescendingSort = DataType.ChangeType<bool>(drUniqueKeyColumn["UniqueKeyColumnDescendingSort"]);
+																				uniqueKeyColumnRef.UniqueKeyOrdinal = DataType.ChangeType<int>(dictDataUniqueKeyColumn["UniqueKeyOrdinal"]);
+																				uniqueKeyColumnRef.ColumnOrdinal = DataType.ChangeType<int>(dictDataUniqueKeyColumn["ColumnOrdinal"]);
+																				uniqueKeyColumnRef.ColumnName = DataType.ChangeType<string>(dictDataUniqueKeyColumn["ColumnName"]);
+																				uniqueKeyColumnRef.UniqueKeyColumnDescendingSort = DataType.ChangeType<bool>(dictDataUniqueKeyColumn["UniqueKeyColumnDescendingSort"]);
 
 																				uniqueKey.UniqueKeyColumnRefs.Add(uniqueKeyColumnRef);
 																			}
@@ -674,16 +676,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 													}
 												}
 
-												var dataReaderProcedure = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Procedures"), this.CoreGetProcedureParameters(unitOfWork, dataSourceTag, server, database, schema), out recordsAffected);
+												var dictEnumProcedure = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Procedures"), this.CoreGetProcedureParameters(unitOfWork, dataSourceTag, server, database, schema), out recordsAffected);
 												{
-													if ((object)dataReaderProcedure != null)
+													if ((object)dictEnumProcedure != null)
 													{
-														foreach (var drProcedure in dataReaderProcedure)
+														foreach (var dictDataProcedure in dictEnumProcedure)
 														{
 															Procedure procedure;
 
 															procedure = new Procedure();
-															procedure.ProcedureName = DataType.ChangeType<string>(drProcedure["ProcedureName"]);
+															procedure.ProcedureName = DataType.ChangeType<string>(dictDataProcedure["ProcedureName"]);
 															procedure.ProcedureNamePascalCase = Name.GetPascalCase(procedure.ProcedureName);
 															procedure.ProcedureNameCamelCase = Name.GetCamelCase(procedure.ProcedureName);
 															procedure.ProcedureNameConstantCase = Name.GetConstantCase(procedure.ProcedureName);
@@ -703,29 +705,29 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 															schema.Procedures.Add(procedure);
 
-															var dataReaderParameter = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Parameters"), this.CoreGetParameterParameters(unitOfWork, dataSourceTag, server, database, schema, procedure), out recordsAffected);
+															var dictEnumParameter = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Parameters"), this.CoreGetParameterParameters(unitOfWork, dataSourceTag, server, database, schema, procedure), out recordsAffected);
 															{
-																if ((object)dataReaderParameter != null)
+																if ((object)dictEnumParameter != null)
 																{
-																	foreach (var drParameter in dataReaderParameter)
+																	foreach (var dictDataParameter in dictEnumParameter)
 																	{
 																		Parameter parameter;
 
 																		parameter = new Parameter();
 
-																		parameter.ParameterPrefix = DataType.ChangeType<string>(drParameter["ParameterName"]).Substring(0, 1);
-																		parameter.ParameterName = DataType.ChangeType<string>(drParameter["ParameterName"]).Substring(1);
-																		parameter.ParameterOrdinal = DataType.ChangeType<int>(drParameter["ParameterOrdinal"]);
-																		parameter.ParameterSize = DataType.ChangeType<int>(drParameter["ParameterSize"]);
-																		parameter.ParameterPrecision = DataType.ChangeType<int>(drParameter["ParameterPrecision"]);
-																		parameter.ParameterScale = DataType.ChangeType<int>(drParameter["ParameterScale"]);
-																		parameter.ParameterSqlType = DataType.ChangeType<string>(drParameter["ParameterSqlType"]);
-																		parameter.ParameterIsOutput = DataType.ChangeType<bool>(drParameter["ParameterIsOutput"]);
-																		parameter.ParameterIsReadOnly = DataType.ChangeType<bool>(drParameter["ParameterIsReadOnly"]);
-																		parameter.ParameterIsCursorRef = DataType.ChangeType<bool>(drParameter["ParameterIsCursorRef"]);
-																		parameter.ParameterIsReturnValue = DataType.ChangeType<bool>(drParameter["ParameterIsReturnValue"]);
-																		parameter.ParameterDefaultValue = DataType.ChangeType<string>(drParameter["ParameterDefaultValue"]);
-																		parameter.ParameterIsResultColumn = DataType.ChangeType<bool>(drParameter["ParameterIsResultColumn"]);
+																		parameter.ParameterPrefix = DataType.ChangeType<string>(dictDataParameter["ParameterName"]).Substring(0, 1);
+																		parameter.ParameterName = DataType.ChangeType<string>(dictDataParameter["ParameterName"]).Substring(1);
+																		parameter.ParameterOrdinal = DataType.ChangeType<int>(dictDataParameter["ParameterOrdinal"]);
+																		parameter.ParameterSize = DataType.ChangeType<int>(dictDataParameter["ParameterSize"]);
+																		parameter.ParameterPrecision = DataType.ChangeType<int>(dictDataParameter["ParameterPrecision"]);
+																		parameter.ParameterScale = DataType.ChangeType<int>(dictDataParameter["ParameterScale"]);
+																		parameter.ParameterSqlType = DataType.ChangeType<string>(dictDataParameter["ParameterSqlType"]);
+																		parameter.ParameterIsOutput = DataType.ChangeType<bool>(dictDataParameter["ParameterIsOutput"]);
+																		parameter.ParameterIsReadOnly = DataType.ChangeType<bool>(dictDataParameter["ParameterIsReadOnly"]);
+																		parameter.ParameterIsCursorRef = DataType.ChangeType<bool>(dictDataParameter["ParameterIsCursorRef"]);
+																		parameter.ParameterIsReturnValue = DataType.ChangeType<bool>(dictDataParameter["ParameterIsReturnValue"]);
+																		parameter.ParameterDefaultValue = DataType.ChangeType<string>(dictDataParameter["ParameterDefaultValue"]);
+																		parameter.ParameterIsResultColumn = DataType.ChangeType<bool>(dictDataParameter["ParameterIsResultColumn"]);
 																		parameter.ParameterNamePascalCase = Name.GetPascalCase(parameter.ParameterName);
 																		parameter.ParameterNameCamelCase = Name.GetCamelCase(parameter.ParameterName);
 																		parameter.ParameterNameConstantCase = Name.GetConstantCase(parameter.ParameterName);
@@ -888,29 +890,29 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 																try
 																{
-																	var dataReaderMetadata = AdoNetHelper.ExecuteSchema(unitOfWork, CommandType.StoredProcedure, string.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), server.ServerName, database.DatabaseName, schema.SchemaName, procedure.ProcedureName), parameters);
+																	var dictEnumMetadata = AdoNetHelper.ExecuteSchema(unitOfWork, CommandType.StoredProcedure, string.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), server.ServerName, database.DatabaseName, schema.SchemaName, procedure.ProcedureName), parameters);
 																	{
-																		if ((object)dataReaderMetadata != null)
+																		if ((object)dictEnumMetadata != null)
 																		{
-																			foreach (var drMetadata in dataReaderMetadata)
+																			foreach (var dictDataMetadata in dictEnumMetadata)
 																			{
 																				Column column;
 
 																				column = new Column();
 
-																				column.ColumnName = DataType.ChangeType<string>(drMetadata["ColumnName"]);
-																				column.ColumnOrdinal = DataType.ChangeType<int>(drMetadata["ColumnOrdinal"]);
-																				column.ColumnNullable = DataType.ChangeType<bool>(drMetadata["AllowDBNull"]);
-																				column.ColumnSize = DataType.ChangeType<int>(drMetadata["ColumnSize"]);
-																				column.ColumnPrecision = DataType.ChangeType<int>(drMetadata["NumericPrecision"]);
-																				column.ColumnScale = DataType.ChangeType<int>(drMetadata["NumericScale"]);
+																				column.ColumnName = DataType.ChangeType<string>(dictDataMetadata["ColumnName"]);
+																				column.ColumnOrdinal = DataType.ChangeType<int>(dictDataMetadata["ColumnOrdinal"]);
+																				column.ColumnNullable = DataType.ChangeType<bool>(dictDataMetadata["AllowDBNull"]);
+																				column.ColumnSize = DataType.ChangeType<int>(dictDataMetadata["ColumnSize"]);
+																				column.ColumnPrecision = DataType.ChangeType<int>(dictDataMetadata["NumericPrecision"]);
+																				column.ColumnScale = DataType.ChangeType<int>(dictDataMetadata["NumericScale"]);
 																				// TODO FIX
-																				//column.ColumnSqlType = DataType.ChangeType<string>(drMetadata["DataTypeName"]);
-																				//column.ColumnIsIdentity = DataType.ChangeType<bool>(drMetadata["IsIdentity"]);
-																				//column.ColumnIsComputed = DataType.ChangeType<bool>(drMetadata["IsReadOnly"]);
-																				//column.ColumnHasDefault = DataType.ChangeType<bool>(drMetadata["ColumnHasDefault"]);
-																				//column.ColumnHasCheck = DataType.ChangeType<bool>(drMetadata["ColumnHasCheck"]);
-																				//column.ColumnIsPrimaryKey = DataType.ChangeType<bool>(drMetadata["IsKey"]);
+																				//column.ColumnSqlType = DataType.ChangeType<string>(dictDataMetadata["DataTypeName"]);
+																				//column.ColumnIsIdentity = DataType.ChangeType<bool>(dictDataMetadata["IsIdentity"]);
+																				//column.ColumnIsComputed = DataType.ChangeType<bool>(dictDataMetadata["IsReadOnly"]);
+																				//column.ColumnHasDefault = DataType.ChangeType<bool>(dictDataMetadata["ColumnHasDefault"]);
+																				//column.ColumnHasCheck = DataType.ChangeType<bool>(dictDataMetadata["ColumnHasCheck"]);
+																				//column.ColumnIsPrimaryKey = DataType.ChangeType<bool>(dictDataMetadata["IsKey"]);
 																				column.ColumnNamePascalCase = Name.GetPascalCase(column.ColumnName);
 																				column.ColumnNameCamelCase = Name.GetCamelCase(column.ColumnName);
 																				column.ColumnNameConstantCase = Name.GetConstantCase(column.ColumnName);

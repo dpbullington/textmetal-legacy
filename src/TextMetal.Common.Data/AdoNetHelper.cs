@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Xml;
 
 using TextMetal.Common.Core;
@@ -59,6 +60,7 @@ namespace TextMetal.Common.Data
 
 		/// <summary>
 		/// An extension method to execute a dictionary query operation against a target unit of work.
+		/// This overload is for backwards compatability.
 		/// DO NOT DISPOSE OF UNIT OF WORK CONTEXT - UP TO THE CALLER.
 		/// </summary>
 		/// <param name="unitOfWork"> The target unit of work. </param>
@@ -69,10 +71,28 @@ namespace TextMetal.Common.Data
 		/// <returns> A list of dictionary instances, containing key/value pairs of data. </returns>
 		public static IList<IDictionary<string, object>> ExecuteDictionary(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters, out int recordsAffected)
 		{
-			IList<IDictionary<string, object>> objs;
+			int _recordsAffected = -1;
+			var list = ExecuteDictionary(unitOfWork, commandType, commandText, commandParameters, (ra) => _recordsAffected = ra).ToList(); // FORCE EAGER LOADING HERE
+			recordsAffected = _recordsAffected;
+			return list;
+		}
+
+		/// <summary>
+		/// An extension method to execute a dictionary query operation against a target unit of work.
+		/// DO NOT DISPOSE OF UNIT OF WORK CONTEXT - UP TO THE CALLER.
+		/// </summary>
+		/// <param name="unitOfWork"> The target unit of work. </param>
+		/// <param name="commandType"> The type of the command. </param>
+		/// <param name="commandText"> The SQL text or stored procedure name. </param>
+		/// <param name="commandParameters"> The parameters to use during the operation. </param>
+		/// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
+		/// <returns> An enumerable of dictionary instances, containing key/value pairs of data. </returns>
+		public static IEnumerable<IDictionary<string, object>> ExecuteDictionary(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters, Action<int> recordsAffectedCallback)
+		{
 			IDictionary<string, object> obj;
 			IDataReader dataReader;
 			const bool COMMAND_PREPARE = false;
+			int recordsAffected;
 			/* const */
 			int? COMMAND_TIMEOUT = null;
 			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default; // force command behavior to default; the unit of work will manage connection lifetime
@@ -82,8 +102,6 @@ namespace TextMetal.Common.Data
 
 			if ((object)unitOfWork.Connection == null)
 				throw new InvalidOperationException("There is not a valid connection associated with the current unit of work.");
-
-			objs = new List<IDictionary<string, object>>();
 
 			using (dataReader = ExecuteReader(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, COMMAND_TIMEOUT, COMMAND_PREPARE))
 			{
@@ -102,13 +120,14 @@ namespace TextMetal.Common.Data
 						obj.Add(key, value);
 					}
 
-					objs.Add(obj);
+					yield return obj;
 				}
 			}
 
 			recordsAffected = dataReader.RecordsAffected;
 
-			return objs;
+			if ((object)recordsAffectedCallback != null)
+				recordsAffectedCallback(recordsAffected);
 		}
 
 		/// <summary>
@@ -183,10 +202,9 @@ namespace TextMetal.Common.Data
 		/// <param name="commandType"> The type of the command. </param>
 		/// <param name="commandText"> The SQL text or stored procedure name. </param>
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
-		/// <returns> A list of dictionary instances, containing key/value pairs of schema data. </returns>
-		public static IList<IDictionary<string, object>> ExecuteSchema(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters)
+		/// <returns> An enumerable of dictionary instances, containing key/value pairs of schema data. </returns>
+		public static IEnumerable<IDictionary<string, object>> ExecuteSchema(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters)
 		{
-			IList<IDictionary<string, object>> objs;
 			IDictionary<string, object> obj;
 
 			if ((object)unitOfWork == null)
@@ -194,8 +212,6 @@ namespace TextMetal.Common.Data
 
 			if ((object)unitOfWork.Connection == null)
 				throw new InvalidOperationException("There is not a valid connection associated with the current unit of work.");
-
-			objs = new List<IDictionary<string, object>>();
 
 			// 2011-09-07 (dpbullington@gmail.com / issue #12): found quirk if CommandBehavior == KeyInfo, hidden columns in views get returned; reverting to CommandBehavior == SchemaOnly
 			using (IDataReader dataReader = ExecuteReader(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, CommandBehavior.SchemaOnly, null, false))
@@ -220,13 +236,11 @@ namespace TextMetal.Common.Data
 								obj.Add(key, value);
 							}
 
-							objs.Add(obj);
+							yield return obj;
 						}
 					}
 				}
 			}
-
-			return objs;
 		}
 
 		/// <summary>

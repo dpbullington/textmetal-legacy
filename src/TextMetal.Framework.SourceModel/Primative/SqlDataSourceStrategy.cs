@@ -40,9 +40,10 @@ namespace TextMetal.Framework.SourceModel.Primative
 			PropertyConstruct propertyConstruct;
 			Tokenizer tokenizer;
 
-			IList<IDictionary<string, object>> objs;
+			IEnumerable<IDictionary<string, object>> objs;
 			string commandText;
 			int rcecordsAffected;
+			int count = 0;
 
 			if ((object)sqlQueries == null)
 				throw new ArgumentNullException("sqlQueries");
@@ -81,7 +82,6 @@ namespace TextMetal.Framework.SourceModel.Primative
 				{
 					propertyConstruct = new PropertyConstruct();
 					propertyConstruct.Name = "RowCount";
-					propertyConstruct.RawValue = objs.Count;
 					arrayConstruct.Items.Add(propertyConstruct);
 
 					foreach (IDictionary<string, object> obj in objs)
@@ -103,7 +103,11 @@ namespace TextMetal.Framework.SourceModel.Primative
 
 						// correlated
 						WriteSqlQuery(sqlQuery.SubQueries, objectConstruct, connectionType, connectionString, getSchemaOnly);
+
+						count++;
 					}
+					
+					propertyConstruct.RawValue = count;
 				}
 			}
 		}
