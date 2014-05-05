@@ -50,9 +50,13 @@
 <![CDATA[
 
 using System;
+using System.Collections.Generic;
 using System.Xml;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Data;
+using TextMetal.Common.Data.Advanced;
+using TextMetal.Common.Expressions;
 ]]>
 						<If>
 							<If.Condition>
@@ -74,7 +78,7 @@ using TextMetal.Common.Core;
 						<![CDATA[
 namespace ${ClrNamespace}.${FolderName}
 {
-	public partial class ${TableNameSingularPascalCase} : ${ClrSuperType}
+	public partial class ${TableNameSingularPascalCase} : ${ClrSuperType}, I${TableNameSingularPascalCase}
 	{		
 		#region Constructors/Destructors
 		
@@ -85,7 +89,58 @@ namespace ${ClrNamespace}.${FolderName}
 		#endregion
 		
 		#region Fields/Constants
+		
+		public const string SCHEMA_NAME = "${SchemaName}";
+		public const string TABLE_NAME = "${TableName}";
 ]]>
+
+					<If>
+						<If.Condition>
+							<BinaryExpression operator="Eq">
+								<BinaryExpression.LeftExpression>
+									<Value type="System.Boolean" data="true" />
+								</BinaryExpression.LeftExpression>
+								<BinaryExpression.RightExpression>
+									<Facet name="HasSingleColumnServerGeneratedPrimaryKey" />
+								</BinaryExpression.RightExpression>
+							</BinaryExpression>
+						</If.Condition>
+						<If.True>
+								<![CDATA[		public const bool HAS_SINGLE_COLUMN_SERVER_GENERATED_PRIMARY_KEY = true;
+]]>
+						</If.True>
+						<If.False>
+								<![CDATA[		public const bool HAS_SINGLE_COLUMN_SERVER_GENERATED_PRIMARY_KEY = false;
+]]>
+						</If.False>
+					</If>
+
+					<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
+						<ForEach.Body>
+							<![CDATA[		public const string COLUMN_NAME_${ColumnNameConstantCase} = "${ColumnName}";]]>
+							
+							<If>
+								<If.Condition>
+									<BinaryExpression operator="Ne">
+										<BinaryExpression.LeftExpression>
+											<Facet name="_LoopCount" />
+										</BinaryExpression.LeftExpression>
+										<BinaryExpression.RightExpression>
+											<Facet name="_LoopIndex" />
+										</BinaryExpression.RightExpression>
+									</BinaryExpression>
+								</If.Condition>
+								<If.True>
+<![CDATA[
+]]>
+								</If.True>
+							</If>
+						</ForEach.Body>
+					</ForEach>
+	
+<![CDATA[
+]]>
+
 						<If>
 							<If.Condition>
 								<BinaryExpression operator="And">
@@ -208,7 +263,7 @@ namespace ${ClrNamespace}.${FolderName}
 									<ForEach.Filter>
 										<BinaryExpression operator="Eq">
 											<BinaryExpression.LeftExpression>
-												<Facet name="ColumnIsIdentity" />
+												<Facet name="IsColumnServerGeneratedPrimaryKey" />
 											</BinaryExpression.LeftExpression>
 											<BinaryExpression.RightExpression>
 												<Value type="System.Boolean" data="True" />
@@ -216,7 +271,7 @@ namespace ${ClrNamespace}.${FolderName}
 										</BinaryExpression>
 									</ForEach.Filter>
 									<ForEach.Body>
-										<![CDATA[this.${ColumnNamePascalCase} == default(${ColumnCSharpClrNullableType})]]>
+										<![CDATA[this.@${ColumnNamePascalCase} == default(${ColumnCSharpClrNullableType})]]>
 										<If>
 											<If.Condition>
 												<BinaryExpression operator="Ne">
@@ -261,7 +316,7 @@ namespace ${ClrNamespace}.${FolderName}
 									<ForEach.Filter>
 										<BinaryExpression operator="Eq">
 											<BinaryExpression.LeftExpression>
-												<Facet name="ColumnIsIdentity" />
+												<Facet name="IsColumnServerGeneratedPrimaryKey" />
 											</BinaryExpression.LeftExpression>
 											<BinaryExpression.RightExpression>
 												<Value type="System.Boolean" data="True" />
@@ -269,7 +324,7 @@ namespace ${ClrNamespace}.${FolderName}
 										</BinaryExpression>
 									</ForEach.Filter>
 									<ForEach.Body>
-										<![CDATA[this.${ColumnNamePascalCase}]]>
+										<![CDATA[this.@${ColumnNamePascalCase}]]>
 										<If>
 											<If.Condition>
 												<BinaryExpression operator="Ne">
@@ -387,6 +442,28 @@ namespace ${ClrNamespace}.${FolderName}
 							</ForEach.Body>
 						</ForEach>
 						<![CDATA[
+		#endregion
+		
+		#region Methods/Operators
+		
+		partial void OnMark();
+		
+		partial void OnValidate(ref IEnumerable<Message> messages);
+		
+		public virtual void Mark()
+		{
+			this.OnMark();
+		}
+		
+		public virtual IEnumerable<Message> Validate()
+		{
+			IEnumerable<Message> messages = null;
+			
+			this.OnValidate(ref messages);
+			
+			return messages ?? new Message[] { };
+		}
+		
 		#endregion
 	}
 }

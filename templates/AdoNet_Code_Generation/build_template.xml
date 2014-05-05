@@ -49,7 +49,7 @@
 			<Value data="12.0" type="System.String" />
 		</Assign.Expression>
 	</Assign>
-		
+
 	<OutputScope name="..\msb.bat">					
 		<![CDATA[@echo off
 
@@ -712,7 +712,7 @@ EndGlobal
     </ProjectReference>
 	
   </ItemGroup>
-  <ItemGroup>       
+  <ItemGroup>
 	<Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
@@ -742,6 +742,8 @@ EndGlobal
 	
 	<Free token="vs_sln_file_version" />
 	<Free token="vs_sln_info_version" />
+	<Free token="visual_studio_version" />
+	<Free token="minimum_visual_studio_version" />
 	<Free token="csproj_product_version" />
 	<Free token="csproj_target_framework_version" />
 	<Free token="csproj_tools_version" />

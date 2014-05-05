@@ -96,7 +96,7 @@ namespace ${ClrNamespace}.${FolderName}
 			return ${TableNamePluralCamelCase}.Count() > 0;
 		}
 
-		public void Mark()
+		partial void OnMark()
 		{
 			DateTime now;
 
@@ -111,25 +111,25 @@ namespace ${ClrNamespace}.${FolderName}
 			this.OrganizationId = this.OrganizationId ?? (int)Current.OrganizationId;
 		}
 
-		public virtual Message[] Validate()
+		partial void OnValidate(ref IEnumerable<Message> messages)
 		{
 			bool exists;
-			List<Message> messages;
+			List<Message> _messages;
 
-			messages = new List<Message>();
+			_messages = new List<Message>();
 
 			if (DataType.IsNullOrWhiteSpace(this.XXX))
-				messages.Add(new Message("", "XXX is required.", Severity.Error));
+				_messages.Add(new Message("", "XXX is required.", Severity.Error));
 				
-			if (messages.Count > 0)
-				return messages.ToArray();
+			if (_messages.Count == 0)
+			{
+				exists = Exists(this);
 
-			exists = Exists(this);
+				if (exists)
+					_messages.Add(new Message("", "${TableNameSingularPascalCase} must be unique.", Severity.Error));
+			}
 
-			if (exists)
-				messages.Add(new Message("", "${TableNameSingularPascalCase} must be unique.", Severity.Error));
-
-			return messages.ToArray();
+			messages = _messages;
 		}
 
 		#endregion

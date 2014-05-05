@@ -116,7 +116,7 @@ namespace ${ClrNamespace}
 				
 				<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Body>
-						<![CDATA[		public ${TableNameSingularPascalCase} Load${TableNameSingularPascalCase}(]]>
+						<![CDATA[		public I${TableNameSingularPascalCase} Load${TableNameSingularPascalCase}(]]>
 						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Or">
@@ -163,7 +163,7 @@ namespace ${ClrNamespace}
 						</ForEach>
 						<![CDATA[)
 		{
-			${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
+			I${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
 			
 			if ((object)UnitOfWork.Current == null)
 			{
@@ -272,7 +272,7 @@ namespace ${ClrNamespace}
 		
 ]]>
 				
-<![CDATA[		public ${TableNameSingularPascalCase} Load${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ]]>
+<![CDATA[		public I${TableNameSingularPascalCase} Load${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ]]>
 						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
 								<BinaryExpression operator="Or">
@@ -319,7 +319,7 @@ namespace ${ClrNamespace}
 						</ForEach>
 						<![CDATA[)
 		{			
-			${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
+			I${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
 			${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase} query;
 			
 			if ((object)unitOfWork == null)
@@ -409,7 +409,7 @@ namespace ${ClrNamespace}
 				if ((object)query == null)
 					return null; // does not exist
 				
-				@${TableNameSingularCamelCase} = new ${TableNameSingularPascalCase}()
+				@${TableNameSingularCamelCase} = new ${TableNameSingularPascalCase}() /* TODO-FIX */
 								{
 									// map result to POCO from L2S object
 ]]>
@@ -479,9 +479,9 @@ namespace ${ClrNamespace}
 			}
 		}
 		
-		public IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(Func<IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}>, IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}>> callback)
+		public IEnumerable<I${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(Func<IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}>, IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}>> callback)
 		{
-			IEnumerable<${TableNameSingularPascalCase}> @${TableNamePluralCamelCase};
+			IEnumerable<I${TableNameSingularPascalCase}> @${TableNamePluralCamelCase};
 			
 			if ((object)UnitOfWork.Current == null)
 			{
@@ -504,9 +504,9 @@ namespace ${ClrNamespace}
 			return @${TableNamePluralCamelCase};
 		}
 		
-		public IEnumerable<${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(IUnitOfWork unitOfWork, Func<IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}>, IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}>> callback)
+		public IEnumerable<I${TableNameSingularPascalCase}> Find${TableNamePluralPascalCase}(IUnitOfWork unitOfWork, Func<IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}>, IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}>> callback)
 		{
-			IEnumerable<${TableNameSingularPascalCase}> @${TableNamePluralCamelCase};			
+			IEnumerable<I${TableNameSingularPascalCase}> @${TableNamePluralCamelCase};			
 			IQueryable<${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase}> queryable;			
 			
 			if ((object)unitOfWork == null)		
@@ -522,7 +522,7 @@ namespace ${ClrNamespace}
 				if ((object)queryable == null)
 					throw new InvalidOperationException(string.Format("The queryable returned was invalid."));
 				
-				@${TableNamePluralCamelCase} = queryable.Select(lo => new ${TableNameSingularPascalCase}()
+				@${TableNamePluralCamelCase} = queryable.Select(lo => new ${TableNameSingularPascalCase}() /* TODO-FIX */
 												 {
 													// map results to POCOs from L2S objects
 ]]>
@@ -585,7 +585,7 @@ namespace ${ClrNamespace}
 <![CDATA[
 												 }); // DOES NOT FORCE EXECUTION AGAINST STORE
 
-				foreach (${TableNameSingularPascalCase} @${TableNameSingularCamelCase} in @${TableNamePluralCamelCase})
+				foreach (I${TableNameSingularPascalCase} @${TableNameSingularCamelCase} in @${TableNamePluralCamelCase})
 				{
 					this.OnSelect${TableNameSingularPascalCase}(unitOfWork, @${TableNameSingularCamelCase});
 					
@@ -594,7 +594,7 @@ namespace ${ClrNamespace}
 			}			
 		}
 		
-		public bool Save${TableNameSingularPascalCase}(${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
+		public bool Save${TableNameSingularPascalCase}(I${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			bool retval;
 
@@ -613,7 +613,7 @@ namespace ${ClrNamespace}
 			return retval;
 		}
 		
-		public bool Save${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
+		public bool Save${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase} query;
 			bool wasNew;
@@ -902,7 +902,7 @@ namespace ${ClrNamespace}
 			}
 		}
 		
-		public bool Discard${TableNameSingularPascalCase}(${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
+		public bool Discard${TableNameSingularPascalCase}(I${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			bool retval;
 			
@@ -921,7 +921,7 @@ namespace ${ClrNamespace}
 			return retval;
 		}
 		
-		public bool Discard${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
+		public bool Discard${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			${LinqToSqlDataContextRootNamespace}.${TableNameSqlMetalSingularPascalCase} query;
 			
@@ -1039,23 +1039,23 @@ namespace ${ClrNamespace}
 			}
 		}
 		
-		partial void OnPreInsert${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnPreInsert${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnPostInsert${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnPostInsert${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnPreUpdate${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnPreUpdate${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnPostUpdate${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnPostUpdate${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnPreDelete${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnPreDelete${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnPostDelete${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnPostDelete${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnSaveConflict${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnSaveConflict${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnDiscardConflict${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
+		partial void OnDiscardConflict${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});
 		
-		partial void OnSelect${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase});		
+		partial void OnSelect${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, I${TableNameSingularPascalCase} @${TableNameSingularCamelCase});		
 ]]>
 						<If>
 							<If.Condition>

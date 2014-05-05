@@ -11,10 +11,18 @@
 <![CDATA[
 
 using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
+using TextMetal.Common.Data.Advanced;
+using TextMetal.Common.Data.LinqToSql;
+using TextMetal.Common.Expressions;
+using TextMetal.Common.Solder.DependencyManagement;
 ]]>
 		<If>
 			<If.Condition>
@@ -33,10 +41,61 @@ using TextMetal.Common.Data;
 				</ForEach>
 			</If.True>
 		</If>
-				
-		<![CDATA[
+
+		<If>
+			<If.Condition>
+				<BinaryExpression operator="Eq">
+					<BinaryExpression.LeftExpression>
+						<Value type="System.Boolean" data="True" />
+					</BinaryExpression.LeftExpression>
+					<BinaryExpression.RightExpression>
+						<Facet name="HasTables" />
+					</BinaryExpression.RightExpression>
+				</BinaryExpression>
+			</If.Condition>
+			<If.True>
+				<![CDATA[using ${ClrNamespace}.Tables;
+]]>
+			</If.True>
+		</If>
+		<If>
+			<If.Condition>
+				<BinaryExpression operator="Eq">
+					<BinaryExpression.LeftExpression>
+						<Value type="System.Boolean" data="True" />
+					</BinaryExpression.LeftExpression>
+					<BinaryExpression.RightExpression>
+						<Facet name="HasViews" />
+					</BinaryExpression.RightExpression>
+				</BinaryExpression>
+			</If.Condition>
+			<If.True>
+				<![CDATA[using ${ClrNamespace}.Views;
+]]>
+			</If.True>
+		</If>
+		<If>
+			<If.Condition>
+				<BinaryExpression operator="Eq">
+					<BinaryExpression.LeftExpression>
+						<Value type="System.Boolean" data="True" />
+					</BinaryExpression.LeftExpression>
+					<BinaryExpression.RightExpression>
+						<Facet name="HasProcedures" />
+					</BinaryExpression.RightExpression>
+				</BinaryExpression>
+			</If.Condition>
+			<If.True>
+				<![CDATA[//using ${ClrNamespace}.Procedures;
+]]>
+			</If.True>
+		</If>
+<![CDATA[
+[assembly: DependencyRegistration]
+
 namespace ${ClrNamespace}
 {
+	[DependencyRegistration]
 	public partial class Repository : IRepository
 	{		
 		#region Constructors/Destructors
@@ -54,9 +113,9 @@ namespace ${ClrNamespace}
 		private const string DATA_SOURCE_TAG = "${ClrNamespace}::DataSourceTag";
 						
 		#endregion
-		
+
 		#region Properties/Indexers/Events
-		
+
 		public static string ConnectionString
 		{
 			get
@@ -83,7 +142,7 @@ namespace ${ClrNamespace}
 				return connectionStringName;
 			}
 		}
-		
+
 		public static Type ConnectionType
 		{
 			get
@@ -91,7 +150,7 @@ namespace ${ClrNamespace}
 				return Type.GetType(AppConfig.GetConnectionProvider(ConnectionStringName), true);
 			}
 		}
-		
+
 		public static string DataSourceTag
 		{
 			get
@@ -106,11 +165,143 @@ namespace ${ClrNamespace}
 				return value;
 			}
 		}
-				
+
 		#endregion
 		
 		#region Methods/Operators
+
+		public TModel CreateModel<TModel>()
+			where TModel : class, IModelObject
+		{
+			return DependencyManager.AppDomainInstance.ResolveDependency<TModel>("");
+		}
 		
+		public TModel CreateRequestModel<TModel>()
+			where TModel : class, IRequestModelObject
+		{
+			return DependencyManager.AppDomainInstance.ResolveDependency<TModel>("");
+		}
+			
+		public TModel CreateResultModel<TModel>()
+			where TModel : class, IResultModelObject
+		{
+			return DependencyManager.AppDomainInstance.ResolveDependency<TModel>("");
+		}
+			
+		public TModel CreateResponseModel<TModel>()
+			where TModel : class, IResponseModelObject
+		{
+			return DependencyManager.AppDomainInstance.ResolveDependency<TModel>("");
+		}
+		
+		[DependencyRegistration]
+		public static void OnDepenndencyRegistration()
+		{
+			DependencyManager.AppDomainInstance.AddResolution<IRepository>("", new ConstructorDependencyResolution<Repository>());
+]]>
+
+	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
+		<ForEach.Filter></ForEach.Filter>
+		<ForEach.Body>
+
+			<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
+				<ForEach.Filter></ForEach.Filter>
+				<ForEach.Body>
+<![CDATA[
+			DependencyManager.AppDomainInstance.AddResolution<I${TableNameSingularPascalCase}>("", DelegateDependencyResolution.FromFunc(() => new ${TableNameSingularPascalCase}()));]]>
+
+				</ForEach.Body>
+			</ForEach>
+			
+		</ForEach.Body>
+	</ForEach>
+
+<![CDATA[
+		}
+		
+		public static XElement ToXElement(XmlDocument xmlDocument)
+		{
+			if ((object)xmlDocument == null)
+				throw new ArgumentNullException("xmlDocument");
+
+			using (XmlNodeReader nodeReader = new XmlNodeReader(xmlDocument))
+			{
+				nodeReader.MoveToContent();
+				return XElement.Load(nodeReader);
+			}
+		}
+
+		public static XmlDocument ToXmlDocument(XElement xElement)
+		{
+			XmlDocument xmlDocument;
+
+			if ((object)xElement == null)
+				throw new ArgumentNullException("xElement");
+
+			xmlDocument = new XmlDocument();
+
+			using (XmlReader xmlReader = xElement.CreateReader())
+				xmlDocument.Load(xmlReader);
+
+			return xmlDocument;
+		}
+
+		public IEnumerable<TResultEntity> Find<TDataContext, TResultEntity>(TDataContext dummy, Func<TDataContext, IQueryable<TResultEntity>> callback)
+			where TDataContext : class, IDisposable
+		{
+			IEnumerable<TResultEntity> things;
+
+			if ((object)UnitOfWork.Current == null)
+			{
+				using (IUnitOfWork unitOfWork = DefaultUnitOfWorkFactory.Instance.GetUnitOfWork())
+				{
+					things = this.Find<TDataContext, TResultEntity>(dummy, unitOfWork, callback);
+
+					things = things.ToList(); // FORCE EAGER LOAD
+
+					unitOfWork.Complete();
+				}
+			}
+			else
+			{
+				things = this.Find<TDataContext, TResultEntity>(dummy, UnitOfWork.Current, callback);
+
+				// DO NOT FORCE EAGER LOAD
+			}
+
+			return things;
+		}
+
+		public IEnumerable<TResultEntity> Find<TDataContext, TResultEntity>(TDataContext dummy, IUnitOfWork unitOfWork, Func<TDataContext, IQueryable<TResultEntity>> callback)
+			where TDataContext : class, IDisposable
+		{
+			IEnumerable<TResultEntity> things;
+			IQueryable<TResultEntity> queryable;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)callback == null)
+				throw new ArgumentNullException("callback");
+
+			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = unitOfWork.GetContext<TDataContext>())
+			{
+				queryable = callback(wrapper.Disposable);
+
+				if ((object)queryable == null)
+					throw new InvalidOperationException(string.Format("The queryable returned was invalid."));
+
+				things = queryable; // DOES NOT FORCE EXECUTION AGAINST STORE
+
+				foreach (TResultEntity thing in things)
+				{
+					//this.OnSelect(unitOfWork, thing);
+					//thing.Mark();
+					yield return thing; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
+				}
+			}
+		}
+
 		public static IUnitOfWork GetUnitOfWork()
 		{
 			return UnitOfWork.Create(ConnectionType, ConnectionString, true);
@@ -123,9 +314,9 @@ namespace ${ClrNamespace}
 		}
 
 		static partial void OnPreProcessConnectionString(ref string connectionString);
-		
+
 		static partial void OnPreProcessConnectionStringName(ref string connectionStringName);
-		
+
 		#endregion
 		
 		#region Classes/Structs/Interfaces/Enums/Delegates

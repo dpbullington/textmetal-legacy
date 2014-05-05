@@ -41,6 +41,89 @@ namespace ${ClrNamespace}
 	public partial class Repository
 	{		
 		#region Methods/Operators
+		
+		public static XElement ToXElement(XmlDocument xmlDocument)
+		{
+			if ((object)xmlDocument == null)
+				throw new ArgumentNullException("xmlDocument");
+
+			using (XmlNodeReader nodeReader = new XmlNodeReader(xmlDocument))
+			{
+				nodeReader.MoveToContent();
+				return XElement.Load(nodeReader);
+			}
+		}
+
+		public static XmlDocument ToXmlDocument(XElement xElement)
+		{
+			XmlDocument xmlDocument;
+
+			if ((object)xElement == null)
+				throw new ArgumentNullException("xElement");
+
+			xmlDocument = new XmlDocument();
+
+			using (XmlReader xmlReader = xElement.CreateReader())
+				xmlDocument.Load(xmlReader);
+
+			return xmlDocument;
+		}
+		
+		public IEnumerable<TResultEntity> Find<TDataContext, TResultEntity>(TDataContext dummy, Func<TDataContext, IQueryable<TResultEntity>> callback)
+			where TDataContext : class, IDisposable
+		{
+			IEnumerable<TResultEntity> things;
+
+			if ((object)UnitOfWork.Current == null)
+			{
+				using (IUnitOfWork unitOfWork = DefaultUnitOfWorkFactory.Instance.GetUnitOfWork())
+				{
+					things = this.Find<TDataContext, TResultEntity>(dummy, unitOfWork, callback);
+
+					things = things.ToList(); // FORCE EAGER LOAD
+
+					unitOfWork.Complete();
+				}
+			}
+			else
+			{
+				things = this.Find<TDataContext, TResultEntity>(dummy, UnitOfWork.Current, callback);
+
+				// DO NOT FORCE EAGER LOAD
+			}
+
+			return things;
+		}
+
+		public IEnumerable<TResultEntity> Find<TDataContext, TResultEntity>(TDataContext dummy, IUnitOfWork unitOfWork, Func<TDataContext, IQueryable<TResultEntity>> callback)
+			where TDataContext : class, IDisposable
+		{
+			IEnumerable<TResultEntity> things;
+			IQueryable<TResultEntity> queryable;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)callback == null)
+				throw new ArgumentNullException("callback");
+
+			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = unitOfWork.GetContext<TDataContext>())
+			{
+				queryable = callback(wrapper.Disposable);
+
+				if ((object)queryable == null)
+					throw new InvalidOperationException(string.Format("The queryable returned was invalid."));
+
+				things = queryable; // DOES NOT FORCE EXECUTION AGAINST STORE
+
+				foreach (TResultEntity thing in things)
+				{
+					//this.OnSelect(unitOfWork, thing);
+					//thing.Mark();
+					yield return thing; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
+				}
+			}
+		}
 ]]>
 
 		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">			

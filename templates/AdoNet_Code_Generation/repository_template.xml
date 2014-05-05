@@ -113,9 +113,9 @@ namespace ${ClrNamespace}
 		private static readonly DatabaseFileManager databaseFileManager = new DatabaseFileManager(APP_CONFIG_PREFIX, NetSqliteSpecific.Instance);
 						
 		#endregion
-		
+
 		#region Properties/Indexers/Events
-		
+
 		public static string ConnectionString
 		{
 			get
@@ -142,7 +142,7 @@ namespace ${ClrNamespace}
 				return connectionStringName;
 			}
 		}
-		
+
 		public static Type ConnectionType
 		{
 			get
@@ -158,7 +158,7 @@ namespace ${ClrNamespace}
 				return databaseFileManager;
 			}
 		}
-		
+
 		public static string DataSourceTag
 		{
 			get
@@ -173,11 +173,11 @@ namespace ${ClrNamespace}
 				return value;
 			}
 		}
-		
+
 		#endregion
-		
+
 		#region Methods/Operators
-		
+
 		public TModel CreateModel<TModel>()
 			where TModel : class, IModelObject
 		{
@@ -226,7 +226,7 @@ namespace ${ClrNamespace}
 
 <![CDATA[
 		}
-				
+
 		static partial void OnPreProcessConnectionString(ref string connectionString)
 		{
 			if (!DatabaseFileManager.UseDatabaseFile)
@@ -293,17 +293,17 @@ namespace ${ClrNamespace}
 			else
 				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 		}
-				
+
 		static partial void OnProfileCommand(Type modelType, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, bool executeAsCud, int thisOrThatRecordsAffected);
-		
+
 		static partial void OnPreProcessConnectionString(ref string connectionString);
-		
+
 		static partial void OnPreProcessConnectionStringName(ref string connectionStringName);
-		
+
 		#endregion
 		
 		#region Classes/Structs/Interfaces/Enums/Delegates
-				
+
 		public sealed class DefaultUnitOfWorkFactory : IUnitOfWorkFactory
 		{
 			#region Constructors/Destructors

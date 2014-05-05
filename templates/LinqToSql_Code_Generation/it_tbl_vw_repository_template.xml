@@ -11,6 +11,7 @@
 <![CDATA[
 
 using System;
+using System.Collections.Generic;
 using System.Xml;
 
 using NUnit.Framework;
@@ -19,6 +20,9 @@ using TextMetal.TestFramework;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
+using TextMetal.Common.Data.Advanced;
+using TextMetal.Common.Expressions;
+
 ]]>
 		<If>
 			<If.Condition>
@@ -131,7 +135,7 @@ namespace ${ClrNamespace}.IntegrationTests
 		public void ShouldSave${TableNameSingularPascalCase}Test()
 		{
 			Repository repository;
-			${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
+			I${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
 			bool result;
 			
 			Assert.IsNull(UnitOfWork.Current);
@@ -142,8 +146,7 @@ namespace ${ClrNamespace}.IntegrationTests
 			{
 				Assert.IsNotNull(UnitOfWork.Current);
 
-				@${TableNameSingularCamelCase} = new ${TableNameSingularPascalCase}();
-
+				@${TableNameSingularCamelCase} = repository.CreateModel<I${TableNameSingularPascalCase}>();
 ]]>
 
 								<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -248,7 +251,7 @@ namespace ${ClrNamespace}.IntegrationTests
 		public void ShouldLoad${TableNameSingularPascalCase}Test()
 		{
 			Repository repository;
-			${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
+			I${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
 ]]>
 	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>

@@ -45,16 +45,18 @@
 						</If.True>
 					</If>
 
-					<OutputScope name="${ClrNamespace}.UnitTests\${FolderName}\${TableNameSingularPascalCase}Tests.g.cs">
+					<OutputScope name="${ClrNamespace}\${FolderName}\I${TableNameSingularPascalCase}.g.cs">
 						<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 
 using System;
+using System.Collections.Generic;
 using System.Xml;
 
-using NUnit.Framework;
-
-using TextMetal.TestFramework;
+using TextMetal.Common.Core;
+using TextMetal.Common.Data;
+using TextMetal.Common.Data.Advanced;
+using TextMetal.Common.Expressions;
 ]]>
 						<If>
 							<If.Condition>
@@ -74,62 +76,55 @@ using TextMetal.TestFramework;
 							</If.True>
 						</If>
 						<![CDATA[
-using ${ClrNamespace}.${FolderName};
-
-namespace ${ClrNamespace}.UnitTests.${FolderName}
+namespace ${ClrNamespace}.${FolderName}
 {
-	[TestFixture]
-	public sealed class ${TableNameSingularPascalCase}Tests
+	public interface I${TableNameSingularPascalCase} : IModelObject
 	{		
-		#region Constructors/Destructors
-		
-		public ${TableNameSingularPascalCase}Tests()
-		{
-		}
-		
-		#endregion
-		
-		#region Methods/Operators
-		
-		[Test]
-		public void ShouldCreate${TableNameSingularPascalCase}Test()
-		{			
-			I${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
-			
-			//@${TableNameSingularCamelCase} = repository.CreateModel<I${TableNameSingularPascalCase}>();
-			@${TableNameSingularCamelCase} = new ${TableNameSingularPascalCase}();
-
+		#region Properties/Indexers/Events
 ]]>
-
-						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
-							<ForEach.Filter></ForEach.Filter>
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
 							<ForEach.Body>
-
-								<![CDATA[			@${TableNameSingularCamelCase}.@${ColumnNamePascalCase} = ValueGenerator.GetNextValue<${ColumnCSharpClrType}>();
-			Assert.AreEqual(ValueGenerator.GetPreviousValue<${ColumnCSharpClrType}>(), @${TableNameSingularCamelCase}.@${ColumnNamePascalCase});
-]]>
-
 								<If>
 									<If.Condition>
-										<BinaryExpression operator="Ne">
+										<BinaryExpression operator="Or">
 											<BinaryExpression.LeftExpression>
-												<Facet name="_LoopCount" />
+												<BinaryExpression operator="Eq">
+													<BinaryExpression.LeftExpression>
+														<Facet name="ColumnIsPrimaryKey" />
+													</BinaryExpression.LeftExpression>
+													<BinaryExpression.RightExpression>
+														<Value type="System.Boolean" data="True" />
+													</BinaryExpression.RightExpression>
+												</BinaryExpression>
 											</BinaryExpression.LeftExpression>
 											<BinaryExpression.RightExpression>
-												<Facet name="_LoopIndex" />
+												<BinaryExpression operator="Eq">
+													<BinaryExpression.LeftExpression>
+														<Facet name="HasNoDefinedPrimaryKeyColumns" />
+													</BinaryExpression.LeftExpression>
+													<BinaryExpression.RightExpression>
+														<Value type="System.Boolean" data="True" />
+													</BinaryExpression.RightExpression>
+												</BinaryExpression>
 											</BinaryExpression.RightExpression>
 										</BinaryExpression>
 									</If.Condition>
 									<If.True>
 										<![CDATA[
-]]>
+		/* PRIMARY_KEY */]]>
 									</If.True>
 								</If>
+
+								<![CDATA[
+		${ColumnCSharpClrNullableType} @${ColumnNamePascalCase}
+		{
+			get;
+			set;
+		}
+		]]>
 							</ForEach.Body>
 						</ForEach>
-
-						<![CDATA[		}
-		
+						<![CDATA[
 		#endregion
 	}
 }

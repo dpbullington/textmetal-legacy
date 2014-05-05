@@ -8,6 +8,8 @@
 	
 	<Alloc token="vs_sln_file_version" />
 	<Alloc token="vs_sln_info_version" />
+	<Alloc token="visual_studio_version" />
+	<Alloc token="minimum_visual_studio_version" />
 	<Alloc token="csproj_product_version" />
 	<Alloc token="csproj_target_framework_version" />
 	<Alloc token="csproj_tools_version" />
@@ -19,9 +21,19 @@
 	</Assign>
 	<Assign token="vs_sln_info_version">
 		<Assign.Expression>
-			<Value data="2012" type="System.String" />
+			<Value data="2013" type="System.String" />
 		</Assign.Expression>
 	</Assign>
+	<Assign token="visual_studio_version">
+		<Assign.Expression>
+			<Value data="12.0.30110.0" type="System.String" />
+		</Assign.Expression>
+	</Assign>
+	<Assign token="minimum_visual_studio_version">
+		<Assign.Expression>
+			<Value data="10.0.40219.1" type="System.String" />
+		</Assign.Expression>
+	</Assign>	
 	<Assign token="csproj_product_version">
 		<Assign.Expression>
 			<Value data="8.0.30703" type="System.String" />
@@ -29,15 +41,15 @@
 	</Assign>
 	<Assign token="csproj_target_framework_version">
 		<Assign.Expression>
-			<Value data="v4.5" type="System.String" />
+			<Value data="v4.5.1" type="System.String" />
 		</Assign.Expression>
 	</Assign>
 	<Assign token="csproj_tools_version">
 		<Assign.Expression>
-			<Value data="4.0" type="System.String" />
+			<Value data="12.0" type="System.String" />
 		</Assign.Expression>
 	</Assign>
-	
+
 	<OutputScope name="..\msb.bat">					
 		<![CDATA[@echo off
 
@@ -169,6 +181,8 @@ using System.Reflection;
 		<![CDATA[
 Microsoft Visual Studio Solution File, Format Version ${vs_sln_file_version}
 # Visual Studio ${vs_sln_info_version}
+VisualStudioVersion = ${visual_studio_version}
+MinimumVisualStudioVersion = ${minimum_visual_studio_version}
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{11000000-0000-0000-0000-00000000FFFF}"
 	ProjectSection(SolutionItems) = preProject
 	EndProjectSection
@@ -297,6 +311,7 @@ EndGlobal
 	<Reference Include="System.Data" />    
 	<Reference Include="System.Data.Linq" />
 	<Reference Include="System.Xml" />
+	<Reference Include="System.Xml.Linq" />
 	
 	<Reference Include="TextMetal.Common.Core">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Core.dll</HintPath>
@@ -378,7 +393,8 @@ EndGlobal
 							</If.True>
 						</If>
 					
-						<![CDATA[    <Compile Include="${FolderName}\${TableNameSingularPascalCase}.g.cs" />]]>
+						<![CDATA[    <Compile Include="${FolderName}\${TableNameSingularPascalCase}.g.cs" />
+    <Compile Include="${FolderName}\I${TableNameSingularPascalCase}.g.cs" />]]>
 					</ForEach.Body>
 				</ForEach>
 			</ForEach.Body>
@@ -438,10 +454,13 @@ EndGlobal
     <WarningLevel>4</WarningLevel>    
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
+   <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+	<Reference Include="System.Data" />    
+	<Reference Include="System.Data.Linq" />
 	<Reference Include="System.Xml" />
+	<Reference Include="System.Xml.Linq" />
     	
 	<Reference Include="TextMetal.Common.Core">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Core.dll</HintPath>
@@ -582,8 +601,10 @@ EndGlobal
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-	<Reference Include="System.Data" />
+	<Reference Include="System.Data" />    
+	<Reference Include="System.Data.Linq" />
 	<Reference Include="System.Xml" />
+	<Reference Include="System.Xml.Linq" />
 	
 	<Reference Include="TextMetal.Common.Core">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Core.dll</HintPath>
@@ -603,7 +624,7 @@ EndGlobal
 	
 	<Reference Include="TextMetal.Imports">
       <HintPath>..\..\lib\TextMetal\TextMetal.Imports.dll</HintPath>
-    </Reference>	
+    </Reference>
 	<Reference Include="TextMetal.TestFramework">
       <HintPath>..\..\lib\TextMetal\TextMetal.TestFramework.dll</HintPath>
     </Reference>
@@ -614,11 +635,12 @@ EndGlobal
     </ProjectReference>
 	
   </ItemGroup>
-  <ItemGroup>       
+  <ItemGroup>
 	<Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
 	<Compile Include="ProjectAssemblyInfo.cs" />
+	<Compile Include="RepositoryTests.g.cs" />
 	<Compile Include="RepositoryTests.tv.g.cs" />	
 	<None Include="IntegrationTests.nunit" />
 	<None Include="App.config">
@@ -639,6 +661,8 @@ EndGlobal
 	
 	<Free token="vs_sln_file_version" />
 	<Free token="vs_sln_info_version" />
+	<Free token="visual_studio_version" />
+	<Free token="minimum_visual_studio_version" />
 	<Free token="csproj_product_version" />
 	<Free token="csproj_target_framework_version" />
 	<Free token="csproj_tools_version" />

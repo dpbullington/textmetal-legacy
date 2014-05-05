@@ -51,6 +51,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using TextMetal.Common.Core;
 ]]>
@@ -86,11 +87,7 @@ namespace ${ClrNamespace}.${FolderName}
 				throw new ArgumentNullException("${TableNameSingularCamelCase}");
 
 			${TableNamePluralCamelCase} =
-				Stuff.Get<IRepository>("").Find${TableNamePluralPascalCase}(
-					q =>
-						q.Where(
-							z =>
-								(z.XXX == ${TableNameSingularCamelCase}.XXX) && ((object)${TableNameSingularCamelCase}.${TableNameSingularPascalCase}Id == null || z.${TableNameSingularPascalCase}Id != ${TableNameSingularCamelCase}.${TableNameSingularPascalCase}Id)));
+				Stuff.Get<IRepository>("").Find${TableNamePluralPascalCase}(/* TODO */);
 
 			return ${TableNamePluralCamelCase}.Count() > 0;
 		}
@@ -107,7 +104,7 @@ namespace ${ClrNamespace}.${FolderName}
 			this.ModificationUserId = ((!this.IsNew ? Current.UserId : this.CreationUserId) ?? this.ModificationUserId) ?? User.SYSTEM_USER_ID;
 			this.LogicalDelete = this.LogicalDelete ?? false;
 
-			this.CompanyId = this.CompanyId ?? (int)Current.CompanyId;
+			this.OrganizationId = this.OrganizationId ?? (int)Current.OrganizationId;
 		}
 
 		partial void OnValidate(ref IEnumerable<Message> messages)
