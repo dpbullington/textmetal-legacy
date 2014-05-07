@@ -401,7 +401,7 @@ namespace TextMetal.Common.UnitTests.Core._
 
 			conversionType = typeof(IDisposable);
 			nonNullableType = Reflexion.MakeNonNullableType(conversionType);
-			Assert.IsNull(nonNullableType);
+			Assert.AreEqual(typeof(IDisposable), nonNullableType);
 		}
 
 		[Test]
