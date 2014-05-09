@@ -151,7 +151,7 @@ namespace TextMetal.HostImpl.WindowsTool.Shared.Forms
 		{
 			base.CoreSetup();
 
-			this.CoreText = string.Format("{0}", this.CoreParentForm.CoreText);
+			this.CoreText = string.Format("{0}", this.CoreOwnerForm.CoreText);
 
 			this.tmrMain.Enabled = true;
 		}

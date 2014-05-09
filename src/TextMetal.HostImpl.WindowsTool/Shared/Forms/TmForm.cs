@@ -84,6 +84,16 @@ namespace TextMetal.HostImpl.WindowsTool.Shared.Forms
 
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		protected TmForm CoreOwnerForm
+		{
+			get
+			{
+				return (TmForm)this.Owner;
+			}
+		}
+
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		protected TmForm CoreParentForm
 		{
 			get
