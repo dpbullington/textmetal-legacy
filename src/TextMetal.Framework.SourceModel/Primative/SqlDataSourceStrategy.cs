@@ -106,7 +106,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 
 						count++;
 					}
-					
+
 					propertyConstruct.RawValue = count;
 				}
 			}

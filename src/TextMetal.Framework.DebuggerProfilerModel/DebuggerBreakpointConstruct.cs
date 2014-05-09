@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
+using TextMetal.Common.Expressions;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 
@@ -110,6 +111,24 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 			set
 			{
 				this.parent = value;
+			}
+		}
+
+		public bool? SortDirection
+		{
+			get
+			{
+				LaunchDebugger();
+				return null;
+			}
+		}
+
+		public IExpression SortExpression
+		{
+			get
+			{
+				LaunchDebugger();
+				return null;
 			}
 		}
 

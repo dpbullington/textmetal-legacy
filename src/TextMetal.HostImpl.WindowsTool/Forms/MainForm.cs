@@ -10,7 +10,7 @@ using System.Linq;
 using System.Windows.Forms;
 
 using TextMetal.Common.Core;
-using TextMetal.Common.WinForms.Forms;
+using TextMetal.HostImpl.WindowsTool.Shared.Forms;
 
 namespace TextMetal.HostImpl.WindowsTool.Forms
 {

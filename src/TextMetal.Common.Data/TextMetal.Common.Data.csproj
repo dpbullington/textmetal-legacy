@@ -42,29 +42,18 @@
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Advanced\DatabaseFileManager.cs" />
-    <Compile Include="Advanced\DatabaseHistory.cs" />
-    <Compile Include="Advanced\DatabaseRevision.cs" />
-    <Compile Include="ModelMap\IResultModelObject.cs" />
-    <Compile Include="ModelMap\IResponseModelObject.cs" />
-    <Compile Include="ModelMap\IRequestModelObject.cs" />
-    <Compile Include="ModelMap\ModelMapHelper.cs" />
-    <Compile Include="Advanced\IDataSourceTagSpecific.cs" />
-    <Compile Include="Advanced\INativeDatabaseFileCreator.cs" />
-    <Compile Include="Advanced\Order.cs" />
-    <Compile Include="Advanced\Query.cs" />
-    <Compile Include="Advanced\SqlExpressionVisitor.cs" />
     <Compile Include="AdoNetHelper.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="IUnitOfWorkFactory.cs" />
     <Compile Include="SqlQuery.cs" />
     <Compile Include="AmbientUnitOfWorkScope.cs" />
-    <Compile Include="ModelMap\IModelObject.cs" />
+    <Compile Include="IModelObject.cs" />
     <Compile Include="UnitOfWork.cs" />
     <Compile Include="AmbientUnitOfWorkAwareDisposableWrapper~1.cs" />
     <Compile Include="LinqToSql\LinqToSqlHelper.cs" />

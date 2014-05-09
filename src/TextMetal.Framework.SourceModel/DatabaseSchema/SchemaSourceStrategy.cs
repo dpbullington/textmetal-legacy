@@ -115,8 +115,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		protected abstract IEnumerable<IDataParameter> CoreGetColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table);
 
-		protected abstract IEnumerable<IDataParameter> CoreGetServerParameters(IUnitOfWork unitOfWork, string dataSourceTag);
-
 		protected abstract IEnumerable<IDataParameter> CoreGetDatabaseParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server);
 
 		protected abstract IEnumerable<IDataParameter> CoreGetDdlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database);
@@ -136,6 +134,8 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		protected abstract IEnumerable<IDataParameter> CoreGetProcedureParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema);
 
 		protected abstract IEnumerable<IDataParameter> CoreGetSchemaParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database);
+
+		protected abstract IEnumerable<IDataParameter> CoreGetServerParameters(IUnitOfWork unitOfWork, string dataSourceTag);
 
 		protected override object CoreGetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties)
 		{
@@ -241,7 +241,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			int recordsAffected;
 			const string RETURN_VALUE = "ReturnValue";
 			Type clrType;
-			
+
 			if ((object)connectionString == null)
 				throw new ArgumentNullException("connectionString");
 
@@ -310,7 +310,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 									// contrain to only the DEFAULT DATABASE
 									if (!enableDatabaseFilter)
 									{
-										if(database.DatabaseName.SafeToString().ToLower() != server.DefaultDatabaseName.SafeToString().ToLower())
+										if (database.DatabaseName.SafeToString().ToLower() != server.DefaultDatabaseName.SafeToString().ToLower())
 											continue;
 									}
 									else

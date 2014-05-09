@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 
 using TextMetal.Common.Core.StringTokens;
+using TextMetal.Common.Expressions;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 
@@ -52,6 +53,22 @@ namespace TextMetal.Framework.SortModel
 			get
 			{
 				return new ContravariantListAdapter<ISortXmlObject, IXmlObject>(base.Items);
+			}
+		}
+
+		public override bool? SortDirection
+		{
+			get
+			{
+				return null;
+			}
+		}
+
+		public override IExpression SortExpression
+		{
+			get
+			{
+				return null;
 			}
 		}
 

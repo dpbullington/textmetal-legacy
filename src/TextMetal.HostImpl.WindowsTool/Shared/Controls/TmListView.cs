@@ -1,0 +1,21 @@
+﻿/*
+	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+*/
+
+using System;
+using System.Windows.Forms;
+
+namespace TextMetal.HostImpl.WindowsTool.Shared.Controls
+{
+	public class TmListView : ListView
+	{
+		#region Constructors/Destructors
+
+		public TmListView()
+		{
+		}
+
+		#endregion
+	}
+}

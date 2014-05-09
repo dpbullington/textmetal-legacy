@@ -180,17 +180,6 @@ IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
 
 
-copy "%SRC_DIR%\TextMetal.Common.WinForms\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.WinForms.dll" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-copy "%SRC_DIR%\TextMetal.Common.WinForms\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.WinForms.xml" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-copy "%SRC_DIR%\TextMetal.Common.WinForms\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.WinForms.pdb" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-
-
 copy "%SRC_DIR%\TextMetal.Common.Xml\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Xml.dll" "%PACKAGE_DIR%\bin\."
 IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
@@ -323,61 +312,6 @@ IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
 
 
-copy "%SRC_DIR%\TextMetal.HostImpl.AspNetSample.Common\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.Common.dll" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-copy "%SRC_DIR%\TextMetal.HostImpl.AspNetSample.Common\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.Common.xml" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-copy "%SRC_DIR%\TextMetal.HostImpl.AspNetSample.Common\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.Common.pdb" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-
-
-copy "%SRC_DIR%\TextMetal.HostImpl.AspNetSample.DomainModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.DomainModel.dll" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-copy "%SRC_DIR%\TextMetal.HostImpl.AspNetSample.DomainModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.DomainModel.xml" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-copy "%SRC_DIR%\TextMetal.HostImpl.AspNetSample.DomainModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.DomainModel.pdb" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-
-
-copy "%SRC_DIR%\TextMetal.HostImpl.AspNetSample.ServiceModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.ServiceModel.dll" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-copy "%SRC_DIR%\TextMetal.HostImpl.AspNetSample.ServiceModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.ServiceModel.xml" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-copy "%SRC_DIR%\TextMetal.HostImpl.AspNetSample.ServiceModel\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.ServiceModel.pdb" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-
-
-copy "%SRC_DIR%\TextMetal.HostImpl.AspNetSample.UI.Web.Mvc\bin\TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.dll" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-copy "%SRC_DIR%\TextMetal.HostImpl.AspNetSample.UI.Web.Mvc\bin\TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.xml" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-copy "%SRC_DIR%\TextMetal.HostImpl.AspNetSample.UI.Web.Mvc\bin\TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.pdb" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-
-
-copy "%SRC_DIR%\TextMetal.HostImpl.AspNetSample.UI.Web.Shared\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.UI.Web.Shared.dll" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-copy "%SRC_DIR%\TextMetal.HostImpl.AspNetSample.UI.Web.Shared\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.UI.Web.Shared.xml" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-copy "%SRC_DIR%\TextMetal.HostImpl.AspNetSample.UI.Web.Shared\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.AspNetSample.UI.Web.Shared.pdb" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-
-
 copy "%SRC_DIR%\TextMetal.HostImpl.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\TextMetal.exe" "%PACKAGE_DIR%\bin\."
 IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
@@ -407,17 +341,6 @@ copy "%SRC_DIR%\TextMetal.HostImpl.VsIdeConv.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\
 IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
 copy "%SRC_DIR%\TextMetal.HostImpl.VsIdeConv.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\VisualStudioConversion.pdb" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-
-
-copy "%SRC_DIR%\TextMetal.HostImpl.Web\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.Web.dll" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-copy "%SRC_DIR%\TextMetal.HostImpl.Web\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.Web.xml" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-copy "%SRC_DIR%\TextMetal.HostImpl.Web\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.Web.pdb" "%PACKAGE_DIR%\bin\."
 IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
 

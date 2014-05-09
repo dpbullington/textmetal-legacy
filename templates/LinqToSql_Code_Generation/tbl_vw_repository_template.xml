@@ -378,7 +378,7 @@ namespace ${ClrNamespace}
 											</Ruby>
 										</If.Condition>
 										<If.True>
-											<![CDATA[lo.@${ColumnNameSqlMetalPascalCase} == ToXElement(@${ColumnNameCamelCase})]]>
+											<![CDATA[lo.@${ColumnNameSqlMetalPascalCase} == LinqToSqlHelper.ToXElement(@${ColumnNameCamelCase})]]>
 										</If.True>
 										<If.False>
 											<![CDATA[lo.@${ColumnNameSqlMetalPascalCase} == @${ColumnNameCamelCase}]]>
@@ -442,7 +442,7 @@ namespace ${ClrNamespace}
 							</Ruby>
 						</If.Condition>
 						<If.True>
-							<![CDATA[(object)query.${ColumnNameSqlMetalPascalCase} != null ? ToXmlDocument(query.@${ColumnNameSqlMetalPascalCase}) : null]]>
+							<![CDATA[(object)query.${ColumnNameSqlMetalPascalCase} != null ? LinqToSqlHelper.ToXmlDocument(query.@${ColumnNameSqlMetalPascalCase}) : null]]>
 						</If.True>
 						<If.False>
 							<![CDATA[query.@${ColumnNameSqlMetalPascalCase}]]>
@@ -555,7 +555,7 @@ namespace ${ClrNamespace}
 							</Ruby>
 						</If.Condition>
 						<If.True>
-							<![CDATA[(object)lo.${ColumnNameSqlMetalPascalCase} != null ? ToXmlDocument(lo.@${ColumnNameSqlMetalPascalCase}) : null]]>
+							<![CDATA[(object)lo.${ColumnNameSqlMetalPascalCase} != null ? LinqToSqlHelper.ToXmlDocument(lo.@${ColumnNameSqlMetalPascalCase}) : null]]>
 						</If.True>
 						<If.False>
 							<![CDATA[lo.@${ColumnNameSqlMetalPascalCase}]]>
@@ -690,7 +690,7 @@ namespace ${ClrNamespace}
 												</Ruby>
 											</If.Condition>
 											<If.True>
-												<![CDATA[lo.@${ColumnNameSqlMetalPascalCase} == ToXElement(@${TableNameSingularCamelCase}.@${ColumnNamePascalCase})]]>
+												<![CDATA[lo.@${ColumnNameSqlMetalPascalCase} == LinqToSqlHelper.ToXElement(@${TableNameSingularCamelCase}.@${ColumnNamePascalCase})]]>
 											</If.True>
 											<If.False>
 												<![CDATA[lo.@${ColumnNameSqlMetalPascalCase} == @${TableNameSingularCamelCase}.@${ColumnNamePascalCase}]]>
@@ -761,7 +761,7 @@ namespace ${ClrNamespace}
 						</If.Condition>
 						<If.True>
 							<![CDATA[				if ((object)@${TableNameSingularCamelCase}.@${ColumnNamePascalCase} != null) // prevent implicit conversion of null -> exception
-					query.@${ColumnNameSqlMetalPascalCase} = ToXElement(@${TableNameSingularCamelCase}.@${ColumnNamePascalCase});]]>
+					query.@${ColumnNameSqlMetalPascalCase} = LinqToSqlHelper.ToXElement(@${TableNameSingularCamelCase}.@${ColumnNamePascalCase});]]>
 						</If.True>
 						<If.False>
 							<![CDATA[				query.@${ColumnNameSqlMetalPascalCase} = @${TableNameSingularCamelCase}.@${ColumnNamePascalCase};]]>
@@ -841,7 +841,7 @@ namespace ${ClrNamespace}
 							</Ruby>
 						</If.Condition>
 						<If.True>
-							<![CDATA[(object)query.@${ColumnNameSqlMetalPascalCase} != null ? ToXmlDocument(query.@${ColumnNameSqlMetalPascalCase}) : null;]]>
+							<![CDATA[(object)query.@${ColumnNameSqlMetalPascalCase} != null ? LinqToSqlHelper.ToXmlDocument(query.@${ColumnNameSqlMetalPascalCase}) : null;]]>
 						</If.True>
 						<If.False>
 							<![CDATA[query.@${ColumnNameSqlMetalPascalCase};]]>
@@ -988,7 +988,7 @@ namespace ${ClrNamespace}
 											</Ruby>
 										</If.Condition>
 										<If.True>
-											<![CDATA[lo.@${ColumnNameSqlMetalPascalCase} == ToXElement(@${TableNameSingularCamelCase}.@${ColumnNamePascalCase})]]>
+											<![CDATA[lo.@${ColumnNameSqlMetalPascalCase} == LinqToSqlHelper.ToXElement(@${TableNameSingularCamelCase}.@${ColumnNamePascalCase})]]>
 										</If.True>
 										<If.False>
 											<![CDATA[lo.@${ColumnNameSqlMetalPascalCase} == @${TableNameSingularCamelCase}.@${ColumnNamePascalCase}]]>

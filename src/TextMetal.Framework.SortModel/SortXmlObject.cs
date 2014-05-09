@@ -6,6 +6,7 @@
 using System;
 using System.Collections;
 
+using TextMetal.Common.Expressions;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 
@@ -20,6 +21,20 @@ namespace TextMetal.Framework.SortModel
 		/// </summary>
 		protected SortXmlObject()
 		{
+		}
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public abstract bool? SortDirection
+		{
+			get;
+		}
+
+		public abstract IExpression SortExpression
+		{
+			get;
 		}
 
 		#endregion

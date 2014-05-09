@@ -53,7 +53,6 @@
     <Compile Include="DatabaseSchema\DatabaseSchemaModelBase.cs" />
     <Compile Include="Primative\FileSystemSourceStrategy.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
-    <Compile Include="DatabaseSchema\Odbc\OdbcSchemaSourceStrategy.cs" />
     <Compile Include="DatabaseSchema\SchemaSourceStrategy.cs" />
     <Compile Include="Primative\JsonSourceStrategy.cs" />
     <Compile Include="SourceStrategy.cs" />
@@ -114,39 +113,6 @@
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\UniqueKeys.sql" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\Columns.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\Server.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ForeignKeyColumns.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ForeignKeys.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\Parameters.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\Procedures.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\Schemas.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\Tables.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\UniqueKeyColumns.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\UniqueKeys.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ProcedureSchema.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\ProcedureSchema.sql" />
   </ItemGroup>
   <ItemGroup>
@@ -176,9 +142,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="DatabaseSchema\Sqlite\DML\net.sqlite\todo.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\ColumnExtProps.sql" />
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\ServerExtProps.sql" />
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\ForeignKeyColumnExtProps.sql" />
@@ -192,49 +155,10 @@
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\UniqueKeyExtProps.sql" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ColumnExtProps.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ServerExtProps.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ForeignKeyColumnExtProps.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ForeignKeyExtProps.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ParameterExtProps.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ProcedureExtProps.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\SchemaExtProps.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ProcedureSchemaExtProps.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\TableExtProps.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\UniqueKeyColumnExtProps.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\UniqueKeyExtProps.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\DmlTriggers.sql" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\DmlTriggerExtProps.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\DmlTriggerExtProps.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\DmlTriggers.sql" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\DdlTriggers.sql" />
@@ -243,26 +167,13 @@
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\DdlTriggerExtProps.sql" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\DdlTriggerExtProps.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\DdlTriggers.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\Databases.sql" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\DatabaseExtProps.sql" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\DatabaseExtProps.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\Databases.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\UseDatabase.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\UseDatabase.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

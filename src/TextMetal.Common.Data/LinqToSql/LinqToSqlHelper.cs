@@ -9,6 +9,8 @@ using System.Data.Common;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Reflection;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace TextMetal.Common.Data.LinqToSql
 {
@@ -17,6 +19,18 @@ namespace TextMetal.Common.Data.LinqToSql
 	/// </summary>
 	public static class LinqToSqlHelper
 	{
+		/*public static TModel Load<TModel>(this IUnitOfWork unitOfWork, TModel prototype)
+			where TModel : class, IModelObject
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)prototype == null)
+				throw new ArgumentNullException("prototype");
+
+			return default(TModel);
+		}*/
+
 		#region Methods/Operators
 
 		/// <summary>
@@ -128,6 +142,33 @@ namespace TextMetal.Common.Data.LinqToSql
 				dataContext.Transaction = (DbTransaction)dbTransaction;
 
 			return dataContext;
+		}
+
+		public static XElement ToXElement(XmlDocument xmlDocument)
+		{
+			if ((object)xmlDocument == null)
+				throw new ArgumentNullException("xmlDocument");
+
+			using (XmlNodeReader nodeReader = new XmlNodeReader(xmlDocument))
+			{
+				nodeReader.MoveToContent();
+				return XElement.Load(nodeReader);
+			}
+		}
+
+		public static XmlDocument ToXmlDocument(XElement xElement)
+		{
+			XmlDocument xmlDocument;
+
+			if ((object)xElement == null)
+				throw new ArgumentNullException("xElement");
+
+			xmlDocument = new XmlDocument();
+
+			using (XmlReader xmlReader = xElement.CreateReader())
+				xmlDocument.Load(xmlReader);
+
+			return xmlDocument;
 		}
 
 		#endregion

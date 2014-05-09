@@ -3,6 +3,8 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
+using TextMetal.HostImpl.WindowsTool.Shared.Controls;
+
 namespace TextMetal.HostImpl.WindowsTool.Forms
 {
 	partial class DocumentChooserForm
@@ -26,12 +28,12 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DocumentChooserForm));
-			this.btnOkay = new TextMetal.Common.WinForms.Controls.TmButton();
-			this.btnCancel = new TextMetal.Common.WinForms.Controls.TmButton();
+			this.btnOkay = new TmButton();
+			this.btnCancel = new TmButton();
 			this.gbChoice = new System.Windows.Forms.GroupBox();
-			this.rdoSqlQuery = new TextMetal.Common.WinForms.Controls.TmRadioButton();
-			this.rdoAssociativeModel = new TextMetal.Common.WinForms.Controls.TmRadioButton();
-			this.rdoTemplate = new TextMetal.Common.WinForms.Controls.TmRadioButton();
+			this.rdoSqlQuery = new TmRadioButton();
+			this.rdoAssociativeModel = new TmRadioButton();
+			this.rdoTemplate = new TmRadioButton();
 			this.gbChoice.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -126,11 +128,11 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			this.ResumeLayout(false);
 
 		}
-		internal TextMetal.Common.WinForms.Controls.TmButton btnOkay;
-		internal TextMetal.Common.WinForms.Controls.TmButton btnCancel;
+		internal TmButton btnOkay;
+		internal TmButton btnCancel;
 		private System.Windows.Forms.GroupBox gbChoice;
-		private TextMetal.Common.WinForms.Controls.TmRadioButton rdoSqlQuery;
-		private TextMetal.Common.WinForms.Controls.TmRadioButton rdoAssociativeModel;
-		private TextMetal.Common.WinForms.Controls.TmRadioButton rdoTemplate;
+		private TmRadioButton rdoSqlQuery;
+		private TmRadioButton rdoAssociativeModel;
+		private TmRadioButton rdoTemplate;
 	}
 }

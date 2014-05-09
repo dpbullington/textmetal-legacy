@@ -5,6 +5,7 @@
 
 using System;
 
+using TextMetal.Common.Expressions;
 using TextMetal.Common.Xml;
 
 namespace TextMetal.Framework.Core
@@ -12,7 +13,7 @@ namespace TextMetal.Framework.Core
 	/// <summary>
 	/// Represents a sort XML object.
 	/// </summary>
-	public interface ISortXmlObject : ISortMechanism, IXmlObject
+	public interface ISortXmlObject : ISortMechanism, IXmlObject, ISequence
 	{
 	}
 }

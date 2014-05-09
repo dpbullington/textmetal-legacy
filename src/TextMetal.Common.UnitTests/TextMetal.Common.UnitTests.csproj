@@ -54,35 +54,26 @@
     <Compile Include="Core\StringTokens\_\DynamicValueTokenReplacementStrategyTests.cs" />
     <Compile Include="Core\StringTokens\_\StaticValueTokenReplacementStrategyTests.cs" />
     <Compile Include="Core\StringTokens\_\TokenizerTests.cs" />
-    <Compile Include="Data\AdoNetHelperTests.cs" />
+    <Compile Include="Data\_\AdoNetHelperTests.cs" />
     <None Include="App.config" />
-    <None Include="Data\UnitOfWorkContextTests.cs" />
-    <Compile Include="Data\AmbientUnitOfWorkAwareDisposableWrapperTests.cs" />
-    <None Include="Data\LinqToSql\LinqToSqlHelperTests.cs" />
-    <Compile Include="Data\LinqToSql\MulticastContextTests.cs" />
-    <Compile Include="Solder\DependencyManagement\_\ActivatorDependencyResolutionTests.cs" />
-    <Compile Include="Solder\DependencyManagement\_\ConstructorDependencyResolutionTests.cs" />
-    <Compile Include="Solder\DependencyManagement\_\DelegateDependencyResolutionTests.cs" />
-    <Compile Include="Solder\DependencyManagement\_\DependencyExceptionTests.cs" />
-    <Compile Include="Solder\DependencyManagement\_\DependencyManagerTests.cs" />
-    <Compile Include="Solder\DependencyManagement\_\DependencyRegistrationAttributeTests.cs" />
-    <Compile Include="Solder\DependencyManagement\_\SingletonDependencyResolutionTests.cs" />
+    <None Include="Data\_\UnitOfWorkContextTests.cs" />
+    <Compile Include="Data\_\AmbientUnitOfWorkAwareDisposableWrapperTests.cs" />
+    <None Include="Data\LinqToSql\_\LinqToSqlHelperTests.cs" />
+    <Compile Include="Data\LinqToSql\_\MulticastContextTests.cs" />
+    <Compile Include="Solder\_\ActivatorDependencyResolutionTests.cs" />
+    <Compile Include="Solder\_\ConstructorDependencyResolutionTests.cs" />
+    <Compile Include="Solder\_\DelegateDependencyResolutionTests.cs" />
+    <Compile Include="Solder\_\DependencyExceptionTests.cs" />
+    <Compile Include="Solder\_\DependencyManagerTests.cs" />
+    <Compile Include="Solder\_\DependencyRegistrationAttributeTests.cs" />
+    <Compile Include="Solder\_\SingletonDependencyResolutionTests.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
-    <Compile Include="Solder\RuntimeInterception\RemotingImpl\_\DynamicInvokerRealProxyTests.cs" />
-    <Compile Include="Solder\RuntimeInterception\_\AspectDynamicInvokerTests.cs" />
-    <Compile Include="Solder\RuntimeInterception\_\DynamicInvokerTests.cs" />
-    <Compile Include="Solder\RuntimeInterception\_\ProxyFactoryTests.cs" />
-    <Compile Include="SqlServerClr\_\ScalarFunctionsTests.cs" />
     <Compile Include="TestingInfrastructure\IMockObject.cs" />
-    <Compile Include="TestingInfrastructure\MockAspectDynamicInvoker.cs" />
     <Compile Include="TestingInfrastructure\MockConnection.cs" />
-    <Compile Include="TestingInfrastructure\MockDynamicInvoker.cs" />
-    <Compile Include="TestingInfrastructure\MockDynamicInvokerRealProxy.cs" />
     <Compile Include="TestingInfrastructure\MockException.cs" />
     <Compile Include="TestingInfrastructure\MockMultipleTestAttibute.cs" />
     <Compile Include="TestingInfrastructure\MockObject.cs" />
     <Compile Include="TestingInfrastructure\MockModelObject.cs" />
-    <Compile Include="TestingInfrastructure\MockProxyFactory.cs" />
     <Compile Include="TestingInfrastructure\MockSingleTestAttibute.cs" />
     <Compile Include="TestingInfrastructure\MockTestAttributedClass.cs" />
   </ItemGroup>
@@ -93,7 +84,7 @@
     <None Include="UnitTesting.nunit" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\Advanced\" />
+    <Folder Include="Cerealization\" />
     <Folder Include="Expressions\" />
     <Folder Include="Xml\" />
   </ItemGroup>

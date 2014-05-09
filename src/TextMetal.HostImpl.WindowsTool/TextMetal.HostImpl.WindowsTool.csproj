@@ -97,6 +97,62 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
+    <Compile Include="Shared\Controls\ControlExtensionMethods.cs" />
+    <Compile Include="Shared\Controls\TmButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Shared\Controls\TmCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Shared\Controls\TmComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Shared\Controls\TmGdiPaintSurface.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Shared\Controls\TmLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Shared\Controls\TmListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Shared\Controls\TmListViewItem.cs" />
+    <Compile Include="Shared\Controls\TmRadioButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Shared\Controls\TmTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Shared\Forms\BackgroundTaskForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Shared\Forms\BackgroundTaskForm.Designer.cs">
+      <DependentUpon>BackgroundTaskForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Shared\Forms\MessageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Shared\Forms\MessageForm.Designer.cs">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Shared\Forms\PropertyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Shared\Forms\PropertyForm.designer.cs">
+      <DependentUpon>PropertyForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Shared\Forms\TmForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Shared\Forms\TmForm.Designer.cs">
+      <DependentUpon>TmForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Shared\IListItem.cs" />
+    <Compile Include="Shared\IListItem~1.cs" />
+    <Compile Include="Shared\ListItem.cs" />
+    <Compile Include="Shared\ListItem~1.cs" />
+    <Compile Include="Shared\SplashApplicationContext.cs" />
+    <Compile Include="Shared\WindowsApplication.cs" />
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -124,6 +180,18 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Shared\Forms\BackgroundTaskForm.resx">
+      <DependentUpon>BackgroundTaskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Shared\Forms\MessageForm.resx">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Shared\Forms\PropertyForm.resx">
+      <DependentUpon>PropertyForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Shared\Forms\TmForm.resx">
+      <DependentUpon>TmForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
@@ -152,10 +220,6 @@
     <ProjectReference Include="..\TextMetal.Common.Solder\TextMetal.Common.Solder.csproj">
       <Project>{3B0EFC3C-AA91-4FB4-B2EE-BD8727230A94}</Project>
       <Name>TextMetal.Common.Solder</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TextMetal.Common.WinForms\TextMetal.Common.WinForms.csproj">
-      <Project>{6BD158BA-429B-422B-AAEB-24A36511C19A}</Project>
-      <Name>TextMetal.Common.WinForms</Name>
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.Xml\TextMetal.Common.Xml.csproj">
       <Project>{CEF6C9D5-D5F2-4F4E-81DD-0BFDF81A2C93}</Project>

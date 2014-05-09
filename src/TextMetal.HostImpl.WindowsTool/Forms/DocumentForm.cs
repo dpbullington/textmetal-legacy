@@ -9,10 +9,10 @@ using System.Windows.Forms;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
-using TextMetal.Common.WinForms.Forms;
 using TextMetal.Framework.AssociativeModel;
 using TextMetal.Framework.TemplateModel;
 using TextMetal.HostImpl.Tool;
+using TextMetal.HostImpl.WindowsTool.Shared.Forms;
 
 using Message = TextMetal.Common.Core.Message;
 

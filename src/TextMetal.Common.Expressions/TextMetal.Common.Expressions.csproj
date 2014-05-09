@@ -47,6 +47,7 @@
     <Compile Include="ExpressionVisitor.cs" />
     <Compile Include="IBinaryExpression.cs" />
     <Compile Include="IContainer.cs" />
+    <Compile Include="ISequence.cs" />
     <Compile Include="IExpression.cs" />
     <Compile Include="INullaryExpression.cs" />
     <Compile Include="ISurface.cs" />

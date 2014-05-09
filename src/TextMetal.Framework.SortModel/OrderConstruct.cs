@@ -10,6 +10,7 @@ using System.Linq;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Core.StringTokens;
+using TextMetal.Common.Expressions;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 using TextMetal.Framework.ExpressionModel;
@@ -58,6 +59,22 @@ namespace TextMetal.Framework.SortModel
 			set
 			{
 				this.compare = value;
+			}
+		}
+
+		public override bool? SortDirection
+		{
+			get
+			{
+				return this.Ascending;
+			}
+		}
+
+		public override IExpression SortExpression
+		{
+			get
+			{
+				return this.Compare;
 			}
 		}
 

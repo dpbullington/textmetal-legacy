@@ -24,16 +24,16 @@ namespace TextMetal.Common.Data
 		/// An extension method to create a new data parameter from the data source.
 		/// </summary>
 		/// <param name="unitOfWork"> The target unit of work. </param>
-		/// <param name="direction"> Specifies the parameter direction. </param>
-		/// <param name="type"> Specifies the parameter provider-(in)dependent type. </param>
-		/// <param name="size"> Specifies the parameter size. </param>
-		/// <param name="precision"> Specifies the parameter precision. </param>
-		/// <param name="scale"> Specifies the parameter scale. </param>
-		/// <param name="nullable"> Specifies the parameter nullable-ness. </param>
-		/// <param name="name"> Specifies the parameter name. </param>
-		/// <param name="value"> Specifies the parameter value. </param>
+		/// <param name="parameterDirection"> Specifies the parameter direction. </param>
+		/// <param name="dbType"> Specifies the parameter provider-(in)dependent type. </param>
+		/// <param name="parameterSize"> Specifies the parameter size. </param>
+		/// <param name="parameterPrecision"> Specifies the parameter precision. </param>
+		/// <param name="parameterScale"> Specifies the parameter scale. </param>
+		/// <param name="parameterIsNullable"> Specifies the parameter nullable-ness. </param>
+		/// <param name="parameterName"> Specifies the parameter name. </param>
+		/// <param name="parameterValue"> Specifies the parameter value. </param>
 		/// <returns> The data parameter with the specified properties set. </returns>
-		public static IDataParameter CreateParameter(this IUnitOfWork unitOfWork, ParameterDirection direction, DbType type, int size, byte precision, byte scale, bool nullable, string name, object value)
+		public static IDataParameter CreateParameter(this IUnitOfWork unitOfWork, ParameterDirection parameterDirection, DbType dbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterIsNullable, string parameterName, object parameterValue)
 		{
 			IDbDataParameter dbDataParameter;
 
@@ -46,14 +46,14 @@ namespace TextMetal.Common.Data
 			using (IDbCommand dbCommand = unitOfWork.Connection.CreateCommand())
 				dbDataParameter = dbCommand.CreateParameter();
 
-			dbDataParameter.ParameterName = name;
-			dbDataParameter.Size = size;
-			dbDataParameter.Value = value;
-			dbDataParameter.Direction = direction;
-			dbDataParameter.DbType = type;
-			Reflexion.SetLogicalPropertyValue(dbDataParameter, "IsNullable", nullable, true, false);
-			dbDataParameter.Precision = precision;
-			dbDataParameter.Scale = scale;
+			dbDataParameter.ParameterName = parameterName;
+			dbDataParameter.Size = parameterSize;
+			dbDataParameter.Value = parameterValue;
+			dbDataParameter.Direction = parameterDirection;
+			dbDataParameter.DbType = dbType;
+			Reflexion.SetLogicalPropertyValue(dbDataParameter, "IsNullable", parameterIsNullable, true, false);
+			dbDataParameter.Precision = parameterPrecision;
+			dbDataParameter.Scale = parameterScale;
 
 			return dbDataParameter;
 		}

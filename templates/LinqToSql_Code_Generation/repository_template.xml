@@ -219,33 +219,6 @@ namespace ${ClrNamespace}
 <![CDATA[
 		}
 		
-		public static XElement ToXElement(XmlDocument xmlDocument)
-		{
-			if ((object)xmlDocument == null)
-				throw new ArgumentNullException("xmlDocument");
-
-			using (XmlNodeReader nodeReader = new XmlNodeReader(xmlDocument))
-			{
-				nodeReader.MoveToContent();
-				return XElement.Load(nodeReader);
-			}
-		}
-
-		public static XmlDocument ToXmlDocument(XElement xElement)
-		{
-			XmlDocument xmlDocument;
-
-			if ((object)xElement == null)
-				throw new ArgumentNullException("xElement");
-
-			xmlDocument = new XmlDocument();
-
-			using (XmlReader xmlReader = xElement.CreateReader())
-				xmlDocument.Load(xmlReader);
-
-			return xmlDocument;
-		}
-
 		public IEnumerable<TResultEntity> Find<TDataContext, TResultEntity>(TDataContext dummy, Func<TDataContext, IQueryable<TResultEntity>> callback)
 			where TDataContext : class, IDisposable
 		{
