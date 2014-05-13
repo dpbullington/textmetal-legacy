@@ -574,7 +574,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 					case "XML":
 						return typeof(XmlDocument);
 					default:
-						throw new ArgumentOutOfRangeException(string.Format("sqlType: '{0}'", sqlType));
+						return null; // dpb: 2014-05-13/changed behavior here to not throw exception
 				}
 			}
 

@@ -19,33 +19,13 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 		/// Initializes a new instance of the LinqToSqlModelRepository`1 class.
 		/// </summary>
 		public LinqToSqlModelRepository()
-			: base(new NullNativeDatabaseFileFactory())
+			: base((path) => false)
 		{
 		}
 
 		#endregion
 
 		#region Methods/Operators
-
-		public override TModel CreateModel<TModel>()
-		{
-			throw new NotImplementedException();
-		}
-
-		public override TRequestModel CreateRequestModel<TRequestModel>()
-		{
-			throw new NotImplementedException();
-		}
-
-		public override TResponseModel CreateResponseModel<TResponseModel, TResultModel>()
-		{
-			throw new NotImplementedException();
-		}
-
-		public override TResultModel CreateResultModel<TResultModel>()
-		{
-			throw new NotImplementedException();
-		}
 
 		public override TModel Discard<TModel>(TModel model)
 		{
@@ -144,55 +124,6 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 		}
 
 		public override TModel Load<TModel>(IUnitOfWork unitOfWork, TModel prototype)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override void OnDiscardConflictModel<TModel>(IUnitOfWork unitOfWork, TModel model)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override void OnPostDeleteModel<TModel>(IUnitOfWork unitOfWork, TModel model)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override void OnPostInsertModel<TModel>(IUnitOfWork unitOfWork, TModel model)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override void OnPostUpdateModel<TModel>(IUnitOfWork unitOfWork, TModel model)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override void OnPreDeleteModel<TModel>(IUnitOfWork unitOfWork, TModel model)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override void OnPreInsertModel<TModel>(IUnitOfWork unitOfWork, TModel model)
-		{
-			throw new NotImplementedException();
-		}
-
-		protected override void OnPreProcessConnectionString(ref string connectionString)
-		{
-		}
-
-		public override void OnPreUpdateModel<TModel>(IUnitOfWork unitOfWork, TModel model)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override void OnSaveConflictModel<TModel>(IUnitOfWork unitOfWork, TModel model)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override void OnSelectModel<TModel>(IUnitOfWork unitOfWork, TModel model)
 		{
 			throw new NotImplementedException();
 		}

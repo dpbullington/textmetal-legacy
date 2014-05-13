@@ -9,6 +9,7 @@ namespace TextMetal.Common.Data.Framework
 {
 	public interface IModelRepository
 	{
+
 		#region Methods/Operators
 
 		TModel CreateModel<TModel>()
@@ -52,37 +53,12 @@ namespace TextMetal.Common.Data.Framework
 		IEnumerable<TModel> Find<TModel>(IUnitOfWork unitOfWork, IModelQuery query)
 			where TModel : class, IModelObject;
 
+		IUnitOfWork GetUnitOfWork();
+
 		TModel Load<TModel>(TModel prototype)
 			where TModel : class, IModelObject;
 
 		TModel Load<TModel>(IUnitOfWork unitOfWork, TModel prototype)
-			where TModel : class, IModelObject;
-
-		void OnDiscardConflictModel<TModel>(IUnitOfWork unitOfWork, TModel model)
-			where TModel : class, IModelObject;
-
-		void OnPostDeleteModel<TModel>(IUnitOfWork unitOfWork, TModel model)
-			where TModel : class, IModelObject;
-
-		void OnPostInsertModel<TModel>(IUnitOfWork unitOfWork, TModel model)
-			where TModel : class, IModelObject;
-
-		void OnPostUpdateModel<TModel>(IUnitOfWork unitOfWork, TModel model)
-			where TModel : class, IModelObject;
-
-		void OnPreDeleteModel<TModel>(IUnitOfWork unitOfWork, TModel model)
-			where TModel : class, IModelObject;
-
-		void OnPreInsertModel<TModel>(IUnitOfWork unitOfWork, TModel model)
-			where TModel : class, IModelObject;
-
-		void OnPreUpdateModel<TModel>(IUnitOfWork unitOfWork, TModel model)
-			where TModel : class, IModelObject;
-
-		void OnSaveConflictModel<TModel>(IUnitOfWork unitOfWork, TModel model)
-			where TModel : class, IModelObject;
-
-		void OnSelectModel<TModel>(IUnitOfWork unitOfWork, TModel model)
 			where TModel : class, IModelObject;
 
 		TModel Save<TModel>(TModel model)
