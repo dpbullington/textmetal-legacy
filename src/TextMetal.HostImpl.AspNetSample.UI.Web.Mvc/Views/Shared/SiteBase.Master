@@ -1,0 +1,93 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+<%@ Import Namespace="TextMetal.Common.Core" %>
+<%@ Import Namespace="TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Models" %>
+<%@ Import Namespace="TextMetal.HostImpl.AspNetSample.UI.Web.Shared" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head id="headIndeed" runat="server">
+		<title><%= this.Page.Title %> | TextMetal</title>
+		<%--<title><asp:ContentPlaceHolder ID="TitleContent" runat="server" /><asp:Literal runat="server" Text=" | TextMetal" /></title>--%>
+
+		<%--<link href="~/styles/reset.css" type="text/css" rel="stylesheet" />--%>
+		<link href="~/styles/ui-lightness/jquery-ui-1.10.4.custom.css" type="text/css" rel="stylesheet" />	
+		<link href="~/styles/primary.css" type="text/css" rel="stylesheet" />
+
+		<script type="text/javascript" src="<%= this.Url.Content("~/scripts/jquery-1.11.0.min.js") %>"> </script>
+		<script type="text/javascript" src="<%= this.Url.Content("~/scripts/jquery-ui-1.10.4.custom.min.js") %>"> </script>
+		<%--<script type="text/javascript" src="<%= this.Url.Content("~/scripts/jquery.mobile-1.4.2.min.js") %>"> </script>--%>
+		<script type="text/javascript" src="<%= this.Url.Content("~/scripts/primary.js") %>"> </script>
+	
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="no-cache" content="no-cache" />
+		<meta http-equiv="Expires" content="-1" />
+		<meta http-equiv="Cache-Control" content="no-cache" />	
+	
+		<meta name="title" content="TextMetal" />
+		<meta name="description" content="A zero friction open source text templating engine for .NET." />
+		<meta name="keywords" content="metaprogramming" />
+
+		<meta property="og:title" content="TextMetal"/>
+		<meta property="og:type" content="website"/>
+		<meta property="og:url" content="http://www.textmetal.com"/>
+		<meta property="og:image" content="http://www.textmetal.com/images/textmetal-logo.png"/>
+		<meta property="og:site_name" content="TextMetal"/>
+		<meta property="og:description" content="A zero friction open source text templating engine for .NET."/>
+	</head>
+	<body>	
+		<div class="txtmtl-content-wrapper">
+			<!-- header -->
+			<div class="txtmtl-header-wrapper">
+				<% this.Html.RenderPartial("Header", (this.Model as TextMetalViewModel) ?? SharedViewModel.GetInstance()); %>
+			</div>
+			
+			<!-- navigation -->
+			<div class="txtmtl-navigation-wrapper">
+				<% this.Html.RenderPartial("Channels", (this.Model as TextMetalViewModel) ?? SharedViewModel.GetInstance()); %>
+			</div>
+
+			<!-- middle -->
+			<div class="txtmtl-page-title-wrapper">
+				[ <%= this.Page.Title %> ]
+				<%--<asp:ContentPlaceHolder ID="TitleContent2" runat="server" />--%>
+			</div>
+
+		
+			<!-- ads -->
+			<div class="txtmtl-ad-wrapper">
+				<% if (WebConfig.ShowAds)
+				   { %>			
+			
+				<% } %>
+			</div>
+		
+			<!-- middle -->
+			<div class="txtmtl-middle-wrapper">			
+				<asp:ContentPlaceHolder ID="MiddleContent" runat="server" />			
+			</div>
+
+			<!-- ads -->
+			<div class="txtmtl-ad-wrapper">			
+				<% if (WebConfig.ShowAds)
+				   { %>	
+				<% } %>
+			</div>
+
+			<!-- navigation -->
+			<div class="txtmtl-navigation-wrapper">
+				<% this.Html.RenderPartial("Navigation", (this.Model as TextMetalViewModel) ?? SharedViewModel.GetInstance()); %>
+			</div>
+			<!-- footer -->
+			<div class="txtmtl-footer-wrapper">
+				<% this.Html.RenderPartial("Footer", (this.Model as TextMetalViewModel) ?? SharedViewModel.GetInstance()); %>
+			</div>
+
+			<!-- messages -->
+			<% this.Html.RenderPartial("MessageList", (IEnumerable<Message>)this.ViewData["_ShowMessages"], new ViewDataDictionary()); %>
+	
+		</div>
+		
+		<!-- google analytics -->
+		
+	</body>
+</html>

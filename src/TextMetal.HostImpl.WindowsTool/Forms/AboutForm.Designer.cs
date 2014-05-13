@@ -1,4 +1,4 @@
-﻿using TextMetal.HostImpl.WindowsTool.Shared.Controls;
+﻿using TextMetal.Common.WinForms.Controls;
 
 namespace TextMetal.HostImpl.WindowsTool.Forms
 {

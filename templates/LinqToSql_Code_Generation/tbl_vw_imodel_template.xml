@@ -55,7 +55,7 @@ using System.Xml;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
-using TextMetal.Common.Data.Advanced;
+using TextMetal.Common.Data.Framework;
 using TextMetal.Common.Expressions;
 ]]>
 						<If>
@@ -78,7 +78,7 @@ using TextMetal.Common.Expressions;
 						<![CDATA[
 namespace ${ClrNamespace}.${FolderName}
 {
-	public interface I${TableNameSingularPascalCase} : IModelObject
+	public partial interface I${TableNameSingularPascalCase} : IModelObject
 	{		
 		#region Properties/Indexers/Events
 ]]>

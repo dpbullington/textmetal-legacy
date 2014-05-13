@@ -44,16 +44,21 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ActivatorDependencyResolution.cs" />
-    <Compile Include="ConstructorDependencyResolution~1.cs" />
-    <Compile Include="DelegateDependencyResolution.cs" />
-    <Compile Include="DependencyException.cs" />
-    <Compile Include="DependencyManager.cs" />
-    <Compile Include="DependencyRegistrationAttribute.cs" />
-    <Compile Include="IDependencyManager.cs" />
-    <Compile Include="IDependencyResolution.cs" />
-    <Compile Include="SingletonDependencyResolution.cs" />
-    <Compile Include="DependencyInjectionAttribute.cs" />
+    <Compile Include="DependencyManagement\ActivatorDependencyResolution.cs" />
+    <Compile Include="DependencyManagement\ConstructorDependencyResolution~1.cs" />
+    <Compile Include="DependencyManagement\DelegateDependencyResolution.cs" />
+    <Compile Include="DependencyManagement\DependencyException.cs" />
+    <Compile Include="DependencyManagement\DependencyInjectionAttribute.cs" />
+    <Compile Include="DependencyManagement\DependencyManager.cs" />
+    <Compile Include="DependencyManagement\DependencyRegistrationAttribute.cs" />
+    <Compile Include="DependencyManagement\IDependencyManager.cs" />
+    <Compile Include="DependencyManagement\IDependencyResolution.cs" />
+    <Compile Include="DependencyManagement\SingletonDependencyResolution.cs" />
+    <Compile Include="RuntimeInterception\AspectDynamicInvoker.cs" />
+    <Compile Include="RuntimeInterception\DynamicInvoker.cs" />
+    <Compile Include="RuntimeInterception\IDynamicInvocation.cs" />
+    <Compile Include="RuntimeInterception\ProxyFactory~1.cs" />
+    <Compile Include="RuntimeInterception\RemotingImpl\DynamicInvokerRealProxy~1.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -62,13 +67,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assertions.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\TextMetal.Common.Core\TextMetal.Common.Core.csproj">
       <Project>{d1860a67-7efb-4c0f-89cd-a641d99dcc2a}</Project>
       <Name>TextMetal.Common.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DependencyManagement\Assertions.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

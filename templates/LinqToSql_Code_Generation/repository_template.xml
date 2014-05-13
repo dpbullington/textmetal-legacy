@@ -19,8 +19,8 @@ using System.Xml.Linq;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
-using TextMetal.Common.Data.Advanced;
-using TextMetal.Common.Data.LinqToSql;
+using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.LinqToSql;
 using TextMetal.Common.Expressions;
 using TextMetal.Common.Solder.DependencyManagement;
 ]]>

@@ -3,7 +3,7 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-using TextMetal.HostImpl.WindowsTool.Shared.Controls;
+using TextMetal.Common.WinForms.Controls;
 
 namespace TextMetal.HostImpl.WindowsTool.Forms
 {

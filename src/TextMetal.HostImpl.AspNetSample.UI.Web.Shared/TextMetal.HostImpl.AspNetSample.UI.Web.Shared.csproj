@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F746294A-579C-4172-B524-6C4115D13BF9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TextMetal.HostImpl.AspNetSample.UI.Web.Shared</RootNamespace>
+    <AssemblyName>TextMetal.HostImpl.AspNetSample.UI.Web.Shared</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+	<DocumentationFile>bin\Debug\TextMetal.HostImpl.AspNetSample.UI.Web.Shared.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+	<DocumentationFile>bin\Release\TextMetal.HostImpl.AspNetSample.UI.Web.Shared.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SolutionAssemblyInfo.cs">
+      <Link>SolutionAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="CaptchaImage.cs" />
+    <None Include="ControlExtensionMethods.cs" />
+    <Compile Include="BaseController.cs" />
+    <Compile Include="LowercaseRoute.cs" />
+    <Compile Include="ProjectAssemblyInfo.cs" />
+    <Compile Include="RequiresCurrentAttribute.cs" />
+    <Compile Include="SecureActionAttribute.cs" />
+    <Compile Include="GlobalAsax.cs" />
+    <Compile Include="BaseViewModel.cs" />
+    <Compile Include="WebConfig.cs" />
+    <Compile Include="WebSession.cs" />
+    <Compile Include="WebStickySession.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TextMetal.Common.Core\TextMetal.Common.Core.csproj">
+      <Project>{d1860a67-7efb-4c0f-89cd-a641d99dcc2a}</Project>
+      <Name>TextMetal.Common.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Common.Solder\TextMetal.Common.Solder.csproj">
+      <Project>{3b0efc3c-aa91-4fb4-b2ee-bd8727230a94}</Project>
+      <Name>TextMetal.Common.Solder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.HostImpl.AspNetSample.Common\TextMetal.HostImpl.AspNetSample.Common.csproj">
+      <Project>{D3907109-3E81-41AB-8BDD-4E287BFB984C}</Project>
+      <Name>TextMetal.HostImpl.AspNetSample.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.HostImpl.AspNetSample.DomainModel\TextMetal.HostImpl.AspNetSample.DomainModel.csproj">
+      <Project>{A7AC63B5-F5B8-44B1-B05C-7F6008846626}</Project>
+      <Name>TextMetal.HostImpl.AspNetSample.DomainModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Imports\TextMetal.Imports.csproj">
+      <Project>{40e6902d-3881-4271-bdf3-7d88db7cf230}</Project>
+      <Name>TextMetal.Imports</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

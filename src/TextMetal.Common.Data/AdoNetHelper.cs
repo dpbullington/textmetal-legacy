@@ -29,11 +29,11 @@ namespace TextMetal.Common.Data
 		/// <param name="parameterSize"> Specifies the parameter size. </param>
 		/// <param name="parameterPrecision"> Specifies the parameter precision. </param>
 		/// <param name="parameterScale"> Specifies the parameter scale. </param>
-		/// <param name="parameterIsNullable"> Specifies the parameter nullable-ness. </param>
+		/// <param name="parameterNullable"> Specifies the parameter nullable-ness. </param>
 		/// <param name="parameterName"> Specifies the parameter name. </param>
 		/// <param name="parameterValue"> Specifies the parameter value. </param>
 		/// <returns> The data parameter with the specified properties set. </returns>
-		public static IDataParameter CreateParameter(this IUnitOfWork unitOfWork, ParameterDirection parameterDirection, DbType dbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterIsNullable, string parameterName, object parameterValue)
+		public static IDataParameter CreateParameter(this IUnitOfWork unitOfWork, ParameterDirection parameterDirection, DbType dbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue)
 		{
 			IDbDataParameter dbDataParameter;
 
@@ -51,7 +51,7 @@ namespace TextMetal.Common.Data
 			dbDataParameter.Value = parameterValue;
 			dbDataParameter.Direction = parameterDirection;
 			dbDataParameter.DbType = dbType;
-			Reflexion.SetLogicalPropertyValue(dbDataParameter, "IsNullable", parameterIsNullable, true, false);
+			Reflexion.SetLogicalPropertyValue(dbDataParameter, "IsNullable", parameterNullable, true, false);
 			dbDataParameter.Precision = parameterPrecision;
 			dbDataParameter.Scale = parameterScale;
 

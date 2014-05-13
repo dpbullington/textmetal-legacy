@@ -49,15 +49,36 @@
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AdoNetHelper.cs" />
+    <Compile Include="Framework\IModelQuery.cs" />
+    <Compile Include="Framework\IModelRepository.cs" />
+    <Compile Include="Framework\NullNativeDatabaseFileFactory.cs" />
+    <Compile Include="Framework\LinqToSql\LinqToSqlModelRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="IUnitOfWorkFactory.cs" />
+    <Compile Include="Framework\DatabaseFileManager.cs" />
+    <Compile Include="Framework\DatabaseHistory.cs" />
+    <Compile Include="Framework\DatabaseRevision.cs" />
+    <Compile Include="Framework\IDataSourceTagSpecific.cs" />
+    <Compile Include="Framework\ModelRepository.cs" />
+    <Compile Include="Framework\INativeDatabaseFileFactory.cs" />
+    <Compile Include="Framework\IRequestModelObject.cs" />
+    <Compile Include="Framework\IResponseModelObject.cs" />
+    <Compile Include="Framework\IResultModelObject.cs" />
+    <Compile Include="Framework\PoPimp\Mapping\ColumnMappingAttribute.cs" />
+    <Compile Include="Framework\PoPimp\Mapping\CommandMappingAttribute.cs" />
+    <Compile Include="Framework\PoPimp\Mapping\ParameterMappingAttribute.cs" />
+    <Compile Include="Framework\PoPimp\Mapping\ProcedureMappingAttribute.cs" />
+    <Compile Include="Framework\PoPimp\Mapping\TableMappingAttribute.cs" />
+    <Compile Include="Framework\PoPimp\ModelMapHelper.cs" />
+    <Compile Include="Framework\PoPimp\Query.cs" />
+    <Compile Include="Framework\PoPimp\SqlExpressionVisitor.cs" />
     <Compile Include="SqlQuery.cs" />
     <Compile Include="AmbientUnitOfWorkScope.cs" />
-    <Compile Include="IModelObject.cs" />
+    <Compile Include="Framework\IModelObject.cs" />
     <Compile Include="UnitOfWork.cs" />
     <Compile Include="AmbientUnitOfWorkAwareDisposableWrapper~1.cs" />
-    <Compile Include="LinqToSql\LinqToSqlHelper.cs" />
-    <Compile Include="LinqToSql\MulticastContext~1.cs" />
+    <Compile Include="Framework\LinqToSql\LinqToSqlHelper.cs" />
+    <Compile Include="Framework\LinqToSql\MulticastContext~1.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +99,13 @@
       <Project>{483501d9-4d73-4076-997b-3a5d8b5ddb2c}</Project>
       <Name>TextMetal.Common.Expressions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Common.Solder\TextMetal.Common.Solder.csproj">
+      <Project>{3B0EFC3C-AA91-4FB4-B2EE-BD8727230A94}</Project>
+      <Name>TextMetal.Common.Solder</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Framework\LinqToEF\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

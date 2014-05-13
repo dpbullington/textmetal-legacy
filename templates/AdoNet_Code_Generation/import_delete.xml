@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+-->
+<Template xmlns="http://www.textmetal.com/api/v6.0.0">
+		
+	<!--<DebuggerBreakpoint />-->
+	
+	<![CDATA[commandText = @"DELETE FROM " + GetDataSourceTagSpecificInstance().GetTableName(${TableNameSingularPascalCase}.SCHEMA_NAME, ${TableNameSingularPascalCase}.TABLE_NAME) + @" WHERE "]]>
+
+	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
+		<ForEach.Filter>
+			<BinaryExpression operator="Or">
+				<BinaryExpression.LeftExpression>
+					<BinaryExpression operator="Eq">
+						<BinaryExpression.LeftExpression>
+							<Facet name="ColumnIsPrimaryKey" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Value type="System.Boolean" data="True" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</BinaryExpression.LeftExpression>
+				<BinaryExpression.RightExpression>
+					<BinaryExpression operator="Eq">
+						<BinaryExpression.LeftExpression>
+							<Facet name="HasNoDefinedPrimaryKeyColumns" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Value type="System.Boolean" data="True" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</BinaryExpression.RightExpression>
+			</BinaryExpression>
+		</ForEach.Filter>
+		<ForEach.Body>
+			<![CDATA[ + GetDataSourceTagSpecificInstance().GetColumnName(${TableNameSingularPascalCase}.COLUMN_NAME_${ColumnNameConstantCase}) + @" = " + GetDataSourceTagSpecificInstance().GetParameterName(${TableNameSingularPascalCase}.COLUMN_NAME_${ColumnNameConstantCase})]]>
+			<If>
+				<If.Condition>
+					<BinaryExpression operator="Ne">
+						<BinaryExpression.LeftExpression>
+							<Facet name="_LoopCount" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Facet name="_LoopIndex" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</If.Condition>
+				<If.True>
+					<![CDATA[ + @" AND "]]>
+				</If.True>
+			</If>
+		</ForEach.Body>
+	</ForEach>
+
+	<![CDATA[;]]>
+	
+</Template>

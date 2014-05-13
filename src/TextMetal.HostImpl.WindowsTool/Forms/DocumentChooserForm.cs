@@ -6,8 +6,8 @@
 using System;
 using System.Windows.Forms;
 
-using TextMetal.HostImpl.WindowsTool.Shared.Controls;
-using TextMetal.HostImpl.WindowsTool.Shared.Forms;
+using TextMetal.Common.WinForms.Controls;
+using TextMetal.Common.WinForms.Forms;
 
 namespace TextMetal.HostImpl.WindowsTool.Forms
 {

@@ -8,7 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-using TextMetal.HostImpl.WindowsTool.Shared.Forms;
+using TextMetal.Common.WinForms.Forms;
 
 namespace TextMetal.HostImpl.WindowsTool.Forms
 {

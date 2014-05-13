@@ -12,7 +12,7 @@ using TextMetal.Common.Data;
 using TextMetal.Framework.AssociativeModel;
 using TextMetal.Framework.TemplateModel;
 using TextMetal.HostImpl.Tool;
-using TextMetal.HostImpl.WindowsTool.Shared.Forms;
+using TextMetal.Common.WinForms.Forms;
 
 using Message = TextMetal.Common.Core.Message;
 

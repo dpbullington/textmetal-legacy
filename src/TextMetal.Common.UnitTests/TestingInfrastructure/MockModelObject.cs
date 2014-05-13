@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
+using TextMetal.Common.Data.Framework;
 
 namespace TextMetal.Common.UnitTests.TestingInfrastructure
 {

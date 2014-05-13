@@ -11,9 +11,16 @@
 <![CDATA[
 
 using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Linq;
+using System.Linq;
 using System.Xml;
 
+using TextMetal.Common.Core;
 using TextMetal.Common.Data;
+using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.LinqToSql;
 ]]>
 		<If>
 			<If.Condition>

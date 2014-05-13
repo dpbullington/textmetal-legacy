@@ -19,7 +19,8 @@ using System.Xml;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
-using TextMetal.Common.Data.LinqToSql;
+using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.LinqToSql;
 ]]>
 		<If>
 			<If.Condition>

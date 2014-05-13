@@ -1,0 +1,29 @@
+ How do I list all tables/indices contained in an SQLite database
+
+If you are running the sqlite3 command-line access program you can type ".tables" to get a list of all tables. Or you can type ".schema" to see the complete database schema including all tables and indices. Either of these commands can be followed by a LIKE pattern that will restrict the tables that are displayed.
+
+From within a C/C++ program (or a script using Tcl/Ruby/Perl/Python bindings) you can get access to table and index names by doing a SELECT on a special table named "SQLITE_MASTER". Every SQLite database has an SQLITE_MASTER table that defines the schema for the database. The SQLITE_MASTER table looks like this:
+
+CREATE TABLE sqlite_master (
+  type TEXT,
+  name TEXT,
+  tbl_name TEXT,
+  rootpage INTEGER,
+  sql TEXT
+);
+For tables, the type field will always be 'table' and the name field will be the name of the table. So to get a list of all tables in the database, use the following SELECT command:
+
+SELECT name FROM sqlite_master
+WHERE type='table'
+ORDER BY name;
+For indices, type is equal to 'index', name is the name of the index and tbl_name is the name of the table to which the index belongs. For both tables and indices, the sql field is the text of the original CREATE TABLE or CREATE INDEX statement that created the table or index. For automatically created indices (used to implement the PRIMARY KEY or UNIQUE constraints) the sql field is NULL.
+
+The SQLITE_MASTER table is read-only. You cannot change this table using UPDATE, INSERT, or DELETE. The table is automatically updated by CREATE TABLE, CREATE INDEX, DROP TABLE, and DROP INDEX commands.
+
+Temporary tables do not appear in the SQLITE_MASTER table. Temporary tables and their indices and triggers occur in another special table named SQLITE_TEMP_MASTER. SQLITE_TEMP_MASTER works just like SQLITE_MASTER except that it is only visible to the application that created the temporary tables. To get a list of all tables, both permanent and temporary, one can use a command similar to the following:
+
+SELECT name FROM 
+   (SELECT * FROM sqlite_master UNION ALL
+    SELECT * FROM sqlite_temp_master)
+WHERE type='table'
+ORDER BY name

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+-->
+<Template xmlns="http://www.textmetal.com/api/v6.0.0">
+		
+	<!--<DebuggerBreakpoint />-->
+	<Alloc token="TableAlias" />
+	
+	<Assign token="TableAlias">
+		<Assign.Expression>
+			<Value data="t0" />
+		</Assign.Expression>
+	</Assign>
+	
+	<![CDATA[commandText = @"SELECT "]]>
+
+	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
+		<ForEach.Body>
+			<![CDATA[ + GetDataSourceTagSpecificInstance().GetAliasedColumnName("${TableAlias}", ${TableNameSingularPascalCase}.COLUMN_NAME_${ColumnNameConstantCase}) + @" AS " + GetDataSourceTagSpecificInstance().GetColumnName(${TableNameSingularPascalCase}.COLUMN_NAME_${ColumnNameConstantCase})]]>
+			<If>
+				<If.Condition>
+					<BinaryExpression operator="Ne">
+						<BinaryExpression.LeftExpression>
+							<Facet name="_LoopCount" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Facet name="_LoopIndex" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</If.Condition>
+				<If.True>
+					<![CDATA[ + @", "]]>
+				</If.True>
+			</If>
+		</ForEach.Body>
+	</ForEach>
+
+	<![CDATA[ + @" FROM  " + GetDataSourceTagSpecificInstance().GetTableName(${TableNameSingularPascalCase}.SCHEMA_NAME, ${TableNameSingularPascalCase}.TABLE_NAME) + @" " + GetDataSourceTagSpecificInstance().GetTableAlias("${TableAlias}") + @" WHERE {0} ORDER BY {1}";]]>
+
+</Template>
