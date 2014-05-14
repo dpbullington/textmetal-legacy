@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
+using TextMetal.Common.Data.Framework.PoPimp.Strategy;
 using TextMetal.Common.Expressions;
 
 namespace TextMetal.Common.Data.Framework.PoPimp
@@ -16,10 +17,10 @@ namespace TextMetal.Common.Data.Framework.PoPimp
 	{
 		#region Constructors/Destructors
 
-		public SqlExpressionVisitor(IDataSourceTagSpecific dataSourceTagSpecific, IUnitOfWork unitOfWork, IList<IDataParameter> commandParameters)
+		public SqlExpressionVisitor(IDataSourceTagStrategy dataSourceTagStrategy, IUnitOfWork unitOfWork, IList<IDataParameter> commandParameters)
 		{
-			if ((object)dataSourceTagSpecific == null)
-				throw new ArgumentNullException("dataSourceTagSpecific");
+			if ((object)dataSourceTagStrategy == null)
+				throw new ArgumentNullException("dataSourceTagStrategy");
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -27,7 +28,7 @@ namespace TextMetal.Common.Data.Framework.PoPimp
 			if ((object)commandParameters == null)
 				throw new ArgumentNullException("commandParameters");
 
-			this.dataSourceTagSpecific = dataSourceTagSpecific;
+			this.dataSourceTagStrategy = dataSourceTagStrategy;
 			this.unitOfWork = unitOfWork;
 			this.commandParameters = commandParameters;
 		}
@@ -37,7 +38,7 @@ namespace TextMetal.Common.Data.Framework.PoPimp
 		#region Fields/Constants
 
 		private readonly IList<IDataParameter> commandParameters;
-		private readonly IDataSourceTagSpecific dataSourceTagSpecific;
+		private readonly IDataSourceTagStrategy dataSourceTagStrategy;
 		private readonly StringBuilder strings = new StringBuilder();
 		private readonly IUnitOfWork unitOfWork;
 
@@ -53,11 +54,11 @@ namespace TextMetal.Common.Data.Framework.PoPimp
 			}
 		}
 
-		private IDataSourceTagSpecific DataSourceTagSpecific
+		private IDataSourceTagStrategy DataSourceTagStrategy
 		{
 			get
 			{
-				return this.dataSourceTagSpecific;
+				return this.dataSourceTagStrategy;
 			}
 		}
 
@@ -81,13 +82,13 @@ namespace TextMetal.Common.Data.Framework.PoPimp
 
 		#region Methods/Operators
 
-		public static string GetFilterText(IDataSourceTagSpecific dataSourceTagSpecific, IUnitOfWork unitOfWork, IList<IDataParameter> commandParameters, IExpression expression)
+		public static string GetFilterText(IDataSourceTagStrategy dataSourceTagStrategy, IUnitOfWork unitOfWork, IList<IDataParameter> commandParameters, IExpression expression)
 		{
 			SqlExpressionVisitor expressionVisitor;
 			string expressionText;
 
-			if ((object)dataSourceTagSpecific == null)
-				throw new ArgumentNullException("dataSourceTagSpecific");
+			if ((object)dataSourceTagStrategy == null)
+				throw new ArgumentNullException("dataSourceTagStrategy");
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -98,20 +99,20 @@ namespace TextMetal.Common.Data.Framework.PoPimp
 			if ((object)expression == null)
 				throw new ArgumentNullException("expression");
 
-			expressionVisitor = new SqlExpressionVisitor(dataSourceTagSpecific, unitOfWork, commandParameters);
+			expressionVisitor = new SqlExpressionVisitor(dataSourceTagStrategy, unitOfWork, commandParameters);
 			expressionVisitor.Visit(expression);
 			expressionText = expressionVisitor.Strings.ToString();
 
 			return expressionText;
 		}
 
-		public static string GetSortText(IDataSourceTagSpecific dataSourceTagSpecific, IUnitOfWork unitOfWork, IList<IDataParameter> commandParameters, IEnumerable<ISequence> sortSequences)
+		public static string GetSortText(IDataSourceTagStrategy dataSourceTagStrategy, IUnitOfWork unitOfWork, IList<IDataParameter> commandParameters, IEnumerable<ISequence> sortSequences)
 		{
 			string expressionText;
 			List<string> sortNames;
 
-			if ((object)dataSourceTagSpecific == null)
-				throw new ArgumentNullException("dataSourceTagSpecific");
+			if ((object)dataSourceTagStrategy == null)
+				throw new ArgumentNullException("dataSourceTagStrategy");
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -129,7 +130,7 @@ namespace TextMetal.Common.Data.Framework.PoPimp
 				if ((object)sortSequence.SortExpression == null)
 					continue;
 
-				sortNames.Add(string.Format("{0} {1}", dataSourceTagSpecific.GetAliasedColumnName("t0", ((ISurface)sortSequence.SortExpression).Name), (sortSequence.SortDirection ?? true) ? "ASC" : "DESC"));
+				sortNames.Add(string.Format("{0} {1}", dataSourceTagStrategy.GetAliasedColumnName("t0", ((ISurface)sortSequence.SortExpression).Name), (sortSequence.SortDirection ?? true) ? "ASC" : "DESC"));
 			}
 
 			if (sortNames.Count <= 0)
@@ -241,7 +242,7 @@ namespace TextMetal.Common.Data.Framework.PoPimp
 			if ((object)surface == null)
 				throw new ArgumentNullException("surface");
 
-			columnName = this.DataSourceTagSpecific.GetAliasedColumnName("t0", surface.Name);
+			columnName = this.DataSourceTagStrategy.GetAliasedColumnName("t0", surface.Name);
 
 			this.Strings.Append(columnName);
 
@@ -316,7 +317,7 @@ namespace TextMetal.Common.Data.Framework.PoPimp
 			if ((object)value.__ == null)
 				throw new InvalidOperationException("Cannot use the constant value NULL as a value operand; use UnaryExpression(..., UnaryOperator.IsNull) instead.");
 
-			parameterName = this.DataSourceTagSpecific.GetParameterName(string.Format("expr_{0}", Guid.NewGuid().ToString("N")));
+			parameterName = this.DataSourceTagStrategy.GetParameterName(string.Format("expr_{0}", Guid.NewGuid().ToString("N")));
 			valueType = value.__.GetType();
 
 			commandParameter = this.UnitOfWork.CreateParameter(ParameterDirection.Input, AdoNetHelper.InferDbTypeForClrType(valueType), 0, 0, 0, true, parameterName, value.__);

@@ -5,9 +5,9 @@
 
 using System.Data;
 
-namespace TextMetal.Common.Data.Framework
+namespace TextMetal.Common.Data.Framework.PoPimp.Strategy
 {
-	public interface IDataSourceTagSpecific
+	public interface IDataSourceTagStrategy
 	{
 		#region Properties/Indexers/Events
 
@@ -21,6 +21,8 @@ namespace TextMetal.Common.Data.Framework
 		#region Methods/Operators
 
 		void CommandMagic(IUnitOfWork unitOfWork, bool executeAsCud, out int thisOrThatRecordsAffected);
+
+		bool CreateNativeDatabaseFile(string databaseFilePath);
 
 		string GetAliasedColumnName(string tableAlias, string columnName);
 

@@ -18,14 +18,9 @@ namespace TextMetal.Common.Data.Framework
 	{
 		#region Constructors/Destructors
 
-		protected ModelRepository(Func<string, bool> createNativeDatabaseFileCallback)
+		protected ModelRepository()
 		{
-			if ((object)createNativeDatabaseFileCallback == null)
-				throw new ArgumentNullException("createNativeDatabaseFileCallback");
-
-			this.createNativeDatabaseFileCallback = createNativeDatabaseFileCallback;
-
-			if(this.UseDatabaseFile)
+			if (this.UseDatabaseFile)
 				this.InitializeFromRevisionHistoryResource();
 		}
 
@@ -40,7 +35,6 @@ namespace TextMetal.Common.Data.Framework
 		private const string KILL_DATABASE_FILE_FORMAT = "{0}::KillDatabaseFile";
 		private const string RESOURCE_NAME_FORMAT = "{0}.SQL.RevisionHistory({1}).xml";
 		private const string USE_DATABASE_FILE_FORMAT = "{0}::UseDatabaseFile";
-		private readonly Func<string, bool> createNativeDatabaseFileCallback;
 
 		#endregion
 
@@ -77,14 +71,6 @@ namespace TextMetal.Common.Data.Framework
 			get
 			{
 				return Type.GetType(AppConfig.GetConnectionProvider(this.ConnectionStringName), true);
-			}
-		}
-
-		private Func<string, bool> CreateNativeDatabaseFileCallback
-		{
-			get
-			{
-				return this.createNativeDatabaseFileCallback;
 			}
 		}
 
@@ -237,7 +223,7 @@ namespace TextMetal.Common.Data.Framework
 				Directory.CreateDirectory(databaseDirectoryPath);
 
 			if (!File.Exists(databaseFilePath))
-				retval = this.CreateNativeDatabaseFileCallback(databaseFilePath);
+				retval = this.OnCreateNativeDatabaseFile(databaseFilePath);
 
 			return retval;
 		}
@@ -300,6 +286,11 @@ namespace TextMetal.Common.Data.Framework
 		public abstract TModel Load<TModel>(TModel prototype) where TModel : class, IModelObject;
 
 		public abstract TModel Load<TModel>(IUnitOfWork unitOfWork, TModel prototype) where TModel : class, IModelObject;
+
+		protected virtual bool OnCreateNativeDatabaseFile(string databaseFilePath)
+		{
+			return false;
+		}
 
 		protected virtual void OnDiscardConflictModel<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject
 		{

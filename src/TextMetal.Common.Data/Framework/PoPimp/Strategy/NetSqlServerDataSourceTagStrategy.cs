@@ -1,83 +1,52 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
-<!--
-	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+/*
+	Copyright �2002-2014 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
--->
-<Template xmlns="http://www.textmetal.com/api/v6.0.0">
-
-	<OutputScope name="${ClrNamespace}\NetSqlServerSpecific.g.cs">
-		<Include name="include_gen_cprt_message.cs.txt" />
-<![CDATA[
+*/
 
 using System;
 using System.Data;
 
 using TextMetal.Common.Core;
-using TextMetal.Common.Data;
-using TextMetal.Common.Data.Advanced;
-using TextMetal.Common.Expressions;
-]]>
-		<If>
-			<If.Condition>
-				<UnaryExpression operator="IsDef">
-					<UnaryExpression.TheExpression>
-						<Aspect name="ClrUsingNamespaces" />
-					</UnaryExpression.TheExpression>
-				</UnaryExpression>
-			</If.Condition>
-			<If.True>
-				<ForEach in="ClrUsingNamespaces" var-ct="_LoopCount" var-ix="_LoopIndex" var-item="_LoopItem">
-					<ForEach.Body>
-						<![CDATA[using ${_LoopItem};
-]]>
-					</ForEach.Body>
-				</ForEach>
-			</If.True>
-		</If>
-				
-		<![CDATA[
-namespace ${ClrNamespace}
+
+namespace TextMetal.Common.Data.Framework.PoPimp.Strategy
 {
-	internal class NetSqlServerSpecific : IDataSourceTagSpecific
+	public sealed class NetSqlServerDataSourceTagStrategy : IDataSourceTagStrategy
 	{
 		#region Constructors/Destructors
 
-		private NetSqlServerSpecific()
+		private NetSqlServerDataSourceTagStrategy()
 		{
 		}
 
 		#endregion
 
 		#region Fields/Constants
-		
-		private const string NET_SQL_SERVER_DATA_SOURCE_TAG = "net.sqlserver";
-		
-		private const int NET_SQL_SERVER_PERSIST_NOT_EXPECTED_RECORDS_AFFECTED = 0;
-		private const int NET_SQL_SERVER_QUERY_EXPECTED_RECORDS_AFFECTED = -1;
-		private const string NET_SQL_SERVER_IDENTITY_COMMAND = "@@IDENTITY"; // warning: 'SELECT SCOPE_IDENTITY() AS PK' should be used in the SAME BATCH if there is any chance of triggers on any tables causing identity creation
 
 		private const string NET_SQL_SERVER_COLUMN_ALIASED_FORMAT = "{0}.[{1}]";
 		private const string NET_SQL_SERVER_COLUMN_NAME_FORMAT = "[{0}]";
+		private const string NET_SQL_SERVER_DATA_SOURCE_TAG = "net.sqlserver";
+		private const string NET_SQL_SERVER_IDENTITY_COMMAND = "@@IDENTITY"; // warning: 'SELECT SCOPE_IDENTITY() AS PK' should be used in the SAME BATCH if there is any chance of triggers on any tables causing identity creation
 		private const string NET_SQL_SERVER_PARAMETER_NAME_FORMAT = "@{0}";
+		private const int NET_SQL_SERVER_PERSIST_NOT_EXPECTED_RECORDS_AFFECTED = 0;
+		private const int NET_SQL_SERVER_QUERY_EXPECTED_RECORDS_AFFECTED = -1;
 		private const string NET_SQL_SERVER_SCHEMA_TABLE_NAME_FORMAT = "[{0}].[{1}]";
 		private const string NET_SQL_SERVER_TABLE_ALIAS_FORMAT = "{0}";
 		private const string NET_SQL_SERVER_TABLE_NAME_FORMAT = "[{0}]";
 
-		private static readonly NetSqlServerSpecific instance = new NetSqlServerSpecific();
+		private static readonly NetSqlServerDataSourceTagStrategy instance = new NetSqlServerDataSourceTagStrategy();
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		public static NetSqlServerSpecific Instance
+		public static NetSqlServerDataSourceTagStrategy Instance
 		{
 			get
 			{
 				return instance;
 			}
 		}
-		
+
 		public string DataSourceTag
 		{
 			get
@@ -94,11 +63,16 @@ namespace ${ClrNamespace}
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
-			
+
 			if (executeAsCud)
 				thisOrThatRecordsAffected = NET_SQL_SERVER_PERSIST_NOT_EXPECTED_RECORDS_AFFECTED;
 			else
 				thisOrThatRecordsAffected = NET_SQL_SERVER_QUERY_EXPECTED_RECORDS_AFFECTED;
+		}
+
+		public bool CreateNativeDatabaseFile(string databaseFilePath)
+		{
+			return false;
 		}
 
 		public string GetAliasedColumnName(string tableAlias, string columnName)
@@ -176,7 +150,3 @@ namespace ${ClrNamespace}
 		#endregion
 	}
 }
-]]>
-	</OutputScope>
-
-</Template>

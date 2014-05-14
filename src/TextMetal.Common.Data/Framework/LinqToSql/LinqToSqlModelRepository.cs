@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace TextMetal.Common.Data.Framework.LinqToSql
 {
-	public sealed class LinqToSqlModelRepository<TDataContext> : ModelRepository
+	public class LinqToSqlModelRepository<TDataContext> : ModelRepository
 		where TDataContext : DataContext, IDisposable
 	{
 		#region Constructors/Destructors
@@ -19,7 +19,6 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 		/// Initializes a new instance of the LinqToSqlModelRepository`1 class.
 		/// </summary>
 		public LinqToSqlModelRepository()
-			: base((path) => false)
 		{
 		}
 

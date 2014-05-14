@@ -369,9 +369,6 @@ EndGlobal
 	<Compile Include="IRepository.tv.g.cs" />
 	<Compile Include="Repository.tv.g.cs" />
 	<Compile Include="ProjectAssemblyInfo.cs" />
-	<Compile Include="NetSqlServerSpecific.g.cs" />
-	<Compile Include="OdbcSqlServerSpecific.g.cs" />
-	<Compile Include="NetSqliteSpecific.g.cs" />
 	
 ]]>
 

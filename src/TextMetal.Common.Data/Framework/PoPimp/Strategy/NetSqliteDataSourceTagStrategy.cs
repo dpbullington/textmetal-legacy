@@ -1,83 +1,53 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
-<!--
-	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+/*
+	Copyright �2002-2014 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
--->
-<Template xmlns="http://www.textmetal.com/api/v6.0.0">
-
-	<OutputScope name="${ClrNamespace}\NetSqliteSpecific.g.cs">
-		<Include name="include_gen_cprt_message.cs.txt" />
-<![CDATA[
+*/
 
 using System;
 using System.Data;
+using System.Reflection;
 
 using TextMetal.Common.Core;
-using TextMetal.Common.Data;
-using TextMetal.Common.Data.Advanced;
-using TextMetal.Common.Expressions;
-]]>
-		<If>
-			<If.Condition>
-				<UnaryExpression operator="IsDef">
-					<UnaryExpression.TheExpression>
-						<Aspect name="ClrUsingNamespaces" />
-					</UnaryExpression.TheExpression>
-				</UnaryExpression>
-			</If.Condition>
-			<If.True>
-				<ForEach in="ClrUsingNamespaces" var-ct="_LoopCount" var-ix="_LoopIndex" var-item="_LoopItem">
-					<ForEach.Body>
-						<![CDATA[using ${_LoopItem};
-]]>
-					</ForEach.Body>
-				</ForEach>
-			</If.True>
-		</If>
-				
-		<![CDATA[
-namespace ${ClrNamespace}
+
+namespace TextMetal.Common.Data.Framework.PoPimp.Strategy
 {
-	internal class NetSqliteSpecific : IDataSourceTagSpecific, INativeDatabaseFileCreator
+	public sealed class NetSqliteDataSourceTagStrategy : IDataSourceTagStrategy
 	{
 		#region Constructors/Destructors
 
-		private NetSqliteSpecific()
+		private NetSqliteDataSourceTagStrategy()
 		{
 		}
 
 		#endregion
 
 		#region Fields/Constants
-		
-		private const string NET_SQLITE_DATA_SOURCE_TAG = "net.sqlite";
-
-		private const int NET_SQLITE_PERSIST_NOT_EXPECTED_RECORDS_AFFECTED = 0;
-		private const int NET_SQLITE_QUERY_EXPECTED_RECORDS_AFFECTED = 0;
-		private const string NET_SQLITE_IDENTITY_COMMAND = "LAST_INSERT_ROWID()";
 
 		private const string NET_SQLITE_COLUMN_ALIASED_FORMAT = "{0}.{1}";
 		private const string NET_SQLITE_COLUMN_NAME_FORMAT = "{0}";
+		private const string NET_SQLITE_DATA_SOURCE_TAG = "net.sqlite";
+		private const string NET_SQLITE_IDENTITY_COMMAND = "LAST_INSERT_ROWID()";
 		private const string NET_SQLITE_PARAMETER_NAME_FORMAT = "@{0}";
+		private const int NET_SQLITE_PERSIST_NOT_EXPECTED_RECORDS_AFFECTED = 0;
+		private const int NET_SQLITE_QUERY_EXPECTED_RECORDS_AFFECTED = 0;
 		private const string NET_SQLITE_SCHEMA_TABLE_NAME_FORMAT = "{1}";
 		private const string NET_SQLITE_TABLE_ALIAS_FORMAT = "{0}";
 		private const string NET_SQLITE_TABLE_NAME_FORMAT = "{0}";
-		
-		private static readonly NetSqliteSpecific instance = new NetSqliteSpecific();
+
+		private static readonly NetSqliteDataSourceTagStrategy instance = new NetSqliteDataSourceTagStrategy();
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		public static NetSqliteSpecific Instance
+		public static NetSqliteDataSourceTagStrategy Instance
 		{
 			get
 			{
 				return instance;
 			}
 		}
-		
+
 		public string DataSourceTag
 		{
 			get
@@ -90,21 +60,36 @@ namespace ${ClrNamespace}
 
 		#region Methods/Operators
 
-		public bool CreateNativeDatabaseFile(string databaseFilePath)
-		{
-			System.Data.SQLite.SQLiteConnection.CreateFile(databaseFilePath);
-			return true;
-		}
-
 		public void CommandMagic(IUnitOfWork unitOfWork, bool executeAsCud, out int thisOrThatRecordsAffected)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
-			
+
 			if (executeAsCud)
 				thisOrThatRecordsAffected = NET_SQLITE_PERSIST_NOT_EXPECTED_RECORDS_AFFECTED;
 			else
 				thisOrThatRecordsAffected = NET_SQLITE_QUERY_EXPECTED_RECORDS_AFFECTED;
+		}
+
+		public bool CreateNativeDatabaseFile(string databaseFilePath)
+		{
+			Type type;
+			MethodInfo methodInfo;
+
+			//System.Data.SQLite.SQLiteConnection.CreateFile(databaseFilePath);
+			type = Type.GetType("System.Data.SQLite.SQLiteConnection", false);
+
+			if ((object)type == null)
+				return false;
+
+			methodInfo = type.GetMethod("CreateFile", new Type[] { typeof(string) });
+
+			if ((object)methodInfo == null)
+				return false;
+
+			methodInfo.Invoke(null, new object[] { databaseFilePath });
+
+			return true;
 		}
 
 		public string GetAliasedColumnName(string tableAlias, string columnName)
@@ -175,7 +160,3 @@ namespace ${ClrNamespace}
 		#endregion
 	}
 }
-]]>
-	</OutputScope>
-
-</Template>
