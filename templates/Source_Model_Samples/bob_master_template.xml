@@ -109,7 +109,9 @@
 	
 	<![CDATA[	
 ${test}
-*rb*	
+*rb*
+
+${rb(`textMetal.DebuggerBreakpoint()`)}
 ]]>
 		
 	<Assign token="test">

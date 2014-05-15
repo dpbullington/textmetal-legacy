@@ -486,9 +486,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			{
 				switch (sqlType = sqlType.SafeToString().ToUpper())
 				{
-					case null:
-					case "":
-						return typeof(Object);
 					case "BIGINT":
 						return typeof(Int64);
 					case "BINARY":
@@ -575,7 +572,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 					case "XML":
 						return typeof(XmlDocument);
 					default:
-						return null; // dpb: 2014-05-13/changed behavior here to not throw exception
+						return typeof(Object); // dpb: 2014-05-13/changed behavior here to not throw exception
 				}
 			}
 

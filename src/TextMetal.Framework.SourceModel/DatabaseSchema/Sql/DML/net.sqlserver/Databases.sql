@@ -6,9 +6,9 @@
 -- database
 SELECT
 	sys_d.[database_id] as [DatabaseId],
-	sys_d.[name] as [DatabaseName],
+	sys_d.[name] as [DatabaseName]
 	
-	sys_d.[source_database_id] AS [source_database_id],
+	/*sys_d.[source_database_id] AS [source_database_id],
 	sys_d.[owner_sid] AS [owner_sid],
 	sys_d.[create_date] AS [create_date],
 	sys_d.[compatibility_level] AS [compatibility_level],
@@ -74,6 +74,6 @@ SELECT
 	sys_d.[containment] AS [containment],
 	sys_d.[containment_desc] AS [containment_desc],
 	sys_d.[target_recovery_time_in_seconds] AS [target_recovery_time_in_seconds]
-	--sys_d.[is_federation_member] AS [is_federation_member] --AZURE ONLY
+	--sys_d.[is_federation_member] AS [is_federation_member] --AZURE ONLY*/
 FROM
 	[sys].[databases] sys_d

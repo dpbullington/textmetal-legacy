@@ -150,6 +150,7 @@ namespace TextMetal.Framework.ExpressionModel
 			dynamic dvalue;
 			Func<string, object> func;
 			Action action;
+			IDictionary<string, object> scriptFoo;
 
 			if ((object)templatingContext == null)
 				throw new ArgumentNullException("templatingContext");
@@ -173,14 +174,16 @@ namespace TextMetal.Framework.ExpressionModel
 			//paths.Add(System.IO.Directory.GetCurrentDirectory());
 			scriptEngine.SetSearchPaths(paths);
 
-			textMetal = new ExpandoObject();
+			scriptFoo = new Dictionary<string, object>();
+
 			func = (token) => dynamicWildcardTokenReplacementStrategy.Evaluate(token, null);
-			textMetal.EvaluateToken = func;
+			scriptFoo.Add("EvaluateToken", func);
 			//TODO: templatingContext.Tokenizer.ExpandTokens(tokenizedValue, dynamicWildcardTokenReplacementStrategy);
 
 			action = () => DebuggerBreakpointConstruct.LaunchDebugger();
-			textMetal.DebuggerBreakpoint = action;
+			scriptFoo.Add("DebuggerBreakpoint", action);
 
+			textMetal = new DynamicDictionary(scriptFoo);
 			scriptScope.SetVariable("textMetal", textMetal);
 
 			foreach (KeyValuePair<string, object> variableEntry in templatingContext.CurrentVariableTable)
@@ -215,6 +218,46 @@ namespace TextMetal.Framework.ExpressionModel
 		#endregion
 
 		#region Classes/Structs/Interfaces/Enums/Delegates
+
+		public class DynamicDictionary : DynamicObject
+		{
+			#region Constructors/Destructors
+
+			public DynamicDictionary(IDictionary<string, object> dictionary)
+			{
+				this.dictionary = dictionary;
+			}
+
+			#endregion
+
+			#region Fields/Constants
+
+			private readonly IDictionary<string, object> dictionary;
+
+			#endregion
+
+			#region Methods/Operators
+
+			public override IEnumerable<string> GetDynamicMemberNames()
+			{
+				foreach (string key in this.dictionary.Keys)
+					yield return key;
+			}
+
+			public override bool TryGetMember(GetMemberBinder binder, out object result)
+			{
+				result = this.dictionary[binder.Name];
+				return true;
+			}
+
+			public override bool TrySetMember(SetMemberBinder binder, object value)
+			{
+				this.dictionary[binder.Name] = value;
+				return true;
+			}
+
+			#endregion
+		}
 
 		private sealed class RubyHost
 		{
