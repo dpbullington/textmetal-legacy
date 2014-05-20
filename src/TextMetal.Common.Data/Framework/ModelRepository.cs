@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Web;
 
@@ -206,9 +207,27 @@ namespace TextMetal.Common.Data.Framework
 			return DependencyManager.AppDomainInstance.ResolveDependency<TResultModel>("");
 		}
 
-		public abstract TModel Discard<TModel>(TModel model) where TModel : class, IModelObject;
+		public abstract bool Discard<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject;
 
-		public abstract TModel Discard<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject;
+		public virtual bool Discard<TModel>(TModel model)
+			where TModel : class, IModelObject
+		{
+			bool retval;
+
+			if ((object)UnitOfWork.Current == null)
+			{
+				using (IUnitOfWork unitOfWork = this.GetUnitOfWork())
+				{
+					retval = this.Discard<TModel>(unitOfWork, model);
+
+					unitOfWork.Complete();
+				}
+			}
+			else
+				retval = this.Discard<TModel>(UnitOfWork.Current, model);
+
+			return retval;
+		}
 
 		private bool EnsureDatabaseFile()
 		{
@@ -228,23 +247,57 @@ namespace TextMetal.Common.Data.Framework
 			return retval;
 		}
 
-		public abstract TResponseModel ExecuteImperative<TRequestModel, TResultModel, TResponseModel>(TRequestModel requestModel)
-			where TRequestModel : class, IRequestModelObject
-			where TResultModel : class, IResultModelObject
-			where TResponseModel : class, IResponseModelObject<TResultModel>;
-
 		public abstract TResponseModel ExecuteImperative<TRequestModel, TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TRequestModel requestModel)
 			where TRequestModel : class, IRequestModelObject
 			where TResultModel : class, IResultModelObject
 			where TResponseModel : class, IResponseModelObject<TResultModel>;
 
-		public abstract TModel Fill<TModel>(TModel model) where TModel : class, IModelObject;
+		public virtual TResponseModel ExecuteImperative<TRequestModel, TResultModel, TResponseModel>(TRequestModel requestModel)
+			where TRequestModel : class, IRequestModelObject
+			where TResultModel : class, IResultModelObject
+			where TResponseModel : class, IResponseModelObject<TResultModel>
+		{
+			throw new NotImplementedException();
+		}
 
 		public abstract TModel Fill<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject;
 
-		public abstract IEnumerable<TModel> Find<TModel>(IModelQuery query) where TModel : class, IModelObject;
+		public virtual TModel Fill<TModel>(TModel model)
+			where TModel : class, IModelObject
+		{
+			throw new NotImplementedException();
+		}
 
 		public abstract IEnumerable<TModel> Find<TModel>(IUnitOfWork unitOfWork, IModelQuery query) where TModel : class, IModelObject;
+
+		public virtual IEnumerable<TModel> Find<TModel>(IModelQuery query)
+			where TModel : class, IModelObject
+		{
+			IEnumerable<TModel> models;
+
+			if ((object)query == null)
+				throw new ArgumentNullException("query");
+
+			if ((object)UnitOfWork.Current == null)
+			{
+				using (IUnitOfWork unitOfWork = this.GetUnitOfWork())
+				{
+					models = this.Find<TModel>(unitOfWork, query);
+
+					models = models.ToList(); // FORCE EAGER LOAD
+
+					unitOfWork.Complete();
+				}
+			}
+			else
+			{
+				models = this.Find<TModel>(UnitOfWork.Current, query);
+
+				// DO NOT FORCE EAGER LOAD
+			}
+
+			return models;
+		}
 
 		public virtual IUnitOfWork GetUnitOfWork()
 		{
@@ -283,9 +336,27 @@ namespace TextMetal.Common.Data.Framework
 			}
 		}
 
-		public abstract TModel Load<TModel>(TModel prototype) where TModel : class, IModelObject;
-
 		public abstract TModel Load<TModel>(IUnitOfWork unitOfWork, TModel prototype) where TModel : class, IModelObject;
+
+		public virtual TModel Load<TModel>(TModel prototype)
+			where TModel : class, IModelObject
+		{
+			TModel model;
+
+			if ((object)UnitOfWork.Current == null)
+			{
+				using (IUnitOfWork unitOfWork = this.GetUnitOfWork())
+				{
+					model = this.Load<TModel>(unitOfWork, prototype);
+
+					unitOfWork.Complete();
+				}
+			}
+			else
+				model = this.Load<TModel>(UnitOfWork.Current, prototype);
+
+			return model;
+		}
 
 		protected virtual bool OnCreateNativeDatabaseFile(string databaseFilePath)
 		{
@@ -399,9 +470,27 @@ namespace TextMetal.Common.Data.Framework
 			// do nothing
 		}
 
-		public abstract TModel Save<TModel>(TModel model) where TModel : class, IModelObject;
+		public abstract bool Save<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject;
 
-		public abstract TModel Save<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject;
+		public virtual bool Save<TModel>(TModel model)
+			where TModel : class, IModelObject
+		{
+			bool retval;
+
+			if ((object)UnitOfWork.Current == null)
+			{
+				using (IUnitOfWork unitOfWork = this.GetUnitOfWork())
+				{
+					retval = this.Save<TModel>(unitOfWork, model);
+
+					unitOfWork.Complete();
+				}
+			}
+			else
+				retval = this.Save<TModel>(UnitOfWork.Current, model);
+
+			return retval;
+		}
 
 		#endregion
 	}

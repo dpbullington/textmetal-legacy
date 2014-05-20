@@ -162,7 +162,7 @@ namespace TextMetal.Common.SqlServerClr
 			}
 		}
 
-		public static int? GetHash(long hashMultiplier, long hashBucketSize, long hashSeed, string value)
+		public static long? GetHash(long hashMultiplier, long hashBucketSize, long hashSeed, string value)
 		{
 			long hashCode;
 			byte[] buffer;
@@ -335,8 +335,14 @@ namespace TextMetal.Common.SqlServerClr
 		}
 
 		[SqlFunction(DataAccess = DataAccessKind.None)]
-		public static int? fn_GetHash(long hashMultiplier, long hashBucketSize, long hashSeed, string value)
+		public static long? fn_GetHash(long hashMultiplier, long hashBucketSize, long hashSeed, string value)
 		{
+			if ((object)value == null)
+				return -1;
+
+			if (DataType.IsWhiteSpace(value))
+				return -1;
+
 			if (!(value is string || value is SqlString))
 				return null;
 

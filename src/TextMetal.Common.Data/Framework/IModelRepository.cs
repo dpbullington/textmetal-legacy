@@ -9,7 +9,6 @@ namespace TextMetal.Common.Data.Framework
 {
 	public interface IModelRepository
 	{
-
 		#region Methods/Operators
 
 		TModel CreateModel<TModel>()
@@ -25,10 +24,10 @@ namespace TextMetal.Common.Data.Framework
 		TResultModel CreateResultModel<TResultModel>()
 			where TResultModel : class, IResultModelObject;
 
-		TModel Discard<TModel>(TModel model)
+		bool Discard<TModel>(TModel model)
 			where TModel : class, IModelObject;
 
-		TModel Discard<TModel>(IUnitOfWork unitOfWork, TModel model)
+		bool Discard<TModel>(IUnitOfWork unitOfWork, TModel model)
 			where TModel : class, IModelObject;
 
 		TResponseModel ExecuteImperative<TRequestModel, TResultModel, TResponseModel>(TRequestModel requestModel)
@@ -61,10 +60,10 @@ namespace TextMetal.Common.Data.Framework
 		TModel Load<TModel>(IUnitOfWork unitOfWork, TModel prototype)
 			where TModel : class, IModelObject;
 
-		TModel Save<TModel>(TModel model)
+		bool Save<TModel>(TModel model)
 			where TModel : class, IModelObject;
 
-		TModel Save<TModel>(IUnitOfWork unitOfWork, TModel model)
+		bool Save<TModel>(IUnitOfWork unitOfWork, TModel model)
 			where TModel : class, IModelObject;
 
 		#endregion

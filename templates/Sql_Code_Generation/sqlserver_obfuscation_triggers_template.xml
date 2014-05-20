@@ -8,6 +8,28 @@
 
 	<InvokeSourceStrategy src="${ObfuscationConfigFilePath}" alloc="true" var="obfuCfg" aqt-name="TextMetal.Framework.SourceModel.Primative.JsonSourceStrategy, TextMetal.Framework.SourceModel" />
 
+	<OutputScope name="SSIS.cs.g" append="false">
+<![CDATA[
+	// start
+]]>
+	</OutputScope>
+
+	<OutputScope name="${ObfuscationConfigFilePath}.g" append="false">
+<![CDATA[
+{
+	"MaskFactor": 0.50,
+	
+	"NumericSign":
+	{
+		"HashMultiplier": 33, 
+		"HashBucketSize": 1000000,
+		"HashSeed": 5381
+	},
+	
+	"TablesViews": [
+]]>
+	</OutputScope>
+
 	<OutputScope name="Obfuscation_Triggers.g.sql">
 <![CDATA[
 
@@ -24,7 +46,7 @@ GO
 --	variance		numeric		Returns an alternate value within +/- (x%) of the original value.
 --					temporal	Returns an alternate value within +/- (x%:365.25d) of the original value.
 --	ciphering		string		Returns an alternate value that is a binary encryption of the original value.
---	defaulting		any			Returns an alternate value that is always NULL.
+--	defaulting		any			Returns an alternate value that is always null if NULL or the default value if NOT NULL.
 --	masking			string		Returns an alternate value that is a +/- (%) mask of the original value.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -59,7 +81,7 @@ GO
 -- template for custom dictionary
 CREATE TABLE [DataObfuscation].[CrayonColorDictionary]
 (
-	[CrayonColorDictionaryKey] [int] IDENTITY(0,1) NOT NULL,
+	[CrayonColorDictionaryKey] [int] IDENTITY(-1,1) NOT NULL,
 	[CrayonColorDictionaryValue] [nvarchar](255) NOT NULL,
 	
 	CONSTRAINT [pk_CrayonColorDictionary] PRIMARY KEY
@@ -76,127 +98,98 @@ CREATE TABLE [DataObfuscation].[CrayonColorDictionary]
 GO
 
 
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Transparent')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Almond')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Antique Brass')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Apricot')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Aquamarine')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Asparagus')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Atomic Tangerine')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Banana Mania')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Beaver')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Bittersweet')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Black')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Blue')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Blue Bell')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Blue Green')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Blue Violet')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Blush')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Brick Red')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Brown')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Burnt Orange')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Burnt Sienna')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Cadet Blue')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Canary')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Caribbean Green')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Carnation Pink')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Cerise')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Cerulean')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Chestnut')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Copper')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Cornflower')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Cotton Candy')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Dandelion')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Denim')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Desert Sand')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Eggplant')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Electric Lime')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Fern')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Forest Green')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Fuchsia')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Fuzzy Wuzzy Brown')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Gold')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Goldenrod')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Granny Smith Apple')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Gray')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Green')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Green Yellow')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Hot Magenta')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Inch Worm')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Indigo')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Jazzberry Jam')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Jungle Green')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Laser Lemon')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Lavender')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Macaroni and Cheese')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Magenta')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Mahogany')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Manatee')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Mango Tango')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Maroon')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Mauvelous')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Melon')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Midnight Blue')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Mountain Meadow')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Navy Blue')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Neon Carrot')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Olive Green')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Orange')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Orchid')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Outer Space')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Outrageous Orange')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Pacific Blue')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Peach')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Periwinkle')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Piggy Pink')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Pine Green')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Pink Flamingo')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Pink Sherbet')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Plum')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Purple Heart')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Purple Mountains’ Majesty')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Purple Pizzazz')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Radical Red')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Raw Sienna')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Razzle Dazzle Rose')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Razzmatazz')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Red')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Red Orange')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Red Violet')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Robin Egg Blue')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Royal Purple')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Salmon')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Scarlet')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Screamin Green')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Sea Green')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Sepia')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Shadow')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Shamrock')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Shocking Pink')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Silver')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Sky Blue')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Spring Green')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Sunglow')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Sunset Orange')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Tan')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Tickle Me Pink')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Timberwolf')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Tropical Rain Forest')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Tumbleweed')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Turquoise Blue')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Unmellow Yellow')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Violet (Purple)')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Violet Red')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Vivid Tangerine')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Vivid Violet')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('White')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Wild Blue Yonder')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Wild Strawberry')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Wild Watermelon')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Wisteria')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Yellow')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Yellow Green')
-INSERT INTO [DataObfuscation].[CrayonColorDictionary] VALUES ('Yellow Orange')
+CREATE TABLE [DataObfuscation].[FirstNameDictionary]
+(
+	[FirstNameDictionaryKey] [int] IDENTITY(-1,1) NOT NULL,
+	[FirstNameDictionaryValue] [nvarchar](255) NOT NULL,
+	
+	CONSTRAINT [pk_FirstNameDictionary] PRIMARY KEY
+	(
+		[FirstNameDictionaryKey]
+	),
+	
+	-- optional
+	CONSTRAINT [uk_FirstNameDictionary] UNIQUE
+	(
+		[FirstNameDictionaryValue]
+	)
+)	
+GO
+
+
+CREATE TABLE [DataObfuscation].[LastNameDictionary]
+(
+	[LastNameDictionaryKey] [int] IDENTITY(-1,1) NOT NULL,
+	[LastNameDictionaryValue] [nvarchar](255) NOT NULL,
+	
+	CONSTRAINT [pk_LastNameDictionary] PRIMARY KEY
+	(
+		[LastNameDictionaryKey]
+	),
+	
+	-- optional
+	CONSTRAINT [uk_LastNameDictionary] UNIQUE
+	(
+		[LastNameDictionaryValue]
+	)
+)	
+GO
+
+
+CREATE TABLE [DataObfuscation].[CityNameDictionary]
+(
+	[CityNameDictionaryKey] [int] IDENTITY(-1,1) NOT NULL,
+	[CityNameDictionaryValue] [nvarchar](255) NOT NULL,
+	
+	CONSTRAINT [pk_CityNameDictionary] PRIMARY KEY
+	(
+		[CityNameDictionaryKey]
+	),
+	
+	-- optional
+	CONSTRAINT [uk_CityNameDictionary] UNIQUE
+	(
+		[CityNameDictionaryValue]
+	)
+)	
+GO
+
+
+CREATE TABLE [DataObfuscation].[StateNameDictionary]
+(
+	[StateNameDictionaryKey] [int] IDENTITY(-1,1) NOT NULL,
+	[StateNameDictionaryValue] [nvarchar](255) NOT NULL,
+	
+	CONSTRAINT [pk_StateNameDictionary] PRIMARY KEY
+	(
+		[StateNameDictionaryKey]
+	),
+	
+	-- optional
+	CONSTRAINT [uk_StateNameDictionary] UNIQUE
+	(
+		[StateNameDictionaryValue]
+	)
+)	
+GO
+
+
+CREATE TABLE [DataObfuscation].[CountryNameDictionary]
+(
+	[CountryNameDictionaryKey] [int] IDENTITY(-1,1) NOT NULL,
+	[CountryNameDictionaryValue] [nvarchar](255) NOT NULL,
+	
+	CONSTRAINT [pk_CountryNameDictionary] PRIMARY KEY
+	(
+		[CountryNameDictionaryKey]
+	),
+	
+	-- optional
+	CONSTRAINT [uk_CountryNameDictionary] UNIQUE
+	(
+		[CountryNameDictionaryValue]
+	)
+)	
 GO
 
 
@@ -236,7 +229,7 @@ CREATE FUNCTION [DataObfuscation].[fn_GetHash]
 	@hashSeed [bigint],
 	@value [nvarchar](MAX)
 )
-RETURNS [int]
+RETURNS [bigint]
 AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.ScalarFunctions].[fn_GetHash]
 GO
 
@@ -310,14 +303,6 @@ GO
 			
 			<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 				<ForEach.Filter>
-					<BinaryExpression operator="Eq">
-						<BinaryExpression.LeftExpression>
-							<Facet name="IsView" />
-						</BinaryExpression.LeftExpression>
-						<BinaryExpression.RightExpression>
-							<Value type="System.Boolean" data="False" />
-						</BinaryExpression.RightExpression>
-					</BinaryExpression>
 				</ForEach.Filter>
 				<ForEach.Body>
 <![CDATA[
@@ -659,17 +644,80 @@ AS
 							</If.True>
 						</If>
 					</ForEach.Body>
+
 				</ForEach>
 <![CDATA[
 		FROM [inserted] i
 	END
 GO
 ]]>
-					
+
+	<OutputScope name="SSIS.cs.g" append="true">
+<![CDATA[	config.Add(new Tuple<string, string>("${DefaultDatabaseName}", "[${SchemaName}].[${TableName}]"));
+]]>
+	</OutputScope>
+
+
+
+
+			<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
+				<ForEach.Sort>
+					<Ascending>
+						<Ascending.Compare>
+							<Facet name="ColumnOrdinal" />
+						</Ascending.Compare>
+					</Ascending>
+				</ForEach.Sort>
+				<ForEach.Body>
+				
+<OutputScope name="${ObfuscationConfigFilePath}.g" append="true">
+<![CDATA[
+	{
+		"DatabaseName": "${DefaultDatabaseName}",
+		"SchemaName": "${SchemaName}",
+		"TableName": "${TableName}",
+		"ColumnName": "${ColumnName}",
+		"StrategyTag": "none",
+		"Dictionary":
+		{
+			"DatabaseName": "${DataObfuscationProxyDatabaseName}",
+			"SchemaName": "DataObfuscation",
+			"TableName": "CrayonColorDictionary",
+			"KeyColumnName": "CrayonColorDictionaryKey",
+			"ValueColumnName": "CrayonColorDictionaryValue"
+		},
+		"HashMultiplier": 33,
+		"HashBucketSize": 120,
+		"HashSeed": 5381
+	},
+]]>
+</OutputScope>
+
+					</ForEach.Body>
+
+			</ForEach>
+
+
+
+
+
 				</ForEach.Body>
+
 			</ForEach>
 
 		</ForEach.Body>
 	</ForEach>
+	</OutputScope>
+
+	<OutputScope name="${ObfuscationConfigFilePath}.g" append="true">
+<![CDATA[	]
+}
+]]>
+	</OutputScope>
+
+	<OutputScope name="SSIS.cs.g" append="true">
+<![CDATA[
+	// end
+]]>
 	</OutputScope>
 </Template>

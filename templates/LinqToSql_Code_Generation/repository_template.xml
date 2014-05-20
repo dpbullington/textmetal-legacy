@@ -175,23 +175,24 @@ namespace ${ClrNamespace}
 		{
 			return DependencyManager.AppDomainInstance.ResolveDependency<TModel>("");
 		}
-		
-		public TModel CreateRequestModel<TModel>()
-			where TModel : class, IRequestModelObject
+
+		public TRequestModel CreateRequestModel<TRequestModel>()
+			where TRequestModel : class, IRequestModelObject
 		{
-			return DependencyManager.AppDomainInstance.ResolveDependency<TModel>("");
+			return DependencyManager.AppDomainInstance.ResolveDependency<TRequestModel>("");
 		}
-			
-		public TModel CreateResultModel<TModel>()
-			where TModel : class, IResultModelObject
+
+		public TResponseModel CreateResponseModel<TResponseModel, TResultModel>()
+			where TResponseModel : class, IResponseModelObject<TResultModel>
+			where TResultModel : class, IResultModelObject
 		{
-			return DependencyManager.AppDomainInstance.ResolveDependency<TModel>("");
+			return DependencyManager.AppDomainInstance.ResolveDependency<TResponseModel>("");
 		}
-			
-		public TModel CreateResponseModel<TModel>()
-			where TModel : class, IResponseModelObject
+
+		public TResultModel CreateResultModel<TResultModel>()
+			where TResultModel : class, IResultModelObject
 		{
-			return DependencyManager.AppDomainInstance.ResolveDependency<TModel>("");
+			return DependencyManager.AppDomainInstance.ResolveDependency<TResultModel>("");
 		}
 		
 		[DependencyRegistration]

@@ -1,0 +1,34 @@
+
+{
+	"MaskFactor": 0.50,
+	
+	"NumericSign":
+	{
+		"HashMultiplier": 33, 
+		"HashBucketSize": 1000000,
+		"HashSeed": 5381
+	},
+
+	"TablesViews": [
+
+	{
+		"DatabaseName": "textmetal_ods_dev",
+		"SchemaName": "application",
+		"TableName": "Organization",
+		"ColumnName": "OrganizationName",
+		"StrategyTag": "substitution",
+		"Dictionary":
+		{
+			"DatabaseName": "Ox_textmetal_ods_dev",
+			"SchemaName": "DataObfuscation",
+			"TableName": "CrayonColorDictionary",
+			"KeyColumnName": "CrayonColorDictionaryKey",
+			"ValueColumnName": "CrayonColorDictionaryValue"
+		},
+		"HashMultiplier": 33,
+		"HashBucketSize": 120,
+		"HashSeed": 5381
+	}
+	
+	]
+}

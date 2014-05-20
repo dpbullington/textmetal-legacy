@@ -46,15 +46,16 @@ namespace ${ClrNamespace}
 	{
 		TModel CreateModel<TModel>()
 			where TModel : class, IModelObject;
-		
-		TModel CreateRequestModel<TModel>()
-			where TModel : class, IRequestModelObject;
-			
-		TModel CreateResultModel<TModel>()
-			where TModel : class, IResultModelObject;
-			
-		TModel CreateResponseModel<TModel>()
-			where TModel : class, IResponseModelObject;
+
+		TRequestModel CreateRequestModel<TRequestModel>()
+			where TRequestModel : class, IRequestModelObject;
+
+		TResponseModel CreateResponseModel<TResponseModel, TResultModel>()
+			where TResponseModel : class, IResponseModelObject<TResultModel>
+			where TResultModel : class, IResultModelObject;
+
+		TResultModel CreateResultModel<TResultModel>()
+			where TResultModel : class, IResultModelObject;
 	}
 }
 ]]>

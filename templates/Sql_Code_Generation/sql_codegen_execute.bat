@@ -10,8 +10,8 @@ set PACKAGE_DIR_EXISTS=%PACKAGE_DIR%\nul
 
 set HISTORY_SCHEMA_NAME=history
 set ADO_NET_CONNECTION_STRING=Server=(local);User ID=textmetal_mssql_dev_login;Password=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Database=textmetal_ods_dev
-set DATA_OBFUSCATION_PROXY_DATABASE_NAME=textmetal_ods_dev_Proxy
-set OBFUSCATION_CONFIG_FILE_PATH=textmetal_ods_dev_ObsCfg.json
+set DATA_OBFUSCATION_PROXY_DATABASE_NAME=Ox_textmetal_ods_dev
+set OBFUSCATION_CONFIG_FILE_PATH=textmetal_ods_dev_obfu_cfg.json
 
 :pkgDir
 

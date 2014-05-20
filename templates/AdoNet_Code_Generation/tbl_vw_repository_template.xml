@@ -19,6 +19,7 @@ using System.Xml;
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
 using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.PoPimp;
 using TextMetal.Common.Expressions;
 ]]>
 		<If>

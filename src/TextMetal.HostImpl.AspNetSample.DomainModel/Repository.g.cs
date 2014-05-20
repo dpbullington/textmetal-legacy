@@ -19,10 +19,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Linq;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
-
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
 using TextMetal.Common.Data.Framework;
@@ -144,7 +144,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 		}
 		
 		public IEnumerable<TResultEntity> Find<TDataContext, TResultEntity>(TDataContext dummy, Func<TDataContext, IQueryable<TResultEntity>> callback)
-			where TDataContext : class, IDisposable
+			where TDataContext : DataContext
 		{
 			IEnumerable<TResultEntity> things;
 
@@ -170,7 +170,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 		}
 
 		public IEnumerable<TResultEntity> Find<TDataContext, TResultEntity>(TDataContext dummy, IUnitOfWork unitOfWork, Func<TDataContext, IQueryable<TResultEntity>> callback)
-			where TDataContext : class, IDisposable
+			where TDataContext : DataContext
 		{
 			IEnumerable<TResultEntity> things;
 			IQueryable<TResultEntity> queryable;

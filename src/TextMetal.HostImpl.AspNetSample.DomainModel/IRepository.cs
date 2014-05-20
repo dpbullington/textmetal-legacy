@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
 
 using TextMetal.Common.Data;
@@ -17,10 +18,10 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 		#region Methods/Operators
 
 		IEnumerable<TResultEntity> Find<TDataContext, TResultEntity>(TDataContext dummy, Func<TDataContext, IQueryable<TResultEntity>> callback)
-			where TDataContext : class, IDisposable;
+			where TDataContext : DataContext;
 
 		IEnumerable<TResultEntity> Find<TDataContext, TResultEntity>(TDataContext dummy, IUnitOfWork unitOfWork, Func<TDataContext, IQueryable<TResultEntity>> callback)
-			where TDataContext : class, IDisposable;
+			where TDataContext : DataContext;
 
 		IEnumerable<IListItem<int?>> GetSecurityRoles();
 

@@ -24,29 +24,22 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 		/// <summary>
 		/// For a given unitOfWork, this method returns a AmbientUnitOfWorkAwareDisposableWrapper`1 for a target data context type.
 		/// </summary>
-		/// <typeparam name="TContext"> The desired data context type. </typeparam>
+		/// <typeparam name="TDataContext"> The desired data context type. </typeparam>
 		/// <param name="unitOfWork"> The target unitOfWork. </param>
 		/// <returns> An instance of a AmbientUnitOfWorkAwareDisposableWrapper`1 for the requested data context type, associated withthe unitOfWork. </returns>
-		public static AmbientUnitOfWorkAwareDisposableWrapper<TContext> GetContext<TContext>(this IUnitOfWork unitOfWork)
-			where TContext : class, IDisposable
+		public static AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> GetContext<TDataContext>(this IUnitOfWork unitOfWork)
+			where TDataContext : DataContext
 		{
-			Type contextType, dataContextType;
-			TContext dataContext;
-			AmbientUnitOfWorkAwareDisposableWrapper<TContext> ambientUnitOfWorkAwareDisposableWrapper;
+			Type dataContextType;
+			TDataContext dataContext;
+			AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> ambientUnitOfWorkAwareDisposableWrapper;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			// assumption: LINQ to SQL DataContext derived AmbientUnitOfWorkAwareDisposable types are only supported
-			// will support Entity Framework *Context types later, if possible.
-			dataContextType = typeof(DataContext);
-			contextType = typeof(TContext);
-
-			if (!dataContextType.IsAssignableFrom(contextType))
-				throw new NotSupportedException(string.Format("The (data) AmbientUnitOfWorkAwareDisposable type '{0}' is not supported.", contextType.FullName));
-
-			dataContext = (TContext)(object)GetDataContext(unitOfWork, contextType);
-			ambientUnitOfWorkAwareDisposableWrapper = new AmbientUnitOfWorkAwareDisposableWrapper<TContext>(unitOfWork, dataContext);
+			dataContextType = typeof(TDataContext);
+			dataContext = (TDataContext)GetDataContext(unitOfWork, dataContextType);
+			ambientUnitOfWorkAwareDisposableWrapper = new AmbientUnitOfWorkAwareDisposableWrapper<TDataContext>(unitOfWork, dataContext);
 
 			return ambientUnitOfWorkAwareDisposableWrapper;
 		}

@@ -27,17 +27,7 @@ namespace TextMetal.Common.Data.Framework.PoPimp
 
 		#region Methods/Operators
 
-		public override TModel Discard<TModel>(TModel model)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override TModel Discard<TModel>(IUnitOfWork unitOfWork, TModel model)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override TResponseModel ExecuteImperative<TRequestModel, TResultModel, TResponseModel>(TRequestModel requestModel)
+		public override bool Discard<TModel>(IUnitOfWork unitOfWork, TModel model)
 		{
 			throw new NotImplementedException();
 		}
@@ -47,27 +37,12 @@ namespace TextMetal.Common.Data.Framework.PoPimp
 			throw new NotImplementedException();
 		}
 
-		public override TModel Fill<TModel>(TModel model)
-		{
-			throw new NotImplementedException();
-		}
-
 		public override TModel Fill<TModel>(IUnitOfWork unitOfWork, TModel model)
 		{
 			throw new NotImplementedException();
 		}
 
-		public override IEnumerable<TModel> Find<TModel>(IModelQuery query)
-		{
-			throw new NotImplementedException();
-		}
-
 		public override IEnumerable<TModel> Find<TModel>(IUnitOfWork unitOfWork, IModelQuery query)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override TModel Load<TModel>(TModel prototype)
 		{
 			throw new NotImplementedException();
 		}
@@ -122,12 +97,7 @@ namespace TextMetal.Common.Data.Framework.PoPimp
 			Trace.WriteLine(value);
 		}
 
-		public override TModel Save<TModel>(TModel model)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override TModel Save<TModel>(IUnitOfWork unitOfWork, TModel model)
+		public override bool Save<TModel>(IUnitOfWork unitOfWork, TModel model)
 		{
 			throw new NotImplementedException();
 		}

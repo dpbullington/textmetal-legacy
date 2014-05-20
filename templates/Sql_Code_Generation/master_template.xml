@@ -8,7 +8,6 @@
 	
 	<Import name="sqlserver_history_template.xml" />
 	<Import name="sqlserver_drop_all_template.xml" />
-	<Import name="sqlserver_obfuscation_views_template.xml" />
 	<Import name="sqlserver_obfuscation_triggers_template.xml" />
 	
 </Template>
