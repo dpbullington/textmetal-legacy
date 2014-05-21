@@ -2,33 +2,46 @@
 {
 	"MaskFactor": 0.50,
 	
-	"NumericSign":
+	"SignHash":
 	{
-		"HashMultiplier": 33, 
-		"HashBucketSize": 1000000,
-		"HashSeed": 5381
+		"Multiplier": 33, 
+		"Size": 1000000,
+		"Seed": 5381
 	},
 
-	"TablesViews": [
+	"Objects": [
 
 	{
-		"DatabaseName": "textmetal_ods_dev",
-		"SchemaName": "application",
-		"TableName": "Organization",
-		"ColumnName": "OrganizationName",
-		"StrategyTag": "substitution",
-		"Dictionary":
+		"ObjectType": "Table",
+		"ObfuscationStrategy": "Substitution",
+		"DictionaryType": "None",
+		
+		"ObjectSource":
+		{
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "application",
+			"ObjectName": "Organization",
+			"MemberName": "OrganizationName"
+		},
+		
+		"DictionarySource":
 		{
 			"DatabaseName": "Ox_textmetal_ods_dev",
-			"SchemaName": "DataObfuscation",
-			"TableName": "CrayonColorDictionary",
-			"KeyColumnName": "CrayonColorDictionaryKey",
-			"ValueColumnName": "CrayonColorDictionaryValue"
+			"SchemaName": "ObfuConf",
+			"ObjectName": "CrayonColorDictionary",
+			"MemberName": "CrayonColorDictionary{0}",
+
+			"KeyMemberName": "CrayonColorDictionaryKey",
+			"ValueMemberName": "CrayonColorDictionaryValue"
 		},
-		"HashMultiplier": 33,
-		"HashBucketSize": 120,
-		"HashSeed": 5381
+
+		"ValueHash":
+		{
+			"Multiplier": 33, 
+			"Size": 120,
+			"Seed": 5381
+		}
 	}
-	
+
 	]
 }

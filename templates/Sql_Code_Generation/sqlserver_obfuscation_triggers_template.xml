@@ -6,27 +6,21 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
 
-	<InvokeSourceStrategy src="${ObfuscationConfigFilePath}" alloc="true" var="obfuCfg" aqt-name="TextMetal.Framework.SourceModel.Primative.JsonSourceStrategy, TextMetal.Framework.SourceModel" />
-
-	<OutputScope name="SSIS.cs.g" append="false">
-<![CDATA[
-	// start
-]]>
-	</OutputScope>
+	<InvokeSourceStrategy src="${ObfuscationConfigFilePath}" alloc="true" var="obfuConf" aqt-name="TextMetal.Framework.SourceModel.Primative.JsonSourceStrategy, TextMetal.Framework.SourceModel" />
 
 	<OutputScope name="${ObfuscationConfigFilePath}.g" append="false">
 <![CDATA[
 {
 	"MaskFactor": 0.50,
 	
-	"NumericSign":
+	"SignHash":
 	{
-		"HashMultiplier": 33, 
-		"HashBucketSize": 1000000,
-		"HashSeed": 5381
+		"Multiplier": 33, 
+		"Size": 1000000,
+		"Seed": 5381
 	},
 	
-	"TablesViews": [
+	"Objects": [
 ]]>
 	</OutputScope>
 
@@ -55,31 +49,31 @@ USE [master]
 GO
 
 
-IF EXISTS (SELECT * FROM sysdatabases WHERE name = '${DataObfuscationProxyDatabaseName}')
+IF EXISTS (SELECT * FROM sysdatabases WHERE name = '${ObfuscationDestinationDatabaseName}')
 BEGIN
 
-	ALTER DATABASE [${DataObfuscationProxyDatabaseName}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
+	ALTER DATABASE [${ObfuscationDestinationDatabaseName}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
 	
-	DROP DATABASE [${DataObfuscationProxyDatabaseName}]
+	DROP DATABASE [${ObfuscationDestinationDatabaseName}]
 	
 END
 GO
 
 
-CREATE DATABASE [${DataObfuscationProxyDatabaseName}]
+CREATE DATABASE [${ObfuscationDestinationDatabaseName}]
 GO
 
 
-USE [${DataObfuscationProxyDatabaseName}]
+USE [${ObfuscationDestinationDatabaseName}]
 GO
 
 
-CREATE SCHEMA [DataObfuscation]
+CREATE SCHEMA [${ObfuscationSchemaName}]
 GO
 
 
 -- template for custom dictionary
-CREATE TABLE [DataObfuscation].[CrayonColorDictionary]
+CREATE TABLE [${ObfuscationSchemaName}].[CrayonColorDictionary]
 (
 	[CrayonColorDictionaryKey] [int] IDENTITY(-1,1) NOT NULL,
 	[CrayonColorDictionaryValue] [nvarchar](255) NOT NULL,
@@ -98,7 +92,7 @@ CREATE TABLE [DataObfuscation].[CrayonColorDictionary]
 GO
 
 
-CREATE TABLE [DataObfuscation].[FirstNameDictionary]
+CREATE TABLE [${ObfuscationSchemaName}].[FirstNameDictionary]
 (
 	[FirstNameDictionaryKey] [int] IDENTITY(-1,1) NOT NULL,
 	[FirstNameDictionaryValue] [nvarchar](255) NOT NULL,
@@ -117,7 +111,7 @@ CREATE TABLE [DataObfuscation].[FirstNameDictionary]
 GO
 
 
-CREATE TABLE [DataObfuscation].[LastNameDictionary]
+CREATE TABLE [${ObfuscationSchemaName}].[LastNameDictionary]
 (
 	[LastNameDictionaryKey] [int] IDENTITY(-1,1) NOT NULL,
 	[LastNameDictionaryValue] [nvarchar](255) NOT NULL,
@@ -136,7 +130,7 @@ CREATE TABLE [DataObfuscation].[LastNameDictionary]
 GO
 
 
-CREATE TABLE [DataObfuscation].[CityNameDictionary]
+CREATE TABLE [${ObfuscationSchemaName}].[CityNameDictionary]
 (
 	[CityNameDictionaryKey] [int] IDENTITY(-1,1) NOT NULL,
 	[CityNameDictionaryValue] [nvarchar](255) NOT NULL,
@@ -155,7 +149,7 @@ CREATE TABLE [DataObfuscation].[CityNameDictionary]
 GO
 
 
-CREATE TABLE [DataObfuscation].[StateNameDictionary]
+CREATE TABLE [${ObfuscationSchemaName}].[StateNameDictionary]
 (
 	[StateNameDictionaryKey] [int] IDENTITY(-1,1) NOT NULL,
 	[StateNameDictionaryValue] [nvarchar](255) NOT NULL,
@@ -174,7 +168,7 @@ CREATE TABLE [DataObfuscation].[StateNameDictionary]
 GO
 
 
-CREATE TABLE [DataObfuscation].[CountryNameDictionary]
+CREATE TABLE [${ObfuscationSchemaName}].[CountryNameDictionary]
 (
 	[CountryNameDictionaryKey] [int] IDENTITY(-1,1) NOT NULL,
 	[CountryNameDictionaryValue] [nvarchar](255) NOT NULL,
@@ -202,7 +196,7 @@ FROM
 GO
 
 
-CREATE FUNCTION [DataObfuscation].[fn_GetCipher]
+CREATE FUNCTION [${ObfuscationSchemaName}].[fn_GetCipher]
 (
 	@sharedSecret [nvarchar](MAX),
 	@value [sql_variant]
@@ -212,7 +206,7 @@ AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.
 GO
 
 
-CREATE FUNCTION [DataObfuscation].[fn_GetDefault]
+CREATE FUNCTION [${ObfuscationSchemaName}].[fn_GetDefault]
 (
 	@isNullable [bit],
 	@sqlType [nvarchar](64)
@@ -222,7 +216,7 @@ AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.
 GO
 
 
-CREATE FUNCTION [DataObfuscation].[fn_GetHash]
+CREATE FUNCTION [${ObfuscationSchemaName}].[fn_GetHash]
 (
 	@hashMultiplier [bigint],
 	@hashBucketSize [bigint],
@@ -234,7 +228,7 @@ AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.
 GO
 
 
-CREATE FUNCTION [DataObfuscation].[fn_GetMask]
+CREATE FUNCTION [${ObfuscationSchemaName}].[fn_GetMask]
 (
 	@maskFactor as [float],
 	@value [sql_variant]
@@ -244,7 +238,7 @@ AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.
 GO
 
 
-CREATE FUNCTION [DataObfuscation].[fn_GetShuffle]
+CREATE FUNCTION [${ObfuscationSchemaName}].[fn_GetShuffle]
 (
 	@randomSeed [bigint],
 	@value [sql_variant]
@@ -254,7 +248,7 @@ AS EXTERNAL NAME [TextMetal.Common.SqlServerClr].[TextMetal.Common.SqlServerClr.
 GO
 
 
-CREATE FUNCTION [DataObfuscation].[fn_GetVariance]
+CREATE FUNCTION [${ObfuscationSchemaName}].[fn_GetVariance]
 (
 	@varianceFactor as [float],
 	@value [sql_variant]
@@ -321,8 +315,12 @@ CREATE TABLE [${SchemaName}].[${TableName}]
 					<ForEach.Body>
 						<![CDATA[	[${ColumnName}] [${ColumnSqlType}]${rb(`
 	x = ""
-	if ["binary", "char", "float", "nchar", "nvarchar", "varbinary", "varchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+	if ["nvarchar", "varbinary", "varchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
 		x += "(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
+	elsif ["binary", "char", "nchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+		x += "(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
+	elsif ["float"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+		x += "(" + textMetal.EvaluateToken.invoke("ColumnPrecision").to_s() + ")"
 	elsif ["decimal", "numeric"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
 		x += "(" + textMetal.EvaluateToken.invoke("ColumnPrecision").to_s() + ", " + textMetal.EvaluateToken.invoke("ColumnScale").to_s() + ")"
 	else
@@ -527,11 +525,10 @@ AS
 			<Ruby src="Script">
 				<Script>
 <![CDATA[
-	temp1 = ["text", "ntext", "image", "xml", "timestamp", "rowversion", "sql_variant", "geography", "hierarchyid", "geometry", "datetimeoffset"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"));
-	temp2 = ["varchar", "nvarchar", "varbinary"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
-	temp3 = textMetal.EvaluateToken.invoke("ColumnSize") <= 0
-	temp4 = !(temp1 || (temp2 && temp3))
-	
+	#temp1 = ["text", "ntext", "image", "xml", "timestamp", "rowversion", "sql_variant", "geography", "hierarchyid", "geometry", "datetimeoffset"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"));
+	#temp2 = ["varchar", "nvarchar", "varbinary"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+	#temp3 = textMetal.EvaluateToken.invoke("ColumnSize") <= 0
+	#temp4 = !(temp1 || (temp2 && temp3))
 	#temp4
 	
 	true
@@ -542,71 +539,81 @@ AS
 		<If.True>
 <![CDATA[			CAST( ${rb(`
 	#textMetal.DebuggerBreakpoint.invoke()
-	obfuCfg = textMetal.EvaluateToken.invoke("obfuCfg")
-	tblCfg = obfuCfg["TablesViews".to_clr_string()].select{|obj|
-		obj["DatabaseName".to_clr_string()] == textMetal.EvaluateToken.invoke("DefaultDatabaseName") &&
-		obj["SchemaName".to_clr_string()] == textMetal.EvaluateToken.invoke("SchemaName") &&
-		obj["TableName".to_clr_string()] == textMetal.EvaluateToken.invoke("TableName") &&
-		obj["ColumnName".to_clr_string()] == textMetal.EvaluateToken.invoke("ColumnName")
+
+	obfuConf = textMetal.EvaluateToken.invoke("obfuConf")
+
+	tblVwObj = obfuConf["Objects".to_clr_string()].select{|obj|
+		(obj["ObjectType".to_clr_string()] == "Table" || obj["ObjectType".to_clr_string()] == "View") &&
+		obj["ObjectSource".to_clr_string()]["DatabaseName".to_clr_string()] == textMetal.EvaluateToken.invoke("DefaultDatabaseName") &&
+		obj["ObjectSource".to_clr_string()]["SchemaName".to_clr_string()] == textMetal.EvaluateToken.invoke("SchemaName") &&
+		obj["ObjectSource".to_clr_string()]["ObjectName".to_clr_string()] == textMetal.EvaluateToken.invoke("TableName") &&
+		obj["ObjectSource".to_clr_string()]["MemberName".to_clr_string()] == textMetal.EvaluateToken.invoke("ColumnName")
 		}.first()
-		
-	numSgn = obfuCfg["NumericSign".to_clr_string()]
+
+	maskFactor = obfuConf["MaskFactor".to_clr_string()]
+	signHash = obfuConf["SignHash".to_clr_string()]
 				
-	if tblCfg.nil?
+	if tblVwObj.nil?
 		"/* EXCLUDE_NO_CONFIG */ i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]"
 	else
-		strategy = tblCfg["StrategyTag".to_clr_string()]
-		
-		case strategy.to_s()			
-			when "substitution"
-				dctCfg = tblCfg["Dictionary".to_clr_string()]
-				
+		obfuStrat = tblVwObj["ObfuscationStrategy".to_clr_string()]
+		dictType = tblVwObj["DictionaryType".to_clr_string()]
+
+		dictSrc = tblVwObj["DictionarySource".to_clr_string()]
+		valHash = tblVwObj["ValueHash".to_clr_string()]
+
+		case obfuStrat.to_s()
+			when "Substitution"
 				"/* SUBSTITUTION */ (SELECT TOP 1 z.[" +
-					dctCfg["ValueColumnName".to_clr_string()].to_s() + "] FROM [" +
-					dctCfg["DatabaseName".to_clr_string()].to_s() + "].[" +
-					dctCfg["SchemaName".to_clr_string()].to_s() + "].[" +
-					dctCfg["TableName".to_clr_string()].to_s() + "] z WHERE z.[" +
-					dctCfg["KeyColumnName".to_clr_string()].to_s() + "] = ([DataObfuscation].[fn_GetHash](" +
-					tblCfg["HashMultiplier".to_clr_string()].to_s() + ", " +
-					tblCfg["HashBucketSize".to_clr_string()].to_s() + ", " +
-					tblCfg["HashSeed".to_clr_string()].to_s() + ", i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "])))"
-			when "shuffling"
-				"/* SHUFFLING */ ([DataObfuscation].[fn_GetShuffle]([DataObfuscation].[fn_GetHash](" +
-					tblCfg["HashMultiplier".to_clr_string()].to_s() + ", " +
-					tblCfg["HashBucketSize".to_clr_string()].to_s() + ", " +
-					tblCfg["HashSeed".to_clr_string()].to_s() + ", i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]), i.[" +
+					dictSrc["ValueMemberName".to_clr_string()].to_s() + "] FROM [" +
+					dictSrc["DatabaseName".to_clr_string()].to_s() + "].[" +
+					dictSrc["SchemaName".to_clr_string()].to_s() + "].[" +
+					dictSrc["ObjectName".to_clr_string()].to_s() + "] z WHERE z.[" +
+					dictSrc["KeyMemberName".to_clr_string()].to_s() + "] = ([" + textMetal.EvaluateToken.invoke("ObfuscationSchemaName") + "].[fn_GetHash](" +
+					valHash["Multiplier".to_clr_string()].to_s() + ", " +
+					valHash["Size".to_clr_string()].to_s() + ", " +
+					valHash["Seed".to_clr_string()].to_s() + ", i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "])))"
+			when "Shuffling"
+				"/* SHUFFLING */ ([" + textMetal.EvaluateToken.invoke("ObfuscationSchemaName") + "].[fn_GetShuffle]([" + textMetal.EvaluateToken.invoke("ObfuscationSchemaName") + "].[fn_GetHash](" +
+					valHash["Multiplier".to_clr_string()].to_s() + ", " +
+					valHash["Size".to_clr_string()].to_s() + ", " +
+					valHash["Seed".to_clr_string()].to_s() + ", i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]), i.[" +
 					textMetal.EvaluateToken.invoke("ColumnName") + "]))"
-			when "variance"
-				"/* VARIANCE */ ([DataObfuscation].[fn_GetVariance]((([DataObfuscation].[fn_GetHash](" +
-					tblCfg["HashMultiplier".to_clr_string()].to_s() + ", " +
-					tblCfg["HashBucketSize".to_clr_string()].to_s() + ", " +
-					tblCfg["HashSeed".to_clr_string()].to_s() + ", CAST(i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] AS [nvarchar](MAX))) * CASE WHEN ([DataObfuscation].[fn_GetHash](" +
-					numSgn["HashMultiplier".to_clr_string()].to_s() + ", " +
-					numSgn["HashBucketSize".to_clr_string()].to_s() + ", " +
-					numSgn["HashSeed".to_clr_string()].to_s() + ", CAST(i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] AS [nvarchar](MAX))) % 2) = 0 THEN 1 ELSE -1 END) / 100.0), i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]))"
-			when "ciphering"
+			when "Variance"
+				"/* VARIANCE */ ([" + textMetal.EvaluateToken.invoke("ObfuscationSchemaName") + "].[fn_GetVariance]((([" + textMetal.EvaluateToken.invoke("ObfuscationSchemaName") + "].[fn_GetHash](" +
+					valHash["Multiplier".to_clr_string()].to_s() + ", " +
+					valHash["Size".to_clr_string()].to_s() + ", " +
+					valHash["Seed".to_clr_string()].to_s() + ", CAST(i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] AS [nvarchar](MAX))) * CASE WHEN ([" + textMetal.EvaluateToken.invoke("ObfuscationSchemaName") + "].[fn_GetHash](" +
+					signHash["Multiplier".to_clr_string()].to_s() + ", " +
+					signHash["Size".to_clr_string()].to_s() + ", " +
+					signHash["Seed".to_clr_string()].to_s() + ", CAST(i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] AS [nvarchar](MAX))) % 2) = 0 THEN 1 ELSE -1 END) / 100.0), i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]))"
+			when "Ciphering"
 				"/* CIPHERING */ (CASE WHEN i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] IS NULL OR LEN(i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]) = 0 THEN i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] ELSE " +
-					"[DataObfuscation].[fn_GetCipher]([DataObfuscation].[fn_GetHash](" +
-					tblCfg["HashMultiplier".to_clr_string()].to_s() + ", " +
-					tblCfg["HashBucketSize".to_clr_string()].to_s() + ", " +
-					tblCfg["HashSeed".to_clr_string()].to_s() + ", i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]), i.[" +
+					"[" + textMetal.EvaluateToken.invoke("ObfuscationSchemaName") + "].[fn_GetCipher]([" + textMetal.EvaluateToken.invoke("ObfuscationSchemaName") + "].[fn_GetHash](" +
+					valHash["Multiplier".to_clr_string()].to_s() + ", " +
+					valHash["Size".to_clr_string()].to_s() + ", " +
+					valHash["Seed".to_clr_string()].to_s() + ", i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]), i.[" +
 					textMetal.EvaluateToken.invoke("ColumnName") + "]) END)"
-			when "defaulting"
-				"/* DEFAULTING */ ([DataObfuscation].[fn_GetDefault](" + (textMetal.EvaluateToken.invoke("ColumnNullable") ? "1" : "0") + ", '" + textMetal.EvaluateToken.invoke("ColumnSqlType") + "'))"
-			when "masking"
-				maskFactor = obfuCfg["MaskFactor".to_clr_string()]
-				
+			when "Defaulting"
+				"/* DEFAULTING */ ([" + textMetal.EvaluateToken.invoke("ObfuscationSchemaName") + "].[fn_GetDefault](" + (textMetal.EvaluateToken.invoke("ColumnNullable") ? "1" : "0") + ", '" + textMetal.EvaluateToken.invoke("ColumnSqlType") + "'))"
+			when "Masking"
 				"/* MASKING */ (CASE WHEN i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] IS NULL OR LEN(i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]) = 0 THEN i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] ELSE " +
-					"[DataObfuscation].[fn_GetMask](" + maskFactor.to_s() + ", i.[" +
+					"[" + textMetal.EvaluateToken.invoke("ObfuscationSchemaName") + "].[fn_GetMask](" + maskFactor.to_s() + ", i.[" +
 					textMetal.EvaluateToken.invoke("ColumnName") + "]) END)"
-			else #none
+			when "None"
 				"/* NONE */ (i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "])"
+			else #default
+				"/* EXCLUDE_UNKNOWN */ (i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "])"
 		end
 	end
 	`)} AS ${rb(`
-	"[" + textMetal.EvaluateToken.invoke("ColumnSqlType") + "]" +	
-	if ["binary", "char", "float", "nchar", "nvarchar", "varbinary", "varchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+	"[" + textMetal.EvaluateToken.invoke("ColumnSqlType") + "]" +
+	if ["nvarchar", "varbinary", "varchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
 		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
+	elsif ["binary", "char", "nchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
+	elsif ["float"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+		"(" + textMetal.EvaluateToken.invoke("ColumnPrecision").to_s() + ")"
 	elsif ["decimal", "numeric"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
 		"(" + textMetal.EvaluateToken.invoke("ColumnPrecision").to_s() + ", " + textMetal.EvaluateToken.invoke("ColumnScale").to_s() + ")"
 	else
@@ -617,8 +624,12 @@ AS
 		
 		<If.False>
 <![CDATA[	CAST( /* EXCLUDE_BY_TYPE */ i.[${ColumnName}] AS [${ColumnSqlType}]${rb(`
-	if ["binary", "char", "float", "nchar", "nvarchar", "varbinary", "varchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+	if ["nvarchar", "varbinary", "varchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
 		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
+	elsif ["binary", "char", "nchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
+	elsif ["float"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
+		"(" + textMetal.EvaluateToken.invoke("ColumnPrecision").to_s() + ")"
 	elsif ["decimal", "numeric"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
 		"(" + textMetal.EvaluateToken.invoke("ColumnPrecision").to_s() + ", " + textMetal.EvaluateToken.invoke("ColumnScale").to_s() + ")"
 	else
@@ -652,14 +663,6 @@ AS
 GO
 ]]>
 
-	<OutputScope name="SSIS.cs.g" append="true">
-<![CDATA[	config.Add(new Tuple<string, string>("${DefaultDatabaseName}", "[${SchemaName}].[${TableName}]"));
-]]>
-	</OutputScope>
-
-
-
-
 			<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 				<ForEach.Sort>
 					<Ascending>
@@ -673,22 +676,35 @@ GO
 <OutputScope name="${ObfuscationConfigFilePath}.g" append="true">
 <![CDATA[
 	{
-		"DatabaseName": "${DefaultDatabaseName}",
-		"SchemaName": "${SchemaName}",
-		"TableName": "${TableName}",
-		"ColumnName": "${ColumnName}",
-		"StrategyTag": "none",
-		"Dictionary":
+		"ObjectType": "Table",
+		"ObfuscationStrategy": "None",
+		"DictionaryType": "External",
+		
+		"ObjectSource":
 		{
-			"DatabaseName": "${DataObfuscationProxyDatabaseName}",
-			"SchemaName": "DataObfuscation",
-			"TableName": "CrayonColorDictionary",
-			"KeyColumnName": "CrayonColorDictionaryKey",
-			"ValueColumnName": "CrayonColorDictionaryValue"
+			"DatabaseName": "${DefaultDatabaseName}",
+			"SchemaName": "${SchemaName}",
+			"ObjectName": "${TableName}",
+			"MemberName": "${ColumnName}"
 		},
-		"HashMultiplier": 33,
-		"HashBucketSize": 120,
-		"HashSeed": 5381
+		
+		"DictionarySource":
+		{
+			"DatabaseName": "${ObfuscationDestinationDatabaseName}",
+			"SchemaName": "${ObfuscationSchemaName}",
+			"ObjectName": "CrayonColorDictionary",
+			"MemberName": "CrayonColorDictionary{0}",
+
+			"KeyMemberName": "CrayonColorDictionaryKey",
+			"ValueMemberName": "CrayonColorDictionaryValue"
+		},
+
+		"ValueHash":
+		{
+			"Multiplier": 33, 
+			"Size": 120,
+			"Seed": 5381
+		}
 	},
 ]]>
 </OutputScope>
@@ -712,12 +728,6 @@ GO
 	<OutputScope name="${ObfuscationConfigFilePath}.g" append="true">
 <![CDATA[	]
 }
-]]>
-	</OutputScope>
-
-	<OutputScope name="SSIS.cs.g" append="true">
-<![CDATA[
-	// end
 ]]>
 	</OutputScope>
 </Template>

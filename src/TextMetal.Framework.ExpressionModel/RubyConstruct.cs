@@ -176,7 +176,13 @@ namespace TextMetal.Framework.ExpressionModel
 
 			scriptFoo = new Dictionary<string, object>();
 
-			func = (token) => dynamicWildcardTokenReplacementStrategy.Evaluate(token, null);
+			func = (token) =>
+					{
+						object value;
+						value = dynamicWildcardTokenReplacementStrategy.Evaluate(token, null);
+						//Console.WriteLine("[{0}]={1}", token, value);
+						return value;
+					};
 			scriptFoo.Add("EvaluateToken", func);
 			//TODO: templatingContext.Tokenizer.ExpandTokens(tokenizedValue, dynamicWildcardTokenReplacementStrategy);
 
