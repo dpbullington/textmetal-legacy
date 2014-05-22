@@ -541,35 +541,82 @@ AS
 	#textMetal.DebuggerBreakpoint.invoke()
 
 	obfuConf = textMetal.EvaluateToken.invoke("obfuConf")
-
-	tblVwObj = obfuConf["Objects".to_clr_string()].select{|obj|
-		(obj["ObjectType".to_clr_string()] == "Table" || obj["ObjectType".to_clr_string()] == "View") &&
-		obj["ObjectSource".to_clr_string()]["DatabaseName".to_clr_string()] == textMetal.EvaluateToken.invoke("DefaultDatabaseName") &&
-		obj["ObjectSource".to_clr_string()]["SchemaName".to_clr_string()] == textMetal.EvaluateToken.invoke("SchemaName") &&
-		obj["ObjectSource".to_clr_string()]["ObjectName".to_clr_string()] == textMetal.EvaluateToken.invoke("TableName") &&
-		obj["ObjectSource".to_clr_string()]["MemberName".to_clr_string()] == textMetal.EvaluateToken.invoke("ColumnName")
-		}.first()
+	raise "obfuConf==null" if obfuConf.nil?
 
 	maskFactor = obfuConf["MaskFactor".to_clr_string()]
+	raise "maskFactor==null" if maskFactor.nil?
+
 	signHash = obfuConf["SignHash".to_clr_string()]
-				
-	if tblVwObj.nil?
+	raise "signHash==null" if signHash.nil?
+		raise "signHash.Multiplier==null" if signHash["Multiplier".to_clr_string()].nil?
+		raise "signHash.Size==null" if signHash["Size".to_clr_string()].nil?
+		raise "signHash.Seed==null" if signHash["Seed".to_clr_string()].nil?
+
+
+	tblVwObj = obfuConf["Objects".to_clr_string()].select{|obj|
+		(obj["Source".to_clr_string()]["ObjectType".to_clr_string()] == "Table" || obj["Source".to_clr_string()]["ObjectType".to_clr_string()] == "View") &&
+		obj["Source".to_clr_string()]["DatabaseName".to_clr_string()] == textMetal.EvaluateToken.invoke("DefaultDatabaseName") &&
+		obj["Source".to_clr_string()]["SchemaName".to_clr_string()] == textMetal.EvaluateToken.invoke("SchemaName") &&
+		obj["Source".to_clr_string()]["ObjectName".to_clr_string()] == textMetal.EvaluateToken.invoke("TableName")
+		}.first()
+
+	if !tblVwObj.nil?
+		colObj = tblVwObj["Members".to_clr_string()].select{|obj|
+			(obj["MemberType".to_clr_string()] == "Column") &&
+			obj["MemberName".to_clr_string()] == textMetal.EvaluateToken.invoke("ColumnName")
+			}.first()
+	end
+
+
+	if tblVwObj.nil? || colObj.nil?
 		"/* EXCLUDE_NO_CONFIG */ i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]"
 	else
-		obfuStrat = tblVwObj["ObfuscationStrategy".to_clr_string()]
-		dictType = tblVwObj["DictionaryType".to_clr_string()]
+		obfuStrat = colObj["ObfuscationStrategy".to_clr_string()]
+		raise "obfuStrat==null" if obfuStrat.nil?
 
-		dictSrc = tblVwObj["DictionarySource".to_clr_string()]
-		valHash = tblVwObj["ValueHash".to_clr_string()]
+		dictRef = colObj["DictionaryRef".to_clr_string()]
+		raise "dictRef==null" if dictRef.nil?
+
+		valHash = colObj["ValueHash".to_clr_string()]
+		raise "valHash==null" if valHash.nil?
+			raise "valHash.Multiplier==null" if valHash["Multiplier".to_clr_string()].nil?
+			raise "valHash.Size==null" if valHash["Size".to_clr_string()].nil?
+			raise "valHash.Seed==null" if valHash["Seed".to_clr_string()].nil?
+
+		dictObj = obfuConf["Dictionaries".to_clr_string()].select{|obj|			
+			obj["DictionaryType".to_clr_string()] == "External" &&
+			obj["DictionaryId".to_clr_string()] == dictRef &&
+
+			!obj["External".to_clr_string()].nil? &&
+			(obj["External".to_clr_string()]["KeyMemberType".to_clr_string()] == "Column" && obj["External".to_clr_string()]["ValueMemberType".to_clr_string()] == "Column") &&
+			!obj["External".to_clr_string()]["Source".to_clr_string()].nil? &&
+			(obj["External".to_clr_string()]["Source".to_clr_string()]["ObjectType".to_clr_string()] == "Table" || obj["External".to_clr_string()]["Source".to_clr_string()]["ObjectType".to_clr_string()] == "View")
+			}.first()
+		raise "dictObj==null" if dictObj.nil?
+
+		dictExt = dictObj["External".to_clr_string()]
+		raise "dictExt==null" if dictExt.nil?
+			raise "dictExt.KeyMemberType==null" if dictExt["KeyMemberType".to_clr_string()].nil?
+			raise "dictExt.KeyMemberName==null" if dictExt["KeyMemberName".to_clr_string()].nil?
+			raise "dictExt.ValueMemberType==null" if dictExt["ValueMemberType".to_clr_string()].nil?
+			raise "dictExt.ValueMemberName==null" if dictExt["ValueMemberName".to_clr_string()].nil?
+
+		dictExtSrc = dictExt["Source".to_clr_string()]
+		raise "dictExtSrc==null" if dictExtSrc.nil?
+			raise "dictExtSrc.ObjectType==null" if dictExtSrc["ObjectType".to_clr_string()].nil?
+			raise "dictExtSrc.DatabaseName==null" if dictExtSrc["DatabaseName".to_clr_string()].nil?
+			raise "dictExtSrc.SchemaName==null" if dictExtSrc["SchemaName".to_clr_string()].nil?
+			raise "dictExtSrc.ObjectName==null" if dictExtSrc["ObjectName".to_clr_string()].nil?
+
 
 		case obfuStrat.to_s()
 			when "Substitution"
 				"/* SUBSTITUTION */ (SELECT TOP 1 z.[" +
-					dictSrc["ValueMemberName".to_clr_string()].to_s() + "] FROM [" +
-					dictSrc["DatabaseName".to_clr_string()].to_s() + "].[" +
-					dictSrc["SchemaName".to_clr_string()].to_s() + "].[" +
-					dictSrc["ObjectName".to_clr_string()].to_s() + "] z WHERE z.[" +
-					dictSrc["KeyMemberName".to_clr_string()].to_s() + "] = ([" + textMetal.EvaluateToken.invoke("ObfuscationSchemaName") + "].[fn_GetHash](" +
+					dictExt["ValueMemberName".to_clr_string()].to_s() + "] FROM [" +
+					dictExtSrc["DatabaseName".to_clr_string()].to_s() + "].[" +
+					dictExtSrc["SchemaName".to_clr_string()].to_s() + "].[" +
+					dictExtSrc["ObjectName".to_clr_string()].to_s() + "] z WHERE z.[" +
+					dictExt["KeyMemberName".to_clr_string()].to_s() + "] = ([" + textMetal.EvaluateToken.invoke("ObfuscationSchemaName") + "].[fn_GetHash](" +
 					valHash["Multiplier".to_clr_string()].to_s() + ", " +
 					valHash["Size".to_clr_string()].to_s() + ", " +
 					valHash["Seed".to_clr_string()].to_s() + ", i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "])))"

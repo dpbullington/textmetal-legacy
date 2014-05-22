@@ -9,38 +9,66 @@
 		"Seed": 5381
 	},
 
+	"Dictionaries": [
+
+	{
+		"DictionaryId": "d_crayon_colors",
+		"DictionaryType": "External",
+
+		"External":
+		{
+			"Source":
+			{
+				"ObjectType": "Table",
+				"DatabaseName": "Ox_textmetal_ods_dev",
+				"SchemaName": "ObfuConf",
+				"ObjectName": "CrayonColorDictionary"
+			},
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "CrayonColorDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "CrayonColorDictionaryKey"
+		},
+
+		"Internal":
+		{
+			"AssemblyName": "",
+			"TypeName": ""
+		}
+	}
+
+	],
+
 	"Objects": [
 
 	{
-		"ObjectType": "Table",
-		"ObfuscationStrategy": "Substitution",
-		"DictionaryType": "None",
-		
-		"ObjectSource":
+		"Source":
 		{
+			"ObjectType": "Table",
 			"DatabaseName": "textmetal_ods_dev",
 			"SchemaName": "application",
-			"ObjectName": "Organization",
-			"MemberName": "OrganizationName"
-		},
-		
-		"DictionarySource":
-		{
-			"DatabaseName": "Ox_textmetal_ods_dev",
-			"SchemaName": "ObfuConf",
-			"ObjectName": "CrayonColorDictionary",
-			"MemberName": "CrayonColorDictionary{0}",
-
-			"KeyMemberName": "CrayonColorDictionaryKey",
-			"ValueMemberName": "CrayonColorDictionaryValue"
+			"ObjectName": "Organization"
 		},
 
-		"ValueHash":
+		"Members": [
+
 		{
-			"Multiplier": 33, 
-			"Size": 120,
-			"Seed": 5381
+			"MemberType": "Column",
+			"MemberName": "OrganizationName",
+
+			"ObfuscationStrategy": "Substitution",
+			"DictionaryRef": "d_crayon_colors",
+
+			"ValueHash":
+			{
+				"Multiplier": 33, 
+				"Size": 120,
+				"Seed": 5381
+			}
 		}
+
+		]
 	}
 
 	]
