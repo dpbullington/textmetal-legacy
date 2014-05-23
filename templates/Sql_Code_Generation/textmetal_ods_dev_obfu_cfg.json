@@ -1,6 +1,8 @@
-
+	
 {
 	"MaskFactor": 0.50,
+
+	"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
 	
 	"SignHash":
 	{
@@ -10,6 +12,33 @@
 	},
 
 	"Dictionaries": [
+
+	{
+		"DictionaryId": "d_null",
+		"DictionaryType": "External",
+
+		"External":
+		{
+			"Source":
+			{
+				"ObjectType": "View",
+				"DatabaseName": "*",
+				"SchemaName": "*",
+				"ObjectName": "*"
+			},
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "*",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "*"
+		},
+
+		"Internal":
+		{
+			"AssemblyName": "",
+			"TypeName": ""
+		}
+	},
 
 	{
 		"DictionaryId": "d_crayon_colors",
@@ -29,6 +58,141 @@
 			"KeyMemberName": "CrayonColorDictionaryKey",
 			"ValueMemberType": "Column",
 			"ValueMemberName": "CrayonColorDictionaryKey"
+		},
+
+		"Internal":
+		{
+			"AssemblyName": "",
+			"TypeName": ""
+		}
+	},
+
+	{
+		"DictionaryId": "d_first_names",
+		"DictionaryType": "External",
+
+		"External":
+		{
+			"Source":
+			{
+				"ObjectType": "Table",
+				"DatabaseName": "Ox_textmetal_ods_dev",
+				"SchemaName": "ObfuConf",
+				"ObjectName": "FirstNameDictionary"
+			},
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "FirstNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "FirstNameDictionaryKey"
+		},
+
+		"Internal":
+		{
+			"AssemblyName": "",
+			"TypeName": ""
+		}
+	},
+
+	{
+		"DictionaryId": "d_last_names",
+		"DictionaryType": "External",
+
+		"External":
+		{
+			"Source":
+			{
+				"ObjectType": "Table",
+				"DatabaseName": "Ox_textmetal_ods_dev",
+				"SchemaName": "ObfuConf",
+				"ObjectName": "LastNameDictionary"
+			},
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "LastNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "LastNameDictionaryKey"
+		},
+
+		"Internal":
+		{
+			"AssemblyName": "",
+			"TypeName": ""
+		}
+	},
+
+	{
+		"DictionaryId": "d_city_name",
+		"DictionaryType": "External",
+
+		"External":
+		{
+			"Source":
+			{
+				"ObjectType": "Table",
+				"DatabaseName": "Ox_textmetal_ods_dev",
+				"SchemaName": "ObfuConf",
+				"ObjectName": "CityNameDictionary"
+			},
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "CityNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "CityNameDictionaryKey"
+		},
+
+		"Internal":
+		{
+			"AssemblyName": "",
+			"TypeName": ""
+		}
+	},
+
+	{
+		"DictionaryId": "d_state_names",
+		"DictionaryType": "External",
+
+		"External":
+		{
+			"Source":
+			{
+				"ObjectType": "Table",
+				"DatabaseName": "Ox_textmetal_ods_dev",
+				"SchemaName": "ObfuConf",
+				"ObjectName": "StateNameDictionary"
+			},
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "StateNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "StateNameDictionaryKey"
+		},
+
+		"Internal":
+		{
+			"AssemblyName": "",
+			"TypeName": ""
+		}
+	},
+
+	{
+		"DictionaryId": "d_country_names",
+		"DictionaryType": "External",
+
+		"External":
+		{
+			"Source":
+			{
+				"ObjectType": "Table",
+				"DatabaseName": "Ox_textmetal_ods_dev",
+				"SchemaName": "ObfuConf",
+				"ObjectName": "CountryNameDictionary"
+			},
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "CountryNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "CountryNameDictionaryKey"
 		},
 
 		"Internal":
@@ -65,6 +229,35 @@
 				"Multiplier": 33, 
 				"Size": 120,
 				"Seed": 5381
+			}
+		}
+
+		]
+	},
+
+	{
+		"Source":
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "application",
+			"ObjectName": "Member"
+		},
+
+		"Members": [
+
+		{
+			"MemberType": "Column",
+			"MemberName": "MemberName",
+
+			"ObfuscationStrategy": "Ciphering",
+			"DictionaryRef": "d_null",
+
+			"ValueHash":
+			{
+				"Multiplier": 0, 
+				"Size": 0,
+				"Seed": 0
 			}
 		}
 

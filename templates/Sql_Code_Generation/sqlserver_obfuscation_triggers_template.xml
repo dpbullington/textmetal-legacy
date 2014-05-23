@@ -12,6 +12,8 @@
 <![CDATA[
 {
 	"MaskFactor": 0.50,
+
+	"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
 	
 	"SignHash":
 	{
@@ -19,7 +21,200 @@
 		"Size": 1000000,
 		"Seed": 5381
 	},
-	
+
+	"Dictionaries": [
+
+	{
+		"DictionaryId": "d_null",
+		"DictionaryType": "External",
+
+		"External":
+		{
+			"Source":
+			{
+				"ObjectType": "*",
+				"DatabaseName": "*",
+				"SchemaName": "*",
+				"ObjectName": "*"
+			},
+
+			"KeyMemberType": "*",
+			"KeyMemberName": "*",
+			"ValueMemberType": "*",
+			"ValueMemberName": "*"
+		},
+
+		"Internal":
+		{
+			"AssemblyName": "",
+			"TypeName": ""
+		}
+	},
+
+	{
+		"DictionaryId": "d_crayon_colors",
+		"DictionaryType": "External",
+
+		"External":
+		{
+			"Source":
+			{
+				"ObjectType": "Table",
+				"DatabaseName": "${ObfuscationDestinationDatabaseName}",
+				"SchemaName": "${ObfuscationSchemaName}",
+				"ObjectName": "CrayonColorDictionary"
+			},
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "CrayonColorDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "CrayonColorDictionaryKey"
+		},
+
+		"Internal":
+		{
+			"AssemblyName": "",
+			"TypeName": ""
+		}
+	},
+
+	{
+		"DictionaryId": "d_first_names",
+		"DictionaryType": "External",
+
+		"External":
+		{
+			"Source":
+			{
+				"ObjectType": "Table",
+				"DatabaseName": "${ObfuscationDestinationDatabaseName}",
+				"SchemaName": "${ObfuscationSchemaName}",
+				"ObjectName": "FirstNameDictionary"
+			},
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "FirstNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "FirstNameDictionaryKey"
+		},
+
+		"Internal":
+		{
+			"AssemblyName": "",
+			"TypeName": ""
+		}
+	},
+
+	{
+		"DictionaryId": "d_last_names",
+		"DictionaryType": "External",
+
+		"External":
+		{
+			"Source":
+			{
+				"ObjectType": "Table",
+				"DatabaseName": "${ObfuscationDestinationDatabaseName}",
+				"SchemaName": "${ObfuscationSchemaName}",
+				"ObjectName": "LastNameDictionary"
+			},
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "LastNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "LastNameDictionaryKey"
+		},
+
+		"Internal":
+		{
+			"AssemblyName": "",
+			"TypeName": ""
+		}
+	},
+
+	{
+		"DictionaryId": "d_city_name",
+		"DictionaryType": "External",
+
+		"External":
+		{
+			"Source":
+			{
+				"ObjectType": "Table",
+				"DatabaseName": "${ObfuscationDestinationDatabaseName}",
+				"SchemaName": "${ObfuscationSchemaName}",
+				"ObjectName": "CityNameDictionary"
+			},
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "CityNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "CityNameDictionaryKey"
+		},
+
+		"Internal":
+		{
+			"AssemblyName": "",
+			"TypeName": ""
+		}
+	},
+
+	{
+		"DictionaryId": "d_state_names",
+		"DictionaryType": "External",
+
+		"External":
+		{
+			"Source":
+			{
+				"ObjectType": "Table",
+				"DatabaseName": "${ObfuscationDestinationDatabaseName}",
+				"SchemaName": "${ObfuscationSchemaName}",
+				"ObjectName": "StateNameDictionary"
+			},
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "StateNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "StateNameDictionaryKey"
+		},
+
+		"Internal":
+		{
+			"AssemblyName": "",
+			"TypeName": ""
+		}
+	},
+
+	{
+		"DictionaryId": "d_country_names",
+		"DictionaryType": "External",
+
+		"External":
+		{
+			"Source":
+			{
+				"ObjectType": "Table",
+				"DatabaseName": "${ObfuscationDestinationDatabaseName}",
+				"SchemaName": "${ObfuscationSchemaName}",
+				"ObjectName": "CountryNameDictionary"
+			},
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "CountryNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "CountryNameDictionaryKey"
+		},
+
+		"Internal":
+		{
+			"AssemblyName": "",
+			"TypeName": ""
+		}
+	}
+
+	],
+
 	"Objects": [
 ]]>
 	</OutputScope>
@@ -34,14 +229,14 @@ GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	STRATEGY		DATA TYPE	DESCRIPTION
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
---	none			any			Returns un-obfuscated, original value.
---	substitution	string		Returns an alternate value using a hashed lookup into a dictionary.
---	shuffling		string		Returns an alternate value using a hashed shuffle of alphanumeric characters (while preserving other characters).
---	variance		numeric		Returns an alternate value within +/- (x%) of the original value.
+--	None			any			Returns un-obfuscated, original value.
+--	Substitution	string		Returns an alternate value using a hashed lookup into a dictionary.
+--	Shuffling		string		Returns an alternate value using a hashed shuffle of alphanumeric characters (while preserving other characters).
+--	Variance		numeric		Returns an alternate value within +/- (x%) of the original value.
 --					temporal	Returns an alternate value within +/- (x%:365.25d) of the original value.
---	ciphering		string		Returns an alternate value that is a binary encryption of the original value.
---	defaulting		any			Returns an alternate value that is always null if NULL or the default value if NOT NULL.
---	masking			string		Returns an alternate value that is a +/- (%) mask of the original value.
+--	Ciphering		string		Returns an alternate value that is a binary encryption of the original value.
+--	Defaulting		any			Returns an alternate value that is always null if NULL or the default value if NOT NULL.
+--	Masking			string		Returns an alternate value that is a +/- (%) mask of the original value.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -546,6 +741,9 @@ AS
 	maskFactor = obfuConf["MaskFactor".to_clr_string()]
 	raise "maskFactor==null" if maskFactor.nil?
 
+	sharedSecret = obfuConf["SharedSecret".to_clr_string()]
+	raise "sharedSecret==null" if sharedSecret.nil?
+
 	signHash = obfuConf["SignHash".to_clr_string()]
 	raise "signHash==null" if signHash.nil?
 		raise "signHash.Multiplier==null" if signHash["Multiplier".to_clr_string()].nil?
@@ -583,7 +781,7 @@ AS
 			raise "valHash.Size==null" if valHash["Size".to_clr_string()].nil?
 			raise "valHash.Seed==null" if valHash["Seed".to_clr_string()].nil?
 
-		dictObj = obfuConf["Dictionaries".to_clr_string()].select{|obj|			
+		dictObj = obfuConf["Dictionaries".to_clr_string()].select{|obj|
 			obj["DictionaryType".to_clr_string()] == "External" &&
 			obj["DictionaryId".to_clr_string()] == dictRef &&
 
@@ -636,10 +834,7 @@ AS
 					signHash["Seed".to_clr_string()].to_s() + ", CAST(i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] AS [nvarchar](MAX))) % 2) = 0 THEN 1 ELSE -1 END) / 100.0), i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]))"
 			when "Ciphering"
 				"/* CIPHERING */ (CASE WHEN i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] IS NULL OR LEN(i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]) = 0 THEN i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "] ELSE " +
-					"[" + textMetal.EvaluateToken.invoke("ObfuscationSchemaName") + "].[fn_GetCipher]([" + textMetal.EvaluateToken.invoke("ObfuscationSchemaName") + "].[fn_GetHash](" +
-					valHash["Multiplier".to_clr_string()].to_s() + ", " +
-					valHash["Size".to_clr_string()].to_s() + ", " +
-					valHash["Seed".to_clr_string()].to_s() + ", i.[" + textMetal.EvaluateToken.invoke("ColumnName") + "]), i.[" +
+					"[" + textMetal.EvaluateToken.invoke("ObfuscationSchemaName") + "].[fn_GetCipher]('" + sharedSecret.to_s() + "', i.[" +
 					textMetal.EvaluateToken.invoke("ColumnName") + "]) END)"
 			when "Defaulting"
 				"/* DEFAULTING */ ([" + textMetal.EvaluateToken.invoke("ObfuscationSchemaName") + "].[fn_GetDefault](" + (textMetal.EvaluateToken.invoke("ColumnNullable") ? "1" : "0") + ", '" + textMetal.EvaluateToken.invoke("ColumnSqlType") + "'))"
@@ -710,6 +905,21 @@ AS
 GO
 ]]>
 
+
+
+<OutputScope name="${ObfuscationConfigFilePath}.g" append="true">
+<![CDATA[
+	{
+		"Source":
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "${DefaultDatabaseName}",
+			"SchemaName": "${SchemaName}",
+			"ObjectName": "${TableName}"
+		},
+
+		"Members": [
+]]>
 			<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 				<ForEach.Sort>
 					<Ascending>
@@ -719,46 +929,31 @@ GO
 					</Ascending>
 				</ForEach.Sort>
 				<ForEach.Body>
-				
-<OutputScope name="${ObfuscationConfigFilePath}.g" append="true">
 <![CDATA[
-	{
-		"ObjectType": "Table",
-		"ObfuscationStrategy": "None",
-		"DictionaryType": "External",
-		
-		"ObjectSource":
 		{
-			"DatabaseName": "${DefaultDatabaseName}",
-			"SchemaName": "${SchemaName}",
-			"ObjectName": "${TableName}",
-			"MemberName": "${ColumnName}"
-		},
-		
-		"DictionarySource":
-		{
-			"DatabaseName": "${ObfuscationDestinationDatabaseName}",
-			"SchemaName": "${ObfuscationSchemaName}",
-			"ObjectName": "CrayonColorDictionary",
-			"MemberName": "CrayonColorDictionary{0}",
+			"MemberType": "Column",
+			"MemberName": "${ColumnName}",
 
-			"KeyMemberName": "CrayonColorDictionaryKey",
-			"ValueMemberName": "CrayonColorDictionaryValue"
-		},
+			"ObfuscationStrategy": "None",
+			"DictionaryRef": "",
 
-		"ValueHash":
-		{
-			"Multiplier": 33, 
-			"Size": 120,
-			"Seed": 5381
-		}
+			"ValueHash":
+			{
+				"Multiplier": 33, 
+				"Size": 120,
+				"Seed": 5381
+			}
+		},
+]]>
+					</ForEach.Body>
+			</ForEach>
+<![CDATA[
+		]
 	},
 ]]>
 </OutputScope>
 
-					</ForEach.Body>
 
-			</ForEach>
 
 
 
