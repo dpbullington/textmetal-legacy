@@ -141,7 +141,7 @@ namespace TextMetal.Common.WinForms.Forms
 			stream = this.GetType().Assembly.GetManifestResourceStream("TextMetal.HostImpl.WindowsTool.Icons.TextMetal.ico");
 
 			if ((object)stream == null)
-				throw new InvalidOperationException("TextMetal.HostImpl.WindowsTool.Icons.TextMetal.ico");
+				return;
 
 			icon = new Icon(stream);
 			this.Icon = icon;

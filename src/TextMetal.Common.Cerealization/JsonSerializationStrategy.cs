@@ -131,7 +131,8 @@ namespace TextMetal.Common.Cerealization
 
 			serializer = JsonSerializer.Create(new JsonSerializerSettings()
 												{
-													TypeNameHandling = TypeNameHandling.Objects
+													TypeNameHandling = TypeNameHandling.None,
+													ReferenceLoopHandling = ReferenceLoopHandling.Ignore
 												});
 
 			using (JsonReader jsonReader = new JsonTextReader(textReader))
@@ -201,7 +202,8 @@ namespace TextMetal.Common.Cerealization
 
 			serializer = JsonSerializer.Create(new JsonSerializerSettings()
 												{
-													TypeNameHandling = TypeNameHandling.Objects
+													TypeNameHandling = TypeNameHandling.None,
+													ReferenceLoopHandling = ReferenceLoopHandling.Ignore
 												});
 
 			using (StreamReader streamReader = new StreamReader(stream))
@@ -368,7 +370,8 @@ namespace TextMetal.Common.Cerealization
 
 			serializer = JsonSerializer.Create(new JsonSerializerSettings()
 												{
-													TypeNameHandling = TypeNameHandling.Objects
+													TypeNameHandling = TypeNameHandling.None,
+													ReferenceLoopHandling = ReferenceLoopHandling.Ignore
 												});
 
 			using (StreamWriter streamWriter = new StreamWriter(stream))
@@ -430,7 +433,8 @@ namespace TextMetal.Common.Cerealization
 
 			serializer = JsonSerializer.Create(new JsonSerializerSettings()
 												{
-													TypeNameHandling = TypeNameHandling.Objects
+													TypeNameHandling = TypeNameHandling.None,
+													ReferenceLoopHandling = ReferenceLoopHandling.Ignore
 												});
 
 			using (JsonWriter jsonWriter = new JsonTextWriter(textWriter))

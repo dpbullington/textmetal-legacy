@@ -58,8 +58,8 @@ namespace TextMetal.Common.Xml
 		/// </summary>
 		protected override void ClearItems()
 		{
-			foreach (TXmlObject xmlObject in base.Items)
-				xmlObject.Parent = null;
+			foreach (TXmlObject item in base.Items)
+				item.Parent = null;
 
 			base.ClearItems();
 		}
