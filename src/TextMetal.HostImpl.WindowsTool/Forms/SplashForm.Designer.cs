@@ -31,10 +31,10 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SplashForm));
-			this.pbAppLogo = new System.Windows.Forms.PictureBox();
+			this.pbAppLogo = new TmPictureBox();
 			this.btnOK = new TmButton();
-			this.pnlMain = new System.Windows.Forms.Panel();
-			this.pbMain = new System.Windows.Forms.ProgressBar();
+			this.pnlMain = new TmPanel();
+			this.pbMain = new TmProgressBar();
 			this.tmrMain = new System.Windows.Forms.Timer(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.pbAppLogo)).BeginInit();
 			this.pnlMain.SuspendLayout();
@@ -114,10 +114,10 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 		#endregion
 
-		private System.Windows.Forms.PictureBox pbAppLogo;
+		private TmPictureBox pbAppLogo;
 		private TmButton btnOK;
-		private System.Windows.Forms.Panel pnlMain;
-		private System.Windows.Forms.ProgressBar pbMain;
+		private TmPanel pnlMain;
+		private TmProgressBar pbMain;
 		private System.Windows.Forms.Timer tmrMain;
 	}
 }

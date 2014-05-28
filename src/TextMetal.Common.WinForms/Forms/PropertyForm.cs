@@ -43,8 +43,10 @@ namespace TextMetal.Common.WinForms.Forms
 
 		#region Methods/Operators
 
-		private void PropertyForm_Load(object sender, EventArgs e)
+		protected override void CoreSetup()
 		{
+			base.CoreSetup();
+
 			this.pgShape.SelectedObject = this.Target;
 		}
 

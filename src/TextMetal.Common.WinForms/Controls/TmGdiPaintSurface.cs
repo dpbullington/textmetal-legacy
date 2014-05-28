@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace TextMetal.Common.WinForms.Controls
 {
-	public class TmGdiPaintSurface : UserControl
+	public class TmGdiPaintSurface : TmUserControl
 	{
 		#region Constructors/Destructors
 

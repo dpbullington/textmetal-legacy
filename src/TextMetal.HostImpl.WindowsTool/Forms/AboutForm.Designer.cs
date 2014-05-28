@@ -30,19 +30,19 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
-			this.pbAppLogo = new System.Windows.Forms.PictureBox();
+			this.pbAppLogo = new TmPictureBox();
 			this.lblProduct = new TmLabel();
 			this.lblVersion = new TmLabel();
 			this.lblCopyright = new TmLabel();
 			this.lblCompany = new TmLabel();
-			this.txtBxDescription = new System.Windows.Forms.TextBox();
+			this.txtBxDescription = new TmTextBox();
 			this.btnOK = new TmButton();
 			this.lblWin32FileVersion = new TmLabel();
 			this.lblTrademark = new TmLabel();
 			this.lblTitle = new TmLabel();
 			this.lblInformationalVersion = new TmLabel();
 			this.lblConfiguration = new TmLabel();
-			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.tableLayoutPanel1 = new TmTableLayoutPanel();
 			((System.ComponentModel.ISupportInitialize)(this.pbAppLogo)).BeginInit();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.SuspendLayout();
@@ -244,18 +244,18 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 		#endregion
 
-		private System.Windows.Forms.PictureBox pbAppLogo;
+		private TmPictureBox pbAppLogo;
 		private TmLabel lblProduct;
 		private TmLabel lblVersion;
 		private TmLabel lblCopyright;
 		private TmLabel lblCompany;
-		private System.Windows.Forms.TextBox txtBxDescription;
+		private TmTextBox txtBxDescription;
 		private TmButton btnOK;
 		private TmLabel lblWin32FileVersion;
 		private TmLabel lblTrademark;
 		private TmLabel lblTitle;
 		private TmLabel lblInformationalVersion;
 		private TmLabel lblConfiguration;
-		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+		private TmTableLayoutPanel tableLayoutPanel1;
 	}
 }

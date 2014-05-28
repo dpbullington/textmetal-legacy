@@ -1,4 +1,6 @@
-﻿namespace TextMetal.HostImpl.WindowsTool.Forms
+﻿using TextMetal.Common.WinForms.Controls;
+
+namespace TextMetal.HostImpl.WindowsTool.Forms
 {
 	partial class DocumentForm
 	{
@@ -37,7 +39,7 @@
 			this.tsmiClose = new System.Windows.Forms.ToolStripMenuItem();
 			this.ssMain = new System.Windows.Forms.StatusStrip();
 			this.tsslMain = new System.Windows.Forms.ToolStripStatusLabel();
-			this.pnlMain = new System.Windows.Forms.Panel();
+			this.pnlMain = new TmPanel();
 			this.sfdMain = new System.Windows.Forms.SaveFileDialog();
 			this.msMain.SuspendLayout();
 			this.ssMain.SuspendLayout();
@@ -148,7 +150,7 @@
 
 		private System.Windows.Forms.MenuStrip msMain;
 		private System.Windows.Forms.StatusStrip ssMain;
-		private System.Windows.Forms.Panel pnlMain;
+		private TmPanel pnlMain;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFile;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSave;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSaveAs;

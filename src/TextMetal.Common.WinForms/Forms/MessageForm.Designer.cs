@@ -32,7 +32,7 @@ namespace TextMetal.Common.WinForms.Forms
 			this.lblMessage = new TmLabel();
 			this.ilMain = new System.Windows.Forms.ImageList(this.components);
 			this.btnOkay = new TmButton();
-			this.tvMessages = new System.Windows.Forms.TreeView();
+			this.tvMessages = new TmTreeView();
 			this.btnCancel = new TmButton();
 			this.SuspendLayout();
 			// 
@@ -112,7 +112,7 @@ namespace TextMetal.Common.WinForms.Forms
 		internal TmLabel lblMessage;
 		internal TmButton btnOkay;
 		internal System.Windows.Forms.ImageList ilMain;
-		internal System.Windows.Forms.TreeView tvMessages;
+		internal TmTreeView tvMessages;
 		internal TmButton btnCancel;
 	}
 }

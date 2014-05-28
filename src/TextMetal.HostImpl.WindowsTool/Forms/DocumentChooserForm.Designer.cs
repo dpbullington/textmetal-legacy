@@ -30,7 +30,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DocumentChooserForm));
 			this.btnOkay = new TmButton();
 			this.btnCancel = new TmButton();
-			this.gbChoice = new System.Windows.Forms.GroupBox();
+			this.gbChoice = new TmGroupBox();
 			this.rdoSqlQuery = new TmRadioButton();
 			this.rdoAssociativeModel = new TmRadioButton();
 			this.rdoTemplate = new TmRadioButton();
@@ -130,7 +130,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		}
 		internal TmButton btnOkay;
 		internal TmButton btnCancel;
-		private System.Windows.Forms.GroupBox gbChoice;
+		private TmGroupBox gbChoice;
 		private TmRadioButton rdoSqlQuery;
 		private TmRadioButton rdoAssociativeModel;
 		private TmRadioButton rdoTemplate;

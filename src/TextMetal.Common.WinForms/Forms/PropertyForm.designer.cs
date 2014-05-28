@@ -8,6 +8,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
+using TextMetal.Common.WinForms.Controls;
+
 namespace TextMetal.Common.WinForms.Forms
 {
 	public partial class PropertyForm
@@ -31,42 +33,36 @@ namespace TextMetal.Common.WinForms.Forms
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.pgShape = new PropertyGrid();
+			this.pgShape = new TextMetal.Common.WinForms.Controls.TmPropertyGrid();
 			this.SuspendLayout();
 			// 
 			// pgShape
 			// 
-			this.pgShape.CommandsVisibleIfAvailable = true;
-			this.pgShape.Dock = DockStyle.Fill;
-			this.pgShape.LargeButtons = false;
-			this.pgShape.LineColor = SystemColors.ScrollBar;
-			this.pgShape.Location = new Point(0, 0);
+			this.pgShape.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pgShape.LineColor = System.Drawing.SystemColors.ScrollBar;
+			this.pgShape.Location = new System.Drawing.Point(0, 0);
 			this.pgShape.Name = "pgShape";
-			this.pgShape.PropertySort = PropertySort.Alphabetical;
-			this.pgShape.Size = new Size(200, 328);
+			this.pgShape.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
+			this.pgShape.Size = new System.Drawing.Size(200, 328);
 			this.pgShape.TabIndex = 0;
-			this.pgShape.Text = "PropertyGrid";
 			this.pgShape.ToolbarVisible = false;
-			this.pgShape.ViewBackColor = SystemColors.Window;
-			this.pgShape.ViewForeColor = SystemColors.WindowText;
-			this.pgShape.PropertyValueChanged += new PropertyValueChangedEventHandler(this.pgShape_PropertyValueChanged);
+			this.pgShape.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.pgShape_PropertyValueChanged);
 			// 
-			// SketchShapeBasePropertiesForm
+			// PropertyForm
 			// 
-			this.AutoScaleBaseSize = new Size(5, 13);
-			this.ClientSize = new Size(200, 328);
+			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+			this.ClientSize = new System.Drawing.Size(200, 328);
 			this.Controls.Add(this.pgShape);
-			this.FormBorderStyle = FormBorderStyle.SizableToolWindow;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.Name = "PropertyForm";
 			this.ShowInTaskbar = false;
-			this.StartPosition = FormStartPosition.CenterParent;
-			this.Text = "Sketch Shape Properties";
-			this.Load += new EventHandler(this.PropertyForm_Load);
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.ResumeLayout(false);
+
 		}
 
 
 		private Container components = null;
-		private PropertyGrid pgShape;
+		private TmPropertyGrid pgShape;
 	}
 }

@@ -37,7 +37,7 @@ namespace TextMetal.Common.WinForms.Forms
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BackgroundTaskForm));
-			this.pbarMain = new System.Windows.Forms.ProgressBar();
+			this.pbarMain = new TmProgressBar();
 			this.tmrMain = new System.Windows.Forms.Timer(this.components);
 			this.btnCancel = new TmButton();
 			this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
@@ -103,7 +103,7 @@ namespace TextMetal.Common.WinForms.Forms
 
 		#endregion
 
-		private System.Windows.Forms.ProgressBar pbarMain;
+		private TmProgressBar pbarMain;
 		private System.Windows.Forms.Timer tmrMain;
 		private TmButton btnCancel;
 		private System.ComponentModel.BackgroundWorker backgroundWorker;
