@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -26,7 +27,7 @@ namespace TextMetal.Common.WinForms.Forms
 
 		#region Fields/Constants
 
-		private Message[] messages;
+		private IEnumerable<Message> messages;
 
 		#endregion
 
@@ -44,7 +45,7 @@ namespace TextMetal.Common.WinForms.Forms
 			}
 		}
 
-		public Message[] Messages
+		public IEnumerable<Message> Messages
 		{
 			get
 			{
@@ -70,7 +71,7 @@ namespace TextMetal.Common.WinForms.Forms
 		{
 			base.CoreSetup();
 
-			this.CoreText = string.Format("{0}", this.CoreParentForm.CoreText);
+			this.CoreText = string.Format("{0}", this.CoreOwnerForm.CoreText);
 
 			this.RefreshMessages();
 		}
