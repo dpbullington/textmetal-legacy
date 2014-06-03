@@ -42,7 +42,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 
 			IEnumerable<IDictionary<string, object>> objs;
 			string commandText;
-			int rcecordsAffected;
+			int recordsAffected;
 			int count = 0;
 
 			if ((object)sqlQueries == null)
@@ -73,13 +73,18 @@ namespace TextMetal.Framework.SourceModel.Primative
 				using (IUnitOfWork unitOfWork = UnitOfWork.Create(connectionType, connectionString, false))
 				{
 					if (!getSchemaOnly)
-						objs = unitOfWork.ExecuteDictionary(sqlQuery.Type, commandText, null, out rcecordsAffected);
+						objs = unitOfWork.ExecuteDictionary(sqlQuery.Type, commandText, null, out recordsAffected);
 					else
-						objs = unitOfWork.ExecuteSchema(sqlQuery.Type, commandText, null);
+						objs = unitOfWork.ExecuteSchema(sqlQuery.Type, commandText, null, out recordsAffected);
 				}
 
 				if ((object)objs != null)
 				{
+					propertyConstruct = new PropertyConstruct();
+					propertyConstruct.Name = "RecordsAffected";
+					arrayConstruct.Items.Add(propertyConstruct);
+					propertyConstruct.RawValue = recordsAffected;
+
 					propertyConstruct = new PropertyConstruct();
 					propertyConstruct.Name = "RowCount";
 					arrayConstruct.Items.Add(propertyConstruct);

@@ -5,6 +5,12 @@ REM	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
 REM	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 REM
 
+set TEXTMETAL_EXE=..\..\src\TextMetal.HostImpl.ConsoleTool\bin\Debug\TextMetal.exe
+
+SET SRC_DIR=..\..\src
+SET BUILD_FLAVOR_DIR=Debug
+SET BUILD_TOOL_CFG=Debug
+
 set PACKAGE_DIR=.\output
 set PACKAGE_DIR_EXISTS=%PACKAGE_DIR%\nul
 
@@ -34,14 +40,14 @@ goto pkgBuild
 
 :pkgBuild
 
-copy "..\..\src\TextMetal.Common.SqlServerClr\bin\Debug\TextMetal.Common.SqlServerClr.dll" "%PACKAGE_DIR%\."
+copy "%SRC_DIR%\TextMetal.Common.SqlServerClr\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.SqlServerClr.dll" "%PACKAGE_DIR%\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 powershell -command "'0x' + [System.BitConverter]::ToString([System.IO.File]::ReadAllBytes('..\..\src\TextMetal.Common.SqlServerClr\bin\Debug\TextMetal.Common.SqlServerClr.dll')).Replace('-', '')" > "%PACKAGE_DIR%\TextMetal.Common.SqlServerClr.dll.txt"
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 echo *** sql_codegen_execute ***
-"..\..\src\TextMetal.HostImpl.ConsoleTool\bin\Debug\TextMetal.exe" ^
+"%TEXTMETAL_EXE%" ^
 	-templatefile:"master_template.xml" ^
 	-sourcefile:"%ADO_NET_CONNECTION_STRING%" ^
 	-basedir:"%PACKAGE_DIR%" ^

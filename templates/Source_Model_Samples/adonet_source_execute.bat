@@ -5,11 +5,13 @@ REM	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
 REM	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 REM
 
+set TEXTMETAL_EXE=..\..\src\TextMetal.HostImpl.ConsoleTool\bin\Debug\TextMetal.exe
+
 set ADO_NET_CONNECTION_STRING=Server=(local);User ID=textmetal_mssql_dev_login;Password=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Database=textmetal_ods_dev
 
 
 echo *** adonet_source_execute ***
-"..\..\src\TextMetal.HostImpl.ConsoleTool\bin\Debug\TextMetal.exe" ^
+"%TEXTMETAL_EXE%" ^
 	-templatefile:"empty_template.xml" ^
 	-sourcefile:"%ADO_NET_CONNECTION_STRING%" ^
 	-basedir:".\output" ^

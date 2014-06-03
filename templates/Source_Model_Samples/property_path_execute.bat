@@ -5,8 +5,10 @@ REM	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
 REM	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 REM
 
+set TEXTMETAL_EXE=..\..\src\TextMetal.HostImpl.ConsoleTool\bin\Debug\TextMetal.exe
+
 echo *** property_path_source_execute ***
-"..\..\src\TextMetal.HostImpl.ConsoleTool\bin\Debug\TextMetal.exe" ^
+"%TEXTMETAL_EXE%" ^
 	-templatefile:"property_path_template.xml" ^
 	-sourcefile:"property_path_source.xml" ^
 	-basedir:".\output" ^

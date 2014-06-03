@@ -890,7 +890,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 																try
 																{
-																	var dictEnumMetadata = AdoNetHelper.ExecuteSchema(unitOfWork, CommandType.StoredProcedure, string.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), server.ServerName, database.DatabaseName, schema.SchemaName, procedure.ProcedureName), parameters);
+																	var dictEnumMetadata = AdoNetHelper.ExecuteSchema(unitOfWork, CommandType.StoredProcedure, string.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), server.ServerName, database.DatabaseName, schema.SchemaName, procedure.ProcedureName), parameters, out recordsAffected);
 																	{
 																		if ((object)dictEnumMetadata != null)
 																		{

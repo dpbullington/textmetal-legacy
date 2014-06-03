@@ -202,8 +202,27 @@ namespace TextMetal.Common.Data
 		/// <param name="commandType"> The type of the command. </param>
 		/// <param name="commandText"> The SQL text or stored procedure name. </param>
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
+		/// <param name="recordsAffected"> The output count of records affected. </param>
+		/// <returns> A list of dictionary instances, containing key/value pairs of data. </returns>
+		public static IList<IDictionary<string, object>> ExecuteSchema(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters, out int recordsAffected)
+		{
+			int _recordsAffected = -1;
+			var list = ExecuteSchema(unitOfWork, commandType, commandText, commandParameters, (ra) => _recordsAffected = ra).ToList(); // FORCE EAGER LOADING HERE
+			recordsAffected = _recordsAffected;
+			return list;
+		}
+
+		/// <summary>
+		/// An extension method to execute a schema query operation against a target unit of work.
+		/// DO NOT DISPOSE OF UNIT OF WORK CONTEXT - UP TO THE CALLER.
+		/// </summary>
+		/// <param name="unitOfWork"> The target unit of work. </param>
+		/// <param name="commandType"> The type of the command. </param>
+		/// <param name="commandText"> The SQL text or stored procedure name. </param>
+		/// <param name="commandParameters"> The parameters to use during the operation. </param>
+		/// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
 		/// <returns> An enumerable of dictionary instances, containing key/value pairs of schema data. </returns>
-		public static IEnumerable<IDictionary<string, object>> ExecuteSchema(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters)
+		public static IEnumerable<IDictionary<string, object>> ExecuteSchema(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters, Action<int> recordsAffectedCallback)
 		{
 			IDictionary<string, object> obj;
 

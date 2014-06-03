@@ -5,6 +5,12 @@ REM	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
 REM	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 REM
 
+set TEXTMETAL_EXE=..\..\src\TextMetal.HostImpl.ConsoleTool\bin\Debug\TextMetal.exe
+
+SET SRC_DIR=..\..\src
+SET BUILD_FLAVOR_DIR=Debug
+SET BUILD_TOOL_CFG=Debug
+
 set SNK_EXE=C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\sn.exe
 
 set BUILD_FLAVOR_DIR=Debug
@@ -55,11 +61,8 @@ goto pkgBuild
 
 REM TODO
 
-
-
-
 echo *** linqtosql_codegen_execute ***
-"..\..\src\TextMetal.HostImpl.ConsoleTool\bin\Debug\TextMetal.exe" ^
+"%TEXTMETAL_EXE%" ^
 	-templatefile:"master_template.xml" ^
 	-sourcefile:"%ADO_NET_CONNECTION_STRING%" ^
 	-basedir:"%SRC_DIR%" ^
