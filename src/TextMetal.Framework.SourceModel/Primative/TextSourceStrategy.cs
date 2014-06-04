@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Core.StringTokens;
 using TextMetal.Framework.AssociativeModel;
 
 namespace TextMetal.Framework.SourceModel.Primative
@@ -75,6 +76,13 @@ namespace TextMetal.Framework.SourceModel.Primative
 					fieldDelimiter = values[0];
 			}
 
+			if (!DataType.IsNullOrWhiteSpace(fieldDelimiter))
+			{
+				fieldDelimiter = fieldDelimiter.Replace("\\t", "\t");
+				fieldDelimiter = fieldDelimiter.Replace("\\r", "\r");
+				fieldDelimiter = fieldDelimiter.Replace("\\n", "\n");
+			}
+
 			using (StreamReader streamReader = File.OpenText(sourceFilePath))
 			{
 				int i = 0;
@@ -116,7 +124,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 								propertyConstruct01 = new PropertyConstruct();
 
 								if (firstRowIsHeader && (object)headers != null)
-									propertyConstruct01.Name = string.Format("{0}", headers[j++]);
+									propertyConstruct01.Name = string.Format("{0}", Name.GetConstantCase(headers[j++]));
 								else
 									propertyConstruct01.Name = string.Format("TextFileField_{0:00000000}", j++);
 

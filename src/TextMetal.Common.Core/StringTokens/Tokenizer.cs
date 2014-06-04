@@ -62,6 +62,17 @@ namespace TextMetal.Common.Core.StringTokens
 		#region Properties/Indexers/Events
 
 		/// <summary>
+		/// Gets the token ID regular expression.
+		/// </summary>
+		public static string TokenIdRegEx
+		{
+			get
+			{
+				return TOKEN_ID_REGEX;
+			}
+		}
+
+		/// <summary>
 		/// Gets the tokenizer regular expression.
 		/// </summary>
 		public static string TokenizerRegEx
@@ -156,6 +167,13 @@ namespace TextMetal.Common.Core.StringTokens
 				throw new InvalidOperationException(string.Format("Failed to recognize '{0}' due to '{1}' match error; strict matching enabled.", originalValue, matchPoint));
 			else
 				return originalValue;
+		}
+
+		public static bool IsValidTokenId(string token)
+		{
+			// [a-zA-Z_\.][a-zA-Z_\.0-9]
+			// 65-90, 97-122, 95, 46, 48-57
+			return Regex.IsMatch(token, TokenIdRegEx, RegexOptions.IgnorePatternWhitespace);
 		}
 
 		/// <summary>

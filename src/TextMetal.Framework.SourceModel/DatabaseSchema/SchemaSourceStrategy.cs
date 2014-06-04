@@ -142,16 +142,20 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			const string PROP_TOKEN_CONNECTION_AQTN = "ConnectionType";
 			const string PROP_TOKEN_CONNECTION_STRING = "ConnectionString";
 			const string PROP_TOKEN_DATA_SOURCE_TAG = "DataSourceTag";
+			const string PROP_TOKEN_SERVER_FILTER = "ServerFilter";
 			const string PROP_TOKEN_DATABASE_FILTER = "DatabaseFilter";
 			const string PROP_TOKEN_SCHEMA_FILTER = "SchemaFilter";
+			const string PROP_TOKEN_OBJECT_FILTER = "ObjectFilter";
 			const string PROP_DISABLE_PROCEDURE_SCHEMA_DISCOVERY = "DisableProcedureSchemaDiscovery";
 			const string PROP_ENABLE_DATABASE_FILTER = "EnableDatabaseFilter";
 			string connectionAqtn;
 			Type connectionType = null;
 			string connectionString = null;
 			string dataSourceTag;
+			string[] serverFilter;
 			string[] databaseFilter;
 			string[] schemaFilter;
+			string[] objectFilter;
 			bool disableProcSchDisc, enableDatabaseFilter;
 			IList<string> values;
 
@@ -196,6 +200,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 					dataSourceTag = values[0];
 			}
 
+			serverFilter = null;
+			if (properties.TryGetValue(PROP_TOKEN_SERVER_FILTER, out values))
+			{
+				if ((object)values != null && values.Count > 0)
+					serverFilter = values.ToArray();
+			}
+
 			databaseFilter = null;
 			if (properties.TryGetValue(PROP_TOKEN_DATABASE_FILTER, out values))
 			{
@@ -208,6 +219,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			{
 				if ((object)values != null && values.Count > 0)
 					schemaFilter = values.ToArray();
+			}
+
+			objectFilter = null;
+			if (properties.TryGetValue(PROP_TOKEN_OBJECT_FILTER, out values))
+			{
+				if ((object)values != null && values.Count > 0)
+					objectFilter = values.ToArray();
 			}
 
 			disableProcSchDisc = false;
@@ -224,7 +242,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 					DataType.TryParse<bool>(values[0], out enableDatabaseFilter);
 			}
 
-			return this.GetSchemaModel(connectionString, connectionType, dataSourceTag, databaseFilter, schemaFilter, disableProcSchDisc, enableDatabaseFilter);
+			return this.GetSchemaModel(connectionString, connectionType, dataSourceTag, serverFilter, databaseFilter, schemaFilter, objectFilter, disableProcSchDisc, enableDatabaseFilter);
 		}
 
 		protected abstract IEnumerable<IDataParameter> CoreGetTableParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema);
@@ -235,7 +253,10 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		protected abstract Type CoreInferClrTypeForSqlType(string dataSourceTag, string sqlType, int sqlPrecision);
 
-		private object GetSchemaModel(string connectionString, Type connectionType, string dataSourceTag, string[] databaseFilter, string[] schemaFilter, bool disableProcSchDisc, bool enableDatabaseFilter)
+		private object GetSchemaModel(string connectionString, Type connectionType, string dataSourceTag,
+			string[] serverFilter, string[] databaseFilter,
+			string[] schemaFilter, string[] objectFilter,
+			bool disableProcSchDisc, bool enableDatabaseFilter)
 		{
 			Server server;
 			int recordsAffected;
@@ -276,6 +297,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 						// each apply is 'off by one' for getting parameters
 						this.ApplyExtendedProperties(unitOfWork, server, dataSourceTag, "ServerExtProps", this.CoreGetDatabaseParameters(unitOfWork, dataSourceTag, server));
 
+						// filter unwanted servers
+						if ((object)serverFilter != null)
+						{
+							if (!serverFilter.Contains(server.ServerName))
+								return null;
+						}
+
 						var dictEnumDatabase = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Databases"), this.CoreGetDatabaseParameters(unitOfWork, dataSourceTag, server), out recordsAffected);
 						{
 							if ((object)dictEnumDatabase != null)
@@ -304,8 +332,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 									database.DatabaseNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(database.DatabaseName));
 									database.DatabaseNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(database.DatabaseName));
 
-									server.Databases.Add(database);
-
 									// preserve default behavior in that if NO filter is specified
 									// contrain to only the DEFAULT DATABASE
 									if (!enableDatabaseFilter)
@@ -322,6 +348,8 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 												continue;
 										}
 									}
+
+									server.Databases.Add(database);
 
 									unitOfWork.ExecuteDictionary(CommandType.Text, string.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UseDatabase"), server.ServerName, database.DatabaseName), null, out recordsAffected);
 
@@ -449,6 +477,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 															table.PrimaryKeyNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(table.PrimaryKeyName));
 															table.PrimaryKeyNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(table.PrimaryKeyName));
 															table.PrimaryKeyNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(table.PrimaryKeyName));
+														}
+
+														// filter unwanted tables (objects)
+														if ((object)objectFilter != null)
+														{
+															if (!objectFilter.Contains(table.TableName))
+																continue;
 														}
 
 														schema.Tables.Add(table);
@@ -702,6 +737,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 															procedure.ProcedureNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(procedure.ProcedureName));
 															procedure.ProcedureNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(procedure.ProcedureName));
 															procedure.ProcedureNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(procedure.ProcedureName));
+
+															// filter unwanted procedures (objects)
+															if ((object)objectFilter != null)
+															{
+																if (!objectFilter.Contains(procedure.ProcedureName))
+																	continue;
+															}
 
 															schema.Procedures.Add(procedure);
 

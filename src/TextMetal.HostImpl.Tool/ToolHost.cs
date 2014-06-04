@@ -98,6 +98,11 @@ namespace TextMetal.HostImpl.Tool
 			if (!Directory.Exists(baseDirectoryPath))
 				Directory.CreateDirectory(baseDirectoryPath);
 
+			/*if (!Directory.Exists(baseDirectoryPath))
+				Directory.Delete(baseDirectoryPath, true);
+
+			Directory.CreateDirectory(baseDirectoryPath);*/
+
 			sourceStrategyType = Type.GetType(sourceStrategyAssemblyQualifiedTypeName, false);
 
 			if ((object)sourceStrategyType == null)
