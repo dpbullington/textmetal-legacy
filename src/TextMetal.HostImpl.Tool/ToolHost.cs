@@ -116,6 +116,8 @@ namespace TextMetal.HostImpl.Tool
 			xpe = new XmlPersistEngine();
 			xpe.RegisterWellKnownConstructs();
 
+			//System.Diagnostics.Debugger.Launch();
+
 			template = (TemplateConstruct)xpe.DeserializeFromXml(templateFilePath);
 			source = sourceStrategy.GetSourceObject(sourceFilePath, properties);
 

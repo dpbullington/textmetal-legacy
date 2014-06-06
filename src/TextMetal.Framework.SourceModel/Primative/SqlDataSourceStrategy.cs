@@ -37,7 +37,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 		{
 			ArrayConstruct arrayConstruct;
 			ObjectConstruct objectConstruct;
-			PropertyConstruct propertyConstruct;
+			PropertyConstruct propertyConstructA, propertyConstructB, propertyConstructC;
 			Tokenizer tokenizer;
 
 			IEnumerable<IDictionary<string, object>> objs;
@@ -78,17 +78,17 @@ namespace TextMetal.Framework.SourceModel.Primative
 						objs = unitOfWork.ExecuteSchema(sqlQuery.Type, commandText, null, out recordsAffected);
 				}
 
+				propertyConstructA = new PropertyConstruct();
+				propertyConstructA.Name = "RecordsAffected";
+				arrayConstruct.Items.Add(propertyConstructA);
+				propertyConstructA.RawValue = recordsAffected;
+
+				propertyConstructB = new PropertyConstruct();
+				propertyConstructB.Name = "RowCount";
+				arrayConstruct.Items.Add(propertyConstructB);
+
 				if ((object)objs != null)
 				{
-					propertyConstruct = new PropertyConstruct();
-					propertyConstruct.Name = "RecordsAffected";
-					arrayConstruct.Items.Add(propertyConstruct);
-					propertyConstruct.RawValue = recordsAffected;
-
-					propertyConstruct = new PropertyConstruct();
-					propertyConstruct.Name = "RowCount";
-					arrayConstruct.Items.Add(propertyConstruct);
-
 					foreach (IDictionary<string, object> obj in objs)
 					{
 						objectConstruct = new ObjectConstruct();
@@ -97,12 +97,12 @@ namespace TextMetal.Framework.SourceModel.Primative
 						if ((object)obj != null)
 						{
 							foreach (KeyValuePair<string, object> keyValuePair in obj)
-							{
-								propertyConstruct = new PropertyConstruct();
-								propertyConstruct.Name = keyValuePair.Key;
-								propertyConstruct.RawValue = keyValuePair.Value;
+							{								
+								propertyConstructC = new PropertyConstruct();
+								propertyConstructC.Name = keyValuePair.Key;
+								propertyConstructC.RawValue = keyValuePair.Value;
 
-								objectConstruct.Items.Add(propertyConstruct);
+								objectConstruct.Items.Add(propertyConstructC);
 							}
 						}
 
@@ -112,7 +112,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 						count++;
 					}
 
-					propertyConstruct.RawValue = count;
+					propertyConstructB.RawValue = count;
 				}
 			}
 		}
