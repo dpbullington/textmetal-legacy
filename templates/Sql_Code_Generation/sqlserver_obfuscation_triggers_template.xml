@@ -18,109 +18,125 @@
 		"Seed": 5381
 	},
 
-	"Dictionaries": [
+	"Dictionaries":
+	[
 
-	{
-		"DictionaryId": "Null",
+		{
+			"DictionaryId": "Null",
 
-		"ObjectType": "*",
-		"DatabaseName": "*",
-		"SchemaName": "*",
-		"ObjectName": "*",
+			"ObjectType": "*",
+			"DatabaseName": "*",
+			"SchemaName": "*",
+			"ObjectName": "*",
 
-		"KeyMemberType": "*",
-		"KeyMemberName": "*",
-		"ValueMemberType": "*",
-		"ValueMemberName": "*"
-	},
+			"KeyMemberType": "*",
+			"KeyMemberName": "*",
+			"ValueMemberType": "*",
+			"ValueMemberName": "*",
 
-	{
-		"DictionaryId": "CrayonColor",
+			"RecordCount": 0
+		},
 
-		"ObjectType": "Table",
-		"DatabaseName": "${ObfuscationDestinationDatabaseName}",
-		"SchemaName": "rev001",
-		"ObjectName": "CrayonColorDictionary",
+		{
+			"DictionaryId": "CrayonColor",
 
-		"KeyMemberType": "Column",
-		"KeyMemberName": "CrayonColorDictionaryKey",
-		"ValueMemberType": "Column",
-		"ValueMemberName": "CrayonColorDictionaryKey"
-	},
+			"ObjectType": "Table",
+			"DatabaseName": "Ox_Config",
+			"SchemaName": "rev001",
+			"ObjectName": "CrayonColorDictionary",
 
-	{
-		"DictionaryId": "FirstName",
+			"KeyMemberType": "Column",
+			"KeyMemberName": "CrayonColorDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "CrayonColorDictionaryKey",
 
-		"ObjectType": "Table",
-		"DatabaseName": "${ObfuscationDestinationDatabaseName}",
-		"SchemaName": "rev001",
-		"ObjectName": "FirstNameDictionary",
+			"RecordCount": 121
+		},
 
-		"KeyMemberType": "Column",
-		"KeyMemberName": "FirstNameDictionaryKey",
-		"ValueMemberType": "Column",
-		"ValueMemberName": "FirstNameDictionaryKey"
-	},
+		{
+			"DictionaryId": "FirstName",
 
-	{
-		"DictionaryId": "LastName",
+			"ObjectType": "Table",
+			"DatabaseName": "Ox_Config",
+			"SchemaName": "rev001",
+			"ObjectName": "FirstNameDictionary",
 
-		"ObjectType": "Table",
-		"DatabaseName": "${ObfuscationDestinationDatabaseName}",
-		"SchemaName": "rev001",
-		"ObjectName": "LastNameDictionary",
+			"KeyMemberType": "Column",
+			"KeyMemberName": "FirstNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "FirstNameDictionaryKey",
 
-		"KeyMemberType": "Column",
-		"KeyMemberName": "LastNameDictionaryKey",
-		"ValueMemberType": "Column",
-		"ValueMemberName": "LastNameDictionaryKey"
-	},
+			"RecordCount": 5164
+		},
 
-	{
-		"DictionaryId": "CityName",
+		{
+			"DictionaryId": "LastName",
 
-		"ObjectType": "Table",
-		"DatabaseName": "${ObfuscationDestinationDatabaseName}",
-		"SchemaName": "rev001",
-		"ObjectName": "CityNameDictionary",
+			"ObjectType": "Table",
+			"DatabaseName": "Ox_Config",
+			"SchemaName": "rev001",
+			"ObjectName": "LastNameDictionary",
 
-		"KeyMemberType": "Column",
-		"KeyMemberName": "CityNameDictionaryKey",
-		"ValueMemberType": "Column",
-		"ValueMemberName": "CityNameDictionaryKey"
-	},
+			"KeyMemberType": "Column",
+			"KeyMemberName": "LastNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "LastNameDictionaryKey",
 
-	{
-		"DictionaryId": "StateName",
+			"RecordCount": 88800
+		},
 
-		"ObjectType": "Table",
-		"DatabaseName": "${ObfuscationDestinationDatabaseName}",
-		"SchemaName": "rev001",
-		"ObjectName": "StateNameDictionary",
+		{
+			"DictionaryId": "CityName",
 
-		"KeyMemberType": "Column",
-		"KeyMemberName": "StateNameDictionaryKey",
-		"ValueMemberType": "Column",
-		"ValueMemberName": "StateNameDictionaryKey"
-	},
+			"ObjectType": "Table",
+			"DatabaseName": "Ox_Config",
+			"SchemaName": "rev001",
+			"ObjectName": "CityNameDictionary",
 
-	{
-		"DictionaryId": "CountryName",
+			"KeyMemberType": "Column",
+			"KeyMemberName": "CityNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "CityNameDictionaryKey",
 
-		"ObjectType": "Table",
-		"DatabaseName": "${ObfuscationDestinationDatabaseName}",
-		"SchemaName": "rev001",
-		"ObjectName": "CountryNameDictionary",
+			"RecordCount": 0
+		},
 
-		"KeyMemberType": "Column",
-		"KeyMemberName": "CountryNameDictionaryKey",
-		"ValueMemberType": "Column",
-		"ValueMemberName": "CountryNameDictionaryKey"
-	}
+		{
+			"DictionaryId": "StateName",
+
+			"ObjectType": "Table",
+			"DatabaseName": "Ox_Config",
+			"SchemaName": "rev001",
+			"ObjectName": "StateNameDictionary",
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "StateNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "StateNameDictionaryKey",
+
+			"RecordCount": 0
+		},
+
+		{
+			"DictionaryId": "CountryName",
+
+			"ObjectType": "Table",
+			"DatabaseName": "Ox_Config",
+			"SchemaName": "rev001",
+			"ObjectName": "CountryNameDictionary",
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "CountryNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "CountryNameDictionaryKey",
+
+			"RecordCount": 0
+		}
 
 	],
 
-	"Objects": [
+	"Objects":
+	[
 ]]>
 	</OutputScope>
 
@@ -718,13 +734,14 @@ GO
 
 <OutputScope name="${ObfuscationConfigFilePath}.g" append="true">
 <![CDATA[
-	{
-		"ObjectType": "Table",
-		"DatabaseName": "${DefaultDatabaseName}",
-		"SchemaName": "${SchemaName}",
-		"ObjectName": "${TableName}",
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "${DefaultDatabaseName}",
+			"SchemaName": "${SchemaName}",
+			"ObjectName": "${TableName}",
 
-		"Members": [
+			"Members":
+			[
 ]]>
 			<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 				<ForEach.Sort>
@@ -736,28 +753,28 @@ GO
 				</ForEach.Sort>
 				<ForEach.Body>
 <![CDATA[
-			{
-				"MemberType": "Column",
-				"MemberName": "${ColumnName}",
-
-				"ObfuscationStrategy": "None",
-				"DictionaryRef": "Null",
-				"MaskFactor": 0.50,
-				"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
-
-				"ValueHash":
 				{
-					"Multiplier": 33, 
-					"Size": 120,
-					"Seed": 5381
-				}
-			},
+					"MemberType": "Column",
+					"MemberName": "${ColumnName}",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
 ]]>
 					</ForEach.Body>
 			</ForEach>
 <![CDATA[
-		]
-	},
+			]
+		},
 ]]>
 </OutputScope>
 
