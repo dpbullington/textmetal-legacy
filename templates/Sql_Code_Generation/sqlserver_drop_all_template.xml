@@ -10,21 +10,19 @@
 <![CDATA[
 -- DROP ALL OBJECTS FROM DATABASE
 ]]>
-	
+
 	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
-			<BinaryExpression operator="Ne">
-				<BinaryExpression.LeftExpression>
-					<Facet name="SchemaName" />
-				</BinaryExpression.LeftExpression>
-				<BinaryExpression.RightExpression>
-					<Facet name="HistorySchemaName" />
-				</BinaryExpression.RightExpression>
-			</BinaryExpression>
+			<Ruby src="Script">
+				<Script>![textMetal.EvaluateToken.invoke("HistorySchemaName"), "db_accessadmin", "db_backupoperator", "db_datareader",
+				"db_datawriter", "db_ddladmin", "db_denydatareader", "db_denydatawriter",
+				"db_owner", "db_securityadmin", "sys",
+				"INFORMATION_SCHEMA", "guest"].include?(textMetal.EvaluateToken.invoke("SchemaName"));</Script>
+			</Ruby>
 		</ForEach.Filter>
 		
 		<ForEach.Body>
-		
+
 <![CDATA[-- [${SchemaName}]
 
 ]]>
@@ -116,11 +114,32 @@ GO
 				
 				</ForEach.Body>
 			</ForEach>
-			
+
+			<If>
+				<If.Condition>
+					<BinaryExpression operator="Ne">
+						<BinaryExpression.LeftExpression>
+							<Facet name="SchemaName" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Value type="System.String" data="dbo" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</If.Condition>
+				<If.True>
 <![CDATA[DROP SCHEMA [${SchemaName}]
 GO
 
 ]]>
+				</If.True>
+				<If.False>
+<![CDATA[-- DO NOT DROP SCHEMA [${SchemaName}]
+GO
+
+]]>
+				</If.False>
+			</If>
+
 
 		</ForEach.Body>
 	</ForEach>

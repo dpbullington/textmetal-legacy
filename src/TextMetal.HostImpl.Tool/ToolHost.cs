@@ -56,7 +56,7 @@ namespace TextMetal.HostImpl.Tool
 			IXmlPersistEngine xpe;
 			TemplateConstruct template;
 			object source;
-			ObjectConstruct objectConstruct = null;
+			IXmlObject sourceXmlObject;
 			Dictionary<string, object> globalVariableTable;
 			string toolVersion;
 			string templateDirectoryPath;
@@ -124,14 +124,14 @@ namespace TextMetal.HostImpl.Tool
 			if ((object)source == null)
 				return;
 
-			objectConstruct = source as ObjectConstruct;
+			sourceXmlObject = source as IXmlObject;
 
 			// this will always use the XPE
 			xpe.SerializeToXml(template, Path.Combine(baseDirectoryPath, "#template.xml"));
 
 			// this should support XML, JSON, and BSON
-			if ((object)objectConstruct != null)
-				xpe.SerializeToXml(objectConstruct, Path.Combine(baseDirectoryPath, "#source.xml"));
+			if ((object)sourceXmlObject != null)
+				xpe.SerializeToXml(sourceXmlObject, Path.Combine(baseDirectoryPath, "#source.xml"));
 			else if ((object)source != null && (object)Reflexion.GetOneAttribute<SerializableAttribute>(source.GetType()) != null)
 				Cerealization.SetObjectToFile(Path.Combine(baseDirectoryPath, "#source.xml"), source);
 

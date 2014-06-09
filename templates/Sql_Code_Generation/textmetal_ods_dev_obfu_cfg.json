@@ -1,9 +1,5 @@
-	
-{
-	"MaskFactor": 0.50,
 
-	"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
-	
+{
 	"SignHash":
 	{
 		"Multiplier": 33, 
@@ -11,258 +7,7790 @@
 		"Seed": 5381
 	},
 
-	"Dictionaries": [
+	"Dictionaries":
+	[
 
-	{
-		"DictionaryId": "d_null",
-		"DictionaryType": "External",
-
-		"External":
 		{
-			"Source":
-			{
-				"ObjectType": "View",
-				"DatabaseName": "*",
-				"SchemaName": "*",
-				"ObjectName": "*"
-			},
+			"DictionaryId": "Null",
 
-			"KeyMemberType": "Column",
+			"ObjectType": "*",
+			"DatabaseName": "*",
+			"SchemaName": "*",
+			"ObjectName": "*",
+
+			"KeyMemberType": "*",
 			"KeyMemberName": "*",
-			"ValueMemberType": "Column",
-			"ValueMemberName": "*"
+			"ValueMemberType": "*",
+			"ValueMemberName": "*",
+
+			"RecordCount": 0
 		},
 
-		"Internal":
 		{
-			"AssemblyName": "",
-			"TypeName": ""
-		}
-	},
+			"DictionaryId": "CrayonColor",
 
-	{
-		"DictionaryId": "d_crayon_colors",
-		"DictionaryType": "External",
-
-		"External":
-		{
-			"Source":
-			{
-				"ObjectType": "Table",
-				"DatabaseName": "Ox_textmetal_ods_dev",
-				"SchemaName": "ObfuConf",
-				"ObjectName": "CrayonColorDictionary"
-			},
+			"ObjectType": "Table",
+			"DatabaseName": "Ox_Config",
+			"SchemaName": "rev001",
+			"ObjectName": "CrayonColorDictionary",
 
 			"KeyMemberType": "Column",
 			"KeyMemberName": "CrayonColorDictionaryKey",
 			"ValueMemberType": "Column",
-			"ValueMemberName": "CrayonColorDictionaryKey"
+			"ValueMemberName": "CrayonColorDictionaryKey",
+
+			"RecordCount": 121
 		},
 
-		"Internal":
 		{
-			"AssemblyName": "",
-			"TypeName": ""
-		}
-	},
+			"DictionaryId": "FirstName",
 
-	{
-		"DictionaryId": "d_first_names",
-		"DictionaryType": "External",
-
-		"External":
-		{
-			"Source":
-			{
-				"ObjectType": "Table",
-				"DatabaseName": "Ox_textmetal_ods_dev",
-				"SchemaName": "ObfuConf",
-				"ObjectName": "FirstNameDictionary"
-			},
+			"ObjectType": "Table",
+			"DatabaseName": "Ox_Config",
+			"SchemaName": "rev001",
+			"ObjectName": "FirstNameDictionary",
 
 			"KeyMemberType": "Column",
 			"KeyMemberName": "FirstNameDictionaryKey",
 			"ValueMemberType": "Column",
-			"ValueMemberName": "FirstNameDictionaryKey"
+			"ValueMemberName": "FirstNameDictionaryKey",
+
+			"RecordCount": 5164
 		},
 
-		"Internal":
 		{
-			"AssemblyName": "",
-			"TypeName": ""
-		}
-	},
+			"DictionaryId": "LastName",
 
-	{
-		"DictionaryId": "d_last_names",
-		"DictionaryType": "External",
-
-		"External":
-		{
-			"Source":
-			{
-				"ObjectType": "Table",
-				"DatabaseName": "Ox_textmetal_ods_dev",
-				"SchemaName": "ObfuConf",
-				"ObjectName": "LastNameDictionary"
-			},
+			"ObjectType": "Table",
+			"DatabaseName": "Ox_Config",
+			"SchemaName": "rev001",
+			"ObjectName": "LastNameDictionary",
 
 			"KeyMemberType": "Column",
 			"KeyMemberName": "LastNameDictionaryKey",
 			"ValueMemberType": "Column",
-			"ValueMemberName": "LastNameDictionaryKey"
+			"ValueMemberName": "LastNameDictionaryKey",
+
+			"RecordCount": 88800
 		},
 
-		"Internal":
 		{
-			"AssemblyName": "",
-			"TypeName": ""
-		}
-	},
+			"DictionaryId": "CityName",
 
-	{
-		"DictionaryId": "d_city_name",
-		"DictionaryType": "External",
-
-		"External":
-		{
-			"Source":
-			{
-				"ObjectType": "Table",
-				"DatabaseName": "Ox_textmetal_ods_dev",
-				"SchemaName": "ObfuConf",
-				"ObjectName": "CityNameDictionary"
-			},
+			"ObjectType": "Table",
+			"DatabaseName": "Ox_Config",
+			"SchemaName": "rev001",
+			"ObjectName": "CityNameDictionary",
 
 			"KeyMemberType": "Column",
 			"KeyMemberName": "CityNameDictionaryKey",
 			"ValueMemberType": "Column",
-			"ValueMemberName": "CityNameDictionaryKey"
+			"ValueMemberName": "CityNameDictionaryKey",
+
+			"RecordCount": 0
 		},
 
-		"Internal":
 		{
-			"AssemblyName": "",
-			"TypeName": ""
-		}
-	},
+			"DictionaryId": "StateName",
 
-	{
-		"DictionaryId": "d_state_names",
-		"DictionaryType": "External",
-
-		"External":
-		{
-			"Source":
-			{
-				"ObjectType": "Table",
-				"DatabaseName": "Ox_textmetal_ods_dev",
-				"SchemaName": "ObfuConf",
-				"ObjectName": "StateNameDictionary"
-			},
+			"ObjectType": "Table",
+			"DatabaseName": "Ox_Config",
+			"SchemaName": "rev001",
+			"ObjectName": "StateNameDictionary",
 
 			"KeyMemberType": "Column",
 			"KeyMemberName": "StateNameDictionaryKey",
 			"ValueMemberType": "Column",
-			"ValueMemberName": "StateNameDictionaryKey"
+			"ValueMemberName": "StateNameDictionaryKey",
+
+			"RecordCount": 0
 		},
 
-		"Internal":
 		{
-			"AssemblyName": "",
-			"TypeName": ""
-		}
-	},
+			"DictionaryId": "CountryName",
 
-	{
-		"DictionaryId": "d_country_names",
-		"DictionaryType": "External",
-
-		"External":
-		{
-			"Source":
-			{
-				"ObjectType": "Table",
-				"DatabaseName": "Ox_textmetal_ods_dev",
-				"SchemaName": "ObfuConf",
-				"ObjectName": "CountryNameDictionary"
-			},
+			"ObjectType": "Table",
+			"DatabaseName": "Ox_Config",
+			"SchemaName": "rev001",
+			"ObjectName": "CountryNameDictionary",
 
 			"KeyMemberType": "Column",
 			"KeyMemberName": "CountryNameDictionaryKey",
 			"ValueMemberType": "Column",
-			"ValueMemberName": "CountryNameDictionaryKey"
-		},
+			"ValueMemberName": "CountryNameDictionaryKey",
 
-		"Internal":
-		{
-			"AssemblyName": "",
-			"TypeName": ""
+			"RecordCount": 0
 		}
-	}
 
 	],
 
-	"Objects": [
+	"Objects":
+	[
 
-	{
-		"Source":
 		{
 			"ObjectType": "Table",
 			"DatabaseName": "textmetal_ods_dev",
 			"SchemaName": "application",
-			"ObjectName": "Organization"
+			"ObjectName": "Organization",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "OrganizationId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ParentOrganizationId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "OrganizationName",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "TimeZoneId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SortOrder",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LogicalDelete",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
 		},
 
-		"Members": [
-
-		{
-			"MemberType": "Column",
-			"MemberName": "OrganizationName",
-
-			"ObfuscationStrategy": "Substitution",
-			"DictionaryRef": "d_crayon_colors",
-
-			"ValueHash":
-			{
-				"Multiplier": 33, 
-				"Size": 120,
-				"Seed": 5381
-			}
-		}
-
-		]
-	},
-
-	{
-		"Source":
 		{
 			"ObjectType": "Table",
 			"DatabaseName": "textmetal_ods_dev",
 			"SchemaName": "application",
-			"ObjectName": "Member"
+			"ObjectName": "Member",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "MemberId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "OrganizationId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ParentMemberId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "MemberName",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "MemberTitle",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SecurityRoleId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SortOrder",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LogicalDelete",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
 		},
 
-		"Members": [
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "dbo",
+			"ObjectName": "EventLogExtent",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "MinCreationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "AvgDifferenceTimestamps",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "MaxModificationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
 
 		{
-			"MemberType": "Column",
-			"MemberName": "MemberName",
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "global",
+			"ObjectName": "User",
 
-			"ObfuscationStrategy": "Ciphering",
-			"DictionaryRef": "d_null",
+			"Members":
+			[
 
-			"ValueHash":
-			{
-				"Multiplier": 0, 
-				"Size": 0,
-				"Seed": 0
-			}
-		}
+				{
+					"MemberType": "Column",
+					"MemberName": "UserId",
 
-		]
-	}
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
 
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "EmailAddress",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "UserName",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SaltValue",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "PasswordHash",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "Question",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "AnswerHash",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LastLoginSuccessTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LastLoginFailureTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "FailedLoginCount",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "MustChangePassword",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SortOrder",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LogicalDelete",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "global",
+			"ObjectName": "SecurityRole",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SecurityRoleId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SecurityRoleName",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SortOrder",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LogicalDelete",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "global",
+			"ObjectName": "PropertyBag",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "PropertyBagId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "PropertyKey",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "PropertyType",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "PropertyValue",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SortOrder",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LogicalDelete",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "global",
+			"ObjectName": "EventLog",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "EventLogId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "EventText",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SortOrder",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LogicalDelete",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "global",
+			"ObjectName": "EmailMessage",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "EmailMessageId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "From",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "Sender",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ReplyTo",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "To",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CarbonCopy",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "BlindCarbonCopy",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "Subject",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "IsBodyHtml",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "Body",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "Processed",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SortOrder",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LogicalDelete",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "global",
+			"ObjectName": "EmailAttachment",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "EmailAttachmentId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "EmailMessageId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "FileName",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "FileSize",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "MimeType",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "AttachmentBits",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SortOrder",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LogicalDelete",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "history",
+			"ObjectName": "OrganizationHistory",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "OrganizationHistoryId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "OrganizationHistoryTs",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "OrganizationId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ParentOrganizationId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "OrganizationName",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "TimeZoneId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SortOrder",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LogicalDelete",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "history",
+			"ObjectName": "MemberHistory",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "MemberHistoryId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "MemberHistoryTs",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "MemberId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "OrganizationId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ParentMemberId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "MemberName",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "MemberTitle",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SecurityRoleId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SortOrder",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LogicalDelete",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "history",
+			"ObjectName": "UserHistory",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "UserHistoryId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "UserHistoryTs",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "UserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "EmailAddress",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "UserName",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SaltValue",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "PasswordHash",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "Question",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "AnswerHash",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LastLoginSuccessTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LastLoginFailureTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "FailedLoginCount",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "MustChangePassword",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SortOrder",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LogicalDelete",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "history",
+			"ObjectName": "SecurityRoleHistory",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SecurityRoleHistoryId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SecurityRoleHistoryTs",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SecurityRoleId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SecurityRoleName",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SortOrder",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LogicalDelete",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "history",
+			"ObjectName": "PropertyBagHistory",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "PropertyBagHistoryId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "PropertyBagHistoryTs",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "PropertyBagId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "PropertyKey",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "PropertyType",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "PropertyValue",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SortOrder",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LogicalDelete",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "history",
+			"ObjectName": "EventLogHistory",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "EventLogHistoryId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "EventLogHistoryTs",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "EventLogId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "EventText",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SortOrder",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LogicalDelete",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "history",
+			"ObjectName": "EmailMessageHistory",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "EmailMessageHistoryId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "EmailMessageHistoryTs",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "EmailMessageId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "From",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "Sender",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ReplyTo",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "To",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CarbonCopy",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "BlindCarbonCopy",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "Subject",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "IsBodyHtml",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "Body",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "Processed",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SortOrder",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LogicalDelete",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "history",
+			"ObjectName": "EmailAttachmentHistory",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "EmailAttachmentHistoryId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "EmailAttachmentHistoryTs",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "EmailMessageId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "EmailAttachmentId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "FileName",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "FileSize",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "MimeType",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "AttachmentBits",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "SortOrder",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationTimestamp",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "CreationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "ModificationUserId",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "LogicalDelete",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "testcases",
+			"ObjectName": "tab_with_primary_key_as_identity",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_int_id_pk",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_bigint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_binary",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_bit",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_char",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_date",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetime",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetime2",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetimeoffset",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_decimal",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_float",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_image",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_int",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_money",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_nchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_ntext",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_numeric",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_nvarchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_real",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_rowversion",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smalldatetime",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smallint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smallmoney",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_sql_variant",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_sysname",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_text",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_time",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_tinyint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_uniqueidentifier",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_varbinary",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_varchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_xml",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "testcases",
+			"ObjectName": "tab_with_primary_key_as_default",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_uuid_df_pk",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_bigint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_binary",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_bit",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_char",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_date",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetime",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetime2",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetimeoffset",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_decimal",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_float",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_image",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_int",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_money",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_nchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_ntext",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_numeric",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_nvarchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_real",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_rowversion",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smalldatetime",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smallint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smallmoney",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_sql_variant",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_sysname",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_text",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_time",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_tinyint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_uniqueidentifier",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_varbinary",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_varchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_xml",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "testcases",
+			"ObjectName": "tab_with_primary_key_with_different_identity",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_int_pk",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_int_id",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_bigint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_binary",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_bit",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_char",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_date",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetime",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetime2",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetimeoffset",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_decimal",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_float",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_image",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_int",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_money",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_nchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_ntext",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_numeric",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_nvarchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_real",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_rowversion",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smalldatetime",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smallint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smallmoney",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_sql_variant",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_sysname",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_text",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_time",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_tinyint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_uniqueidentifier",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_varbinary",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_varchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_xml",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "testcases",
+			"ObjectName": "tab_with_no_primary_key_with_identity",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_int_id",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_bigint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_binary",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_bit",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_char",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_date",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetime",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetime2",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetimeoffset",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_decimal",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_float",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_image",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_int",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_money",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_nchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_ntext",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_numeric",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_nvarchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_real",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_rowversion",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smalldatetime",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smallint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smallmoney",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_sql_variant",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_sysname",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_text",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_time",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_tinyint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_uniqueidentifier",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_varbinary",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_varchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_xml",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "testcases",
+			"ObjectName": "tab_with_primary_key_no_identity",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_int_pk",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_bigint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_binary",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_bit",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_char",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_date",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetime",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetime2",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetimeoffset",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_decimal",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_float",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_image",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_int",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_money",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_nchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_ntext",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_numeric",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_nvarchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_real",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_rowversion",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smalldatetime",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smallint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smallmoney",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_sql_variant",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_sysname",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_text",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_time",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_tinyint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_uniqueidentifier",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_varbinary",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_varchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_xml",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "testcases",
+			"ObjectName": "tab_no_primary_key_no_identity",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_bigint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_binary",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_bit",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_char",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_date",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetime",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetime2",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetimeoffset",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_decimal",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_float",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_image",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_int",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_money",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_nchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_ntext",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_numeric",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_nvarchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_real",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_rowversion",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smalldatetime",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smallint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smallmoney",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_sql_variant",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_sysname",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_text",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_time",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_tinyint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_uniqueidentifier",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_varbinary",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_varchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_xml",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
+
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "textmetal_ods_dev",
+			"SchemaName": "testcases",
+			"ObjectName": "tab_with_composite_primary_key_no_identity",
+
+			"Members":
+			[
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_int_pk0",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_int_pk1",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_int_pk2",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_int_pk3",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_bigint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_binary",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_bit",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_char",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_date",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetime",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetime2",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_datetimeoffset",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_decimal",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_float",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_image",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_int",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_money",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_nchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_ntext",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_numeric",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_nvarchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_real",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_rowversion",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smalldatetime",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smallint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_smallmoney",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_sql_variant",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_sysname",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_text",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_time",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_tinyint",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_uniqueidentifier",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_varbinary",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_varchar",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+				{
+					"MemberType": "Column",
+					"MemberName": "col_xml",
+
+					"ObfuscationStrategy": "None",
+					"DictionaryRef": "Null",
+					"MaskFactor": 0.50,
+					"SharedSecret": "v0ofW8yRTonp3t9L7O7wTqewwccSz2B239v7vW631xP38UKd53BHm9bq0751572n",
+
+					"ValueHash":
+					{
+						"Multiplier": 33, 
+						"Size": 120,
+						"Seed": 5381
+					}
+				},
+
+			]
+		},
 	]
 }

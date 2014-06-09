@@ -42,8 +42,20 @@ namespace TextMetal.Common.SqlServerClr
 			initVectorBytes = Encoding.UTF8.GetBytes(INIT_VECTOR);
 			plainTextBytes = Encoding.GetEncoding("UCS-2").GetBytes(value);
 
-			using (PasswordDeriveBytes password = new PasswordDeriveBytes(sharedSecret, null))
+#if !CLR_35
+			using (
+#endif
+				PasswordDeriveBytes password = new PasswordDeriveBytes(sharedSecret, null)
+#if CLR_35
+			;
+#endif
+#if !CLR_35
+				)
+#endif
+			{
+				// support 3.5 and above
 				keyBytes = password.GetBytes(KEY_SIZE / 8);
+			}
 
 			using (RijndaelManaged symmetricKey = new RijndaelManaged())
 			{
@@ -257,6 +269,8 @@ namespace TextMetal.Common.SqlServerClr
 				value = (SqlSingle)value + (SqlSingle)(varianceFactor * (double)(SqlSingle)value);
 			else if (value is SqlDouble)
 				value = (SqlDouble)value + (SqlDouble)(varianceFactor * (double)(SqlDouble)value);
+			else if (value is SqlMoney)
+				value = (SqlMoney)value + (SqlMoney)((decimal)varianceFactor * (decimal)(SqlMoney)value);
 			else if (value is SqlDateTime)
 				value = SqlDateTime.Add(((SqlDateTime)value), TimeSpan.FromDays((Double)(varianceFactor * 365.25)));
 			else
