@@ -23,6 +23,7 @@ namespace TextMetal.HostImpl.SsisGenPkg.ConsoleTool.Config
 		#region Fields/Constants
 
 		private readonly List<DataTransfer> objects = new List<DataTransfer>();
+		private bool? validateExternalMetadata;
 
 		#endregion
 
@@ -33,6 +34,18 @@ namespace TextMetal.HostImpl.SsisGenPkg.ConsoleTool.Config
 			get
 			{
 				return this.objects;
+			}
+		}
+
+		public bool? ValidateExternalMetadata
+		{
+			get
+			{
+				return this.validateExternalMetadata;
+			}
+			set
+			{
+				this.validateExternalMetadata = value;
 			}
 		}
 

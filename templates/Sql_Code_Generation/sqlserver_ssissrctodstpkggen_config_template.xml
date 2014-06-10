@@ -9,6 +9,8 @@
 	<OutputScope name="SsisSrcToDstPkgGen.config.g.json" append="false">
 <![CDATA[
 {
+	"ValidateExternalMetadata": true,
+
 	"Objects":
 	[
 ]]>

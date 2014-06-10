@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+-->
+<Template xmlns="http://www.textmetal.com/api/v6.0.0">
+
+	<ForEach in="databases" var-ct="_LoopCount" var-ix="_LoopIndex">
+		<ForEach.Body>
+
+			<OutputScope name="${OutputFilePrefix}${DatabaseName}.json" append="false">
+<![CDATA[
+{
+	"SignHash":
+	{
+		"Multiplier": 33, 
+		"Size": 1000000,
+		"Seed": 5381
+	},
+
+	"Dictionaries":
+	[
+
+		{
+			"DictionaryId": "Null",
+
+			"ObjectType": "*",
+			"DatabaseName": "*",
+			"SchemaName": "*",
+			"ObjectName": "*",
+
+			"KeyMemberType": "*",
+			"KeyMemberName": "*",
+			"ValueMemberType": "*",
+			"ValueMemberName": "*",
+
+			"RecordCount": 0
+		},
+
+		{
+			"DictionaryId": "CrayonColor",
+
+			"ObjectType": "Table",
+			"DatabaseName": "${ObfuscationConfigurationDatabaseName}",
+			"SchemaName": "rev001",
+			"ObjectName": "CrayonColorDictionary",
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "CrayonColorDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "CrayonColorDictionaryKey",
+
+			"RecordCount": 121
+		},
+
+		{
+			"DictionaryId": "FirstName",
+
+			"ObjectType": "Table",
+			"DatabaseName": "${ObfuscationConfigurationDatabaseName}",
+			"SchemaName": "rev001",
+			"ObjectName": "FirstNameDictionary",
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "FirstNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "FirstNameDictionaryKey",
+
+			"RecordCount": 5164
+		},
+
+		{
+			"DictionaryId": "LastName",
+
+			"ObjectType": "Table",
+			"DatabaseName": "${ObfuscationConfigurationDatabaseName}",
+			"SchemaName": "rev001",
+			"ObjectName": "LastNameDictionary",
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "LastNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "LastNameDictionaryKey",
+
+			"RecordCount": 88800
+		},
+
+		{
+			"DictionaryId": "CityName",
+
+			"ObjectType": "Table",
+			"DatabaseName": "${ObfuscationConfigurationDatabaseName}",
+			"SchemaName": "rev001",
+			"ObjectName": "CityNameDictionary",
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "CityNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "CityNameDictionaryKey",
+
+			"RecordCount": 0
+		},
+
+		{
+			"DictionaryId": "StateName",
+
+			"ObjectType": "Table",
+			"DatabaseName": "${ObfuscationConfigurationDatabaseName}",
+			"SchemaName": "rev001",
+			"ObjectName": "StateNameDictionary",
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "StateNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "StateNameDictionaryKey",
+
+			"RecordCount": 0
+		},
+
+		{
+			"DictionaryId": "CountryName",
+
+			"ObjectType": "Table",
+			"DatabaseName": "${ObfuscationConfigurationDatabaseName}",
+			"SchemaName": "rev001",
+			"ObjectName": "CountryNameDictionary",
+
+			"KeyMemberType": "Column",
+			"KeyMemberName": "CountryNameDictionaryKey",
+			"ValueMemberType": "Column",
+			"ValueMemberName": "CountryNameDictionaryKey",
+
+			"RecordCount": 0
+		}
+
+	],
+
+	"Objects":
+	[
+]]>
+			<ForEach in="objects" var-ct="_LoopCount" var-ix="_LoopIndex">
+				<ForEach.Sort>
+					<Ascending>
+						<Ascending.Compare>
+							<Facet name="ObjectName" />
+						</Ascending.Compare>
+					</Ascending>
+				</ForEach.Sort>
+				<ForEach.Body>
+<![CDATA[
+		{
+			"ObjectType": "Table",
+			"DatabaseName": "${DatabaseName}",
+			"SchemaName": "${SchemaName}",
+			"ObjectName": "${ObjectName}",
+
+			"Members":
+			[
+	]]>
+				<ForEach in="members" var-ct="_LoopCount" var-ix="_LoopIndex">
+					<ForEach.Sort>
+						<Ascending>
+							<Ascending.Compare>
+								<Facet name="MemberOrdinal" />
+							</Ascending.Compare>
+						</Ascending>
+					</ForEach.Sort>
+					<ForEach.Body>
+	<![CDATA[
+			{
+				"MemberType": "${MemberType}",
+				"MemberName": "${MemberName}",
+
+				"ObfuscationStrategy": "${ObfuscationStrategy}",
+				"DictionaryRef": "${DictionaryId}",
+				"MaskFactor": 0.50,
+				"SharedSecret": "a47Ao829Qtml044m0AV246TX8cM2Vl3m8nmmDW8EU238b4eLq1h235qQwCkHG10Z",
+
+				"ValueHash":
+				{
+					"Multiplier": 33, 
+					"Size": 121,
+					"Seed": 5381
+				}
+			},
+	]]>
+						</ForEach.Body>
+				</ForEach>
+	<![CDATA[
+			]
+		},
+	]]>
+						</ForEach.Body>
+				</ForEach>
+	<![CDATA[
+	]
+}
+]]>
+
+			</OutputScope>
+		</ForEach.Body>
+	</ForEach>
+	
+</Template>

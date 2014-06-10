@@ -37,7 +37,7 @@ goto pkgBuild
 
 :pkgBuild
 
-echo *** sql_codegen_execute ***
+echo *** sqlserver_ssissrctodstpkggen_config_execute ***
 "%TEXTMETAL_EXE%" ^
 	-templatefile:"sqlserver_ssissrctodstpkggen_config_template.xml" ^
 	-sourcefile:"%SOURCE_FILE%" ^

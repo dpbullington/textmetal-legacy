@@ -304,7 +304,7 @@ namespace TextMetal.HostImpl.SsisGenPkg.ConsoleTool
 			return 0;
 		}
 
-		public static void WritePackage(string baseDirectoryPath, Project project, DataTransfer @object
+		public static void WritePackage(bool validateExternalMetadata, string baseDirectoryPath, Project project, DataTransfer @object
 			/*,	ConnectionManager sourceConnectionManager, ConnectionManager destinationConnectionManager*/)
 		{
 			if ((object)project == null)
@@ -398,7 +398,7 @@ namespace TextMetal.HostImpl.SsisGenPkg.ConsoleTool
 				// create OLEDB source component metadata in pipeline
 				oleDbSourceDtsComponentMetaData100 = mainPipe.ComponentMetaDataCollection.New();
 				oleDbSourceDtsComponentMetaData100.ComponentClassID = "DTSAdapter.OleDbSource";
-				oleDbSourceDtsComponentMetaData100.ValidateExternalMetadata = true;
+				oleDbSourceDtsComponentMetaData100.ValidateExternalMetadata = validateExternalMetadata;
 				oleDbSourceDtsComponentMetaData100.Name = "OLE DB Source";
 
 				// create OLEDB source design-time component in pipeline
@@ -412,16 +412,19 @@ namespace TextMetal.HostImpl.SsisGenPkg.ConsoleTool
 				oleDbSourceDtsComponentMetaData100.RuntimeConnectionCollection[0].ConnectionManagerID = sourceConnectionManager.ID;
 
 				// get the column metadata
-				oleDbSourceDtsDesigntimeComponent100.AcquireConnections(null);
-				oleDbSourceDtsDesigntimeComponent100.ReinitializeMetaData();
-				oleDbSourceDtsDesigntimeComponent100.ReleaseConnections();
+				if (validateExternalMetadata)
+				{
+					oleDbSourceDtsDesigntimeComponent100.AcquireConnections(null);
+					oleDbSourceDtsDesigntimeComponent100.ReinitializeMetaData();
+					oleDbSourceDtsDesigntimeComponent100.ReleaseConnections();
+				}
 
 				if (false)
 				{
 					// create transform component metadata in pipeline
 					transformDtsComponentMetaData100 = mainPipe.ComponentMetaDataCollection.New();
 					transformDtsComponentMetaData100.ComponentClassID = "???";
-					transformDtsComponentMetaData100.ValidateExternalMetadata = true;
+					transformDtsComponentMetaData100.ValidateExternalMetadata = validateExternalMetadata;
 					transformDtsComponentMetaData100.Name = "???";
 
 					// create transform design-time component in pipeline
@@ -431,9 +434,12 @@ namespace TextMetal.HostImpl.SsisGenPkg.ConsoleTool
 					transformDtsDesigntimeComponent100.SetComponentProperty("???", new object());
 
 					// get the column metadata
-					transformDtsDesigntimeComponent100.AcquireConnections(null);
-					transformDtsDesigntimeComponent100.ReinitializeMetaData();
-					transformDtsDesigntimeComponent100.ReleaseConnections();
+					if (validateExternalMetadata)
+					{
+						transformDtsDesigntimeComponent100.AcquireConnections(null);
+						transformDtsDesigntimeComponent100.ReinitializeMetaData();
+						transformDtsDesigntimeComponent100.ReleaseConnections();
+					}
 				}
 				else
 				{
@@ -443,7 +449,7 @@ namespace TextMetal.HostImpl.SsisGenPkg.ConsoleTool
 				// create OLEDB destination component metadata in pipeline
 				oleDbDestinationDtsComponentMetaData100 = mainPipe.ComponentMetaDataCollection.New();
 				oleDbDestinationDtsComponentMetaData100.ComponentClassID = "DTSAdapter.OleDbDestination";
-				oleDbDestinationDtsComponentMetaData100.ValidateExternalMetadata = true;
+				oleDbDestinationDtsComponentMetaData100.ValidateExternalMetadata = validateExternalMetadata;
 				oleDbDestinationDtsComponentMetaData100.Name = "OLE DB Destination";
 
 				// create OLEDB destination design-time component in pipeline
@@ -460,9 +466,12 @@ namespace TextMetal.HostImpl.SsisGenPkg.ConsoleTool
 				oleDbDestinationDtsComponentMetaData100.RuntimeConnectionCollection[0].ConnectionManagerID = destinationConnectionManager.ID;
 
 				// get the column metadata
-				oleDbDestinationDtsDesigntimeComponent100.AcquireConnections(null);
-				oleDbDestinationDtsDesigntimeComponent100.ReinitializeMetaData();
-				oleDbDestinationDtsDesigntimeComponent100.ReleaseConnections();
+				if (validateExternalMetadata)
+				{
+					oleDbDestinationDtsDesigntimeComponent100.AcquireConnections(null);
+					oleDbDestinationDtsDesigntimeComponent100.ReinitializeMetaData();
+					oleDbDestinationDtsDesigntimeComponent100.ReleaseConnections();
+				}
 
 				if (false)
 				{
@@ -613,7 +622,7 @@ namespace TextMetal.HostImpl.SsisGenPkg.ConsoleTool
 				destinationConnectionManager = destinationConnectionManagerItem.ConnectionManager;*/
 
 				foreach (var @object in configuration.Objects)
-					WritePackage(baseDirectoryPath, project, @object);
+					WritePackage(configuration.ValidateExternalMetadata ?? true, baseDirectoryPath, project, @object);
 
 				// MASTER: server ...
 				// SERVER: database ...

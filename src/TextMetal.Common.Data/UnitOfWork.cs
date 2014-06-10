@@ -163,8 +163,8 @@ namespace TextMetal.Common.Data
 		public static IUnitOfWork Create(Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel = IsolationLevel.Unspecified)
 		{
 			UnitOfWork unitOfWork;
-			IDbConnection connection;
-			IDbTransaction transaction;
+			IDbConnection dbConnection;
+			IDbTransaction dbTransaction;
 			const bool OPEN = true;
 
 			if ((object)connectionType == null)
@@ -176,20 +176,32 @@ namespace TextMetal.Common.Data
 			if (DataType.IsWhiteSpace(connectionString))
 				throw new ArgumentOutOfRangeException("connectionString");
 
-			connection = (IDbConnection)Activator.CreateInstance(connectionType);
+			dbConnection = (IDbConnection)Activator.CreateInstance(connectionType);
 
 			if (OPEN)
 			{
-				connection.ConnectionString = connectionString;
-				connection.Open();
+				dbConnection.ConnectionString = connectionString;
+				dbConnection.Open();
 
 				if (transactional)
-					transaction = connection.BeginTransaction(isolationLevel);
+					dbTransaction = dbConnection.BeginTransaction(isolationLevel);
 				else
-					transaction = null;
+					dbTransaction = null;
 			}
 
-			unitOfWork = new UnitOfWork(connection, transaction);
+			unitOfWork = new UnitOfWork(dbConnection, dbTransaction);
+
+			return unitOfWork;
+		}
+
+		public static IUnitOfWork From(IDbConnection dbConnection, IDbTransaction dbTransaction)
+		{
+			UnitOfWork unitOfWork;
+
+			if ((object)dbConnection == null)
+				throw new ArgumentNullException("dbConnection");
+
+			unitOfWork = new UnitOfWork(dbConnection, dbTransaction);
 
 			return unitOfWork;
 		}
