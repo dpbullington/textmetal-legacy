@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 using TextMetal.Common.Core.StringTokens;
 using TextMetal.Common.Xml;
@@ -206,6 +207,15 @@ namespace TextMetal.Framework.Core
 			temp.InsertRange(0, temp2.ToArray());
 
 			return new DynamicWildcardTokenReplacementStrategy(temp.ToArray(), strict);
+		}
+
+		public bool LaunchDebugger()
+		{
+			bool result;
+
+			result = Debugger.Launch() && Debugger.IsAttached;
+			Console.WriteLine("Debugger launch result: '{0}'", result);
+			return result;
 		}
 
 		public void SetReference(Type xmlObjectType)

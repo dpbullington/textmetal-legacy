@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Core.StringTokens;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 
@@ -154,7 +155,7 @@ namespace TextMetal.Framework.AssociativeModel
 					{
 						if (!DataType.IsNullOrWhiteSpace(item.Name) &&
 							!dictionary.ContainsKey(item.Name))
-							dictionary.Add(item.Name, item.GetAssociativeObjectValue());
+							dictionary.Add(item.Name, item.GetAssociativeObjectValue(NullTemplatingContext.Instance));
 					}
 				}
 
@@ -564,9 +565,13 @@ namespace TextMetal.Framework.AssociativeModel
 		/// <summary>
 		/// Gets the enumerator for the current associative object instance. Derived types can override the default behavior of returning the enumerator from the result of InnerAsDictionary (arrays should overrride this behavior for example).
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> An instance of IEnumerator or null. </returns>
-		protected virtual IEnumerator CoreGetAssociativeObjectEnumerator()
+		protected virtual IEnumerator CoreGetAssociativeObjectEnumerator(ITemplatingContext templatingContext)
 		{
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
 			// default (except for Array)
 			return ((IDictionary)this.InnerAsDictionary).GetEnumerator();
 		}
@@ -574,27 +579,39 @@ namespace TextMetal.Framework.AssociativeModel
 		/// <summary>
 		/// Gets the dictionary enumerator for the current associative object instance. Derived types can override the default behavior of returning the enumerator from the result of InnerAsDictionary.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> An instance of IDictionaryEnumerator or null. </returns>
-		protected virtual IDictionaryEnumerator CoreGetAssociativeObjectEnumeratorDict()
+		protected virtual IDictionaryEnumerator CoreGetAssociativeObjectEnumeratorDict(ITemplatingContext templatingContext)
 		{
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
 			return ((IDictionary)this.InnerAsDictionary).GetEnumerator();
 		}
 
 		/// <summary>
 		/// Gets the enumerator (tick one) for the current associative object instance. Derived types can override the default behavior of returning the enumerator from the result of InnerAsDictionary.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> An instance of IEnumerator`1 or null. </returns>
-		protected virtual IEnumerator<KeyValuePair<string, object>> CoreGetAssociativeObjectEnumeratorTickOne()
+		protected virtual IEnumerator<KeyValuePair<string, object>> CoreGetAssociativeObjectEnumeratorTickOne(ITemplatingContext templatingContext)
 		{
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
 			return ((IDictionary<string, object>)this.InnerAsDictionary).GetEnumerator();
 		}
 
 		/// <summary>
 		/// Gets the value of the current associative object instance. Derived types can override the default behavior of returning 'this' (properties should overrride this behavior for example).
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> A value or null. </returns>
-		protected virtual object CoreGetAssociativeObjectValue()
+		protected virtual object CoreGetAssociativeObjectValue(ITemplatingContext templatingContext)
 		{
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
 			// default (except for Property)
 			return this;
 		}
@@ -602,37 +619,53 @@ namespace TextMetal.Framework.AssociativeModel
 		/// <summary>
 		/// Gets the enumerator for the current associative object instance.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> An instance of IEnumerator or null. </returns>
-		public IEnumerator GetAssociativeObjectEnumerator()
+		public IEnumerator GetAssociativeObjectEnumerator(ITemplatingContext templatingContext)
 		{
-			return this.CoreGetAssociativeObjectEnumerator();
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
+			return this.CoreGetAssociativeObjectEnumerator(templatingContext);
 		}
 
 		/// <summary>
 		/// Gets the dictionary enumerator for the current associative object instance.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> An instance of IDictionaryEnumerator or null. </returns>
-		public IDictionaryEnumerator GetAssociativeObjectEnumeratorDict()
+		public IDictionaryEnumerator GetAssociativeObjectEnumeratorDict(ITemplatingContext templatingContext)
 		{
-			return this.CoreGetAssociativeObjectEnumeratorDict();
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
+			return this.CoreGetAssociativeObjectEnumeratorDict(templatingContext);
 		}
 
 		/// <summary>
 		/// Gets the enumerator (tick one) for the current associative object instance.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> An instance of IEnumerator`1 or null. </returns>
-		public IEnumerator<KeyValuePair<string, object>> GetAssociativeObjectEnumeratorTickOne()
+		public IEnumerator<KeyValuePair<string, object>> GetAssociativeObjectEnumeratorTickOne(ITemplatingContext templatingContext)
 		{
-			return this.CoreGetAssociativeObjectEnumeratorTickOne();
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
+			return this.CoreGetAssociativeObjectEnumeratorTickOne(templatingContext);
 		}
 
 		/// <summary>
 		/// Gets the value of the current associative object instance.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> A value or null. </returns>
-		public object GetAssociativeObjectValue()
+		public object GetAssociativeObjectValue(ITemplatingContext templatingContext)
 		{
-			return this.CoreGetAssociativeObjectValue();
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
+			return this.CoreGetAssociativeObjectValue(templatingContext);
 		}
 
 		/// <summary>
@@ -649,7 +682,7 @@ namespace TextMetal.Framework.AssociativeModel
 		/// </returns>
 		IDictionaryEnumerator IDictionary.GetEnumerator()
 		{
-			return this.CoreGetAssociativeObjectEnumeratorDict();
+			return this.CoreGetAssociativeObjectEnumeratorDict(NullTemplatingContext.Instance);
 		}
 
 		/// <summary>
@@ -660,7 +693,7 @@ namespace TextMetal.Framework.AssociativeModel
 		/// </returns>
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			return this.CoreGetAssociativeObjectEnumerator();
+			return this.CoreGetAssociativeObjectEnumerator(NullTemplatingContext.Instance);
 		}
 
 		/// <summary>
@@ -671,7 +704,7 @@ namespace TextMetal.Framework.AssociativeModel
 		/// </returns>
 		IEnumerator<KeyValuePair<string, object>> IEnumerable<KeyValuePair<string, object>>.GetEnumerator()
 		{
-			return this.CoreGetAssociativeObjectEnumeratorTickOne();
+			return this.CoreGetAssociativeObjectEnumeratorTickOne(NullTemplatingContext.Instance);
 		}
 
 		/// <summary>
@@ -764,6 +797,139 @@ namespace TextMetal.Framework.AssociativeModel
 		bool IDictionary<string, object>.TryGetValue(string key, out object value)
 		{
 			return ((IDictionary<string, object>)this.InnerAsDictionary).TryGetValue(key, out value);
+		}
+
+		#endregion
+
+		#region Classes/Structs/Interfaces/Enums/Delegates
+
+		public class NullTemplatingContext : ITemplatingContext
+		{
+			#region Constructors/Destructors
+
+			private NullTemplatingContext()
+			{
+			}
+
+			#endregion
+
+			#region Fields/Constants
+
+			private static readonly NullTemplatingContext instance = new NullTemplatingContext();
+
+			#endregion
+
+			#region Properties/Indexers/Events
+
+			public static NullTemplatingContext Instance
+			{
+				get
+				{
+					return instance;
+				}
+			}
+
+			public IDictionary<string, object> CurrentVariableTable
+			{
+				get
+				{
+					throw new NotImplementedException();
+				}
+			}
+
+			public IInputMechanism Input
+			{
+				get
+				{
+					throw new NotImplementedException();
+				}
+			}
+
+			public System.Collections.Generic.Stack<object> IteratorModels
+			{
+				get
+				{
+					throw new NotImplementedException();
+				}
+			}
+
+			public IOutputMechanism Output
+			{
+				get
+				{
+					throw new NotImplementedException();
+				}
+			}
+
+			public IDictionary<string, IList<string>> Properties
+			{
+				get
+				{
+					throw new NotImplementedException();
+				}
+			}
+
+			public Tokenizer Tokenizer
+			{
+				get
+				{
+					throw new NotImplementedException();
+				}
+			}
+
+			public System.Collections.Generic.Stack<Dictionary<string, object>> VariableTables
+			{
+				get
+				{
+					throw new NotImplementedException();
+				}
+			}
+
+			#endregion
+
+			#region Methods/Operators
+
+			public void AddReference(Type xmlObjectType)
+			{
+				throw new NotImplementedException();
+			}
+
+			public void AddReference(XmlName xmlName, Type xmlObjectType)
+			{
+				throw new NotImplementedException();
+			}
+
+			public void ClearReferences()
+			{
+				throw new NotImplementedException();
+			}
+
+			public void Dispose()
+			{
+				throw new NotImplementedException();
+			}
+
+			public DynamicWildcardTokenReplacementStrategy GetDynamicWildcardTokenReplacementStrategy()
+			{
+				throw new NotImplementedException();
+			}
+
+			public DynamicWildcardTokenReplacementStrategy GetDynamicWildcardTokenReplacementStrategy(bool strict)
+			{
+				throw new NotImplementedException();
+			}
+
+			public bool LaunchDebugger()
+			{
+				throw new NotImplementedException();
+			}
+
+			public void SetReference(Type xmlObjectType)
+			{
+				throw new NotImplementedException();
+			}
+
+			#endregion
 		}
 
 		#endregion

@@ -34,9 +34,13 @@ namespace TextMetal.Framework.AssociativeModel
 		/// <summary>
 		/// Gets the enumerator for the current associative object instance. Overrides the default behavior by returning an enumerator from a list of only IActualThing implementing child objects.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> An instance of IEnumerator or null. </returns>
-		protected override IEnumerator CoreGetAssociativeObjectEnumerator()
+		protected override IEnumerator CoreGetAssociativeObjectEnumerator(ITemplatingContext templatingContext)
 		{
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
 			return this.Items.OfType<IActualThing>().GetEnumerator();
 		}
 

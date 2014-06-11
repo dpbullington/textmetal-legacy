@@ -183,7 +183,7 @@ namespace TextMetal.Framework.ExpressionModel
 			scriptFoo.Add("EvaluateToken", func);
 			//TODO: templatingContext.Tokenizer.ExpandTokens(tokenizedValue, dynamicWildcardTokenReplacementStrategy);
 
-			action = () => DebuggerBreakpointConstruct.LaunchDebugger();
+			action = () => templatingContext.LaunchDebugger();
 			scriptFoo.Add("DebuggerBreakpoint", action);
 
 			textMetal = new DynamicDictionary(scriptFoo);

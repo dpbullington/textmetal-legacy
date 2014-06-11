@@ -19,26 +19,30 @@ namespace TextMetal.Framework.Core
 		/// <summary>
 		/// Gets the enumerator for the current associative object instance.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> An instance of IEnumerator or null. </returns>
-		IEnumerator GetAssociativeObjectEnumerator();
+		IEnumerator GetAssociativeObjectEnumerator(ITemplatingContext templatingContext);
 
 		/// <summary>
 		/// Gets the dictionary enumerator for the current associative object instance.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> An instance of IDictionaryEnumerator or null. </returns>
-		IDictionaryEnumerator GetAssociativeObjectEnumeratorDict();
+		IDictionaryEnumerator GetAssociativeObjectEnumeratorDict(ITemplatingContext templatingContext);
 
 		/// <summary>
 		/// Gets the enumerator (tick one) for the current associative object instance.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> An instance of IEnumerator`1 or null. </returns>
-		IEnumerator<KeyValuePair<string, object>> GetAssociativeObjectEnumeratorTickOne();
+		IEnumerator<KeyValuePair<string, object>> GetAssociativeObjectEnumeratorTickOne(ITemplatingContext templatingContext);
 
 		/// <summary>
 		/// Gets the value of the current associative object instance.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> A value or null. </returns>
-		object GetAssociativeObjectValue();
+		object GetAssociativeObjectValue(ITemplatingContext templatingContext);
 
 		#endregion
 	}

@@ -64,6 +64,8 @@ namespace TextMetal.Framework.Core
 
 		DynamicWildcardTokenReplacementStrategy GetDynamicWildcardTokenReplacementStrategy(bool strict);
 
+		bool LaunchDebugger();
+
 		void SetReference(Type xmlObjectType);
 
 		#endregion

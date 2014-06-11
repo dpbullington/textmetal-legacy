@@ -27,7 +27,6 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 		/// </summary>
 		public DebuggerBreakpointConstruct()
 		{
-			//LaunchDebugger(); // new behavior to break on PARSE!
 		}
 
 		#endregion
@@ -118,7 +117,6 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 		{
 			get
 			{
-				LaunchDebugger();
 				return null;
 			}
 		}
@@ -127,7 +125,6 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 		{
 			get
 			{
-				LaunchDebugger();
 				return null;
 			}
 		}
@@ -136,16 +133,6 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 
 		#region Methods/Operators
 
-		public static void LaunchDebugger()
-		{
-			if (!Debugger.IsAttached)
-			{
-				Console.WriteLine("debugger before launch;");
-				Debugger.Launch();
-				Console.WriteLine("debugger after launch;");
-			}
-		}
-
 		/// <summary>
 		/// Evaluates at run-time, an expression tree yielding an object value result.
 		/// </summary>
@@ -153,7 +140,10 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 		/// <returns> An expression return value or null. </returns>
 		public object EvaluateExpression(ITemplatingContext templatingContext)
 		{
-			LaunchDebugger();
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
+			templatingContext.LaunchDebugger();
 
 			return null;
 		}
@@ -166,7 +156,10 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 		/// <returns> </returns>
 		public IEnumerable EvaluateSort(ITemplatingContext templatingContext, IEnumerable values)
 		{
-			LaunchDebugger();
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
+			templatingContext.LaunchDebugger();
 
 			return values;
 		}
@@ -177,43 +170,68 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 		/// <param name="templatingContext"> The templating context. </param>
 		public void ExpandTemplate(ITemplatingContext templatingContext)
 		{
-			LaunchDebugger();
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
+			templatingContext.LaunchDebugger();
 		}
 
 		/// <summary>
 		/// Gets the enumerator for the current associative object instance.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> An instance of IEnumerator or null. </returns>
-		public IEnumerator GetAssociativeObjectEnumerator()
+		public IEnumerator GetAssociativeObjectEnumerator(ITemplatingContext templatingContext)
 		{
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
+			templatingContext.LaunchDebugger();
+
 			return null;
 		}
 
 		/// <summary>
 		/// Gets the dictionary enumerator for the current associative object instance.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> An instance of IDictionaryEnumerator or null. </returns>
-		public IDictionaryEnumerator GetAssociativeObjectEnumeratorDict()
+		public IDictionaryEnumerator GetAssociativeObjectEnumeratorDict(ITemplatingContext templatingContext)
 		{
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
+			templatingContext.LaunchDebugger();
+
 			return null;
 		}
 
 		/// <summary>
 		/// Gets the enumerator (tick one) for the current associative object instance.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> An instance of IEnumerator`1 or null. </returns>
-		public IEnumerator<KeyValuePair<string, object>> GetAssociativeObjectEnumeratorTickOne()
+		public IEnumerator<KeyValuePair<string, object>> GetAssociativeObjectEnumeratorTickOne(ITemplatingContext templatingContext)
 		{
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
+			templatingContext.LaunchDebugger();
+
 			return null;
 		}
 
 		/// <summary>
 		/// Gets the value of the current associative object instance.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> A value or null. </returns>
-		public object GetAssociativeObjectValue()
+		public object GetAssociativeObjectValue(ITemplatingContext templatingContext)
 		{
-			LaunchDebugger();
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
+			templatingContext.LaunchDebugger();
 
 			return this;
 		}

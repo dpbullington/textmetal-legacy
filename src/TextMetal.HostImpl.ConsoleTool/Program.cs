@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -98,6 +99,7 @@ namespace TextMetal.HostImpl.ConsoleTool
 			string baseDirectoryPath;
 			string sourceStrategyAssemblyQualifiedTypeName;
 			bool strictMatching;
+			bool debuggerLaunch = false;
 			IDictionary<string, IList<string>> properties;
 			IList<string> _arguments;
 			IList<string> propertyValues;
@@ -108,6 +110,7 @@ namespace TextMetal.HostImpl.ConsoleTool
 			const string CMDLN_TOKEN_SOURCESTRATEGY_AQTN = "sourcestrategy";
 			const string CMDLN_TOKEN_STRICT = "strict";
 			const string CMDLN_TOKEN_PROPERTY = "property";
+			const string CMDLN_DEBUGGER_LAUNCH = "debug";
 
 			arguments = AppConfig.ParseCommandLineArguments(args);
 
@@ -127,6 +130,12 @@ namespace TextMetal.HostImpl.ConsoleTool
 
 				return -1;
 			}
+
+			if (arguments.ContainsKey(CMDLN_DEBUGGER_LAUNCH))
+				DataType.TryParse<bool>(arguments[CMDLN_DEBUGGER_LAUNCH].Single(), out debuggerLaunch);
+
+			if (debuggerLaunch)
+				Console.WriteLine("Debugger launch result: '{0}'", Debugger.Launch() && Debugger.IsAttached);
 
 			// required
 			properties = new Dictionary<string, IList<string>>();

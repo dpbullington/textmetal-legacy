@@ -116,8 +116,6 @@ namespace TextMetal.HostImpl.Tool
 			xpe = new XmlPersistEngine();
 			xpe.RegisterWellKnownConstructs();
 
-			//System.Diagnostics.Debugger.Launch();
-
 			template = (TemplateConstruct)xpe.DeserializeFromXml(templateFilePath);
 			source = sourceStrategy.GetSourceObject(sourceFilePath, properties);
 
@@ -135,9 +133,9 @@ namespace TextMetal.HostImpl.Tool
 			else if ((object)source != null && (object)Reflexion.GetOneAttribute<SerializableAttribute>(source.GetType()) != null)
 				Cerealization.SetObjectToFile(Path.Combine(baseDirectoryPath, "#source.xml"), source);
 
-			using (IInputMechanism inputMechanism = new FileInputMechanism(templateDirectoryPath, xpe)) // relative to template
+			using (IInputMechanism inputMechanism = new FileInputMechanism(templateDirectoryPath, xpe)) // relative to template directory
 			{
-				using (IOutputMechanism outputMechanism = new FileOutputMechanism(baseDirectoryPath, "#textmetal.log"))
+				using (IOutputMechanism outputMechanism = new FileOutputMechanism(baseDirectoryPath, "#textmetal.log")) // relative to base directory
 				{
 					outputMechanism.LogTextWriter.WriteLine("['{0:O}' (UTC)]\tText templating started.", startUtc);
 

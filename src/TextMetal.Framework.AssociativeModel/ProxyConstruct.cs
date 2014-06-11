@@ -58,18 +58,26 @@ namespace TextMetal.Framework.AssociativeModel
 		/// <summary>
 		/// Gets the enumerator for the current associative object instance. Overrides the default behavior and always return null.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> An instance of IEnumerator or null. </returns>
-		protected override IEnumerator CoreGetAssociativeObjectEnumerator()
+		protected override IEnumerator CoreGetAssociativeObjectEnumerator(ITemplatingContext templatingContext)
 		{
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
 			return null;
 		}
 
 		/// <summary>
 		/// Gets the value of the current associative object instance. Overrides the default behavior to return the Value property.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> A value or null. </returns>
-		protected override object CoreGetAssociativeObjectValue()
+		protected override object CoreGetAssociativeObjectValue(ITemplatingContext templatingContext)
 		{
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
 			return this.Value;
 		}
 

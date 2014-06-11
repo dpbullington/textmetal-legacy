@@ -45,7 +45,7 @@ namespace TextMetal.Framework.AssociativeModel
 		{
 			get
 			{
-				return this.GetAssociativeObjectValue();
+				return this.GetAssociativeObjectValue(NullTemplatingContext.Instance);
 			}
 			set
 			{
@@ -104,13 +104,13 @@ namespace TextMetal.Framework.AssociativeModel
 			if ((object)leftAssociativeXmlObject == null)
 				throw new ArgumentNullException("leftAssociativeXmlObject");
 
-			thisValue = leftAssociativeXmlObject.GetAssociativeObjectValue();
+			thisValue = leftAssociativeXmlObject.GetAssociativeObjectValue(NullTemplatingContext.Instance);
 
 			if ((object)rightObject == null)
 				return (object)thisValue == null;
 
 			if ((propertyConstruct = rightObject as PropertyConstruct) != null)
-				thatValue = propertyConstruct.GetAssociativeObjectValue();
+				thatValue = propertyConstruct.GetAssociativeObjectValue(NullTemplatingContext.Instance);
 			else
 				thatValue = rightObject;
 
@@ -129,7 +129,7 @@ namespace TextMetal.Framework.AssociativeModel
 			if ((object)associativeXmlObject == null)
 				throw new ArgumentNullException("associativeXmlObject");
 
-			value = associativeXmlObject.GetAssociativeObjectValue();
+			value = associativeXmlObject.GetAssociativeObjectValue(NullTemplatingContext.Instance);
 
 			if ((object)value == null)
 				return 0;
@@ -149,7 +149,7 @@ namespace TextMetal.Framework.AssociativeModel
 			if ((object)associativeXmlObject == null)
 				throw new ArgumentNullException("associativeXmlObject");
 
-			value = associativeXmlObject.GetAssociativeObjectValue();
+			value = associativeXmlObject.GetAssociativeObjectValue(NullTemplatingContext.Instance);
 
 			if ((object)value == null)
 				return null;
@@ -160,20 +160,28 @@ namespace TextMetal.Framework.AssociativeModel
 		/// <summary>
 		/// Gets the enumerator for the current associative object instance. Overrides the default behavior to always return null.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> An instance of IEnumerator or null. </returns>
-		protected override IEnumerator CoreGetAssociativeObjectEnumerator()
+		protected override IEnumerator CoreGetAssociativeObjectEnumerator(ITemplatingContext templatingContext)
 		{
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
 			return null;
 		}
 
 		/// <summary>
 		/// Gets the value of the current associative object instance. Overrides the default behavior to return a strongly-typed, parsed value from using the Type and Value properties.
 		/// </summary>
+		/// <param name="templatingContext"> The templating context. </param>
 		/// <returns> A value or null. </returns>
-		protected override object CoreGetAssociativeObjectValue()
+		protected override object CoreGetAssociativeObjectValue(ITemplatingContext templatingContext)
 		{
 			object value;
 			Type valueType;
+
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
 
 			if (DataType.IsNullOrWhiteSpace(this.Type))
 				valueType = typeof(String);
