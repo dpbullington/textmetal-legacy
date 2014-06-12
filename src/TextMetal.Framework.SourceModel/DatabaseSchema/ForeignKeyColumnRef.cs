@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	public class ForeignKeyColumnRef : DatabaseSchemaModelBase
+	public class ForeignKeyColumnRef
 	{
 		#region Constructors/Destructors
 

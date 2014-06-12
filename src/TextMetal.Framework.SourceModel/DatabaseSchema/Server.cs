@@ -12,7 +12,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
 	[XmlRoot(ElementName = "Server", Namespace = "http://www.textmetal.com/api/v6.0.0")]
-	public class Server : DatabaseSchemaModelBase
+	public class Server
 	{
 		#region Constructors/Destructors
 
@@ -34,7 +34,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string instanceName;
 		private string machineName;
 		private string serverEdition;
-		private int serverId;
 		private string serverLevel;
 		private string serverName;
 		private string serverVersion;
@@ -125,7 +124,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		{
 			get
 			{
-				return this.Schemas.Count(s => s.Procedures.Count() > 0) > 0;
+				return this.Schemas.Count(s => s.Procedures.Any()) > 0;
 			}
 		}
 
@@ -135,7 +134,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		{
 			get
 			{
-				return this.Schemas.Count(s => s.Tables.Count(t => !t.IsView) > 0) > 0;
+				return this.Schemas.Count(s => s.Tables.Any()) > 0;
 			}
 		}
 
@@ -145,7 +144,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		{
 			get
 			{
-				return this.Schemas.Count(s => s.Tables.Count(t => t.IsView) > 0) > 0;
+				return this.Schemas.Count(s => s.Views.Any()) > 0;
 			}
 		}
 
@@ -195,19 +194,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.serverEdition = value;
-			}
-		}
-
-		[XmlAttribute]
-		public int ServerId
-		{
-			get
-			{
-				return this.serverId;
-			}
-			set
-			{
-				this.serverId = value;
 			}
 		}
 

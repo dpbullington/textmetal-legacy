@@ -5,11 +5,10 @@
 
 -- server
 SELECT
-	CAST(NULL AS [int]) as [ServerId],
 	SERVERPROPERTY('ServerName') AS [ServerName],
 	SERVERPROPERTY('MachineName') AS [MachineName],
 	SERVERPROPERTY('InstanceName') AS [InstanceName],
 	SERVERPROPERTY('ProductVersion') AS [ServerVersion],
 	SERVERPROPERTY ('ProductLevel') AS [ServerLevel],
 	SERVERPROPERTY ('Edition') AS [ServerEdition],
-	DB_NAME() AS [DefaultDatabaseName];
+	DB_NAME() AS [DefaultDatabaseName]

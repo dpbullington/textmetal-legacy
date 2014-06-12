@@ -1,0 +1,64 @@
+﻿/*
+	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+*/
+
+-- columns[schema, table]
+-- DECLARE @SchemaName [nvarchar](255); SET @SchemaName = 'global'; DECLARE @TableName [nvarchar](255); SET @TableName = 'EventLog';
+SELECT
+	sys_c.[column_id] as [ColumnOrdinal],
+	sys_s.[name] as [SchemaName],
+	sys_o.[name] as [TableName],
+	sys_c.[name] as [ColumnName],
+	sys_c.[is_nullable] as [ColumnNullable],
+	sys_c.[max_length] as [ColumnSize],
+	sys_c.[precision] as [ColumnPrecision],
+	sys_c.[scale] as [ColumnScale],		
+	CASE WHEN sys_ty_u.[system_type_id] IS NOT NULL THEN sys_ty_u.[name] ELSE sys_ty.[name] END AS [ColumnSqlType],
+	CAST(CASE WHEN sys_ty_u.[system_type_id] IS NOT NULL THEN 1 ELSE 0 END AS [bit]) AS [ColumnIsUserDefinedType],
+
+	sys_c.[is_identity] as [ColumnIsIdentity],
+	sys_c.[is_computed] as [ColumnIsComputed],
+	CAST(CASE
+		WHEN sys_c.[default_object_id] = 0 THEN 0
+		ELSE 1
+	END AS [bit]) AS [ColumnHasDefault],
+	CAST(CASE
+		WHEN sys_c.[rule_object_id] = 0 THEN 0
+		ELSE 1
+	END AS [bit]) as [ColumnHasCheck],
+	
+	(SELECT
+		CAST(CASE
+			WHEN COUNT(_sys_kc.name) > 0 THEN 1
+			ELSE 0
+		END AS [bit])
+	FROM
+		[sys].[key_constraints] _sys_kc
+		INNER JOIN [sys].[indexes] _sys_ix ON
+			_sys_ix.[object_id] = _sys_kc.[parent_object_id]
+			AND _sys_kc.[unique_index_id] = _sys_ix.[index_id]
+		INNER JOIN [sys].[index_columns] _sys_ixc ON
+			_sys_ixc.[object_id] = _sys_ix.[object_id]
+			AND _sys_ixc.[index_id] = _sys_ix.[index_id]	
+	WHERE
+		_sys_kc.[type] = 'PK'
+		AND _sys_ix.[object_id] = sys_c.[object_id]
+		AND _sys_ixc.[column_id] = sys_c.[column_id]
+		AND _sys_ixc.[is_included_column] = 0
+		AND _sys_ix.[object_id] = sys_o.[object_id]
+	) AS [ColumnIsPrimaryKey]
+FROM
+	[sys].[columns] sys_c
+	INNER JOIN [sys].[tables] sys_t ON sys_t.[object_id] = sys_c.[object_id]
+	INNER JOIN [sys].[objects] sys_o ON sys_o.[object_id] = sys_t.[object_id]
+	INNER JOIN [sys].[schemas] sys_s ON sys_s.[schema_id] = sys_o.[schema_id]
+	INNER JOIN [sys].[types] sys_ty ON sys_ty.[user_type_id] = sys_c.[user_type_id]
+	LEFT OUTER JOIN [sys].[types] sys_ty_u ON
+		sys_ty.[is_user_defined] = 1
+		AND sys_ty_u.[system_type_id] = sys_ty.[system_type_id]
+WHERE
+	sys_s.[name] = @SchemaName
+	and sys_o.[name] = @TableName
+ORDER BY
+	sys_c.[column_id] ASC

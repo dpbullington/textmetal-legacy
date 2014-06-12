@@ -77,43 +77,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			return sqlText;
 		}
 
-		private void ApplyExtendedProperties(IUnitOfWork unitOfWork, DatabaseSchemaModelBase model, string dataSourceTag, string objectTypeName, IEnumerable<IDataParameter> dataParameters)
-		{
-			int recordsAffected;
-
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)model == null)
-				throw new ArgumentNullException("model");
-
-			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
-
-			if ((object)objectTypeName == null)
-				throw new ArgumentNullException("objectTypeName");
-
-			var dataReaderExtProps = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, objectTypeName), dataParameters, out recordsAffected);
-			{
-				foreach (var drReaderExtProps in dataReaderExtProps)
-				{
-					var name = DataType.ChangeType<string>(drReaderExtProps["PropertyName"]);
-					var value = DataType.ChangeType<string>(drReaderExtProps["PropertyValue"]);
-
-					model.ExtendedProperties.Add(new ExtendedProperty()
-												{
-													Name = name,
-													Value = value
-												});
-				}
-			}
-		}
-
 		protected abstract int CoreCalculateColumnSize(string dataSourceTag, Column column);
 
 		protected abstract int CoreCalculateParameterSize(string dataSourceTag, Parameter parameter);
 
 		protected abstract IEnumerable<IDataParameter> CoreGetColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table);
+
+		protected abstract IEnumerable<IDataParameter> CoreGetColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, View view);
 
 		protected abstract IEnumerable<IDataParameter> CoreGetDatabaseParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server);
 
@@ -285,7 +255,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 					if ((object)dictEnumServer != null &&
 						(object)(dictDataServer = dictEnumServer.SingleOrDefault()) != null)
 					{
-						server.ServerId = DataType.ChangeType<int>(dictDataServer["ServerId"]);
 						server.ServerName = DataType.ChangeType<string>(dictDataServer["ServerName"]);
 						server.MachineName = DataType.ChangeType<string>(dictDataServer["MachineName"]);
 						server.InstanceName = DataType.ChangeType<string>(dictDataServer["InstanceName"]);
@@ -293,9 +262,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 						server.ServerLevel = DataType.ChangeType<string>(dictDataServer["ServerLevel"]);
 						server.ServerEdition = DataType.ChangeType<string>(dictDataServer["ServerEdition"]);
 						server.DefaultDatabaseName = DataType.ChangeType<string>(dictDataServer["DefaultDatabaseName"]);
-
-						// each apply is 'off by one' for getting parameters
-						this.ApplyExtendedProperties(unitOfWork, server, dataSourceTag, "ServerExtProps", this.CoreGetDatabaseParameters(unitOfWork, dataSourceTag, server));
 
 						// filter unwanted servers
 						if ((object)serverFilter != null)
@@ -315,6 +281,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 									database = new Database();
 									database.DatabaseId = DataType.ChangeType<int>(dictDataDatabase["DatabaseId"]);
 									database.DatabaseName = DataType.ChangeType<string>(dictDataDatabase["DatabaseName"]);
+									database.CreationTimestamp = DataType.ChangeType<DateTime>(dictDataDatabase["CreationTimestamp"]);
 									database.DatabaseNamePascalCase = Name.GetPascalCase(database.DatabaseName);
 									database.DatabaseNameCamelCase = Name.GetCamelCase(database.DatabaseName);
 									database.DatabaseNameConstantCase = Name.GetConstantCase(database.DatabaseName);
@@ -353,8 +320,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 									unitOfWork.ExecuteDictionary(CommandType.Text, string.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UseDatabase"), server.ServerName, database.DatabaseName), null, out recordsAffected);
 
-									this.ApplyExtendedProperties(unitOfWork, database, dataSourceTag, "DatabaseExtProps", this.CoreGetSchemaParameters(unitOfWork, dataSourceTag, server, database));
-
 									var dictEnumDdlTrigger = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DdlTriggers"), this.CoreGetDdlTriggerParameters(unitOfWork, dataSourceTag, server, database), out recordsAffected);
 									{
 										if ((object)dictEnumDdlTrigger != null)
@@ -365,7 +330,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 												trigger = new Trigger();
 
-												trigger.TriggerId = DataType.ChangeType<int>(dictDataTrigger["ObjectId"]);
+												trigger.TriggerId = DataType.ChangeType<int>(dictDataTrigger["TriggerId"]);
 												trigger.TriggerName = DataType.ChangeType<string>(dictDataTrigger["TriggerName"]);
 												trigger.IsClrTrigger = DataType.ChangeType<bool>(dictDataTrigger["IsClrTrigger"]);
 												trigger.IsTriggerDisabled = DataType.ChangeType<bool>(dictDataTrigger["IsTriggerDisabled"]);
@@ -402,6 +367,8 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 												Schema schema;
 
 												schema = new Schema();
+												schema.SchemaId = DataType.ChangeType<int>(dictDataSchema["SchemaId"]);
+												schema.OwnerId = DataType.ChangeType<int>(dictDataSchema["OwnerId"]);
 												schema.SchemaName = DataType.ChangeType<string>(dictDataSchema["SchemaName"]);
 												schema.SchemaNamePascalCase = Name.GetPascalCase(schema.SchemaName);
 												schema.SchemaNameCamelCase = Name.GetCamelCase(schema.SchemaName);
@@ -427,8 +394,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 														continue;
 												}
 
-												this.ApplyExtendedProperties(unitOfWork, schema, dataSourceTag, "SchemaExtProps", this.CoreGetTableParameters(unitOfWork, dataSourceTag, server, database, schema));
-
 												database.Schemas.Add(schema);
 
 												var dictEnumTable = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Tables"), this.CoreGetTableParameters(unitOfWork, dataSourceTag, server, database, schema), out recordsAffected);
@@ -438,8 +403,11 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 														Table table;
 
 														table = new Table();
-														table.IsView = DataType.ChangeType<bool>(dictDataTable["IsView"]);
+														table.TableId = DataType.ChangeType<int>(dictDataTable["TableId"]);
 														table.TableName = DataType.ChangeType<string>(dictDataTable["TableName"]);
+														table.CreationTimestamp = DataType.ChangeType<DateTime>(dictDataTable["CreationTimestamp"]);
+														table.ModificationTimestamp = DataType.ChangeType<DateTime>(dictDataTable["ModificationTimestamp"]);
+														table.IsImplementationDetail = DataType.ChangeType<bool>(dictDataTable["IsImplementationDetail"]);
 														table.TableNamePascalCase = Name.GetPascalCase(table.TableName);
 														table.TableNameCamelCase = Name.GetCamelCase(table.TableName);
 														table.TableNameConstantCase = Name.GetConstantCase(table.TableName);
@@ -457,6 +425,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 														table.TableNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(table.TableName));
 														table.TableNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(table.TableName));
 
+														table.PrimaryKeyId = DataType.ChangeType<int>(dictDataTable["PrimaryKeyId"]);
 														table.PrimaryKeyName = DataType.ChangeType<string>(dictDataTable["PrimaryKeyName"]);
 
 														if (!DataType.IsNullOrWhiteSpace(table.PrimaryKeyName))
@@ -488,15 +457,15 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 														schema.Tables.Add(table);
 
-														var dictEnumColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Columns"), this.CoreGetColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table), out recordsAffected);
+														var dictEnumColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "TableColumns"), this.CoreGetColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table), out recordsAffected);
 														{
 															if ((object)dictEnumColumn != null)
 															{
 																foreach (var dictDataColumn in dictEnumColumn)
 																{
-																	Column column;
+																	TableColumn column;
 
-																	column = new Column();
+																	column = new TableColumn();
 
 																	column.ColumnName = DataType.ChangeType<string>(dictDataColumn["ColumnName"]);
 																	column.ColumnOrdinal = DataType.ChangeType<int>(dictDataColumn["ColumnOrdinal"]);
@@ -505,13 +474,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 																	column.ColumnPrecision = DataType.ChangeType<int>(dictDataColumn["ColumnPrecision"]);
 																	column.ColumnScale = DataType.ChangeType<int>(dictDataColumn["ColumnScale"]);
 																	column.ColumnSqlType = DataType.ChangeType<string>(dictDataColumn["ColumnSqlType"]);
+																	column.ColumnIsUserDefinedType = DataType.ChangeType<bool>(dictDataColumn["ColumnIsUserDefinedType"]);
 																	column.ColumnIsIdentity = DataType.ChangeType<bool>(dictDataColumn["ColumnIsIdentity"]);
 																	column.ColumnIsComputed = DataType.ChangeType<bool>(dictDataColumn["ColumnIsComputed"]);
 																	column.ColumnHasDefault = DataType.ChangeType<bool>(dictDataColumn["ColumnHasDefault"]);
 																	column.ColumnHasCheck = DataType.ChangeType<bool>(dictDataColumn["ColumnHasCheck"]);
 																	column.ColumnIsPrimaryKey = DataType.ChangeType<bool>(dictDataColumn["ColumnIsPrimaryKey"]);
-																	column.PrimaryKeyName = DataType.ChangeType<string>(dictDataColumn["PrimaryKeyName"]);
-																	column.PrimaryKeyColumnOrdinal = DataType.ChangeType<int>(dictDataColumn["PrimaryKeyColumnOrdinal"]);
 																	column.ColumnNamePascalCase = Name.GetPascalCase(column.ColumnName);
 																	column.ColumnNameCamelCase = Name.GetCamelCase(column.ColumnName);
 																	column.ColumnNameConstantCase = Name.GetConstantCase(column.ColumnName);
@@ -563,7 +531,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 																	trigger = new Trigger();
 
-																	trigger.TriggerId = DataType.ChangeType<int>(dictDataTrigger["ObjectId"]);
+																	trigger.TriggerId = DataType.ChangeType<int>(dictDataTrigger["TriggerId"]);
 																	trigger.TriggerName = DataType.ChangeType<string>(dictDataTrigger["TriggerName"]);
 																	trigger.IsClrTrigger = DataType.ChangeType<bool>(dictDataTrigger["IsClrTrigger"]);
 																	trigger.IsTriggerDisabled = DataType.ChangeType<bool>(dictDataTrigger["IsTriggerDisabled"]);
@@ -705,6 +673,99 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 																			}
 																		}
 																	}
+																}
+															}
+														}
+													}
+												}
+
+												var dictEnumView = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Views"), this.CoreGetTableParameters(unitOfWork, dataSourceTag, server, database, schema), out recordsAffected);
+												{
+													foreach (var dictDataView in dictEnumView)
+													{
+														View view;
+
+														view = new View();
+														view.ViewId = DataType.ChangeType<int>(dictDataView["ViewId"]);
+														view.ViewName = DataType.ChangeType<string>(dictDataView["ViewName"]);
+														view.CreationTimestamp = DataType.ChangeType<DateTime>(dictDataView["CreationTimestamp"]);
+														view.ModificationTimestamp = DataType.ChangeType<DateTime>(dictDataView["ModificationTimestamp"]);
+														view.IsImplementationDetail = DataType.ChangeType<bool>(dictDataView["IsImplementationDetail"]);
+														view.ViewNamePascalCase = Name.GetPascalCase(view.ViewName);
+														view.ViewNameCamelCase = Name.GetCamelCase(view.ViewName);
+														view.ViewNameConstantCase = Name.GetConstantCase(view.ViewName);
+														view.ViewNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(view.ViewName));
+														view.ViewNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(view.ViewName));
+														view.ViewNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(view.ViewName));
+														view.ViewNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(view.ViewName));
+														view.ViewNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(view.ViewName));
+														view.ViewNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(view.ViewName));
+
+														view.ViewNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(view.ViewName);
+														view.ViewNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(view.ViewName);
+														view.ViewNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(view.ViewName));
+														view.ViewNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(view.ViewName));
+														view.ViewNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(view.ViewName));
+														view.ViewNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(view.ViewName));
+
+														// filter unwanted tables (objects)
+														if ((object)objectFilter != null)
+														{
+															if (!objectFilter.Contains(view.ViewName))
+																continue;
+														}
+
+														schema.Views.Add(view);
+
+														var dictEnumColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ViewColumns"), this.CoreGetColumnParameters(unitOfWork, dataSourceTag, server, database, schema, view), out recordsAffected);
+														{
+															if ((object)dictEnumColumn != null)
+															{
+																foreach (var dictDataColumn in dictEnumColumn)
+																{
+																	ViewColumn column;
+
+																	column = new ViewColumn();
+
+																	column.ColumnName = DataType.ChangeType<string>(dictDataColumn["ColumnName"]);
+																	column.ColumnOrdinal = DataType.ChangeType<int>(dictDataColumn["ColumnOrdinal"]);
+																	column.ColumnNullable = DataType.ChangeType<bool>(dictDataColumn["ColumnNullable"]);
+																	column.ColumnSize = DataType.ChangeType<int>(dictDataColumn["ColumnSize"]);
+																	column.ColumnPrecision = DataType.ChangeType<int>(dictDataColumn["ColumnPrecision"]);
+																	column.ColumnScale = DataType.ChangeType<int>(dictDataColumn["ColumnScale"]);
+																	column.ColumnSqlType = DataType.ChangeType<string>(dictDataColumn["ColumnSqlType"]);
+																	column.ColumnIsUserDefinedType = DataType.ChangeType<bool>(dictDataColumn["ColumnIsUserDefinedType"]);
+																	column.ColumnNamePascalCase = Name.GetPascalCase(column.ColumnName);
+																	column.ColumnNameCamelCase = Name.GetCamelCase(column.ColumnName);
+																	column.ColumnNameConstantCase = Name.GetConstantCase(column.ColumnName);
+																	column.ColumnNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(column.ColumnName));
+																	column.ColumnNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(column.ColumnName));
+																	column.ColumnNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(column.ColumnName));
+																	column.ColumnNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(column.ColumnName));
+																	column.ColumnNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(column.ColumnName));
+																	column.ColumnNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(column.ColumnName));
+
+																	column.ColumnNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(column.ColumnName);
+																	column.ColumnNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(column.ColumnName);
+																	column.ColumnNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(column.ColumnName));
+																	column.ColumnNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(column.ColumnName));
+																	column.ColumnNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(column.ColumnName));
+																	column.ColumnNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(column.ColumnName));
+
+																	clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType, column.ColumnPrecision);
+																	column.ColumnDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
+																	column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
+
+																	column.ColumnClrType = clrType ?? typeof(object);
+																	column.ColumnClrNullableType = Reflexion.MakeNullableType(clrType);
+																	column.ColumnClrNonNullableType = Reflexion.MakeNonNullableType(clrType);
+																	column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
+																	column.ColumnCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
+																	column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
+																	column.ColumnCSharpClrNullableType = (object)column.ColumnClrNullableType != null ? FormatCSharpType(column.ColumnClrNullableType) : FormatCSharpType(typeof(object));
+																	column.ColumnCSharpClrNonNullableType = (object)column.ColumnClrNonNullableType != null ? FormatCSharpType(column.ColumnClrNonNullableType) : FormatCSharpType(typeof(object));
+
+																	view.Columns.Add(column);
 																}
 															}
 														}
@@ -872,9 +933,9 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 															{
 																foreach (Parameter columnParameter in columnParameters)
 																{
-																	Column column;
+																	ProcedureColumn column;
 
-																	column = new Column();
+																	column = new ProcedureColumn();
 
 																	column.ColumnName = columnParameter.ParameterName;
 																	column.ColumnOrdinal = columnParameter.ParameterOrdinal;
@@ -883,11 +944,8 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 																	column.ColumnPrecision = columnParameter.ParameterPrecision;
 																	column.ColumnScale = columnParameter.ParameterScale;
 																	column.ColumnSqlType = columnParameter.ParameterSqlType;
-																	column.ColumnIsIdentity = false;
-																	column.ColumnIsComputed = false;
+																	column.ColumnIsUserDefinedType = columnParameter.ParameterIsUserDefinedType;
 																	column.ColumnHasDefault = !DataType.IsNullOrWhiteSpace(columnParameter.ParameterDefaultValue);
-																	column.ColumnHasCheck = false;
-																	column.ColumnIsPrimaryKey = false;
 																	column.ColumnNamePascalCase = Name.GetPascalCase(columnParameter.ParameterName);
 																	column.ColumnNameCamelCase = Name.GetCamelCase(columnParameter.ParameterName);
 																	column.ColumnNameConstantCase = Name.GetConstantCase(columnParameter.ParameterName);
@@ -938,9 +996,9 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 																		{
 																			foreach (var dictDataMetadata in dictEnumMetadata)
 																			{
-																				Column column;
+																				ProcedureColumn column;
 
-																				column = new Column();
+																				column = new ProcedureColumn();
 
 																				column.ColumnName = DataType.ChangeType<string>(dictDataMetadata["ColumnName"]);
 																				column.ColumnOrdinal = DataType.ChangeType<int>(dictDataMetadata["ColumnOrdinal"]);
@@ -950,11 +1008,8 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 																				column.ColumnScale = DataType.ChangeType<int>(dictDataMetadata["NumericScale"]);
 																				// TODO FIX
 																				//column.ColumnSqlType = DataType.ChangeType<string>(dictDataMetadata["DataTypeName"]);
-																				//column.ColumnIsIdentity = DataType.ChangeType<bool>(dictDataMetadata["IsIdentity"]);
-																				//column.ColumnIsComputed = DataType.ChangeType<bool>(dictDataMetadata["IsReadOnly"]);
+																				//column.ColumnIsUserDefinedType = DataType.ChangeType<string>(dictDataMetadata["IsUserDefinedType"]);
 																				//column.ColumnHasDefault = DataType.ChangeType<bool>(dictDataMetadata["ColumnHasDefault"]);
-																				//column.ColumnHasCheck = DataType.ChangeType<bool>(dictDataMetadata["ColumnHasCheck"]);
-																				//column.ColumnIsPrimaryKey = DataType.ChangeType<bool>(dictDataMetadata["IsKey"]);
 																				column.ColumnNamePascalCase = Name.GetPascalCase(column.ColumnName);
 																				column.ColumnNameCamelCase = Name.GetCamelCase(column.ColumnName);
 																				column.ColumnNameConstantCase = Name.GetConstantCase(column.ColumnName);

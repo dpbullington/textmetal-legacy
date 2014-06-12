@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	public class Table : DatabaseSchemaModelBase
+	public class Table
 	{
 		#region Constructors/Destructors
 
@@ -26,12 +26,15 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Fields/Constants
 
-		private readonly List<Column> columns = new List<Column>();
+		private readonly List<TableColumn> columns = new List<TableColumn>();
 		private readonly List<ForeignKey> foreignKeys = new List<ForeignKey>();
 		private readonly List<Trigger> triggers = new List<Trigger>();
 		private readonly List<UniqueKey> uniqueKeys = new List<UniqueKey>();
+		private DateTime creationTimestamp;
 		private bool hasNoDefinedPrimaryKeyColumns;
-		private bool isView;
+		private bool isImplementationDetail;
+		private DateTime modificationTimestamp;
+		private int primaryKeyId;
 		private string primaryKeyName;
 		private string primaryKeyNameCamelCase;
 		private string primaryKeyNameConstantCase;
@@ -48,6 +51,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string primaryKeyNameSqlMetalPluralPascalCase;
 		private string primaryKeyNameSqlMetalSingularCamelCase;
 		private string primaryKeyNameSqlMetalSingularPascalCase;
+		private int tableId;
 		private string tableName;
 		private string tableNameCamelCase;
 		private string tableNameConstantCase;
@@ -71,11 +75,24 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		[XmlArray(ElementName = "Columns")]
 		[XmlArrayItem(ElementName = "Column")]
-		public List<Column> Columns
+		public List<TableColumn> Columns
 		{
 			get
 			{
 				return this.columns;
+			}
+		}
+
+		[XmlAttribute]
+		public DateTime CreationTimestamp
+		{
+			get
+			{
+				return this.creationTimestamp;
+			}
+			set
+			{
+				this.creationTimestamp = value;
 			}
 		}
 
@@ -120,15 +137,41 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		}
 
 		[XmlAttribute]
-		public bool IsView
+		public bool IsImplementationDetail
 		{
 			get
 			{
-				return this.isView;
+				return this.isImplementationDetail;
 			}
 			set
 			{
-				this.isView = value;
+				this.isImplementationDetail = value;
+			}
+		}
+
+		[XmlAttribute]
+		public DateTime ModificationTimestamp
+		{
+			get
+			{
+				return this.modificationTimestamp;
+			}
+			set
+			{
+				this.modificationTimestamp = value;
+			}
+		}
+
+		[XmlAttribute]
+		public int PrimaryKeyId
+		{
+			get
+			{
+				return this.primaryKeyId;
+			}
+			set
+			{
+				this.primaryKeyId = value;
 			}
 		}
 
@@ -337,6 +380,19 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.primaryKeyNameSqlMetalSingularPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public int TableId
+		{
+			get
+			{
+				return this.tableId;
+			}
+			set
+			{
+				this.tableId = value;
 			}
 		}
 

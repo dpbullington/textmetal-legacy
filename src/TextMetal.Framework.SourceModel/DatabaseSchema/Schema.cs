@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	public class Schema : DatabaseSchemaModelBase
+	public class Schema
 	{
 		#region Constructors/Destructors
 
@@ -27,6 +27,9 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		private readonly List<Procedure> procedures = new List<Procedure>();
 		private readonly List<Table> tables = new List<Table>();
+		private readonly List<View> views = new List<View>();
+		private int ownerId;
+		private int schemaId;
 		private string schemaName;
 		private string schemaNameCamelCase;
 		private string schemaNameConstantCase;
@@ -48,6 +51,19 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Properties/Indexers/Events
 
+		[XmlAttribute]
+		public int OwnerId
+		{
+			get
+			{
+				return this.ownerId;
+			}
+			set
+			{
+				this.ownerId = value;
+			}
+		}
+
 		[XmlArray(ElementName = "Procedures")]
 		[XmlArrayItem(ElementName = "Procedure")]
 		public List<Procedure> Procedures
@@ -55,6 +71,19 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			get
 			{
 				return this.procedures;
+			}
+		}
+
+		[XmlAttribute]
+		public int SchemaId
+		{
+			get
+			{
+				return this.schemaId;
+			}
+			set
+			{
+				this.schemaId = value;
 			}
 		}
 
@@ -273,6 +302,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			get
 			{
 				return this.tables;
+			}
+		}
+
+		[XmlArray(ElementName = "Views")]
+		[XmlArrayItem(ElementName = "View")]
+		public List<View> Views
+		{
+			get
+			{
+				return this.views;
 			}
 		}
 

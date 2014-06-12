@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	public class ForeignKey : DatabaseSchemaModelBase
+	public class ForeignKey
 	{
 		#region Constructors/Destructors
 

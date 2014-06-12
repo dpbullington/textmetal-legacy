@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	public class UniqueKey : DatabaseSchemaModelBase
+	public class UniqueKey
 	{
 		#region Constructors/Destructors
 

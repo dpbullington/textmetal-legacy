@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	public class Procedure : DatabaseSchemaModelBase
+	public class Procedure
 	{
 		#region Constructors/Destructors
 
@@ -25,7 +25,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Fields/Constants
 
-		private readonly List<Column> columns = new List<Column>();
+		private readonly List<ProcedureColumn> columns = new List<ProcedureColumn>();
 		private readonly List<Parameter> parameters = new List<Parameter>();
 		private string procedureName;
 		private string procedureNameCamelCase;
@@ -50,7 +50,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		[XmlArray(ElementName = "Columns")]
 		[XmlArrayItem(ElementName = "Column")]
-		public List<Column> Columns
+		public List<ProcedureColumn> Columns
 		{
 			get
 			{

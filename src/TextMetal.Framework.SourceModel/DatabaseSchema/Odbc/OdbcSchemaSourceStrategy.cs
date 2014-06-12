@@ -110,6 +110,42 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
+		protected override IEnumerable<IDataParameter> CoreGetColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, View view)
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)dataSourceTag == null)
+				throw new ArgumentNullException("dataSourceTag");
+
+			if ((object)server == null)
+				throw new ArgumentNullException("server");
+
+			if ((object)database == null)
+				throw new ArgumentNullException("database");
+
+			if ((object)schema == null)
+				throw new ArgumentNullException("schema");
+
+			if ((object)view == null)
+				throw new ArgumentNullException("view");
+
+			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			{
+				return new IDataParameter[]
+						{
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", view.ViewName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P5", schema.SchemaName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P6", view.ViewName)
+						};
+			}
+
+			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
+		}
+
 		protected override IEnumerable<IDataParameter> CoreGetDatabaseParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server)
 		{
 			if ((object)unitOfWork == null)

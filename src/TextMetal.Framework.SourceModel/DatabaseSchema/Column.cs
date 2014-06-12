@@ -1,5 +1,5 @@
-﻿/*
-	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+/*
+	Copyright �2002-2014 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -12,14 +12,14 @@ using TextMetal.Common.Core;
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	public class Column : DatabaseSchemaModelBase
+	public abstract class Column
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
 		/// Initializes a new instance of the Column class.
 		/// </summary>
-		public Column()
+		protected Column()
 		{
 		}
 
@@ -36,11 +36,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private Type columnClrNullableType;
 		private Type columnClrType;
 		private DbType columnDbType;
-		private bool columnHasCheck;
-		private bool columnHasDefault;
-		private bool columnIsComputed;
-		private bool columnIsIdentity;
-		private bool columnIsPrimaryKey;
+		private bool columnIsUserDefinedType;
 		private string columnName;
 		private string columnNameCamelCase;
 		private string columnNameConstantCase;
@@ -63,8 +59,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private int columnScale;
 		private int columnSize;
 		private string columnSqlType;
-		private int primaryKeyColumnOrdinal;
-		private string primaryKeyName;
 
 		#endregion
 
@@ -188,67 +182,15 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		}
 
 		[XmlAttribute]
-		public bool ColumnHasCheck
+		public bool ColumnIsUserDefinedType
 		{
 			get
 			{
-				return this.columnHasCheck;
+				return this.columnIsUserDefinedType;
 			}
 			set
 			{
-				this.columnHasCheck = value;
-			}
-		}
-
-		[XmlAttribute]
-		public bool ColumnHasDefault
-		{
-			get
-			{
-				return this.columnHasDefault;
-			}
-			set
-			{
-				this.columnHasDefault = value;
-			}
-		}
-
-		[XmlAttribute]
-		public bool ColumnIsComputed
-		{
-			get
-			{
-				return this.columnIsComputed;
-			}
-			set
-			{
-				this.columnIsComputed = value;
-			}
-		}
-
-		[XmlAttribute]
-		public bool ColumnIsIdentity
-		{
-			get
-			{
-				return this.columnIsIdentity;
-			}
-			set
-			{
-				this.columnIsIdentity = value;
-			}
-		}
-
-		[XmlAttribute]
-		public bool ColumnIsPrimaryKey
-		{
-			get
-			{
-				return this.columnIsPrimaryKey;
-			}
-			set
-			{
-				this.columnIsPrimaryKey = value;
+				this.columnIsUserDefinedType = value;
 			}
 		}
 
@@ -535,40 +477,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.columnSqlType = value;
-			}
-		}
-
-		public bool IsColumnServerGeneratedPrimaryKey
-		{
-			get
-			{
-				return this.ColumnIsPrimaryKey && this.ColumnIsIdentity;
-			}
-		}
-
-		[XmlAttribute]
-		public int PrimaryKeyColumnOrdinal
-		{
-			get
-			{
-				return this.primaryKeyColumnOrdinal;
-			}
-			set
-			{
-				this.primaryKeyColumnOrdinal = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string PrimaryKeyName
-		{
-			get
-			{
-				return this.primaryKeyName;
-			}
-			set
-			{
-				this.primaryKeyName = value;
 			}
 		}
 

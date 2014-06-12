@@ -12,7 +12,7 @@ using TextMetal.Common.Core;
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	public class Parameter : DatabaseSchemaModelBase
+	public class Parameter
 	{
 		#region Constructors/Destructors
 
@@ -66,6 +66,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private int parameterScale;
 		private int parameterSize;
 		private string parameterSqlType;
+		private bool parameterIsUserDefinedType;
 
 		#endregion
 
@@ -623,6 +624,19 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 					this.ParameterClrType = null;
 				else
 					this.ParameterClrType = Type.GetType(value, false);
+			}
+		}
+
+		[XmlAttribute]
+		public bool ParameterIsUserDefinedType
+		{
+			get
+			{
+				return parameterIsUserDefinedType;
+			}
+			set
+			{
+				parameterIsUserDefinedType = value;
 			}
 		}
 

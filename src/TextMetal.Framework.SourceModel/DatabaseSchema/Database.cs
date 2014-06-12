@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	public class Database : DatabaseSchemaModelBase
+	public class Database
 	{
 		#region Constructors/Destructors
 
@@ -28,6 +28,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		private readonly List<Schema> schemas = new List<Schema>();
 		private readonly List<Trigger> triggers = new List<Trigger>();
+		private DateTime creationTimestamp;
 		private int databaseId;
 
 		private string databaseName;
@@ -50,6 +51,19 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		[XmlAttribute]
+		public DateTime CreationTimestamp
+		{
+			get
+			{
+				return this.creationTimestamp;
+			}
+			set
+			{
+				this.creationTimestamp = value;
+			}
+		}
 
 		[XmlAttribute]
 		public int DatabaseId
@@ -286,7 +300,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		{
 			get
 			{
-				return this.Schemas.Count(s => s.Tables.Count(t => !t.IsView) > 0) > 0;
+				return this.Schemas.Count(s => s.Tables.Any()) > 0;
 			}
 		}
 
@@ -295,7 +309,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		{
 			get
 			{
-				return this.Schemas.Count(s => s.Tables.Count(t => t.IsView) > 0) > 0;
+				return this.Schemas.Count(s => s.Tables.Any()) > 0;
 			}
 		}
 
