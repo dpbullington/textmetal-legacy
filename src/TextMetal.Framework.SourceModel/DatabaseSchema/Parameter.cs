@@ -38,11 +38,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private DbType parameterDbType;
 		private string parameterDefaultValue;
 		private ParameterDirection parameterDirection;
+		private bool parameterHasDefault;
 		private bool parameterIsCursorRef;
 		private bool parameterIsOutput;
 		private bool parameterIsReadOnly;
 		private bool parameterIsResultColumn;
 		private bool parameterIsReturnValue;
+		private bool parameterIsUserDefinedType;
 		private string parameterName;
 		private string parameterNameCamelCase;
 		private string parameterNameConstantCase;
@@ -66,7 +68,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private int parameterScale;
 		private int parameterSize;
 		private string parameterSqlType;
-		private bool parameterIsUserDefinedType;
 
 		#endregion
 
@@ -216,6 +217,19 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		}
 
 		[XmlAttribute]
+		public bool ParameterHasDefault
+		{
+			get
+			{
+				return this.parameterHasDefault;
+			}
+			set
+			{
+				this.parameterHasDefault = value;
+			}
+		}
+
+		[XmlAttribute]
 		public bool ParameterIsCursorRef
 		{
 			get
@@ -277,6 +291,19 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.parameterIsReturnValue = value;
+			}
+		}
+
+		[XmlAttribute]
+		public bool ParameterIsUserDefinedType
+		{
+			get
+			{
+				return this.parameterIsUserDefinedType;
+			}
+			set
+			{
+				this.parameterIsUserDefinedType = value;
 			}
 		}
 
@@ -624,19 +651,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 					this.ParameterClrType = null;
 				else
 					this.ParameterClrType = Type.GetType(value, false);
-			}
-		}
-
-		[XmlAttribute]
-		public bool ParameterIsUserDefinedType
-		{
-			get
-			{
-				return parameterIsUserDefinedType;
-			}
-			set
-			{
-				parameterIsUserDefinedType = value;
 			}
 		}
 

@@ -5,15 +5,15 @@
 
 -- tables[schema]
 -- DECLARE @SchemaName [nvarchar](255); SET @SchemaName = 'dbo';
-select
-	sys_o.[object_id] as [TableId],
-	sys_s.[name] as [SchemaName],
-    sys_o.[name] as [TableName],
+SELECT
+	sys_o.[object_id] AS [TableId],
+	sys_s.[name] AS [SchemaName],
+    sys_o.[name] AS [TableName],
 	sys_o.[create_date] AS [CreationTimestamp],
 	sys_o.[modify_date] AS [ModificationTimestamp],
 	sys_o.[is_ms_shipped] AS [IsImplementationDetail],
-	sys_kc.[object_id] as [PrimaryKeyId],
-	sys_kc.[name] as [PrimaryKeyName]
+	sys_kc.[object_id] AS [PrimaryKeyId],
+	sys_kc.[name] AS [PrimaryKeyName]
 FROM
     [sys].[tables] sys_t
 	INNER JOIN [sys].[objects] sys_o ON sys_o.[object_id] = sys_t.[object_id]

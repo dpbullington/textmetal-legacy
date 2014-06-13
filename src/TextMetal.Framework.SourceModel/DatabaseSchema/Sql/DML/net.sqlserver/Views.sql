@@ -6,9 +6,9 @@
 -- views[schema]
 -- DECLARE @SchemaName [nvarchar](255); SET @SchemaName = 'dbo';
 SELECT
-	sys_o.[object_id] as [ViewId],
-	sys_s.[name] as [SchemaName],
-    sys_o.[name] as [ViewName],
+	sys_o.[object_id] AS [ViewId],
+	sys_s.[name] AS [SchemaName],
+    sys_o.[name] AS [ViewName],
 	sys_o.[create_date] AS [CreationTimestamp],
 	sys_o.[modify_date] AS [ModificationTimestamp],
 	sys_o.[is_ms_shipped] AS [IsImplementationDetail]

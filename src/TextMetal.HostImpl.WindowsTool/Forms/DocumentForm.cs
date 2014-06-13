@@ -9,10 +9,10 @@ using System.Windows.Forms;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
+using TextMetal.Common.WinForms.Forms;
 using TextMetal.Framework.AssociativeModel;
 using TextMetal.Framework.TemplateModel;
 using TextMetal.HostImpl.Tool;
-using TextMetal.Common.WinForms.Forms;
 
 using Message = TextMetal.Common.Core.Message;
 
@@ -284,12 +284,16 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 					if (DataType.IsNullOrWhiteSpace(filePath))
 						return new ObjectConstruct();
 					else
-						return new ToolHost().LoadModelOnly(filePath);
+					{
+						using (IToolHost toolHost = new ToolHost())
+							return toolHost.LoadModelOnly(filePath);
+					}
 				}
 
 				public void SaveDocument(object document, string filePath)
 				{
-					new ToolHost().SaveModelOnly((ObjectConstruct)document, filePath);
+					using (IToolHost toolHost = new ToolHost())
+						toolHost.SaveModelOnly((ObjectConstruct)document, filePath);
 				}
 
 				public object UpdateDocumentProps(object document)
@@ -379,12 +383,16 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 					if (DataType.IsNullOrWhiteSpace(filePath))
 						return new SqlQuery();
 					else
-						return new ToolHost().LoadSqlQueryOnly(filePath);
+					{
+						using (IToolHost toolHost = new ToolHost())
+							return toolHost.LoadSqlQueryOnly(filePath);
+					}
 				}
 
 				public void SaveDocument(object document, string filePath)
 				{
-					new ToolHost().SaveSqlQueryOnly((SqlQuery)document, filePath);
+					using (IToolHost toolHost = new ToolHost())
+						toolHost.SaveSqlQueryOnly((SqlQuery)document, filePath);
 				}
 
 				public object UpdateDocumentProps(object document)
@@ -448,12 +456,16 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 					if (DataType.IsNullOrWhiteSpace(filePath))
 						return new TemplateConstruct();
 					else
-						return new ToolHost().LoadTemplateOnly(filePath);
+					{
+						using (IToolHost toolHost = new ToolHost())
+							return toolHost.LoadTemplateOnly(filePath);
+					}
 				}
 
 				public void SaveDocument(object document, string filePath)
 				{
-					new ToolHost().SaveTemplateOnly((TemplateConstruct)document, filePath);
+					using (IToolHost toolHost = new ToolHost())
+						toolHost.SaveTemplateOnly((TemplateConstruct)document, filePath);
 				}
 
 				public object UpdateDocumentProps(object document)

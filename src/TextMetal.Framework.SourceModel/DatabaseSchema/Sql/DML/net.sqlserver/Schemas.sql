@@ -5,9 +5,9 @@
 
 -- schemas
 SELECT
-	sys_s.[schema_id] as [SchemaId],
-	sys_s.[principal_id] as [OwnerId],
-    sys_s.name as [SchemaName]	
+	sys_s.[schema_id] AS [SchemaId],
+	sys_s.[principal_id] AS [OwnerId],
+    sys_s.name AS [SchemaName]
 FROM
     [sys].[schemas] sys_s
 ORDER BY

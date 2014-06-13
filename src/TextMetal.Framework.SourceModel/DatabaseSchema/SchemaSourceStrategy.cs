@@ -808,7 +808,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 															schema.Procedures.Add(procedure);
 
-															var dictEnumParameter = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Parameters"), this.CoreGetParameterParameters(unitOfWork, dataSourceTag, server, database, schema, procedure), out recordsAffected);
+															var dictEnumParameter = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureParameters"), this.CoreGetParameterParameters(unitOfWork, dataSourceTag, server, database, schema, procedure), out recordsAffected);
 															{
 																if ((object)dictEnumParameter != null)
 																{
@@ -825,10 +825,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 																		parameter.ParameterPrecision = DataType.ChangeType<int>(dictDataParameter["ParameterPrecision"]);
 																		parameter.ParameterScale = DataType.ChangeType<int>(dictDataParameter["ParameterScale"]);
 																		parameter.ParameterSqlType = DataType.ChangeType<string>(dictDataParameter["ParameterSqlType"]);
+																		parameter.ParameterIsUserDefinedType = DataType.ChangeType<bool>(dictDataParameter["ParameterIsUserDefinedType"]);
 																		parameter.ParameterIsOutput = DataType.ChangeType<bool>(dictDataParameter["ParameterIsOutput"]);
 																		parameter.ParameterIsReadOnly = DataType.ChangeType<bool>(dictDataParameter["ParameterIsReadOnly"]);
 																		parameter.ParameterIsCursorRef = DataType.ChangeType<bool>(dictDataParameter["ParameterIsCursorRef"]);
 																		parameter.ParameterIsReturnValue = DataType.ChangeType<bool>(dictDataParameter["ParameterIsReturnValue"]);
+																		parameter.ParameterHasDefault = DataType.ChangeType<bool>(dictDataParameter["ParameterHasDefault"]);
+																		parameter.ParameterNullable = DataType.ChangeType<bool?>(dictDataParameter["ParameterNullable"]) ?? true;
 																		parameter.ParameterDefaultValue = DataType.ChangeType<string>(dictDataParameter["ParameterDefaultValue"]);
 																		parameter.ParameterIsResultColumn = DataType.ChangeType<bool>(dictDataParameter["ParameterIsResultColumn"]);
 																		parameter.ParameterNamePascalCase = Name.GetPascalCase(parameter.ParameterName);
@@ -848,7 +851,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 																		parameter.ParameterNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(parameter.ParameterName));
 																		parameter.ParameterNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(parameter.ParameterName));
 
-																		parameter.ParameterNullable = true;
 																		parameter.ParameterDirection = (parameter.ParameterIsOutput || parameter.ParameterIsReadOnly) ? ParameterDirection.Output : ParameterDirection.Input;
 
 																		clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, parameter.ParameterSqlType, parameter.ParameterPrecision);

@@ -6,19 +6,19 @@
 -- columns[schema, table]
 -- DECLARE @SchemaName [nvarchar](255); SET @SchemaName = 'global'; DECLARE @TableName [nvarchar](255); SET @TableName = 'EventLog';
 SELECT
-	sys_c.[column_id] as [ColumnOrdinal],
-	sys_s.[name] as [SchemaName],
-	sys_o.[name] as [TableName],
-	sys_c.[name] as [ColumnName],
-	sys_c.[is_nullable] as [ColumnNullable],
-	sys_c.[max_length] as [ColumnSize],
-	sys_c.[precision] as [ColumnPrecision],
-	sys_c.[scale] as [ColumnScale],		
+	sys_c.[column_id] AS [ColumnOrdinal],
+	sys_s.[name] AS [SchemaName],
+	sys_o.[name] AS [TableName],
+	sys_c.[name] AS [ColumnName],
+	sys_c.[is_nullable] AS [ColumnNullable],
+	sys_c.[max_length] AS [ColumnSize],
+	sys_c.[precision] AS [ColumnPrecision],
+	sys_c.[scale] AS [ColumnScale],		
 	CASE WHEN sys_ty_u.[system_type_id] IS NOT NULL THEN sys_ty_u.[name] ELSE sys_ty.[name] END AS [ColumnSqlType],
 	CAST(CASE WHEN sys_ty_u.[system_type_id] IS NOT NULL THEN 1 ELSE 0 END AS [bit]) AS [ColumnIsUserDefinedType],
 
-	sys_c.[is_identity] as [ColumnIsIdentity],
-	sys_c.[is_computed] as [ColumnIsComputed],
+	sys_c.[is_identity] AS [ColumnIsIdentity],
+	sys_c.[is_computed] AS [ColumnIsComputed],
 	CAST(CASE
 		WHEN sys_c.[default_object_id] = 0 THEN 0
 		ELSE 1
@@ -26,7 +26,7 @@ SELECT
 	CAST(CASE
 		WHEN sys_c.[rule_object_id] = 0 THEN 0
 		ELSE 1
-	END AS [bit]) as [ColumnHasCheck],
+	END AS [bit]) AS [ColumnHasCheck],
 	
 	(SELECT
 		CAST(CASE

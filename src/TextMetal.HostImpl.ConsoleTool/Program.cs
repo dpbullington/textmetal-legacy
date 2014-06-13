@@ -93,6 +93,7 @@ namespace TextMetal.HostImpl.ConsoleTool
 		/// <returns> The resulting exit code. </returns>
 		private static int Startup(string[] args)
 		{
+			Dictionary<string, object> argz;
 			IDictionary<string, IList<string>> arguments;
 			string templateFilePath;
 			string sourceFilePath;
@@ -103,6 +104,7 @@ namespace TextMetal.HostImpl.ConsoleTool
 			IDictionary<string, IList<string>> properties;
 			IList<string> _arguments;
 			IList<string> propertyValues;
+			bool hasProperties;
 
 			const string CMDLN_TOKEN_TEMPLATEFILE = "templatefile";
 			const string CMDLN_TOKEN_SOURCEFILE = "sourcefile";
@@ -145,28 +147,18 @@ namespace TextMetal.HostImpl.ConsoleTool
 			baseDirectoryPath = arguments[CMDLN_TOKEN_BASEDIR].Single();
 			sourceStrategyAssemblyQualifiedTypeName = arguments[CMDLN_TOKEN_SOURCESTRATEGY_AQTN].Single();
 			DataType.TryParse<bool>(arguments[CMDLN_TOKEN_STRICT].Single(), out strictMatching);
+			hasProperties = arguments.TryGetValue(CMDLN_TOKEN_PROPERTY, out _arguments);
 
-			propertyValues = new List<string>();
-			propertyValues.Add(templateFilePath);
-			properties.Add(string.Format("argument_{0}", CMDLN_TOKEN_TEMPLATEFILE), propertyValues);
+			argz = new Dictionary<string, object>();
+			argz.Add(CMDLN_TOKEN_TEMPLATEFILE, templateFilePath);
+			argz.Add(CMDLN_TOKEN_SOURCEFILE, sourceFilePath);
+			argz.Add(CMDLN_TOKEN_BASEDIR, baseDirectoryPath);
+			argz.Add(CMDLN_TOKEN_SOURCESTRATEGY_AQTN, sourceStrategyAssemblyQualifiedTypeName);
+			argz.Add(CMDLN_TOKEN_STRICT, strictMatching);
+			argz.Add(CMDLN_DEBUGGER_LAUNCH, arguments.ContainsKey(CMDLN_DEBUGGER_LAUNCH) ? (object)debuggerLaunch : null);
+			argz.Add(CMDLN_TOKEN_PROPERTY, hasProperties ? (object)_arguments : null);
 
-			propertyValues = new List<string>();
-			propertyValues.Add(sourceFilePath);
-			properties.Add(string.Format("argument_{0}", CMDLN_TOKEN_SOURCEFILE), propertyValues);
-
-			propertyValues = new List<string>();
-			propertyValues.Add(baseDirectoryPath);
-			properties.Add(string.Format("argument_{0}", CMDLN_TOKEN_BASEDIR), propertyValues);
-
-			propertyValues = new List<string>();
-			propertyValues.Add(sourceStrategyAssemblyQualifiedTypeName);
-			properties.Add(string.Format("argument_{0}", CMDLN_TOKEN_SOURCESTRATEGY_AQTN), propertyValues);
-
-			propertyValues = new List<string>();
-			propertyValues.Add(strictMatching.ToString());
-			properties.Add(string.Format("argument_{0}", CMDLN_TOKEN_STRICT), propertyValues);
-
-			if (arguments.TryGetValue(CMDLN_TOKEN_PROPERTY, out _arguments))
+			if (hasProperties)
 			{
 				if ((object)_arguments != null)
 				{
@@ -209,7 +201,8 @@ namespace TextMetal.HostImpl.ConsoleTool
 					return 0;
 			}
 
-			new ToolHost().Host(templateFilePath, sourceFilePath, baseDirectoryPath, sourceStrategyAssemblyQualifiedTypeName, strictMatching, properties);
+			using(IToolHost toolHost = new ToolHost())
+				toolHost.Host((object)args != null ? args.Length : -1, args, argz, templateFilePath, sourceFilePath, baseDirectoryPath, sourceStrategyAssemblyQualifiedTypeName, strictMatching, properties);
 
 			return 0;
 		}

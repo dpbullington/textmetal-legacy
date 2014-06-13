@@ -7,9 +7,9 @@
 -- DECLARE @SchemaName [nvarchar](255); SET @SchemaName = 'global'; DECLARE @TableName [nvarchar](255); SET @TableName = 'User';
 SELECT
 	sys_o.[object_id] AS [TriggerId],
-	sys_s.[name] as [SchemaName],
+	sys_s.[name] AS [SchemaName],
 	sys_o_p.[name] AS [TableName],
-	sys_s_p.[name] as [_SchemaName],
+	sys_s_p.[name] AS [_SchemaName],
 	sys_o.[name] AS [TriggerName],	
 	CAST(CASE WHEN sys_tr.[type] = 'TA' THEN 1
 		ELSE 0 END AS [bit]) AS [IsClrTrigger],

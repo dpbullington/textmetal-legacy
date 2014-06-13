@@ -40,17 +40,23 @@ namespace TextMetal.HostImpl.Tool
 
 		#region Methods/Operators
 
+		public void Dispose()
+		{
+		}
+
 		/// <summary>
 		/// Provides a hosting shim between a 'tool' host and the underlying TextMetal run-time.
 		/// </summary>
+		/// <param name="argc"> The raw argument count passed into the host. </param>
+		/// <param name="argv"> The raw arguments passed into the host. </param>
+		/// <param name="args"> The parsed arguments passed into the host. </param>
 		/// <param name="templateFilePath"> The file path of the input TextMetal template file to execute. </param>
 		/// <param name="sourceFilePath"> The file path (or source specific URI) of the input data source to leverage. </param>
 		/// <param name="baseDirectoryPath"> The root output directory path to place output arifacts (since this implementation uses file output mechanics). </param>
 		/// <param name="sourceStrategyAssemblyQualifiedTypeName"> The assembly qualified type name for the ISourceStrategy to instantiate and execute. </param>
 		/// <param name="strictMatching"> A value indicating whether to use strict matching semantics for tokens. </param>
 		/// <param name="properties"> Arbitrary dictionary of string lists used to further customize the text templating process. The individual components or template files can use the properties as they see fit. </param>
-		public void Host(string templateFilePath, string sourceFilePath, string baseDirectoryPath,
-			string sourceStrategyAssemblyQualifiedTypeName, bool strictMatching, IDictionary<string, IList<string>> properties)
+		public void Host(int argc, string[] argv, IDictionary<string, object> args, string templateFilePath, string sourceFilePath, string baseDirectoryPath, string sourceStrategyAssemblyQualifiedTypeName, bool strictMatching, IDictionary<string, IList<string>> properties)
 		{
 			DateTime startUtc = DateTime.UtcNow, endUtc;
 			IXmlPersistEngine xpe;
@@ -147,7 +153,34 @@ namespace TextMetal.HostImpl.Tool
 
 						// globals
 						templatingContext.VariableTables.Push(globalVariableTable = new Dictionary<string, object>());
+
+						var environment = new
+										{
+											ARGC = argc,
+											ARGV = argv,
+											ARGS = args,
+											CommandLine = Environment.CommandLine,
+											CurrentDirectory = Environment.CurrentDirectory,
+											CurrentManagedThreadId = Environment.CurrentManagedThreadId,
+											ExitCode = Environment.ExitCode,
+											Is64BitOperatingSystem = Environment.Is64BitOperatingSystem,
+											Is64BitProcess = Environment.Is64BitProcess,
+											MachineName = Environment.MachineName,
+											NewLine = Environment.NewLine,
+											OSVersion = Environment.OSVersion,
+											ProcessorCount = Environment.ProcessorCount,
+											SystemDirectory = Environment.SystemDirectory,
+											SystemPageSize = Environment.SystemPageSize,
+											TickCount = Environment.TickCount,
+											UserDomainName = Environment.UserDomainName,
+											UserInteractive = Environment.UserInteractive,
+											UserName = Environment.UserName,
+											Version = Environment.Version,
+											WorkingSet = Environment.WorkingSet,
+											Variables = Environment.GetEnvironmentVariables()
+										};
 						globalVariableTable.Add("ToolVersion", toolVersion);
+						globalVariableTable.Add("Environment", environment);
 
 						foreach (KeyValuePair<string, IList<string>> property in properties)
 						{

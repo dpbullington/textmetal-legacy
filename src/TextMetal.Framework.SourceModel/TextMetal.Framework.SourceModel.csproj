@@ -99,7 +99,7 @@
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\ForeignKeys.sql" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\Parameters.sql" />
+    <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\ProcedureParameters.sql" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\Procedures.sql" />
