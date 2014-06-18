@@ -26,7 +26,7 @@ FROM
 		sys_ty.[is_user_defined] = 1
 		AND sys_ty_u.[system_type_id] = sys_ty.[system_type_id]
 WHERE
-	sys_s.[name] = @SchemaName
-	and sys_v.[name] = @ViewName
+	sys_s.[name] = ?
+	and sys_v.[name] = ?
 ORDER BY
 	sys_c.[column_id] ASC

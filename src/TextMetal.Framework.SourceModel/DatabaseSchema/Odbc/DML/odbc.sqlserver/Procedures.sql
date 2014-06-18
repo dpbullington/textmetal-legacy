@@ -4,14 +4,16 @@
 */
 
 -- procedures[schema]
-select	
-	cast(null as int) as ObjectId,
-	sys_s.name as SchemaName,
-	sys_p.name as ProcedureName
-from
-    sys.procedures sys_p
-	inner join sys.schemas sys_s on sys_s.schema_id = sys_p.schema_id
-where
-	sys_s.name = ?
-order by
-	sys_p.name asc
+-- DECLARE @SchemaName [nvarchar](255); SET @SchemaName = 'testcases';
+SELECT
+	sys_p.[object_id] AS [ProcedureId],
+	sys_s.[name] AS [SchemaName],
+	sys_p.[name] AS [ProcedureName]
+FROM
+    [sys].[procedures] sys_p
+	-- NO NEED TO JOIN ON [sys].[objects] sys_o
+	INNER JOIN [sys].[schemas] sys_s ON sys_s.[schema_id] = sys_p.[schema_id]
+WHERE
+	sys_s.[name] = ?
+ORDER BY
+	sys_p.[name] ASC

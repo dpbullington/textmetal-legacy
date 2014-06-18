@@ -29,6 +29,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private bool columnIsComputed;
 		private bool columnIsIdentity;
 		private bool columnIsPrimaryKey;
+		private int columnPrimaryKeyOrdinal;
 
 		#endregion
 
@@ -96,6 +97,19 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.columnIsPrimaryKey = value;
+			}
+		}
+
+		[XmlAttribute]
+		public int ColumnPrimaryKeyOrdinal
+		{
+			get
+			{
+				return this.columnPrimaryKeyOrdinal;
+			}
+			set
+			{
+				this.columnPrimaryKeyOrdinal = value;
 			}
 		}
 

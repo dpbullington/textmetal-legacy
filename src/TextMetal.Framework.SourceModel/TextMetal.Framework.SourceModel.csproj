@@ -50,6 +50,8 @@
     </Compile>
     <Compile Include="DatabaseSchema\Column.cs" />
     <Compile Include="DatabaseSchema\ProcedureColumn.cs" />
+    <Compile Include="DatabaseSchema\PrimaryKey.cs" />
+    <Compile Include="DatabaseSchema\PrimaryKeyColumn.cs" />
     <Compile Include="DatabaseSchema\ViewColumn.cs" />
     <Compile Include="DatabaseSchema\Odbc\OdbcSchemaSourceStrategy.cs" />
     <Compile Include="DatabaseSchema\View.cs" />
@@ -72,14 +74,14 @@
     <Compile Include="DatabaseSchema\TableColumn.cs" />
     <Compile Include="DatabaseSchema\Server.cs" />
     <Compile Include="DatabaseSchema\ForeignKey.cs" />
-    <Compile Include="DatabaseSchema\ForeignKeyColumnRef.cs" />
+    <Compile Include="DatabaseSchema\ForeignKeyColumn.cs" />
     <Compile Include="DatabaseSchema\Parameter.cs" />
     <Compile Include="DatabaseSchema\Procedure.cs" />
     <Compile Include="DatabaseSchema\Schema.cs" />
     <Compile Include="DatabaseSchema\Sql\SqlSchemaSourceStrategy.cs" />
     <Compile Include="DatabaseSchema\Table.cs" />
     <Compile Include="DatabaseSchema\UniqueKey.cs" />
-    <Compile Include="DatabaseSchema\UniqueKeyColumnRef.cs" />
+    <Compile Include="DatabaseSchema\UniqueKeyColumn.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TextMetal.snk">
@@ -158,13 +160,11 @@
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\UseDatabase.sql" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\Columns.sql" />
     <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\Databases.sql" />
     <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\DdlTriggers.sql" />
     <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\DmlTriggers.sql" />
     <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ForeignKeyColumns.sql" />
     <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ForeignKeys.sql" />
-    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\Parameters.sql" />
     <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\Procedures.sql" />
     <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ProcedureSchema.sql" />
     <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\Schemas.sql" />
@@ -179,6 +179,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DatabaseSchema\Sql\DML\net.sqlserver\ViewColumns.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\Views.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ProcedureParameters.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\TableColumns.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DatabaseSchema\Odbc\DML\odbc.sqlserver\ViewColumns.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

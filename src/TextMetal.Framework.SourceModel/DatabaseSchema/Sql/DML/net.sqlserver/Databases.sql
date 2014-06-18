@@ -4,6 +4,8 @@
 */
 
 -- database
+-- DECLARE
+
 SELECT
 	sys_d.[database_id] AS [DatabaseId],
 	sys_d.[name] AS [DatabaseName],

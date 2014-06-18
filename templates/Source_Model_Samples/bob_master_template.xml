@@ -73,6 +73,7 @@
 	
 	${ToolVersion}
 	${Environment.Variables.Path}
+	${Environment.CurrentDirectory}
 	
 	]]>
 	

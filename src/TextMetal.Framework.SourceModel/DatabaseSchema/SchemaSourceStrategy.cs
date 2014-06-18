@@ -425,29 +425,33 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 														table.TableNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(table.TableName));
 														table.TableNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(table.TableName));
 
-														table.PrimaryKeyId = DataType.ChangeType<int>(dictDataTable["PrimaryKeyId"]);
-														table.PrimaryKeyName = DataType.ChangeType<string>(dictDataTable["PrimaryKeyName"]);
-
-														if (!DataType.IsNullOrWhiteSpace(table.PrimaryKeyName))
+														var pkId = DataType.ChangeType<int?>(dictDataTable["PrimaryKeyId"]);
+														if ((object)pkId != null)
 														{
-															table.PrimaryKeyNamePascalCase = Name.GetPascalCase(table.PrimaryKeyName);
-															table.PrimaryKeyNameCamelCase = Name.GetCamelCase(table.PrimaryKeyName);
-															table.PrimaryKeyNameConstantCase = Name.GetConstantCase(table.PrimaryKeyName);
-															table.PrimaryKeyNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(table.PrimaryKeyName));
-															table.PrimaryKeyNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(table.PrimaryKeyName));
-															table.PrimaryKeyNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(table.PrimaryKeyName));
-															table.PrimaryKeyNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(table.PrimaryKeyName));
-															table.PrimaryKeyNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(table.PrimaryKeyName));
-															table.PrimaryKeyNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(table.PrimaryKeyName));
+															table.PrimaryKey = new PrimaryKey();
+															table.PrimaryKey.PrimaryKeyId = (int)pkId;
 
-															table.PrimaryKeyNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(table.PrimaryKeyName);
-															table.PrimaryKeyNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(table.PrimaryKeyName);
-															table.PrimaryKeyNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(table.PrimaryKeyName));
-															table.PrimaryKeyNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(table.PrimaryKeyName));
-															table.PrimaryKeyNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(table.PrimaryKeyName));
-															table.PrimaryKeyNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(table.PrimaryKeyName));
+															table.PrimaryKey.PrimaryKeyIsSystemNamed = DataType.ChangeType<bool>(dictDataTable["PrimaryKeyIsSystemNamed"]);
+															table.PrimaryKey.PrimaryKeyName = DataType.ChangeType<string>(dictDataTable["PrimaryKeyName"]);
+															
+															table.PrimaryKey.PrimaryKeyNamePascalCase = Name.GetPascalCase(table.PrimaryKey.PrimaryKeyName);
+															table.PrimaryKey.PrimaryKeyNameCamelCase = Name.GetCamelCase(table.PrimaryKey.PrimaryKeyName);
+															table.PrimaryKey.PrimaryKeyNameConstantCase = Name.GetConstantCase(table.PrimaryKey.PrimaryKeyName);
+															table.PrimaryKey.PrimaryKeyNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(table.PrimaryKey.PrimaryKeyName));
+															table.PrimaryKey.PrimaryKeyNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(table.PrimaryKey.PrimaryKeyName));
+															table.PrimaryKey.PrimaryKeyNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(table.PrimaryKey.PrimaryKeyName));
+															table.PrimaryKey.PrimaryKeyNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(table.PrimaryKey.PrimaryKeyName));
+															table.PrimaryKey.PrimaryKeyNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(table.PrimaryKey.PrimaryKeyName));
+															table.PrimaryKey.PrimaryKeyNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(table.PrimaryKey.PrimaryKeyName));
+
+															table.PrimaryKey.PrimaryKeyNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(table.PrimaryKey.PrimaryKeyName);
+															table.PrimaryKey.PrimaryKeyNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(table.PrimaryKey.PrimaryKeyName);
+															table.PrimaryKey.PrimaryKeyNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(table.PrimaryKey.PrimaryKeyName));
+															table.PrimaryKey.PrimaryKeyNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(table.PrimaryKey.PrimaryKeyName));
+															table.PrimaryKey.PrimaryKeyNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(table.PrimaryKey.PrimaryKeyName));
+															table.PrimaryKey.PrimaryKeyNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(table.PrimaryKey.PrimaryKeyName));
 														}
-
+														
 														// filter unwanted tables (objects)
 														if ((object)objectFilter != null)
 														{
@@ -480,6 +484,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 																	column.ColumnHasDefault = DataType.ChangeType<bool>(dictDataColumn["ColumnHasDefault"]);
 																	column.ColumnHasCheck = DataType.ChangeType<bool>(dictDataColumn["ColumnHasCheck"]);
 																	column.ColumnIsPrimaryKey = DataType.ChangeType<bool>(dictDataColumn["ColumnIsPrimaryKey"]);
+																	column.ColumnPrimaryKeyOrdinal = DataType.ChangeType<int>(dictDataColumn["ColumnPrimaryKeyOrdinal"]);
 																	column.ColumnNamePascalCase = Name.GetPascalCase(column.ColumnName);
 																	column.ColumnNameCamelCase = Name.GetCamelCase(column.ColumnName);
 																	column.ColumnNameConstantCase = Name.GetConstantCase(column.ColumnName);
@@ -511,6 +516,14 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 																	column.ColumnCSharpClrNonNullableType = (object)column.ColumnClrNonNullableType != null ? FormatCSharpType(column.ColumnClrNonNullableType) : FormatCSharpType(typeof(object));
 
 																	table.Columns.Add(column);
+
+																	if ((object)table.PrimaryKey != null && column.ColumnIsPrimaryKey)
+																		table.PrimaryKey.PrimaryKeyColumns.Add(new PrimaryKeyColumn()
+																		{
+																			ColumnName = column.ColumnName,
+																			ColumnOrdinal = column.ColumnOrdinal,
+																			PrimaryKeyColumnOrdinal = column.ColumnPrimaryKeyOrdinal
+																		});
 																}
 															}
 														}
@@ -571,6 +584,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 																	foreignKey.ForeignKeyName = DataType.ChangeType<string>(dictDataForeignKey["ForeignKeyName"]);
 																	foreignKey.ForeignKeyIsDisabled = DataType.ChangeType<bool>(dictDataForeignKey["ForeignKeyIsDisabled"]);
+																	foreignKey.ForeignKeyIsSystemNamed = DataType.ChangeType<bool>(dictDataForeignKey["ForeignKeyIsSystemNamed"]);
 																	foreignKey.ForeignKeyIsForReplication = DataType.ChangeType<bool>(dictDataForeignKey["ForeignKeyIsForReplication"]);
 																	foreignKey.ForeignKeyOnDeleteRefIntAction = DataType.ChangeType<byte>(dictDataForeignKey["ForeignKeyOnDeleteRefIntAction"]);
 																	foreignKey.ForeignKeyOnDeleteRefIntActionSqlName = DataType.ChangeType<string>(dictDataForeignKey["ForeignKeyOnDeleteRefIntActionSqlName"]);
@@ -593,6 +607,44 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 																	foreignKey.ForeignKeyNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(foreignKey.ForeignKeyName));
 																	foreignKey.ForeignKeyNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(foreignKey.ForeignKeyName));
 
+
+																	foreignKey.TargetSchemaName = DataType.ChangeType<string>(dictDataForeignKey["TargetSchemaName"]);
+																	foreignKey.TargetSchemaNamePascalCase = Name.GetPascalCase(foreignKey.TargetSchemaName);
+																	foreignKey.TargetSchemaNameCamelCase = Name.GetCamelCase(foreignKey.TargetSchemaName);
+																	foreignKey.TargetSchemaNameConstantCase = Name.GetConstantCase(foreignKey.TargetSchemaName);
+																	foreignKey.TargetSchemaNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(foreignKey.TargetSchemaName));
+																	foreignKey.TargetSchemaNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(foreignKey.TargetSchemaName));
+																	foreignKey.TargetSchemaNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(foreignKey.TargetSchemaName));
+																	foreignKey.TargetSchemaNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(foreignKey.TargetSchemaName));
+																	foreignKey.TargetSchemaNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(foreignKey.TargetSchemaName));
+																	foreignKey.TargetSchemaNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(foreignKey.TargetSchemaName));
+
+																	foreignKey.TargetSchemaNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(foreignKey.TargetSchemaName);
+																	foreignKey.TargetSchemaNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(foreignKey.TargetSchemaName);
+																	foreignKey.TargetSchemaNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(foreignKey.TargetSchemaName));
+																	foreignKey.TargetSchemaNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(foreignKey.TargetSchemaName));
+																	foreignKey.TargetSchemaNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(foreignKey.TargetSchemaName));
+																	foreignKey.TargetSchemaNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(foreignKey.TargetSchemaName));
+
+																	
+																	foreignKey.TargetTableName = DataType.ChangeType<string>(dictDataForeignKey["TargetTableName"]);
+																	foreignKey.TargetTableNamePascalCase = Name.GetPascalCase(foreignKey.TargetTableName);
+																	foreignKey.TargetTableNameCamelCase = Name.GetCamelCase(foreignKey.TargetTableName);
+																	foreignKey.TargetTableNameConstantCase = Name.GetConstantCase(foreignKey.TargetTableName);
+																	foreignKey.TargetTableNameSingularPascalCase = Name.GetPascalCase(Name.GetSingularForm(foreignKey.TargetTableName));
+																	foreignKey.TargetTableNameSingularCamelCase = Name.GetCamelCase(Name.GetSingularForm(foreignKey.TargetTableName));
+																	foreignKey.TargetTableNameSingularConstantCase = Name.GetConstantCase(Name.GetSingularForm(foreignKey.TargetTableName));
+																	foreignKey.TargetTableNamePluralPascalCase = Name.GetPascalCase(Name.GetPluralForm(foreignKey.TargetTableName));
+																	foreignKey.TargetTableNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(foreignKey.TargetTableName));
+																	foreignKey.TargetTableNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(foreignKey.TargetTableName));
+
+																	foreignKey.TargetTableNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(foreignKey.TargetTableName);
+																	foreignKey.TargetTableNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(foreignKey.TargetTableName);
+																	foreignKey.TargetTableNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(foreignKey.TargetTableName));
+																	foreignKey.TargetTableNameSqlMetalSingularCamelCase = Name.GetSqlMetalCamelCase(Name.GetSingularForm(foreignKey.TargetTableName));
+																	foreignKey.TargetTableNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(foreignKey.TargetTableName));
+																	foreignKey.TargetTableNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(foreignKey.TargetTableName));
+
 																	table.ForeignKeys.Add(foreignKey);
 
 																	var dictEnumForeignKeyColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeyColumns"), this.CoreGetForeignKeyColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table, foreignKey), out recordsAffected);
@@ -601,21 +653,17 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 																		{
 																			foreach (var dictDataForeignKeyColumn in dictEnumForeignKeyColumn)
 																			{
-																				ForeignKeyColumnRef foreignKeyColumnRef;
+																				ForeignKeyColumn foreignKeyColumn;
 
-																				foreignKeyColumnRef = new ForeignKeyColumnRef();
+																				foreignKeyColumn = new ForeignKeyColumn();
 
-																				foreignKeyColumnRef.ForeignKeyOrdinal = DataType.ChangeType<int>(dictDataForeignKeyColumn["ForeignKeyOrdinal"]);
-																				foreignKeyColumnRef.ColumnOrdinal = DataType.ChangeType<int>(dictDataForeignKeyColumn["ColumnOrdinal"]);
-																				foreignKeyColumnRef.ColumnName = DataType.ChangeType<string>(dictDataForeignKeyColumn["ColumnName"]);
-																				foreignKeyColumnRef.PrimarySchemaName = DataType.ChangeType<string>(dictDataForeignKeyColumn["PrimarySchemaName"]);
-																				foreignKeyColumnRef.PrimaryTableName = DataType.ChangeType<string>(dictDataForeignKeyColumn["PrimaryTableName"]);
-																				foreignKeyColumnRef.PrimaryKeyName = DataType.ChangeType<string>(dictDataForeignKeyColumn["PrimaryKeyName"]);
-																				foreignKeyColumnRef.PrimaryKeyOrdinal = DataType.ChangeType<int>(dictDataForeignKeyColumn["PrimaryKeyOrdinal"]);
-																				foreignKeyColumnRef.PrimaryKeyColumnOrdinal = DataType.ChangeType<int>(dictDataForeignKeyColumn["PrimaryKeyColumnOrdinal"]);
-																				foreignKeyColumnRef.PrimaryKeyColumnName = DataType.ChangeType<string>(dictDataForeignKeyColumn["PrimaryKeyColumnName"]);
+																				foreignKeyColumn.ForeignKeyColumnOrdinal = DataType.ChangeType<int>(dictDataForeignKeyColumn["ForeignKeyColumnOrdinal"]);
+																				foreignKeyColumn.ColumnOrdinal = DataType.ChangeType<int>(dictDataForeignKeyColumn["ColumnOrdinal"]);
+																				foreignKeyColumn.ColumnName = DataType.ChangeType<string>(dictDataForeignKeyColumn["ColumnName"]);
+																				foreignKeyColumn.TargetColumnOrdinal = DataType.ChangeType<int>(dictDataForeignKeyColumn["TargetColumnOrdinal"]);
+																				foreignKeyColumn.TargetColumnName = DataType.ChangeType<string>(dictDataForeignKeyColumn["TargetColumnName"]);
 
-																				foreignKey.ForeignKeyColumnRefs.Add(foreignKeyColumnRef);
+																				foreignKey.ForeignKeyColumns.Add(foreignKeyColumn);
 																			}
 																		}
 																	}
@@ -633,8 +681,9 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 																	uniqueKey = new UniqueKey();
 
+																	uniqueKey.UniqueKeyId = DataType.ChangeType<int>(dictDataUniqueKey["UniqueKeyId"]);
 																	uniqueKey.UniqueKeyName = DataType.ChangeType<string>(dictDataUniqueKey["UniqueKeyName"]);
-																	uniqueKey.UniqueKeyIsDisabled = DataType.ChangeType<bool>(dictDataUniqueKey["UniqueKeyIsDisabled"]);
+																	uniqueKey.UniqueKeyIsSystemNamed = DataType.ChangeType<bool>(dictDataUniqueKey["UniqueKeyIsSystemNamed"]);
 																	uniqueKey.UniqueKeyNamePascalCase = Name.GetPascalCase(uniqueKey.UniqueKeyName);
 																	uniqueKey.UniqueKeyNameCamelCase = Name.GetCamelCase(uniqueKey.UniqueKeyName);
 																	uniqueKey.UniqueKeyNameConstantCase = Name.GetConstantCase(uniqueKey.UniqueKeyName);
@@ -660,16 +709,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 																		{
 																			foreach (var dictDataUniqueKeyColumn in dictEnumUniqueKeyColumn)
 																			{
-																				UniqueKeyColumnRef uniqueKeyColumnRef;
+																				UniqueKeyColumn uniqueKeyColumn;
 
-																				uniqueKeyColumnRef = new UniqueKeyColumnRef();
+																				uniqueKeyColumn = new UniqueKeyColumn();
 
-																				uniqueKeyColumnRef.UniqueKeyOrdinal = DataType.ChangeType<int>(dictDataUniqueKeyColumn["UniqueKeyOrdinal"]);
-																				uniqueKeyColumnRef.ColumnOrdinal = DataType.ChangeType<int>(dictDataUniqueKeyColumn["ColumnOrdinal"]);
-																				uniqueKeyColumnRef.ColumnName = DataType.ChangeType<string>(dictDataUniqueKeyColumn["ColumnName"]);
-																				uniqueKeyColumnRef.UniqueKeyColumnDescendingSort = DataType.ChangeType<bool>(dictDataUniqueKeyColumn["UniqueKeyColumnDescendingSort"]);
+																				uniqueKeyColumn.UniqueKeyColumnOrdinal = DataType.ChangeType<int>(dictDataUniqueKeyColumn["UniqueKeyColumnOrdinal"]);
+																				uniqueKeyColumn.ColumnOrdinal = DataType.ChangeType<int>(dictDataUniqueKeyColumn["ColumnOrdinal"]);
+																				uniqueKeyColumn.ColumnName = DataType.ChangeType<string>(dictDataUniqueKeyColumn["ColumnName"]);
+																				uniqueKeyColumn.UniqueKeyColumnDescendingSort = DataType.ChangeType<bool>(dictDataUniqueKeyColumn["UniqueKeyColumnDescendingSort"]);
 
-																				uniqueKey.UniqueKeyColumnRefs.Add(uniqueKeyColumnRef);
+																				uniqueKey.UniqueKeyColumns.Add(uniqueKeyColumn);
 																			}
 																		}
 																	}

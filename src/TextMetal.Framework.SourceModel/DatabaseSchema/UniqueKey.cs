@@ -25,8 +25,9 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Fields/Constants
 
-		private readonly List<UniqueKeyColumnRef> uniqueKeyColumnRef = new List<UniqueKeyColumnRef>();
-		private bool uniqueKeyIsDisabled;
+		private readonly List<UniqueKeyColumn> uniqueKeyColumn = new List<UniqueKeyColumn>();
+		private int uniqueKeyId;
+		private bool uniqueKeyIsSystemNamed;
 		private string uniqueKeyName;
 		private string uniqueKeyNameCamelCase;
 		private string uniqueKeyNameConstantCase;
@@ -48,26 +49,39 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Properties/Indexers/Events
 
-		[XmlArray(ElementName = "UniqueKeyColumnRefs")]
-		[XmlArrayItem(ElementName = "UniqueKeyColumnRef")]
-		public List<UniqueKeyColumnRef> UniqueKeyColumnRefs
+		[XmlArray(ElementName = "UniqueKeyColumns")]
+		[XmlArrayItem(ElementName = "UniqueKeyColumn")]
+		public List<UniqueKeyColumn> UniqueKeyColumns
 		{
 			get
 			{
-				return this.uniqueKeyColumnRef;
+				return this.uniqueKeyColumn;
 			}
 		}
 
 		[XmlAttribute]
-		public bool UniqueKeyIsDisabled
+		public int UniqueKeyId
 		{
 			get
 			{
-				return this.uniqueKeyIsDisabled;
+				return this.uniqueKeyId;
 			}
 			set
 			{
-				this.uniqueKeyIsDisabled = value;
+				this.uniqueKeyId = value;
+			}
+		}
+
+		[XmlAttribute]
+		public bool UniqueKeyIsSystemNamed
+		{
+			get
+			{
+				return this.uniqueKeyIsSystemNamed;
+			}
+			set
+			{
+				this.uniqueKeyIsSystemNamed = value;
 			}
 		}
 

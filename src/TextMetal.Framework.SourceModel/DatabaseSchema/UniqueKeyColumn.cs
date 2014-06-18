@@ -9,14 +9,14 @@ using System.Xml.Serialization;
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	public class UniqueKeyColumnRef
+	public class UniqueKeyColumn
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the UniqueKeyColumnRef class.
+		/// Initializes a new instance of the UniqueKeyColumn class.
 		/// </summary>
-		public UniqueKeyColumnRef()
+		public UniqueKeyColumn()
 		{
 		}
 
@@ -28,7 +28,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private int columnOrdinal;
 
 		private bool uniqueKeyColumnDescendingSort;
-		private int uniqueKeyOrdinal;
+		private int uniqueKeyColumnOrdinal;
 
 		#endregion
 
@@ -74,15 +74,15 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		}
 
 		[XmlAttribute]
-		public int UniqueKeyOrdinal
+		public int UniqueKeyColumnOrdinal
 		{
 			get
 			{
-				return this.uniqueKeyOrdinal;
+				return this.uniqueKeyColumnOrdinal;
 			}
 			set
 			{
-				this.uniqueKeyOrdinal = value;
+				this.uniqueKeyColumnOrdinal = value;
 			}
 		}
 

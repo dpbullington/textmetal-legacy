@@ -26,6 +26,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 
 		#endregion
 
+		#region Fields/Constants
+
+		private const string ODBC_SQL_SERVER_DATA_SOURCE_TAG = "odbc.sqlserver";
+
+		#endregion
+
 		#region Methods/Operators
 
 		protected override int CoreCalculateColumnSize(string dataSourceTag, Column column)
@@ -36,7 +42,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)column == null)
 				throw new ArgumentNullException("column");
 
-			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return column.ColumnSqlType == "image" ||
 						column.ColumnSqlType == "text" ||
@@ -59,7 +65,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)parameter == null)
 				throw new ArgumentNullException("parameter");
 
-			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return parameter.ParameterSqlType == "image" ||
 						parameter.ParameterSqlType == "text" ||
@@ -94,16 +100,14 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)table == null)
 				throw new ArgumentNullException("table");
 
-			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P5", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P6", table.TableName)
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};
 			}
 
@@ -130,16 +134,14 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)view == null)
 				throw new ArgumentNullException("view");
 
-			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", view.ViewName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P5", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P6", view.ViewName)
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", view.ViewName)
 						};
 			}
 
@@ -154,7 +156,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
@@ -173,12 +175,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName)
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName)
 						};
 			}
 
@@ -205,16 +207,14 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)table == null)
 				throw new ArgumentNullException("table");
 
-			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P5", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P6", table.TableName)
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};
 			}
 
@@ -226,7 +226,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 				return true;
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -255,14 +255,14 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)foreignKey == null)
 				throw new ArgumentNullException("foreignKey");
 
-			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P5", foreignKey.ForeignKeyName)
 						};
 			}
@@ -290,12 +290,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)table == null)
 				throw new ArgumentNullException("table");
 
-			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};
@@ -324,12 +324,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)procedure == null)
 				throw new ArgumentNullException("procedure");
 
-			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", procedure.ProcedureName)
 						};
@@ -343,7 +343,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 				return "@";
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -366,12 +366,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
 
-			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName)
 						};
 			}
@@ -390,12 +390,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)server == null)
 				throw new ArgumentNullException("server");
 
-			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
 						};
 			}
 
@@ -410,7 +410,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 				return null;
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -427,13 +427,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)database == null)
 				throw new ArgumentNullException("database");
 
-			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName), unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", schema.SchemaName)
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName)
 						};
 			}
 
@@ -463,14 +463,14 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)uniqueKey == null)
 				throw new ArgumentNullException("uniqueKey");
 
-			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P5", uniqueKey.UniqueKeyName)
 						};
 			}
@@ -498,12 +498,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)table == null)
 				throw new ArgumentNullException("table");
 
-			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
 							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};
@@ -517,7 +517,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Odbc
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if (dataSourceTag.SafeToString().ToLower() == "odbc.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == ODBC_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				switch (sqlType = sqlType.SafeToString().ToUpper())
 				{

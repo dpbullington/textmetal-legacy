@@ -6,12 +6,12 @@
 -- procedures[schema]
 -- DECLARE @SchemaName [nvarchar](255); SET @SchemaName = 'testcases';
 SELECT
-	sys_o.[object_id] AS [ProcedureId],
+	sys_p.[object_id] AS [ProcedureId],
 	sys_s.[name] AS [SchemaName],
 	sys_p.[name] AS [ProcedureName]
 FROM
     [sys].[procedures] sys_p
-	INNER JOIN [sys].[objects] sys_o ON sys_o.[object_id] = sys_p.[object_id]
+	-- NO NEED TO JOIN ON [sys].[objects] sys_o
 	INNER JOIN [sys].[schemas] sys_s ON sys_s.[schema_id] = sys_p.[schema_id]
 WHERE
 	sys_s.[name] = @SchemaName

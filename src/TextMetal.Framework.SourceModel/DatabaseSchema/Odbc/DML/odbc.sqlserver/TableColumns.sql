@@ -78,7 +78,7 @@ FROM
 		sys_ty.[is_user_defined] = 1
 		AND sys_ty_u.[system_type_id] = sys_ty.[system_type_id]
 WHERE
-	sys_s.[name] = @SchemaName
-	AND sys_t.[name] = @TableName
+	sys_s.[name] = ?
+	AND sys_t.[name] = ?
 ORDER BY
 	sys_c.[column_id] ASC

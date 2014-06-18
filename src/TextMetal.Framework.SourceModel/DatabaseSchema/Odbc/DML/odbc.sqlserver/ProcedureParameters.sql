@@ -6,7 +6,7 @@
 -- parameters[schema, procedure]
 -- DECLARE @SchemaName [nvarchar](255); SET @SchemaName = 'testcases'; DECLARE @ProcedureName [nvarchar](255); SET @ProcedureName = 'sproc_simple';
 
-IF CAST(SERVERPROPERTY('ProductVersion') AS [nvarchar](255)) LIKE '8.%' OR
+/*IF CAST(SERVERPROPERTY('ProductVersion') AS [nvarchar](255)) LIKE '8.%' OR
 	CAST(SERVERPROPERTY('ProductVersion') AS [nvarchar](255)) LIKE '9.%'
 BEGIN
 
@@ -40,14 +40,14 @@ FROM
 		sys_ty.[is_user_defined] = 1
 		AND sys_ty_u.[system_type_id] = sys_ty.[system_type_id]
 WHERE
-	sys_s.[name] = @SchemaName
-	AND sys_p.[name] = @ProcedureName
+	sys_s.[name] = ?
+	AND sys_p.[name] = ?
 ORDER BY
 	sys_pm.[parameter_id] ASC
 
 END
 ELSE
-BEGIN
+BEGIN*/
 
 SELECT
 	sys_pm.[parameter_id] AS [ParameterOrdinal],
@@ -78,9 +78,9 @@ FROM
 		sys_ty.[is_user_defined] = 1
 		AND sys_ty_u.[system_type_id] = sys_ty.[system_type_id]
 WHERE
-	sys_s.[name] = @SchemaName
-	AND sys_p.[name] = @ProcedureName
+	sys_s.[name] = ?
+	AND sys_p.[name] = ?
 ORDER BY
 	sys_pm.[parameter_id] ASC
 
-END
+/*END*/

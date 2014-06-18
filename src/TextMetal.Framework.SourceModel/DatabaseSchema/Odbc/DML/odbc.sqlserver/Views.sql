@@ -17,6 +17,6 @@ FROM
 	-- NO NEED TO JOIN ON [sys].[objects] sys_o
 	INNER JOIN [sys].[schemas] sys_s ON sys_s.[schema_id] = sys_v.[schema_id]
 WHERE
-	sys_s.[name] = @SchemaName
+	sys_s.[name] = ?
 ORDER BY
 	sys_v.[name] ASC

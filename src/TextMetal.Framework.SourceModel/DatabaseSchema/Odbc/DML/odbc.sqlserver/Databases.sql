@@ -3,12 +3,14 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
--- server
+-- database
+-- DECLARE
+
 SELECT
-	CAST(NULL AS [int]) as [ObjectId],
-	SERVERPROPERTY('MachineName') AS [MachineName],
-	SERVERPROPERTY('InstanceName') AS [InstanceName],
-	SERVERPROPERTY('ProductVersion') AS [ServerVersion],
-	SERVERPROPERTY ('ProductLevel') AS [ServerLevel],
-	SERVERPROPERTY ('Edition') AS [ServerEdition],
-	DB_NAME() AS [DefaultDatabaseName];
+	sys_d.[database_id] AS [DatabaseId],
+	sys_d.[name] AS [DatabaseName],
+	sys_d.[create_date] AS [CreationTimestamp]
+FROM
+	[sys].[databases] sys_d
+ORDER BY
+	sys_d.[name] ASC

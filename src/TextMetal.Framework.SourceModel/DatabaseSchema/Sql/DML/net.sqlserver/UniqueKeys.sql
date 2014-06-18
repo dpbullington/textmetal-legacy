@@ -4,19 +4,21 @@
 */
 
 -- unique keys[schema, table]
-select
-	cast(null as int) as ObjectId,
-	sys_s_us.name as SchemaName,	
-	sys_t_us.name as TableName,
-	sys_kc.name as UniqueKeyName,
-	null as UniqueKeyIsDisabled
-from
-	sys.key_constraints as sys_kc
-	inner join sys.tables as sys_t_us on sys_t_us.object_id = sys_kc.parent_object_id
-	inner join sys.schemas as sys_s_us on sys_s_us.schema_id = sys_t_us.schema_id
-where
-	sys_kc.type = 'UQ'
-	and sys_s_us.name = @SchemaName
-	and sys_t_us.name = @TableName
-order by
-	sys_kc.name asc
+-- DECLARE @SchemaName [nvarchar](255); SET @SchemaName = 'application'; DECLARE @TableName [nvarchar](255); SET @TableName = 'Organization';
+SELECT
+	sys_kc.[object_id] AS [UniqueKeyId],
+	sys_s.[name] AS [SchemaName],
+	sys_t.[name] AS [TableName],
+	sys_kc.[name] AS [UniqueKeyName],
+	sys_kc.[is_system_named] AS [UniqueKeyIsSystemNamed]	
+FROM
+	[sys].[key_constraints] AS sys_kc -- UKs
+	INNER JOIN [sys].[tables] sys_t ON sys_t.[object_id] = sys_kc.[parent_object_id]
+	-- NO NEED TO JOIN ON [sys].[objects] sys_o
+	INNER JOIN [sys].[schemas] sys_s ON sys_s.[schema_id] = sys_t.[schema_id]
+WHERE
+	sys_s.[name] = @SchemaName
+	AND sys_t.[name] = @TableName
+	AND sys_kc.[type] = 'UQ' -- UNIQUE KEY CONSTRAINT
+ORDER BY
+	sys_kc.[name] ASC

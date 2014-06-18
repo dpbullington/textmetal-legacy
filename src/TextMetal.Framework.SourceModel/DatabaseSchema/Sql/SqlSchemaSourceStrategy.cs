@@ -26,6 +26,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 
 		#endregion
 
+		#region Fields/Constants
+
+		private const string NET_SQL_SERVER_DATA_SOURCE_TAG = "net.sqlserver";
+
+		#endregion
+
 		#region Methods/Operators
 
 		protected override int CoreCalculateColumnSize(string dataSourceTag, Column column)
@@ -36,7 +42,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)column == null)
 				throw new ArgumentNullException("column");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return column.ColumnSqlType == "image" ||
 						column.ColumnSqlType == "text" ||
@@ -59,7 +65,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)parameter == null)
 				throw new ArgumentNullException("parameter");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return parameter.ParameterSqlType == "image" ||
 						parameter.ParameterSqlType == "text" ||
@@ -93,7 +99,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)table == null)
 				throw new ArgumentNullException("table");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
@@ -127,7 +133,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)view == null)
 				throw new ArgumentNullException("view");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
@@ -152,7 +158,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)server == null)
 				throw new ArgumentNullException("server");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
@@ -171,7 +177,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
@@ -203,7 +209,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)table == null)
 				throw new ArgumentNullException("table");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
@@ -222,7 +228,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 				return true;
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -251,7 +257,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)foreignKey == null)
 				throw new ArgumentNullException("foreignKey");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
@@ -286,7 +292,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)table == null)
 				throw new ArgumentNullException("table");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
@@ -320,7 +326,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)procedure == null)
 				throw new ArgumentNullException("procedure");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
@@ -339,7 +345,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 				return "@";
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -362,7 +368,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
@@ -383,7 +389,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)database == null)
 				throw new ArgumentNullException("database");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
@@ -403,7 +409,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 				return null;
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -426,7 +432,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)schema == null)
 				throw new ArgumentNullException("schema");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
@@ -462,7 +468,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)uniqueKey == null)
 				throw new ArgumentNullException("uniqueKey");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
@@ -497,7 +503,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)table == null)
 				throw new ArgumentNullException("table");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				return new IDataParameter[]
 						{
@@ -516,7 +522,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema.Sql
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
 
-			if (dataSourceTag.SafeToString().ToLower() == "net.sqlserver")
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				switch (sqlType = sqlType.SafeToString().ToUpper())
 				{
