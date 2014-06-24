@@ -459,7 +459,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 																continue;
 														}
 
-														schema.Tables.Add(table);
+														schema._Tables.Add(table);
 
 														var dictEnumColumn = unitOfWork.ExecuteDictionary(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "TableColumns"), this.CoreGetColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table), out recordsAffected);
 														{
@@ -517,7 +517,9 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 																	table.Columns.Add(column);
 
-																	if ((object)table.PrimaryKey != null && column.ColumnIsPrimaryKey)
+																	if ((object)table.PrimaryKey != null &&
+																		(object)table.PrimaryKey.PrimaryKeyId != null &&
+																		column.ColumnIsPrimaryKey)
 																		table.PrimaryKey.PrimaryKeyColumns.Add(new PrimaryKeyColumn()
 																		{
 																			ColumnName = column.ColumnName,

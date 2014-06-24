@@ -104,6 +104,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 		}
 
+		[XmlAttribute]
 		public int TriggerId
 		{
 			get

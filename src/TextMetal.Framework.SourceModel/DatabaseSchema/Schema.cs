@@ -297,7 +297,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		[XmlArray(ElementName = "Tables")]
 		[XmlArrayItem(ElementName = "Table")]
-		public List<Table> Tables
+		public List<Table> _Tables
 		{
 			get
 			{
@@ -312,6 +312,30 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			get
 			{
 				return this.views;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public IEnumerable<ITabular> Tables
+		{
+			get
+			{
+				if ((object)this._Tables != null)
+				{
+					foreach (Table table in this._Tables)
+					{
+						yield return table;
+					}
+				}
+
+				if ((object)this.Views != null)
+				{
+					foreach (View view in this.Views)
+					{
+						yield return view;
+					}
+				}
 			}
 		}
 

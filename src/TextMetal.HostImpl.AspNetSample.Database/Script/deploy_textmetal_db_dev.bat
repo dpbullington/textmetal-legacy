@@ -28,11 +28,11 @@ REM MUST BE ONLY FOR DEV
 	-v VAR_DB_LOGIN_ODS="%DB_LOGIN_ODS%" ^
 	-v VAR_DB_PASSWORD_ODS="%DB_PASSWORD_ODS%" ^
 	-v VAR_DB_USER_ODS="%DB_USER_ODS%" ^
-	-i ".\deploy_sql_server_db_0000.sql"
+	-i ".\deploy_textmetal_db_0000.sql"
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
-CALL deploy.bat
+CALL deploy_textmetal_db.bat
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 

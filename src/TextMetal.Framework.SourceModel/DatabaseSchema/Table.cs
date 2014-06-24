@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	public class Table
+	public class Table : ITabular
 	{
 		#region Constructors/Destructors
 
@@ -19,7 +19,17 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		/// Initializes a new instance of the Table class.
 		/// </summary>
 		public Table()
+			: this(false)
 		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the Table class.
+		/// </summary>
+		[Obsolete("Provided for model breaking change compatability only.")]
+		private Table(bool isView)
+		{
+			this.isView = isView;
 		}
 
 		#endregion
@@ -28,6 +38,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		private readonly List<TableColumn> columns = new List<TableColumn>();
 		private readonly List<ForeignKey> foreignKeys = new List<ForeignKey>();
+		private readonly bool isView;
 		private readonly List<Trigger> triggers = new List<Trigger>();
 		private readonly List<UniqueKey> uniqueKeys = new List<UniqueKey>();
 		private DateTime creationTimestamp;
@@ -35,7 +46,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private bool isImplementationDetail;
 		private DateTime modificationTimestamp;
 		private PrimaryKey primaryKey;
-
 		private int tableId;
 		private string tableName;
 		private string tableNameCamelCase;
@@ -68,6 +78,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 		}
 
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		IEnumerable<Column> ITabular.Columns
+		{
+			get
+			{
+				return this.Columns;
+			}
+		}
+
 		[XmlAttribute]
 		public DateTime CreationTimestamp
 		{
@@ -88,6 +108,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			get
 			{
 				return this.foreignKeys;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string PrimaryKeyName
+		{
+			get
+			{
+				return (object)this.PrimaryKey != null ? this.PrimaryKey.PrimaryKeyName : null;
 			}
 		}
 
@@ -113,6 +143,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 		}
 
+		[XmlIgnore]
 		public bool HasSingleColumnServerGeneratedPrimaryKey
 		{
 			get
@@ -131,6 +162,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.isImplementationDetail = value;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool IsView
+		{
+			get
+			{
+				return this.isView;
 			}
 		}
 

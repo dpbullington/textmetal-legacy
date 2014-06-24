@@ -55,6 +55,7 @@ namespace TextMetal.Framework.TemplateModel
 			if ((object)templatingContext == null)
 				throw new ArgumentNullException("templatingContext");
 
+			// add global cleanup into context to suppro this....
 			//templatingContext.IteratorModels.Push(this.Dynamic.Content);
 			// BUG: this never gets popped !!!
 		}

@@ -11,7 +11,7 @@ REM
 	-U "%DB_SA_USERNAME%" ^
 	-P "%DB_SA_PASSWORD%" ^
 	-d "%DB_DATABASE_ODS%" ^
-	-i ".\deploy_sql_server_db_0001.sql"
+	-i ".\deploy_textmetal_db_0001.sql"
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
@@ -20,7 +20,7 @@ IF %ERRORLEVEL% NEQ 0 goto pkgError
 	-U "%DB_SA_USERNAME%" ^
 	-P "%DB_SA_PASSWORD%" ^
 	-d "%DB_DATABASE_ODS%" ^
-	-i ".\deploy_sql_server_db_0002.sql"
+	-i ".\deploy_textmetal_db_0002.sql"
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
@@ -31,7 +31,7 @@ REM goto skipAddSeedData
 	-U "%DB_SA_USERNAME%" ^
 	-P "%DB_SA_PASSWORD%" ^
 	-d "%DB_DATABASE_ODS%" ^
-	-i ".\add_seed_data.sql"
+	-i ".\add_textmetal_seed_data.sql"
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 :skipAddSeedData

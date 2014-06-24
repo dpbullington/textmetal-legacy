@@ -188,7 +188,7 @@ CREATE ASSEMBLY [TextMetal.Common.SqlServerClr]
 AUTHORIZATION [dbo]
 FROM
 ]]>
-		<Include name="${argument_basedir}\TextMetal.Common.SqlServerClr.dll.txt" />
+		<Include name="${Environment.ARGS.basedir}\TextMetal.Common.SqlServerClr.dll.txt" />
 <![CDATA[WITH PERMISSION_SET = SAFE
 GO
 

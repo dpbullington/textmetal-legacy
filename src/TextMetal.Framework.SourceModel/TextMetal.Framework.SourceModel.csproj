@@ -48,6 +48,8 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="DatabaseSchema\ITabularColumn.cs" />
+    <Compile Include="DatabaseSchema\ITabular.cs" />
     <Compile Include="DatabaseSchema\Column.cs" />
     <Compile Include="DatabaseSchema\ProcedureColumn.cs" />
     <Compile Include="DatabaseSchema\PrimaryKey.cs" />
@@ -56,7 +58,6 @@
     <Compile Include="DatabaseSchema\Odbc\OdbcSchemaSourceStrategy.cs" />
     <Compile Include="DatabaseSchema\View.cs" />
     <Compile Include="DatabaseSchema\Trigger.cs" />
-    <Compile Include="DatabaseSchema\ExtendedProperty.cs" />
     <Compile Include="Primative\FileSystemSourceStrategy.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
     <Compile Include="DatabaseSchema\SchemaSourceStrategy.cs" />

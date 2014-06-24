@@ -4,11 +4,12 @@
 */
 
 using System;
+using System.Xml.Serialization;
 
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	public class ViewColumn : Column
+	public class ViewColumn : Column, ITabularColumn
 	{
 		#region Constructors/Destructors
 
@@ -17,6 +18,80 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		/// </summary>
 		public ViewColumn()
 		{
+		}
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool ColumnHasCheck
+		{
+			get
+			{
+				return false;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool ColumnHasDefault
+		{
+			get
+			{
+				return false;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool ColumnIsComputed
+		{
+			get
+			{
+				return false;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool ColumnIsIdentity
+		{
+			get
+			{
+				return false;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool ColumnIsPrimaryKey
+		{
+			get
+			{
+				return false;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public int ColumnPrimaryKeyOrdinal
+		{
+			get
+			{
+				return 0;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool IsColumnServerGeneratedPrimaryKey
+		{
+			get
+			{
+				return false;
+			}
 		}
 
 		#endregion

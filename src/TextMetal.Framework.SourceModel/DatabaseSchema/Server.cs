@@ -134,7 +134,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		{
 			get
 			{
-				return this.Schemas.Count(s => s.Tables.Any()) > 0;
+				return this.Schemas.Count(s => s._Tables.Any()) > 0;
 			}
 		}
 

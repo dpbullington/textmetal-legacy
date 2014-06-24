@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 namespace TextMetal.Framework.SourceModel.DatabaseSchema
 {
 	[Serializable]
-	public class TableColumn : Column
+	public class TableColumn : Column, ITabularColumn
 	{
 		#region Constructors/Destructors
 
@@ -113,6 +113,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 		}
 
+		[XmlIgnore]
 		public bool IsColumnServerGeneratedPrimaryKey
 		{
 			get
