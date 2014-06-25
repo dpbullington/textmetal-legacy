@@ -16,17 +16,17 @@ using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 using TextMetal.Framework.DebuggerProfilerModel;
 
-namespace TextMetal.Framework.ExpressionModel
+namespace TextMetal.Framework.ExpressionModel.v2
 {
 	[XmlElementMapping(LocalName = "Ruby_v2", NamespaceUri = "http://www.textmetal.com/api/v6.0.0", ChildElementModel = ChildElementModel.Sterile)]
-	public sealed class RubyConstruct_v2 : ExpressionXmlObject
+	public sealed class RubyConstruct : ExpressionXmlObject
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the RubyConstruct_v2 class.
+		/// Initializes a new instance of the RubyConstruct class.
 		/// </summary>
-		public RubyConstruct_v2()
+		public RubyConstruct()
 		{
 		}
 
@@ -134,7 +134,7 @@ namespace TextMetal.Framework.ExpressionModel
 
 			templatingContext = (ITemplatingContext)context[0];
 
-			return new RubyConstruct_v2()
+			return new RubyConstruct()
 					{
 						Src = RubySource.Expr, Expr = parameters[0]
 					}.CoreEvaluateExpression(templatingContext);

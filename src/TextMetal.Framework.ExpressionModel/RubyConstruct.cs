@@ -6,9 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
-
-using Microsoft.Scripting.Hosting;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Core.StringTokens;
@@ -33,6 +30,7 @@ namespace TextMetal.Framework.ExpressionModel
 
 		#region Fields/Constants
 
+		private static readonly RubyHost instance = new RubyHost();
 		private string expr;
 		private string file;
 		private string script;
@@ -41,6 +39,14 @@ namespace TextMetal.Framework.ExpressionModel
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		private static RubyHost SingletonRubyHost
+		{
+			get
+			{
+				return instance;
+			}
+		}
 
 		[XmlAttributeMapping(LocalName = "expr", NamespaceUri = "")]
 		public string Expr
@@ -133,17 +139,19 @@ namespace TextMetal.Framework.ExpressionModel
 
 			templatingContext = (ITemplatingContext)context[0];
 
-			return new RubyConstruct() { Src = RubySource.Expr, Expr = parameters[0] }.CoreEvaluateExpression(templatingContext);
+			return new RubyConstruct()
+			{
+				Src = RubySource.Expr,
+				Expr = parameters[0]
+			}.CoreEvaluateExpression(templatingContext);
 		}
 
 		protected override object CoreEvaluateExpression(ITemplatingContext templatingContext)
 		{
 			DynamicWildcardTokenReplacementStrategy dynamicWildcardTokenReplacementStrategy;
-			ScriptRuntimeSetup scriptRuntimeSetup;
-			ScriptRuntime scriptRuntime;
-			ScriptEngine scriptEngine;
-			ScriptScope scriptScope;
-			List<string> paths;
+			string scriptContent;
+			IDictionary<string, object> scriptVariables;
+
 			dynamic result;
 			dynamic textMetal;
 			dynamic dvalue;
@@ -156,32 +164,36 @@ namespace TextMetal.Framework.ExpressionModel
 
 			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy();
 
-			scriptRuntimeSetup = new ScriptRuntimeSetup();
-			scriptRuntimeSetup.LanguageSetups.Add(
-				new LanguageSetup(
-					"IronRuby.Runtime.RubyContext, IronRuby",
-					"IronRuby",
-					new[] { "IronRuby", "Ruby", "rb" },
-					new[] { ".rb" }));
+			switch (this.Src)
+			{
+				case RubySource.Script:
+					scriptContent = this.Script;
+					break;
+				case RubySource.Expr:
+					scriptContent = this.Expr;
+					break;
+				case RubySource.File:
+					string file;
+					file = templatingContext.Tokenizer.ExpandTokens(this.File, dynamicWildcardTokenReplacementStrategy);
+					scriptContent = templatingContext.Input.LoadContent(file);
+					break;
+				default:
+					scriptContent = "nil";
+					break;
+			}
 
-			scriptRuntime = new ScriptRuntime(scriptRuntimeSetup);
-			scriptEngine = scriptRuntime.GetEngine("Ruby");
-			scriptScope = scriptEngine.CreateScope();
-
-			paths = scriptEngine.GetSearchPaths().ToList();
-			paths.Clear();
-			//paths.Add(System.IO.Directory.GetCurrentDirectory());
-			scriptEngine.SetSearchPaths(paths);
+			if (!SingletonRubyHost.Compile(this, scriptContent))
+				new object(); // in cache already
 
 			scriptFoo = new Dictionary<string, object>();
 
 			func = (token) =>
-					{
-						object value;
-						value = dynamicWildcardTokenReplacementStrategy.Evaluate(token, null);
-						//Console.WriteLine("[{0}]={1}", token, value);
-						return value;
-					};
+			{
+				object value;
+				value = dynamicWildcardTokenReplacementStrategy.Evaluate(token, null);
+				//Console.WriteLine("[{0}]={1}", token, value);
+				return value;
+			};
 			scriptFoo.Add("EvaluateToken", func);
 			//TODO: templatingContext.Tokenizer.ExpandTokens(tokenizedValue, dynamicWildcardTokenReplacementStrategy);
 
@@ -189,34 +201,11 @@ namespace TextMetal.Framework.ExpressionModel
 			scriptFoo.Add("DebuggerBreakpoint", action);
 
 			textMetal = new DynamicDictionary(scriptFoo);
-			scriptScope.SetVariable("textMetal", textMetal);
 
-			foreach (KeyValuePair<string, object> variableEntry in templatingContext.CurrentVariableTable)
-			{
-				if (scriptScope.TryGetVariable(variableEntry.Key, out dvalue))
-					throw new InvalidOperationException(string.Format("Cannot set variable '{0}' in Ruby script scope; the specified variable name already exists.", variableEntry.Key));
+			scriptVariables = new Dictionary<string, object>();
+			scriptVariables.Add("textMetal", textMetal);
 
-				scriptScope.SetVariable(variableEntry.Key, variableEntry.Value);
-			}
-
-			switch (this.Src)
-			{
-				case RubySource.Script:
-					result = scriptEngine.Execute(this.Script, scriptScope);
-					break;
-				case RubySource.Expr:
-					result = scriptEngine.Execute(this.Expr, scriptScope);
-					break;
-				case RubySource.File:
-					string file;
-					file = templatingContext.Tokenizer.ExpandTokens(this.File, dynamicWildcardTokenReplacementStrategy);
-					result = scriptEngine.Execute(templatingContext.Input.LoadContent(file), scriptScope);
-					break;
-				default:
-					result = null;
-					break;
-			}
-
+			result = SingletonRubyHost.Execute(this, scriptVariables);
 			return result;
 		}
 
@@ -224,6 +213,7 @@ namespace TextMetal.Framework.ExpressionModel
 
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
+		[Serializable]
 		public class DynamicDictionary : DynamicObject
 		{
 			#region Constructors/Destructors
@@ -259,20 +249,6 @@ namespace TextMetal.Framework.ExpressionModel
 			{
 				this.dictionary[binder.Name] = value;
 				return true;
-			}
-
-			#endregion
-		}
-
-		private sealed class RubyHost
-		{
-			#region Constructors/Destructors
-
-			/// <summary>
-			/// Initializes a new instance of the RubyHost class.
-			/// </summary>
-			public RubyHost()
-			{
 			}
 
 			#endregion
