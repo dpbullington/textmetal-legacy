@@ -182,7 +182,7 @@ namespace TextMetal.Framework.ExpressionModel
 					break;
 			}
 
-			if (!SingletonRubyHost.Compile(this, scriptContent))
+			if (!SingletonRubyHost.Compile(scriptContent.GetHashCode(), scriptContent))
 				new object(); // in cache already
 
 			scriptFoo = new Dictionary<string, object>();
@@ -205,7 +205,7 @@ namespace TextMetal.Framework.ExpressionModel
 			scriptVariables = new Dictionary<string, object>();
 			scriptVariables.Add("textMetal", textMetal);
 
-			result = SingletonRubyHost.Execute(this, scriptVariables);
+			result = SingletonRubyHost.Execute(scriptContent.GetHashCode(), scriptVariables);
 			return result;
 		}
 
