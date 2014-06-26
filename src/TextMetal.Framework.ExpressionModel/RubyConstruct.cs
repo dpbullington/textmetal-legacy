@@ -154,7 +154,6 @@ namespace TextMetal.Framework.ExpressionModel
 
 			dynamic result;
 			dynamic textMetal;
-			dynamic dvalue;
 			Func<string, object> func;
 			Action action;
 			IDictionary<string, object> scriptFoo;
@@ -194,16 +193,27 @@ namespace TextMetal.Framework.ExpressionModel
 				//Console.WriteLine("[{0}]={1}", token, value);
 				return value;
 			};
-			scriptFoo.Add("EvaluateToken", func);
-			//TODO: templatingContext.Tokenizer.ExpandTokens(tokenizedValue, dynamicWildcardTokenReplacementStrategy);
-
+			
 			action = () => templatingContext.LaunchDebugger();
+			
+			scriptFoo.Add("EvaluateToken", func);
 			scriptFoo.Add("DebuggerBreakpoint", action);
+
+			scriptFoo.Add("__EvaluateToken", func);
+			scriptFoo.Add("__DebuggerBreakpoint", action);
 
 			textMetal = new DynamicDictionary(scriptFoo);
 
 			scriptVariables = new Dictionary<string, object>();
 			scriptVariables.Add("textMetal", textMetal);
+
+			foreach (KeyValuePair<string, object> variableEntry in templatingContext.CurrentVariableTable)
+			{
+				if (scriptVariables.ContainsKey(variableEntry.Key))
+					throw new InvalidOperationException(string.Format("Cannot set variable '{0}' in Ruby script scope; the specified variable name already exists.", variableEntry.Key));
+
+				scriptVariables.Add(variableEntry.Key, variableEntry.Value);
+			}
 
 			result = SingletonRubyHost.Execute(scriptContent.GetHashCode(), scriptVariables);
 			return result;
@@ -229,25 +239,61 @@ namespace TextMetal.Framework.ExpressionModel
 
 			private readonly IDictionary<string, object> dictionary;
 
+			private IDictionary<string, object> Dictionary
+			{
+				get
+				{
+					return this.dictionary;
+				}
+			}
+
 			#endregion
 
 			#region Methods/Operators
 
 			public override IEnumerable<string> GetDynamicMemberNames()
 			{
-				foreach (string key in this.dictionary.Keys)
+				foreach (string key in this.Dictionary.Keys)
 					yield return key;
 			}
 
 			public override bool TryGetMember(GetMemberBinder binder, out object result)
 			{
-				result = this.dictionary[binder.Name];
+				if (this.Dictionary.TryGetValue(binder.Name, out result))
+					return true;
+
+				return base.TryGetMember(binder, out result);
+			}
+
+			public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
+			{
+				object value;
+				Delegate method;
+
+				// LEGACY COMPATABILITY HACK
+				if (!binder.Name.SafeToString().Trim().ToLower().StartsWith("__"))
+					return base.TryInvokeMember(binder, args, out result);
+
+				if (!this.Dictionary.TryGetValue(binder.Name, out value))
+					return base.TryInvokeMember(binder, args, out result);
+
+				method = value as Delegate;
+
+				if ((object)method == null)
+					return base.TryInvokeMember(binder, args, out result);
+
+				result = method.DynamicInvoke(args);
 				return true;
 			}
 
 			public override bool TrySetMember(SetMemberBinder binder, object value)
 			{
-				this.dictionary[binder.Name] = value;
+				if (this.Dictionary.ContainsKey(binder.Name))
+					this.Dictionary.Remove(binder.Name);
+				
+				if ((object)value != null)
+					this.Dictionary.Add(binder.Name, value);
+
 				return true;
 			}
 

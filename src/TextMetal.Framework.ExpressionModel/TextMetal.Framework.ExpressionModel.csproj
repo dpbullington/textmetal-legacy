@@ -61,7 +61,6 @@
     <Compile Include="BinaryExpressionConstruct.cs" />
     <Compile Include="IExpressionContainerConstruct.cs" />
     <Compile Include="RubyHost.cs" />
-    <Compile Include="RubyConstruct_v2.cs" />
     <Compile Include="RubyConstruct.cs" />
     <Compile Include="AspectConstruct.cs" />
     <Compile Include="ExpressionXmlObject.cs" />

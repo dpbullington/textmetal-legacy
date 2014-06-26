@@ -113,7 +113,7 @@
 ${test}
 *rb*
 
-${rb(`textMetal.DebuggerBreakpoint()`)}
+${rb(`textMetal.DebuggerBreakpoint.invoke()`)}
 ]]>
 		
 	<Assign token="test">
