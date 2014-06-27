@@ -165,7 +165,7 @@ USE [master]
 GO
 
 
-IF EXISTS (SELECT * FROM sysdatabases WHERE name = '${ObfuscationDestinationDatabaseName}')
+IF EXISTS (SELECT sys_d.[database_id] FROM [sys].[databases] sys_d WHERE sys_d.[name] = '${ObfuscationDestinationDatabaseName}')
 BEGIN
 
 	ALTER DATABASE [${ObfuscationDestinationDatabaseName}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
@@ -378,7 +378,7 @@ CREATE TABLE [${SchemaName}].[${TableName}]
 		<If.True>
 <![CDATA[
 
-	CONSTRAINT [pk_${TableName}] PRIMARY KEY
+	CONSTRAINT [${PrimaryKey.PrimaryKeyName}] PRIMARY KEY
 	(
 ]]>
 				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">

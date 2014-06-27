@@ -110,7 +110,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		{
 			get
 			{
-				return false;
+				return true;
 			}
 		}
 
