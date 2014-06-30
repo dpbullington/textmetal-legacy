@@ -25,7 +25,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\TextMetal.Framework.Core.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\TextMetal.Framework.Core.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,7 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\TextMetal.Framework.Core.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\TextMetal.Framework.Core.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -78,7 +78,7 @@
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.Xml\TextMetal.Common.Xml.csproj">
       <Project>{CEF6C9D5-D5F2-4F4E-81DD-0BFDF81A2C93}</Project>
-      <Name>TextMetal.Common.Xml</Name>
+      <Name>TextMetal.Common.xml</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

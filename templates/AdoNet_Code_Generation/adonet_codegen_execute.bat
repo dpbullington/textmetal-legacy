@@ -130,17 +130,6 @@ IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
-copy "..\..\src\TextMetal.Common.SqlServerClr\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.SqlServerClr.dll" "%PACKAGE_DIR%\lib\TextMetal\."
-IF %ERRORLEVEL% NEQ 0 goto pkgError
-
-copy "..\..\src\TextMetal.Common.SqlServerClr\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.SqlServerClr.xml" "%PACKAGE_DIR%\lib\TextMetal\."
-IF %ERRORLEVEL% NEQ 0 goto pkgError
-
-copy "..\..\src\TextMetal.Common.SqlServerClr\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.SqlServerClr.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
-IF %ERRORLEVEL% NEQ 0 goto pkgError
-
-
-
 copy "..\..\src\TextMetal.Common.UnitTests\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.UnitTests.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
@@ -368,17 +357,6 @@ copy "..\..\src\TextMetal.HostImpl.Tool\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImp
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 copy "..\..\src\TextMetal.HostImpl.Tool\bin\%BUILD_FLAVOR_DIR%\TextMetal.HostImpl.Tool.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
-IF %ERRORLEVEL% NEQ 0 goto pkgError
-
-
-
-copy "..\..\src\TextMetal.HostImpl.VsIdeConv.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\VisualStudioConversion.exe" "%PACKAGE_DIR%\lib\TextMetal\."
-IF %ERRORLEVEL% NEQ 0 goto pkgError
-
-copy "..\..\src\TextMetal.HostImpl.VsIdeConv.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\VisualStudioConversion.xml" "%PACKAGE_DIR%\lib\TextMetal\."
-IF %ERRORLEVEL% NEQ 0 goto pkgError
-
-copy "..\..\src\TextMetal.HostImpl.VsIdeConv.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\VisualStudioConversion.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 

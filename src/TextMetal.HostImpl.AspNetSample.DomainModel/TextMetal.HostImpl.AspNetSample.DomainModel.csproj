@@ -23,7 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\TextMetal.HostImpl.AspNetSample.DomainModel.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\TextMetal.HostImpl.AspNetSample.DomainModel.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,7 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\TextMetal.HostImpl.AspNetSample.DomainModel.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\TextMetal.HostImpl.AspNetSample.DomainModel.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

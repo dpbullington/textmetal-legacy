@@ -1,3 +1,0 @@
-ServerName|DatabaseName|SchemaName|ObjectType|ObjectName
-(local)|textmetal_ods_dev|application|Table|Organization
-(local)|textmetal_ods_dev|application|Table|Member

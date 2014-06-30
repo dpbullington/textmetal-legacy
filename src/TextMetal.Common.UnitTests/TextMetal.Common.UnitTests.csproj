@@ -25,7 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\TextMetal.Common.UnitTests.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\TextMetal.Common.UnitTests.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,7 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\TextMetal.Common.UnitTests.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\TextMetal.Common.UnitTests.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -119,10 +119,6 @@
     <ProjectReference Include="..\TextMetal.Common.Solder\TextMetal.Common.Solder.csproj">
       <Project>{3B0EFC3C-AA91-4FB4-B2EE-BD8727230A94}</Project>
       <Name>TextMetal.Common.Solder</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TextMetal.Common.SqlServerClr\TextMetal.Common.SqlServerClr.csproj">
-      <Project>{CBE1C4D7-342F-480F-9B2A-718E1BEB5F0D}</Project>
-      <Name>TextMetal.Common.SqlServerClr</Name>
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Imports\TextMetal.Imports.csproj">
       <Project>{40e6902d-3881-4271-bdf3-7d88db7cf230}</Project>

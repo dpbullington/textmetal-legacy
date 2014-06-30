@@ -25,7 +25,7 @@
     <DefineConstants>DEBUG;TRACE;CLR_4_0;NETFX40;PHYSICALASSEMBLY DOTNET DOTNET40 CLIENTPROFILE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\TextMetal.Imports.nunit.console.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\TextMetal.Imports.nunit.console.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -35,7 +35,7 @@
     <DefineConstants>TRACE;CLR_4_0;NETFX40;PHYSICALASSEMBLY DOTNET DOTNET40 CLIENTPROFILE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\TextMetal.Imports.nunit.console.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\TextMetal.Imports.nunit.console.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>

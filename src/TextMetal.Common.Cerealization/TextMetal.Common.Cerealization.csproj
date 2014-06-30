@@ -25,7 +25,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\TextMetal.Common.Cerealization.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\TextMetal.Common.Cerealization.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,7 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\TextMetal.Common.Cerealization.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\TextMetal.Common.Cerealization.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -65,7 +65,7 @@
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.Xml\TextMetal.Common.Xml.csproj">
       <Project>{CEF6C9D5-D5F2-4F4E-81DD-0BFDF81A2C93}</Project>
-      <Name>TextMetal.Common.Xml</Name>
+      <Name>TextMetal.Common.xml</Name>
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Imports\TextMetal.Imports.csproj">
       <Project>{40e6902d-3881-4271-bdf3-7d88db7cf230}</Project>

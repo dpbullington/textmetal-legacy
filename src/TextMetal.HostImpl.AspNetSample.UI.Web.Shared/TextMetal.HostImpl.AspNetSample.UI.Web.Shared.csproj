@@ -23,7 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\TextMetal.HostImpl.AspNetSample.UI.Web.Shared.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\TextMetal.HostImpl.AspNetSample.UI.Web.Shared.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,7 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\TextMetal.HostImpl.AspNetSample.UI.Web.Shared.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\TextMetal.HostImpl.AspNetSample.UI.Web.Shared.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
