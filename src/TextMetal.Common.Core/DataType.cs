@@ -222,6 +222,11 @@ namespace TextMetal.Common.Core
 				else
 					return TryParse(valueType.GetGenericArguments()[0], value, out result);
 			}
+			else if (valueType == typeof(DBNull))
+			{
+				retval = true;
+				result = DBNull.Value;
+			}
 			else if (valueType == typeof(String))
 			{
 				retval = true;
