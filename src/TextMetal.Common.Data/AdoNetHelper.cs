@@ -115,7 +115,7 @@ namespace TextMetal.Common.Data
 						object value;
 
 						key = dataReader.GetName(index);
-						value = dataReader.GetValue(index);
+						value = dataReader.GetValue(index).ChangeType<object>();
 
 						obj.Add(key, value);
 					}
@@ -250,7 +250,7 @@ namespace TextMetal.Common.Data
 								object value;
 
 								key = dataTable.Columns[index].ColumnName;
-								value = dataRow[index];
+								value = dataRow[index].ChangeType<object>();;
 
 								obj.Add(key, value);
 							}
