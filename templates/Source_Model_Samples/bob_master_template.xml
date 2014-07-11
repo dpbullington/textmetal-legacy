@@ -95,6 +95,37 @@
 <![CDATA[FALSE]]>
 		</If.False>
 	</If>
+
+	<If>
+		<If.Condition>
+			<BinaryExpression operator="And">
+				<BinaryExpression.LeftExpression>
+					<Value type="System.Boolean" data="false" />
+				</BinaryExpression.LeftExpression>
+				<BinaryExpression.RightExpression>
+					<Value type="System.Boolean" data="true" />
+				</BinaryExpression.RightExpression>
+			</BinaryExpression>
+		</If.Condition>
+		<If.Then>
+<![CDATA[THEN]]>
+		</If.Then>
+		<If.Else>
+<![CDATA[ELSE]]>
+		</If.Else>
+	</If>
+
+	<Unless>
+		<Unless.Condition>
+			<Value type="System.Boolean" data="false" />
+		</Unless.Condition>
+		<Unless.Then>
+<![CDATA[__unless:THEN]]>
+		</Unless.Then>
+		<Unless.Else>
+<![CDATA[__unless:ELSE]]>
+		</Unless.Else>
+	</Unless>
 	
 	<Assign token="test">
 		<Assign.Expression>

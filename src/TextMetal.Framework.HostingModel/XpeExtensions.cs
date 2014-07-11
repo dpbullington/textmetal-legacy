@@ -56,6 +56,8 @@ namespace TextMetal.Framework.HostingModel
 			xpe.RegisterKnownXmlObject<AliasConstruct>();
 			xpe.RegisterKnownXmlObject<AllocConstruct>();
 			xpe.RegisterKnownXmlObject<AssignConstruct>();
+			xpe.RegisterKnownXmlObject<DoUntilConstruct>();
+			xpe.RegisterKnownXmlObject<DoWhileConstruct>();
 			xpe.RegisterKnownXmlObject<ExpandoConstruct>();
 			xpe.RegisterKnownXmlObject<ForConstruct>();
 			xpe.RegisterKnownXmlObject<ForEachConstruct>();
@@ -69,6 +71,9 @@ namespace TextMetal.Framework.HostingModel
 			xpe.RegisterKnownXmlObject<ReferenceConstruct>();
 			xpe.RegisterKnownXmlObject<TemplateConstruct>();
 			xpe.RegisterKnownXmlObject<TemplateContainerConstruct>();
+			xpe.RegisterKnownXmlObject<UnlessConstruct>();
+			xpe.RegisterKnownXmlObject<UntilConstruct>();
+			xpe.RegisterKnownXmlObject<WhileConstruct>();
 			xpe.RegisterKnownXmlObject<WriteConstruct>();
 		}
 

@@ -5,8 +5,6 @@
 
 using System;
 
-using TextMetal.Common.Core;
-using TextMetal.Common.Core.StringTokens;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 using TextMetal.Framework.ExpressionModel;
@@ -14,7 +12,7 @@ using TextMetal.Framework.ExpressionModel;
 namespace TextMetal.Framework.TemplateModel
 {
 	[XmlElementMapping(LocalName = "For", NamespaceUri = "http://www.textmetal.com/api/v6.0.0", ChildElementModel = ChildElementModel.Sterile)]
-	public sealed class ForConstruct : TemplateXmlObject
+	public sealed class ForConstruct : ConditionalIterationConstruct
 	{
 		#region Constructors/Destructors
 
@@ -22,6 +20,7 @@ namespace TextMetal.Framework.TemplateModel
 		/// Initializes a new instance of the ForConstruct class.
 		/// </summary>
 		public ForConstruct()
+			: base(true, true)
 		{
 		}
 
@@ -29,41 +28,12 @@ namespace TextMetal.Framework.TemplateModel
 
 		#region Fields/Constants
 
-		private ITemplateContainerConstruct body;
-		private IExpressionContainerConstruct condition;
 		private IExpressionContainerConstruct initializer;
 		private IExpressionContainerConstruct iterator;
-		private string varIx;
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Body", NamespaceUri = "http://www.textmetal.com/api/v6.0.0")]
-		public ITemplateContainerConstruct Body
-		{
-			get
-			{
-				return this.body;
-			}
-			set
-			{
-				this.body = value;
-			}
-		}
-
-		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Condition", NamespaceUri = "http://www.textmetal.com/api/v6.0.0")]
-		public IExpressionContainerConstruct Condition
-		{
-			get
-			{
-				return this.condition;
-			}
-			set
-			{
-				this.condition = value;
-			}
-		}
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Initializer", NamespaceUri = "http://www.textmetal.com/api/v6.0.0")]
 		public IExpressionContainerConstruct Initializer
@@ -75,14 +45,6 @@ namespace TextMetal.Framework.TemplateModel
 			set
 			{
 				this.initializer = value;
-			}
-		}
-
-		protected override bool IsScopeBlock
-		{
-			get
-			{
-				return true;
 			}
 		}
 
@@ -99,107 +61,36 @@ namespace TextMetal.Framework.TemplateModel
 			}
 		}
 
-		[XmlAttributeMapping(LocalName = "var-ix", NamespaceUri = "")]
-		public string VarIx
-		{
-			get
-			{
-				return this.varIx;
-			}
-			set
-			{
-				this.varIx = value;
-			}
-		}
-
 		#endregion
 
 		#region Methods/Operators
 
-		protected override void CoreExpandTemplate(ITemplatingContext templatingContext)
+		protected override void CoreConditionalIterationInitialize(ITemplatingContext templatingContext)
 		{
-			const uint MAX_ITERATIONS_INFINITE_LOOP_CHECK = 999999;
-			string varIx;
-			uint index = 1; // one-based
 			object value;
-			bool shouldLoop;
-			DynamicWildcardTokenReplacementStrategy dynamicWildcardTokenReplacementStrategy;
 
 			if ((object)templatingContext == null)
 				throw new ArgumentNullException("templatingContext");
 
-			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy();
-
-			varIx = templatingContext.Tokenizer.ExpandTokens(this.VarIx, dynamicWildcardTokenReplacementStrategy);
-
-			if (!DataType.IsNullOrWhiteSpace(varIx))
-			{
-				new AllocConstruct()
-				{
-					Token = varIx
-				}.ExpandTemplate(templatingContext);
-			}
-
 			if ((object)this.Initializer != null)
 				value = this.Initializer.EvaluateExpression(templatingContext);
+		}
 
-			// DO NOT USE REAL FOR LOOP HERE
-			while (true)
-			{
-				if (!DataType.IsNullOrWhiteSpace(varIx))
-				{
-					IExpressionContainerConstruct expressionContainerConstruct;
-					ValueConstruct valueConstruct;
+		protected override void CoreConditionalIterationStep(ITemplatingContext templatingContext, uint indexOneBase)
+		{
+			object value;
 
-					expressionContainerConstruct = new ExpressionContainerConstruct();
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
 
-					valueConstruct = new ValueConstruct()
-									{
-										Type = typeof(int).FullName,
-										__ = index
-									};
+			if ((object)this.Iterator != null)
+				value = this.Iterator.EvaluateExpression(templatingContext);
+		}
 
-					((IContentContainerXmlObject<IExpressionXmlObject>)expressionContainerConstruct).Content = valueConstruct;
-
-					new AssignConstruct()
-					{
-						Token = varIx,
-						Expression = expressionContainerConstruct
-					}.ExpandTemplate(templatingContext);
-				}
-
-				if (index > MAX_ITERATIONS_INFINITE_LOOP_CHECK)
-					throw new InvalidOperationException(string.Format("The for construct has exceeded the maximun number of iterations '{0}'; this is an infinite loop prevention mechansim.", MAX_ITERATIONS_INFINITE_LOOP_CHECK));
-
-				if ((object)this.Condition != null)
-					value = this.Condition.EvaluateExpression(templatingContext);
-				else
-					value = false;
-
-				if ((object)value != null && !(value is bool) && !(value is bool?))
-					throw new InvalidOperationException(string.Format("The for construct condition expression has evaluated to a non-null value with an unsupported type '{0}'; only '{1}' and '{2}' types are supported.", value.GetType().FullName, typeof(bool).FullName, typeof(bool?).FullName));
-
-				shouldLoop = ((bool)(value ?? false));
-
-				if (!shouldLoop)
-					break;
-
-				if ((object)this.Body != null)
-					this.Body.ExpandTemplate(templatingContext);
-
-				if ((object)this.Iterator != null)
-					value = this.Iterator.EvaluateExpression(templatingContext);
-
-				index++;
-			}
-
-			if (!DataType.IsNullOrWhiteSpace(varIx))
-			{
-				new FreeConstruct()
-				{
-					Token = varIx
-				}.ExpandTemplate(templatingContext);
-			}
+		protected override void CoreConditionalIterationTerminate(ITemplatingContext templatingContext)
+		{
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
 		}
 
 		#endregion

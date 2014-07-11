@@ -9,16 +9,16 @@ using TextMetal.Common.Xml;
 
 namespace TextMetal.Framework.TemplateModel
 {
-	[XmlElementMapping(LocalName = "If", NamespaceUri = "http://www.textmetal.com/api/v6.0.0", ChildElementModel = ChildElementModel.Sterile)]
-	public sealed class IfConstruct : ConditionalBranchConstruct
+	[XmlElementMapping(LocalName = "Unless", NamespaceUri = "http://www.textmetal.com/api/v6.0.0", ChildElementModel = ChildElementModel.Sterile)]
+	public sealed class UnlessConstruct : ConditionalBranchConstruct
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the IfConstruct class.
+		/// Initializes a new instance of the UnlessConstruct class.
 		/// </summary>
-		public IfConstruct()
-			: base(true)
+		public UnlessConstruct()
+			: base(false)
 		{
 		}
 

@@ -45,6 +45,13 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ConditionalIterationConstruct.cs" />
+    <Compile Include="DoUntilConstruct.cs" />
+    <Compile Include="DoWhileConstruct.cs" />
+    <Compile Include="UntilConstruct.cs" />
+    <Compile Include="WhileConstruct.cs" />
+    <Compile Include="UnlessConstruct.cs" />
+    <Compile Include="IfConstruct.cs" />
     <Compile Include="ITemplateContainerConstruct.cs" />
     <Compile Include="ExpandoConstruct.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
@@ -55,7 +62,7 @@
     <Compile Include="ForConstruct.cs" />
     <Compile Include="ForEachConstruct.cs" />
     <Compile Include="FreeConstruct.cs" />
-    <Compile Include="IfConstruct.cs" />
+    <Compile Include="ConditionalBranchConstruct.cs" />
     <Compile Include="ImportConstruct.cs" />
     <Compile Include="IncludeConstruct.cs" />
     <Compile Include="InvokeSourceStrategyConstruct.cs" />

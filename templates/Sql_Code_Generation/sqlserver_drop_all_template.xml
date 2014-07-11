@@ -7,14 +7,18 @@
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
 
 	<OutputScope name="DropAll.g.sql">
+
 <![CDATA[
--- DROP ALL OBJECTS FROM DATABASE
+-- Creating drop script for database: [${DefaultDatabaseName}]
+
+USE [${DefaultDatabaseName}]
+GO
 ]]>
 
 	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
 			<Ruby src="Script">
-				<Script>![textMetal.EvaluateToken.invoke("HistorySchemaName"), "db_accessadmin", "db_backupoperator", "db_datareader",
+				<Script>!["db_accessadmin", "db_backupoperator", "db_datareader",
 				"db_datawriter", "db_ddladmin", "db_denydatareader", "db_denydatawriter",
 				"db_owner", "db_securityadmin", "sys",
 				"INFORMATION_SCHEMA", "guest"].include?(textMetal.EvaluateToken.invoke("SchemaName"));</Script>
@@ -23,7 +27,7 @@
 		
 		<ForEach.Body>
 
-<![CDATA[-- [${SchemaName}]
+<![CDATA[-- Creating drop script for schema: [${SchemaName}]
 
 ]]>
 
@@ -40,11 +44,24 @@
 				</ForEach.Filter>
 				<ForEach.Body>
 
-<![CDATA[ALTER TABLE [${SchemaName}].[${TableName}] DROP CONSTRAINT [${PrimaryKeyName}]
+	<If>
+		<If.Condition>
+			<BinaryExpression operator="Ne">
+				<BinaryExpression.LeftExpression>
+					<Facet name="HasNoDefinedPrimaryKeyColumns" />
+				</BinaryExpression.LeftExpression>
+				<BinaryExpression.RightExpression>
+					<Value type="System.Boolean" data="True" />
+				</BinaryExpression.RightExpression>
+			</BinaryExpression>
+		</If.Condition>
+		<If.True>
+<![CDATA[ALTER TABLE [${SchemaName}].[${TableName}] DROP CONSTRAINT [${PrimaryKey.PrimaryKeyName}]
 GO
 	
 ]]>
-
+		</If.True>
+		</If>
 					<ForEach in="ForeignKeys" var-ct="_LoopCount" var-ix="_LoopIndex">
 						<ForEach.Filter />
 						<ForEach.Body>
@@ -133,7 +150,7 @@ GO
 ]]>
 				</If.True>
 				<If.False>
-<![CDATA[-- DO NOT DROP SCHEMA [${SchemaName}]
+<![CDATA[-- do not drop schema [${SchemaName}]
 GO
 
 ]]>
