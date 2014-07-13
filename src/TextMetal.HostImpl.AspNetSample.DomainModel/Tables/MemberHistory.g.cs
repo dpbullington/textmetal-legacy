@@ -23,7 +23,6 @@ using System.Xml;
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
 using TextMetal.Common.Data.Framework;
-using TextMetal.Common.Expressions;
 
 namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 {

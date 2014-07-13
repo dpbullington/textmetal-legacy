@@ -3,7 +3,9 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-namespace TextMetal.Common.Expressions
+using TextMetal.Common.Syntax.Operators;
+
+namespace TextMetal.Common.Syntax.Expressions
 {
 	/// <summary>
 	/// Represents an expression with two operands.

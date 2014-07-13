@@ -319,8 +319,8 @@ EndGlobal
 	<Reference Include="TextMetal.Common.Data">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Data.dll</HintPath>
     </Reference>
-	<Reference Include="TextMetal.Common.Expressions">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Expressions.dll</HintPath>
+	<Reference Include="TextMetal.Common.Syntax">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Syntax.dll</HintPath>
     </Reference>
 	<Reference Include="TextMetal.Common.Solder">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Solder.dll</HintPath>
@@ -468,8 +468,8 @@ EndGlobal
 	<Reference Include="TextMetal.Common.Data">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Data.dll</HintPath>
     </Reference>
-	<Reference Include="TextMetal.Common.Expressions">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Expressions.dll</HintPath>
+	<Reference Include="TextMetal.Common.Syntax">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Syntax.dll</HintPath>
     </Reference>
 	<Reference Include="TextMetal.Common.Solder">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Solder.dll</HintPath>
@@ -612,8 +612,8 @@ EndGlobal
 	<Reference Include="TextMetal.Common.Data">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Data.dll</HintPath>
     </Reference>
-	<Reference Include="TextMetal.Common.Expressions">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Expressions.dll</HintPath>
+	<Reference Include="TextMetal.Common.Syntax">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Syntax.dll</HintPath>
     </Reference>
 	<Reference Include="TextMetal.Common.Solder">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Solder.dll</HintPath>

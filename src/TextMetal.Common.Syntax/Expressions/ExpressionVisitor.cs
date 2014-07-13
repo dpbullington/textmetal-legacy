@@ -5,7 +5,7 @@
 
 using System;
 
-namespace TextMetal.Common.Expressions
+namespace TextMetal.Common.Syntax.Expressions
 {
 	public abstract class ExpressionVisitor
 	{

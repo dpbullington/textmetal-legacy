@@ -8,7 +8,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-using TextMetal.Common.Expressions;
+using TextMetal.Common.Syntax;
+using TextMetal.Common.Syntax.Expressions;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 

@@ -3,16 +3,21 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-namespace TextMetal.Common.Expressions
+namespace TextMetal.Common.Syntax.Expressions
 {
 	/// <summary>
-	/// Represents a container.
+	/// Represents a sequence.
 	/// </summary>
-	public interface IContainer : IExpression
+	public interface ISequence
 	{
 		#region Properties/Indexers/Events
 
-		IExpression Content
+		bool? SortDirection
+		{
+			get;
+		}
+
+		IExpression SortExpression
 		{
 			get;
 		}

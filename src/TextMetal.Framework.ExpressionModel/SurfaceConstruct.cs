@@ -5,7 +5,8 @@
 
 using System;
 
-using TextMetal.Common.Expressions;
+using TextMetal.Common.Syntax;
+using TextMetal.Common.Syntax.Expressions;
 using TextMetal.Common.Xml;
 
 namespace TextMetal.Framework.ExpressionModel

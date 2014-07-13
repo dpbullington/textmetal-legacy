@@ -9,8 +9,9 @@ using System.Reflection;
 using System.Text;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Syntax.Operators;
 
-namespace TextMetal.Common.Expressions
+namespace TextMetal.Common.Syntax.Expressions
 {
 	public sealed class PrintExpressionVisitor : ExpressionVisitor
 	{

@@ -100,7 +100,7 @@
     <Folder Include="Cerealization\" />
     <Folder Include="Data\Framework\ModelMap\_\" />
     <Folder Include="Data\Framework\_\" />
-    <Folder Include="Expressions\" />
+    <Folder Include="Syntax\" />
     <Folder Include="Xml\" />
   </ItemGroup>
   <ItemGroup>
@@ -112,9 +112,9 @@
       <Project>{E41E2352-4249-458E-B4F2-DBDF9B564BF5}</Project>
       <Name>TextMetal.Common.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TextMetal.Common.Expressions\TextMetal.Common.Expressions.csproj">
+    <ProjectReference Include="..\TextMetal.Common.Syntax\TextMetal.Common.Syntax.csproj">
       <Project>{483501d9-4d73-4076-997b-3a5d8b5ddb2c}</Project>
-      <Name>TextMetal.Common.Expressions</Name>
+      <Name>TextMetal.Common.Syntax</Name>
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.Solder\TextMetal.Common.Solder.csproj">
       <Project>{3B0EFC3C-AA91-4FB4-B2EE-BD8727230A94}</Project>

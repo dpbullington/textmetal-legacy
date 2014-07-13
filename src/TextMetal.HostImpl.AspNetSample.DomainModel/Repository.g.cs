@@ -27,7 +27,6 @@ using TextMetal.Common.Core;
 using TextMetal.Common.Data;
 using TextMetal.Common.Data.Framework;
 using TextMetal.Common.Data.Framework.LinqToSql;
-using TextMetal.Common.Expressions;
 using TextMetal.Common.Solder.DependencyManagement;
 using TextMetal.HostImpl.AspNetSample.DomainModel.Tables;
 using TextMetal.HostImpl.AspNetSample.DomainModel.Views;

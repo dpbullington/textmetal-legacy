@@ -16,7 +16,9 @@ using System.Xml;
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
 using TextMetal.Common.Data.Framework;
-using TextMetal.Common.Expressions;
+using TextMetal.Common.Syntax.Expressions;
+using TextMetal.Common.Syntax.Operators;
+using TextMetal.Common.Syntax.Statements;
 ]]>
 		<If>
 			<If.Condition>

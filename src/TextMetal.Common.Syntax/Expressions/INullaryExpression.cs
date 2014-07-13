@@ -3,21 +3,18 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-namespace TextMetal.Common.Expressions
+using TextMetal.Common.Syntax.Operators;
+
+namespace TextMetal.Common.Syntax.Expressions
 {
 	/// <summary>
-	/// Represents an expression with one operand.
+	/// Represents an expression with zero operands.
 	/// </summary>
-	public interface IUnaryExpression : IExpression
+	public interface INullaryExpression : IExpression
 	{
 		#region Properties/Indexers/Events
 
-		IExpression TheExpression
-		{
-			get;
-		}
-
-		UnaryOperator UnaryOperator
+		NullaryOperator NullaryOperator
 		{
 			get;
 		}

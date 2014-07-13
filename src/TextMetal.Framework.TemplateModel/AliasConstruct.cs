@@ -28,7 +28,6 @@ namespace TextMetal.Framework.TemplateModel
 		#region Fields/Constants
 
 		private string assemblyQualifiedTypeName;
-
 		private string localName;
 		private string namespaceUri;
 

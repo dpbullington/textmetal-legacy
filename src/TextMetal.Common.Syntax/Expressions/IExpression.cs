@@ -3,7 +3,7 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-namespace TextMetal.Common.Expressions
+namespace TextMetal.Common.Syntax.Expressions
 {
 	/// <summary>
 	/// Represents an expression.

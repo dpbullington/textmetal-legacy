@@ -53,10 +53,10 @@ namespace TextMetal.HostImpl.Tool
 		/// <param name="templateFilePath"> The file path of the input TextMetal template file to execute. </param>
 		/// <param name="sourceFilePath"> The file path (or source specific URI) of the input data source to leverage. </param>
 		/// <param name="baseDirectoryPath"> The root output directory path to place output arifacts (since this implementation uses file output mechanics). </param>
-		/// <param name="sourceStrategyAssemblyQualifiedTypeName"> The assembly qualified type name for the ISourceStrategy to instantiate and execute. </param>
+		/// <param name="sourceStrategyAqtn"> The assembly qualified type name for the ISourceStrategy to instantiate and execute. </param>
 		/// <param name="strictMatching"> A value indicating whether to use strict matching semantics for tokens. </param>
 		/// <param name="properties"> Arbitrary dictionary of string lists used to further customize the text templating process. The individual components or template files can use the properties as they see fit. </param>
-		public void Host(int argc, string[] argv, IDictionary<string, object> args, string templateFilePath, string sourceFilePath, string baseDirectoryPath, string sourceStrategyAssemblyQualifiedTypeName, bool strictMatching, IDictionary<string, IList<string>> properties)
+		public void Host(int argc, string[] argv, IDictionary<string, object> args, string templateFilePath, string sourceFilePath, string baseDirectoryPath, string sourceStrategyAqtn, bool strictMatching, IDictionary<string, IList<string>> properties)
 		{
 			DateTime startUtc = DateTime.UtcNow, endUtc;
 			IXmlPersistEngine xpe;
@@ -78,8 +78,8 @@ namespace TextMetal.HostImpl.Tool
 			if ((object)baseDirectoryPath == null)
 				throw new ArgumentNullException("baseDirectoryPath");
 
-			if ((object)sourceStrategyAssemblyQualifiedTypeName == null)
-				throw new ArgumentNullException("sourceStrategyAssemblyQualifiedTypeName");
+			if ((object)sourceStrategyAqtn == null)
+				throw new ArgumentNullException("sourceStrategyAqtn");
 
 			if ((object)properties == null)
 				throw new ArgumentNullException("properties");
@@ -93,8 +93,8 @@ namespace TextMetal.HostImpl.Tool
 			if (DataType.IsWhiteSpace(baseDirectoryPath))
 				throw new ArgumentOutOfRangeException("baseDirectoryPath");
 
-			if (DataType.IsWhiteSpace(sourceStrategyAssemblyQualifiedTypeName))
-				throw new ArgumentOutOfRangeException("sourceStrategyAssemblyQualifiedTypeName");
+			if (DataType.IsWhiteSpace(sourceStrategyAqtn))
+				throw new ArgumentOutOfRangeException("sourceStrategyAqtn");
 
 			toolVersion = new AssemblyInformation(Assembly.GetAssembly(typeof(IXmlPersistEngine))).AssemblyVersion;
 			templateFilePath = Path.GetFullPath(templateFilePath);
@@ -109,10 +109,10 @@ namespace TextMetal.HostImpl.Tool
 
 			Directory.CreateDirectory(baseDirectoryPath);*/
 
-			sourceStrategyType = Type.GetType(sourceStrategyAssemblyQualifiedTypeName, false);
+			sourceStrategyType = Type.GetType(sourceStrategyAqtn, false);
 
 			if ((object)sourceStrategyType == null)
-				throw new InvalidOperationException(string.Format("Failed to load source strategy from assembly qualified type name '{0}'.", sourceStrategyAssemblyQualifiedTypeName));
+				throw new InvalidOperationException(string.Format("Failed to load source strategy from assembly qualified type name '{0}'.", sourceStrategyAqtn));
 
 			if (!typeof(ISourceStrategy).IsAssignableFrom(sourceStrategyType))
 				throw new InvalidOperationException(string.Format("Source strategy type '{0}' is not assignable to '{1}'.", sourceStrategyType, typeof(ISourceStrategy)));

@@ -29,6 +29,7 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool.Config
 		#region Fields/Constants
 
 		private readonly ConfigurationCollection<ColumnConfiguration> columns;
+		private string destinationCommandText;
 		private string destinationTableName;
 		private string sourceCommandText;
 
@@ -41,6 +42,18 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool.Config
 			get
 			{
 				return this.columns;
+			}
+		}
+
+		public string DestinationCommandText
+		{
+			get
+			{
+				return this.destinationCommandText;
+			}
+			set
+			{
+				this.destinationCommandText = value;
 			}
 		}
 
@@ -100,6 +113,15 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool.Config
 			int index;
 
 			messages = new List<Message>();
+
+			if (DataType.IsNullOrWhiteSpace(this.SourceCommandText))
+				messages.Add(NewError(string.Format("Source command text is required.")));
+
+			if (DataType.IsNullOrWhiteSpace(this.DestinationCommandText))
+				messages.Add(NewError(string.Format("Destination command text is required.")));
+
+			if (DataType.IsNullOrWhiteSpace(this.DestinationTableName))
+				messages.Add(NewError(string.Format("Destination table is required.")));
 
 			// check for duplicate columns
 			var columnNameSums = this.Columns.GroupBy(c => c.ColumnName)

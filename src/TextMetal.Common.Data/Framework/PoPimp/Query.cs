@@ -6,7 +6,8 @@
 using System;
 using System.Collections.Generic;
 
-using TextMetal.Common.Expressions;
+using TextMetal.Common.Syntax;
+using TextMetal.Common.Syntax.Expressions;
 
 namespace TextMetal.Common.Data.Framework.PoPimp
 {

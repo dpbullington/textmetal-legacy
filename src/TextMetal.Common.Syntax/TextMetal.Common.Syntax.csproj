@@ -8,8 +8,8 @@
     <ProjectGuid>{483501D9-4D73-4076-997B-3A5D8B5DDB2C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TextMetal.Common.Expressions</RootNamespace>
-    <AssemblyName>TextMetal.Common.Expressions</AssemblyName>
+    <RootNamespace>TextMetal.Common.Syntax</RootNamespace>
+    <AssemblyName>TextMetal.Common.Syntax</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\TextMetal.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -25,7 +25,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\TextMetal.Common.Expressions.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\TextMetal.Common.Syntax.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,7 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\TextMetal.Common.Expressions.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\TextMetal.Common.Syntax.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -43,20 +43,21 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="BinaryOperator.cs" />
-    <Compile Include="ExpressionVisitor.cs" />
-    <Compile Include="IBinaryExpression.cs" />
-    <Compile Include="IContainer.cs" />
-    <Compile Include="ISequence.cs" />
-    <Compile Include="IExpression.cs" />
-    <Compile Include="INullaryExpression.cs" />
-    <Compile Include="ISurface.cs" />
-    <Compile Include="IUnaryExpression.cs" />
-    <Compile Include="IValue.cs" />
-    <Compile Include="NullaryOperator.cs" />
-    <Compile Include="PrintExpressionVisitor.cs" />
-    <Compile Include="UnaryOperator.cs" />
+    <Compile Include="Operators\BinaryOperator.cs" />
+    <Compile Include="Expressions\ExpressionVisitor.cs" />
+    <Compile Include="Expressions\IBinaryExpression.cs" />
+    <Compile Include="Expressions\IContainer.cs" />
+    <Compile Include="Expressions\ISequence.cs" />
+    <Compile Include="Expressions\IExpression.cs" />
+    <Compile Include="Expressions\INullaryExpression.cs" />
+    <Compile Include="Expressions\ISurface.cs" />
+    <Compile Include="Expressions\IUnaryExpression.cs" />
+    <Compile Include="Expressions\IValue.cs" />
+    <Compile Include="Operators\NullaryOperator.cs" />
+    <Compile Include="Expressions\PrintExpressionVisitor.cs" />
+    <Compile Include="Operators\UnaryOperator.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
+    <Compile Include="Statements\IStatement.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TextMetal.snk">
@@ -69,6 +70,7 @@
       <Name>TextMetal.Common.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

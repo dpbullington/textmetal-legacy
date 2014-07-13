@@ -136,17 +136,6 @@ IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
 
 
-copy "%SRC_DIR%\TextMetal.Common.Expressions\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Expressions.dll" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-copy "%SRC_DIR%\TextMetal.Common.Expressions\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Expressions.xml" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-copy "%SRC_DIR%\TextMetal.Common.Expressions\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Expressions.pdb" "%PACKAGE_DIR%\bin\."
-IF %ERRORLEVEL% NEQ 0 GOTO pkgError
-
-
-
 copy "%SRC_DIR%\TextMetal.Common.Solder\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Solder.dll" "%PACKAGE_DIR%\bin\."
 IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
@@ -154,6 +143,17 @@ copy "%SRC_DIR%\TextMetal.Common.Solder\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.
 IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
 copy "%SRC_DIR%\TextMetal.Common.Solder\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Solder.pdb" "%PACKAGE_DIR%\bin\."
+IF %ERRORLEVEL% NEQ 0 GOTO pkgError
+
+
+
+copy "%SRC_DIR%\TextMetal.Common.Syntax\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Syntax.dll" "%PACKAGE_DIR%\bin\."
+IF %ERRORLEVEL% NEQ 0 GOTO pkgError
+
+copy "%SRC_DIR%\TextMetal.Common.Syntax\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Syntax.xml" "%PACKAGE_DIR%\bin\."
+IF %ERRORLEVEL% NEQ 0 GOTO pkgError
+
+copy "%SRC_DIR%\TextMetal.Common.Syntax\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Syntax.pdb" "%PACKAGE_DIR%\bin\."
 IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
 

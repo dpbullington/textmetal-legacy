@@ -1,8 +1,8 @@
 TextMetal.Common.Cerealization
 TextMetal.Common.Core
 TextMetal.Common.Data
-TextMetal.Common.Expressions
 TextMetal.Common.Solder
+TextMetal.Common.Syntax
 TextMetal.Common.SqlServerClr
 TextMetal.Common.UnitTests
 TextMetal.Common.WinForms

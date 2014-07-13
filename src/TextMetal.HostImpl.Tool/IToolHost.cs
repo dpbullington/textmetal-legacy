@@ -20,11 +20,11 @@ namespace TextMetal.HostImpl.Tool
 		/// <param name="templateFilePath"> The file path of the input TextMetal template file to execute. </param>
 		/// <param name="sourceFilePath"> The file path (or source specific URI) of the input data source to leverage. </param>
 		/// <param name="baseDirectoryPath"> The root output directory path to place output arifacts (since this implementation uses file output mechanics). </param>
-		/// <param name="sourceStrategyAssemblyQualifiedTypeName"> The assembly qualified type name for the ISourceStrategy to instantiate and execute. </param>
+		/// <param name="sourceStrategyAqtn"> The assembly qualified type name for the ISourceStrategy to instantiate and execute. </param>
 		/// <param name="strictMatching"> A value indicating whether to use strict matching semantics for tokens. </param>
 		/// <param name="properties"> Arbitrary dictionary of string lists used to further customize the text templating process. The individual components or template files can use the properties as they see fit. </param>
 		void Host(int argc, string[] argv, IDictionary<string, object> args, string templateFilePath, string sourceFilePath, string baseDirectoryPath,
-			string sourceStrategyAssemblyQualifiedTypeName, bool strictMatching, IDictionary<string, IList<string>> properties);
+			string sourceStrategyAqtn, bool strictMatching, IDictionary<string, IList<string>> properties);
 
 		object LoadModelOnly(string filePath);
 

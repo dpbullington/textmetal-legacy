@@ -38,7 +38,8 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool
 			loaderConfiguration.Tables.Add(__tableConfiguration = new TableConfiguration()
 																{
 																	SourceCommandText = "SELECT * FROM [testcases].[tab_with_primary_key_with_different_identity]",
-																	DestinationTableName = "[testcases].[tab_with_primary_key_no_identity]"
+																	DestinationTableName = "[testcases].[tab_with_primary_key_no_identity]",
+																	DestinationCommandText = "TRUNCATE TABLE [testcases].[tab_with_primary_key_no_identity]"
 																});
 
 			__tableConfiguration.Columns.Add(new ColumnConfiguration()
@@ -54,6 +55,9 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool
 					{
 						recordsAffected = -1;
 						rowsCopied = 0;
+
+						sourceUnitOfWork.ExecuteDictionary(CommandType.Text, tableConfiguration.DestinationCommandText, new IDataParameter[] { }, out recordsAffected);
+						Console.WriteLine("DESTINATION: recordsAffected={0}", recordsAffected);
 
 						using (dataReader = new ObfuscationDataReader(AdoNetHelper.ExecuteReader(sourceUnitOfWork.Connection, sourceUnitOfWork.Transaction, CommandType.Text, tableConfiguration.SourceCommandText, new IDataParameter[] { }, CommandBehavior.Default, null, false), tableConfiguration))
 						{
@@ -76,7 +80,7 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool
 							recordsAffected = dataReader.RecordsAffected;
 						}
 
-						Console.WriteLine("recordsAffected={0}; rowsCopied={1}", recordsAffected, rowsCopied);
+						Console.WriteLine("SOURCE: recordsAffected={0}; rowsCopied={1}", recordsAffected, rowsCopied);
 					}
 				}
 			}

@@ -3,20 +3,12 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-namespace TextMetal.Common.Expressions
+namespace TextMetal.Common.Syntax.Statements
 {
 	/// <summary>
-	/// Represents a value.
+	/// Represents a statement.
 	/// </summary>
-	public interface IValue : IExpression
+	public interface IStatement
 	{
-		#region Properties/Indexers/Events
-
-		object __
-		{
-			get;
-		}
-
-		#endregion
 	}
 }

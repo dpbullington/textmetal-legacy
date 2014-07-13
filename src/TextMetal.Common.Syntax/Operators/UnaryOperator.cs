@@ -6,7 +6,7 @@
 using System;
 using System.ComponentModel;
 
-namespace TextMetal.Common.Expressions
+namespace TextMetal.Common.Syntax.Operators
 {
 	[Serializable]
 	public enum UnaryOperator

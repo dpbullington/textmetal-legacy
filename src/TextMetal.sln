@@ -18,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Common.Core", "Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Common.Data", "TextMetal.Common.Data\TextMetal.Common.Data.csproj", "{E41E2352-4249-458E-B4F2-DBDF9B564BF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Common.Expressions", "TextMetal.Common.Expressions\TextMetal.Common.Expressions.csproj", "{483501D9-4D73-4076-997B-3A5D8B5DDB2C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Common.Syntax", "TextMetal.Common.Syntax\TextMetal.Common.Syntax.csproj", "{483501D9-4D73-4076-997B-3A5D8B5DDB2C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Common.Solder", "TextMetal.Common.Solder\TextMetal.Common.Solder.csproj", "{3B0EFC3C-AA91-4FB4-B2EE-BD8727230A94}"
 EndProject

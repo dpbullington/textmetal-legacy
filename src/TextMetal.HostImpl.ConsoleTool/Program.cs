@@ -98,7 +98,7 @@ namespace TextMetal.HostImpl.ConsoleTool
 			string templateFilePath;
 			string sourceFilePath;
 			string baseDirectoryPath;
-			string sourceStrategyAssemblyQualifiedTypeName;
+			string sourceStrategyAqtn;
 			bool strictMatching;
 			bool debuggerLaunch = false;
 			IDictionary<string, IList<string>> properties;
@@ -145,7 +145,7 @@ namespace TextMetal.HostImpl.ConsoleTool
 			templateFilePath = arguments[CMDLN_TOKEN_TEMPLATEFILE].Single();
 			sourceFilePath = arguments[CMDLN_TOKEN_SOURCEFILE].Single();
 			baseDirectoryPath = arguments[CMDLN_TOKEN_BASEDIR].Single();
-			sourceStrategyAssemblyQualifiedTypeName = arguments[CMDLN_TOKEN_SOURCESTRATEGY_AQTN].Single();
+			sourceStrategyAqtn = arguments[CMDLN_TOKEN_SOURCESTRATEGY_AQTN].Single();
 			DataType.TryParse<bool>(arguments[CMDLN_TOKEN_STRICT].Single(), out strictMatching);
 			hasProperties = arguments.TryGetValue(CMDLN_TOKEN_PROPERTY, out _arguments);
 
@@ -153,7 +153,7 @@ namespace TextMetal.HostImpl.ConsoleTool
 			argz.Add(CMDLN_TOKEN_TEMPLATEFILE, templateFilePath);
 			argz.Add(CMDLN_TOKEN_SOURCEFILE, sourceFilePath);
 			argz.Add(CMDLN_TOKEN_BASEDIR, baseDirectoryPath);
-			argz.Add(CMDLN_TOKEN_SOURCESTRATEGY_AQTN, sourceStrategyAssemblyQualifiedTypeName);
+			argz.Add(CMDLN_TOKEN_SOURCESTRATEGY_AQTN, sourceStrategyAqtn);
 			argz.Add(CMDLN_TOKEN_STRICT, strictMatching);
 			argz.Add(CMDLN_DEBUGGER_LAUNCH, arguments.ContainsKey(CMDLN_DEBUGGER_LAUNCH) ? (object)debuggerLaunch : null);
 			argz.Add(CMDLN_TOKEN_PROPERTY, hasProperties ? (object)_arguments : null);
@@ -202,7 +202,7 @@ namespace TextMetal.HostImpl.ConsoleTool
 			}
 
 			using(IToolHost toolHost = new ToolHost())
-				toolHost.Host((object)args != null ? args.Length : -1, args, argz, templateFilePath, sourceFilePath, baseDirectoryPath, sourceStrategyAssemblyQualifiedTypeName, strictMatching, properties);
+				toolHost.Host((object)args != null ? args.Length : -1, args, argz, templateFilePath, sourceFilePath, baseDirectoryPath, sourceStrategyAqtn, strictMatching, properties);
 
 			return 0;
 		}

@@ -21,7 +21,9 @@ using TextMetal.Common.Core;
 using TextMetal.Common.Data;
 using TextMetal.Common.Data.Framework;
 using TextMetal.Common.Data.Framework.LinqToSql;
-using TextMetal.Common.Expressions;
+using TextMetal.Common.Syntax.Expressions;
+using TextMetal.Common.Syntax.Operators;
+using TextMetal.Common.Syntax.Statements;
 using TextMetal.Common.Solder.DependencyManagement;
 ]]>
 		<If>

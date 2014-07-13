@@ -9,7 +9,9 @@ using System.Data;
 using System.Text;
 
 using TextMetal.Common.Data.Framework.PoPimp.Strategy;
-using TextMetal.Common.Expressions;
+using TextMetal.Common.Syntax;
+using TextMetal.Common.Syntax.Expressions;
+using TextMetal.Common.Syntax.Operators;
 
 namespace TextMetal.Common.Data.Framework.PoPimp
 {

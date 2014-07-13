@@ -3,16 +3,16 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-namespace TextMetal.Common.Expressions
+namespace TextMetal.Common.Syntax.Expressions
 {
 	/// <summary>
-	/// Represents an expression with zero operands.
+	/// Represents a value.
 	/// </summary>
-	public interface INullaryExpression : IExpression
+	public interface IValue : IExpression
 	{
 		#region Properties/Indexers/Events
 
-		NullaryOperator NullaryOperator
+		object __
 		{
 			get;
 		}
