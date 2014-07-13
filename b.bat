@@ -12,7 +12,7 @@ GOTO setEnv
 :setEnv
 
 SET SRC_DIR=.\src
-SET BUILD_EXE=C:\WINDOWS\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe
+SET BUILD_EXE=C:\Program Files (x86)\MSBuild\12.0\bin\amd64\msbuild.exe
 GOTO chooseBuildFlavor
 
 

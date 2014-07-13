@@ -82,6 +82,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.HostImpl.AspNetSa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Common.WinForms", "TextMetal.Common.WinForms\TextMetal.Common.WinForms.csproj", "{6BD158BA-429B-422B-AAEB-24A36511C19A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{DA0095EB-B72A-4588-B75A-A65B40C5E5C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Utilities.VsIdeConv.ConsoleTool", "TextMetal.Utilities.VsIdeConv.ConsoleTool\TextMetal.Utilities.VsIdeConv.ConsoleTool.csproj", "{C90978EB-0645-4126-87A1-D1060669D1D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Utilities.DataObfu.ConsoleTool", "TextMetal.Utilities.DataObfu.ConsoleTool\TextMetal.Utilities.DataObfu.ConsoleTool.csproj", "{7E50AF14-0C54-4EEA-8B49-3FA8021BE5B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -216,6 +222,14 @@ Global
 		{6BD158BA-429B-422B-AAEB-24A36511C19A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BD158BA-429B-422B-AAEB-24A36511C19A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BD158BA-429B-422B-AAEB-24A36511C19A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C90978EB-0645-4126-87A1-D1060669D1D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C90978EB-0645-4126-87A1-D1060669D1D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C90978EB-0645-4126-87A1-D1060669D1D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C90978EB-0645-4126-87A1-D1060669D1D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E50AF14-0C54-4EEA-8B49-3FA8021BE5B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E50AF14-0C54-4EEA-8B49-3FA8021BE5B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E50AF14-0C54-4EEA-8B49-3FA8021BE5B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E50AF14-0C54-4EEA-8B49-3FA8021BE5B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -254,5 +268,7 @@ Global
 		{5C3FDAEC-AB83-4808-BCCC-6022260C8B61} = {BFF5949D-F61D-4070-8B21-6829BC86E0BE}
 		{F746294A-579C-4172-B524-6C4115D13BF9} = {BFF5949D-F61D-4070-8B21-6829BC86E0BE}
 		{DBF807B3-AE5D-46CD-9437-1E7B1DE66A64} = {BFF5949D-F61D-4070-8B21-6829BC86E0BE}
+		{C90978EB-0645-4126-87A1-D1060669D1D5} = {DA0095EB-B72A-4588-B75A-A65B40C5E5C2}
+		{7E50AF14-0C54-4EEA-8B49-3FA8021BE5B4} = {DA0095EB-B72A-4588-B75A-A65B40C5E5C2}
 	EndGlobalSection
 EndGlobal

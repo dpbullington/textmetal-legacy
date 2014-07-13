@@ -16,7 +16,7 @@ SET LIB_DIR=.\lib
 SET TEMPLATES_DIR=.\templates
 SET PACKAGE_DIR=.\pkg
 SET PACKAGE_DIR_EXISTS=%PACKAGE_DIR%\nul
-SET BUILD_EXE=C:\WINDOWS\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe
+SET BUILD_EXE=C:\Program Files (x86)\MSBuild\12.0\bin\amd64\msbuild.exe
 SET ROBOCOPY_EXE=robocopy.exe
 GOTO chooseBuildFlavor
 
