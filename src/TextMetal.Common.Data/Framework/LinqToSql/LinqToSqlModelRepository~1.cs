@@ -28,7 +28,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 		#region Methods/Operators
 
 		public bool LinqDiscard<TModel, TTable>(TModel model,
-			Func<IQueryable<TTable>, TModel, IQueryable<TTable>> queryableCallback)
+			Expression<Func<TTable, bool>> filterPredicateCallback)
 			where TModel : class, IModelObject
 			where TTable : class, new()
 		{
@@ -38,23 +38,22 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			{
 				using (IUnitOfWork unitOfWork = this.GetUnitOfWork())
 				{
-					retval = this.LinqDiscard<TModel, TTable>(unitOfWork, model, queryableCallback);
+					retval = this.LinqDiscard<TModel, TTable>(unitOfWork, model, filterPredicateCallback);
 
 					unitOfWork.Complete();
 				}
 			}
 			else
-				retval = this.LinqDiscard<TModel, TTable>(UnitOfWork.Current, model, queryableCallback);
+				retval = this.LinqDiscard<TModel, TTable>(UnitOfWork.Current, model, filterPredicateCallback);
 
 			return retval;
 		}
 
 		public bool LinqDiscard<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
-			Func<IQueryable<TTable>, TModel, IQueryable<TTable>> queryableCallback)
+			Expression<Func<TTable, bool>> filterPredicateCallback)
 			where TModel : class, IModelObject
 			where TTable : class, new()
 		{
-			IQueryable<TTable> queryable;
 			TTable table;
 			Table<TTable> linqTable;
 
@@ -64,25 +63,20 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			if ((object)model == null)
 				throw new ArgumentNullException("model");
 
+			if ((object)filterPredicateCallback == null)
+				throw new ArgumentNullException("filterPredicateCallback");
+
 			model.Mark();
 
 			if (model.IsNew)
 				return true;
-
-			if ((object)queryableCallback == null)
-				throw new ArgumentNullException("queryableCallback");
 
 			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = unitOfWork.GetContext<TDataContext>())
 			{
 				this.OnPreDeleteModel<TModel>(unitOfWork, model);
 
 				linqTable = wrapper.Disposable.GetTable<TTable>();
-				queryable = queryableCallback(linqTable, model);
-
-				if ((object)queryable == null)
-					throw new InvalidOperationException(string.Format("The queryable returned was invalid."));
-
-				table = queryable.SingleOrDefault();
+				table = linqTable.SingleOrDefault(filterPredicateCallback);
 
 				if ((object)table == null)
 					return false;

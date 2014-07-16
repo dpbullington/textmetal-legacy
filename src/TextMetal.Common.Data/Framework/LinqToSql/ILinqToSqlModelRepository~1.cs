@@ -17,12 +17,12 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 		#region Methods/Operators
 
 		bool LinqDiscard<TModel, TTable>(TModel model,
-			Func<IQueryable<TTable>, TModel, IQueryable<TTable>> queryableCallback)
+			Expression<Func<TTable, bool>> prototypePredicateCallback)
 			where TModel : class, IModelObject
 			where TTable : class, new();
 
 		bool LinqDiscard<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
-			Func<IQueryable<TTable>, TModel, IQueryable<TTable>> queryableCallback)
+			Expression<Func<TTable, bool>> prototypePredicateCallback)
 			where TModel : class, IModelObject
 			where TTable : class, new();
 
