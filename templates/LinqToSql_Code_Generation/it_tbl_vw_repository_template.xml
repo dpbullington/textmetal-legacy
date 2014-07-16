@@ -135,7 +135,7 @@ namespace ${ClrNamespace}.IntegrationTests
 							</If.Condition>
 							<If.True>
 								<![CDATA[		[Test]
-		public void ShouldSave${TableNameSingularPascalCase}Test()
+		public void ShouldSaveThenDiscard${TableNameSingularPascalCase}Test()
 		{
 			Repository repository;
 			I${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
@@ -237,6 +237,13 @@ namespace ${ClrNamespace}.IntegrationTests
 				Assert.IsFalse(@${TableNameSingularCamelCase}.IsNew);
 				
 				result = repository.Save<I${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase});
+
+				Assert.IsTrue(result);
+
+				// do DELETE next
+				Assert.IsFalse(@${TableNameSingularCamelCase}.IsNew);
+				
+				result = repository.Discard<I${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase});
 
 				Assert.IsTrue(result);
 				

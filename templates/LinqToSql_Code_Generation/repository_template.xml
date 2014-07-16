@@ -138,7 +138,115 @@ namespace ${ClrNamespace}
 
 		public override bool Discard<TModel>(IUnitOfWork unitOfWork, TModel model)
 		{
-			throw new NotImplementedException();
+			Type modelType;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)model == null)
+				throw new ArgumentNullException("model");
+
+			modelType = typeof(TModel);
+
+			if (false)
+			{
+				// do nothing
+			}]]>
+		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
+			<ForEach.Body>
+				<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
+					<ForEach.Body>
+
+<![CDATA[
+			else if (modelType == typeof(I${TableNameSingularPascalCase}))
+			{
+				I${TableNameSingularPascalCase} _model = (I${TableNameSingularPascalCase})(object)model;
+				return this.LinqDiscard<I${TableNameSingularPascalCase}, ${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}>(unitOfWork, _model, (t) => ]]>
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
+							<ForEach.Filter>
+								<BinaryExpression operator="Or">
+									<BinaryExpression.LeftExpression>
+										<BinaryExpression operator="Eq">
+											<BinaryExpression.LeftExpression>
+												<Facet name="ColumnIsPrimaryKey" />
+											</BinaryExpression.LeftExpression>
+											<BinaryExpression.RightExpression>
+												<Value type="System.Boolean" data="True" />
+											</BinaryExpression.RightExpression>
+										</BinaryExpression>
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<BinaryExpression operator="Eq">
+											<BinaryExpression.LeftExpression>
+												<Facet name="HasNoDefinedPrimaryKeyColumns" />
+											</BinaryExpression.LeftExpression>
+											<BinaryExpression.RightExpression>
+												<Value type="System.Boolean" data="True" />
+											</BinaryExpression.RightExpression>
+										</BinaryExpression>
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</ForEach.Filter>
+							<ForEach.Body>
+								<If>
+									<If.Condition>
+										<Ruby src="Script" expr="" file="">
+											<Script>
+												type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+												return ["image", "varbinary", "binary", "rowversion", "timestamp"].include?(type);
+											</Script>
+										</Ruby>
+									</If.Condition>
+									<If.True>
+										<![CDATA[t.@${ColumnNameSqlMetalPascalCase}.ToArray() == _model.@${ColumnNamePascalCase}]]>
+									</If.True>
+									<If.False>
+										<If>
+											<If.Condition>
+												<Ruby src="Script" expr="" file="">
+													<Script>
+														type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+														return ["xml"].include?(type);
+													</Script>
+												</Ruby>
+											</If.Condition>
+											<If.True>
+												<![CDATA[t.@${ColumnNameSqlMetalPascalCase} == LinqToSqlHelper.ToXElement(_model.@${ColumnNamePascalCase})]]>
+											</If.True>
+											<If.False>
+												<![CDATA[t.@${ColumnNameSqlMetalPascalCase} == _model.@${ColumnNamePascalCase}]]>
+											</If.False>
+										</If>
+									</If.False>
+								</If>
+
+								<If>
+									<If.Condition>
+										<BinaryExpression operator="Ne">
+											<BinaryExpression.LeftExpression>
+												<Facet name="_LoopCount" />
+											</BinaryExpression.LeftExpression>
+											<BinaryExpression.RightExpression>
+												<Facet name="_LoopIndex" />
+											</BinaryExpression.RightExpression>
+										</BinaryExpression>
+									</If.Condition>
+									<If.True>
+										<![CDATA[ && ]]>
+									</If.True>
+								</If>
+							</ForEach.Body>
+						</ForEach>
+						<![CDATA[);
+			}]]>
+
+					</ForEach.Body>
+				</ForEach>
+			</ForEach.Body>
+		</ForEach>
+<![CDATA[
+			else
+				throw new ArgumentOutOfRangeException(string.Format("The model type '{0}' was not recognized. Try re-generating the repository code from the templates using TextMetal.exe and try again.", modelType.FullName));
 		}
 
 		public override TResponseModel ExecuteImperative<TRequestModel, TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TRequestModel requestModel)
@@ -175,7 +283,11 @@ namespace ${ClrNamespace}
 <![CDATA[
 			else if (modelType == typeof(I${TableNameSingularPascalCase}))
 			{
-				Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>> _predicate = (Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>>)modelQuery.GetNativeReduction();
+				Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>> _predicate = modelQuery.GetNativeReduction() as Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>>;
+
+				if ((object)_predicate == null)
+					throw new InvalidOperationException(string.Format("Model query object of type '{0}' returned an invalid native reduction (inner query); expected type is '{1}'.", modelQuery.GetType().FullName, typeof(Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>>).FullName));
+
 				return (IEnumerable<TModel>)this.LinqFind<I${TableNameSingularPascalCase}, ${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}>(unitOfWork, _predicate, (dm, st) => { ]]>
 						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
@@ -411,7 +523,223 @@ namespace ${ClrNamespace}
 
 		public override bool Save<TModel>(IUnitOfWork unitOfWork, TModel model)
 		{
-			throw new NotImplementedException();
+			Type modelType;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)model == null)
+				throw new ArgumentNullException("model");
+
+			modelType = typeof(TModel);
+
+			if (false)
+			{
+				// do nothing
+			}]]>
+		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
+			<ForEach.Body>
+				<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
+					<ForEach.Body>
+
+<![CDATA[
+			else if (modelType == typeof(I${TableNameSingularPascalCase}))
+			{
+				I${TableNameSingularPascalCase} _model = (I${TableNameSingularPascalCase})(object)model;
+				return this.LinqSave<I${TableNameSingularPascalCase}, ${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}>(unitOfWork, _model, (t) => ]]>
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
+							<ForEach.Filter>
+								<BinaryExpression operator="Or">
+									<BinaryExpression.LeftExpression>
+										<BinaryExpression operator="Eq">
+											<BinaryExpression.LeftExpression>
+												<Facet name="ColumnIsPrimaryKey" />
+											</BinaryExpression.LeftExpression>
+											<BinaryExpression.RightExpression>
+												<Value type="System.Boolean" data="True" />
+											</BinaryExpression.RightExpression>
+										</BinaryExpression>
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<BinaryExpression operator="Eq">
+											<BinaryExpression.LeftExpression>
+												<Facet name="HasNoDefinedPrimaryKeyColumns" />
+											</BinaryExpression.LeftExpression>
+											<BinaryExpression.RightExpression>
+												<Value type="System.Boolean" data="True" />
+											</BinaryExpression.RightExpression>
+										</BinaryExpression>
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</ForEach.Filter>
+							<ForEach.Body>
+								<If>
+									<If.Condition>
+										<Ruby src="Script" expr="" file="">
+											<Script>
+												type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+												return ["image", "varbinary", "binary", "rowversion", "timestamp"].include?(type);
+											</Script>
+										</Ruby>
+									</If.Condition>
+									<If.True>
+										<![CDATA[t.@${ColumnNameSqlMetalPascalCase}.ToArray() == _model.@${ColumnNamePascalCase}]]>
+									</If.True>
+									<If.False>
+										<If>
+											<If.Condition>
+												<Ruby src="Script" expr="" file="">
+													<Script>
+														type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+														return ["xml"].include?(type);
+													</Script>
+												</Ruby>
+											</If.Condition>
+											<If.True>
+												<![CDATA[t.@${ColumnNameSqlMetalPascalCase} == LinqToSqlHelper.ToXElement(_model.@${ColumnNamePascalCase})]]>
+											</If.True>
+											<If.False>
+												<![CDATA[t.@${ColumnNameSqlMetalPascalCase} == _model.@${ColumnNamePascalCase}]]>
+											</If.False>
+										</If>
+									</If.False>
+								</If>
+
+								<If>
+									<If.Condition>
+										<BinaryExpression operator="Ne">
+											<BinaryExpression.LeftExpression>
+												<Facet name="_LoopCount" />
+											</BinaryExpression.LeftExpression>
+											<BinaryExpression.RightExpression>
+												<Facet name="_LoopIndex" />
+											</BinaryExpression.RightExpression>
+										</BinaryExpression>
+									</If.Condition>
+									<If.True>
+										<![CDATA[ && ]]>
+									</If.True>
+								</If>
+							</ForEach.Body>
+						</ForEach>
+						<![CDATA[, (dt, sm) => { ]]>
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
+							<ForEach.Filter>
+							</ForEach.Filter>
+							<ForEach.Body>
+								<If>
+									<If.Condition>
+										<Ruby src="Script" expr="" file="">
+											<Script>
+												type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+												return ["image", "varbinary", "binary", "rowversion", "timestamp"].include?(type);
+											</Script>
+										</Ruby>
+									</If.Condition>
+									<If.True>
+										<![CDATA[if ((object)sm.@${ColumnNamePascalCase} != null) dt.@${ColumnNameSqlMetalPascalCase} = sm.@${ColumnNamePascalCase};]]>
+									</If.True>
+									<If.False>
+										<If>
+											<If.Condition>
+												<Ruby src="Script" expr="" file="">
+													<Script>
+														type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+														return ["xml"].include?(type);
+													</Script>
+												</Ruby>
+											</If.Condition>
+											<If.True>
+												<![CDATA[if ((object)sm.@${ColumnNamePascalCase} != null) dt.@${ColumnNameSqlMetalPascalCase} = LinqToSqlHelper.ToXElement(sm.@${ColumnNamePascalCase});]]>
+											</If.True>
+											<If.False>
+												<![CDATA[dt.@${ColumnNameSqlMetalPascalCase} = sm.@${ColumnNamePascalCase};]]>
+											</If.False>
+										</If>
+									</If.False>
+								</If>
+
+								<If>
+									<If.Condition>
+										<BinaryExpression operator="Ne">
+											<BinaryExpression.LeftExpression>
+												<Facet name="_LoopCount" />
+											</BinaryExpression.LeftExpression>
+											<BinaryExpression.RightExpression>
+												<Facet name="_LoopIndex" />
+											</BinaryExpression.RightExpression>
+										</BinaryExpression>
+									</If.Condition>
+									<If.True>
+										<![CDATA[ ]]>
+									</If.True>
+								</If>
+							</ForEach.Body>
+						</ForEach>
+						<![CDATA[ }, (dm, st) => { ]]>
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
+							<ForEach.Filter>
+							</ForEach.Filter>
+							<ForEach.Body>
+								<If>
+									<If.Condition>
+										<Ruby src="Script" expr="" file="">
+											<Script>
+												type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+												return ["image", "varbinary", "binary", "rowversion", "timestamp"].include?(type);
+											</Script>
+										</Ruby>
+									</If.Condition>
+									<If.True>
+										<![CDATA[dm.@${ColumnNamePascalCase} = (object)st.@${ColumnNameSqlMetalPascalCase} != null ? st.@${ColumnNameSqlMetalPascalCase}.ToArray() : null;]]>
+									</If.True>
+									<If.False>
+										<If>
+											<If.Condition>
+												<Ruby src="Script" expr="" file="">
+													<Script>
+														type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+														return ["xml"].include?(type);
+													</Script>
+												</Ruby>
+											</If.Condition>
+											<If.True>
+												<![CDATA[dm.@${ColumnNamePascalCase} = (object)st.@${ColumnNameSqlMetalPascalCase} != null ? LinqToSqlHelper.ToXmlDocument(st.@${ColumnNameSqlMetalPascalCase}) : null;]]>
+											</If.True>
+											<If.False>
+												<![CDATA[dm.@${ColumnNamePascalCase} = st.@${ColumnNameSqlMetalPascalCase};]]>
+											</If.False>
+										</If>
+									</If.False>
+								</If>
+
+								<If>
+									<If.Condition>
+										<BinaryExpression operator="Ne">
+											<BinaryExpression.LeftExpression>
+												<Facet name="_LoopCount" />
+											</BinaryExpression.LeftExpression>
+											<BinaryExpression.RightExpression>
+												<Facet name="_LoopIndex" />
+											</BinaryExpression.RightExpression>
+										</BinaryExpression>
+									</If.Condition>
+									<If.True>
+										<![CDATA[ ]]>
+									</If.True>
+								</If>
+							</ForEach.Body>
+						</ForEach>
+						<![CDATA[ });
+			}]]>
+
+					</ForEach.Body>
+				</ForEach>
+			</ForEach.Body>
+		</ForEach>
+<![CDATA[
+			else
+				throw new ArgumentOutOfRangeException(string.Format("The model type '{0}' was not recognized. Try re-generating the repository code from the templates using TextMetal.exe and try again.", modelType.FullName));
 		}
 
 		#endregion
