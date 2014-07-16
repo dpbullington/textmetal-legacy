@@ -46,7 +46,7 @@ namespace TextMetal.Common.Data.Framework
 		TModel Fill<TModel>(IUnitOfWork unitOfWork, TModel model)
 			where TModel : class, IModelObject;
 
-		IEnumerable<TModel> Find<TModel>(IModelQuery query)
+		IEnumerable<TModel> Find<TModel>(IModelQuery modelQuery)
 			where TModel : class, IModelObject;
 
 		IEnumerable<TModel> Find<TModel>(IUnitOfWork unitOfWork, IModelQuery query)

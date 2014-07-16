@@ -12,14 +12,14 @@ using TextMetal.Common.Data.Framework.PoPimp.Strategy;
 
 namespace TextMetal.Common.Data.Framework.PoPimp
 {
-	public class PoPimpModelRepository : ModelRepository
+	public abstract class PoPimpModelRepository : ModelRepository
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
 		/// Initializes a new instance of the PoPimpModelRepository class.
 		/// </summary>
-		public PoPimpModelRepository()
+		protected PoPimpModelRepository()
 		{
 		}
 
@@ -42,7 +42,7 @@ namespace TextMetal.Common.Data.Framework.PoPimp
 			throw new NotImplementedException();
 		}
 
-		public override IEnumerable<TModel> Find<TModel>(IUnitOfWork unitOfWork, IModelQuery query)
+		public override IEnumerable<TModel> Find<TModel>(IUnitOfWork unitOfWork, IModelQuery modelQuery)
 		{
 			throw new NotImplementedException();
 		}

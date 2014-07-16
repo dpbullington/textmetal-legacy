@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 
 namespace TextMetal.Common.Data.Framework.LinqToSql
 {
-	public class LinqToSqlModelRepository<TDataContext> : ModelRepository
+	public abstract class LinqToSqlModelRepository<TDataContext> : ModelRepository, ILinqToSqlModelRepository<TDataContext>
 		where TDataContext : DataContext
 	{
 		#region Constructors/Destructors
@@ -19,7 +19,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 		/// <summary>
 		/// Initializes a new instance of the LinqToSqlModelRepository`1 class.
 		/// </summary>
-		public LinqToSqlModelRepository()
+		protected LinqToSqlModelRepository()
 		{
 		}
 
@@ -27,7 +27,8 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 
 		#region Methods/Operators
 
-		public bool Discard<TModel, TTable>(TModel model, Func<IQueryable<TTable>, TModel, IQueryable<TTable>> queryableCallback)
+		public bool LinqDiscard<TModel, TTable>(TModel model,
+			Func<IQueryable<TTable>, TModel, IQueryable<TTable>> queryableCallback)
 			where TModel : class, IModelObject
 			where TTable : class, new()
 		{
@@ -37,30 +38,33 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			{
 				using (IUnitOfWork unitOfWork = this.GetUnitOfWork())
 				{
-					retval = this.Discard<TModel, TTable>(unitOfWork, model, queryableCallback);
+					retval = this.LinqDiscard<TModel, TTable>(unitOfWork, model, queryableCallback);
 
 					unitOfWork.Complete();
 				}
 			}
 			else
-				retval = this.Discard<TModel, TTable>(UnitOfWork.Current, model, queryableCallback);
+				retval = this.LinqDiscard<TModel, TTable>(UnitOfWork.Current, model, queryableCallback);
 
 			return retval;
 		}
 
-		public bool Discard<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
+		public bool LinqDiscard<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
 			Func<IQueryable<TTable>, TModel, IQueryable<TTable>> queryableCallback)
 			where TModel : class, IModelObject
 			where TTable : class, new()
 		{
 			IQueryable<TTable> queryable;
 			TTable table;
+			Table<TTable> linqTable;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
 			if ((object)model == null)
 				throw new ArgumentNullException("model");
+
+			model.Mark();
 
 			if (model.IsNew)
 				return true;
@@ -72,8 +76,8 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			{
 				this.OnPreDeleteModel<TModel>(unitOfWork, model);
 
-				// cannot just do SingleOrDefault(predicateCallback)
-				queryable = queryableCallback(wrapper.Disposable.GetTable<TTable>(), model);
+				linqTable = wrapper.Disposable.GetTable<TTable>();
+				queryable = queryableCallback(linqTable, model);
 
 				if ((object)queryable == null)
 					throw new InvalidOperationException(string.Format("The queryable returned was invalid."));
@@ -81,9 +85,9 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 				table = queryable.SingleOrDefault();
 
 				if ((object)table == null)
-					throw new InvalidOperationException(string.Format("The table returned was invalid."));
+					return false;
 
-				wrapper.Disposable.GetTable<TTable>().DeleteOnSubmit(table);
+				linqTable.DeleteOnSubmit(table);
 
 				try
 				{
@@ -104,44 +108,25 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			}
 		}
 
-		public override bool Discard<TModel>(IUnitOfWork unitOfWork, TModel model)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override TResponseModel ExecuteImperative<TRequestModel, TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TRequestModel requestModel)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override TModel Fill<TModel>(IUnitOfWork unitOfWork, TModel model)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override IEnumerable<TModel> Find<TModel>(IUnitOfWork unitOfWork, IModelQuery query)
-		{
-			throw new NotImplementedException();
-		}
-
-		public IEnumerable<TModel> Find<TModel, TTable>(Func<IQueryable<TTable>, IQueryable<TTable>> queryableCallback,
-			Expression<Func<TTable, TModel>> selectorCallback)
+		public IEnumerable<TModel> LinqFind<TModel, TTable>(
+			Expression<Func<TTable, bool>> filterPredicateCallback,
+			Action<TModel, TTable> tableToModelMappingCallback)
 			where TModel : class, IModelObject
 			where TTable : class, new()
 		{
 			IEnumerable<TModel> models;
 
-			if ((object)queryableCallback == null)
-				throw new ArgumentNullException("queryableCallback");
+			if ((object)filterPredicateCallback == null)
+				throw new ArgumentNullException("filterPredicateCallback");
 
-			if ((object)selectorCallback == null)
-				throw new ArgumentNullException("selectorCallback");
+			if ((object)tableToModelMappingCallback == null)
+				throw new ArgumentNullException("tableToModelMappingCallback");
 
 			if ((object)UnitOfWork.Current == null)
 			{
 				using (IUnitOfWork unitOfWork = this.GetUnitOfWork())
 				{
-					models = this.Find<TModel, TTable>(unitOfWork, queryableCallback, selectorCallback);
+					models = this.LinqFind<TModel, TTable>(unitOfWork, filterPredicateCallback, tableToModelMappingCallback);
 
 					models = models.ToList(); // FORCE EAGER LOAD
 
@@ -150,7 +135,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			}
 			else
 			{
-				models = this.Find<TModel, TTable>(UnitOfWork.Current, queryableCallback, selectorCallback);
+				models = this.LinqFind<TModel, TTable>(UnitOfWork.Current, filterPredicateCallback, tableToModelMappingCallback);
 
 				// DO NOT FORCE EAGER LOAD
 			}
@@ -158,44 +143,51 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			return models;
 		}
 
-		public IEnumerable<TModel> Find<TModel, TTable>(IUnitOfWork unitOfWork,
-			Func<IQueryable<TTable>, IQueryable<TTable>> queryableCallback,
-			Expression<Func<TTable, TModel>> selectorCallback)
+		public IEnumerable<TModel> LinqFind<TModel, TTable>(IUnitOfWork unitOfWork,
+			Expression<Func<TTable, bool>> filterPredicateCallback,
+			Action<TModel, TTable> tableToModelMappingCallback)
 			where TModel : class, IModelObject
 			where TTable : class, new()
 		{
-			IEnumerable<TModel> models;
 			IQueryable<TTable> queryable;
+			TModel model;
+			Table<TTable> linqTable;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)queryableCallback == null)
-				throw new ArgumentNullException("queryableCallback");
+			if ((object)filterPredicateCallback == null)
+				throw new ArgumentNullException("filterPredicateCallback");
 
-			if ((object)selectorCallback == null)
-				throw new ArgumentNullException("selectorCallback");
+			if ((object)tableToModelMappingCallback == null)
+				throw new ArgumentNullException("tableToModelMappingCallback");
 
 			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = unitOfWork.GetContext<TDataContext>())
 			{
-				queryable = queryableCallback(wrapper.Disposable.GetTable<TTable>());
+				linqTable = wrapper.Disposable.GetTable<TTable>();
+				queryable = linqTable.Where(filterPredicateCallback);
 
 				if ((object)queryable == null)
 					throw new InvalidOperationException(string.Format("The queryable returned was invalid."));
 
-				models = queryable.Select(selectorCallback); // DOES NOT FORCE EXECUTION AGAINST STORE
-
-				foreach (TModel model in models)
+				// DOES NOT FORCE EXECUTION AGAINST STORE
+				foreach (TTable table in queryable)
 				{
+					model = this.CreateModel<TModel>();
+
+					// map to POCO model from L2S table (destination, source)
+					tableToModelMappingCallback(model, table);
+
 					this.OnSelectModel<TModel>(unitOfWork, model);
-					//model.Mark();
+
 					yield return model; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
 				}
 			}
 		}
 
-		public TModel Load<TModel, TTable>(TModel prototype, Expression<Func<TTable, TModel>> selectorCallback,
-			Func<IQueryable<TTable>, TModel, IQueryable<TTable>> queryableCallback)
+		public TModel LinqLoad<TModel, TTable>(
+			Expression<Func<TTable, bool>> prototypePredicateCallback,
+			Action<TModel, TTable> tableToModelMappingCallback)
 			where TModel : class, IModelObject
 			where TTable : class, new()
 		{
@@ -205,64 +197,54 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			{
 				using (IUnitOfWork unitOfWork = this.GetUnitOfWork())
 				{
-					retval = this.Load<TModel, TTable>(unitOfWork, prototype, selectorCallback, queryableCallback);
+					retval = this.LinqLoad<TModel, TTable>(unitOfWork, prototypePredicateCallback, tableToModelMappingCallback);
 
 					unitOfWork.Complete();
 				}
 			}
 			else
-				retval = this.Load<TModel, TTable>(UnitOfWork.Current, prototype, selectorCallback, queryableCallback);
+				retval = this.LinqLoad<TModel, TTable>(UnitOfWork.Current, prototypePredicateCallback, tableToModelMappingCallback);
 
 			return retval;
 		}
 
-		public TModel Load<TModel, TTable>(IUnitOfWork unitOfWork, TModel prototype,
-			Expression<Func<TTable, TModel>> selectorCallback,
-			Func<IQueryable<TTable>, TModel, IQueryable<TTable>> queryableCallback)
+		public TModel LinqLoad<TModel, TTable>(IUnitOfWork unitOfWork,
+			Expression<Func<TTable, bool>> prototypePredicateCallback,
+			Action<TModel, TTable> tableToModelMappingCallback)
 			where TModel : class, IModelObject
 			where TTable : class, new()
 		{
-			IQueryable<TTable> queryable;
 			TTable table;
 			TModel model;
+			Table<TTable> linqTable;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)prototype == null)
-				throw new ArgumentNullException("prototype");
+			if ((object)prototypePredicateCallback == null)
+				throw new ArgumentNullException("prototypePredicateCallback");
 
-			if ((object)selectorCallback == null)
-				throw new ArgumentNullException("selectorCallback");
-
-			if ((object)queryableCallback == null)
-				throw new ArgumentNullException("queryableCallback");
+			if ((object)tableToModelMappingCallback == null)
+				throw new ArgumentNullException("tableToModelMappingCallback");
 
 			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = unitOfWork.GetContext<TDataContext>())
 			{
-				// cannot just do SingleOrDefault(predicateCallback)
-				queryable = queryableCallback(wrapper.Disposable.GetTable<TTable>(), prototype);
-
-				if ((object)queryable == null)
-					throw new InvalidOperationException(string.Format("The queryable returned was invalid."));
-
-				table = queryable.SingleOrDefault();
+				linqTable = wrapper.Disposable.GetTable<TTable>();
+				table = linqTable.SingleOrDefault(prototypePredicateCallback);
 
 				if ((object)table == null)
-					throw new InvalidOperationException(string.Format("The table returned was invalid."));
+					return null;
 
-				model = selectorCallback.Compile().Invoke(table); // is this approapriate?
+				model = this.CreateModel<TModel>();
+
+				// map to POCO model from L2S table (destination, source)
+				tableToModelMappingCallback(model, table);
 
 				return model;
 			}
 		}
 
-		public override TModel Load<TModel>(IUnitOfWork unitOfWork, TModel prototype)
-		{
-			throw new NotImplementedException();
-		}
-
-		public bool Save<TModel, TTable>(TModel model, Func<IQueryable<TTable>, TModel, IQueryable<TTable>> queryableCallback,
+		public bool LinqSave<TModel, TTable>(TModel model, Func<IQueryable<TTable>, TModel, IQueryable<TTable>> queryableCallback,
 			Action<TTable, TModel> modelToTableMappingCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)
 			where TModel : class, IModelObject
@@ -274,18 +256,18 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			{
 				using (IUnitOfWork unitOfWork = this.GetUnitOfWork())
 				{
-					retval = this.Save<TModel, TTable>(unitOfWork, model, queryableCallback, modelToTableMappingCallback, tableToModelMappingCallback);
+					retval = this.LinqSave<TModel, TTable>(unitOfWork, model, queryableCallback, modelToTableMappingCallback, tableToModelMappingCallback);
 
 					unitOfWork.Complete();
 				}
 			}
 			else
-				retval = this.Save<TModel, TTable>(UnitOfWork.Current, model, queryableCallback, modelToTableMappingCallback, tableToModelMappingCallback);
+				retval = this.LinqSave<TModel, TTable>(UnitOfWork.Current, model, queryableCallback, modelToTableMappingCallback, tableToModelMappingCallback);
 
 			return retval;
 		}
 
-		public bool Save<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
+		public bool LinqSave<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
 			Func<IQueryable<TTable>, TModel, IQueryable<TTable>> queryableCallback,
 			Action<TTable, TModel> modelToTableMappingCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)
@@ -295,6 +277,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			bool wasNew;
 			IQueryable<TTable> queryable;
 			TTable table;
+			Table<TTable> linqTable;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -313,7 +296,10 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 
 			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = unitOfWork.GetContext<TDataContext>())
 			{
+				linqTable = wrapper.Disposable.GetTable<TTable>();
+
 				wasNew = model.IsNew;
+				model.Mark();
 
 				if (wasNew)
 				{
@@ -321,13 +307,13 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 
 					table = new TTable();
 
-					wrapper.Disposable.GetTable<TTable>().InsertOnSubmit(table);
+					linqTable.InsertOnSubmit(table);
 				}
 				else
 				{
 					this.OnPreUpdateModel<TModel>(unitOfWork, model);
 
-					queryable = queryableCallback(wrapper.Disposable.GetTable<TTable>(), model);
+					queryable = queryableCallback(linqTable, model);
 
 					if ((object)queryable == null)
 						throw new InvalidOperationException(string.Format("The queryable returned was invalid."));
@@ -362,11 +348,6 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 
 				return true;
 			}
-		}
-
-		public override bool Save<TModel>(IUnitOfWork unitOfWork, TModel model)
-		{
-			throw new NotImplementedException();
 		}
 
 		#endregion

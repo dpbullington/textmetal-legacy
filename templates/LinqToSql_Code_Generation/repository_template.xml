@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -98,105 +99,18 @@ using TextMetal.Common.Solder.DependencyManagement;
 namespace ${ClrNamespace}
 {
 	[DependencyRegistration]
-	public partial class Repository : IRepository
+	public partial class Repository : LinqToSqlModelRepository<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}>, IRepository
 	{		
 		#region Constructors/Destructors
 		
 		public Repository()
 		{
 		}
-		
-		#endregion
-		
-		#region Fields/Constants
-		
-		private const string APP_CONFIG_PREFIX = "${ClrNamespace}";
-		private const string CONNECTION_STRING_NAME = "${ClrNamespace}::ConnectionString";
-		private const string DATA_SOURCE_TAG = "${ClrNamespace}::DataSourceTag";
-						
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public static string ConnectionString
-		{
-			get
-			{
-				string connectionString;
-
-				connectionString = AppConfig.GetConnectionString(ConnectionStringName);
-
-				OnPreProcessConnectionString(ref connectionString);
-
-				return connectionString;
-			}
-		}
-
-		public static string ConnectionStringName
-		{
-			get
-			{
-				string connectionStringName;
-
-				connectionStringName = CONNECTION_STRING_NAME;
-				OnPreProcessConnectionStringName(ref connectionStringName);
-
-				return connectionStringName;
-			}
-		}
-
-		public static Type ConnectionType
-		{
-			get
-			{
-				return Type.GetType(AppConfig.GetConnectionProvider(ConnectionStringName), true);
-			}
-		}
-
-		public static string DataSourceTag
-		{
-			get
-			{
-				string value;
-
-				if (!AppConfig.HasAppSetting(DATA_SOURCE_TAG))
-					return null;
-
-				value = AppConfig.GetAppSetting<string>(DATA_SOURCE_TAG);
-
-				return value;
-			}
-		}
 
 		#endregion
-		
+
 		#region Methods/Operators
 
-		public TModel CreateModel<TModel>()
-			where TModel : class, IModelObject
-		{
-			return DependencyManager.AppDomainInstance.ResolveDependency<TModel>("");
-		}
-
-		public TRequestModel CreateRequestModel<TRequestModel>()
-			where TRequestModel : class, IRequestModelObject
-		{
-			return DependencyManager.AppDomainInstance.ResolveDependency<TRequestModel>("");
-		}
-
-		public TResponseModel CreateResponseModel<TResponseModel, TResultModel>()
-			where TResponseModel : class, IResponseModelObject<TResultModel>
-			where TResultModel : class, IResultModelObject
-		{
-			return DependencyManager.AppDomainInstance.ResolveDependency<TResponseModel>("");
-		}
-
-		public TResultModel CreateResultModel<TResultModel>()
-			where TResultModel : class, IResultModelObject
-		{
-			return DependencyManager.AppDomainInstance.ResolveDependency<TResultModel>("");
-		}
-		
 		[DependencyRegistration]
 		public static void OnDepenndencyRegistration()
 		{
@@ -211,7 +125,7 @@ namespace ${ClrNamespace}
 				<ForEach.Filter></ForEach.Filter>
 				<ForEach.Body>
 <![CDATA[
-			DependencyManager.AppDomainInstance.AddResolution<I${TableNameSingularPascalCase}>("", DelegateDependencyResolution.FromFunc(() => new ${TableNameSingularPascalCase}()));]]>
+			DependencyManager.AppDomainInstance.AddResolution<I${TableNameSingularPascalCase}>("", ActivatorDependencyResolution.FromNonPublicDefault<${TableNameSingularPascalCase}>());]]>
 
 				</ForEach.Body>
 			</ForEach>
@@ -221,118 +135,283 @@ namespace ${ClrNamespace}
 
 <![CDATA[
 		}
-		
-		public IEnumerable<TResultEntity> Find<TDataContext, TResultEntity>(TDataContext dummy, Func<TDataContext, IQueryable<TResultEntity>> callback)
-			where TDataContext : class, IDisposable
+
+		public override bool Discard<TModel>(IUnitOfWork unitOfWork, TModel model)
 		{
-			IEnumerable<TResultEntity> things;
-
-			if ((object)UnitOfWork.Current == null)
-			{
-				using (IUnitOfWork unitOfWork = DefaultUnitOfWorkFactory.Instance.GetUnitOfWork())
-				{
-					things = this.Find<TDataContext, TResultEntity>(dummy, unitOfWork, callback);
-
-					things = things.ToList(); // FORCE EAGER LOAD
-
-					unitOfWork.Complete();
-				}
-			}
-			else
-			{
-				things = this.Find<TDataContext, TResultEntity>(dummy, UnitOfWork.Current, callback);
-
-				// DO NOT FORCE EAGER LOAD
-			}
-
-			return things;
+			throw new NotImplementedException();
 		}
 
-		public IEnumerable<TResultEntity> Find<TDataContext, TResultEntity>(TDataContext dummy, IUnitOfWork unitOfWork, Func<TDataContext, IQueryable<TResultEntity>> callback)
-			where TDataContext : class, IDisposable
+		public override TResponseModel ExecuteImperative<TRequestModel, TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TRequestModel requestModel)
 		{
-			IEnumerable<TResultEntity> things;
-			IQueryable<TResultEntity> queryable;
+			throw new NotImplementedException();
+		}
+
+		public override TModel Fill<TModel>(IUnitOfWork unitOfWork, TModel model)
+		{
+			throw new NotImplementedException();
+		}
+
+		public override IEnumerable<TModel> Find<TModel>(IUnitOfWork unitOfWork, IModelQuery modelQuery)
+		{
+			Type modelType;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)callback == null)
-				throw new ArgumentNullException("callback");
+			if ((object)modelQuery == null)
+				throw new ArgumentNullException("modelQuery");
 
-			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = unitOfWork.GetContext<TDataContext>())
+			modelType = typeof(TModel);
+
+			if (false)
 			{
-				queryable = callback(wrapper.Disposable);
+				// do nothing
+			}]]>
+		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
+			<ForEach.Body>
+				<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
+					<ForEach.Body>
 
-				if ((object)queryable == null)
-					throw new InvalidOperationException(string.Format("The queryable returned was invalid."));
+<![CDATA[
+			else if (modelType == typeof(I${TableNameSingularPascalCase}))
+			{
+				Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>> _predicate = (Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>>)modelQuery.GetNativeReduction();
+				return (IEnumerable<TModel>)this.LinqFind<I${TableNameSingularPascalCase}, ${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}>(unitOfWork, _predicate, (dm, st) => { ]]>
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
+							<ForEach.Filter>
+							</ForEach.Filter>
+							<ForEach.Body>
+								<If>
+									<If.Condition>
+										<Ruby src="Script" expr="" file="">
+											<Script>
+												type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+												return ["image", "varbinary", "binary", "rowversion", "timestamp"].include?(type);
+											</Script>
+										</Ruby>
+									</If.Condition>
+									<If.True>
+										<![CDATA[dm.@${ColumnNamePascalCase} = (object)st.@${ColumnNameSqlMetalPascalCase} != null ? st.@${ColumnNameSqlMetalPascalCase}.ToArray() : null;]]>
+									</If.True>
+									<If.False>
+										<If>
+											<If.Condition>
+												<Ruby src="Script" expr="" file="">
+													<Script>
+														type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+														return ["xml"].include?(type);
+													</Script>
+												</Ruby>
+											</If.Condition>
+											<If.True>
+												<![CDATA[dm.@${ColumnNamePascalCase} = (object)st.@${ColumnNameSqlMetalPascalCase} != null ? LinqToSqlHelper.ToXmlDocument(st.@${ColumnNameSqlMetalPascalCase}) : null;]]>
+											</If.True>
+											<If.False>
+												<![CDATA[dm.@${ColumnNamePascalCase} = st.@${ColumnNameSqlMetalPascalCase};]]>
+											</If.False>
+										</If>
+									</If.False>
+								</If>
 
-				things = queryable; // DOES NOT FORCE EXECUTION AGAINST STORE
+								<If>
+									<If.Condition>
+										<BinaryExpression operator="Ne">
+											<BinaryExpression.LeftExpression>
+												<Facet name="_LoopCount" />
+											</BinaryExpression.LeftExpression>
+											<BinaryExpression.RightExpression>
+												<Facet name="_LoopIndex" />
+											</BinaryExpression.RightExpression>
+										</BinaryExpression>
+									</If.Condition>
+									<If.True>
+										<![CDATA[ ]]>
+									</If.True>
+								</If>
+							</ForEach.Body>
+						</ForEach>
+						<![CDATA[ });
+			}]]>
 
-				foreach (TResultEntity thing in things)
-				{
-					//this.OnSelect(unitOfWork, thing);
-					//thing.Mark();
-					yield return thing; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
-				}
-			}
+					</ForEach.Body>
+				</ForEach>
+			</ForEach.Body>
+		</ForEach>
+<![CDATA[
+			else
+				throw new ArgumentOutOfRangeException(string.Format("The model type '{0}' was not recognized. Try re-generating the repository code from the templates using TextMetal.exe and try again.", modelType.FullName));
 		}
 
-		public static IUnitOfWork GetUnitOfWork()
+		public override TModel Load<TModel>(IUnitOfWork unitOfWork, TModel prototype)
 		{
-			return UnitOfWork.Create(ConnectionType, ConnectionString, true);
+			Type modelType;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)prototype == null)
+				throw new ArgumentNullException("prototype");
+
+			modelType = typeof(TModel);
+
+			if (false)
+			{
+				// do nothing
+			}]]>
+		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
+			<ForEach.Body>
+				<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
+					<ForEach.Body>
+
+<![CDATA[
+			else if (modelType == typeof(I${TableNameSingularPascalCase}))
+			{
+				I${TableNameSingularPascalCase} _prototype = (I${TableNameSingularPascalCase})(object)prototype;
+				return (TModel)this.LinqLoad<I${TableNameSingularPascalCase}, ${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}>(unitOfWork, (t) => ]]>
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
+							<ForEach.Filter>
+								<BinaryExpression operator="Or">
+									<BinaryExpression.LeftExpression>
+										<BinaryExpression operator="Eq">
+											<BinaryExpression.LeftExpression>
+												<Facet name="ColumnIsPrimaryKey" />
+											</BinaryExpression.LeftExpression>
+											<BinaryExpression.RightExpression>
+												<Value type="System.Boolean" data="True" />
+											</BinaryExpression.RightExpression>
+										</BinaryExpression>
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<BinaryExpression operator="Eq">
+											<BinaryExpression.LeftExpression>
+												<Facet name="HasNoDefinedPrimaryKeyColumns" />
+											</BinaryExpression.LeftExpression>
+											<BinaryExpression.RightExpression>
+												<Value type="System.Boolean" data="True" />
+											</BinaryExpression.RightExpression>
+										</BinaryExpression>
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</ForEach.Filter>
+							<ForEach.Body>
+								<If>
+									<If.Condition>
+										<Ruby src="Script" expr="" file="">
+											<Script>
+												type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+												return ["image", "varbinary", "binary", "rowversion", "timestamp"].include?(type);
+											</Script>
+										</Ruby>
+									</If.Condition>
+									<If.True>
+										<![CDATA[t.@${ColumnNameSqlMetalPascalCase}.ToArray() == _prototype.@${ColumnNamePascalCase}]]>
+									</If.True>
+									<If.False>
+										<If>
+											<If.Condition>
+												<Ruby src="Script" expr="" file="">
+													<Script>
+														type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+														return ["xml"].include?(type);
+													</Script>
+												</Ruby>
+											</If.Condition>
+											<If.True>
+												<![CDATA[t.@${ColumnNameSqlMetalPascalCase} == LinqToSqlHelper.ToXElement(_prototype.@${ColumnNamePascalCase})]]>
+											</If.True>
+											<If.False>
+												<![CDATA[t.@${ColumnNameSqlMetalPascalCase} == _prototype.@${ColumnNamePascalCase}]]>
+											</If.False>
+										</If>
+									</If.False>
+								</If>
+
+								<If>
+									<If.Condition>
+										<BinaryExpression operator="Ne">
+											<BinaryExpression.LeftExpression>
+												<Facet name="_LoopCount" />
+											</BinaryExpression.LeftExpression>
+											<BinaryExpression.RightExpression>
+												<Facet name="_LoopIndex" />
+											</BinaryExpression.RightExpression>
+										</BinaryExpression>
+									</If.Condition>
+									<If.True>
+										<![CDATA[ && ]]>
+									</If.True>
+								</If>
+							</ForEach.Body>
+						</ForEach>
+						<![CDATA[, (dm, st) => { ]]>
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
+							<ForEach.Filter>
+							</ForEach.Filter>
+							<ForEach.Body>
+								<If>
+									<If.Condition>
+										<Ruby src="Script" expr="" file="">
+											<Script>
+												type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+												return ["image", "varbinary", "binary", "rowversion", "timestamp"].include?(type);
+											</Script>
+										</Ruby>
+									</If.Condition>
+									<If.True>
+										<![CDATA[dm.@${ColumnNamePascalCase} = (object)st.@${ColumnNameSqlMetalPascalCase} != null ? st.@${ColumnNameSqlMetalPascalCase}.ToArray() : null;]]>
+									</If.True>
+									<If.False>
+										<If>
+											<If.Condition>
+												<Ruby src="Script" expr="" file="">
+													<Script>
+														type = textMetal.EvaluateToken.invoke("ColumnSqlType");
+														return ["xml"].include?(type);
+													</Script>
+												</Ruby>
+											</If.Condition>
+											<If.True>
+												<![CDATA[dm.@${ColumnNamePascalCase} = (object)st.@${ColumnNameSqlMetalPascalCase} != null ? LinqToSqlHelper.ToXmlDocument(st.@${ColumnNameSqlMetalPascalCase}) : null;]]>
+											</If.True>
+											<If.False>
+												<![CDATA[dm.@${ColumnNamePascalCase} = st.@${ColumnNameSqlMetalPascalCase};]]>
+											</If.False>
+										</If>
+									</If.False>
+								</If>
+
+								<If>
+									<If.Condition>
+										<BinaryExpression operator="Ne">
+											<BinaryExpression.LeftExpression>
+												<Facet name="_LoopCount" />
+											</BinaryExpression.LeftExpression>
+											<BinaryExpression.RightExpression>
+												<Facet name="_LoopIndex" />
+											</BinaryExpression.RightExpression>
+										</BinaryExpression>
+									</If.Condition>
+									<If.True>
+										<![CDATA[ ]]>
+									</If.True>
+								</If>
+							</ForEach.Body>
+						</ForEach>
+						<![CDATA[ });
+			}]]>
+
+					</ForEach.Body>
+				</ForEach>
+			</ForEach.Body>
+		</ForEach>
+<![CDATA[
+			else
+				throw new ArgumentOutOfRangeException(string.Format("The model type '{0}' was not recognized. Try re-generating the repository code from the templates using TextMetal.exe and try again.", modelType.FullName));
 		}
-		
-		public static void InitDatabase()
+
+		public override bool Save<TModel>(IUnitOfWork unitOfWork, TModel model)
 		{
-			// do nothing
-			throw new NotSupportedException("LINQ to SQL is being used.");
-		}
-
-		static partial void OnPreProcessConnectionString(ref string connectionString);
-
-		static partial void OnPreProcessConnectionStringName(ref string connectionStringName);
-
-		#endregion
-		
-		#region Classes/Structs/Interfaces/Enums/Delegates
-
-		public sealed class DefaultUnitOfWorkFactory : IUnitOfWorkFactory
-		{
-			#region Constructors/Destructors
-
-			private DefaultUnitOfWorkFactory()
-			{
-			}
-
-			#endregion
-
-			#region Fields/Constants
-
-			private static readonly IUnitOfWorkFactory instance = new DefaultUnitOfWorkFactory();
-
-			#endregion
-
-			#region Properties/Indexers/Events
-
-			public static IUnitOfWorkFactory Instance
-			{
-				get
-				{
-					return instance;
-				}
-			}
-
-			#endregion
-
-			#region Methods/Operators
-
-			public IUnitOfWork GetUnitOfWork()
-			{
-				return Repository.GetUnitOfWork();
-			}
-
-			#endregion
+			throw new NotImplementedException();
 		}
 
 		#endregion

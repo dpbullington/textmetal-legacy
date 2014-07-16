@@ -418,6 +418,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 														table.TableNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(table.TableName));
 														table.TableNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(table.TableName));
 
+														table.ObjectNameSqlMetalPascalCase = Name.GetSqlMetalObjectNamePascalCase(schema.SchemaName, table.TableName);
 														table.TableNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(table.TableName);
 														table.TableNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(table.TableName);
 														table.TableNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(table.TableName));
@@ -752,6 +753,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 														view.ViewNamePluralCamelCase = Name.GetCamelCase(Name.GetPluralForm(view.ViewName));
 														view.ViewNamePluralConstantCase = Name.GetConstantCase(Name.GetPluralForm(view.ViewName));
 
+														view.ObjectNameSqlMetalPascalCase = Name.GetSqlMetalObjectNamePascalCase(schema.SchemaName, view.ViewName);
 														view.ViewNameSqlMetalPascalCase = Name.GetSqlMetalPascalCase(view.ViewName);
 														view.ViewNameSqlMetalCamelCase = Name.GetSqlMetalCamelCase(view.ViewName);
 														view.ViewNameSqlMetalSingularPascalCase = Name.GetSqlMetalPascalCase(Name.GetSingularForm(view.ViewName));

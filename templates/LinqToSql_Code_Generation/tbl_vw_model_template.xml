@@ -174,7 +174,7 @@ namespace ${ClrNamespace}.${FolderName}
 							</If.True>
 						</If>
 
-						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Body>
 								<![CDATA[
 		private ${ColumnCSharpClrNullableType} @${ColumnNameCamelCase};]]>

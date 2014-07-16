@@ -9,19 +9,14 @@
 	<Import name="irepository_template.xml" />
 	<Import name="repository_template.xml" />
 	<Import name="repository_partial_template.xml" />
+	<Import name="ut_tbl_vw_repository_template.xml" />
+	<Import name="it_repository_template.xml" />
+	<Import name="it_tbl_vw_repository_template.xml" />
 
 	<Import name="tbl_vw_imodel_template.xml" />
 	<Import name="tbl_vw_model_template.xml" />
 	<Import name="tbl_vw_partial_model_template.xml" />
-
-	<Import name="tbl_vw_irepository_template.xml" />
-	<Import name="tbl_vw_repository_template.xml" />
-
-	<Import name="ut_tbl_vw_repository_template.xml" />
 	<Import name="ut_tbl_vw_model_template.xml" />
-
-	<Import name="it_repository_template.xml" />
-	<Import name="it_tbl_vw_repository_template.xml" />
 
 	<Import name="build_template.xml" />
 

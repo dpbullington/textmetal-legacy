@@ -29,6 +29,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private DateTime creationTimestamp;
 		private bool isImplementationDetail;
 		private DateTime modificationTimestamp;
+		private string objectNameSqlMetalPascalCase;
 		private int viewId;
 		private string viewName;
 		private string viewNameCamelCase;
@@ -50,16 +51,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string PrimaryKeyName
-		{
-			get
-			{
-				return null;
-			}
-		}
 
 		[XmlArray(ElementName = "Columns")]
 		[XmlArrayItem(ElementName = "Column")]
@@ -157,6 +148,29 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.modificationTimestamp = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ObjectNameSqlMetalPascalCase
+		{
+			get
+			{
+				return this.objectNameSqlMetalPascalCase;
+			}
+			set
+			{
+				this.objectNameSqlMetalPascalCase = value;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string PrimaryKeyName
+		{
+			get
+			{
+				return null;
 			}
 		}
 

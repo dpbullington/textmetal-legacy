@@ -51,7 +51,9 @@
     <Compile Include="AdoNetHelper.cs" />
     <Compile Include="Framework\IModelQuery.cs" />
     <Compile Include="Framework\IModelRepository.cs" />
-    <Compile Include="Framework\LinqToSql\LinqToSqlModelRepository.cs" />
+    <Compile Include="Framework\LinqToSql\ILinqToSqlModelRepository~1.cs" />
+    <Compile Include="Framework\LinqToSql\LinqTableQuery~1.cs" />
+    <Compile Include="Framework\LinqToSql\LinqToSqlModelRepository~1.cs" />
     <Compile Include="Framework\PoPimp\PoPimpModelRepository.cs" />
     <Compile Include="Framework\PoPimp\Strategy\IDataSourceTagStrategyFactory.cs" />
     <Compile Include="Framework\PoPimp\Strategy\DataSourceTagStrategyFactory.cs" />

@@ -257,7 +257,21 @@ namespace TextMetal.Common.Data.Framework
 			where TResultModel : class, IResultModelObject
 			where TResponseModel : class, IResponseModelObject<TResultModel>
 		{
-			throw new NotImplementedException();
+			TResponseModel responseModel;
+
+			if ((object)UnitOfWork.Current == null)
+			{
+				using (IUnitOfWork unitOfWork = this.GetUnitOfWork())
+				{
+					responseModel = this.ExecuteImperative<TRequestModel, TResultModel, TResponseModel>(unitOfWork, requestModel);
+
+					unitOfWork.Complete();
+				}
+			}
+			else
+				responseModel = this.ExecuteImperative<TRequestModel, TResultModel, TResponseModel>(UnitOfWork.Current, requestModel);
+
+			return responseModel;
 		}
 
 		public abstract TModel Fill<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject;
@@ -265,24 +279,36 @@ namespace TextMetal.Common.Data.Framework
 		public virtual TModel Fill<TModel>(TModel model)
 			where TModel : class, IModelObject
 		{
-			throw new NotImplementedException();
+			if ((object)UnitOfWork.Current == null)
+			{
+				using (IUnitOfWork unitOfWork = this.GetUnitOfWork())
+				{
+					model = this.Fill<TModel>(unitOfWork, model);
+
+					unitOfWork.Complete();
+				}
+			}
+			else
+				model = this.Fill<TModel>(UnitOfWork.Current, model);
+
+			return model;
 		}
 
-		public abstract IEnumerable<TModel> Find<TModel>(IUnitOfWork unitOfWork, IModelQuery query) where TModel : class, IModelObject;
+		public abstract IEnumerable<TModel> Find<TModel>(IUnitOfWork unitOfWork, IModelQuery modelQuery) where TModel : class, IModelObject;
 
-		public virtual IEnumerable<TModel> Find<TModel>(IModelQuery query)
+		public virtual IEnumerable<TModel> Find<TModel>(IModelQuery modelQuery)
 			where TModel : class, IModelObject
 		{
 			IEnumerable<TModel> models;
 
-			if ((object)query == null)
-				throw new ArgumentNullException("query");
+			if ((object)modelQuery == null)
+				throw new ArgumentNullException("modelQuery");
 
 			if ((object)UnitOfWork.Current == null)
 			{
 				using (IUnitOfWork unitOfWork = this.GetUnitOfWork())
 				{
-					models = this.Find<TModel>(unitOfWork, query);
+					models = this.Find<TModel>(unitOfWork, modelQuery);
 
 					models = models.ToList(); // FORCE EAGER LOAD
 
@@ -291,7 +317,7 @@ namespace TextMetal.Common.Data.Framework
 			}
 			else
 			{
-				models = this.Find<TModel>(UnitOfWork.Current, query);
+				models = this.Find<TModel>(UnitOfWork.Current, modelQuery);
 
 				// DO NOT FORCE EAGER LOAD
 			}

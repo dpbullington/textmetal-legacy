@@ -13,7 +13,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 	{
 		#region Properties/Indexers/Events
 
-		string PrimaryKeyName
+		IEnumerable<Column> Columns
+		{
+			get;
+		}
+
+		DateTime CreationTimestamp
 		{
 			get;
 		}
@@ -33,16 +38,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			get;
 		}
 
-		IEnumerable<Column> Columns
-		{
-			get;
-		}
-
-		DateTime CreationTimestamp
-		{
-			get;
-		}
-
 		bool IsImplementationDetail
 		{
 			get;
@@ -54,6 +49,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		}
 
 		DateTime ModificationTimestamp
+		{
+			get;
+		}
+
+		string ObjectNameSqlMetalPascalCase
+		{
+			get;
+		}
+
+		string PrimaryKeyName
 		{
 			get;
 		}

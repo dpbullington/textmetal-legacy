@@ -19,7 +19,7 @@ namespace TextMetal.Common.Solder.DependencyManagement
 		/// </summary>
 		/// <param name="actualType"> The actual type of the resolution. </param>
 		public ActivatorDependencyResolution(Type actualType)
-			: this(actualType, new Type[] { })
+			: this(actualType, false, new Type[] { })
 		{
 		}
 
@@ -29,6 +29,17 @@ namespace TextMetal.Common.Solder.DependencyManagement
 		/// <param name="actualType"> The actual type of the resolution. </param>
 		/// <param name="parameterTypes"> The parameter types of the constructor overload to use or null for the default constructor. </param>
 		public ActivatorDependencyResolution(Type actualType, Type[] parameterTypes)
+			: this(actualType, false, parameterTypes)
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the ConstructorDependencyResolution class.
+		/// </summary>
+		/// <param name="actualType"> The actual type of the resolution. </param>
+		/// <param name="useNonPublicDefault"> A value indicating whether to consider a default, non-public constructor. </param>
+		/// <param name="parameterTypes"> The parameter types of the constructor overload to use or null for the default constructor. </param>
+		private ActivatorDependencyResolution(Type actualType, bool useNonPublicDefault, Type[] parameterTypes)
 		{
 			if ((object)actualType == null)
 				throw new ArgumentNullException("actualType");
@@ -37,6 +48,7 @@ namespace TextMetal.Common.Solder.DependencyManagement
 				throw new ArgumentNullException("parameterTypes");
 
 			this.actualType = actualType;
+			this.useNonPublicDefault = useNonPublicDefault;
 			this.parameterTypes = parameterTypes;
 		}
 
@@ -46,6 +58,7 @@ namespace TextMetal.Common.Solder.DependencyManagement
 
 		private readonly Type actualType;
 		private readonly Type[] parameterTypes;
+		private readonly bool useNonPublicDefault;
 
 		#endregion
 
@@ -67,9 +80,26 @@ namespace TextMetal.Common.Solder.DependencyManagement
 			}
 		}
 
+		private bool UseNonPublicDefault
+		{
+			get
+			{
+				return this.useNonPublicDefault;
+			}
+		}
+
 		#endregion
 
 		#region Methods/Operators
+
+		public static ActivatorDependencyResolution FromNonPublicDefault<TObject>()
+		{
+			Type actualType;
+
+			actualType = typeof(TObject);
+
+			return new ActivatorDependencyResolution(actualType, true, new Type[] { });
+		}
 
 		public static ActivatorDependencyResolution OfType<TObject, TParameter0>()
 		{
@@ -509,7 +539,10 @@ namespace TextMetal.Common.Solder.DependencyManagement
 				invocationArguments[index++] = dependencyManager.ResolveDependency(parameterType, "");
 			}
 
-			return Activator.CreateInstance(this.ActualType, invocationArguments);
+			if (this.UseNonPublicDefault)
+				return Activator.CreateInstance(this.ActualType, true);
+			else
+				return Activator.CreateInstance(this.ActualType, invocationArguments);
 		}
 
 		#endregion

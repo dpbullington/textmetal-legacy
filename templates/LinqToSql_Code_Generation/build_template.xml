@@ -227,6 +227,11 @@ EndGlobal
 		<add name="${ClrNamespace}::ConnectionString" connectionString="${ConnectionString}" providerName="${ConnectionType}" />
 	</connectionStrings>
 	<appSettings>
+		<add key="${ClrNamespace}::DataSourceTag" value="${DataSourceTag}" />
+		<add key="${ClrNamespace}::UseDatabaseFile" value="false" />
+		<add key="${ClrNamespace}::KillDatabaseFile" value="false" />
+		<add key="${ClrNamespace}::DatabaseFileName" value="" />
+		<add key="${ClrNamespace}::DatabaseDirectoryPath" value="" />
 	</appSettings>
 </configuration>]]>
 	</OutputScope>
@@ -351,8 +356,6 @@ EndGlobal
     <Compile Include="IRepository.g.cs" />
 	<Compile Include="Repository.g.cs" />
 	<Compile Include="ProjectAssemblyInfo.cs" />
-	<Compile Include="IRepository.tv.g.cs" />
-	<Compile Include="Repository.tv.g.cs" />
 ]]>
 
 		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">

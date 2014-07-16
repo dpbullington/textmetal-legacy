@@ -13,8 +13,12 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
+using System.Reflection;
+using System.Web;
 using System.Xml;
 
+using TextMetal.Common.Cerealization;
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
 using TextMetal.Common.Data.Framework;
@@ -282,7 +286,7 @@ namespace ${ClrNamespace}
 			
 			resourceName = string.Format(RESOURCE_NAME_FORMAT, GetDataSourceTagSpecificInstance().DataSourceTag.SafeToString().ToLower());
 			
-			_DatabaseFileManager.InitializeFromRevisionHistoryResource(DefaultUnitOfWorkFactory.Instance, typeof(Repository), resourceName);
+			DatabaseFileManager.InitializeFromRevisionHistoryResource(DefaultUnitOfWorkFactory.Instance, typeof(Repository), resourceName);
 		}
 		
 		private static IDataSourceTagSpecific GetDataSourceTagSpecificInstance()
@@ -536,7 +540,7 @@ namespace ${ClrNamespace}
 						this.EnsureDatabaseFile();
 					}
 
-					if (!Cerealization.Cerealization.TryGetFromAssemblyResource<DatabaseHistory>(revisionHistoryResourceAssemblyType, revisionHistoryResourceName, out history))
+					if (!Cerealization.TryGetFromAssemblyResource<DatabaseHistory>(revisionHistoryResourceAssemblyType, revisionHistoryResourceName, out history))
 						throw new InvalidOperationException(string.Format("Unable to deserialize instance of '{0}' from the manifest resource name '{1}' in the assembly '{2}'.", typeof(DatabaseHistory).FullName, revisionHistoryResourceName, revisionHistoryResourceAssemblyType.Assembly.FullName));
 
 					using (IUnitOfWork unitOfWork = unitOfWorkFactory.GetUnitOfWork())

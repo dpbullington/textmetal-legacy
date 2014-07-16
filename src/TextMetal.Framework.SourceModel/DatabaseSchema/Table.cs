@@ -45,6 +45,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private bool hasNoDefinedPrimaryKeyColumns;
 		private bool isImplementationDetail;
 		private DateTime modificationTimestamp;
+		private string objectNameSqlMetalPascalCase;
 		private PrimaryKey primaryKey;
 		private int tableId;
 		private string tableName;
@@ -108,16 +109,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			get
 			{
 				return this.foreignKeys;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string PrimaryKeyName
-		{
-			get
-			{
-				return (object)this.PrimaryKey != null ? this.PrimaryKey.PrimaryKeyName : null;
 			}
 		}
 
@@ -188,6 +179,19 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 		}
 
+		[XmlAttribute]
+		public string ObjectNameSqlMetalPascalCase
+		{
+			get
+			{
+				return this.objectNameSqlMetalPascalCase;
+			}
+			set
+			{
+				this.objectNameSqlMetalPascalCase = value;
+			}
+		}
+
 		[XmlElement]
 		public PrimaryKey PrimaryKey
 		{
@@ -198,6 +202,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.primaryKey = value;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string PrimaryKeyName
+		{
+			get
+			{
+				return (object)this.PrimaryKey != null ? this.PrimaryKey.PrimaryKeyName : null;
 			}
 		}
 
