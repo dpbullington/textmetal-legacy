@@ -37,7 +37,7 @@ namespace TextMetal.Common.Data.Framework.PoPimp
 			throw new NotImplementedException();
 		}
 
-		public override TModel Fill<TModel>(IUnitOfWork unitOfWork, TModel model)
+		public override bool Fill<TModel>(IUnitOfWork unitOfWork, TModel model)
 		{
 			throw new NotImplementedException();
 		}

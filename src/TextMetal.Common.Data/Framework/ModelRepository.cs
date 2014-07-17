@@ -274,24 +274,26 @@ namespace TextMetal.Common.Data.Framework
 			return responseModel;
 		}
 
-		public abstract TModel Fill<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject;
+		public abstract bool Fill<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject;
 
-		public virtual TModel Fill<TModel>(TModel model)
+		public virtual bool Fill<TModel>(TModel model)
 			where TModel : class, IModelObject
 		{
+			bool retval;
+
 			if ((object)UnitOfWork.Current == null)
 			{
 				using (IUnitOfWork unitOfWork = this.GetUnitOfWork())
 				{
-					model = this.Fill<TModel>(unitOfWork, model);
+					retval = this.Fill<TModel>(unitOfWork, model);
 
 					unitOfWork.Complete();
 				}
 			}
 			else
-				model = this.Fill<TModel>(UnitOfWork.Current, model);
+				retval = this.Fill<TModel>(UnitOfWork.Current, model);
 
-			return model;
+			return retval;
 		}
 
 		public abstract IEnumerable<TModel> Find<TModel>(IUnitOfWork unitOfWork, IModelQuery modelQuery) where TModel : class, IModelObject;

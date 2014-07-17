@@ -40,10 +40,10 @@ namespace TextMetal.Common.Data.Framework
 			where TResultModel : class, IResultModelObject
 			where TResponseModel : class, IResponseModelObject<TResultModel>;
 
-		TModel Fill<TModel>(TModel model)
+		bool Fill<TModel>(TModel model)
 			where TModel : class, IModelObject;
 
-		TModel Fill<TModel>(IUnitOfWork unitOfWork, TModel model)
+		bool Fill<TModel>(IUnitOfWork unitOfWork, TModel model)
 			where TModel : class, IModelObject;
 
 		IEnumerable<TModel> Find<TModel>(IModelQuery modelQuery)

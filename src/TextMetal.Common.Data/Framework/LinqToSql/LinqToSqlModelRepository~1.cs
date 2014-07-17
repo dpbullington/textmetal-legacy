@@ -104,6 +104,62 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			}
 		}
 
+		protected bool LinqFill<TModel, TTable>(TModel model,
+			Expression<Func<TTable, bool>> prototypePredicateCallback,
+			Action<TModel, TTable> tableToModelMappingCallback)
+			where TModel : class, IModelObject
+			where TTable : class, new()
+		{
+			bool retval;
+
+			if ((object)UnitOfWork.Current == null)
+			{
+				using (IUnitOfWork unitOfWork = this.GetUnitOfWork())
+				{
+					retval = this.LinqFill<TModel, TTable>(unitOfWork, model, prototypePredicateCallback, tableToModelMappingCallback);
+
+					unitOfWork.Complete();
+				}
+			}
+			else
+				retval = this.LinqFill<TModel, TTable>(UnitOfWork.Current, model, prototypePredicateCallback, tableToModelMappingCallback);
+
+			return retval;
+		}
+
+		protected bool LinqFill<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
+			Expression<Func<TTable, bool>> prototypePredicateCallback,
+			Action<TModel, TTable> tableToModelMappingCallback)
+			where TModel : class, IModelObject
+			where TTable : class, new()
+		{
+			TTable table;
+			Table<TTable> linqTable;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)prototypePredicateCallback == null)
+				throw new ArgumentNullException("prototypePredicateCallback");
+
+			if ((object)tableToModelMappingCallback == null)
+				throw new ArgumentNullException("tableToModelMappingCallback");
+
+			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = unitOfWork.GetContext<TDataContext>())
+			{
+				linqTable = wrapper.Disposable.GetTable<TTable>();
+				table = linqTable.SingleOrDefault(prototypePredicateCallback);
+
+				if ((object)table == null)
+					return false;
+
+				// map to POCO model from L2S table (destination, source)
+				tableToModelMappingCallback(model, table);
+
+				return true;
+			}
+		}
+
 		protected IEnumerable<TModel> LinqFind<TModel, TTable>(
 			Expression<Func<TTable, bool>> filterPredicateCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)
@@ -296,7 +352,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = unitOfWork.GetContext<TDataContext>())
 			{
 				linqTable = wrapper.Disposable.GetTable<TTable>();
-				
+
 				if (wasNew)
 				{
 					this.OnPreInsertModel<TModel>(unitOfWork, model);
