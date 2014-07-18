@@ -63,7 +63,7 @@ namespace TextMetal.Framework.TemplateModel
 
 			name = templatingContext.Tokenizer.ExpandTokens(this.Name, dynamicWildcardTokenReplacementStrategy);
 
-			fragment = templatingContext.Input.LoadFragment(name);
+			fragment = templatingContext.Input.LoadTemplate(name);
 
 			if ((object)fragment == null)
 				throw new InvalidOperationException(string.Format("Failed to import the fragment '{0}'.", name));

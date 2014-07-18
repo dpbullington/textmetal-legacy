@@ -35,6 +35,10 @@ namespace TextMetal.Framework.InputOutputModel
 		{
 		}
 
+		protected override void CoreWriteObject(object obj, string objectName)
+		{
+		}
+
 		#endregion
 	}
 }

@@ -85,6 +85,8 @@ namespace TextMetal.Framework.InputOutputModel
 
 		protected abstract void CoreLeave(string scopeName);
 
+		protected abstract void CoreWriteObject(object obj, string objectName);
+
 		/// <summary>
 		/// Dispose of the data source transaction.
 		/// </summary>
@@ -102,6 +104,8 @@ namespace TextMetal.Framework.InputOutputModel
 						textWriter.Flush();
 						textWriter.Dispose();
 					}
+
+					this.TextWriters.Clear();
 				}
 
 				if ((object)this.LogTextWriter != null)
@@ -118,11 +122,20 @@ namespace TextMetal.Framework.InputOutputModel
 			}
 		}
 
+		/// <summary>
+		/// Enters (pushes) an output scope as deliniated by scope name. Scope name semantics are implementation specific.
+		/// </summary>
+		/// <param name="scopeName"> The scope name to push. </param>
+		/// <param name="appendMode"> A value indicating whether to append or not. </param>
 		public void EnterScope(string scopeName, bool appendMode)
 		{
 			this.CoreEnter(scopeName, appendMode);
 		}
 
+		/// <summary>
+		/// Leaves (pops) an output scope as deliniated by scope name. Scope name semantics are implementation specific.
+		/// </summary>
+		/// <param name="scopeName"> The scope name to pop. </param>
 		public void LeaveScope(string scopeName)
 		{
 			this.CoreLeave(scopeName);
@@ -139,6 +152,16 @@ namespace TextMetal.Framework.InputOutputModel
 			}
 
 			this.LogTextWriter = activeLogTextWriter ?? Console.Out;
+		}
+
+		/// <summary>
+		/// Writes a serialized object to a location specified by object name. Object name semantics are implementation specific.
+		/// </summary>
+		/// <param name="obj"> The object to serialize. </param>
+		/// <param name="objectName"> The object name to write to. </param>
+		public void WriteObject(object obj, string objectName)
+		{
+			this.CoreWriteObject(obj, objectName);
 		}
 
 		#endregion

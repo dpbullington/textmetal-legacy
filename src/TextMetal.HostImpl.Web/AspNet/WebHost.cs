@@ -16,6 +16,7 @@ using TextMetal.Framework.Core;
 using TextMetal.Framework.ExpressionModel;
 using TextMetal.Framework.HostingModel;
 using TextMetal.Framework.InputOutputModel;
+using TextMetal.Framework.SourceModel.Primative;
 using TextMetal.Framework.TemplateModel;
 
 namespace TextMetal.HostImpl.Web.AspNet
@@ -61,7 +62,7 @@ namespace TextMetal.HostImpl.Web.AspNet
 
 			template = (TemplateConstruct)xpe.DeserializeFromXml(templateFilePath);
 
-			using (IInputMechanism inputMechanism = new FileInputMechanism(templateDirectoryPath, xpe)) // relative to template
+			using (IInputMechanism inputMechanism = new FileInputMechanism(templateDirectoryPath, xpe, new NullSourceStrategy())) // relative to template
 			{
 				using (IOutputMechanism outputMechanism = new TextWriterOutputMechanism(textWriter))
 				{

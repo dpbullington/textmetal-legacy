@@ -6,6 +6,8 @@
 using System;
 using System.IO;
 
+using TextMetal.Common.Core;
+
 namespace TextMetal.Framework.InputOutputModel
 {
 	public class StringOutputMechanism : OutputMechanism
@@ -26,10 +28,32 @@ namespace TextMetal.Framework.InputOutputModel
 
 		protected override void CoreEnter(string scopeName, bool appendMode)
 		{
+			if ((object)scopeName == null)
+				throw new ArgumentNullException("scopeName");
+
+			if (DataType.IsWhiteSpace(scopeName))
+				throw new ArgumentOutOfRangeException("scopeName");
 		}
 
 		protected override void CoreLeave(string scopeName)
 		{
+			if ((object)scopeName == null)
+				throw new ArgumentNullException("scopeName");
+
+			if (DataType.IsWhiteSpace(scopeName))
+				throw new ArgumentOutOfRangeException("scopeName");
+		}
+
+		protected override void CoreWriteObject(object obj, string objectName)
+		{
+			if ((object)obj == null)
+				throw new ArgumentNullException("obj");
+
+			if ((object)objectName == null)
+				throw new ArgumentNullException("objectName");
+
+			if (DataType.IsWhiteSpace(objectName))
+				throw new ArgumentOutOfRangeException("objectName");
 		}
 
 		public string RecycleOutput()

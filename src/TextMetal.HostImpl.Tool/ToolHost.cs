@@ -122,27 +122,27 @@ namespace TextMetal.HostImpl.Tool
 			xpe = new XmlPersistEngine();
 			xpe.RegisterWellKnownConstructs();
 
-			template = (TemplateConstruct)xpe.DeserializeFromXml(templateFilePath);
-			source = sourceStrategy.GetSourceObject(sourceFilePath, properties);
+			// *****************************************
+			IList<string> inputDirectoryPaths;
+			inputDirectoryPaths = new List<string>();
+			inputDirectoryPaths.Add(Environment.CurrentDirectory);
+			inputDirectoryPaths.Add(templateDirectoryPath);
+			// *****************************************
 
-			if ((object)source == null)
-				return;
-
-			sourceXmlObject = source as IXmlObject;
-
-			// this will always use the XPE
-			xpe.SerializeToXml(template, Path.Combine(baseDirectoryPath, "#template.xml"));
-
-			// this should support XML, JSON, and BSON
-			if ((object)sourceXmlObject != null)
-				xpe.SerializeToXml(sourceXmlObject, Path.Combine(baseDirectoryPath, "#source.xml"));
-			else if ((object)source != null && (object)Reflexion.GetOneAttribute<SerializableAttribute>(source.GetType()) != null)
-				Cerealization.SetObjectToFile(Path.Combine(baseDirectoryPath, "#source.xml"), source);
-
-			using (IInputMechanism inputMechanism = new FileInputMechanism(templateDirectoryPath, xpe)) // relative to template directory
+			using (IInputMechanism inputMechanism = new FileInputMechanism(templateDirectoryPath, xpe, sourceStrategy)) // relative to template directory
 			{
-				using (IOutputMechanism outputMechanism = new FileOutputMechanism(baseDirectoryPath, "#textmetal.log")) // relative to base directory
+				source = inputMechanism.LoadSource(sourceFilePath, properties);
+
+				if ((object)source == null)
+					return;
+
+				template = (TemplateConstruct)inputMechanism.LoadTemplate(templateFilePath);
+
+				using (IOutputMechanism outputMechanism = new FileOutputMechanism(baseDirectoryPath, "#textmetal.log", xpe)) // relative to base directory
 				{
+					outputMechanism.WriteObject(template, "#template.xml");
+					outputMechanism.WriteObject(source, "#source.xml");
+
 					outputMechanism.LogTextWriter.WriteLine("['{0:O}' (UTC)]\tText templating started.", startUtc);
 
 					using (ITemplatingContext templatingContext = new TemplatingContext(xpe, new Tokenizer(strictMatching), inputMechanism, outputMechanism, properties))

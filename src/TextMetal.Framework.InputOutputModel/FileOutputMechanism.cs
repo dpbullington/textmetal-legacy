@@ -7,7 +7,9 @@ using System;
 using System.IO;
 using System.Text;
 
+using TextMetal.Common.Cerealization;
 using TextMetal.Common.Core;
+using TextMetal.Common.Xml;
 
 namespace TextMetal.Framework.InputOutputModel
 {
@@ -20,7 +22,8 @@ namespace TextMetal.Framework.InputOutputModel
 		/// </summary>
 		/// <param name="baseDirectoryPath"> The base output directory path. </param>
 		/// <param name="logFileName"> The file name of the log file (relative to base directory path) or empty string for console output. </param>
-		public FileOutputMechanism(string baseDirectoryPath, string logFileName)
+		/// <param name="xpe"> The XML persist engine in-effect. </param>
+		public FileOutputMechanism(string baseDirectoryPath, string logFileName, IXmlPersistEngine xpe)
 		{
 			if ((object)baseDirectoryPath == null)
 				throw new ArgumentNullException("baseDirectoryPath");
@@ -28,8 +31,12 @@ namespace TextMetal.Framework.InputOutputModel
 			if ((object)logFileName == null)
 				throw new ArgumentNullException("logFileName");
 
+			if ((object)xpe == null)
+				throw new ArgumentNullException("xpe");
+
 			this.baseDirectoryPath = baseDirectoryPath;
 			this.logFileName = logFileName;
+			this.xpe = xpe;
 
 			this.SetupLogger();
 		}
@@ -40,6 +47,7 @@ namespace TextMetal.Framework.InputOutputModel
 
 		private readonly string baseDirectoryPath;
 		private readonly string logFileName;
+		private readonly IXmlPersistEngine xpe;
 
 		#endregion
 
@@ -61,6 +69,14 @@ namespace TextMetal.Framework.InputOutputModel
 			}
 		}
 
+		private IXmlPersistEngine Xpe
+		{
+			get
+			{
+				return this.xpe;
+			}
+		}
+
 		#endregion
 
 		#region Methods/Operators
@@ -72,8 +88,11 @@ namespace TextMetal.Framework.InputOutputModel
 			string fullFilePath;
 			string fullDirectoryPath;
 
-			if (DataType.IsNullOrWhiteSpace(scopeName))
-				return;
+			if ((object)scopeName == null)
+				throw new ArgumentNullException("scopeName");
+
+			if (DataType.IsWhiteSpace(scopeName))
+				throw new ArgumentOutOfRangeException("scopeName");
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, scopeName));
 			fullDirectoryPath = Path.GetDirectoryName(fullFilePath);
@@ -93,12 +112,44 @@ namespace TextMetal.Framework.InputOutputModel
 		{
 			TextWriter textWriter;
 
-			if (DataType.IsNullOrWhiteSpace(scopeName))
-				return;
+			if ((object)scopeName == null)
+				throw new ArgumentNullException("scopeName");
+
+			if (DataType.IsWhiteSpace(scopeName))
+				throw new ArgumentOutOfRangeException("scopeName");
 
 			textWriter = base.TextWriters.Pop();
 			textWriter.Flush();
 			textWriter.Dispose();
+		}
+
+		protected override void CoreWriteObject(object obj, string objectName)
+		{
+			string fullFilePath;
+			IXmlObject xmlObject;
+			ISerializationStrategy serializationStrategy;
+
+			if ((object)obj == null)
+				throw new ArgumentNullException("obj");
+
+			if ((object)objectName == null)
+				throw new ArgumentNullException("objectName");
+
+			if (DataType.IsWhiteSpace(objectName))
+				throw new ArgumentOutOfRangeException("objectName");
+
+			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, objectName));
+			xmlObject = obj as IXmlObject;
+
+			// this should support XPE, XML, JSON
+			if ((object)xmlObject != null)
+				serializationStrategy = new XpeSerializationStrategy(this.Xpe);
+			else if ((object)Reflexion.GetOneAttribute<SerializableAttribute>(obj.GetType()) != null)
+				serializationStrategy = new XmlSerializationStrategy();
+			else
+				serializationStrategy = new JsonSerializationStrategy();
+
+			serializationStrategy.SetObjectToFile(fullFilePath, obj);
 		}
 
 		private void SetupLogger()

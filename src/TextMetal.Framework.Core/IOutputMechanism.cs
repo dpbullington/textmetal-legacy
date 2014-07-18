@@ -36,16 +36,24 @@ namespace TextMetal.Framework.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// Enters (pushes) an output scope as deliniated by scope name. Scope name semantics is implementation specific.
+		/// Enters (pushes) an output scope as deliniated by scope name. Scope name semantics are implementation specific.
 		/// </summary>
 		/// <param name="scopeName"> The scope name to push. </param>
+		/// <param name="appendMode"> A value indicating whether to append or not. </param>
 		void EnterScope(string scopeName, bool appendMode);
 
 		/// <summary>
-		/// Leaves (pops) an output scope as deliniated by scope name. Scope name semantics is implementation specific.
+		/// Leaves (pops) an output scope as deliniated by scope name. Scope name semantics are implementation specific.
 		/// </summary>
 		/// <param name="scopeName"> The scope name to pop. </param>
 		void LeaveScope(string scopeName);
+
+		/// <summary>
+		/// Writes a serialized object to a location specified by object name. Object name semantics are implementation specific.
+		/// </summary>
+		/// <param name="obj"> The object to serialize. </param>
+		/// <param name="objectName"> The object name to write to. </param>
+		void WriteObject(object obj, string objectName);
 
 		#endregion
 	}

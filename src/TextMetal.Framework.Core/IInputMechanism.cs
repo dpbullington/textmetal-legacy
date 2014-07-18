@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace TextMetal.Framework.Core
@@ -16,25 +17,33 @@ namespace TextMetal.Framework.Core
 		#region Methods/Operators
 
 		/// <summary>
-		/// Loads an assembly by name.
+		/// Loads an assembly by name. Assembly name semantics are implementation specific.
 		/// </summary>
 		/// <param name="assemblyName"> The assembly name to load. </param>
 		/// <returns> An assembly object or null. </returns>
 		Assembly LoadAssembly(string assemblyName);
 
 		/// <summary>
-		/// Loads content by resource name. Resource name semantics is implementation specific.
+		/// Loads content by content name. Content name semantics are implementation specific.
 		/// </summary>
-		/// <param name="resourceName"> The resource name to load. </param>
+		/// <param name="contentName"> The content name to load. </param>
 		/// <returns> The text content or null. </returns>
-		string LoadContent(string resourceName);
+		string LoadContent(string contentName);
 
 		/// <summary>
-		/// Loads an template fragment by resource name. Resource name semantics is implementation specific.
+		/// Loads a source object by source name. Source name semantics are implementation specific.
 		/// </summary>
-		/// <param name="resourceName"> The resource name to load. </param>
-		/// <returns> The template fragment root object or null. </returns>
-		ITemplateXmlObject LoadFragment(string resourceName);
+		/// <param name="sourceName"> The source name to load. </param>
+		/// <param name="properties"> A list of arbitrary properties (key/value pairs). </param>
+		/// <returns> The source object or null. </returns>
+		object LoadSource(string sourceName, IDictionary<string, IList<string>> properties);
+
+		/// <summary>
+		/// Loads an template by template name. Template name semantics are implementation specific.
+		/// </summary>
+		/// <param name="templateName"> The template name to load. </param>
+		/// <returns> The template root object or null. </returns>
+		ITemplateXmlObject LoadTemplate(string templateName);
 
 		#endregion
 	}

@@ -10,7 +10,7 @@ set TEXTMETAL_EXE=..\..\src\TextMetal.HostImpl.ConsoleTool\bin\Debug\TextMetal.e
 echo *** bob_execute ***
 "%TEXTMETAL_EXE%" ^
 	-templatefile:"bob_master_template.xml" ^
-	-sourcefile:"*" ^
+	-sourcefile:"NUL" ^
 	-basedir:".\output" ^
 	-sourcestrategy:"TextMetal.Framework.SourceModel.Primative.NullSourceStrategy, TextMetal.Framework.SourceModel" ^
 	-strict:"true" ^

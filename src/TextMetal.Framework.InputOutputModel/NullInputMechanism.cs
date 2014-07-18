@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 using TextMetal.Common.Core;
@@ -11,7 +12,7 @@ using TextMetal.Framework.Core;
 
 namespace TextMetal.Framework.InputOutputModel
 {
-	public class NullInputMechanism : IInputMechanism
+	public class NullInputMechanism : InputMechanism
 	{
 		#region Constructors/Destructors
 
@@ -26,29 +27,54 @@ namespace TextMetal.Framework.InputOutputModel
 
 		#region Methods/Operators
 
-		public void Dispose()
-		{
-		}
-
-		public Assembly LoadAssembly(string assemblyName)
+		protected override Assembly CoreLoadAssembly(string assemblyName)
 		{
 			Assembly assembly;
 
-			if (DataType.IsNullOrWhiteSpace(assemblyName))
-				return null;
+			if ((object)assemblyName == null)
+				throw new ArgumentNullException("assemblyName");
+
+			if (DataType.IsWhiteSpace(assemblyName))
+				throw new ArgumentOutOfRangeException("assemblyName");
 
 			assembly = Assembly.Load(assemblyName);
 
 			return assembly;
 		}
 
-		public string LoadContent(string resourceName)
+		protected override string CoreLoadContent(string contentName)
 		{
+			if ((object)contentName == null)
+				throw new ArgumentNullException("contentName");
+
+			if (DataType.IsWhiteSpace(contentName))
+				throw new ArgumentOutOfRangeException("contentName");
+
 			return null;
 		}
 
-		public ITemplateXmlObject LoadFragment(string resourceName)
+		protected override object CoreLoadSource(string sourceName, IDictionary<string, IList<string>> properties)
 		{
+			if ((object)sourceName == null)
+				throw new ArgumentNullException("sourceName");
+
+			if ((object)properties == null)
+				throw new ArgumentNullException("properties");
+
+			if (DataType.IsWhiteSpace(sourceName))
+				throw new ArgumentOutOfRangeException("sourceName");
+
+			return DBNull.Value;
+		}
+
+		protected override ITemplateXmlObject CoreLoadTemplate(string templateName)
+		{
+			if ((object)templateName == null)
+				throw new ArgumentNullException("templateName");
+
+			if (DataType.IsWhiteSpace(templateName))
+				throw new ArgumentOutOfRangeException("templateName");
+
 			return null;
 		}
 
