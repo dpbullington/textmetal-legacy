@@ -34,11 +34,16 @@ namespace TextMetal.Framework.InputOutputModel
 			if ((object)xpe == null)
 				throw new ArgumentNullException("xpe");
 
-			this.baseDirectoryPath = baseDirectoryPath;
+			if (!Path.HasExtension(baseDirectoryPath) &&
+				!baseDirectoryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+				baseDirectoryPath = baseDirectoryPath + Path.DirectorySeparatorChar;
+
+			this.baseDirectoryPath = Path.GetDirectoryName(Path.GetFullPath(baseDirectoryPath));
 			this.logFileName = logFileName;
 			this.xpe = xpe;
 
 			this.SetupLogger();
+			this.EnsureOutputDirectory(false);
 		}
 
 		#endregion
@@ -150,6 +155,22 @@ namespace TextMetal.Framework.InputOutputModel
 				serializationStrategy = new JsonSerializationStrategy();
 
 			serializationStrategy.SetObjectToFile(fullFilePath, obj);
+		}
+
+		private void EnsureOutputDirectory(bool kill)
+		{
+			if (!kill)
+			{
+				if (!Directory.Exists(this.baseDirectoryPath))
+					Directory.CreateDirectory(this.baseDirectoryPath);
+			}
+			else
+			{
+				if (!Directory.Exists(this.baseDirectoryPath))
+					Directory.Delete(this.baseDirectoryPath, true);
+
+				Directory.CreateDirectory(this.baseDirectoryPath);
+			}
 		}
 
 		private void SetupLogger()

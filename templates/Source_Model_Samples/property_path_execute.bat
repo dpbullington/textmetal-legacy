@@ -12,7 +12,7 @@ echo *** property_path_source_execute ***
 	-templatefile:"property_path_template.xml" ^
 	-sourcefile:"property_path_source.xml" ^
 	-basedir:".\output" ^
-	-sourcestrategy:"TextMetal.Framework.SourceModel.Primative.AssociativeXmlSourceStrategy, TextMetal.Framework.SourceModel" ^
+	-sourcestrategy:"TextMetal.Framework.SourceModel.Primative.WellKnownXmlPersistEngineSourceStrategy, TextMetal.Framework.SourceModel" ^
 	-strict:"true" ^
 	-debug:"false"
 IF %ERRORLEVEL% NEQ 0 goto pkgError

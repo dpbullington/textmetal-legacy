@@ -46,7 +46,7 @@ namespace TextMetal.Common.WinForms
 			}
 		}
 
-		private bool HookUnhandledExceptionEvents
+		public bool HookUnhandledExceptionEvents
 		{
 			get
 			{
@@ -55,7 +55,7 @@ namespace TextMetal.Common.WinForms
 			}
 		}
 
-		private bool ShowSplashScreen
+		public bool ShowSplashScreen
 		{
 			get
 			{

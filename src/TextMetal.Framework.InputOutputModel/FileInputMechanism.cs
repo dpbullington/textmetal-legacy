@@ -35,7 +35,11 @@ namespace TextMetal.Framework.InputOutputModel
 			if ((object)sourceStrategy == null)
 				throw new ArgumentNullException("sourceStrategy");
 
-			this.baseDirectoryPath = baseDirectoryPath;
+			if (!Path.HasExtension(baseDirectoryPath) &&
+				!baseDirectoryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+				baseDirectoryPath = baseDirectoryPath + Path.DirectorySeparatorChar;
+
+			this.baseDirectoryPath = Path.GetDirectoryName(Path.GetFullPath(baseDirectoryPath));
 			this.xpe = xpe;
 			this.sourceStrategy = sourceStrategy;
 		}

@@ -63,7 +63,7 @@
     <Compile Include="DatabaseSchema\SchemaSourceStrategy.cs" />
     <Compile Include="Primative\JsonSourceStrategy.cs" />
     <Compile Include="SourceStrategy.cs" />
-    <Compile Include="Primative\AssociativeXmlSourceStrategy.cs" />
+    <Compile Include="Primative\WellKnownXmlPersistEngineSourceStrategy.cs" />
     <Compile Include="Primative\NullSourceStrategy.cs" />
     <Compile Include="Primative\ReflectionSourceStrategy.cs" />
     <Compile Include="Primative\SqlDataSourceStrategy.cs" />
@@ -146,6 +146,10 @@
     <ProjectReference Include="..\TextMetal.Framework.Core\TextMetal.Framework.Core.csproj">
       <Project>{72DACF93-04D7-42A3-B851-2717915FFF89}</Project>
       <Name>TextMetal.Framework.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Framework.HostingModel\TextMetal.Framework.HostingModel.csproj">
+      <Project>{D5226035-2438-4DFB-96D1-BB771D08CC65}</Project>
+      <Name>TextMetal.Framework.HostingModel</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

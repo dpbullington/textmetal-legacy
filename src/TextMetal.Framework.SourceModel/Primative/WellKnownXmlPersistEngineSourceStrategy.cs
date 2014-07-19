@@ -7,18 +7,18 @@ using System;
 using System.Collections.Generic;
 
 using TextMetal.Common.Xml;
-using TextMetal.Framework.AssociativeModel;
+using TextMetal.Framework.HostingModel;
 
 namespace TextMetal.Framework.SourceModel.Primative
 {
-	public class AssociativeXmlSourceStrategy : XmlPersistEngineSourceStrategy
+	public class WellKnownXmlPersistEngineSourceStrategy : XmlPersistEngineSourceStrategy
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the AssociativeXmlSourceStrategy class.
+		/// Initializes a new instance of the WellKnownXmlPersistEngineSourceStrategy class.
 		/// </summary>
-		public AssociativeXmlSourceStrategy()
+		public WellKnownXmlPersistEngineSourceStrategy()
 		{
 		}
 
@@ -31,9 +31,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 			IXmlPersistEngine xpe;
 
 			xpe = new XmlPersistEngine();
-			xpe.RegisterKnownXmlObject<ArrayConstruct>();
-			xpe.RegisterKnownXmlObject<ObjectConstruct>();
-			xpe.RegisterKnownXmlObject<PropertyConstruct>();
+			xpe.RegisterWellKnownConstructs();
 
 			return xpe;
 		}

@@ -8,12 +8,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-using TextMetal.Common.Cerealization;
 using TextMetal.Common.Core;
 using TextMetal.Common.Core.StringTokens;
-using TextMetal.Common.Data;
 using TextMetal.Common.Xml;
-using TextMetal.Framework.AssociativeModel;
 using TextMetal.Framework.Core;
 using TextMetal.Framework.ExpressionModel;
 using TextMetal.Framework.HostingModel;
@@ -62,10 +59,8 @@ namespace TextMetal.HostImpl.Tool
 			IXmlPersistEngine xpe;
 			TemplateConstruct template;
 			object source;
-			IXmlObject sourceXmlObject;
 			Dictionary<string, object> globalVariableTable;
 			string toolVersion;
-			string templateDirectoryPath;
 			Type sourceStrategyType;
 			ISourceStrategy sourceStrategy;
 
@@ -98,16 +93,7 @@ namespace TextMetal.HostImpl.Tool
 
 			toolVersion = new AssemblyInformation(Assembly.GetAssembly(typeof(IXmlPersistEngine))).AssemblyVersion;
 			templateFilePath = Path.GetFullPath(templateFilePath);
-			templateDirectoryPath = Path.GetDirectoryName(templateFilePath);
 			baseDirectoryPath = Path.GetFullPath(baseDirectoryPath);
-
-			if (!Directory.Exists(baseDirectoryPath))
-				Directory.CreateDirectory(baseDirectoryPath);
-
-			/*if (!Directory.Exists(baseDirectoryPath))
-				Directory.Delete(baseDirectoryPath, true);
-
-			Directory.CreateDirectory(baseDirectoryPath);*/
 
 			sourceStrategyType = Type.GetType(sourceStrategyAqtn, false);
 
@@ -126,10 +112,10 @@ namespace TextMetal.HostImpl.Tool
 			IList<string> inputDirectoryPaths;
 			inputDirectoryPaths = new List<string>();
 			inputDirectoryPaths.Add(Environment.CurrentDirectory);
-			inputDirectoryPaths.Add(templateDirectoryPath);
+			inputDirectoryPaths.Add(templateFilePath);
 			// *****************************************
 
-			using (IInputMechanism inputMechanism = new FileInputMechanism(templateDirectoryPath, xpe, sourceStrategy)) // relative to template directory
+			using (IInputMechanism inputMechanism = new FileInputMechanism(templateFilePath, xpe, sourceStrategy)) // relative to template directory
 			{
 				source = inputMechanism.LoadSource(sourceFilePath, properties);
 
@@ -203,119 +189,6 @@ namespace TextMetal.HostImpl.Tool
 					}
 				}
 			}
-		}
-
-		public object LoadModelOnly(string filePath)
-		{
-			IXmlPersistEngine xpe;
-			ObjectConstruct model;
-
-			if ((object)filePath == null)
-				throw new ArgumentNullException("filePath");
-
-			if (DataType.IsWhiteSpace(filePath))
-				throw new ArgumentOutOfRangeException("filePath");
-
-			filePath = Path.GetFullPath(filePath);
-
-			xpe = new XmlPersistEngine();
-			xpe.RegisterWellKnownConstructs();
-
-			model = (ObjectConstruct)xpe.DeserializeFromXml(filePath);
-
-			return model;
-		}
-
-		public object LoadSqlQueryOnly(string filePath)
-		{
-			if ((object)filePath == null)
-				throw new ArgumentNullException("filePath");
-
-			if (DataType.IsWhiteSpace(filePath))
-				throw new ArgumentOutOfRangeException("filePath");
-
-			filePath = Path.GetFullPath(filePath);
-
-			return Cerealization.GetObjectFromFile<SqlQuery>(filePath);
-		}
-
-		public TemplateConstruct LoadTemplateOnly(string filePath)
-		{
-			IXmlPersistEngine xpe;
-			TemplateConstruct template;
-
-			if ((object)filePath == null)
-				throw new ArgumentNullException("filePath");
-
-			if (DataType.IsWhiteSpace(filePath))
-				throw new ArgumentOutOfRangeException("filePath");
-
-			filePath = Path.GetFullPath(filePath);
-
-			xpe = new XmlPersistEngine();
-			xpe.RegisterWellKnownConstructs();
-
-			template = (TemplateConstruct)xpe.DeserializeFromXml(filePath);
-
-			return template;
-		}
-
-		public void SaveModelOnly(ObjectConstruct model, string filePath)
-		{
-			IXmlPersistEngine xpe;
-
-			if ((object)model == null)
-				throw new ArgumentNullException("model");
-
-			if ((object)filePath == null)
-				throw new ArgumentNullException("filePath");
-
-			if (DataType.IsWhiteSpace(filePath))
-				throw new ArgumentOutOfRangeException("filePath");
-
-			filePath = Path.GetFullPath(filePath);
-
-			xpe = new XmlPersistEngine();
-			xpe.RegisterWellKnownConstructs();
-
-			xpe.SerializeToXml(model, filePath);
-		}
-
-		public void SaveSqlQueryOnly(SqlQuery sqlQuery, string filePath)
-		{
-			if ((object)sqlQuery == null)
-				throw new ArgumentNullException("sqlQuery");
-
-			if ((object)filePath == null)
-				throw new ArgumentNullException("filePath");
-
-			if (DataType.IsWhiteSpace(filePath))
-				throw new ArgumentOutOfRangeException("filePath");
-
-			filePath = Path.GetFullPath(filePath);
-
-			Cerealization.SetObjectToFile<SqlQuery>(filePath, sqlQuery);
-		}
-
-		public void SaveTemplateOnly(TemplateConstruct template, string filePath)
-		{
-			IXmlPersistEngine xpe;
-
-			if ((object)template == null)
-				throw new ArgumentNullException("template");
-
-			if ((object)filePath == null)
-				throw new ArgumentNullException("filePath");
-
-			if (DataType.IsWhiteSpace(filePath))
-				throw new ArgumentOutOfRangeException("filePath");
-
-			filePath = Path.GetFullPath(filePath);
-
-			xpe = new XmlPersistEngine();
-			xpe.RegisterWellKnownConstructs();
-
-			xpe.SerializeToXml(template, filePath);
 		}
 
 		#endregion

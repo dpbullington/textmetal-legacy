@@ -12,7 +12,7 @@ echo *** associative_model_execute ***
 	-templatefile:"empty_template.xml" ^
 	-sourcefile:"associative_model_source.xml" ^
 	-basedir:".\output" ^
-	-sourcestrategy:"TextMetal.Framework.SourceModel.Primative.AssociativeXmlSourceStrategy, TextMetal.Framework.SourceModel" ^
+	-sourcestrategy:"TextMetal.Framework.SourceModel.Primative.WellKnownXmlPersistEngineSourceStrategy, TextMetal.Framework.SourceModel" ^
 	-strict:"true" ^
 	-debug:"false"
 IF %ERRORLEVEL% NEQ 0 goto pkgError

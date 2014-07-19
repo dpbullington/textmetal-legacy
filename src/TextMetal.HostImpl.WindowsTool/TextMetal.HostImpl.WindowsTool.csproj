@@ -71,12 +71,6 @@
     <Compile Include="Forms\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DocumentChooserForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\DocumentChooserForm.Designer.cs">
-      <DependentUpon>DocumentChooserForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\DocumentForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,9 +94,6 @@
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DocumentChooserForm.resx">
-      <DependentUpon>DocumentChooserForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DocumentForm.resx">
       <DependentUpon>DocumentForm.cs</DependentUpon>
@@ -168,6 +159,14 @@
     <ProjectReference Include="..\TextMetal.Framework.Core\TextMetal.Framework.Core.csproj">
       <Project>{72DACF93-04D7-42A3-B851-2717915FFF89}</Project>
       <Name>TextMetal.Framework.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Framework.HostingModel\TextMetal.Framework.HostingModel.csproj">
+      <Project>{D5226035-2438-4DFB-96D1-BB771D08CC65}</Project>
+      <Name>TextMetal.Framework.HostingModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Framework.InputOutputModel\TextMetal.Framework.InputOutputModel.csproj">
+      <Project>{E5573166-2524-4971-A727-40E55ECD262A}</Project>
+      <Name>TextMetal.Framework.InputOutputModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Framework.SourceModel\TextMetal.Framework.SourceModel.csproj">
       <Project>{9CA823F7-D73B-4CE5-BF71-1515F3C6940D}</Project>

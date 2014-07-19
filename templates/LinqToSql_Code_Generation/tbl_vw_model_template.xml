@@ -51,6 +51,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Xml;
 
 using TextMetal.Common.Core;
@@ -80,7 +81,7 @@ using TextMetal.Common.Syntax.Statements;
 						<![CDATA[
 namespace ${ClrNamespace}.${FolderName}
 {
-	public partial class ${TableNameSingularPascalCase} : ${ClrSuperType}, I${TableNameSingularPascalCase}
+	public partial class ${TableNameSingularPascalCase} : ${ClrSuperType}, INotifyPropertyChanged, I${TableNameSingularPascalCase}
 	{		
 		#region Constructors/Destructors
 		
@@ -185,6 +186,8 @@ namespace ${ClrNamespace}.${FolderName}
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		public event PropertyChangedEventHandler PropertyChanged;
 ]]>
 						<If>
 							<If.Condition>
@@ -437,7 +440,11 @@ namespace ${ClrNamespace}.${FolderName}
 			}
 			set
 			{
-				this.@${ColumnNameCamelCase} = value;
+				if (!DataType.ObjectsEqualValueSemantics(this.@${ColumnNameCamelCase}, value))
+				{
+					this.@${ColumnNameCamelCase} = value;
+					OnPropertyChanged("${ColumnNamePascalCase}");
+				}
 			}
 		}
 		]]>
@@ -465,7 +472,18 @@ namespace ${ClrNamespace}.${FolderName}
 			
 			return messages ?? new Message[] { };
 		}
-		
+
+		protected void OnAllPropertiesChanged()
+        {
+			this.OnPropertyChanged(null);
+		}
+
+		protected void OnPropertyChanged(string propertyName)
+        {
+			if ((object)this.PropertyChanged != null)
+				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
 		#endregion
 	}
 }

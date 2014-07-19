@@ -4,15 +4,19 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 using TextMetal.Common.Core;
-using TextMetal.Common.Data;
 using TextMetal.Common.WinForms.Forms;
-using TextMetal.Framework.AssociativeModel;
+using TextMetal.Common.Xml;
+using TextMetal.Framework.Core;
+using TextMetal.Framework.HostingModel;
+using TextMetal.Framework.InputOutputModel;
+using TextMetal.Framework.SourceModel.Primative;
 using TextMetal.Framework.TemplateModel;
-using TextMetal.HostImpl.Tool;
 
 using Message = TextMetal.Common.Core.Message;
 
@@ -32,15 +36,14 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 		#region Fields/Constants
 
-		private object document;
+		private TemplateConstruct document;
 		private string documentFilePath;
-		private DocumentSpecific.IDocumentStrategy documentStrategy;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		private object Document
+		private TemplateConstruct Document
 		{
 			get
 			{
@@ -61,18 +64,6 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			set
 			{
 				this.documentFilePath = value;
-			}
-		}
-
-		public DocumentSpecific.IDocumentStrategy DocumentStrategy
-		{
-			get
-			{
-				return this.documentStrategy;
-			}
-			set
-			{
-				this.documentStrategy = value;
 			}
 		}
 
@@ -116,10 +107,10 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 			base.CoreShown();
 
-			dialogResult = BackgroundTaskForm.Show(this, "Loading document...", o =>
+			dialogResult = BackgroundTaskForm.Show(this, "Loading template...", o =>
 																				{
-																					//Thread.Sleep(1000);
-																					return this.DocumentStrategy.LoadDocument(this.DocumentFilePath);
+																					Thread.Sleep(1000);
+																					return this._LoadDocument();
 																				}, null, out asyncWasCanceled, out asyncExceptionOrNull, out asyncResult);
 
 			if (asyncWasCanceled || dialogResult == DialogResult.Cancel)
@@ -127,17 +118,18 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 			if ((object)asyncExceptionOrNull != null)
 			{
-				Program.Instance.ShowNestedExceptionsAndThrowBrickAtProcess(asyncExceptionOrNull);
+				if (Program.Instance.HookUnhandledExceptionEvents)
+					Program.Instance.ShowNestedExceptionsAndThrowBrickAtProcess(asyncExceptionOrNull);
 				// should never reach this point
 			}
 
-			this.Document = asyncResult;
+			this.Document = (TemplateConstruct)asyncResult;
 
 			if ((object)this.Document == null)
 				throw new InvalidOperationException("TODO: add meaningful message");
 
 			this.CoreText = string.Format("{0}", this.DocumentFilePath.SafeToString(null, "<new>"));
-			this.StatusText = this.DocumentStrategy.DisplayText;
+			this.StatusText = "Template load completed successfully.";
 
 			this.ApplyModelToView();
 		}
@@ -158,7 +150,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 					return false;
 			}
 
-			messages = this.DocumentStrategy.ValidateDocument(this.document);
+			messages = this._ValidateDocument();
 
 			if ((object)messages == null)
 				throw new InvalidOperationException("TODO: add meaningful message");
@@ -195,9 +187,10 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			}
 
 			// save document
-			this.DocumentStrategy.SaveDocument(this.Document, this.DocumentFilePath);
+			this._SaveDocument();
 
 			this.CoreText = string.Format("{0}", this.DocumentFilePath.SafeToString(null, "<new>"));
+			this.StatusText = "Template save completed successfully.";
 			this.ApplyModelToView();
 
 			return true;
@@ -218,6 +211,58 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			return true;
 		}
 
+		public TemplateConstruct _LoadDocument()
+		{
+			if (DataType.IsNullOrWhiteSpace(this.DocumentFilePath))
+				return new TemplateConstruct();
+			else
+			{
+				IXmlPersistEngine xpe;
+				ISourceStrategy sourceStrategy;
+				IDictionary<string, IList<string>> properties;
+
+				xpe = new XmlPersistEngine();
+				xpe.RegisterWellKnownConstructs();
+
+				sourceStrategy = new WellKnownXmlPersistEngineSourceStrategy();
+				properties = new Dictionary<string, IList<string>>();
+
+				using (IInputMechanism inputMechanism = new FileInputMechanism(Environment.CurrentDirectory, xpe, sourceStrategy))
+					return (TemplateConstruct)inputMechanism.LoadSource(this.DocumentFilePath, properties);
+			}
+		}
+
+		public void _SaveDocument()
+		{
+			if (DataType.IsNullOrWhiteSpace(this.DocumentFilePath))
+				return;
+			else
+			{
+				IXmlPersistEngine xpe;
+
+				xpe = new XmlPersistEngine();
+				xpe.RegisterWellKnownConstructs();
+
+				using (IOutputMechanism outputMechanism = new FileOutputMechanism(Environment.CurrentDirectory, "", xpe))
+					outputMechanism.WriteObject(this.Document, this.DocumentFilePath);
+			}
+		}
+
+		public object _UpdateDocumentProps()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void _UpdateDocumentTree(TreeView tvDocument)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Message[] _ValidateDocument()
+		{
+			return new Message[] { };
+		}
+
 		private void tsmiClose_Click(object sender, EventArgs e)
 		{
 			this.Close(); // direct
@@ -231,262 +276,6 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		private void tsmiSave_Click(object sender, EventArgs e)
 		{
 			this.SaveDocument(false);
-		}
-
-		#endregion
-
-		#region Classes/Structs/Interfaces/Enums/Delegates
-
-		public static class DocumentSpecific
-		{
-			#region Classes/Structs/Interfaces/Enums/Delegates
-
-			public sealed class AssociativeModelDocumentStrategy : IDocumentStrategy
-			{
-				#region Constructors/Destructors
-
-				private AssociativeModelDocumentStrategy()
-				{
-				}
-
-				#endregion
-
-				#region Fields/Constants
-
-				private static readonly IDocumentStrategy instance = new AssociativeModelDocumentStrategy();
-
-				#endregion
-
-				#region Properties/Indexers/Events
-
-				public static IDocumentStrategy Instance
-				{
-					get
-					{
-						return instance;
-					}
-				}
-
-				public string DisplayText
-				{
-					get
-					{
-						return "Associative Model";
-					}
-				}
-
-				#endregion
-
-				#region Methods/Operators
-
-				public object LoadDocument(string filePath)
-				{
-					if (DataType.IsNullOrWhiteSpace(filePath))
-						return new ObjectConstruct();
-					else
-					{
-						using (IToolHost toolHost = new ToolHost())
-							return toolHost.LoadModelOnly(filePath);
-					}
-				}
-
-				public void SaveDocument(object document, string filePath)
-				{
-					using (IToolHost toolHost = new ToolHost())
-						toolHost.SaveModelOnly((ObjectConstruct)document, filePath);
-				}
-
-				public object UpdateDocumentProps(object document)
-				{
-					throw new NotImplementedException();
-				}
-
-				public void UpdateDocumentTree(object document, TreeView tvDocument)
-				{
-					throw new NotImplementedException();
-				}
-
-				public Message[] ValidateDocument(object document)
-				{
-					return new Message[] { };
-				}
-
-				#endregion
-			}
-
-			public interface IDocumentStrategy
-			{
-				#region Properties/Indexers/Events
-
-				string DisplayText
-				{
-					get;
-				}
-
-				#endregion
-
-				#region Methods/Operators
-
-				object LoadDocument(string filePath);
-
-				void SaveDocument(object document, string filePath);
-
-				object UpdateDocumentProps(object document);
-
-				void UpdateDocumentTree(object document, TreeView tvDocument);
-
-				Message[] ValidateDocument(object document);
-
-				#endregion
-			}
-
-			public sealed class SqlQueryDocumentStrategy : IDocumentStrategy
-			{
-				#region Constructors/Destructors
-
-				private SqlQueryDocumentStrategy()
-				{
-				}
-
-				#endregion
-
-				#region Fields/Constants
-
-				private static readonly IDocumentStrategy instance = new SqlQueryDocumentStrategy();
-
-				#endregion
-
-				#region Properties/Indexers/Events
-
-				public static IDocumentStrategy Instance
-				{
-					get
-					{
-						return instance;
-					}
-				}
-
-				public string DisplayText
-				{
-					get
-					{
-						return "SQL Query";
-					}
-				}
-
-				#endregion
-
-				#region Methods/Operators
-
-				public object LoadDocument(string filePath)
-				{
-					if (DataType.IsNullOrWhiteSpace(filePath))
-						return new SqlQuery();
-					else
-					{
-						using (IToolHost toolHost = new ToolHost())
-							return toolHost.LoadSqlQueryOnly(filePath);
-					}
-				}
-
-				public void SaveDocument(object document, string filePath)
-				{
-					using (IToolHost toolHost = new ToolHost())
-						toolHost.SaveSqlQueryOnly((SqlQuery)document, filePath);
-				}
-
-				public object UpdateDocumentProps(object document)
-				{
-					throw new NotImplementedException();
-				}
-
-				public void UpdateDocumentTree(object document, TreeView tvDocument)
-				{
-					throw new NotImplementedException();
-				}
-
-				public Message[] ValidateDocument(object document)
-				{
-					return new Message[] { };
-				}
-
-				#endregion
-			}
-
-			public sealed class TemplateDocumentStrategy : IDocumentStrategy
-			{
-				#region Constructors/Destructors
-
-				private TemplateDocumentStrategy()
-				{
-				}
-
-				#endregion
-
-				#region Fields/Constants
-
-				private static readonly IDocumentStrategy instance = new TemplateDocumentStrategy();
-
-				#endregion
-
-				#region Properties/Indexers/Events
-
-				public static IDocumentStrategy Instance
-				{
-					get
-					{
-						return instance;
-					}
-				}
-
-				public string DisplayText
-				{
-					get
-					{
-						return "Template";
-					}
-				}
-
-				#endregion
-
-				#region Methods/Operators
-
-				public object LoadDocument(string filePath)
-				{
-					if (DataType.IsNullOrWhiteSpace(filePath))
-						return new TemplateConstruct();
-					else
-					{
-						using (IToolHost toolHost = new ToolHost())
-							return toolHost.LoadTemplateOnly(filePath);
-					}
-				}
-
-				public void SaveDocument(object document, string filePath)
-				{
-					using (IToolHost toolHost = new ToolHost())
-						toolHost.SaveTemplateOnly((TemplateConstruct)document, filePath);
-				}
-
-				public object UpdateDocumentProps(object document)
-				{
-					throw new NotImplementedException();
-				}
-
-				public void UpdateDocumentTree(object document, TreeView tvDocument)
-				{
-					throw new NotImplementedException();
-				}
-
-				public Message[] ValidateDocument(object document)
-				{
-					return new Message[] { };
-				}
-
-				#endregion
-			}
-
-			#endregion
 		}
 
 		#endregion

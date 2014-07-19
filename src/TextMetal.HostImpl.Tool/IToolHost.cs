@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using TextMetal.Common.Data;
-using TextMetal.Framework.AssociativeModel;
-using TextMetal.Framework.TemplateModel;
-
 namespace TextMetal.HostImpl.Tool
 {
 	public interface IToolHost : IDisposable
@@ -25,18 +21,6 @@ namespace TextMetal.HostImpl.Tool
 		/// <param name="properties"> Arbitrary dictionary of string lists used to further customize the text templating process. The individual components or template files can use the properties as they see fit. </param>
 		void Host(int argc, string[] argv, IDictionary<string, object> args, string templateFilePath, string sourceFilePath, string baseDirectoryPath,
 			string sourceStrategyAqtn, bool strictMatching, IDictionary<string, IList<string>> properties);
-
-		object LoadModelOnly(string filePath);
-
-		object LoadSqlQueryOnly(string filePath);
-
-		TemplateConstruct LoadTemplateOnly(string templateFilePath);
-
-		void SaveModelOnly(ObjectConstruct document, string filePath);
-
-		void SaveSqlQueryOnly(SqlQuery document, string filePath);
-
-		void SaveTemplateOnly(TemplateConstruct template, string templateFilePath);
 
 		#endregion
 	}

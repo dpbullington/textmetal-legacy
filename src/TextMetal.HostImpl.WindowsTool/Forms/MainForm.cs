@@ -72,15 +72,6 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 				aboutForm.ShowDialog(this);
 		}
 
-		private DocumentForm.DocumentSpecific.IDocumentStrategy ChooseDocument()
-		{
-			using (DocumentChooserForm documentChooserForm = new DocumentChooserForm())
-			{
-				documentChooserForm.ShowDialog(this);
-				return documentChooserForm.DocumentStrategy;
-			}
-		}
-
 		private void CloseAllDocuments()
 		{
 			bool cancel;
@@ -141,30 +132,17 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 		private void NewDocument()
 		{
-			DocumentForm.DocumentSpecific.IDocumentStrategy documentStrategy;
-
-			documentStrategy = this.ChooseDocument();
-
-			if ((object)documentStrategy == null)
-				return;
-
-			this.ShowDocument(documentStrategy, null);
+			this.ShowDocument(null);
 		}
 
 		private void OpenDocument()
 		{
 			string filePath;
-			DocumentForm.DocumentSpecific.IDocumentStrategy documentStrategy;
-
-			documentStrategy = this.ChooseDocument();
-
-			if ((object)documentStrategy == null)
-				return;
 
 			if (!this.TryGetFilePath(out filePath))
 				return;
 
-			this.ShowDocument(documentStrategy, filePath);
+			this.ShowDocument(filePath);
 		}
 
 		private void RefreshControlState()
@@ -175,15 +153,11 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			this.tsmiDocumentWindows.Enabled = this.HasAnyDocuments;
 		}
 
-		private void ShowDocument(DocumentForm.DocumentSpecific.IDocumentStrategy documentStrategy, string documentFilePath)
+		private void ShowDocument(string documentFilePath)
 		{
 			DocumentForm documentForm;
 
-			if ((object)documentStrategy == null)
-				throw new ArgumentNullException("documentStrategy");
-
 			documentForm = new DocumentForm();
-			documentForm.DocumentStrategy = documentStrategy;
 			documentForm.DocumentFilePath = documentFilePath;
 
 			documentForm.Load += this.documentForm_Load;

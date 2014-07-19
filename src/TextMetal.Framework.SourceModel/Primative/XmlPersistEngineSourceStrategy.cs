@@ -67,8 +67,8 @@ namespace TextMetal.Framework.SourceModel.Primative
 				throw new ArgumentNullException("properties");
 
 			xpe = new XmlPersistEngine();
-
 			xmlObjectAqtn = null;
+
 			if (properties.TryGetValue(PROP_TOKEN_KNOWN_XML_TEXT_OBJECT_AQTN, out values))
 			{
 				if ((object)values != null && values.Count == 1)
@@ -76,17 +76,16 @@ namespace TextMetal.Framework.SourceModel.Primative
 					xmlObjectAqtn = values[0];
 					xmlObjectType = Type.GetType(xmlObjectAqtn, false);
 				}
+
+				if ((object)xmlObjectType == null)
+					throw new InvalidOperationException(string.Format("Failed to load the XML text object type '{0}' via Type.GetType(..).", xmlObjectAqtn));
+
+				if (!typeof(IXmlTextObject).IsAssignableFrom(xmlObjectType))
+					throw new InvalidOperationException(string.Format("The XML text object type is not assignable to type '{0}'.", typeof(IXmlTextObject).FullName));
+
+				xpe.RegisterKnownXmlTextObject(xmlObjectType);
 			}
-
-			if ((object)xmlObjectType == null)
-				throw new InvalidOperationException(string.Format("Failed to load the XML text object type '{0}' via Type.GetType(..).", xmlObjectAqtn));
-
-			if (!typeof(IXmlTextObject).IsAssignableFrom(xmlObjectType))
-				throw new InvalidOperationException(string.Format("The XML text object type is not assignable to type '{0}'.", typeof(IXmlTextObject).FullName));
-
-			xpe.RegisterKnownXmlTextObject(xmlObjectType);
-
-			xmlObjectType = null;
+			
 			if (properties.TryGetValue(PROP_TOKEN_KNOWN_XML_OBJECT_AQTN, out values))
 			{
 				if ((object)values != null)
@@ -106,10 +105,6 @@ namespace TextMetal.Framework.SourceModel.Primative
 					}
 				}
 			}
-
-			// dpbullington@gmail.com@2012-08-01: is this needed?
-			//if ((object)xmlObjectType == null)
-			//throw new InvalidOperationException("???");
 
 			return xpe;
 		}
