@@ -96,8 +96,6 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool.Config
 			}
 		}
 
-	
-
 		#endregion
 
 		#region Methods/Operators

@@ -23,8 +23,8 @@ namespace TextMetal.Framework.Core
 		/// <returns> An source object instance or null. </returns>
 		object GetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties);
 
-		//string[] GetValidPropertyNames();
-		
 		#endregion
+
+		//string[] GetValidPropertyNames();
 	}
 }

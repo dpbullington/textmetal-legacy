@@ -250,7 +250,7 @@ namespace TextMetal.Common.Data
 								object value;
 
 								key = dataTable.Columns[index].ColumnName;
-								value = dataRow[index].ChangeType<object>();;
+								value = dataRow[index].ChangeType<object>();
 
 								obj.Add(key, value);
 							}

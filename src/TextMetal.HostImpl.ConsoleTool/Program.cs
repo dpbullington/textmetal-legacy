@@ -201,7 +201,7 @@ namespace TextMetal.HostImpl.ConsoleTool
 					return 0;
 			}
 
-			using(IToolHost toolHost = new ToolHost())
+			using (IToolHost toolHost = new ToolHost())
 				toolHost.Host((object)args != null ? args.Length : -1, args, argz, templateFilePath, sourceFilePath, baseDirectoryPath, sourceStrategyAqtn, strictMatching, properties);
 
 			return 0;

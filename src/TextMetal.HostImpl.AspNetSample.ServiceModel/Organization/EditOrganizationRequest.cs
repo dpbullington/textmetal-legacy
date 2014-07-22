@@ -21,6 +21,18 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Organization
 			set;
 		}
 
+		public int? OrganizationId
+		{
+			get;
+			set;
+		}
+
+		public string OrganizationName
+		{
+			get;
+			set;
+		}
+
 		public string PasswordClearText
 		{
 			get;
@@ -34,18 +46,6 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Organization
 		}
 
 		public string SecurityQuestion
-		{
-			get;
-			set;
-		}
-
-		public int? OrganizationId
-		{
-			get;
-			set;
-		}
-
-		public string OrganizationName
 		{
 			get;
 			set;

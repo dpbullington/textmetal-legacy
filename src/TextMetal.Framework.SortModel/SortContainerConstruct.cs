@@ -7,7 +7,6 @@ using System;
 using System.Collections;
 
 using TextMetal.Common.Core.StringTokens;
-using TextMetal.Common.Syntax;
 using TextMetal.Common.Syntax.Expressions;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;

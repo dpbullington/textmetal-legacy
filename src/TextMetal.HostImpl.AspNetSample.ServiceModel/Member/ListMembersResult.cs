@@ -13,8 +13,8 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 
 		private DateTime? creationTimestamp;
 		private string emailAddress;
-		private string memberName;
 		private int? memberId;
+		private string memberName;
 		private DateTime? modificationTimestamp;
 		private int? organizationId;
 		private string securityQuestion;
@@ -49,18 +49,6 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 			}
 		}
 
-		public string MemberName
-		{
-			get
-			{
-				return this.memberName;
-			}
-			set
-			{
-				this.memberName = value;
-			}
-		}
-
 		public int? MemberId
 		{
 			get
@@ -70,6 +58,18 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 			set
 			{
 				this.memberId = value;
+			}
+		}
+
+		public string MemberName
+		{
+			get
+			{
+				return this.memberName;
+			}
+			set
+			{
+				this.memberName = value;
 			}
 		}
 

@@ -44,9 +44,9 @@
 						<% if (memberResult.MemberId != (int)Current.MemberId)
 						   { %>
 							<%= this.Html.ActionLink("Remove", "Remove", new
-																{
-																	id = memberResult.MemberId
-																})
+																		{
+																			id = memberResult.MemberId
+																		})
 	%>
 						<% } %>
 

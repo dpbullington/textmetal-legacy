@@ -49,8 +49,8 @@ namespace TextMetal.Framework.InputOutputModel
 		#region Fields/Constants
 
 		private readonly string baseDirectoryPath;
-		private readonly IXmlPersistEngine xpe;
 		private readonly ISourceStrategy sourceStrategy;
+		private readonly IXmlPersistEngine xpe;
 
 		#endregion
 
@@ -64,19 +64,19 @@ namespace TextMetal.Framework.InputOutputModel
 			}
 		}
 
-		private IXmlPersistEngine Xpe
-		{
-			get
-			{
-				return this.xpe;
-			}
-		}
-
 		private ISourceStrategy SourceStrategy
 		{
 			get
 			{
 				return this.sourceStrategy;
+			}
+		}
+
+		private IXmlPersistEngine Xpe
+		{
+			get
+			{
+				return this.xpe;
 			}
 		}
 
@@ -136,12 +136,12 @@ namespace TextMetal.Framework.InputOutputModel
 
 			if (DataType.IsWhiteSpace(sourceName))
 				throw new ArgumentOutOfRangeException("sourceName");
-			
+
 			//fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, sourceName));
 			//Console.Error.WriteLine(fullFilePath);
 
 			// pass-thru the source name without a resolution...let the source strategy decide
-			value = sourceStrategy.GetSourceObject(sourceName, properties);
+			value = this.sourceStrategy.GetSourceObject(sourceName, properties);
 
 			return value;
 		}

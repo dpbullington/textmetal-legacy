@@ -140,10 +140,10 @@ namespace TextMetal.Framework.ExpressionModel
 			templatingContext = (ITemplatingContext)context[0];
 
 			return new RubyConstruct()
-			{
-				Src = RubySource.Expr,
-				Expr = parameters[0]
-			}.CoreEvaluateExpression(templatingContext);
+					{
+						Src = RubySource.Expr,
+						Expr = parameters[0]
+					}.CoreEvaluateExpression(templatingContext);
 		}
 
 		protected override object CoreEvaluateExpression(ITemplatingContext templatingContext)
@@ -187,15 +187,15 @@ namespace TextMetal.Framework.ExpressionModel
 			scriptFoo = new Dictionary<string, object>();
 
 			func = (token) =>
-			{
-				object value;
-				value = dynamicWildcardTokenReplacementStrategy.Evaluate(token, null);
-				//Console.WriteLine("[{0}]={1}", token, value);
-				return value;
-			};
-			
+					{
+						object value;
+						value = dynamicWildcardTokenReplacementStrategy.Evaluate(token, null);
+						//Console.WriteLine("[{0}]={1}", token, value);
+						return value;
+					};
+
 			action = () => templatingContext.LaunchDebugger();
-			
+
 			scriptFoo.Add("EvaluateToken", func);
 			scriptFoo.Add("DebuggerBreakpoint", action);
 
@@ -238,6 +238,10 @@ namespace TextMetal.Framework.ExpressionModel
 			#region Fields/Constants
 
 			private readonly IDictionary<string, object> dictionary;
+
+			#endregion
+
+			#region Properties/Indexers/Events
 
 			private IDictionary<string, object> Dictionary
 			{
@@ -290,7 +294,7 @@ namespace TextMetal.Framework.ExpressionModel
 			{
 				if (this.Dictionary.ContainsKey(binder.Name))
 					this.Dictionary.Remove(binder.Name);
-				
+
 				if ((object)value != null)
 					this.Dictionary.Add(binder.Name, value);
 

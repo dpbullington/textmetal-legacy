@@ -97,7 +97,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 						if ((object)obj != null)
 						{
 							foreach (KeyValuePair<string, object> keyValuePair in obj)
-							{								
+							{
 								propertyConstructC = new PropertyConstruct();
 								propertyConstructC.Name = keyValuePair.Key;
 								propertyConstructC.RawValue = keyValuePair.Value;

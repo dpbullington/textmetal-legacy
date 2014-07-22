@@ -11,6 +11,7 @@ using TextMetal.Common.Core;
 using TextMetal.Common.Data;
 using TextMetal.HostImpl.AspNetSample.DomainModel;
 using TextMetal.HostImpl.AspNetSample.DomainModel.L2S;
+using TextMetal.HostImpl.AspNetSample.DomainModel.Tables;
 
 namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 {
@@ -21,8 +22,8 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 		public CreateMemberResponse CreateMember(CreateMemberRequest request)
 		{
 			CreateMemberResponse response;
-			DomainModel.Tables.IUser user;
-			DomainModel.Tables.IMember member;
+			IUser user;
+			IMember member;
 
 			using (var scope = new AmbientUnitOfWorkScope(DomainModel.Repository.DefaultUnitOfWorkFactory.Instance))
 			{
@@ -96,8 +97,8 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 		public EditMemberResponse EditMember(EditMemberRequest request)
 		{
 			EditMemberResponse response;
-			DomainModel.Tables.IUser user;
-			DomainModel.Tables.IMember member;
+			IUser user;
+			IMember member;
 
 			using (var scope = new AmbientUnitOfWorkScope(DomainModel.Repository.DefaultUnitOfWorkFactory.Instance))
 			{
@@ -235,8 +236,8 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 		public RemoveMemberResponse RemoveMember(RemoveMemberRequest request)
 		{
 			RemoveMemberResponse response;
-			IEnumerable<DomainModel.Tables.IMember> members;
-			DomainModel.Tables.IMember member;
+			IEnumerable<IMember> members;
+			IMember member;
 
 			using (var scope = new AmbientUnitOfWorkScope(DomainModel.Repository.DefaultUnitOfWorkFactory.Instance))
 			{
@@ -247,8 +248,8 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 					throw new InvalidOperationException();
 
 				response = new RemoveMemberResponse()
-				{
-				};
+							{
+							};
 
 				members = this.Repository.FindMembers(
 					q => q.Where(m => m.OrganizationId == (int)Current.OrganizationId && m.MemberId == (int)request.MemberId && m.LogicalDelete == false));

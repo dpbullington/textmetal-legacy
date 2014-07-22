@@ -185,24 +185,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 			this.MustChangePassword = this.MustChangePassword ?? false;
 		}
 
-		public void SetAnswer(string value)
-		{
-			this.TransientAnswerClearText = value;
-
-			value = HashWithSalt(this.TransientPassswordClearText ?? "", this.SaltValue ?? "");
-
-			this.AnswerHash = value;
-		}
-
-		public void SetPassword(string value)
-		{
-			this.TransientPassswordClearText = value;
-
-			value = HashWithSalt(this.TransientPassswordClearText ?? "", this.SaltValue ?? "");
-
-			this.PasswordHash = value;
-		}
-
 		partial void OnValidate(ref IEnumerable<Message> messages)
 		{
 			List<Message> _messages;
@@ -259,6 +241,24 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 				_messages.Add(new Message("", "Username and email address each must be unique.", Severity.Error));
 
 			messages = _messages;
+		}
+
+		public void SetAnswer(string value)
+		{
+			this.TransientAnswerClearText = value;
+
+			value = HashWithSalt(this.TransientPassswordClearText ?? "", this.SaltValue ?? "");
+
+			this.AnswerHash = value;
+		}
+
+		public void SetPassword(string value)
+		{
+			this.TransientPassswordClearText = value;
+
+			value = HashWithSalt(this.TransientPassswordClearText ?? "", this.SaltValue ?? "");
+
+			this.PasswordHash = value;
 		}
 
 		#endregion

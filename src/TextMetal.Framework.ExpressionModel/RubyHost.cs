@@ -28,7 +28,7 @@ namespace TextMetal.Framework.ExpressionModel
 					new[] { "IronRuby", "Ruby", "rb" },
 					new[] { ".rb" }));
 
-			this.scriptRuntime = new ScriptRuntime(scriptRuntimeSetup);
+			this.scriptRuntime = new ScriptRuntime(this.scriptRuntimeSetup);
 			//this.scriptRuntime = ScriptRuntime.CreateRemote(this.RemoteAppDomain, this.ScriptRuntimeSetup);
 			this.scriptEngine = this.ScriptRuntime.GetEngine("Ruby");
 
@@ -40,9 +40,9 @@ namespace TextMetal.Framework.ExpressionModel
 
 		#endregion
 
-		#region Fields/Constants
-
 		//private readonly AppDomain remoteAppDomain;
+
+		#region Fields/Constants
 
 		private readonly IDictionary<object, CompiledCode> scriptCompilations = new Dictionary<object, CompiledCode>();
 		private readonly ScriptEngine scriptEngine;
@@ -51,8 +51,6 @@ namespace TextMetal.Framework.ExpressionModel
 
 		#endregion
 
-		#region Properties/Indexers/Events
-
 		/*private AppDomain RemoteAppDomain
 		{
 			get
@@ -60,6 +58,8 @@ namespace TextMetal.Framework.ExpressionModel
 				return this.remoteAppDomain;
 			}
 		}*/
+
+		#region Properties/Indexers/Events
 
 		private IDictionary<object, CompiledCode> ScriptCompilations
 		{
@@ -97,6 +97,28 @@ namespace TextMetal.Framework.ExpressionModel
 
 		#region Methods/Operators
 
+		public bool Compile(object scriptHandle, string scriptContent)
+		{
+			CompiledCode compiledCode;
+			ScriptSource scriptSource;
+
+			if ((object)scriptHandle == null)
+				throw new ArgumentNullException("scriptHandle");
+
+			if ((object)scriptContent == null)
+				throw new ArgumentNullException("scriptContent");
+
+			scriptSource = this.ScriptEngine.CreateScriptSourceFromString(scriptContent);
+			compiledCode = scriptSource.Compile();
+
+			if (this.ScriptCompilations.ContainsKey(scriptHandle))
+				return false;
+
+			this.ScriptCompilations.Add(scriptHandle, compiledCode);
+
+			return true;
+		}
+
 		public object Execute(object scriptHandle, IDictionary<string, object> scriptVariables)
 		{
 			CompiledCode compiledCode;
@@ -129,28 +151,6 @@ namespace TextMetal.Framework.ExpressionModel
 			// TODO get variables OUT and UP
 
 			return returnValue;
-		}
-
-		public bool Compile(object scriptHandle, string scriptContent)
-		{
-			CompiledCode compiledCode;
-			ScriptSource scriptSource;
-
-			if ((object)scriptHandle == null)
-				throw new ArgumentNullException("scriptHandle");
-
-			if ((object)scriptContent == null)
-				throw new ArgumentNullException("scriptContent");
-
-			scriptSource = this.ScriptEngine.CreateScriptSourceFromString(scriptContent);
-			compiledCode = scriptSource.Compile();
-
-			if (this.ScriptCompilations.ContainsKey(scriptHandle))
-				return false;
-
-			this.ScriptCompilations.Add(scriptHandle, compiledCode);
-
-			return true;
 		}
 
 		#endregion

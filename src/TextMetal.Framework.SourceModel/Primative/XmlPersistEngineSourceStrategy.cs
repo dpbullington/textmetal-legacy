@@ -85,7 +85,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 
 				xpe.RegisterKnownXmlTextObject(xmlObjectType);
 			}
-			
+
 			if (properties.TryGetValue(PROP_TOKEN_KNOWN_XML_OBJECT_AQTN, out values))
 			{
 				if ((object)values != null)

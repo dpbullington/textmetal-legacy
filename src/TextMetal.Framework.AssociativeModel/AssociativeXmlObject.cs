@@ -845,7 +845,7 @@ namespace TextMetal.Framework.AssociativeModel
 				}
 			}
 
-			public System.Collections.Generic.Stack<object> IteratorModels
+			public Stack<object> IteratorModels
 			{
 				get
 				{
@@ -877,7 +877,7 @@ namespace TextMetal.Framework.AssociativeModel
 				}
 			}
 
-			public System.Collections.Generic.Stack<Dictionary<string, object>> VariableTables
+			public Stack<Dictionary<string, object>> VariableTables
 			{
 				get
 				{

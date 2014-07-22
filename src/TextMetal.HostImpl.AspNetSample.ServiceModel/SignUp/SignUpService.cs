@@ -10,6 +10,7 @@ using TextMetal.Common.Core;
 using TextMetal.Common.Data;
 using TextMetal.HostImpl.AspNetSample.Common;
 using TextMetal.HostImpl.AspNetSample.DomainModel;
+using TextMetal.HostImpl.AspNetSample.DomainModel.Tables;
 
 namespace TextMetal.HostImpl.AspNetSample.ServiceModel.SignUp
 {
@@ -20,9 +21,9 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.SignUp
 		public SignUpResponse SignUp(SignUpRequest request)
 		{
 			SignUpResponse response;
-			DomainModel.Tables.IOrganization organization;
-			DomainModel.Tables.IUser user;
-			DomainModel.Tables.IMember member;
+			IOrganization organization;
+			IUser user;
+			IMember member;
 
 			using (var scope = new AmbientUnitOfWorkScope(DomainModel.Repository.DefaultUnitOfWorkFactory.Instance))
 			{

@@ -30,8 +30,8 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool.Config
 
 		private readonly ConfigurationCollection<DictionaryConfiguration> dictionaries;
 		private readonly HashConfiguration signHash = new HashConfiguration();
-		private readonly HashConfiguration valueHash = new HashConfiguration();
 		private readonly ConfigurationCollection<TableConfiguration> tables;
+		private readonly HashConfiguration valueHash = new HashConfiguration();
 		private string destinationConnectionAqtn;
 		private string destinationConnectionString;
 		private string dictionaryConnectionAqtn;
@@ -107,14 +107,6 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool.Config
 			}
 		}
 
-		public HashConfiguration ValueHash
-		{
-			get
-			{
-				return this.valueHash;
-			}
-		}
-
 		public string SourceConnectionAqtn
 		{
 			get
@@ -144,6 +136,14 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool.Config
 			get
 			{
 				return this.tables;
+			}
+		}
+
+		public HashConfiguration ValueHash
+		{
+			get
+			{
+				return this.valueHash;
 			}
 		}
 
@@ -189,20 +189,20 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool.Config
 			new JsonSerializationStrategy().SetObjectToFile<LoaderConfiguration>(jsonFile, loaderConfiguration);
 		}
 
-		public Type GetDictionaryConnectionType()
-		{
-			Type connectionType;
-
-			connectionType = Type.GetType(this.DictionaryConnectionAqtn, false);
-
-			return connectionType;
-		}
-
 		public Type GetDestinationConnectionType()
 		{
 			Type connectionType;
 
 			connectionType = Type.GetType(this.DestinationConnectionAqtn, false);
+
+			return connectionType;
+		}
+
+		public Type GetDictionaryConnectionType()
+		{
+			Type connectionType;
+
+			connectionType = Type.GetType(this.DictionaryConnectionAqtn, false);
 
 			return connectionType;
 		}

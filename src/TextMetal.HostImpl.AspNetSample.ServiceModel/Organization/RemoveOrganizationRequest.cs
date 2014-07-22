@@ -7,6 +7,5 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Organization
 {
 	public sealed class RemoveOrganizationRequest : RequestBase
 	{
-		
 	}
 }

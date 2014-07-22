@@ -13,9 +13,9 @@ using TextMetal.HostImpl.AspNetSample.Common;
 namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 {
 	public partial class SecurityRole
-	{		
+	{
 		#region Methods/Operators
-		
+
 		public static bool Exists(SecurityRole securityRole)
 		{
 			IEnumerable<ISecurityRole> securityRoles;

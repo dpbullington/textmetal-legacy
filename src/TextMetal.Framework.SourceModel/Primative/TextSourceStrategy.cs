@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.IO;
 
 using TextMetal.Common.Core;
-using TextMetal.Common.Core.StringTokens;
 using TextMetal.Framework.AssociativeModel;
 
 namespace TextMetal.Framework.SourceModel.Primative

@@ -29,15 +29,15 @@ namespace TextMetal.HostImpl.Web.Email
 			set;
 		}
 
-		IList<IHostEmailAttachment> HostEmailAttachments
-		{
-			get;
-		}
-
 		string From
 		{
 			get;
 			set;
+		}
+
+		IList<IHostEmailAttachment> HostEmailAttachments
+		{
+			get;
 		}
 
 		bool? IsBodyHtml

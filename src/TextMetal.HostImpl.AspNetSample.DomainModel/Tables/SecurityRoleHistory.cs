@@ -5,14 +5,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using TextMetal.Common.Core;
 
 namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 {
 	public partial class SecurityRoleHistory
-	{		
+	{
 		#region Methods/Operators
 
 		partial void OnMark()

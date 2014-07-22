@@ -5,8 +5,10 @@
 
 using System;
 
+using TextMetal.Common.Core.StringTokens;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.AssociativeModel;
+using TextMetal.Framework.Core;
 using TextMetal.Framework.DebuggerProfilerModel;
 using TextMetal.Framework.ExpressionModel;
 using TextMetal.Framework.SortModel;
@@ -17,7 +19,7 @@ namespace TextMetal.Framework.HostingModel
 	/// <summary>
 	/// A set of extension methods to manage the XML Persist Engine model. NOTE: This file must be updated when adding or removing constructs.
 	/// </summary>
-	public static class XpeExtensions
+	public static class WellKnownExtensions
 	{
 		#region Methods/Operators
 
@@ -75,6 +77,19 @@ namespace TextMetal.Framework.HostingModel
 			xpe.RegisterKnownXmlObject<UntilConstruct>();
 			xpe.RegisterKnownXmlObject<WhileConstruct>();
 			xpe.RegisterKnownXmlObject<WriteConstruct>();
+		}
+
+		public static void RegisterWellKnownTokenReplacementStrategies(this Tokenizer tokenizer, ITemplatingContext templatingContext)
+		{
+			if ((object)tokenizer == null)
+				throw new ArgumentNullException("tokenizer");
+
+			if ((object)templatingContext == null)
+				throw new ArgumentNullException("templatingContext");
+
+			tokenizer.TokenReplacementStrategies.Add("StaticPropertyResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticPropertyResolver));
+			tokenizer.TokenReplacementStrategies.Add("StaticMethodResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticMethodResolver));
+			tokenizer.TokenReplacementStrategies.Add("rb", new ContextualDynamicValueTokenReplacementStrategy(RubyConstruct.RubyExpressionResolver, new object[] { templatingContext }));
 		}
 
 		#endregion

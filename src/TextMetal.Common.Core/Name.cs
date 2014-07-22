@@ -246,6 +246,24 @@ namespace TextMetal.Common.Core
 			return value;
 		}
 
+		public static string GetSqlMetalObjectNamePascalCase(string schemaName, string objectName)
+		{
+			string value;
+
+			if ((object)schemaName == null)
+				throw new ArgumentNullException("schemaName");
+
+			if ((object)objectName == null)
+				throw new ArgumentNullException("objectName");
+
+			if (!DataType.IsNullOrWhiteSpace(schemaName) && schemaName.ToLower() != "dbo")
+				value = string.Format("{0}_{1}", GetSqlMetalPascalCase(schemaName), GetSqlMetalPascalCase(objectName));
+			else
+				value = string.Format("{0}", GetSqlMetalPascalCase(objectName));
+
+			return value;
+		}
+
 		/// <summary>
 		/// Gets the Pascal (e.g. 'MyVariableName') form of a name. This method mimics SqlMetal.exe.
 		/// </summary>
@@ -269,24 +287,6 @@ namespace TextMetal.Common.Core
 			sb[0] = char.ToUpper(sb[0]);
 
 			return sb.ToString();
-		}
-
-		public static string GetSqlMetalObjectNamePascalCase(string schemaName, string objectName)
-		{
-			string value;
-
-			if ((object)schemaName == null)
-				throw new ArgumentNullException("schemaName");
-
-			if ((object)objectName == null)
-				throw new ArgumentNullException("objectName");
-
-			if (!DataType.IsNullOrWhiteSpace(schemaName) && schemaName.ToLower() != "dbo")
-				value = string.Format("{0}_{1}", GetSqlMetalPascalCase(schemaName), GetSqlMetalPascalCase(objectName));
-			else
-				value = string.Format("{0}", GetSqlMetalPascalCase(objectName));
-
-			return value;
 		}
 
 		/// <summary>

@@ -295,13 +295,23 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 		}
 
-		[XmlArray(ElementName = "Tables")]
-		[XmlArrayItem(ElementName = "Table")]
-		public List<Table> _Tables
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public IEnumerable<ITabular> Tables
 		{
 			get
 			{
-				return this.tables;
+				if ((object)this._Tables != null)
+				{
+					foreach (Table table in this._Tables)
+						yield return table;
+				}
+
+				if ((object)this.Views != null)
+				{
+					foreach (View view in this.Views)
+						yield return view;
+				}
 			}
 		}
 
@@ -315,27 +325,13 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 		}
 
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public IEnumerable<ITabular> Tables
+		[XmlArray(ElementName = "Tables")]
+		[XmlArrayItem(ElementName = "Table")]
+		public List<Table> _Tables
 		{
 			get
 			{
-				if ((object)this._Tables != null)
-				{
-					foreach (Table table in this._Tables)
-					{
-						yield return table;
-					}
-				}
-
-				if ((object)this.Views != null)
-				{
-					foreach (View view in this.Views)
-					{
-						yield return view;
-					}
-				}
+				return this.tables;
 			}
 		}
 

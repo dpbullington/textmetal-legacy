@@ -653,7 +653,7 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool
 			columnName = this.DataReader.GetName(i);
 			columnType = this.DataReader.GetFieldType(i);
 			columnValue = this.DataReader.GetValue(i);
-			
+
 			obfusscatedValue = this.GetObfuscatedValue(columnName, columnType, columnValue);
 
 			return obfusscatedValue;

@@ -8,7 +8,6 @@ using System.Linq;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Core.StringTokens;
-using TextMetal.Common.Syntax;
 using TextMetal.Common.Syntax.Expressions;
 using TextMetal.Common.Syntax.Operators;
 using TextMetal.Common.Xml;

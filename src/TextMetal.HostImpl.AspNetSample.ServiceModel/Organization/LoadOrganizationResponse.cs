@@ -17,13 +17,13 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Organization
 			set;
 		}
 
-		public DateTime? CreationTimestamp
+		public int? CreationOrganizationId
 		{
 			get;
 			set;
 		}
 
-		public int? CreationOrganizationId
+		public DateTime? CreationTimestamp
 		{
 			get;
 			set;
@@ -71,6 +71,18 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Organization
 			set;
 		}
 
+		public int? OrganizationId
+		{
+			get;
+			set;
+		}
+
+		public string OrganizationName
+		{
+			get;
+			set;
+		}
+
 		public string PasswordHash
 		{
 			get;
@@ -90,18 +102,6 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Organization
 		}
 
 		public byte? SortOrder
-		{
-			get;
-			set;
-		}
-
-		public int? OrganizationId
-		{
-			get;
-			set;
-		}
-
-		public string OrganizationName
 		{
 			get;
 			set;

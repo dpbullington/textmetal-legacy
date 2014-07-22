@@ -10,7 +10,6 @@ using System.Web.Routing;
 
 using TextMetal.Common.Solder.DependencyManagement;
 using TextMetal.HostImpl.AspNetSample.Common;
-using TextMetal.HostImpl.AspNetSample.DomainModel;
 using TextMetal.HostImpl.AspNetSample.UI.Web.Shared;
 using TextMetal.HostImpl.Web.AspNet;
 

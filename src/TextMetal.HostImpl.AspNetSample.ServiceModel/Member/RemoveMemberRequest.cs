@@ -9,18 +9,24 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 {
 	public sealed class RemoveMemberRequest : RequestBase
 	{
+		#region Fields/Constants
+
 		private int? memberId;
 		private int? organizationId;
+
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		public int? MemberId
 		{
 			get
 			{
-				return memberId;
+				return this.memberId;
 			}
 			set
 			{
-				memberId = value;
+				this.memberId = value;
 			}
 		}
 
@@ -28,12 +34,14 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 		{
 			get
 			{
-				return organizationId;
+				return this.organizationId;
 			}
 			set
 			{
-				organizationId = value;
+				this.organizationId = value;
 			}
 		}
+
+		#endregion
 	}
 }

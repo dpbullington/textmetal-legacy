@@ -164,56 +164,6 @@ namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Controllers
 		}
 
 		[AcceptVerbs(HttpVerbs.Get)]
-		[ActionName("remove")]
-		[SecureAction(AllowedSecurityRole = SecurityRoleEnum.Master)]
-		public ActionResult RemoveGet(int id)
-		{
-			var model = this.CreateModel<MemberViewModel>();
-			return this.View(model);
-		}
-
-		[AcceptVerbs(HttpVerbs.Post)]
-		[ActionName("remove")]
-		[SecureAction(AllowedSecurityRole = SecurityRoleEnum.Master)]
-		public ActionResult RemovePost(int id)
-		{
-			MemberViewModel model;
-			RemoveMemberRequest request;
-			RemoveMemberResponse response;
-
-			model = this.CreateModel<MemberViewModel>();
-
-			if (!this.TryUpdateModel(model))
-				return this.View(model);
-
-			request = new RemoveMemberRequest()
-			{
-				OrganizationId = (int)Current.OrganizationId,
-				MemberId = id,
-			};
-
-			response = this.MemberService.RemoveMember(request);
-
-			if ((object)response == null)
-				throw new InvalidOperationException();
-
-			if ((object)response.Messages != null && response.Messages.Any())
-			{
-				this.ViewData.Add("_ShowMessages", response.Messages);
-
-				return this.View(model);
-			}
-
-			return
-				new RedirectToRouteResult(
-					new RouteValueDictionary(new
-											{
-												controller = "Member",
-												action = "List"
-											}));
-		}
-
-		[AcceptVerbs(HttpVerbs.Get)]
 		[ActionName("edit")]
 		[SecureAction(AllowedSecurityRole = SecurityRoleEnum.Master)]
 		public ActionResult EditGet(int id)
@@ -370,6 +320,56 @@ namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Controllers
 			model.MemberResults = response.Results;
 
 			return this.View(model);
+		}
+
+		[AcceptVerbs(HttpVerbs.Get)]
+		[ActionName("remove")]
+		[SecureAction(AllowedSecurityRole = SecurityRoleEnum.Master)]
+		public ActionResult RemoveGet(int id)
+		{
+			var model = this.CreateModel<MemberViewModel>();
+			return this.View(model);
+		}
+
+		[AcceptVerbs(HttpVerbs.Post)]
+		[ActionName("remove")]
+		[SecureAction(AllowedSecurityRole = SecurityRoleEnum.Master)]
+		public ActionResult RemovePost(int id)
+		{
+			MemberViewModel model;
+			RemoveMemberRequest request;
+			RemoveMemberResponse response;
+
+			model = this.CreateModel<MemberViewModel>();
+
+			if (!this.TryUpdateModel(model))
+				return this.View(model);
+
+			request = new RemoveMemberRequest()
+					{
+						OrganizationId = (int)Current.OrganizationId,
+						MemberId = id,
+					};
+
+			response = this.MemberService.RemoveMember(request);
+
+			if ((object)response == null)
+				throw new InvalidOperationException();
+
+			if ((object)response.Messages != null && response.Messages.Any())
+			{
+				this.ViewData.Add("_ShowMessages", response.Messages);
+
+				return this.View(model);
+			}
+
+			return
+				new RedirectToRouteResult(
+					new RouteValueDictionary(new
+											{
+												controller = "Member",
+												action = "List"
+											}));
 		}
 
 		[AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]

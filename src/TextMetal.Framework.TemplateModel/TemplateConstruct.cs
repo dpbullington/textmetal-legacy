@@ -4,7 +4,6 @@
 */
 
 using System;
-using System.Diagnostics;
 
 using TextMetal.Common.Core.StringTokens;
 using TextMetal.Common.Xml;

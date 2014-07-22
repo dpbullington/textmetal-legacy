@@ -44,7 +44,7 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="XpeExtensions.cs" />
+    <Compile Include="WellKnownExtensions.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -53,6 +53,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TextMetal.Common.Core\TextMetal.Common.Core.csproj">
+      <Project>{D1860A67-7EFB-4C0F-89CD-A641D99DCC2A}</Project>
+      <Name>TextMetal.Common.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.Syntax\TextMetal.Common.Syntax.csproj">
       <Project>{483501D9-4D73-4076-997B-3A5D8B5DDB2C}</Project>
       <Name>TextMetal.Common.Syntax</Name>

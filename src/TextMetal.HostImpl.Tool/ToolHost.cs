@@ -12,7 +12,6 @@ using TextMetal.Common.Core;
 using TextMetal.Common.Core.StringTokens;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
-using TextMetal.Framework.ExpressionModel;
 using TextMetal.Framework.HostingModel;
 using TextMetal.Framework.InputOutputModel;
 using TextMetal.Framework.TemplateModel;
@@ -108,13 +107,6 @@ namespace TextMetal.HostImpl.Tool
 			xpe = new XmlPersistEngine();
 			xpe.RegisterWellKnownConstructs();
 
-			// *****************************************
-			IList<string> inputDirectoryPaths;
-			inputDirectoryPaths = new List<string>();
-			inputDirectoryPaths.Add(Environment.CurrentDirectory);
-			inputDirectoryPaths.Add(templateFilePath);
-			// *****************************************
-
 			using (IInputMechanism inputMechanism = new FileInputMechanism(templateFilePath, xpe, sourceStrategy)) // relative to template directory
 			{
 				source = inputMechanism.LoadSource(sourceFilePath, properties);
@@ -133,12 +125,10 @@ namespace TextMetal.HostImpl.Tool
 
 					using (ITemplatingContext templatingContext = new TemplatingContext(xpe, new Tokenizer(strictMatching), inputMechanism, outputMechanism, properties))
 					{
-						templatingContext.Tokenizer.TokenReplacementStrategies.Add("StaticPropertyResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticPropertyResolver));
-						templatingContext.Tokenizer.TokenReplacementStrategies.Add("StaticMethodResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticMethodResolver));
-						templatingContext.Tokenizer.TokenReplacementStrategies.Add("rb", new ContextualDynamicValueTokenReplacementStrategy(RubyConstruct.RubyExpressionResolver, new object[] { templatingContext }));
+						templatingContext.Tokenizer.RegisterWellKnownTokenReplacementStrategies(templatingContext);
 
 						// globals
-						templatingContext.VariableTables.Push(globalVariableTable = new Dictionary<string, object>());
+						globalVariableTable = new Dictionary<string, object>();
 
 						var environment = new
 										{
@@ -168,6 +158,7 @@ namespace TextMetal.HostImpl.Tool
 						globalVariableTable.Add("ToolVersion", toolVersion);
 						globalVariableTable.Add("Environment", environment);
 
+						// add properties to GVT
 						foreach (KeyValuePair<string, IList<string>> property in properties)
 						{
 							if (property.Value.Count == 0)
@@ -179,14 +170,15 @@ namespace TextMetal.HostImpl.Tool
 								globalVariableTable.Add(property.Key, property.Value);
 						}
 
+						templatingContext.VariableTables.Push(globalVariableTable);
 						templatingContext.IteratorModels.Push(source);
 						template.ExpandTemplate(templatingContext);
 						templatingContext.IteratorModels.Pop();
 						templatingContext.VariableTables.Pop();
-
-						endUtc = DateTime.UtcNow;
-						outputMechanism.LogTextWriter.WriteLine("['{0:O}' (UTC)]\tText templating completed with duration: '{1}'.", endUtc, (endUtc - startUtc));
 					}
+
+					endUtc = DateTime.UtcNow;
+					outputMechanism.LogTextWriter.WriteLine("['{0:O}' (UTC)]\tText templating completed with duration: '{1}'.", endUtc, (endUtc - startUtc));
 				}
 			}
 		}

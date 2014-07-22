@@ -9,6 +9,7 @@ using System.Linq;
 
 using TextMetal.Common.Core;
 using TextMetal.HostImpl.AspNetSample.Common;
+using TextMetal.HostImpl.AspNetSample.DomainModel.Tables;
 
 namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 {
@@ -25,11 +26,11 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 		public AuthenticateUserResponse AuthenticateUser(AuthenticateUserRequest request)
 		{
 			AuthenticateUserResponse response;
-			IEnumerable<DomainModel.Tables.IUser> users;
-			DomainModel.Tables.IUser user;
-			IEnumerable<DomainModel.Tables.IMember> members;
-			DomainModel.Tables.IMember member;
-			DomainModel.Tables.IOrganization organization;
+			IEnumerable<IUser> users;
+			IUser user;
+			IEnumerable<IMember> members;
+			IMember member;
+			IOrganization organization;
 			bool failed, locked = false;
 
 			if ((object)request == null)
@@ -123,7 +124,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 		public CreateUserResponse CreateUser(CreateUserRequest request)
 		{
 			CreateUserResponse response;
-			DomainModel.Tables.IUser user;
+			IUser user;
 
 			if ((object)request == null)
 				throw new ArgumentNullException("request");
@@ -169,7 +170,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 		public EditUserResponse EditUser(EditUserRequest request)
 		{
 			EditUserResponse response;
-			DomainModel.Tables.IUser user;
+			IUser user;
 
 			if ((object)request == null)
 				throw new ArgumentNullException("request");
@@ -236,8 +237,8 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 		public ForgotPasswordResponse ForgotPassword(ForgotPasswordRequest request)
 		{
 			ForgotPasswordResponse response;
-			IEnumerable<DomainModel.Tables.IUser> users;
-			DomainModel.Tables.IUser user;
+			IEnumerable<IUser> users;
+			IUser user;
 			bool failed, locked = false;
 			string tempPasswordClearText;
 
@@ -332,8 +333,8 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 		public ForgotUsernameResponse ForgotUsername(ForgotUsernameRequest request)
 		{
 			ForgotUsernameResponse response;
-			IEnumerable<DomainModel.Tables.IUser> users;
-			DomainModel.Tables.IUser user;
+			IEnumerable<IUser> users;
+			IUser user;
 			bool failed;
 
 			if ((object)request == null)
@@ -414,7 +415,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 		public LoadUserResponse LoadUser(LoadUserRequest request)
 		{
 			LoadUserResponse response;
-			DomainModel.Tables.IUser user;
+			IUser user;
 
 			if ((object)request == null)
 				throw new ArgumentNullException("request");
@@ -453,7 +454,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 		public SuspendAccountResponse SuspendAccount(SuspendAccountRequest request)
 		{
 			SuspendAccountResponse response;
-			DomainModel.Tables.IUser user;
+			IUser user;
 
 			if ((object)request == null)
 				throw new ArgumentNullException("request");

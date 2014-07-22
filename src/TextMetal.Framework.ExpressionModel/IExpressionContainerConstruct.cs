@@ -5,7 +5,6 @@
 
 using System;
 
-using TextMetal.Common.Syntax;
 using TextMetal.Common.Syntax.Expressions;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;

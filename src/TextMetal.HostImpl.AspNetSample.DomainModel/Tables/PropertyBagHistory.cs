@@ -5,14 +5,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Xml;
 
 using TextMetal.Common.Core;
 
 namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 {
 	public partial class PropertyBagHistory
-	{		
+	{
 		#region Methods/Operators
 
 		partial void OnMark()
