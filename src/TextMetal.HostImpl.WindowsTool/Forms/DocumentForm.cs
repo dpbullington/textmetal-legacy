@@ -94,6 +94,14 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		{
 		}
 
+		protected override void CoreQuit(out bool cancel)
+		{
+			base.CoreQuit(out cancel);
+
+			if (cancel)
+				return;
+		}
+
 		protected override void CoreSetup()
 		{
 			base.CoreSetup();

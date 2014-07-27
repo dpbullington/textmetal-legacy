@@ -51,7 +51,6 @@
     <Compile Include="InputMechanism.cs" />
     <Compile Include="NullInputMechanism.cs" />
     <Compile Include="OutputMechanism.cs" />
-    <Compile Include="StringOutputMechanism.cs" />
     <Compile Include="TextWriterOutputMechanism.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
   </ItemGroup>
