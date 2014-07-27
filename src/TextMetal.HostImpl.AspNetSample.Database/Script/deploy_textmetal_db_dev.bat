@@ -12,10 +12,10 @@ set DB_DATABASE_MASTER=master
 set DB_SA_USERNAME=sa
 set DB_SA_PASSWORD=???
 
-set DB_DATABASE_ODS=textmetal_ods_dev
-set DB_LOGIN_ODS=textmetal_mssql_dev_login
+set DB_DATABASE_ODS=textmetal_sample
+set DB_LOGIN_ODS=textmetal_sample_mssql_dev_login
 set DB_PASSWORD_ODS=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH
-set DB_USER_ODS=textmetal_mssql_dev_user
+set DB_USER_ODS=textmetal_sample_mssql_dev_user
 
 
 REM MUST BE ONLY FOR DEV

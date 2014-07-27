@@ -6,6 +6,10 @@
 using System;
 using System.IO;
 
+using TextMetal.Common.Cerealization;
+using TextMetal.Common.Core;
+using TextMetal.Common.Xml;
+
 namespace TextMetal.Framework.InputOutputModel
 {
 	public class TextWriterOutputMechanism : OutputMechanism
@@ -15,12 +19,34 @@ namespace TextMetal.Framework.InputOutputModel
 		/// <summary>
 		/// Initializes a new instance of the TextWriterOutputMechanism class.
 		/// </summary>
-		public TextWriterOutputMechanism(TextWriter textWriter)
+		public TextWriterOutputMechanism(TextWriter textWriter, IXmlPersistEngine xpe)
 		{
 			if ((object)textWriter == null)
 				throw new ArgumentNullException("textWriter");
 
+			if ((object)xpe == null)
+				throw new ArgumentNullException("xpe");
+
 			base.TextWriters.Push(textWriter);
+			this.xpe = xpe;
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly IXmlPersistEngine xpe;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		private IXmlPersistEngine Xpe
+		{
+			get
+			{
+				return this.xpe;
+			}
 		}
 
 		#endregion
@@ -37,6 +63,23 @@ namespace TextMetal.Framework.InputOutputModel
 
 		protected override void CoreWriteObject(object obj, string objectName)
 		{
+			IXmlObject xmlObject;
+			ITextSerializationStrategy serializationStrategy;
+
+			if ((object)obj == null)
+				throw new ArgumentNullException("obj");
+
+			xmlObject = obj as IXmlObject;
+
+			// this should support XPE, XML, JSON
+			if ((object)xmlObject != null)
+				serializationStrategy = new XpeSerializationStrategy(this.Xpe);
+			else if ((object)Reflexion.GetOneAttribute<SerializableAttribute>(obj.GetType()) != null)
+				serializationStrategy = new XmlSerializationStrategy();
+			else
+				serializationStrategy = new JsonSerializationStrategy();
+
+			serializationStrategy.SetObjectToWriter(this.CurrentTextWriter, obj);
 		}
 
 		#endregion

@@ -15,8 +15,7 @@ GO
 --USE master
 --GO
 
-
-IF EXISTS (SELECT * FROM sysdatabases where name = '$(VAR_DB_DATABASE_ODS)')
+IF EXISTS (SELECT sys_d.[database_id] FROM [sys].[databases] sys_d WHERE sys_d.[name] = '$(VAR_DB_DATABASE_ODS)')
 BEGIN
 
 	PRINT 'Database [$(VAR_DB_DATABASE_ODS)] exists...'	
@@ -33,7 +32,7 @@ END
 GO
 
 
-IF EXISTS (SELECT * FROM master.dbo.syslogins WHERE loginname = N'$(VAR_DB_LOGIN_ODS)')
+IF EXISTS (SELECT sys_spl.[principal_id] FROM [sys].[server_principals] sys_spl WHERE sys_spl.[name] = N'$(VAR_DB_LOGIN_ODS)')
 BEGIN
 
 	PRINT 'Login [$(VAR_DB_LOGIN_ODS)] exists...'	

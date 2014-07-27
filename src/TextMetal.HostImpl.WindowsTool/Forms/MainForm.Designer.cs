@@ -95,7 +95,7 @@
 			this.tsmiNew.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiNewDocument});
 			this.tsmiNew.Name = "tsmiNew";
-			this.tsmiNew.Size = new System.Drawing.Size(152, 22);
+			this.tsmiNew.Size = new System.Drawing.Size(137, 22);
 			this.tsmiNew.Text = "&New";
 			// 
 			// tsmiNewDocument
@@ -112,7 +112,7 @@
 			this.tsmiOpen.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiOpenDocument});
 			this.tsmiOpen.Name = "tsmiOpen";
-			this.tsmiOpen.Size = new System.Drawing.Size(152, 22);
+			this.tsmiOpen.Size = new System.Drawing.Size(137, 22);
 			this.tsmiOpen.Text = "&Open";
 			// 
 			// tsmiOpenDocument
@@ -126,13 +126,13 @@
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(134, 6);
 			// 
 			// tsmiExit
 			// 
 			this.tsmiExit.Name = "tsmiExit";
 			this.tsmiExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-			this.tsmiExit.Size = new System.Drawing.Size(152, 22);
+			this.tsmiExit.Size = new System.Drawing.Size(137, 22);
 			this.tsmiExit.Text = "E&xit";
 			this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
 			// 

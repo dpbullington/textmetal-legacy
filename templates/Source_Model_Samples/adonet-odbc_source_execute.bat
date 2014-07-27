@@ -7,7 +7,7 @@ REM
 
 set TEXTMETAL_EXE=..\..\src\TextMetal.HostImpl.ConsoleTool\bin\Debug\TextMetal.exe
 
-set ADO_NET_CONNECTION_STRING=Driver={SQL Server Native Client 11.0};Server=(local);UID=textmetal_mssql_dev_login;PWD=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Database=textmetal_ods_dev
+set ADO_NET_CONNECTION_STRING=Driver={SQL Server Native Client 11.0};Server=(local);UID=textmetal_sample_mssql_lcl_login;PWD=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Database=textmetal_sample
 
 
 echo *** adonet_source_execute ***

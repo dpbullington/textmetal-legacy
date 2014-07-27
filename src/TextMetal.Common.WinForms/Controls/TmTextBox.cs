@@ -60,11 +60,11 @@ namespace TextMetal.Common.WinForms.Controls
 		{
 			get
 			{
-				return (base.Text ?? "").ToUpper();
+				return (base.Text ?? "");
 			}
 			set
 			{
-				base.Text = (value ?? "").ToUpper();
+				base.Text = (value ?? "");
 			}
 		}
 

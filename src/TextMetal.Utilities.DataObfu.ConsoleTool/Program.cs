@@ -29,9 +29,9 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool
 
 			loaderConfiguration = new LoaderConfiguration();
 			loaderConfiguration.SourceConnectionAqtn = typeof(SqlConnection).AssemblyQualifiedName;
-			loaderConfiguration.SourceConnectionString = "Server=(local);User ID=textmetal_mssql_dev_login;Password=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Database=textmetal_ods_dev";
+			loaderConfiguration.SourceConnectionString = "Server=(local);User ID=textmetal_sample_mssql_lcl_login;PWD=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Database=textmetal_sample";
 			loaderConfiguration.DestinationConnectionAqtn = typeof(SqlConnection).AssemblyQualifiedName;
-			loaderConfiguration.DestinationConnectionString = "Server=(local);User ID=textmetal_mssql_dev_login;Password=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Database=textmetal_ods_dev";
+			loaderConfiguration.DestinationConnectionString = "Server=(local);User ID=textmetal_sample_mssql_lcl_login;PWD=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Database=textmetal_sample";
 
 			TableConfiguration __tableConfiguration;
 

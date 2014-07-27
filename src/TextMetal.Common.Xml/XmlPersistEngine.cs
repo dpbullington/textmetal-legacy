@@ -1201,7 +1201,22 @@ namespace TextMetal.Common.Xml
 
 		public void SerializeToXml(IXmlObject document, TextWriter textWriter)
 		{
-			throw new NotImplementedException();
+			XmlTextWriter xmlTextWriter;
+
+			if ((object)document == null)
+				throw new ArgumentNullException("document");
+
+			if ((object)textWriter == null)
+				throw new ArgumentNullException("textWriter");
+
+			// DO NOT USE A USING BLOCK HERE (CALLER OWNS TEXTWRITER) !!!
+			xmlTextWriter = new XmlTextWriter(textWriter);
+			xmlTextWriter.Formatting = Formatting.Indented;
+			xmlTextWriter.Indentation = 1;
+			xmlTextWriter.IndentChar = '\t';
+
+			this.SerializeToXml(document, xmlTextWriter);
+			xmlTextWriter.Flush();
 		}
 
 		/// <summary>

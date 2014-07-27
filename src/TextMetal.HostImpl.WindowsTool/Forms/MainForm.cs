@@ -5,11 +5,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.WinForms.Controls;
 using TextMetal.Common.WinForms.Forms;
 
 namespace TextMetal.HostImpl.WindowsTool.Forms
@@ -81,6 +83,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 		private void CloseAllDocuments(out bool cancel, string verb)
 		{
+			DialogResult dialogResult;
 			List<DocumentForm> temp;
 			int dirtyCount;
 			cancel = false;
@@ -90,19 +93,28 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 			if (dirtyCount > 0)
 			{
-				if (MessageBox.Show(this, string.Format("Do you want {1} without saving the {0} modified document(s)?", dirtyCount, verb), Program.Instance.AssemblyInformation.Product, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+				dialogResult = MessageBox.Show(this, string.Format("Do you want {1} without saving the {0} modified document(s)?", dirtyCount, verb), Program.Instance.AssemblyInformation.Product, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+				
+				if (dialogResult == DialogResult.Cancel)
 				{
 					cancel = true;
-					return;
 				}
-			}
+				else if (dialogResult == DialogResult.No)
+				{
+					cancel = false;
 
-			foreach (DocumentForm documentForm in temp)
-			{
-				if (documentForm.CoreIsDirty)
-					documentForm.SaveDocument(false);
+					foreach (DocumentForm documentForm in temp)
+					{
+						if (documentForm.CoreIsDirty)
+							documentForm.SaveDocument(false);
 
-				documentForm.Close(); // direct
+						documentForm.Close(); // direct
+					}
+				}
+				else // YES
+				{
+					cancel = false;
+				}
 			}
 		}
 
@@ -116,12 +128,31 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			this.CloseAllDocuments(out cancel, "quit");
 		}
 
-		protected override void CoreShown()
+		protected override void CoreSetup()
 		{
-			base.CoreShown();
+			Stream stream;
+			Image image;
+
+			base.CoreSetup();
 
 			this.CoreText = string.Format("{0} Studio", Program.Instance.AssemblyInformation.Product);
 
+			stream = this.GetType().Assembly.GetManifestResourceStream("TextMetal.HostImpl.WindowsTool.Images.SplashScreen.png");
+
+			if ((object)stream == null)
+				throw new InvalidOperationException("");
+
+			image = Image.FromStream(stream);
+
+			this.BackgroundImage = image;
+
+			// DO NOT DISPOSE (owner cleans up)
+		}
+
+		protected override void CoreShown()
+		{
+			base.CoreShown();
+			
 			this.RefreshControlState();
 		}
 

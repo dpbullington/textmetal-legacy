@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows.Forms;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.WinForms.Controls;
 using TextMetal.Common.WinForms.Forms;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
@@ -85,6 +86,8 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 		private void ApplyModelToView()
 		{
+			this._UpdateDocumentTree();
+			this._UpdateSourceEditor();
 		}
 
 		private void ApplyViewToModel()
@@ -94,8 +97,6 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		protected override void CoreSetup()
 		{
 			base.CoreSetup();
-
-			this.ApplyModelToView();
 		}
 
 		protected override void CoreShown()
@@ -107,9 +108,11 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 			base.CoreShown();
 
+			this.StatusText = "Template load started...";
+
 			dialogResult = BackgroundTaskForm.Show(this, "Loading template...", o =>
 																				{
-																					Thread.Sleep(1000);
+																					Thread.Sleep(250);
 																					return this._LoadDocument();
 																				}, null, out asyncWasCanceled, out asyncExceptionOrNull, out asyncResult);
 
@@ -139,10 +142,17 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			Message[] messages;
 			string filePath;
 
+			DialogResult dialogResult;
+			object asyncResult;
+			bool asyncWasCanceled;
+			Exception asyncExceptionOrNull;
+
 			if ((object)this.Document == null)
 				throw new InvalidOperationException("TODO: add meaningful message");
 
 			this.ApplyViewToModel();
+
+			this.StatusText = "Template save started...";
 
 			if (asCopy && !DataType.IsNullOrWhiteSpace(this.DocumentFilePath))
 			{
@@ -150,7 +160,18 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 					return false;
 			}
 
-			messages = this._ValidateDocument();
+			// validate document
+			this.StatusText = "Template validation started...";
+
+			dialogResult = BackgroundTaskForm.Show(this, "Validating template...", o =>
+																					{
+																						Thread.Sleep(250);
+																						return this._ValidateDocument();
+																					}, null, out asyncWasCanceled, out asyncExceptionOrNull, out asyncResult);
+
+			this.StatusText = "Template validation completed successfully.";
+
+			messages = (Message[])asyncResult;
 
 			if ((object)messages == null)
 				throw new InvalidOperationException("TODO: add meaningful message");
@@ -187,10 +208,16 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			}
 
 			// save document
-			this._SaveDocument();
+			dialogResult = BackgroundTaskForm.Show(this, "Saving template...", o =>
+																				{
+																					Thread.Sleep(250);
+																					this._SaveDocument();
+																					return null;
+																				}, null, out asyncWasCanceled, out asyncExceptionOrNull, out asyncResult);
 
 			this.CoreText = string.Format("{0}", this.DocumentFilePath.SafeToString(null, "<new>"));
 			this.StatusText = "Template save completed successfully.";
+
 			this.ApplyModelToView();
 
 			return true;
@@ -243,7 +270,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 				xpe = new XmlPersistEngine();
 				xpe.RegisterWellKnownConstructs();
 
-				using (IOutputMechanism outputMechanism = new FileOutputMechanism(Environment.CurrentDirectory, "", xpe))
+				using (IOutputMechanism outputMechanism = new FileOutputMechanism(Environment.CurrentDirectory, "#temp.log", xpe))
 					outputMechanism.WriteObject(this.Document, this.DocumentFilePath);
 			}
 		}
@@ -253,14 +280,66 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			throw new NotImplementedException();
 		}
 
-		public void _UpdateDocumentTree(TreeView tvDocument)
+		public void _UpdateDocumentTree()
 		{
-			throw new NotImplementedException();
+			TmTreeNode tnRoot;
+
+			this.tvMain.BeginUpdate();
+			this.tvMain.Nodes.Clear();
+
+			tnRoot = new TmTreeNode();
+			tnRoot.Text = Guid.NewGuid().ToString("B");
+			tnRoot.Tag = null;
+			this.tvMain.Nodes.Add(tnRoot);
+
+			this._UpdateDocumentTree(tnRoot, this.Document);
+
+			this.tvMain.EndUpdate();
+		}
+
+		public void _UpdateDocumentTree(TmTreeNode tnParent, IXmlObject currentXmlObject)
+		{
+			TmTreeNode tnCurrent;
+
+			if ((object)tnParent == null)
+				throw new ArgumentNullException("tnParent");
+
+			tnCurrent = new TmTreeNode();
+			tnCurrent.Text = currentXmlObject.GetType().Name;
+			tnCurrent.Tag = currentXmlObject;
+			tnParent.Nodes.Add(tnCurrent);
+
+			foreach (IXmlObject childItemXmlObject in currentXmlObject.Items)
+				this._UpdateDocumentTree(tnCurrent, childItemXmlObject);
+		}
+
+		private void _UpdateSourceEditor()
+		{
+			IXmlPersistEngine xpe;
+
+			xpe = new XmlPersistEngine();
+			xpe.RegisterWellKnownConstructs();
+
+			using (StringWriter stringWriter = new StringWriter())
+			{
+				using (IOutputMechanism outputMechanism = new TextWriterOutputMechanism(stringWriter, xpe))
+					outputMechanism.WriteObject(this.Document, "*");
+
+				this.txtBxSourceView.Text = stringWriter.ToString();
+			}
+
+			this.CoreIsDirty = false;
 		}
 
 		public Message[] _ValidateDocument()
 		{
 			return new Message[] { };
+		}
+
+		private void pgMain_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+		{
+			this._UpdateSourceEditor();
+			this.CoreIsDirty = true;
 		}
 
 		private void tsmiClose_Click(object sender, EventArgs e)
@@ -276,6 +355,16 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		private void tsmiSave_Click(object sender, EventArgs e)
 		{
 			this.SaveDocument(false);
+		}
+
+		private void tvMain_AfterSelect(object sender, TreeViewEventArgs e)
+		{
+			if ((object)e.Node != null)
+				this.pgMain.SelectedObject = e.Node.Tag;
+			else
+				this.pgMain.SelectedObject = null;
+
+			this.pgMain.Update();
 		}
 
 		#endregion

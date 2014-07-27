@@ -49,6 +49,36 @@
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Controls\ControlExtensionMethods.cs" />
+    <Compile Include="Controls\TmToolStripPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TmToolStripOverflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TmToolStripDropDownMenu.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TmToolStripDropDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TmToolStripContentPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TmToolStripContainer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TmToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TmStatusStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TmMenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TmContextMenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\TmPropertyGrid.cs">
       <SubType>Component</SubType>
     </Compile>

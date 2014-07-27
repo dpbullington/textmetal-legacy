@@ -70,7 +70,7 @@ namespace TextMetal.HostImpl.Web.AspNet
 			{
 				template = (TemplateConstruct)inputMechanism.LoadTemplate(templateFilePath);
 
-				using (IOutputMechanism outputMechanism = new TextWriterOutputMechanism(textWriter))
+				using (IOutputMechanism outputMechanism = new TextWriterOutputMechanism(textWriter, xpe))
 				{
 					//outputMechanism.WriteObject(template, "#template.xml");
 					//outputMechanism.WriteObject(source, "#source.xml");

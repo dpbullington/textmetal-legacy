@@ -31,10 +31,10 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SplashForm));
-			this.pbAppLogo = new TmPictureBox();
-			this.btnOK = new TmButton();
-			this.pnlMain = new TmPanel();
-			this.pbMain = new TmProgressBar();
+			this.pbAppLogo = new TextMetal.Common.WinForms.Controls.TmPictureBox();
+			this.btnOK = new TextMetal.Common.WinForms.Controls.TmButton();
+			this.pnlMain = new TextMetal.Common.WinForms.Controls.TmPanel();
+			this.pbMain = new TextMetal.Common.WinForms.Controls.TmProgressBar();
 			this.tmrMain = new System.Windows.Forms.Timer(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.pbAppLogo)).BeginInit();
 			this.pnlMain.SuspendLayout();
@@ -42,19 +42,23 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			// 
 			// pbAppLogo
 			// 
-			this.pbAppLogo.BackColor = System.Drawing.Color.White;
+			this.pbAppLogo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.pbAppLogo.BackColor = System.Drawing.Color.Transparent;
 			this.pbAppLogo.Location = new System.Drawing.Point(12, 12);
 			this.pbAppLogo.Name = "pbAppLogo";
-			this.pbAppLogo.Size = new System.Drawing.Size(300, 300);
-			this.pbAppLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pbAppLogo.Size = new System.Drawing.Size(376, 363);
+			this.pbAppLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
 			this.pbAppLogo.TabIndex = 12;
 			this.pbAppLogo.TabStop = false;
 			this.pbAppLogo.Click += new System.EventHandler(this.closeFormBy_Click);
 			// 
 			// btnOK
 			// 
+			this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnOK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btnOK.Location = new System.Drawing.Point(237, 318);
+			this.btnOK.Location = new System.Drawing.Point(313, 381);
 			this.btnOK.Name = "btnOK";
 			this.btnOK.Size = new System.Drawing.Size(75, 23);
 			this.btnOK.TabIndex = 1;
@@ -63,6 +67,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			// 
 			// pnlMain
 			// 
+			this.pnlMain.BackColor = System.Drawing.SystemColors.Control;
 			this.pnlMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.pnlMain.Controls.Add(this.pbMain);
 			this.pnlMain.Controls.Add(this.pbAppLogo);
@@ -71,16 +76,18 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			this.pnlMain.Location = new System.Drawing.Point(0, 0);
 			this.pnlMain.Margin = new System.Windows.Forms.Padding(0);
 			this.pnlMain.Name = "pnlMain";
-			this.pnlMain.Size = new System.Drawing.Size(327, 351);
+			this.pnlMain.Size = new System.Drawing.Size(403, 414);
 			this.pnlMain.TabIndex = 0;
 			this.pnlMain.Click += new System.EventHandler(this.closeFormBy_Click);
 			// 
 			// pbMain
 			// 
-			this.pbMain.Location = new System.Drawing.Point(12, 317);
+			this.pbMain.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.pbMain.Location = new System.Drawing.Point(12, 380);
 			this.pbMain.Maximum = 1000;
 			this.pbMain.Name = "pbMain";
-			this.pbMain.Size = new System.Drawing.Size(219, 23);
+			this.pbMain.Size = new System.Drawing.Size(295, 23);
 			this.pbMain.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
 			this.pbMain.TabIndex = 0;
 			this.pbMain.Click += new System.EventHandler(this.closeFormBy_Click);
@@ -97,7 +104,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
 			this.CancelButton = this.btnOK;
-			this.ClientSize = new System.Drawing.Size(327, 351);
+			this.ClientSize = new System.Drawing.Size(403, 414);
 			this.Controls.Add(this.pnlMain);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

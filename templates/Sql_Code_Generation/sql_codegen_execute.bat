@@ -14,7 +14,7 @@ SET BUILD_TOOL_CFG=Debug
 set PACKAGE_DIR=.\output
 set PACKAGE_DIR_EXISTS=%PACKAGE_DIR%\nul
 
-set ADO_NET_CONNECTION_STRING=Server=(local);User ID=textmetal_mssql_dev_login;Password=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Database=textmetal_ods_dev
+set ADO_NET_CONNECTION_STRING=Server=(local);User ID=textmetal_sample_mssql_lcl_login;PWD=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Database=textmetal_sample
 set HISTORY_SCHEMA_NAME=history
 
 :pkgDir
