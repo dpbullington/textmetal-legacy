@@ -91,6 +91,27 @@ goto pkgBuild
 @echo BUILD_EXE=%BUILD_EXE%
 @echo BUILD_TOOL_CFG=%BUILD_TOOL_CFG%
 
+
+REM ***
+set CLR_NAMESPACE=${ClrNamespace}
+set SQL_METAL_EXE=C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\SqlMetal.exe
+set L2S_DIR=.\src\%CLR_NAMESPACE%\L2S
+set L2S_CLR_NAMESPACE=%CLR_NAMESPACE%.L2S
+set L2S_DATA_CONTEXT_NAME=${LinqToSqlTargetDataContextName}
+
+set L2S_DBML_FILE_PATH=%L2S_DIR%\%L2S_DATA_CONTEXT_NAME%.dbml
+set L2S_DESIGNER_CS_FILE_PATH=%L2S_DIR%\%L2S_DATA_CONTEXT_NAME%.designer.cs
+
+
+"%SQL_METAL_EXE%" ^
+	/language:"C#" ^
+	/code:"%L2S_DESIGNER_CS_FILE_PATH%" ^
+	"%L2S_DBML_FILE_PATH%" >> "_sqlmetal_log.txt
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+REM ***
+
+
+
 "%BUILD_EXE%" ".\src\${ClrNamespace}.sln" /t:clean /p:Configuration=%BUILD_TOOL_CFG%
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 

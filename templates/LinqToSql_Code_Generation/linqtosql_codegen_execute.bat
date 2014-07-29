@@ -25,7 +25,7 @@ set CLR_NAMESPACE=TextMetal.HostImpl.AspNetSample.DomainModel
 set ADO_NET_CONNECTION_STRING=Server=(local);User ID=textmetal_sample_mssql_lcl_login;PWD=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH;Database=textmetal_sample
 
 set SQL_METAL_EXE=C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\SqlMetal.exe
-set L2S_DIR=%SRC_DIR%\TextMetal.HostImpl.AspNetSample.DomainModel\L2S
+set L2S_DIR=%SRC_DIR%\%CLR_NAMESPACE%\L2S
 set L2S_DIR_EXISTS=%L2S_DIR%\nul
 set L2S_CLR_NAMESPACE=%CLR_NAMESPACE%.L2S
 set L2S_DATA_CONTEXT_NAME=TextMetalOdsDataContext

@@ -664,9 +664,23 @@ namespace TextMetal.Common.Xml
 			return documentXmlObject;
 		}
 
+		/// <summary>
+		/// Deserialize an XML object graph from the specified text reader.
+		/// </summary>
+		/// <param name="textReader"> The text reader to load. </param>
+		/// <returns> An XML object graph. </returns>
 		public IXmlObject DeserializeFromXml(TextReader textReader)
 		{
-			throw new NotImplementedException();
+			XmlTextReader xmlTextReader;
+			IXmlObject document;
+
+			if ((object)textReader == null)
+				throw new ArgumentNullException("textReader");
+
+			// DO NOT USE A USING BLOCK HERE (CALLER OWNS TEXTWRITER) !!!
+			xmlTextReader = new XmlTextReader(textReader);
+			document = this.DeserializeFromXml(xmlTextReader);
+			return document;
 		}
 
 		/// <summary>
