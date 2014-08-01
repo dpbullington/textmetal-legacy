@@ -50,23 +50,23 @@ using System.Xml;
 namespace ${ClrNamespace}.${FolderName}
 {
 	public partial class ${ProcedureNameSingularPascalCase}_Result : ${ClrSuperType}, I${ProcedureNameSingularPascalCase}_Result
-	{		
+	{
 		#region Constructors/Destructors
-		
+
 		public ${ProcedureNameSingularPascalCase}_Result()
 		{
 		}
-		
+
 		#endregion
-		
+
 		#region Fields/Constants
-			
+
 ]]>
 
-					<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
+					<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 						<ForEach.Body>
 							<![CDATA[		public const string COLUMN_NAME_${ColumnNameConstantCase} = "${ColumnName}";]]>
-							
+
 							<If>
 								<If.Condition>
 									<BinaryExpression operator="Ne">
@@ -116,7 +116,7 @@ namespace ${ClrNamespace}.${FolderName}
 						<![CDATA[
 
 		#endregion
-			
+
 		#region Properties/Indexers/Events
 ]]>
 						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">

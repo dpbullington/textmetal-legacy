@@ -5,7 +5,7 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
-	
+
 	<Alloc token="i" />
 	<OutputScope name="generics.g.cs">
 		<For var-ix="LoopIndex">
@@ -26,7 +26,7 @@
 				<Value type="System.Boolean" data="true" />
 			</For.Iterator>
 			<For.Body>
-			
+
 <![CDATA[
 public static ActivatorDependencyResolution OfType<TObject${rb(`
 temp = ""

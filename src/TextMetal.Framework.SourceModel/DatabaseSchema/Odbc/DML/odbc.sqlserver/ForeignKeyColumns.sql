@@ -7,13 +7,13 @@
 -- DECLARE @SchemaName [nvarchar](255); SET @SchemaName = 'application'; DECLARE @ForeignKeyName [nvarchar](255); SET @ForeignKeyName = 'fk_Organization_User_creation';
 SELECT
 	sys_fkc.[constraint_column_id] AS [ForeignKeyColumnOrdinal],
-	
+
 	sys_s.[name] AS [SchemaName],
 	sys_t.[name] AS [TableName],
 	sys_fk.[name] AS [ForeignKeyName],
 	sys_fkc.[parent_column_id] AS [ColumnOrdinal],
 	sys_c.[name] AS [ColumnName],
-		
+
 	sys_s_p.[name] AS [TargetSchemaName],
 	sys_t_p.[name] AS [TargetTableName],
 	sys_fkc.[referenced_column_id] AS [TargetColumnOrdinal],

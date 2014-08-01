@@ -81,17 +81,17 @@ using TextMetal.Common.Syntax.Statements;
 namespace ${ClrNamespace}.${FolderName}
 {
 	public partial class ${TableNameSingularPascalCase} : ${ClrSuperType}, I${TableNameSingularPascalCase}
-	{		
+	{
 		#region Constructors/Destructors
-		
+
 		public ${TableNameSingularPascalCase}()
 		{
 		}
-		
+
 		#endregion
-		
+
 		#region Fields/Constants
-		
+
 		public const string SCHEMA_NAME = "${SchemaName}";
 		public const string TABLE_NAME = "${TableName}";
 ]]>
@@ -117,10 +117,10 @@ namespace ${ClrNamespace}.${FolderName}
 						</If.False>
 					</If>
 
-					<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
+					<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 						<ForEach.Body>
 							<![CDATA[		public const string COLUMN_NAME_${ColumnNameConstantCase} = "${ColumnName}";]]>
-							
+
 							<If>
 								<If.Condition>
 									<BinaryExpression operator="Ne">
@@ -139,7 +139,7 @@ namespace ${ClrNamespace}.${FolderName}
 							</If>
 						</ForEach.Body>
 					</ForEach>
-	
+
 <![CDATA[
 ]]>
 
@@ -174,7 +174,7 @@ namespace ${ClrNamespace}.${FolderName}
 							</If.True>
 						</If>
 
-						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Body>
 								<![CDATA[
 		private ${ColumnCSharpClrNullableType} @${ColumnNameCamelCase};]]>
@@ -212,7 +212,7 @@ namespace ${ClrNamespace}.${FolderName}
 								</BinaryExpression>
 							</If.Condition>
 							<If.True>
-								<![CDATA[		
+								<![CDATA[
 		public virtual bool IsNew
 		{
 			get
@@ -254,13 +254,13 @@ namespace ${ClrNamespace}.${FolderName}
 								</BinaryExpression>
 							</If.Condition>
 							<If.True>
-								<![CDATA[		
+								<![CDATA[
 		public virtual bool IsNew
 		{
 			get
 			{
 				return ]]>
-				
+
 								<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 									<ForEach.Filter>
 										<BinaryExpression operator="Eq">
@@ -312,8 +312,8 @@ namespace ${ClrNamespace}.${FolderName}
 			set
 			{
 				if(value)
-					]]>	
-								
+					]]>
+
 								<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 									<ForEach.Filter>
 										<BinaryExpression operator="Eq">
@@ -360,7 +360,7 @@ namespace ${ClrNamespace}.${FolderName}
 										</If>
 									</ForEach.Body>
 								</ForEach>
-			
+
 								<![CDATA[			}
 		}
 		]]>
@@ -379,7 +379,7 @@ namespace ${ClrNamespace}.${FolderName}
 								</BinaryExpression>
 							</If.Condition>
 							<If.True>
-								<![CDATA[		
+								<![CDATA[
 		public virtual bool IsNew
 		{
 			get
@@ -395,7 +395,7 @@ namespace ${ClrNamespace}.${FolderName}
 							</If.True>
 						</If>
 
-						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Body>
 								<If>
 									<If.Condition>
@@ -445,27 +445,27 @@ namespace ${ClrNamespace}.${FolderName}
 						</ForEach>
 						<![CDATA[
 		#endregion
-		
+
 		#region Methods/Operators
-		
+
 		partial void OnMark();
-		
+
 		partial void OnValidate(ref IEnumerable<Message> messages);
-		
+
 		public virtual void Mark()
 		{
 			this.OnMark();
 		}
-		
+
 		public virtual IEnumerable<Message> Validate()
 		{
 			IEnumerable<Message> messages = null;
-			
+
 			this.OnValidate(ref messages);
-			
+
 			return messages ?? new Message[] { };
 		}
-		
+
 		#endregion
 	}
 }

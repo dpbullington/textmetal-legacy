@@ -51,17 +51,17 @@ using System.Xml;
 namespace ${ClrNamespace}.${FolderName}
 {
 	public partial class ${ProcedureNameSingularPascalCase}_Response : ${ClrSuperType}, I${ProcedureNameSingularPascalCase}_Response
-	{		
+	{
 		#region Constructors/Destructors
-		
+
 		public ${ProcedureNameSingularPascalCase}_Response()
 		{
 		}
-		
+
 		#endregion
-		
+
 		#region Fields/Constants
-			
+
 		private IEnumerable<I${ProcedureNameSingularPascalCase}_Result> results;
 ]]>
 
@@ -116,9 +116,9 @@ namespace ${ClrNamespace}.${FolderName}
 						<![CDATA[
 
 		#endregion
-			
+
 		#region Properties/Indexers/Events
-			
+
 		public IEnumerable<I${ProcedureNameSingularPascalCase}_Result> Results
 		{
 			get

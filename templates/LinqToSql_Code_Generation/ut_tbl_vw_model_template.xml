@@ -80,22 +80,22 @@ namespace ${ClrNamespace}.UnitTests.${FolderName}
 {
 	[TestFixture]
 	public sealed class ${TableNameSingularPascalCase}Tests
-	{		
+	{
 		#region Constructors/Destructors
-		
+
 		public ${TableNameSingularPascalCase}Tests()
 		{
 		}
-		
+
 		#endregion
-		
+
 		#region Methods/Operators
-		
+
 		[Test]
 		public void ShouldCreate${TableNameSingularPascalCase}Test()
-		{			
+		{
 			I${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
-			
+
 			//@${TableNameSingularCamelCase} = repository.CreateModel<I${TableNameSingularPascalCase}>();
 			@${TableNameSingularCamelCase} = new ${TableNameSingularPascalCase}();
 
@@ -129,7 +129,7 @@ namespace ${ClrNamespace}.UnitTests.${FolderName}
 						</ForEach>
 
 						<![CDATA[		}
-		
+
 		#endregion
 	}
 }

@@ -5,18 +5,18 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
-		
+
 	<!--<DebuggerBreakpoint />-->
 	<Alloc token="TableAlias" />
-	
+
 	<Assign token="TableAlias">
 		<Assign.Expression>
 			<Value data="" />
 		</Assign.Expression>
 	</Assign>
-	
+
 	<![CDATA[commandText = @"SELECT " + GetDataSourceTagSpecificInstance().GetIdentityCommand() + @" AS "]]>
-	
+
 	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
 			<BinaryExpression operator="Eq">
@@ -28,7 +28,7 @@
 				</BinaryExpression.RightExpression>
 			</BinaryExpression>
 		</ForEach.Filter>
-		<ForEach.Body>			
+		<ForEach.Body>
 			<If>
 				<If.Condition>
 					<BinaryExpression operator="Eq">
@@ -46,7 +46,7 @@
 			</If>
 		</ForEach.Body>
 	</ForEach>
-	
+
 	<![CDATA[;]]>
 
 </Template>

@@ -10,7 +10,7 @@ SELECT
 	sys_s.[name] AS [SchemaName],
 	sys_o_p.[name] AS [TableName],
 	sys_s_p.[name] AS [_SchemaName],
-	sys_tr.[name] AS [TriggerName],	
+	sys_tr.[name] AS [TriggerName],
 	CAST(CASE WHEN sys_tr.[type] = 'TA' THEN 1
 		ELSE 0 END AS [bit]) AS [IsClrTrigger],
 	sys_tr.[is_disabled] AS [IsTriggerDisabled],

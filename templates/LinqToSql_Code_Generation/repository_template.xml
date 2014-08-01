@@ -100,9 +100,9 @@ namespace ${ClrNamespace}
 {
 	[DependencyRegistration]
 	public partial class Repository : LinqToSqlModelRepository<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}>, IRepository
-	{		
+	{
 		#region Constructors/Destructors
-		
+
 		public Repository()
 		{
 		}
@@ -129,7 +129,7 @@ namespace ${ClrNamespace}
 
 				</ForEach.Body>
 			</ForEach>
-			
+
 		</ForEach.Body>
 	</ForEach>
 

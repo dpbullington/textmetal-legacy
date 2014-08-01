@@ -13,7 +13,7 @@ SELECT
 	sys_c.[is_nullable] AS [ColumnNullable],
 	sys_c.[max_length] AS [ColumnSize],
 	sys_c.[precision] AS [ColumnPrecision],
-	sys_c.[scale] AS [ColumnScale],		
+	sys_c.[scale] AS [ColumnScale],
 	CASE WHEN sys_ty_u.[system_type_id] IS NOT NULL THEN sys_ty_u.[name] ELSE sys_ty.[name] END AS [ColumnSqlType],
 	CAST(CASE WHEN sys_ty_u.[system_type_id] IS NOT NULL THEN 1 ELSE 0 END AS [bit]) AS [ColumnIsUserDefinedType]
 FROM

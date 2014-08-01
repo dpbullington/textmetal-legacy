@@ -10,7 +10,7 @@ SELECT
 	sys_s.[name] AS [SchemaName],
 	sys_t.[name] AS [TableName],
 	sys_kc.[name] AS [UniqueKeyName],
-	sys_kc.[is_system_named] AS [UniqueKeyIsSystemNamed]	
+	sys_kc.[is_system_named] AS [UniqueKeyIsSystemNamed]
 FROM
 	[sys].[key_constraints] AS sys_kc -- UKs
 	INNER JOIN [sys].[tables] sys_t ON sys_t.[object_id] = sys_kc.[parent_object_id]

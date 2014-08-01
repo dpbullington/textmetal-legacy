@@ -100,9 +100,9 @@ namespace ${ClrNamespace}.UnitTests
 {
 	[TestFixture]
 	public partial class RepositoryTests
-	{		
+	{
 		#region Methods/Operators
-		
+
 ]]>
 
 		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -118,14 +118,14 @@ namespace ${ClrNamespace}.UnitTests
 		{
 			throw new NotImplementedException();
 		}
-		
+
 		[Ignore]
 		[Test]
 		public void ShouldLoad${TableNameSingularPascalCase}Test()
 		{
 			throw new NotImplementedException();
 		}
-		
+
 		[Ignore]
 		[Test]
 		public void ShouldGetAll${TableNamePluralPascalCase}Test()

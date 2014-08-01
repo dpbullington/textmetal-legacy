@@ -5,7 +5,7 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
-	
+
 	<Alloc token="vs_sln_file_version" />
 	<Alloc token="vs_sln_info_version" />
 	<Alloc token="visual_studio_version" />
@@ -13,7 +13,7 @@
 	<Alloc token="csproj_product_version" />
 	<Alloc token="csproj_target_framework_version" />
 	<Alloc token="csproj_tools_version" />
-	
+
 	<Assign token="vs_sln_file_version">
 		<Assign.Expression>
 			<Value data="12.00" type="System.String" />
@@ -33,7 +33,7 @@
 		<Assign.Expression>
 			<Value data="10.0.40219.1" type="System.String" />
 		</Assign.Expression>
-	</Assign>	
+	</Assign>
 	<Assign token="csproj_product_version">
 		<Assign.Expression>
 			<Value data="8.0.30703" type="System.String" />
@@ -50,7 +50,7 @@
 		</Assign.Expression>
 	</Assign>
 
-	<OutputScope name="..\msb.bat">					
+	<OutputScope name="..\msb.bat">
 		<![CDATA[@echo off
 
 REM
@@ -139,8 +139,8 @@ echo For example:
 echo     %0 -debug
 goto :eof]]>
 	</OutputScope>
-	
-	<OutputScope name="SolutionAssemblyInfo.cs">					
+
+	<OutputScope name="SolutionAssemblyInfo.cs">
 		<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 using System.Reflection;
@@ -167,8 +167,8 @@ using System.Runtime.InteropServices;
 
 ]]>
 	</OutputScope>
-	
-	<OutputScope name="${ClrNamespace}\ProjectAssemblyInfo.cs">					
+
+	<OutputScope name="${ClrNamespace}\ProjectAssemblyInfo.cs">
 		<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 using System.Reflection;
@@ -177,8 +177,8 @@ using System.Reflection;
 
 ]]>
 	</OutputScope>
-	
-	<OutputScope name="${ClrNamespace}.UnitTests\ProjectAssemblyInfo.cs">					
+
+	<OutputScope name="${ClrNamespace}.UnitTests\ProjectAssemblyInfo.cs">
 		<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 using System.Reflection;
@@ -187,8 +187,8 @@ using System.Reflection;
 
 ]]>
 	</OutputScope>
-	
-	<OutputScope name="${ClrNamespace}.IntegrationTests\ProjectAssemblyInfo.cs">					
+
+	<OutputScope name="${ClrNamespace}.IntegrationTests\ProjectAssemblyInfo.cs">
 		<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 using System.Reflection;
@@ -197,8 +197,8 @@ using System.Reflection;
 
 ]]>
 	</OutputScope>
-	
-	<OutputScope name="${ClrNamespace}.sln">					
+
+	<OutputScope name="${ClrNamespace}.sln">
 		<![CDATA[
 Microsoft Visual Studio Solution File, Format Version ${vs_sln_file_version}
 # Visual Studio ${vs_sln_info_version}
@@ -258,40 +258,40 @@ EndGlobal
 	</OutputScope>
 
 	<OutputScope name="${ClrNamespace}.UnitTests\UnitTests.nunit">
-		<![CDATA[<?xml version="1.0" encoding="utf-8" ?> 
+		<![CDATA[<?xml version="1.0" encoding="utf-8" ?>
 <NUnitProject>
 	<Settings activeconfig="Debug"/>
 
 	<Config configfile="App.config" name="Debug">
 		<assembly path="bin\Debug\${ClrNamespace}.UnitTests.dll"/>
 	</Config>
-		
+
 	<Config configfile="App.config" name="Release">
 		<assembly path="bin\Release\${ClrNamespace}.UnitTests.dll"/>
 	</Config>
-	
+
 </NUnitProject>]]>
 	</OutputScope>
 
 	<OutputScope name="${ClrNamespace}.IntegrationTests\IntegrationTests.nunit">
-		<![CDATA[<?xml version="1.0" encoding="utf-8" ?> 
+		<![CDATA[<?xml version="1.0" encoding="utf-8" ?>
 <NUnitProject>
 	<Settings activeconfig="Debug"/>
 
 	<Config configfile="App.config" name="Debug">
 		<assembly path="bin\Debug\${ClrNamespace}.IntegrationTests.dll"/>
 	</Config>
-		
+
 	<Config configfile="App.config" name="Release">
 		<assembly path="bin\Release\${ClrNamespace}.IntegrationTests.dll"/>
 	</Config>
-	
+
 </NUnitProject>]]>
 	</OutputScope>
 
 	<OutputScope name="${ClrNamespace}\${ClrNamespace}.csproj">
 		<Alloc token="FolderName" />
-		
+
 		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="${csproj_tools_version}">
   <PropertyGroup>
@@ -334,11 +334,11 @@ EndGlobal
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-	<Reference Include="System.Data" />    
+	<Reference Include="System.Data" />
 	<Reference Include="System.Data.Linq" />
 	<Reference Include="System.Xml" />
 	<Reference Include="System.Xml.Linq" />
-	
+
 	<Reference Include="TextMetal.Common.Core">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Core.dll</HintPath>
     </Reference>
@@ -360,7 +360,7 @@ EndGlobal
       <Link>${ClrNamespace}.snk</Link>
     </None>
   </ItemGroup>
-  <ItemGroup> 
+  <ItemGroup>
 	<Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
@@ -416,7 +416,7 @@ EndGlobal
 								</Assign>
 							</If.True>
 						</If>
-					
+
 						<![CDATA[    <Compile Include="${FolderName}\${TableNameSingularPascalCase}.g.cs" />
     <Compile Include="${FolderName}\I${TableNameSingularPascalCase}.g.cs" />]]>
 					</ForEach.Body>
@@ -424,23 +424,23 @@ EndGlobal
 			</ForEach.Body>
 		</ForEach>
 
-		<![CDATA[	
-  </ItemGroup>  
+		<![CDATA[
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
   </Target>
   -->
-</Project>		
+</Project>
 ]]>
 	</OutputScope>
 
 	<OutputScope name="${ClrNamespace}.UnitTests\${ClrNamespace}.UnitTests.csproj">
 		<Alloc token="FolderName" />
-		
+
 		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="${csproj_tools_version}">
   <PropertyGroup>
@@ -467,7 +467,7 @@ EndGlobal
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>    
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -475,17 +475,17 @@ EndGlobal
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>    
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
    <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-	<Reference Include="System.Data" />    
+	<Reference Include="System.Data" />
 	<Reference Include="System.Data.Linq" />
 	<Reference Include="System.Xml" />
 	<Reference Include="System.Xml.Linq" />
-    	
+
 	<Reference Include="TextMetal.Common.Core">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Core.dll</HintPath>
     </Reference>
@@ -501,26 +501,26 @@ EndGlobal
 	<Reference Include="TextMetal.Common.Xml">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Xml.dll</HintPath>
     </Reference>
-	
+
 	<Reference Include="TextMetal.Imports">
       <HintPath>..\..\lib\TextMetal\TextMetal.Imports.dll</HintPath>
     </Reference>
 	<Reference Include="TextMetal.TestFramework">
       <HintPath>..\..\lib\TextMetal\TextMetal.TestFramework.dll</HintPath>
     </Reference>
-	
+
 	<ProjectReference Include="..\${ClrNamespace}\${ClrNamespace}.csproj">
       <Project>{FFFF0000-0000-0000-0000-000000000001}</Project>
       <Name>${ClrNamespace}</Name>
     </ProjectReference>
-	
+
   </ItemGroup>
-  <ItemGroup>    
+  <ItemGroup>
 	<Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
 	<Compile Include="ProjectAssemblyInfo.cs" />
-	<Compile Include="RepositoryTests.tv.g.cs" />	
+	<Compile Include="RepositoryTests.tv.g.cs" />
 	<None Include="UnitTests.nunit" />
 ]]>
 
@@ -561,30 +561,30 @@ EndGlobal
 								</Assign>
 							</If.True>
 						</If>
-					
+
 						<![CDATA[    <Compile Include="${FolderName}\${TableNameSingularPascalCase}Tests.g.cs" />]]>
 					</ForEach.Body>
 				</ForEach>
 			</ForEach.Body>
 		</ForEach>
-		
-		<![CDATA[	
-  </ItemGroup>  
+
+		<![CDATA[
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
   </Target>
   -->
-</Project>		
+</Project>
 ]]>
 	</OutputScope>
 
 	<OutputScope name="${ClrNamespace}.IntegrationTests\${ClrNamespace}.IntegrationTests.csproj">
 		<Alloc token="FolderName" />
-		
+
 		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="${csproj_tools_version}">
   <PropertyGroup>
@@ -611,7 +611,7 @@ EndGlobal
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>    
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -619,17 +619,17 @@ EndGlobal
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>    
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-	<Reference Include="System.Data" />    
+	<Reference Include="System.Data" />
 	<Reference Include="System.Data.Linq" />
 	<Reference Include="System.Xml" />
 	<Reference Include="System.Xml.Linq" />
-	
+
 	<Reference Include="TextMetal.Common.Core">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Core.dll</HintPath>
     </Reference>
@@ -645,19 +645,19 @@ EndGlobal
 	<Reference Include="TextMetal.Common.Xml">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Xml.dll</HintPath>
     </Reference>
-	
+
 	<Reference Include="TextMetal.Imports">
       <HintPath>..\..\lib\TextMetal\TextMetal.Imports.dll</HintPath>
     </Reference>
 	<Reference Include="TextMetal.TestFramework">
       <HintPath>..\..\lib\TextMetal\TextMetal.TestFramework.dll</HintPath>
     </Reference>
-	
+
 	<ProjectReference Include="..\${ClrNamespace}\${ClrNamespace}.csproj">
       <Project>{FFFF0000-0000-0000-0000-000000000001}</Project>
       <Name>${ClrNamespace}</Name>
     </ProjectReference>
-	
+
   </ItemGroup>
   <ItemGroup>
 	<Compile Include="..\SolutionAssemblyInfo.cs">
@@ -665,24 +665,24 @@ EndGlobal
     </Compile>
 	<Compile Include="ProjectAssemblyInfo.cs" />
 	<Compile Include="RepositoryTests.g.cs" />
-	<Compile Include="RepositoryTests.tv.g.cs" />	
+	<Compile Include="RepositoryTests.tv.g.cs" />
 	<None Include="IntegrationTests.nunit" />
 	<None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>  
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
   </Target>
   -->
-</Project>		
+</Project>
 ]]>
 	</OutputScope>
-	
+
 	<Free token="vs_sln_file_version" />
 	<Free token="vs_sln_info_version" />
 	<Free token="visual_studio_version" />

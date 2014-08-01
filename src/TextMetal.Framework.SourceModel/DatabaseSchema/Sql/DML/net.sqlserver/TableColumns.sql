@@ -13,7 +13,7 @@ SELECT
 	sys_c.[is_nullable] AS [ColumnNullable],
 	sys_c.[max_length] AS [ColumnSize],
 	sys_c.[precision] AS [ColumnPrecision],
-	sys_c.[scale] AS [ColumnScale],		
+	sys_c.[scale] AS [ColumnScale],
 	CASE WHEN sys_ty_u.[system_type_id] IS NOT NULL THEN sys_ty_u.[name] ELSE sys_ty.[name] END AS [ColumnSqlType],
 	CAST(CASE WHEN sys_ty_u.[system_type_id] IS NOT NULL THEN 1 ELSE 0 END AS [bit]) AS [ColumnIsUserDefinedType],
 
@@ -27,8 +27,8 @@ SELECT
 	CAST(CASE
 		WHEN sys_c.[rule_object_id] = 0 THEN 0
 		ELSE 1
-	END AS [bit]) AS [ColumnHasCheck],	
-	
+	END AS [bit]) AS [ColumnHasCheck],
+
 	(SELECT
 		CAST(CASE COUNT(_sys_kc.[name])
 			WHEN 1 THEN 1
@@ -42,7 +42,7 @@ SELECT
 			AND _sys_kc.[unique_index_id] = _sys_ix.[index_id]
 		INNER JOIN [sys].[index_columns] _sys_ixc ON
 			_sys_ixc.[object_id] = _sys_ix.[object_id]
-			AND _sys_ixc.[index_id] = _sys_ix.[index_id]	
+			AND _sys_ixc.[index_id] = _sys_ix.[index_id]
 	WHERE
 		_sys_kc.[type] = 'PK'
 		AND _sys_ix.[object_id] = sys_c.[object_id]
@@ -60,7 +60,7 @@ SELECT
 			AND _sys_kc.[unique_index_id] = _sys_ix.[index_id]
 		INNER JOIN [sys].[index_columns] _sys_ixc ON
 			_sys_ixc.[object_id] = _sys_ix.[object_id]
-			AND _sys_ixc.[index_id] = _sys_ix.[index_id]	
+			AND _sys_ixc.[index_id] = _sys_ix.[index_id]
 	WHERE
 		_sys_kc.[type] = 'PK'
 		AND _sys_ix.[object_id] = sys_c.[object_id]

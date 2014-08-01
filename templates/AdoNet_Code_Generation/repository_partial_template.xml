@@ -34,21 +34,21 @@ using TextMetal.Common.Data;
 				</ForEach>
 			</If.True>
 		</If>
-				
+
 		<![CDATA[
 namespace ${ClrNamespace}
 {
 	public partial class Repository
-	{		
+	{
 		#region Methods/Operators
 ]]>
 
-		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">			
+		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 			<ForEach.Body>
-				
+
 				<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Body>
-<![CDATA[	
+<![CDATA[
 		partial void OnPreInsert${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			if ((object)unitOfWork == null)
@@ -59,7 +59,7 @@ namespace ${ClrNamespace}
 
 			@${TableNameSingularCamelCase}.Mark();
 		}
-		
+
 		partial void OnPostInsert${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			if ((object)unitOfWork == null)
@@ -70,7 +70,7 @@ namespace ${ClrNamespace}
 
 			// do nothing
 		}
-		
+
 		partial void OnPreUpdate${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			if ((object)unitOfWork == null)
@@ -81,7 +81,7 @@ namespace ${ClrNamespace}
 
 			@${TableNameSingularCamelCase}.Mark();
 		}
-		
+
 		partial void OnPostUpdate${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			if ((object)unitOfWork == null)
@@ -92,7 +92,7 @@ namespace ${ClrNamespace}
 
 			// do nothing
 		}
-		
+
 		partial void OnPreDelete${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			if ((object)unitOfWork == null)
@@ -103,7 +103,7 @@ namespace ${ClrNamespace}
 
 			// do nothing
 		}
-		
+
 		partial void OnPostDelete${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			if ((object)unitOfWork == null)
@@ -114,7 +114,7 @@ namespace ${ClrNamespace}
 
 			// do nothing
 		}
-		
+
 		partial void OnSaveConflict${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			if ((object)unitOfWork == null)
@@ -125,7 +125,7 @@ namespace ${ClrNamespace}
 
 			// do nothing
 		}
-		
+
 		partial void OnDiscardConflict${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			if ((object)unitOfWork == null)
@@ -136,7 +136,7 @@ namespace ${ClrNamespace}
 
 			// do nothing
 		}
-		
+
 		partial void OnSelect${TableNameSingularPascalCase}(IUnitOfWork unitOfWork, ${TableNameSingularPascalCase} @${TableNameSingularCamelCase})
 		{
 			if ((object)unitOfWork == null)

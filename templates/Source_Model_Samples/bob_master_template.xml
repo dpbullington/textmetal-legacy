@@ -5,35 +5,35 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
-	
+
 	<!--<DebuggerBreakpoint />-->
-	
+
 	<Write newline="true">
 		<Write.Text>
 			<Value data="${StaticPropertyResolver(`System.DateTime`, `UtcNow`)}" type="System.String" />
 		</Write.Text>
 	</Write>
-	
+
 	<Write newline="true">
 		<Write.Text>
 			<Value data="${StaticMethodResolver(`TextMetal.Common.Core.StringTokens.DynamicValueTokenReplacementStrategy`, `StaticMethodResolverPing`)}" type="System.String" />
 		</Write.Text>
-	</Write>	
-	
+	</Write>
+
 	<Write newline="true">
 		<Write.Text>
 			<Value data="${StaticMethodResolver(`TextMetal.Common.Core.StringTokens.DynamicValueTokenReplacementStrategy`, `StaticMethodResolverPing`, `System.String`, `this is a test`)}" type="System.String" />
 		</Write.Text>
 	</Write>
-	
+
 	<Write newline="true">
 		<Write.Text>
 			<Value data="${StaticMethodResolver(`TextMetal.Common.Core.StringTokens.DynamicValueTokenReplacementStrategy`, `StaticMethodResolverPing`, `System.Nullable\'1[[System.Int32]]`, `1`)}" type="System.String" />
 		</Write.Text>
 	</Write>
-	
+
 	<Alloc token="test" />
-	
+
 	<Assign token="test">
 		<Assign.Expression>
 			<Value data="1234.56789" type="System.Double" />
@@ -45,19 +45,19 @@
 			<Value data="${test}" type="System.String" />
 		</Write.Text>
 	</Write>
-	
+
 	<Assign token="test">
 		<Assign.Expression>
 			<UnaryExpression operator="Neg">
 				<UnaryExpression.TheExpression>
 					<Facet name="test" />
 				</UnaryExpression.TheExpression>
-			</UnaryExpression>			
+			</UnaryExpression>
 		</Assign.Expression>
 	</Assign>
 
 	<Include name="bob_include_content.txt" />
-	
+
 	<Alias local-name="Scrizzle" namespace-uri="http://www.textmetal.com/api/v6.0.0" aqt-name="TextMetal.Framework.TemplateModel.WriteConstruct, TextMetal.Framework.TemplateModel" />
 
 	<!-- FAILS BY DESIGN -->
@@ -66,17 +66,17 @@
 			<Value data="${test}" type="System.String" />
 		</Scrizzle.Text>
 	</Scrizzle>-->
-	
+
 	<Import name="bob_import_template.xml" />
-	
+
 	<![CDATA[
-	
+
 	${ToolVersion}
 	${Environment.Variables.Path}
 	${Environment.CurrentDirectory}
-	
+
 	]]>
-	
+
 	<If>
 		<If.Condition>
 			<BinaryExpression operator="And">
@@ -126,7 +126,7 @@
 <![CDATA[__unless:ELSE]]>
 		</Unless.Else>
 	</Unless>
-	
+
 	<Assign token="test">
 		<Assign.Expression>
 			<Ruby src="File" expr="((self.test + textMetal.EvaluateToken.invoke(&quot;test&quot;)) / 2) * -2" file="sample.rb">
@@ -136,30 +136,30 @@
 					z2 = textMetal.EvaluateToken.invoke("test");
 					return ((z1 + z2) / 2) * -1;
 				</Script>
-			</Ruby>			
+			</Ruby>
 		</Assign.Expression>
 	</Assign>
-	
-	<![CDATA[	
+
+	<![CDATA[
 ${test}
 *rb*
 
 ${rb(`textMetal.DebuggerBreakpoint.invoke()`)}
 ]]>
-		
+
 	<Assign token="test">
 		<Assign.Expression>
 			<UnaryExpression operator="Incr">
 				<UnaryExpression.TheExpression>
 					<Value data="100" type="System.Byte" />
 				</UnaryExpression.TheExpression>
-			</UnaryExpression>	
+			</UnaryExpression>
 		</Assign.Expression>
 	</Assign>
-	
-	<![CDATA[	
+
+	<![CDATA[
 ${test}
-***	
+***
 ]]>
 
 	<Free token="test" />

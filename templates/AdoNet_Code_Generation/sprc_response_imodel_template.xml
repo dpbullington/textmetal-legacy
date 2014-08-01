@@ -54,9 +54,9 @@ using TextMetal.Common.Data.Framework;
 namespace ${ClrNamespace}.${FolderName}
 {
 	public partial interface I${ProcedureNameSingularPascalCase}_Response : IResponseModelObject<I${ProcedureNameSingularPascalCase}_Result>
-	{		
+	{
 		#region Properties/Indexers/Events
-			
+
 		IEnumerable<I${ProcedureNameSingularPascalCase}_Result> Results
 		{
 			get;
@@ -100,7 +100,7 @@ namespace ${ClrNamespace}.${FolderName}
 							</ForEach.Body>
 						</ForEach>
 						<![CDATA[
-		#endregion		
+		#endregion
 	}
 }
 ]]>

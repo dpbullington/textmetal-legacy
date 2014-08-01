@@ -15,18 +15,18 @@ GO
 CREATE TABLE [global].[User]
 (
 	[UserId] [int] IDENTITY(0,1) NOT NULL,
-	
+
 	[EmailAddress] [nvarchar](255) NOT NULL,
 	[UserName] [nvarchar](255) NOT NULL,
 	[SaltValue] [nvarchar](255) NOT NULL,
-	[PasswordHash] [nvarchar](255) NOT NULL,	
+	[PasswordHash] [nvarchar](255) NOT NULL,
 	[Question] [nvarchar](255) NOT NULL,
 	[AnswerHash] [nvarchar](255) NOT NULL,
 	[LastLoginSuccessTimestamp] [datetime] NULL,
 	[LastLoginFailureTimestamp] [datetime] NULL,
 	[FailedLoginCount] [smallint] NOT NULL,
 	[MustChangePassword] [bit] NOT NULL,
-		
+
 	[SortOrder] [tinyint] NULL,
 	[CreationTimestamp] [datetime] NOT NULL,
 	[ModificationTimestamp] [datetime] NOT NULL,
@@ -38,12 +38,12 @@ CREATE TABLE [global].[User]
 	(
 		[UserId]
 	),
-	
+
 	CONSTRAINT [uk_User_username] UNIQUE
 	(
 		[UserName]
 	),
-	
+
 	CONSTRAINT [uk_User_emailaddress] UNIQUE
 	(
 		[EmailAddress]
@@ -98,9 +98,9 @@ GO
 CREATE TABLE [global].[SecurityRole]
 (
 	[SecurityRoleId] [int] NOT NULL,
-	
+
 	[SecurityRoleName] [nvarchar](255) NOT NULL,
-	
+
 	[SortOrder] [tinyint] NULL,
 	[CreationTimestamp] [datetime] NOT NULL,
 	[ModificationTimestamp] [datetime] NOT NULL,
@@ -117,7 +117,7 @@ CREATE TABLE [global].[SecurityRole]
 	(
 		[SecurityRoleName]
 	),
-	
+
 	CONSTRAINT [fk_SecurityRole_User_creation] FOREIGN KEY
 	(
 		[CreationUserId]
@@ -126,7 +126,7 @@ CREATE TABLE [global].[SecurityRole]
 	(
 		[UserId]
 	),
-	
+
 	CONSTRAINT [fk_SecurityRole_User_modification] FOREIGN KEY
 	(
 		[ModificationUserId]
@@ -154,7 +154,7 @@ CREATE TABLE [global].[PropertyBag]
 	[PropertyKey] [nvarchar](255) NOT NULL,
 	[PropertyType] [nvarchar](255) NULL,
 	[PropertyValue] [nvarchar](2047) NULL,
-	
+
 	[SortOrder] [tinyint] NULL,
 	[CreationTimestamp] [datetime] NOT NULL,
 	[ModificationTimestamp] [datetime] NOT NULL,
@@ -166,7 +166,7 @@ CREATE TABLE [global].[PropertyBag]
 	(
 		[PropertyBagId]
 	),
-	
+
 	CONSTRAINT [fk_PropertyBag_User_creation] FOREIGN KEY
 	(
 		[CreationUserId]
@@ -175,7 +175,7 @@ CREATE TABLE [global].[PropertyBag]
 	(
 		[UserId]
 	),
-	
+
 	CONSTRAINT [fk_PropertyBag_User_modification] FOREIGN KEY
 	(
 		[ModificationUserId]
@@ -184,7 +184,7 @@ CREATE TABLE [global].[PropertyBag]
 	(
 		[UserId]
 	)
-)	
+)
 GO
 
 
@@ -196,20 +196,20 @@ GO
 CREATE TABLE [global].[EventLog]
 (
 	[EventLogId] [int] IDENTITY(1,1) NOT NULL,
-	[EventText] [nvarchar](MAX) NOT NULL,	
-	
+	[EventText] [nvarchar](MAX) NOT NULL,
+
 	[SortOrder] [tinyint] NULL,
 	[CreationTimestamp] [datetime] NOT NULL,
 	[ModificationTimestamp] [datetime] NOT NULL,
 	[CreationUserId] [int] NULL,
 	[ModificationUserId] [int] NULL,
 	[LogicalDelete] [bit] NOT NULL DEFAULT(0),
-	
+
 	CONSTRAINT [pk_EventLog] PRIMARY KEY
 	(
 		[EventLogId]
 	),
-	
+
 	CONSTRAINT [fk_EventLog_User_creation] FOREIGN KEY
 	(
 		[CreationUserId]
@@ -218,7 +218,7 @@ CREATE TABLE [global].[EventLog]
 	(
 		[UserId]
 	),
-	
+
 	CONSTRAINT [fk_EventLog_User_modification] FOREIGN KEY
 	(
 		[ModificationUserId]
@@ -234,30 +234,30 @@ GO
 CREATE TABLE [global].[EmailMessage]
 (
 	[EmailMessageId] [int] IDENTITY(1,1) NOT NULL,
-	
+
 	[From] [nvarchar](2047) NOT NULL,
 	[Sender] [nvarchar](2047) NULL,
 	[ReplyTo] [nvarchar](2047) NULL,
 	[To] [nvarchar](2047) NOT NULL,
 	[CarbonCopy] [nvarchar](2047) NULL,
 	[BlindCarbonCopy] [nvarchar](2047) NULL,
-	[Subject] [nvarchar](2047) NOT NULL,	
+	[Subject] [nvarchar](2047) NOT NULL,
 	[IsBodyHtml] [bit] NOT NULL DEFAULT(0),
 	[Body] [nvarchar](MAX) NOT NULL,
 	[Processed] [bit] NOT NULL,
-	
+
 	[SortOrder] [tinyint] NULL,
 	[CreationTimestamp] [datetime] NOT NULL,
 	[ModificationTimestamp] [datetime] NOT NULL,
 	[CreationUserId] [int] NULL,
 	[ModificationUserId] [int] NULL,
 	[LogicalDelete] [bit] NOT NULL DEFAULT(0),
-	
+
 	CONSTRAINT [pk_EmailMessage] PRIMARY KEY
 	(
 		[EmailMessageId]
 	),
-	
+
 	CONSTRAINT [fk_EmailMessage_User_creation] FOREIGN KEY
 	(
 		[CreationUserId]
@@ -266,7 +266,7 @@ CREATE TABLE [global].[EmailMessage]
 	(
 		[UserId]
 	),
-	
+
 	CONSTRAINT [fk_EmailMessage_User_modification] FOREIGN KEY
 	(
 		[ModificationUserId]
@@ -283,19 +283,19 @@ CREATE TABLE [global].[EmailAttachment]
 (
 	[EmailAttachmentId] [int] IDENTITY(1,1) NOT NULL,
 	[EmailMessageId] [int] NOT NULL,
-	
+
 	[FileName] [nvarchar](255) NOT NULL,
 	[FileSize] [bigint] NOT NULL DEFAULT(0),
 	[MimeType] [nvarchar](255) NOT NULL,
-	[AttachmentBits] [varbinary](MAX) NULL,	
-	
+	[AttachmentBits] [varbinary](MAX) NULL,
+
 	[SortOrder] [tinyint] NULL,
 	[CreationTimestamp] [datetime] NOT NULL,
 	[ModificationTimestamp] [datetime] NOT NULL,
 	[CreationUserId] [int] NULL,
 	[ModificationUserId] [int] NULL,
 	[LogicalDelete] [bit] NOT NULL DEFAULT(0),
-	
+
 	CONSTRAINT [pk_EmailAttachment] PRIMARY KEY
 	(
 		[EmailMessageId]
@@ -315,7 +315,7 @@ CREATE TABLE [global].[EmailAttachment]
 	(
 		[EmailMessageId]
 	),
-	
+
 	CONSTRAINT [fk_EmailAttachment_User_creation] FOREIGN KEY
 	(
 		[CreationUserId]
@@ -324,7 +324,7 @@ CREATE TABLE [global].[EmailAttachment]
 	(
 		[UserId]
 	),
-	
+
 	CONSTRAINT [fk_EmailAttachment_User_modification] FOREIGN KEY
 	(
 		[ModificationUserId]
@@ -345,10 +345,10 @@ CREATE TABLE [application].[Organization]
 (
 	[OrganizationId] [int] IDENTITY(1,1) NOT NULL,
 	[ParentOrganizationId] [int] NULL,
-	
+
 	[OrganizationName] [nvarchar](255) NOT NULL,
 	[TimeZoneId] [nvarchar](255) NULL,
-	
+
 	[SortOrder] [tinyint] NULL,
 	[CreationTimestamp] [datetime] NOT NULL,
 	[ModificationTimestamp] [datetime] NOT NULL,
@@ -360,12 +360,12 @@ CREATE TABLE [application].[Organization]
 	(
 		[OrganizationId]
 	),
-	
+
 	CONSTRAINT [uk_Organization] UNIQUE
 	(
 		[OrganizationName]
 	),
-	
+
 	CONSTRAINT [fk_Organization_Organization_parent] FOREIGN KEY
 	(
 		[ParentOrganizationId]
@@ -383,7 +383,7 @@ CREATE TABLE [application].[Organization]
 	(
 		[UserId]
 	),
-	
+
 	CONSTRAINT [fk_Organization_User_modification] FOREIGN KEY
 	(
 		[ModificationUserId]
@@ -401,19 +401,19 @@ CREATE TABLE [application].[Member]
 	[MemberId] [int] NOT NULL, -- same as [User].[UserId]
 	[OrganizationId] [int] NOT NULL,
 	[ParentMemberId] [int] NULL,
-	
+
 	[MemberName] [nvarchar](255) NULL,
 	[MemberTitle] [nvarchar](255) NULL,
-	
+
 	[SecurityRoleId] [int] NOT NULL,
-			
+
 	[SortOrder] [tinyint] NULL,
 	[CreationTimestamp] [datetime] NOT NULL,
 	[ModificationTimestamp] [datetime] NOT NULL,
 	[CreationUserId] [int] NOT NULL,
 	[ModificationUserId] [int] NOT NULL,
 	[LogicalDelete] [bit] NOT NULL DEFAULT(0),
-	
+
 	CONSTRAINT [pk_Member] PRIMARY KEY
 	(
 		[MemberId]
@@ -432,7 +432,7 @@ CREATE TABLE [application].[Member]
 	(
 		[UserId]
 	),
-	
+
 	CONSTRAINT [fk_Member_Member_parent] FOREIGN KEY
 	(
 		[ParentMemberId]
@@ -441,7 +441,7 @@ CREATE TABLE [application].[Member]
 	(
 		[MemberId]
 	),
-	
+
 	CONSTRAINT [fk_Member_Organization] FOREIGN KEY
 	(
 		[OrganizationId]
@@ -450,7 +450,7 @@ CREATE TABLE [application].[Member]
 	(
 		[OrganizationId]
 	),
-	
+
 	CONSTRAINT [fk_Member_SecurityRole] FOREIGN KEY
 	(
 		[SecurityRoleId]
@@ -459,7 +459,7 @@ CREATE TABLE [application].[Member]
 	(
 		[SecurityRoleId]
 	),
-	
+
 	CONSTRAINT [fk_Member_User_creation] FOREIGN KEY
 	(
 		[CreationUserId]
@@ -468,7 +468,7 @@ CREATE TABLE [application].[Member]
 	(
 		[UserId]
 	),
-	
+
 	CONSTRAINT [fk_Member_User_modification] FOREIGN KEY
 	(
 		[ModificationUserId]
@@ -497,7 +497,7 @@ GO
 CREATE TABLE [testcases].[tab_with_primary_key_as_identity]
 (
 	[col_int_id_pk] [int] IDENTITY(1,1) NOT NULL,
-	
+
 	[col_bigint] [bigint] NULL,
 	[col_binary] [binary] NULL,
 	[col_bit] [bit] NULL,
@@ -538,7 +538,7 @@ CREATE TABLE [testcases].[tab_with_primary_key_as_identity]
 	CONSTRAINT [pk_tab_with_primary_key_as_identity] PRIMARY KEY
 	(
 		[col_int_id_pk]
-	)	
+	)
 )
 GO
 
@@ -546,7 +546,7 @@ GO
 CREATE TABLE [testcases].[tab_with_primary_key_as_default]
 (
 	[col_uuid_df_pk] [uniqueidentifier] NOT NULL DEFAULT(newsequentialid()),
-	
+
 	[col_bigint] [bigint] NULL,
 	[col_binary] [binary] NULL,
 	[col_bit] [bit] NULL,
@@ -587,7 +587,7 @@ CREATE TABLE [testcases].[tab_with_primary_key_as_default]
 	CONSTRAINT [pk_tab_with_primary_key_as_default] PRIMARY KEY
 	(
 		[col_uuid_df_pk]
-	)	
+	)
 )
 GO
 
@@ -596,7 +596,7 @@ CREATE TABLE [testcases].[tab_with_primary_key_with_different_identity]
 (
 	[col_int_pk] [int] NOT NULL,
 	[col_int_id] [int] IDENTITY(1,1) NOT NULL,
-	
+
 	[col_bigint] [bigint] NULL,
 	[col_binary] [binary] NULL,
 	[col_bit] [bit] NULL,
@@ -637,7 +637,7 @@ CREATE TABLE [testcases].[tab_with_primary_key_with_different_identity]
 	CONSTRAINT [pk_tab_with_primary_key_with_different_identity] PRIMARY KEY
 	(
 		[col_int_pk]
-	)	
+	)
 )
 GO
 
@@ -645,7 +645,7 @@ GO
 CREATE TABLE [testcases].[tab_with_no_primary_key_with_identity]
 (
 	[col_int_id] [int] IDENTITY(1,1) NOT NULL,
-	
+
 	[col_bigint] [bigint] NULL,
 	[col_binary] [binary] NULL,
 	[col_bit] [bit] NULL,
@@ -689,7 +689,7 @@ GO
 CREATE TABLE [testcases].[tab_with_primary_key_no_identity]
 (
 	[col_int_pk] [int] NOT NULL,
-	
+
 	[col_bigint] [bigint] NULL,
 	[col_binary] [binary] NULL,
 	[col_bit] [bit] NULL,
@@ -730,7 +730,7 @@ CREATE TABLE [testcases].[tab_with_primary_key_no_identity]
 	CONSTRAINT [pk_tab_with_primary_key_no_identity] PRIMARY KEY
 	(
 		[col_int_pk]
-	)	
+	)
 )
 GO
 
@@ -783,7 +783,7 @@ CREATE TABLE [testcases].[tab_with_composite_primary_key_no_identity]
 	[col_int_pk1] [int] NOT NULL,
 	[col_int_pk2] [int] NOT NULL,
 	[col_int_pk3] [int] NOT NULL,
-	
+
 	[col_bigint] [bigint] NULL,
 	[col_binary] [binary] NULL,
 	[col_bit] [bit] NULL,
@@ -827,7 +827,7 @@ CREATE TABLE [testcases].[tab_with_composite_primary_key_no_identity]
 		[col_int_pk1],
 		[col_int_pk2],
 		[col_int_pk3]
-	)	
+	)
 )
 GO
 

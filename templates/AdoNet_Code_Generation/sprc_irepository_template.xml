@@ -57,9 +57,9 @@ using TextMetal.Common.Syntax.Statements;
 namespace ${ClrNamespace}
 {
 	public partial interface IRepository
-	{		
+	{
 		#region Methods/Operators
-		
+
 ]]>
 
 		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -70,7 +70,7 @@ namespace ${ClrNamespace}
 					<ForEach.Filter></ForEach.Filter>
 					<ForEach.Body>
 						<![CDATA[		I${ProcedureNameSingularPascalCase}_Response Execute_${ProcedureNameSingularPascalCase}(I${ProcedureNameSingularPascalCase}_Request request);
-						
+
 		I${ProcedureNameSingularPascalCase}_Response Execute_${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, I${ProcedureNameSingularPascalCase}_Request request);
 ]]>
 						<If>

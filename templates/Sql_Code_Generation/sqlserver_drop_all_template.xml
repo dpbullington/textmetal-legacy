@@ -24,7 +24,7 @@ GO
 				"INFORMATION_SCHEMA", "guest"].include?(textMetal.EvaluateToken.invoke("SchemaName"));</Script>
 			</Ruby>
 		</ForEach.Filter>
-		
+
 		<ForEach.Body>
 
 <![CDATA[-- Creating drop script for schema: [${SchemaName}]
@@ -58,59 +58,59 @@ GO
 		<If.True>
 <![CDATA[ALTER TABLE [${SchemaName}].[${TableName}] DROP CONSTRAINT [${PrimaryKey.PrimaryKeyName}]
 GO
-	
+
 ]]>
 		</If.True>
 		</If>
 					<ForEach in="ForeignKeys" var-ct="_LoopCount" var-ix="_LoopIndex">
 						<ForEach.Filter />
 						<ForEach.Body>
-						
+
 <![CDATA[ALTER TABLE [${SchemaName}].[${TableName}] DROP CONSTRAINT [${ForeignKeyName}]
 GO
-	
+
 ]]>
-						
+
 						</ForEach.Body>
 					</ForEach>
-				
+
 					<ForEach in="UniqueKeys" var-ct="_LoopCount" var-ix="_LoopIndex">
 						<ForEach.Filter>
 						</ForEach.Filter>
 						<ForEach.Body>
-						
+
 <![CDATA[ALTER TABLE [${SchemaName}].[${TableName}] DROP CONSTRAINT [${UniqueKeyName}]
 GO
-	
+
 ]]>
-						
+
 						</ForEach.Body>
 					</ForEach>
-				
+
 					<ForEach in="Triggers" var-ct="_LoopCount" var-ix="_LoopIndex">
 						<ForEach.Filter>
 						</ForEach.Filter>
 						<ForEach.Body>
-						
+
 <![CDATA[DROP TRIGGER [${SchemaName}].[${TriggerName}]
 GO
-	
+
 ]]>
-						
+
 						</ForEach.Body>
 					</ForEach>
-				
-				
-				
-				
+
+
+
+
 <![CDATA[DROP TABLE [${SchemaName}].[${TableName}]
 GO
-	
+
 ]]>
-				
+
 				</ForEach.Body>
 			</ForEach>
-			
+
 			<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
 				<ForEach.Filter>
 					<BinaryExpression operator="Eq">
@@ -123,12 +123,12 @@ GO
 					</BinaryExpression>
 				</ForEach.Filter>
 				<ForEach.Body>
-				
+
 <![CDATA[DROP VIEW [${SchemaName}].[${TableName}]
 GO
-	
+
 ]]>
-				
+
 				</ForEach.Body>
 			</ForEach>
 

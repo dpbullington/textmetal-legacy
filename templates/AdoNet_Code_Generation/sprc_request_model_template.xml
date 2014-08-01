@@ -50,26 +50,26 @@ using System.Xml;
 namespace ${ClrNamespace}.${FolderName}
 {
 	public partial class ${ProcedureNameSingularPascalCase}_Request : ${ClrSuperType}, I${ProcedureNameSingularPascalCase}_Request
-	{		
+	{
 		#region Constructors/Destructors
-		
+
 		public ${ProcedureNameSingularPascalCase}_Request()
 		{
 		}
-		
+
 		#endregion
-		
+
 		#region Fields/Constants
-		
+
 		public const string SCHEMA_NAME = "${SchemaName}";
 		public const string PROCEDURE_NAME = "${ProcedureName}";
-		
+
 ]]>
 
-					<ForEach in="Parameters" var-ct="_LoopCount" var-ix="_LoopIndex">							
+					<ForEach in="Parameters" var-ct="_LoopCount" var-ix="_LoopIndex">
 						<ForEach.Body>
 							<![CDATA[		public const string PARAMETER_NAME_${ParameterNameConstantCase} = "${ParameterName}";]]>
-							
+
 							<If>
 								<If.Condition>
 									<BinaryExpression operator="Ne">
@@ -88,7 +88,7 @@ namespace ${ClrNamespace}.${FolderName}
 							</If>
 						</ForEach.Body>
 					</ForEach>
-	
+
 <![CDATA[
 
 ]]>

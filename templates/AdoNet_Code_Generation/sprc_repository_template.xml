@@ -78,9 +78,9 @@ using TextMetal.Common.Syntax.Statements;
 namespace ${ClrNamespace}
 {
 	public partial class Repository
-	{		
+	{
 		#region Methods/Operators
-		
+
 ]]>
 
 		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -93,42 +93,42 @@ namespace ${ClrNamespace}
 						<![CDATA[		public I${ProcedureNameSingularPascalCase}_Response Execute_${ProcedureNameSingularPascalCase}(I${ProcedureNameSingularPascalCase}_Request request${ProcedureNameSingularPascalCase})
 		{
 			I${ProcedureNameSingularPascalCase}_Response retval;
-			
+
 			if ((object)UnitOfWork.Current == null)
 			{
 				using (IUnitOfWork unitOfWork = Repository.GetUnitOfWork())
 				{
 					retval = this.Execute_${ProcedureNameSingularPascalCase}(unitOfWork, request${ProcedureNameSingularPascalCase});
-						
+
 					unitOfWork.Complete();
-					
+
 					return retval;
 				}
-			}			
+			}
 			else
 			{
 				return this.Execute_${ProcedureNameSingularPascalCase}(UnitOfWork.Current, request${ProcedureNameSingularPascalCase});
 			}
 		}
-						
+
 		public I${ProcedureNameSingularPascalCase}_Response Execute_${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, I${ProcedureNameSingularPascalCase}_Request request${ProcedureNameSingularPascalCase})
-		{	
-			I${ProcedureNameSingularPascalCase}_Response response${ProcedureNameSingularPascalCase};						
+		{
+			I${ProcedureNameSingularPascalCase}_Response response${ProcedureNameSingularPascalCase};
 			IDataParameter commandParameter;
-			List<IDataParameter> commandParameters;			
+			List<IDataParameter> commandParameters;
 			string commandText;
 			object value;
 			bool executeAsCud;
 			int thisOrThatRecordsAffected;
-			
+
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
-				
+
 			if ((object)request${ProcedureNameSingularPascalCase} == null)
 				throw new ArgumentNullException("request${ProcedureNameSingularPascalCase}");
 
 			this.OnPreExecute${ProcedureNameSingularPascalCase}(unitOfWork, request${ProcedureNameSingularPascalCase});
-			
+
 			commandParameters = new List<IDataParameter>();
 
 ]]>
@@ -147,7 +147,7 @@ namespace ${ClrNamespace}
 <![CDATA[			commandParameter = unitOfWork.CreateParameter(ParameterDirection.${ParameterDirection}, DbType.${ParameterDbType}, ${ParameterSize}, ${ParameterPrecision}, ${ParameterScale}, ${ParameterCSharpNullableLiteral}, GetDataSourceTagSpecificInstance().GetParameterName(${ProcedureNameSingularPascalCase}_Request.PARAMETER_NAME_${ParameterNameConstantCase}), request${ProcedureNameSingularPascalCase}.${ParameterNamePascalCase});
 			commandParameters.Add(commandParameter);
 			GetDataSourceTagSpecificInstance().ParameterMagic(unitOfWork, commandParameter, "${ParameterSqlType}");]]>
-			
+
 			<If>
 				<If.Condition>
 					<BinaryExpression operator="Ne">
@@ -171,7 +171,7 @@ namespace ${ClrNamespace}
 <![CDATA[
 
 ]]>
-	 
+
 	 <ForEach in="Parameters" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
 			<BinaryExpression operator="Ne">
@@ -187,7 +187,7 @@ namespace ${ClrNamespace}
 <![CDATA[			commandParameter = unitOfWork.CreateParameter(ParameterDirection.${ParameterDirection}, DbType.${ParameterDbType}, ${ParameterSize}, ${ParameterPrecision}, ${ParameterScale}, ${ParameterCSharpNullableLiteral}, GetDataSourceTagSpecificInstance().GetParameterName(${ProcedureNameSingularPascalCase}_Request.PARAMETER_NAME_${ParameterNameConstantCase}), null);
 			commandParameters.Add(commandParameter);
 			GetDataSourceTagSpecificInstance().ParameterMagic(unitOfWork, commandParameter, "${ParameterSqlType}");]]>
-			
+
 			<If>
 				<If.Condition>
 					<BinaryExpression operator="Ne">
@@ -207,7 +207,7 @@ namespace ${ClrNamespace}
 			</If>
 		</ForEach.Body>
 	 </ForEach>
-			
+
 			<If>
 				<If.Condition>
 					<BinaryExpression operator="Eq">
@@ -220,8 +220,8 @@ namespace ${ClrNamespace}
 					</BinaryExpression>
 				</If.Condition>
 				<If.True>
-<![CDATA[		
-	
+<![CDATA[
+
 			executeAsCud = true;
 ]]>
 				</If.True>
@@ -231,8 +231,8 @@ namespace ${ClrNamespace}
 			executeAsCud = false;
 ]]>
 				</If.False>
-			</If>			
-			
+			</If>
+
 <![CDATA[
 			]]>
 			<Import name="import_execute.xml" />
@@ -241,13 +241,13 @@ namespace ${ClrNamespace}
 
 			OnProfileCommand(typeof(I${ProcedureNameSingularPascalCase}_Result), CommandType.StoredProcedure, commandText, commandParameters, executeAsCud, thisOrThatRecordsAffected);
 
-			response${ProcedureNameSingularPascalCase} = unitOfWork.ExecuteModel<I${ProcedureNameSingularPascalCase}_Request, I${ProcedureNameSingularPascalCase}_Result, I${ProcedureNameSingularPascalCase}_Response>(request${ProcedureNameSingularPascalCase}, CommandType.StoredProcedure, commandText, commandParameters, executeAsCud, thisOrThatRecordsAffected, MapTo${ProcedureNameSingularPascalCase}_Result, () => this.CreateResponseModel<I${ProcedureNameSingularPascalCase}_Response>(), () => this.CreateResultModel<I${ProcedureNameSingularPascalCase}_Result>());	
-			
+			response${ProcedureNameSingularPascalCase} = unitOfWork.ExecuteModel<I${ProcedureNameSingularPascalCase}_Request, I${ProcedureNameSingularPascalCase}_Result, I${ProcedureNameSingularPascalCase}_Response>(request${ProcedureNameSingularPascalCase}, CommandType.StoredProcedure, commandText, commandParameters, executeAsCud, thisOrThatRecordsAffected, MapTo${ProcedureNameSingularPascalCase}_Result, () => this.CreateResponseModel<I${ProcedureNameSingularPascalCase}_Response>(), () => this.CreateResultModel<I${ProcedureNameSingularPascalCase}_Result>());
+
 			foreach (I${ProcedureNameSingularPascalCase}_Result result${ProcedureNameSingularPascalCase}2 in response${ProcedureNameSingularPascalCase}.Results)
 				this.OnExecuteResult${ProcedureNameSingularPascalCase}(unitOfWork, result${ProcedureNameSingularPascalCase}2);
-			
+
 ]]>
-	
+
 <ForEach in="Parameters" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
 			<BinaryExpression operator="Or">
@@ -275,10 +275,10 @@ namespace ${ClrNamespace}
 		</ForEach.Filter>
 		<ForEach.Body>
 			<![CDATA[			commandParameter = commandParameters.SingleOrDefault(p => p.ParameterName == GetDataSourceTagSpecificInstance().GetParameterName(${ProcedureNameSingularPascalCase}_Request.PARAMETER_NAME_${ParameterNameConstantCase}));
-			
+
 			if ((object)commandParameter == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message"); 
-				
+				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+
 			response${ProcedureNameSingularPascalCase}.${ParameterNamePascalCase} = commandParameter.Value.ChangeType<${ParameterCSharpClrType}>();]]>
 			<If>
 				<If.Condition>
@@ -300,26 +300,26 @@ namespace ${ClrNamespace}
 		</ForEach.Body>
 	 </ForEach>
 
-<![CDATA[				
-			
+<![CDATA[
+
 			this.OnPostExecute${ProcedureNameSingularPascalCase}(unitOfWork, response${ProcedureNameSingularPascalCase});
-			
+
 			return response${ProcedureNameSingularPascalCase};
 		}
-		
+
 		private static void MapTo${ProcedureNameSingularPascalCase}_Result(IDictionary<string, object> result, I${ProcedureNameSingularPascalCase}_Result result${ProcedureNameSingularPascalCase})
 		{
 			object value;
-			
+
 			if ((object)result == null)
 				throw new ArgumentNullException("result");
-				
+
 			if ((object)result${ProcedureNameSingularPascalCase} == null)
 				throw new ArgumentNullException("result${ProcedureNameSingularPascalCase}");
-			
+
 ]]>
 	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
-		<ForEach.Filter>			
+		<ForEach.Filter>
 		</ForEach.Filter>
 		<ForEach.Body>
 			<![CDATA[			if (result.TryGetValue(${ProcedureNameSingularPascalCase}_Result.COLUMN_NAME_${ColumnNameConstantCase}, out value))
@@ -344,11 +344,11 @@ namespace ${ClrNamespace}
 		</ForEach.Body>
 	 </ForEach>
 <![CDATA[		}
-		
+
 		partial void OnPreExecute${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, I${ProcedureNameSingularPascalCase}_Request request${ProcedureNameSingularPascalCase});
-		
+
 		partial void OnExecuteResult${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, I${ProcedureNameSingularPascalCase}_Result result${ProcedureNameSingularPascalCase});
-		
+
 		partial void OnPostExecute${ProcedureNameSingularPascalCase}(IUnitOfWork unitOfWork, I${ProcedureNameSingularPascalCase}_Response response${ProcedureNameSingularPascalCase});
 ]]>
 

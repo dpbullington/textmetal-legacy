@@ -3,7 +3,7 @@
 #	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 #
 
-cls 
+cls
 $root = [System.Environment]::CurrentDirectory
 
 $filesToKill = Get-ChildItem $root -Recurse -Include "bin", "obj", "clientbin", "debug", "release", "output", "*.suo", "*.cache", "*.resharper", "*.user", "*.visualstate.xml", "*.pidb", "*.userprefs", "_ReSharper.*" -Force

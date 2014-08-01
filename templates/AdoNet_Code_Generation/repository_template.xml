@@ -100,24 +100,24 @@ namespace ${ClrNamespace}
 {
 	[DependencyRegistration]
 	public partial class Repository : IRepository
-	{		
+	{
 		#region Constructors/Destructors
-		
+
 		public Repository()
 		{
 		}
-		
+
 		#endregion
-		
+
 		#region Fields/Constants
-		
+
 		private const string APP_CONFIG_PREFIX = "${ClrNamespace}";
 		private const string CONNECTION_STRING_NAME = "${ClrNamespace}::ConnectionString";
 		private const string DATA_SOURCE_TAG = "${ClrNamespace}::DataSourceTag";
 		private const string RESOURCE_NAME_FORMAT = "${ClrNamespace}.SQL.RevisionHistory({0}).xml";
-		
+
 		private static readonly _DatabaseFileManager databaseFileManager = new _DatabaseFileManager(APP_CONFIG_PREFIX, NetSqliteSpecific.Instance);
-						
+
 		#endregion
 
 		#region Properties/Indexers/Events
@@ -208,7 +208,7 @@ namespace ${ClrNamespace}
 		{
 			return DependencyManager.AppDomainInstance.ResolveDependency<TResultModel>("");
 		}
-		
+
 		[DependencyRegistration]
 		public static void OnDepenndencyRegistration()
 		{
@@ -227,7 +227,7 @@ namespace ${ClrNamespace}
 
 				</ForEach.Body>
 			</ForEach>
-			
+
 		</ForEach.Body>
 	</ForEach>
 
@@ -248,7 +248,7 @@ namespace ${ClrNamespace}
 		static partial void OnProfileCommand(Type modelType, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, bool executeAsCud, int thisOrThatRecordsAffected)
 		{
 			/* THIS METHOD SHOULD NOT BE DEFINED IN RELEASE/PRODUCTION BUILDS */
-			
+
 			// these are by convention in the TextMetal.Common.Data.AdoNetHelper.ExecuteDictionary(...) API.
 			const bool COMMAND_PREPARE = false;
 			/* const */ int? COMMAND_TIMEOUT = null;
@@ -273,22 +273,22 @@ namespace ${ClrNamespace}
 
 			System.Diagnostics.Trace.WriteLine(value);
 		}
-#endif		
-		
+#endif
+
 		public static IUnitOfWork GetUnitOfWork()
 		{
 			return UnitOfWork.Create(ConnectionType, ConnectionString, true);
 		}
-		
+
 		public static void InitDatabase()
 		{
 			string resourceName;
-			
+
 			resourceName = string.Format(RESOURCE_NAME_FORMAT, GetDataSourceTagSpecificInstance().DataSourceTag.SafeToString().ToLower());
-			
+
 			DatabaseFileManager.InitializeFromRevisionHistoryResource(DefaultUnitOfWorkFactory.Instance, typeof(Repository), resourceName);
 		}
-		
+
 		private static IDataSourceTagSpecific GetDataSourceTagSpecificInstance()
 		{
 			if (DataSourceTag.SafeToString().ToLower() == NetSqlServerSpecific.Instance.DataSourceTag.SafeToString().ToLower())
@@ -308,7 +308,7 @@ namespace ${ClrNamespace}
 		static partial void OnPreProcessConnectionStringName(ref string connectionStringName);
 
 		#endregion
-		
+
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		public sealed class DefaultUnitOfWorkFactory : IUnitOfWorkFactory

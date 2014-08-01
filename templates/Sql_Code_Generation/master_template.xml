@@ -5,8 +5,8 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
-	
+
 	<Import name="sqlserver_history_template.xml" />
 	<Import name="sqlserver_drop_all_template.xml" />
-	
+
 </Template>

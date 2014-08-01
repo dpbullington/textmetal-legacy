@@ -53,9 +53,9 @@ namespace ${ClrNamespace}.UnitTests
 {
 	[TestFixture]
 	public partial class RepositoryTests
-	{		
+	{
 		#region Methods/Operators
-		
+
 ]]>
 
 		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -68,7 +68,7 @@ namespace ${ClrNamespace}.UnitTests
 						<![CDATA[		[Ignore]
 		[Test]
 		public void ShouldExecute${ProcedureNameSingularPascalCase}Test()
-		{			
+		{
 			throw new NotImplementedException();
 		}
 ]]>

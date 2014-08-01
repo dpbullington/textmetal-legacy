@@ -53,7 +53,7 @@ using TextMetal.Common.Data.Framework;
 namespace ${ClrNamespace}.${FolderName}
 {
 	public partial interface I${ProcedureNameSingularPascalCase}_Request : IRequestModelObject
-	{		
+	{
 		#region Properties/Indexers/Events
 ]]>
 						<ForEach in="Parameters" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -80,7 +80,7 @@ namespace ${ClrNamespace}.${FolderName}
 						</ForEach>
 
 						<![CDATA[
-		#endregion		
+		#endregion
 	}
 }
 ]]>

@@ -76,9 +76,9 @@ using TextMetal.Common.Core;
 namespace ${ClrNamespace}.${FolderName}
 {
 	public partial class ${TableNameSingularPascalCase}
-	{		
+	{
 		#region Methods/Operators
-		
+
 		public static bool Exists(${TableNameSingularPascalCase} ${TableNameSingularCamelCase})
 		{
 			IEnumerable<${TableNameSingularPascalCase}> ${TableNamePluralCamelCase};
@@ -116,7 +116,7 @@ namespace ${ClrNamespace}.${FolderName}
 
 			if (DataType.IsNullOrWhiteSpace(this.XXX))
 				_messages.Add(new Message("", "XXX is required.", Severity.Error));
-				
+
 			if (_messages.Count == 0)
 			{
 				exists = Exists(this);

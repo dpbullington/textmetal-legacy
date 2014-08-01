@@ -20,7 +20,7 @@ INSERT INTO [global].[User]
 		null, null, 0, 0,
 		0, GETUTCDATE(), GETUTCDATE(), 0, 0, 0
 	);
-	
+
 
 DECLARE @UserId [int]
 SET @UserId = SCOPE_IDENTITY()
@@ -80,7 +80,7 @@ INSERT INTO [application].[Member]
 		@UserId,
 		0
 	);
-	
+
 DECLARE @MemberId [int]
 SET @MemberId = SCOPE_IDENTITY()
 

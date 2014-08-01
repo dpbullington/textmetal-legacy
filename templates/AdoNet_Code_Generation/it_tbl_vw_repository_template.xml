@@ -112,9 +112,9 @@ namespace ${ClrNamespace}.IntegrationTests
 {
 	[TestFixture]
 	public partial class RepositoryTests
-	{		
+	{
 		#region Methods/Operators
-		
+
 ]]>
 
 		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -140,11 +140,11 @@ namespace ${ClrNamespace}.IntegrationTests
 			Repository repository;
 			I${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
 			bool result;
-			
+
 			Assert.IsNull(UnitOfWork.Current);
-			
+
 			repository = new Repository();
-				
+
 			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(Repository.DefaultUnitOfWorkFactory.Instance))
 			{
 				Assert.IsNotNull(UnitOfWork.Current);
@@ -190,11 +190,11 @@ namespace ${ClrNamespace}.IntegrationTests
 
 				// do INSERT first
 				Assert.IsTrue(@${TableNameSingularCamelCase}.IsNew);
-				
+
 				result = repository.Save${TableNameSingularPascalCase}(@${TableNameSingularCamelCase});
 
 				Assert.IsTrue(result);
-					
+
 ]]>
 
 								<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -235,21 +235,21 @@ namespace ${ClrNamespace}.IntegrationTests
 
 				// do UPDATE next
 				Assert.IsFalse(@${TableNameSingularCamelCase}.IsNew);
-				
+
 				result = repository.Save${TableNameSingularPascalCase}(@${TableNameSingularCamelCase});
 
 				Assert.IsTrue(result);
-				
+
 				scope.ScopeComplete();
 			}
-			
+
 			Assert.IsNull(UnitOfWork.Current);
 		}
-		
+
 ]]>
 							</If.True>
 						</If>
-						
+
 						<![CDATA[		[Test]
 		public void ShouldLoad${TableNameSingularPascalCase}Test()
 		{
@@ -366,7 +366,7 @@ namespace ${ClrNamespace}.IntegrationTests
 
 			Assert.IsNull(UnitOfWork.Current);
 		}
-		
+
 		[Test]
 		public void ShouldFind${TableNamePluralPascalCase}Test()
 		{

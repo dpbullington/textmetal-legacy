@@ -1,4 +1,4 @@
-TextMetal.Common.Cerealization
+﻿TextMetal.Common.Cerealization
 TextMetal.Common.Core
 TextMetal.Common.Data
 TextMetal.Common.Solder

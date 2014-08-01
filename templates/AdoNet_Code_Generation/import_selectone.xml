@@ -5,16 +5,16 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
-		
+
 	<!--<DebuggerBreakpoint />-->
 	<Alloc token="TableAlias" />
-	
+
 	<Assign token="TableAlias">
 		<Assign.Expression>
 			<Value data="t0" />
 		</Assign.Expression>
 	</Assign>
-	
+
 	<![CDATA[commandText = @"SELECT "]]>
 
 	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -39,7 +39,7 @@
 	</ForEach>
 
 	<![CDATA[ + @" FROM  " + GetDataSourceTagSpecificInstance().GetTableName(${TableNameSingularPascalCase}.SCHEMA_NAME, ${TableNameSingularPascalCase}.TABLE_NAME) + @" " + GetDataSourceTagSpecificInstance().GetTableAlias("${TableAlias}")]]>
-	
+
 	<If>
 		<If.Condition>
 			<UnaryExpression operator="Not">
@@ -94,7 +94,7 @@
 					</If>
 				</ForEach.Body>
 			</ForEach>
-			
+
 			<![CDATA[ + @" ORDER BY "]]>
 
 			<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -140,11 +140,11 @@
 						</If.True>
 					</If>
 				</ForEach.Body>
-			</ForEach>			
-	
+			</ForEach>
+
 		</If.True>
 	</If>
-	
+
 	<![CDATA[;]]>
 
 </Template>

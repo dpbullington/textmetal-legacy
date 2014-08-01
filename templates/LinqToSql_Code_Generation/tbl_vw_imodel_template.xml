@@ -81,10 +81,10 @@ using TextMetal.Common.Syntax.Statements;
 namespace ${ClrNamespace}.${FolderName}
 {
 	public partial interface I${TableNameSingularPascalCase} : IModelObject
-	{		
+	{
 		#region Properties/Indexers/Events
 ]]>
-						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
+						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Body>
 								<If>
 									<If.Condition>

@@ -58,25 +58,25 @@ namespace ${ClrNamespace}.UnitTests.${FolderName}
 {
 	[TestFixture]
 	public sealed class ${ProcedureNameSingularPascalCase}_ResponseTests
-	{		
+	{
 		#region Constructors/Destructors
-		
+
 		public ${ProcedureNameSingularPascalCase}_ResponseTests()
 		{
 		}
-		
+
 		#endregion
-			
+
 		#region Methods/Operators
-		
+
 		[Test]
 		public void ShouldCreate${ProcedureNameSingularPascalCase}Test()
-		{			
+		{
 			I${ProcedureNameSingularPascalCase}_Response ${ProcedureNameSingularCamelCase}Response;
-			
+
 			//${ProcedureNameSingularCamelCase}Response = repository.CreateResponseModel<I${ProcedureNameSingularPascalCase}_Response>();
 			${ProcedureNameSingularCamelCase}Response = new ${ProcedureNameSingularPascalCase}_Response();
-			
+
 			Assert.IsNull(${ProcedureNameSingularCamelCase}Response.Results);
 
 ]]>
@@ -132,7 +132,7 @@ namespace ${ClrNamespace}.UnitTests.${FolderName}
 						</ForEach>
 
 						<![CDATA[		}
-		
+
 		#endregion
 	}
 }

@@ -57,22 +57,22 @@ namespace ${ClrNamespace}.UnitTests.${FolderName}
 {
 	[TestFixture]
 	public sealed class ${ProcedureNameSingularPascalCase}_RequestTests
-	{		
+	{
 		#region Constructors/Destructors
-		
+
 		public ${ProcedureNameSingularPascalCase}_RequestTests()
 		{
 		}
-		
+
 		#endregion
-			
+
 		#region Methods/Operators
-		
+
 		[Test]
 		public void ShouldCreate${ProcedureNameSingularPascalCase}Test()
-		{			
+		{
 			I${ProcedureNameSingularPascalCase}_Request ${ProcedureNameSingularCamelCase}Request;
-			
+
 			//${ProcedureNameSingularCamelCase}Request = repository.CreateRequestModel<I${ProcedureNameSingularPascalCase}_Request>();
 			${ProcedureNameSingularCamelCase}Request = new ${ProcedureNameSingularPascalCase}_Request();
 
@@ -115,7 +115,7 @@ namespace ${ClrNamespace}.UnitTests.${FolderName}
 						</ForEach>
 
 						<![CDATA[		}
-		
+
 		#endregion
 	}
 }

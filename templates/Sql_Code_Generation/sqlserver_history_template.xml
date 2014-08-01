@@ -12,7 +12,7 @@
 CREATE SCHEMA [${HistorySchemaName}]
 GO
 ]]>
-	
+
 	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
 			<BinaryExpression operator="Ne">
@@ -24,7 +24,7 @@ GO
 				</BinaryExpression.RightExpression>
 			</BinaryExpression>
 		</ForEach.Filter>
-		
+
 		<ForEach.Body>
 
 			<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -81,7 +81,7 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 		""
 	end
 `)} NOT NULL,]]>
-							
+
 						<If>
 							<If.Condition>
 								<BinaryExpression operator="Ne">
@@ -103,7 +103,7 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 <![CDATA[
 
 ]]>
-				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
+				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter>
 						<BinaryExpression operator="And">
 							<BinaryExpression.LeftExpression>
@@ -138,7 +138,7 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 		""
 	end
 `)} NULL,]]>
-						
+
 						<If>
 							<If.Condition>
 								<BinaryExpression operator="Ne">
@@ -198,7 +198,7 @@ CREATE NONCLUSTERED INDEX [ix_${TableName}History] ON [${HistorySchemaName}].[${
 					</ForEach.Filter>
 					<ForEach.Body>
 						<![CDATA[	[${ColumnName}] ASC]]>
-							
+
 						<If>
 							<If.Condition>
 								<BinaryExpression operator="Ne">
@@ -226,9 +226,9 @@ CREATE TRIGGER [${SchemaName}].[On${TableName}Change] ON [${SchemaName}].[${Tabl
 AS
 	BEGIN
 		SET NOCOUNT ON;
-		
+
 		DECLARE @ThisMoment [datetime2]
-		
+
 		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [${HistorySchemaName}].[${TableName}History]
@@ -262,7 +262,7 @@ AS
 					</ForEach.Filter>
 					<ForEach.Body>
 						<![CDATA[			i.[${ColumnName}],]]>
-							
+
 						<If>
 							<If.Condition>
 								<BinaryExpression operator="Ne">
@@ -283,8 +283,8 @@ AS
 				</ForEach>
 <![CDATA[
 
-]]>		
-				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
+]]>
+				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter>
 						<BinaryExpression operator="And">
 							<BinaryExpression.LeftExpression>
@@ -311,7 +311,7 @@ AS
 					</ForEach.Filter>
 					<ForEach.Body>
 						<![CDATA[			i.[${ColumnName}]]]>
-						
+
 						<If>
 							<If.Condition>
 								<BinaryExpression operator="Ne">
@@ -365,7 +365,7 @@ AS
 					</ForEach.Filter>
 					<ForEach.Body>
 						<![CDATA[			d.[${ColumnName}],]]>
-							
+
 						<If>
 							<If.Condition>
 								<BinaryExpression operator="Ne">
@@ -386,8 +386,8 @@ AS
 				</ForEach>
 <![CDATA[
 
-]]>		
-				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">							
+]]>
+				<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter>
 						<BinaryExpression operator="And">
 							<BinaryExpression.LeftExpression>
@@ -414,7 +414,7 @@ AS
 					</ForEach.Filter>
 					<ForEach.Body>
 						<![CDATA[			NULL AS [${ColumnName}]]]>
-						
+
 						<If>
 							<If.Condition>
 								<BinaryExpression operator="Ne">
@@ -463,7 +463,7 @@ AS
 					</ForEach.Filter>
 					<ForEach.Body>
 						<![CDATA[i.[${ColumnName}] = d.[${ColumnName}]]]>
-							
+
 						<If>
 							<If.Condition>
 								<BinaryExpression operator="Ne">
@@ -510,7 +510,7 @@ AS
 					</ForEach.Filter>
 					<ForEach.Body>
 						<![CDATA[i.[${ColumnName}] IS NULL]]>
-							
+
 						<If>
 							<If.Condition>
 								<BinaryExpression operator="Ne">
@@ -532,7 +532,7 @@ AS
 	END
 GO
 ]]>
-					
+
 				</ForEach.Body>
 			</ForEach>
 

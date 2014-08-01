@@ -48,9 +48,9 @@ CREATE TRIGGER [application].[OnOrganizationChange] ON [application].[Organizati
 AS
 	BEGIN
 		SET NOCOUNT ON;
-		
+
 		DECLARE @ThisMoment [datetime2]
-		
+
 		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[OrganizationHistory]
@@ -129,9 +129,9 @@ CREATE TRIGGER [application].[OnMemberChange] ON [application].[Member] AFTER IN
 AS
 	BEGIN
 		SET NOCOUNT ON;
-		
+
 		DECLARE @ThisMoment [datetime2]
-		
+
 		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[MemberHistory]
@@ -219,9 +219,9 @@ CREATE TRIGGER [global].[OnUserChange] ON [global].[User] AFTER INSERT, UPDATE, 
 AS
 	BEGIN
 		SET NOCOUNT ON;
-		
+
 		DECLARE @ThisMoment [datetime2]
-		
+
 		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[UserHistory]
@@ -310,9 +310,9 @@ CREATE TRIGGER [global].[OnSecurityRoleChange] ON [global].[SecurityRole] AFTER 
 AS
 	BEGIN
 		SET NOCOUNT ON;
-		
+
 		DECLARE @ThisMoment [datetime2]
-		
+
 		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[SecurityRoleHistory]
@@ -385,9 +385,9 @@ CREATE TRIGGER [global].[OnPropertyBagChange] ON [global].[PropertyBag] AFTER IN
 AS
 	BEGIN
 		SET NOCOUNT ON;
-		
+
 		DECLARE @ThisMoment [datetime2]
-		
+
 		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[PropertyBagHistory]
@@ -462,9 +462,9 @@ CREATE TRIGGER [global].[OnEventLogChange] ON [global].[EventLog] AFTER INSERT, 
 AS
 	BEGIN
 		SET NOCOUNT ON;
-		
+
 		DECLARE @ThisMoment [datetime2]
-		
+
 		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[EventLogHistory]
@@ -544,9 +544,9 @@ CREATE TRIGGER [global].[OnEmailMessageChange] ON [global].[EmailMessage] AFTER 
 AS
 	BEGIN
 		SET NOCOUNT ON;
-		
+
 		DECLARE @ThisMoment [datetime2]
-		
+
 		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[EmailMessageHistory]
@@ -639,9 +639,9 @@ CREATE TRIGGER [global].[OnEmailAttachmentChange] ON [global].[EmailAttachment] 
 AS
 	BEGIN
 		SET NOCOUNT ON;
-		
+
 		DECLARE @ThisMoment [datetime2]
-		
+
 		SET @ThisMoment = SYSUTCDATETIME()
 
 		INSERT INTO [history].[EmailAttachmentHistory]

@@ -37,17 +37,17 @@ namespace ${ClrNamespace}.IntegrationTests
 {
 	[TestFixture]
 	public partial class RepositoryTests
-	{		
+	{
 		#region Constructors/Destructors
-		
+
 		public RepositoryTests()
 		{
 		}
-		
+
 		#endregion
-		
+
 		#region Methods/Operators
-		
+
 		[TestFixtureSetUp]
 		public void TestFixtureSetUp()
 		{

@@ -1,9 +1,9 @@
-﻿<Object name="" xmlns="http://www.textmetal.com/api/v6.0.0">	
+﻿<Object name="" xmlns="http://www.textmetal.com/api/v6.0.0">
 	<Property name="mono" type="" value="no" />
-	
+
 	<Array name="TextFileLines">
 		<Property name="nomo" type="" value="yes" />
-		
+
 		<Object name="">
 			<Property name="RECORD_TYPE" type="" value="U" />
 			<Property name="UNIQUE_ID" type="" value="A000001" />
@@ -20,6 +20,6 @@
 			<Property name="AU" type="" value="" />
 			<Property name="OWNING_APPL" type="" value="" />
 			<Property name="LAST_LOGIN" type="" value="" />
-		</Object>		
+		</Object>
 	</Array>
 </Object>
