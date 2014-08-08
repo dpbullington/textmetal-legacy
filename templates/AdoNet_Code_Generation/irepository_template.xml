@@ -38,18 +38,6 @@ namespace ${ClrNamespace}
 {
 	public partial interface IRepository
 	{
-		TModel CreateModel<TModel>()
-			where TModel : class, IModelObject;
-
-		TRequestModel CreateRequestModel<TRequestModel>()
-			where TRequestModel : class, IRequestModelObject;
-
-		TResponseModel CreateResponseModel<TResponseModel, TResultModel>()
-			where TResponseModel : class, IResponseModelObject<TResultModel>
-			where TResultModel : class, IResultModelObject;
-
-		TResultModel CreateResultModel<TResultModel>()
-			where TResultModel : class, IResultModelObject;
 	}
 }
 ]]>

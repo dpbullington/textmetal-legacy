@@ -74,7 +74,7 @@
     <Compile Include="Framework\PoPimp\Mapping\ProcedureMappingAttribute.cs" />
     <Compile Include="Framework\PoPimp\Mapping\TableMappingAttribute.cs" />
     <Compile Include="Framework\PoPimp\ModelMapHelper.cs" />
-    <Compile Include="Framework\PoPimp\Query.cs" />
+    <Compile Include="Framework\PoPimp\PoPimpQuery.cs" />
     <Compile Include="Framework\PoPimp\SqlExpressionVisitor.cs" />
     <Compile Include="SqlQuery.cs" />
     <Compile Include="AmbientUnitOfWorkScope.cs" />

@@ -51,7 +51,6 @@ namespace ${ClrNamespace}.IntegrationTests
 		[TestFixtureSetUp]
 		public void TestFixtureSetUp()
 		{
-			Repository.InitDatabase();
 		}
 
 		[TestFixtureTearDown]

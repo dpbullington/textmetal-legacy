@@ -16,16 +16,17 @@ using System.Xml;
 
 using NUnit.Framework;
 
+using TextMetal.Framework.ExpressionModel;
 using TextMetal.TestFramework;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
 using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.PoPimp;
 using TextMetal.Common.Syntax.Expressions;
 using TextMetal.Common.Syntax.Operators;
 using TextMetal.Common.Syntax.Statements;
 
-using TextMetal.Framework.ExpressionModel;
 ]]>
 		<If>
 			<If.Condition>
@@ -135,7 +136,7 @@ namespace ${ClrNamespace}.IntegrationTests
 							</If.Condition>
 							<If.True>
 								<![CDATA[		[Test]
-		public void ShouldSave${TableNameSingularPascalCase}Test()
+		public void ShouldSaveThenDiscard${TableNameSingularPascalCase}Test()
 		{
 			Repository repository;
 			I${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
@@ -145,7 +146,7 @@ namespace ${ClrNamespace}.IntegrationTests
 
 			repository = new Repository();
 
-			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(Repository.DefaultUnitOfWorkFactory.Instance))
+			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(repository))
 			{
 				Assert.IsNotNull(UnitOfWork.Current);
 
@@ -191,7 +192,7 @@ namespace ${ClrNamespace}.IntegrationTests
 				// do INSERT first
 				Assert.IsTrue(@${TableNameSingularCamelCase}.IsNew);
 
-				result = repository.Save${TableNameSingularPascalCase}(@${TableNameSingularCamelCase});
+				result = repository.Save<I${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase});
 
 				Assert.IsTrue(result);
 
@@ -236,7 +237,14 @@ namespace ${ClrNamespace}.IntegrationTests
 				// do UPDATE next
 				Assert.IsFalse(@${TableNameSingularCamelCase}.IsNew);
 
-				result = repository.Save${TableNameSingularPascalCase}(@${TableNameSingularCamelCase});
+				result = repository.Save<I${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase});
+
+				Assert.IsTrue(result);
+
+				// do DELETE next
+				Assert.IsFalse(@${TableNameSingularCamelCase}.IsNew);
+
+				result = repository.Discard<I${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase});
 
 				Assert.IsTrue(result);
 
@@ -255,6 +263,12 @@ namespace ${ClrNamespace}.IntegrationTests
 		{
 			Repository repository;
 			I${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
+
+			Assert.IsNull(UnitOfWork.Current);
+
+			repository = new Repository();
+
+			@${TableNameSingularCamelCase} = repository.CreateModel<I${TableNameSingularPascalCase}>();
 ]]>
 	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
@@ -282,7 +296,7 @@ namespace ${ClrNamespace}.IntegrationTests
 			</BinaryExpression>
 		</ForEach.Filter>
 		<ForEach.Body>
-			<![CDATA[			${ColumnCSharpClrType} @${ColumnNameCamelCase} = ValueGenerator.GetNextValue<${ColumnCSharpClrType}>();]]>
+			<![CDATA[			@${TableNameSingularCamelCase}.@${ColumnNamePascalCase} = ValueGenerator.GetNextValue<${ColumnCSharpClrType}>();]]>
 			<If>
 				<If.Condition>
 					<BinaryExpression operator="Ne">
@@ -303,60 +317,11 @@ namespace ${ClrNamespace}.IntegrationTests
 	</ForEach>
 	<![CDATA[
 
-			Assert.IsNull(UnitOfWork.Current);
-
-			repository = new Repository();
-
-			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(Repository.DefaultUnitOfWorkFactory.Instance))
+			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(repository))
 			{
 				Assert.IsNotNull(UnitOfWork.Current);
 
-				${TableNameSingularCamelCase} = repository.Load${TableNameSingularPascalCase}(]]>
-						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
-							<ForEach.Filter>
-								<BinaryExpression operator="Or">
-									<BinaryExpression.LeftExpression>
-										<BinaryExpression operator="Eq">
-											<BinaryExpression.LeftExpression>
-												<Facet name="ColumnIsPrimaryKey" />
-											</BinaryExpression.LeftExpression>
-											<BinaryExpression.RightExpression>
-												<Value type="System.Boolean" data="True" />
-											</BinaryExpression.RightExpression>
-										</BinaryExpression>
-									</BinaryExpression.LeftExpression>
-									<BinaryExpression.RightExpression>
-										<BinaryExpression operator="Eq">
-											<BinaryExpression.LeftExpression>
-												<Facet name="HasNoDefinedPrimaryKeyColumns" />
-											</BinaryExpression.LeftExpression>
-											<BinaryExpression.RightExpression>
-												<Value type="System.Boolean" data="True" />
-											</BinaryExpression.RightExpression>
-										</BinaryExpression>
-									</BinaryExpression.RightExpression>
-								</BinaryExpression>
-							</ForEach.Filter>
-							<ForEach.Body>
-								<![CDATA[@${ColumnNameCamelCase}]]>
-								<If>
-									<If.Condition>
-										<BinaryExpression operator="Ne">
-											<BinaryExpression.LeftExpression>
-												<Facet name="_LoopCount" />
-											</BinaryExpression.LeftExpression>
-											<BinaryExpression.RightExpression>
-												<Facet name="_LoopIndex" />
-											</BinaryExpression.RightExpression>
-										</BinaryExpression>
-									</If.Condition>
-									<If.True>
-										<![CDATA[, ]]>
-									</If.True>
-								</If>
-							</ForEach.Body>
-						</ForEach>
-						<![CDATA[);
+				${TableNameSingularCamelCase} = repository.Load<I${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase});
 
 				Assert.IsNotNull(@${TableNameSingularCamelCase});
 				Assert.IsFalse(@${TableNameSingularCamelCase}.IsNew);
@@ -377,11 +342,11 @@ namespace ${ClrNamespace}.IntegrationTests
 
 			repository = new Repository();
 
-			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(Repository.DefaultUnitOfWorkFactory.Instance))
+			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(repository))
 			{
 				Assert.IsNotNull(UnitOfWork.Current);
 
-				${TableNamePluralCamelCase} = repository.Find${TableNamePluralPascalCase}(new Query(new NullaryExpressionConstruct(), new Order[] { }, 0, 0));
+				@${TableNamePluralCamelCase} = repository.Find<I${TableNameSingularPascalCase}>(new PoPimpQuery(new NullaryExpressionConstruct(), new ISequence[] {}));
 
 				Assert.IsNotNull(@${TableNamePluralCamelCase});
 				Assert.IsNotEmpty(@${TableNamePluralCamelCase});

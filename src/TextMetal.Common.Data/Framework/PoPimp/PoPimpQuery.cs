@@ -10,11 +10,11 @@ using TextMetal.Common.Syntax.Expressions;
 
 namespace TextMetal.Common.Data.Framework.PoPimp
 {
-	public sealed class Query : IModelQuery
+	public sealed class PoPimpQuery : IModelQuery
 	{
 		#region Constructors/Destructors
 
-		public Query(IExpression filterExpression, IEnumerable<ISequence> sortSequences)
+		public PoPimpQuery(IExpression filterExpression, IEnumerable<ISequence> sortSequences)
 		{
 			if ((object)filterExpression == null)
 				throw new ArgumentNullException("filterExpression");
