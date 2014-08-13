@@ -14,10 +14,10 @@
 		<span class="txtmtl-organization-subtext">Modified on: <%= this.Html.Encode(this.Model.ModificationTimestamp.SafeToString("MM/dd/yyyy hh:mm:ss UTC", "<unknown>")) %></span>
 	</div>
 
-	<div class="txtmtl-ctxnav-wrapper">		
+	<div class="txtmtl-ctxnav-wrapper">
 		<%= this.Html.ActionLink("Edit this organization", "Edit", "Organization") %><br />
-		<%= this.Html.ActionLink("Delete this organization", "Delete", "Organization") %><br />		
+		<%= this.Html.ActionLink("Delete this organization", "Delete", "Organization") %><br />
 		<%= this.Html.ActionLink("Manage members for this organization", "List", "Member") %><br />
-		
+
 	</div>
 </asp:Content>

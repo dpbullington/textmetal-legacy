@@ -13,7 +13,7 @@
 	   { %>
 		<%= this.Html.ValidationSummary(true) %>
 		<div class="txtmtl-data-form">
-			
+
 			<div class="txtmtl-data-label">
 				<%= this.Html.LabelFor(m => m.EmailAddress, "Email Address") %>
 			</div>
@@ -21,7 +21,7 @@
 				<%= this.Html.TextBoxFor(m => m.EmailAddress, new { @class = "txtmtl-input-text" }) %>
 				<%= this.Html.ValidationMessageFor(m => m.EmailAddress) %>
 			</div>
-			
+
 			<div class="txtmtl-data-label">
 				<%= this.Html.LabelFor(m => m.EmailAddressConfirm, "Email Address (confirm)") %>
 			</div>
@@ -35,7 +35,7 @@
 			</div>
 		</div>
 	<% } %>
-	
+
 	<div class="txtmtl-ctxnav-wrapper">
 		<%= this.Html.ActionLink("Forgot password", "ForgotPassword", "User") %>
 	</div>

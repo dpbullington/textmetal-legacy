@@ -15,7 +15,7 @@
 				<%= this.Html.PasswordFor(m => m.PasswordClearText, new { @class = "txtmtl-input-text" }) %>
 				<%= this.Html.ValidationMessageFor(m => m.PasswordClearText) %>
 			</div>
-			
+
 			<div class="txtmtl-data-label">
 				<%= this.Html.LabelFor(m => m.PasswordClearTextConfirm, "Password (confirm)") %>
 			</div>
@@ -26,7 +26,7 @@
 
 			<div class="txtmtl-data-button">
 				<input type="submit" class="txtmtl-input-button" value="Proceed" id="Proceed" />
-				
+
 				<span><%= this.Html.CheckBoxFor(m => m.SuspendAccount, new { @class = "txtmtl-input-checkbox" }) %> <%= this.Html.LabelFor(m => m.SuspendAccount, "Suspend account?") %><%= this.Html.ValidationMessageFor(m => m.SuspendAccount) %></span>
 			</div>
 		</div>

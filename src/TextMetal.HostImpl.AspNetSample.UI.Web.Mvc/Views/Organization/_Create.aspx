@@ -1,13 +1,13 @@
 ﻿<%@ Page Title="Create an Organization" MasterPageFile="~/Views/Shared/SiteBase.Master" Language="C#" Inherits="System.Web.Mvc.ViewPage<TextMetal.HostImpl.AspNetSample.DomainModel.Tables.Organization>" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MiddleContent" runat="server">
-	
+
 	<p>Creating a new organization requires the following information.</p>
 
 	<% using (this.Html.BeginForm())
 	   { %>
 		<%= this.Html.ValidationSummary(true) %>
 		<div class="txtmtl-data-form">
-			
+
 			<div class="txtmtl-data-label">
 				Record #
 			</div>
@@ -23,13 +23,13 @@
 				<%= this.Html.TextBox("OrganizationName", null, new { @class = "txtmtl-input-text" }) %>
 				<%= this.Html.ValidationMessage("OrganizationName") %>
 			</div>
-			
+
 			<div class="txtmtl-data-button">
 				<input type="submit" class="txtmtl-input-button" value="Save" />
 			</div>
 		</div>
 	<% } %>
-	
+
 	<div class="txtmtl-ctxnav-wrapper">
 		<%= this.Html.ActionLink("Return to organization dashboard", "Dashboard", "Organization") %>
 	</div>

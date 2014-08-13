@@ -20,7 +20,7 @@
 			</div>
 			<div class="txtmtl-data-field">
 				<%= this.Html.TextBoxFor(m => m.Username, new { @class = "txtmtl-input-text" }) %>
-				<%= this.Html.ValidationMessageFor(m => m.Username) %>			
+				<%= this.Html.ValidationMessageFor(m => m.Username) %>
 			</div>
 
 			<div class="txtmtl-data-label">
@@ -33,15 +33,15 @@
 
 			<div class="txtmtl-data-button">
 				<input type="submit" class="txtmtl-input-button" value="Login" id="Login" />
-						
-				<span><%= this.Html.CheckBoxFor(m => m.RememberMe, new { @class = "txtmtl-input-checkbox" }) %> <%= this.Html.LabelFor(m => m.RememberMe, "Remember me?") %><%= this.Html.ValidationMessageFor(m => m.RememberMe) %></span>		
-			
+
+				<span><%= this.Html.CheckBoxFor(m => m.RememberMe, new { @class = "txtmtl-input-checkbox" }) %> <%= this.Html.LabelFor(m => m.RememberMe, "Remember me?") %><%= this.Html.ValidationMessageFor(m => m.RememberMe) %></span>
+
 			</div>
 		</div>
 	<% } %>
-	
+
 	<div class="txtmtl-ctxnav-wrapper">
 		<%= this.Html.ActionLink("Forgot password", "ForgotPassword", "User") %><br />
-		<%= this.Html.ActionLink("Forgot username", "ForgotUsername", "User") %>		
+		<%= this.Html.ActionLink("Forgot username", "ForgotUsername", "User") %>
 	</div>
 </asp:Content>

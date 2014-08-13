@@ -13,7 +13,7 @@
 	   { %>
 		<%= this.Html.ValidationSummary(true) %>
 		<div class="txtmtl-data-form">
-			
+
 			<div class="txtmtl-data-label">
 				<%= this.Html.LabelFor(m => m.EmailAddress, "Email Address") %>
 			</div>
@@ -21,7 +21,7 @@
 				<%= this.Html.TextBoxFor(m => m.EmailAddress, new { @class = "txtmtl-input-text" }) %>
 				<%= this.Html.ValidationMessageFor(m => m.EmailAddress) %>
 			</div>
-			
+
 			<div class="txtmtl-data-label">
 				<%= this.Html.LabelFor(m => m.EmailAddressConfirm, "Email Address (confirm)") %>
 			</div>
@@ -53,7 +53,7 @@
 				<%= this.Html.PasswordFor(m => m.PasswordClearText, new { @class = "txtmtl-input-text" }) %>
 				<%= this.Html.ValidationMessageFor(m => m.PasswordClearText) %>
 			</div>
-			
+
 			<div class="txtmtl-data-label">
 				<%= this.Html.LabelFor(m => m.PasswordClearTextConfirm, "Password (confirm)") %>
 			</div>
@@ -61,7 +61,7 @@
 				<%= this.Html.PasswordFor(m => m.PasswordClearTextConfirm, new { @class = "txtmtl-input-text" }) %>
 				<%= this.Html.ValidationMessageFor(m => m.PasswordClearTextConfirm) %>
 			</div>
-			
+
 			<div class="txtmtl-data-label">
 				<%= this.Html.LabelFor(m => m.SecurityQuestion, "Security Question") %>
 			</div>
@@ -69,7 +69,7 @@
 				<%= this.Html.TextBoxFor(m => m.SecurityQuestion, new { @class = "txtmtl-input-text" }) %>
 				<%= this.Html.ValidationMessageFor(m => m.SecurityQuestion) %>
 			</div>
-			
+
 			<div class="txtmtl-data-label">
 				<%= this.Html.LabelFor(m => m.SecurityQuestionConfirm, "Security Question (confirm)") %>
 			</div>
@@ -77,7 +77,7 @@
 				<%= this.Html.TextBoxFor(m => m.SecurityQuestionConfirm, new { @class = "txtmtl-input-text" }) %>
 				<%= this.Html.ValidationMessageFor(m => m.SecurityQuestionConfirm) %>
 			</div>
-			
+
 			<div class="txtmtl-data-label">
 				<%= this.Html.LabelFor(m => m.SecurityAnswerClearText, "Security Answer") %>
 			</div>
@@ -85,7 +85,7 @@
 				<%= this.Html.TextBoxFor(m => m.SecurityAnswerClearText, new { @class = "txtmtl-input-text" }) %>
 				<%= this.Html.ValidationMessageFor(m => m.SecurityAnswerClearText) %>
 			</div>
-			
+
 			<div class="txtmtl-data-label">
 				<%= this.Html.LabelFor(m => m.SecurityAnswerClearTextConfirm, "Security Answer (confirm)") %>
 			</div>
@@ -94,12 +94,12 @@
 				<%= this.Html.ValidationMessageFor(m => m.SecurityAnswerClearTextConfirm) %>
 			</div>
 
-			<div class="txtmtl-data-button">			
+			<div class="txtmtl-data-button">
 				<input type="submit" class="txtmtl-input-button" value="Save" id="Save" />
 			</div>
 		</div>
 	<% } %>
-		
+
 	<div class="txtmtl-ctxnav-wrapper">
 		<%= this.Html.ActionLink("Return to home", "Index", "Welcome") %>
 	</div>

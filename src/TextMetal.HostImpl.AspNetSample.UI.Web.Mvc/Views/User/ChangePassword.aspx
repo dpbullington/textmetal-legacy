@@ -13,7 +13,7 @@
 	   { %>
 		<%= this.Html.ValidationSummary(true) %>
 		<div class="txtmtl-data-form">
-			
+
 			<div class="txtmtl-data-label">
 				<%= this.Html.LabelFor(m => m.PasswordClearText, "Password") %>
 			</div>
@@ -21,7 +21,7 @@
 				<%= this.Html.PasswordFor(m => m.PasswordClearText, new { @class = "txtmtl-input-text" }) %>
 				<%= this.Html.ValidationMessageFor(m => m.PasswordClearText) %>
 			</div>
-			
+
 			<div class="txtmtl-data-label">
 				<%= this.Html.LabelFor(m => m.PasswordClearTextConfirm, "Password (confirm)") %>
 			</div>
@@ -29,8 +29,8 @@
 				<%= this.Html.PasswordFor(m => m.PasswordClearTextConfirm, new { @class = "txtmtl-input-text" }) %>
 				<%= this.Html.ValidationMessageFor(m => m.PasswordClearTextConfirm) %>
 			</div>
-			
-			<div class="txtmtl-data-button">			
+
+			<div class="txtmtl-data-button">
 				<input type="submit" class="txtmtl-input-button" value="Save" id="Save" />
 			</div>
 		</div>

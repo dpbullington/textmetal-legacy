@@ -3,11 +3,11 @@
 	<table class="txtmtl-results">
 		<tr class="txtmtl-results-header">
 			<th>
-				<%= this.Html.ActionLink("Circle Name", "List", "Circle", new { sort = "0" }, new { @class = "txtmtl-results-sortby" }) %>				
+				<%= this.Html.ActionLink("Circle Name", "List", "Circle", new { sort = "0" }, new { @class = "txtmtl-results-sortby" }) %>
 			</th>
 			<th>
 				<%= this.Html.ActionLink("Circle Desc", "List", "Circle", new { sort = "1" }, new { @class = "txtmtl-results-sortby" }) %>
-			</th>			
+			</th>
 			<th>
 				<%= this.Html.ActionLink("Created", "List", "Circle", new { sort = "2" }, new { @class = "txtmtl-results-sortby" }) %>
 			</th>

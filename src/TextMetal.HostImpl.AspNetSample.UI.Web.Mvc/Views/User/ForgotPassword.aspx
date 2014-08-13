@@ -13,7 +13,7 @@
 	   { %>
 		<%= this.Html.ValidationSummary(true) %>
 		<div class="txtmtl-data-form">
-			
+
 			<div class="txtmtl-data-label">
 				<%= this.Html.LabelFor(m => m.Username, "Username") %>
 			</div>
@@ -29,14 +29,14 @@
 				<%= this.Html.TextBoxFor(m => m.UsernameConfirm, new { @class = "txtmtl-input-text" }) %>
 				<%= this.Html.ValidationMessageFor(m => m.UsernameConfirm) %>
 			</div>
-			
+
 			<div class="txtmtl-data-button">
 				<input type="submit" class="txtmtl-input-button" value="Submit" id="Submit" />
 			</div>
 		</div>
 	<% } %>
-	
-	<div class="txtmtl-ctxnav-wrapper">		
+
+	<div class="txtmtl-ctxnav-wrapper">
 		<%= this.Html.ActionLink("Forgot username", "ForgotUsername", "User") %>
 	</div>
 </asp:Content>

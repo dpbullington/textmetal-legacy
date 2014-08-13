@@ -13,7 +13,7 @@
 			</div>
 		</div>
 	<% } %>
-	
+
 	<div class="txtmtl-ctxnav-wrapper">
 		<%= this.Html.ActionLink("Return to home", "Index", "Welcome") %>
 	</div>

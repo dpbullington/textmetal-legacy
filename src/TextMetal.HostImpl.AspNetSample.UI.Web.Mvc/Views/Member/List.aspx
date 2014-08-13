@@ -3,7 +3,7 @@
 <%@ Import Namespace="TextMetal.HostImpl.AspNetSample.DomainModel" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MiddleContent" runat="server">
-		
+
 	<table class="txtmtl-results">
 		<tr class="txtmtl-results-header">
 			<th>
