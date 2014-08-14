@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.LinqToSql;
 using TextMetal.HostImpl.AspNetSample.Common;
 using TextMetal.HostImpl.AspNetSample.DomainModel.Tables;
 
@@ -32,6 +34,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 			IMember member;
 			IOrganization organization;
 			bool failed, locked = false;
+			IModelQuery modelQuery;
 
 			if ((object)request == null)
 				throw new ArgumentNullException("request");
@@ -55,7 +58,9 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 			if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 				return response;
 
-			users = this.Repository.FindUsers(q => q.Where(u => u.UserName == request.UserName && u.UserId != 0 && u.LogicalDelete == false));
+			modelQuery = new LinqTableQuery<IUser>(u => u.UserName == request.UserName && u.UserId != 0 && u.LogicalDelete == false);
+
+			users = this.Repository.Find<IUser>(modelQuery);
 
 			user = users.SingleOrDefault();
 
@@ -74,7 +79,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 					user.FailedLoginCount = !locked ? 0 : user.FailedLoginCount;
 				}
 
-				this.Repository.SaveUser(user);
+				this.Repository.Save<IUser>(user);
 
 				user = failed ? null : user;
 			}
@@ -96,7 +101,8 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 				response.UserId = user.UserId;
 				response.MustChangePassword = user.MustChangePassword ?? false;
 
-				members = this.Repository.FindMembers(q => q.Where(e => e.MemberId == user.UserId && e.LogicalDelete == false && e.Organization.LogicalDelete == false));
+				members = this.Repository.LinqQuery((dc) => dc.Application_Members.Where(m => m.MemberId == user.UserId && m.LogicalDelete == false && m.Application_Organization.LogicalDelete == false).Select(m => new DomainModel.Tables.Member() { }));
+				
 				member = members.SingleOrDefault();
 
 				if ((object)member == null)
@@ -105,7 +111,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 					return response;
 				}
 
-				organization = this.Repository.LoadOrganization((int)member.OrganizationId);
+				organization = this.Repository.Load<IOrganization>(new DomainModel.Tables.Organization() { OrganizationId = (int)member.OrganizationId });
 
 				if ((object)organization == null)
 				{
@@ -156,7 +162,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 			if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 				return response;
 
-			if (!this.Repository.SaveUser(user))
+			if (!this.Repository.Save<IUser>(user))
 			{
 				response.Messages = new[] { new Message("", "A conflict error occured.", Severity.Error) };
 				return response;
@@ -183,7 +189,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 							MustChangePassword = request.MustChangePassword
 						};
 
-			user = this.Repository.LoadUser((int)request.UserId);
+			user = this.Repository.Load<IUser>(new DomainModel.Tables.User() { UserId = (int)request.UserId });
 
 			if ((object)user == null)
 			{
@@ -223,7 +229,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 			if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 				return response;
 
-			if (!this.Repository.SaveUser(user))
+			if (!this.Repository.Save<IUser>(user))
 			{
 				response.Messages = new[] { new Message("", "A conflict error occured.", Severity.Error) };
 				return response;
@@ -241,6 +247,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 			IUser user;
 			bool failed, locked = false;
 			string tempPasswordClearText;
+			IModelQuery modelQuery;
 
 			if ((object)request == null)
 				throw new ArgumentNullException("request");
@@ -262,7 +269,9 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 			if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 				return response;
 
-			users = this.Repository.FindUsers(q => q.Where(u => u.UserName == request.UserName && u.UserId != 0 && u.LogicalDelete == false));
+			modelQuery = new LinqTableQuery<IUser>(u => u.UserName == request.UserName && u.UserId != 0 && u.LogicalDelete == false);
+
+			users = this.Repository.Find<IUser>(modelQuery);
 
 			user = users.SingleOrDefault();
 
@@ -282,7 +291,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 					user.FailedLoginCount = !locked ? 0 : user.FailedLoginCount;
 				}
 
-				this.Repository.SaveUser(user);
+				this.Repository.Save<IUser>(user);
 
 				user = failed ? null : user;
 			}
@@ -312,7 +321,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 				if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 					return response;
 
-				if (!this.Repository.SaveUser(user))
+				if (!this.Repository.Save<IUser>(user))
 				{
 					response.Messages = new[] { new Message("", "A conflict error occured.", Severity.Error) };
 					return response;
@@ -336,6 +345,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 			IEnumerable<IUser> users;
 			IUser user;
 			bool failed;
+			IModelQuery modelQuery;
 
 			if ((object)request == null)
 				throw new ArgumentNullException("request");
@@ -357,7 +367,9 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 			if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 				return response;
 
-			users = this.Repository.FindUsers(q => q.Where(u => u.EmailAddress == request.EmailAddress && u.UserId != 0 && u.LogicalDelete == false));
+			modelQuery = new LinqTableQuery<IUser>(u => u.EmailAddress == request.EmailAddress && u.UserId != 0 && u.LogicalDelete == false);
+
+			users = this.Repository.Find<IUser>(modelQuery);
 
 			user = users.SingleOrDefault();
 
@@ -423,7 +435,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 			if ((object)request.UserId == null)
 				throw new InvalidOperationException();
 
-			user = this.Repository.LoadUser((int)request.UserId);
+			user = this.Repository.Load<IUser>(new DomainModel.Tables.User() { UserId = (int)request.UserId });
 
 			if ((object)user == null)
 				throw new InvalidOperationException("User was not found.");
@@ -474,7 +486,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 			if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 				return response;
 
-			user = this.Repository.LoadUser((int)request.UserId);
+			user = this.Repository.Load<IUser>(new DomainModel.Tables.User() { UserId = (int)request.UserId });
 
 			if ((object)user == null)
 			{
@@ -498,7 +510,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 			if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 				return response;
 
-			if (!this.Repository.SaveUser(user))
+			if (!this.Repository.Save<IUser>(user))
 			{
 				response.Messages = new[] { new Message("", "A conflict error occured.", Severity.Error) };
 				return response;

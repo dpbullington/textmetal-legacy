@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.LinqToSql;
 using TextMetal.HostImpl.AspNetSample.Common;
 
 namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
@@ -19,16 +21,16 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 		public static bool Exists(SecurityRole securityRole)
 		{
 			IEnumerable<ISecurityRole> securityRoles;
+			IModelQuery modelQuery;
 
 			if ((object)securityRole == null)
 				throw new ArgumentNullException("securityRole");
 
-			securityRoles =
-				Stuff.Get<IRepository>("").FindSecurityRoles(
-					q =>
-						q.Where(
-							z =>
-								(z.SecurityRoleName == securityRole.SecurityRoleName) && ((object)securityRole.SecurityRoleId == null || z.SecurityRoleId != securityRole.SecurityRoleId)));
+			modelQuery = new LinqTableQuery<ISecurityRole>(z =>
+								(z.SecurityRoleName == securityRole.SecurityRoleName) &&
+								((object)securityRole.SecurityRoleId == null || z.SecurityRoleId != securityRole.SecurityRoleId));
+
+			securityRoles = Stuff.Get<IRepository>("").Find<ISecurityRole>(modelQuery);
 
 			return securityRoles.Count() > 0;
 		}

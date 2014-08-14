@@ -15,7 +15,7 @@ using TextMetal.Common.Solder.DependencyManagement;
 
 namespace TextMetal.Common.Data.Framework
 {
-	public abstract class ModelRepository : IModelRepository, IUnitOfWorkFactory
+	public abstract class ModelRepository : IModelRepository
 	{
 		#region Constructors/Destructors
 

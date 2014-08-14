@@ -11,6 +11,8 @@ using System.Security.Cryptography;
 using System.Text;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.LinqToSql;
 using TextMetal.HostImpl.AspNetSample.Common;
 
 namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
@@ -45,13 +47,16 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 		public static bool Exists(User user)
 		{
 			IEnumerable<IUser> users;
+			IModelQuery modelQuery;
 
 			if ((object)user == null)
 				throw new ArgumentNullException("user");
 
-			users =
-				Stuff.Get<IRepository>("").FindUsers(
-					q => q.Where(u => (u.UserName == user.UserName || u.EmailAddress == user.EmailAddress) && ((object)user.UserId == null || u.UserId != user.UserId)));
+			modelQuery = new LinqTableQuery<IUser>(u =>
+				(u.UserName == user.UserName || u.EmailAddress == user.EmailAddress) &&
+				((object)user.UserId == null || u.UserId != user.UserId));
+
+			users = Stuff.Get<IRepository>("").Find<IUser>(modelQuery);
 
 			return users.Count() > 0;
 		}

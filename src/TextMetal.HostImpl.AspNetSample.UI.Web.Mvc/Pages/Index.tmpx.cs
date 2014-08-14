@@ -8,8 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 
 using TextMetal.Common.Data;
+using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.LinqToSql;
 using TextMetal.Framework.Core;
 using TextMetal.HostImpl.AspNetSample.DomainModel;
+using TextMetal.HostImpl.AspNetSample.DomainModel.Tables;
 
 namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Pages
 {
@@ -26,13 +29,17 @@ namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Pages
 
 			repository.TryWriteEventLogEntry(Guid.NewGuid().ToString());
 
-			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(Repository.DefaultUnitOfWorkFactory.Instance))
+			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(repository))
 			{
-				var list = repository.FindEventLogs((q) => q.OrderBy(ev => ev.CreationTimestamp)).ToList();
+				IModelQuery modelQuery;
+
+				modelQuery = new LinqTableQuery<IEventLog>(ev => true);
+
+				var list = repository.Find<IEventLog>(modelQuery).ToList();
 
 				ct = list.Count();
 
-				list.ForEach(el => repository.DiscardEventLog(el));
+				list.ForEach(el => repository.Discard<IEventLog>(el));
 
 				scope.ScopeComplete();
 			}

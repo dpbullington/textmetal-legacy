@@ -10,6 +10,8 @@ using System.Web.Mvc;
 using System.Web.Routing;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.LinqToSql;
 using TextMetal.HostImpl.AspNetSample.Common;
 using TextMetal.HostImpl.AspNetSample.DomainModel;
 using TextMetal.HostImpl.AspNetSample.DomainModel.Tables;
@@ -379,8 +381,11 @@ namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Controllers
 		{
 			JsonResult result;
 			IEnumerable<IMember> members;
+			IModelQuery modelQuery;
 
-			members = this.Repository.FindMembers(q => q.Where(e => e.OrganizationId == (int)Current.OrganizationId && e.LogicalDelete == false));
+			modelQuery = new LinqTableQuery<IMember>(e => e.OrganizationId == (int)Current.OrganizationId && e.LogicalDelete == false);
+
+			members = this.Repository.Find<IMember>(modelQuery);
 
 			members = members.Where(c => DataType.IsNullOrWhiteSpace(value) || c.MemberName.SafeToString().StartsWith(value)).ToList();
 

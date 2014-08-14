@@ -9,6 +9,9 @@ using System.Linq;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
+using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.LinqToSql;
+using TextMetal.Common.Data.Framework.PoPimp;
 using TextMetal.HostImpl.AspNetSample.DomainModel;
 using TextMetal.HostImpl.AspNetSample.DomainModel.L2S;
 using TextMetal.HostImpl.AspNetSample.DomainModel.Tables;
@@ -25,7 +28,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 			IUser user;
 			IMember member;
 
-			using (var scope = new AmbientUnitOfWorkScope(DomainModel.Repository.DefaultUnitOfWorkFactory.Instance))
+			using (var scope = new AmbientUnitOfWorkScope(this.Repository))
 			{
 				if ((object)request == null)
 					throw new ArgumentNullException("request");
@@ -57,7 +60,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 				if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 					return response;
 
-				if (!this.Repository.SaveUser(user))
+				if (!this.Repository.Save<IUser>(user))
 				{
 					response.Messages = new[] { new Message("", "A conflict error occured.", Severity.Error) };
 					return response;
@@ -79,7 +82,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 				if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 					return response;
 
-				if (!this.Repository.SaveMember(member))
+				if (!this.Repository.Save<IMember>(member))
 				{
 					response.Messages = new[] { new Message("", "A conflict error occured.", Severity.Error) };
 					return response;
@@ -100,7 +103,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 			IUser user;
 			IMember member;
 
-			using (var scope = new AmbientUnitOfWorkScope(DomainModel.Repository.DefaultUnitOfWorkFactory.Instance))
+			using (var scope = new AmbientUnitOfWorkScope(this.Repository))
 			{
 				if ((object)request == null)
 					throw new ArgumentNullException("request");
@@ -112,7 +115,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 							{
 							};
 
-				user = this.Repository.LoadUser((int)request.UserId);
+				user = this.Repository.Load<IUser>(new DomainModel.Tables.User() { UserId = request.UserId });
 
 				if ((object)user == null)
 				{
@@ -143,15 +146,15 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 				if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 					return response;
 
-				if (!this.Repository.SaveUser(user))
+				if (!this.Repository.Save<IUser>(user))
 				{
 					response.Messages = new[] { new Message("", "A conflict error occured.", Severity.Error) };
 					return response;
 				}
 
 				// +++
-				member = this.Repository.LoadMember((int)request.MemberId);
-				member.IsNew = false; // HACK DUETO NON-AUTO PK
+				member = this.Repository.Load<IMember>(new DomainModel.Tables.Member() { MemberId = (int)request.MemberId });
+				member.IsNew = false; // HACK DUE TO NON-AUTO PK
 				//member.MemberId = user.UserId;
 				//member.OrganizationId = request.OrganizationId;
 				member.MemberName = request.MemberName;
@@ -166,7 +169,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 				if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 					return response;
 
-				if (!this.Repository.SaveMember(member))
+				if (!this.Repository.Save<IMember>(member))
 				{
 					response.Messages = new[] { new Message("", "A conflict error occured.", Severity.Error) };
 					return response;
@@ -185,23 +188,23 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 			if ((object)request == null)
 				throw new ArgumentNullException("request");
 
-			using (var scope = new AmbientUnitOfWorkScope(DomainModel.Repository.DefaultUnitOfWorkFactory.Instance))
+			using (var scope = new AmbientUnitOfWorkScope(this.Repository))
 			{
 				response = new ListMembersResponse();
 
-				response.Results = this.Repository.Find((TextMetalOdsDataContext)null, (dc) => dc.Members.Where(e => e.OrganizationId == request.OrganizationId && e.LogicalDelete == false).OrderBy(e => e.MemberName).Select(p => new ListMembersResult()
-																																																									{
-																																																										OrganizationId = p.Organization.OrganizationId,
-																																																										MemberId = p.MemberId,
-																																																										CreationTimestamp = p.CreationTimestamp,
-																																																										ModificationTimestamp = p.ModificationTimestamp,
-																																																										MemberName = p.MemberName,
-																																																										UserId = p.User.UserId,
-																																																										EmailAddress = p.User.EmailAddress,
-																																																										UserName = p.User.UserName,
-																																																										SecurityQuestion = p.User.Question
-																																																									})).ToList(); // force eager load here;
-
+				response.Results = this.Repository.LinqQuery((dc) => dc.Application_Members.Where(e => e.OrganizationId == request.OrganizationId && e.LogicalDelete == false).OrderBy(e => e.MemberName).Select(p => new ListMembersResult()
+				{
+					OrganizationId = p.Application_Organization.OrganizationId,
+					MemberId = p.MemberId,
+					CreationTimestamp = p.CreationTimestamp,
+					ModificationTimestamp = p.ModificationTimestamp,
+					MemberName = p.MemberName,
+					UserId = p.Global_User.UserId,
+					EmailAddress = p.Global_User.EmailAddress,
+					UserName = p.Global_User.UserName,
+					SecurityQuestion = p.Global_User.Question
+				})).ToList(); // force eager load here
+				
 				return response;
 			}
 		}
@@ -213,19 +216,19 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 			if ((object)request == null)
 				throw new ArgumentNullException("request");
 
-			using (var scope = new AmbientUnitOfWorkScope(DomainModel.Repository.DefaultUnitOfWorkFactory.Instance))
+			using (var scope = new AmbientUnitOfWorkScope(this.Repository))
 			{
-				response = this.Repository.Find((TextMetalOdsDataContext)null, (dc) => dc.Members.Where(e => (e.MemberId == request.MemberId) && (e.OrganizationId == request.OrganizationId) && e.LogicalDelete == false).Select(p => new LoadMemberResponse()
+				response = this.Repository.LinqQuery((dc) => dc.Application_Members.Where(e => (e.MemberId == request.MemberId) && (e.OrganizationId == request.OrganizationId) && e.LogicalDelete == false).Select(p => new LoadMemberResponse()
 																																																										{
-																																																											OrganizationId = p.Organization.OrganizationId,
+																																																											OrganizationId = p.Application_Organization.OrganizationId,
 																																																											MemberId = p.MemberId,
 																																																											MemberCreationTimestamp = p.CreationTimestamp,
 																																																											MemberModificationTimestamp = p.ModificationTimestamp,
 																																																											MemberName = p.MemberName,
-																																																											UserId = p.User.UserId,
-																																																											EmailAddress = p.User.EmailAddress,
-																																																											UserName = p.User.UserName,
-																																																											SecurityQuestion = p.User.Question,
+																																																											UserId = p.Global_User.UserId,
+																																																											EmailAddress = p.Global_User.EmailAddress,
+																																																											UserName = p.Global_User.UserName,
+																																																											SecurityQuestion = p.Global_User.Question,
 																																																											MemberSecurityRoleId = p.SecurityRoleId
 																																																										})).SingleOrDefault();
 
@@ -238,8 +241,9 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 			RemoveMemberResponse response;
 			IEnumerable<IMember> members;
 			IMember member;
+			IModelQuery modelQuery;
 
-			using (var scope = new AmbientUnitOfWorkScope(DomainModel.Repository.DefaultUnitOfWorkFactory.Instance))
+			using (var scope = new AmbientUnitOfWorkScope(this.Repository))
 			{
 				if ((object)request == null)
 					throw new ArgumentNullException("request");
@@ -251,8 +255,9 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 							{
 							};
 
-				members = this.Repository.FindMembers(
-					q => q.Where(m => m.OrganizationId == (int)Current.OrganizationId && m.MemberId == (int)request.MemberId && m.LogicalDelete == false));
+				modelQuery = new LinqTableQuery<IMember>(m => m.OrganizationId == (int)Current.OrganizationId && m.MemberId == (int)request.MemberId && m.LogicalDelete == false);
+				
+				members = this.Repository.Find<IMember>(modelQuery);
 
 				member = members.SingleOrDefault();
 
@@ -260,7 +265,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 					throw new InvalidOperationException("not found");
 
 				member.IsNew = false; // HACK DUE TO NON-AUTO PK
-				if (!this.Repository.DiscardMember(member))
+				if (!this.Repository.Discard<IMember>(member))
 				{
 					response.Messages = new[] { new Message("", "A conflict error occured.", Severity.Error) };
 					return response;

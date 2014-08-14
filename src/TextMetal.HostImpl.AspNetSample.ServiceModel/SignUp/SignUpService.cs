@@ -4,10 +4,14 @@
 */
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
+using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.LinqToSql;
 using TextMetal.HostImpl.AspNetSample.Common;
 using TextMetal.HostImpl.AspNetSample.DomainModel;
 using TextMetal.HostImpl.AspNetSample.DomainModel.Tables;
@@ -24,8 +28,10 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.SignUp
 			IOrganization organization;
 			IUser user;
 			IMember member;
+			IEnumerable<ISecurityRole> securityRoles;
+			IModelQuery modelQuery;
 
-			using (var scope = new AmbientUnitOfWorkScope(DomainModel.Repository.DefaultUnitOfWorkFactory.Instance))
+			using (var scope = new AmbientUnitOfWorkScope(this.Repository))
 			{
 				if ((object)request == null)
 					throw new ArgumentNullException("request");
@@ -57,7 +63,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.SignUp
 				if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 					return response;
 
-				if (!this.Repository.SaveUser(user))
+				if (!this.Repository.Save<IUser>(user))
 				{
 					response.Messages = new[] { new Message("", "A conflict error occured.", Severity.Error) };
 					return response;
@@ -75,7 +81,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.SignUp
 				if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 					return response;
 
-				if (!this.Repository.SaveOrganization(organization))
+				if (!this.Repository.Save<IOrganization>(organization))
 				{
 					response.Messages = new[] { new Message("", "A conflict error occured.", Severity.Error) };
 					return response;
@@ -83,7 +89,14 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.SignUp
 
 				// +++
 				member = new DomainModel.Tables.Member();
-				member.SecurityRoleId = this.Repository.FindSecurityRoles(q => q.Where(sr => sr.SecurityRoleName == "OrganizationOwner" && sr.LogicalDelete == false)).Select(x => x.SecurityRoleId).SingleOrDefault();
+
+				modelQuery = new LinqTableQuery<ISecurityRole>(sr => sr.SecurityRoleName == "OrganizationOwner" && sr.LogicalDelete == false);
+				
+				securityRoles = this.Repository.Find<ISecurityRole>(modelQuery);
+				
+				// techncial debt: not optimal but works
+				member.SecurityRoleId = securityRoles.Select(x => x.SecurityRoleId).SingleOrDefault();
+				
 				member.MemberId = user.UserId;
 				member.OrganizationId = organization.OrganizationId;
 				member.MemberName = request.MemberName;
@@ -97,7 +110,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.SignUp
 				if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 					return response;
 
-				if (!this.Repository.SaveMember(member))
+				if (!this.Repository.Save<IMember>(member))
 				{
 					response.Messages = new[] { new Message("", "A conflict error occured.", Severity.Error) };
 					return response;

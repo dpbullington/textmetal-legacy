@@ -5,13 +5,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.Data.Linq;
+using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace TextMetal.Common.Data.Framework.LinqToSql
 {
-	public abstract class LinqToSqlModelRepository<TDataContext> : ModelRepository
+	public abstract class LinqToSqlModelRepository<TDataContext> : ModelRepository, ILinqToSqlModelRepository<TDataContext>
 		where TDataContext : DataContext
 	{
 		#region Constructors/Destructors
@@ -27,7 +33,136 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 
 		#region Methods/Operators
 
-		protected bool LinqDiscard<TModel, TTable>(TModel model,
+		/// <summary>
+		/// For a given unitOfWork, this method returns a AmbientUnitOfWorkAwareDisposableWrapper`1 for a target data context type.
+		/// </summary>
+		/// <param name="unitOfWork"> The target unitOfWork. </param>
+		/// <returns> An instance of a AmbientUnitOfWorkAwareDisposableWrapper`1 for the requested data context type, associated withthe unitOfWork. </returns>
+		public static AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> GetContext(IUnitOfWork unitOfWork)
+		{
+			Type dataContextType;
+			TDataContext dataContext;
+			AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> ambientUnitOfWorkAwareDisposableWrapper;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			dataContextType = typeof(TDataContext);
+			dataContext = (TDataContext)GetDataContext(unitOfWork, dataContextType);
+			ambientUnitOfWorkAwareDisposableWrapper = new AmbientUnitOfWorkAwareDisposableWrapper<TDataContext>(unitOfWork, dataContext);
+
+			return ambientUnitOfWorkAwareDisposableWrapper;
+		}
+
+		/// <summary>
+		/// For a given unitOfWork, this method returns a DataContext of the target data context type.
+		/// </summary>
+		/// <param name="unitOfWork"> The target unitOfWork. </param>
+		/// <param name="dataContextType"> The desired data context type. </param>
+		/// <returns> An instance of the requested data context type, associated withthe unitOfWork. </returns>
+		private static DataContext GetDataContext(IUnitOfWork unitOfWork, Type dataContextType)
+		{
+			DataContext dataContext;
+			MulticastContext<DataContext> multicastContext;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)dataContextType == null)
+				throw new ArgumentNullException("dataContextType");
+
+			if ((object)unitOfWork.Context != null)
+			{
+				multicastContext = unitOfWork.Context as MulticastContext<DataContext>;
+
+				// will fail if not correct type (e.g. DataContext, ObjectContext, etc.)
+				if ((object)multicastContext == null)
+					throw new InvalidOperationException("Multicast context type obtained from the current data source transaction context does not match the current multicast context type.");
+
+				if (!multicastContext.HasContext(dataContextType))
+				{
+					// create DC and add to existing MCC
+					dataContext = GetDataContext(dataContextType, unitOfWork.Connection, unitOfWork.Transaction);
+					multicastContext.SetContext(dataContextType, dataContext);
+				}
+				else
+				{
+					// grab existing DC from existing MCC
+					dataContext = multicastContext.GetContext(dataContextType);
+				}
+			}
+			else
+			{
+				// create DC and add to new MCC
+				multicastContext = new MulticastContext<DataContext>();
+				dataContext = GetDataContext(dataContextType, unitOfWork.Connection, unitOfWork.Transaction);
+				multicastContext.SetContext(dataContextType, dataContext);
+				unitOfWork.Context = multicastContext;
+			}
+
+			return dataContext;
+		}
+
+		/// <summary>
+		/// For a given unitOfWork, this method returns a DataContext of the target data context type.
+		/// </summary>
+		/// <param name="dataContextType"> The desired data context type. </param>
+		/// <param name="dbConnection"> The target database connection. </param>
+		/// <param name="dbTransaction"> The target database transaction. </param>
+		/// <returns> An instance of the requested data context type, associated withthe unitOfWork. </returns>
+		/// <returns> </returns>
+		private static DataContext GetDataContext(Type dataContextType, IDbConnection dbConnection, IDbTransaction dbTransaction)
+		{
+			DataContext dataContext;
+			MappingSource mappingSource;
+			ConstructorInfo constructorInfo;
+
+			if ((object)dataContextType == null)
+				throw new ArgumentNullException("dataContextType");
+
+			if ((object)dbConnection == null)
+				throw new ArgumentNullException("dbConnection");
+
+			mappingSource = new AttributeMappingSource();
+			constructorInfo = dataContextType.GetConstructor(new Type[] { typeof(IDbConnection), typeof(MappingSource) });
+
+			// assumption: reflection constructor contract/attribute-based mapping source
+			dataContext = (DataContext)constructorInfo.Invoke(new object[] { dbConnection, mappingSource });
+
+			if ((object)dbTransaction != null)
+				dataContext.Transaction = (DbTransaction)dbTransaction;
+
+			return dataContext;
+		}
+
+		protected static XElement ToXElement(XmlDocument xmlDocument)
+		{
+			if ((object)xmlDocument == null)
+				throw new ArgumentNullException("xmlDocument");
+
+			using (XmlNodeReader nodeReader = new XmlNodeReader(xmlDocument))
+			{
+				nodeReader.MoveToContent();
+				return XElement.Load(nodeReader);
+			}
+		}
+
+		protected static XmlDocument ToXmlDocument(XElement xElement)
+		{
+			XmlDocument xmlDocument;
+
+			if ((object)xElement == null)
+				throw new ArgumentNullException("xElement");
+
+			xmlDocument = new XmlDocument();
+
+			using (XmlReader xmlReader = xElement.CreateReader())
+				xmlDocument.Load(xmlReader);
+
+			return xmlDocument;
+		}
+
+		public bool LinqDiscard<TModel, TTable>(TModel model,
 			Expression<Func<TTable, bool>> filterPredicateCallback)
 			where TModel : class, IModelObject
 			where TTable : class, new()
@@ -49,7 +184,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			return retval;
 		}
 
-		protected bool LinqDiscard<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
+		public bool LinqDiscard<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
 			Expression<Func<TTable, bool>> filterPredicateCallback)
 			where TModel : class, IModelObject
 			where TTable : class, new()
@@ -73,7 +208,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			if (wasNew)
 				return true;
 
-			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = unitOfWork.GetContext<TDataContext>())
+			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = GetContext(unitOfWork))
 			{
 				this.OnPreDeleteModel<TModel>(unitOfWork, model);
 
@@ -104,7 +239,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			}
 		}
 
-		protected bool LinqFill<TModel, TTable>(TModel model,
+		public bool LinqFill<TModel, TTable>(TModel model,
 			Expression<Func<TTable, bool>> prototypePredicateCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)
 			where TModel : class, IModelObject
@@ -127,7 +262,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			return retval;
 		}
 
-		protected bool LinqFill<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
+		public bool LinqFill<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
 			Expression<Func<TTable, bool>> prototypePredicateCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)
 			where TModel : class, IModelObject
@@ -145,7 +280,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			if ((object)tableToModelMappingCallback == null)
 				throw new ArgumentNullException("tableToModelMappingCallback");
 
-			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = unitOfWork.GetContext<TDataContext>())
+			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = GetContext(unitOfWork))
 			{
 				linqTable = wrapper.Disposable.GetTable<TTable>();
 				table = linqTable.SingleOrDefault(prototypePredicateCallback);
@@ -160,7 +295,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			}
 		}
 
-		protected IEnumerable<TModel> LinqFind<TModel, TTable>(
+		public IEnumerable<TModel> LinqFind<TModel, TTable>(
 			Expression<Func<TTable, bool>> filterPredicateCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)
 			where TModel : class, IModelObject
@@ -195,7 +330,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			return models;
 		}
 
-		protected IEnumerable<TModel> LinqFind<TModel, TTable>(IUnitOfWork unitOfWork,
+		public IEnumerable<TModel> LinqFind<TModel, TTable>(IUnitOfWork unitOfWork,
 			Expression<Func<TTable, bool>> filterPredicateCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)
 			where TModel : class, IModelObject
@@ -214,7 +349,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			if ((object)tableToModelMappingCallback == null)
 				throw new ArgumentNullException("tableToModelMappingCallback");
 
-			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = unitOfWork.GetContext<TDataContext>())
+			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = GetContext(unitOfWork))
 			{
 				linqTable = wrapper.Disposable.GetTable<TTable>();
 				queryable = linqTable.Where(filterPredicateCallback);
@@ -237,7 +372,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			}
 		}
 
-		protected TModel LinqLoad<TModel, TTable>(
+		public TModel LinqLoad<TModel, TTable>(
 			Expression<Func<TTable, bool>> prototypePredicateCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)
 			where TModel : class, IModelObject
@@ -260,7 +395,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			return retval;
 		}
 
-		protected TModel LinqLoad<TModel, TTable>(IUnitOfWork unitOfWork,
+		public TModel LinqLoad<TModel, TTable>(IUnitOfWork unitOfWork,
 			Expression<Func<TTable, bool>> prototypePredicateCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)
 			where TModel : class, IModelObject
@@ -279,7 +414,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			if ((object)tableToModelMappingCallback == null)
 				throw new ArgumentNullException("tableToModelMappingCallback");
 
-			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = unitOfWork.GetContext<TDataContext>())
+			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = GetContext(unitOfWork))
 			{
 				linqTable = wrapper.Disposable.GetTable<TTable>();
 				table = linqTable.SingleOrDefault(prototypePredicateCallback);
@@ -296,7 +431,17 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			}
 		}
 
-		protected bool LinqSave<TModel, TTable>(TModel model,
+		public IEnumerable<T> LinqQuery<T>(Func<TDataContext, IQueryable<T>> query)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IEnumerable<T> LinqQuery<T>(IUnitOfWork unitOfWork, Func<TDataContext, IQueryable<T>> query)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool LinqSave<TModel, TTable>(TModel model,
 			Expression<Func<TTable, bool>> filterPredicateCallback,
 			Action<TTable, TModel> modelToTableMappingCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)
@@ -320,7 +465,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			return retval;
 		}
 
-		protected bool LinqSave<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
+		public bool LinqSave<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
 			Expression<Func<TTable, bool>> filterPredicateCallback,
 			Action<TTable, TModel> modelToTableMappingCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)
@@ -349,7 +494,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			wasNew = model.IsNew;
 			model.Mark();
 
-			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = unitOfWork.GetContext<TDataContext>())
+			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = GetContext(unitOfWork))
 			{
 				linqTable = wrapper.Disposable.GetTable<TTable>();
 

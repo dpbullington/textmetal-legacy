@@ -17,12 +17,6 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel
 	{
 		#region Methods/Operators
 
-		IEnumerable<TResultEntity> Find<TDataContext, TResultEntity>(TDataContext dummy, Func<TDataContext, IQueryable<TResultEntity>> callback)
-			where TDataContext : DataContext;
-
-		IEnumerable<TResultEntity> Find<TDataContext, TResultEntity>(TDataContext dummy, IUnitOfWork unitOfWork, Func<TDataContext, IQueryable<TResultEntity>> callback)
-			where TDataContext : DataContext;
-
 		IEnumerable<IListItem<int?>> GetSecurityRoles();
 
 		bool TrySendEmailTemplate(string templateResourceName, object modelObject);

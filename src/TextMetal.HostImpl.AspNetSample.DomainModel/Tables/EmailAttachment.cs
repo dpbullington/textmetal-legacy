@@ -11,7 +11,7 @@ using TextMetal.HostImpl.Web.Email;
 
 namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 {
-	public partial class EmailAttachment : IHostEmailAttachment
+	public partial class EmailAttachment
 	{
 		#region Fields/Constants
 

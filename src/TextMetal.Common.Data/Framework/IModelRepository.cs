@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace TextMetal.Common.Data.Framework
 {
-	public interface IModelRepository
+	public interface IModelRepository : IUnitOfWorkFactory
 	{
 		#region Methods/Operators
 
@@ -51,8 +51,6 @@ namespace TextMetal.Common.Data.Framework
 
 		IEnumerable<TModel> Find<TModel>(IUnitOfWork unitOfWork, IModelQuery query)
 			where TModel : class, IModelObject;
-
-		IUnitOfWork GetUnitOfWork();
 
 		TModel Load<TModel>(TModel prototype)
 			where TModel : class, IModelObject;

@@ -61,12 +61,12 @@ namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Controllers
 		{
 			IOrganization organization;
 
-			organization = this.Repository.LoadOrganization((int)Current.OrganizationId); // current OK no filter
+			organization = this.Repository.Load<IOrganization>(new Organization { OrganizationId = (int)Current.OrganizationId }); // any=current OK no filter
 
 			// in the case of a organization, it is a LOGICAL delete!
 			organization.LogicalDelete = true;
 
-			if (!this.Repository.SaveOrganization(organization))
+			if (!this.Repository.Save<IOrganization>(organization))
 			{
 				this.ViewData.Add("_ShowMessages", new[] { new Message("", "A conflict error occured.", Severity.Error) });
 
@@ -107,7 +107,7 @@ namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Controllers
 			if ((object)organizationId == null)
 				organization = new Organization();
 			else
-				organization = this.Repository.LoadOrganization((int)organizationId); // current OK no filter
+				organization = this.Repository.Load<IOrganization>(new Organization { OrganizationId = (int)organizationId }); // any=current OK no filter
 
 			return this.View(organization);
 		}
@@ -120,7 +120,7 @@ namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Controllers
 			if ((object)organizationId == null)
 				organization = new Organization();
 			else
-				organization = this.Repository.LoadOrganization((int)organizationId); // any=current OK no filter
+				organization = this.Repository.Load<IOrganization>(new Organization { OrganizationId = (int)organizationId }); // any=current OK no filter
 
 			if (!this.TryUpdateModel(organization))
 				return this.View(organization);
@@ -137,7 +137,7 @@ namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Controllers
 				return this.View(organization);
 			}
 
-			if (!this.Repository.SaveOrganization(organization))
+			if (!this.Repository.Save<IOrganization>(organization))
 			{
 				this.ViewData.Add("_ShowMessages", new[] { new Message("", "A conflict error occured.", Severity.Error) });
 

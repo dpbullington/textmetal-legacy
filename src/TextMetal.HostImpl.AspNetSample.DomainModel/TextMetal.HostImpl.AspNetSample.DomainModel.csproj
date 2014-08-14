@@ -66,15 +66,15 @@
     <Compile Include="Tables\EventLogHistory.cs" />
     <Compile Include="Tables\EventLogHistory.g.cs" />
     <Compile Include="IRepository.g.cs" />
-    <Compile Include="IRepository.tv.g.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
     <Compile Include="Repository.g.cs" />
-    <Compile Include="Repository.tv.g.cs" />
     <Compile Include="Tables\EmailAttachment.g.cs" />
     <Compile Include="Tables\EmailMessage.g.cs" />
     <Compile Include="Tables\EventLog.g.cs" />
     <Compile Include="Tables\IEmailAttachment.g.cs" />
     <Compile Include="Tables\IEmailAttachmentHistory.g.cs" />
+    <Compile Include="Tables\IEmailAttachment.cs" />
+    <Compile Include="Tables\IEmailMessage.cs" />
     <Compile Include="Tables\IEmailMessage.g.cs" />
     <Compile Include="Tables\IEmailMessageHistory.g.cs" />
     <Compile Include="Tables\IEventLog.g.cs" />

@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.LinqToSql;
 using TextMetal.HostImpl.AspNetSample.Common;
 
 namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
@@ -19,16 +21,16 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 		public static bool Exists(Member member)
 		{
 			IEnumerable<IMember> members;
+			IModelQuery modelQuery;
 
 			if ((object)member == null)
 				throw new ArgumentNullException("member");
 
-			members =
-				Stuff.Get<IRepository>("").FindMembers(
-					q =>
-						q.Where(
-							z =>
-								(z.MemberName == member.MemberName) && ((object)member.MemberId == null || z.MemberId != member.MemberId)));
+			modelQuery = new LinqTableQuery<IMember>(z =>
+				(z.MemberName == member.MemberName) &&
+				((object)member.MemberId == null || z.MemberId != member.MemberId));
+			
+			members = Stuff.Get<IRepository>("").Find<IMember>(modelQuery);
 
 			return members.Count() > 0;
 		}

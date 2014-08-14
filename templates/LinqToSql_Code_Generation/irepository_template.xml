@@ -42,7 +42,7 @@ using TextMetal.Common.Data.Framework.LinqToSql;
 		<![CDATA[
 namespace ${ClrNamespace}
 {
-	public partial interface IRepository
+	public partial interface IRepository : ILinqToSqlModelRepository<${LinqToSqlDataContextRootNamespace}.${LinqToSqlTargetDataContextName}>
 	{
 	}
 }
