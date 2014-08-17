@@ -54,39 +54,16 @@
     <Compile Include="Core\StringTokens\_\DynamicValueTokenReplacementStrategyTests.cs" />
     <Compile Include="Core\StringTokens\_\StaticValueTokenReplacementStrategyTests.cs" />
     <Compile Include="Core\StringTokens\_\TokenizerTests.cs" />
-    <Compile Include="Data\Framework\ModelMap\Mapping\_\ColumnMappingAttributeTests.cs" />
-    <Compile Include="Data\Framework\ModelMap\Mapping\_\CommandMappingAttributeTests.cs" />
-    <Compile Include="Data\Framework\ModelMap\Mapping\_\ParameterMappingAttributeTests.cs" />
-    <Compile Include="Data\Framework\ModelMap\Mapping\_\ProcedureMappingAttributeTests.cs" />
-    <Compile Include="Data\Framework\ModelMap\Mapping\_\TableMappingAttributeTests.cs" />
     <Compile Include="Data\_\AdoNetHelperTests.cs" />
     <None Include="App.config" />
     <None Include="Data\_\UnitOfWorkContextTests.cs" />
     <Compile Include="Data\_\AmbientUnitOfWorkAwareDisposableWrapperTests.cs" />
-    <None Include="Data\Framework\LinqToSql\_\LinqToSqlHelperTests.cs" />
-    <Compile Include="Data\Framework\LinqToSql\_\MulticastContextTests.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
-    <Compile Include="Solder\DependencyManagement\_\ActivatorDependencyResolutionTests.cs" />
-    <Compile Include="Solder\DependencyManagement\_\ConstructorDependencyResolutionTests.cs" />
-    <Compile Include="Solder\DependencyManagement\_\DelegateDependencyResolutionTests.cs" />
-    <Compile Include="Solder\DependencyManagement\_\DependencyExceptionTests.cs" />
-    <Compile Include="Solder\DependencyManagement\_\DependencyManagerTests.cs" />
-    <Compile Include="Solder\DependencyManagement\_\DependencyRegistrationAttributeTests.cs" />
-    <Compile Include="Solder\DependencyManagement\_\SingletonDependencyResolutionTests.cs" />
-    <Compile Include="Solder\RuntimeInterception\RemotingImpl\_\DynamicInvokerRealProxyTests.cs" />
-    <Compile Include="Solder\RuntimeInterception\_\AspectDynamicInvokerTests.cs" />
-    <Compile Include="Solder\RuntimeInterception\_\DynamicInvokerTests.cs" />
-    <Compile Include="Solder\RuntimeInterception\_\ProxyFactoryTests.cs" />
     <Compile Include="TestingInfrastructure\IMockObject.cs" />
-    <Compile Include="TestingInfrastructure\MockAspectDynamicInvoker.cs" />
     <Compile Include="TestingInfrastructure\MockConnection.cs" />
-    <Compile Include="TestingInfrastructure\MockDynamicInvoker.cs" />
-    <Compile Include="TestingInfrastructure\MockDynamicInvokerRealProxy.cs" />
     <Compile Include="TestingInfrastructure\MockException.cs" />
     <Compile Include="TestingInfrastructure\MockMultipleTestAttibute.cs" />
     <Compile Include="TestingInfrastructure\MockObject.cs" />
-    <Compile Include="TestingInfrastructure\MockModelObject.cs" />
-    <Compile Include="TestingInfrastructure\MockProxyFactory.cs" />
     <Compile Include="TestingInfrastructure\MockSingleTestAttibute.cs" />
     <Compile Include="TestingInfrastructure\MockTestAttributedClass.cs" />
   </ItemGroup>
@@ -98,8 +75,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cerealization\" />
-    <Folder Include="Data\Framework\ModelMap\_\" />
-    <Folder Include="Data\Framework\_\" />
     <Folder Include="Syntax\" />
     <Folder Include="Xml\" />
   </ItemGroup>
@@ -115,10 +90,6 @@
     <ProjectReference Include="..\TextMetal.Common.Syntax\TextMetal.Common.Syntax.csproj">
       <Project>{483501d9-4d73-4076-997b-3a5d8b5ddb2c}</Project>
       <Name>TextMetal.Common.Syntax</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TextMetal.Common.Solder\TextMetal.Common.Solder.csproj">
-      <Project>{3B0EFC3C-AA91-4FB4-B2EE-BD8727230A94}</Project>
-      <Name>TextMetal.Common.Solder</Name>
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Imports\TextMetal.Imports.csproj">
       <Project>{40e6902d-3881-4271-bdf3-7d88db7cf230}</Project>

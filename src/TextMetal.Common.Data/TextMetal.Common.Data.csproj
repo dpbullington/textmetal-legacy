@@ -49,40 +49,12 @@
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AdoNetHelper.cs" />
-    <Compile Include="Framework\IModelQuery.cs" />
-    <Compile Include="Framework\IModelRepository.cs" />
-    <Compile Include="Framework\LinqToSql\ILinqToSqlModelRepository~1.cs" />
-    <Compile Include="Framework\LinqToSql\LinqTableQuery~1.cs" />
-    <Compile Include="Framework\LinqToSql\LinqToSqlModelRepository~1.cs" />
-    <Compile Include="Framework\PoPimp\PoPimpModelRepository.cs" />
-    <Compile Include="Framework\PoPimp\Strategy\IDataSourceTagStrategyFactory.cs" />
-    <Compile Include="Framework\PoPimp\Strategy\DataSourceTagStrategyFactory.cs" />
-    <Compile Include="Framework\PoPimp\Strategy\NetSqlServerDataSourceTagStrategy.cs" />
-    <Compile Include="Framework\PoPimp\Strategy\OdbcSqlServerDataSourceTagStrategy.cs" />
-    <Compile Include="Framework\PoPimp\Strategy\NetSqliteDataSourceTagStrategy.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="IUnitOfWorkFactory.cs" />
-    <Compile Include="Framework\DatabaseHistory.cs" />
-    <Compile Include="Framework\DatabaseRevision.cs" />
-    <Compile Include="Framework\PoPimp\Strategy\IDataSourceTagStrategy.cs" />
-    <Compile Include="Framework\ModelRepository.cs" />
-    <Compile Include="Framework\IRequestModelObject.cs" />
-    <Compile Include="Framework\IResponseModelObject.cs" />
-    <Compile Include="Framework\IResultModelObject.cs" />
-    <Compile Include="Framework\PoPimp\Mapping\ColumnMappingAttribute.cs" />
-    <Compile Include="Framework\PoPimp\Mapping\CommandMappingAttribute.cs" />
-    <Compile Include="Framework\PoPimp\Mapping\ParameterMappingAttribute.cs" />
-    <Compile Include="Framework\PoPimp\Mapping\ProcedureMappingAttribute.cs" />
-    <Compile Include="Framework\PoPimp\Mapping\TableMappingAttribute.cs" />
-    <Compile Include="Framework\PoPimp\ModelMapHelper.cs" />
-    <Compile Include="Framework\PoPimp\PoPimpQuery.cs" />
-    <Compile Include="Framework\PoPimp\SqlExpressionVisitor.cs" />
     <Compile Include="SqlQuery.cs" />
     <Compile Include="AmbientUnitOfWorkScope.cs" />
-    <Compile Include="Framework\IModelObject.cs" />
     <Compile Include="UnitOfWork.cs" />
     <Compile Include="AmbientUnitOfWorkAwareDisposableWrapper~1.cs" />
-    <Compile Include="Framework\LinqToSql\MulticastContext~1.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -103,14 +75,8 @@
       <Project>{483501d9-4d73-4076-997b-3a5d8b5ddb2c}</Project>
       <Name>TextMetal.Common.Syntax</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TextMetal.Common.Solder\TextMetal.Common.Solder.csproj">
-      <Project>{3B0EFC3C-AA91-4FB4-B2EE-BD8727230A94}</Project>
-      <Name>TextMetal.Common.Solder</Name>
-    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Framework\LinqToEF\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
