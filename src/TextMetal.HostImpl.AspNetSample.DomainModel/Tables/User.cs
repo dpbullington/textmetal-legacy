@@ -52,7 +52,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 			if ((object)user == null)
 				throw new ArgumentNullException("user");
 
-			modelQuery = new LinqTableQuery<IUser>(u =>
+			modelQuery = new LinqTableQuery<DomainModel.L2S.Global_User>(u =>
 				(u.UserName == user.UserName || u.EmailAddress == user.EmailAddress) &&
 				((object)user.UserId == null || u.UserId != user.UserId));
 

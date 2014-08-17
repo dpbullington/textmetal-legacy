@@ -568,6 +568,19 @@ namespace TextMetal.Common.UnitTests.Core._
 		}
 
 		[Test]
+		public void ShouldPreventNullCoaleseTest()
+		{
+			bool result;
+			object objA, objB;
+
+			// both null
+			objA = null;
+			objB = (int)0;
+			result = DataType.ObjectsEqualValueSemantics(objA, objB);
+			Assert.IsFalse(result);
+		}
+
+		[Test]
 		public void ShouldSafeToStringTest()
 		{
 			Assert.AreEqual("123.456", DataType.SafeToString(123.456));

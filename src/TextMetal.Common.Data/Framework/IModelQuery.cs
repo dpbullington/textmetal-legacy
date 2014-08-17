@@ -14,7 +14,7 @@ namespace TextMetal.Common.Data.Framework
 	{
 		#region Methods/Operators
 
-		object GetNativeReduction();
+		object GetUnderlyingQuery();
 
 		#endregion
 	}

@@ -26,7 +26,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 			if ((object)member == null)
 				throw new ArgumentNullException("member");
 
-			modelQuery = new LinqTableQuery<IMember>(z =>
+			modelQuery = new LinqTableQuery<DomainModel.L2S.Application_Member>(z =>
 				(z.MemberName == member.MemberName) &&
 				((object)member.MemberId == null || z.MemberId != member.MemberId));
 			

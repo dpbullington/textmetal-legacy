@@ -424,6 +424,7 @@ namespace ${ClrNamespace}
 		public override IEnumerable<TModel> Find<TModel>(IUnitOfWork unitOfWork, IModelQuery modelQuery)
 		{
 			Type modelType;
+			object underlyingQuery;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -432,6 +433,10 @@ namespace ${ClrNamespace}
 				throw new ArgumentNullException("modelQuery");
 
 			modelType = typeof(TModel);
+			underlyingQuery = modelQuery.GetUnderlyingQuery();
+
+			if ((object)underlyingQuery == null)
+				throw new InvalidOperationException(string.Format("Model query object of type '{0}' returned an invalid underlying query."));
 
 			if (false)
 			{
@@ -445,10 +450,10 @@ namespace ${ClrNamespace}
 <![CDATA[
 			else if (modelType == typeof(I${TableNameSingularPascalCase}))
 			{
-				Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>> _predicate = modelQuery.GetNativeReduction() as Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>>;
+				Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>> _predicate = underlyingQuery as Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>>;
 
 				if ((object)_predicate == null)
-					throw new InvalidOperationException(string.Format("Model query object of type '{0}' returned an invalid native reduction (inner query); expected type is '{1}'.", modelQuery.GetType().FullName, typeof(Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>>).FullName));
+					throw new InvalidOperationException(string.Format("Model query object of type '{0}' returned an unsupported underlying query type; expected type is '{1}'; actual type was '{2}'.", modelQuery.GetType().FullName, typeof(Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>>).FullName, underlyingQuery.GetType().FullName));
 
 				return (IEnumerable<TModel>)this.LinqFind<I${TableNameSingularPascalCase}, ${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}>(unitOfWork, _predicate, (dm, st) => { ]]>
 						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">

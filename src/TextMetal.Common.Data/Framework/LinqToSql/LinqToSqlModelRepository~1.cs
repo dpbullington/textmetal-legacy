@@ -184,7 +184,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			return retval;
 		}
 
-		public bool LinqDiscard<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
+		protected bool LinqDiscard<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
 			Expression<Func<TTable, bool>> filterPredicateCallback)
 			where TModel : class, IModelObject
 			where TTable : class, new()
@@ -239,7 +239,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			}
 		}
 
-		public bool LinqFill<TModel, TTable>(TModel model,
+		protected bool LinqFill<TModel, TTable>(TModel model,
 			Expression<Func<TTable, bool>> prototypePredicateCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)
 			where TModel : class, IModelObject
@@ -262,7 +262,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			return retval;
 		}
 
-		public bool LinqFill<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
+		protected bool LinqFill<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
 			Expression<Func<TTable, bool>> prototypePredicateCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)
 			where TModel : class, IModelObject
@@ -295,7 +295,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			}
 		}
 
-		public IEnumerable<TModel> LinqFind<TModel, TTable>(
+		protected IEnumerable<TModel> LinqFind<TModel, TTable>(
 			Expression<Func<TTable, bool>> filterPredicateCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)
 			where TModel : class, IModelObject
@@ -330,7 +330,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			return models;
 		}
 
-		public IEnumerable<TModel> LinqFind<TModel, TTable>(IUnitOfWork unitOfWork,
+		protected IEnumerable<TModel> LinqFind<TModel, TTable>(IUnitOfWork unitOfWork,
 			Expression<Func<TTable, bool>> filterPredicateCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)
 			where TModel : class, IModelObject
@@ -372,7 +372,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			}
 		}
 
-		public TModel LinqLoad<TModel, TTable>(
+		protected TModel LinqLoad<TModel, TTable>(
 			Expression<Func<TTable, bool>> prototypePredicateCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)
 			where TModel : class, IModelObject
@@ -395,7 +395,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			return retval;
 		}
 
-		public TModel LinqLoad<TModel, TTable>(IUnitOfWork unitOfWork,
+		protected TModel LinqLoad<TModel, TTable>(IUnitOfWork unitOfWork,
 			Expression<Func<TTable, bool>> prototypePredicateCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)
 			where TModel : class, IModelObject
@@ -441,7 +441,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			throw new NotImplementedException();
 		}
 
-		public bool LinqSave<TModel, TTable>(TModel model,
+		protected bool LinqSave<TModel, TTable>(TModel model,
 			Expression<Func<TTable, bool>> filterPredicateCallback,
 			Action<TTable, TModel> modelToTableMappingCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)
@@ -465,7 +465,7 @@ namespace TextMetal.Common.Data.Framework.LinqToSql
 			return retval;
 		}
 
-		public bool LinqSave<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
+		protected bool LinqSave<TModel, TTable>(IUnitOfWork unitOfWork, TModel model,
 			Expression<Func<TTable, bool>> filterPredicateCallback,
 			Action<TTable, TModel> modelToTableMappingCallback,
 			Action<TModel, TTable> tableToModelMappingCallback)

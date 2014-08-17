@@ -26,7 +26,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 			if ((object)securityRole == null)
 				throw new ArgumentNullException("securityRole");
 
-			modelQuery = new LinqTableQuery<ISecurityRole>(z =>
+			modelQuery = new LinqTableQuery<DomainModel.L2S.Global_SecurityRole>(z =>
 								(z.SecurityRoleName == securityRole.SecurityRoleName) &&
 								((object)securityRole.SecurityRoleId == null || z.SecurityRoleId != securityRole.SecurityRoleId));
 

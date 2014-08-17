@@ -255,7 +255,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.Member
 							{
 							};
 
-				modelQuery = new LinqTableQuery<IMember>(m => m.OrganizationId == (int)Current.OrganizationId && m.MemberId == (int)request.MemberId && m.LogicalDelete == false);
+				modelQuery = new LinqTableQuery<DomainModel.L2S.Application_Member>(m => m.OrganizationId == (int)Current.OrganizationId && m.MemberId == (int)request.MemberId && m.LogicalDelete == false);
 				
 				members = this.Repository.Find<IMember>(modelQuery);
 

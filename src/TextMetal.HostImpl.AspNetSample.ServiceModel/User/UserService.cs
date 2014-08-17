@@ -58,7 +58,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 			if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 				return response;
 
-			modelQuery = new LinqTableQuery<IUser>(u => u.UserName == request.UserName && u.UserId != 0 && u.LogicalDelete == false);
+			modelQuery = new LinqTableQuery<DomainModel.L2S.Global_User>(u => u.UserName == request.UserName && u.UserId != 0 && u.LogicalDelete == false);
 
 			users = this.Repository.Find<IUser>(modelQuery);
 
@@ -101,7 +101,11 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 				response.UserId = user.UserId;
 				response.MustChangePassword = user.MustChangePassword ?? false;
 
-				members = this.Repository.LinqQuery((dc) => dc.Application_Members.Where(m => m.MemberId == user.UserId && m.LogicalDelete == false && m.Application_Organization.LogicalDelete == false).Select(m => new DomainModel.Tables.Member() { }));
+				modelQuery = new LinqTableQuery<DomainModel.L2S.Application_Member>(m => m.MemberId == user.UserId && m.LogicalDelete == false && m.Application_Organization.LogicalDelete == false);
+
+				members = this.Repository.Find<IMember>(modelQuery);
+
+				//members = this.Repository.LinqQuery((dc) => dc.Application_Members.Where(m => m.MemberId == user.UserId && m.LogicalDelete == false && m.Application_Organization.LogicalDelete == false).Select(m => new DomainModel.Tables.Member() { }));
 				
 				member = members.SingleOrDefault();
 
@@ -269,7 +273,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 			if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 				return response;
 
-			modelQuery = new LinqTableQuery<IUser>(u => u.UserName == request.UserName && u.UserId != 0 && u.LogicalDelete == false);
+			modelQuery = new LinqTableQuery<DomainModel.L2S.Global_User>(u => u.UserName == request.UserName && u.UserId != 0 && u.LogicalDelete == false);
 
 			users = this.Repository.Find<IUser>(modelQuery);
 
@@ -367,7 +371,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.User
 			if (response.Messages.Count(m => m.Severity == Severity.Error) > 0)
 				return response;
 
-			modelQuery = new LinqTableQuery<IUser>(u => u.EmailAddress == request.EmailAddress && u.UserId != 0 && u.LogicalDelete == false);
+			modelQuery = new LinqTableQuery<DomainModel.L2S.Global_User>(u => u.EmailAddress == request.EmailAddress && u.UserId != 0 && u.LogicalDelete == false);
 
 			users = this.Repository.Find<IUser>(modelQuery);
 

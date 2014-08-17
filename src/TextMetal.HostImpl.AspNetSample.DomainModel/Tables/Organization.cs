@@ -26,7 +26,7 @@ namespace TextMetal.HostImpl.AspNetSample.DomainModel.Tables
 			if ((object)organization == null)
 				throw new ArgumentNullException("organization");
 
-			modelQuery = new LinqTableQuery<IOrganization>(z =>
+			modelQuery = new LinqTableQuery<DomainModel.L2S.Application_Organization>(z =>
 								(z.OrganizationName == organization.OrganizationName) &&
 								((object)organization.OrganizationId == null || z.OrganizationId != organization.OrganizationId));
 

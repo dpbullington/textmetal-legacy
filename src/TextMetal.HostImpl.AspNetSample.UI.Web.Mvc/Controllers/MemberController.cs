@@ -383,7 +383,7 @@ namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Controllers
 			IEnumerable<IMember> members;
 			IModelQuery modelQuery;
 
-			modelQuery = new LinqTableQuery<IMember>(e => e.OrganizationId == (int)Current.OrganizationId && e.LogicalDelete == false);
+			modelQuery = new LinqTableQuery<DomainModel.L2S.Application_Member>(e => e.OrganizationId == (int)Current.OrganizationId && e.LogicalDelete == false);
 
 			members = this.Repository.Find<IMember>(modelQuery);
 

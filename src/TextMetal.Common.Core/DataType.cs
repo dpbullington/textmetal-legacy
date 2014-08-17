@@ -121,6 +121,10 @@ namespace TextMetal.Common.Core
 		{
 			Type typeOfA = null, typeOfB = null;
 
+			if (((object)objA != null && (object)objB == null) ||
+				((object)objA == null && (object)objB != null))
+				return false; // prevent null coalescence
+
 			if ((object)objA != null)
 				typeOfA = objA.GetType();
 

@@ -33,7 +33,7 @@ namespace TextMetal.HostImpl.AspNetSample.UI.Web.Mvc.Pages
 			{
 				IModelQuery modelQuery;
 
-				modelQuery = new LinqTableQuery<IEventLog>(ev => true);
+				modelQuery = new LinqTableQuery<DomainModel.L2S.Global_EventLog>(ev => true);
 
 				var list = repository.Find<IEventLog>(modelQuery).ToList();
 

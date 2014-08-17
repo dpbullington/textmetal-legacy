@@ -90,7 +90,7 @@ namespace TextMetal.HostImpl.AspNetSample.ServiceModel.SignUp
 				// +++
 				member = new DomainModel.Tables.Member();
 
-				modelQuery = new LinqTableQuery<ISecurityRole>(sr => sr.SecurityRoleName == "OrganizationOwner" && sr.LogicalDelete == false);
+				modelQuery = new LinqTableQuery<DomainModel.L2S.Global_SecurityRole>(sr => sr.SecurityRoleName == "OrganizationOwner" && sr.LogicalDelete == false);
 				
 				securityRoles = this.Repository.Find<ISecurityRole>(modelQuery);
 				

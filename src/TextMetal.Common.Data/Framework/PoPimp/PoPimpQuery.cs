@@ -57,7 +57,7 @@ namespace TextMetal.Common.Data.Framework.PoPimp
 
 		#region Methods/Operators
 
-		public object GetNativeReduction()
+		public object GetUnderlyingQuery()
 		{
 			return this;
 		}
