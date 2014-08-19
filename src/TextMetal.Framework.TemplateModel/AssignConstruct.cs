@@ -5,7 +5,7 @@
 
 using System;
 
-using TextMetal.Common.Core.StringTokens;
+using TextMetal.Common.Tokenization;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 using TextMetal.Framework.ExpressionModel;

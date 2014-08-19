@@ -57,13 +57,6 @@
     <Compile Include="Reflexion.cs" />
     <Compile Include="Severity.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
-    <Compile Include="StringTokens\ContextualDynamicValueTokenReplacementStrategy.cs" />
-    <Compile Include="StringTokens\DynamicValueTokenReplacementStrategy.cs" />
-    <Compile Include="StringTokens\DynamicWildcardTokenReplacementStrategy.cs" />
-    <Compile Include="StringTokens\ITokenReplacementStrategy.cs" />
-    <Compile Include="StringTokens\IWildcardTokenReplacementStrategy.cs" />
-    <Compile Include="StringTokens\StaticValueTokenReplacementStrategy.cs" />
-    <Compile Include="StringTokens\Tokenizer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TextMetal.snk">

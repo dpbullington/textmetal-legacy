@@ -51,13 +51,17 @@
     <Compile Include="Core\_\DataTypeTests.cs" />
     <Compile Include="Core\_\ExecutionPathStorageTests.cs" />
     <Compile Include="Core\_\ReflexionTests.cs" />
-    <Compile Include="Core\StringTokens\_\DynamicValueTokenReplacementStrategyTests.cs" />
-    <Compile Include="Core\StringTokens\_\StaticValueTokenReplacementStrategyTests.cs" />
-    <Compile Include="Core\StringTokens\_\TokenizerTests.cs" />
+    <Compile Include="Data\Framework\Mapping\_\ColumnMappingAttributeTests.cs" />
+    <Compile Include="Data\Framework\Mapping\_\CommandMappingAttributeTests.cs" />
+    <Compile Include="Data\Framework\Mapping\_\ParameterMappingAttributeTests.cs" />
+    <Compile Include="Data\Framework\Mapping\_\ProcedureMappingAttributeTests.cs" />
+    <Compile Include="Data\Framework\Mapping\_\TableMappingAttributeTests.cs" />
+    <Compile Include="Tokenization\_\DynamicValueTokenReplacementStrategyTests.cs" />
+    <Compile Include="Tokenization\_\StaticValueTokenReplacementStrategyTests.cs" />
+    <Compile Include="Tokenization\_\TokenizerTests.cs" />
     <Compile Include="Data\_\AdoNetHelperTests.cs" />
     <None Include="App.config" />
-    <None Include="Data\_\UnitOfWorkContextTests.cs" />
-    <Compile Include="Data\_\AmbientUnitOfWorkAwareDisposableWrapperTests.cs" />
+    <None Include="Data\_\AmbientUnitOfWorkScope.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
     <Compile Include="TestingInfrastructure\IMockObject.cs" />
     <Compile Include="TestingInfrastructure\MockConnection.cs" />
@@ -75,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cerealization\" />
+    <Folder Include="Data\Framework\_\" />
     <Folder Include="Syntax\" />
     <Folder Include="Xml\" />
   </ItemGroup>
@@ -90,6 +95,10 @@
     <ProjectReference Include="..\TextMetal.Common.Syntax\TextMetal.Common.Syntax.csproj">
       <Project>{483501d9-4d73-4076-997b-3a5d8b5ddb2c}</Project>
       <Name>TextMetal.Common.Syntax</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Common.Tokenization\TextMetal.Common.Tokenization.csproj">
+      <Project>{2FF3DDEC-8A2D-47C6-9C41-5C6743591DC1}</Project>
+      <Name>TextMetal.Common.Tokenization</Name>
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Imports\TextMetal.Imports.csproj">
       <Project>{40e6902d-3881-4271-bdf3-7d88db7cf230}</Project>

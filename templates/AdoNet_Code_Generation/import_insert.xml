@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+-->
+<Template xmlns="http://www.textmetal.com/api/v6.0.0">
+
+	<!--<DebuggerBreakpoint />-->
+
+	<![CDATA[commandText = @"INSERT INTO " + GetDataSourceTagSpecificInstance().GetTableName(${TableNameSingularPascalCase}.SCHEMA_NAME, ${TableNameSingularPascalCase}.TABLE_NAME) + @" ("]]>
+
+	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
+		<ForEach.Filter>
+			<BinaryExpression operator="Ne">
+				<BinaryExpression.LeftExpression>
+					<Facet name="IsColumnServerGeneratedPrimaryKey" />
+				</BinaryExpression.LeftExpression>
+				<BinaryExpression.RightExpression>
+					<Value type="System.Boolean" data="True" />
+				</BinaryExpression.RightExpression>
+			</BinaryExpression>
+		</ForEach.Filter>
+		<ForEach.Body>
+			<![CDATA[ + GetDataSourceTagSpecificInstance().GetColumnName(${TableNameSingularPascalCase}.COLUMN_NAME_${ColumnNameConstantCase})]]>
+			<If>
+				<If.Condition>
+					<BinaryExpression operator="Ne">
+						<BinaryExpression.LeftExpression>
+							<Facet name="_LoopCount" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Facet name="_LoopIndex" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</If.Condition>
+				<If.True>
+					<![CDATA[ + @", "]]>
+				</If.True>
+			</If>
+		</ForEach.Body>
+	</ForEach>
+
+	<![CDATA[ + @") VALUES ("]]>
+
+	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
+		<ForEach.Filter>
+			<BinaryExpression operator="Ne">
+				<BinaryExpression.LeftExpression>
+					<Facet name="IsColumnServerGeneratedPrimaryKey" />
+				</BinaryExpression.LeftExpression>
+				<BinaryExpression.RightExpression>
+					<Value type="System.Boolean" data="True" />
+				</BinaryExpression.RightExpression>
+			</BinaryExpression>
+		</ForEach.Filter>
+		<ForEach.Body>
+			<![CDATA[ + GetDataSourceTagSpecificInstance().GetParameterName(${TableNameSingularPascalCase}.COLUMN_NAME_${ColumnNameConstantCase})]]>
+			<If>
+				<If.Condition>
+					<BinaryExpression operator="Ne">
+						<BinaryExpression.LeftExpression>
+							<Facet name="_LoopCount" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Facet name="_LoopIndex" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</If.Condition>
+				<If.True>
+					<![CDATA[ + @", "]]>
+				</If.True>
+			</If>
+		</ForEach.Body>
+	</ForEach>
+
+	<![CDATA[ + @")";]]>
+
+</Template>

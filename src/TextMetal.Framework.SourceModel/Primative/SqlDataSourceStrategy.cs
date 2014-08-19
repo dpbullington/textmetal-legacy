@@ -11,8 +11,8 @@ using System.Linq;
 
 using TextMetal.Common.Cerealization;
 using TextMetal.Common.Core;
-using TextMetal.Common.Core.StringTokens;
 using TextMetal.Common.Data;
+using TextMetal.Common.Tokenization;
 using TextMetal.Framework.AssociativeModel;
 using TextMetal.Framework.Core;
 

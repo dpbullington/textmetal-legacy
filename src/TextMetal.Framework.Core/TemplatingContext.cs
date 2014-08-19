@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-using TextMetal.Common.Core.StringTokens;
+using TextMetal.Common.Tokenization;
 using TextMetal.Common.Xml;
 
 namespace TextMetal.Framework.Core
