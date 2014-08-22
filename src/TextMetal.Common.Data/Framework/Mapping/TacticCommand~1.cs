@@ -4,16 +4,17 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace TextMetal.Common.Data.Framework.Mapping
 {
-	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-	public sealed class CommandMappingAttribute : Attribute
+	public sealed class TacticCommand<TModel>
+		where TModel : class, IModelObject
 	{
 		#region Constructors/Destructors
 
-		public CommandMappingAttribute()
+		public TacticCommand()
 		{
 		}
 
@@ -22,10 +23,14 @@ namespace TextMetal.Common.Data.Framework.Mapping
 		#region Fields/Constants
 
 		private CommandBehavior commandBehavior = CommandBehavior.Default;
+		private IEnumerable<IDataParameter> commandParameters;
 		private bool commandPrepare;
 		private string commandText;
 		private int? commandTimeout;
 		private CommandType commandType;
+		private int expectedRecordsAffected;
+		private bool isNullipotent;
+		private Action<TModel, IDictionary<string, object>> tableToModelMappingCallback;
 
 		#endregion
 
@@ -46,6 +51,18 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			}
 		}
 
+		public IEnumerable<IDataParameter> CommandParameters
+		{
+			get
+			{
+				return this.commandParameters;
+			}
+			set
+			{
+				this.commandParameters = value;
+			}
+		}
+
 		/// <summary>
 		/// Gets or sets a value indicating whether to prepare the command.
 		/// </summary>
@@ -58,6 +75,21 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			set
 			{
 				this.commandPrepare = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the command text.
+		/// </summary>
+		public string CommandText
+		{
+			get
+			{
+				return this.commandText;
+			}
+			set
+			{
+				this.commandText = value;
 			}
 		}
 
@@ -91,19 +123,49 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			}
 		}
 
-		/// <summary>
-		/// Gets or sets the command text.
-		/// </summary>
-		public string Text
+		public int ExpectedRecordsAffected
 		{
 			get
 			{
-				return this.commandText;
+				return this.expectedRecordsAffected;
 			}
 			set
 			{
-				this.commandText = value;
+				this.expectedRecordsAffected = value;
 			}
+		}
+
+		public bool IsNullipotent
+		{
+			get
+			{
+				return this.isNullipotent;
+			}
+			set
+			{
+				this.isNullipotent = value;
+			}
+		}
+
+		public Action<TModel, IDictionary<string, object>> TableToModelMappingCallback
+		{
+			get
+			{
+				return this.tableToModelMappingCallback;
+			}
+			set
+			{
+				this.tableToModelMappingCallback = value;
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		public Type GetModelType()
+		{
+			return typeof(TModel);
 		}
 
 		#endregion

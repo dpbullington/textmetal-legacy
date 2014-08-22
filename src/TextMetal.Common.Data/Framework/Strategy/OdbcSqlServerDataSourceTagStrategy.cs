@@ -7,14 +7,16 @@ using System;
 using System.Data;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Data.Framework.Mapping;
 
 namespace TextMetal.Common.Data.Framework.Strategy
 {
-	public sealed class OdbcSqlServerDataSourceTagStrategy : IDataSourceTagStrategy
+	public sealed class OdbcSqlServerDataSourceTagStrategy : DataSourceTagStrategy
 	{
 		#region Constructors/Destructors
 
-		private OdbcSqlServerDataSourceTagStrategy()
+		private OdbcSqlServerDataSourceTagStrategy() :
+			base(ODBC_SQL_SERVER_DATA_SOURCE_TAG, false)
 		{
 		}
 
@@ -59,15 +61,15 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 		#region Methods/Operators
 
-		public void CommandMagic(IUnitOfWork unitOfWork, bool executeAsCud, out int thisOrThatRecordsAffected)
+		public void CommandMagic(IUnitOfWork unitOfWork, bool isNullipotent, out int expectedRecordsAffected)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if (executeAsCud)
-				thisOrThatRecordsAffected = ODBC_SQL_SERVER_PERSIST_NOT_EXPECTED_RECORDS_AFFECTED;
+			if (!isNullipotent)
+				expectedRecordsAffected = ODBC_SQL_SERVER_PERSIST_NOT_EXPECTED_RECORDS_AFFECTED;
 			else
-				thisOrThatRecordsAffected = ODBC_SQL_SERVER_QUERY_EXPECTED_RECORDS_AFFECTED;
+				expectedRecordsAffected = ODBC_SQL_SERVER_QUERY_EXPECTED_RECORDS_AFFECTED;
 		}
 
 		public bool CreateNativeDatabaseFile(string databaseFilePath)
@@ -75,7 +77,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return false;
 		}
 
-		public string GetAliasedColumnName(string tableAlias, string columnName)
+		protected override string GetAliasedColumnName(string tableAlias, string columnName)
 		{
 			string retVal;
 
@@ -84,7 +86,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return retVal;
 		}
 
-		public string GetColumnName(string columnName)
+		protected override string GetColumnName(string columnName)
 		{
 			string retVal;
 
@@ -93,7 +95,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return retVal;
 		}
 
-		public string GetIdentityCommand()
+		protected override string GetIdentityCommand()
 		{
 			string retVal;
 
@@ -102,7 +104,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return retVal;
 		}
 
-		public string GetParameterName(string parameterName)
+		protected override string GetParameterName(string parameterName)
 		{
 			string retVal;
 
@@ -111,7 +113,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return retVal;
 		}
 
-		public string GetTableAlias(string tableAlias)
+		protected override string GetTableAlias(string tableAlias)
 		{
 			string retVal;
 
@@ -120,7 +122,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return retVal;
 		}
 
-		public string GetTableName(string schemaName, string tableName)
+		protected override string GetTableName(string schemaName, string tableName)
 		{
 			string retVal;
 

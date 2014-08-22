@@ -52,10 +52,11 @@
     <Compile Include="Core\_\ExecutionPathStorageTests.cs" />
     <Compile Include="Core\_\ReflexionTests.cs" />
     <Compile Include="Data\Framework\Mapping\_\ColumnMappingAttributeTests.cs" />
-    <Compile Include="Data\Framework\Mapping\_\CommandMappingAttributeTests.cs" />
+    <Compile Include="Data\Framework\Mapping\_\TacticCommandTests.cs" />
     <Compile Include="Data\Framework\Mapping\_\ParameterMappingAttributeTests.cs" />
     <Compile Include="Data\Framework\Mapping\_\ProcedureMappingAttributeTests.cs" />
     <Compile Include="Data\Framework\Mapping\_\TableMappingAttributeTests.cs" />
+    <Compile Include="TestingInfrastructure\MockModelObject.cs" />
     <Compile Include="Tokenization\_\DynamicValueTokenReplacementStrategyTests.cs" />
     <Compile Include="Tokenization\_\StaticValueTokenReplacementStrategyTests.cs" />
     <Compile Include="Tokenization\_\TokenizerTests.cs" />

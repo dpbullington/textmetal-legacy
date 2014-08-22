@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Web;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Data.Framework.Mapping;
 using TextMetal.Common.Data.Framework.Strategy;
 
 namespace TextMetal.Common.Data.Framework
@@ -25,6 +26,8 @@ namespace TextMetal.Common.Data.Framework
 		{
 			if (this.UseDatabaseFile)
 				this.InitializeFromRevisionHistoryResource();
+
+			this.dataSourceTagStrategy = DataSourceTagStrategyFactory.Instance.GetDataSourceTagStrategy(this.DataSourceTag);
 		}
 
 		#endregion
@@ -38,6 +41,8 @@ namespace TextMetal.Common.Data.Framework
 		private const string KILL_DATABASE_FILE_FORMAT = "{0}::KillDatabaseFile";
 		private const string RESOURCE_NAME_FORMAT = "{0}.SQL.RevisionHistory({1}).xml";
 		private const string USE_DATABASE_FILE_FORMAT = "{0}::UseDatabaseFile";
+
+		private readonly IDataSourceTagStrategy dataSourceTagStrategy;
 
 		#endregion
 
@@ -92,6 +97,14 @@ namespace TextMetal.Common.Data.Framework
 				value = AppConfig.GetAppSetting<string>(dataSourceTag);
 
 				return value;
+			}
+		}
+
+		public IDataSourceTagStrategy DataSourceTagStrategy
+		{
+			get
+			{
+				return this.dataSourceTagStrategy;
 			}
 		}
 
@@ -182,6 +195,34 @@ namespace TextMetal.Common.Data.Framework
 			}
 
 			return userSpecificDirectoryPath;
+		}
+
+		protected static TValue GetScalar<TValue>(IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters)
+		{
+			int recordsAffected;
+			IEnumerable<IDictionary<string, object>> results;
+			IDictionary<string, object> result;
+			object dbValue;
+
+			results = unitOfWork.ExecuteDictionary(commandType, commandText, commandParameters, out recordsAffected);
+
+			if ((object)results == null)
+				return default(TValue);
+
+			result = results.SingleOrDefault();
+
+			if ((object)result == null)
+				return default(TValue);
+
+			if (result.Count != 1)
+				return default(TValue);
+
+			if (result.Keys.Count != 1)
+				return default(TValue);
+
+			dbValue = result[result.Keys.First()];
+
+			return dbValue.ChangeType<TValue>();
 		}
 
 		public virtual TModel CreateModel<TModel>()
@@ -318,8 +359,9 @@ namespace TextMetal.Common.Data.Framework
 
 		public virtual bool Fill<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject
 		{
-			dynamic table;
-			Action<TModel, dynamic> tableToModelMappingCallback;
+			Type modelType;
+			IEnumerable<IDictionary<string, object>> rows;
+			IDictionary<string, object> table;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -327,16 +369,39 @@ namespace TextMetal.Common.Data.Framework
 			if ((object)model == null)
 				throw new ArgumentNullException("model");
 
-			table = null;
-			tableToModelMappingCallback = (m, t) => {};
+			modelType = typeof(TModel);
 
 			using (GarbageDisposable.Instance)
 			{
+				TacticCommand<TModel> tacticCommand;
+				int actualRecordsAffected;
+
+				tacticCommand = this.DataSourceTagStrategy.GetSelectTacticCommand<TModel>(unitOfWork, modelType, model, null);
+
+				this.OnProfileTacticCommand<TModel>(tacticCommand);
+
+				rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
+
+				if (actualRecordsAffected != tacticCommand.ExpectedRecordsAffected)
+				{
+					// idempotency failure
+					unitOfWork.Divergent();
+
+					throw new InvalidOperationException(string.Format("Data concurrency failure occurred during model load; expected records affected '{0}' did not equal actual records affected '{1}'.", tacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
+				}
+
+				if ((object)rows == null)
+					throw new InvalidOperationException(string.Format("Rows were invalid."));
+
+				table = rows.SingleOrDefault();
+
 				if ((object)table == null)
 					return false;
 
-				// map to POCO model from L2S table (destination, source)
-				tableToModelMappingCallback(model, table);
+				// map to model from table (destination, source)
+				tacticCommand.TableToModelMappingCallback(model, table);
+
+				this.OnSelectModel(unitOfWork, model);
 
 				return true;
 			}
@@ -375,7 +440,9 @@ namespace TextMetal.Common.Data.Framework
 				throw new ArgumentNullException("modelQuery");
 
 			tables = null;
-			tableToModelMappingCallback = (m, t) => {};
+			tableToModelMappingCallback = (m, t) =>
+										{
+										};
 
 			using (GarbageDisposable.Instance)
 			{
@@ -384,7 +451,7 @@ namespace TextMetal.Common.Data.Framework
 				{
 					model = this.CreateModel<TModel>();
 
-					// map to POCO model from L2S table (destination, source)
+					// map to model from table (destination, source)
 					tableToModelMappingCallback(model, table);
 
 					this.OnSelectModel<TModel>(unitOfWork, model);
@@ -462,9 +529,10 @@ namespace TextMetal.Common.Data.Framework
 
 		public virtual TModel Load<TModel>(IUnitOfWork unitOfWork, TModel prototype) where TModel : class, IModelObject
 		{
+			Type modelType;
 			TModel model;
-			dynamic table;
-			Action<TModel, dynamic> tableToModelMappingCallback;
+			IEnumerable<IDictionary<string, object>> rows;
+			IDictionary<string, object> table;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -472,15 +540,41 @@ namespace TextMetal.Common.Data.Framework
 			if ((object)prototype == null)
 				throw new ArgumentNullException("prototype");
 
-			table = null;
-			tableToModelMappingCallback = (m, t) => {};
+			modelType = typeof(TModel);
 
 			using (GarbageDisposable.Instance)
 			{
+				TacticCommand<TModel> tacticCommand;
+				int actualRecordsAffected;
+
+				tacticCommand = this.DataSourceTagStrategy.GetSelectTacticCommand<TModel>(unitOfWork, modelType, prototype, null);
+
+				this.OnProfileTacticCommand<TModel>(tacticCommand);
+
+				rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
+
+				if (actualRecordsAffected != tacticCommand.ExpectedRecordsAffected)
+				{
+					// idempotency failure
+					unitOfWork.Divergent();
+
+					throw new InvalidOperationException(string.Format("Data concurrency failure occurred during model load; expected records affected '{0}' did not equal actual records affected '{1}'.", tacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
+				}
+
+				if ((object)rows == null)
+					throw new InvalidOperationException(string.Format("Rows were invalid."));
+
+				table = rows.SingleOrDefault();
+
+				if ((object)table == null)
+					return null;
+
 				model = this.CreateModel<TModel>();
 
-				// map to POCO model from L2S table (destination, source)
-				tableToModelMappingCallback(model, table);
+				// map to model from table (destination, source)
+				tacticCommand.TableToModelMappingCallback(model, table);
+
+				this.OnSelectModel(unitOfWork, model);
 
 				return model;
 			}
@@ -508,7 +602,10 @@ namespace TextMetal.Common.Data.Framework
 
 		protected virtual bool OnCreateNativeDatabaseFile(string databaseFilePath)
 		{
-			return DataSourceTagStrategyFactory.Instance.GetDataSourceTagStrategy(DataSourceTag).CreateNativeDatabaseFile(databaseFilePath);
+			if (this.DataSourceTagStrategy.CanCreateNativeDatabaseFile)
+				return this.DataSourceTagStrategy.CreateNativeDatabaseFile(databaseFilePath);
+			else
+				return false;
 		}
 
 		protected virtual void OnDiscardConflictModel<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject
@@ -600,6 +697,49 @@ namespace TextMetal.Common.Data.Framework
 			model.Mark();
 		}
 
+		[Conditional("DEBUG")]
+		protected virtual void OnProfileTacticCommand<TModel>(TacticCommand<TModel> tacticCommand)
+			where TModel : class, IModelObject
+		{
+			/* THIS METHOD SHOULD NOT BE DEFINED IN RELEASE/PRODUCTION BUILDS */
+			string value = "";
+			int i;
+
+			if ((object)tacticCommand == null)
+				throw new ArgumentNullException("tacticCommand");
+
+			value += "\r\n[+++ begin OnProfileTacticCommand +++]\r\n";
+
+			value += string.Format("[TacticCommand]: ModelType = '{0}', IsNullipotent = '{6}'; ExpectedRecordsAffected = '{7}'; CommandType = '{1}'; CommandText = '{2}'; CommandPrepare = '{3}'; CommandTimeout = '{4}'; CommandBehavior = '{5}'.",
+				tacticCommand.GetModelType().FullName,
+				tacticCommand.CommandType,
+				tacticCommand.CommandText,
+				tacticCommand.CommandPrepare,
+				tacticCommand.CommandTimeout,
+				tacticCommand.CommandBehavior,
+				tacticCommand.IsNullipotent,
+				tacticCommand.ExpectedRecordsAffected);
+
+			i = 0;
+			foreach (IDbDataParameter commandParameter in tacticCommand.CommandParameters)
+			{
+				value += string.Format("\r\n\t[Parameter{0:00}]: Direction = '{1}'; ParameterName = '{2}'; IsNullable = '{3}'; Precision = '{4}'; Scale = '{5}'; Size = '{6}'; DbType = '{7}'; Value = '{8}'.",
+					i++,
+					commandParameter.Direction,
+					commandParameter.ParameterName,
+					commandParameter.IsNullable,
+					commandParameter.Precision,
+					commandParameter.Scale,
+					commandParameter.Size,
+					commandParameter.DbType,
+					(object)commandParameter != null ? commandParameter.Value.SafeToString(null, "<null>") : "[[null]]");
+			}
+
+			value += "\r\n[+++ end OnProfileTacticCommand +++]\r\n";
+
+			Trace.WriteLine(value);
+		}
+
 		protected virtual void OnSaveConflictModel<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject
 		{
 			if ((object)unitOfWork == null)
@@ -635,8 +775,12 @@ namespace TextMetal.Common.Data.Framework
 			if ((object)model == null)
 				throw new ArgumentNullException("model");
 
-			tableToModelMappingCallback = (m, t) => {};
-			modelToTableMappingCallback = (m, t) => {};
+			tableToModelMappingCallback = (m, t) =>
+										{
+										};
+			modelToTableMappingCallback = (m, t) =>
+										{
+										};
 
 			wasNew = model.IsNew;
 			model.Mark();
@@ -660,7 +804,7 @@ namespace TextMetal.Common.Data.Framework
 						return false;
 				}
 
-				// map to L2S table from POCO model (destination, source)
+				// map to table from model (destination, source)
 				modelToTableMappingCallback(table, model);
 
 				try
@@ -674,7 +818,7 @@ namespace TextMetal.Common.Data.Framework
 					return false;
 				}
 
-				// map to POCO model from L2S table (destination, source)
+				// map to model from table (destination, source)
 				tableToModelMappingCallback(model, table);
 
 				if (wasNew)
@@ -704,37 +848,6 @@ namespace TextMetal.Common.Data.Framework
 				retval = this.Save<TModel>(UnitOfWork.Current, model);
 
 			return retval;
-		}
-
-		[Conditional("DEBUG")]
-		protected virtual void OnProfileCommand(Type modelType, CommandType commandType, string commandText, IList<IDataParameter> commandParameters, bool executeAsCud, int thisOrThatRecordsAffected)
-		{
-			/* THIS METHOD SHOULD NOT BE DEFINED IN RELEASE/PRODUCTION BUILDS */
-
-			// these are by convention in the ExecuteDictionary(...) API
-			const bool COMMAND_PREPARE = false;
-			/* const */
-			int? COMMAND_TIMEOUT = null;
-			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
-
-			string value = "";
-			int i;
-
-			value += "\r\n[+++ begin trace +++]\r\n";
-
-			value += string.Format("[Command]: Type = '{0}'; Text = '{1}'; Prepare = '{2}'; Timeout = '{3}'; Behavior = '{4}'.",
-				commandType, commandText, COMMAND_PREPARE, COMMAND_TIMEOUT, COMMAND_BEHAVIOR);
-
-			i = 0;
-			foreach (IDbDataParameter commandParameter in commandParameters)
-			{
-				value += string.Format("\r\n\t[Parameter{0:00}]: Direction = '{1}'; ParameterName = '{2}'; IsNullable = '{3}'; Precision = '{4}'; Scale = '{5}'; Size = '{6}'; DbType = '{7}'; Value = '{8}'.",
-					i++, commandParameter.Direction, commandParameter.ParameterName, commandParameter.IsNullable, commandParameter.Precision, commandParameter.Scale, commandParameter.Size, commandParameter.DbType, (object)commandParameter != null ? commandParameter.Value : "<<null>>");
-			}
-
-			value += "\r\n[+++ end trace +++]\r\n";
-
-			Trace.WriteLine(value);
 		}
 
 		#endregion

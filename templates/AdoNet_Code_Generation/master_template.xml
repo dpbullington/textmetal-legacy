@@ -17,6 +17,7 @@
 	<Import name="tbl_vw_model_template.xml" />
 	<Import name="tbl_vw_partial_model_template.xml" />
 
+<Import name="DO_NOT_USE_tbl_vw_repository_template.xml" />
 	<Import name="ut_tbl_vw_model_template.xml" />
 
 	<!-- SPROC -->

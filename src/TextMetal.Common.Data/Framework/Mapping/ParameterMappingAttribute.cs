@@ -25,7 +25,6 @@ namespace TextMetal.Common.Data.Framework.Mapping
 		#region Fields/Constants
 
 		private DbType dbType;
-
 		private ParameterDirection parameterDirection;
 		private string parameterName;
 		private bool parameterNullable;

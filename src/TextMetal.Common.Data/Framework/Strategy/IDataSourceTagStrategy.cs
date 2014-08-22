@@ -3,13 +3,20 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-using System.Data;
+using System;
+
+using TextMetal.Common.Data.Framework.Mapping;
 
 namespace TextMetal.Common.Data.Framework.Strategy
 {
 	public interface IDataSourceTagStrategy
 	{
 		#region Properties/Indexers/Events
+
+		bool CanCreateNativeDatabaseFile
+		{
+			get;
+		}
 
 		string DataSourceTag
 		{
@@ -20,24 +27,26 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 		#region Methods/Operators
 
-		void CommandMagic(IUnitOfWork unitOfWork, bool executeAsCud, out int thisOrThatRecordsAffected);
-
 		bool CreateNativeDatabaseFile(string databaseFilePath);
 
-		string GetAliasedColumnName(string tableAlias, string columnName);
+		TacticCommand<TModel> GetDeleteTacticCommand<TModel>(IUnitOfWork unitOfWork, Type modelType, object modelValue, IModelQuery modelQuery)
+			where TModel : class, IModelObject;
 
-		string GetColumnName(string columnName);
+		TacticCommand<TModel> GetInsertTacticCommand<TModel>(IUnitOfWork unitOfWork, Type modelType, object modelValue, IModelQuery modelQuery)
+			where TModel : class, IModelObject;
 
-		string GetIdentityCommand();
+		TacticCommand<TModel> GetSelectTacticCommand<TModel>(IUnitOfWork unitOfWork, Type modelType, object modelValue, IModelQuery modelQuery)
+			where TModel : class, IModelObject;
 
-		string GetParameterName(string parameterName);
-
-		string GetTableAlias(string tableAlias);
-
-		string GetTableName(string schemaName, string tableName);
-
-		void ParameterMagic(IUnitOfWork unitOfWork, IDataParameter commandParameter, string generatedFromColumnNativeType);
+		TacticCommand<TModel> GetUpdateTacticCommand<TModel>(IUnitOfWork unitOfWork, Type modelType, object modelValue, IModelQuery modelQuery)
+			where TModel : class, IModelObject;
 
 		#endregion
+
+		//string GetAliasedColumnName(string tableAlias, string columnName);
+		//string GetColumnName(string columnName);
+		//string GetParameterName(string parameterName);
+		//string GetTableAlias(string tableAlias);
+		//string GetTableName(string schemaName, string tableName);
 	}
 }

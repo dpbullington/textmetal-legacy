@@ -21,7 +21,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 		#region Fields/Constants
 
-		private static DataSourceTagStrategyFactory instance;
+		private static readonly DataSourceTagStrategyFactory instance = new DataSourceTagStrategyFactory();
 
 		#endregion
 
@@ -48,7 +48,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			else if (dataSourceTag.SafeToString().ToLower() == OdbcSqlServerDataSourceTagStrategy.Instance.DataSourceTag.SafeToString().ToLower())
 				return OdbcSqlServerDataSourceTagStrategy.Instance;
 			else
-				return null;
+				throw new InvalidOperationException(string.Format("Data source tag was not recognized: '{0}'.", dataSourceTag));
 		}
 
 		#endregion

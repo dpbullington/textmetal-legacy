@@ -1393,43 +1393,43 @@
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.gui\SettingsPages\AdvancedLoaderSettingsPage.resx">
       <DependentUpon>AdvancedLoaderSettingsPage.cs</DependentUpon>
-      <LogicalName>NUnit.Gui.AdvancedLoaderSettingsPage.resources</LogicalName>
+      <LogicalName>NUnit.Gui.SettingsPages.AdvancedLoaderSettingsPage.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.gui\SettingsPages\AssemblyReloadSettingsPage.resx">
       <DependentUpon>AssemblyReloadSettingsPage.cs</DependentUpon>
-      <LogicalName>NUnit.Gui.AssemblyReloadSettingsPage.resources</LogicalName>
+      <LogicalName>NUnit.Gui.SettingsPages.AssemblyReloadSettingsPage.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.gui\SettingsPages\GuiSettingsPage.resx">
       <DependentUpon>GuiSettingsPage.cs</DependentUpon>
-      <LogicalName>NUnit.Gui.GuiSettingsPage.resources</LogicalName>
+      <LogicalName>NUnit.Gui.SettingsPages.GuiSettingsPage.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.gui\SettingsPages\InternalTraceSettingsPage.resx">
       <DependentUpon>InternalTraceSettingsPage.cs</DependentUpon>
-      <LogicalName>NUnit.Gui.InternalTraceSettingsPage.resources</LogicalName>
+      <LogicalName>NUnit.Gui.SettingsPages.InternalTraceSettingsPage.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.gui\SettingsPages\ProjectEditorSettingsPage.resx">
       <DependentUpon>ProjectEditorSettingsPage.cs</DependentUpon>
-      <LogicalName>NUnit.Gui.ProjectEditorSettingsPage.resources</LogicalName>
+      <LogicalName>NUnit.Gui.SettingsPages.ProjectEditorSettingsPage.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.gui\SettingsPages\RuntimeSelectionSettingsPage.resx">
       <DependentUpon>RuntimeSelectionSettingsPage.cs</DependentUpon>
-      <LogicalName>NUnit.Gui.RuntimeSelectionSettingsPage.resources</LogicalName>
+      <LogicalName>NUnit.Gui.SettingsPages.RuntimeSelectionSettingsPage.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.gui\SettingsPages\TestLoaderSettingsPage.resx">
       <DependentUpon>TestLoaderSettingsPage.cs</DependentUpon>
-      <LogicalName>NUnit.Gui.TestLoaderSettingsPage.resources</LogicalName>
+      <LogicalName>NUnit.Gui.SettingsPages.TestLoaderSettingsPage.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.gui\SettingsPages\TestResultSettingsPage.resx">
       <DependentUpon>TestResultSettingsPage.cs</DependentUpon>
-      <LogicalName>NUnit.Gui.TestResultSettingsPage.resources</LogicalName>
+      <LogicalName>NUnit.Gui.SettingsPages.TestResultSettingsPage.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.gui\SettingsPages\TreeSettingsPage.resx">
       <DependentUpon>TreeSettingsPage.cs</DependentUpon>
-      <LogicalName>NUnit.Gui.TreeSettingsPage.resources</LogicalName>
+      <LogicalName>NUnit.Gui.SettingsPages.TreeSettingsPage.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.gui\SettingsPages\VisualStudioSettingsPage.resx">
       <DependentUpon>VisualStudioSettingsPage.cs</DependentUpon>
-      <LogicalName>NUnit.Gui.VisualStudioSettingsPage.resources</LogicalName>
+      <LogicalName>NUnit.Gui.SettingsPages.VisualStudioSettingsPage.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.uiexception\Properties\Resources.resx">
       <LogicalName>NUnit.UiException.Properties.Resources.resources</LogicalName>
