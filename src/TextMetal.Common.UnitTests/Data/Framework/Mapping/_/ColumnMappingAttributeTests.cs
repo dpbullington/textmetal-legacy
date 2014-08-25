@@ -40,8 +40,8 @@ namespace TextMetal.Common.UnitTests.Data.Framework.Mapping._
 			attribute.ColumnSize = 1;
 			Assert.AreEqual(1, attribute.ColumnSize);
 
-			attribute.DbType = DbType.Guid;
-			Assert.AreEqual(DbType.Guid, attribute.DbType);
+			attribute.ColumnDbType = DbType.Guid;
+			Assert.AreEqual(DbType.Guid, attribute.ColumnDbType);
 
 			attribute.ColumnIsReadOnly = true;
 			Assert.AreEqual(true, attribute.ColumnIsReadOnly);

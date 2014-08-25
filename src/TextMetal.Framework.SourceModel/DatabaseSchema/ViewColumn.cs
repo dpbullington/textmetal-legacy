@@ -26,6 +26,36 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		[Obsolete("Provided for model breaking change compatability only.")]
 		[XmlIgnore]
+		public string ColumnCSharpIsComputedLiteral
+		{
+			get
+			{
+				return false.ToString().ToLower();
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string ColumnCSharpIsIdentityLiteral
+		{
+			get
+			{
+				return false.ToString().ToLower();
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string ColumnCSharpIsPrimaryKeyLiteral
+		{
+			get
+			{
+				return false.ToString().ToLower();
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
 		public bool ColumnHasCheck
 		{
 			get

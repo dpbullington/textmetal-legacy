@@ -61,15 +61,12 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 		#region Methods/Operators
 
-		public void CommandMagic(IUnitOfWork unitOfWork, bool isNullipotent, out int expectedRecordsAffected)
+		protected override int GetExpectedRecordsAffected(bool isNullipotent)
 		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
 			if (!isNullipotent)
-				expectedRecordsAffected = NET_SQL_SERVER_PERSIST_NOT_EXPECTED_RECORDS_AFFECTED;
+				return NET_SQL_SERVER_PERSIST_NOT_EXPECTED_RECORDS_AFFECTED;
 			else
-				expectedRecordsAffected = NET_SQL_SERVER_QUERY_EXPECTED_RECORDS_AFFECTED;
+				return NET_SQL_SERVER_QUERY_EXPECTED_RECORDS_AFFECTED;
 		}
 
 		public bool CreateNativeDatabaseFile(string databaseFilePath)

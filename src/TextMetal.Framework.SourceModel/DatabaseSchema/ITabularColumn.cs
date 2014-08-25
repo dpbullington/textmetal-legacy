@@ -12,6 +12,21 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 	{
 		#region Properties/Indexers/Events
 
+		string ColumnCSharpIsComputedLiteral
+		{
+			get;
+		}
+
+		string ColumnCSharpIsIdentityLiteral
+		{
+			get;
+		}
+
+		string ColumnCSharpIsPrimaryKeyLiteral
+		{
+			get;
+		}
+
 		bool ColumnHasCheck
 		{
 			get;

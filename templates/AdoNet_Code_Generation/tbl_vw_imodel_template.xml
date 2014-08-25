@@ -50,12 +50,14 @@
 <![CDATA[
 
 using System;
+using System.Data;
 using System.Collections.Generic;
 using System.Xml;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
 using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.Mapping;
 using TextMetal.Common.Syntax.Expressions;
 using TextMetal.Common.Syntax.Operators;
 using TextMetal.Common.Syntax.Statements;
@@ -80,44 +82,18 @@ using TextMetal.Common.Syntax.Statements;
 						<![CDATA[
 namespace ${ClrNamespace}.${FolderName}
 {
+	[TableMapping(SchemaName = "${SchemaName}", TableName = "${TableName}", IsView = ${CSharpIsViewLiteral})]
 	public partial interface I${TableNameSingularPascalCase} : IModelObject
 	{
 		#region Properties/Indexers/Events
 ]]>
 						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Body>
-								<If>
-									<If.Condition>
-										<BinaryExpression operator="Or">
-											<BinaryExpression.LeftExpression>
-												<BinaryExpression operator="Eq">
-													<BinaryExpression.LeftExpression>
-														<Facet name="ColumnIsPrimaryKey" />
-													</BinaryExpression.LeftExpression>
-													<BinaryExpression.RightExpression>
-														<Value type="System.Boolean" data="True" />
-													</BinaryExpression.RightExpression>
-												</BinaryExpression>
-											</BinaryExpression.LeftExpression>
-											<BinaryExpression.RightExpression>
-												<BinaryExpression operator="Eq">
-													<BinaryExpression.LeftExpression>
-														<Facet name="HasNoDefinedPrimaryKeyColumns" />
-													</BinaryExpression.LeftExpression>
-													<BinaryExpression.RightExpression>
-														<Value type="System.Boolean" data="True" />
-													</BinaryExpression.RightExpression>
-												</BinaryExpression>
-											</BinaryExpression.RightExpression>
-										</BinaryExpression>
-									</If.Condition>
-									<If.True>
-										<![CDATA[
-		/* PRIMARY_KEY */]]>
-									</If.True>
-								</If>
-
 								<![CDATA[
+		[ColumnMapping(ColumnOrdinal = ${ColumnOrdinal}, ColumnName = "${ColumnName}",
+			ColumnDbType = ${ColumnCSharpDbType}, ColumnSize = ${ColumnSize}, ColumnPrecision = ${ColumnPrecision}, ColumnScale = ${ColumnScale},
+			ColumnNullable = ${ColumnCSharpNullableLiteral}, ColumnIsPrimaryKey = ${ColumnCSharpIsPrimaryKeyLiteral},
+			ColumnIsReadOnly = ${ColumnCSharpIsComputedLiteral} || ${ColumnCSharpIsIdentityLiteral})]
 		${ColumnCSharpClrNullableType} @${ColumnNamePascalCase}
 		{
 			get;

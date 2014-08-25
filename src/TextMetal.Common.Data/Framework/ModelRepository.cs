@@ -376,7 +376,7 @@ namespace TextMetal.Common.Data.Framework
 				TacticCommand<TModel> tacticCommand;
 				int actualRecordsAffected;
 
-				tacticCommand = this.DataSourceTagStrategy.GetSelectTacticCommand<TModel>(unitOfWork, modelType, model, null);
+				tacticCommand = this.DataSourceTagStrategy.GetSelectTacticCommand<TModel>(unitOfWork, model, null);
 
 				this.OnProfileTacticCommand<TModel>(tacticCommand);
 
@@ -547,7 +547,7 @@ namespace TextMetal.Common.Data.Framework
 				TacticCommand<TModel> tacticCommand;
 				int actualRecordsAffected;
 
-				tacticCommand = this.DataSourceTagStrategy.GetSelectTacticCommand<TModel>(unitOfWork, modelType, prototype, null);
+				tacticCommand = this.DataSourceTagStrategy.GetSelectTacticCommand<TModel>(unitOfWork, prototype, null);
 
 				this.OnProfileTacticCommand<TModel>(tacticCommand);
 

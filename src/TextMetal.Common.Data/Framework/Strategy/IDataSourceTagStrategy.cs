@@ -29,24 +29,18 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 		bool CreateNativeDatabaseFile(string databaseFilePath);
 
-		TacticCommand<TModel> GetDeleteTacticCommand<TModel>(IUnitOfWork unitOfWork, Type modelType, object modelValue, IModelQuery modelQuery)
+		TacticCommand<TModel> GetDeleteTacticCommand<TModel>(IUnitOfWork unitOfWork, TModel modelValue, IModelQuery modelQuery)
 			where TModel : class, IModelObject;
 
-		TacticCommand<TModel> GetInsertTacticCommand<TModel>(IUnitOfWork unitOfWork, Type modelType, object modelValue, IModelQuery modelQuery)
+		TacticCommand<TModel> GetInsertTacticCommand<TModel>(IUnitOfWork unitOfWork, TModel modelValue, IModelQuery modelQuery)
 			where TModel : class, IModelObject;
 
-		TacticCommand<TModel> GetSelectTacticCommand<TModel>(IUnitOfWork unitOfWork, Type modelType, object modelValue, IModelQuery modelQuery)
+		TacticCommand<TModel> GetSelectTacticCommand<TModel>(IUnitOfWork unitOfWork, TModel modelValue, IModelQuery modelQuery)
 			where TModel : class, IModelObject;
 
-		TacticCommand<TModel> GetUpdateTacticCommand<TModel>(IUnitOfWork unitOfWork, Type modelType, object modelValue, IModelQuery modelQuery)
+		TacticCommand<TModel> GetUpdateTacticCommand<TModel>(IUnitOfWork unitOfWork, TModel modelValue, IModelQuery modelQuery)
 			where TModel : class, IModelObject;
 
 		#endregion
-
-		//string GetAliasedColumnName(string tableAlias, string columnName);
-		//string GetColumnName(string columnName);
-		//string GetParameterName(string parameterName);
-		//string GetTableAlias(string tableAlias);
-		//string GetTableName(string schemaName, string tableName);
 	}
 }

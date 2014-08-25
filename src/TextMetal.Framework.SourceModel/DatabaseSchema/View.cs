@@ -52,6 +52,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Properties/Indexers/Events
 
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string CSharpIsViewLiteral
+		{
+			get
+			{
+				return this.IsView.ToString().ToLower();
+			}
+		}
+
 		[XmlArray(ElementName = "Columns")]
 		[XmlArrayItem(ElementName = "Column")]
 		public List<ViewColumn> Columns

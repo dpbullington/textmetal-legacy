@@ -5,6 +5,7 @@
 
 using System;
 using System.Data;
+using System.Reflection;
 
 namespace TextMetal.Common.Data.Framework.Mapping
 {
@@ -29,7 +30,8 @@ namespace TextMetal.Common.Data.Framework.Mapping
 		private byte columnPrecision;
 		private byte columnScale;
 		private int columnSize;
-		private DbType dbType;
+		private DbType columnDbType;
+		private PropertyInfo targetProperty;
 
 		#endregion
 
@@ -131,15 +133,27 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			}
 		}
 
-		public DbType DbType
+		public DbType ColumnDbType
 		{
 			get
 			{
-				return this.dbType;
+				return this.columnDbType;
 			}
 			set
 			{
-				this.dbType = value;
+				this.columnDbType = value;
+			}
+		}
+
+		public PropertyInfo _TargetProperty
+		{
+			get
+			{
+				return this.targetProperty;
+			}
+			set
+			{
+				this.targetProperty = value;
 			}
 		}
 

@@ -511,6 +511,9 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 																	column.ColumnClrNullableType = Reflexion.MakeNullableType(clrType);
 																	column.ColumnClrNonNullableType = Reflexion.MakeNonNullableType(clrType);
 																	column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
+																	column.ColumnCSharpIsPrimaryKeyLiteral = column.ColumnIsPrimaryKey.ToString().ToLower();
+																	column.ColumnCSharpIsComputedLiteral = column.ColumnIsComputed.ToString().ToLower();
+																	column.ColumnCSharpIsIdentityLiteral = column.ColumnIsIdentity.ToString().ToLower();
 																	column.ColumnCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
 																	column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
 																	column.ColumnCSharpClrNullableType = (object)column.ColumnClrNullableType != null ? FormatCSharpType(column.ColumnClrNullableType) : FormatCSharpType(typeof(object));

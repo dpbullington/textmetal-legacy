@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 
 namespace TextMetal.Common.Data.Framework.Mapping
 {
@@ -20,10 +21,13 @@ namespace TextMetal.Common.Data.Framework.Mapping
 
 		#region Fields/Constants
 
+		private readonly IList<ColumnMappingAttribute> columnMappingAttributes = new List<ColumnMappingAttribute>();
+
 		private string databaseName;
 		private bool isView;
 		private string schemaName;
 		private string tableName;
+		private Type targetType;
 
 		#endregion
 
@@ -74,6 +78,26 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			set
 			{
 				this.tableName = value;
+			}
+		}
+
+		public IList<ColumnMappingAttribute> _ColumnMappingAttributes
+		{
+			get
+			{
+				return this.columnMappingAttributes;
+			}
+		}
+
+		public Type _TargetType
+		{
+			get
+			{
+				return this.targetType;
+			}
+			set
+			{
+				this.targetType = value;
 			}
 		}
 

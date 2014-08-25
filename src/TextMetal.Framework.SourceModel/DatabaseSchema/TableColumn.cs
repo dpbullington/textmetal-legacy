@@ -24,6 +24,10 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Fields/Constants
 
+		private string columnCSharpIsComputedLiteral;
+		private string columnCSharpIsIdentityLiteral;
+		private string columnCSharpIsPrimaryKeyLiteral;
+
 		private bool columnHasCheck;
 		private bool columnHasDefault;
 		private bool columnIsComputed;
@@ -34,6 +38,45 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		[XmlAttribute]
+		public string ColumnCSharpIsComputedLiteral
+		{
+			get
+			{
+				return this.columnCSharpIsComputedLiteral;
+			}
+			set
+			{
+				this.columnCSharpIsComputedLiteral = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ColumnCSharpIsIdentityLiteral
+		{
+			get
+			{
+				return this.columnCSharpIsIdentityLiteral;
+			}
+			set
+			{
+				this.columnCSharpIsIdentityLiteral = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ColumnCSharpIsPrimaryKeyLiteral
+		{
+			get
+			{
+				return this.columnCSharpIsPrimaryKeyLiteral;
+			}
+			set
+			{
+				this.columnCSharpIsPrimaryKeyLiteral = value;
+			}
+		}
 
 		[XmlAttribute]
 		public bool ColumnHasCheck
