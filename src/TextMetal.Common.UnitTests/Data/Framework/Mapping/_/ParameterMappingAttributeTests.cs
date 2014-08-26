@@ -40,11 +40,17 @@ namespace TextMetal.Common.UnitTests.Data.Framework.Mapping._
 			parameterMappingAttribute.ParameterName = "@ItemId";
 			Assert.AreEqual("@ItemId", parameterMappingAttribute.ParameterName);
 
+			parameterMappingAttribute.ParameterSqlType = "foo";
+			Assert.AreEqual("foo", parameterMappingAttribute.ParameterSqlType);
+
+			parameterMappingAttribute.ParameterOrdinal = 10;
+			Assert.AreEqual(10, parameterMappingAttribute.ParameterOrdinal);
+
 			parameterMappingAttribute.ParameterSize = 10;
 			Assert.AreEqual(10, parameterMappingAttribute.ParameterSize);
 
-			parameterMappingAttribute.DbType = DbType.Int32;
-			Assert.AreEqual(DbType.Int32, parameterMappingAttribute.DbType);
+			parameterMappingAttribute.ParameterDbType = DbType.Int32;
+			Assert.AreEqual(DbType.Int32, parameterMappingAttribute.ParameterDbType);
 
 			parameterMappingAttribute.ParameterNullable = true;
 			Assert.AreEqual(true, parameterMappingAttribute.ParameterNullable);

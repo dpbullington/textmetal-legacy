@@ -32,13 +32,18 @@ namespace TextMetal.Common.Data.Framework.Strategy
 		TacticCommand<TModel> GetDeleteTacticCommand<TModel>(IUnitOfWork unitOfWork, TModel modelValue, IModelQuery modelQuery)
 			where TModel : class, IModelObject;
 
+		TacticCommand<TRequestModel, TResultModel, TResponseModel> GetExecuteTacticCommand<TRequestModel, TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TRequestModel requestModelValue)
+			where TRequestModel : class, IRequestModelObject
+			where TResultModel : class, IResultModelObject
+			where TResponseModel : class, IResponseModelObject<TResultModel>;
+
+		TacticCommand<TModel> GetIdentityTacticCommand<TModel>(IUnitOfWork unitOfWork)
+			where TModel : class, IModelObject;
+
 		TacticCommand<TModel> GetInsertTacticCommand<TModel>(IUnitOfWork unitOfWork, TModel modelValue, IModelQuery modelQuery)
 			where TModel : class, IModelObject;
 
 		TacticCommand<TModel> GetSelectTacticCommand<TModel>(IUnitOfWork unitOfWork, TModel modelValue, IModelQuery modelQuery)
-			where TModel : class, IModelObject;
-
-		TacticCommand<TModel> GetIdentityTacticCommand<TModel>(IUnitOfWork unitOfWork)
 			where TModel : class, IModelObject;
 
 		TacticCommand<TModel> GetUpdateTacticCommand<TModel>(IUnitOfWork unitOfWork, TModel modelValue, IModelQuery modelQuery)

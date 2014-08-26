@@ -17,9 +17,9 @@ namespace TextMetal.Common.Data.Framework
 		TRequestModel CreateRequestModel<TRequestModel>()
 			where TRequestModel : class, IRequestModelObject;
 
-		TResponseModel CreateResponseModel<TResponseModel, TResultModel>()
-			where TResponseModel : class, IResponseModelObject<TResultModel>
-			where TResultModel : class, IResultModelObject;
+		TResponseModel CreateResponseModel<TResultModel, TResponseModel>()
+			where TResultModel : class, IResultModelObject
+			where TResponseModel : class, IResponseModelObject<TResultModel>;
 
 		TResultModel CreateResultModel<TResultModel>()
 			where TResultModel : class, IResultModelObject;

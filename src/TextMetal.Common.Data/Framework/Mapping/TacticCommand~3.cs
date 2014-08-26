@@ -9,8 +9,10 @@ using System.Data;
 
 namespace TextMetal.Common.Data.Framework.Mapping
 {
-	public sealed class TacticCommand<TModel> : ITacticCommand
-		where TModel : class, IModelObject
+	public sealed class TacticCommand<TRequestModel, TResultModel, TResponseModel> : ITacticCommand
+		where TRequestModel : class, IRequestModelObject
+		where TResultModel : class, IResultModelObject
+		where TResponseModel : class, IResponseModelObject<TResultModel>
 	{
 		#region Constructors/Destructors
 
@@ -30,7 +32,8 @@ namespace TextMetal.Common.Data.Framework.Mapping
 		private CommandType commandType;
 		private int expectedRecordsAffected;
 		private bool isNullipotent;
-		private Action<TModel, IDictionary<string, object>> tableToModelMappingCallback;
+		private Action<TResponseModel, IDictionary<string, object>> tableToResponseModelMappingCallback;
+		private Action<TResultModel, IDictionary<string, object>> tableToResultModelMappingCallback;
 
 		#endregion
 
@@ -147,15 +150,27 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			}
 		}
 
-		public Action<TModel, IDictionary<string, object>> TableToModelMappingCallback
+		public Action<TResponseModel, IDictionary<string, object>> TableToResponseModelMappingCallback
 		{
 			get
 			{
-				return this.tableToModelMappingCallback;
+				return this.tableToResponseModelMappingCallback;
 			}
 			set
 			{
-				this.tableToModelMappingCallback = value;
+				this.tableToResponseModelMappingCallback = value;
+			}
+		}
+
+		public Action<TResultModel, IDictionary<string, object>> TableToResultModelMappingCallback
+		{
+			get
+			{
+				return this.tableToResultModelMappingCallback;
+			}
+			set
+			{
+				this.tableToResultModelMappingCallback = value;
 			}
 		}
 
@@ -165,7 +180,12 @@ namespace TextMetal.Common.Data.Framework.Mapping
 
 		public Type[] GetModelTypes()
 		{
-			return new Type[] { typeof(TModel) };
+			return new Type[]
+					{
+						typeof(TRequestModel),
+						typeof(TResultModel),
+						typeof(TResponseModel)
+					};
 		}
 
 		#endregion

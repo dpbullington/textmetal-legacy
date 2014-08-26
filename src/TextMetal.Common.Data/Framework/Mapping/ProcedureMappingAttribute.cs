@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 
 namespace TextMetal.Common.Data.Framework.Mapping
 {
@@ -20,10 +21,15 @@ namespace TextMetal.Common.Data.Framework.Mapping
 
 		#region Fields/Constants
 
+		private readonly IList<ParameterMappingAttribute> requestParameterMappingAttributes = new List<ParameterMappingAttribute>();
+		private readonly IList<ParameterMappingAttribute> responseParameterMappingAttributes = new List<ParameterMappingAttribute>();
+		private readonly IList<ColumnMappingAttribute> resultColumnMappingAttributes = new List<ColumnMappingAttribute>();
+
 		private string databaseName;
 		private bool isFunction;
 		private string procedureName;
 		private string schemaName;
+		private Type targetType;
 
 		#endregion
 
@@ -74,6 +80,42 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			set
 			{
 				this.schemaName = value;
+			}
+		}
+
+		public IList<ParameterMappingAttribute> _RequestParameterMappingAttributes
+		{
+			get
+			{
+				return this.requestParameterMappingAttributes;
+			}
+		}
+
+		public IList<ParameterMappingAttribute> _ResponseParameterMappingAttributes
+		{
+			get
+			{
+				return this.responseParameterMappingAttributes;
+			}
+		}
+
+		public IList<ColumnMappingAttribute> _ResultColumnMappingAttributes
+		{
+			get
+			{
+				return this.resultColumnMappingAttributes;
+			}
+		}
+
+		public Type _TargetType
+		{
+			get
+			{
+				return this.targetType;
+			}
+			set
+			{
+				this.targetType = value;
 			}
 		}
 

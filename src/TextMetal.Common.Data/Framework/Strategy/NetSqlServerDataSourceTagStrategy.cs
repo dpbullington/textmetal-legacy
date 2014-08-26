@@ -7,7 +7,6 @@ using System;
 using System.Data;
 
 using TextMetal.Common.Core;
-using TextMetal.Common.Data.Framework.Mapping;
 
 namespace TextMetal.Common.Data.Framework.Strategy
 {
@@ -15,8 +14,9 @@ namespace TextMetal.Common.Data.Framework.Strategy
 	{
 		#region Constructors/Destructors
 
-		private NetSqlServerDataSourceTagStrategy() :
-			base(NET_SQL_SERVER_DATA_SOURCE_TAG, false)
+		private NetSqlServerDataSourceTagStrategy()
+			:
+				base(NET_SQL_SERVER_DATA_SOURCE_TAG, false)
 		{
 		}
 
@@ -30,7 +30,9 @@ namespace TextMetal.Common.Data.Framework.Strategy
 		private const string NET_SQL_SERVER_IDENTITY_COMMAND = "@@IDENTITY"; // warning: 'SELECT SCOPE_IDENTITY() AS PK' should be used in the SAME BATCH if there is any chance of triggers on any tables causing identity creation
 		private const string NET_SQL_SERVER_PARAMETER_NAME_FORMAT = "@{0}";
 		private const int NET_SQL_SERVER_PERSIST_NOT_EXPECTED_RECORDS_AFFECTED = 0;
+		private const string NET_SQL_SERVER_PROCEDURE_NAME_FORMAT = "[{0}]";
 		private const int NET_SQL_SERVER_QUERY_EXPECTED_RECORDS_AFFECTED = -1;
+		private const string NET_SQL_SERVER_SCHEMA_PROCEDURE_NAME_FORMAT = "[{0}].[{1}]";
 		private const string NET_SQL_SERVER_SCHEMA_TABLE_NAME_FORMAT = "[{0}].[{1}]";
 		private const string NET_SQL_SERVER_TABLE_ALIAS_FORMAT = "{0}";
 		private const string NET_SQL_SERVER_TABLE_NAME_FORMAT = "[{0}]";
@@ -61,20 +63,12 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 		#region Methods/Operators
 
-		protected override int GetExpectedRecordsAffected(bool isNullipotent)
-		{
-			if (!isNullipotent)
-				return NET_SQL_SERVER_PERSIST_NOT_EXPECTED_RECORDS_AFFECTED;
-			else
-				return NET_SQL_SERVER_QUERY_EXPECTED_RECORDS_AFFECTED;
-		}
-
 		public bool CreateNativeDatabaseFile(string databaseFilePath)
 		{
 			return false;
 		}
 
-		protected override string GetAliasedColumnName(string tableAlias, string columnName)
+		public override string GetAliasedColumnName(string tableAlias, string columnName)
 		{
 			string retVal;
 
@@ -83,7 +77,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return retVal;
 		}
 
-		protected override string GetColumnName(string columnName)
+		public override string GetColumnName(string columnName)
 		{
 			string retVal;
 
@@ -92,7 +86,15 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return retVal;
 		}
 
-		protected override string GetIdentityCommand()
+		public override int GetExpectedRecordsAffected(bool isNullipotent)
+		{
+			if (!isNullipotent)
+				return NET_SQL_SERVER_PERSIST_NOT_EXPECTED_RECORDS_AFFECTED;
+			else
+				return NET_SQL_SERVER_QUERY_EXPECTED_RECORDS_AFFECTED;
+		}
+
+		public override string GetIdentityCommand()
 		{
 			string retVal;
 
@@ -101,7 +103,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return retVal;
 		}
 
-		protected override string GetParameterName(string parameterName)
+		public override string GetParameterName(string parameterName)
 		{
 			string retVal;
 
@@ -110,7 +112,18 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return retVal;
 		}
 
-		protected override string GetTableAlias(string tableAlias)
+		public override string GetProcedureName(string schemaName, string procedureName)
+		{
+			string retVal;
+
+			retVal = !DataType.IsNullOrWhiteSpace(schemaName) ?
+				string.Format(NET_SQL_SERVER_SCHEMA_PROCEDURE_NAME_FORMAT, schemaName, procedureName) :
+				string.Format(NET_SQL_SERVER_PROCEDURE_NAME_FORMAT, procedureName);
+
+			return retVal;
+		}
+
+		public override string GetTableAlias(string tableAlias)
 		{
 			string retVal;
 
@@ -119,7 +132,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return retVal;
 		}
 
-		protected override string GetTableName(string schemaName, string tableName)
+		public override string GetTableName(string schemaName, string tableName)
 		{
 			string retVal;
 
@@ -130,7 +143,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return retVal;
 		}
 
-		public void ParameterMagic(IUnitOfWork unitOfWork, IDataParameter commandParameter, string generatedFromColumnNativeType)
+		public override void ParameterMagic(IUnitOfWork unitOfWork, IDataParameter commandParameter, string originalSqlType)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -138,11 +151,11 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			if ((object)commandParameter == null)
 				throw new ArgumentNullException("commandParameter");
 
-			if (generatedFromColumnNativeType.SafeToString().ToUpper() == "NTEXT")
+			if (originalSqlType.SafeToString().ToUpper() == "NTEXT")
 				Reflexion.SetLogicalPropertyValue(commandParameter, "SqlDbType", Enum.Parse(Type.GetType("System.Data.SqlDbType, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089", true), "NText", true));
-			else if (generatedFromColumnNativeType.SafeToString().ToUpper() == "TEXT")
+			else if (originalSqlType.SafeToString().ToUpper() == "TEXT")
 				Reflexion.SetLogicalPropertyValue(commandParameter, "SqlDbType", Enum.Parse(Type.GetType("System.Data.SqlDbType, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089", true), "Text", true));
-			else if (generatedFromColumnNativeType.SafeToString().ToUpper() == "IMAGE")
+			else if (originalSqlType.SafeToString().ToUpper() == "IMAGE")
 				Reflexion.SetLogicalPropertyValue(commandParameter, "SqlDbType", Enum.Parse(Type.GetType("System.Data.SqlDbType, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089", true), "Image", true));
 		}
 

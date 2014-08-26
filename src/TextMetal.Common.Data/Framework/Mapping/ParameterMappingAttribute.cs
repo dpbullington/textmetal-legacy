@@ -5,6 +5,7 @@
 
 using System;
 using System.Data;
+using System.Reflection;
 
 namespace TextMetal.Common.Data.Framework.Mapping
 {
@@ -24,13 +25,17 @@ namespace TextMetal.Common.Data.Framework.Mapping
 
 		#region Fields/Constants
 
-		private DbType dbType;
+		private DbType parameterDbType;
 		private ParameterDirection parameterDirection;
 		private string parameterName;
 		private bool parameterNullable;
+		private int parameterOrdinal;
 		private byte parameterPrecision;
 		private byte parameterScale;
 		private int parameterSize;
+		private string parameterSqlType;
+		private PropertyInfo targetProperty;
+		private Type targetType;
 
 		#endregion
 
@@ -39,15 +44,15 @@ namespace TextMetal.Common.Data.Framework.Mapping
 		/// <summary>
 		/// Gets or sets the type of the parameter.
 		/// </summary>
-		public DbType DbType
+		public DbType ParameterDbType
 		{
 			get
 			{
-				return this.dbType;
+				return this.parameterDbType;
 			}
 			set
 			{
-				this.dbType = value;
+				this.parameterDbType = value;
 			}
 		}
 
@@ -96,6 +101,18 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			}
 		}
 
+		public int ParameterOrdinal
+		{
+			get
+			{
+				return this.parameterOrdinal;
+			}
+			set
+			{
+				this.parameterOrdinal = value;
+			}
+		}
+
 		/// <summary>
 		/// Gets or sets the precision of the parameter.
 		/// </summary>
@@ -138,6 +155,42 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			set
 			{
 				this.parameterSize = value;
+			}
+		}
+
+		public string ParameterSqlType
+		{
+			get
+			{
+				return this.parameterSqlType;
+			}
+			set
+			{
+				this.parameterSqlType = value;
+			}
+		}
+
+		public PropertyInfo _TargetProperty
+		{
+			get
+			{
+				return this.targetProperty;
+			}
+			set
+			{
+				this.targetProperty = value;
+			}
+		}
+
+		public Type _TargetType
+		{
+			get
+			{
+				return this.targetType;
+			}
+			set
+			{
+				this.targetType = value;
 			}
 		}
 

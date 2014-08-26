@@ -9,25 +9,19 @@
 	<Import name="irepository_template.xml" />
 	<Import name="repository_template.xml" />
 	<Import name="repository_partial_template.xml" />
+
 	<Import name="ut_tbl_vw_repository_template.xml" />
+	<Import name="ut_sprc_repository_template.xml" />
+
 	<Import name="it_repository_template.xml" />
 	<Import name="it_tbl_vw_repository_template.xml" />
+	<Import name="it_sprc_repository_template.xml" />
 
 	<Import name="tbl_vw_imodel_template.xml" />
 	<Import name="tbl_vw_model_template.xml" />
 	<Import name="tbl_vw_partial_model_template.xml" />
 
-<Import name="DO_NOT_USE_tbl_vw_repository_template.xml" />
 	<Import name="ut_tbl_vw_model_template.xml" />
-
-	<!-- SPROC -->
-	<Import name="sprc_irepository_template.xml" />
-	<Import name="sprc_repository_template.xml" />
-	<Import name="ut_sprc_repository_template.xml" />
-	<Import name="ut_sprc_request_model_template.xml" />
-	<Import name="ut_sprc_response_model_template.xml" />
-	<Import name="ut_sprc_result_model_template.xml" />
-	<Import name="it_sprc_repository_template.xml" />
 
 	<Import name="sprc_request_imodel_template.xml" />
 	<Import name="sprc_response_imodel_template.xml" />
@@ -35,6 +29,10 @@
 	<Import name="sprc_request_model_template.xml" />
 	<Import name="sprc_response_model_template.xml" />
 	<Import name="sprc_result_model_template.xml" />
+
+	<Import name="ut_sprc_request_model_template.xml" />
+	<Import name="ut_sprc_response_model_template.xml" />
+	<Import name="ut_sprc_result_model_template.xml" />
 
 	<Import name="build_template.xml" />
 

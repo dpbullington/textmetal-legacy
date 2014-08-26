@@ -15,8 +15,9 @@ namespace TextMetal.Common.Data.Framework.Strategy
 	{
 		#region Constructors/Destructors
 
-		private NetSqliteDataSourceTagStrategy() : 
-			base(NET_SQLITE_DATA_SOURCE_TAG, true)
+		private NetSqliteDataSourceTagStrategy()
+			:
+				base(NET_SQLITE_DATA_SOURCE_TAG, true)
 		{
 		}
 
@@ -61,14 +62,6 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 		#region Methods/Operators
 
-		protected override int GetExpectedRecordsAffected(bool isNullipotent)
-		{
-			if (!isNullipotent)
-				return NET_SQLITE_PERSIST_NOT_EXPECTED_RECORDS_AFFECTED;
-			else
-				return NET_SQLITE_QUERY_EXPECTED_RECORDS_AFFECTED;
-		}
-
 		public bool CreateNativeDatabaseFile(string databaseFilePath)
 		{
 			Type type;
@@ -90,7 +83,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return true;
 		}
 
-		protected override string GetAliasedColumnName(string tableAlias, string columnName)
+		public override string GetAliasedColumnName(string tableAlias, string columnName)
 		{
 			string retVal;
 
@@ -99,7 +92,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return retVal;
 		}
 
-		protected override string GetColumnName(string columnName)
+		public override string GetColumnName(string columnName)
 		{
 			string retVal;
 
@@ -108,7 +101,15 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return retVal;
 		}
 
-		protected override string GetIdentityCommand()
+		public override int GetExpectedRecordsAffected(bool isNullipotent)
+		{
+			if (!isNullipotent)
+				return NET_SQLITE_PERSIST_NOT_EXPECTED_RECORDS_AFFECTED;
+			else
+				return NET_SQLITE_QUERY_EXPECTED_RECORDS_AFFECTED;
+		}
+
+		public override string GetIdentityCommand()
 		{
 			string retVal;
 
@@ -117,7 +118,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return retVal;
 		}
 
-		protected override string GetParameterName(string parameterName)
+		public override string GetParameterName(string parameterName)
 		{
 			string retVal;
 
@@ -126,7 +127,12 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return retVal;
 		}
 
-		protected override string GetTableAlias(string tableAlias)
+		public override string GetProcedureName(string schemaName, string procedureName)
+		{
+			throw new NotSupportedException(string.Format("Procedures are not supported by this data source tag strategy implementation."));
+		}
+
+		public override string GetTableAlias(string tableAlias)
 		{
 			string retVal;
 
@@ -135,7 +141,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return retVal;
 		}
 
-		protected override string GetTableName(string schemaName, string tableName)
+		public override string GetTableName(string schemaName, string tableName)
 		{
 			string retVal;
 
@@ -146,7 +152,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return retVal;
 		}
 
-		public void ParameterMagic(IUnitOfWork unitOfWork, IDataParameter commandParameter, string generatedFromColumnNativeType)
+		public override void ParameterMagic(IUnitOfWork unitOfWork, IDataParameter commandParameter, string originalSqlType)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");

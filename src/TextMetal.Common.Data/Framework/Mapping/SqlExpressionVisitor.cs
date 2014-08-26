@@ -12,16 +12,16 @@ using TextMetal.Common.Data.Framework.Strategy;
 using TextMetal.Common.Syntax.Expressions;
 using TextMetal.Common.Syntax.Operators;
 
-namespace TextMetal.Common.Data.Framework
+namespace TextMetal.Common.Data.Framework.Mapping
 {
 	public sealed class SqlExpressionVisitor : ExpressionVisitor
 	{
 		#region Constructors/Destructors
 
-		public SqlExpressionVisitor(IDataSourceTagStrategy dataSourceTagStrategy, IUnitOfWork unitOfWork, IList<IDataParameter> commandParameters)
+		public SqlExpressionVisitor(ISqlNuance sqlNuance, IUnitOfWork unitOfWork, IDictionary<string, IDataParameter> commandParameters)
 		{
-			if ((object)dataSourceTagStrategy == null)
-				throw new ArgumentNullException("dataSourceTagStrategy");
+			if ((object)sqlNuance == null)
+				throw new ArgumentNullException("sqlNuance");
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -29,7 +29,7 @@ namespace TextMetal.Common.Data.Framework
 			if ((object)commandParameters == null)
 				throw new ArgumentNullException("commandParameters");
 
-			this.dataSourceTagStrategy = dataSourceTagStrategy;
+			this.sqlNuance = sqlNuance;
 			this.unitOfWork = unitOfWork;
 			this.commandParameters = commandParameters;
 		}
@@ -38,8 +38,8 @@ namespace TextMetal.Common.Data.Framework
 
 		#region Fields/Constants
 
-		private readonly IList<IDataParameter> commandParameters;
-		private readonly IDataSourceTagStrategy dataSourceTagStrategy;
+		private readonly IDictionary<string, IDataParameter> commandParameters;
+		private readonly ISqlNuance sqlNuance;
 		private readonly StringBuilder strings = new StringBuilder();
 		private readonly IUnitOfWork unitOfWork;
 
@@ -47,7 +47,7 @@ namespace TextMetal.Common.Data.Framework
 
 		#region Properties/Indexers/Events
 
-		private IList<IDataParameter> CommandParameters
+		private IDictionary<string, IDataParameter> CommandParameters
 		{
 			get
 			{
@@ -55,11 +55,11 @@ namespace TextMetal.Common.Data.Framework
 			}
 		}
 
-		private IDataSourceTagStrategy DataSourceTagStrategy
+		private ISqlNuance SqlNuance
 		{
 			get
 			{
-				return this.dataSourceTagStrategy;
+				return this.sqlNuance;
 			}
 		}
 
@@ -83,13 +83,13 @@ namespace TextMetal.Common.Data.Framework
 
 		#region Methods/Operators
 
-		public static string GetFilterText(IDataSourceTagStrategy dataSourceTagStrategy, IUnitOfWork unitOfWork, IList<IDataParameter> commandParameters, IExpression expression)
+		public static string GetFilterText(ISqlNuance sqlNuance, IUnitOfWork unitOfWork, IDictionary<string, IDataParameter> commandParameters, IExpression expression)
 		{
 			SqlExpressionVisitor expressionVisitor;
 			string expressionText;
 
-			if ((object)dataSourceTagStrategy == null)
-				throw new ArgumentNullException("dataSourceTagStrategy");
+			if ((object)sqlNuance == null)
+				throw new ArgumentNullException("sqlNuance");
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -100,20 +100,20 @@ namespace TextMetal.Common.Data.Framework
 			if ((object)expression == null)
 				throw new ArgumentNullException("expression");
 
-			expressionVisitor = new SqlExpressionVisitor(dataSourceTagStrategy, unitOfWork, commandParameters);
+			expressionVisitor = new SqlExpressionVisitor(sqlNuance, unitOfWork, commandParameters);
 			expressionVisitor.Visit(expression);
 			expressionText = expressionVisitor.Strings.ToString();
 
 			return expressionText;
 		}
 
-		public static string GetSortText(IDataSourceTagStrategy dataSourceTagStrategy, IUnitOfWork unitOfWork, IList<IDataParameter> commandParameters, IEnumerable<ISequence> sortSequences)
+		public static string GetSortText(ISqlNuance sqlNuance, IUnitOfWork unitOfWork, IDictionary<string, IDataParameter> commandParameters, IEnumerable<ISequence> sortSequences)
 		{
 			string expressionText;
 			List<string> sortNames;
 
-			if ((object)dataSourceTagStrategy == null)
-				throw new ArgumentNullException("dataSourceTagStrategy");
+			if ((object)sqlNuance == null)
+				throw new ArgumentNullException("sqlNuance");
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -131,7 +131,7 @@ namespace TextMetal.Common.Data.Framework
 				if ((object)sortSequence.SortExpression == null)
 					continue;
 
-				sortNames.Add(string.Format("{0} {1}", dataSourceTagStrategy.GetAliasedColumnName("t0", ((ISurface)sortSequence.SortExpression).Name), (sortSequence.SortDirection ?? true) ? "ASC" : "DESC"));
+				sortNames.Add(string.Format("{0} {1}", sqlNuance.GetAliasedColumnName("t0", ((ISurface)sortSequence.SortExpression).Name), (sortSequence.SortDirection ?? true) ? "ASC" : "DESC"));
 			}
 
 			if (sortNames.Count <= 0)
@@ -243,7 +243,7 @@ namespace TextMetal.Common.Data.Framework
 			if ((object)surface == null)
 				throw new ArgumentNullException("surface");
 
-			columnName = this.DataSourceTagStrategy.GetAliasedColumnName("t0", surface.Name);
+			columnName = this.SqlNuance.GetAliasedColumnName("t0", surface.Name);
 
 			this.Strings.Append(columnName);
 
@@ -318,11 +318,12 @@ namespace TextMetal.Common.Data.Framework
 			if ((object)value.__ == null)
 				throw new InvalidOperationException("Cannot use the constant value NULL as a value operand; use UnaryExpression(..., UnaryOperator.IsNull) instead.");
 
-			parameterName = this.DataSourceTagStrategy.GetParameterName(string.Format("expr_{0}", Guid.NewGuid().ToString("N")));
+			parameterName = this.SqlNuance.GetParameterName(string.Format("expr_{0}", Guid.NewGuid().ToString("N")));
 			valueType = value.__.GetType();
 
 			commandParameter = this.UnitOfWork.CreateParameter(ParameterDirection.Input, AdoNetHelper.InferDbTypeForClrType(valueType), 0, 0, 0, true, parameterName, value.__);
-			this.commandParameters.Add(commandParameter);
+			this.SqlNuance.ParameterMagic(this.unitOfWork, commandParameter, "");
+			this.CommandParameters.Add(parameterName, commandParameter);
 
 			this.Strings.Append(parameterName);
 

@@ -24,10 +24,10 @@ namespace TextMetal.Common.Data.Framework
 
 		protected ModelRepository()
 		{
+			this.dataSourceTagStrategy = DataSourceTagStrategyFactory.Instance.GetDataSourceTagStrategy(this.DataSourceTag);
+
 			if (this.UseDatabaseFile)
 				this.InitializeFromRevisionHistoryResource();
-
-			this.dataSourceTagStrategy = DataSourceTagStrategyFactory.Instance.GetDataSourceTagStrategy(this.DataSourceTag);
 		}
 
 		#endregion
@@ -237,9 +237,9 @@ namespace TextMetal.Common.Data.Framework
 			return (TRequestModel)Activator.CreateInstance(typeof(TRequestModel), true);
 		}
 
-		public virtual TResponseModel CreateResponseModel<TResponseModel, TResultModel>()
-			where TResponseModel : class, IResponseModelObject<TResultModel>
+		public virtual TResponseModel CreateResponseModel<TResultModel, TResponseModel>()
 			where TResultModel : class, IResultModelObject
+			where TResponseModel : class, IResponseModelObject<TResultModel>
 		{
 			return (TResponseModel)Activator.CreateInstance(typeof(TResponseModel), true);
 		}
@@ -277,7 +277,7 @@ namespace TextMetal.Common.Data.Framework
 
 				tacticCommand = this.DataSourceTagStrategy.GetDeleteTacticCommand<TModel>(unitOfWork, model, null);
 
-				this.OnProfileTacticCommand<TModel>(tacticCommand);
+				this.OnProfileTacticCommand(tacticCommand);
 
 				rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
 
@@ -352,7 +352,84 @@ namespace TextMetal.Common.Data.Framework
 			where TResultModel : class, IResultModelObject
 			where TResponseModel : class, IResponseModelObject<TResultModel>
 		{
-			throw new NotImplementedException();
+			Type requestModelType;
+			Type resultModelType;
+			Type responseModelType;
+			TResultModel resultModel;
+			TResponseModel responseModel;
+			IEnumerable<IDictionary<string, object>> rows;
+			IList<TResultModel> results;
+			IDictionary<string, object> tablix;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)requestModel == null)
+				throw new ArgumentNullException("requestModel");
+
+			requestModelType = typeof(TRequestModel);
+			resultModelType = typeof(TResultModel);
+			responseModelType = typeof(TResponseModel);
+
+			using (GarbageDisposable.Instance)
+			{
+				TacticCommand<TRequestModel, TResultModel, TResponseModel> tacticCommand;
+				int actualRecordsAffected;
+
+				this.OnPreExecuteRequestModel<TRequestModel>(unitOfWork, requestModel);
+
+				tacticCommand = this.DataSourceTagStrategy.GetExecuteTacticCommand<TRequestModel, TResultModel, TResponseModel>(unitOfWork, requestModel);
+
+				this.OnProfileTacticCommand(tacticCommand);
+
+				rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
+
+				if (actualRecordsAffected != tacticCommand.ExpectedRecordsAffected)
+				{
+					// idempotency failure
+					unitOfWork.Divergent();
+
+					throw new InvalidOperationException(string.Format("Data idempotency failure occurred during model execute; actual records affected '{0}' did not equal expected records affected '{1}'.", tacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
+				}
+
+				if ((object)rows == null)
+					throw new InvalidOperationException(string.Format("Rows were invalid."));
+
+				responseModel = this.CreateResponseModel<TResultModel, TResponseModel>();
+				results = new List<TResultModel>();
+				responseModel.Results = results;
+
+				foreach (IDictionary<string, object> table in rows)
+				{
+					resultModel = this.CreateResultModel<TResultModel>();
+
+					// map to model from table (destination, source)
+					tacticCommand.TableToResultModelMappingCallback(resultModel, table);
+
+					this.OnPostExecuteResultModel<TResultModel>(unitOfWork, resultModel);
+
+					results.Add(resultModel);
+				}
+
+				tablix = new Dictionary<string, object>();
+
+				foreach (IDataParameter commandParameter in tacticCommand.CommandParameters)
+				{
+					if (commandParameter.Direction != ParameterDirection.InputOutput &&
+						commandParameter.Direction != ParameterDirection.Output &&
+						commandParameter.Direction == ParameterDirection.ReturnValue)
+						continue;
+
+					tablix.Add(commandParameter.ParameterName, commandParameter.Value);
+				}
+
+				// map to model from table (destination, source)
+				tacticCommand.TableToResponseModelMappingCallback(responseModel, tablix);
+
+				this.OnPostExecuteResponseModel<TResultModel, TResponseModel>(unitOfWork, responseModel);
+
+				return responseModel;
+			}
 		}
 
 		public virtual TResponseModel ExecuteImperative<TRequestModel, TResultModel, TResponseModel>(TRequestModel requestModel)
@@ -398,7 +475,7 @@ namespace TextMetal.Common.Data.Framework
 
 				tacticCommand = this.DataSourceTagStrategy.GetSelectTacticCommand<TModel>(unitOfWork, model, null);
 
-				this.OnProfileTacticCommand<TModel>(tacticCommand);
+				this.OnProfileTacticCommand(tacticCommand);
 
 				rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
 
@@ -449,9 +526,9 @@ namespace TextMetal.Common.Data.Framework
 
 		public virtual IEnumerable<TModel> Find<TModel>(IUnitOfWork unitOfWork, IModelQuery modelQuery) where TModel : class, IModelObject
 		{
-			TModel model;
-			dynamic tables;
-			Action<TModel, dynamic> tableToModelMappingCallback;
+			Type modelType;
+			TModel model, dummy;
+			IEnumerable<IDictionary<string, object>> rows;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -459,24 +536,44 @@ namespace TextMetal.Common.Data.Framework
 			if ((object)modelQuery == null)
 				throw new ArgumentNullException("modelQuery");
 
-			tables = null;
-			tableToModelMappingCallback = (m, t) =>
-										{
-										};
+			modelType = typeof(TModel);
+			dummy = this.CreateModel<TModel>();
 
 			using (GarbageDisposable.Instance)
 			{
+				TacticCommand<TModel> tacticCommand;
+				int actualRecordsAffected = int.MaxValue;
+
+				tacticCommand = this.DataSourceTagStrategy.GetSelectTacticCommand<TModel>(unitOfWork, dummy, modelQuery);
+
+				this.OnProfileTacticCommand(tacticCommand);
+
+				// enumerator overload usage
+				rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, (ra) => actualRecordsAffected = ra);
+
+				if ((object)rows == null)
+					throw new InvalidOperationException(string.Format("Rows were invalid."));
+
 				// DOES NOT FORCE EXECUTION AGAINST STORE
-				foreach (dynamic table in tables)
+				foreach (IDictionary<string, object> table in rows)
 				{
 					model = this.CreateModel<TModel>();
 
 					// map to model from table (destination, source)
-					tableToModelMappingCallback(model, table);
+					tacticCommand.TableToModelMappingCallback(model, table);
 
 					this.OnSelectModel<TModel>(unitOfWork, model);
 
 					yield return model; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
+				}
+
+				// special case for enumerator
+				if (actualRecordsAffected != tacticCommand.ExpectedRecordsAffected)
+				{
+					// idempotency failure
+					unitOfWork.Divergent();
+
+					throw new InvalidOperationException(string.Format("Data idempotency failure occurred during model load; actual records affected '{0}' did not equal expected records affected '{1}'.", tacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
 				}
 			}
 		}
@@ -569,7 +666,7 @@ namespace TextMetal.Common.Data.Framework
 
 				tacticCommand = this.DataSourceTagStrategy.GetSelectTacticCommand<TModel>(unitOfWork, prototype, null);
 
-				this.OnProfileTacticCommand<TModel>(tacticCommand);
+				this.OnProfileTacticCommand(tacticCommand);
 
 				rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
 
@@ -650,6 +747,30 @@ namespace TextMetal.Common.Data.Framework
 			// do nothing
 		}
 
+		protected virtual void OnPostExecuteResponseModel<TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TResponseModel responseModel)
+			where TResultModel : class, IResultModelObject
+			where TResponseModel : class, IResponseModelObject<TResultModel>
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)responseModel == null)
+				throw new ArgumentNullException("responseModel");
+
+			// do nothing
+		}
+
+		protected virtual void OnPostExecuteResultModel<TResultModel>(IUnitOfWork unitOfWork, TResultModel resultModel) where TResultModel : class, IResultModelObject
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)resultModel == null)
+				throw new ArgumentNullException("resultModel");
+
+			// do nothing
+		}
+
 		protected virtual void OnPostInsertModel<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject
 		{
 			if ((object)unitOfWork == null)
@@ -679,6 +800,17 @@ namespace TextMetal.Common.Data.Framework
 
 			if ((object)model == null)
 				throw new ArgumentNullException("model");
+
+			// do nothing
+		}
+
+		protected virtual void OnPreExecuteRequestModel<TRequestModel>(IUnitOfWork unitOfWork, TRequestModel requestModel) where TRequestModel : class, IRequestModelObject
+		{
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)requestModel == null)
+				throw new ArgumentNullException("requestModel");
 
 			// do nothing
 		}
@@ -718,8 +850,7 @@ namespace TextMetal.Common.Data.Framework
 		}
 
 		[Conditional("DEBUG")]
-		protected virtual void OnProfileTacticCommand<TModel>(TacticCommand<TModel> tacticCommand)
-			where TModel : class, IModelObject
+		protected virtual void OnProfileTacticCommand(ITacticCommand tacticCommand)
 		{
 			/* THIS METHOD SHOULD NOT BE DEFINED IN RELEASE/PRODUCTION BUILDS */
 			string value = "";
@@ -731,7 +862,7 @@ namespace TextMetal.Common.Data.Framework
 			value += "\r\n[+++ begin OnProfileTacticCommand +++]\r\n";
 
 			value += string.Format("[TacticCommand]: ModelType = '{0}', IsNullipotent = '{6}'; ExpectedRecordsAffected = '{7}'; CommandType = '{1}'; CommandText = '{2}'; CommandPrepare = '{3}'; CommandTimeout = '{4}'; CommandBehavior = '{5}'.",
-				tacticCommand.GetModelType().FullName,
+				string.Join("|", tacticCommand.GetModelTypes().Select(t => t.FullName).ToArray()),
 				tacticCommand.CommandType,
 				tacticCommand.CommandText,
 				tacticCommand.CommandPrepare,
@@ -787,7 +918,7 @@ namespace TextMetal.Common.Data.Framework
 			bool wasNew;
 			IEnumerable<IDictionary<string, object>> rows;
 			IDictionary<string, object> table;
-			
+
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
@@ -815,7 +946,7 @@ namespace TextMetal.Common.Data.Framework
 					tacticCommand = this.DataSourceTagStrategy.GetUpdateTacticCommand<TModel>(unitOfWork, model, null);
 				}
 
-				this.OnProfileTacticCommand<TModel>(tacticCommand);
+				this.OnProfileTacticCommand(tacticCommand);
 
 				rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
 
@@ -848,7 +979,7 @@ namespace TextMetal.Common.Data.Framework
 
 					if ((object)tacticCommand != null)
 					{
-						this.OnProfileTacticCommand<TModel>(tacticCommand);
+						this.OnProfileTacticCommand(tacticCommand);
 
 						rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
 
