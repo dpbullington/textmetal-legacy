@@ -81,7 +81,10 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 		public TacticCommand<TModel> GetDeleteTacticCommand<TModel>(IUnitOfWork unitOfWork, TModel modelValue, IModelQuery modelQuery) where TModel : class, IModelObject
 		{
+			TacticCommand<TModel> tacticCommand;
 			Type modelType;
+			TableMappingAttribute tableMappingAttribute;
+			bool isDeleteOne;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -90,21 +93,18 @@ namespace TextMetal.Common.Data.Framework.Strategy
 				throw new ArgumentNullException("modelValue");
 
 			modelType = typeof(TModel);
+			tableMappingAttribute = this.GetTableMapping(modelType);
 
-			return new TacticCommand<TModel>()
-					{
-						CommandBehavior = CommandBehavior.Default,
-						CommandParameters = new IDataParameter[] { },
-						CommandPrepare = false,
-						CommandText = "",
-						CommandTimeout = null,
-						CommandType = CommandType.Text,
-						ExpectedRecordsAffected = -1,
-						IsNullipotent = true,
-						TableToModelMappingCallback = (t, m) =>
-													{
-													}
-					};
+			AssertValidMapping(modelType, tableMappingAttribute);
+
+			isDeleteOne = (object)modelQuery == null;
+
+			if (isDeleteOne)
+				tacticCommand = this.GetDeleteOneTacticCommand<TModel>(unitOfWork, modelValue, tableMappingAttribute);
+			else
+				tacticCommand = null;
+
+			return tacticCommand;
 		}
 
 		protected abstract int GetExpectedRecordsAffected(bool isNullipotent);
@@ -113,7 +113,10 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 		public TacticCommand<TModel> GetInsertTacticCommand<TModel>(IUnitOfWork unitOfWork, TModel modelValue, IModelQuery modelQuery) where TModel : class, IModelObject
 		{
+			TacticCommand<TModel> tacticCommand;
 			Type modelType;
+			TableMappingAttribute tableMappingAttribute;
+			bool isInsertOne;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -122,21 +125,190 @@ namespace TextMetal.Common.Data.Framework.Strategy
 				throw new ArgumentNullException("modelValue");
 
 			modelType = typeof(TModel);
+			tableMappingAttribute = this.GetTableMapping(modelType);
 
-			return new TacticCommand<TModel>()
-					{
-						CommandBehavior = CommandBehavior.Default,
-						CommandParameters = new IDataParameter[] { },
-						CommandPrepare = false,
-						CommandText = "",
-						CommandTimeout = null,
-						CommandType = CommandType.Text,
-						ExpectedRecordsAffected = -1,
-						IsNullipotent = true,
-						TableToModelMappingCallback = (t, m) =>
-													{
-													}
-					};
+			AssertValidMapping(modelType, tableMappingAttribute);
+			
+			isInsertOne = (object)modelQuery == null;
+
+			if (isInsertOne)
+				tacticCommand = this.GetInsertOneTacticCommand<TModel>(unitOfWork, modelValue, tableMappingAttribute);
+			else
+				tacticCommand = null;
+			
+			return tacticCommand;
+		}
+
+		private TacticCommand<TModel> GetInsertOneTacticCommand<TModel>(IUnitOfWork unitOfWork, TModel model, TableMappingAttribute tableMappingAttribute) where TModel : class, IModelObject
+		{
+			TacticCommand<TModel> tacticCommand;
+			const bool IS_NULLIPOTENT = false;
+			const bool COMMAND_PREPARE = false;
+			const object COMMAND_TIMEOUT = null;
+			const CommandType COMMAND_TYPE = CommandType.Text;
+			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
+
+			int expectedRecordsAffected;
+			Action<TModel, IDictionary<string, object>> tableToModelMappingCallback;
+			string commandText;
+			IDataParameter commandParameter;
+			IDictionary<string, IDataParameter> commandParameters;
+			ColumnMappingAttribute[] columnMappingAttributes;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)model == null)
+				throw new ArgumentNullException("model");
+
+			if ((object)tableMappingAttribute == null)
+				throw new ArgumentNullException("tableMappingAttribute");
+
+			commandText = @"INSERT INTO ";
+
+			commandText += this.GetTableName(tableMappingAttribute.SchemaName, tableMappingAttribute.TableName) + @" (";
+
+			columnMappingAttributes = tableMappingAttribute._ColumnMappingAttributes.Where(cma => !cma.IsColumnServerGeneratedPrimaryKey).OrderBy(cma => cma.ColumnOrdinal).ToArray();
+			for (int index = 0; index < columnMappingAttributes.Length; index++)
+			{
+				commandText += this.GetColumnName(columnMappingAttributes[index].ColumnName);
+
+				if (index != (columnMappingAttributes.Length - 1))
+					commandText += @", ";
+			}
+
+			commandText += @") VALUES (";
+			commandParameters = new Dictionary<string, IDataParameter>();
+
+			// yes, this is redundant loop but it makes it easier to maintain for now
+			for (int index = 0; index < columnMappingAttributes.Length; index++)
+			{
+				string parameterName;
+				object parameterValue;
+
+				if (!Reflexion.GetLogicalPropertyValue(model, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
+					throw new InvalidOperationException(string.Format("Ah snap."));
+
+				parameterName = this.GetParameterName(columnMappingAttributes[index].ColumnName);
+				commandParameter = unitOfWork.CreateParameter(ParameterDirection.Input, columnMappingAttributes[index].ColumnDbType, columnMappingAttributes[index].ColumnSize, columnMappingAttributes[index].ColumnPrecision, columnMappingAttributes[index].ColumnScale, columnMappingAttributes[index].ColumnNullable, parameterName, parameterValue);
+				commandParameters.Add(parameterName, commandParameter);
+
+				commandText += parameterName;
+
+				if (index != (columnMappingAttributes.Length - 1))
+					commandText += @", ";
+			}
+
+			commandText += @");";
+
+			expectedRecordsAffected = this.GetExpectedRecordsAffected(IS_NULLIPOTENT);
+			tableToModelMappingCallback = GetMapToMethod<TModel>(tableMappingAttribute);
+
+			tacticCommand = new TacticCommand<TModel>()
+			{
+				CommandBehavior = COMMAND_BEHAVIOR,
+				CommandParameters = commandParameters.Values,
+				CommandPrepare = COMMAND_PREPARE,
+				CommandText = commandText,
+				CommandTimeout = (int?)COMMAND_TIMEOUT,
+				CommandType = COMMAND_TYPE,
+				ExpectedRecordsAffected = expectedRecordsAffected,
+				IsNullipotent = IS_NULLIPOTENT,
+				TableToModelMappingCallback = tableToModelMappingCallback
+			};
+
+			return tacticCommand;
+		}
+
+		private TacticCommand<TModel> GetUpdateOneTacticCommand<TModel>(IUnitOfWork unitOfWork, TModel model, TableMappingAttribute tableMappingAttribute) where TModel : class, IModelObject
+		{
+			TacticCommand<TModel> tacticCommand;
+			const bool IS_NULLIPOTENT = false;
+			const bool COMMAND_PREPARE = false;
+			const object COMMAND_TIMEOUT = null;
+			const CommandType COMMAND_TYPE = CommandType.Text;
+			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
+
+			int expectedRecordsAffected;
+			Action<TModel, IDictionary<string, object>> tableToModelMappingCallback;
+			string commandText;
+			IDataParameter commandParameter;
+			IDictionary<string, IDataParameter> commandParameters;
+			ColumnMappingAttribute[] columnMappingAttributes;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)model == null)
+				throw new ArgumentNullException("model");
+
+			if ((object)tableMappingAttribute == null)
+				throw new ArgumentNullException("tableMappingAttribute");
+
+			commandText = @"UPDATE ";
+
+			commandText += this.GetTableName(tableMappingAttribute.SchemaName, tableMappingAttribute.TableName) + @" SET ";
+			commandParameters = new Dictionary<string, IDataParameter>();
+
+			columnMappingAttributes = tableMappingAttribute._ColumnMappingAttributes.Where(cma => !cma.IsColumnServerGeneratedPrimaryKey).OrderBy(cma => cma.ColumnOrdinal).ToArray();
+			for (int index = 0; index < columnMappingAttributes.Length; index++)
+			{
+				string parameterName;
+				object parameterValue;
+
+				if (!Reflexion.GetLogicalPropertyValue(model, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
+					throw new InvalidOperationException(string.Format("Ah snap."));
+
+				parameterName = this.GetParameterName(columnMappingAttributes[index].ColumnName);
+				commandParameter = unitOfWork.CreateParameter(ParameterDirection.Input, columnMappingAttributes[index].ColumnDbType, columnMappingAttributes[index].ColumnSize, columnMappingAttributes[index].ColumnPrecision, columnMappingAttributes[index].ColumnScale, columnMappingAttributes[index].ColumnNullable, parameterName, parameterValue);
+				commandParameters.Add(parameterName, commandParameter);
+
+				commandText += this.GetColumnName(columnMappingAttributes[index].ColumnName) + @" = " + parameterName;
+
+				if (index != (columnMappingAttributes.Length - 1))
+					commandText += @", ";
+			}
+			
+			commandText += @" WHERE ";
+
+			columnMappingAttributes = tableMappingAttribute._ColumnMappingAttributes.Where(cma => !tableMappingAttribute._ColumnMappingAttributes.Any() || cma.ColumnIsPrimaryKey).OrderBy(cma => cma.ColumnOrdinal).ToArray();
+			for (int index = 0; index < columnMappingAttributes.Length; index++)
+			{
+				string parameterName;
+				object parameterValue;
+
+				if (!Reflexion.GetLogicalPropertyValue(model, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
+					throw new InvalidOperationException(string.Format("Ah snap."));
+
+				parameterName = this.GetParameterName(columnMappingAttributes[index].ColumnName);
+				commandParameter = unitOfWork.CreateParameter(ParameterDirection.Input, columnMappingAttributes[index].ColumnDbType, columnMappingAttributes[index].ColumnSize, columnMappingAttributes[index].ColumnPrecision, columnMappingAttributes[index].ColumnScale, columnMappingAttributes[index].ColumnNullable, parameterName, parameterValue);
+				commandParameters.Add(parameterName, commandParameter);
+
+				commandText += this.GetColumnName(columnMappingAttributes[index].ColumnName) + @" = " + parameterName;
+
+				if (index != (columnMappingAttributes.Length - 1))
+					commandText += @" AND ";
+			}
+
+			commandText += @";";
+
+			expectedRecordsAffected = this.GetExpectedRecordsAffected(IS_NULLIPOTENT);
+			tableToModelMappingCallback = GetMapToMethod<TModel>(tableMappingAttribute);
+
+			tacticCommand = new TacticCommand<TModel>()
+			{
+				CommandBehavior = COMMAND_BEHAVIOR,
+				CommandParameters = commandParameters.Values,
+				CommandPrepare = COMMAND_PREPARE,
+				CommandText = commandText,
+				CommandTimeout = (int?)COMMAND_TIMEOUT,
+				CommandType = COMMAND_TYPE,
+				ExpectedRecordsAffected = expectedRecordsAffected,
+				IsNullipotent = IS_NULLIPOTENT,
+				TableToModelMappingCallback = tableToModelMappingCallback
+			};
+
+			return tacticCommand;
 		}
 
 		protected abstract string GetParameterName(string parameterName);
@@ -346,7 +518,10 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 		public TacticCommand<TModel> GetUpdateTacticCommand<TModel>(IUnitOfWork unitOfWork, TModel modelValue, IModelQuery modelQuery) where TModel : class, IModelObject
 		{
+			TacticCommand<TModel> tacticCommand;
 			Type modelType;
+			TableMappingAttribute tableMappingAttribute;
+			bool isUpdateOne;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -355,23 +530,162 @@ namespace TextMetal.Common.Data.Framework.Strategy
 				throw new ArgumentNullException("modelValue");
 
 			modelType = typeof(TModel);
+			tableMappingAttribute = this.GetTableMapping(modelType);
 
-			return new TacticCommand<TModel>()
-					{
-						CommandBehavior = CommandBehavior.Default,
-						CommandParameters = new IDataParameter[] { },
-						CommandPrepare = false,
-						CommandText = "",
-						CommandTimeout = null,
-						CommandType = CommandType.Text,
-						ExpectedRecordsAffected = -1,
-						IsNullipotent = true,
-						TableToModelMappingCallback = (t, m) =>
-													{
-													}
-					};
+			AssertValidMapping(modelType, tableMappingAttribute);
+
+			isUpdateOne = (object)modelQuery == null;
+
+			if (isUpdateOne)
+				tacticCommand = this.GetUpdateOneTacticCommand<TModel>(unitOfWork, modelValue, tableMappingAttribute);
+			else
+				tacticCommand = null;
+
+			return tacticCommand;
 		}
 
 		#endregion
+
+
+		public TacticCommand<TModel> GetIdentityTacticCommand<TModel>(IUnitOfWork unitOfWork) where TModel : class, IModelObject
+		{
+			TacticCommand<TModel> tacticCommand;
+			Type modelType;
+			TableMappingAttribute tableMappingAttribute;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			modelType = typeof(TModel);
+			tableMappingAttribute = this.GetTableMapping(modelType);
+
+			AssertValidMapping(modelType, tableMappingAttribute);
+
+			tacticCommand = this.GetIdentityTacticCommand<TModel>(unitOfWork, tableMappingAttribute);
+			
+			return tacticCommand;
+		}
+
+		private TacticCommand<TModel> GetIdentityTacticCommand<TModel>(IUnitOfWork unitOfWork, TableMappingAttribute tableMappingAttribute)
+			where TModel : class, IModelObject
+		{
+			TacticCommand<TModel> tacticCommand;
+			const bool IS_NULLIPOTENT = true;
+			const bool COMMAND_PREPARE = false;
+			const object COMMAND_TIMEOUT = null;
+			const CommandType COMMAND_TYPE = CommandType.Text;
+			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
+
+			int expectedRecordsAffected;
+			Action<TModel, IDictionary<string, object>> tableToModelMappingCallback;
+			string commandText;
+			IDictionary<string, IDataParameter> commandParameters;
+			ColumnMappingAttribute columnMappingAttribute;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)tableMappingAttribute == null)
+				throw new ArgumentNullException("tableMappingAttribute");
+
+			commandParameters = new Dictionary<string, IDataParameter>();
+			columnMappingAttribute = tableMappingAttribute._ColumnMappingAttributes.Where(cma => cma.IsColumnServerGeneratedPrimaryKey).SingleOrDefault();
+
+			if ((object)columnMappingAttribute == null)
+				return null;
+
+			commandText = @"SELECT " + this.GetIdentityCommand() + @" AS " + this.GetColumnName(columnMappingAttribute.ColumnName) + @";";
+
+			expectedRecordsAffected = this.GetExpectedRecordsAffected(IS_NULLIPOTENT);
+			tableToModelMappingCallback = GetMapToMethod<TModel>(tableMappingAttribute);
+
+			tacticCommand = new TacticCommand<TModel>()
+			{
+				CommandBehavior = COMMAND_BEHAVIOR,
+				CommandParameters = commandParameters.Values,
+				CommandPrepare = COMMAND_PREPARE,
+				CommandText = commandText,
+				CommandTimeout = (int?)COMMAND_TIMEOUT,
+				CommandType = COMMAND_TYPE,
+				ExpectedRecordsAffected = expectedRecordsAffected,
+				IsNullipotent = IS_NULLIPOTENT,
+				TableToModelMappingCallback = tableToModelMappingCallback
+			};
+
+			return tacticCommand;
+		}
+
+		private TacticCommand<TModel> GetDeleteOneTacticCommand<TModel>(IUnitOfWork unitOfWork, TModel prototype, TableMappingAttribute tableMappingAttribute)
+					where TModel : class, IModelObject
+		{
+			TacticCommand<TModel> tacticCommand;
+			const bool IS_NULLIPOTENT = false;
+			const bool COMMAND_PREPARE = false;
+			const object COMMAND_TIMEOUT = null;
+			const CommandType COMMAND_TYPE = CommandType.Text;
+			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
+
+			int expectedRecordsAffected;
+			Action<TModel, IDictionary<string, object>> tableToModelMappingCallback;
+			string commandText;
+			IDataParameter commandParameter;
+			IDictionary<string, IDataParameter> commandParameters;
+			ColumnMappingAttribute[] columnMappingAttributes;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)prototype == null)
+				throw new ArgumentNullException("prototype");
+
+			if ((object)tableMappingAttribute == null)
+				throw new ArgumentNullException("tableMappingAttribute");
+
+			commandText = @"DELETE FROM ";
+
+			commandText += this.GetTableName(tableMappingAttribute.SchemaName, tableMappingAttribute.TableName);
+
+			commandText += @" WHERE ";
+			commandParameters = new Dictionary<string, IDataParameter>();
+
+			columnMappingAttributes = tableMappingAttribute._ColumnMappingAttributes.Where(cma => !tableMappingAttribute._ColumnMappingAttributes.Any() || cma.ColumnIsPrimaryKey).OrderBy(cma => cma.ColumnOrdinal).ToArray();
+			for (int index = 0; index < columnMappingAttributes.Length; index++)
+			{
+				string parameterName;
+				object parameterValue;
+
+				if (!Reflexion.GetLogicalPropertyValue(prototype, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
+					throw new InvalidOperationException(string.Format("Ah snap."));
+
+				parameterName = this.GetParameterName(columnMappingAttributes[index].ColumnName);
+				commandParameter = unitOfWork.CreateParameter(ParameterDirection.Input, columnMappingAttributes[index].ColumnDbType, columnMappingAttributes[index].ColumnSize, columnMappingAttributes[index].ColumnPrecision, columnMappingAttributes[index].ColumnScale, columnMappingAttributes[index].ColumnNullable, parameterName, parameterValue);
+				commandParameters.Add(parameterName, commandParameter);
+
+				commandText += this.GetColumnName(columnMappingAttributes[index].ColumnName) + @" = " + parameterName;
+
+				if (index != (columnMappingAttributes.Length - 1))
+					commandText += @" AND ";
+			}
+
+			commandText += @";";
+
+			expectedRecordsAffected = this.GetExpectedRecordsAffected(IS_NULLIPOTENT);
+			tableToModelMappingCallback = GetMapToMethod<TModel>(tableMappingAttribute);
+
+			tacticCommand = new TacticCommand<TModel>()
+			{
+				CommandBehavior = COMMAND_BEHAVIOR,
+				CommandParameters = commandParameters.Values,
+				CommandPrepare = COMMAND_PREPARE,
+				CommandText = commandText,
+				CommandTimeout = (int?)COMMAND_TIMEOUT,
+				CommandType = COMMAND_TYPE,
+				ExpectedRecordsAffected = expectedRecordsAffected,
+				IsNullipotent = IS_NULLIPOTENT,
+				TableToModelMappingCallback = tableToModelMappingCallback
+			};
+
+			return tacticCommand;
+		}
 	}
 }

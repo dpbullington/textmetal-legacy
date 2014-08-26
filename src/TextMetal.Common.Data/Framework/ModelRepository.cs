@@ -253,6 +253,8 @@ namespace TextMetal.Common.Data.Framework
 		public virtual bool Discard<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject
 		{
 			bool wasNew;
+			IEnumerable<IDictionary<string, object>> rows;
+			IDictionary<string, object> table;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -268,18 +270,36 @@ namespace TextMetal.Common.Data.Framework
 
 			using (GarbageDisposable.Instance)
 			{
+				TacticCommand<TModel> tacticCommand;
+				int actualRecordsAffected;
+
 				this.OnPreDeleteModel<TModel>(unitOfWork, model);
 
-				try
-				{
-					// do some shit
-				}
-				catch (Exception ex)
-				{
-					this.OnDiscardConflictModel<TModel>(unitOfWork, model);
+				tacticCommand = this.DataSourceTagStrategy.GetDeleteTacticCommand<TModel>(unitOfWork, model, null);
 
+				this.OnProfileTacticCommand<TModel>(tacticCommand);
+
+				rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
+
+				if (actualRecordsAffected <= tacticCommand.ExpectedRecordsAffected)
+				{
+					// concurrency failure
+					unitOfWork.Divergent();
+
+					this.OnSaveConflictModel<TModel>(unitOfWork, model);
+
+					//throw new InvalidOperationException(string.Format("Data concurrency failure occurred during model save; actual records affected '{0}' was less than or equal to the expected records affected '{1}'.", tacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
 					return false;
 				}
+
+				if ((object)rows == null)
+					throw new InvalidOperationException(string.Format("Rows were invalid."));
+
+				table = rows.SingleOrDefault();
+
+				// map to model from table (destination, source)
+				if ((object)table != null)
+					tacticCommand.TableToModelMappingCallback(model, table);
 
 				this.OnPostDeleteModel<TModel>(unitOfWork, model);
 
@@ -387,7 +407,7 @@ namespace TextMetal.Common.Data.Framework
 					// idempotency failure
 					unitOfWork.Divergent();
 
-					throw new InvalidOperationException(string.Format("Data concurrency failure occurred during model load; expected records affected '{0}' did not equal actual records affected '{1}'.", tacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
+					throw new InvalidOperationException(string.Format("Data idempotency failure occurred during model fill; actual records affected '{0}' did not equal expected records affected '{1}'.", tacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
 				}
 
 				if ((object)rows == null)
@@ -558,7 +578,7 @@ namespace TextMetal.Common.Data.Framework
 					// idempotency failure
 					unitOfWork.Divergent();
 
-					throw new InvalidOperationException(string.Format("Data concurrency failure occurred during model load; expected records affected '{0}' did not equal actual records affected '{1}'.", tacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
+					throw new InvalidOperationException(string.Format("Data idempotency failure occurred during model load; actual records affected '{0}' did not equal expected records affected '{1}'.", tacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
 				}
 
 				if ((object)rows == null)
@@ -765,61 +785,95 @@ namespace TextMetal.Common.Data.Framework
 		public virtual bool Save<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject
 		{
 			bool wasNew;
-			dynamic table;
-			Action<TModel, dynamic> tableToModelMappingCallback;
-			Action<dynamic, TModel> modelToTableMappingCallback;
-
+			IEnumerable<IDictionary<string, object>> rows;
+			IDictionary<string, object> table;
+			
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
 			if ((object)model == null)
 				throw new ArgumentNullException("model");
 
-			tableToModelMappingCallback = (m, t) =>
-										{
-										};
-			modelToTableMappingCallback = (m, t) =>
-										{
-										};
-
 			wasNew = model.IsNew;
 			model.Mark();
 
 			using (GarbageDisposable.Instance)
 			{
+				TacticCommand<TModel> tacticCommand;
+				int actualRecordsAffected;
+
 				if (wasNew)
 				{
 					this.OnPreInsertModel<TModel>(unitOfWork, model);
 
-					// INSERT
-					table = null;
+					tacticCommand = this.DataSourceTagStrategy.GetInsertTacticCommand<TModel>(unitOfWork, model, null);
 				}
 				else
 				{
 					this.OnPreUpdateModel<TModel>(unitOfWork, model);
 
-					table = null;
-
-					if ((object)table == null)
-						return false;
+					tacticCommand = this.DataSourceTagStrategy.GetUpdateTacticCommand<TModel>(unitOfWork, model, null);
 				}
 
-				// map to table from model (destination, source)
-				modelToTableMappingCallback(table, model);
+				this.OnProfileTacticCommand<TModel>(tacticCommand);
 
-				try
+				rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
+
+				if (actualRecordsAffected <= tacticCommand.ExpectedRecordsAffected)
 				{
-					// do some shit
-				}
-				catch (Exception ex)
-				{
+					// concurrency failure
+					unitOfWork.Divergent();
+
 					this.OnSaveConflictModel<TModel>(unitOfWork, model);
 
+					//throw new InvalidOperationException(string.Format("Data concurrency failure occurred during model save; actual records affected '{0}' was less than or equal to the expected records affected '{1}'.", tacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
 					return false;
 				}
 
+				if ((object)rows == null)
+					throw new InvalidOperationException(string.Format("Rows were invalid."));
+
+				table = rows.SingleOrDefault();
+
 				// map to model from table (destination, source)
-				tableToModelMappingCallback(model, table);
+				if ((object)table != null)
+					tacticCommand.TableToModelMappingCallback(model, table);
+
+				// ***------------------------***
+
+				if (wasNew)
+				{
+					// this is optional
+					tacticCommand = this.DataSourceTagStrategy.GetIdentityTacticCommand<TModel>(unitOfWork);
+
+					if ((object)tacticCommand != null)
+					{
+						this.OnProfileTacticCommand<TModel>(tacticCommand);
+
+						rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
+
+						if (actualRecordsAffected != tacticCommand.ExpectedRecordsAffected)
+						{
+							// idempotency failure
+							unitOfWork.Divergent();
+
+							throw new InvalidOperationException(string.Format("Data idempotency failure occurred during model fill; actual records affected '{0}' did not equal expected records affected '{1}'.", tacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
+						}
+
+						if ((object)rows == null)
+							throw new InvalidOperationException(string.Format("Rows were invalid."));
+
+						table = rows.SingleOrDefault();
+
+						if ((object)table == null)
+							return false;
+
+						// map to model from table (destination, source)
+						tacticCommand.TableToModelMappingCallback(model, table);
+					}
+				}
+
+				// ***------------------------***
 
 				if (wasNew)
 					this.OnPostInsertModel<TModel>(unitOfWork, model);

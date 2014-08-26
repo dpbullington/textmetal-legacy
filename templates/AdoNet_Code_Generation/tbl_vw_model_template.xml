@@ -97,27 +97,6 @@ namespace ${ClrNamespace}.${FolderName}
 		public const string TABLE_NAME = "${TableName}";
 ]]>
 
-					<If>
-						<If.Condition>
-							<BinaryExpression operator="Eq">
-								<BinaryExpression.LeftExpression>
-									<Value type="System.Boolean" data="true" />
-								</BinaryExpression.LeftExpression>
-								<BinaryExpression.RightExpression>
-									<Facet name="HasSingleColumnServerGeneratedPrimaryKey" />
-								</BinaryExpression.RightExpression>
-							</BinaryExpression>
-						</If.Condition>
-						<If.True>
-								<![CDATA[		public const bool HAS_SINGLE_COLUMN_SERVER_GENERATED_PRIMARY_KEY = true;
-]]>
-						</If.True>
-						<If.False>
-								<![CDATA[		public const bool HAS_SINGLE_COLUMN_SERVER_GENERATED_PRIMARY_KEY = false;
-]]>
-						</If.False>
-					</If>
-
 					<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 						<ForEach.Body>
 							<![CDATA[		public const string COLUMN_NAME_${ColumnNameConstantCase} = "${ColumnName}";]]>
@@ -443,7 +422,7 @@ namespace ${ClrNamespace}.${FolderName}
 				if (!DataType.ObjectsEqualValueSemantics(this.@${ColumnNameCamelCase}, value))
 				{
 					this.@${ColumnNameCamelCase} = value;
-					OnPropertyChanged("${ColumnNamePascalCase}");
+					OnPropertyChanged(COLUMN_NAME_${ColumnNameConstantCase});
 				}
 			}
 		}

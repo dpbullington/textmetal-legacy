@@ -298,7 +298,7 @@ CREATE TABLE [global].[EmailAttachment]
 
 	CONSTRAINT [pk_EmailAttachment] PRIMARY KEY
 	(
-		[EmailMessageId]
+		[EmailAttachmentId]
 	),
 
 	CONSTRAINT [uk_EmailAttachment] UNIQUE

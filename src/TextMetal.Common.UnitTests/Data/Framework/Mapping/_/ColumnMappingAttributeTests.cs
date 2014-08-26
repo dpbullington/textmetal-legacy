@@ -37,14 +37,20 @@ namespace TextMetal.Common.UnitTests.Data.Framework.Mapping._
 			attribute.ColumnName = "x";
 			Assert.AreEqual("x", attribute.ColumnName);
 
+			attribute.ColumnSqlType = "x";
+			Assert.AreEqual("x", attribute.ColumnSqlType);
+
 			attribute.ColumnSize = 1;
 			Assert.AreEqual(1, attribute.ColumnSize);
 
 			attribute.ColumnDbType = DbType.Guid;
 			Assert.AreEqual(DbType.Guid, attribute.ColumnDbType);
 
-			attribute.ColumnIsReadOnly = true;
-			Assert.AreEqual(true, attribute.ColumnIsReadOnly);
+			attribute.ColumnIsComputed = true;
+			Assert.AreEqual(true, attribute.ColumnIsComputed);
+
+			attribute.ColumnIsIdentity = true;
+			Assert.AreEqual(true, attribute.ColumnIsIdentity);
 
 			attribute.ColumnIsPrimaryKey = true;
 			Assert.AreEqual(true, attribute.ColumnIsPrimaryKey);

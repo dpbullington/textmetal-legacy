@@ -38,6 +38,9 @@ namespace TextMetal.Common.Data.Framework.Strategy
 		TacticCommand<TModel> GetSelectTacticCommand<TModel>(IUnitOfWork unitOfWork, TModel modelValue, IModelQuery modelQuery)
 			where TModel : class, IModelObject;
 
+		TacticCommand<TModel> GetIdentityTacticCommand<TModel>(IUnitOfWork unitOfWork)
+			where TModel : class, IModelObject;
+
 		TacticCommand<TModel> GetUpdateTacticCommand<TModel>(IUnitOfWork unitOfWork, TModel modelValue, IModelQuery modelQuery)
 			where TModel : class, IModelObject;
 

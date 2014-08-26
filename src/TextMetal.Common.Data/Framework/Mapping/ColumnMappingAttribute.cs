@@ -22,20 +22,58 @@ namespace TextMetal.Common.Data.Framework.Mapping
 
 		#region Fields/Constants
 
+		private DbType columnDbType;
+		private bool columnIsComputed;
+		private bool columnIsIdentity;
 		private bool columnIsPrimaryKey;
-		private bool columnIsReadOnly;
 		private string columnName;
 		private bool columnNullable;
 		private int columnOrdinal;
 		private byte columnPrecision;
 		private byte columnScale;
 		private int columnSize;
-		private DbType columnDbType;
+		private string columnSqlType;
 		private PropertyInfo targetProperty;
 
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		public DbType ColumnDbType
+		{
+			get
+			{
+				return this.columnDbType;
+			}
+			set
+			{
+				this.columnDbType = value;
+			}
+		}
+
+		public bool ColumnIsComputed
+		{
+			get
+			{
+				return this.columnIsComputed;
+			}
+			set
+			{
+				this.columnIsComputed = value;
+			}
+		}
+
+		public bool ColumnIsIdentity
+		{
+			get
+			{
+				return this.columnIsIdentity;
+			}
+			set
+			{
+				this.columnIsIdentity = value;
+			}
+		}
 
 		public bool ColumnIsPrimaryKey
 		{
@@ -46,18 +84,6 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			set
 			{
 				this.columnIsPrimaryKey = value;
-			}
-		}
-
-		public bool ColumnIsReadOnly
-		{
-			get
-			{
-				return this.columnIsReadOnly;
-			}
-			set
-			{
-				this.columnIsReadOnly = value;
 			}
 		}
 
@@ -133,15 +159,23 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			}
 		}
 
-		public DbType ColumnDbType
+		public string ColumnSqlType
 		{
 			get
 			{
-				return this.columnDbType;
+				return this.columnSqlType;
 			}
 			set
 			{
-				this.columnDbType = value;
+				this.columnSqlType = value;
+			}
+		}
+
+		public bool IsColumnServerGeneratedPrimaryKey
+		{
+			get
+			{
+				return this.ColumnIsPrimaryKey && this.ColumnIsIdentity;
 			}
 		}
 

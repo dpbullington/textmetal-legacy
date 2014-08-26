@@ -90,10 +90,10 @@ namespace ${ClrNamespace}.${FolderName}
 						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Body>
 								<![CDATA[
-		[ColumnMapping(ColumnOrdinal = ${ColumnOrdinal}, ColumnName = "${ColumnName}",
+		[ColumnMapping(ColumnOrdinal = ${ColumnOrdinal}, ColumnName = "${ColumnName}", ColumnSqlType = "${ColumnSqlType}",
 			ColumnDbType = ${ColumnCSharpDbType}, ColumnSize = ${ColumnSize}, ColumnPrecision = ${ColumnPrecision}, ColumnScale = ${ColumnScale},
 			ColumnNullable = ${ColumnCSharpNullableLiteral}, ColumnIsPrimaryKey = ${ColumnCSharpIsPrimaryKeyLiteral},
-			ColumnIsReadOnly = ${ColumnCSharpIsComputedLiteral} || ${ColumnCSharpIsIdentityLiteral})]
+			ColumnIsComputed = ${ColumnCSharpIsComputedLiteral}, ColumnIsIdentity = ${ColumnCSharpIsIdentityLiteral})]
 		${ColumnCSharpClrNullableType} @${ColumnNamePascalCase}
 		{
 			get;
