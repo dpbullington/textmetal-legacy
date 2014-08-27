@@ -39,7 +39,7 @@ namespace TextMetal.Common.Data.Framework
 		private const string DATABASE_FILE_NAME_FORMAT = "{0}::DatabaseFileName";
 		private const string DATA_SOURCE_TAG_FORMAT = "{0}::DataSourceTag";
 		private const string KILL_DATABASE_FILE_FORMAT = "{0}::KillDatabaseFile";
-		private const string RESOURCE_NAME_FORMAT = "{0}.SQL.RevisionHistory({1}).xml";
+		private const string RESOURCE_NAME_FORMAT = "{0}.SQL.RevisionHistory.({1}).xml";
 		private const string USE_DATABASE_FILE_FORMAT = "{0}::UseDatabaseFile";
 
 		private readonly IDataSourceTagStrategy dataSourceTagStrategy;

@@ -253,6 +253,20 @@ EndGlobal
 </configuration>]]>
 	</OutputScope>
 
+<OutputScope name="${ClrNamespace}\SQL\RevisionHistory.(${DataSourceTag}).xml">
+		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
+
+<History xmlns="http://www.textmetal.com/api/v6.0.0">
+</History>]]>
+	</OutputScope>
+
+	<OutputScope name="${ClrNamespace}\SQL\RevisionHistory.(net.sqlite).xml">
+		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
+
+<History xmlns="http://www.textmetal.com/api/v6.0.0">
+</History>]]>
+	</OutputScope>
+
 	<OutputScope name="${ClrNamespace}.UnitTests\UnitTests.nunit">
 		<![CDATA[<?xml version="1.0" encoding="utf-8" ?>
 <NUnitProject>
@@ -451,9 +465,8 @@ EndGlobal
 		<![CDATA[
   </ItemGroup>
   <ItemGroup>
-    <None Include="SQL\RevisionHistory%28net.sqlserver%29.xml" />
-    <None Include="SQL\RevisionHistory%28net.sqlite%29.xml" />
-	<None Include="SQL\RevisionHistory%28odbc.sqlserver%29.xml" />
+    <EmbeddedResource Include="SQL\RevisionHistory.%28${DataSourceTag}%29.xml" />
+    <EmbeddedResource Include="SQL\RevisionHistory.%28net.sqlite%29.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
