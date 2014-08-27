@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -84,15 +85,15 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 			if ((object)procedureMappingAttribute._RequestParameterMappingAttributes == null ||
 				procedureMappingAttribute._RequestParameterMappingAttributes.Count == 0)
-				throw new InvalidOperationException(string.Format("The request model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", requestModelType.FullName, typeof(ParameterMappingAttribute).FullName));
+				Trace.WriteLine(string.Format("The request model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", requestModelType.FullName, typeof(ParameterMappingAttribute).FullName));
+
+			if ((object)procedureMappingAttribute._ResultColumnMappingAttributes == null ||
+				procedureMappingAttribute._ResultColumnMappingAttributes.Count == 0)
+				Trace.WriteLine(string.Format("The result model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", resultModelType.FullName, typeof(ColumnMappingAttribute).FullName));
 
 			if ((object)procedureMappingAttribute._ResponseParameterMappingAttributes == null ||
 				procedureMappingAttribute._ResponseParameterMappingAttributes.Count == 0)
-				throw new InvalidOperationException(string.Format("The result model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", resultModelType.FullName, typeof(ColumnMappingAttribute).FullName));
-
-			if ((object)procedureMappingAttribute._ResponseParameterMappingAttributes == null ||
-				procedureMappingAttribute._ResponseParameterMappingAttributes.Count == 0)
-				throw new InvalidOperationException(string.Format("The response model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", resultModelType.FullName, typeof(ParameterMappingAttribute).FullName));
+				Trace.WriteLine(string.Format("The response model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", resultModelType.FullName, typeof(ParameterMappingAttribute).FullName));
 		}
 
 		private static Action<TModel, IDictionary<string, object>> GetMapToMethod<TModel>(TableMappingAttribute tableMappingAttribute)
@@ -331,7 +332,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			const bool IS_NULLIPOTENT = true;
 			const bool COMMAND_PREPARE = false;
 			const object COMMAND_TIMEOUT = null;
-			const CommandType COMMAND_TYPE = CommandType.Text;
+			const CommandType COMMAND_TYPE = CommandType.StoredProcedure;
 			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
 
 			int expectedRecordsAffected;
@@ -341,8 +342,6 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			IDictionary<string, IDataParameter> commandParameters;
 			IDataParameter commandParameter;
 			ParameterMappingAttribute[] parameterMappingAttributes;
-			ColumnMappingAttribute[] columnMappingAttributes;
-			ModelQuery _modelQuery;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -361,15 +360,21 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			for (int index = 0; index < parameterMappingAttributes.Length; index++)
 			{
 				string parameterName;
-				object parameterValue;
+				object parameterValue = null;
 
-				if (!Reflexion.GetLogicalPropertyValue(requestModelValue, parameterMappingAttributes[index]._TargetProperty.Name, out parameterValue))
-					throw new InvalidOperationException(string.Format("Ah snap."));
+				if (parameterMappingAttributes[index].ParameterDirection == ParameterDirection.Input ||
+					parameterMappingAttributes[index].ParameterDirection == ParameterDirection.InputOutput)
+				{
+					if (!Reflexion.GetLogicalPropertyValue(requestModelValue, parameterMappingAttributes[index]._TargetProperty.Name, out parameterValue))
+						throw new InvalidOperationException(string.Format("Ah snap."));
+				}
 
 				parameterName = this.GetParameterName(parameterMappingAttributes[index].ParameterName);
 				commandParameter = unitOfWork.CreateParameter(parameterMappingAttributes[index].ParameterDirection, parameterMappingAttributes[index].ParameterDbType, parameterMappingAttributes[index].ParameterSize, parameterMappingAttributes[index].ParameterPrecision, parameterMappingAttributes[index].ParameterScale, parameterMappingAttributes[index].ParameterNullable, parameterName, parameterValue);
 				this.ParameterMagic(unitOfWork, commandParameter, parameterMappingAttributes[index].ParameterSqlType);
-				commandParameters.Add(parameterName, commandParameter);
+
+				if (!commandParameters.ContainsKey(parameterName))
+					commandParameters.Add(parameterName, commandParameter);
 			}
 
 			expectedRecordsAffected = this.GetExpectedRecordsAffected(IS_NULLIPOTENT);

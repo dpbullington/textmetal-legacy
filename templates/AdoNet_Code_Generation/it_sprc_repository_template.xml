@@ -14,6 +14,9 @@ using System;
 using System.Xml;
 
 using NUnit.Framework;
+
+using TextMetal.Common.Data;
+using TextMetal.TestFramework;
 ]]>
 		<If>
 			<If.Condition>
@@ -65,11 +68,65 @@ namespace ${ClrNamespace}.IntegrationTests
 				<ForEach in="Procedures" var-ct="_LoopCount" var-ix="_LoopIndex">
 					<ForEach.Filter></ForEach.Filter>
 					<ForEach.Body>
-						<![CDATA[		[Ignore]
-		[Test]
+						<![CDATA[		[Test]
 		public void ShouldExecute${ProcedureNamePascalCase}Test()
 		{
-			throw new NotImplementedException();
+			Repository repository;
+			I${ProcedureNameSingularPascalCase}_Request @${ProcedureNameSingularCamelCase}_Request;
+			I${ProcedureNameSingularPascalCase}_Response @${ProcedureNameSingularCamelCase}_Response;
+
+			Assert.IsNull(UnitOfWork.Current);
+
+			repository = new Repository();
+
+			@${ProcedureNameSingularCamelCase}_Request = repository.CreateRequestModel<I${ProcedureNameSingularPascalCase}_Request>();
+]]>
+	<ForEach in="Parameters" var-ct="_LoopCount" var-ix="_LoopIndex">
+		<ForEach.Filter>
+			<BinaryExpression operator="Eq">
+				<BinaryExpression.LeftExpression>
+					<Facet name="ParameterIsReadOnly" />
+				</BinaryExpression.LeftExpression>
+				<BinaryExpression.RightExpression>
+					<Value type="System.Boolean" data="False" />
+				</BinaryExpression.RightExpression>
+			</BinaryExpression>
+		</ForEach.Filter>
+		<ForEach.Body>
+			<![CDATA[			@${ProcedureNameSingularCamelCase}_Request.@${ParameterNamePascalCase} = ValueGenerator.GetNextValue<${ParameterCSharpClrType}>();]]>
+			<If>
+				<If.Condition>
+					<BinaryExpression operator="Ne">
+						<BinaryExpression.LeftExpression>
+							<Facet name="_LoopCount" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Facet name="_LoopIndex" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</If.Condition>
+				<If.True>
+<![CDATA[
+]]>
+				</If.True>
+			</If>
+		</ForEach.Body>
+	</ForEach>
+	<![CDATA[
+
+			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(repository))
+			{
+				Assert.IsNotNull(UnitOfWork.Current);
+
+				@${ProcedureNameSingularCamelCase}_Response = repository.Execute<I${ProcedureNameSingularPascalCase}_Request, I${ProcedureNameSingularPascalCase}_Result, I${ProcedureNameSingularPascalCase}_Response>(@${ProcedureNameSingularCamelCase}_Request);
+
+				Assert.IsNotNull(@${ProcedureNameSingularCamelCase}_Response);
+				Assert.IsNotNull(@${ProcedureNameSingularCamelCase}_Response.Results);
+
+				scope.ScopeComplete();
+			}
+
+			Assert.IsNull(UnitOfWork.Current);
 		}
 ]]>
 						<If>

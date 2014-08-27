@@ -31,6 +31,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string parameterCSharpClrNullableType;
 		private string parameterCSharpClrType;
 		private string parameterCSharpDbType;
+		private string parameterCSharpDirection;
 		private string parameterCSharpNullableLiteral;
 		private Type parameterClrNonNullableType;
 		private Type parameterClrNullableType;
@@ -122,6 +123,19 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.parameterCSharpDbType = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ParameterCSharpDirection
+		{
+			get
+			{
+				return this.parameterCSharpDirection;
+			}
+			set
+			{
+				this.parameterCSharpDirection = value;
 			}
 		}
 

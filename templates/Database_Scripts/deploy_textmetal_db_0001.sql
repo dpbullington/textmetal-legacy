@@ -845,3 +845,15 @@ BEGIN
 	RETURN @num % @den
 END
 GO
+
+
+CREATE PROCEDURE [testcases].[sproc_resultset]
+AS
+BEGIN
+	SELECT 1 AS [Id], 227 AS [Value], 'XXX' AS [Name]
+UNION ALL
+	SELECT 2 AS [Id], 112 AS [Value], 'XXX' AS [Name]
+
+	RETURN RAND()
+END
+GO

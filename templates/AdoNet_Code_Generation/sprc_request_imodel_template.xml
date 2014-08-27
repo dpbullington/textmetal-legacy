@@ -27,10 +27,12 @@
 <![CDATA[
 
 using System;
+using System.Data;
 using System.Xml;
 
 using TextMetal.Common.Data;
 using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.Mapping;
 ]]>
 						<If>
 							<If.Condition>
@@ -52,6 +54,7 @@ using TextMetal.Common.Data.Framework;
 						<![CDATA[
 namespace ${ClrNamespace}.${FolderName}
 {
+	[ProcedureMapping(SchemaName = "${SchemaName}", ProcedureName = "${ProcedureName}")]
 	public partial interface I${ProcedureNameSingularPascalCase}_Request : IRequestModelObject
 	{
 		#region Properties/Indexers/Events
@@ -70,6 +73,9 @@ namespace ${ClrNamespace}.${FolderName}
 							<ForEach.Body>
 
 								<![CDATA[
+		[ParameterMapping(ParameterOrdinal = ${ParameterOrdinal}, ParameterName = "${ParameterName}", ParameterSqlType = "${ParameterSqlType}",
+			ParameterDbType = ${ParameterCSharpDbType}, ParameterSize = ${ParameterSize}, ParameterPrecision = ${ParameterPrecision}, ParameterScale = ${ParameterScale},
+			ParameterNullable = ${ParameterCSharpNullableLiteral}, ParameterDirection = ${ParameterCSharpDirection})]
 		${ParameterCSharpClrType} @${ParameterNamePascalCase}
 		{
 			get;

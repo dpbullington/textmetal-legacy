@@ -28,10 +28,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Xml;
 
 using TextMetal.Common.Data;
 using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.Mapping;
 ]]>
 						<If>
 							<If.Condition>
@@ -91,6 +93,9 @@ namespace ${ClrNamespace}.${FolderName}
 							<ForEach.Body>
 
 								<![CDATA[
+		[ParameterMapping(ParameterOrdinal = ${ParameterOrdinal}, ParameterName = "${ParameterName}", ParameterSqlType = "${ParameterSqlType}",
+			ParameterDbType = ${ParameterCSharpDbType}, ParameterSize = ${ParameterSize}, ParameterPrecision = ${ParameterPrecision}, ParameterScale = ${ParameterScale},
+			ParameterNullable = ${ParameterCSharpNullableLiteral}, ParameterDirection = ${ParameterCSharpDirection})]
 		${ParameterCSharpClrType} @${ParameterNamePascalCase}
 		{
 			get;

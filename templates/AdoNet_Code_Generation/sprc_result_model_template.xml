@@ -60,7 +60,6 @@ namespace ${ClrNamespace}.${FolderName}
 		#endregion
 
 		#region Fields/Constants
-
 ]]>
 
 					<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -86,7 +85,6 @@ namespace ${ClrNamespace}.${FolderName}
 						</ForEach.Body>
 					</ForEach>
 <![CDATA[
-
 ]]>
 						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter></ForEach.Filter>
@@ -113,8 +111,7 @@ namespace ${ClrNamespace}.${FolderName}
 							</ForEach.Body>
 						</ForEach>
 
-						<![CDATA[
-
+<![CDATA[
 		#endregion
 
 		#region Properties/Indexers/Events
@@ -135,7 +132,7 @@ namespace ${ClrNamespace}.${FolderName}
 				this.@${ColumnNameCamelCase} = value;
 			}
 		}
-		]]>
+]]>
 							</ForEach.Body>
 						</ForEach>
 <![CDATA[

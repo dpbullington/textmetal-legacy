@@ -25,7 +25,7 @@ SELECT
 	sys_pm.[has_default_value] AS [ParameterHasDefault],
 	sys_pm.[default_value] AS [ParameterDefaultValue],
 	CAST(0 AS [bit]) as [ParameterIsReadOnly],
-	--sys_pm.is_readonly as [ParameterIsReadOnly], -- SQL 2008+
+	--sys_pm.[is_readonly] as [ParameterIsReadOnly], -- SQL 2008+
 	NULL AS [ParameterNullable],
 	--sys_pm.[is_nullable] AS [ParameterNullable], -- SQL 2014+
 	CAST(0 AS [bit]) as [ParameterIsReturnValue],
@@ -63,7 +63,7 @@ SELECT
 	sys_pm.[is_cursor_ref] as [ParameterIsCursorRef],
 	sys_pm.[has_default_value] AS [ParameterHasDefault],
 	sys_pm.[default_value] AS [ParameterDefaultValue],
-	sys_pm.is_readonly as [ParameterIsReadOnly], -- SQL 2008+
+	sys_pm.[is_readonly] as [ParameterIsReadOnly], -- SQL 2008+
 	NULL AS [ParameterNullable],
 	--sys_pm.[is_nullable] AS [ParameterNullable], -- SQL 2014+
 	CAST(0 AS [bit]) as [ParameterIsReturnValue],

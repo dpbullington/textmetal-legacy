@@ -27,10 +27,12 @@
 <![CDATA[
 
 using System;
+using System.Data;
 using System.Xml;
 
 using TextMetal.Common.Data;
 using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.Mapping;
 ]]>
 						<If>
 							<If.Condition>
@@ -60,16 +62,20 @@ namespace ${ClrNamespace}.${FolderName}
 							<ForEach.Filter></ForEach.Filter>
 							<ForEach.Body>
 
-								<![CDATA[
+<![CDATA[
+		[ColumnMapping(ColumnOrdinal = ${ColumnOrdinal}, ColumnName = "${ColumnName}", ColumnSqlType = "${ColumnSqlType}",
+			ColumnDbType = ${ColumnCSharpDbType}, ColumnSize = ${ColumnSize}, ColumnPrecision = ${ColumnPrecision}, ColumnScale = ${ColumnScale},
+			ColumnNullable = ${ColumnCSharpNullableLiteral}, ColumnIsPrimaryKey = false,
+			ColumnIsComputed = false, ColumnIsIdentity = false)]
 		${ColumnCSharpClrNullableType} @${ColumnNamePascalCase}
 		{
 			get;
 			set;
 		}
-		]]>
+]]>
 							</ForEach.Body>
 						</ForEach>
-						<![CDATA[
+<![CDATA[
 		#endregion
 	}
 }

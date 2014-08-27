@@ -347,7 +347,7 @@ namespace TextMetal.Common.Data.Framework
 			return retval;
 		}
 
-		public virtual TResponseModel ExecuteImperative<TRequestModel, TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TRequestModel requestModel)
+		public virtual TResponseModel Execute<TRequestModel, TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TRequestModel requestModel)
 			where TRequestModel : class, IRequestModelObject
 			where TResultModel : class, IResultModelObject
 			where TResponseModel : class, IResponseModelObject<TResultModel>
@@ -432,7 +432,7 @@ namespace TextMetal.Common.Data.Framework
 			}
 		}
 
-		public virtual TResponseModel ExecuteImperative<TRequestModel, TResultModel, TResponseModel>(TRequestModel requestModel)
+		public virtual TResponseModel Execute<TRequestModel, TResultModel, TResponseModel>(TRequestModel requestModel)
 			where TRequestModel : class, IRequestModelObject
 			where TResultModel : class, IResultModelObject
 			where TResponseModel : class, IResponseModelObject<TResultModel>
@@ -443,13 +443,13 @@ namespace TextMetal.Common.Data.Framework
 			{
 				using (IUnitOfWork unitOfWork = this.GetUnitOfWork())
 				{
-					responseModel = this.ExecuteImperative<TRequestModel, TResultModel, TResponseModel>(unitOfWork, requestModel);
+					responseModel = this.Execute<TRequestModel, TResultModel, TResponseModel>(unitOfWork, requestModel);
 
 					unitOfWork.Complete();
 				}
 			}
 			else
-				responseModel = this.ExecuteImperative<TRequestModel, TResultModel, TResponseModel>(UnitOfWork.Current, requestModel);
+				responseModel = this.Execute<TRequestModel, TResultModel, TResponseModel>(UnitOfWork.Current, requestModel);
 
 			return responseModel;
 		}

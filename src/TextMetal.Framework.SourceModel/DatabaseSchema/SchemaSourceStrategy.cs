@@ -907,7 +907,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 																		parameter.ParameterNameSqlMetalPluralPascalCase = Name.GetSqlMetalPascalCase(Name.GetPluralForm(parameter.ParameterName));
 																		parameter.ParameterNameSqlMetalPluralCamelCase = Name.GetSqlMetalCamelCase(Name.GetPluralForm(parameter.ParameterName));
 
-																		parameter.ParameterDirection = (parameter.ParameterIsOutput || parameter.ParameterIsReadOnly) ? ParameterDirection.Output : ParameterDirection.Input;
+																		parameter.ParameterDirection = !parameter.ParameterIsOutput ? ParameterDirection.Input : (!parameter.ParameterIsReadOnly ? ParameterDirection.InputOutput : ParameterDirection.Output);
 
 																		clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, parameter.ParameterSqlType, parameter.ParameterPrecision);
 																		parameter.ParameterDbType = AdoNetHelper.InferDbTypeForClrType(clrType);
@@ -917,6 +917,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 																		parameter.ParameterClrNullableType = Reflexion.MakeNullableType(clrType);
 																		parameter.ParameterClrNonNullableType = Reflexion.MakeNonNullableType(clrType);
 																		parameter.ParameterCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, parameter.ParameterDbType);
+																		parameter.ParameterCSharpDirection = string.Format("{0}.{1}", typeof(ParameterDirection).Name, parameter.ParameterDirection);
 																		parameter.ParameterCSharpClrType = (object)parameter.ParameterClrType != null ? FormatCSharpType(parameter.ParameterClrType) : FormatCSharpType(typeof(object));
 																		parameter.ParameterCSharpClrNullableType = (object)parameter.ParameterClrNullableType != null ? FormatCSharpType(parameter.ParameterClrNullableType) : FormatCSharpType(typeof(object));
 																		parameter.ParameterCSharpClrNonNullableType = (object)parameter.ParameterClrNonNullableType != null ? FormatCSharpType(parameter.ParameterClrNonNullableType) : FormatCSharpType(typeof(object));
@@ -974,6 +975,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 																	parameter.ParameterClrNullableType = Reflexion.MakeNullableType(clrType);
 																	parameter.ParameterClrNonNullableType = Reflexion.MakeNonNullableType(clrType);
 																	parameter.ParameterCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, parameter.ParameterDbType);
+																	parameter.ParameterCSharpDirection = string.Format("{0}.{1}", typeof(ParameterDirection).Name, parameter.ParameterDirection);
 																	parameter.ParameterCSharpClrType = (object)parameter.ParameterClrType != null ? FormatCSharpType(parameter.ParameterClrType) : FormatCSharpType(typeof(object));
 																	parameter.ParameterCSharpClrNullableType = (object)parameter.ParameterClrNullableType != null ? FormatCSharpType(parameter.ParameterClrNullableType) : FormatCSharpType(typeof(object));
 																	parameter.ParameterCSharpClrNonNullableType = (object)parameter.ParameterClrNonNullableType != null ? FormatCSharpType(parameter.ParameterClrNonNullableType) : FormatCSharpType(typeof(object));
@@ -1064,8 +1066,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 																				column.ColumnSize = DataType.ChangeType<int>(dictDataMetadata["ColumnSize"]);
 																				column.ColumnPrecision = DataType.ChangeType<int>(dictDataMetadata["NumericPrecision"]);
 																				column.ColumnScale = DataType.ChangeType<int>(dictDataMetadata["NumericScale"]);
-																				// TODO FIX
-																				//column.ColumnSqlType = DataType.ChangeType<string>(dictDataMetadata["DataTypeName"]);
+																				column.ColumnSqlType = DataType.ChangeType<string>(dictDataMetadata["DataTypeName"]);
 																				//column.ColumnIsUserDefinedType = DataType.ChangeType<string>(dictDataMetadata["IsUserDefinedType"]);
 																				//column.ColumnHasDefault = DataType.ChangeType<bool>(dictDataMetadata["ColumnHasDefault"]);
 																				column.ColumnNamePascalCase = Name.GetPascalCase(column.ColumnName);

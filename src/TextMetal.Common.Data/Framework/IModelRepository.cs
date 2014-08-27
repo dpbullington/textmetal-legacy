@@ -30,12 +30,12 @@ namespace TextMetal.Common.Data.Framework
 		bool Discard<TModel>(IUnitOfWork unitOfWork, TModel model)
 			where TModel : class, IModelObject;
 
-		TResponseModel ExecuteImperative<TRequestModel, TResultModel, TResponseModel>(TRequestModel requestModel)
+		TResponseModel Execute<TRequestModel, TResultModel, TResponseModel>(TRequestModel requestModel)
 			where TRequestModel : class, IRequestModelObject
 			where TResultModel : class, IResultModelObject
 			where TResponseModel : class, IResponseModelObject<TResultModel>;
 
-		TResponseModel ExecuteImperative<TRequestModel, TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TRequestModel requestModel)
+		TResponseModel Execute<TRequestModel, TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TRequestModel requestModel)
 			where TRequestModel : class, IRequestModelObject
 			where TResultModel : class, IResultModelObject
 			where TResponseModel : class, IResponseModelObject<TResultModel>;

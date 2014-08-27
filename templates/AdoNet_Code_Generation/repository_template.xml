@@ -138,6 +138,99 @@ namespace ${ClrNamespace}
 				throw new InvalidOperationException(string.Format("Unknown model type '{0}'.", modelType.FullName));
 		}
 
+		public override TRequestModel CreateRequestModel<TRequestModel>()
+		{
+			Type requestModelType;
+
+			requestModelType = typeof(TRequestModel);
+
+			if (false)
+				return default(TRequestModel);
+]]>
+
+	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
+		<ForEach.Filter></ForEach.Filter>
+		<ForEach.Body>
+
+			<ForEach in="Procedures" var-ct="_LoopCount" var-ix="_LoopIndex">
+				<ForEach.Filter></ForEach.Filter>
+				<ForEach.Body>
+<![CDATA[
+			else if (requestModelType == typeof(I${ProcedureNameSingularPascalCase}_Request))
+				return (TRequestModel)(object)new ${ProcedureNameSingularPascalCase}_Request();]]>
+				</ForEach.Body>
+			</ForEach>
+
+		</ForEach.Body>
+	</ForEach>
+
+<![CDATA[
+			else
+				throw new InvalidOperationException(string.Format("Unknown request model type '{0}'.", requestModelType.FullName));
+		}
+
+		public override TResultModel CreateResultModel<TResultModel>()
+		{
+			Type resultModelType;
+
+			resultModelType = typeof(TResultModel);
+
+			if (false)
+				return default(TResultModel);
+]]>
+
+	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
+		<ForEach.Filter></ForEach.Filter>
+		<ForEach.Body>
+
+			<ForEach in="Procedures" var-ct="_LoopCount" var-ix="_LoopIndex">
+				<ForEach.Filter></ForEach.Filter>
+				<ForEach.Body>
+<![CDATA[
+			else if (resultModelType == typeof(I${ProcedureNameSingularPascalCase}_Result))
+				return (TResultModel)(object)new ${ProcedureNameSingularPascalCase}_Result();]]>
+				</ForEach.Body>
+			</ForEach>
+
+		</ForEach.Body>
+	</ForEach>
+
+<![CDATA[
+			else
+				throw new InvalidOperationException(string.Format("Unknown result model type '{0}'.", resultModelType.FullName));
+		}
+
+		public override TResponseModel CreateResponseModel<TResultModel, TResponseModel>()
+		{
+			Type responseModelType;
+
+			responseModelType = typeof(TResponseModel);
+
+			if (false)
+				return default(TResponseModel);
+]]>
+
+	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
+		<ForEach.Filter></ForEach.Filter>
+		<ForEach.Body>
+
+			<ForEach in="Procedures" var-ct="_LoopCount" var-ix="_LoopIndex">
+				<ForEach.Filter></ForEach.Filter>
+				<ForEach.Body>
+<![CDATA[
+			else if (responseModelType == typeof(I${ProcedureNameSingularPascalCase}_Response))
+				return (TResponseModel)(object)new ${ProcedureNameSingularPascalCase}_Response();]]>
+				</ForEach.Body>
+			</ForEach>
+
+		</ForEach.Body>
+	</ForEach>
+
+<![CDATA[
+			else
+				throw new InvalidOperationException(string.Format("Unknown response model type '{0}'.", responseModelType.FullName));
+		}
+
 		#endregion
 	}
 }
