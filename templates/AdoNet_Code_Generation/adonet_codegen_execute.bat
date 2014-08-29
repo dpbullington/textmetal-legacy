@@ -103,6 +103,17 @@ IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
+copy "..\..\src\TextMetal.Common.Solder\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Solder.dll" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy "..\..\src\TextMetal.Common.Solder\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Solder.xml" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy "..\..\src\TextMetal.Common.Solder\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Solder.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+
+
 copy "..\..\src\TextMetal.Common.Syntax\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Syntax.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
@@ -121,6 +132,17 @@ copy "..\..\src\TextMetal.Common.UnitTests\bin\%BUILD_FLAVOR_DIR%\TextMetal.Comm
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 copy "..\..\src\TextMetal.Common.UnitTests\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.UnitTests.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+
+
+copy "..\..\src\TextMetal.Common.WinForms\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.WinForms.dll" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy "..\..\src\TextMetal.Common.WinForms\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.WinForms.xml" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy "..\..\src\TextMetal.Common.WinForms\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.WinForms.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
@@ -264,6 +286,17 @@ copy "..\..\src\TextMetal.HostImpl.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\TextMetal.
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 copy "..\..\src\TextMetal.HostImpl.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\TextMetal.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+
+
+copy "..\..\src\TextMetal.HostImpl.WindowsTool\bin\%BUILD_FLAVOR_DIR%\TextMetalStudio.exe" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy "..\..\src\TextMetal.HostImpl.WindowsTool\bin\%BUILD_FLAVOR_DIR%\TextMetalStudio.xml" "%PACKAGE_DIR%\lib\TextMetal\."
+IF %ERRORLEVEL% NEQ 0 goto pkgError
+
+copy "..\..\src\TextMetal.HostImpl.WindowsTool\bin\%BUILD_FLAVOR_DIR%\TextMetalStudio.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 

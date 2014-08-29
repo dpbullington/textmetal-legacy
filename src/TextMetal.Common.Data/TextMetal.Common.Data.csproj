@@ -98,6 +98,10 @@
       <Project>{d1860a67-7efb-4c0f-89cd-a641d99dcc2a}</Project>
       <Name>TextMetal.Common.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Common.Solder\TextMetal.Common.Solder.csproj">
+      <Project>{3b0efc3c-aa91-4fb4-b2ee-bd8727230a94}</Project>
+      <Name>TextMetal.Common.Solder</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.Syntax\TextMetal.Common.Syntax.csproj">
       <Project>{483501d9-4d73-4076-997b-3a5d8b5ddb2c}</Project>
       <Name>TextMetal.Common.Syntax</Name>

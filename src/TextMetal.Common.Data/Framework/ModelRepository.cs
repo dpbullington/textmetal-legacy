@@ -15,6 +15,7 @@ using System.Web;
 using TextMetal.Common.Core;
 using TextMetal.Common.Data.Framework.Mapping;
 using TextMetal.Common.Data.Framework.Strategy;
+using TextMetal.Common.Solder.DependencyManagement;
 
 namespace TextMetal.Common.Data.Framework
 {
@@ -228,26 +229,26 @@ namespace TextMetal.Common.Data.Framework
 		public virtual TModel CreateModel<TModel>()
 			where TModel : class, IModelObject
 		{
-			return (TModel)Activator.CreateInstance(typeof(TModel), true);
+			return DependencyManager.AppDomainInstance.ResolveDependency<TModel>("");
 		}
 
 		public virtual TRequestModel CreateRequestModel<TRequestModel>()
 			where TRequestModel : class, IRequestModelObject
 		{
-			return (TRequestModel)Activator.CreateInstance(typeof(TRequestModel), true);
+			return DependencyManager.AppDomainInstance.ResolveDependency<TRequestModel>("");
 		}
 
 		public virtual TResponseModel CreateResponseModel<TResultModel, TResponseModel>()
 			where TResultModel : class, IResultModelObject
 			where TResponseModel : class, IResponseModelObject<TResultModel>
 		{
-			return (TResponseModel)Activator.CreateInstance(typeof(TResponseModel), true);
+			return DependencyManager.AppDomainInstance.ResolveDependency<TResponseModel>("");
 		}
 
 		public virtual TResultModel CreateResultModel<TResultModel>()
 			where TResultModel : class, IResultModelObject
 		{
-			return (TResultModel)Activator.CreateInstance(typeof(TResultModel), true);
+			return DependencyManager.AppDomainInstance.ResolveDependency<TResultModel>("");
 		}
 
 		public virtual bool Discard<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject
@@ -347,6 +348,76 @@ namespace TextMetal.Common.Data.Framework
 			return retval;
 		}
 
+		private IEnumerable<TResultModel> GetResultsLazy<TRequestModel, TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TacticCommand<TRequestModel, TResultModel, TResponseModel> tacticCommand, TResponseModel responseModel)
+			where TRequestModel : class, IRequestModelObject
+			where TResultModel : class, IResultModelObject
+			where TResponseModel : class, IResponseModelObject<TResultModel>
+		{
+			IEnumerable<IDictionary<string, object>> rows;
+			TResultModel resultModel;
+
+			int actualRecordsAffected = int.MaxValue;
+			IDictionary<string, object> tablix;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)tacticCommand == null)
+				throw new ArgumentNullException("tacticCommand");
+
+			if ((object)responseModel == null)
+				throw new ArgumentNullException("responseModel");
+
+			// enumerator overload usage
+			rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, (ra) => actualRecordsAffected = ra);
+
+			if ((object)rows == null)
+				throw new InvalidOperationException(string.Format("Rows were invalid."));
+
+			Trace.WriteLine("[+++ begin GetResultsLazy YIELD +++]");
+
+			// DOES NOT FORCE EXECUTION AGAINST STORE
+			foreach (IDictionary<string, object> table in rows)
+			{
+				resultModel = this.CreateResultModel<TResultModel>();
+
+				// map to model from table (destination, source)
+				tacticCommand.TableToResultModelMappingCallback(resultModel, table);
+
+				this.OnPostExecuteResultModel<TResultModel>(unitOfWork, resultModel);
+
+				yield return resultModel; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
+			}
+
+			Trace.WriteLine("[+++ end GetResultsLazy YIELD +++]");
+
+			// ***** SUPER special case for enumerator *****
+			if (actualRecordsAffected != tacticCommand.ExpectedRecordsAffected)
+			{
+				// idempotency failure
+				unitOfWork.Divergent();
+
+				throw new InvalidOperationException(string.Format("Data idempotency failure occurred during model execute; actual records affected '{0}' did not equal expected records affected '{1}'.", tacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
+			}
+
+			tablix = new Dictionary<string, object>();
+
+			foreach (IDataParameter commandParameter in tacticCommand.CommandParameters)
+			{
+				if (commandParameter.Direction != ParameterDirection.InputOutput &&
+					commandParameter.Direction != ParameterDirection.Output &&
+					commandParameter.Direction != ParameterDirection.ReturnValue)
+					continue;
+
+				tablix.Add(commandParameter.ParameterName, commandParameter.Value);
+			}
+
+			// map to model from table (destination, source)
+			tacticCommand.TableToResponseModelMappingCallback(responseModel, tablix);
+
+			this.OnPostExecuteResponseModel<TResultModel, TResponseModel>(unitOfWork, responseModel);
+		}
+
 		public virtual TResponseModel Execute<TRequestModel, TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TRequestModel requestModel)
 			where TRequestModel : class, IRequestModelObject
 			where TResultModel : class, IResultModelObject
@@ -355,12 +426,8 @@ namespace TextMetal.Common.Data.Framework
 			Type requestModelType;
 			Type resultModelType;
 			Type responseModelType;
-			TResultModel resultModel;
 			TResponseModel responseModel;
-			IEnumerable<IDictionary<string, object>> rows;
-			IList<TResultModel> results;
-			IDictionary<string, object> tablix;
-
+			
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
@@ -374,7 +441,6 @@ namespace TextMetal.Common.Data.Framework
 			using (GarbageDisposable.Instance)
 			{
 				TacticCommand<TRequestModel, TResultModel, TResponseModel> tacticCommand;
-				int actualRecordsAffected;
 
 				this.OnPreExecuteRequestModel<TRequestModel>(unitOfWork, requestModel);
 
@@ -382,52 +448,9 @@ namespace TextMetal.Common.Data.Framework
 
 				this.OnProfileTacticCommand(tacticCommand);
 
-				rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
-
-				if (actualRecordsAffected != tacticCommand.ExpectedRecordsAffected)
-				{
-					// idempotency failure
-					unitOfWork.Divergent();
-
-					throw new InvalidOperationException(string.Format("Data idempotency failure occurred during model execute; actual records affected '{0}' did not equal expected records affected '{1}'.", tacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
-				}
-
-				if ((object)rows == null)
-					throw new InvalidOperationException(string.Format("Rows were invalid."));
-
 				responseModel = this.CreateResponseModel<TResultModel, TResponseModel>();
-				results = new List<TResultModel>();
-				responseModel.Results = results;
-
-				foreach (IDictionary<string, object> table in rows)
-				{
-					resultModel = this.CreateResultModel<TResultModel>();
-
-					// map to model from table (destination, source)
-					tacticCommand.TableToResultModelMappingCallback(resultModel, table);
-
-					this.OnPostExecuteResultModel<TResultModel>(unitOfWork, resultModel);
-
-					results.Add(resultModel);
-				}
-
-				tablix = new Dictionary<string, object>();
-
-				foreach (IDataParameter commandParameter in tacticCommand.CommandParameters)
-				{
-					if (commandParameter.Direction != ParameterDirection.InputOutput &&
-						commandParameter.Direction != ParameterDirection.Output &&
-						commandParameter.Direction == ParameterDirection.ReturnValue)
-						continue;
-
-					tablix.Add(commandParameter.ParameterName, commandParameter.Value);
-				}
-
-				// map to model from table (destination, source)
-				tacticCommand.TableToResponseModelMappingCallback(responseModel, tablix);
-
-				this.OnPostExecuteResponseModel<TResultModel, TResponseModel>(unitOfWork, responseModel);
-
+				responseModel.Results = this.GetResultsLazy<TRequestModel, TResultModel, TResponseModel>(unitOfWork, tacticCommand, responseModel);
+				
 				return responseModel;
 			}
 		}

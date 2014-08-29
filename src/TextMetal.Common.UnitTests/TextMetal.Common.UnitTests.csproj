@@ -56,7 +56,22 @@
     <Compile Include="Data\Framework\Mapping\_\ParameterMappingAttributeTests.cs" />
     <Compile Include="Data\Framework\Mapping\_\ProcedureMappingAttributeTests.cs" />
     <Compile Include="Data\Framework\Mapping\_\TableMappingAttributeTests.cs" />
+    <Compile Include="Solder\DependencyManagement\_\ActivatorDependencyResolutionTests.cs" />
+    <Compile Include="Solder\DependencyManagement\_\ConstructorDependencyResolutionTests.cs" />
+    <Compile Include="Solder\DependencyManagement\_\DelegateDependencyResolutionTests.cs" />
+    <Compile Include="Solder\DependencyManagement\_\DependencyExceptionTests.cs" />
+    <Compile Include="Solder\DependencyManagement\_\DependencyManagerTests.cs" />
+    <Compile Include="Solder\DependencyManagement\_\DependencyRegistrationAttributeTests.cs" />
+    <Compile Include="Solder\DependencyManagement\_\SingletonDependencyResolutionTests.cs" />
+    <Compile Include="Solder\RuntimeInterception\RemotingImpl\_\DynamicInvokerRealProxyTests.cs" />
+    <Compile Include="Solder\RuntimeInterception\_\AspectDynamicInvokerTests.cs" />
+    <Compile Include="Solder\RuntimeInterception\_\DynamicInvokerTests.cs" />
+    <Compile Include="Solder\RuntimeInterception\_\ProxyFactoryTests.cs" />
+    <Compile Include="TestingInfrastructure\MockAspectDynamicInvoker.cs" />
+    <Compile Include="TestingInfrastructure\MockDynamicInvoker.cs" />
+    <Compile Include="TestingInfrastructure\MockDynamicInvokerRealProxy.cs" />
     <Compile Include="TestingInfrastructure\MockModelObject.cs" />
+    <Compile Include="TestingInfrastructure\MockProxyFactory.cs" />
     <Compile Include="Tokenization\_\DynamicValueTokenReplacementStrategyTests.cs" />
     <Compile Include="Tokenization\_\StaticValueTokenReplacementStrategyTests.cs" />
     <Compile Include="Tokenization\_\TokenizerTests.cs" />
@@ -92,6 +107,10 @@
     <ProjectReference Include="..\TextMetal.Common.Data\TextMetal.Common.Data.csproj">
       <Project>{E41E2352-4249-458E-B4F2-DBDF9B564BF5}</Project>
       <Name>TextMetal.Common.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Common.Solder\TextMetal.Common.Solder.csproj">
+      <Project>{3b0efc3c-aa91-4fb4-b2ee-bd8727230a94}</Project>
+      <Name>TextMetal.Common.Solder</Name>
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.Syntax\TextMetal.Common.Syntax.csproj">
       <Project>{483501d9-4d73-4076-997b-3a5d8b5ddb2c}</Project>

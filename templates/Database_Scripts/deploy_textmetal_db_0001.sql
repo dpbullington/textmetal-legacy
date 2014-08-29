@@ -832,27 +832,98 @@ CREATE TABLE [testcases].[tab_with_composite_primary_key_no_identity]
 GO
 
 
-CREATE PROCEDURE [testcases].[sproc_simple]
+CREATE PROCEDURE [testcases].[sproc_with_inparam_no_outparam_with_rvparam_no_resultet]
 (
-	@num [int],
-	@den [int],
-	@res [float] OUTPUT
+	@in_numerator [int],
+	@in_denominator [int]
 )
 AS
 BEGIN
-	SET @res = @num / @den
-
-	RETURN @num % @den
+	RETURN @in_numerator / @in_denominator
 END
 GO
 
 
-CREATE PROCEDURE [testcases].[sproc_resultset]
+CREATE PROCEDURE [testcases].[sproc_with_inparam_with_outparam_no_rvparam_no_resultet]
+(
+	@in_numerator [int],
+	@in_denominator [int],
+	@out_result [float] OUTPUT
+)
 AS
 BEGIN
-	SELECT 1 AS [Id], 227 AS [Value], 'XXX' AS [Name]
-UNION ALL
-	SELECT 2 AS [Id], 112 AS [Value], 'XXX' AS [Name]
+	SET @out_result = @in_numerator / @in_denominator
+END
+GO
+
+
+CREATE PROCEDURE [testcases].[sproc_with_inparam_no_outparam_with_rvparam_with_resultet]
+(
+	@in_numerator [int],
+	@in_denominator [int]
+)
+AS
+BEGIN
+
+	SELECT 1 AS [Id], NEWID() AS [Value], 'aaa' AS [Name]
+		UNION ALL
+	SELECT 2 AS [Id], NEWID() AS [Value], 'bbb' AS [Name]
+		UNION ALL
+	SELECT 3 AS [Id], NEWID() AS [Value], 'ccc' AS [Name]
+		UNION ALL
+	SELECT 4 AS [Id], NEWID() AS [Value], 'ddd' AS [Name]
+		UNION ALL
+	SELECT 5 AS [Id], NEWID() AS [Value], 'eee' AS [Name]
+
+	RETURN @in_numerator / @in_denominator
+END
+GO
+
+
+CREATE PROCEDURE [testcases].[sproc_with_inparam_with_outparam_no_rvparam_with_resultet]
+(
+	@in_numerator [int],
+	@in_denominator [int],
+	@out_result [float] OUTPUT
+)
+AS
+BEGIN
+
+	SELECT 1 AS [Id], NEWID() AS [Value], 'aaa' AS [Name]
+		UNION ALL
+	SELECT 2 AS [Id], NEWID() AS [Value], 'bbb' AS [Name]
+		UNION ALL
+	SELECT 3 AS [Id], NEWID() AS [Value], 'ccc' AS [Name]
+		UNION ALL
+	SELECT 4 AS [Id], NEWID() AS [Value], 'ddd' AS [Name]
+		UNION ALL
+	SELECT 5 AS [Id], NEWID() AS [Value], 'eee' AS [Name]
+
+	SET @out_result = @in_numerator / @in_denominator
+END
+GO
+
+
+CREATE PROCEDURE [testcases].[sproc_with_inparam_with_outparam_with_rvparam_with_resultet]
+(
+	@in_numerator [int],
+	@in_denominator [int],
+	@out_result [float] OUTPUT
+)
+AS
+BEGIN
+
+	SELECT 1 AS [Id], NEWID() AS [Value], 'aaa' AS [Name]
+		UNION ALL
+	SELECT 2 AS [Id], NEWID() AS [Value], 'bbb' AS [Name]
+		UNION ALL
+	SELECT 3 AS [Id], NEWID() AS [Value], 'ccc' AS [Name]
+		UNION ALL
+	SELECT 4 AS [Id], NEWID() AS [Value], 'ddd' AS [Name]
+		UNION ALL
+	SELECT 5 AS [Id], NEWID() AS [Value], 'eee' AS [Name]
+
+	SET @out_result = @in_numerator / @in_denominator
 
 	RETURN RAND()
 END

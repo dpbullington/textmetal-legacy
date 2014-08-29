@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Xml;
 
@@ -91,11 +92,16 @@ namespace TextMetal.Common.Data
 		{
 			IDictionary<string, object> obj;
 			IDataReader dataReader;
-			const bool COMMAND_PREPARE = false;
 			int recordsAffected;
-			/* const */
-			int? COMMAND_TIMEOUT = null;
-			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default; // force command behavior to default; the unit of work will manage connection lifetime
+			
+			// force no preparation
+			const bool COMMAND_PREPARE = false;
+			
+			// force provider default timeout
+			const object COMMAND_TIMEOUT = null; /*int?*/
+			
+			// force command behavior to default; the unit of work will manage connection lifetime
+			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -103,7 +109,9 @@ namespace TextMetal.Common.Data
 			if ((object)unitOfWork.Connection == null)
 				throw new InvalidOperationException("There is not a valid connection associated with the current unit of work.");
 
-			using (dataReader = ExecuteReader(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, COMMAND_TIMEOUT, COMMAND_PREPARE))
+			Trace.WriteLine("[+++ begin ExecuteDictionary YIELD +++]");
+
+			using (dataReader = ExecuteReader(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE))
 			{
 				while (dataReader.Read())
 				{
@@ -123,7 +131,8 @@ namespace TextMetal.Common.Data
 					yield return obj;
 				}
 			}
-
+			
+			Trace.WriteLine("[+++ end ExecuteDictionary YIELD +++]");
 			recordsAffected = dataReader.RecordsAffected;
 
 			if ((object)recordsAffectedCallback != null)

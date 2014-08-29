@@ -9,6 +9,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Data.Framework.Mapping;
@@ -168,7 +169,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return callback;
 		}
 
-		private static Action<TResponseModel, IDictionary<string, object>> GetMapToMethod<TResultModel, TResponseModel>(ProcedureMappingAttribute procedureMappingAttribute)
+		private Action<TResponseModel, IDictionary<string, object>> GetMapToMethod<TResultModel, TResponseModel>(ProcedureMappingAttribute procedureMappingAttribute)
 			where TResultModel : class, IResultModelObject
 			where TResponseModel : class, IResponseModelObject<TResultModel>
 		{
@@ -190,9 +191,12 @@ namespace TextMetal.Common.Data.Framework.Strategy
 							parameterMappingAttributes = procedureMappingAttribute._ResponseParameterMappingAttributes.OrderBy(pma => pma.ParameterOrdinal).ToArray();
 							for (int index = 0; index < parameterMappingAttributes.Length; index++)
 							{
+								string parameterName;
 								object parameterValue, propertyValue;
 
-								if (ts.TryGetValue(parameterMappingAttributes[index].ParameterName, out parameterValue))
+								parameterName = this.GetParameterName(parameterMappingAttributes[index].ParameterName);
+
+								if (ts.TryGetValue(parameterName, out parameterValue))
 								{
 									propertyValue = parameterValue.ChangeType(parameterMappingAttributes[index]._TargetProperty.PropertyType);
 
@@ -705,7 +709,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 					parameterMappingAttribute._TargetProperty = propertyInfo;
 
-					procedureMappingAttribute._RequestParameterMappingAttributes.Add(parameterMappingAttribute);
+					procedureMappingAttribute._ResponseParameterMappingAttributes.Add(parameterMappingAttribute);
 				}
 			}
 
