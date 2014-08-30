@@ -50,17 +50,6 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 		}
 
 		/// <summary>
-		/// Gets an array of allowed parent XML object types.
-		/// </summary>
-		public Type[] AllowedParentTypes
-		{
-			get
-			{
-				return new Type[] { typeof(IXmlObject) };
-			}
-		}
-
-		/// <summary>
 		/// Gets or sets the optional single XML object content. This implementation always return null.
 		/// </summary>
 		public IXmlObject Content

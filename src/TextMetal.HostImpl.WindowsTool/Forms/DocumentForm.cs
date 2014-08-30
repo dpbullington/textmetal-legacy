@@ -290,35 +290,52 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 		public void _UpdateDocumentTree()
 		{
-			TmTreeNode tnRoot;
-
 			this.tvMain.BeginUpdate();
 			this.tvMain.Nodes.Clear();
 
-			tnRoot = new TmTreeNode();
-			tnRoot.Text = Guid.NewGuid().ToString("B");
-			tnRoot.Tag = null;
-			this.tvMain.Nodes.Add(tnRoot);
-
-			this._UpdateDocumentTree(tnRoot, this.Document);
+			this._UpdateDocumentTree(this.tvMain.Nodes, this.Document);
 
 			this.tvMain.EndUpdate();
 		}
 
-		public void _UpdateDocumentTree(TmTreeNode tnParent, IXmlObject currentXmlObject)
+		public void _UpdateDocumentTree(TreeNodeCollection tncParent, IXmlObject currentXmlObject)
 		{
-			TmTreeNode tnCurrent;
+			TmTreeNode tnCurrentXmlObject;
+			TmTreeNode tnCurrentContentFolder;
+			TmTreeNode tnCurrentItemsFolder;
+			TmTreeNode tnCurrentChildrenFolder;
+			
+			if ((object)tncParent == null)
+				throw new ArgumentNullException("tncParent");
 
-			if ((object)tnParent == null)
-				throw new ArgumentNullException("tnParent");
+			tnCurrentXmlObject = new TmTreeNode();
+			tnCurrentXmlObject.Text = currentXmlObject.GetType().Name;
+			tnCurrentXmlObject.Tag = currentXmlObject;
+			tncParent.Add(tnCurrentXmlObject);
 
-			tnCurrent = new TmTreeNode();
-			tnCurrent.Text = currentXmlObject.GetType().Name;
-			tnCurrent.Tag = currentXmlObject;
-			tnParent.Nodes.Add(tnCurrent);
+			tnCurrentContentFolder = new TmTreeNode();
+			tnCurrentContentFolder.Text = "[Content]";
+			tnCurrentContentFolder.Tag = null;
+			tnCurrentXmlObject.Nodes.Add(tnCurrentContentFolder);
 
-			foreach (IXmlObject childItemXmlObject in currentXmlObject.Items)
-				this._UpdateDocumentTree(tnCurrent, childItemXmlObject);
+			if ((object)currentXmlObject.Content != null)
+				this._UpdateDocumentTree(tnCurrentContentFolder.Nodes, currentXmlObject.Content);
+
+			tnCurrentItemsFolder = new TmTreeNode();
+			tnCurrentItemsFolder.Text = "[Items]";
+			tnCurrentItemsFolder.Tag = currentXmlObject.Items;
+			tnCurrentXmlObject.Nodes.Add(tnCurrentItemsFolder);
+
+			foreach (IXmlObject itemXmlObject in currentXmlObject.Items)
+				this._UpdateDocumentTree(tnCurrentItemsFolder.Nodes, itemXmlObject);
+
+			tnCurrentChildrenFolder = new TmTreeNode();
+			tnCurrentChildrenFolder.Text = "[Children]";
+			tnCurrentChildrenFolder.Tag = null;
+			tnCurrentXmlObject.Nodes.Add(tnCurrentChildrenFolder);
+
+			//foreach (IXmlObject itemXmlObject in currentXmlObject.Items)
+				//this._UpdateDocumentTree(tnCurrentChildrenFolder.Nodes, null);
 		}
 
 		private void _UpdateSourceEditor()

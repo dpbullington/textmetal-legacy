@@ -385,18 +385,6 @@ namespace TextMetal.Common.Xml
 			if ((object)currentXmlObject == null)
 				throw new InvalidOperationException(string.Format("TODO (enhancement): add meaningful message '{0}'", currentElementXmlName));
 
-			// sanity check
-			if ((object)currentXmlObject.AllowedParentTypes == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
-
-			// does the current object allow it to be a child of the parent type?
-			if ((object)parentType != null && // is this a non-root node?
-				currentXmlObject.AllowedParentTypes.Count(t => t.IsAssignableFrom(parentType)) <= 0)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
-
-			// dpbullington@gmail.com / 2012-10-29 (Issue #32): no longer need to explicitly assign parent
-			// currentXmlObject.Parent = parentXmlObject;
-
 			// interogate the current type
 			currentType = currentXmlObject.GetType();
 			currentPropertyInfos = currentType.GetProperties(BindingFlags.Public | BindingFlags.Instance);

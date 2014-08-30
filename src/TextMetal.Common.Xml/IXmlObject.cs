@@ -23,14 +23,6 @@ namespace TextMetal.Common.Xml
 		}
 
 		/// <summary>
-		/// Gets an array of allowed parent XML object types.
-		/// </summary>
-		Type[] AllowedParentTypes
-		{
-			get;
-		}
-
-		/// <summary>
 		/// Gets or sets the optional single XML object content.
 		/// </summary>
 		IXmlObject Content

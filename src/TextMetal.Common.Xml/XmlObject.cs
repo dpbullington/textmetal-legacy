@@ -46,17 +46,6 @@ namespace TextMetal.Common.Xml
 		}
 
 		/// <summary>
-		/// Gets an array of allowed parent XML object types.
-		/// </summary>
-		public virtual Type[] AllowedParentTypes
-		{
-			get
-			{
-				return new Type[] { typeof(IXmlObject) };
-			}
-		}
-
-		/// <summary>
 		/// Gets or sets the optional single XML object content.
 		/// </summary>
 		public IXmlObject Content
