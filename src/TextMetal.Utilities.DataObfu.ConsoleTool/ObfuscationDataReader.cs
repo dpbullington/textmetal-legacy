@@ -18,19 +18,16 @@ using TextMetal.Utilities.DataObfu.ConsoleTool.Config;
 
 namespace TextMetal.Utilities.DataObfu.ConsoleTool
 {
-	public sealed class ObfuscationDataReader : IDataReader
+	public sealed class ObfuscationDataReader : WrapperDataReader
 	{
 		#region Constructors/Destructors
 
 		public ObfuscationDataReader(IDataReader dataReader, TableConfiguration tableConfiguration)
+			: base(dataReader)
 		{
-			if ((object)dataReader == null)
-				throw new ArgumentNullException("dataReader");
-
 			if ((object)tableConfiguration == null)
 				throw new ArgumentNullException("tableConfiguration");
 
-			this.dataReader = dataReader;
 			this.tableConfiguration = tableConfiguration;
 		}
 
@@ -38,68 +35,13 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool
 
 		#region Fields/Constants
 
-		private readonly IDataReader dataReader;
+		private static readonly IDictionary<string, IDictionary<long?, object>> substitutionCacheRoot = new Dictionary<string, IDictionary<long?, object>>();
+
 		private readonly TableConfiguration tableConfiguration;
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		object IDataRecord.this[string name]
-		{
-			get
-			{
-				return this.DataReader[name];
-			}
-		}
-
-		object IDataRecord.this[int i]
-		{
-			get
-			{
-				return this.DataReader[i];
-			}
-		}
-
-		private IDataReader DataReader
-		{
-			get
-			{
-				return this.dataReader;
-			}
-		}
-
-		int IDataReader.Depth
-		{
-			get
-			{
-				return this.DataReader.Depth;
-			}
-		}
-
-		int IDataRecord.FieldCount
-		{
-			get
-			{
-				return this.DataReader.FieldCount;
-			}
-		}
-
-		bool IDataReader.IsClosed
-		{
-			get
-			{
-				return this.DataReader.IsClosed;
-			}
-		}
-
-		int IDataReader.RecordsAffected
-		{
-			get
-			{
-				return this.DataReader.RecordsAffected;
-			}
-		}
 
 		private TableConfiguration TableConfiguration
 		{
@@ -329,7 +271,7 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool
 			_value = _value.Trim();
 
 			//Console.WriteLine("substitutionCacheRoot-count: {0}", substitutionCacheRoot.Count);
-			
+
 			if (dictionaryConfiguration.RecordCount < 100000)
 			{
 				if (substitutionCacheRoot.TryGetValue(dictionaryConfiguration.DictionaryId, out dictionaryCache))
@@ -352,11 +294,11 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool
 
 			using (IUnitOfWork dictionaryUnitOfWork = UnitOfWork.Create(dictionaryConfiguration.Parent.GetDictionaryConnectionType(), dictionaryConfiguration.Parent.DictionaryConnectionString, false))
 			{
-				IDataParameter dataParameterKey;
+				IDbDataParameter dbDataParameterKey;
 
-				dataParameterKey = dictionaryUnitOfWork.CreateParameter(ParameterDirection.Input, DbType.Object, 0, 0, 0, false, "@ID", valueHash);
+				dbDataParameterKey = dictionaryUnitOfWork.CreateParameter(ParameterDirection.Input, DbType.Object, 0, 0, 0, false, "@ID", valueHash);
 
-				value = dictionaryUnitOfWork.FetchScalar<string>(CommandType.Text, dictionaryConfiguration.DictionaryCommandText, new IDataParameter[] { dataParameterKey });
+				value = dictionaryUnitOfWork.FetchScalar<string>(CommandType.Text, dictionaryConfiguration.DictionaryCommandText, new IDbDataParameter[] { dbDataParameterKey });
 			}
 
 			if ((object)dictionaryCache != null)
@@ -364,8 +306,6 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool
 
 			return value;
 		}
-
-		private static readonly IDictionary<string, IDictionary<long?, object>> substitutionCacheRoot = new Dictionary<string, IDictionary<long?, object>>(); 
 
 		private static object GetVariance(double varianceFactor, object value)
 		{
@@ -481,101 +421,6 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool
 			return fidelityMap;
 		}
 
-		void IDataReader.Close()
-		{
-			this.DataReader.Close();
-		}
-
-		void IDisposable.Dispose()
-		{
-			this.DataReader.Dispose();
-		}
-
-		bool IDataRecord.GetBoolean(int i)
-		{
-			return this.DataReader.GetBoolean(i);
-		}
-
-		byte IDataRecord.GetByte(int i)
-		{
-			return this.DataReader.GetByte(i);
-		}
-
-		long IDataRecord.GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
-		{
-			return this.DataReader.GetBytes(i, fieldOffset, buffer, bufferoffset, length);
-		}
-
-		char IDataRecord.GetChar(int i)
-		{
-			return this.DataReader.GetChar(i);
-		}
-
-		long IDataRecord.GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
-		{
-			return this.DataReader.GetChars(i, fieldoffset, buffer, bufferoffset, length);
-		}
-
-		IDataReader IDataRecord.GetData(int i)
-		{
-			return this.DataReader.GetData(i);
-		}
-
-		string IDataRecord.GetDataTypeName(int i)
-		{
-			return this.DataReader.GetDataTypeName(i);
-		}
-
-		DateTime IDataRecord.GetDateTime(int i)
-		{
-			return this.DataReader.GetDateTime(i);
-		}
-
-		decimal IDataRecord.GetDecimal(int i)
-		{
-			return this.DataReader.GetDecimal(i);
-		}
-
-		double IDataRecord.GetDouble(int i)
-		{
-			return this.DataReader.GetDouble(i);
-		}
-
-		Type IDataRecord.GetFieldType(int i)
-		{
-			return this.DataReader.GetFieldType(i);
-		}
-
-		float IDataRecord.GetFloat(int i)
-		{
-			return this.DataReader.GetFloat(i);
-		}
-
-		Guid IDataRecord.GetGuid(int i)
-		{
-			return this.DataReader.GetGuid(i);
-		}
-
-		short IDataRecord.GetInt16(int i)
-		{
-			return this.DataReader.GetInt16(i);
-		}
-
-		int IDataRecord.GetInt32(int i)
-		{
-			return this.DataReader.GetInt32(i);
-		}
-
-		long IDataRecord.GetInt64(int i)
-		{
-			return this.DataReader.GetInt64(i);
-		}
-
-		string IDataRecord.GetName(int i)
-		{
-			return this.DataReader.GetName(i);
-		}
-
 		private object GetObfuscatedValue(string columnName, Type columnType, object columnValue)
 		{
 			IEnumerable<Message> messages;
@@ -613,7 +458,7 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool
 
 			valueHash = GetHash((long)this.TableConfiguration.Parent.ValueHash.Multiplier,
 				columnConfiguration.ObfuscationStrategy == ObfuscationStrategy.Substitution ?
-				(long)dictionaryConfiguration.RecordCount : (long)this.TableConfiguration.Parent.ValueHash.Size,
+					(long)dictionaryConfiguration.RecordCount : (long)this.TableConfiguration.Parent.ValueHash.Size,
 				(long)this.TableConfiguration.Parent.ValueHash.Seed, columnValue.SafeToString()) ?? 0;
 
 			switch (columnConfiguration.ObfuscationStrategy)
@@ -644,54 +489,19 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool
 			}
 		}
 
-		int IDataRecord.GetOrdinal(string name)
-		{
-			return this.DataReader.GetOrdinal(name);
-		}
-
-		DataTable IDataReader.GetSchemaTable()
-		{
-			return this.DataReader.GetSchemaTable();
-		}
-
-		string IDataRecord.GetString(int i)
-		{
-			return this.DataReader.GetString(i);
-		}
-
-		object IDataRecord.GetValue(int i)
+		public override object GetValue(int i)
 		{
 			string columnName;
 			Type columnType;
 			object columnValue, obfusscatedValue;
 
-			columnName = this.DataReader.GetName(i);
-			columnType = this.DataReader.GetFieldType(i);
-			columnValue = this.DataReader.GetValue(i);
+			columnName = base.GetName(i);
+			columnType = base.GetFieldType(i);
+			columnValue = base.GetValue(i);
 
 			obfusscatedValue = this.GetObfuscatedValue(columnName, columnType, columnValue);
 
 			return obfusscatedValue;
-		}
-
-		int IDataRecord.GetValues(object[] values)
-		{
-			return this.DataReader.GetValues(values);
-		}
-
-		bool IDataRecord.IsDBNull(int i)
-		{
-			return this.DataReader.IsDBNull(i);
-		}
-
-		bool IDataReader.NextResult()
-		{
-			return this.DataReader.NextResult();
-		}
-
-		bool IDataReader.Read()
-		{
-			return this.DataReader.Read();
 		}
 
 		#endregion

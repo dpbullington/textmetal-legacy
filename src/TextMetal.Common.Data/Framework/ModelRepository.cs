@@ -198,7 +198,7 @@ namespace TextMetal.Common.Data.Framework
 			return userSpecificDirectoryPath;
 		}
 
-		protected static TValue GetScalar<TValue>(IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters)
+		protected static TValue GetScalar<TValue>(IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
 		{
 			int recordsAffected;
 			IEnumerable<IDictionary<string, object>> results;
@@ -278,7 +278,7 @@ namespace TextMetal.Common.Data.Framework
 
 				tacticCommand = this.DataSourceTagStrategy.GetDeleteTacticCommand<TModel>(unitOfWork, model, null);
 
-				this.OnProfileTacticCommand(tacticCommand);
+				this.OnProfileTacticCommand(RepositoryOperation.Discard, tacticCommand);
 
 				rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
 
@@ -297,6 +297,8 @@ namespace TextMetal.Common.Data.Framework
 					throw new InvalidOperationException(string.Format("Rows were invalid."));
 
 				table = rows.SingleOrDefault();
+
+				this.OnProfileTacticCommand(RepositoryOperation.DiscardYield, tacticCommand);
 
 				// map to model from table (destination, source)
 				if ((object)table != null)
@@ -348,79 +350,6 @@ namespace TextMetal.Common.Data.Framework
 			return retval;
 		}
 
-		private IEnumerable<TResultModel> GetResultsLazy<TRequestModel, TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TacticCommand<TRequestModel, TResultModel, TResponseModel> tacticCommand, TResponseModel responseModel)
-			where TRequestModel : class, IRequestModelObject
-			where TResultModel : class, IResultModelObject
-			where TResponseModel : class, IResponseModelObject<TResultModel>
-		{
-			IEnumerable<IDictionary<string, object>> rows;
-			TResultModel resultModel;
-
-			int actualRecordsAffected = int.MaxValue;
-			IDictionary<string, object> tablix;
-
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)tacticCommand == null)
-				throw new ArgumentNullException("tacticCommand");
-
-			if ((object)responseModel == null)
-				throw new ArgumentNullException("responseModel");
-
-			// enumerator overload usage
-			rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, (ra) => actualRecordsAffected = ra);
-
-			if ((object)rows == null)
-				throw new InvalidOperationException(string.Format("Rows were invalid."));
-
-			Trace.WriteLine("[+++ begin GetResultsLazy YIELD +++]");
-
-			// DOES NOT FORCE EXECUTION AGAINST STORE
-			foreach (IDictionary<string, object> table in rows)
-			{
-				resultModel = this.CreateResultModel<TResultModel>();
-
-				// map to model from table (destination, source)
-				tacticCommand.TableToResultModelMappingCallback(resultModel, table);
-
-				this.OnPostExecuteResultModel<TResultModel>(unitOfWork, resultModel);
-
-				yield return resultModel; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
-			}
-
-			Trace.WriteLine("[+++ end GetResultsLazy YIELD +++]");
-
-			// alert the response model that we are done enumerating the lazy river...
-			responseModel.SetEnumerationComplete();
-
-			// ***** SUPER special case for enumerator *****
-			if (actualRecordsAffected != tacticCommand.ExpectedRecordsAffected)
-			{
-				// idempotency failure
-				unitOfWork.Divergent();
-
-				throw new InvalidOperationException(string.Format("Data idempotency failure occurred during model execute; actual records affected '{0}' did not equal expected records affected '{1}'.", tacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
-			}
-
-			tablix = new Dictionary<string, object>();
-
-			foreach (IDataParameter commandParameter in tacticCommand.CommandParameters)
-			{
-				if (commandParameter.Direction != ParameterDirection.InputOutput &&
-					commandParameter.Direction != ParameterDirection.Output &&
-					commandParameter.Direction != ParameterDirection.ReturnValue)
-					continue;
-
-				tablix.Add(commandParameter.ParameterName, commandParameter.Value);
-			}
-
-			// map to model from table (destination, source)
-			tacticCommand.TableToResponseModelMappingCallback(responseModel, tablix);
-
-			this.OnPostExecuteResponseModel<TResultModel, TResponseModel>(unitOfWork, responseModel);
-		}
-
 		public virtual TResponseModel Execute<TRequestModel, TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TRequestModel requestModel)
 			where TRequestModel : class, IRequestModelObject
 			where TResultModel : class, IResultModelObject
@@ -430,7 +359,7 @@ namespace TextMetal.Common.Data.Framework
 			Type resultModelType;
 			Type responseModelType;
 			TResponseModel responseModel;
-			
+
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
@@ -449,11 +378,11 @@ namespace TextMetal.Common.Data.Framework
 
 				tacticCommand = this.DataSourceTagStrategy.GetExecuteTacticCommand<TRequestModel, TResultModel, TResponseModel>(unitOfWork, requestModel);
 
-				this.OnProfileTacticCommand(tacticCommand);
+				this.OnProfileTacticCommand(RepositoryOperation.Execute, tacticCommand);
 
 				responseModel = this.CreateResponseModel<TResultModel, TResponseModel>();
 				responseModel.Results = this.GetResultsLazy<TRequestModel, TResultModel, TResponseModel>(unitOfWork, tacticCommand, responseModel);
-				
+
 				return responseModel;
 			}
 		}
@@ -501,7 +430,7 @@ namespace TextMetal.Common.Data.Framework
 
 				tacticCommand = this.DataSourceTagStrategy.GetSelectTacticCommand<TModel>(unitOfWork, model, null);
 
-				this.OnProfileTacticCommand(tacticCommand);
+				this.OnProfileTacticCommand(RepositoryOperation.Fill, tacticCommand);
 
 				rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
 
@@ -517,6 +446,8 @@ namespace TextMetal.Common.Data.Framework
 					throw new InvalidOperationException(string.Format("Rows were invalid."));
 
 				table = rows.SingleOrDefault();
+
+				this.OnProfileTacticCommand(RepositoryOperation.FillYield, tacticCommand);
 
 				if ((object)table == null)
 					return false;
@@ -572,13 +503,15 @@ namespace TextMetal.Common.Data.Framework
 
 				tacticCommand = this.DataSourceTagStrategy.GetSelectTacticCommand<TModel>(unitOfWork, dummy, modelQuery);
 
-				this.OnProfileTacticCommand(tacticCommand);
+				this.OnProfileTacticCommand(RepositoryOperation.Find, tacticCommand);
 
 				// enumerator overload usage
 				rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, (ra) => actualRecordsAffected = ra);
 
 				if ((object)rows == null)
 					throw new InvalidOperationException(string.Format("Rows were invalid."));
+
+				Trace.WriteLine("[+++ before yield: Find +++]");
 
 				// DOES NOT FORCE EXECUTION AGAINST STORE
 				foreach (IDictionary<string, object> table in rows)
@@ -593,6 +526,10 @@ namespace TextMetal.Common.Data.Framework
 					yield return model; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
 				}
 
+				this.OnProfileTacticCommand(RepositoryOperation.FindYield, tacticCommand);
+
+				Trace.WriteLine("[+++ after yield: Find +++]");
+
 				// special case for enumerator
 				if (actualRecordsAffected != tacticCommand.ExpectedRecordsAffected)
 				{
@@ -601,6 +538,8 @@ namespace TextMetal.Common.Data.Framework
 
 					throw new InvalidOperationException(string.Format("Data idempotency failure occurred during model load; actual records affected '{0}' did not equal expected records affected '{1}'.", tacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
 				}
+
+				this.OnProfileTacticCommand(RepositoryOperation.Find, tacticCommand);
 			}
 		}
 
@@ -631,6 +570,81 @@ namespace TextMetal.Common.Data.Framework
 			}
 
 			return models;
+		}
+
+		private IEnumerable<TResultModel> GetResultsLazy<TRequestModel, TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TacticCommand<TRequestModel, TResultModel, TResponseModel> tacticCommand, TResponseModel responseModel)
+			where TRequestModel : class, IRequestModelObject
+			where TResultModel : class, IResultModelObject
+			where TResponseModel : class, IResponseModelObject<TResultModel>
+		{
+			IEnumerable<IDictionary<string, object>> rows;
+			TResultModel resultModel;
+
+			int actualRecordsAffected = int.MaxValue;
+			IDictionary<string, object> tablix;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)tacticCommand == null)
+				throw new ArgumentNullException("tacticCommand");
+
+			if ((object)responseModel == null)
+				throw new ArgumentNullException("responseModel");
+
+			// enumerator overload usage
+			rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, (ra) => actualRecordsAffected = ra);
+
+			if ((object)rows == null)
+				throw new InvalidOperationException(string.Format("Rows were invalid."));
+
+			Trace.WriteLine("[+++ before yield: GetResultsLazy +++]");
+
+			// DOES NOT FORCE EXECUTION AGAINST STORE
+			foreach (IDictionary<string, object> table in rows)
+			{
+				resultModel = this.CreateResultModel<TResultModel>();
+
+				// map to model from table (destination, source)
+				tacticCommand.TableToResultModelMappingCallback(resultModel, table);
+
+				this.OnPostExecuteResultModel<TResultModel>(unitOfWork, resultModel);
+
+				yield return resultModel; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
+			}
+
+			this.OnProfileTacticCommand(RepositoryOperation.ExecuteYield, tacticCommand);
+
+			Trace.WriteLine("[+++ after yield: GetResultsLazy +++]");
+
+			// alert the response model that we are done enumerating the lazy river...
+			responseModel.SetEnumerationComplete();
+			
+			// ***** SUPER special case for enumerator *****
+			if (actualRecordsAffected != tacticCommand.ExpectedRecordsAffected)
+			{
+				// idempotency failure
+				unitOfWork.Divergent();
+
+				throw new InvalidOperationException(string.Format("Data idempotency failure occurred during model execute; actual records affected '{0}' did not equal expected records affected '{1}'.", tacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
+			}
+
+			tablix = new Dictionary<string, object>();
+
+			foreach (IDbDataParameter commandParameter in tacticCommand.CommandParameters)
+			{
+				if (commandParameter.Direction != ParameterDirection.InputOutput &&
+					commandParameter.Direction != ParameterDirection.Output &&
+					commandParameter.Direction != ParameterDirection.ReturnValue)
+					continue;
+
+				tablix.Add(commandParameter.ParameterName, commandParameter.Value);
+			}
+
+			// map to model from table (destination, source)
+			tacticCommand.TableToResponseModelMappingCallback(responseModel, tablix);
+
+			this.OnPostExecuteResponseModel<TResultModel, TResponseModel>(unitOfWork, responseModel);
 		}
 
 		public virtual IUnitOfWork GetUnitOfWork()
@@ -692,7 +706,7 @@ namespace TextMetal.Common.Data.Framework
 
 				tacticCommand = this.DataSourceTagStrategy.GetSelectTacticCommand<TModel>(unitOfWork, prototype, null);
 
-				this.OnProfileTacticCommand(tacticCommand);
+				this.OnProfileTacticCommand(RepositoryOperation.Load, tacticCommand);
 
 				rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
 
@@ -708,6 +722,8 @@ namespace TextMetal.Common.Data.Framework
 					throw new InvalidOperationException(string.Format("Rows were invalid."));
 
 				table = rows.SingleOrDefault();
+
+				this.OnProfileTacticCommand(RepositoryOperation.LoadYield, tacticCommand);
 
 				if ((object)table == null)
 					return null;
@@ -876,7 +892,7 @@ namespace TextMetal.Common.Data.Framework
 		}
 
 		[Conditional("DEBUG")]
-		protected virtual void OnProfileTacticCommand(ITacticCommand tacticCommand)
+		protected virtual void OnProfileTacticCommand(RepositoryOperation repositoryOperation, ITacticCommand tacticCommand)
 		{
 			/* THIS METHOD SHOULD NOT BE DEFINED IN RELEASE/PRODUCTION BUILDS */
 			string value = "";
@@ -885,7 +901,7 @@ namespace TextMetal.Common.Data.Framework
 			if ((object)tacticCommand == null)
 				throw new ArgumentNullException("tacticCommand");
 
-			value += "\r\n[+++ begin OnProfileTacticCommand +++]\r\n";
+			value += string.Format("\r\n[+++ begin OnProfileTacticCommand({0}) +++]\r\n", repositoryOperation);
 
 			value += string.Format("[TacticCommand]: ModelType = '{0}', IsNullipotent = '{6}'; ExpectedRecordsAffected = '{7}'; CommandType = '{1}'; CommandText = '{2}'; CommandPrepare = '{3}'; CommandTimeout = '{4}'; CommandBehavior = '{5}'.",
 				string.Join("|", tacticCommand.GetModelTypes().Select(t => t.FullName).ToArray()),
@@ -912,7 +928,7 @@ namespace TextMetal.Common.Data.Framework
 					(object)commandParameter != null ? commandParameter.Value.SafeToString(null, "<null>") : "[[null]]");
 			}
 
-			value += "\r\n[+++ end OnProfileTacticCommand +++]\r\n";
+			value += string.Format("\r\n[+++ end OnProfileTacticCommand({0}) +++]\r\n", repositoryOperation);
 
 			Trace.WriteLine(value);
 		}
@@ -972,7 +988,7 @@ namespace TextMetal.Common.Data.Framework
 					tacticCommand = this.DataSourceTagStrategy.GetUpdateTacticCommand<TModel>(unitOfWork, model, null);
 				}
 
-				this.OnProfileTacticCommand(tacticCommand);
+				this.OnProfileTacticCommand(RepositoryOperation.Save, tacticCommand);
 
 				rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
 
@@ -998,12 +1014,12 @@ namespace TextMetal.Common.Data.Framework
 
 				// ***------------------------***
 
-				if (wasNew && !tacticCommand.UseBatchScopeIdentitySemantics)
+				if (wasNew && !tacticCommand.UseBatchScopeIdentificationSemantics)
 				{
 					// this is optional
-					tacticCommand = this.DataSourceTagStrategy.GetIdentityTacticCommand<TModel>(unitOfWork);
+					tacticCommand = this.DataSourceTagStrategy.GetIdentifyTacticCommand<TModel>(unitOfWork);
 
-					this.OnProfileTacticCommand(tacticCommand);
+					this.OnProfileTacticCommand(RepositoryOperation.Identify, tacticCommand);
 
 					rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
 
@@ -1019,6 +1035,8 @@ namespace TextMetal.Common.Data.Framework
 						throw new InvalidOperationException(string.Format("Rows were invalid."));
 
 					table = rows.SingleOrDefault();
+
+					this.OnProfileTacticCommand(RepositoryOperation.IdentifyYield, tacticCommand);
 
 					if ((object)table == null)
 						return false;
@@ -1056,6 +1074,29 @@ namespace TextMetal.Common.Data.Framework
 				retval = this.Save<TModel>(UnitOfWork.Current, model);
 
 			return retval;
+		}
+
+		#endregion
+
+		#region Classes/Structs/Interfaces/Enums/Delegates
+
+		protected enum RepositoryOperation
+		{
+			None = 0,
+			Discard,
+			DiscardYield,
+			Execute,
+			ExecuteYield,
+			Fill,
+			FillYield,
+			Find,
+			FindYield,
+			Load,
+			LoadYield,
+			Save,
+			SaveYield,
+			Identify,
+			IdentifyYield
 		}
 
 		#endregion

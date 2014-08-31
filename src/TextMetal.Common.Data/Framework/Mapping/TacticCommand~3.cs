@@ -25,14 +25,14 @@ namespace TextMetal.Common.Data.Framework.Mapping
 		#region Fields/Constants
 
 		private CommandBehavior commandBehavior = CommandBehavior.Default;
-		private IEnumerable<IDataParameter> commandParameters;
+		private IEnumerable<IDbDataParameter> commandParameters;
 		private bool commandPrepare;
 		private string commandText;
 		private int? commandTimeout;
 		private CommandType commandType;
 		private int expectedRecordsAffected;
 		private bool isNullipotent;
-		private bool useBatchScopeIdentitySemantics;
+		private bool useBatchScopeIdentificationSemantics;
 		private Action<TResponseModel, IDictionary<string, object>> tableToResponseModelMappingCallback;
 		private Action<TResultModel, IDictionary<string, object>> tableToResultModelMappingCallback;
 
@@ -55,7 +55,7 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			}
 		}
 
-		public IEnumerable<IDataParameter> CommandParameters
+		public IEnumerable<IDbDataParameter> CommandParameters
 		{
 			get
 			{
@@ -151,15 +151,15 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			}
 		}
 
-		public bool UseBatchScopeIdentitySemantics
+		public bool UseBatchScopeIdentificationSemantics
 		{
 			get
 			{
-				return this.useBatchScopeIdentitySemantics;
+				return this.useBatchScopeIdentificationSemantics;
 			}
 			set
 			{
-				this.useBatchScopeIdentitySemantics = value;
+				this.useBatchScopeIdentificationSemantics = value;
 			}
 		}
 

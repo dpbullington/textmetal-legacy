@@ -36,10 +36,10 @@ namespace TextMetal.Utilities.DataObfu.ConsoleTool
 						recordsAffected = -1;
 						rowsCopied = 0;
 
-						sourceUnitOfWork.ExecuteDictionary(CommandType.Text, tableConfiguration.DestinationCommandText, new IDataParameter[] { }, out recordsAffected);
+						sourceUnitOfWork.ExecuteDictionary(CommandType.Text, tableConfiguration.DestinationCommandText, new IDbDataParameter[] { }, out recordsAffected);
 						Console.WriteLine("DESTINATION: recordsAffected={0}", recordsAffected);
 
-						using (dataReader = new ObfuscationDataReader(AdoNetHelper.ExecuteReader(sourceUnitOfWork.Connection, sourceUnitOfWork.Transaction, CommandType.Text, tableConfiguration.SourceCommandText, new IDataParameter[] { }, CommandBehavior.Default, null, false), tableConfiguration))
+						using (dataReader = new ObfuscationDataReader(AdoNetHelper.ExecuteReader(sourceUnitOfWork.Connection, sourceUnitOfWork.Transaction, CommandType.Text, tableConfiguration.SourceCommandText, new IDbDataParameter[] { }, CommandBehavior.Default, null, false), tableConfiguration))
 						{
 							using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy((SqlConnection)destinationUnitOfWork.Connection, SqlBulkCopyOptions.FireTriggers | SqlBulkCopyOptions.CheckConstraints | SqlBulkCopyOptions.KeepIdentity | SqlBulkCopyOptions.KeepNulls, (SqlTransaction)destinationUnitOfWork.Transaction))
 							{

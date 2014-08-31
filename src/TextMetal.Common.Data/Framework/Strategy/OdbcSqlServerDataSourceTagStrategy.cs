@@ -142,7 +142,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return retVal;
 		}
 
-		public override void ParameterMagic(IUnitOfWork unitOfWork, IDataParameter commandParameter, string originalSqlType)
+		public override void ParameterMagic(IUnitOfWork unitOfWork, IDbDataParameter commandParameter, string originalSqlType)
 		{
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");

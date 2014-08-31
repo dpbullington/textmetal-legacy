@@ -50,7 +50,7 @@ namespace TextMetal.Common.UnitTests.Data.Framework.Mapping._
 			tacticCommand.CommandType = CommandType.Text;
 			Assert.AreEqual(CommandType.Text, tacticCommand.CommandType);
 
-			tacticCommand.CommandParameters = new IDataParameter[] { };
+			tacticCommand.CommandParameters = new IDbDataParameter[] { };
 			Assert.IsNotEmpty(tacticCommand.CommandParameters);
 
 			tacticCommand.ExpectedRecordsAffected = 123;

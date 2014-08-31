@@ -21,7 +21,7 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			get;
 		}
 
-		IEnumerable<IDataParameter> CommandParameters
+		IEnumerable<IDbDataParameter> CommandParameters
 		{
 			get;
 		}
@@ -68,7 +68,7 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			get;
 		}
 
-		bool UseBatchScopeIdentitySemantics
+		bool UseBatchScopeIdentificationSemantics
 		{
 			get;
 		}

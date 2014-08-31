@@ -37,7 +37,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			where TResultModel : class, IResultModelObject
 			where TResponseModel : class, IResponseModelObject<TResultModel>;
 
-		TacticCommand<TModel> GetIdentityTacticCommand<TModel>(IUnitOfWork unitOfWork)
+		TacticCommand<TModel> GetIdentifyTacticCommand<TModel>(IUnitOfWork unitOfWork)
 			where TModel : class, IModelObject;
 
 		TacticCommand<TModel> GetInsertTacticCommand<TModel>(IUnitOfWork unitOfWork, TModel modelValue, IModelQuery modelQuery)

@@ -27,7 +27,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 		string GetTableName(string schemaName, string tableName);
 
-		void ParameterMagic(IUnitOfWork unitOfWork, IDataParameter commandParameter, string originalSqlType);
+		void ParameterMagic(IUnitOfWork unitOfWork, IDbDataParameter commandParameter, string originalSqlType);
 
 		#endregion
 	}

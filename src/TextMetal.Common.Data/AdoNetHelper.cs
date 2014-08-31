@@ -34,7 +34,7 @@ namespace TextMetal.Common.Data
 		/// <param name="parameterName"> Specifies the parameter name. </param>
 		/// <param name="parameterValue"> Specifies the parameter value. </param>
 		/// <returns> The data parameter with the specified properties set. </returns>
-		public static IDataParameter CreateParameter(this IUnitOfWork unitOfWork, ParameterDirection parameterDirection, DbType dbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue)
+		public static IDbDataParameter CreateParameter(this IUnitOfWork unitOfWork, ParameterDirection parameterDirection, DbType dbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue)
 		{
 			IDbDataParameter dbDataParameter;
 
@@ -70,7 +70,7 @@ namespace TextMetal.Common.Data
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
 		/// <param name="recordsAffected"> The output count of records affected. </param>
 		/// <returns> A list of dictionary instances, containing key/value pairs of data. </returns>
-		public static IList<IDictionary<string, object>> ExecuteDictionary(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters, out int recordsAffected)
+		public static IList<IDictionary<string, object>> ExecuteDictionary(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, out int recordsAffected)
 		{
 			int _recordsAffected = -1;
 			var list = ExecuteDictionary(unitOfWork, commandType, commandText, commandParameters, (ra) => _recordsAffected = ra).ToList(); // FORCE EAGER LOADING HERE
@@ -88,7 +88,7 @@ namespace TextMetal.Common.Data
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
 		/// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
 		/// <returns> An enumerable of dictionary instances, containing key/value pairs of data. </returns>
-		public static IEnumerable<IDictionary<string, object>> ExecuteDictionary(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters, Action<int> recordsAffectedCallback)
+		public static IEnumerable<IDictionary<string, object>> ExecuteDictionary(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> recordsAffectedCallback)
 		{
 			IDictionary<string, object> obj;
 			IDataReader dataReader;
@@ -109,11 +109,11 @@ namespace TextMetal.Common.Data
 			if ((object)unitOfWork.Connection == null)
 				throw new InvalidOperationException("There is not a valid connection associated with the current unit of work.");
 
-			Trace.WriteLine("[+++ begin ExecuteDictionary YIELD +++]");
+			Trace.WriteLine("[+++ before yield: ExecuteDictionary +++]");
 
 			using (dataReader = ExecuteReader(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE))
 			{
-				do
+				//do
 				{
 					while (dataReader.Read())
 					{
@@ -133,10 +133,11 @@ namespace TextMetal.Common.Data
 						yield return obj;
 					}
 				}
-				while (dataReader.NextResult());
+				//while (dataReader.NextResult());
 			}
 
-			Trace.WriteLine("[+++ end ExecuteDictionary YIELD +++]");
+			Trace.WriteLine("[+++ after yield: ExecuteDictionary +++]");
+
 			recordsAffected = dataReader.RecordsAffected;
 
 			if ((object)recordsAffectedCallback != null)
@@ -155,22 +156,18 @@ namespace TextMetal.Common.Data
 		/// <param name="commandTimeout"> The command timeout (use null for default). </param>
 		/// <param name="commandPrepare"> Whether to prepare the command at the data source. </param>
 		/// <returns> The data reader result. </returns>
-		public static IDataReader ExecuteReader(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters, CommandBehavior commandBehavior, int? commandTimeout, bool commandPrepare)
+		public static IDataReader ExecuteReader(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, CommandBehavior commandBehavior, int? commandTimeout, bool commandPrepare)
 		{
-			IDbCommand dbCommand = null;
-			IDataReader dataReader = null;
+			IDataReader dataReader;
 
-			try
+			if ((object)dbConnection == null)
+				throw new ArgumentNullException("dbConnection");
+
+			using (IDbCommand dbCommand = dbConnection.CreateCommand())
 			{
-				if ((object)dbConnection == null)
-					throw new ArgumentNullException("dbConnection");
-
-				// create a command
-				dbCommand = dbConnection.CreateCommand();
-				dbCommand.Connection = dbConnection;
+				dbCommand.Transaction = dbTransaction;
 				dbCommand.CommandType = commandType;
 				dbCommand.CommandText = commandText;
-				dbCommand.Transaction = dbTransaction;
 
 				if ((object)commandTimeout != null)
 					dbCommand.CommandTimeout = (int)commandTimeout;
@@ -178,32 +175,22 @@ namespace TextMetal.Common.Data
 				// add parameters
 				if ((object)commandParameters != null)
 				{
-					foreach (IDataParameter parameter in commandParameters)
+					foreach (IDbDataParameter commandParameter in commandParameters)
 					{
-						if ((object)parameter.Value == null)
-							parameter.Value = DBNull.Value;
+						if ((object)commandParameter.Value == null)
+							commandParameter.Value = DBNull.Value;
 
-						dbCommand.Parameters.Add(parameter);
+						dbCommand.Parameters.Add(commandParameter);
 					}
 				}
 
 				if (commandPrepare)
 					dbCommand.Prepare();
 
-				// do the database work		
+				// do the database work
 				dataReader = dbCommand.ExecuteReader(commandBehavior);
 
-				return dataReader;
-			}
-			finally
-			{
-				// cleanup command
-				if ((object)dbCommand != null)
-				{
-					dbCommand.Parameters.Clear();
-					dbCommand.Dispose();
-					dbCommand = null;
-				}
+				return new WrapperDataReader(dataReader);
 			}
 		}
 
@@ -217,7 +204,7 @@ namespace TextMetal.Common.Data
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
 		/// <param name="recordsAffected"> The output count of records affected. </param>
 		/// <returns> A list of dictionary instances, containing key/value pairs of data. </returns>
-		public static IList<IDictionary<string, object>> ExecuteSchema(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters, out int recordsAffected)
+		public static IList<IDictionary<string, object>> ExecuteSchema(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, out int recordsAffected)
 		{
 			int _recordsAffected = -1;
 			var list = ExecuteSchema(unitOfWork, commandType, commandText, commandParameters, (ra) => _recordsAffected = ra).ToList(); // FORCE EAGER LOADING HERE
@@ -235,7 +222,7 @@ namespace TextMetal.Common.Data
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
 		/// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
 		/// <returns> An enumerable of dictionary instances, containing key/value pairs of schema data. </returns>
-		public static IEnumerable<IDictionary<string, object>> ExecuteSchema(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters, Action<int> recordsAffectedCallback)
+		public static IEnumerable<IDictionary<string, object>> ExecuteSchema(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> recordsAffectedCallback)
 		{
 			IDictionary<string, object> obj;
 
@@ -275,7 +262,7 @@ namespace TextMetal.Common.Data
 			}
 		}
 
-		public static TValue FetchScalar<TValue>(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters)
+		public static TValue FetchScalar<TValue>(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
 		{
 			int recordsAffected;
 			IEnumerable<IDictionary<string, object>> results;

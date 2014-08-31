@@ -49,6 +49,7 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="WrapperDataReader.cs" />
     <Compile Include="AdoNetHelper.cs" />
     <Compile Include="Framework\DatabaseHistory.cs" />
     <Compile Include="Framework\DatabaseRevision.cs" />

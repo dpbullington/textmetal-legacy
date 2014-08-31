@@ -19,11 +19,11 @@ namespace TextMetal.Common.Data.Framework.Strategy
 	{
 		#region Constructors/Destructors
 
-		protected DataSourceTagStrategy(string dataSourceTag, bool canCreateNativeDatabaseFile, bool useBatchScopeIdentitySemantics)
+		protected DataSourceTagStrategy(string dataSourceTag, bool canCreateNativeDatabaseFile, bool useBatchScopeIdentificationSemantics)
 		{
 			this.dataSourceTag = dataSourceTag;
 			this.canCreateNativeDatabaseFile = canCreateNativeDatabaseFile;
-			this.useBatchScopeIdentitySemantics = useBatchScopeIdentitySemantics;
+			this.useBatchScopeIdentificationSemantics = useBatchScopeIdentificationSemantics;
 		}
 
 		#endregion
@@ -32,7 +32,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 		private readonly bool canCreateNativeDatabaseFile;
 		private readonly string dataSourceTag;
-		private readonly bool useBatchScopeIdentitySemantics;
+		private readonly bool useBatchScopeIdentificationSemantics;
 
 		#endregion
 
@@ -54,11 +54,11 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			}
 		}
 
-		public bool UseBatchScopeIdentitySemantics
+		public bool UseBatchScopeIdentificationSemantics
 		{
 			get
 			{
-				return this.useBatchScopeIdentitySemantics;
+				return this.useBatchScopeIdentificationSemantics;
 			}
 		}
 
@@ -207,8 +207,8 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			int expectedRecordsAffected;
 			Action<TModel, IDictionary<string, object>> tableToModelMappingCallback;
 			string commandText;
-			IDataParameter commandParameter;
-			IDictionary<string, IDataParameter> commandParameters;
+			IDbDataParameter commandParameter;
+			IDictionary<string, IDbDataParameter> commandParameters;
 			ColumnMappingAttribute[] columnMappingAttributes;
 
 			if ((object)unitOfWork == null)
@@ -225,7 +225,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			commandText += this.GetTableName(tableMappingAttribute.SchemaName, tableMappingAttribute.TableName);
 
 			commandText += @" WHERE ";
-			commandParameters = new Dictionary<string, IDataParameter>();
+			commandParameters = new Dictionary<string, IDbDataParameter>();
 
 			columnMappingAttributes = tableMappingAttribute._ColumnMappingAttributes.Where(cma => !tableMappingAttribute._ColumnMappingAttributes.Any() || cma.ColumnIsPrimaryKey).OrderBy(cma => cma.ColumnOrdinal).ToArray();
 			for (int index = 0; index < columnMappingAttributes.Length; index++)
@@ -254,7 +254,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 			tacticCommand = new TacticCommand<TModel>()
 							{
-								UseBatchScopeIdentitySemantics = this.UseBatchScopeIdentitySemantics,
+								UseBatchScopeIdentificationSemantics = this.UseBatchScopeIdentificationSemantics,
 								CommandBehavior = COMMAND_BEHAVIOR,
 								CommandParameters = commandParameters.Values,
 								CommandPrepare = COMMAND_PREPARE,
@@ -297,7 +297,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return tacticCommand;
 		}
 
-		public TacticCommand<TRequestModel, TResultModel, TResponseModel> GetExecuteOneTacticCommand<TRequestModel, TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TRequestModel requestModelValue, ProcedureMappingAttribute procedureMappingAttribute)
+		private TacticCommand<TRequestModel, TResultModel, TResponseModel> GetExecuteTacticCommand<TRequestModel, TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TRequestModel requestModelValue, ProcedureMappingAttribute procedureMappingAttribute)
 			where TRequestModel : class, IRequestModelObject
 			where TResultModel : class, IResultModelObject
 			where TResponseModel : class, IResponseModelObject<TResultModel>
@@ -313,8 +313,8 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			Action<TResultModel, IDictionary<string, object>> tableToResultModelMappingCallback;
 			Action<TResponseModel, IDictionary<string, object>> tableToResponseModelMappingCallback;
 			string commandText;
-			IDictionary<string, IDataParameter> commandParameters;
-			IDataParameter commandParameter;
+			IDictionary<string, IDbDataParameter> commandParameters;
+			IDbDataParameter commandParameter;
 			ParameterMappingAttribute[] parameterMappingAttributes;
 
 			if ((object)unitOfWork == null)
@@ -324,7 +324,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 				throw new ArgumentNullException("procedureMappingAttribute");
 
 			commandText = this.GetProcedureName(procedureMappingAttribute.SchemaName, procedureMappingAttribute.ProcedureName);
-			commandParameters = new Dictionary<string, IDataParameter>();
+			commandParameters = new Dictionary<string, IDbDataParameter>();
 
 			var temp = new List<ParameterMappingAttribute>();
 			temp.AddRange(procedureMappingAttribute._RequestParameterMappingAttributes);
@@ -357,7 +357,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 			tacticCommand = new TacticCommand<TRequestModel, TResultModel, TResponseModel>()
 							{
-								UseBatchScopeIdentitySemantics = this.UseBatchScopeIdentitySemantics,
+								UseBatchScopeIdentificationSemantics = this.UseBatchScopeIdentificationSemantics,
 								CommandBehavior = COMMAND_BEHAVIOR,
 								CommandParameters = commandParameters.Values,
 								CommandPrepare = COMMAND_PREPARE,
@@ -397,7 +397,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 			AssertValidMapping(requestModelType, resultModelType, responseModelType, procedureMappingAttribute);
 
-			tacticCommand = this.GetExecuteOneTacticCommand<TRequestModel, TResultModel, TResponseModel>(unitOfWork, requestModelValue, procedureMappingAttribute);
+			tacticCommand = this.GetExecuteTacticCommand<TRequestModel, TResultModel, TResponseModel>(unitOfWork, requestModelValue, procedureMappingAttribute);
 
 			return tacticCommand;
 		}
@@ -406,7 +406,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 		public abstract string GetIdentityFunctionName();
 
-		public TacticCommand<TModel> GetIdentityTacticCommand<TModel>(IUnitOfWork unitOfWork) where TModel : class, IModelObject
+		public TacticCommand<TModel> GetIdentifyTacticCommand<TModel>(IUnitOfWork unitOfWork) where TModel : class, IModelObject
 		{
 			TacticCommand<TModel> tacticCommand;
 			Type modelType;
@@ -420,12 +420,12 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 			AssertValidMapping(modelType, tableMappingAttribute);
 
-			tacticCommand = this.GetIdentityTacticCommand<TModel>(unitOfWork, tableMappingAttribute);
+			tacticCommand = this.GetIdentifyTacticCommand<TModel>(unitOfWork, tableMappingAttribute);
 
 			return tacticCommand;
 		}
 
-		private TacticCommand<TModel> GetIdentityTacticCommand<TModel>(IUnitOfWork unitOfWork, TableMappingAttribute tableMappingAttribute)
+		private TacticCommand<TModel> GetIdentifyTacticCommand<TModel>(IUnitOfWork unitOfWork, TableMappingAttribute tableMappingAttribute)
 			where TModel : class, IModelObject
 		{
 			TacticCommand<TModel> tacticCommand;
@@ -438,7 +438,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			int expectedRecordsAffected;
 			Action<TModel, IDictionary<string, object>> tableToModelMappingCallback;
 			string commandText;
-			IDictionary<string, IDataParameter> commandParameters;
+			IDictionary<string, IDbDataParameter> commandParameters;
 			ColumnMappingAttribute columnMappingAttribute;
 
 			if ((object)unitOfWork == null)
@@ -447,10 +447,10 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			if ((object)tableMappingAttribute == null)
 				throw new ArgumentNullException("tableMappingAttribute");
 
-			if (this.UseBatchScopeIdentitySemantics)
+			if (this.UseBatchScopeIdentificationSemantics)
 				throw new InvalidOperationException(string.Format("Aw snap."));
 
-			commandParameters = new Dictionary<string, IDataParameter>();
+			commandParameters = new Dictionary<string, IDbDataParameter>();
 			columnMappingAttribute = tableMappingAttribute._ColumnMappingAttributes.Where(cma => cma.IsColumnServerGeneratedPrimaryKey).SingleOrDefault();
 
 			if ((object)columnMappingAttribute == null)
@@ -463,7 +463,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 			tacticCommand = new TacticCommand<TModel>()
 							{
-								UseBatchScopeIdentitySemantics = this.UseBatchScopeIdentitySemantics,
+								UseBatchScopeIdentificationSemantics = this.UseBatchScopeIdentificationSemantics,
 								CommandBehavior = COMMAND_BEHAVIOR,
 								CommandParameters = commandParameters.Values,
 								CommandPrepare = COMMAND_PREPARE,
@@ -496,8 +496,8 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			int expectedRecordsAffected;
 			Action<TModel, IDictionary<string, object>> tableToModelMappingCallback;
 			string commandText;
-			IDataParameter commandParameter;
-			IDictionary<string, IDataParameter> commandParameters;
+			IDbDataParameter commandParameter;
+			IDictionary<string, IDbDataParameter> commandParameters;
 			ColumnMappingAttribute[] columnMappingAttributes;
 
 			if ((object)unitOfWork == null)
@@ -523,7 +523,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			}
 
 			commandText += @") VALUES (";
-			commandParameters = new Dictionary<string, IDataParameter>();
+			commandParameters = new Dictionary<string, IDbDataParameter>();
 
 			// yes, this is redundant loop but it makes it easier to maintain for now
 			for (int index = 0; index < columnMappingAttributes.Length; index++)
@@ -547,7 +547,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 			commandText += @");";
 
-			if (this.UseBatchScopeIdentitySemantics)
+			if (this.UseBatchScopeIdentificationSemantics)
 			{
 				ColumnMappingAttribute columnMappingAttribute;
 
@@ -562,7 +562,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 			tacticCommand = new TacticCommand<TModel>()
 							{
-								UseBatchScopeIdentitySemantics = this.UseBatchScopeIdentitySemantics,
+								UseBatchScopeIdentificationSemantics = this.UseBatchScopeIdentificationSemantics,
 								CommandBehavior = COMMAND_BEHAVIOR,
 								CommandParameters = commandParameters.Values,
 								CommandPrepare = COMMAND_PREPARE,
@@ -758,7 +758,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			int expectedRecordsAffected;
 			Action<TModel, IDictionary<string, object>> tableToModelMappingCallback;
 			string commandText;
-			IDictionary<string, IDataParameter> commandParameters;
+			IDictionary<string, IDbDataParameter> commandParameters;
 			ColumnMappingAttribute[] columnMappingAttributes;
 			ModelQuery _modelQuery;
 
@@ -787,7 +787,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			commandText += this.GetTableName(tableMappingAttribute.SchemaName, tableMappingAttribute.TableName) + @" " + this.GetTableAlias(TABLE_ALIAS);
 
 			commandText += @" WHERE {0} ORDER BY {1} "; // late replacement
-			commandParameters = new Dictionary<string, IDataParameter>();
+			commandParameters = new Dictionary<string, IDbDataParameter>();
 
 			_modelQuery = modelQuery.GetUnderlyingQuery() as ModelQuery;
 
@@ -806,7 +806,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 			tacticCommand = new TacticCommand<TModel>()
 							{
-								UseBatchScopeIdentitySemantics = this.UseBatchScopeIdentitySemantics,
+								UseBatchScopeIdentificationSemantics = this.UseBatchScopeIdentificationSemantics,
 								CommandBehavior = COMMAND_BEHAVIOR,
 								CommandParameters = commandParameters.Values,
 								CommandPrepare = COMMAND_PREPARE,
@@ -835,8 +835,8 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			int expectedRecordsAffected;
 			Action<TModel, IDictionary<string, object>> tableToModelMappingCallback;
 			string commandText;
-			IDataParameter commandParameter;
-			IDictionary<string, IDataParameter> commandParameters;
+			IDbDataParameter commandParameter;
+			IDictionary<string, IDbDataParameter> commandParameters;
 			ColumnMappingAttribute[] columnMappingAttributes;
 
 			if ((object)unitOfWork == null)
@@ -864,7 +864,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			commandText += this.GetTableName(tableMappingAttribute.SchemaName, tableMappingAttribute.TableName) + @" " + this.GetTableAlias(TABLE_ALIAS);
 
 			commandText += @" WHERE ";
-			commandParameters = new Dictionary<string, IDataParameter>();
+			commandParameters = new Dictionary<string, IDbDataParameter>();
 
 			columnMappingAttributes = tableMappingAttribute._ColumnMappingAttributes.Where(cma => !tableMappingAttribute._ColumnMappingAttributes.Any() || cma.ColumnIsPrimaryKey).OrderBy(cma => cma.ColumnOrdinal).ToArray();
 			for (int index = 0; index < columnMappingAttributes.Length; index++)
@@ -904,7 +904,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 			tacticCommand = new TacticCommand<TModel>()
 							{
-								UseBatchScopeIdentitySemantics = this.UseBatchScopeIdentitySemantics,
+								UseBatchScopeIdentificationSemantics = this.UseBatchScopeIdentificationSemantics,
 								CommandBehavior = COMMAND_BEHAVIOR,
 								CommandParameters = commandParameters.Values,
 								CommandPrepare = COMMAND_PREPARE,
@@ -1008,8 +1008,8 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			int expectedRecordsAffected;
 			Action<TModel, IDictionary<string, object>> tableToModelMappingCallback;
 			string commandText;
-			IDataParameter commandParameter;
-			IDictionary<string, IDataParameter> commandParameters;
+			IDbDataParameter commandParameter;
+			IDictionary<string, IDbDataParameter> commandParameters;
 			ColumnMappingAttribute[] columnMappingAttributes;
 
 			if ((object)unitOfWork == null)
@@ -1024,7 +1024,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			commandText = @"UPDATE ";
 
 			commandText += this.GetTableName(tableMappingAttribute.SchemaName, tableMappingAttribute.TableName) + @" SET ";
-			commandParameters = new Dictionary<string, IDataParameter>();
+			commandParameters = new Dictionary<string, IDbDataParameter>();
 
 			columnMappingAttributes = tableMappingAttribute._ColumnMappingAttributes.Where(cma => !cma.IsColumnServerGeneratedPrimaryKey).OrderBy(cma => cma.ColumnOrdinal).ToArray();
 			for (int index = 0; index < columnMappingAttributes.Length; index++)
@@ -1075,7 +1075,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 			tacticCommand = new TacticCommand<TModel>()
 							{
-								UseBatchScopeIdentitySemantics = this.UseBatchScopeIdentitySemantics,
+								UseBatchScopeIdentificationSemantics = this.UseBatchScopeIdentificationSemantics,
 								CommandBehavior = COMMAND_BEHAVIOR,
 								CommandParameters = commandParameters.Values,
 								CommandPrepare = COMMAND_PREPARE,
@@ -1118,7 +1118,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return tacticCommand;
 		}
 
-		public abstract void ParameterMagic(IUnitOfWork unitOfWork, IDataParameter commandParameter, string generatedFromColumnNativeType);
+		public abstract void ParameterMagic(IUnitOfWork unitOfWork, IDbDataParameter commandParameter, string generatedFromColumnNativeType);
 
 		#endregion
 	}

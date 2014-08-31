@@ -18,7 +18,7 @@ namespace TextMetal.Common.Data.Framework.Mapping
 	{
 		#region Constructors/Destructors
 
-		public SqlExpressionVisitor(ISqlNuance sqlNuance, IUnitOfWork unitOfWork, IDictionary<string, IDataParameter> commandParameters)
+		public SqlExpressionVisitor(ISqlNuance sqlNuance, IUnitOfWork unitOfWork, IDictionary<string, IDbDataParameter> commandParameters)
 		{
 			if ((object)sqlNuance == null)
 				throw new ArgumentNullException("sqlNuance");
@@ -38,7 +38,7 @@ namespace TextMetal.Common.Data.Framework.Mapping
 
 		#region Fields/Constants
 
-		private readonly IDictionary<string, IDataParameter> commandParameters;
+		private readonly IDictionary<string, IDbDataParameter> commandParameters;
 		private readonly ISqlNuance sqlNuance;
 		private readonly StringBuilder strings = new StringBuilder();
 		private readonly IUnitOfWork unitOfWork;
@@ -47,7 +47,7 @@ namespace TextMetal.Common.Data.Framework.Mapping
 
 		#region Properties/Indexers/Events
 
-		private IDictionary<string, IDataParameter> CommandParameters
+		private IDictionary<string, IDbDataParameter> CommandParameters
 		{
 			get
 			{
@@ -83,7 +83,7 @@ namespace TextMetal.Common.Data.Framework.Mapping
 
 		#region Methods/Operators
 
-		public static string GetFilterText(ISqlNuance sqlNuance, IUnitOfWork unitOfWork, IDictionary<string, IDataParameter> commandParameters, IExpression expression)
+		public static string GetFilterText(ISqlNuance sqlNuance, IUnitOfWork unitOfWork, IDictionary<string, IDbDataParameter> commandParameters, IExpression expression)
 		{
 			SqlExpressionVisitor expressionVisitor;
 			string expressionText;
@@ -107,7 +107,7 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			return expressionText;
 		}
 
-		public static string GetSortText(ISqlNuance sqlNuance, IUnitOfWork unitOfWork, IDictionary<string, IDataParameter> commandParameters, IEnumerable<ISequence> sortSequences)
+		public static string GetSortText(ISqlNuance sqlNuance, IUnitOfWork unitOfWork, IDictionary<string, IDbDataParameter> commandParameters, IEnumerable<ISequence> sortSequences)
 		{
 			string expressionText;
 			List<string> sortNames;
@@ -308,7 +308,7 @@ namespace TextMetal.Common.Data.Framework.Mapping
 
 		protected override IExpression VisitValue(IValue value)
 		{
-			IDataParameter commandParameter;
+			IDbDataParameter commandParameter;
 			string parameterName;
 			Type valueType;
 
