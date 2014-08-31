@@ -15,8 +15,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 		#region Constructors/Destructors
 
 		private OdbcSqlServerDataSourceTagStrategy()
-			:
-				base(ODBC_SQL_SERVER_DATA_SOURCE_TAG, false)
+			: base(ODBC_SQL_SERVER_DATA_SOURCE_TAG, false, true)
 		{
 		}
 
@@ -27,7 +26,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 		private const string ODBC_SQL_SERVER_COLUMN_ALIASED_FORMAT = "{0}.[{1}]";
 		private const string ODBC_SQL_SERVER_COLUMN_NAME_FORMAT = "[{0}]";
 		private const string ODBC_SQL_SERVER_DATA_SOURCE_TAG = "odbc.sqlserver";
-		private const string ODBC_SQL_SERVER_IDENTITY_COMMAND = "@@IDENTITY"; // warning: 'SELECT SCOPE_IDENTITY() AS PK' should be used in the SAME BATCH if there is any chance of triggers on any tables causing identity creation
+		private const string ODBC_SQL_SERVER_IDENTITY_FUNCTION_NAME = "SCOPE_IDENTITY()";
 		private const string ODBC_SQL_SERVER_PARAMETER_NAME_FORMAT = "?";
 		private const int ODBC_SQL_SERVER_PERSIST_NOT_EXPECTED_RECORDS_AFFECTED = 0;
 		private const string ODBC_SQL_SERVER_PROCEDURE_NAME_FORMAT = "[{0}]";
@@ -94,11 +93,11 @@ namespace TextMetal.Common.Data.Framework.Strategy
 				return ODBC_SQL_SERVER_QUERY_EXPECTED_RECORDS_AFFECTED;
 		}
 
-		public override string GetIdentityCommand()
+		public override string GetIdentityFunctionName()
 		{
 			string retVal;
 
-			retVal = ODBC_SQL_SERVER_IDENTITY_COMMAND;
+			retVal = ODBC_SQL_SERVER_IDENTITY_FUNCTION_NAME;
 
 			return retVal;
 		}

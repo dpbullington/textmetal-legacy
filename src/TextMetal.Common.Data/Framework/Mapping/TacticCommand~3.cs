@@ -32,6 +32,7 @@ namespace TextMetal.Common.Data.Framework.Mapping
 		private CommandType commandType;
 		private int expectedRecordsAffected;
 		private bool isNullipotent;
+		private bool useBatchScopeIdentitySemantics;
 		private Action<TResponseModel, IDictionary<string, object>> tableToResponseModelMappingCallback;
 		private Action<TResultModel, IDictionary<string, object>> tableToResultModelMappingCallback;
 
@@ -147,6 +148,18 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			set
 			{
 				this.isNullipotent = value;
+			}
+		}
+
+		public bool UseBatchScopeIdentitySemantics
+		{
+			get
+			{
+				return this.useBatchScopeIdentitySemantics;
+			}
+			set
+			{
+				this.useBatchScopeIdentitySemantics = value;
 			}
 		}
 

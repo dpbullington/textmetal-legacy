@@ -30,6 +30,7 @@ namespace TextMetal.Common.Data.Framework.Mapping
 		private CommandType commandType;
 		private int expectedRecordsAffected;
 		private bool isNullipotent;
+		private bool useBatchScopeIdentitySemantics;
 		private Action<TModel, IDictionary<string, object>> tableToModelMappingCallback;
 
 		#endregion
@@ -144,6 +145,18 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			set
 			{
 				this.isNullipotent = value;
+			}
+		}
+
+		public bool UseBatchScopeIdentitySemantics
+		{
+			get
+			{
+				return this.useBatchScopeIdentitySemantics;
+			}
+			set
+			{
+				this.useBatchScopeIdentitySemantics = value;
 			}
 		}
 

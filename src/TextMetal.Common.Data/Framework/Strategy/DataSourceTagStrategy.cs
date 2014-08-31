@@ -9,7 +9,6 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Data.Framework.Mapping;
@@ -20,10 +19,11 @@ namespace TextMetal.Common.Data.Framework.Strategy
 	{
 		#region Constructors/Destructors
 
-		protected DataSourceTagStrategy(string dataSourceTag, bool canCreateNativeDatabaseFile)
+		protected DataSourceTagStrategy(string dataSourceTag, bool canCreateNativeDatabaseFile, bool useBatchScopeIdentitySemantics)
 		{
 			this.dataSourceTag = dataSourceTag;
 			this.canCreateNativeDatabaseFile = canCreateNativeDatabaseFile;
+			this.useBatchScopeIdentitySemantics = useBatchScopeIdentitySemantics;
 		}
 
 		#endregion
@@ -32,6 +32,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 		private readonly bool canCreateNativeDatabaseFile;
 		private readonly string dataSourceTag;
+		private readonly bool useBatchScopeIdentitySemantics;
 
 		#endregion
 
@@ -50,6 +51,14 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			get
 			{
 				return this.dataSourceTag;
+			}
+		}
+
+		public bool UseBatchScopeIdentitySemantics
+		{
+			get
+			{
+				return this.useBatchScopeIdentitySemantics;
 			}
 		}
 
@@ -169,46 +178,6 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			return callback;
 		}
 
-		private Action<TResponseModel, IDictionary<string, object>> GetMapToMethod<TResultModel, TResponseModel>(ProcedureMappingAttribute procedureMappingAttribute)
-			where TResultModel : class, IResultModelObject
-			where TResponseModel : class, IResponseModelObject<TResultModel>
-		{
-			Action<TResponseModel, IDictionary<string, object>> callback;
-
-			if ((object)procedureMappingAttribute == null)
-				throw new ArgumentNullException("procedureMappingAttribute");
-
-			callback = (md, ts) =>
-						{
-							ParameterMappingAttribute[] parameterMappingAttributes;
-
-							if ((object)md == null)
-								throw new ArgumentNullException("md");
-
-							if ((object)ts == null)
-								throw new ArgumentNullException("ts");
-
-							parameterMappingAttributes = procedureMappingAttribute._ResponseParameterMappingAttributes.OrderBy(pma => pma.ParameterOrdinal).ToArray();
-							for (int index = 0; index < parameterMappingAttributes.Length; index++)
-							{
-								string parameterName;
-								object parameterValue, propertyValue;
-
-								parameterName = this.GetParameterName(parameterMappingAttributes[index].ParameterName);
-
-								if (ts.TryGetValue(parameterName, out parameterValue))
-								{
-									propertyValue = parameterValue.ChangeType(parameterMappingAttributes[index]._TargetProperty.PropertyType);
-
-									if (!Reflexion.SetLogicalPropertyValue(md, parameterMappingAttributes[index]._TargetProperty.Name, propertyValue))
-										throw new InvalidOperationException(string.Format("Ah snap."));
-								}
-							}
-						};
-
-			return callback;
-		}
-
 		public bool CreateNativeDatabaseFile(string databaseFilePath)
 		{
 			// do nothing
@@ -285,6 +254,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 			tacticCommand = new TacticCommand<TModel>()
 							{
+								UseBatchScopeIdentitySemantics = this.UseBatchScopeIdentitySemantics,
 								CommandBehavior = COMMAND_BEHAVIOR,
 								CommandParameters = commandParameters.Values,
 								CommandPrepare = COMMAND_PREPARE,
@@ -383,10 +353,11 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 			expectedRecordsAffected = this.GetExpectedRecordsAffected(IS_NULLIPOTENT);
 			tableToResultModelMappingCallback = GetMapToMethod<TResultModel>(procedureMappingAttribute);
-			tableToResponseModelMappingCallback = GetMapToMethod<TResultModel, TResponseModel>(procedureMappingAttribute);
+			tableToResponseModelMappingCallback = this.GetMapToMethod<TResultModel, TResponseModel>(procedureMappingAttribute);
 
 			tacticCommand = new TacticCommand<TRequestModel, TResultModel, TResponseModel>()
 							{
+								UseBatchScopeIdentitySemantics = this.UseBatchScopeIdentitySemantics,
 								CommandBehavior = COMMAND_BEHAVIOR,
 								CommandParameters = commandParameters.Values,
 								CommandPrepare = COMMAND_PREPARE,
@@ -433,7 +404,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 		public abstract int GetExpectedRecordsAffected(bool isNullipotent);
 
-		public abstract string GetIdentityCommand();
+		public abstract string GetIdentityFunctionName();
 
 		public TacticCommand<TModel> GetIdentityTacticCommand<TModel>(IUnitOfWork unitOfWork) where TModel : class, IModelObject
 		{
@@ -476,19 +447,23 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			if ((object)tableMappingAttribute == null)
 				throw new ArgumentNullException("tableMappingAttribute");
 
+			if (this.UseBatchScopeIdentitySemantics)
+				throw new InvalidOperationException(string.Format("Aw snap."));
+
 			commandParameters = new Dictionary<string, IDataParameter>();
 			columnMappingAttribute = tableMappingAttribute._ColumnMappingAttributes.Where(cma => cma.IsColumnServerGeneratedPrimaryKey).SingleOrDefault();
 
 			if ((object)columnMappingAttribute == null)
 				return null;
 
-			commandText = @"SELECT " + this.GetIdentityCommand() + @" AS " + this.GetColumnName(columnMappingAttribute.ColumnName) + @";";
+			commandText = @"SELECT " + this.GetIdentityFunctionName() + @" AS " + this.GetColumnName(columnMappingAttribute.ColumnName) + @";";
 
 			expectedRecordsAffected = this.GetExpectedRecordsAffected(IS_NULLIPOTENT);
 			tableToModelMappingCallback = GetMapToMethod<TModel>(tableMappingAttribute);
 
 			tacticCommand = new TacticCommand<TModel>()
 							{
+								UseBatchScopeIdentitySemantics = this.UseBatchScopeIdentitySemantics,
 								CommandBehavior = COMMAND_BEHAVIOR,
 								CommandParameters = commandParameters.Values,
 								CommandPrepare = COMMAND_PREPARE,
@@ -572,11 +547,22 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 			commandText += @");";
 
+			if (this.UseBatchScopeIdentitySemantics)
+			{
+				ColumnMappingAttribute columnMappingAttribute;
+
+				columnMappingAttribute = tableMappingAttribute._ColumnMappingAttributes.Where(cma => cma.IsColumnServerGeneratedPrimaryKey).SingleOrDefault();
+
+				if ((object)columnMappingAttribute != null)
+					commandText += Environment.NewLine + @"SELECT " + this.GetIdentityFunctionName() + @" AS " + this.GetColumnName(columnMappingAttribute.ColumnName) + @";";
+			}
+
 			expectedRecordsAffected = this.GetExpectedRecordsAffected(IS_NULLIPOTENT);
 			tableToModelMappingCallback = GetMapToMethod<TModel>(tableMappingAttribute);
 
 			tacticCommand = new TacticCommand<TModel>()
 							{
+								UseBatchScopeIdentitySemantics = this.UseBatchScopeIdentitySemantics,
 								CommandBehavior = COMMAND_BEHAVIOR,
 								CommandParameters = commandParameters.Values,
 								CommandPrepare = COMMAND_PREPARE,
@@ -617,6 +603,46 @@ namespace TextMetal.Common.Data.Framework.Strategy
 				tacticCommand = this.GetInsertAllTacticCommand<TModel>(unitOfWork, modelValue, modelQuery, tableMappingAttribute);
 
 			return tacticCommand;
+		}
+
+		private Action<TResponseModel, IDictionary<string, object>> GetMapToMethod<TResultModel, TResponseModel>(ProcedureMappingAttribute procedureMappingAttribute)
+			where TResultModel : class, IResultModelObject
+			where TResponseModel : class, IResponseModelObject<TResultModel>
+		{
+			Action<TResponseModel, IDictionary<string, object>> callback;
+
+			if ((object)procedureMappingAttribute == null)
+				throw new ArgumentNullException("procedureMappingAttribute");
+
+			callback = (md, ts) =>
+						{
+							ParameterMappingAttribute[] parameterMappingAttributes;
+
+							if ((object)md == null)
+								throw new ArgumentNullException("md");
+
+							if ((object)ts == null)
+								throw new ArgumentNullException("ts");
+
+							parameterMappingAttributes = procedureMappingAttribute._ResponseParameterMappingAttributes.OrderBy(pma => pma.ParameterOrdinal).ToArray();
+							for (int index = 0; index < parameterMappingAttributes.Length; index++)
+							{
+								string parameterName;
+								object parameterValue, propertyValue;
+
+								parameterName = this.GetParameterName(parameterMappingAttributes[index].ParameterName);
+
+								if (ts.TryGetValue(parameterName, out parameterValue))
+								{
+									propertyValue = parameterValue.ChangeType(parameterMappingAttributes[index]._TargetProperty.PropertyType);
+
+									if (!Reflexion.SetLogicalPropertyValue(md, parameterMappingAttributes[index]._TargetProperty.Name, propertyValue))
+										throw new InvalidOperationException(string.Format("Ah snap."));
+								}
+							}
+						};
+
+			return callback;
 		}
 
 		public abstract string GetParameterName(string parameterName);
@@ -780,6 +806,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 			tacticCommand = new TacticCommand<TModel>()
 							{
+								UseBatchScopeIdentitySemantics = this.UseBatchScopeIdentitySemantics,
 								CommandBehavior = COMMAND_BEHAVIOR,
 								CommandParameters = commandParameters.Values,
 								CommandPrepare = COMMAND_PREPARE,
@@ -877,6 +904,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 			tacticCommand = new TacticCommand<TModel>()
 							{
+								UseBatchScopeIdentitySemantics = this.UseBatchScopeIdentitySemantics,
 								CommandBehavior = COMMAND_BEHAVIOR,
 								CommandParameters = commandParameters.Values,
 								CommandPrepare = COMMAND_PREPARE,
@@ -1047,6 +1075,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 			tacticCommand = new TacticCommand<TModel>()
 							{
+								UseBatchScopeIdentitySemantics = this.UseBatchScopeIdentitySemantics,
 								CommandBehavior = COMMAND_BEHAVIOR,
 								CommandParameters = commandParameters.Values,
 								CommandPrepare = COMMAND_PREPARE,

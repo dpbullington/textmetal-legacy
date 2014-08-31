@@ -17,7 +17,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 		int GetExpectedRecordsAffected(bool isNullipotent);
 
-		string GetIdentityCommand();
+		string GetIdentityFunctionName();
 
 		string GetParameterName(string parameterName);
 

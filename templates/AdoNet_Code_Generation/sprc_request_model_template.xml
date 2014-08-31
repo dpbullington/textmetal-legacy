@@ -27,7 +27,11 @@
 <![CDATA[
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Xml;
+
+using TextMetal.Common.Core;
 ]]>
 						<If>
 							<If.Condition>
@@ -49,7 +53,8 @@ using System.Xml;
 						<![CDATA[
 namespace ${ClrNamespace}.${FolderName}
 {
-	public partial class ${ProcedureNameSingularPascalCase}_Request : ${ClrSuperType}, I${ProcedureNameSingularPascalCase}_Request
+	[Serializable]
+	public partial class ${ProcedureNameSingularPascalCase}_Request : ${ClrSuperType}, INotifyPropertyChanged, I${ProcedureNameSingularPascalCase}_Request
 	{
 		#region Constructors/Destructors
 
@@ -67,6 +72,16 @@ namespace ${ClrNamespace}.${FolderName}
 ]]>
 
 					<ForEach in="Parameters" var-ct="_LoopCount" var-ix="_LoopIndex">
+						<ForEach.Filter>
+							<BinaryExpression operator="Eq">
+								<BinaryExpression.LeftExpression>
+									<Facet name="ParameterIsReadOnly" />
+								</BinaryExpression.LeftExpression>
+								<BinaryExpression.RightExpression>
+									<Value type="System.Boolean" data="False" />
+								</BinaryExpression.RightExpression>
+							</BinaryExpression>
+						</ForEach.Filter>
 						<ForEach.Body>
 							<![CDATA[		public const string PARAMETER_NAME_${ParameterNameConstantCase} = "${ParameterName}";]]>
 
@@ -106,7 +121,7 @@ namespace ${ClrNamespace}.${FolderName}
 							</ForEach.Filter>
 							<ForEach.Body>
 
-								<![CDATA[		private ${ParameterCSharpClrType} @${ParameterNameCamelCase};]]>
+								<![CDATA[		private ${ParameterCSharpClrNullableType} @${ParameterNameCamelCase};]]>
 
 								<If>
 									<If.Condition>
@@ -132,6 +147,8 @@ namespace ${ClrNamespace}.${FolderName}
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		public event PropertyChangedEventHandler PropertyChanged;
 ]]>
 						<ForEach in="Parameters" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
@@ -147,7 +164,7 @@ namespace ${ClrNamespace}.${FolderName}
 							<ForEach.Body>
 
 								<![CDATA[
-		public ${ParameterCSharpClrType} @${ParameterNamePascalCase}
+		public ${ParameterCSharpClrNullableType} @${ParameterNamePascalCase}
 		{
 			get
 			{
@@ -155,7 +172,11 @@ namespace ${ClrNamespace}.${FolderName}
 			}
 			set
 			{
-				this.@${ParameterNameCamelCase} = value;
+				if (!DataType.ObjectsEqualValueSemantics(this.@${ParameterNameCamelCase}, value))
+				{
+					this.@${ParameterNameCamelCase} = value;
+					OnPropertyChanged(PARAMETER_NAME_${ParameterNameConstantCase});
+				}
 			}
 		}
 		]]>
@@ -163,6 +184,32 @@ namespace ${ClrNamespace}.${FolderName}
 						</ForEach>
 
 <![CDATA[
+		#endregion
+
+		#region Methods/Operators
+
+		partial void OnValidate(ref IEnumerable<Message> messages);
+
+		public virtual IEnumerable<Message> Validate()
+		{
+			IEnumerable<Message> messages = null;
+
+			this.OnValidate(ref messages);
+
+			return messages ?? new Message[] { };
+		}
+
+		protected void OnAllPropertiesChanged()
+        {
+			this.OnPropertyChanged(null);
+		}
+
+		protected void OnPropertyChanged(string propertyName)
+        {
+			if ((object)this.PropertyChanged != null)
+				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
 		#endregion
 	}
 }

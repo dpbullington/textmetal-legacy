@@ -57,6 +57,7 @@
     <Compile Include="Framework\IModelRepository.cs" />
     <Compile Include="Framework\IRequestModelObject.cs" />
     <Compile Include="Framework\IResponseModelObject.cs" />
+    <Compile Include="Framework\IResponseModelObject~1.cs" />
     <Compile Include="Framework\IResultModelObject.cs" />
     <Compile Include="Framework\Mapping\ColumnMappingAttribute.cs" />
     <Compile Include="Framework\Mapping\ITacticCommand.cs" />

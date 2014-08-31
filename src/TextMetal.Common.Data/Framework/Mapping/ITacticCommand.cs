@@ -19,13 +19,11 @@ namespace TextMetal.Common.Data.Framework.Mapping
 		CommandBehavior CommandBehavior
 		{
 			get;
-			set;
 		}
 
 		IEnumerable<IDataParameter> CommandParameters
 		{
 			get;
-			set;
 		}
 
 		/// <summary>
@@ -34,7 +32,6 @@ namespace TextMetal.Common.Data.Framework.Mapping
 		bool CommandPrepare
 		{
 			get;
-			set;
 		}
 
 		/// <summary>
@@ -43,7 +40,6 @@ namespace TextMetal.Common.Data.Framework.Mapping
 		string CommandText
 		{
 			get;
-			set;
 		}
 
 		/// <summary>
@@ -52,7 +48,6 @@ namespace TextMetal.Common.Data.Framework.Mapping
 		int? CommandTimeout
 		{
 			get;
-			set;
 		}
 
 		/// <summary>
@@ -61,19 +56,21 @@ namespace TextMetal.Common.Data.Framework.Mapping
 		CommandType CommandType
 		{
 			get;
-			set;
 		}
 
 		int ExpectedRecordsAffected
 		{
 			get;
-			set;
 		}
 
 		bool IsNullipotent
 		{
 			get;
-			set;
+		}
+
+		bool UseBatchScopeIdentitySemantics
+		{
+			get;
 		}
 
 		#endregion

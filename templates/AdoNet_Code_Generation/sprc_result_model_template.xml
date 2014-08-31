@@ -27,7 +27,11 @@
 <![CDATA[
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Xml;
+
+using TextMetal.Common.Core;
 ]]>
 						<If>
 							<If.Condition>
@@ -49,7 +53,8 @@ using System.Xml;
 						<![CDATA[
 namespace ${ClrNamespace}.${FolderName}
 {
-	public partial class ${ProcedureNameSingularPascalCase}_Result : ${ClrSuperType}, I${ProcedureNameSingularPascalCase}_Result
+	[Serializable]
+	public partial class ${ProcedureNameSingularPascalCase}_Result : ${ClrSuperType}, INotifyPropertyChanged, I${ProcedureNameSingularPascalCase}_Result
 	{
 		#region Constructors/Destructors
 
@@ -60,6 +65,7 @@ namespace ${ClrNamespace}.${FolderName}
 		#endregion
 
 		#region Fields/Constants
+
 ]]>
 
 					<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -85,6 +91,7 @@ namespace ${ClrNamespace}.${FolderName}
 						</ForEach.Body>
 					</ForEach>
 <![CDATA[
+
 ]]>
 						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter></ForEach.Filter>
@@ -112,9 +119,12 @@ namespace ${ClrNamespace}.${FolderName}
 						</ForEach>
 
 <![CDATA[
+
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		public event PropertyChangedEventHandler PropertyChanged;
 ]]>
 						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter></ForEach.Filter>
@@ -129,13 +139,32 @@ namespace ${ClrNamespace}.${FolderName}
 			}
 			set
 			{
-				this.@${ColumnNameCamelCase} = value;
+				if (!DataType.ObjectsEqualValueSemantics(this.@${ColumnNameCamelCase}, value))
+				{
+					this.@${ColumnNameCamelCase} = value;
+					OnPropertyChanged(COLUMN_NAME_${ColumnNameConstantCase});
+				}
 			}
 		}
 ]]>
 							</ForEach.Body>
 						</ForEach>
 <![CDATA[
+		#endregion
+
+		#region Methods/Operators
+
+		protected void OnAllPropertiesChanged()
+        {
+			this.OnPropertyChanged(null);
+		}
+
+		protected void OnPropertyChanged(string propertyName)
+        {
+			if ((object)this.PropertyChanged != null)
+				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
 		#endregion
 	}
 }

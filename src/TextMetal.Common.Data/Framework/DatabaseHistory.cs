@@ -107,34 +107,6 @@ namespace TextMetal.Common.Data.Framework
 
 		#region Methods/Operators
 
-		private static TValue FetchScalar<TValue>(IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters)
-		{
-			int recordsAffected;
-			IEnumerable<IDictionary<string, object>> results;
-			IDictionary<string, object> result;
-			object dbValue;
-
-			results = unitOfWork.ExecuteDictionary(commandType, commandText, commandParameters, out recordsAffected);
-
-			if ((object)results == null)
-				return default(TValue);
-
-			result = results.SingleOrDefault();
-
-			if ((object)result == null)
-				return default(TValue);
-
-			if (result.Count != 1)
-				return default(TValue);
-
-			if (result.Keys.Count != 1)
-				return default(TValue);
-
-			dbValue = result[result.Keys.First()];
-
-			return dbValue.ChangeType<TValue>();
-		}
-
 		/// <summary>
 		/// For a given unitOfWork, perform a schema upgrade if necessary. The ordered set of revisions are executed from version+1 to version[n].
 		/// </summary>
@@ -155,7 +127,7 @@ namespace TextMetal.Common.Data.Framework
 			if (this.Revisions.Count < 1)
 				throw new InvalidOperationException(string.Format("Revision count was less than one."));
 
-			ivalue = FetchScalar<int>(unitOfWork, CommandType.Text, this.DoesSchemaTrackingExistCommandText, null);
+			ivalue = unitOfWork.FetchScalar<int>(CommandType.Text, this.DoesSchemaTrackingExistCommandText, null);
 
 			if (ivalue != 1)
 			{
@@ -164,7 +136,7 @@ namespace TextMetal.Common.Data.Framework
 			}
 			else
 			{
-				svalue = FetchScalar<string>(unitOfWork, CommandType.Text, this.GetSchemaVersionCommandText, null);
+				svalue = unitOfWork.FetchScalar<string>(CommandType.Text, this.GetSchemaVersionCommandText, null);
 
 				if (!DataType.TryParse(svalue, out schemaRevision))
 					throw new InvalidOperationException(string.Format("The schema revision scalar value returned from the database '{0}' could not be parsed into a valid '{1}'.", svalue, typeof(int)));
@@ -198,12 +170,12 @@ namespace TextMetal.Common.Data.Framework
 				}
 			}
 
-			ivalue = FetchScalar<int>(unitOfWork, CommandType.Text, this.DoesSchemaTrackingExistCommandText, null);
+			ivalue = unitOfWork.FetchScalar<int>(CommandType.Text, this.DoesSchemaTrackingExistCommandText, null);
 
 			if (ivalue != 1)
 				throw new InvalidOperationException(string.Format("Schema tracking is not enabled in the database."));
 
-			svalue = FetchScalar<string>(unitOfWork, CommandType.Text, this.GetSchemaVersionCommandText, null);
+			svalue = unitOfWork.FetchScalar<string>(CommandType.Text, this.GetSchemaVersionCommandText, null);
 
 			if (!DataType.TryParse(svalue, out schemaRevision))
 				throw new InvalidOperationException(string.Format("The schema revision scalar value returned from the database '{0}' could not be parsed into a valid '{1}'.", svalue, typeof(int)));

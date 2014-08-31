@@ -391,6 +391,9 @@ namespace TextMetal.Common.Data.Framework
 
 			Trace.WriteLine("[+++ end GetResultsLazy YIELD +++]");
 
+			// alert the response model that we are done enumerating the lazy river...
+			responseModel.SetEnumerationComplete();
+
 			// ***** SUPER special case for enumerator *****
 			if (actualRecordsAffected != tacticCommand.ExpectedRecordsAffected)
 			{
@@ -995,36 +998,33 @@ namespace TextMetal.Common.Data.Framework
 
 				// ***------------------------***
 
-				if (wasNew)
+				if (wasNew && !tacticCommand.UseBatchScopeIdentitySemantics)
 				{
 					// this is optional
 					tacticCommand = this.DataSourceTagStrategy.GetIdentityTacticCommand<TModel>(unitOfWork);
 
-					if ((object)tacticCommand != null)
+					this.OnProfileTacticCommand(tacticCommand);
+
+					rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
+
+					if (actualRecordsAffected != tacticCommand.ExpectedRecordsAffected)
 					{
-						this.OnProfileTacticCommand(tacticCommand);
+						// idempotency failure
+						unitOfWork.Divergent();
 
-						rows = unitOfWork.ExecuteDictionary(tacticCommand.CommandType, tacticCommand.CommandText, tacticCommand.CommandParameters, out actualRecordsAffected);
-
-						if (actualRecordsAffected != tacticCommand.ExpectedRecordsAffected)
-						{
-							// idempotency failure
-							unitOfWork.Divergent();
-
-							throw new InvalidOperationException(string.Format("Data idempotency failure occurred during model fill; actual records affected '{0}' did not equal expected records affected '{1}'.", tacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
-						}
-
-						if ((object)rows == null)
-							throw new InvalidOperationException(string.Format("Rows were invalid."));
-
-						table = rows.SingleOrDefault();
-
-						if ((object)table == null)
-							return false;
-
-						// map to model from table (destination, source)
-						tacticCommand.TableToModelMappingCallback(model, table);
+						throw new InvalidOperationException(string.Format("Data idempotency failure occurred during model fill; actual records affected '{0}' did not equal expected records affected '{1}'.", tacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
 					}
+
+					if ((object)rows == null)
+						throw new InvalidOperationException(string.Format("Rows were invalid."));
+
+					table = rows.SingleOrDefault();
+
+					if ((object)table == null)
+						return false;
+
+					// map to model from table (destination, source)
+					tacticCommand.TableToModelMappingCallback(model, table);
 				}
 
 				// ***------------------------***

@@ -76,7 +76,7 @@ namespace ${ClrNamespace}.${FolderName}
 		[ParameterMapping(ParameterOrdinal = ${ParameterOrdinal}, ParameterName = "${ParameterName}", ParameterSqlType = "${ParameterSqlType}",
 			ParameterDbType = ${ParameterCSharpDbType}, ParameterSize = ${ParameterSize}, ParameterPrecision = ${ParameterPrecision}, ParameterScale = ${ParameterScale},
 			ParameterNullable = ${ParameterCSharpNullableLiteral}, ParameterDirection = ${ParameterCSharpDirection})]
-		${ParameterCSharpClrType} @${ParameterNamePascalCase}
+		${ParameterCSharpClrNullableType} @${ParameterNamePascalCase}
 		{
 			get;
 			set;

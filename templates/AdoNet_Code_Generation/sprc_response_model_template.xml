@@ -28,7 +28,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Xml;
+
+using TextMetal.Common.Core;
+using TextMetal.Common.Data.Framework;
 ]]>
 						<If>
 							<If.Condition>
@@ -50,7 +54,8 @@ using System.Xml;
 						<![CDATA[
 namespace ${ClrNamespace}.${FolderName}
 {
-	public partial class ${ProcedureNameSingularPascalCase}_Response : ${ClrSuperType}, I${ProcedureNameSingularPascalCase}_Response
+	[Serializable]
+	public partial class ${ProcedureNameSingularPascalCase}_Response : ${ClrSuperType}, INotifyPropertyChanged, I${ProcedureNameSingularPascalCase}_Response
 	{
 		#region Constructors/Destructors
 
@@ -62,7 +67,63 @@ namespace ${ClrNamespace}.${FolderName}
 
 		#region Fields/Constants
 
+		private bool enumerationComplete;
 		private IEnumerable<I${ProcedureNameSingularPascalCase}_Result> results;
+
+		public const string SCHEMA_NAME = "${SchemaName}";
+		public const string PROCEDURE_NAME = "${ProcedureName}";
+
+]]>
+
+					<ForEach in="Parameters" var-ct="_LoopCount" var-ix="_LoopIndex">
+						<ForEach.Filter>
+							<BinaryExpression operator="Or">
+								<BinaryExpression.LeftExpression>
+									<BinaryExpression operator="Eq">
+										<BinaryExpression.LeftExpression>
+											<Facet name="ParameterIsOutput" />
+										</BinaryExpression.LeftExpression>
+										<BinaryExpression.RightExpression>
+											<Value type="System.Boolean" data="True" />
+										</BinaryExpression.RightExpression>
+									</BinaryExpression>
+								</BinaryExpression.LeftExpression>
+								<BinaryExpression.RightExpression>
+									<BinaryExpression operator="Eq">
+										<BinaryExpression.LeftExpression>
+											<Facet name="ParameterIsReadOnly" />
+										</BinaryExpression.LeftExpression>
+										<BinaryExpression.RightExpression>
+											<Value type="System.Boolean" data="True" />
+										</BinaryExpression.RightExpression>
+									</BinaryExpression>
+								</BinaryExpression.RightExpression>
+							</BinaryExpression>
+						</ForEach.Filter>
+						<ForEach.Body>
+							<![CDATA[		public const string PARAMETER_NAME_${ParameterNameConstantCase} = "${ParameterName}";]]>
+
+							<If>
+								<If.Condition>
+									<BinaryExpression operator="Ne">
+										<BinaryExpression.LeftExpression>
+											<Facet name="_LoopCount" />
+										</BinaryExpression.LeftExpression>
+										<BinaryExpression.RightExpression>
+											<Facet name="_LoopIndex" />
+										</BinaryExpression.RightExpression>
+									</BinaryExpression>
+								</If.Condition>
+								<If.True>
+<![CDATA[
+]]>
+								</If.True>
+							</If>
+						</ForEach.Body>
+					</ForEach>
+
+<![CDATA[
+
 ]]>
 
 						<ForEach in="Parameters" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -92,7 +153,7 @@ namespace ${ClrNamespace}.${FolderName}
 							</ForEach.Filter>
 							<ForEach.Body>
 
-								<![CDATA[		private ${ParameterCSharpClrType} @${ParameterNameCamelCase};]]>
+								<![CDATA[		private ${ParameterCSharpClrNullableType} @${ParameterNameCamelCase};]]>
 
 								<If>
 									<If.Condition>
@@ -119,6 +180,24 @@ namespace ${ClrNamespace}.${FolderName}
 
 		#region Properties/Indexers/Events
 
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		public bool EnumerationComplete
+		{
+			get
+			{
+				return this.enumerationComplete;
+			}
+			private set
+			{
+				if (!DataType.ObjectsEqualValueSemantics(this.enumerationComplete, value))
+				{
+					this.enumerationComplete = value;
+					OnPropertyChanged("EnumerationComplete");
+				}
+			}
+		}
+
 		public IEnumerable<I${ProcedureNameSingularPascalCase}_Result> Results
 		{
 			get
@@ -127,7 +206,12 @@ namespace ${ClrNamespace}.${FolderName}
 			}
 			set
 			{
-				this.results = value;
+				if (!DataType.ObjectsEqualValueSemantics(this.results, value))
+				{
+					this.results = value;
+					this.EnumerationComplete = false;
+					OnPropertyChanged("Results");
+				}
 			}
 		}
 ]]>
@@ -159,7 +243,7 @@ namespace ${ClrNamespace}.${FolderName}
 							<ForEach.Body>
 
 								<![CDATA[
-		public ${ParameterCSharpClrType} @${ParameterNamePascalCase}
+		public ${ParameterCSharpClrNullableType} @${ParameterNamePascalCase}
 		{
 			get
 			{
@@ -167,13 +251,37 @@ namespace ${ClrNamespace}.${FolderName}
 			}
 			set
 			{
-				this.@${ParameterNameCamelCase} = value;
+				if (!DataType.ObjectsEqualValueSemantics(this.@${ParameterNameCamelCase}, value))
+				{
+					this.@${ParameterNameCamelCase} = value;
+					OnPropertyChanged(PARAMETER_NAME_${ParameterNameConstantCase});
+				}
 			}
 		}
 		]]>
 							</ForEach.Body>
 						</ForEach>
 <![CDATA[
+		#endregion
+
+		#region Methods/Operators
+
+		protected void OnAllPropertiesChanged()
+        {
+			this.OnPropertyChanged(null);
+		}
+
+		protected void OnPropertyChanged(string propertyName)
+        {
+			if ((object)this.PropertyChanged != null)
+				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+		void IResponseModelObject.SetEnumerationComplete()
+		{
+			this.EnumerationComplete = true;
+		}
+
 		#endregion
 	}
 }

@@ -16,8 +16,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 		#region Constructors/Destructors
 
 		private NetSqliteDataSourceTagStrategy()
-			:
-				base(NET_SQLITE_DATA_SOURCE_TAG, true)
+			: base(NET_SQLITE_DATA_SOURCE_TAG, true, false)
 		{
 		}
 
@@ -28,7 +27,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 		private const string NET_SQLITE_COLUMN_ALIASED_FORMAT = "{0}.{1}";
 		private const string NET_SQLITE_COLUMN_NAME_FORMAT = "{0}";
 		private const string NET_SQLITE_DATA_SOURCE_TAG = "net.sqlite";
-		private const string NET_SQLITE_IDENTITY_COMMAND = "LAST_INSERT_ROWID()";
+		private const string NET_SQLITE_IDENTITY_FUNCTION_NAME = "LAST_INSERT_ROWID()";
 		private const string NET_SQLITE_PARAMETER_NAME_FORMAT = "@{0}";
 		private const int NET_SQLITE_PERSIST_NOT_EXPECTED_RECORDS_AFFECTED = 0;
 		private const int NET_SQLITE_QUERY_EXPECTED_RECORDS_AFFECTED = 0;
@@ -109,11 +108,11 @@ namespace TextMetal.Common.Data.Framework.Strategy
 				return NET_SQLITE_QUERY_EXPECTED_RECORDS_AFFECTED;
 		}
 
-		public override string GetIdentityCommand()
+		public override string GetIdentityFunctionName()
 		{
 			string retVal;
 
-			retVal = NET_SQLITE_IDENTITY_COMMAND;
+			retVal = NET_SQLITE_IDENTITY_FUNCTION_NAME;
 
 			return retVal;
 		}

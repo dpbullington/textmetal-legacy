@@ -59,11 +59,6 @@ namespace ${ClrNamespace}.${FolderName}
 	{
 		#region Properties/Indexers/Events
 
-		IEnumerable<I${ProcedureNameSingularPascalCase}_Result> Results
-		{
-			get;
-			set;
-		}
 ]]>
 						<ForEach in="Parameters" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
@@ -96,7 +91,7 @@ namespace ${ClrNamespace}.${FolderName}
 		[ParameterMapping(ParameterOrdinal = ${ParameterOrdinal}, ParameterName = "${ParameterName}", ParameterSqlType = "${ParameterSqlType}",
 			ParameterDbType = ${ParameterCSharpDbType}, ParameterSize = ${ParameterSize}, ParameterPrecision = ${ParameterPrecision}, ParameterScale = ${ParameterScale},
 			ParameterNullable = ${ParameterCSharpNullableLiteral}, ParameterDirection = ${ParameterCSharpDirection})]
-		${ParameterCSharpClrType} @${ParameterNamePascalCase}
+		${ParameterCSharpClrNullableType} @${ParameterNamePascalCase}
 		{
 			get;
 			set;

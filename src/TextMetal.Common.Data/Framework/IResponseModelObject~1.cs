@@ -4,26 +4,23 @@
 */
 
 using System;
+using System.Collections.Generic;
 
 namespace TextMetal.Common.Data.Framework
 {
 	/// <summary>
 	/// Provides a contract for response model objects (procedure, function, etc.).
 	/// </summary>
-	public interface IResponseModelObject
+	public interface IResponseModelObject<TResultModel> : IResponseModelObject
+		where TResultModel : class, IResultModelObject
 	{
 		#region Properties/Indexers/Events
 
-		bool EnumerationComplete
+		IEnumerable<TResultModel> Results
 		{
 			get;
+			set;
 		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		void SetEnumerationComplete();
 
 		#endregion
 	}

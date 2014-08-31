@@ -494,6 +494,67 @@ CREATE SCHEMA [testcases]
 GO
 
 
+CREATE TABLE [testcases].[UpsertMaster]
+(
+	[UpsertMasterId] [int] IDENTITY(1,1) NOT NULL,
+
+	[UpsertMasterName] [nvarchar](100) NOT NULL,
+
+	CONSTRAINT [pk_UpsertMaster] PRIMARY KEY
+	(
+		[UpsertMasterId]
+	)
+)
+GO
+
+
+CREATE TABLE [testcases].[UpsertSlave]
+(
+	[UpsertSlaveId] [int] IDENTITY(100000,1) NOT NULL,
+	[UpsertSlaveTs] [datetime2] NOT NULL,
+	[UpsertMasterId] [int] NOT NULL,
+
+	[UpsertSlaveName] [nvarchar](100) NULL,
+
+	CONSTRAINT [pk_UpsertSlave] PRIMARY KEY
+	(
+		[UpsertSlaveId]
+	)
+)
+GO
+
+
+CREATE TRIGGER [testcases].[OnUpsertMasterChange] ON [testcases].[UpsertMaster] AFTER INSERT, UPDATE, DELETE
+AS
+	BEGIN
+		SET NOCOUNT ON;
+
+		DECLARE @ThisMoment [datetime2]
+
+		SET @ThisMoment = SYSUTCDATETIME()
+
+		INSERT INTO [testcases].[UpsertSlave]
+		SELECT
+			@ThisMoment AS [UpsertSlaveTs],
+			i.[UpsertMasterId],
+
+			i.[UpsertMasterName] AS [UpsertSlaveName]
+		FROM [inserted] i
+
+		UNION ALL
+
+		SELECT
+			@ThisMoment AS [UpsertSlaveTs],
+			d.[UpsertMasterId],
+
+			NULL AS [UpsertSlaveName]
+		FROM [deleted] d
+		LEFT OUTER JOIN [inserted] i ON i.[UpsertMasterId] = d.[UpsertMasterId]
+		WHERE i.[UpsertMasterId] IS NULL
+	END
+GO
+
+
 CREATE TABLE [testcases].[tab_with_primary_key_as_identity]
 (
 	[col_int_id_pk] [int] IDENTITY(1,1) NOT NULL,
@@ -839,7 +900,7 @@ CREATE PROCEDURE [testcases].[sproc_with_inparam_no_outparam_with_rvparam_no_res
 )
 AS
 BEGIN
-	RETURN @in_numerator / @in_denominator
+	RETURN CAST(CRYPT_GEN_RANDOM(1) AS [int])
 END
 GO
 
@@ -875,7 +936,7 @@ BEGIN
 		UNION ALL
 	SELECT 5 AS [Id], NEWID() AS [Value], 'eee' AS [Name]
 
-	RETURN @in_numerator / @in_denominator
+	RETURN CAST(CRYPT_GEN_RANDOM(1) AS [int])
 END
 GO
 
@@ -925,6 +986,6 @@ BEGIN
 
 	SET @out_result = @in_numerator / @in_denominator
 
-	RETURN RAND()
+	RETURN CAST(CRYPT_GEN_RANDOM(1) AS [int])
 END
 GO

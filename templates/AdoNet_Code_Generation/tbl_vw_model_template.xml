@@ -81,6 +81,7 @@ using TextMetal.Common.Syntax.Statements;
 						<![CDATA[
 namespace ${ClrNamespace}.${FolderName}
 {
+	[Serializable]
 	public partial class ${TableNameSingularPascalCase} : ${ClrSuperType}, INotifyPropertyChanged, I${TableNameSingularPascalCase}
 	{
 		#region Constructors/Destructors

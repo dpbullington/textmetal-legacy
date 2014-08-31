@@ -93,13 +93,13 @@ namespace TextMetal.Common.Data
 			IDictionary<string, object> obj;
 			IDataReader dataReader;
 			int recordsAffected;
-			
+
 			// force no preparation
 			const bool COMMAND_PREPARE = false;
-			
+
 			// force provider default timeout
 			const object COMMAND_TIMEOUT = null; /*int?*/
-			
+
 			// force command behavior to default; the unit of work will manage connection lifetime
 			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
 
@@ -113,25 +113,29 @@ namespace TextMetal.Common.Data
 
 			using (dataReader = ExecuteReader(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE))
 			{
-				while (dataReader.Read())
+				do
 				{
-					obj = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-
-					for (int index = 0; index < dataReader.FieldCount; index++)
+					while (dataReader.Read())
 					{
-						string key;
-						object value;
+						obj = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
-						key = dataReader.GetName(index);
-						value = dataReader.GetValue(index).ChangeType<object>();
+						for (int index = 0; index < dataReader.FieldCount; index++)
+						{
+							string key;
+							object value;
 
-						obj.Add(key, value);
+							key = dataReader.GetName(index);
+							value = dataReader.GetValue(index).ChangeType<object>();
+
+							obj.Add(key, value);
+						}
+
+						yield return obj;
 					}
-
-					yield return obj;
 				}
+				while (dataReader.NextResult());
 			}
-			
+
 			Trace.WriteLine("[+++ end ExecuteDictionary YIELD +++]");
 			recordsAffected = dataReader.RecordsAffected;
 
@@ -269,6 +273,34 @@ namespace TextMetal.Common.Data
 					}
 				}
 			}
+		}
+
+		public static TValue FetchScalar<TValue>(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDataParameter> commandParameters)
+		{
+			int recordsAffected;
+			IEnumerable<IDictionary<string, object>> results;
+			IDictionary<string, object> result;
+			object dbValue;
+
+			results = unitOfWork.ExecuteDictionary(commandType, commandText, commandParameters, out recordsAffected);
+
+			if ((object)results == null)
+				return default(TValue);
+
+			result = results.SingleOrDefault();
+
+			if ((object)result == null)
+				return default(TValue);
+
+			if (result.Count != 1)
+				return default(TValue);
+
+			if (result.Keys.Count != 1)
+				return default(TValue);
+
+			dbValue = result[result.Keys.First()];
+
+			return dbValue.ChangeType<TValue>();
 		}
 
 		/// <summary>
