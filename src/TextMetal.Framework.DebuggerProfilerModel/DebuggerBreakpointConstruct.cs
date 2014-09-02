@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+using TextMetal.Common.Core.HierarchicalObjects;
 using TextMetal.Common.Syntax.Expressions;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
@@ -33,6 +34,7 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 		#region Fields/Constants
 
 		private IXmlObject parent;
+		private IXmlObjectCollection surround;
 
 		#endregion
 
@@ -101,6 +103,21 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the parent hierarchical object or null if this is the hierarchy root.
+		/// </summary>
+		IHierarchicalObject IHierarchicalObject.Parent
+		{
+			get
+			{
+				return this.parent;
+			}
+			set
+			{
+				this.parent = (IXmlObject)value;
+			}
+		}
+
 		public bool? SortDirection
 		{
 			get
@@ -114,6 +131,36 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 			get
 			{
 				return null;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the surround XML object or null if this is not surrounded (in a collection).
+		/// </summary>
+		public IXmlObjectCollection Surround
+		{
+			get
+			{
+				return this.surround;
+			}
+			set
+			{
+				this.surround = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the surround hierarchical object or null if this is not surrounded (in a collection).
+		/// </summary>
+		IHierarchicalObjectCollection IHierarchicalObject.Surround
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+			set
+			{
+				throw new NotImplementedException();
 			}
 		}
 

@@ -6,21 +6,22 @@
 using System;
 using System.Collections.ObjectModel;
 
-namespace TextMetal.Common.Xml
+namespace TextMetal.Common.Core.HierarchicalObjects
 {
 	/// <summary>
-	/// Provides a concrete implementation for XML object collections.
+	/// Provides a concrete implementation for hierarchical object collections.
 	/// </summary>
-	public class XmlObjectCollection<TXmlObject> : Collection<TXmlObject>, IXmlObjectCollection<TXmlObject>
-		where TXmlObject : IXmlObject
+	/// <typeparam name="THierarchicalObject"> </typeparam>
+	public class HierarchicalObjectCollection<THierarchicalObject> : Collection<THierarchicalObject>, IHierarchicalObjectCollection<THierarchicalObject>
+		where THierarchicalObject : IHierarchicalObject
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the XmlObjectCollection class.
+		/// Initializes a new instance of the HierarchicalObjectCollection class.
 		/// </summary>
-		/// <param name="site"> The containing site XML object. </param>
-		public XmlObjectCollection(IXmlObject site)
+		/// <param name="site"> The containing site hierarchical object. </param>
+		public HierarchicalObjectCollection(IHierarchicalObject site)
 		{
 			if ((object)site == null)
 				throw new ArgumentNullException("site");
@@ -32,16 +33,16 @@ namespace TextMetal.Common.Xml
 
 		#region Fields/Constants
 
-		private readonly IXmlObject site;
+		private readonly IHierarchicalObject site;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// Gets the site XML object or null if this is unattached.
+		/// Gets the site hierarchical object or null if this is unattached.
 		/// </summary>
-		public IXmlObject Site
+		public IHierarchicalObject Site
 		{
 			get
 			{
@@ -58,8 +59,11 @@ namespace TextMetal.Common.Xml
 		/// </summary>
 		protected override void ClearItems()
 		{
-			foreach (TXmlObject item in base.Items)
+			foreach (THierarchicalObject item in base.Items)
+			{
+				item.Surround = null;
 				item.Parent = null;
+			}
 
 			base.ClearItems();
 		}
@@ -69,11 +73,12 @@ namespace TextMetal.Common.Xml
 		/// </summary>
 		/// <param name="index"> The zero-based index at which item should be inserted. </param>
 		/// <param name="item"> The object to insert. The value can be null for reference types. </param>
-		protected override void InsertItem(int index, TXmlObject item)
+		protected override void InsertItem(int index, THierarchicalObject item)
 		{
 			if ((object)item == null)
 				throw new ArgumentNullException("item");
 
+			item.Surround = this;
 			item.Parent = this.Site;
 
 			base.InsertItem(index, item);
@@ -85,12 +90,15 @@ namespace TextMetal.Common.Xml
 		/// <param name="index"> The zero-based index of the element to remove. </param>
 		protected override void RemoveItem(int index)
 		{
-			TXmlObject item;
+			THierarchicalObject item;
 
 			item = base[index];
 
 			if ((object)item == null)
+			{
+				item.Surround = null;
 				item.Parent = null;
+			}
 
 			base.RemoveItem(index);
 		}
@@ -100,11 +108,12 @@ namespace TextMetal.Common.Xml
 		/// </summary>
 		/// <param name="index"> The zero-based index of the element to replace. </param>
 		/// <param name="item"> The new value for the element at the specified index. The value can be null for reference types. </param>
-		protected override void SetItem(int index, TXmlObject item)
+		protected override void SetItem(int index, THierarchicalObject item)
 		{
 			if ((object)item == null)
 				throw new ArgumentNullException("item");
 
+			item.Surround = this;
 			item.Parent = this.Site;
 
 			base.SetItem(index, item);

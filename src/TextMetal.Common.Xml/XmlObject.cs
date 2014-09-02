@@ -5,12 +5,14 @@
 
 using System;
 
+using TextMetal.Common.Core.HierarchicalObjects;
+
 namespace TextMetal.Common.Xml
 {
 	/// <summary>
 	/// Provides a base for all XML objects.
 	/// </summary>
-	public abstract class XmlObject : IXmlObject
+	public abstract class XmlObject : HierarchicalObject, IXmlObject
 	{
 		#region Constructors/Destructors
 
@@ -28,7 +30,6 @@ namespace TextMetal.Common.Xml
 
 		private readonly IXmlObjectCollection<IXmlObject> items;
 		private IXmlObject content;
-		private IXmlObject parent;
 
 		#endregion
 
@@ -75,15 +76,30 @@ namespace TextMetal.Common.Xml
 		/// <summary>
 		/// Gets or sets the parent XML object or null if this is the document root.
 		/// </summary>
-		public IXmlObject Parent
+		public new IXmlObject Parent
 		{
 			get
 			{
-				return this.parent;
+				return (IXmlObject)base.Parent;
 			}
 			set
 			{
-				this.parent = value;
+				this.Parent = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the surround XML object or null if this is not surrounded (in a collection).
+		/// </summary>
+		public new IXmlObjectCollection Surround
+		{
+			get
+			{
+				return (IXmlObjectCollection)base.Surround;
+			}
+			set
+			{
+				this.Surround = value;
 			}
 		}
 
@@ -101,11 +117,7 @@ namespace TextMetal.Common.Xml
 		/// <param name="newValueObj"> The new XML object value (value). </param>
 		protected void EnsureParentOnPropertySet(IXmlObject oldValueObj, IXmlObject newValueObj)
 		{
-			if ((object)oldValueObj != null)
-				oldValueObj.Parent = null;
-
-			if ((object)newValueObj != null)
-				newValueObj.Parent = this;
+			base.EnsureParentOnPropertySet(oldValueObj, newValueObj);
 		}
 
 		#endregion

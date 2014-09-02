@@ -7,6 +7,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+using TextMetal.Common.Core.HierarchicalObjects;
+
 namespace TextMetal.Common.Xml
 {
 	/// <summary>
@@ -99,6 +101,17 @@ namespace TextMetal.Common.Xml
 		/// Gets the site XML object or null if this is unattached.
 		/// </summary>
 		public IXmlObject Site
+		{
+			get
+			{
+				return null;
+			}
+		}
+
+		/// <summary>
+		/// Gets the site hierarchical object or null if this is unattached.
+		/// </summary>
+		IHierarchicalObject IHierarchicalObjectCollection.Site
 		{
 			get
 			{

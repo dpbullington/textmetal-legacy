@@ -52,6 +52,11 @@
     <Compile Include="DataType.cs" />
     <Compile Include="DataType.IntImpl.cs" />
     <Compile Include="ExecutionPathStorage.cs" />
+    <Compile Include="HierarchicalObjects\IHierarchicalObjectCollection.cs" />
+    <Compile Include="HierarchicalObjects\IHierarchicalObjectCollection~1.cs" />
+    <Compile Include="HierarchicalObjects\IHierarchicalObject.cs" />
+    <Compile Include="HierarchicalObjects\HierarchicalObject.cs" />
+    <Compile Include="HierarchicalObjects\HierarchicalObjectCollection~1.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Name.cs" />
     <Compile Include="Reflexion.cs" />

@@ -5,12 +5,14 @@
 
 using System;
 
+using TextMetal.Common.Core.HierarchicalObjects;
+
 namespace TextMetal.Common.Xml
 {
 	/// <summary>
 	/// Represents an XML object and it's "schema".
 	/// </summary>
-	public interface IXmlObject
+	public interface IXmlObject : IHierarchicalObject
 	{
 		#region Properties/Indexers/Events
 
@@ -42,7 +44,16 @@ namespace TextMetal.Common.Xml
 		/// <summary>
 		/// Gets or sets the parent XML object or null if this is the document root.
 		/// </summary>
-		IXmlObject Parent
+		new IXmlObject Parent
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Gets or sets the surround XML object or null if this is not surrounded (in a collection).
+		/// </summary>
+		new IXmlObjectCollection Surround
 		{
 			get;
 			set;
