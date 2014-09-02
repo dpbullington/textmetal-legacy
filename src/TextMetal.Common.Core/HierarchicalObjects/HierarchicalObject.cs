@@ -77,10 +77,16 @@ namespace TextMetal.Common.Core.HierarchicalObjects
 		protected void EnsureParentOnPropertySet(IHierarchicalObject oldValueObj, IHierarchicalObject newValueObj)
 		{
 			if ((object)oldValueObj != null)
+			{
+				oldValueObj.Surround = null;
 				oldValueObj.Parent = null;
+			}
 
 			if ((object)newValueObj != null)
+			{
+				newValueObj.Surround = null;
 				newValueObj.Parent = this;
+			}
 		}
 
 		#endregion
