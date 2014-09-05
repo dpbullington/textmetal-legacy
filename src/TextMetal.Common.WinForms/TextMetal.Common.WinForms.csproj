@@ -48,6 +48,7 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ConsoleApplication.cs" />
     <Compile Include="Controls\ControlExtensionMethods.cs" />
     <Compile Include="Controls\TmToolStripPanel.cs">
       <SubType>Component</SubType>
@@ -180,6 +181,7 @@
     <Compile Include="Controls\TmTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ExecutableApplication.cs" />
     <Compile Include="Forms\BackgroundTaskForm.cs">
       <SubType>Form</SubType>
     </Compile>

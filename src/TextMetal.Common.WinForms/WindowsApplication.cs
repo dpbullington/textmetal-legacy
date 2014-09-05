@@ -4,9 +4,7 @@
 */
 
 using System;
-using System.Diagnostics;
-using System.Reflection;
-using System.Security.Principal;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -14,7 +12,7 @@ using TextMetal.Common.Core;
 
 namespace TextMetal.Common.WinForms
 {
-	public abstract class WindowsApplication<TMainForm, TSplashForm> : IDisposable
+	public abstract class WindowsApplication<TMainForm, TSplashForm> : ExecutableApplication
 		where TMainForm : Form, new()
 		where TSplashForm : Form, new()
 	{
@@ -26,34 +24,7 @@ namespace TextMetal.Common.WinForms
 
 		#endregion
 
-		#region Fields/Constants
-
-		private AssemblyInformation assemblyInformation;
-
-		#endregion
-
 		#region Properties/Indexers/Events
-
-		public AssemblyInformation AssemblyInformation
-		{
-			get
-			{
-				return this.assemblyInformation;
-			}
-			private set
-			{
-				this.assemblyInformation = value;
-			}
-		}
-
-		public bool HookUnhandledExceptionEvents
-		{
-			get
-			{
-				return !Debugger.IsAttached &&
-						AppConfig.GetAppSetting<bool>(string.Format("{0}::HookUnhandledExceptionEvents", this.GetType().Namespace));
-			}
-		}
 
 		public bool ShowSplashScreen
 		{
@@ -67,19 +38,9 @@ namespace TextMetal.Common.WinForms
 
 		#region Methods/Operators
 
-		public void Dispose()
+		protected override void DisplayExceptionMessage(string exceptionMessage)
 		{
-		}
-
-		/// <summary>
-		/// The main entry point for the application.
-		/// </summary>
-		public int EntryPoint(string[] args)
-		{
-			if (this.HookUnhandledExceptionEvents)
-				return this.TryStartup(args);
-			else
-				return this.Startup(args);
+			MessageBox.Show("A fatal error occured:\r\n" + exceptionMessage + "\r\nThe application will now terminate.", this.AssemblyInformation.Product, MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
 		private void OnApplicationThreadException(object sender, ThreadExceptionEventArgs e)
@@ -87,33 +48,10 @@ namespace TextMetal.Common.WinForms
 			this.ShowNestedExceptionsAndThrowBrickAtProcess(new ApplicationException("OnApplicationThreadException", e.Exception));
 		}
 
-		private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+		protected override int OnStartup(string[] args, IDictionary<string, IList<string>> arguments)
 		{
-			this.ShowNestedExceptionsAndThrowBrickAtProcess(new ApplicationException("OnUnhandledException", e.ExceptionObject as Exception));
-		}
-
-		public void ShowNestedExceptionsAndThrowBrickAtProcess(Exception e)
-		{
-			string message;
-
-			message = Reflexion.GetErrors(e, 0);
-
-			MessageBox.Show("A fatal error occured:\r\n" + message + "\r\nThe application will now terminate.", this.AssemblyInformation.Product, MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-			Environment.Exit(-1);
-		}
-
-		private int Startup(string[] args)
-		{
-			this.AssemblyInformation = new AssemblyInformation(Assembly.GetEntryAssembly());
-
-			AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
-
 			if (this.HookUnhandledExceptionEvents)
-			{
-				AppDomain.CurrentDomain.UnhandledException += this.OnUnhandledException;
 				Application.ThreadException += this.OnApplicationThreadException;
-			}
 
 			Control.CheckForIllegalCrossThreadCalls = true;
 			Application.EnableVisualStyles();
@@ -125,20 +63,6 @@ namespace TextMetal.Common.WinForms
 				Application.Run(new TMainForm());
 
 			return 0;
-		}
-
-		private int TryStartup(string[] args)
-		{
-			try
-			{
-				return this.Startup(args);
-			}
-			catch (Exception ex)
-			{
-				this.ShowNestedExceptionsAndThrowBrickAtProcess(new ApplicationException("Main", ex));
-			}
-
-			return -1;
 		}
 
 		#endregion

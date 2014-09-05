@@ -7,9 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Windows.Forms;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.WinForms;
 using TextMetal.HostImpl.Tool;
 
 namespace TextMetal.HostImpl.ConsoleTool
@@ -17,59 +17,27 @@ namespace TextMetal.HostImpl.ConsoleTool
 	/// <summary>
 	/// Entry point class for the application.
 	/// </summary>
-	internal class Program
+	internal class Program : ConsoleApplication
 	{
+		#region Fields/Constants
+
+		private static readonly Program instance = new Program();
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public static Program Instance
+		{
+			get
+			{
+				return instance;
+			}
+		}
+
+		#endregion
+
 		#region Methods/Operators
-
-		/// <summary>
-		/// When called, displays an interactive folder browser dialog to prompt for a directory path.
-		/// </summary>
-		/// <param name="directoryPath"> The resulting directory path or null if the user canceled. </param>
-		/// <returns> A value indicating whether the user canceled the dialog. </returns>
-		private static bool GetDirectoryPathInteractive(out string directoryPath)
-		{
-			directoryPath = null;
-
-			using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
-			{
-				folderBrowserDialog.ShowNewFolderButton = true;
-
-				if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-				{
-					directoryPath = folderBrowserDialog.SelectedPath;
-
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		/// <summary>
-		/// When called, displays an interactive open file dialog to prompt for a file path.
-		/// </summary>
-		/// <param name="filePath"> The resulting file path or null if the user canceled. </param>
-		/// <returns> A value indicating whether the user canceled the dialog. </returns>
-		private static bool GetFilePathInteractive(out string filePath)
-		{
-			filePath = null;
-
-			using (OpenFileDialog openFileDialog = new OpenFileDialog())
-			{
-				openFileDialog.Multiselect = false;
-				openFileDialog.RestoreDirectory = true;
-				openFileDialog.Title = "Choose File...";
-
-				if (openFileDialog.ShowDialog() == DialogResult.OK)
-				{
-					filePath = openFileDialog.FileName;
-
-					return true;
-				}
-			}
-
-			return false;
-		}
 
 		/// <summary>
 		/// The entry point method for this application.
@@ -77,24 +45,15 @@ namespace TextMetal.HostImpl.ConsoleTool
 		/// <param name="args"> The command line arguments passed from the executing environment. </param>
 		/// <returns> The resulting exit code. </returns>
 		[STAThread]
-		private static int Main(string[] args)
+		public static int Main(string[] args)
 		{
-#if !DEBUG
-			return TryStartup(args);
-#else
-			return Startup(args);
-#endif
+			using (Instance)
+				return Instance.EntryPoint(args);
 		}
 
-		/// <summary>
-		/// The indirect entry point method for this application. Code is wrapped in this method to leverage the 'TryStartup'/'Startup' pattern. This method contains the TextMetal console application host environment setup code (logic that is specific to a console application to transition to the more generic 'tool' host code).
-		/// </summary>
-		/// <param name="args"> The command line arguments passed from the executing environment. </param>
-		/// <returns> The resulting exit code. </returns>
-		private static int Startup(string[] args)
+		protected override int OnStartup(string[] args, IDictionary<string, IList<string>> arguments)
 		{
 			Dictionary<string, object> argz;
-			IDictionary<string, IList<string>> arguments;
 			string templateFilePath;
 			string sourceFilePath;
 			string baseDirectoryPath;
@@ -114,10 +73,13 @@ namespace TextMetal.HostImpl.ConsoleTool
 			const string CMDLN_TOKEN_PROPERTY = "property";
 			const string CMDLN_DEBUGGER_LAUNCH = "debug";
 
-			arguments = AppConfig.ParseCommandLineArguments(args);
+			if((object)args == null)
+				throw new ArgumentNullException("args");
 
-			if ((object)arguments == null ||
-				!arguments.ContainsKey(CMDLN_TOKEN_TEMPLATEFILE) ||
+			if ((object)arguments == null)
+				throw new ArgumentNullException("arguments");
+			
+			if (!arguments.ContainsKey(CMDLN_TOKEN_TEMPLATEFILE) ||
 				!arguments.ContainsKey(CMDLN_TOKEN_SOURCEFILE) ||
 				!arguments.ContainsKey(CMDLN_TOKEN_BASEDIR) ||
 				!arguments.ContainsKey(CMDLN_TOKEN_SOURCESTRATEGY_AQTN) ||
@@ -183,52 +145,10 @@ namespace TextMetal.HostImpl.ConsoleTool
 				}
 			}
 
-			if (templateFilePath == "?")
-			{
-				if (!GetFilePathInteractive(out templateFilePath))
-					return 0;
-			}
-
-			if (sourceFilePath == "?")
-			{
-				if (!GetFilePathInteractive(out sourceFilePath))
-					return 0;
-			}
-
-			if (baseDirectoryPath == "?")
-			{
-				if (!GetDirectoryPathInteractive(out baseDirectoryPath))
-					return 0;
-			}
-
 			using (IToolHost toolHost = new ToolHost())
 				toolHost.Host((object)args != null ? args.Length : -1, args, argz, templateFilePath, sourceFilePath, baseDirectoryPath, sourceStrategyAqtn, strictMatching, properties);
 
 			return 0;
-		}
-
-		/// <summary>
-		/// The indirect entry point method for this application. Code is wrapped in this method to leverage the 'TryStartup'/'Startup' pattern. This method, if used, wraps the Startup() method in an exception handler. The handler will catch all exceptions and report a full detailed stack trace to the Console.Error stream; -1 is then returned as the exit code. Otherwise, if no exception is thrown, the exit code returned is that which is returned by Startup().
-		/// </summary>
-		/// <param name="args"> The command line arguments passed from the executing environment. </param>
-		/// <returns> The resulting exit code. </returns>
-		private static int TryStartup(string[] args)
-		{
-			try
-			{
-				return Startup(args);
-			}
-			catch (Exception ex)
-			{
-				string message;
-
-				message = Reflexion.GetErrors(ex, 0);
-
-				Console.Error.WriteLine(message);
-				Console.WriteLine("The operation failed to complete.");
-			}
-
-			return -1;
 		}
 
 		#endregion

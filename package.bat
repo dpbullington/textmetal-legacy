@@ -158,6 +158,17 @@ IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
 
 
+copy "%SRC_DIR%\TextMetal.Common.Tokenization\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Tokenization.dll" "%PACKAGE_DIR%\bin\."
+IF %ERRORLEVEL% NEQ 0 GOTO pkgError
+
+copy "%SRC_DIR%\TextMetal.Common.Tokenization\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Tokenization.xml" "%PACKAGE_DIR%\bin\."
+IF %ERRORLEVEL% NEQ 0 GOTO pkgError
+
+copy "%SRC_DIR%\TextMetal.Common.Tokenization\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Tokenization.pdb" "%PACKAGE_DIR%\bin\."
+IF %ERRORLEVEL% NEQ 0 GOTO pkgError
+
+
+
 copy "%SRC_DIR%\TextMetal.Common.UnitTests\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.UnitTests.dll" "%PACKAGE_DIR%\bin\."
 IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
@@ -165,6 +176,17 @@ copy "%SRC_DIR%\TextMetal.Common.UnitTests\bin\%BUILD_FLAVOR_DIR%\TextMetal.Comm
 IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
 copy "%SRC_DIR%\TextMetal.Common.UnitTests\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.UnitTests.pdb" "%PACKAGE_DIR%\bin\."
+IF %ERRORLEVEL% NEQ 0 GOTO pkgError
+
+
+
+copy "%SRC_DIR%\TextMetal.Common.WinForms\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.WinForms.dll" "%PACKAGE_DIR%\bin\."
+IF %ERRORLEVEL% NEQ 0 GOTO pkgError
+
+copy "%SRC_DIR%\TextMetal.Common.WinForms\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.WinForms.xml" "%PACKAGE_DIR%\bin\."
+IF %ERRORLEVEL% NEQ 0 GOTO pkgError
+
+copy "%SRC_DIR%\TextMetal.Common.WinForms\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.WinForms.pdb" "%PACKAGE_DIR%\bin\."
 IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
 

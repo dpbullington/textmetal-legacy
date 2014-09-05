@@ -16,19 +16,19 @@
 
 	<Write newline="true">
 		<Write.Text>
-			<Value data="${StaticMethodResolver(`TextMetal.Common.Core.StringTokens.DynamicValueTokenReplacementStrategy`, `StaticMethodResolverPing`)}" type="System.String" />
+			<Value data="${StaticMethodResolver(`TextMetal.Common.Tokenization.DynamicValueTokenReplacementStrategy`, `StaticMethodResolverPing`)}" type="System.String" />
 		</Write.Text>
 	</Write>
 
 	<Write newline="true">
 		<Write.Text>
-			<Value data="${StaticMethodResolver(`TextMetal.Common.Core.StringTokens.DynamicValueTokenReplacementStrategy`, `StaticMethodResolverPing`, `System.String`, `this is a test`)}" type="System.String" />
+			<Value data="${StaticMethodResolver(`TextMetal.Common.Tokenization.DynamicValueTokenReplacementStrategy`, `StaticMethodResolverPing`, `System.String`, `this is a test`)}" type="System.String" />
 		</Write.Text>
 	</Write>
 
 	<Write newline="true">
 		<Write.Text>
-			<Value data="${StaticMethodResolver(`TextMetal.Common.Core.StringTokens.DynamicValueTokenReplacementStrategy`, `StaticMethodResolverPing`, `System.Nullable\'1[[System.Int32]]`, `1`)}" type="System.String" />
+			<Value data="${StaticMethodResolver(`TextMetal.Common.Tokenization.DynamicValueTokenReplacementStrategy`, `StaticMethodResolverPing`, `System.Nullable\'1[[System.Int32]]`, `1`)}" type="System.String" />
 		</Write.Text>
 	</Write>
 

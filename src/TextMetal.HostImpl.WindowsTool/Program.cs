@@ -10,6 +10,9 @@ using TextMetal.HostImpl.WindowsTool.Forms;
 
 namespace TextMetal.HostImpl.WindowsTool
 {
+	/// <summary>
+	/// Entry point class for the application.
+	/// </summary>
 	internal class Program : WindowsApplication<MainForm, SplashForm>
 	{
 		#region Fields/Constants
@@ -33,8 +36,10 @@ namespace TextMetal.HostImpl.WindowsTool
 		#region Methods/Operators
 
 		/// <summary>
-		/// The main entry point for the application.
+		/// The entry point method for this application.
 		/// </summary>
+		/// <param name="args"> The command line arguments passed from the executing environment. </param>
+		/// <returns> The resulting exit code. </returns>
 		[STAThread]
 		public static int Main(string[] args)
 		{
