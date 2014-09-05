@@ -85,7 +85,7 @@ namespace TextMetal.HostImpl.ConsoleTool
 				!arguments.ContainsKey(CMDLN_TOKEN_SOURCESTRATEGY_AQTN) ||
 				!arguments.ContainsKey(CMDLN_TOKEN_STRICT))
 			{
-				Console.WriteLine("USAGE: textmetal.exe\r\n\t-{0}:\"<filepath>|?\"\r\n\t-{1}:\"<filepath>|?\"\r\n\t-{2}:\"<directorypath>|?\"\r\n\t-{3}:\"<asmqualtypename>\"\r\n\t-{4}:\"true|false\"",
+				Console.WriteLine("USAGE: textmetal.exe\r\n\t-{0}:\"<filepath>\"\r\n\t-{1}:\"<filepath>\"\r\n\t-{2}:\"<directorypath>\"\r\n\t-{3}:\"<asmqualtypename>\"\r\n\t-{4}:\"true|false\"",
 					CMDLN_TOKEN_TEMPLATEFILE,
 					CMDLN_TOKEN_SOURCEFILE,
 					CMDLN_TOKEN_BASEDIR,
