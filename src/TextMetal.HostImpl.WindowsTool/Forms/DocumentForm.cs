@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows.Forms;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.WinForms;
 using TextMetal.Common.WinForms.Controls;
 using TextMetal.Common.WinForms.Forms;
 using TextMetal.Common.Xml;
@@ -129,8 +130,8 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 			if ((object)asyncExceptionOrNull != null)
 			{
-				if (Program.Instance.HookUnhandledExceptionEvents)
-					Program.Instance.ShowNestedExceptionsAndThrowBrickAtProcess(asyncExceptionOrNull);
+				if (ExecutableApplication.Current.HookUnhandledExceptionEvents)
+					ExecutableApplication.Current.ShowNestedExceptionsAndThrowBrickAtProcess(asyncExceptionOrNull);
 				// should never reach this point
 			}
 
@@ -164,7 +165,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 			if (asCopy && !DataType.IsNullOrWhiteSpace(this.DocumentFilePath))
 			{
-				if (MessageBox.Show(this, "Do you want to save a copy of the current document?", Program.Instance.AssemblyInformation.Product, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+				if (MessageBox.Show(this, "Do you want to save a copy of the current document?", ExecutableApplication.Current.AssemblyInformation.Product, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
 					return false;
 			}
 

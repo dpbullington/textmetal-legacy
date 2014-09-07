@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
+using TextMetal.Common.WinForms;
 using TextMetal.Common.WinForms.Forms;
 
 namespace TextMetal.HostImpl.WindowsTool.Forms
@@ -32,18 +33,18 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 			base.CoreSetup();
 
-			this.CoreText = string.Format("About {0} Studio", Program.Instance.AssemblyInformation.Product);
+			this.CoreText = string.Format("About {0} Studio", ExecutableApplication.Current.AssemblyInformation.Product);
 
-			this.lblVersion.Text = Program.Instance.AssemblyInformation.AssemblyVersion;
-			this.lblCompany.Text = Program.Instance.AssemblyInformation.Company;
-			this.lblConfiguration.Text = Program.Instance.AssemblyInformation.Configuration;
-			this.lblCopyright.Text = Program.Instance.AssemblyInformation.Copyright;
-			this.lblInformationalVersion.Text = Program.Instance.AssemblyInformation.InformationalVersion;
-			this.lblProduct.Text = string.Format("{0} Studio", Program.Instance.AssemblyInformation.Product);
-			this.lblTitle.Text = Program.Instance.AssemblyInformation.Title;
-			this.lblTrademark.Text = Program.Instance.AssemblyInformation.Trademark;
-			this.lblWin32FileVersion.Text = Program.Instance.AssemblyInformation.Win32FileVersion;
-			this.txtBxDescription.Text = Program.Instance.AssemblyInformation.Description;
+			this.lblVersion.Text = ExecutableApplication.Current.AssemblyInformation.AssemblyVersion;
+			this.lblCompany.Text = ExecutableApplication.Current.AssemblyInformation.Company;
+			this.lblConfiguration.Text = ExecutableApplication.Current.AssemblyInformation.Configuration;
+			this.lblCopyright.Text = ExecutableApplication.Current.AssemblyInformation.Copyright;
+			this.lblInformationalVersion.Text = ExecutableApplication.Current.AssemblyInformation.InformationalVersion;
+			this.lblProduct.Text = string.Format("{0} Studio", ExecutableApplication.Current.AssemblyInformation.Product);
+			this.lblTitle.Text = ExecutableApplication.Current.AssemblyInformation.Title;
+			this.lblTrademark.Text = ExecutableApplication.Current.AssemblyInformation.Trademark;
+			this.lblWin32FileVersion.Text = ExecutableApplication.Current.AssemblyInformation.Win32FileVersion;
+			this.txtBxDescription.Text = ExecutableApplication.Current.AssemblyInformation.Description;
 
 			stream = this.GetType().Assembly.GetManifestResourceStream("TextMetal.HostImpl.WindowsTool.Images.SplashScreen.png");
 

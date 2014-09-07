@@ -19,24 +19,6 @@ namespace TextMetal.HostImpl.ConsoleTool
 	/// </summary>
 	internal class Program : ConsoleApplication
 	{
-		#region Fields/Constants
-
-		private static readonly Program instance = new Program();
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public static Program Instance
-		{
-			get
-			{
-				return instance;
-			}
-		}
-
-		#endregion
-
 		#region Methods/Operators
 
 		/// <summary>
@@ -47,8 +29,8 @@ namespace TextMetal.HostImpl.ConsoleTool
 		[STAThread]
 		public static int Main(string[] args)
 		{
-			using (Instance)
-				return Instance.EntryPoint(args);
+			using (Program program = new Program())
+				return program.EntryPoint(args);
 		}
 
 		protected override IDictionary<string, ArgumentSlot> GetArgumentMap()

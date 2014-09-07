@@ -11,6 +11,7 @@ using System.Linq;
 using System.Windows.Forms;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.WinForms;
 using TextMetal.Common.WinForms.Controls;
 using TextMetal.Common.WinForms.Forms;
 
@@ -93,7 +94,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 			if (dirtyCount > 0)
 			{
-				dialogResult = MessageBox.Show(this, string.Format("Do you want {1} without saving the {0} modified document(s)?", dirtyCount, verb), Program.Instance.AssemblyInformation.Product, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+				dialogResult = MessageBox.Show(this, string.Format("Do you want {1} without saving the {0} modified document(s)?", dirtyCount, verb), ExecutableApplication.Current.AssemblyInformation.Product, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 				
 				if (dialogResult == DialogResult.Cancel)
 				{
@@ -135,7 +136,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 			base.CoreSetup();
 
-			this.CoreText = string.Format("{0} Studio", Program.Instance.AssemblyInformation.Product);
+			this.CoreText = string.Format("{0} Studio", ExecutableApplication.Current.AssemblyInformation.Product);
 
 			stream = this.GetType().Assembly.GetManifestResourceStream("TextMetal.HostImpl.WindowsTool.Images.SplashScreen.png");
 
@@ -158,7 +159,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 		private void HelpTopics()
 		{
-			MessageBox.Show(this, "Help is not available in this release.", Program.Instance.AssemblyInformation.Product, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			MessageBox.Show(this, "Help is not available in this release.", ExecutableApplication.Current.AssemblyInformation.Product, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 		}
 
 		private void NewDocument()
