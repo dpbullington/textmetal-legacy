@@ -5,10 +5,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.WinForms.Forms;
+
+using Message = TextMetal.Common.Core.Message;
 
 namespace TextMetal.Common.WinForms
 {
@@ -38,9 +43,42 @@ namespace TextMetal.Common.WinForms
 
 		#region Methods/Operators
 
-		protected override void DisplayExceptionMessage(string exceptionMessage)
+		protected override sealed void DisplayArgumentErrorMessage(IEnumerable<Message> argumentMessages)
 		{
-			MessageBox.Show("A fatal error occured:\r\n" + exceptionMessage + "\r\nThe application will now terminate.", this.AssemblyInformation.Product, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			/*if ((object)argumentMessages != null)
+			{
+				using (MessageForm messageForm = new MessageForm()
+												{
+													CoreText = this.AssemblyInformation.Product,
+													Message = string.Empty,
+													Messages = argumentMessages,
+													StartPosition = FormStartPosition.CenterScreen
+												})
+					messageForm.ShowDialog(null);
+			}*/
+		}
+
+		protected override sealed void DisplayArgumentMapMessage(IDictionary<string, ArgumentSlot> argumentMap)
+		{
+			string message;
+
+			var requiredArgumentTokens = argumentMap.Select(m => (!m.Value.Required ? "[" : "") + string.Format("-{0}:value{1}", m.Key, !m.Value.Bounded ? "(s)" : "") + (!m.Value.Required ? "]" : ""));
+
+			if ((object)requiredArgumentTokens != null)
+			{
+				message = string.Format("USAGE: {0} ", Assembly.GetEntryAssembly().ManifestModule.Name) + string.Join(" ", requiredArgumentTokens) + Environment.NewLine;
+				MessageBox.Show(message, this.AssemblyInformation.Product, MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+		}
+
+		protected override sealed void DisplayFailureMessage(Exception exception)
+		{
+			MessageBox.Show("A fatal error occured:\r\n" + (object)exception == null ? Reflexion.GetErrors(exception, 0) : "<unknown>" + "\r\nThe application will now terminate.", this.AssemblyInformation.Product, MessageBoxButtons.OK, MessageBoxIcon.Error);
+		}
+
+		protected override sealed void DisplaySuccessMessage(TimeSpan duration)
+		{
+			//MessageBox.Show(string.Format("Operation completed successfully; duration: '{0}'.", duration), this.AssemblyInformation.Product, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
 		private void OnApplicationThreadException(object sender, ThreadExceptionEventArgs e)
@@ -48,7 +86,7 @@ namespace TextMetal.Common.WinForms
 			this.ShowNestedExceptionsAndThrowBrickAtProcess(new ApplicationException("OnApplicationThreadException", e.Exception));
 		}
 
-		protected override int OnStartup(string[] args, IDictionary<string, IList<string>> arguments)
+		protected override sealed int OnStartup(string[] args, IDictionary<string, IList<string>> arguments)
 		{
 			if (this.HookUnhandledExceptionEvents)
 				Application.ThreadException += this.OnApplicationThreadException;

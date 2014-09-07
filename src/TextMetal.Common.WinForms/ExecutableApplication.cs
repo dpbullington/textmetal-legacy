@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 
@@ -19,17 +20,33 @@ namespace TextMetal.Common.WinForms
 
 		protected ExecutableApplication()
 		{
+			ExecutableApplication.Current = this;
 		}
 
 		#endregion
 
 		#region Fields/Constants
 
+		private static readonly string EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY = typeof(ExecutableApplication).GUID.SafeToString();
+
 		private AssemblyInformation assemblyInformation;
+		private bool disposed;
 
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		public static ExecutableApplication Current
+		{
+			get
+			{
+				return (ExecutableApplication)ExecutionPathStorage.GetValue(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY);
+			}
+			set
+			{
+				ExecutionPathStorage.SetValue(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY, value);
+			}
+		}
 
 		public AssemblyInformation AssemblyInformation
 		{
@@ -40,6 +57,21 @@ namespace TextMetal.Common.WinForms
 			private set
 			{
 				this.assemblyInformation = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether the current instance has been disposed.
+		/// </summary>
+		public bool Disposed
+		{
+			get
+			{
+				return this.disposed;
+			}
+			private set
+			{
+				this.disposed = value;
 			}
 		}
 
@@ -56,10 +88,30 @@ namespace TextMetal.Common.WinForms
 
 		#region Methods/Operators
 
-		protected abstract void DisplayExceptionMessage(string exceptionMessage);
+		protected abstract void DisplayArgumentErrorMessage(IEnumerable<Message> argumentMessages);
 
-		public virtual void Dispose()
+		protected abstract void DisplayArgumentMapMessage(IDictionary<string, ArgumentSlot> argumentMap);
+
+		protected abstract void DisplayFailureMessage(Exception exception);
+
+		protected abstract void DisplaySuccessMessage(TimeSpan duration);
+
+		public void Dispose()
 		{
+			if (this.Disposed)
+				return;
+
+			try
+			{
+				this.OnDispose();
+			}
+			finally
+			{
+				ExecutableApplication.Current = null;
+
+				this.Disposed = true;
+				GC.SuppressFinalize(this);
+			}
 		}
 
 		/// <summary>
@@ -75,7 +127,11 @@ namespace TextMetal.Common.WinForms
 				return this.Startup(args);
 		}
 
-		//protected abstract IEnumerable<string> GetRequiredArguments();
+		protected abstract IDictionary<string, ArgumentSlot> GetArgumentMap();
+
+		protected virtual void OnDispose()
+		{
+		}
 
 		protected abstract int OnStartup(string[] args, IDictionary<string, IList<string>> arguments);
 
@@ -86,11 +142,7 @@ namespace TextMetal.Common.WinForms
 
 		public void ShowNestedExceptionsAndThrowBrickAtProcess(Exception e)
 		{
-			string exceptionMessage;
-
-			exceptionMessage = Reflexion.GetErrors(e, 0);
-
-			this.DisplayExceptionMessage(exceptionMessage);
+			this.DisplayFailureMessage(e);
 
 			Environment.Exit(-1);
 		}
@@ -100,6 +152,9 @@ namespace TextMetal.Common.WinForms
 			int returnCode;
 			DateTime start, end;
 			TimeSpan duration;
+			IDictionary<string, ArgumentSlot> argumentMap;
+			IList<string> argumentValues;
+			IList<Message> argumentMessages;
 
 			start = DateTime.UtcNow;
 			IDictionary<string, IList<string>> arguments;
@@ -110,13 +165,52 @@ namespace TextMetal.Common.WinForms
 				AppDomain.CurrentDomain.UnhandledException += this.OnUnhandledException;
 
 			this.AssemblyInformation = new AssemblyInformation(Assembly.GetEntryAssembly());
-			arguments = AppConfig.ParseCommandLineArguments(args);
 
-			returnCode = this.OnStartup(args, arguments);
+			arguments = AppConfig.ParseCommandLineArguments(args);
+			argumentMap = this.GetArgumentMap();
+			argumentMessages = new List<Message>();
+
+			if ((object)argumentMap != null)
+			{
+				foreach (string argumentToken in argumentMap.Keys)
+				{
+					bool argumentExists;
+					int argumentValueCount = 0;
+					ArgumentSlot argumentSlot;
+
+					if (argumentExists = arguments.TryGetValue(argumentToken, out argumentValues))
+						argumentValueCount = argumentValues.Count;
+
+					if (!argumentMap.TryGetValue(argumentToken, out argumentSlot))
+						continue;
+
+					if (argumentSlot.Required && !argumentExists)
+					{
+						argumentMessages.Add(new Message("", string.Format("A required argument was not specified: '{0}'.", argumentToken), Severity.Error));
+						continue;
+					}
+
+					if (argumentSlot.Bounded && argumentValueCount > 1)
+					{
+						argumentMessages.Add(new Message("", string.Format("A bounded argument was specified more than once: '{0}'.", argumentToken), Severity.Error));
+						continue;
+					}
+				}
+			}
+
+			if (argumentMessages.Any())
+			{
+				this.DisplayArgumentErrorMessage(argumentMessages);
+				this.DisplayArgumentMapMessage(argumentMap);
+				returnCode = -1;
+			}
+			else
+				returnCode = this.OnStartup(args, arguments);
 
 			end = DateTime.UtcNow;
 			duration = end - start;
-			//Console.WriteLine("Operation duration: {0}", duration);
+
+			this.DisplaySuccessMessage(duration);
 
 			return returnCode;
 		}
@@ -133,6 +227,20 @@ namespace TextMetal.Common.WinForms
 			}
 
 			return -1;
+		}
+
+		#endregion
+
+		#region Classes/Structs/Interfaces/Enums/Delegates
+
+		protected struct ArgumentSlot
+		{
+			#region Fields/Constants
+
+			public bool Bounded;
+			public bool Required;
+
+			#endregion
 		}
 
 		#endregion

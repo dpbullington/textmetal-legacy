@@ -32,8 +32,6 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 			base.CoreSetup();
 
-			this.CoreText = string.Format("{0}", Program.Instance.AssemblyInformation.Product);
-
 			stream = this.GetType().Assembly.GetManifestResourceStream("TextMetal.HostImpl.WindowsTool.Images.SplashScreen.png");
 
 			if ((object)stream == null)

@@ -71,8 +71,6 @@ namespace TextMetal.Common.WinForms.Forms
 		{
 			base.CoreSetup();
 
-			this.CoreText = string.Format("{0}", this.CoreOwnerForm.CoreText);
-
 			this.RefreshMessages();
 		}
 

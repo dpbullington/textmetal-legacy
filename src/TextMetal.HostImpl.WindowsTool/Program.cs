@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 
 using TextMetal.Common.WinForms;
 using TextMetal.HostImpl.WindowsTool.Forms;
@@ -45,6 +46,20 @@ namespace TextMetal.HostImpl.WindowsTool
 		{
 			using (Instance)
 				return Instance.EntryPoint(args);
+		}
+
+		protected override IDictionary<string, ArgumentSlot> GetArgumentMap()
+		{
+			IDictionary<string, ArgumentSlot> argumentMap;
+
+			argumentMap = new Dictionary<string, ArgumentSlot>();
+			/*argumentMap.Add("test", new ArgumentSlot()
+			{
+				Required = true,
+				Bounded = true
+			});*/
+
+			return argumentMap;
 		}
 
 		#endregion

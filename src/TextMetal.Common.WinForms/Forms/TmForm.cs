@@ -20,6 +20,9 @@ namespace TextMetal.Common.WinForms.Forms
 		public TmForm()
 		{
 			this.InitializeComponent();
+
+			if((object)ExecutableApplication.Current == null)
+				throw new InvalidOperationException(string.Format("No exectable application context exists on the current thread and application domain"));
 		}
 
 		#endregion
@@ -138,6 +141,9 @@ namespace TextMetal.Common.WinForms.Forms
 			Stream stream;
 			Icon icon;
 
+			if ((object)this.CoreOwnerForm != null)
+				this.CoreText = string.Format("{0}", this.CoreOwnerForm.CoreText.SafeToString());
+			
 			stream = this.GetType().Assembly.GetManifestResourceStream("TextMetal.HostImpl.WindowsTool.Icons.TextMetal.ico");
 
 			if ((object)stream == null)
