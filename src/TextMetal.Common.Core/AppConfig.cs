@@ -17,8 +17,8 @@ namespace TextMetal.Common.Core
 	{
 		#region Fields/Constants
 
-		private const string ARGS_REGEX = @"-([a-zA-Z_][a-zA-Z_0-9]{0,}):(.{0,})";
-		private const string PROPS_REGEX = @"([a-zA-Z_][a-zA-Z_0-9]{0,})=(.{0,})";
+		private const string ARGS_REGEX = @"-(" + Constants.GLOBAL_ID_REGEX_UNBOUNDED + @"{0,63}):(.{0,})";
+		private const string PROPS_REGEX = @"(" + Constants.GLOBAL_ID_REGEX_UNBOUNDED + @"{0,63})=(.{0,})";
 
 		#endregion
 

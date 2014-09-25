@@ -38,7 +38,7 @@ namespace TextMetal.Common.WinForms
 			Console.ForegroundColor = oldConsoleColor;
 		}
 
-		protected override sealed void DisplayArgumentMapMessage(IDictionary<string, ArgumentSlot> argumentMap)
+		protected override sealed void DisplayArgumentMapMessage(IDictionary<string, ArgumentSpec> argumentMap)
 		{
 			ConsoleColor oldConsoleColor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Magenta;
@@ -59,15 +59,15 @@ namespace TextMetal.Common.WinForms
 		{
 			ConsoleColor oldConsoleColor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Red;
-			Console.WriteLine((object)exception == null ? Reflexion.GetErrors(exception, 0) : "<unknown>");
+			Console.WriteLine((object)exception != null ? Reflexion.GetErrors(exception, 0) : "<unknown>");
 			Console.ForegroundColor = oldConsoleColor;
 
-			Console.WriteLine("The operation failed to complete.");
+			Console.WriteLine(Environment.NewLine + "The operation failed to complete.");
 		}
 
 		protected override sealed void DisplaySuccessMessage(TimeSpan duration)
 		{
-			Console.WriteLine("Operation completed successfully; duration: '{0}'.", duration);
+			Console.WriteLine(Environment.NewLine + "Operation completed successfully; duration: '{0}'.", duration);
 		}
 
 		#endregion

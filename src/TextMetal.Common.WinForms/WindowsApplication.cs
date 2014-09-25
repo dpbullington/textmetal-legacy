@@ -58,7 +58,7 @@ namespace TextMetal.Common.WinForms
 			}*/
 		}
 
-		protected override sealed void DisplayArgumentMapMessage(IDictionary<string, ArgumentSlot> argumentMap)
+		protected override sealed void DisplayArgumentMapMessage(IDictionary<string, ArgumentSpec> argumentMap)
 		{
 			string message;
 
@@ -73,7 +73,7 @@ namespace TextMetal.Common.WinForms
 
 		protected override sealed void DisplayFailureMessage(Exception exception)
 		{
-			MessageBox.Show("A fatal error occured:\r\n" + (object)exception == null ? Reflexion.GetErrors(exception, 0) : "<unknown>" + "\r\nThe application will now terminate.", this.AssemblyInformation.Product, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			MessageBox.Show("A fatal error occured:" + Environment.NewLine + (object)exception == null ? Reflexion.GetErrors(exception, 0) : "<unknown>" + Environment.NewLine + "The application will now terminate.", this.AssemblyInformation.Product, MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
 		protected override sealed void DisplaySuccessMessage(TimeSpan duration)
@@ -86,7 +86,7 @@ namespace TextMetal.Common.WinForms
 			this.ShowNestedExceptionsAndThrowBrickAtProcess(new ApplicationException("OnApplicationThreadException", e.Exception));
 		}
 
-		protected override sealed int OnStartup(string[] args, IDictionary<string, IList<string>> arguments)
+		protected override sealed int OnStartup(string[] args, IDictionary<string, IList<object>> arguments)
 		{
 			if (this.HookUnhandledExceptionEvents)
 				Application.ThreadException += this.OnApplicationThreadException;

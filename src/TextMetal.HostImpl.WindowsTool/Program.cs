@@ -30,11 +30,11 @@ namespace TextMetal.HostImpl.WindowsTool
 				return program.EntryPoint(args);
 		}
 
-		protected override IDictionary<string, ArgumentSlot> GetArgumentMap()
+		protected override IDictionary<string, ArgumentSpec> GetArgumentMap()
 		{
-			IDictionary<string, ArgumentSlot> argumentMap;
+			IDictionary<string, ArgumentSpec> argumentMap;
 
-			argumentMap = new Dictionary<string, ArgumentSlot>();
+			argumentMap = new Dictionary<string, ArgumentSpec>();
 			/*argumentMap.Add("test", new ArgumentSlot()
 			{
 				Required = true,

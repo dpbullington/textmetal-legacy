@@ -56,6 +56,7 @@ namespace TextMetal.Common.Core
 			string message = "";
 			object propertyValue;
 			bool first = true;
+			const char INDENT_CHAR = '\t';
 
 			exceptionEnumerableType = typeof(IEnumerable<Exception>);
 
@@ -64,18 +65,18 @@ namespace TextMetal.Common.Core
 				if (first)
 				{
 					message +=
-						new string('\t', indent) + "+++ BEGIN ROOT EXECPTION +++" + "\r\n" +
-						new string('\t', indent) + "Type: " + exception.GetType().FullName + "\r\n" +
-						new string('\t', indent) + "Message: " + exception.Message + "\r\n" +
-						new string('\t', indent) + "Stack: \r\n" + new string('\t', indent) + exception.StackTrace + "\r\n\r\n";
+						new string(INDENT_CHAR, indent) + "+++ BEGIN ROOT EXECPTION +++" + Environment.NewLine +
+						new string(INDENT_CHAR, indent) + "Type: " + exception.GetType().FullName + Environment.NewLine +
+						new string(INDENT_CHAR, indent) + "Message: " + exception.Message + Environment.NewLine +
+						new string(INDENT_CHAR, indent) + "Stack:" + Environment.NewLine + new string(INDENT_CHAR, indent) + exception.StackTrace + Environment.NewLine + Environment.NewLine;
 				}
 				else
 				{
-					message += "\r\n" +
-								new string('\t', indent) + "+++ BEGIN INNER EXECPTION +++" + "\r\n" +
-								new string('\t', indent) + "Type: " + exception.GetType().FullName + "\r\n" +
-								new string('\t', indent) + "Message: " + exception.Message + "\r\n" +
-								new string('\t', indent) + "Stack: \r\n" + new string('\t', indent) + exception.StackTrace + "\r\n\r\n";
+					message += Environment.NewLine +
+								new string(INDENT_CHAR, indent) + "+++ BEGIN INNER EXECPTION +++" + Environment.NewLine +
+								new string(INDENT_CHAR, indent) + "Type: " + exception.GetType().FullName + Environment.NewLine +
+								new string(INDENT_CHAR, indent) + "Message: " + exception.Message + Environment.NewLine +
+								new string(INDENT_CHAR, indent) + "Stack:" + Environment.NewLine + new string(INDENT_CHAR, indent) + exception.StackTrace + Environment.NewLine + Environment.NewLine;
 				}
 
 				exceptionType = exception.GetType();
@@ -90,15 +91,15 @@ namespace TextMetal.Common.Core
 						{
 							propertyValue = propertyInfo.GetValue(exception, null);
 
-							message += new string('\t', indent + 1) + "+++ BEGIN ENUMERABLE EXECPTIONS +++" + "\r\n";
+							message += new string(INDENT_CHAR, indent + 1) + "+++ BEGIN ENUMERABLE EXECPTIONS +++" + Environment.NewLine;
 
 							if ((object)propertyValue != null)
 							{
 								foreach (Exception subException in (IEnumerable<Exception>)propertyValue)
-									message += "\r\n" + GetErrors(subException, indent + 1);
+									message += Environment.NewLine + GetErrors(subException, indent + 1);
 							}
 
-							message += "\r\n" + new string('\t', indent + 1) + "+++ END ENUMERABLE EXECPTIONS +++" + "\r\n\r\n";
+							message += Environment.NewLine + new string(INDENT_CHAR, indent + 1) + "+++ END ENUMERABLE EXECPTIONS +++" + Environment.NewLine + Environment.NewLine;
 						}
 					}
 				}
@@ -106,12 +107,12 @@ namespace TextMetal.Common.Core
 				if (first)
 				{
 					message +=
-						new string('\t', indent) + "+++ END ROOT EXECPTION +++" + "\r\n";
+						new string(INDENT_CHAR, indent) + "+++ END ROOT EXECPTION +++" + Environment.NewLine;
 				}
 				else
 				{
 					message +=
-						new string('\t', indent) + "+++ END INNER EXECPTION +++" + "\r\n";
+						new string(INDENT_CHAR, indent) + "+++ END INNER EXECPTION +++" + Environment.NewLine;
 				}
 
 				first = false;

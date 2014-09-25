@@ -20,7 +20,7 @@ namespace TextMetal.Common.WinForms
 
 		protected ExecutableApplication()
 		{
-			ExecutableApplication.Current = this;
+			Current = this;
 		}
 
 		#endregion
@@ -90,7 +90,7 @@ namespace TextMetal.Common.WinForms
 
 		protected abstract void DisplayArgumentErrorMessage(IEnumerable<Message> argumentMessages);
 
-		protected abstract void DisplayArgumentMapMessage(IDictionary<string, ArgumentSlot> argumentMap);
+		protected abstract void DisplayArgumentMapMessage(IDictionary<string, ArgumentSpec> argumentMap);
 
 		protected abstract void DisplayFailureMessage(Exception exception);
 
@@ -107,7 +107,7 @@ namespace TextMetal.Common.WinForms
 			}
 			finally
 			{
-				ExecutableApplication.Current = null;
+				Current = null;
 
 				this.Disposed = true;
 				GC.SuppressFinalize(this);
@@ -127,13 +127,13 @@ namespace TextMetal.Common.WinForms
 				return this.Startup(args);
 		}
 
-		protected abstract IDictionary<string, ArgumentSlot> GetArgumentMap();
+		protected abstract IDictionary<string, ArgumentSpec> GetArgumentMap();
 
 		protected virtual void OnDispose()
 		{
 		}
 
-		protected abstract int OnStartup(string[] args, IDictionary<string, IList<string>> arguments);
+		protected abstract int OnStartup(string[] args, IDictionary<string, IList<object>> arguments);
 
 		private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
@@ -152,67 +152,105 @@ namespace TextMetal.Common.WinForms
 			int returnCode;
 			DateTime start, end;
 			TimeSpan duration;
-			IDictionary<string, ArgumentSlot> argumentMap;
-			IList<string> argumentValues;
-			IList<Message> argumentMessages;
+			IDictionary<string, ArgumentSpec> argumentMap;
+			IList<Message> argumentValidationMessages;
 
-			start = DateTime.UtcNow;
+			IList<string> argumentValues;
 			IDictionary<string, IList<string>> arguments;
 
-			AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
+			IDictionary<string, IList<object>> finalArguments;
+			IList<object> finalArgumentValues;
+			object finalArgumentValue;
 
-			if (this.HookUnhandledExceptionEvents)
-				AppDomain.CurrentDomain.UnhandledException += this.OnUnhandledException;
-
-			this.AssemblyInformation = new AssemblyInformation(Assembly.GetEntryAssembly());
-
-			arguments = AppConfig.ParseCommandLineArguments(args);
-			argumentMap = this.GetArgumentMap();
-			argumentMessages = new List<Message>();
-
-			if ((object)argumentMap != null)
+			try
 			{
-				foreach (string argumentToken in argumentMap.Keys)
+				start = DateTime.UtcNow;
+
+				AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
+
+				if (this.HookUnhandledExceptionEvents)
+					AppDomain.CurrentDomain.UnhandledException += this.OnUnhandledException;
+
+				this.AssemblyInformation = new AssemblyInformation(Assembly.GetEntryAssembly());
+
+				arguments = AppConfig.ParseCommandLineArguments(args);
+				argumentMap = this.GetArgumentMap();
+
+				finalArguments = new Dictionary<string, IList<object>>();
+				argumentValidationMessages = new List<Message>();
+
+				if ((object)argumentMap != null)
 				{
-					bool argumentExists;
-					int argumentValueCount = 0;
-					ArgumentSlot argumentSlot;
-
-					if (argumentExists = arguments.TryGetValue(argumentToken, out argumentValues))
-						argumentValueCount = argumentValues.Count;
-
-					if (!argumentMap.TryGetValue(argumentToken, out argumentSlot))
-						continue;
-
-					if (argumentSlot.Required && !argumentExists)
+					foreach (string argumentToken in argumentMap.Keys)
 					{
-						argumentMessages.Add(new Message("", string.Format("A required argument was not specified: '{0}'.", argumentToken), Severity.Error));
-						continue;
-					}
+						bool argumentExists;
+						int argumentValueCount = 0;
+						ArgumentSpec argumentSpec;
 
-					if (argumentSlot.Bounded && argumentValueCount > 1)
-					{
-						argumentMessages.Add(new Message("", string.Format("A bounded argument was specified more than once: '{0}'.", argumentToken), Severity.Error));
-						continue;
+						if (argumentExists = arguments.TryGetValue(argumentToken, out argumentValues))
+							argumentValueCount = argumentValues.Count;
+
+						if (!argumentMap.TryGetValue(argumentToken, out argumentSpec))
+							continue;
+
+						if (argumentSpec.Required && !argumentExists)
+						{
+							argumentValidationMessages.Add(new Message("", string.Format("A required argument was not specified: '{0}'.", argumentToken), Severity.Error));
+							continue;
+						}
+
+						if (argumentSpec.Bounded && argumentValueCount > 1)
+						{
+							argumentValidationMessages.Add(new Message("", string.Format("A bounded argument was specified more than once: '{0}'.", argumentToken), Severity.Error));
+							continue;
+						}
+
+						if ((object)argumentValues != null)
+						{
+							finalArgumentValues = new List<object>();
+
+							if ((object)argumentSpec.Type != null)
+							{
+								foreach (string argumentValue in argumentValues)
+								{
+									if (!DataType.TryParse(argumentSpec.Type, argumentValue, out finalArgumentValue))
+										argumentValidationMessages.Add(new Message("", string.Format("An argument '{0}' value '{1}' was specified that failed to parse to the target type '{2}'.", argumentToken, argumentValue, argumentSpec.Type.FullName), Severity.Error));
+									else
+										finalArgumentValues.Add(finalArgumentValue);
+								}
+							}
+							else
+							{
+								foreach (string argumentValue in argumentValues)
+									finalArgumentValues.Add(argumentValue);
+							}
+
+							finalArguments.Add(argumentToken, finalArgumentValues);
+						}
 					}
 				}
-			}
 
-			if (argumentMessages.Any())
+				if (argumentValidationMessages.Any())
+				{
+					this.DisplayArgumentErrorMessage(argumentValidationMessages);
+					this.DisplayArgumentMapMessage(argumentMap);
+					returnCode = -1;
+				}
+				else
+					returnCode = this.OnStartup(args, finalArguments);
+
+				end = DateTime.UtcNow;
+				duration = end - start;
+
+				this.DisplaySuccessMessage(duration);
+
+				return returnCode;
+			}
+			finally
 			{
-				this.DisplayArgumentErrorMessage(argumentMessages);
-				this.DisplayArgumentMapMessage(argumentMap);
-				returnCode = -1;
+				if (this.HookUnhandledExceptionEvents)
+					AppDomain.CurrentDomain.UnhandledException += this.OnUnhandledException;
 			}
-			else
-				returnCode = this.OnStartup(args, arguments);
-
-			end = DateTime.UtcNow;
-			duration = end - start;
-
-			this.DisplaySuccessMessage(duration);
-
-			return returnCode;
 		}
 
 		private int TryStartup(string[] args)
@@ -233,12 +271,64 @@ namespace TextMetal.Common.WinForms
 
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
-		protected struct ArgumentSlot
+		protected class ArgumentSpec
 		{
+			#region Constructors/Destructors
+
+			public ArgumentSpec(Type type, bool required, bool bounded)
+			{
+				this.type = type ?? typeof(Object);
+				this.required = required;
+				this.bounded = bounded;
+			}
+
+			#endregion
+
 			#region Fields/Constants
 
-			public bool Bounded;
-			public bool Required;
+			private readonly bool bounded;
+			private readonly bool required;
+			private readonly Type type;
+
+			#endregion
+
+			#region Properties/Indexers/Events
+
+			public bool Bounded
+			{
+				get
+				{
+					return this.bounded;
+				}
+			}
+
+			public bool Required
+			{
+				get
+				{
+					return this.required;
+				}
+			}
+
+			public Type Type
+			{
+				get
+				{
+					return this.type;
+				}
+			}
+
+			#endregion
+		}
+
+		protected class ArgumentSpec<T> : ArgumentSpec
+		{
+			#region Constructors/Destructors
+
+			public ArgumentSpec(bool required, bool bounded)
+				: base(typeof(T), required, bounded)
+			{
+			}
 
 			#endregion
 		}

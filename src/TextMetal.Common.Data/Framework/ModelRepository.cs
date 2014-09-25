@@ -897,11 +897,12 @@ namespace TextMetal.Common.Data.Framework
 			/* THIS METHOD SHOULD NOT BE DEFINED IN RELEASE/PRODUCTION BUILDS */
 			string value = "";
 			int i;
+			const string INDENT_CHAR = "\t";
 
 			if ((object)tacticCommand == null)
 				throw new ArgumentNullException("tacticCommand");
 
-			value += string.Format("\r\n[+++ begin OnProfileTacticCommand({0}) +++]\r\n", repositoryOperation);
+			value += string.Format(Environment.NewLine + "[+++ begin OnProfileTacticCommand({0}) +++]" + Environment.NewLine, repositoryOperation);
 
 			value += string.Format("[TacticCommand]: ModelType = '{0}', IsNullipotent = '{6}'; ExpectedRecordsAffected = '{7}'; CommandType = '{1}'; CommandText = '{2}'; CommandPrepare = '{3}'; CommandTimeout = '{4}'; CommandBehavior = '{5}'.",
 				string.Join("|", tacticCommand.GetModelTypes().Select(t => t.FullName).ToArray()),
@@ -916,7 +917,7 @@ namespace TextMetal.Common.Data.Framework
 			i = 0;
 			foreach (IDbDataParameter commandParameter in tacticCommand.CommandParameters)
 			{
-				value += string.Format("\r\n\t[Parameter{0:00}]: Direction = '{1}'; ParameterName = '{2}'; IsNullable = '{3}'; Precision = '{4}'; Scale = '{5}'; Size = '{6}'; DbType = '{7}'; Value = '{8}'.",
+				value += string.Format(Environment.NewLine + INDENT_CHAR + "[Parameter{0:00}]: Direction = '{1}'; ParameterName = '{2}'; IsNullable = '{3}'; Precision = '{4}'; Scale = '{5}'; Size = '{6}'; DbType = '{7}'; Value = '{8}'.",
 					i++,
 					commandParameter.Direction,
 					commandParameter.ParameterName,
@@ -928,7 +929,7 @@ namespace TextMetal.Common.Data.Framework
 					(object)commandParameter != null ? commandParameter.Value.SafeToString(null, "<null>") : "[[null]]");
 			}
 
-			value += string.Format("\r\n[+++ end OnProfileTacticCommand({0}) +++]\r\n", repositoryOperation);
+			value += string.Format(Environment.NewLine + "[+++ end OnProfileTacticCommand({0}) +++]" + Environment.NewLine, repositoryOperation);
 
 			Trace.WriteLine(value);
 		}

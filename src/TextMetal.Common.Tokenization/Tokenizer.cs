@@ -53,7 +53,7 @@ namespace TextMetal.Common.Tokenization
 			@"(?: [ ]* \( ( [ ]* (?: ` [^`]* ` [ ]* (?: , [ ]* ` [^`]* ` [ ]* )* ){0,1} ){0,1} \) ){0,1}" +
 			@"[ ]* \}";
 
-		private const string TOKEN_ID_REGEX = @"[a-zA-Z_\.][a-zA-Z_\.0-9]{0,1023}";
+		private const string TOKEN_ID_REGEX = Constants.GLOBAL_ID_REGEX_UNBOUNDED + @"{0,1023}";
 
 		private readonly List<string> previousExpansionTokens = new List<string>();
 		private readonly bool strictMatching;
@@ -259,7 +259,7 @@ namespace TextMetal.Common.Tokenization
 			}
 			catch (Exception ex)
 			{
-				return GetOriginalValueOrThrowExecption(this.StrictMatching, match.Value, string.Format("function exception {{\r\n{0}\r\n}}", Reflexion.GetErrors(ex, 0)));
+				return GetOriginalValueOrThrowExecption(this.StrictMatching, match.Value, string.Format("function exception {{" + Environment.NewLine + "{0}" + Environment.NewLine + "}}", Reflexion.GetErrors(ex, 0)));
 			}
 
 			if ((object)tokens == null ||

@@ -57,6 +57,7 @@
     <Compile Include="HierarchicalObjects\IHierarchicalObject.cs" />
     <Compile Include="HierarchicalObjects\HierarchicalObject.cs" />
     <Compile Include="HierarchicalObjects\HierarchicalObjectCollection~1.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Name.cs" />
     <Compile Include="Reflexion.cs" />

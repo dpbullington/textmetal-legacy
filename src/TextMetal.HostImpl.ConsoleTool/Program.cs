@@ -33,46 +33,18 @@ namespace TextMetal.HostImpl.ConsoleTool
 				return program.EntryPoint(args);
 		}
 
-		protected override IDictionary<string, ArgumentSlot> GetArgumentMap()
+		protected override IDictionary<string, ArgumentSpec> GetArgumentMap()
 		{
-			IDictionary<string, ArgumentSlot> argumentMap;
+			IDictionary<string, ArgumentSpec> argumentMap;
 
-			argumentMap = new Dictionary<string, ArgumentSlot>();
-			argumentMap.Add(CMDLN_TOKEN_TEMPLATEFILE, new ArgumentSlot()
-			{
-				Required = true,
-				Bounded = true
-			});
-			argumentMap.Add(CMDLN_TOKEN_SOURCEFILE, new ArgumentSlot()
-			{
-				Required = true,
-				Bounded = true
-			});
-			argumentMap.Add(CMDLN_TOKEN_BASEDIR, new ArgumentSlot()
-			{
-				Required = true,
-				Bounded = true
-			});
-			argumentMap.Add(CMDLN_TOKEN_SOURCESTRATEGY_AQTN, new ArgumentSlot()
-			{
-				Required = true,
-				Bounded = true
-			});
-			argumentMap.Add(CMDLN_TOKEN_STRICT, new ArgumentSlot()
-			{
-				Required = true,
-				Bounded = true
-			});
-			argumentMap.Add(CMDLN_TOKEN_PROPERTY, new ArgumentSlot()
-			{
-				Required = false,
-				Bounded = false
-			});
-			argumentMap.Add(CMDLN_DEBUGGER_LAUNCH, new ArgumentSlot()
-			{
-				Required = false,
-				Bounded = true
-			});
+			argumentMap = new Dictionary<string, ArgumentSpec>();
+			argumentMap.Add(CMDLN_TOKEN_TEMPLATEFILE, new ArgumentSpec<string>(true, true));
+			argumentMap.Add(CMDLN_TOKEN_SOURCEFILE, new ArgumentSpec<string>(true, true));
+			argumentMap.Add(CMDLN_TOKEN_BASEDIR, new ArgumentSpec<string>(true, true));
+			argumentMap.Add(CMDLN_TOKEN_SOURCESTRATEGY_AQTN, new ArgumentSpec<string>(true, true));
+			argumentMap.Add(CMDLN_TOKEN_STRICT, new ArgumentSpec<bool>(true, true));
+			argumentMap.Add(CMDLN_TOKEN_PROPERTY, new ArgumentSpec<string>(false, false));
+			argumentMap.Add(CMDLN_DEBUGGER_LAUNCH, new ArgumentSpec<bool>(false, true));
 
 			return argumentMap;
 		}
@@ -85,7 +57,7 @@ namespace TextMetal.HostImpl.ConsoleTool
 		private const string CMDLN_TOKEN_PROPERTY = "property";
 		private const string CMDLN_DEBUGGER_LAUNCH = "debug";
 
-		protected override int OnStartup(string[] args, IDictionary<string, IList<string>> arguments)
+		protected override int OnStartup(string[] args, IDictionary<string, IList<object>> arguments)
 		{
 			Dictionary<string, object> argz;
 			string templateFilePath;
@@ -95,7 +67,7 @@ namespace TextMetal.HostImpl.ConsoleTool
 			bool strictMatching;
 			bool debuggerLaunch = false;
 			IDictionary<string, IList<string>> properties;
-			IList<string> argumentValues;
+			IList<object> argumentValues;
 			IList<string> propertyValues;
 			bool hasProperties;
 
@@ -106,7 +78,7 @@ namespace TextMetal.HostImpl.ConsoleTool
 				throw new ArgumentNullException("arguments");
 
 			if (arguments.ContainsKey(CMDLN_DEBUGGER_LAUNCH))
-				DataType.TryParse<bool>(arguments[CMDLN_DEBUGGER_LAUNCH].Single(), out debuggerLaunch);
+				debuggerLaunch = (bool)arguments[CMDLN_DEBUGGER_LAUNCH].Single();
 
 			if (debuggerLaunch)
 				Console.WriteLine("Debugger launch result: '{0}'", Debugger.Launch() && Debugger.IsAttached);
@@ -114,11 +86,11 @@ namespace TextMetal.HostImpl.ConsoleTool
 			// required
 			properties = new Dictionary<string, IList<string>>();
 
-			templateFilePath = arguments[CMDLN_TOKEN_TEMPLATEFILE].Single();
-			sourceFilePath = arguments[CMDLN_TOKEN_SOURCEFILE].Single();
-			baseDirectoryPath = arguments[CMDLN_TOKEN_BASEDIR].Single();
-			sourceStrategyAqtn = arguments[CMDLN_TOKEN_SOURCESTRATEGY_AQTN].Single();
-			DataType.TryParse<bool>(arguments[CMDLN_TOKEN_STRICT].Single(), out strictMatching);
+			templateFilePath = (string)arguments[CMDLN_TOKEN_TEMPLATEFILE].Single();
+			sourceFilePath = (string)arguments[CMDLN_TOKEN_SOURCEFILE].Single();
+			baseDirectoryPath = (string)arguments[CMDLN_TOKEN_BASEDIR].Single();
+			sourceStrategyAqtn = (string)arguments[CMDLN_TOKEN_SOURCESTRATEGY_AQTN].Single();
+			strictMatching = (bool)arguments[CMDLN_TOKEN_STRICT].Single();
 			
 			hasProperties = arguments.TryGetValue(CMDLN_TOKEN_PROPERTY, out argumentValues);
 
