@@ -49,7 +49,7 @@ namespace TextMetal.Framework.AssociativeModel
 			}
 			set
 			{
-				this.Type = (value ?? "").GetType().FullName;
+				this.Type = (value ?? string.Empty).GetType().FullName;
 				this.Value = value.SafeToString();
 			}
 		}

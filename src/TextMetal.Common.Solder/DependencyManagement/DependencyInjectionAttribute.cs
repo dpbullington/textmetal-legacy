@@ -26,7 +26,7 @@ namespace TextMetal.Common.Solder.DependencyManagement
 
 		#region Fields/Constants
 
-		private string selectorKey = "";
+		private string selectorKey = string.Empty;
 
 		#endregion
 
@@ -43,7 +43,7 @@ namespace TextMetal.Common.Solder.DependencyManagement
 			}
 			set
 			{
-				this.selectorKey = (value ?? "").Trim();
+				this.selectorKey = (value ?? string.Empty).Trim();
 			}
 		}
 

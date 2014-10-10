@@ -50,11 +50,11 @@ namespace TextMetal.Common.Data
 		{
 			get
 			{
-				return (this.key ?? "").Trim();
+				return (this.key ?? string.Empty).Trim();
 			}
 			set
 			{
-				this.key = (value ?? "").Trim();
+				this.key = (value ?? string.Empty).Trim();
 			}
 		}
 
@@ -95,11 +95,11 @@ namespace TextMetal.Common.Data
 		{
 			get
 			{
-				return (this.text ?? "").Trim();
+				return (this.text ?? string.Empty).Trim();
 			}
 			set
 			{
-				this.text = (value ?? "").Trim();
+				this.text = (value ?? string.Empty).Trim();
 			}
 		}
 

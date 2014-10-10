@@ -49,7 +49,7 @@ namespace TextMetal.Common.WinForms.Forms
 			private set
 			{
 				if (this.coreHasShown || !value)
-					throw new InvalidOperationException("");
+					throw new InvalidOperationException("TODO");
 
 				this.coreHasShown = true;
 			}
@@ -167,7 +167,7 @@ namespace TextMetal.Common.WinForms.Forms
 
 		private void CoreUpdateFormText()
 		{
-			this.Text = string.Format("{0}{1}", this.CoreText.SafeToString(), this.CoreIsDirty ? this.CoreIsDirtyIndicator.SafeToString() : "");
+			this.Text = string.Format("{0}{1}", this.CoreText.SafeToString(), this.CoreIsDirty ? this.CoreIsDirtyIndicator.SafeToString() : string.Empty);
 		}
 
 		protected override void OnClosed(EventArgs e)

@@ -43,7 +43,7 @@ namespace TextMetal.Common.WinForms
 			ConsoleColor oldConsoleColor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Magenta;
 
-			var requiredArgumentTokens = argumentMap.Select(m => (!m.Value.Required ? "[" : "") + string.Format("-{0}:value{1}", m.Key, !m.Value.Bounded ? "(s)" : "") + (!m.Value.Required ? "]" : ""));
+			var requiredArgumentTokens = argumentMap.Select(m => (!m.Value.Required ? "[" : string.Empty) + string.Format("-{0}:value{1}", m.Key, !m.Value.Bounded ? "(s)" : string.Empty) + (!m.Value.Required ? "]" : string.Empty));
 
 			if ((object)requiredArgumentTokens != null)
 			{

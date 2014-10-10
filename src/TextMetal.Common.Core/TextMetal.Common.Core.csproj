@@ -61,6 +61,7 @@
     <Compile Include="Message.cs" />
     <Compile Include="Name.cs" />
     <Compile Include="Reflexion.cs" />
+    <Compile Include="StructuredTextReader.cs" />
     <Compile Include="Severity.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
   </ItemGroup>

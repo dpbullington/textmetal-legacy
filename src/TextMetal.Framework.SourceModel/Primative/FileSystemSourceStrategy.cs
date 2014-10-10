@@ -234,7 +234,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 			if (sameCounter == 0)
 				return absoluteFilePath;
 
-			string newPath = "";
+			string newPath = string.Empty;
 			for (int i = sameCounter; i < firstPathParts.Length; i++)
 			{
 				if (i > sameCounter)

@@ -154,7 +154,7 @@ namespace TextMetal.Common.UnitTests.Core._
 
 				// fake up HttpContext
 				tw = new StringWriter();
-				wr = new SimpleWorkerRequest("/webapp", "c:\\inetpub\\wwwroot\\webapp\\", "default.aspx", "", tw);
+				wr = new SimpleWorkerRequest("/webapp", "c:\\inetpub\\wwwroot\\webapp\\", "default.aspx", string.Empty, tw);
 
 				HttpContext.Current = new HttpContext(wr);
 			}
@@ -172,7 +172,7 @@ namespace TextMetal.Common.UnitTests.Core._
 
 				// fake up HttpContext
 				tw = new StringWriter();
-				wr = new SimpleWorkerRequest("/webapp", "c:\\inetpub\\wwwroot\\webapp\\", "default.aspx", "", tw);
+				wr = new SimpleWorkerRequest("/webapp", "c:\\inetpub\\wwwroot\\webapp\\", "default.aspx", string.Empty, tw);
 				HttpContext.Current = new HttpContext(wr);
 
 				Thread.Sleep(1000);

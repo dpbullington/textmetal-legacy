@@ -125,7 +125,7 @@ namespace TextMetal.Framework.TemplateModel
 			if ((object)this.Default != null)
 				defaultObj = this.Default.EvaluateExpression(templatingContext);
 
-			output = valueObj.SafeToString(this.Format, defaultObj.SafeToString("", null, true), this.DoFvIsNoW);
+			output = valueObj.SafeToString(this.Format, defaultObj.SafeToString(string.Empty, null, true), this.DoFvIsNoW);
 
 			output = templatingContext.Tokenizer.ExpandTokens(output, dynamicWildcardTokenReplacementStrategy);
 

@@ -12,10 +12,10 @@ set DB_DATABASE_MASTER=master
 set DB_SA_USERNAME=sa
 set DB_SA_PASSWORD=???
 
-set DB_DATABASE_ODS=textmetal_sample
-set DB_LOGIN_ODS=textmetal_sample_mssql_dev_login
-set DB_PASSWORD_ODS=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH
-set DB_USER_ODS=textmetal_sample_mssql_dev_user
+set DB_DATABASE=textmetal_sample
+set DB_LOGIN=textmetal_sample_mssql_dev_login
+set DB_PASSWORD=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH
+set DB_USER=textmetal_sample_mssql_dev_user
 
 
 REM MUST BE ONLY FOR DEV
@@ -24,10 +24,10 @@ REM MUST BE ONLY FOR DEV
 	-U "%DB_SA_USERNAME%" ^
 	-P "%DB_SA_PASSWORD%" ^
 	-d "%DB_DATABASE_MASTER%" ^
-	-v VAR_DB_DATABASE_ODS="%DB_DATABASE_ODS%" ^
-	-v VAR_DB_LOGIN_ODS="%DB_LOGIN_ODS%" ^
-	-v VAR_DB_PASSWORD_ODS="%DB_PASSWORD_ODS%" ^
-	-v VAR_DB_USER_ODS="%DB_USER_ODS%" ^
+	-v VAR_DB_DATABASE="%DB_DATABASE%" ^
+	-v VAR_DB_LOGIN="%DB_LOGIN%" ^
+	-v VAR_DB_PASSWORD="%DB_PASSWORD%" ^
+	-v VAR_DB_USER="%DB_USER%" ^
 	-i ".\deploy_textmetal_db_0000.sql"
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 

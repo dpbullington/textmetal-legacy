@@ -326,6 +326,9 @@ IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 copy "%SRC_DIR%\TextMetal.HostImpl.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\TextMetal.exe" "%PACKAGE_DIR%\bin\."
 IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
+copy "%SRC_DIR%\TextMetal.HostImpl.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\TextMetal.exe.config" "%PACKAGE_DIR%\bin\."
+IF %ERRORLEVEL% NEQ 0 GOTO pkgError
+
 copy "%SRC_DIR%\TextMetal.HostImpl.ConsoleTool\bin\%BUILD_FLAVOR_DIR%\TextMetal.xml" "%PACKAGE_DIR%\bin\."
 IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
@@ -346,6 +349,9 @@ IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
 
 copy "%SRC_DIR%\TextMetal.HostImpl.WindowsTool\bin\%BUILD_FLAVOR_DIR%\TextMetalStudio.exe" "%PACKAGE_DIR%\bin\."
+IF %ERRORLEVEL% NEQ 0 GOTO pkgError
+
+copy "%SRC_DIR%\TextMetal.HostImpl.WindowsTool\bin\%BUILD_FLAVOR_DIR%\TextMetalStudio.exe.config" "%PACKAGE_DIR%\bin\."
 IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
 copy "%SRC_DIR%\TextMetal.HostImpl.WindowsTool\bin\%BUILD_FLAVOR_DIR%\TextMetalStudio.xml" "%PACKAGE_DIR%\bin\."
@@ -370,6 +376,9 @@ IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 copy "%SRC_DIR%\TextMetal.Imports.nunit.console.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.console.exe" "%PACKAGE_DIR%\bin\."
 IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
+REM copy "%SRC_DIR%\TextMetal.Imports.nunit.console.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.console.exe.config" "%PACKAGE_DIR%\bin\."
+REM IF %ERRORLEVEL% NEQ 0 GOTO pkgError
+
 copy "%SRC_DIR%\TextMetal.Imports.nunit.console.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.console.xml" "%PACKAGE_DIR%\bin\."
 IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
@@ -380,6 +389,9 @@ IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
 copy "%SRC_DIR%\TextMetal.Imports.nunit.gui.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.gui.exe" "%PACKAGE_DIR%\bin\."
 IF %ERRORLEVEL% NEQ 0 GOTO pkgError
+
+REM copy "%SRC_DIR%\TextMetal.Imports.nunit.gui.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.gui.exe.config" "%PACKAGE_DIR%\bin\."
+REM IF %ERRORLEVEL% NEQ 0 GOTO pkgError
 
 copy "%SRC_DIR%\TextMetal.Imports.nunit.gui.exe\bin\%BUILD_FLAVOR_DIR%\TextMetal.Imports.nunit.gui.xml" "%PACKAGE_DIR%\bin\."
 IF %ERRORLEVEL% NEQ 0 GOTO pkgError

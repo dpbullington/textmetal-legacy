@@ -536,7 +536,7 @@ namespace TextMetal.Common.Solder.DependencyManagement
 			{
 				// vCurrent: just assumes default selector
 				// vNext: will use DependencyInjectionAttribute auto-wire on target type contructor for selector
-				invocationArguments[index++] = dependencyManager.ResolveDependency(parameterType, "");
+				invocationArguments[index++] = dependencyManager.ResolveDependency(parameterType, string.Empty);
 			}
 
 			if (this.UseNonPublicDefault)

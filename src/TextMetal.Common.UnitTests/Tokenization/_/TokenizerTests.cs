@@ -92,22 +92,22 @@ namespace TextMetal.Common.UnitTests.Tokenization._
 			Expect.Once.On(mockTokenReplacementStrategy).Method("Evaluate").With(new object[] { null }).Will(Throw.Exception(new Exception()));
 
 			Expect.Once.On(mockTokenReplacementStrategies).Method("TryGetValue").With(new EqualMatcher("a"), new AndMatcher(new ArgumentsMatcher.OutMatcher(), ForceTrueMatcher.Instance)).Will(new SetNamedParameterAction("value", mockTokenReplacementStrategy), Return.Value(true));
-			Expect.Once.On(mockTokenReplacementStrategy).Method("Evaluate").With(new object[] { null }).Will(Return.Value(""));
+			Expect.Once.On(mockTokenReplacementStrategy).Method("Evaluate").With(new object[] { null }).Will(Return.Value(string.Empty));
 
 			Expect.Once.On(mockTokenReplacementStrategies).Method("TryGetValue").With(new EqualMatcher("b"), new AndMatcher(new ArgumentsMatcher.OutMatcher(), ForceTrueMatcher.Instance)).Will(new SetNamedParameterAction("value", mockTokenReplacementStrategy), Return.Value(true));
-			Expect.Once.On(mockTokenReplacementStrategy).Method("Evaluate").With(new object[] { null }).Will(Return.Value(""));
+			Expect.Once.On(mockTokenReplacementStrategy).Method("Evaluate").With(new object[] { null }).Will(Return.Value(string.Empty));
 
 			Expect.Once.On(mockTokenReplacementStrategies).Method("TryGetValue").With(new EqualMatcher("c"), new AndMatcher(new ArgumentsMatcher.OutMatcher(), ForceTrueMatcher.Instance)).Will(new SetNamedParameterAction("value", mockTokenReplacementStrategy), Return.Value(true));
-			Expect.Once.On(mockTokenReplacementStrategy).Method("Evaluate").With(new object[] { null }).Will(Return.Value(""));
+			Expect.Once.On(mockTokenReplacementStrategy).Method("Evaluate").With(new object[] { null }).Will(Return.Value(string.Empty));
 
 			Expect.Once.On(mockTokenReplacementStrategies).Method("TryGetValue").With(new EqualMatcher("d"), new AndMatcher(new ArgumentsMatcher.OutMatcher(), ForceTrueMatcher.Instance)).Will(new SetNamedParameterAction("value", mockTokenReplacementStrategy), Return.Value(true));
 			Expect.Once.On(mockTokenReplacementStrategy).Method("Evaluate").With(new object[] { null }).Will(Throw.Exception(new Exception()));
 
 			tokenizer = new Tokenizer(mockTokenReplacementStrategies, false);
 
-			tokenizedValue = "";
+			tokenizedValue = string.Empty;
 			expandedValue = tokenizer.ExpandTokens(tokenizedValue);
-			expectedValue = "";
+			expectedValue = string.Empty;
 			Assert.AreEqual(expectedValue, expandedValue);
 
 			tokenizedValue = "...{myNoSemanticToken}...";
@@ -190,22 +190,22 @@ namespace TextMetal.Common.UnitTests.Tokenization._
 			Expect.Once.On(mockTokenReplacementStrategy).Method("Evaluate").With(new object[] { null }).Will(Throw.Exception(new Exception()));
 
 			Expect.Once.On(mockTokenReplacementStrategies).Method("TryGetValue").With(new EqualMatcher("a"), new AndMatcher(new ArgumentsMatcher.OutMatcher(), ForceTrueMatcher.Instance)).Will(new SetNamedParameterAction("value", mockTokenReplacementStrategy), Return.Value(true));
-			Expect.Once.On(mockTokenReplacementStrategy).Method("Evaluate").With(new object[] { null }).Will(Return.Value(""));
+			Expect.Once.On(mockTokenReplacementStrategy).Method("Evaluate").With(new object[] { null }).Will(Return.Value(string.Empty));
 
 			Expect.Once.On(mockTokenReplacementStrategies).Method("TryGetValue").With(new EqualMatcher("b"), new AndMatcher(new ArgumentsMatcher.OutMatcher(), ForceTrueMatcher.Instance)).Will(new SetNamedParameterAction("value", mockTokenReplacementStrategy), Return.Value(true));
-			Expect.Once.On(mockTokenReplacementStrategy).Method("Evaluate").With(new object[] { null }).Will(Return.Value(""));
+			Expect.Once.On(mockTokenReplacementStrategy).Method("Evaluate").With(new object[] { null }).Will(Return.Value(string.Empty));
 
 			Expect.Once.On(mockTokenReplacementStrategies).Method("TryGetValue").With(new EqualMatcher("c"), new AndMatcher(new ArgumentsMatcher.OutMatcher(), ForceTrueMatcher.Instance)).Will(new SetNamedParameterAction("value", mockTokenReplacementStrategy), Return.Value(true));
-			Expect.Once.On(mockTokenReplacementStrategy).Method("Evaluate").With(new object[] { null }).Will(Return.Value(""));
+			Expect.Once.On(mockTokenReplacementStrategy).Method("Evaluate").With(new object[] { null }).Will(Return.Value(string.Empty));
 
 			Expect.Once.On(mockTokenReplacementStrategies).Method("TryGetValue").With(new EqualMatcher("d"), new AndMatcher(new ArgumentsMatcher.OutMatcher(), ForceTrueMatcher.Instance)).Will(new SetNamedParameterAction("value", mockTokenReplacementStrategy), Return.Value(true));
 			Expect.Once.On(mockTokenReplacementStrategy).Method("Evaluate").With(new object[] { null }).Will(Throw.Exception(new Exception()));
 
 			tokenizer = new Tokenizer(mockTokenReplacementStrategies, true);
 
-			tokenizedValue = "";
+			tokenizedValue = string.Empty;
 			expandedValue = tokenizer.ExpandTokens(tokenizedValue);
-			expectedValue = "";
+			expectedValue = string.Empty;
 			Assert.AreEqual(expectedValue, expandedValue);
 
 			tokenizedValue = "...{myNoSemanticToken}...";
@@ -291,22 +291,22 @@ namespace TextMetal.Common.UnitTests.Tokenization._
 			Expect.Once.On(mockWildcardTokenReplacementStrategy).Method("Evaluate").With(new object[] { "myErrSemanticToken", null }).Will(Throw.Exception(new Exception()));
 
 			Expect.Once.On(mockTokenReplacementStrategies).Method("TryGetValue").With(new EqualMatcher("a"), new AndMatcher(new ArgumentsMatcher.OutMatcher(), ForceTrueMatcher.Instance)).Will(new SetNamedParameterAction("value", null), Return.Value(false));
-			Expect.Once.On(mockWildcardTokenReplacementStrategy).Method("Evaluate").With(new object[] { "a", null }).Will(Return.Value(""));
+			Expect.Once.On(mockWildcardTokenReplacementStrategy).Method("Evaluate").With(new object[] { "a", null }).Will(Return.Value(string.Empty));
 
 			Expect.Once.On(mockTokenReplacementStrategies).Method("TryGetValue").With(new EqualMatcher("b"), new AndMatcher(new ArgumentsMatcher.OutMatcher(), ForceTrueMatcher.Instance)).Will(new SetNamedParameterAction("value", null), Return.Value(false));
-			Expect.Once.On(mockWildcardTokenReplacementStrategy).Method("Evaluate").With(new object[] { "b", null }).Will(Return.Value(""));
+			Expect.Once.On(mockWildcardTokenReplacementStrategy).Method("Evaluate").With(new object[] { "b", null }).Will(Return.Value(string.Empty));
 
 			Expect.Once.On(mockTokenReplacementStrategies).Method("TryGetValue").With(new EqualMatcher("c"), new AndMatcher(new ArgumentsMatcher.OutMatcher(), ForceTrueMatcher.Instance)).Will(new SetNamedParameterAction("value", null), Return.Value(false));
-			Expect.Once.On(mockWildcardTokenReplacementStrategy).Method("Evaluate").With(new object[] { "c", null }).Will(Return.Value(""));
+			Expect.Once.On(mockWildcardTokenReplacementStrategy).Method("Evaluate").With(new object[] { "c", null }).Will(Return.Value(string.Empty));
 
 			Expect.Once.On(mockTokenReplacementStrategies).Method("TryGetValue").With(new EqualMatcher("d"), new AndMatcher(new ArgumentsMatcher.OutMatcher(), ForceTrueMatcher.Instance)).Will(new SetNamedParameterAction("value", null), Return.Value(false));
 			Expect.Once.On(mockWildcardTokenReplacementStrategy).Method("Evaluate").With(new object[] { "d", null }).Will(Throw.Exception(new Exception()));
 
 			tokenizer = new Tokenizer(mockTokenReplacementStrategies, false);
 
-			tokenizedValue = "";
+			tokenizedValue = string.Empty;
 			expandedValue = tokenizer.ExpandTokens(tokenizedValue, mockWildcardTokenReplacementStrategy);
-			expectedValue = "";
+			expectedValue = string.Empty;
 			Assert.AreEqual(expectedValue, expandedValue);
 
 			tokenizedValue = "...{myNoSemanticToken}...";

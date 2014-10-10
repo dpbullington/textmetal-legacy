@@ -37,7 +37,7 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 			mockery = new Mockery();
 			mockDependencyManager = mockery.NewMock<IDependencyManager>();
 
-			Expect.Once.On(mockDependencyManager).Method("ResolveDependency").With(typeof(char[]), "").Will(Return.Value(new char[] { 'x', 'y', 'z' }));
+			Expect.Once.On(mockDependencyManager).Method("ResolveDependency").With(typeof(char[]), string.Empty).Will(Return.Value(new char[] { 'x', 'y', 'z' }));
 
 			activatorDependencyResolution = ActivatorDependencyResolution.OfType<string, char[]>();
 
@@ -60,8 +60,8 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 			mockery = new Mockery();
 			mockDependencyManager = mockery.NewMock<IDependencyManager>();
 
-			Expect.Once.On(mockDependencyManager).Method("ResolveDependency").With(typeof(char), "").Will(Return.Value('x'));
-			Expect.Once.On(mockDependencyManager).Method("ResolveDependency").With(typeof(int), "").Will(Return.Value(10));
+			Expect.Once.On(mockDependencyManager).Method("ResolveDependency").With(typeof(char), string.Empty).Will(Return.Value('x'));
+			Expect.Once.On(mockDependencyManager).Method("ResolveDependency").With(typeof(int), string.Empty).Will(Return.Value(10));
 
 			activatorDependencyResolution = ActivatorDependencyResolution.OfType<string, char, int>();
 

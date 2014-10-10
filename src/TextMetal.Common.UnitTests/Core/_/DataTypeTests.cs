@@ -33,7 +33,7 @@ namespace TextMetal.Common.UnitTests.Core._
 		public void ShouldCheckIsNullOrWhiteSpaceTest()
 		{
 			Assert.IsTrue(DataType.IsNullOrWhiteSpace(null));
-			Assert.IsTrue(DataType.IsNullOrWhiteSpace(""));
+			Assert.IsTrue(DataType.IsNullOrWhiteSpace(string.Empty));
 			Assert.IsTrue(DataType.IsNullOrWhiteSpace("   "));
 			Assert.IsFalse(DataType.IsNullOrWhiteSpace("daniel"));
 			Assert.IsFalse(DataType.IsNullOrWhiteSpace("   daniel     "));
@@ -163,7 +163,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			object ovalue;
 			bool result;
 
-			result = DataType.TryParse(null, "", out ovalue);
+			result = DataType.TryParse(null, string.Empty, out ovalue);
 		}
 
 		[Test]
@@ -587,9 +587,9 @@ namespace TextMetal.Common.UnitTests.Core._
 			Assert.AreEqual("123.46", DataType.SafeToString(123.456, "n"));
 			Assert.AreEqual("urn:foo", DataType.SafeToString(new Uri("urn:foo"), "n"));
 
-			Assert.AreEqual("", DataType.SafeToString((object)null, null));
+			Assert.AreEqual(string.Empty, DataType.SafeToString((object)null, null));
 			Assert.AreEqual(null, DataType.SafeToString((object)null, null, null));
-			Assert.AreEqual("1", DataType.SafeToString((object)"", null, "1", true));
+			Assert.AreEqual("1", DataType.SafeToString((object)string.Empty, null, "1", true));
 		}
 
 		[Test]

@@ -39,7 +39,7 @@ namespace TextMetal.Common.WinForms.Controls
 				tempListItems.Insert(0, ListItem<TValue>.Empty);
 
 			foreach (IListItem<TValue> listItem in tempListItems)
-				listItem.Text = (listItem.Text ?? "").ToUpper();
+				listItem.Text = (listItem.Text ?? string.Empty).ToUpper();
 
 			comboBox.BeginUpdate();
 			comboBox.Items.Clear();
@@ -117,7 +117,7 @@ namespace TextMetal.Common.WinForms.Controls
 				throw new ArgumentNullException("control");
 
 			if (control is MaskedTextBox)
-				return (object)((MaskedTextBox)control).MaskedTextProvider == null ? "" : ((MaskedTextBox)control).MaskedTextProvider.ToString(false, false);
+				return (object)((MaskedTextBox)control).MaskedTextProvider == null ? string.Empty : ((MaskedTextBox)control).MaskedTextProvider.ToString(false, false);
 			else
 				return control.Text;
 		}
@@ -177,7 +177,7 @@ namespace TextMetal.Common.WinForms.Controls
 			else
 			{
 				control.BackColor = previousBackgroundColor;
-				control.CoreGetParentForm().CoreSetToolTipText(control, "");
+				control.CoreGetParentForm().CoreSetToolTipText(control, string.Empty);
 			}
 		}
 

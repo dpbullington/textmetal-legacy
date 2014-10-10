@@ -322,7 +322,7 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			valueType = value.__.GetType();
 
 			commandParameter = this.UnitOfWork.CreateParameter(ParameterDirection.Input, AdoNetHelper.InferDbTypeForClrType(valueType), 0, 0, 0, true, parameterName, value.__);
-			this.SqlNuance.ParameterMagic(this.unitOfWork, commandParameter, "");
+			this.SqlNuance.ParameterMagic(this.unitOfWork, commandParameter, string.Empty);
 			this.CommandParameters.Add(parameterName, commandParameter);
 
 			this.Strings.Append(parameterName);

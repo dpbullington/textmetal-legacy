@@ -46,7 +46,7 @@ namespace TextMetal.Common.UnitTests.Core._
 
 			// null, ""
 			mockObject = null;
-			propertyName = "";
+			propertyName = string.Empty;
 
 			result = Reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
 
@@ -73,7 +73,7 @@ namespace TextMetal.Common.UnitTests.Core._
 
 			// !null, ""
 			mockObject = new Dictionary<string, object>();
-			propertyName = "";
+			propertyName = string.Empty;
 
 			result = Reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
 
@@ -111,7 +111,7 @@ namespace TextMetal.Common.UnitTests.Core._
 
 			// null, ""
 			mockObject = null;
-			propertyName = "";
+			propertyName = string.Empty;
 
 			result = Reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
 
@@ -138,7 +138,7 @@ namespace TextMetal.Common.UnitTests.Core._
 
 			// !null, ""
 			mockObject = new Dictionary<string, object>();
-			propertyName = "";
+			propertyName = string.Empty;
 
 			result = Reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
 
@@ -178,7 +178,7 @@ namespace TextMetal.Common.UnitTests.Core._
 
 			// null, ""
 			mockObject = null;
-			propertyName = "";
+			propertyName = string.Empty;
 
 			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
 
@@ -205,7 +205,7 @@ namespace TextMetal.Common.UnitTests.Core._
 
 			// !null, ""
 			mockObject = new Dictionary<string, object>();
-			propertyName = "";
+			propertyName = string.Empty;
 
 			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
 
@@ -442,7 +442,7 @@ namespace TextMetal.Common.UnitTests.Core._
 
 			// null, ""
 			mockObject = null;
-			propertyName = "";
+			propertyName = string.Empty;
 
 			result = Reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
 
@@ -469,7 +469,7 @@ namespace TextMetal.Common.UnitTests.Core._
 
 			// !null, ""
 			mockObject = new MockObject();
-			propertyName = "";
+			propertyName = string.Empty;
 
 			result = Reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
 
@@ -529,7 +529,7 @@ namespace TextMetal.Common.UnitTests.Core._
 
 			// null, ""
 			mockObject = null;
-			propertyName = "";
+			propertyName = string.Empty;
 
 			result = Reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
 
@@ -556,7 +556,7 @@ namespace TextMetal.Common.UnitTests.Core._
 
 			// !null, ""
 			mockObject = new MockObject();
-			propertyName = "";
+			propertyName = string.Empty;
 
 			result = Reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
 
@@ -617,7 +617,7 @@ namespace TextMetal.Common.UnitTests.Core._
 
 			// null, ""
 			mockObject = null;
-			propertyName = "";
+			propertyName = string.Empty;
 
 			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
 
@@ -644,7 +644,7 @@ namespace TextMetal.Common.UnitTests.Core._
 
 			// !null, ""
 			mockObject = new MockObject();
-			propertyName = "";
+			propertyName = string.Empty;
 
 			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
 

@@ -189,7 +189,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			{
 				using (MessageForm messageForm = new MessageForm()
 												{
-													Message = "",
+													Message = string.Empty,
 													Messages = messages
 												})
 					messageForm.ShowDialog(this);

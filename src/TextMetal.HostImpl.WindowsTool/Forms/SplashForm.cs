@@ -35,7 +35,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			stream = this.GetType().Assembly.GetManifestResourceStream("TextMetal.HostImpl.WindowsTool.Images.SplashScreen.png");
 
 			if ((object)stream == null)
-				throw new InvalidOperationException("");
+				throw new InvalidOperationException("TODO");
 
 			image = Image.FromStream(stream);
 

@@ -6,7 +6,7 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
 
-	<!-- FAILS AS DEFECT -->
+	<!-- FAILS AS DEFECT: GitHub Issue #65 -->
 	<!--<Scrizzle newline="true">
 		<Scrizzle.Text>
 			<Value data="Scrizzle was here yo." />

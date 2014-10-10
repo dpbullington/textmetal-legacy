@@ -142,7 +142,7 @@ namespace TextMetal.Common.Core
 		/// <returns> A formatted string value if the value is not null; otherwise the default value specified. </returns>
 		public static string SafeToString<TValue>(this TValue value)
 		{
-			return SafeToString<TValue>(value, null, "");
+			return SafeToString<TValue>(value, null, string.Empty);
 		}
 
 		/// <summary>
@@ -154,7 +154,7 @@ namespace TextMetal.Common.Core
 		/// <returns> A formatted string value if the value is not null; otherwise the default value specified. </returns>
 		public static string SafeToString<TValue>(this TValue value, string format)
 		{
-			return SafeToString<TValue>(value, format, "");
+			return SafeToString<TValue>(value, format, string.Empty);
 		}
 
 		/// <summary>
@@ -183,7 +183,7 @@ namespace TextMetal.Common.Core
 		{
 			string retval;
 
-			//@default = (@default ?? "");
+			//@default = (@default ?? string.Empty);
 
 			if ((object)value == null)
 				return @default;

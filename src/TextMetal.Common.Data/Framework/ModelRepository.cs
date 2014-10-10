@@ -132,7 +132,7 @@ namespace TextMetal.Common.Data.Framework
 				string value;
 
 				// {0} == GetApplicationUserSpecificDirectoryPath()
-				value = Path.Combine(string.Format(this.DatabaseDirectoryPath ?? "", GetApplicationUserSpecificDirectoryPath()), this.DatabaseFileName);
+				value = Path.Combine(string.Format(this.DatabaseDirectoryPath ?? string.Empty, GetApplicationUserSpecificDirectoryPath()), this.DatabaseFileName);
 
 				return value;
 			}
@@ -229,26 +229,26 @@ namespace TextMetal.Common.Data.Framework
 		public virtual TModel CreateModel<TModel>()
 			where TModel : class, IModelObject
 		{
-			return DependencyManager.AppDomainInstance.ResolveDependency<TModel>("");
+			return DependencyManager.AppDomainInstance.ResolveDependency<TModel>(string.Empty);
 		}
 
 		public virtual TRequestModel CreateRequestModel<TRequestModel>()
 			where TRequestModel : class, IRequestModelObject
 		{
-			return DependencyManager.AppDomainInstance.ResolveDependency<TRequestModel>("");
+			return DependencyManager.AppDomainInstance.ResolveDependency<TRequestModel>(string.Empty);
 		}
 
 		public virtual TResponseModel CreateResponseModel<TResultModel, TResponseModel>()
 			where TResultModel : class, IResultModelObject
 			where TResponseModel : class, IResponseModelObject<TResultModel>
 		{
-			return DependencyManager.AppDomainInstance.ResolveDependency<TResponseModel>("");
+			return DependencyManager.AppDomainInstance.ResolveDependency<TResponseModel>(string.Empty);
 		}
 
 		public virtual TResultModel CreateResultModel<TResultModel>()
 			where TResultModel : class, IResultModelObject
 		{
-			return DependencyManager.AppDomainInstance.ResolveDependency<TResultModel>("");
+			return DependencyManager.AppDomainInstance.ResolveDependency<TResultModel>(string.Empty);
 		}
 
 		public virtual bool Discard<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject
@@ -877,7 +877,7 @@ namespace TextMetal.Common.Data.Framework
 				throw new ArgumentNullException("connectionString");
 
 			// {0} = this.DatabaseFilePath
-			connectionString = string.Format(connectionString ?? "", this.DatabaseFilePath);
+			connectionString = string.Format(connectionString ?? string.Empty, this.DatabaseFilePath);
 		}
 
 		protected virtual void OnPreUpdateModel<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject
@@ -895,7 +895,7 @@ namespace TextMetal.Common.Data.Framework
 		protected virtual void OnProfileTacticCommand(RepositoryOperation repositoryOperation, ITacticCommand tacticCommand)
 		{
 			/* THIS METHOD SHOULD NOT BE DEFINED IN RELEASE/PRODUCTION BUILDS */
-			string value = "";
+			string value = string.Empty;
 			int i;
 			const string INDENT_CHAR = "\t";
 

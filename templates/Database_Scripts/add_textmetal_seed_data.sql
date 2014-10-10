@@ -22,8 +22,8 @@ INSERT INTO [global].[User]
 	);
 
 
-DECLARE @UserId [int]
-SET @UserId = SCOPE_IDENTITY()
+DECLARE @UserId [int];
+SET @UserId = SCOPE_IDENTITY();
 
 
 INSERT INTO [application].[Organization]
@@ -48,8 +48,8 @@ INSERT INTO [application].[Organization]
 	);
 
 
-DECLARE @OrganizationId [int]
-SET @OrganizationId = SCOPE_IDENTITY()
+DECLARE @OrganizationId [int];
+SET @OrganizationId = SCOPE_IDENTITY();
 
 
 INSERT INTO [application].[Member]
@@ -81,8 +81,8 @@ INSERT INTO [application].[Member]
 		0
 	);
 
-DECLARE @MemberId [int]
-SET @MemberId = SCOPE_IDENTITY()
+DECLARE @MemberId [int];
+SET @MemberId = SCOPE_IDENTITY();
 
 
 GO

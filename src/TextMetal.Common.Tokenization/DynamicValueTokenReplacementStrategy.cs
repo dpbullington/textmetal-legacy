@@ -149,7 +149,7 @@ namespace TextMetal.Common.Tokenization
 		/// <returns> A value. </returns>
 		public static object StaticMethodResolverPing(string value)
 		{
-			return (value ?? "").ToUpper();
+			return (value ?? string.Empty).ToUpper();
 		}
 
 		/// <summary>

@@ -462,7 +462,7 @@ namespace TextMetal.Common.UnitTests.Core._
 
 			args = new List<string>();
 			args.Add("arg0");
-			args.Add("");
+			args.Add(string.Empty);
 			args.Add("-");
 			args.Add("-arg1");
 			args.Add("-arg2:");

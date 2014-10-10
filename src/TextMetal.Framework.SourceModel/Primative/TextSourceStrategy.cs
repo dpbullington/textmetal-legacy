@@ -31,15 +31,15 @@ namespace TextMetal.Framework.SourceModel.Primative
 		{
 			const string PROP_TOKEN_FIRST_ROW_CONTAINS_COLUMN_HEADINGS = "FirstRowIsHeader";
 			const string PROP_TOKEN_FIELD_DELIMITER = "FieldDelimiter";
-			//const string PROP_TOKEN_ROW_DELIMITER = "RowDelimiter";
-			string line;
+			const string PROP_TOKEN_ROW_DELIMITER = "RowDelimiter";
+			
+			IList<string> values;
+			bool firstRowIsHeader;
+			string rowDelimiter, fieldDelimiter;
+			string[] headerNames = new string[] { };
+
 			ObjectConstruct objectConstruct00;
 			ArrayConstruct arrayConstruct00;
-			IList<string> values;
-			bool firstRowIsHeader = false;
-			string firstRowIsHeaderStr;
-			string fieldDelimiter;
-			string[] headers = null;
 
 			if ((object)sourceFilePath == null)
 				throw new ArgumentNullException("sourceFilePath");
@@ -57,22 +57,28 @@ namespace TextMetal.Framework.SourceModel.Primative
 			arrayConstruct00.Name = "TextFileLines";
 			objectConstruct00.Items.Add(arrayConstruct00);
 
-			firstRowIsHeaderStr = null;
+			firstRowIsHeader = false;
 			if (properties.TryGetValue(PROP_TOKEN_FIRST_ROW_CONTAINS_COLUMN_HEADINGS, out values))
 			{
 				if ((object)values != null && values.Count == 1)
 				{
-					firstRowIsHeaderStr = values[0];
-					if (!DataType.TryParse<bool>(firstRowIsHeaderStr, out firstRowIsHeader))
+					if (!DataType.TryParse<bool>(values[0], out firstRowIsHeader))
 						firstRowIsHeader = false;
 				}
 			}
 
-			fieldDelimiter = null;
+			fieldDelimiter = string.Empty;
 			if (properties.TryGetValue(PROP_TOKEN_FIELD_DELIMITER, out values))
 			{
 				if ((object)values != null && values.Count == 1)
 					fieldDelimiter = values[0];
+			}
+
+			rowDelimiter = string.Empty;
+			if (properties.TryGetValue(PROP_TOKEN_ROW_DELIMITER, out values))
+			{
+				if ((object)values != null && values.Count == 1)
+					rowDelimiter = values[0];
 			}
 
 			if (!DataType.IsNullOrWhiteSpace(fieldDelimiter))
@@ -84,56 +90,26 @@ namespace TextMetal.Framework.SourceModel.Primative
 
 			using (StreamReader streamReader = File.OpenText(sourceFilePath))
 			{
-				int i = 0;
-
-				while (((line = streamReader.ReadLine()) ?? "").Trim() != "")
+				using (StructuredTextReader structuredTextReader = new StructuredTextReader(streamReader, firstRowIsHeader, headerNames, fieldDelimiter, rowDelimiter))
 				{
 					ObjectConstruct objectConstruct01;
 					PropertyConstruct propertyConstruct01;
-					string[] temp;
 
-					objectConstruct01 = new ObjectConstruct();
-					arrayConstruct00.Items.Add(objectConstruct01);
+					var rows = structuredTextReader.ReadRowsUsingDelimiters();
 
-					if (DataType.IsNullOrWhiteSpace(fieldDelimiter))
+					foreach (var row in rows)
 					{
-						propertyConstruct01 = new PropertyConstruct();
-						propertyConstruct01.Name = "TextFileLine";
-						propertyConstruct01.RawValue = line;
-						objectConstruct01.Items.Add(propertyConstruct01);
-					}
-					else
-					{
-						temp = line.Split(fieldDelimiter.ToCharArray());
+						objectConstruct01 = new ObjectConstruct();
+						arrayConstruct00.Items.Add(objectConstruct01);
 
-						if (firstRowIsHeader && i == 0)
+						foreach (var field in row)
 						{
-							headers = temp;
-							arrayConstruct00.Items.Remove(objectConstruct01);
-							i++;
-							continue;
-						}
-
-						if ((object)temp != null)
-						{
-							int j = 0;
-
-							foreach (string pmet in temp)
-							{
-								propertyConstruct01 = new PropertyConstruct();
-
-								if (firstRowIsHeader && (object)headers != null)
-									propertyConstruct01.Name = string.Format("{0}", Name.GetConstantCase(headers[j++]));
-								else
-									propertyConstruct01.Name = string.Format("TextFileField_{0:00000000}", j++);
-
-								propertyConstruct01.RawValue = pmet;
-								objectConstruct01.Items.Add(propertyConstruct01);
-							}
+							propertyConstruct01 = new PropertyConstruct();
+							propertyConstruct01.Name = DataType.IsNullOrWhiteSpace(field.Key) ? "TextFileLine" : field.Key;
+							propertyConstruct01.RawValue = field.Value;
+							objectConstruct01.Items.Add(propertyConstruct01);
 						}
 					}
-
-					i++;
 				}
 			}
 

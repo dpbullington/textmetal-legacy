@@ -199,7 +199,7 @@ namespace TextMetal.Common.Xml
 		/// <param name="attributes"> The current attributes for the current XML object. </param>
 		/// <param name="overrideCurrentXmlTextObject"> A special overriding XML text object. </param>
 		/// <returns> The created current XML object. </returns>
-		private IXmlObject DeserializeFromXml(Stack<IXmlObject> contextStack, XmlName previousElementXmlName, XmlName currentElementXmlName, IDictionary<XmlName, string> attributes, IXmlTextObject overrideCurrentXmlTextObject)
+		private IXmlObject DeserializeFromXml(IXmlLineInfo xmlLineInfo, Stack<IXmlObject> contextStack, XmlName previousElementXmlName, XmlName currentElementXmlName, IDictionary<XmlName, string> attributes, IXmlTextObject overrideCurrentXmlTextObject)
 		{
 			IXmlObject currentXmlObject;
 			Type currentType;
@@ -520,12 +520,15 @@ namespace TextMetal.Common.Xml
 			bool isEmptyElement, isTextElement;
 			Dictionary<XmlName, string> attributes;
 
+			IXmlLineInfo xmlLineInfo;
+
 			if ((object)xmlReader == null)
 				throw new ArgumentNullException("xmlReader");
 
 			// setup contextual data
 			attributes = new Dictionary<XmlName, string>();
 			contextStack = new Stack<IXmlObject>();
+			xmlLineInfo = xmlReader as IXmlLineInfo;
 
 			// walk the XML document
 			while (xmlReader.Read())
@@ -541,15 +544,15 @@ namespace TextMetal.Common.Xml
 					isTextElement = IsTextElement(contextStack, elementXmlName ?? new XmlName());
 
 					// get the current XML object as XML text object
-					currentXmlObject = this.DeserializeFromXmlText(contextStack, xmlReader.Value, isTextElement ? elementXmlName : null);
+					currentXmlObject = this.DeserializeFromXmlText(xmlLineInfo, contextStack, xmlReader.Value, isTextElement ? elementXmlName : null);
 
 					// is this a text element? if so, deserialize into it in a special maner
 					if (isTextElement)
-						this.DeserializeFromXml(contextStack, null, elementXmlName, attributes, (IXmlTextObject)currentXmlObject);
+						this.DeserializeFromXml(xmlLineInfo, contextStack, null, elementXmlName, attributes, (IXmlTextObject)currentXmlObject);
 				}
 				else if (xmlReader.NodeType == XmlNodeType.Element) // actual elements
 				{
-					Debug.WriteLine(string.Format("{2} <{0}{1}>", xmlReader.LocalName, xmlReader.IsEmptyElement ? " /" : "", xmlReader.IsEmptyElement ? "empty" : "begin"));
+					Debug.WriteLine(string.Format("{2} <{0}{1}>", xmlReader.LocalName, xmlReader.IsEmptyElement ? " /" : string.Empty, xmlReader.IsEmptyElement ? "empty" : "begin"));
 
 					// stash away previous element
 					//previousElementXmlName = elementXmlName;
@@ -599,7 +602,7 @@ namespace TextMetal.Common.Xml
 					if (!isTextElement)
 					{
 						// deserialize current XML object
-						currentXmlObject = this.DeserializeFromXml(contextStack, previousElementXmlName, elementXmlName, attributes, null);
+						currentXmlObject = this.DeserializeFromXml(xmlLineInfo, contextStack, previousElementXmlName, elementXmlName, attributes, null);
 					}
 					else
 					{
@@ -678,7 +681,7 @@ namespace TextMetal.Common.Xml
 		/// <param name="textValue"> The string value of the text element. </param>
 		/// <param name="xmlName"> The in-effect XML name. </param>
 		/// <returns> The created current XML text object. </returns>
-		private IXmlTextObject DeserializeFromXmlText(Stack<IXmlObject> contextStack, string textValue, XmlName xmlName)
+		private IXmlTextObject DeserializeFromXmlText(IXmlLineInfo xmlLineInfo, Stack<IXmlObject> contextStack, string textValue, XmlName xmlName)
 		{
 			IXmlTextObject currentXmlTextObject;
 			IXmlObject parentXmlObject;
@@ -1125,7 +1128,7 @@ namespace TextMetal.Common.Xml
 
 					svalue = ovalue.SafeToString();
 
-					xmlWriter.WriteElementString("", currentPropertyToChildElementMapping.Value.LocalName, currentPropertyToChildElementMapping.Value.NamespaceUri, svalue);
+					xmlWriter.WriteElementString(string.Empty, currentPropertyToChildElementMapping.Value.LocalName, currentPropertyToChildElementMapping.Value.NamespaceUri, svalue);
 				}
 
 				// write child elements

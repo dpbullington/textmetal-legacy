@@ -47,6 +47,8 @@ namespace TextMetal.Common.Tokenization
 
 		#region Fields/Constants
 
+		private const char TOKENIZER_LOGICAL_PROPERTY_PATH_CHAR = '.';
+
 		private const string TOKENIZER_REGEX =
 			@"\$ \{" +
 			@"(?: [ ]* ( " + TOKEN_ID_REGEX + " ){1,1} )" +
@@ -54,7 +56,6 @@ namespace TextMetal.Common.Tokenization
 			@"[ ]* \}";
 
 		private const string TOKEN_ID_REGEX = Constants.GLOBAL_ID_REGEX_UNBOUNDED + @"{0,1023}";
-
 		private readonly List<string> previousExpansionTokens = new List<string>();
 		private readonly bool strictMatching;
 		private readonly IDictionary<string, ITokenReplacementStrategy> tokenReplacementStrategies;
@@ -139,12 +140,12 @@ namespace TextMetal.Common.Tokenization
 		{
 			string[] args;
 
-			if (DataType.IsNullOrWhiteSpace((call ?? "").Trim()))
+			if (DataType.IsNullOrWhiteSpace((call ?? string.Empty).Trim()))
 				return new string[] { };
 
 			// fixup argument list
-			call = Regex.Replace(call, "^ [ ]* `", "", RegexOptions.IgnorePatternWhitespace);
-			call = Regex.Replace(call, "` [ ]* $", "", RegexOptions.IgnorePatternWhitespace);
+			call = Regex.Replace(call, "^ [ ]* `", string.Empty, RegexOptions.IgnorePatternWhitespace);
+			call = Regex.Replace(call, "` [ ]* $", string.Empty, RegexOptions.IgnorePatternWhitespace);
 			call = Regex.Replace(call, "` [ ]* , [ ]* `", "`", RegexOptions.IgnorePatternWhitespace);
 
 			args = call.Split('`');
@@ -173,8 +174,6 @@ namespace TextMetal.Common.Tokenization
 
 		public static bool IsValidTokenId(string token)
 		{
-			// [a-zA-Z_\.][a-zA-Z_\.0-9]
-			// 65-90, 97-122, 95, 46, 48-57
 			return Regex.IsMatch(token, TokenIdRegEx, RegexOptions.IgnorePatternWhitespace);
 		}
 
@@ -232,7 +231,7 @@ namespace TextMetal.Common.Tokenization
 				return GetOriginalValueOrThrowExecption(this.StrictMatching, match.Value, "token missing");
 
 			// break any token paths into token list
-			tokens = rawToken.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+			tokens = rawToken.Split(new char[] { TOKENIZER_LOGICAL_PROPERTY_PATH_CHAR }, StringSplitOptions.RemoveEmptyEntries);
 
 			if ((object)tokens == null ||
 				tokens.Length <= 0)

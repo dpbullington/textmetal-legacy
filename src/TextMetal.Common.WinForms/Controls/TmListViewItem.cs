@@ -27,7 +27,7 @@ namespace TextMetal.Common.WinForms.Controls
 				throw new ArgumentNullException("strings");
 
 			for (int i = 0; i < strings.Length; i++)
-				strings[i] = (strings[i] ?? "").Trim().ToUpper();
+				strings[i] = (strings[i] ?? string.Empty).Trim().ToUpper();
 
 			return strings;
 		}

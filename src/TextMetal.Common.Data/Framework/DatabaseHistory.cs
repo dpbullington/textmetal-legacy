@@ -50,11 +50,11 @@ namespace TextMetal.Common.Data.Framework
 		{
 			get
 			{
-				return (this.doesSchemaTrackingExistCommandText ?? "").Trim();
+				return (this.doesSchemaTrackingExistCommandText ?? string.Empty).Trim();
 			}
 			set
 			{
-				this.doesSchemaTrackingExistCommandText = (value ?? "").Trim();
+				this.doesSchemaTrackingExistCommandText = (value ?? string.Empty).Trim();
 			}
 		}
 
@@ -66,11 +66,11 @@ namespace TextMetal.Common.Data.Framework
 		{
 			get
 			{
-				return (this.getSchemaVersionCommandText ?? "").Trim();
+				return (this.getSchemaVersionCommandText ?? string.Empty).Trim();
 			}
 			set
 			{
-				this.getSchemaVersionCommandText = (value ?? "").Trim();
+				this.getSchemaVersionCommandText = (value ?? string.Empty).Trim();
 			}
 		}
 
@@ -82,11 +82,11 @@ namespace TextMetal.Common.Data.Framework
 		{
 			get
 			{
-				return (this.incrementSchemaVersionCommandText ?? "").Trim();
+				return (this.incrementSchemaVersionCommandText ?? string.Empty).Trim();
 			}
 			set
 			{
-				this.incrementSchemaVersionCommandText = (value ?? "").Trim();
+				this.incrementSchemaVersionCommandText = (value ?? string.Empty).Trim();
 			}
 		}
 

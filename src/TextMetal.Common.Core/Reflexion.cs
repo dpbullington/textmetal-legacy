@@ -53,7 +53,7 @@ namespace TextMetal.Common.Core
 		{
 			PropertyInfo[] propertyInfos;
 			Type exceptionType, exceptionEnumerableType;
-			string message = "";
+			string message = string.Empty;
 			object propertyValue;
 			bool first = true;
 			const char INDENT_CHAR = '\t';

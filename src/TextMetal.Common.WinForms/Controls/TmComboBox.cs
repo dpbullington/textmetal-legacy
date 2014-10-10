@@ -46,11 +46,11 @@ namespace TextMetal.Common.WinForms.Controls
 		{
 			get
 			{
-				return (base.Text ?? "").ToUpper();
+				return (base.Text ?? string.Empty).ToUpper();
 			}
 			set
 			{
-				base.Text = (value ?? "").ToUpper();
+				base.Text = (value ?? string.Empty).ToUpper();
 			}
 		}
 

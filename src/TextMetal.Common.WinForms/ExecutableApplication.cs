@@ -195,13 +195,13 @@ namespace TextMetal.Common.WinForms
 
 						if (argumentSpec.Required && !argumentExists)
 						{
-							argumentValidationMessages.Add(new Message("", string.Format("A required argument was not specified: '{0}'.", argumentToken), Severity.Error));
+							argumentValidationMessages.Add(new Message(string.Empty, string.Format("A required argument was not specified: '{0}'.", argumentToken), Severity.Error));
 							continue;
 						}
 
 						if (argumentSpec.Bounded && argumentValueCount > 1)
 						{
-							argumentValidationMessages.Add(new Message("", string.Format("A bounded argument was specified more than once: '{0}'.", argumentToken), Severity.Error));
+							argumentValidationMessages.Add(new Message(string.Empty, string.Format("A bounded argument was specified more than once: '{0}'.", argumentToken), Severity.Error));
 							continue;
 						}
 
@@ -214,7 +214,7 @@ namespace TextMetal.Common.WinForms
 								foreach (string argumentValue in argumentValues)
 								{
 									if (!DataType.TryParse(argumentSpec.Type, argumentValue, out finalArgumentValue))
-										argumentValidationMessages.Add(new Message("", string.Format("An argument '{0}' value '{1}' was specified that failed to parse to the target type '{2}'.", argumentToken, argumentValue, argumentSpec.Type.FullName), Severity.Error));
+										argumentValidationMessages.Add(new Message(string.Empty, string.Format("An argument '{0}' value '{1}' was specified that failed to parse to the target type '{2}'.", argumentToken, argumentValue, argumentSpec.Type.FullName), Severity.Error));
 									else
 										finalArgumentValues.Add(finalArgumentValue);
 								}

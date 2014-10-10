@@ -110,7 +110,7 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 			result = dependencyManager.HasTypeResolution<IDisposable>(null);
 			Assert.IsFalse(result);
 
-			result = dependencyManager.HasTypeResolution<IDisposable>("");
+			result = dependencyManager.HasTypeResolution<IDisposable>(string.Empty);
 			Assert.IsFalse(result);
 
 			result = dependencyManager.HasTypeResolution<IDisposable>("x");
@@ -122,7 +122,7 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 			result = dependencyManager.HasTypeResolution<IDisposable>(null);
 			Assert.IsTrue(result);
 
-			result = dependencyManager.HasTypeResolution<IDisposable>("");
+			result = dependencyManager.HasTypeResolution<IDisposable>(string.Empty);
 			Assert.IsFalse(result);
 
 			result = dependencyManager.HasTypeResolution<IDisposable>("x");
@@ -133,19 +133,19 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 			result = dependencyManager.HasTypeResolution<IDisposable>(null);
 			Assert.IsFalse(result);
 
-			result = dependencyManager.HasTypeResolution<IDisposable>("");
+			result = dependencyManager.HasTypeResolution<IDisposable>(string.Empty);
 			Assert.IsFalse(result);
 
 			result = dependencyManager.HasTypeResolution<IDisposable>("x");
 			Assert.IsFalse(result);
 
-			selectorKey = "";
+			selectorKey = string.Empty;
 			dependencyManager.AddResolution<IDisposable>(selectorKey, mockDependencyResolution);
 
 			result = dependencyManager.HasTypeResolution<IDisposable>(null);
 			Assert.IsTrue(result);
 
-			result = dependencyManager.HasTypeResolution<IDisposable>("");
+			result = dependencyManager.HasTypeResolution<IDisposable>(string.Empty);
 			Assert.IsTrue(result);
 
 			result = dependencyManager.HasTypeResolution<IDisposable>("x");
@@ -175,7 +175,7 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 			result = dependencyManager.HasTypeResolution(targetType, null);
 			Assert.IsFalse(result);
 
-			result = dependencyManager.HasTypeResolution(targetType, "");
+			result = dependencyManager.HasTypeResolution(targetType, string.Empty);
 			Assert.IsFalse(result);
 
 			result = dependencyManager.HasTypeResolution(targetType, "x");
@@ -187,7 +187,7 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 			result = dependencyManager.HasTypeResolution(targetType, null);
 			Assert.IsTrue(result);
 
-			result = dependencyManager.HasTypeResolution(targetType, "");
+			result = dependencyManager.HasTypeResolution(targetType, string.Empty);
 			Assert.IsFalse(result);
 
 			result = dependencyManager.HasTypeResolution(targetType, "x");
@@ -198,19 +198,19 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 			result = dependencyManager.HasTypeResolution(targetType, null);
 			Assert.IsFalse(result);
 
-			result = dependencyManager.HasTypeResolution(targetType, "");
+			result = dependencyManager.HasTypeResolution(targetType, string.Empty);
 			Assert.IsFalse(result);
 
 			result = dependencyManager.HasTypeResolution(targetType, "x");
 			Assert.IsFalse(result);
 
-			selectorKey = "";
+			selectorKey = string.Empty;
 			dependencyManager.AddResolution(targetType, selectorKey, mockDependencyResolution);
 
 			result = dependencyManager.HasTypeResolution(targetType, null);
 			Assert.IsTrue(result);
 
-			result = dependencyManager.HasTypeResolution(targetType, "");
+			result = dependencyManager.HasTypeResolution(targetType, string.Empty);
 			Assert.IsTrue(result);
 
 			result = dependencyManager.HasTypeResolution(targetType, "x");

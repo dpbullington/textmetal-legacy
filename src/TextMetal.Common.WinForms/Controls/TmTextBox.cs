@@ -60,11 +60,11 @@ namespace TextMetal.Common.WinForms.Controls
 		{
 			get
 			{
-				return (base.Text ?? "");
+				return (base.Text ?? string.Empty);
 			}
 			set
 			{
-				base.Text = (value ?? "");
+				base.Text = (value ?? string.Empty);
 			}
 		}
 

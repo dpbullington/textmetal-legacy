@@ -87,13 +87,13 @@ namespace TextMetal.Common.WinForms.Forms
 
 			if ((object)this.messages != null)
 			{
-				var categories = this.messages.Select(m => (m.Category ?? "").Trim()).Distinct();
+				var categories = this.messages.Select(m => (m.Category ?? string.Empty).Trim()).Distinct();
 
 				foreach (string category in categories)
 				{
 					string _category = category; // prevent closure issue
 
-					if ((category ?? "").Trim() != "")
+					if ((category ?? string.Empty).Trim() != string.Empty)
 					{
 						tnCategory = new TreeNode(category, 0, 0);
 						this.tvMessages.Nodes.Add(tnCategory);
@@ -101,7 +101,7 @@ namespace TextMetal.Common.WinForms.Forms
 					else
 						tnCategory = null;
 
-					foreach (Message message in this.messages.Where(m => (m.Category ?? "").Trim() == _category))
+					foreach (Message message in this.messages.Where(m => (m.Category ?? string.Empty).Trim() == _category))
 					{
 						tnMessage = new TreeNode(message.Description, (int)message.Severity, (int)message.Severity);
 
