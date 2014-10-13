@@ -131,6 +131,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 		protected override void CoreSetup()
 		{
+			const string RESOURCE_NAME = "TextMetal.HostImpl.WindowsTool.Images.SplashScreen.png";
 			Stream stream;
 			Image image;
 
@@ -141,7 +142,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			stream = this.GetType().Assembly.GetManifestResourceStream("TextMetal.HostImpl.WindowsTool.Images.SplashScreen.png");
 
 			if ((object)stream == null)
-				throw new InvalidOperationException("TODO");
+				throw new InvalidOperationException(string.Format("Manifest resource name '{0}' was not found in assembly '{1}'.", RESOURCE_NAME, this.GetType().Assembly));
 
 			image = Image.FromStream(stream);
 
@@ -226,7 +227,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			tsmiWindow = this.tsmiDocumentWindows.DropDownItems.Cast<ToolStripMenuItem>().SingleOrDefault(tsmi => (object)tsmi.Tag == documentForm);
 
 			if ((object)tsmiWindow == null)
-				throw new InvalidOperationException("TODO: add meaningful message");
+				throw new InvalidOperationException(string.Format("ToolStripMenuItem was null."));
 
 			tsmiWindow.Tag = null;
 			tsmiWindow.Click -= this.tsmiWindow_Click;

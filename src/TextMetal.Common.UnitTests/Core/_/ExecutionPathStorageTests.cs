@@ -12,6 +12,7 @@ using System.Web.Hosting;
 using NUnit.Framework;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Core.AmbientExecutionContext;
 
 namespace TextMetal.Common.UnitTests.Core._
 {
@@ -110,7 +111,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			[Test]
 			public void ShouldCreateAddGetRemoveExecutionPathStorageTest()
 			{
-				Assert.IsTrue(ExecutionPathStorage.IsInHttpContext);
+				Assert.IsTrue(HttpContextExecutionPathStorage.IsInHttpContext);
 
 				Assert.IsNull(ExecutionPathStorage.GetValue("x"));
 

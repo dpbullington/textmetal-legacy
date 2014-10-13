@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Web;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Core.AmbientExecutionContext;
 using TextMetal.Common.Data.Framework.Mapping;
 using TextMetal.Common.Data.Framework.Strategy;
 using TextMetal.Common.Solder.DependencyManagement;
@@ -175,7 +176,7 @@ namespace TextMetal.Common.Data.Framework
 			AssemblyInformation assemblyInformation;
 			string userSpecificDirectoryPath;
 
-			if (ExecutionPathStorage.IsInHttpContext)
+			if (HttpContextExecutionPathStorage.IsInHttpContext)
 				userSpecificDirectoryPath = Path.GetFullPath(HttpContext.Current.Server.MapPath("~/"));
 			else
 			{

@@ -21,8 +21,7 @@ namespace TextMetal.Common.WinForms.Forms
 		{
 			this.InitializeComponent();
 
-			if((object)ExecutableApplication.Current == null)
-				throw new InvalidOperationException(string.Format("No exectable application context exists on the current thread and application domain"));
+			this.AssertExecutionContext();
 		}
 
 		#endregion
@@ -49,7 +48,7 @@ namespace TextMetal.Common.WinForms.Forms
 			private set
 			{
 				if (this.coreHasShown || !value)
-					throw new InvalidOperationException("TODO");
+					throw new InvalidOperationException(string.Format("CoreHasShow property cannot be set more than once and cannot be set to false at anytime."));
 
 				this.coreHasShown = true;
 			}
@@ -156,6 +155,8 @@ namespace TextMetal.Common.WinForms.Forms
 
 		protected virtual void CoreShown()
 		{
+			this.AssertExecutionContext();
+
 			this.CoreHasShow = true;
 			this.CoreIsDirty = false;
 		}
@@ -200,6 +201,12 @@ namespace TextMetal.Common.WinForms.Forms
 		{
 			base.OnShown(e);
 			this.CoreShown();
+		}
+
+		protected void AssertExecutionContext()
+		{
+			if ((object)ExecutableApplication.Current == null)
+				throw new InvalidOperationException(string.Format("No executable application context exists on the current thread and application domain."));
 		}
 
 		#endregion

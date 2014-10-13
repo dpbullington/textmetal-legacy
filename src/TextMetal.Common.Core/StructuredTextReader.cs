@@ -105,7 +105,7 @@ namespace TextMetal.Common.Core
 		{
 			string line;
 
-			line = this.InnerTextReader.ReadLine(); // TODO
+			line = this.InnerTextReader.ReadLine(); // TODO: need to support the row delimitor (defaults to \r\n)
 
 			return line;
 		}

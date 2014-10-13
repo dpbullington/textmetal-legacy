@@ -138,7 +138,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			this.Document = (TemplateConstruct)asyncResult;
 
 			if ((object)this.Document == null)
-				throw new InvalidOperationException("TODO: add meaningful message");
+				throw new InvalidOperationException(string.Format("Document object was null."));
 
 			this.CoreText = string.Format("{0}", this.DocumentFilePath.SafeToString(null, "<new>"));
 			this.StatusText = "Template load completed successfully.";
@@ -157,7 +157,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			Exception asyncExceptionOrNull;
 
 			if ((object)this.Document == null)
-				throw new InvalidOperationException("TODO: add meaningful message");
+				throw new InvalidOperationException(string.Format("Document object was null."));
 
 			this.ApplyViewToModel();
 
@@ -183,7 +183,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			messages = (Message[])asyncResult;
 
 			if ((object)messages == null)
-				throw new InvalidOperationException("TODO: add meaningful message");
+				throw new InvalidOperationException(string.Format("Messages was null."));
 
 			if (messages.Length != 0)
 			{

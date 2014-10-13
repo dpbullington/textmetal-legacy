@@ -29,7 +29,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("6.0.2.*")]
 [assembly: AssemblyFileVersion("6.0.2.0")]
-[assembly: AssemblyInformationalVersion("2014.09.25/beta")]
+[assembly: AssemblyInformationalVersion("2014.10.11/preview")]
 [assembly: AssemblyDelaySign(false)]
 [assembly: ComVisible(false)]
 

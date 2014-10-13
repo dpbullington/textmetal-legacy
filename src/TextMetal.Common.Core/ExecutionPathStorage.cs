@@ -3,8 +3,10 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-using System.Runtime.Remoting.Messaging;
-using System.Web;
+using System;
+using System.Diagnostics;
+
+using TextMetal.Common.Core.AmbientExecutionContext;
 
 namespace TextMetal.Common.Core
 {
@@ -13,51 +15,22 @@ namespace TextMetal.Common.Core
 	/// </summary>
 	public static class ExecutionPathStorage
 	{
-		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Gets a value indicating if the current application domain is running under ASP.NET.
-		/// </summary>
-		public static bool IsInHttpContext
-		{
-			get
-			{
-				return (object)HttpContext.Current != null;
-			}
-		}
-
-		#endregion
-
 		#region Methods/Operators
 
-		private static object AspNetGetValue(string key)
+		private static IExecutionPathStorage GetExecutionPathStorage()
 		{
-			return HttpContext.Current.Items[key];
-		}
+			IExecutionPathStorage executionPathStorage;
 
-		private static void AspNetRemoveValue(string key)
-		{
-			HttpContext.Current.Items.Remove(key);
-		}
+			// TODO: support others via DI or app.config
 
-		private static void AspNetSetValue(string key, object value)
-		{
-			HttpContext.Current.Items[key] = value;
-		}
+			if (HttpContextExecutionPathStorage.IsInHttpContext)
+				executionPathStorage = new HttpContextExecutionPathStorage();
+			else
+				executionPathStorage = new ThreadStaticExecutionPathStorage();
 
-		private static object CallCtxGetValue(string key)
-		{
-			return CallContext.GetData(key);
-		}
+			Trace.WriteLine(string.Format("GetExecutionPathStorage(): '{0}'", executionPathStorage.GetType().FullName));
 
-		private static void CallCtxRemoveValue(string key)
-		{
-			CallContext.FreeNamedDataSlot(key);
-		}
-
-		private static void CallCtxSetValue(string key, object value)
-		{
-			CallContext.SetData(key, value);
+			return executionPathStorage;
 		}
 
 		/// <summary>
@@ -67,10 +40,7 @@ namespace TextMetal.Common.Core
 		/// <returns> An object value or null. </returns>
 		public static object GetValue(string key)
 		{
-			if (IsInHttpContext)
-				return AspNetGetValue(key);
-			else
-				return CallCtxGetValue(key);
+			return GetExecutionPathStorage().GetValue(key);
 		}
 
 		/// <summary>
@@ -79,10 +49,7 @@ namespace TextMetal.Common.Core
 		/// <param name="key"> The key to remove in execution path storage. </param>
 		public static void RemoveValue(string key)
 		{
-			if (IsInHttpContext)
-				AspNetRemoveValue(key);
-			else
-				CallCtxRemoveValue(key);
+			GetExecutionPathStorage().RemoveValue(key);
 		}
 
 		/// <summary>
@@ -92,10 +59,7 @@ namespace TextMetal.Common.Core
 		/// <param name="value"> An object instance or null. </param>
 		public static void SetValue(string key, object value)
 		{
-			if (IsInHttpContext)
-				AspNetSetValue(key, value);
-			else
-				CallCtxSetValue(key, value);
+			GetExecutionPathStorage().SetValue(key, value);
 		}
 
 		#endregion
