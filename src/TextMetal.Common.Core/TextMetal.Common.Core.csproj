@@ -39,26 +39,17 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AmbientExecutionContext\CallContextExecutionPathStorage.cs" />
-    <Compile Include="AmbientExecutionContext\HttpContextExecutionPathStorage.cs" />
-    <Compile Include="AmbientExecutionContext\IExecutionPathStorage.cs" />
-    <Compile Include="AmbientExecutionContext\LogicalCallContextExecutionPathStorage.cs" />
-    <Compile Include="AmbientExecutionContext\ThreadStaticExecutionPathStorage.cs" />
-    <Compile Include="AmbientExecutionContext\WcfContextExecutionPathStorage.cs" />
     <Compile Include="AppConfig.cs" />
     <Compile Include="AssemblyInformation.cs" />
     <Compile Include="ComparableComparer.cs" />
     <Compile Include="DataType.cs" />
     <Compile Include="DataType.IntImpl.cs" />
-    <Compile Include="ExecutionPathStorage.cs" />
     <Compile Include="HierarchicalObjects\IHierarchicalObjectCollection.cs" />
     <Compile Include="HierarchicalObjects\IHierarchicalObjectCollection~1.cs" />
     <Compile Include="HierarchicalObjects\IHierarchicalObject.cs" />

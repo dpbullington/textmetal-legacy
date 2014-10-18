@@ -124,6 +124,12 @@ namespace TextMetal.Common.WinForms.Forms
 
 		#region Methods/Operators
 
+		protected void AssertExecutionContext()
+		{
+			if ((object)ExecutableApplication.Current == null)
+				throw new InvalidOperationException(string.Format("No executable application context exists on the current thread and application domain."));
+		}
+
 		protected virtual void CoreQuit(out bool cancel)
 		{
 			cancel = false;
@@ -142,7 +148,7 @@ namespace TextMetal.Common.WinForms.Forms
 
 			if ((object)this.CoreOwnerForm != null)
 				this.CoreText = string.Format("{0}", this.CoreOwnerForm.CoreText.SafeToString());
-			
+
 			stream = this.GetType().Assembly.GetManifestResourceStream("TextMetal.HostImpl.WindowsTool.Icons.TextMetal.ico");
 
 			if ((object)stream == null)
@@ -201,12 +207,6 @@ namespace TextMetal.Common.WinForms.Forms
 		{
 			base.OnShown(e);
 			this.CoreShown();
-		}
-
-		protected void AssertExecutionContext()
-		{
-			if ((object)ExecutableApplication.Current == null)
-				throw new InvalidOperationException(string.Format("No executable application context exists on the current thread and application domain."));
 		}
 
 		#endregion

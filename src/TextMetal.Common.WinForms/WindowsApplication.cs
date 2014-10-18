@@ -11,7 +11,6 @@ using System.Threading;
 using System.Windows.Forms;
 
 using TextMetal.Common.Core;
-using TextMetal.Common.WinForms.Forms;
 
 using Message = TextMetal.Common.Core.Message;
 

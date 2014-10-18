@@ -13,7 +13,16 @@ using TextMetal.Common.Core;
 namespace TextMetal.Common.Tokenization
 {
 	/// <summary>
-	/// Replaces a tokenized input string with replacement values. A token is in the following format: ${token(`arg0`, `arg1`, ...)} token: a required 'key' into a 'dictionary' of token replacement strategies. A missing token is considered invalid and no replacement will be made. An unknown token considered invalid and no replacement will be made. The minimum length of a token is 1; the maximum length of a token is 1024. Tokens are case insensative. An token may be proceded by an optional function call operator with zero or more arguments. Each function call argument must be enclosed in tick marks e.g. `some value`. Recursion/nested token expressions is not supported.
+	/// Replaces a tokenized input string with replacement values.
+	/// A token is in the following format: ${token(`arg0`, `arg1`, ...)}
+	/// token: a required 'key' into a 'dictionary' of token replacement strategies.
+	/// A missing token is considered invalid and no replacement will be made.
+	/// An unknown token considered invalid and no replacement will be made.
+	/// The minimum length of a token is 1; the maximum length of a token is 1024.
+	/// Tokens are case insensative.
+	/// An token may be proceded by an optional function call operator with zero or more arguments.
+	/// Each function call argument must be enclosed in tick marks e.g. `some value`.
+	/// Recursion/nested token expressions is not supported.
 	/// </summary>
 	public sealed class Tokenizer
 	{
@@ -47,7 +56,7 @@ namespace TextMetal.Common.Tokenization
 
 		#region Fields/Constants
 
-		private const char TOKENIZER_LOGICAL_PROPERTY_PATH_CHAR = '.';
+		private const char TOKENIZER_LOGICAL_PROPERTY_PATH_CHAR = Constants.GLOBAL_LOGICAL_PROPERTY_PATH_CHAR;
 
 		private const string TOKENIZER_REGEX =
 			@"\$ \{" +

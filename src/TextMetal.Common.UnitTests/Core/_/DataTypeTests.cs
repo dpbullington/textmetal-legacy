@@ -30,6 +30,40 @@ namespace TextMetal.Common.UnitTests.Core._
 		#region Methods/Operators
 
 		[Test]
+		public void ShouldGetNonNullOnNonNullValueChangeTypeTest()
+		{
+			object value;
+
+			value = DataType.ChangeType((byte)1, typeof(int));
+
+			Assert.IsNotNull(value);
+			Assert.IsInstanceOf<int>(value);
+			Assert.AreEqual((int)1, value);
+		}
+
+		[Test]
+		public void ShouldGetNonNullOnNonNullValueNullableChangeTypeTest()
+		{
+			object value;
+
+			value = DataType.ChangeType((byte)1, typeof(int?));
+
+			Assert.IsNotNull(value);
+			Assert.IsInstanceOf<int?>(value);
+			Assert.AreEqual((int?)1, value);
+		}
+
+		[Test]
+		public void ShouldGetDefaultOnNullValueChangeTypeTest()
+		{
+			object value;
+
+			value = DataType.ChangeType(null, typeof(int));
+
+			Assert.AreEqual(default(int), value);
+		}
+
+		[Test]
 		public void ShouldCheckIsNullOrWhiteSpaceTest()
 		{
 			Assert.IsTrue(DataType.IsNullOrWhiteSpace(null));

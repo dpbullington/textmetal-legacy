@@ -297,16 +297,6 @@ namespace TextMetal.Common.UnitTests.Core._
 		}
 
 		[Test]
-		public void ShouldGetDefaultOnNullValueChangeTypeTest()
-		{
-			object value;
-
-			value = DataType.ChangeType(null, typeof(int));
-
-			Assert.AreEqual(default(int), value);
-		}
-
-		[Test]
 		public void ShouldGetErrors()
 		{
 			MockException mockException;
@@ -339,30 +329,6 @@ namespace TextMetal.Common.UnitTests.Core._
 		public void ShouldGetNoAttributesTest()
 		{
 			Reflexion.GetZeroAttributes<AssemblyDescriptionAttribute>(typeof(MockTestAttributedClass));
-		}
-
-		[Test]
-		public void ShouldGetNonNullOnNonNullValueChangeTypeTest()
-		{
-			object value;
-
-			value = DataType.ChangeType((byte)1, typeof(int));
-
-			Assert.IsNotNull(value);
-			Assert.IsInstanceOf<int>(value);
-			Assert.AreEqual((int)1, value);
-		}
-
-		[Test]
-		public void ShouldGetNonNullOnNonNullValueNullableChangeTypeTest()
-		{
-			object value;
-
-			value = DataType.ChangeType((byte)1, typeof(int?));
-
-			Assert.IsNotNull(value);
-			Assert.IsInstanceOf<int?>(value);
-			Assert.AreEqual((int?)1, value);
 		}
 
 		[Test]

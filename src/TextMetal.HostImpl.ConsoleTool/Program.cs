@@ -19,6 +19,18 @@ namespace TextMetal.HostImpl.ConsoleTool
 	/// </summary>
 	internal class Program : ConsoleApplication
 	{
+		#region Fields/Constants
+
+		private const string CMDLN_DEBUGGER_LAUNCH = "debug";
+		private const string CMDLN_TOKEN_BASEDIR = "basedir";
+		private const string CMDLN_TOKEN_PROPERTY = "property";
+		private const string CMDLN_TOKEN_SOURCEFILE = "sourcefile";
+		private const string CMDLN_TOKEN_SOURCESTRATEGY_AQTN = "sourcestrategy";
+		private const string CMDLN_TOKEN_STRICT = "strict";
+		private const string CMDLN_TOKEN_TEMPLATEFILE = "templatefile";
+
+		#endregion
+
 		#region Methods/Operators
 
 		/// <summary>
@@ -48,14 +60,6 @@ namespace TextMetal.HostImpl.ConsoleTool
 
 			return argumentMap;
 		}
-
-		private const string CMDLN_TOKEN_TEMPLATEFILE = "templatefile";
-		private const string CMDLN_TOKEN_SOURCEFILE = "sourcefile";
-		private const string CMDLN_TOKEN_BASEDIR = "basedir";
-		private const string CMDLN_TOKEN_SOURCESTRATEGY_AQTN = "sourcestrategy";
-		private const string CMDLN_TOKEN_STRICT = "strict";
-		private const string CMDLN_TOKEN_PROPERTY = "property";
-		private const string CMDLN_DEBUGGER_LAUNCH = "debug";
 
 		protected override int OnStartup(string[] args, IDictionary<string, IList<object>> arguments)
 		{
@@ -91,7 +95,7 @@ namespace TextMetal.HostImpl.ConsoleTool
 			baseDirectoryPath = (string)arguments[CMDLN_TOKEN_BASEDIR].Single();
 			sourceStrategyAqtn = (string)arguments[CMDLN_TOKEN_SOURCESTRATEGY_AQTN].Single();
 			strictMatching = (bool)arguments[CMDLN_TOKEN_STRICT].Single();
-			
+
 			hasProperties = arguments.TryGetValue(CMDLN_TOKEN_PROPERTY, out argumentValues);
 
 			argz = new Dictionary<string, object>();

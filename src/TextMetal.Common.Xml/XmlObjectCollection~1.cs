@@ -12,7 +12,7 @@ namespace TextMetal.Common.Xml
 	/// <summary>
 	/// Provides a concrete implementation for XML object collections.
 	/// </summary>
-	/// <typeparam name="TXmlObject"></typeparam>
+	/// <typeparam name="TXmlObject"> </typeparam>
 	public class XmlObjectCollection<TXmlObject> : HierarchicalObjectCollection<TXmlObject>, IXmlObjectCollection<TXmlObject>
 		where TXmlObject : IXmlObject
 	{
@@ -34,7 +34,7 @@ namespace TextMetal.Common.Xml
 		/// <summary>
 		/// Gets the site XML object or null if this is unattached.
 		/// </summary>
-		new public IXmlObject Site
+		public new IXmlObject Site
 		{
 			get
 			{

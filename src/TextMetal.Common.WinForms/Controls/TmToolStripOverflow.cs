@@ -12,7 +12,8 @@ namespace TextMetal.Common.WinForms.Controls
 	{
 		#region Constructors/Destructors
 
-		public TmToolStripOverflow() : base(null)
+		public TmToolStripOverflow()
+			: base(null)
 		{
 		}
 

@@ -5,13 +5,13 @@
 
 using System.Runtime.Remoting.Messaging;
 
-namespace TextMetal.Common.Core.AmbientExecutionContext
+namespace TextMetal.Common.Solder.AmbientExecutionContext
 {
-	public sealed class CallContextExecutionPathStorage : IExecutionPathStorage
+	public sealed class LogicalCallContextExecutionPathStorage : IExecutionPathStorage
 	{
 		#region Constructors/Destructors
 
-		public CallContextExecutionPathStorage()
+		public LogicalCallContextExecutionPathStorage()
 		{
 		}
 
@@ -21,7 +21,7 @@ namespace TextMetal.Common.Core.AmbientExecutionContext
 
 		public object GetValue(string key)
 		{
-			return CallContext.GetData(key);
+			return CallContext.LogicalGetData(key);
 		}
 
 		public void RemoveValue(string key)
@@ -31,7 +31,7 @@ namespace TextMetal.Common.Core.AmbientExecutionContext
 
 		public void SetValue(string key, object value)
 		{
-			CallContext.SetData(key, value);
+			CallContext.LogicalSetData(key, value);
 		}
 
 		#endregion

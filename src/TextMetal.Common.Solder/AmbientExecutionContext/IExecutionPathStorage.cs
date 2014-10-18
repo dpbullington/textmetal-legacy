@@ -3,7 +3,7 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-namespace TextMetal.Common.Core.AmbientExecutionContext
+namespace TextMetal.Common.Solder.AmbientExecutionContext
 {
 	public interface IExecutionPathStorage
 	{

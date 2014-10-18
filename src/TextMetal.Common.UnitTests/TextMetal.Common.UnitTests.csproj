@@ -49,7 +49,7 @@
     </Compile>
     <Compile Include="Core\_\AppConfigTests.cs" />
     <Compile Include="Core\_\DataTypeTests.cs" />
-    <Compile Include="Core\_\ExecutionPathStorageTests.cs" />
+    <Compile Include="Solder\AmbientExecutionContext\_\ExecutionPathStorageTests.cs" />
     <Compile Include="Core\_\ReflexionTests.cs" />
     <Compile Include="Data\Framework\Mapping\_\ColumnMappingAttributeTests.cs" />
     <Compile Include="Data\Framework\Mapping\_\TacticCommandTests.cs" />
@@ -100,6 +100,10 @@
     <Folder Include="Xml\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TextMetal.Common.Cerealization\TextMetal.Common.Cerealization.csproj">
+      <Project>{384a2559-5c35-4279-9f69-fe0d643b1014}</Project>
+      <Name>TextMetal.Common.Cerealization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.Core\TextMetal.Common.Core.csproj">
       <Project>{D1860A67-7EFB-4C0F-89CD-A641D99DCC2A}</Project>
       <Name>TextMetal.Common.Core</Name>
@@ -119,6 +123,14 @@
     <ProjectReference Include="..\TextMetal.Common.Tokenization\TextMetal.Common.Tokenization.csproj">
       <Project>{2FF3DDEC-8A2D-47C6-9C41-5C6743591DC1}</Project>
       <Name>TextMetal.Common.Tokenization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Common.WinForms\TextMetal.Common.WinForms.csproj">
+      <Project>{6bd158ba-429b-422b-aaeb-24a36511c19a}</Project>
+      <Name>TextMetal.Common.WinForms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Common.Xml\TextMetal.Common.Xml.csproj">
+      <Project>{cef6c9d5-d5f2-4f4e-81dd-0bfdf81a2c93}</Project>
+      <Name>TextMetal.Common.Xml</Name>
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Imports\TextMetal.Imports.csproj">
       <Project>{40e6902d-3881-4271-bdf3-7d88db7cf230}</Project>

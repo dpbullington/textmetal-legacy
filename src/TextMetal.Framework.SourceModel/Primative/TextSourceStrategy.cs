@@ -32,7 +32,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 			const string PROP_TOKEN_FIRST_ROW_CONTAINS_COLUMN_HEADINGS = "FirstRowIsHeader";
 			const string PROP_TOKEN_FIELD_DELIMITER = "FieldDelimiter";
 			const string PROP_TOKEN_ROW_DELIMITER = "RowDelimiter";
-			
+
 			IList<string> values;
 			bool firstRowIsHeader;
 			string rowDelimiter, fieldDelimiter;

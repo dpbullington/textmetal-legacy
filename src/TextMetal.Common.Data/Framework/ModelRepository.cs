@@ -13,9 +13,9 @@ using System.Reflection;
 using System.Web;
 
 using TextMetal.Common.Core;
-using TextMetal.Common.Core.AmbientExecutionContext;
 using TextMetal.Common.Data.Framework.Mapping;
 using TextMetal.Common.Data.Framework.Strategy;
+using TextMetal.Common.Solder.AmbientExecutionContext;
 using TextMetal.Common.Solder.DependencyManagement;
 
 namespace TextMetal.Common.Data.Framework
@@ -620,7 +620,7 @@ namespace TextMetal.Common.Data.Framework
 
 			// alert the response model that we are done enumerating the lazy river...
 			responseModel.SetEnumerationComplete();
-			
+
 			// ***** SUPER special case for enumerator *****
 			if (actualRecordsAffected != tacticCommand.ExpectedRecordsAffected)
 			{

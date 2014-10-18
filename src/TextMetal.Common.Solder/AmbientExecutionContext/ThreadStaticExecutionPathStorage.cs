@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TextMetal.Common.Core.AmbientExecutionContext
+namespace TextMetal.Common.Solder.AmbientExecutionContext
 {
 	public sealed class ThreadStaticExecutionPathStorage : IExecutionPathStorage
 	{

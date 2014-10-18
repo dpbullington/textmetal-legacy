@@ -10,7 +10,7 @@ namespace TextMetal.Common.Core.HierarchicalObjects
 	/// <summary>
 	/// Represents a hierarchical object collection.
 	/// </summary>
-	public interface IHierarchicalObjectCollection/* : IList*/
+	public interface IHierarchicalObjectCollection /* : IList*/
 	{
 		#region Properties/Indexers/Events
 

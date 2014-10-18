@@ -8,14 +8,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Remoting.Messaging;
 using System.Security.Principal;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Solder;
 
 namespace TextMetal.Common.WinForms
 {
-	public abstract class ExecutableApplication : IDisposable/*, ILogicalThreadAffinative*/
+	public abstract class ExecutableApplication : IDisposable /*, ILogicalThreadAffinative*/
 	{
 		#region Constructors/Destructors
 

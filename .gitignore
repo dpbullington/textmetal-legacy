@@ -1,4 +1,7 @@
-# directory specs
+# catch-all
+[\!]git*
+
+# directory name specs
 obj
 bin
 debug
@@ -9,21 +12,18 @@ pkg
 _ReSharper.*
 .partial
 
-# file specs
+# file name specs
 thumbs.db
 desktop.ini
 .DS_Store
+TestResult.xml
 
 # file extension specs
 *.suo
 *.user
 *.cache
 *.resharper
-*.visualstate.xml
+*.VisualState.xml
 *.pidb
 *.userprefs
 *.DotSettings
-
-#testresult*
-#coverage*
-[\!]git*

@@ -12,7 +12,6 @@ using System.Windows.Forms;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.WinForms;
-using TextMetal.Common.WinForms.Controls;
 using TextMetal.Common.WinForms.Forms;
 
 namespace TextMetal.HostImpl.WindowsTool.Forms
@@ -95,11 +94,9 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			if (dirtyCount > 0)
 			{
 				dialogResult = MessageBox.Show(this, string.Format("Do you want {1} without saving the {0} modified document(s)?", dirtyCount, verb), ExecutableApplication.Current.AssemblyInformation.Product, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-				
+
 				if (dialogResult == DialogResult.Cancel)
-				{
 					cancel = true;
-				}
 				else if (dialogResult == DialogResult.No)
 				{
 					cancel = false;
@@ -113,9 +110,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 					}
 				}
 				else // YES
-				{
 					cancel = false;
-				}
 			}
 		}
 
@@ -154,7 +149,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		protected override void CoreShown()
 		{
 			base.CoreShown();
-			
+
 			this.RefreshControlState();
 		}
 

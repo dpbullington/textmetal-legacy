@@ -404,8 +404,6 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 		public abstract int GetExpectedRecordsAffected(bool isNullipotent);
 
-		public abstract string GetIdentityFunctionName();
-
 		public TacticCommand<TModel> GetIdentifyTacticCommand<TModel>(IUnitOfWork unitOfWork) where TModel : class, IModelObject
 		{
 			TacticCommand<TModel> tacticCommand;
@@ -477,6 +475,8 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 			return tacticCommand;
 		}
+
+		public abstract string GetIdentityFunctionName();
 
 		private TacticCommand<TModel> GetInsertAllTacticCommand<TModel>(IUnitOfWork unitOfWork, IModelObject model, IModelQuery modelQuery, TableMappingAttribute tableMappingAttribute)
 			where TModel : class, IModelObject

@@ -11,7 +11,7 @@ namespace TextMetal.Common.Core.HierarchicalObjects
 	/// <summary>
 	/// Represents a hierarchical object collection.
 	/// </summary>
-	/// <typeparam name="THierarchicalObject"></typeparam>
+	/// <typeparam name="THierarchicalObject"> </typeparam>
 	public interface IHierarchicalObjectCollection<THierarchicalObject> : IHierarchicalObjectCollection, IList<THierarchicalObject>
 		where THierarchicalObject : IHierarchicalObject
 	{

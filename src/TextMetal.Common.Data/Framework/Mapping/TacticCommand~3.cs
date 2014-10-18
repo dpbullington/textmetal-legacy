@@ -32,9 +32,9 @@ namespace TextMetal.Common.Data.Framework.Mapping
 		private CommandType commandType;
 		private int expectedRecordsAffected;
 		private bool isNullipotent;
-		private bool useBatchScopeIdentificationSemantics;
 		private Action<TResponseModel, IDictionary<string, object>> tableToResponseModelMappingCallback;
 		private Action<TResultModel, IDictionary<string, object>> tableToResultModelMappingCallback;
+		private bool useBatchScopeIdentificationSemantics;
 
 		#endregion
 
@@ -151,18 +151,6 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			}
 		}
 
-		public bool UseBatchScopeIdentificationSemantics
-		{
-			get
-			{
-				return this.useBatchScopeIdentificationSemantics;
-			}
-			set
-			{
-				this.useBatchScopeIdentificationSemantics = value;
-			}
-		}
-
 		public Action<TResponseModel, IDictionary<string, object>> TableToResponseModelMappingCallback
 		{
 			get
@@ -184,6 +172,18 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			set
 			{
 				this.tableToResultModelMappingCallback = value;
+			}
+		}
+
+		public bool UseBatchScopeIdentificationSemantics
+		{
+			get
+			{
+				return this.useBatchScopeIdentificationSemantics;
+			}
+			set
+			{
+				this.useBatchScopeIdentificationSemantics = value;
 			}
 		}
 

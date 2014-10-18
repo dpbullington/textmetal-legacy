@@ -11,10 +11,10 @@ using System.Web.Hosting;
 
 using NUnit.Framework;
 
-using TextMetal.Common.Core;
-using TextMetal.Common.Core.AmbientExecutionContext;
+using TextMetal.Common.Solder;
+using TextMetal.Common.Solder.AmbientExecutionContext;
 
-namespace TextMetal.Common.UnitTests.Core._
+namespace TextMetal.Common.UnitTests.Solder.AmbientExecutionContext._
 {
 	[TestFixture]
 	public static class ExecutionPathStorageTests

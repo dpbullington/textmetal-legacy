@@ -12,6 +12,7 @@ namespace TextMetal.Common.Core
 		#region Fields/Constants
 
 		public const string GLOBAL_ID_REGEX_UNBOUNDED = @"[a-zA-Z_\.][a-zA-Z_\.0-9]";
+		public const char GLOBAL_LOGICAL_PROPERTY_PATH_CHAR = '.';
 
 		#endregion
 	}

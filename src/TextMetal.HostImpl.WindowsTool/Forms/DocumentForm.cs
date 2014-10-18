@@ -305,7 +305,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			TmTreeNode tnCurrentContentFolder;
 			TmTreeNode tnCurrentItemsFolder;
 			TmTreeNode tnCurrentChildrenFolder;
-			
+
 			if ((object)tncParent == null)
 				throw new ArgumentNullException("tncParent");
 
@@ -336,7 +336,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			tnCurrentXmlObject.Nodes.Add(tnCurrentChildrenFolder);
 
 			//foreach (IXmlObject itemXmlObject in currentXmlObject.Items)
-				//this._UpdateDocumentTree(tnCurrentChildrenFolder.Nodes, null);
+			//this._UpdateDocumentTree(tnCurrentChildrenFolder.Nodes, null);
 		}
 
 		private void _UpdateSourceEditor()

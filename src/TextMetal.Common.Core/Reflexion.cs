@@ -13,11 +13,7 @@ namespace TextMetal.Common.Core
 	/// <summary>
 	/// Provides static helper and/or extension methods for reflection.
 	/// </summary>
-#if SQL_CLR
-	internal static class Reflexion
-#else
 	public static class Reflexion
-#endif
 	{
 		#region Methods/Operators
 

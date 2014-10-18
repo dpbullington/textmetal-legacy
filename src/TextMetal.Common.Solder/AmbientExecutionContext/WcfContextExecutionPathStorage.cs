@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using System.Web;
 
-namespace TextMetal.Common.Core.AmbientExecutionContext
+namespace TextMetal.Common.Solder.AmbientExecutionContext
 {
 	public sealed class WcfContextExecutionPathStorage : IExecutionPathStorage
 	{

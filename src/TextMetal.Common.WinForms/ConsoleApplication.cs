@@ -48,10 +48,10 @@ namespace TextMetal.Common.WinForms
 			if ((object)requiredArgumentTokens != null)
 			{
 				Console.WriteLine(Environment.NewLine +
-					string.Format("USAGE: {0} ", Assembly.GetEntryAssembly().ManifestModule.Name) + string.Join(" ", requiredArgumentTokens) +
-					Environment.NewLine);
+								string.Format("USAGE: {0} ", Assembly.GetEntryAssembly().ManifestModule.Name) + string.Join(" ", requiredArgumentTokens) +
+								Environment.NewLine);
 			}
-			
+
 			Console.ForegroundColor = oldConsoleColor;
 		}
 

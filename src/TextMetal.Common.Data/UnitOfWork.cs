@@ -7,6 +7,7 @@ using System;
 using System.Data;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Solder;
 
 namespace TextMetal.Common.Data
 {

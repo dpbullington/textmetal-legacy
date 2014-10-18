@@ -6,9 +6,9 @@
 using System;
 using System.Diagnostics;
 
-using TextMetal.Common.Core.AmbientExecutionContext;
+using TextMetal.Common.Solder.AmbientExecutionContext;
 
-namespace TextMetal.Common.Core
+namespace TextMetal.Common.Solder
 {
 	/// <summary>
 	/// Manages execution path storage of objects in a manner which is safe in standard executables and libraries and ASP.NET code.
