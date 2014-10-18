@@ -1,6 +1,6 @@
 h1. TextMetal
 
-TextMetal is a powerful text templating engine written in C# which uses an extensible XML-based dialect and is suitable for use in automation scenarios and code generation situations.
+TextMetal is a powerful meta-programming framework written in C#. It uses XML as the extensible template language and hosts the dynamic language run-time (DLR) and IronRuby to provide rich expression/logic support.
 
 h2. License
 

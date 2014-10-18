@@ -17,4 +17,7 @@ echo "The operation is starting..."
 	/TargetWorkingDir="" /ReportType=HTML `
 	/Output="$output_base_dir\TextMetal.Common.Core\Reflexion\ut_cov_rpt.html"
 
+if ($LastExitCode -ne 0)
+{ echo "An error occurred during the operation."; return; }
+
 echo "The operation completed successfully."
