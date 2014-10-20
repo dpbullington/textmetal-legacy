@@ -2,6 +2,10 @@ h1. TextMetal
 
 TextMetal is a powerful meta-programming framework written in C#. It uses XML as the extensible template language and hosts the dynamic language run-time (DLR) and IronRuby to provide rich expression/logic support.
 
+Meta-programming is all about making software simpler and reusable through the use of programming language independent skills and computer programs that write new computer programs.
+
+TextMetal is a framework for accelerating the delivery, increasing the quality, and reducing the time to market of small to enterprise scale software systems.
+
 h2. License
 
 See doc/LICENSE.txt.

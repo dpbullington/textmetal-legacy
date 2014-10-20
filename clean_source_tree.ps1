@@ -13,5 +13,5 @@ foreach ($fileToKill in $filesToKill)
 {
 	"Cleaning: " + $fileToKill.FullName
 
-	try { del $fileToKill.FullName -Recurse -Force } catch {}
+	try { Remove-Item $fileToKill.FullName -Recurse -Force } catch { }
 }

@@ -17,7 +17,17 @@ echo "The operation is starting..."
 	/TargetWorkingDir="" /ReportType=HTML `
 	/Output="$output_base_dir\TextMetal.Common.Core\Reflexion\ut_cov_rpt.html"
 
-if ($LastExitCode -ne 0)
+if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
+{ echo "An error occurred during the operation."; return; }
+
+
+&$cover_exe analyse /Filters="$exclude_filter" `
+	/TargetExecutable="$nunit_exe" `
+	/TargetArguments="/run:TextMetal.Common.UnitTests.Core._.AppConfigTests .\$src_dir\TextMetal.Common.UnitTests\bin\Debug\TextMetal.Common.UnitTests.dll" `
+	/TargetWorkingDir="" /ReportType=HTML `
+	/Output="$output_base_dir\TextMetal.Common.Core\AppConfig\ut_cov_rpt.html"
+
+if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
 
 echo "The operation completed successfully."

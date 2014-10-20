@@ -15,12 +15,12 @@ echo "The operation is starting..."
 
 &"$msbuild_exe" /verbosity:quiet /consoleloggerparameters:ErrorsOnly "$src_dir\TextMetal.sln" /t:clean /p:Configuration="$build_tool_cfg" /p:VisualStudioVersion=12.0
 
-if ($LastExitCode -ne 0)
+if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
 
 &"$msbuild_exe" /verbosity:quiet /consoleloggerparameters:ErrorsOnly "$src_dir\TextMetal.sln" /t:build /p:Configuration="$build_tool_cfg" /p:VisualStudioVersion=12.0
 
-if ($LastExitCode -ne 0)
+if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
 
 echo "The operation completed successfully."

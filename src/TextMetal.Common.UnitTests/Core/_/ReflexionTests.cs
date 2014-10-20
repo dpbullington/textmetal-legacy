@@ -223,6 +223,16 @@ namespace TextMetal.Common.UnitTests.Core._
 			Assert.IsTrue(result);
 			Assert.IsNotNull(propertyValue);
 			Assert.AreEqual("john", propertyValue);
+
+			// !null, "PropName" - !staySoft
+			mockObject = new Dictionary<string, object>();
+			propertyName = "FirstName";
+			propertyValue = null;
+
+			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue, false, false);
+
+			Assert.IsFalse(result);
+			Assert.IsNull(propertyValue);
 		}
 
 		[Test]
