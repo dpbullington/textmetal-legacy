@@ -121,7 +121,7 @@ namespace TextMetal.Common.Core
 			{
 				row = new Dictionary<string, string>();
 
-				if (DataType.IsWhiteSpace(this.FieldDelimiter))
+				if (DataType.Instance.IsWhiteSpace(this.FieldDelimiter))
 					row.Add(string.Empty, line);
 				else
 				{

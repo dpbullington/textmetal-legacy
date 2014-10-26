@@ -64,10 +64,6 @@
       <Project>{D1860A67-7EFB-4C0F-89CD-A641D99DCC2A}</Project>
       <Name>TextMetal.Common.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TextMetal.Common.Tokenization\TextMetal.Common.Tokenization.csproj">
-      <Project>{2FF3DDEC-8A2D-47C6-9C41-5C6743591DC1}</Project>
-      <Name>TextMetal.Common.Tokenization</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.Xml\TextMetal.Common.Xml.csproj">
       <Project>{CEF6C9D5-D5F2-4F4E-81DD-0BFDF81A2C93}</Project>
       <Name>TextMetal.Common.Xml</Name>

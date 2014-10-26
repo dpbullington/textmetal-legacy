@@ -83,7 +83,7 @@ namespace TextMetal.Common.Syntax.Expressions
 			if ((object)fieldInfo == null)
 				throw new NotSupportedException(string.Format("The binary operator '{0}' is not supported.", binaryExpression.BinaryOperator));
 
-			descriptionAttribute = Reflexion.GetOneAttribute<DescriptionAttribute>(fieldInfo);
+			descriptionAttribute = Reflexion.Instance.GetOneAttribute<DescriptionAttribute>(fieldInfo);
 
 			if ((object)descriptionAttribute == null)
 				throw new NotSupportedException(string.Format("The binary operator '{0}' is not described.", binaryExpression.BinaryOperator));
@@ -121,7 +121,7 @@ namespace TextMetal.Common.Syntax.Expressions
 			if ((object)fieldInfo == null)
 				throw new NotSupportedException(string.Format("The nullary operator '{0}' is not supported.", nullaryExpression.NullaryOperator));
 
-			descriptionAttribute = Reflexion.GetOneAttribute<DescriptionAttribute>(fieldInfo);
+			descriptionAttribute = Reflexion.Instance.GetOneAttribute<DescriptionAttribute>(fieldInfo);
 
 			if ((object)descriptionAttribute == null)
 				throw new NotSupportedException(string.Format("The nullary operator '{0}' is not described.", nullaryExpression.NullaryOperator));
@@ -159,7 +159,7 @@ namespace TextMetal.Common.Syntax.Expressions
 			if ((object)fieldInfo == null)
 				throw new NotSupportedException(string.Format("The unary operator '{0}' is not supported.", unaryExpression.UnaryOperator));
 
-			descriptionAttribute = Reflexion.GetOneAttribute<DescriptionAttribute>(fieldInfo);
+			descriptionAttribute = Reflexion.Instance.GetOneAttribute<DescriptionAttribute>(fieldInfo);
 
 			if ((object)descriptionAttribute == null)
 				throw new NotSupportedException(string.Format("The unary operator '{0}' is not described.", unaryExpression.UnaryOperator));

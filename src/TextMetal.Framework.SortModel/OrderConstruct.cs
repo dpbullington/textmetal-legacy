@@ -9,8 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Core.Tokenization;
 using TextMetal.Common.Syntax.Expressions;
-using TextMetal.Common.Tokenization;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 using TextMetal.Framework.ExpressionModel;

@@ -7,7 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using TextMetal.Common.Core.HierarchicalObjects;
+using TextMetal.Common.Core.Hierarchy;
 using TextMetal.Common.Syntax.Expressions;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;

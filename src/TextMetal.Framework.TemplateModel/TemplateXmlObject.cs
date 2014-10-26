@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-using TextMetal.Common.Tokenization;
+using TextMetal.Common.Core.Tokenization;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 

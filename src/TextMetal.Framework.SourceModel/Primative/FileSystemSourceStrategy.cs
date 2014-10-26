@@ -61,12 +61,12 @@ namespace TextMetal.Framework.SourceModel.Primative
 			}
 			else
 			{
-				if (DataType.IsNullOrWhiteSpace(wildcard))
+				if (DataType.Instance.IsNullOrWhiteSpace(wildcard))
 					files = Directory.GetFiles(directoryPath);
 				else
 					files = Directory.GetFiles(directoryPath, wildcard);
 
-				if (DataType.IsNullOrWhiteSpace(wildcard))
+				if (DataType.Instance.IsNullOrWhiteSpace(wildcard))
 					directories = Directory.GetDirectories(directoryPath);
 				else
 					directories = Directory.GetDirectories(directoryPath, wildcard);
@@ -282,7 +282,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException("properties");
 
-			if (DataType.IsWhiteSpace(sourceFilePath))
+			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException("sourceFilePath");
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
@@ -293,7 +293,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 				if ((object)values != null && values.Count == 1)
 				{
 					recursiveStr = values[0];
-					if (!DataType.TryParse<bool>(recursiveStr, out recursive))
+					if (!DataType.Instance.TryParse<bool>(recursiveStr, out recursive))
 						;
 				}
 			}

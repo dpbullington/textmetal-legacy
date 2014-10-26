@@ -6,7 +6,7 @@
 using System;
 
 using TextMetal.Common.Core;
-using TextMetal.Common.Tokenization;
+using TextMetal.Common.Core.Tokenization;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 using TextMetal.Framework.ExpressionModel;
@@ -148,7 +148,7 @@ namespace TextMetal.Framework.TemplateModel
 
 			varIx = templatingContext.Tokenizer.ExpandTokens(this.VarIx, dynamicWildcardTokenReplacementStrategy);
 
-			if (!DataType.IsNullOrWhiteSpace(varIx))
+			if (!DataType.Instance.IsNullOrWhiteSpace(varIx))
 			{
 				new AllocConstruct()
 				{
@@ -161,7 +161,7 @@ namespace TextMetal.Framework.TemplateModel
 			// DO NOT USE REAL FOR LOOP HERE
 			while (true)
 			{
-				if (!DataType.IsNullOrWhiteSpace(varIx))
+				if (!DataType.Instance.IsNullOrWhiteSpace(varIx))
 				{
 					IExpressionContainerConstruct expressionContainerConstruct;
 					ValueConstruct valueConstruct;
@@ -208,7 +208,7 @@ namespace TextMetal.Framework.TemplateModel
 
 			this.CoreConditionalIterationTerminate(templatingContext);
 
-			if (!DataType.IsNullOrWhiteSpace(varIx))
+			if (!DataType.Instance.IsNullOrWhiteSpace(varIx))
 			{
 				new FreeConstruct()
 				{

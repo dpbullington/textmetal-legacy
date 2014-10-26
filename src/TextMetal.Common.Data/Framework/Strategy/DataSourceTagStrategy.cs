@@ -133,7 +133,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 								{
 									propertyValue = columnValue.ChangeType(columnMappingAttributes[index]._TargetProperty.PropertyType);
 
-									if (!Reflexion.SetLogicalPropertyValue(md, columnMappingAttributes[index]._TargetProperty.Name, propertyValue))
+									if (!Reflexion.Instance.SetLogicalPropertyValue(md, columnMappingAttributes[index]._TargetProperty.Name, propertyValue))
 										throw new InvalidOperationException(string.Format("Ah snap."));
 								}
 							}
@@ -169,7 +169,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 								{
 									propertyValue = columnValue.ChangeType(columnMappingAttributes[index]._TargetProperty.PropertyType);
 
-									if (!Reflexion.SetLogicalPropertyValue(md, columnMappingAttributes[index]._TargetProperty.Name, propertyValue))
+									if (!Reflexion.Instance.SetLogicalPropertyValue(md, columnMappingAttributes[index]._TargetProperty.Name, propertyValue))
 										throw new InvalidOperationException(string.Format("Ah snap."));
 								}
 							}
@@ -233,7 +233,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 				string parameterName;
 				object parameterValue;
 
-				if (!Reflexion.GetLogicalPropertyValue(prototype, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
+				if (!Reflexion.Instance.GetLogicalPropertyValue(prototype, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
 					throw new InvalidOperationException(string.Format("Ah snap."));
 
 				parameterName = this.GetParameterName(columnMappingAttributes[index].ColumnName);
@@ -339,7 +339,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 				if (parameterMappingAttributes[index].ParameterDirection == ParameterDirection.Input ||
 					parameterMappingAttributes[index].ParameterDirection == ParameterDirection.InputOutput)
 				{
-					if (!Reflexion.GetLogicalPropertyValue(requestModelValue, parameterMappingAttributes[index]._TargetProperty.Name, out parameterValue))
+					if (!Reflexion.Instance.GetLogicalPropertyValue(requestModelValue, parameterMappingAttributes[index]._TargetProperty.Name, out parameterValue))
 						throw new InvalidOperationException(string.Format("Ah snap."));
 				}
 
@@ -531,7 +531,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 				string parameterName;
 				object parameterValue;
 
-				if (!Reflexion.GetLogicalPropertyValue(model, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
+				if (!Reflexion.Instance.GetLogicalPropertyValue(model, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
 					throw new InvalidOperationException(string.Format("Ah snap."));
 
 				parameterName = this.GetParameterName(columnMappingAttributes[index].ColumnName);
@@ -636,7 +636,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 								{
 									propertyValue = parameterValue.ChangeType(parameterMappingAttributes[index]._TargetProperty.PropertyType);
 
-									if (!Reflexion.SetLogicalPropertyValue(md, parameterMappingAttributes[index]._TargetProperty.Name, propertyValue))
+									if (!Reflexion.Instance.SetLogicalPropertyValue(md, parameterMappingAttributes[index]._TargetProperty.Name, propertyValue))
 										throw new InvalidOperationException(string.Format("Ah snap."));
 								}
 							}
@@ -663,7 +663,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			if ((object)responseModelType == null)
 				throw new ArgumentNullException("responseModelType");
 
-			procedureMappingAttribute = Reflexion.GetOneAttribute<ProcedureMappingAttribute>(requestModelType);
+			procedureMappingAttribute = Reflexion.Instance.GetOneAttribute<ProcedureMappingAttribute>(requestModelType);
 
 			if ((object)procedureMappingAttribute == null)
 				return null;
@@ -679,7 +679,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 					if (!propertyInfo.CanRead || !propertyInfo.CanWrite)
 						continue;
 
-					parameterMappingAttribute = Reflexion.GetOneAttribute<ParameterMappingAttribute>(propertyInfo);
+					parameterMappingAttribute = Reflexion.Instance.GetOneAttribute<ParameterMappingAttribute>(propertyInfo);
 
 					if ((object)parameterMappingAttribute == null)
 						continue;
@@ -703,7 +703,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 					if (!propertyInfo.CanRead || !propertyInfo.CanWrite)
 						continue;
 
-					columnMappingAttribute = Reflexion.GetOneAttribute<ColumnMappingAttribute>(propertyInfo);
+					columnMappingAttribute = Reflexion.Instance.GetOneAttribute<ColumnMappingAttribute>(propertyInfo);
 
 					if ((object)columnMappingAttribute == null)
 						continue;
@@ -723,7 +723,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 					if (!propertyInfo.CanRead || !propertyInfo.CanWrite)
 						continue;
 
-					parameterMappingAttribute = Reflexion.GetOneAttribute<ParameterMappingAttribute>(propertyInfo);
+					parameterMappingAttribute = Reflexion.Instance.GetOneAttribute<ParameterMappingAttribute>(propertyInfo);
 
 					if ((object)parameterMappingAttribute == null)
 						continue;
@@ -872,7 +872,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 				string parameterName;
 				object parameterValue;
 
-				if (!Reflexion.GetLogicalPropertyValue(prototype, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
+				if (!Reflexion.Instance.GetLogicalPropertyValue(prototype, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
 					throw new InvalidOperationException(string.Format("Ah snap."));
 
 				parameterName = this.GetParameterName(columnMappingAttributes[index].ColumnName);
@@ -958,7 +958,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 			if ((object)targetType == null)
 				throw new ArgumentNullException("targetType");
 
-			tableMappingAttribute = Reflexion.GetOneAttribute<TableMappingAttribute>(targetType);
+			tableMappingAttribute = Reflexion.Instance.GetOneAttribute<TableMappingAttribute>(targetType);
 
 			if ((object)tableMappingAttribute == null)
 				return null;
@@ -974,7 +974,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 					if (!propertyInfo.CanRead || !propertyInfo.CanWrite)
 						continue;
 
-					columnMappingAttribute = Reflexion.GetOneAttribute<ColumnMappingAttribute>(propertyInfo);
+					columnMappingAttribute = Reflexion.Instance.GetOneAttribute<ColumnMappingAttribute>(propertyInfo);
 
 					if ((object)columnMappingAttribute == null)
 						continue;
@@ -1032,7 +1032,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 				string parameterName;
 				object parameterValue;
 
-				if (!Reflexion.GetLogicalPropertyValue(model, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
+				if (!Reflexion.Instance.GetLogicalPropertyValue(model, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
 					throw new InvalidOperationException(string.Format("Ah snap."));
 
 				parameterName = this.GetParameterName(columnMappingAttributes[index].ColumnName);
@@ -1054,7 +1054,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 				string parameterName;
 				object parameterValue;
 
-				if (!Reflexion.GetLogicalPropertyValue(model, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
+				if (!Reflexion.Instance.GetLogicalPropertyValue(model, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
 					throw new InvalidOperationException(string.Format("Ah snap."));
 
 				parameterName = this.GetParameterName(columnMappingAttributes[index].ColumnName);

@@ -144,7 +144,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 		{
 			string retVal;
 
-			retVal = !DataType.IsNullOrWhiteSpace(schemaName) ?
+			retVal = !DataType.Instance.IsNullOrWhiteSpace(schemaName) ?
 				string.Format(NET_SQLITE_SCHEMA_TABLE_NAME_FORMAT, schemaName, tableName) :
 				string.Format(NET_SQLITE_TABLE_NAME_FORMAT, tableName);
 

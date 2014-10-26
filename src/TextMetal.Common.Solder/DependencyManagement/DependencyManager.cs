@@ -10,8 +10,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 
-using TextMetal.Common.Core;
-
 namespace TextMetal.Common.Solder.DependencyManagement
 {
 	/// <summary>
@@ -129,6 +127,40 @@ namespace TextMetal.Common.Solder.DependencyManagement
 		}
 
 		/// <summary>
+		/// *** Code duplication here that breaks the dependency between Solder and Core. ***
+		/// Get the single custom attribute of the attribute specified type. If more than one custom attribute exists for the requested type, an InvalidOperationException is thrown. If no custom attributes of the specified type are defined, then null is returned.
+		/// </summary>
+		/// <typeparam name="TAttribute"> The custom attribute type. </typeparam>
+		/// <param name="target"> The target ICustomAttributeProvider (Assembly, Type, MemberInfo, etc.) </param>
+		/// <returns> The single custom attribute or null if none are defined. </returns>
+		private static TAttribute GetOneAttribute<TAttribute>(ICustomAttributeProvider target)
+			where TAttribute : Attribute
+		{
+			TAttribute[] attributes;
+			Type attributeType, targetType;
+
+			if ((object)target == null)
+				throw new ArgumentNullException("target");
+
+			attributeType = typeof(TAttribute);
+			targetType = target.GetType();
+
+			var temp = target.GetCustomAttributes(typeof(TAttribute), true);
+
+			if ((object)temp != null && temp.Length != 0 && temp is TAttribute[])
+				attributes = temp as TAttribute[];
+			else
+				attributes = null;
+
+			if ((object)attributes == null || attributes.Length == 0)
+				return null;
+			else if (attributes.Length > 1)
+				throw new InvalidOperationException(string.Format("Multiple custom attributes of type '{0}' are defined on type '{1}'.", attributeType.FullName, targetType.FullName));
+			else
+				return attributes[0];
+		}
+
+		/// <summary>
 		/// Private method that will scan all asemblies specified to perform auto-wiring of dependencies.
 		/// </summary>
 		/// <param name="assemblies"> An arry of ssemblies to scan and load dependency resolutions automatically ("auto-wire" feature). </param>
@@ -143,7 +175,7 @@ namespace TextMetal.Common.Solder.DependencyManagement
 			{
 				foreach (Assembly assembly in assemblies)
 				{
-					dependencyRegistrationAttribute = Reflexion.GetOneAttribute<DependencyRegistrationAttribute>(assembly);
+					dependencyRegistrationAttribute = GetOneAttribute<DependencyRegistrationAttribute>(assembly);
 
 					if ((object)dependencyRegistrationAttribute == null)
 						continue;
@@ -154,7 +186,7 @@ namespace TextMetal.Common.Solder.DependencyManagement
 					{
 						foreach (Type assemblyType in assemblyTypes)
 						{
-							dependencyRegistrationAttribute = Reflexion.GetOneAttribute<DependencyRegistrationAttribute>(assemblyType);
+							dependencyRegistrationAttribute = GetOneAttribute<DependencyRegistrationAttribute>(assemblyType);
 
 							if ((object)dependencyRegistrationAttribute == null)
 								continue;
@@ -168,7 +200,7 @@ namespace TextMetal.Common.Solder.DependencyManagement
 							{
 								foreach (MethodInfo methodInfo in methodInfos)
 								{
-									dependencyRegistrationAttribute = Reflexion.GetOneAttribute<DependencyRegistrationAttribute>(methodInfo);
+									dependencyRegistrationAttribute = GetOneAttribute<DependencyRegistrationAttribute>(methodInfo);
 
 									if ((object)dependencyRegistrationAttribute == null)
 										continue;
@@ -622,14 +654,14 @@ namespace TextMetal.Common.Solder.DependencyManagement
 				{
 // To keep from shooting oneself in the foot, this must be explicitly enabled at compile-time.
 #if !ALLOW_FCFS_INDIRECT_RESOLUTION
-					throw new DependencyException(string.Format("Dependency resolution in the dependency manager failed to match for target type '{0}' and selector key '{1}'.", targetType.FullName, selectorKey));
+					throw new DependencyException(string.Format("Dependency resolution in the in-effect dependency manager failed to match for target type '{0}' and selector key '{1}'.", targetType.FullName, selectorKey));
 #else
 	// no direct resolution; lets try FCFS indirect resolution...
 					var candidateResolutions = this.DependencyResolutionRegistrations.Keys.Where(x => targetType.IsAssignableFrom(x.Key)
 						&& (selectorKey == string.Empty || x.Value == selectorKey));
 
 					if (candidateResolutions.Count() < 1) // nothing to offer up
-						throw new DependencyException(string.Format("Dependency resolution in the dependency manager failed to match for target type '{0}' and selector key '{1}'.", targetType.FullName, selectorKey));
+						throw new DependencyException(string.Format("Dependency resolution in the in-effect dependency manager failed to match for target type '{0}' and selector key '{1}'.", targetType.FullName, selectorKey));
 					
 					// pick the 'best' one...???
 					trait = candidateResolutions.First();

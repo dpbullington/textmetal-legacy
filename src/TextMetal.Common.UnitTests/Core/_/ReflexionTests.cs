@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
+using NMock2;
+
 using NUnit.Framework;
 
 using TextMetal.Common.Core;
@@ -27,19 +29,54 @@ namespace TextMetal.Common.UnitTests.Core._
 
 		#region Methods/Operators
 
+		//[Test]
+		public void ShouldCreateFromSingletonTest()
+		{
+			IReflexion reflexion;
+
+			reflexion = Reflexion.Instance;
+
+			Assert.IsNotNull(reflexion);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnCreateNullDataType()
+		{
+			IReflexion reflexion;
+			IDataType mockDataType;
+
+			mockDataType = null;
+
+			reflexion = new Reflexion(mockDataType);
+		}
+
 		[Test]
 		public void ShouldAssociativeOnlyGetLogicalPropertyTypeTest()
 		{
+			Reflexion reflexion;
 			Dictionary<string, object> mockObject;
 			string propertyName;
 			Type propertyType;
 			bool result;
 
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With((object)null).Will(Return.Value(true));
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With(string.Empty).Will(Return.Value(true));
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With("FirstName").Will(Return.Value(false));
+
+			reflexion = new Reflexion(mockDataType);
+
 			// null, null
 			mockObject = null;
 			propertyName = null;
 
-			result = Reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
+			result = reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyType);
@@ -48,7 +85,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = null;
 			propertyName = string.Empty;
 
-			result = Reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
+			result = reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyType);
@@ -57,7 +94,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = null;
 			propertyName = "FirstName";
 
-			result = Reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
+			result = reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyType);
@@ -66,7 +103,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = new Dictionary<string, object>();
 			propertyName = null;
 
-			result = Reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
+			result = reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyType);
@@ -75,7 +112,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = new Dictionary<string, object>();
 			propertyName = string.Empty;
 
-			result = Reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
+			result = reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyType);
@@ -85,26 +122,41 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject["FirstName"] = "john";
 			propertyName = "FirstName";
 
-			result = Reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
+			result = reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
 
 			Assert.IsTrue(result);
 			Assert.IsNotNull(propertyType);
 			Assert.AreEqual(typeof(string), propertyType);
+			
+			mockery.VerifyAllExpectationsHaveBeenMet();
 		}
 
 		[Test]
 		public void ShouldAssociativeOnlyGetLogicalPropertyValueTest()
 		{
+			Reflexion reflexion;
 			Dictionary<string, object> mockObject;
 			string propertyName;
 			object propertyValue;
 			bool result;
 
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With((object)null).Will(Return.Value(true));
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With(string.Empty).Will(Return.Value(true));
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With("FirstName").Will(Return.Value(false));
+
+			reflexion = new Reflexion(mockDataType);
+
 			// null, null
 			mockObject = null;
 			propertyName = null;
 
-			result = Reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
+			result = reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -113,7 +165,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = null;
 			propertyName = string.Empty;
 
-			result = Reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
+			result = reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -122,7 +174,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = null;
 			propertyName = "FirstName";
 
-			result = Reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
+			result = reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -131,7 +183,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = new Dictionary<string, object>();
 			propertyName = null;
 
-			result = Reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
+			result = reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -140,7 +192,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = new Dictionary<string, object>();
 			propertyName = string.Empty;
 
-			result = Reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
+			result = reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -150,20 +202,35 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject["FirstName"] = "john";
 			propertyName = "FirstName";
 
-			result = Reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
+			result = reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
 
 			Assert.IsTrue(result);
 			Assert.IsNotNull(propertyValue);
 			Assert.AreEqual("john", propertyValue);
+
+			mockery.VerifyAllExpectationsHaveBeenMet();
 		}
 
 		[Test]
 		public void ShouldAssociativeOnlySetLogicalPropertyValueTest()
 		{
+			Reflexion reflexion;
 			Dictionary<string, object> mockObject;
 			string propertyName;
 			object propertyValue;
 			bool result;
+
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With((object)null).Will(Return.Value(true));
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With(string.Empty).Will(Return.Value(true));
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With("FirstName").Will(Return.Value(false));
+
+			reflexion = new Reflexion(mockDataType);
 
 			propertyValue = null;
 
@@ -171,7 +238,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = null;
 			propertyName = null;
 
-			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
+			result = reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -180,7 +247,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = null;
 			propertyName = string.Empty;
 
-			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
+			result = reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -189,7 +256,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = null;
 			propertyName = "FirstName";
 
-			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
+			result = reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -198,7 +265,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = new Dictionary<string, object>();
 			propertyName = null;
 
-			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
+			result = reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -207,7 +274,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = new Dictionary<string, object>();
 			propertyName = string.Empty;
 
-			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
+			result = reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -218,7 +285,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			propertyName = "FirstName";
 			propertyValue = "john";
 
-			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
+			result = reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
 
 			Assert.IsTrue(result);
 			Assert.IsNotNull(propertyValue);
@@ -229,67 +296,148 @@ namespace TextMetal.Common.UnitTests.Core._
 			propertyName = "FirstName";
 			propertyValue = null;
 
-			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue, false, false);
+			result = reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue, false, false);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
+
+			mockery.VerifyAllExpectationsHaveBeenMet();
 		}
 
 		[Test]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void ShouldFailOnDefinedGetNoAttributesTest()
 		{
-			Reflexion.GetZeroAttributes<MockMultipleTestAttibute>(typeof(MockTestAttributedClass));
+			Reflexion reflexion;
+
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			reflexion = new Reflexion(mockDataType);
+
+			reflexion.GetZeroAttributes<MockMultipleTestAttibute>(typeof(MockTestAttributedClass));
 		}
 
 		[Test]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void ShouldFailOnMultiDefinedGetAttributeTest()
 		{
-			Reflexion.GetOneAttribute<MockMultipleTestAttibute>(typeof(MockTestAttributedClass));
+			Reflexion reflexion;
+
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			reflexion = new Reflexion(mockDataType);
+			
+			reflexion.GetOneAttribute<MockMultipleTestAttibute>(typeof(MockTestAttributedClass));
 		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullConversionTypeMakeNonNullableTypeTest()
 		{
-			Reflexion.MakeNonNullableType(null);
+			Reflexion reflexion;
+
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			reflexion = new Reflexion(mockDataType);
+			
+			reflexion.MakeNonNullableType(null);
 		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullConversionTypeMakeNullableTypeTest()
 		{
-			Reflexion.MakeNullableType(null);
+			Reflexion reflexion;
+
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			reflexion = new Reflexion(mockDataType);
+			
+			reflexion.MakeNullableType(null);
 		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullTargetGetAttributeICustomAttributeProviderTest()
 		{
-			Reflexion.GetOneAttribute<MockMultipleTestAttibute>((ICustomAttributeProvider)null);
+			Reflexion reflexion;
+
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			reflexion = new Reflexion(mockDataType);
+			
+			reflexion.GetOneAttribute<MockMultipleTestAttibute>((ICustomAttributeProvider)null);
 		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullTargetGetAttributesICustomAttributeProviderTest()
 		{
-			Reflexion.GetAllAttributes<MockMultipleTestAttibute>((ICustomAttributeProvider)null);
+			Reflexion reflexion;
+
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			reflexion = new Reflexion(mockDataType);
+
+			reflexion.GetAllAttributes<MockMultipleTestAttibute>((ICustomAttributeProvider)null);
 		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullTargetGetZeroAttributesICustomAttributeProviderTest()
 		{
-			Reflexion.GetZeroAttributes<MockMultipleTestAttibute>((ICustomAttributeProvider)null);
+			Reflexion reflexion;
+
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			reflexion = new Reflexion(mockDataType);
+
+			reflexion.GetZeroAttributes<MockMultipleTestAttibute>((ICustomAttributeProvider)null);
 		}
 
 		[Test]
 		public void ShouldGetAttributeICustomAttributeProviderTest()
 		{
+			Reflexion reflexion;
 			MockSingleTestAttibute sta;
 
-			sta = Reflexion.GetOneAttribute<MockSingleTestAttibute>(typeof(MockTestAttributedClass));
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			reflexion = new Reflexion(mockDataType);
+			
+			sta = reflexion.GetOneAttribute<MockSingleTestAttibute>(typeof(MockTestAttributedClass));
 
 			Assert.IsNotNull(sta);
 			Assert.AreEqual(5, sta.Value);
@@ -298,9 +446,18 @@ namespace TextMetal.Common.UnitTests.Core._
 		[Test]
 		public void ShouldGetAttributesICustomAttributeProviderTest()
 		{
+			Reflexion reflexion;
 			MockMultipleTestAttibute[] tas;
 
-			tas = Reflexion.GetAllAttributes<MockMultipleTestAttibute>(typeof(MockTestAttributedClass));
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			reflexion = new Reflexion(mockDataType);
+
+			tas = reflexion.GetAllAttributes<MockMultipleTestAttibute>(typeof(MockTestAttributedClass));
 
 			Assert.IsNotNull(tas);
 			Assert.AreEqual(2, tas.Length);
@@ -309,8 +466,17 @@ namespace TextMetal.Common.UnitTests.Core._
 		[Test]
 		public void ShouldGetErrors()
 		{
+			Reflexion reflexion;
 			MockException mockException;
 			string message;
+
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			reflexion = new Reflexion(mockDataType);
 
 			try
 			{
@@ -328,7 +494,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			}
 			catch (Exception ex)
 			{
-				message = Reflexion.GetErrors(ex, 0);
+				message = reflexion.GetErrors(ex, 0);
 
 				Console.WriteLine(message);
 				//Assert.AreEqual("[SwIsHw.Core.UnitTests.TestingInfrastructure.MockException]\r\nouter\r\n[System.Exception]\r\ncollected.outer\r\n[System.Exception]\r\ncollected.inner\r\n[System.Exception]\r\ninner", message);
@@ -338,15 +504,34 @@ namespace TextMetal.Common.UnitTests.Core._
 		[Test]
 		public void ShouldGetNoAttributesTest()
 		{
-			Reflexion.GetZeroAttributes<AssemblyDescriptionAttribute>(typeof(MockTestAttributedClass));
+			Reflexion reflexion;
+
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			reflexion = new Reflexion(mockDataType);
+
+			reflexion.GetZeroAttributes<AssemblyDescriptionAttribute>(typeof(MockTestAttributedClass));
 		}
 
 		[Test]
 		public void ShouldGetNullAttributeICustomAttributeProviderTest()
 		{
+			Reflexion reflexion;
 			MockMultipleTestAttibute ta;
 
-			ta = Reflexion.GetOneAttribute<MockMultipleTestAttibute>(typeof(Exception));
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			reflexion = new Reflexion(mockDataType);
+			
+			ta = reflexion.GetOneAttribute<MockMultipleTestAttibute>(typeof(Exception));
 
 			Assert.IsNull(ta);
 		}
@@ -354,9 +539,18 @@ namespace TextMetal.Common.UnitTests.Core._
 		[Test]
 		public void ShouldGetNullAttributesICustomAttributeProviderTest()
 		{
+			Reflexion reflexion;
 			MockMultipleTestAttibute[] tas;
 
-			tas = Reflexion.GetAllAttributes<MockMultipleTestAttibute>(typeof(Exception));
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			reflexion = new Reflexion(mockDataType);
+
+			tas = reflexion.GetAllAttributes<MockMultipleTestAttibute>(typeof(Exception));
 
 			Assert.IsNull(tas);
 		}
@@ -364,54 +558,88 @@ namespace TextMetal.Common.UnitTests.Core._
 		[Test]
 		public void ShouldMakeNonNullableTypeTest()
 		{
+			Reflexion reflexion;
 			Type conversionType;
 			Type nonNullableType;
 
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			reflexion = new Reflexion(mockDataType);
+
 			conversionType = typeof(int);
-			nonNullableType = Reflexion.MakeNonNullableType(conversionType);
+			nonNullableType = reflexion.MakeNonNullableType(conversionType);
 			Assert.AreEqual(typeof(int), nonNullableType);
 
 			conversionType = typeof(int?);
-			nonNullableType = Reflexion.MakeNonNullableType(conversionType);
+			nonNullableType = reflexion.MakeNonNullableType(conversionType);
 			Assert.AreEqual(typeof(int), nonNullableType);
 
 			conversionType = typeof(IDisposable);
-			nonNullableType = Reflexion.MakeNonNullableType(conversionType);
+			nonNullableType = reflexion.MakeNonNullableType(conversionType);
 			Assert.AreEqual(typeof(IDisposable), nonNullableType);
 		}
 
 		[Test]
 		public void ShouldMakeNullableTypeTest()
 		{
+			Reflexion reflexion;
 			Type conversionType;
 			Type nullableType;
 
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			reflexion = new Reflexion(mockDataType);
+
 			conversionType = typeof(int);
-			nullableType = Reflexion.MakeNullableType(conversionType);
+			nullableType = reflexion.MakeNullableType(conversionType);
 			Assert.AreEqual(typeof(int?), nullableType);
 
 			conversionType = typeof(int?);
-			nullableType = Reflexion.MakeNullableType(conversionType);
+			nullableType = reflexion.MakeNullableType(conversionType);
 			Assert.AreEqual(typeof(int?), nullableType);
 
 			conversionType = typeof(IDisposable);
-			nullableType = Reflexion.MakeNullableType(conversionType);
+			nullableType = reflexion.MakeNullableType(conversionType);
 			Assert.AreEqual(typeof(IDisposable), nullableType);
 		}
 
 		[Test]
 		public void ShouldReflectionOnlyGetLogicalPropertyTypeTest()
 		{
+			Reflexion reflexion;
 			MockObject mockObject;
 			string propertyName;
 			Type propertyType;
 			bool result;
 
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With((object)null).Will(Return.Value(true));
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With(string.Empty).Will(Return.Value(true));
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With("FirstName").Will(Return.Value(false));
+
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With("NoGetter").Will(Return.Value(false));
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With("NoSetter").Will(Return.Value(false));
+
+			reflexion = new Reflexion(mockDataType);
+
 			// null, null
 			mockObject = null;
 			propertyName = null;
 
-			result = Reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
+			result = reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyType);
@@ -420,7 +648,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = null;
 			propertyName = string.Empty;
 
-			result = Reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
+			result = reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyType);
@@ -429,7 +657,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = null;
 			propertyName = "FirstName";
 
-			result = Reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
+			result = reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyType);
@@ -438,7 +666,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = new MockObject();
 			propertyName = null;
 
-			result = Reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
+			result = reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyType);
@@ -447,7 +675,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = new MockObject();
 			propertyName = string.Empty;
 
-			result = Reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
+			result = reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyType);
@@ -457,7 +685,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject.FirstName = "john";
 			propertyName = "FirstName";
 
-			result = Reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
+			result = reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
 
 			Assert.IsTrue(result);
 			Assert.IsNotNull(propertyType);
@@ -468,7 +696,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject.FirstName = "john";
 			propertyName = "NoGetter";
 
-			result = Reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
+			result = reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
 
 			Assert.IsTrue(result);
 			Assert.IsNotNull(propertyType);
@@ -479,7 +707,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject.FirstName = "john";
 			propertyName = "NoSetter";
 
-			result = Reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
+			result = reflexion.GetLogicalPropertyType(mockObject, propertyName, out propertyType);
 
 			Assert.IsTrue(result);
 			Assert.IsNotNull(propertyType);
@@ -489,16 +717,32 @@ namespace TextMetal.Common.UnitTests.Core._
 		[Test]
 		public void ShouldReflectionOnlyGetLogicalPropertyValueTest()
 		{
+			Reflexion reflexion;
 			MockObject mockObject;
 			string propertyName;
 			object propertyValue;
 			bool result;
 
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With((object)null).Will(Return.Value(true));
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With(string.Empty).Will(Return.Value(true));
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With("FirstName").Will(Return.Value(false));
+
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With("NoGetter").Will(Return.Value(false));
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With("NoSetter").Will(Return.Value(false));
+
+			reflexion = new Reflexion(mockDataType);
+
 			// null, null
 			mockObject = null;
 			propertyName = null;
 
-			result = Reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
+			result = reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -507,7 +751,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = null;
 			propertyName = string.Empty;
 
-			result = Reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
+			result = reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -516,7 +760,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = null;
 			propertyName = "FirstName";
 
-			result = Reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
+			result = reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -525,7 +769,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = new MockObject();
 			propertyName = null;
 
-			result = Reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
+			result = reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -534,7 +778,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = new MockObject();
 			propertyName = string.Empty;
 
-			result = Reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
+			result = reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -544,7 +788,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject.FirstName = "john";
 			propertyName = "FirstName";
 
-			result = Reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
+			result = reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
 
 			Assert.IsTrue(result);
 			Assert.IsNotNull(propertyValue);
@@ -555,7 +799,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject.FirstName = "john";
 			propertyName = "NoGetter";
 
-			result = Reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
+			result = reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -565,7 +809,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject.FirstName = "john";
 			propertyName = "NoSetter";
 
-			result = Reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
+			result = reflexion.GetLogicalPropertyValue(mockObject, propertyName, out propertyValue);
 
 			Assert.IsTrue(result);
 			Assert.IsNotNull(propertyValue);
@@ -575,10 +819,27 @@ namespace TextMetal.Common.UnitTests.Core._
 		[Test]
 		public void ShouldReflectionOnlySetLogicalPropertyValueTest()
 		{
+			Reflexion reflexion;
 			MockObject mockObject;
 			string propertyName;
 			object propertyValue;
 			bool result;
+
+			Mockery mockery;
+			IDataType mockDataType;
+
+			mockery = new Mockery();
+			mockDataType = mockery.NewMock<IDataType>();
+
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With((object)null).Will(Return.Value(true));
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With(string.Empty).Will(Return.Value(true));
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With("FirstName").Will(Return.Value(false));
+			Expect.On(mockDataType).Method("ChangeType").WithAnyArguments().Will(Return.Value(null));
+
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With("NoGetter").Will(Return.Value(false));
+			Expect.On(mockDataType).Method("IsNullOrWhiteSpace").With("NoSetter").Will(Return.Value(false));
+
+			reflexion = new Reflexion(mockDataType);
 
 			propertyValue = null;
 
@@ -586,7 +847,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = null;
 			propertyName = null;
 
-			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
+			result = reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -595,7 +856,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = null;
 			propertyName = string.Empty;
 
-			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
+			result = reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -604,7 +865,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = null;
 			propertyName = "FirstName";
 
-			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
+			result = reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -613,7 +874,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = new MockObject();
 			propertyName = null;
 
-			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
+			result = reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -622,7 +883,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject = new MockObject();
 			propertyName = string.Empty;
 
-			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
+			result = reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
 
 			Assert.IsFalse(result);
 			Assert.IsNull(propertyValue);
@@ -632,7 +893,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			propertyName = "FirstName";
 			propertyValue = "john";
 
-			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
+			result = reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
 
 			Assert.IsTrue(result);
 			Assert.IsNotNull(propertyValue);
@@ -643,7 +904,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			propertyName = "NoGetter";
 			propertyValue = "john";
 
-			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
+			result = reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
 
 			Assert.IsTrue(result);
 			Assert.IsNotNull(propertyValue);
@@ -654,7 +915,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockObject.FirstName = "john";
 			propertyName = "NoSetter";
 
-			result = Reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
+			result = reflexion.SetLogicalPropertyValue(mockObject, propertyName, propertyValue);
 
 			Assert.IsFalse(result);
 		}

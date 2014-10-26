@@ -72,9 +72,9 @@
     <Compile Include="TestingInfrastructure\MockDynamicInvokerRealProxy.cs" />
     <Compile Include="TestingInfrastructure\MockModelObject.cs" />
     <Compile Include="TestingInfrastructure\MockProxyFactory.cs" />
-    <Compile Include="Tokenization\_\DynamicValueTokenReplacementStrategyTests.cs" />
-    <Compile Include="Tokenization\_\StaticValueTokenReplacementStrategyTests.cs" />
-    <Compile Include="Tokenization\_\TokenizerTests.cs" />
+    <Compile Include="Core\Tokenization\_\DynamicValueTokenReplacementStrategyTests.cs" />
+    <Compile Include="Core\Tokenization\_\StaticValueTokenReplacementStrategyTests.cs" />
+    <Compile Include="Core\Tokenization\_\TokenizerTests.cs" />
     <Compile Include="Data\_\AdoNetHelperTests.cs" />
     <None Include="App.config" />
     <None Include="Data\_\AmbientUnitOfWorkScope.cs" />
@@ -94,16 +94,13 @@
     <None Include="UnitTesting.nunit" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Cerealization\" />
+    <Folder Include="Core\Cerealization\_\" />
+    <Folder Include="Core\Hierarchy\_\" />
     <Folder Include="Data\Framework\_\" />
     <Folder Include="Syntax\" />
     <Folder Include="Xml\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TextMetal.Common.Cerealization\TextMetal.Common.Cerealization.csproj">
-      <Project>{384a2559-5c35-4279-9f69-fe0d643b1014}</Project>
-      <Name>TextMetal.Common.Cerealization</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.Core\TextMetal.Common.Core.csproj">
       <Project>{D1860A67-7EFB-4C0F-89CD-A641D99DCC2A}</Project>
       <Name>TextMetal.Common.Core</Name>
@@ -119,10 +116,6 @@
     <ProjectReference Include="..\TextMetal.Common.Syntax\TextMetal.Common.Syntax.csproj">
       <Project>{483501d9-4d73-4076-997b-3a5d8b5ddb2c}</Project>
       <Name>TextMetal.Common.Syntax</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TextMetal.Common.Tokenization\TextMetal.Common.Tokenization.csproj">
-      <Project>{2FF3DDEC-8A2D-47C6-9C41-5C6743591DC1}</Project>
-      <Name>TextMetal.Common.Tokenization</Name>
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.WinForms\TextMetal.Common.WinForms.csproj">
       <Project>{6bd158ba-429b-422b-aaeb-24a36511c19a}</Project>

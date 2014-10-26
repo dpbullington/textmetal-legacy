@@ -34,7 +34,7 @@ namespace TextMetal.Framework.InputOutputModel
 			if ((object)assemblyName == null)
 				throw new ArgumentNullException("assemblyName");
 
-			if (DataType.IsWhiteSpace(assemblyName))
+			if (DataType.Instance.IsWhiteSpace(assemblyName))
 				throw new ArgumentOutOfRangeException("assemblyName");
 
 			assembly = Assembly.Load(assemblyName);
@@ -47,7 +47,7 @@ namespace TextMetal.Framework.InputOutputModel
 			if ((object)contentName == null)
 				throw new ArgumentNullException("contentName");
 
-			if (DataType.IsWhiteSpace(contentName))
+			if (DataType.Instance.IsWhiteSpace(contentName))
 				throw new ArgumentOutOfRangeException("contentName");
 
 			return null;
@@ -61,7 +61,7 @@ namespace TextMetal.Framework.InputOutputModel
 			if ((object)properties == null)
 				throw new ArgumentNullException("properties");
 
-			if (DataType.IsWhiteSpace(sourceName))
+			if (DataType.Instance.IsWhiteSpace(sourceName))
 				throw new ArgumentOutOfRangeException("sourceName");
 
 			return DBNull.Value;
@@ -72,7 +72,7 @@ namespace TextMetal.Framework.InputOutputModel
 			if ((object)templateName == null)
 				throw new ArgumentNullException("templateName");
 
-			if (DataType.IsWhiteSpace(templateName))
+			if (DataType.Instance.IsWhiteSpace(templateName))
 				throw new ArgumentOutOfRangeException("templateName");
 
 			return null;

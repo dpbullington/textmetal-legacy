@@ -71,7 +71,7 @@ namespace TextMetal.Common.Core
 			if ((object)svalue == null)
 				throw new ConfigurationErrorsException(string.Format("Key '{0}' was not found in app.config file.", key));
 
-			if (!DataType.TryParse<TValue>(svalue, out ovalue))
+			if (!DataType.Instance.TryParse<TValue>(svalue, out ovalue))
 				throw new ConfigurationErrorsException(string.Format("App.config key '{0}' value '{1}' is not a valid '{2}'.", key, svalue, typeOfValue.FullName));
 
 			return ovalue;
@@ -99,7 +99,7 @@ namespace TextMetal.Common.Core
 			if ((object)svalue == null)
 				throw new ConfigurationErrorsException(string.Format("Key '{0}' was not found in app.config file.", key));
 
-			if (!DataType.TryParse(valueType, svalue, out ovalue))
+			if (!DataType.Instance.TryParse(valueType, svalue, out ovalue))
 				throw new ConfigurationErrorsException(string.Format("App.config key '{0}' value '{1}' is not a valid '{2}'.", key, svalue, valueType.FullName));
 
 			return ovalue;
@@ -219,11 +219,11 @@ namespace TextMetal.Common.Core
 				value = match.Groups[2].Value;
 
 				// key is required
-				if (DataType.IsNullOrWhiteSpace(key))
+				if (DataType.Instance.IsNullOrWhiteSpace(key))
 					continue;
 
 				// val is required
-				if (DataType.IsNullOrWhiteSpace(value))
+				if (DataType.Instance.IsNullOrWhiteSpace(value))
 					continue;
 
 				if (!arguments.ContainsKey(key))
@@ -274,11 +274,11 @@ namespace TextMetal.Common.Core
 			v = match.Groups[2].Value;
 
 			// key is required
-			if (DataType.IsNullOrWhiteSpace(k))
+			if (DataType.Instance.IsNullOrWhiteSpace(k))
 				return false;
 
 			// val is required
-			if (DataType.IsNullOrWhiteSpace(v))
+			if (DataType.Instance.IsNullOrWhiteSpace(v))
 				return false;
 
 			key = k;

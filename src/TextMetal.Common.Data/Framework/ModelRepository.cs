@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Web;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Core.Cerealization;
 using TextMetal.Common.Data.Framework.Mapping;
 using TextMetal.Common.Data.Framework.Strategy;
 using TextMetal.Common.Solder.AmbientExecutionContext;
@@ -662,7 +663,7 @@ namespace TextMetal.Common.Data.Framework
 
 			if (this.UseDatabaseFile)
 			{
-				if (!DataType.IsNullOrWhiteSpace(this.DatabaseFilePath))
+				if (!DataType.Instance.IsNullOrWhiteSpace(this.DatabaseFilePath))
 				{
 					if (this.KillDatabaseFile)
 					{
@@ -673,7 +674,7 @@ namespace TextMetal.Common.Data.Framework
 					this.EnsureDatabaseFile();
 				}
 
-				if (!Cerealization.Cerealization.TryGetFromAssemblyResource<DatabaseHistory>(this.GetType(), resourceName, out databaseHistory))
+				if (!Cerealization.TryGetFromAssemblyResource<DatabaseHistory>(this.GetType(), resourceName, out databaseHistory))
 					throw new InvalidOperationException(string.Format("Unable to deserialize instance of '{0}' from the manifest resource name '{1}' in the assembly '{2}'.", typeof(DatabaseHistory).FullName, resourceName, this.GetType().Assembly.FullName));
 
 				using (IUnitOfWork unitOfWork = this.GetUnitOfWork())

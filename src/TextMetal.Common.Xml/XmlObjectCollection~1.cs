@@ -5,7 +5,7 @@
 
 using System;
 
-using TextMetal.Common.Core.HierarchicalObjects;
+using TextMetal.Common.Core.Hierarchy;
 
 namespace TextMetal.Common.Xml
 {

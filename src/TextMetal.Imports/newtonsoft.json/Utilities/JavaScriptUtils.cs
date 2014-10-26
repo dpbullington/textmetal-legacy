@@ -72,6 +72,31 @@ namespace Newtonsoft.Json.Utilities
 
         private const string EscapedUnicodeText = "!";
 
+        public static bool[] GetCharEscapeFlags(StringEscapeHandling stringEscapeHandling, char quoteChar)
+        {
+            if (stringEscapeHandling == StringEscapeHandling.EscapeHtml)
+                return HtmlCharEscapeFlags;
+
+            if (quoteChar == '"')
+                return DoubleQuoteCharEscapeFlags;
+
+            return SingleQuoteCharEscapeFlags;
+        }
+
+        public static bool ShouldEscapeJavaScriptString(string s, bool[] charEscapeFlags)
+        {
+            if (s == null)
+                return false;
+
+            foreach (char c in s)
+            {
+                if (c >= charEscapeFlags.Length || charEscapeFlags[c])
+                    return true;
+            }
+
+            return false;
+        }
+
         public static void WriteEscapedJavaScriptString(TextWriter writer, string s, char delimiter, bool appendDelimiters,
             bool[] charEscapeFlags, StringEscapeHandling stringEscapeHandling, ref char[] writeBuffer)
         {
@@ -211,10 +236,17 @@ namespace Newtonsoft.Json.Utilities
 
         public static string ToEscapedJavaScriptString(string value, char delimiter, bool appendDelimiters)
         {
+            return ToEscapedJavaScriptString(value, delimiter, appendDelimiters, StringEscapeHandling.Default);
+        }
+
+        public static string ToEscapedJavaScriptString(string value, char delimiter, bool appendDelimiters, StringEscapeHandling stringEscapeHandling)
+        {
+            bool[] charEscapeFlags = GetCharEscapeFlags(stringEscapeHandling, delimiter);
+
             using (StringWriter w = StringUtils.CreateStringWriter(StringUtils.GetLength(value) ?? 16))
             {
                 char[] buffer = null;
-                WriteEscapedJavaScriptString(w, value, delimiter, appendDelimiters, (delimiter == '"') ? DoubleQuoteCharEscapeFlags : SingleQuoteCharEscapeFlags, StringEscapeHandling.Default, ref buffer);
+                WriteEscapedJavaScriptString(w, value, delimiter, appendDelimiters, charEscapeFlags, stringEscapeHandling, ref buffer);
                 return w.ToString();
             }
         }

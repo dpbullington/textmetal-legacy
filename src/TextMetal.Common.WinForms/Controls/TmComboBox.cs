@@ -130,7 +130,7 @@ namespace TextMetal.Common.WinForms.Controls
 			}
 			else
 			{
-				if (DataType.IsNullOrWhiteSpace(this.ValueType))
+				if (DataType.Instance.IsNullOrWhiteSpace(this.ValueType))
 					isValid = this.IsInputValid = this.CoreIsValid();
 				else
 					isValid = this.IsInputValid = this.CoreIsValid(Type.GetType(this.ValueType, false) ?? typeof(string));

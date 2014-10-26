@@ -29,12 +29,14 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("6.0.2.*")]
 [assembly: AssemblyFileVersion("6.0.2.0")]
-[assembly: AssemblyInformationalVersion("2014.10.11/preview")]
+[assembly: AssemblyInformationalVersion("2014.10.25/preview")]
 [assembly: AssemblyDelaySign(false)]
 [assembly: ComVisible(false)]
 
-#if DEFINE_CLR_VERSION_20
-// this causes NUnit to die in CLR 4.0
-
-[assembly: AllowPartiallyTrustedCallers]
+/*#if DEFINE_CLR_VERSION_20
+[assembly: System.Security.AllowPartiallyTrustedCallers]
 #endif
+
+#if DEFINE_CLR_VERSION_40
+[assembly: System.Security.SecurityRules(System.Security.SecurityRuleSet.Level2)]
+#endif*/

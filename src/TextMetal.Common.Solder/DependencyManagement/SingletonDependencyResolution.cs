@@ -46,6 +46,19 @@ namespace TextMetal.Common.Solder.DependencyManagement
 		#region Methods/Operators
 
 		/// <summary>
+		/// Gets an instance of an IDependencyResolution using the specified generic type.
+		/// The default constructor will be used to initialize a lazy singled in the current application domain on first request.
+		/// This method is never guaranteed to return a SingletonDependencyResolution instance.
+		/// </summary>
+		/// <typeparam name="TObject"> The target type of resolution. </typeparam>
+		/// <returns> An IDependencyResolution instance. </returns>
+		public static IDependencyResolution LazyConstructorOfType<TObject>()
+			where TObject : new()
+		{
+			return DelegateDependencyResolution.FromFunc<object>(() => LazySingleton<TObject>.LazyInstance);
+		}
+
+		/// <summary>
 		/// Gets an instance of SingletonDependencyResolution from the specified object instance.
 		/// </summary>
 		/// <typeparam name="TObject"> The target type of resolution. </typeparam>
@@ -67,6 +80,40 @@ namespace TextMetal.Common.Solder.DependencyManagement
 				throw new ArgumentNullException("dependencyManager");
 
 			return this.Instance;
+		}
+
+		#endregion
+
+		#region Classes/Structs/Interfaces/Enums/Delegates
+
+		private class LazySingleton<TObject>
+			where TObject : new()
+		{
+			#region Constructors/Destructors
+
+			static LazySingleton()
+			{
+			}
+
+			#endregion
+
+			#region Fields/Constants
+
+			private static readonly TObject lazyInstance = new TObject();
+
+			#endregion
+
+			#region Properties/Indexers/Events
+
+			public static TObject LazyInstance
+			{
+				get
+				{
+					return lazyInstance;
+				}
+			}
+
+			#endregion
 		}
 
 		#endregion

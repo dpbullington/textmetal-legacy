@@ -56,10 +56,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TextMetal.Common.Cerealization\TextMetal.Common.Cerealization.csproj">
-      <Project>{384A2559-5C35-4279-9F69-FE0D643B1014}</Project>
-      <Name>TextMetal.Common.Cerealization</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.Data\TextMetal.Common.Data.csproj">
       <Project>{E41E2352-4249-458E-B4F2-DBDF9B564BF5}</Project>
       <Name>TextMetal.Common.Data</Name>
@@ -67,10 +63,6 @@
     <ProjectReference Include="..\TextMetal.Common.Syntax\TextMetal.Common.Syntax.csproj">
       <Project>{483501D9-4D73-4076-997B-3A5D8B5DDB2C}</Project>
       <Name>TextMetal.Common.Syntax</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TextMetal.Common.Tokenization\TextMetal.Common.Tokenization.csproj">
-      <Project>{2FF3DDEC-8A2D-47C6-9C41-5C6743591DC1}</Project>
-      <Name>TextMetal.Common.Tokenization</Name>
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.Xml\TextMetal.Common.Xml.csproj">
       <Project>{CEF6C9D5-D5F2-4F4E-81DD-0BFDF81A2C93}</Project>

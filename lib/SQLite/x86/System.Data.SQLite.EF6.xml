@@ -1945,6 +1945,18 @@
             </summary>
             <returns>The new object.</returns>
         </member>
+        <member name="M:System.Data.SQLite.EF6.SQLiteProviderFactory.GetService(System.Type)">
+            <summary>
+            Gets the service object of the specified type.
+            </summary>
+            <param name="serviceType">
+            An object that specifies the type of service object to get.
+            </param>
+            <returns>
+            A service object of type serviceType -OR- a null reference if
+            there is no service object of type serviceType.
+            </returns>
+        </member>
         <member name="T:System.Data.SQLite.EF6.SQLiteProviderManifest">
             <summary>
             The Provider Manifest for SQL Server
@@ -2020,7 +2032,7 @@
             because schema information seems to always be queried on a new connection object, so the schema is
             always fresh.
             </remarks>
-            <param name="cnn">The connection upon which to build the schema tables</param>
+            <param name="cnn">The connection upon which to build the schema tables.</param>
         </member>
         <member name="M:System.Data.SQLite.EF6.SQLiteProviderServices.DataTableToTable(System.Data.SQLite.SQLiteConnection,System.Data.DataTable,System.String)">
             <summary>

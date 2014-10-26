@@ -6,8 +6,8 @@
 using System;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Core.Tokenization;
 using TextMetal.Common.Syntax.Expressions;
-using TextMetal.Common.Tokenization;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 
@@ -95,7 +95,7 @@ namespace TextMetal.Framework.ExpressionModel
 			object value;
 			Type valueType;
 
-			if (DataType.IsNullOrWhiteSpace(this.Type))
+			if (DataType.Instance.IsNullOrWhiteSpace(this.Type))
 				valueType = typeof(string);
 			else
 				valueType = System.Type.GetType(this.Type, false);
@@ -103,7 +103,7 @@ namespace TextMetal.Framework.ExpressionModel
 			if ((object)valueType == null)
 				throw new InvalidOperationException(string.Format("The value run-time type failed to load for type '{0}'.", this.Type));
 
-			if (!DataType.TryParse(valueType, data, out value))
+			if (!DataType.Instance.TryParse(valueType, data, out value))
 				throw new InvalidOperationException(string.Format("Could not parse the value '{0}' as type '{1}'.", data, valueType.FullName));
 
 			this._ = value;

@@ -3,7 +3,7 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-using TextMetal.Common.Core.HierarchicalObjects;
+using TextMetal.Common.Core.Hierarchy;
 
 namespace TextMetal.Common.Xml
 {

@@ -59,7 +59,7 @@ namespace TextMetal.Common.WinForms
 		{
 			ConsoleColor oldConsoleColor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Red;
-			Console.WriteLine((object)exception != null ? Reflexion.GetErrors(exception, 0) : "<unknown>");
+			Console.WriteLine((object)exception != null ? Reflexion.Instance.GetErrors(exception, 0) : "<unknown>");
 			Console.ForegroundColor = oldConsoleColor;
 
 			Console.WriteLine(Environment.NewLine + "The operation failed to complete.");

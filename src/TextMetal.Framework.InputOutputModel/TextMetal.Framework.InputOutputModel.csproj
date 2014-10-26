@@ -60,10 +60,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TextMetal.Common.Cerealization\TextMetal.Common.Cerealization.csproj">
-      <Project>{384A2559-5C35-4279-9F69-FE0D643B1014}</Project>
-      <Name>TextMetal.Common.Cerealization</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.Core\TextMetal.Common.Core.csproj">
       <Project>{D1860A67-7EFB-4C0F-89CD-A641D99DCC2A}</Project>
       <Name>TextMetal.Common.Core</Name>

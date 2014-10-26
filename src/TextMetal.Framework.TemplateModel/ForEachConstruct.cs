@@ -7,7 +7,7 @@ using System;
 using System.Collections;
 
 using TextMetal.Common.Core;
-using TextMetal.Common.Tokenization;
+using TextMetal.Common.Core.Tokenization;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 using TextMetal.Framework.ExpressionModel;
@@ -164,7 +164,7 @@ namespace TextMetal.Framework.TemplateModel
 			varCt = templatingContext.Tokenizer.ExpandTokens(this.VarCt, dynamicWildcardTokenReplacementStrategy);
 			varIx = templatingContext.Tokenizer.ExpandTokens(this.VarIx, dynamicWildcardTokenReplacementStrategy);
 
-			if (!DataType.IsNullOrWhiteSpace(varItem))
+			if (!DataType.Instance.IsNullOrWhiteSpace(varItem))
 			{
 				new AllocConstruct()
 				{
@@ -172,7 +172,7 @@ namespace TextMetal.Framework.TemplateModel
 				}.ExpandTemplate(templatingContext);
 			}
 
-			if (!DataType.IsNullOrWhiteSpace(varCt))
+			if (!DataType.Instance.IsNullOrWhiteSpace(varCt))
 			{
 				new AllocConstruct()
 				{
@@ -180,7 +180,7 @@ namespace TextMetal.Framework.TemplateModel
 				}.ExpandTemplate(templatingContext);
 			}
 
-			if (!DataType.IsNullOrWhiteSpace(varIx))
+			if (!DataType.Instance.IsNullOrWhiteSpace(varIx))
 			{
 				new AllocConstruct()
 				{
@@ -244,7 +244,7 @@ namespace TextMetal.Framework.TemplateModel
 			if ((object)this.Sort != null)
 				values = this.Sort.EvaluateSort(templatingContext, values);
 
-			if (!DataType.IsNullOrWhiteSpace(varCt))
+			if (!DataType.Instance.IsNullOrWhiteSpace(varCt))
 			{
 				IExpressionContainerConstruct expressionContainerConstruct;
 				ValueConstruct valueConstruct;
@@ -270,7 +270,7 @@ namespace TextMetal.Framework.TemplateModel
 			{
 				foreach (object value in values)
 				{
-					if (!DataType.IsNullOrWhiteSpace(varItem))
+					if (!DataType.Instance.IsNullOrWhiteSpace(varItem))
 					{
 						IExpressionContainerConstruct expressionContainerConstruct;
 						ValueConstruct valueConstruct;
@@ -291,7 +291,7 @@ namespace TextMetal.Framework.TemplateModel
 						}.ExpandTemplate(templatingContext);
 					}
 
-					if (!DataType.IsNullOrWhiteSpace(varIx))
+					if (!DataType.Instance.IsNullOrWhiteSpace(varIx))
 					{
 						IExpressionContainerConstruct expressionContainerConstruct;
 						ValueConstruct valueConstruct;
@@ -323,7 +323,7 @@ namespace TextMetal.Framework.TemplateModel
 					index++;
 				}
 
-				if (!DataType.IsNullOrWhiteSpace(varIx))
+				if (!DataType.Instance.IsNullOrWhiteSpace(varIx))
 				{
 					new FreeConstruct()
 					{
@@ -331,7 +331,7 @@ namespace TextMetal.Framework.TemplateModel
 					}.ExpandTemplate(templatingContext);
 				}
 
-				if (!DataType.IsNullOrWhiteSpace(varCt))
+				if (!DataType.Instance.IsNullOrWhiteSpace(varCt))
 				{
 					new FreeConstruct()
 					{
@@ -339,7 +339,7 @@ namespace TextMetal.Framework.TemplateModel
 					}.ExpandTemplate(templatingContext);
 				}
 
-				if (!DataType.IsNullOrWhiteSpace(varItem))
+				if (!DataType.Instance.IsNullOrWhiteSpace(varItem))
 				{
 					new FreeConstruct()
 					{

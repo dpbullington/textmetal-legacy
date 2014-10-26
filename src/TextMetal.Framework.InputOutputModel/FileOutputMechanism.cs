@@ -7,8 +7,8 @@ using System;
 using System.IO;
 using System.Text;
 
-using TextMetal.Common.Cerealization;
 using TextMetal.Common.Core;
+using TextMetal.Common.Core.Cerealization;
 using TextMetal.Common.Xml;
 
 namespace TextMetal.Framework.InputOutputModel
@@ -96,7 +96,7 @@ namespace TextMetal.Framework.InputOutputModel
 			if ((object)scopeName == null)
 				throw new ArgumentNullException("scopeName");
 
-			if (DataType.IsWhiteSpace(scopeName))
+			if (DataType.Instance.IsWhiteSpace(scopeName))
 				throw new ArgumentOutOfRangeException("scopeName");
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, scopeName));
@@ -120,7 +120,7 @@ namespace TextMetal.Framework.InputOutputModel
 			if ((object)scopeName == null)
 				throw new ArgumentNullException("scopeName");
 
-			if (DataType.IsWhiteSpace(scopeName))
+			if (DataType.Instance.IsWhiteSpace(scopeName))
 				throw new ArgumentOutOfRangeException("scopeName");
 
 			textWriter = base.TextWriters.Pop();
@@ -140,7 +140,7 @@ namespace TextMetal.Framework.InputOutputModel
 			if ((object)objectName == null)
 				throw new ArgumentNullException("objectName");
 
-			if (DataType.IsWhiteSpace(objectName))
+			if (DataType.Instance.IsWhiteSpace(objectName))
 				throw new ArgumentOutOfRangeException("objectName");
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, objectName));
@@ -149,7 +149,7 @@ namespace TextMetal.Framework.InputOutputModel
 			// this should support XPE, XML, JSON
 			if ((object)xmlObject != null)
 				serializationStrategy = new XpeSerializationStrategy(this.Xpe);
-			else if ((object)Reflexion.GetOneAttribute<SerializableAttribute>(obj.GetType()) != null)
+			else if ((object)Reflexion.Instance.GetOneAttribute<SerializableAttribute>(obj.GetType()) != null)
 				serializationStrategy = new XmlSerializationStrategy();
 			else
 				serializationStrategy = new JsonSerializationStrategy();
@@ -180,7 +180,7 @@ namespace TextMetal.Framework.InputOutputModel
 			string fullFilePath;
 			string fullDirectoryPath;
 
-			if (!DataType.IsWhiteSpace(this.LogFileName))
+			if (!DataType.Instance.IsWhiteSpace(this.LogFileName))
 			{
 				fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, this.LogFileName));
 				fullDirectoryPath = Path.GetDirectoryName(fullFilePath);

@@ -7,9 +7,9 @@ using System;
 using System.Linq;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Core.Tokenization;
 using TextMetal.Common.Syntax.Expressions;
 using TextMetal.Common.Syntax.Operators;
-using TextMetal.Common.Tokenization;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 
@@ -2151,15 +2151,15 @@ namespace TextMetal.Framework.ExpressionModel
 
 						rhs = rightObj.ChangeType<string>();
 
-						if (DataType.IsWhiteSpace(rhs))
-							throw new InvalidOperationException("TODO (enhancement): add meaningful message | DataType.IsNullOrWhiteSpace(rhs)");
+						if (DataType.Instance.IsWhiteSpace(rhs))
+							throw new InvalidOperationException("TODO (enhancement): add meaningful message | DataType.Instance.IsNullOrWhiteSpace(rhs)");
 
 						rightType = Type.GetType(rhs, false);
 
 						if ((object)rightType == null)
 							throw new InvalidOperationException("TODO (enhancement): add meaningful message | Type.GetType");
 
-						return DataType.ChangeType(leftObj, rightType);
+						return DataType.Instance.ChangeType(leftObj, rightType);
 					}
 
 					break;
@@ -2183,16 +2183,16 @@ namespace TextMetal.Framework.ExpressionModel
 							lhs = leftObj.ChangeType<string>();
 							rhs = rightObj.ChangeType<string>();
 
-							if (DataType.IsWhiteSpace(rhs))
-								throw new InvalidOperationException("TODO (enhancement): add meaningful message | DataType.IsNullOrWhiteSpace(rhs)");
+							if (DataType.Instance.IsWhiteSpace(rhs))
+								throw new InvalidOperationException("TODO (enhancement): add meaningful message | DataType.Instance.IsNullOrWhiteSpace(rhs)");
 
 							rightType = Type.GetType(rhs, false);
 
 							if ((object)rightType == null)
 								throw new InvalidOperationException("TODO (enhancement): add meaningful message | Type.GetType");
 
-							if (!DataType.TryParse(rightType, lhs, out result))
-								throw new InvalidOperationException("TODO (enhancement): add meaningful message | DataType.TryParse");
+							if (!DataType.Instance.TryParse(rightType, lhs, out result))
+								throw new InvalidOperationException("TODO (enhancement): add meaningful message | DataType.Instance.TryParse");
 
 							return result;
 						}
@@ -2215,8 +2215,8 @@ namespace TextMetal.Framework.ExpressionModel
 
 						rhs = rightObj.ChangeType<string>();
 
-						if (DataType.IsWhiteSpace(rhs))
-							throw new InvalidOperationException("TODO (enhancement): add meaningful message | DataType.IsNullOrWhiteSpace(rhs)");
+						if (DataType.Instance.IsWhiteSpace(rhs))
+							throw new InvalidOperationException("TODO (enhancement): add meaningful message | DataType.Instance.IsNullOrWhiteSpace(rhs)");
 
 						rightType = Type.GetType(rhs, false);
 

@@ -8,13 +8,66 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
+using TextMetal.Common.Solder.DependencyManagement;
+
 namespace TextMetal.Common.Core
 {
 	/// <summary>
-	/// Provides static helper and/or extension methods for reflection.
+	/// Provides easier reflection facilities.
 	/// </summary>
-	public static class Reflexion
+	public sealed class Reflexion : IReflexion
 	{
+		#region Constructors/Destructors
+
+		/// <summary>
+		/// Initializes a new instance of the Reflexion class.
+		/// </summary>
+		/// <param name="dataType"> The data type instance to use. </param>
+		public Reflexion(IDataType dataType)
+		{
+			if ((object)dataType == null)
+				throw new ArgumentNullException("dataType");
+
+			this.dataType = dataType;
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the Reflexion class.
+		/// </summary>
+		private Reflexion()
+			: this(DependencyManager.AppDomainInstance.ResolveDependency<IDataType>(string.Empty))
+		{
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private static readonly IReflexion instance = new Reflexion();
+		private readonly IDataType dataType;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public static IReflexion Instance
+		{
+			get
+			{
+				return instance;
+			}
+		}
+
+		private IDataType DataType
+		{
+			get
+			{
+				return this.dataType;
+			}
+		}
+
+		#endregion
+
 		#region Methods/Operators
 
 		/// <summary>
@@ -23,7 +76,7 @@ namespace TextMetal.Common.Core
 		/// <typeparam name="TAttribute"> The target ICustomAttributeProvider (Assembly, Type, MemberInfo, etc.) </typeparam>
 		/// <param name="target"> The target object. </param>
 		/// <returns> The custom attributes array or null. </returns>
-		public static TAttribute[] GetAllAttributes<TAttribute>(ICustomAttributeProvider target)
+		public TAttribute[] GetAllAttributes<TAttribute>(ICustomAttributeProvider target)
 			where TAttribute : Attribute
 		{
 			object[] attributes;
@@ -45,7 +98,7 @@ namespace TextMetal.Common.Core
 		/// <param name="exception"> The root exception to get errors. </param>
 		/// <param name="indent"> The indent level count. </param>
 		/// <returns> A string concatenation of error messages delimited by newlines. </returns>
-		public static string GetErrors(Exception exception, int indent)
+		public string GetErrors(Exception exception, int indent)
 		{
 			PropertyInfo[] propertyInfos;
 			Type exceptionType, exceptionEnumerableType;
@@ -92,7 +145,7 @@ namespace TextMetal.Common.Core
 							if ((object)propertyValue != null)
 							{
 								foreach (Exception subException in (IEnumerable<Exception>)propertyValue)
-									message += Environment.NewLine + GetErrors(subException, indent + 1);
+									message += Environment.NewLine + this.GetErrors(subException, indent + 1);
 							}
 
 							message += Environment.NewLine + new string(INDENT_CHAR, indent + 1) + "+++ END ENUMERABLE EXECPTIONS +++" + Environment.NewLine + Environment.NewLine;
@@ -125,7 +178,7 @@ namespace TextMetal.Common.Core
 		/// <param name="propertyName"> The logical property name to get the type for. </param>
 		/// <param name="propertyType"> An output run-time type of the logical property or null if the logical property lookup failed. </param>
 		/// <returns> A value indicating whether the logical property name lookup was successful or not. </returns>
-		public static bool GetLogicalPropertyType(object targetInstance, string propertyName, out Type propertyType)
+		public bool GetLogicalPropertyType(object targetInstance, string propertyName, out Type propertyType)
 		{
 			bool trigger = false;
 			Type targetType;
@@ -138,7 +191,7 @@ namespace TextMetal.Common.Core
 			if ((object)targetInstance == null)
 				return false;
 
-			if (DataType.IsNullOrWhiteSpace(propertyName))
+			if (this.DataType.IsNullOrWhiteSpace(propertyName))
 				return false;
 
 			// STRATEGY: attempt reflection
@@ -146,7 +199,7 @@ namespace TextMetal.Common.Core
 			{
 				targetType = targetInstance.GetType();
 
-				propertyInfo = targetType.GetLowestProperty(propertyName);
+				propertyInfo = this.GetLowestProperty(targetType, propertyName);
 
 				if ((object)propertyInfo != null)
 				{
@@ -183,7 +236,7 @@ namespace TextMetal.Common.Core
 		/// <param name="propertyName"> The logical property name to get the value for. </param>
 		/// <param name="propertyValue"> An output run-time value of the logical property or null if the logical property lookup failed. </param>
 		/// <returns> A value indicating whether the logical property name lookup was successful or not. </returns>
-		public static bool GetLogicalPropertyValue(object targetInstance, string propertyName, out object propertyValue)
+		public bool GetLogicalPropertyValue(object targetInstance, string propertyName, out object propertyValue)
 		{
 			bool trigger = false;
 			Type targetType;
@@ -195,7 +248,7 @@ namespace TextMetal.Common.Core
 			if ((object)targetInstance == null)
 				return false;
 
-			if (DataType.IsNullOrWhiteSpace(propertyName))
+			if (this.DataType.IsNullOrWhiteSpace(propertyName))
 				return false;
 
 			// STRATEGY: attempt reflection
@@ -203,7 +256,7 @@ namespace TextMetal.Common.Core
 			{
 				targetType = targetInstance.GetType();
 
-				propertyInfo = targetType.GetLowestProperty(propertyName);
+				propertyInfo = this.GetLowestProperty(targetType, propertyName);
 
 				if ((object)propertyInfo != null &&
 					propertyInfo.CanRead)
@@ -230,12 +283,12 @@ namespace TextMetal.Common.Core
 		}
 
 		/// <summary>
-		/// A private extension method used to obtain the least-derived public, instance property of a given name.
+		/// Used to obtain the least-derived public, instance property of a given name.
 		/// </summary>
 		/// <param name="propertyType"> The property type to interogate. </param>
 		/// <param name="propertyName"> The property name to lookup. </param>
 		/// <returns> A PropertyInfo for the least-derived public, instance property by the given name or null if none were found. </returns>
-		private static PropertyInfo GetLowestProperty(this Type propertyType, string propertyName)
+		public PropertyInfo GetLowestProperty(Type propertyType, string propertyName)
 		{
 			PropertyInfo property;
 
@@ -258,7 +311,7 @@ namespace TextMetal.Common.Core
 		/// <typeparam name="TAttribute"> The custom attribute type. </typeparam>
 		/// <param name="target"> The target ICustomAttributeProvider (Assembly, Type, MemberInfo, etc.) </param>
 		/// <returns> The single custom attribute or null if none are defined. </returns>
-		public static TAttribute GetOneAttribute<TAttribute>(ICustomAttributeProvider target)
+		public TAttribute GetOneAttribute<TAttribute>(ICustomAttributeProvider target)
 			where TAttribute : Attribute
 		{
 			TAttribute[] attributes;
@@ -270,7 +323,7 @@ namespace TextMetal.Common.Core
 			attributeType = typeof(TAttribute);
 			targetType = target.GetType();
 
-			attributes = GetAllAttributes<TAttribute>(target);
+			attributes = this.GetAllAttributes<TAttribute>(target);
 
 			if ((object)attributes == null || attributes.Length == 0)
 				return null;
@@ -285,7 +338,7 @@ namespace TextMetal.Common.Core
 		/// </summary>
 		/// <typeparam name="TAttribute"> The custom attribute type. </typeparam>
 		/// <param name="target"> The target ICustomAttributeProvider (Assembly, Type, MemberInfo, etc.) </param>
-		public static void GetZeroAttributes<TAttribute>(ICustomAttributeProvider target)
+		public void GetZeroAttributes<TAttribute>(ICustomAttributeProvider target)
 			where TAttribute : Attribute
 		{
 			TAttribute[] attributes;
@@ -297,7 +350,7 @@ namespace TextMetal.Common.Core
 			attributeType = typeof(TAttribute);
 			targetType = target.GetType();
 
-			attributes = GetAllAttributes<TAttribute>(target);
+			attributes = this.GetAllAttributes<TAttribute>(target);
 
 			if ((object)attributes == null || attributes.Length == 0)
 				return;
@@ -311,7 +364,7 @@ namespace TextMetal.Common.Core
 		/// </summary>
 		/// <param name="conversionType"> The nullable run-time type to transform. </param>
 		/// <returns> The non-nullbale run-time type. </returns>
-		public static Type MakeNonNullableType(Type conversionType)
+		public Type MakeNonNullableType(Type conversionType)
 		{
 			Type openNullableType;
 
@@ -336,7 +389,7 @@ namespace TextMetal.Common.Core
 		/// </summary>
 		/// <param name="conversionType"> The nullable run-time type to transform. </param>
 		/// <returns> The non-nullbale run-time type. </returns>
-		public static Type MakeNullableType(Type conversionType)
+		public Type MakeNullableType(Type conversionType)
 		{
 			Type openNullableType, closedNullableType;
 
@@ -365,9 +418,9 @@ namespace TextMetal.Common.Core
 		/// <param name="propertyName"> The logical property name to set the value for. </param>
 		/// <param name="propertyValue"> The value of the logical property to set or null. </param>
 		/// <returns> A value indicating whether the logical property name lookup was successful or not. </returns>
-		public static bool SetLogicalPropertyValue(object targetInstance, string propertyName, object propertyValue)
+		public bool SetLogicalPropertyValue(object targetInstance, string propertyName, object propertyValue)
 		{
-			return SetLogicalPropertyValue(targetInstance, propertyName, propertyValue, false, true);
+			return this.SetLogicalPropertyValue(targetInstance, propertyName, propertyValue, false, true);
 		}
 
 		/// <summary>
@@ -379,7 +432,7 @@ namespace TextMetal.Common.Core
 		/// <param name="stayHard"> Force only 'hard' object semantics and not use associative lookup (i.e. the target instance must be a real CLR object). </param>
 		/// <param name="makeSoft"> Allow making 'soft' object semantics (i.e. the target instance could be an associative object). </param>
 		/// <returns> A value indicating whether the logical property name lookup was successful or not; lookup respects the 'stayHard' and 'makeSoft' flags. </returns>
-		public static bool SetLogicalPropertyValue(object targetInstance, string propertyName, object propertyValue, bool stayHard, bool makeSoft)
+		public bool SetLogicalPropertyValue(object targetInstance, string propertyName, object propertyValue, bool stayHard, bool makeSoft)
 		{
 			bool trigger = false;
 			Type targetType;
@@ -389,7 +442,7 @@ namespace TextMetal.Common.Core
 			if ((object)targetInstance == null)
 				return false;
 
-			if (DataType.IsNullOrWhiteSpace(propertyName))
+			if (this.DataType.IsNullOrWhiteSpace(propertyName))
 				return false;
 
 			// STRATEGY: attempt reflection
@@ -397,12 +450,12 @@ namespace TextMetal.Common.Core
 			{
 				targetType = targetInstance.GetType();
 
-				propertyInfo = targetType.GetLowestProperty(propertyName);
+				propertyInfo = this.GetLowestProperty(targetType, propertyName);
 
 				if ((object)propertyInfo != null &&
 					propertyInfo.CanWrite)
 				{
-					propertyValue = DataType.ChangeType(propertyValue, propertyInfo.PropertyType);
+					propertyValue = this.DataType.ChangeType(propertyValue, propertyInfo.PropertyType);
 					propertyInfo.SetValue(targetInstance, propertyValue, null);
 					trigger = true;
 				}

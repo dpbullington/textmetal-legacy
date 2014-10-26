@@ -31,6 +31,7 @@ using System.ComponentModel;
 using System.Numerics;
 #endif
 using System.Text;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json.Serialization;
 using System.Reflection;
 #if NET20
@@ -160,7 +161,8 @@ namespace Newtonsoft.Json.Utilities
 #endif
             };
 
-        private static readonly List<TypeInformation> PrimitiveTypeCodes = new List<TypeInformation>
+#if !(NETFX_CORE || PORTABLE)
+        private static readonly TypeInformation[] PrimitiveTypeCodes =
         {
             new TypeInformation { Type = typeof(object), TypeCode = PrimitiveTypeCode.Empty },
             new TypeInformation { Type = typeof(object), TypeCode = PrimitiveTypeCode.Object },
@@ -182,15 +184,28 @@ namespace Newtonsoft.Json.Utilities
             new TypeInformation { Type = typeof(object), TypeCode = PrimitiveTypeCode.Empty }, // no 17 in TypeCode for some reason
             new TypeInformation { Type = typeof(string), TypeCode = PrimitiveTypeCode.String }
         };
+#endif
 
         public static PrimitiveTypeCode GetTypeCode(Type t)
         {
+            bool isEnum;
+            return GetTypeCode(t, out isEnum);
+        }
+
+        public static PrimitiveTypeCode GetTypeCode(Type t, out bool isEnum)
+        {
             PrimitiveTypeCode typeCode;
             if (TypeCodeMap.TryGetValue(t, out typeCode))
+            {
+                isEnum = false;
                 return typeCode;
+            }
 
             if (t.IsEnum())
+            {
+                isEnum = true;
                 return GetTypeCode(Enum.GetUnderlyingType(t));
+            }
 
             // performance?
             if (ReflectionUtils.IsNullableType(t))
@@ -199,16 +214,13 @@ namespace Newtonsoft.Json.Utilities
                 if (nonNullable.IsEnum())
                 {
                     Type nullableUnderlyingType = typeof(Nullable<>).MakeGenericType(Enum.GetUnderlyingType(nonNullable));
+                    isEnum = true;
                     return GetTypeCode(nullableUnderlyingType);
                 }
             }
 
+            isEnum = false;
             return PrimitiveTypeCode.Object;
-        }
-
-        public static PrimitiveTypeCode GetTypeCode(object o)
-        {
-            return GetTypeCode(o.GetType());
         }
 
 #if !(NETFX_CORE || PORTABLE)
@@ -345,15 +357,51 @@ namespace Newtonsoft.Json.Utilities
         }
 #endif
 
-        #region Convert
-        /// <summary>
-        /// Converts the value to the specified type.
-        /// </summary>
-        /// <param name="initialValue">The value to convert.</param>
-        /// <param name="culture">The culture to use when converting.</param>
-        /// <param name="targetType">The type to convert the value to.</param>
-        /// <returns>The converted type.</returns>
+        #region TryConvert
+        internal enum ConvertResult
+        {
+            Success,
+            CannotConvertNull,
+            NotInstantiableType,
+            NoValidConversion
+        }
+
         public static object Convert(object initialValue, CultureInfo culture, Type targetType)
+        {
+            object value;
+            switch (TryConvertInternal(initialValue, culture, targetType, out value))
+            {
+                case ConvertResult.Success:
+                    return value;
+                case ConvertResult.CannotConvertNull:
+                    throw new Exception("Can not convert null {0} into non-nullable {1}.".FormatWith(CultureInfo.InvariantCulture, initialValue.GetType(), targetType));
+                case ConvertResult.NotInstantiableType:
+                    throw new ArgumentException("Target type {0} is not a value type or a non-abstract class.".FormatWith(CultureInfo.InvariantCulture, targetType), "targetType");
+                case ConvertResult.NoValidConversion:
+                    throw new InvalidOperationException("Can not convert from {0} to {1}.".FormatWith(CultureInfo.InvariantCulture, initialValue.GetType(), targetType));
+                default:
+                    throw new InvalidOperationException("Unexpected conversion result.");
+            }
+        }
+
+        private static bool TryConvert(object initialValue, CultureInfo culture, Type targetType, out object value)
+        {
+            try
+            {
+                if (TryConvertInternal(initialValue, culture, targetType, out value) == ConvertResult.Success)
+                    return true;
+
+                value = null;
+                return false;
+            }
+            catch
+            {
+                value = null;
+                return false;
+            }
+        }
+
+        private static ConvertResult TryConvertInternal(object initialValue, CultureInfo culture, Type targetType, out object value)
         {
             if (initialValue == null)
                 throw new ArgumentNullException("initialValue");
@@ -364,7 +412,10 @@ namespace Newtonsoft.Json.Utilities
             Type initialType = initialValue.GetType();
 
             if (targetType == initialType)
-                return initialValue;
+            {
+                value = initialValue;
+                return ConvertResult.Success;
+            }
 
             // use Convert.ChangeType if both types are IConvertible
             if (ConvertUtils.IsConvertible(initialValue.GetType()) && ConvertUtils.IsConvertible(targetType))
@@ -372,41 +423,81 @@ namespace Newtonsoft.Json.Utilities
                 if (targetType.IsEnum())
                 {
                     if (initialValue is string)
-                        return Enum.Parse(targetType, initialValue.ToString(), true);
+                    {
+                        value = Enum.Parse(targetType, initialValue.ToString(), true);
+                        return ConvertResult.Success;
+                    }
                     else if (IsInteger(initialValue))
-                        return Enum.ToObject(targetType, initialValue);
+                    {
+                        value = Enum.ToObject(targetType, initialValue);
+                        return ConvertResult.Success;
+                    }
                 }
 
-                return System.Convert.ChangeType(initialValue, targetType, culture);
+                value = System.Convert.ChangeType(initialValue, targetType, culture);
+                return ConvertResult.Success;
             }
 
 #if !NET20
             if (initialValue is DateTime && targetType == typeof(DateTimeOffset))
-                return new DateTimeOffset((DateTime)initialValue);
+            {
+                value = new DateTimeOffset((DateTime)initialValue);
+                return ConvertResult.Success;
+            }
 #endif
 
             if (initialValue is byte[] && targetType == typeof(Guid))
-                return new Guid((byte[])initialValue);
+            {
+                value = new Guid((byte[])initialValue);
+                return ConvertResult.Success;
+            }
+
+            if (initialValue is Guid && targetType == typeof(byte[]))
+            {
+                value = ((Guid)initialValue).ToByteArray();
+                return ConvertResult.Success;
+            }
 
             if (initialValue is string)
             {
                 if (targetType == typeof(Guid))
-                    return new Guid((string)initialValue);
+                {
+                    value = new Guid((string)initialValue);
+                    return ConvertResult.Success;
+                }
                 if (targetType == typeof(Uri))
-                    return new Uri((string)initialValue, UriKind.RelativeOrAbsolute);
+                {
+                    value = new Uri((string)initialValue, UriKind.RelativeOrAbsolute);
+                    return ConvertResult.Success;
+                }
                 if (targetType == typeof(TimeSpan))
-                    return ParseTimeSpan((string)initialValue);
-                if (targetType == typeof (byte[]))
-                    return System.Convert.FromBase64String((string)initialValue);
+                {
+                    value = ParseTimeSpan((string)initialValue);
+                    return ConvertResult.Success;
+                }
+                if (targetType == typeof(byte[]))
+                {
+                    value = System.Convert.FromBase64String((string)initialValue);
+                    return ConvertResult.Success;
+                }
                 if (typeof(Type).IsAssignableFrom(targetType))
-                    return Type.GetType((string)initialValue, true);
+                {
+                    value = Type.GetType((string)initialValue, true);
+                    return ConvertResult.Success;
+                }
             }
 
 #if !(NET20 || NET35 || PORTABLE40 || PORTABLE)
             if (targetType == typeof(BigInteger))
-                return ToBigInteger(initialValue);
+            {
+                value = ToBigInteger(initialValue);
+                return ConvertResult.Success;
+            }
             if (initialValue is BigInteger)
-                return FromBigInteger((BigInteger)initialValue, targetType);
+            {
+                value = FromBigInteger((BigInteger)initialValue, targetType);
+                return ConvertResult.Success;
+            }
 #endif
 
 #if !(NETFX_CORE || PORTABLE40 || PORTABLE)
@@ -414,58 +505,50 @@ namespace Newtonsoft.Json.Utilities
             TypeConverter toConverter = GetConverter(initialType);
 
             if (toConverter != null && toConverter.CanConvertTo(targetType))
-                return toConverter.ConvertTo(null, culture, initialValue, targetType);
+            {
+                value = toConverter.ConvertTo(null, culture, initialValue, targetType);
+                return ConvertResult.Success;
+            }
 
             TypeConverter fromConverter = GetConverter(targetType);
 
             if (fromConverter != null && fromConverter.CanConvertFrom(initialType))
-                return fromConverter.ConvertFrom(null, culture, initialValue);
+            {
+                value = fromConverter.ConvertFrom(null, culture, initialValue);
+                return ConvertResult.Success;
+            }
 #endif
 #if !(NETFX_CORE || PORTABLE40 || PORTABLE)
             // handle DBNull and INullable
             if (initialValue == DBNull.Value)
             {
                 if (ReflectionUtils.IsNullable(targetType))
-                    return EnsureTypeAssignable(null, initialType, targetType);
+                {
+                    value = EnsureTypeAssignable(null, initialType, targetType);
+                    return ConvertResult.Success;
+                }
 
-                throw new Exception("Can not convert null {0} into non-nullable {1}.".FormatWith(CultureInfo.InvariantCulture, initialType, targetType));
+                // cannot convert null to non-nullable
+                value = null;
+                return ConvertResult.CannotConvertNull;
             }
 #endif
 #if !(NETFX_CORE || PORTABLE40 || PORTABLE)
             if (initialValue is INullable)
-                return EnsureTypeAssignable(ToValue((INullable)initialValue), initialType, targetType);
+            {
+                value = EnsureTypeAssignable(ToValue((INullable)initialValue), initialType, targetType);
+                return ConvertResult.Success;
+            }
 #endif
 
             if (targetType.IsInterface() || targetType.IsGenericTypeDefinition() || targetType.IsAbstract())
-                throw new ArgumentException("Target type {0} is not a value type or a non-abstract class.".FormatWith(CultureInfo.InvariantCulture, targetType), "targetType");
-
-            throw new InvalidOperationException("Can not convert from {0} to {1}.".FormatWith(CultureInfo.InvariantCulture, initialType, targetType));
-        }
-        #endregion
-
-        #region TryConvert
-        /// <summary>
-        /// Converts the value to the specified type.
-        /// </summary>
-        /// <param name="initialValue">The value to convert.</param>
-        /// <param name="culture">The culture to use when converting.</param>
-        /// <param name="targetType">The type to convert the value to.</param>
-        /// <param name="convertedValue">The converted value if the conversion was successful or the default value of <c>T</c> if it failed.</param>
-        /// <returns>
-        /// 	<c>true</c> if <c>initialValue</c> was converted successfully; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool TryConvert(object initialValue, CultureInfo culture, Type targetType, out object convertedValue)
-        {
-            try
             {
-                convertedValue = Convert(initialValue, culture, targetType);
-                return true;
+                value = null;
+                return ConvertResult.NotInstantiableType;
             }
-            catch
-            {
-                convertedValue = null;
-                return false;
-            }
+
+            value = null;
+            return ConvertResult.NoValidConversion;
         }
         #endregion
 
@@ -549,7 +632,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsInteger(object value)
         {
-            switch (GetTypeCode(value))
+            switch (GetTypeCode(value.GetType()))
             {
                 case PrimitiveTypeCode.SByte:
                 case PrimitiveTypeCode.Byte:
@@ -693,6 +776,30 @@ namespace Newtonsoft.Json.Utilities
             }
 
             return ParseResult.Success;
+        }
+
+        public static bool TryConvertGuid(string s, out Guid g)
+        {
+#if NET20 || NET35
+            if (s == null)
+                throw new ArgumentNullException("s");
+
+            Regex format = new Regex(
+                "^[A-Fa-f0-9]{32}$|" +
+                "^({|\\()?[A-Fa-f0-9]{8}-([A-Fa-f0-9]{4}-){3}[A-Fa-f0-9]{12}(}|\\))?$|" +
+                "^({)?[0xA-Fa-f0-9]{3,10}(, {0,1}[0xA-Fa-f0-9]{3,6}){2}, {0,1}({)([0xA-Fa-f0-9]{3,4}, {0,1}){7}[0xA-Fa-f0-9]{3,4}(}})$");
+            Match match = format.Match(s);
+            if (match.Success)
+            {
+                g = new Guid(s);
+                return true;
+            }
+
+            g = Guid.Empty;
+            return false;
+#else
+            return Guid.TryParse(s, out g);
+#endif
         }
     }
 }

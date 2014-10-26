@@ -47,7 +47,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException("properties");
 
-			if (DataType.IsWhiteSpace(sourceFilePath))
+			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException("sourceFilePath");
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
@@ -62,7 +62,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 			{
 				if ((object)values != null && values.Count == 1)
 				{
-					if (!DataType.TryParse<bool>(values[0], out firstRowIsHeader))
+					if (!DataType.Instance.TryParse<bool>(values[0], out firstRowIsHeader))
 						firstRowIsHeader = false;
 				}
 			}
@@ -81,7 +81,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 					rowDelimiter = values[0];
 			}
 
-			if (!DataType.IsNullOrWhiteSpace(fieldDelimiter))
+			if (!DataType.Instance.IsNullOrWhiteSpace(fieldDelimiter))
 			{
 				fieldDelimiter = fieldDelimiter.Replace("\\t", "\t");
 				fieldDelimiter = fieldDelimiter.Replace("\\r", "\r");
@@ -105,7 +105,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 						foreach (var field in row)
 						{
 							propertyConstruct01 = new PropertyConstruct();
-							propertyConstruct01.Name = DataType.IsNullOrWhiteSpace(field.Key) ? "TextFileLine" : field.Key;
+							propertyConstruct01.Name = DataType.Instance.IsNullOrWhiteSpace(field.Key) ? "TextFileLine" : field.Key;
 							propertyConstruct01.RawValue = field.Value;
 							objectConstruct01.Items.Add(propertyConstruct01);
 						}

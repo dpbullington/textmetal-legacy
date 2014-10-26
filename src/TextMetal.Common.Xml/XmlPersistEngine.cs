@@ -110,10 +110,10 @@ namespace TextMetal.Common.Xml
 				foreach (PropertyInfo parentPropertyInfo in parentPropertyInfos)
 				{
 					// get potential attribute mapping metadata
-					xmlAttributeMappingAttribute = Reflexion.GetOneAttribute<XmlAttributeMappingAttribute>(parentPropertyInfo);
+					xmlAttributeMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlAttributeMappingAttribute>(parentPropertyInfo);
 
 					// get the potential child mapping metadata
-					xmlChildElementMappingAttribute = Reflexion.GetOneAttribute<XmlChildElementMappingAttribute>(parentPropertyInfo);
+					xmlChildElementMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlChildElementMappingAttribute>(parentPropertyInfo);
 
 					// count what we found; there can only be one
 					attributeCount = 0;
@@ -161,7 +161,7 @@ namespace TextMetal.Common.Xml
 			if ((object)fileName == null)
 				throw new ArgumentNullException("fileName");
 
-			if (DataType.IsWhiteSpace(fileName))
+			if (DataType.Instance.IsWhiteSpace(fileName))
 				throw new ArgumentOutOfRangeException("fileName");
 
 			using (Stream stream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -240,7 +240,7 @@ namespace TextMetal.Common.Xml
 			if ((object)attributes == null)
 				throw new ArgumentNullException("attributes");
 
-			if (DataType.IsNullOrWhiteSpace(currentElementXmlName.LocalName))
+			if (DataType.Instance.IsNullOrWhiteSpace(currentElementXmlName.LocalName))
 				throw new ArgumentOutOfRangeException("currentElementXmlName");
 
 			if (contextStack.Count > 0) // is this NOT the root node?
@@ -261,7 +261,7 @@ namespace TextMetal.Common.Xml
 					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
 				// get parent mapping metadata
-				parentXmlElementMappingAttribute = Reflexion.GetOneAttribute<XmlElementMappingAttribute>(parentType);
+				parentXmlElementMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlElementMappingAttribute>(parentType);
 
 				// sanity check
 				if ((object)parentXmlElementMappingAttribute == null)
@@ -274,10 +274,10 @@ namespace TextMetal.Common.Xml
 				foreach (PropertyInfo parentPropertyInfo in parentPropertyInfos)
 				{
 					// get potential attribute mapping metadata
-					xmlAttributeMappingAttribute = Reflexion.GetOneAttribute<XmlAttributeMappingAttribute>(parentPropertyInfo);
+					xmlAttributeMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlAttributeMappingAttribute>(parentPropertyInfo);
 
 					// get the potential child mapping metadata
-					xmlChildElementMappingAttribute = Reflexion.GetOneAttribute<XmlChildElementMappingAttribute>(parentPropertyInfo);
+					xmlChildElementMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlChildElementMappingAttribute>(parentPropertyInfo);
 
 					// count what we found; there can only be one
 					attributeCount = 0;
@@ -319,11 +319,11 @@ namespace TextMetal.Common.Xml
 					svalue = overrideCurrentXmlTextObject.Text;
 
 					// convert to strongly-typed value
-					if (!DataType.TryParse(parentPropertyToChildElementMapping.Value.Key.PropertyType, svalue, out ovalue))
-						ovalue = DataType.DefaultValue(parentPropertyToChildElementMapping.Value.Key.PropertyType);
+					if (!DataType.Instance.TryParse(parentPropertyToChildElementMapping.Value.Key.PropertyType, svalue, out ovalue))
+						ovalue = DataType.Instance.DefaultValue(parentPropertyToChildElementMapping.Value.Key.PropertyType);
 
 					// attempt to set the value
-					if (!Reflexion.SetLogicalPropertyValue(parentXmlObject, parentPropertyToChildElementMapping.Value.Key.Name, ovalue))
+					if (!Reflexion.Instance.SetLogicalPropertyValue(parentXmlObject, parentPropertyToChildElementMapping.Value.Key.Name, ovalue))
 						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
 					// return null to prevent recursion
@@ -366,7 +366,7 @@ namespace TextMetal.Common.Xml
 						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
 					// get parent-of-child mapping metadata
-					parentOfChildXmlElementMappingAttribute = Reflexion.GetOneAttribute<XmlElementMappingAttribute>(parentPropertyToChildElementMapping.Value.Key.PropertyType);
+					parentOfChildXmlElementMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlElementMappingAttribute>(parentPropertyToChildElementMapping.Value.Key.PropertyType);
 
 					// sanity check
 					if ((object)parentOfChildXmlElementMappingAttribute == null)
@@ -394,7 +394,7 @@ namespace TextMetal.Common.Xml
 				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
 			// get current mapping metadata
-			currentXmlElementMappingAttribute = Reflexion.GetOneAttribute<XmlElementMappingAttribute>(currentType);
+			currentXmlElementMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlElementMappingAttribute>(currentType);
 
 			// sanity check
 			if ((object)currentXmlElementMappingAttribute == null)
@@ -407,10 +407,10 @@ namespace TextMetal.Common.Xml
 			foreach (PropertyInfo currentPropertyInfo in currentPropertyInfos)
 			{
 				// get potential attribute mapping metadata
-				xmlAttributeMappingAttribute = Reflexion.GetOneAttribute<XmlAttributeMappingAttribute>(currentPropertyInfo);
+				xmlAttributeMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlAttributeMappingAttribute>(currentPropertyInfo);
 
 				// get the potential child mapping metadata
-				xmlChildElementMappingAttribute = Reflexion.GetOneAttribute<XmlChildElementMappingAttribute>(currentPropertyInfo);
+				xmlChildElementMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlChildElementMappingAttribute>(currentPropertyInfo);
 
 				// count what we found; there can only be one
 				attributeCount = 0;
@@ -447,11 +447,11 @@ namespace TextMetal.Common.Xml
 						.Select(a => a.Value).SingleOrDefault();
 
 					// convert to strongly-typed value
-					if (!DataType.TryParse(currentPropertyToAttributeMapping.Key.PropertyType, svalue, out ovalue))
-						ovalue = DataType.DefaultValue(currentPropertyToAttributeMapping.Key.PropertyType);
+					if (!DataType.Instance.TryParse(currentPropertyToAttributeMapping.Key.PropertyType, svalue, out ovalue))
+						ovalue = DataType.Instance.DefaultValue(currentPropertyToAttributeMapping.Key.PropertyType);
 
 					// attempt to set the values
-					if (!Reflexion.SetLogicalPropertyValue(currentXmlObject, currentPropertyToAttributeMapping.Key.Name, ovalue))
+					if (!Reflexion.Instance.SetLogicalPropertyValue(currentXmlObject, currentPropertyToAttributeMapping.Key.Name, ovalue))
 						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 				}
 			}
@@ -460,7 +460,7 @@ namespace TextMetal.Common.Xml
 			if ((object)parentPropertyToChildElementMapping != null)
 			{
 				// store this as a child element of parent XML object
-				if (!Reflexion.SetLogicalPropertyValue(parentXmlObject, parentPropertyToChildElementMapping.Value.Key.Name, currentXmlObject))
+				if (!Reflexion.Instance.SetLogicalPropertyValue(parentXmlObject, parentPropertyToChildElementMapping.Value.Key.Name, currentXmlObject))
 					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 			}
 			else if ((object)parentXmlElementMappingAttribute != null)
@@ -716,7 +716,7 @@ namespace TextMetal.Common.Xml
 			parentType = parentXmlObject.GetType();
 
 			// get the parent emlement mapping metadata
-			parentXmlElementMappingAttribute = Reflexion.GetOneAttribute<XmlElementMappingAttribute>(parentType);
+			parentXmlElementMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlElementMappingAttribute>(parentType);
 
 			// sanity check
 			if ((object)parentXmlElementMappingAttribute == null)
@@ -813,7 +813,7 @@ namespace TextMetal.Common.Xml
 			if ((object)targetType == null)
 				throw new ArgumentNullException("targetType");
 
-			xmlElementMappingAttribute = Reflexion.GetOneAttribute<XmlElementMappingAttribute>(targetType);
+			xmlElementMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlElementMappingAttribute>(targetType);
 
 			if ((object)xmlElementMappingAttribute == null)
 				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
@@ -933,7 +933,7 @@ namespace TextMetal.Common.Xml
 			if ((object)fileName == null)
 				throw new ArgumentNullException("fileName");
 
-			if (DataType.IsWhiteSpace(fileName))
+			if (DataType.Instance.IsWhiteSpace(fileName))
 				throw new ArgumentOutOfRangeException("fileName");
 
 			using (Stream stream = File.Open(fileName, FileMode.Create, FileAccess.Write, FileShare.None))
@@ -1022,7 +1022,7 @@ namespace TextMetal.Common.Xml
 			{
 				// write as CDATA if name is invalid (expected)
 				if ((object)currentXmlTextObject.Name == null ||
-					DataType.IsNullOrWhiteSpace(currentXmlTextObject.Name.LocalName))
+					DataType.Instance.IsNullOrWhiteSpace(currentXmlTextObject.Name.LocalName))
 				{
 					xmlWriter.WriteCData(currentXmlTextObject.Text);
 					return;
@@ -1038,7 +1038,7 @@ namespace TextMetal.Common.Xml
 				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
 			// get the current mapping metadata
-			currentXmlElementMappingAttribute = Reflexion.GetOneAttribute<XmlElementMappingAttribute>(currentType);
+			currentXmlElementMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlElementMappingAttribute>(currentType);
 
 			// sanity check
 			if ((object)currentXmlElementMappingAttribute == null)
@@ -1051,10 +1051,10 @@ namespace TextMetal.Common.Xml
 			foreach (PropertyInfo currentPropertyInfo in currentPropertyInfos)
 			{
 				// get potential attribute mapping metadata
-				xmlAttributeMappingAttribute = Reflexion.GetOneAttribute<XmlAttributeMappingAttribute>(currentPropertyInfo);
+				xmlAttributeMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlAttributeMappingAttribute>(currentPropertyInfo);
 
 				// get potential child element mapping metadata
-				xmlChildElementMappingAttribute = Reflexion.GetOneAttribute<XmlChildElementMappingAttribute>(currentPropertyInfo);
+				xmlChildElementMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlChildElementMappingAttribute>(currentPropertyInfo);
 
 				// count what we found; there can only be one
 				attributeCount = 0;
@@ -1074,7 +1074,7 @@ namespace TextMetal.Common.Xml
 
 			// begin current element
 			if ((object)overrideXmlName != null &&
-				!DataType.IsNullOrWhiteSpace(overrideXmlName.LocalName)) // overriden element is special case for parent DOT property convention
+				!DataType.Instance.IsNullOrWhiteSpace(overrideXmlName.LocalName)) // overriden element is special case for parent DOT property convention
 			{
 				// write the start of the element
 				xmlWriter.WriteStartElement(overrideXmlName.LocalName, overrideXmlName.NamespaceUri);
@@ -1082,7 +1082,7 @@ namespace TextMetal.Common.Xml
 			else
 			{
 				// sanity check
-				if (DataType.IsNullOrWhiteSpace(currentXmlElementMappingAttribute.LocalName))
+				if (DataType.Instance.IsNullOrWhiteSpace(currentXmlElementMappingAttribute.LocalName))
 					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
 				// write the start of the element
@@ -1099,7 +1099,7 @@ namespace TextMetal.Common.Xml
 						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
 					// get the strongly-typed value
-					if (!Reflexion.GetLogicalPropertyValue(currentXmlObject, currentPropertyToAttributeMapping.Key.Name, out ovalue))
+					if (!Reflexion.Instance.GetLogicalPropertyValue(currentXmlObject, currentPropertyToAttributeMapping.Key.Name, out ovalue))
 						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
 					// convert to loosely-typed formatted string
@@ -1120,10 +1120,10 @@ namespace TextMetal.Common.Xml
 					if (!currentPropertyToChildElementMapping.Key.CanRead)
 						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
-					if (DataType.IsNullOrWhiteSpace(currentPropertyToChildElementMapping.Value.LocalName))
+					if (DataType.Instance.IsNullOrWhiteSpace(currentPropertyToChildElementMapping.Value.LocalName))
 						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
-					if (!Reflexion.GetLogicalPropertyValue(currentXmlObject, currentPropertyToChildElementMapping.Key.Name, out ovalue))
+					if (!Reflexion.Instance.GetLogicalPropertyValue(currentXmlObject, currentPropertyToChildElementMapping.Key.Name, out ovalue))
 						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 
 					svalue = ovalue.SafeToString();
@@ -1147,7 +1147,7 @@ namespace TextMetal.Common.Xml
 
 					// get the XML object property value
 					object _out;
-					if (!Reflexion.GetLogicalPropertyValue(currentXmlObject, currentPropertyToChildElementMapping.Key.Name, out _out))
+					if (!Reflexion.Instance.GetLogicalPropertyValue(currentXmlObject, currentPropertyToChildElementMapping.Key.Name, out _out))
 						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
 					childElement = (IXmlObject)_out;
 
@@ -1252,7 +1252,7 @@ namespace TextMetal.Common.Xml
 			if ((object)targetType == null)
 				throw new ArgumentNullException("targetType");
 
-			xmlElementMappingAttribute = Reflexion.GetOneAttribute<XmlElementMappingAttribute>(targetType);
+			xmlElementMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlElementMappingAttribute>(targetType);
 
 			if ((object)xmlElementMappingAttribute == null)
 				throw new InvalidOperationException("TODO (enhancement): add meaningful message");

@@ -5,7 +5,8 @@ IMPORTS
 castleproject-core <https://github.com/castleproject/Core>
 json-net <https://github.com/JamesNK/Newtonsoft.Json>
 nmock2-2.1.3641.rtm <http://nmock2.svn.sourceforge.net/viewvc/nmock2/>
-nunit-2.6x <http://nunit.org/?p=download>
+nunit-2.6x <https://github.com/nunit/nunitv2> <http://nunit.org/?p=download>
+
 sqlite <http://system.data.sqlite.org/index.html/doc/trunk/www/downloads.wiki>
 
 ironlanguages-main <https://github.com/IronLanguages/main>

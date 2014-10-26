@@ -20,6 +20,16 @@ namespace TextMetal.Common.Core
 		/// </summary>
 		/// <param name="assembly"> The target assembly to examine for information. </param>
 		public AssemblyInformation(Assembly assembly)
+			: this(Reflexion.Instance, assembly)
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the AssemblyInformation class.
+		/// </summary>
+		/// <param name="reflexion"> The reflexion instance to use. </param>
+		/// <param name="assembly"> The target assembly to examine for information. </param>
+		public AssemblyInformation(IReflexion reflexion, Assembly assembly)
 		{
 			AssemblyTitleAttribute aTiA;
 			//AssemblyVersionAttribute ava;
@@ -32,57 +42,60 @@ namespace TextMetal.Common.Core
 			AssemblyInformationalVersionAttribute aiva;
 			AssemblyTrademarkAttribute aTrA;
 
+			if ((object)reflexion == null)
+				throw new ArgumentNullException("reflexion");
+
 			if ((object)assembly == null)
 				throw new ArgumentNullException("assembly");
 
-			aTiA = Reflexion.GetOneAttribute<AssemblyTitleAttribute>(assembly);
+			aTiA = reflexion.GetOneAttribute<AssemblyTitleAttribute>(assembly);
 
 			if ((object)aTiA != null)
 				this.title = aTiA.Title;
 
-			//ava = Reflexion.GetOneAttribute<AssemblyVersionAttribute>(assembly);
+			//ava = reflexion.GetOneAttribute<AssemblyVersionAttribute>(assembly);
 
 			//if ((object)ava != null)
 			//    this.ava = ava.ava;
 
 			this.assemblyVersion = assembly.GetName().Version.ToString();
 
-			ada = Reflexion.GetOneAttribute<AssemblyDescriptionAttribute>(assembly);
+			ada = reflexion.GetOneAttribute<AssemblyDescriptionAttribute>(assembly);
 
 			if ((object)ada != null)
 				this.description = ada.Description;
 
-			apa = Reflexion.GetOneAttribute<AssemblyProductAttribute>(assembly);
+			apa = reflexion.GetOneAttribute<AssemblyProductAttribute>(assembly);
 
 			if ((object)apa != null)
 				this.product = apa.Product;
 
-			aCopA = Reflexion.GetOneAttribute<AssemblyCopyrightAttribute>(assembly);
+			aCopA = reflexion.GetOneAttribute<AssemblyCopyrightAttribute>(assembly);
 
 			if ((object)aCopA != null)
 				this.copyright = aCopA.Copyright;
 
-			aComA = Reflexion.GetOneAttribute<AssemblyCompanyAttribute>(assembly);
+			aComA = reflexion.GetOneAttribute<AssemblyCompanyAttribute>(assembly);
 
 			if ((object)aComA != null)
 				this.company = aComA.Company;
 
-			aConA = Reflexion.GetOneAttribute<AssemblyConfigurationAttribute>(assembly);
+			aConA = reflexion.GetOneAttribute<AssemblyConfigurationAttribute>(assembly);
 
 			if ((object)aConA != null)
 				this.configuration = aConA.Configuration;
 
-			afva = Reflexion.GetOneAttribute<AssemblyFileVersionAttribute>(assembly);
+			afva = reflexion.GetOneAttribute<AssemblyFileVersionAttribute>(assembly);
 
 			if ((object)afva != null)
 				this.win32FileVersion = afva.Version;
 
-			aiva = Reflexion.GetOneAttribute<AssemblyInformationalVersionAttribute>(assembly);
+			aiva = reflexion.GetOneAttribute<AssemblyInformationalVersionAttribute>(assembly);
 
 			if ((object)aiva != null)
 				this.informationalVersion = aiva.InformationalVersion;
 
-			aTrA = Reflexion.GetOneAttribute<AssemblyTrademarkAttribute>(assembly);
+			aTrA = reflexion.GetOneAttribute<AssemblyTrademarkAttribute>(assembly);
 
 			if ((object)aTrA != null)
 				this.trademark = aTrA.Trademark;

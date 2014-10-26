@@ -72,7 +72,7 @@ namespace TextMetal.Common.WinForms
 
 		protected override sealed void DisplayFailureMessage(Exception exception)
 		{
-			MessageBox.Show("A fatal error occured:" + Environment.NewLine + (object)exception == null ? Reflexion.GetErrors(exception, 0) : "<unknown>" + Environment.NewLine + "The application will now terminate.", this.AssemblyInformation.Product, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			MessageBox.Show("A fatal error occured:" + Environment.NewLine + (object)exception == null ? Reflexion.Instance.GetErrors(exception, 0) : "<unknown>" + Environment.NewLine + "The application will now terminate.", this.AssemblyInformation.Product, MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
 		protected override sealed void DisplaySuccessMessage(TimeSpan duration)

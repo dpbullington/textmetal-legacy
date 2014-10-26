@@ -46,28 +46,56 @@
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AppConfig.cs" />
+    <Compile Include="AssemblyDependency.cs" />
     <Compile Include="AssemblyInformation.cs" />
+    <Compile Include="Cerealization\Cerealization.cs" />
+    <Compile Include="Cerealization\IBinarySerializationStrategy.cs" />
+    <Compile Include="Cerealization\ISerializationStrategy.cs" />
+    <Compile Include="Cerealization\ITextSerializationStrategy.cs" />
+    <Compile Include="Cerealization\IXmlSerializationStrategy.cs" />
+    <Compile Include="Cerealization\JsonSerializationStrategy.cs" />
+    <Compile Include="Cerealization\XmlSerializationStrategy.cs" />
     <Compile Include="ComparableComparer.cs" />
     <Compile Include="DataType.cs" />
     <Compile Include="DataType.IntImpl.cs" />
-    <Compile Include="HierarchicalObjects\IHierarchicalObjectCollection.cs" />
-    <Compile Include="HierarchicalObjects\IHierarchicalObjectCollection~1.cs" />
-    <Compile Include="HierarchicalObjects\IHierarchicalObject.cs" />
-    <Compile Include="HierarchicalObjects\HierarchicalObject.cs" />
-    <Compile Include="HierarchicalObjects\HierarchicalObjectCollection~1.cs" />
+    <Compile Include="Hierarchy\IHierarchicalObjectCollection.cs" />
+    <Compile Include="Hierarchy\IHierarchicalObjectCollection~1.cs" />
+    <Compile Include="Hierarchy\IHierarchicalObject.cs" />
+    <Compile Include="Hierarchy\HierarchicalObject.cs" />
+    <Compile Include="Hierarchy\HierarchicalObjectCollection~1.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="IDataType.cs" />
+    <Compile Include="IReflexion.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Name.cs" />
     <Compile Include="Reflexion.cs" />
     <Compile Include="StructuredTextReader.cs" />
     <Compile Include="Severity.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
+    <Compile Include="Tokenization\ContextualDynamicValueTokenReplacementStrategy.cs" />
+    <Compile Include="Tokenization\DynamicValueTokenReplacementStrategy.cs" />
+    <Compile Include="Tokenization\DynamicWildcardTokenReplacementStrategy.cs" />
+    <Compile Include="Tokenization\ITokenReplacementStrategy.cs" />
+    <Compile Include="Tokenization\IWildcardTokenReplacementStrategy.cs" />
+    <Compile Include="Tokenization\StaticValueTokenReplacementStrategy.cs" />
+    <Compile Include="Tokenization\Tokenizer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TextMetal.snk">
       <Link>TextMetal.snk</Link>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TextMetal.Common.Solder\TextMetal.Common.Solder.csproj">
+      <Project>{3B0EFC3C-AA91-4FB4-B2EE-BD8727230A94}</Project>
+      <Name>TextMetal.Common.Solder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Imports\TextMetal.Imports.csproj">
+      <Project>{40E6902D-3881-4271-BDF3-7D88DB7CF230}</Project>
+      <Name>TextMetal.Imports</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

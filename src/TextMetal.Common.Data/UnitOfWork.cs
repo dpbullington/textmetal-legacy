@@ -174,7 +174,7 @@ namespace TextMetal.Common.Data
 			if ((object)connectionString == null)
 				throw new ArgumentNullException("connectionString");
 
-			if (DataType.IsWhiteSpace(connectionString))
+			if (DataType.Instance.IsWhiteSpace(connectionString))
 				throw new ArgumentOutOfRangeException("connectionString");
 
 			dbConnection = (IDbConnection)Activator.CreateInstance(connectionType);

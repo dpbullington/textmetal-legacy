@@ -629,7 +629,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 			set
 			{
-				if (DataType.IsNullOrWhiteSpace(value))
+				if (DataType.Instance.IsNullOrWhiteSpace(value))
 					this.ParameterClrNonNullableType = null;
 				else
 					this.ParameterClrNonNullableType = Type.GetType(value, false);
@@ -645,7 +645,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 			set
 			{
-				if (DataType.IsNullOrWhiteSpace(value))
+				if (DataType.Instance.IsNullOrWhiteSpace(value))
 					this.ParameterClrNullableType = null;
 				else
 					this.ParameterClrNullableType = Type.GetType(value, false);
@@ -661,7 +661,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 			set
 			{
-				if (DataType.IsNullOrWhiteSpace(value))
+				if (DataType.Instance.IsNullOrWhiteSpace(value))
 					this.ParameterClrType = null;
 				else
 					this.ParameterClrType = Type.GetType(value, false);

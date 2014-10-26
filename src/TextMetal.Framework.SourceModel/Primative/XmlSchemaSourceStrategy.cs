@@ -59,8 +59,8 @@ namespace TextMetal.Framework.SourceModel.Primative
 
 				if ((object)xmlSchemaElement != null)
 				{
-					if (DataType.IsNullOrWhiteSpace(xmlSchemaElement.Name) &&
-						!DataType.IsNullOrWhiteSpace(xmlSchemaElement.RefName.Name))
+					if (DataType.Instance.IsNullOrWhiteSpace(xmlSchemaElement.Name) &&
+						!DataType.Instance.IsNullOrWhiteSpace(xmlSchemaElement.RefName.Name))
 					{
 						propertyConstruct00 = new PropertyConstruct();
 						propertyConstruct00.Name = "XmlSchemaElementIsRef";
@@ -162,7 +162,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException("properties");
 
-			if (DataType.IsWhiteSpace(sourceFilePath))
+			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException("sourceFilePath");
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);

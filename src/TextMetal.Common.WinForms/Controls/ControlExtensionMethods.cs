@@ -129,7 +129,7 @@ namespace TextMetal.Common.WinForms.Controls
 			if ((object)control == null)
 				throw new ArgumentNullException("control");
 
-			if (DataType.TryParse<TValue>(control.Text, out value))
+			if (DataType.Instance.TryParse<TValue>(control.Text, out value))
 				return value;
 			else
 				return default(TValue);
@@ -145,10 +145,10 @@ namespace TextMetal.Common.WinForms.Controls
 			if ((object)targetType == null)
 				throw new ArgumentNullException("targetType");
 
-			if (DataType.TryParse(targetType, control.Text, out value))
+			if (DataType.Instance.TryParse(targetType, control.Text, out value))
 				return value;
 			else
-				return DataType.DefaultValue(targetType);
+				return DataType.Instance.DefaultValue(targetType);
 		}
 
 		public static bool? CoreGetValue(this RadioButton radioButton)
@@ -190,7 +190,7 @@ namespace TextMetal.Common.WinForms.Controls
 
 			value = CoreGetValue(control);
 
-			return DataType.IsNullOrWhiteSpace(value);
+			return DataType.Instance.IsNullOrWhiteSpace(value);
 		}
 
 		public static bool CoreIsValid(this Control control)
@@ -214,7 +214,7 @@ namespace TextMetal.Common.WinForms.Controls
 			if (!CoreIsValid(control))
 				return false;
 			else
-				return DataType.TryParse<TValue>(control.Text, out value);
+				return DataType.Instance.TryParse<TValue>(control.Text, out value);
 		}
 
 		public static bool CoreIsValid(this Control control, Type targetType)
@@ -230,7 +230,7 @@ namespace TextMetal.Common.WinForms.Controls
 			if (!CoreIsValid(control))
 				return false;
 			else
-				return DataType.TryParse(targetType, control.Text, out value);
+				return DataType.Instance.TryParse(targetType, control.Text, out value);
 		}
 
 		public static void CoreSetParentFormDirty(this Control control, bool isDirty)

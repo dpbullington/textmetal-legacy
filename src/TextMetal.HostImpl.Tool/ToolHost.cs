@@ -9,7 +9,7 @@ using System.IO;
 using System.Reflection;
 
 using TextMetal.Common.Core;
-using TextMetal.Common.Tokenization;
+using TextMetal.Common.Core.Tokenization;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 using TextMetal.Framework.HostingModel;
@@ -78,16 +78,16 @@ namespace TextMetal.HostImpl.Tool
 			if ((object)properties == null)
 				throw new ArgumentNullException("properties");
 
-			if (DataType.IsWhiteSpace(templateFilePath))
+			if (DataType.Instance.IsWhiteSpace(templateFilePath))
 				throw new ArgumentOutOfRangeException("templateFilePath");
 
-			if (DataType.IsWhiteSpace(sourceFilePath))
+			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException("sourceFilePath");
 
-			if (DataType.IsWhiteSpace(baseDirectoryPath))
+			if (DataType.Instance.IsWhiteSpace(baseDirectoryPath))
 				throw new ArgumentOutOfRangeException("baseDirectoryPath");
 
-			if (DataType.IsWhiteSpace(sourceStrategyAqtn))
+			if (DataType.Instance.IsWhiteSpace(sourceStrategyAqtn))
 				throw new ArgumentOutOfRangeException("sourceStrategyAqtn");
 
 			toolVersion = new AssemblyInformation(Assembly.GetAssembly(typeof(IXmlPersistEngine))).AssemblyVersion;

@@ -6,9 +6,9 @@
 using System;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Core.Tokenization;
 using TextMetal.Common.Syntax.Expressions;
 using TextMetal.Common.Syntax.Operators;
-using TextMetal.Common.Tokenization;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 
@@ -108,7 +108,7 @@ namespace TextMetal.Framework.ExpressionModel
 				if (theType.IsEnum)
 				{
 					theType = Enum.GetUnderlyingType(theType);
-					theObj = DataType.ChangeType(theObj, theType);
+					theObj = DataType.Instance.ChangeType(theObj, theType);
 				}
 			}
 
@@ -149,8 +149,8 @@ namespace TextMetal.Framework.ExpressionModel
 
 						ths = theObj.ChangeType<AspectConstruct>();
 
-						if (DataType.IsWhiteSpace(ths.Name))
-							throw new InvalidOperationException("TODO (enhancement): add meaningful message | DataType.IsNullOrWhiteSpace(ths)");
+						if (DataType.Instance.IsWhiteSpace(ths.Name))
+							throw new InvalidOperationException("TODO (enhancement): add meaningful message | DataType.Instance.IsNullOrWhiteSpace(ths)");
 
 						return dynamicWildcardTokenReplacementStrategy.GetByToken(ths.Name, out obj);
 					}

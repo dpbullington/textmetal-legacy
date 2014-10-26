@@ -52,7 +52,7 @@ namespace TextMetal.Common.Data
 			dbDataParameter.Value = parameterValue;
 			dbDataParameter.Direction = parameterDirection;
 			dbDataParameter.DbType = dbType;
-			Reflexion.SetLogicalPropertyValue(dbDataParameter, "IsNullable", parameterNullable, true, false);
+			Reflexion.Instance.SetLogicalPropertyValue(dbDataParameter, "IsNullable", parameterNullable, true, false);
 			dbDataParameter.Precision = parameterPrecision;
 			dbDataParameter.Scale = parameterScale;
 

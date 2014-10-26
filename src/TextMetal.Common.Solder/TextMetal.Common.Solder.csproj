@@ -76,12 +76,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TextMetal.Common.Core\TextMetal.Common.Core.csproj">
-      <Project>{d1860a67-7efb-4c0f-89cd-a641d99dcc2a}</Project>
-      <Name>TextMetal.Common.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="DependencyManagement\Assertions.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

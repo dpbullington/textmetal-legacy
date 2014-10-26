@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 
 using TextMetal.Common.Core;
-using TextMetal.Common.Tokenization;
+using TextMetal.Common.Core.Tokenization;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 
@@ -110,7 +110,7 @@ namespace TextMetal.Framework.ExpressionModel
 			{
 				RubySource src;
 
-				if (!DataType.TryParse<RubySource>(value, out src))
+				if (!DataType.Instance.TryParse<RubySource>(value, out src))
 					this.Src = RubySource.Unknown;
 				else
 					this.Src = src;

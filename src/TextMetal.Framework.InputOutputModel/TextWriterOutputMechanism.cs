@@ -6,8 +6,8 @@
 using System;
 using System.IO;
 
-using TextMetal.Common.Cerealization;
 using TextMetal.Common.Core;
+using TextMetal.Common.Core.Cerealization;
 using TextMetal.Common.Xml;
 
 namespace TextMetal.Framework.InputOutputModel
@@ -74,7 +74,7 @@ namespace TextMetal.Framework.InputOutputModel
 			// this should support XPE, XML, JSON
 			if ((object)xmlObject != null)
 				serializationStrategy = new XpeSerializationStrategy(this.Xpe);
-			else if ((object)Reflexion.GetOneAttribute<SerializableAttribute>(obj.GetType()) != null)
+			else if ((object)Reflexion.Instance.GetOneAttribute<SerializableAttribute>(obj.GetType()) != null)
 				serializationStrategy = new XmlSerializationStrategy();
 			else
 				serializationStrategy = new JsonSerializationStrategy();

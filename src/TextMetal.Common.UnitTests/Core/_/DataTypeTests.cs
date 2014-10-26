@@ -34,7 +34,7 @@ namespace TextMetal.Common.UnitTests.Core._
 		{
 			object value;
 
-			value = DataType.ChangeType((byte)1, typeof(int));
+			value = DataType.Instance.ChangeType((byte)1, typeof(int));
 
 			Assert.IsNotNull(value);
 			Assert.IsInstanceOf<int>(value);
@@ -46,7 +46,7 @@ namespace TextMetal.Common.UnitTests.Core._
 		{
 			object value;
 
-			value = DataType.ChangeType((byte)1, typeof(int?));
+			value = DataType.Instance.ChangeType((byte)1, typeof(int?));
 
 			Assert.IsNotNull(value);
 			Assert.IsInstanceOf<int?>(value);
@@ -58,7 +58,7 @@ namespace TextMetal.Common.UnitTests.Core._
 		{
 			object value;
 
-			value = DataType.ChangeType(null, typeof(int));
+			value = DataType.Instance.ChangeType(null, typeof(int));
 
 			Assert.AreEqual(default(int), value);
 		}
@@ -66,20 +66,20 @@ namespace TextMetal.Common.UnitTests.Core._
 		[Test]
 		public void ShouldCheckIsNullOrWhiteSpaceTest()
 		{
-			Assert.IsTrue(DataType.IsNullOrWhiteSpace(null));
-			Assert.IsTrue(DataType.IsNullOrWhiteSpace(string.Empty));
-			Assert.IsTrue(DataType.IsNullOrWhiteSpace("   "));
-			Assert.IsFalse(DataType.IsNullOrWhiteSpace("daniel"));
-			Assert.IsFalse(DataType.IsNullOrWhiteSpace("   daniel     "));
+			Assert.IsTrue(DataType.Instance.IsNullOrWhiteSpace(null));
+			Assert.IsTrue(DataType.Instance.IsNullOrWhiteSpace(string.Empty));
+			Assert.IsTrue(DataType.Instance.IsNullOrWhiteSpace("   "));
+			Assert.IsFalse(DataType.Instance.IsNullOrWhiteSpace("daniel"));
+			Assert.IsFalse(DataType.Instance.IsNullOrWhiteSpace("   daniel     "));
 		}
 
 		[Test]
 		public void ShouldCheckIsWhiteSpaceTest()
 		{
-			Assert.IsFalse(DataType.IsWhiteSpace(null));
-			Assert.IsTrue(DataType.IsWhiteSpace("   "));
-			Assert.IsFalse(DataType.IsWhiteSpace("daniel"));
-			Assert.IsFalse(DataType.IsWhiteSpace("   daniel     "));
+			Assert.IsFalse(DataType.Instance.IsWhiteSpace(null));
+			Assert.IsTrue(DataType.Instance.IsWhiteSpace("   "));
+			Assert.IsFalse(DataType.Instance.IsWhiteSpace("daniel"));
+			Assert.IsFalse(DataType.Instance.IsWhiteSpace("   daniel     "));
 		}
 
 		//[Test]
@@ -91,31 +91,31 @@ namespace TextMetal.Common.UnitTests.Core._
 		//    // both null
 		//    objA = null;
 		//    objB = null;
-		//    result = DataType.ObjectsCompareValueSemantics(objA, objB);
+		//    result = DataType.Instance.ObjectsCompareValueSemantics(objA, objB);
 		//    Assert.IsNull(result);
 
 		//    // objA null, objB not null
 		//    objA = null;
 		//    objB = 10;
-		//    result = DataType.ObjectsCompareValueSemantics(objA, objB);
+		//    result = DataType.Instance.ObjectsCompareValueSemantics(objA, objB);
 		//    Assert.Less(result, 0);
 
 		//    // objA not null, objB null
 		//    objA = 10;
 		//    objB = null;
-		//    result = DataType.ObjectsCompareValueSemantics(objA, objB);
+		//    result = DataType.Instance.ObjectsCompareValueSemantics(objA, objB);
 		//    Assert.Greater(result, 0);
 
 		//    // objA == objB
 		//    objA = 100;
 		//    objB = 100;
-		//    result = DataType.ObjectsCompareValueSemantics(objA, objB);
+		//    result = DataType.Instance.ObjectsCompareValueSemantics(objA, objB);
 		//    Assert.AreEqual(0, result);
 
 		//    // objA != objB
 		//    objA = 100;
 		//    objB = -100;
-		//    result = DataType.ObjectsCompareValueSemantics(objA, objB);
+		//    result = DataType.Instance.ObjectsCompareValueSemantics(objA, objB);
 		//    Assert.Greater(result, 0);
 		//}
 
@@ -128,31 +128,31 @@ namespace TextMetal.Common.UnitTests.Core._
 			// both null
 			objA = null;
 			objB = null;
-			result = DataType.ObjectsEqualValueSemantics(objA, objB);
+			result = DataType.Instance.ObjectsEqualValueSemantics(objA, objB);
 			Assert.IsTrue(result);
 
 			// objA null, objB not null
 			objA = null;
 			objB = "not null string";
-			result = DataType.ObjectsEqualValueSemantics(objA, objB);
+			result = DataType.Instance.ObjectsEqualValueSemantics(objA, objB);
 			Assert.IsFalse(result);
 
 			// objA not null, objB null
 			objA = "not null string";
 			objB = null;
-			result = DataType.ObjectsEqualValueSemantics(objA, objB);
+			result = DataType.Instance.ObjectsEqualValueSemantics(objA, objB);
 			Assert.IsFalse(result);
 
 			// objA == objB
 			objA = 100;
 			objB = 100;
-			result = DataType.ObjectsEqualValueSemantics(objA, objB);
+			result = DataType.Instance.ObjectsEqualValueSemantics(objA, objB);
 			Assert.IsTrue(result);
 
 			// objA != objB
 			objA = 100;
 			objB = -100;
-			result = DataType.ObjectsEqualValueSemantics(objA, objB);
+			result = DataType.Instance.ObjectsEqualValueSemantics(objA, objB);
 			Assert.IsFalse(result);
 		}
 
@@ -163,7 +163,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			KeyValuePair<int, int> ovalue;
 			bool result;
 
-			result = DataType.TryParse<KeyValuePair<int, int>>(DBNull.Value.ToString(), out ovalue);
+			result = DataType.Instance.TryParse<KeyValuePair<int, int>>(DBNull.Value.ToString(), out ovalue);
 		}
 
 		[Test]
@@ -173,21 +173,21 @@ namespace TextMetal.Common.UnitTests.Core._
 			object ovalue;
 			bool result;
 
-			result = DataType.TryParse(typeof(KeyValuePair<int, int>), DBNull.Value.ToString(), out ovalue);
+			result = DataType.Instance.TryParse(typeof(KeyValuePair<int, int>), DBNull.Value.ToString(), out ovalue);
 		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullTypeChangeTypeTest()
 		{
-			DataType.ChangeType(1, null);
+			DataType.Instance.ChangeType(1, null);
 		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullTypeDefaultValueTest()
 		{
-			DataType.DefaultValue(null);
+			DataType.Instance.DefaultValue(null);
 		}
 
 		[Test]
@@ -197,7 +197,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			object ovalue;
 			bool result;
 
-			result = DataType.TryParse(null, string.Empty, out ovalue);
+			result = DataType.Instance.TryParse(null, string.Empty, out ovalue);
 		}
 
 		[Test]
@@ -206,11 +206,11 @@ namespace TextMetal.Common.UnitTests.Core._
 			Boolean ovalue;
 			bool result;
 
-			result = DataType.TryParse<Boolean>("true", out ovalue);
+			result = DataType.Instance.TryParse<Boolean>("true", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(true, ovalue);
 
-			result = DataType.TryParse<Boolean>("false", out ovalue);
+			result = DataType.Instance.TryParse<Boolean>("false", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(false, ovalue);
 		}
@@ -221,7 +221,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Byte ovalue;
 			bool result;
 
-			result = DataType.TryParse<Byte>("0", out ovalue);
+			result = DataType.Instance.TryParse<Byte>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -232,7 +232,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Char ovalue;
 			bool result;
 
-			result = DataType.TryParse<Char>("0", out ovalue);
+			result = DataType.Instance.TryParse<Char>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual('0', ovalue);
 		}
@@ -243,7 +243,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			DateTimeOffset ovalue;
 			bool result;
 
-			result = DataType.TryParse<DateTimeOffset>("6/22/2003", out ovalue);
+			result = DataType.Instance.TryParse<DateTimeOffset>("6/22/2003", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(new DateTimeOffset(new DateTime(2003, 6, 22)), ovalue);
 		}
@@ -254,7 +254,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			DateTime ovalue;
 			bool result;
 
-			result = DataType.TryParse<DateTime>("6/22/2003", out ovalue);
+			result = DataType.Instance.TryParse<DateTime>("6/22/2003", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(new DateTime(2003, 6, 22), ovalue);
 		}
@@ -265,7 +265,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Decimal ovalue;
 			bool result;
 
-			result = DataType.TryParse<Decimal>("0", out ovalue);
+			result = DataType.Instance.TryParse<Decimal>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -275,11 +275,11 @@ namespace TextMetal.Common.UnitTests.Core._
 		{
 			object defaultValue;
 
-			defaultValue = DataType.DefaultValue(typeof(int));
+			defaultValue = DataType.Instance.DefaultValue(typeof(int));
 
 			Assert.AreEqual(0, defaultValue);
 
-			defaultValue = DataType.DefaultValue(typeof(int?));
+			defaultValue = DataType.Instance.DefaultValue(typeof(int?));
 
 			Assert.IsNull(defaultValue);
 		}
@@ -290,7 +290,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Double ovalue;
 			bool result;
 
-			result = DataType.TryParse<Double>("0", out ovalue);
+			result = DataType.Instance.TryParse<Double>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -301,7 +301,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			CharSet ovalue;
 			bool result;
 
-			result = DataType.TryParse<CharSet>("Unicode", out ovalue);
+			result = DataType.Instance.TryParse<CharSet>("Unicode", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(CharSet.Unicode, ovalue);
 		}
@@ -312,7 +312,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Guid ovalue;
 			bool result;
 
-			result = DataType.TryParse<Guid>("{00000000-0000-0000-0000-000000000000}", out ovalue);
+			result = DataType.Instance.TryParse<Guid>("{00000000-0000-0000-0000-000000000000}", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(Guid.Empty, ovalue);
 		}
@@ -323,7 +323,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Int16 ovalue;
 			bool result;
 
-			result = DataType.TryParse<Int16>("0", out ovalue);
+			result = DataType.Instance.TryParse<Int16>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -334,7 +334,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Int32 ovalue;
 			bool result;
 
-			result = DataType.TryParse<Int32>("0", out ovalue);
+			result = DataType.Instance.TryParse<Int32>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -345,7 +345,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Int64 ovalue;
 			bool result;
 
-			result = DataType.TryParse<Int64>("0", out ovalue);
+			result = DataType.Instance.TryParse<Int64>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -356,7 +356,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			SByte ovalue;
 			bool result;
 
-			result = DataType.TryParse<SByte>("0", out ovalue);
+			result = DataType.Instance.TryParse<SByte>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -367,7 +367,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Single ovalue;
 			bool result;
 
-			result = DataType.TryParse<Single>("0", out ovalue);
+			result = DataType.Instance.TryParse<Single>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -378,7 +378,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			String ovalue;
 			bool result;
 
-			result = DataType.TryParse<String>("0-8-8-8-8-8-8-8-c", out ovalue);
+			result = DataType.Instance.TryParse<String>("0-8-8-8-8-8-8-8-c", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual("0-8-8-8-8-8-8-8-c", ovalue);
 		}
@@ -389,7 +389,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			TimeSpan ovalue;
 			bool result;
 
-			result = DataType.TryParse<TimeSpan>("0:0:0", out ovalue);
+			result = DataType.Instance.TryParse<TimeSpan>("0:0:0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(TimeSpan.Zero, ovalue);
 		}
@@ -400,7 +400,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			UInt16 ovalue;
 			bool result;
 
-			result = DataType.TryParse<UInt16>("0", out ovalue);
+			result = DataType.Instance.TryParse<UInt16>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -411,7 +411,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			UInt32 ovalue;
 			bool result;
 
-			result = DataType.TryParse<UInt32>("0", out ovalue);
+			result = DataType.Instance.TryParse<UInt32>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -422,7 +422,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			UInt64 ovalue;
 			bool result;
 
-			result = DataType.TryParse<UInt64>("0", out ovalue);
+			result = DataType.Instance.TryParse<UInt64>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -433,7 +433,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Boolean ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Boolean>("gibberish", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Boolean>("gibberish", out ovalue));
 		}
 
 		[Test]
@@ -442,8 +442,8 @@ namespace TextMetal.Common.UnitTests.Core._
 			Byte ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Byte>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataType.TryParse<Byte>("1111111111111111111", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Byte>("gibberish", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Byte>("1111111111111111111", out ovalue));
 		}
 
 		[Test]
@@ -452,7 +452,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Char ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Char>("gibberish", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Char>("gibberish", out ovalue));
 		}
 
 		[Test]
@@ -461,7 +461,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			DateTimeOffset ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<DateTimeOffset>("gibberish", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<DateTimeOffset>("gibberish", out ovalue));
 		}
 
 		[Test]
@@ -470,7 +470,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			DateTime ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<DateTime>("gibberish", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<DateTime>("gibberish", out ovalue));
 		}
 
 		[Test]
@@ -479,8 +479,8 @@ namespace TextMetal.Common.UnitTests.Core._
 			Decimal ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Decimal>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataType.TryParse<Decimal>("11111111111111111111111111111111111111", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Decimal>("gibberish", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Decimal>("11111111111111111111111111111111111111", out ovalue));
 		}
 
 		[Test]
@@ -489,8 +489,8 @@ namespace TextMetal.Common.UnitTests.Core._
 			Double ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Double>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataType.TryParse<Double>("999,769,313,486,232,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000.00", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Double>("gibberish", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Double>("999,769,313,486,232,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000.00", out ovalue));
 		}
 
 		[Test]
@@ -499,7 +499,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			CharSet ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<CharSet>("gibberish", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<CharSet>("gibberish", out ovalue));
 		}
 
 		[Test]
@@ -508,7 +508,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Guid ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Guid>("gibberish", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Guid>("gibberish", out ovalue));
 		}
 
 		[Test]
@@ -517,8 +517,8 @@ namespace TextMetal.Common.UnitTests.Core._
 			Int16 ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Int16>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataType.TryParse<Int16>("1111111111111111111", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Int16>("gibberish", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Int16>("1111111111111111111", out ovalue));
 		}
 
 		[Test]
@@ -527,8 +527,8 @@ namespace TextMetal.Common.UnitTests.Core._
 			Int32 ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Int32>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataType.TryParse<Int32>("1111111111111111111", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Int32>("gibberish", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Int32>("1111111111111111111", out ovalue));
 		}
 
 		[Test]
@@ -537,8 +537,8 @@ namespace TextMetal.Common.UnitTests.Core._
 			Int64 ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Int64>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataType.TryParse<Int64>("9999999999999999999", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Int64>("gibberish", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Int64>("9999999999999999999", out ovalue));
 		}
 
 		[Test]
@@ -547,8 +547,8 @@ namespace TextMetal.Common.UnitTests.Core._
 			SByte ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<SByte>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataType.TryParse<SByte>("1111111111111111111", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<SByte>("gibberish", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<SByte>("1111111111111111111", out ovalue));
 		}
 
 		[Test]
@@ -557,8 +557,8 @@ namespace TextMetal.Common.UnitTests.Core._
 			Single ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Single>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataType.TryParse<Single>("999,282,300,000,000,000,000,000,000,000,000,000,000.00", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Single>("gibberish", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Single>("999,282,300,000,000,000,000,000,000,000,000,000,000.00", out ovalue));
 		}
 
 		[Test]
@@ -567,8 +567,8 @@ namespace TextMetal.Common.UnitTests.Core._
 			TimeSpan ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<TimeSpan>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataType.TryParse<TimeSpan>("99999999.02:48:05.4775807", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<TimeSpan>("gibberish", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<TimeSpan>("99999999.02:48:05.4775807", out ovalue));
 		}
 
 		[Test]
@@ -577,8 +577,8 @@ namespace TextMetal.Common.UnitTests.Core._
 			UInt16 ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<UInt16>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataType.TryParse<UInt16>("1111111111111111111", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<UInt16>("gibberish", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<UInt16>("1111111111111111111", out ovalue));
 		}
 
 		[Test]
@@ -587,8 +587,8 @@ namespace TextMetal.Common.UnitTests.Core._
 			UInt32 ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<UInt32>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataType.TryParse<UInt32>("1111111111111111111", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<UInt32>("gibberish", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<UInt32>("1111111111111111111", out ovalue));
 		}
 
 		[Test]
@@ -597,8 +597,8 @@ namespace TextMetal.Common.UnitTests.Core._
 			UInt64 ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<UInt64>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataType.TryParse<UInt64>("99999999999999999999", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<UInt64>("gibberish", out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<UInt64>("99999999999999999999", out ovalue));
 		}
 
 		[Test]
@@ -610,20 +610,20 @@ namespace TextMetal.Common.UnitTests.Core._
 			// both null
 			objA = null;
 			objB = (int)0;
-			result = DataType.ObjectsEqualValueSemantics(objA, objB);
+			result = DataType.Instance.ObjectsEqualValueSemantics(objA, objB);
 			Assert.IsFalse(result);
 		}
 
 		[Test]
 		public void ShouldSafeToStringTest()
 		{
-			Assert.AreEqual("123.456", DataType.SafeToString(123.456));
-			Assert.AreEqual("123.46", DataType.SafeToString(123.456, "n"));
-			Assert.AreEqual("urn:foo", DataType.SafeToString(new Uri("urn:foo"), "n"));
+			Assert.AreEqual("123.456", DataType.Instance.SafeToString(123.456));
+			Assert.AreEqual("123.46", DataType.Instance.SafeToString(123.456, "n"));
+			Assert.AreEqual("urn:foo", DataType.Instance.SafeToString(new Uri("urn:foo"), "n"));
 
-			Assert.AreEqual(string.Empty, DataType.SafeToString((object)null, null));
-			Assert.AreEqual(null, DataType.SafeToString((object)null, null, null));
-			Assert.AreEqual("1", DataType.SafeToString((object)string.Empty, null, "1", true));
+			Assert.AreEqual(string.Empty, DataType.Instance.SafeToString((object)null, null));
+			Assert.AreEqual(null, DataType.Instance.SafeToString((object)null, null, null));
+			Assert.AreEqual("1", DataType.Instance.SafeToString((object)string.Empty, null, "1", true));
 		}
 
 		[Test]
@@ -632,7 +632,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			int? ovalue;
 			bool result;
 
-			result = DataType.TryParse<int?>("100", out ovalue);
+			result = DataType.Instance.TryParse<int?>("100", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual((int?)100, ovalue);
 		}
@@ -643,7 +643,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			object ovalue;
 			bool result;
 
-			result = DataType.TryParse(typeof(int?), "100", out ovalue);
+			result = DataType.Instance.TryParse(typeof(int?), "100", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual((int?)100, ovalue);
 		}
@@ -654,7 +654,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			int? ovalue;
 			bool result;
 
-			result = DataType.TryParse<int?>(null, out ovalue);
+			result = DataType.Instance.TryParse<int?>(null, out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual((int?)null, ovalue);
 		}
@@ -665,7 +665,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			object ovalue;
 			bool result;
 
-			result = DataType.TryParse(typeof(int?), null, out ovalue);
+			result = DataType.Instance.TryParse(typeof(int?), null, out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual((int?)null, ovalue);
 		}
@@ -676,7 +676,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Boolean ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Boolean>(null, out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Boolean>(null, out ovalue));
 		}
 
 		[Test]
@@ -685,7 +685,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Byte ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Byte>(null, out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Byte>(null, out ovalue));
 		}
 
 		[Test]
@@ -694,7 +694,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Char ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Char>(null, out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Char>(null, out ovalue));
 		}
 
 		[Test]
@@ -703,7 +703,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			DateTimeOffset ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<DateTimeOffset>(null, out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<DateTimeOffset>(null, out ovalue));
 		}
 
 		[Test]
@@ -712,7 +712,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			DateTime ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<DateTime>(null, out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<DateTime>(null, out ovalue));
 		}
 
 		[Test]
@@ -721,7 +721,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Decimal ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Decimal>(null, out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Decimal>(null, out ovalue));
 		}
 
 		[Test]
@@ -730,7 +730,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Double ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Double>(null, out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Double>(null, out ovalue));
 		}
 
 		[Test]
@@ -739,7 +739,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			CharSet ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<CharSet>(null, out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<CharSet>(null, out ovalue));
 		}
 
 		[Test]
@@ -748,7 +748,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Guid ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Guid>(null, out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Guid>(null, out ovalue));
 		}
 
 		[Test]
@@ -757,7 +757,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Int16 ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Int16>(null, out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Int16>(null, out ovalue));
 		}
 
 		[Test]
@@ -766,7 +766,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Int32 ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Int32>(null, out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Int32>(null, out ovalue));
 		}
 
 		[Test]
@@ -775,7 +775,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Int64 ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Int64>(null, out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Int64>(null, out ovalue));
 		}
 
 		[Test]
@@ -784,7 +784,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			SByte ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<SByte>(null, out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<SByte>(null, out ovalue));
 		}
 
 		[Test]
@@ -793,7 +793,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Single ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<Single>(null, out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<Single>(null, out ovalue));
 		}
 
 		[Test]
@@ -802,7 +802,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			TimeSpan ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<TimeSpan>(null, out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<TimeSpan>(null, out ovalue));
 		}
 
 		[Test]
@@ -811,7 +811,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			UInt16 ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<UInt16>(null, out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<UInt16>(null, out ovalue));
 		}
 
 		[Test]
@@ -820,7 +820,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			UInt32 ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<UInt32>(null, out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<UInt32>(null, out ovalue));
 		}
 
 		[Test]
@@ -829,7 +829,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			UInt64 ovalue;
 			bool result;
 
-			Assert.IsFalse(result = DataType.TryParse<UInt64>(null, out ovalue));
+			Assert.IsFalse(result = DataType.Instance.TryParse<UInt64>(null, out ovalue));
 		}
 
 		#endregion

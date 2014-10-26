@@ -115,7 +115,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 		{
 			string retVal;
 
-			retVal = !DataType.IsNullOrWhiteSpace(schemaName) ?
+			retVal = !DataType.Instance.IsNullOrWhiteSpace(schemaName) ?
 				string.Format(NET_SQL_SERVER_SCHEMA_PROCEDURE_NAME_FORMAT, schemaName, procedureName) :
 				string.Format(NET_SQL_SERVER_PROCEDURE_NAME_FORMAT, procedureName);
 
@@ -135,7 +135,7 @@ namespace TextMetal.Common.Data.Framework.Strategy
 		{
 			string retVal;
 
-			retVal = !DataType.IsNullOrWhiteSpace(schemaName) ?
+			retVal = !DataType.Instance.IsNullOrWhiteSpace(schemaName) ?
 				string.Format(NET_SQL_SERVER_SCHEMA_TABLE_NAME_FORMAT, schemaName, tableName) :
 				string.Format(NET_SQL_SERVER_TABLE_NAME_FORMAT, tableName);
 
@@ -151,11 +151,11 @@ namespace TextMetal.Common.Data.Framework.Strategy
 				throw new ArgumentNullException("commandParameter");
 
 			if (originalSqlType.SafeToString().ToUpper() == "NTEXT")
-				Reflexion.SetLogicalPropertyValue(commandParameter, "SqlDbType", Enum.Parse(Type.GetType("System.Data.SqlDbType, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089", true), "NText", true));
+				Reflexion.Instance.SetLogicalPropertyValue(commandParameter, "SqlDbType", Enum.Parse(Type.GetType("System.Data.SqlDbType, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089", true), "NText", true));
 			else if (originalSqlType.SafeToString().ToUpper() == "TEXT")
-				Reflexion.SetLogicalPropertyValue(commandParameter, "SqlDbType", Enum.Parse(Type.GetType("System.Data.SqlDbType, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089", true), "Text", true));
+				Reflexion.Instance.SetLogicalPropertyValue(commandParameter, "SqlDbType", Enum.Parse(Type.GetType("System.Data.SqlDbType, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089", true), "Text", true));
 			else if (originalSqlType.SafeToString().ToUpper() == "IMAGE")
-				Reflexion.SetLogicalPropertyValue(commandParameter, "SqlDbType", Enum.Parse(Type.GetType("System.Data.SqlDbType, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089", true), "Image", true));
+				Reflexion.Instance.SetLogicalPropertyValue(commandParameter, "SqlDbType", Enum.Parse(Type.GetType("System.Data.SqlDbType, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089", true), "Image", true));
 		}
 
 		#endregion

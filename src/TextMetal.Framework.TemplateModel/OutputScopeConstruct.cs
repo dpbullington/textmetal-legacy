@@ -6,7 +6,7 @@
 using System;
 
 using TextMetal.Common.Core;
-using TextMetal.Common.Tokenization;
+using TextMetal.Common.Core.Tokenization;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
 using TextMetal.Framework.ExpressionModel;
@@ -86,7 +86,7 @@ namespace TextMetal.Framework.TemplateModel
 
 			name = templatingContext.Tokenizer.ExpandTokens(this.Name, dynamicWildcardTokenReplacementStrategy);
 
-			if (!DataType.IsNullOrWhiteSpace(name))
+			if (!DataType.Instance.IsNullOrWhiteSpace(name))
 			{
 				new AllocConstruct()
 				{
@@ -94,7 +94,7 @@ namespace TextMetal.Framework.TemplateModel
 				}.ExpandTemplate(templatingContext);
 			}
 
-			if (!DataType.IsNullOrWhiteSpace(name))
+			if (!DataType.Instance.IsNullOrWhiteSpace(name))
 			{
 				IExpressionContainerConstruct expressionContainerConstruct;
 				ValueConstruct valueConstruct;
@@ -128,7 +128,7 @@ namespace TextMetal.Framework.TemplateModel
 			templatingContext.Output.LeaveScope(name);
 			templatingContext.Output.LogTextWriter.WriteLine("['{0:O}' (UTC)]\tLeaving output scope '{1}'.", DateTime.UtcNow, name);
 
-			if (!DataType.IsNullOrWhiteSpace(name))
+			if (!DataType.Instance.IsNullOrWhiteSpace(name))
 			{
 				new FreeConstruct()
 				{

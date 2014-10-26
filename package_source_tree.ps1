@@ -68,21 +68,6 @@ if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 
 
 
-Copy-Item "$src_dir\TextMetal.Common.Cerealization\bin\$build_flavor_dir\TextMetal.Common.Cerealization.dll" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Common.Cerealization\bin\$build_flavor_dir\TextMetal.Common.Cerealization.xml" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Common.Cerealization\bin\$build_flavor_dir\TextMetal.Common.Cerealization.pdb" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
 
 
 Copy-Item "$src_dir\TextMetal.Common.Core\bin\$build_flavor_dir\TextMetal.Common.Core.dll" "$pkg_dir\bin\."
@@ -147,23 +132,6 @@ if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
 
 Copy-Item "$src_dir\TextMetal.Common.Syntax\bin\$build_flavor_dir\TextMetal.Common.Syntax.pdb" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-
-
-Copy-Item "$src_dir\TextMetal.Common.Tokenization\bin\$build_flavor_dir\TextMetal.Common.Tokenization.dll" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Common.Tokenization\bin\$build_flavor_dir\TextMetal.Common.Tokenization.xml" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Common.Tokenization\bin\$build_flavor_dir\TextMetal.Common.Tokenization.pdb" "$pkg_dir\bin\."
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }

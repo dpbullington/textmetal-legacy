@@ -70,17 +70,6 @@ IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 
-copy "..\..\src\TextMetal.Common.Cerealization\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Cerealization.dll" "%PACKAGE_DIR%\lib\TextMetal\."
-IF %ERRORLEVEL% NEQ 0 goto pkgError
-
-copy "..\..\src\TextMetal.Common.Cerealization\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Cerealization.xml" "%PACKAGE_DIR%\lib\TextMetal\."
-IF %ERRORLEVEL% NEQ 0 goto pkgError
-
-copy "..\..\src\TextMetal.Common.Cerealization\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Cerealization.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
-IF %ERRORLEVEL% NEQ 0 goto pkgError
-
-
-
 copy "..\..\src\TextMetal.Common.Core\bin\%BUILD_FLAVOR_DIR%\TextMetal.Common.Core.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 

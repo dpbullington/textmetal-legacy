@@ -41,6 +41,8 @@ namespace Newtonsoft.Json
 
     internal struct JsonPosition
     {
+        private static readonly char[] SpecialCharacters = {'.', ' ', '[', ']', '(', ')'};
+
         internal JsonContainerType Type;
         internal int Position;
         internal string PropertyName;
@@ -60,14 +62,25 @@ namespace Newtonsoft.Json
             {
                 case JsonContainerType.Object:
                     if (sb.Length > 0)
-                        sb.Append(".");
-                    sb.Append(PropertyName);
+                        sb.Append('.');
+
+                    string propertyName = PropertyName;
+                    if (propertyName.IndexOfAny(SpecialCharacters) != -1)
+                    {
+                        sb.Append(@"['");
+                        sb.Append(propertyName);
+                        sb.Append(@"']");
+                    }
+                    else
+                    {
+                        sb.Append(propertyName);
+                    }
                     break;
                 case JsonContainerType.Array:
                 case JsonContainerType.Constructor:
-                    sb.Append("[");
+                    sb.Append('[');
                     sb.Append(Position);
-                    sb.Append("]");
+                    sb.Append(']');
                     break;
             }
         }
@@ -92,11 +105,11 @@ namespace Newtonsoft.Json
         internal static string FormatMessage(IJsonLineInfo lineInfo, string path, string message)
         {
             // don't add a fullstop and space when message ends with a new line
-            if (!message.EndsWith(Environment.NewLine))
+            if (!message.EndsWith(Environment.NewLine, StringComparison.Ordinal))
             {
                 message = message.Trim();
 
-                if (!message.EndsWith("."))
+                if (!message.EndsWith('.'))
                     message += ".";
 
                 message += " ";

@@ -133,11 +133,11 @@ namespace TextMetal.Common.Data
 			{
 				int ivalue;
 
-				if (DataType.IsNullOrWhiteSpace(value))
+				if (DataType.Instance.IsNullOrWhiteSpace(value))
 					this.Order = null;
 				else
 				{
-					if (!DataType.TryParse<int>(value, out ivalue))
+					if (!DataType.Instance.TryParse<int>(value, out ivalue))
 						this.Order = null;
 					else
 						this.Order = ivalue;

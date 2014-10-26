@@ -549,6 +549,7 @@
     <Compile Include="newtonsoft.json\Linq\JPropertyDescriptor.cs" />
     <Compile Include="newtonsoft.json\Linq\JPropertyKeyedCollection.cs" />
     <Compile Include="newtonsoft.json\Linq\JRaw.cs" />
+    <Compile Include="newtonsoft.json\Linq\JsonMergeSettings.cs" />
     <Compile Include="newtonsoft.json\Linq\JsonPath\ArrayIndexFilter.cs" />
     <Compile Include="newtonsoft.json\Linq\JsonPath\ArrayMultipleIndexFilter.cs" />
     <Compile Include="newtonsoft.json\Linq\JsonPath\ArraySliceFilter.cs" />
@@ -565,7 +566,9 @@
     <Compile Include="newtonsoft.json\Linq\JTokenType.cs" />
     <Compile Include="newtonsoft.json\Linq\JTokenWriter.cs" />
     <Compile Include="newtonsoft.json\Linq\JValue.cs" />
+    <Compile Include="newtonsoft.json\Linq\MergeArrayHandling.cs" />
     <Compile Include="newtonsoft.json\MemberSerialization.cs" />
+    <Compile Include="newtonsoft.json\MetadataPropertyHandling.cs" />
     <Compile Include="newtonsoft.json\MissingMemberHandling.cs" />
     <Compile Include="newtonsoft.json\NullValueHandling.cs" />
     <Compile Include="newtonsoft.json\ObjectCreationHandling.cs" />
@@ -621,14 +624,12 @@
     <Compile Include="newtonsoft.json\Serialization\JsonSerializerProxy.cs" />
     <Compile Include="newtonsoft.json\Serialization\JsonStringContract.cs" />
     <Compile Include="newtonsoft.json\Serialization\JsonTypeReflector.cs" />
-    <Compile Include="newtonsoft.json\Serialization\LateBoundMetadataTypeAttribute.cs" />
     <Compile Include="newtonsoft.json\Serialization\MemoryTraceWriter.cs" />
     <Compile Include="newtonsoft.json\Serialization\ObjectConstructor.cs" />
     <Compile Include="newtonsoft.json\Serialization\OnErrorAttribute.cs" />
     <Compile Include="newtonsoft.json\Serialization\ReflectionValueProvider.cs" />
     <Compile Include="newtonsoft.json\Serialization\TraceJsonReader.cs" />
     <Compile Include="newtonsoft.json\Serialization\TraceJsonWriter.cs" />
-    <Compile Include="newtonsoft.json\SpecialPropertyHandling.cs" />
     <Compile Include="newtonsoft.json\StringEscapeHandling.cs" />
     <Compile Include="newtonsoft.json\TraceLevel.cs" />
     <Compile Include="newtonsoft.json\TypeNameHandling.cs" />
@@ -644,10 +645,8 @@
     <Compile Include="newtonsoft.json\Utilities\DynamicProxyMetaObject.cs" />
     <Compile Include="newtonsoft.json\Utilities\DynamicReflectionDelegateFactory.cs" />
     <Compile Include="newtonsoft.json\Utilities\DynamicUtils.cs" />
-    <Compile Include="newtonsoft.json\Utilities\DynamicWrapper.cs" />
     <Compile Include="newtonsoft.json\Utilities\EnumUtils.cs" />
     <Compile Include="newtonsoft.json\Utilities\EnumValue.cs" />
-    <Compile Include="newtonsoft.json\Utilities\EnumValues.cs" />
     <Compile Include="newtonsoft.json\Utilities\ExpressionReflectionDelegateFactory.cs" />
     <Compile Include="newtonsoft.json\Utilities\FSharpUtils.cs" />
     <Compile Include="newtonsoft.json\Utilities\ILGeneratorExtensions.cs" />
@@ -658,7 +657,9 @@
     <Compile Include="newtonsoft.json\Utilities\MathUtils.cs" />
     <Compile Include="newtonsoft.json\Utilities\MethodCall.cs" />
     <Compile Include="newtonsoft.json\Utilities\MiscellaneousUtils.cs" />
+    <Compile Include="newtonsoft.json\Utilities\PropertyNameTable.cs" />
     <Compile Include="newtonsoft.json\Utilities\ReflectionDelegateFactory.cs" />
+    <Compile Include="newtonsoft.json\Utilities\ReflectionObject.cs" />
     <Compile Include="newtonsoft.json\Utilities\ReflectionUtils.cs" />
     <Compile Include="newtonsoft.json\Utilities\StringBuffer.cs" />
     <Compile Include="newtonsoft.json\Utilities\StringReference.cs" />

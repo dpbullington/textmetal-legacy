@@ -163,7 +163,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 			this.StatusText = "Template save started...";
 
-			if (asCopy && !DataType.IsNullOrWhiteSpace(this.DocumentFilePath))
+			if (asCopy && !DataType.Instance.IsNullOrWhiteSpace(this.DocumentFilePath))
 			{
 				if (MessageBox.Show(this, "Do you want to save a copy of the current document?", ExecutableApplication.Current.AssemblyInformation.Product, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
 					return false;
@@ -207,7 +207,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			}
 			else
 			{
-				if (DataType.IsNullOrWhiteSpace(this.DocumentFilePath))
+				if (DataType.Instance.IsNullOrWhiteSpace(this.DocumentFilePath))
 				{
 					if (!this.TryGetFilePath(out filePath))
 						return false;
@@ -240,7 +240,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			dialogResult = this.sfdMain.ShowDialog(this);
 
 			if (dialogResult != DialogResult.OK ||
-				DataType.IsNullOrWhiteSpace(this.sfdMain.FileName))
+				DataType.Instance.IsNullOrWhiteSpace(this.sfdMain.FileName))
 				return false;
 
 			filePath = Path.GetFullPath(this.sfdMain.FileName);
@@ -249,7 +249,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 		public TemplateConstruct _LoadDocument()
 		{
-			if (DataType.IsNullOrWhiteSpace(this.DocumentFilePath))
+			if (DataType.Instance.IsNullOrWhiteSpace(this.DocumentFilePath))
 				return new TemplateConstruct();
 			else
 			{
@@ -270,7 +270,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 		public void _SaveDocument()
 		{
-			if (DataType.IsNullOrWhiteSpace(this.DocumentFilePath))
+			if (DataType.Instance.IsNullOrWhiteSpace(this.DocumentFilePath))
 				return;
 			else
 			{

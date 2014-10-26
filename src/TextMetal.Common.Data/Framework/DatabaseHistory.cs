@@ -138,7 +138,7 @@ namespace TextMetal.Common.Data.Framework
 			{
 				svalue = unitOfWork.FetchScalar<string>(CommandType.Text, this.GetSchemaVersionCommandText, null);
 
-				if (!DataType.TryParse(svalue, out schemaRevision))
+				if (!DataType.Instance.TryParse(svalue, out schemaRevision))
 					throw new InvalidOperationException(string.Format("The schema revision scalar value returned from the database '{0}' could not be parsed into a valid '{1}'.", svalue, typeof(int)));
 			}
 
@@ -177,7 +177,7 @@ namespace TextMetal.Common.Data.Framework
 
 			svalue = unitOfWork.FetchScalar<string>(CommandType.Text, this.GetSchemaVersionCommandText, null);
 
-			if (!DataType.TryParse(svalue, out schemaRevision))
+			if (!DataType.Instance.TryParse(svalue, out schemaRevision))
 				throw new InvalidOperationException(string.Format("The schema revision scalar value returned from the database '{0}' could not be parsed into a valid '{1}'.", svalue, typeof(int)));
 
 			if (schemaRevision != currentSchemaRevision)

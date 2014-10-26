@@ -256,7 +256,7 @@ namespace TextMetal.Common.Core
 			if ((object)objectName == null)
 				throw new ArgumentNullException("objectName");
 
-			if (!DataType.IsNullOrWhiteSpace(schemaName) && schemaName.ToLower() != "dbo")
+			if (!DataType.Instance.IsNullOrWhiteSpace(schemaName) && schemaName.ToLower() != "dbo")
 				value = string.Format("{0}_{1}", GetSqlMetalPascalCase(schemaName), GetSqlMetalPascalCase(objectName));
 			else
 				value = string.Format("{0}", GetSqlMetalPascalCase(objectName));

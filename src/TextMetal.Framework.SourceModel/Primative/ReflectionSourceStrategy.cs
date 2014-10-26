@@ -430,7 +430,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 			if ((object)parent == null)
 				throw new ArgumentNullException("parent");
 
-			customAttributes = Reflexion.GetAllAttributes<Attribute>(customAttributeProvider);
+			customAttributes = Reflexion.Instance.GetAllAttributes<Attribute>(customAttributeProvider);
 
 			arrayConstruct00 = new ArrayConstruct();
 			arrayConstruct00.Name = "CustomAttributes";
@@ -466,7 +466,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 							propertyConstruct01.RawValue = publicPropertyInfo.Name;
 							objectConstruct01.Items.Add(propertyConstruct01);
 
-							if (Reflexion.GetLogicalPropertyValue(customAttribute, publicPropertyInfo.Name, out value))
+							if (Reflexion.Instance.GetLogicalPropertyValue(customAttribute, publicPropertyInfo.Name, out value))
 							{
 								propertyConstruct01 = new PropertyConstruct();
 								propertyConstruct01.Name = "CustomAttributePropertyValue";
@@ -1466,7 +1466,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException("properties");
 
-			if (DataType.IsWhiteSpace(sourceFilePath))
+			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException("sourceFilePath");
 
 			assemblies = new List<Assembly>();

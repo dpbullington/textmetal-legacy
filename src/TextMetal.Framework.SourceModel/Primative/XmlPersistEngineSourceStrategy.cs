@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-using TextMetal.Common.Cerealization;
 using TextMetal.Common.Core;
 using TextMetal.Common.Xml;
 
@@ -44,7 +43,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException("properties");
 
-			if (DataType.IsWhiteSpace(sourceFilePath))
+			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException("sourceFilePath");
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);

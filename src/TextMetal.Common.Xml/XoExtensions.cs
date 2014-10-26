@@ -23,7 +23,7 @@ namespace TextMetal.Common.Xml
 				throw new ArgumentNullException("xmlObject");
 
 			xmlObjectType = xmlObject.GetType();
-			xmlElementMappingAttribute = Reflexion.GetOneAttribute<XmlElementMappingAttribute>(xmlObjectType);
+			xmlElementMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlElementMappingAttribute>(xmlObjectType);
 
 			if ((object)xmlElementMappingAttribute == null)
 				xmlName = null;

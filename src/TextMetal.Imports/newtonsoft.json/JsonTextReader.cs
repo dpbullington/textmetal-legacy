@@ -26,12 +26,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-#if !(NET20 || NET35 || PORTABLE40 || PORTABLE)
-using System.Numerics;
-#endif
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.IO;
-using System.Xml;
 using System.Globalization;
 using Newtonsoft.Json.Utilities;
 
@@ -56,6 +53,7 @@ namespace Newtonsoft.Json
     public class JsonTextReader : JsonReader, IJsonLineInfo
     {
         private const char UnicodeReplacementChar = '\uFFFD';
+        private const int MaximumJavascriptIntegerCharacterLength = 380;
 
         private readonly TextReader _reader;
         private char[] _chars;
@@ -66,6 +64,7 @@ namespace Newtonsoft.Json
         private bool _isEndOfFile;
         private StringBuffer _buffer;
         private StringReference _stringReference;
+        internal PropertyNameTable NameTable;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonReader"/> class with the specified <see cref="TextReader"/>.
@@ -114,6 +113,7 @@ namespace Newtonsoft.Json
 
             ShiftBufferIfNeeded();
             ReadStringIntoBuffer(quote);
+            SetPostValueState(true);
 
             if (_readType == ReadType.ReadAsBytes)
             {
@@ -127,13 +127,13 @@ namespace Newtonsoft.Json
                     data = Convert.FromBase64CharArray(_stringReference.Chars, _stringReference.StartIndex, _stringReference.Length);
                 }
 
-                SetToken(JsonToken.Bytes, data);
+                SetToken(JsonToken.Bytes, data, false);
             }
             else if (_readType == ReadType.ReadAsString)
             {
                 string text = _stringReference.ToString();
 
-                SetToken(JsonToken.String, text);
+                SetToken(JsonToken.String, text, false);
                 _quoteChar = quote;
             }
             else
@@ -153,14 +153,14 @@ namespace Newtonsoft.Json
                         dateParseHandling = _dateParseHandling;
 
                     object dt;
-                    if (DateTimeUtils.TryParseDateTime(text, dateParseHandling, DateTimeZoneHandling, out dt))
+                    if (DateTimeUtils.TryParseDateTime(text, dateParseHandling, DateTimeZoneHandling, DateFormatString, Culture, out dt))
                     {
-                        SetToken(JsonToken.Date, dt);
+                        SetToken(JsonToken.Date, dt, false);
                         return;
                     }
                 }
 
-                SetToken(JsonToken.String, text);
+                SetToken(JsonToken.String, text, false);
                 _quoteChar = quote;
             }
         }
@@ -174,7 +174,7 @@ namespace Newtonsoft.Json
 
         private void ShiftBufferIfNeeded()
         {
-            // once in the last 10% of the buffer shift the remainling content to the start to avoid
+            // once in the last 10% of the buffer shift the remaining content to the start to avoid
             // unnessesarly increasing the buffer size when reading numbers/strings
             int length = _chars.Length;
             if (length - _charPos <= length * 0.1)
@@ -380,8 +380,6 @@ namespace Newtonsoft.Json
                     case State.Constructor:
                     case State.ConstructorStart:
                         return ParseValue();
-                    case State.Complete:
-                        break;
                     case State.Object:
                     case State.ObjectStart:
                         return ParseObject();
@@ -404,16 +402,10 @@ namespace Newtonsoft.Json
                                 ParseComment();
                                 return true;
                             }
-                            else
-                            {
-                                throw JsonReaderException.Create(this, "Additional text encountered after finished reading JSON content: {0}.".FormatWith(CultureInfo.InvariantCulture, _chars[_charPos]));
-                            }
+                            
+                            throw JsonReaderException.Create(this, "Additional text encountered after finished reading JSON content: {0}.".FormatWith(CultureInfo.InvariantCulture, _chars[_charPos]));
                         }
                         return false;
-                    case State.Closed:
-                        break;
-                    case State.Error:
-                        break;
                     default:
                         throw JsonReaderException.Create(this, "Unexpected state: {0}.".FormatWith(CultureInfo.InvariantCulture, CurrentState));
                 }
@@ -637,19 +629,18 @@ namespace Newtonsoft.Json
 
             while (true)
             {
-                switch (_chars[charPos++])
+                switch (_chars[charPos])
                 {
                     case '\0':
-                        if (_charsUsed == charPos - 1)
+                        _charPos = charPos;
+
+                        if (_charsUsed == charPos)
                         {
-                            charPos--;
-                            _charPos = charPos;
                             if (ReadData(true) == 0)
                                 return;
                         }
                         else
                         {
-                            _charPos = charPos - 1;
                             return;
                         }
                         break;
@@ -680,10 +671,23 @@ namespace Newtonsoft.Json
                     case '7':
                     case '8':
                     case '9':
+                        charPos++;
                         break;
                     default:
-                        _charPos = charPos - 1;
-                        return;
+                        _charPos = charPos;
+
+                        char currentChar = _chars[_charPos];
+                        if (char.IsWhiteSpace(currentChar)
+                            || currentChar == ','
+                            || currentChar == '}'
+                            || currentChar == ']'
+                            || currentChar == ')'
+                            || currentChar == '/')
+                        {
+                            return;
+                        }
+                        
+                        throw JsonReaderException.Create(this, "Unexpected character encountered while parsing number: {0}.".FormatWith(CultureInfo.InvariantCulture, currentChar));
                 }
             }
         }
@@ -840,7 +844,20 @@ namespace Newtonsoft.Json
                 throw JsonReaderException.Create(this, "Invalid property identifier character: {0}.".FormatWith(CultureInfo.InvariantCulture, _chars[_charPos]));
             }
 
-            string propertyName = _stringReference.ToString();
+            string propertyName;
+
+            if (NameTable != null)
+            {
+                propertyName = NameTable.Get(_stringReference.Chars, _stringReference.StartIndex, _stringReference.Length);
+
+                // no match in name table
+                if (propertyName == null)
+                    propertyName = _stringReference.ToString();
+            }
+            else
+            {
+                propertyName = _stringReference.ToString();
+            }
 
             EatWhitespace(false);
 
@@ -1003,15 +1020,13 @@ namespace Newtonsoft.Json
                             _charPos++;
                             break;
                         }
-                        else if (char.IsNumber(currentChar) || currentChar == '-' || currentChar == '.')
+                        if (char.IsNumber(currentChar) || currentChar == '-' || currentChar == '.')
                         {
                             ParseNumber();
                             return true;
                         }
-                        else
-                        {
-                            throw JsonReaderException.Create(this, "Unexpected character encountered while parsing value: {0}.".FormatWith(CultureInfo.InvariantCulture, currentChar));
-                        }
+
+                        throw JsonReaderException.Create(this, "Unexpected character encountered while parsing value: {0}.".FormatWith(CultureInfo.InvariantCulture, currentChar));
                 }
             }
         }
@@ -1164,6 +1179,9 @@ namespace Newtonsoft.Json
 
             ReadNumberIntoBuffer();
 
+            // set state to PostValue now so that if there is an error parsing the number then the reader can continue
+            SetPostValueState(true);
+
             _stringReference = new StringReference(_chars, initialPosition, _charPos - initialPosition);
 
             object numberValue;
@@ -1186,12 +1204,18 @@ namespace Newtonsoft.Json
                 {
                     string number = _stringReference.ToString();
 
-                    // decimal.Parse doesn't support parsing hexadecimal values
-                    int integer = number.StartsWith("0x", StringComparison.OrdinalIgnoreCase)
-                        ? Convert.ToInt32(number, 16)
-                        : Convert.ToInt32(number, 8);
+                    try
+                    {
+                        int integer = number.StartsWith("0x", StringComparison.OrdinalIgnoreCase)
+                            ? Convert.ToInt32(number, 16)
+                            : Convert.ToInt32(number, 8);
 
-                    numberValue = integer;
+                        numberValue = integer;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw JsonReaderException.Create(this, "Input string '{0}' is not a valid integer.".FormatWith(CultureInfo.InvariantCulture, number), ex);
+                    }
                 }
                 else
                 {
@@ -1218,12 +1242,19 @@ namespace Newtonsoft.Json
                 {
                     string number = _stringReference.ToString();
 
-                    // decimal.Parse doesn't support parsing hexadecimal values
-                    long integer = number.StartsWith("0x", StringComparison.OrdinalIgnoreCase)
-                        ? Convert.ToInt64(number, 16)
-                        : Convert.ToInt64(number, 8);
+                    try
+                    {
+                        // decimal.Parse doesn't support parsing hexadecimal values
+                        long integer = number.StartsWith("0x", StringComparison.OrdinalIgnoreCase)
+                            ? Convert.ToInt64(number, 16)
+                            : Convert.ToInt64(number, 8);
 
-                    numberValue = Convert.ToDecimal(integer);
+                        numberValue = Convert.ToDecimal(integer);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw JsonReaderException.Create(this, "Input string '{0}' is not a valid decimal.".FormatWith(CultureInfo.InvariantCulture, number), ex);
+                    }
                 }
                 else
                 {
@@ -1250,9 +1281,17 @@ namespace Newtonsoft.Json
                 {
                     string number = _stringReference.ToString();
 
-                    numberValue = number.StartsWith("0x", StringComparison.OrdinalIgnoreCase)
-                        ? Convert.ToInt64(number, 16)
-                        : Convert.ToInt64(number, 8);
+                    try
+                    {
+                        numberValue = number.StartsWith("0x", StringComparison.OrdinalIgnoreCase)
+                            ? Convert.ToInt64(number, 16)
+                            : Convert.ToInt64(number, 8);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw JsonReaderException.Create(this, "Input string '{0}' is not a valid number.".FormatWith(CultureInfo.InvariantCulture, number), ex);
+                    }
+
                     numberType = JsonToken.Integer;
                 }
                 else
@@ -1268,7 +1307,11 @@ namespace Newtonsoft.Json
                     {
 #if !(NET20 || NET35 || PORTABLE40 || PORTABLE)
                         string number = _stringReference.ToString();
-                        numberValue = BigInteger.Parse(number, CultureInfo.InvariantCulture);
+
+                        if (number.Length > MaximumJavascriptIntegerCharacterLength)
+                            throw JsonReaderException.Create(this, "JSON integer {0} is too large to parse.".FormatWith(CultureInfo.InvariantCulture, _stringReference.ToString()));
+                        
+                        numberValue = BigIntegerParse(number, CultureInfo.InvariantCulture);
                         numberType = JsonToken.Integer;
 #else
                         throw JsonReaderException.Create(this, "JSON integer {0} is too large or small for an Int64.".FormatWith(CultureInfo.InvariantCulture, _stringReference.ToString()));
@@ -1302,8 +1345,21 @@ namespace Newtonsoft.Json
 
             ClearRecentString();
 
-            SetToken(numberType, numberValue);
+            // index has already been updated
+            SetToken(numberType, numberValue, false);
         }
+
+#if !(NET20 || NET35 || PORTABLE40 || PORTABLE)
+        // By using the BigInteger type in a separate method,
+        // the runtime can execute the ParseNumber even if 
+        // the System.Numerics.BigInteger.Parse method is
+        // missing, which happens in some versions of Mono
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static object BigIntegerParse(string number, CultureInfo culture)
+        {
+            return System.Numerics.BigInteger.Parse(number, culture);
+        }
+#endif
 
         private void ParseComment()
         {

@@ -47,6 +47,12 @@ namespace Newtonsoft.Json
         }
 
         /// <summary>
+        /// The parameter list to use when constructing the JsonConverter described by ConverterType.  
+        /// If null, the default constructor is used.
+        /// </summary>
+        public object[] ConverterParameters { get; private set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="JsonConverterAttribute"/> class.
         /// </summary>
         /// <param name="converterType">Type of the converter.</param>
@@ -58,16 +64,15 @@ namespace Newtonsoft.Json
             _converterType = converterType;
         }
 
-        internal static JsonConverter CreateJsonConverterInstance(Type converterType)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsonConverterAttribute"/> class.
+        /// </summary>
+        /// <param name="converterType">Type of the converter.</param>
+        /// <param name="converterParameters">Parameter list to use when constructing the JsonConverter.  Can be null.</param>
+        public JsonConverterAttribute(Type converterType, params object[] converterParameters)
+        : this(converterType)
         {
-            try
-            {
-                return (JsonConverter)Activator.CreateInstance(converterType);
-            }
-            catch (Exception ex)
-            {
-                throw new JsonException("Error creating {0}".FormatWith(CultureInfo.InvariantCulture, converterType), ex);
-            }
+            ConverterParameters = converterParameters;
         }
     }
 }
