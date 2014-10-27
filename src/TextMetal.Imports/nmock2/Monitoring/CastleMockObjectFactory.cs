@@ -67,7 +67,7 @@ namespace NMock2.Monitoring
                         throw new ArgumentException("Cannot mock sealed classes.");
                     }
 
-					proxyType = proxyBuilder.CreateClassProxyType( // CreateClassProxy                        compositeType.PrimaryType,
+					proxyType = proxyBuilder.CreateClassProxyType( // dpbullington@gail.com                        compositeType.PrimaryType,
                         additionalInterfaceTypes,
                         ProxyGenerationOptions.Default);
                 }
@@ -140,6 +140,12 @@ namespace NMock2.Monitoring
             {
                 this.stringValue = stringValue;
             }
+
+			// dpbullington@gail.com
+			public InterfaceMockBase()
+				: this("")
+			{
+			}
 
             public override string ToString()
             {
