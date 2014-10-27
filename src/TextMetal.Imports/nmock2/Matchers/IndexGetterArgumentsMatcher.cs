@@ -16,42 +16,32 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.IO;
-
 namespace NMock2.Matchers
 {
-	/// <summary>
-	/// Matcher for indexer getters. Checks that the arguments passed to the indexer match.
-	/// </summary>
-	public class IndexGetterArgumentsMatcher : ArgumentsMatcher
-	{
-		#region Constructors/Destructors
+    using System.IO;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="IndexGetterArgumentsMatcher" /> class.
-		/// </summary>
-		/// <param name="valueMatchers"> The value matchers. This is an ordered list of matchers, each matching a single method argument. </param>
-		public IndexGetterArgumentsMatcher(params Matcher[] valueMatchers)
-			: base(valueMatchers)
-		{
-		}
+    /// <summary>
+    /// Matcher for indexer getters. Checks that the arguments passed to the indexer match.
+    /// </summary>
+    public class IndexGetterArgumentsMatcher : ArgumentsMatcher
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IndexGetterArgumentsMatcher"/> class.
+        /// </summary>
+        /// <param name="valueMatchers">The value matchers. This is an ordered list of matchers, each matching a single method argument.</param>
+        public IndexGetterArgumentsMatcher(params Matcher[] valueMatchers) : base(valueMatchers)
+        {
+        }
 
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Describes this object.
-		/// </summary>
-		/// <param name="writer"> The text writer the description is added to. </param>
-		public override void DescribeTo(TextWriter writer)
-		{
-			writer.Write("[");
-			this.WriteListOfMatchers(this.MatcherCount(), writer);
-			writer.Write("]");
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Describes this object.
+        /// </summary>
+        /// <param name="writer">The text writer the description is added to.</param>
+        public override void DescribeTo(TextWriter writer)
+        {
+            writer.Write("[");
+            WriteListOfMatchers(MatcherCount(), writer);
+            writer.Write("]");
+        }
+    }
 }

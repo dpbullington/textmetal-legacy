@@ -16,22 +16,17 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
 namespace NMock2.Syntax
 {
-	/// <summary>
-	/// Syntax for defining event arguments.
-	/// </summary>
-	public interface IEventArgumentSyntax
-	{
-		#region Methods/Operators
-
-		/// <summary>
-		/// Defines the event arguments.
-		/// </summary>
-		/// <param name="args"> The event args. </param>
-		void With(params object[] args);
-
-		#endregion
-	}
+    /// <summary>
+    /// Syntax for defining event arguments.
+    /// </summary>
+    public interface IEventArgumentSyntax
+    {
+        /// <summary>
+        /// Defines the event arguments.
+        /// </summary>
+        /// <param name="args">The event args.</param>
+        void With(params object[] args);
+    }
 }

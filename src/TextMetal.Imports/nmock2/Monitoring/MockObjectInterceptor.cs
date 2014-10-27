@@ -16,140 +16,134 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.Collections.Generic;
-using System.Reflection;
-
-using Castle.DynamicProxy;
-
-using NMock2.Internal;
-
 namespace NMock2.Monitoring
 {
-	using System;
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Text;
+	using Castle.DynamicProxy;
+    using NMock2.Internal;
 
-	//using Castle.Core.Interceptor;
+    internal class MockObjectInterceptor : MockObject, IInterceptor
+    {
+        private static readonly Dictionary<MethodInfo, object> mockObjectMethods = new Dictionary<MethodInfo, object>();
 
-	internal class MockObjectInterceptor : MockObject, IInterceptor
-	{
-		#region Constructors/Destructors
+        /// <summary>
+        /// Initializes static members of the <see cref="MockObjectInterceptor"/> class.
+        /// </summary>
+        static MockObjectInterceptor()
+        {
+            // We want to be able to quickly recognize any later invocations
+            // on methods that belong to IMockObject or IInvokable, so we cache
+            // their definitions here.
+            foreach (MethodInfo methodInfo in typeof(IMockObject).GetMethods())
+            {
+                mockObjectMethods.Add(methodInfo, null);
+            }
 
-		/// <summary>
-		/// Initializes static members of the <see cref="MockObjectInterceptor" /> class.
-		/// </summary>
-		static MockObjectInterceptor()
-		{
-			// We want to be able to quickly recognize any later invocations
-			// on methods that belong to IMockObject or IInvokable, so we cache
-			// their definitions here.
-			foreach (MethodInfo methodInfo in typeof(IMockObject).GetMethods())
-				mockObjectMethods.Add(methodInfo, null);
+            foreach (MethodInfo methodInfo in typeof(IInvokable).GetMethods())
+            {
+                mockObjectMethods.Add(methodInfo, null);
+            }
+        }
 
-			foreach (MethodInfo methodInfo in typeof(IInvokable).GetMethods())
-				mockObjectMethods.Add(methodInfo, null);
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MockObjectInterceptor"/> class.
+        /// </summary>
+        /// <param name="mockery">The mockery.</param>
+        /// <param name="mockedType">Type of the mocked.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="mockStyle">The mock style.</param>
+        public MockObjectInterceptor(
+            Mockery mockery,
+            CompositeType mockedType,
+            string name,
+            MockStyle mockStyle) : base(mockery, mockedType, name, mockStyle)
+        {
+        }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="MockObjectInterceptor" /> class.
-		/// </summary>
-		/// <param name="mockery"> The mockery. </param>
-		/// <param name="mockedType"> Type of the mocked. </param>
-		/// <param name="name"> The name. </param>
-		/// <param name="mockStyle"> The mock style. </param>
-		public MockObjectInterceptor(
-			Mockery mockery,
-			CompositeType mockedType,
-			string name,
-			MockStyle mockStyle)
-			: base(mockery, mockedType, name, mockStyle)
-		{
-		}
+        #region IInterceptor Members
 
-		#endregion
+        public void Intercept(IInvocation interceptedInvocation)
+        {
+            // Check for calls to basic NMock2 infrastructure
+            if (mockObjectMethods.ContainsKey(interceptedInvocation.Method))
+            {
+                try
+                {
+                    interceptedInvocation.ReturnValue = interceptedInvocation.Method.Invoke(this, interceptedInvocation.Arguments);
+                }
+                catch (TargetInvocationException tie)
+                {
+                    // replace stack trace with original stack trace
+                    FieldInfo remoteStackTraceString = typeof(Exception).GetField("_remoteStackTraceString", BindingFlags.Instance | BindingFlags.NonPublic);
+                    remoteStackTraceString.SetValue(tie.InnerException, tie.InnerException.StackTrace + Environment.NewLine);
+                    throw tie.InnerException;
+                }
 
-		#region Fields/Constants
+                return;
+            }
 
-		private static readonly Dictionary<MethodInfo, object> mockObjectMethods = new Dictionary<MethodInfo, object>();
+            // Ok, this call is targeting a member of the mocked class
+            object invocationTarget = MockedTypes.PrimaryType.IsInterface ? interceptedInvocation.Proxy : interceptedInvocation.InvocationTarget;
+            Invocation invocationForMock = new Invocation(
+                invocationTarget,
+                interceptedInvocation.Method,
+                interceptedInvocation.Arguments);
 
-		#endregion
+            if (this.ShouldCallInvokeImplementation(invocationForMock))
+            {
+                interceptedInvocation.Proceed();
+                return;
+            }
 
-		#region Methods/Operators
+            interceptedInvocation.ReturnValue = this.ProcessCallAgainstExpectations(invocationForMock);
+        }
 
-		public void Intercept(IInvocation interceptedInvocation)
-		{
-			// Check for calls to basic NMock2 infrastructure
-			if (mockObjectMethods.ContainsKey(interceptedInvocation.Method))
-			{
-				try
-				{
-					interceptedInvocation.ReturnValue = interceptedInvocation.Method.Invoke(this, interceptedInvocation.Arguments);
-				}
-				catch (TargetInvocationException tie)
-				{
-					// replace stack trace with original stack trace
-					FieldInfo remoteStackTraceString = typeof(Exception).GetField("_remoteStackTraceString", BindingFlags.Instance | BindingFlags.NonPublic);
-					remoteStackTraceString.SetValue(tie.InnerException, tie.InnerException.StackTrace + Environment.NewLine);
-					throw tie.InnerException;
-				}
+        #endregion
 
-				return;
-			}
+        private bool ShouldCallInvokeImplementation(Invocation invocationForMock)
+        {
+            // Only transparent mocks of classes can have their implemenation invoked
+            if (this.MockStyle == MockStyle.Transparent
+                && !MockedTypes.PrimaryType.IsInterface)
+            {
+                // The implementation should only be invoked if no expectations
+                // have been set for this method
+                if (!Mockery.HasExpectationFor(invocationForMock))
+                {
+                    // As classes and interfaces can be combined into a single mock, we have
+                    // to be sure that the target method actually belongs to a class
+                    if (!invocationForMock.Method.DeclaringType.IsInterface)
+                    {
+                        return true;
+                    }
+                }
+            }
 
-			// Ok, this call is targeting a member of the mocked class
-			object invocationTarget = this.MockedTypes.PrimaryType.IsInterface ? interceptedInvocation.Proxy : interceptedInvocation.InvocationTarget;
-			Invocation invocationForMock = new Invocation(
-				invocationTarget,
-				interceptedInvocation.Method,
-				interceptedInvocation.Arguments);
+            return false;
+        }
 
-			if (this.ShouldCallInvokeImplementation(invocationForMock))
-			{
-				interceptedInvocation.Proceed();
-				return;
-			}
+        private object ProcessCallAgainstExpectations(Invocation invocationForMock)
+        {
+            this.Invoke(invocationForMock);
 
-			interceptedInvocation.ReturnValue = this.ProcessCallAgainstExpectations(invocationForMock);
-		}
+            if (invocationForMock.IsThrowing)
+            {
+                throw invocationForMock.Exception;
+            }
 
-		private object ProcessCallAgainstExpectations(Invocation invocationForMock)
-		{
-			this.Invoke(invocationForMock);
+            if (invocationForMock.Result == Missing.Value && invocationForMock.Method.ReturnType != typeof(void))
+            {
+                throw new InvalidOperationException(
+                    string.Format(
+                        "You have to set the return value for method '{0}' on '{1}' mock.",
+                        invocationForMock.Method.Name,
+                        invocationForMock.Method.DeclaringType.Name));
+            }
 
-			if (invocationForMock.IsThrowing)
-				throw invocationForMock.Exception;
-
-			if (invocationForMock.Result == Missing.Value && invocationForMock.Method.ReturnType != typeof(void))
-			{
-				throw new InvalidOperationException(
-					string.Format(
-						"You have to set the return value for method '{0}' on '{1}' mock.",
-						invocationForMock.Method.Name,
-						invocationForMock.Method.DeclaringType.Name));
-			}
-
-			return invocationForMock.Result;
-		}
-
-		private bool ShouldCallInvokeImplementation(Invocation invocationForMock)
-		{
-			// Only transparent mocks of classes can have their implemenation invoked
-			if (this.MockStyle == MockStyle.Transparent
-				&& !this.MockedTypes.PrimaryType.IsInterface)
-			{
-				// The implementation should only be invoked if no expectations
-				// have been set for this method
-				if (!this.Mockery.HasExpectationFor(invocationForMock))
-				{
-					// As classes and interfaces can be combined into a single mock, we have
-					// to be sure that the target method actually belongs to a class
-					if (!invocationForMock.Method.DeclaringType.IsInterface)
-						return true;
-				}
-			}
-
-			return false;
-		}
-
-		#endregion
-	}
+            return invocationForMock.Result;
+        }
+    }
 }

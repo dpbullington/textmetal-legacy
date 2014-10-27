@@ -16,61 +16,62 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.IO;
-
 namespace NMock2.Internal
 {
-	/// <summary>
-	/// Used to describe Matchers and other classes for exception handling.
-	/// </summary>
-	public class DescriptionWriter : StringWriter
-	{
-		#region Methods/Operators
+    using System.IO;
 
-		/// <summary>
-		/// Replaces backslashes with three escaped backslashes.
-		/// </summary>
-		/// <param name="s"> The string to replace backslashes. </param>
-		/// <returns> Returns the escaped string. </returns>
-		private string FormatString(string s)
-		{
-			const string Quote = "\"";
-			const string EscapedQuote = "\\\"";
+    /// <summary>
+    /// Used to describe Matchers and other classes for exception handling.
+    /// </summary>
+    public class DescriptionWriter : StringWriter
+    {
+        /// <summary>
+        /// Writes the text representation of an object to the text stream by calling ToString on that object.
+        /// </summary>
+        /// <param name="value">The object to write.</param>
+        /// <exception cref="T:System.ObjectDisposedException">
+        /// The <see cref="T:System.IO.TextWriter"/> is closed.
+        /// </exception>
+        /// <exception cref="T:System.IO.IOException">
+        /// An I/O error occurs.
+        /// </exception>
+        public override void Write(object value)
+        {
+            this.Write(this.FormatValue(value));
+        }
 
-			return Quote + s.Replace(Quote, EscapedQuote) + Quote;
-		}
+        /// <summary>
+        /// Formats the given <paramref name="value"/> depending on null and the type of the value.
+        /// </summary>
+        /// <param name="value">The value to format.</param>
+        /// <returns>Returns the formatted string.</returns>
+        private string FormatValue(object value)
+        {
+            if (value == null)
+            {
+                return "null";
+            }
+            else if (value is string)
+            {
+                return this.FormatString((string)value);
+            }
+            else
+            {
+                return "<" + value.ToString() + ">";
+            }
+        }
 
-		/// <summary>
-		/// Formats the given <paramref name="value" /> depending on null and the type of the value.
-		/// </summary>
-		/// <param name="value"> The value to format. </param>
-		/// <returns> Returns the formatted string. </returns>
-		private string FormatValue(object value)
-		{
-			if (value == null)
-				return "null";
-			else if (value is string)
-				return this.FormatString((string)value);
-			else
-				return "<" + value.ToString() + ">";
-		}
+        /// <summary>
+        /// Replaces backslashes with three escaped backslashes.
+        /// </summary>
+        /// <param name="s">The string to replace backslashes.</param>
+        /// <returns>Returns the escaped string.</returns>
+        private string FormatString(string s)
+        {
+            const string Quote = "\"";
+            const string EscapedQuote = "\\\"";
 
-		/// <summary>
-		/// Writes the text representation of an object to the text stream by calling ToString on that object.
-		/// </summary>
-		/// <param name="value"> The object to write. </param>
-		/// <exception cref="T:System.ObjectDisposedException">
-		/// The
-		/// <see cref="T:System.IO.TextWriter" />
-		/// is closed.
-		/// </exception>
-		/// <exception cref="T:System.IO.IOException"> An I/O error occurs. </exception>
-		public override void Write(object value)
-		{
-			this.Write(this.FormatValue(value));
-		}
-
-		#endregion
-	}
+            return Quote + s.Replace(Quote, EscapedQuote) + Quote;
+        }
+    }
 }

@@ -16,23 +16,18 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
 namespace NMock2.Syntax
 {
-	/// <summary>
-	/// Syntax defining a receiver.
-	/// </summary>
-	public interface IReceiverSyntax
-	{
-		#region Methods/Operators
-
-		/// <summary>
-		/// Defines the receiver.
-		/// </summary>
-		/// <param name="receiver"> The dynamic mock on which the expectation or stub is applied. </param>
-		/// <returns> Method syntax defining the method, property or event. </returns>
-		IMethodSyntax On(object receiver);
-
-		#endregion
-	}
+    /// <summary>
+    /// Syntax defining a receiver.
+    /// </summary>
+    public interface IReceiverSyntax
+    {
+        /// <summary>
+        /// Defines the receiver.
+        /// </summary>
+        /// <param name="receiver">The dynamic mock on which the expectation or stub is applied.</param>
+        /// <returns>Method syntax defining the method, property or event.</returns>
+        IMethodSyntax On(object receiver);
+    }
 }

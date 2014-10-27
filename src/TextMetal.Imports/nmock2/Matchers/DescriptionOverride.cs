@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------
 // <copyright file="DescriptionOverride.cs" company="NMock2">
 //
 //   http://www.sourceforge.net/projects/NMock2
@@ -16,66 +16,53 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.IO;
-
 namespace NMock2.Matchers
 {
-	/// <summary>
-	/// Matcher that is used to change the description the wrapped matcher.
-	/// </summary>
-	public class DescriptionOverride : Matcher
-	{
-		#region Constructors/Destructors
+    using System.IO;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="DescriptionOverride" /> class.
-		/// </summary>
-		/// <param name="description"> The new description for the wrapped matcher. </param>
-		/// <param name="otherMatcher"> The matcher to wrap. </param>
-		public DescriptionOverride(string description, Matcher otherMatcher)
-		{
-			this.description = description;
-			this.otherMatcher = otherMatcher;
-		}
+    /// <summary>
+    /// Matcher that is used to change the description the wrapped matcher.
+    /// </summary>
+    public class DescriptionOverride : Matcher
+    {
+        /// <summary>
+        /// Stores the new description for the wrapped matcher.
+        /// </summary>
+        private readonly string description;
 
-		#endregion
+        /// <summary>
+        /// Stores the matcher to wrap.
+        /// </summary>
+        private readonly Matcher otherMatcher;
 
-		#region Fields/Constants
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DescriptionOverride"/> class.
+        /// </summary>
+        /// <param name="description">The new description for the wrapped matcher.</param>
+        /// <param name="otherMatcher">The matcher to wrap.</param>
+        public DescriptionOverride(string description, Matcher otherMatcher)
+        {
+            this.description = description;
+            this.otherMatcher = otherMatcher;
+        }
 
-		/// <summary>
-		/// Stores the new description for the wrapped matcher.
-		/// </summary>
-		private readonly string description;
+        /// <summary>
+        /// Matches the specified object to this matcher and returns whether it matches.
+        /// </summary>
+        /// <param name="o">The object to match.</param>
+        /// <returns>Whether the wrapped matcher matches.</returns>
+        public override bool Matches(object o)
+        {
+            return this.otherMatcher.Matches(o);
+        }
 
-		/// <summary>
-		/// Stores the matcher to wrap.
-		/// </summary>
-		private readonly Matcher otherMatcher;
-
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Describes this object.
-		/// </summary>
-		/// <param name="writer"> The text writer the description is added to. </param>
-		public override void DescribeTo(TextWriter writer)
-		{
-			writer.Write(this.description);
-		}
-
-		/// <summary>
-		/// Matches the specified object to this matcher and returns whether it matches.
-		/// </summary>
-		/// <param name="o"> The object to match. </param>
-		/// <returns> Whether the wrapped matcher matches. </returns>
-		public override bool Matches(object o)
-		{
-			return this.otherMatcher.Matches(o);
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Describes this object.
+        /// </summary>
+        /// <param name="writer">The text writer the description is added to.</param>
+        public override void DescribeTo(TextWriter writer)
+        {
+            writer.Write(this.description);
+        }
+    }
 }

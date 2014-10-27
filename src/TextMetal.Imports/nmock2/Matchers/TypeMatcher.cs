@@ -16,59 +16,45 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.IO;
-
 namespace NMock2.Matchers
 {
-	using System;
+    using System;
+    using System.IO;
 
-	/// <summary>
-	/// Matcher that checks whether the actual object can be assigned to the expected type.
-	/// </summary>
-	public class TypeMatcher : Matcher
-	{
-		#region Constructors/Destructors
+    /// <summary>
+    /// Matcher that checks whether the actual object can be assigned to the expected type.
+    /// </summary>
+    public class TypeMatcher : Matcher
+    {
+        private readonly Type type;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="TypeMatcher" /> class.
-		/// </summary>
-		/// <param name="type"> The expected type. </param>
-		public TypeMatcher(Type type)
-		{
-			this.type = type;
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TypeMatcher"/> class.
+        /// </summary>
+        /// <param name="type">The expected type.</param>
+        public TypeMatcher(Type type)
+        {
+            this.type = type;
+        }
 
-		#endregion
+        /// <summary>
+        /// Matches the specified object to this matcher and returns whether it matches.
+        /// </summary>
+        /// <param name="o">The object to match.</param>
+        /// <returns>Whether the object castable to the expected type.</returns>
+        public override bool Matches(object o)
+        {
+            return this.type.IsAssignableFrom(o.GetType()); 
+        }
 
-		#region Fields/Constants
-
-		private readonly Type type;
-
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Describes this object.
-		/// </summary>
-		/// <param name="writer"> The text writer the description is added to. </param>
-		public override void DescribeTo(TextWriter writer)
-		{
-			writer.Write("type assignable to ");
-			writer.Write(this.type);
-		}
-
-		/// <summary>
-		/// Matches the specified object to this matcher and returns whether it matches.
-		/// </summary>
-		/// <param name="o"> The object to match. </param>
-		/// <returns> Whether the object castable to the expected type. </returns>
-		public override bool Matches(object o)
-		{
-			return this.type.IsAssignableFrom(o.GetType());
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Describes this object.
+        /// </summary>
+        /// <param name="writer">The text writer the description is added to.</param>
+        public override void DescribeTo(TextWriter writer)
+        {
+            writer.Write("type assignable to ");
+            writer.Write(this.type);
+        }
+    }
 }

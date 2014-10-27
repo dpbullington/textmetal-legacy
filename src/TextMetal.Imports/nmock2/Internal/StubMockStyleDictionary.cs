@@ -17,162 +17,130 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace NMock2.Internal
 {
-	using System;
+    using System;
+    using System.Collections.Generic;
 
-	/// <summary>
-	/// Provides functionality to map stubs and specific types of a stub to mock styles.
-	/// </summary>
-	public class StubMockStyleDictionary
-	{
-		#region Fields/Constants
+    /// <summary>
+    /// Provides functionality to map stubs and specific types of a stub to mock styles.
+    /// </summary>
+    public class StubMockStyleDictionary
+    {
+        /// <summary>
+        /// holds mappings from stub.type to mock style.
+        /// </summary>
+        private readonly Dictionary<Key, MockStyle?> mockStyleForType = new Dictionary<Key, MockStyle?>();
 
-		/// <summary>
-		/// holds mappings from stub to mock style (holds for all types unless there is a mapping defined in
-		/// <see
-		///     cref="mockStyleForType" />
-		/// .
-		/// </summary>
-		private readonly Dictionary<IMockObject, MockStyle?> mockStyleForStub = new Dictionary<IMockObject, MockStyle?>();
+        /// <summary>
+        /// holds mappings from stub to mock style (holds for all types unless there is a mapping defined in <see cref="mockStyleForType"/>.
+        /// </summary>
+        private readonly Dictionary<IMockObject, MockStyle?> mockStyleForStub = new Dictionary<IMockObject, MockStyle?>();
 
-		/// <summary>
-		/// holds mappings from stub.type to mock style.
-		/// </summary>
-		private readonly Dictionary<Key, MockStyle?> mockStyleForType = new Dictionary<Key, MockStyle?>();
+        /// <summary>
+        /// Gets or sets the mock style for the specified mock.
+        /// </summary>
+        /// <param name="mock">the mock object</param>
+        /// <value>mock style. null if no value defined.</value>
+        public MockStyle? this[IMockObject mock]
+        {
+            get
+            {
+                return this.mockStyleForStub.ContainsKey(mock) ? this.mockStyleForStub[mock] : null;
+            }
 
-		#endregion
+            set
+            {
+                this.mockStyleForStub[mock] = value;
+            }
+        }
 
-		#region Properties/Indexers/Events
+        /// <summary>
+        /// Gets or sets the mock style for the specified mock and type.
+        /// </summary>
+        /// <param name="mock">the mock object</param>
+        /// <param name="nestedMockType">the type of the nested mock.</param>
+        /// <value>mock style. null if no value defined.</value>
+        public MockStyle? this[IMockObject mock, Type nestedMockType]
+        {
+            get
+            {
+                Key key = new Key(mock, nestedMockType);
 
-		/// <summary>
-		/// Gets or sets the mock style for the specified mock.
-		/// </summary>
-		/// <param name="mock"> the mock object </param>
-		/// <value> mock style. null if no value defined. </value>
-		public MockStyle? this[IMockObject mock]
-		{
-			get
-			{
-				return this.mockStyleForStub.ContainsKey(mock) ? this.mockStyleForStub[mock] : null;
-			}
+                if (this.mockStyleForType.ContainsKey(key))
+                {
+                    return this.mockStyleForType[key] ?? this.mockStyleForStub[mock];
+                }
 
-			set
-			{
-				this.mockStyleForStub[mock] = value;
-			}
-		}
+                return this[mock];
+            }
 
-		/// <summary>
-		/// Gets or sets the mock style for the specified mock and type.
-		/// </summary>
-		/// <param name="mock"> the mock object </param>
-		/// <param name="nestedMockType"> the type of the nested mock. </param>
-		/// <value> mock style. null if no value defined. </value>
-		public MockStyle? this[IMockObject mock, Type nestedMockType]
-		{
-			get
-			{
-				Key key = new Key(mock, nestedMockType);
+            set
+            {
+                Key key = new Key(mock, nestedMockType);
 
-				if (this.mockStyleForType.ContainsKey(key))
-					return this.mockStyleForType[key] ?? this.mockStyleForStub[mock];
+                this.mockStyleForType[key] = value;
+            }
+        }
 
-				return this[mock];
-			}
+        /// <summary>
+        /// Key into the <see cref="StubMockStyleDictionary.mockStyleForType"/> dictionary.
+        /// </summary>
+        private class Key
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Key"/> class.
+            /// </summary>
+            /// <param name="mock">The mock object.</param>
+            /// <param name="nestedMockType">Type of the nested mock.</param>
+            public Key(IMockObject mock, Type nestedMockType)
+            {
+                this.Mock = mock;
+                this.NestedMockType = nestedMockType;
+            }
 
-			set
-			{
-				Key key = new Key(mock, nestedMockType);
+            /// <summary>
+            /// Gets the mock.
+            /// </summary>
+            /// <value>The mock object.</value>
+            public IMockObject Mock { get; private set; }
 
-				this.mockStyleForType[key] = value;
-			}
-		}
+            /// <summary>
+            /// Gets the type of the nested mock.
+            /// </summary>
+            /// <value>The type of the nested mock.</value>
+            public Type NestedMockType { get; private set; }
 
-		#endregion
+            /// <summary>
+            /// Whether this instance equals the specified other.
+            /// </summary>
+            /// <param name="other">The other to compare to.</param>
+            /// <returns>A value indicating whether both instances are equal.</returns>
+            public override bool Equals(object other)
+            {
+                return other is Key && this.Equals((Key)other);
+            }
 
-		#region Classes/Structs/Interfaces/Enums/Delegates
+            /// <summary>
+            /// Whether this instance equals the specified other.
+            /// </summary>
+            /// <param name="other">The other to compare to.</param>
+            /// <returns>A value indicating whether both instances are equal.</returns>
+            public bool Equals(Key other)
+            {
+                return other.Mock == this.Mock && other.NestedMockType == this.NestedMockType;
+            }
 
-		/// <summary>
-		/// Key into the <see cref="StubMockStyleDictionary.mockStyleForType" /> dictionary.
-		/// </summary>
-		private class Key
-		{
-			#region Constructors/Destructors
-
-			/// <summary>
-			/// Initializes a new instance of the <see cref="Key" /> class.
-			/// </summary>
-			/// <param name="mock"> The mock object. </param>
-			/// <param name="nestedMockType"> Type of the nested mock. </param>
-			public Key(IMockObject mock, Type nestedMockType)
-			{
-				this.Mock = mock;
-				this.NestedMockType = nestedMockType;
-			}
-
-			#endregion
-
-			#region Properties/Indexers/Events
-
-			/// <summary>
-			/// Gets the mock.
-			/// </summary>
-			/// <value> The mock object. </value>
-			public IMockObject Mock
-			{
-				get;
-				private set;
-			}
-
-			/// <summary>
-			/// Gets the type of the nested mock.
-			/// </summary>
-			/// <value> The type of the nested mock. </value>
-			public Type NestedMockType
-			{
-				get;
-				private set;
-			}
-
-			#endregion
-
-			#region Methods/Operators
-
-			/// <summary>
-			/// Whether this instance equals the specified other.
-			/// </summary>
-			/// <param name="other"> The other to compare to. </param>
-			/// <returns> A value indicating whether both instances are equal. </returns>
-			public override bool Equals(object other)
-			{
-				return other is Key && this.Equals((Key)other);
-			}
-
-			/// <summary>
-			/// Whether this instance equals the specified other.
-			/// </summary>
-			/// <param name="other"> The other to compare to. </param>
-			/// <returns> A value indicating whether both instances are equal. </returns>
-			public bool Equals(Key other)
-			{
-				return other.Mock == this.Mock && other.NestedMockType == this.NestedMockType;
-			}
-
-			/// <summary>
-			/// Serves as a hash function for a particular type.
-			/// </summary>
-			/// <returns> A hash code for the current <see cref="T:System.Object" /> . </returns>
-			public override int GetHashCode()
-			{
-				return this.Mock.GetHashCode() ^ this.NestedMockType.GetHashCode();
-			}
-
-			#endregion
-		}
-
-		#endregion
-	}
+            /// <summary>
+            /// Serves as a hash function for a particular type.
+            /// </summary>
+            /// <returns>
+            /// A hash code for the current <see cref="T:System.Object"/>.
+            /// </returns>
+            public override int GetHashCode()
+            {
+                return this.Mock.GetHashCode() ^ this.NestedMockType.GetHashCode();
+            }
+        }
+    }
 }

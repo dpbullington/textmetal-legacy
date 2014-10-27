@@ -16,79 +16,58 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.IO;
-using System.Threading;
-
-using NMock2.Monitoring;
-
 namespace NMock2.Actions
 {
-	/// <summary>
-	/// Action that signals an event.
-	/// You can use this action to synchronize threads when an expectation is invoked.
-	/// </summary>
-	public class SignalAction : IAction
-	{
-		#region Constructors/Destructors
+    using System.IO;
+    using System.Threading;
+    using NMock2.Monitoring;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SignalAction" /> class.
-		/// </summary>
-		/// <param name="signal"> The signal. </param>
-		public SignalAction(EventWaitHandle signal)
-		{
-			this.signal = signal;
-		}
+    /// <summary>
+    /// Action that signals an event.
+    /// You can use this action to synchronize threads when an expectation is invoked.
+    /// </summary>
+    public class SignalAction : IAction
+    {
+        /// <summary>
+        /// Stores the wait handle to be signalled.
+        /// </summary>
+        private readonly EventWaitHandle signal;
 
-		#endregion
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SignalAction"/> class.
+        /// </summary>
+        /// <param name="signal">The signal.</param>
+        public SignalAction(EventWaitHandle signal)
+        {
+            this.signal = signal;
+        }
 
-		#region Fields/Constants
+        /// <summary>
+        /// Gets the signal.
+        /// You can use this signal to wait for this action beeing invoked.
+        /// </summary>
+        /// <value>The signal.</value>
+        public EventWaitHandle Signal
+        {
+            get { return this.signal; }
+        }
 
-		/// <summary>
-		/// Stores the wait handle to be signalled.
-		/// </summary>
-		private readonly EventWaitHandle signal;
+        /// <summary>
+        /// Invokes this object by signaling the event.
+        /// </summary>
+        /// <param name="invocation">The invocation.</param>
+        public void Invoke(Invocation invocation)
+        {
+            this.signal.Set();
+        }
 
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Gets the signal.
-		/// You can use this signal to wait for this action beeing invoked.
-		/// </summary>
-		/// <value> The signal. </value>
-		public EventWaitHandle Signal
-		{
-			get
-			{
-				return this.signal;
-			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Describes this object.
-		/// </summary>
-		/// <param name="writer"> The text writer the description is added to. </param>
-		public void DescribeTo(TextWriter writer)
-		{
-			writer.Write("signals");
-		}
-
-		/// <summary>
-		/// Invokes this object by signaling the event.
-		/// </summary>
-		/// <param name="invocation"> The invocation. </param>
-		public void Invoke(Invocation invocation)
-		{
-			this.signal.Set();
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Describes this object.
+        /// </summary>
+        /// <param name="writer">The text writer the description is added to.</param>
+        public void DescribeTo(TextWriter writer)
+        {
+            writer.Write("signals");
+        }
+    }
 }

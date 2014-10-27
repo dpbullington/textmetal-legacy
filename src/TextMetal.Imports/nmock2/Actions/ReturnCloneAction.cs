@@ -16,63 +16,48 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.IO;
-
-using NMock2.Monitoring;
-
 namespace NMock2.Actions
 {
-	using System;
+    using System;
+    using System.IO;
+    using NMock2.Monitoring;
 
-	/// <summary>
-	/// Action that set the result value of an invocation to a clone of the specified prototype.
-	/// </summary>
-	public class ReturnCloneAction : IAction
-	{
-		#region Constructors/Destructors
+    /// <summary>
+    /// Action that set the result value of an invocation to a clone of the specified prototype.
+    /// </summary>
+    public class ReturnCloneAction : IAction
+    {
+        /// <summary>
+        /// Stores the prototype that will be cloned.
+        /// </summary>
+        private readonly ICloneable prototype;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ReturnCloneAction" /> class.
-		/// </summary>
-		/// <param name="prototype"> The prototype. </param>
-		public ReturnCloneAction(ICloneable prototype)
-		{
-			this.prototype = prototype;
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReturnCloneAction"/> class.
+        /// </summary>
+        /// <param name="prototype">The prototype.</param>
+        public ReturnCloneAction(ICloneable prototype)
+        {
+            this.prototype = prototype;
+        }
 
-		#endregion
+        /// <summary>
+        /// Invokes this object. Sets the result value of the invocation to a clone of the prototype.
+        /// </summary>
+        /// <param name="invocation">The invocation.</param>
+        public void Invoke(Invocation invocation)
+        {
+            invocation.Result = this.prototype.Clone();
+        }
 
-		#region Fields/Constants
-
-		/// <summary>
-		/// Stores the prototype that will be cloned.
-		/// </summary>
-		private readonly ICloneable prototype;
-
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Describes this object.
-		/// </summary>
-		/// <param name="writer"> The text writer the description is added to. </param>
-		public void DescribeTo(TextWriter writer)
-		{
-			writer.Write("a clone of ");
-			writer.Write(this.prototype);
-		}
-
-		/// <summary>
-		/// Invokes this object. Sets the result value of the invocation to a clone of the prototype.
-		/// </summary>
-		/// <param name="invocation"> The invocation. </param>
-		public void Invoke(Invocation invocation)
-		{
-			invocation.Result = this.prototype.Clone();
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Describes this object.
+        /// </summary>
+        /// <param name="writer">The text writer the description is added to.</param>
+        public void DescribeTo(TextWriter writer)
+        {
+            writer.Write("a clone of ");
+            writer.Write(this.prototype);
+        }
+    }
 }

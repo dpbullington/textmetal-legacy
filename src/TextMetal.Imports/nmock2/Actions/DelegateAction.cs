@@ -16,69 +16,51 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.IO;
-
-using NMock2.Monitoring;
-
 namespace NMock2.Actions
 {
-	/// <summary>
-	/// Action that executes the delegate passed to the constructor.
-	/// </summary>
-	public class DelegateAction : IAction
-	{
-		#region Constructors/Destructors
+    using System.IO;
+    using NMock2.Monitoring;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="DelegateAction" /> class.
-		/// </summary>
-		/// <param name="actionHandler"> The action handler. </param>
-		public DelegateAction(Handler actionHandler)
-		{
-			this.handler = actionHandler;
-		}
+    /// <summary>
+    /// Action that executes the delegate passed to the constructor.
+    /// </summary>
+    public class DelegateAction : IAction
+    {
+        /// <summary>
+        /// Stores the handler of the delegate action.
+        /// </summary>
+        private readonly Handler handler;
 
-		#endregion
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DelegateAction"/> class.
+        /// </summary>
+        /// <param name="actionHandler">The action handler.</param>
+        public DelegateAction(Handler actionHandler)
+        {
+            this.handler = actionHandler;
+        }
 
-		#region Fields/Constants
+        /// <summary>
+        /// Delegate that is executed on invocation of the action.
+        /// </summary>
+        public delegate void Handler();
 
-		/// <summary>
-		/// Stores the handler of the delegate action.
-		/// </summary>
-		private readonly Handler handler;
+        /// <summary>
+        /// Invokes this object.
+        /// </summary>
+        /// <param name="invocation">The invocation.</param>
+        public void Invoke(Invocation invocation)
+        {
+            this.handler();
+        }
 
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Describes this object.
-		/// </summary>
-		/// <param name="writer"> The text writer the description is added to. </param>
-		public void DescribeTo(TextWriter writer)
-		{
-			writer.Write("execute delegate");
-		}
-
-		/// <summary>
-		/// Invokes this object.
-		/// </summary>
-		/// <param name="invocation"> The invocation. </param>
-		public void Invoke(Invocation invocation)
-		{
-			this.handler();
-		}
-
-		#endregion
-
-		#region Classes/Structs/Interfaces/Enums/Delegates
-
-		/// <summary>
-		/// Delegate that is executed on invocation of the action.
-		/// </summary>
-		public delegate void Handler();
-
-		#endregion
-	}
+        /// <summary>
+        /// Describes this object.
+        /// </summary>
+        /// <param name="writer">The text writer the description is added to.</param>
+        public void DescribeTo(TextWriter writer)
+        {
+            writer.Write("execute delegate");
+        }
+    }
 }

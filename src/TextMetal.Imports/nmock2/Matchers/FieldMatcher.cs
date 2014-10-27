@@ -16,77 +16,65 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.IO;
-using System.Reflection;
-
 namespace NMock2.Matchers
 {
-	using System;
+    using System;
+    using System.IO;
+    using System.Reflection;
 
-	/// <summary>
-	/// Matcher that checks whether the specified field of the actual object matches with the specified matcher.
-	/// </summary>
-	public class FieldMatcher : Matcher
-	{
-		#region Constructors/Destructors
+    /// <summary>
+    /// Matcher that checks whether the specified field of the actual object matches with the specified matcher. 
+    /// </summary>
+    public class FieldMatcher : Matcher
+    {
+        /// <summary>
+        /// Name of the field to match against the <seealso cref="valueMatcher"/>.
+        /// </summary>
+        private readonly string fieldName;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="FieldMatcher" /> class.
-		/// </summary>
-		/// <param name="fieldName"> Name of the field to match against the <paramref name="valueMatcher" /> . </param>
-		/// <param name="valueMatcher"> The value matcher. </param>
-		public FieldMatcher(string fieldName, Matcher valueMatcher)
-		{
-			this.fieldName = fieldName;
-			this.valueMatcher = valueMatcher;
-		}
+        /// <summary>
+        /// The value <see cref="Matcher"/> used to match the field of the object under investigation.
+        /// </summary>
+        private readonly Matcher valueMatcher;
 
-		#endregion
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FieldMatcher"/> class.
+        /// </summary>
+        /// <param name="fieldName">Name of the field to match against the <paramref name="valueMatcher"/>.</param>
+        /// <param name="valueMatcher">The value matcher.</param>
+        public FieldMatcher(string fieldName, Matcher valueMatcher)
+        {
+            this.fieldName = fieldName;
+            this.valueMatcher = valueMatcher;
+        }
 
-		#region Fields/Constants
+        /// <summary>
+        /// Matches the specified object to this matcher and returns whether it matches.
+        /// </summary>
+        /// <param name="o">The object to match.</param>
+        /// <returns>Whether the object matches.</returns>
+        public override bool Matches(object o)
+        {
+            Type type = o.GetType();
+            FieldInfo field = type.GetField(this.fieldName, BindingFlags.Public | BindingFlags.Instance);
 
-		/// <summary>
-		/// Name of the field to match against the <seealso cref="valueMatcher" />.
-		/// </summary>
-		private readonly string fieldName;
+            if (field == null)
+            {
+                return false;
+            }
+            
+            object value = field.GetValue(o);
+            return this.valueMatcher.Matches(value);
+        }
 
-		/// <summary>
-		/// The value <see cref="Matcher" /> used to match the field of the object under investigation.
-		/// </summary>
-		private readonly Matcher valueMatcher;
-
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Describes this object.
-		/// </summary>
-		/// <param name="writer"> The text writer the description is added to. </param>
-		public override void DescribeTo(TextWriter writer)
-		{
-			writer.Write(string.Format("field '{0}' ", this.fieldName));
-			this.valueMatcher.DescribeTo(writer);
-		}
-
-		/// <summary>
-		/// Matches the specified object to this matcher and returns whether it matches.
-		/// </summary>
-		/// <param name="o"> The object to match. </param>
-		/// <returns> Whether the object matches. </returns>
-		public override bool Matches(object o)
-		{
-			Type type = o.GetType();
-			FieldInfo field = type.GetField(this.fieldName, BindingFlags.Public | BindingFlags.Instance);
-
-			if (field == null)
-				return false;
-
-			object value = field.GetValue(o);
-			return this.valueMatcher.Matches(value);
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Describes this object.
+        /// </summary>
+        /// <param name="writer">The text writer the description is added to.</param>
+        public override void DescribeTo(TextWriter writer)
+        {
+            writer.Write(string.Format("field '{0}' ", this.fieldName));
+            this.valueMatcher.DescribeTo(writer);
+        }
+    }
 }

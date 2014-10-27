@@ -16,40 +16,33 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
 namespace NMock2.Syntax
 {
-	/// <summary>
-	/// Syntax for defining the object that fires an event.
-	/// </summary>
-	public interface IEventSyntax
-	{
-		#region Methods/Operators
+    using NMock2.Syntax;
 
-		/// <summary>
-		/// Defines the object that fires the event.
-		/// </summary>
-		/// <param name="o"> The object firing the event. </param>
-		/// <returns> Event argument syntax defining the arguments passed to the event. </returns>
-		IEventArgumentSyntax On(object o);
+    /// <summary>
+    /// Syntax for defining the object that fires an event. 
+    /// </summary>
+    public interface IEventSyntax
+    {
+        /// <summary>
+        /// Defines the object that fires the event.
+        /// </summary>
+        /// <param name="o">The object firing the event.</param>
+        /// <returns>Event argument syntax defining the arguments passed to the event.</returns>
+        IEventArgumentSyntax On(object o);
+    }
 
-		#endregion
-	}
-
-	/// <summary>
-	/// Syntax for defining the event that is fired.
-	/// </summary>
-	public interface INewEventSyntax
-	{
-		#region Methods/Operators
-
-		/// <summary>
-		/// Defines the event to fire.
-		/// </summary>
-		/// <param name="eventName"> Name of the event. </param>
-		/// <returns> Event argument syntax defining the arguments passed to the event. </returns>
-		IEventArgumentSyntax Event(string eventName);
-
-		#endregion
-	}
+    /// <summary>
+    /// Syntax for defining the event that is fired.
+    /// </summary>
+    public interface INewEventSyntax
+    {
+        /// <summary>
+        /// Defines the event to fire.
+        /// </summary>
+        /// <param name="eventName">Name of the event.</param>
+        /// <returns>Event argument syntax defining the arguments passed to the event.</returns>
+        IEventArgumentSyntax Event(string eventName);
+    }
 }

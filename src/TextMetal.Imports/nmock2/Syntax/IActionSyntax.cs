@@ -16,23 +16,18 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
 namespace NMock2.Syntax
 {
-	/// <summary>
-	/// Syntax for defining actions.
-	/// </summary>
-	public interface IActionSyntax : ICommentSyntax
-	{
-		#region Methods/Operators
-
-		/// <summary>
-		/// Defines what will happen.
-		/// </summary>
-		/// <param name="actions"> The actions to take. </param>
-		/// <returns> Returns the comment syntax defined after will. </returns>
-		ICommentSyntax Will(params IAction[] actions);
-
-		#endregion
-	}
+    /// <summary>
+    /// Syntax for defining actions.
+    /// </summary>
+    public interface IActionSyntax : ICommentSyntax
+    {
+        /// <summary>
+        /// Defines what will happen.
+        /// </summary>
+        /// <param name="actions">The actions to take.</param>
+        /// <returns>Returns the comment syntax defined after will.</returns>
+        ICommentSyntax Will(params IAction[] actions);
+    }
 }

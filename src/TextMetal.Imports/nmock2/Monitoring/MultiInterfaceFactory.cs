@@ -16,136 +16,112 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.Collections;
-using System.Reflection;
-using System.Reflection.Emit;
-
-using NMock2.Properties;
-
 namespace NMock2.Monitoring
 {
-	using System;
+    using System;
+    using System.Collections;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
-	public class MultiInterfaceFactory
-	{
-		#region Constructors/Destructors
+    public class MultiInterfaceFactory
+    {
+        private static Hashtable createdTypes = new Hashtable();
+        private ModuleBuilder moduleBuilder;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="MultiInterfaceFactory" /> class.
-		/// </summary>
-		/// <param name="name"> The name of the assembly to generate. </param>
-		public MultiInterfaceFactory(string name)
-		{
-			AssemblyName assemblyName = new AssemblyName();
-			assemblyName.Name = name;
-			assemblyName.KeyPair = new StrongNameKeyPair(Resources.NMock2);
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MultiInterfaceFactory"/> class.
+        /// </summary>
+        /// <param name="name">The name of the assembly to generate.</param>
+        public MultiInterfaceFactory(string name)
+        {
+            AssemblyName assemblyName = new AssemblyName();
+            assemblyName.Name = name;
+            assemblyName.KeyPair = new StrongNameKeyPair(Properties.Resources.NMock2);
 
-			AssemblyBuilder assemblyBuilder =
-				AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
-			this.moduleBuilder = assemblyBuilder.DefineDynamicModule(name);
-		}
+            AssemblyBuilder assemblyBuilder =
+                AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+            this.moduleBuilder = assemblyBuilder.DefineDynamicModule(name);
+        }
+        
+        public Type GetType(params Type[] baseInterfaces)
+        {
+            TypeId id = this.Id(baseInterfaces);
+            if (createdTypes.ContainsKey(id))
+            {
+                return (Type) createdTypes[id];
+            }
+            else
+            {
+                string typeName = "MultiInterface" + (createdTypes.Count + 1);
+                Type newType = this.CreateType(typeName, baseInterfaces);
+                createdTypes[id] = newType;
+                return newType;
+            }
+        }
+        
+        private Type CreateType(string typeName, Type[] baseInterfaces)
+        {
+            TypeBuilder typeBuilder = this.moduleBuilder.DefineType(
+                typeName,
+                TypeAttributes.Public | TypeAttributes.Abstract | TypeAttributes.Interface,
+                null,
+                baseInterfaces);
+            
+            return typeBuilder.CreateType();
+        }
 
-		#endregion
+        private TypeId Id(params Type[] types)
+        {
+            return new TypeId(types);
+        }
 
-		#region Fields/Constants
+        private class TypeId
+        {
+            private Type[] types;
 
-		private static Hashtable createdTypes = new Hashtable();
-		private ModuleBuilder moduleBuilder;
+            /// <summary>
+            /// Initializes a new instance of the <see cref="TypeId"/> class.
+            /// </summary>
+            /// <param name="types">The types.</param>
+            public TypeId(params Type[] types)
+            {
+                this.types = types;
+            }
 
-		#endregion
+            public override int GetHashCode()
+            {
+                int hashCode = 0;
+                foreach (Type type in this.types)
+                {
+                    hashCode ^= type.GetHashCode();
+                }
 
-		#region Methods/Operators
+                return hashCode;
+            }
+            
+            public override bool Equals(object obj)
+            {
+                return obj is TypeId
+                    && this.ContainsSameTypesAs((TypeId)obj);
+            }
 
-		private Type CreateType(string typeName, Type[] baseInterfaces)
-		{
-			TypeBuilder typeBuilder = this.moduleBuilder.DefineType(
-				typeName,
-				TypeAttributes.Public | TypeAttributes.Abstract | TypeAttributes.Interface,
-				null,
-				baseInterfaces);
+            private bool ContainsSameTypesAs(TypeId other)
+            {
+                if (other.types.Length != this.types.Length)
+                {
+                    return false;
+                }
 
-			return typeBuilder.CreateType();
-		}
+                for (int i = 0; i < this.types.Length; i++)
+                {
+                    if (Array.IndexOf(other.types, this.types[i]) < 0)
+                    {
+                        return false;
+                    }
+                }
 
-		public Type GetType(params Type[] baseInterfaces)
-		{
-			TypeId id = this.Id(baseInterfaces);
-			if (createdTypes.ContainsKey(id))
-				return (Type)createdTypes[id];
-			else
-			{
-				string typeName = "MultiInterface" + (createdTypes.Count + 1);
-				Type newType = this.CreateType(typeName, baseInterfaces);
-				createdTypes[id] = newType;
-				return newType;
-			}
-		}
-
-		private TypeId Id(params Type[] types)
-		{
-			return new TypeId(types);
-		}
-
-		#endregion
-
-		#region Classes/Structs/Interfaces/Enums/Delegates
-
-		private class TypeId
-		{
-			#region Constructors/Destructors
-
-			/// <summary>
-			/// Initializes a new instance of the <see cref="TypeId" /> class.
-			/// </summary>
-			/// <param name="types"> The types. </param>
-			public TypeId(params Type[] types)
-			{
-				this.types = types;
-			}
-
-			#endregion
-
-			#region Fields/Constants
-
-			private Type[] types;
-
-			#endregion
-
-			#region Methods/Operators
-
-			private bool ContainsSameTypesAs(TypeId other)
-			{
-				if (other.types.Length != this.types.Length)
-					return false;
-
-				for (int i = 0; i < this.types.Length; i++)
-				{
-					if (Array.IndexOf(other.types, this.types[i]) < 0)
-						return false;
-				}
-
-				return true;
-			}
-
-			public override bool Equals(object obj)
-			{
-				return obj is TypeId
-						&& this.ContainsSameTypesAs((TypeId)obj);
-			}
-
-			public override int GetHashCode()
-			{
-				int hashCode = 0;
-				foreach (Type type in this.types)
-					hashCode ^= type.GetHashCode();
-
-				return hashCode;
-			}
-
-			#endregion
-		}
-
-		#endregion
-	}
+                return true;
+            }
+        }
+    }
 }

@@ -16,28 +16,23 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
 namespace NMock2.Internal
 {
-	/// <summary>
-	/// Represents expectations (order or unordered).
-	/// </summary>
-	public interface IExpectationOrdering : IExpectation
-	{
-		#region Methods/Operators
+    /// <summary>
+    /// Represents expectations (order or unordered).
+    /// </summary>
+    public interface IExpectationOrdering : IExpectation
+    {
+        /// <summary>
+        /// Adds an expectation.
+        /// </summary>
+        /// <param name="expectation">The expectation to add.</param>
+        void AddExpectation(IExpectation expectation);
 
-		/// <summary>
-		/// Adds an expectation.
-		/// </summary>
-		/// <param name="expectation"> The expectation to add. </param>
-		void AddExpectation(IExpectation expectation);
-
-		/// <summary>
-		/// Removes the specified expectation.
-		/// </summary>
-		/// <param name="expectation"> The expectation to remove. </param>
-		void RemoveExpectation(IExpectation expectation);
-
-		#endregion
-	}
+        /// <summary>
+        /// Removes the specified expectation.
+        /// </summary>
+        /// <param name="expectation">The expectation to remove.</param>
+        void RemoveExpectation(IExpectation expectation);
+    }
 }

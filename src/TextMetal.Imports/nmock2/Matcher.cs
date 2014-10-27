@@ -16,77 +16,74 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.IO;
-
-using NMock2.Internal;
-using NMock2.Matchers;
-
 namespace NMock2
 {
-	/// <summary>
-	/// A matcher is used to match objects against it.
-	/// </summary>
-	public abstract class Matcher : ISelfDescribing
-	{
-		#region Methods/Operators
+    using System.IO;
+    using NMock2.Internal;
+    using NMock2.Matchers;
 
-		/// <summary>
-		/// Describes this object.
-		/// </summary>
-		/// <param name="writer"> The text writer the description is added to. </param>
-		public abstract void DescribeTo(TextWriter writer);
+    /// <summary>
+    /// A matcher is used to match objects against it.
+    /// </summary>
+    public abstract class Matcher : ISelfDescribing
+    {
+        /// <summary>
+        /// Logical and of to matchers.
+        /// </summary>
+        /// <param name="m1">First matcher.</param>
+        /// <param name="m2">Second matcher.</param>
+        /// <returns>Matcher combining the two operands.</returns>
+        public static Matcher operator &(Matcher m1, Matcher m2)
+        {
+            return new AndMatcher(m1, m2);
+        }
 
-		/// <summary>
-		/// Matches the specified object to this matcher and returns whether it matches.
-		/// </summary>
-		/// <param name="o"> The object to match. </param>
-		/// <returns> Whether the object matches. </returns>
-		public abstract bool Matches(object o);
+        /// <summary>
+        /// Logical or of to matchers.
+        /// </summary>
+        /// <param name="m1">First matcher.</param>
+        /// <param name="m2">Second matcher.</param>
+        /// <returns>Matcher combining the two operands.</returns>
+        public static Matcher operator |(Matcher m1, Matcher m2)
+        {
+            return new OrMatcher(m1, m2);
+        }
 
-		/// <summary>
-		/// Returns a <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
-		/// </summary>
-		/// <returns> A <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" /> . </returns>
-		public override string ToString()
-		{
-			DescriptionWriter writer = new DescriptionWriter();
-			this.DescribeTo(writer);
-			return writer.ToString();
-		}
+        /// <summary>
+        /// Negation of a matcher.
+        /// </summary>
+        /// <param name="m">Matcher to negate.</param>
+        /// <returns>Negation of the specified matcher.</returns>
+        public static Matcher operator !(Matcher m)
+        {
+            return new NotMatcher(m);
+        }
 
-		/// <summary>
-		/// Logical and of to matchers.
-		/// </summary>
-		/// <param name="m1"> First matcher. </param>
-		/// <param name="m2"> Second matcher. </param>
-		/// <returns> Matcher combining the two operands. </returns>
-		public static Matcher operator &(Matcher m1, Matcher m2)
-		{
-			return new AndMatcher(m1, m2);
-		}
+        /// <summary>
+        /// Matches the specified object to this matcher and returns whether it matches.
+        /// </summary>
+        /// <param name="o">The object to match.</param>
+        /// <returns>Whether the object matches.</returns>
+        public abstract bool Matches(object o);
 
-		/// <summary>
-		/// Logical or of to matchers.
-		/// </summary>
-		/// <param name="m1"> First matcher. </param>
-		/// <param name="m2"> Second matcher. </param>
-		/// <returns> Matcher combining the two operands. </returns>
-		public static Matcher operator |(Matcher m1, Matcher m2)
-		{
-			return new OrMatcher(m1, m2);
-		}
+        /// <summary>
+        /// Describes this object.
+        /// </summary>
+        /// <param name="writer">The text writer the description is added to.</param>
+        public abstract void DescribeTo(TextWriter writer);
 
-		/// <summary>
-		/// Negation of a matcher.
-		/// </summary>
-		/// <param name="m"> Matcher to negate. </param>
-		/// <returns> Negation of the specified matcher. </returns>
-		public static Matcher operator !(Matcher m)
-		{
-			return new NotMatcher(m);
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </returns>
+        public override string ToString()
+        {
+            DescriptionWriter writer = new DescriptionWriter();
+            this.DescribeTo(writer);
+            return writer.ToString();
+        }
+    }
 }
+

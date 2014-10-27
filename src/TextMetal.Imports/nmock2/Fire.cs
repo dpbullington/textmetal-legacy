@@ -16,42 +16,36 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using NMock2.Internal;
-using NMock2.Syntax;
-
 namespace NMock2
 {
-	using System;
+    using System;
+    using NMock2.Internal;
+    using NMock2.Syntax;
 
-	/// <summary>
-	/// Fires a mocked event.
-	/// </summary>
-	public sealed class Fire
-	{
-		#region Methods/Operators
+    /// <summary>
+    /// Fires a mocked event.
+    /// </summary>
+    public sealed class Fire
+    {
+        /// <summary>
+        /// Fires the specified event.
+        /// </summary>
+        /// <param name="eventName">Name of the event.</param>
+        /// <returns>Returns the event mock corresponding to the given <paramref name="eventName"/>.</returns>
+        [Obsolete("Use new syntax Fire.On(mock).Event(EventName).With(arguments) instead.")]
+        public static IEventSyntax Event(string eventName)
+        {
+            return new EventInvocationBuilder(eventName);
+        }
 
-		/// <summary>
-		/// Fires the specified event.
-		/// </summary>
-		/// <param name="eventName"> Name of the event. </param>
-		/// <returns> Returns the event mock corresponding to the given <paramref name="eventName" /> . </returns>
-		[Obsolete("Use new syntax Fire.On(mock).Event(EventName).With(arguments) instead.")]
-		public static IEventSyntax Event(string eventName)
-		{
-			return new EventInvocationBuilder(eventName);
-		}
-
-		/// <summary>
-		/// Defines the mock the event is fired on.
-		/// </summary>
-		/// <param name="mock"> The mock the event is fired on. </param>
-		/// <returns> Returns the event fire syntax. </returns>
-		public static INewEventSyntax On(object mock)
-		{
-			return new NewEventInvocationBuilder(mock);
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Defines the mock the event is fired on.
+        /// </summary>
+        /// <param name="mock">The mock the event is fired on.</param>
+        /// <returns>Returns the event fire syntax.</returns>
+        public static INewEventSyntax On(object mock)
+        {
+            return new NewEventInvocationBuilder(mock);
+        }
+    }
 }

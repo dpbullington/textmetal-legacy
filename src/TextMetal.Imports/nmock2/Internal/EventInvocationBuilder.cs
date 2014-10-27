@@ -16,133 +16,117 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using NMock2.Syntax;
-
 namespace NMock2.Internal
 {
-	using System;
+    using System;
+    using NMock2.Syntax;
 
-	/// <summary>
-	/// Builder for event invocations.
-	/// </summary>
-	public class EventInvocationBuilder : IEventSyntax, IEventArgumentSyntax
-	{
-		#region Constructors/Destructors
+    /// <summary>
+    /// Builder for event invocations.
+    /// </summary>
+    public class EventInvocationBuilder : IEventSyntax, IEventArgumentSyntax
+    {
+        /// <summary>
+        /// Stores the event name to be mocked.
+        /// </summary>
+        private readonly string eventName;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="EventInvocationBuilder" /> class.
-		/// </summary>
-		/// <param name="eventName"> Name of the event. </param>
-		public EventInvocationBuilder(string eventName)
-		{
-			this.eventName = eventName;
-		}
+        /// <summary>
+        /// Stores the mock when called in the On mehtod.
+        /// </summary>
+        private IMockObject mock;
 
-		#endregion
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventInvocationBuilder"/> class.
+        /// </summary>
+        /// <param name="eventName">Name of the event.</param>
+        public EventInvocationBuilder(string eventName)
+        {
+            this.eventName = eventName;
+        }
 
-		#region Fields/Constants
+        /// <summary>
+        /// Specifies the mock on which the event is fired.
+        /// </summary>
+        /// <param name="o">The mock on which the event is fired.</param>
+        /// <returns>
+        /// Event argument sytax defining the arguments passed to the event.
+        /// </returns>
+        public IEventArgumentSyntax On(object o)
+        {
+            if (!(o is IMockObject))
+            {
+                throw new ArgumentException("Must be a mock object.");
+            }
 
-		/// <summary>
-		/// Stores the event name to be mocked.
-		/// </summary>
-		private readonly string eventName;
+            this.mock = o as IMockObject;
+            return this;
+        }
 
-		/// <summary>
-		/// Stores the mock when called in the On mehtod.
-		/// </summary>
-		private IMockObject mock;
+        /// <summary>
+        /// Specifies the event arguments that are passed to the event and fires the event.
+        /// </summary>
+        /// <param name="args">The args to be passed to raise the event.</param>
+        public void With(params object[] args)
+        {
+            if (this.mock == null)
+            {
+                throw new InvalidOperationException("Call 'On' method first to define the mock.");
+            }
 
-		#endregion
+            this.mock.RaiseEvent(this.eventName, args);
+        }
+    }
 
-		#region Methods/Operators
+    /// <summary>
+    /// Builder for event invocations.
+    /// </summary>
+    public class NewEventInvocationBuilder : INewEventSyntax, IEventArgumentSyntax
+    {
+        /// <summary>
+        /// Stores the event name to be mocked.
+        /// </summary>
+        private string eventName;
 
-		/// <summary>
-		/// Specifies the mock on which the event is fired.
-		/// </summary>
-		/// <param name="o"> The mock on which the event is fired. </param>
-		/// <returns> Event argument sytax defining the arguments passed to the event. </returns>
-		public IEventArgumentSyntax On(object o)
-		{
-			if (!(o is IMockObject))
-				throw new ArgumentException("Must be a mock object.");
+        /// <summary>
+        /// Stores the mock when called in the On method.
+        /// </summary>
+        private IMockObject mock;
 
-			this.mock = o as IMockObject;
-			return this;
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NewEventInvocationBuilder"/> class.
+        /// </summary>
+        /// <param name="mock">The mock.</param>
+        public NewEventInvocationBuilder(object mock)
+        {
+            if (!(mock is IMockObject))
+            {
+                throw new ArgumentException("Must be a mock object.");
+            }
 
-		/// <summary>
-		/// Specifies the event arguments that are passed to the event and fires the event.
-		/// </summary>
-		/// <param name="args"> The args to be passed to raise the event. </param>
-		public void With(params object[] args)
-		{
-			if (this.mock == null)
-				throw new InvalidOperationException("Call 'On' method first to define the mock.");
+            this.mock = mock as IMockObject;
+        }
 
-			this.mock.RaiseEvent(this.eventName, args);
-		}
+        /// <summary>
+        /// Defines the event to fire.
+        /// </summary>
+        /// <param name="eventName">Name of the event.</param>
+        /// <returns>
+        /// Event argument syntax defining the arguments passed to the event.
+        /// </returns>
+        public IEventArgumentSyntax Event(string eventName)
+        {
+            this.eventName = eventName;
+            return this;
+        }
 
-		#endregion
-	}
-
-	/// <summary>
-	/// Builder for event invocations.
-	/// </summary>
-	public class NewEventInvocationBuilder : INewEventSyntax, IEventArgumentSyntax
-	{
-		#region Constructors/Destructors
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="NewEventInvocationBuilder" /> class.
-		/// </summary>
-		/// <param name="mock"> The mock. </param>
-		public NewEventInvocationBuilder(object mock)
-		{
-			if (!(mock is IMockObject))
-				throw new ArgumentException("Must be a mock object.");
-
-			this.mock = mock as IMockObject;
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		/// <summary>
-		/// Stores the event name to be mocked.
-		/// </summary>
-		private string eventName;
-
-		/// <summary>
-		/// Stores the mock when called in the On method.
-		/// </summary>
-		private IMockObject mock;
-
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Defines the event to fire.
-		/// </summary>
-		/// <param name="eventName"> Name of the event. </param>
-		/// <returns> Event argument syntax defining the arguments passed to the event. </returns>
-		public IEventArgumentSyntax Event(string eventName)
-		{
-			this.eventName = eventName;
-			return this;
-		}
-
-		/// <summary>
-		/// Specifies the event arguments that are passed to the event and fires the event.
-		/// </summary>
-		/// <param name="args"> The args to be passed to raise the event. </param>
-		public void With(params object[] args)
-		{
-			this.mock.RaiseEvent(this.eventName, args);
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Specifies the event arguments that are passed to the event and fires the event.
+        /// </summary>
+        /// <param name="args">The args to be passed to raise the event.</param>
+        public void With(params object[] args)
+        {
+            this.mock.RaiseEvent(this.eventName, args);
+        }
+    }
 }

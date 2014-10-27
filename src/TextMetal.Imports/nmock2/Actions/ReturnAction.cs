@@ -16,61 +16,47 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.IO;
-
-using NMock2.Monitoring;
-
 namespace NMock2.Actions
 {
-	/// <summary>
-	/// Action that sets the result value on an invocation.
-	/// </summary>
-	public class ReturnAction : IAction
-	{
-		#region Constructors/Destructors
+    using System.IO;
+    using NMock2.Monitoring;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ReturnAction" /> class.
-		/// </summary>
-		/// <param name="result"> The result to set on the invocation as the return value. </param>
-		public ReturnAction(object result)
-		{
-			this.result = result;
-		}
+    /// <summary>
+    /// Action that sets the result value on an invocation.
+    /// </summary>
+    public class ReturnAction : IAction
+    {
+        /// <summary>
+        /// Stores the result to set on the invocation as the return value.
+        /// </summary>
+        private readonly object result;
 
-		#endregion
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReturnAction"/> class.
+        /// </summary>
+        /// <param name="result">The result to set on the invocation as the return value.</param>
+        public ReturnAction(object result)
+        {
+            this.result = result;
+        }
 
-		#region Fields/Constants
+        /// <summary>
+        /// Invokes this object. Sets the result value of the invocation.
+        /// </summary>
+        /// <param name="invocation">The invocation.</param>
+        public void Invoke(Invocation invocation)
+        {
+            invocation.Result = this.result;
+        }
 
-		/// <summary>
-		/// Stores the result to set on the invocation as the return value.
-		/// </summary>
-		private readonly object result;
-
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Describes this object.
-		/// </summary>
-		/// <param name="writer"> The text writer the description is added to. </param>
-		public void DescribeTo(TextWriter writer)
-		{
-			writer.Write("return ");
-			writer.Write(this.result);
-		}
-
-		/// <summary>
-		/// Invokes this object. Sets the result value of the invocation.
-		/// </summary>
-		/// <param name="invocation"> The invocation. </param>
-		public void Invoke(Invocation invocation)
-		{
-			invocation.Result = this.result;
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Describes this object.
+        /// </summary>
+        /// <param name="writer">The text writer the description is added to.</param>
+        public void DescribeTo(TextWriter writer)
+        {
+            writer.Write("return ");
+            writer.Write(this.result);
+        }
+    }
 }

@@ -16,57 +16,44 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.IO;
-
 namespace NMock2.Matchers
 {
-	/// <summary>
-	/// Matcher that checks whether the actual object is the same as the expected one (equality by reference).
-	/// </summary>
-	public class SameMatcher : Matcher
-	{
-		#region Constructors/Destructors
+    using System.IO;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SameMatcher" /> class.
-		/// </summary>
-		/// <param name="expected"> The expected object. </param>
-		public SameMatcher(object expected)
-		{
-			this.expected = expected;
-		}
+    /// <summary>
+    /// Matcher that checks whether the actual object is the same as the expected one (equality by reference).
+    /// </summary>
+    public class SameMatcher : Matcher
+    {
+        private readonly object expected;
 
-		#endregion
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SameMatcher"/> class.
+        /// </summary>
+        /// <param name="expected">The expected object.</param>
+        public SameMatcher(object expected)
+        {
+            this.expected = expected;
+        }
 
-		#region Fields/Constants
+        /// <summary>
+        /// Matches the specified object to this matcher and returns whether it matches.
+        /// </summary>
+        /// <param name="o">The object to match.</param>
+        /// <returns>Whether the object is the same as the expected one.</returns>
+        public override bool Matches(object o)
+        {
+            return this.expected == o;
+        }
 
-		private readonly object expected;
-
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Describes this object.
-		/// </summary>
-		/// <param name="writer"> The text writer the description is added to. </param>
-		public override void DescribeTo(TextWriter writer)
-		{
-			writer.Write("same as ");
-			writer.Write(this.expected);
-		}
-
-		/// <summary>
-		/// Matches the specified object to this matcher and returns whether it matches.
-		/// </summary>
-		/// <param name="o"> The object to match. </param>
-		/// <returns> Whether the object is the same as the expected one. </returns>
-		public override bool Matches(object o)
-		{
-			return this.expected == o;
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Describes this object.
+        /// </summary>
+        /// <param name="writer">The text writer the description is added to.</param>
+        public override void DescribeTo(TextWriter writer)
+        {
+            writer.Write("same as ");
+            writer.Write(this.expected);
+        }
+    }
 }

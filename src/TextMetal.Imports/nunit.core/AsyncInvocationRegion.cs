@@ -2,34 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Threading;
 
-namespace NUnit.Framework
+namespace NUnit.Core
 {
 	internal abstract class AsyncInvocationRegion : IDisposable
 	{
 		private static readonly Type AsyncStateMachineAttribute = Type.GetType("System.Runtime.CompilerServices.AsyncStateMachineAttribute");
-		private static readonly MethodInfo PreserveStackTraceMethod = typeof(Exception).GetMethod("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic);
-
-        private static Action<Exception> preserveStackTraceDelegate;
-        private static void PreserveStackTrace(Exception ex)
-        {
-            if (PreserveStackTraceMethod != null)
-            {
-                if (preserveStackTraceDelegate == null)
-                    preserveStackTraceDelegate = (Action<Exception>)Delegate.CreateDelegate(typeof(Action<Exception>), PreserveStackTraceMethod);
-
-                preserveStackTraceDelegate(ex);
-            }
-        }
 
 		private AsyncInvocationRegion()
 		{
-		}
-
-		public static AsyncInvocationRegion Create(Delegate @delegate)
-		{
-			return Create(@delegate.Method);
 		}
 
 		public static AsyncInvocationRegion Create(MethodInfo method)
@@ -42,6 +25,11 @@ at wrapping a non-async method invocation in an async region was done");
 				return new AsyncVoidInvocationRegion();
 
 			return new AsyncTaskInvocationRegion();
+		}
+
+		public static AsyncInvocationRegion Create(Delegate @delegate)
+		{
+			return Create(@delegate.Method);
 		}
 
 		public static bool IsAsyncOperation(MethodInfo method)
@@ -60,6 +48,7 @@ at wrapping a non-async method invocation in an async region was done");
 		/// </summary>
 		/// <param name="invocationResult">The raw result of the method invocation</param>
 		/// <returns>The unwrapped result, if necessary</returns>
+		/// <exception cref="AsyncInvocationException">If any exception is thrown while waiting for completion</exception>
 		public abstract object WaitForPendingOperationsToComplete(object invocationResult);
 
 		public virtual void Dispose()
@@ -91,8 +80,7 @@ at wrapping a non-async method invocation in an async region was done");
 				}
 				catch (Exception e)
 				{
-					PreserveStackTrace(e);
-					throw;
+					throw new AsyncInvocationException(e);
 				}
 			}
 		}
@@ -113,13 +101,12 @@ at wrapping a non-async method invocation in an async region was done");
 				}
 				catch (TargetInvocationException e)
 				{
-					IList<Exception> innerExceptions = GetAllExceptions(e.InnerException);
+					var innerExceptions = GetAllExceptions(e.InnerException);
 
-					PreserveStackTrace(innerExceptions[0]);
-					throw innerExceptions[0];
+					throw new AsyncInvocationException(innerExceptions[0]);
 				}
 
-				PropertyInfo taskResultProperty = invocationResult.GetType().GetProperty(TaskResultProperty, TaskResultPropertyBindingFlags);
+				var taskResultProperty = invocationResult.GetType().GetProperty(TaskResultProperty, TaskResultPropertyBindingFlags);
 
 				return taskResultProperty != null ? taskResultProperty.GetValue(invocationResult, null) : invocationResult;
 			}
@@ -129,8 +116,22 @@ at wrapping a non-async method invocation in an async region was done");
 				if (SystemAggregateException.Equals(exception.GetType().FullName))
 					return (IList<Exception>)exception.GetType().GetProperty(InnerExceptionsProperty).GetValue(exception, null);
 
-				return new Exception[] { exception };
+				return new[] { exception };
 			}
+		}
+	}
+
+	[Serializable]
+	internal class AsyncInvocationException : Exception
+	{
+		public AsyncInvocationException(Exception innerException)
+			: base("An exception has occurred during an asynchronous operation", innerException)
+		{
+		}
+
+		protected AsyncInvocationException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
 		}
 	}
 }

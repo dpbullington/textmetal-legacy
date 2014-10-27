@@ -16,62 +16,56 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using NMock2.Actions;
-
 namespace NMock2
 {
-	using System;
+    using System;
+    using NMock2.Actions;
 
-	/// <summary>
-	/// Defines the return value of a mocked method call.
-	/// </summary>
-	public class Return
-	{
-		#region Methods/Operators
+    /// <summary>
+    /// Defines the return value of a mocked method call.
+    /// </summary>
+    public class Return
+    {
+        /// <summary>
+        /// Returns a value as method return value.
+        /// </summary>
+        /// <param name="result">The result value.</param>
+        /// <returns>Action defining the return value of a method.</returns>
+        public static IAction Value(object result)
+        {
+            return new ReturnAction(result);
+        }
 
-		/// <summary>
-		/// Returns a clone as method return value.
-		/// </summary>
-		/// <param name="prototype"> The prototype to clone. </param>
-		/// <returns> Action defining the return value of a method. </returns>
-		public static IAction CloneOf(ICloneable prototype)
-		{
-			return new ReturnCloneAction(prototype);
-		}
+        /// <summary>
+        /// Returns a clone as method return value.
+        /// </summary>
+        /// <param name="prototype">The prototype to clone.</param>
+        /// <returns>Action defining the return value of a method.</returns>
+        public static IAction CloneOf(ICloneable prototype)
+        {
+            return new ReturnCloneAction(prototype);
+        }
 
-		/// <summary>
-		/// Defines the value returned by an out parameter.
-		/// </summary>
-		/// <param name="parameterName"> Name of the parameter. </param>
-		/// <param name="value"> The value to return. </param>
-		/// <returns> Action defining the value of an out parameter. </returns>
-		public static IAction OutValue(string parameterName, object value)
-		{
-			return new SetNamedParameterAction(parameterName, value);
-		}
+        /// <summary>
+        /// Defines the value returned by an out parameter.
+        /// </summary>
+        /// <param name="parameterName">Name of the parameter.</param>
+        /// <param name="value">The value to return.</param>
+        /// <returns>Action defining the value of an out parameter.</returns>
+        public static IAction OutValue(string parameterName, object value)
+        {
+            return new SetNamedParameterAction(parameterName, value);
+        }
 
-		/// <summary>
-		/// Defines the value returned by an out parameter.
-		/// </summary>
-		/// <param name="parameterIndex"> Index of the parameter. </param>
-		/// <param name="value"> The value to return. </param>
-		/// <returns> Action defining the value of an out parameter. </returns>
-		public static IAction OutValue(int parameterIndex, object value)
-		{
-			return new SetIndexedParameterAction(parameterIndex, value);
-		}
-
-		/// <summary>
-		/// Returns a value as method return value.
-		/// </summary>
-		/// <param name="result"> The result value. </param>
-		/// <returns> Action defining the return value of a method. </returns>
-		public static IAction Value(object result)
-		{
-			return new ReturnAction(result);
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Defines the value returned by an out parameter.
+        /// </summary>
+        /// <param name="parameterIndex">Index of the parameter.</param>
+        /// <param name="value">The value to return.</param>
+        /// <returns>Action defining the value of an out parameter.</returns>
+        public static IAction OutValue(int parameterIndex, object value)
+        {
+            return new SetIndexedParameterAction(parameterIndex, value);
+        }
+    }
 }

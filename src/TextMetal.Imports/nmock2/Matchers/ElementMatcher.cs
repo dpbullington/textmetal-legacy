@@ -16,75 +16,66 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.Collections;
-using System.IO;
-
 namespace NMock2.Matchers
 {
-	/// <summary>
-	/// Matcher that checks whether a single object is in a collection of elements.
-	/// </summary>
-	public class ElementMatcher : Matcher
-	{
-		#region Constructors/Destructors
+    using System.Collections;
+    using System.IO;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ElementMatcher" /> class.
-		/// </summary>
-		/// <param name="collection"> The collection to match against. </param>
-		public ElementMatcher(ICollection collection)
-		{
-			this.collection = collection;
-		}
+    /// <summary>
+    /// Matcher that checks whether a single object is in a collection of elements.
+    /// </summary>
+    public class ElementMatcher : Matcher
+    {
+        private readonly ICollection collection;
 
-		#endregion
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ElementMatcher"/> class.
+        /// </summary>
+        /// <param name="collection">The collection to match against.</param>
+        public ElementMatcher(ICollection collection)
+        {
+            this.collection = collection;
+        }
 
-		#region Fields/Constants
+        /// <summary>
+        /// Matches the specified object to this matcher and returns whether it matches.
+        /// </summary>
+        /// <param name="actual">The object to match.</param>
+        /// <returns>Whether to object matches.</returns>
+        public override bool Matches(object actual)
+        {
+            foreach (object element in this.collection)
+            {
+                if (Equals(element, actual))
+                {
+                    return true;
+                }
+            }
 
-		private readonly ICollection collection;
+            return false;
+        }
 
-		#endregion
+        /// <summary>
+        /// Describes this object.
+        /// </summary>
+        /// <param name="writer">The text writer the description is added to.</param>
+        public override void DescribeTo(TextWriter writer)
+        {
+            writer.Write("element of [");
 
-		#region Methods/Operators
+            bool separate = false;
+            foreach (object element in this.collection)
+            {
+                if (separate)
+                {
+                    writer.Write(", ");
+                }
 
-		/// <summary>
-		/// Describes this object.
-		/// </summary>
-		/// <param name="writer"> The text writer the description is added to. </param>
-		public override void DescribeTo(TextWriter writer)
-		{
-			writer.Write("element of [");
+                writer.Write(element);
+                separate = true;
+            }
 
-			bool separate = false;
-			foreach (object element in this.collection)
-			{
-				if (separate)
-					writer.Write(", ");
-
-				writer.Write(element);
-				separate = true;
-			}
-
-			writer.Write("]");
-		}
-
-		/// <summary>
-		/// Matches the specified object to this matcher and returns whether it matches.
-		/// </summary>
-		/// <param name="actual"> The object to match. </param>
-		/// <returns> Whether to object matches. </returns>
-		public override bool Matches(object actual)
-		{
-			foreach (object element in this.collection)
-			{
-				if (Equals(element, actual))
-					return true;
-			}
-
-			return false;
-		}
-
-		#endregion
-	}
+            writer.Write("]");
+        }
+    }
 }

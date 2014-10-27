@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------
 // <copyright file="GenericCollectAction.cs" company="NMock2">
 //
 //   http://www.sourceforge.net/projects/NMock2
@@ -16,79 +16,61 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.IO;
-
-using NMock2.Monitoring;
-
 namespace NMock2.Actions
 {
-	/// <summary>
-	/// Action that calls the collect delegate passed to constructor with the n-th element of the arguments to an invocation.
-	/// </summary>
-	/// <typeparam name="T"> Type of the argument to collect. </typeparam>
-	public class CollectAction<T> : IAction
-	{
-		#region Constructors/Destructors
+    using System.IO;
+    using Monitoring;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="CollectAction&lt;T&gt;" /> class.
-		/// </summary>
-		/// <param name="argumentIndex"> Index of the argument. </param>
-		/// <param name="collectDelegate"> The collect delegate. </param>
-		public CollectAction(int argumentIndex, Collect collectDelegate)
-		{
-			this.argumentIndex = argumentIndex;
-			this.collectDelegate = collectDelegate;
-		}
+    /// <summary>
+    /// Action that calls the collect delegate passed to constructor with the n-th element of the arguments to an invocation.
+    /// </summary>
+    /// <typeparam name="T">Type of the argument to collect.</typeparam>
+    public class CollectAction<T> : IAction
+    {
+        /// <summary>
+        /// Stores the index of the argument.
+        /// </summary>
+        private readonly int argumentIndex;
 
-		#endregion
+        /// <summary>
+        /// Stores the collect delegate.
+        /// </summary>
+        private readonly Collect collectDelegate;
 
-		#region Fields/Constants
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CollectAction&lt;T&gt;"/> class.
+        /// </summary>
+        /// <param name="argumentIndex">Index of the argument.</param>
+        /// <param name="collectDelegate">The collect delegate.</param>
+        public CollectAction(int argumentIndex, Collect collectDelegate)
+        {
+            this.argumentIndex = argumentIndex;
+            this.collectDelegate = collectDelegate;
+        }
 
-		/// <summary>
-		/// Stores the index of the argument.
-		/// </summary>
-		private readonly int argumentIndex;
+        /// <summary>
+        /// Delegate that is called on collecting an argument.
+        /// </summary>
+        /// <param name="collectedParameter">The collected generic parameter.</param>
+        public delegate void Collect(T collectedParameter);
 
-		/// <summary>
-		/// Stores the collect delegate.
-		/// </summary>
-		private readonly Collect collectDelegate;
+        /// <summary>
+        /// Invokes this object.
+        /// </summary>
+        /// <param name="invocation">The invocation.</param>
+        public void Invoke(Invocation invocation)
+        {
+            this.collectDelegate((T)invocation.Parameters[this.argumentIndex]);
+        }
 
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Describes this object.
-		/// </summary>
-		/// <param name="writer"> The text writer the description is added to. </param>
-		public void DescribeTo(TextWriter writer)
-		{
-			writer.Write("collect argument at index ");
-			writer.Write(this.argumentIndex);
-		}
-
-		/// <summary>
-		/// Invokes this object.
-		/// </summary>
-		/// <param name="invocation"> The invocation. </param>
-		public void Invoke(Invocation invocation)
-		{
-			this.collectDelegate((T)invocation.Parameters[this.argumentIndex]);
-		}
-
-		#endregion
-
-		#region Classes/Structs/Interfaces/Enums/Delegates
-
-		/// <summary>
-		/// Delegate that is called on collecting an argument.
-		/// </summary>
-		/// <param name="collectedParameter"> The collected generic parameter. </param>
-		public delegate void Collect(T collectedParameter);
-
-		#endregion
-	}
+        /// <summary>
+        /// Describes this object.
+        /// </summary>
+        /// <param name="writer">The text writer the description is added to.</param>
+        public void DescribeTo(TextWriter writer)
+        {
+            writer.Write("collect argument at index ");
+            writer.Write(this.argumentIndex);
+        }
+    }
 }

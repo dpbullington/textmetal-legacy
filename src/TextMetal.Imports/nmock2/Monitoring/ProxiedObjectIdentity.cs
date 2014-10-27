@@ -16,55 +16,47 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.Reflection;
-
 namespace NMock2.Monitoring
 {
-	using System;
+    using System;
+    using System.Reflection;
 
-	public class ProxiedObjectIdentity : IInvokable
-	{
-		#region Constructors/Destructors
+    public class ProxiedObjectIdentity : IInvokable
+    {
+        private static readonly MethodInfo EqualsMethod =
+            typeof(object).GetMethod("Equals", new Type[] { typeof(object) });
+        
+        private readonly object identityProvider;
+        private readonly IInvokable next;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ProxiedObjectIdentity" /> class.
-		/// </summary>
-		/// <param name="identityProvider"> The identity provider. </param>
-		/// <param name="next"> The next object to be invoked. </param>
-		public ProxiedObjectIdentity(object identityProvider, IInvokable next)
-		{
-			this.identityProvider = identityProvider;
-			this.next = next;
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private static readonly MethodInfo EqualsMethod =
-			typeof(object).GetMethod("Equals", new Type[] { typeof(object) });
-
-		private readonly object identityProvider;
-		private readonly IInvokable next;
-
-		#endregion
-
-		#region Methods/Operators
-
-		public void Invoke(Invocation invocation)
-		{
-			if (invocation.Method.DeclaringType == typeof(object))
-			{
-				if (invocation.Method.Equals(EqualsMethod))
-					invocation.Result = ReferenceEquals(invocation.Receiver, invocation.Parameters[0]);
-				else
-					invocation.InvokeOn(this.identityProvider);
-			}
-			else
-				this.next.Invoke(invocation);
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProxiedObjectIdentity"/> class.
+        /// </summary>
+        /// <param name="identityProvider">The identity provider.</param>
+        /// <param name="next">The next object to be invoked.</param>
+        public ProxiedObjectIdentity(object identityProvider, IInvokable next)
+        {
+            this.identityProvider = identityProvider;
+            this.next = next;
+        }
+        
+        public void Invoke(Invocation invocation)
+        {
+            if (invocation.Method.DeclaringType == typeof(object))
+            {
+                if (invocation.Method.Equals(EqualsMethod))
+                {
+                    invocation.Result = Object.ReferenceEquals(invocation.Receiver, invocation.Parameters[0]);
+                }
+                else
+                {
+                    invocation.InvokeOn(this.identityProvider);
+                }
+            }
+            else
+            {
+                this.next.Invoke(invocation);
+            }
+        }
+    }
 }

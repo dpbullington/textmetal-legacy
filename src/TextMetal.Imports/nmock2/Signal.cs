@@ -16,32 +16,25 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.Threading;
-
-using NMock2.Actions;
-
 namespace NMock2
 {
-	using System;
+    using System;
+    using System.Threading;
+    using NMock2.Actions;
 
-	/// <summary>
-	/// Defines that an <see cref="EventWaitHandle" /> should be signaled.
-	/// </summary>
-	public class Signal
-	{
-		#region Methods/Operators
-
-		/// <summary>
-		/// Signals an <see cref="EventWaitHandle" /> to synchronizes threads.
-		/// </summary>
-		/// <param name="signal"> The signal to set. </param>
-		/// <returns> Action that signals an <see cref="EventWaitHandle" /> . </returns>
-		public static IAction EventWaitHandle(EventWaitHandle signal)
-		{
-			return new SignalAction(signal);
-		}
-
-		#endregion
-	}
+    /// <summary>
+    /// Defines that an <see cref="EventWaitHandle"/> should be signaled.
+    /// </summary>
+    public class Signal
+    {
+        /// <summary>
+        /// Signals an <see cref="EventWaitHandle"/> to synchronizes threads.
+        /// </summary>
+        /// <param name="signal">The signal to set.</param>
+        /// <returns>Action that signals an <see cref="EventWaitHandle"/>.</returns>
+        public static IAction EventWaitHandle(EventWaitHandle signal)
+        {
+            return new SignalAction(signal);
+        }
+    }
 }

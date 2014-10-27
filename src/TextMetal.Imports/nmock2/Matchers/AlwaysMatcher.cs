@@ -16,66 +16,53 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.IO;
-
 namespace NMock2.Matchers
 {
-	/// <summary>
-	/// A matcher that will always or never match independent of the value matched but depending on how it is initialized.
-	/// </summary>
-	public class AlwaysMatcher : Matcher
-	{
-		#region Constructors/Destructors
+    using System.IO;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="AlwaysMatcher" /> class.
-		/// </summary>
-		/// <param name="matches"> if set to <c> true </c> the matcher will always match, otherwise it will never match. </param>
-		/// <param name="description"> The description which will be printed out when calling <see cref="DescribeTo" /> . </param>
-		public AlwaysMatcher(bool matches, string description)
-		{
-			this.matches = matches;
-			this.description = description;
-		}
+    /// <summary>
+    /// A matcher that will always or never match independent of the value matched but depending on how it is initialized.
+    /// </summary>
+    public class AlwaysMatcher : Matcher
+    {
+        /// <summary>
+        /// Stores the matcher value which was given at initialization.
+        /// </summary>
+        private readonly bool matches;
 
-		#endregion
+        /// <summary>
+        /// Stores the description which was given at initialization.
+        /// </summary>
+        private readonly string description;
 
-		#region Fields/Constants
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AlwaysMatcher"/> class.
+        /// </summary>
+        /// <param name="matches">if set to <c>true</c> the matcher will always match, otherwise it will never match.</param>
+        /// <param name="description">The description which will be printed out when calling <see cref="DescribeTo"/>.</param>
+        public AlwaysMatcher(bool matches, string description)
+        {
+            this.matches = matches;
+            this.description = description;
+        }
 
-		/// <summary>
-		/// Stores the description which was given at initialization.
-		/// </summary>
-		private readonly string description;
+        /// <summary>
+        /// Matches the specified object to this matcher and returns whether it matches.
+        /// </summary>
+        /// <param name="o">The object to match.</param>
+        /// <returns>Returns whether the object matches.</returns>
+        public override bool Matches(object o)
+        {
+            return this.matches;
+        }
 
-		/// <summary>
-		/// Stores the matcher value which was given at initialization.
-		/// </summary>
-		private readonly bool matches;
-
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Describes this object.
-		/// </summary>
-		/// <param name="writer"> The text writer the description is added to. </param>
-		public override void DescribeTo(TextWriter writer)
-		{
-			writer.Write(this.description);
-		}
-
-		/// <summary>
-		/// Matches the specified object to this matcher and returns whether it matches.
-		/// </summary>
-		/// <param name="o"> The object to match. </param>
-		/// <returns> Returns whether the object matches. </returns>
-		public override bool Matches(object o)
-		{
-			return this.matches;
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Describes this object.
+        /// </summary>
+        /// <param name="writer">The text writer the description is added to.</param>
+        public override void DescribeTo(TextWriter writer)
+        {
+            writer.Write(this.description);
+        }
+    }
 }

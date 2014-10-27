@@ -814,7 +814,6 @@
     <Compile Include="nunit.core\AssemblyReader.cs" />
     <Compile Include="nunit.core\AssemblyResolver.cs" />
     <None Include="nunit.core\AsyncInvocationRegion.cs" />
-    <None Include="nunit.core\AsyncSynchronizationContext.cs" />
     <Compile Include="nunit.core\Builders\CombinatorialStrategy.cs" />
     <Compile Include="nunit.core\Builders\CombinatorialTestCaseProvider.cs" />
     <Compile Include="nunit.core\Builders\CombiningStrategy.cs" />
@@ -1235,6 +1234,9 @@
     <Compile Include="nunit.uikit\SimpleSettingsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="nunit.uikit\SimpleTextDisplay.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="nunit.uikit\StatusBar.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1315,6 +1317,7 @@
     <Compile Include="nunit.util\Services.cs" />
     <Compile Include="nunit.util\Services\AddinManager.cs" />
     <Compile Include="nunit.util\Services\AddinRegistry.cs" />
+    <Compile Include="nunit.util\Services\ClientExtensions.cs" />
     <Compile Include="nunit.util\Services\DomainManager.cs" />
     <Compile Include="nunit.util\Services\ProjectService.cs" />
     <Compile Include="nunit.util\Services\RecentFilesService.cs" />
@@ -1495,6 +1498,9 @@
     <EmbeddedResource Include="nunit.uikit\SimpleSettingsDialog.resx">
       <DependentUpon>SimpleSettingsDialog.cs</DependentUpon>
       <LogicalName>NUnit.UiKit.SimpleSettingsDialog.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="nunit.uikit\SimpleTextDisplay.resx">
+      <DependentUpon>SimpleTextDisplay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="nunit.uikit\StatusBar.resx">
       <DependentUpon>StatusBar.cs</DependentUpon>

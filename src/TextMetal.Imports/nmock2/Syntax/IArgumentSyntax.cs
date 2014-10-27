@@ -16,35 +16,30 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
 namespace NMock2.Syntax
 {
-	/// <summary>
-	/// Syntax for defining expected arguments of a method call.
-	/// </summary>
-	public interface IArgumentSyntax : IMatchSyntax
-	{
-		#region Methods/Operators
+    /// <summary>
+    /// Syntax for defining expected arguments of a method call.
+    /// </summary>
+    public interface IArgumentSyntax : IMatchSyntax
+    {
+        /// <summary>
+        /// Defines the arguments that are expected on the method call.
+        /// </summary>
+        /// <param name="expectedArguments">The expected arguments.</param>
+        /// <returns>Matcher syntax.</returns>
+        IMatchSyntax With(params object[] expectedArguments);
 
-		/// <summary>
-		/// Defines the arguments that are expected on the method call.
-		/// </summary>
-		/// <param name="expectedArguments"> The expected arguments. </param>
-		/// <returns> Matcher syntax. </returns>
-		IMatchSyntax With(params object[] expectedArguments);
+        /// <summary>
+        /// Defines that no arguments are expected on the method call.
+        /// </summary>
+        /// <returns>Matcher syntax.</returns>
+        IMatchSyntax WithNoArguments();
 
-		/// <summary>
-		/// Defines that all arguments are allowed on the method call.
-		/// </summary>
-		/// <returns> Matcher syntax. </returns>
-		IMatchSyntax WithAnyArguments();
-
-		/// <summary>
-		/// Defines that no arguments are expected on the method call.
-		/// </summary>
-		/// <returns> Matcher syntax. </returns>
-		IMatchSyntax WithNoArguments();
-
-		#endregion
-	}
+        /// <summary>
+        /// Defines that all arguments are allowed on the method call.
+        /// </summary>
+        /// <returns>Matcher syntax.</returns>
+        IMatchSyntax WithAnyArguments();
+    }
 }

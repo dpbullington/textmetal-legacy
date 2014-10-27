@@ -16,76 +16,71 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using NMock2.Internal;
-using NMock2.Syntax;
-
 namespace NMock2
 {
-	using System;
+    using System;
 
-	/// <summary>
-	/// Defines the initial characteristics of a new mock object.
-	/// This is normally used in conjunction with <see cref="Mockery.NewMock&lt;T&gt;(IMockDefinition)" />
-	/// </summary>
-	public static class DefinedAs
-	{
-		#region Methods/Operators
+    using Internal;
+    using Syntax;
 
-		/// <summary>
-		/// Specifies a type that this mock should implement. This may be a class or interface,
-		/// but there can only be a maximum of one class implemented by a mock.
-		/// </summary>
-		/// <typeparam name="T"> The type to implement. </typeparam>
-		/// <returns> The mock object definition. </returns>
-		public static IMockDefinitionSyntax Implementing<T>()
-		{
-			return new MockBuilder().Implementing<T>();
-		}
+    /// <summary>
+    /// Defines the initial characteristics of a new mock object.
+    /// This is normally used in conjunction with <see cref="Mockery.NewMock&lt;T&gt;(IMockDefinition)"/>
+    /// </summary>
+    public static class DefinedAs
+    {
+        /// <summary>
+        /// Specifies a type that this mock should implement. This may be a class or interface,
+        /// but there can only be a maximum of one class implemented by a mock.
+        /// </summary>
+        /// <typeparam name="T">The type to implement.</typeparam>
+        /// <returns>The mock object definition.</returns>
+        public static IMockDefinitionSyntax Implementing<T>()
+        {
+            return new MockBuilder().Implementing<T>();
+        }
 
-		/// <summary>
-		/// Specifies the types that this mock should implement. These may be a class or interface,
-		/// but there can only be a maximum of one class implemented by a mock.
-		/// </summary>
-		/// <param name="types"> The types to implement. </param>
-		/// <returns> The mock object definition. </returns>
-		public static IMockDefinitionSyntax Implementing(params Type[] types)
-		{
-			return new MockBuilder().Implementing(types);
-		}
+        /// <summary>
+        /// Specifies the types that this mock should implement. These may be a class or interface,
+        /// but there can only be a maximum of one class implemented by a mock.
+        /// </summary>
+        /// <param name="types">The types to implement.</param>
+        /// <returns>The mock object definition.</returns>
+        public static IMockDefinitionSyntax Implementing(params Type[] types)
+        {
+            return new MockBuilder().Implementing(types);
+        }
 
-		/// <summary>
-		/// Specifies a name for the mock. This will be used in error messages,
-		/// and as the return value of ToString() if not mocking a class.
-		/// </summary>
-		/// <param name="name"> The name for the mock. </param>
-		/// <returns> The mock object definition. </returns>
-		public static IMockDefinitionSyntax Named(string name)
-		{
-			return new MockBuilder().Named(name);
-		}
+        /// <summary>
+        /// Specifies how the mock object should behave when first created.
+        /// </summary>
+        /// <param name="style">A MockStyle value.</param>
+        /// <returns>The mock object definition.</returns>
+        public static IMockDefinitionSyntax OfStyle(MockStyle style)
+        {
+            return new MockBuilder().OfStyle(style);
+        }
 
-		/// <summary>
-		/// Specifies how the mock object should behave when first created.
-		/// </summary>
-		/// <param name="style"> A MockStyle value. </param>
-		/// <returns> The mock object definition. </returns>
-		public static IMockDefinitionSyntax OfStyle(MockStyle style)
-		{
-			return new MockBuilder().OfStyle(style);
-		}
+        /// <summary>
+        /// Specifies the arguments for the constructor of the class to be mocked.
+        /// Only applicable when mocking a class with a non-default constructor.
+        /// </summary>
+        /// <param name="args">The arguments for the class constructor.</param>
+        /// <returns>The mock object definition.</returns>
+        public static IMockDefinitionSyntax WithArgs(params object[] args)
+        {
+            return new MockBuilder().WithArgs(args);
+        }
 
-		/// <summary>
-		/// Specifies the arguments for the constructor of the class to be mocked.
-		/// Only applicable when mocking a class with a non-default constructor.
-		/// </summary>
-		/// <param name="args"> The arguments for the class constructor. </param>
-		/// <returns> The mock object definition. </returns>
-		public static IMockDefinitionSyntax WithArgs(params object[] args)
-		{
-			return new MockBuilder().WithArgs(args);
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Specifies a name for the mock. This will be used in error messages,
+        /// and as the return value of ToString() if not mocking a class.
+        /// </summary>
+        /// <param name="name">The name for the mock.</param>
+        /// <returns>The mock object definition.</returns>
+        public static IMockDefinitionSyntax Named(string name)
+        {
+            return new MockBuilder().Named(name);
+        }
+    }
 }

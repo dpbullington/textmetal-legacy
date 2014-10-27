@@ -16,30 +16,25 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
 namespace NMock2.Syntax
 {
-	/// <summary>
-	/// Syntax defining a value.
-	/// </summary>
-	public interface IValueSyntax
-	{
-		#region Methods/Operators
+    /// <summary>
+    /// Syntax defining a value.
+    /// </summary>
+    public interface IValueSyntax
+    {
+        /// <summary>
+        /// Defines a value.
+        /// </summary>
+        /// <param name="valueMatcher">The value matcher.</param>
+        /// <returns>Match syntax defining the behavior of the value.</returns>
+        IMatchSyntax To(Matcher valueMatcher);
 
-		/// <summary>
-		/// Defines a value.
-		/// </summary>
-		/// <param name="valueMatcher"> The value matcher. </param>
-		/// <returns> Match syntax defining the behavior of the value. </returns>
-		IMatchSyntax To(Matcher valueMatcher);
-
-		/// <summary>
-		/// Defines a value.
-		/// </summary>
-		/// <param name="equalValue"> The value. </param>
-		/// <returns> Match syntax defining the behavior of the value. </returns>
-		IMatchSyntax To(object equalValue);
-
-		#endregion
-	}
+        /// <summary>
+        /// Defines a value.
+        /// </summary>
+        /// <param name="equalValue">The value.</param>
+        /// <returns>Match syntax defining the behavior of the value.</returns>
+        IMatchSyntax To(object equalValue);
+    }
 }

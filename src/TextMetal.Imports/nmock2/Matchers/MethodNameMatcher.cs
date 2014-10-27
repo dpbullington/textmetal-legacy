@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------
 // <copyright file="MethodNameMatcher.cs" company="NMock2">
 //
 //   http://www.sourceforge.net/projects/NMock2
@@ -16,60 +16,47 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.IO;
-using System.Reflection;
-
 namespace NMock2.Matchers
 {
-	/// <summary>
-	/// Matcher that checks whether the actual object is a <see cref="MethodInfo" /> and its name is equal to the expected name.
-	/// </summary>
-	public class MethodNameMatcher : Matcher
-	{
-		#region Constructors/Destructors
+    using System.IO;
+    using System.Reflection;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="MethodNameMatcher" /> class.
-		/// </summary>
-		/// <param name="methodName"> The expected name of the method. </param>
-		public MethodNameMatcher(string methodName)
-		{
-			this.methodName = methodName;
-		}
+    /// <summary>
+    /// Matcher that checks whether the actual object is a <see cref="MethodInfo"/> and its name is equal to the expected name.
+    /// </summary>
+    public class MethodNameMatcher : Matcher
+    {
+        /// <summary>
+        /// Holds the expected name of the mocked method.
+        /// </summary>
+        private readonly string methodName;
 
-		#endregion
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MethodNameMatcher"/> class.
+        /// </summary>
+        /// <param name="methodName">The expected name of the method.</param>
+        public MethodNameMatcher(string methodName)
+        {
+            this.methodName = methodName;
+        }
 
-		#region Fields/Constants
+        /// <summary>
+        /// Matches the specified object to this matcher and returns whether it matches.
+        /// </summary>
+        /// <param name="o">The MethodInfo to match.</param>
+        /// <returns>Whether the object is a MethodInfo and its name matches the expected one.</returns>
+        public override bool Matches(object o)
+        {
+            return o is MethodInfo && ((MethodInfo)o).Name == this.methodName;
+        }
 
-		/// <summary>
-		/// Holds the expected name of the mocked method.
-		/// </summary>
-		private readonly string methodName;
-
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Describes this object.
-		/// </summary>
-		/// <param name="writer"> The text writer the description is added to. </param>
-		public override void DescribeTo(TextWriter writer)
-		{
-			writer.Write(this.methodName);
-		}
-
-		/// <summary>
-		/// Matches the specified object to this matcher and returns whether it matches.
-		/// </summary>
-		/// <param name="o"> The MethodInfo to match. </param>
-		/// <returns> Whether the object is a MethodInfo and its name matches the expected one. </returns>
-		public override bool Matches(object o)
-		{
-			return o is MethodInfo && ((MethodInfo)o).Name == this.methodName;
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Describes this object.
+        /// </summary>
+        /// <param name="writer">The text writer the description is added to.</param>
+        public override void DescribeTo(TextWriter writer)
+        {
+            writer.Write(this.methodName);
+        }
+    }
 }

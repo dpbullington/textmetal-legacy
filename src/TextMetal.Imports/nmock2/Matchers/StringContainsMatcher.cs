@@ -16,59 +16,46 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.IO;
-
 namespace NMock2.Matchers
 {
-	/// <summary>
-	/// Matcher that checks whether the actual value contains the expected substring.
-	/// </summary>
-	public class StringContainsMatcher : Matcher
-	{
-		#region Constructors/Destructors
+    using System.IO;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="StringContainsMatcher" /> class.
-		/// </summary>
-		/// <param name="substring"> The substring that is expected. </param>
-		public StringContainsMatcher(string substring)
-		{
-			this.substring = substring;
-		}
+    /// <summary>
+    /// Matcher that checks whether the actual value contains the expected substring.
+    /// </summary>
+    public class StringContainsMatcher : Matcher
+    {
+        private readonly string substring;
 
-		#endregion
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StringContainsMatcher"/> class.
+        /// </summary>
+        /// <param name="substring">The substring that is expected.</param>
+        public StringContainsMatcher(string substring)
+        {
+            this.substring = substring;
+        }
 
-		#region Fields/Constants
+        /// <summary>
+        /// Matches the specified object to this matcher and returns whether it matches.
+        /// </summary>
+        /// <param name="o">The object to match.</param>
+        /// <returns>Whether the object is a string and contains the expected substring.</returns>
+        public override bool Matches(object o)
+        {
+            return o != null
+                && o is string
+                && ((string)o).IndexOf(this.substring) >= 0;
+        }
 
-		private readonly string substring;
-
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Describes this object.
-		/// </summary>
-		/// <param name="writer"> The text writer the description is added to. </param>
-		public override void DescribeTo(TextWriter writer)
-		{
-			writer.Write("containing ");
-			writer.Write((object)this.substring);
-		}
-
-		/// <summary>
-		/// Matches the specified object to this matcher and returns whether it matches.
-		/// </summary>
-		/// <param name="o"> The object to match. </param>
-		/// <returns> Whether the object is a string and contains the expected substring. </returns>
-		public override bool Matches(object o)
-		{
-			return o != null
-					&& o is string
-					&& ((string)o).IndexOf(this.substring) >= 0;
-		}
-
-		#endregion
-	}
+        /// <summary>
+        /// Describes this object.
+        /// </summary>
+        /// <param name="writer">The text writer the description is added to.</param>
+        public override void DescribeTo(TextWriter writer)
+        {
+            writer.Write("containing ");
+            writer.Write((object)this.substring);
+        }
+    }
 }

@@ -16,37 +16,31 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.ComponentModel;
-
-using NMock2.Monitoring;
-
 namespace NMock2
 {
-	using System;
+    using System;
+    using System.ComponentModel;
 
-	/// <summary>
-	/// The definition of a mock object.
-	/// </summary>
-	/// <remarks>
-	/// Implementations of this interface encapsulate the details of
-	/// how a mock object is defined, and provide the ability to be able to
-	/// instantiate an instance of it.
-	/// </remarks>
-	public interface IMockDefinition
-	{
-		#region Methods/Operators
+    using Monitoring;
 
-		/// <summary>
-		/// This method supports NMock2 infrastructure and is not intended to be called directly from your code.
-		/// </summary>
-		/// <param name="primaryType"> The primary type that is being mocked. </param>
-		/// <param name="mockery"> The current <see cref="Mockery" /> instance. </param>
-		/// <param name="mockFactory"> An <see cref="IMockObjectFactory" /> to use when creating the mock. </param>
-		/// <returns> A new mock instance. </returns>
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		object Create(Type primaryType, Mockery mockery, IMockObjectFactory mockFactory);
-
-		#endregion
-	}
+    /// <summary>
+    /// The definition of a mock object.
+    /// </summary>
+    /// <remarks>
+    /// Implementations of this interface encapsulate the details of
+    /// how a mock object is defined, and provide the ability to be able to
+    /// instantiate an instance of it.
+    /// </remarks>
+    public interface IMockDefinition
+    {
+        /// <summary>
+        /// This method supports NMock2 infrastructure and is not intended to be called directly from your code.
+        /// </summary>
+        /// <param name="primaryType">The primary type that is being mocked.</param>
+        /// <param name="mockery">The current <see cref="Mockery"/> instance.</param>
+        /// <param name="mockFactory">An <see cref="IMockObjectFactory"/> to use when creating the mock.</param>
+        /// <returns>A new mock instance.</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        object Create(Type primaryType, Mockery mockery, IMockObjectFactory mockFactory);
+    }
 }

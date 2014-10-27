@@ -16,26 +16,21 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
 namespace NMock2.Syntax
 {
-	/// <summary>
-	/// Syntax defining an indexer set operation.
-	/// </summary>
-	public interface ISetIndexerSyntax
-	{
-		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Defines the indexer.
-		/// </summary>
-		/// <value> Defines the value the indexer is set to. </value>
-		/// <param name="args"> The argument list. </param>
-		IValueSyntax this[params object[] args]
-		{
-			get;
-		}
-
-		#endregion
-	}
+    /// <summary>
+    /// Syntax defining an indexer set operation.
+    /// </summary>
+    public interface ISetIndexerSyntax
+    {
+        /// <summary>
+        /// Defines the indexer.
+        /// </summary>
+        /// <value>Defines the value the indexer is set to.</value>
+        /// <param name="args">The argument list.</param>
+        IValueSyntax this[params object[] args] 
+        { 
+            get; 
+        }
+    }
 }

@@ -16,291 +16,255 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-
-using NMock2.Matchers;
-using NMock2.Monitoring;
-
 namespace NMock2.Internal
 {
-	using System;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using NMock2.Matchers;
+    using NMock2.Monitoring;
 
-	public class BuildableExpectation : IExpectation
-	{
-		#region Constructors/Destructors
+    public class BuildableExpectation : IExpectation
+    {
+        private const string AddEventHandlerPrefix = "add_";
+        private const string RemoveEventHandlerPrefix = "remove_";
+        private int callCount = 0;
+        
+        private string expectationDescription;
+        private string expectationComment;
+        private Matcher requiredCountMatcher, matchingCountMatcher;
+        
+        private IMockObject receiver;
+        private string methodSeparator = ".";
+        private Matcher methodMatcher = new AlwaysMatcher(true, "<any method>");
+        private Matcher genericMethodTypeMatcher = new AlwaysMatcher(true, string.Empty);
+        private Matcher argumentsMatcher = new AlwaysMatcher(true, "(any arguments)");
+        private ArrayList extraMatchers = new ArrayList();
+        private ArrayList actions = new ArrayList();
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="BuildableExpectation" /> class.
-		/// </summary>
-		/// <param name="expectationDescription"> The expectation description. </param>
-		/// <param name="requiredCountMatcher"> The required count matcher. </param>
-		/// <param name="matchingCountMatcher"> The matching count matcher. </param>
-		public BuildableExpectation(string expectationDescription, Matcher requiredCountMatcher, Matcher matchingCountMatcher)
-		{
-			this.expectationDescription = expectationDescription;
-			this.requiredCountMatcher = requiredCountMatcher;
-			this.matchingCountMatcher = matchingCountMatcher;
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BuildableExpectation"/> class.
+        /// </summary>
+        /// <param name="expectationDescription">The expectation description.</param>
+        /// <param name="requiredCountMatcher">The required count matcher.</param>
+        /// <param name="matchingCountMatcher">The matching count matcher.</param>
+        public BuildableExpectation(string expectationDescription, Matcher requiredCountMatcher, Matcher matchingCountMatcher)
+        {
+            this.expectationDescription = expectationDescription;
+            this.requiredCountMatcher = requiredCountMatcher;
+            this.matchingCountMatcher = matchingCountMatcher;
+        }
+        
+        public IMockObject Receiver
+        {
+            get { return this.receiver; }
+            set { this.receiver = value; }
+        }
+        
+        public Matcher MethodMatcher
+        {
+            get { return this.methodMatcher; }
+            set { this.methodMatcher = value; }
+        }
 
-		#endregion
+        public Matcher GenericMethodTypeMatcher
+        {
+            get { return this.genericMethodTypeMatcher; }
+            set { this.genericMethodTypeMatcher = value; }
+        }
 
-		#region Fields/Constants
+        public Matcher ArgumentsMatcher
+        {
+            get { return this.argumentsMatcher; }
+            set { this.argumentsMatcher = value; }
+        }
 
-		private const string AddEventHandlerPrefix = "add_";
-		private const string RemoveEventHandlerPrefix = "remove_";
-		private ArrayList actions = new ArrayList();
-		private Matcher argumentsMatcher = new AlwaysMatcher(true, "(any arguments)");
-		private int callCount = 0;
+        public bool IsActive
+        {
+            get { return this.matchingCountMatcher.Matches(this.callCount + 1); }
+        }
 
-		private string expectationComment;
-		private string expectationDescription;
-		private ArrayList extraMatchers = new ArrayList();
-		private Matcher genericMethodTypeMatcher = new AlwaysMatcher(true, string.Empty);
-		private Matcher matchingCountMatcher;
+        public bool HasBeenMet
+        {
+            get { return this.requiredCountMatcher.Matches(this.callCount); }
+        }
 
-		private Matcher methodMatcher = new AlwaysMatcher(true, "<any method>");
-		private string methodSeparator = ".";
-		private IMockObject receiver;
-		private Matcher requiredCountMatcher;
+        public void AddInvocationMatcher(Matcher matcher)
+        {
+            this.extraMatchers.Add(matcher);
+        }
+        
+        public void AddAction(IAction action)
+        {
+            this.actions.Add(action);
+        }
 
-		#endregion
+        public void AddComment(string comment)
+        {
+            this.expectationComment = comment;
+        }
 
-		#region Properties/Indexers/Events
+        /// <summary>
+        /// Checks whether stored expectations matches the specified invocation.
+        /// </summary>
+        /// <param name="invocation">The invocation to check.</param>
+        /// <returns>Returns whether one of the stored expectations has met the specified invocation.</returns>
+        public bool Matches(Invocation invocation)
+        {
+            return this.IsActive
+                && this.receiver == invocation.Receiver
+                && this.methodMatcher.Matches(invocation.Method)
+                && this.argumentsMatcher.Matches(invocation)
+                && this.ExtraMatchersMatch(invocation)
+                && this.GenericMethodTypeMatcher.Matches(invocation);
+        }
 
-		public Matcher ArgumentsMatcher
-		{
-			get
-			{
-				return this.argumentsMatcher;
-			}
-			set
-			{
-				this.argumentsMatcher = value;
-			}
-		}
+        public bool MatchesIgnoringIsActive(Invocation invocation)
+        {
+            return this.receiver == invocation.Receiver
+                && this.methodMatcher.Matches(invocation.Method)
+                && this.argumentsMatcher.Matches(invocation)
+                && this.ExtraMatchersMatch(invocation)
+                && this.GenericMethodTypeMatcher.Matches(invocation);
+        }
+        
+        public void Perform(Invocation invocation)
+        {
+            this.callCount++;
+            ProcessEventHandlers(invocation);
+            foreach (IAction action in this.actions)
+            {
+                action.Invoke(invocation);
+            }
+        }
 
-		public Matcher GenericMethodTypeMatcher
-		{
-			get
-			{
-				return this.genericMethodTypeMatcher;
-			}
-			set
-			{
-				this.genericMethodTypeMatcher = value;
-			}
-		}
+        public void DescribeActiveExpectationsTo(TextWriter writer)
+        {
+            if (this.IsActive)
+            {
+                this.DescribeTo(writer);
+            }
+        }
 
-		public bool HasBeenMet
-		{
-			get
-			{
-				return this.requiredCountMatcher.Matches(this.callCount);
-			}
-		}
+        public void DescribeUnmetExpectationsTo(TextWriter writer)
+        {
+            if (!this.HasBeenMet)
+            {
+                this.DescribeTo(writer);
+            }
+        }
 
-		public bool IsActive
-		{
-			get
-			{
-				return this.matchingCountMatcher.Matches(this.callCount + 1);
-			}
-		}
+        /// <summary>
+        /// Adds itself to the <paramref name="result"/> if the <see cref="Receiver"/> matches
+        /// the specified <paramref name="mock"/>.
+        /// </summary>
+        /// <param name="mock">The mock for which expectations are queried.</param>
+        /// <param name="result">The result to add matching expectations to.</param>
+        public void QueryExpectationsBelongingTo(IMockObject mock, IList<IExpectation> result)
+        {
+            if (this.Receiver == mock)
+            {
+                result.Add(this);
+            }
+        }
 
-		public Matcher MethodMatcher
-		{
-			get
-			{
-				return this.methodMatcher;
-			}
-			set
-			{
-				this.methodMatcher = value;
-			}
-		}
+        public void DescribeAsIndexer()
+        {
+            this.methodSeparator = string.Empty;
+        }
+        
+        private static void ProcessEventHandlers(Invocation invocation)
+        {
+            if (IsEventAccessorMethod(invocation))
+            {
+                IMockObject mockObject = invocation.Receiver as IMockObject;
+                if (mockObject != null)
+                {
+                    MockEventHandler(invocation, mockObject);
+                }
+            }
+        }
 
-		public IMockObject Receiver
-		{
-			get
-			{
-				return this.receiver;
-			}
-			set
-			{
-				this.receiver = value;
-			}
-		}
+        private static void MockEventHandler(Invocation invocation, IMockObject mockObject)
+        {
+            Delegate handler = invocation.Parameters[0] as Delegate;
 
-		#endregion
+            if (invocation.Method.Name.StartsWith(AddEventHandlerPrefix))
+            {
+                mockObject.AddEventHandler(
+                    invocation.Method.Name.Substring(AddEventHandlerPrefix.Length), handler);
+            }
 
-		#region Methods/Operators
+            if (invocation.Method.Name.StartsWith(RemoveEventHandlerPrefix))
+            {
+                mockObject.RemoveEventHandler(
+                    invocation.Method.Name.Substring(RemoveEventHandlerPrefix.Length),
+                    handler);
+            }
+        }
 
-		private static bool IsEventAccessorMethod(Invocation invocation)
-		{
-			return invocation.Method.IsSpecialName &&
-					(invocation.Method.Name.StartsWith(AddEventHandlerPrefix) ||
-					invocation.Method.Name.StartsWith(RemoveEventHandlerPrefix));
-		}
+        private static bool IsEventAccessorMethod(Invocation invocation)
+        {
+            return invocation.Method.IsSpecialName &&
+                   (invocation.Method.Name.StartsWith(AddEventHandlerPrefix) ||
+                    invocation.Method.Name.StartsWith(RemoveEventHandlerPrefix));
+        }
 
-		private static void MockEventHandler(Invocation invocation, IMockObject mockObject)
-		{
-			Delegate handler = invocation.Parameters[0] as Delegate;
+        private bool ExtraMatchersMatch(Invocation invocation)
+        {
+            foreach (Matcher matcher in this.extraMatchers)
+            {
+                if (!matcher.Matches(invocation))
+                {
+                    return false;
+                }
+            }
 
-			if (invocation.Method.Name.StartsWith(AddEventHandlerPrefix))
-			{
-				mockObject.AddEventHandler(
-					invocation.Method.Name.Substring(AddEventHandlerPrefix.Length), handler);
-			}
+            return true;
+        }
 
-			if (invocation.Method.Name.StartsWith(RemoveEventHandlerPrefix))
-			{
-				mockObject.RemoveEventHandler(
-					invocation.Method.Name.Substring(RemoveEventHandlerPrefix.Length),
-					handler);
-			}
-		}
+        private void DescribeTo(TextWriter writer)
+        {
+            writer.Write(this.expectationDescription);
+            writer.Write(": ");
+            writer.Write(this.receiver.MockName);
+            writer.Write(this.methodSeparator);
+            this.methodMatcher.DescribeTo(writer);
+            this.genericMethodTypeMatcher.DescribeTo(writer);
+            this.argumentsMatcher.DescribeTo(writer);
+            foreach (Matcher extraMatcher in this.extraMatchers)
+            {
+                writer.Write(", ");
+                extraMatcher.DescribeTo(writer);
+            }
 
-		private static void ProcessEventHandlers(Invocation invocation)
-		{
-			if (IsEventAccessorMethod(invocation))
-			{
-				IMockObject mockObject = invocation.Receiver as IMockObject;
-				if (mockObject != null)
-					MockEventHandler(invocation, mockObject);
-			}
-		}
+            if (this.actions.Count > 0)
+            {
+                writer.Write(", will ");
+                ((IAction)this.actions[0]).DescribeTo(writer);
+                for (int i = 1; i < this.actions.Count; i++)
+                {
+                    writer.Write(", ");
+                    ((IAction)this.actions[i]).DescribeTo(writer);
+                }
+            }
+            
+            writer.Write(" [called ");
+            writer.Write(this.callCount);
+            writer.Write(" time");
+            if (this.callCount != 1)
+            {
+                writer.Write("s");
+            }
 
-		public void AddAction(IAction action)
-		{
-			this.actions.Add(action);
-		}
+            writer.Write("]");
 
-		public void AddComment(string comment)
-		{
-			this.expectationComment = comment;
-		}
-
-		public void AddInvocationMatcher(Matcher matcher)
-		{
-			this.extraMatchers.Add(matcher);
-		}
-
-		public void DescribeActiveExpectationsTo(TextWriter writer)
-		{
-			if (this.IsActive)
-				this.DescribeTo(writer);
-		}
-
-		public void DescribeAsIndexer()
-		{
-			this.methodSeparator = string.Empty;
-		}
-
-		private void DescribeTo(TextWriter writer)
-		{
-			writer.Write(this.expectationDescription);
-			writer.Write(": ");
-			writer.Write(this.receiver.MockName);
-			writer.Write(this.methodSeparator);
-			this.methodMatcher.DescribeTo(writer);
-			this.genericMethodTypeMatcher.DescribeTo(writer);
-			this.argumentsMatcher.DescribeTo(writer);
-			foreach (Matcher extraMatcher in this.extraMatchers)
-			{
-				writer.Write(", ");
-				extraMatcher.DescribeTo(writer);
-			}
-
-			if (this.actions.Count > 0)
-			{
-				writer.Write(", will ");
-				((IAction)this.actions[0]).DescribeTo(writer);
-				for (int i = 1; i < this.actions.Count; i++)
-				{
-					writer.Write(", ");
-					((IAction)this.actions[i]).DescribeTo(writer);
-				}
-			}
-
-			writer.Write(" [called ");
-			writer.Write(this.callCount);
-			writer.Write(" time");
-			if (this.callCount != 1)
-				writer.Write("s");
-
-			writer.Write("]");
-
-			if (!string.IsNullOrEmpty(this.expectationComment))
-			{
-				writer.Write(" Comment: ");
-				writer.Write(this.expectationComment);
-			}
-		}
-
-		public void DescribeUnmetExpectationsTo(TextWriter writer)
-		{
-			if (!this.HasBeenMet)
-				this.DescribeTo(writer);
-		}
-
-		private bool ExtraMatchersMatch(Invocation invocation)
-		{
-			foreach (Matcher matcher in this.extraMatchers)
-			{
-				if (!matcher.Matches(invocation))
-					return false;
-			}
-
-			return true;
-		}
-
-		/// <summary>
-		/// Checks whether stored expectations matches the specified invocation.
-		/// </summary>
-		/// <param name="invocation"> The invocation to check. </param>
-		/// <returns> Returns whether one of the stored expectations has met the specified invocation. </returns>
-		public bool Matches(Invocation invocation)
-		{
-			return this.IsActive
-					&& this.receiver == invocation.Receiver
-					&& this.methodMatcher.Matches(invocation.Method)
-					&& this.argumentsMatcher.Matches(invocation)
-					&& this.ExtraMatchersMatch(invocation)
-					&& this.GenericMethodTypeMatcher.Matches(invocation);
-		}
-
-		public bool MatchesIgnoringIsActive(Invocation invocation)
-		{
-			return this.receiver == invocation.Receiver
-					&& this.methodMatcher.Matches(invocation.Method)
-					&& this.argumentsMatcher.Matches(invocation)
-					&& this.ExtraMatchersMatch(invocation)
-					&& this.GenericMethodTypeMatcher.Matches(invocation);
-		}
-
-		public void Perform(Invocation invocation)
-		{
-			this.callCount++;
-			ProcessEventHandlers(invocation);
-			foreach (IAction action in this.actions)
-				action.Invoke(invocation);
-		}
-
-		/// <summary>
-		/// Adds itself to the <paramref name="result" /> if the <see cref="Receiver" /> matches
-		/// the specified <paramref name="mock" />.
-		/// </summary>
-		/// <param name="mock"> The mock for which expectations are queried. </param>
-		/// <param name="result"> The result to add matching expectations to. </param>
-		public void QueryExpectationsBelongingTo(IMockObject mock, IList<IExpectation> result)
-		{
-			if (this.Receiver == mock)
-				result.Add(this);
-		}
-
-		#endregion
-	}
+            if (!string.IsNullOrEmpty(this.expectationComment))
+            {
+                writer.Write(" Comment: ");
+                writer.Write(this.expectationComment);
+            }
+        }
+    }
 }

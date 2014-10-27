@@ -16,70 +16,54 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.IO;
-
-using NMock2.Monitoring;
-
 namespace NMock2.Actions
 {
-	/// <summary>
-	/// Action that sets the result value on an invocation. The value is aquired by calling the delegate specified in the constructor.
-	/// </summary>
-	public class LazyReturnAction : IAction
-	{
-		#region Constructors/Destructors
+    using System.IO;
+    using NMock2.Monitoring;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="LazyReturnAction" /> class.
-		/// </summary>
-		/// <param name="evaluate"> The delegate used to aquire the return value. </param>
-		public LazyReturnAction(Evaluate evaluate)
-		{
-			this.evaluate = evaluate;
-		}
+    /// <summary>
+    /// Action that sets the result value on an invocation. The value is aquired by calling the delegate specified in the constructor.
+    /// </summary>
+    public class LazyReturnAction : IAction
+    {
+        /// <summary>
+        /// Stores the evaluate delegate for this action.
+        /// </summary>
+        private readonly Evaluate evaluate;
 
-		#endregion
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LazyReturnAction"/> class.
+        /// </summary>
+        /// <param name="evaluate">The delegate used to aquire the return value.</param>
+        public LazyReturnAction(Evaluate evaluate)
+        {
+            this.evaluate = evaluate;
+        }
 
-		#region Fields/Constants
+        /// <summary>
+        /// Delegate that is used to get the return value.
+        /// </summary>
+        /// <returns>
+        /// Returns an object...
+        /// </returns>
+        public delegate object Evaluate();
 
-		/// <summary>
-		/// Stores the evaluate delegate for this action.
-		/// </summary>
-		private readonly Evaluate evaluate;
+        /// <summary>
+        /// Invokes this object.
+        /// </summary>
+        /// <param name="invocation">The invocation.</param>
+        public void Invoke(Invocation invocation)
+        {
+            invocation.Result = this.evaluate();
+        }
 
-		#endregion
-
-		#region Methods/Operators
-
-		/// <summary>
-		/// Describes this object.
-		/// </summary>
-		/// <param name="writer"> The text writer the description is added to. </param>
-		public void DescribeTo(TextWriter writer)
-		{
-			writer.Write("lazy return value");
-		}
-
-		/// <summary>
-		/// Invokes this object.
-		/// </summary>
-		/// <param name="invocation"> The invocation. </param>
-		public void Invoke(Invocation invocation)
-		{
-			invocation.Result = this.evaluate();
-		}
-
-		#endregion
-
-		#region Classes/Structs/Interfaces/Enums/Delegates
-
-		/// <summary>
-		/// Delegate that is used to get the return value.
-		/// </summary>
-		/// <returns> Returns an object... </returns>
-		public delegate object Evaluate();
-
-		#endregion
-	}
+        /// <summary>
+        /// Describes this object.
+        /// </summary>
+        /// <param name="writer">The text writer the description is added to.</param>
+        public void DescribeTo(TextWriter writer)
+        {
+            writer.Write("lazy return value");
+        }
+    }
 }

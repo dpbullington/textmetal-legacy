@@ -16,23 +16,18 @@
 //   limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-
 namespace NMock2.Syntax
 {
-	/// <summary>
-	/// Syntax defining matching criterias.
-	/// </summary>
-	public interface IMatchSyntax : IActionSyntax
-	{
-		#region Methods/Operators
-
-		/// <summary>
-		/// Defines a matching criteria.
-		/// </summary>
-		/// <param name="matcher"> The matcher. </param>
-		/// <returns> Action syntax defining the action to take. </returns>
-		IActionSyntax Matching(Matcher matcher);
-
-		#endregion
-	}
+    /// <summary>
+    /// Syntax defining matching criterias.
+    /// </summary>
+    public interface IMatchSyntax : IActionSyntax
+    {
+        /// <summary>
+        /// Defines a matching criteria.
+        /// </summary>
+        /// <param name="matcher">The matcher.</param>
+        /// <returns>Action syntax defining the action to take.</returns>
+        IActionSyntax Matching(Matcher matcher);
+    }
 }
