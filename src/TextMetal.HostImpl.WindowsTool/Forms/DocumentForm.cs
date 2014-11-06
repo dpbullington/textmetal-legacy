@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -279,7 +280,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 				xpe = new XmlPersistEngine();
 				xpe.RegisterWellKnownConstructs();
 
-				using (IOutputMechanism outputMechanism = new FileOutputMechanism(Environment.CurrentDirectory, "#temp.log", xpe))
+				using (IOutputMechanism outputMechanism = new FileOutputMechanism(Environment.CurrentDirectory, "#temp.log", Encoding.UTF8, xpe))
 					outputMechanism.WriteObject(this.Document, this.DocumentFilePath);
 			}
 		}

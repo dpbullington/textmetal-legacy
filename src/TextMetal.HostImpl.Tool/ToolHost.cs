@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Core.Tokenization;
@@ -116,7 +117,7 @@ namespace TextMetal.HostImpl.Tool
 
 				template = (TemplateConstruct)inputMechanism.LoadTemplate(templateFilePath);
 
-				using (IOutputMechanism outputMechanism = new FileOutputMechanism(baseDirectoryPath, "#textmetal.log", xpe)) // relative to base directory
+				using (IOutputMechanism outputMechanism = new FileOutputMechanism(baseDirectoryPath, "#textmetal.log", Encoding.UTF8, xpe)) // relative to base directory
 				{
 					outputMechanism.WriteObject(template, "#template.xml");
 					outputMechanism.WriteObject(source, "#source.xml");

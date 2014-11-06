@@ -5,6 +5,7 @@
 
 using System;
 using System.IO;
+using System.Text;
 
 namespace TextMetal.Framework.Core
 {
@@ -40,7 +41,8 @@ namespace TextMetal.Framework.Core
 		/// </summary>
 		/// <param name="scopeName"> The scope name to push. </param>
 		/// <param name="appendMode"> A value indicating whether to append or not. </param>
-		void EnterScope(string scopeName, bool appendMode);
+		/// <param name="encoding"> A text encoding in-effect for this new scope. </param>
+		void EnterScope(string scopeName, bool appendMode, Encoding encoding);
 
 		/// <summary>
 		/// Leaves (pops) an output scope as deliniated by scope name. Scope name semantics are implementation specific.

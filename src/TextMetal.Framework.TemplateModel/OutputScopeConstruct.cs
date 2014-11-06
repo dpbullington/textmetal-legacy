@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Text;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Core.Tokenization;
@@ -30,7 +31,8 @@ namespace TextMetal.Framework.TemplateModel
 		#region Fields/Constants
 
 		private bool append;
-		private string name;
+		private string scopeName;
+		private string encodingName;
 
 		#endregion
 
@@ -58,15 +60,28 @@ namespace TextMetal.Framework.TemplateModel
 		}
 
 		[XmlAttributeMapping(LocalName = "name", NamespaceUri = "")]
-		public string Name
+		public string ScopeName
 		{
 			get
 			{
-				return this.name;
+				return this.scopeName;
 			}
 			set
 			{
-				this.name = value;
+				this.scopeName = value;
+			}
+		}
+
+		[XmlAttributeMapping(LocalName = "encoding", NamespaceUri = "")]
+		public string EncodingName
+		{
+			get
+			{
+				return this.encodingName;
+			}
+			set
+			{
+				this.encodingName = value;
 			}
 		}
 
@@ -76,7 +91,9 @@ namespace TextMetal.Framework.TemplateModel
 
 		protected override void CoreExpandTemplate(ITemplatingContext templatingContext)
 		{
-			string name;
+			string scopeName;
+			bool appendMode;
+			Encoding encoding;
 			DynamicWildcardTokenReplacementStrategy dynamicWildcardTokenReplacementStrategy;
 
 			if ((object)templatingContext == null)
@@ -84,9 +101,15 @@ namespace TextMetal.Framework.TemplateModel
 
 			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy();
 
-			name = templatingContext.Tokenizer.ExpandTokens(this.Name, dynamicWildcardTokenReplacementStrategy);
+			scopeName = templatingContext.Tokenizer.ExpandTokens(this.ScopeName, dynamicWildcardTokenReplacementStrategy);
+			appendMode = this.Append;
 
-			if (!DataType.Instance.IsNullOrWhiteSpace(name))
+			if (!DataType.Instance.IsNullOrWhiteSpace(this.EncodingName))
+				encoding = Encoding.GetEncoding(this.EncodingName);
+			else
+				encoding = Encoding.UTF8;
+
+			if (!DataType.Instance.IsNullOrWhiteSpace(scopeName))
 			{
 				new AllocConstruct()
 				{
@@ -94,7 +117,7 @@ namespace TextMetal.Framework.TemplateModel
 				}.ExpandTemplate(templatingContext);
 			}
 
-			if (!DataType.Instance.IsNullOrWhiteSpace(name))
+			if (!DataType.Instance.IsNullOrWhiteSpace(scopeName))
 			{
 				IExpressionContainerConstruct expressionContainerConstruct;
 				ValueConstruct valueConstruct;
@@ -104,7 +127,7 @@ namespace TextMetal.Framework.TemplateModel
 				valueConstruct = new ValueConstruct()
 								{
 									Type = typeof(string).FullName,
-									__ = name
+									__ = scopeName
 								};
 
 				((IContentContainerXmlObject<IExpressionXmlObject>)expressionContainerConstruct).Content = valueConstruct;
@@ -116,8 +139,8 @@ namespace TextMetal.Framework.TemplateModel
 				}.ExpandTemplate(templatingContext);
 			}
 
-			templatingContext.Output.LogTextWriter.WriteLine("['{0:O}' (UTC)]\tEntering output scope '{1}'.", DateTime.UtcNow, name);
-			templatingContext.Output.EnterScope(name, this.Append);
+			templatingContext.Output.LogTextWriter.WriteLine("['{0:O}' (UTC)]\tEntering output scope '{1}'.", DateTime.UtcNow, scopeName);
+			templatingContext.Output.EnterScope(scopeName, appendMode, encoding);
 
 			if ((object)this.Items != null)
 			{
@@ -125,10 +148,10 @@ namespace TextMetal.Framework.TemplateModel
 					templateMechanism.ExpandTemplate(templatingContext);
 			}
 
-			templatingContext.Output.LeaveScope(name);
-			templatingContext.Output.LogTextWriter.WriteLine("['{0:O}' (UTC)]\tLeaving output scope '{1}'.", DateTime.UtcNow, name);
+			templatingContext.Output.LeaveScope(scopeName);
+			templatingContext.Output.LogTextWriter.WriteLine("['{0:O}' (UTC)]\tLeaving output scope '{1}'.", DateTime.UtcNow, scopeName);
 
-			if (!DataType.Instance.IsNullOrWhiteSpace(name))
+			if (!DataType.Instance.IsNullOrWhiteSpace(scopeName))
 			{
 				new FreeConstruct()
 				{

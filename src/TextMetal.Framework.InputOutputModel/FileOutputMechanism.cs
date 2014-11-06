@@ -22,14 +22,18 @@ namespace TextMetal.Framework.InputOutputModel
 		/// </summary>
 		/// <param name="baseDirectoryPath"> The base output directory path. </param>
 		/// <param name="logFileName"> The file name of the log file (relative to base directory path) or empty string for console output. </param>
+		/// <param name="logFileEncoding"> The encoding of the log file. </param>
 		/// <param name="xpe"> The XML persist engine in-effect. </param>
-		public FileOutputMechanism(string baseDirectoryPath, string logFileName, IXmlPersistEngine xpe)
+		public FileOutputMechanism(string baseDirectoryPath, string logFileName, Encoding logFileEncoding, IXmlPersistEngine xpe)
 		{
 			if ((object)baseDirectoryPath == null)
 				throw new ArgumentNullException("baseDirectoryPath");
 
 			if ((object)logFileName == null)
 				throw new ArgumentNullException("logFileName");
+
+			if ((object)logFileEncoding == null)
+				throw new ArgumentNullException("logFileEncoding");
 
 			if ((object)xpe == null)
 				throw new ArgumentNullException("xpe");
@@ -40,6 +44,7 @@ namespace TextMetal.Framework.InputOutputModel
 
 			this.baseDirectoryPath = Path.GetDirectoryName(Path.GetFullPath(baseDirectoryPath));
 			this.logFileName = logFileName;
+			this.logFileEncoding = logFileEncoding;
 			this.xpe = xpe;
 
 			this.SetupLogger();
@@ -52,6 +57,7 @@ namespace TextMetal.Framework.InputOutputModel
 
 		private readonly string baseDirectoryPath;
 		private readonly string logFileName;
+		private readonly Encoding logFileEncoding;
 		private readonly IXmlPersistEngine xpe;
 
 		#endregion
@@ -82,11 +88,19 @@ namespace TextMetal.Framework.InputOutputModel
 			}
 		}
 
+		private Encoding LogFileEncoding
+		{
+			get
+			{
+				return this.logFileEncoding;
+			}
+		}
+
 		#endregion
 
 		#region Methods/Operators
 
-		protected override void CoreEnter(string scopeName, bool appendMode)
+		protected override void CoreEnter(string scopeName, bool appendMode, Encoding encoding)
 		{
 			FileStream stream;
 			TextWriter textWriter;
@@ -108,7 +122,7 @@ namespace TextMetal.Framework.InputOutputModel
 
 			// do not dispose here!
 			stream = new FileStream(fullFilePath, appendMode ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.None);
-			textWriter = new StreamWriter(stream, Encoding.UTF8);
+			textWriter = new StreamWriter(stream, encoding ?? this.LogFileEncoding);
 
 			base.TextWriters.Push(textWriter);
 		}
@@ -191,7 +205,7 @@ namespace TextMetal.Framework.InputOutputModel
 
 				// do not dispose here!
 				stream = new FileStream(fullFilePath, FileMode.Create, FileAccess.Write, FileShare.None);
-				textWriter = new StreamWriter(stream, Encoding.UTF8);
+				textWriter = new StreamWriter(stream, this.LogFileEncoding);
 			}
 
 			base.SetLogTextWriter(textWriter);

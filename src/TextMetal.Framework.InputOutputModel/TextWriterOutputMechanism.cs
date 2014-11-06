@@ -5,6 +5,7 @@
 
 using System;
 using System.IO;
+using System.Text;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.Core.Cerealization;
@@ -53,7 +54,7 @@ namespace TextMetal.Framework.InputOutputModel
 
 		#region Methods/Operators
 
-		protected override void CoreEnter(string scopeName, bool appendMode)
+		protected override void CoreEnter(string scopeName, bool appendMode, Encoding encoding)
 		{
 		}
 

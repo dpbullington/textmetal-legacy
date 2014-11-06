@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 using TextMetal.Framework.Core;
 
@@ -81,7 +82,7 @@ namespace TextMetal.Framework.InputOutputModel
 
 		#region Methods/Operators
 
-		protected abstract void CoreEnter(string scopeName, bool appendMode);
+		protected abstract void CoreEnter(string scopeName, bool appendMode, Encoding encoding);
 
 		protected abstract void CoreLeave(string scopeName);
 
@@ -127,9 +128,10 @@ namespace TextMetal.Framework.InputOutputModel
 		/// </summary>
 		/// <param name="scopeName"> The scope name to push. </param>
 		/// <param name="appendMode"> A value indicating whether to append or not. </param>
-		public void EnterScope(string scopeName, bool appendMode)
+		/// <param name="encoding"> A text encoding in-effect for this new scope. </param>
+		public void EnterScope(string scopeName, bool appendMode, Encoding encoding)
 		{
-			this.CoreEnter(scopeName, appendMode);
+			this.CoreEnter(scopeName, appendMode, encoding);
 		}
 
 		/// <summary>
