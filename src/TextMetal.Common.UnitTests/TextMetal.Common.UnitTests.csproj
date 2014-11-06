@@ -49,6 +49,9 @@
     </Compile>
     <Compile Include="Core\_\AppConfigTests.cs" />
     <Compile Include="Core\_\DataTypeTests.cs" />
+    <Compile Include="Data\LinqToSql\_\AmbientUnitOfWorkAwareDisposableWrapperTests.cs" />
+    <None Include="Data\LinqToSql\_\LinqToSqlHelperTests.cs" />
+    <Compile Include="Data\LinqToSql\_\MulticastContextTests.cs" />
     <Compile Include="Solder\AmbientExecutionContext\_\ExecutionPathStorageTests.cs" />
     <Compile Include="Core\_\ReflexionTests.cs" />
     <Compile Include="Data\Framework\Mapping\_\ColumnMappingAttributeTests.cs" />

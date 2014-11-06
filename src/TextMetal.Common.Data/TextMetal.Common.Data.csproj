@@ -49,6 +49,11 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="LinqToSql\AmbientUnitOfWorkAwareDisposableWrapper~1.cs" />
+    <Compile Include="LinqToSql\ILinqToSqlModelRepository~1.cs" />
+    <Compile Include="LinqToSql\LinqTableQuery~1.cs" />
+    <Compile Include="LinqToSql\LinqToSqlModelRepository~1.cs" />
+    <Compile Include="LinqToSql\MulticastContext~1.cs" />
     <Compile Include="WrapperDataReader.cs" />
     <Compile Include="AdoNetHelper.cs" />
     <Compile Include="Framework\DatabaseHistory.cs" />
