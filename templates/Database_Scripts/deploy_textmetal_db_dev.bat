@@ -6,6 +6,7 @@ REM	Distributed under the MIT license: http://www.opensource.org/licenses/mit-li
 REM
 
 set SQLCMD_EXE=sqlcmd.exe
+set SQL_DIR=.
 
 set DB_SERVER=(local)
 set DB_DATABASE_MASTER=master
@@ -16,20 +17,6 @@ set DB_DATABASE=textmetal_sample
 set DB_LOGIN=textmetal_sample_mssql_dev_login
 set DB_PASSWORD=LrJGmP6UfW8TEp7x3wWhECUYULE6zzMcWQ03R6UxeB4xzVmnq5S4Lx0vApegZVH
 set DB_USER=textmetal_sample_mssql_dev_user
-
-
-REM MUST BE ONLY FOR DEV
-"%SQLCMD_EXE%" ^
-	-S "%DB_SERVER%" ^
-	-U "%DB_SA_USERNAME%" ^
-	-P "%DB_SA_PASSWORD%" ^
-	-d "%DB_DATABASE_MASTER%" ^
-	-v VAR_DB_DATABASE="%DB_DATABASE%" ^
-	-v VAR_DB_LOGIN="%DB_LOGIN%" ^
-	-v VAR_DB_PASSWORD="%DB_PASSWORD%" ^
-	-v VAR_DB_USER="%DB_USER%" ^
-	-i ".\deploy_textmetal_db_0000.sql"
-IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 
 CALL deploy_textmetal_db.bat

@@ -31,8 +31,31 @@ namespace TextMetal.Common.WinForms
 
 			if ((object)argumentMessages != null)
 			{
+				Console.WriteLine();
 				foreach (Message argumentMessage in argumentMessages)
 					Console.WriteLine(argumentMessage.Description);
+			}
+
+			Console.ForegroundColor = oldConsoleColor;
+		}
+
+		protected override sealed void DisplayRawArgumentsMessage(IEnumerable<string> arguments)
+		{
+			ConsoleColor oldConsoleColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.Blue;
+			
+			if ((object)arguments != null)
+			{
+				Console.WriteLine();
+				Console.WriteLine("RAW CMDLN: {0}", Environment.CommandLine);
+				Console.WriteLine();
+				Console.WriteLine("RAW ARGS:");
+
+				int index = 0;
+				foreach (string argument in arguments)
+				{
+					Console.WriteLine("[{0}] => {1}", index++, argument);
+				}
 			}
 
 			Console.ForegroundColor = oldConsoleColor;
@@ -47,9 +70,8 @@ namespace TextMetal.Common.WinForms
 
 			if ((object)requiredArgumentTokens != null)
 			{
-				Console.WriteLine(Environment.NewLine +
-								string.Format("USAGE: {0} ", Assembly.GetEntryAssembly().ManifestModule.Name) + string.Join(" ", requiredArgumentTokens) +
-								Environment.NewLine);
+				Console.WriteLine();
+				Console.WriteLine(string.Format("USAGE: {0} ", Assembly.GetEntryAssembly().ManifestModule.Name) + string.Join(" ", requiredArgumentTokens));
 			}
 
 			Console.ForegroundColor = oldConsoleColor;
@@ -59,15 +81,18 @@ namespace TextMetal.Common.WinForms
 		{
 			ConsoleColor oldConsoleColor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine();
 			Console.WriteLine((object)exception != null ? Reflexion.Instance.GetErrors(exception, 0) : "<unknown>");
 			Console.ForegroundColor = oldConsoleColor;
 
-			Console.WriteLine(Environment.NewLine + "The operation failed to complete.");
+			Console.WriteLine();
+			Console.WriteLine("The operation failed to complete.");
 		}
 
 		protected override sealed void DisplaySuccessMessage(TimeSpan duration)
 		{
-			Console.WriteLine(Environment.NewLine + "Operation completed successfully; duration: '{0}'.", duration);
+			Console.WriteLine();
+			Console.WriteLine("Operation completed successfully; duration: '{0}'.", duration);
 		}
 
 		#endregion

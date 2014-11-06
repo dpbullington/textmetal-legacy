@@ -12,12 +12,12 @@ using TextMetal.Common.Solder.DependencyManagement;
 namespace TextMetal.Common.Core
 {
 	[DependencyRegistration]
-	public static class AssemblyDependency
+	public static class ProjectAssemblyDependency
 	{
 		#region Methods/Operators
 
 		[DependencyRegistration]
-		public static void ProvokeDependencyRegistration()
+		public static void ProvokeProjectDependencyRegistration()
 		{
 			DependencyManager.AppDomainInstance.AddResolution<IDataType>("", SingletonDependencyResolution.LazyConstructorOfType<DataType>());
 		}

@@ -97,6 +97,8 @@ namespace TextMetal.Common.WinForms
 
 		protected abstract void DisplaySuccessMessage(TimeSpan duration);
 
+		protected abstract void DisplayRawArgumentsMessage(IEnumerable<string> arguments);
+
 		public void Dispose()
 		{
 			if (this.Disposed)
@@ -235,6 +237,7 @@ namespace TextMetal.Common.WinForms
 				{
 					this.DisplayArgumentErrorMessage(argumentValidationMessages);
 					this.DisplayArgumentMapMessage(argumentMap);
+					//this.DisplayRawArgumentsMessage(args);
 					returnCode = -1;
 				}
 				else

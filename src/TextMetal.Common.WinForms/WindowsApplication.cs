@@ -57,6 +57,10 @@ namespace TextMetal.Common.WinForms
 			}*/
 		}
 
+		protected override sealed void DisplayRawArgumentsMessage(IEnumerable<string> arguments)
+		{
+		}
+		
 		protected override sealed void DisplayArgumentMapMessage(IDictionary<string, ArgumentSpec> argumentMap)
 		{
 			string message;
