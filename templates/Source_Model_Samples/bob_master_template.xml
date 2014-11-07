@@ -10,6 +10,12 @@
 
 	<Write newline="true">
 		<Write.Text>
+			<Value data="${printf(`StartUtc`, `O`)}" type="System.String" />
+		</Write.Text>
+	</Write>
+
+	<Write newline="true">
+		<Write.Text>
 			<Value data="${StaticPropertyResolver(`System.DateTime`, `UtcNow`)}" type="System.String" />
 		</Write.Text>
 	</Write>

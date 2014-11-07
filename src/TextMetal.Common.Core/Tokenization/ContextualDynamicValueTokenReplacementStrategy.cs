@@ -10,7 +10,7 @@ namespace TextMetal.Common.Core.Tokenization
 	/// <summary>
 	/// Provides a dynamic token replacement strategy which executes an on-demand callback method to obtain a replacement value.
 	/// </summary>
-	public class ContextualDynamicValueTokenReplacementStrategy : ITokenReplacementStrategy
+	public class ContextualDynamicValueTokenReplacementStrategy<TContext> : ITokenReplacementStrategy
 	{
 		#region Constructors/Destructors
 
@@ -18,8 +18,8 @@ namespace TextMetal.Common.Core.Tokenization
 		/// Initializes a new instance of the ContextualDynamicValueTokenReplacementStrategy class.
 		/// </summary>
 		/// <param name="method"> The callback method to evaluate during token replacement. </param>
-		/// <param name="context"> The context object array used during token replacement. </param>
-		public ContextualDynamicValueTokenReplacementStrategy(Func<object[], string[], object> method, object[] context)
+		/// <param name="context"> The context object used during token replacement. </param>
+		public ContextualDynamicValueTokenReplacementStrategy(Func<TContext, string[], object> method, TContext context)
 		{
 			if ((object)method == null)
 				throw new ArgumentNullException("method");
@@ -32,17 +32,17 @@ namespace TextMetal.Common.Core.Tokenization
 
 		#region Fields/Constants
 
-		private readonly object[] context;
-		private readonly Func<object[], string[], object> method;
+		private readonly TContext context;
+		private readonly Func<TContext, string[], object> method;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// Gets the context object array used during token replacement.
+		/// Gets the context object used during token replacement.
 		/// </summary>
-		public object[] Context
+		public TContext Context
 		{
 			get
 			{
@@ -53,7 +53,7 @@ namespace TextMetal.Common.Core.Tokenization
 		/// <summary>
 		/// Gets the callback method to evaluate during token replacement.
 		/// </summary>
-		public Func<object[], string[], object> Method
+		public Func<TContext, string[], object> Method
 		{
 			get
 			{

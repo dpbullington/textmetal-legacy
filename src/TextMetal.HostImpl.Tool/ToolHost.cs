@@ -158,6 +158,7 @@ namespace TextMetal.HostImpl.Tool
 										};
 						globalVariableTable.Add("ToolVersion", toolVersion);
 						globalVariableTable.Add("Environment", environment);
+						globalVariableTable.Add("StartUtc", startUtc);
 
 						// add properties to GVT
 						foreach (KeyValuePair<string, IList<string>> property in properties)

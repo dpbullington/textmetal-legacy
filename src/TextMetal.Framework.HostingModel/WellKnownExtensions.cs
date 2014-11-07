@@ -5,6 +5,7 @@
 
 using System;
 
+using TextMetal.Common.Core;
 using TextMetal.Common.Core.Tokenization;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.AssociativeModel;
@@ -89,7 +90,30 @@ namespace TextMetal.Framework.HostingModel
 
 			tokenizer.TokenReplacementStrategies.Add("StaticPropertyResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticPropertyResolver));
 			tokenizer.TokenReplacementStrategies.Add("StaticMethodResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticMethodResolver));
-			tokenizer.TokenReplacementStrategies.Add("rb", new ContextualDynamicValueTokenReplacementStrategy(RubyConstruct.RubyExpressionResolver, new object[] { templatingContext }));
+			tokenizer.TokenReplacementStrategies.Add("rb", new ContextualDynamicValueTokenReplacementStrategy<ITemplatingContext>(RubyConstruct.RubyExpressionResolver, templatingContext));
+			tokenizer.TokenReplacementStrategies.Add("printf", new ContextualDynamicValueTokenReplacementStrategy<ITemplatingContext>(printf, templatingContext));
+		}
+
+		public static object printf(ITemplatingContext context, string[] parameters)
+		{
+			const int CNT_P = 2; // token, format
+			object value;
+
+			if ((object)context == null)
+				throw new ArgumentNullException("context");
+
+			if ((object)parameters == null)
+				throw new ArgumentNullException("parameters");
+
+			if (parameters.Length != CNT_P)
+				throw new InvalidOperationException(string.Format("printf expects '{1}' parameter(s) but received '{0}' parameter(s).", parameters.Length, CNT_P));
+
+			var x = context.GetDynamicWildcardTokenReplacementStrategy();
+
+			if (!x.GetByToken(parameters[0], out value))
+				return null;
+
+			return value.SafeToString(parameters[1]);
 		}
 
 		#endregion
