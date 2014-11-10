@@ -133,7 +133,7 @@ namespace TextMetal.Common.Solder.DependencyManagement
 		/// <typeparam name="TAttribute"> The custom attribute type. </typeparam>
 		/// <param name="target"> The target ICustomAttributeProvider (Assembly, Type, MemberInfo, etc.) </param>
 		/// <returns> The single custom attribute or null if none are defined. </returns>
-		private static TAttribute GetOneAttribute<TAttribute>(ICustomAttributeProvider target)
+		internal static TAttribute GetOneAttribute<TAttribute>(ICustomAttributeProvider target)
 			where TAttribute : Attribute
 		{
 			TAttribute[] attributes;
@@ -504,8 +504,6 @@ namespace TextMetal.Common.Solder.DependencyManagement
 		/// <returns> A value indicating if at least one dependency resolution is present. </returns>
 		public bool HasTypeResolution(Type targetType, string selectorKey)
 		{
-			List<KeyValuePair<Type, string>> traitsToRemove;
-
 			if (this.Disposed)
 				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
 
@@ -519,8 +517,6 @@ namespace TextMetal.Common.Solder.DependencyManagement
 
 			try
 			{
-				traitsToRemove = new List<KeyValuePair<Type, string>>();
-
 				return this.DependencyResolutionRegistrations.Keys.Count(x => x.Key == targetType
 																			&& ((object)selectorKey == null || x.Value == selectorKey)) > 0;
 			}
@@ -656,7 +652,7 @@ namespace TextMetal.Common.Solder.DependencyManagement
 #if !ALLOW_FCFS_INDIRECT_RESOLUTION
 					throw new DependencyException(string.Format("Dependency resolution in the in-effect dependency manager failed to match for target type '{0}' and selector key '{1}'.", targetType.FullName, selectorKey));
 #else
-	// no direct resolution; lets try FCFS indirect resolution...
+					// no direct resolution; lets try FCFS indirect resolution...
 					var candidateResolutions = this.DependencyResolutionRegistrations.Keys.Where(x => targetType.IsAssignableFrom(x.Key)
 						&& (selectorKey == string.Empty || x.Value == selectorKey));
 

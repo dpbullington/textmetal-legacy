@@ -9,6 +9,8 @@ namespace TextMetal.Common.Solder.DependencyManagement
 {
 	/// <summary>
 	/// Provides the Factory Method pattern used to resolve dependencies.
+	/// This implementation allows only a single instance to be created, cached, and reused.
+	/// The singleton instance is the result a value passed as a constructor parameter.
 	/// </summary>
 	public sealed class SingletonDependencyResolution : IDependencyResolution
 	{

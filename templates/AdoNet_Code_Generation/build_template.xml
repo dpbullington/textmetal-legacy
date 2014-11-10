@@ -332,9 +332,6 @@ EndGlobal
       <HintPath>..\..\lib\SQLite\x64\System.Data.SQLite.dll</HintPath>
     </Reference>
 
-	<Reference Include="TextMetal.Common.Cerealization">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Cerealization.dll</HintPath>
-    </Reference>
 	<Reference Include="TextMetal.Common.Core">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Core.dll</HintPath>
     </Reference>

@@ -190,7 +190,7 @@ namespace ${ClrNamespace}.${FolderName}
 			}
 			private set
 			{
-				if (!DataType.ObjectsEqualValueSemantics(this.enumerationComplete, value))
+				if (!DataType.Instance.ObjectsEqualValueSemantics(this.enumerationComplete, value))
 				{
 					this.enumerationComplete = value;
 					OnPropertyChanged("EnumerationComplete");
@@ -206,7 +206,7 @@ namespace ${ClrNamespace}.${FolderName}
 			}
 			set
 			{
-				if (!DataType.ObjectsEqualValueSemantics(this.results, value))
+				if (!DataType.Instance.ObjectsEqualValueSemantics(this.results, value))
 				{
 					this.results = value;
 					this.EnumerationComplete = false;
@@ -251,7 +251,7 @@ namespace ${ClrNamespace}.${FolderName}
 			}
 			set
 			{
-				if (!DataType.ObjectsEqualValueSemantics(this.@${ParameterNameCamelCase}, value))
+				if (!DataType.Instance.ObjectsEqualValueSemantics(this.@${ParameterNameCamelCase}, value))
 				{
 					this.@${ParameterNameCamelCase} = value;
 					OnPropertyChanged(PARAMETER_NAME_${ParameterNameConstantCase});

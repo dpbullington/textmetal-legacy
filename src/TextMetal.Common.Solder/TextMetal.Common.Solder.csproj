@@ -61,6 +61,7 @@
     <Compile Include="DependencyManagement\DependencyRegistrationAttribute.cs" />
     <Compile Include="DependencyManagement\IDependencyManager.cs" />
     <Compile Include="DependencyManagement\IDependencyResolution.cs" />
+    <Compile Include="DependencyManagement\ChainSingletonDependencyResolution.cs" />
     <Compile Include="DependencyManagement\SingletonDependencyResolution.cs" />
     <Compile Include="ExecutionPathStorage.cs" />
     <Compile Include="RuntimeInterception\AspectDynamicInvoker.cs" />

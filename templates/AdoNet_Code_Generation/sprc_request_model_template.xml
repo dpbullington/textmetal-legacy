@@ -172,7 +172,7 @@ namespace ${ClrNamespace}.${FolderName}
 			}
 			set
 			{
-				if (!DataType.ObjectsEqualValueSemantics(this.@${ParameterNameCamelCase}, value))
+				if (!DataType.Instance.ObjectsEqualValueSemantics(this.@${ParameterNameCamelCase}, value))
 				{
 					this.@${ParameterNameCamelCase} = value;
 					OnPropertyChanged(PARAMETER_NAME_${ParameterNameConstantCase});

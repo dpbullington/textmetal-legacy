@@ -18,9 +18,26 @@ namespace TextMetal.Common.Solder.DependencyManagement
 		/// <summary>
 		/// Initializes a new instance of the DependencyException class.
 		/// </summary>
+		public DependencyException()
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the DependencyException class.
+		/// </summary>
 		/// <param name="message"> The message that describes the error. </param>
 		public DependencyException(string message)
 			: base(message)
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the DependencyException class.
+		/// </summary>
+		/// <param name="message"> The message that describes the error. </param>
+		/// <param name="innerException"> The inner exception. </param>
+		public DependencyException(string message, Exception innerException)
+			: base(message, innerException)
 		{
 		}
 

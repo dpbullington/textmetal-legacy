@@ -9,6 +9,7 @@ namespace TextMetal.Common.Solder.DependencyManagement
 {
 	/// <summary>
 	/// Provides the Factory Method pattern used to resolve dependencies.
+	/// Requires a public, default constructor on the target type.
 	/// </summary>
 	/// <typeparam name="TObject"> The actual type of the resolution. </typeparam>
 	public sealed class ConstructorDependencyResolution<TObject> : IDependencyResolution

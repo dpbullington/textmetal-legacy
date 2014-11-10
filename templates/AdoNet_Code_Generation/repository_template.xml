@@ -18,8 +18,8 @@ using System.Reflection;
 using System.Web;
 using System.Xml;
 
-using TextMetal.Common.Cerealization;
 using TextMetal.Common.Core;
+using TextMetal.Common.Core.Cerealization;
 using TextMetal.Common.Data;
 using TextMetal.Common.Data.Framework;
 using TextMetal.Common.Solder.DependencyManagement;

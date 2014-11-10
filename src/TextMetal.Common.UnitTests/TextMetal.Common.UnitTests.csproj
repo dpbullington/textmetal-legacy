@@ -74,6 +74,7 @@
     <Compile Include="TestingInfrastructure\MockDynamicInvoker.cs" />
     <Compile Include="TestingInfrastructure\MockDynamicInvokerRealProxy.cs" />
     <Compile Include="TestingInfrastructure\MockModelObject.cs" />
+    <Compile Include="TestingInfrastructure\MockDependantObject.cs" />
     <Compile Include="TestingInfrastructure\MockProxyFactory.cs" />
     <Compile Include="Core\Tokenization\_\DynamicValueTokenReplacementStrategyTests.cs" />
     <Compile Include="Core\Tokenization\_\StaticValueTokenReplacementStrategyTests.cs" />

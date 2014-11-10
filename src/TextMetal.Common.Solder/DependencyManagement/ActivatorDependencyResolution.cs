@@ -4,11 +4,15 @@
 */
 
 using System;
+using System.Linq;
+using System.Reflection;
 
 namespace TextMetal.Common.Solder.DependencyManagement
 {
 	/// <summary>
 	/// Provides the Factory Method pattern used to resolve dependencies.
+	/// This implementation uses Activator.CreateInstance(...) and is the only implementation
+	/// that allows for constructor auto-wiring using the DependencyInjectionAttribute.
 	/// </summary>
 	public sealed class ActivatorDependencyResolution : IDependencyResolution
 	{
@@ -517,6 +521,68 @@ namespace TextMetal.Common.Solder.DependencyManagement
 			return new ActivatorDependencyResolution(actualType, new Type[] { parameterType0, parameterType1, parameterType2, parameterType3, parameterType4, parameterType5, parameterType6, parameterType7, parameterType8, parameterType9, parameterType10, parameterType11, parameterType12, parameterType13, parameterType14, parameterType15 });
 		}
 
+		private object CoreResolve(IDependencyManager dependencyManager)
+		{
+			object[] invocationArguments;
+			int index = 0;
+
+			ConstructorInfo constructorInfo;
+			ParameterInfo[] parameterInfos;
+			ParameterInfo parameterInfo;
+			DependencyInjectionAttribute dependencyInjectionAttribute;
+
+			if ((object)dependencyManager == null)
+				throw new ArgumentNullException("dependencyManager");
+
+			constructorInfo = this.ActualType.GetConstructor(this.ParameterTypes);
+
+			if ((object)constructorInfo == null)
+			{
+				if (this.ActualType.IsValueType)
+					return this.GetResolutionInstance(new object[] { });
+
+				throw new DependencyException(string.Format("Constructor lookup failed for target type '{0}' and parameter types '{1}'.", this.ActualType.FullName, string.Join("|", this.ParameterTypes.Select(pt => pt.FullName).ToArray())));
+			}
+
+			parameterInfos = constructorInfo.GetParameters();
+
+			if (parameterInfos == null || parameterInfos.Length != this.ParameterTypes.Length)
+				throw new DependencyException(string.Format("Constructor parameter list mismatch occured for target type '{0}' and parameter types '{1}'.", this.ActualType.FullName, string.Join("|", this.ParameterTypes.Select(pt => pt.FullName).ToArray())));
+
+			invocationArguments = new object[this.ParameterTypes.Length];
+
+			foreach (Type parameterType in this.ParameterTypes)
+			{
+				parameterInfo = parameterInfos[index];
+
+				if (!parameterInfo.ParameterType.IsAssignableFrom(parameterType))
+					throw new DependencyException(string.Format("Constructor parameter '{2}' type '{3}' is not assignable to dependency type '{4}' for target type '{0}' and parameter types '{1}'.", this.ActualType.FullName, string.Join("|", this.ParameterTypes.Select(pt => pt.FullName).ToArray()), parameterInfo.Name, parameterInfo.ParameterType.FullName, parameterType.FullName));
+
+				dependencyInjectionAttribute = DependencyManager.GetOneAttribute<DependencyInjectionAttribute>(parameterInfo);
+
+				// TODO: should lookup occur using parameterType or parameterInfo.ParameterType ???
+				if ((object)dependencyInjectionAttribute != null)
+					invocationArguments[index] = dependencyManager.ResolveDependency(parameterType, dependencyInjectionAttribute.SelectorKey);
+				else
+					invocationArguments[index] = Activator.CreateInstance(parameterType, this.UseNonPublicDefault);
+
+				index++;
+			}
+
+			return this.GetResolutionInstance(invocationArguments);
+		}
+
+		private object GetResolutionInstance(object[] args)
+		{
+			if ((object)args == null)
+				throw new ArgumentNullException("args");
+
+			if (this.UseNonPublicDefault && args.Length == 0)
+				return Activator.CreateInstance(this.ActualType, true);
+			else
+				return Activator.CreateInstance(this.ActualType, args);
+		}
+
 		/// <summary>
 		/// Resolves a dependency.
 		/// </summary>
@@ -524,25 +590,18 @@ namespace TextMetal.Common.Solder.DependencyManagement
 		/// <returns> An instance of an object or null. </returns>
 		public object Resolve(IDependencyManager dependencyManager)
 		{
-			object[] invocationArguments;
-			int index = 0;
-
-			if ((object)dependencyManager == null)
-				throw new ArgumentNullException("dependencyManager");
-
-			invocationArguments = new object[this.ParameterTypes.Length];
-
-			foreach (Type parameterType in this.ParameterTypes)
+			try
 			{
-				// vCurrent: just assumes default selector
-				// vNext: will use DependencyInjectionAttribute auto-wire on target type contructor for selector
-				invocationArguments[index++] = dependencyManager.ResolveDependency(parameterType, string.Empty);
+				return this.CoreResolve(dependencyManager);
 			}
-
-			if (this.UseNonPublicDefault)
-				return Activator.CreateInstance(this.ActualType, true);
-			else
-				return Activator.CreateInstance(this.ActualType, invocationArguments);
+			catch (DependencyException)
+			{
+				throw;
+			}
+			catch (Exception ex)
+			{
+				throw new DependencyException(string.Format("Exception occured during activator dependency resolution for target type '{0}' and parameter types '{1}'.", this.ActualType.FullName, string.Join("|", this.ParameterTypes.Select(pt => pt.FullName).ToArray())), ex);
+			}
 		}
 
 		#endregion

@@ -114,7 +114,7 @@ namespace ${ClrNamespace}.${FolderName}
 
 			_messages = new List<Message>();
 
-			if (DataType.IsNullOrWhiteSpace(this.XXX))
+			if (DataType.Instance.IsNullOrWhiteSpace(this.XXX))
 				_messages.Add(new Message("", "XXX is required.", Severity.Error));
 
 			if (_messages.Count == 0)

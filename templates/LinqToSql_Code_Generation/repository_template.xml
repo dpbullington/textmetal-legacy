@@ -21,7 +21,7 @@ using System.Xml.Linq;
 using TextMetal.Common.Core;
 using TextMetal.Common.Data;
 using TextMetal.Common.Data.Framework;
-using TextMetal.Common.Data.Framework.LinqToSql;
+using TextMetal.Common.Data.LinqToSql;
 using TextMetal.Common.Syntax.Expressions;
 using TextMetal.Common.Syntax.Operators;
 using TextMetal.Common.Syntax.Statements;
@@ -249,7 +249,7 @@ namespace ${ClrNamespace}
 				throw new ArgumentOutOfRangeException(string.Format("The model type '{0}' was not recognized. Try re-generating the repository code from the templates using TextMetal.exe and try again.", modelType.FullName));
 		}
 
-		public override TResponseModel ExecuteImperative<TRequestModel, TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TRequestModel requestModel)
+		public override TResponseModel Execute<TRequestModel, TResultModel, TResponseModel>(IUnitOfWork unitOfWork, TRequestModel requestModel)
 		{
 			throw new NotImplementedException();
 		}

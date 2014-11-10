@@ -183,6 +183,32 @@ $argz = @("/views",
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
 
+
+
+
+$xd = New-Object System.Xml.XmlDocument
+$xd.Load($l2s_dbml_file)
+$xa_list = $xd.SelectNodes("//@CanBeNull")
+
+if ($xa_list -ne $null)
+{
+	$xa_list.Count
+
+	foreach ($xa_item in $xa_list)
+	{
+		$xa_item.Value = "true"
+	}
+}
+else
+{
+	echo "Warning: no XPATH results."
+}
+
+$xd.Save($l2s_dbml_file)
+
+
+
+
 $argz = @("/language:C#",
 	"/code:$l2s_designer_cs_file",
 	"$l2s_dbml_file")

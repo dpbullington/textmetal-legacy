@@ -440,7 +440,7 @@ namespace ${ClrNamespace}.${FolderName}
 			}
 			set
 			{
-				if (!DataType.ObjectsEqualValueSemantics(this.@${ColumnNameCamelCase}, value))
+				if (!DataType.Instance.ObjectsEqualValueSemantics(this.@${ColumnNameCamelCase}, value))
 				{
 					this.@${ColumnNameCamelCase} = value;
 					OnPropertyChanged("${ColumnNamePascalCase}");

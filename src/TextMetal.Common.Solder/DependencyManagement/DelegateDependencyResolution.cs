@@ -9,6 +9,7 @@ namespace TextMetal.Common.Solder.DependencyManagement
 {
 	/// <summary>
 	/// Provides the Factory Method pattern used to resolve dependencies.
+	/// This implementation executes a callback each time a dependency resolution occurs.
 	/// </summary>
 	public sealed class DelegateDependencyResolution : IDependencyResolution
 	{
