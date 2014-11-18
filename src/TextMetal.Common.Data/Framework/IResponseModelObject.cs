@@ -10,7 +10,7 @@ namespace TextMetal.Common.Data.Framework
 	/// <summary>
 	/// Provides a contract for response model objects (procedure, function, etc.).
 	/// </summary>
-	public interface IResponseModelObject
+	public interface IResponseModelObject : IBasicObject
 	{
 		#region Properties/Indexers/Events
 
@@ -23,7 +23,7 @@ namespace TextMetal.Common.Data.Framework
 
 		#region Methods/Operators
 
-		void SetEnumerationComplete();
+		void SignalEnumerationComplete();
 
 		#endregion
 	}

@@ -61,15 +61,16 @@
     <Compile Include="DependencyManagement\DependencyRegistrationAttribute.cs" />
     <Compile Include="DependencyManagement\IDependencyManager.cs" />
     <Compile Include="DependencyManagement\IDependencyResolution.cs" />
-    <Compile Include="DependencyManagement\ChainSingletonDependencyResolution.cs" />
     <Compile Include="DependencyManagement\SingletonDependencyResolution.cs" />
     <Compile Include="ExecutionPathStorage.cs" />
     <Compile Include="RuntimeInterception\AspectDynamicInvoker.cs" />
     <Compile Include="RuntimeInterception\DynamicInvoker.cs" />
     <Compile Include="RuntimeInterception\IDynamicInvocation.cs" />
+    <Compile Include="RuntimeInterception\LoggingAspectDynamicInvoker.cs" />
     <Compile Include="RuntimeInterception\ProxyFactory~1.cs" />
     <Compile Include="RuntimeInterception\RemotingImpl\DynamicInvokerRealProxy~1.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
+    <Compile Include="DependencyManagement\LoggingAspectConstructorDependencyResolution~1.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TextMetal.snk">

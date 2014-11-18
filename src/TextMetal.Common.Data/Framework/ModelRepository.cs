@@ -231,7 +231,23 @@ namespace TextMetal.Common.Data.Framework
 		public virtual TModel CreateModel<TModel>()
 			where TModel : class, IModelObject
 		{
-			return DependencyManager.AppDomainInstance.ResolveDependency<TModel>(string.Empty);
+			return this.CreateModel<TModel>((m) =>
+											{
+											});
+		}
+
+		public virtual TModel CreateModel<TModel>(Action<TModel> initializionCallback)
+			where TModel : class, IModelObject
+		{
+			TModel model;
+
+			if ((object)initializionCallback == null)
+				throw new ArgumentNullException("initializionCallback");
+
+			model = DependencyManager.AppDomainInstance.ResolveDependency<TModel>(string.Empty);
+			initializionCallback(model);
+
+			return model;
 		}
 
 		public virtual TRequestModel CreateRequestModel<TRequestModel>()
@@ -620,7 +636,7 @@ namespace TextMetal.Common.Data.Framework
 			Trace.WriteLine("[+++ after yield: GetResultsLazy +++]");
 
 			// alert the response model that we are done enumerating the lazy river...
-			responseModel.SetEnumerationComplete();
+			responseModel.SignalEnumerationComplete();
 
 			// ***** SUPER special case for enumerator *****
 			if (actualRecordsAffected != tacticCommand.ExpectedRecordsAffected)

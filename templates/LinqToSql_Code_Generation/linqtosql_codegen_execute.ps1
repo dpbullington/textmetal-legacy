@@ -19,8 +19,9 @@ $source_strategy = "TextMetal.Framework.SourceModel.DatabaseSchema.Sql.SqlSchema
 $strict = $true
 $property_connection_type = "System.Data.SqlClient.SqlConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
 $property_data_source_tag = "net.sqlserver"
+$property_module_name = "TextMetal.Sample.DomainModel"
 $property_clr_namespace = "TextMetal.Sample.DomainModel"
-$property_clr_super_type = "Object"
+$property_model_clr_super_type = "ModelObject"
 
 $lib_dir = "..\..\lib"
 
@@ -28,11 +29,11 @@ $base_src_dir = "$base_dir\src"
 $base_lib_dir = "$base_dir\lib"
 
 $sn_exe = "C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\sn.exe"
-$snk_file = "$base_src_dir\$property_clr_namespace.snk"
+$snk_file = "$base_src_dir\$property_module_name.snk"
 
 $sql_metal_exe = "C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\SqlMetal.exe"
 
-$l2s_dir = "$base_src_dir\$property_clr_namespace\L2S"
+$l2s_dir = "$base_src_dir\$property_module_name\L2S"
 $l2s_clr_namespace = "$property_clr_namespace.L2S"
 $l2s_data_context_name = "TextMetalDataContext"
 $l2s_dbml_file = "$l2s_dir\$l2s_data_context_name.dbml"
@@ -60,8 +61,9 @@ $argz = @("-templatefile:$template_file",
 	"-strict:$strict",
 	"-property:ConnectionType=$property_connection_type",
 	"-property:DataSourceTag=$property_data_source_tag",
+	"-property:ModuleName=$property_module_name",
 	"-property:ClrNamespace=$property_clr_namespace",
-	"-property:ClrSuperType=$property_clr_super_type",
+	"-property:ModelClrSuperType=$property_model_clr_super_type",
 	"-property:LinqToSqlDataContextRootNamespace=$l2s_clr_namespace",
 	"-property:LinqToSqlTargetDataContextName=$l2s_data_context_name")
 

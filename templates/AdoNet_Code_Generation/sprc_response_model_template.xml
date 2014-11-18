@@ -22,16 +22,16 @@
 				<ForEach.Filter></ForEach.Filter>
 				<ForEach.Body>
 
-					<OutputScope name="${ClrNamespace}\${FolderName}\${ProcedureNameSingularPascalCase}_Response.g.cs">
+					<OutputScope name="${ModuleName}\${FolderName}\${ProcedureNameSingularPascalCase}_Response.g.cs">
 						<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Xml;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Data;
 using TextMetal.Common.Data.Framework;
 ]]>
 						<If>
@@ -55,7 +55,7 @@ using TextMetal.Common.Data.Framework;
 namespace ${ClrNamespace}.${FolderName}
 {
 	[Serializable]
-	public partial class ${ProcedureNameSingularPascalCase}_Response : ${ClrSuperType}, INotifyPropertyChanged, I${ProcedureNameSingularPascalCase}_Response
+	public partial class ${ProcedureNameSingularPascalCase}_Response : ${ResponseModelClrSuperType}<${ProcedureNameSingularPascalCase}_Result>, I${ProcedureNameSingularPascalCase}_Response
 	{
 		#region Constructors/Destructors
 
@@ -67,7 +67,6 @@ namespace ${ClrNamespace}.${FolderName}
 
 		#region Fields/Constants
 
-		private bool enumerationComplete;
 		private IEnumerable<I${ProcedureNameSingularPascalCase}_Result> results;
 
 		public const string SCHEMA_NAME = "${SchemaName}";
@@ -180,24 +179,6 @@ namespace ${ClrNamespace}.${FolderName}
 
 		#region Properties/Indexers/Events
 
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		public bool EnumerationComplete
-		{
-			get
-			{
-				return this.enumerationComplete;
-			}
-			private set
-			{
-				if (!DataType.Instance.ObjectsEqualValueSemantics(this.enumerationComplete, value))
-				{
-					this.enumerationComplete = value;
-					OnPropertyChanged("EnumerationComplete");
-				}
-			}
-		}
-
 		public IEnumerable<I${ProcedureNameSingularPascalCase}_Result> Results
 		{
 			get
@@ -210,7 +191,7 @@ namespace ${ClrNamespace}.${FolderName}
 				{
 					this.results = value;
 					this.EnumerationComplete = false;
-					OnPropertyChanged("Results");
+					this.OnPropertyChanged("Results");
 				}
 			}
 		}
@@ -254,7 +235,7 @@ namespace ${ClrNamespace}.${FolderName}
 				if (!DataType.Instance.ObjectsEqualValueSemantics(this.@${ParameterNameCamelCase}, value))
 				{
 					this.@${ParameterNameCamelCase} = value;
-					OnPropertyChanged(PARAMETER_NAME_${ParameterNameConstantCase});
+					this.OnPropertyChanged(PARAMETER_NAME_${ParameterNameConstantCase});
 				}
 			}
 		}
@@ -262,26 +243,6 @@ namespace ${ClrNamespace}.${FolderName}
 							</ForEach.Body>
 						</ForEach>
 <![CDATA[
-		#endregion
-
-		#region Methods/Operators
-
-		protected void OnAllPropertiesChanged()
-        {
-			this.OnPropertyChanged(null);
-		}
-
-		protected void OnPropertyChanged(string propertyName)
-        {
-			if ((object)this.PropertyChanged != null)
-				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-		void IResponseModelObject.SetEnumerationComplete()
-		{
-			this.EnumerationComplete = true;
-		}
-
 		#endregion
 	}
 }

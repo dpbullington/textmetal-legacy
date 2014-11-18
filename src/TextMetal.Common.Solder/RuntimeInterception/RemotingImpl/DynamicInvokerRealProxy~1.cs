@@ -15,10 +15,10 @@ using System.Runtime.Remoting.Proxies;
 namespace TextMetal.Common.Solder.RuntimeInterception.RemotingImpl
 {
 	/// <summary>
-	/// Provides an abstract base for real proxy objects which leverage the dynamic invoker infrastructure (i.e. IDynamicInvocation).
+	/// Provides a (remoting) real proxy for objects which leverage the dynamic invoker infrastructure (i.e. IDynamicInvocation).
 	/// </summary>
 	/// <typeparam name="TTransparentProxy"> The type of the transparent proxy object served up by this class. </typeparam>
-	public abstract class DynamicInvokerRealProxy<TTransparentProxy> : RealProxy, IDisposable, IRemotingTypeInfo
+	public sealed class DynamicInvokerRealProxy<TTransparentProxy> : RealProxy, IDisposable, IRemotingTypeInfo
 		where TTransparentProxy : class
 	{
 		#region Constructors/Destructors
@@ -27,7 +27,7 @@ namespace TextMetal.Common.Solder.RuntimeInterception.RemotingImpl
 		/// Initializes a new instance of the DynamicInvokerRealProxy`1 class.
 		/// </summary>
 		/// <param name="dynamicInvocation"> The dynamic invoker object to use. </param>
-		protected DynamicInvokerRealProxy(IDynamicInvocation dynamicInvocation)
+		public DynamicInvokerRealProxy(IDynamicInvocation dynamicInvocation)
 			: base(typeof(TTransparentProxy))
 		{
 			if ((object)dynamicInvocation == null)

@@ -17,10 +17,10 @@ namespace TextMetal.Common.Data.LinqToSql
 	{
 		#region Methods/Operators
 
-		IEnumerable<T> LinqQuery<T>(Func<TDataContext, IQueryable<T>> query);
+		TProjection LinqQuery<TProjection>(Func<TDataContext, TProjection> dataContextQueryCallback);
 
-		IEnumerable<T> LinqQuery<T>(IUnitOfWork unitOfWork,
-			Func<TDataContext, IQueryable<T>> query);
+		TProjection LinqQuery<TProjection>(IUnitOfWork unitOfWork,
+			Func<TDataContext, TProjection> dataContextQueryCallback);
 
 		#endregion
 	}

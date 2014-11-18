@@ -1,26 +1,29 @@
-﻿/*
-	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+/*
+	Copyright �2002-2014 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
 using System;
 
+using TextMetal.Common.Solder.RuntimeInterception;
+using TextMetal.Common.Solder.RuntimeInterception.RemotingImpl;
+
 namespace TextMetal.Common.Solder.DependencyManagement
 {
 	/// <summary>
-	/// Provides the Factory Method pattern used to resolve dependencies.
-	/// This implementation allows only a single instance to be created, cached, and reused.
-	/// The singleton instance is the result of a chained IDependencyResolution execution once.
+	/// TODO
 	/// </summary>
-	public sealed class ChainSingletonDependencyResolution : IDependencyResolution
+	/// <typeparam name="TObject"> The actual type of the resolution. </typeparam>
+	public sealed class LoggingAspectConstructorDependencyResolution<TObject> : IDependencyResolution
+		where TObject : class
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the ChainSingletonDependencyResolution class.
+		/// Initializes a new instance of the LoggingAspectConstructorDependencyResolution`1 class.
 		/// </summary>
 		/// <param name="chainedDependencyResolution"> The singleton instance. </param>
-		public ChainSingletonDependencyResolution(IDependencyResolution chainedDependencyResolution)
+		public LoggingAspectConstructorDependencyResolution(IDependencyResolution chainedDependencyResolution)
 		{
 			if ((object)chainedDependencyResolution == null)
 				throw new ArgumentNullException("chainedDependencyResolution");
@@ -33,8 +36,6 @@ namespace TextMetal.Common.Solder.DependencyManagement
 		#region Fields/Constants
 
 		private readonly IDependencyResolution chainedDependencyResolution;
-		private bool frozen;
-		private object instance;
 
 		#endregion
 
@@ -45,30 +46,6 @@ namespace TextMetal.Common.Solder.DependencyManagement
 			get
 			{
 				return this.chainedDependencyResolution;
-			}
-		}
-
-		private bool Frozen
-		{
-			get
-			{
-				return this.frozen;
-			}
-			set
-			{
-				this.frozen = value;
-			}
-		}
-
-		private object Instance
-		{
-			get
-			{
-				return this.instance;
-			}
-			set
-			{
-				this.instance = value;
 			}
 		}
 
@@ -83,21 +60,20 @@ namespace TextMetal.Common.Solder.DependencyManagement
 		/// <returns> An instance of an object or null. </returns>
 		public object Resolve(IDependencyManager dependencyManager)
 		{
+			object interceptedInstance;
+			TObject wrapperInstance;
+
 			if ((object)dependencyManager == null)
 				throw new ArgumentNullException("dependencyManager");
 
-			if(this.Frozen)
-				return this.Instance;
+			interceptedInstance = this.ChainedDependencyResolution.Resolve(dependencyManager);
 
-			try
-			{
-				this.Instance = this.ChainedDependencyResolution.Resolve(dependencyManager);
-				return this.Instance;
-			}
-			finally 
-			{
-				this.Frozen = true;
-			}
+			if ((object)interceptedInstance == null)
+				return null;
+
+			wrapperInstance = (TObject)new DynamicInvokerRealProxy<TObject>(new LoggingAspectDynamicInvoker(interceptedInstance)).GetTransparentProxy();
+
+			return wrapperInstance;
 		}
 
 		#endregion

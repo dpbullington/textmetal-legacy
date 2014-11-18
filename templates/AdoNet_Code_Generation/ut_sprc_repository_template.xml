@@ -6,7 +6,7 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
 
-	<OutputScope name="${ClrNamespace}.UnitTests\RepositoryTests.sp.g.cs">
+	<OutputScope name="${ModuleName}.UnitTests\RepositoryTests.sp.g.cs">
 		<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 

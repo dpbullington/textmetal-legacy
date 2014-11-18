@@ -22,7 +22,7 @@
 				<ForEach.Filter></ForEach.Filter>
 				<ForEach.Body>
 
-					<OutputScope name="${ClrNamespace}\${FolderName}\I${ProcedureNameSingularPascalCase}_Request.g.cs">
+					<OutputScope name="${ModuleName}\${FolderName}\I${ProcedureNameSingularPascalCase}_Request.g.cs">
 						<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 

@@ -19,8 +19,12 @@ $source_strategy = "TextMetal.Framework.SourceModel.DatabaseSchema.Sql.SqlSchema
 $strict = $true
 $property_connection_type = "System.Data.SqlClient.SqlConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
 $property_data_source_tag = "net.sqlserver"
+$property_module_name = "TextMetal.Sample.DataModel"
 $property_clr_namespace = "TextMetal.Sample.DataModel"
-$property_clr_super_type = "Object"
+$property_model_clr_super_type = "ModelObject"
+$property_request_model_clr_super_type = "RequestModelObject"
+$property_result_model_clr_super_type = "ResultModelObject"
+$property_response_model_clr_super_type = "ResponseModelObject"
 
 $lib_dir = "..\..\lib"
 
@@ -28,7 +32,7 @@ $base_src_dir = "$base_dir\src"
 $base_lib_dir = "$base_dir\lib"
 
 $sn_exe = "C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\sn.exe"
-$snk_file = "$base_src_dir\$property_clr_namespace.snk"
+$snk_file = "$base_src_dir\$property_module_name.snk"
 
 echo "The operation is starting..."
 
@@ -52,8 +56,12 @@ $argz = @("-templatefile:$template_file",
 	"-strict:$strict",
 	"-property:ConnectionType=$property_connection_type",
 	"-property:DataSourceTag=$property_data_source_tag",
+	"-property:ModuleName=$property_module_name",
 	"-property:ClrNamespace=$property_clr_namespace",
-	"-property:ClrSuperType=$property_clr_super_type")
+	"-property:ModelClrSuperType=$property_model_clr_super_type",
+	"-property:RequestModelClrSuperType=$property_request_model_clr_super_type",
+	"-property:ResultModelClrSuperType=$property_result_model_clr_super_type",
+	"-property:ResponseModelClrSuperType=$property_response_model_clr_super_type")
 
 &"$textmetal_exe" $argz
 

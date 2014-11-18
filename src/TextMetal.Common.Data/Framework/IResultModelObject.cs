@@ -10,7 +10,7 @@ namespace TextMetal.Common.Data.Framework
 	/// <summary>
 	/// Provides a contract for result model objects (procedure, function, etc.).
 	/// </summary>
-	public interface IResultModelObject
+	public interface IResultModelObject : IBasicObject
 	{
 	}
 }

@@ -49,6 +49,12 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Framework\BasicObject.cs" />
+    <Compile Include="Framework\IBasicObject.cs" />
+    <Compile Include="Framework\ResultModelObject.cs" />
+    <Compile Include="Framework\ResponseModelObject~1.cs" />
+    <Compile Include="Framework\RequestModelObject.cs" />
+    <Compile Include="Framework\ModelObject.cs" />
     <Compile Include="LinqToSql\AmbientUnitOfWorkAwareDisposableWrapper~1.cs" />
     <Compile Include="LinqToSql\ILinqToSqlModelRepository~1.cs" />
     <Compile Include="LinqToSql\LinqTableQuery~1.cs" />
@@ -110,7 +116,9 @@
       <Name>TextMetal.Common.Syntax</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Framework\Model\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

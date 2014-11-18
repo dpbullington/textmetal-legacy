@@ -22,24 +22,64 @@ namespace TextMetal.Common.Solder.DependencyManagement
 		/// <param name="instance"> The singleton instance. </param>
 		public SingletonDependencyResolution(object instance)
 		{
-			this.instance = instance;
+			this.Instance = instance;
+			this.Frozen = true;
+			this.chainedDependencyResolution = null;
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the SingletonDependencyResolution class.
+		/// </summary>
+		/// <param name="chainedDependencyResolution"> The chained dependency resolution which is called only once. </param>
+		public SingletonDependencyResolution(IDependencyResolution chainedDependencyResolution)
+		{
+			if ((object)chainedDependencyResolution == null)
+				throw new ArgumentNullException("chainedDependencyResolution");
+
+			this.chainedDependencyResolution = chainedDependencyResolution;
 		}
 
 		#endregion
 
 		#region Fields/Constants
 
-		private readonly object instance;
+		private readonly IDependencyResolution chainedDependencyResolution;
+		private bool frozen;
+		private object instance;
 
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		private IDependencyResolution ChainedDependencyResolution
+		{
+			get
+			{
+				return this.chainedDependencyResolution;
+			}
+		}
+
+		private bool Frozen
+		{
+			get
+			{
+				return this.frozen;
+			}
+			set
+			{
+				this.frozen = value;
+			}
+		}
 
 		private object Instance
 		{
 			get
 			{
 				return this.instance;
+			}
+			set
+			{
+				this.instance = value;
 			}
 		}
 
@@ -81,7 +121,18 @@ namespace TextMetal.Common.Solder.DependencyManagement
 			if ((object)dependencyManager == null)
 				throw new ArgumentNullException("dependencyManager");
 
-			return this.Instance;
+			if (this.Frozen || (object)this.ChainedDependencyResolution == null)
+				return this.Instance;
+
+			try
+			{
+				this.Instance = this.ChainedDependencyResolution.Resolve(dependencyManager);
+				return this.Instance;
+			}
+			finally
+			{
+				this.Frozen = true;
+			}
 		}
 
 		#endregion

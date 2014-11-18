@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -433,14 +434,55 @@ namespace TextMetal.Common.Data.LinqToSql
 			}
 		}
 
-		public IEnumerable<T> LinqQuery<T>(Func<TDataContext, IQueryable<T>> query)
+		public TProjection LinqQuery<TProjection>(Func<TDataContext, TProjection> dataContextQueryCallback)
 		{
-			throw new NotImplementedException();
+			TProjection projection;
+
+			if ((object)dataContextQueryCallback == null)
+				throw new ArgumentNullException("dataContextQueryCallback");
+
+			if ((object)UnitOfWork.Current == null)
+			{
+				using (IUnitOfWork unitOfWork = this.GetUnitOfWork())
+				{
+					projection = this.LinqQuery<TProjection>(unitOfWork, dataContextQueryCallback);
+
+					// HACK ALERT: will this work as expected?
+					if(projection is IEnumerable)
+						((IEnumerable)projection).Cast<object>().ToList(); // FORCE EAGER LOAD
+
+					unitOfWork.Complete();
+				}
+			}
+			else
+			{
+				projection = this.LinqQuery<TProjection>(UnitOfWork.Current, dataContextQueryCallback);
+
+				// DO NOT FORCE EAGER LOAD
+			}
+
+			return projection;
 		}
 
-		public IEnumerable<T> LinqQuery<T>(IUnitOfWork unitOfWork, Func<TDataContext, IQueryable<T>> query)
+		public TProjection LinqQuery<TProjection>(IUnitOfWork unitOfWork, Func<TDataContext, TProjection> dataContextQueryCallback)
 		{
-			throw new NotImplementedException();
+			TProjection projection;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)dataContextQueryCallback == null)
+				throw new ArgumentNullException("dataContextQueryCallback");
+
+			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = GetContext(unitOfWork))
+			{
+				projection = dataContextQueryCallback(wrapper.Disposable);
+
+				if ((object)projection == null)
+					throw new InvalidOperationException(string.Format("The projection returned was invalid."));
+
+				return projection;
+			}
 		}
 
 		protected bool LinqSave<TModel, TTable>(TModel model,

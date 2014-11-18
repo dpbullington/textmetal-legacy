@@ -3,6 +3,7 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
+using System;
 using System.Collections.Generic;
 
 namespace TextMetal.Common.Data.Framework
@@ -12,6 +13,9 @@ namespace TextMetal.Common.Data.Framework
 		#region Methods/Operators
 
 		TModel CreateModel<TModel>()
+			where TModel : class, IModelObject;
+
+		TModel CreateModel<TModel>(Action<TModel> initializionCallback)
 			where TModel : class, IModelObject;
 
 		TRequestModel CreateRequestModel<TRequestModel>()

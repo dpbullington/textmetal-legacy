@@ -45,7 +45,7 @@
 						</If.True>
 					</If>
 
-					<OutputScope name="${ClrNamespace}\${FolderName}\I${TableNameSingularPascalCase}.g.cs">
+					<OutputScope name="${ModuleName}\${FolderName}\I${TableNameSingularPascalCase}.g.cs">
 						<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 

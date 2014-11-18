@@ -13,16 +13,7 @@ namespace TextMetal.Common.Data.Framework
 	/// <summary>
 	/// Provides a contract for request model objects (procedure, function, etc.).
 	/// </summary>
-	public interface IRequestModelObject
+	public interface IRequestModelObject : IBasicObject
 	{
-		#region Methods/Operators
-
-		/// <summary>
-		/// Validates this model instance.
-		/// </summary>
-		/// <returns> A enumerable of zero or more messages. </returns>
-		IEnumerable<Message> Validate();
-
-		#endregion
 	}
 }

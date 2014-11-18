@@ -66,12 +66,12 @@ $msbuild_exe = "C:\Program Files (x86)\MSBuild\12.0\bin\amd64\msbuild.exe"
 
 echo "The operation is starting..."
 
-&"$msbuild_exe" /verbosity:quiet /consoleloggerparameters:ErrorsOnly "$src_dir\${ClrNamespace}.sln" /t:clean /p:Configuration="$build_tool_cfg" > _msbuild_log.txt
+&"$msbuild_exe" /verbosity:quiet /consoleloggerparameters:ErrorsOnly "$src_dir\${ModuleName}.sln" /t:clean /p:Configuration="$build_tool_cfg" > _msbuild_log.txt
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
 
-&"$msbuild_exe" /verbosity:quiet /consoleloggerparameters:ErrorsOnly "$src_dir\${ClrNamespace}.sln" /t:build /p:Configuration="$build_tool_cfg" >> _msbuild_log.txt
+&"$msbuild_exe" /verbosity:quiet /consoleloggerparameters:ErrorsOnly "$src_dir\${ModuleName}.sln" /t:build /p:Configuration="$build_tool_cfg" >> _msbuild_log.txt
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
@@ -120,7 +120,7 @@ using System.Runtime.InteropServices;
 ]]>
 	</OutputScope>
 
-	<OutputScope name="${ClrNamespace}\ProjectAssemblyInfo.cs">
+	<OutputScope name="${ModuleName}\ProjectAssemblyInfo.cs">
 		<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 using System.Reflection;
@@ -130,7 +130,7 @@ using System.Reflection;
 ]]>
 	</OutputScope>
 
-	<OutputScope name="${ClrNamespace}.UnitTests\ProjectAssemblyInfo.cs">
+	<OutputScope name="${ModuleName}.UnitTests\ProjectAssemblyInfo.cs">
 		<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 using System.Reflection;
@@ -140,7 +140,7 @@ using System.Reflection;
 ]]>
 	</OutputScope>
 
-	<OutputScope name="${ClrNamespace}.IntegrationTests\ProjectAssemblyInfo.cs">
+	<OutputScope name="${ModuleName}.IntegrationTests\ProjectAssemblyInfo.cs">
 		<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 using System.Reflection;
@@ -150,7 +150,7 @@ using System.Reflection;
 ]]>
 	</OutputScope>
 
-	<OutputScope name="${ClrNamespace}.sln">
+	<OutputScope name="${ModuleName}.sln">
 		<![CDATA[
 Microsoft Visual Studio Solution File, Format Version ${vs_sln_file_version}
 # Visual Studio ${vs_sln_info_version}
@@ -160,11 +160,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 	EndProjectSection
 EndProject
-Project("{10000000-0000-0000-0000-00000000FFFF}") = "${ClrNamespace}", "${ClrNamespace}\${ClrNamespace}.csproj", "{FFFF0000-0000-0000-0000-000000000001}"
+Project("{10000000-0000-0000-0000-00000000FFFF}") = "${ModuleName}", "${ModuleName}\${ModuleName}.csproj", "{FFFF0000-0000-0000-0000-000000000001}"
 EndProject
-Project("{10000000-0000-0000-0000-00000000FFFF}") = "${ClrNamespace}.UnitTests", "${ClrNamespace}.UnitTests\${ClrNamespace}.UnitTests.csproj", "{FFFF0000-0000-0000-0000-000000000002}"
+Project("{10000000-0000-0000-0000-00000000FFFF}") = "${ModuleName}.UnitTests", "${ModuleName}.UnitTests\${ModuleName}.UnitTests.csproj", "{FFFF0000-0000-0000-0000-000000000002}"
 EndProject
-Project("{10000000-0000-0000-0000-00000000FFFF}") = "${ClrNamespace}.IntegrationTests", "${ClrNamespace}.IntegrationTests\${ClrNamespace}.IntegrationTests.csproj", "{FFFF0000-0000-0000-0000-000000000003}"
+Project("{10000000-0000-0000-0000-00000000FFFF}") = "${ModuleName}.IntegrationTests", "${ModuleName}.IntegrationTests\${ModuleName}.IntegrationTests.csproj", "{FFFF0000-0000-0000-0000-000000000003}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -192,95 +192,95 @@ EndGlobal
 ]]>
 	</OutputScope>
 
-	<OutputScope name="${ClrNamespace}.IntegrationTests\App.(${DataSourceTag}).config">
+	<OutputScope name="${ModuleName}.IntegrationTests\App.(${DataSourceTag}).config">
 		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
 
 <configuration>
 	<connectionStrings>
-		<add name="${ClrNamespace}::ConnectionString" connectionString="${ConnectionString}" providerName="${ConnectionType}" />
+		<add name="${ModuleName}::ConnectionString" connectionString="${ConnectionString}" providerName="${ConnectionType}" />
 	</connectionStrings>
 	<appSettings>
-		<add key="${ClrNamespace}::DataSourceTag" value="${DataSourceTag}" />
-		<add key="${ClrNamespace}::UseDatabaseFile" value="false" />
-		<add key="${ClrNamespace}::KillDatabaseFile" value="false" />
-		<add key="${ClrNamespace}::DatabaseFileName" value="" />
-		<add key="${ClrNamespace}::DatabaseDirectoryPath" value="" />
+		<add key="${ModuleName}::DataSourceTag" value="${DataSourceTag}" />
+		<add key="${ModuleName}::UseDatabaseFile" value="false" />
+		<add key="${ModuleName}::KillDatabaseFile" value="false" />
+		<add key="${ModuleName}::DatabaseFileName" value="" />
+		<add key="${ModuleName}::DatabaseDirectoryPath" value="" />
 	</appSettings>
 </configuration>]]>
 	</OutputScope>
 
-	<OutputScope name="${ClrNamespace}.IntegrationTests\App.(net.sqlite).config">
+	<OutputScope name="${ModuleName}.IntegrationTests\App.(net.sqlite).config">
 		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
 
 <configuration>
 	<connectionStrings>
-		<add name="${ClrNamespace}::ConnectionString" connectionString="Data Source={0};FailIfMissing=True" providerName="System.Data.SQLite.SQLiteConnection, System.Data.SQLite" />
+		<add name="${ModuleName}::ConnectionString" connectionString="Data Source={0};FailIfMissing=True" providerName="System.Data.SQLite.SQLiteConnection, System.Data.SQLite" />
 	</connectionStrings>
 	<appSettings>
-		<add key="${ClrNamespace}::DataSourceTag" value="net.sqlite" />
-		<add key="${ClrNamespace}::UseDatabaseFile" value="true" />
-		<add key="${ClrNamespace}::KillDatabaseFile" value="true" />
-		<add key="${ClrNamespace}::DatabaseFileName" value="${ClrNamespace}.database" />
-		<add key="${ClrNamespace}::DatabaseDirectoryPath" value="{0}" />
+		<add key="${ModuleName}::DataSourceTag" value="net.sqlite" />
+		<add key="${ModuleName}::UseDatabaseFile" value="true" />
+		<add key="${ModuleName}::KillDatabaseFile" value="true" />
+		<add key="${ModuleName}::DatabaseFileName" value="${ModuleName}.database" />
+		<add key="${ModuleName}::DatabaseDirectoryPath" value="{0}" />
 	</appSettings>
 </configuration>]]>
 	</OutputScope>
 
-<OutputScope name="${ClrNamespace}\SQL\RevisionHistory.(${DataSourceTag}).xml">
+<OutputScope name="${ModuleName}\SQL\RevisionHistory.(${DataSourceTag}).xml">
 		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
 
 <History xmlns="http://www.textmetal.com/api/v6.0.0">
 </History>]]>
 	</OutputScope>
 
-	<OutputScope name="${ClrNamespace}\SQL\RevisionHistory.(net.sqlite).xml">
+	<OutputScope name="${ModuleName}\SQL\RevisionHistory.(net.sqlite).xml">
 		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
 
 <History xmlns="http://www.textmetal.com/api/v6.0.0">
 </History>]]>
 	</OutputScope>
 
-	<OutputScope name="${ClrNamespace}.UnitTests\UnitTests.nunit">
+	<OutputScope name="${ModuleName}.UnitTests\UnitTests.nunit">
 		<![CDATA[<?xml version="1.0" encoding="utf-8" ?>
 <NUnitProject>
 	<Settings activeconfig="Debug"/>
 
 	<Config configfile="App.config" name="Debug">
-		<assembly path="bin\Debug\${ClrNamespace}.UnitTests.dll"/>
+		<assembly path="bin\Debug\${ModuleName}.UnitTests.dll"/>
 	</Config>
 
 	<Config configfile="App.config" name="Release">
-		<assembly path="bin\Release\${ClrNamespace}.UnitTests.dll"/>
+		<assembly path="bin\Release\${ModuleName}.UnitTests.dll"/>
 	</Config>
 
 </NUnitProject>]]>
 	</OutputScope>
 
-	<OutputScope name="${ClrNamespace}.IntegrationTests\IntegrationTests.nunit">
+	<OutputScope name="${ModuleName}.IntegrationTests\IntegrationTests.nunit">
 		<![CDATA[<?xml version="1.0" encoding="utf-8" ?>
 <NUnitProject>
 	<Settings activeconfig="Debug_${DataSourceTag}"/>
 
 	<Config configfile="App.(${DataSourceTag}).config" name="Debug_(${DataSourceTag})">
-		<assembly path="bin\Debug\${ClrNamespace}.IntegrationTests.dll"/>
+		<assembly path="bin\Debug\${ModuleName}.IntegrationTests.dll"/>
 	</Config>
 
 	<Config configfile="App.(net.sqlite).config" name="Debug_(net.sqlite)">
-		<assembly path="bin\Debug\${ClrNamespace}.IntegrationTests.dll"/>
+		<assembly path="bin\Debug\${ModuleName}.IntegrationTests.dll"/>
 	</Config>
 
 	<Config configfile="App.(${DataSourceTag}).config" name="Release_(${DataSourceTag})">
-		<assembly path="bin\Release\${ClrNamespace}.IntegrationTests.dll"/>
+		<assembly path="bin\Release\${ModuleName}.IntegrationTests.dll"/>
 	</Config>
 
 	<Config configfile="App.(net.sqlite).config" name="Release_(net.sqlite)">
-		<assembly path="bin\Release\${ClrNamespace}.IntegrationTests.dll"/>
+		<assembly path="bin\Release\${ModuleName}.IntegrationTests.dll"/>
 	</Config>
 
 </NUnitProject>]]>
 	</OutputScope>
 
-	<OutputScope name="${ClrNamespace}\${ClrNamespace}.csproj">
+	<OutputScope name="${ModuleName}\${ModuleName}.csproj">
 		<Alloc token="FolderName" />
 
 		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -294,9 +294,9 @@ EndGlobal
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>${ClrNamespace}</RootNamespace>
-    <AssemblyName>${ClrNamespace}</AssemblyName>
+    <AssemblyName>${ModuleName}</AssemblyName>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\${ClrNamespace}.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\${ModuleName}.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>${csproj_target_framework_version}</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
@@ -310,7 +310,7 @@ EndGlobal
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <!--<DocumentationFile>bin\Debug\${ClrNamespace}.XML</DocumentationFile>-->
+    <!--<DocumentationFile>bin\Debug\${ModuleName}.XML</DocumentationFile>-->
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -319,7 +319,7 @@ EndGlobal
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <!--<DocumentationFile>bin\Release\${ClrNamespace}.XML</DocumentationFile>-->
+    <!--<DocumentationFile>bin\Release\${ModuleName}.XML</DocumentationFile>-->
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -349,8 +349,8 @@ EndGlobal
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\${ClrNamespace}.snk">
-      <Link>${ClrNamespace}.snk</Link>
+    <None Include="..\${ModuleName}.snk">
+      <Link>${ModuleName}.snk</Link>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -450,7 +450,7 @@ EndGlobal
 ]]>
 	</OutputScope>
 
-	<OutputScope name="${ClrNamespace}.UnitTests\${ClrNamespace}.UnitTests.csproj">
+	<OutputScope name="${ModuleName}.UnitTests\${ModuleName}.UnitTests.csproj">
 		<Alloc token="FolderName" />
 
 		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -464,7 +464,7 @@ EndGlobal
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>${ClrNamespace}.UnitTests</RootNamespace>
-    <AssemblyName>${ClrNamespace}.UnitTests</AssemblyName>
+    <AssemblyName>${ModuleName}.UnitTests</AssemblyName>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>${csproj_target_framework_version}</TargetFrameworkVersion>
@@ -518,9 +518,9 @@ EndGlobal
       <HintPath>..\..\lib\TextMetal\TextMetal.TestFramework.dll</HintPath>
     </Reference>
 
-	<ProjectReference Include="..\${ClrNamespace}\${ClrNamespace}.csproj">
+	<ProjectReference Include="..\${ModuleName}\${ModuleName}.csproj">
       <Project>{FFFF0000-0000-0000-0000-000000000001}</Project>
-      <Name>${ClrNamespace}</Name>
+      <Name>${ModuleName}</Name>
     </ProjectReference>
 
   </ItemGroup>
@@ -613,7 +613,7 @@ EndGlobal
 ]]>
 	</OutputScope>
 
-	<OutputScope name="${ClrNamespace}.IntegrationTests\${ClrNamespace}.IntegrationTests.csproj">
+	<OutputScope name="${ModuleName}.IntegrationTests\${ModuleName}.IntegrationTests.csproj">
 		<Alloc token="FolderName" />
 
 		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -627,7 +627,7 @@ EndGlobal
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>${ClrNamespace}.IntegrationTests</RootNamespace>
-    <AssemblyName>${ClrNamespace}.IntegrationTests</AssemblyName>
+    <AssemblyName>${ModuleName}.IntegrationTests</AssemblyName>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>${csproj_target_framework_version}</TargetFrameworkVersion>
@@ -693,9 +693,9 @@ EndGlobal
       <HintPath>..\..\lib\TextMetal\TextMetal.TestFramework.dll</HintPath>
     </Reference>
 
-	<ProjectReference Include="..\${ClrNamespace}\${ClrNamespace}.csproj">
+	<ProjectReference Include="..\${ModuleName}\${ModuleName}.csproj">
       <Project>{FFFF0000-0000-0000-0000-000000000001}</Project>
-      <Name>${ClrNamespace}</Name>
+      <Name>${ModuleName}</Name>
     </ProjectReference>
 
   </ItemGroup>

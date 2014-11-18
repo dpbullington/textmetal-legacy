@@ -45,7 +45,7 @@
 						</If.True>
 					</If>
 
-					<OutputScope name="${ClrNamespace}\${FolderName}\.partial\${TableNameSingularPascalCase}.cs">
+					<OutputScope name="${ModuleName}\${FolderName}\.partial\${TableNameSingularPascalCase}.cs">
 						<Include name="include_gen_cprt_message_no_warn.cs.txt" />
 <![CDATA[
 
@@ -92,7 +92,7 @@ namespace ${ClrNamespace}.${FolderName}
 			return ${TableNamePluralCamelCase}.Count() > 0;
 		}
 
-		partial void OnMark()
+		public override void Mark()
 		{
 			DateTime now;
 
@@ -107,25 +107,25 @@ namespace ${ClrNamespace}.${FolderName}
 			this.OrganizationId = this.OrganizationId ?? (int)Current.OrganizationId;
 		}
 
-		partial void OnValidate(ref IEnumerable<Message> messages)
+		public override IEnumerable<Message> Validate()
 		{
 			bool exists;
-			List<Message> _messages;
+			List<Message> messages;
 
-			_messages = new List<Message>();
+			messages = new List<Message>();
 
 			if (DataType.Instance.IsNullOrWhiteSpace(this.XXX))
-				_messages.Add(new Message("", "XXX is required.", Severity.Error));
+				messages.Add(new Message("", "XXX is required.", Severity.Error));
 
-			if (_messages.Count == 0)
+			if (messages.Count == 0)
 			{
 				exists = Exists(this);
 
 				if (exists)
-					_messages.Add(new Message("", "${TableNameSingularPascalCase} must be unique.", Severity.Error));
+					messages.Add(new Message("", "${TableNameSingularPascalCase} must be unique.", Severity.Error));
 			}
 
-			messages = _messages;
+			return messages.ToArray();
 		}
 
 		#endregion

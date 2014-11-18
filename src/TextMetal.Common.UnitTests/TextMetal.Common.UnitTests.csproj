@@ -70,9 +70,9 @@
     <Compile Include="Solder\RuntimeInterception\_\AspectDynamicInvokerTests.cs" />
     <Compile Include="Solder\RuntimeInterception\_\DynamicInvokerTests.cs" />
     <Compile Include="Solder\RuntimeInterception\_\ProxyFactoryTests.cs" />
+    <Compile Include="TestingInfrastructure\IMockModelObject.cs" />
     <Compile Include="TestingInfrastructure\MockAspectDynamicInvoker.cs" />
     <Compile Include="TestingInfrastructure\MockDynamicInvoker.cs" />
-    <Compile Include="TestingInfrastructure\MockDynamicInvokerRealProxy.cs" />
     <Compile Include="TestingInfrastructure\MockModelObject.cs" />
     <Compile Include="TestingInfrastructure\MockDependantObject.cs" />
     <Compile Include="TestingInfrastructure\MockProxyFactory.cs" />
