@@ -415,6 +415,23 @@ if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 
 
 
+Copy-Item "$src_dir\TextMetal.HostImpl.Web\bin\$build_flavor_dir\TextMetal.HostImpl.Web.dll" "$pkg_dir\bin\."
+
+if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
+{ echo "An error occurred during the operation."; return; }
+
+Copy-Item "$src_dir\TextMetal.HostImpl.Web\bin\$build_flavor_dir\TextMetal.HostImpl.Web.xml" "$pkg_dir\bin\."
+
+if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
+{ echo "An error occurred during the operation."; return; }
+
+Copy-Item "$src_dir\TextMetal.HostImpl.Web\bin\$build_flavor_dir\TextMetal.HostImpl.Web.pdb" "$pkg_dir\bin\."
+
+if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
+{ echo "An error occurred during the operation."; return; }
+
+
+
 Copy-Item "$src_dir\TextMetal.HostImpl.WindowsTool\bin\$build_flavor_dir\TextMetalStudio.exe" "$pkg_dir\bin\."
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))

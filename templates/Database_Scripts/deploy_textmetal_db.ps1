@@ -54,14 +54,4 @@ if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
 
-&"$sqlcmd_exe" `
-	-S "$db_server" `
-	-U "$db_sa_username" `
-	-P "$db_sa_password" `
-	-d "$db_database" `
-	-i "$sql_dir\add_textmetal_seed_data.sql"
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
 echo "The operation completed successfully."

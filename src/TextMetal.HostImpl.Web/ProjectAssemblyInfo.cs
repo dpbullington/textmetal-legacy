@@ -3,6 +3,6 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
+using System.Reflection;
 
-SET NOCOUNT ON
-GO
+[assembly: AssemblyTitle("TextMetal Host Impl Web Library")]
