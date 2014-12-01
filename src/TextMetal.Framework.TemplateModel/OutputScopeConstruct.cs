@@ -31,8 +31,8 @@ namespace TextMetal.Framework.TemplateModel
 		#region Fields/Constants
 
 		private bool append;
-		private string scopeName;
 		private string encodingName;
+		private string scopeName;
 
 		#endregion
 
@@ -48,6 +48,19 @@ namespace TextMetal.Framework.TemplateModel
 			set
 			{
 				this.append = value;
+			}
+		}
+
+		[XmlAttributeMapping(LocalName = "encoding", NamespaceUri = "")]
+		public string EncodingName
+		{
+			get
+			{
+				return this.encodingName;
+			}
+			set
+			{
+				this.encodingName = value;
 			}
 		}
 
@@ -69,19 +82,6 @@ namespace TextMetal.Framework.TemplateModel
 			set
 			{
 				this.scopeName = value;
-			}
-		}
-
-		[XmlAttributeMapping(LocalName = "encoding", NamespaceUri = "")]
-		public string EncodingName
-		{
-			get
-			{
-				return this.encodingName;
-			}
-			set
-			{
-				this.encodingName = value;
 			}
 		}
 

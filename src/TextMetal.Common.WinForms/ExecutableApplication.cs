@@ -95,9 +95,9 @@ namespace TextMetal.Common.WinForms
 
 		protected abstract void DisplayFailureMessage(Exception exception);
 
-		protected abstract void DisplaySuccessMessage(TimeSpan duration);
-
 		protected abstract void DisplayRawArgumentsMessage(IEnumerable<string> arguments);
+
+		protected abstract void DisplaySuccessMessage(TimeSpan duration);
 
 		public void Dispose()
 		{

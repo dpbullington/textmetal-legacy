@@ -12,6 +12,8 @@ namespace TextMetal.Common.Data.Framework
 {
 	public interface IBasicObject : INotifyPropertyChanged
 	{
+		#region Methods/Operators
+
 		/// <summary>
 		/// Called when all properties values change.
 		/// </summary>
@@ -28,5 +30,7 @@ namespace TextMetal.Common.Data.Framework
 		/// </summary>
 		/// <returns> A enumerable of zero or more messages. </returns>
 		IEnumerable<Message> Validate();
+
+		#endregion
 	}
 }

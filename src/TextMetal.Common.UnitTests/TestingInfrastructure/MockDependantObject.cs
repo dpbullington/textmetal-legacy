@@ -23,7 +23,7 @@ namespace TextMetal.Common.UnitTests.TestingInfrastructure
 			this.text = text ?? string.Empty;
 		}
 
-		public MockDependantObject([DependencyInjection(SelectorKey="named_dep_obj")] MockDependantObject left, MockDependantObject right)
+		public MockDependantObject([DependencyInjection(SelectorKey = "named_dep_obj")] MockDependantObject left, MockDependantObject right)
 		{
 			this.text = string.Empty;
 			this.left = left;
@@ -34,19 +34,19 @@ namespace TextMetal.Common.UnitTests.TestingInfrastructure
 
 		#region Fields/Constants
 
-		private readonly string text;
 		private readonly MockDependantObject left;
 		private readonly MockDependantObject right;
+		private readonly string text;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		public string Text
+		public MockDependantObject Left
 		{
 			get
 			{
-				return this.text;
+				return this.left;
 			}
 		}
 
@@ -58,11 +58,11 @@ namespace TextMetal.Common.UnitTests.TestingInfrastructure
 			}
 		}
 
-		public MockDependantObject Left
+		public string Text
 		{
 			get
 			{
-				return this.left;
+				return this.text;
 			}
 		}
 

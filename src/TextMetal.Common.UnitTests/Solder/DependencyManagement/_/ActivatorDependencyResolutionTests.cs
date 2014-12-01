@@ -37,7 +37,7 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 
 			mockery = new Mockery();
 			mockDependencyManager = mockery.NewMock<IDependencyManager>();
-			
+
 			//Expect.Once.On(mockDependencyManager).Method("ResolveDependency").With(typeof(char[]), string.Empty).Will(Return.Value(new char[] { 'x', 'y', 'z' }));
 
 			activatorDependencyResolution = ActivatorDependencyResolution.OfType<DateTime, long>();
@@ -46,6 +46,29 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 
 			Assert.IsNotNull(result);
 			Assert.AreEqual(new DateTime(0), result);
+
+			mockery.VerifyAllExpectationsHaveBeenMet();
+		}
+
+		[Test]
+		public void ShouldCreateAndEvaluateNonDefaultContructorOfTypeUsing1ArgsWithAutowireTest()
+		{
+			ActivatorDependencyResolution activatorDependencyResolution;
+			IDependencyManager mockDependencyManager;
+			Mockery mockery;
+			MockDependantObject result;
+
+			mockery = new Mockery();
+			mockDependencyManager = mockery.NewMock<IDependencyManager>();
+
+			Expect.Once.On(mockDependencyManager).Method("ResolveDependency").With(typeof(string), string.Empty).Will(Return.Value("turing tarpit"));
+
+			activatorDependencyResolution = ActivatorDependencyResolution.OfType<MockDependantObject, string>();
+
+			result = (MockDependantObject)activatorDependencyResolution.Resolve(mockDependencyManager);
+
+			Assert.IsNotNull(result);
+			Assert.AreEqual("turing tarpit", result.Text);
 
 			mockery.VerifyAllExpectationsHaveBeenMet();
 		}
@@ -70,69 +93,6 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 
 			Assert.IsNotNull(result);
 			Assert.AreEqual(string.Empty, result);
-
-			mockery.VerifyAllExpectationsHaveBeenMet();
-		}
-
-		[Test]
-		public void ShouldCreateAndEvaluateTest()
-		{
-			ActivatorDependencyResolution activatorDependencyResolution;
-			IDependencyManager mockDependencyManager;
-			Type actualType;
-			object result;
-			Mockery mockery;
-
-			mockery = new Mockery();
-			mockDependencyManager = mockery.NewMock<IDependencyManager>();
-
-			actualType = typeof(int);
-
-			activatorDependencyResolution = new ActivatorDependencyResolution(actualType);
-
-			Assert.IsNotNull(activatorDependencyResolution);
-
-			result = activatorDependencyResolution.Resolve(mockDependencyManager);
-
-			Assert.IsNotNull(result);
-			Assert.AreEqual(0, result);
-
-			mockery.VerifyAllExpectationsHaveBeenMet();
-		}
-
-		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullActualTypeCreateTest()
-		{
-			ActivatorDependencyResolution activatorDependencyResolution;
-			Type actualType;
-
-			actualType = null;
-
-			activatorDependencyResolution = new ActivatorDependencyResolution(actualType);
-		}
-
-
-
-		[Test]
-		public void ShouldCreateAndEvaluateNonDefaultContructorOfTypeUsing1ArgsWithAutowireTest()
-		{
-			ActivatorDependencyResolution activatorDependencyResolution;
-			IDependencyManager mockDependencyManager;
-			Mockery mockery;
-			MockDependantObject result;
-
-			mockery = new Mockery();
-			mockDependencyManager = mockery.NewMock<IDependencyManager>();
-
-			Expect.Once.On(mockDependencyManager).Method("ResolveDependency").With(typeof(string), string.Empty).Will(Return.Value("turing tarpit"));
-
-			activatorDependencyResolution = ActivatorDependencyResolution.OfType<MockDependantObject, string>();
-
-			result = (MockDependantObject)activatorDependencyResolution.Resolve(mockDependencyManager);
-
-			Assert.IsNotNull(result);
-			Assert.AreEqual("turing tarpit", result.Text);
 
 			mockery.VerifyAllExpectationsHaveBeenMet();
 		}
@@ -166,6 +126,32 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 		}
 
 		[Test]
+		public void ShouldCreateAndEvaluateTest()
+		{
+			ActivatorDependencyResolution activatorDependencyResolution;
+			IDependencyManager mockDependencyManager;
+			Type actualType;
+			object result;
+			Mockery mockery;
+
+			mockery = new Mockery();
+			mockDependencyManager = mockery.NewMock<IDependencyManager>();
+
+			actualType = typeof(int);
+
+			activatorDependencyResolution = new ActivatorDependencyResolution(actualType);
+
+			Assert.IsNotNull(activatorDependencyResolution);
+
+			result = activatorDependencyResolution.Resolve(mockDependencyManager);
+
+			Assert.IsNotNull(result);
+			Assert.AreEqual(0, result);
+
+			mockery.VerifyAllExpectationsHaveBeenMet();
+		}
+
+		[Test]
 		public void ShouldCreateAndEvaluateWithAutowireTest()
 		{
 			ActivatorDependencyResolution activatorDependencyResolution;
@@ -193,7 +179,17 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 			mockery.VerifyAllExpectationsHaveBeenMet();
 		}
 
-		
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullActualTypeCreateTest()
+		{
+			ActivatorDependencyResolution activatorDependencyResolution;
+			Type actualType;
+
+			actualType = null;
+
+			activatorDependencyResolution = new ActivatorDependencyResolution(actualType);
+		}
 
 		#endregion
 	}

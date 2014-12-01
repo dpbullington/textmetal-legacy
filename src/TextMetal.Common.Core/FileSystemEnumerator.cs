@@ -6,7 +6,7 @@
 using System;
 using System.IO;
 
-namespace TextMetal.Utilities.VsIdeConv.ConsoleTool.Utilities
+namespace TextMetal.Common.Core
 {
 	public class FileSystemEnumerator
 	{
@@ -20,7 +20,7 @@ namespace TextMetal.Utilities.VsIdeConv.ConsoleTool.Utilities
 
 		#region Fields/Constants
 
-		private bool cancel = false;
+		private bool cancel;
 
 		#endregion
 
@@ -45,48 +45,61 @@ namespace TextMetal.Utilities.VsIdeConv.ConsoleTool.Utilities
 
 		#region Methods/Operators
 
-		public void EnumerateFileSystem(string directoryPath)
+		public void EnumerateFileSystem(string enumerationPath)
 		{
-			string[] directories;
-			string[] files;
+			this.EnumerateFileSystem(enumerationPath, true);
+		}
+
+		public void EnumerateFileSystem(string enumerationPath, bool recurse)
+		{
+			string[] directoryPaths;
+			string[] filePaths;
+
+			enumerationPath = Path.GetFullPath(enumerationPath);
 
 			if (this.Cancel)
 				return;
 
-			if (File.Exists(directoryPath))
+			if (File.Exists(enumerationPath))
 			{
-				files = new string[] { Path.GetFullPath(directoryPath) };
-				directories = null;
+				filePaths = new string[] { enumerationPath };
+				directoryPaths = new string[] { };
+			}
+			else if (Directory.Exists(enumerationPath))
+			{
+				filePaths = Directory.GetFiles(enumerationPath);
+				directoryPaths = Directory.GetDirectories(enumerationPath);
 			}
 			else
 			{
-				files = Directory.GetFiles(directoryPath);
-				directories = Directory.GetDirectories(directoryPath);
+				filePaths = new string[] { };
+				directoryPaths = new string[] { };
 			}
 
-			if ((object)files != null)
+			if ((object)filePaths != null)
 			{
-				foreach (string file in files)
+				foreach (string filePath in filePaths)
 				{
 					if (this.Cancel)
 						return;
 
 					if (this.FileFound != null)
-						this.FileFound(new FileInfo(file));
+						this.FileFound(new FileInfo(filePath));
 				}
 			}
 
-			if ((object)directories != null)
+			if ((object)directoryPaths != null)
 			{
-				foreach (string directory in directories)
+				foreach (string directoryPath in directoryPaths)
 				{
 					if (this.Cancel)
 						return;
 
 					if (this.DirectoryFound != null)
-						this.DirectoryFound(new DirectoryInfo(directory));
+						this.DirectoryFound(new DirectoryInfo(directoryPath));
 
-					this.EnumerateFileSystem(directory);
+					if (recurse)
+						this.EnumerateFileSystem(directoryPath);
 				}
 			}
 		}

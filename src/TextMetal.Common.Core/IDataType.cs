@@ -12,6 +12,8 @@ namespace TextMetal.Common.Core
 	/// </summary>
 	public interface IDataType
 	{
+		#region Methods/Operators
+
 		/// <summary>
 		/// Performs a run-time type change on a given value.
 		/// </summary>
@@ -119,5 +121,7 @@ namespace TextMetal.Common.Core
 		/// <param name="result"> When this method returns, contains the TValue value equivalent contained in value, if the conversion succeeded, or default(TValue) if the conversion failed. The conversion fails if the value parameter is null, is an empty string, or does not contain a valid string representation of a TValue. This parameter is passed uninitialized. </param>
 		/// <returns> A boolean value of true if the value was converted successfully; otherwise, false. </returns>
 		bool TryParse<TValue>(string value, out TValue result);
+
+		#endregion
 	}
 }

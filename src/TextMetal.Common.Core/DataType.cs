@@ -56,7 +56,15 @@ namespace TextMetal.Common.Core
 		{
 		}
 
+		#endregion
+
+		#region Fields/Constants
+
 		private static readonly IDataType instance = new DataType();
+
+		#endregion
+
+		#region Properties/Indexers/Events
 
 		public static IDataType Instance
 		{

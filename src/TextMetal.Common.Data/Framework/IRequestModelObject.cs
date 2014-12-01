@@ -4,9 +4,6 @@
 */
 
 using System;
-using System.Collections.Generic;
-
-using TextMetal.Common.Core;
 
 namespace TextMetal.Common.Data.Framework
 {

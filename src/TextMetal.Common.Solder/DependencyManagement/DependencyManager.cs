@@ -652,7 +652,7 @@ namespace TextMetal.Common.Solder.DependencyManagement
 #if !ALLOW_FCFS_INDIRECT_RESOLUTION
 					throw new DependencyException(string.Format("Dependency resolution in the in-effect dependency manager failed to match for target type '{0}' and selector key '{1}'.", targetType.FullName, selectorKey));
 #else
-					// no direct resolution; lets try FCFS indirect resolution...
+	// no direct resolution; lets try FCFS indirect resolution...
 					var candidateResolutions = this.DependencyResolutionRegistrations.Keys.Where(x => targetType.IsAssignableFrom(x.Key)
 						&& (selectorKey == string.Empty || x.Value == selectorKey));
 

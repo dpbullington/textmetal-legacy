@@ -27,29 +27,9 @@ namespace TextMetal.Common.UnitTests.Core._
 
 		#endregion
 
-		#region Methods/Operators
-
 		//[Test]
-		public void ShouldCreateFromSingletonTest()
-		{
-			IReflexion reflexion;
 
-			reflexion = Reflexion.Instance;
-
-			Assert.IsNotNull(reflexion);
-		}
-
-		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnCreateNullDataType()
-		{
-			IReflexion reflexion;
-			IDataType mockDataType;
-
-			mockDataType = null;
-
-			reflexion = new Reflexion(mockDataType);
-		}
+		#region Methods/Operators
 
 		[Test]
 		public void ShouldAssociativeOnlyGetLogicalPropertyTypeTest()
@@ -127,7 +107,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			Assert.IsTrue(result);
 			Assert.IsNotNull(propertyType);
 			Assert.AreEqual(typeof(string), propertyType);
-			
+
 			mockery.VerifyAllExpectationsHaveBeenMet();
 		}
 
@@ -304,6 +284,27 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockery.VerifyAllExpectationsHaveBeenMet();
 		}
 
+		public void ShouldCreateFromSingletonTest()
+		{
+			IReflexion reflexion;
+
+			reflexion = Reflexion.Instance;
+
+			Assert.IsNotNull(reflexion);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnCreateNullDataType()
+		{
+			IReflexion reflexion;
+			IDataType mockDataType;
+
+			mockDataType = null;
+
+			reflexion = new Reflexion(mockDataType);
+		}
+
 		[Test]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void ShouldFailOnDefinedGetNoAttributesTest()
@@ -334,7 +335,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockDataType = mockery.NewMock<IDataType>();
 
 			reflexion = new Reflexion(mockDataType);
-			
+
 			reflexion.GetOneAttribute<MockMultipleTestAttibute>(typeof(MockTestAttributedClass));
 		}
 
@@ -351,7 +352,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockDataType = mockery.NewMock<IDataType>();
 
 			reflexion = new Reflexion(mockDataType);
-			
+
 			reflexion.MakeNonNullableType(null);
 		}
 
@@ -368,7 +369,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockDataType = mockery.NewMock<IDataType>();
 
 			reflexion = new Reflexion(mockDataType);
-			
+
 			reflexion.MakeNullableType(null);
 		}
 
@@ -385,7 +386,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockDataType = mockery.NewMock<IDataType>();
 
 			reflexion = new Reflexion(mockDataType);
-			
+
 			reflexion.GetOneAttribute<MockMultipleTestAttibute>((ICustomAttributeProvider)null);
 		}
 
@@ -436,7 +437,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockDataType = mockery.NewMock<IDataType>();
 
 			reflexion = new Reflexion(mockDataType);
-			
+
 			sta = reflexion.GetOneAttribute<MockSingleTestAttibute>(typeof(MockTestAttributedClass));
 
 			Assert.IsNotNull(sta);
@@ -530,7 +531,7 @@ namespace TextMetal.Common.UnitTests.Core._
 			mockDataType = mockery.NewMock<IDataType>();
 
 			reflexion = new Reflexion(mockDataType);
-			
+
 			ta = reflexion.GetOneAttribute<MockMultipleTestAttibute>(typeof(Exception));
 
 			Assert.IsNull(ta);

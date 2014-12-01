@@ -70,7 +70,6 @@
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Utilities\ConversionConfig.cs" />
-    <Compile Include="Utilities\FileSystemEnumerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TextMetal.snk">

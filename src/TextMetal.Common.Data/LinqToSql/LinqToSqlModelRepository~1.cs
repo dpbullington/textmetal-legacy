@@ -448,7 +448,7 @@ namespace TextMetal.Common.Data.LinqToSql
 					projection = this.LinqQuery<TProjection>(unitOfWork, dataContextQueryCallback);
 
 					// HACK ALERT: will this work as expected?
-					if(projection is IEnumerable)
+					if (projection is IEnumerable)
 						((IEnumerable)projection).Cast<object>().ToList(); // FORCE EAGER LOAD
 
 					unitOfWork.Complete();

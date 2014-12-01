@@ -39,28 +39,6 @@ namespace TextMetal.Common.WinForms
 			Console.ForegroundColor = oldConsoleColor;
 		}
 
-		protected override sealed void DisplayRawArgumentsMessage(IEnumerable<string> arguments)
-		{
-			ConsoleColor oldConsoleColor = Console.ForegroundColor;
-			Console.ForegroundColor = ConsoleColor.Blue;
-			
-			if ((object)arguments != null)
-			{
-				Console.WriteLine();
-				Console.WriteLine("RAW CMDLN: {0}", Environment.CommandLine);
-				Console.WriteLine();
-				Console.WriteLine("RAW ARGS:");
-
-				int index = 0;
-				foreach (string argument in arguments)
-				{
-					Console.WriteLine("[{0}] => {1}", index++, argument);
-				}
-			}
-
-			Console.ForegroundColor = oldConsoleColor;
-		}
-
 		protected override sealed void DisplayArgumentMapMessage(IDictionary<string, ArgumentSpec> argumentMap)
 		{
 			ConsoleColor oldConsoleColor = Console.ForegroundColor;
@@ -87,6 +65,26 @@ namespace TextMetal.Common.WinForms
 
 			Console.WriteLine();
 			Console.WriteLine("The operation failed to complete.");
+		}
+
+		protected override sealed void DisplayRawArgumentsMessage(IEnumerable<string> arguments)
+		{
+			ConsoleColor oldConsoleColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.Blue;
+
+			if ((object)arguments != null)
+			{
+				Console.WriteLine();
+				Console.WriteLine("RAW CMDLN: {0}", Environment.CommandLine);
+				Console.WriteLine();
+				Console.WriteLine("RAW ARGS:");
+
+				int index = 0;
+				foreach (string argument in arguments)
+					Console.WriteLine("[{0}] => {1}", index++, argument);
+			}
+
+			Console.ForegroundColor = oldConsoleColor;
 		}
 
 		protected override sealed void DisplaySuccessMessage(TimeSpan duration)

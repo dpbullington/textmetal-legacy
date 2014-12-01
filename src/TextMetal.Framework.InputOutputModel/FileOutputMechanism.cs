@@ -56,8 +56,8 @@ namespace TextMetal.Framework.InputOutputModel
 		#region Fields/Constants
 
 		private readonly string baseDirectoryPath;
-		private readonly string logFileName;
 		private readonly Encoding logFileEncoding;
+		private readonly string logFileName;
 		private readonly IXmlPersistEngine xpe;
 
 		#endregion
@@ -69,6 +69,14 @@ namespace TextMetal.Framework.InputOutputModel
 			get
 			{
 				return this.baseDirectoryPath;
+			}
+		}
+
+		private Encoding LogFileEncoding
+		{
+			get
+			{
+				return this.logFileEncoding;
 			}
 		}
 
@@ -85,14 +93,6 @@ namespace TextMetal.Framework.InputOutputModel
 			get
 			{
 				return this.xpe;
-			}
-		}
-
-		private Encoding LogFileEncoding
-		{
-			get
-			{
-				return this.logFileEncoding;
 			}
 		}
 
