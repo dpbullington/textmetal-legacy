@@ -69,18 +69,6 @@ namespace TextMetal.Common.Xml
 		#region Methods/Operators
 
 		/// <summary>
-		/// Performs a custom equals test against two XML name objects using value semantics over the local name and namespace URI.
-		/// </summary>
-		/// <param name="a"> The first XML name to test. </param>
-		/// <param name="b"> The second XML name object to test. </param>
-		/// <returns> A value indicating whther the two XML name objects are equal using value semantics. </returns>
-		private static bool TestEquals(XmlName a, XmlName b)
-		{
-			return (a.LocalName == b.LocalName) &&
-					(a.NamespaceUri == b.NamespaceUri);
-		}
-
-		/// <summary>
 		/// Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" /> .
 		/// </summary>
 		/// <returns>
@@ -125,6 +113,18 @@ namespace TextMetal.Common.Xml
 		public override string ToString()
 		{
 			return (this.NamespaceUri.SafeToString() + "#" + this.LocalName.SafeToString());
+		}
+
+		/// <summary>
+		/// Performs a custom equals test against two XML name objects using value semantics over the local name and namespace URI.
+		/// </summary>
+		/// <param name="a"> The first XML name to test. </param>
+		/// <param name="b"> The second XML name object to test. </param>
+		/// <returns> A value indicating whther the two XML name objects are equal using value semantics. </returns>
+		private static bool TestEquals(XmlName a, XmlName b)
+		{
+			return (a.LocalName == b.LocalName) &&
+					(a.NamespaceUri == b.NamespaceUri);
 		}
 
 		/// <summary>

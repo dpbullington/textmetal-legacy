@@ -28,26 +28,13 @@ namespace TextMetal.Common.WinForms
 
 		#region Fields/Constants
 
-		private static readonly string EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY = typeof(ExecutableApplication).GUID.SafeToString();
-
 		private AssemblyInformation assemblyInformation;
 		private bool disposed;
+		private static readonly string EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY = typeof(ExecutableApplication).GUID.SafeToString();
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		public static ExecutableApplication Current
-		{
-			get
-			{
-				return (ExecutableApplication)ExecutionPathStorage.GetValue(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY);
-			}
-			set
-			{
-				ExecutionPathStorage.SetValue(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY, value);
-			}
-		}
 
 		public AssemblyInformation AssemblyInformation
 		{
@@ -82,6 +69,18 @@ namespace TextMetal.Common.WinForms
 			{
 				return !Debugger.IsAttached &&
 						AppConfig.GetAppSetting<bool>(string.Format("{0}::HookUnhandledExceptionEvents", this.GetType().Namespace));
+			}
+		}
+
+		public static ExecutableApplication Current
+		{
+			get
+			{
+				return (ExecutableApplication)ExecutionPathStorage.GetValue(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY);
+			}
+			set
+			{
+				ExecutionPathStorage.SetValue(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY, value);
 			}
 		}
 

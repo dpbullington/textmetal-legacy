@@ -28,20 +28,12 @@ namespace TextMetal.Common.UnitTests.TestingInfrastructure
 
 		#region Fields/Constants
 
-		private readonly object interceptedInstance;
 		private string lastOperationName;
+		private readonly object interceptedInstance;
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		public override object InterceptedInstance
-		{
-			get
-			{
-				return this.interceptedInstance;
-			}
-		}
 
 		public string LastOperationName
 		{
@@ -52,6 +44,14 @@ namespace TextMetal.Common.UnitTests.TestingInfrastructure
 			private set
 			{
 				this.lastOperationName = value;
+			}
+		}
+
+		public override object InterceptedInstance
+		{
+			get
+			{
+				return this.interceptedInstance;
 			}
 		}
 

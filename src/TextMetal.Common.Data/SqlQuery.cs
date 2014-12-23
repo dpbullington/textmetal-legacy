@@ -32,15 +32,41 @@ namespace TextMetal.Common.Data
 
 		#region Fields/Constants
 
-		private readonly List<SqlQuery> subQueries = new List<SqlQuery>();
 		private string key;
 		private int? order;
 		private string text;
 		private CommandType type = CommandType.Text;
+		private readonly List<SqlQuery> subQueries = new List<SqlQuery>();
 
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		/// <summary>
+		/// Gets or sets the ordinal (order) of this SQL query. Do not use directly; rather use the Order property.
+		/// </summary>
+		[XmlAttribute("order")]
+		public string _Order
+		{
+			get
+			{
+				return this.Order.SafeToString();
+			}
+			set
+			{
+				int ivalue;
+
+				if (DataType.Instance.IsNullOrWhiteSpace(value))
+					this.Order = null;
+				else
+				{
+					if (!DataType.Instance.TryParse<int>(value, out ivalue))
+						this.Order = null;
+					else
+						this.Order = ivalue;
+				}
+			}
+		}
 
 		/// <summary>
 		/// Gets or sets the key of this SQL query.
@@ -71,19 +97,6 @@ namespace TextMetal.Common.Data
 			set
 			{
 				this.order = value;
-			}
-		}
-
-		/// <summary>
-		/// Gets a list of corrolated subqueries.
-		/// </summary>
-		[XmlArray(ElementName = "SubQueries", Order = 1)]
-		[XmlArrayItem(ElementName = "SqlQuery")]
-		public List<SqlQuery> SubQueries
-		{
-			get
-			{
-				return this.subQueries;
 			}
 		}
 
@@ -120,28 +133,15 @@ namespace TextMetal.Common.Data
 		}
 
 		/// <summary>
-		/// Gets or sets the ordinal (order) of this SQL query. Do not use directly; rather use the Order property.
+		/// Gets a list of corrolated subqueries.
 		/// </summary>
-		[XmlAttribute("order")]
-		public string _Order
+		[XmlArray(ElementName = "SubQueries", Order = 1)]
+		[XmlArrayItem(ElementName = "SqlQuery")]
+		public List<SqlQuery> SubQueries
 		{
 			get
 			{
-				return this.Order.SafeToString();
-			}
-			set
-			{
-				int ivalue;
-
-				if (DataType.Instance.IsNullOrWhiteSpace(value))
-					this.Order = null;
-				else
-				{
-					if (!DataType.Instance.TryParse<int>(value, out ivalue))
-						this.Order = null;
-					else
-						this.Order = ivalue;
-				}
+				return this.subQueries;
 			}
 		}
 

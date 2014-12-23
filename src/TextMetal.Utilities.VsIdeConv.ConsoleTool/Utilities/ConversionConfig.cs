@@ -10,13 +10,6 @@ using System.Configuration;
 
 namespace TextMetal.Utilities.VsIdeConv.ConsoleTool.Utilities
 {
-	public enum VersionControlBindingAction
-	{
-		Leave = 0,
-		Modify = 1,
-		Remove = 2
-	}
-
 	public static class ConversionConfig
 	{
 		#region Properties/Indexers/Events

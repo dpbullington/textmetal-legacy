@@ -54,6 +54,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.LinqToSql;
 ]]>
 						<If>
 							<If.Condition>
@@ -79,19 +81,21 @@ namespace ${ClrNamespace}.${FolderName}
 	{
 		#region Methods/Operators
 
-		public static bool Exists(${TableNameSingularPascalCase} ${TableNameSingularCamelCase})
+		public static bool Exists(I${TableNameSingularPascalCase} ${TableNameSingularCamelCase})
 		{
-			IEnumerable<${TableNameSingularPascalCase}> ${TableNamePluralCamelCase};
+			IEnumerable<I${TableNameSingularPascalCase}> ${TableNamePluralCamelCase};
+			IModelQuery modelQuery;
 
 			if ((object)${TableNameSingularCamelCase} == null)
 				throw new ArgumentNullException("${TableNameSingularCamelCase}");
 
+			modelQuery = new LinqTableQuery<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}>(z =>
+								(z.XXX == ${TableNameSingularCamelCase}.XXX) &&
+									((object)${TableNameSingularCamelCase}.${TableNameSingularPascalCase}Id == null ||
+										z.${TableNameSingularPascalCase}Id != ${TableNameSingularCamelCase}.${TableNameSingularPascalCase}Id));
+
 			${TableNamePluralCamelCase} =
-				Stuff.Get<IRepository>("").Find${TableNamePluralPascalCase}(
-					q =>
-						q.Where(
-							z =>
-								(z.XXX == ${TableNameSingularCamelCase}.XXX) && ((object)${TableNameSingularCamelCase}.${TableNameSingularPascalCase}Id == null || z.${TableNameSingularPascalCase}Id != ${TableNameSingularCamelCase}.${TableNameSingularPascalCase}Id)));
+				Stuff.Get<IRepository>("").Find<I${TableNameSingularPascalCase}>(modelQuery);
 
 			return ${TableNamePluralCamelCase}.Count() > 0;
 		}

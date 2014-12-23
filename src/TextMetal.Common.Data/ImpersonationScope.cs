@@ -94,10 +94,10 @@ namespace TextMetal.Common.Data
 
 		#region Fields/Constants
 
+		private bool disposed;
 		private readonly WindowsIdentity impersonatedWindowsIdentity;
 		private readonly WindowsImpersonationContext processWindowsImpersonationContext;
 		private readonly WindowsImpersonationContext threadWindowsImpersonationContext;
-		private bool disposed;
 
 		#endregion
 
@@ -143,18 +143,6 @@ namespace TextMetal.Common.Data
 
 		#region Methods/Operators
 
-		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-		private static extern bool CloseHandle(IntPtr handle);
-
-		[DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-		private static extern int DuplicateToken(IntPtr hToken, int impersonationLevel, ref IntPtr hNewToken);
-
-		[DllImport("advapi32.dll", SetLastError = true)]
-		private static extern int LogonUser(string lpszUserName, string lpszDomain, string lpszPassword, int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
-
-		[DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-		private static extern bool RevertToSelf();
-
 		public void Dispose()
 		{
 			if (this.Disposed)
@@ -190,6 +178,18 @@ namespace TextMetal.Common.Data
 				Console.WriteLine("Leave impersonation scope");
 			}
 		}
+
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+		private static extern bool CloseHandle(IntPtr handle);
+
+		[DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		private static extern int DuplicateToken(IntPtr hToken, int impersonationLevel, ref IntPtr hNewToken);
+
+		[DllImport("advapi32.dll", SetLastError = true)]
+		private static extern int LogonUser(string lpszUserName, string lpszDomain, string lpszPassword, int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
+
+		[DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		private static extern bool RevertToSelf();
 
 		#endregion
 

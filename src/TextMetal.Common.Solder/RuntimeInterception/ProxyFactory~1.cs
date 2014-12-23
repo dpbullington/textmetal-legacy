@@ -29,9 +29,9 @@ namespace TextMetal.Common.Solder.RuntimeInterception
 		#region Fields/Constants
 
 		private const int LOCK_AQUIRE_TIMEOUT_MILLISECONDS = 500;
+		private bool disposed;
 		private readonly IDictionary<KeyValuePair<Type, TCacheTrait>, object> proxyCache = new Dictionary<KeyValuePair<Type, TCacheTrait>, object>();
 		private readonly ReaderWriterLock readerWriterLock = new ReaderWriterLock();
-		private bool disposed;
 
 		#endregion
 
@@ -71,16 +71,6 @@ namespace TextMetal.Common.Solder.RuntimeInterception
 		#endregion
 
 		#region Methods/Operators
-
-		/// <summary>
-		/// Disposes of the inner proxies, if present. Once disposed, the instance cannot be reused.
-		/// </summary>
-		/// <param name="proxy"> The proxy to dispose of. </param>
-		protected static void DisposeOf(object proxy)
-		{
-			if (proxy is IDisposable)
-				((IDisposable)proxy).Dispose();
-		}
 
 		/// <summary>
 		/// Returns an instance of the specified proxy type for the given key-value pair for a type and cache trait. If the instance is in the cache, it will be returned; otherwise a new instacne is created, added to the cache, and returned. This method is thread-safe: a reader-writer-lock is used to serialize access in the case of a new addition to the cahce.
@@ -193,6 +183,16 @@ namespace TextMetal.Common.Solder.RuntimeInterception
 			{
 				this.ReaderWriterLock.ReleaseReaderLock();
 			}
+		}
+
+		/// <summary>
+		/// Disposes of the inner proxies, if present. Once disposed, the instance cannot be reused.
+		/// </summary>
+		/// <param name="proxy"> The proxy to dispose of. </param>
+		protected static void DisposeOf(object proxy)
+		{
+			if (proxy is IDisposable)
+				((IDisposable)proxy).Dispose();
 		}
 
 		#endregion

@@ -17,28 +17,12 @@ namespace TextMetal.Common.Xml
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// Gets an array of allowed child XML object types.
-		/// </summary>
-		Type[] AllowedChildTypes
-		{
-			get;
-		}
-
-		/// <summary>
 		/// Gets or sets the optional single XML object content.
 		/// </summary>
 		IXmlObject Content
 		{
 			get;
 			set;
-		}
-
-		/// <summary>
-		/// Gets a list of XML object items.
-		/// </summary>
-		IXmlObjectCollection<IXmlObject> Items
-		{
-			get;
 		}
 
 		/// <summary>
@@ -57,6 +41,22 @@ namespace TextMetal.Common.Xml
 		{
 			get;
 			set;
+		}
+
+		/// <summary>
+		/// Gets an array of allowed child XML object types.
+		/// </summary>
+		Type[] AllowedChildTypes
+		{
+			get;
+		}
+
+		/// <summary>
+		/// Gets a list of XML object items.
+		/// </summary>
+		IXmlObjectCollection<IXmlObject> Items
+		{
+			get;
 		}
 
 		#endregion

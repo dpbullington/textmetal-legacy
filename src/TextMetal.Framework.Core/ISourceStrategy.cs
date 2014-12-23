@@ -24,7 +24,5 @@ namespace TextMetal.Framework.Core
 		object GetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties);
 
 		#endregion
-
-		//string[] GetValidPropertyNames();
 	}
 }

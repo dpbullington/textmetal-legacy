@@ -30,21 +30,31 @@ namespace TextMetal.Framework.ExpressionModel
 
 		#region Fields/Constants
 
-		private static readonly RubyHost instance = new RubyHost();
 		private string expr;
 		private string file;
 		private string script;
 		private RubySource src;
+		private static readonly RubyHost instance = new RubyHost();
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		private static RubyHost SingletonRubyHost
+		[XmlAttributeMapping(LocalName = "src", NamespaceUri = "")]
+		public string _Src
 		{
 			get
 			{
-				return instance;
+				return this.Src.SafeToString();
+			}
+			set
+			{
+				RubySource src;
+
+				if (!DataType.Instance.TryParse<RubySource>(value, out src))
+					this.Src = RubySource.Unknown;
+				else
+					this.Src = src;
 			}
 		}
 
@@ -99,47 +109,17 @@ namespace TextMetal.Framework.ExpressionModel
 			}
 		}
 
-		[XmlAttributeMapping(LocalName = "src", NamespaceUri = "")]
-		public string _Src
+		private static RubyHost SingletonRubyHost
 		{
 			get
 			{
-				return this.Src.SafeToString();
-			}
-			set
-			{
-				RubySource src;
-
-				if (!DataType.Instance.TryParse<RubySource>(value, out src))
-					this.Src = RubySource.Unknown;
-				else
-					this.Src = src;
+				return instance;
 			}
 		}
 
 		#endregion
 
 		#region Methods/Operators
-
-		public static object RubyExpressionResolver(ITemplatingContext context, string[] parameters)
-		{
-			const int CNT_P = 1; // expr
-
-			if ((object)context == null)
-				throw new ArgumentNullException("context");
-
-			if ((object)parameters == null)
-				throw new ArgumentNullException("parameters");
-
-			if (parameters.Length != CNT_P)
-				throw new InvalidOperationException(string.Format("RubyExpressionResolver expects '{1}' parameter(s) but received '{0}' parameter(s).", parameters.Length, CNT_P));
-
-			return new RubyConstruct()
-					{
-						Src = RubySource.Expr,
-						Expr = parameters[0]
-					}.CoreEvaluateExpression(context);
-		}
 
 		protected override object CoreEvaluateExpression(ITemplatingContext templatingContext)
 		{
@@ -212,6 +192,26 @@ namespace TextMetal.Framework.ExpressionModel
 
 			result = SingletonRubyHost.Execute(scriptContent.GetHashCode(), scriptVariables);
 			return result;
+		}
+
+		public static object RubyExpressionResolver(ITemplatingContext context, string[] parameters)
+		{
+			const int CNT_P = 1; // expr
+
+			if ((object)context == null)
+				throw new ArgumentNullException("context");
+
+			if ((object)parameters == null)
+				throw new ArgumentNullException("parameters");
+
+			if (parameters.Length != CNT_P)
+				throw new InvalidOperationException(string.Format("RubyExpressionResolver expects '{1}' parameter(s) but received '{0}' parameter(s).", parameters.Length, CNT_P));
+
+			return new RubyConstruct()
+					{
+						Src = RubySource.Expr,
+						Expr = parameters[0]
+					}.CoreEvaluateExpression(context);
 		}
 
 		#endregion

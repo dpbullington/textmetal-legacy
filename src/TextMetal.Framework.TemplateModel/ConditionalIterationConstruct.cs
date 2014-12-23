@@ -30,23 +30,15 @@ namespace TextMetal.Framework.TemplateModel
 
 		#region Fields/Constants
 
-		private readonly bool affirmative;
-		private readonly bool precondition;
 		private ITemplateContainerConstruct body;
 		private IExpressionContainerConstruct condition;
 		private string varIx;
+		private readonly bool affirmative;
+		private readonly bool precondition;
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		private bool Affirmative
-		{
-			get
-			{
-				return this.affirmative;
-			}
-		}
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Body", NamespaceUri = "http://www.textmetal.com/api/v6.0.0")]
 		public ITemplateContainerConstruct Body
@@ -74,6 +66,27 @@ namespace TextMetal.Framework.TemplateModel
 			}
 		}
 
+		[XmlAttributeMapping(LocalName = "var-ix", NamespaceUri = "")]
+		public string VarIx
+		{
+			get
+			{
+				return this.varIx;
+			}
+			set
+			{
+				this.varIx = value;
+			}
+		}
+
+		private bool Affirmative
+		{
+			get
+			{
+				return this.affirmative;
+			}
+		}
+
 		protected override bool IsScopeBlock
 		{
 			get
@@ -87,19 +100,6 @@ namespace TextMetal.Framework.TemplateModel
 			get
 			{
 				return this.precondition;
-			}
-		}
-
-		[XmlAttributeMapping(LocalName = "var-ix", NamespaceUri = "")]
-		public string VarIx
-		{
-			get
-			{
-				return this.varIx;
-			}
-			set
-			{
-				this.varIx = value;
 			}
 		}
 

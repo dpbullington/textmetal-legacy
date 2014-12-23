@@ -25,6 +25,11 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 		#region Methods/Operators
 
+		private void closeFormBy_Click(object sender, EventArgs e)
+		{
+			this.Okay();
+		}
+
 		protected override void CoreSetup()
 		{
 			const string RESOURCE_NAME = "TextMetal.HostImpl.WindowsTool.Images.SplashScreen.png";
@@ -48,11 +53,6 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		{
 			this.DialogResult = DialogResult.Cancel; // yes, this is correct
 			this.Close(); // direct
-		}
-
-		private void closeFormBy_Click(object sender, EventArgs e)
-		{
-			this.Okay();
 		}
 
 		private void tmrMain_Tick(object sender, EventArgs e)

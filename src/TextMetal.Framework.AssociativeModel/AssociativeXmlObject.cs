@@ -111,6 +111,22 @@ namespace TextMetal.Framework.AssociativeModel
 		}
 
 		/// <summary>
+		/// Gets the associative name of the current associative XML object.
+		/// </summary>
+		[XmlAttributeMapping(LocalName = "name", NamespaceUri = "")]
+		public string Name
+		{
+			get
+			{
+				return this.name;
+			}
+			set
+			{
+				this.name = value;
+			}
+		}
+
+		/// <summary>
 		/// Gets the number of elements contained in the <see cref="T:System.Collections.ICollection" /> .
 		/// </summary>
 		/// <returns>
@@ -256,22 +272,6 @@ namespace TextMetal.Framework.AssociativeModel
 			get
 			{
 				return ((IDictionary<string, object>)this.InnerAsDictionary).Keys;
-			}
-		}
-
-		/// <summary>
-		/// Gets the associative name of the current associative XML object.
-		/// </summary>
-		[XmlAttributeMapping(LocalName = "name", NamespaceUri = "")]
-		public string Name
-		{
-			get
-			{
-				return this.name;
-			}
-			set
-			{
-				this.name = value;
 			}
 		}
 
@@ -821,14 +821,6 @@ namespace TextMetal.Framework.AssociativeModel
 
 			#region Properties/Indexers/Events
 
-			public static NullTemplatingContext Instance
-			{
-				get
-				{
-					return instance;
-				}
-			}
-
 			public IDictionary<string, object> CurrentVariableTable
 			{
 				get
@@ -882,6 +874,14 @@ namespace TextMetal.Framework.AssociativeModel
 				get
 				{
 					throw new NotImplementedException();
+				}
+			}
+
+			public static NullTemplatingContext Instance
+			{
+				get
+				{
+					return instance;
 				}
 			}
 

@@ -50,6 +50,19 @@ namespace TextMetal.Common.Solder.DependencyManagement
 		#region Methods/Operators
 
 		/// <summary>
+		/// Resolves a dependency.
+		/// </summary>
+		/// <param name="dependencyManager"> The current in-effect dependency manager requesting this resolution. </param>
+		/// <returns> An instance of an object or null. </returns>
+		public object Resolve(IDependencyManager dependencyManager)
+		{
+			if ((object)dependencyManager == null)
+				throw new ArgumentNullException("dependencyManager");
+
+			return this.Method.DynamicInvoke(null);
+		}
+
+		/// <summary>
 		/// Gets an instance of DelegateDependencyResolution from the specified Func`1 delegate.
 		/// </summary>
 		/// <typeparam name="TObject"> The target type of resolution. </typeparam>
@@ -61,19 +74,6 @@ namespace TextMetal.Common.Solder.DependencyManagement
 				throw new ArgumentNullException("func");
 
 			return new DelegateDependencyResolution(func);
-		}
-
-		/// <summary>
-		/// Resolves a dependency.
-		/// </summary>
-		/// <param name="dependencyManager"> The current in-effect dependency manager requesting this resolution. </param>
-		/// <returns> An instance of an object or null. </returns>
-		public object Resolve(IDependencyManager dependencyManager)
-		{
-			if ((object)dependencyManager == null)
-				throw new ArgumentNullException("dependencyManager");
-
-			return this.Method.DynamicInvoke(null);
 		}
 
 		#endregion

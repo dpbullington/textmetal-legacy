@@ -26,11 +26,8 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Fields/Constants
 
-		private readonly List<Schema> schemas = new List<Schema>();
-		private readonly List<Trigger> triggers = new List<Trigger>();
 		private DateTime creationTimestamp;
 		private int databaseId;
-
 		private string databaseName;
 		private string databaseNameCamelCase;
 		private string databaseNameConstantCase;
@@ -47,6 +44,8 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string databaseNameSqlMetalPluralPascalCase;
 		private string databaseNameSqlMetalSingularCamelCase;
 		private string databaseNameSqlMetalSingularPascalCase;
+		private readonly List<Schema> schemas = new List<Schema>();
+		private readonly List<Trigger> triggers = new List<Trigger>();
 
 		#endregion
 

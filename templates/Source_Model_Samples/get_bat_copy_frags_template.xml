@@ -43,4 +43,20 @@ IF %ERRORLEVEL% NEQ 0 goto pkgError
 		</ForEach>
 	</OutputScope>
 
+	<OutputScope name="get_bat_copy_frags_template_aspmvc.g.txt">
+		<ForEach in="TextFileLines" var-ct="_LoopCount" var-ix="_LoopIndex" var-item="_LoopItem">
+			<ForEach.Body>
+<![CDATA[<div class="secass-data-label">
+	<%= this.Html.LabelFor(m => m.${TextFileLine}, "${TextFileLine}") %>
+</div>
+<div class="secass-data-field">
+	<%= this.Html.TextBoxFor(m => m.${TextFileLine}, new { @class = "secass-input-text" }) %>
+	<%= this.Html.ValidationMessageFor(m => m.${TextFileLine}) %>
+</div>
+
+]]>
+			</ForEach.Body>
+		</ForEach>
+	</OutputScope>
+
 </Template>

@@ -4,9 +4,6 @@
 */
 
 using System;
-using System.Collections.Generic;
-
-using TextMetal.Common.Core;
 
 namespace TextMetal.Common.Data.Framework
 {
@@ -35,15 +32,6 @@ namespace TextMetal.Common.Data.Framework
 		public virtual void Mark()
 		{
 			// do nothing
-		}
-
-		public virtual IEnumerable<Message> Validate()
-		{
-			List<Message> messages;
-
-			messages = new List<Message>();
-
-			return messages.ToArray();
 		}
 
 		#endregion

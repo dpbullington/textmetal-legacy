@@ -35,11 +35,6 @@ namespace TextMetal.HostImpl.Web.Email
 			set;
 		}
 
-		IList<IHostEmailAttachment> HostEmailAttachments
-		{
-			get;
-		}
-
 		bool? IsBodyHtml
 		{
 			get;
@@ -74,6 +69,11 @@ namespace TextMetal.HostImpl.Web.Email
 		{
 			get;
 			set;
+		}
+
+		IList<IHostEmailAttachment> HostEmailAttachments
+		{
+			get;
 		}
 
 		#endregion

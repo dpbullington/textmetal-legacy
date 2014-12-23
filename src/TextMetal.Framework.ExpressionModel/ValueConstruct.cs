@@ -36,6 +36,18 @@ namespace TextMetal.Framework.ExpressionModel
 
 		#region Properties/Indexers/Events
 
+		public object __
+		{
+			get
+			{
+				return this._;
+			}
+			set
+			{
+				this._ = value;
+			}
+		}
+
 		[XmlAttributeMapping(LocalName = "data", NamespaceUri = "", Order = 2)]
 		public string Data
 		{
@@ -59,18 +71,6 @@ namespace TextMetal.Framework.ExpressionModel
 			set
 			{
 				this.type = value;
-			}
-		}
-
-		public object __
-		{
-			get
-			{
-				return this._;
-			}
-			set
-			{
-				this._ = value;
 			}
 		}
 

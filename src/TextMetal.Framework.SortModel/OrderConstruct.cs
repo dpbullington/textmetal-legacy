@@ -34,20 +34,12 @@ namespace TextMetal.Framework.SortModel
 
 		#region Fields/Constants
 
-		private readonly bool ascending;
 		private IExpressionContainerConstruct compare;
+		private readonly bool ascending;
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		private bool Ascending
-		{
-			get
-			{
-				return this.ascending;
-			}
-		}
 
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Compare", NamespaceUri = "http://www.textmetal.com/api/v6.0.0")]
 		public IExpressionContainerConstruct Compare
@@ -59,6 +51,14 @@ namespace TextMetal.Framework.SortModel
 			set
 			{
 				this.compare = value;
+			}
+		}
+
+		private bool Ascending
+		{
+			get
+			{
+				return this.ascending;
 			}
 		}
 

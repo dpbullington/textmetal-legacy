@@ -13,17 +13,17 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 	{
 		#region Properties/Indexers/Events
 
-		string CSharpIsViewLiteral
-		{
-			get;
-		}
-
 		IEnumerable<Column> Columns
 		{
 			get;
 		}
 
 		DateTime CreationTimestamp
+		{
+			get;
+		}
+
+		string CSharpIsViewLiteral
 		{
 			get;
 		}

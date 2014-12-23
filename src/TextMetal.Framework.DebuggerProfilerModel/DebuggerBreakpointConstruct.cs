@@ -41,17 +41,6 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// Gets an array of allowed child XML object types.
-		/// </summary>
-		public Type[] AllowedChildTypes
-		{
-			get
-			{
-				return new Type[] { typeof(IXmlObject) };
-			}
-		}
-
-		/// <summary>
 		/// Gets or sets the optional single XML object content. This implementation always return null.
 		/// </summary>
 		public IXmlObject Content
@@ -63,28 +52,6 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 			set
 			{
 				// do nothing
-			}
-		}
-
-		/// <summary>
-		/// Gets a list of XML object items. This implementation always return null.
-		/// </summary>
-		public IXmlObjectCollection<IXmlObject> Items
-		{
-			get
-			{
-				return null;
-			}
-		}
-
-		/// <summary>
-		/// Gets the associative name of the current associative XML object.
-		/// </summary>
-		public string Name
-		{
-			get
-			{
-				return null;
 			}
 		}
 
@@ -118,22 +85,6 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 			}
 		}
 
-		public bool? SortDirection
-		{
-			get
-			{
-				return null;
-			}
-		}
-
-		public IExpression SortExpression
-		{
-			get
-			{
-				return null;
-			}
-		}
-
 		/// <summary>
 		/// Gets or sets the surround XML object or null if this is not surrounded (in a collection).
 		/// </summary>
@@ -161,6 +112,55 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 			set
 			{
 				throw new NotImplementedException();
+			}
+		}
+
+		/// <summary>
+		/// Gets an array of allowed child XML object types.
+		/// </summary>
+		public Type[] AllowedChildTypes
+		{
+			get
+			{
+				return new Type[] { typeof(IXmlObject) };
+			}
+		}
+
+		/// <summary>
+		/// Gets a list of XML object items. This implementation always return null.
+		/// </summary>
+		public IXmlObjectCollection<IXmlObject> Items
+		{
+			get
+			{
+				return null;
+			}
+		}
+
+		/// <summary>
+		/// Gets the associative name of the current associative XML object.
+		/// </summary>
+		public string Name
+		{
+			get
+			{
+				return null;
+			}
+		}
+
+		public bool? SortDirection
+		{
+			get
+			{
+				return null;
+			}
+		}
+
+		public IExpression SortExpression
+		{
+			get
+			{
+				return null;
 			}
 		}
 

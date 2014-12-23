@@ -4,10 +4,123 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace TextMetal.Common.Core
 {
+	public enum VirtualFileSystemItemType
+	{
+		None = 0,
+		File = 1,
+		Directory = 2,
+		Volume = 3,
+		Link = 4
+	}
+
+	public sealed class VirtualFileSystemItem
+	{
+		#region Constructors/Destructors
+
+		public VirtualFileSystemItem(VirtualFileSystemItemType itemType, string itemName, string itemPath)
+		{
+			this.itemType = itemType;
+			this.itemName = itemName;
+			this.itemPath = itemPath;
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly string itemName;
+		private readonly string itemPath;
+		private readonly VirtualFileSystemItemType itemType;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public string ItemName
+		{
+			get
+			{
+				return this.itemName;
+			}
+		}
+
+		public string ItemPath
+		{
+			get
+			{
+				return this.itemPath;
+			}
+		}
+
+		public VirtualFileSystemItemType ItemType
+		{
+			get
+			{
+				return this.itemType;
+			}
+		}
+
+		#endregion
+	}
+
+	public sealed class VirtualFileSystemEnumerator
+	{
+		#region Constructors/Destructors
+
+		public VirtualFileSystemEnumerator()
+		{
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		public IEnumerable<VirtualFileSystemItem> EnumerateVirtualItems(string directoryPath, bool enableRecursion)
+		{
+			IEnumerable<string> directoryNames;
+			IEnumerable<string> fileNames;
+
+			if ((object)directoryPath == null)
+				throw new ArgumentNullException("directoryPath");
+
+			directoryPath = Path.GetFullPath(directoryPath);
+
+			if (File.Exists(directoryPath))
+				throw new DirectoryNotFoundException(directoryPath);
+
+			if (!Directory.Exists(directoryPath))
+				throw new DirectoryNotFoundException(directoryPath);
+
+			directoryNames = Directory.EnumerateDirectories(directoryPath);
+
+			foreach (string directoryName in directoryNames)
+			{
+				string tempDirectoryPath = Path.Combine(directoryPath, directoryName);
+				yield return new VirtualFileSystemItem(VirtualFileSystemItemType.Directory, directoryName, tempDirectoryPath);
+
+				if (enableRecursion)
+				{
+					var items = this.EnumerateVirtualItems(tempDirectoryPath, true);
+
+					foreach (var item in items)
+						yield return item;
+				}
+			}
+
+			fileNames = Directory.EnumerateFiles(directoryPath);
+
+			foreach (string fileName in fileNames)
+				yield return new VirtualFileSystemItem(VirtualFileSystemItemType.File, fileName, Path.Combine(directoryPath, fileName));
+		}
+
+		#endregion
+	}
+
 	public class FileSystemEnumerator
 	{
 		#region Constructors/Destructors
@@ -26,8 +139,8 @@ namespace TextMetal.Common.Core
 
 		#region Properties/Indexers/Events
 
-		public event DirectoryFoundHandler DirectoryFound;
-		public event FileFoundHandler FileFound;
+		public event Action<DirectoryInfo> DirectoryFound;
+		public event Action<FileInfo> FileFound;
 
 		public bool Cancel
 		{
@@ -52,54 +165,45 @@ namespace TextMetal.Common.Core
 
 		public void EnumerateFileSystem(string enumerationPath, bool recurse)
 		{
-			string[] directoryPaths;
-			string[] filePaths;
+			VirtualFileSystemEnumerator virtualFileSystemEnumerator;
+			IEnumerable<VirtualFileSystemItem> virtualFileSystemItems;
 
-			enumerationPath = Path.GetFullPath(enumerationPath);
+			if ((object)enumerationPath == null)
+				throw new ArgumentNullException("enumerationPath");
 
 			if (this.Cancel)
 				return;
 
-			if (File.Exists(enumerationPath))
-			{
-				filePaths = new string[] { enumerationPath };
-				directoryPaths = new string[] { };
-			}
-			else if (Directory.Exists(enumerationPath))
-			{
-				filePaths = Directory.GetFiles(enumerationPath);
-				directoryPaths = Directory.GetDirectories(enumerationPath);
-			}
-			else
-			{
-				filePaths = new string[] { };
-				directoryPaths = new string[] { };
-			}
+			virtualFileSystemEnumerator = new VirtualFileSystemEnumerator();
+			virtualFileSystemItems = virtualFileSystemEnumerator.EnumerateVirtualItems(enumerationPath, true);
 
-			if ((object)filePaths != null)
+			if ((object)virtualFileSystemItems != null)
 			{
-				foreach (string filePath in filePaths)
+				foreach (VirtualFileSystemItem virtualFileSystemItem in virtualFileSystemItems)
 				{
 					if (this.Cancel)
 						return;
 
-					if (this.FileFound != null)
-						this.FileFound(new FileInfo(filePath));
-				}
-			}
+					switch (virtualFileSystemItem.ItemType)
+					{
+						case VirtualFileSystemItemType.File:
 
-			if ((object)directoryPaths != null)
-			{
-				foreach (string directoryPath in directoryPaths)
-				{
-					if (this.Cancel)
-						return;
+							if (this.FileFound != null)
+								this.FileFound(new FileInfo(virtualFileSystemItem.ItemPath));
 
-					if (this.DirectoryFound != null)
-						this.DirectoryFound(new DirectoryInfo(directoryPath));
+							break;
+						case VirtualFileSystemItemType.Directory:
 
-					if (recurse)
-						this.EnumerateFileSystem(directoryPath);
+							if (this.DirectoryFound != null)
+								this.DirectoryFound(new DirectoryInfo(virtualFileSystemItem.ItemPath));
+
+							if (recurse)
+								this.EnumerateFileSystem(virtualFileSystemItem.ItemPath, recurse);
+
+							break;
+						default:
+							throw new ArgumentOutOfRangeException(virtualFileSystemItem.ItemType.ToString());
+					}
 				}
 			}
 		}
@@ -107,18 +211,10 @@ namespace TextMetal.Common.Core
 		public void SignalCancel()
 		{
 			if (this.Cancel)
-				throw new InvalidOperationException("Already canceled");
+				throw new InvalidOperationException("Already canceled.");
 
 			this.Cancel = true;
 		}
-
-		#endregion
-
-		#region Classes/Structs/Interfaces/Enums/Delegates
-
-		public delegate void DirectoryFoundHandler(DirectoryInfo directoryInfo);
-
-		public delegate void FileFoundHandler(FileInfo fileInfo);
 
 		#endregion
 	}

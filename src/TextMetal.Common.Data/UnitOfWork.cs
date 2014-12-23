@@ -31,32 +31,17 @@ namespace TextMetal.Common.Data
 
 		#region Fields/Constants
 
-		private static readonly string UNIT_OF_WORK_CONTEXT_CURRENT_KEY = typeof(UnitOfWork).GUID.SafeToString();
-		private readonly IDbConnection connection;
-		private readonly IDbTransaction transaction;
 		private bool completed;
 		private IDisposable context;
 		private bool disposed;
 		private bool diverged;
+		private readonly IDbConnection connection;
+		private readonly IDbTransaction transaction;
+		private static readonly string UNIT_OF_WORK_CONTEXT_CURRENT_KEY = typeof(UnitOfWork).GUID.SafeToString();
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Gets the current ambient unit of work active on the current thread and application domain.
-		/// </summary>
-		public static IUnitOfWork Current
-		{
-			get
-			{
-				return (IUnitOfWork)ExecutionPathStorage.GetValue(UNIT_OF_WORK_CONTEXT_CURRENT_KEY);
-			}
-			set
-			{
-				ExecutionPathStorage.SetValue(UNIT_OF_WORK_CONTEXT_CURRENT_KEY, value);
-			}
-		}
 
 		/// <summary>
 		/// Gets a value indicating whether the current instance has been completed.
@@ -70,20 +55,6 @@ namespace TextMetal.Common.Data
 			private set
 			{
 				this.completed = value;
-			}
-		}
-
-		/// <summary>
-		/// Gets the underlying ADO.NET connection.
-		/// </summary>
-		public IDbConnection Connection
-		{
-			get
-			{
-				if (this.Disposed)
-					throw new ObjectDisposedException(typeof(UnitOfWork).FullName);
-
-				return this.connection;
 			}
 		}
 
@@ -136,6 +107,20 @@ namespace TextMetal.Common.Data
 		}
 
 		/// <summary>
+		/// Gets the underlying ADO.NET connection.
+		/// </summary>
+		public IDbConnection Connection
+		{
+			get
+			{
+				if (this.Disposed)
+					throw new ObjectDisposedException(typeof(UnitOfWork).FullName);
+
+				return this.connection;
+			}
+		}
+
+		/// <summary>
 		/// Gets the underlying ADO.NET transaction.
 		/// </summary>
 		public IDbTransaction Transaction
@@ -149,63 +134,24 @@ namespace TextMetal.Common.Data
 			}
 		}
 
+		/// <summary>
+		/// Gets the current ambient unit of work active on the current thread and application domain.
+		/// </summary>
+		public static IUnitOfWork Current
+		{
+			get
+			{
+				return (IUnitOfWork)ExecutionPathStorage.GetValue(UNIT_OF_WORK_CONTEXT_CURRENT_KEY);
+			}
+			set
+			{
+				ExecutionPathStorage.SetValue(UNIT_OF_WORK_CONTEXT_CURRENT_KEY, value);
+			}
+		}
+
 		#endregion
 
 		#region Methods/Operators
-
-		/// <summary>
-		/// Creates a new unit of work (and opens the underlying connection) for the given connection type and connection string with an optional transaction started.
-		/// </summary>
-		/// <param name="connectionType"> The run-time type of the connection to use. </param>
-		/// <param name="connectionString"> The ADO.NET provider connection string to use. </param>
-		/// <param name="transactional"> A value indicating whether a new local data source transaction isstarted on the connection. </param>
-		/// <param name="isolationLevel"> A value indicating the transaction isolation level. </param>
-		/// <returns> An instance of teh unitOfWork ready for execution of operations. This should be wrapped in a using(...){} block for an optimal usage scenario. </returns>
-		public static IUnitOfWork Create(Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel = IsolationLevel.Unspecified)
-		{
-			UnitOfWork unitOfWork;
-			IDbConnection dbConnection;
-			IDbTransaction dbTransaction;
-			const bool OPEN = true;
-
-			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
-
-			if ((object)connectionString == null)
-				throw new ArgumentNullException("connectionString");
-
-			if (DataType.Instance.IsWhiteSpace(connectionString))
-				throw new ArgumentOutOfRangeException("connectionString");
-
-			dbConnection = (IDbConnection)Activator.CreateInstance(connectionType);
-
-			if (OPEN)
-			{
-				dbConnection.ConnectionString = connectionString;
-				dbConnection.Open();
-
-				if (transactional)
-					dbTransaction = dbConnection.BeginTransaction(isolationLevel);
-				else
-					dbTransaction = null;
-			}
-
-			unitOfWork = new UnitOfWork(dbConnection, dbTransaction);
-
-			return unitOfWork;
-		}
-
-		public static IUnitOfWork From(IDbConnection dbConnection, IDbTransaction dbTransaction)
-		{
-			UnitOfWork unitOfWork;
-
-			if ((object)dbConnection == null)
-				throw new ArgumentNullException("dbConnection");
-
-			unitOfWork = new UnitOfWork(dbConnection, dbTransaction);
-
-			return unitOfWork;
-		}
 
 		/// <summary>
 		/// Contains the logic to 'adjudicate' or realize a transaction based on state of the current unit of work instance.
@@ -280,6 +226,60 @@ namespace TextMetal.Common.Data
 				throw new ObjectDisposedException(typeof(UnitOfWork).FullName);
 
 			this.Diverged = true;
+		}
+
+		/// <summary>
+		/// Creates a new unit of work (and opens the underlying connection) for the given connection type and connection string with an optional transaction started.
+		/// </summary>
+		/// <param name="connectionType"> The run-time type of the connection to use. </param>
+		/// <param name="connectionString"> The ADO.NET provider connection string to use. </param>
+		/// <param name="transactional"> A value indicating whether a new local data source transaction isstarted on the connection. </param>
+		/// <param name="isolationLevel"> A value indicating the transaction isolation level. </param>
+		/// <returns> An instance of teh unitOfWork ready for execution of operations. This should be wrapped in a using(...){} block for an optimal usage scenario. </returns>
+		public static IUnitOfWork Create(Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel = IsolationLevel.Unspecified)
+		{
+			UnitOfWork unitOfWork;
+			IDbConnection dbConnection;
+			IDbTransaction dbTransaction;
+			const bool OPEN = true;
+
+			if ((object)connectionType == null)
+				throw new ArgumentNullException("connectionType");
+
+			if ((object)connectionString == null)
+				throw new ArgumentNullException("connectionString");
+
+			if (DataType.Instance.IsWhiteSpace(connectionString))
+				throw new ArgumentOutOfRangeException("connectionString");
+
+			dbConnection = (IDbConnection)Activator.CreateInstance(connectionType);
+
+			if (OPEN)
+			{
+				dbConnection.ConnectionString = connectionString;
+				dbConnection.Open();
+
+				if (transactional)
+					dbTransaction = dbConnection.BeginTransaction(isolationLevel);
+				else
+					dbTransaction = null;
+			}
+
+			unitOfWork = new UnitOfWork(dbConnection, dbTransaction);
+
+			return unitOfWork;
+		}
+
+		public static IUnitOfWork From(IDbConnection dbConnection, IDbTransaction dbTransaction)
+		{
+			UnitOfWork unitOfWork;
+
+			if ((object)dbConnection == null)
+				throw new ArgumentNullException("dbConnection");
+
+			unitOfWork = new UnitOfWork(dbConnection, dbTransaction);
+
+			return unitOfWork;
 		}
 
 		#endregion

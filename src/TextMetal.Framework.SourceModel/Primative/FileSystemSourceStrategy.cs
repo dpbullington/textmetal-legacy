@@ -27,6 +27,68 @@ namespace TextMetal.Framework.SourceModel.Primative
 
 		#region Methods/Operators
 
+		protected override object CoreGetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties)
+		{
+			const string PROP_TOKEN_RECURSIVE = "Recursive";
+			const string PROP_TOKEN_WILDCARD = "Wildcard";
+			ObjectConstruct objectConstruct00;
+			PropertyConstruct propertyConstruct00;
+			IList<string> values;
+			bool recursive = false;
+			string recursiveStr;
+			string wildcard;
+
+			if ((object)sourceFilePath == null)
+				throw new ArgumentNullException("sourceFilePath");
+
+			if ((object)properties == null)
+				throw new ArgumentNullException("properties");
+
+			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
+				throw new ArgumentOutOfRangeException("sourceFilePath");
+
+			sourceFilePath = Path.GetFullPath(sourceFilePath);
+
+			recursiveStr = null;
+			if (properties.TryGetValue(PROP_TOKEN_RECURSIVE, out values))
+			{
+				if ((object)values != null && values.Count == 1)
+				{
+					recursiveStr = values[0];
+					if (!DataType.Instance.TryParse<bool>(recursiveStr, out recursive))
+						;
+				}
+			}
+
+			wildcard = null;
+			if (properties.TryGetValue(PROP_TOKEN_WILDCARD, out values))
+			{
+				if ((object)values != null && values.Count == 1)
+					wildcard = values[0];
+			}
+
+			objectConstruct00 = new ObjectConstruct();
+
+			propertyConstruct00 = new PropertyConstruct();
+			propertyConstruct00.Name = "SourceFullPath";
+			propertyConstruct00.RawValue = sourceFilePath;
+			objectConstruct00.Items.Add(propertyConstruct00);
+
+			propertyConstruct00 = new PropertyConstruct();
+			propertyConstruct00.Name = "Recursive";
+			propertyConstruct00.RawValue = recursive;
+			objectConstruct00.Items.Add(propertyConstruct00);
+
+			propertyConstruct00 = new PropertyConstruct();
+			propertyConstruct00.Name = "Wildcard";
+			propertyConstruct00.RawValue = wildcard;
+			objectConstruct00.Items.Add(propertyConstruct00);
+
+			EnumerateFileSystem(sourceFilePath, recursive, wildcard, objectConstruct00, sourceFilePath);
+
+			return objectConstruct00;
+		}
+
 		private static void EnumerateFileSystem(string directoryPath, bool recursive, string wildcard, AssociativeXmlObject parent, string sourcePath)
 		{
 			ArrayConstruct arrayConstruct00;
@@ -263,68 +325,6 @@ namespace TextMetal.Framework.SourceModel.Primative
 				p = p.Substring(2);
 
 			return p;
-		}
-
-		protected override object CoreGetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties)
-		{
-			const string PROP_TOKEN_RECURSIVE = "Recursive";
-			const string PROP_TOKEN_WILDCARD = "Wildcard";
-			ObjectConstruct objectConstruct00;
-			PropertyConstruct propertyConstruct00;
-			IList<string> values;
-			bool recursive = false;
-			string recursiveStr;
-			string wildcard;
-
-			if ((object)sourceFilePath == null)
-				throw new ArgumentNullException("sourceFilePath");
-
-			if ((object)properties == null)
-				throw new ArgumentNullException("properties");
-
-			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
-				throw new ArgumentOutOfRangeException("sourceFilePath");
-
-			sourceFilePath = Path.GetFullPath(sourceFilePath);
-
-			recursiveStr = null;
-			if (properties.TryGetValue(PROP_TOKEN_RECURSIVE, out values))
-			{
-				if ((object)values != null && values.Count == 1)
-				{
-					recursiveStr = values[0];
-					if (!DataType.Instance.TryParse<bool>(recursiveStr, out recursive))
-						;
-				}
-			}
-
-			wildcard = null;
-			if (properties.TryGetValue(PROP_TOKEN_WILDCARD, out values))
-			{
-				if ((object)values != null && values.Count == 1)
-					wildcard = values[0];
-			}
-
-			objectConstruct00 = new ObjectConstruct();
-
-			propertyConstruct00 = new PropertyConstruct();
-			propertyConstruct00.Name = "SourceFullPath";
-			propertyConstruct00.RawValue = sourceFilePath;
-			objectConstruct00.Items.Add(propertyConstruct00);
-
-			propertyConstruct00 = new PropertyConstruct();
-			propertyConstruct00.Name = "Recursive";
-			propertyConstruct00.RawValue = recursive;
-			objectConstruct00.Items.Add(propertyConstruct00);
-
-			propertyConstruct00 = new PropertyConstruct();
-			propertyConstruct00.Name = "Wildcard";
-			propertyConstruct00.RawValue = wildcard;
-			objectConstruct00.Items.Add(propertyConstruct00);
-
-			EnumerateFileSystem(sourceFilePath, recursive, wildcard, objectConstruct00, sourceFilePath);
-
-			return objectConstruct00;
 		}
 
 		#endregion

@@ -46,6 +46,10 @@
     <ApplicationIcon>TextMetal.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TextMetal.Common.WinForms\TextMetal.Common.WinForms.csproj">
+      <Project>{6BD158BA-429B-422B-AAEB-24A36511C19A}</Project>
+      <Name>TextMetal.Common.WinForms</Name>
+    </ProjectReference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Xml" />
@@ -61,8 +65,6 @@
     <Compile Include="FileHandlers\FsDeleteFileHandler.cs" />
     <Compile Include="FileHandlers\IFileHandler.cs" />
     <Compile Include="FileHandlers\MsBuildProjectFileHandler.cs" />
-    <Compile Include="FileHandlers\VsDatabaseProjectFileHandler.cs" />
-    <Compile Include="FileHandlers\VsDeployProjectFileHandler.cs" />
     <Compile Include="FileHandlers\VsSolutionFileHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
@@ -70,6 +72,7 @@
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Utilities\ConversionConfig.cs" />
+    <Compile Include="Utilities\VersionControlBindingAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TextMetal.snk">

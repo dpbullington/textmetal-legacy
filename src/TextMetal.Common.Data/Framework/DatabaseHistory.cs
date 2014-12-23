@@ -33,10 +33,10 @@ namespace TextMetal.Common.Data.Framework
 
 		#region Fields/Constants
 
-		private readonly List<DatabaseRevision> revisions = new List<DatabaseRevision>();
 		private string doesSchemaTrackingExistCommandText;
 		private string getSchemaVersionCommandText;
 		private string incrementSchemaVersionCommandText;
+		private readonly List<DatabaseRevision> revisions = new List<DatabaseRevision>();
 
 		#endregion
 

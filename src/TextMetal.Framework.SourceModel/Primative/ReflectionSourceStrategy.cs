@@ -28,6 +28,53 @@ namespace TextMetal.Framework.SourceModel.Primative
 
 		#region Methods/Operators
 
+		protected override object CoreGetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties)
+		{
+			ObjectConstruct objectConstruct00;
+
+			List<Assembly> assemblies;
+			Assembly assembly;
+			IEnumerable<string> filePaths;
+
+			if ((object)sourceFilePath == null)
+				throw new ArgumentNullException("sourceFilePath");
+
+			if ((object)properties == null)
+				throw new ArgumentNullException("properties");
+
+			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
+				throw new ArgumentOutOfRangeException("sourceFilePath");
+
+			assemblies = new List<Assembly>();
+			sourceFilePath = Path.GetFullPath(sourceFilePath);
+
+			if (File.Exists(sourceFilePath))
+				filePaths = new string[] { sourceFilePath };
+			else if (Directory.Exists(sourceFilePath))
+				filePaths = Directory.EnumerateFiles(sourceFilePath, "*.dll", SearchOption.TopDirectoryOnly);
+			else
+				filePaths = null;
+
+			if ((object)filePaths != null)
+			{
+				foreach (string filePath in filePaths)
+				{
+					assembly = Assembly.LoadFile(filePath);
+
+					if ((object)assembly == null)
+						throw new InvalidOperationException(string.Format("Failed to load the assembly file '{0}' via Assembly.LoadFile(..).", sourceFilePath));
+
+					assemblies.Add(assembly);
+				}
+			}
+
+			objectConstruct00 = new ObjectConstruct();
+
+			ModelAssemblies(assemblies.ToArray(), objectConstruct00);
+
+			return objectConstruct00;
+		}
+
 		private static bool IsRealMemberInfo(MethodInfo methodInfo)
 		{
 			PropertyInfo[] propertyInfos;
@@ -1450,53 +1497,6 @@ namespace TextMetal.Framework.SourceModel.Primative
 
 				ModelTypes("NestedTypes", childTypes, objectConstruct00);
 			}
-		}
-
-		protected override object CoreGetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties)
-		{
-			ObjectConstruct objectConstruct00;
-
-			List<Assembly> assemblies;
-			Assembly assembly;
-			IEnumerable<string> filePaths;
-
-			if ((object)sourceFilePath == null)
-				throw new ArgumentNullException("sourceFilePath");
-
-			if ((object)properties == null)
-				throw new ArgumentNullException("properties");
-
-			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
-				throw new ArgumentOutOfRangeException("sourceFilePath");
-
-			assemblies = new List<Assembly>();
-			sourceFilePath = Path.GetFullPath(sourceFilePath);
-
-			if (File.Exists(sourceFilePath))
-				filePaths = new string[] { sourceFilePath };
-			else if (Directory.Exists(sourceFilePath))
-				filePaths = Directory.EnumerateFiles(sourceFilePath, "*.dll", SearchOption.TopDirectoryOnly);
-			else
-				filePaths = null;
-
-			if ((object)filePaths != null)
-			{
-				foreach (string filePath in filePaths)
-				{
-					assembly = Assembly.LoadFile(filePath);
-
-					if ((object)assembly == null)
-						throw new InvalidOperationException(string.Format("Failed to load the assembly file '{0}' via Assembly.LoadFile(..).", sourceFilePath));
-
-					assemblies.Add(assembly);
-				}
-			}
-
-			objectConstruct00 = new ObjectConstruct();
-
-			ModelAssemblies(assemblies.ToArray(), objectConstruct00);
-
-			return objectConstruct00;
 		}
 
 		#endregion

@@ -27,7 +27,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string columnName;
 		private int columnOrdinal;
 		private int foreignKeyColumnOrdinal;
-
 		private string targetColumnName;
 		private int targetColumnOrdinal;
 

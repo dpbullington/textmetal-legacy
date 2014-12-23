@@ -31,15 +31,46 @@ namespace TextMetal.Common.Solder.DependencyManagement
 		#region Fields/Constants
 
 		private const int LOCK_AQUIRE_TIMEOUT_MILLISECONDS = 500;
-		private static readonly object synchObj = new object();
-		private static bool ready;
+		private bool disposed;
 		private readonly Dictionary<KeyValuePair<Type, string>, IDependencyResolution> dependencyResolutionRegistrations = new Dictionary<KeyValuePair<Type, string>, IDependencyResolution>();
 		private readonly ReaderWriterLock readerWriterLock = new ReaderWriterLock();
-		private bool disposed;
+		private static bool ready;
+		private static readonly object synchObj = new object();
 
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		/// <summary>
+		/// Gets a value indicating whether the current instance has been disposed.
+		/// </summary>
+		public bool Disposed
+		{
+			get
+			{
+				return this.disposed;
+			}
+			private set
+			{
+				this.disposed = value;
+			}
+		}
+
+		private Dictionary<KeyValuePair<Type, string>, IDependencyResolution> DependencyResolutionRegistrations
+		{
+			get
+			{
+				return this.dependencyResolutionRegistrations;
+			}
+		}
+
+		private ReaderWriterLock ReaderWriterLock
+		{
+			get
+			{
+				return this.readerWriterLock;
+			}
+		}
 
 		/// <summary>
 		/// Gets the singleton instance associated with the current application domain. Most applications will use this instance instead of creating their own instance.
@@ -71,196 +102,9 @@ namespace TextMetal.Common.Solder.DependencyManagement
 			}
 		}
 
-		private Dictionary<KeyValuePair<Type, string>, IDependencyResolution> DependencyResolutionRegistrations
-		{
-			get
-			{
-				return this.dependencyResolutionRegistrations;
-			}
-		}
-
-		/// <summary>
-		/// Gets a value indicating whether the current instance has been disposed.
-		/// </summary>
-		public bool Disposed
-		{
-			get
-			{
-				return this.disposed;
-			}
-			private set
-			{
-				this.disposed = value;
-			}
-		}
-
-		private ReaderWriterLock ReaderWriterLock
-		{
-			get
-			{
-				return this.readerWriterLock;
-			}
-		}
-
 		#endregion
 
 		#region Methods/Operators
-
-		/// <summary>
-		/// Private method to handle the assembly load events on application domains.
-		/// </summary>
-		/// <param name="sender"> The sending object. </param>
-		/// <param name="args"> The event arguments. </param>
-		private static void CurrentDomain_AssemblyLoad(object sender, AssemblyLoadEventArgs args)
-		{
-			ScanAssemblies(new Assembly[] { args.LoadedAssembly });
-		}
-
-		/// <summary>
-		/// Private method to handle the assembly unload events on application domains.
-		/// </summary>
-		/// <param name="sender"> The sending object. </param>
-		/// <param name="e"> The event arguments. </param>
-		private static void CurrentDomain_DomainUnload(object sender, EventArgs e)
-		{
-			TearDownApplicationDomain();
-		}
-
-		/// <summary>
-		/// *** Code duplication here that breaks the dependency between Solder and Core. ***
-		/// Get the single custom attribute of the attribute specified type. If more than one custom attribute exists for the requested type, an InvalidOperationException is thrown. If no custom attributes of the specified type are defined, then null is returned.
-		/// </summary>
-		/// <typeparam name="TAttribute"> The custom attribute type. </typeparam>
-		/// <param name="target"> The target ICustomAttributeProvider (Assembly, Type, MemberInfo, etc.) </param>
-		/// <returns> The single custom attribute or null if none are defined. </returns>
-		internal static TAttribute GetOneAttribute<TAttribute>(ICustomAttributeProvider target)
-			where TAttribute : Attribute
-		{
-			TAttribute[] attributes;
-			Type attributeType, targetType;
-
-			if ((object)target == null)
-				throw new ArgumentNullException("target");
-
-			attributeType = typeof(TAttribute);
-			targetType = target.GetType();
-
-			var temp = target.GetCustomAttributes(typeof(TAttribute), true);
-
-			if ((object)temp != null && temp.Length != 0 && temp is TAttribute[])
-				attributes = temp as TAttribute[];
-			else
-				attributes = null;
-
-			if ((object)attributes == null || attributes.Length == 0)
-				return null;
-			else if (attributes.Length > 1)
-				throw new InvalidOperationException(string.Format("Multiple custom attributes of type '{0}' are defined on type '{1}'.", attributeType.FullName, targetType.FullName));
-			else
-				return attributes[0];
-		}
-
-		/// <summary>
-		/// Private method that will scan all asemblies specified to perform auto-wiring of dependencies.
-		/// </summary>
-		/// <param name="assemblies"> An arry of ssemblies to scan and load dependency resolutions automatically ("auto-wire" feature). </param>
-		private static void ScanAssemblies(Assembly[] assemblies)
-		{
-			Type[] assemblyTypes;
-			MethodInfo[] methodInfos;
-			DependencyRegistrationAttribute dependencyRegistrationAttribute;
-			Action dependencyRegistrationMethod;
-
-			if ((object)assemblies != null)
-			{
-				foreach (Assembly assembly in assemblies)
-				{
-					dependencyRegistrationAttribute = GetOneAttribute<DependencyRegistrationAttribute>(assembly);
-
-					if ((object)dependencyRegistrationAttribute == null)
-						continue;
-
-					assemblyTypes = assembly.GetTypes();
-
-					if ((object)assemblyTypes != null)
-					{
-						foreach (Type assemblyType in assemblyTypes)
-						{
-							dependencyRegistrationAttribute = GetOneAttribute<DependencyRegistrationAttribute>(assemblyType);
-
-							if ((object)dependencyRegistrationAttribute == null)
-								continue;
-
-							if (!assemblyType.IsPublic)
-								continue;
-
-							methodInfos = assemblyType.GetMethods(BindingFlags.Public | BindingFlags.Static);
-
-							if ((object)methodInfos != null)
-							{
-								foreach (MethodInfo methodInfo in methodInfos)
-								{
-									dependencyRegistrationAttribute = GetOneAttribute<DependencyRegistrationAttribute>(methodInfo);
-
-									if ((object)dependencyRegistrationAttribute == null)
-										continue;
-
-									if (!methodInfo.IsStatic)
-										continue;
-
-									if (!methodInfo.IsPublic)
-										continue;
-
-									dependencyRegistrationMethod = (Action)(Delegate.CreateDelegate(typeof(Action), methodInfo, false));
-
-									if ((object)dependencyRegistrationMethod == null)
-										continue;
-
-									dependencyRegistrationMethod();
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		/// <summary>
-		/// Private thread-safe method which bootstraps an app domain for dependency management.
-		/// </summary>
-		private static void SetUpApplicationDomain()
-		{
-			lock (synchObj)
-			{
-				if (ready)
-					return;
-
-				AppDomain.CurrentDomain.AssemblyLoad += new AssemblyLoadEventHandler(CurrentDomain_AssemblyLoad);
-				AppDomain.CurrentDomain.DomainUnload += new EventHandler(CurrentDomain_DomainUnload);
-				ScanAssemblies(AppDomain.CurrentDomain.GetAssemblies());
-
-				ready = true;
-			}
-		}
-
-		/// <summary>
-		/// Private thread-safe method which dismantles an app domain for dependency management.
-		/// </summary>
-		private static void TearDownApplicationDomain()
-		{
-			lock (synchObj)
-			{
-				if (!ready)
-					return;
-
-				// cleanup
-				if ((object)AppDomainInstance != null)
-					AppDomainInstance.Dispose();
-
-				AppDomain.CurrentDomain.DomainUnload -= new EventHandler(CurrentDomain_DomainUnload);
-				AppDomain.CurrentDomain.AssemblyLoad -= new AssemblyLoadEventHandler(CurrentDomain_AssemblyLoad);
-			}
-		}
 
 		/// <summary>
 		/// Adds a new dependency resolution for a given target type and selector key. Throws a DependencyException if the target type and selector key combination has been previously registered in this instance. This is the generic overload.
@@ -684,6 +528,162 @@ namespace TextMetal.Common.Solder.DependencyManagement
 			finally
 			{
 				this.ReaderWriterLock.ReleaseReaderLock();
+			}
+		}
+
+		/// <summary>
+		/// Private method to handle the assembly load events on application domains.
+		/// </summary>
+		/// <param name="sender"> The sending object. </param>
+		/// <param name="args"> The event arguments. </param>
+		private static void CurrentDomain_AssemblyLoad(object sender, AssemblyLoadEventArgs args)
+		{
+			ScanAssemblies(new Assembly[] { args.LoadedAssembly });
+		}
+
+		/// <summary>
+		/// Private method to handle the assembly unload events on application domains.
+		/// </summary>
+		/// <param name="sender"> The sending object. </param>
+		/// <param name="e"> The event arguments. </param>
+		private static void CurrentDomain_DomainUnload(object sender, EventArgs e)
+		{
+			TearDownApplicationDomain();
+		}
+
+		/// <summary>
+		/// *** Code duplication here that breaks the dependency between Solder and Core. ***
+		/// Get the single custom attribute of the attribute specified type. If more than one custom attribute exists for the requested type, an InvalidOperationException is thrown. If no custom attributes of the specified type are defined, then null is returned.
+		/// </summary>
+		/// <typeparam name="TAttribute"> The custom attribute type. </typeparam>
+		/// <param name="target"> The target ICustomAttributeProvider (Assembly, Type, MemberInfo, etc.) </param>
+		/// <returns> The single custom attribute or null if none are defined. </returns>
+		internal static TAttribute GetOneAttribute<TAttribute>(ICustomAttributeProvider target)
+			where TAttribute : Attribute
+		{
+			TAttribute[] attributes;
+			Type attributeType, targetType;
+
+			if ((object)target == null)
+				throw new ArgumentNullException("target");
+
+			attributeType = typeof(TAttribute);
+			targetType = target.GetType();
+
+			var temp = target.GetCustomAttributes(typeof(TAttribute), true);
+
+			if ((object)temp != null && temp.Length != 0 && temp is TAttribute[])
+				attributes = temp as TAttribute[];
+			else
+				attributes = null;
+
+			if ((object)attributes == null || attributes.Length == 0)
+				return null;
+			else if (attributes.Length > 1)
+				throw new InvalidOperationException(string.Format("Multiple custom attributes of type '{0}' are defined on type '{1}'.", attributeType.FullName, targetType.FullName));
+			else
+				return attributes[0];
+		}
+
+		/// <summary>
+		/// Private method that will scan all asemblies specified to perform auto-wiring of dependencies.
+		/// </summary>
+		/// <param name="assemblies"> An arry of ssemblies to scan and load dependency resolutions automatically ("auto-wire" feature). </param>
+		private static void ScanAssemblies(Assembly[] assemblies)
+		{
+			Type[] assemblyTypes;
+			MethodInfo[] methodInfos;
+			DependencyRegistrationAttribute dependencyRegistrationAttribute;
+			Action dependencyRegistrationMethod;
+
+			if ((object)assemblies != null)
+			{
+				foreach (Assembly assembly in assemblies)
+				{
+					dependencyRegistrationAttribute = GetOneAttribute<DependencyRegistrationAttribute>(assembly);
+
+					if ((object)dependencyRegistrationAttribute == null)
+						continue;
+
+					assemblyTypes = assembly.GetTypes();
+
+					if ((object)assemblyTypes != null)
+					{
+						foreach (Type assemblyType in assemblyTypes)
+						{
+							dependencyRegistrationAttribute = GetOneAttribute<DependencyRegistrationAttribute>(assemblyType);
+
+							if ((object)dependencyRegistrationAttribute == null)
+								continue;
+
+							if (!assemblyType.IsPublic)
+								continue;
+
+							methodInfos = assemblyType.GetMethods(BindingFlags.Public | BindingFlags.Static);
+
+							if ((object)methodInfos != null)
+							{
+								foreach (MethodInfo methodInfo in methodInfos)
+								{
+									dependencyRegistrationAttribute = GetOneAttribute<DependencyRegistrationAttribute>(methodInfo);
+
+									if ((object)dependencyRegistrationAttribute == null)
+										continue;
+
+									if (!methodInfo.IsStatic)
+										continue;
+
+									if (!methodInfo.IsPublic)
+										continue;
+
+									dependencyRegistrationMethod = (Action)(Delegate.CreateDelegate(typeof(Action), methodInfo, false));
+
+									if ((object)dependencyRegistrationMethod == null)
+										continue;
+
+									dependencyRegistrationMethod();
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Private thread-safe method which bootstraps an app domain for dependency management.
+		/// </summary>
+		private static void SetUpApplicationDomain()
+		{
+			lock (synchObj)
+			{
+				if (ready)
+					return;
+
+				AppDomain.CurrentDomain.AssemblyLoad += new AssemblyLoadEventHandler(CurrentDomain_AssemblyLoad);
+				AppDomain.CurrentDomain.DomainUnload += new EventHandler(CurrentDomain_DomainUnload);
+				ScanAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+
+				ready = true;
+			}
+		}
+
+		/// <summary>
+		/// Private thread-safe method which dismantles an app domain for dependency management.
+		/// </summary>
+		private static void TearDownApplicationDomain()
+		{
+			lock (synchObj)
+			{
+				if (!ready)
+					return;
+
+				// cleanup
+				if ((object)AppDomainInstance != null)
+					AppDomainInstance.Dispose();
+
+				AppDomain.CurrentDomain.DomainUnload -= new EventHandler(CurrentDomain_DomainUnload);
+				AppDomain.CurrentDomain.AssemblyLoad -= new AssemblyLoadEventHandler(CurrentDomain_AssemblyLoad);
 			}
 		}
 

@@ -23,15 +23,15 @@ namespace TextMetal.HostImpl.Web.Email
 			set;
 		}
 
-		IHostEmailMessage HostEmailMessage
-		{
-			get;
-		}
-
 		string MimeType
 		{
 			get;
 			set;
+		}
+
+		IHostEmailMessage HostEmailMessage
+		{
+			get;
 		}
 
 		#endregion

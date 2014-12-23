@@ -21,17 +21,28 @@ namespace TextMetal.Common.Data.Framework.Mapping
 
 		#region Fields/Constants
 
-		private readonly IList<ColumnMappingAttribute> columnMappingAttributes = new List<ColumnMappingAttribute>();
-
 		private string databaseName;
 		private bool isView;
 		private string schemaName;
 		private string tableName;
 		private Type targetType;
+		private readonly IList<ColumnMappingAttribute> columnMappingAttributes = new List<ColumnMappingAttribute>();
 
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		public Type _TargetType
+		{
+			get
+			{
+				return this.targetType;
+			}
+			set
+			{
+				this.targetType = value;
+			}
+		}
 
 		public string DatabaseName
 		{
@@ -86,18 +97,6 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			get
 			{
 				return this.columnMappingAttributes;
-			}
-		}
-
-		public Type _TargetType
-		{
-			get
-			{
-				return this.targetType;
-			}
-			set
-			{
-				this.targetType = value;
 			}
 		}
 

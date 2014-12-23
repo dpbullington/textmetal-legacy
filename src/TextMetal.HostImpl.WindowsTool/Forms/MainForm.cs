@@ -36,6 +36,18 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 		#region Properties/Indexers/Events
 
+		public string StatusText
+		{
+			get
+			{
+				return this.tsslMain.Text;
+			}
+			set
+			{
+				this.tsslMain.Text = value;
+			}
+		}
+
 		public IList<DocumentForm> DocumentForms
 		{
 			get
@@ -49,18 +61,6 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			get
 			{
 				return this.DocumentForms.Count > 0;
-			}
-		}
-
-		public string StatusText
-		{
-			get
-			{
-				return this.tsslMain.Text;
-			}
-			set
-			{
-				this.tsslMain.Text = value;
 			}
 		}
 
@@ -153,62 +153,6 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			this.RefreshControlState();
 		}
 
-		private void HelpTopics()
-		{
-			MessageBox.Show(this, "Help is not available in this release.", ExecutableApplication.Current.AssemblyInformation.Product, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-		}
-
-		private void NewDocument()
-		{
-			this.ShowDocument(null);
-		}
-
-		private void OpenDocument()
-		{
-			string filePath;
-
-			if (!this.TryGetFilePath(out filePath))
-				return;
-
-			this.ShowDocument(filePath);
-		}
-
-		private void RefreshControlState()
-		{
-			this.tsmiNewDocument.Enabled = true;
-			this.tsmiOpenDocument.Enabled = true;
-			this.tsmiCloseAllDocuments.Enabled = this.HasAnyDocuments;
-			this.tsmiDocumentWindows.Enabled = this.HasAnyDocuments;
-		}
-
-		private void ShowDocument(string documentFilePath)
-		{
-			DocumentForm documentForm;
-
-			documentForm = new DocumentForm();
-			documentForm.DocumentFilePath = documentFilePath;
-
-			documentForm.Load += this.documentForm_Load;
-			documentForm.TextChanged += this.documentForm_TextChanged;
-			documentForm.Closed += this.documentForm_Closed;
-			documentForm.Show();
-		}
-
-		private bool TryGetFilePath(out string filePath)
-		{
-			DialogResult dialogResult;
-
-			this.ofdMain.FileName = filePath = null;
-			dialogResult = this.ofdMain.ShowDialog(this);
-
-			if (dialogResult != DialogResult.OK ||
-				DataType.Instance.IsNullOrWhiteSpace(this.ofdMain.FileName))
-				return false;
-
-			filePath = Path.GetFullPath(this.ofdMain.FileName);
-			return true;
-		}
-
 		private void documentForm_Closed(object sender, EventArgs e)
 		{
 			DocumentForm documentForm;
@@ -267,6 +211,62 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 				throw new InvalidOperationException();
 
 			tsmiWindow.Text = documentForm.Text;
+		}
+
+		private void HelpTopics()
+		{
+			MessageBox.Show(this, "Help is not available in this release.", ExecutableApplication.Current.AssemblyInformation.Product, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+		}
+
+		private void NewDocument()
+		{
+			this.ShowDocument(null);
+		}
+
+		private void OpenDocument()
+		{
+			string filePath;
+
+			if (!this.TryGetFilePath(out filePath))
+				return;
+
+			this.ShowDocument(filePath);
+		}
+
+		private void RefreshControlState()
+		{
+			this.tsmiNewDocument.Enabled = true;
+			this.tsmiOpenDocument.Enabled = true;
+			this.tsmiCloseAllDocuments.Enabled = this.HasAnyDocuments;
+			this.tsmiDocumentWindows.Enabled = this.HasAnyDocuments;
+		}
+
+		private void ShowDocument(string documentFilePath)
+		{
+			DocumentForm documentForm;
+
+			documentForm = new DocumentForm();
+			documentForm.DocumentFilePath = documentFilePath;
+
+			documentForm.Load += this.documentForm_Load;
+			documentForm.TextChanged += this.documentForm_TextChanged;
+			documentForm.Closed += this.documentForm_Closed;
+			documentForm.Show();
+		}
+
+		private bool TryGetFilePath(out string filePath)
+		{
+			DialogResult dialogResult;
+
+			this.ofdMain.FileName = filePath = null;
+			dialogResult = this.ofdMain.ShowDialog(this);
+
+			if (dialogResult != DialogResult.OK ||
+				DataType.Instance.IsNullOrWhiteSpace(this.ofdMain.FileName))
+				return false;
+
+			filePath = Path.GetFullPath(this.ofdMain.FileName);
+			return true;
 		}
 
 		private void tsmiAbout_Click(object sender, EventArgs e)

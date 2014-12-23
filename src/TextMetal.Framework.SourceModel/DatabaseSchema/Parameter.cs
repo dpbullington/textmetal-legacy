@@ -27,15 +27,15 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Fields/Constants
 
+		private Type parameterClrNonNullableType;
+		private Type parameterClrNullableType;
+		private Type parameterClrType;
 		private string parameterCSharpClrNonNullableType;
 		private string parameterCSharpClrNullableType;
 		private string parameterCSharpClrType;
 		private string parameterCSharpDbType;
 		private string parameterCSharpDirection;
 		private string parameterCSharpNullableLiteral;
-		private Type parameterClrNonNullableType;
-		private Type parameterClrNullableType;
-		private Type parameterClrType;
 		private DbType parameterDbType;
 		private string parameterDefaultValue;
 		private ParameterDirection parameterDirection;
@@ -73,6 +73,93 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		[XmlAttribute("ParameterClrNonNullableType")]
+		public string _ParameterClrNonNullableType
+		{
+			get
+			{
+				return this.ParameterClrNonNullableType.SafeToString();
+			}
+			set
+			{
+				if (DataType.Instance.IsNullOrWhiteSpace(value))
+					this.ParameterClrNonNullableType = null;
+				else
+					this.ParameterClrNonNullableType = Type.GetType(value, false);
+			}
+		}
+
+		[XmlAttribute("ParameterClrNullableType")]
+		public string _ParameterClrNullableType
+		{
+			get
+			{
+				return this.ParameterClrNullableType.SafeToString();
+			}
+			set
+			{
+				if (DataType.Instance.IsNullOrWhiteSpace(value))
+					this.ParameterClrNullableType = null;
+				else
+					this.ParameterClrNullableType = Type.GetType(value, false);
+			}
+		}
+
+		[XmlAttribute("ParameterClrType")]
+		public string _ParameterClrType
+		{
+			get
+			{
+				return this.ParameterClrType.SafeToString();
+			}
+			set
+			{
+				if (DataType.Instance.IsNullOrWhiteSpace(value))
+					this.ParameterClrType = null;
+				else
+					this.ParameterClrType = Type.GetType(value, false);
+			}
+		}
+
+		[XmlIgnore]
+		public Type ParameterClrNonNullableType
+		{
+			get
+			{
+				return this.parameterClrNonNullableType;
+			}
+			set
+			{
+				this.parameterClrNonNullableType = value;
+			}
+		}
+
+		[XmlIgnore]
+		public Type ParameterClrNullableType
+		{
+			get
+			{
+				return this.parameterClrNullableType;
+			}
+			set
+			{
+				this.parameterClrNullableType = value;
+			}
+		}
+
+		[XmlIgnore]
+		public Type ParameterClrType
+		{
+			get
+			{
+				return this.parameterClrType;
+			}
+			set
+			{
+				this.parameterClrType = value;
+			}
+		}
 
 		[XmlAttribute]
 		public string ParameterCSharpClrNonNullableType
@@ -149,45 +236,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.parameterCSharpNullableLiteral = value;
-			}
-		}
-
-		[XmlIgnore]
-		public Type ParameterClrNonNullableType
-		{
-			get
-			{
-				return this.parameterClrNonNullableType;
-			}
-			set
-			{
-				this.parameterClrNonNullableType = value;
-			}
-		}
-
-		[XmlIgnore]
-		public Type ParameterClrNullableType
-		{
-			get
-			{
-				return this.parameterClrNullableType;
-			}
-			set
-			{
-				this.parameterClrNullableType = value;
-			}
-		}
-
-		[XmlIgnore]
-		public Type ParameterClrType
-		{
-			get
-			{
-				return this.parameterClrType;
-			}
-			set
-			{
-				this.parameterClrType = value;
 			}
 		}
 
@@ -617,54 +665,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.parameterSqlType = value;
-			}
-		}
-
-		[XmlAttribute("ParameterClrNonNullableType")]
-		public string _ParameterClrNonNullableType
-		{
-			get
-			{
-				return this.ParameterClrNonNullableType.SafeToString();
-			}
-			set
-			{
-				if (DataType.Instance.IsNullOrWhiteSpace(value))
-					this.ParameterClrNonNullableType = null;
-				else
-					this.ParameterClrNonNullableType = Type.GetType(value, false);
-			}
-		}
-
-		[XmlAttribute("ParameterClrNullableType")]
-		public string _ParameterClrNullableType
-		{
-			get
-			{
-				return this.ParameterClrNullableType.SafeToString();
-			}
-			set
-			{
-				if (DataType.Instance.IsNullOrWhiteSpace(value))
-					this.ParameterClrNullableType = null;
-				else
-					this.ParameterClrNullableType = Type.GetType(value, false);
-			}
-		}
-
-		[XmlAttribute("ParameterClrType")]
-		public string _ParameterClrType
-		{
-			get
-			{
-				return this.ParameterClrType.SafeToString();
-			}
-			set
-			{
-				if (DataType.Instance.IsNullOrWhiteSpace(value))
-					this.ParameterClrType = null;
-				else
-					this.ParameterClrType = Type.GetType(value, false);
 			}
 		}
 

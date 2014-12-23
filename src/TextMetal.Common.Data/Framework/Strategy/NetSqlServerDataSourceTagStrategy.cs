@@ -35,26 +35,25 @@ namespace TextMetal.Common.Data.Framework.Strategy
 		private const string NET_SQL_SERVER_SCHEMA_TABLE_NAME_FORMAT = "[{0}].[{1}]";
 		private const string NET_SQL_SERVER_TABLE_ALIAS_FORMAT = "{0}";
 		private const string NET_SQL_SERVER_TABLE_NAME_FORMAT = "[{0}]";
-
 		private static readonly NetSqlServerDataSourceTagStrategy instance = new NetSqlServerDataSourceTagStrategy();
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		public static NetSqlServerDataSourceTagStrategy Instance
-		{
-			get
-			{
-				return instance;
-			}
-		}
-
 		public string DataSourceTag
 		{
 			get
 			{
 				return NET_SQL_SERVER_DATA_SOURCE_TAG;
+			}
+		}
+
+		public static NetSqlServerDataSourceTagStrategy Instance
+		{
+			get
+			{
+				return instance;
 			}
 		}
 

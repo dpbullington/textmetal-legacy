@@ -27,7 +27,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string columnCSharpIsComputedLiteral;
 		private string columnCSharpIsIdentityLiteral;
 		private string columnCSharpIsPrimaryKeyLiteral;
-
 		private bool columnHasCheck;
 		private bool columnHasDefault;
 		private bool columnIsComputed;

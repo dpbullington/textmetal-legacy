@@ -40,17 +40,6 @@ namespace TextMetal.Common.WinForms
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// Gets the singleton 'empty' instance.
-		/// </summary>
-		public new static ListItem<TValue> Empty
-		{
-			get
-			{
-				return empty;
-			}
-		}
-
-		/// <summary>
 		/// Gets the list item value.
 		/// </summary>
 		public new TValue Value
@@ -62,6 +51,17 @@ namespace TextMetal.Common.WinForms
 			set
 			{
 				base.Value = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets the singleton 'empty' instance.
+		/// </summary>
+		public new static ListItem<TValue> Empty
+		{
+			get
+			{
+				return empty;
 			}
 		}
 

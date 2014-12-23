@@ -30,53 +30,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Methods/Operators
 
-		private static string FormatCSharpType(Type type)
-		{
-			if ((object)type == null)
-				throw new ArgumentNullException("type");
-
-			if (type.IsGenericType)
-			{
-				Type[] args;
-				List<string> s;
-
-				s = new List<string>();
-				args = type.GetGenericArguments();
-
-				if ((object)args != null)
-				{
-					foreach (Type arg in args)
-						s.Add(FormatCSharpType(arg));
-				}
-
-				return string.Format("{0}<{1}>", Regex.Replace(type.Name, "([A-Za-z0-9_]+)(`[0-1]+)", "$1"), string.Join(", ", s.ToArray()));
-			}
-
-			return type.Name;
-		}
-
-		private static string GetAllAssemblyResourceFileText(Type type, string folder, string name)
-		{
-			string resourcePath;
-			string sqlText;
-
-			if ((object)type == null)
-				throw new ArgumentNullException("type");
-
-			if ((object)name == null)
-				throw new ArgumentNullException("name");
-
-			if (DataType.Instance.IsWhiteSpace(name))
-				throw new ArgumentOutOfRangeException("name");
-
-			resourcePath = string.Format("{0}.DML.{1}.{2}.sql", type.Namespace, folder, name);
-
-			if (!Cerealization.TryGetStringFromAssemblyResource(type, resourcePath, out sqlText))
-				throw new InvalidOperationException(string.Format("Failed to obtain assembly manifest (embedded) resource '{0}'.", resourcePath));
-
-			return sqlText;
-		}
-
 		protected abstract int CoreCalculateColumnSize(string dataSourceTag, Column column);
 
 		protected abstract int CoreCalculateParameterSize(string dataSourceTag, Parameter parameter);
@@ -1123,6 +1076,53 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 
 			return server;
+		}
+
+		private static string FormatCSharpType(Type type)
+		{
+			if ((object)type == null)
+				throw new ArgumentNullException("type");
+
+			if (type.IsGenericType)
+			{
+				Type[] args;
+				List<string> s;
+
+				s = new List<string>();
+				args = type.GetGenericArguments();
+
+				if ((object)args != null)
+				{
+					foreach (Type arg in args)
+						s.Add(FormatCSharpType(arg));
+				}
+
+				return string.Format("{0}<{1}>", Regex.Replace(type.Name, "([A-Za-z0-9_]+)(`[0-1]+)", "$1"), string.Join(", ", s.ToArray()));
+			}
+
+			return type.Name;
+		}
+
+		private static string GetAllAssemblyResourceFileText(Type type, string folder, string name)
+		{
+			string resourcePath;
+			string sqlText;
+
+			if ((object)type == null)
+				throw new ArgumentNullException("type");
+
+			if ((object)name == null)
+				throw new ArgumentNullException("name");
+
+			if (DataType.Instance.IsWhiteSpace(name))
+				throw new ArgumentOutOfRangeException("name");
+
+			resourcePath = string.Format("{0}.DML.{1}.{2}.sql", type.Namespace, folder, name);
+
+			if (!Cerealization.TryGetStringFromAssemblyResource(type, resourcePath, out sqlText))
+				throw new InvalidOperationException(string.Format("Failed to obtain assembly manifest (embedded) resource '{0}'.", resourcePath));
+
+			return sqlText;
 		}
 
 		#endregion

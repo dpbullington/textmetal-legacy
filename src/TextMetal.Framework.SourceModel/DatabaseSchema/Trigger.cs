@@ -29,7 +29,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private bool isTriggerDisabled;
 		private bool isTriggerNotForReplication;
 		private int triggerId;
-
 		private string triggerName;
 		private string triggerNameCamelCase;
 		private string triggerNameConstantCase;

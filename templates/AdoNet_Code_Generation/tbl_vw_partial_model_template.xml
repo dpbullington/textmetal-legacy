@@ -54,6 +54,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Data.Framework;
 ]]>
 						<If>
 							<If.Condition>
@@ -79,15 +80,18 @@ namespace ${ClrNamespace}.${FolderName}
 	{
 		#region Methods/Operators
 
-		public static bool Exists(${TableNameSingularPascalCase} ${TableNameSingularCamelCase})
+		public static bool Exists(I${TableNameSingularPascalCase} ${TableNameSingularCamelCase})
 		{
-			IEnumerable<${TableNameSingularPascalCase}> ${TableNamePluralCamelCase};
+			IEnumerable<I${TableNameSingularPascalCase}> ${TableNamePluralCamelCase};
+			IModelQuery modelQuery;
 
 			if ((object)${TableNameSingularCamelCase} == null)
 				throw new ArgumentNullException("${TableNameSingularCamelCase}");
 
+			modelQuery = new ModelQuery(null, null); /* TODO */
+
 			${TableNamePluralCamelCase} =
-				Stuff.Get<IRepository>("").Find${TableNamePluralPascalCase}(/* TODO */);
+				Stuff.Get<IRepository>("").Find<I${TableNameSingularPascalCase}>(modelQuery);
 
 			return ${TableNamePluralCamelCase}.Count() > 0;
 		}

@@ -54,6 +54,7 @@ namespace TextMetal.Common.Core.Tokenization
 
 		#region Fields/Constants
 
+		private const string TOKEN_ID_REGEX = Constants.GLOBAL_ID_REGEX_UNBOUNDED + @"{0,1023}";
 		private const char TOKENIZER_LOGICAL_PROPERTY_PATH_CHAR = Constants.GLOBAL_LOGICAL_PROPERTY_PATH_CHAR;
 
 		private const string TOKENIZER_REGEX =
@@ -62,7 +63,6 @@ namespace TextMetal.Common.Core.Tokenization
 			@"(?: [ ]* \( ( [ ]* (?: ` [^`]* ` [ ]* (?: , [ ]* ` [^`]* ` [ ]* )* ){0,1} ){0,1} \) ){0,1}" +
 			@"[ ]* \}";
 
-		private const string TOKEN_ID_REGEX = Constants.GLOBAL_ID_REGEX_UNBOUNDED + @"{0,1023}";
 		private readonly List<string> previousExpansionTokens = new List<string>();
 		private readonly bool strictMatching;
 		private readonly IDictionary<string, ITokenReplacementStrategy> tokenReplacementStrategies;
@@ -70,28 +70,6 @@ namespace TextMetal.Common.Core.Tokenization
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Gets the token ID regular expression.
-		/// </summary>
-		public static string TokenIdRegEx
-		{
-			get
-			{
-				return TOKEN_ID_REGEX;
-			}
-		}
-
-		/// <summary>
-		/// Gets the tokenizer regular expression.
-		/// </summary>
-		public static string TokenizerRegEx
-		{
-			get
-			{
-				return TOKENIZER_REGEX;
-			}
-		}
 
 		/// <summary>
 		/// Gets an ordered array of the previous execution of expansion tokens encountered.
@@ -134,55 +112,31 @@ namespace TextMetal.Common.Core.Tokenization
 			}
 		}
 
+		/// <summary>
+		/// Gets the token ID regular expression.
+		/// </summary>
+		public static string TokenIdRegEx
+		{
+			get
+			{
+				return TOKEN_ID_REGEX;
+			}
+		}
+
+		/// <summary>
+		/// Gets the tokenizer regular expression.
+		/// </summary>
+		public static string TokenizerRegEx
+		{
+			get
+			{
+				return TOKENIZER_REGEX;
+			}
+		}
+
 		#endregion
 
 		#region Methods/Operators
-
-		/// <summary>
-		/// A private method to parse an argument array from a tokenized call list.
-		/// </summary>
-		/// <param name="call"> The call list from a tokenized call site. </param>
-		/// <returns> A string array of call site arguments. </returns>
-		private static string[] GetArgs(string call)
-		{
-			string[] args;
-
-			if (DataType.Instance.IsNullOrWhiteSpace((call ?? string.Empty).Trim()))
-				return new string[] { };
-
-			// fixup argument list
-			call = Regex.Replace(call, "^ [ ]* `", string.Empty, RegexOptions.IgnorePatternWhitespace);
-			call = Regex.Replace(call, "` [ ]* $", string.Empty, RegexOptions.IgnorePatternWhitespace);
-			call = Regex.Replace(call, "` [ ]* , [ ]* `", "`", RegexOptions.IgnorePatternWhitespace);
-
-			args = call.Split('`');
-
-			// fix-up escaped backtick
-			for (int i = 0; i < args.Length; i++)
-				args[i] = args[i].Replace("\\'", "`");
-
-			return args;
-		}
-
-		/// <summary>
-		/// A private method that obeys the strict matching semantics flag in effect and if enabled, will throw an exception. Otherwise, returns the original unmatched value without alteration.
-		/// </summary>
-		/// <param name="strictMatching"> A value indicating whether strict matching semantics are in effect. </param>
-		/// <param name="originalValue"> The original unmatched value. </param>
-		/// <param name="matchPoint"> A short description of where the match failure occured. </param>
-		/// <returns> The original value if strict matching semantics are disabled. </returns>
-		private static string GetOriginalValueOrThrowExecption(bool strictMatching, string originalValue, string matchPoint)
-		{
-			if (strictMatching)
-				throw new InvalidOperationException(string.Format("Failed to recognize '{0}' due to '{1}' match error; strict matching enabled.", originalValue, matchPoint));
-			else
-				return originalValue;
-		}
-
-		public static bool IsValidTokenId(string token)
-		{
-			return Regex.IsMatch(token, TokenIdRegEx, RegexOptions.IgnorePatternWhitespace);
-		}
 
 		/// <summary>
 		/// Replaces a tokenized input string with replacement values. No wildcard support is assumed.
@@ -281,6 +235,52 @@ namespace TextMetal.Common.Core.Tokenization
 			}
 
 			return tokenLogicalValue.SafeToString();
+		}
+
+		/// <summary>
+		/// A private method to parse an argument array from a tokenized call list.
+		/// </summary>
+		/// <param name="call"> The call list from a tokenized call site. </param>
+		/// <returns> A string array of call site arguments. </returns>
+		private static string[] GetArgs(string call)
+		{
+			string[] args;
+
+			if (DataType.Instance.IsNullOrWhiteSpace((call ?? string.Empty).Trim()))
+				return new string[] { };
+
+			// fixup argument list
+			call = Regex.Replace(call, "^ [ ]* `", string.Empty, RegexOptions.IgnorePatternWhitespace);
+			call = Regex.Replace(call, "` [ ]* $", string.Empty, RegexOptions.IgnorePatternWhitespace);
+			call = Regex.Replace(call, "` [ ]* , [ ]* `", "`", RegexOptions.IgnorePatternWhitespace);
+
+			args = call.Split('`');
+
+			// fix-up escaped backtick
+			for (int i = 0; i < args.Length; i++)
+				args[i] = args[i].Replace("\\'", "`");
+
+			return args;
+		}
+
+		/// <summary>
+		/// A private method that obeys the strict matching semantics flag in effect and if enabled, will throw an exception. Otherwise, returns the original unmatched value without alteration.
+		/// </summary>
+		/// <param name="strictMatching"> A value indicating whether strict matching semantics are in effect. </param>
+		/// <param name="originalValue"> The original unmatched value. </param>
+		/// <param name="matchPoint"> A short description of where the match failure occured. </param>
+		/// <returns> The original value if strict matching semantics are disabled. </returns>
+		private static string GetOriginalValueOrThrowExecption(bool strictMatching, string originalValue, string matchPoint)
+		{
+			if (strictMatching)
+				throw new InvalidOperationException(string.Format("Failed to recognize '{0}' due to '{1}' match error; strict matching enabled.", originalValue, matchPoint));
+			else
+				return originalValue;
+		}
+
+		public static bool IsValidTokenId(string token)
+		{
+			return Regex.IsMatch(token, TokenIdRegEx, RegexOptions.IgnorePatternWhitespace);
 		}
 
 		#endregion

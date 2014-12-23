@@ -43,14 +43,6 @@ namespace TextMetal.Utilities.VsIdeConv.ConsoleTool.FileHandlers
 
 		#region Methods/Operators
 
-		public static ChainFileHandler GetChain(params IFileHandler[] fileHandlerChain)
-		{
-			if ((object)fileHandlerChain == null)
-				throw new ArgumentNullException("fileHandlerChain");
-
-			return new ChainFileHandler(fileHandlerChain);
-		}
-
 		protected override void OnExecute(FileInfo fileInfo)
 		{
 			if ((object)fileInfo == null)
@@ -65,6 +57,14 @@ namespace TextMetal.Utilities.VsIdeConv.ConsoleTool.FileHandlers
 			}
 
 			Debug.WriteLine(">> Leave: {0}", fileInfo.FullName);
+		}
+
+		public static ChainFileHandler GetChain(params IFileHandler[] fileHandlerChain)
+		{
+			if ((object)fileHandlerChain == null)
+				throw new ArgumentNullException("fileHandlerChain");
+
+			return new ChainFileHandler(fileHandlerChain);
 		}
 
 		#endregion

@@ -50,6 +50,7 @@
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Framework\BasicObject.cs" />
+    <Compile Include="Framework\IModelTracking.cs" />
     <Compile Include="Framework\IBasicObject.cs" />
     <Compile Include="Framework\ResultModelObject.cs" />
     <Compile Include="Framework\ResponseModelObject~1.cs" />

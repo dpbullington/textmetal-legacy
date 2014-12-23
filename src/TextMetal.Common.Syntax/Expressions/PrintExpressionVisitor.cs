@@ -51,21 +51,6 @@ namespace TextMetal.Common.Syntax.Expressions
 
 		#region Methods/Operators
 
-		public static string GetExpressionText(IExpression expression)
-		{
-			PrintExpressionVisitor expressionVisitor;
-			string expressionText;
-
-			if ((object)expression == null)
-				throw new ArgumentNullException("expression");
-
-			expressionVisitor = new PrintExpressionVisitor();
-			expressionVisitor.Visit(expression);
-			expressionText = expressionVisitor.Strings.ToString();
-
-			return expressionText;
-		}
-
 		protected override IExpression VisitBinary(IBinaryExpression binaryExpression)
 		{
 			DescriptionAttribute descriptionAttribute;
@@ -196,6 +181,21 @@ namespace TextMetal.Common.Syntax.Expressions
 			this.Strings.Append(valueText);
 
 			return value;
+		}
+
+		public static string GetExpressionText(IExpression expression)
+		{
+			PrintExpressionVisitor expressionVisitor;
+			string expressionText;
+
+			if ((object)expression == null)
+				throw new ArgumentNullException("expression");
+
+			expressionVisitor = new PrintExpressionVisitor();
+			expressionVisitor.Visit(expression);
+			expressionText = expressionVisitor.Strings.ToString();
+
+			return expressionText;
 		}
 
 		#endregion

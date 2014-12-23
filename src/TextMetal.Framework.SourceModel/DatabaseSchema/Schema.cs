@@ -25,9 +25,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Fields/Constants
 
-		private readonly List<Procedure> procedures = new List<Procedure>();
-		private readonly List<Table> tables = new List<Table>();
-		private readonly List<View> views = new List<View>();
 		private int ownerId;
 		private int schemaId;
 		private string schemaName;
@@ -46,6 +43,9 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string schemaNameSqlMetalPluralPascalCase;
 		private string schemaNameSqlMetalSingularCamelCase;
 		private string schemaNameSqlMetalSingularPascalCase;
+		private readonly List<Procedure> procedures = new List<Procedure>();
+		private readonly List<Table> tables = new List<Table>();
+		private readonly List<View> views = new List<View>();
 
 		#endregion
 
@@ -61,16 +61,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.ownerId = value;
-			}
-		}
-
-		[XmlArray(ElementName = "Procedures")]
-		[XmlArrayItem(ElementName = "Procedure")]
-		public List<Procedure> Procedures
-		{
-			get
-			{
-				return this.procedures;
 			}
 		}
 
@@ -295,6 +285,26 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 		}
 
+		[XmlArray(ElementName = "Tables")]
+		[XmlArrayItem(ElementName = "Table")]
+		public List<Table> _Tables
+		{
+			get
+			{
+				return this.tables;
+			}
+		}
+
+		[XmlArray(ElementName = "Procedures")]
+		[XmlArrayItem(ElementName = "Procedure")]
+		public List<Procedure> Procedures
+		{
+			get
+			{
+				return this.procedures;
+			}
+		}
+
 		[Obsolete("Provided for model breaking change compatability only.")]
 		[XmlIgnore]
 		public IEnumerable<ITabular> Tables
@@ -322,16 +332,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			get
 			{
 				return this.views;
-			}
-		}
-
-		[XmlArray(ElementName = "Tables")]
-		[XmlArrayItem(ElementName = "Table")]
-		public List<Table> _Tables
-		{
-			get
-			{
-				return this.tables;
 			}
 		}
 

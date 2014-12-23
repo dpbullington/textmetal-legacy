@@ -66,12 +66,6 @@ namespace TextMetal.HostImpl.Web.AspNet
 
 		#region Methods/Operators
 
-		public static void CallMeInGlobalAsax()
-		{
-			ViewEngines.Engines.Clear();
-			ViewEngines.Engines.Add(new TextMetalViewEngine());
-		}
-
 		protected override IView CreatePartialView(ControllerContext controllerContext, string partialPath)
 		{
 			if ((object)controllerContext == null)
@@ -120,6 +114,12 @@ namespace TextMetal.HostImpl.Web.AspNet
 				throw new ArgumentNullException("virtualPath");
 
 			return base.FileExists(controllerContext, virtualPath);
+		}
+
+		public static void CallMeInGlobalAsax()
+		{
+			ViewEngines.Engines.Clear();
+			ViewEngines.Engines.Add(new TextMetalViewEngine());
 		}
 
 		#endregion

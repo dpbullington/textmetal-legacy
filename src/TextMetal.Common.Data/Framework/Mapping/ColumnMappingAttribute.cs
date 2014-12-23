@@ -39,6 +39,18 @@ namespace TextMetal.Common.Data.Framework.Mapping
 
 		#region Properties/Indexers/Events
 
+		public PropertyInfo _TargetProperty
+		{
+			get
+			{
+				return this.targetProperty;
+			}
+			set
+			{
+				this.targetProperty = value;
+			}
+		}
+
 		public DbType ColumnDbType
 		{
 			get
@@ -176,18 +188,6 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			get
 			{
 				return this.ColumnIsPrimaryKey && this.ColumnIsIdentity;
-			}
-		}
-
-		public PropertyInfo _TargetProperty
-		{
-			get
-			{
-				return this.targetProperty;
-			}
-			set
-			{
-				this.targetProperty = value;
 			}
 		}
 

@@ -28,8 +28,8 @@ namespace TextMetal.Common.Data.Framework
 
 		#region Fields/Constants
 
-		private readonly List<string> statements = new List<string>();
 		private int number;
+		private readonly List<string> statements = new List<string>();
 
 		#endregion
 

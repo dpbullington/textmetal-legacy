@@ -27,21 +27,13 @@ namespace TextMetal.Framework.InputOutputModel
 
 		#region Fields/Constants
 
-		private readonly Stack<TextWriter> textWriters = new Stack<TextWriter>();
 		private bool disposed;
 		private TextWriter logTextWriter = Console.Out;
+		private readonly Stack<TextWriter> textWriters = new Stack<TextWriter>();
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		public TextWriter CurrentTextWriter
-		{
-			get
-			{
-				return this.TextWriters.Count > 0 ? this.TextWriters.Peek() : Console.Out;
-			}
-		}
 
 		/// <summary>
 		/// Gets a value indicating whether the current instance has been disposed.
@@ -67,6 +59,14 @@ namespace TextMetal.Framework.InputOutputModel
 			private set
 			{
 				this.logTextWriter = value;
+			}
+		}
+
+		public TextWriter CurrentTextWriter
+		{
+			get
+			{
+				return this.TextWriters.Count > 0 ? this.TextWriters.Peek() : Console.Out;
 			}
 		}
 

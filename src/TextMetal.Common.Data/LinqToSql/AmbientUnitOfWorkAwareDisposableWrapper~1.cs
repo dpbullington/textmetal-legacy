@@ -42,27 +42,13 @@ namespace TextMetal.Common.Data.LinqToSql
 
 		#region Fields/Constants
 
+		private bool disposed;
 		private readonly TDisposable disposable;
 		private readonly IUnitOfWork sourceUnitOfWork;
-		private bool disposed;
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Gets the underlying or 'wrapped' disposable.
-		/// </summary>
-		public TDisposable Disposable
-		{
-			get
-			{
-				if (this.Disposed)
-					throw new ObjectDisposedException(typeof(AmbientUnitOfWorkAwareDisposableWrapper<TDisposable>).FullName);
-
-				return this.disposable;
-			}
-		}
 
 		/// <summary>
 		/// Gets a value indicating whether the current instance has been disposed.
@@ -76,6 +62,20 @@ namespace TextMetal.Common.Data.LinqToSql
 			private set
 			{
 				this.disposed = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets the underlying or 'wrapped' disposable.
+		/// </summary>
+		public TDisposable Disposable
+		{
+			get
+			{
+				if (this.Disposed)
+					throw new ObjectDisposedException(typeof(AmbientUnitOfWorkAwareDisposableWrapper<TDisposable>).FullName);
+
+				return this.disposable;
 			}
 		}
 

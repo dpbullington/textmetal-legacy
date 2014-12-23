@@ -26,7 +26,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		private string columnName;
 		private int columnOrdinal;
-
 		private bool uniqueKeyColumnDescendingSort;
 		private int uniqueKeyColumnOrdinal;
 

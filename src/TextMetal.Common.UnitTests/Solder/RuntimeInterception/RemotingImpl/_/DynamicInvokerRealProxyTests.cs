@@ -31,19 +31,6 @@ namespace TextMetal.Common.UnitTests.Solder.RuntimeInterception.RemotingImpl._
 
 		#endregion
 
-		//[Test]
-		//public void _TestTart()
-		//{
-		//    IListItem outerli;
-		//    IListItem innerli;
-
-		//    innerli = new ListItem<int>(1110, "daniel");
-
-		//    outerli = (IListItem)new BarDIRP<IListItem>(innerli).GetTransparentProxy();
-
-		//    var v = outerli.Text;
-		//}
-
 		#region Methods/Operators
 
 		[Test]
@@ -446,67 +433,5 @@ namespace TextMetal.Common.UnitTests.Solder.RuntimeInterception.RemotingImpl._
 		}
 
 		#endregion
-
-		//public class BarDIRP<T> : DynamicInvokerRealProxy<IMockObject><T>
-		//    where T : class
-		//{
-		//    #region Constructors/Destructors
-
-		//    public BarDIRP(T obj)
-		//        : base(new FooADI<T>(obj))
-		//    {
-		//    }
-
-		//    #endregion
-		//}
-
-		//public class FooADI<T> : AspectDynamicInvoker
-		//    where T : class
-		//{
-		//    #region Constructors/Destructors
-
-		//    public FooADI(T obj)
-		//    {
-		//        if ((object)obj == null)
-		//            throw new ArgumentNullException("obj");
-
-		//        this.obj = obj;
-		//    }
-
-		//    #endregion
-
-		//    #region Fields/Constants
-
-		//    private readonly T obj;
-
-		//    #endregion
-
-		//    #region Properties/Indexers/Events
-
-		//    public override object InterceptedInstance
-		//    {
-		//        get
-		//        {
-		//            return this.obj;
-		//        }
-		//    }
-
-		//    #endregion
-
-		//    #region Methods/Operators
-
-		//    protected override void OnInterceptAfterInvoke(bool invocationPreceeded, Type proxiedType, MethodInfo invokedMethodInfo, object proxyInstance, object[] invocationParameters, ref object returnValue, ref Exception thrownException)
-		//    {
-		//        Console.WriteLine(string.Format("{0}::{1}", proxiedType.FullName, invokedMethodInfo.Name));
-		//    }
-
-		//    protected override void OnInterceptBeforeInvoke(out bool proceedWithInvocation, Type proxiedType, MethodInfo invokedMethodInfo, object proxyInstance, object[] invocationParameters)
-		//    {
-		//        Console.WriteLine(string.Format("{0}::{1}", proxiedType.FullName, invokedMethodInfo.Name));
-		//        proceedWithInvocation = true;
-		//    }
-
-		//    #endregion
-		//}
 	}
 }

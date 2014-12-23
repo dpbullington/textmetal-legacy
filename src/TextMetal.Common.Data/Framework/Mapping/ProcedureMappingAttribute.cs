@@ -21,19 +21,30 @@ namespace TextMetal.Common.Data.Framework.Mapping
 
 		#region Fields/Constants
 
-		private readonly IList<ParameterMappingAttribute> requestParameterMappingAttributes = new List<ParameterMappingAttribute>();
-		private readonly IList<ParameterMappingAttribute> responseParameterMappingAttributes = new List<ParameterMappingAttribute>();
-		private readonly IList<ColumnMappingAttribute> resultColumnMappingAttributes = new List<ColumnMappingAttribute>();
-
 		private string databaseName;
 		private bool isFunction;
 		private string procedureName;
 		private string schemaName;
 		private Type targetType;
+		private readonly IList<ParameterMappingAttribute> requestParameterMappingAttributes = new List<ParameterMappingAttribute>();
+		private readonly IList<ParameterMappingAttribute> responseParameterMappingAttributes = new List<ParameterMappingAttribute>();
+		private readonly IList<ColumnMappingAttribute> resultColumnMappingAttributes = new List<ColumnMappingAttribute>();
 
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		public Type _TargetType
+		{
+			get
+			{
+				return this.targetType;
+			}
+			set
+			{
+				this.targetType = value;
+			}
+		}
 
 		public string DatabaseName
 		{
@@ -104,18 +115,6 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			get
 			{
 				return this.resultColumnMappingAttributes;
-			}
-		}
-
-		public Type _TargetType
-		{
-			get
-			{
-				return this.targetType;
-			}
-			set
-			{
-				this.targetType = value;
 			}
 		}
 

@@ -83,65 +83,6 @@ namespace TextMetal.Common.Data.Framework.Mapping
 
 		#region Methods/Operators
 
-		public static string GetFilterText(ISqlNuance sqlNuance, IUnitOfWork unitOfWork, IDictionary<string, IDbDataParameter> commandParameters, IExpression expression)
-		{
-			SqlExpressionVisitor expressionVisitor;
-			string expressionText;
-
-			if ((object)sqlNuance == null)
-				throw new ArgumentNullException("sqlNuance");
-
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)commandParameters == null)
-				throw new ArgumentNullException("commandParameters");
-
-			if ((object)expression == null)
-				throw new ArgumentNullException("expression");
-
-			expressionVisitor = new SqlExpressionVisitor(sqlNuance, unitOfWork, commandParameters);
-			expressionVisitor.Visit(expression);
-			expressionText = expressionVisitor.Strings.ToString();
-
-			return expressionText;
-		}
-
-		public static string GetSortText(ISqlNuance sqlNuance, IUnitOfWork unitOfWork, IDictionary<string, IDbDataParameter> commandParameters, IEnumerable<ISequence> sortSequences)
-		{
-			string expressionText;
-			List<string> sortNames;
-
-			if ((object)sqlNuance == null)
-				throw new ArgumentNullException("sqlNuance");
-
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)commandParameters == null)
-				throw new ArgumentNullException("commandParameters");
-
-			if ((object)sortSequences == null)
-				throw new ArgumentNullException("sortSequences");
-
-			sortNames = new List<string>();
-
-			foreach (var sortSequence in sortSequences)
-			{
-				if ((object)sortSequence.SortExpression == null)
-					continue;
-
-				sortNames.Add(string.Format("{0} {1}", sqlNuance.GetAliasedColumnName("t0", ((ISurface)sortSequence.SortExpression).Name), (sortSequence.SortDirection ?? true) ? "ASC" : "DESC"));
-			}
-
-			if (sortNames.Count <= 0)
-				sortNames.Add("1");
-
-			expressionText = string.Join(", ", sortNames.ToArray());
-
-			return expressionText;
-		}
-
 		protected override IExpression VisitBinary(IBinaryExpression binaryExpression)
 		{
 			if ((object)binaryExpression == null)
@@ -328,6 +269,65 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			this.Strings.Append(parameterName);
 
 			return value;
+		}
+
+		public static string GetFilterText(ISqlNuance sqlNuance, IUnitOfWork unitOfWork, IDictionary<string, IDbDataParameter> commandParameters, IExpression expression)
+		{
+			SqlExpressionVisitor expressionVisitor;
+			string expressionText;
+
+			if ((object)sqlNuance == null)
+				throw new ArgumentNullException("sqlNuance");
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)commandParameters == null)
+				throw new ArgumentNullException("commandParameters");
+
+			if ((object)expression == null)
+				throw new ArgumentNullException("expression");
+
+			expressionVisitor = new SqlExpressionVisitor(sqlNuance, unitOfWork, commandParameters);
+			expressionVisitor.Visit(expression);
+			expressionText = expressionVisitor.Strings.ToString();
+
+			return expressionText;
+		}
+
+		public static string GetSortText(ISqlNuance sqlNuance, IUnitOfWork unitOfWork, IDictionary<string, IDbDataParameter> commandParameters, IEnumerable<ISequence> sortSequences)
+		{
+			string expressionText;
+			List<string> sortNames;
+
+			if ((object)sqlNuance == null)
+				throw new ArgumentNullException("sqlNuance");
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)commandParameters == null)
+				throw new ArgumentNullException("commandParameters");
+
+			if ((object)sortSequences == null)
+				throw new ArgumentNullException("sortSequences");
+
+			sortNames = new List<string>();
+
+			foreach (var sortSequence in sortSequences)
+			{
+				if ((object)sortSequence.SortExpression == null)
+					continue;
+
+				sortNames.Add(string.Format("{0} {1}", sqlNuance.GetAliasedColumnName("t0", ((ISurface)sortSequence.SortExpression).Name), (sortSequence.SortDirection ?? true) ? "ASC" : "DESC"));
+			}
+
+			if (sortNames.Count <= 0)
+				sortNames.Add("1");
+
+			expressionText = string.Join(", ", sortNames.ToArray());
+
+			return expressionText;
 		}
 
 		#endregion

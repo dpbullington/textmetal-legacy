@@ -28,23 +28,12 @@ namespace TextMetal.Common.Xml
 
 		#region Fields/Constants
 
-		private readonly IXmlObjectCollection<IXmlObject> items;
 		private IXmlObject content;
+		private readonly IXmlObjectCollection<IXmlObject> items;
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Gets an array of allowed child XML object types.
-		/// </summary>
-		public virtual Type[] AllowedChildTypes
-		{
-			get
-			{
-				return new Type[] { typeof(IXmlObject) };
-			}
-		}
 
 		/// <summary>
 		/// Gets or sets the optional single XML object content.
@@ -59,17 +48,6 @@ namespace TextMetal.Common.Xml
 			{
 				this.EnsureParentOnPropertySet(this.content, value);
 				this.content = value;
-			}
-		}
-
-		/// <summary>
-		/// Gets a list of XML object items.
-		/// </summary>
-		public IXmlObjectCollection<IXmlObject> Items
-		{
-			get
-			{
-				return this.items;
 			}
 		}
 
@@ -100,6 +78,28 @@ namespace TextMetal.Common.Xml
 			set
 			{
 				this.Surround = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets an array of allowed child XML object types.
+		/// </summary>
+		public virtual Type[] AllowedChildTypes
+		{
+			get
+			{
+				return new Type[] { typeof(IXmlObject) };
+			}
+		}
+
+		/// <summary>
+		/// Gets a list of XML object items.
+		/// </summary>
+		public IXmlObjectCollection<IXmlObject> Items
+		{
+			get
+			{
+				return this.items;
 			}
 		}
 

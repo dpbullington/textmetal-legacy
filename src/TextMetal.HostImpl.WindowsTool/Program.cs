@@ -16,19 +16,15 @@ namespace TextMetal.HostImpl.WindowsTool
 	/// </summary>
 	internal class Program : WindowsApplication<MainForm, SplashForm>
 	{
-		#region Methods/Operators
+		#region Constructors/Destructors
 
-		/// <summary>
-		/// The entry point method for this application.
-		/// </summary>
-		/// <param name="args"> The command line arguments passed from the executing environment. </param>
-		/// <returns> The resulting exit code. </returns>
-		[STAThread]
-		public static int Main(string[] args)
+		public Program()
 		{
-			using (Program program = new Program())
-				return program.EntryPoint(args);
 		}
+
+		#endregion
+
+		#region Methods/Operators
 
 		protected override IDictionary<string, ArgumentSpec> GetArgumentMap()
 		{
@@ -42,6 +38,18 @@ namespace TextMetal.HostImpl.WindowsTool
 			});*/
 
 			return argumentMap;
+		}
+
+		/// <summary>
+		/// The entry point method for this application.
+		/// </summary>
+		/// <param name="args"> The command line arguments passed from the executing environment. </param>
+		/// <returns> The resulting exit code. </returns>
+		[STAThread]
+		public static int Main(string[] args)
+		{
+			using (Program program = new Program())
+				return program.EntryPoint(args);
 		}
 
 		#endregion

@@ -20,16 +20,16 @@ namespace TextMetal.Common.WinForms.Controls
 
 		#region Methods/Operators
 
-		protected override void OnCheckStateChanged(EventArgs e)
+		protected override void OnCheckedChanged(EventArgs e)
 		{
-			base.OnCheckStateChanged(e);
+			base.OnCheckedChanged(e);
 
 			this.CoreSetParentFormDirty(true);
 		}
 
-		protected override void OnCheckedChanged(EventArgs e)
+		protected override void OnCheckStateChanged(EventArgs e)
 		{
-			base.OnCheckedChanged(e);
+			base.OnCheckStateChanged(e);
 
 			this.CoreSetParentFormDirty(true);
 		}

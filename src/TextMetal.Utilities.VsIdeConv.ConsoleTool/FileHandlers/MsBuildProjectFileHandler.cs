@@ -42,6 +42,50 @@ namespace TextMetal.Utilities.VsIdeConv.ConsoleTool.FileHandlers
 
 		#region Methods/Operators
 
+		protected override void OnExecute(FileInfo fileInfo)
+		{
+			if ((object)fileInfo == null)
+				throw new ArgumentNullException("fileInfo");
+
+			Debug.WriteLine("MSBuild project file: " + fileInfo.FullName);
+
+			switch (fileInfo.Extension.ToLower())
+			{
+				case ".csproj":
+				case ".vbproj":
+					this.PatchMsBuildProjectFile(fileInfo);
+					break;
+				default:
+					throw new InvalidOperationException(string.Format("Unsupported file type: {0}", fileInfo.Extension));
+			}
+		}
+
+		private void PatchMsBuildProjectFile(FileInfo fileInfo)
+		{
+			XmlDocument projectXml;
+			XmlElement element, e;
+			XmlAttribute attribute;
+			XmlAttribute a;
+			StreamReader streamReader;
+			bool shouldCommit;
+
+			if ((object)fileInfo == null)
+				throw new ArgumentNullException("fileInfo");
+
+			if (ConversionConfig.ConversionSettings.BackupFiles)
+				fileInfo.CopyTo(fileInfo.FullName + ".bak", true);
+
+			projectXml = new XmlDocument();
+
+			using (streamReader = fileInfo.OpenText())
+				projectXml.Load(streamReader);
+
+			shouldCommit = PatchMsBuildProjectFile(fileInfo, projectXml);
+
+			if (shouldCommit)
+				projectXml.Save(fileInfo.FullName);
+		}
+
 		public static bool PatchMsBuildProjectFile(FileInfo fileInfo, XmlDocument projectXml)
 		{
 			XmlElement element, e;
@@ -244,50 +288,6 @@ namespace TextMetal.Utilities.VsIdeConv.ConsoleTool.FileHandlers
 			}
 
 			return true;
-		}
-
-		protected override void OnExecute(FileInfo fileInfo)
-		{
-			if ((object)fileInfo == null)
-				throw new ArgumentNullException("fileInfo");
-
-			Debug.WriteLine("MSBuild project file: " + fileInfo.FullName);
-
-			switch (fileInfo.Extension.ToLower())
-			{
-				case ".csproj":
-				case ".vbproj":
-					this.PatchMsBuildProjectFile(fileInfo);
-					break;
-				default:
-					throw new InvalidOperationException(string.Format("Unsupported file type: {0}", fileInfo.Extension));
-			}
-		}
-
-		private void PatchMsBuildProjectFile(FileInfo fileInfo)
-		{
-			XmlDocument projectXml;
-			XmlElement element, e;
-			XmlAttribute attribute;
-			XmlAttribute a;
-			StreamReader streamReader;
-			bool shouldCommit;
-
-			if ((object)fileInfo == null)
-				throw new ArgumentNullException("fileInfo");
-
-			if (ConversionConfig.ConversionSettings.BackupFiles)
-				fileInfo.CopyTo(fileInfo.FullName + ".bak", true);
-
-			projectXml = new XmlDocument();
-
-			using (streamReader = fileInfo.OpenText())
-				projectXml.Load(streamReader);
-
-			shouldCommit = PatchMsBuildProjectFile(fileInfo, projectXml);
-
-			if (shouldCommit)
-				projectXml.Save(fileInfo.FullName);
 		}
 
 		#endregion

@@ -53,14 +53,6 @@ namespace TextMetal.Framework.ExpressionModel
 			}
 		}
 
-		IExpression IUnaryExpression.TheExpression
-		{
-			get
-			{
-				return this.TheExpression;
-			}
-		}
-
 		[XmlAttributeMapping(LocalName = "operator", NamespaceUri = "")]
 		public UnaryOperator UnaryOperator
 		{
@@ -71,6 +63,14 @@ namespace TextMetal.Framework.ExpressionModel
 			set
 			{
 				this.unaryOperator = value;
+			}
+		}
+
+		IExpression IUnaryExpression.TheExpression
+		{
+			get
+			{
+				return this.TheExpression;
 			}
 		}
 

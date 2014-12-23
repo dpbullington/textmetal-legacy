@@ -86,15 +86,6 @@ namespace TextMetal.Common.UnitTests.TestingInfrastructure
 
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
-		public interface IInvokeDynamicFactory
-		{
-			#region Methods/Operators
-
-			IDynamicInvocation GetDynamicInvoker(string cacheKey, Type objectType);
-
-			#endregion
-		}
-
 		public class MockInvokeDynamic : IDynamicInvocation
 		{
 			#region Methods/Operators
@@ -151,6 +142,15 @@ namespace TextMetal.Common.UnitTests.TestingInfrastructure
 			{
 				throw new NotImplementedException();
 			}
+
+			#endregion
+		}
+
+		public interface IInvokeDynamicFactory
+		{
+			#region Methods/Operators
+
+			IDynamicInvocation GetDynamicInvoker(string cacheKey, Type objectType);
 
 			#endregion
 		}

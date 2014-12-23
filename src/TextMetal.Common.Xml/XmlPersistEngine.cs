@@ -35,23 +35,12 @@ namespace TextMetal.Common.Xml
 
 		#region Fields/Constants
 
-		private readonly Dictionary<XmlName, Type> knownXmlObjectTypeRegistrations = new Dictionary<XmlName, Type>();
 		private Type knownXmlTextObjectTypeRegistration;
+		private readonly Dictionary<XmlName, Type> knownXmlObjectTypeRegistrations = new Dictionary<XmlName, Type>();
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Gets the known XML object type registrations.
-		/// </summary>
-		private Dictionary<XmlName, Type> KnownXmlObjectTypeRegistrations
-		{
-			get
-			{
-				return this.knownXmlObjectTypeRegistrations;
-			}
-		}
 
 		/// <summary>
 		/// Gets or sets the known XML text object type registration.
@@ -68,77 +57,20 @@ namespace TextMetal.Common.Xml
 			}
 		}
 
+		/// <summary>
+		/// Gets the known XML object type registrations.
+		/// </summary>
+		private Dictionary<XmlName, Type> KnownXmlObjectTypeRegistrations
+		{
+			get
+			{
+				return this.knownXmlObjectTypeRegistrations;
+			}
+		}
+
 		#endregion
 
 		#region Methods/Operators
-
-		/// <summary>
-		/// Determines whether an element is a text element.
-		/// </summary>
-		/// <param name="contextStack"> The effective context stack. </param>
-		/// <param name="xmlName"> The XML name to use. </param>
-		/// <returns> A value indicating whether the element is a text element. </returns>
-		private static bool IsTextElement(Stack<IXmlObject> contextStack, XmlName xmlName)
-		{
-			IXmlObject parentXmlObject;
-			Type parentType;
-			PropertyInfo[] parentPropertyInfos;
-
-			XmlAttributeMappingAttribute xmlAttributeMappingAttribute;
-			XmlChildElementMappingAttribute xmlChildElementMappingAttribute;
-
-			int attributeCount;
-
-			if ((object)contextStack == null)
-				throw new ArgumentNullException("contextStack");
-
-			if ((object)xmlName == null)
-				throw new ArgumentNullException("xmlName");
-
-			// sanity check
-			if (contextStack.Count < 1)
-				return false;
-
-			// interogate the parent (last pushed value)
-			parentXmlObject = contextStack.Peek();
-			parentType = parentXmlObject.GetType();
-			parentPropertyInfos = parentType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-			// examine parent mapping tables for attributes and child elements
-			if ((object)parentPropertyInfos != null)
-			{
-				foreach (PropertyInfo parentPropertyInfo in parentPropertyInfos)
-				{
-					// get potential attribute mapping metadata
-					xmlAttributeMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlAttributeMappingAttribute>(parentPropertyInfo);
-
-					// get the potential child mapping metadata
-					xmlChildElementMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlChildElementMappingAttribute>(parentPropertyInfo);
-
-					// count what we found; there can only be one
-					attributeCount = 0;
-					attributeCount += (object)xmlAttributeMappingAttribute == null ? 0 : 1;
-					attributeCount += (object)xmlChildElementMappingAttribute == null ? 0 : 1;
-
-					// sanity check
-					if (attributeCount > 1)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
-
-					// we only care about child elements
-					if ((object)xmlChildElementMappingAttribute == null)
-						continue;
-
-					// is this mapped as a text element?
-					if (xmlChildElementMappingAttribute.ChildElementType == ChildElementType.TextValue &&
-						xmlChildElementMappingAttribute.LocalName == xmlName.LocalName &&
-						xmlChildElementMappingAttribute.NamespaceUri == xmlName.NamespaceUri)
-						return true;
-				}
-			}
-
-			// nope, we exhausted our search
-			return false;
-		}
 
 		/// <summary>
 		/// Clears all known XML object registrations.
@@ -1299,6 +1231,74 @@ namespace TextMetal.Common.Xml
 				this.KnownXmlTextObjectTypeRegistration = null;
 
 			return retval;
+		}
+
+		/// <summary>
+		/// Determines whether an element is a text element.
+		/// </summary>
+		/// <param name="contextStack"> The effective context stack. </param>
+		/// <param name="xmlName"> The XML name to use. </param>
+		/// <returns> A value indicating whether the element is a text element. </returns>
+		private static bool IsTextElement(Stack<IXmlObject> contextStack, XmlName xmlName)
+		{
+			IXmlObject parentXmlObject;
+			Type parentType;
+			PropertyInfo[] parentPropertyInfos;
+
+			XmlAttributeMappingAttribute xmlAttributeMappingAttribute;
+			XmlChildElementMappingAttribute xmlChildElementMappingAttribute;
+
+			int attributeCount;
+
+			if ((object)contextStack == null)
+				throw new ArgumentNullException("contextStack");
+
+			if ((object)xmlName == null)
+				throw new ArgumentNullException("xmlName");
+
+			// sanity check
+			if (contextStack.Count < 1)
+				return false;
+
+			// interogate the parent (last pushed value)
+			parentXmlObject = contextStack.Peek();
+			parentType = parentXmlObject.GetType();
+			parentPropertyInfos = parentType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+			// examine parent mapping tables for attributes and child elements
+			if ((object)parentPropertyInfos != null)
+			{
+				foreach (PropertyInfo parentPropertyInfo in parentPropertyInfos)
+				{
+					// get potential attribute mapping metadata
+					xmlAttributeMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlAttributeMappingAttribute>(parentPropertyInfo);
+
+					// get the potential child mapping metadata
+					xmlChildElementMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlChildElementMappingAttribute>(parentPropertyInfo);
+
+					// count what we found; there can only be one
+					attributeCount = 0;
+					attributeCount += (object)xmlAttributeMappingAttribute == null ? 0 : 1;
+					attributeCount += (object)xmlChildElementMappingAttribute == null ? 0 : 1;
+
+					// sanity check
+					if (attributeCount > 1)
+						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+
+					// we only care about child elements
+					if ((object)xmlChildElementMappingAttribute == null)
+						continue;
+
+					// is this mapped as a text element?
+					if (xmlChildElementMappingAttribute.ChildElementType == ChildElementType.TextValue &&
+						xmlChildElementMappingAttribute.LocalName == xmlName.LocalName &&
+						xmlChildElementMappingAttribute.NamespaceUri == xmlName.NamespaceUri)
+						return true;
+				}
+			}
+
+			// nope, we exhausted our search
+			return false;
 		}
 
 		#endregion

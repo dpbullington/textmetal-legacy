@@ -43,26 +43,26 @@ namespace TextMetal.Common.Core
 
 		#region Fields/Constants
 
-		private static readonly IReflexion instance = new Reflexion();
 		private readonly IDataType dataType;
+		private static readonly IReflexion instance = new Reflexion();
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		public static IReflexion Instance
-		{
-			get
-			{
-				return instance;
-			}
-		}
 
 		private IDataType DataType
 		{
 			get
 			{
 				return this.dataType;
+			}
+		}
+
+		public static IReflexion Instance
+		{
+			get
+			{
+				return instance;
 			}
 		}
 

@@ -36,11 +36,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Fields/Constants
 
-		private readonly List<TableColumn> columns = new List<TableColumn>();
-		private readonly List<ForeignKey> foreignKeys = new List<ForeignKey>();
-		private readonly bool isView;
-		private readonly List<Trigger> triggers = new List<Trigger>();
-		private readonly List<UniqueKey> uniqueKeys = new List<UniqueKey>();
 		private DateTime creationTimestamp;
 		private bool hasNoDefinedPrimaryKeyColumns;
 		private bool isImplementationDetail;
@@ -64,40 +59,15 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string tableNameSqlMetalPluralPascalCase;
 		private string tableNameSqlMetalSingularCamelCase;
 		private string tableNameSqlMetalSingularPascalCase;
+		private readonly List<TableColumn> columns = new List<TableColumn>();
+		private readonly List<ForeignKey> foreignKeys = new List<ForeignKey>();
+		private readonly bool isView;
+		private readonly List<Trigger> triggers = new List<Trigger>();
+		private readonly List<UniqueKey> uniqueKeys = new List<UniqueKey>();
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string CSharpIsViewLiteral
-		{
-			get
-			{
-				return this.IsView.ToString().ToLower();
-			}
-		}
-
-		[XmlArray(ElementName = "Columns")]
-		[XmlArrayItem(ElementName = "Column")]
-		public List<TableColumn> Columns
-		{
-			get
-			{
-				return this.columns;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		IEnumerable<Column> ITabular.Columns
-		{
-			get
-			{
-				return this.Columns;
-			}
-		}
 
 		[XmlAttribute]
 		public DateTime CreationTimestamp
@@ -109,25 +79,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.creationTimestamp = value;
-			}
-		}
-
-		[XmlArray(ElementName = "ForeignKeys")]
-		[XmlArrayItem(ElementName = "ForeignKey")]
-		public List<ForeignKey> ForeignKeys
-		{
-			get
-			{
-				return this.foreignKeys;
-			}
-		}
-
-		[XmlIgnore]
-		public bool HasIdentityColumns
-		{
-			get
-			{
-				return this.Columns.Count(c => c.ColumnIsIdentity) > 0;
 			}
 		}
 
@@ -144,15 +95,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 		}
 
-		[XmlIgnore]
-		public bool HasSingleColumnServerGeneratedPrimaryKey
-		{
-			get
-			{
-				return this.Columns.Count(c => c.IsColumnServerGeneratedPrimaryKey) == 1;
-			}
-		}
-
 		[XmlAttribute]
 		public bool IsImplementationDetail
 		{
@@ -163,16 +105,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.isImplementationDetail = value;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public bool IsView
-		{
-			get
-			{
-				return this.isView;
 			}
 		}
 
@@ -212,16 +144,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.primaryKey = value;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string PrimaryKeyName
-		{
-			get
-			{
-				return (object)this.PrimaryKey != null ? this.PrimaryKey.PrimaryKeyName : null;
 			}
 		}
 
@@ -443,6 +365,84 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.tableNameSqlMetalSingularPascalCase = value;
+			}
+		}
+
+		[XmlArray(ElementName = "Columns")]
+		[XmlArrayItem(ElementName = "Column")]
+		public List<TableColumn> Columns
+		{
+			get
+			{
+				return this.columns;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		IEnumerable<Column> ITabular.Columns
+		{
+			get
+			{
+				return this.Columns;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string CSharpIsViewLiteral
+		{
+			get
+			{
+				return this.IsView.ToString().ToLower();
+			}
+		}
+
+		[XmlArray(ElementName = "ForeignKeys")]
+		[XmlArrayItem(ElementName = "ForeignKey")]
+		public List<ForeignKey> ForeignKeys
+		{
+			get
+			{
+				return this.foreignKeys;
+			}
+		}
+
+		[XmlIgnore]
+		public bool HasIdentityColumns
+		{
+			get
+			{
+				return this.Columns.Count(c => c.ColumnIsIdentity) > 0;
+			}
+		}
+
+		[XmlIgnore]
+		public bool HasSingleColumnServerGeneratedPrimaryKey
+		{
+			get
+			{
+				return this.Columns.Count(c => c.IsColumnServerGeneratedPrimaryKey) == 1;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool IsView
+		{
+			get
+			{
+				return this.isView;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string PrimaryKeyName
+		{
+			get
+			{
+				return (object)this.PrimaryKey != null ? this.PrimaryKey.PrimaryKeyName : null;
 			}
 		}
 

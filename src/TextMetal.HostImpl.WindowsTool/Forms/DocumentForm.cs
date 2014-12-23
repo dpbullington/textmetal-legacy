@@ -86,168 +86,6 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 		#region Methods/Operators
 
-		private void ApplyModelToView()
-		{
-			this._UpdateDocumentTree();
-			this._UpdateSourceEditor();
-		}
-
-		private void ApplyViewToModel()
-		{
-		}
-
-		protected override void CoreQuit(out bool cancel)
-		{
-			base.CoreQuit(out cancel);
-
-			if (cancel)
-				return;
-		}
-
-		protected override void CoreSetup()
-		{
-			base.CoreSetup();
-		}
-
-		protected override void CoreShown()
-		{
-			DialogResult dialogResult;
-			object asyncResult;
-			bool asyncWasCanceled;
-			Exception asyncExceptionOrNull;
-
-			base.CoreShown();
-
-			this.StatusText = "Template load started...";
-
-			dialogResult = BackgroundTaskForm.Show(this, "Loading template...", o =>
-																				{
-																					Thread.Sleep(250);
-																					return this._LoadDocument();
-																				}, null, out asyncWasCanceled, out asyncExceptionOrNull, out asyncResult);
-
-			if (asyncWasCanceled || dialogResult == DialogResult.Cancel)
-				this.Close(); // direct
-
-			if ((object)asyncExceptionOrNull != null)
-			{
-				if (ExecutableApplication.Current.HookUnhandledExceptionEvents)
-					ExecutableApplication.Current.ShowNestedExceptionsAndThrowBrickAtProcess(asyncExceptionOrNull);
-				// should never reach this point
-			}
-
-			this.Document = (TemplateConstruct)asyncResult;
-
-			if ((object)this.Document == null)
-				throw new InvalidOperationException(string.Format("Document object was null."));
-
-			this.CoreText = string.Format("{0}", this.DocumentFilePath.SafeToString(null, "<new>"));
-			this.StatusText = "Template load completed successfully.";
-
-			this.ApplyModelToView();
-		}
-
-		public bool SaveDocument(bool asCopy)
-		{
-			Message[] messages;
-			string filePath;
-
-			DialogResult dialogResult;
-			object asyncResult;
-			bool asyncWasCanceled;
-			Exception asyncExceptionOrNull;
-
-			if ((object)this.Document == null)
-				throw new InvalidOperationException(string.Format("Document object was null."));
-
-			this.ApplyViewToModel();
-
-			this.StatusText = "Template save started...";
-
-			if (asCopy && !DataType.Instance.IsNullOrWhiteSpace(this.DocumentFilePath))
-			{
-				if (MessageBox.Show(this, "Do you want to save a copy of the current document?", ExecutableApplication.Current.AssemblyInformation.Product, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
-					return false;
-			}
-
-			// validate document
-			this.StatusText = "Template validation started...";
-
-			dialogResult = BackgroundTaskForm.Show(this, "Validating template...", o =>
-																					{
-																						Thread.Sleep(250);
-																						return this._ValidateDocument();
-																					}, null, out asyncWasCanceled, out asyncExceptionOrNull, out asyncResult);
-
-			this.StatusText = "Template validation completed successfully.";
-
-			messages = (Message[])asyncResult;
-
-			if ((object)messages == null)
-				throw new InvalidOperationException(string.Format("Messages was null."));
-
-			if (messages.Length != 0)
-			{
-				using (MessageForm messageForm = new MessageForm()
-												{
-													Message = string.Empty,
-													Messages = messages
-												})
-					messageForm.ShowDialog(this);
-
-				return false;
-			}
-
-			if (asCopy)
-			{
-				// get new file path
-				if (!this.TryGetFilePath(out filePath))
-					return false;
-
-				this.DocumentFilePath = filePath;
-			}
-			else
-			{
-				if (DataType.Instance.IsNullOrWhiteSpace(this.DocumentFilePath))
-				{
-					if (!this.TryGetFilePath(out filePath))
-						return false;
-
-					this.DocumentFilePath = filePath;
-				}
-			}
-
-			// save document
-			dialogResult = BackgroundTaskForm.Show(this, "Saving template...", o =>
-																				{
-																					Thread.Sleep(250);
-																					this._SaveDocument();
-																					return null;
-																				}, null, out asyncWasCanceled, out asyncExceptionOrNull, out asyncResult);
-
-			this.CoreText = string.Format("{0}", this.DocumentFilePath.SafeToString(null, "<new>"));
-			this.StatusText = "Template save completed successfully.";
-
-			this.ApplyModelToView();
-
-			return true;
-		}
-
-		private bool TryGetFilePath(out string filePath)
-		{
-			DialogResult dialogResult;
-
-			this.sfdMain.FileName = filePath = null;
-			dialogResult = this.sfdMain.ShowDialog(this);
-
-			if (dialogResult != DialogResult.OK ||
-				DataType.Instance.IsNullOrWhiteSpace(this.sfdMain.FileName))
-				return false;
-
-			filePath = Path.GetFullPath(this.sfdMain.FileName);
-			return true;
-		}
-
 		public TemplateConstruct _LoadDocument()
 		{
 			if (DataType.Instance.IsNullOrWhiteSpace(this.DocumentFilePath))
@@ -363,10 +201,172 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			return new Message[] { };
 		}
 
+		private void ApplyModelToView()
+		{
+			this._UpdateDocumentTree();
+			this._UpdateSourceEditor();
+		}
+
+		private void ApplyViewToModel()
+		{
+		}
+
+		protected override void CoreQuit(out bool cancel)
+		{
+			base.CoreQuit(out cancel);
+
+			if (cancel)
+				return;
+		}
+
+		protected override void CoreSetup()
+		{
+			base.CoreSetup();
+		}
+
+		protected override void CoreShown()
+		{
+			DialogResult dialogResult;
+			object asyncResult;
+			bool asyncWasCanceled;
+			Exception asyncExceptionOrNull;
+
+			base.CoreShown();
+
+			this.StatusText = "Template load started...";
+
+			dialogResult = BackgroundTaskForm.Show(this, "Loading template...", o =>
+																				{
+																					Thread.Sleep(250);
+																					return this._LoadDocument();
+																				}, null, out asyncWasCanceled, out asyncExceptionOrNull, out asyncResult);
+
+			if (asyncWasCanceled || dialogResult == DialogResult.Cancel)
+				this.Close(); // direct
+
+			if ((object)asyncExceptionOrNull != null)
+			{
+				if (ExecutableApplication.Current.HookUnhandledExceptionEvents)
+					ExecutableApplication.Current.ShowNestedExceptionsAndThrowBrickAtProcess(asyncExceptionOrNull);
+				// should never reach this point
+			}
+
+			this.Document = (TemplateConstruct)asyncResult;
+
+			if ((object)this.Document == null)
+				throw new InvalidOperationException(string.Format("Document object was null."));
+
+			this.CoreText = string.Format("{0}", this.DocumentFilePath.SafeToString(null, "<new>"));
+			this.StatusText = "Template load completed successfully.";
+
+			this.ApplyModelToView();
+		}
+
 		private void pgMain_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
 		{
 			this._UpdateSourceEditor();
 			this.CoreIsDirty = true;
+		}
+
+		public bool SaveDocument(bool asCopy)
+		{
+			Message[] messages;
+			string filePath;
+
+			DialogResult dialogResult;
+			object asyncResult;
+			bool asyncWasCanceled;
+			Exception asyncExceptionOrNull;
+
+			if ((object)this.Document == null)
+				throw new InvalidOperationException(string.Format("Document object was null."));
+
+			this.ApplyViewToModel();
+
+			this.StatusText = "Template save started...";
+
+			if (asCopy && !DataType.Instance.IsNullOrWhiteSpace(this.DocumentFilePath))
+			{
+				if (MessageBox.Show(this, "Do you want to save a copy of the current document?", ExecutableApplication.Current.AssemblyInformation.Product, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+					return false;
+			}
+
+			// validate document
+			this.StatusText = "Template validation started...";
+
+			dialogResult = BackgroundTaskForm.Show(this, "Validating template...", o =>
+																					{
+																						Thread.Sleep(250);
+																						return this._ValidateDocument();
+																					}, null, out asyncWasCanceled, out asyncExceptionOrNull, out asyncResult);
+
+			this.StatusText = "Template validation completed successfully.";
+
+			messages = (Message[])asyncResult;
+
+			if ((object)messages == null)
+				throw new InvalidOperationException(string.Format("Messages was null."));
+
+			if (messages.Length != 0)
+			{
+				using (MessageForm messageForm = new MessageForm()
+												{
+													Message = string.Empty,
+													Messages = messages
+												})
+					messageForm.ShowDialog(this);
+
+				return false;
+			}
+
+			if (asCopy)
+			{
+				// get new file path
+				if (!this.TryGetFilePath(out filePath))
+					return false;
+
+				this.DocumentFilePath = filePath;
+			}
+			else
+			{
+				if (DataType.Instance.IsNullOrWhiteSpace(this.DocumentFilePath))
+				{
+					if (!this.TryGetFilePath(out filePath))
+						return false;
+
+					this.DocumentFilePath = filePath;
+				}
+			}
+
+			// save document
+			dialogResult = BackgroundTaskForm.Show(this, "Saving template...", o =>
+																				{
+																					Thread.Sleep(250);
+																					this._SaveDocument();
+																					return null;
+																				}, null, out asyncWasCanceled, out asyncExceptionOrNull, out asyncResult);
+
+			this.CoreText = string.Format("{0}", this.DocumentFilePath.SafeToString(null, "<new>"));
+			this.StatusText = "Template save completed successfully.";
+
+			this.ApplyModelToView();
+
+			return true;
+		}
+
+		private bool TryGetFilePath(out string filePath)
+		{
+			DialogResult dialogResult;
+
+			this.sfdMain.FileName = filePath = null;
+			dialogResult = this.sfdMain.ShowDialog(this);
+
+			if (dialogResult != DialogResult.OK ||
+				DataType.Instance.IsNullOrWhiteSpace(this.sfdMain.FileName))
+				return false;
+
+			filePath = Path.GetFullPath(this.sfdMain.FileName);
+			return true;
 		}
 
 		private void tsmiClose_Click(object sender, EventArgs e)
@@ -374,14 +374,14 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			this.Close(); // direct
 		}
 
-		private void tsmiSaveAs_Click(object sender, EventArgs e)
-		{
-			this.SaveDocument(true);
-		}
-
 		private void tsmiSave_Click(object sender, EventArgs e)
 		{
 			this.SaveDocument(false);
+		}
+
+		private void tsmiSaveAs_Click(object sender, EventArgs e)
+		{
+			this.SaveDocument(true);
 		}
 
 		private void tvMain_AfterSelect(object sender, TreeViewEventArgs e)

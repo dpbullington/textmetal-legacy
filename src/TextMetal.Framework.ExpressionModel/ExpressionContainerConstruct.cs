@@ -46,14 +46,6 @@ namespace TextMetal.Framework.ExpressionModel
 			}
 		}
 
-		IExpression IContainer.Content
-		{
-			get
-			{
-				return this.Content;
-			}
-		}
-
 		[XmlAttributeMapping(LocalName = "id", NamespaceUri = "")]
 		public string Id
 		{
@@ -64,6 +56,14 @@ namespace TextMetal.Framework.ExpressionModel
 			set
 			{
 				this.id = value;
+			}
+		}
+
+		IExpression IContainer.Content
+		{
+			get
+			{
+				return this.Content;
 			}
 		}
 

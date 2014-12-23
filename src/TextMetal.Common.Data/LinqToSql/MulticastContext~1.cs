@@ -28,20 +28,12 @@ namespace TextMetal.Common.Data.LinqToSql
 
 		#region Fields/Constants
 
-		private readonly IDictionary<Type, TContextBase> contexts = new Dictionary<Type, TContextBase>();
 		private bool disposed;
+		private readonly IDictionary<Type, TContextBase> contexts = new Dictionary<Type, TContextBase>();
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		private IDictionary<Type, TContextBase> Contexts
-		{
-			get
-			{
-				return this.contexts;
-			}
-		}
 
 		/// <summary>
 		/// Gets a value indicating whether the current instance has been disposed.
@@ -55,6 +47,14 @@ namespace TextMetal.Common.Data.LinqToSql
 			private set
 			{
 				this.disposed = value;
+			}
+		}
+
+		private IDictionary<Type, TContextBase> Contexts
+		{
+			get
+			{
+				return this.contexts;
 			}
 		}
 

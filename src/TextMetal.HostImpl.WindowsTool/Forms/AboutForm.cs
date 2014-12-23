@@ -26,6 +26,11 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 		#region Methods/Operators
 
+		private void btnOK_Click(object sender, EventArgs e)
+		{
+			this.Okay();
+		}
+
 		protected override void CoreSetup()
 		{
 			const string RESOURCE_NAME = "TextMetal.HostImpl.WindowsTool.Images.SplashScreen.png";
@@ -62,11 +67,6 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		{
 			this.DialogResult = DialogResult.Cancel; // yes, this is correct
 			this.Close(); // direct
-		}
-
-		private void btnOK_Click(object sender, EventArgs e)
-		{
-			this.Okay();
 		}
 
 		#endregion

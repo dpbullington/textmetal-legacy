@@ -61,6 +61,16 @@ namespace TextMetal.Common.WinForms.Forms
 
 		#region Methods/Operators
 
+		private void btnCancel_Click(object sender, EventArgs e)
+		{
+			this.Cancel();
+		}
+
+		private void btnOkay_Click(object sender, EventArgs e)
+		{
+			this.Okay();
+		}
+
 		private void Cancel()
 		{
 			this.DialogResult = DialogResult.Cancel;
@@ -114,16 +124,6 @@ namespace TextMetal.Common.WinForms.Forms
 			}
 
 			this.tvMessages.ExpandAll();
-		}
-
-		private void btnCancel_Click(object sender, EventArgs e)
-		{
-			this.Cancel();
-		}
-
-		private void btnOkay_Click(object sender, EventArgs e)
-		{
-			this.Okay();
 		}
 
 		#endregion

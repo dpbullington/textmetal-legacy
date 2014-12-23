@@ -30,6 +30,39 @@ namespace TextMetal.Framework.SourceModel.Primative
 
 		#region Methods/Operators
 
+		protected override object CoreGetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties)
+		{
+			XmlSchemaSet xmlSchemaSet;
+			XmlSchema xmlSchema;
+			ObjectConstruct objectConstruct00;
+
+			if ((object)sourceFilePath == null)
+				throw new ArgumentNullException("sourceFilePath");
+
+			if ((object)properties == null)
+				throw new ArgumentNullException("properties");
+
+			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
+				throw new ArgumentOutOfRangeException("sourceFilePath");
+
+			sourceFilePath = Path.GetFullPath(sourceFilePath);
+
+			objectConstruct00 = new ObjectConstruct();
+
+			using (Stream stream = File.Open(sourceFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				xmlSchema = XmlSchema.Read(stream, ValidationCallback);
+
+			xmlSchemaSet = new XmlSchemaSet();
+			xmlSchemaSet.Add(xmlSchema);
+			xmlSchemaSet.Compile();
+
+			xmlSchema = xmlSchemaSet.Schemas().Cast<XmlSchema>().ToList()[0];
+
+			EnumSchema(objectConstruct00, xmlSchema.Items);
+
+			return objectConstruct00;
+		}
+
 		private static void EnumSchema(IAssociativeXmlObject parentAssociativeXmlObject, XmlSchemaObjectCollection currentXmlSchemaObjectCollection)
 		{
 			XmlSchemaElement xmlSchemaElement;
@@ -148,39 +181,6 @@ namespace TextMetal.Framework.SourceModel.Primative
 
 		private static void ValidationCallback(object sender, ValidationEventArgs args)
 		{
-		}
-
-		protected override object CoreGetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties)
-		{
-			XmlSchemaSet xmlSchemaSet;
-			XmlSchema xmlSchema;
-			ObjectConstruct objectConstruct00;
-
-			if ((object)sourceFilePath == null)
-				throw new ArgumentNullException("sourceFilePath");
-
-			if ((object)properties == null)
-				throw new ArgumentNullException("properties");
-
-			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
-				throw new ArgumentOutOfRangeException("sourceFilePath");
-
-			sourceFilePath = Path.GetFullPath(sourceFilePath);
-
-			objectConstruct00 = new ObjectConstruct();
-
-			using (Stream stream = File.Open(sourceFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-				xmlSchema = XmlSchema.Read(stream, ValidationCallback);
-
-			xmlSchemaSet = new XmlSchemaSet();
-			xmlSchemaSet.Add(xmlSchema);
-			xmlSchemaSet.Compile();
-
-			xmlSchema = xmlSchemaSet.Schemas().Cast<XmlSchema>().ToList()[0];
-
-			EnumSchema(objectConstruct00, xmlSchema.Items);
-
-			return objectConstruct00;
 		}
 
 		#endregion

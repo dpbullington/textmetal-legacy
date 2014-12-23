@@ -33,6 +33,71 @@ namespace TextMetal.Framework.SourceModel.Primative
 
 		#region Methods/Operators
 
+		protected override object CoreGetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties)
+		{
+			const string PROP_TOKEN_CONNECTION_AQTN = "ConnectionType";
+			const string PROP_TOKEN_CONNECTION_STRING = "ConnectionString";
+			const string PROP_TOKEN_GET_SCHEMA_ONLY = "GetSchemaOnly";
+			string connectionAqtn;
+			Type connectionType = null;
+			string connectionString = null;
+			bool getSchemaOnly = false;
+			IList<string> values;
+
+			ObjectConstruct objectConstruct00;
+			SqlQuery sqlQuery;
+
+			if ((object)sourceFilePath == null)
+				throw new ArgumentNullException("sourceFilePath");
+
+			if ((object)properties == null)
+				throw new ArgumentNullException("properties");
+
+			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
+				throw new ArgumentOutOfRangeException("sourceFilePath");
+
+			connectionAqtn = null;
+			if (properties.TryGetValue(PROP_TOKEN_CONNECTION_AQTN, out values))
+			{
+				if ((object)values != null && values.Count == 1)
+				{
+					connectionAqtn = values[0];
+					connectionType = Type.GetType(connectionAqtn, false);
+				}
+			}
+
+			if ((object)connectionType == null)
+				throw new InvalidOperationException(string.Format("Failed to load the connection type '{0}' via Type.GetType(..).", connectionAqtn));
+
+			if (!typeof(IDbConnection).IsAssignableFrom(connectionType))
+				throw new InvalidOperationException(string.Format("The connection type is not assignable to type '{0}'.", typeof(IDbConnection).FullName));
+
+			if (properties.TryGetValue(PROP_TOKEN_CONNECTION_STRING, out values))
+			{
+				if ((object)values != null && values.Count == 1)
+					connectionString = values[0];
+			}
+
+			if (DataType.Instance.IsWhiteSpace(connectionString))
+				throw new InvalidOperationException(string.Format("The connection string cannot be null or whitespace."));
+
+			if (properties.TryGetValue(PROP_TOKEN_GET_SCHEMA_ONLY, out values))
+			{
+				if ((object)values != null && values.Count == 1)
+					DataType.Instance.TryParse<bool>(values[0], out getSchemaOnly);
+			}
+
+			sourceFilePath = Path.GetFullPath(sourceFilePath);
+
+			sqlQuery = Cerealization.GetObjectFromFile<SqlQuery>(sourceFilePath);
+
+			objectConstruct00 = new ObjectConstruct();
+
+			WriteSqlQuery(new SqlQuery[] { sqlQuery }, objectConstruct00, connectionType, connectionString, getSchemaOnly);
+
+			return objectConstruct00;
+		}
+
 		private static void WriteSqlQuery(IEnumerable<SqlQuery> sqlQueries, IAssociativeXmlObject parentAssociativeXmlObject, Type connectionType, string connectionString, bool getSchemaOnly)
 		{
 			ArrayConstruct arrayConstruct;
@@ -115,71 +180,6 @@ namespace TextMetal.Framework.SourceModel.Primative
 					propertyConstructB.RawValue = count;
 				}
 			}
-		}
-
-		protected override object CoreGetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties)
-		{
-			const string PROP_TOKEN_CONNECTION_AQTN = "ConnectionType";
-			const string PROP_TOKEN_CONNECTION_STRING = "ConnectionString";
-			const string PROP_TOKEN_GET_SCHEMA_ONLY = "GetSchemaOnly";
-			string connectionAqtn;
-			Type connectionType = null;
-			string connectionString = null;
-			bool getSchemaOnly = false;
-			IList<string> values;
-
-			ObjectConstruct objectConstruct00;
-			SqlQuery sqlQuery;
-
-			if ((object)sourceFilePath == null)
-				throw new ArgumentNullException("sourceFilePath");
-
-			if ((object)properties == null)
-				throw new ArgumentNullException("properties");
-
-			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
-				throw new ArgumentOutOfRangeException("sourceFilePath");
-
-			connectionAqtn = null;
-			if (properties.TryGetValue(PROP_TOKEN_CONNECTION_AQTN, out values))
-			{
-				if ((object)values != null && values.Count == 1)
-				{
-					connectionAqtn = values[0];
-					connectionType = Type.GetType(connectionAqtn, false);
-				}
-			}
-
-			if ((object)connectionType == null)
-				throw new InvalidOperationException(string.Format("Failed to load the connection type '{0}' via Type.GetType(..).", connectionAqtn));
-
-			if (!typeof(IDbConnection).IsAssignableFrom(connectionType))
-				throw new InvalidOperationException(string.Format("The connection type is not assignable to type '{0}'.", typeof(IDbConnection).FullName));
-
-			if (properties.TryGetValue(PROP_TOKEN_CONNECTION_STRING, out values))
-			{
-				if ((object)values != null && values.Count == 1)
-					connectionString = values[0];
-			}
-
-			if (DataType.Instance.IsWhiteSpace(connectionString))
-				throw new InvalidOperationException(string.Format("The connection string cannot be null or whitespace."));
-
-			if (properties.TryGetValue(PROP_TOKEN_GET_SCHEMA_ONLY, out values))
-			{
-				if ((object)values != null && values.Count == 1)
-					DataType.Instance.TryParse<bool>(values[0], out getSchemaOnly);
-			}
-
-			sourceFilePath = Path.GetFullPath(sourceFilePath);
-
-			sqlQuery = Cerealization.GetObjectFromFile<SqlQuery>(sourceFilePath);
-
-			objectConstruct00 = new ObjectConstruct();
-
-			WriteSqlQuery(new SqlQuery[] { sqlQuery }, objectConstruct00, connectionType, connectionString, getSchemaOnly);
-
-			return objectConstruct00;
 		}
 
 		#endregion

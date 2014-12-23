@@ -29,28 +29,6 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 
 		#region Methods/Operators
 
-		public static void NoDependencyRegistration()
-		{
-		}
-
-		[DependencyRegistration]
-		public static void ShouldNotMatchDelegateSignature(int unused)
-		{
-			throw new Exception();
-		}
-
-		[DependencyRegistration]
-		private static void ShouldNotMatchPrivateMethod()
-		{
-			throw new Exception();
-		}
-
-		[DependencyRegistration]
-		public static void YesDependencyRegistration()
-		{
-			DependencyManager.AppDomainInstance.AddResolution<IFormattable>("bob", DelegateDependencyResolution.FromFunc<double>(() => (double)1234.56789));
-		}
-
 		[Test]
 		public void ShouldAddResolution1Test()
 		{
@@ -1012,6 +990,28 @@ namespace TextMetal.Common.UnitTests.Solder.DependencyManagement._
 			Assert.IsNotNull(formattable);
 			Assert.IsInstanceOf<double>(formattable);
 			Assert.AreEqual(1234.56789, (double)formattable);
+		}
+
+		public static void NoDependencyRegistration()
+		{
+		}
+
+		[DependencyRegistration]
+		public static void ShouldNotMatchDelegateSignature(int unused)
+		{
+			throw new Exception();
+		}
+
+		[DependencyRegistration]
+		private static void ShouldNotMatchPrivateMethod()
+		{
+			throw new Exception();
+		}
+
+		[DependencyRegistration]
+		public static void YesDependencyRegistration()
+		{
+			DependencyManager.AppDomainInstance.AddResolution<IFormattable>("bob", DelegateDependencyResolution.FromFunc<double>(() => (double)1234.56789));
 		}
 
 		#endregion

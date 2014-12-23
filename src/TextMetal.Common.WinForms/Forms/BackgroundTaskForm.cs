@@ -24,7 +24,6 @@ namespace TextMetal.Common.WinForms.Forms
 
 		private bool asyncCanceledOut;
 		private Exception asyncErrorOut;
-
 		private Func<object, object> asyncMethod;
 		private object asyncParameterIn;
 		private object asyncResultOut;
@@ -111,33 +110,19 @@ namespace TextMetal.Common.WinForms.Forms
 
 		#region Methods/Operators
 
-		public static DialogResult Show(
-			IWin32Window owner,
-			string caption,
-			Func<object, object> asyncMethod,
-			object asyncParameterIn,
-			out bool asyncWasCanceled, out Exception asyncExceptionOrNull, out object asyncDoneParameter)
+		private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
 		{
-			DialogResult result;
+			this.DoWork(e);
+		}
 
-			if ((object)asyncMethod == null)
-				throw new ArgumentNullException("asyncMethod");
+		private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			this.RunWorkerCompleted(e);
+		}
 
-			using (BackgroundTaskForm backgroundTaskForm = new BackgroundTaskForm())
-			{
-				backgroundTaskForm.btnCancel.Enabled = false;
-				backgroundTaskForm.lblCaption.Text = caption;
-				backgroundTaskForm.AsyncMethod = asyncMethod;
-				backgroundTaskForm.AsyncParameterIn = asyncParameterIn;
-
-				result = backgroundTaskForm.ShowDialog(owner);
-
-				asyncWasCanceled = backgroundTaskForm.AsyncCanceledOut;
-				asyncExceptionOrNull = backgroundTaskForm.AsyncErrorOut;
-				asyncDoneParameter = backgroundTaskForm.AsyncResultOut;
-			}
-
-			return result;
+		private void btnCancel_Click(object sender, EventArgs e)
+		{
+			this.Cancel();
 		}
 
 		private void Cancel()
@@ -195,24 +180,38 @@ namespace TextMetal.Common.WinForms.Forms
 			this.pbarMain.Value = value;
 		}
 
-		private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
-		{
-			this.DoWork(e);
-		}
-
-		private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-		{
-			this.RunWorkerCompleted(e);
-		}
-
-		private void btnCancel_Click(object sender, EventArgs e)
-		{
-			this.Cancel();
-		}
-
 		private void tmrMain_Tick(object sender, EventArgs e)
 		{
 			this.TimerTick();
+		}
+
+		public static DialogResult Show(
+			IWin32Window owner,
+			string caption,
+			Func<object, object> asyncMethod,
+			object asyncParameterIn,
+			out bool asyncWasCanceled, out Exception asyncExceptionOrNull, out object asyncDoneParameter)
+		{
+			DialogResult result;
+
+			if ((object)asyncMethod == null)
+				throw new ArgumentNullException("asyncMethod");
+
+			using (BackgroundTaskForm backgroundTaskForm = new BackgroundTaskForm())
+			{
+				backgroundTaskForm.btnCancel.Enabled = false;
+				backgroundTaskForm.lblCaption.Text = caption;
+				backgroundTaskForm.AsyncMethod = asyncMethod;
+				backgroundTaskForm.AsyncParameterIn = asyncParameterIn;
+
+				result = backgroundTaskForm.ShowDialog(owner);
+
+				asyncWasCanceled = backgroundTaskForm.AsyncCanceledOut;
+				asyncExceptionOrNull = backgroundTaskForm.AsyncErrorOut;
+				asyncDoneParameter = backgroundTaskForm.AsyncResultOut;
+			}
+
+			return result;
 		}
 
 		#endregion

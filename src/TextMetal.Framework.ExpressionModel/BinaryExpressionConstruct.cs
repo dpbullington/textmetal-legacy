@@ -55,14 +55,6 @@ namespace TextMetal.Framework.ExpressionModel
 			}
 		}
 
-		BinaryOperator IBinaryExpression.BinaryOperator
-		{
-			get
-			{
-				return this.BinaryOperator;
-			}
-		}
-
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "LeftExpression", NamespaceUri = "http://www.textmetal.com/api/v6.0.0")]
 		public IExpressionContainerConstruct LeftExpression
 		{
@@ -76,14 +68,6 @@ namespace TextMetal.Framework.ExpressionModel
 			}
 		}
 
-		IExpression IBinaryExpression.LeftExpression
-		{
-			get
-			{
-				return this.LeftExpression;
-			}
-		}
-
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "RightExpression", NamespaceUri = "http://www.textmetal.com/api/v6.0.0")]
 		public IExpressionContainerConstruct RightExpression
 		{
@@ -94,6 +78,22 @@ namespace TextMetal.Framework.ExpressionModel
 			set
 			{
 				this.rightExpression = value;
+			}
+		}
+
+		BinaryOperator IBinaryExpression.BinaryOperator
+		{
+			get
+			{
+				return this.BinaryOperator;
+			}
+		}
+
+		IExpression IBinaryExpression.LeftExpression
+		{
+			get
+			{
+				return this.LeftExpression;
 			}
 		}
 

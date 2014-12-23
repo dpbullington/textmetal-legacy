@@ -28,22 +28,38 @@ namespace TextMetal.Framework.TemplateModel
 
 		#region Fields/Constants
 
-		private readonly bool affirmative;
 		private IExpressionContainerConstruct condition;
 		private ITemplateContainerConstruct @else;
 		private ITemplateContainerConstruct @then;
+		private readonly bool affirmative;
 
 		#endregion
 
-		//private ConditionalBranchConstruct vector;
-
 		#region Properties/Indexers/Events
 
-		private bool Affirmative
+		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "False", NamespaceUri = "http://www.textmetal.com/api/v6.0.0")]
+		public ITemplateContainerConstruct _False
 		{
 			get
 			{
-				return this.affirmative;
+				return this.Else;
+			}
+			set
+			{
+				this.Else = value;
+			}
+		}
+
+		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "True", NamespaceUri = "http://www.textmetal.com/api/v6.0.0")]
+		public ITemplateContainerConstruct _True
+		{
+			get
+			{
+				return this.Then;
+			}
+			set
+			{
+				this.Then = value;
 			}
 		}
 
@@ -73,14 +89,6 @@ namespace TextMetal.Framework.TemplateModel
 			}
 		}
 
-		protected override bool IsScopeBlock
-		{
-			get
-			{
-				return true;
-			}
-		}
-
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Then", NamespaceUri = "http://www.textmetal.com/api/v6.0.0")]
 		public ITemplateContainerConstruct Then
 		{
@@ -94,29 +102,19 @@ namespace TextMetal.Framework.TemplateModel
 			}
 		}
 
-		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "False", NamespaceUri = "http://www.textmetal.com/api/v6.0.0")]
-		public ITemplateContainerConstruct _False
+		private bool Affirmative
 		{
 			get
 			{
-				return this.Else;
-			}
-			set
-			{
-				this.Else = value;
+				return this.affirmative;
 			}
 		}
 
-		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "True", NamespaceUri = "http://www.textmetal.com/api/v6.0.0")]
-		public ITemplateContainerConstruct _True
+		protected override bool IsScopeBlock
 		{
 			get
 			{
-				return this.Then;
-			}
-			set
-			{
-				this.Then = value;
+				return true;
 			}
 		}
 

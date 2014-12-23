@@ -45,6 +45,42 @@ namespace TextMetal.Utilities.VsIdeConv.ConsoleTool.FileHandlers
 
 		#region Methods/Operators
 
+		protected override void OnExecute(FileInfo fileInfo)
+		{
+			if ((object)fileInfo == null)
+				throw new ArgumentNullException("fileInfo");
+
+			Debug.WriteLine("Visual Studio solution file: " + fileInfo.FullName);
+
+			switch (fileInfo.Extension.ToLower())
+			{
+				case ".sln":
+					this.PatchSolutionFile(fileInfo);
+					break;
+				default:
+					throw new InvalidOperationException(string.Format("Unsupported file type: {0}", fileInfo.Extension));
+			}
+		}
+
+		private void PatchSolutionFile(FileInfo fileInfo)
+		{
+			bool shouldCommit;
+			string[] solutionLines;
+
+			if ((object)fileInfo == null)
+				throw new ArgumentNullException("fileInfo");
+
+			if (ConversionConfig.ConversionSettings.BackupFiles)
+				fileInfo.CopyTo(fileInfo.FullName + ".bak", true);
+
+			solutionLines = File.ReadAllLines(fileInfo.FullName);
+
+			shouldCommit = PatchSolutionFile(fileInfo, ref solutionLines);
+
+			if (shouldCommit)
+				File.WriteAllLines(fileInfo.FullName, solutionLines, Encoding.UTF8);
+		}
+
 		public static bool PatchSolutionFile(FileInfo fileInfo, ref string[] solutionLines)
 		{
 			string line;
@@ -163,42 +199,6 @@ namespace TextMetal.Utilities.VsIdeConv.ConsoleTool.FileHandlers
 
 			solutionLines = lines.ToArray();
 			return true;
-		}
-
-		protected override void OnExecute(FileInfo fileInfo)
-		{
-			if ((object)fileInfo == null)
-				throw new ArgumentNullException("fileInfo");
-
-			Debug.WriteLine("Visual Studio solution file: " + fileInfo.FullName);
-
-			switch (fileInfo.Extension.ToLower())
-			{
-				case ".sln":
-					this.PatchSolutionFile(fileInfo);
-					break;
-				default:
-					throw new InvalidOperationException(string.Format("Unsupported file type: {0}", fileInfo.Extension));
-			}
-		}
-
-		private void PatchSolutionFile(FileInfo fileInfo)
-		{
-			bool shouldCommit;
-			string[] solutionLines;
-
-			if ((object)fileInfo == null)
-				throw new ArgumentNullException("fileInfo");
-
-			if (ConversionConfig.ConversionSettings.BackupFiles)
-				fileInfo.CopyTo(fileInfo.FullName + ".bak", true);
-
-			solutionLines = File.ReadAllLines(fileInfo.FullName);
-
-			shouldCommit = PatchSolutionFile(fileInfo, ref solutionLines);
-
-			if (shouldCommit)
-				File.WriteAllLines(fileInfo.FullName, solutionLines, Encoding.UTF8);
 		}
 
 		#endregion

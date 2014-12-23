@@ -38,11 +38,6 @@ namespace TextMetal.Common.UnitTests.TestingInfrastructure
 			set;
 		}
 
-		object NoSetter
-		{
-			get;
-		}
-
 		object PersistentId
 		{
 			get;
@@ -53,6 +48,11 @@ namespace TextMetal.Common.UnitTests.TestingInfrastructure
 		{
 			get;
 			set;
+		}
+
+		object NoSetter
+		{
+			get;
 		}
 
 		#endregion

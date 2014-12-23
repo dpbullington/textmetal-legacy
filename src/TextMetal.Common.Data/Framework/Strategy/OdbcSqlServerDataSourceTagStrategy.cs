@@ -35,26 +35,25 @@ namespace TextMetal.Common.Data.Framework.Strategy
 		private const string ODBC_SQL_SERVER_SCHEMA_TABLE_NAME_FORMAT = "[{0}].[{1}]";
 		private const string ODBC_SQL_SERVER_TABLE_ALIAS_FORMAT = "{0}";
 		private const string ODBC_SQL_SERVER_TABLE_NAME_FORMAT = "[{0}]";
-
 		private static readonly OdbcSqlServerDataSourceTagStrategy instance = new OdbcSqlServerDataSourceTagStrategy();
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		public static OdbcSqlServerDataSourceTagStrategy Instance
-		{
-			get
-			{
-				return instance;
-			}
-		}
-
 		public string DataSourceTag
 		{
 			get
 			{
 				return ODBC_SQL_SERVER_DATA_SOURCE_TAG;
+			}
+		}
+
+		public static OdbcSqlServerDataSourceTagStrategy Instance
+		{
+			get
+			{
+				return instance;
 			}
 		}
 

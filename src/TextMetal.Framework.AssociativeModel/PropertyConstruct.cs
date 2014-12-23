@@ -91,73 +91,6 @@ namespace TextMetal.Framework.AssociativeModel
 		#region Methods/Operators
 
 		/// <summary>
-		/// Determines whether a left-hand-side associative XML object is equal to any right-hand-side object using value semantics (instead of reference semantics).
-		/// </summary>
-		/// <param name="leftAssociativeXmlObject"> The left-hand-side associative XML object to test. </param>
-		/// <param name="rightObject"> The right-hand-side object to test. </param>
-		/// <returns> A value indicating whether the two objects equate using value semantics. </returns>
-		public static bool CommonEquals(IAssociativeXmlObject leftAssociativeXmlObject, object rightObject)
-		{
-			object thisValue, thatValue;
-			PropertyConstruct propertyConstruct;
-
-			if ((object)leftAssociativeXmlObject == null)
-				throw new ArgumentNullException("leftAssociativeXmlObject");
-
-			thisValue = leftAssociativeXmlObject.GetAssociativeObjectValue(NullTemplatingContext.Instance);
-
-			if ((object)rightObject == null)
-				return (object)thisValue == null;
-
-			if ((propertyConstruct = rightObject as PropertyConstruct) != null)
-				thatValue = propertyConstruct.GetAssociativeObjectValue(NullTemplatingContext.Instance);
-			else
-				thatValue = rightObject;
-
-			return DataType.Instance.ObjectsEqualValueSemantics(thisValue, thatValue);
-		}
-
-		/// <summary>
-		/// Determines the hash code for an associative XML object.
-		/// </summary>
-		/// <param name="associativeXmlObject"> The associative XML object used to get a hash code. </param>
-		/// <returns> The hash code of the associative XML object's value. </returns>
-		public static int CommonGetHashCode(IAssociativeXmlObject associativeXmlObject)
-		{
-			object value;
-
-			if ((object)associativeXmlObject == null)
-				throw new ArgumentNullException("associativeXmlObject");
-
-			value = associativeXmlObject.GetAssociativeObjectValue(NullTemplatingContext.Instance);
-
-			if ((object)value == null)
-				return 0;
-
-			return value.GetHashCode();
-		}
-
-		/// <summary>
-		/// Gets a string representation for an associative XML object value.
-		/// </summary>
-		/// <param name="associativeXmlObject"> The associative XML object used to get a string representation. </param>
-		/// <returns> The string representation of the associative XML object's value. </returns>
-		public static string CommonToString(IAssociativeXmlObject associativeXmlObject)
-		{
-			object value;
-
-			if ((object)associativeXmlObject == null)
-				throw new ArgumentNullException("associativeXmlObject");
-
-			value = associativeXmlObject.GetAssociativeObjectValue(NullTemplatingContext.Instance);
-
-			if ((object)value == null)
-				return null;
-
-			return value.SafeToString();
-		}
-
-		/// <summary>
 		/// Gets the enumerator for the current associative object instance. Overrides the default behavior to always return null.
 		/// </summary>
 		/// <param name="templatingContext"> The templating context. </param>
@@ -232,6 +165,73 @@ namespace TextMetal.Framework.AssociativeModel
 		public override string ToString()
 		{
 			return CommonToString(this);
+		}
+
+		/// <summary>
+		/// Determines whether a left-hand-side associative XML object is equal to any right-hand-side object using value semantics (instead of reference semantics).
+		/// </summary>
+		/// <param name="leftAssociativeXmlObject"> The left-hand-side associative XML object to test. </param>
+		/// <param name="rightObject"> The right-hand-side object to test. </param>
+		/// <returns> A value indicating whether the two objects equate using value semantics. </returns>
+		public static bool CommonEquals(IAssociativeXmlObject leftAssociativeXmlObject, object rightObject)
+		{
+			object thisValue, thatValue;
+			PropertyConstruct propertyConstruct;
+
+			if ((object)leftAssociativeXmlObject == null)
+				throw new ArgumentNullException("leftAssociativeXmlObject");
+
+			thisValue = leftAssociativeXmlObject.GetAssociativeObjectValue(NullTemplatingContext.Instance);
+
+			if ((object)rightObject == null)
+				return (object)thisValue == null;
+
+			if ((propertyConstruct = rightObject as PropertyConstruct) != null)
+				thatValue = propertyConstruct.GetAssociativeObjectValue(NullTemplatingContext.Instance);
+			else
+				thatValue = rightObject;
+
+			return DataType.Instance.ObjectsEqualValueSemantics(thisValue, thatValue);
+		}
+
+		/// <summary>
+		/// Determines the hash code for an associative XML object.
+		/// </summary>
+		/// <param name="associativeXmlObject"> The associative XML object used to get a hash code. </param>
+		/// <returns> The hash code of the associative XML object's value. </returns>
+		public static int CommonGetHashCode(IAssociativeXmlObject associativeXmlObject)
+		{
+			object value;
+
+			if ((object)associativeXmlObject == null)
+				throw new ArgumentNullException("associativeXmlObject");
+
+			value = associativeXmlObject.GetAssociativeObjectValue(NullTemplatingContext.Instance);
+
+			if ((object)value == null)
+				return 0;
+
+			return value.GetHashCode();
+		}
+
+		/// <summary>
+		/// Gets a string representation for an associative XML object value.
+		/// </summary>
+		/// <param name="associativeXmlObject"> The associative XML object used to get a string representation. </param>
+		/// <returns> The string representation of the associative XML object's value. </returns>
+		public static string CommonToString(IAssociativeXmlObject associativeXmlObject)
+		{
+			object value;
+
+			if ((object)associativeXmlObject == null)
+				throw new ArgumentNullException("associativeXmlObject");
+
+			value = associativeXmlObject.GetAssociativeObjectValue(NullTemplatingContext.Instance);
+
+			if ((object)value == null)
+				return null;
+
+			return value.SafeToString();
 		}
 
 		#endregion

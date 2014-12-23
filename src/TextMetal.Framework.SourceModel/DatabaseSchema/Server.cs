@@ -27,7 +27,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Fields/Constants
 
-		private readonly List<Database> databases = new List<Database>();
 		private string connectionString;
 		private string connectionType;
 		private string defaultDatabaseName;
@@ -37,6 +36,7 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string serverLevel;
 		private string serverName;
 		private string serverVersion;
+		private readonly List<Database> databases = new List<Database>();
 
 		#endregion
 
@@ -68,25 +68,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 		}
 
-		[XmlArray(ElementName = "Databases")]
-		[XmlArrayItem(ElementName = "Database")]
-		public List<Database> Databases
-		{
-			get
-			{
-				return this.databases;
-			}
-		}
-
-		[XmlIgnore]
-		public Database DefaultDatabase
-		{
-			get
-			{
-				return this.Databases.FirstOrDefault(c => c.DatabaseName == this.DefaultDatabaseName);
-			}
-		}
-
 		[XmlAttribute]
 		public string DefaultDatabaseName
 		{
@@ -97,54 +78,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.defaultDatabaseName = value;
-			}
-		}
-
-		[XmlIgnore]
-		public bool HasDatabases
-		{
-			get
-			{
-				return this.Databases.Count() > 0;
-			}
-		}
-
-		[XmlIgnore]
-		public bool HasDefaultDatabase
-		{
-			get
-			{
-				return (object)this.DefaultDatabase != null;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public bool HasProcedures
-		{
-			get
-			{
-				return this.Schemas.Count(s => s.Procedures.Any()) > 0;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public bool HasTables
-		{
-			get
-			{
-				return this.Schemas.Count(s => s._Tables.Any()) > 0;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public bool HasViews
-		{
-			get
-			{
-				return this.Schemas.Count(s => s.Views.Any()) > 0;
 			}
 		}
 
@@ -171,16 +104,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.machineName = value;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public List<Schema> Schemas
-		{
-			get
-			{
-				return this.Databases.SingleOrDefault(db => db.DatabaseName == this.DefaultDatabaseName).Schemas;
 			}
 		}
 
@@ -233,6 +156,83 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.serverVersion = value;
+			}
+		}
+
+		[XmlArray(ElementName = "Databases")]
+		[XmlArrayItem(ElementName = "Database")]
+		public List<Database> Databases
+		{
+			get
+			{
+				return this.databases;
+			}
+		}
+
+		[XmlIgnore]
+		public Database DefaultDatabase
+		{
+			get
+			{
+				return this.Databases.FirstOrDefault(c => c.DatabaseName == this.DefaultDatabaseName);
+			}
+		}
+
+		[XmlIgnore]
+		public bool HasDatabases
+		{
+			get
+			{
+				return this.Databases.Count() > 0;
+			}
+		}
+
+		[XmlIgnore]
+		public bool HasDefaultDatabase
+		{
+			get
+			{
+				return (object)this.DefaultDatabase != null;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool HasProcedures
+		{
+			get
+			{
+				return this.Schemas.Count(s => s.Procedures.Any()) > 0;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool HasTables
+		{
+			get
+			{
+				return this.Schemas.Count(s => s._Tables.Any()) > 0;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool HasViews
+		{
+			get
+			{
+				return this.Schemas.Count(s => s.Views.Any()) > 0;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public List<Schema> Schemas
+		{
+			get
+			{
+				return this.Databases.SingleOrDefault(db => db.DatabaseName == this.DefaultDatabaseName).Schemas;
 			}
 		}
 

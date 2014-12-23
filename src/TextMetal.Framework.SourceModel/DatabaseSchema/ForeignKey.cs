@@ -25,7 +25,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Fields/Constants
 
-		private readonly List<ForeignKeyColumn> foreignKeyColumn = new List<ForeignKeyColumn>();
 		private bool foreignKeyIsDisabled;
 		private bool foreignKeyIsForReplication;
 		private bool foreignKeyIsSystemNamed;
@@ -81,20 +80,11 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string targetTableNameSqlMetalPluralPascalCase;
 		private string targetTableNameSqlMetalSingularCamelCase;
 		private string targetTableNameSqlMetalSingularPascalCase;
+		private readonly List<ForeignKeyColumn> foreignKeyColumn = new List<ForeignKeyColumn>();
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		[XmlArray(ElementName = "ForeignKeyColumns")]
-		[XmlArrayItem(ElementName = "ForeignKeyColumn")]
-		public List<ForeignKeyColumn> ForeignKeyColumns
-		{
-			get
-			{
-				return this.foreignKeyColumn;
-			}
-		}
 
 		[XmlAttribute]
 		public bool ForeignKeyIsDisabled
@@ -808,6 +798,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.targetTableNameSqlMetalSingularPascalCase = value;
+			}
+		}
+
+		[XmlArray(ElementName = "ForeignKeyColumns")]
+		[XmlArrayItem(ElementName = "ForeignKeyColumn")]
+		public List<ForeignKeyColumn> ForeignKeyColumns
+		{
+			get
+			{
+				return this.foreignKeyColumn;
 			}
 		}
 

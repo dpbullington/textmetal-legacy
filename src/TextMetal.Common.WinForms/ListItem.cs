@@ -34,24 +34,13 @@ namespace TextMetal.Common.WinForms
 
 		#region Fields/Constants
 
-		private static readonly ListItem empty = new ListItem(null, null);
 		private string text;
 		private object value;
+		private static readonly ListItem empty = new ListItem(null, null);
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Gets the singleton 'empty' instance.
-		/// </summary>
-		public static ListItem Empty
-		{
-			get
-			{
-				return empty;
-			}
-		}
 
 		/// <summary>
 		/// Gets the list item text.
@@ -80,6 +69,17 @@ namespace TextMetal.Common.WinForms
 			set
 			{
 				this.value = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets the singleton 'empty' instance.
+		/// </summary>
+		public static ListItem Empty
+		{
+			get
+			{
+				return empty;
 			}
 		}
 

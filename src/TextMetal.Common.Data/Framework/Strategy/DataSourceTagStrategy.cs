@@ -66,118 +66,6 @@ namespace TextMetal.Common.Data.Framework.Strategy
 
 		#region Methods/Operators
 
-		private static void AssertValidMapping(Type modelType, TableMappingAttribute tableMappingAttribute)
-		{
-			if ((object)modelType == null)
-				throw new ArgumentNullException("modelType");
-
-			if ((object)tableMappingAttribute == null)
-				throw new InvalidOperationException(string.Format("The model type '{0}' does not specify the '{1}' attribute.", modelType.FullName, typeof(TableMappingAttribute).FullName));
-
-			if ((object)tableMappingAttribute._ColumnMappingAttributes == null ||
-				tableMappingAttribute._ColumnMappingAttributes.Count == 0)
-				throw new InvalidOperationException(string.Format("The model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", modelType.FullName, typeof(ColumnMappingAttribute).FullName));
-		}
-
-		private static void AssertValidMapping(Type requestModelType, Type resultModelType, Type responseModelType, ProcedureMappingAttribute procedureMappingAttribute)
-		{
-			if ((object)requestModelType == null)
-				throw new ArgumentNullException("requestModelType");
-
-			if ((object)resultModelType == null)
-				throw new ArgumentNullException("resultModelType");
-
-			if ((object)responseModelType == null)
-				throw new ArgumentNullException("responseModelType");
-
-			if ((object)procedureMappingAttribute == null)
-				throw new InvalidOperationException(string.Format("The request model type '{0}' does not specify the '{1}' attribute.", requestModelType.FullName, typeof(ProcedureMappingAttribute).FullName));
-
-			if ((object)procedureMappingAttribute._RequestParameterMappingAttributes == null ||
-				procedureMappingAttribute._RequestParameterMappingAttributes.Count == 0)
-				Trace.WriteLine(string.Format("The request model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", requestModelType.FullName, typeof(ParameterMappingAttribute).FullName));
-
-			if ((object)procedureMappingAttribute._ResultColumnMappingAttributes == null ||
-				procedureMappingAttribute._ResultColumnMappingAttributes.Count == 0)
-				Trace.WriteLine(string.Format("The result model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", resultModelType.FullName, typeof(ColumnMappingAttribute).FullName));
-
-			if ((object)procedureMappingAttribute._ResponseParameterMappingAttributes == null ||
-				procedureMappingAttribute._ResponseParameterMappingAttributes.Count == 0)
-				Trace.WriteLine(string.Format("The response model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", resultModelType.FullName, typeof(ParameterMappingAttribute).FullName));
-		}
-
-		private static Action<TModel, IDictionary<string, object>> GetMapToMethod<TModel>(TableMappingAttribute tableMappingAttribute)
-			where TModel : class, IModelObject
-		{
-			Action<TModel, IDictionary<string, object>> callback;
-
-			if ((object)tableMappingAttribute == null)
-				throw new ArgumentNullException("tableMappingAttribute");
-
-			callback = (md, ts) =>
-						{
-							ColumnMappingAttribute[] columnMappingAttributes;
-
-							if ((object)md == null)
-								throw new ArgumentNullException("md");
-
-							if ((object)ts == null)
-								throw new ArgumentNullException("ts");
-
-							columnMappingAttributes = tableMappingAttribute._ColumnMappingAttributes.OrderBy(cma => cma.ColumnOrdinal).ToArray();
-							for (int index = 0; index < columnMappingAttributes.Length; index++)
-							{
-								object columnValue, propertyValue;
-
-								if (ts.TryGetValue(columnMappingAttributes[index].ColumnName, out columnValue))
-								{
-									propertyValue = columnValue.ChangeType(columnMappingAttributes[index]._TargetProperty.PropertyType);
-
-									if (!Reflexion.Instance.SetLogicalPropertyValue(md, columnMappingAttributes[index]._TargetProperty.Name, propertyValue))
-										throw new InvalidOperationException(string.Format("Ah snap."));
-								}
-							}
-						};
-
-			return callback;
-		}
-
-		private static Action<TResultModel, IDictionary<string, object>> GetMapToMethod<TResultModel>(ProcedureMappingAttribute procedureMappingAttribute)
-			where TResultModel : class, IResultModelObject
-		{
-			Action<TResultModel, IDictionary<string, object>> callback;
-
-			if ((object)procedureMappingAttribute == null)
-				throw new ArgumentNullException("procedureMappingAttribute");
-
-			callback = (md, ts) =>
-						{
-							ColumnMappingAttribute[] columnMappingAttributes;
-
-							if ((object)md == null)
-								throw new ArgumentNullException("md");
-
-							if ((object)ts == null)
-								throw new ArgumentNullException("ts");
-
-							columnMappingAttributes = procedureMappingAttribute._ResultColumnMappingAttributes.OrderBy(cma => cma.ColumnOrdinal).ToArray();
-							for (int index = 0; index < columnMappingAttributes.Length; index++)
-							{
-								object columnValue, propertyValue;
-
-								if (ts.TryGetValue(columnMappingAttributes[index].ColumnName, out columnValue))
-								{
-									propertyValue = columnValue.ChangeType(columnMappingAttributes[index]._TargetProperty.PropertyType);
-
-									if (!Reflexion.Instance.SetLogicalPropertyValue(md, columnMappingAttributes[index]._TargetProperty.Name, propertyValue))
-										throw new InvalidOperationException(string.Format("Ah snap."));
-								}
-							}
-						};
-
-			return callback;
-		}
-
 		public bool CreateNativeDatabaseFile(string databaseFilePath)
 		{
 			// do nothing
@@ -1119,6 +1007,118 @@ namespace TextMetal.Common.Data.Framework.Strategy
 		}
 
 		public abstract void ParameterMagic(IUnitOfWork unitOfWork, IDbDataParameter commandParameter, string generatedFromColumnNativeType);
+
+		private static void AssertValidMapping(Type modelType, TableMappingAttribute tableMappingAttribute)
+		{
+			if ((object)modelType == null)
+				throw new ArgumentNullException("modelType");
+
+			if ((object)tableMappingAttribute == null)
+				throw new InvalidOperationException(string.Format("The model type '{0}' does not specify the '{1}' attribute.", modelType.FullName, typeof(TableMappingAttribute).FullName));
+
+			if ((object)tableMappingAttribute._ColumnMappingAttributes == null ||
+				tableMappingAttribute._ColumnMappingAttributes.Count == 0)
+				throw new InvalidOperationException(string.Format("The model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", modelType.FullName, typeof(ColumnMappingAttribute).FullName));
+		}
+
+		private static void AssertValidMapping(Type requestModelType, Type resultModelType, Type responseModelType, ProcedureMappingAttribute procedureMappingAttribute)
+		{
+			if ((object)requestModelType == null)
+				throw new ArgumentNullException("requestModelType");
+
+			if ((object)resultModelType == null)
+				throw new ArgumentNullException("resultModelType");
+
+			if ((object)responseModelType == null)
+				throw new ArgumentNullException("responseModelType");
+
+			if ((object)procedureMappingAttribute == null)
+				throw new InvalidOperationException(string.Format("The request model type '{0}' does not specify the '{1}' attribute.", requestModelType.FullName, typeof(ProcedureMappingAttribute).FullName));
+
+			if ((object)procedureMappingAttribute._RequestParameterMappingAttributes == null ||
+				procedureMappingAttribute._RequestParameterMappingAttributes.Count == 0)
+				Trace.WriteLine(string.Format("The request model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", requestModelType.FullName, typeof(ParameterMappingAttribute).FullName));
+
+			if ((object)procedureMappingAttribute._ResultColumnMappingAttributes == null ||
+				procedureMappingAttribute._ResultColumnMappingAttributes.Count == 0)
+				Trace.WriteLine(string.Format("The result model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", resultModelType.FullName, typeof(ColumnMappingAttribute).FullName));
+
+			if ((object)procedureMappingAttribute._ResponseParameterMappingAttributes == null ||
+				procedureMappingAttribute._ResponseParameterMappingAttributes.Count == 0)
+				Trace.WriteLine(string.Format("The response model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", resultModelType.FullName, typeof(ParameterMappingAttribute).FullName));
+		}
+
+		private static Action<TModel, IDictionary<string, object>> GetMapToMethod<TModel>(TableMappingAttribute tableMappingAttribute)
+			where TModel : class, IModelObject
+		{
+			Action<TModel, IDictionary<string, object>> callback;
+
+			if ((object)tableMappingAttribute == null)
+				throw new ArgumentNullException("tableMappingAttribute");
+
+			callback = (md, ts) =>
+						{
+							ColumnMappingAttribute[] columnMappingAttributes;
+
+							if ((object)md == null)
+								throw new ArgumentNullException("md");
+
+							if ((object)ts == null)
+								throw new ArgumentNullException("ts");
+
+							columnMappingAttributes = tableMappingAttribute._ColumnMappingAttributes.OrderBy(cma => cma.ColumnOrdinal).ToArray();
+							for (int index = 0; index < columnMappingAttributes.Length; index++)
+							{
+								object columnValue, propertyValue;
+
+								if (ts.TryGetValue(columnMappingAttributes[index].ColumnName, out columnValue))
+								{
+									propertyValue = columnValue.ChangeType(columnMappingAttributes[index]._TargetProperty.PropertyType);
+
+									if (!Reflexion.Instance.SetLogicalPropertyValue(md, columnMappingAttributes[index]._TargetProperty.Name, propertyValue))
+										throw new InvalidOperationException(string.Format("Ah snap."));
+								}
+							}
+						};
+
+			return callback;
+		}
+
+		private static Action<TResultModel, IDictionary<string, object>> GetMapToMethod<TResultModel>(ProcedureMappingAttribute procedureMappingAttribute)
+			where TResultModel : class, IResultModelObject
+		{
+			Action<TResultModel, IDictionary<string, object>> callback;
+
+			if ((object)procedureMappingAttribute == null)
+				throw new ArgumentNullException("procedureMappingAttribute");
+
+			callback = (md, ts) =>
+						{
+							ColumnMappingAttribute[] columnMappingAttributes;
+
+							if ((object)md == null)
+								throw new ArgumentNullException("md");
+
+							if ((object)ts == null)
+								throw new ArgumentNullException("ts");
+
+							columnMappingAttributes = procedureMappingAttribute._ResultColumnMappingAttributes.OrderBy(cma => cma.ColumnOrdinal).ToArray();
+							for (int index = 0; index < columnMappingAttributes.Length; index++)
+							{
+								object columnValue, propertyValue;
+
+								if (ts.TryGetValue(columnMappingAttributes[index].ColumnName, out columnValue))
+								{
+									propertyValue = columnValue.ChangeType(columnMappingAttributes[index]._TargetProperty.PropertyType);
+
+									if (!Reflexion.Instance.SetLogicalPropertyValue(md, columnMappingAttributes[index]._TargetProperty.Name, propertyValue))
+										throw new InvalidOperationException(string.Format("Ah snap."));
+								}
+							}
+						};
+
+			return callback;
+		}
 
 		#endregion
 	}

@@ -25,8 +25,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Fields/Constants
 
-		private readonly List<ProcedureColumn> columns = new List<ProcedureColumn>();
-		private readonly List<Parameter> parameters = new List<Parameter>();
 		private string procedureName;
 		private string procedureNameCamelCase;
 		private string procedureNameConstantCase;
@@ -43,39 +41,12 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string procedureNameSqlMetalPluralPascalCase;
 		private string procedureNameSqlMetalSingularCamelCase;
 		private string procedureNameSqlMetalSingularPascalCase;
+		private readonly List<ProcedureColumn> columns = new List<ProcedureColumn>();
+		private readonly List<Parameter> parameters = new List<Parameter>();
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		[XmlArray(ElementName = "Columns")]
-		[XmlArrayItem(ElementName = "Column")]
-		public List<ProcedureColumn> Columns
-		{
-			get
-			{
-				return this.columns;
-			}
-		}
-
-		[XmlIgnore]
-		public bool HasResults
-		{
-			get
-			{
-				return this.Columns.Count > 0;
-			}
-		}
-
-		[XmlArray(ElementName = "Parameters")]
-		[XmlArrayItem(ElementName = "Parameter")]
-		public List<Parameter> Parameters
-		{
-			get
-			{
-				return this.parameters;
-			}
-		}
 
 		[XmlAttribute]
 		public string ProcedureName
@@ -282,6 +253,35 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.procedureNameSqlMetalSingularPascalCase = value;
+			}
+		}
+
+		[XmlArray(ElementName = "Columns")]
+		[XmlArrayItem(ElementName = "Column")]
+		public List<ProcedureColumn> Columns
+		{
+			get
+			{
+				return this.columns;
+			}
+		}
+
+		[XmlIgnore]
+		public bool HasResults
+		{
+			get
+			{
+				return this.Columns.Count > 0;
+			}
+		}
+
+		[XmlArray(ElementName = "Parameters")]
+		[XmlArrayItem(ElementName = "Parameter")]
+		public List<Parameter> Parameters
+		{
+			get
+			{
+				return this.parameters;
 			}
 		}
 

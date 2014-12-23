@@ -25,7 +25,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Fields/Constants
 
-		private readonly List<ViewColumn> columns = new List<ViewColumn>();
 		private DateTime creationTimestamp;
 		private bool isImplementationDetail;
 		private DateTime modificationTimestamp;
@@ -47,40 +46,11 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string viewNameSqlMetalPluralPascalCase;
 		private string viewNameSqlMetalSingularCamelCase;
 		private string viewNameSqlMetalSingularPascalCase;
+		private readonly List<ViewColumn> columns = new List<ViewColumn>();
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string CSharpIsViewLiteral
-		{
-			get
-			{
-				return this.IsView.ToString().ToLower();
-			}
-		}
-
-		[XmlArray(ElementName = "Columns")]
-		[XmlArrayItem(ElementName = "Column")]
-		public List<ViewColumn> Columns
-		{
-			get
-			{
-				return this.columns;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		IEnumerable<Column> ITabular.Columns
-		{
-			get
-			{
-				return this.Columns;
-			}
-		}
 
 		[XmlAttribute]
 		public DateTime CreationTimestamp
@@ -95,36 +65,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			}
 		}
 
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public bool HasIdentityColumns
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public bool HasNoDefinedPrimaryKeyColumns
-		{
-			get
-			{
-				return true;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public bool HasSingleColumnServerGeneratedPrimaryKey
-		{
-			get
-			{
-				return false;
-			}
-		}
-
 		[XmlAttribute]
 		public bool IsImplementationDetail
 		{
@@ -135,16 +75,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.isImplementationDetail = value;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public bool IsView
-		{
-			get
-			{
-				return true;
 			}
 		}
 
@@ -171,186 +101,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.objectNameSqlMetalPascalCase = value;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string PrimaryKeyName
-		{
-			get
-			{
-				return null;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public int TableId
-		{
-			get
-			{
-				return this.ViewId;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableName
-		{
-			get
-			{
-				return this.ViewName;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNameCamelCase
-		{
-			get
-			{
-				return this.ViewNameCamelCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNameConstantCase
-		{
-			get
-			{
-				return this.ViewNameConstantCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNamePascalCase
-		{
-			get
-			{
-				return this.ViewNamePascalCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNamePluralCamelCase
-		{
-			get
-			{
-				return this.ViewNamePluralCamelCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNamePluralConstantCase
-		{
-			get
-			{
-				return this.ViewNamePluralConstantCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNamePluralPascalCase
-		{
-			get
-			{
-				return this.ViewNamePluralPascalCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNameSingularCamelCase
-		{
-			get
-			{
-				return this.ViewNameSingularCamelCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNameSingularConstantCase
-		{
-			get
-			{
-				return this.ViewNameSingularConstantCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNameSingularPascalCase
-		{
-			get
-			{
-				return this.ViewNameSingularPascalCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNameSqlMetalCamelCase
-		{
-			get
-			{
-				return this.ViewNameSqlMetalCamelCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNameSqlMetalPascalCase
-		{
-			get
-			{
-				return this.ViewNameSqlMetalPascalCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNameSqlMetalPluralCamelCase
-		{
-			get
-			{
-				return this.ViewNameSqlMetalPluralCamelCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNameSqlMetalPluralPascalCase
-		{
-			get
-			{
-				return this.ViewNameSqlMetalPluralPascalCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNameSqlMetalSingularCamelCase
-		{
-			get
-			{
-				return this.ViewNameSqlMetalSingularCamelCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNameSqlMetalSingularPascalCase
-		{
-			get
-			{
-				return this.ViewName;
 			}
 		}
 
@@ -572,6 +322,256 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.viewNameSqlMetalSingularPascalCase = value;
+			}
+		}
+
+		[XmlArray(ElementName = "Columns")]
+		[XmlArrayItem(ElementName = "Column")]
+		public List<ViewColumn> Columns
+		{
+			get
+			{
+				return this.columns;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		IEnumerable<Column> ITabular.Columns
+		{
+			get
+			{
+				return this.Columns;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string CSharpIsViewLiteral
+		{
+			get
+			{
+				return this.IsView.ToString().ToLower();
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool HasIdentityColumns
+		{
+			get
+			{
+				return false;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool HasNoDefinedPrimaryKeyColumns
+		{
+			get
+			{
+				return true;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool HasSingleColumnServerGeneratedPrimaryKey
+		{
+			get
+			{
+				return false;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool IsView
+		{
+			get
+			{
+				return true;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string PrimaryKeyName
+		{
+			get
+			{
+				return null;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public int TableId
+		{
+			get
+			{
+				return this.ViewId;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string TableName
+		{
+			get
+			{
+				return this.ViewName;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string TableNameCamelCase
+		{
+			get
+			{
+				return this.ViewNameCamelCase;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string TableNameConstantCase
+		{
+			get
+			{
+				return this.ViewNameConstantCase;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string TableNamePascalCase
+		{
+			get
+			{
+				return this.ViewNamePascalCase;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string TableNamePluralCamelCase
+		{
+			get
+			{
+				return this.ViewNamePluralCamelCase;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string TableNamePluralConstantCase
+		{
+			get
+			{
+				return this.ViewNamePluralConstantCase;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string TableNamePluralPascalCase
+		{
+			get
+			{
+				return this.ViewNamePluralPascalCase;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string TableNameSingularCamelCase
+		{
+			get
+			{
+				return this.ViewNameSingularCamelCase;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string TableNameSingularConstantCase
+		{
+			get
+			{
+				return this.ViewNameSingularConstantCase;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string TableNameSingularPascalCase
+		{
+			get
+			{
+				return this.ViewNameSingularPascalCase;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string TableNameSqlMetalCamelCase
+		{
+			get
+			{
+				return this.ViewNameSqlMetalCamelCase;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string TableNameSqlMetalPascalCase
+		{
+			get
+			{
+				return this.ViewNameSqlMetalPascalCase;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string TableNameSqlMetalPluralCamelCase
+		{
+			get
+			{
+				return this.ViewNameSqlMetalPluralCamelCase;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string TableNameSqlMetalPluralPascalCase
+		{
+			get
+			{
+				return this.ViewNameSqlMetalPluralPascalCase;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string TableNameSqlMetalSingularCamelCase
+		{
+			get
+			{
+				return this.ViewNameSqlMetalSingularCamelCase;
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public string TableNameSqlMetalSingularPascalCase
+		{
+			get
+			{
+				return this.ViewName;
 			}
 		}
 

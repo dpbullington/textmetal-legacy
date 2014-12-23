@@ -84,14 +84,6 @@ namespace TextMetal.Common.UnitTests.TestingInfrastructure
 			}
 		}
 
-		public object NoSetter
-		{
-			get
-			{
-				return 1;
-			}
-		}
-
 		public object PersistentId
 		{
 			get
@@ -113,6 +105,14 @@ namespace TextMetal.Common.UnitTests.TestingInfrastructure
 			set
 			{
 				this.suffix = value;
+			}
+		}
+
+		public object NoSetter
+		{
+			get
+			{
+				return 1;
 			}
 		}
 

@@ -86,6 +86,22 @@ namespace TextMetal.Common.WinForms.Forms
 
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public string CoreText
+		{
+			get
+			{
+				return this.coreText;
+			}
+			set
+			{
+				this.coreText = value;
+
+				this.CoreUpdateFormText();
+			}
+		}
+
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		protected TmForm CoreOwnerForm
 		{
 			get
@@ -101,22 +117,6 @@ namespace TextMetal.Common.WinForms.Forms
 			get
 			{
 				return (TmForm)this.ParentForm;
-			}
-		}
-
-		[Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public string CoreText
-		{
-			get
-			{
-				return this.coreText;
-			}
-			set
-			{
-				this.coreText = value;
-
-				this.CoreUpdateFormText();
 			}
 		}
 

@@ -25,7 +25,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Fields/Constants
 
-		private readonly List<UniqueKeyColumn> uniqueKeyColumn = new List<UniqueKeyColumn>();
 		private int uniqueKeyId;
 		private bool uniqueKeyIsSystemNamed;
 		private string uniqueKeyName;
@@ -44,20 +43,11 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string uniqueKeyNameSqlMetalPluralPascalCase;
 		private string uniqueKeyNameSqlMetalSingularCamelCase;
 		private string uniqueKeyNameSqlMetalSingularPascalCase;
+		private readonly List<UniqueKeyColumn> uniqueKeyColumn = new List<UniqueKeyColumn>();
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		[XmlArray(ElementName = "UniqueKeyColumns")]
-		[XmlArrayItem(ElementName = "UniqueKeyColumn")]
-		public List<UniqueKeyColumn> UniqueKeyColumns
-		{
-			get
-			{
-				return this.uniqueKeyColumn;
-			}
-		}
 
 		[XmlAttribute]
 		public int UniqueKeyId
@@ -290,6 +280,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.uniqueKeyNameSqlMetalSingularPascalCase = value;
+			}
+		}
+
+		[XmlArray(ElementName = "UniqueKeyColumns")]
+		[XmlArrayItem(ElementName = "UniqueKeyColumn")]
+		public List<UniqueKeyColumn> UniqueKeyColumns
+		{
+			get
+			{
+				return this.uniqueKeyColumn;
 			}
 		}
 

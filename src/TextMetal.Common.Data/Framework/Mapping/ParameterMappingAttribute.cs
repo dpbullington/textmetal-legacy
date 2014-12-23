@@ -41,6 +41,30 @@ namespace TextMetal.Common.Data.Framework.Mapping
 
 		#region Properties/Indexers/Events
 
+		public PropertyInfo _TargetProperty
+		{
+			get
+			{
+				return this.targetProperty;
+			}
+			set
+			{
+				this.targetProperty = value;
+			}
+		}
+
+		public Type _TargetType
+		{
+			get
+			{
+				return this.targetType;
+			}
+			set
+			{
+				this.targetType = value;
+			}
+		}
+
 		/// <summary>
 		/// Gets or sets the type of the parameter.
 		/// </summary>
@@ -167,30 +191,6 @@ namespace TextMetal.Common.Data.Framework.Mapping
 			set
 			{
 				this.parameterSqlType = value;
-			}
-		}
-
-		public PropertyInfo _TargetProperty
-		{
-			get
-			{
-				return this.targetProperty;
-			}
-			set
-			{
-				this.targetProperty = value;
-			}
-		}
-
-		public Type _TargetType
-		{
-			get
-			{
-				return this.targetType;
-			}
-			set
-			{
-				this.targetType = value;
 			}
 		}
 

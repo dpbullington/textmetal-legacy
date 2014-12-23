@@ -52,6 +52,34 @@ namespace TextMetal.Common.Solder.RuntimeInterception
 		#region Methods/Operators
 
 		/// <summary>
+		/// Disposes of the inner resources, if present. Once disposed, the instance cannot be reused.
+		/// </summary>
+		public virtual void Dispose()
+		{
+			if (this.Disposed)
+				return;
+
+			try
+			{
+			}
+			finally
+			{
+				this.Disposed = true;
+				GC.SuppressFinalize(this);
+			}
+		}
+
+		/// <summary>
+		/// Represnts a dynamic invocation of a proxied type member.
+		/// </summary>
+		/// <param name="proxiedType"> The run-time type of the proxied type (may differ from MethodInfo.DeclaringType). </param>
+		/// <param name="invokedMethodInfo"> The MethodInfo of the invoked member. </param>
+		/// <param name="proxyInstance"> The proxy object instance. </param>
+		/// <param name="invocationParameters"> The parameters passed to the invoked member, if appliable. </param>
+		/// <returns> The return value from the invoked member, if appliable. </returns>
+		public abstract object Invoke(Type proxiedType, MethodInfo invokedMethodInfo, object proxyInstance, object[] invocationParameters);
+
+		/// <summary>
 		/// Represnts a dynamic invocation of a proxied type member.
 		/// </summary>
 		/// <param name="proxiedType"> The run-time type of the proxied type (may differ from MethodInfo.DeclaringType). </param>
@@ -121,34 +149,6 @@ namespace TextMetal.Common.Solder.RuntimeInterception
 
 			return returnValue;
 		}
-
-		/// <summary>
-		/// Disposes of the inner resources, if present. Once disposed, the instance cannot be reused.
-		/// </summary>
-		public virtual void Dispose()
-		{
-			if (this.Disposed)
-				return;
-
-			try
-			{
-			}
-			finally
-			{
-				this.Disposed = true;
-				GC.SuppressFinalize(this);
-			}
-		}
-
-		/// <summary>
-		/// Represnts a dynamic invocation of a proxied type member.
-		/// </summary>
-		/// <param name="proxiedType"> The run-time type of the proxied type (may differ from MethodInfo.DeclaringType). </param>
-		/// <param name="invokedMethodInfo"> The MethodInfo of the invoked member. </param>
-		/// <param name="proxyInstance"> The proxy object instance. </param>
-		/// <param name="invocationParameters"> The parameters passed to the invoked member, if appliable. </param>
-		/// <returns> The return value from the invoked member, if appliable. </returns>
-		public abstract object Invoke(Type proxiedType, MethodInfo invokedMethodInfo, object proxyInstance, object[] invocationParameters);
 
 		#endregion
 	}

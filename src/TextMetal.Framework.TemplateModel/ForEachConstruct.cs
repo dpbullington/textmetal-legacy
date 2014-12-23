@@ -82,14 +82,6 @@ namespace TextMetal.Framework.TemplateModel
 			}
 		}
 
-		protected override bool IsScopeBlock
-		{
-			get
-			{
-				return true;
-			}
-		}
-
 		[XmlChildElementMapping(ChildElementType = ChildElementType.ParentQualified, LocalName = "Sort", NamespaceUri = "http://www.textmetal.com/api/v6.0.0")]
 		public ISortContainerConstruct Sort
 		{
@@ -139,6 +131,14 @@ namespace TextMetal.Framework.TemplateModel
 			set
 			{
 				this.varIx = value;
+			}
+		}
+
+		protected override bool IsScopeBlock
+		{
+			get
+			{
+				return true;
 			}
 		}
 

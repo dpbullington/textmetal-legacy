@@ -45,7 +45,7 @@ namespace TextMetal.Common.Data.Framework
 
 			messages = new List<Message>();
 
-			return messages.ToArray();
+			return messages;
 		}
 
 		#endregion

@@ -101,15 +101,6 @@ namespace TextMetal.Common.Core
 			base.Close();
 		}
 
-		public string ReadRowUsingDelimiter()
-		{
-			string line;
-
-			line = this.InnerTextReader.ReadLine(); // TODO: need to support the row delimitor (defaults to \r\n)
-
-			return line;
-		}
-
 		public IEnumerable<IDictionary<string, string>> ReadRowsUsingDelimiters()
 		{
 			int rowIndex = 0;
@@ -160,6 +151,15 @@ namespace TextMetal.Common.Core
 
 				yield return row;
 			}
+		}
+
+		public string ReadRowUsingDelimiter()
+		{
+			string line;
+
+			line = this.InnerTextReader.ReadLine(); // TODO: need to support the row delimitor (defaults to \r\n)
+
+			return line;
 		}
 
 		#endregion

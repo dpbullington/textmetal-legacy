@@ -40,8 +40,6 @@ namespace TextMetal.Framework.ExpressionModel
 
 		#endregion
 
-		//private readonly AppDomain remoteAppDomain;
-
 		#region Fields/Constants
 
 		private readonly IDictionary<object, CompiledCode> scriptCompilations = new Dictionary<object, CompiledCode>();
@@ -50,14 +48,6 @@ namespace TextMetal.Framework.ExpressionModel
 		private readonly ScriptRuntimeSetup scriptRuntimeSetup;
 
 		#endregion
-
-		/*private AppDomain RemoteAppDomain
-		{
-			get
-			{
-				return this.remoteAppDomain;
-			}
-		}*/
 
 		#region Properties/Indexers/Events
 

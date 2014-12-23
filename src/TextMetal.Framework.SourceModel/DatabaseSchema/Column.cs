@@ -27,14 +27,14 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Fields/Constants
 
+		private Type columnClrNonNullableType;
+		private Type columnClrNullableType;
+		private Type columnClrType;
 		private string columnCSharpClrNonNullableType;
 		private string columnCSharpClrNullableType;
 		private string columnCSharpClrType;
 		private string columnCSharpDbType;
 		private string columnCSharpNullableLiteral;
-		private Type columnClrNonNullableType;
-		private Type columnClrNullableType;
-		private Type columnClrType;
 		private DbType columnDbType;
 		private bool columnIsUserDefinedType;
 		private string columnName;
@@ -63,6 +63,93 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		[XmlAttribute("ColumnClrNonNullableType")]
+		public string _ColumnClrNotNullableType
+		{
+			get
+			{
+				return this.ColumnClrNonNullableType.SafeToString();
+			}
+			set
+			{
+				if (DataType.Instance.IsNullOrWhiteSpace(value))
+					this.ColumnClrNonNullableType = null;
+				else
+					this.ColumnClrNonNullableType = Type.GetType(value, false);
+			}
+		}
+
+		[XmlAttribute("ColumnClrNullableType")]
+		public string _ColumnClrNullableType
+		{
+			get
+			{
+				return this.ColumnClrNullableType.SafeToString();
+			}
+			set
+			{
+				if (DataType.Instance.IsNullOrWhiteSpace(value))
+					this.ColumnClrNullableType = null;
+				else
+					this.ColumnClrNullableType = Type.GetType(value, false);
+			}
+		}
+
+		[XmlAttribute("ColumnClrType")]
+		public string _ColumnClrType
+		{
+			get
+			{
+				return this.ColumnClrType.SafeToString();
+			}
+			set
+			{
+				if (DataType.Instance.IsNullOrWhiteSpace(value))
+					this.ColumnClrType = null;
+				else
+					this.ColumnClrType = Type.GetType(value, false);
+			}
+		}
+
+		[XmlIgnore]
+		public Type ColumnClrNonNullableType
+		{
+			get
+			{
+				return this.columnClrNonNullableType;
+			}
+			set
+			{
+				this.columnClrNonNullableType = value;
+			}
+		}
+
+		[XmlIgnore]
+		public Type ColumnClrNullableType
+		{
+			get
+			{
+				return this.columnClrNullableType;
+			}
+			set
+			{
+				this.columnClrNullableType = value;
+			}
+		}
+
+		[XmlIgnore]
+		public Type ColumnClrType
+		{
+			get
+			{
+				return this.columnClrType;
+			}
+			set
+			{
+				this.columnClrType = value;
+			}
+		}
 
 		[XmlAttribute]
 		public string ColumnCSharpClrNonNullableType
@@ -126,45 +213,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.columnCSharpNullableLiteral = value;
-			}
-		}
-
-		[XmlIgnore]
-		public Type ColumnClrNonNullableType
-		{
-			get
-			{
-				return this.columnClrNonNullableType;
-			}
-			set
-			{
-				this.columnClrNonNullableType = value;
-			}
-		}
-
-		[XmlIgnore]
-		public Type ColumnClrNullableType
-		{
-			get
-			{
-				return this.columnClrNullableType;
-			}
-			set
-			{
-				this.columnClrNullableType = value;
-			}
-		}
-
-		[XmlIgnore]
-		public Type ColumnClrType
-		{
-			get
-			{
-				return this.columnClrType;
-			}
-			set
-			{
-				this.columnClrType = value;
 			}
 		}
 
@@ -477,54 +525,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.columnSqlType = value;
-			}
-		}
-
-		[XmlAttribute("ColumnClrNonNullableType")]
-		public string _ColumnClrNotNullableType
-		{
-			get
-			{
-				return this.ColumnClrNonNullableType.SafeToString();
-			}
-			set
-			{
-				if (DataType.Instance.IsNullOrWhiteSpace(value))
-					this.ColumnClrNonNullableType = null;
-				else
-					this.ColumnClrNonNullableType = Type.GetType(value, false);
-			}
-		}
-
-		[XmlAttribute("ColumnClrNullableType")]
-		public string _ColumnClrNullableType
-		{
-			get
-			{
-				return this.ColumnClrNullableType.SafeToString();
-			}
-			set
-			{
-				if (DataType.Instance.IsNullOrWhiteSpace(value))
-					this.ColumnClrNullableType = null;
-				else
-					this.ColumnClrNullableType = Type.GetType(value, false);
-			}
-		}
-
-		[XmlAttribute("ColumnClrType")]
-		public string _ColumnClrType
-		{
-			get
-			{
-				return this.ColumnClrType.SafeToString();
-			}
-			set
-			{
-				if (DataType.Instance.IsNullOrWhiteSpace(value))
-					this.ColumnClrType = null;
-				else
-					this.ColumnClrType = Type.GetType(value, false);
 			}
 		}
 

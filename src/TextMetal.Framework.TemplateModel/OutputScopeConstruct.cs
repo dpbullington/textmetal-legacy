@@ -64,14 +64,6 @@ namespace TextMetal.Framework.TemplateModel
 			}
 		}
 
-		protected override bool IsScopeBlock
-		{
-			get
-			{
-				return true;
-			}
-		}
-
 		[XmlAttributeMapping(LocalName = "name", NamespaceUri = "")]
 		public string ScopeName
 		{
@@ -82,6 +74,14 @@ namespace TextMetal.Framework.TemplateModel
 			set
 			{
 				this.scopeName = value;
+			}
+		}
+
+		protected override bool IsScopeBlock
+		{
+			get
+			{
+				return true;
 			}
 		}
 

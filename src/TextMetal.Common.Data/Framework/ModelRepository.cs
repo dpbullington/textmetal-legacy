@@ -38,13 +38,12 @@ namespace TextMetal.Common.Data.Framework
 		#region Fields/Constants
 
 		private const string CONNECTION_STRING_NAME_FORMAT = "{0}::ConnectionString";
+		private const string DATA_SOURCE_TAG_FORMAT = "{0}::DataSourceTag";
 		private const string DATABASE_DIRECTORY_PATH_FORMAT = "{0}::DatabaseDirectoryPath";
 		private const string DATABASE_FILE_NAME_FORMAT = "{0}::DatabaseFileName";
-		private const string DATA_SOURCE_TAG_FORMAT = "{0}::DataSourceTag";
 		private const string KILL_DATABASE_FILE_FORMAT = "{0}::KillDatabaseFile";
 		private const string RESOURCE_NAME_FORMAT = "{0}.SQL.RevisionHistory.({1}).xml";
 		private const string USE_DATABASE_FILE_FORMAT = "{0}::UseDatabaseFile";
-
 		private readonly IDataSourceTagStrategy dataSourceTagStrategy;
 
 		#endregion
@@ -85,32 +84,6 @@ namespace TextMetal.Common.Data.Framework
 			}
 		}
 
-		public string DataSourceTag
-		{
-			get
-			{
-				string dataSourceTag;
-				string value;
-
-				dataSourceTag = string.Format(DATA_SOURCE_TAG_FORMAT, this.GetType().Namespace);
-
-				if (!AppConfig.HasAppSetting(dataSourceTag))
-					return null;
-
-				value = AppConfig.GetAppSetting<string>(dataSourceTag);
-
-				return value;
-			}
-		}
-
-		public IDataSourceTagStrategy DataSourceTagStrategy
-		{
-			get
-			{
-				return this.dataSourceTagStrategy;
-			}
-		}
-
 		public string DatabaseDirectoryPath
 		{
 			get
@@ -137,6 +110,32 @@ namespace TextMetal.Common.Data.Framework
 				value = Path.Combine(string.Format(this.DatabaseDirectoryPath ?? string.Empty, GetApplicationUserSpecificDirectoryPath()), this.DatabaseFileName);
 
 				return value;
+			}
+		}
+
+		public string DataSourceTag
+		{
+			get
+			{
+				string dataSourceTag;
+				string value;
+
+				dataSourceTag = string.Format(DATA_SOURCE_TAG_FORMAT, this.GetType().Namespace);
+
+				if (!AppConfig.HasAppSetting(dataSourceTag))
+					return null;
+
+				value = AppConfig.GetAppSetting<string>(dataSourceTag);
+
+				return value;
+			}
+		}
+
+		public IDataSourceTagStrategy DataSourceTagStrategy
+		{
+			get
+			{
+				return this.dataSourceTagStrategy;
 			}
 		}
 
@@ -170,63 +169,6 @@ namespace TextMetal.Common.Data.Framework
 		#endregion
 
 		#region Methods/Operators
-
-		private static string GetApplicationUserSpecificDirectoryPath()
-		{
-			Assembly assembly;
-			AssemblyInformation assemblyInformation;
-			string userSpecificDirectoryPath;
-
-			if (HttpContextExecutionPathStorage.IsInHttpContext)
-				userSpecificDirectoryPath = Path.GetFullPath(HttpContext.Current.Server.MapPath("~/"));
-			else
-			{
-				assembly = Assembly.GetExecutingAssembly();
-				assemblyInformation = new AssemblyInformation(assembly);
-
-				if ((object)assemblyInformation.Company != null &&
-					(object)assemblyInformation.Product != null &&
-					(object)assemblyInformation.Win32FileVersion != null)
-				{
-					userSpecificDirectoryPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-					userSpecificDirectoryPath = Path.Combine(userSpecificDirectoryPath, assemblyInformation.Company);
-					userSpecificDirectoryPath = Path.Combine(userSpecificDirectoryPath, assemblyInformation.Product);
-					userSpecificDirectoryPath = Path.Combine(userSpecificDirectoryPath, assemblyInformation.Win32FileVersion);
-				}
-				else
-					userSpecificDirectoryPath = Path.GetFullPath(".");
-			}
-
-			return userSpecificDirectoryPath;
-		}
-
-		protected static TValue GetScalar<TValue>(IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
-		{
-			int recordsAffected;
-			IEnumerable<IDictionary<string, object>> results;
-			IDictionary<string, object> result;
-			object dbValue;
-
-			results = unitOfWork.ExecuteDictionary(commandType, commandText, commandParameters, out recordsAffected);
-
-			if ((object)results == null)
-				return default(TValue);
-
-			result = results.SingleOrDefault();
-
-			if ((object)result == null)
-				return default(TValue);
-
-			if (result.Count != 1)
-				return default(TValue);
-
-			if (result.Keys.Count != 1)
-				return default(TValue);
-
-			dbValue = result[result.Keys.First()];
-
-			return dbValue.ChangeType<TValue>();
-		}
 
 		public virtual TModel CreateModel<TModel>()
 			where TModel : class, IModelObject
@@ -1093,6 +1035,63 @@ namespace TextMetal.Common.Data.Framework
 				retval = this.Save<TModel>(UnitOfWork.Current, model);
 
 			return retval;
+		}
+
+		private static string GetApplicationUserSpecificDirectoryPath()
+		{
+			Assembly assembly;
+			AssemblyInformation assemblyInformation;
+			string userSpecificDirectoryPath;
+
+			if (HttpContextExecutionPathStorage.IsInHttpContext)
+				userSpecificDirectoryPath = Path.GetFullPath(HttpContext.Current.Server.MapPath("~/"));
+			else
+			{
+				assembly = Assembly.GetExecutingAssembly();
+				assemblyInformation = new AssemblyInformation(assembly);
+
+				if ((object)assemblyInformation.Company != null &&
+					(object)assemblyInformation.Product != null &&
+					(object)assemblyInformation.Win32FileVersion != null)
+				{
+					userSpecificDirectoryPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+					userSpecificDirectoryPath = Path.Combine(userSpecificDirectoryPath, assemblyInformation.Company);
+					userSpecificDirectoryPath = Path.Combine(userSpecificDirectoryPath, assemblyInformation.Product);
+					userSpecificDirectoryPath = Path.Combine(userSpecificDirectoryPath, assemblyInformation.Win32FileVersion);
+				}
+				else
+					userSpecificDirectoryPath = Path.GetFullPath(".");
+			}
+
+			return userSpecificDirectoryPath;
+		}
+
+		protected static TValue GetScalar<TValue>(IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
+		{
+			int recordsAffected;
+			IEnumerable<IDictionary<string, object>> results;
+			IDictionary<string, object> result;
+			object dbValue;
+
+			results = unitOfWork.ExecuteDictionary(commandType, commandText, commandParameters, out recordsAffected);
+
+			if ((object)results == null)
+				return default(TValue);
+
+			result = results.SingleOrDefault();
+
+			if ((object)result == null)
+				return default(TValue);
+
+			if (result.Count != 1)
+				return default(TValue);
+
+			if (result.Keys.Count != 1)
+				return default(TValue);
+
+			dbValue = result[result.Keys.First()];
+
+			return dbValue.ChangeType<TValue>();
 		}
 
 		#endregion

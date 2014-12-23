@@ -27,8 +27,6 @@ namespace TextMetal.Common.UnitTests.Core._
 
 		#endregion
 
-		//[Test]
-
 		#region Methods/Operators
 
 		[Test]

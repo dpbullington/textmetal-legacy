@@ -25,7 +25,6 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 
 		#region Fields/Constants
 
-		private readonly List<PrimaryKeyColumn> primaryKeyColumn = new List<PrimaryKeyColumn>();
 		private int primaryKeyId;
 		private bool primaryKeyIsSystemNamed;
 		private string primaryKeyName;
@@ -44,20 +43,11 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 		private string primaryKeyNameSqlMetalPluralPascalCase;
 		private string primaryKeyNameSqlMetalSingularCamelCase;
 		private string primaryKeyNameSqlMetalSingularPascalCase;
+		private readonly List<PrimaryKeyColumn> primaryKeyColumn = new List<PrimaryKeyColumn>();
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		[XmlArray(ElementName = "PrimaryKeyColumns")]
-		[XmlArrayItem(ElementName = "PrimaryKeyColumn")]
-		public List<PrimaryKeyColumn> PrimaryKeyColumns
-		{
-			get
-			{
-				return this.primaryKeyColumn;
-			}
-		}
 
 		[XmlAttribute]
 		public int PrimaryKeyId
@@ -290,6 +280,16 @@ namespace TextMetal.Framework.SourceModel.DatabaseSchema
 			set
 			{
 				this.primaryKeyNameSqlMetalSingularPascalCase = value;
+			}
+		}
+
+		[XmlArray(ElementName = "PrimaryKeyColumns")]
+		[XmlArrayItem(ElementName = "PrimaryKeyColumn")]
+		public List<PrimaryKeyColumn> PrimaryKeyColumns
+		{
+			get
+			{
+				return this.primaryKeyColumn;
 			}
 		}
 

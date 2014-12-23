@@ -13,6 +13,15 @@ namespace TextMetal.Common.Data
 		#region Properties/Indexers/Events
 
 		/// <summary>
+		/// Gets the context object.
+		/// </summary>
+		IDisposable Context
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
 		/// Gets a value indicating whether the current instance has been completed.
 		/// </summary>
 		bool Completed
@@ -26,15 +35,6 @@ namespace TextMetal.Common.Data
 		IDbConnection Connection
 		{
 			get;
-		}
-
-		/// <summary>
-		/// Gets the context object.
-		/// </summary>
-		IDisposable Context
-		{
-			get;
-			set;
 		}
 
 		/// <summary>
