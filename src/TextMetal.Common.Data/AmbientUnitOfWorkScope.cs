@@ -1,9 +1,10 @@
 ﻿/*
-	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
 using System;
+using System.Data;
 
 namespace TextMetal.Common.Data
 {
@@ -17,7 +18,9 @@ namespace TextMetal.Common.Data
 		/// <summary>
 		/// Initializes a new instance of the AmbientUnitOfWorkScope class.
 		/// </summary>
-		public AmbientUnitOfWorkScope(IUnitOfWorkFactory unitOfWorkFactory)
+		/// <param name="unitOfWorkFactory">The unit of work factory instance.</param>
+		/// <param name="isolationLevel">An option isolation level for the unit of work transaction.</param>
+		public AmbientUnitOfWorkScope(IUnitOfWorkFactory unitOfWorkFactory, IsolationLevel isolationLevel = IsolationLevel.Unspecified)
 		{
 			if ((object)unitOfWorkFactory == null)
 				throw new ArgumentNullException("unitOfWorkFactory");
@@ -25,7 +28,7 @@ namespace TextMetal.Common.Data
 			if ((object)UnitOfWork.Current != null)
 				throw new InvalidOperationException("An ambient unit of work already exists on the current thread and application domain.");
 
-			UnitOfWork.Current = unitOfWorkFactory.GetUnitOfWork();
+			UnitOfWork.Current = unitOfWorkFactory.GetUnitOfWork(isolationLevel);
 		}
 
 		#endregion

@@ -47,6 +47,7 @@
     </Compile>
     <Compile Include="AppConfig.cs" />
     <Compile Include="FileSystemEnumerator.cs" />
+    <Compile Include="IApplicationStorage.cs" />
     <Compile Include="ProjectAssemblyDependency.cs" />
     <Compile Include="AssemblyInformation.cs" />
     <Compile Include="Cerealization\Cerealization.cs" />

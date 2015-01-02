@@ -1,5 +1,5 @@
 ﻿/*
-	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -9,11 +9,13 @@ namespace TextMetal.Common.Solder.AmbientExecutionContext
 	{
 		#region Methods/Operators
 
-		object GetValue(string key);
+		T GetValue<T>(string key);
+
+		bool HasValue(string key);
 
 		void RemoveValue(string key);
 
-		void SetValue(string key, object value);
+		void SetValue<T>(string key, T value);
 
 		#endregion
 	}

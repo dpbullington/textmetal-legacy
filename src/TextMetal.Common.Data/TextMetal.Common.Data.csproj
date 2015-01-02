@@ -49,6 +49,8 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Framework\IModelRepository~1.cs" />
+    <Compile Include="Framework\NullDataContext.cs" />
     <Compile Include="Framework\BasicObject.cs" />
     <Compile Include="Framework\IModelTracking.cs" />
     <Compile Include="Framework\IBasicObject.cs" />
@@ -57,7 +59,6 @@
     <Compile Include="Framework\RequestModelObject.cs" />
     <Compile Include="Framework\ModelObject.cs" />
     <Compile Include="LinqToSql\AmbientUnitOfWorkAwareDisposableWrapper~1.cs" />
-    <Compile Include="LinqToSql\ILinqToSqlModelRepository~1.cs" />
     <Compile Include="LinqToSql\LinqTableQuery~1.cs" />
     <Compile Include="LinqToSql\LinqToSqlModelRepository~1.cs" />
     <Compile Include="LinqToSql\MulticastContext~1.cs" />

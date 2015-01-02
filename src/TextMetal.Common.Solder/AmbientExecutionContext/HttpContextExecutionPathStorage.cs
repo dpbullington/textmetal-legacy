@@ -1,5 +1,5 @@
 ﻿/*
-	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -34,9 +34,14 @@ namespace TextMetal.Common.Solder.AmbientExecutionContext
 
 		#region Methods/Operators
 
-		public object GetValue(string key)
+		public T GetValue<T>(string key)
 		{
-			return HttpContext.Current.Items[key];
+			return (T)HttpContext.Current.Items[key];
+		}
+
+		public bool HasValue(string key)
+		{
+			return HttpContext.Current.Items.Contains(key);
 		}
 
 		public void RemoveValue(string key)
@@ -44,7 +49,7 @@ namespace TextMetal.Common.Solder.AmbientExecutionContext
 			HttpContext.Current.Items.Remove(key);
 		}
 
-		public void SetValue(string key, object value)
+		public void SetValue<T>(string key, T value)
 		{
 			HttpContext.Current.Items[key] = value;
 		}

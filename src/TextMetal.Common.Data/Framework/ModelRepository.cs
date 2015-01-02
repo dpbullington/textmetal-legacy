@@ -1,5 +1,5 @@
 /*
-	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -21,7 +21,7 @@ using TextMetal.Common.Solder.DependencyManagement;
 
 namespace TextMetal.Common.Data.Framework
 {
-	public class ModelRepository : IModelRepository
+	public class ModelRepository : IModelRepository<NullDataContext>
 	{
 		#region Constructors/Destructors
 
@@ -471,7 +471,7 @@ namespace TextMetal.Common.Data.Framework
 				if ((object)rows == null)
 					throw new InvalidOperationException(string.Format("Rows were invalid."));
 
-				Trace.WriteLine("[+++ before yield: Find +++]");
+				//Trace.WriteLine("[+++ before yield: Find +++]");
 
 				// DOES NOT FORCE EXECUTION AGAINST STORE
 				foreach (IDictionary<string, object> table in rows)
@@ -488,7 +488,7 @@ namespace TextMetal.Common.Data.Framework
 
 				this.OnProfileTacticCommand(RepositoryOperation.FindYield, tacticCommand);
 
-				Trace.WriteLine("[+++ after yield: Find +++]");
+				//Trace.WriteLine("[+++ after yield: Find +++]");
 
 				// special case for enumerator
 				if (actualRecordsAffected != tacticCommand.ExpectedRecordsAffected)
@@ -558,7 +558,7 @@ namespace TextMetal.Common.Data.Framework
 			if ((object)rows == null)
 				throw new InvalidOperationException(string.Format("Rows were invalid."));
 
-			Trace.WriteLine("[+++ before yield: GetResultsLazy +++]");
+			//Trace.WriteLine("[+++ before yield: GetResultsLazy +++]");
 
 			// DOES NOT FORCE EXECUTION AGAINST STORE
 			foreach (IDictionary<string, object> table in rows)
@@ -575,7 +575,7 @@ namespace TextMetal.Common.Data.Framework
 
 			this.OnProfileTacticCommand(RepositoryOperation.ExecuteYield, tacticCommand);
 
-			Trace.WriteLine("[+++ after yield: GetResultsLazy +++]");
+			//Trace.WriteLine("[+++ after yield: GetResultsLazy +++]");
 
 			// alert the response model that we are done enumerating the lazy river...
 			responseModel.SignalEnumerationComplete();
@@ -607,9 +607,9 @@ namespace TextMetal.Common.Data.Framework
 			this.OnPostExecuteResponseModel<TResultModel, TResponseModel>(unitOfWork, responseModel);
 		}
 
-		public virtual IUnitOfWork GetUnitOfWork()
+		public virtual IUnitOfWork GetUnitOfWork(IsolationLevel isolationLevel = IsolationLevel.Unspecified)
 		{
-			return UnitOfWork.Create(this.ConnectionType, this.ConnectionString, true);
+			return UnitOfWork.Create(this.ConnectionType, this.ConnectionString, true, isolationLevel);
 		}
 
 		private void InitializeFromRevisionHistoryResource()
@@ -891,7 +891,7 @@ namespace TextMetal.Common.Data.Framework
 
 			value += string.Format(Environment.NewLine + "[+++ end OnProfileTacticCommand({0}) +++]" + Environment.NewLine, repositoryOperation);
 
-			Trace.WriteLine(value);
+			Debug.WriteLine(value);
 		}
 
 		protected virtual void OnSaveConflictModel<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject
@@ -914,6 +914,16 @@ namespace TextMetal.Common.Data.Framework
 				throw new ArgumentNullException("model");
 
 			// do nothing
+		}
+
+		public TProjection Query<TProjection>(Func<NullDataContext, TProjection> dataContextQueryCallback)
+		{
+			throw new NotImplementedException();
+		}
+
+		public TProjection Query<TProjection>(IUnitOfWork unitOfWork, Func<NullDataContext, TProjection> dataContextQueryCallback)
+		{
+			throw new NotImplementedException();
 		}
 
 		public virtual bool Save<TModel>(IUnitOfWork unitOfWork, TModel model) where TModel : class, IModelObject
@@ -1037,6 +1047,16 @@ namespace TextMetal.Common.Data.Framework
 			return retval;
 		}
 
+		public virtual bool TrySendEmailTemplate(string templateResourceName, object modelObject)
+		{
+			throw new NotImplementedException(string.Format("TrySendEmailTemplate(...) should be overriden in subclassed implementations."));
+		}
+
+		public virtual bool TryWriteEventLogEntry(string eventText)
+		{
+			throw new NotImplementedException(string.Format("TryWriteEventLogEntry(...) should be overriden in subclassed implementations."));
+		}
+
 		private static string GetApplicationUserSpecificDirectoryPath()
 		{
 			Assembly assembly;
@@ -1114,7 +1134,9 @@ namespace TextMetal.Common.Data.Framework
 			Save,
 			SaveYield,
 			Identify,
-			IdentifyYield
+			IdentifyYield,
+			Query,
+			QueryYield
 		}
 
 		#endregion

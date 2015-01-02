@@ -1,5 +1,5 @@
 ﻿/*
-	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -141,11 +141,11 @@ namespace TextMetal.Common.Data
 		{
 			get
 			{
-				return (IUnitOfWork)ExecutionPathStorage.GetValue(UNIT_OF_WORK_CONTEXT_CURRENT_KEY);
+				return ExecutionPathStorage.GetValue <IUnitOfWork>(UNIT_OF_WORK_CONTEXT_CURRENT_KEY);
 			}
 			set
 			{
-				ExecutionPathStorage.SetValue(UNIT_OF_WORK_CONTEXT_CURRENT_KEY, value);
+				ExecutionPathStorage.SetValue<IUnitOfWork>(UNIT_OF_WORK_CONTEXT_CURRENT_KEY, value);
 			}
 		}
 

@@ -1,5 +1,5 @@
 ﻿/*
-	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -76,11 +76,11 @@ namespace TextMetal.Common.WinForms
 		{
 			get
 			{
-				return (ExecutableApplication)ExecutionPathStorage.GetValue(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY);
+				return ExecutionPathStorage.GetValue<ExecutableApplication>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY);
 			}
 			set
 			{
-				ExecutionPathStorage.SetValue(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY, value);
+				ExecutionPathStorage.SetValue<ExecutableApplication>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY, value);
 			}
 		}
 

@@ -1,5 +1,5 @@
 ﻿/*
-	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -72,9 +72,19 @@ namespace TextMetal.Common.Data
 		/// <returns> A list of dictionary instances, containing key/value pairs of data. </returns>
 		public static IList<IDictionary<string, object>> ExecuteDictionary(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, out int recordsAffected)
 		{
-			int _recordsAffected = -1;
-			var list = ExecuteDictionary(unitOfWork, commandType, commandText, commandParameters, (ra) => _recordsAffected = ra).ToList(); // FORCE EAGER LOADING HERE
+			int _recordsAffected;
+			List<IDictionary<string, object>> list;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			_recordsAffected = -1;
+			
+			// FORCE EAGER LOADING HERE
+			list = ExecuteDictionary(unitOfWork, commandType, commandText, commandParameters, (ra) => _recordsAffected = ra).ToList();
+			
 			recordsAffected = _recordsAffected;
+			
 			return list;
 		}
 
@@ -90,9 +100,8 @@ namespace TextMetal.Common.Data
 		/// <returns> An enumerable of dictionary instances, containing key/value pairs of data. </returns>
 		public static IEnumerable<IDictionary<string, object>> ExecuteDictionary(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> recordsAffectedCallback)
 		{
-			IDictionary<string, object> obj;
+			IEnumerable<IDictionary<string, object>> retval;
 			IDataReader dataReader;
-			int recordsAffected;
 
 			// force no preparation
 			const bool COMMAND_PREPARE = false;
@@ -109,39 +118,11 @@ namespace TextMetal.Common.Data
 			if ((object)unitOfWork.Connection == null)
 				throw new InvalidOperationException("There is not a valid connection associated with the current unit of work.");
 
-			Trace.WriteLine("[+++ before yield: ExecuteDictionary +++]");
+			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
+			dataReader = ExecuteReader(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE);
+			retval = dataReader.GetEnumerableDictionary(recordsAffectedCallback);
 
-			using (dataReader = ExecuteReader(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE))
-			{
-				//do
-				{
-					while (dataReader.Read())
-					{
-						obj = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-
-						for (int index = 0; index < dataReader.FieldCount; index++)
-						{
-							string key;
-							object value;
-
-							key = dataReader.GetName(index);
-							value = dataReader.GetValue(index).ChangeType<object>();
-
-							obj.Add(key, value);
-						}
-
-						yield return obj;
-					}
-				}
-				//while (dataReader.NextResult());
-			}
-
-			Trace.WriteLine("[+++ after yield: ExecuteDictionary +++]");
-
-			recordsAffected = dataReader.RecordsAffected;
-
-			if ((object)recordsAffectedCallback != null)
-				recordsAffectedCallback(recordsAffected);
+			return retval;
 		}
 
 		/// <summary>
@@ -288,6 +269,56 @@ namespace TextMetal.Common.Data
 			dbValue = result[result.Keys.First()];
 
 			return dbValue.ChangeType<TValue>();
+		}
+
+		/// <summary>
+		/// An extension method to execute a dictionary query operation against a target data reader.
+		/// THE DATA READER WILL BE DISPOSED UPON ENUMERATION OR FOREACH BRANCH OUT.
+		/// </summary>
+		/// <param name="dataReader"> The target data reader. </param>
+		/// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
+		/// <returns> An enumerable of dictionary instances, containing key/value pairs of data. </returns>
+		public static IEnumerable<IDictionary<string, object>> GetEnumerableDictionary(this IDataReader dataReader, Action<int> recordsAffectedCallback)
+		{
+			IDictionary<string, object> obj;
+			int recordsAffected;
+
+			if ((object)dataReader == null)
+				throw new ArgumentNullException("dataReader");
+
+			//Trace.WriteLine("[+++ before yield: GetEnumerableDictionary +++]");
+
+			using (dataReader)
+			{
+				//do
+				{
+					while (dataReader.Read())
+					{
+						obj = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+
+						for (int index = 0; index < dataReader.FieldCount; index++)
+						{
+							string key;
+							object value;
+
+							key = dataReader.GetName(index);
+							value = dataReader.GetValue(index).ChangeType<object>();
+
+							obj.Add(key, value);
+						}
+
+						yield return obj;
+					}
+				}
+				//while (dataReader.NextResult());
+			}
+
+			//Trace.WriteLine("[+++ after yield: GetEnumerableDictionary +++]");
+
+			recordsAffected = dataReader.RecordsAffected;
+
+			if ((object)recordsAffectedCallback != null)
+				recordsAffectedCallback(recordsAffected);
 		}
 
 		/// <summary>

@@ -1,5 +1,5 @@
 ﻿/*
-	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -37,21 +37,21 @@ namespace TextMetal.Common.UnitTests.Solder.AmbientExecutionContext._
 			[Test]
 			public void ShouldCreateAddGetRemoveCallContextExecutionPathStorageTest()
 			{
-				Assert.IsNull(ExecutionPathStorage.GetValue("x"));
+				Assert.IsNull(ExecutionPathStorage.GetValue<object>("x"));
 
 				ExecutionPathStorage.SetValue("x", 1);
 
-				Assert.IsNotNull(ExecutionPathStorage.GetValue("x"));
+				Assert.IsNotNull(ExecutionPathStorage.GetValue<object>("x"));
 
-				Assert.AreEqual(1, ExecutionPathStorage.GetValue("x"));
+				Assert.AreEqual(1, ExecutionPathStorage.GetValue<object>("x"));
 
-				ExecutionPathStorage.SetValue("x", null);
+				ExecutionPathStorage.SetValue<object>("x", null);
 
-				Assert.IsNull(ExecutionPathStorage.GetValue("x"));
+				Assert.IsNull(ExecutionPathStorage.GetValue<object>("x"));
 
 				ExecutionPathStorage.RemoveValue("x");
 
-				Assert.IsNull(ExecutionPathStorage.GetValue("x"));
+				Assert.IsNull(ExecutionPathStorage.GetValue<object>("x"));
 			}
 
 			[Test]
@@ -59,7 +59,7 @@ namespace TextMetal.Common.UnitTests.Solder.AmbientExecutionContext._
 			{
 				Thread t;
 
-				Assert.IsNull(ExecutionPathStorage.GetValue("x"));
+				Assert.IsNull(ExecutionPathStorage.GetValue<object>("x"));
 
 				ExecutionPathStorage.SetValue("x", 1);
 
@@ -67,8 +67,8 @@ namespace TextMetal.Common.UnitTests.Solder.AmbientExecutionContext._
 				t.Start();
 				t.Join();
 
-				Assert.IsNotNull(ExecutionPathStorage.GetValue("x"));
-				Assert.AreEqual(1, ExecutionPathStorage.GetValue("x"));
+				Assert.IsNotNull(ExecutionPathStorage.GetValue<object>("x"));
+				Assert.AreEqual(1, ExecutionPathStorage.GetValue<object>("x"));
 			}
 
 			[SetUp]
@@ -87,7 +87,7 @@ namespace TextMetal.Common.UnitTests.Solder.AmbientExecutionContext._
 			{
 				Thread.Sleep(1000);
 
-				Assert.IsNull(ExecutionPathStorage.GetValue("x"));
+				Assert.IsNull(ExecutionPathStorage.GetValue<object>("x"));
 
 				ExecutionPathStorage.SetValue("x", 2);
 			}
@@ -113,21 +113,21 @@ namespace TextMetal.Common.UnitTests.Solder.AmbientExecutionContext._
 			{
 				Assert.IsTrue(HttpContextExecutionPathStorage.IsInHttpContext);
 
-				Assert.IsNull(ExecutionPathStorage.GetValue("x"));
+				Assert.IsNull(ExecutionPathStorage.GetValue<object>("x"));
 
 				ExecutionPathStorage.SetValue("x", 1);
 
-				Assert.IsNotNull(ExecutionPathStorage.GetValue("x"));
+				Assert.IsNotNull(ExecutionPathStorage.GetValue<object>("x"));
 
-				Assert.AreEqual(1, ExecutionPathStorage.GetValue("x"));
+				Assert.AreEqual(1, ExecutionPathStorage.GetValue<object>("x"));
 
-				ExecutionPathStorage.SetValue("x", null);
+				ExecutionPathStorage.SetValue<object>("x", null);
 
-				Assert.IsNull(ExecutionPathStorage.GetValue("x"));
+				Assert.IsNull(ExecutionPathStorage.GetValue<object>("x"));
 
 				ExecutionPathStorage.RemoveValue("x");
 
-				Assert.IsNull(ExecutionPathStorage.GetValue("x"));
+				Assert.IsNull(ExecutionPathStorage.GetValue<object>("x"));
 			}
 
 			[Test]
@@ -135,7 +135,7 @@ namespace TextMetal.Common.UnitTests.Solder.AmbientExecutionContext._
 			{
 				Thread t;
 
-				Assert.IsNull(ExecutionPathStorage.GetValue("x"));
+				Assert.IsNull(ExecutionPathStorage.GetValue<object>("x"));
 
 				ExecutionPathStorage.SetValue("x", 1);
 
@@ -143,8 +143,8 @@ namespace TextMetal.Common.UnitTests.Solder.AmbientExecutionContext._
 				t.Start();
 				t.Join();
 
-				Assert.IsNotNull(ExecutionPathStorage.GetValue("x"));
-				Assert.AreEqual(1, ExecutionPathStorage.GetValue("x"));
+				Assert.IsNotNull(ExecutionPathStorage.GetValue<object>("x"));
+				Assert.AreEqual(1, ExecutionPathStorage.GetValue<object>("x"));
 			}
 
 			[SetUp]
@@ -178,7 +178,7 @@ namespace TextMetal.Common.UnitTests.Solder.AmbientExecutionContext._
 
 				Thread.Sleep(1000);
 
-				Assert.IsNull(ExecutionPathStorage.GetValue("x"));
+				Assert.IsNull(ExecutionPathStorage.GetValue<object>("x"));
 
 				ExecutionPathStorage.SetValue("x", 2);
 

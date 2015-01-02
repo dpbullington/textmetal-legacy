@@ -1,5 +1,5 @@
 ﻿/*
-	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -19,9 +19,14 @@ namespace TextMetal.Common.Solder.AmbientExecutionContext
 
 		#region Methods/Operators
 
-		public object GetValue(string key)
+		public T GetValue<T>(string key)
 		{
-			return CallContext.GetData(key);
+			return (T)CallContext.GetData(key);
+		}
+
+		public bool HasValue(string key)
+		{
+			return (object)CallContext.GetData(key) == null;
 		}
 
 		public void RemoveValue(string key)
@@ -29,7 +34,7 @@ namespace TextMetal.Common.Solder.AmbientExecutionContext
 			CallContext.FreeNamedDataSlot(key);
 		}
 
-		public void SetValue(string key, object value)
+		public void SetValue<T>(string key, T value)
 		{
 			CallContext.SetData(key, value);
 		}

@@ -1,5 +1,5 @@
 /*
-	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -20,7 +20,7 @@ using TextMetal.Common.Data.Framework;
 
 namespace TextMetal.Common.Data.LinqToSql
 {
-	public abstract class LinqToSqlModelRepository<TDataContext> : ModelRepository, ILinqToSqlModelRepository<TDataContext>
+	public abstract class LinqToSqlModelRepository<TDataContext> : ModelRepository, IModelRepository<TDataContext>
 		where TDataContext : DataContext
 	{
 		#region Constructors/Destructors
@@ -36,7 +36,7 @@ namespace TextMetal.Common.Data.LinqToSql
 
 		#region Methods/Operators
 
-		public bool LinqDiscard<TModel, TTable>(TModel model,
+		protected bool LinqDiscard<TModel, TTable>(TModel model,
 			Expression<Func<TTable, bool>> filterPredicateCallback)
 			where TModel : class, IModelObject
 			where TTable : class, new()
@@ -305,7 +305,7 @@ namespace TextMetal.Common.Data.LinqToSql
 			}
 		}
 
-		public TProjection LinqQuery<TProjection>(Func<TDataContext, TProjection> dataContextQueryCallback)
+		public TProjection Query<TProjection>(Func<TDataContext, TProjection> dataContextQueryCallback)
 		{
 			TProjection projection;
 
@@ -316,7 +316,7 @@ namespace TextMetal.Common.Data.LinqToSql
 			{
 				using (IUnitOfWork unitOfWork = this.GetUnitOfWork())
 				{
-					projection = this.LinqQuery<TProjection>(unitOfWork, dataContextQueryCallback);
+					projection = this.Query<TProjection>(unitOfWork, dataContextQueryCallback);
 
 					// HACK ALERT: will this work as expected?
 					if (projection is IEnumerable)
@@ -327,7 +327,7 @@ namespace TextMetal.Common.Data.LinqToSql
 			}
 			else
 			{
-				projection = this.LinqQuery<TProjection>(UnitOfWork.Current, dataContextQueryCallback);
+				projection = this.Query<TProjection>(UnitOfWork.Current, dataContextQueryCallback);
 
 				// DO NOT FORCE EAGER LOAD
 			}
@@ -335,7 +335,7 @@ namespace TextMetal.Common.Data.LinqToSql
 			return projection;
 		}
 
-		public TProjection LinqQuery<TProjection>(IUnitOfWork unitOfWork, Func<TDataContext, TProjection> dataContextQueryCallback)
+		public TProjection Query<TProjection>(IUnitOfWork unitOfWork, Func<TDataContext, TProjection> dataContextQueryCallback)
 		{
 			TProjection projection;
 
@@ -348,10 +348,7 @@ namespace TextMetal.Common.Data.LinqToSql
 			using (AmbientUnitOfWorkAwareDisposableWrapper<TDataContext> wrapper = GetContext(unitOfWork))
 			{
 				projection = dataContextQueryCallback(wrapper.Disposable);
-
-				if ((object)projection == null)
-					throw new InvalidOperationException(string.Format("The projection returned was invalid."));
-
+				// do not check for null as this is a valid state for the projection
 				return projection;
 			}
 		}
@@ -458,7 +455,7 @@ namespace TextMetal.Common.Data.LinqToSql
 		}
 
 		/// <summary>
-		/// For a given unitOfWork, this method returns a AmbientUnitOfWorkAwareDisposableWrapper`1 for a target data context type.
+		/// For a given UnitOfWork, this method returns a AmbientUnitOfWorkAwareDisposableWrapper`1 for a target data context type.
 		/// </summary>
 		/// <param name="unitOfWork"> The target unitOfWork. </param>
 		/// <returns> An instance of a AmbientUnitOfWorkAwareDisposableWrapper`1 for the requested data context type, associated withthe unitOfWork. </returns>
@@ -538,7 +535,6 @@ namespace TextMetal.Common.Data.LinqToSql
 		private static DataContext GetDataContext(Type dataContextType, IDbConnection dbConnection, IDbTransaction dbTransaction)
 		{
 			DataContext dataContext;
-			MappingSource mappingSource;
 			ConstructorInfo constructorInfo;
 
 			if ((object)dataContextType == null)
@@ -547,11 +543,12 @@ namespace TextMetal.Common.Data.LinqToSql
 			if ((object)dbConnection == null)
 				throw new ArgumentNullException("dbConnection");
 
-			mappingSource = new AttributeMappingSource();
-			constructorInfo = dataContextType.GetConstructor(new Type[] { typeof(IDbConnection), typeof(MappingSource) });
+			constructorInfo = dataContextType.GetConstructor(new Type[] { typeof(IDbConnection) });
 
-			// assumption: reflection constructor contract/attribute-based mapping source
-			dataContext = (DataContext)constructorInfo.Invoke(new object[] { dbConnection, mappingSource });
+			if ((object)constructorInfo == null)
+				throw new InvalidOperationException("constructorInfo");
+
+			dataContext = (DataContext)constructorInfo.Invoke(new object[] { dbConnection });
 
 			if ((object)dbTransaction != null)
 				dataContext.Transaction = (DbTransaction)dbTransaction;

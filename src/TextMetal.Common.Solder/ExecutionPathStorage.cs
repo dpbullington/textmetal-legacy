@@ -1,5 +1,5 @@
 ﻿/*
-	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -28,7 +28,7 @@ namespace TextMetal.Common.Solder
 			else
 				executionPathStorage = new ThreadStaticExecutionPathStorage();
 
-			Trace.WriteLine(string.Format("GetExecutionPathStorage(): '{0}'", executionPathStorage.GetType().FullName));
+			//Trace.WriteLine(string.Format("GetExecutionPathStorage(): '{0}'", executionPathStorage.GetType().FullName));
 
 			return executionPathStorage;
 		}
@@ -38,9 +38,19 @@ namespace TextMetal.Common.Solder
 		/// </summary>
 		/// <param name="key"> The key to lookup in execution path storage. </param>
 		/// <returns> An object value or null. </returns>
-		public static object GetValue(string key)
+		public static T GetValue<T>(string key)
 		{
-			return GetExecutionPathStorage().GetValue(key);
+			return GetExecutionPathStorage().GetValue<T>(key);
+		}
+
+		/// <summary>
+		/// Checks the existence of a named value in the current execution context storage mechanism.
+		/// </summary>
+		/// <param name="key"> The key to lookup in execution path storage. </param>
+		/// <returns>A value indicating whether the key exists in the current execution context storage mechanism.</returns>
+		public static bool HasValue(string key)
+		{
+			return GetExecutionPathStorage().HasValue(key);
 		}
 
 		/// <summary>
@@ -57,9 +67,9 @@ namespace TextMetal.Common.Solder
 		/// </summary>
 		/// <param name="key"> The key to store in execution path storage. </param>
 		/// <param name="value"> An object instance or null. </param>
-		public static void SetValue(string key, object value)
+		public static void SetValue<T>(string key, T value)
 		{
-			GetExecutionPathStorage().SetValue(key, value);
+			GetExecutionPathStorage().SetValue<T>(key, value);
 		}
 
 		#endregion

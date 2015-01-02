@@ -1,5 +1,5 @@
 ﻿/*
-	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -32,6 +32,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 			const string PROP_TOKEN_FIRST_ROW_CONTAINS_COLUMN_HEADINGS = "FirstRowIsHeader";
 			const string PROP_TOKEN_FIELD_DELIMITER = "FieldDelimiter";
 			const string PROP_TOKEN_ROW_DELIMITER = "RowDelimiter";
+			const string PROP_TOKEN_VALUE_QUALIFIER = "ValueQualifier";
 
 			IList<string> values;
 			bool firstRowIsHeader;
