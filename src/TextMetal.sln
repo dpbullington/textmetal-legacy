@@ -72,7 +72,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Utilities.VsIdeCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.HostImpl.Web", "TextMetal.HostImpl.Web\TextMetal.HostImpl.Web.csproj", "{32997ECF-2B2F-4BDB-AF4F-6E389C9F8235}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Innovation", "Innovation", "{CBB61636-2967-49C3-97B7-AD1FE4081722}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Common.WebApps", "TextMetal.Common.WebApps\TextMetal.Common.WebApps.csproj", "{12B98DB7-E571-45E7-9A47-A7E4566A8F87}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -188,6 +188,10 @@ Global
 		{32997ECF-2B2F-4BDB-AF4F-6E389C9F8235}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32997ECF-2B2F-4BDB-AF4F-6E389C9F8235}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32997ECF-2B2F-4BDB-AF4F-6E389C9F8235}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12B98DB7-E571-45E7-9A47-A7E4566A8F87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12B98DB7-E571-45E7-9A47-A7E4566A8F87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12B98DB7-E571-45E7-9A47-A7E4566A8F87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12B98DB7-E571-45E7-9A47-A7E4566A8F87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -221,5 +225,6 @@ Global
 		{B254A58D-DBDA-4213-94D3-17C90FD1AB53} = {63BCA757-EED3-4BF2-BA47-6FCE7BF23E49}
 		{C90978EB-0645-4126-87A1-D1060669D1D5} = {16F2C045-568A-4FFE-A03A-647C1667FAF0}
 		{32997ECF-2B2F-4BDB-AF4F-6E389C9F8235} = {16F2C045-568A-4FFE-A03A-647C1667FAF0}
+		{12B98DB7-E571-45E7-9A47-A7E4566A8F87} = {63BCA757-EED3-4BF2-BA47-6FCE7BF23E49}
 	EndGlobalSection
 EndGlobal

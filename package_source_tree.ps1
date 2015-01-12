@@ -155,6 +155,24 @@ if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 
 
 
+
+Copy-Item "$src_dir\TextMetal.Common.WebApps\bin\$build_flavor_dir\TextMetal.Common.WebApps.dll" "$pkg_dir\bin\."
+
+if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
+{ echo "An error occurred during the operation."; return; }
+
+Copy-Item "$src_dir\TextMetal.Common.WebApps\bin\$build_flavor_dir\TextMetal.Common.WebApps.xml" "$pkg_dir\bin\."
+
+if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
+{ echo "An error occurred during the operation."; return; }
+
+Copy-Item "$src_dir\TextMetal.Common.WebApps\bin\$build_flavor_dir\TextMetal.Common.WebApps.pdb" "$pkg_dir\bin\."
+
+if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
+{ echo "An error occurred during the operation."; return; }
+
+
+
 Copy-Item "$src_dir\TextMetal.Common.WinForms\bin\$build_flavor_dir\TextMetal.Common.WinForms.dll" "$pkg_dir\bin\."
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
@@ -529,7 +547,6 @@ Copy-Item "$src_dir\TextMetal.TestFramework\bin\$build_flavor_dir\TextMetal.Test
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
-
 
 
 

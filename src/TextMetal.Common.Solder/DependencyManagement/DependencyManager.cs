@@ -6,6 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -595,11 +597,30 @@ namespace TextMetal.Common.Solder.DependencyManagement
 			MethodInfo[] methodInfos;
 			DependencyRegistrationAttribute dependencyRegistrationAttribute;
 			Action dependencyRegistrationMethod;
+			AssemblyName[] referencedAssemblies;
 
 			if ((object)assemblies != null)
 			{
 				foreach (Assembly assembly in assemblies)
 				{
+					referencedAssemblies = assembly.GetReferencedAssemblies();
+
+					/*TODO: spike to figure out dependency load order - unsuccessful thus far
+					 * if ((object)referencedAssemblies != null)
+					{
+						foreach (AssemblyName referencedAssembly in referencedAssemblies)
+						{
+							try
+							{
+								Assembly.Load(referencedAssembly); // force load
+							}
+							catch (FileNotFoundException ex)
+							{
+								Debug.WriteLine(ex);
+							}
+						}
+					}*/
+
 					dependencyRegistrationAttribute = GetOneAttribute<DependencyRegistrationAttribute>(assembly);
 
 					if ((object)dependencyRegistrationAttribute == null)
