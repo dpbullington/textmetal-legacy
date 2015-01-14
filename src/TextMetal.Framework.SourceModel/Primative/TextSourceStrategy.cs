@@ -89,14 +89,21 @@ namespace TextMetal.Framework.SourceModel.Primative
 				fieldDelimiter = fieldDelimiter.Replace("\\n", "\n");
 			}
 
+			if (!DataType.Instance.IsNullOrWhiteSpace(rowDelimiter))
+			{
+				rowDelimiter = rowDelimiter.Replace("\\t", "\t");
+				rowDelimiter = rowDelimiter.Replace("\\r", "\r");
+				rowDelimiter = rowDelimiter.Replace("\\n", "\n");
+			}
+
 			using (StreamReader streamReader = File.OpenText(sourceFilePath))
 			{
-				using (StructuredTextReader structuredTextReader = new StructuredTextReader(streamReader, firstRowIsHeader, headerNames, fieldDelimiter, rowDelimiter))
+				using (DelimitedTextReader delimitedTextReader = new DelimitedTextReader(streamReader, firstRowIsHeader, headerNames, fieldDelimiter, rowDelimiter))
 				{
 					ObjectConstruct objectConstruct01;
 					PropertyConstruct propertyConstruct01;
 
-					var rows = structuredTextReader.ReadRowsUsingDelimiters();
+					var rows = delimitedTextReader.ReadRowsUsingDelimiters();
 
 					foreach (var row in rows)
 					{

@@ -20,7 +20,7 @@ $source_strategy = "TextMetal.Framework.SourceModel.Primative.TextSourceStrategy
 $strict = $true
 $property_first_row_is_header = $true
 $property_field_delimiter = "|"
-$property_row_delimiter = "(ignored in this release)"
+$property_row_delimiter = "\\r\\n"
 
 echo "The operation is starting..."
 

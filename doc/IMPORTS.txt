@@ -2,12 +2,20 @@
 IMPORTS
 -----------------------------------------------------------------------------------
 
+BUILT FROM SOURCE INCLUDED IN TREE (Imports)
+--------------------------------
 castleproject-core <https://github.com/castleproject/Core>
 json-net <https://github.com/JamesNK/Newtonsoft.Json>
 nmock2-2.1.3641.rtm <http://nmock2.svn.sourceforge.net/viewvc/nmock2/>
 nunit-2.6x <https://github.com/nunit/nunitv2> <http://nunit.org/?p=download>
 
+
+USES OFFICIAL BINARY - SOURCE INCLUDED IN TREE
+--------------------------------
 sqlite <http://system.data.sqlite.org/index.html/doc/trunk/www/downloads.wiki>
 
+
+USES OFFICIAL BINARY - SOURCE NOT INCLUDED DUE TO SIZE
+--------------------------------
 ironlanguages-main <https://github.com/IronLanguages/main>
 dlr <https://github.com/IronLanguages/dlr>

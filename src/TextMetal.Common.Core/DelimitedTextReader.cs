@@ -6,21 +6,21 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace TextMetal.Common.Core
 {
-	public sealed class StructuredTextReader : TextReader
+	public sealed class DelimitedTextReader : TextReader
 	{
 		#region Constructors/Destructors
 
-		public StructuredTextReader(TextReader innerTextReader,
-			bool firstRowIsHeader, string[] headerNames, string fieldDelimiter, string rowDelimiter)
+		public DelimitedTextReader(TextReader innerTextReader,
+			bool firstRowIsHeader = true, string[] headerNames = null,
+			string fieldDelimiter = ",", string rowDelimiter = "\r\n",
+			string quoteValue = "\"", string commentValue = "#")
 		{
 			if ((object)innerTextReader == null)
 				throw new ArgumentNullException("innerTextReader");
-
-			if ((object)headerNames == null)
-				throw new ArgumentNullException("headerNames");
 
 			if ((object)fieldDelimiter == null)
 				throw new ArgumentNullException("fieldDelimiter");
@@ -28,26 +28,44 @@ namespace TextMetal.Common.Core
 			if ((object)rowDelimiter == null)
 				throw new ArgumentNullException("rowDelimiter");
 
+			if ((object)quoteValue == null)
+				throw new ArgumentNullException("quoteValue");
+
+			if ((object)commentValue == null)
+				throw new ArgumentNullException("commentValue");
+
 			this.innerTextReader = innerTextReader;
 			this.firstRowIsHeader = firstRowIsHeader;
-			this.headerNames = headerNames;
+			this.headerNames = headerNames ?? new string[] { };
 			this.fieldDelimiter = fieldDelimiter;
 			this.rowDelimiter = rowDelimiter;
+			this.quoteValue = quoteValue;
+			this.commentValue = commentValue;
 		}
 
 		#endregion
 
 		#region Fields/Constants
 
+		private readonly string commentValue;
 		private readonly string fieldDelimiter;
 		private readonly bool firstRowIsHeader;
 		private readonly string[] headerNames;
 		private readonly TextReader innerTextReader;
+		private readonly string quoteValue;
 		private readonly string rowDelimiter;
 
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		public string CommentValue
+		{
+			get
+			{
+				return this.commentValue;
+			}
+		}
 
 		public string FieldDelimiter
 		{
@@ -81,6 +99,14 @@ namespace TextMetal.Common.Core
 			}
 		}
 
+		public string QuoteValue
+		{
+			get
+			{
+				return this.quoteValue;
+			}
+		}
+
 		public string RowDelimiter
 		{
 			get
@@ -101,16 +127,58 @@ namespace TextMetal.Common.Core
 			base.Close();
 		}
 
+		private StringBuilder ReadRowAsStringBuilderUsingDelimiter()
+		{
+			int count = 0, value;
+			StringBuilder lineStringBuilder;
+
+			lineStringBuilder = new StringBuilder();
+
+			while (true)
+			{
+				value = this.InnerTextReader.Read();
+
+				if (value == -1)
+					break;
+				else
+					lineStringBuilder.Append((char)value);
+
+				count++;
+
+				// look-behind CHECK
+				if (lineStringBuilder.Length > 0 &&
+					this.RowDelimiter.Length > 0 &&
+					lineStringBuilder.Length >= this.RowDelimiter.Length)
+				{
+					for (int i = lineStringBuilder.Length - this.RowDelimiter.Length; i < lineStringBuilder.Length; i++)
+					{
+						for (int j = 0; j < this.RowDelimiter.Length; j++)
+						{
+							if (lineStringBuilder[i] != this.RowDelimiter[j])
+								continue; // look-behind NO MATCH...
+						}
+
+						break; // look-behind MATCHED: stop
+					}
+				}
+			}
+
+			return lineStringBuilder;
+		}
+
 		public IEnumerable<IDictionary<string, string>> ReadRowsUsingDelimiters()
 		{
 			int rowIndex = 0;
+			StringBuilder lineStringBuilder;
 			string line;
 			string[] temp, headers = null;
 			IDictionary<string, string> row;
 
-			while (((line = this.ReadRowUsingDelimiter()) ?? string.Empty).Trim() != string.Empty)
+			while ((object)(lineStringBuilder = this.ReadRowAsStringBuilderUsingDelimiter()) != null &&
+				lineStringBuilder.Length > 0)
 			{
 				row = new Dictionary<string, string>();
+				line = lineStringBuilder.ToString();
 
 				if (DataType.Instance.IsWhiteSpace(this.FieldDelimiter))
 					row.Add(string.Empty, line);
@@ -151,15 +219,6 @@ namespace TextMetal.Common.Core
 
 				yield return row;
 			}
-		}
-
-		public string ReadRowUsingDelimiter()
-		{
-			string line;
-
-			line = this.InnerTextReader.ReadLine(); // TODO: need to support the row delimitor (defaults to \r\n)
-
-			return line;
 		}
 
 		#endregion
