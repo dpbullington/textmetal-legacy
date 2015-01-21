@@ -126,8 +126,8 @@ namespace TextMetal.Common.WinForms.Forms
 
 		protected void AssertExecutionContext()
 		{
-			if ((object)ExecutableApplication.Current == null)
-				throw new InvalidOperationException(string.Format("No executable application context exists on the current thread and application domain."));
+			//if ((object)ExecutableApplication.Current == null)
+				//throw new InvalidOperationException(string.Format("No executable application context exists on the current thread and application domain."));
 		}
 
 		protected virtual void CoreQuit(out bool cancel)

@@ -19,7 +19,7 @@ namespace TextMetal.Common.Core
 		[DependencyRegistration]
 		public static void ProvokeProjectDependencyRegistration()
 		{
-			DependencyManager.AppDomainInstance.AddResolution<IDataType>("", SingletonDependencyResolution.LazyConstructorOfType<DataType>());
+			DependencyManager.AppDomainInstance.AddResolution<IDataType>(string.Empty, SingletonDependencyResolution.LazyConstructorOfType<DataType>());
 		}
 
 		#endregion

@@ -13,14 +13,14 @@ $source_dir = "."
 
 $textmetal_exe = "$src_dir\TextMetal.HostImpl.ConsoleTool\bin\$build_flavor_dir\TextMetal.exe"
 
-$template_file = "$template_dir\empty_template.xml"
+$template_file = "$template_dir\text_delimiter_template.xml"
 $source_file = "$source_dir\text_delimiter_source.txt"
 $base_dir = ".\output"
 $source_strategy = "TextMetal.Framework.SourceModel.Primative.TextSourceStrategy, TextMetal.Framework.SourceModel"
 $strict = $true
-$property_first_row_is_header = $true
-$property_field_delimiter = "|"
-$property_row_delimiter = "\\r\\n"
+$property_first_record_is_header = $true
+$property_field_delimiter = "\\t"
+$property_record_delimiter = "\\r\\n"
 
 echo "The operation is starting..."
 
@@ -42,9 +42,10 @@ $argz = @("-templatefile:$template_file",
 	"-basedir:$base_dir",
 	"-sourcestrategy:$source_strategy",
 	"-strict:$strict",
-	"-property:FirstRowIsHeader=$property_first_row_is_header",
+"-debug:$true",
+	"-property:FirstRecordIsHeader=$property_first_record_is_header",
 	"-property:FieldDelimiter=$property_field_delimiter",
-	"-property:RowDelimiter=$property_row_delimiter")
+	"-property:RecordDelimiter=$property_record_delimiter")
 
 &"$textmetal_exe" $argz
 

@@ -46,6 +46,10 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			this.txtBxSourceView = new TextMetal.Common.WinForms.Controls.TmTextBox();
 			this.pgMain = new TextMetal.Common.WinForms.Controls.TmPropertyGrid();
 			this.sfdMain = new System.Windows.Forms.SaveFileDialog();
+			this.tabMain = new TextMetal.Common.WinForms.Controls.TmTabControl();
+			this.tpgSourceView = new System.Windows.Forms.TabPage();
+			this.tpgDesignView = new System.Windows.Forms.TabPage();
+			this.sketchDesigner = new TextMetal.Common.WinForms.DesignTime.SketchDesigner();
 			this.msMain.SuspendLayout();
 			this.ssMain.SuspendLayout();
 			this.pnlMain.SuspendLayout();
@@ -57,6 +61,9 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			this.tmSplitContainer2.Panel1.SuspendLayout();
 			this.tmSplitContainer2.Panel2.SuspendLayout();
 			this.tmSplitContainer2.SuspendLayout();
+			this.tabMain.SuspendLayout();
+			this.tpgSourceView.SuspendLayout();
+			this.tpgDesignView.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// msMain
@@ -169,7 +176,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			// 
 			// tmSplitContainer2.Panel1
 			// 
-			this.tmSplitContainer2.Panel1.Controls.Add(this.txtBxSourceView);
+			this.tmSplitContainer2.Panel1.Controls.Add(this.tabMain);
 			// 
 			// tmSplitContainer2.Panel2
 			// 
@@ -186,12 +193,12 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			this.txtBxSourceView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.txtBxSourceView.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtBxSourceView.HideSelection = false;
-			this.txtBxSourceView.Location = new System.Drawing.Point(0, 0);
+			this.txtBxSourceView.Location = new System.Drawing.Point(3, 3);
 			this.txtBxSourceView.Multiline = true;
 			this.txtBxSourceView.Name = "txtBxSourceView";
 			this.txtBxSourceView.ReadOnly = true;
 			this.txtBxSourceView.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			this.txtBxSourceView.Size = new System.Drawing.Size(520, 387);
+			this.txtBxSourceView.Size = new System.Drawing.Size(506, 355);
 			this.txtBxSourceView.TabIndex = 0;
 			this.txtBxSourceView.ValueType = null;
 			this.txtBxSourceView.WordWrap = false;
@@ -209,6 +216,48 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			// 
 			this.sfdMain.Filter = "All files|*.*";
 			this.sfdMain.RestoreDirectory = true;
+			// 
+			// tabMain
+			// 
+			this.tabMain.Alignment = System.Windows.Forms.TabAlignment.Bottom;
+			this.tabMain.Controls.Add(this.tpgDesignView);
+			this.tabMain.Controls.Add(this.tpgSourceView);
+			this.tabMain.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tabMain.Location = new System.Drawing.Point(0, 0);
+			this.tabMain.Name = "tabMain";
+			this.tabMain.SelectedIndex = 0;
+			this.tabMain.Size = new System.Drawing.Size(520, 387);
+			this.tabMain.TabIndex = 1;
+			// 
+			// tpgSourceView
+			// 
+			this.tpgSourceView.Controls.Add(this.txtBxSourceView);
+			this.tpgSourceView.Location = new System.Drawing.Point(4, 4);
+			this.tpgSourceView.Name = "tpgSourceView";
+			this.tpgSourceView.Padding = new System.Windows.Forms.Padding(3);
+			this.tpgSourceView.Size = new System.Drawing.Size(512, 361);
+			this.tpgSourceView.TabIndex = 0;
+			this.tpgSourceView.Text = "Source";
+			this.tpgSourceView.UseVisualStyleBackColor = true;
+			// 
+			// tpgDesignView
+			// 
+			this.tpgDesignView.Controls.Add(this.sketchDesigner);
+			this.tpgDesignView.Location = new System.Drawing.Point(4, 4);
+			this.tpgDesignView.Name = "tpgDesignView";
+			this.tpgDesignView.Padding = new System.Windows.Forms.Padding(3);
+			this.tpgDesignView.Size = new System.Drawing.Size(512, 361);
+			this.tpgDesignView.TabIndex = 1;
+			this.tpgDesignView.Text = "Design";
+			this.tpgDesignView.UseVisualStyleBackColor = true;
+			// 
+			// sketchDesigner
+			// 
+			this.sketchDesigner.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.sketchDesigner.Location = new System.Drawing.Point(3, 3);
+			this.sketchDesigner.Name = "sketchDesigner";
+			this.sketchDesigner.Size = new System.Drawing.Size(506, 355);
+			this.sketchDesigner.TabIndex = 3;
 			// 
 			// DocumentForm
 			// 
@@ -232,10 +281,13 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			((System.ComponentModel.ISupportInitialize)(this.tmSplitContainer1)).EndInit();
 			this.tmSplitContainer1.ResumeLayout(false);
 			this.tmSplitContainer2.Panel1.ResumeLayout(false);
-			this.tmSplitContainer2.Panel1.PerformLayout();
 			this.tmSplitContainer2.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.tmSplitContainer2)).EndInit();
 			this.tmSplitContainer2.ResumeLayout(false);
+			this.tabMain.ResumeLayout(false);
+			this.tpgSourceView.ResumeLayout(false);
+			this.tpgSourceView.PerformLayout();
+			this.tpgDesignView.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -258,6 +310,10 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		private TmSplitContainer tmSplitContainer2;
 		private TmPropertyGrid pgMain;
 		private TmTextBox txtBxSourceView;
+		private TmTabControl tabMain;
+		private System.Windows.Forms.TabPage tpgSourceView;
+		private System.Windows.Forms.TabPage tpgDesignView;
+		private Common.WinForms.DesignTime.SketchDesigner sketchDesigner;
 
 	}
 }

@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using TextMetal.Common.Core;
 using TextMetal.Common.WinForms;
 using TextMetal.Common.WinForms.Controls;
+using TextMetal.Common.WinForms.DesignTime;
 using TextMetal.Common.WinForms.Forms;
 using TextMetal.Common.Xml;
 using TextMetal.Framework.Core;
@@ -222,6 +223,9 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		protected override void CoreSetup()
 		{
 			base.CoreSetup();
+
+			this.sketchDesigner.InitializeSketching();
+			this.sketchDesigner.SetSketch(new Sketch());
 		}
 
 		protected override void CoreShown()

@@ -107,11 +107,11 @@ namespace TextMetal.Framework.DebuggerProfilerModel
 		{
 			get
 			{
-				throw new NotImplementedException();
+				return this.surround;
 			}
 			set
 			{
-				throw new NotImplementedException();
+				this.surround = (IXmlObjectCollection)value;
 			}
 		}
 

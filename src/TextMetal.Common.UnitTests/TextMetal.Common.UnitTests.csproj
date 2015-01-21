@@ -47,6 +47,7 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Core\_\DelimitedTextReaderTests.cs" />
     <Compile Include="Core\_\AppConfigTests.cs" />
     <Compile Include="Core\_\DataTypeTests.cs" />
     <Compile Include="Data\LinqToSql\_\AmbientUnitOfWorkAwareDisposableWrapperTests.cs" />

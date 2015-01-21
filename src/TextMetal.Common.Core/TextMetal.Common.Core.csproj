@@ -39,6 +39,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -46,8 +47,11 @@
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AppConfig.cs" />
+    <Compile Include="ApplicationStorage\HttpCookieApplicationStorage.cs" />
+    <Compile Include="ApplicationStorage\HttpSessionApplicationStorage.cs" />
+    <Compile Include="ApplicationStorage\IApplicationStorage.cs" />
+    <Compile Include="DelimitedTextSpec.cs" />
     <Compile Include="FileSystemEnumerator.cs" />
-    <Compile Include="IApplicationStorage.cs" />
     <Compile Include="ProjectAssemblyDependency.cs" />
     <Compile Include="AssemblyInformation.cs" />
     <Compile Include="Cerealization\Cerealization.cs" />

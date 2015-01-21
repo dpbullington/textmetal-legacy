@@ -181,6 +181,24 @@
     <Compile Include="Controls\TmTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DesignTime\Shapes\SketchEllipse.cs" />
+    <Compile Include="DesignTime\Shapes\SketchImage.cs" />
+    <Compile Include="DesignTime\Shapes\SketchLine.cs" />
+    <Compile Include="DesignTime\Shapes\SketchPoint.cs" />
+    <Compile Include="DesignTime\Shapes\SketchPointSet.cs" />
+    <Compile Include="DesignTime\Shapes\SketchRectangle.cs" />
+    <Compile Include="DesignTime\Shapes\SketchText.cs" />
+    <Compile Include="DesignTime\Shapes\SketchUnknown.cs" />
+    <Compile Include="DesignTime\Sketch.cs" />
+    <Compile Include="DesignTime\SketchDesigner.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DesignTime\SketchDesigner.designer.cs">
+      <DependentUpon>SketchDesigner.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DesignTime\SketchFactory.cs" />
+    <Compile Include="DesignTime\SketchShape.cs" />
+    <Compile Include="DesignTime\SketchUtilities.cs" />
     <Compile Include="ExecutableApplication.cs" />
     <Compile Include="Forms\BackgroundTaskForm.cs">
       <SubType>Form</SubType>
@@ -220,6 +238,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DesignTime\SketchDesigner.resx">
+      <DependentUpon>SketchDesigner.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\BackgroundTaskForm.resx">
       <DependentUpon>BackgroundTaskForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -242,9 +263,27 @@
       <Project>{3B0EFC3C-AA91-4FB4-B2EE-BD8727230A94}</Project>
       <Name>TextMetal.Common.Solder</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Common.Xml\TextMetal.Common.Xml.csproj">
+      <Project>{CEF6C9D5-D5F2-4F4E-81DD-0BFDF81A2C93}</Project>
+      <Name>TextMetal.Common.Xml</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Components\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DesignTime\Shapes\Resources\Clean.bmp" />
+    <EmbeddedResource Include="DesignTime\Shapes\Resources\Clear.bmp" />
+    <EmbeddedResource Include="DesignTime\Shapes\Resources\DefaultImage.bmp" />
+    <EmbeddedResource Include="DesignTime\Shapes\Resources\SketchArrow.bmp" />
+    <EmbeddedResource Include="DesignTime\Shapes\Resources\SketchEllipse.bmp" />
+    <EmbeddedResource Include="DesignTime\Shapes\Resources\SketchImage.bmp" />
+    <EmbeddedResource Include="DesignTime\Shapes\Resources\SketchLine.bmp" />
+    <EmbeddedResource Include="DesignTime\Shapes\Resources\SketchPoint.bmp" />
+    <EmbeddedResource Include="DesignTime\Shapes\Resources\SketchPointSet.bmp" />
+    <EmbeddedResource Include="DesignTime\Shapes\Resources\SketchRectangle.bmp" />
+    <EmbeddedResource Include="DesignTime\Shapes\Resources\SketchText.bmp" />
+    <EmbeddedResource Include="DesignTime\Shapes\Resources\SketchUnknown.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

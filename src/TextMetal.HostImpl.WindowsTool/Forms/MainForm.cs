@@ -12,6 +12,7 @@ using System.Windows.Forms;
 
 using TextMetal.Common.Core;
 using TextMetal.Common.WinForms;
+using TextMetal.Common.WinForms.DesignTime;
 using TextMetal.Common.WinForms.Forms;
 
 namespace TextMetal.HostImpl.WindowsTool.Forms

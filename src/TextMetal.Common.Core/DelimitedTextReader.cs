@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace TextMetal.Common.Core
@@ -14,80 +15,47 @@ namespace TextMetal.Common.Core
 	{
 		#region Constructors/Destructors
 
-		public DelimitedTextReader(TextReader innerTextReader,
-			bool firstRowIsHeader = true, string[] headerNames = null,
-			string fieldDelimiter = ",", string rowDelimiter = "\r\n",
-			string quoteValue = "\"", string commentValue = "#")
+		public DelimitedTextReader(TextReader innerTextReader, DelimitedTextSpec delimitedTextSpec)
 		{
 			if ((object)innerTextReader == null)
 				throw new ArgumentNullException("innerTextReader");
 
-			if ((object)fieldDelimiter == null)
-				throw new ArgumentNullException("fieldDelimiter");
-
-			if ((object)rowDelimiter == null)
-				throw new ArgumentNullException("rowDelimiter");
-
-			if ((object)quoteValue == null)
-				throw new ArgumentNullException("quoteValue");
-
-			if ((object)commentValue == null)
-				throw new ArgumentNullException("commentValue");
+			if ((object)delimitedTextSpec == null)
+				throw new ArgumentNullException("delimitedTextSpec");
 
 			this.innerTextReader = innerTextReader;
-			this.firstRowIsHeader = firstRowIsHeader;
-			this.headerNames = headerNames ?? new string[] { };
-			this.fieldDelimiter = fieldDelimiter;
-			this.rowDelimiter = rowDelimiter;
-			this.quoteValue = quoteValue;
-			this.commentValue = commentValue;
+			this.delimitedTextSpec = delimitedTextSpec;
 		}
 
 		#endregion
 
 		#region Fields/Constants
 
-		private readonly string commentValue;
-		private readonly string fieldDelimiter;
-		private readonly bool firstRowIsHeader;
-		private readonly string[] headerNames;
+		private string[] parsedHeaders;
+		private readonly DelimitedTextSpec delimitedTextSpec;
 		private readonly TextReader innerTextReader;
-		private readonly string quoteValue;
-		private readonly string rowDelimiter;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		public string CommentValue
+		public string[] ParsedHeaders
 		{
 			get
 			{
-				return this.commentValue;
+				return this.parsedHeaders;
+			}
+			private set
+			{
+				this.parsedHeaders = value;
 			}
 		}
 
-		public string FieldDelimiter
+		public DelimitedTextSpec DelimitedTextSpec
 		{
 			get
 			{
-				return this.fieldDelimiter;
-			}
-		}
-
-		public bool FirstRowIsHeader
-		{
-			get
-			{
-				return this.firstRowIsHeader;
-			}
-		}
-
-		public string[] HeaderNames
-		{
-			get
-			{
-				return this.headerNames;
+				return this.delimitedTextSpec;
 			}
 		}
 
@@ -96,22 +64,6 @@ namespace TextMetal.Common.Core
 			get
 			{
 				return this.innerTextReader;
-			}
-		}
-
-		public string QuoteValue
-		{
-			get
-			{
-				return this.quoteValue;
-			}
-		}
-
-		public string RowDelimiter
-		{
-			get
-			{
-				return this.rowDelimiter;
 			}
 		}
 
@@ -127,98 +79,215 @@ namespace TextMetal.Common.Core
 			base.Close();
 		}
 
-		private StringBuilder ReadRowAsStringBuilderUsingDelimiter()
+		public IEnumerable<IDictionary<string, string>> ReadRecords()
 		{
-			int count = 0, value;
-			StringBuilder lineStringBuilder;
+			IDictionary<string, string> record;
+			string[] headers;
 
-			lineStringBuilder = new StringBuilder();
+			int __value;
+			char ch;
 
-			while (true)
+			long characterIndex;
+			long recordIndex;
+			int fieldIndex;
+
+			bool isQuotedValue;
+			bool isEOF;
+
+			StringBuilder tempStringBuilder;
+			string tempStringValue;
+
+			tempStringBuilder = new StringBuilder();
+
+			// init on BOF
+			characterIndex = 0;
+			recordIndex = 0;
+			fieldIndex = 0;
+			isQuotedValue = false;
+			isEOF = false;
+
+			record = new Dictionary<string, string>();
+			headers = !this.DelimitedTextSpec.FirstRecordIsHeader ? this.DelimitedTextSpec.HeaderNames : null;
+
+			while (!isEOF)
 			{
-				value = this.InnerTextReader.Read();
+				// read the next byte
+				__value = this.InnerTextReader.Read();
+				ch = (char)__value;
 
-				if (value == -1)
-					break;
-				else
-					lineStringBuilder.Append((char)value);
-
-				count++;
-
-				// look-behind CHECK
-				if (lineStringBuilder.Length > 0 &&
-					this.RowDelimiter.Length > 0 &&
-					lineStringBuilder.Length >= this.RowDelimiter.Length)
+				// check for -1 (EOF)
+				if (__value == -1)
 				{
-					for (int i = lineStringBuilder.Length - this.RowDelimiter.Length; i < lineStringBuilder.Length; i++)
+					isEOF = true; // set terminal state
+
+					// sanity check - should never end with an open quote value
+					if (isQuotedValue)
+						throw new InvalidOperationException(string.Format("Delimited text reader parse state failure: end of file encountered while reading open quoted value."));
+				}
+				else
+				{
+					// append character to temp buffer
+					tempStringBuilder.Append(ch);
+
+					// advance character index
+					characterIndex++;
+				}
+
+				// now determine what to do based on parser state
+				if (isEOF ||
+					(!isQuotedValue && LookBehindFixup(tempStringBuilder, this.DelimitedTextSpec.RecordDelimiter)))
+				{
+					// RECORD_DELIMITER | EOF
+
+					// get string and clear for exit
+					tempStringValue = tempStringBuilder.ToString();
+					tempStringBuilder.Clear();
+
+					if (recordIndex == 0 &&
+						this.DelimitedTextSpec.FirstRecordIsHeader)
 					{
-						for (int j = 0; j < this.RowDelimiter.Length; j++)
+						// append last header
+						record.Add(tempStringValue, fieldIndex.ToString("0000"));
+
+						// finalize headers
+						headers = record.Keys.ToArray();
+
+						// stash header names into member
+						this.ParsedHeaders = headers.ToArray();
+
+						// prevent acidental usage of record
+						record = null;
+					}
+					else
+					{
+						if ((this.DelimitedTextSpec.FieldDelimiter ?? string.Empty).Length == 0)
 						{
-							if (lineStringBuilder[i] != this.RowDelimiter[j])
-								continue; // look-behind NO MATCH...
+							// we would never match a field delimiter, so we assume entire record is the anonymous value
+							record.Add("TextFileLine" /*string.Empty*/, tempStringValue);
+						}
+						else
+						{
+							// check header array and field index validity
+							if ((object)headers == null ||
+								fieldIndex >= headers.Length)
+								throw new InvalidOperationException(string.Format("Delimited text reader parse state failure: field index '{0}' exceeded known field indices '{1}' at character index '{2}'.", fieldIndex, (object)headers != null ? (headers.Length - 1) : (int?)null, characterIndex));
+
+							// lookup header name (key) by index and commit value to record
+							record.Add(headers[fieldIndex], tempStringValue);
 						}
 
-						break; // look-behind MATCHED: stop
+						// commit record to collection
+						yield return record;
 					}
+
+					if (!isEOF)
+					{
+						// create new record
+						record = new Dictionary<string, string>();
+
+						// advance record index
+						recordIndex++;
+
+						// reset field index
+						fieldIndex = 0;
+					}
+				}
+				else if (!isEOF && !isQuotedValue && LookBehindFixup(tempStringBuilder, this.DelimitedTextSpec.FieldDelimiter))
+				{
+					// FIELD_DELIMITER
+
+					// get string and clear for next field
+					tempStringValue = tempStringBuilder.ToString();
+					tempStringBuilder.Clear();
+
+					if (recordIndex == 0 &&
+						this.DelimitedTextSpec.FirstRecordIsHeader)
+					{
+						// stash header if FRIS enabled and zeroth record
+						record.Add(tempStringValue, fieldIndex.ToString("0000"));
+					}
+					else
+					{
+						// check header array and field index validity
+						if ((object)headers == null ||
+							fieldIndex >= headers.Length)
+							throw new InvalidOperationException(string.Format("Delimited text reader parse state failure: field index '{0}' exceeded known field indices '{1}' at character index '{2}'.", fieldIndex, (object)headers != null ? (headers.Length - 1) : (int?)null, characterIndex));
+
+						// lookup header name (key) by index and commit value to record
+						record.Add(headers[fieldIndex], tempStringValue);
+					}
+
+					// advance field index
+					fieldIndex++;
+				}
+				else if (!isEOF && isQuotedValue && LookBehindFixup(tempStringBuilder, (this.DelimitedTextSpec.QuoteValue + this.DelimitedTextSpec.QuoteValue)))
+				{
+					// QUOTE_VALUE -> ESCAPED::QUOTE_VALUE
+
+					// fixup escaped quote value embeded inside quoted field value
+					tempStringBuilder.Append(this.DelimitedTextSpec.QuoteValue);
+				}
+				else if (!isEOF && !isQuotedValue && LookBehindFixup(tempStringBuilder, this.DelimitedTextSpec.QuoteValue))
+				{
+					// BEGIN::QUOTE_VALUE
+					isQuotedValue = true;
+				}
+				else if (!isEOF && isQuotedValue && LookBehindFixup(tempStringBuilder, this.DelimitedTextSpec.QuoteValue))
+				{
+					// END::QUOTE_VALUE
+					isQuotedValue = false;
+				}
+				else if (!isEOF)
+				{
+					// {field_data}
+				}
+				else
+				{
+					// {unknown_parser_state_error}
+					throw new InvalidOperationException(string.Format("Unknown parser state error at character index '{0}'.", characterIndex));
 				}
 			}
 
-			return lineStringBuilder;
+			// term on EOF
+			tempStringBuilder = null;
 		}
 
-		public IEnumerable<IDictionary<string, string>> ReadRowsUsingDelimiters()
+		private static bool LookBehindFixup(StringBuilder targetStringBuilder, string targetValue)
 		{
-			int rowIndex = 0;
-			StringBuilder lineStringBuilder;
-			string line;
-			string[] temp, headers = null;
-			IDictionary<string, string> row;
+			if ((object)targetStringBuilder == null)
+				throw new ArgumentNullException("targetStringBuilder");
 
-			while ((object)(lineStringBuilder = this.ReadRowAsStringBuilderUsingDelimiter()) != null &&
-				lineStringBuilder.Length > 0)
+			if ((object)targetValue == null)
+				throw new ArgumentNullException("targetValue");
+
+			// look-behind CHECK
+			if (targetStringBuilder.Length > 0 &&
+				targetValue.Length > 0 &&
+				targetStringBuilder.Length >= targetValue.Length)
 			{
-				row = new Dictionary<string, string>();
-				line = lineStringBuilder.ToString();
+				int sb_length = targetStringBuilder.Length;
+				int rd_length = targetValue.Length;
 
-				if (DataType.Instance.IsWhiteSpace(this.FieldDelimiter))
-					row.Add(string.Empty, line);
-				else
+				int matches = 0;
+
+				for (int i = 0; i < rd_length; i++)
 				{
-					temp = line.Split(this.FieldDelimiter.ToCharArray());
+					if (targetStringBuilder[sb_length - rd_length + i] != targetValue[i])
+						return false; // look-behind NO MATCH...
 
-					if ((object)temp == null)
-						continue;
-
-					if (rowIndex == 0)
-					{
-						if (this.FirstRowIsHeader)
-						{
-							headers = temp;
-							rowIndex++;
-							continue;
-						}
-
-						headers = this.HeaderNames;
-					}
-
-					int fieldIndex = 0;
-					string key;
-
-					foreach (string value in temp)
-					{
-						if (this.FirstRowIsHeader && (object)headers != null && headers.Length > 0)
-							key = string.Format("{0}", Name.GetConstantCase(headers[fieldIndex++]));
-						else
-							key = string.Format("Field{0:00000000}", fieldIndex++);
-
-						row.Add(key, value);
-					}
+					matches++;
 				}
 
-				rowIndex++;
+				if (matches != rd_length)
+					throw new InvalidOperationException(string.Format("Something went sideways."));
 
-				yield return row;
+				targetStringBuilder.Remove(sb_length - rd_length, rd_length);
+
+				// look-behind MATCHED: stop
+				return true;
 			}
+
+			return false; // not enought buffer space to care
 		}
 
 		#endregion

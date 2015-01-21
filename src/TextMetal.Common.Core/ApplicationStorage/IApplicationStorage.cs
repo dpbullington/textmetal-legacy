@@ -7,7 +7,7 @@ using System;
 
 using TextMetal.Common.Solder.AmbientExecutionContext;
 
-namespace TextMetal.Common.Core
+namespace TextMetal.Common.Core.ApplicationStorage
 {
 	public interface IApplicationStorage : IExecutionPathStorage
 	{

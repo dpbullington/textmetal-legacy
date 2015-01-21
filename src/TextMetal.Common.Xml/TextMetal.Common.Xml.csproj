@@ -38,6 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +49,7 @@
     <Compile Include="ChildElementType.cs" />
     <Compile Include="ContravariantListAdapter~2.cs" />
     <Compile Include="IXmlObjectCollection~1.cs" />
+    <Compile Include="XmlObjectDesignTimeBehaviorAttribute.cs" />
     <Compile Include="XmlKnownElementMappingAttribute.cs" />
     <Compile Include="CovariantListAdapter~2.cs" />
     <Compile Include="IXmlObject.cs" />
