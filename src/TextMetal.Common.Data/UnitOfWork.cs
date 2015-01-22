@@ -141,7 +141,7 @@ namespace TextMetal.Common.Data
 		{
 			get
 			{
-				return ExecutionPathStorage.GetValue <IUnitOfWork>(UNIT_OF_WORK_CONTEXT_CURRENT_KEY);
+				return ExecutionPathStorage.GetValue<IUnitOfWork>(UNIT_OF_WORK_CONTEXT_CURRENT_KEY);
 			}
 			set
 			{

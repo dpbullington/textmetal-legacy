@@ -24,7 +24,7 @@ namespace TextMetal.Common.WinForms.DesignTime.Shapes
 		public SketchText(Rectangle bounds, string text)
 			: base(bounds)
 		{
-			this.text = text ?? "";
+			this.text = text ?? string.Empty;
 		}
 
 		#endregion
@@ -43,6 +43,20 @@ namespace TextMetal.Common.WinForms.DesignTime.Shapes
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		[XmlAttribute("text-color")]
+		public string _TextColor
+		{
+			get
+			{
+				return ColorTranslator.ToHtml(this.TextColor);
+			}
+
+			set
+			{
+				this.TextColor = ColorTranslator.FromHtml(value);
+			}
+		}
 
 		[XmlAttribute("font-family")]
 		public string FontFamily
@@ -130,12 +144,12 @@ namespace TextMetal.Common.WinForms.DesignTime.Shapes
 		{
 			get
 			{
-				return this.text ?? "";
+				return this.text ?? string.Empty;
 			}
 
 			set
 			{
-				this.text = (value ?? "").Trim();
+				this.text = (value ?? string.Empty).Trim();
 			}
 		}
 
@@ -150,20 +164,6 @@ namespace TextMetal.Common.WinForms.DesignTime.Shapes
 			set
 			{
 				this.textColor = value;
-			}
-		}
-
-		[XmlAttribute("text-color")]
-		public string _TextColor
-		{
-			get
-			{
-				return ColorTranslator.ToHtml(this.TextColor);
-			}
-
-			set
-			{
-				this.TextColor = ColorTranslator.FromHtml(value);
 			}
 		}
 

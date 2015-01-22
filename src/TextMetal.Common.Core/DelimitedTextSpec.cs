@@ -3,6 +3,9 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
+using System;
+using System.Linq;
+
 namespace TextMetal.Common.Core
 {
 	public sealed class DelimitedTextSpec
@@ -17,11 +20,11 @@ namespace TextMetal.Common.Core
 
 		#region Fields/Constants
 
-		private string fieldDelimiter = ",";
-		private bool firstRecordIsHeader = true;
-		private string[] headerNames = new string[] { };
-		private string quoteValue = "\"";
-		private string recordDelimiter = "\r\n";
+		private string fieldDelimiter;
+		private bool firstRecordIsHeader;
+		private string[] headerNames;
+		private string quoteValue;
+		private string recordDelimiter;
 
 		#endregion
 
@@ -35,7 +38,7 @@ namespace TextMetal.Common.Core
 			}
 			set
 			{
-				this.fieldDelimiter = value ?? string.Empty;
+				this.fieldDelimiter = value;
 			}
 		}
 
@@ -59,7 +62,7 @@ namespace TextMetal.Common.Core
 			}
 			set
 			{
-				this.headerNames = value ?? new string[] { };
+				this.headerNames = value;
 			}
 		}
 
@@ -71,7 +74,7 @@ namespace TextMetal.Common.Core
 			}
 			set
 			{
-				this.quoteValue = value ?? string.Empty;
+				this.quoteValue = value;
 			}
 		}
 
@@ -83,8 +86,28 @@ namespace TextMetal.Common.Core
 			}
 			set
 			{
-				this.recordDelimiter = value ?? string.Empty;
+				this.recordDelimiter = value;
 			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		public void AssertValid()
+		{
+			if (DataType.Instance.IsNullOrEmpty(this.RecordDelimiter))
+				throw new InvalidOperationException(string.Format("Record delimiter is invalid."));
+
+			if (DataType.Instance.IsNullOrEmpty(this.FieldDelimiter))
+				throw new InvalidOperationException(string.Format("Field delimiter is invalid."));
+
+			if (DataType.Instance.IsNullOrEmpty(this.QuoteValue))
+				throw new InvalidOperationException(string.Format("Quote value is invalid."));
+
+			var strings = new string[] { this.RecordDelimiter, this.FieldDelimiter, this.QuoteValue };
+			if (strings.GroupBy(s => s).Where(gs => gs.Count() > 1).Any())
+				throw new InvalidOperationException(string.Format("Duplicate delimiter/value encountered."));
 		}
 
 		#endregion

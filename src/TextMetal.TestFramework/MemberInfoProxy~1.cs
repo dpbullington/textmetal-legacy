@@ -52,6 +52,36 @@ namespace TextMetal.TestFramework
 		#region Methods/Operators
 
 		/// <summary>
+		/// Run-time real proxy invocation.
+		/// </summary>
+		/// <param name="msg"> Invocation call message </param>
+		/// <returns> Invocation return message. </returns>
+		public override IMessage Invoke(IMessage msg)
+		{
+			IMethodCallMessage methodCallMessage;
+			MethodInfo methodInfo;
+			Type returnType;
+			bool isVoidCall;
+			object returnValue;
+			List<object> outputParameters;
+
+			if ((object)this.LastMemberInfo != null)
+				throw new InvalidOperationException("A member has already been executed on this instance.");
+
+			methodCallMessage = (IMethodCallMessage)msg;
+			methodInfo = (MethodInfo)methodCallMessage.MethodBase;
+			returnType = methodInfo.ReturnType;
+			isVoidCall = ((object)returnType == null || returnType == typeof(void));
+			outputParameters = new List<object>(methodCallMessage.ArgCount);
+
+			this.LastMemberInfo = GetRealMemberInfo(methodInfo);
+
+			returnValue = isVoidCall || !returnType.IsValueType ? null : (object)Activator.CreateInstance(returnType);
+
+			return new ReturnMessage(returnValue, outputParameters.ToArray(), outputParameters.Count, methodCallMessage.LogicalCallContext, methodCallMessage);
+		}
+
+		/// <summary>
 		/// Obtains the MemberInfo of a member using a dummy invocation inside of the spcified anonymous delegate call, useful for mocking scenarios.
 		/// </summary>
 		/// <param name="exec"> A method which makes a dummy call onto a member of the provided action parameter. </param>
@@ -116,36 +146,6 @@ namespace TextMetal.TestFramework
 			}
 
 			return methodInfo;
-		}
-
-		/// <summary>
-		/// Run-time real proxy invocation.
-		/// </summary>
-		/// <param name="msg"> Invocation call message </param>
-		/// <returns> Invocation return message. </returns>
-		public override IMessage Invoke(IMessage msg)
-		{
-			IMethodCallMessage methodCallMessage;
-			MethodInfo methodInfo;
-			Type returnType;
-			bool isVoidCall;
-			object returnValue;
-			List<object> outputParameters;
-
-			if ((object)this.LastMemberInfo != null)
-				throw new InvalidOperationException("A member has already been executed on this instance.");
-
-			methodCallMessage = (IMethodCallMessage)msg;
-			methodInfo = (MethodInfo)methodCallMessage.MethodBase;
-			returnType = methodInfo.ReturnType;
-			isVoidCall = ((object)returnType == null || returnType == typeof(void));
-			outputParameters = new List<object>(methodCallMessage.ArgCount);
-
-			this.LastMemberInfo = GetRealMemberInfo(methodInfo);
-
-			returnValue = isVoidCall || !returnType.IsValueType ? null : (object)Activator.CreateInstance(returnType);
-
-			return new ReturnMessage(returnValue, outputParameters.ToArray(), outputParameters.Count, methodCallMessage.LogicalCallContext, methodCallMessage);
 		}
 
 		#endregion

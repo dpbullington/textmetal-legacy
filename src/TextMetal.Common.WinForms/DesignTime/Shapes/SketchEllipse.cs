@@ -41,6 +41,48 @@ namespace TextMetal.Common.WinForms.DesignTime.Shapes
 
 		#region Properties/Indexers/Events
 
+		[XmlAttribute("background-color")]
+		public string _BackgroundColor
+		{
+			get
+			{
+				return ColorTranslator.ToHtml(this.BackgroundColor);
+			}
+
+			set
+			{
+				this.BackgroundColor = ColorTranslator.FromHtml(value);
+			}
+		}
+
+		[XmlAttribute("bounds")]
+		public string _Bounds
+		{
+			get
+			{
+				return new RectangleConverter().ConvertToString(this.Bounds);
+			}
+
+			set
+			{
+				this.Bounds = (Rectangle)(new RectangleConverter().ConvertFromString(value) ?? Rectangle.Empty);
+			}
+		}
+
+		[XmlAttribute("foreground-color")]
+		public string _ForegroundColor
+		{
+			get
+			{
+				return ColorTranslator.ToHtml(this.ForegroundColor);
+			}
+
+			set
+			{
+				this.ForegroundColor = ColorTranslator.FromHtml(value);
+			}
+		}
+
 		[XmlIgnore]
 		public Color BackgroundColor
 		{
@@ -106,48 +148,6 @@ namespace TextMetal.Common.WinForms.DesignTime.Shapes
 			set
 			{
 				this.thickness = value;
-			}
-		}
-
-		[XmlAttribute("background-color")]
-		public string _BackgroundColor
-		{
-			get
-			{
-				return ColorTranslator.ToHtml(this.BackgroundColor);
-			}
-
-			set
-			{
-				this.BackgroundColor = ColorTranslator.FromHtml(value);
-			}
-		}
-
-		[XmlAttribute("bounds")]
-		public string _Bounds
-		{
-			get
-			{
-				return new RectangleConverter().ConvertToString(this.Bounds);
-			}
-
-			set
-			{
-				this.Bounds = (Rectangle)(new RectangleConverter().ConvertFromString(value) ?? Rectangle.Empty);
-			}
-		}
-
-		[XmlAttribute("foreground-color")]
-		public string _ForegroundColor
-		{
-			get
-			{
-				return ColorTranslator.ToHtml(this.ForegroundColor);
-			}
-
-			set
-			{
-				this.ForegroundColor = ColorTranslator.FromHtml(value);
 			}
 		}
 

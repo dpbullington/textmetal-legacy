@@ -63,16 +63,16 @@ namespace TextMetal.Common.Data.Framework
 		TModel Load<TModel>(IUnitOfWork unitOfWork, TModel prototype)
 			where TModel : class, IModelObject;
 
+		TProjection Query<TProjection>(Func<TDataContext, TProjection> dataContextQueryCallback);
+
+		TProjection Query<TProjection>(IUnitOfWork unitOfWork,
+			Func<TDataContext, TProjection> dataContextQueryCallback);
+
 		bool Save<TModel>(TModel model)
 			where TModel : class, IModelObject;
 
 		bool Save<TModel>(IUnitOfWork unitOfWork, TModel model)
 			where TModel : class, IModelObject;
-
-		TProjection Query<TProjection>(Func<TDataContext, TProjection> dataContextQueryCallback);
-
-		TProjection Query<TProjection>(IUnitOfWork unitOfWork,
-			Func<TDataContext, TProjection> dataContextQueryCallback);
 
 		#endregion
 	}

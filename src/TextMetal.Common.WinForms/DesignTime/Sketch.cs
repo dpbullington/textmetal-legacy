@@ -55,6 +55,29 @@ namespace TextMetal.Common.WinForms.DesignTime
 
 		#region Methods/Operators
 
+		public SketchShape GetShapeAtPoint(Point location)
+		{
+			Rectangle bounds;
+			SketchShape shape;
+
+			for (int i = this.Shapes.Count - 1; i >= 0; i--)
+			{
+				shape = this.Shapes[i];
+				bounds = shape.GetBounds();
+
+				if (bounds.Contains(location))
+					return shape;
+			}
+
+			return null;
+		}
+
+		public void RenderToSurface(Graphics surface)
+		{
+			foreach (SketchShape shape in this.Shapes)
+				shape.Render(surface);
+		}
+
 		public static byte[] GetImageBytesFromSketch(Sketch sketch)
 		{
 			using (MemoryStream stream = new MemoryStream())
@@ -210,29 +233,6 @@ namespace TextMetal.Common.WinForms.DesignTime
 				using (StreamWriter streamWriter = new StreamWriter(stream))
 					SaveTo(sketch, streamWriter);
 			}
-		}
-
-		public SketchShape GetShapeAtPoint(Point location)
-		{
-			Rectangle bounds;
-			SketchShape shape;
-
-			for (int i = this.Shapes.Count - 1; i >= 0; i--)
-			{
-				shape = this.Shapes[i];
-				bounds = shape.GetBounds();
-
-				if (bounds.Contains(location))
-					return shape;
-			}
-
-			return null;
-		}
-
-		public void RenderToSurface(Graphics surface)
-		{
-			foreach (SketchShape shape in this.Shapes)
-				shape.Render(surface);
 		}
 
 		#endregion

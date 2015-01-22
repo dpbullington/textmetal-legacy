@@ -143,10 +143,16 @@ namespace TextMetal.Common.WinForms.DesignTime
 		[StructLayout(LayoutKind.Sequential)]
 		private struct RECT
 		{
-			public int Left;
-			public int Top;
-			public int Right;
+			#region Fields/Constants
+
 			public int Bottom;
+			public int Left;
+			public int Right;
+			public int Top;
+
+			#endregion
+
+			#region Methods/Operators
 
 			public Rectangle ToRectangle()
 			{
@@ -163,6 +169,8 @@ namespace TextMetal.Common.WinForms.DesignTime
 
 				return r;
 			}
+
+			#endregion
 		}
 
 		#endregion

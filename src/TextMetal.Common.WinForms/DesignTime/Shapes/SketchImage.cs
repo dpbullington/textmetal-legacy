@@ -39,34 +39,6 @@ namespace TextMetal.Common.WinForms.DesignTime.Shapes
 
 		#region Properties/Indexers/Events
 
-		[XmlIgnore]
-		public Image Image
-		{
-			get
-			{
-				return this.image;
-			}
-
-			set
-			{
-				this.image = value;
-			}
-		}
-
-		[XmlIgnore]
-		public Point LocationPoint
-		{
-			get
-			{
-				return this.locationPoint;
-			}
-
-			set
-			{
-				this.locationPoint = value;
-			}
-		}
-
 		[XmlElement("Data")]
 		public string _Image
 		{
@@ -92,6 +64,34 @@ namespace TextMetal.Common.WinForms.DesignTime.Shapes
 			set
 			{
 				this.LocationPoint = (Point)(new PointConverter().ConvertFromString(value) ?? Point.Empty);
+			}
+		}
+
+		[XmlIgnore]
+		public Image Image
+		{
+			get
+			{
+				return this.image;
+			}
+
+			set
+			{
+				this.image = value;
+			}
+		}
+
+		[XmlIgnore]
+		public Point LocationPoint
+		{
+			get
+			{
+				return this.locationPoint;
+			}
+
+			set
+			{
+				this.locationPoint = value;
 			}
 		}
 

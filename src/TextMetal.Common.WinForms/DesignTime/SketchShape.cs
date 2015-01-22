@@ -34,12 +34,12 @@ namespace TextMetal.Common.WinForms.DesignTime
 		{
 			get
 			{
-				return this.name ?? "";
+				return this.name ?? string.Empty;
 			}
 
 			set
 			{
-				this.name = (value ?? "").Trim();
+				this.name = (value ?? string.Empty).Trim();
 			}
 		}
 

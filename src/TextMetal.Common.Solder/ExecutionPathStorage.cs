@@ -4,7 +4,6 @@
 */
 
 using System;
-using System.Diagnostics;
 
 using TextMetal.Common.Solder.AmbientExecutionContext;
 
@@ -47,7 +46,7 @@ namespace TextMetal.Common.Solder
 		/// Checks the existence of a named value in the current execution context storage mechanism.
 		/// </summary>
 		/// <param name="key"> The key to lookup in execution path storage. </param>
-		/// <returns>A value indicating whether the key exists in the current execution context storage mechanism.</returns>
+		/// <returns> A value indicating whether the key exists in the current execution context storage mechanism. </returns>
 		public static bool HasValue(string key)
 		{
 			return GetExecutionPathStorage().HasValue(key);

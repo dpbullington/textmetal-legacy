@@ -26,13 +26,27 @@ namespace TextMetal.Common.WinForms.DesignTime.Shapes
 
 		#region Fields/Constants
 
-		private readonly List<SketchPoint> points = new List<SketchPoint>();
 		private Color foregroundColor = Color.Black;
 		private int thickness = 2;
+		private readonly List<SketchPoint> points = new List<SketchPoint>();
 
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		[XmlAttribute("foreground-color")]
+		public string _ForegroundColor
+		{
+			get
+			{
+				return ColorTranslator.ToHtml(this.ForegroundColor);
+			}
+
+			set
+			{
+				this.ForegroundColor = ColorTranslator.FromHtml(value);
+			}
+		}
 
 		[XmlIgnore]
 		public Color ForegroundColor
@@ -45,16 +59,6 @@ namespace TextMetal.Common.WinForms.DesignTime.Shapes
 			set
 			{
 				this.foregroundColor = value;
-			}
-		}
-
-		[XmlArray(ElementName = "SketchPoints", Order = 0)]
-		[XmlArrayItem(ElementName = "SketchPoint")]
-		public List<SketchPoint> Points
-		{
-			get
-			{
-				return this.points;
 			}
 		}
 
@@ -75,17 +79,13 @@ namespace TextMetal.Common.WinForms.DesignTime.Shapes
 			}
 		}
 
-		[XmlAttribute("foreground-color")]
-		public string _ForegroundColor
+		[XmlArray(ElementName = "SketchPoints", Order = 0)]
+		[XmlArrayItem(ElementName = "SketchPoint")]
+		public List<SketchPoint> Points
 		{
 			get
 			{
-				return ColorTranslator.ToHtml(this.ForegroundColor);
-			}
-
-			set
-			{
-				this.ForegroundColor = ColorTranslator.FromHtml(value);
+				return this.points;
 			}
 		}
 

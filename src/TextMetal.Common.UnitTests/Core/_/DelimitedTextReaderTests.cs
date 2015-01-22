@@ -4,7 +4,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -49,7 +48,7 @@ namespace TextMetal.Common.UnitTests.Core._
 
 					Console.WriteLine(records.Count());
 
-					Console.WriteLine(string.Join("|", delimitedTextReader.ParsedHeaders));
+					Console.WriteLine(string.Join("|", delimitedTextSpec.HeaderNames));
 				}
 			}
 		}

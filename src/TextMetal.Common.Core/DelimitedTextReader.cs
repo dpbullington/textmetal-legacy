@@ -25,31 +25,21 @@ namespace TextMetal.Common.Core
 
 			this.innerTextReader = innerTextReader;
 			this.delimitedTextSpec = delimitedTextSpec;
+
+			this.ResetParserState();
 		}
 
 		#endregion
 
 		#region Fields/Constants
 
-		private string[] parsedHeaders;
 		private readonly DelimitedTextSpec delimitedTextSpec;
 		private readonly TextReader innerTextReader;
+		private readonly _ParserState parserState = new _ParserState();
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		public string[] ParsedHeaders
-		{
-			get
-			{
-				return this.parsedHeaders;
-			}
-			private set
-			{
-				this.parsedHeaders = value;
-			}
-		}
 
 		public DelimitedTextSpec DelimitedTextSpec
 		{
@@ -67,6 +57,14 @@ namespace TextMetal.Common.Core
 			}
 		}
 
+		private _ParserState ParserState
+		{
+			get
+			{
+				return this.parserState;
+			}
+		}
+
 		#endregion
 
 		#region Methods/Operators
@@ -79,37 +77,133 @@ namespace TextMetal.Common.Core
 			base.Close();
 		}
 
+		private bool ParserStateMachine()
+		{
+			string tempStringValue;
+			bool matchedRecordDelimiter, matchedFieldDelimiter;
+
+			// now determine what to do based on parser state
+			matchedRecordDelimiter = !this.ParserState.isQuotedValue && LookBehindFixup(this.ParserState.tempStringBuilder, this.DelimitedTextSpec.RecordDelimiter);
+
+			if (!matchedRecordDelimiter)
+				matchedFieldDelimiter = !this.ParserState.isQuotedValue && LookBehindFixup(this.ParserState.tempStringBuilder, this.DelimitedTextSpec.FieldDelimiter);
+			else
+				matchedFieldDelimiter = false;
+
+			if (matchedRecordDelimiter || matchedFieldDelimiter || this.ParserState.isEOF)
+			{
+				// RECORD_DELIMITER | FIELD_DELIMITER | EOF
+
+				// get string and clear for exit
+				tempStringValue = this.ParserState.tempStringBuilder.ToString();
+				this.ParserState.tempStringBuilder.Clear();
+
+				// common logic to store value of field in record
+				if (this.ParserState.isHeaderRecord)
+				{
+					// stash header if FRIS enabled and zeroth record
+					this.ParserState.record.Add(tempStringValue, this.ParserState.fieldIndex.ToString("0000"));
+				}
+				else
+				{
+					// check header array and field index validity
+					if ((object)this.DelimitedTextSpec.HeaderNames == null ||
+						this.ParserState.fieldIndex >= this.DelimitedTextSpec.HeaderNames.Length)
+						throw new InvalidOperationException(string.Format("Delimited text reader parse state failure: field index '{0}' exceeded known field indices '{1}' at character index '{2}'.", this.ParserState.fieldIndex, (object)this.DelimitedTextSpec.HeaderNames != null ? (this.DelimitedTextSpec.HeaderNames.Length - 1) : (int?)null, this.ParserState.characterIndex));
+
+					// lookup header name (key) by index and commit value to record
+					this.ParserState.record.Add(this.DelimitedTextSpec.HeaderNames[this.ParserState.fieldIndex], tempStringValue);
+				}
+
+				// handle blank records (we assume that an records with valid record delimiter is OK)
+				if (DataType.Instance.IsNullOrEmpty(tempStringValue) && this.ParserState.record.Keys.Count == 1)
+					this.ParserState.record = null;
+
+				// now what to do?
+				if (this.ParserState.isEOF)
+					return true;
+				else if (matchedRecordDelimiter)
+				{
+					// advance record index
+					this.ParserState.recordIndex++;
+
+					// reset field index
+					this.ParserState.fieldIndex = 0;
+
+					return true;
+				}
+				else if (matchedFieldDelimiter)
+				{
+					// advance field index
+					this.ParserState.fieldIndex++;
+				}
+			}
+			else if (!this.ParserState.isEOF &&
+					!this.ParserState.isQuotedValue &&
+					LookBehindFixup(this.ParserState.tempStringBuilder, this.DelimitedTextSpec.QuoteValue))
+			{
+				// BEGIN::QUOTE_VALUE
+				this.ParserState.isQuotedValue = true;
+			}
+			else if (!this.ParserState.isEOF &&
+					this.ParserState.isQuotedValue &&
+					LookBehindFixup(this.ParserState.tempStringBuilder, this.DelimitedTextSpec.QuoteValue))
+			{
+				// END::QUOTE_VALUE
+				this.ParserState.isQuotedValue = false;
+			}
+			else if (!this.ParserState.isEOF)
+			{
+				// {field_data}
+				this.ParserState.contentIndex++;
+			}
+			else
+			{
+				// {unknown_parser_state_error}
+				throw new InvalidOperationException(string.Format("Unknown parser state error at character index '{0}'.", this.ParserState.characterIndex));
+			}
+
+			return false;
+		}
+
+		public IEnumerable<string> ReadHeaderNames()
+		{
+			if (this.DelimitedTextSpec.FirstRecordIsHeader)
+			{
+				var y = this.ResumableParserMainLoop(true);
+
+				y.SingleOrDefault(); // force a single enumeration - yield return is a brain fyck
+			}
+
+			return this.DelimitedTextSpec.HeaderNames;
+		}
+
 		public IEnumerable<IDictionary<string, string>> ReadRecords()
 		{
-			IDictionary<string, string> record;
-			string[] headers;
+			return this.ResumableParserMainLoop(false);
+		}
 
+		private void ResetParserState()
+		{
+			this.ParserState.record = new Dictionary<string, string>();
+			this.ParserState.tempStringBuilder = new StringBuilder();
+			this.ParserState.characterIndex = 0;
+			this.ParserState.contentIndex = 0;
+			this.ParserState.recordIndex = 0;
+			this.ParserState.fieldIndex = 0;
+			this.ParserState.isQuotedValue = false;
+			this.ParserState.isEOF = false;
+
+			this.DelimitedTextSpec.AssertValid();
+		}
+
+		private IEnumerable<IDictionary<string, string>> ResumableParserMainLoop(bool once)
+		{
 			int __value;
 			char ch;
 
-			long characterIndex;
-			long recordIndex;
-			int fieldIndex;
-
-			bool isQuotedValue;
-			bool isEOF;
-
-			StringBuilder tempStringBuilder;
-			string tempStringValue;
-
-			tempStringBuilder = new StringBuilder();
-
-			// init on BOF
-			characterIndex = 0;
-			recordIndex = 0;
-			fieldIndex = 0;
-			isQuotedValue = false;
-			isEOF = false;
-
-			record = new Dictionary<string, string>();
-			headers = !this.DelimitedTextSpec.FirstRecordIsHeader ? this.DelimitedTextSpec.HeaderNames : null;
-
-			while (!isEOF)
+			// main loop - character stream
+			while (!this.ParserState.isEOF)
 			{
 				// read the next byte
 				__value = this.InnerTextReader.Read();
@@ -118,138 +212,43 @@ namespace TextMetal.Common.Core
 				// check for -1 (EOF)
 				if (__value == -1)
 				{
-					isEOF = true; // set terminal state
+					this.ParserState.isEOF = true; // set terminal state
 
 					// sanity check - should never end with an open quote value
-					if (isQuotedValue)
+					if (this.ParserState.isQuotedValue)
 						throw new InvalidOperationException(string.Format("Delimited text reader parse state failure: end of file encountered while reading open quoted value."));
 				}
 				else
 				{
 					// append character to temp buffer
-					tempStringBuilder.Append(ch);
+					this.ParserState.tempStringBuilder.Append(ch);
 
 					// advance character index
-					characterIndex++;
+					this.ParserState.characterIndex++;
 				}
 
-				// now determine what to do based on parser state
-				if (isEOF ||
-					(!isQuotedValue && LookBehindFixup(tempStringBuilder, this.DelimitedTextSpec.RecordDelimiter)))
+				// eval on every loop
+				this.ParserState.isHeaderRecord = this.ParserState.recordIndex == 0 && this.DelimitedTextSpec.FirstRecordIsHeader;
+
+				if (this.ParserStateMachine())
 				{
-					// RECORD_DELIMITER | EOF
-
-					// get string and clear for exit
-					tempStringValue = tempStringBuilder.ToString();
-					tempStringBuilder.Clear();
-
-					if (recordIndex == 0 &&
-						this.DelimitedTextSpec.FirstRecordIsHeader)
+					if ((object)this.ParserState.record != null)
 					{
-						// append last header
-						record.Add(tempStringValue, fieldIndex.ToString("0000"));
-
-						// finalize headers
-						headers = record.Keys.ToArray();
-
-						// stash header names into member
-						this.ParsedHeaders = headers.ToArray();
-
-						// prevent acidental usage of record
-						record = null;
-					}
-					else
-					{
-						if ((this.DelimitedTextSpec.FieldDelimiter ?? string.Empty).Length == 0)
-						{
-							// we would never match a field delimiter, so we assume entire record is the anonymous value
-							record.Add("TextFileLine" /*string.Empty*/, tempStringValue);
-						}
+						if (!this.ParserState.isHeaderRecord)
+							yield return this.ParserState.record; // aint this some shhhhhhhh?
 						else
 						{
-							// check header array and field index validity
-							if ((object)headers == null ||
-								fieldIndex >= headers.Length)
-								throw new InvalidOperationException(string.Format("Delimited text reader parse state failure: field index '{0}' exceeded known field indices '{1}' at character index '{2}'.", fieldIndex, (object)headers != null ? (headers.Length - 1) : (int?)null, characterIndex));
-
-							// lookup header name (key) by index and commit value to record
-							record.Add(headers[fieldIndex], tempStringValue);
+							// stash parsed header names into member
+							this.DelimitedTextSpec.HeaderNames = this.ParserState.record.Keys.ToArray();
 						}
-
-						// commit record to collection
-						yield return record;
 					}
 
-					if (!isEOF)
-					{
-						// create new record
-						record = new Dictionary<string, string>();
+					this.ParserState.record = new Dictionary<string, string>();
 
-						// advance record index
-						recordIndex++;
-
-						// reset field index
-						fieldIndex = 0;
-					}
-				}
-				else if (!isEOF && !isQuotedValue && LookBehindFixup(tempStringBuilder, this.DelimitedTextSpec.FieldDelimiter))
-				{
-					// FIELD_DELIMITER
-
-					// get string and clear for next field
-					tempStringValue = tempStringBuilder.ToString();
-					tempStringBuilder.Clear();
-
-					if (recordIndex == 0 &&
-						this.DelimitedTextSpec.FirstRecordIsHeader)
-					{
-						// stash header if FRIS enabled and zeroth record
-						record.Add(tempStringValue, fieldIndex.ToString("0000"));
-					}
-					else
-					{
-						// check header array and field index validity
-						if ((object)headers == null ||
-							fieldIndex >= headers.Length)
-							throw new InvalidOperationException(string.Format("Delimited text reader parse state failure: field index '{0}' exceeded known field indices '{1}' at character index '{2}'.", fieldIndex, (object)headers != null ? (headers.Length - 1) : (int?)null, characterIndex));
-
-						// lookup header name (key) by index and commit value to record
-						record.Add(headers[fieldIndex], tempStringValue);
-					}
-
-					// advance field index
-					fieldIndex++;
-				}
-				else if (!isEOF && isQuotedValue && LookBehindFixup(tempStringBuilder, (this.DelimitedTextSpec.QuoteValue + this.DelimitedTextSpec.QuoteValue)))
-				{
-					// QUOTE_VALUE -> ESCAPED::QUOTE_VALUE
-
-					// fixup escaped quote value embeded inside quoted field value
-					tempStringBuilder.Append(this.DelimitedTextSpec.QuoteValue);
-				}
-				else if (!isEOF && !isQuotedValue && LookBehindFixup(tempStringBuilder, this.DelimitedTextSpec.QuoteValue))
-				{
-					// BEGIN::QUOTE_VALUE
-					isQuotedValue = true;
-				}
-				else if (!isEOF && isQuotedValue && LookBehindFixup(tempStringBuilder, this.DelimitedTextSpec.QuoteValue))
-				{
-					// END::QUOTE_VALUE
-					isQuotedValue = false;
-				}
-				else if (!isEOF)
-				{
-					// {field_data}
-				}
-				else
-				{
-					// {unknown_parser_state_error}
-					throw new InvalidOperationException(string.Format("Unknown parser state error at character index '{0}'.", characterIndex));
+					if (once) // state-based resumption of loop ;)
+						break;
 				}
 			}
-
-			// term on EOF
-			tempStringBuilder = null;
 		}
 
 		private static bool LookBehindFixup(StringBuilder targetStringBuilder, string targetValue)
@@ -260,15 +259,21 @@ namespace TextMetal.Common.Core
 			if ((object)targetValue == null)
 				throw new ArgumentNullException("targetValue");
 
+			if (DataType.Instance.IsNullOrEmpty(targetValue))
+				throw new ArgumentOutOfRangeException("targetValue");
+
 			// look-behind CHECK
 			if (targetStringBuilder.Length > 0 &&
 				targetValue.Length > 0 &&
 				targetStringBuilder.Length >= targetValue.Length)
 			{
-				int sb_length = targetStringBuilder.Length;
-				int rd_length = targetValue.Length;
+				int sb_length;
+				int rd_length;
+				int matches;
 
-				int matches = 0;
+				sb_length = targetStringBuilder.Length;
+				rd_length = targetValue.Length;
+				matches = 0;
 
 				for (int i = 0; i < rd_length; i++)
 				{
@@ -287,7 +292,28 @@ namespace TextMetal.Common.Core
 				return true;
 			}
 
-			return false; // not enought buffer space to care
+			return false; // not enough buffer space to care
+		}
+
+		#endregion
+
+		#region Classes/Structs/Interfaces/Enums/Delegates
+
+		private sealed class _ParserState
+		{
+			#region Fields/Constants
+
+			public long characterIndex;
+			public long contentIndex;
+			public int fieldIndex;
+			public bool isEOF;
+			public bool isHeaderRecord;
+			public bool isQuotedValue;
+			public IDictionary<string, string> record;
+			public long recordIndex;
+			public StringBuilder tempStringBuilder;
+
+			#endregion
 		}
 
 		#endregion

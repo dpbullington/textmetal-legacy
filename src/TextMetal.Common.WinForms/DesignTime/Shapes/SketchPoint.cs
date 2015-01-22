@@ -39,6 +39,34 @@ namespace TextMetal.Common.WinForms.DesignTime.Shapes
 
 		#region Properties/Indexers/Events
 
+		[XmlAttribute("foreground-color")]
+		public string _ForegroundColor
+		{
+			get
+			{
+				return ColorTranslator.ToHtml(this.ForegroundColor);
+			}
+
+			set
+			{
+				this.ForegroundColor = ColorTranslator.FromHtml(value);
+			}
+		}
+
+		[XmlAttribute("location-point")]
+		public string _LocationPoint
+		{
+			get
+			{
+				return new PointConverter().ConvertToString(this.LocationPoint);
+			}
+
+			set
+			{
+				this.LocationPoint = (Point)(new PointConverter().ConvertFromString(value) ?? Point.Empty);
+			}
+		}
+
 		[XmlIgnore]
 		public Color ForegroundColor
 		{
@@ -78,34 +106,6 @@ namespace TextMetal.Common.WinForms.DesignTime.Shapes
 			set
 			{
 				this.thickness = value;
-			}
-		}
-
-		[XmlAttribute("foreground-color")]
-		public string _ForegroundColor
-		{
-			get
-			{
-				return ColorTranslator.ToHtml(this.ForegroundColor);
-			}
-
-			set
-			{
-				this.ForegroundColor = ColorTranslator.FromHtml(value);
-			}
-		}
-
-		[XmlAttribute("location-point")]
-		public string _LocationPoint
-		{
-			get
-			{
-				return new PointConverter().ConvertToString(this.LocationPoint);
-			}
-
-			set
-			{
-				this.LocationPoint = (Point)(new PointConverter().ConvertFromString(value) ?? Point.Empty);
 			}
 		}
 

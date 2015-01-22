@@ -74,72 +74,6 @@ namespace TextMetal.Common.WinForms.DesignTime
 
 		#region Methods/Operators
 
-		public void InitializeSketching()
-		{
-			Image image;
-			ToolBarButton tbBtnShape;
-			Type shapeType;
-			XmlObjectDesignTimeBehaviorAttribute xmlObjectDesignTimeBehaviorAttribute;
-
-			tbBtnShape = new ToolBarButton();
-			tbBtnShape.ToolTipText = "Arrow";
-			tbBtnShape.Tag = null;
-			tbBtnShape.ImageIndex =
-				this.ilMain.Images.Add(Image.FromStream(this.GetType().Assembly.GetManifestResourceStream("TextMetal.Common.WinForms.DesignTime.Shapes.Resources.SketchArrow.bmp")), Color.Magenta);
-			tbBtnShape.Pushed = true;
-
-			this.tbarTools.Buttons.Add(tbBtnShape);
-
-			foreach (string shapeKey in SketchFactory.ShapeKeys)
-			{
-				tbBtnShape = new ToolBarButton();
-
-				shapeType = SketchFactory.GetShapeType(shapeKey);
-
-				if ((object)shapeType == null)
-					throw new InvalidOperationException();
-
-				xmlObjectDesignTimeBehaviorAttribute = Reflexion.Instance.GetOneAttribute<XmlObjectDesignTimeBehaviorAttribute>(shapeType);
-
-				if ((object)xmlObjectDesignTimeBehaviorAttribute == null)
-					continue;
-
-				if (!xmlObjectDesignTimeBehaviorAttribute.ShowInToolbox)
-					continue;
-
-				tbBtnShape.ToolTipText = xmlObjectDesignTimeBehaviorAttribute.Description;
-				tbBtnShape.Tag = shapeKey;
-
-				image = xmlObjectDesignTimeBehaviorAttribute.GetToolboxImage();
-
-				if ((object)image != null)
-					tbBtnShape.ImageIndex = this.ilMain.Images.Add(image, Color.Magenta);
-				else
-					tbBtnShape.ImageIndex = 4;
-
-				this.tbarTools.Buttons.Add(tbBtnShape);
-			}
-
-			this.SetSketch(null);
-		}
-
-		public void SetSketch(Sketch sketch)
-		{
-			this.Sketch = sketch;
-
-			foreach (ToolBarButton tbBtn in this.tbarTools.Buttons)
-				tbBtn.Enabled = (object)this.Sketch != null;
-
-			this.pnlCanvas.Enabled = (object)this.Sketch != null;
-
-			this.pnlCanvas.Refresh();
-		}
-
-		private void SketchDesigner_Load(object sender, EventArgs e)
-		{
-			// do nothing
-		}
-
 		private void ctxMnuSpecificDelete_Click(object sender, EventArgs e)
 		{
 			SketchShape shapeUnderCursor;
@@ -187,6 +121,55 @@ namespace TextMetal.Common.WinForms.DesignTime
 		private void f_PropertyUpdate(object sender, EventArgs e)
 		{
 			this.pnlCanvas.Refresh();
+		}
+
+		public void InitializeSketching()
+		{
+			Image image;
+			ToolBarButton tbBtnShape;
+			Type shapeType;
+			XmlObjectDesignTimeBehaviorAttribute xmlObjectDesignTimeBehaviorAttribute;
+
+			tbBtnShape = new ToolBarButton();
+			tbBtnShape.ToolTipText = "Arrow";
+			tbBtnShape.Tag = null;
+			tbBtnShape.ImageIndex =
+				this.ilMain.Images.Add(Image.FromStream(this.GetType().Assembly.GetManifestResourceStream("TextMetal.Common.WinForms.DesignTime.Shapes.Resources.SketchArrow.bmp")), Color.Magenta);
+			tbBtnShape.Pushed = true;
+
+			this.tbarTools.Buttons.Add(tbBtnShape);
+
+			foreach (string shapeKey in SketchFactory.ShapeKeys)
+			{
+				tbBtnShape = new ToolBarButton();
+
+				shapeType = SketchFactory.GetShapeType(shapeKey);
+
+				if ((object)shapeType == null)
+					throw new InvalidOperationException();
+
+				xmlObjectDesignTimeBehaviorAttribute = Reflexion.Instance.GetOneAttribute<XmlObjectDesignTimeBehaviorAttribute>(shapeType);
+
+				if ((object)xmlObjectDesignTimeBehaviorAttribute == null)
+					continue;
+
+				if (!xmlObjectDesignTimeBehaviorAttribute.ShowInToolbox)
+					continue;
+
+				tbBtnShape.ToolTipText = xmlObjectDesignTimeBehaviorAttribute.Description;
+				tbBtnShape.Tag = shapeKey;
+
+				image = xmlObjectDesignTimeBehaviorAttribute.GetToolboxImage();
+
+				if ((object)image != null)
+					tbBtnShape.ImageIndex = this.ilMain.Images.Add(image, Color.Magenta);
+				else
+					tbBtnShape.ImageIndex = 4;
+
+				this.tbarTools.Buttons.Add(tbBtnShape);
+			}
+
+			this.SetSketch(null);
 		}
 
 		private void mnuCtxGenericClear_Click(object sender, EventArgs e)
@@ -393,6 +376,23 @@ namespace TextMetal.Common.WinForms.DesignTime
 				if ((object)this.CurrentShape != null)
 					this.CurrentShape.Render(e.Graphics);
 			}
+		}
+
+		public void SetSketch(Sketch sketch)
+		{
+			this.Sketch = sketch;
+
+			foreach (ToolBarButton tbBtn in this.tbarTools.Buttons)
+				tbBtn.Enabled = (object)this.Sketch != null;
+
+			this.pnlCanvas.Enabled = (object)this.Sketch != null;
+
+			this.pnlCanvas.Refresh();
+		}
+
+		private void SketchDesigner_Load(object sender, EventArgs e)
+		{
+			// do nothing
 		}
 
 		private void tbarTools_ButtonClick(object sender, ToolBarButtonClickEventArgs e)

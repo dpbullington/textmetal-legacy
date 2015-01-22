@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.Linq;
 using System.Xml;
 
@@ -79,12 +78,12 @@ namespace TextMetal.Common.Data
 				throw new ArgumentNullException("unitOfWork");
 
 			_recordsAffected = -1;
-			
+
 			// FORCE EAGER LOADING HERE
 			list = ExecuteDictionary(unitOfWork, commandType, commandText, commandParameters, (ra) => _recordsAffected = ra).ToList();
-			
+
 			recordsAffected = _recordsAffected;
-			
+
 			return list;
 		}
 

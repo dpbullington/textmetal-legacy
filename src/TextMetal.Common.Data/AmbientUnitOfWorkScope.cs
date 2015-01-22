@@ -18,8 +18,8 @@ namespace TextMetal.Common.Data
 		/// <summary>
 		/// Initializes a new instance of the AmbientUnitOfWorkScope class.
 		/// </summary>
-		/// <param name="unitOfWorkFactory">The unit of work factory instance.</param>
-		/// <param name="isolationLevel">An option isolation level for the unit of work transaction.</param>
+		/// <param name="unitOfWorkFactory"> The unit of work factory instance. </param>
+		/// <param name="isolationLevel"> An option isolation level for the unit of work transaction. </param>
 		public AmbientUnitOfWorkScope(IUnitOfWorkFactory unitOfWorkFactory, IsolationLevel isolationLevel = IsolationLevel.Unspecified)
 		{
 			if ((object)unitOfWorkFactory == null)

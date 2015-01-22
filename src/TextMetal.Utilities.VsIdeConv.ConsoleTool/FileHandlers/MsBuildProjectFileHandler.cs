@@ -271,7 +271,7 @@ namespace TextMetal.Utilities.VsIdeConv.ConsoleTool.FileHandlers
 				string[] projectTypeGuids;
 				string oldProjectTypeGuid, newProjectTypeGuid;
 
-				projectTypeGuids = (e.InnerXml ?? "").Split(';');
+				projectTypeGuids = (e.InnerXml ?? string.Empty).Split(';');
 
 				if ((object)projectTypeGuids != null)
 				{

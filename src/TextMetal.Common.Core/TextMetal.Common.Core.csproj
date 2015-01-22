@@ -50,6 +50,7 @@
     <Compile Include="ApplicationStorage\HttpCookieApplicationStorage.cs" />
     <Compile Include="ApplicationStorage\HttpSessionApplicationStorage.cs" />
     <Compile Include="ApplicationStorage\IApplicationStorage.cs" />
+    <Compile Include="DelimitedTextWriter.cs" />
     <Compile Include="DelimitedTextSpec.cs" />
     <Compile Include="FileSystemEnumerator.cs" />
     <Compile Include="ProjectAssemblyDependency.cs" />

@@ -49,6 +49,8 @@ namespace TextMetal.Framework.SourceModel.Primative
 			ObjectConstruct objectConstruct01;
 			PropertyConstruct propertyConstruct01;
 
+			ObjectConstruct tempOc;
+
 			if ((object)sourceFilePath == null)
 				throw new ArgumentNullException("sourceFilePath");
 
@@ -61,7 +63,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
 
 			objectConstruct00 = new ObjectConstruct();
-			
+
 			firstRecordIsHeader = false;
 			if (properties.TryGetValue(PROP_TOKEN_FIRST_RECORD_CONTAINS_COLUMN_HEADINGS, out values))
 			{
@@ -130,7 +132,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 			delimitedTextSpec.FieldDelimiter = fieldDelimiter;
 			delimitedTextSpec.QuoteValue = quoteValue;
 
-			objectConstruct01 = new ObjectConstruct();
+			tempOc = objectConstruct01 = new ObjectConstruct();
 			objectConstruct01.Name = "DelimitedTextSpec";
 			objectConstruct00.Items.Add(objectConstruct01);
 
@@ -142,17 +144,17 @@ namespace TextMetal.Framework.SourceModel.Primative
 			objectConstruct01.Items.Add(propertyConstruct01);
 
 			propertyConstruct01 = new PropertyConstruct()
-			{
-				Name = "RecordDelimiter",
-				Value = recordDelimiter
-			};
+								{
+									Name = "RecordDelimiter",
+									Value = recordDelimiter
+								};
 			objectConstruct01.Items.Add(propertyConstruct01);
 
 			propertyConstruct01 = new PropertyConstruct()
-			{
-				Name = "FieldDelimiter",
-				Value = fieldDelimiter
-			};
+								{
+									Name = "FieldDelimiter",
+									Value = fieldDelimiter
+								};
 			objectConstruct01.Items.Add(propertyConstruct01);
 
 			propertyConstruct01 = new PropertyConstruct()
@@ -166,12 +168,28 @@ namespace TextMetal.Framework.SourceModel.Primative
 			{
 				using (DelimitedTextReader delimitedTextReader = new DelimitedTextReader(streamReader, delimitedTextSpec))
 				{
+					var __headerNames = delimitedTextReader.ReadHeaderNames();
+
+					objectConstruct01 = new ObjectConstruct();
+					objectConstruct01.Name = "HeaderNames";
+					tempOc.Items.Add(objectConstruct01);
+
+					foreach (var headerName in __headerNames /*delimitedTextSpec.HeaderNames */)
+					{
+						propertyConstruct01 = new PropertyConstruct()
+											{
+												Name = headerName,
+												Value = headerName
+											};
+						objectConstruct01.Items.Add(propertyConstruct01);
+					}
+
 					var records = delimitedTextReader.ReadRecords();
 
 					arrayConstruct00 = new ArrayConstruct();
 					arrayConstruct00.Name = "TextFileLines";
 					objectConstruct00.Items.Add(arrayConstruct00);
-					
+
 					foreach (var record in records)
 					{
 						objectConstruct01 = new ObjectConstruct();
@@ -184,20 +202,6 @@ namespace TextMetal.Framework.SourceModel.Primative
 							propertyConstruct01.RawValue = field.Value;
 							objectConstruct01.Items.Add(propertyConstruct01);
 						}
-					}
-
-					objectConstruct01 = new ObjectConstruct();
-					objectConstruct01.Name = "ParsedHeaders";
-					objectConstruct00.Items.Add(objectConstruct01);
-
-					foreach (var parsedHeader in delimitedTextReader.ParsedHeaders)
-					{
-						propertyConstruct01 = new PropertyConstruct()
-						{
-							Name = "ParsedHeader",
-							Value = parsedHeader
-						};
-						objectConstruct01.Items.Add(propertyConstruct01);
 					}
 				}
 			}

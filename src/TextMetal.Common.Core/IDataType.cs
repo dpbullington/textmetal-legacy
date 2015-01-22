@@ -38,6 +38,13 @@ namespace TextMetal.Common.Core
 		object DefaultValue(Type targetType);
 
 		/// <summary>
+		/// Determines if a string value is null or zero length.
+		/// </summary>
+		/// <param name="value"> The string value to check. </param>
+		/// <returns> A boolean value indicating whether the value is null or zero length. </returns>
+		bool IsNullOrEmpty(string value);
+
+		/// <summary>
 		/// Determines if a string value is null, zero length, or only contains white space.
 		/// </summary>
 		/// <param name="value"> The string value to check. </param>

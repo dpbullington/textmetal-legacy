@@ -128,6 +128,16 @@ namespace TextMetal.Common.Core
 		}
 
 		/// <summary>
+		/// Determines if a string value is null or zero length.
+		/// </summary>
+		/// <param name="value"> The string value to check. </param>
+		/// <returns> A boolean value indicating whether the value is null or zero length. </returns>
+		public bool IsNullOrEmpty(string value)
+		{
+			return (object)value == null || value.Length <= 0;
+		}
+
+		/// <summary>
 		/// Determines if a string value is null, zero length, or only contains white space.
 		/// </summary>
 		/// <param name="value"> The string value to check. </param>

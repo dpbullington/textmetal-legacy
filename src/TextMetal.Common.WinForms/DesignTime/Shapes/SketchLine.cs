@@ -41,11 +41,45 @@ namespace TextMetal.Common.WinForms.DesignTime.Shapes
 
 		#region Properties/Indexers/Events
 
-		public double Distance
+		[XmlAttribute("foreground-color")]
+		public string _ForegroundColor
 		{
 			get
 			{
-				return SketchUtilities.GetDistanceBetweenPoints(this.FromPoint, this.ToPoint);
+				return ColorTranslator.ToHtml(this.ForegroundColor);
+			}
+
+			set
+			{
+				this.ForegroundColor = ColorTranslator.FromHtml(value);
+			}
+		}
+
+		[XmlAttribute("from-point")]
+		public string _FromPoint
+		{
+			get
+			{
+				return new PointConverter().ConvertToString(this.FromPoint);
+			}
+
+			set
+			{
+				this.FromPoint = (Point)(new PointConverter().ConvertFromString(value) ?? Point.Empty);
+			}
+		}
+
+		[XmlAttribute("to-point")]
+		public string _ToPoint
+		{
+			get
+			{
+				return new PointConverter().ConvertToString(this.ToPoint);
+			}
+
+			set
+			{
+				this.ToPoint = (Point)(new PointConverter().ConvertFromString(value) ?? Point.Empty);
 			}
 		}
 
@@ -105,45 +139,11 @@ namespace TextMetal.Common.WinForms.DesignTime.Shapes
 			}
 		}
 
-		[XmlAttribute("foreground-color")]
-		public string _ForegroundColor
+		public double Distance
 		{
 			get
 			{
-				return ColorTranslator.ToHtml(this.ForegroundColor);
-			}
-
-			set
-			{
-				this.ForegroundColor = ColorTranslator.FromHtml(value);
-			}
-		}
-
-		[XmlAttribute("from-point")]
-		public string _FromPoint
-		{
-			get
-			{
-				return new PointConverter().ConvertToString(this.FromPoint);
-			}
-
-			set
-			{
-				this.FromPoint = (Point)(new PointConverter().ConvertFromString(value) ?? Point.Empty);
-			}
-		}
-
-		[XmlAttribute("to-point")]
-		public string _ToPoint
-		{
-			get
-			{
-				return new PointConverter().ConvertToString(this.ToPoint);
-			}
-
-			set
-			{
-				this.ToPoint = (Point)(new PointConverter().ConvertFromString(value) ?? Point.Empty);
+				return SketchUtilities.GetDistanceBetweenPoints(this.FromPoint, this.ToPoint);
 			}
 		}
 
