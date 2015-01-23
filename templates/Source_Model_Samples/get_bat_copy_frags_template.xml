@@ -6,17 +6,17 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
 	<OutputScope name="get_bat_copy_frags_template_pkg.g.txt">
-		<ForEach in="TextFileLines" var-ct="_LoopCount" var-ix="_LoopIndex" var-item="_LoopItem">
+		<ForEach in="Records" var-ct="_LoopCount" var-ix="_LoopIndex" var-item="_LoopItem">
 			<ForEach.Body>
 <![CDATA[
 
-copy ".\src\${TextFileLine}\bin\%BUILD_FLAVOR_DIR%\${TextFileLine}.dll" "%PACKAGE_DIR%\."
+copy ".\src\${Field0001}\bin\%BUILD_FLAVOR_DIR%\${Field0001}.dll" "%PACKAGE_DIR%\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy ".\src\${TextFileLine}\bin\%BUILD_FLAVOR_DIR%\${TextFileLine}.xml" "%PACKAGE_DIR%\."
+copy ".\src\${Field0001}\bin\%BUILD_FLAVOR_DIR%\${Field0001}.xml" "%PACKAGE_DIR%\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy ".\src\${TextFileLine}\bin\%BUILD_FLAVOR_DIR%\${TextFileLine}.pdb" "%PACKAGE_DIR%\."
+copy ".\src\${Field0001}\bin\%BUILD_FLAVOR_DIR%\${Field0001}.pdb" "%PACKAGE_DIR%\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 ]]>
@@ -25,17 +25,17 @@ IF %ERRORLEVEL% NEQ 0 goto pkgError
 	</OutputScope>
 
 	<OutputScope name="get_bat_copy_frags_template_tmpl.g.txt">
-		<ForEach in="TextFileLines" var-ct="_LoopCount" var-ix="_LoopIndex" var-item="_LoopItem">
+		<ForEach in="Records" var-ct="_LoopCount" var-ix="_LoopIndex" var-item="_LoopItem">
 			<ForEach.Body>
 <![CDATA[
 
-copy "..\..\src\${TextFileLine}\bin\%BUILD_FLAVOR_DIR%\${TextFileLine}.dll" "%PACKAGE_DIR%\lib\TextMetal\."
+copy "..\..\src\${Field0001}\bin\%BUILD_FLAVOR_DIR%\${Field0001}.dll" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\${TextFileLine}\bin\%BUILD_FLAVOR_DIR%\${TextFileLine}.xml" "%PACKAGE_DIR%\lib\TextMetal\."
+copy "..\..\src\${Field0001}\bin\%BUILD_FLAVOR_DIR%\${Field0001}.xml" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
-copy "..\..\src\${TextFileLine}\bin\%BUILD_FLAVOR_DIR%\${TextFileLine}.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
+copy "..\..\src\${Field0001}\bin\%BUILD_FLAVOR_DIR%\${Field0001}.pdb" "%PACKAGE_DIR%\lib\TextMetal\."
 IF %ERRORLEVEL% NEQ 0 goto pkgError
 
 ]]>
@@ -44,14 +44,14 @@ IF %ERRORLEVEL% NEQ 0 goto pkgError
 	</OutputScope>
 
 	<OutputScope name="get_bat_copy_frags_template_aspmvc.g.txt">
-		<ForEach in="TextFileLines" var-ct="_LoopCount" var-ix="_LoopIndex" var-item="_LoopItem">
+		<ForEach in="Records" var-ct="_LoopCount" var-ix="_LoopIndex" var-item="_LoopItem">
 			<ForEach.Body>
 <![CDATA[<div class="secass-data-label">
-	<%= this.Html.LabelFor(m => m.${TextFileLine}, "${TextFileLine}") %>
+	<%= this.Html.LabelFor(m => m.${Field0001}, "${Field0001}") %>
 </div>
 <div class="secass-data-field">
-	<%= this.Html.TextBoxFor(m => m.${TextFileLine}, new { @class = "secass-input-text" }) %>
-	<%= this.Html.ValidationMessageFor(m => m.${TextFileLine}) %>
+	<%= this.Html.TextBoxFor(m => m.${Field0001}, new { @class = "secass-input-text" }) %>
+	<%= this.Html.ValidationMessageFor(m => m.${Field0001}) %>
 </div>
 
 ]]>

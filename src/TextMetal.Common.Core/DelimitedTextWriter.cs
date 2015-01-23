@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -70,6 +71,74 @@ namespace TextMetal.Common.Core
 				this.InnerTextWriter.Close();
 
 			base.Close();
+		}
+
+		private void WriteField(StringBuilder transientStringBuilder, bool first, object fieldValue)
+		{
+			if ((object)transientStringBuilder == null)
+				throw new ArgumentNullException("transientStringBuilder");
+
+			if (!first && !DataType.Instance.IsNullOrEmpty(this.DelimitedTextSpec.FieldDelimiter))
+				transientStringBuilder.Append(this.DelimitedTextSpec.FieldDelimiter);
+
+			if (!DataType.Instance.IsNullOrEmpty(this.DelimitedTextSpec.QuoteValue))
+				transientStringBuilder.Append(this.DelimitedTextSpec.QuoteValue);
+
+			transientStringBuilder.Append(fieldValue);
+
+			if (!DataType.Instance.IsNullOrEmpty(this.DelimitedTextSpec.QuoteValue))
+				transientStringBuilder.Append(this.DelimitedTextSpec.QuoteValue);
+		}
+
+		public void WriteRecords(IEnumerable<IDictionary<string, object>> records)
+		{
+			bool first;
+			StringBuilder transientStringBuilder;
+			string tempStringValue;
+
+			if ((object)records == null)
+				throw new ArgumentNullException("records");
+
+			transientStringBuilder = new StringBuilder();
+
+			if ((object)this.DelimitedTextSpec.HeaderNames != null &&
+				this.DelimitedTextSpec.FirstRecordIsHeader)
+			{
+				first = true;
+				foreach (var headerName in this.DelimitedTextSpec.HeaderNames)
+				{
+					this.WriteField(transientStringBuilder, first, headerName);
+
+					if (first)
+						first = false;
+				}
+			}
+
+			if (!DataType.Instance.IsNullOrEmpty(this.DelimitedTextSpec.RecordDelimiter))
+				transientStringBuilder.Append(this.DelimitedTextSpec.RecordDelimiter);
+
+			tempStringValue = transientStringBuilder.ToString();
+			transientStringBuilder.Clear();
+			this.InnerTextWriter.Write(tempStringValue);
+
+			foreach (IDictionary<string, object> record in records)
+			{
+				first = true;
+				foreach (KeyValuePair<string, object> field in record)
+				{
+					this.WriteField(transientStringBuilder, first, field.Value);
+
+					if (first)
+						first = false;
+				}
+
+				if (!DataType.Instance.IsNullOrEmpty(this.DelimitedTextSpec.RecordDelimiter))
+					transientStringBuilder.Append(this.DelimitedTextSpec.RecordDelimiter);
+
+				tempStringValue = transientStringBuilder.ToString();
+				transientStringBuilder.Clear();
+				this.InnerTextWriter.Write(tempStringValue);
+			}
 		}
 
 		#endregion

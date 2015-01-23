@@ -42,7 +42,6 @@ $argz = @("-templatefile:$template_file",
 	"-basedir:$base_dir",
 	"-sourcestrategy:$source_strategy",
 	"-strict:$strict",
-"-debug:$true",
 	"-property:FirstRecordIsHeader=$property_first_record_is_header",
 	"-property:FieldDelimiter=$property_field_delimiter",
 	"-property:RecordDelimiter=$property_record_delimiter")

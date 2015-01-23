@@ -6,7 +6,7 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
 
-	<ForEach in="TextFileLines" var-ct="_LoopCount" var-ix="_LoopIndex">
+	<ForEach in="Records" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Body>
 
 <![CDATA[${_LoopIndex}/${_LoopCount}

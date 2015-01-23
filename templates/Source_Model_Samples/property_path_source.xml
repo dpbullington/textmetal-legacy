@@ -7,7 +7,7 @@
 <Object name="" xmlns="http://www.textmetal.com/api/v6.0.0">
 	<Property name="FirstName" type="" value="daniel" />
 	<Property name="LastName" type="" value="bullington" />
-	<Property name="variable" type="" value="Address.TextFileLines" />
+	<Property name="variable" type="" value="Address.Records" />
 
 	<Object name="Address">
 		<Property name="Line1" type="" value="10 Any Street" />
@@ -17,7 +17,7 @@
 			<Property name="Extension" type="" value="x100" />
 		</Object>
 
-		<Array name="TextFileLines">
+		<Array name="Records">
 			<Property name="nomo" type="" value="yes" />
 
 			<Object name="">
@@ -75,7 +75,7 @@
 		</Array>
 	</Object>
 
-	<Array name="TextFileLines">
+	<Array name="Records">
 		<Property name="nomo" type="" value="yes" />
 
 		<Object name="">

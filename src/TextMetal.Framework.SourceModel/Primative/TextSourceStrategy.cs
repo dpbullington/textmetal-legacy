@@ -31,7 +31,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 		protected override object CoreGetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties)
 		{
 			const string PROP_TOKEN_FIRST_RECORD_CONTAINS_COLUMN_HEADINGS = "FirstRecordIsHeader";
-			const string PROP_TOKEN_HEADER_NAMES = "HeaderNames";
+			const string PROP_TOKEN_HEADER_NAMES = "HeaderName";
 			const string PROP_TOKEN_FIELD_DELIMITER = "FieldDelimiter";
 			const string PROP_TOKEN_RECORD_DELIMITER = "RecordDelimiter";
 			const string PROP_TOKEN_QUOTE_VALUE = "QuoteValue";
@@ -131,6 +131,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 			delimitedTextSpec.RecordDelimiter = recordDelimiter;
 			delimitedTextSpec.FieldDelimiter = fieldDelimiter;
 			delimitedTextSpec.QuoteValue = quoteValue;
+			delimitedTextSpec.HeaderNames = headerNames;
 
 			tempOc = objectConstruct01 = new ObjectConstruct();
 			objectConstruct01.Name = "DelimitedTextSpec";
@@ -174,20 +175,23 @@ namespace TextMetal.Framework.SourceModel.Primative
 					objectConstruct01.Name = "HeaderNames";
 					tempOc.Items.Add(objectConstruct01);
 
-					foreach (var headerName in __headerNames /*delimitedTextSpec.HeaderNames */)
+					if ((object)__headerNames != null)
 					{
-						propertyConstruct01 = new PropertyConstruct()
-											{
-												Name = headerName,
-												Value = headerName
-											};
-						objectConstruct01.Items.Add(propertyConstruct01);
+						foreach (var headerName in __headerNames)
+						{
+							propertyConstruct01 = new PropertyConstruct()
+												{
+													Name = headerName,
+													Value = headerName
+												};
+							objectConstruct01.Items.Add(propertyConstruct01);
+						}
 					}
 
 					var records = delimitedTextReader.ReadRecords();
 
 					arrayConstruct00 = new ArrayConstruct();
-					arrayConstruct00.Name = "TextFileLines";
+					arrayConstruct00.Name = "Records";
 					objectConstruct00.Items.Add(arrayConstruct00);
 
 					foreach (var record in records)
@@ -198,7 +202,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 						foreach (var field in record)
 						{
 							propertyConstruct01 = new PropertyConstruct();
-							propertyConstruct01.Name = DataType.Instance.IsNullOrWhiteSpace(field.Key) ? "TextFileLine" : field.Key;
+							propertyConstruct01.Name = field.Key;
 							propertyConstruct01.RawValue = field.Value;
 							objectConstruct01.Items.Add(propertyConstruct01);
 						}

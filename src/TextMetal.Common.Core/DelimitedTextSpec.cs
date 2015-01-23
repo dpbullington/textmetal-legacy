@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TextMetal.Common.Core
@@ -96,16 +97,19 @@ namespace TextMetal.Common.Core
 
 		public void AssertValid()
 		{
-			if (DataType.Instance.IsNullOrEmpty(this.RecordDelimiter))
-				throw new InvalidOperationException(string.Format("Record delimiter is invalid."));
+			List<string> strings;
 
-			if (DataType.Instance.IsNullOrEmpty(this.FieldDelimiter))
-				throw new InvalidOperationException(string.Format("Field delimiter is invalid."));
+			strings = new List<string>();
 
-			if (DataType.Instance.IsNullOrEmpty(this.QuoteValue))
-				throw new InvalidOperationException(string.Format("Quote value is invalid."));
+			if (!DataType.Instance.IsNullOrEmpty(this.RecordDelimiter))
+				strings.Add(this.RecordDelimiter);
 
-			var strings = new string[] { this.RecordDelimiter, this.FieldDelimiter, this.QuoteValue };
+			if (!DataType.Instance.IsNullOrEmpty(this.FieldDelimiter))
+				strings.Add(this.FieldDelimiter);
+
+			if (!DataType.Instance.IsNullOrEmpty(this.QuoteValue))
+				strings.Add(this.QuoteValue);
+
 			if (strings.GroupBy(s => s).Where(gs => gs.Count() > 1).Any())
 				throw new InvalidOperationException(string.Format("Duplicate delimiter/value encountered."));
 		}

@@ -14,7 +14,7 @@
 			<Object>
 				<Property name="mono" type="" value="no" />
 
-				<Array name="TextFileLines">
+				<Array name="Records">
 					<Property name="nomo" type="" value="yes" />
 
 					<Object name="">
@@ -42,7 +42,7 @@
 
 	<!--<Write newline="true">
 		<Write.Text>
-			<Facet name="TextFileLines" />
+			<Facet name="Records" />
 		</Write.Text>
 	</Write>-->
 </Template>

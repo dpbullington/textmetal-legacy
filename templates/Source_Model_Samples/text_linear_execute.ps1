@@ -18,6 +18,10 @@ $source_file = "$source_dir\text_linear_source.txt"
 $base_dir = ".\output"
 $source_strategy = "TextMetal.Framework.SourceModel.Primative.TextSourceStrategy, TextMetal.Framework.SourceModel"
 $strict = $true
+$property_first_record_is_header = $false
+$property_field_delimiter = ""
+$property_record_delimiter = "\\r\\n"
+$property_quote_value = ""
 
 echo "The operation is starting..."
 
@@ -38,7 +42,12 @@ $argz = @("-templatefile:$template_file",
 	"-sourcefile:$source_file",
 	"-basedir:$base_dir",
 	"-sourcestrategy:$source_strategy",
-	"-strict:$strict")
+	"-strict:$strict",
+	"-property:FirstRecordIsHeader=$property_first_record_is_header",
+	"-property:FieldDelimiter=$property_field_delimiter",
+	"-property:QuoteValue=$property_quote_value",
+	"-property:RecordDelimiter=$property_record_delimiter",
+	"-property:HeaderName=Field0001")
 
 &"$textmetal_exe" $argz
 

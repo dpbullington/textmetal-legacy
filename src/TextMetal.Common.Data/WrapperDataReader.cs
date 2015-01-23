@@ -12,19 +12,19 @@ namespace TextMetal.Common.Data
 	{
 		#region Constructors/Destructors
 
-		public WrapperDataReader(IDataReader dataReader)
+		public WrapperDataReader(IDataReader innerDataReader)
 		{
-			if ((object)dataReader == null)
-				throw new ArgumentNullException("dataReader");
+			if ((object)innerDataReader == null)
+				throw new ArgumentNullException("innerDataReader");
 
-			this.dataReader = dataReader;
+			this.innerDataReader = innerDataReader;
 		}
 
 		#endregion
 
 		#region Fields/Constants
 
-		private readonly IDataReader dataReader;
+		private readonly IDataReader innerDataReader;
 
 		#endregion
 
@@ -34,7 +34,7 @@ namespace TextMetal.Common.Data
 		{
 			get
 			{
-				return this.DataReader[name];
+				return this.InnerDataReader[name];
 			}
 		}
 
@@ -42,15 +42,15 @@ namespace TextMetal.Common.Data
 		{
 			get
 			{
-				return this.DataReader[i];
+				return this.InnerDataReader[i];
 			}
 		}
 
-		protected IDataReader DataReader
+		protected IDataReader InnerDataReader
 		{
 			get
 			{
-				return this.dataReader;
+				return this.innerDataReader;
 			}
 		}
 
@@ -58,7 +58,7 @@ namespace TextMetal.Common.Data
 		{
 			get
 			{
-				return this.DataReader.Depth;
+				return this.InnerDataReader.Depth;
 			}
 		}
 
@@ -66,7 +66,7 @@ namespace TextMetal.Common.Data
 		{
 			get
 			{
-				return this.DataReader.FieldCount;
+				return this.InnerDataReader.FieldCount;
 			}
 		}
 
@@ -74,7 +74,7 @@ namespace TextMetal.Common.Data
 		{
 			get
 			{
-				return this.DataReader.IsClosed;
+				return this.InnerDataReader.IsClosed;
 			}
 		}
 
@@ -82,7 +82,7 @@ namespace TextMetal.Common.Data
 		{
 			get
 			{
-				return this.DataReader.RecordsAffected;
+				return this.InnerDataReader.RecordsAffected;
 			}
 		}
 
@@ -92,137 +92,137 @@ namespace TextMetal.Common.Data
 
 		public virtual void Close()
 		{
-			this.DataReader.Close();
+			this.InnerDataReader.Close();
 		}
 
 		public virtual void Dispose()
 		{
-			this.DataReader.Dispose();
+			this.InnerDataReader.Dispose();
 		}
 
 		public virtual bool GetBoolean(int i)
 		{
-			return this.DataReader.GetBoolean(i);
+			return this.InnerDataReader.GetBoolean(i);
 		}
 
 		public virtual byte GetByte(int i)
 		{
-			return this.DataReader.GetByte(i);
+			return this.InnerDataReader.GetByte(i);
 		}
 
 		public virtual long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
 		{
-			return this.DataReader.GetBytes(i, fieldOffset, buffer, bufferoffset, length);
+			return this.InnerDataReader.GetBytes(i, fieldOffset, buffer, bufferoffset, length);
 		}
 
 		public virtual char GetChar(int i)
 		{
-			return this.DataReader.GetChar(i);
+			return this.InnerDataReader.GetChar(i);
 		}
 
 		public virtual long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
 		{
-			return this.DataReader.GetChars(i, fieldoffset, buffer, bufferoffset, length);
+			return this.InnerDataReader.GetChars(i, fieldoffset, buffer, bufferoffset, length);
 		}
 
 		public virtual IDataReader GetData(int i)
 		{
-			return this.DataReader.GetData(i);
+			return this.InnerDataReader.GetData(i);
 		}
 
 		public virtual string GetDataTypeName(int i)
 		{
-			return this.DataReader.GetDataTypeName(i);
+			return this.InnerDataReader.GetDataTypeName(i);
 		}
 
 		public virtual DateTime GetDateTime(int i)
 		{
-			return this.DataReader.GetDateTime(i);
+			return this.InnerDataReader.GetDateTime(i);
 		}
 
 		public virtual decimal GetDecimal(int i)
 		{
-			return this.DataReader.GetDecimal(i);
+			return this.InnerDataReader.GetDecimal(i);
 		}
 
 		public double GetDouble(int i)
 		{
-			return this.DataReader.GetDouble(i);
+			return this.InnerDataReader.GetDouble(i);
 		}
 
 		public virtual Type GetFieldType(int i)
 		{
-			return this.DataReader.GetFieldType(i);
+			return this.InnerDataReader.GetFieldType(i);
 		}
 
 		public virtual float GetFloat(int i)
 		{
-			return this.DataReader.GetFloat(i);
+			return this.InnerDataReader.GetFloat(i);
 		}
 
 		public virtual Guid GetGuid(int i)
 		{
-			return this.DataReader.GetGuid(i);
+			return this.InnerDataReader.GetGuid(i);
 		}
 
 		public virtual short GetInt16(int i)
 		{
-			return this.DataReader.GetInt16(i);
+			return this.InnerDataReader.GetInt16(i);
 		}
 
 		public virtual int GetInt32(int i)
 		{
-			return this.DataReader.GetInt32(i);
+			return this.InnerDataReader.GetInt32(i);
 		}
 
 		public virtual long GetInt64(int i)
 		{
-			return this.DataReader.GetInt64(i);
+			return this.InnerDataReader.GetInt64(i);
 		}
 
 		public virtual string GetName(int i)
 		{
-			return this.DataReader.GetName(i);
+			return this.InnerDataReader.GetName(i);
 		}
 
 		public virtual int GetOrdinal(string name)
 		{
-			return this.DataReader.GetOrdinal(name);
+			return this.InnerDataReader.GetOrdinal(name);
 		}
 
 		public virtual DataTable GetSchemaTable()
 		{
-			return this.DataReader.GetSchemaTable();
+			return this.InnerDataReader.GetSchemaTable();
 		}
 
 		public virtual string GetString(int i)
 		{
-			return this.DataReader.GetString(i);
+			return this.InnerDataReader.GetString(i);
 		}
 
 		public virtual object GetValue(int i)
 		{
-			return this.DataReader.GetValue(i);
+			return this.InnerDataReader.GetValue(i);
 		}
 
 		public virtual int GetValues(object[] values)
 		{
-			return this.DataReader.GetValues(values);
+			return this.InnerDataReader.GetValues(values);
 		}
 
 		public virtual bool IsDBNull(int i)
 		{
-			return this.DataReader.IsDBNull(i);
+			return this.InnerDataReader.IsDBNull(i);
 		}
 
 		public virtual bool NextResult()
 		{
-			return this.DataReader.NextResult();
+			return this.InnerDataReader.NextResult();
 		}
 
 		public virtual bool Read()
 		{
-			return this.DataReader.Read();
+			return this.InnerDataReader.Read();
 		}
 
 		#endregion

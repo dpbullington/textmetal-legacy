@@ -83,10 +83,16 @@ namespace TextMetal.Common.Core
 			bool matchedRecordDelimiter, matchedFieldDelimiter;
 
 			// now determine what to do based on parser state
-			matchedRecordDelimiter = !this.ParserState.isQuotedValue && LookBehindFixup(this.ParserState.tempStringBuilder, this.DelimitedTextSpec.RecordDelimiter);
+			matchedRecordDelimiter = !this.ParserState.isQuotedValue &&
+									!DataType.Instance.IsNullOrEmpty(this.DelimitedTextSpec.RecordDelimiter) &&
+									LookBehindFixup(this.ParserState.transientStringBuilder, this.DelimitedTextSpec.RecordDelimiter);
 
 			if (!matchedRecordDelimiter)
-				matchedFieldDelimiter = !this.ParserState.isQuotedValue && LookBehindFixup(this.ParserState.tempStringBuilder, this.DelimitedTextSpec.FieldDelimiter);
+			{
+				matchedFieldDelimiter = !this.ParserState.isQuotedValue &&
+										!DataType.Instance.IsNullOrEmpty(this.DelimitedTextSpec.FieldDelimiter) &&
+										LookBehindFixup(this.ParserState.transientStringBuilder, this.DelimitedTextSpec.FieldDelimiter);
+			}
 			else
 				matchedFieldDelimiter = false;
 
@@ -95,8 +101,8 @@ namespace TextMetal.Common.Core
 				// RECORD_DELIMITER | FIELD_DELIMITER | EOF
 
 				// get string and clear for exit
-				tempStringValue = this.ParserState.tempStringBuilder.ToString();
-				this.ParserState.tempStringBuilder.Clear();
+				tempStringValue = this.ParserState.transientStringBuilder.ToString();
+				this.ParserState.transientStringBuilder.Clear();
 
 				// common logic to store value of field in record
 				if (this.ParserState.isHeaderRecord)
@@ -130,24 +136,41 @@ namespace TextMetal.Common.Core
 					// reset field index
 					this.ParserState.fieldIndex = 0;
 
+					// reset value index
+					this.ParserState.valueIndex = 0;
+
 					return true;
 				}
 				else if (matchedFieldDelimiter)
 				{
 					// advance field index
 					this.ParserState.fieldIndex++;
+
+					// reset value index
+					this.ParserState.valueIndex = 0;
 				}
 			}
 			else if (!this.ParserState.isEOF &&
 					!this.ParserState.isQuotedValue &&
-					LookBehindFixup(this.ParserState.tempStringBuilder, this.DelimitedTextSpec.QuoteValue))
+					!DataType.Instance.IsNullOrEmpty(this.DelimitedTextSpec.QuoteValue) &&
+					LookBehindFixup(this.ParserState.transientStringBuilder, this.DelimitedTextSpec.QuoteValue))
 			{
 				// BEGIN::QUOTE_VALUE
 				this.ParserState.isQuotedValue = true;
 			}
+			//else if (!this.ParserState.isEOF &&
+			//	this.ParserState.isQuotedValue &&
+			//	!DataType.Instance.IsNullOrEmpty(this.DelimitedTextSpec.QuoteValue) &&
+			//	LookBehindFixup(this.ParserState.transientStringBuilder, this.DelimitedTextSpec.QuoteValue) &&
+			//	this.ParserState.peekNextCharacter.ToString() == this.DelimitedTextSpec.QuoteValue)
+			//{
+			//	// unescape::QUOTE_VALUE
+			//	this.ParserState.transientStringBuilder.Append("'");
+			//}
 			else if (!this.ParserState.isEOF &&
 					this.ParserState.isQuotedValue &&
-					LookBehindFixup(this.ParserState.tempStringBuilder, this.DelimitedTextSpec.QuoteValue))
+					!DataType.Instance.IsNullOrEmpty(this.DelimitedTextSpec.QuoteValue) &&
+					LookBehindFixup(this.ParserState.transientStringBuilder, this.DelimitedTextSpec.QuoteValue))
 			{
 				// END::QUOTE_VALUE
 				this.ParserState.isQuotedValue = false;
@@ -155,7 +178,12 @@ namespace TextMetal.Common.Core
 			else if (!this.ParserState.isEOF)
 			{
 				// {field_data}
+
+				// advance content index
 				this.ParserState.contentIndex++;
+
+				// advance value index
+				this.ParserState.valueIndex++;
 			}
 			else
 			{
@@ -178,26 +206,29 @@ namespace TextMetal.Common.Core
 			return this.DelimitedTextSpec.HeaderNames;
 		}
 
-		public IEnumerable<IDictionary<string, string>> ReadRecords()
+		public IEnumerable<IDictionary<string, object>> ReadRecords()
 		{
 			return this.ResumableParserMainLoop(false);
 		}
 
 		private void ResetParserState()
 		{
-			this.ParserState.record = new Dictionary<string, string>();
-			this.ParserState.tempStringBuilder = new StringBuilder();
+			this.ParserState.record = new Dictionary<string, object>();
+			this.ParserState.transientStringBuilder = new StringBuilder();
+			this.ParserState.readCurrentCharacter = '\0';
+			this.ParserState.peekNextCharacter = '\0';
 			this.ParserState.characterIndex = 0;
 			this.ParserState.contentIndex = 0;
 			this.ParserState.recordIndex = 0;
 			this.ParserState.fieldIndex = 0;
+			this.ParserState.valueIndex = 0;
 			this.ParserState.isQuotedValue = false;
 			this.ParserState.isEOF = false;
 
 			this.DelimitedTextSpec.AssertValid();
 		}
 
-		private IEnumerable<IDictionary<string, string>> ResumableParserMainLoop(bool once)
+		private IEnumerable<IDictionary<string, object>> ResumableParserMainLoop(bool once)
 		{
 			int __value;
 			char ch;
@@ -221,7 +252,8 @@ namespace TextMetal.Common.Core
 				else
 				{
 					// append character to temp buffer
-					this.ParserState.tempStringBuilder.Append(ch);
+					this.ParserState.readCurrentCharacter = ch;
+					this.ParserState.transientStringBuilder.Append(ch);
 
 					// advance character index
 					this.ParserState.characterIndex++;
@@ -229,6 +261,11 @@ namespace TextMetal.Common.Core
 
 				// eval on every loop
 				this.ParserState.isHeaderRecord = this.ParserState.recordIndex == 0 && this.DelimitedTextSpec.FirstRecordIsHeader;
+
+				// peek the next byte
+				__value = this.InnerTextReader.Peek();
+				ch = (char)__value;
+				this.ParserState.peekNextCharacter = ch;
 
 				if (this.ParserStateMachine())
 				{
@@ -243,7 +280,7 @@ namespace TextMetal.Common.Core
 						}
 					}
 
-					this.ParserState.record = new Dictionary<string, string>();
+					this.ParserState.record = new Dictionary<string, object>();
 
 					if (once) // state-based resumption of loop ;)
 						break;
@@ -309,9 +346,12 @@ namespace TextMetal.Common.Core
 			public bool isEOF;
 			public bool isHeaderRecord;
 			public bool isQuotedValue;
-			public IDictionary<string, string> record;
+			public char peekNextCharacter;
+			public char readCurrentCharacter;
+			public IDictionary<string, object> record;
 			public long recordIndex;
-			public StringBuilder tempStringBuilder;
+			public StringBuilder transientStringBuilder;
+			public long valueIndex;
 
 			#endregion
 		}

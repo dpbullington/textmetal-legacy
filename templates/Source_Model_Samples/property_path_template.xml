@@ -11,7 +11,7 @@ ${variable}
 ${...............................................Address.......Phone.....Extension...}
 Full Name:			${LastName}, ${FirstName}
 Phone Extension:	${Address.Phone.Extension}
-Data:				${TextFileLines.Name}
+Data:				${Records.Name}
 
 
 ]]>
