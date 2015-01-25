@@ -8,22 +8,132 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace TextMetal.Common.Core
 {
-	public sealed class DelimitedTextReader : TextReader
+	public abstract class WrappedTextReader : TextReader
 	{
 		#region Constructors/Destructors
 
-		public DelimitedTextReader(TextReader innerTextReader, DelimitedTextSpec delimitedTextSpec)
+		protected WrappedTextReader(TextReader innerTextReader)
 		{
 			if ((object)innerTextReader == null)
 				throw new ArgumentNullException("innerTextReader");
 
+			this.innerTextReader = innerTextReader;
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly TextReader innerTextReader;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		protected TextReader InnerTextReader
+		{
+			get
+			{
+				return this.innerTextReader;
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		public override void Close()
+		{
+			this.InnerTextReader.Close();
+		}
+
+		public override int Peek()
+		{
+			return this.InnerTextReader.Peek();
+		}
+
+		public override int Read()
+		{
+			return this.InnerTextReader.Read();
+		}
+
+		public override int Read(char[] buffer, int index, int count)
+		{
+			return this.InnerTextReader.Read(buffer, index, count);
+		}
+
+		public override Task<int> ReadAsync(char[] buffer, int index, int count)
+		{
+			return this.InnerTextReader.ReadAsync(buffer, index, count);
+		}
+
+		public override int ReadBlock(char[] buffer, int index, int count)
+		{
+			return this.InnerTextReader.ReadBlock(buffer, index, count);
+		}
+
+		public override Task<int> ReadBlockAsync(char[] buffer, int index, int count)
+		{
+			return this.InnerTextReader.ReadBlockAsync(buffer, index, count);
+		}
+
+		public override string ReadLine()
+		{
+			return this.InnerTextReader.ReadLine();
+		}
+
+		public override Task<string> ReadLineAsync()
+		{
+			return this.InnerTextReader.ReadLineAsync();
+		}
+
+		public override string ReadToEnd()
+		{
+			return this.InnerTextReader.ReadToEnd();
+		}
+
+		public override Task<string> ReadToEndAsync()
+		{
+			return this.InnerTextReader.ReadToEndAsync();
+		}
+
+		#endregion
+	}
+
+	public abstract class RecordTextReader : WrappedTextReader
+	{
+		#region Constructors/Destructors
+
+		protected RecordTextReader(TextReader innerTextReader)
+			: base(innerTextReader)
+		{
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		public abstract IEnumerable<string> ReadHeaderNames();
+
+		public abstract IEnumerable<IDictionary<string, object>> ReadRecords();
+
+		#endregion
+	}
+
+	public sealed class DelimitedTextReader : RecordTextReader
+	{
+		#region Constructors/Destructors
+
+		public DelimitedTextReader(TextReader innerTextReader, DelimitedTextSpec delimitedTextSpec)
+			: base(innerTextReader)
+		{
 			if ((object)delimitedTextSpec == null)
 				throw new ArgumentNullException("delimitedTextSpec");
 
-			this.innerTextReader = innerTextReader;
 			this.delimitedTextSpec = delimitedTextSpec;
 
 			this.ResetParserState();
@@ -34,7 +144,6 @@ namespace TextMetal.Common.Core
 		#region Fields/Constants
 
 		private readonly DelimitedTextSpec delimitedTextSpec;
-		private readonly TextReader innerTextReader;
 		private readonly _ParserState parserState = new _ParserState();
 
 		#endregion
@@ -46,14 +155,6 @@ namespace TextMetal.Common.Core
 			get
 			{
 				return this.delimitedTextSpec;
-			}
-		}
-
-		public TextReader InnerTextReader
-		{
-			get
-			{
-				return this.innerTextReader;
 			}
 		}
 
@@ -194,9 +295,10 @@ namespace TextMetal.Common.Core
 			return false;
 		}
 
-		public IEnumerable<string> ReadHeaderNames()
+		public override IEnumerable<string> ReadHeaderNames()
 		{
-			if (this.DelimitedTextSpec.FirstRecordIsHeader)
+			if (this.ParserState.recordIndex == 0 && 
+				this.DelimitedTextSpec.FirstRecordIsHeader)
 			{
 				var y = this.ResumableParserMainLoop(true);
 
@@ -206,7 +308,7 @@ namespace TextMetal.Common.Core
 			return this.DelimitedTextSpec.HeaderNames;
 		}
 
-		public IEnumerable<IDictionary<string, object>> ReadRecords()
+		public override IEnumerable<IDictionary<string, object>> ReadRecords()
 		{
 			return this.ResumableParserMainLoop(false);
 		}

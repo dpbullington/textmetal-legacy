@@ -100,19 +100,19 @@ namespace TextMetal.Common.WinForms
 
 		public void Dispose()
 		{
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
 			if (this.Disposed)
 				return;
 
-			try
+			if (disposing)
 			{
-				this.OnDispose();
-			}
-			finally
-			{
-				Current = null;
-
-				this.Disposed = true;
-				GC.SuppressFinalize(this);
+				if ((object)Current != null)
+					Current = null;
 			}
 		}
 
@@ -130,10 +130,6 @@ namespace TextMetal.Common.WinForms
 		}
 
 		protected abstract IDictionary<string, ArgumentSpec> GetArgumentMap();
-
-		protected virtual void OnDispose()
-		{
-		}
 
 		protected abstract int OnStartup(string[] args, IDictionary<string, IList<object>> arguments);
 

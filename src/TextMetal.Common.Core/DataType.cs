@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Globalization;
 using System.Net.Mail;
 
 namespace TextMetal.Common.Core
@@ -319,7 +320,7 @@ namespace TextMetal.Common.Core
 			else if (valueType == typeof(Byte))
 			{
 				Byte zresult;
-				retval = Byte.TryParse(value, out zresult);
+				retval = Byte.TryParse(value, NumberStyles.Any, null, out zresult);
 				result = zresult;
 			}
 			else if (valueType == typeof(Char))
@@ -343,13 +344,13 @@ namespace TextMetal.Common.Core
 			else if (valueType == typeof(Decimal))
 			{
 				Decimal zresult;
-				retval = Decimal.TryParse(value, out zresult);
+				retval = Decimal.TryParse(value, NumberStyles.Any, null, out zresult);
 				result = zresult;
 			}
 			else if (valueType == typeof(Double))
 			{
 				Double zresult;
-				retval = Double.TryParse(value, out zresult);
+				retval = Double.TryParse(value, NumberStyles.Any, null, out zresult);
 				result = zresult;
 			}
 			else if (valueType == typeof(Guid))
@@ -365,31 +366,31 @@ namespace TextMetal.Common.Core
 			else if (valueType == typeof(Int16))
 			{
 				Int16 zresult;
-				retval = Int16.TryParse(value, out zresult);
+				retval = Int16.TryParse(value, NumberStyles.Any, null, out zresult);
 				result = zresult;
 			}
 			else if (valueType == typeof(Int32))
 			{
 				Int32 zresult;
-				retval = Int32.TryParse(value, out zresult);
+				retval = Int32.TryParse(value, NumberStyles.Any, null, out zresult);
 				result = zresult;
 			}
 			else if (valueType == typeof(Int64))
 			{
 				Int64 zresult;
-				retval = Int64.TryParse(value, out zresult);
+				retval = Int64.TryParse(value, NumberStyles.Any, null, out zresult);
 				result = zresult;
 			}
 			else if (valueType == typeof(SByte))
 			{
 				SByte zresult;
-				retval = SByte.TryParse(value, out zresult);
+				retval = SByte.TryParse(value, NumberStyles.Any, null, out zresult);
 				result = zresult;
 			}
 			else if (valueType == typeof(Single))
 			{
 				Single zresult;
-				retval = Single.TryParse(value, out zresult);
+				retval = Single.TryParse(value, NumberStyles.Any, null, out zresult);
 				result = zresult;
 			}
 			else if (valueType == typeof(TimeSpan))
@@ -401,19 +402,19 @@ namespace TextMetal.Common.Core
 			else if (valueType == typeof(UInt16))
 			{
 				UInt16 zresult;
-				retval = UInt16.TryParse(value, out zresult);
+				retval = UInt16.TryParse(value, NumberStyles.Any, null, out zresult);
 				result = zresult;
 			}
 			else if (valueType == typeof(UInt32))
 			{
 				UInt32 zresult;
-				retval = UInt32.TryParse(value, out zresult);
+				retval = UInt32.TryParse(value, NumberStyles.Any, null, out zresult);
 				result = zresult;
 			}
 			else if (valueType == typeof(UInt64))
 			{
 				UInt64 zresult;
-				retval = UInt64.TryParse(value, out zresult);
+				retval = UInt64.TryParse(value, NumberStyles.Any, null, out zresult);
 				result = zresult;
 			}
 			else if (valueType.IsEnum) // special case
