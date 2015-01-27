@@ -131,7 +131,19 @@ namespace TextMetal.Framework.SourceModel.Primative
 			delimitedTextSpec.RecordDelimiter = recordDelimiter;
 			delimitedTextSpec.FieldDelimiter = fieldDelimiter;
 			delimitedTextSpec.QuoteValue = quoteValue;
-			delimitedTextSpec.HeaderNames = headerNames;
+
+			if ((object)headerNames != null)
+			{
+				delimitedTextSpec.HeaderSpecs.Clear();
+				foreach (string headerName in headerNames)
+				{
+					delimitedTextSpec.HeaderSpecs.Add(new HeaderSpec()
+													{
+														HeaderName = headerName,
+														FieldType = FieldType.Undefined
+													});
+				}
+			}
 
 			tempOc = objectConstruct01 = new ObjectConstruct();
 			objectConstruct01.Name = "DelimitedTextSpec";
@@ -169,20 +181,20 @@ namespace TextMetal.Framework.SourceModel.Primative
 			{
 				using (DelimitedTextReader delimitedTextReader = new DelimitedTextReader(streamReader, delimitedTextSpec))
 				{
-					var __headerNames = delimitedTextReader.ReadHeaderNames();
+					var __headerSpecs = delimitedTextReader.ReadHeaderSpecs();
 
 					objectConstruct01 = new ObjectConstruct();
 					objectConstruct01.Name = "HeaderNames";
 					tempOc.Items.Add(objectConstruct01);
 
-					if ((object)__headerNames != null)
+					if ((object)__headerSpecs != null)
 					{
-						foreach (var headerName in __headerNames)
+						foreach (var headerSpec in __headerSpecs)
 						{
 							propertyConstruct01 = new PropertyConstruct()
 												{
-													Name = headerName,
-													Value = headerName
+													Name = "HeaderName",
+													Value = headerSpec.HeaderName
 												};
 							objectConstruct01.Items.Add(propertyConstruct01);
 						}

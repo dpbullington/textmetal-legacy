@@ -22,7 +22,7 @@ namespace TextMetal.Common.Core.Tokenization
 	/// Each function call argument must be enclosed in tick marks e.g. `some value`.
 	/// Recursion/nested token expressions is not supported.
 	/// </summary>
-	public sealed class Tokenizer
+	public sealed class Tokenizer : ITokenizer
 	{
 		#region Constructors/Destructors
 

@@ -23,9 +23,9 @@ namespace TextMetal.Common.Core
 
 		private string fieldDelimiter;
 		private bool firstRecordIsHeader;
-		private string[] headerNames;
 		private string quoteValue;
 		private string recordDelimiter;
+		private readonly List<HeaderSpec> headerSpecs = new List<HeaderSpec>();
 
 		#endregion
 
@@ -55,18 +55,6 @@ namespace TextMetal.Common.Core
 			}
 		}
 
-		public string[] HeaderNames
-		{
-			get
-			{
-				return this.headerNames;
-			}
-			set
-			{
-				this.headerNames = value;
-			}
-		}
-
 		public string QuoteValue
 		{
 			get
@@ -88,6 +76,14 @@ namespace TextMetal.Common.Core
 			set
 			{
 				this.recordDelimiter = value;
+			}
+		}
+
+		public List<HeaderSpec> HeaderSpecs
+		{
+			get
+			{
+				return this.headerSpecs;
 			}
 		}
 

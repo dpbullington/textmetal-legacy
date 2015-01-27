@@ -18,7 +18,7 @@ namespace TextMetal.Common.Core.Tokenization
 		/// <summary>
 		/// Initializes a new instance of the DynamicWildcardTokenReplacementStrategy class.
 		/// </summary>
-		/// <param name="targets"> The tagret object instances to evaluate (in linear order) during wildcard token replacement. </param>
+		/// <param name="targets"> The target object instances to evaluate (in linear order) during wildcard token replacement. </param>
 		public DynamicWildcardTokenReplacementStrategy(object[] targets)
 			:
 				this(targets, true)
@@ -28,7 +28,7 @@ namespace TextMetal.Common.Core.Tokenization
 		/// <summary>
 		/// Initializes a new instance of the DynamicWildcardTokenReplacementStrategy class. This overload overrides the default strict setting (true).
 		/// </summary>
-		/// <param name="targets"> The tagret object instances to evaluate (in linear order) during wildcard token replacement. </param>
+		/// <param name="targets"> The target object instances to evaluate (in linear order) during wildcard token replacement. </param>
 		/// <param name="strict"> A value indicating if exceptions are thrown for bad token matches. </param>
 		public DynamicWildcardTokenReplacementStrategy(object[] targets, bool strict)
 		{

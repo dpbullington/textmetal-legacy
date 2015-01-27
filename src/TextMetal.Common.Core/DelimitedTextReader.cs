@@ -7,124 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace TextMetal.Common.Core
 {
-	public abstract class WrappedTextReader : TextReader
-	{
-		#region Constructors/Destructors
-
-		protected WrappedTextReader(TextReader innerTextReader)
-		{
-			if ((object)innerTextReader == null)
-				throw new ArgumentNullException("innerTextReader");
-
-			this.innerTextReader = innerTextReader;
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private readonly TextReader innerTextReader;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		protected TextReader InnerTextReader
-		{
-			get
-			{
-				return this.innerTextReader;
-			}
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		public override void Close()
-		{
-			this.InnerTextReader.Close();
-		}
-
-		public override int Peek()
-		{
-			return this.InnerTextReader.Peek();
-		}
-
-		public override int Read()
-		{
-			return this.InnerTextReader.Read();
-		}
-
-		public override int Read(char[] buffer, int index, int count)
-		{
-			return this.InnerTextReader.Read(buffer, index, count);
-		}
-
-		public override Task<int> ReadAsync(char[] buffer, int index, int count)
-		{
-			return this.InnerTextReader.ReadAsync(buffer, index, count);
-		}
-
-		public override int ReadBlock(char[] buffer, int index, int count)
-		{
-			return this.InnerTextReader.ReadBlock(buffer, index, count);
-		}
-
-		public override Task<int> ReadBlockAsync(char[] buffer, int index, int count)
-		{
-			return this.InnerTextReader.ReadBlockAsync(buffer, index, count);
-		}
-
-		public override string ReadLine()
-		{
-			return this.InnerTextReader.ReadLine();
-		}
-
-		public override Task<string> ReadLineAsync()
-		{
-			return this.InnerTextReader.ReadLineAsync();
-		}
-
-		public override string ReadToEnd()
-		{
-			return this.InnerTextReader.ReadToEnd();
-		}
-
-		public override Task<string> ReadToEndAsync()
-		{
-			return this.InnerTextReader.ReadToEndAsync();
-		}
-
-		#endregion
-	}
-
-	public abstract class RecordTextReader : WrappedTextReader
-	{
-		#region Constructors/Destructors
-
-		protected RecordTextReader(TextReader innerTextReader)
-			: base(innerTextReader)
-		{
-		}
-
-		#endregion
-
-		#region Methods/Operators
-
-		public abstract IEnumerable<string> ReadHeaderNames();
-
-		public abstract IEnumerable<IDictionary<string, object>> ReadRecords();
-
-		#endregion
-	}
-
-	public sealed class DelimitedTextReader : RecordTextReader
+	public class DelimitedTextReader : RecordTextReader
 	{
 		#region Constructors/Destructors
 
@@ -213,13 +101,43 @@ namespace TextMetal.Common.Core
 				}
 				else
 				{
+					HeaderSpec headerSpec;
+					Type fieldType;
+					object fieldValue;
+
 					// check header array and field index validity
-					if ((object)this.DelimitedTextSpec.HeaderNames == null ||
-						this.ParserState.fieldIndex >= this.DelimitedTextSpec.HeaderNames.Length)
-						throw new InvalidOperationException(string.Format("Delimited text reader parse state failure: field index '{0}' exceeded known field indices '{1}' at character index '{2}'.", this.ParserState.fieldIndex, (object)this.DelimitedTextSpec.HeaderNames != null ? (this.DelimitedTextSpec.HeaderNames.Length - 1) : (int?)null, this.ParserState.characterIndex));
+					if ((object)this.DelimitedTextSpec.HeaderSpecs == null ||
+						this.ParserState.fieldIndex >= this.DelimitedTextSpec.HeaderSpecs.Count)
+						throw new InvalidOperationException(string.Format("Delimited text reader parse state failure: field index '{0}' exceeded known field indices '{1}' at character index '{2}'.", this.ParserState.fieldIndex, (object)this.DelimitedTextSpec.HeaderSpecs != null ? (this.DelimitedTextSpec.HeaderSpecs.Count - 1) : (int?)null, this.ParserState.characterIndex));
+
+					headerSpec = this.DelimitedTextSpec.HeaderSpecs[this.ParserState.fieldIndex];
+
+					switch (headerSpec.FieldType)
+					{
+						case FieldType.Number:
+							fieldType = typeof(Nullable<Decimal>);
+							break;
+						case FieldType.DateTime:
+							fieldType = typeof(Nullable<DateTime>);
+							break;
+						case FieldType.TimeSpan:
+							fieldType = typeof(Nullable<TimeSpan>);
+							break;
+						case FieldType.Boolean:
+							fieldType = typeof(Nullable<Boolean>);
+							break;
+						default:
+							fieldType = typeof(String);
+							break;
+					}
+
+					if (DataType.Instance.IsNullOrWhiteSpace(tempStringValue))
+						fieldValue = DataType.Instance.DefaultValue(fieldType);
+					else
+						DataType.Instance.TryParse(fieldType, tempStringValue, out fieldValue);
 
 					// lookup header name (key) by index and commit value to record
-					this.ParserState.record.Add(this.DelimitedTextSpec.HeaderNames[this.ParserState.fieldIndex], tempStringValue);
+					this.ParserState.record.Add(headerSpec.HeaderName, fieldValue);
 				}
 
 				// handle blank records (we assume that an records with valid record delimiter is OK)
@@ -295,7 +213,7 @@ namespace TextMetal.Common.Core
 			return false;
 		}
 
-		public override IEnumerable<string> ReadHeaderNames()
+		public override IEnumerable<HeaderSpec> ReadHeaderSpecs()
 		{
 			if (this.ParserState.recordIndex == 0 && 
 				this.DelimitedTextSpec.FirstRecordIsHeader)
@@ -305,7 +223,7 @@ namespace TextMetal.Common.Core
 				y.SingleOrDefault(); // force a single enumeration - yield return is a brain fyck
 			}
 
-			return this.DelimitedTextSpec.HeaderNames;
+			return this.DelimitedTextSpec.HeaderSpecs;
 		}
 
 		public override IEnumerable<IDictionary<string, object>> ReadRecords()
@@ -373,12 +291,53 @@ namespace TextMetal.Common.Core
 				{
 					if ((object)this.ParserState.record != null)
 					{
-						if (!this.ParserState.isHeaderRecord)
-							yield return this.ParserState.record; // aint this some shhhhhhhh?
+						if (this.ParserState.isHeaderRecord)
+						{
+							string[] headerNames;
+							HeaderSpec headerSpec;
+
+							headerNames = this.ParserState.record.Keys.ToArray();
+
+							// stash parsed header names into header specs member
+							if ((object)this.DelimitedTextSpec.HeaderSpecs != null &&
+								headerNames.Length == this.DelimitedTextSpec.HeaderSpecs.Count)
+							{
+								if ((object)headerNames != null)
+								{
+									for (int headerIndex = 0; headerIndex < headerNames.Length; headerIndex++)
+									{
+										headerSpec = this.DelimitedTextSpec.HeaderSpecs[headerIndex];
+
+										if (!DataType.Instance.IsNullOrWhiteSpace(headerSpec.HeaderName) &&
+											headerSpec.HeaderName.ToLower() != headerNames[headerIndex].ToLower())
+											throw new InvalidOperationException(string.Format("Header name mismatch: '{0}' <> '{1}'.", headerSpec.HeaderName, headerNames[headerIndex]));
+
+										headerSpec.HeaderName = headerNames[headerIndex];
+									}
+								}
+							}
+							else
+							{
+								// reset header specs because they do not match in length
+								this.DelimitedTextSpec.HeaderSpecs.Clear();
+
+								if ((object)headerNames != null)
+								{
+									foreach (string headerName in headerNames)
+									{
+										this.DelimitedTextSpec.HeaderSpecs.Add(new HeaderSpec()
+																				{
+																					HeaderName = headerName,
+																					FieldType = FieldType.Undefined
+																				});
+									}
+								}
+							}
+						}
 						else
 						{
-							// stash parsed header names into member
-							this.DelimitedTextSpec.HeaderNames = this.ParserState.record.Keys.ToArray();
+							// aint this some shhhhhhhh?
+							yield return this.ParserState.record;
 						}
 					}
 

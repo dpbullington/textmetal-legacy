@@ -52,7 +52,10 @@
     <Compile Include="ApplicationStorage\IApplicationStorage.cs" />
     <Compile Include="DelimitedTextWriter.cs" />
     <Compile Include="DelimitedTextSpec.cs" />
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="FieldType.cs" />
     <Compile Include="FileSystemEnumerator.cs" />
+    <Compile Include="HeaderSpec.cs" />
     <Compile Include="ProjectAssemblyDependency.cs" />
     <Compile Include="AssemblyInformation.cs" />
     <Compile Include="Cerealization\Cerealization.cs" />
@@ -75,6 +78,8 @@
     <Compile Include="IReflexion.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Name.cs" />
+    <Compile Include="RecordTextReader.cs" />
+    <Compile Include="RecordTextWriter.cs" />
     <Compile Include="Reflexion.cs" />
     <Compile Include="DelimitedTextReader.cs" />
     <Compile Include="Severity.cs" />
@@ -82,10 +87,16 @@
     <Compile Include="Tokenization\ContextualDynamicValueTokenReplacementStrategy.cs" />
     <Compile Include="Tokenization\DynamicValueTokenReplacementStrategy.cs" />
     <Compile Include="Tokenization\DynamicWildcardTokenReplacementStrategy.cs" />
+    <Compile Include="Tokenization\ITokenizer.cs" />
     <Compile Include="Tokenization\ITokenReplacementStrategy.cs" />
     <Compile Include="Tokenization\IWildcardTokenReplacementStrategy.cs" />
     <Compile Include="Tokenization\StaticValueTokenReplacementStrategy.cs" />
     <Compile Include="Tokenization\Tokenizer.cs" />
+    <Compile Include="VirtualFileSystemEnumerator.cs" />
+    <Compile Include="VirtualFileSystemItem.cs" />
+    <Compile Include="VirtualFileSystemItemType.cs" />
+    <Compile Include="WrappedTextReader.cs" />
+    <Compile Include="WrappedTextWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TextMetal.snk">
