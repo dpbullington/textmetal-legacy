@@ -326,7 +326,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			if (asCopy)
 			{
 				// get new file path
-				if (!this.TryGetFilePath(out filePath))
+				if (!this.TryGetSaveFilePath(out filePath))
 					return false;
 
 				this.DocumentFilePath = filePath;
@@ -335,7 +335,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			{
 				if (DataType.Instance.IsNullOrWhiteSpace(this.DocumentFilePath))
 				{
-					if (!this.TryGetFilePath(out filePath))
+					if (!this.TryGetSaveFilePath(out filePath))
 						return false;
 
 					this.DocumentFilePath = filePath;
@@ -358,7 +358,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			return true;
 		}
 
-		private bool TryGetFilePath(out string filePath)
+		private bool TryGetSaveFilePath(out string filePath)
 		{
 			DialogResult dialogResult;
 

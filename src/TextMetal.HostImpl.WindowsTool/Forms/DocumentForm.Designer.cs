@@ -31,13 +31,13 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DocumentForm));
-			this.msMain = new System.Windows.Forms.MenuStrip();
+			this.msMain = new TmMenuStrip();
 			this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSave = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSaveAs = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiClose = new System.Windows.Forms.ToolStripMenuItem();
-			this.ssMain = new System.Windows.Forms.StatusStrip();
+			this.ssMain = new TmStatusStrip();
 			this.tsslMain = new System.Windows.Forms.ToolStripStatusLabel();
 			this.pnlMain = new TextMetal.Common.WinForms.Controls.TmPanel();
 			this.tmSplitContainer1 = new TextMetal.Common.WinForms.Controls.TmSplitContainer();
@@ -47,8 +47,8 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			this.pgMain = new TextMetal.Common.WinForms.Controls.TmPropertyGrid();
 			this.sfdMain = new System.Windows.Forms.SaveFileDialog();
 			this.tabMain = new TextMetal.Common.WinForms.Controls.TmTabControl();
-			this.tpgSourceView = new System.Windows.Forms.TabPage();
-			this.tpgDesignView = new System.Windows.Forms.TabPage();
+			this.tpgSourceView = new TmTabPage();
+			this.tpgDesignView = new TmTabPage();
 			this.sketchDesigner = new TextMetal.Common.WinForms.DesignTime.SketchDesigner();
 			this.msMain.SuspendLayout();
 			this.ssMain.SuspendLayout();
@@ -295,8 +295,8 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 		#endregion
 
-		private System.Windows.Forms.MenuStrip msMain;
-		private System.Windows.Forms.StatusStrip ssMain;
+		private TmMenuStrip msMain;
+		private TmStatusStrip ssMain;
 		private TmPanel pnlMain;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFile;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSave;
@@ -311,8 +311,8 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		private TmPropertyGrid pgMain;
 		private TmTextBox txtBxSourceView;
 		private TmTabControl tabMain;
-		private System.Windows.Forms.TabPage tpgSourceView;
-		private System.Windows.Forms.TabPage tpgDesignView;
+		private TmTabPage tpgSourceView;
+		private TmTabPage tpgDesignView;
 		private Common.WinForms.DesignTime.SketchDesigner sketchDesigner;
 
 	}

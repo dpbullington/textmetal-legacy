@@ -314,7 +314,7 @@ namespace TextMetal.Common.WinForms.Controls
 			control.Text = value;
 		}
 
-		public static void CoreSetValue<TValue>(this Control control, object value, string format)
+		public static void CoreSetValue<TValue>(this Control control, TValue value, string format)
 		{
 			if ((object)control == null)
 				throw new ArgumentNullException("control");

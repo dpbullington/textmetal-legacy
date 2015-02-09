@@ -16,26 +16,13 @@ using Message = TextMetal.Common.Core.Message;
 
 namespace TextMetal.Common.WinForms
 {
-	public abstract class WindowsApplication<TMainForm, TSplashForm> : ExecutableApplication
+	public abstract class WindowsApplication<TMainForm> : ExecutableApplication
 		where TMainForm : Form, new()
-		where TSplashForm : Form, new()
 	{
 		#region Constructors/Destructors
 
 		protected WindowsApplication()
 		{
-		}
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public bool ShowSplashScreen
-		{
-			get
-			{
-				return AppConfig.GetAppSetting<bool>(string.Format("{0}::ShowSplashScreen", this.GetType().Namespace));
-			}
 		}
 
 		#endregion
@@ -89,6 +76,11 @@ namespace TextMetal.Common.WinForms
 			this.ShowNestedExceptionsAndThrowBrickAtProcess(new ApplicationException("OnApplicationThreadException", e.Exception));
 		}
 
+		protected virtual void OnRunApplication()
+		{
+			Application.Run(new TMainForm());
+		}
+
 		protected override sealed int OnStartup(string[] args, IDictionary<string, IList<object>> arguments)
 		{
 			if (this.HookUnhandledExceptionEvents)
@@ -98,10 +90,7 @@ namespace TextMetal.Common.WinForms
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			if (this.ShowSplashScreen)
-				Application.Run(new SplashApplicationContext(new TMainForm(), new TSplashForm()));
-			else
-				Application.Run(new TMainForm());
+			this.OnRunApplication();
 
 			return 0;
 		}

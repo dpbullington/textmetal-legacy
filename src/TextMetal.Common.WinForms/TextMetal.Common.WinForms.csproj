@@ -229,7 +229,8 @@
     <Compile Include="ListItem.cs" />
     <Compile Include="ListItem~1.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
-    <Compile Include="WindowsApplication.cs" />
+    <Compile Include="WindowsApplication~1.cs" />
+    <Compile Include="WindowsApplication~2.cs" />
     <Compile Include="SplashApplicationContext.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -23,7 +23,6 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		public MainForm()
 		{
 			this.InitializeComponent();
-			this.StatusText = string.Empty;
 		}
 
 		#endregion
@@ -134,7 +133,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 			this.CoreText = string.Format("{0} Studio", ExecutableApplication.Current.AssemblyInformation.Product);
 
-			stream = this.GetType().Assembly.GetManifestResourceStream("TextMetal.HostImpl.WindowsTool.Images.SplashScreen.png");
+			stream = this.GetType().Assembly.GetManifestResourceStream(RESOURCE_NAME);
 
 			if ((object)stream == null)
 				throw new InvalidOperationException(string.Format("Manifest resource name '{0}' was not found in assembly '{1}'.", RESOURCE_NAME, this.GetType().Assembly));
@@ -144,6 +143,8 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			this.BackgroundImage = image;
 
 			// DO NOT DISPOSE (owner cleans up)
+
+			this.StatusText = "Ready";
 		}
 
 		protected override void CoreShown()
@@ -227,7 +228,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		{
 			string filePath;
 
-			if (!this.TryGetFilePath(out filePath))
+			if (!this.TryGetOpenFilePath(out filePath))
 				return;
 
 			this.ShowDocument(filePath);
@@ -254,7 +255,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 			documentForm.Show();
 		}
 
-		private bool TryGetFilePath(out string filePath)
+		private bool TryGetOpenFilePath(out string filePath)
 		{
 			DialogResult dialogResult;
 

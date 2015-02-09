@@ -29,7 +29,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 		{
 			this.Okay();
 		}
-
+			
 		protected override void CoreSetup()
 		{
 			const string RESOURCE_NAME = "TextMetal.HostImpl.WindowsTool.Images.SplashScreen.png";
@@ -38,7 +38,7 @@ namespace TextMetal.HostImpl.WindowsTool.Forms
 
 			base.CoreSetup();
 
-			stream = this.GetType().Assembly.GetManifestResourceStream("TextMetal.HostImpl.WindowsTool.Images.SplashScreen.png");
+			stream = this.GetType().Assembly.GetManifestResourceStream(RESOURCE_NAME);
 
 			if ((object)stream == null)
 				throw new InvalidOperationException(string.Format("Manifest resource name '{0}' was not found in assembly '{1}'.", RESOURCE_NAME, this.GetType().Assembly));

@@ -1,4 +1,6 @@
-﻿namespace TextMetal.HostImpl.WindowsTool.Forms
+﻿using TextMetal.Common.WinForms.Controls;
+
+namespace TextMetal.HostImpl.WindowsTool.Forms
 {
 	partial class MainForm
 	{
@@ -29,9 +31,9 @@
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-			this.ssMain = new System.Windows.Forms.StatusStrip();
+			this.ssMain = new TmStatusStrip();
 			this.tsslMain = new System.Windows.Forms.ToolStripStatusLabel();
-			this.msMain = new System.Windows.Forms.MenuStrip();
+			this.msMain = new TmMenuStrip();
 			this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiNew = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiNewDocument = new System.Windows.Forms.ToolStripMenuItem();
@@ -220,8 +222,8 @@
 
 		#endregion
 
-		private System.Windows.Forms.StatusStrip ssMain;
-		private System.Windows.Forms.MenuStrip msMain;
+		private TmStatusStrip ssMain;
+		private TmMenuStrip msMain;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFile;
 		private System.Windows.Forms.ToolStripMenuItem tsmiNew;
 		private System.Windows.Forms.ToolStripMenuItem tsmiNewDocument;

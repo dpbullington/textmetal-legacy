@@ -39,6 +39,12 @@
   <PropertyGroup>
     <ApplicationIcon>Icons\TextMetal.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\TextMetal.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="IronRuby">
       <HintPath>..\..\lib\IronRuby\IronRuby.dll</HintPath>
@@ -115,6 +121,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="..\TextMetal.snk">
+      <Link>TextMetal.snk</Link>
+    </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
