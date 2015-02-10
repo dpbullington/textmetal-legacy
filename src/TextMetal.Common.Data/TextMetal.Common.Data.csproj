@@ -63,6 +63,11 @@
     <Compile Include="LinqToSql\LinqToSqlModelRepository~1.cs" />
     <Compile Include="LinqToSql\MulticastContext~1.cs" />
     <Compile Include="ImpersonationScope.cs" />
+    <Compile Include="ServiceFascade\RequestBase.cs" />
+    <Compile Include="ServiceFascade\ResponseBase.cs" />
+    <Compile Include="ServiceFascade\ResponseBase~1.cs" />
+    <Compile Include="ServiceFascade\ResultBase.cs" />
+    <Compile Include="ServiceFascade\ServiceBase~1.cs" />
     <Compile Include="WrapperDataReader.cs" />
     <Compile Include="AdoNetHelper.cs" />
     <Compile Include="Framework\DatabaseHistory.cs" />

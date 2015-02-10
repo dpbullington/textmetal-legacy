@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Core.InOut;
 using TextMetal.Framework.AssociativeModel;
 
 namespace TextMetal.Framework.SourceModel.Primative

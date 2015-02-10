@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 
 using TextMetal.Common.Core;
-using TextMetal.Common.WinForms;
 using TextMetal.Utilities.VsIdeConv.ConsoleTool.FileHandlers;
 using TextMetal.Utilities.VsIdeConv.ConsoleTool.Utilities;
 

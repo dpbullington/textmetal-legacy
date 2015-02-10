@@ -46,14 +46,6 @@ namespace TextMetal.Common.Data
 			}
 		}
 
-		protected IDataReader InnerDataReader
-		{
-			get
-			{
-				return this.innerDataReader;
-			}
-		}
-
 		public virtual int Depth
 		{
 			get
@@ -67,6 +59,14 @@ namespace TextMetal.Common.Data
 			get
 			{
 				return this.InnerDataReader.FieldCount;
+			}
+		}
+
+		protected IDataReader InnerDataReader
+		{
+			get
+			{
+				return this.innerDataReader;
 			}
 		}
 

@@ -9,7 +9,6 @@ using System.Diagnostics;
 using System.Linq;
 
 using TextMetal.Common.Core;
-using TextMetal.Common.WinForms;
 using TextMetal.HostImpl.Tool;
 
 namespace TextMetal.HostImpl.ConsoleTool

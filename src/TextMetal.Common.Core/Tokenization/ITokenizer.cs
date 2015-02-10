@@ -9,6 +9,8 @@ namespace TextMetal.Common.Core.Tokenization
 {
 	public interface ITokenizer
 	{
+		#region Properties/Indexers/Events
+
 		/// <summary>
 		/// Gets an ordered array of the previous execution of expansion tokens encountered.
 		/// </summary>
@@ -33,6 +35,10 @@ namespace TextMetal.Common.Core.Tokenization
 			get;
 		}
 
+		#endregion
+
+		#region Methods/Operators
+
 		/// <summary>
 		/// Replaces a tokenized input string with replacement values. No wildcard support is assumed.
 		/// </summary>
@@ -47,5 +53,7 @@ namespace TextMetal.Common.Core.Tokenization
 		/// <param name="optionalWildcardTokenReplacementStrategy"> An optional wildcard token replacement strategy. </param>
 		/// <returns> A string value with all possible replacements made. </returns>
 		string ExpandTokens(string tokenizedValue, IWildcardTokenReplacementStrategy optionalWildcardTokenReplacementStrategy);
+
+		#endregion
 	}
 }

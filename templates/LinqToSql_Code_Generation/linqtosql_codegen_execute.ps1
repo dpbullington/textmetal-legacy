@@ -1,5 +1,5 @@
 #
-#	Copyright ©2002-2014 Daniel Bullington (dpbullington@gmail.com)
+#	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
 #	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 #
 
@@ -107,9 +107,6 @@ Copy-Item "$src_dir\TextMetal.Common.Syntax\bin\$build_flavor_dir\TextMetal.Comm
 Copy-Item "$src_dir\TextMetal.Common.UnitTests\bin\$build_flavor_dir\TextMetal.Common.UnitTests.dll" "$base_lib_dir\TextMetal\."
 Copy-Item "$src_dir\TextMetal.Common.UnitTests\bin\$build_flavor_dir\TextMetal.Common.UnitTests.xml" "$base_lib_dir\TextMetal\."
 Copy-Item "$src_dir\TextMetal.Common.UnitTests\bin\$build_flavor_dir\TextMetal.Common.UnitTests.pdb" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Common.WinForms\bin\$build_flavor_dir\TextMetal.Common.WinForms.dll" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Common.WinForms\bin\$build_flavor_dir\TextMetal.Common.WinForms.xml" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Common.WinForms\bin\$build_flavor_dir\TextMetal.Common.WinForms.pdb" "$base_lib_dir\TextMetal\."
 Copy-Item "$src_dir\TextMetal.Common.Xml\bin\$build_flavor_dir\TextMetal.Common.Xml.dll" "$base_lib_dir\TextMetal\."
 Copy-Item "$src_dir\TextMetal.Common.Xml\bin\$build_flavor_dir\TextMetal.Common.Xml.xml" "$base_lib_dir\TextMetal\."
 Copy-Item "$src_dir\TextMetal.Common.Xml\bin\$build_flavor_dir\TextMetal.Common.Xml.pdb" "$base_lib_dir\TextMetal\."
@@ -149,9 +146,6 @@ Copy-Item "$src_dir\TextMetal.Framework.UnitTests\bin\$build_flavor_dir\TextMeta
 Copy-Item "$src_dir\TextMetal.HostImpl.ConsoleTool\bin\$build_flavor_dir\TextMetal.exe" "$base_lib_dir\TextMetal\."
 Copy-Item "$src_dir\TextMetal.HostImpl.ConsoleTool\bin\$build_flavor_dir\TextMetal.xml" "$base_lib_dir\TextMetal\."
 Copy-Item "$src_dir\TextMetal.HostImpl.ConsoleTool\bin\$build_flavor_dir\TextMetal.pdb" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.HostImpl.WindowsTool\bin\$build_flavor_dir\TextMetalStudio.exe" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.HostImpl.WindowsTool\bin\$build_flavor_dir\TextMetalStudio.xml" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.HostImpl.WindowsTool\bin\$build_flavor_dir\TextMetalStudio.pdb" "$base_lib_dir\TextMetal\."
 Copy-Item "$src_dir\TextMetal.HostImpl.Tool\bin\$build_flavor_dir\TextMetal.HostImpl.Tool.dll" "$base_lib_dir\TextMetal\."
 Copy-Item "$src_dir\TextMetal.HostImpl.Tool\bin\$build_flavor_dir\TextMetal.HostImpl.Tool.xml" "$base_lib_dir\TextMetal\."
 Copy-Item "$src_dir\TextMetal.HostImpl.Tool\bin\$build_flavor_dir\TextMetal.HostImpl.Tool.pdb" "$base_lib_dir\TextMetal\."

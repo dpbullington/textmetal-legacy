@@ -155,23 +155,6 @@ if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 
 
 
-Copy-Item "$src_dir\TextMetal.Common.WinForms\bin\$build_flavor_dir\TextMetal.Common.WinForms.dll" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Common.WinForms\bin\$build_flavor_dir\TextMetal.Common.WinForms.xml" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Common.WinForms\bin\$build_flavor_dir\TextMetal.Common.WinForms.pdb" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-
-
 Copy-Item "$src_dir\TextMetal.Common.Xml\bin\$build_flavor_dir\TextMetal.Common.Xml.dll" "$pkg_dir\bin\."
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
@@ -409,28 +392,6 @@ if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
 
 Copy-Item "$src_dir\TextMetal.HostImpl.Tool\bin\$build_flavor_dir\TextMetal.HostImpl.Tool.pdb" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-
-
-Copy-Item "$src_dir\TextMetal.HostImpl.WindowsTool\bin\$build_flavor_dir\TextMetalStudio.exe" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.HostImpl.WindowsTool\bin\$build_flavor_dir\TextMetalStudio.exe.config" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.HostImpl.WindowsTool\bin\$build_flavor_dir\TextMetalStudio.xml" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.HostImpl.WindowsTool\bin\$build_flavor_dir\TextMetalStudio.pdb" "$pkg_dir\bin\."
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }

@@ -50,12 +50,13 @@
     <Compile Include="ApplicationStorage\HttpCookieApplicationStorage.cs" />
     <Compile Include="ApplicationStorage\HttpSessionApplicationStorage.cs" />
     <Compile Include="ApplicationStorage\IApplicationStorage.cs" />
-    <Compile Include="DelimitedTextWriter.cs" />
-    <Compile Include="DelimitedTextSpec.cs" />
+    <Compile Include="ConsoleApplication.cs" />
+    <Compile Include="InOut\DelimitedTextWriter.cs" />
+    <Compile Include="InOut\DelimitedTextSpec.cs" />
+    <Compile Include="ExecutableApplication.cs" />
     <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="FieldType.cs" />
-    <Compile Include="FileSystemEnumerator.cs" />
-    <Compile Include="HeaderSpec.cs" />
+    <Compile Include="InOut\FieldType.cs" />
+    <Compile Include="InOut\HeaderSpec.cs" />
     <Compile Include="ProjectAssemblyDependency.cs" />
     <Compile Include="AssemblyInformation.cs" />
     <Compile Include="Cerealization\Cerealization.cs" />
@@ -78,10 +79,10 @@
     <Compile Include="IReflexion.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Name.cs" />
-    <Compile Include="RecordTextReader.cs" />
-    <Compile Include="RecordTextWriter.cs" />
+    <Compile Include="InOut\RecordTextReader.cs" />
+    <Compile Include="InOut\RecordTextWriter.cs" />
     <Compile Include="Reflexion.cs" />
-    <Compile Include="DelimitedTextReader.cs" />
+    <Compile Include="InOut\DelimitedTextReader.cs" />
     <Compile Include="Severity.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
     <Compile Include="Tokenization\ContextualDynamicValueTokenReplacementStrategy.cs" />
@@ -92,11 +93,11 @@
     <Compile Include="Tokenization\IWildcardTokenReplacementStrategy.cs" />
     <Compile Include="Tokenization\StaticValueTokenReplacementStrategy.cs" />
     <Compile Include="Tokenization\Tokenizer.cs" />
-    <Compile Include="VirtualFileSystemEnumerator.cs" />
-    <Compile Include="VirtualFileSystemItem.cs" />
-    <Compile Include="VirtualFileSystemItemType.cs" />
-    <Compile Include="WrappedTextReader.cs" />
-    <Compile Include="WrappedTextWriter.cs" />
+    <Compile Include="InOut\VirtualFileSystemEnumerator.cs" />
+    <Compile Include="InOut\VirtualFileSystemItem.cs" />
+    <Compile Include="InOut\VirtualFileSystemItemType.cs" />
+    <Compile Include="InOut\WrappedTextReader.cs" />
+    <Compile Include="InOut\WrappedTextWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TextMetal.snk">

@@ -122,10 +122,6 @@
       <Project>{483501d9-4d73-4076-997b-3a5d8b5ddb2c}</Project>
       <Name>TextMetal.Common.Syntax</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TextMetal.Common.WinForms\TextMetal.Common.WinForms.csproj">
-      <Project>{6bd158ba-429b-422b-aaeb-24a36511c19a}</Project>
-      <Name>TextMetal.Common.WinForms</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TextMetal.Common.Xml\TextMetal.Common.Xml.csproj">
       <Project>{cef6c9d5-d5f2-4f4e-81dd-0bfdf81a2c93}</Project>
       <Name>TextMetal.Common.Xml</Name>
