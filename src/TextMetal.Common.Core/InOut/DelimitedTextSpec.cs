@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace TextMetal.Common.Core.InOut
 {
-	public sealed class DelimitedTextSpec
+	public class DelimitedTextSpec
 	{
 		#region Constructors/Destructors
 

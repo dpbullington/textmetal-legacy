@@ -50,13 +50,15 @@ namespace TextMetal.Common.Core.Cerealization
 		/// <summary>
 		/// Serializes an object to a byte array value.
 		/// </summary>
+		/// <param name="targetType"> The target run-time type of the root of the object graph to serialize. </param>
 		/// <param name="obj"> The object graph to serialize. </param>
 		/// <returns> A byte array representation of the object graph. </returns>
-		byte[] SetObjectToBytes(object obj);
+		byte[] SetObjectToBytes(Type targetType, object obj);
 
 		/// <summary>
 		/// Serializes an object to a byte array value. This is the generic overload.
 		/// </summary>
+		/// <typeparam name="TObject"> The target run-time type of the root of the object graph to serialize. </typeparam>
 		/// <param name="obj"> The object graph to serialize. </param>
 		/// <returns> A byte array representation of the object graph. </returns>
 		byte[] SetObjectToBytes<TObject>(TObject obj);
@@ -65,12 +67,14 @@ namespace TextMetal.Common.Core.Cerealization
 		/// Serializes an object to the specified binary writer.
 		/// </summary>
 		/// <param name="binaryWriter"> The binary writer to serialize. </param>
+		/// <param name="targetType"> The target run-time type of the root of the object graph to serialize. </param>
 		/// <param name="obj"> The object graph to serialize. </param>
-		void SetObjectToWriter(BinaryWriter binaryWriter, object obj);
+		void SetObjectToWriter(BinaryWriter binaryWriter, Type targetType, object obj);
 
 		/// <summary>
 		/// Serializes an object to the specified binary writer. This is the generic overload.
 		/// </summary>
+		/// <typeparam name="TObject"> The target run-time type of the root of the object graph to serialize. </typeparam>
 		/// <param name="binaryWriter"> The binary writer to serialize. </param>
 		/// <param name="obj"> The object graph to serialize. </param>
 		void SetObjectToWriter<TObject>(BinaryWriter binaryWriter, TObject obj);

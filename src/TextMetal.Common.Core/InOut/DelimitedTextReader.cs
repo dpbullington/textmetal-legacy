@@ -327,7 +327,7 @@ namespace TextMetal.Common.Core.InOut
 										this.DelimitedTextSpec.HeaderSpecs.Add(new HeaderSpec()
 																				{
 																					HeaderName = headerName,
-																					FieldType = FieldType.Undefined
+																					FieldType = FieldType.String
 																				});
 									}
 								}

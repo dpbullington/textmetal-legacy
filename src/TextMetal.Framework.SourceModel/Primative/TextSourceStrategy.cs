@@ -141,7 +141,7 @@ namespace TextMetal.Framework.SourceModel.Primative
 					delimitedTextSpec.HeaderSpecs.Add(new HeaderSpec()
 													{
 														HeaderName = headerName,
-														FieldType = FieldType.Undefined
+														FieldType = FieldType.String
 													});
 				}
 			}

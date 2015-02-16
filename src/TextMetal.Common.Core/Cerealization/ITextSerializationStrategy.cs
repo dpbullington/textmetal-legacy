@@ -50,13 +50,15 @@ namespace TextMetal.Common.Core.Cerealization
 		/// <summary>
 		/// Serializes an object to a string value.
 		/// </summary>
+		/// <param name="targetType"> The target run-time type of the root of the object graph to serialize. </param>
 		/// <param name="obj"> The object graph to serialize. </param>
 		/// <returns> A string representation of the object graph. </returns>
-		string SetObjectToString(object obj);
+		string SetObjectToString(Type targetType, object obj);
 
 		/// <summary>
 		/// Serializes an object to a string value. This is the generic overload.
 		/// </summary>
+		/// <typeparam name="TObject"> The target run-time type of the root of the object graph to serialize. </typeparam>
 		/// <param name="obj"> The object graph to serialize. </param>
 		/// <returns> A string representation of the object graph. </returns>
 		string SetObjectToString<TObject>(TObject obj);
@@ -65,12 +67,14 @@ namespace TextMetal.Common.Core.Cerealization
 		/// Serializes an object to the specified text writer.
 		/// </summary>
 		/// <param name="textWriter"> The text writer to serialize. </param>
+		/// <param name="targetType"> The target run-time type of the root of the object graph to serialize. </param>
 		/// <param name="obj"> The object graph to serialize. </param>
-		void SetObjectToWriter(TextWriter textWriter, object obj);
+		void SetObjectToWriter(TextWriter textWriter, Type targetType, object obj);
 
 		/// <summary>
 		/// Serializes an object to the specified text writer. This is the generic overload.
 		/// </summary>
+		/// <typeparam name="TObject"> The target run-time type of the root of the object graph to serialize. </typeparam>
 		/// <param name="textWriter"> The text writer to serialize. </param>
 		/// <param name="obj"> The object graph to serialize. </param>
 		void SetObjectToWriter<TObject>(TextWriter textWriter, TObject obj);

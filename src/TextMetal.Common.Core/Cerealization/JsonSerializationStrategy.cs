@@ -59,7 +59,14 @@ namespace TextMetal.Common.Core.Cerealization
 		/// <returns> An object of the target type or null. </returns>
 		public TObject GetObjectFromBytes<TObject>(byte[] value)
 		{
-			throw new NotImplementedException();
+			TObject obj;
+			Type targetType;
+
+			targetType = typeof(TObject);
+
+			obj = (TObject)this.GetObjectFromBytes(value, targetType);
+
+			return obj;
 		}
 
 		/// <summary>
@@ -178,7 +185,14 @@ namespace TextMetal.Common.Core.Cerealization
 		/// <returns> An object of the target type or null. </returns>
 		public TObject GetObjectFromReader<TObject>(BinaryReader binaryReader)
 		{
-			throw new NotImplementedException();
+			TObject obj;
+			Type targetType;
+
+			targetType = typeof(TObject);
+
+			obj = (TObject)this.GetObjectFromReader(binaryReader, targetType);
+
+			return obj;
 		}
 
 		/// <summary>
@@ -274,9 +288,10 @@ namespace TextMetal.Common.Core.Cerealization
 		/// <summary>
 		/// Serializes an object to a byte array value.
 		/// </summary>
+		/// <param name="targetType"> The target run-time type of the root of the object graph to serialize. </param>
 		/// <param name="obj"> The object graph to serialize. </param>
 		/// <returns> A byte array representation of the object graph. </returns>
-		public byte[] SetObjectToBytes(object obj)
+		public byte[] SetObjectToBytes(Type targetType, object obj)
 		{
 			throw new NotImplementedException();
 		}
@@ -288,7 +303,14 @@ namespace TextMetal.Common.Core.Cerealization
 		/// <returns> A byte array representation of the object graph. </returns>
 		public byte[] SetObjectToBytes<TObject>(TObject obj)
 		{
-			throw new NotImplementedException();
+			byte[] bytes;
+			Type targetType;
+
+			targetType = typeof(TObject);
+
+			bytes = this.SetObjectToBytes(targetType, obj);
+
+			return bytes;
 		}
 
 		/// <summary>
@@ -299,6 +321,8 @@ namespace TextMetal.Common.Core.Cerealization
 		/// <param name="obj"> The object graph to serialize. </param>
 		public void SetObjectToFile<TObject>(string outputFilePath, TObject obj)
 		{
+			Type targetType;
+
 			if ((object)outputFilePath == null)
 				throw new ArgumentNullException("outputFilePath");
 
@@ -308,18 +332,24 @@ namespace TextMetal.Common.Core.Cerealization
 			if (DataType.Instance.IsWhiteSpace(outputFilePath))
 				throw new ArgumentOutOfRangeException("outputFilePath");
 
-			this.SetObjectToFile(outputFilePath, (object)obj);
+			targetType = obj.GetType();
+
+			this.SetObjectToFile(outputFilePath, targetType, (object)obj);
 		}
 
 		/// <summary>
 		/// Serializes an object to the specified output file.
 		/// </summary>
 		/// <param name="outputFilePath"> The output file path to serialize. </param>
+		/// <param name="targetType"> The target run-time type of the root of the object graph to serialize. </param>
 		/// <param name="obj"> The object graph to serialize. </param>
-		public void SetObjectToFile(string outputFilePath, object obj)
+		public void SetObjectToFile(string outputFilePath, Type targetType, object obj)
 		{
 			if ((object)outputFilePath == null)
 				throw new ArgumentNullException("outputFilePath");
+
+			if ((object)targetType == null)
+				throw new ArgumentNullException("targetType");
 
 			if ((object)obj == null)
 				throw new ArgumentNullException("obj");
@@ -328,7 +358,7 @@ namespace TextMetal.Common.Core.Cerealization
 				throw new ArgumentOutOfRangeException("outputFilePath");
 
 			using (Stream stream = File.Open(outputFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
-				this.SetObjectToStream(stream, obj);
+				this.SetObjectToStream(stream, targetType, obj);
 		}
 
 		/// <summary>
@@ -339,23 +369,6 @@ namespace TextMetal.Common.Core.Cerealization
 		/// <param name="obj"> The object graph to serialize. </param>
 		public void SetObjectToStream<TObject>(Stream stream, TObject obj)
 		{
-			if ((object)stream == null)
-				throw new ArgumentNullException("stream");
-
-			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
-
-			this.SetObjectToStream(stream, (object)obj);
-		}
-
-		/// <summary>
-		/// Serializes an object to the specified writable stream.
-		/// </summary>
-		/// <param name="stream"> The writable stream to serialize. </param>
-		/// <param name="obj"> The object graph to serialize. </param>
-		public void SetObjectToStream(Stream stream, object obj)
-		{
-			JsonSerializer serializer;
 			Type targetType;
 
 			if ((object)stream == null)
@@ -365,6 +378,28 @@ namespace TextMetal.Common.Core.Cerealization
 				throw new ArgumentNullException("obj");
 
 			targetType = obj.GetType();
+
+			this.SetObjectToStream(stream, targetType, (object)obj);
+		}
+
+		/// <summary>
+		/// Serializes an object to the specified writable stream.
+		/// </summary>
+		/// <param name="stream"> The writable stream to serialize. </param>
+		/// <param name="targetType"> The target run-time type of the root of the object graph to serialize. </param>
+		/// <param name="obj"> The object graph to serialize. </param>
+		public void SetObjectToStream(Stream stream, Type targetType, object obj)
+		{
+			JsonSerializer serializer;
+
+			if ((object)stream == null)
+				throw new ArgumentNullException("stream");
+
+			if ((object)targetType == null)
+				throw new ArgumentNullException("targetType");
+
+			if ((object)obj == null)
+				throw new ArgumentNullException("obj");
 
 			serializer = JsonSerializer.Create(new JsonSerializerSettings()
 												{
@@ -382,9 +417,10 @@ namespace TextMetal.Common.Core.Cerealization
 		/// <summary>
 		/// Serializes an object to a string value.
 		/// </summary>
+		/// <param name="targetType"> The target run-time type of the root of the object graph to serialize. </param>
 		/// <param name="obj"> The object graph to serialize. </param>
 		/// <returns> A string representation of the object graph. </returns>
-		public string SetObjectToString(object obj)
+		public string SetObjectToString(Type targetType, object obj)
 		{
 			StringWriter stringWriter;
 
@@ -405,29 +441,34 @@ namespace TextMetal.Common.Core.Cerealization
 		/// <returns> A string representation of the object graph. </returns>
 		public string SetObjectToString<TObject>(TObject obj)
 		{
+			Type targetType;
+
 			if ((object)obj == null)
 				throw new ArgumentNullException("obj");
 
-			return this.SetObjectToString((object)obj);
+			targetType = obj.GetType();
+
+			return this.SetObjectToString(targetType, (object)obj);
 		}
 
 		/// <summary>
 		/// Serializes an object to the specified text writer.
 		/// </summary>
 		/// <param name="textWriter"> The text writer to serialize. </param>
+		/// <param name="targetType"> The target run-time type of the root of the object graph to serialize. </param>
 		/// <param name="obj"> The object graph to serialize. </param>
-		public void SetObjectToWriter(TextWriter textWriter, object obj)
+		public void SetObjectToWriter(TextWriter textWriter, Type targetType, object obj)
 		{
 			JsonSerializer serializer;
-			Type targetType;
 
 			if ((object)textWriter == null)
 				throw new ArgumentNullException("stream");
 
+			if ((object)targetType == null)
+				throw new ArgumentNullException("targetType");
+
 			if ((object)obj == null)
 				throw new ArgumentNullException("obj");
-
-			targetType = obj.GetType();
 
 			serializer = JsonSerializer.Create(new JsonSerializerSettings()
 												{
@@ -446,23 +487,17 @@ namespace TextMetal.Common.Core.Cerealization
 		/// <param name="obj"> The object graph to serialize. </param>
 		public void SetObjectToWriter<TObject>(TextWriter textWriter, TObject obj)
 		{
+			Type targetType;
+
 			if ((object)textWriter == null)
 				throw new ArgumentNullException("textWriter");
 
 			if ((object)obj == null)
 				throw new ArgumentNullException("obj");
 
-			this.SetObjectToWriter(textWriter, (object)obj);
-		}
+			targetType = obj.GetType();
 
-		/// <summary>
-		/// Serializes an object to the specified binary writer.
-		/// </summary>
-		/// <param name="binaryWriter"> The binary writer to serialize. </param>
-		/// <param name="obj"> The object graph to serialize. </param>
-		public void SetObjectToWriter(BinaryWriter binaryWriter, object obj)
-		{
-			throw new NotImplementedException();
+			this.SetObjectToWriter(textWriter, targetType, (object)obj);
 		}
 
 		/// <summary>
@@ -471,6 +506,21 @@ namespace TextMetal.Common.Core.Cerealization
 		/// <param name="binaryWriter"> The binary writer to serialize. </param>
 		/// <param name="obj"> The object graph to serialize. </param>
 		public void SetObjectToWriter<TObject>(BinaryWriter binaryWriter, TObject obj)
+		{
+			Type targetType;
+
+			targetType = typeof(TObject);
+
+			this.SetObjectToWriter(binaryWriter, targetType, obj);
+		}
+
+		/// <summary>
+		/// Serializes an object to the specified binary writer.
+		/// </summary>
+		/// <param name="binaryWriter"> The binary writer to serialize. </param>
+		/// <param name="targetType"> The target run-time type of the root of the object graph to serialize. </param>
+		/// <param name="obj"> The object graph to serialize. </param>
+		public void SetObjectToWriter(BinaryWriter binaryWriter, Type targetType, object obj)
 		{
 			throw new NotImplementedException();
 		}

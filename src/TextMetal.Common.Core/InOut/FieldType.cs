@@ -7,11 +7,10 @@ namespace TextMetal.Common.Core.InOut
 {
 	public enum FieldType
 	{
-		Undefined = 0,
+		String = 0,
 		Number = 1,
 		DateTime = 2,
 		TimeSpan = 3,
-		Boolean = 4,
-		String = Undefined
+		Boolean = 4
 	}
 }

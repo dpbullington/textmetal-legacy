@@ -59,15 +59,17 @@ namespace TextMetal.Common.Core.Cerealization
 		/// Serializes an object to the specified output file.
 		/// </summary>
 		/// <param name="outputFilePath"> The output file path to serialize. </param>
+		/// <param name="targetType"> The target run-time type of the root of the object graph to serialize. </param>
 		/// <param name="obj"> The object graph to serialize. </param>
-		void SetObjectToFile(string outputFilePath, object obj);
+		void SetObjectToFile(string outputFilePath, Type targetType, object obj);
 
 		/// <summary>
 		/// Serializes an object to the specified writable stream.
 		/// </summary>
 		/// <param name="stream"> The writable stream to serialize. </param>
+		/// <param name="targetType"> The target run-time type of the root of the object graph to serialize. </param>
 		/// <param name="obj"> The object graph to serialize. </param>
-		void SetObjectToStream(Stream stream, object obj);
+		void SetObjectToStream(Stream stream, Type targetType, object obj);
 
 		/// <summary>
 		/// Serializes an object to the specified writable stream.

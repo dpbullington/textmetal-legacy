@@ -35,8 +35,9 @@ namespace TextMetal.Common.Core.Cerealization
 		/// Serializes an object to the specified xml writer.
 		/// </summary>
 		/// <param name="xmlWriter"> The xml writer to serialize. </param>
+		/// <param name="targetType"> The target run-time type of the root of the object graph to serialize. </param>
 		/// <param name="obj"> The object graph to serialize. </param>
-		void SetObjectToWriter(XmlWriter xmlWriter, object obj);
+		void SetObjectToWriter(XmlWriter xmlWriter, Type targetType, object obj);
 
 		/// <summary>
 		/// Serializes an object to the specified xml writer. This is the generic overload.

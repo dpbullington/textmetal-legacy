@@ -46,7 +46,7 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AppConfig.cs" />
+    <Compile Include="Utility\AppConfig.cs" />
     <Compile Include="ApplicationStorage\HttpCookieApplicationStorage.cs" />
     <Compile Include="ApplicationStorage\HttpSessionApplicationStorage.cs" />
     <Compile Include="ApplicationStorage\IApplicationStorage.cs" />
@@ -67,21 +67,21 @@
     <Compile Include="Cerealization\JsonSerializationStrategy.cs" />
     <Compile Include="Cerealization\XmlSerializationStrategy.cs" />
     <Compile Include="ComparableComparer.cs" />
-    <Compile Include="DataType.cs" />
-    <Compile Include="DataType.IntImpl.cs" />
+    <Compile Include="Utility\DataType.cs" />
+    <Compile Include="Utility\DataType.IntImpl.cs" />
     <Compile Include="Hierarchy\IHierarchicalObjectCollection.cs" />
     <Compile Include="Hierarchy\IHierarchicalObjectCollection~1.cs" />
     <Compile Include="Hierarchy\IHierarchicalObject.cs" />
     <Compile Include="Hierarchy\HierarchicalObject.cs" />
     <Compile Include="Hierarchy\HierarchicalObjectCollection~1.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="IDataType.cs" />
-    <Compile Include="IReflexion.cs" />
+    <Compile Include="Utility\IDataType.cs" />
+    <Compile Include="Utility\IReflexion.cs" />
     <Compile Include="Message.cs" />
-    <Compile Include="Name.cs" />
+    <Compile Include="Utility\Name.cs" />
     <Compile Include="InOut\RecordTextReader.cs" />
     <Compile Include="InOut\RecordTextWriter.cs" />
-    <Compile Include="Reflexion.cs" />
+    <Compile Include="Utility\Reflexion.cs" />
     <Compile Include="InOut\DelimitedTextReader.cs" />
     <Compile Include="Severity.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />

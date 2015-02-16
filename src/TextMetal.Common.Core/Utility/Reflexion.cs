@@ -35,7 +35,7 @@ namespace TextMetal.Common.Core
 		/// Initializes a new instance of the Reflexion class.
 		/// </summary>
 		private Reflexion()
-			: this(DependencyManager.AppDomainInstance.ResolveDependency<IDataType>(string.Empty))
+			: this(Core.DataType.Instance)
 		{
 		}
 

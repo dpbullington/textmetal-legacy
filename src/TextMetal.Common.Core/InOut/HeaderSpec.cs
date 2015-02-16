@@ -7,7 +7,7 @@ using System.Globalization;
 
 namespace TextMetal.Common.Core.InOut
 {
-	public sealed class HeaderSpec
+	public class HeaderSpec
 	{
 		#region Constructors/Destructors
 
@@ -17,24 +17,50 @@ namespace TextMetal.Common.Core.InOut
 
 		#endregion
 
+		#region Fields/Constants
+
+		private NumberFormatInfo fieldNumberFormatSpec;
+		private FieldType fieldType;
+		private string headerName;
+
+		#endregion
+
 		#region Properties/Indexers/Events
 
 		public NumberFormatInfo FieldNumberFormatSpec
 		{
-			get;
-			set;
+			get
+			{
+				return this.fieldNumberFormatSpec;
+			}
+			set
+			{
+				this.fieldNumberFormatSpec = value;
+			}
 		}
 
 		public FieldType FieldType
 		{
-			get;
-			set;
+			get
+			{
+				return this.fieldType;
+			}
+			set
+			{
+				this.fieldType = value;
+			}
 		}
 
 		public string HeaderName
 		{
-			get;
-			set;
+			get
+			{
+				return this.headerName;
+			}
+			set
+			{
+				this.headerName = value;
+			}
 		}
 
 		#endregion
