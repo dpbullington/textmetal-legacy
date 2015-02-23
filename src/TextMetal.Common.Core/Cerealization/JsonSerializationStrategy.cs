@@ -136,6 +136,7 @@ namespace TextMetal.Common.Core.Cerealization
 
 			serializer = JsonSerializer.Create(new JsonSerializerSettings()
 												{
+													Formatting = Formatting.Indented,
 													TypeNameHandling = TypeNameHandling.None,
 													ReferenceLoopHandling = ReferenceLoopHandling.Ignore
 												});
@@ -214,6 +215,7 @@ namespace TextMetal.Common.Core.Cerealization
 
 			serializer = JsonSerializer.Create(new JsonSerializerSettings()
 												{
+													Formatting = Formatting.Indented,
 													TypeNameHandling = TypeNameHandling.None,
 													ReferenceLoopHandling = ReferenceLoopHandling.Ignore
 												});
@@ -403,6 +405,7 @@ namespace TextMetal.Common.Core.Cerealization
 
 			serializer = JsonSerializer.Create(new JsonSerializerSettings()
 												{
+													Formatting = Formatting.Indented,
 													TypeNameHandling = TypeNameHandling.None,
 													ReferenceLoopHandling = ReferenceLoopHandling.Ignore
 												});
@@ -472,6 +475,7 @@ namespace TextMetal.Common.Core.Cerealization
 
 			serializer = JsonSerializer.Create(new JsonSerializerSettings()
 												{
+													Formatting = Formatting.Indented,
 													TypeNameHandling = TypeNameHandling.None,
 													ReferenceLoopHandling = ReferenceLoopHandling.Ignore
 												});
