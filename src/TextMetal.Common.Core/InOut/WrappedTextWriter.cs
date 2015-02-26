@@ -74,7 +74,16 @@ namespace TextMetal.Common.Core.InOut
 
 		public override void Close()
 		{
-			this.InnerTextWriter.Close();
+			this.Dispose(true);
+			GC.SuppressFinalize((object)this);
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+				this.InnerTextWriter.Dispose();
+
+			base.Dispose(disposing);
 		}
 
 		public override void Flush()

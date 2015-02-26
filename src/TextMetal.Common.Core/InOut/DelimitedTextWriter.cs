@@ -63,14 +63,6 @@ namespace TextMetal.Common.Core.InOut
 
 		#region Methods/Operators
 
-		public override void Close()
-		{
-			if ((object)this.InnerTextWriter != null)
-				this.InnerTextWriter.Close();
-
-			base.Close();
-		}
-
 		private void WriteField(StringBuilder transientStringBuilder, bool first, object fieldValue)
 		{
 			if ((object)transientStringBuilder == null)

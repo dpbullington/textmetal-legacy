@@ -45,7 +45,16 @@ namespace TextMetal.Common.Core.InOut
 
 		public override void Close()
 		{
-			this.InnerTextReader.Close();
+			this.Dispose(true);
+			GC.SuppressFinalize((object)this);
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+				this.InnerTextReader.Dispose();
+
+			base.Dispose(disposing);
 		}
 
 		public override int Peek()

@@ -57,14 +57,6 @@ namespace TextMetal.Common.Core.InOut
 
 		#region Methods/Operators
 
-		public override void Close()
-		{
-			if ((object)this.InnerTextReader != null)
-				this.InnerTextReader.Close();
-
-			base.Close();
-		}
-
 		private bool ParserStateMachine()
 		{
 			string tempStringValue;

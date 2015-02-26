@@ -92,12 +92,20 @@ namespace TextMetal.Common.Data
 
 		public virtual void Close()
 		{
-			this.InnerDataReader.Close();
+			this.Dispose(true);
+			GC.SuppressFinalize((object)this);
 		}
 
-		public virtual void Dispose()
+		public void Dispose()
 		{
-			this.InnerDataReader.Dispose();
+			this.Dispose(true);
+			GC.SuppressFinalize((object)this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+				this.InnerDataReader.Dispose();
 		}
 
 		public virtual bool GetBoolean(int i)

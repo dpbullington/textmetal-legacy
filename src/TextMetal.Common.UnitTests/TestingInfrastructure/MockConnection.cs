@@ -82,9 +82,10 @@ namespace TextMetal.Common.UnitTests.TestingInfrastructure
 			throw new NotImplementedException();
 		}
 
-		public void Close()
+		public virtual void Close()
 		{
-			throw new NotImplementedException();
+			this.Dispose(true);
+			GC.SuppressFinalize((object)this);
 		}
 
 		public IDbCommand CreateCommand()
@@ -93,6 +94,12 @@ namespace TextMetal.Common.UnitTests.TestingInfrastructure
 		}
 
 		public void Dispose()
+		{
+			this.Dispose(true);
+			GC.SuppressFinalize((object)this);
+		}
+
+		protected virtual void Dispose(bool disposing)
 		{
 		}
 
