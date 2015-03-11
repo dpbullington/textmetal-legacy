@@ -13,8 +13,11 @@
 using System;
 using System.Xml;
 
+using TextMetal.Common.Core;
 using TextMetal.Common.Data;
 using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.Syntax.Expressions;
+using TextMetal.Common.Data.Framework.Syntax.Operators;
 ]]>
 		<If>
 			<If.Condition>

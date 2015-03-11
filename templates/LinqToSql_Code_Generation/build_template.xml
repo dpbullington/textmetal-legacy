@@ -81,7 +81,7 @@ $sql_metal_exe = "C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 
 
 $l2s_dir = "$src_dir\${ModuleName}\L2S"
 $l2s_clr_namespace = "${ClrNamespace}.L2S"
-$l2s_data_context_name = "TextMetalDataContext"
+$l2s_data_context_name = "${LinqToSqlTargetDataContextName}"
 $l2s_dbml_file = "$l2s_dir\$l2s_data_context_name.dbml"
 $l2s_designer_cs_file = "$l2s_dir\$l2s_data_context_name.designer.cs"
 
@@ -316,14 +316,8 @@ EndGlobal
 	<Reference Include="TextMetal.Common.Data">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Data.dll</HintPath>
     </Reference>
-	<Reference Include="TextMetal.Common.Syntax">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Syntax.dll</HintPath>
-    </Reference>
 	<Reference Include="TextMetal.Common.Solder">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Solder.dll</HintPath>
-    </Reference>
-	<Reference Include="TextMetal.Common.Xml">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Xml.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -425,7 +419,7 @@ EndGlobal
     <RootNamespace>${ClrNamespace}.UnitTests</RootNamespace>
     <AssemblyName>${ModuleName}.UnitTests</AssemblyName>
     <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\${ModuleName}.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>${csproj_target_framework_version}</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
@@ -463,16 +457,9 @@ EndGlobal
 	<Reference Include="TextMetal.Common.Data">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Data.dll</HintPath>
     </Reference>
-	<Reference Include="TextMetal.Common.Syntax">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Syntax.dll</HintPath>
-    </Reference>
 	<Reference Include="TextMetal.Common.Solder">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Solder.dll</HintPath>
     </Reference>
-	<Reference Include="TextMetal.Common.Xml">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Xml.dll</HintPath>
-    </Reference>
-
 	<Reference Include="TextMetal.Imports">
       <HintPath>..\..\lib\TextMetal\TextMetal.Imports.dll</HintPath>
     </Reference>
@@ -485,6 +472,11 @@ EndGlobal
       <Name>${ModuleName}</Name>
     </ProjectReference>
 
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\${ModuleName}.snk">
+      <Link>${ModuleName}.snk</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
 	<Compile Include="..\SolutionAssemblyInfo.cs">
@@ -569,7 +561,7 @@ EndGlobal
     <RootNamespace>${ClrNamespace}.IntegrationTests</RootNamespace>
     <AssemblyName>${ModuleName}.IntegrationTests</AssemblyName>
     <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\${ModuleName}.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>${csproj_target_framework_version}</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
@@ -607,16 +599,9 @@ EndGlobal
 	<Reference Include="TextMetal.Common.Data">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Data.dll</HintPath>
     </Reference>
-	<Reference Include="TextMetal.Common.Syntax">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Syntax.dll</HintPath>
-    </Reference>
 	<Reference Include="TextMetal.Common.Solder">
       <HintPath>..\..\lib\TextMetal\TextMetal.Common.Solder.dll</HintPath>
     </Reference>
-	<Reference Include="TextMetal.Common.Xml">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Xml.dll</HintPath>
-    </Reference>
-
 	<Reference Include="TextMetal.Imports">
       <HintPath>..\..\lib\TextMetal\TextMetal.Imports.dll</HintPath>
     </Reference>
@@ -629,6 +614,11 @@ EndGlobal
       <Name>${ModuleName}</Name>
     </ProjectReference>
 
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\${ModuleName}.snk">
+      <Link>${ModuleName}.snk</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
 	<Compile Include="..\SolutionAssemblyInfo.cs">

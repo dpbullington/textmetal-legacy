@@ -170,7 +170,7 @@ namespace TextMetal.Common.Data
 				// do the database work
 				dataReader = dbCommand.ExecuteReader(commandBehavior);
 
-				return new WrapperDataReader(dataReader);
+				return dataReader;
 			}
 		}
 

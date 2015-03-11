@@ -22,19 +22,19 @@
 
 	<Write newline="true">
 		<Write.Text>
-			<Value data="${StaticMethodResolver(`TextMetal.Common.Core.Tokenization.DynamicValueTokenReplacementStrategy`, `StaticMethodResolverPing`)}" type="System.String" />
+			<Value data="${StaticMethodResolver(`TextMetal.Framework.Tokenization.DynamicValueTokenReplacementStrategy`, `StaticMethodResolverPing`)}" type="System.String" />
 		</Write.Text>
 	</Write>
 
 	<Write newline="true">
 		<Write.Text>
-			<Value data="${StaticMethodResolver(`TextMetal.Common.Core.Tokenization.DynamicValueTokenReplacementStrategy`, `StaticMethodResolverPing`, `System.String`, `this is a test`)}" type="System.String" />
+			<Value data="${StaticMethodResolver(`TextMetal.Framework.Tokenization.DynamicValueTokenReplacementStrategy`, `StaticMethodResolverPing`, `System.String`, `this is a test`)}" type="System.String" />
 		</Write.Text>
 	</Write>
 
 	<Write newline="true">
 		<Write.Text>
-			<Value data="${StaticMethodResolver(`TextMetal.Common.Core.Tokenization.DynamicValueTokenReplacementStrategy`, `StaticMethodResolverPing`, `System.Nullable\'1[[System.Int32]]`, `1`)}" type="System.String" />
+			<Value data="${StaticMethodResolver(`TextMetal.Framework.Tokenization.DynamicValueTokenReplacementStrategy`, `StaticMethodResolverPing`, `System.Nullable\'1[[System.Int32]]`, `1`)}" type="System.String" />
 		</Write.Text>
 	</Write>
 
@@ -64,7 +64,7 @@
 
 	<Include name="bob_include_content.txt" />
 
-	<Alias local-name="Scrizzle" namespace-uri="http://www.textmetal.com/api/v6.0.0" aqt-name="TextMetal.Framework.TemplateModel.WriteConstruct, TextMetal.Framework.TemplateModel" />
+	<Alias local-name="Scrizzle" namespace-uri="http://www.textmetal.com/api/v6.0.0" aqt-name="TextMetal.Framework.Template.WriteConstruct, TextMetal.Framework" />
 
 	<!-- FAILS BY DESIGN: fails during deserialization, which is in same parse scope as Alias above... -->
 	<!--<Scrizzle newline="true">

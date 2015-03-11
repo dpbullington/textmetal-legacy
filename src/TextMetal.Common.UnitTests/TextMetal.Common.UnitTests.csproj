@@ -12,7 +12,7 @@
     <AssemblyName>TextMetal.Common.UnitTests</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\TextMetal.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -77,9 +77,6 @@
     <Compile Include="TestingInfrastructure\MockModelObject.cs" />
     <Compile Include="TestingInfrastructure\MockDependantObject.cs" />
     <Compile Include="TestingInfrastructure\MockProxyFactory.cs" />
-    <Compile Include="Core\Tokenization\_\DynamicValueTokenReplacementStrategyTests.cs" />
-    <Compile Include="Core\Tokenization\_\StaticValueTokenReplacementStrategyTests.cs" />
-    <Compile Include="Core\Tokenization\_\TokenizerTests.cs" />
     <Compile Include="Data\_\AdoNetHelperTests.cs" />
     <None Include="App.config" />
     <None Include="Data\_\AmbientUnitOfWorkScope.cs" />
@@ -117,14 +114,6 @@
     <ProjectReference Include="..\TextMetal.Common.Solder\TextMetal.Common.Solder.csproj">
       <Project>{3b0efc3c-aa91-4fb4-b2ee-bd8727230a94}</Project>
       <Name>TextMetal.Common.Solder</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TextMetal.Common.Syntax\TextMetal.Common.Syntax.csproj">
-      <Project>{483501d9-4d73-4076-997b-3a5d8b5ddb2c}</Project>
-      <Name>TextMetal.Common.Syntax</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TextMetal.Common.Xml\TextMetal.Common.Xml.csproj">
-      <Project>{cef6c9d5-d5f2-4f4e-81dd-0bfdf81a2c93}</Project>
-      <Name>TextMetal.Common.Xml</Name>
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Imports\TextMetal.Imports.csproj">
       <Project>{40e6902d-3881-4271-bdf3-7d88db7cf230}</Project>

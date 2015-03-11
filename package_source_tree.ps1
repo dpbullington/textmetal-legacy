@@ -121,22 +121,6 @@ if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 
 
 
-Copy-Item "$src_dir\TextMetal.Common.Syntax\bin\$build_flavor_dir\TextMetal.Common.Syntax.dll" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Common.Syntax\bin\$build_flavor_dir\TextMetal.Common.Syntax.xml" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Common.Syntax\bin\$build_flavor_dir\TextMetal.Common.Syntax.pdb" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-
 
 Copy-Item "$src_dir\TextMetal.Common.UnitTests\bin\$build_flavor_dir\TextMetal.Common.UnitTests.dll" "$pkg_dir\bin\."
 
@@ -155,119 +139,17 @@ if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 
 
 
-Copy-Item "$src_dir\TextMetal.Common.Xml\bin\$build_flavor_dir\TextMetal.Common.Xml.dll" "$pkg_dir\bin\."
+Copy-Item "$src_dir\TextMetal.Framework\bin\$build_flavor_dir\TextMetal.Framework.dll" "$pkg_dir\bin\."
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
 
-Copy-Item "$src_dir\TextMetal.Common.Xml\bin\$build_flavor_dir\TextMetal.Common.Xml.xml" "$pkg_dir\bin\."
+Copy-Item "$src_dir\TextMetal.Framework\bin\$build_flavor_dir\TextMetal.Framework.xml" "$pkg_dir\bin\."
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
 
-Copy-Item "$src_dir\TextMetal.Common.Xml\bin\$build_flavor_dir\TextMetal.Common.Xml.pdb" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-
-
-Copy-Item "$src_dir\TextMetal.Framework.AssociativeModel\bin\$build_flavor_dir\TextMetal.Framework.AssociativeModel.dll" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Framework.AssociativeModel\bin\$build_flavor_dir\TextMetal.Framework.AssociativeModel.xml" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Framework.AssociativeModel\bin\$build_flavor_dir\TextMetal.Framework.AssociativeModel.pdb" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-
-
-Copy-Item "$src_dir\TextMetal.Framework.Core\bin\$build_flavor_dir\TextMetal.Framework.Core.dll" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Framework.Core\bin\$build_flavor_dir\TextMetal.Framework.Core.xml" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Framework.Core\bin\$build_flavor_dir\TextMetal.Framework.Core.pdb" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-
-
-Copy-Item "$src_dir\TextMetal.Framework.DebuggerProfilerModel\bin\$build_flavor_dir\TextMetal.Framework.DebuggerProfilerModel.dll" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Framework.DebuggerProfilerModel\bin\$build_flavor_dir\TextMetal.Framework.DebuggerProfilerModel.xml" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Framework.DebuggerProfilerModel\bin\$build_flavor_dir\TextMetal.Framework.DebuggerProfilerModel.pdb" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-
-
-Copy-Item "$src_dir\TextMetal.Framework.ExpressionModel\bin\$build_flavor_dir\TextMetal.Framework.ExpressionModel.dll" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Framework.ExpressionModel\bin\$build_flavor_dir\TextMetal.Framework.ExpressionModel.xml" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Framework.ExpressionModel\bin\$build_flavor_dir\TextMetal.Framework.ExpressionModel.pdb" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-
-
-Copy-Item "$src_dir\TextMetal.Framework.HostingModel\bin\$build_flavor_dir\TextMetal.Framework.HostingModel.dll" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Framework.HostingModel\bin\$build_flavor_dir\TextMetal.Framework.HostingModel.xml" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Framework.HostingModel\bin\$build_flavor_dir\TextMetal.Framework.HostingModel.pdb" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-
-
-Copy-Item "$src_dir\TextMetal.Framework.InputOutputModel\bin\$build_flavor_dir\TextMetal.Framework.InputOutputModel.dll" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Framework.InputOutputModel\bin\$build_flavor_dir\TextMetal.Framework.InputOutputModel.xml" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Framework.InputOutputModel\bin\$build_flavor_dir\TextMetal.Framework.InputOutputModel.pdb" "$pkg_dir\bin\."
+Copy-Item "$src_dir\TextMetal.Framework\bin\$build_flavor_dir\TextMetal.Framework.pdb" "$pkg_dir\bin\."
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
@@ -291,57 +173,6 @@ if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 
 
 
-Copy-Item "$src_dir\TextMetal.Framework.SortModel\bin\$build_flavor_dir\TextMetal.Framework.SortModel.dll" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Framework.SortModel\bin\$build_flavor_dir\TextMetal.Framework.SortModel.xml" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Framework.SortModel\bin\$build_flavor_dir\TextMetal.Framework.SortModel.pdb" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-
-
-Copy-Item "$src_dir\TextMetal.Framework.SourceModel\bin\$build_flavor_dir\TextMetal.Framework.SourceModel.dll" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Framework.SourceModel\bin\$build_flavor_dir\TextMetal.Framework.SourceModel.xml" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Framework.SourceModel\bin\$build_flavor_dir\TextMetal.Framework.SourceModel.pdb" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-
-
-Copy-Item "$src_dir\TextMetal.Framework.TemplateModel\bin\$build_flavor_dir\TextMetal.Framework.TemplateModel.dll" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Framework.TemplateModel\bin\$build_flavor_dir\TextMetal.Framework.TemplateModel.xml" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.Framework.TemplateModel\bin\$build_flavor_dir\TextMetal.Framework.TemplateModel.pdb" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-
-
 Copy-Item "$src_dir\TextMetal.Framework.UnitTests\bin\$build_flavor_dir\TextMetal.Framework.UnitTests.dll" "$pkg_dir\bin\."
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
@@ -359,39 +190,22 @@ if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 
 
 
-Copy-Item "$src_dir\TextMetal.HostImpl.ConsoleTool\bin\$build_flavor_dir\TextMetal.exe" "$pkg_dir\bin\."
+Copy-Item "$src_dir\TextMetal.ConsoleTool\bin\$build_flavor_dir\TextMetal.exe" "$pkg_dir\bin\."
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
 
-Copy-Item "$src_dir\TextMetal.HostImpl.ConsoleTool\bin\$build_flavor_dir\TextMetal.exe.config" "$pkg_dir\bin\."
+Copy-Item "$src_dir\TextMetal.ConsoleTool\bin\$build_flavor_dir\TextMetal.exe.config" "$pkg_dir\bin\."
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
 
-Copy-Item "$src_dir\TextMetal.HostImpl.ConsoleTool\bin\$build_flavor_dir\TextMetal.xml" "$pkg_dir\bin\."
+Copy-Item "$src_dir\TextMetal.ConsoleTool\bin\$build_flavor_dir\TextMetal.xml" "$pkg_dir\bin\."
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
 
-Copy-Item "$src_dir\TextMetal.HostImpl.ConsoleTool\bin\$build_flavor_dir\TextMetal.pdb" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-
-
-Copy-Item "$src_dir\TextMetal.HostImpl.Tool\bin\$build_flavor_dir\TextMetal.HostImpl.Tool.dll" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.HostImpl.Tool\bin\$build_flavor_dir\TextMetal.HostImpl.Tool.xml" "$pkg_dir\bin\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.HostImpl.Tool\bin\$build_flavor_dir\TextMetal.HostImpl.Tool.pdb" "$pkg_dir\bin\."
+Copy-Item "$src_dir\TextMetal.ConsoleTool\bin\$build_flavor_dir\TextMetal.pdb" "$pkg_dir\bin\."
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }

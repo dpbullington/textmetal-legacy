@@ -54,7 +54,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 using TextMetal.Common.Core;
+using TextMetal.Common.Data;
 using TextMetal.Common.Data.Framework;
+using TextMetal.Common.Data.Framework.Syntax.Expressions;
+using TextMetal.Common.Data.Framework.Syntax.Operators;
 using TextMetal.Common.Data.LinqToSql;
 ]]>
 						<If>
@@ -83,21 +86,23 @@ namespace ${ClrNamespace}.${FolderName}
 
 		public static bool Exists(I${TableNameSingularPascalCase} ${TableNameSingularCamelCase})
 		{
-			IEnumerable<I${TableNameSingularPascalCase}> ${TableNamePluralCamelCase};
+			return false; // TODO - remove this and uncomment the above code fragment
+
+			/*IEnumerable<I${TableNameSingularPascalCase}> ${TableNamePluralCamelCase};
 			IModelQuery modelQuery;
 
 			if ((object)${TableNameSingularCamelCase} == null)
 				throw new ArgumentNullException("${TableNameSingularCamelCase}");
 
 			modelQuery = new LinqTableQuery<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}>(z =>
-								(z.XXX == ${TableNameSingularCamelCase}.XXX) &&
+								(z.TODO_UNIQUE_VALUE_1 == ${TableNameSingularCamelCase}.TODO_UNIQUE_VALUE_1) &&
 									((object)${TableNameSingularCamelCase}.${TableNameSingularPascalCase}Id == null ||
 										z.${TableNameSingularPascalCase}Id != ${TableNameSingularCamelCase}.${TableNameSingularPascalCase}Id));
 
 			${TableNamePluralCamelCase} =
 				Stuff.Get<IRepository>("").Find<I${TableNameSingularPascalCase}>(modelQuery);
 
-			return ${TableNamePluralCamelCase}.Count() > 0;
+			return ${TableNamePluralCamelCase}.Count() > 0;*/
 		}
 
 		public override void Mark()
@@ -108,11 +113,12 @@ namespace ${ClrNamespace}.${FolderName}
 
 			this.CreationTimestamp = this.CreationTimestamp ?? now;
 			this.ModificationTimestamp = !this.IsNew ? now : this.CreationTimestamp;
-			this.CreationUserId = ((this.IsNew ? Current.UserId : this.CreationUserId) ?? this.CreationUserId) ?? User.SYSTEM_USER_ID;
-			this.ModificationUserId = ((!this.IsNew ? Current.UserId : this.CreationUserId) ?? this.ModificationUserId) ?? User.SYSTEM_USER_ID;
+			this.CreationUserId = ((this.IsNew ? Current.Instance.UserId : this.CreationUserId) ?? this.CreationUserId) ?? User.SYSTEM_USER_ID;
+			this.ModificationUserId = ((!this.IsNew ? Current.Instance.UserId : this.CreationUserId) ?? this.ModificationUserId) ?? User.SYSTEM_USER_ID;
 			this.LogicalDelete = this.LogicalDelete ?? false;
 
-			this.OrganizationId = this.OrganizationId ?? (int)Current.OrganizationId;
+			// TODO - remove this and uncomment the below code fragment if needed
+			//this.TODO_PARENT_ID = this.TODO_PARENT_ID ?? (long)Current.Instance.TODO_PARENT_ID;
 		}
 
 		public override IEnumerable<Message> Validate()
@@ -122,8 +128,9 @@ namespace ${ClrNamespace}.${FolderName}
 
 			messages = new List<Message>();
 
-			if (DataType.Instance.IsNullOrWhiteSpace(this.XXX))
-				messages.Add(new Message("", "XXX is required.", Severity.Error));
+			// TODO - remove this and uncomment the below code fragment if needed
+			/*if (DataType.Instance.IsNullOrWhiteSpace(this.TODO_REQUIRED_VALUE_1))
+				messages.Add(new Message("", "TODO_REQUIRED_VALUE_1 is required.", Severity.Error));
 
 			if (messages.Count == 0)
 			{
@@ -131,7 +138,7 @@ namespace ${ClrNamespace}.${FolderName}
 
 				if (exists)
 					messages.Add(new Message("", "${TableNameSingularPascalCase} must be unique.", Severity.Error));
-			}
+			}*/
 
 			return messages.ToArray();
 		}

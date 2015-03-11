@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-using TextMetal.Common.Syntax.Expressions;
+using TextMetal.Common.Data.Framework.Syntax.Expressions;
 
 namespace TextMetal.Common.Data.Framework
 {

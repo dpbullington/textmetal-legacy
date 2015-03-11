@@ -12,7 +12,7 @@
     <AssemblyName>TextMetal.Common.Data</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\TextMetal.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -58,17 +58,28 @@
     <Compile Include="Framework\ResponseModelObject~1.cs" />
     <Compile Include="Framework\RequestModelObject.cs" />
     <Compile Include="Framework\ModelObject.cs" />
+    <Compile Include="Framework\Syntax\Expressions\ExpressionVisitor.cs" />
+    <Compile Include="Framework\Syntax\Expressions\IBinaryExpression.cs" />
+    <Compile Include="Framework\Syntax\Expressions\IContainer.cs" />
+    <Compile Include="Framework\Syntax\Expressions\IExpression.cs" />
+    <Compile Include="Framework\Syntax\Expressions\INullaryExpression.cs" />
+    <Compile Include="Framework\Syntax\Expressions\ISequence.cs" />
+    <Compile Include="Framework\Syntax\Expressions\ISurface.cs" />
+    <Compile Include="Framework\Syntax\Expressions\IUnaryExpression.cs" />
+    <Compile Include="Framework\Syntax\Expressions\IValue.cs" />
+    <Compile Include="Framework\Syntax\Expressions\PrintExpressionVisitor.cs" />
+    <Compile Include="Framework\Syntax\Operators\BinaryOperator.cs" />
+    <Compile Include="Framework\Syntax\Operators\NullaryOperator.cs" />
+    <Compile Include="Framework\Syntax\Operators\UnaryOperator.cs" />
     <Compile Include="LinqToSql\AmbientUnitOfWorkAwareDisposableWrapper~1.cs" />
     <Compile Include="LinqToSql\LinqTableQuery~1.cs" />
     <Compile Include="LinqToSql\LinqToSqlModelRepository~1.cs" />
     <Compile Include="LinqToSql\MulticastContext~1.cs" />
-    <Compile Include="ImpersonationScope.cs" />
     <Compile Include="ServiceFascade\RequestBase.cs" />
     <Compile Include="ServiceFascade\ResponseBase.cs" />
     <Compile Include="ServiceFascade\ResponseBase~1.cs" />
     <Compile Include="ServiceFascade\ResultBase.cs" />
     <Compile Include="ServiceFascade\ServiceBase~1.cs" />
-    <Compile Include="WrapperDataReader.cs" />
     <Compile Include="AdoNetHelper.cs" />
     <Compile Include="Framework\DatabaseHistory.cs" />
     <Compile Include="Framework\DatabaseRevision.cs" />
@@ -100,7 +111,6 @@
     <Compile Include="GarbageDisposable.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="IUnitOfWorkFactory.cs" />
-    <Compile Include="SqlQuery.cs" />
     <Compile Include="AmbientUnitOfWorkScope.cs" />
     <Compile Include="UnitOfWork.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
@@ -118,10 +128,6 @@
     <ProjectReference Include="..\TextMetal.Common.Solder\TextMetal.Common.Solder.csproj">
       <Project>{3b0efc3c-aa91-4fb4-b2ee-bd8727230a94}</Project>
       <Name>TextMetal.Common.Solder</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TextMetal.Common.Syntax\TextMetal.Common.Syntax.csproj">
-      <Project>{483501d9-4d73-4076-997b-3a5d8b5ddb2c}</Project>
-      <Name>TextMetal.Common.Syntax</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

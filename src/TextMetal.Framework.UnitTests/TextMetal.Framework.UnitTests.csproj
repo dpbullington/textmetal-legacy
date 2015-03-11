@@ -12,7 +12,7 @@
     <AssemblyName>TextMetal.Framework.UnitTests</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\TextMetal.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -46,6 +46,9 @@
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ProjectAssemblyInfo.cs" />
+    <Compile Include="Tokenization\_\DynamicValueTokenReplacementStrategyTests.cs" />
+    <Compile Include="Tokenization\_\StaticValueTokenReplacementStrategyTests.cs" />
+    <Compile Include="Tokenization\_\TokenizerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TextMetal.snk">
@@ -55,6 +58,10 @@
     <None Include="UnitTesting.nunit" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TextMetal.Framework\TextMetal.Framework.csproj">
+      <Project>{2CA91424-7DD3-4E93-B6E4-F296D9D07716}</Project>
+      <Name>TextMetal.Framework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TextMetal.Imports\TextMetal.Imports.csproj">
       <Project>{40E6902D-3881-4271-BDF3-7D88DB7CF230}</Project>
       <Name>TextMetal.Imports</Name>

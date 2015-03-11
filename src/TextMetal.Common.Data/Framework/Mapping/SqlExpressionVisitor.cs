@@ -9,8 +9,8 @@ using System.Data;
 using System.Text;
 
 using TextMetal.Common.Data.Framework.Strategy;
-using TextMetal.Common.Syntax.Expressions;
-using TextMetal.Common.Syntax.Operators;
+using TextMetal.Common.Data.Framework.Syntax.Expressions;
+using TextMetal.Common.Data.Framework.Syntax.Operators;
 
 namespace TextMetal.Common.Data.Framework.Mapping
 {

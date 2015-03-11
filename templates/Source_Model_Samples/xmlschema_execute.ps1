@@ -11,12 +11,12 @@ $build_flavor_dir = "Debug"
 $template_dir = "."
 $source_dir = "."
 
-$textmetal_exe = "$src_dir\TextMetal.HostImpl.ConsoleTool\bin\$build_flavor_dir\TextMetal.exe"
+$textmetal_exe = "$src_dir\TextMetal.ConsoleTool\bin\$build_flavor_dir\TextMetal.exe"
 
 $template_file = "$template_dir\empty_template.xml"
 $source_file = "$source_dir\xmlschema_source.xsd"
 $base_dir = ".\output"
-$source_strategy = "TextMetal.Framework.SourceModel.Primative.XmlSchemaSourceStrategy, TextMetal.Framework.SourceModel"
+$source_strategy = "TextMetal.Framework.Source.Primative.XmlSchemaSourceStrategy, TextMetal.Framework"
 $strict = $true
 
 echo "The operation is starting..."

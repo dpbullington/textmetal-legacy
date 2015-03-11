@@ -12,7 +12,7 @@
     <AssemblyName>TextMetal.Common.Core</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\TextMetal.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -46,17 +46,19 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ApplicationStorage\HttpCookieApplicationStorage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ApplicationStorage\HttpSessionApplicationStorage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ApplicationStorage\IApplicationStorage.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Utility\AppConfig.cs" />
-    <Compile Include="ApplicationStorage\HttpCookieApplicationStorage.cs" />
-    <Compile Include="ApplicationStorage\HttpSessionApplicationStorage.cs" />
-    <Compile Include="ApplicationStorage\IApplicationStorage.cs" />
     <Compile Include="ConsoleApplication.cs" />
-    <Compile Include="InOut\DelimitedTextWriter.cs" />
-    <Compile Include="InOut\DelimitedTextSpec.cs" />
     <Compile Include="ExecutableApplication.cs" />
     <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="InOut\FieldType.cs" />
-    <Compile Include="InOut\HeaderSpec.cs" />
     <Compile Include="ProjectAssemblyDependency.cs" />
     <Compile Include="AssemblyInformation.cs" />
     <Compile Include="Cerealization\Cerealization.cs" />
@@ -79,25 +81,9 @@
     <Compile Include="Utility\IReflexion.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Utility\Name.cs" />
-    <Compile Include="InOut\RecordTextReader.cs" />
-    <Compile Include="InOut\RecordTextWriter.cs" />
     <Compile Include="Utility\Reflexion.cs" />
-    <Compile Include="InOut\DelimitedTextReader.cs" />
     <Compile Include="Severity.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
-    <Compile Include="Tokenization\ContextualDynamicValueTokenReplacementStrategy.cs" />
-    <Compile Include="Tokenization\DynamicValueTokenReplacementStrategy.cs" />
-    <Compile Include="Tokenization\DynamicWildcardTokenReplacementStrategy.cs" />
-    <Compile Include="Tokenization\ITokenizer.cs" />
-    <Compile Include="Tokenization\ITokenReplacementStrategy.cs" />
-    <Compile Include="Tokenization\IWildcardTokenReplacementStrategy.cs" />
-    <Compile Include="Tokenization\StaticValueTokenReplacementStrategy.cs" />
-    <Compile Include="Tokenization\Tokenizer.cs" />
-    <Compile Include="InOut\VirtualFileSystemEnumerator.cs" />
-    <Compile Include="InOut\VirtualFileSystemItem.cs" />
-    <Compile Include="InOut\VirtualFileSystemItemType.cs" />
-    <Compile Include="InOut\WrappedTextReader.cs" />
-    <Compile Include="InOut\WrappedTextWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TextMetal.snk">

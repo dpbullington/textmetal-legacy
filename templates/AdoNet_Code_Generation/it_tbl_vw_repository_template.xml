@@ -16,15 +16,14 @@ using System.Xml;
 
 using NUnit.Framework;
 
-using TextMetal.Framework.ExpressionModel;
-using TextMetal.TestFramework;
-
 using TextMetal.Common.Core;
+using TextMetal.Common.Core.Cerealization;
 using TextMetal.Common.Data;
 using TextMetal.Common.Data.Framework;
-using TextMetal.Common.Syntax.Expressions;
-using TextMetal.Common.Syntax.Operators;
-using TextMetal.Common.Syntax.Statements;
+using TextMetal.Common.Data.Framework.Syntax.Expressions;
+using TextMetal.Common.Data.Framework.Syntax.Operators;
+
+using TextMetal.TestFramework;
 ]]>
 		<If>
 			<If.Condition>
@@ -344,7 +343,7 @@ namespace ${ClrNamespace}.IntegrationTests
 			{
 				Assert.IsNotNull(UnitOfWork.Current);
 
-				@${TableNamePluralCamelCase} = repository.Find<I${TableNameSingularPascalCase}>(new ModelQuery(new NullaryExpressionConstruct(), new ISequence[] {}));
+				@${TableNamePluralCamelCase} = repository.Find<I${TableNameSingularPascalCase}>(new ModelQuery(VoidExpression.Instance, new ISequence[] {}));
 
 				Assert.IsNotNull(@${TableNamePluralCamelCase});
 				Assert.IsNotEmpty(@${TableNamePluralCamelCase});

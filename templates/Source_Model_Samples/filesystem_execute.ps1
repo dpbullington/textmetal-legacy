@@ -11,12 +11,12 @@ $build_flavor_dir = "Debug"
 $template_dir = "."
 $source_dir = "."
 
-$textmetal_exe = "$src_dir\TextMetal.HostImpl.ConsoleTool\bin\$build_flavor_dir\TextMetal.exe"
+$textmetal_exe = "$src_dir\TextMetal.ConsoleTool\bin\$build_flavor_dir\TextMetal.exe"
 
 $template_file = "$template_dir\empty_template.xml"
 $source_file = "$src_dir"
 $base_dir = ".\output"
-$source_strategy = "TextMetal.Framework.SourceModel.Primative.FileSystemSourceStrategy, TextMetal.Framework.SourceModel"
+$source_strategy = "TextMetal.Framework.Source.Primative.FileSystemSourceStrategy, TextMetal.Framework"
 $strict = $true
 $property_recursive = $true
 $property_wildcard = "*"
