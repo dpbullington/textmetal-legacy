@@ -7,8 +7,9 @@ using System;
 using System.IO;
 using System.Text;
 
-using TextMetal.Common.Core;
-using TextMetal.Common.Core.Cerealization;
+using LeastViable.Common.Fascades.Utilities;
+using LeastViable.Common.Strategies.Serialization;
+
 using TextMetal.Framework.XmlDialect;
 
 namespace TextMetal.Framework.InputOutput
@@ -75,7 +76,7 @@ namespace TextMetal.Framework.InputOutput
 			// this should support XPE, XML, JSON
 			if ((object)xmlObject != null)
 				serializationStrategy = new XpeSerializationStrategy(this.Xpe);
-			else if ((object)Reflexion.Instance.GetOneAttribute<SerializableAttribute>(obj.GetType()) != null)
+			else if ((object)ReflectionFascade.Instance.GetOneAttribute<SerializableAttribute>(obj.GetType()) != null)
 				serializationStrategy = new XmlSerializationStrategy();
 			else
 				serializationStrategy = new JsonSerializationStrategy();

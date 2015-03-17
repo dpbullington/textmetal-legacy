@@ -18,13 +18,9 @@ using System.Reflection;
 using System.Web;
 using System.Xml;
 
-using TextMetal.Common.Core;
-using TextMetal.Common.Core.Cerealization;
-using TextMetal.Common.Data;
-using TextMetal.Common.Data.Framework;
-using TextMetal.Common.Data.Framework.Syntax.Expressions;
-using TextMetal.Common.Data.Framework.Syntax.Operators;
-using TextMetal.Common.Solder.DependencyManagement;
+using LeastViable.Data.Models;
+using LeastViable.Data.Models.Impl.Purist;
+using LeastViable.Solder.IoC;
 ]]>
 		<If>
 			<If.Condition>
@@ -98,7 +94,7 @@ using TextMetal.Common.Solder.DependencyManagement;
 namespace ${ClrNamespace}
 {
 	[DependencyRegistration]
-	public partial class Repository : ModelRepository, IRepository
+	public partial class Repository : PuristModelRepository, IRepository
 	{
 		#region Constructors/Destructors
 

@@ -5,7 +5,9 @@
 
 using System;
 
-using TextMetal.Common.Core;
+using LeastViable.Common;
+using LeastViable.Common.Fascades.Utilities;
+
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Expression;
 using TextMetal.Framework.Tokenization;

@@ -8,9 +8,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+using LeastViable.Common.Fascades.Utilities;
+
 using Microsoft.VisualBasic.FileIO;
 
-using TextMetal.Common.Core;
 using TextMetal.Framework.Associative;
 
 namespace TextMetal.Framework.Source.Primative
@@ -54,7 +55,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException("properties");
 
-			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
+			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException("sourceFilePath");
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
@@ -66,7 +67,7 @@ namespace TextMetal.Framework.Source.Primative
 			{
 				if ((object)values != null && values.Count == 1)
 				{
-					if (!DataType.Instance.TryParse<bool>(values[0], out firstRecordIsHeader))
+					if (!DataTypeFascade.Instance.TryParse<bool>(values[0], out firstRecordIsHeader))
 						firstRecordIsHeader = false;
 				}
 			}
@@ -76,7 +77,7 @@ namespace TextMetal.Framework.Source.Primative
 			{
 				if ((object)values != null && values.Count == 1)
 				{
-					if (!DataType.Instance.TryParse<bool>(values[0], out hasQuotedValues))
+					if (!DataTypeFascade.Instance.TryParse<bool>(values[0], out hasQuotedValues))
 						hasQuotedValues = false;
 				}
 			}
@@ -95,7 +96,7 @@ namespace TextMetal.Framework.Source.Primative
 					fieldDelimiter = values[0];
 			}
 
-			if (!DataType.Instance.IsNullOrWhiteSpace(fieldDelimiter))
+			if (!DataTypeFascade.Instance.IsNullOrWhiteSpace(fieldDelimiter))
 			{
 				fieldDelimiter = fieldDelimiter.Replace("\\\\t", "\t");
 				fieldDelimiter = fieldDelimiter.Replace("\\\"", "\"");

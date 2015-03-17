@@ -7,7 +7,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using TextMetal.Common.Core;
+using LeastViable.Common;
+using LeastViable.Common.Fascades.Utilities;
+
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Tokenization;
 using TextMetal.Framework.XmlDialect;
@@ -153,7 +155,7 @@ namespace TextMetal.Framework.Associative
 				{
 					foreach (IAssociativeXmlObject item in this.Items)
 					{
-						if (!DataType.Instance.IsNullOrWhiteSpace(item.Name) &&
+						if (!DataTypeFascade.Instance.IsNullOrWhiteSpace(item.Name) &&
 							!dictionary.ContainsKey(item.Name))
 							dictionary.Add(item.Name, item.GetAssociativeObjectValue(NullTemplatingContext.Instance));
 					}

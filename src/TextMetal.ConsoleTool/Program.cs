@@ -8,7 +8,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-using TextMetal.Common.Core;
+using LeastViable.Common.Fascades.Application;
+using LeastViable.Common.Fascades.Utilities;
+
 using TextMetal.Framework.Hosting;
 
 namespace TextMetal.ConsoleTool
@@ -16,7 +18,7 @@ namespace TextMetal.ConsoleTool
 	/// <summary>
 	/// Entry point class for the application.
 	/// </summary>
-	internal class Program : ConsoleApplication
+	internal class Program : ConsoleApplicationFascade
 	{
 		#region Constructors/Destructors
 
@@ -110,7 +112,7 @@ namespace TextMetal.ConsoleTool
 					{
 						string key, value;
 
-						if (!AppConfig.TryParseCommandLineArgumentProperty(argumentValue, out key, out value))
+						if (!AppConfigFascade.Instance.TryParseCommandLineArgumentProperty(argumentValue, out key, out value))
 							continue;
 
 						if (!properties.ContainsKey(key))

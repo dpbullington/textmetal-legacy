@@ -6,7 +6,8 @@
 using System;
 using System.Reflection;
 
-using TextMetal.Common.Core;
+using LeastViable.Common.Fascades.Utilities;
+
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Tokenization;
 using TextMetal.Framework.XmlDialect;
@@ -66,7 +67,7 @@ namespace TextMetal.Framework.Template
 
 			name = templatingContext.Tokenizer.ExpandTokens(this.Name, dynamicWildcardTokenReplacementStrategy);
 
-			if (DataType.Instance.IsNullOrWhiteSpace(name))
+			if (DataTypeFascade.Instance.IsNullOrWhiteSpace(name))
 			{
 				templatingContext.ClearReferences();
 				return;

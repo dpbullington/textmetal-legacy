@@ -1,0 +1,424 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LeastViable.Data</name>
+    </assembly>
+    <members>
+        <member name="T:LeastViable.Data.Models.Impl.Purist.Expressions.IExpression">
+            <summary>
+            Represents an expression.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:LeastViable.Data.Models.IPlainModelObject" -->
+        <!-- Badly formed XML comment ignored for member "T:LeastViable.Data.Models.IModelObject" -->
+        <member name="M:LeastViable.Data.Models.IPlainModelObject.Mark">
+            <summary>
+            Called prior to any non-idempotent (e.g. insert, update, delete) operation.
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Models.IPlainModelObject.Validate">
+            <summary>
+            Validates this model instance.
+            </summary>
+            <returns> A enumerable of zero or more messages. </returns>
+        </member>
+        <member name="P:LeastViable.Data.Models.IPlainModelObject.CanChange">
+            <summary>
+            Gets or sets a value indicating whether the current plain model object instance
+            can be modified at the data source or simply read-only.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.IPlainModelObject.IsNew">
+            <summary>
+            Gets or sets a value indicating whether the current plain model object instance
+            is new (never been persisted) or old (has been persisted).
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Models.IResponseModelObject">
+            <summary>
+            Provides a contract for response model objects (procedure, function, packages, etc.).
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Models.IResultModelObject">
+            <summary>
+            Provides a contract for result model objects (procedure, function, packages, etc.).
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Models.IResponseModelObject`1">
+            <summary>
+            Provides a contract for response model objects (procedure, function, packages, etc.).
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Models.IRequestModelObject">
+            <summary>
+            Provides a contract for request model objects (procedure, function, packages, etc.).
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Models.PlainModelObject.Mark">
+            <summary>
+            Called prior to any non-idempotent (e.g. insert, update, delete) operation.
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Models.PlainModelObject.Validate">
+            <summary>
+            Validates this model instance.
+            </summary>
+            <returns> A enumerable of zero or more messages. </returns>
+        </member>
+        <member name="P:LeastViable.Data.Models.PlainModelObject.CanChange">
+            <summary>
+            Gets or sets a value indicating whether the current plain model object instance
+            can be modified at the data source or simply read-only.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.PlainModelObject.IsNew">
+            <summary>
+            Gets or sets a value indicating whether the current plain model object instance
+            is new (never been persisted) or old (has been persisted).
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Models.Impl.Purist.Expressions.ExpressionVisitor.#ctor">
+            <summary>
+            Initializes a new instance of the ExpressionVisitor class.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Models.Impl.Purist.Expressions.IBinaryExpression">
+            <summary>
+            Represents an expression with two operands.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Models.Impl.Purist.Expressions.INullaryExpression">
+            <summary>
+            Represents an expression with zero operands.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Models.Impl.Purist.Expressions.ISortOrder">
+            <summary>
+            Represents a sequence.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Models.Impl.Purist.Expressions.ISymbolName">
+            <summary>
+            Represents a symbol name.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Models.Impl.Purist.Expressions.IUnaryExpression">
+            <summary>
+            Represents an expression with one operand.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Models.Impl.Purist.Expressions.ILiteralValue">
+            <summary>
+            Represents a literal value.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Models.Impl.Linq.AmbientUnitOfWorkAwareDisposableWrapper`1">
+            <summary>
+            Used to 'wrap' a disposable (e.g. DataContext, ObjectContext, SessionImpl, etc.) in a manner such that consuming code can leverage a 'using' block which respects an ambient unit of work, if one is present.
+            Essentially, the disposal of this object forwards disposal to the wrapped disposable if an ambient unit of work is NOT present; otherwise, no action is performed leaving disposal of the disposable up to the adjudication of the ambient unit of work.
+            </summary>
+            <typeparam name="TDisposable"> The type of the underlying or 'wrapped' disposable. </typeparam>
+        </member>
+        <member name="M:LeastViable.Data.Models.Impl.Linq.AmbientUnitOfWorkAwareDisposableWrapper`1.#ctor(LeastViable.Common.Fascades.AdoNet.UoW.IUnitOfWork,`0)">
+            <summary>
+            Initializes a new instance of the AmbientUnitOfWorkAwareDisposableWrapper`1 class.
+            </summary>
+            <param name="sourceUnitOfWork">
+            The unit of work triggering the creation of this 'wrapped' disposable.
+            NOTE: Any ambient unit of work may not reference the same object instance as the incoming unit of work.
+            In this case, the ambient unit of work is ignored as the unit of work instances differ.
+            </param>
+            <param name="disposable"> The underlying or 'wrapped' disposable. </param>
+        </member>
+        <member name="M:LeastViable.Data.Models.Impl.Linq.AmbientUnitOfWorkAwareDisposableWrapper`1.Dispose">
+            <summary>
+            Disposes of the inner context. Once disposed, the instance cannot be reused.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Linq.AmbientUnitOfWorkAwareDisposableWrapper`1.Disposable">
+            <summary>
+            Gets the underlying or 'wrapped' disposable.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Linq.AmbientUnitOfWorkAwareDisposableWrapper`1.ShouldDisposeResources">
+            <summary>
+            Gets a value indicating whether resources need to be disposed of.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Linq.AmbientUnitOfWorkAwareDisposableWrapper`1.Disposed">
+            <summary>
+            Gets a value indicating whether the current instance has been disposed.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:LeastViable.Data.Models.IModelQuery" -->
+        <member name="M:LeastViable.Data.Models.Impl.Linq.L2S.LinqToSqlModelRepository`1.#ctor">
+            <summary>
+            Initializes a new instance of the LinqToSqlModelRepository`1 class.
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Models.Impl.Linq.L2S.LinqToSqlModelRepository`1.GetContext(LeastViable.Common.Fascades.AdoNet.UoW.IUnitOfWork)">
+            <summary>
+            For a given UnitOfWork, this method returns a AmbientUnitOfWorkAwareDisposableWrapper`1 for a target data context type.
+            </summary>
+            <param name="unitOfWork"> The target unitOfWork. </param>
+            <returns> An instance of a AmbientUnitOfWorkAwareDisposableWrapper`1 for the requested data context type, associated withthe unitOfWork. </returns>
+        </member>
+        <member name="M:LeastViable.Data.Models.Impl.Linq.L2S.LinqToSqlModelRepository`1.GetDataContext(LeastViable.Common.Fascades.AdoNet.UoW.IUnitOfWork,System.Type)">
+            <summary>
+            For a given unitOfWork, this method returns a DataContext of the target data context type.
+            </summary>
+            <param name="unitOfWork"> The target unitOfWork. </param>
+            <param name="dataContextType"> The desired data context type. </param>
+            <returns> An instance of the requested data context type, associated withthe unitOfWork. </returns>
+        </member>
+        <member name="M:LeastViable.Data.Models.Impl.Linq.L2S.LinqToSqlModelRepository`1.GetDataContext(System.Type,System.Data.IDbConnection,System.Data.IDbTransaction)">
+            <summary>
+            For a given unitOfWork, this method returns a DataContext of the target data context type.
+            </summary>
+            <param name="dataContextType"> The desired data context type. </param>
+            <param name="dbConnection"> The target database connection. </param>
+            <param name="dbTransaction"> The target database transaction. </param>
+            <returns> An instance of the requested data context type, associated withthe unitOfWork. </returns>
+            <returns> </returns>
+        </member>
+        <member name="T:LeastViable.Data.Models.Impl.Linq.MulticastContext`1">
+            <summary>
+            Used as a context for a data source transaction. Allows multiple contexts to be associated to a single transaction for differing actual types. An exception is throw if duplicate context actual types are registered. When disposed, all underlying contexts will also be disposed.
+            </summary>
+            <typeparam name="TContextBase"> The base type (not actual type) of the underlying context. </typeparam>
+        </member>
+        <member name="M:LeastViable.Data.Models.Impl.Linq.MulticastContext`1.#ctor">
+            <summary>
+            Initializes a new instance of the MulticastContext`1 class.
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Models.Impl.Linq.MulticastContext`1.Dispose">
+            <summary>
+            Disposes of the inner contexts. Once disposed, the instance cannot be reused.
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Models.Impl.Linq.MulticastContext`1.GetContext(System.Type)">
+            <summary>
+            Gets the single context of the specified actual context type. An exception is thrown if the requested actual type has not previously been registered.
+            </summary>
+            <param name="contextActualType"> The actual context type requested. </param>
+            <returns> An instance of an actual context type. </returns>
+        </member>
+        <member name="M:LeastViable.Data.Models.Impl.Linq.MulticastContext`1.HasContext(System.Type)">
+            <summary>
+            Gets a value indicating whether a context of the specified actual context type has been previously registered.
+            </summary>
+            <param name="contextActualType"> The actual context type requested. </param>
+            <returns> A value indicating whether a context of the specified actual context type has been previously registered. </returns>
+        </member>
+        <member name="M:LeastViable.Data.Models.Impl.Linq.MulticastContext`1.SetContext(System.Type,`0)">
+            <summary>
+            Sets (or registers) a single context instance of the specified actual context type. An exception is thrown if the requested actual type has already previously been registered.
+            </summary>
+            <param name="contextActualType"> The actual context type requested. </param>
+            <param name="contextActualInstance"> The actual context instance to register. </param>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Linq.MulticastContext`1.Disposed">
+            <summary>
+            Gets a value indicating whether the current instance has been disposed.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Services.IRequestServiceModelObject">
+            <summary>
+            Provides a contract for request service model objects.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Services.IServiceModelObject">
+            <summary>
+            Provides a contract for all service model objects.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Services.IResponseServiceModelObject">
+            <summary>
+            Provides a contract for response service model objects.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Services.IResponseServiceModelObject`1">
+            <summary>
+            Provides a contract for response service model objects.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Services.IResultServiceModelObject">
+            <summary>
+            Provides a contract for result service model objects.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Models.Impl.DatabaseHistory">
+            <summary>
+            Represents an ordered set of historical revsions to a database (file).
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Models.Impl.DatabaseHistory.#ctor">
+            <summary>
+            Initializes a new instance of the DatabaseHistory class.
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Models.Impl.DatabaseHistory.PerformSchemaUpgrade(LeastViable.Common.Fascades.AdoNet.UoW.IUnitOfWork)">
+            <summary>
+            For a given unitOfWork, perform a schema upgrade if necessary. The ordered set of revisions are executed from version+1 to version[n].
+            </summary>
+            <param name="unitOfWork"> The target unitOfWork. </param>
+            <returns> A value indicating whether any changes were needed against the target database (file). </returns>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.DatabaseHistory.Revisions">
+            <summary>
+            Gets a list of ordered revisions.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.DatabaseHistory.DoesSchemaTrackingExistCommandText">
+            <summary>
+            Gets or sets the SQL required to determine if schema tracking is enabled in the database (file).
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.DatabaseHistory.GetSchemaVersionCommandText">
+            <summary>
+            Gets or sets the SQL required to determine the schema version of the database (file).
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.DatabaseHistory.IncrementSchemaVersionCommandText">
+            <summary>
+            Gets or sets the SQL required to increment the schema version in the database (file).
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Models.Impl.DatabaseRevision">
+            <summary>
+            Represents a single historical revsion to a database (file).
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Models.Impl.DatabaseRevision.#ctor">
+            <summary>
+            Initializes a new instance of the DatabaseRevision class.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.DatabaseRevision.Statements">
+            <summary>
+            Gets an ordered list of statements to execute for this revision.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.DatabaseRevision.Number">
+            <summary>
+            Gets or sets the revision number.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.ITacticCommand.CommandBehavior">
+            <summary>
+            Gets or sets the command behavior.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.ITacticCommand.CommandPrepare">
+            <summary>
+            Gets or sets a value indicating whether to prepare the command.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.ITacticCommand.CommandText">
+            <summary>
+            Gets or sets the command text.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.ITacticCommand.CommandTimeout">
+            <summary>
+            Gets or sets the command timeout.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.ITacticCommand.CommandType">
+            <summary>
+            Gets or sets the command type.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.TacticCommand`3.CommandBehavior">
+            <summary>
+            Gets or sets the command behavior.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.TacticCommand`3.CommandPrepare">
+            <summary>
+            Gets or sets a value indicating whether to prepare the command.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.TacticCommand`3.CommandText">
+            <summary>
+            Gets or sets the command text.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.TacticCommand`3.CommandTimeout">
+            <summary>
+            Gets or sets the command timeout.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.TacticCommand`3.CommandType">
+            <summary>
+            Gets or sets the command type.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.TacticCommand`1.CommandBehavior">
+            <summary>
+            Gets or sets the command behavior.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.TacticCommand`1.CommandPrepare">
+            <summary>
+            Gets or sets a value indicating whether to prepare the command.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.TacticCommand`1.CommandText">
+            <summary>
+            Gets or sets the command text.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.TacticCommand`1.CommandTimeout">
+            <summary>
+            Gets or sets the command timeout.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.TacticCommand`1.CommandType">
+            <summary>
+            Gets or sets the command type.
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Models.Impl.Purist.Mapping.ParameterMappingAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the ParameterMappingAttribute class.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.ParameterMappingAttribute.ParameterDbType">
+            <summary>
+            Gets or sets the type of the parameter.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.ParameterMappingAttribute.ParameterDirection">
+            <summary>
+            Gets or sets the direction of the parameter.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.ParameterMappingAttribute.ParameterName">
+            <summary>
+            Gets or sets the name of the parameter.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.ParameterMappingAttribute.ParameterNullable">
+            <summary>
+            Gets or sets the nullable-ness of the parameter.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.ParameterMappingAttribute.ParameterPrecision">
+            <summary>
+            Gets or sets the precision of the parameter.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.ParameterMappingAttribute.ParameterScale">
+            <summary>
+            Gets or sets the scale of the parameter.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.Impl.Purist.Mapping.ParameterMappingAttribute.ParameterSize">
+            <summary>
+            Gets or sets the size of the parameter.
+            </summary>
+        </member>
+    </members>
+</doc>

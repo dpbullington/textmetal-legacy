@@ -3,7 +3,7 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-using TextMetal.Common.Core.Hierarchy;
+using TextMetal.Framework.Core.ObjectTaxonomy;
 
 namespace TextMetal.Framework.XmlDialect
 {

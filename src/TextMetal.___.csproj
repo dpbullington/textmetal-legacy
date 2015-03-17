@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{????????-????-????-????-????????????}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AppDesignerFolder></AppDesignerFolder>
     <RootNamespace>TextMetal.???</RootNamespace>
     <AssemblyName>TextMetal.???</AssemblyName>
     <SignAssembly>true</SignAssembly>

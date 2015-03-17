@@ -7,7 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{579ADD09-25FD-4776-8CF1-829BAAB46519}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AppDesignerFolder>
+    </AppDesignerFolder>
     <RootNamespace>TextMetal.ConsoleTool</RootNamespace>
     <AssemblyName>TextMetal</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
@@ -52,6 +53,9 @@
     <Reference Include="IronRuby.Libraries">
       <HintPath>..\..\lib\IronRuby\IronRuby.Libraries.dll</HintPath>
     </Reference>
+    <Reference Include="LeastViable.Common">
+      <HintPath>..\..\lib\LeastViable\LeastViable.Common.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Dynamic">
       <HintPath>..\..\lib\IronRuby\Microsoft.Dynamic.dll</HintPath>
     </Reference>
@@ -79,10 +83,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TextMetal.Common.Core\TextMetal.Common.Core.csproj">
-      <Project>{D1860A67-7EFB-4C0F-89CD-A641D99DCC2A}</Project>
-      <Name>TextMetal.Common.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TextMetal.Framework\TextMetal.Framework.csproj">
       <Project>{2CA91424-7DD3-4E93-B6E4-F296D9D07716}</Project>
       <Name>TextMetal.Framework</Name>

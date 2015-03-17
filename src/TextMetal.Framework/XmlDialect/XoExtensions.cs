@@ -5,7 +5,7 @@
 
 using System;
 
-using TextMetal.Common.Core;
+using LeastViable.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.XmlDialect
 {
@@ -23,7 +23,7 @@ namespace TextMetal.Framework.XmlDialect
 				throw new ArgumentNullException("xmlObject");
 
 			xmlObjectType = xmlObject.GetType();
-			xmlElementMappingAttribute = Reflexion.Instance.GetOneAttribute<XmlElementMappingAttribute>(xmlObjectType);
+			xmlElementMappingAttribute = ReflectionFascade.Instance.GetOneAttribute<XmlElementMappingAttribute>(xmlObjectType);
 
 			if ((object)xmlElementMappingAttribute == null)
 				xmlName = null;

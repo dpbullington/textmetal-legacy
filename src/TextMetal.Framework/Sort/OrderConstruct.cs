@@ -8,7 +8,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-using TextMetal.Common.Core;
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Expression;
 using TextMetal.Framework.Tokenization;

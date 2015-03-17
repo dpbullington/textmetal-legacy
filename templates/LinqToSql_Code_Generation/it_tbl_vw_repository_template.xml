@@ -16,14 +16,9 @@ using System.Xml;
 
 using NUnit.Framework;
 
-using TextMetal.TestFramework;
-
-using TextMetal.Common.Core;
-using TextMetal.Common.Data;
-using TextMetal.Common.Data.Framework;
-using TextMetal.Common.Data.Framework.Syntax.Expressions;
-using TextMetal.Common.Data.Framework.Syntax.Operators;
-using TextMetal.Common.Data.LinqToSql;
+using LeastViable.Common.Fascades.AdoNet.UoW;
+using LeastViable.Data.Models.Impl.Linq;
+using LeastViable.Testing;
 ]]>
 		<If>
 			<If.Condition>
@@ -147,7 +142,7 @@ namespace ${ClrNamespace}.IntegrationTests
 			{
 				Assert.IsNotNull(UnitOfWork.Current);
 
-				@${TableNameSingularCamelCase} = repository.CreateModel<I${TableNameSingularPascalCase}>();
+				@${TableNameSingularCamelCase} = repository.CreatePlain<I${TableNameSingularPascalCase}>();
 ]]>
 
 								<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -265,7 +260,7 @@ namespace ${ClrNamespace}.IntegrationTests
 
 			repository = new Repository();
 
-			@${TableNameSingularCamelCase} = repository.CreateModel<I${TableNameSingularPascalCase}>();
+			@${TableNameSingularCamelCase} = repository.CreatePlain<I${TableNameSingularPascalCase}>();
 ]]>
 	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
@@ -343,7 +338,7 @@ namespace ${ClrNamespace}.IntegrationTests
 			{
 				Assert.IsNotNull(UnitOfWork.Current);
 
-				@${TableNamePluralCamelCase} = repository.Find<I${TableNameSingularPascalCase}>(new LinqTableQuery<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}>(t => true));
+				@${TableNamePluralCamelCase} = repository.Find<I${TableNameSingularPascalCase}>(new LinqModelQuery<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}>(t => true));
 
 				Assert.IsNotNull(@${TableNamePluralCamelCase});
 				Assert.IsNotEmpty(@${TableNamePluralCamelCase});

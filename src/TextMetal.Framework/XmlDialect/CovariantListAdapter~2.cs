@@ -7,7 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using TextMetal.Common.Core.Hierarchy;
+using TextMetal.Framework.Core.ObjectTaxonomy;
 
 namespace TextMetal.Framework.XmlDialect
 {

@@ -6,7 +6,8 @@
 using System;
 using System.Text;
 
-using TextMetal.Common.Core;
+using LeastViable.Common.Fascades.Utilities;
+
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Expression;
 using TextMetal.Framework.Tokenization;
@@ -104,12 +105,12 @@ namespace TextMetal.Framework.Template
 			scopeName = templatingContext.Tokenizer.ExpandTokens(this.ScopeName, dynamicWildcardTokenReplacementStrategy);
 			appendMode = this.Append;
 
-			if (!DataType.Instance.IsNullOrWhiteSpace(this.EncodingName))
+			if (!DataTypeFascade.Instance.IsNullOrWhiteSpace(this.EncodingName))
 				encoding = Encoding.GetEncoding(this.EncodingName);
 			else
 				encoding = Encoding.UTF8;
 
-			if (!DataType.Instance.IsNullOrWhiteSpace(scopeName))
+			if (!DataTypeFascade.Instance.IsNullOrWhiteSpace(scopeName))
 			{
 				new AllocConstruct()
 				{
@@ -117,7 +118,7 @@ namespace TextMetal.Framework.Template
 				}.ExpandTemplate(templatingContext);
 			}
 
-			if (!DataType.Instance.IsNullOrWhiteSpace(scopeName))
+			if (!DataTypeFascade.Instance.IsNullOrWhiteSpace(scopeName))
 			{
 				IExpressionContainerConstruct expressionContainerConstruct;
 				ValueConstruct valueConstruct;
@@ -151,7 +152,7 @@ namespace TextMetal.Framework.Template
 			templatingContext.Output.LeaveScope(scopeName);
 			templatingContext.Output.LogTextWriter.WriteLine("['{0:O}' (UTC)]\tLeaving output scope '{1}'.", DateTime.UtcNow, scopeName);
 
-			if (!DataType.Instance.IsNullOrWhiteSpace(scopeName))
+			if (!DataTypeFascade.Instance.IsNullOrWhiteSpace(scopeName))
 			{
 				new FreeConstruct()
 				{

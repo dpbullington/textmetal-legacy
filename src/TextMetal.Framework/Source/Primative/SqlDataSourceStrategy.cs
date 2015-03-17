@@ -9,9 +9,10 @@ using System.Data;
 using System.IO;
 using System.Linq;
 
-using TextMetal.Common.Core;
-using TextMetal.Common.Core.Cerealization;
-using TextMetal.Common.Data;
+using LeastViable.Common.Fascades.AdoNet.UoW;
+using LeastViable.Common.Fascades.Utilities;
+using LeastViable.Common.Strategies.Serialization;
+
 using TextMetal.Framework.Associative;
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Tokenization;
@@ -57,7 +58,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)connectionString == null)
 				throw new ArgumentNullException("connectionString");
 
-			if (DataType.Instance.IsWhiteSpace(connectionString))
+			if (DataTypeFascade.Instance.IsWhiteSpace(connectionString))
 				throw new ArgumentOutOfRangeException("connectionString");
 
 			tokenizer = new Tokenizer(true);
@@ -137,7 +138,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException("properties");
 
-			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
+			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException("sourceFilePath");
 
 			connectionAqtn = null;
@@ -162,18 +163,18 @@ namespace TextMetal.Framework.Source.Primative
 					connectionString = values[0];
 			}
 
-			if (DataType.Instance.IsWhiteSpace(connectionString))
+			if (DataTypeFascade.Instance.IsWhiteSpace(connectionString))
 				throw new InvalidOperationException(string.Format("The connection string cannot be null or whitespace."));
 
 			if (properties.TryGetValue(PROP_TOKEN_GET_SCHEMA_ONLY, out values))
 			{
 				if ((object)values != null && values.Count == 1)
-					DataType.Instance.TryParse<bool>(values[0], out getSchemaOnly);
+					DataTypeFascade.Instance.TryParse<bool>(values[0], out getSchemaOnly);
 			}
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
 
-			sqlQuery = Cerealization.GetObjectFromFile<SqlQuery>(sourceFilePath);
+			sqlQuery = XmlSerializationStrategy.Instance.GetObjectFromFile<SqlQuery>(sourceFilePath);
 
 			objectConstruct00 = new ObjectConstruct();
 

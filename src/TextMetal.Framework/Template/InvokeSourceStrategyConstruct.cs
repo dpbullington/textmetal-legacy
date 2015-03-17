@@ -5,7 +5,8 @@
 
 using System;
 
-using TextMetal.Common.Core;
+using LeastViable.Common.Fascades.Utilities;
+
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Expression;
 using TextMetal.Framework.Tokenization;
@@ -138,7 +139,7 @@ namespace TextMetal.Framework.Template
 			}
 			else
 			{
-				if (!DataType.Instance.IsNullOrWhiteSpace(var))
+				if (!DataTypeFascade.Instance.IsNullOrWhiteSpace(var))
 				{
 					IExpressionContainerConstruct expressionContainerConstruct;
 					ValueConstruct valueConstruct;

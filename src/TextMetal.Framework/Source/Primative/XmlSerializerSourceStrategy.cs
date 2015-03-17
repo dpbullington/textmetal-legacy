@@ -7,8 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-using TextMetal.Common.Core;
-using TextMetal.Common.Core.Cerealization;
+using LeastViable.Common.Fascades.Utilities;
+using LeastViable.Common.Strategies.Serialization;
 
 namespace TextMetal.Framework.Source.Primative
 {
@@ -41,7 +41,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException("properties");
 
-			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
+			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException("sourceFilePath");
 
 			xmlSerializedObjectAqtn = null;

@@ -21,7 +21,7 @@ $property_connection_type = "System.Data.SqlClient.SqlConnection, System.Data, V
 $property_data_source_tag = "net.sqlserver"
 $property_module_name = "TextMetal.Sample.DataModel"
 $property_clr_namespace = "TextMetal.Sample.DataModel"
-$property_model_clr_super_type = "ModelObject"
+$property_model_clr_super_type = "PlainModelObject"
 $property_request_model_clr_super_type = "RequestModelObject"
 $property_result_model_clr_super_type = "ResultModelObject"
 $property_response_model_clr_super_type = "ResponseModelObject"
@@ -78,39 +78,28 @@ if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 
 
 New-Item -ItemType directory -Path $base_lib_dir
-New-Item -ItemType directory -Path "$base_lib_dir\TextMetal"
-New-Item -ItemType directory -Path "$base_lib_dir\IronRuby"
+New-Item -ItemType directory -Path "$base_lib_dir\LeastViable"
 New-Item -ItemType directory -Path "$base_lib_dir\Sqlite"
 New-Item -ItemType directory -Path "$base_lib_dir\Sqlite\x64"
 New-Item -ItemType directory -Path "$base_lib_dir\Sqlite\x86"
 
-Copy-Item "$lib_dir\IronRuby\*.*" "$base_lib_dir\IronRuby\."
+
 Copy-Item "$lib_dir\SQLite\x64\*.*" "$base_lib_dir\SQLite\x64\."
+
+if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
+{ echo "An error occurred during the operation."; return; }
+
+
 Copy-Item "$lib_dir\SQLite\x86\*.*" "$base_lib_dir\SQLite\x86\."
 
-Copy-Item "$src_dir\TextMetal.Common.Core\bin\$build_flavor_dir\TextMetal.Common.Core.dll" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Common.Core\bin\$build_flavor_dir\TextMetal.Common.Core.xml" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Common.Core\bin\$build_flavor_dir\TextMetal.Common.Core.pdb" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Common.Data\bin\$build_flavor_dir\TextMetal.Common.Data.dll" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Common.Data\bin\$build_flavor_dir\TextMetal.Common.Data.xml" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Common.Data\bin\$build_flavor_dir\TextMetal.Common.Data.pdb" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Common.Solder\bin\$build_flavor_dir\TextMetal.Common.Solder.dll" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Common.Solder\bin\$build_flavor_dir\TextMetal.Common.Solder.xml" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Common.Solder\bin\$build_flavor_dir\TextMetal.Common.Solder.pdb" "$base_lib_dir\TextMetal\."
+if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
+{ echo "An error occurred during the operation."; return; }
 
-Copy-Item "$src_dir\TextMetal.Imports\bin\$build_flavor_dir\TextMetal.Imports.dll" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Imports\bin\$build_flavor_dir\TextMetal.Imports.xml" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Imports\bin\$build_flavor_dir\TextMetal.Imports.pdb" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Imports.nunit.console.exe\bin\$build_flavor_dir\TextMetal.Imports.nunit.console.exe" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Imports.nunit.console.exe\bin\$build_flavor_dir\TextMetal.Imports.nunit.console.xml" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Imports.nunit.console.exe\bin\$build_flavor_dir\TextMetal.Imports.nunit.console.pdb" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Imports.nunit.gui.exe\bin\$build_flavor_dir\TextMetal.Imports.nunit.gui.exe" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Imports.nunit.gui.exe\bin\$build_flavor_dir\TextMetal.Imports.nunit.gui.xml" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Imports.nunit.gui.exe\bin\$build_flavor_dir\TextMetal.Imports.nunit.gui.pdb" "$base_lib_dir\TextMetal\."
 
-Copy-Item "$src_dir\TextMetal.TestFramework\bin\$build_flavor_dir\TextMetal.TestFramework.dll" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.TestFramework\bin\$build_flavor_dir\TextMetal.TestFramework.xml" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.TestFramework\bin\$build_flavor_dir\TextMetal.TestFramework.pdb" "$base_lib_dir\TextMetal\."
+Copy-Item "$lib_dir\LeastViable\*.*" "$base_lib_dir\LeastViable\."
+
+if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
+{ echo "An error occurred during the operation."; return; }
 
 
 echo "The operation completed successfully."

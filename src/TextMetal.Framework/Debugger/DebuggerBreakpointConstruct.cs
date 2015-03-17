@@ -7,8 +7,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using TextMetal.Common.Core.Hierarchy;
 using TextMetal.Framework.Core;
+using TextMetal.Framework.Core.ObjectTaxonomy;
 using TextMetal.Framework.XmlDialect;
 
 namespace TextMetal.Framework.Debugger

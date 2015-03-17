@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 
-using TextMetal.Common.Core;
+using LeastViable.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.Tokenization
 {
@@ -105,7 +105,7 @@ namespace TextMetal.Framework.Tokenization
 			value = null;
 			rawToken = _token;
 
-			if (DataType.Instance.IsNullOrWhiteSpace(rawToken))
+			if (DataTypeFascade.Instance.IsNullOrWhiteSpace(rawToken))
 			{
 				if (this.Strict)
 					throw new InvalidOperationException(string.Format("Failed to get value for empty token"));
@@ -132,7 +132,7 @@ namespace TextMetal.Framework.Tokenization
 			{
 				foreach (object target in this.Targets)
 				{
-					if (Reflexion.Instance.GetLogicalPropertyValue(target, firstToken, out tokenReplacementValue))
+					if (ReflectionFascade.Instance.GetLogicalPropertyValue(target, firstToken, out tokenReplacementValue))
 					{
 						if ((object)tokens == null ||
 							tokens.Length <= 0)
@@ -145,7 +145,7 @@ namespace TextMetal.Framework.Tokenization
 						foreach (string token in tokens)
 						{
 							// only do logical lookup here
-							if (!Reflexion.Instance.GetLogicalPropertyValue(tokenLogicalValue, token, out tokenLogicalValue))
+							if (!ReflectionFascade.Instance.GetLogicalPropertyValue(tokenLogicalValue, token, out tokenLogicalValue))
 							{
 								if (this.Strict)
 									throw new InvalidOperationException(string.Format("Failed to get value for token '{0}'", _token));
@@ -182,7 +182,7 @@ namespace TextMetal.Framework.Tokenization
 			{
 				foreach (object target in this.Targets)
 				{
-					if (Reflexion.Instance.SetLogicalPropertyValue(target, token, value, false, false))
+					if (ReflectionFascade.Instance.SetLogicalPropertyValue(target, token, value, false, false))
 						return true;
 				}
 			}

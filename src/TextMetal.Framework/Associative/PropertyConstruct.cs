@@ -6,7 +6,9 @@
 using System;
 using System.Collections;
 
-using TextMetal.Common.Core;
+using LeastViable.Common;
+using LeastViable.Common.Fascades.Utilities;
+
 using TextMetal.Framework.Core;
 using TextMetal.Framework.XmlDialect;
 
@@ -114,7 +116,7 @@ namespace TextMetal.Framework.Associative
 			else
 				thatValue = rightObject;
 
-			return DataType.Instance.ObjectsEqualValueSemantics(thisValue, thatValue);
+			return DataTypeFascade.Instance.ObjectsEqualValueSemantics(thisValue, thatValue);
 		}
 
 		/// <summary>
@@ -183,7 +185,7 @@ namespace TextMetal.Framework.Associative
 			if ((object)templatingContext == null)
 				throw new ArgumentNullException("templatingContext");
 
-			if (DataType.Instance.IsNullOrWhiteSpace(this.Type))
+			if (DataTypeFascade.Instance.IsNullOrWhiteSpace(this.Type))
 				valueType = typeof(String);
 			else
 				valueType = System.Type.GetType(this.Type, false);
@@ -191,7 +193,7 @@ namespace TextMetal.Framework.Associative
 			if ((object)valueType == null)
 				throw new InvalidOperationException(string.Format("Failed to determine or load the type '{0}' of the associative property value.", this.Type));
 
-			if (!DataType.Instance.TryParse(valueType, this.Value, out value))
+			if (!DataTypeFascade.Instance.TryParse(valueType, this.Value, out value))
 				throw new InvalidOperationException(string.Format("Failed to parse the associative property value '{0}' into the specified type '{1}'.", value, this.Type));
 
 			return value;

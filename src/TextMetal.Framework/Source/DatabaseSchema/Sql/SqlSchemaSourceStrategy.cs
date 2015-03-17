@@ -8,8 +8,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Xml;
 
-using TextMetal.Common.Core;
-using TextMetal.Common.Data;
+using LeastViable.Common;
+using LeastViable.Common.Fascades.AdoNet.UoW;
+using LeastViable.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 {

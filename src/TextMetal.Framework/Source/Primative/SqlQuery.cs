@@ -8,7 +8,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Xml.Serialization;
 
-using TextMetal.Common.Core;
+using LeastViable.Common;
+using LeastViable.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.Source.Primative
 {
@@ -56,11 +57,11 @@ namespace TextMetal.Framework.Source.Primative
 			{
 				int ivalue;
 
-				if (DataType.Instance.IsNullOrWhiteSpace(value))
+				if (DataTypeFascade.Instance.IsNullOrWhiteSpace(value))
 					this.Order = null;
 				else
 				{
-					if (!DataType.Instance.TryParse<int>(value, out ivalue))
+					if (!DataTypeFascade.Instance.TryParse<int>(value, out ivalue))
 						this.Order = null;
 					else
 						this.Order = ivalue;

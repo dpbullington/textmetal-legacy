@@ -30,11 +30,8 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 
-using TextMetal.Common.Core;
-using TextMetal.Common.Data;
-using TextMetal.Common.Data.Framework;
-using TextMetal.Common.Data.Framework.Syntax.Expressions;
-using TextMetal.Common.Data.Framework.Syntax.Operators;
+using LeastViable.Common.Fascades.Utilities;
+using LeastViable.Data.Models;
 ]]>
 						<If>
 							<If.Condition>
@@ -141,7 +138,7 @@ namespace ${ClrNamespace}.${FolderName}
 			}
 			set
 			{
-				if (!DataType.Instance.ObjectsEqualValueSemantics(this.@${ColumnNameCamelCase}, value))
+				if (!DataTypeFascade.Instance.ObjectsEqualValueSemantics(this.@${ColumnNameCamelCase}, value))
 				{
 					this.@${ColumnNameCamelCase} = value;
 					this.OnPropertyChanged(COLUMN_NAME_${ColumnNameConstantCase});

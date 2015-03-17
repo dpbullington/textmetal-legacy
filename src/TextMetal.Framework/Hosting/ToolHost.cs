@@ -9,7 +9,8 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-using TextMetal.Common.Core;
+using LeastViable.Common.Fascades.Utilities;
+
 using TextMetal.Framework.Core;
 using TextMetal.Framework.InputOutput;
 using TextMetal.Framework.Template;
@@ -78,19 +79,19 @@ namespace TextMetal.Framework.Hosting
 			if ((object)properties == null)
 				throw new ArgumentNullException("properties");
 
-			if (DataType.Instance.IsWhiteSpace(templateFilePath))
+			if (DataTypeFascade.Instance.IsWhiteSpace(templateFilePath))
 				throw new ArgumentOutOfRangeException("templateFilePath");
 
-			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
+			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException("sourceFilePath");
 
-			if (DataType.Instance.IsWhiteSpace(baseDirectoryPath))
+			if (DataTypeFascade.Instance.IsWhiteSpace(baseDirectoryPath))
 				throw new ArgumentOutOfRangeException("baseDirectoryPath");
 
-			if (DataType.Instance.IsWhiteSpace(sourceStrategyAqtn))
+			if (DataTypeFascade.Instance.IsWhiteSpace(sourceStrategyAqtn))
 				throw new ArgumentOutOfRangeException("sourceStrategyAqtn");
 
-			toolVersion = new AssemblyInformation(Assembly.GetAssembly(typeof(IXmlPersistEngine))).AssemblyVersion;
+			toolVersion = new AssemblyInformationFascade(Assembly.GetAssembly(typeof(IXmlPersistEngine))).AssemblyVersion;
 			templateFilePath = Path.GetFullPath(templateFilePath);
 			baseDirectoryPath = Path.GetFullPath(baseDirectoryPath);
 

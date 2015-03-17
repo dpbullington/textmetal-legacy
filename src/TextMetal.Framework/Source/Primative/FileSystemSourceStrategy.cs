@@ -7,7 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-using TextMetal.Common.Core;
+using LeastViable.Common.Fascades.Utilities;
+
 using TextMetal.Framework.Associative;
 
 namespace TextMetal.Framework.Source.Primative
@@ -61,12 +62,12 @@ namespace TextMetal.Framework.Source.Primative
 			}
 			else
 			{
-				if (DataType.Instance.IsNullOrWhiteSpace(wildcard))
+				if (DataTypeFascade.Instance.IsNullOrWhiteSpace(wildcard))
 					files = Directory.GetFiles(directoryPath);
 				else
 					files = Directory.GetFiles(directoryPath, wildcard);
 
-				if (DataType.Instance.IsNullOrWhiteSpace(wildcard))
+				if (DataTypeFascade.Instance.IsNullOrWhiteSpace(wildcard))
 					directories = Directory.GetDirectories(directoryPath);
 				else
 					directories = Directory.GetDirectories(directoryPath, wildcard);
@@ -282,7 +283,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException("properties");
 
-			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
+			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException("sourceFilePath");
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
@@ -293,7 +294,7 @@ namespace TextMetal.Framework.Source.Primative
 				if ((object)values != null && values.Count == 1)
 				{
 					recursiveStr = values[0];
-					if (!DataType.Instance.TryParse<bool>(recursiveStr, out recursive))
+					if (!DataTypeFascade.Instance.TryParse<bool>(recursiveStr, out recursive))
 						;
 				}
 			}

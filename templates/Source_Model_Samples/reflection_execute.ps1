@@ -14,7 +14,7 @@ $source_dir = "."
 $textmetal_exe = "$src_dir\TextMetal.ConsoleTool\bin\$build_flavor_dir\TextMetal.exe"
 
 $template_file = "$template_dir\empty_template.xml"
-$source_file = "$src_dir\TextMetal.HostImpl.Tool\bin\$build_flavor_dir\TextMetal.Common.Core.dll"
+$source_file = "$src_dir\TextMetal.Framework\bin\$build_flavor_dir\TextMetal.Framework.dll"
 $base_dir = ".\output"
 $source_strategy = "TextMetal.Framework.Source.Primative.ReflectionSourceStrategy, TextMetal.Framework"
 $strict = $true

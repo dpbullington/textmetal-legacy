@@ -30,11 +30,8 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 
-using TextMetal.Common.Core;
-using TextMetal.Common.Data;
-using TextMetal.Common.Data.Framework;
-using TextMetal.Common.Data.Framework.Syntax.Expressions;
-using TextMetal.Common.Data.Framework.Syntax.Operators;
+using LeastViable.Common.Fascades.Utilities;
+using LeastViable.Data.Models;
 ]]>
 						<If>
 							<If.Condition>
@@ -189,7 +186,7 @@ namespace ${ClrNamespace}.${FolderName}
 			}
 			set
 			{
-				if (!DataType.Instance.ObjectsEqualValueSemantics(this.results, value))
+				if (!DataTypeFascade.Instance.ObjectsEqualValueSemantics(this.results, value))
 				{
 					this.results = value;
 					this.EnumerationComplete = false;
@@ -234,7 +231,7 @@ namespace ${ClrNamespace}.${FolderName}
 			}
 			set
 			{
-				if (!DataType.Instance.ObjectsEqualValueSemantics(this.@${ParameterNameCamelCase}, value))
+				if (!DataTypeFascade.Instance.ObjectsEqualValueSemantics(this.@${ParameterNameCamelCase}, value))
 				{
 					this.@${ParameterNameCamelCase} = value;
 					this.OnPropertyChanged(PARAMETER_NAME_${ParameterNameConstantCase});

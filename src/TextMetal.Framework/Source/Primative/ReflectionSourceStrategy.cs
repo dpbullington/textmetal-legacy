@@ -8,7 +8,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-using TextMetal.Common.Core;
+using LeastViable.Common;
+using LeastViable.Common.Fascades.Utilities;
+
 using TextMetal.Framework.Associative;
 
 namespace TextMetal.Framework.Source.Primative
@@ -430,7 +432,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)parent == null)
 				throw new ArgumentNullException("parent");
 
-			customAttributes = Reflexion.Instance.GetAllAttributes<Attribute>(customAttributeProvider);
+			customAttributes = ReflectionFascade.Instance.GetAllAttributes<Attribute>(customAttributeProvider);
 
 			arrayConstruct00 = new ArrayConstruct();
 			arrayConstruct00.Name = "CustomAttributes";
@@ -466,7 +468,7 @@ namespace TextMetal.Framework.Source.Primative
 							propertyConstruct01.RawValue = publicPropertyInfo.Name;
 							objectConstruct01.Items.Add(propertyConstruct01);
 
-							if (Reflexion.Instance.GetLogicalPropertyValue(customAttribute, publicPropertyInfo.Name, out value))
+							if (ReflectionFascade.Instance.GetLogicalPropertyValue(customAttribute, publicPropertyInfo.Name, out value))
 							{
 								propertyConstruct01 = new PropertyConstruct();
 								propertyConstruct01.Name = "CustomAttributePropertyValue";
@@ -1466,7 +1468,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException("properties");
 
-			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
+			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException("sourceFilePath");
 
 			assemblies = new List<Assembly>();

@@ -53,12 +53,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 
-using TextMetal.Common.Core;
-using TextMetal.Common.Data;
-using TextMetal.Common.Data.Framework;
-using TextMetal.Common.Data.Framework.Syntax.Expressions;
-using TextMetal.Common.Data.Framework.Syntax.Operators;
-using TextMetal.Common.Data.LinqToSql;
+using LeastViable.Data.Models;
 ]]>
 						<If>
 							<If.Condition>
@@ -80,7 +75,7 @@ using TextMetal.Common.Data.LinqToSql;
 						<![CDATA[
 namespace ${ClrNamespace}.${FolderName}
 {
-	public partial interface I${TableNameSingularPascalCase} : IModelObject
+	public partial interface I${TableNameSingularPascalCase} : IPlainModelObject
 	{
 		#region Properties/Indexers/Events
 ]]>

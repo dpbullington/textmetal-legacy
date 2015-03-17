@@ -9,7 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Xml.Schema;
 
-using TextMetal.Common.Core;
+using LeastViable.Common.Fascades.Utilities;
+
 using TextMetal.Framework.Associative;
 using TextMetal.Framework.Core;
 
@@ -59,8 +60,8 @@ namespace TextMetal.Framework.Source.Primative
 
 				if ((object)xmlSchemaElement != null)
 				{
-					if (DataType.Instance.IsNullOrWhiteSpace(xmlSchemaElement.Name) &&
-						!DataType.Instance.IsNullOrWhiteSpace(xmlSchemaElement.RefName.Name))
+					if (DataTypeFascade.Instance.IsNullOrWhiteSpace(xmlSchemaElement.Name) &&
+						!DataTypeFascade.Instance.IsNullOrWhiteSpace(xmlSchemaElement.RefName.Name))
 					{
 						propertyConstruct00 = new PropertyConstruct();
 						propertyConstruct00.Name = "XmlSchemaElementIsRef";
@@ -162,7 +163,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException("properties");
 
-			if (DataType.Instance.IsWhiteSpace(sourceFilePath))
+			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException("sourceFilePath");
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);

@@ -7,8 +7,8 @@ using System;
 using System.IO;
 using System.Xml;
 
-using TextMetal.Common.Core;
-using TextMetal.Common.Core.Cerealization;
+using LeastViable.Common.Fascades.Utilities;
+using LeastViable.Common.Strategies.Serialization;
 
 namespace TextMetal.Framework.XmlDialect
 {
@@ -85,7 +85,7 @@ namespace TextMetal.Framework.XmlDialect
 			if ((object)inputFilePath == null)
 				throw new ArgumentNullException("inputFilePath");
 
-			if (DataType.Instance.IsWhiteSpace(inputFilePath))
+			if (DataTypeFascade.Instance.IsWhiteSpace(inputFilePath))
 				throw new ArgumentOutOfRangeException("inputFilePath");
 
 			targetType = typeof(TObject);
@@ -241,7 +241,7 @@ namespace TextMetal.Framework.XmlDialect
 			if ((object)obj == null)
 				throw new ArgumentNullException("obj");
 
-			if (DataType.Instance.IsWhiteSpace(outputFilePath))
+			if (DataTypeFascade.Instance.IsWhiteSpace(outputFilePath))
 				throw new ArgumentOutOfRangeException("outputFilePath");
 
 			targetType = obj.GetType();
@@ -263,7 +263,7 @@ namespace TextMetal.Framework.XmlDialect
 			if ((object)obj == null)
 				throw new ArgumentNullException("obj");
 
-			if (DataType.Instance.IsWhiteSpace(outputFilePath))
+			if (DataTypeFascade.Instance.IsWhiteSpace(outputFilePath))
 				throw new ArgumentOutOfRangeException("outputFilePath");
 
 			using (Stream stream = File.Open(outputFilePath, FileMode.Create, FileAccess.Write, FileShare.None))

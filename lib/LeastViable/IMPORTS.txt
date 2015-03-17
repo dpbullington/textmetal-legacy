@@ -1,0 +1,10 @@
+﻿-----------------------------------------------------------------------------------
+IMPORTS
+-----------------------------------------------------------------------------------
+
+BUILT FROM SOURCE INCLUDED IN TREE (Imports)
+--------------------------------
+castleproject-core <https://github.com/castleproject/Core>
+json-net <https://github.com/JamesNK/Newtonsoft.Json>
+nmock2-2.1.3641.rtm <http://nmock2.svn.sourceforge.net/viewvc/nmock2/>
+nunit-2.6x <https://github.com/nunit/nunitv2> <http://nunit.org/?p=download>

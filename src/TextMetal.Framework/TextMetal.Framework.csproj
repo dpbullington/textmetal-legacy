@@ -7,7 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2CA91424-7DD3-4E93-B6E4-F296D9D07716}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AppDesignerFolder>
+    </AppDesignerFolder>
     <RootNamespace>TextMetal.Framework</RootNamespace>
     <AssemblyName>TextMetal.Framework</AssemblyName>
     <SignAssembly>true</SignAssembly>
@@ -42,6 +43,9 @@
     </Reference>
     <Reference Include="IronRuby.Libraries">
       <HintPath>..\..\lib\IronRuby\IronRuby.Libraries.dll</HintPath>
+    </Reference>
+    <Reference Include="LeastViable.Common">
+      <HintPath>..\..\lib\LeastViable\LeastViable.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Dynamic">
@@ -83,6 +87,12 @@
     <Compile Include="Core\ITemplateMechanism.cs" />
     <Compile Include="Core\ITemplateXmlObject.cs" />
     <Compile Include="Core\ITemplatingContext.cs" />
+    <Compile Include="Core\Name.cs" />
+    <Compile Include="Core\Infrastructure\HierarchicalObject.cs" />
+    <Compile Include="Core\Infrastructure\HierarchicalObjectCollection~1.cs" />
+    <Compile Include="Core\Infrastructure\IHierarchicalObject.cs" />
+    <Compile Include="Core\Infrastructure\IHierarchicalObjectCollection.cs" />
+    <Compile Include="Core\Infrastructure\IHierarchicalObjectCollection~1.cs" />
     <Compile Include="Core\TemplatingContext.cs" />
     <Compile Include="Debugger\DebuggerBreakpointConstruct.cs" />
     <Compile Include="Expression\AspectConstruct.cs" />
@@ -111,6 +121,7 @@
     <Compile Include="InputOutput\TextWriterOutputMechanism.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
     <Compile Include="Sort\AscendingConstruct.cs" />
+    <Compile Include="Sort\ComparableComparer.cs" />
     <Compile Include="Sort\DescendingConstruct.cs" />
     <Compile Include="Sort\ISortContainerConstruct.cs" />
     <Compile Include="Sort\OrderConstruct.cs" />
@@ -211,16 +222,6 @@
     <None Include="..\TextMetal.snk">
       <Link>TextMetal.snk</Link>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TextMetal.Common.Core\TextMetal.Common.Core.csproj">
-      <Project>{D1860A67-7EFB-4C0F-89CD-A641D99DCC2A}</Project>
-      <Name>TextMetal.Common.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TextMetal.Common.Data\TextMetal.Common.Data.csproj">
-      <Project>{e41e2352-4249-458e-b4f2-dbdf9b564bf5}</Project>
-      <Name>TextMetal.Common.Data</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Source\DatabaseSchema\Odbc\DML\odbc.sqlserver\Databases.sql" />

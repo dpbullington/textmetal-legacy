@@ -7,7 +7,7 @@ using System;
 using System.Drawing;
 using System.IO;
 
-using TextMetal.Common.Core;
+using LeastViable.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.XmlDialect
 {
@@ -27,10 +27,10 @@ namespace TextMetal.Framework.XmlDialect
 			if ((object)toolboxImageResourceName == null)
 				throw new ArgumentNullException("toolboxImageResourceName");
 
-			if (DataType.Instance.IsWhiteSpace(description))
+			if (DataTypeFascade.Instance.IsWhiteSpace(description))
 				throw new ArgumentOutOfRangeException("description");
 
-			if (DataType.Instance.IsWhiteSpace(toolboxImageResourceName))
+			if (DataTypeFascade.Instance.IsWhiteSpace(toolboxImageResourceName))
 				throw new ArgumentOutOfRangeException("toolboxImageResourceName");
 
 			this.description = description;

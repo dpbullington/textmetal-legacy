@@ -16,14 +16,10 @@ using System.Xml;
 
 using NUnit.Framework;
 
-using TextMetal.Common.Core;
-using TextMetal.Common.Core.Cerealization;
-using TextMetal.Common.Data;
-using TextMetal.Common.Data.Framework;
-using TextMetal.Common.Data.Framework.Syntax.Expressions;
-using TextMetal.Common.Data.Framework.Syntax.Operators;
-
-using TextMetal.TestFramework;
+using LeastViable.Common.Fascades.AdoNet.UoW;
+using LeastViable.Data.Models.Impl.Purist;
+using LeastViable.Data.Models.Impl.Purist.Expressions;
+using LeastViable.Testing;
 ]]>
 		<If>
 			<If.Condition>
@@ -147,7 +143,7 @@ namespace ${ClrNamespace}.IntegrationTests
 			{
 				Assert.IsNotNull(UnitOfWork.Current);
 
-				@${TableNameSingularCamelCase} = repository.CreateModel<I${TableNameSingularPascalCase}>();
+				@${TableNameSingularCamelCase} = repository.CreatePlain<I${TableNameSingularPascalCase}>();
 ]]>
 
 								<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -265,7 +261,7 @@ namespace ${ClrNamespace}.IntegrationTests
 
 			repository = new Repository();
 
-			@${TableNameSingularCamelCase} = repository.CreateModel<I${TableNameSingularPascalCase}>();
+			@${TableNameSingularCamelCase} = repository.CreatePlain<I${TableNameSingularPascalCase}>();
 ]]>
 	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter>
@@ -343,7 +339,7 @@ namespace ${ClrNamespace}.IntegrationTests
 			{
 				Assert.IsNotNull(UnitOfWork.Current);
 
-				@${TableNamePluralCamelCase} = repository.Find<I${TableNameSingularPascalCase}>(new ModelQuery(VoidExpression.Instance, new ISequence[] {}));
+				@${TableNamePluralCamelCase} = repository.Find<I${TableNameSingularPascalCase}>(new PuristModelQuery(VoidExpression.Instance, new ISortOrder[] { }));
 
 				Assert.IsNotNull(@${TableNamePluralCamelCase});
 				Assert.IsNotEmpty(@${TableNamePluralCamelCase});

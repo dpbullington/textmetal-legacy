@@ -7,8 +7,9 @@ using System;
 using System.IO;
 using System.Text;
 
-using TextMetal.Common.Core;
-using TextMetal.Common.Core.Cerealization;
+using LeastViable.Common.Fascades.Utilities;
+using LeastViable.Common.Strategies.Serialization;
+
 using TextMetal.Framework.XmlDialect;
 
 namespace TextMetal.Framework.InputOutput
@@ -110,7 +111,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)scopeName == null)
 				throw new ArgumentNullException("scopeName");
 
-			if (DataType.Instance.IsWhiteSpace(scopeName))
+			if (DataTypeFascade.Instance.IsWhiteSpace(scopeName))
 				throw new ArgumentOutOfRangeException("scopeName");
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, scopeName));
@@ -134,7 +135,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)scopeName == null)
 				throw new ArgumentNullException("scopeName");
 
-			if (DataType.Instance.IsWhiteSpace(scopeName))
+			if (DataTypeFascade.Instance.IsWhiteSpace(scopeName))
 				throw new ArgumentOutOfRangeException("scopeName");
 
 			textWriter = base.TextWriters.Pop();
@@ -154,7 +155,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)objectName == null)
 				throw new ArgumentNullException("objectName");
 
-			if (DataType.Instance.IsWhiteSpace(objectName))
+			if (DataTypeFascade.Instance.IsWhiteSpace(objectName))
 				throw new ArgumentOutOfRangeException("objectName");
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, objectName));
@@ -163,7 +164,7 @@ namespace TextMetal.Framework.InputOutput
 			// this should support XPE, XML, JSON
 			if ((object)xmlObject != null)
 				serializationStrategy = new XpeSerializationStrategy(this.Xpe);
-			else if ((object)Reflexion.Instance.GetOneAttribute<SerializableAttribute>(obj.GetType()) != null)
+			else if ((object)ReflectionFascade.Instance.GetOneAttribute<SerializableAttribute>(obj.GetType()) != null)
 				serializationStrategy = new XmlSerializationStrategy();
 			else
 				serializationStrategy = new JsonSerializationStrategy();
@@ -194,7 +195,7 @@ namespace TextMetal.Framework.InputOutput
 			string fullFilePath;
 			string fullDirectoryPath;
 
-			if (!DataType.Instance.IsWhiteSpace(this.LogFileName))
+			if (!DataTypeFascade.Instance.IsWhiteSpace(this.LogFileName))
 			{
 				fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, this.LogFileName));
 				fullDirectoryPath = Path.GetDirectoryName(fullFilePath);

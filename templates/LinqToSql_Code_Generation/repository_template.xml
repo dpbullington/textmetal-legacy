@@ -18,13 +18,10 @@ using System.Linq.Expressions;
 using System.Xml;
 using System.Xml.Linq;
 
-using TextMetal.Common.Core;
-using TextMetal.Common.Data;
-using TextMetal.Common.Data.Framework;
-using TextMetal.Common.Data.Framework.Syntax.Expressions;
-using TextMetal.Common.Data.Framework.Syntax.Operators;
-using TextMetal.Common.Data.LinqToSql;
-using TextMetal.Common.Solder.DependencyManagement;
+using LeastViable.Common.Fascades.AdoNet.UoW;
+using LeastViable.Data.Models;
+using LeastViable.Data.Models.Impl.Linq.L2S;
+using LeastViable.Solder.IoC;
 ]]>
 		<If>
 			<If.Condition>
@@ -420,22 +417,22 @@ namespace ${ClrNamespace}
 				throw new ArgumentOutOfRangeException(string.Format("The model type '{0}' was not recognized. Try re-generating the repository code from the templates using TextMetal.exe and try again.", modelType.FullName));
 		}
 
-		public override IEnumerable<TModel> Find<TModel>(IUnitOfWork unitOfWork, IModelQuery modelQuery)
+		public override IEnumerable<TModel> Find<TModel>(IUnitOfWork unitOfWork, IModelQuery query)
 		{
 			Type modelType;
-			object underlyingQuery;
+			Expression canonicalExpression;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			if ((object)modelQuery == null)
-				throw new ArgumentNullException("modelQuery");
+			if ((object)query == null)
+				throw new ArgumentNullException("query");
 
 			modelType = typeof(TModel);
-			underlyingQuery = modelQuery.GetUnderlyingQuery();
+			canonicalExpression = query.GetCanonicalExpression();
 
-			if ((object)underlyingQuery == null)
-				throw new InvalidOperationException(string.Format("Model query object of type '{0}' returned an invalid underlying query."));
+			if ((object)canonicalExpression == null)
+				throw new InvalidOperationException(string.Format("Model query object of type '{0}' returned an invalid cannonical expression.", modelType.FullName));
 
 			if (false)
 			{
@@ -449,10 +446,10 @@ namespace ${ClrNamespace}
 <![CDATA[
 			else if (modelType == typeof(I${TableNameSingularPascalCase}))
 			{
-				Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>> _predicate = underlyingQuery as Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>>;
+				Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>> _predicate = canonicalExpression as Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>>;
 
 				if ((object)_predicate == null)
-					throw new InvalidOperationException(string.Format("Model query object of type '{0}' returned an unsupported underlying query type; expected type is '{1}'; actual type was '{2}'.", modelQuery.GetType().FullName, typeof(Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>>).FullName, underlyingQuery.GetType().FullName));
+					throw new InvalidOperationException(string.Format("Model query object of type '{0}' returned an unsupported underlying query type; expected type is '{1}'; actual type was '{2}'.", query.GetType().FullName, typeof(Expression<Func<${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}, bool>>).FullName, canonicalExpression.GetType().FullName));
 
 				return (IEnumerable<TModel>)this.LinqFind<I${TableNameSingularPascalCase}, ${LinqToSqlDataContextRootNamespace}.${ObjectNameSqlMetalPascalCase}>(unitOfWork, _predicate, (dm, st) => { ]]>
 						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">

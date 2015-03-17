@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
+using LeastViable.Testing;
+
 using NMock2;
 using NMock2.Actions;
 using NMock2.Matchers;
@@ -14,7 +16,6 @@ using NMock2.Matchers;
 using NUnit.Framework;
 
 using TextMetal.Framework.Tokenization;
-using TextMetal.TestFramework;
 
 namespace TextMetal.Framework.UnitTests.Tokenization._
 {

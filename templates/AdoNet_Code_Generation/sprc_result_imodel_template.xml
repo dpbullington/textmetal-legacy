@@ -30,12 +30,8 @@ using System;
 using System.Data;
 using System.Xml;
 
-using TextMetal.Common.Core;
-using TextMetal.Common.Data;
-using TextMetal.Common.Data.Framework;
-using TextMetal.Common.Data.Framework.Mapping;
-using TextMetal.Common.Data.Framework.Syntax.Expressions;
-using TextMetal.Common.Data.Framework.Syntax.Operators;
+using LeastViable.Data.Models;
+using LeastViable.Data.Models.Impl.Purist.Mapping;
 ]]>
 						<If>
 							<If.Condition>

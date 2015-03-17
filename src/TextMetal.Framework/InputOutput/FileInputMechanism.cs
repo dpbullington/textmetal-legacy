@@ -8,7 +8,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-using TextMetal.Common.Core;
+using LeastViable.Common.Fascades.Utilities;
+
 using TextMetal.Framework.Core;
 using TextMetal.Framework.XmlDialect;
 
@@ -91,7 +92,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)assemblyName == null)
 				throw new ArgumentNullException("assemblyName");
 
-			if (DataType.Instance.IsWhiteSpace(assemblyName))
+			if (DataTypeFascade.Instance.IsWhiteSpace(assemblyName))
 				throw new ArgumentOutOfRangeException("assemblyName");
 
 			assemblyName = Path.GetFullPath(assemblyName);
@@ -108,7 +109,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)contentName == null)
 				throw new ArgumentNullException("contentName");
 
-			if (DataType.Instance.IsWhiteSpace(contentName))
+			if (DataTypeFascade.Instance.IsWhiteSpace(contentName))
 				throw new ArgumentOutOfRangeException("contentName");
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, contentName));
@@ -134,7 +135,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)properties == null)
 				throw new ArgumentNullException("properties");
 
-			if (DataType.Instance.IsWhiteSpace(sourceName))
+			if (DataTypeFascade.Instance.IsWhiteSpace(sourceName))
 				throw new ArgumentOutOfRangeException("sourceName");
 
 			//fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, sourceName));
@@ -154,7 +155,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)templateName == null)
 				throw new ArgumentNullException("templateName");
 
-			if (DataType.Instance.IsWhiteSpace(templateName))
+			if (DataTypeFascade.Instance.IsWhiteSpace(templateName))
 				throw new ArgumentOutOfRangeException("templateName");
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, templateName));

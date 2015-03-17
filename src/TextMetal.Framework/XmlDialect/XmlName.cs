@@ -5,7 +5,8 @@
 
 using System;
 
-using TextMetal.Common.Core;
+using LeastViable.Common;
+using LeastViable.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.XmlDialect
 {

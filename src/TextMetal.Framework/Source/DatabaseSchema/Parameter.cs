@@ -7,7 +7,8 @@ using System;
 using System.Data;
 using System.Xml.Serialization;
 
-using TextMetal.Common.Core;
+using LeastViable.Common;
+using LeastViable.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
@@ -83,7 +84,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			}
 			set
 			{
-				if (DataType.Instance.IsNullOrWhiteSpace(value))
+				if (DataTypeFascade.Instance.IsNullOrWhiteSpace(value))
 					this.ParameterClrNonNullableType = null;
 				else
 					this.ParameterClrNonNullableType = Type.GetType(value, false);
@@ -99,7 +100,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			}
 			set
 			{
-				if (DataType.Instance.IsNullOrWhiteSpace(value))
+				if (DataTypeFascade.Instance.IsNullOrWhiteSpace(value))
 					this.ParameterClrNullableType = null;
 				else
 					this.ParameterClrNullableType = Type.GetType(value, false);
@@ -115,7 +116,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			}
 			set
 			{
-				if (DataType.Instance.IsNullOrWhiteSpace(value))
+				if (DataTypeFascade.Instance.IsNullOrWhiteSpace(value))
 					this.ParameterClrType = null;
 				else
 					this.ParameterClrType = Type.GetType(value, false);

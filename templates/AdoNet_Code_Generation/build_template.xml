@@ -26,12 +26,12 @@
 	</Assign>
 	<Assign token="visual_studio_version">
 		<Assign.Expression>
-			<Value data="12.0.30110.0" type="System.String" />
+			<Value data="12.0.31101.0" type="System.String" />
 		</Assign.Expression>
 	</Assign>
 	<Assign token="minimum_visual_studio_version">
 		<Assign.Expression>
-			<Value data="10.0.40219.1" type="System.String" />
+			<Value data="12.0.31101.0" type="System.String" />
 		</Assign.Expression>
 	</Assign>
 	<Assign token="csproj_product_version">
@@ -158,6 +158,7 @@ VisualStudioVersion = ${visual_studio_version}
 MinimumVisualStudioVersion = ${minimum_visual_studio_version}
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{11000000-0000-0000-0000-00000000FFFF}"
 	ProjectSection(SolutionItems) = preProject
+		SolutionAssemblyInfo.cs = SolutionAssemblyInfo.cs
 	EndProjectSection
 EndProject
 Project("{10000000-0000-0000-0000-00000000FFFF}") = "${ModuleName}", "${ModuleName}\${ModuleName}.csproj", "{FFFF0000-0000-0000-0000-000000000001}"
@@ -229,14 +230,14 @@ EndGlobal
 <OutputScope name="${ModuleName}\SQL\RevisionHistory.(${DataSourceTag}).xml">
 		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
 
-<History xmlns="http://www.textmetal.com/api/v6.0.0">
+<History xmlns="http://www.leastviable.com/api/v7.0.0">
 </History>]]>
 	</OutputScope>
 
 	<OutputScope name="${ModuleName}\SQL\RevisionHistory.(net.sqlite).xml">
 		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
 
-<History xmlns="http://www.textmetal.com/api/v6.0.0">
+<History xmlns="http://www.leastviable.com/api/v7.0.0">
 </History>]]>
 	</OutputScope>
 
@@ -259,7 +260,7 @@ EndGlobal
 	<OutputScope name="${ModuleName}.IntegrationTests\IntegrationTests.nunit">
 		<![CDATA[<?xml version="1.0" encoding="utf-8" ?>
 <NUnitProject>
-	<Settings activeconfig="Debug_${DataSourceTag}"/>
+	<Settings activeconfig="Debug_(${DataSourceTag})"/>
 
 	<Config configfile="App.(${DataSourceTag}).config" name="Debug_(${DataSourceTag})">
 		<assembly path="bin\Debug\${ModuleName}.IntegrationTests.dll"/>
@@ -326,20 +327,19 @@ EndGlobal
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
 	<Reference Include="System.Data" />
-	<Reference Include="System.Web" />
 	<Reference Include="System.Xml" />
 	<Reference Include="System.Data.SQLite">
       <HintPath>..\..\lib\SQLite\x64\System.Data.SQLite.dll</HintPath>
     </Reference>
 
-	<Reference Include="TextMetal.Common.Core">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Core.dll</HintPath>
+	<Reference Include="LeastViable.Common">
+      <HintPath>..\..\lib\LeastViable\LeastViable.Common.dll</HintPath>
     </Reference>
-	<Reference Include="TextMetal.Common.Data">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Data.dll</HintPath>
+	<Reference Include="LeastViable.Data">
+      <HintPath>..\..\lib\LeastViable\LeastViable.Data.dll</HintPath>
     </Reference>
-	<Reference Include="TextMetal.Common.Solder">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Solder.dll</HintPath>
+	<Reference Include="LeastViable.Solder">
+      <HintPath>..\..\lib\LeastViable\LeastViable.Solder.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -487,23 +487,20 @@ EndGlobal
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
 
-	<Reference Include="TextMetal.Common.Core">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Core.dll</HintPath>
+	<Reference Include="LeastViable.Common">
+      <HintPath>..\..\lib\LeastViable\LeastViable.Common.dll</HintPath>
     </Reference>
-	<Reference Include="TextMetal.Common.Data">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Data.dll</HintPath>
+	<Reference Include="LeastViable.Data">
+      <HintPath>..\..\lib\LeastViable\LeastViable.Data.dll</HintPath>
     </Reference>
-	<Reference Include="TextMetal.Common.Solder">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Solder.dll</HintPath>
+	<Reference Include="LeastViable.Solder">
+      <HintPath>..\..\lib\LeastViable\LeastViable.Solder.dll</HintPath>
     </Reference>
-
-	<Reference Include="TextMetal.Imports">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Imports.dll</HintPath>
-    </Reference>
-	<Reference Include="TextMetal.TestFramework">
-      <HintPath>..\..\lib\TextMetal\TextMetal.TestFramework.dll</HintPath>
+	<Reference Include="LeastViable.Testing">
+      <HintPath>..\..\lib\LeastViable\LeastViable.Testing.dll</HintPath>
     </Reference>
 
 	<ProjectReference Include="..\${ModuleName}\${ModuleName}.csproj">
@@ -656,28 +653,17 @@ EndGlobal
       <HintPath>..\..\lib\SQLite\x64\System.Data.SQLite.dll</HintPath>
     </Reference>
 
-	<Reference Include="TextMetal.Common.Core">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Core.dll</HintPath>
+	<Reference Include="LeastViable.Common">
+      <HintPath>..\..\lib\LeastViable\LeastViable.Common.dll</HintPath>
     </Reference>
-	<Reference Include="TextMetal.Common.Data">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Data.dll</HintPath>
+	<Reference Include="LeastViable.Data">
+      <HintPath>..\..\lib\LeastViable\LeastViable.Data.dll</HintPath>
     </Reference>
-	<Reference Include="TextMetal.Common.Solder">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Common.Solder.dll</HintPath>
+	<Reference Include="LeastViable.Solder">
+      <HintPath>..\..\lib\LeastViable\LeastViable.Solder.dll</HintPath>
     </Reference>
-
-	<Reference Include="TextMetal.Framework.Core">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Framework.Core.dll</HintPath>
-    </Reference>
-	<Reference Include="TextMetal.Framework.ExpressionModel">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Framework.ExpressionModel.dll</HintPath>
-    </Reference>
-
-	<Reference Include="TextMetal.Imports">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Imports.dll</HintPath>
-    </Reference>
-	<Reference Include="TextMetal.TestFramework">
-      <HintPath>..\..\lib\TextMetal\TextMetal.TestFramework.dll</HintPath>
+	<Reference Include="LeastViable.Testing">
+      <HintPath>..\..\lib\LeastViable\LeastViable.Testing.dll</HintPath>
     </Reference>
 
 	<ProjectReference Include="..\${ModuleName}\${ModuleName}.csproj">
