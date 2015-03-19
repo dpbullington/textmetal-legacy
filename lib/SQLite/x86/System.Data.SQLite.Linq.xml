@@ -488,7 +488,7 @@
              CustomerId2 etc.
             
              Since the names generated are globally unique, they will not conflict when the
-             columns of a JOIN SELECT statement are joined with another JOIN. 
+             columns of a JOIN SELECT statement are joined with another JOIN.
             
              </para>
             
@@ -629,7 +629,7 @@
         </member>
         <member name="M:System.Data.SQLite.Linq.SqlGenerator.#ctor(System.Data.SQLite.Linq.SQLiteProviderManifest)">
             <summary>
-            Basic constructor. 
+            Basic constructor.
             </summary>
         </member>
         <member name="M:System.Data.SQLite.Linq.SqlGenerator.GenerateSql(System.Data.SQLite.Linq.SQLiteProviderManifest,System.Data.Common.CommandTrees.DbCommandTree,System.Collections.Generic.List{System.Data.Common.DbParameter}@,System.Data.CommandType@)">
@@ -802,7 +802,7 @@
             <item>Store Functions - We recognize these by the BuiltInAttribute and not being Canonical</item>
             <item>User-defined Functions - All the rest except for Lambda functions</item>
             </list>
-            We handle Canonical and Store functions the same way: If they are in the list of functions 
+            We handle Canonical and Store functions the same way: If they are in the list of functions
             that need special handling, we invoke the appropriate handler, otherwise we translate them to
             FunctionName(arg1, arg2, ..., argn).
             We translate user-defined functions to NamespaceName.FunctionName(arg1, arg2, ..., argn).
@@ -825,47 +825,47 @@
             <returns></returns>
         </member>
         <member name="M:System.Data.SQLite.Linq.SqlGenerator.Visit(System.Data.Common.CommandTrees.DbGroupByExpression)">
-            <summary>
-            <see cref="M:System.Data.SQLite.Linq.SqlGenerator.Visit(System.Data.Common.CommandTrees.DbFilterExpression)"/> for general details.
-            We modify both the GroupBy and the Select fields of the SqlSelectStatement.
-            GroupBy gets just the keys without aliases,
-            and Select gets the keys and the aggregates with aliases.
+             <summary>
+             <see cref="M:System.Data.SQLite.Linq.SqlGenerator.Visit(System.Data.Common.CommandTrees.DbFilterExpression)"/> for general details.
+             We modify both the GroupBy and the Select fields of the SqlSelectStatement.
+             GroupBy gets just the keys without aliases,
+             and Select gets the keys and the aggregates with aliases.
             
-            Whenever there exists at least one aggregate with an argument that is not is not a simple
-            <see cref="T:System.Data.Common.CommandTrees.DbPropertyExpression"/>  over <see cref="T:System.Data.Common.CommandTrees.DbVariableReferenceExpression"/>, 
-            we create a nested query in which we alias the arguments to the aggregates. 
-            That is due to the following two limitations of Sql Server:
-            <list type="number">
-            <item>If an expression being aggregated contains an outer reference, then that outer 
-            reference must be the only column referenced in the expression </item>
-            <item>Sql Server cannot perform an aggregate function on an expression containing 
-            an aggregate or a subquery. </item>
-            </list>
+             Whenever there exists at least one aggregate with an argument that is not is not a simple
+             <see cref="T:System.Data.Common.CommandTrees.DbPropertyExpression"/>  over <see cref="T:System.Data.Common.CommandTrees.DbVariableReferenceExpression"/>,
+             we create a nested query in which we alias the arguments to the aggregates.
+             That is due to the following two limitations of Sql Server:
+             <list type="number">
+             <item>If an expression being aggregated contains an outer reference, then that outer
+             reference must be the only column referenced in the expression </item>
+             <item>Sql Server cannot perform an aggregate function on an expression containing
+             an aggregate or a subquery. </item>
+             </list>
             
-            The default translation, without inner query is: 
+             The default translation, without inner query is:
             
-                SELECT 
-                    kexp1 AS key1, kexp2 AS key2,... kexpn AS keyn, 
-                    aggf1(aexpr1) AS agg1, .. aggfn(aexprn) AS aggn
-                FROM input AS a
-                GROUP BY kexp1, kexp2, .. kexpn
+                 SELECT
+                     kexp1 AS key1, kexp2 AS key2,... kexpn AS keyn,
+                     aggf1(aexpr1) AS agg1, .. aggfn(aexprn) AS aggn
+                 FROM input AS a
+                 GROUP BY kexp1, kexp2, .. kexpn
             
-            When we inject an innner query, the equivalent translation is:
+             When we inject an innner query, the equivalent translation is:
             
-                SELECT 
-                    key1 AS key1, key2 AS key2, .. keyn AS keys,  
-                    aggf1(agg1) AS agg1, aggfn(aggn) AS aggn
-                FROM (
-                        SELECT 
-                            kexp1 AS key1, kexp2 AS key2,... kexpn AS keyn, 
-                            aexpr1 AS agg1, .. aexprn AS aggn
-                        FROM input AS a
-                    ) as a
-                GROUP BY key1, key2, keyn
+                 SELECT
+                     key1 AS key1, key2 AS key2, .. keyn AS keys,
+                     aggf1(agg1) AS agg1, aggfn(aggn) AS aggn
+                 FROM (
+                         SELECT
+                             kexp1 AS key1, kexp2 AS key2,... kexpn AS keyn,
+                             aexpr1 AS agg1, .. aexprn AS aggn
+                         FROM input AS a
+                     ) as a
+                 GROUP BY key1, key2, keyn
             
-            </summary>
-            <param name="e"></param>
-            <returns>A <see cref="T:System.Data.SQLite.Linq.SqlSelectStatement"/></returns>
+             </summary>
+             <param name="e"></param>
+             <returns>A <see cref="T:System.Data.SQLite.Linq.SqlSelectStatement"/></returns>
         </member>
         <member name="M:System.Data.SQLite.Linq.SqlGenerator.Visit(System.Data.Common.CommandTrees.DbIntersectExpression)">
             <summary>
@@ -1044,10 +1044,10 @@
             For Sql9 it translates to:
             SELECT Y.x1, Y.x2, ..., Y.xn
             FROM (
-                SELECT X.x1, X.x2, ..., X.xn, row_number() OVER (ORDER BY sk1, sk2, ...) AS [row_number] 
-                FROM input as X 
+                SELECT X.x1, X.x2, ..., X.xn, row_number() OVER (ORDER BY sk1, sk2, ...) AS [row_number]
+                FROM input as X
                 ) as Y
-            WHERE Y.[row_number] &gt; count 
+            WHERE Y.[row_number] &gt; count
             ORDER BY sk1, sk2, ...
             </summary>
             <param name="e"></param>
@@ -1278,8 +1278,8 @@
         <member name="M:System.Data.SQLite.Linq.SqlGenerator.HandleSpecialFunctionToOperator(System.Data.Common.CommandTrees.DbFunctionExpression,System.Boolean)">
             <summary>
             Handles functions that are translated into TSQL operators.
-            The given function should have one or two arguments. 
-            Functions with one arguemnt are translated into 
+            The given function should have one or two arguments.
+            Functions with one arguemnt are translated into
                 op arg
             Functions with two arguments are translated into
                 arg0 op arg1
@@ -1325,7 +1325,7 @@
         </member>
         <member name="M:System.Data.SQLite.Linq.SqlGenerator.HandleCanonicalFunctionDateSubtract(System.Data.SQLite.Linq.SqlGenerator,System.Data.Common.CommandTrees.DbFunctionExpression)">
             <summary>
-            DateSubtract(datetime1, datetime2) -> DATEDIFF ( seconds , startdate , enddate ) 
+            DateSubtract(datetime1, datetime2) -> DATEDIFF ( seconds , startdate , enddate )
             </summary>
             <param name="sqlgen"></param>
             <param name="e"></param>
@@ -1333,7 +1333,7 @@
         </member>
         <member name="M:System.Data.SQLite.Linq.SqlGenerator.HandleCanonicalFunctionDatepart(System.Data.SQLite.Linq.SqlGenerator,System.Data.Common.CommandTrees.DbFunctionExpression)">
             <summary>
-            Handler for canonical functions for extracting date parts. 
+            Handler for canonical functions for extracting date parts.
             For example:
                 Year(date) -> DATEPART( year, date)
             </summary>
@@ -1510,7 +1510,7 @@
         <member name="M:System.Data.SQLite.Linq.SqlGenerator.AddSortKeys(System.Data.SQLite.Linq.SqlBuilder,System.Collections.Generic.IList{System.Data.Common.CommandTrees.DbSortClause})">
             <summary>
             Translates a list of SortClauses.
-            Used in the translation of OrderBy 
+            Used in the translation of OrderBy
             </summary>
             <param name="orderByClause">The SqlBuilder to which the sort keys should be appended</param>
             <param name="sortKeys"></param>
@@ -1548,6 +1548,19 @@
              <param name="fromSymbol"></param>
              <returns>A new select statement, with the old one as the from clause.</returns>
         </member>
+        <member name="M:System.Data.SQLite.Linq.SqlGenerator.NeedSingleQuotes(System.Data.SQLite.SQLiteDateFormats)">
+            <summary>
+            Determines if values of the specified <see cref="T:System.Data.SQLite.SQLiteDateFormats"/>
+            require wrapping in single quotes.
+            </summary>
+            <param name="format">
+            The <see cref="T:System.Data.SQLite.SQLiteDateFormats"/> format.
+            </param>
+            <returns>
+            Non-zero if single quotes are required for a value in the specified
+            <see cref="T:System.Data.SQLite.SQLiteDateFormats"/>.
+            </returns>
+        </member>
         <member name="M:System.Data.SQLite.Linq.SqlGenerator.EscapeSingleQuote(System.String,System.Boolean)">
             <summary>
             Before we embed a string literal in a SQL string, we should
@@ -1559,8 +1572,8 @@
         </member>
         <member name="M:System.Data.SQLite.Linq.SqlGenerator.GetSqlPrimitiveType(System.Data.Metadata.Edm.TypeUsage)">
             <summary>
-            Returns the sql primitive/native type name. 
-            It will include size, precision or scale depending on type information present in the 
+            Returns the sql primitive/native type name.
+            It will include size, precision or scale depending on type information present in the
             type facets
             </summary>
             <param name="type"></param>
@@ -1645,7 +1658,7 @@
              SELECT *
              FROM {expression} as c
              </code>
-             
+            
              DbLimitExpression needs to start the statement but not add the default columns
              </summary>
              <param name="e"></param>
@@ -1693,11 +1706,24 @@
              <param name="function"></param>
              <param name="result"></param>
         </member>
+        <member name="M:System.Data.SQLite.Linq.SqlGenerator.ToBlobLiteral(System.Byte[],System.Data.SQLite.Linq.SqlBuilder)">
+            <summary>
+            Appends the literal BLOB string representation of the specified
+            byte array to the <see cref="T:System.Data.SQLite.Linq.SqlBuilder"/>.
+            </summary>
+            <param name="bytes">
+            The byte array to be formatted as a literal BLOB string.
+            </param>
+            <param name="builder">
+            The <see cref="T:System.Data.SQLite.Linq.SqlBuilder"/> object to use.  If null, an exception
+            will be thrown.
+            </param>
+        </member>
         <member name="M:System.Data.SQLite.Linq.SqlGenerator.NeedsInnerQuery(System.Collections.Generic.IList{System.Data.Common.CommandTrees.DbAggregate})">
             <summary>
             Helper method for the Group By visitor
             Returns true if at least one of the aggregates in the given list
-            has an argument that is not a <see cref="T:System.Data.Common.CommandTrees.DbPropertyExpression"/> 
+            has an argument that is not a <see cref="T:System.Data.Common.CommandTrees.DbPropertyExpression"/>
             over <see cref="T:System.Data.Common.CommandTrees.DbVariableReferenceExpression"/>
             </summary>
             <param name="aggregates"></param>
@@ -1705,7 +1731,7 @@
         </member>
         <member name="M:System.Data.SQLite.Linq.SqlGenerator.IsPropertyOverVarRef(System.Data.Common.CommandTrees.DbExpression)">
             <summary>
-            Determines whether the given expression is a <see cref="T:System.Data.Common.CommandTrees.DbPropertyExpression"/> 
+            Determines whether the given expression is a <see cref="T:System.Data.Common.CommandTrees.DbPropertyExpression"/>
             over <see cref="T:System.Data.Common.CommandTrees.DbVariableReferenceExpression"/>
             </summary>
             <param name="expression"></param>
@@ -1764,6 +1790,15 @@
             
             
              </summary>
+        </member>
+        <member name="M:System.Data.SQLite.Linq.SqlSelectStatement.HaveOrderByLimitOrOffset">
+            <summary>
+            Checks if the statement has an ORDER BY, LIMIT, or OFFSET clause.
+            </summary>
+            <returns>
+            Non-zero if there is an ORDER BY, LIMIT, or OFFSET clause;
+            otherwise, zero.
+            </returns>
         </member>
         <member name="M:System.Data.SQLite.Linq.SqlSelectStatement.WriteSql(System.Data.SQLite.Linq.SqlWriter,System.Data.SQLite.Linq.SqlGenerator)">
             <summary>
@@ -1967,10 +2002,55 @@
             Constructs the provider manifest.
             </summary>
             <remarks>
-            We pass the token as a DateTimeFormat enum text, because all the datetime functions
-            are vastly different depending on how the user is opening the connection
+            Previously, the manifest token was interpreted as a <see cref="T:System.Data.SQLite.SQLiteDateFormats"/>,
+            because the <see cref="T:System.DateTime"/> functions are vastly different depending on the
+            connection was opened.  However, the manifest token may specify a connection string
+            instead.  WARNING: Only the "DateTimeFormat", "DateTimeKind", "DateTimeFormatString",
+            and "BinaryGUID" connection parameters are extracted from it.  All other connection
+            parameters, if any are present, are silently ignored.
             </remarks>
-            <param name="manifestToken">A token used to infer the capabilities of the store</param>
+            <param name="manifestToken">
+            A token used to infer the capabilities of the store.
+            </param>
+        </member>
+        <member name="M:System.Data.SQLite.Linq.SQLiteProviderManifest.GetProviderManifestToken(System.String)">
+            <summary>
+            Determines and returns the effective provider manifest token to use,
+            based on the specified provider manifest token and the environment,
+            if applicable.
+            </summary>
+            <param name="manifestToken">
+            The original provider manifest token passed to the constructor for this
+            class.
+            </param>
+            <returns>
+            The effective provider manifest token.
+            </returns>
+        </member>
+        <member name="M:System.Data.SQLite.Linq.SQLiteProviderManifest.ParseProviderManifestToken(System.String)">
+            <summary>
+            Attempts to parse a provider manifest token.  It must contain either a
+            legacy string that specifies the <see cref="T:System.Data.SQLite.SQLiteDateFormats"/> value
+            -OR- string that uses the standard connection string syntax; otherwise,
+            the results are undefined.
+            </summary>
+            <param name="manifestToken">
+            The manifest token to parse.
+            </param>
+            <returns>
+            The dictionary containing the connection string parameters.
+            </returns>
+        </member>
+        <member name="M:System.Data.SQLite.Linq.SQLiteProviderManifest.SetFromOptions(System.Collections.Generic.SortedList{System.String,System.String})">
+            <summary>
+            Attempts to set the provider manifest options from the specified
+            connection string parameters.  An exception may be thrown if one
+            or more of the connection string parameter values do not conform
+            to the expected type.
+            </summary>
+            <param name="opts">
+            The dictionary containing the connection string parameters.
+            </param>
         </member>
         <member name="M:System.Data.SQLite.Linq.SQLiteProviderManifest.GetDbInformation(System.String)">
             <summary>

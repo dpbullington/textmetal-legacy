@@ -38,7 +38,7 @@ echo "The operation is starting..."
 
 if ((Test-Path -Path $base_dir))
 {
-	Remove-Item $base_dir -recurse
+	Remove-Item $base_dir -recurse -force
 
 	if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 	{ echo "An error occurred during the operation."; return; }
