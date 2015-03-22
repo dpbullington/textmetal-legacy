@@ -25,7 +25,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		#region Fields/Constants
 
 		private bool columnHasDefault;
-
+		
 		#endregion
 
 		#region Properties/Indexers/Events

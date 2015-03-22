@@ -7,7 +7,6 @@ using System;
 using System.Data;
 using System.Xml.Serialization;
 
-using LeastViable.Common;
 using LeastViable.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
@@ -59,6 +58,12 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		private int columnPrecision;
 		private int columnScale;
 		private int columnSize;
+		private Type columnSqlMetalClrNonNullableType;
+		private Type columnSqlMetalClrNullableType;
+		private Type columnSqlMetalClrType;
+		private string columnSqlMetalCSharpClrNonNullableType;
+		private string columnSqlMetalCSharpClrNullableType;
+		private string columnSqlMetalCSharpClrType;
 		private string columnSqlType;
 
 		#endregion
@@ -513,6 +518,84 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			set
 			{
 				this.columnSize = value;
+			}
+		}
+
+		[XmlIgnore]
+		public Type ColumnSqlMetalClrNonNullableType
+		{
+			get
+			{
+				return this.columnSqlMetalClrNonNullableType;
+			}
+			set
+			{
+				this.columnSqlMetalClrNonNullableType = value;
+			}
+		}
+
+		[XmlIgnore]
+		public Type ColumnSqlMetalClrNullableType
+		{
+			get
+			{
+				return this.columnSqlMetalClrNullableType;
+			}
+			set
+			{
+				this.columnSqlMetalClrNullableType = value;
+			}
+		}
+
+		[XmlIgnore]
+		public Type ColumnSqlMetalClrType
+		{
+			get
+			{
+				return this.columnSqlMetalClrType;
+			}
+			set
+			{
+				this.columnSqlMetalClrType = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ColumnSqlMetalCSharpClrNonNullableType
+		{
+			get
+			{
+				return this.columnSqlMetalCSharpClrNonNullableType;
+			}
+			set
+			{
+				this.columnSqlMetalCSharpClrNonNullableType = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ColumnSqlMetalCSharpClrNullableType
+		{
+			get
+			{
+				return this.columnSqlMetalCSharpClrNullableType;
+			}
+			set
+			{
+				this.columnSqlMetalCSharpClrNullableType = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ColumnSqlMetalCSharpClrType
+		{
+			get
+			{
+				return this.columnSqlMetalCSharpClrType;
+			}
+			set
+			{
+				this.columnSqlMetalCSharpClrType = value;
 			}
 		}
 

@@ -57,8 +57,10 @@
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SolutionAssemblyInfo.cs">
@@ -110,8 +112,13 @@
     <Compile Include="Expression\UnaryExpressionConstruct.cs" />
     <Compile Include="Expression\UnaryOperator.cs" />
     <Compile Include="Expression\ValueConstruct.cs" />
-    <Compile Include="Hosting\IToolHost.cs" />
-    <Compile Include="Hosting\ToolHost.cs" />
+    <Compile Include="Hosting\Email\EmailHost.cs" />
+    <Compile Include="Hosting\Email\IEmailHost.cs" />
+    <Compile Include="Hosting\Email\IHostEmailAttachment.cs" />
+    <Compile Include="Hosting\Email\IHostEmailMessage.cs" />
+    <Compile Include="Hosting\Email\MessageTemplate.cs" />
+    <Compile Include="Hosting\Tool\IToolHost.cs" />
+    <Compile Include="Hosting\Tool\ToolHost.cs" />
     <Compile Include="Hosting\WellKnownExtensions.cs" />
     <Compile Include="InputOutput\FileInputMechanism.cs" />
     <Compile Include="InputOutput\FileOutputMechanism.cs" />
@@ -259,6 +266,7 @@
     <EmbeddedResource Include="Source\DatabaseSchema\Sql\DML\net.sqlserver\ViewColumns.sql" />
     <EmbeddedResource Include="Source\DatabaseSchema\Sql\DML\net.sqlserver\Views.sql" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

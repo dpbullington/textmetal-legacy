@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LeastViable.Data.Impl.MicrosoftLinq</name>
+    </assembly>
+    <members>
+        <member name="T:LeastViable.Data.Impl.MicrosoftLinq.AmbientUnitOfWorkAwareContextWrapper`1">
+            <summary>
+            Used to 'wrap' a disposable (e.g. DataContext, DbContext, SessionImpl, etc.) in a manner such that consuming code can leverage a 'using' block which respects an ambient unit of work, if one is present.
+            Essentially, the disposal of this object forwards disposal to the wrapped disposable if an ambient unit of work is NOT present; otherwise, no action is performed leaving disposal of the disposable up to the adjudication of the ambient unit of work.
+            </summary>
+            <typeparam name="TDisposableContext"> The type of the underlying or 'wrapped' disposable. </typeparam>
+        </member>
+        <member name="M:LeastViable.Data.Impl.MicrosoftLinq.AmbientUnitOfWorkAwareContextWrapper`1.#ctor(LeastViable.Common.Fascades.AdoNet.UoW.IUnitOfWork,`0)">
+            <summary>
+            Initializes a new instance of the AmbientUnitOfWorkAwareContextWrapper`1 class.
+            </summary>
+            <param name="sourceUnitOfWork">
+            The unit of work triggering the creation of this 'wrapped' disposable.
+            NOTE: Any ambient unit of work may not reference the same object instance as the incoming unit of work.
+            In this case, the ambient unit of work is ignored as the unit of work instances differ.
+            </param>
+            <param name="disposableContext"> The underlying or 'wrapped' disposable. </param>
+        </member>
+        <member name="M:LeastViable.Data.Impl.MicrosoftLinq.AmbientUnitOfWorkAwareContextWrapper`1.Dispose">
+            <summary>
+            Disposes of the inner context. Once disposed, the instance cannot be reused.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.MicrosoftLinq.AmbientUnitOfWorkAwareContextWrapper`1.DisposableContext">
+            <summary>
+            Gets the underlying or 'wrapped' disposable.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.MicrosoftLinq.AmbientUnitOfWorkAwareContextWrapper`1.ShouldDisposeResources">
+            <summary>
+            Gets a value indicating whether resources need to be disposed of.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.MicrosoftLinq.AmbientUnitOfWorkAwareContextWrapper`1.Disposed">
+            <summary>
+            Gets a value indicating whether the current instance has been disposed.
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Impl.MicrosoftLinq.ContextModelRepository`1.#ctor">
+            <summary>
+            Initializes a new instance of the ContextModelRepository`1 class.
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Impl.MicrosoftLinq.ContextModelRepository`1.GetContext(LeastViable.Common.Fascades.AdoNet.UoW.IUnitOfWork)">
+            <summary>
+            For a given unit of work, this method returns a AmbientUnitOfWorkAwareContextWrapper`1 for a target data context type.
+            </summary>
+            <param name="unitOfWork"> The target unitOfWork. </param>
+            <returns> An instance of a AmbientUnitOfWorkAwareContextWrapper`1 for the requested data context type, associated withthe unitOfWork. </returns>
+        </member>
+        <member name="M:LeastViable.Data.Impl.MicrosoftLinq.ContextModelRepository`1.GetContext(LeastViable.Common.Fascades.AdoNet.UoW.IUnitOfWork,System.Type)">
+            <summary>
+            For a given unit of work, this method returns a Context of the target data context type.
+            </summary>
+            <param name="unitOfWork"> The target unitOfWork. </param>
+            <param name="contextType"> The desired data context type. </param>
+            <returns> An instance of the requested data context type, associated withthe unitOfWork. </returns>
+        </member>
+        <member name="T:LeastViable.Data.Impl.MicrosoftLinq.DbContextModelRepository`1">
+            <summary>
+            Entity Framework 6.0+
+            NOTE: TDbContext must support GetConstructor(new Type[] { typeof(DbConnection), typeof(bool) }).
+            </summary>
+            <typeparam name="TDbContext"> </typeparam>
+        </member>
+        <member name="M:LeastViable.Data.Impl.MicrosoftLinq.DbContextModelRepository`1.#ctor">
+            <summary>
+            Initializes a new instance of the DbContextModelRepository`1 class.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Impl.MicrosoftLinq.DataContextModelRepository`1">
+            <summary>
+            LINQ to SQL
+            NOTE: TDataContext must support GetConstructor(new Type[] { typeof(IDbConnection) }).
+            </summary>
+            <typeparam name="TDataContext"> </typeparam>
+        </member>
+        <member name="M:LeastViable.Data.Impl.MicrosoftLinq.DataContextModelRepository`1.#ctor">
+            <summary>
+            Initializes a new instance of the DataContextModelRepository`1 class.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Impl.MicrosoftLinq.MulticastDisposableContext`1">
+            <summary>
+            Used as a context object for a unit of work. Allows multiple contexts to be associated to a single transaction for differing actual types. An exception is throw if duplicate context actual types are registered. When disposed, all underlying contexts will also be disposed.
+            </summary>
+            <typeparam name="TDisposableContext"> The base type (not actual type) of the underlying context. </typeparam>
+        </member>
+        <member name="M:LeastViable.Data.Impl.MicrosoftLinq.MulticastDisposableContext`1.#ctor">
+            <summary>
+            Initializes a new instance of the MulticastDisposableContext`1 class.
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Impl.MicrosoftLinq.MulticastDisposableContext`1.ClearContext(System.Type)">
+            <summary>
+            Unsets (or unregisters) the specified actual context type.
+            </summary>
+            <param name="contextActualType"> The actual context type requested. </param>
+        </member>
+        <member name="M:LeastViable.Data.Impl.MicrosoftLinq.MulticastDisposableContext`1.Dispose">
+            <summary>
+            Disposes of the inner contexts. Once disposed, the instance cannot be reused.
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Impl.MicrosoftLinq.MulticastDisposableContext`1.GetContext(System.Type)">
+            <summary>
+            Gets the single context of the specified actual context type. An exception is thrown if the requested actual type has not previously been registered.
+            </summary>
+            <param name="contextActualType"> The actual context type requested. </param>
+            <returns> An instance of an actual context type. </returns>
+        </member>
+        <member name="M:LeastViable.Data.Impl.MicrosoftLinq.MulticastDisposableContext`1.HasContext(System.Type)">
+            <summary>
+            Gets a value indicating whether a context of the specified actual context type has been previously registered.
+            </summary>
+            <param name="contextActualType"> The actual context type requested. </param>
+            <returns> A value indicating whether a context of the specified actual context type has been previously registered. </returns>
+        </member>
+        <member name="M:LeastViable.Data.Impl.MicrosoftLinq.MulticastDisposableContext`1.SetContext(System.Type,`0)">
+            <summary>
+            Sets (or registers) a single context instance of the specified actual context type. An exception is thrown if the requested actual type has already previously been registered.
+            </summary>
+            <param name="contextActualType"> The actual context type requested. </param>
+            <param name="contextActualInstance"> The actual context instance to register. </param>
+        </member>
+        <member name="P:LeastViable.Data.Impl.MicrosoftLinq.MulticastDisposableContext`1.Disposed">
+            <summary>
+            Gets a value indicating whether the current instance has been disposed.
+            </summary>
+        </member>
+    </members>
+</doc>

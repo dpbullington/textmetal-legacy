@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
+	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+-->
+<Template xmlns="http://www.textmetal.com/api/v6.0.0">
+
+	<OutputScope name="${ModuleName}.IntegrationTests\ThisAppRepositoryTests.tv.g.cs">
+		<Include name="include_gen_cprt_message.cs.txt" />
+<![CDATA[
+
+using System;
+using System.Collections.Generic;
+using System.Data.Linq;
+using System.Xml;
+using System.Xml.Linq;
+
+using NUnit.Framework;
+
+using LeastViable.Common.Fascades.AdoNet.UoW;
+using LeastViable.Data.Models;
+using LeastViable.Data.Impl.MicrosoftLinq;
+using LeastViable.Testing;
+]]>
+		<If>
+			<If.Condition>
+				<UnaryExpression operator="IsDef">
+					<UnaryExpression.TheExpression>
+						<Aspect name="ClrUsingNamespaces" />
+					</UnaryExpression.TheExpression>
+				</UnaryExpression>
+			</If.Condition>
+			<If.True>
+				<ForEach in="ClrUsingNamespaces" var-ct="_LoopCount" var-ix="_LoopIndex" var-item="_LoopItem">
+					<ForEach.Body>
+						<![CDATA[using ${_LoopItem};
+]]>
+					</ForEach.Body>
+				</ForEach>
+			</If.True>
+		</If>
+<![CDATA[
+namespace ${ClrNamespace}.IntegrationTests
+{
+	[TestFixture]
+	public partial class ThisAppRepositoryTests
+	{
+		#region Methods/Operators
+
+]]>
+
+		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
+			<ForEach.Filter></ForEach.Filter>
+			<ForEach.Body>
+
+				<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
+					<ForEach.Filter></ForEach.Filter>
+					<ForEach.Body>
+
+						<If>
+							<If.Condition>
+								<UnaryExpression operator="Not">
+									<UnaryExpression.TheExpression>
+										<Facet name="IsView" />
+									</UnaryExpression.TheExpression>
+								</UnaryExpression>
+							</If.Condition>
+							<If.True>
+								<![CDATA[		[Test]
+		public void ShouldSaveThenDiscard${TableNameSqlMetalSingularPascalCase}Test()
+		{
+			ThisAppRepository thisAppRepository;
+			${TableNameSqlMetalSingularPascalCase} @${TableNameSqlMetalSingularCamelCase};
+			bool result;
+
+			Assert.IsNull(UnitOfWork.Current);
+
+			thisAppRepository = new ThisAppRepository();
+
+			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(thisAppRepository, true))
+			{
+				Assert.IsNotNull(UnitOfWork.Current);
+
+				@${TableNameSqlMetalSingularCamelCase} = new ${TableNameSqlMetalSingularPascalCase}();
+]]>
+
+								<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
+									<ForEach.Filter>
+										<BinaryExpression operator="Ne">
+											<BinaryExpression.LeftExpression>
+												<Facet name="IsColumnServerGeneratedPrimaryKey" />
+											</BinaryExpression.LeftExpression>
+											<BinaryExpression.RightExpression>
+												<Value type="System.Boolean" data="True" />
+											</BinaryExpression.RightExpression>
+										</BinaryExpression>
+									</ForEach.Filter>
+									<ForEach.Body>
+
+<![CDATA[				@${TableNameSqlMetalSingularCamelCase}.@${ColumnNameSqlMetalPascalCase} = ValueGenerator.GetNextValue<${ColumnSqlMetalCSharpClrType}>();]]>
+
+										<If>
+											<If.Condition>
+												<BinaryExpression operator="Ne">
+													<BinaryExpression.LeftExpression>
+														<Facet name="_LoopCount" />
+													</BinaryExpression.LeftExpression>
+													<BinaryExpression.RightExpression>
+														<Facet name="_LoopIndex" />
+													</BinaryExpression.RightExpression>
+												</BinaryExpression>
+											</If.Condition>
+											<If.True>
+<![CDATA[
+]]>
+											</If.True>
+										</If>
+									</ForEach.Body>
+								</ForEach>
+
+<![CDATA[
+
+				// do INSERT first
+				Assert.IsTrue(@${TableNameSqlMetalSingularCamelCase}.IsNew);
+
+				result = thisAppRepository.Save<${TableNameSqlMetalSingularPascalCase}>(@${TableNameSqlMetalSingularCamelCase});
+
+				Assert.IsTrue(result);
+
+]]>
+
+								<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
+									<ForEach.Filter>
+										<BinaryExpression operator="Ne">
+											<BinaryExpression.LeftExpression>
+												<Facet name="IsColumnServerGeneratedPrimaryKey" />
+											</BinaryExpression.LeftExpression>
+											<BinaryExpression.RightExpression>
+												<Value type="System.Boolean" data="True" />
+											</BinaryExpression.RightExpression>
+										</BinaryExpression>
+									</ForEach.Filter>
+									<ForEach.Body>
+
+<![CDATA[				${TableNameSqlMetalSingularCamelCase}.@${ColumnNameSqlMetalPascalCase} = ValueGenerator.GetNextValue<${ColumnSqlMetalCSharpClrType}>();]]>
+
+										<If>
+											<If.Condition>
+												<BinaryExpression operator="Ne">
+													<BinaryExpression.LeftExpression>
+														<Facet name="_LoopCount" />
+													</BinaryExpression.LeftExpression>
+													<BinaryExpression.RightExpression>
+														<Facet name="_LoopIndex" />
+													</BinaryExpression.RightExpression>
+												</BinaryExpression>
+											</If.Condition>
+											<If.True>
+<![CDATA[
+]]>
+											</If.True>
+										</If>
+									</ForEach.Body>
+								</ForEach>
+
+<![CDATA[
+
+				// do UPDATE next
+				Assert.IsFalse(@${TableNameSqlMetalSingularCamelCase}.IsNew);
+
+				result = thisAppRepository.Save<${TableNameSqlMetalSingularPascalCase}>(@${TableNameSqlMetalSingularCamelCase});
+
+				Assert.IsTrue(result);
+
+				// do DELETE next
+				Assert.IsFalse(@${TableNameSqlMetalSingularCamelCase}.IsNew);
+
+				result = thisAppRepository.Discard<${TableNameSqlMetalSingularPascalCase}>(@${TableNameSqlMetalSingularCamelCase});
+
+				Assert.IsTrue(result);
+
+				scope.ScopeComplete();
+			}
+
+			Assert.IsNull(UnitOfWork.Current);
+		}
+
+]]>
+							</If.True>
+						</If>
+
+						<![CDATA[		[Test]
+		public void ShouldLoad${TableNameSqlMetalSingularPascalCase}Test()
+		{
+			ThisAppRepository thisAppRepository;
+			${TableNameSqlMetalSingularPascalCase} @${TableNameSqlMetalSingularCamelCase};
+
+			Assert.IsNull(UnitOfWork.Current);
+
+			thisAppRepository = new ThisAppRepository();
+
+			@${TableNameSqlMetalSingularCamelCase} = new ${TableNameSqlMetalSingularPascalCase}();
+]]>
+	<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
+		<ForEach.Filter>
+			<BinaryExpression operator="Or">
+				<BinaryExpression.LeftExpression>
+					<BinaryExpression operator="Eq">
+						<BinaryExpression.LeftExpression>
+							<Facet name="ColumnIsPrimaryKey" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Value type="System.Boolean" data="True" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</BinaryExpression.LeftExpression>
+				<BinaryExpression.RightExpression>
+					<BinaryExpression operator="Eq">
+						<BinaryExpression.LeftExpression>
+							<Facet name="HasNoDefinedPrimaryKeyColumns" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Value type="System.Boolean" data="True" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</BinaryExpression.RightExpression>
+			</BinaryExpression>
+		</ForEach.Filter>
+		<ForEach.Body>
+			<![CDATA[			@${TableNameSqlMetalSingularCamelCase}.@${ColumnNameSqlMetalPascalCase} = ValueGenerator.GetNextValue<${ColumnSqlMetalCSharpClrType}>();]]>
+			<If>
+				<If.Condition>
+					<BinaryExpression operator="Ne">
+						<BinaryExpression.LeftExpression>
+							<Facet name="_LoopCount" />
+						</BinaryExpression.LeftExpression>
+						<BinaryExpression.RightExpression>
+							<Facet name="_LoopIndex" />
+						</BinaryExpression.RightExpression>
+					</BinaryExpression>
+				</If.Condition>
+				<If.True>
+<![CDATA[
+]]>
+				</If.True>
+			</If>
+		</ForEach.Body>
+	</ForEach>
+	<![CDATA[
+
+			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(thisAppRepository, false))
+			{
+				Assert.IsNotNull(UnitOfWork.Current);
+
+				${TableNameSqlMetalSingularCamelCase} = thisAppRepository.Load<${TableNameSqlMetalSingularPascalCase}>(@${TableNameSqlMetalSingularCamelCase});
+
+				Assert.IsNotNull(@${TableNameSqlMetalSingularCamelCase});
+				Assert.IsFalse(@${TableNameSqlMetalSingularCamelCase}.IsNew);
+
+				scope.ScopeComplete();
+			}
+
+			Assert.IsNull(UnitOfWork.Current);
+		}
+
+		[Test]
+		public void ShouldFind${TableNameSqlMetalPluralPascalCase}Test()
+		{
+			ThisAppRepository thisAppRepository;
+			IEnumerable<${TableNameSqlMetalSingularPascalCase}> @${TableNameSqlMetalPluralCamelCase};
+
+			Assert.IsNull(UnitOfWork.Current);
+
+			thisAppRepository = new ThisAppRepository();
+
+			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(thisAppRepository, false))
+			{
+				Assert.IsNotNull(UnitOfWork.Current);
+
+				@${TableNameSqlMetalPluralCamelCase} = thisAppRepository.Find<${TableNameSqlMetalSingularPascalCase}>(new LinqTableModelQuery<${TableNameSqlMetalPascalCase}>(t => true));
+
+				Assert.IsNotNull(@${TableNameSqlMetalPluralCamelCase});
+				Assert.IsNotEmpty(@${TableNameSqlMetalPluralCamelCase});
+
+				scope.ScopeComplete();
+			}
+
+			Assert.IsNull(UnitOfWork.Current);
+		}
+]]>
+						<If>
+							<If.Condition>
+								<BinaryExpression operator="Ne">
+									<BinaryExpression.LeftExpression>
+										<Facet name="_LoopCount" />
+									</BinaryExpression.LeftExpression>
+									<BinaryExpression.RightExpression>
+										<Facet name="_LoopIndex" />
+									</BinaryExpression.RightExpression>
+								</BinaryExpression>
+							</If.Condition>
+							<If.True>
+								<![CDATA[
+]]>
+							</If.True>
+						</If>
+					</ForEach.Body>
+				</ForEach>
+
+			</ForEach.Body>
+		</ForEach>
+
+		<![CDATA[
+		#endregion
+	}
+}
+]]>
+	</OutputScope>
+
+</Template>

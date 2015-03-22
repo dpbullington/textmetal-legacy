@@ -7,7 +7,6 @@ using System;
 using System.Data;
 using System.Xml.Serialization;
 
-using LeastViable.Common;
 using LeastViable.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
@@ -69,6 +68,12 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		private string parameterPrefix;
 		private int parameterScale;
 		private int parameterSize;
+		private Type parameterSqlMetalClrNonNullableType;
+		private Type parameterSqlMetalClrNullableType;
+		private Type parameterSqlMetalClrType;
+		private string parameterSqlMetalCSharpClrNonNullableType;
+		private string parameterSqlMetalCSharpClrNullableType;
+		private string parameterSqlMetalCSharpClrType;
 		private string parameterSqlType;
 
 		#endregion
@@ -653,6 +658,84 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			set
 			{
 				this.parameterSize = value;
+			}
+		}
+
+		[XmlIgnore]
+		public Type ParameterSqlMetalClrNonNullableType
+		{
+			get
+			{
+				return this.parameterSqlMetalClrNonNullableType;
+			}
+			set
+			{
+				this.parameterSqlMetalClrNonNullableType = value;
+			}
+		}
+
+		[XmlIgnore]
+		public Type ParameterSqlMetalClrNullableType
+		{
+			get
+			{
+				return this.parameterSqlMetalClrNullableType;
+			}
+			set
+			{
+				this.parameterSqlMetalClrNullableType = value;
+			}
+		}
+
+		[XmlIgnore]
+		public Type ParameterSqlMetalClrType
+		{
+			get
+			{
+				return this.parameterSqlMetalClrType;
+			}
+			set
+			{
+				this.parameterSqlMetalClrType = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ParameterSqlMetalCSharpClrNonNullableType
+		{
+			get
+			{
+				return this.parameterSqlMetalCSharpClrNonNullableType;
+			}
+			set
+			{
+				this.parameterSqlMetalCSharpClrNonNullableType = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ParameterSqlMetalCSharpClrNullableType
+		{
+			get
+			{
+				return this.parameterSqlMetalCSharpClrNullableType;
+			}
+			set
+			{
+				this.parameterSqlMetalCSharpClrNullableType = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ParameterSqlMetalCSharpClrType
+		{
+			get
+			{
+				return this.parameterSqlMetalCSharpClrType;
+			}
+			set
+			{
+				this.parameterSqlMetalCSharpClrType = value;
 			}
 		}
 

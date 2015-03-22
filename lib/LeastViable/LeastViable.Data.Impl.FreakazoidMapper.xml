@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LeastViable.Data.Impl.FreakazoidMapper</name>
+    </assembly>
+    <members>
+        <member name="M:LeastViable.Data.Impl.FreakazoidMapper.Expressions.ExpressionVisitor.#ctor">
+            <summary>
+            Initializes a new instance of the ExpressionVisitor class.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.IBinaryExpression">
+            <summary>
+            Represents an expression with two operands.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.IExpression">
+            <summary>
+            Represents an expression.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.ILiteralValue">
+            <summary>
+            Represents a literal value.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.INullaryExpression">
+            <summary>
+            Represents an expression with zero operands.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.ISortOrder">
+            <summary>
+            Represents a sequence.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.ISymbolName">
+            <summary>
+            Represents a symbol name.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.IUnaryExpression">
+            <summary>
+            Represents an expression with one operand.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.ITacticCommand.CommandBehavior">
+            <summary>
+            Gets or sets the command behavior.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.ITacticCommand.CommandPrepare">
+            <summary>
+            Gets or sets a value indicating whether to prepare the command.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.ITacticCommand.CommandText">
+            <summary>
+            Gets or sets the command text.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.ITacticCommand.CommandTimeout">
+            <summary>
+            Gets or sets the command timeout.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.ITacticCommand.CommandType">
+            <summary>
+            Gets or sets the command type.
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Attributes.ParameterMappingAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the ParameterMappingAttribute class.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Attributes.ParameterMappingAttribute.ParameterDbType">
+            <summary>
+            Gets or sets the type of the parameter.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Attributes.ParameterMappingAttribute.ParameterDirection">
+            <summary>
+            Gets or sets the direction of the parameter.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Attributes.ParameterMappingAttribute.ParameterName">
+            <summary>
+            Gets or sets the name of the parameter.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Attributes.ParameterMappingAttribute.ParameterNullable">
+            <summary>
+            Gets or sets the nullable-ness of the parameter.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Attributes.ParameterMappingAttribute.ParameterPrecision">
+            <summary>
+            Gets or sets the precision of the parameter.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Attributes.ParameterMappingAttribute.ParameterScale">
+            <summary>
+            Gets or sets the scale of the parameter.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Attributes.ParameterMappingAttribute.ParameterSize">
+            <summary>
+            Gets or sets the size of the parameter.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.TacticCommand.CommandBehavior">
+            <summary>
+            Gets or sets the command behavior.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.TacticCommand.CommandPrepare">
+            <summary>
+            Gets or sets a value indicating whether to prepare the command.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.TacticCommand.CommandText">
+            <summary>
+            Gets or sets the command text.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.TacticCommand.CommandTimeout">
+            <summary>
+            Gets or sets the command timeout.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.TacticCommand.CommandType">
+            <summary>
+            Gets or sets the command type.
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Migrations.DatabaseHistory">
+            <summary>
+            Represents an ordered set of historical revsions to a database (file).
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Impl.FreakazoidMapper.Migrations.DatabaseHistory.#ctor">
+            <summary>
+            Initializes a new instance of the DatabaseHistory class.
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Impl.FreakazoidMapper.Migrations.DatabaseHistory.PerformSchemaUpgrade(LeastViable.Common.Fascades.AdoNet.UoW.IUnitOfWork)">
+            <summary>
+            For a given unitOfWork, perform a schema upgrade if necessary. The ordered set of revisions are executed from version+1 to version[n].
+            </summary>
+            <param name="unitOfWork"> The target unitOfWork. </param>
+            <returns> A value indicating whether any changes were needed against the target database (file). </returns>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Migrations.DatabaseHistory.Revisions">
+            <summary>
+            Gets a list of ordered revisions.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Migrations.DatabaseHistory.DoesSchemaTrackingExistCommandText">
+            <summary>
+            Gets or sets the SQL required to determine if schema tracking is enabled in the database (file).
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Migrations.DatabaseHistory.GetSchemaVersionCommandText">
+            <summary>
+            Gets or sets the SQL required to determine the schema version of the database (file).
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Migrations.DatabaseHistory.IncrementSchemaVersionCommandText">
+            <summary>
+            Gets or sets the SQL required to increment the schema version in the database (file).
+            </summary>
+        </member>
+        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Migrations.DatabaseRevision">
+            <summary>
+            Represents a single historical revsion to a database (file).
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Impl.FreakazoidMapper.Migrations.DatabaseRevision.#ctor">
+            <summary>
+            Initializes a new instance of the DatabaseRevision class.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Migrations.DatabaseRevision.Statements">
+            <summary>
+            Gets an ordered list of statements to execute for this revision.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Migrations.DatabaseRevision.Number">
+            <summary>
+            Gets or sets the revision number.
+            </summary>
+        </member>
+    </members>
+</doc>

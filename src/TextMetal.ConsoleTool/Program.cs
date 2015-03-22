@@ -12,6 +12,7 @@ using LeastViable.Common.Fascades.Application;
 using LeastViable.Common.Fascades.Utilities;
 
 using TextMetal.Framework.Hosting;
+using TextMetal.Framework.Hosting.Tool;
 
 namespace TextMetal.ConsoleTool
 {

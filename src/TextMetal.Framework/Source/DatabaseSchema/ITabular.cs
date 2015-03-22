@@ -58,11 +58,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			get;
 		}
 
-		string ObjectNameSqlMetalPascalCase
-		{
-			get;
-		}
-
 		string PrimaryKeyName
 		{
 			get;

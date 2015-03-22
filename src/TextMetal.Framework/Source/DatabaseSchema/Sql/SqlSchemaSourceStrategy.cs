@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Xml;
 
 using LeastViable.Common;
@@ -620,6 +621,24 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		#endregion
+		protected override Type CoreInferSqlMetalClrTypeForClrType(string dataSourceTag, Type clrType)
+		{
+			if ((object)dataSourceTag == null)
+				throw new ArgumentNullException("dataSourceTag");
+
+			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
+			{
+				if (clrType == typeof(Byte[]))
+					return typeof(System.Data.Linq.Binary);
+				else if (clrType == typeof(XmlDocument))
+					return typeof(System.Xml.Linq.XElement);
+				else
+					return clrType;
+			}
+
+			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
+		}
 	}
+
+	#endregion
 }

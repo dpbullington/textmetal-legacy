@@ -29,7 +29,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		private DateTime creationTimestamp;
 		private bool isImplementationDetail;
 		private DateTime modificationTimestamp;
-		private string objectNameSqlMetalPascalCase;
+		private string viewNameSqlMetal;
 		private int viewId;
 		private string viewName;
 		private string viewNameCamelCase;
@@ -342,15 +342,15 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		}
 
 		[XmlAttribute]
-		public string ObjectNameSqlMetalPascalCase
+		public string ViewNameSqlMetal
 		{
 			get
 			{
-				return this.objectNameSqlMetalPascalCase;
+				return this.viewNameSqlMetal;
 			}
 			set
 			{
-				this.objectNameSqlMetalPascalCase = value;
+				this.viewNameSqlMetal = value;
 			}
 		}
 

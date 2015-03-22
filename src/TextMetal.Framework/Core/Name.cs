@@ -202,93 +202,97 @@ namespace TextMetal.Framework.Core
 			return value;
 		}
 
-		/// <summary>
-		/// Gets the camel (e.g. 'myVariableName') form of a name. This method mimics SqlMetal.exe.
-		/// </summary>
-		/// <param name="value"> The value to which to get the camel case form. </param>
-		/// <returns> The camel case, valid C# identifier form of the specified value. </returns>
-		public static string GetSqlMetalCamelCase(string value)
+		public static class SqlMetal
 		{
-			StringBuilder sb;
-			bool flag = true;
-
-			if ((object)value == null)
-				throw new ArgumentNullException("value");
-
-			value = GetValidCSharpIdentifier(value);
-
-			if (value.Length < 1)
-				return value;
-
-			sb = new StringBuilder();
-
-			for (int index = 0; index < value.Length; ++index)
+			/// <summary>
+			/// Gets the camel (e.g. 'myVariableName') form of a name. This method mimics SqlMetal.exe.
+			/// </summary>
+			/// <param name="value"> The value to which to get the camel case form. </param>
+			/// <returns> The camel case, valid C# identifier form of the specified value. </returns>
+			public static string GetSqlMetalCamelCase(string value)
 			{
-				char ch = value[index];
+				StringBuilder sb;
+				bool flag = true;
 
-				if ((int)ch >= 97 && (int)ch <= 122 ||
-					(int)ch >= 65 && (int)ch <= 90 ||
-					((int)ch >= 48 && (int)ch <= 57 ||
-					(int)ch == 95))
-				{
-					if (flag)
-						ch = char.ToUpper(ch, CultureInfo.InvariantCulture);
+				if ((object)value == null)
+					throw new ArgumentNullException("value");
 
-					flag = false;
-					sb.Append(ch);
-				}
-				else
+				value = GetValidCSharpIdentifier(value);
+
+				if (value.Length < 1)
+					return value;
+
+				sb = new StringBuilder();
+
+				for (int index = 0; index < value.Length; ++index)
 				{
-					flag = true;
-					sb.Append(ch);
+					char ch = value[index];
+
+					if ((int)ch >= 97 && (int)ch <= 122 ||
+						(int)ch >= 65 && (int)ch <= 90 ||
+						((int)ch >= 48 && (int)ch <= 57 ||
+						(int)ch == 95))
+					{
+						if (flag)
+							ch = char.ToUpper(ch, CultureInfo.InvariantCulture);
+
+						flag = false;
+						sb.Append(ch);
+					}
+					else
+					{
+						flag = true;
+						sb.Append(ch);
+					}
 				}
+
+				value = sb.ToString();
+				return value;
 			}
 
-			value = sb.ToString();
-			return value;
-		}
+			public static string GetSqlMetalObjectNamePascalCase(string schemaName, string objectName)
+			{
+				string value;
+				const string DBO_SCHEMA_NAME = "dbo";
 
-		public static string GetSqlMetalObjectNamePascalCase(string schemaName, string objectName)
-		{
-			string value;
+				if ((object)schemaName == null)
+					throw new ArgumentNullException("schemaName");
 
-			if ((object)schemaName == null)
-				throw new ArgumentNullException("schemaName");
+				if ((object)objectName == null)
+					throw new ArgumentNullException("objectName");
 
-			if ((object)objectName == null)
-				throw new ArgumentNullException("objectName");
+				if (!DataTypeFascade.Instance.IsNullOrWhiteSpace(schemaName) && schemaName.ToLower() != DBO_SCHEMA_NAME)
+					value = string.Format("{0}_{1}", GetSqlMetalPascalCase(schemaName), GetSqlMetalPascalCase(objectName));
+				else
+					value = string.Format("{0}", GetSqlMetalPascalCase(objectName));
 
-			if (!DataTypeFascade.Instance.IsNullOrWhiteSpace(schemaName) && schemaName.ToLower() != "dbo")
-				value = string.Format("{0}_{1}", GetSqlMetalPascalCase(schemaName), GetSqlMetalPascalCase(objectName));
-			else
-				value = string.Format("{0}", GetSqlMetalPascalCase(objectName));
-
-			return value;
-		}
-
-		/// <summary>
-		/// Gets the Pascal (e.g. 'MyVariableName') form of a name. This method mimics SqlMetal.exe.
-		/// </summary>
-		/// <param name="value"> The value to which to get the Pascal case form. </param>
-		/// <returns> The Pascal case, valid C# identifier form of the specified value. </returns>
-		public static string GetSqlMetalPascalCase(string value)
-		{
-			StringBuilder sb;
-
-			if ((object)value == null)
-				throw new ArgumentNullException("value");
-
-			value = GetValidCSharpIdentifier(value);
-
-			if (value.Length < 1)
 				return value;
+			}
 
-			value = GetSqlMetalCamelCase(value);
-			sb = new StringBuilder(value);
+			/// <summary>
+			/// Gets the Pascal (e.g. 'MyVariableName') form of a name. This method mimics SqlMetal.exe.
+			/// </summary>
+			/// <param name="value"> The value to which to get the Pascal case form. </param>
+			/// <returns> The Pascal case, valid C# identifier form of the specified value. </returns>
+			public static string GetSqlMetalPascalCase(string value)
+			{
+				StringBuilder sb;
 
-			sb[0] = char.ToUpper(sb[0]);
+				if ((object)value == null)
+					throw new ArgumentNullException("value");
 
-			return sb.ToString();
+				value = GetValidCSharpIdentifier(value);
+
+				if (value.Length < 1)
+					return value;
+
+				value = GetSqlMetalCamelCase(value);
+				sb = new StringBuilder(value);
+
+				sb[0] = char.ToUpper(sb[0]);
+
+				return sb.ToString();
+			}
 		}
 
 		/// <summary>
