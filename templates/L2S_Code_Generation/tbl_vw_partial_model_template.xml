@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using LeastViable.Common.ValueObjects;
 using LeastViable.Data.Models;
 using LeastViable.Data.Impl.MicrosoftLinq;
 ]]>
@@ -77,8 +78,8 @@ namespace ${ClrNamespace}
 
 			this.CreationTimestamp = this.CreationTimestamp ?? now;
 			this.ModificationTimestamp = !this.IsNew ? now : this.CreationTimestamp;
-			this.CreationUserId = ((this.IsNew ? Current.Instance.UserId : this.CreationUserId) ?? this.CreationUserId) ?? User.SYSTEM_USER_ID;
-			this.ModificationUserId = ((!this.IsNew ? Current.Instance.UserId : this.CreationUserId) ?? this.ModificationUserId) ?? User.SYSTEM_USER_ID;
+			this.CreationUserId = ((this.IsNew ? Current.Instance.UserId : this.CreationUserId) ?? this.CreationUserId) ?? Current.Instance.SystemUserId;
+			this.ModificationUserId = ((!this.IsNew ? Current.Instance.UserId : this.CreationUserId) ?? this.ModificationUserId) ?? Current.Instance.SystemUserId;
 			this.LogicalDelete = this.LogicalDelete ?? false;
 
 			// TODO - remove this and uncomment the below code fragment if needed
