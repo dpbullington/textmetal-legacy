@@ -6,7 +6,7 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
 
-	<OutputScope name="${ModuleName}\Repository.g.cs">
+	<OutputScope name="${ModuleName}\ThisAppRepository.g.cs">
 		<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 
@@ -18,7 +18,7 @@ using System.Reflection;
 using System.Xml;
 
 using LeastViable.Data.Models;
-using LeastViable.Data.Models.Impl.Purist;
+using LeastViable.Data.Impl.FreakazoidMapper;
 using LeastViable.Solder.IoC;
 ]]>
 		<If>
@@ -93,11 +93,11 @@ using LeastViable.Solder.IoC;
 namespace ${ClrNamespace}
 {
 	[DependencyRegistration]
-	public partial class Repository : PuristModelRepository, IRepository
+	public partial class ThisAppRepository : FreakazoidModelRepository, IThisAppRepository
 	{
 		#region Constructors/Destructors
 
-		public Repository()
+		public ThisAppRepository()
 		{
 		}
 
@@ -108,7 +108,7 @@ namespace ${ClrNamespace}
 		[DependencyRegistration]
 		public static void OnDepenndencyRegistration()
 		{
-			DependencyManager.AppDomainInstance.AddResolution<IRepository>("", new ConstructorDependencyResolution<Repository>());
+			DependencyManager.AppDomainInstance.AddResolution<IThisAppRepository>("", new ConstructorDependencyResolution<ThisAppRepository>());
 		}
 
 		#endregion

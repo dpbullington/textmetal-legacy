@@ -6,23 +6,21 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
 
-	<OutputScope name="${ModuleName}\Repository.g.cs">
+	<OutputScope name="${ModuleName}\ThisAppRepository.g.cs">
 		<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
-using System.Data.Entity;
-using System.Data.Entity.Migrations;
-using System.IO;
 using System.Linq;
-using System.Reflection;
+using System.Linq.Expressions;
 using System.Xml;
+using System.Xml.Linq;
 
+using LeastViable.Common.Fascades.AdoNet.UoW;
 using LeastViable.Data.Models;
-using LeastViable.Data.Models.Impl.Linq.EF6;
+using LeastViable.Data.Impl.MicrosoftLinq;
 using LeastViable.Solder.IoC;
 ]]>
 		<If>
@@ -43,126 +41,17 @@ using LeastViable.Solder.IoC;
 			</If.True>
 		</If>
 
-		<If>
-			<If.Condition>
-				<BinaryExpression operator="Eq">
-					<BinaryExpression.LeftExpression>
-						<Value type="System.Boolean" data="True" />
-					</BinaryExpression.LeftExpression>
-					<BinaryExpression.RightExpression>
-						<Facet name="HasTables" />
-					</BinaryExpression.RightExpression>
-				</BinaryExpression>
-			</If.Condition>
-			<If.True>
-				<![CDATA[using ${ClrNamespace}.Tables;
-]]>
-			</If.True>
-		</If>
-		<If>
-			<If.Condition>
-				<BinaryExpression operator="Eq">
-					<BinaryExpression.LeftExpression>
-						<Value type="System.Boolean" data="True" />
-					</BinaryExpression.LeftExpression>
-					<BinaryExpression.RightExpression>
-						<Facet name="HasViews" />
-					</BinaryExpression.RightExpression>
-				</BinaryExpression>
-			</If.Condition>
-			<If.True>
-				<![CDATA[using ${ClrNamespace}.Views;
-]]>
-			</If.True>
-		</If>
-		<If>
-			<If.Condition>
-				<BinaryExpression operator="Eq">
-					<BinaryExpression.LeftExpression>
-						<Value type="System.Boolean" data="True" />
-					</BinaryExpression.LeftExpression>
-					<BinaryExpression.RightExpression>
-						<Facet name="HasProcedures" />
-					</BinaryExpression.RightExpression>
-				</BinaryExpression>
-			</If.Condition>
-			<If.True>
-				<![CDATA[using ${ClrNamespace}.Procedures;
-]]>
-			</If.True>
-		</If>
 <![CDATA[
 [assembly: DependencyRegistration]
 
 namespace ${ClrNamespace}
 {
-	public class ThisAppDbContext : DbContext
-	{
-		#region Constructors/Destructors
-
-		public ThisAppDbContext(DbConnection dbConnection, bool contextOwnsConnection)
-			: base(dbConnection, contextOwnsConnection)
-		{
-			//Console.WriteLine(this.Database.Connection.ConnectionString);
-		}
-
-		#endregion
-
-		#region Properties/Indexers/Events
-]]>
-
-
-
-	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
-		<ForEach.Filter></ForEach.Filter>
-		<ForEach.Body>
-
-			<ForEach in="Tables" var-ct="_LoopCount" var-ix="_LoopIndex">
-				<ForEach.Filter></ForEach.Filter>
-				<ForEach.Body>
-<![CDATA[
-		public DbSet<${TableNameSingularPascalCase}> ${TableNamePluralPascalCase}
-		{
-			get;
-			set;
-		}
-]]>
-				</ForEach.Body>
-			</ForEach>
-
-		</ForEach.Body>
-	</ForEach>
-<![CDATA[
-		#endregion
-
-		#region Methods/Operators
-
-		protected override void OnModelCreating(DbModelBuilder modelBuilder)
-		{
-			Database.SetInitializer<ThisAppDbContext>(new ThisAppDatabaseInitializer());
-			base.OnModelCreating(modelBuilder);
-		}
-
-		#endregion
-	}
-
-	internal class ThisAppDatabaseInitializer : IDatabaseInitializer<ThisAppDbContext>
-	{
-		#region Methods/Operators
-
-		public void InitializeDatabase(ThisAppDbContext context)
-		{
-		}
-
-		#endregion
-	}
-
 	[DependencyRegistration]
-	public partial class Repository : EntityFrameworkDbContextModelRepository<ThisAppDbContext>, IRepository
+	public partial class ThisAppRepository : DbContextModelRepository<${EntityFrameworkTargetDbContextName}>, IThisAppRepository
 	{
 		#region Constructors/Destructors
 
-		public Repository()
+		public ThisAppRepository()
 		{
 		}
 
@@ -173,7 +62,7 @@ namespace ${ClrNamespace}
 		[DependencyRegistration]
 		public static void OnDepenndencyRegistration()
 		{
-			DependencyManager.AppDomainInstance.AddResolution<IRepository>("", new ConstructorDependencyResolution<Repository>());
+			DependencyManager.AppDomainInstance.AddResolution<IThisAppRepository>("", new ConstructorDependencyResolution<ThisAppRepository>());
 		}
 
 		#endregion

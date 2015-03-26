@@ -75,7 +75,7 @@ using LeastViable.Data.Models;
 						<![CDATA[
 namespace ${ClrNamespace}.${FolderName}
 {
-	public partial interface I${TableNameSingularPascalCase} : IPlainModelObject
+	public partial interface I${TableNameSingularPascalCase} : ITableModelObject
 	{
 		#region Properties/Indexers/Events
 ]]>

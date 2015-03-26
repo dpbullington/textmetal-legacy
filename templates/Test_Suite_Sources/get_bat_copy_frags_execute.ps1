@@ -27,15 +27,9 @@ echo "The operation is starting..."
 if ((Test-Path -Path $base_dir))
 {
 	Remove-Item $base_dir -recurse
-
-	if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-	{ echo "An error occurred during the operation."; return; }
 }
 
 New-Item -ItemType directory -Path $base_dir
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
 
 $argz = @("-templatefile:$template_file",
 	"-sourcefile:$source_file",

@@ -52,7 +52,7 @@ using LeastViable.Data.Models;
 						<![CDATA[
 namespace ${ClrNamespace}.${FolderName}
 {
-	public partial interface I${ProcedureNameSingularPascalCase}_Response : IResponseModelObject<${ProcedureNameSingularPascalCase}_Result>
+	public partial interface I${ProcedureNameSingularPascalCase}_Response : ICallableLeaveModelObject<${ProcedureNameSingularPascalCase}_Result>
 	{
 		#region Properties/Indexers/Events
 

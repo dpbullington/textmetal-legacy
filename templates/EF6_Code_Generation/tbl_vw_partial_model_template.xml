@@ -5,8 +5,6 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
-	<Alloc token="FolderName" />
-
 	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter></ForEach.Filter>
 		<ForEach.Body>
@@ -15,37 +13,7 @@
 				<ForEach.Filter></ForEach.Filter>
 				<ForEach.Body>
 
-					<If>
-						<If.Condition>
-							<UnaryExpression operator="Not">
-								<UnaryExpression.TheExpression>
-									<Facet name="IsView" />
-								</UnaryExpression.TheExpression>
-							</UnaryExpression>
-						</If.Condition>
-						<If.True>
-							<Assign token="FolderName">
-								<Assign.Expression>
-									<Value data="Tables" />
-								</Assign.Expression>
-							</Assign>
-						</If.True>
-					</If>
-
-					<If>
-						<If.Condition>
-							<Facet name="IsView" />
-						</If.Condition>
-						<If.True>
-							<Assign token="FolderName">
-								<Assign.Expression>
-									<Value data="Views" />
-								</Assign.Expression>
-							</Assign>
-						</If.True>
-					</If>
-
-					<OutputScope name="${ModuleName}\${FolderName}\.partial\${TableNameSingularPascalCase}.cs">
+					<OutputScope name="${ModuleName}\.partial\${TableNameSqlMetalSingularPascalCase}.cs">
 						<Include name="include_gen_cprt_message_no_warn.cs.txt" />
 <![CDATA[
 
@@ -53,7 +21,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using LeastViable.Common.ValueObjects;
 using LeastViable.Data.Models;
+using LeastViable.Data.Impl.MicrosoftLinq;
 ]]>
 						<If>
 							<If.Condition>
@@ -73,28 +43,31 @@ using LeastViable.Data.Models;
 							</If.True>
 						</If>
 						<![CDATA[
-namespace ${ClrNamespace}.${FolderName}
+namespace ${ClrNamespace}
 {
-	public partial class ${TableNameSingularPascalCase}
+	public partial class ${TableNameSqlMetalSingularPascalCase}
 	{
 		#region Methods/Operators
 
-		public static bool Exists(I${TableNameSingularPascalCase} ${TableNameSingularCamelCase})
+		public static bool Exists(${TableNameSqlMetalSingularPascalCase} ${TableNameSqlMetalSingularCamelCase})
 		{
 			return false; // TODO - remove this and uncomment the above code fragment
 
-			/*IEnumerable<I${TableNameSingularPascalCase}> ${TableNamePluralCamelCase};
+			/*IEnumerable<${TableNameSqlMetalSingularPascalCase}> ${TableNameSqlMetalPluralCamelCase};
 			IModelQuery modelQuery;
 
-			if ((object)${TableNameSingularCamelCase} == null)
-				throw new ArgumentNullException("${TableNameSingularCamelCase}");
+			if ((object)${TableNameSqlMetalSingularCamelCase} == null)
+				throw new ArgumentNullException("${TableNameSqlMetalSingularCamelCase}");
 
-			modelQuery = new ModelQuery(null, null);
+			modelQuery = new LinqTableQuery<${TableNameSqlMetalPascalCase}>(z =>
+								(z.TODO_UNIQUE_VALUE_1 == ${TableNameSqlMetalSingularCamelCase}.TODO_UNIQUE_VALUE_1) &&
+									((object)${TableNameSqlMetalSingularCamelCase}.${TableNameSqlMetalSingularPascalCase}Id == null ||
+										z.${TableNameSqlMetalSingularPascalCase}Id != ${TableNameSqlMetalSingularCamelCase}.${TableNameSqlMetalSingularPascalCase}Id));
 
-			${TableNamePluralCamelCase} =
-				Stuff.Get<IRepository>("").Find<I${TableNameSingularPascalCase}>(modelQuery);
+			${TableNameSqlMetalPluralCamelCase} =
+				Stuff.Get<IThisAppRepository>("").Find<${TableNameSqlMetalSingularPascalCase}>(modelQuery);
 
-			return ${TableNamePluralCamelCase}.Count() > 0;*/
+			return ${TableNameSqlMetalPluralCamelCase}.Count() > 0;*/
 		}
 
 		public override void Mark()
@@ -105,8 +78,8 @@ namespace ${ClrNamespace}.${FolderName}
 
 			this.CreationTimestamp = this.CreationTimestamp ?? now;
 			this.ModificationTimestamp = !this.IsNew ? now : this.CreationTimestamp;
-			this.CreationUserId = ((this.IsNew ? Current.Instance.UserId : this.CreationUserId) ?? this.CreationUserId) ?? User.SYSTEM_USER_ID;
-			this.ModificationUserId = ((!this.IsNew ? Current.Instance.UserId : this.CreationUserId) ?? this.ModificationUserId) ?? User.SYSTEM_USER_ID;
+			this.CreationUserId = ((this.IsNew ? Current.Instance.UserId : this.CreationUserId) ?? this.CreationUserId) ?? Current.Instance.SystemUserId;
+			this.ModificationUserId = ((!this.IsNew ? Current.Instance.UserId : this.CreationUserId) ?? this.ModificationUserId) ?? Current.Instance.SystemUserId;
 			this.LogicalDelete = this.LogicalDelete ?? false;
 
 			// TODO - remove this and uncomment the below code fragment if needed
@@ -129,7 +102,7 @@ namespace ${ClrNamespace}.${FolderName}
 				exists = Exists(this);
 
 				if (exists)
-					messages.Add(new Message("", "${TableNameSingularPascalCase} must be unique.", Severity.Error));
+					messages.Add(new Message("", "${TableNameSqlMetalSingularPascalCase} must be unique.", Severity.Error));
 			}*/
 
 			return messages.ToArray();

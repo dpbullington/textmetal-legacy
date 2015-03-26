@@ -6,7 +6,7 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
 
-	<OutputScope name="${ModuleName}\IRepository.g.cs">
+	<OutputScope name="${ModuleName}\IThisAppRepository.g.cs">
 		<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 
@@ -14,7 +14,7 @@ using System;
 using System.Xml;
 
 using LeastViable.Data.Models;
-using LeastViable.Data.Models.Impl.Purist;
+using LeastViable.Data.Impl.FreakazoidMapper;
 ]]>
 		<If>
 			<If.Condition>
@@ -36,7 +36,7 @@ using LeastViable.Data.Models.Impl.Purist;
 		<![CDATA[
 namespace ${ClrNamespace}
 {
-	public partial interface IRepository : IModelRepository<PuristDataContext>
+	public partial interface IThisAppRepository : IModelRepository<FreakazoidContext>
 	{
 	}
 }

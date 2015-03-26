@@ -5,8 +5,6 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
-	<Alloc token="FolderName" />
-
 	<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
 		<ForEach.Filter></ForEach.Filter>
 		<ForEach.Body>
@@ -15,50 +13,16 @@
 				<ForEach.Filter></ForEach.Filter>
 				<ForEach.Body>
 
-					<If>
-						<If.Condition>
-							<UnaryExpression operator="Not">
-								<UnaryExpression.TheExpression>
-									<Facet name="IsView" />
-								</UnaryExpression.TheExpression>
-							</UnaryExpression>
-						</If.Condition>
-						<If.True>
-							<Assign token="FolderName">
-								<Assign.Expression>
-									<Value data="Tables" />
-								</Assign.Expression>
-							</Assign>
-						</If.True>
-					</If>
-
-					<If>
-						<If.Condition>
-							<Facet name="IsView" />
-						</If.Condition>
-						<If.True>
-							<Assign token="FolderName">
-								<Assign.Expression>
-									<Value data="Views" />
-								</Assign.Expression>
-							</Assign>
-						</If.True>
-					</If>
-
-					<OutputScope name="${ModuleName}\${FolderName}\${TableNameSingularPascalCase}.g.cs">
+					<OutputScope name="${ModuleName}\${TableNameSqlMetalSingularPascalCase}.g.cs">
 						<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
 using System.Xml;
 
 using LeastViable.Common.Fascades.Utilities;
 using LeastViable.Data.Models;
-using LeastViable.Data.Models.Impl.Purist.Mapping;
 ]]>
 						<If>
 							<If.Condition>
@@ -78,50 +42,20 @@ using LeastViable.Data.Models.Impl.Purist.Mapping;
 							</If.True>
 						</If>
 						<![CDATA[
-namespace ${ClrNamespace}.${FolderName}
+namespace ${ClrNamespace}
 {
 	[Serializable]
-	[Table("${TableName}", Schema = "${SchemaName}")]
-	public partial class ${TableNameSingularPascalCase} : ${ModelClrSuperType}, I${TableNameSingularPascalCase}
+	public partial class ${TableNameSqlMetalSingularPascalCase} : ${ModelClrSuperType}, I${TableNameSqlMetalSingularPascalCase}
 	{
 		#region Constructors/Destructors
 
-		public ${TableNameSingularPascalCase}()
+		public ${TableNameSqlMetalSingularPascalCase}(object reserved)
 		{
 		}
 
 		#endregion
 
 		#region Fields/Constants
-
-		public const string SCHEMA_NAME = "${SchemaName}";
-		public const string TABLE_NAME = "${TableName}";
-]]>
-
-					<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
-						<ForEach.Body>
-							<![CDATA[		public const string COLUMN_NAME_${ColumnNameConstantCase} = "${ColumnName}";]]>
-
-							<If>
-								<If.Condition>
-									<BinaryExpression operator="Ne">
-										<BinaryExpression.LeftExpression>
-											<Facet name="_LoopCount" />
-										</BinaryExpression.LeftExpression>
-										<BinaryExpression.RightExpression>
-											<Facet name="_LoopIndex" />
-										</BinaryExpression.RightExpression>
-									</BinaryExpression>
-								</If.Condition>
-								<If.True>
-<![CDATA[
-]]>
-								</If.True>
-							</If>
-						</ForEach.Body>
-					</ForEach>
-
-<![CDATA[
 ]]>
 
 						<If>
@@ -155,14 +89,7 @@ namespace ${ClrNamespace}.${FolderName}
 							</If.True>
 						</If>
 
-						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
-							<ForEach.Body>
-								<![CDATA[
-		private ${ColumnCSharpClrNullableType} @${ColumnNameCamelCase};]]>
-							</ForEach.Body>
-						</ForEach>
-						<![CDATA[
-
+<![CDATA[
 		#endregion
 
 		#region Properties/Indexers/Events
@@ -194,7 +121,6 @@ namespace ${ClrNamespace}.${FolderName}
 							</If.Condition>
 							<If.True>
 								<![CDATA[
-		[NotMapped]
 		public override bool IsNew
 		{
 			get
@@ -207,7 +133,6 @@ namespace ${ClrNamespace}.${FolderName}
 			}
 		}
 
-		[NotMapped]
 		public override object[] IdValues
 		{
 			get
@@ -246,7 +171,6 @@ namespace ${ClrNamespace}.${FolderName}
 							</If.Condition>
 							<If.True>
 								<![CDATA[
-		[NotMapped]
 		public override bool IsNew
 		{
 			get
@@ -265,7 +189,7 @@ namespace ${ClrNamespace}.${FolderName}
 										</BinaryExpression>
 									</ForEach.Filter>
 									<ForEach.Body>
-										<![CDATA[this.@${ColumnNamePascalCase} == default(${ColumnCSharpClrNullableType})]]>
+										<![CDATA[this.@${ColumnNameSqlMetalPascalCase} == default(${ColumnCSharpClrNullableType})]]>
 										<If>
 											<If.Condition>
 												<BinaryExpression operator="Ne">
@@ -318,7 +242,7 @@ namespace ${ClrNamespace}.${FolderName}
 										</BinaryExpression>
 									</ForEach.Filter>
 									<ForEach.Body>
-										<![CDATA[this.@${ColumnNamePascalCase}]]>
+										<![CDATA[this.@${ColumnNameSqlMetalPascalCase}]]>
 										<If>
 											<If.Condition>
 												<BinaryExpression operator="Ne">
@@ -356,7 +280,6 @@ namespace ${ClrNamespace}.${FolderName}
 								<![CDATA[			}
 		}
 
-		[NotMapped]
 		public override object[] IdValues
 		{
 			get
@@ -375,7 +298,7 @@ namespace ${ClrNamespace}.${FolderName}
 										</BinaryExpression>
 									</ForEach.Filter>
 									<ForEach.Body>
-										<![CDATA[this.@${ColumnNamePascalCase}]]>
+										<![CDATA[this.@${ColumnNameSqlMetalPascalCase}]]>
 										<If>
 											<If.Condition>
 												<BinaryExpression operator="Ne">
@@ -429,7 +352,6 @@ namespace ${ClrNamespace}.${FolderName}
 							</If.Condition>
 							<If.True>
 								<![CDATA[
-		[NotMapped]
 		public override bool IsNew
 		{
 			get
@@ -442,7 +364,6 @@ namespace ${ClrNamespace}.${FolderName}
 			}
 		}
 
-		[NotMapped]
 		public override object[] IdValues
 		{
 			get
@@ -454,62 +375,7 @@ namespace ${ClrNamespace}.${FolderName}
 							</If.True>
 						</If>
 
-						<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
-							<ForEach.Body>
-								<If>
-									<If.Condition>
-										<BinaryExpression operator="Or">
-											<BinaryExpression.LeftExpression>
-												<BinaryExpression operator="Eq">
-													<BinaryExpression.LeftExpression>
-														<Facet name="ColumnIsPrimaryKey" />
-													</BinaryExpression.LeftExpression>
-													<BinaryExpression.RightExpression>
-														<Value type="System.Boolean" data="True" />
-													</BinaryExpression.RightExpression>
-												</BinaryExpression>
-											</BinaryExpression.LeftExpression>
-											<BinaryExpression.RightExpression>
-												<BinaryExpression operator="Eq">
-													<BinaryExpression.LeftExpression>
-														<Facet name="HasNoDefinedPrimaryKeyColumns" />
-													</BinaryExpression.LeftExpression>
-													<BinaryExpression.RightExpression>
-														<Value type="System.Boolean" data="True" />
-													</BinaryExpression.RightExpression>
-												</BinaryExpression>
-											</BinaryExpression.RightExpression>
-										</BinaryExpression>
-									</If.Condition>
-									<If.True>
-										<![CDATA[]]>
-									</If.True>
-								</If>
-
-								<![CDATA[
-		[Column("${ColumnName}", Order = ${ColumnOrdinal})]
-		${rb(`textMetal.EvaluateToken.invoke("ColumnCSharpIsPrimaryKeyLiteral").to_s() == "true" ? "[Key]" : ""`)}
-		${rb(`textMetal.EvaluateToken.invoke("ColumnCSharpIsIdentityLiteral").to_s() == "true" ? "[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]" : ""`)}
-		${rb(`textMetal.EvaluateToken.invoke("ColumnCSharpIsComputedLiteral").to_s() == "true" ? "[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Computed)]" : ""`)}
-		public ${ColumnCSharpClrNullableType} @${ColumnNamePascalCase}
-		{
-			get
-			{
-				return this.@${ColumnNameCamelCase};
-			}
-			set
-			{
-				if (!DataTypeFascade.Instance.ObjectsEqualValueSemantics(this.@${ColumnNameCamelCase}, value))
-				{
-					this.@${ColumnNameCamelCase} = value;
-					this.OnPropertyChanged(COLUMN_NAME_${ColumnNameConstantCase});
-				}
-			}
-		}
-		]]>
-							</ForEach.Body>
-						</ForEach>
-						<![CDATA[
+<![CDATA[
 		#endregion
 	}
 }

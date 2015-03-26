@@ -6,7 +6,7 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
 
-	<OutputScope name="${ModuleName}.IntegrationTests\RepositoryTests.tv.g.cs">
+	<OutputScope name="${ModuleName}.IntegrationTests\ThisAppRepositoryTests.tv.g.cs">
 		<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 
@@ -17,8 +17,8 @@ using System.Xml;
 using NUnit.Framework;
 
 using LeastViable.Common.Fascades.AdoNet.UoW;
-using LeastViable.Data.Models.Impl.Purist;
-using LeastViable.Data.Models.Impl.Purist.Expressions;
+using LeastViable.Data.Impl.FreakazoidMapper;
+using LeastViable.Data.Impl.FreakazoidMapper.Expressions;
 using LeastViable.Testing;
 ]]>
 		<If>
@@ -105,7 +105,7 @@ using LeastViable.Testing;
 namespace ${ClrNamespace}.IntegrationTests
 {
 	[TestFixture]
-	public partial class RepositoryTests
+	public partial class ThisAppRepositoryTests
 	{
 		#region Methods/Operators
 
@@ -131,15 +131,15 @@ namespace ${ClrNamespace}.IntegrationTests
 								<![CDATA[		[Test]
 		public void ShouldSaveThenDiscard${TableNameSingularPascalCase}Test()
 		{
-			Repository repository;
+			ThisAppRepository thisAppRepository;
 			${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
 			bool result;
 
 			Assert.IsNull(UnitOfWork.Current);
 
-			repository = new Repository();
+			thisAppRepository = new ThisAppRepository();
 
-			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(repository))
+			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(thisAppRepository, true))
 			{
 				Assert.IsNotNull(UnitOfWork.Current);
 
@@ -185,7 +185,7 @@ namespace ${ClrNamespace}.IntegrationTests
 				// do INSERT first
 				Assert.IsTrue(@${TableNameSingularCamelCase}.IsNew);
 
-				result = repository.Save<${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase});
+				result = thisAppRepository.Save<${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase});
 
 				Assert.IsTrue(result);
 
@@ -230,14 +230,14 @@ namespace ${ClrNamespace}.IntegrationTests
 				// do UPDATE next
 				Assert.IsFalse(@${TableNameSingularCamelCase}.IsNew);
 
-				result = repository.Save<${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase});
+				result = thisAppRepository.Save<${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase});
 
 				Assert.IsTrue(result);
 
 				// do DELETE next
 				Assert.IsFalse(@${TableNameSingularCamelCase}.IsNew);
 
-				result = repository.Discard<${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase});
+				result = thisAppRepository.Discard<${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase});
 
 				Assert.IsTrue(result);
 
@@ -254,12 +254,12 @@ namespace ${ClrNamespace}.IntegrationTests
 						<![CDATA[		[Test]
 		public void ShouldLoad${TableNameSingularPascalCase}Test()
 		{
-			Repository repository;
+			ThisAppRepository thisAppRepository;
 			${TableNameSingularPascalCase} @${TableNameSingularCamelCase};
 
 			Assert.IsNull(UnitOfWork.Current);
 
-			repository = new Repository();
+			thisAppRepository = new ThisAppRepository();
 
 			@${TableNameSingularCamelCase} = new ${TableNameSingularPascalCase}();
 ]]>
@@ -310,11 +310,11 @@ namespace ${ClrNamespace}.IntegrationTests
 	</ForEach>
 	<![CDATA[
 
-			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(repository))
+			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(thisAppRepository, true))
 			{
 				Assert.IsNotNull(UnitOfWork.Current);
 
-				${TableNameSingularCamelCase} = repository.Load<${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase});
+				${TableNameSingularCamelCase} = thisAppRepository.Load<${TableNameSingularPascalCase}>(@${TableNameSingularCamelCase});
 
 				Assert.IsNotNull(@${TableNameSingularCamelCase});
 				Assert.IsFalse(@${TableNameSingularCamelCase}.IsNew);
@@ -328,18 +328,18 @@ namespace ${ClrNamespace}.IntegrationTests
 		[Test]
 		public void ShouldFind${TableNamePluralPascalCase}Test()
 		{
-			Repository repository;
+			ThisAppRepository thisAppRepository;
 			IEnumerable<${TableNameSingularPascalCase}> @${TableNamePluralCamelCase};
 
 			Assert.IsNull(UnitOfWork.Current);
 
-			repository = new Repository();
+			thisAppRepository = new ThisAppRepository();
 
-			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(repository))
+			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(thisAppRepository, true))
 			{
 				Assert.IsNotNull(UnitOfWork.Current);
 
-				@${TableNamePluralCamelCase} = repository.Find<${TableNameSingularPascalCase}>(new PuristModelQuery(VoidExpression.Instance, new ISortOrder[] { }));
+				@${TableNamePluralCamelCase} = thisAppRepository.Find<${TableNameSingularPascalCase}>(new FreakazoidTableModelQuery(VoidExpression.Instance, new ISortOrder[] { }));
 
 				Assert.IsNotNull(@${TableNamePluralCamelCase});
 				Assert.IsNotEmpty(@${TableNamePluralCamelCase});

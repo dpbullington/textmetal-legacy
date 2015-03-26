@@ -4,8 +4,9 @@
         <name>LeastViable.Data</name>
     </assembly>
     <members>
-        <!-- Badly formed XML comment ignored for member "T:LeastViable.Data.Models.ITableModelObject" -->
+        <!-- Badly formed XML comment ignored for member "T:LeastViable.Data.Models.ICallableResultModelObject" -->
         <!-- Badly formed XML comment ignored for member "T:LeastViable.Data.Models.IModelObject" -->
+        <!-- Badly formed XML comment ignored for member "T:LeastViable.Data.Models.ITableModelObject" -->
         <member name="M:LeastViable.Data.Models.ITableModelObject.Mark">
             <summary>
             Called prior to any non-idempotent (e.g. insert, update, delete) operation.

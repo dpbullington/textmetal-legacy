@@ -76,6 +76,25 @@ if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
 
+
+$sql_metal_exe = "C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\SqlMetal.exe"
+
+$l2s_dir = "$src_dir\${ModuleName}"
+$l2s_clr_namespace = "${ClrNamespace}"
+$l2s_data_context_name = "${EntityFrameworkTargetDbContextName}"
+$l2s_dbml_file = "$l2s_dir\$l2s_data_context_name.dbml"
+$l2s_designer_cs_file = "$l2s_dir\$l2s_data_context_name.designer.cs"
+
+$argz = @("/language:C#",
+	"/code:$l2s_designer_cs_file",
+	"$l2s_dbml_file")
+
+&"$sql_metal_exe" $argz > "$base_dir\SqlMetal_LOG.txt"
+
+if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
+{ echo "An error occurred during the operation."; return; }
+
+
 echo "The operation completed successfully."
 ]]>
 	</OutputScope>
@@ -201,61 +220,12 @@ EndGlobal
 		<add name="${ModuleName}::ConnectionString" connectionString="${ConnectionString}" providerName="${ConnectionType}" />
 	</connectionStrings>
 	<appSettings>
-		<add key="${ModuleName}::DataSourceTag" value="${DataSourceTag}" />
 		<add key="${ModuleName}::UseDatabaseFile" value="false" />
 		<add key="${ModuleName}::KillDatabaseFile" value="false" />
 		<add key="${ModuleName}::DatabaseFileName" value="" />
 		<add key="${ModuleName}::DatabaseDirectoryPath" value="" />
 	</appSettings>
 </configuration>]]>
-	</OutputScope>
-
-	<OutputScope name="${ModuleName}.IntegrationTests\App.(${DataSourceTag}).config">
-		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
-
-<configuration>
-	<connectionStrings>
-		<add name="${ModuleName}::ConnectionString" connectionString="${ConnectionString}" providerName="${ConnectionType}" />
-	</connectionStrings>
-	<appSettings>
-		<add key="${ModuleName}::DataSourceTag" value="${DataSourceTag}" />
-		<add key="${ModuleName}::UseDatabaseFile" value="false" />
-		<add key="${ModuleName}::KillDatabaseFile" value="false" />
-		<add key="${ModuleName}::DatabaseFileName" value="" />
-		<add key="${ModuleName}::DatabaseDirectoryPath" value="" />
-	</appSettings>
-</configuration>]]>
-	</OutputScope>
-
-	<OutputScope name="${ModuleName}.IntegrationTests\App.(net.sqlite).config">
-		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
-
-<configuration>
-	<connectionStrings>
-		<add name="${ModuleName}::ConnectionString" connectionString="Data Source={0};FailIfMissing=True" providerName="System.Data.SQLite.SQLiteConnection, System.Data.SQLite" />
-	</connectionStrings>
-	<appSettings>
-		<add key="${ModuleName}::DataSourceTag" value="net.sqlite" />
-		<add key="${ModuleName}::UseDatabaseFile" value="true" />
-		<add key="${ModuleName}::KillDatabaseFile" value="true" />
-		<add key="${ModuleName}::DatabaseFileName" value="${ModuleName}.database" />
-		<add key="${ModuleName}::DatabaseDirectoryPath" value="{0}" />
-	</appSettings>
-</configuration>]]>
-	</OutputScope>
-
-<OutputScope name="${ModuleName}\SQL\RevisionHistory.(${DataSourceTag}).xml">
-		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
-
-<History xmlns="http://www.leastviable.com/api/v7.0.0">
-</History>]]>
-	</OutputScope>
-
-	<OutputScope name="${ModuleName}\SQL\RevisionHistory.(net.sqlite).xml">
-		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
-
-<History xmlns="http://www.leastviable.com/api/v7.0.0">
-</History>]]>
 	</OutputScope>
 
 	<OutputScope name="${ModuleName}.UnitTests\UnitTests.nunit">
@@ -277,21 +247,13 @@ EndGlobal
 	<OutputScope name="${ModuleName}.IntegrationTests\IntegrationTests.nunit">
 		<![CDATA[<?xml version="1.0" encoding="utf-8" ?>
 <NUnitProject>
-	<Settings activeconfig="Debug_(${DataSourceTag})"/>
+	<Settings activeconfig="Debug"/>
 
-	<Config configfile="App.(${DataSourceTag}).config" name="Debug_(${DataSourceTag})">
+	<Config configfile="App.config" name="Debug">
 		<assembly path="bin\Debug\${ModuleName}.IntegrationTests.dll"/>
 	</Config>
 
-	<Config configfile="App.(net.sqlite).config" name="Debug_(net.sqlite)">
-		<assembly path="bin\Debug\${ModuleName}.IntegrationTests.dll"/>
-	</Config>
-
-	<Config configfile="App.(${DataSourceTag}).config" name="Release_(${DataSourceTag})">
-		<assembly path="bin\Release\${ModuleName}.IntegrationTests.dll"/>
-	</Config>
-
-	<Config configfile="App.(net.sqlite).config" name="Release_(net.sqlite)">
+	<Config configfile="App.config" name="Release">
 		<assembly path="bin\Release\${ModuleName}.IntegrationTests.dll"/>
 	</Config>
 
@@ -299,7 +261,6 @@ EndGlobal
 	</OutputScope>
 
 	<OutputScope name="${ModuleName}\${ModuleName}.csproj">
-		<Alloc token="FolderName" />
 
 		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="${csproj_tools_version}">
@@ -328,7 +289,7 @@ EndGlobal
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <!--<DocumentationFile>bin\Debug\${ModuleName}.XML</DocumentationFile>-->
+    <DocumentationFile>bin\Debug\${ModuleName}.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -337,32 +298,25 @@ EndGlobal
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <!--<DocumentationFile>bin\Release\${ModuleName}.XML</DocumentationFile>-->
+    <DocumentationFile>bin\Release\${ModuleName}.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
 	<Reference Include="System.Data" />
+	<Reference Include="System.Data.Linq" />
 	<Reference Include="System.Xml" />
-
-	<Reference Include="EntityFramework">
-      <HintPath>..\..\lib\LeastViable\EntityFramework.dll</HintPath>
-    </Reference>
-	<Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\lib\LeastViable\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-
-	<Reference Include="System.Data.SQLite">
-      <HintPath>..\..\lib\SQLite\x64\System.Data.SQLite.dll</HintPath>
-    </Reference>
+	<Reference Include="System.Xml.Linq" />
 
 	<Reference Include="LeastViable.Common">
       <HintPath>..\..\lib\LeastViable\LeastViable.Common.dll</HintPath>
     </Reference>
 	<Reference Include="LeastViable.Data">
       <HintPath>..\..\lib\LeastViable\LeastViable.Data.dll</HintPath>
+    </Reference>
+	<Reference Include="LeastViable.Data.Impl.MicrosoftLinq">
+      <HintPath>..\..\lib\LeastViable\LeastViable.Data.Impl.MicrosoftLinq.dll</HintPath>
     </Reference>
 	<Reference Include="LeastViable.Solder">
       <HintPath>..\..\lib\LeastViable\LeastViable.Solder.dll</HintPath>
@@ -377,10 +331,19 @@ EndGlobal
 	<Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
-	<Compile Include="IRepository.g.cs" />
-	<Compile Include="Repository.g.cs" />
+	<Compile Include="${EntityFrameworkTargetDbContextName}.designer.cs">
+		<AutoGen>True</AutoGen>
+		<DesignTime>True</DesignTime>
+		<DependentUpon>${EntityFrameworkTargetDbContextName}.dbml</DependentUpon>
+	</Compile>
+	<None Include="${EntityFrameworkTargetDbContextName}.dbml">
+		<Generator>MSLinqToSQLGenerator</Generator>
+		<LastGenOutput>${EntityFrameworkTargetDbContextName}.designer.cs</LastGenOutput>
+		<SubType>Designer</SubType>
+	</None>
+    <Compile Include="IThisAppRepository.g.cs" />
+	<Compile Include="ThisAppRepository.g.cs" />
 	<Compile Include="ProjectAssemblyInfo.cs" />
-
 ]]>
 
 		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
@@ -391,72 +354,14 @@ EndGlobal
 					<ForEach.Filter></ForEach.Filter>
 					<ForEach.Body>
 
-						<If>
-							<If.Condition>
-								<UnaryExpression operator="Not">
-									<UnaryExpression.TheExpression>
-										<Facet name="IsView" />
-									</UnaryExpression.TheExpression>
-								</UnaryExpression>
-							</If.Condition>
-							<If.True>
-								<Assign token="FolderName">
-									<Assign.Expression>
-										<Value data="Tables" />
-									</Assign.Expression>
-								</Assign>
-							</If.True>
-						</If>
-
-						<If>
-							<If.Condition>
-								<Facet name="IsView" />
-							</If.Condition>
-							<If.True>
-								<Assign token="FolderName">
-									<Assign.Expression>
-										<Value data="Views" />
-									</Assign.Expression>
-								</Assign>
-							</If.True>
-						</If>
-
-						<![CDATA[	<Compile Include="${FolderName}\${TableNameSingularPascalCase}.g.cs" />
-	<Compile Include="${FolderName}\I${TableNameSingularPascalCase}.g.cs" />]]>
-					</ForEach.Body>
-				</ForEach>
-			</ForEach.Body>
-		</ForEach>
-
-		<Assign token="FolderName">
-			<Assign.Expression>
-				<Value data="Procedures" />
-			</Assign.Expression>
-		</Assign>
-
-		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
-			<ForEach.Filter></ForEach.Filter>
-			<ForEach.Body>
-
-				<ForEach in="Procedures" var-ct="_LoopCount" var-ix="_LoopIndex">
-					<ForEach.Filter></ForEach.Filter>
-					<ForEach.Body>
-						<![CDATA[    <Compile Include="${FolderName}\I${ProcedureNameSingularPascalCase}_Request.g.cs" />
-    <Compile Include="${FolderName}\I${ProcedureNameSingularPascalCase}_Result.g.cs" />
-	<Compile Include="${FolderName}\I${ProcedureNameSingularPascalCase}_Response.g.cs" />
-	<Compile Include="${FolderName}\${ProcedureNameSingularPascalCase}_Request.g.cs" />
-    <Compile Include="${FolderName}\${ProcedureNameSingularPascalCase}_Result.g.cs" />
-	<Compile Include="${FolderName}\${ProcedureNameSingularPascalCase}_Response.g.cs" />]]>
+						<![CDATA[    <Compile Include="I${TableNameSqlMetalSingularPascalCase}.g.cs" />
+    <Compile Include="${TableNameSqlMetalSingularPascalCase}.g.cs" />]]>
 					</ForEach.Body>
 				</ForEach>
 			</ForEach.Body>
 		</ForEach>
 
 		<![CDATA[
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SQL\RevisionHistory.%28${DataSourceTag}%29.xml" />
-    <EmbeddedResource Include="SQL\RevisionHistory.%28net.sqlite%29.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
@@ -471,7 +376,6 @@ EndGlobal
 	</OutputScope>
 
 	<OutputScope name="${ModuleName}.UnitTests\${ModuleName}.UnitTests.csproj">
-		<Alloc token="FolderName" />
 
 		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="${csproj_tools_version}">
@@ -510,25 +414,22 @@ EndGlobal
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
+   <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-
-	<Reference Include="EntityFramework">
-      <HintPath>..\..\lib\LeastViable\EntityFramework.dll</HintPath>
-    </Reference>
-	<Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\lib\LeastViable\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
+	<Reference Include="System.Data" />
+	<Reference Include="System.Data.Linq" />
+	<Reference Include="System.Xml" />
+	<Reference Include="System.Xml.Linq" />
 
 	<Reference Include="LeastViable.Common">
       <HintPath>..\..\lib\LeastViable\LeastViable.Common.dll</HintPath>
     </Reference>
 	<Reference Include="LeastViable.Data">
       <HintPath>..\..\lib\LeastViable\LeastViable.Data.dll</HintPath>
+    </Reference>
+	<Reference Include="LeastViable.Data.Impl.MicrosoftLinq">
+      <HintPath>..\..\lib\LeastViable\LeastViable.Data.Impl.MicrosoftLinq.dll</HintPath>
     </Reference>
 	<Reference Include="LeastViable.Solder">
       <HintPath>..\..\lib\LeastViable\LeastViable.Solder.dll</HintPath>
@@ -553,8 +454,7 @@ EndGlobal
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
 	<Compile Include="ProjectAssemblyInfo.cs" />
-	<Compile Include="RepositoryTests.sp.g.cs" />
-	<Compile Include="RepositoryTests.tv.g.cs" />
+	<Compile Include="ThisAppRepositoryTests.tv.g.cs" />
 	<None Include="UnitTests.nunit" />
 ]]>
 
@@ -566,58 +466,7 @@ EndGlobal
 					<ForEach.Filter></ForEach.Filter>
 					<ForEach.Body>
 
-						<If>
-							<If.Condition>
-								<UnaryExpression operator="Not">
-									<UnaryExpression.TheExpression>
-										<Facet name="IsView" />
-									</UnaryExpression.TheExpression>
-								</UnaryExpression>
-							</If.Condition>
-							<If.True>
-								<Assign token="FolderName">
-									<Assign.Expression>
-										<Value data="Tables" />
-									</Assign.Expression>
-								</Assign>
-							</If.True>
-						</If>
-
-						<If>
-							<If.Condition>
-								<Facet name="IsView" />
-							</If.Condition>
-							<If.True>
-								<Assign token="FolderName">
-									<Assign.Expression>
-										<Value data="Views" />
-									</Assign.Expression>
-								</Assign>
-							</If.True>
-						</If>
-
-						<![CDATA[    <Compile Include="${FolderName}\${TableNameSingularPascalCase}Tests.g.cs" />]]>
-					</ForEach.Body>
-				</ForEach>
-			</ForEach.Body>
-		</ForEach>
-
-		<Assign token="FolderName">
-			<Assign.Expression>
-				<Value data="Procedures" />
-			</Assign.Expression>
-		</Assign>
-
-		<ForEach in="Schemas" var-ct="_LoopCount" var-ix="_LoopIndex">
-			<ForEach.Filter></ForEach.Filter>
-			<ForEach.Body>
-
-				<ForEach in="Procedures" var-ct="_LoopCount" var-ix="_LoopIndex">
-					<ForEach.Filter></ForEach.Filter>
-					<ForEach.Body>
-						<![CDATA[    <Compile Include="${FolderName}\${ProcedureNameSingularPascalCase}_RequestTests.g.cs" />
-    <Compile Include="${FolderName}\${ProcedureNameSingularPascalCase}_ResultTests.g.cs" />
-	<Compile Include="${FolderName}\${ProcedureNameSingularPascalCase}_ResponseTests.g.cs" />]]>
+						<![CDATA[    <Compile Include="${TableNameSqlMetalSingularPascalCase}Tests.g.cs" />]]>
 					</ForEach.Body>
 				</ForEach>
 			</ForEach.Body>
@@ -638,7 +487,6 @@ EndGlobal
 	</OutputScope>
 
 	<OutputScope name="${ModuleName}.IntegrationTests\${ModuleName}.IntegrationTests.csproj">
-		<Alloc token="FolderName" />
 
 		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="${csproj_tools_version}">
@@ -678,22 +526,12 @@ EndGlobal
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
 	<Reference Include="System.Data" />
+	<Reference Include="System.Data.Linq" />
 	<Reference Include="System.Xml" />
-
-	<Reference Include="EntityFramework">
-      <HintPath>..\..\lib\LeastViable\EntityFramework.dll</HintPath>
-    </Reference>
-	<Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\lib\LeastViable\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-
-	<Reference Include="System.Data.SQLite">
-      <HintPath>..\..\lib\SQLite\x64\System.Data.SQLite.dll</HintPath>
-    </Reference>
+	<Reference Include="System.Xml.Linq" />
 
 	<Reference Include="LeastViable.Common">
       <HintPath>..\..\lib\LeastViable\LeastViable.Common.dll</HintPath>
@@ -703,6 +541,9 @@ EndGlobal
     </Reference>
 	<Reference Include="LeastViable.Solder">
       <HintPath>..\..\lib\LeastViable\LeastViable.Solder.dll</HintPath>
+    </Reference>
+	<Reference Include="LeastViable.Data.Impl.MicrosoftLinq">
+      <HintPath>..\..\lib\LeastViable\LeastViable.Data.Impl.MicrosoftLinq.dll</HintPath>
     </Reference>
 	<Reference Include="LeastViable.Testing">
       <HintPath>..\..\lib\LeastViable\LeastViable.Testing.dll</HintPath>
@@ -724,17 +565,10 @@ EndGlobal
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
 	<Compile Include="ProjectAssemblyInfo.cs" />
-	<Compile Include="RepositoryTests.g.cs" />
-	<Compile Include="RepositoryTests.sp.g.cs" />
-	<Compile Include="RepositoryTests.tv.g.cs" />
+	<Compile Include="ThisAppRepositoryTests.g.cs" />
+	<Compile Include="ThisAppRepositoryTests.tv.g.cs" />
 	<None Include="IntegrationTests.nunit" />
 	<None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-	<None Include="App.(${DataSourceTag}).config">
-      <SubType>Designer</SubType>
-    </None>
-	<None Include="App.(net.sqlite).config">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

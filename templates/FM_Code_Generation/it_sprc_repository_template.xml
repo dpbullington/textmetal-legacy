@@ -6,7 +6,7 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
 
-	<OutputScope name="${ModuleName}.IntegrationTests\RepositoryTests.sp.g.cs">
+	<OutputScope name="${ModuleName}.IntegrationTests\ThisAppRepositoryTests.sp.g.cs">
 		<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 
@@ -55,7 +55,7 @@ using LeastViable.Testing;
 namespace ${ClrNamespace}.IntegrationTests
 {
 	[TestFixture]
-	public partial class RepositoryTests
+	public partial class ThisAppRepositoryTests
 	{
 		#region Methods/Operators
 
@@ -71,13 +71,13 @@ namespace ${ClrNamespace}.IntegrationTests
 						<![CDATA[		[Test]
 		public void ShouldExecute${ProcedureNamePascalCase}Test()
 		{
-			Repository repository;
+			ThisAppRepository thisAppRepository;
 			${ProcedureNameSingularPascalCase}_Request @${ProcedureNameSingularCamelCase}_Request;
 			${ProcedureNameSingularPascalCase}_Response @${ProcedureNameSingularCamelCase}_Response;
 
 			Assert.IsNull(UnitOfWork.Current);
 
-			repository = new Repository();
+			thisAppRepository = new ThisAppRepository();
 
 			@${ProcedureNameSingularCamelCase}_Request = new ${ProcedureNameSingularPascalCase}_Request();
 ]]>
@@ -114,11 +114,11 @@ namespace ${ClrNamespace}.IntegrationTests
 	</ForEach>
 	<![CDATA[
 
-			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(repository))
+			using (AmbientUnitOfWorkScope scope = new AmbientUnitOfWorkScope(thisAppRepository, true))
 			{
 				Assert.IsNotNull(UnitOfWork.Current);
 
-				@${ProcedureNameSingularCamelCase}_Response = repository.Execute<${ProcedureNameSingularPascalCase}_Request, ${ProcedureNameSingularPascalCase}_Result, ${ProcedureNameSingularPascalCase}_Response>(@${ProcedureNameSingularCamelCase}_Request);
+				@${ProcedureNameSingularCamelCase}_Response = thisAppRepository.Execute<${ProcedureNameSingularPascalCase}_Request, ${ProcedureNameSingularPascalCase}_Result, ${ProcedureNameSingularPascalCase}_Response>(@${ProcedureNameSingularCamelCase}_Request);
 
 				Assert.IsNotNull(@${ProcedureNameSingularCamelCase}_Response);
 				Assert.IsNotNull(@${ProcedureNameSingularCamelCase}_Response.Results);

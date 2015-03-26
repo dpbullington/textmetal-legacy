@@ -6,7 +6,7 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
 
-	<OutputScope name="${ModuleName}.IntegrationTests\RepositoryTests.g.cs">
+	<OutputScope name="${ModuleName}.IntegrationTests\ThisAppRepositoryTests.g.cs">
 		<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 
@@ -36,11 +36,11 @@ using NUnit.Framework;
 namespace ${ClrNamespace}.IntegrationTests
 {
 	[TestFixture]
-	public partial class RepositoryTests
+	public partial class ThisAppRepositoryTests
 	{
 		#region Constructors/Destructors
 
-		public RepositoryTests()
+		public ThisAppRepositoryTests()
 		{
 		}
 

@@ -21,10 +21,10 @@ $property_connection_type = "System.Data.SqlClient.SqlConnection, System.Data, V
 $property_data_source_tag = "net.sqlserver"
 $property_module_name = "TextMetal.Sample.DataModel"
 $property_clr_namespace = "TextMetal.Sample.DataModel"
-$property_model_clr_super_type = "PlainModelObject"
-$property_request_model_clr_super_type = "RequestModelObject"
-$property_result_model_clr_super_type = "ResultModelObject"
-$property_response_model_clr_super_type = "ResponseModelObject"
+$property_model_clr_super_type = "TableModelObject"
+$property_request_model_clr_super_type = "CallableEntryModelObject"
+$property_result_model_clr_super_type = "CallableResultModelObject"
+$property_response_model_clr_super_type = "CallableLeaveModelObject"
 
 $lib_dir = "..\..\lib"
 
@@ -39,15 +39,9 @@ echo "The operation is starting..."
 if ((Test-Path -Path $base_dir))
 {
 	Remove-Item $base_dir -recurse -force
-
-	if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-	{ echo "An error occurred during the operation."; return; }
 }
 
 New-Item -ItemType directory -Path $base_dir
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
 
 $argz = @("-templatefile:$template_file",
 	"-sourcefile:$source_file",
@@ -76,30 +70,14 @@ $argz = @("-k",
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
 
-
 New-Item -ItemType directory -Path $base_lib_dir
 New-Item -ItemType directory -Path "$base_lib_dir\LeastViable"
 New-Item -ItemType directory -Path "$base_lib_dir\Sqlite"
 New-Item -ItemType directory -Path "$base_lib_dir\Sqlite\x64"
 New-Item -ItemType directory -Path "$base_lib_dir\Sqlite\x86"
 
-
 Copy-Item "$lib_dir\SQLite\x64\*.*" "$base_lib_dir\SQLite\x64\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-
 Copy-Item "$lib_dir\SQLite\x86\*.*" "$base_lib_dir\SQLite\x86\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
-
 Copy-Item "$lib_dir\LeastViable\*.*" "$base_lib_dir\LeastViable\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
 
 echo "The operation completed successfully."

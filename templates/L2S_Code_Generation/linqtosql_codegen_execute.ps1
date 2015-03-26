@@ -44,15 +44,9 @@ echo "The operation is starting..."
 if ((Test-Path -Path $base_dir))
 {
 	Remove-Item $base_dir -recurse -force
-
-	if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-	{ echo "An error occurred during the operation."; return; }
 }
 
 New-Item -ItemType directory -Path $base_dir
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
 
 $argz = @("-templatefile:$template_file",
 	"-sourcefile:$source_file",
@@ -79,16 +73,10 @@ $argz = @("-k",
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
 
-
 New-Item -ItemType directory -Path $base_lib_dir
 New-Item -ItemType directory -Path "$base_lib_dir\LeastViable"
 
-
 Copy-Item "$lib_dir\LeastViable\*.*" "$base_lib_dir\LeastViable\."
-
-if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
-{ echo "An error occurred during the operation."; return; }
-
 
 if ((Test-Path -Path $base_dir) -eq $false)
 {
@@ -109,9 +97,6 @@ $argz = @("/views",
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
 
-
-
-
 $xd = New-Object System.Xml.XmlDocument
 $xd.Load($l2s_dbml_file)
 $xa_list = $xd.SelectNodes("//@CanBeNull")
@@ -131,9 +116,6 @@ else
 }
 
 $xd.Save($l2s_dbml_file)
-
-
-
 
 $argz = @("/language:C#",
 	"/code:$l2s_designer_cs_file",

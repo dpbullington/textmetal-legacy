@@ -56,7 +56,7 @@ using System.Xml;
 
 using LeastViable.Common.Fascades.Utilities;
 using LeastViable.Data.Models;
-using LeastViable.Data.Models.Impl.Purist.Mapping;
+using LeastViable.Data.Impl.FreakazoidMapper.Mapping.Attributes;
 ]]>
 						<If>
 							<If.Condition>

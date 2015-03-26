@@ -6,7 +6,7 @@
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
 
-	<OutputScope name="${ModuleName}.UnitTests\RepositoryTests.tv.g.cs">
+	<OutputScope name="${ModuleName}.UnitTests\ThisAppRepositoryTests.tv.g.cs">
 		<Include name="include_gen_cprt_message.cs.txt" />
 <![CDATA[
 
@@ -32,74 +32,11 @@ using NUnit.Framework;
 				</ForEach>
 			</If.True>
 		</If>
-		<If>
-			<If.Condition>
-				<BinaryExpression operator="Or">
-					<BinaryExpression.LeftExpression>
-						<BinaryExpression operator="Eq">
-							<BinaryExpression.LeftExpression>
-								<Facet name="HasTables" />
-							</BinaryExpression.LeftExpression>
-							<BinaryExpression.RightExpression>
-								<Value type="System.Boolean" data="True" />
-							</BinaryExpression.RightExpression>
-						</BinaryExpression>
-					</BinaryExpression.LeftExpression>
-					<BinaryExpression.RightExpression>
-						<BinaryExpression operator="Eq">
-							<BinaryExpression.LeftExpression>
-								<Facet name="HasViews" />
-							</BinaryExpression.LeftExpression>
-							<BinaryExpression.RightExpression>
-								<Value type="System.Boolean" data="True" />
-							</BinaryExpression.RightExpression>
-						</BinaryExpression>
-					</BinaryExpression.RightExpression>
-				</BinaryExpression>
-			</If.Condition>
-			<If.True>
-				<![CDATA[
-]]>
-			</If.True>
-		</If>
-
-		<If>
-			<If.Condition>
-				<BinaryExpression operator="Eq">
-					<BinaryExpression.LeftExpression>
-						<Value type="System.Boolean" data="True" />
-					</BinaryExpression.LeftExpression>
-					<BinaryExpression.RightExpression>
-						<Facet name="HasTables" />
-					</BinaryExpression.RightExpression>
-				</BinaryExpression>
-			</If.Condition>
-			<If.True>
-				<![CDATA[using ${ClrNamespace}.Tables;
-]]>
-			</If.True>
-		</If>
-		<If>
-			<If.Condition>
-				<BinaryExpression operator="Eq">
-					<BinaryExpression.LeftExpression>
-						<Value type="System.Boolean" data="True" />
-					</BinaryExpression.LeftExpression>
-					<BinaryExpression.RightExpression>
-						<Facet name="HasViews" />
-					</BinaryExpression.RightExpression>
-				</BinaryExpression>
-			</If.Condition>
-			<If.True>
-				<![CDATA[using ${ClrNamespace}.Views;
-]]>
-			</If.True>
-		</If>
-		<![CDATA[
+<![CDATA[
 namespace ${ClrNamespace}.UnitTests
 {
 	[TestFixture]
-	public partial class RepositoryTests
+	public partial class ThisAppRepositoryTests
 	{
 		#region Methods/Operators
 
@@ -114,21 +51,21 @@ namespace ${ClrNamespace}.UnitTests
 					<ForEach.Body>
 						<![CDATA[		[Ignore]
 		[Test]
-		public void ShouldSave${TableNameSingularPascalCase}Test()
+		public void ShouldSave${TableNameSqlMetalSingularPascalCase}Test()
 		{
 			throw new NotImplementedException();
 		}
 
 		[Ignore]
 		[Test]
-		public void ShouldLoad${TableNameSingularPascalCase}Test()
+		public void ShouldLoad${TableNameSqlMetalSingularPascalCase}Test()
 		{
 			throw new NotImplementedException();
 		}
 
 		[Ignore]
 		[Test]
-		public void ShouldGetAll${TableNamePluralPascalCase}Test()
+		public void ShouldGetAll${TableNameSqlMetalPluralPascalCase}Test()
 		{
 			throw new NotImplementedException();
 		}
