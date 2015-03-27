@@ -27,6 +27,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 		private readonly List<ProcedureColumn> columns = new List<ProcedureColumn>();
 		private readonly List<Parameter> parameters = new List<Parameter>();
+		private string procedureExecuteSchemaExceptionText;
+		private bool procedureExecuteSchemaThrewException;
 		private string procedureName;
 		private string procedureNameCamelCase;
 		private string procedureNameConstantCase;
@@ -74,6 +76,32 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			get
 			{
 				return this.parameters;
+			}
+		}
+
+		[XmlAttribute]
+		public string ProcedureExecuteSchemaExceptionText
+		{
+			get
+			{
+				return this.procedureExecuteSchemaExceptionText;
+			}
+			set
+			{
+				this.procedureExecuteSchemaExceptionText = value;
+			}
+		}
+
+		[XmlAttribute]
+		public bool ProcedureExecuteSchemaThrewException
+		{
+			get
+			{
+				return this.procedureExecuteSchemaThrewException;
+			}
+			set
+			{
+				this.procedureExecuteSchemaThrewException = value;
 			}
 		}
 

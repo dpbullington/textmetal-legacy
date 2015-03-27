@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -271,7 +272,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 						// filter unwanted servers
 						if ((object)serverFilter != null)
 						{
-							if (!serverFilter.Contains(server.ServerName))
+							if (!serverFilter.Any(f => Regex.IsMatch(server.ServerName, f)))
 								return null;
 						}
 
@@ -316,7 +317,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 										// filter unwanted databases
 										if ((object)databaseFilter != null)
 										{
-											if (!databaseFilter.Contains(database.DatabaseName))
+											if (!databaseFilter.Any(f => Regex.IsMatch(database.DatabaseName, f)))
 												continue;
 										}
 									}
@@ -395,7 +396,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 												// filter unwanted schemas
 												if ((object)schemaFilter != null)
 												{
-													if (!schemaFilter.Contains(schema.SchemaName))
+													if (!schemaFilter.Any(f => Regex.IsMatch(schema.SchemaName, f)))
 														continue;
 												}
 
@@ -461,7 +462,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 														// filter unwanted tables (objects)
 														if ((object)objectFilter != null)
 														{
-															if (!objectFilter.Contains(table.TableName))
+															if (!objectFilter.Any(f => Regex.IsMatch(table.TableName, f)))
 																continue;
 														}
 
@@ -777,10 +778,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 														view.ViewNameSqlMetalPluralPascalCase = Name.SqlMetal.GetSqlMetalPascalCase(Name.GetPluralForm(view.ViewNameSqlMetal));
 														view.ViewNameSqlMetalPluralCamelCase = Name.SqlMetal.GetSqlMetalCamelCase(Name.GetPluralForm(view.ViewNameSqlMetal));
 
-														// filter unwanted tables (objects)
+														// filter unwanted views (objects)
 														if ((object)objectFilter != null)
 														{
-															if (!objectFilter.Contains(view.ViewName))
+															if (!objectFilter.Any(f => Regex.IsMatch(view.ViewName, f)))
 																continue;
 														}
 
@@ -879,7 +880,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 															// filter unwanted procedures (objects)
 															if ((object)objectFilter != null)
 															{
-																if (!objectFilter.Contains(procedure.ProcedureName))
+																if (!objectFilter.Any(f => Regex.IsMatch(procedure.ProcedureName, f)))
 																	continue;
 															}
 
@@ -1105,15 +1106,24 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																				column = new ProcedureColumn();
 
-																				column.ColumnName = DataTypeFascade.Instance.ChangeType<string>(dictDataMetadata["ColumnName"]);
-																				column.ColumnOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata["ColumnOrdinal"]);
-																				column.ColumnNullable = DataTypeFascade.Instance.ChangeType<bool>(dictDataMetadata["AllowDBNull"]);
-																				column.ColumnSize = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata["ColumnSize"]);
-																				column.ColumnPrecision = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata["NumericPrecision"]);
-																				column.ColumnScale = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata["NumericScale"]);
-																				//column.ColumnSqlType = dataTypeFascade.Instance.ChangeType<string>(dictDataMetadata["DataTypeName"]);
-																				//column.ColumnIsUserDefinedType = dataTypeFascade.Instance.ChangeType<string>(dictDataMetadata["IsUserDefinedType"]);
-																				//column.ColumnHasDefault = dataTypeFascade.Instance.ChangeType<bool>(dictDataMetadata["ColumnHasDefault"]);
+																				column.ColumnName = DataTypeFascade.Instance.ChangeType<string>(dictDataMetadata[SchemaTableColumn.ColumnName]);
+																				column.ColumnOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.ColumnOrdinal]);
+																				column.ColumnSize = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.ColumnSize]);
+																				column.ColumnPrecision = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.NumericPrecision]);
+																				column.ColumnScale = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.NumericScale]);
+																				column.ColumnSqlType = string.Empty;
+																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.ProviderType]);
+																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.NonVersionedProviderType]);
+																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsLong]);
+																				column.ColumnNullable = DataTypeFascade.Instance.ChangeType<bool>(dictDataMetadata[SchemaTableColumn.AllowDBNull]);
+																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsAliased]);
+																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsExpression]);
+																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsKey]);
+																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsUnique]);
+																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.BaseSchemaName]);
+																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.BaseTableName]);
+																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.BaseColumnName]);
+																				
 																				column.ColumnNamePascalCase = Name.GetPascalCase(column.ColumnName);
 																				column.ColumnNameCamelCase = Name.GetCamelCase(column.ColumnName);
 																				column.ColumnNameConstantCase = Name.GetConstantCase(column.ColumnName);
@@ -1131,7 +1141,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																				column.ColumnNameSqlMetalPluralPascalCase = Name.SqlMetal.GetSqlMetalPascalCase(Name.GetPluralForm(column.ColumnName));
 																				column.ColumnNameSqlMetalPluralCamelCase = Name.SqlMetal.GetSqlMetalCamelCase(Name.GetPluralForm(column.ColumnName));
 
-																				clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType, column.ColumnPrecision);
+																				clrType = DataTypeFascade.Instance.ChangeType<Type>(dictDataMetadata[SchemaTableColumn.DataType]);
 																				column.ColumnDbType = AdoNetFascade.Instance.InferDbTypeForClrType(clrType);
 																				column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
@@ -1159,7 +1169,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																}
 																catch (Exception ex)
 																{
-																	Console.Error.WriteLine(ReflectionFascade.Instance.GetErrors(ex, 0));
+																	procedure.ProcedureExecuteSchemaThrewException = true;
+																	procedure.ProcedureExecuteSchemaExceptionText = ReflectionFascade.Instance.GetErrors(ex, 0);
+																	//Console.Error.WriteLine(ReflectionFascade.Instance.GetErrors(ex, 0));
 																}
 															}
 														}

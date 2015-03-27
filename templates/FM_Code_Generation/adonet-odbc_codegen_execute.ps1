@@ -25,6 +25,7 @@ $property_model_clr_super_type = "TableModelObject"
 $property_request_model_clr_super_type = "CallableEntryModelObject"
 $property_result_model_clr_super_type = "CallableResultModelObject"
 $property_response_model_clr_super_type = "CallableLeaveModelObject"
+$property_schema_filter = "^testcases"
 
 $lib_dir = "..\..\lib"
 
@@ -55,7 +56,8 @@ $argz = @("-templatefile:$template_file",
 	"-property:ModelClrSuperType=$property_model_clr_super_type",
 	"-property:RequestModelClrSuperType=$property_request_model_clr_super_type",
 	"-property:ResultModelClrSuperType=$property_result_model_clr_super_type",
-	"-property:ResponseModelClrSuperType=$property_response_model_clr_super_type")
+	"-property:ResponseModelClrSuperType=$property_response_model_clr_super_type",
+	"-property:SchemaFilter=$property_schema_filter")
 
 &"$textmetal_exe" $argz
 

@@ -117,6 +117,11 @@
     <Compile Include="Hosting\Email\IHostEmailAttachment.cs" />
     <Compile Include="Hosting\Email\IHostEmailMessage.cs" />
     <Compile Include="Hosting\Email\MessageTemplate.cs" />
+    <Compile Include="Hosting\Mvc\IWebHost.cs" />
+    <Compile Include="Hosting\Mvc\TextMetalHttpHandler.cs" />
+    <Compile Include="Hosting\Mvc\TextMetalView.cs" />
+    <Compile Include="Hosting\Mvc\TextMetalViewEngine.cs" />
+    <Compile Include="Hosting\Mvc\WebHost.cs" />
     <Compile Include="Hosting\Tool\IToolHost.cs" />
     <Compile Include="Hosting\Tool\ToolHost.cs" />
     <Compile Include="Hosting\WellKnownExtensions.cs" />
