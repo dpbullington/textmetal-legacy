@@ -2,12 +2,7 @@
 IMPORTS
 -----------------------------------------------------------------------------------
 
-USES OFFICIAL BINARY - SOURCE INCLUDED IN TREE
---------------------------------
+entity-framework <https://github.com/aspnet/EntityFramework>
+iron-ruby <https://github.com/IronLanguages/main>
+leastviable <https://github.com/dpbullington/leastviable>
 sqlite <http://system.data.sqlite.org/index.html/doc/trunk/www/downloads.wiki>
-
-
-USES OFFICIAL BINARY - SOURCE NOT INCLUDED DUE TO SIZE
---------------------------------
-dlr <https://github.com/IronLanguages/dlr>
-ironlanguages-main <https://github.com/IronLanguages/main>

@@ -125,7 +125,7 @@ namespace TextMetal.Framework.InputOutput
 			stream = new FileStream(fullFilePath, appendMode ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.None);
 			textWriter = new StreamWriter(stream, encoding ?? this.LogFileEncoding);
 
-			base.TextWriters.Push(textWriter);
+			this.TextWriters.Push(textWriter);
 		}
 
 		protected override void CoreLeave(string scopeName)
@@ -138,7 +138,7 @@ namespace TextMetal.Framework.InputOutput
 			if (DataTypeFascade.Instance.IsWhiteSpace(scopeName))
 				throw new ArgumentOutOfRangeException("scopeName");
 
-			textWriter = base.TextWriters.Pop();
+			textWriter = this.TextWriters.Pop();
 			textWriter.Flush();
 			textWriter.Dispose();
 		}
@@ -209,7 +209,7 @@ namespace TextMetal.Framework.InputOutput
 				textWriter = new StreamWriter(stream, this.LogFileEncoding);
 			}
 
-			base.SetLogTextWriter(textWriter);
+			this.SetLogTextWriter(textWriter);
 		}
 
 		#endregion

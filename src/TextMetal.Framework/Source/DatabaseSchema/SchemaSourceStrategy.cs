@@ -1123,7 +1123,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.BaseSchemaName]);
 																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.BaseTableName]);
 																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.BaseColumnName]);
-																				
+
 																				column.ColumnNamePascalCase = Name.GetPascalCase(column.ColumnName);
 																				column.ColumnNameCamelCase = Name.GetCamelCase(column.ColumnName);
 																				column.ColumnNameConstantCase = Name.GetConstantCase(column.ColumnName);

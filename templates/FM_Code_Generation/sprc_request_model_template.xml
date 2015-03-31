@@ -33,7 +33,7 @@ using System.Xml;
 
 using LeastViable.Common.Fascades.Utilities;
 using LeastViable.Data.Models;
-using LeastViable.Data.Impl.FreakazoidMapper.Mapping.Attributes;
+using LeastViable.Data.Impl.FreakazoidMapper.Mappings;
 ]]>
 						<If>
 							<If.Condition>
@@ -150,7 +150,6 @@ namespace ${ClrNamespace}.${FolderName}
 		#endregion
 
 		#region Properties/Indexers/Events
-
 ]]>
 						<ForEach in="Parameters" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>

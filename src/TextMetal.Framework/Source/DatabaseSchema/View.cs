@@ -29,7 +29,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		private DateTime creationTimestamp;
 		private bool isImplementationDetail;
 		private DateTime modificationTimestamp;
-		private string viewNameSqlMetal;
 		private int viewId;
 		private string viewName;
 		private string viewNameCamelCase;
@@ -41,6 +40,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		private string viewNameSingularCamelCase;
 		private string viewNameSingularConstantCase;
 		private string viewNameSingularPascalCase;
+		private string viewNameSqlMetal;
 		private string viewNameSqlMetalCamelCase;
 		private string viewNameSqlMetalPascalCase;
 		private string viewNameSqlMetalPluralCamelCase;
@@ -342,19 +342,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		}
 
 		[XmlAttribute]
-		public string ViewNameSqlMetal
-		{
-			get
-			{
-				return this.viewNameSqlMetal;
-			}
-			set
-			{
-				this.viewNameSqlMetal = value;
-			}
-		}
-
-		[XmlAttribute]
 		public int ViewId
 		{
 			get
@@ -494,6 +481,19 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			set
 			{
 				this.viewNameSingularPascalCase = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string ViewNameSqlMetal
+		{
+			get
+			{
+				return this.viewNameSqlMetal;
+			}
+			set
+			{
+				this.viewNameSqlMetal = value;
 			}
 		}
 

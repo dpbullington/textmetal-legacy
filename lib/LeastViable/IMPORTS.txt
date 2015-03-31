@@ -2,8 +2,6 @@
 IMPORTS
 -----------------------------------------------------------------------------------
 
-BUILT FROM SOURCE INCLUDED IN TREE (Imports)
---------------------------------
 castleproject-core <https://github.com/castleproject/Core>
 json-net <https://github.com/JamesNK/Newtonsoft.Json>
 nmock2-2.1.3641.rtm <http://nmock2.svn.sourceforge.net/viewvc/nmock2/>

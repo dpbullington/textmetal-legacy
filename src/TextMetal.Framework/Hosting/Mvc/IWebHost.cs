@@ -3,8 +3,6 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-using System.IO;
-
 namespace TextMetal.Framework.Hosting.Mvc
 {
 #if USE_ASP_NET_LIBS

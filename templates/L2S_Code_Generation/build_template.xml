@@ -89,7 +89,7 @@ $argz = @("/language:C#",
 	"/code:$l2s_designer_cs_file",
 	"$l2s_dbml_file")
 
-&"$sql_metal_exe" $argz > "$base_dir\SqlMetal_LOG.txt"
+&"$sql_metal_exe" $argz > ".\_sqlmetal_log.txt"
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }

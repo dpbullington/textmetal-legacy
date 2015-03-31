@@ -28,12 +28,34 @@ namespace TextMetal.Framework.XmlDialect
 
 		#region Fields/Constants
 
-		private IXmlObject content;
 		private readonly IXmlObjectCollection<IXmlObject> items;
+		private IXmlObject content;
 
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		/// <summary>
+		/// Gets an array of allowed child XML object types.
+		/// </summary>
+		public virtual Type[] AllowedChildTypes
+		{
+			get
+			{
+				return new Type[] { typeof(IXmlObject) };
+			}
+		}
+
+		/// <summary>
+		/// Gets a list of XML object items.
+		/// </summary>
+		public IXmlObjectCollection<IXmlObject> Items
+		{
+			get
+			{
+				return this.items;
+			}
+		}
 
 		/// <summary>
 		/// Gets or sets the optional single XML object content.
@@ -78,28 +100,6 @@ namespace TextMetal.Framework.XmlDialect
 			set
 			{
 				this.Surround = value;
-			}
-		}
-
-		/// <summary>
-		/// Gets an array of allowed child XML object types.
-		/// </summary>
-		public virtual Type[] AllowedChildTypes
-		{
-			get
-			{
-				return new Type[] { typeof(IXmlObject) };
-			}
-		}
-
-		/// <summary>
-		/// Gets a list of XML object items.
-		/// </summary>
-		public IXmlObjectCollection<IXmlObject> Items
-		{
-			get
-			{
-				return this.items;
 			}
 		}
 

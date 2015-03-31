@@ -56,16 +56,6 @@ namespace TextMetal.Framework.Tokenization
 		#region Methods/Operators
 
 		/// <summary>
-		/// Evaluate a token using any parameters specified.
-		/// </summary>
-		/// <param name="parameters"> Should be null for value semantics; or a valid string array for function semantics. </param>
-		/// <returns> An approapriate token replacement value. </returns>
-		public object Evaluate(string[] parameters)
-		{
-			return this.Method(parameters);
-		}
-
-		/// <summary>
 		/// Used by the token model to execute public, static methods with zero or more parameters in a dynamic manner.
 		/// </summary>
 		/// <param name="parameters"> An array of parameters in the form: assembly-qualified-type-name, method-name, [parameter-assembly-qualified-type-name, argument-value, ...] </param>
@@ -197,6 +187,16 @@ namespace TextMetal.Framework.Tokenization
 			propertyValue = propertyInfo.GetValue(null, new object[] { });
 
 			return propertyValue;
+		}
+
+		/// <summary>
+		/// Evaluate a token using any parameters specified.
+		/// </summary>
+		/// <param name="parameters"> Should be null for value semantics; or a valid string array for function semantics. </param>
+		/// <returns> An approapriate token replacement value. </returns>
+		public object Evaluate(string[] parameters)
+		{
+			return this.Method(parameters);
 		}
 
 		#endregion

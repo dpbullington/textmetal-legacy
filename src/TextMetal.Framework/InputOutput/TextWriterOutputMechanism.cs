@@ -29,7 +29,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)xpe == null)
 				throw new ArgumentNullException("xpe");
 
-			base.TextWriters.Push(textWriter);
+			this.TextWriters.Push(textWriter);
 			this.xpe = xpe;
 		}
 

@@ -59,7 +59,7 @@ namespace TextMetal.Framework.Core.ObjectTaxonomy
 		/// </summary>
 		protected override void ClearItems()
 		{
-			foreach (THierarchicalObject item in base.Items)
+			foreach (THierarchicalObject item in this.Items)
 			{
 				item.Surround = null;
 				item.Parent = null;

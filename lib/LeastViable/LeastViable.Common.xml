@@ -80,7 +80,7 @@
             <param name="dbConnection"> The database connection. </param>
             <param name="dbTransaction"> An optional local database transaction. </param>
             <param name="parameterDirection"> Specifies the parameter direction. </param>
-            <param name="dbType"> Specifies the parameter provider-(in)dependent type. </param>
+            <param name="parameterDbType"> Specifies the parameter provider-(in)dependent type. </param>
             <param name="parameterSize"> Specifies the parameter size. </param>
             <param name="parameterPrecision"> Specifies the parameter precision. </param>
             <param name="parameterScale"> Specifies the parameter scale. </param>
@@ -191,7 +191,7 @@
             <param name="dbConnection"> The database connection. </param>
             <param name="dbTransaction"> An optional local database transaction. </param>
             <param name="parameterDirection"> Specifies the parameter direction. </param>
-            <param name="dbType"> Specifies the parameter provider-(in)dependent type. </param>
+            <param name="parameterDbType"> Specifies the parameter provider-(in)dependent type. </param>
             <param name="parameterSize"> Specifies the parameter size. </param>
             <param name="parameterPrecision"> Specifies the parameter precision. </param>
             <param name="parameterScale"> Specifies the parameter scale. </param>
@@ -308,7 +308,7 @@
         </member>
         <member name="M:LeastViable.Common.Fascades.AdoNet.UoW.AmbientUnitOfWorkScope.ScopeDivergent">
             <summary>
-            Indicates that at least one operation within the unit of work scope cause a failure in data concurrency or idempotency. This forces the entire unit of work to yield an incomplete status. This method can be called any number of times.
+            Indicates that at least one operation within the unit of work scope cause a failure in data concurrency or nullipotency. This forces the entire unit of work to yield an incomplete status. This method can be called any number of times.
             </summary>
         </member>
         <member name="P:LeastViable.Common.Fascades.AdoNet.UoW.AmbientUnitOfWorkScope.Disposed">
@@ -323,7 +323,7 @@
         </member>
         <member name="M:LeastViable.Common.Fascades.AdoNet.UoW.IUnitOfWork.Divergent">
             <summary>
-            Indicates that at least one operation within the unit of work cause a failure in data concurrency or idempotency. This forces the entire unit of work to yield an incomplete status. This method can be called any number of times.
+            Indicates that at least one operation within the unit of work cause a failure in data concurrency or nullipotency. This forces the entire unit of work to yield an incomplete status. This method can be called any number of times.
             </summary>
         </member>
         <member name="P:LeastViable.Common.Fascades.AdoNet.UoW.IUnitOfWork.Completed">
@@ -393,7 +393,7 @@
         </member>
         <member name="M:LeastViable.Common.Fascades.AdoNet.UoW.UnitOfWork.Divergent">
             <summary>
-            Indicates that at least one operation within the unit of work cause a failure in data concurrency or idempotency. This forces the entire unit of work to yield an incomplete status. This method can be called any number of times.
+            Indicates that at least one operation within the unit of work cause a failure in data concurrency or nullipotency. This forces the entire unit of work to yield an incomplete status. This method can be called any number of times.
             </summary>
         </member>
         <member name="P:LeastViable.Common.Fascades.AdoNet.UoW.UnitOfWork.Current">

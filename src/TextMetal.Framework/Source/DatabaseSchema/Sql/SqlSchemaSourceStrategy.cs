@@ -6,10 +6,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
+using System.Data.Linq;
 using System.Xml;
+using System.Xml.Linq;
 
-using LeastViable.Common;
 using LeastViable.Common.Fascades.AdoNet.UoW;
 using LeastViable.Common.Fascades.Utilities;
 
@@ -629,16 +629,16 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
 				if (clrType == typeof(Byte[]))
-					return typeof(System.Data.Linq.Binary);
+					return typeof(Binary);
 				else if (clrType == typeof(XmlDocument))
-					return typeof(System.Xml.Linq.XElement);
+					return typeof(XElement);
 				else
 					return clrType;
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
-	}
 
-	#endregion
+		#endregion
+	}
 }

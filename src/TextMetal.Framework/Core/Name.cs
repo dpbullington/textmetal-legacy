@@ -202,8 +202,82 @@ namespace TextMetal.Framework.Core
 			return value;
 		}
 
+		/// <summary>
+		/// Gets a valid C# identifier from the specified name (symbol).
+		/// </summary>
+		/// <param name="value"> The value to which to derive the C# identifier. </param>
+		/// <returns> The valid C# identifier form of the specified value. </returns>
+		private static string GetValidCSharpIdentifier(string value)
+		{
+			bool first = true;
+			StringBuilder sb;
+
+			if ((object)value == null)
+				throw new ArgumentNullException("value");
+
+			sb = new StringBuilder();
+
+			foreach (char curr in value)
+			{
+				if (!(first && char.IsDigit(curr)) && (char.IsLetterOrDigit(curr) || curr == '_'))
+					sb.Append(curr);
+				else if ((first && char.IsDigit(curr)) || curr == ' ')
+					sb.Append('_');
+				else
+					; // skip
+
+				first = false;
+			}
+
+			return sb.ToString();
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether the specified value is a valid C# identifier.
+		/// </summary>
+		/// <param name="value"> The value to test as a C# identifier. </param>
+		/// <returns> True if the specified value is a valid C# identifier; otherwise false. </returns>
+		public static bool IsValidCSharpIdentifier(string value)
+		{
+			return new CSharpCodeProvider().IsValidIdentifier(value);
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether the specified character is a vowel (US English).
+		/// </summary>
+		/// <param name="ch"> The value to test as a vowel (US English). </param>
+		/// <returns> True if the specified value is a vowel (US English); otherwise false. </returns>
+		private static bool IsVowel(char ch)
+		{
+			switch (ch)
+			{
+				case 'A':
+				case 'E':
+				case 'I':
+				case 'O':
+				case 'U':
+				case 'Y':
+					return true;
+				case 'a':
+				case 'e':
+				case 'i':
+				case 'o':
+				case 'u':
+				case 'y':
+					return true;
+				default:
+					return false;
+			}
+		}
+
+		#endregion
+
+		#region Classes/Structs/Interfaces/Enums/Delegates
+
 		public static class SqlMetal
 		{
+			#region Methods/Operators
+
 			/// <summary>
 			/// Gets the camel (e.g. 'myVariableName') form of a name. This method mimics SqlMetal.exe.
 			/// </summary>
@@ -293,74 +367,8 @@ namespace TextMetal.Framework.Core
 
 				return sb.ToString();
 			}
-		}
 
-		/// <summary>
-		/// Gets a valid C# identifier from the specified name (symbol).
-		/// </summary>
-		/// <param name="value"> The value to which to derive the C# identifier. </param>
-		/// <returns> The valid C# identifier form of the specified value. </returns>
-		private static string GetValidCSharpIdentifier(string value)
-		{
-			bool first = true;
-			StringBuilder sb;
-
-			if ((object)value == null)
-				throw new ArgumentNullException("value");
-
-			sb = new StringBuilder();
-
-			foreach (char curr in value)
-			{
-				if (!(first && char.IsDigit(curr)) && (char.IsLetterOrDigit(curr) || curr == '_'))
-					sb.Append(curr);
-				else if ((first && char.IsDigit(curr)) || curr == ' ')
-					sb.Append('_');
-				else
-					; // skip
-
-				first = false;
-			}
-
-			return sb.ToString();
-		}
-
-		/// <summary>
-		/// Gets a value indicating whether the specified value is a valid C# identifier.
-		/// </summary>
-		/// <param name="value"> The value to test as a C# identifier. </param>
-		/// <returns> True if the specified value is a valid C# identifier; otherwise false. </returns>
-		public static bool IsValidCSharpIdentifier(string value)
-		{
-			return new CSharpCodeProvider().IsValidIdentifier(value);
-		}
-
-		/// <summary>
-		/// Gets a value indicating whether the specified character is a vowel (US English).
-		/// </summary>
-		/// <param name="ch"> The value to test as a vowel (US English). </param>
-		/// <returns> True if the specified value is a vowel (US English); otherwise false. </returns>
-		private static bool IsVowel(char ch)
-		{
-			switch (ch)
-			{
-				case 'A':
-				case 'E':
-				case 'I':
-				case 'O':
-				case 'U':
-				case 'Y':
-					return true;
-				case 'a':
-				case 'e':
-				case 'i':
-				case 'o':
-				case 'u':
-				case 'y':
-					return true;
-				default:
-					return false;
-			}
+			#endregion
 		}
 
 		#endregion

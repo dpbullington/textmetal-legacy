@@ -51,7 +51,7 @@ using LeastViable.Data.Models;
 						<![CDATA[
 namespace ${ClrNamespace}.${FolderName}
 {
-	public partial interface I${ProcedureNameSingularPascalCase}_Request : ICallableEntryModelObject
+	public partial interface I${ProcedureNameSingularPascalCase}_Request : ICallProcedureModelObject
 	{
 		#region Properties/Indexers/Events
 ]]>
@@ -68,13 +68,13 @@ namespace ${ClrNamespace}.${FolderName}
 							</ForEach.Filter>
 							<ForEach.Body>
 
-								<![CDATA[
+<![CDATA[
 		${ParameterCSharpClrNullableType} @${ParameterNamePascalCase}
 		{
 			get;
 			set;
 		}
-		]]>
+]]>
 							</ForEach.Body>
 						</ForEach>
 

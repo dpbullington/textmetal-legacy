@@ -11,6 +11,11 @@ namespace TextMetal.Framework.Hosting.Email
 	{
 		#region Properties/Indexers/Events
 
+		IList<IHostEmailAttachment> HostEmailAttachments
+		{
+			get;
+		}
+
 		string BlindCarbonCopy
 		{
 			get;
@@ -69,11 +74,6 @@ namespace TextMetal.Framework.Hosting.Email
 		{
 			get;
 			set;
-		}
-
-		IList<IHostEmailAttachment> HostEmailAttachments
-		{
-			get;
 		}
 
 		#endregion

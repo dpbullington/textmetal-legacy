@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Xml.Serialization;
 
-using LeastViable.Common;
 using LeastViable.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.Source.Primative
@@ -33,15 +32,28 @@ namespace TextMetal.Framework.Source.Primative
 
 		#region Fields/Constants
 
+		private readonly List<SqlQuery> subQueries = new List<SqlQuery>();
 		private string key;
 		private int? order;
 		private string text;
 		private CommandType type = CommandType.Text;
-		private readonly List<SqlQuery> subQueries = new List<SqlQuery>();
 
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		/// <summary>
+		/// Gets a list of corrolated subqueries.
+		/// </summary>
+		[XmlArray(ElementName = "SubQueries", Order = 1)]
+		[XmlArrayItem(ElementName = "SqlQuery")]
+		public List<SqlQuery> SubQueries
+		{
+			get
+			{
+				return this.subQueries;
+			}
+		}
 
 		/// <summary>
 		/// Gets or sets the ordinal (order) of this SQL query. Do not use directly; rather use the Order property.
@@ -130,19 +142,6 @@ namespace TextMetal.Framework.Source.Primative
 			set
 			{
 				this.type = value;
-			}
-		}
-
-		/// <summary>
-		/// Gets a list of corrolated subqueries.
-		/// </summary>
-		[XmlArray(ElementName = "SubQueries", Order = 1)]
-		[XmlArrayItem(ElementName = "SqlQuery")]
-		public List<SqlQuery> SubQueries
-		{
-			get
-			{
-				return this.subQueries;
 			}
 		}
 

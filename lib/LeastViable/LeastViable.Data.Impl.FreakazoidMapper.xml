@@ -44,92 +44,92 @@
             Represents an expression with one operand.
             </summary>
         </member>
-        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.ITacticCommand.CommandBehavior">
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Tactics.ITacticCommand.CommandBehavior">
             <summary>
             Gets or sets the command behavior.
             </summary>
         </member>
-        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.ITacticCommand.CommandPrepare">
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Tactics.ITacticCommand.CommandPrepare">
             <summary>
             Gets or sets a value indicating whether to prepare the command.
             </summary>
         </member>
-        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.ITacticCommand.CommandText">
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Tactics.ITacticCommand.CommandText">
             <summary>
             Gets or sets the command text.
             </summary>
         </member>
-        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.ITacticCommand.CommandTimeout">
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Tactics.ITacticCommand.CommandTimeout">
             <summary>
             Gets or sets the command timeout.
             </summary>
         </member>
-        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.ITacticCommand.CommandType">
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Tactics.ITacticCommand.CommandType">
             <summary>
             Gets or sets the command type.
             </summary>
         </member>
-        <member name="M:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Attributes.ParameterMappingAttribute.#ctor">
+        <member name="M:LeastViable.Data.Impl.FreakazoidMapper.Mappings.ParameterMappingAttribute.#ctor">
             <summary>
             Initializes a new instance of the ParameterMappingAttribute class.
             </summary>
         </member>
-        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Attributes.ParameterMappingAttribute.ParameterDbType">
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mappings.ParameterMappingAttribute.ParameterDbType">
             <summary>
             Gets or sets the type of the parameter.
             </summary>
         </member>
-        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Attributes.ParameterMappingAttribute.ParameterDirection">
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mappings.ParameterMappingAttribute.ParameterDirection">
             <summary>
             Gets or sets the direction of the parameter.
             </summary>
         </member>
-        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Attributes.ParameterMappingAttribute.ParameterName">
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mappings.ParameterMappingAttribute.ParameterName">
             <summary>
             Gets or sets the name of the parameter.
             </summary>
         </member>
-        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Attributes.ParameterMappingAttribute.ParameterNullable">
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mappings.ParameterMappingAttribute.ParameterNullable">
             <summary>
             Gets or sets the nullable-ness of the parameter.
             </summary>
         </member>
-        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Attributes.ParameterMappingAttribute.ParameterPrecision">
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mappings.ParameterMappingAttribute.ParameterPrecision">
             <summary>
             Gets or sets the precision of the parameter.
             </summary>
         </member>
-        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Attributes.ParameterMappingAttribute.ParameterScale">
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mappings.ParameterMappingAttribute.ParameterScale">
             <summary>
             Gets or sets the scale of the parameter.
             </summary>
         </member>
-        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Attributes.ParameterMappingAttribute.ParameterSize">
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mappings.ParameterMappingAttribute.ParameterSize">
             <summary>
             Gets or sets the size of the parameter.
             </summary>
         </member>
-        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.TacticCommand.CommandBehavior">
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Tactics.TacticCommand.CommandBehavior">
             <summary>
             Gets or sets the command behavior.
             </summary>
         </member>
-        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.TacticCommand.CommandPrepare">
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Tactics.TacticCommand.CommandPrepare">
             <summary>
             Gets or sets a value indicating whether to prepare the command.
             </summary>
         </member>
-        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.TacticCommand.CommandText">
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Tactics.TacticCommand.CommandText">
             <summary>
             Gets or sets the command text.
             </summary>
         </member>
-        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.TacticCommand.CommandTimeout">
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Tactics.TacticCommand.CommandTimeout">
             <summary>
             Gets or sets the command timeout.
             </summary>
         </member>
-        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Mapping.Commands.TacticCommand.CommandType">
+        <member name="P:LeastViable.Data.Impl.FreakazoidMapper.Tactics.TacticCommand.CommandType">
             <summary>
             Gets or sets the command type.
             </summary>
@@ -190,6 +190,40 @@
             <summary>
             Gets or sets the revision number.
             </summary>
+        </member>
+        <member name="M:LeastViable.Data.Impl.FreakazoidMapper.FreakazoidModelRepository.GetProcedureResultsLazy``3(LeastViable.Common.Fascades.AdoNet.UoW.IUnitOfWork,LeastViable.Data.Impl.FreakazoidMapper.Tactics.IProcedureTacticCommand{``0,``1,``2},``0,``2)">
+            <summary>
+            NOTE: This code is re-entrant if the results enumeration is re-started, for example:
+            returnProcedureModelObject.Results.First(); // causes an 'abandoned' enumerator
+            returnProcedureModelObject.Results.Last(); // causes a full enumeration
+            To prevent this:
+            var results = returnProcedureModelObject.Results.ToArray(); // causes a full enumeration
+            results.First(); // in-memory
+            results.Last(); // in-memory
+            </summary>
+            <typeparam name="TCallProcedureModelObject"> </typeparam>
+            <typeparam name="TResultModelObject"> </typeparam>
+            <typeparam name="TReturnProcedureModelObject"> </typeparam>
+            <param name="unitOfWork"> </param>
+            <param name="procedureTacticCommand"> </param>
+            <param name="callProcedureModelObject"> </param>
+            <param name="returnProcedureModelObject"> </param>
+            <returns> </returns>
+        </member>
+        <member name="M:LeastViable.Data.Impl.FreakazoidMapper.FreakazoidModelRepository.GetTableResultsLazy``1(LeastViable.Common.Fascades.AdoNet.UoW.IUnitOfWork,LeastViable.Data.Impl.FreakazoidMapper.Tactics.ITableTacticCommand{``0})">
+            <summary>
+            NOTE: This code is re-entrant if the results enumeration is re-started, for example:
+            results.First(); // causes an 'abandoned' enumerator
+            results.Last(); // causes a full enumeration
+            To prevent this:
+            var results2 = results.ToArray(); // causes a full enumeration
+            results2.First(); // in-memory
+            results2.Last(); // in-memory
+            </summary>
+            <typeparam name="TTableModelObject"></typeparam>
+            <param name="unitOfWork"></param>
+            <param name="tableTacticCommand"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>

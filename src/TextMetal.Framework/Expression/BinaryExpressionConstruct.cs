@@ -6,7 +6,6 @@
 using System;
 using System.Linq;
 
-using LeastViable.Common;
 using LeastViable.Common.Fascades.Utilities;
 
 using TextMetal.Framework.Core;

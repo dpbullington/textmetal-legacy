@@ -22,9 +22,9 @@ $property_data_source_tag = "net.sqlserver"
 $property_module_name = "TextMetal.Sample.DataModel"
 $property_clr_namespace = "TextMetal.Sample.DataModel"
 $property_model_clr_super_type = "TableModelObject"
-$property_request_model_clr_super_type = "CallableEntryModelObject"
-$property_result_model_clr_super_type = "CallableResultModelObject"
-$property_response_model_clr_super_type = "CallableLeaveModelObject"
+$property_request_model_clr_super_type = "CallProcedureModelObject"
+$property_result_model_clr_super_type = "ResultModelObject"
+$property_response_model_clr_super_type = "ReturnProcedureModelObject"
 
 $lib_dir = "..\..\lib"
 

@@ -11,6 +11,11 @@ namespace TextMetal.Framework.Hosting.Email
 	{
 		#region Properties/Indexers/Events
 
+		IHostEmailMessage HostEmailMessage
+		{
+			get;
+		}
+
 		byte[] AttachmentBits
 		{
 			get;
@@ -27,11 +32,6 @@ namespace TextMetal.Framework.Hosting.Email
 		{
 			get;
 			set;
-		}
-
-		IHostEmailMessage HostEmailMessage
-		{
-			get;
 		}
 
 		#endregion

@@ -11,7 +11,6 @@ using System.Linq;
 using LeastViable.Common.Fascades.Application;
 using LeastViable.Common.Fascades.Utilities;
 
-using TextMetal.Framework.Hosting;
 using TextMetal.Framework.Hosting.Tool;
 
 namespace TextMetal.ConsoleTool
@@ -42,6 +41,18 @@ namespace TextMetal.ConsoleTool
 		#endregion
 
 		#region Methods/Operators
+
+		/// <summary>
+		/// The entry point method for this application.
+		/// </summary>
+		/// <param name="args"> The command line arguments passed from the executing environment. </param>
+		/// <returns> The resulting exit code. </returns>
+		[STAThread]
+		public static int Main(string[] args)
+		{
+			using (Program program = new Program())
+				return program.EntryPoint(args);
+		}
 
 		protected override IDictionary<string, ArgumentSpec> GetArgumentMap()
 		{
@@ -134,18 +145,6 @@ namespace TextMetal.ConsoleTool
 				toolHost.Host((object)args != null ? args.Length : -1, args, argz, templateFilePath, sourceFilePath, baseDirectoryPath, sourceStrategyAqtn, strictMatching, properties);
 
 			return 0;
-		}
-
-		/// <summary>
-		/// The entry point method for this application.
-		/// </summary>
-		/// <param name="args"> The command line arguments passed from the executing environment. </param>
-		/// <returns> The resulting exit code. </returns>
-		[STAThread]
-		public static int Main(string[] args)
-		{
-			using (Program program = new Program())
-				return program.EntryPoint(args);
 		}
 
 		#endregion

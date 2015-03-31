@@ -7,7 +7,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using LeastViable.Common;
 using LeastViable.Common.Fascades.Utilities;
 
 using TextMetal.Framework.Core;

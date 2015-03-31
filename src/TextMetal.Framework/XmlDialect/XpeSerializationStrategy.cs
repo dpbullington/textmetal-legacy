@@ -33,26 +33,26 @@ namespace TextMetal.Framework.XmlDialect
 
 		#region Fields/Constants
 
-		private readonly IXmlPersistEngine xpe;
 		private static readonly XpeSerializationStrategy instance = new XpeSerializationStrategy();
+		private readonly IXmlPersistEngine xpe;
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		private IXmlPersistEngine Xpe
-		{
-			get
-			{
-				return this.xpe;
-			}
-		}
 
 		public static XpeSerializationStrategy Instance
 		{
 			get
 			{
 				return instance;
+			}
+		}
+
+		private IXmlPersistEngine Xpe
+		{
+			get
+			{
+				return this.xpe;
 			}
 		}
 

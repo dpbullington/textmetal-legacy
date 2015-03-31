@@ -52,10 +52,9 @@ using LeastViable.Data.Models;
 						<![CDATA[
 namespace ${ClrNamespace}.${FolderName}
 {
-	public partial interface I${ProcedureNameSingularPascalCase}_Response : ICallableLeaveModelObject<${ProcedureNameSingularPascalCase}_Result>
+	public partial interface I${ProcedureNameSingularPascalCase}_Response : IReturnProcedureModelObject<${ProcedureNameSingularPascalCase}_Result>
 	{
 		#region Properties/Indexers/Events
-
 ]]>
 						<ForEach in="Parameters" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
@@ -84,16 +83,16 @@ namespace ${ClrNamespace}.${FolderName}
 							</ForEach.Filter>
 							<ForEach.Body>
 
-								<![CDATA[
+<![CDATA[
 		${ParameterCSharpClrNullableType} @${ParameterNamePascalCase}
 		{
 			get;
 			set;
 		}
-		]]>
+]]>
 							</ForEach.Body>
 						</ForEach>
-						<![CDATA[
+<![CDATA[
 		#endregion
 	}
 }

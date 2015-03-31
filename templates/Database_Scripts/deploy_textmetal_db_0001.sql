@@ -411,7 +411,7 @@ CREATE TABLE [testcases].[tab_with_composite_primary_key_no_identity]
 GO
 
 
-CREATE PROCEDURE [testcases].[sproc_with_inparam_no_outparam_with_rvparam_no_resultet]
+CREATE PROCEDURE [testcases].[sproc_with_inparam_no_outparam_with_rvparam_no_resultset]
 (
 	@in_numerator [int],
 	@in_denominator [int]
@@ -423,7 +423,7 @@ END
 GO
 
 
-CREATE PROCEDURE [testcases].[sproc_with_inparam_with_outparam_no_rvparam_no_resultet]
+CREATE PROCEDURE [testcases].[sproc_with_inparam_with_outparam_no_rvparam_no_resultset]
 (
 	@in_numerator [int],
 	@in_denominator [int],
@@ -436,7 +436,7 @@ END
 GO
 
 
-CREATE PROCEDURE [testcases].[sproc_with_inparam_no_outparam_with_rvparam_with_resultet]
+CREATE PROCEDURE [testcases].[sproc_with_inparam_no_outparam_with_rvparam_with_resultset]
 (
 	@in_numerator [int],
 	@in_denominator [int]
@@ -459,7 +459,7 @@ END
 GO
 
 
-CREATE PROCEDURE [testcases].[sproc_with_inparam_with_outparam_no_rvparam_with_resultet]
+CREATE PROCEDURE [testcases].[sproc_with_inparam_with_outparam_no_rvparam_with_resultset]
 (
 	@in_numerator [int],
 	@in_denominator [int],
@@ -483,7 +483,7 @@ END
 GO
 
 
-CREATE PROCEDURE [testcases].[sproc_with_inparam_with_outparam_with_rvparam_with_resultet]
+CREATE PROCEDURE [testcases].[sproc_with_inparam_with_outparam_with_rvparam_with_resultset]
 (
 	@in_numerator [int],
 	@in_denominator [int],
@@ -503,6 +503,36 @@ BEGIN
 	SELECT 5 AS [Id], NEWID() AS [Value], 'eee' AS [Name]
 
 	SET @out_result = @in_numerator / @in_denominator
+
+	RETURN CAST(CRYPT_GEN_RANDOM(1) AS [int])
+END
+GO
+
+
+CREATE PROCEDURE [testcases].[sproc_with_inparam_no_outparam_with_rvparam_with_resultset_uses_temp_tbls]
+(
+	@in_numerator [int],
+	@in_denominator [int]
+)
+AS
+BEGIN
+
+	SET NOCOUNT ON
+
+	CREATE TABLE #temp_values ([id] [int], [Value] [uniqueidentifier], [Name] [nvarchar](10));
+
+	INSERT INTO #temp_values
+		SELECT 1 AS [Id], NEWID() AS [Value], 'aaa' AS [Name]
+			UNION ALL
+		SELECT 2 AS [Id], NEWID() AS [Value], 'bbb' AS [Name]
+			UNION ALL
+		SELECT 3 AS [Id], NEWID() AS [Value], 'ccc' AS [Name]
+			UNION ALL
+		SELECT 4 AS [Id], NEWID() AS [Value], 'ddd' AS [Name]
+			UNION ALL
+		SELECT 5 AS [Id], NEWID() AS [Value], 'eee' AS [Name]
+
+	SELECT * FROM #temp_values
 
 	RETURN CAST(CRYPT_GEN_RANDOM(1) AS [int])
 END
