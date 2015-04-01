@@ -80,7 +80,7 @@ namespace ${ClrNamespace}.${FolderName}
 {
 	[Serializable]
 	[TableMapping(SchemaName = "${SchemaName}", TableName = "${TableName}", IsView = ${CSharpIsViewLiteral})]
-	public partial class ${TableNameSingularPascalCase} : ${ModelClrSuperType}, I${TableNameSingularPascalCase}
+	public partial class ${TableNameSingularPascalCase} : ${TableModelClrSuperType}, I${TableNameSingularPascalCase}
 	{
 		#region Constructors/Destructors
 
@@ -483,7 +483,7 @@ namespace ${ClrNamespace}.${FolderName}
 		[ColumnMapping(ColumnOrdinal = ${ColumnOrdinal}, ColumnName = "${ColumnName}", ColumnSqlType = "${ColumnSqlType}",
 			ColumnDbType = ${ColumnCSharpDbType}, ColumnSize = ${ColumnSize}, ColumnPrecision = ${ColumnPrecision}, ColumnScale = ${ColumnScale},
 			ColumnNullable = ${ColumnCSharpNullableLiteral}, ColumnIsPrimaryKey = ${ColumnCSharpIsPrimaryKeyLiteral},
-			ColumnIsComputed = ${ColumnCSharpIsComputedLiteral}, ColumnIsIdentity = ${ColumnCSharpIsIdentityLiteral})]
+			ColumnIsComputed = ${ColumnCSharpIsComputedLiteral}, ColumnIsIdentity = ${ColumnCSharpIsIdentityLiteral}, ColumnIsAnonymous = ${ColumnCSharpIsAnonymousLiteral})]
 		public ${ColumnCSharpClrNullableType} @${ColumnNamePascalCase}
 		{
 			get

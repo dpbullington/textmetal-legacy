@@ -56,7 +56,7 @@ using LeastViable.Data.Impl.FreakazoidMapper.Mappings;
 namespace ${ClrNamespace}.${FolderName}
 {
 	[Serializable]
-	public partial class ${ProcedureNameSingularPascalCase}_Response : ${ResponseModelClrSuperType}<${ProcedureNameSingularPascalCase}_Result>, I${ProcedureNameSingularPascalCase}_Response
+	public partial class ${ProcedureNameSingularPascalCase}_Response : ${ReturnProcedureClrSuperType}<${ProcedureNameSingularPascalCase}_Result>, I${ProcedureNameSingularPascalCase}_Response
 	{
 		#region Constructors/Destructors
 
@@ -67,8 +67,6 @@ namespace ${ClrNamespace}.${FolderName}
 		#endregion
 
 		#region Fields/Constants
-
-		private IEnumerable<${ProcedureNameSingularPascalCase}_Result> results;
 
 		public const string SCHEMA_NAME = "${SchemaName}";
 		public const string PROCEDURE_NAME = "${ProcedureName}";
@@ -179,23 +177,6 @@ namespace ${ClrNamespace}.${FolderName}
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		public IEnumerable<${ProcedureNameSingularPascalCase}_Result> Results
-		{
-			get
-			{
-				return this.results;
-			}
-			set
-			{
-				if (!DataTypeFascade.Instance.ObjectsEqualValueSemantics(this.results, value))
-				{
-					this.results = value;
-					this.EnumerationComplete = false;
-					this.OnPropertyChanged("Results");
-				}
-			}
-		}
 ]]>
 						<ForEach in="Parameters" var-ct="_LoopCount" var-ix="_LoopIndex">
 							<ForEach.Filter>
@@ -224,7 +205,7 @@ namespace ${ClrNamespace}.${FolderName}
 							</ForEach.Filter>
 							<ForEach.Body>
 
-								<![CDATA[
+<![CDATA[
 		[ParameterMapping(ParameterOrdinal = ${ParameterOrdinal}, ParameterName = "${ParameterName}", ParameterSqlType = "${ParameterSqlType}",
 			ParameterDbType = ${ParameterCSharpDbType}, ParameterSize = ${ParameterSize}, ParameterPrecision = ${ParameterPrecision}, ParameterScale = ${ParameterScale},
 			ParameterNullable = ${ParameterCSharpNullableLiteral}, ParameterDirection = ${ParameterCSharpDirection})]

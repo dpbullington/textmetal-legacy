@@ -278,7 +278,7 @@ namespace ${ClrNamespace}.IntegrationTests
 			{
 				Assert.IsNotNull(UnitOfWork.Current);
 
-				@${TableNameSqlMetalPluralCamelCase} = thisAppRepository.Find<${TableNameSqlMetalSingularPascalCase}>(new LinqTableModelQuery<${TableNameSqlMetalPascalCase}>(t => true));
+				@${TableNameSqlMetalPluralCamelCase} = thisAppRepository.Find<${TableNameSqlMetalSingularPascalCase}>(new LinqTableModelQuery<${TableNameSqlMetalSingularPascalCase}>(t => true));
 
 				Assert.IsNotNull(@${TableNameSqlMetalPluralCamelCase});
 				Assert.IsNotEmpty(@${TableNameSqlMetalPluralCamelCase});

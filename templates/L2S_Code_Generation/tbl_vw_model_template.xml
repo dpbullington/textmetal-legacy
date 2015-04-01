@@ -45,7 +45,7 @@ using LeastViable.Data.Models;
 namespace ${ClrNamespace}
 {
 	[Serializable]
-	public partial class ${TableNameSqlMetalSingularPascalCase} : ${ModelClrSuperType}, I${TableNameSqlMetalSingularPascalCase}
+	public partial class ${TableNameSqlMetalSingularPascalCase} : ${TableModelClrSuperType}, I${TableNameSqlMetalSingularPascalCase}
 	{
 		#region Constructors/Destructors
 

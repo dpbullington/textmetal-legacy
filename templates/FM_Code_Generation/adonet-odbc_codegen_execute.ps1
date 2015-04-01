@@ -21,11 +21,13 @@ $property_connection_type = "System.Data.Odbc.OdbcConnection, System.Data, Versi
 $property_data_source_tag = "odbc.sqlserver"
 $property_module_name = "TextMetal.Sample.DataModel"
 $property_clr_namespace = "TextMetal.Sample.DataModel"
-$property_model_clr_super_type = "TableModelObject"
-$property_request_model_clr_super_type = "CallProcedureModelObject"
+$property_table_model_clr_super_type = "TableModelObject"
+$property_call_procedure_model_clr_super_type = "CallProcedureModelObject"
 $property_result_model_clr_super_type = "ResultModelObject"
-$property_response_model_clr_super_type = "ReturnProcedureModelObject"
+$property_return_procedure_model_clr_super_type = "ReturnProcedureModelObject"
+
 $property_schema_filter = "^testcases"
+$property_disable_name_mangling = $true
 
 $lib_dir = "..\..\lib"
 
@@ -53,11 +55,12 @@ $argz = @("-templatefile:$template_file",
 	"-property:DataSourceTag=$property_data_source_tag",
 	"-property:ModuleName=$property_module_name",
 	"-property:ClrNamespace=$property_clr_namespace",
-	"-property:ModelClrSuperType=$property_model_clr_super_type",
-	"-property:RequestModelClrSuperType=$property_request_model_clr_super_type",
+	"-property:TableModelClrSuperType=$property_table_model_clr_super_type",
+	"-property:CallProcedureModelClrSuperType=$property_call_procedure_model_clr_super_type",
 	"-property:ResultModelClrSuperType=$property_result_model_clr_super_type",
-	"-property:ResponseModelClrSuperType=$property_response_model_clr_super_type",
-	"-property:SchemaFilter=$property_schema_filter")
+	"-property:ReturnProcedureClrSuperType=$property_return_procedure_model_clr_super_type",
+	"-property:SchemaFilter=$property_schema_filter",
+	"-property:DisableNameMangling=$property_disable_name_mangling")
 
 &"$textmetal_exe" $argz
 

@@ -57,7 +57,7 @@ namespace ${ClrNamespace}.${FolderName}
 {
 	[Serializable]
 	[ProcedureMapping(SchemaName = "${SchemaName}", ProcedureName = "${ProcedureName}")]
-	public partial class ${ProcedureNameSingularPascalCase}_Request : ${RequestModelClrSuperType}, I${ProcedureNameSingularPascalCase}_Request
+	public partial class ${ProcedureNameSingularPascalCase}_Request : ${CallProcedureModelClrSuperType}, I${ProcedureNameSingularPascalCase}_Request
 	{
 		#region Constructors/Destructors
 

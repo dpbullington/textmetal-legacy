@@ -12,6 +12,34 @@ CREATE SCHEMA [testcases]
 GO
 
 
+/*CREATE TABLE [testcases].[MyTable]
+(
+	[MyTableId] [int] IDENTITY(1,1) NOT NULL,
+
+	[MyTableName] [nvarchar](100) NOT NULL,
+
+	CONSTRAINT [pk_MyTable] PRIMARY KEY
+	(
+		[MyTableId]
+	)
+)
+GO
+
+
+CREATE TABLE [testcases].[My_Table]
+(
+	[MyTableId] [int] IDENTITY(1,1) NOT NULL,
+
+	[MyTableName] [nvarchar](100) NOT NULL,
+
+	CONSTRAINT [pk_My_Table] PRIMARY KEY
+	(
+		[MyTableId]
+	)
+)
+GO*/
+
+
 CREATE TABLE [testcases].[UpsertCurrent]
 (
 	[UpsertCurrentId] [int] IDENTITY(1,1) NOT NULL,
@@ -411,6 +439,20 @@ CREATE TABLE [testcases].[tab_with_composite_primary_key_no_identity]
 GO
 
 
+CREATE VIEW [testcases].[view_with_named_columns]
+AS
+	SELECT 1 AS [Id], NEWID() AS [Value], 'aaa' AS [Name]
+		UNION ALL
+	SELECT 2 AS [Id], NEWID() AS [Value], 'bbb' AS [Name]
+		UNION ALL
+	SELECT 3 AS [Id], NEWID() AS [Value], 'ccc' AS [Name]
+		UNION ALL
+	SELECT 4 AS [Id], NEWID() AS [Value], 'ddd' AS [Name]
+		UNION ALL
+	SELECT 5 AS [Id], NEWID() AS [Value], 'eee' AS [Name]
+GO
+
+
 CREATE PROCEDURE [testcases].[sproc_with_inparam_no_outparam_with_rvparam_no_resultset]
 (
 	@in_numerator [int],
@@ -533,6 +575,29 @@ BEGIN
 		SELECT 5 AS [Id], NEWID() AS [Value], 'eee' AS [Name]
 
 	SELECT * FROM #temp_values
+
+	RETURN CAST(CRYPT_GEN_RANDOM(1) AS [int])
+END
+GO
+
+
+CREATE PROCEDURE [testcases].[sproc_with_inparam_no_outparam_with_rvparam_with_resultset_has_anonymous_col]
+(
+	@in_numerator [int],
+	@in_denominator [int]
+)
+AS
+BEGIN
+
+	SELECT 1 AS [Id], NEWID() AS [Value], 'aaa'
+		UNION ALL
+	SELECT 2 AS [Id], NEWID() AS [Value], 'bbb'
+		UNION ALL
+	SELECT 3 AS [Id], NEWID() AS [Value], 'ccc'
+		UNION ALL
+	SELECT 4 AS [Id], NEWID() AS [Value], 'ddd'
+		UNION ALL
+	SELECT 5 AS [Id], NEWID() AS [Value], 'eee'
 
 	RETURN CAST(CRYPT_GEN_RANDOM(1) AS [int])
 END

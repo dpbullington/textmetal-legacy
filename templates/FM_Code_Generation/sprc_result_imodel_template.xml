@@ -59,7 +59,8 @@ namespace ${ClrNamespace}.${FolderName}
 							<ForEach.Filter></ForEach.Filter>
 							<ForEach.Body>
 
-<![CDATA[		${ColumnCSharpClrNullableType} @${ColumnNamePascalCase}
+<![CDATA[
+		${ColumnCSharpClrNullableType} @${ColumnNamePascalCase}
 		{
 			get;
 			set;

@@ -34,8 +34,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		private string columnCSharpClrNullableType;
 		private string columnCSharpClrType;
 		private string columnCSharpDbType;
+		private string columnCSharpIsAnonymousLiteral;
 		private string columnCSharpNullableLiteral;
 		private DbType columnDbType;
+		private bool columnIsAnonymous;
 		private bool columnIsUserDefinedType;
 		private string columnName;
 		private string columnNameCamelCase;
@@ -210,6 +212,19 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		}
 
 		[XmlAttribute]
+		public string ColumnCSharpIsAnonymousLiteral
+		{
+			get
+			{
+				return this.columnCSharpIsAnonymousLiteral;
+			}
+			set
+			{
+				this.columnCSharpIsAnonymousLiteral = value;
+			}
+		}
+
+		[XmlAttribute]
 		public string ColumnCSharpNullableLiteral
 		{
 			get
@@ -236,6 +251,19 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		}
 
 		[XmlAttribute]
+		public bool ColumnIsAnonymous
+		{
+			get
+			{
+				return this.columnIsAnonymous;
+			}
+			set
+			{
+				this.columnIsAnonymous = value;
+			}
+		}
+
+		[XmlAttribute]
 		public bool ColumnIsUserDefinedType
 		{
 			get
@@ -257,7 +285,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			}
 			set
 			{
-				this.columnName = value;
+				if (this.ColumnIsAnonymous = DataTypeFascade.Instance.IsNullOrEmpty(value))
+					this.columnName = string.Format("Column_{0:0000}", this.ColumnOrdinal);
+				else
+					this.columnName = value;
 			}
 		}
 

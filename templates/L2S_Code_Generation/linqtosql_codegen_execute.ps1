@@ -21,7 +21,7 @@ $property_connection_type = "System.Data.SqlClient.SqlConnection, System.Data, V
 $property_data_source_tag = "net.sqlserver"
 $property_module_name = "TextMetal.Sample.DomainModel"
 $property_clr_namespace = "TextMetal.Sample.DomainModel"
-$property_model_clr_super_type = "TableModelObject"
+$property_table_model_clr_super_type = "TableModelObject"
 
 $lib_dir = "..\..\lib"
 
@@ -57,7 +57,7 @@ $argz = @("-templatefile:$template_file",
 	"-property:DataSourceTag=$property_data_source_tag",
 	"-property:ModuleName=$property_module_name",
 	"-property:ClrNamespace=$property_clr_namespace",
-	"-property:ModelClrSuperType=$property_model_clr_super_type",
+	"-property:TableModelClrSuperType=$property_table_model_clr_super_type",
 	"-property:LinqToSqlTargetDataContextName=$l2s_data_context_name")
 
 &"$textmetal_exe" $argz

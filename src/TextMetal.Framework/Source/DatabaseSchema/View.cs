@@ -298,7 +298,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		{
 			get
 			{
-				return this.ViewName;
+				return this.ViewNameSqlMetalSingularPascalCase;
 			}
 		}
 
