@@ -72,6 +72,7 @@ if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 
 New-Item -ItemType directory -Path $base_lib_dir
 New-Item -ItemType directory -Path "$base_lib_dir\LeastViable"
+New-Item -ItemType directory -Path "$base_lib_dir\Newtonsoft.Json"
 New-Item -ItemType directory -Path "$base_lib_dir\Sqlite"
 New-Item -ItemType directory -Path "$base_lib_dir\Sqlite\x64"
 New-Item -ItemType directory -Path "$base_lib_dir\Sqlite\x86"
@@ -79,5 +80,6 @@ New-Item -ItemType directory -Path "$base_lib_dir\Sqlite\x86"
 Copy-Item "$lib_dir\SQLite\x64\*.*" "$base_lib_dir\SQLite\x64\."
 Copy-Item "$lib_dir\SQLite\x86\*.*" "$base_lib_dir\SQLite\x86\."
 Copy-Item "$lib_dir\LeastViable\*.*" "$base_lib_dir\LeastViable\."
+Copy-Item "$lib_dir\Newtonsoft.Json\*.*" "$base_lib_dir\Newtonsoft.Json\."
 
 echo "The operation completed successfully."

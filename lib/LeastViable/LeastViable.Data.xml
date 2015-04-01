@@ -12,12 +12,6 @@
             Called prior to any non-nullipotent (e.g. insert, update, delete) operation.
             </summary>
         </member>
-        <member name="M:LeastViable.Data.Models.ITableModelObject.Validate">
-            <summary>
-            Validates this model instance.
-            </summary>
-            <returns> A enumerable of zero or more messages. </returns>
-        </member>
         <member name="P:LeastViable.Data.Models.ITableModelObject.IdValues">
             <summary>
             Gets the ordinal sorted array values identifying the current table model object instance.

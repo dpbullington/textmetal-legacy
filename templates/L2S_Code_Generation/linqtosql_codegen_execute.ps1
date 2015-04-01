@@ -75,8 +75,10 @@ if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 
 New-Item -ItemType directory -Path $base_lib_dir
 New-Item -ItemType directory -Path "$base_lib_dir\LeastViable"
+New-Item -ItemType directory -Path "$base_lib_dir\Newtonsoft.Json"
 
 Copy-Item "$lib_dir\LeastViable\*.*" "$base_lib_dir\LeastViable\."
+Copy-Item "$lib_dir\Newtonsoft.Json\*.*" "$base_lib_dir\Newtonsoft.Json\."
 
 if ((Test-Path -Path $base_dir) -eq $false)
 {
