@@ -38,6 +38,28 @@
             Provides a contract for call procedure model objects (procedure, function, packages, etc.).
             </summary>
         </member>
+        <member name="M:LeastViable.Data.Models.DynamicTableModelObject.Mark">
+            <summary>
+            Called prior to any non-nullipotent (e.g. insert, update, delete) operation.
+            </summary>
+        </member>
+        <member name="M:LeastViable.Data.Models.DynamicTableModelObject.Validate">
+            <summary>
+            Validates this model instance.
+            </summary>
+            <returns> A enumerable of zero or more messages. </returns>
+        </member>
+        <member name="P:LeastViable.Data.Models.DynamicTableModelObject.IdValues">
+            <summary>
+            Gets the ordinal sorted array values identifying the current table model object instance.
+            </summary>
+        </member>
+        <member name="P:LeastViable.Data.Models.DynamicTableModelObject.IsNew">
+            <summary>
+            Gets or sets a value indicating whether the current table model object instance
+            is new (never been persisted) or old (has been persisted).
+            </summary>
+        </member>
         <member name="M:LeastViable.Data.Models.TableModelObject.Mark">
             <summary>
             Called prior to any non-nullipotent (e.g. insert, update, delete) operation.

@@ -135,11 +135,11 @@
 
 	<Assign token="test">
 		<Assign.Expression>
-			<Ruby src="File" expr="((self.test + textMetal.EvaluateToken.invoke(&quot;test&quot;)) / 2) * -2" file="sample.rb">
+			<Ruby src="File" expr="((self.test + textMetal.EvaluateToken(&quot;test&quot;)) / 2) * -2" file="sample.rb">
 				<Script>
 					puts "go ruby";
 					z1 = self.test;
-					z2 = textMetal.EvaluateToken.invoke("test");
+					z2 = textMetal.EvaluateToken("test");
 					return ((z1 + z2) / 2) * -1;
 				</Script>
 			</Ruby>
@@ -150,7 +150,7 @@
 ${test}
 *rb*
 
-${rb(`textMetal.DebuggerBreakpoint.invoke()`)}
+${rb(`textMetal.DebuggerBreakpoint()`)}
 ]]>
 
 	<Assign token="test">

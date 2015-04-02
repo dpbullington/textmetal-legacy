@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Dynamic;
 
 using LeastViable.Common.Fascades.Utilities;
@@ -195,10 +196,7 @@ namespace TextMetal.Framework.Expression
 			scriptFoo.Add("EvaluateToken", func);
 			scriptFoo.Add("DebuggerBreakpoint", action);
 
-			scriptFoo.Add("__EvaluateToken", func);
-			scriptFoo.Add("__DebuggerBreakpoint", action);
-
-			textMetal = new DynamicDictionary(scriptFoo);
+			textMetal = new DictionaryDynamicObject(scriptFoo);
 
 			scriptVariables = new Dictionary<string, object>();
 			scriptVariables.Add("textMetal", textMetal);
@@ -220,11 +218,16 @@ namespace TextMetal.Framework.Expression
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
 		[Serializable]
-		public class DynamicDictionary : DynamicObject
+		public class DictionaryDynamicObject : DynamicObject, INotifyPropertyChanged
 		{
 			#region Constructors/Destructors
 
-			public DynamicDictionary(IDictionary<string, object> dictionary)
+			public DictionaryDynamicObject()
+				: this(new Dictionary<string, object>())
+			{
+			}
+
+			public DictionaryDynamicObject(IDictionary<string, object> dictionary)
 			{
 				this.dictionary = dictionary;
 			}
@@ -238,6 +241,20 @@ namespace TextMetal.Framework.Expression
 			#endregion
 
 			#region Properties/Indexers/Events
+
+			private event PropertyChangedEventHandler PropertyChanged;
+
+			event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+			{
+				add
+				{
+					this.PropertyChanged += value;
+				}
+				remove
+				{
+					this.PropertyChanged -= value;
+				}
+			}
 
 			private IDictionary<string, object> Dictionary
 			{
@@ -257,6 +274,17 @@ namespace TextMetal.Framework.Expression
 					yield return key;
 			}
 
+			private void OnAllPropertiesChanged()
+			{
+				this.OnPropertyChanged(null);
+			}
+
+			private void OnPropertyChanged(string propertyName)
+			{
+				if ((object)this.PropertyChanged != null)
+					this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+
 			public override bool TryGetMember(GetMemberBinder binder, out object result)
 			{
 				if (this.Dictionary.TryGetValue(binder.Name, out result))
@@ -269,10 +297,6 @@ namespace TextMetal.Framework.Expression
 			{
 				object value;
 				Delegate method;
-
-				// LEGACY COMPATABILITY HACK
-				if (!binder.Name.SafeToString().Trim().ToLower().StartsWith("__"))
-					return base.TryInvokeMember(binder, args, out result);
 
 				if (!this.Dictionary.TryGetValue(binder.Name, out value))
 					return base.TryInvokeMember(binder, args, out result);
@@ -288,11 +312,25 @@ namespace TextMetal.Framework.Expression
 
 			public override bool TrySetMember(SetMemberBinder binder, object value)
 			{
-				if (this.Dictionary.ContainsKey(binder.Name))
-					this.Dictionary.Remove(binder.Name);
+				object thisValue;
 
-				if ((object)value != null)
+				if (this.Dictionary.TryGetValue(binder.Name, out thisValue))
+				{
+					if (!DataTypeFascade.Instance.ObjectsEqualValueSemantics(thisValue, value))
+					{
+						this.Dictionary.Remove(binder.Name);
+
+						if ((object)value != null)
+							this.Dictionary.Add(binder.Name, value);
+
+						this.OnPropertyChanged(binder.Name);
+					}
+				}
+				else
+				{
 					this.Dictionary.Add(binder.Name, value);
+					this.OnPropertyChanged(binder.Name);
+				}
 
 				return true;
 			}

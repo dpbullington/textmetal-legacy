@@ -72,11 +72,11 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 						</BinaryExpression>
 					</ForEach.Filter>
 					<ForEach.Body>
-						<![CDATA[	[${ColumnName}] [${ColumnSqlType}]${rb(`
-	if ["binary", "char", "float", "nchar", "nvarchar", "varbinary", "varchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
-		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
-	elsif ["decimal", "numeric"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
-		"(" + textMetal.EvaluateToken.invoke("ColumnPrecision").to_s() + ", " + textMetal.EvaluateToken.invoke("ColumnScale").to_s() + ")"
+						<![CDATA[	[${ColumnName}] [${ColumnSqlType}]${rb(` #first
+	if ["binary", "char", "float", "nchar", "nvarchar", "varbinary", "varchar"].include?(textMetal.EvaluateToken("ColumnSqlType".to_clr_string()))
+		"(" + (textMetal.EvaluateToken("ColumnSize".to_clr_string()) > 0 ? textMetal.EvaluateToken("ColumnSize".to_clr_string()).to_s() : "MAX") + ")"
+	elsif ["decimal", "numeric"].include?(textMetal.EvaluateToken("ColumnSqlType".to_clr_string()))
+		"(" + textMetal.EvaluateToken("ColumnPrecision".to_clr_string()).to_s() + ", " + textMetal.EvaluateToken("ColumnScale".to_clr_string()).to_s() + ")"
 	else
 		""
 	end
@@ -129,11 +129,11 @@ CREATE TABLE [${HistorySchemaName}].[${TableName}History]
 						</BinaryExpression>
 					</ForEach.Filter>
 					<ForEach.Body>
-						<![CDATA[	[${ColumnName}] [${ColumnSqlType}]${rb(`
-	if ["binary", "char", "float", "nchar", "nvarchar", "varbinary", "varchar"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
-		"(" + (textMetal.EvaluateToken.invoke("ColumnSize") > 0 ? textMetal.EvaluateToken.invoke("ColumnSize").to_s() : "MAX") + ")"
-	elsif ["decimal", "numeric"].include?(textMetal.EvaluateToken.invoke("ColumnSqlType"))
-		"(" + textMetal.EvaluateToken.invoke("ColumnPrecision").to_s() + ", " + textMetal.EvaluateToken.invoke("ColumnScale").to_s() + ")"
+						<![CDATA[	[${ColumnName}] [${ColumnSqlType}]${rb(` #second
+	if ["binary", "char", "float", "nchar", "nvarchar", "varbinary", "varchar"].include?(textMetal.EvaluateToken("ColumnSqlType".to_clr_string()))
+		"(" + (textMetal.EvaluateToken("ColumnSize".to_clr_string()) > 0 ? textMetal.EvaluateToken("ColumnSize".to_clr_string()).to_s() : "MAX") + ")"
+	elsif ["decimal", "numeric"].include?(textMetal.EvaluateToken("ColumnSqlType".to_clr_string()))
+		"(" + textMetal.EvaluateToken("ColumnPrecision".to_clr_string()).to_s() + ", " + textMetal.EvaluateToken("ColumnScale".to_clr_string()).to_s() + ")"
 	else
 		""
 	end

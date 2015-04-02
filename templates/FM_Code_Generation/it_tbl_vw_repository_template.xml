@@ -339,7 +339,7 @@ namespace ${ClrNamespace}.IntegrationTests
 			{
 				Assert.IsNotNull(UnitOfWork.Current);
 
-				@${TableNamePluralCamelCase} = thisAppRepository.Find<${TableNameSingularPascalCase}>(new FreakazoidTableModelQuery(VoidExpression.Instance, new ISortOrder[] { }));
+				@${TableNamePluralCamelCase} = thisAppRepository.Find<${TableNameSingularPascalCase}>(new FreakazoidTableModelQuery(VoidExpression.Instance, new SortOrder[] { }));
 
 				Assert.IsNotNull(@${TableNamePluralCamelCase});
 				Assert.IsNotEmpty(@${TableNamePluralCamelCase});

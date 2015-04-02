@@ -80,7 +80,7 @@ namespace ${ClrNamespace}.${FolderName}
 {
 	[Serializable]
 	[TableMapping(SchemaName = "${SchemaName}", TableName = "${TableName}", IsView = ${CSharpIsViewLiteral})]
-	public partial class ${TableNameSingularPascalCase} : ${TableModelClrSuperType}, I${TableNameSingularPascalCase}
+	public partial class ${TableNameSingularPascalCase} : ${rb(`textMetal.EvaluateToken("HasAnyMappedColumns".to_clr_string()) ? textMetal.EvaluateToken("TableModelClrSuperType".to_clr_string()) : textMetal.EvaluateToken("DynamicTableModelClrSuperType".to_clr_string())`)}, I${TableNameSingularPascalCase}
 	{
 		#region Constructors/Destructors
 

@@ -110,6 +110,15 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		}
 
 		[XmlIgnore]
+		public bool HasAnyMappedColumns
+		{
+			get
+			{
+				return this.Columns.Any();
+			}
+		}
+
+		[XmlIgnore]
 		public bool HasIdentityColumns
 		{
 			get

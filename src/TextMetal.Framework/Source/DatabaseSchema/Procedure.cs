@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
@@ -61,11 +62,11 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		}
 
 		[XmlIgnore]
-		public bool HasResults
+		public bool HasAnyMappedResultColumns
 		{
 			get
 			{
-				return this.Columns.Count > 0;
+				return this.Columns.Any();
 			}
 		}
 

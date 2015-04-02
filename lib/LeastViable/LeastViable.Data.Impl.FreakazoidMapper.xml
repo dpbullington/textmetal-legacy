@@ -9,7 +9,7 @@
             Initializes a new instance of the ExpressionVisitor class.
             </summary>
         </member>
-        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.IBinaryExpression">
+        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.BinaryExpression">
             <summary>
             Represents an expression with two operands.
             </summary>
@@ -19,27 +19,27 @@
             Represents an expression.
             </summary>
         </member>
-        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.ILiteralValue">
+        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.LiteralValue">
             <summary>
             Represents a literal value.
             </summary>
         </member>
-        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.INullaryExpression">
+        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.NullaryExpression">
             <summary>
             Represents an expression with zero operands.
             </summary>
         </member>
-        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.ISortOrder">
+        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.SortOrder">
             <summary>
             Represents a sequence.
             </summary>
         </member>
-        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.ISymbolName">
+        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.SymbolName">
             <summary>
             Represents a symbol name.
             </summary>
         </member>
-        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.IUnaryExpression">
+        <member name="T:LeastViable.Data.Impl.FreakazoidMapper.Expressions.UnaryExpression">
             <summary>
             Represents an expression with one operand.
             </summary>

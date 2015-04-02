@@ -21,7 +21,7 @@ GO
 				<Script>!["db_accessadmin", "db_backupoperator", "db_datareader",
 				"db_datawriter", "db_ddladmin", "db_denydatareader", "db_denydatawriter",
 				"db_owner", "db_securityadmin", "sys",
-				"INFORMATION_SCHEMA", "guest"].include?(textMetal.EvaluateToken.invoke("SchemaName"));</Script>
+				"INFORMATION_SCHEMA", "guest"].include?(textMetal.EvaluateToken("SchemaName".to_clr_string()));</Script>
 			</Ruby>
 		</ForEach.Filter>
 

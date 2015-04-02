@@ -28,6 +28,11 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			get;
 		}
 
+		bool HasAnyMappedColumns
+		{
+			get;
+		}
+
 		bool HasIdentityColumns
 		{
 			get;

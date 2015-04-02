@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
@@ -79,6 +80,16 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			get
 			{
 				return this.IsView.ToString().ToLower();
+			}
+		}
+
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
+		public bool HasAnyMappedColumns
+		{
+			get
+			{
+				return this.Columns.Any();
 			}
 		}
 
