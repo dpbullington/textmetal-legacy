@@ -1115,70 +1115,82 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	{
 																		if ((object)dictEnumMetadata != null)
 																		{
-																			foreach (var dictDataMetadata in dictEnumMetadata)
+																			var dictEnumMetadataGroupings = dictEnumMetadata.GroupBy(r => DataTypeFascade.Instance.ChangeType<int>(r[AdoNetFascade.KeyResultsetIndex])).ToArray();
+
+																			foreach (var dictEnumMetadataGrouping in dictEnumMetadataGroupings)
 																			{
-																				ProcedureColumn column;
+																				ProcedureResultset procedureResultset;
 
-																				column = new ProcedureColumn();
+																				procedureResultset = new ProcedureResultset();
+																				procedureResultset.ResultsetIndex = dictEnumMetadataGrouping.Key;
 
-																				column.ColumnOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.ColumnOrdinal]);
-																				column.ColumnName = DataTypeFascade.Instance.ChangeType<string>(dictDataMetadata[SchemaTableColumn.ColumnName]);
-																				column.ColumnCSharpIsAnonymousLiteral = column.ColumnIsAnonymous.ToString().ToLower();
-																				column.ColumnSize = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.ColumnSize]);
-																				column.ColumnPrecision = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.NumericPrecision]);
-																				column.ColumnScale = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.NumericScale]);
-																				column.ColumnSqlType = string.Empty;
-																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.ProviderType]);
-																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.NonVersionedProviderType]);
-																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsLong]);
-																				column.ColumnNullable = DataTypeFascade.Instance.ChangeType<bool>(dictDataMetadata[SchemaTableColumn.AllowDBNull]);
-																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsAliased]);
-																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsExpression]);
-																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsKey]);
-																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsUnique]);
-																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.BaseSchemaName]);
-																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.BaseTableName]);
-																				//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.BaseColumnName]);
+																				foreach (var dictDataMetadata in dictEnumMetadataGrouping)
+																				{
+																					ProcedureColumn column;
 
-																				column.ColumnNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(column.ColumnName);
-																				column.ColumnNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(column.ColumnName);
-																				column.ColumnNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(column.ColumnName);
-																				column.ColumnNameSingularPascalCase = effectiveStandardCanonicalNaming.GetPascalCase(effectiveStandardCanonicalNaming.GetSingularForm(column.ColumnName));
-																				column.ColumnNameSingularCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(effectiveStandardCanonicalNaming.GetSingularForm(column.ColumnName));
-																				column.ColumnNameSingularConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetSingularForm(column.ColumnName));
-																				column.ColumnNamePluralPascalCase = effectiveStandardCanonicalNaming.GetPascalCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
-																				column.ColumnNamePluralCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
-																				column.ColumnNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
+																					column = new ProcedureColumn();
 
-																				column.ColumnNameSqlMetalPascalCase = SqlMetalCanonicalNaming.Instance.GetPascalCase(column.ColumnName);
-																				column.ColumnNameSqlMetalCamelCase = SqlMetalCanonicalNaming.Instance.GetCamelCase(column.ColumnName);
-																				column.ColumnNameSqlMetalSingularPascalCase = SqlMetalCanonicalNaming.Instance.GetPascalCase(effectiveStandardCanonicalNaming.GetSingularForm(column.ColumnName));
-																				column.ColumnNameSqlMetalSingularCamelCase = SqlMetalCanonicalNaming.Instance.GetCamelCase(effectiveStandardCanonicalNaming.GetSingularForm(column.ColumnName));
-																				column.ColumnNameSqlMetalPluralPascalCase = SqlMetalCanonicalNaming.Instance.GetPascalCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
-																				column.ColumnNameSqlMetalPluralCamelCase = SqlMetalCanonicalNaming.Instance.GetCamelCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
+																					column.ColumnOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.ColumnOrdinal]);
+																					column.ColumnName = DataTypeFascade.Instance.ChangeType<string>(dictDataMetadata[SchemaTableColumn.ColumnName]);
+																					column.ColumnCSharpIsAnonymousLiteral = column.ColumnIsAnonymous.ToString().ToLower();
+																					column.ColumnSize = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.ColumnSize]);
+																					column.ColumnPrecision = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.NumericPrecision]);
+																					column.ColumnScale = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.NumericScale]);
+																					column.ColumnSqlType = string.Empty;
+																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.ProviderType]);
+																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.NonVersionedProviderType]);
+																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsLong]);
+																					column.ColumnNullable = DataTypeFascade.Instance.ChangeType<bool>(dictDataMetadata[SchemaTableColumn.AllowDBNull]);
+																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsAliased]);
+																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsExpression]);
+																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsKey]);
+																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsUnique]);
+																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.BaseSchemaName]);
+																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.BaseTableName]);
+																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.BaseColumnName]);
 
-																				clrType = DataTypeFascade.Instance.ChangeType<Type>(dictDataMetadata[SchemaTableColumn.DataType]);
-																				column.ColumnDbType = AdoNetFascade.Instance.InferDbTypeForClrType(clrType);
-																				column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
+																					column.ColumnNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(column.ColumnName);
+																					column.ColumnNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(column.ColumnName);
+																					column.ColumnNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(column.ColumnName);
+																					column.ColumnNameSingularPascalCase = effectiveStandardCanonicalNaming.GetPascalCase(effectiveStandardCanonicalNaming.GetSingularForm(column.ColumnName));
+																					column.ColumnNameSingularCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(effectiveStandardCanonicalNaming.GetSingularForm(column.ColumnName));
+																					column.ColumnNameSingularConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetSingularForm(column.ColumnName));
+																					column.ColumnNamePluralPascalCase = effectiveStandardCanonicalNaming.GetPascalCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
+																					column.ColumnNamePluralCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
+																					column.ColumnNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
 
-																				column.ColumnClrType = clrType ?? typeof(object);
-																				column.ColumnClrNullableType = ReflectionFascade.Instance.MakeNullableType(clrType);
-																				column.ColumnClrNonNullableType = ReflectionFascade.Instance.MakeNonNullableType(clrType);
-																				column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
-																				column.ColumnCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
-																				column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
-																				column.ColumnCSharpClrNullableType = (object)column.ColumnClrNullableType != null ? FormatCSharpType(column.ColumnClrNullableType) : FormatCSharpType(typeof(object));
-																				column.ColumnCSharpClrNonNullableType = (object)column.ColumnClrNonNullableType != null ? FormatCSharpType(column.ColumnClrNonNullableType) : FormatCSharpType(typeof(object));
+																					column.ColumnNameSqlMetalPascalCase = SqlMetalCanonicalNaming.Instance.GetPascalCase(column.ColumnName);
+																					column.ColumnNameSqlMetalCamelCase = SqlMetalCanonicalNaming.Instance.GetCamelCase(column.ColumnName);
+																					column.ColumnNameSqlMetalSingularPascalCase = SqlMetalCanonicalNaming.Instance.GetPascalCase(effectiveStandardCanonicalNaming.GetSingularForm(column.ColumnName));
+																					column.ColumnNameSqlMetalSingularCamelCase = SqlMetalCanonicalNaming.Instance.GetCamelCase(effectiveStandardCanonicalNaming.GetSingularForm(column.ColumnName));
+																					column.ColumnNameSqlMetalPluralPascalCase = SqlMetalCanonicalNaming.Instance.GetPascalCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
+																					column.ColumnNameSqlMetalPluralCamelCase = SqlMetalCanonicalNaming.Instance.GetCamelCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
 
-																				clrType = this.CoreInferSqlMetalClrTypeForClrType(dataSourceTag, column.ColumnClrType);
-																				column.ColumnSqlMetalClrType = clrType;
-																				column.ColumnSqlMetalClrNullableType = ReflectionFascade.Instance.MakeNullableType(clrType);
-																				column.ColumnSqlMetalClrNonNullableType = ReflectionFascade.Instance.MakeNonNullableType(clrType);
-																				column.ColumnSqlMetalCSharpClrType = (object)column.ColumnSqlMetalClrType != null ? FormatCSharpType(column.ColumnSqlMetalClrType) : FormatCSharpType(typeof(object));
-																				column.ColumnSqlMetalCSharpClrNullableType = (object)column.ColumnSqlMetalClrNullableType != null ? FormatCSharpType(column.ColumnSqlMetalClrNullableType) : FormatCSharpType(typeof(object));
-																				column.ColumnSqlMetalCSharpClrNonNullableType = (object)column.ColumnSqlMetalClrNonNullableType != null ? FormatCSharpType(column.ColumnSqlMetalClrNonNullableType) : FormatCSharpType(typeof(object));
+																					clrType = DataTypeFascade.Instance.ChangeType<Type>(dictDataMetadata[SchemaTableColumn.DataType]);
+																					column.ColumnDbType = AdoNetFascade.Instance.InferDbTypeForClrType(clrType);
+																					column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
-																				procedure.Columns.Add(column);
+																					column.ColumnClrType = clrType ?? typeof(object);
+																					column.ColumnClrNullableType = ReflectionFascade.Instance.MakeNullableType(clrType);
+																					column.ColumnClrNonNullableType = ReflectionFascade.Instance.MakeNonNullableType(clrType);
+																					column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
+																					column.ColumnCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
+																					column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
+																					column.ColumnCSharpClrNullableType = (object)column.ColumnClrNullableType != null ? FormatCSharpType(column.ColumnClrNullableType) : FormatCSharpType(typeof(object));
+																					column.ColumnCSharpClrNonNullableType = (object)column.ColumnClrNonNullableType != null ? FormatCSharpType(column.ColumnClrNonNullableType) : FormatCSharpType(typeof(object));
+
+																					clrType = this.CoreInferSqlMetalClrTypeForClrType(dataSourceTag, column.ColumnClrType);
+																					column.ColumnSqlMetalClrType = clrType;
+																					column.ColumnSqlMetalClrNullableType = ReflectionFascade.Instance.MakeNullableType(clrType);
+																					column.ColumnSqlMetalClrNonNullableType = ReflectionFascade.Instance.MakeNonNullableType(clrType);
+																					column.ColumnSqlMetalCSharpClrType = (object)column.ColumnSqlMetalClrType != null ? FormatCSharpType(column.ColumnSqlMetalClrType) : FormatCSharpType(typeof(object));
+																					column.ColumnSqlMetalCSharpClrNullableType = (object)column.ColumnSqlMetalClrNullableType != null ? FormatCSharpType(column.ColumnSqlMetalClrNullableType) : FormatCSharpType(typeof(object));
+																					column.ColumnSqlMetalCSharpClrNonNullableType = (object)column.ColumnSqlMetalClrNonNullableType != null ? FormatCSharpType(column.ColumnSqlMetalClrNonNullableType) : FormatCSharpType(typeof(object));
+
+																					procedureResultset.Columns.Add(column);
+																				}
+
+																				procedure.Resultsets.Add(procedureResultset);
 																			}
 																		}
 																	}

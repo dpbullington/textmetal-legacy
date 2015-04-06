@@ -26,8 +26,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 		#region Fields/Constants
 
-		private readonly List<ProcedureColumn> columns = new List<ProcedureColumn>();
 		private readonly List<Parameter> parameters = new List<Parameter>();
+		private readonly List<ProcedureResultset> resultsets = new List<ProcedureResultset>();
 		private string procedureExecuteSchemaExceptionText;
 		private bool procedureExecuteSchemaThrewException;
 		private string procedureName;
@@ -51,21 +51,32 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 		#region Properties/Indexers/Events
 
-		[XmlArray(ElementName = "Columns")]
-		[XmlArrayItem(ElementName = "Column")]
+		[Obsolete("Provided for model breaking change compatability only.")]
+		[XmlIgnore]
 		public List<ProcedureColumn> Columns
 		{
 			get
 			{
-				return this.columns;
+				ProcedureResultset procedureResultset;
+
+				procedureResultset = this.Resultsets.SingleOrDefault(rs => rs.ResultsetIndex == 0);
+
+				if ((object)procedureResultset == null)
+					return null;
+
+				return procedureResultset.Columns;
 			}
 		}
 
+		[Obsolete("Provided for model breaking change compatability only.")]
 		[XmlIgnore]
 		public bool HasAnyMappedResultColumns
 		{
 			get
 			{
+				if ((object)this.Columns == null)
+					return false;
+
 				return this.Columns.Any();
 			}
 		}
@@ -77,6 +88,16 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			get
 			{
 				return this.parameters;
+			}
+		}
+
+		[XmlArray(ElementName = "Resultsets")]
+		[XmlArrayItem(ElementName = "Resultset")]
+		public List<ProcedureResultset> Resultsets
+		{
+			get
+			{
+				return this.resultsets;
 			}
 		}
 

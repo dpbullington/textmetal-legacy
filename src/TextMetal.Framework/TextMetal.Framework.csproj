@@ -157,6 +157,7 @@
     <Compile Include="Source\DatabaseSchema\PrimaryKeyColumn.cs" />
     <Compile Include="Source\DatabaseSchema\Procedure.cs" />
     <Compile Include="Source\DatabaseSchema\ProcedureColumn.cs" />
+    <Compile Include="Source\DatabaseSchema\ProcedureResultset.cs" />
     <Compile Include="Source\DatabaseSchema\Schema.cs" />
     <Compile Include="Source\DatabaseSchema\SchemaSourceStrategy.cs" />
     <Compile Include="Source\DatabaseSchema\Server.cs" />

@@ -1,22 +1,24 @@
-﻿/*
-	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
+/*
+	Copyright �2002-2015 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
 	[Serializable]
-	public class ProcedureColumn : Column
+	public class ProcedureResultset
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the ProcedureColumn class.
+		/// Initializes a new instance of the ProcedureResultset class.
 		/// </summary>
-		public ProcedureColumn()
+		public ProcedureResultset()
 		{
 		}
 
@@ -24,28 +26,34 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 		#region Fields/Constants
 
-		private bool columnHasDefault;
+		private readonly List<ProcedureColumn> columns = new List<ProcedureColumn>();
 		private int resultsetIndex;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		[XmlAttribute]
-		public bool ColumnHasDefault
+		[XmlArray(ElementName = "Columns")]
+		[XmlArrayItem(ElementName = "Column")]
+		public List<ProcedureColumn> Columns
 		{
 			get
 			{
-				return this.columnHasDefault;
+				return this.columns;
 			}
-			set
+		}
+
+		[XmlIgnore]
+		public bool HasAnyMappedResultColumns
+		{
+			get
 			{
-				this.columnHasDefault = value;
+				return this.Columns.Any();
 			}
 		}
 
 		[XmlAttribute]
-		public int _ResultsetIndex
+		public int ResultsetIndex
 		{
 			get
 			{

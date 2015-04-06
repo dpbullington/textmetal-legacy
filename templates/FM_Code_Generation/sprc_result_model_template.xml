@@ -67,12 +67,12 @@ namespace ${ClrNamespace}.${FolderName}
 		#endregion
 
 		#region Fields/Constants
+
 ]]>
 
 					<ForEach in="Columns" var-ct="_LoopCount" var-ix="_LoopIndex">
 						<ForEach.Body>
-							<![CDATA[
-		public const string COLUMN_NAME_${ColumnNameConstantCase} = "${ColumnName}";]]>
+							<![CDATA[		public const string COLUMN_NAME_${ColumnNameConstantCase} = "${ColumnName}";]]>
 
 							<If>
 								<If.Condition>
