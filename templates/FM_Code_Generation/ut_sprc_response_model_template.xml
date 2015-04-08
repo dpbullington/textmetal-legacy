@@ -76,7 +76,7 @@ namespace ${ClrNamespace}.UnitTests.${FolderName}
 
 			${ProcedureNameSingularCamelCase}Response = new ${ProcedureNameSingularPascalCase}_Response();
 
-			Assert.IsNull(${ProcedureNameSingularCamelCase}Response.Results);
+			Assert.IsNull(${ProcedureNameSingularCamelCase}Response.Resultsets);
 
 ]]>
 

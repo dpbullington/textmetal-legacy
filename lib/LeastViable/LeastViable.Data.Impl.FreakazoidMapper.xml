@@ -191,7 +191,7 @@
             Gets or sets the revision number.
             </summary>
         </member>
-        <member name="M:LeastViable.Data.Impl.FreakazoidMapper.FreakazoidModelRepository.GetProcedureResultsLazy``3(LeastViable.Common.Fascades.AdoNet.UoW.IUnitOfWork,LeastViable.Data.Impl.FreakazoidMapper.Tactics.IProcedureTacticCommand{``0,``1,``2},``0,``2)">
+        <member name="M:LeastViable.Data.Impl.FreakazoidMapper.FreakazoidModelRepository.GetProcedureResultsetsLazy``4(LeastViable.Common.Fascades.AdoNet.UoW.IUnitOfWork,LeastViable.Data.Impl.FreakazoidMapper.Tactics.IProcedureTacticCommand{``0,``2,``3},``0,``3)">
             <summary>
             NOTE: This code is re-entrant if the results enumeration is re-started, for example:
             returnProcedureModelObject.Results.First(); // causes an 'abandoned' enumerator
@@ -202,12 +202,33 @@
             results.Last(); // in-memory
             </summary>
             <typeparam name="TCallProcedureModelObject"> </typeparam>
-            <typeparam name="TResultModelObject"> </typeparam>
+            <typeparam name="TResultsetModelObject"> </typeparam>
+            <typeparam name="TResultProcedureModelObject"> </typeparam>
             <typeparam name="TReturnProcedureModelObject"> </typeparam>
             <param name="unitOfWork"> </param>
             <param name="procedureTacticCommand"> </param>
             <param name="callProcedureModelObject"> </param>
             <param name="returnProcedureModelObject"> </param>
+            <returns> </returns>
+        </member>
+        <member name="M:LeastViable.Data.Impl.FreakazoidMapper.FreakazoidModelRepository.GetProcedureResultsLazy``4(LeastViable.Common.Fascades.AdoNet.UoW.IUnitOfWork,LeastViable.Data.Impl.FreakazoidMapper.Tactics.IProcedureTacticCommand{``0,``2,``3},``1,System.Linq.IGrouping{System.Int32,System.Collections.Generic.IDictionary{System.String,System.Object}})">
+            <summary>
+            NOTE: This code is re-entrant if the results enumeration is re-started, for example:
+            returnProcedureModelObject.Results.First(); // causes an 'abandoned' enumerator
+            returnProcedureModelObject.Results.Last(); // causes a full enumeration
+            To prevent this:
+            var results = returnProcedureModelObject.Results.ToArray(); // causes a full enumeration
+            results.First(); // in-memory
+            results.Last(); // in-memory
+            </summary>
+            <typeparam name="TCallProcedureModelObject"> </typeparam>
+            <typeparam name="TResultsetModelObject"> </typeparam>
+            <typeparam name="TResultProcedureModelObject"> </typeparam>
+            <typeparam name="TReturnProcedureModelObject"> </typeparam>
+            <param name="unitOfWork"> </param>
+            <param name="procedureTacticCommand"> </param>
+            <param name="resultsetModelObject"> </param>
+            <param name="group"> </param>
             <returns> </returns>
         </member>
         <member name="M:LeastViable.Data.Impl.FreakazoidMapper.FreakazoidModelRepository.GetTableResultsLazy``1(LeastViable.Common.Fascades.AdoNet.UoW.IUnitOfWork,LeastViable.Data.Impl.FreakazoidMapper.Tactics.ITableTacticCommand{``0})">
@@ -220,10 +241,10 @@
             results2.First(); // in-memory
             results2.Last(); // in-memory
             </summary>
-            <typeparam name="TTableModelObject"></typeparam>
-            <param name="unitOfWork"></param>
-            <param name="tableTacticCommand"></param>
-            <returns></returns>
+            <typeparam name="TTableModelObject"> </typeparam>
+            <param name="unitOfWork"> </param>
+            <param name="tableTacticCommand"> </param>
+            <returns> </returns>
         </member>
     </members>
 </doc>

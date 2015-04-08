@@ -1115,7 +1115,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	{
 																		if ((object)dictEnumMetadata != null)
 																		{
-																			var dictEnumMetadataGroupings = dictEnumMetadata.GroupBy(r => DataTypeFascade.Instance.ChangeType<int>(r[AdoNetFascade.KeyResultsetIndex])).ToArray();
+																			var dictEnumMetadataGroupings = dictEnumMetadata.GroupBy(r => DataTypeFascade.Instance.ChangeType<int>(r[AdoNetFascade.ResultsetIndexRecordKey])).ToArray();
 
 																			foreach (var dictEnumMetadataGrouping in dictEnumMetadataGroupings)
 																			{

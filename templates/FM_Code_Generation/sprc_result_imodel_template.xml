@@ -51,7 +51,7 @@ using LeastViable.Data.Models;
 						<![CDATA[
 namespace ${ClrNamespace}.${FolderName}
 {
-	public partial interface I${ProcedureNameSingularPascalCase}_Result : IResultModelObject
+	public partial interface I${ProcedureNameSingularPascalCase}_Result : IResultProcedureModelObject
 	{
 		#region Properties/Indexers/Events
 ]]>

@@ -91,8 +91,8 @@
         </member>
         <member name="M:LeastViable.Common.Fascades.AdoNet.IAdoNetFascade.ExecuteDictionary(System.Data.IDbConnection,System.Data.IDbTransaction,System.Data.CommandType,System.String,System.Collections.Generic.IEnumerable{System.Data.IDbDataParameter},System.Int32@)">
             <summary>
-            An extension method to execute a dictionary query operation against a target unit of work.
-            This overload is for backwards compatability.
+            Execute a command against a data source, mapping the data reader to a list of dictionaries.
+            This overload is for backwards compatability; this overload perfoms EAGER LOADING.
             DO NOT DISPOSE OF CONNECTION/TRANSACTION - UP TO THE CALLER.
             </summary>
             <param name="dbConnection"> The database connection. </param>
@@ -105,7 +105,8 @@
         </member>
         <member name="M:LeastViable.Common.Fascades.AdoNet.IAdoNetFascade.ExecuteDictionary(System.Data.IDbConnection,System.Data.IDbTransaction,System.Data.CommandType,System.String,System.Collections.Generic.IEnumerable{System.Data.IDbDataParameter},System.Action{System.Int32})">
             <summary>
-            An extension method to execute a dictionary query operation against a target unit of work.
+            Execute a command against a data source, mapping the data reader to an enumerable of dictionaries.
+            This overload is for backwards compatability; this overload perfoms LAZY LOADING/DEFERRED EXECUTION.
             DO NOT DISPOSE OF CONNECTION/TRANSACTION - UP TO THE CALLER.
             </summary>
             <param name="dbConnection"> The database connection. </param>
@@ -118,7 +119,7 @@
         </member>
         <member name="M:LeastViable.Common.Fascades.AdoNet.IAdoNetFascade.ExecuteReader(System.Data.IDbConnection,System.Data.IDbTransaction,System.Data.CommandType,System.String,System.Collections.Generic.IEnumerable{System.Data.IDbDataParameter},System.Data.CommandBehavior,System.Nullable{System.Int32},System.Boolean)">
             <summary>
-            Executes a reader query operation against the database.
+            Executes a command, returning a data reader, against a data source.
             </summary>
             <param name="dbConnection"> The database connection. </param>
             <param name="dbTransaction"> An optional local database transaction. </param>
@@ -132,7 +133,8 @@
         </member>
         <member name="M:LeastViable.Common.Fascades.AdoNet.IAdoNetFascade.ExecuteSchema(System.Data.IDbConnection,System.Data.IDbTransaction,System.Data.CommandType,System.String,System.Collections.Generic.IEnumerable{System.Data.IDbDataParameter},System.Int32@)">
             <summary>
-            An extension method to execute a schema query operation against a target unit of work.
+            Execute a command against a data source, mapping the data reader GetSchemaTable() result to a list of dictionaries.
+            This overload is for backwards compatability; this overload perfoms EAGER LOADING.
             DO NOT DISPOSE OF CONNECTION/TRANSACTION - UP TO THE CALLER.
             </summary>
             <param name="dbConnection"> The database connection. </param>
@@ -141,11 +143,12 @@
             <param name="commandText"> The SQL text or stored procedure name. </param>
             <param name="commandParameters"> The parameters to use during the operation. </param>
             <param name="recordsAffected"> The output count of records affected. </param>
-            <returns> A list of dictionary instances, containing key/value pairs of data. </returns>
+            <returns> A list of dictionary instances, containing key/value pairs of schema metadata. </returns>
         </member>
         <member name="M:LeastViable.Common.Fascades.AdoNet.IAdoNetFascade.ExecuteSchema(System.Data.IDbConnection,System.Data.IDbTransaction,System.Data.CommandType,System.String,System.Collections.Generic.IEnumerable{System.Data.IDbDataParameter},System.Action{System.Int32})">
             <summary>
-            An extension method to execute a schema query operation against a target unit of work.
+            Execute a command against a data source, mapping the data reader GetSchemaTable() result to an enumerable of dictionaries.
+            This overload is for backwards compatability; this overload perfoms LAZY LOADING/DEFERRED EXECUTION.
             DO NOT DISPOSE OF CONNECTION/TRANSACTION - UP TO THE CALLER.
             </summary>
             <param name="dbConnection"> The database connection. </param>
@@ -154,16 +157,27 @@
             <param name="commandText"> The SQL text or stored procedure name. </param>
             <param name="commandParameters"> The parameters to use during the operation. </param>
             <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
-            <returns> An enumerable of dictionary instances, containing key/value pairs of schema data. </returns>
+            <returns> An enumerable of dictionary instances, containing key/value pairs of schema metadata. </returns>
         </member>
         <member name="M:LeastViable.Common.Fascades.AdoNet.IAdoNetFascade.GetEnumerableDictionary(System.Data.IDataReader,System.Action{System.Int32})">
             <summary>
-            An extension method to execute a dictionary query operation against a target data reader.
+            Execute a command against a data source, mapping the data reader to an enumerable of dictionaries.
+            This state machine method (yield return) perfoms LAZY LOADING/DEFERRED EXECUTION.
             THE DATA READER WILL BE DISPOSED UPON ENUMERATION OR FOREACH BRANCH OUT.
             </summary>
             <param name="dataReader"> The target data reader. </param>
             <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
             <returns> An enumerable of dictionary instances, containing key/value pairs of data. </returns>
+        </member>
+        <member name="M:LeastViable.Common.Fascades.AdoNet.IAdoNetFascade.GetSchemaEnumerableDictionary(System.Data.IDataReader,System.Action{System.Int32})">
+            <summary>
+            Execute a command against a data source, mapping the data reader GetSchemaTable() result to an enumerable of dictionaries.
+            This state machine method (yield return) perfoms LAZY LOADING/DEFERRED EXECUTION.
+            THE DATA READER WILL BE DISPOSED UPON ENUMERATION OR FOREACH BRANCH OUT.
+            </summary>
+            <param name="dataReader"> The target data reader. </param>
+            <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
+            <returns> An enumerable of dictionary instances, containing key/value pairs of schema metadata. </returns>
         </member>
         <member name="M:LeastViable.Common.Fascades.AdoNet.IAdoNetFascade.InferDbTypeForClrType(System.Type)">
             <summary>
@@ -202,8 +216,8 @@
         </member>
         <member name="M:LeastViable.Common.Fascades.AdoNet.AdoNetFascade.ExecuteDictionary(System.Data.IDbConnection,System.Data.IDbTransaction,System.Data.CommandType,System.String,System.Collections.Generic.IEnumerable{System.Data.IDbDataParameter},System.Int32@)">
             <summary>
-            An extension method to execute a dictionary query operation against a target unit of work.
-            This overload is for backwards compatability.
+            Execute a command against a data source, mapping the data reader to a list of dictionaries.
+            This overload is for backwards compatability; this overload perfoms EAGER LOADING.
             DO NOT DISPOSE OF CONNECTION/TRANSACTION - UP TO THE CALLER.
             </summary>
             <param name="dbConnection"> The database connection. </param>
@@ -216,7 +230,8 @@
         </member>
         <member name="M:LeastViable.Common.Fascades.AdoNet.AdoNetFascade.ExecuteDictionary(System.Data.IDbConnection,System.Data.IDbTransaction,System.Data.CommandType,System.String,System.Collections.Generic.IEnumerable{System.Data.IDbDataParameter},System.Action{System.Int32})">
             <summary>
-            An extension method to execute a dictionary query operation against a target unit of work.
+            Execute a command against a data source, mapping the data reader to an enumerable of dictionaries.
+            This overload is for backwards compatability; this overload perfoms LAZY LOADING/DEFERRED EXECUTION.
             DO NOT DISPOSE OF CONNECTION/TRANSACTION - UP TO THE CALLER.
             </summary>
             <param name="dbConnection"> The database connection. </param>
@@ -229,7 +244,7 @@
         </member>
         <member name="M:LeastViable.Common.Fascades.AdoNet.AdoNetFascade.ExecuteReader(System.Data.IDbConnection,System.Data.IDbTransaction,System.Data.CommandType,System.String,System.Collections.Generic.IEnumerable{System.Data.IDbDataParameter},System.Data.CommandBehavior,System.Nullable{System.Int32},System.Boolean)">
             <summary>
-            Executes a reader query operation against the database.
+            Executes a command, returning a data reader, against a data source.
             </summary>
             <param name="dbConnection"> The database connection. </param>
             <param name="dbTransaction"> An optional local database transaction. </param>
@@ -243,7 +258,8 @@
         </member>
         <member name="M:LeastViable.Common.Fascades.AdoNet.AdoNetFascade.ExecuteSchema(System.Data.IDbConnection,System.Data.IDbTransaction,System.Data.CommandType,System.String,System.Collections.Generic.IEnumerable{System.Data.IDbDataParameter},System.Int32@)">
             <summary>
-            An extension method to execute a schema query operation against a target unit of work.
+            Execute a command against a data source, mapping the data reader GetSchemaTable() result to a list of dictionaries.
+            This overload is for backwards compatability; this overload perfoms EAGER LOADING.
             DO NOT DISPOSE OF CONNECTION/TRANSACTION - UP TO THE CALLER.
             </summary>
             <param name="dbConnection"> The database connection. </param>
@@ -252,11 +268,12 @@
             <param name="commandText"> The SQL text or stored procedure name. </param>
             <param name="commandParameters"> The parameters to use during the operation. </param>
             <param name="recordsAffected"> The output count of records affected. </param>
-            <returns> A list of dictionary instances, containing key/value pairs of data. </returns>
+            <returns> A list of dictionary instances, containing key/value pairs of schema metadata. </returns>
         </member>
         <member name="M:LeastViable.Common.Fascades.AdoNet.AdoNetFascade.ExecuteSchema(System.Data.IDbConnection,System.Data.IDbTransaction,System.Data.CommandType,System.String,System.Collections.Generic.IEnumerable{System.Data.IDbDataParameter},System.Action{System.Int32})">
             <summary>
-            An extension method to execute a schema query operation against a target unit of work.
+            Execute a command against a data source, mapping the data reader GetSchemaTable() result to an enumerable of dictionaries.
+            This overload is for backwards compatability; this overload perfoms LAZY LOADING/DEFERRED EXECUTION.
             DO NOT DISPOSE OF CONNECTION/TRANSACTION - UP TO THE CALLER.
             </summary>
             <param name="dbConnection"> The database connection. </param>
@@ -265,16 +282,27 @@
             <param name="commandText"> The SQL text or stored procedure name. </param>
             <param name="commandParameters"> The parameters to use during the operation. </param>
             <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
-            <returns> An enumerable of dictionary instances, containing key/value pairs of schema data. </returns>
+            <returns> An enumerable of dictionary instances, containing key/value pairs of schema metadata. </returns>
         </member>
         <member name="M:LeastViable.Common.Fascades.AdoNet.AdoNetFascade.GetEnumerableDictionary(System.Data.IDataReader,System.Action{System.Int32})">
             <summary>
-            An extension method to execute a dictionary query operation against a target data reader.
+            Execute a command against a data source, mapping the data reader to an enumerable of dictionaries.
+            This state machine method (yield return) perfoms LAZY LOADING/DEFERRED EXECUTION.
             THE DATA READER WILL BE DISPOSED UPON ENUMERATION OR FOREACH BRANCH OUT.
             </summary>
             <param name="dataReader"> The target data reader. </param>
             <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
             <returns> An enumerable of dictionary instances, containing key/value pairs of data. </returns>
+        </member>
+        <member name="M:LeastViable.Common.Fascades.AdoNet.AdoNetFascade.GetSchemaEnumerableDictionary(System.Data.IDataReader,System.Action{System.Int32})">
+            <summary>
+            Execute a command against a data source, mapping the data reader GetSchemaTable() result to an enumerable of dictionaries.
+            This state machine method (yield return) perfoms LAZY LOADING/DEFERRED EXECUTION.
+            THE DATA READER WILL BE DISPOSED UPON ENUMERATION OR FOREACH BRANCH OUT.
+            </summary>
+            <param name="dataReader"> The target data reader. </param>
+            <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
+            <returns> An enumerable of dictionary instances, containing key/value pairs of schema metadata. </returns>
         </member>
         <member name="M:LeastViable.Common.Fascades.AdoNet.AdoNetFascade.InferDbTypeForClrType(System.Type)">
             <summary>

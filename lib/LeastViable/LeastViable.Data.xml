@@ -4,8 +4,9 @@
         <name>LeastViable.Data</name>
     </assembly>
     <members>
-        <!-- Badly formed XML comment ignored for member "T:LeastViable.Data.Models.IResultModelObject" -->
         <!-- Badly formed XML comment ignored for member "T:LeastViable.Data.Models.IModelObject" -->
+        <!-- Badly formed XML comment ignored for member "T:LeastViable.Data.Models.IResultProcedureModelObject" -->
+        <!-- Badly formed XML comment ignored for member "T:LeastViable.Data.Models.IRecordModelObject" -->
         <!-- Badly formed XML comment ignored for member "T:LeastViable.Data.Models.ITableModelObject" -->
         <member name="M:LeastViable.Data.Models.ITableModelObject.Mark">
             <summary>
@@ -28,7 +29,7 @@
             Provides a contract for return procedure model objects (procedure, function, packages, etc.).
             </summary>
         </member>
-        <member name="T:LeastViable.Data.Models.IReturnProcedureModelObject`1">
+        <member name="T:LeastViable.Data.Models.IReturnProcedureModelObject`2">
             <summary>
             Provides a contract for return procedure model objects (procedure, function, packages, etc.).
             </summary>

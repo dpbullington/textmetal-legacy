@@ -56,7 +56,7 @@ using LeastViable.Data.Impl.FreakazoidMapper.Mappings;
 namespace ${ClrNamespace}.${FolderName}
 {
 	[Serializable]
-	public partial class ${ProcedureNameSingularPascalCase}_Response : ${ReturnProcedureClrSuperType}<${ProcedureNameSingularPascalCase}_Result>, I${ProcedureNameSingularPascalCase}_Response
+	public partial class ${ProcedureNameSingularPascalCase}_Response : ${ReturnProcedureClrSuperType}<DefaultResultsetModelObject<${ProcedureNameSingularPascalCase}_Result>, ${ProcedureNameSingularPascalCase}_Result>, I${ProcedureNameSingularPascalCase}_Response
 	{
 		#region Constructors/Destructors
 

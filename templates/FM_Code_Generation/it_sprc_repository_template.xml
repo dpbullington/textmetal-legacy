@@ -121,7 +121,7 @@ namespace ${ClrNamespace}.IntegrationTests
 				@${ProcedureNameSingularCamelCase}_Response = thisAppRepository.Execute<${ProcedureNameSingularPascalCase}_Request, ${ProcedureNameSingularPascalCase}_Result, ${ProcedureNameSingularPascalCase}_Response>(@${ProcedureNameSingularCamelCase}_Request);
 
 				Assert.IsNotNull(@${ProcedureNameSingularCamelCase}_Response);
-				Assert.IsNotNull(@${ProcedureNameSingularCamelCase}_Response.Results);
+				Assert.IsNotNull(@${ProcedureNameSingularCamelCase}_Response.Resultsets);
 
 				scope.ScopeComplete();
 			}

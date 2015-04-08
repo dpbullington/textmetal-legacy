@@ -56,7 +56,7 @@ using LeastViable.Data.Impl.FreakazoidMapper.Mappings;
 namespace ${ClrNamespace}.${FolderName}
 {
 	[Serializable]
-	public partial class ${ProcedureNameSingularPascalCase}_Result : ${rb(`textMetal.EvaluateToken("HasAnyMappedResultColumns".to_clr_string()) ? textMetal.EvaluateToken("ResultModelClrSuperType".to_clr_string()) : textMetal.EvaluateToken("DynamicResultModelClrSuperType".to_clr_string())`)}, I${ProcedureNameSingularPascalCase}_Result
+	public partial class ${ProcedureNameSingularPascalCase}_Result : ${rb(`textMetal.EvaluateToken("HasAnyMappedResultColumns".to_clr_string()) ? textMetal.EvaluateToken("ResultProcedureModelClrSuperType".to_clr_string()) : textMetal.EvaluateToken("DynamicResultProcedureModelClrSuperType".to_clr_string())`)}, I${ProcedureNameSingularPascalCase}_Result
 	{
 		#region Constructors/Destructors
 
