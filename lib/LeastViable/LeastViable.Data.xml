@@ -34,6 +34,11 @@
             Provides a contract for return procedure model objects (procedure, function, packages, etc.).
             </summary>
         </member>
+        <member name="P:LeastViable.Data.Models.ReturnProcedureModelObject`2.Results">
+            <summary>
+            Gets an enumerable of just the first resultset result objects.
+            </summary>
+        </member>
         <member name="T:LeastViable.Data.Models.ICallProcedureModelObject">
             <summary>
             Provides a contract for call procedure model objects (procedure, function, packages, etc.).
