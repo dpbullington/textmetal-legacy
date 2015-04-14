@@ -53,6 +53,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using LeastViable.Common.Fascades.Utilities;
 using LeastViable.Data.Models;
 ]]>
 						<If>
@@ -84,17 +85,16 @@ namespace ${ClrNamespace}.${FolderName}
 			return false; // TODO - remove this and uncomment the above code fragment
 
 			/*IEnumerable<I${TableNameSingularPascalCase}> ${TableNamePluralCamelCase};
-			IModelQuery modelQuery;
+			ITableModelQuery tableModelQuery;
 
 			if ((object)${TableNameSingularCamelCase} == null)
 				throw new ArgumentNullException("${TableNameSingularCamelCase}");
 
-			modelQuery = new ModelQuery(null, null);
+			tableModelQuery = new ModelQuery(null, null);
 
-			${TableNamePluralCamelCase} =
-				Stuff.Get<IRepository>("").Find<I${TableNameSingularPascalCase}>(modelQuery);
+			${TableNamePluralCamelCase} = DependencyManager.AppDomainInstance.ResolveDependency<IThisAppRepository>(string.Empty).Find<I${TableNameSingularPascalCase}>(tableModelQuery);
 
-			return ${TableNamePluralCamelCase}.Count() > 0;*/
+			return ${TableNamePluralCamelCase}.Any();*/
 		}
 
 		public override void Mark()
@@ -121,7 +121,7 @@ namespace ${ClrNamespace}.${FolderName}
 			messages = new List<Message>();
 
 			// TODO - remove this and uncomment the below code fragment if needed
-			/*if (DataType.Instance.IsNullOrWhiteSpace(this.TODO_REQUIRED_VALUE_1))
+			/*if (DataTypeFascade.Instance.IsNullOrWhiteSpace(this.TODO_REQUIRED_VALUE_1))
 				messages.Add(new Message("", "TODO_REQUIRED_VALUE_1 is required.", Severity.Error));
 
 			if (messages.Count == 0)

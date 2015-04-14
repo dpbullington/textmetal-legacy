@@ -105,8 +105,6 @@ $xa_list = $xd.SelectNodes("//@CanBeNull")
 
 if ($xa_list -ne $null)
 {
-	$xa_list.Count
-
 	foreach ($xa_item in $xa_list)
 	{
 		$xa_item.Value = "true"

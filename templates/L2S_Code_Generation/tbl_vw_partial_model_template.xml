@@ -21,9 +21,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using LeastViable.Common.Fascades.Utilities;
 using LeastViable.Common.ValueObjects;
-using LeastViable.Data.Models;
 using LeastViable.Data.Impl.MicrosoftLinq;
+using LeastViable.Data.Models;
+using LeastViable.Solder.IoC;
 ]]>
 						<If>
 							<If.Condition>
@@ -49,25 +51,24 @@ namespace ${ClrNamespace}
 	{
 		#region Methods/Operators
 
-		public static bool Exists(${TableNameSqlMetalSingularPascalCase} ${TableNameSqlMetalSingularCamelCase})
+		public static bool Exists(${TableNameSqlMetalSingularPascalCase} ${TableNameSingularCamelCase})
 		{
 			return false; // TODO - remove this and uncomment the above code fragment
 
-			/*IEnumerable<${TableNameSqlMetalSingularPascalCase}> ${TableNameSqlMetalPluralCamelCase};
-			IModelQuery modelQuery;
+			/*IEnumerable<${TableNameSqlMetalSingularPascalCase}> ${TableNamePluralCamelCase};
+			ITableModelQuery tableModelQuery;
 
-			if ((object)${TableNameSqlMetalSingularCamelCase} == null)
-				throw new ArgumentNullException("${TableNameSqlMetalSingularCamelCase}");
+			if ((object)${TableNameSingularCamelCase} == null)
+				throw new ArgumentNullException("${TableNameSingularCamelCase}");
 
-			modelQuery = new LinqTableQuery<${TableNameSqlMetalPascalCase}>(z =>
-								(z.TODO_UNIQUE_VALUE_1 == ${TableNameSqlMetalSingularCamelCase}.TODO_UNIQUE_VALUE_1) &&
-									((object)${TableNameSqlMetalSingularCamelCase}.${TableNameSqlMetalSingularPascalCase}Id == null ||
-										z.${TableNameSqlMetalSingularPascalCase}Id != ${TableNameSqlMetalSingularCamelCase}.${TableNameSqlMetalSingularPascalCase}Id));
+			tableModelQuery = new LinqTableModelQuery<${TableNameSqlMetalPascalCase}>(z =>
+								(z.TODO_UNIQUE_VALUE_1 == ${TableNameSingularCamelCase}.TODO_UNIQUE_VALUE_1) &&
+									((object)${TableNameSingularCamelCase}.${TableNameSqlMetalSingularPascalCase}Id == null ||
+										z.${TableNameSingularPascalCase}Id != ${TableNameSingularCamelCase}.${TableNameSingularPascalCase}Id));
 
-			${TableNameSqlMetalPluralCamelCase} =
-				Stuff.Get<IThisAppRepository>("").Find<${TableNameSqlMetalSingularPascalCase}>(modelQuery);
+			${TableNamePluralCamelCase} = DependencyManager.AppDomainInstance.ResolveDependency<IThisAppRepository>(string.Empty).Find<${TableNameSqlMetalSingularPascalCase}>(tableModelQuery);
 
-			return ${TableNameSqlMetalPluralCamelCase}.Count() > 0;*/
+			return ${TableNamePluralCamelCase}.Any();*/
 		}
 
 		public override void Mark()
@@ -94,7 +95,7 @@ namespace ${ClrNamespace}
 			messages = new List<Message>();
 
 			// TODO - remove this and uncomment the below code fragment if needed
-			/*if (DataType.Instance.IsNullOrWhiteSpace(this.TODO_REQUIRED_VALUE_1))
+			/*if (DataTypeFascade.Instance.IsNullOrWhiteSpace(this.TODO_REQUIRED_VALUE_1))
 				messages.Add(new Message("", "TODO_REQUIRED_VALUE_1 is required.", Severity.Error));
 
 			if (messages.Count == 0)
