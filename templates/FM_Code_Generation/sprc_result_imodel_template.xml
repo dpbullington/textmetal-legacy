@@ -29,7 +29,7 @@
 using System;
 using System.Xml;
 
-using LeastViable.Data.Models;
+using TextMetal.Middleware.Data.Models;
 ]]>
 						<If>
 							<If.Condition>

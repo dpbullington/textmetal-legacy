@@ -14,6 +14,7 @@ $lib_dir = ".\lib"
 $templates_dir = ".\templates"
 $pkg_dir = ".\pkg"
 
+$robocopy_exe = "robocopy.exe"
 $msbuild_exe = "C:\Program Files (x86)\MSBuild\12.0\bin\amd64\msbuild.exe"
 
 echo "The operation is starting..."
@@ -28,8 +29,30 @@ New-Item -ItemType directory -Path ($pkg_dir + "\bin")
 
 Copy-Item ".\trunk.bat" "$pkg_dir\."
 Copy-Item "$doc_dir\LICENSE.txt" "$pkg_dir\."
-Copy-Item "$lib_dir" "$pkg_dir\lib" -recurse
-Copy-Item "$templates_dir" "$pkg_dir\templates" -recurse -exclude "*!git*"
+
+$argz = @("$templates_dir",
+	"$pkg_dir\templates",
+	"/MIR",
+	"/e",
+	"/xd", "*!git*", "output",
+	"/xf", "*!git*")
+
+&"$robocopy_exe" $argz
+
+if (!($LastExitCode -eq $null -or $LastExitCode -eq 1))
+{ echo "An error occurred during the operation."; return; }
+
+$argz = @("$lib_dir",
+	"$pkg_dir\lib",
+	"/MIR",
+	"/e",
+	"/xd", "*!git*", "output",
+	"/xf", "*!git*")
+
+&"$robocopy_exe" $argz
+
+if (!($LastExitCode -eq $null -or $LastExitCode -eq 1))
+{ echo "An error occurred during the operation."; return; }
 
 Copy-Item "$src_dir\TextMetal.ConsoleTool\bin\$build_flavor_dir\TextMetal.exe" "$pkg_dir\bin\."
 Copy-Item "$src_dir\TextMetal.ConsoleTool\bin\$build_flavor_dir\TextMetal.exe.config" "$pkg_dir\bin\."

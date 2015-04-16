@@ -13,8 +13,8 @@
 using System;
 using System.Xml;
 
-using LeastViable.Data.Models;
-using LeastViable.Data.Impl.FreakazoidMapper;
+using TextMetal.Middleware.Data.Models;
+using TextMetal.Middleware.Data.Impl.FreakazoidMapper;
 ]]>
 		<If>
 			<If.Condition>

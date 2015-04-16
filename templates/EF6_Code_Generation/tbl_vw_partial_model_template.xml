@@ -21,9 +21,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using LeastViable.Common.ValueObjects;
-using LeastViable.Data.Models;
-using LeastViable.Data.Impl.MicrosoftLinq;
+using TextMetal.Middleware.Common.ValueObjects;
+using TextMetal.Middleware.Data.Models;
+using TextMetal.Middleware.Data.Impl.MicrosoftLinq;
 ]]>
 						<If>
 							<If.Condition>

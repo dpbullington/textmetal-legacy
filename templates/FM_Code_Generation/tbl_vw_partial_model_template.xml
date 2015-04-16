@@ -53,8 +53,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using LeastViable.Common.Fascades.Utilities;
-using LeastViable.Data.Models;
+using TextMetal.Middleware.Common.Fascades.Utilities;
+using TextMetal.Middleware.Data.Models;
 ]]>
 						<If>
 							<If.Condition>

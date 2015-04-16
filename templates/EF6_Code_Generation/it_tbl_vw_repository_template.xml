@@ -18,10 +18,10 @@ using System.Xml.Linq;
 
 using NUnit.Framework;
 
-using LeastViable.Common.Fascades.AdoNet.UoW;
-using LeastViable.Data.Models;
-using LeastViable.Data.Impl.MicrosoftLinq;
-using LeastViable.Testing;
+using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
+using TextMetal.Middleware.Data.Models;
+using TextMetal.Middleware.Data.Impl.MicrosoftLinq;
+using TextMetal.Middleware.Testing;
 ]]>
 		<If>
 			<If.Condition>

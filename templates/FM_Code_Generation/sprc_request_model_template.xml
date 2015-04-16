@@ -31,9 +31,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Xml;
 
-using LeastViable.Common.Fascades.Utilities;
-using LeastViable.Data.Models;
-using LeastViable.Data.Impl.FreakazoidMapper.Mappings;
+using TextMetal.Middleware.Common.Fascades.Utilities;
+using TextMetal.Middleware.Data.Models;
+using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Mappings;
 ]]>
 						<If>
 							<If.Condition>

@@ -10,6 +10,7 @@ $src_dir = "..\..\src"
 $build_flavor_dir = "Debug"
 $template_dir = "."
 
+$robocopy_exe = "robocopy.exe"
 $textmetal_exe = "$src_dir\TextMetal.ConsoleTool\bin\$build_flavor_dir\TextMetal.exe"
 
 $template_file = "$template_dir\master_template.xml"
@@ -79,15 +80,52 @@ if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
 
 New-Item -ItemType directory -Path $base_lib_dir
-New-Item -ItemType directory -Path "$base_lib_dir\LeastViable"
-New-Item -ItemType directory -Path "$base_lib_dir\Newtonsoft.Json"
-New-Item -ItemType directory -Path "$base_lib_dir\Sqlite"
-New-Item -ItemType directory -Path "$base_lib_dir\Sqlite\x64"
-New-Item -ItemType directory -Path "$base_lib_dir\Sqlite\x86"
 
-Copy-Item "$lib_dir\SQLite\x64\*.*" "$base_lib_dir\SQLite\x64\."
-Copy-Item "$lib_dir\SQLite\x86\*.*" "$base_lib_dir\SQLite\x86\."
-Copy-Item "$lib_dir\LeastViable\*.*" "$base_lib_dir\LeastViable\."
-Copy-Item "$lib_dir\Newtonsoft.Json\*.*" "$base_lib_dir\Newtonsoft.Json\."
+$argz = @("$lib_dir",
+	"$base_lib_dir",
+	"/MIR",
+	"/e",
+	"/xd", "*!git*", "output",
+	"/xf", "*!git*")
+
+&"$robocopy_exe" $argz
+
+if (!($LastExitCode -eq $null -or $LastExitCode -eq 1))
+{ echo "An error occurred during the operation."; return; }
+
+New-Item -ItemType directory -Path "$base_lib_dir\TextMetal"
+
+Copy-Item "$src_dir\TextMetal.ConsoleTool\bin\$build_flavor_dir\TextMetal.exe" "$base_lib_dir\TextMetal\."
+Copy-Item "$src_dir\TextMetal.ConsoleTool\bin\$build_flavor_dir\TextMetal.exe.config" "$base_lib_dir\TextMetal\."
+Copy-Item "$src_dir\TextMetal.ConsoleTool\bin\$build_flavor_dir\TextMetal.xml" "$base_lib_dir\TextMetal\."
+Copy-Item "$src_dir\TextMetal.ConsoleTool\bin\$build_flavor_dir\TextMetal.pdb" "$base_lib_dir\TextMetal\."
+
+Copy-Item "$src_dir\TextMetal.Framework\bin\$build_flavor_dir\TextMetal.Framework.dll" "$base_lib_dir\TextMetal\."
+Copy-Item "$src_dir\TextMetal.Framework\bin\$build_flavor_dir\TextMetal.Framework.xml" "$base_lib_dir\TextMetal\."
+Copy-Item "$src_dir\TextMetal.Framework\bin\$build_flavor_dir\TextMetal.Framework.pdb" "$base_lib_dir\TextMetal\."
+
+Copy-Item "$src_dir\TextMetal.Middleware.Common\bin\$build_flavor_dir\TextMetal.Middleware.Common.dll" "$base_lib_dir\TextMetal\."
+Copy-Item "$src_dir\TextMetal.Middleware.Common\bin\$build_flavor_dir\TextMetal.Middleware.Common.xml" "$base_lib_dir\TextMetal\."
+Copy-Item "$src_dir\TextMetal.Middleware.Common\bin\$build_flavor_dir\TextMetal.Middleware.Common.pdb" "$base_lib_dir\TextMetal\."
+
+Copy-Item "$src_dir\TextMetal.Middleware.Data\bin\$build_flavor_dir\TextMetal.Middleware.Data.dll" "$base_lib_dir\TextMetal\."
+Copy-Item "$src_dir\TextMetal.Middleware.Data\bin\$build_flavor_dir\TextMetal.Middleware.Data.xml" "$base_lib_dir\TextMetal\."
+Copy-Item "$src_dir\TextMetal.Middleware.Data\bin\$build_flavor_dir\TextMetal.Middleware.Data.pdb" "$base_lib_dir\TextMetal\."
+
+Copy-Item "$src_dir\TextMetal.Middleware.Data.Impl.FreakazoidMapper\bin\$build_flavor_dir\TextMetal.Middleware.Data.Impl.FreakazoidMapper.dll" "$base_lib_dir\TextMetal\."
+Copy-Item "$src_dir\TextMetal.Middleware.Data.Impl.FreakazoidMapper\bin\$build_flavor_dir\TextMetal.Middleware.Data.Impl.FreakazoidMapper.xml" "$base_lib_dir\TextMetal\."
+Copy-Item "$src_dir\TextMetal.Middleware.Data.Impl.FreakazoidMapper\bin\$build_flavor_dir\TextMetal.Middleware.Data.Impl.FreakazoidMapper.pdb" "$base_lib_dir\TextMetal\."
+
+Copy-Item "$src_dir\TextMetal.Middleware.Data.Impl.MicrosoftLinq\bin\$build_flavor_dir\TextMetal.Middleware.Data.Impl.MicrosoftLinq.dll" "$base_lib_dir\TextMetal\."
+Copy-Item "$src_dir\TextMetal.Middleware.Data.Impl.MicrosoftLinq\bin\$build_flavor_dir\TextMetal.Middleware.Data.Impl.MicrosoftLinq.xml" "$base_lib_dir\TextMetal\."
+Copy-Item "$src_dir\TextMetal.Middleware.Data.Impl.MicrosoftLinq\bin\$build_flavor_dir\TextMetal.Middleware.Data.Impl.MicrosoftLinq.pdb" "$base_lib_dir\TextMetal\."
+
+Copy-Item "$src_dir\TextMetal.Middleware.Solder\bin\$build_flavor_dir\TextMetal.Middleware.Solder.dll" "$base_lib_dir\TextMetal\."
+Copy-Item "$src_dir\TextMetal.Middleware.Solder\bin\$build_flavor_dir\TextMetal.Middleware.Solder.xml" "$base_lib_dir\TextMetal\."
+Copy-Item "$src_dir\TextMetal.Middleware.Solder\bin\$build_flavor_dir\TextMetal.Middleware.Solder.pdb" "$base_lib_dir\TextMetal\."
+
+Copy-Item "$src_dir\TextMetal.Middleware.Testing\bin\$build_flavor_dir\TextMetal.Middleware.Testing.dll" "$base_lib_dir\TextMetal\."
+Copy-Item "$src_dir\TextMetal.Middleware.Testing\bin\$build_flavor_dir\TextMetal.Middleware.Testing.xml" "$base_lib_dir\TextMetal\."
+Copy-Item "$src_dir\TextMetal.Middleware.Testing\bin\$build_flavor_dir\TextMetal.Middleware.Testing.pdb" "$base_lib_dir\TextMetal\."
 
 echo "The operation completed successfully."

@@ -15,8 +15,8 @@ using System.Xml;
 
 using NUnit.Framework;
 
-using LeastViable.Common.Fascades.AdoNet.UoW;
-using LeastViable.Testing;
+using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
+using TextMetal.Middleware.Testing;
 ]]>
 		<If>
 			<If.Condition>

@@ -16,10 +16,10 @@ using System.Xml;
 
 using NUnit.Framework;
 
-using LeastViable.Common.Fascades.AdoNet.UoW;
-using LeastViable.Data.Impl.FreakazoidMapper;
-using LeastViable.Data.Impl.FreakazoidMapper.Expressions;
-using LeastViable.Testing;
+using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
+using TextMetal.Middleware.Data.Impl.FreakazoidMapper;
+using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Expressions;
+using TextMetal.Middleware.Testing;
 ]]>
 		<If>
 			<If.Condition>

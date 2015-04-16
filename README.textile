@@ -6,6 +6,10 @@ Meta-programming is all about making software simpler and reusable through the u
 
 TextMetal is a framework for accelerating the delivery, increasing the quality, and reducing the time to market of small to enterprise scale software systems.
 
+h2. Middleware for MVPs
+
+TextMetal exposes a powerful set of middleware for rapidly building minimal viable products (MVPs) using the .NET technology stack.
+
 h2. License
 
 See doc/LICENSE.txt.

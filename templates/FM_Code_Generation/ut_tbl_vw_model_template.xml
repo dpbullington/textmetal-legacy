@@ -54,7 +54,7 @@ using System.Xml;
 
 using NUnit.Framework;
 
-using LeastViable.Testing;
+using TextMetal.Middleware.Testing;
 ]]>
 						<If>
 							<If.Condition>

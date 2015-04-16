@@ -17,9 +17,9 @@ using System.IO;
 using System.Reflection;
 using System.Xml;
 
-using LeastViable.Data.Models;
-using LeastViable.Data.Impl.FreakazoidMapper;
-using LeastViable.Solder.IoC;
+using TextMetal.Middleware.Data.Models;
+using TextMetal.Middleware.Data.Impl.FreakazoidMapper;
+using TextMetal.Middleware.Solder.IoC;
 ]]>
 		<If>
 			<If.Condition>

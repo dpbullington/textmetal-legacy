@@ -62,6 +62,7 @@ $root = [System.Environment]::CurrentDirectory
 $build_flavor_dir = "Debug"
 $build_tool_cfg = "Debug"
 $src_dir = ".\src"
+$robocopy_exe = "robocopy.exe"
 $msbuild_exe = "C:\Program Files (x86)\MSBuild\12.0\bin\amd64\msbuild.exe"
 
 echo "The operation is starting..."
@@ -247,14 +248,14 @@ EndGlobal
 	<OutputScope name="${ModuleName}\SQL\RevisionHistory.(${DataSourceTag}).xml">
 		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
 
-<History xmlns="http://www.leastviable.com/api/v7.0.0">
+<History xmlns="http://www.TextMetal.Middleware.com/api/v7.0.0">
 </History>]]>
 	</OutputScope>
 
 	<OutputScope name="${ModuleName}\SQL\RevisionHistory.(net.sqlite).xml">
 		<![CDATA[<?xml version="1.0" encoding="utf-8"?>
 
-<History xmlns="http://www.leastviable.com/api/v7.0.0">
+<History xmlns="http://www.TextMetal.Middleware.com/api/v7.0.0">
 </History>]]>
 	</OutputScope>
 
@@ -345,22 +346,28 @@ EndGlobal
     <Reference Include="System.Core" />
 	<Reference Include="System.Data" />
 	<Reference Include="System.Xml" />
+
 	<Reference Include="System.Data.SQLite">
       <HintPath>..\..\lib\SQLite\x64\System.Data.SQLite.dll</HintPath>
     </Reference>
 
-	<Reference Include="LeastViable.Common">
-      <HintPath>..\..\lib\LeastViable\LeastViable.Common.dll</HintPath>
+	<Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\lib\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
     </Reference>
-	<Reference Include="LeastViable.Data">
-      <HintPath>..\..\lib\LeastViable\LeastViable.Data.dll</HintPath>
+
+	<Reference Include="TextMetal.Middleware.Common">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Common.dll</HintPath>
     </Reference>
-	<Reference Include="LeastViable.Data.Impl.FreakazoidMapper">
-      <HintPath>..\..\lib\LeastViable\LeastViable.Data.Impl.FreakazoidMapper.dll</HintPath>
+	<Reference Include="TextMetal.Middleware.Data">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Data.dll</HintPath>
     </Reference>
-	<Reference Include="LeastViable.Solder">
-      <HintPath>..\..\lib\LeastViable\LeastViable.Solder.dll</HintPath>
+	<Reference Include="TextMetal.Middleware.Data.Impl.FreakazoidMapper">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Data.Impl.FreakazoidMapper.dll</HintPath>
     </Reference>
+	<Reference Include="TextMetal.Middleware.Solder">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Solder.dll</HintPath>
+    </Reference>
+
   </ItemGroup>
   <ItemGroup>
     <None Include="..\${ModuleName}.snk">
@@ -510,20 +517,31 @@ EndGlobal
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
 
-	<Reference Include="LeastViable.Common">
-      <HintPath>..\..\lib\LeastViable\LeastViable.Common.dll</HintPath>
+	<Reference Include="nunit.framework">
+      <HintPath>..\..\lib\NUnit\nunit.framework.dll</HintPath>
     </Reference>
-	<Reference Include="LeastViable.Data">
-      <HintPath>..\..\lib\LeastViable\LeastViable.Data.dll</HintPath>
+	<Reference Include="NMock3">
+      <HintPath>..\..\lib\NMock3\NMock3.dll</HintPath>
     </Reference>
-	<Reference Include="LeastViable.Data.Impl.FreakazoidMapper">
-      <HintPath>..\..\lib\LeastViable\LeastViable.Data.Impl.FreakazoidMapper.dll</HintPath>
+
+	<Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\lib\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
     </Reference>
-	<Reference Include="LeastViable.Solder">
-      <HintPath>..\..\lib\LeastViable\LeastViable.Solder.dll</HintPath>
+
+	<Reference Include="TextMetal.Middleware.Common">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Common.dll</HintPath>
     </Reference>
-	<Reference Include="LeastViable.Testing">
-      <HintPath>..\..\lib\LeastViable\LeastViable.Testing.dll</HintPath>
+	<Reference Include="TextMetal.Middleware.Data">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Data.dll</HintPath>
+    </Reference>
+	<Reference Include="TextMetal.Middleware.Data.Impl.FreakazoidMapper">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Data.Impl.FreakazoidMapper.dll</HintPath>
+    </Reference>
+	<Reference Include="TextMetal.Middleware.Solder">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Solder.dll</HintPath>
+    </Reference>
+	<Reference Include="TextMetal.Middleware.Testing">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Testing.dll</HintPath>
     </Reference>
 
 	<ProjectReference Include="..\${ModuleName}\${ModuleName}.csproj">
@@ -672,24 +690,35 @@ EndGlobal
 	<Reference Include="System.Data" />
 	<Reference Include="System.Xml" />
 
+	<Reference Include="nunit.framework">
+      <HintPath>..\..\lib\NUnit\nunit.framework.dll</HintPath>
+    </Reference>
+	<Reference Include="NMock3">
+      <HintPath>..\..\lib\NMock3\NMock3.dll</HintPath>
+    </Reference>
+
 	<Reference Include="System.Data.SQLite">
       <HintPath>..\..\lib\SQLite\x64\System.Data.SQLite.dll</HintPath>
     </Reference>
 
-	<Reference Include="LeastViable.Common">
-      <HintPath>..\..\lib\LeastViable\LeastViable.Common.dll</HintPath>
+	<Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\lib\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
     </Reference>
-	<Reference Include="LeastViable.Data">
-      <HintPath>..\..\lib\LeastViable\LeastViable.Data.dll</HintPath>
+
+	<Reference Include="TextMetal.Middleware.Common">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Common.dll</HintPath>
     </Reference>
-	<Reference Include="LeastViable.Data.Impl.FreakazoidMapper">
-      <HintPath>..\..\lib\LeastViable\LeastViable.Data.Impl.FreakazoidMapper.dll</HintPath>
+	<Reference Include="TextMetal.Middleware.Data">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Data.dll</HintPath>
     </Reference>
-	<Reference Include="LeastViable.Solder">
-      <HintPath>..\..\lib\LeastViable\LeastViable.Solder.dll</HintPath>
+	<Reference Include="TextMetal.Middleware.Data.Impl.FreakazoidMapper">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Data.Impl.FreakazoidMapper.dll</HintPath>
     </Reference>
-	<Reference Include="LeastViable.Testing">
-      <HintPath>..\..\lib\LeastViable\LeastViable.Testing.dll</HintPath>
+	<Reference Include="TextMetal.Middleware.Solder">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Solder.dll</HintPath>
+    </Reference>
+	<Reference Include="TextMetal.Middleware.Testing">
+      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Testing.dll</HintPath>
     </Reference>
 
 	<ProjectReference Include="..\${ModuleName}\${ModuleName}.csproj">
