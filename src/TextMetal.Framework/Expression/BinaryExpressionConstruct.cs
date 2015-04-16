@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 
-using LeastViable.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Fascades.Utilities;
 
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Tokenization;

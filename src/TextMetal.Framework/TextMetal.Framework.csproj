@@ -44,9 +44,6 @@
     <Reference Include="IronRuby.Libraries">
       <HintPath>..\..\lib\IronRuby\IronRuby.Libraries.dll</HintPath>
     </Reference>
-    <Reference Include="LeastViable.Common">
-      <HintPath>..\..\lib\LeastViable\LeastViable.Common.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Dynamic">
       <HintPath>..\..\lib\IronRuby\Microsoft.Dynamic.dll</HintPath>
@@ -278,7 +275,12 @@
     <EmbeddedResource Include="Source\DatabaseSchema\Sql\DML\net.sqlserver\ViewColumns.sql" />
     <EmbeddedResource Include="Source\DatabaseSchema\Sql\DML\net.sqlserver\Views.sql" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TextMetal.Middleware.Common\TextMetal.Middleware.Common.csproj">
+      <Project>{d1860a67-7efb-4c0f-89cd-a641d99dcc2a}</Project>
+      <Name>TextMetal.Middleware.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

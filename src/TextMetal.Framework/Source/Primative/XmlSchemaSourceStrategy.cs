@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Schema;
 
-using LeastViable.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Fascades.Utilities;
 
 using TextMetal.Framework.Associative;
 using TextMetal.Framework.Core;

@@ -5,7 +5,7 @@
 
 using System;
 
-using LeastViable.Common.ValueObjects;
+using TextMetal.Middleware.Common.ValueObjects;
 
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Tokenization;

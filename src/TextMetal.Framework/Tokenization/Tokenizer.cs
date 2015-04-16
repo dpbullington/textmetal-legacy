@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using LeastViable.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.Tokenization
 {

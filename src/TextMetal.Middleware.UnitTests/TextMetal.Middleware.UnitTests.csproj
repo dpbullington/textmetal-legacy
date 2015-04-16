@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A0917FE0-AAF8-4388-87D5-59F90B602BAF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>
+    </AppDesignerFolder>
+    <RootNamespace>TextMetal.Middleware.UnitTests</RootNamespace>
+    <AssemblyName>TextMetal.Middleware.UnitTests</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\TextMetal.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\TextMetal.Middleware.UnitTests.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\TextMetal.Middleware.UnitTests.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NMock3">
+      <HintPath>..\..\lib\NMock3\NMock3.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\lib\NUnit\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SolutionAssemblyInfo.cs">
+      <Link>SolutionAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Common\Fascades\Utilities\_\AppConfigFascadeTests.cs" />
+    <Compile Include="Common\Fascades\Utilities\_\DataTypeFascadeTests.cs" />
+    <Compile Include="Common\Strategies\ContextualStorage\_\DefaultExecutionStorageFactoryTests.cs" />
+    <Compile Include="Common\Fascades\Utilities\_\ReflectionFascadeTests.cs" />
+    <Compile Include="Data\Impl\MicrosoftLinq\_\AmbientUnitOfWorkAwareContextWrapperTests.cs" />
+    <None Include="Data\Impl\MicrosoftLinq\_\LinqToSqlHelperTests.cs" />
+    <Compile Include="Data\Impl\MicrosoftLinq\_\MulticastContextTests.cs" />
+    <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\ColumnMappingAttributeTests.cs" />
+    <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\ParameterMappingAttributeTests.cs" />
+    <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\ProcedureMappingAttributeTests.cs" />
+    <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\TableMappingAttributeTests.cs" />
+    <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\TacticCommandTests.cs" />
+    <Compile Include="Solder\IoC\_\ActivatorDependencyResolutionTests.cs" />
+    <Compile Include="Solder\IoC\_\ConstructorDependencyResolutionTests.cs" />
+    <Compile Include="Solder\IoC\_\DelegateDependencyResolutionTests.cs" />
+    <Compile Include="Solder\IoC\_\DependencyExceptionTests.cs" />
+    <Compile Include="Solder\IoC\_\DependencyManagerTests.cs" />
+    <Compile Include="Solder\IoC\_\DependencyRegistrationAttributeTests.cs" />
+    <Compile Include="Solder\IoC\_\SingletonDependencyResolutionTests.cs" />
+    <Compile Include="Solder\SoC\RemotingImpl\_\DynamicInvokerRealProxyTests.cs" />
+    <Compile Include="Solder\SoC\_\AspectDynamicInvokerTests.cs" />
+    <Compile Include="Solder\SoC\_\DynamicInvokerTests.cs" />
+    <Compile Include="Solder\SoC\_\ProxyFactoryTests.cs" />
+    <Compile Include="TestingInfrastructure\IMockModelObject.cs" />
+    <Compile Include="TestingInfrastructure\MockAspectDynamicInvoker.cs" />
+    <Compile Include="TestingInfrastructure\MockDynamicInvoker.cs" />
+    <Compile Include="TestingInfrastructure\MockModelObject.cs" />
+    <Compile Include="TestingInfrastructure\MockDependantObject.cs" />
+    <Compile Include="TestingInfrastructure\MockProxyFactory.cs" />
+    <Compile Include="Common\Fascades\AdoNet\_\AdoNetFascadeTests.cs" />
+    <None Include="App.config" />
+    <None Include="Common\Fascades\AdoNet\UoW\_\AmbientUnitOfWorkScope.cs" />
+    <Compile Include="ProjectAssemblyInfo.cs" />
+    <Compile Include="TestingInfrastructure\IMockObject.cs" />
+    <Compile Include="TestingInfrastructure\MockConnection.cs" />
+    <Compile Include="TestingInfrastructure\MockException.cs" />
+    <Compile Include="TestingInfrastructure\MockMultipleTestAttibute.cs" />
+    <Compile Include="TestingInfrastructure\MockObject.cs" />
+    <Compile Include="TestingInfrastructure\MockSingleTestAttibute.cs" />
+    <Compile Include="TestingInfrastructure\MockTestAttributedClass.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\TextMetal.snk">
+      <Link>TextMetal.snk</Link>
+    </None>
+    <None Include="UnitTesting.nunit" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Common\ValueObjects\" />
+    <Folder Include="Data\_\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TextMetal.Middleware.Common\TextMetal.Middleware.Common.csproj">
+      <Project>{d1860a67-7efb-4c0f-89cd-a641d99dcc2a}</Project>
+      <Name>TextMetal.Middleware.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Middleware.Data.Impl.FreakazoidMapper\TextMetal.Middleware.Data.Impl.FreakazoidMapper.csproj">
+      <Project>{91B2496C-9D84-4CA8-8D34-3499C7E50D27}</Project>
+      <Name>TextMetal.Middleware.Data.Impl.FreakazoidMapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Middleware.Data.Impl.MicrosoftLinq\TextMetal.Middleware.Data.Impl.MicrosoftLinq.csproj">
+      <Project>{68424441-503d-463d-8d2b-e697a3568601}</Project>
+      <Name>TextMetal.Middleware.Data.Impl.MicrosoftLinq</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Middleware.Data\TextMetal.Middleware.Data.csproj">
+      <Project>{e41e2352-4249-458e-b4f2-dbdf9b564bf5}</Project>
+      <Name>TextMetal.Middleware.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Middleware.Solder\TextMetal.Middleware.Solder.csproj">
+      <Project>{3b0efc3c-aa91-4fb4-b2ee-bd8727230a94}</Project>
+      <Name>TextMetal.Middleware.Solder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Middleware.Testing\TextMetal.Middleware.Testing.csproj">
+      <Project>{3155f5f3-7b0b-4b3b-b5bc-11df80fe2148}</Project>
+      <Name>TextMetal.Middleware.Testing</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

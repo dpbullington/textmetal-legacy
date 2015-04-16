@@ -10,10 +10,10 @@ using System.Data.Common;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using LeastViable.Common.Fascades.AdoNet;
-using LeastViable.Common.Fascades.AdoNet.UoW;
-using LeastViable.Common.Fascades.Utilities;
-using LeastViable.Common.Strategies.Serialization;
+using TextMetal.Middleware.Common.Fascades.AdoNet;
+using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
+using TextMetal.Middleware.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Strategies.Serialization;
 
 using TextMetal.Framework.Core;
 

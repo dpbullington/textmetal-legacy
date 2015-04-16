@@ -38,6 +38,12 @@
     <DocumentationFile>bin\Release\TextMetal.Framework.IntegrationTests.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NMock3">
+      <HintPath>..\..\lib\NMock3\NMock3.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\lib\NUnit\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
     </Reference>
@@ -58,6 +64,10 @@
     <ProjectReference Include="..\TextMetal.Framework\TextMetal.Framework.csproj">
       <Project>{2ca91424-7dd3-4e93-b6e4-f296d9d07716}</Project>
       <Name>TextMetal.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextMetal.Middleware.Testing\TextMetal.Middleware.Testing.csproj">
+      <Project>{3155F5F3-7B0B-4B3B-B5BC-11DF80FE2148}</Project>
+      <Name>TextMetal.Middleware.Testing</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

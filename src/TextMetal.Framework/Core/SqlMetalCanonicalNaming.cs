@@ -7,7 +7,7 @@ using System;
 using System.Globalization;
 using System.Text;
 
-using LeastViable.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.Core
 {

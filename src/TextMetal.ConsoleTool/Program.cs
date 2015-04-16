@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-using LeastViable.Common.Fascades.Application;
-using LeastViable.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Fascades.Application;
+using TextMetal.Middleware.Common.Fascades.Utilities;
 
 using TextMetal.Framework.Hosting.Tool;
 

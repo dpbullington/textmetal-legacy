@@ -9,7 +9,7 @@ using System.IO;
 using System.Net.Mail;
 using System.Xml;
 
-using LeastViable.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Fascades.Utilities;
 
 using TextMetal.Framework.Core;
 using TextMetal.Framework.InputOutput;

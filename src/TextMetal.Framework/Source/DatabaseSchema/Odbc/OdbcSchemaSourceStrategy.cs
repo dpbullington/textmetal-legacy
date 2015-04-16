@@ -10,8 +10,8 @@ using System.Data.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
-using LeastViable.Common.Fascades.AdoNet.UoW;
-using LeastViable.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
+using TextMetal.Middleware.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 {

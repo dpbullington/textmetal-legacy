@@ -7,8 +7,8 @@ $lib_dir = ".\lib"
 $src_dir = ".\src"
 $output_base_dir = ".\output"
 $cover_exe = "$Env:USERPROFILE\AppData\Local\JetBrains\Installations\dotCover01\dotCover.exe"
-$exclude_filter = "-:TestingConsoleTool;-:LeastViable.Testing;-:TextMetal.Framework.UnitTests;"
-$nunit_exe = ".\$lib_dir\LeastViable\TestingConsoleTool.exe"
+$exclude_filter = "-:nunit-console;-:TextMetal.Middleware.Testing;-:TextMetal.Framework.UnitTests;"
+$nunit_exe = ".\$lib_dir\NUnit\nunit-console.exe"
 
 echo "The operation is starting..."
 
@@ -16,7 +16,7 @@ echo "The operation is starting..."
 	/TargetExecutable="$nunit_exe" `
 	/TargetArguments="/run:TextMetal.Framework.UnitTests .\$src_dir\TextMetal.Framework.UnitTests\bin\Debug\TextMetal.Framework.UnitTests.dll" `
 	/TargetWorkingDir="" /ReportType=HTML `
-	/Output="$output_base_dir\LeastViable\ut_cov_rpt.html"
+	/Output="$output_base_dir\TextMetal.Framework.UnitTests\ut_cov_rpt.html"
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 { echo "An error occurred during the operation."; return; }
