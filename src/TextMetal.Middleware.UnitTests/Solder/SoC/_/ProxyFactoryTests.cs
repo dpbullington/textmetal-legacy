@@ -6,13 +6,15 @@
 using System;
 using System.Reflection;
 
+using NMock;
+
+using NUnit.Framework;
+
 using TextMetal.Middleware.Solder.SoC;
 using TextMetal.Middleware.Testing;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
-using NMock;
-
-using NUnit.Framework;
+using IMockObject = TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject;
 
 namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 {
@@ -34,7 +36,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 		{
 			MockFactory mockFactory;
 			MockProxyFactory factory;
-			TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject objectContract;
+			IMockObject objectContract;
 			MockProxyFactory.IInvokeDynamicFactory mockInvokeDynamicFactory;
 			IDynamicInvocation mockDynamicInvocation;
 			MethodInfo invokedMethodInfo;
@@ -45,7 +47,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 
 			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IDisposable>.GetLastMemberInfo(exec => exec.Dispose());
 
-			Expect.Once.On(mockInvokeDynamicFactory).Method("GetDynamicInvoker").With("myCacheKey", typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject)).Will(Return.Value(mockDynamicInvocation));
+			Expect.Once.On(mockInvokeDynamicFactory).Method("GetDynamicInvoker").With("myCacheKey", typeof(IMockObject)).Will(Return.Value(mockDynamicInvocation));
 
 			factory = new MockProxyFactory();
 
@@ -63,7 +65,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 		public void ShouldCreateInstanceWithCacheKeyTest()
 		{
 			MockProxyFactory factory;
-			TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject objectContract;
+			IMockObject objectContract;
 
 			factory = new MockProxyFactory();
 
@@ -83,7 +85,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 		{
 			MockFactory mockFactory;
 			MockProxyFactory factory;
-			TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject objectContract;
+			IMockObject objectContract;
 			IDynamicInvocation mockDynamicInvocation;
 
 			mockFactory = new MockFactory();
@@ -103,7 +105,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 		{
 			MockFactory mockFactory;
 			MockProxyFactory factory;
-			TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject objectContract0, objectContract1, objectContract2, objectContract3;
+			IMockObject objectContract0, objectContract1, objectContract2, objectContract3;
 			MockProxyFactory.IInvokeDynamicFactory mockInvokeDynamicFactory;
 			IDynamicInvocation mockDynamicInvocation;
 			MethodInfo invokedMethodInfo;
@@ -114,8 +116,8 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 
 			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IDisposable>.GetLastMemberInfo(exec => exec.Dispose());
 
-			Expect.Exactly(1).On(mockInvokeDynamicFactory).Method("GetDynamicInvoker").With("myCacheKey", typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject)).Will(Return.Value(mockDynamicInvocation));
-			Expect.Exactly(1).On(mockInvokeDynamicFactory).Method("GetDynamicInvoker").With("myCacheKey_different", typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject)).Will(Return.Value(mockDynamicInvocation));
+			Expect.Exactly(1).On(mockInvokeDynamicFactory).Method("GetDynamicInvoker").With("myCacheKey", typeof(IMockObject)).Will(Return.Value(mockDynamicInvocation));
+			Expect.Exactly(1).On(mockInvokeDynamicFactory).Method("GetDynamicInvoker").With("myCacheKey_different", typeof(IMockObject)).Will(Return.Value(mockDynamicInvocation));
 
 			factory = new MockProxyFactory();
 
@@ -149,7 +151,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 		{
 			MockFactory mockFactory;
 			MockProxyFactory factory;
-			TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject objectContract0, objectContract1, objectContract2;
+			IMockObject objectContract0, objectContract1, objectContract2;
 			MockProxyFactory.IInvokeDynamicFactory mockInvokeDynamicFactory;
 			IDynamicInvocation mockDynamicInvocation;
 			MethodInfo invokedMethodInfo;
@@ -160,7 +162,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 
 			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IDisposable>.GetLastMemberInfo(exec => exec.Dispose());
 
-			Expect.Once.On(mockInvokeDynamicFactory).Method("GetDynamicInvoker").With("myCacheKey", typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject)).Will(Return.Value(mockDynamicInvocation));
+			Expect.Once.On(mockInvokeDynamicFactory).Method("GetDynamicInvoker").With("myCacheKey", typeof(IMockObject)).Will(Return.Value(mockDynamicInvocation));
 
 			factory = new MockProxyFactory();
 
@@ -249,7 +251,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 		{
 			MockFactory mockFactory;
 			MockProxyFactory factory;
-			TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject objectContract;
+			IMockObject objectContract;
 			MockProxyFactory.IInvokeDynamicFactory mockInvokeDynamicFactory;
 
 			mockFactory = new MockFactory();
@@ -268,7 +270,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 		{
 			MockFactory mockFactory;
 			MockProxyFactory factory;
-			TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject objectContract;
+			IMockObject objectContract;
 			MockProxyFactory.IInvokeDynamicFactory mockInvokeDynamicFactory;
 
 			mockFactory = new MockFactory();
@@ -287,7 +289,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 		{
 			MockFactory mockFactory;
 			MockProxyFactory factory;
-			TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject objectContract;
+			IMockObject objectContract;
 			IDynamicInvocation mockDynamicInvocation;
 
 			mockFactory = new MockFactory();
@@ -305,7 +307,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 		{
 			MockFactory mockFactory;
 			MockProxyFactory factory;
-			TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject objectContract;
+			IMockObject objectContract;
 			MockProxyFactory.IInvokeDynamicFactory mockInvokeDynamicFactory;
 			IDynamicInvocation mockDynamicInvocation;
 			MethodInfo invokedMethodInfo;
@@ -316,7 +318,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 
 			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IDisposable>.GetLastMemberInfo(exec => exec.Dispose());
 
-			Expect.Once.On(mockInvokeDynamicFactory).Method("GetDynamicInvoker").With("myCacheKey", typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject)).Will(Return.Value(mockDynamicInvocation));
+			Expect.Once.On(mockInvokeDynamicFactory).Method("GetDynamicInvoker").With("myCacheKey", typeof(IMockObject)).Will(Return.Value(mockDynamicInvocation));
 
 			factory = new MockProxyFactory();
 

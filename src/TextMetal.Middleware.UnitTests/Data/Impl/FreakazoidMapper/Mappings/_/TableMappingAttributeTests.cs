@@ -5,9 +5,9 @@
 
 using System;
 
-using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Mappings;
-
 using NUnit.Framework;
+
+using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Mappings;
 
 namespace TextMetal.Middleware.UnitTests.Data.Impl.FreakazoidMapper.Mappings._
 {

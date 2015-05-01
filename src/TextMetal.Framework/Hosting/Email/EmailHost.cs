@@ -9,13 +9,12 @@ using System.IO;
 using System.Net.Mail;
 using System.Xml;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
-
 using TextMetal.Framework.Core;
 using TextMetal.Framework.InputOutput;
 using TextMetal.Framework.Template;
 using TextMetal.Framework.Tokenization;
 using TextMetal.Framework.XmlDialect;
+using TextMetal.Middleware.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.Hosting.Email
 {

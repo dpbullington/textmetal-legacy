@@ -5,8 +5,6 @@
 
 using System;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
-
 using TextMetal.Framework.Associative;
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Debugger;
@@ -15,6 +13,7 @@ using TextMetal.Framework.Sort;
 using TextMetal.Framework.Template;
 using TextMetal.Framework.Tokenization;
 using TextMetal.Framework.XmlDialect;
+using TextMetal.Middleware.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.Hosting
 {

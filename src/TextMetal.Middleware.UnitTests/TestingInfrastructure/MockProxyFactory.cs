@@ -23,7 +23,7 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 
 		#region Methods/Operators
 
-		public TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject CreateInstance(string cacheKey)
+		public IMockObject CreateInstance(string cacheKey)
 		{
 			//if (base.Disposed)
 			//    throw new ObjectDisposedException(typeof(MockProxyFactory).FullName);
@@ -31,14 +31,14 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 			return this.CreateInstance(cacheKey, new MockInvokeDynamicFactory());
 		}
 
-		public TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject CreateInstance(string cacheKey, IInvokeDynamicFactory invokeDynamicFactory)
+		public IMockObject CreateInstance(string cacheKey, IInvokeDynamicFactory invokeDynamicFactory)
 		{
 			return this.CreateInstance(cacheKey, invokeDynamicFactory, false);
 		}
 
-		public TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject CreateInstance(string cacheKey, IInvokeDynamicFactory invokeDynamicFactory, bool skipCacheCheck)
+		public IMockObject CreateInstance(string cacheKey, IInvokeDynamicFactory invokeDynamicFactory, bool skipCacheCheck)
 		{
-			TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject objectContract;
+			IMockObject objectContract;
 			KeyValuePair<Type, string> keyValuePair;
 			IDynamicInvocation dynamicInvocation = null;
 			Type objectType;
@@ -52,11 +52,11 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 			if ((object)invokeDynamicFactory == null)
 				throw new ArgumentNullException("invokeDynamicFactory");
 
-			keyValuePair = new KeyValuePair<Type, string>(typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject), cacheKey);
+			keyValuePair = new KeyValuePair<Type, string>(typeof(IMockObject), cacheKey);
 
 			if (!skipCacheCheck && !this.IsInstanceInCache(keyValuePair))
 			{
-				objectType = typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject);
+				objectType = typeof(IMockObject);
 
 				// spin up an (Wcf)Service instance
 				dynamicInvocation = invokeDynamicFactory.GetDynamicInvoker(cacheKey, objectType);
@@ -67,9 +67,9 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 			return objectContract;
 		}
 
-		public TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject CreateInstance(IDynamicInvocation dynamicInvocation)
+		public IMockObject CreateInstance(IDynamicInvocation dynamicInvocation)
 		{
-			TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject proxy;
+			IMockObject proxy;
 
 			if (this.Disposed)
 				throw new ObjectDisposedException(typeof(MockProxyFactory).FullName);
@@ -114,7 +114,7 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 			#endregion
 		}
 
-		public class MockObject : TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject, IDisposable
+		public class MockObject : IMockObject, IDisposable
 		{
 			#region Properties/Indexers/Events
 

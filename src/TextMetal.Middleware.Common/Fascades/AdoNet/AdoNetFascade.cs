@@ -325,6 +325,9 @@ namespace TextMetal.Middleware.Common.Fascades.AdoNet
 							key = dataReader.GetName(index);
 							value = dataReader.GetValue(index).ChangeType<object>();
 
+							if (obj.ContainsKey(key))
+								key = string.Format("Column_{0:0000}", index);
+
 							obj.Add(key, value);
 						}
 

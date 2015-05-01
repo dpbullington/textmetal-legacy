@@ -7,9 +7,10 @@
 -- DECLARE @SchemaName [nvarchar](255); SET @SchemaName = 'testcases'; DECLARE @TableName [nvarchar](255); SET @TableName = 'tab_with_composite_primary_key_no_identity';
 SELECT
 	sys_c.[column_id] AS [ColumnOrdinal],
+	CASE WHEN LEN(ISNULL(sys_c.[name], '')) = 0 THEN 1 ELSE 0 END AS [ColumnIsAnonymous],
 	sys_s.[name] AS [SchemaName],
 	sys_t.[name] AS [TableName],
-	sys_c.[name] AS [ColumnName],
+	CASE WHEN LEN(ISNULL(sys_c.[name], '')) = 0 THEN ('Column_' + REPLICATE('0', 4 - LEN(CAST(sys_c.[column_id] AS NVARCHAR))) + CAST(sys_c.[column_id] AS NVARCHAR)) ELSE sys_c.[name] END AS [ColumnName],
 	sys_c.[is_nullable] AS [ColumnNullable],
 	sys_c.[max_length] AS [ColumnSize],
 	sys_c.[precision] AS [ColumnPrecision],

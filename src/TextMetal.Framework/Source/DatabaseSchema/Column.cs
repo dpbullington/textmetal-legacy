@@ -4,7 +4,9 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Xml.Serialization;
 
 using TextMetal.Middleware.Common.Fascades.Utilities;
@@ -285,10 +287,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			}
 			set
 			{
-				if (this.ColumnIsAnonymous = DataTypeFascade.Instance.IsNullOrEmpty(value))
-					this.columnName = string.Format("Column_{0:0000}", this.ColumnOrdinal);
-				else
-					this.columnName = value;
+				this.columnName = value;
 			}
 		}
 
@@ -641,6 +640,61 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			{
 				this.columnSqlType = value;
 			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		public static IEnumerable<IDictionary<string, object>> FixupDuplicateColumns(IEnumerable<IDictionary<string, object>> records)
+		{
+			const string COLUMN_NAME_RECORD_KEY = "ColumnName";
+			const string COLUMN_ORDINAL_RECORD_KEY = "ColumnOrdinal";
+			const string COLUMN_IS_ANONYMOUS_RECORD_KEY = "ColumnIsAnonymous";
+			object columnOrdinal;
+			object columnName;
+			bool isDuplicateColumn;
+			bool isAnonymousColumn;
+
+			if ((object)records == null)
+				throw new ArgumentNullException("records");
+
+			IEnumerable<IGrouping<string, IDictionary<string, object>>> groups;
+
+			groups = records.GroupBy(record => (string)record[COLUMN_NAME_RECORD_KEY]);
+
+			foreach (var group in groups)
+			{
+				isDuplicateColumn = group.Count() > 1;
+
+				foreach (IDictionary<string, object> record in group)
+				{
+					record.TryGetValue(COLUMN_ORDINAL_RECORD_KEY, out columnOrdinal);
+					record.TryGetValue(COLUMN_NAME_RECORD_KEY, out columnName);
+
+					isAnonymousColumn = DataTypeFascade.Instance.IsNullOrEmpty(columnName.ChangeType<string>());
+
+					if (isAnonymousColumn || isDuplicateColumn)
+					{
+						if ((object)columnOrdinal != null)
+							columnName = string.Format("Column_{0:0000}", columnOrdinal.ChangeType<int>());
+						else
+							columnName = string.Format("Column_{0:N}", Guid.NewGuid());
+
+						if (record.ContainsKey(COLUMN_NAME_RECORD_KEY))
+							record.Remove(COLUMN_NAME_RECORD_KEY);
+
+						record.Add(COLUMN_NAME_RECORD_KEY, columnName);
+
+						if (record.ContainsKey(COLUMN_IS_ANONYMOUS_RECORD_KEY))
+							record.Remove(COLUMN_IS_ANONYMOUS_RECORD_KEY);
+
+						record.Add(COLUMN_IS_ANONYMOUS_RECORD_KEY, true);
+					}
+				}
+			}
+
+			return records;
 		}
 
 		#endregion

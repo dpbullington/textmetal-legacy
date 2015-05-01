@@ -8,11 +8,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
-
 using Microsoft.VisualBasic.FileIO;
 
 using TextMetal.Framework.Associative;
+using TextMetal.Middleware.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.Source.Primative
 {

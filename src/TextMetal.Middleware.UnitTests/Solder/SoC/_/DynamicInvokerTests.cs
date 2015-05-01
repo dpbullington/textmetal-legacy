@@ -6,10 +6,10 @@
 using System;
 using System.Reflection;
 
+using NUnit.Framework;
+
 using TextMetal.Middleware.Testing;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
-
-using NUnit.Framework;
 
 namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 {
@@ -81,8 +81,8 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 			object returnValue;
 
 			proxyInstance = new object();
-			proxiedType = typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject);
-			invokedMethodInfo = (MethodInfo)MemberInfoProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>.GetLastMemberInfo(exec => exec.Equals(null));
+			proxiedType = typeof(IMockObject);
+			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec => exec.Equals(null));
 			invocationParameters = new object[] { null };
 
 			mockDynamicInvoker = new MockDynamicInvoker();
@@ -121,8 +121,8 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 			object[] invocationParameters;
 
 			proxyInstance = new object();
-			proxiedType = typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject);
-			invokedMethodInfo = (MethodInfo)MemberInfoProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>.GetLastMemberInfo(exec => exec.Equals(null));
+			proxiedType = typeof(IMockObject);
+			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec => exec.Equals(null));
 			invocationParameters = new object[] { };
 
 			mockDynamicInvoker = new MockDynamicInvoker();
@@ -140,8 +140,8 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 			object[] invocationParameters;
 
 			proxyInstance = new object();
-			proxiedType = typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject);
-			invokedMethodInfo = (MethodInfo)MemberInfoProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>.GetLastMemberInfo(exec => exec.GetHashCode());
+			proxiedType = typeof(IMockObject);
+			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec => exec.GetHashCode());
 			invocationParameters = new object[] { 0 };
 
 			mockDynamicInvoker = new MockDynamicInvoker();
@@ -159,8 +159,8 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 			object[] invocationParameters;
 
 			proxyInstance = new object();
-			proxiedType = typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject);
-			invokedMethodInfo = (MethodInfo)MemberInfoProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>.GetLastMemberInfo(exec => exec.GetType());
+			proxiedType = typeof(IMockObject);
+			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec => exec.GetType());
 			invocationParameters = new object[] { 0 };
 
 			mockDynamicInvoker = new MockDynamicInvoker();
@@ -178,8 +178,8 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 			object[] invocationParameters;
 
 			proxyInstance = new object();
-			proxiedType = typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject);
-			invokedMethodInfo = (MethodInfo)MemberInfoProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>.GetLastMemberInfo(exec => exec.ToString());
+			proxiedType = typeof(IMockObject);
+			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec => exec.ToString());
 			invocationParameters = new object[] { 0 };
 
 			mockDynamicInvoker = new MockDynamicInvoker();
@@ -197,7 +197,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 			object[] invocationParameters;
 
 			proxyInstance = new object();
-			proxiedType = typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject);
+			proxiedType = typeof(IMockObject);
 			invokedMethodInfo = (MethodInfo)typeof(object).GetMethod("MemberwiseClone", BindingFlags.Instance | BindingFlags.NonPublic);
 			invocationParameters = new object[] { };
 
@@ -216,8 +216,8 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 			object[] invocationParameters;
 
 			proxyInstance = new object();
-			proxiedType = typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject);
-			invokedMethodInfo = (MethodInfo)MemberInfoProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>.GetLastMemberInfo(exec => exec.GetType());
+			proxiedType = typeof(IMockObject);
+			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec => exec.GetType());
 			invocationParameters = null;
 
 			mockDynamicInvoker = new MockDynamicInvoker();
@@ -235,8 +235,8 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 			object[] invocationParameters;
 
 			proxyInstance = new object();
-			proxiedType = typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject);
-			invokedMethodInfo = (MethodInfo)MemberInfoProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>.GetLastMemberInfo(exec => exec.ToString());
+			proxiedType = typeof(IMockObject);
+			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec => exec.ToString());
 			invocationParameters = null;
 
 			mockDynamicInvoker = new MockDynamicInvoker();
@@ -255,7 +255,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 
 			proxyInstance = new object();
 			proxiedType = null;
-			invokedMethodInfo = (MethodInfo)MemberInfoProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>.GetLastMemberInfo(exec => exec.ToString());
+			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec => exec.ToString());
 			invocationParameters = new object[] { };
 
 			mockDynamicInvoker = new MockDynamicInvoker();
@@ -273,7 +273,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 			object[] invocationParameters;
 
 			proxyInstance = new object();
-			proxiedType = typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject);
+			proxiedType = typeof(IMockObject);
 			invokedMethodInfo = null;
 			invocationParameters = new object[] { };
 
@@ -292,7 +292,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 			object[] invocationParameters;
 
 			proxyInstance = new object();
-			proxiedType = typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject);
+			proxiedType = typeof(IMockObject);
 			invokedMethodInfo = null;
 			invocationParameters = new object[] { };
 
@@ -312,7 +312,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 
 			proxyInstance = new object();
 			proxiedType = null;
-			invokedMethodInfo = (MethodInfo)MemberInfoProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>.GetLastMemberInfo(exec => exec.GetType());
+			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec => exec.GetType());
 			invocationParameters = new object[] { };
 
 			mockDynamicInvoker = new MockDynamicInvoker();
@@ -330,8 +330,8 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 			object[] invocationParameters;
 
 			proxyInstance = null;
-			proxiedType = typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject);
-			invokedMethodInfo = (MethodInfo)MemberInfoProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>.GetLastMemberInfo(exec => exec.GetType());
+			proxiedType = typeof(IMockObject);
+			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec => exec.GetType());
 			invocationParameters = new object[] { };
 
 			mockDynamicInvoker = new MockDynamicInvoker();
@@ -349,8 +349,8 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 			object[] invocationParameters;
 
 			proxyInstance = null;
-			proxiedType = typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject);
-			invokedMethodInfo = (MethodInfo)MemberInfoProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>.GetLastMemberInfo(exec => exec.ToString());
+			proxiedType = typeof(IMockObject);
+			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec => exec.ToString());
 			invocationParameters = new object[] { };
 
 			mockDynamicInvoker = new MockDynamicInvoker();
@@ -368,8 +368,8 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 			object returnValue;
 
 			proxyInstance = new object();
-			proxiedType = typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject);
-			invokedMethodInfo = (MethodInfo)MemberInfoProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>.GetLastMemberInfo(exec => exec.GetHashCode());
+			proxiedType = typeof(IMockObject);
+			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec => exec.GetHashCode());
 			invocationParameters = new object[] { };
 
 			mockDynamicInvoker = new MockDynamicInvoker();
@@ -389,14 +389,14 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 			object returnValue;
 
 			proxyInstance = new object();
-			proxiedType = typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject);
-			invokedMethodInfo = (MethodInfo)MemberInfoProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>.GetLastMemberInfo(exec => exec.GetType());
+			proxiedType = typeof(IMockObject);
+			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec => exec.GetType());
 			invocationParameters = new object[] { };
 
 			mockDynamicInvoker = new MockDynamicInvoker();
 			returnValue = mockDynamicInvoker.BypassInvokeOnObject(proxiedType, invokedMethodInfo, proxyInstance, invocationParameters);
 
-			Assert.AreEqual(typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject), returnValue);
+			Assert.AreEqual(typeof(IMockObject), returnValue);
 		}
 
 		[Test]
@@ -423,14 +423,14 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 			object returnValue;
 
 			proxyInstance = new object();
-			proxiedType = typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject);
-			invokedMethodInfo = (MethodInfo)MemberInfoProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>.GetLastMemberInfo(exec => exec.ToString());
+			proxiedType = typeof(IMockObject);
+			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec => exec.ToString());
 			invocationParameters = new object[] { };
 
 			mockDynamicInvoker = new MockDynamicInvoker();
 			returnValue = mockDynamicInvoker.BypassInvokeOnObject(proxiedType, invokedMethodInfo, proxyInstance, invocationParameters);
 
-			Assert.AreEqual(typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject).FullName, returnValue);
+			Assert.AreEqual(typeof(IMockObject).FullName, returnValue);
 		}
 
 		[Test]
@@ -444,14 +444,14 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC._
 			object returnValue;
 
 			proxyInstance = new object();
-			proxiedType = typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject);
-			invokedMethodInfo = (MethodInfo)MemberInfoProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>.GetLastMemberInfo(exec => exec.ToString());
+			proxiedType = typeof(IMockObject);
+			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec => exec.ToString());
 			invocationParameters = new object[] { };
 
 			mockDynamicInvoker = new MockDynamicInvoker();
 			returnValue = mockDynamicInvoker.Invoke(proxiedType, invokedMethodInfo, proxyInstance, invocationParameters);
 
-			Assert.AreEqual(typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject).FullName, returnValue);
+			Assert.AreEqual(typeof(IMockObject).FullName, returnValue);
 		}
 
 		#endregion

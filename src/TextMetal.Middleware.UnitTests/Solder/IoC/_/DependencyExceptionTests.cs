@@ -5,9 +5,9 @@
 
 using System;
 
-using TextMetal.Middleware.Solder.IoC;
-
 using NUnit.Framework;
+
+using TextMetal.Middleware.Solder.IoC;
 
 namespace TextMetal.Middleware.UnitTests.Solder.IoC._
 {

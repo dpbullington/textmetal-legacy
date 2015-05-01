@@ -8,10 +8,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
-
 using TextMetal.Framework.Core;
 using TextMetal.Framework.XmlDialect;
+using TextMetal.Middleware.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.InputOutput
 {

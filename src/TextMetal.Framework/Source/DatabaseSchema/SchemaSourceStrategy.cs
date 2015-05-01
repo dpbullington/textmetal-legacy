@@ -10,12 +10,11 @@ using System.Data.Common;
 using System.Linq;
 using System.Text.RegularExpressions;
 
+using TextMetal.Framework.Core;
 using TextMetal.Middleware.Common.Fascades.AdoNet;
 using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
 using TextMetal.Middleware.Common.Fascades.Utilities;
 using TextMetal.Middleware.Common.Strategies.Serialization;
-
-using TextMetal.Framework.Core;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
@@ -484,7 +483,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 														{
 															if ((object)dictEnumColumn != null)
 															{
-																foreach (var dictDataColumn in dictEnumColumn)
+																foreach (var dictDataColumn in Column.FixupDuplicateColumns(dictEnumColumn))
 																{
 																	TableColumn column;
 
@@ -492,6 +491,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	column.ColumnOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataColumn["ColumnOrdinal"]);
 																	column.ColumnName = DataTypeFascade.Instance.ChangeType<string>(dictDataColumn["ColumnName"]);
+																	column.ColumnIsAnonymous = DataTypeFascade.Instance.ChangeType<bool>(dictDataColumn["ColumnIsAnonymous"]);
 																	column.ColumnCSharpIsAnonymousLiteral = column.ColumnIsAnonymous.ToString().ToLower();
 																	column.ColumnNullable = DataTypeFascade.Instance.ChangeType<bool>(dictDataColumn["ColumnNullable"]);
 																	column.ColumnSize = DataTypeFascade.Instance.ChangeType<int>(dictDataColumn["ColumnSize"]);
@@ -804,7 +804,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 														{
 															if ((object)dictEnumColumn != null)
 															{
-																foreach (var dictDataColumn in dictEnumColumn)
+																foreach (var dictDataColumn in Column.FixupDuplicateColumns(dictEnumColumn))
 																{
 																	ViewColumn column;
 
@@ -812,6 +812,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	column.ColumnOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataColumn["ColumnOrdinal"]);
 																	column.ColumnName = DataTypeFascade.Instance.ChangeType<string>(dictDataColumn["ColumnName"]);
+																	column.ColumnIsAnonymous = DataTypeFascade.Instance.ChangeType<bool>(dictDataColumn["ColumnIsAnonymous"]);
 																	column.ColumnCSharpIsAnonymousLiteral = column.ColumnIsAnonymous.ToString().ToLower();
 																	column.ColumnNullable = DataTypeFascade.Instance.ChangeType<bool>(dictDataColumn["ColumnNullable"]);
 																	column.ColumnSize = DataTypeFascade.Instance.ChangeType<int>(dictDataColumn["ColumnSize"]);
@@ -1051,7 +1052,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	column.ColumnOrdinal = columnParameter.ParameterOrdinal;
 																	column.ColumnName = columnParameter.ParameterName;
-																	column.ColumnCSharpIsAnonymousLiteral = column.ColumnIsAnonymous.ToString().ToLower();
+																	column.ColumnCSharpIsAnonymousLiteral = column.ColumnIsAnonymous.ToString().ToLower(); // should be false always
 																	column.ColumnNullable = columnParameter.ParameterNullable;
 																	column.ColumnSize = columnParameter.ParameterSize;
 																	column.ColumnPrecision = columnParameter.ParameterPrecision;
@@ -1124,7 +1125,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																				procedureResultset = new ProcedureResultset();
 																				procedureResultset.ResultsetIndex = dictEnumMetadataGrouping.Key;
 
-																				foreach (var dictDataMetadata in dictEnumMetadataGrouping)
+																				foreach (var dictDataMetadata in Column.FixupDuplicateColumns(dictEnumMetadataGrouping))
 																				{
 																					ProcedureColumn column;
 
@@ -1132,6 +1133,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																					column.ColumnOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.ColumnOrdinal]);
 																					column.ColumnName = DataTypeFascade.Instance.ChangeType<string>(dictDataMetadata[SchemaTableColumn.ColumnName]);
+																					column.ColumnIsAnonymous = DataTypeFascade.Instance.ChangeType<bool>(dictDataMetadata["ColumnIsAnonymous"]);
 																					column.ColumnCSharpIsAnonymousLiteral = column.ColumnIsAnonymous.ToString().ToLower();
 																					column.ColumnSize = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.ColumnSize]);
 																					column.ColumnPrecision = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.NumericPrecision]);

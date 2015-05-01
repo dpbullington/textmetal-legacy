@@ -7,9 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
-
 using TextMetal.Framework.Core;
+using TextMetal.Middleware.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.InputOutput
 {

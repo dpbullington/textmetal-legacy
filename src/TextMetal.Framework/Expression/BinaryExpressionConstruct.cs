@@ -6,11 +6,10 @@
 using System;
 using System.Linq;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
-
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Tokenization;
 using TextMetal.Framework.XmlDialect;
+using TextMetal.Middleware.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.Expression
 {

@@ -5,12 +5,12 @@
 
 using System;
 
-using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
-using TextMetal.Middleware.Data.Impl.MicrosoftLinq;
-
 using NMock;
 
 using NUnit.Framework;
+
+using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
+using TextMetal.Middleware.Data.Impl.MicrosoftLinq;
 
 namespace TextMetal.Middleware.UnitTests.Data.Impl.MicrosoftLinq._
 {

@@ -100,9 +100,9 @@ namespace TextMetal.Framework.Core
 		/// <summary>
 		/// SqlMetal specific.
 		/// </summary>
-		/// <param name="schemaName"></param>
-		/// <param name="objectName"></param>
-		/// <returns></returns>
+		/// <param name="schemaName"> </param>
+		/// <param name="objectName"> </param>
+		/// <returns> </returns>
 		public string GetObjectNamePascalCase(string schemaName, string objectName)
 		{
 			string value;

@@ -9,9 +9,9 @@ using System.Threading;
 using System.Web;
 using System.Web.Hosting;
 
-using TextMetal.Middleware.Common.Strategies.ContextualStorage;
-
 using NUnit.Framework;
+
+using TextMetal.Middleware.Common.Strategies.ContextualStorage;
 
 namespace TextMetal.Middleware.UnitTests.Common.Strategies.ContextualStorage._
 {

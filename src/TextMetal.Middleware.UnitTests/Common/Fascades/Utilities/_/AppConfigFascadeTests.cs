@@ -8,9 +8,9 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Runtime.InteropServices;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
-
 using NUnit.Framework;
+
+using TextMetal.Middleware.Common.Fascades.Utilities;
 
 namespace TextMetal.Middleware.UnitTests.Common.Fascades.Utilities._
 {

@@ -7,10 +7,9 @@ using System;
 using System.IO;
 using System.Text;
 
+using TextMetal.Framework.XmlDialect;
 using TextMetal.Middleware.Common.Fascades.Utilities;
 using TextMetal.Middleware.Common.Strategies.Serialization;
-
-using TextMetal.Framework.XmlDialect;
 
 namespace TextMetal.Framework.InputOutput
 {

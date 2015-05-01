@@ -6,9 +6,9 @@
 using System;
 using System.IO;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
-
 using Newtonsoft.Json;
+
+using TextMetal.Middleware.Common.Fascades.Utilities;
 
 namespace TextMetal.Middleware.Common.Strategies.Serialization
 {

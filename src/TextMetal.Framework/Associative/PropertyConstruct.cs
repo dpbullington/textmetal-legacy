@@ -6,10 +6,9 @@
 using System;
 using System.Collections;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
-
 using TextMetal.Framework.Core;
 using TextMetal.Framework.XmlDialect;
+using TextMetal.Middleware.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.Associative
 {

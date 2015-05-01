@@ -9,13 +9,12 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
-
 using TextMetal.Framework.Core;
 using TextMetal.Framework.InputOutput;
 using TextMetal.Framework.Template;
 using TextMetal.Framework.Tokenization;
 using TextMetal.Framework.XmlDialect;
+using TextMetal.Middleware.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.Hosting.Tool
 {

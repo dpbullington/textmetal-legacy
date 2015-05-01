@@ -9,10 +9,9 @@ using System.IO;
 using System.Linq;
 using System.Xml.Schema;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
-
 using TextMetal.Framework.Associative;
 using TextMetal.Framework.Core;
+using TextMetal.Middleware.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.Source.Primative
 {

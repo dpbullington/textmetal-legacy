@@ -8,15 +8,16 @@ using System.Reflection;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Messaging;
 
-using TextMetal.Middleware.Solder.SoC;
-using TextMetal.Middleware.Solder.SoC.RemotingImpl;
-using TextMetal.Middleware.Testing;
-using TextMetal.Middleware.UnitTests.TestingInfrastructure;
-
 using NMock;
 using NMock.Matchers;
 
 using NUnit.Framework;
+
+using TextMetal.Middleware.Solder.SoC;
+using TextMetal.Middleware.Solder.SoC.RemotingImpl;
+using TextMetal.Middleware.Testing;
+
+using IMockObject = TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject;
 
 namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 {
@@ -37,7 +38,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 		public void ShouldCreateInstanceWithInvokeDynamicAndDisposeInnerDisposableTest()
 		{
 			MockFactory mockFactory;
-			DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject> dynamicInvokerRealProxy;
+			DynamicInvokerRealProxy<IMockObject> dynamicInvokerRealProxy;
 			IDynamicInvocation mockDynamicInvocation;
 
 			mockFactory = new MockFactory();
@@ -45,7 +46,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 
 			Expect.Once.On(mockDynamicInvocation).Method("Dispose").WithNoArguments();
 
-			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>(mockDynamicInvocation);
+			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<IMockObject>(mockDynamicInvocation);
 			Assert.IsFalse(dynamicInvokerRealProxy.Disposed);
 			Assert.IsNotNull(dynamicInvokerRealProxy);
 
@@ -60,7 +61,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 		public void ShouldFailOnDisposedInvokeTest()
 		{
 			MockFactory mockFactory;
-			DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject> dynamicInvokerRealProxy;
+			DynamicInvokerRealProxy<IMockObject> dynamicInvokerRealProxy;
 			IDynamicInvocation mockDynamicInvocation;
 			IMethodCallMessage mockMessage;
 			MethodInfo invokedMethodInfo;
@@ -73,7 +74,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 
 			Expect.Once.On(mockDynamicInvocation).Method("Dispose").WithNoArguments();
 
-			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>(mockDynamicInvocation);
+			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<IMockObject>(mockDynamicInvocation);
 
 			Assert.IsNotNull(dynamicInvokerRealProxy);
 
@@ -86,7 +87,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 		[ExpectedException(typeof(NotSupportedException))]
 		public void ShouldFailOnGetTypeNameTest()
 		{
-			DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject> realProxy;
+			DynamicInvokerRealProxy<IMockObject> realProxy;
 			MockFactory mockFactory;
 			IDynamicInvocation mockDynamicInvocation;
 			string value;
@@ -94,7 +95,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 			mockFactory = new MockFactory();
 			mockDynamicInvocation = mockFactory.CreateInstance<IDynamicInvocation>();
 
-			realProxy = new DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>(mockDynamicInvocation);
+			realProxy = new DynamicInvokerRealProxy<IMockObject>(mockDynamicInvocation);
 			Assert.IsNotNull(realProxy);
 
 			value = realProxy.TypeName;
@@ -105,27 +106,27 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 		public void ShouldFailOnNullInvokeDynamicCreateTest()
 		{
 			MockFactory mockFactory;
-			DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject> dynamicInvokerRealProxy;
+			DynamicInvokerRealProxy<IMockObject> dynamicInvokerRealProxy;
 			IDynamicInvocation mockDynamicInvocation;
 
 			mockFactory = new MockFactory();
 			mockDynamicInvocation = null;
 
-			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>(mockDynamicInvocation);
+			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<IMockObject>(mockDynamicInvocation);
 		}
 
 		[Test]
 		[ExpectedException(typeof(NotSupportedException))]
 		public void ShouldFailOnSetTypeNameTest()
 		{
-			DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject> realProxy;
+			DynamicInvokerRealProxy<IMockObject> realProxy;
 			MockFactory mockFactory;
 			IDynamicInvocation mockDynamicInvocation;
 
 			mockFactory = new MockFactory();
 			mockDynamicInvocation = mockFactory.CreateInstance<IDynamicInvocation>();
 
-			realProxy = new DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>(mockDynamicInvocation);
+			realProxy = new DynamicInvokerRealProxy<IMockObject>(mockDynamicInvocation);
 			Assert.IsNotNull(realProxy);
 
 			realProxy.TypeName = null;
@@ -136,7 +137,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 		public void ShouldIFailOnNullInvocationParametersInGetOutputParametersTest()
 		{
 			MockFactory mockFactory;
-			DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject> dynamicInvokerRealProxy;
+			DynamicInvokerRealProxy<IMockObject> dynamicInvokerRealProxy;
 			IDynamicInvocation mockDynamicInvocation;
 			IMethodCallMessage mockMessage;
 			MethodInfo invokedMethodInfo;
@@ -145,7 +146,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 			mockDynamicInvocation = mockFactory.CreateInstance<IDynamicInvocation>();
 			mockMessage = mockFactory.CreateInstance<IMethodCallMessage>();
 
-			invokedMethodInfo = (MethodInfo)MemberInfoProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>.GetLastMemberInfo(exec =>
+			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec =>
 																							{
 																								byte bdummy = default(byte);
 																								int idummy = default(int);
@@ -162,10 +163,10 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 			Expect.Once.On(mockMessage).GetProperty("TypeName").Will(Return.Value(null));
 			Expect.Once.On(mockMessage).GetProperty("HasVarArgs").Will(Return.Value(false));
 
-			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>(mockDynamicInvocation);
+			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<IMockObject>(mockDynamicInvocation);
 			Assert.IsNotNull(dynamicInvokerRealProxy);
 
-			Expect.Once.On(mockDynamicInvocation).Method("Invoke").With(new EqualMatcher(typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject)), new EqualMatcher(invokedMethodInfo), new EqualMatcher(dynamicInvokerRealProxy.GetTransparentProxy()), new EqualMatcher(null)).Will(Return.Value(null));
+			Expect.Once.On(mockDynamicInvocation).Method("Invoke").With(new EqualMatcher(typeof(IMockObject)), new EqualMatcher(invokedMethodInfo), new EqualMatcher(dynamicInvokerRealProxy.GetTransparentProxy()), new EqualMatcher(null)).Will(Return.Value(null));
 
 			dynamicInvokerRealProxy.Invoke(mockMessage);
 		}
@@ -175,7 +176,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 		public void ShouldIFailOnNullMethodInfoInGetOutputParametersTest()
 		{
 			MockFactory mockFactory;
-			DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject> dynamicInvokerRealProxy;
+			DynamicInvokerRealProxy<IMockObject> dynamicInvokerRealProxy;
 			IDynamicInvocation mockDynamicInvocation;
 			IMethodCallMessage mockMessage;
 			MethodInfo invokedMethodInfo;
@@ -194,10 +195,10 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 			Expect.Once.On(mockMessage).GetProperty("TypeName").Will(Return.Value(null));
 			Expect.Once.On(mockMessage).GetProperty("HasVarArgs").Will(Return.Value(false));
 
-			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>(mockDynamicInvocation);
+			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<IMockObject>(mockDynamicInvocation);
 			Assert.IsNotNull(dynamicInvokerRealProxy);
 
-			Expect.Once.On(mockDynamicInvocation).Method("Invoke").With(new EqualMatcher(typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject)), new EqualMatcher(invokedMethodInfo), new EqualMatcher(dynamicInvokerRealProxy.GetTransparentProxy()), new EqualMatcher(new object[] { 10, "100", (object)"1000" })).Will(Return.Value(null));
+			Expect.Once.On(mockDynamicInvocation).Method("Invoke").With(new EqualMatcher(typeof(IMockObject)), new EqualMatcher(invokedMethodInfo), new EqualMatcher(dynamicInvokerRealProxy.GetTransparentProxy()), new EqualMatcher(new object[] { 10, "100", (object)"1000" })).Will(Return.Value(null));
 
 			dynamicInvokerRealProxy.Invoke(mockMessage);
 		}
@@ -206,7 +207,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 		public void ShouldInvokeAsIDiposableTest()
 		{
 			MockFactory mockFactory;
-			DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject> dynamicInvokerRealProxy;
+			DynamicInvokerRealProxy<IMockObject> dynamicInvokerRealProxy;
 			IDynamicInvocation mockDynamicInvocation;
 			IMethodCallMessage mockMessage;
 			MethodInfo invokedMethodInfo;
@@ -225,10 +226,10 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 			Expect.Once.On(mockMessage).GetProperty("TypeName").Will(Return.Value(null));
 			Expect.Once.On(mockMessage).GetProperty("HasVarArgs").Will(Return.Value(false));
 
-			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>(mockDynamicInvocation);
+			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<IMockObject>(mockDynamicInvocation);
 			Assert.IsNotNull(dynamicInvokerRealProxy);
 
-			Expect.Once.On(mockDynamicInvocation).Method("Invoke").With(new EqualMatcher(typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject)), new EqualMatcher(invokedMethodInfo), new EqualMatcher(dynamicInvokerRealProxy.GetTransparentProxy()), new EqualMatcher(new object[] { })).Will(Return.Value(null));
+			Expect.Once.On(mockDynamicInvocation).Method("Invoke").With(new EqualMatcher(typeof(IMockObject)), new EqualMatcher(invokedMethodInfo), new EqualMatcher(dynamicInvokerRealProxy.GetTransparentProxy()), new EqualMatcher(new object[] { })).Will(Return.Value(null));
 
 			dynamicInvokerRealProxy.Invoke(mockMessage);
 
@@ -239,7 +240,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 		public void ShouldInvokeAsIMockObjectTest()
 		{
 			MockFactory mockFactory;
-			DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject> dynamicInvokerRealProxy;
+			DynamicInvokerRealProxy<IMockObject> dynamicInvokerRealProxy;
 			IDynamicInvocation mockDynamicInvocation;
 			IMethodCallMessage mockMessage;
 			MethodInfo invokedMethodInfo;
@@ -248,7 +249,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 			mockDynamicInvocation = mockFactory.CreateInstance<IDynamicInvocation>();
 			mockMessage = mockFactory.CreateInstance<IMethodCallMessage>();
 
-			invokedMethodInfo = (MethodInfo)MemberInfoProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>.GetLastMemberInfo(exec =>
+			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec =>
 																							{
 																								byte bdummy = default(byte);
 																								int idummy = default(int);
@@ -265,10 +266,10 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 			Expect.Once.On(mockMessage).GetProperty("TypeName").Will(Return.Value(null));
 			Expect.Once.On(mockMessage).GetProperty("HasVarArgs").Will(Return.Value(false));
 
-			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>(mockDynamicInvocation);
+			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<IMockObject>(mockDynamicInvocation);
 			Assert.IsNotNull(dynamicInvokerRealProxy);
 
-			Expect.Once.On(mockDynamicInvocation).Method("Invoke").With(new EqualMatcher(typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject)), new EqualMatcher(invokedMethodInfo), new EqualMatcher(dynamicInvokerRealProxy.GetTransparentProxy()), new EqualMatcher(new object[] { 10, "100", (object)"1000" })).Will(Return.Value(null));
+			Expect.Once.On(mockDynamicInvocation).Method("Invoke").With(new EqualMatcher(typeof(IMockObject)), new EqualMatcher(invokedMethodInfo), new EqualMatcher(dynamicInvokerRealProxy.GetTransparentProxy()), new EqualMatcher(new object[] { 10, "100", (object)"1000" })).Will(Return.Value(null));
 
 			dynamicInvokerRealProxy.Invoke(mockMessage);
 
@@ -279,7 +280,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 		public void ShouldInvokeAsNonObjectTest()
 		{
 			MockFactory mockFactory;
-			DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject> dynamicInvokerRealProxy;
+			DynamicInvokerRealProxy<IMockObject> dynamicInvokerRealProxy;
 			IDynamicInvocation mockDynamicInvocation;
 			IMethodCallMessage mockMessage;
 			MethodInfo invokedMethodInfo;
@@ -298,11 +299,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 			Expect.Once.On(mockMessage).GetProperty("TypeName").Will(Return.Value(null));
 			Expect.Once.On(mockMessage).GetProperty("HasVarArgs").Will(Return.Value(false));
 
-			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>(mockDynamicInvocation);
+			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<IMockObject>(mockDynamicInvocation);
 
 			Assert.IsNotNull(dynamicInvokerRealProxy);
 
-			Expect.Once.On(mockDynamicInvocation).Method("Invoke").With(new EqualMatcher(typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject)), new EqualMatcher(invokedMethodInfo), new EqualMatcher(dynamicInvokerRealProxy.GetTransparentProxy()), new EqualMatcher(new object[] { })).Will(Return.Value(null));
+			Expect.Once.On(mockDynamicInvocation).Method("Invoke").With(new EqualMatcher(typeof(IMockObject)), new EqualMatcher(invokedMethodInfo), new EqualMatcher(dynamicInvokerRealProxy.GetTransparentProxy()), new EqualMatcher(new object[] { })).Will(Return.Value(null));
 
 			dynamicInvokerRealProxy.Invoke(mockMessage);
 
@@ -313,7 +314,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 		public void ShouldInvokeAsObjectTest()
 		{
 			MockFactory mockFactory;
-			DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject> dynamicInvokerRealProxy;
+			DynamicInvokerRealProxy<IMockObject> dynamicInvokerRealProxy;
 			IDynamicInvocation mockDynamicInvocation;
 			IMethodCallMessage mockMessage;
 			MethodInfo invokedMethodInfo;
@@ -322,7 +323,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 			mockDynamicInvocation = mockFactory.CreateInstance<IDynamicInvocation>();
 			mockMessage = mockFactory.CreateInstance<IMethodCallMessage>();
 
-			invokedMethodInfo = (MethodInfo)MemberInfoProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>.GetLastMemberInfo(exec => exec.GetType());
+			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IMockObject>.GetLastMemberInfo(exec => exec.GetType());
 
 			Expect.Once.On(mockMessage).GetProperty("Args").Will(Return.Value(new object[] { }));
 			Expect.Exactly(2).On(mockMessage).GetProperty("MethodBase").Will(Return.Value(invokedMethodInfo));
@@ -332,9 +333,9 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 			Expect.Once.On(mockMessage).GetProperty("TypeName").Will(Return.Value(null));
 			Expect.Once.On(mockMessage).GetProperty("HasVarArgs").Will(Return.Value(false));
 
-			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>(mockDynamicInvocation);
+			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<IMockObject>(mockDynamicInvocation);
 
-			Expect.Once.On(mockDynamicInvocation).Method("Invoke").With(new EqualMatcher(typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject)), new EqualMatcher(invokedMethodInfo), new EqualMatcher(dynamicInvokerRealProxy.GetTransparentProxy()), new EqualMatcher(new object[] { })).Will(Return.Value(null));
+			Expect.Once.On(mockDynamicInvocation).Method("Invoke").With(new EqualMatcher(typeof(IMockObject)), new EqualMatcher(invokedMethodInfo), new EqualMatcher(dynamicInvokerRealProxy.GetTransparentProxy()), new EqualMatcher(new object[] { })).Will(Return.Value(null));
 
 			Assert.IsNotNull(dynamicInvokerRealProxy);
 
@@ -347,7 +348,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 		public void ShouldNotFailOnDoubleDisposeTest()
 		{
 			MockFactory mockFactory;
-			DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject> dynamicInvokerRealProxy;
+			DynamicInvokerRealProxy<IMockObject> dynamicInvokerRealProxy;
 			IDynamicInvocation mockDynamicInvocation;
 
 			mockFactory = new MockFactory();
@@ -355,7 +356,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 
 			Expect.Once.On(mockDynamicInvocation).Method("Dispose").WithNoArguments();
 
-			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>(mockDynamicInvocation);
+			dynamicInvokerRealProxy = new DynamicInvokerRealProxy<IMockObject>(mockDynamicInvocation);
 
 			Assert.IsNotNull(dynamicInvokerRealProxy);
 
@@ -368,8 +369,8 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 		[Test]
 		public void ShouldValidateAssumptionAboutRealProxyObjectCastingTest()
 		{
-			DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject> realProxy;
-			TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject transparentProxy;
+			DynamicInvokerRealProxy<IMockObject> realProxy;
+			IMockObject transparentProxy;
 			MockFactory mockFactory;
 			IDynamicInvocation mockDynamicInvocation;
 			IDisposable disposable;
@@ -380,12 +381,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 
 			invokedMethodInfo = (MethodInfo)MemberInfoProxy<IDisposable>.GetLastMemberInfo(exec => exec.Dispose());
 
-			realProxy = new DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>(mockDynamicInvocation);
+			realProxy = new DynamicInvokerRealProxy<IMockObject>(mockDynamicInvocation);
 			Assert.IsNotNull(realProxy);
 
-			Expect.Once.On(mockDynamicInvocation).Method("Invoke").With(new EqualMatcher(typeof(TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject)), new EqualMatcher(invokedMethodInfo), new EqualMatcher(realProxy.GetTransparentProxy()), new EqualMatcher(new object[] { })).Will(Return.Value(null));
+			Expect.Once.On(mockDynamicInvocation).Method("Invoke").With(new EqualMatcher(typeof(IMockObject)), new EqualMatcher(invokedMethodInfo), new EqualMatcher(realProxy.GetTransparentProxy()), new EqualMatcher(new object[] { })).Will(Return.Value(null));
 
-			transparentProxy = (TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject)realProxy.GetTransparentProxy();
+			transparentProxy = (IMockObject)realProxy.GetTransparentProxy();
 			Assert.IsNotNull(transparentProxy);
 			Assert.IsTrue(RemotingServices.IsTransparentProxy((object)transparentProxy));
 			Assert.IsTrue(RemotingServices.GetRealProxy((object)transparentProxy) == (object)realProxy);
@@ -404,24 +405,24 @@ namespace TextMetal.Middleware.UnitTests.Solder.SoC.RemotingImpl._
 		[Test]
 		public void ShouldValidateAssumptionAboutRealProxyObjectIdTest()
 		{
-			DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject> realProxy;
-			TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject transparentProxy0, transparentProxy1;
+			DynamicInvokerRealProxy<IMockObject> realProxy;
+			IMockObject transparentProxy0, transparentProxy1;
 			MockFactory mockFactory;
 			IDynamicInvocation mockDynamicInvocation;
 
 			mockFactory = new MockFactory();
 			mockDynamicInvocation = mockFactory.CreateInstance<IDynamicInvocation>();
 
-			realProxy = new DynamicInvokerRealProxy<TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject>(mockDynamicInvocation);
+			realProxy = new DynamicInvokerRealProxy<IMockObject>(mockDynamicInvocation);
 			Assert.IsNotNull(realProxy);
 
-			transparentProxy0 = (TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject)realProxy.GetTransparentProxy();
+			transparentProxy0 = (IMockObject)realProxy.GetTransparentProxy();
 			Assert.IsNotNull(transparentProxy0);
 			Assert.IsTrue(RemotingServices.IsTransparentProxy((object)transparentProxy0));
 			Assert.IsTrue(RemotingServices.GetRealProxy((object)transparentProxy0) == (object)realProxy);
 			Assert.IsFalse((object)realProxy == (object)transparentProxy0);
 
-			transparentProxy1 = (TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject)realProxy.GetTransparentProxy();
+			transparentProxy1 = (IMockObject)realProxy.GetTransparentProxy();
 			Assert.IsNotNull(transparentProxy1);
 			Assert.IsTrue(RemotingServices.IsTransparentProxy((object)transparentProxy1));
 			Assert.IsTrue(RemotingServices.GetRealProxy((object)transparentProxy1) == (object)realProxy);

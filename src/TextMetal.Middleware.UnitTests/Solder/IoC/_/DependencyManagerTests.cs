@@ -5,11 +5,11 @@
 
 using System;
 
-using TextMetal.Middleware.Solder.IoC;
-
 using NMock;
 
 using NUnit.Framework;
+
+using TextMetal.Middleware.Solder.IoC;
 
 [assembly: DependencyRegistration]
 

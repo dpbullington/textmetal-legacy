@@ -782,3 +782,21 @@ BEGIN
 	RETURN CAST(CRYPT_GEN_RANDOM(1) AS [int])
 END
 GO
+
+
+CREATE PROCEDURE [testcases].[sproc_with_duplicate_columns_resultset]
+AS
+BEGIN
+
+	SELECT 1 AS [Name], NEWID() AS [Name], 'aaa' AS [Name]
+		UNION ALL
+	SELECT 2 AS [Name], NEWID() AS [Name], 'bbb' AS [Name]
+		UNION ALL
+	SELECT 3 AS [Name], NEWID() AS [Name], 'ccc' AS [Name]
+		UNION ALL
+	SELECT 4 AS [Name], NEWID() AS [Name], 'ddd' AS [Name]
+		UNION ALL
+	SELECT 5 AS [Name], NEWID() AS [Name], 'eee' AS [Name]
+
+END
+GO

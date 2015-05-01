@@ -25,7 +25,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		#region Fields/Constants
 
 		private bool columnHasDefault;
-		private int resultsetIndex;
 
 		#endregion
 
@@ -41,19 +40,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			set
 			{
 				this.columnHasDefault = value;
-			}
-		}
-
-		[XmlAttribute]
-		public int _ResultsetIndex
-		{
-			get
-			{
-				return this.resultsetIndex;
-			}
-			set
-			{
-				this.resultsetIndex = value;
 			}
 		}
 

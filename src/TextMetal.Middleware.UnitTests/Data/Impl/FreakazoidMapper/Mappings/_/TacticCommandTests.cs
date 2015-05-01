@@ -6,10 +6,10 @@
 using System;
 using System.Data;
 
+using NUnit.Framework;
+
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Tactics;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
-
-using NUnit.Framework;
 
 namespace TextMetal.Middleware.UnitTests.Data.Impl.FreakazoidMapper.Mappings._
 {
@@ -51,7 +51,7 @@ namespace TextMetal.Middleware.UnitTests.Data.Impl.FreakazoidMapper.Mappings._
 			Assert.AreEqual(CommandType.Text, tableTacticCommand.CommandType);
 
 			tableTacticCommand.TacticParameters = new ITacticParameter[] { };
-			Assert.IsNotEmpty(tableTacticCommand.TacticParameters);
+			Assert.IsNotNull(tableTacticCommand.TacticParameters);
 
 			tableTacticCommand.ExpectedRecordsAffected = 123;
 			Assert.AreEqual(123, tableTacticCommand.ExpectedRecordsAffected);

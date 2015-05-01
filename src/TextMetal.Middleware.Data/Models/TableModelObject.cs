@@ -6,9 +6,9 @@
 using System;
 using System.Collections.Generic;
 
-using TextMetal.Middleware.Common.ValueObjects;
-
 using Newtonsoft.Json;
+
+using TextMetal.Middleware.Common.ValueObjects;
 
 namespace TextMetal.Middleware.Data.Models
 {

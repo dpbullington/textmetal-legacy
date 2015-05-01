@@ -5,12 +5,12 @@
 
 using System;
 
-using TextMetal.Middleware.Solder.IoC;
-using TextMetal.Middleware.UnitTests.TestingInfrastructure;
-
 using NMock;
 
 using NUnit.Framework;
+
+using TextMetal.Middleware.Solder.IoC;
+using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
 namespace TextMetal.Middleware.UnitTests.Solder.IoC._
 {

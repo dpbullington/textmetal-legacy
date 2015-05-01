@@ -5,11 +5,10 @@
 
 using System;
 
-using TextMetal.Middleware.Common.ValueObjects;
-
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Tokenization;
 using TextMetal.Framework.XmlDialect;
+using TextMetal.Middleware.Common.ValueObjects;
 
 namespace TextMetal.Framework.Template
 {

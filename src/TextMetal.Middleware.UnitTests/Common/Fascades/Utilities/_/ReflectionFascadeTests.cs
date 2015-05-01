@@ -7,12 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
-using TextMetal.Middleware.UnitTests.TestingInfrastructure;
-
 using NMock;
 
 using NUnit.Framework;
+
+using TextMetal.Middleware.Common.Fascades.Utilities;
+using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
 namespace TextMetal.Middleware.UnitTests.Common.Fascades.Utilities._
 {
@@ -41,12 +41,14 @@ namespace TextMetal.Middleware.UnitTests.Common.Fascades.Utilities._
 			MockFactory mockFactory;
 			IDataTypeFascade mockDataTypeFascade;
 
+			string _unusedString = null;
+
 			mockFactory = new MockFactory();
 			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With((object)null).Will(Return.Value(true));
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With(string.Empty).Will(Return.Value(true));
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With("FirstName").Will(Return.Value(false));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With((object)null).Will(Return.Value(true));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With(string.Empty).Will(Return.Value(true));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With("FirstName").Will(Return.Value(false));
 
 			reflectionFascade = new ReflectionFascade(mockDataTypeFascade);
 
@@ -121,12 +123,14 @@ namespace TextMetal.Middleware.UnitTests.Common.Fascades.Utilities._
 			MockFactory mockFactory;
 			IDataTypeFascade mockDataTypeFascade;
 
+			string _unusedString = null;
+
 			mockFactory = new MockFactory();
 			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With((object)null).Will(Return.Value(true));
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With(string.Empty).Will(Return.Value(true));
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With("FirstName").Will(Return.Value(false));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With((object)null).Will(Return.Value(true));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With(string.Empty).Will(Return.Value(true));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With("FirstName").Will(Return.Value(false));
 
 			reflectionFascade = new ReflectionFascade(mockDataTypeFascade);
 
@@ -201,12 +205,14 @@ namespace TextMetal.Middleware.UnitTests.Common.Fascades.Utilities._
 			MockFactory mockFactory;
 			IDataTypeFascade mockDataTypeFascade;
 
+			string _unusedString = null;
+
 			mockFactory = new MockFactory();
 			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With((object)null).Will(Return.Value(true));
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With(string.Empty).Will(Return.Value(true));
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With("FirstName").Will(Return.Value(false));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With((object)null).Will(Return.Value(true));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With(string.Empty).Will(Return.Value(true));
+			Expect.On(mockDataTypeFascade).Exactly(2).Method(m => m.IsNullOrWhiteSpace(_unusedString)).With("FirstName").Will(Return.Value(false));
 
 			reflectionFascade = new ReflectionFascade(mockDataTypeFascade);
 
@@ -622,15 +628,17 @@ namespace TextMetal.Middleware.UnitTests.Common.Fascades.Utilities._
 			MockFactory mockFactory;
 			IDataTypeFascade mockDataTypeFascade;
 
+			string _unusedString = null;
+
 			mockFactory = new MockFactory();
 			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With((object)null).Will(Return.Value(true));
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With(string.Empty).Will(Return.Value(true));
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With("FirstName").Will(Return.Value(false));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With((object)null).Will(Return.Value(true));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With(string.Empty).Will(Return.Value(true));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With("FirstName").Will(Return.Value(false));
 
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With("NoGetter").Will(Return.Value(false));
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With("NoSetter").Will(Return.Value(false));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With("NoGetter").Will(Return.Value(false));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With("NoSetter").Will(Return.Value(false));
 
 			reflectionFascade = new ReflectionFascade(mockDataTypeFascade);
 
@@ -725,15 +733,17 @@ namespace TextMetal.Middleware.UnitTests.Common.Fascades.Utilities._
 			MockFactory mockFactory;
 			IDataTypeFascade mockDataTypeFascade;
 
+			string _unusedString = null;
+
 			mockFactory = new MockFactory();
 			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With((object)null).Will(Return.Value(true));
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With(string.Empty).Will(Return.Value(true));
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With("FirstName").Will(Return.Value(false));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With((object)null).Will(Return.Value(true));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With(string.Empty).Will(Return.Value(true));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With("FirstName").Will(Return.Value(false));
 
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With("NoGetter").Will(Return.Value(false));
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With("NoSetter").Will(Return.Value(false));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With("NoGetter").Will(Return.Value(false));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With("NoSetter").Will(Return.Value(false));
 
 			reflectionFascade = new ReflectionFascade(mockDataTypeFascade);
 
@@ -827,16 +837,20 @@ namespace TextMetal.Middleware.UnitTests.Common.Fascades.Utilities._
 			MockFactory mockFactory;
 			IDataTypeFascade mockDataTypeFascade;
 
+			string _unusedString = null;
+			object _unusedObject = null;
+			Type _unusedType = null;
+
 			mockFactory = new MockFactory();
 			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With((object)null).Will(Return.Value(true));
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With(string.Empty).Will(Return.Value(true));
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With("FirstName").Will(Return.Value(false));
-			Expect.On(mockDataTypeFascade).Method("ChangeType").WithAnyArguments().Will(Return.Value(null));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With((object)null).Will(Return.Value(true));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With(string.Empty).Will(Return.Value(true));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With("FirstName").Will(Return.Value(false));
+			Expect.On(mockDataTypeFascade).Exactly(2).Method(m => m.ChangeType(_unusedObject, _unusedType)).WithAnyArguments().Will(Return.Value(null));
 
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With("NoGetter").Will(Return.Value(false));
-			Expect.On(mockDataTypeFascade).Method("IsNullOrWhiteSpace").With("NoSetter").Will(Return.Value(false));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With("NoGetter").Will(Return.Value(false));
+			Expect.On(mockDataTypeFascade).One.Method(m => m.IsNullOrWhiteSpace(_unusedString)).With("NoSetter").Will(Return.Value(false));
 
 			reflectionFascade = new ReflectionFascade(mockDataTypeFascade);
 

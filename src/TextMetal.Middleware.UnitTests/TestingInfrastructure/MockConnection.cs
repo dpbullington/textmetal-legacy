@@ -68,13 +68,13 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 
 		public IDbTransaction BeginTransaction()
 		{
-			MockFactory mocks;
-			IDbTransaction mockDbTransaction;
+			MockFactory mockFactory;
+			Mock<IDbTransaction> mockDbTransaction;
 
-			mocks = new MockFactory();
-			mockDbTransaction = mocks.CreateInstance<IDbTransaction>();
-			Stub.On(mockDbTransaction);
-			return mockDbTransaction;
+			mockFactory = new MockFactory();
+			mockDbTransaction = mockFactory.CreateMock<IDbTransaction>(MockStyle.Stub);
+
+			return mockDbTransaction.MockObject;
 		}
 
 		public void ChangeDatabase(string databaseName)

@@ -66,7 +66,7 @@ namespace TextMetal.Framework.UnitTests.Tokenization._
 			MockFactory mockFactory;
 			IDictionary<string, ITokenReplacementStrategy> mockTokenReplacementStrategies;
 			ITokenReplacementStrategy mockTokenReplacementStrategy;
-			
+
 			ITokenReplacementStrategy _unusedTokenReplacementStrategy = null;
 			string _unusedString = null;
 			string[] _unusedStrings = null;
@@ -74,7 +74,7 @@ namespace TextMetal.Framework.UnitTests.Tokenization._
 			string tokenizedValue;
 			string expandedValue;
 			string expectedValue;
-			
+
 			mockFactory = new MockFactory();
 			mockTokenReplacementStrategies = mockFactory.CreateInstance<IDictionary<string, ITokenReplacementStrategy>>();
 			mockTokenReplacementStrategy = mockFactory.CreateInstance<ITokenReplacementStrategy>();
@@ -107,7 +107,7 @@ namespace TextMetal.Framework.UnitTests.Tokenization._
 
 			Expect.On(mockTokenReplacementStrategies).One.Method(x => x.TryGetValue(_unusedString, out _unusedTokenReplacementStrategy)).WithArguments(new EqualMatcher("d"), new AndMatcher(new ArgumentsMatcher.OutMatcher(), ForceTrueMatcher.Instance)).Will(new SetNamedParameterAction("value", mockTokenReplacementStrategy), Return.Value(true));
 			Expect.On(mockTokenReplacementStrategy).One.Method(x => x.Evaluate(_unusedStrings)).WithArguments(new EqualMatcher(null)).Will(Throw.Exception(new Exception()));
-			
+
 			tokenizer = new Tokenizer(mockTokenReplacementStrategies, false);
 
 			tokenizedValue = string.Empty;
@@ -210,7 +210,7 @@ namespace TextMetal.Framework.UnitTests.Tokenization._
 
 			Expect.On(mockTokenReplacementStrategies).One.Method(x => x.TryGetValue(_unusedString, out _unusedTokenReplacementStrategy)).WithArguments(new EqualMatcher("d"), new AndMatcher(new ArgumentsMatcher.OutMatcher(), ForceTrueMatcher.Instance)).Will(new SetNamedParameterAction("value", mockTokenReplacementStrategy), Return.Value(true));
 			Expect.On(mockTokenReplacementStrategy).One.Method(x => x.Evaluate(_unusedStrings)).WithArguments(new EqualMatcher(null)).Will(Throw.Exception(new Exception()));
-			
+
 			tokenizer = new Tokenizer(mockTokenReplacementStrategies, true);
 
 			tokenizedValue = string.Empty;
@@ -318,7 +318,7 @@ namespace TextMetal.Framework.UnitTests.Tokenization._
 
 			Expect.On(mockTokenReplacementStrategies).One.Method(x => x.TryGetValue(_unusedString, out _unusedTokenReplacementStrategy)).WithArguments(new EqualMatcher("d"), new AndMatcher(new ArgumentsMatcher.OutMatcher(), ForceTrueMatcher.Instance)).Will(new SetNamedParameterAction("value", null), Return.Value(false));
 			Expect.On(mockWildcardTokenReplacementStrategy).One.Method(x => x.Evaluate(_unusedString, _unusedStrings)).WithArguments(new EqualMatcher("d"), new EqualMatcher(null)).Will(Throw.Exception(new Exception()));
-			
+
 			tokenizer = new Tokenizer(mockTokenReplacementStrategies, false);
 
 			tokenizedValue = string.Empty;
