@@ -224,7 +224,6 @@ namespace TextMetal.Middleware.Common.Fascades.AdoNet
 
 				// do the database work
 				dataReader = dbCommand.ExecuteReader(commandBehavior);
-				dataReader = new WrapperDataReader(dataReader);
 
 				return dataReader;
 			}

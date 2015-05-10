@@ -9,7 +9,6 @@ using System.Linq;
 using System.Reflection;
 
 using TextMetal.Middleware.Common.Fascades.Utilities;
-using TextMetal.Middleware.Common.ValueObjects;
 
 namespace TextMetal.Middleware.Common.Fascades.Application
 {
@@ -61,7 +60,7 @@ namespace TextMetal.Middleware.Common.Fascades.Application
 			ConsoleColor oldConsoleColor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Red;
 			Console.WriteLine();
-			Console.WriteLine((object)exception != null ? ReflectionFascade.Instance.GetErrors(exception, 0) : "<unknown>");
+			Console.WriteLine((object)exception != null ? this.ReflectionFascade.GetErrors(exception, 0) : "<unknown>");
 			Console.ForegroundColor = oldConsoleColor;
 
 			Console.WriteLine();

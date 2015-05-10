@@ -10,7 +10,6 @@ using System.Linq;
 
 using TextMetal.Framework.Hosting.Tool;
 using TextMetal.Middleware.Common.Fascades.Application;
-using TextMetal.Middleware.Common.Fascades.Utilities;
 
 namespace TextMetal.ConsoleTool
 {
@@ -123,7 +122,7 @@ namespace TextMetal.ConsoleTool
 					{
 						string key, value;
 
-						if (!AppConfigFascade.Instance.TryParseCommandLineArgumentProperty(argumentValue, out key, out value))
+						if (!this.AppConfigFascade.TryParseCommandLineArgumentProperty(argumentValue, out key, out value))
 							continue;
 
 						if (!properties.ContainsKey(key))

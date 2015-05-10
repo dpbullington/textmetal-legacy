@@ -21,7 +21,7 @@ namespace TextMetal.Middleware.Common.Fascades.AdoNet.UoW
 		/// <summary>
 		/// Initializes a new instance of the unitOfWork class.
 		/// </summary>
-		private UnitOfWork(IDbConnection connection, IDbTransaction transaction)
+		public UnitOfWork(IDbConnection connection, IDbTransaction transaction)
 		{
 			this.connection = connection;
 			this.transaction = transaction;
@@ -173,9 +173,6 @@ namespace TextMetal.Middleware.Common.Fascades.AdoNet.UoW
 
 			if ((object)connectionString == null)
 				throw new ArgumentNullException("connectionString");
-
-			if (DataTypeFascade.Instance.IsWhiteSpace(connectionString))
-				throw new ArgumentOutOfRangeException("connectionString");
 
 			dbConnection = (IDbConnection)Activator.CreateInstance(connectionType);
 

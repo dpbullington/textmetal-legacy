@@ -10,7 +10,6 @@ using System.Linq;
 using System.Xml.Schema;
 
 using TextMetal.Framework.Associative;
-using TextMetal.Framework.Core;
 using TextMetal.Middleware.Common.Fascades.Utilities;
 
 namespace TextMetal.Framework.Source.Primative

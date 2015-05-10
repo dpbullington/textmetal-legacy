@@ -71,20 +71,8 @@ Copy-Item "$src_dir\TextMetal.Middleware.Data\bin\$build_flavor_dir\TextMetal.Mi
 Copy-Item "$src_dir\TextMetal.Middleware.Data\bin\$build_flavor_dir\TextMetal.Middleware.Data.xml" "$pkg_dir\bin\."
 Copy-Item "$src_dir\TextMetal.Middleware.Data\bin\$build_flavor_dir\TextMetal.Middleware.Data.pdb" "$pkg_dir\bin\."
 
-Copy-Item "$src_dir\TextMetal.Middleware.Data.Impl.FreakazoidMapper\bin\$build_flavor_dir\TextMetal.Middleware.Data.Impl.FreakazoidMapper.dll" "$pkg_dir\bin\."
-Copy-Item "$src_dir\TextMetal.Middleware.Data.Impl.FreakazoidMapper\bin\$build_flavor_dir\TextMetal.Middleware.Data.Impl.FreakazoidMapper.xml" "$pkg_dir\bin\."
-Copy-Item "$src_dir\TextMetal.Middleware.Data.Impl.FreakazoidMapper\bin\$build_flavor_dir\TextMetal.Middleware.Data.Impl.FreakazoidMapper.pdb" "$pkg_dir\bin\."
-
-Copy-Item "$src_dir\TextMetal.Middleware.Data.Impl.MicrosoftLinq\bin\$build_flavor_dir\TextMetal.Middleware.Data.Impl.MicrosoftLinq.dll" "$pkg_dir\bin\."
-Copy-Item "$src_dir\TextMetal.Middleware.Data.Impl.MicrosoftLinq\bin\$build_flavor_dir\TextMetal.Middleware.Data.Impl.MicrosoftLinq.xml" "$pkg_dir\bin\."
-Copy-Item "$src_dir\TextMetal.Middleware.Data.Impl.MicrosoftLinq\bin\$build_flavor_dir\TextMetal.Middleware.Data.Impl.MicrosoftLinq.pdb" "$pkg_dir\bin\."
-
 Copy-Item "$src_dir\TextMetal.Middleware.Solder\bin\$build_flavor_dir\TextMetal.Middleware.Solder.dll" "$pkg_dir\bin\."
 Copy-Item "$src_dir\TextMetal.Middleware.Solder\bin\$build_flavor_dir\TextMetal.Middleware.Solder.xml" "$pkg_dir\bin\."
 Copy-Item "$src_dir\TextMetal.Middleware.Solder\bin\$build_flavor_dir\TextMetal.Middleware.Solder.pdb" "$pkg_dir\bin\."
-
-Copy-Item "$src_dir\TextMetal.Middleware.Testing\bin\$build_flavor_dir\TextMetal.Middleware.Testing.dll" "$pkg_dir\bin\."
-Copy-Item "$src_dir\TextMetal.Middleware.Testing\bin\$build_flavor_dir\TextMetal.Middleware.Testing.xml" "$pkg_dir\bin\."
-Copy-Item "$src_dir\TextMetal.Middleware.Testing\bin\$build_flavor_dir\TextMetal.Middleware.Testing.pdb" "$pkg_dir\bin\."
 
 echo "The operation completed successfully."

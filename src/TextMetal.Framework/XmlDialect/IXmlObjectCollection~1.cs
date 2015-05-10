@@ -3,7 +3,7 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-using TextMetal.Framework.Core.ObjectTaxonomy;
+using System.Collections.Generic;
 
 namespace TextMetal.Framework.XmlDialect
 {
@@ -11,7 +11,7 @@ namespace TextMetal.Framework.XmlDialect
 	/// Represents an XML object collection.
 	/// </summary>
 	/// <typeparam name="TXmlObject"> </typeparam>
-	public interface IXmlObjectCollection<TXmlObject> : IHierarchicalObjectCollection<TXmlObject>, IXmlObjectCollection
+	public interface IXmlObjectCollection<TXmlObject> : IList<TXmlObject>, IXmlObjectCollection
 		where TXmlObject : IXmlObject
 	{
 	}

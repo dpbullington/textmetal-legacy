@@ -8,7 +8,7 @@ using System;
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Tokenization;
 using TextMetal.Framework.XmlDialect;
-using TextMetal.Middleware.Common.ValueObjects;
+using TextMetal.Middleware.Common;
 
 namespace TextMetal.Framework.Template
 {

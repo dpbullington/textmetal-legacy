@@ -10,7 +10,6 @@ using System.IO;
 using System.Linq;
 
 using TextMetal.Framework.Associative;
-using TextMetal.Framework.Core;
 using TextMetal.Framework.Tokenization;
 using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
 using TextMetal.Middleware.Common.Fascades.Utilities;

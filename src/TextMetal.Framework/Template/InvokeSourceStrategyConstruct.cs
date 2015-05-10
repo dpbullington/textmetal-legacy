@@ -7,6 +7,7 @@ using System;
 
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Expression;
+using TextMetal.Framework.Source;
 using TextMetal.Framework.Tokenization;
 using TextMetal.Framework.XmlDialect;
 using TextMetal.Middleware.Common.Fascades.Utilities;

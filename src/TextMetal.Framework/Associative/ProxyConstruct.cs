@@ -15,7 +15,7 @@ namespace TextMetal.Framework.Associative
 	/// Provides an XML construct for associative proxies. DO NOT SERIALIZE THIS CLASS TO AN XML STREAM.
 	/// </summary>
 	[XmlElementMapping(LocalName = "Proxy", NamespaceUri = "http://www.textmetal.com/api/v6.0.0", ChildElementModel = ChildElementModel.Sterile)]
-	public sealed class ProxyConstruct : AssociativeXmlObject, IActualThing
+	public sealed class ProxyConstruct : AssociativeXmlObject, IObjectReference
 	{
 		#region Constructors/Destructors
 

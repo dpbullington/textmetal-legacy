@@ -47,6 +47,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -58,9 +59,9 @@
     <Compile Include="Common\Fascades\Utilities\_\DataTypeFascadeTests.cs" />
     <None Include="Common\Strategies\ContextualStorage\_\DefaultExecutionStorageFactoryTests.cs" />
     <Compile Include="Common\Fascades\Utilities\_\ReflectionFascadeTests.cs" />
-    <None Include="Data\Impl\MicrosoftLinq\_\AmbientUnitOfWorkAwareContextWrapperTests.cs" />
-    <None Include="Data\Impl\MicrosoftLinq\_\LinqToSqlHelperTests.cs" />
-    <None Include="Data\Impl\MicrosoftLinq\_\MulticastContextTests.cs" />
+    <Compile Include="Data\Impl\_\AmbientUnitOfWorkAwareContextWrapperTests.cs" />
+    <None Include="Data\Impl\MicrosoftLinq\_\DataContextModelRepositoryTests.cs" />
+    <Compile Include="Data\Impl\_\MulticastContextTests.cs" />
     <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\ColumnMappingAttributeTests.cs" />
     <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\ParameterMappingAttributeTests.cs" />
     <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\ProcedureMappingAttributeTests.cs" />
@@ -79,6 +80,7 @@
     <None Include="Solder\SoC\_\ProxyFactoryTests.cs" />
     <Compile Include="TestingInfrastructure\IMockModelObject.cs" />
     <Compile Include="TestingInfrastructure\MockAspectDynamicInvoker.cs" />
+    <Compile Include="TestingInfrastructure\MockDataContext.cs" />
     <Compile Include="TestingInfrastructure\MockDynamicInvoker.cs" />
     <Compile Include="TestingInfrastructure\MockModelObject.cs" />
     <Compile Include="TestingInfrastructure\MockDependantObject.cs" />
@@ -102,21 +104,12 @@
     <None Include="UnitTesting.nunit" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Common\ValueObjects\" />
     <Folder Include="Data\_\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TextMetal.Middleware.Common\TextMetal.Middleware.Common.csproj">
       <Project>{d1860a67-7efb-4c0f-89cd-a641d99dcc2a}</Project>
       <Name>TextMetal.Middleware.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TextMetal.Middleware.Data.Impl.FreakazoidMapper\TextMetal.Middleware.Data.Impl.FreakazoidMapper.csproj">
-      <Project>{91B2496C-9D84-4CA8-8D34-3499C7E50D27}</Project>
-      <Name>TextMetal.Middleware.Data.Impl.FreakazoidMapper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TextMetal.Middleware.Data.Impl.MicrosoftLinq\TextMetal.Middleware.Data.Impl.MicrosoftLinq.csproj">
-      <Project>{68424441-503d-463d-8d2b-e697a3568601}</Project>
-      <Name>TextMetal.Middleware.Data.Impl.MicrosoftLinq</Name>
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Middleware.Data\TextMetal.Middleware.Data.csproj">
       <Project>{e41e2352-4249-458e-b4f2-dbdf9b564bf5}</Project>
@@ -125,10 +118,6 @@
     <ProjectReference Include="..\TextMetal.Middleware.Solder\TextMetal.Middleware.Solder.csproj">
       <Project>{3b0efc3c-aa91-4fb4-b2ee-bd8727230a94}</Project>
       <Name>TextMetal.Middleware.Solder</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TextMetal.Middleware.Testing\TextMetal.Middleware.Testing.csproj">
-      <Project>{3155f5f3-7b0b-4b3b-b5bc-11df80fe2148}</Project>
-      <Name>TextMetal.Middleware.Testing</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

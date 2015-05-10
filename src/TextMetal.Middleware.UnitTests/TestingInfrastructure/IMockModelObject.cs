@@ -3,7 +3,7 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-using TextMetal.Middleware.Data.Models;
+using TextMetal.Middleware.Data.Models.Tabular;
 
 namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 {

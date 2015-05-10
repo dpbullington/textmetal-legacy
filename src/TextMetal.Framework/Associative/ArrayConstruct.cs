@@ -16,7 +16,7 @@ namespace TextMetal.Framework.Associative
 	/// Provides an XML construct for associative arrays.
 	/// </summary>
 	[XmlElementMapping(LocalName = "Array", NamespaceUri = "http://www.textmetal.com/api/v6.0.0", ChildElementModel = ChildElementModel.Items)]
-	public sealed class ArrayConstruct : AssociativeXmlObject, IActualThing
+	public sealed class ArrayConstruct : AssociativeXmlObject, IObjectReference
 	{
 		#region Constructors/Destructors
 
@@ -41,7 +41,7 @@ namespace TextMetal.Framework.Associative
 			if ((object)templatingContext == null)
 				throw new ArgumentNullException("templatingContext");
 
-			return this.Items.OfType<IActualThing>().GetEnumerator();
+			return this.Items.OfType<IObjectReference>().GetEnumerator();
 		}
 
 		#endregion

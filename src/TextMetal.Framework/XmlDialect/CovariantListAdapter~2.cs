@@ -7,8 +7,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using TextMetal.Framework.Core.ObjectTaxonomy;
-
 namespace TextMetal.Framework.XmlDialect
 {
 	/// <summary>
@@ -101,17 +99,6 @@ namespace TextMetal.Framework.XmlDialect
 		/// Gets the site XML object or null if this is unattached.
 		/// </summary>
 		public IXmlObject Site
-		{
-			get
-			{
-				return null;
-			}
-		}
-
-		/// <summary>
-		/// Gets the site hierarchical object or null if this is unattached.
-		/// </summary>
-		IHierarchicalObject IHierarchicalObjectCollection.Site
 		{
 			get
 			{

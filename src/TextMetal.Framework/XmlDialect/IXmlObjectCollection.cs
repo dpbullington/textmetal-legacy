@@ -3,21 +3,19 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-using TextMetal.Framework.Core.ObjectTaxonomy;
-
 namespace TextMetal.Framework.XmlDialect
 {
 	/// <summary>
 	/// Represents an XML object collection.
 	/// </summary>
-	public interface IXmlObjectCollection : IHierarchicalObjectCollection
+	public interface IXmlObjectCollection /* : IList*/
 	{
 		#region Properties/Indexers/Events
 
 		/// <summary>
 		/// Gets the site XML object or null if this is unattached.
 		/// </summary>
-		new IXmlObject Site
+		IXmlObject Site
 		{
 			get;
 		}

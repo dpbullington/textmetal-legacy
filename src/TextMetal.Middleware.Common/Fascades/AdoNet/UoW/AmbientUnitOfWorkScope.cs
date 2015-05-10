@@ -19,6 +19,7 @@ namespace TextMetal.Middleware.Common.Fascades.AdoNet.UoW
 		/// Initializes a new instance of the AmbientUnitOfWorkScope class.
 		/// </summary>
 		/// <param name="unitOfWorkFactory"> The unit of work factory instance. </param>
+		/// <param name="transactional"> Gets a value indicating whether the created unit of work should create a data source transaction. </param>
 		/// <param name="isolationLevel"> An optional isolation level for the unit of work transaction. </param>
 		public AmbientUnitOfWorkScope(IUnitOfWorkFactory unitOfWorkFactory, bool transactional, IsolationLevel isolationLevel = IsolationLevel.Unspecified)
 		{

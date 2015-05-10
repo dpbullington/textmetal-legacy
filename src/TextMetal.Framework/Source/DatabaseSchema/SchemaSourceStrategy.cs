@@ -10,7 +10,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using TextMetal.Framework.Core;
+using TextMetal.Framework.Naming;
 using TextMetal.Middleware.Common.Fascades.AdoNet;
 using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
 using TextMetal.Middleware.Common.Fascades.Utilities;

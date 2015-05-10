@@ -63,7 +63,6 @@
     <Compile Include="Fascades\AdoNet\UoW\IUnitOfWork.cs" />
     <Compile Include="Fascades\AdoNet\UoW\IUnitOfWorkFactory.cs" />
     <Compile Include="Fascades\AdoNet\UoW\UnitOfWork.cs" />
-    <Compile Include="Fascades\AdoNet\WrapperDataReader.cs" />
     <Compile Include="Fascades\Application\ConsoleApplicationFascade.cs" />
     <Compile Include="Fascades\Application\ExecutableApplicationFascade.cs" />
     <Compile Include="Fascades\Application\IExecutableApplicationFascade.cs" />
@@ -77,7 +76,7 @@
     <Compile Include="Fascades\Utilities\IDataTypeFascade.cs" />
     <Compile Include="Fascades\Utilities\IReflectionFascade.cs" />
     <Compile Include="Fascades\Utilities\ReflectionFascade.cs" />
-    <Compile Include="GarbageDisposable.cs" />
+    <Compile Include="ProjectAssemblyDependency.cs" />
     <Compile Include="Strategies\ContextualStorage\ApplicationSpecific\HttpCookieApplicationSpecificStorageStrategy.cs" />
     <Compile Include="Strategies\ContextualStorage\ApplicationSpecific\HttpSessionApplicationSpecificStorageStrategy.cs" />
     <Compile Include="Strategies\ContextualStorage\ApplicationSpecific\IApplicationSpecificStorageStrategy.cs" />
@@ -96,13 +95,9 @@
     <Compile Include="Strategies\Serialization\IXmlSerializationStrategy.cs" />
     <Compile Include="Strategies\Serialization\JsonSerializationStrategy.cs" />
     <Compile Include="Strategies\Serialization\XmlSerializationStrategy.cs" />
-    <Compile Include="ValueObjects\IListItem.cs" />
-    <Compile Include="ValueObjects\IListItem~1.cs" />
-    <Compile Include="ValueObjects\ListItem.cs" />
-    <Compile Include="ValueObjects\ListItem~1.cs" />
-    <Compile Include="ValueObjects\IValidate.cs" />
-    <Compile Include="ValueObjects\Message.cs" />
-    <Compile Include="ValueObjects\Severity.cs" />
+    <Compile Include="IValidate.cs" />
+    <Compile Include="Message.cs" />
+    <Compile Include="Severity.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -110,7 +105,12 @@
       <Link>TextMetal.snk</Link>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TextMetal.Middleware.Solder\TextMetal.Middleware.Solder.csproj">
+      <Project>{3B0EFC3C-AA91-4FB4-B2EE-BD8727230A94}</Project>
+      <Name>TextMetal.Middleware.Solder</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

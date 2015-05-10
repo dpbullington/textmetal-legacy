@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using TextMetal.Framework.Core;
+using TextMetal.Framework.Template;
 
 namespace TextMetal.Framework.InputOutput
 {

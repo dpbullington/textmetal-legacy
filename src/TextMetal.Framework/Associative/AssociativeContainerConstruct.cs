@@ -5,7 +5,6 @@
 
 using System;
 
-using TextMetal.Framework.Core;
 using TextMetal.Framework.XmlDialect;
 
 namespace TextMetal.Framework.Associative

@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 
+using TextMetal.Framework.InputOutput;
 using TextMetal.Framework.Tokenization;
 using TextMetal.Framework.XmlDialect;
 

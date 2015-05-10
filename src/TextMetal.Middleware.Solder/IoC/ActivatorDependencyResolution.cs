@@ -7,8 +7,6 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
-
 namespace TextMetal.Middleware.Solder.IoC
 {
 	/// <summary>
@@ -560,7 +558,7 @@ namespace TextMetal.Middleware.Solder.IoC
 				if (!parameterInfo.ParameterType.IsAssignableFrom(parameterType))
 					throw new DependencyException(string.Format("Constructor parameter '{2}' type '{3}' is not assignable to dependency type '{4}' for target type '{0}' and parameter types '{1}'.", this.ActualType.FullName, string.Join("|", this.ParameterTypes.Select(pt => pt.FullName).ToArray()), parameterInfo.Name, parameterInfo.ParameterType.FullName, parameterType.FullName));
 
-				dependencyInjectionAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyInjectionAttribute>(parameterInfo);
+				dependencyInjectionAttribute = ExternalImport.GetOneAttribute<DependencyInjectionAttribute>(parameterInfo);
 
 				// TODO: should lookup occur using parameterType or parameterInfo.ParameterType ???
 				if ((object)dependencyInjectionAttribute != null)

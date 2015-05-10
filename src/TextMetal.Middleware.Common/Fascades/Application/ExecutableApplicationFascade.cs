@@ -12,7 +12,6 @@ using System.Security.Principal;
 
 using TextMetal.Middleware.Common.Fascades.Utilities;
 using TextMetal.Middleware.Common.Strategies.ContextualStorage;
-using TextMetal.Middleware.Common.ValueObjects;
 
 namespace TextMetal.Middleware.Common.Fascades.Application
 {
@@ -21,7 +20,27 @@ namespace TextMetal.Middleware.Common.Fascades.Application
 		#region Constructors/Destructors
 
 		protected ExecutableApplicationFascade()
+			: this(Utilities.DataTypeFascade.Instance,
+				Utilities.AppConfigFascade.Instance,
+				Utilities.ReflectionFascade.Instance)
 		{
+		}
+
+		protected ExecutableApplicationFascade(IDataTypeFascade dataTypeFascade, IAppConfigFascade appConfigFascade, IReflectionFascade reflectionFascade)
+		{
+			if ((object)dataTypeFascade == null)
+				throw new ArgumentNullException("dataTypeFascade");
+
+			if ((object)appConfigFascade == null)
+				throw new ArgumentNullException("appConfigFascade");
+
+			if ((object)reflectionFascade == null)
+				throw new ArgumentNullException("reflectionFascade");
+
+			this.dataTypeFascade = dataTypeFascade;
+			this.appConfigFascade = appConfigFascade;
+			this.reflectionFascade = reflectionFascade;
+
 			Current = this;
 		}
 
@@ -30,6 +49,9 @@ namespace TextMetal.Middleware.Common.Fascades.Application
 		#region Fields/Constants
 
 		private static readonly string EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY = typeof(ExecutableApplicationFascade).GUID.SafeToString();
+		private readonly IAppConfigFascade appConfigFascade;
+		private readonly IDataTypeFascade dataTypeFascade;
+		private readonly IReflectionFascade reflectionFascade;
 		private AssemblyInformationFascade assemblyInformationFascade;
 		private bool disposed;
 
@@ -49,12 +71,36 @@ namespace TextMetal.Middleware.Common.Fascades.Application
 			}
 		}
 
+		protected IAppConfigFascade AppConfigFascade
+		{
+			get
+			{
+				return this.appConfigFascade;
+			}
+		}
+
+		protected IDataTypeFascade DataTypeFascade
+		{
+			get
+			{
+				return this.dataTypeFascade;
+			}
+		}
+
 		public bool HookUnhandledExceptionEvents
 		{
 			get
 			{
 				return !Debugger.IsAttached &&
-						AppConfigFascade.Instance.GetAppSetting<bool>(string.Format("{0}::HookUnhandledExceptionEvents", this.GetType().Namespace));
+						this.AppConfigFascade.GetAppSetting<bool>(string.Format("{0}::HookUnhandledExceptionEvents", this.GetType().Namespace));
+			}
+		}
+
+		protected IReflectionFascade ReflectionFascade
+		{
+			get
+			{
+				return this.reflectionFascade;
 			}
 		}
 
@@ -172,7 +218,7 @@ namespace TextMetal.Middleware.Common.Fascades.Application
 
 				this.AssemblyInformationFascade = new AssemblyInformationFascade(Assembly.GetEntryAssembly());
 
-				arguments = AppConfigFascade.Instance.ParseCommandLineArguments(args);
+				arguments = this.AppConfigFascade.ParseCommandLineArguments(args);
 				argumentMap = this.GetArgumentMap();
 
 				finalArguments = new Dictionary<string, IList<object>>();
@@ -212,7 +258,7 @@ namespace TextMetal.Middleware.Common.Fascades.Application
 							{
 								foreach (string argumentValue in argumentValues)
 								{
-									if (!DataTypeFascade.Instance.TryParse(argumentSpec.Type, argumentValue, out finalArgumentValue))
+									if (!this.DataTypeFascade.TryParse(argumentSpec.Type, argumentValue, out finalArgumentValue))
 										argumentValidationMessages.Add(new Message(string.Empty, string.Format("An argument '{0}' value '{1}' was specified that failed to parse to the target type '{2}'.", argumentToken, argumentValue, argumentSpec.Type.FullName), Severity.Error));
 									else
 										finalArgumentValues.Add(finalArgumentValue);

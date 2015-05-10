@@ -11,6 +11,7 @@ using System.Text;
 
 using TextMetal.Framework.Core;
 using TextMetal.Framework.InputOutput;
+using TextMetal.Framework.Source;
 using TextMetal.Framework.Template;
 using TextMetal.Framework.Tokenization;
 using TextMetal.Framework.XmlDialect;

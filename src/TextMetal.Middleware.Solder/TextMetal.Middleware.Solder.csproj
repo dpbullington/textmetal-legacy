@@ -45,6 +45,7 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ExternalImport.cs" />
     <Compile Include="IoC\ActivatorDependencyResolution.cs" />
     <Compile Include="IoC\ConstructorDependencyResolution~1.cs" />
     <Compile Include="IoC\DelegateDependencyResolution.cs" />
@@ -71,12 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="IoC\Assertions.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TextMetal.Middleware.Common\TextMetal.Middleware.Common.csproj">
-      <Project>{d1860a67-7efb-4c0f-89cd-a641d99dcc2a}</Project>
-      <Name>TextMetal.Middleware.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

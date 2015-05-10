@@ -7,8 +7,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+using TextMetal.Framework.Associative;
 using TextMetal.Framework.Core;
-using TextMetal.Framework.Core.ObjectTaxonomy;
+using TextMetal.Framework.Expression;
+using TextMetal.Framework.Sort;
+using TextMetal.Framework.Template;
 using TextMetal.Framework.XmlDialect;
 
 namespace TextMetal.Framework.Debugger
@@ -111,21 +114,6 @@ namespace TextMetal.Framework.Debugger
 		}
 
 		/// <summary>
-		/// Gets or sets the parent hierarchical object or null if this is the hierarchy root.
-		/// </summary>
-		IHierarchicalObject IHierarchicalObject.Parent
-		{
-			get
-			{
-				return this.parent;
-			}
-			set
-			{
-				this.parent = (IXmlObject)value;
-			}
-		}
-
-		/// <summary>
 		/// Gets or sets the surround XML object or null if this is not surrounded (in a collection).
 		/// </summary>
 		public IXmlObjectCollection Surround
@@ -137,21 +125,6 @@ namespace TextMetal.Framework.Debugger
 			set
 			{
 				this.surround = value;
-			}
-		}
-
-		/// <summary>
-		/// Gets or sets the surround hierarchical object or null if this is not surrounded (in a collection).
-		/// </summary>
-		IHierarchicalObjectCollection IHierarchicalObject.Surround
-		{
-			get
-			{
-				return this.surround;
-			}
-			set
-			{
-				this.surround = (IXmlObjectCollection)value;
 			}
 		}
 

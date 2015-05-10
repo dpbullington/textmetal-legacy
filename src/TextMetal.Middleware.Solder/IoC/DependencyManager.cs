@@ -10,8 +10,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
-
 namespace TextMetal.Middleware.Solder.IoC
 {
 	/// <summary>
@@ -144,25 +142,7 @@ namespace TextMetal.Middleware.Solder.IoC
 			{
 				foreach (Assembly assembly in assemblies)
 				{
-					referencedAssemblies = assembly.GetReferencedAssemblies();
-
-					/*TODO: spike to figure out dependency load order - unsuccessful thus far
-					 * if ((object)referencedAssemblies != null)
-					{
-						foreach (AssemblyName referencedAssembly in referencedAssemblies)
-						{
-							try
-							{
-								Assembly.Load(referencedAssembly); // force load
-							}
-							catch (FileNotFoundException ex)
-							{
-								Debug.WriteLine(ex);
-							}
-						}
-					}*/
-
-					dependencyRegistrationAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyRegistrationAttribute>(assembly);
+					dependencyRegistrationAttribute = ExternalImport.GetOneAttribute<DependencyRegistrationAttribute>(assembly);
 
 					if ((object)dependencyRegistrationAttribute == null)
 						continue;
@@ -173,7 +153,7 @@ namespace TextMetal.Middleware.Solder.IoC
 					{
 						foreach (Type assemblyType in assemblyTypes)
 						{
-							dependencyRegistrationAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyRegistrationAttribute>(assemblyType);
+							dependencyRegistrationAttribute = ExternalImport.GetOneAttribute<DependencyRegistrationAttribute>(assemblyType);
 
 							if ((object)dependencyRegistrationAttribute == null)
 								continue;
@@ -187,7 +167,7 @@ namespace TextMetal.Middleware.Solder.IoC
 							{
 								foreach (MethodInfo methodInfo in methodInfos)
 								{
-									dependencyRegistrationAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyRegistrationAttribute>(methodInfo);
+									dependencyRegistrationAttribute = ExternalImport.GetOneAttribute<DependencyRegistrationAttribute>(methodInfo);
 
 									if ((object)dependencyRegistrationAttribute == null)
 										continue;

@@ -58,13 +58,11 @@ namespace TextMetal.Middleware.UnitTests.Common.Fascades.AdoNet._
 			mockReflectionFascade = mockFactory.CreateInstance<IReflectionFascade>();
 
 			Expect.On(mockDbConnection).One.Method(x => x.CreateCommand()).Will(Return.Value(mockDbCommand));
-			Expect.On(mockDbCommand).One.GetProperty(x => x.Parameters).Will(Return.Value(mockDbDataParameterCollection));
-			Expect.On(mockDbDataParameterCollection).One.Method(x => x.Clear());
+			Expect.On(mockDbCommand).Exactly(2).GetProperty(x => x.Parameters).Will(Return.Value(mockDbDataParameterCollection));
 			Expect.On(mockDbCommand).One.Method(x => x.Dispose());
-			Expect.On(mockDbCommand).One.SetProperty(x => x.Connection).To(mockDbConnection);
 			Expect.On(mockDbCommand).One.SetProperty(x => x.CommandType).To(CommandType.StoredProcedure);
 			Expect.On(mockDbCommand).One.SetProperty(x => x.CommandText).To("blah blah blah");
-			Expect.On(mockDbCommand).One.SetProperty(x => x.Transaction);
+			Expect.On(mockDbCommand).One.SetProperty(x => x.Transaction).To(null);
 			Expect.On(mockDbCommand).One.Method(x => x.ExecuteReader(_unusedCommandBehavior)).With(CommandBehavior.CloseConnection).Will(Return.Value(mockDataReader));
 			Expect.On(mockDbDataParameter0).One.GetProperty(x => x.Value).Will(Return.Value(1));
 			Expect.On(mockDbDataParameter1).One.GetProperty(x => x.Value).Will(Return.Value(null));
@@ -91,7 +89,6 @@ namespace TextMetal.Middleware.UnitTests.Common.Fascades.AdoNet._
 			MockFactory mockFactory;
 			IDbConnection mockDbConnection;
 			IDbCommand mockDbCommand;
-			IDataParameterCollection mockDbDataParameterCollection;
 			IDataReader mockDataReader;
 			IReflectionFascade mockReflectionFascade;
 
@@ -102,18 +99,14 @@ namespace TextMetal.Middleware.UnitTests.Common.Fascades.AdoNet._
 			mockFactory = new MockFactory();
 			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
 			mockDbCommand = mockFactory.CreateInstance<IDbCommand>();
-			mockDbDataParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
 			mockDataReader = mockFactory.CreateInstance<IDataReader>();
 			mockReflectionFascade = mockFactory.CreateInstance<IReflectionFascade>();
 
 			Expect.On(mockDbConnection).One.Method(x => x.CreateCommand()).WithNoArguments().Will(Return.Value(mockDbCommand));
-			Expect.On(mockDbCommand).One.GetProperty(x => x.Parameters).Will(Return.Value(mockDbDataParameterCollection));
-			Expect.On(mockDbDataParameterCollection).One.Method(x => x.Clear());
 			Expect.On(mockDbCommand).One.Method(x => x.Dispose());
-			Expect.On(mockDbCommand).One.SetProperty(x => x.Connection).To(mockDbConnection);
 			Expect.On(mockDbCommand).One.SetProperty(x => x.CommandType).To(CommandType.Text);
 			Expect.On(mockDbCommand).One.SetProperty(x => x.CommandText).To("blah blah blah");
-			Expect.On(mockDbCommand).One.SetProperty(x => x.Transaction);
+			Expect.On(mockDbCommand).One.SetProperty(x => x.Transaction).To(null);
 			Expect.On(mockDbCommand).One.Method(x => x.ExecuteReader(_unusedCommandBehavior)).With(CommandBehavior.CloseConnection).Will(Return.Value(mockDataReader));
 			Expect.On(mockDataReader).One.Method(x => x.Dispose());
 			Expect.On(mockDbCommand).One.SetProperty(x => x.CommandTimeout).To(15);
@@ -203,13 +196,11 @@ namespace TextMetal.Middleware.UnitTests.Common.Fascades.AdoNet._
 			mockReflectionFascade = mockFactory.CreateInstance<IReflectionFascade>();
 
 			Expect.On(mockDbConnection).One.Method(x => x.CreateCommand()).WithNoArguments().Will(Return.Value(mockDbCommand));
-			Expect.On(mockDbCommand).One.GetProperty(x => x.Parameters).Will(Return.Value(mockDbDataParameterCollection));
-			Expect.On(mockDbDataParameterCollection).One.Method(x => x.Clear());
+			Expect.On(mockDbCommand).Exactly(2).GetProperty(x => x.Parameters).Will(Return.Value(mockDbDataParameterCollection));
 			Expect.On(mockDbCommand).One.Method(x => x.Dispose());
-			Expect.On(mockDbCommand).One.SetProperty(x => x.Connection).To(mockDbConnection);
 			Expect.On(mockDbCommand).One.SetProperty(x => x.CommandType).To(CommandType.StoredProcedure);
 			Expect.On(mockDbCommand).One.SetProperty(x => x.CommandText).To("blah blah blah");
-			Expect.On(mockDbCommand).One.SetProperty(x => x.Transaction);
+			Expect.On(mockDbCommand).One.SetProperty(x => x.Transaction).To(null);
 			Expect.On(mockDbCommand).One.Method(x => x.ExecuteReader(_unusedCommandBehavior)).With(CommandBehavior.SingleRow).Will(Return.Value(mockDataReader));
 			Expect.On(mockDbDataParameter0).One.GetProperty(x => x.Value).Will(Return.Value(1));
 			Expect.On(mockDbDataParameter1).One.GetProperty(x => x.Value).Will(Return.Value(null));
@@ -236,29 +227,24 @@ namespace TextMetal.Middleware.UnitTests.Common.Fascades.AdoNet._
 			MockFactory mockFactory;
 			IDbConnection mockDbConnection;
 			IDbCommand mockDbCommand;
-			IDataParameterCollection mockDbDataParameterCollection;
 			IDataReader mockDataReader;
 			IReflectionFascade mockReflectionFascade;
 
 			IDataReader dataReader;
-			
+
 			CommandBehavior _unusedCommandBehavior = CommandBehavior.Default;
 
 			mockFactory = new MockFactory();
 			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
 			mockDbCommand = mockFactory.CreateInstance<IDbCommand>();
-			mockDbDataParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
 			mockDataReader = mockFactory.CreateInstance<IDataReader>();
 			mockReflectionFascade = mockFactory.CreateInstance<IReflectionFascade>();
 
 			Expect.On(mockDbConnection).One.Method(x => x.CreateCommand()).WithNoArguments().Will(Return.Value(mockDbCommand));
-			Expect.On(mockDbCommand).One.GetProperty(x => x.Parameters).Will(Return.Value(mockDbDataParameterCollection));
-			Expect.On(mockDbDataParameterCollection).One.Method(x => x.Clear());
 			Expect.On(mockDbCommand).One.Method(x => x.Dispose());
-			Expect.On(mockDbCommand).One.SetProperty(x => x.Connection).To(mockDbConnection);
 			Expect.On(mockDbCommand).One.SetProperty(x => x.CommandType).To(CommandType.Text);
 			Expect.On(mockDbCommand).One.SetProperty(x => x.CommandText).To("blah blah blah");
-			Expect.On(mockDbCommand).One.SetProperty(x => x.Transaction);
+			Expect.On(mockDbCommand).One.SetProperty(x => x.Transaction).To(null);
 			Expect.On(mockDbCommand).One.Method(x => x.ExecuteReader(_unusedCommandBehavior)).With(CommandBehavior.SingleRow).Will(Return.Value(mockDataReader));
 			Expect.On(mockDataReader).One.Method(x => x.Dispose());
 

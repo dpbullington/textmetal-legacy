@@ -6,8 +6,6 @@
 using System;
 using System.Collections.Generic;
 
-using TextMetal.Framework.Core;
-
 namespace TextMetal.Framework.Source
 {
 	public abstract class SourceStrategy : ISourceStrategy

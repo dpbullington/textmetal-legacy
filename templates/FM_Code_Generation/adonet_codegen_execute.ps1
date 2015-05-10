@@ -108,20 +108,8 @@ Copy-Item "$src_dir\TextMetal.Middleware.Data\bin\$build_flavor_dir\TextMetal.Mi
 Copy-Item "$src_dir\TextMetal.Middleware.Data\bin\$build_flavor_dir\TextMetal.Middleware.Data.xml" "$base_lib_dir\TextMetal\."
 Copy-Item "$src_dir\TextMetal.Middleware.Data\bin\$build_flavor_dir\TextMetal.Middleware.Data.pdb" "$base_lib_dir\TextMetal\."
 
-Copy-Item "$src_dir\TextMetal.Middleware.Data.Impl.FreakazoidMapper\bin\$build_flavor_dir\TextMetal.Middleware.Data.Impl.FreakazoidMapper.dll" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Middleware.Data.Impl.FreakazoidMapper\bin\$build_flavor_dir\TextMetal.Middleware.Data.Impl.FreakazoidMapper.xml" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Middleware.Data.Impl.FreakazoidMapper\bin\$build_flavor_dir\TextMetal.Middleware.Data.Impl.FreakazoidMapper.pdb" "$base_lib_dir\TextMetal\."
-
-Copy-Item "$src_dir\TextMetal.Middleware.Data.Impl.MicrosoftLinq\bin\$build_flavor_dir\TextMetal.Middleware.Data.Impl.MicrosoftLinq.dll" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Middleware.Data.Impl.MicrosoftLinq\bin\$build_flavor_dir\TextMetal.Middleware.Data.Impl.MicrosoftLinq.xml" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Middleware.Data.Impl.MicrosoftLinq\bin\$build_flavor_dir\TextMetal.Middleware.Data.Impl.MicrosoftLinq.pdb" "$base_lib_dir\TextMetal\."
-
 Copy-Item "$src_dir\TextMetal.Middleware.Solder\bin\$build_flavor_dir\TextMetal.Middleware.Solder.dll" "$base_lib_dir\TextMetal\."
 Copy-Item "$src_dir\TextMetal.Middleware.Solder\bin\$build_flavor_dir\TextMetal.Middleware.Solder.xml" "$base_lib_dir\TextMetal\."
 Copy-Item "$src_dir\TextMetal.Middleware.Solder\bin\$build_flavor_dir\TextMetal.Middleware.Solder.pdb" "$base_lib_dir\TextMetal\."
-
-Copy-Item "$src_dir\TextMetal.Middleware.Testing\bin\$build_flavor_dir\TextMetal.Middleware.Testing.dll" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Middleware.Testing\bin\$build_flavor_dir\TextMetal.Middleware.Testing.xml" "$base_lib_dir\TextMetal\."
-Copy-Item "$src_dir\TextMetal.Middleware.Testing\bin\$build_flavor_dir\TextMetal.Middleware.Testing.pdb" "$base_lib_dir\TextMetal\."
 
 echo "The operation completed successfully."

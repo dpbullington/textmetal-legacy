@@ -8,7 +8,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-using TextMetal.Framework.Core;
+using TextMetal.Framework.Source;
+using TextMetal.Framework.Template;
 using TextMetal.Framework.XmlDialect;
 using TextMetal.Middleware.Common.Fascades.Utilities;
 

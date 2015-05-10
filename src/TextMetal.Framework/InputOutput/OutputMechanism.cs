@@ -8,8 +8,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-using TextMetal.Framework.Core;
-
 namespace TextMetal.Framework.InputOutput
 {
 	public abstract class OutputMechanism : IOutputMechanism

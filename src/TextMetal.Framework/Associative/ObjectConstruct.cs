@@ -5,7 +5,6 @@
 
 using System;
 
-using TextMetal.Framework.Core;
 using TextMetal.Framework.XmlDialect;
 
 namespace TextMetal.Framework.Associative
@@ -14,7 +13,7 @@ namespace TextMetal.Framework.Associative
 	/// Provides an XML construct for associative objects (not a base class however).
 	/// </summary>
 	[XmlElementMapping(LocalName = "Object", NamespaceUri = "http://www.textmetal.com/api/v6.0.0", ChildElementModel = ChildElementModel.Items)]
-	public class ObjectConstruct : AssociativeXmlObject, IActualThing
+	public class ObjectConstruct : AssociativeXmlObject, IObjectReference
 	{
 		#region Constructors/Destructors
 
