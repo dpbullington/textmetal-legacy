@@ -53,8 +53,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Utilities;
 using TextMetal.Middleware.Data.Models;
+using TextMetal.Middleware.Data.Models.Tabular;
 ]]>
 						<If>
 							<If.Condition>

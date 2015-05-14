@@ -38,63 +38,26 @@
     <DocumentationFile>bin\Release\TextMetal.Middleware.Common.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Fascades\AdoNet\UoW\ExtensionMethods.cs" />
-    <Compile Include="Fascades\AdoNet\AdoNetFascade.cs" />
-    <Compile Include="Fascades\AdoNet\IAdoNetFascade.cs" />
-    <Compile Include="Fascades\AdoNet\UoW\AmbientUnitOfWorkScope.cs" />
-    <Compile Include="Fascades\AdoNet\UoW\IUnitOfWork.cs" />
-    <Compile Include="Fascades\AdoNet\UoW\IUnitOfWorkFactory.cs" />
-    <Compile Include="Fascades\AdoNet\UoW\UnitOfWork.cs" />
-    <Compile Include="Fascades\Application\ConsoleApplicationFascade.cs" />
-    <Compile Include="Fascades\Application\ExecutableApplicationFascade.cs" />
-    <Compile Include="Fascades\Application\IExecutableApplicationFascade.cs" />
-    <Compile Include="Fascades\Utilities\AppConfigFascade.cs" />
-    <Compile Include="Fascades\Utilities\AssemblyInformationFascade.cs" />
-    <Compile Include="Fascades\Utilities\DataTypeFascade.cs" />
-    <Compile Include="Fascades\Utilities\DataTypeFascade.impl.p.cs" />
-    <Compile Include="Fascades\Utilities\ExtensionMethods.cs" />
-    <Compile Include="Fascades\Utilities\IAppConfigFascade.cs" />
-    <Compile Include="Fascades\Utilities\IAssemblyInformationFascade.cs" />
-    <Compile Include="Fascades\Utilities\IDataTypeFascade.cs" />
-    <Compile Include="Fascades\Utilities\IReflectionFascade.cs" />
-    <Compile Include="Fascades\Utilities\ReflectionFascade.cs" />
+    <Compile Include="Utilities\AppConfigFascade.cs" />
+    <Compile Include="Utilities\AssemblyInformationFascade.cs" />
+    <Compile Include="Utilities\DataTypeFascade.cs" />
+    <Compile Include="Utilities\DataTypeFascade.impl.p.cs" />
+    <Compile Include="Utilities\ExtensionMethods.cs" />
+    <Compile Include="Utilities\IAppConfigFascade.cs" />
+    <Compile Include="Utilities\IAssemblyInformationFascade.cs" />
+    <Compile Include="Utilities\IDataTypeFascade.cs" />
+    <Compile Include="Utilities\IReflectionFascade.cs" />
+    <Compile Include="Utilities\ReflectionFascade.cs" />
     <Compile Include="ProjectAssemblyDependency.cs" />
-    <Compile Include="Strategies\ContextualStorage\ApplicationSpecific\HttpCookieApplicationSpecificStorageStrategy.cs" />
-    <Compile Include="Strategies\ContextualStorage\ApplicationSpecific\HttpSessionApplicationSpecificStorageStrategy.cs" />
-    <Compile Include="Strategies\ContextualStorage\ApplicationSpecific\IApplicationSpecificStorageStrategy.cs" />
-    <Compile Include="Strategies\ContextualStorage\CallContextContextualStorageStrategy.cs" />
-    <Compile Include="Strategies\ContextualStorage\DefaultContextualStorageFactory.cs" />
-    <Compile Include="Strategies\ContextualStorage\HttpContextContextualStorageStrategy.cs" />
-    <Compile Include="Strategies\ContextualStorage\IContextualStorageStrategy.cs" />
-    <Compile Include="Strategies\ContextualStorage\IContextualStorageFactory.cs" />
-    <Compile Include="Strategies\ContextualStorage\LogicalCallContextContextualStorageStrategy.cs" />
-    <Compile Include="Strategies\ContextualStorage\ThreadStaticContextualStorageStrategy.cs" />
-    <Compile Include="Strategies\ContextualStorage\WcfContextContextualStorageStrategy.cs" />
-    <Compile Include="Strategies\Serialization\ExtensionMethods.cs" />
-    <Compile Include="Strategies\Serialization\IBinarySerializationStrategy.cs" />
-    <Compile Include="Strategies\Serialization\ISerializationStrategy.cs" />
-    <Compile Include="Strategies\Serialization\ITextSerializationStrategy.cs" />
-    <Compile Include="Strategies\Serialization\IXmlSerializationStrategy.cs" />
-    <Compile Include="Strategies\Serialization\JsonSerializationStrategy.cs" />
-    <Compile Include="Strategies\Serialization\XmlSerializationStrategy.cs" />
     <Compile Include="IValidate.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Severity.cs" />

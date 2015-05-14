@@ -6,9 +6,9 @@
 using System;
 using System.Collections.Generic;
 
-using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
 using TextMetal.Middleware.Data.Models.Functional;
 using TextMetal.Middleware.Data.Models.Tabular;
+using TextMetal.Middleware.Data.UoW;
 
 namespace TextMetal.Middleware.Data.Repositories
 {

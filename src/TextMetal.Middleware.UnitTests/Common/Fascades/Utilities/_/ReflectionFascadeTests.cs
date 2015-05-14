@@ -11,7 +11,7 @@ using NMock;
 
 using NUnit.Framework;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Utilities;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
 namespace TextMetal.Middleware.UnitTests.Common.Fascades.Utilities._

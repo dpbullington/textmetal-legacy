@@ -13,7 +13,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Utilities;
 
 namespace TextMetal.Framework.XmlDialect
 {

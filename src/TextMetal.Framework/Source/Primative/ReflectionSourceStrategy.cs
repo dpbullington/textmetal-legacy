@@ -9,7 +9,7 @@ using System.IO;
 using System.Reflection;
 
 using TextMetal.Framework.Associative;
-using TextMetal.Middleware.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Utilities;
 
 namespace TextMetal.Framework.Source.Primative
 {

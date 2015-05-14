@@ -19,7 +19,8 @@ using System.Xml;
 
 using TextMetal.Middleware.Data.Models;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper;
-using TextMetal.Middleware.Solder.IoC;
+using TextMetal.Middleware.Data.Repositories;
+using TextMetal.Middleware.Solder.Injection;
 ]]>
 		<If>
 			<If.Condition>

@@ -11,15 +11,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-using TextMetal.Middleware.Common.Fascades.AdoNet;
-using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
-using TextMetal.Middleware.Common.Fascades.Utilities;
-using TextMetal.Middleware.Common.Strategies.Serialization;
+using TextMetal.Middleware.Common.Utilities;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Migrations;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Tactics;
 using TextMetal.Middleware.Data.Models.Functional;
 using TextMetal.Middleware.Data.Models.Tabular;
+using TextMetal.Middleware.Data.UoW;
+using TextMetal.Middleware.Solder.Serialization;
 
 namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 {

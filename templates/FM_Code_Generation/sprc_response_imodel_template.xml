@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using System.Xml;
 
 using TextMetal.Middleware.Data.Models;
+using TextMetal.Middleware.Data.Models.Functional;
 ]]>
 						<If>
 							<If.Condition>

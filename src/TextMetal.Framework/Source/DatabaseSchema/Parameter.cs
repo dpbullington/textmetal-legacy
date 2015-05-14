@@ -7,7 +7,7 @@ using System;
 using System.Data;
 using System.Xml.Serialization;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Utilities;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
 {

@@ -8,9 +8,9 @@ using System.Data;
 using System.IO;
 using System.Reflection;
 
-using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
-using TextMetal.Middleware.Common.Fascades.Utilities;
-using TextMetal.Middleware.Common.Strategies.ContextualStorage;
+using TextMetal.Middleware.Common.Utilities;
+using TextMetal.Middleware.Data.UoW;
+using TextMetal.Middleware.Solder.Context;
 
 namespace TextMetal.Middleware.Data.Repositories
 {
@@ -19,8 +19,8 @@ namespace TextMetal.Middleware.Data.Repositories
 		#region Constructors/Destructors
 
 		protected ModelRepository()
-			: this(Common.Fascades.Utilities.DataTypeFascade.Instance,
-				Common.Fascades.Utilities.AppConfigFascade.Instance)
+			: this(Common.Utilities.DataTypeFascade.Instance,
+				Common.Utilities.AppConfigFascade.Instance)
 		{
 		}
 

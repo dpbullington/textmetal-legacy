@@ -15,7 +15,7 @@ using TextMetal.Framework.Source;
 using TextMetal.Framework.Template;
 using TextMetal.Framework.Tokenization;
 using TextMetal.Framework.XmlDialect;
-using TextMetal.Middleware.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Utilities;
 
 namespace TextMetal.Framework.Hosting.Tool
 {

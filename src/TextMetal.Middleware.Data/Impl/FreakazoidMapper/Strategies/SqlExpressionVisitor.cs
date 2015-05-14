@@ -8,11 +8,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-using TextMetal.Middleware.Common.Fascades.AdoNet;
-using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Expressions;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Mappings;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Tactics;
+using TextMetal.Middleware.Data.UoW;
 
 namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 {

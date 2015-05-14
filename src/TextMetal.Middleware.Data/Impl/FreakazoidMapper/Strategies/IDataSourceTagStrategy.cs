@@ -6,12 +6,12 @@
 using System;
 using System.Collections.Generic;
 
-using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Expressions;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Mappings;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Tactics;
 using TextMetal.Middleware.Data.Models.Functional;
 using TextMetal.Middleware.Data.Models.Tabular;
+using TextMetal.Middleware.Data.UoW;
 
 namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 {

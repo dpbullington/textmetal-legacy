@@ -9,8 +9,8 @@ using NMock;
 
 using NUnit.Framework;
 
-using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
 using TextMetal.Middleware.Data.Impl;
+using TextMetal.Middleware.Data.UoW;
 
 using _MockDataContext = System.IDisposable;
 

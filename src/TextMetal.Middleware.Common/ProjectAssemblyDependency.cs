@@ -5,9 +5,7 @@
 
 using System;
 
-using TextMetal.Middleware.Common.Fascades.AdoNet;
-using TextMetal.Middleware.Common.Fascades.Utilities;
-using TextMetal.Middleware.Solder.IoC;
+using TextMetal.Middleware.Solder.Injection;
 
 [assembly: DependencyRegistration]
 

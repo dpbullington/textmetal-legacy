@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 using NUnit.Framework;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Utilities;
 
 namespace TextMetal.Middleware.UnitTests.Common.Fascades.Utilities._
 {

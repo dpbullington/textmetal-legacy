@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 
-using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
+using TextMetal.Middleware.Data.UoW;
 
 namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Tactics
 {

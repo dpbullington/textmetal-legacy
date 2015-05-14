@@ -6,9 +6,9 @@
 using System;
 using System.Reflection;
 
-using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
-using TextMetal.Middleware.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Utilities;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Tactics;
+using TextMetal.Middleware.Data.UoW;
 
 namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 {

@@ -30,8 +30,6 @@ using System;
 using System.Xml;
 
 using NUnit.Framework;
-
-using TextMetal.Middleware.Testing;
 ]]>
 						<If>
 							<If.Condition>
@@ -90,8 +88,8 @@ namespace ${ClrNamespace}.UnitTests.${FolderName}
 							</ForEach.Filter>
 							<ForEach.Body>
 
-								<![CDATA[			${ProcedureNameSingularCamelCase}Request.@${ParameterNamePascalCase} = ValueGenerator.GetNextValue<${ParameterCSharpClrType}>();
-			Assert.AreEqual(ValueGenerator.GetPreviousValue<${ParameterCSharpClrType}>(), ${ProcedureNameSingularCamelCase}Request.@${ParameterNamePascalCase});
+								<![CDATA[			${ProcedureNameSingularCamelCase}Request.@${ParameterNamePascalCase} = default(${ParameterCSharpClrType});
+			Assert.AreEqual(default(${ParameterCSharpClrType}), ${ProcedureNameSingularCamelCase}Request.@${ParameterNamePascalCase});
 ]]>
 
 								<If>

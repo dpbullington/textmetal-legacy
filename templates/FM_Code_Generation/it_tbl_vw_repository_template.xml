@@ -16,10 +16,9 @@ using System.Xml;
 
 using NUnit.Framework;
 
-using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
+using TextMetal.Middleware.Data.UoW;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Expressions;
-using TextMetal.Middleware.Testing;
 ]]>
 		<If>
 			<If.Condition>
@@ -159,7 +158,7 @@ namespace ${ClrNamespace}.IntegrationTests
 									</ForEach.Filter>
 									<ForEach.Body>
 
-<![CDATA[				@${TableNameSingularCamelCase}.@${ColumnNamePascalCase} = ValueGenerator.GetNextValue<${ColumnCSharpClrType}>();]]>
+<![CDATA[				@${TableNameSingularCamelCase}.@${ColumnNamePascalCase} = default(${ColumnCSharpClrType});]]>
 
 										<If>
 											<If.Condition>
@@ -204,7 +203,7 @@ namespace ${ClrNamespace}.IntegrationTests
 									</ForEach.Filter>
 									<ForEach.Body>
 
-<![CDATA[				${TableNameSingularCamelCase}.@${ColumnNamePascalCase} = ValueGenerator.GetNextValue<${ColumnCSharpClrType}>();]]>
+<![CDATA[				${TableNameSingularCamelCase}.@${ColumnNamePascalCase} = default(${ColumnCSharpClrType});]]>
 
 										<If>
 											<If.Condition>
@@ -289,7 +288,7 @@ namespace ${ClrNamespace}.IntegrationTests
 			</BinaryExpression>
 		</ForEach.Filter>
 		<ForEach.Body>
-			<![CDATA[			@${TableNameSingularCamelCase}.@${ColumnNamePascalCase} = ValueGenerator.GetNextValue<${ColumnCSharpClrType}>();]]>
+			<![CDATA[			@${TableNameSingularCamelCase}.@${ColumnNamePascalCase} = default(${ColumnCSharpClrType});]]>
 			<If>
 				<If.Condition>
 					<BinaryExpression operator="Ne">

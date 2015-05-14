@@ -361,9 +361,6 @@ EndGlobal
 	<Reference Include="TextMetal.Middleware.Data">
       <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Data.dll</HintPath>
     </Reference>
-	<Reference Include="TextMetal.Middleware.Data.Impl.FreakazoidMapper">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Data.Impl.FreakazoidMapper.dll</HintPath>
-    </Reference>
 	<Reference Include="TextMetal.Middleware.Solder">
       <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Solder.dll</HintPath>
     </Reference>
@@ -534,14 +531,8 @@ EndGlobal
 	<Reference Include="TextMetal.Middleware.Data">
       <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Data.dll</HintPath>
     </Reference>
-	<Reference Include="TextMetal.Middleware.Data.Impl.FreakazoidMapper">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Data.Impl.FreakazoidMapper.dll</HintPath>
-    </Reference>
 	<Reference Include="TextMetal.Middleware.Solder">
       <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Solder.dll</HintPath>
-    </Reference>
-	<Reference Include="TextMetal.Middleware.Testing">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Testing.dll</HintPath>
     </Reference>
 
 	<ProjectReference Include="..\${ModuleName}\${ModuleName}.csproj">
@@ -711,14 +702,8 @@ EndGlobal
 	<Reference Include="TextMetal.Middleware.Data">
       <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Data.dll</HintPath>
     </Reference>
-	<Reference Include="TextMetal.Middleware.Data.Impl.FreakazoidMapper">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Data.Impl.FreakazoidMapper.dll</HintPath>
-    </Reference>
 	<Reference Include="TextMetal.Middleware.Solder">
       <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Solder.dll</HintPath>
-    </Reference>
-	<Reference Include="TextMetal.Middleware.Testing">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Testing.dll</HintPath>
     </Reference>
 
 	<ProjectReference Include="..\${ModuleName}\${ModuleName}.csproj">

@@ -11,7 +11,7 @@ using System.Linq;
 using Microsoft.VisualBasic.FileIO;
 
 using TextMetal.Framework.Associative;
-using TextMetal.Middleware.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Utilities;
 
 namespace TextMetal.Framework.Source.Primative
 {

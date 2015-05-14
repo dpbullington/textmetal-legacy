@@ -38,32 +38,54 @@
     <DocumentationFile>bin\Release\TextMetal.Middleware.Solder.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Context\CallContextContextualStorageStrategy.cs" />
+    <Compile Include="Context\DefaultContextualStorageFactory.cs" />
+    <Compile Include="Context\HttpContextContextualStorageStrategy.cs" />
+    <Compile Include="Context\IContextualStorageFactory.cs" />
+    <Compile Include="Context\IContextualStorageStrategy.cs" />
+    <Compile Include="Context\LogicalCallContextContextualStorageStrategy.cs" />
+    <Compile Include="Context\ThreadStaticContextualStorageStrategy.cs" />
+    <Compile Include="Context\WcfContextContextualStorageStrategy.cs" />
     <Compile Include="ExternalImport.cs" />
-    <Compile Include="IoC\ActivatorDependencyResolution.cs" />
-    <Compile Include="IoC\ConstructorDependencyResolution~1.cs" />
-    <Compile Include="IoC\DelegateDependencyResolution.cs" />
-    <Compile Include="IoC\DependencyException.cs" />
-    <Compile Include="IoC\DependencyInjectionAttribute.cs" />
-    <Compile Include="IoC\DependencyManager.cs" />
-    <Compile Include="IoC\DependencyRegistrationAttribute.cs" />
-    <Compile Include="IoC\IDependencyManager.cs" />
-    <Compile Include="IoC\IDependencyResolution.cs" />
-    <Compile Include="IoC\SingletonDependencyResolution.cs" />
-    <Compile Include="SoC\AspectDynamicInvoker.cs" />
-    <Compile Include="SoC\DynamicInvoker.cs" />
-    <Compile Include="SoC\IDynamicInvocation.cs" />
-    <Compile Include="SoC\LoggingAspectDynamicInvoker.cs" />
-    <Compile Include="SoC\ProxyFactory~1.cs" />
-    <Compile Include="SoC\RemotingImpl\DynamicInvokerRealProxy~1.cs" />
+    <Compile Include="Injection\ActivatorDependencyResolution.cs" />
+    <Compile Include="Injection\ConstructorDependencyResolution~1.cs" />
+    <Compile Include="Injection\DelegateDependencyResolution.cs" />
+    <Compile Include="Injection\DependencyException.cs" />
+    <Compile Include="Injection\DependencyInjectionAttribute.cs" />
+    <Compile Include="Injection\DependencyManager.cs" />
+    <Compile Include="Injection\DependencyRegistrationAttribute.cs" />
+    <Compile Include="Injection\IDependencyManager.cs" />
+    <Compile Include="Injection\IDependencyResolution.cs" />
+    <Compile Include="Injection\SingletonDependencyResolution.cs" />
+    <Compile Include="Interception\AspectDynamicInvoker.cs" />
+    <Compile Include="Interception\DynamicInvoker.cs" />
+    <Compile Include="Interception\IDynamicInvocation.cs" />
+    <Compile Include="Interception\LoggingAspectDynamicInvoker.cs" />
+    <Compile Include="Interception\ProxyFactory~1.cs" />
+    <Compile Include="Interception\RemotingImpl\DynamicInvokerRealProxy~1.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
-    <Compile Include="IoC\LoggingAspectConstructorDependencyResolution~1.cs" />
+    <Compile Include="Injection\LoggingAspectConstructorDependencyResolution~1.cs" />
+    <Compile Include="Serialization\ExtensionMethods.cs" />
+    <Compile Include="Serialization\IBinarySerializationStrategy.cs" />
+    <Compile Include="Serialization\ISerializationStrategy.cs" />
+    <Compile Include="Serialization\ITextSerializationStrategy.cs" />
+    <Compile Include="Serialization\IXmlSerializationStrategy.cs" />
+    <Compile Include="Serialization\JsonSerializationStrategy.cs" />
+    <Compile Include="Serialization\XmlSerializationStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TextMetal.snk">
@@ -71,7 +93,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="IoC\Assertions.txt" />
+    <Content Include="Injection\Assertions.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

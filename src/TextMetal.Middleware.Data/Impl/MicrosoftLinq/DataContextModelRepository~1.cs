@@ -13,8 +13,8 @@ using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 
-using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
 using TextMetal.Middleware.Data.Models.Tabular;
+using TextMetal.Middleware.Data.UoW;
 
 namespace TextMetal.Middleware.Data.Impl.MicrosoftLinq
 {

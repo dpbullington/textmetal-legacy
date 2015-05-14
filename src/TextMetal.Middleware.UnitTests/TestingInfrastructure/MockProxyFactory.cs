@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using TextMetal.Middleware.Solder.SoC;
+using TextMetal.Middleware.Solder.Interception;
 
 namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 {

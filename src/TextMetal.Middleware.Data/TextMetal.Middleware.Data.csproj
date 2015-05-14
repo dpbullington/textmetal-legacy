@@ -53,9 +53,16 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AdoNetFascade.cs" />
+    <Compile Include="IAdoNetFascade.cs" />
     <Compile Include="Impl\AmbientUnitOfWorkAwareContextWrapper~1.cs" />
     <Compile Include="Impl\ContextModelRepository~1.cs" />
     <Compile Include="Impl\MicrosoftLinq\DataContextModelRepository~1.cs" />
+    <Compile Include="UoW\AmbientUnitOfWorkScope.cs" />
+    <Compile Include="UoW\ExtensionMethods.cs" />
+    <Compile Include="UoW\IUnitOfWork.cs" />
+    <Compile Include="UoW\IUnitOfWorkFactory.cs" />
+    <Compile Include="UoW\UnitOfWork.cs" />
     <None Include="Impl\MicrosoftLinq\DbContextModelRepository~1.cs" />
     <Compile Include="Impl\FreakazoidMapper\Expressions\BinaryExpression.cs" />
     <Compile Include="Impl\FreakazoidMapper\Expressions\BinaryOperator.cs" />

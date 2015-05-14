@@ -11,10 +11,10 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 using TextMetal.Framework.Naming;
-using TextMetal.Middleware.Common.Fascades.AdoNet;
-using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
-using TextMetal.Middleware.Common.Fascades.Utilities;
-using TextMetal.Middleware.Common.Strategies.Serialization;
+using TextMetal.Middleware.Common.Utilities;
+using TextMetal.Middleware.Data;
+using TextMetal.Middleware.Data.UoW;
+using TextMetal.Middleware.Solder.Serialization;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
 {

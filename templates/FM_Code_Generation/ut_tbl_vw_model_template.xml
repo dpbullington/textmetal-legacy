@@ -53,8 +53,6 @@ using System;
 using System.Xml;
 
 using NUnit.Framework;
-
-using TextMetal.Middleware.Testing;
 ]]>
 						<If>
 							<If.Condition>
@@ -104,8 +102,8 @@ namespace ${ClrNamespace}.UnitTests.${FolderName}
 							<ForEach.Filter></ForEach.Filter>
 							<ForEach.Body>
 
-								<![CDATA[			@${TableNameSingularCamelCase}.@${ColumnNamePascalCase} = ValueGenerator.GetNextValue<${ColumnCSharpClrType}>();
-			Assert.AreEqual(ValueGenerator.GetPreviousValue<${ColumnCSharpClrType}>(), @${TableNameSingularCamelCase}.@${ColumnNamePascalCase});
+								<![CDATA[			@${TableNameSingularCamelCase}.@${ColumnNamePascalCase} = default(${ColumnCSharpClrType});
+			Assert.AreEqual(default(${ColumnCSharpClrType}), @${TableNameSingularCamelCase}.@${ColumnNamePascalCase});
 ]]>
 
 								<If>

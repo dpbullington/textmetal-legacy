@@ -11,9 +11,9 @@ using System.Linq;
 
 using TextMetal.Framework.Associative;
 using TextMetal.Framework.Tokenization;
-using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
-using TextMetal.Middleware.Common.Fascades.Utilities;
-using TextMetal.Middleware.Common.Strategies.Serialization;
+using TextMetal.Middleware.Common.Utilities;
+using TextMetal.Middleware.Data.UoW;
+using TextMetal.Middleware.Solder.Serialization;
 
 namespace TextMetal.Framework.Source.Primative
 {

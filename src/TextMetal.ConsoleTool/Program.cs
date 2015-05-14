@@ -8,8 +8,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
+using TextMetal.Framework.Application;
 using TextMetal.Framework.Hosting.Tool;
-using TextMetal.Middleware.Common.Fascades.Application;
+
+using ConsoleApplicationFascade = TextMetal.ConsoleTool.Application.ConsoleApplicationFascade;
 
 namespace TextMetal.ConsoleTool
 {

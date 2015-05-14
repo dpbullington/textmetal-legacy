@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Utilities;
 
 namespace TextMetal.Framework.Tokenization
 {

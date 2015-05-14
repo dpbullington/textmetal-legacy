@@ -5,7 +5,7 @@
 
 using System;
 
-using TextMetal.Middleware.Solder.IoC;
+using TextMetal.Middleware.Solder.Injection;
 
 namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 {

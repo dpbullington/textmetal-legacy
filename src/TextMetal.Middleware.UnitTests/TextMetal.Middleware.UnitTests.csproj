@@ -57,7 +57,7 @@
     </Compile>
     <Compile Include="Common\Fascades\Utilities\_\AppConfigFascadeTests.cs" />
     <Compile Include="Common\Fascades\Utilities\_\DataTypeFascadeTests.cs" />
-    <None Include="Common\Strategies\ContextualStorage\_\DefaultExecutionStorageFactoryTests.cs" />
+    <None Include="Solder\Context\_\DefaultExecutionStorageFactoryTests.cs" />
     <Compile Include="Common\Fascades\Utilities\_\ReflectionFascadeTests.cs" />
     <Compile Include="Data\Impl\_\AmbientUnitOfWorkAwareContextWrapperTests.cs" />
     <None Include="Data\Impl\MicrosoftLinq\_\DataContextModelRepositoryTests.cs" />
@@ -67,17 +67,17 @@
     <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\ProcedureMappingAttributeTests.cs" />
     <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\TableMappingAttributeTests.cs" />
     <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\TacticCommandTests.cs" />
-    <None Include="Solder\IoC\_\ActivatorDependencyResolutionTests.cs" />
-    <None Include="Solder\IoC\_\ConstructorDependencyResolutionTests.cs" />
-    <None Include="Solder\IoC\_\DelegateDependencyResolutionTests.cs" />
-    <None Include="Solder\IoC\_\DependencyExceptionTests.cs" />
-    <None Include="Solder\IoC\_\DependencyManagerTests.cs" />
-    <None Include="Solder\IoC\_\DependencyRegistrationAttributeTests.cs" />
-    <None Include="Solder\IoC\_\SingletonDependencyResolutionTests.cs" />
-    <None Include="Solder\SoC\RemotingImpl\_\DynamicInvokerRealProxyTests.cs" />
-    <None Include="Solder\SoC\_\AspectDynamicInvokerTests.cs" />
-    <None Include="Solder\SoC\_\DynamicInvokerTests.cs" />
-    <None Include="Solder\SoC\_\ProxyFactoryTests.cs" />
+    <None Include="Solder\Injection\_\ActivatorDependencyResolutionTests.cs" />
+    <None Include="Solder\Injection\_\ConstructorDependencyResolutionTests.cs" />
+    <None Include="Solder\Injection\_\DelegateDependencyResolutionTests.cs" />
+    <None Include="Solder\Injection\_\DependencyExceptionTests.cs" />
+    <None Include="Solder\Injection\_\DependencyManagerTests.cs" />
+    <None Include="Solder\Injection\_\DependencyRegistrationAttributeTests.cs" />
+    <None Include="Solder\Injection\_\SingletonDependencyResolutionTests.cs" />
+    <None Include="Solder\Interception\RemotingImpl\_\DynamicInvokerRealProxyTests.cs" />
+    <None Include="Solder\Interception\_\AspectDynamicInvokerTests.cs" />
+    <None Include="Solder\Interception\_\DynamicInvokerTests.cs" />
+    <None Include="Solder\Interception\_\ProxyFactoryTests.cs" />
     <Compile Include="TestingInfrastructure\IMockModelObject.cs" />
     <Compile Include="TestingInfrastructure\MockAspectDynamicInvoker.cs" />
     <Compile Include="TestingInfrastructure\MockDataContext.cs" />
@@ -85,9 +85,9 @@
     <Compile Include="TestingInfrastructure\MockModelObject.cs" />
     <Compile Include="TestingInfrastructure\MockDependantObject.cs" />
     <Compile Include="TestingInfrastructure\MockProxyFactory.cs" />
-    <Compile Include="Common\Fascades\AdoNet\_\AdoNetFascadeTests.cs" />
+    <Compile Include="Data\_\AdoNetFascadeTests.cs" />
     <None Include="App.config" />
-    <None Include="Common\Fascades\AdoNet\UoW\_\AmbientUnitOfWorkScope.cs" />
+    <None Include="Data\UoW\_\AmbientUnitOfWorkScope.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
     <Compile Include="TestingInfrastructure\IMockObject.cs" />
     <Compile Include="TestingInfrastructure\MockConnection.cs" />
@@ -104,7 +104,7 @@
     <None Include="UnitTesting.nunit" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\_\" />
+    <Folder Include="Common\Strategies\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TextMetal.Middleware.Common\TextMetal.Middleware.Common.csproj">

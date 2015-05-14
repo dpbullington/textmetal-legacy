@@ -10,8 +10,8 @@ using System.Data.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
-using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
-using TextMetal.Middleware.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Utilities;
+using TextMetal.Middleware.Data.UoW;
 
 namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 {

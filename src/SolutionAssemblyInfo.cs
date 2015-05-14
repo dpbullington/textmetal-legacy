@@ -19,16 +19,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Distributed under the MIT license:\r\nhttp://www.opensource.org/licenses/mit-license.php")]
 [assembly: AssemblyTrademark("π")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("7.1.0.*")]
-[assembly: AssemblyFileVersion("7.1.0.0")]
-[assembly: AssemblyInformationalVersion("2015.05.01/preview")]
+[assembly: AssemblyVersion("8.0.0.*")]
+[assembly: AssemblyFileVersion("8.0.0.0")]
+[assembly: AssemblyInformationalVersion("2015.05.14/preview")]
 [assembly: AssemblyDelaySign(false)]
 [assembly: ComVisible(false)]
-
-/*#if DEFINE_CLR_VERSION_20
-[assembly: System.Security.AllowPartiallyTrustedCallers]
-#endif
-
-#if DEFINE_CLR_VERSION_40
-[assembly: System.Security.SecurityRules(System.Security.SecurityRuleSet.Level2)]
-#endif*/

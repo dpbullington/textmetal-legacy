@@ -7,8 +7,8 @@ using System;
 using System.IO;
 using System.Xml;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
-using TextMetal.Middleware.Common.Strategies.Serialization;
+using TextMetal.Middleware.Common.Utilities;
+using TextMetal.Middleware.Solder.Serialization;
 
 namespace TextMetal.Framework.XmlDialect
 {

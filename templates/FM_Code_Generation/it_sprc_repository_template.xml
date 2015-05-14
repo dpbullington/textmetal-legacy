@@ -15,8 +15,7 @@ using System.Xml;
 
 using NUnit.Framework;
 
-using TextMetal.Middleware.Common.Fascades.AdoNet.UoW;
-using TextMetal.Middleware.Testing;
+using TextMetal.Middleware.Data.UoW;
 ]]>
 		<If>
 			<If.Condition>
@@ -93,7 +92,7 @@ namespace ${ClrNamespace}.IntegrationTests
 			</BinaryExpression>
 		</ForEach.Filter>
 		<ForEach.Body>
-			<![CDATA[			@${ProcedureNameSingularCamelCase}_Request.@${ParameterNamePascalCase} = ValueGenerator.GetNextValue<${ParameterCSharpClrType}>();]]>
+			<![CDATA[			@${ProcedureNameSingularCamelCase}_Request.@${ParameterNamePascalCase} = default(${ParameterCSharpClrType});]]>
 			<If>
 				<If.Condition>
 					<BinaryExpression operator="Ne">

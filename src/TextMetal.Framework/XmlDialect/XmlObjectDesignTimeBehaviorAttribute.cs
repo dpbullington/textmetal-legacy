@@ -7,7 +7,7 @@ using System;
 using System.Drawing;
 using System.IO;
 
-using TextMetal.Middleware.Common.Fascades.Utilities;
+using TextMetal.Middleware.Common.Utilities;
 
 namespace TextMetal.Framework.XmlDialect
 {
