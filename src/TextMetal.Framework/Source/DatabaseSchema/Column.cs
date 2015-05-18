@@ -648,9 +648,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 		public static IEnumerable<IDictionary<string, object>> FixupDuplicateColumns(IEnumerable<IDictionary<string, object>> records)
 		{
-			const string COLUMN_NAME_RECORD_KEY = "ColumnName";
-			const string COLUMN_ORDINAL_RECORD_KEY = "ColumnOrdinal";
-			const string COLUMN_IS_ANONYMOUS_RECORD_KEY = "ColumnIsAnonymous";
+			IEnumerable<IGrouping<string, IDictionary<string, object>>> groups;
+
 			object columnOrdinal;
 			object columnName;
 			bool isDuplicateColumn;
@@ -659,9 +658,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			if ((object)records == null)
 				throw new ArgumentNullException("records");
 
-			IEnumerable<IGrouping<string, IDictionary<string, object>>> groups;
-
-			groups = records.GroupBy(record => (string)record[COLUMN_NAME_RECORD_KEY]);
+			groups = records.GroupBy(record => (string)record[SchemaInfoConstants.COLUMN_NAME_RECORD_KEY]);
 
 			foreach (var group in groups)
 			{
@@ -669,8 +666,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 				foreach (IDictionary<string, object> record in group)
 				{
-					record.TryGetValue(COLUMN_ORDINAL_RECORD_KEY, out columnOrdinal);
-					record.TryGetValue(COLUMN_NAME_RECORD_KEY, out columnName);
+					record.TryGetValue(SchemaInfoConstants.COLUMN_ORDINAL_RECORD_KEY, out columnOrdinal);
+					record.TryGetValue(SchemaInfoConstants.COLUMN_NAME_RECORD_KEY, out columnName);
 
 					isAnonymousColumn = DataTypeFascade.Instance.IsNullOrEmpty(columnName.ChangeType<string>());
 
@@ -681,15 +678,15 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 						else
 							columnName = string.Format("Column_{0:N}", Guid.NewGuid());
 
-						if (record.ContainsKey(COLUMN_NAME_RECORD_KEY))
-							record.Remove(COLUMN_NAME_RECORD_KEY);
+						if (record.ContainsKey(SchemaInfoConstants.COLUMN_NAME_RECORD_KEY))
+							record.Remove(SchemaInfoConstants.COLUMN_NAME_RECORD_KEY);
 
-						record.Add(COLUMN_NAME_RECORD_KEY, columnName);
+						record.Add(SchemaInfoConstants.COLUMN_NAME_RECORD_KEY, columnName);
 
-						if (record.ContainsKey(COLUMN_IS_ANONYMOUS_RECORD_KEY))
-							record.Remove(COLUMN_IS_ANONYMOUS_RECORD_KEY);
+						if (record.ContainsKey(SchemaInfoConstants.COLUMN_IS_ANONYMOUS_RECORD_KEY))
+							record.Remove(SchemaInfoConstants.COLUMN_IS_ANONYMOUS_RECORD_KEY);
 
-						record.Add(COLUMN_IS_ANONYMOUS_RECORD_KEY, true);
+						record.Add(SchemaInfoConstants.COLUMN_IS_ANONYMOUS_RECORD_KEY, true);
 					}
 				}
 			}

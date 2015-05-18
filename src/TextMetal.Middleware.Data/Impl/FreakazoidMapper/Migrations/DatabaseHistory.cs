@@ -120,7 +120,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Migrations
 			string svalue;
 			int ivalue;
 			int schemaRevision, currentSchemaRevision, recordsAffected;
-			IEnumerable<IDictionary<string, object>> results;
+			IEnumerable<IDictionary<string, object>> records;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
@@ -164,7 +164,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Migrations
 					foreach (string statement in revision.Statements)
 						unitOfWork.ExecuteDictionary(CommandType.Text, statement, null, out recordsAffected);
 
-					results = unitOfWork.ExecuteDictionary(CommandType.Text, this.IncrementSchemaVersionCommandText, null, out recordsAffected);
+					records = unitOfWork.ExecuteDictionary(CommandType.Text, this.IncrementSchemaVersionCommandText, null, out recordsAffected);
 
 					if (recordsAffected != 1)
 						throw new InvalidOperationException(string.Format("The records affected was not equal to one."));

@@ -316,12 +316,12 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 
 		/// <summary>
 		/// NOTE: This code is re-entrant if the results enumeration is re-started, for example:
-		/// returnProcedureModelObject.Results.First(); // causes an 'abandoned' enumerator
-		/// returnProcedureModelObject.Results.Last(); // causes a full enumeration
+		/// returnProcedureModelObject.Records.First(); // causes an 'abandoned' enumerator
+		/// returnProcedureModelObject.Records.Last(); // causes a full enumeration
 		/// To prevent this:
-		/// var results = returnProcedureModelObject.Results.ToArray(); // causes a full enumeration
-		/// results.First(); // in-memory
-		/// results.Last(); // in-memory
+		/// var records = returnProcedureModelObject.Records.ToArray(); // causes a full enumeration
+		/// records.First(); // in-memory
+		/// records.Last(); // in-memory
 		/// </summary>
 		/// <typeparam name="TCallProcedureModelObject"> </typeparam>
 		/// <typeparam name="TResultsetModelObject"> </typeparam>
@@ -340,6 +340,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 		{
 			IEnumerable<IDictionary<string, object>> records;
 			TResultsetModelObject resultsetModelObject;
+			IEnumerable<IGrouping<int, IDictionary<string, object>>> resultsets;
 
 			int actualRecordsAffected = int.MaxValue;
 			IDictionary<string, object> output;
@@ -375,20 +376,13 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 				throw new InvalidOperationException(string.Format("Records were invalid."));
 
 			// DOES NOT FORCE EXECUTION AGAINST STORE
-			IEnumerable<IGrouping<int, IDictionary<string, object>>> groups;
+			resultsets = records.ToResultsets();
 
-			groups = records.GroupBy(record =>
-									{
-										int resultsetIndex = (int)record[AdoNetFascade.ResultsetIndexRecordKey];
-										record.Remove(AdoNetFascade.ResultsetIndexRecordKey);
-										return resultsetIndex;
-									});
-
-			foreach (IGrouping<int, IDictionary<string, object>> group in groups)
+			foreach (IGrouping<int, IDictionary<string, object>> resultset in resultsets)
 			{
 				resultsetModelObject = new TResultsetModelObject();
-				resultsetModelObject.Index = group.Key;
-				resultsetModelObject.Results = this.GetProcedureResultsLazy<TCallProcedureModelObject, TResultsetModelObject, TResultProcedureModelObject, TReturnProcedureModelObject>(unitOfWork, procedureTacticCommand, resultsetModelObject, group);
+				resultsetModelObject.Index = resultset.Key;
+				resultsetModelObject.Records = this.GetProcedureResultsLazy<TCallProcedureModelObject, TResultsetModelObject, TResultProcedureModelObject, TReturnProcedureModelObject>(unitOfWork, procedureTacticCommand, resultsetModelObject, resultset);
 
 				this.OnResultsetProcedureModel<TResultsetModelObject, TResultProcedureModelObject>(unitOfWork, resultsetModelObject);
 
@@ -399,13 +393,13 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			procedureTacticCommand.LeaveEnumeration(this.DisableEnumerationReentrantCheck);
 
 			// ***** SUPER special case for enumerator *****
-			if (actualRecordsAffected != procedureTacticCommand.ExpectedRecordsAffected)
+			/*if (actualRecordsAffected != procedureTacticCommand.ExpectedRecordsAffected)
 			{
 				// concurrency or nullipotency failure
 				unitOfWork.Divergent();
 
 				throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during result model execute; actual records affected '{0}' did not equal expected records affected '{1}'.", procedureTacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
-			}
+			}*/
 
 			// right now for procedures only
 			output = dbDataParameters.GetOutputAsRecord();
@@ -419,12 +413,12 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 
 		/// <summary>
 		/// NOTE: This code is re-entrant if the results enumeration is re-started, for example:
-		/// returnProcedureModelObject.Results.First(); // causes an 'abandoned' enumerator
-		/// returnProcedureModelObject.Results.Last(); // causes a full enumeration
+		/// returnProcedureModelObject.Records.First(); // causes an 'abandoned' enumerator
+		/// returnProcedureModelObject.Records.Last(); // causes a full enumeration
 		/// To prevent this:
-		/// var results = returnProcedureModelObject.Results.ToArray(); // causes a full enumeration
-		/// results.First(); // in-memory
-		/// results.Last(); // in-memory
+		/// var records = returnProcedureModelObject.Records.ToArray(); // causes a full enumeration
+		/// records.First(); // in-memory
+		/// records.Last(); // in-memory
 		/// </summary>
 		/// <typeparam name="TCallProcedureModelObject"> </typeparam>
 		/// <typeparam name="TResultsetModelObject"> </typeparam>
@@ -435,7 +429,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 		/// <param name="resultsetModelObject"> </param>
 		/// <param name="group"> </param>
 		/// <returns> </returns>
-		private IEnumerable<TResultProcedureModelObject> GetProcedureResultsLazy<TCallProcedureModelObject, TResultsetModelObject, TResultProcedureModelObject, TReturnProcedureModelObject>(IUnitOfWork unitOfWork, IProcedureTacticCommand<TCallProcedureModelObject, TResultProcedureModelObject, TReturnProcedureModelObject> procedureTacticCommand, TResultsetModelObject resultsetModelObject, IGrouping<int, IDictionary<string, object>> group)
+		private IEnumerable<TResultProcedureModelObject> GetProcedureResultsLazy<TCallProcedureModelObject, TResultsetModelObject, TResultProcedureModelObject, TReturnProcedureModelObject>(IUnitOfWork unitOfWork, IProcedureTacticCommand<TCallProcedureModelObject, TResultProcedureModelObject, TReturnProcedureModelObject> procedureTacticCommand, TResultsetModelObject resultsetModelObject, IGrouping<int, IDictionary<string, object>> resultset)
 			where TCallProcedureModelObject : class, ICallProcedureModelObject, new()
 			where TResultsetModelObject : class, IResultsetModelObject<TResultProcedureModelObject>, new()
 			where TResultProcedureModelObject : class, IResultProcedureModelObject, new()
@@ -449,11 +443,11 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			if ((object)resultsetModelObject == null)
 				throw new ArgumentNullException("resultsetModelObject");
 
-			if ((object)group == null)
-				throw new ArgumentNullException("group");
+			if ((object)resultset == null)
+				throw new ArgumentNullException("resultset");
 
 			// DOES NOT FORCE EXECUTION AGAINST STORE
-			foreach (IDictionary<string, object> record in group)
+			foreach (IDictionary<string, object> record in resultset)
 			{
 				resultProcedureModelObject = new TResultProcedureModelObject();
 
@@ -468,12 +462,12 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 
 		/// <summary>
 		/// NOTE: This code is re-entrant if the results enumeration is re-started, for example:
-		/// results.First(); // causes an 'abandoned' enumerator
-		/// results.Last(); // causes a full enumeration
+		/// records.First(); // causes an 'abandoned' enumerator
+		/// records.Last(); // causes a full enumeration
 		/// To prevent this:
-		/// var results2 = results.ToArray(); // causes a full enumeration
-		/// results2.First(); // in-memory
-		/// results2.Last(); // in-memory
+		/// var records2 = records.ToArray(); // causes a full enumeration
+		/// records2.First(); // in-memory
+		/// records2.Last(); // in-memory
 		/// </summary>
 		/// <typeparam name="TTableModelObject"> </typeparam>
 		/// <param name="unitOfWork"> </param>

@@ -99,30 +99,41 @@ namespace TextMetal.Middleware.Data.UoW
 		public static TValue ExecuteScalar<TValue>(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
 		{
 			int recordsAffected;
-			IEnumerable<IDictionary<string, object>> results;
-			IDictionary<string, object> result;
+			IEnumerable<IDictionary<string, object>> records;
+			IDictionary<string, object> record;
+			IEnumerable<IGrouping<int, IDictionary<string, object>>> resultsets;
 			object dbValue;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			results = AdoNetFascade.Instance.ExecuteDictionary(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, out recordsAffected);
+			records = AdoNetFascade.Instance.ExecuteDictionary(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, out recordsAffected);
 
-			if ((object)results == null)
+			if ((object)records == null)
 				return default(TValue);
 
-			result = results.SingleOrDefault();
+			resultsets = records.ToResultsets();
 
-			if ((object)result == null)
+			if ((object)resultsets == null)
 				return default(TValue);
 
-			if (result.Count != 1)
+			records = resultsets.SingleOrDefault();
+
+			if ((object)records == null)
 				return default(TValue);
 
-			if (result.Keys.Count != 1)
+			record = records.SingleOrDefault();
+
+			if ((object)record == null)
 				return default(TValue);
 
-			dbValue = result[result.Keys.First()];
+			if (record.Count != 1)
+				return default(TValue);
+
+			if (record.Keys.Count != 1)
+				return default(TValue);
+
+			dbValue = record[record.Keys.First()];
 
 			return dbValue.ChangeType<TValue>();
 		}
@@ -187,6 +198,26 @@ namespace TextMetal.Middleware.Data.UoW
 			}
 
 			return output;
+		}
+
+		public static IEnumerable<IGrouping<int, IDictionary<string, object>>> ToResultsets(this IEnumerable<IDictionary<string, object>> records)
+		{
+			IEnumerable<IGrouping<int, IDictionary<string, object>>> resultsets;
+
+			if ((object)records == null)
+				throw new ArgumentNullException("records");
+
+			resultsets = records.GroupBy(record =>
+										{
+											object resultsetIndex;
+
+											if (record.TryGetValue(AdoNetFascade.ResultsetIndexRecordKey, out resultsetIndex))
+												record.Remove(AdoNetFascade.ResultsetIndexRecordKey);
+
+											return resultsetIndex.ChangeType<int>();
+										});
+
+			return resultsets;
 		}
 
 		#endregion

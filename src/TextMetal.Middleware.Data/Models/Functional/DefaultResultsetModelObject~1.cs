@@ -21,7 +21,7 @@ namespace TextMetal.Middleware.Data.Models.Functional
 		#region Fields/Constants
 
 		private int index;
-		private IEnumerable<TResultProcedureModelObject> results;
+		private IEnumerable<TResultProcedureModelObject> records;
 
 		#endregion
 
@@ -39,15 +39,15 @@ namespace TextMetal.Middleware.Data.Models.Functional
 			}
 		}
 
-		public IEnumerable<TResultProcedureModelObject> Results
+		public IEnumerable<TResultProcedureModelObject> Records
 		{
 			get
 			{
-				return this.results;
+				return this.records;
 			}
 			set
 			{
-				this.results = value;
+				this.records = value;
 			}
 		}
 

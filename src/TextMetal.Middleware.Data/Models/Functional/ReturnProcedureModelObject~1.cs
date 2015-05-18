@@ -39,7 +39,7 @@ namespace TextMetal.Middleware.Data.Models.Functional
 		{
 			get
 			{
-				return this.Resultsets.Where(rs => rs.Index == 0).SelectMany(rs => rs.Results);
+				return this.Resultsets.Where(rs => rs.Index == 0).SelectMany(rs => rs.Records);
 			}
 		}
 

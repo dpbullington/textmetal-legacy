@@ -128,7 +128,7 @@ namespace TextMetal.Middleware.Data
 		public IList<IDictionary<string, object>> ExecuteDictionary(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, out int recordsAffected)
 		{
 			int _recordsAffected;
-			List<IDictionary<string, object>> list;
+			List<IDictionary<string, object>> records;
 
 			if ((object)dbConnection == null)
 				throw new ArgumentNullException("dbConnection");
@@ -136,11 +136,11 @@ namespace TextMetal.Middleware.Data
 			_recordsAffected = -1;
 
 			// FORCE EAGER LOADING HERE
-			list = this.ExecuteDictionary(dbConnection, dbTransaction, commandType, commandText, commandParameters, (ra) => _recordsAffected = ra).ToList();
+			records = this.ExecuteDictionary(dbConnection, dbTransaction, commandType, commandText, commandParameters, (ra) => _recordsAffected = ra).ToList();
 
 			recordsAffected = _recordsAffected;
 
-			return list;
+			return records;
 		}
 
 		/// <summary>
@@ -157,7 +157,7 @@ namespace TextMetal.Middleware.Data
 		/// <returns> An enumerable of dictionary instances, containing key/value pairs of data. </returns>
 		public IEnumerable<IDictionary<string, object>> ExecuteDictionary(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> recordsAffectedCallback)
 		{
-			IEnumerable<IDictionary<string, object>> retval;
+			IEnumerable<IDictionary<string, object>> records;
 			IDataReader dataReader;
 
 			// force no preparation
@@ -174,9 +174,9 @@ namespace TextMetal.Middleware.Data
 
 			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
 			dataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE);
-			retval = this.GetEnumerableDictionary(dataReader, recordsAffectedCallback);
+			records = this.GetEnumerableDictionary(dataReader, recordsAffectedCallback);
 
-			return retval;
+			return records;
 		}
 
 		/// <summary>
@@ -244,9 +244,9 @@ namespace TextMetal.Middleware.Data
 		public IList<IDictionary<string, object>> ExecuteSchema(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, out int recordsAffected)
 		{
 			int _recordsAffected = -1;
-			var list = this.ExecuteSchema(dbConnection, dbTransaction, commandType, commandText, commandParameters, (ra) => _recordsAffected = ra).ToList(); // FORCE EAGER LOADING HERE
+			var records = this.ExecuteSchema(dbConnection, dbTransaction, commandType, commandText, commandParameters, (ra) => _recordsAffected = ra).ToList(); // FORCE EAGER LOADING HERE
 			recordsAffected = _recordsAffected;
-			return list;
+			return records;
 		}
 
 		/// <summary>
@@ -263,7 +263,7 @@ namespace TextMetal.Middleware.Data
 		/// <returns> An enumerable of dictionary instances, containing key/value pairs of schema metadata. </returns>
 		public IEnumerable<IDictionary<string, object>> ExecuteSchema(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> recordsAffectedCallback)
 		{
-			IEnumerable<IDictionary<string, object>> retval;
+			IEnumerable<IDictionary<string, object>> records;
 			IDataReader dataReader;
 
 			// force no preparation
@@ -280,9 +280,9 @@ namespace TextMetal.Middleware.Data
 
 			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
 			dataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE);
-			retval = this.GetSchemaEnumerableDictionary(dataReader, recordsAffectedCallback);
+			records = this.GetSchemaEnumerableDictionary(dataReader, recordsAffectedCallback);
 
-			return retval;
+			return records;
 		}
 
 		/// <summary>
@@ -295,7 +295,7 @@ namespace TextMetal.Middleware.Data
 		/// <returns> An enumerable of dictionary instances, containing key/value pairs of data. </returns>
 		public IEnumerable<IDictionary<string, object>> GetEnumerableDictionary(IDataReader dataReader, Action<int> recordsAffectedCallback)
 		{
-			IDictionary<string, object> obj;
+			IDictionary<string, object> record;
 			int recordsAffected;
 			int resultsetIndex = 0;
 			string key;
@@ -312,25 +312,25 @@ namespace TextMetal.Middleware.Data
 				{
 					while (dataReader.Read())
 					{
-						obj = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+						record = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
 						key = ResultsetIndexRecordKey;
 						value = resultsetIndex;
 
-						obj.Add(key, value);
+						record.Add(key, value);
 
 						for (int index = 0; index < dataReader.FieldCount; index++)
 						{
 							key = dataReader.GetName(index);
 							value = dataReader.GetValue(index).ChangeType<object>();
 
-							if (obj.ContainsKey(key))
+							if (record.ContainsKey(key))
 								key = string.Format("Column_{0:0000}", index);
 
-							obj.Add(key, value);
+							record.Add(key, value);
 						}
 
-						yield return obj; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
+						yield return record; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
 					}
 
 					resultsetIndex++;
@@ -356,7 +356,7 @@ namespace TextMetal.Middleware.Data
 		/// <returns> An enumerable of dictionary instances, containing key/value pairs of schema metadata. </returns>
 		public IEnumerable<IDictionary<string, object>> GetSchemaEnumerableDictionary(IDataReader dataReader, Action<int> recordsAffectedCallback)
 		{
-			IDictionary<string, object> obj;
+			IDictionary<string, object> record;
 			int resultsetIndex = 0;
 			string key;
 			object value;
@@ -374,22 +374,22 @@ namespace TextMetal.Middleware.Data
 						{
 							foreach (DataRow dataRow in dataTable.Rows)
 							{
-								obj = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+								record = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
 								key = ResultsetIndexRecordKey;
 								value = resultsetIndex;
 
-								obj.Add(key, value);
+								record.Add(key, value);
 
 								for (int index = 0; index < dataTable.Columns.Count; index++)
 								{
 									key = dataTable.Columns[index].ColumnName;
 									value = dataRow[index].ChangeType<object>();
 
-									obj.Add(key, value);
+									record.Add(key, value);
 								}
 
-								yield return obj; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
+								yield return record; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
 							}
 						}
 					}

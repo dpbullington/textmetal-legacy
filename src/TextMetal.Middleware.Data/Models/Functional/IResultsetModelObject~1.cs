@@ -12,7 +12,7 @@ namespace TextMetal.Middleware.Data.Models.Functional
 	{
 		#region Properties/Indexers/Events
 
-		IEnumerable<TResultProcedureModelObject> Results
+		IEnumerable<TResultProcedureModelObject> Records
 		{
 			get;
 			set;

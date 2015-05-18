@@ -244,7 +244,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		{
 			Server server;
 			int recordsAffected;
-			const string RETURN_VALUE = "ReturnValue";
 			Type clrType;
 			StandardCanonicalNaming effectiveStandardCanonicalNaming;
 
@@ -272,13 +271,13 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 					if ((object)dictEnumServer != null &&
 						(object)(dictDataServer = dictEnumServer.SingleOrDefault()) != null)
 					{
-						server.ServerName = DataTypeFascade.Instance.ChangeType<string>(dictDataServer["ServerName"]);
-						server.MachineName = DataTypeFascade.Instance.ChangeType<string>(dictDataServer["MachineName"]);
-						server.InstanceName = DataTypeFascade.Instance.ChangeType<string>(dictDataServer["InstanceName"]);
-						server.ServerVersion = DataTypeFascade.Instance.ChangeType<string>(dictDataServer["ServerVersion"]);
-						server.ServerLevel = DataTypeFascade.Instance.ChangeType<string>(dictDataServer["ServerLevel"]);
-						server.ServerEdition = DataTypeFascade.Instance.ChangeType<string>(dictDataServer["ServerEdition"]);
-						server.DefaultDatabaseName = DataTypeFascade.Instance.ChangeType<string>(dictDataServer["DefaultDatabaseName"]);
+						server.ServerName = DataTypeFascade.Instance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_NAME]);
+						server.MachineName = DataTypeFascade.Instance.ChangeType<string>(dictDataServer[SchemaInfoConstants.MACHINE_NAME]);
+						server.InstanceName = DataTypeFascade.Instance.ChangeType<string>(dictDataServer[SchemaInfoConstants.INSTANCE_NAME]);
+						server.ServerVersion = DataTypeFascade.Instance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_VERSION]);
+						server.ServerLevel = DataTypeFascade.Instance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_LEVEL]);
+						server.ServerEdition = DataTypeFascade.Instance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_EDITION]);
+						server.DefaultDatabaseName = DataTypeFascade.Instance.ChangeType<string>(dictDataServer[SchemaInfoConstants.DEFAULT_DATABASE_NAME]);
 
 						// filter unwanted servers
 						if ((object)serverFilter != null)
@@ -981,7 +980,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	parameter.ParameterPrefix = this.CoreGetParameterPrefix(dataSourceTag);
 																	parameter.ParameterOrdinal = int.MaxValue;
-																	parameter.ParameterName = RETURN_VALUE;
+																	parameter.ParameterName = SchemaInfoConstants.PARAMETER_NAME_RETURN_VALUE;
 																	parameter.ParameterSize = 0;
 																	parameter.ParameterPrecision = 0;
 																	parameter.ParameterScale = 0;
@@ -992,22 +991,22 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	parameter.ParameterIsReturnValue = true;
 																	parameter.ParameterDefaultValue = null;
 																	parameter.ParameterIsResultColumn = false;
-																	parameter.ParameterNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(RETURN_VALUE);
-																	parameter.ParameterNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(RETURN_VALUE);
-																	parameter.ParameterNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(RETURN_VALUE);
-																	parameter.ParameterNameSingularPascalCase = effectiveStandardCanonicalNaming.GetPascalCase(effectiveStandardCanonicalNaming.GetSingularForm(RETURN_VALUE));
-																	parameter.ParameterNameSingularCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(effectiveStandardCanonicalNaming.GetSingularForm(RETURN_VALUE));
-																	parameter.ParameterNameSingularConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetSingularForm(RETURN_VALUE));
-																	parameter.ParameterNamePluralPascalCase = effectiveStandardCanonicalNaming.GetPascalCase(effectiveStandardCanonicalNaming.GetPluralForm(RETURN_VALUE));
-																	parameter.ParameterNamePluralCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(effectiveStandardCanonicalNaming.GetPluralForm(RETURN_VALUE));
-																	parameter.ParameterNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(RETURN_VALUE));
+																	parameter.ParameterNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(SchemaInfoConstants.PARAMETER_NAME_RETURN_VALUE);
+																	parameter.ParameterNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(SchemaInfoConstants.PARAMETER_NAME_RETURN_VALUE);
+																	parameter.ParameterNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(SchemaInfoConstants.PARAMETER_NAME_RETURN_VALUE);
+																	parameter.ParameterNameSingularPascalCase = effectiveStandardCanonicalNaming.GetPascalCase(effectiveStandardCanonicalNaming.GetSingularForm(SchemaInfoConstants.PARAMETER_NAME_RETURN_VALUE));
+																	parameter.ParameterNameSingularCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(effectiveStandardCanonicalNaming.GetSingularForm(SchemaInfoConstants.PARAMETER_NAME_RETURN_VALUE));
+																	parameter.ParameterNameSingularConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetSingularForm(SchemaInfoConstants.PARAMETER_NAME_RETURN_VALUE));
+																	parameter.ParameterNamePluralPascalCase = effectiveStandardCanonicalNaming.GetPascalCase(effectiveStandardCanonicalNaming.GetPluralForm(SchemaInfoConstants.PARAMETER_NAME_RETURN_VALUE));
+																	parameter.ParameterNamePluralCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(effectiveStandardCanonicalNaming.GetPluralForm(SchemaInfoConstants.PARAMETER_NAME_RETURN_VALUE));
+																	parameter.ParameterNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(SchemaInfoConstants.PARAMETER_NAME_RETURN_VALUE));
 
-																	parameter.ParameterNameSqlMetalPascalCase = SqlMetalCanonicalNaming.Instance.GetPascalCase(RETURN_VALUE);
-																	parameter.ParameterNameSqlMetalCamelCase = SqlMetalCanonicalNaming.Instance.GetCamelCase(RETURN_VALUE);
-																	parameter.ParameterNameSqlMetalSingularPascalCase = SqlMetalCanonicalNaming.Instance.GetPascalCase(effectiveStandardCanonicalNaming.GetSingularForm(RETURN_VALUE));
-																	parameter.ParameterNameSqlMetalSingularCamelCase = SqlMetalCanonicalNaming.Instance.GetCamelCase(effectiveStandardCanonicalNaming.GetSingularForm(RETURN_VALUE));
-																	parameter.ParameterNameSqlMetalPluralPascalCase = SqlMetalCanonicalNaming.Instance.GetPascalCase(effectiveStandardCanonicalNaming.GetPluralForm(RETURN_VALUE));
-																	parameter.ParameterNameSqlMetalPluralCamelCase = SqlMetalCanonicalNaming.Instance.GetCamelCase(effectiveStandardCanonicalNaming.GetPluralForm(RETURN_VALUE));
+																	parameter.ParameterNameSqlMetalPascalCase = SqlMetalCanonicalNaming.Instance.GetPascalCase(SchemaInfoConstants.PARAMETER_NAME_RETURN_VALUE);
+																	parameter.ParameterNameSqlMetalCamelCase = SqlMetalCanonicalNaming.Instance.GetCamelCase(SchemaInfoConstants.PARAMETER_NAME_RETURN_VALUE);
+																	parameter.ParameterNameSqlMetalSingularPascalCase = SqlMetalCanonicalNaming.Instance.GetPascalCase(effectiveStandardCanonicalNaming.GetSingularForm(SchemaInfoConstants.PARAMETER_NAME_RETURN_VALUE));
+																	parameter.ParameterNameSqlMetalSingularCamelCase = SqlMetalCanonicalNaming.Instance.GetCamelCase(effectiveStandardCanonicalNaming.GetSingularForm(SchemaInfoConstants.PARAMETER_NAME_RETURN_VALUE));
+																	parameter.ParameterNameSqlMetalPluralPascalCase = SqlMetalCanonicalNaming.Instance.GetPascalCase(effectiveStandardCanonicalNaming.GetPluralForm(SchemaInfoConstants.PARAMETER_NAME_RETURN_VALUE));
+																	parameter.ParameterNameSqlMetalPluralCamelCase = SqlMetalCanonicalNaming.Instance.GetCamelCase(effectiveStandardCanonicalNaming.GetPluralForm(SchemaInfoConstants.PARAMETER_NAME_RETURN_VALUE));
 
 																	parameter.ParameterNullable = true;
 																	parameter.ParameterDirection = ParameterDirection.ReturnValue;

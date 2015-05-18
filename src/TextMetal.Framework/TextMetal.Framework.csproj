@@ -90,6 +90,7 @@
     <Compile Include="InputOutput\IOutputMechanism.cs" />
     <Compile Include="Sort\ISortMechanism.cs" />
     <Compile Include="Sort\ISortXmlObject.cs" />
+    <Compile Include="Source\DatabaseSchema\SchemaInfoConstants.cs" />
     <Compile Include="Source\ISourceStrategy.cs" />
     <Compile Include="Template\ITemplateMechanism.cs" />
     <Compile Include="Template\ITemplateXmlObject.cs" />
