@@ -44,7 +44,7 @@ namespace TextMetal.Middleware.Data.UoW
 			return dbDataParameter;
 		}
 
-		public static IEnumerable<IRecord> ExecuteRecords(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
+		public static IEnumerable<IRecord> ExecuteRecords(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> recordsAffectedCallback)
 		{
 			IEnumerable<IRecord> records;
 
@@ -52,7 +52,7 @@ namespace TextMetal.Middleware.Data.UoW
 				throw new ArgumentNullException("unitOfWork");
 
 			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
-			records = AdoNetFascade.Instance.ExecuteRecords(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters);
+			records = AdoNetFascade.Instance.ExecuteRecords(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, recordsAffectedCallback);
 
 			return records;
 		}
@@ -81,8 +81,6 @@ namespace TextMetal.Middleware.Data.UoW
 
 		public static TValue ExecuteScalar<TValue>(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
 		{
-			IEnumerable<IResultset> resultsets;
-			IResultset resultset;
 			IEnumerable<IRecord> records;
 			IRecord record;
 
@@ -91,18 +89,7 @@ namespace TextMetal.Middleware.Data.UoW
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			resultsets = unitOfWork.ExecuteResultsets(commandType, commandText, commandParameters);
-
-			if ((object)resultsets == null)
-				return default(TValue);
-
-			// FORCE EAGER LOADING HERE
-			resultset = resultsets.SingleOrDefault();
-
-			if ((object)resultset == null)
-				return default(TValue);
-
-			records = resultset.Records;
+			records = unitOfWork.ExecuteRecords(commandType, commandText, commandParameters, null);
 
 			if ((object)records == null)
 				return default(TValue);
@@ -123,7 +110,7 @@ namespace TextMetal.Middleware.Data.UoW
 			return dbValue.ChangeType<TValue>();
 		}
 
-		public static IEnumerable<IRecord> ExecuteSchemaRecords(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
+		public static IEnumerable<IRecord> ExecuteSchemaRecords(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> recordsAffectedCallback)
 		{
 			IEnumerable<IRecord> records;
 
@@ -131,7 +118,7 @@ namespace TextMetal.Middleware.Data.UoW
 				throw new ArgumentNullException("unitOfWork");
 
 			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
-			records = AdoNetFascade.Instance.ExecuteSchemaRecords(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters);
+			records = AdoNetFascade.Instance.ExecuteSchemaRecords(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, recordsAffectedCallback);
 
 			return records;
 		}

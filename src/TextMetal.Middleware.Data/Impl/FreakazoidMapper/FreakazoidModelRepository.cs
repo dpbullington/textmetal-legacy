@@ -146,6 +146,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			IEnumerable<IRecord> records;
 			IRecord record;
 			IRecord output;
+			int? recordsAffected = null;
 
 			IEnumerable<IDbDataParameter> dbDataParameters;
 
@@ -174,17 +175,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 				// get native parameters
 				dbDataParameters = tableTacticCommand.GetDbDataParameters(unitOfWork);
 
-				resultsets = unitOfWork.ExecuteResultsets(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters);
-
-				if ((object)resultsets == null)
-					throw new InvalidOperationException(string.Format("Resultsets were invalid."));
-
-				resultset = resultsets.SingleOrDefault();
-
-				if ((object)resultset == null)
-					throw new InvalidOperationException(string.Format("Resultset was invalid."));
-
-				records = resultset.Records;
+				records = unitOfWork.ExecuteRecords(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters, (ra) => recordsAffected = ra);
 
 				if ((object)records == null)
 					throw new InvalidOperationException(string.Format("Records were invalid."));
@@ -193,19 +184,19 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 
 				// map to table model from record (destination, source)
 				if ((object)record != null)
-					tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, resultset.Index, record);
+					tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, 0, record);
 
-				if ((object)resultset.RecordsAffected == null)
+				if ((object)recordsAffected == null)
 					throw new InvalidOperationException(string.Format("Records affected was invalid."));
 
-				if (resultset.RecordsAffected <= tableTacticCommand.ExpectedRecordsAffected)
+				if (recordsAffected <= tableTacticCommand.ExpectedRecordsAffected)
 				{
 					// concurrency or nullipotency failure
 					unitOfWork.Divergent();
 
 					this.OnSaveConflictTableModel<TTableModelObject>(unitOfWork, tableModelObject);
 
-					//throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model save; actual records affected '{0}' was less than or equal to the expected records affected '{1}'.", TableTacticCommand.ExpectedRecordsAffected, resultset.RecordsAffected));
+					//throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model save; actual records affected '{0}' was less than or equal to the expected records affected '{1}'.", TableTacticCommand.ExpectedRecordsAffected, recordsAffected));
 					return false;
 				}
 
@@ -251,6 +242,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			IEnumerable<IRecord> records;
 			IRecord record;
 			IRecord output;
+			int? recordsAffected = null;
 
 			IEnumerable<IDbDataParameter> dbDataParameters;
 
@@ -271,17 +263,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 				// get native parameters
 				dbDataParameters = tableTacticCommand.GetDbDataParameters(unitOfWork);
 
-				resultsets = unitOfWork.ExecuteResultsets(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters);
-
-				if ((object)resultsets == null)
-					throw new InvalidOperationException(string.Format("Resultsets were invalid."));
-
-				resultset = resultsets.SingleOrDefault();
-
-				if ((object)resultset == null)
-					throw new InvalidOperationException(string.Format("Resultset was invalid."));
-
-				records = resultset.Records;
+				records = unitOfWork.ExecuteRecords(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters, (ra) => recordsAffected = ra);
 
 				if ((object)records == null)
 					throw new InvalidOperationException(string.Format("Records were invalid."));
@@ -292,17 +274,17 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 					return false;
 
 				// map to table model from record (destination, source)
-				tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, resultset.Index, record);
+				tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, 0, record);
 
-				if ((object)resultset.RecordsAffected == null)
+				if ((object)recordsAffected == null)
 					throw new InvalidOperationException(string.Format("Records affected was invalid."));
 
-				if (resultset.RecordsAffected != tableTacticCommand.ExpectedRecordsAffected)
+				if (recordsAffected != tableTacticCommand.ExpectedRecordsAffected)
 				{
 					// concurrency or nullipotency failure
 					unitOfWork.Divergent();
 
-					throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model fill; actual records affected '{0}' did not equal expected records affected '{1}'.", tableTacticCommand.ExpectedRecordsAffected, resultset.RecordsAffected));
+					throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model fill; actual records affected '{0}' did not equal expected records affected '{1}'.", tableTacticCommand.ExpectedRecordsAffected, recordsAffected));
 				}
 
 				this.OnSelectTableModel(unitOfWork, tableModelObject);
@@ -506,6 +488,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			IResultset resultset;
 			IEnumerable<IRecord> records;
 			IRecord output;
+			int? recordsAffected = null;
 
 			IEnumerable<IDbDataParameter> dbDataParameters;
 
@@ -526,17 +509,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			dbDataParameters = tableTacticCommand.GetDbDataParameters(unitOfWork);
 
 			// enumerator overload usage
-			resultsets = unitOfWork.ExecuteResultsets(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters);
-
-			if ((object)resultsets == null)
-				throw new InvalidOperationException(string.Format("Resultsets were invalid."));
-
-			resultset = resultsets.SingleOrDefault();
-
-			if ((object)resultset == null)
-				throw new InvalidOperationException(string.Format("Resultset was invalid."));
-
-			records = resultset.Records;
+			records = unitOfWork.ExecuteRecords(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters, (ra) => recordsAffected = ra);
 
 			if ((object)records == null)
 				throw new InvalidOperationException(string.Format("Records were invalid."));
@@ -546,22 +519,22 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 				tableModelObject = new TTableModelObject();
 
 				// map to table model from record (destination, source)
-				tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, resultset.Index, record);
+				tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, 0, record);
 
 				this.OnSelectTableModel<TTableModelObject>(unitOfWork, tableModelObject);
 
 				yield return tableModelObject; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
 			}
 
-			if ((object)resultset.RecordsAffected == null)
+			if ((object)recordsAffected == null)
 				throw new InvalidOperationException(string.Format("Records affected was invalid."));
 
-			if (resultset.RecordsAffected != tableTacticCommand.ExpectedRecordsAffected)
+			if (recordsAffected != tableTacticCommand.ExpectedRecordsAffected)
 			{
 				// concurrency or nullipotency failure
 				unitOfWork.Divergent();
 
-				throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model load; actual records affected '{0}' did not equal expected records affected '{1}'.", tableTacticCommand.ExpectedRecordsAffected, resultset.RecordsAffected));
+				throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model load; actual records affected '{0}' did not equal expected records affected '{1}'.", tableTacticCommand.ExpectedRecordsAffected, recordsAffected));
 			}
 
 			// NOTE: execution will not reach this point until enumeration is fully completed
@@ -579,6 +552,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			IEnumerable<IRecord> records;
 			IRecord record;
 			IRecord output;
+			int? recordsAffected = null;
 
 			IEnumerable<IDbDataParameter> dbDataParameters;
 
@@ -599,17 +573,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 				// get native parameters
 				dbDataParameters = tableTacticCommand.GetDbDataParameters(unitOfWork);
 
-				resultsets = unitOfWork.ExecuteResultsets(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters);
-
-				if ((object)resultsets == null)
-					throw new InvalidOperationException(string.Format("Resultsets were invalid."));
-
-				resultset = resultsets.SingleOrDefault();
-
-				if ((object)resultset == null)
-					throw new InvalidOperationException(string.Format("Resultset was invalid."));
-
-				records = resultset.Records;
+				records = unitOfWork.ExecuteRecords(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters, (ra) => recordsAffected = ra);
 
 				if ((object)records == null)
 					throw new InvalidOperationException(string.Format("Records were invalid."));
@@ -622,17 +586,17 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 				tableModelObject = new TTableModelObject();
 
 				// map to table model from record (destination, source)
-				tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, resultset.Index, record);
+				tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, 0, record);
 
-				if ((object)resultset.RecordsAffected == null)
+				if ((object)recordsAffected == null)
 					throw new InvalidOperationException(string.Format("Records affected was invalid."));
 
-				if (resultset.RecordsAffected != tableTacticCommand.ExpectedRecordsAffected)
+				if (recordsAffected != tableTacticCommand.ExpectedRecordsAffected)
 				{
 					// concurrency or nullipotency failure
 					unitOfWork.Divergent();
 
-					throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model fill; actual records affected '{0}' did not equal expected records affected '{1}'.", tableTacticCommand.ExpectedRecordsAffected, resultset.RecordsAffected));
+					throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model fill; actual records affected '{0}' did not equal expected records affected '{1}'.", tableTacticCommand.ExpectedRecordsAffected, recordsAffected));
 				}
 
 				this.OnSelectTableModel(unitOfWork, tableModelObject);
@@ -674,6 +638,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			IEnumerable<IRecord> records;
 			IRecord record;
 			IRecord output;
+			int? recordsAffected = null;
 
 			IEnumerable<IDbDataParameter> dbDataParameters;
 
@@ -708,17 +673,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 				// get native parameters
 				dbDataParameters = tableTacticCommand.GetDbDataParameters(unitOfWork);
 
-				resultsets = unitOfWork.ExecuteResultsets(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters);
-
-				if ((object)resultsets == null)
-					throw new InvalidOperationException(string.Format("Resultsets were invalid."));
-
-				resultset = resultsets.SingleOrDefault();
-
-				if ((object)resultset == null)
-					throw new InvalidOperationException(string.Format("Resultset was invalid."));
-
-				records = resultset.Records;
+				records = unitOfWork.ExecuteRecords(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters, (ra) => recordsAffected = ra);
 
 				if ((object)records == null)
 					throw new InvalidOperationException(string.Format("Records were invalid."));
@@ -727,19 +682,19 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 
 				// map to table model from record (destination, source)
 				if ((object)record != null)
-					tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, resultset.Index, record);
+					tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, 0, record);
 
-				if ((object)resultset.RecordsAffected == null)
+				if ((object)recordsAffected == null)
 					throw new InvalidOperationException(string.Format("Records affected was invalid."));
 
-				if (resultset.RecordsAffected <= tableTacticCommand.ExpectedRecordsAffected)
+				if (recordsAffected <= tableTacticCommand.ExpectedRecordsAffected)
 				{
 					// concurrency or nullipotency failure
 					unitOfWork.Divergent();
 
 					this.OnSaveConflictTableModel<TTableModelObject>(unitOfWork, tableModelObject);
 
-					//throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model save; actual records affected '{0}' was less than or equal to the expected records affected '{1}'.", TableTacticCommand.ExpectedRecordsAffected, resultset.RecordsAffected));
+					//throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model save; actual records affected '{0}' was less than or equal to the expected records affected '{1}'.", TableTacticCommand.ExpectedRecordsAffected, recordsAffected));
 					return false;
 				}
 
@@ -752,14 +707,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 
 					__DEBUG_ProfileTacticCommand(RepositoryOperation.Identify, tableTacticCommand);
 
-					resultsets = unitOfWork.ExecuteResultsets(tableTacticCommand.CommandType, tableTacticCommand.CommandText, tableTacticCommand.GetDbDataParameters(unitOfWork));
-
-					resultset = resultsets.SingleOrDefault();
-
-					if ((object)resultset == null)
-						throw new InvalidOperationException(string.Format("Resultset was invalid."));
-
-					records = resultset.Records;
+					records = unitOfWork.ExecuteRecords(tableTacticCommand.CommandType, tableTacticCommand.CommandText, tableTacticCommand.GetDbDataParameters(unitOfWork), (ra) => recordsAffected = ra);
 
 					if ((object)records == null)
 						throw new InvalidOperationException(string.Format("Records were invalid."));
@@ -770,15 +718,15 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 					if ((object)record != null)
 						tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, -1, record);
 
-					if ((object)resultset.RecordsAffected == null)
+					if ((object)recordsAffected == null)
 						throw new InvalidOperationException(string.Format("Records affected was invalid."));
 
-					if (resultset.RecordsAffected != tableTacticCommand.ExpectedRecordsAffected)
+					if (recordsAffected != tableTacticCommand.ExpectedRecordsAffected)
 					{
 						// concurrency or nullipotency failure
 						unitOfWork.Divergent();
 
-						throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model fill; actual records affected '{0}' did not equal expected records affected '{1}'.", tableTacticCommand.ExpectedRecordsAffected, resultset.RecordsAffected));
+						throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model fill; actual records affected '{0}' did not equal expected records affected '{1}'.", tableTacticCommand.ExpectedRecordsAffected, recordsAffected));
 					}
 				}
 

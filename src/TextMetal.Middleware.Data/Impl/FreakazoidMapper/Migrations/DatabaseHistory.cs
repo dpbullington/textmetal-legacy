@@ -161,9 +161,9 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Migrations
 						throw new InvalidOperationException("A revsion must have at least one statement.");
 
 					foreach (string statement in revision.Statements)
-						unitOfWork.ExecuteResultsets(CommandType.Text, statement, null).ToList();
+						unitOfWork.ExecuteRecords(CommandType.Text, statement, null, null).ToList();
 
-					unitOfWork.ExecuteResultsets(CommandType.Text, this.IncrementSchemaVersionCommandText, null).ToList();
+					unitOfWork.ExecuteRecords(CommandType.Text, this.IncrementSchemaVersionCommandText, null, null).ToList();
 				}
 			}
 

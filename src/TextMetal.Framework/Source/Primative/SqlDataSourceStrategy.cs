@@ -72,9 +72,9 @@ namespace TextMetal.Framework.Source.Primative
 				using (IUnitOfWork unitOfWork = UnitOfWork.Create(connectionType, connectionString, false))
 				{
 					if (!getSchemaOnly)
-						records = unitOfWork.ExecuteRecords(sqlQuery.Type, commandText, null);
+						records = unitOfWork.ExecuteRecords(sqlQuery.Type, commandText, null, null);
 					else
-						records = unitOfWork.ExecuteSchemaRecords(sqlQuery.Type, commandText, null);
+						records = unitOfWork.ExecuteSchemaRecords(sqlQuery.Type, commandText, null, null);
 				}
 
 				propertyConstructB = new PropertyConstruct();

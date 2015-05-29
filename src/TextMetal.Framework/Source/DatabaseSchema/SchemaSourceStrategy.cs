@@ -264,7 +264,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 				server.ConnectionString = connectionString;
 				server.ConnectionType = connectionType.FullName;
 
-				var dictEnumServer = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Server"), this.CoreGetServerParameters(unitOfWork, dataSourceTag));
+				var dictEnumServer = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Server"), this.CoreGetServerParameters(unitOfWork, dataSourceTag), null);
 				{
 					var dictDataServer = (IRecord)null;
 
@@ -286,7 +286,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 								return null;
 						}
 
-						var dictEnumDatabase = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Databases"), this.CoreGetDatabaseParameters(unitOfWork, dataSourceTag, server));
+						var dictEnumDatabase = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Databases"), this.CoreGetDatabaseParameters(unitOfWork, dataSourceTag, server), null);
 						{
 							if ((object)dictEnumDatabase != null)
 							{
@@ -334,9 +334,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 									server.Databases.Add(database);
 
-									unitOfWork.ExecuteRecords(CommandType.Text, string.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UseDatabase"), server.ServerName, database.DatabaseName), null);
+									unitOfWork.ExecuteRecords(CommandType.Text, string.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UseDatabase"), server.ServerName, database.DatabaseName), null, null);
 
-									var dictEnumDdlTrigger = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DdlTriggers"), this.CoreGetDdlTriggerParameters(unitOfWork, dataSourceTag, server, database));
+									var dictEnumDdlTrigger = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DdlTriggers"), this.CoreGetDdlTriggerParameters(unitOfWork, dataSourceTag, server, database), null);
 									{
 										if ((object)dictEnumDdlTrigger != null)
 										{
@@ -374,7 +374,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 										}
 									}
 
-									var dictEnumSchema = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Schemas"), this.CoreGetSchemaParameters(unitOfWork, dataSourceTag, server, database));
+									var dictEnumSchema = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Schemas"), this.CoreGetSchemaParameters(unitOfWork, dataSourceTag, server, database), null);
 									{
 										if ((object)dictEnumSchema != null)
 										{
@@ -412,7 +412,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 												database.Schemas.Add(schema);
 
-												var dictEnumTable = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Tables"), this.CoreGetTableParameters(unitOfWork, dataSourceTag, server, database, schema));
+												var dictEnumTable = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Tables"), this.CoreGetTableParameters(unitOfWork, dataSourceTag, server, database, schema), null);
 												{
 													foreach (var dictDataTable in dictEnumTable.ToList())
 													{
@@ -478,7 +478,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 														schema._Tables.Add(table);
 
-														var dictEnumColumn = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "TableColumns"), this.CoreGetColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table));
+														var dictEnumColumn = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "TableColumns"), this.CoreGetColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table), null);
 														{
 															if ((object)dictEnumColumn != null)
 															{
@@ -568,7 +568,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 															table.Columns.ForEach(c => c.ColumnIsPrimaryKey = true);
 														}
 
-														var dictEnumDmlTrigger = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DmlTriggers"), this.CoreGetDmlTriggerParameters(unitOfWork, dataSourceTag, server, database, schema, table));
+														var dictEnumDmlTrigger = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DmlTriggers"), this.CoreGetDmlTriggerParameters(unitOfWork, dataSourceTag, server, database, schema, table), null);
 														{
 															if ((object)dictEnumDmlTrigger != null)
 															{
@@ -606,7 +606,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 															}
 														}
 
-														var dictEnumForeignKey = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeys"), this.CoreGetForeignKeyParameters(unitOfWork, dataSourceTag, server, database, schema, table));
+														var dictEnumForeignKey = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeys"), this.CoreGetForeignKeyParameters(unitOfWork, dataSourceTag, server, database, schema, table), null);
 														{
 															if ((object)dictEnumForeignKey != null)
 															{
@@ -679,7 +679,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	table.ForeignKeys.Add(foreignKey);
 
-																	var dictEnumForeignKeyColumn = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeyColumns"), this.CoreGetForeignKeyColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table, foreignKey));
+																	var dictEnumForeignKeyColumn = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeyColumns"), this.CoreGetForeignKeyColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table, foreignKey), null);
 																	{
 																		if ((object)dictEnumForeignKeyColumn != null)
 																		{
@@ -703,7 +703,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 															}
 														}
 
-														var dictEnumUniqueKey = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeys"), this.CoreGetUniqueKeyParameters(unitOfWork, dataSourceTag, server, database, schema, table));
+														var dictEnumUniqueKey = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeys"), this.CoreGetUniqueKeyParameters(unitOfWork, dataSourceTag, server, database, schema, table), null);
 														{
 															if ((object)dictEnumUniqueKey != null)
 															{
@@ -735,7 +735,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	table.UniqueKeys.Add(uniqueKey);
 
-																	var dictEnumUniqueKeyColumn = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeyColumns"), this.CoreGetUniqueKeyColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table, uniqueKey));
+																	var dictEnumUniqueKeyColumn = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeyColumns"), this.CoreGetUniqueKeyColumnParameters(unitOfWork, dataSourceTag, server, database, schema, table, uniqueKey), null);
 																	{
 																		if ((object)dictEnumUniqueKeyColumn != null)
 																		{
@@ -760,7 +760,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 													}
 												}
 
-												var dictEnumView = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Views"), this.CoreGetTableParameters(unitOfWork, dataSourceTag, server, database, schema));
+												var dictEnumView = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Views"), this.CoreGetTableParameters(unitOfWork, dataSourceTag, server, database, schema), null);
 												{
 													foreach (var dictDataView in dictEnumView.ToList())
 													{
@@ -799,7 +799,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 														schema.Views.Add(view);
 
-														var dictEnumColumn = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ViewColumns"), this.CoreGetColumnParameters(unitOfWork, dataSourceTag, server, database, schema, view));
+														var dictEnumColumn = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ViewColumns"), this.CoreGetColumnParameters(unitOfWork, dataSourceTag, server, database, schema, view), null);
 														{
 															if ((object)dictEnumColumn != null)
 															{
@@ -864,7 +864,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 													}
 												}
 
-												var dictEnumProcedure = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Procedures"), this.CoreGetProcedureParameters(unitOfWork, dataSourceTag, server, database, schema));
+												var dictEnumProcedure = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Procedures"), this.CoreGetProcedureParameters(unitOfWork, dataSourceTag, server, database, schema), null);
 												{
 													if ((object)dictEnumProcedure != null)
 													{
@@ -900,7 +900,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 															schema.Procedures.Add(procedure);
 
-															var dictEnumParameter = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureParameters"), this.CoreGetParameterParameters(unitOfWork, dataSourceTag, server, database, schema, procedure));
+															var dictEnumParameter = unitOfWork.ExecuteRecords(CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureParameters"), this.CoreGetParameterParameters(unitOfWork, dataSourceTag, server, database, schema, procedure), null);
 															{
 																if ((object)dictEnumParameter != null)
 																{

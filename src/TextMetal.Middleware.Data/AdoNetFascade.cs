@@ -180,8 +180,9 @@ namespace TextMetal.Middleware.Data
 		/// <param name="commandType"> The type of the command. </param>
 		/// <param name="commandText"> The SQL text or stored procedure name. </param>
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
+		/// /// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
 		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of schema metadata. </returns>
-		public IEnumerable<IRecord> ExecuteRecords(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
+		public IEnumerable<IRecord> ExecuteRecords(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> recordsAffectedCallback)
 		{
 			IEnumerable<IRecord> records;
 			IDataReader dataReader;
@@ -207,7 +208,7 @@ namespace TextMetal.Middleware.Data
 			{
 				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteRecords(...): use reader", typeof(AdoNetFascade).Name));
 
-				records = this.GetRecordsFromReader(dataReader, null);
+				records = this.GetRecordsFromReader(dataReader, recordsAffectedCallback);
 
 				foreach (IRecord record in records)
 				{
@@ -273,8 +274,9 @@ namespace TextMetal.Middleware.Data
 		/// <param name="commandType"> The type of the command. </param>
 		/// <param name="commandText"> The SQL text or stored procedure name. </param>
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
+		/// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
 		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of schema metadata. </returns>
-		public IEnumerable<IRecord> ExecuteSchemaRecords(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
+		public IEnumerable<IRecord> ExecuteSchemaRecords(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> recordsAffectedCallback)
 		{
 			IEnumerable<IRecord> records;
 			IDataReader dataReader;
@@ -300,7 +302,7 @@ namespace TextMetal.Middleware.Data
 			{
 				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: use reader", typeof(AdoNetFascade).Name));
 
-				records = this.GetSchemaRecordsFromReader(dataReader, null);
+				records = this.GetSchemaRecordsFromReader(dataReader, recordsAffectedCallback);
 
 				foreach (IRecord record in records)
 				{
