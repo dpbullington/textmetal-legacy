@@ -67,9 +67,6 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Application\ConsoleApplicationFascade.cs" />
-    <Compile Include="Application\ExecutableApplicationFascade.cs" />
-    <Compile Include="Application\IExecutableApplicationFascade.cs" />
     <Compile Include="Associative\ArrayConstruct.cs" />
     <Compile Include="Associative\AssociativeContainerConstruct.cs" />
     <Compile Include="Associative\AssociativeXmlObject.cs" />

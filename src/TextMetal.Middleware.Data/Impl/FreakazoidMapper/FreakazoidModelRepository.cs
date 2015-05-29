@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
+using TextMetal.Middleware.Common;
 using TextMetal.Middleware.Common.Utilities;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Migrations;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies;
@@ -93,7 +94,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 		#region Methods/Operators
 
 		[Conditional("DEBUG")]
-		private void __DEBUG_ProfileTacticCommand(RepositoryOperation repositoryOperation, ITacticCommand tacticCommand)
+		private static void __DEBUG_ProfileTacticCommand(RepositoryOperation repositoryOperation, ITacticCommand tacticCommand)
 		{
 			/* THIS METHOD SHOULD NOT BE DEFINED IN RELEASE/PRODUCTION BUILDS */
 			StringBuilder stringBuilder;
@@ -133,15 +134,18 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 
 			stringBuilder.Append(string.Format(Environment.NewLine + "[+++ end __DEBUG_ProfileTacticCommand({0}) +++]" + Environment.NewLine, repositoryOperation));
 
-			Debug.WriteLine(stringBuilder.ToString());
+			OnlyWhen._DEBUG_ThenPrint(stringBuilder.ToString());
 			stringBuilder.Clear();
 		}
 
 		public override bool Discard<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject tableModelObject)
 		{
 			bool wasNew;
-			IEnumerable<IDictionary<string, object>> records;
-			IDictionary<string, object> record;
+			IEnumerable<IResultset> resultsets;
+			IResultset resultset;
+			IEnumerable<IRecord> records;
+			IRecord record;
+			IRecord output;
 
 			IEnumerable<IDbDataParameter> dbDataParameters;
 
@@ -160,38 +164,50 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			using (AmbientUnitOfWorkAwareContextWrapper<FreakazoidContext> wrapper = this.GetContext(unitOfWork))
 			{
 				ITableTacticCommand<TTableModelObject> tableTacticCommand;
-				int actualRecordsAffected;
 
 				this.OnPreDeleteTableModel<TTableModelObject>(unitOfWork, tableModelObject);
 
 				tableTacticCommand = this.DataSourceTagStrategy.GetDeleteTacticCommand<TTableModelObject>(unitOfWork, tableModelObject, null);
 
-				this.__DEBUG_ProfileTacticCommand(RepositoryOperation.Discard, tableTacticCommand);
+				__DEBUG_ProfileTacticCommand(RepositoryOperation.Discard, tableTacticCommand);
 
 				// get native parameters
 				dbDataParameters = tableTacticCommand.GetDbDataParameters(unitOfWork);
 
-				records = unitOfWork.ExecuteDictionary(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters, out actualRecordsAffected);
+				resultsets = unitOfWork.ExecuteResultsets(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters);
 
-				if (actualRecordsAffected <= tableTacticCommand.ExpectedRecordsAffected)
+				if ((object)resultsets == null)
+					throw new InvalidOperationException(string.Format("Resultsets were invalid."));
+
+				resultset = resultsets.SingleOrDefault();
+
+				if ((object)resultset == null)
+					throw new InvalidOperationException(string.Format("Resultset was invalid."));
+
+				records = resultset.Records;
+
+				if ((object)records == null)
+					throw new InvalidOperationException(string.Format("Records were invalid."));
+
+				record = records.SingleOrDefault();
+
+				// map to table model from record (destination, source)
+				if ((object)record != null)
+					tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, resultset.Index, record);
+
+				if ((object)resultset.RecordsAffected == null)
+					throw new InvalidOperationException(string.Format("Records affected was invalid."));
+
+				if (resultset.RecordsAffected <= tableTacticCommand.ExpectedRecordsAffected)
 				{
 					// concurrency or nullipotency failure
 					unitOfWork.Divergent();
 
 					this.OnSaveConflictTableModel<TTableModelObject>(unitOfWork, tableModelObject);
 
-					//throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model save; actual records affected '{0}' was less than or equal to the expected records affected '{1}'.", TableTacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
+					//throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model save; actual records affected '{0}' was less than or equal to the expected records affected '{1}'.", TableTacticCommand.ExpectedRecordsAffected, resultset.RecordsAffected));
 					return false;
 				}
-
-				if ((object)records == null)
-					throw new InvalidOperationException(string.Format("Records were invalid."));
-
-				record = records.ToList().SingleOrDefault();
-
-				// map to table model from record (destination, source)
-				if ((object)record != null)
-					tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, record);
 
 				this.OnPostDeleteTableModel<TTableModelObject>(unitOfWork, tableModelObject);
 
@@ -230,8 +246,11 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 
 		public override bool Fill<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject tableModelObject)
 		{
-			IEnumerable<IDictionary<string, object>> records;
-			IDictionary<string, object> record;
+			IEnumerable<IResultset> resultsets;
+			IResultset resultset;
+			IEnumerable<IRecord> records;
+			IRecord record;
+			IRecord output;
 
 			IEnumerable<IDbDataParameter> dbDataParameters;
 
@@ -244,35 +263,47 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			using (AmbientUnitOfWorkAwareContextWrapper<FreakazoidContext> wrapper = this.GetContext(unitOfWork))
 			{
 				ITableTacticCommand<TTableModelObject> tableTacticCommand;
-				int actualRecordsAffected;
 
 				tableTacticCommand = this.DataSourceTagStrategy.GetSelectTacticCommand<TTableModelObject>(unitOfWork, tableModelObject, null);
 
-				this.__DEBUG_ProfileTacticCommand(RepositoryOperation.Fill, tableTacticCommand);
+				__DEBUG_ProfileTacticCommand(RepositoryOperation.Fill, tableTacticCommand);
 
 				// get native parameters
 				dbDataParameters = tableTacticCommand.GetDbDataParameters(unitOfWork);
 
-				records = unitOfWork.ExecuteDictionary(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters, out actualRecordsAffected);
+				resultsets = unitOfWork.ExecuteResultsets(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters);
 
-				if (actualRecordsAffected != tableTacticCommand.ExpectedRecordsAffected)
-				{
-					// concurrency or nullipotency failure
-					unitOfWork.Divergent();
+				if ((object)resultsets == null)
+					throw new InvalidOperationException(string.Format("Resultsets were invalid."));
 
-					throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model fill; actual records affected '{0}' did not equal expected records affected '{1}'.", tableTacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
-				}
+				resultset = resultsets.SingleOrDefault();
+
+				if ((object)resultset == null)
+					throw new InvalidOperationException(string.Format("Resultset was invalid."));
+
+				records = resultset.Records;
 
 				if ((object)records == null)
 					throw new InvalidOperationException(string.Format("Records were invalid."));
 
-				record = records.ToList().SingleOrDefault();
+				record = records.SingleOrDefault();
 
 				if ((object)record == null)
 					return false;
 
 				// map to table model from record (destination, source)
-				tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, record);
+				tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, resultset.Index, record);
+
+				if ((object)resultset.RecordsAffected == null)
+					throw new InvalidOperationException(string.Format("Records affected was invalid."));
+
+				if (resultset.RecordsAffected != tableTacticCommand.ExpectedRecordsAffected)
+				{
+					// concurrency or nullipotency failure
+					unitOfWork.Divergent();
+
+					throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model fill; actual records affected '{0}' did not equal expected records affected '{1}'.", tableTacticCommand.ExpectedRecordsAffected, resultset.RecordsAffected));
+				}
 
 				this.OnSelectTableModel(unitOfWork, tableModelObject);
 
@@ -316,12 +347,67 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 
 		/// <summary>
 		/// NOTE: This code is re-entrant if the results enumeration is re-started, for example:
-		/// returnProcedureModelObject.Records.First(); // causes an 'abandoned' enumerator
-		/// returnProcedureModelObject.Records.Last(); // causes a full enumeration
+		/// resultset.Records.First(); // causes an 'abandoned' enumerator
+		/// resultset.Records.Last(); // causes a full enumeration
 		/// To prevent this:
-		/// var records = returnProcedureModelObject.Records.ToArray(); // causes a full enumeration
+		/// var records = resultset.Records.ToArray(); // causes a full enumeration
 		/// records.First(); // in-memory
 		/// records.Last(); // in-memory
+		/// </summary>
+		/// <typeparam name="TCallProcedureModelObject"> </typeparam>
+		/// <typeparam name="TResultsetModelObject"> </typeparam>
+		/// <typeparam name="TResultProcedureModelObject"> </typeparam>
+		/// <typeparam name="TReturnProcedureModelObject"> </typeparam>
+		/// <param name="unitOfWork"> </param>
+		/// <param name="procedureTacticCommand"> </param>
+		/// <param name="resultsetModelObject"> </param>
+		/// <param name="resultset"> </param>
+		/// <returns> </returns>
+		private IEnumerable<TResultProcedureModelObject> GetProcedureRecordsLazy<TCallProcedureModelObject, TResultsetModelObject, TResultProcedureModelObject, TReturnProcedureModelObject>(IUnitOfWork unitOfWork, IProcedureTacticCommand<TCallProcedureModelObject, TResultProcedureModelObject, TReturnProcedureModelObject> procedureTacticCommand, TResultsetModelObject resultsetModelObject, IResultset resultset)
+			where TCallProcedureModelObject : class, ICallProcedureModelObject, new()
+			where TResultsetModelObject : class, IResultsetModelObject<TResultProcedureModelObject>, new()
+			where TResultProcedureModelObject : class, IResultProcedureModelObject, new()
+			where TReturnProcedureModelObject : class, IReturnProcedureModelObject<DefaultResultsetModelObject<TResultProcedureModelObject>, TResultProcedureModelObject>, new()
+		{
+			TResultProcedureModelObject resultProcedureModelObject;
+			IEnumerable<IRecord> records;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)resultsetModelObject == null)
+				throw new ArgumentNullException("resultsetModelObject");
+
+			if ((object)resultset == null)
+				throw new ArgumentNullException("resultset");
+
+			records = resultset.Records;
+
+			if ((object)records == null)
+				throw new InvalidOperationException(string.Format("Records were invalid."));
+
+			// DOES NOT FORCE EXECUTION AGAINST STORE
+			foreach (IRecord record in records)
+			{
+				resultProcedureModelObject = new TResultProcedureModelObject();
+
+				// map to result model from record (destination, source)
+				procedureTacticCommand.RecordToResultModelMappingCallback(resultProcedureModelObject, resultset.Index, record);
+
+				this.OnResultProcedureModel<TResultProcedureModelObject>(unitOfWork, resultProcedureModelObject);
+
+				yield return resultProcedureModelObject; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
+			}
+		}
+
+		/// <summary>
+		/// NOTE: This code is re-entrant if the results enumeration is re-started, for example:
+		/// returnProcedureModelObject.Resultsets.First(); // causes an 'abandoned' enumerator
+		/// returnProcedureModelObject.Resultsets.Last(); // causes a full enumeration
+		/// To prevent this:
+		/// var resultsets = returnProcedureModelObject.Resultsets.ToArray(); // causes a full enumeration
+		/// resultsets.First(); // in-memory
+		/// resultsets.Last(); // in-memory
 		/// </summary>
 		/// <typeparam name="TCallProcedureModelObject"> </typeparam>
 		/// <typeparam name="TResultsetModelObject"> </typeparam>
@@ -338,12 +424,11 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			where TResultProcedureModelObject : class, IResultProcedureModelObject, new()
 			where TReturnProcedureModelObject : class, IReturnProcedureModelObject<DefaultResultsetModelObject<TResultProcedureModelObject>, TResultProcedureModelObject>, new()
 		{
-			IEnumerable<IDictionary<string, object>> records;
 			TResultsetModelObject resultsetModelObject;
-			IEnumerable<IGrouping<int, IDictionary<string, object>>> resultsets;
-
-			int actualRecordsAffected = int.MaxValue;
-			IDictionary<string, object> output;
+			IEnumerable<IResultset> resultsets;
+			IEnumerable<IRecord> records;
+			IRecord record;
+			IRecord output;
 
 			IEnumerable<IDbDataParameter> dbDataParameters;
 
@@ -361,7 +446,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 
 			this.OnPreResultsProcedureModel<TCallProcedureModelObject>(unitOfWork, callProcedureModelObject);
 
-			this.__DEBUG_ProfileTacticCommand(RepositoryOperation.Execute, procedureTacticCommand);
+			__DEBUG_ProfileTacticCommand(RepositoryOperation.Execute, procedureTacticCommand);
 
 			// starting a new delayed-execution enumeration
 			procedureTacticCommand.EnterEnumeration(this.DisableEnumerationReentrantCheck);
@@ -369,20 +454,16 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			// get native parameters
 			dbDataParameters = procedureTacticCommand.GetDbDataParameters(unitOfWork);
 
-			// enumerator overload usage
-			records = unitOfWork.ExecuteDictionary(procedureTacticCommand.CommandType, procedureTacticCommand.CommandText, dbDataParameters, (ra) => actualRecordsAffected = ra);
+			resultsets = unitOfWork.ExecuteResultsets(procedureTacticCommand.CommandType, procedureTacticCommand.CommandText, dbDataParameters);
 
-			if ((object)records == null)
-				throw new InvalidOperationException(string.Format("Records were invalid."));
+			if ((object)resultsets == null)
+				throw new InvalidOperationException(string.Format("Resultsets were invalid."));
 
-			// DOES NOT FORCE EXECUTION AGAINST STORE
-			resultsets = records.ToResultsets();
-
-			foreach (IGrouping<int, IDictionary<string, object>> resultset in resultsets)
+			foreach (IResultset resultset in resultsets)
 			{
 				resultsetModelObject = new TResultsetModelObject();
-				resultsetModelObject.Index = resultset.Key;
-				resultsetModelObject.Records = this.GetProcedureResultsLazy<TCallProcedureModelObject, TResultsetModelObject, TResultProcedureModelObject, TReturnProcedureModelObject>(unitOfWork, procedureTacticCommand, resultsetModelObject, resultset);
+				resultsetModelObject.Index = resultset.Index;
+				resultsetModelObject.Records = this.GetProcedureRecordsLazy<TCallProcedureModelObject, TResultsetModelObject, TResultProcedureModelObject, TReturnProcedureModelObject>(unitOfWork, procedureTacticCommand, resultsetModelObject, resultset);
 
 				this.OnResultsetProcedureModel<TResultsetModelObject, TResultProcedureModelObject>(unitOfWork, resultsetModelObject);
 
@@ -392,14 +473,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			// NOTE: execution will not reach this point until enumeration is fully completed
 			procedureTacticCommand.LeaveEnumeration(this.DisableEnumerationReentrantCheck);
 
-			// ***** SUPER special case for enumerator *****
-			/*if (actualRecordsAffected != procedureTacticCommand.ExpectedRecordsAffected)
-			{
-				// concurrency or nullipotency failure
-				unitOfWork.Divergent();
-
-				throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during result model execute; actual records affected '{0}' did not equal expected records affected '{1}'.", procedureTacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
-			}*/
+			// cannot validate records affected in the general case with procedures
 
 			// right now for procedures only
 			output = dbDataParameters.GetOutputAsRecord();
@@ -409,55 +483,6 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 
 			// alert that we are done enumerating the lazy river...
 			this.OnPostResultsProcedureModel<TResultProcedureModelObject, TReturnProcedureModelObject>(unitOfWork, returnProcedureModelObject);
-		}
-
-		/// <summary>
-		/// NOTE: This code is re-entrant if the results enumeration is re-started, for example:
-		/// returnProcedureModelObject.Records.First(); // causes an 'abandoned' enumerator
-		/// returnProcedureModelObject.Records.Last(); // causes a full enumeration
-		/// To prevent this:
-		/// var records = returnProcedureModelObject.Records.ToArray(); // causes a full enumeration
-		/// records.First(); // in-memory
-		/// records.Last(); // in-memory
-		/// </summary>
-		/// <typeparam name="TCallProcedureModelObject"> </typeparam>
-		/// <typeparam name="TResultsetModelObject"> </typeparam>
-		/// <typeparam name="TResultProcedureModelObject"> </typeparam>
-		/// <typeparam name="TReturnProcedureModelObject"> </typeparam>
-		/// <param name="unitOfWork"> </param>
-		/// <param name="procedureTacticCommand"> </param>
-		/// <param name="resultsetModelObject"> </param>
-		/// <param name="group"> </param>
-		/// <returns> </returns>
-		private IEnumerable<TResultProcedureModelObject> GetProcedureResultsLazy<TCallProcedureModelObject, TResultsetModelObject, TResultProcedureModelObject, TReturnProcedureModelObject>(IUnitOfWork unitOfWork, IProcedureTacticCommand<TCallProcedureModelObject, TResultProcedureModelObject, TReturnProcedureModelObject> procedureTacticCommand, TResultsetModelObject resultsetModelObject, IGrouping<int, IDictionary<string, object>> resultset)
-			where TCallProcedureModelObject : class, ICallProcedureModelObject, new()
-			where TResultsetModelObject : class, IResultsetModelObject<TResultProcedureModelObject>, new()
-			where TResultProcedureModelObject : class, IResultProcedureModelObject, new()
-			where TReturnProcedureModelObject : class, IReturnProcedureModelObject<DefaultResultsetModelObject<TResultProcedureModelObject>, TResultProcedureModelObject>, new()
-		{
-			TResultProcedureModelObject resultProcedureModelObject;
-
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			if ((object)resultsetModelObject == null)
-				throw new ArgumentNullException("resultsetModelObject");
-
-			if ((object)resultset == null)
-				throw new ArgumentNullException("resultset");
-
-			// DOES NOT FORCE EXECUTION AGAINST STORE
-			foreach (IDictionary<string, object> record in resultset)
-			{
-				resultProcedureModelObject = new TResultProcedureModelObject();
-
-				// map to result model from record (destination, source)
-				procedureTacticCommand.RecordToResultModelMappingCallback(resultProcedureModelObject, record);
-
-				this.OnResultProcedureModel<TResultProcedureModelObject>(unitOfWork, resultProcedureModelObject);
-
-				yield return resultProcedureModelObject; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
-			}
 		}
 
 		/// <summary>
@@ -476,10 +501,11 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 		private IEnumerable<TTableModelObject> GetTableResultsLazy<TTableModelObject>(IUnitOfWork unitOfWork, ITableTacticCommand<TTableModelObject> tableTacticCommand)
 			where TTableModelObject : class, ITableModelObject, new()
 		{
-			IEnumerable<IDictionary<string, object>> records;
 			TTableModelObject tableModelObject;
-
-			int actualRecordsAffected = int.MaxValue;
+			IEnumerable<IResultset> resultsets;
+			IResultset resultset;
+			IEnumerable<IRecord> records;
+			IRecord output;
 
 			IEnumerable<IDbDataParameter> dbDataParameters;
 
@@ -491,7 +517,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 
 			this.OnPreSelectionTableModel<TTableModelObject>(unitOfWork);
 
-			this.__DEBUG_ProfileTacticCommand(RepositoryOperation.Find, tableTacticCommand);
+			__DEBUG_ProfileTacticCommand(RepositoryOperation.Find, tableTacticCommand);
 
 			// starting a new delayed-execution enumeration
 			tableTacticCommand.EnterEnumeration(this.DisableEnumerationReentrantCheck);
@@ -500,35 +526,46 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			dbDataParameters = tableTacticCommand.GetDbDataParameters(unitOfWork);
 
 			// enumerator overload usage
-			records = unitOfWork.ExecuteDictionary(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters, (ra) => actualRecordsAffected = ra);
+			resultsets = unitOfWork.ExecuteResultsets(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters);
+
+			if ((object)resultsets == null)
+				throw new InvalidOperationException(string.Format("Resultsets were invalid."));
+
+			resultset = resultsets.SingleOrDefault();
+
+			if ((object)resultset == null)
+				throw new InvalidOperationException(string.Format("Resultset was invalid."));
+
+			records = resultset.Records;
 
 			if ((object)records == null)
 				throw new InvalidOperationException(string.Format("Records were invalid."));
 
-			// DOES NOT FORCE EXECUTION AGAINST STORE
-			foreach (IDictionary<string, object> record in records)
+			foreach (IRecord record in records)
 			{
 				tableModelObject = new TTableModelObject();
 
 				// map to table model from record (destination, source)
-				tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, record);
+				tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, resultset.Index, record);
 
 				this.OnSelectTableModel<TTableModelObject>(unitOfWork, tableModelObject);
 
 				yield return tableModelObject; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
 			}
 
-			// NOTE: execution will not reach this point until enumeration is fully completed
-			tableTacticCommand.LeaveEnumeration(this.DisableEnumerationReentrantCheck);
+			if ((object)resultset.RecordsAffected == null)
+				throw new InvalidOperationException(string.Format("Records affected was invalid."));
 
-			// ***** SUPER special case for enumerator *****
-			if (actualRecordsAffected != tableTacticCommand.ExpectedRecordsAffected)
+			if (resultset.RecordsAffected != tableTacticCommand.ExpectedRecordsAffected)
 			{
 				// concurrency or nullipotency failure
 				unitOfWork.Divergent();
 
-				throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model load; actual records affected '{0}' did not equal expected records affected '{1}'.", tableTacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
+				throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model load; actual records affected '{0}' did not equal expected records affected '{1}'.", tableTacticCommand.ExpectedRecordsAffected, resultset.RecordsAffected));
 			}
+
+			// NOTE: execution will not reach this point until enumeration is fully completed
+			tableTacticCommand.LeaveEnumeration(this.DisableEnumerationReentrantCheck);
 
 			// alert that we are done enumerating the lazy river...
 			this.OnPostSelectionTableModel<TTableModelObject>(unitOfWork);
@@ -537,8 +574,11 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 		public override TTableModelObject Load<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject prototypeTableModel)
 		{
 			TTableModelObject tableModelObject;
-			IEnumerable<IDictionary<string, object>> records;
-			IDictionary<string, object> record;
+			IEnumerable<IResultset> resultsets;
+			IResultset resultset;
+			IEnumerable<IRecord> records;
+			IRecord record;
+			IRecord output;
 
 			IEnumerable<IDbDataParameter> dbDataParameters;
 
@@ -551,29 +591,30 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			using (AmbientUnitOfWorkAwareContextWrapper<FreakazoidContext> wrapper = this.GetContext(unitOfWork))
 			{
 				ITableTacticCommand<TTableModelObject> tableTacticCommand;
-				int actualRecordsAffected;
 
 				tableTacticCommand = this.DataSourceTagStrategy.GetSelectTacticCommand<TTableModelObject>(unitOfWork, prototypeTableModel, null);
 
-				this.__DEBUG_ProfileTacticCommand(RepositoryOperation.Load, tableTacticCommand);
+				__DEBUG_ProfileTacticCommand(RepositoryOperation.Load, tableTacticCommand);
 
 				// get native parameters
 				dbDataParameters = tableTacticCommand.GetDbDataParameters(unitOfWork);
 
-				records = unitOfWork.ExecuteDictionary(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters, out actualRecordsAffected);
+				resultsets = unitOfWork.ExecuteResultsets(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters);
 
-				if (actualRecordsAffected != tableTacticCommand.ExpectedRecordsAffected)
-				{
-					// concurrency or nullipotency failure
-					unitOfWork.Divergent();
+				if ((object)resultsets == null)
+					throw new InvalidOperationException(string.Format("Resultsets were invalid."));
 
-					throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model load; actual records affected '{0}' did not equal expected records affected '{1}'.", tableTacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
-				}
+				resultset = resultsets.SingleOrDefault();
+
+				if ((object)resultset == null)
+					throw new InvalidOperationException(string.Format("Resultset was invalid."));
+
+				records = resultset.Records;
 
 				if ((object)records == null)
 					throw new InvalidOperationException(string.Format("Records were invalid."));
 
-				record = records.ToList().SingleOrDefault();
+				record = records.SingleOrDefault();
 
 				if ((object)record == null)
 					return null;
@@ -581,7 +622,18 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 				tableModelObject = new TTableModelObject();
 
 				// map to table model from record (destination, source)
-				tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, record);
+				tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, resultset.Index, record);
+
+				if ((object)resultset.RecordsAffected == null)
+					throw new InvalidOperationException(string.Format("Records affected was invalid."));
+
+				if (resultset.RecordsAffected != tableTacticCommand.ExpectedRecordsAffected)
+				{
+					// concurrency or nullipotency failure
+					unitOfWork.Divergent();
+
+					throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model fill; actual records affected '{0}' did not equal expected records affected '{1}'.", tableTacticCommand.ExpectedRecordsAffected, resultset.RecordsAffected));
+				}
 
 				this.OnSelectTableModel(unitOfWork, tableModelObject);
 
@@ -617,8 +669,11 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 		public override bool Save<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject tableModelObject)
 		{
 			bool wasNew;
-			IEnumerable<IDictionary<string, object>> records;
-			IDictionary<string, object> record;
+			IEnumerable<IResultset> resultsets;
+			IResultset resultset;
+			IEnumerable<IRecord> records;
+			IRecord record;
+			IRecord output;
 
 			IEnumerable<IDbDataParameter> dbDataParameters;
 
@@ -634,7 +689,6 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			using (AmbientUnitOfWorkAwareContextWrapper<FreakazoidContext> wrapper = this.GetContext(unitOfWork))
 			{
 				ITableTacticCommand<TTableModelObject> tableTacticCommand;
-				int actualRecordsAffected;
 
 				if (wasNew)
 				{
@@ -649,32 +703,45 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 					tableTacticCommand = this.DataSourceTagStrategy.GetUpdateTacticCommand<TTableModelObject>(unitOfWork, tableModelObject, null);
 				}
 
-				this.__DEBUG_ProfileTacticCommand(RepositoryOperation.Save, tableTacticCommand);
+				__DEBUG_ProfileTacticCommand(RepositoryOperation.Save, tableTacticCommand);
 
 				// get native parameters
 				dbDataParameters = tableTacticCommand.GetDbDataParameters(unitOfWork);
 
-				records = unitOfWork.ExecuteDictionary(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters, out actualRecordsAffected);
+				resultsets = unitOfWork.ExecuteResultsets(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters);
 
-				if (actualRecordsAffected <= tableTacticCommand.ExpectedRecordsAffected)
+				if ((object)resultsets == null)
+					throw new InvalidOperationException(string.Format("Resultsets were invalid."));
+
+				resultset = resultsets.SingleOrDefault();
+
+				if ((object)resultset == null)
+					throw new InvalidOperationException(string.Format("Resultset was invalid."));
+
+				records = resultset.Records;
+
+				if ((object)records == null)
+					throw new InvalidOperationException(string.Format("Records were invalid."));
+
+				record = records.SingleOrDefault();
+
+				// map to table model from record (destination, source)
+				if ((object)record != null)
+					tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, resultset.Index, record);
+
+				if ((object)resultset.RecordsAffected == null)
+					throw new InvalidOperationException(string.Format("Records affected was invalid."));
+
+				if (resultset.RecordsAffected <= tableTacticCommand.ExpectedRecordsAffected)
 				{
 					// concurrency or nullipotency failure
 					unitOfWork.Divergent();
 
 					this.OnSaveConflictTableModel<TTableModelObject>(unitOfWork, tableModelObject);
 
-					//throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model save; actual records affected '{0}' was less than or equal to the expected records affected '{1}'.", TableTacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
+					//throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model save; actual records affected '{0}' was less than or equal to the expected records affected '{1}'.", TableTacticCommand.ExpectedRecordsAffected, resultset.RecordsAffected));
 					return false;
 				}
-
-				if ((object)records == null)
-					throw new InvalidOperationException(string.Format("Records were invalid."));
-
-				record = records.ToList().SingleOrDefault();
-
-				// map to table model from record (destination, source)
-				if ((object)record != null)
-					tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, record);
 
 				// ***------------------------***
 
@@ -683,28 +750,36 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 					// this is optional
 					tableTacticCommand = this.DataSourceTagStrategy.GetIdentifyTacticCommand<TTableModelObject>(unitOfWork);
 
-					this.__DEBUG_ProfileTacticCommand(RepositoryOperation.Identify, tableTacticCommand);
+					__DEBUG_ProfileTacticCommand(RepositoryOperation.Identify, tableTacticCommand);
 
-					records = unitOfWork.ExecuteDictionary(tableTacticCommand.CommandType, tableTacticCommand.CommandText, tableTacticCommand.GetDbDataParameters(unitOfWork), out actualRecordsAffected);
+					resultsets = unitOfWork.ExecuteResultsets(tableTacticCommand.CommandType, tableTacticCommand.CommandText, tableTacticCommand.GetDbDataParameters(unitOfWork));
 
-					if (actualRecordsAffected != tableTacticCommand.ExpectedRecordsAffected)
-					{
-						// concurrency or nullipotency failure
-						unitOfWork.Divergent();
+					resultset = resultsets.SingleOrDefault();
 
-						throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model fill; actual records affected '{0}' did not equal expected records affected '{1}'.", tableTacticCommand.ExpectedRecordsAffected, actualRecordsAffected));
-					}
+					if ((object)resultset == null)
+						throw new InvalidOperationException(string.Format("Resultset was invalid."));
+
+					records = resultset.Records;
 
 					if ((object)records == null)
 						throw new InvalidOperationException(string.Format("Records were invalid."));
 
-					record = records.ToList().SingleOrDefault();
-
-					if ((object)record == null)
-						return false;
+					record = records.SingleOrDefault();
 
 					// map to table model from record (destination, source)
-					tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, record);
+					if ((object)record != null)
+						tableTacticCommand.RecordToTableModelMappingCallback(tableModelObject, -1, record);
+
+					if ((object)resultset.RecordsAffected == null)
+						throw new InvalidOperationException(string.Format("Records affected was invalid."));
+
+					if (resultset.RecordsAffected != tableTacticCommand.ExpectedRecordsAffected)
+					{
+						// concurrency or nullipotency failure
+						unitOfWork.Divergent();
+
+						throw new InvalidOperationException(string.Format("Data concurrency or nullipotency failure occurred during table model fill; actual records affected '{0}' did not equal expected records affected '{1}'.", tableTacticCommand.ExpectedRecordsAffected, resultset.RecordsAffected));
+					}
 				}
 
 				// ***------------------------***

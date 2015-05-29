@@ -176,7 +176,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Tactics
 		public void EnterEnumeration(bool @override)
 		{
 			if (!@override && this.IsEnumerating)
-				throw new InvalidOperationException(string.Format("Enumeration is not re-entrant by design."));
+				throw new InvalidOperationException(string.Format("Deferred execution enumeration is not re-entrant by design. This behavior can be disabled by setting the '<repository-clr-namespace>::DisableEnumerationReentrantCheck' appSetting to 'true'. This is not advised; however, and can lead to unexpected application behavior."));
 
 			this.IsEnumerating = true;
 		}
@@ -205,7 +205,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Tactics
 		public void LeaveEnumeration(bool @override)
 		{
 			if (!@override && !this.IsEnumerating)
-				throw new InvalidOperationException(string.Format("Enumeration is not re-entrant by design."));
+				throw new InvalidOperationException(string.Format("Deferred execution enumeration is not re-entrant by design. This behavior can be disabled by setting the '<repository-clr-namespace>::DisableEnumerationReentrantCheck' appSetting to 'true'. This is not advised; however, and can lead to unexpected application behavior."));
 
 			this.IsEnumerating = false;
 		}

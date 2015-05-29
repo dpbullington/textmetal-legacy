@@ -23,14 +23,14 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Tactics
 
 		#region Fields/Constants
 
-		private Action<TTableModelObject, IDictionary<string, object>> recordToTableModelMappingCallback;
+		private Action<TTableModelObject, int, IRecord> recordToTableModelMappingCallback;
 		private bool useBatchScopeIdentificationSemantics;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		public Action<TTableModelObject, IDictionary<string, object>> RecordToTableModelMappingCallback
+		public Action<TTableModelObject, int, IRecord> RecordToTableModelMappingCallback
 		{
 			get
 			{

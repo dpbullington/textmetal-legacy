@@ -68,9 +68,6 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Application\ConsoleApplicationFascade.cs" />
-    <Compile Include="Application\ExecutableApplicationFascade.cs" />
-    <Compile Include="Application\IExecutableApplicationFascade.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

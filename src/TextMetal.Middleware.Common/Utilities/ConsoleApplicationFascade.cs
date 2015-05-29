@@ -8,9 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using TextMetal.Middleware.Common;
-
-namespace TextMetal.ConsoleTool.Application
+namespace TextMetal.Middleware.Common.Utilities
 {
 	public abstract class ConsoleApplicationFascade : ExecutableApplicationFascade
 	{

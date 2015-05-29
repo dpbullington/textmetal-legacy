@@ -54,7 +54,11 @@
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AdoNetFascade.cs" />
+    <Compile Include="IRecord.cs" />
+    <Compile Include="Record.cs" />
+    <Compile Include="Resultset.cs" />
     <Compile Include="IAdoNetFascade.cs" />
+    <Compile Include="IResultset.cs" />
     <Compile Include="Impl\AmbientUnitOfWorkAwareContextWrapper~1.cs" />
     <Compile Include="Impl\ContextModelRepository~1.cs" />
     <Compile Include="Impl\MicrosoftLinq\DataContextModelRepository~1.cs" />
@@ -63,6 +67,7 @@
     <Compile Include="UoW\IUnitOfWork.cs" />
     <Compile Include="UoW\IUnitOfWorkFactory.cs" />
     <Compile Include="UoW\UnitOfWork.cs" />
+    <Compile Include="WrappedDataReader.cs" />
     <None Include="Impl\MicrosoftLinq\DbContextModelRepository~1.cs" />
     <Compile Include="Impl\FreakazoidMapper\Expressions\BinaryExpression.cs" />
     <Compile Include="Impl\FreakazoidMapper\Expressions\BinaryOperator.cs" />
@@ -112,14 +117,12 @@
     <Compile Include="Models\Functional\DefaultResultsetModelObject~1.cs" />
     <Compile Include="Models\DynamicModelObject.cs" />
     <Compile Include="Models\Functional\DynamicResultProcedureModelObject.cs" />
-    <Compile Include="Repositories\IModelRepositoryTryNotifyMixIn.cs" />
     <Compile Include="Repositories\IModelRepository~1.cs" />
     <Compile Include="Models\Functional\IResultProcedureModelObject.cs" />
     <Compile Include="Models\IRecordModelObject.cs" />
     <Compile Include="Models\Functional\IResultsetModelObject.cs" />
     <Compile Include="Models\Functional\IResultsetModelObject~1.cs" />
     <Compile Include="Models\Tabular\ITableModelObject.cs" />
-    <Compile Include="Models\Tabular\ITableModelObjectTrackingMixIn.cs" />
     <Compile Include="Models\ModelObject.cs" />
     <Compile Include="Repositories\ModelRepository.cs" />
     <Compile Include="Models\Functional\ResultProcedureModelObject.cs" />

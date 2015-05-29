@@ -17,13 +17,13 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Tactics
 	{
 		#region Properties/Indexers/Events
 
-		Action<TReturnProcedureModelObject, IDictionary<string, object>> OutputToReturnProcedureModelMappingCallback
+		Action<TReturnProcedureModelObject, IRecord> OutputToReturnProcedureModelMappingCallback
 		{
 			get;
 			set;
 		}
 
-		Action<TResultProcedureModelObject, IDictionary<string, object>> RecordToResultModelMappingCallback
+		Action<TResultProcedureModelObject, int, IRecord> RecordToResultModelMappingCallback
 		{
 			get;
 			set;

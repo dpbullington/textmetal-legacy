@@ -25,14 +25,14 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Tactics
 
 		#region Fields/Constants
 
-		private Action<TReturnProcedureModelObject, IDictionary<string, object>> outputToReturnProcedureModelMappingCallback;
-		private Action<TResultProcedureModelObject, IDictionary<string, object>> recordToResultModelMappingCallback;
+		private Action<TReturnProcedureModelObject, IRecord> outputToReturnProcedureModelMappingCallback;
+		private Action<TResultProcedureModelObject, int, IRecord> recordToResultModelMappingCallback;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		public Action<TReturnProcedureModelObject, IDictionary<string, object>> OutputToReturnProcedureModelMappingCallback
+		public Action<TReturnProcedureModelObject, IRecord> OutputToReturnProcedureModelMappingCallback
 		{
 			get
 			{
@@ -44,7 +44,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Tactics
 			}
 		}
 
-		public Action<TResultProcedureModelObject, IDictionary<string, object>> RecordToResultModelMappingCallback
+		public Action<TResultProcedureModelObject, int, IRecord> RecordToResultModelMappingCallback
 		{
 			get
 			{

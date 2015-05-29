@@ -10,6 +10,7 @@ using System.Linq;
 using System.Xml.Serialization;
 
 using TextMetal.Middleware.Common.Utilities;
+using TextMetal.Middleware.Data;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
@@ -646,9 +647,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 		#region Methods/Operators
 
-		public static IEnumerable<IDictionary<string, object>> FixupDuplicateColumns(IEnumerable<IDictionary<string, object>> records)
+		public static IEnumerable<IRecord> FixupDuplicateColumns(IEnumerable<IRecord> records)
 		{
-			IEnumerable<IGrouping<string, IDictionary<string, object>>> groups;
+			IEnumerable<IGrouping<string, IRecord>> groups;
 
 			object columnOrdinal;
 			object columnName;
@@ -664,7 +665,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			{
 				isDuplicateColumn = group.Count() > 1;
 
-				foreach (IDictionary<string, object> record in group)
+				foreach (IRecord record in group)
 				{
 					record.TryGetValue(SchemaInfoConstants.COLUMN_ORDINAL_RECORD_KEY, out columnOrdinal);
 					record.TryGetValue(SchemaInfoConstants.COLUMN_NAME_RECORD_KEY, out columnName);

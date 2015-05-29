@@ -20,7 +20,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Tactics
 			get;
 		}
 
-		Action<TTableModelObject, IDictionary<string, object>> RecordToTableModelMappingCallback
+		Action<TTableModelObject, int, IRecord> RecordToTableModelMappingCallback
 		{
 			get;
 			set;

@@ -5,24 +5,23 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 
-using TextMetal.Middleware.Common;
-using TextMetal.Middleware.Common.Utilities;
 using TextMetal.Middleware.Solder.Context;
 
-namespace TextMetal.Framework.Application
+namespace TextMetal.Middleware.Common.Utilities
 {
 	public abstract class ExecutableApplicationFascade : IExecutableApplicationFascade /*, ILogicalThreadAffinative*/
 	{
 		#region Constructors/Destructors
 
 		protected ExecutableApplicationFascade()
-			: this(Middleware.Common.Utilities.DataTypeFascade.Instance,
-				Middleware.Common.Utilities.AppConfigFascade.Instance,
-				Middleware.Common.Utilities.ReflectionFascade.Instance)
+			: this(Utilities.DataTypeFascade.Instance,
+				Utilities.AppConfigFascade.Instance,
+				Utilities.ReflectionFascade.Instance)
 		{
 		}
 
@@ -91,7 +90,7 @@ namespace TextMetal.Framework.Application
 		{
 			get
 			{
-				return !System.Diagnostics.Debugger.IsAttached &&
+				return !Debugger.IsAttached &&
 						this.AppConfigFascade.GetAppSetting<bool>(string.Format("{0}::HookUnhandledExceptionEvents", this.GetType().Namespace));
 			}
 		}

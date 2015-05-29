@@ -44,80 +44,65 @@ namespace TextMetal.Middleware.Data.UoW
 			return dbDataParameter;
 		}
 
-		/// <summary>
-		/// An extension method to execute a dictionary query operation against a target unit of work.
-		/// This overload is for backwards compatability.
-		/// DO NOT DISPOSE OF UNIT OF WORK CONTEXT - UP TO THE CALLER.
-		/// </summary>
-		/// <param name="unitOfWork"> The target unit of work. </param>
-		/// <param name="commandType"> The type of the command. </param>
-		/// <param name="commandText"> The SQL text or stored procedure name. </param>
-		/// <param name="commandParameters"> The parameters to use during the operation. </param>
-		/// <param name="recordsAffected"> The output count of records affected. </param>
-		/// <returns> A list of dictionary instances, containing key/value pairs of data. </returns>
-		public static IList<IDictionary<string, object>> ExecuteDictionary(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, out int recordsAffected)
+		public static IEnumerable<IRecord> ExecuteRecords(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
 		{
-			int _recordsAffected;
-			List<IDictionary<string, object>> list;
-
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
-
-			_recordsAffected = -1;
-
-			// FORCE EAGER LOADING HERE
-			list = AdoNetFascade.Instance.ExecuteDictionary(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, (ra) => _recordsAffected = ra).ToList();
-
-			recordsAffected = _recordsAffected;
-
-			return list;
-		}
-
-		/// <summary>
-		/// An extension method to execute a dictionary query operation against a target unit of work.
-		/// DO NOT DISPOSE OF UNIT OF WORK CONTEXT - UP TO THE CALLER.
-		/// </summary>
-		/// <param name="unitOfWork"> The target unit of work. </param>
-		/// <param name="commandType"> The type of the command. </param>
-		/// <param name="commandText"> The SQL text or stored procedure name. </param>
-		/// <param name="commandParameters"> The parameters to use during the operation. </param>
-		/// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
-		/// <returns> An enumerable of dictionary instances, containing key/value pairs of data. </returns>
-		public static IEnumerable<IDictionary<string, object>> ExecuteDictionary(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> recordsAffectedCallback)
-		{
-			IEnumerable<IDictionary<string, object>> retval;
+			IEnumerable<IRecord> records;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
 			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
-			retval = AdoNetFascade.Instance.ExecuteDictionary(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, recordsAffectedCallback);
+			records = AdoNetFascade.Instance.ExecuteRecords(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters);
 
-			return retval;
+			return records;
+		}
+
+		/// <summary>
+		/// An extension method to execute a resultset/records query operation against a target unit of work.
+		/// DO NOT DISPOSE OF UNIT OF WORK CONTEXT - UP TO THE CALLER.
+		/// </summary>
+		/// <param name="unitOfWork"> The target unit of work. </param>
+		/// <param name="commandType"> The type of the command. </param>
+		/// <param name="commandText"> The SQL text or stored procedure name. </param>
+		/// <param name="commandParameters"> The parameters to use during the operation. </param>
+		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of data. </returns>
+		public static IEnumerable<IResultset> ExecuteResultsets(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
+		{
+			IEnumerable<IResultset> resultsets;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
+			resultsets = AdoNetFascade.Instance.ExecuteResultsets(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters);
+
+			return resultsets;
 		}
 
 		public static TValue ExecuteScalar<TValue>(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
 		{
-			int recordsAffected;
-			IEnumerable<IDictionary<string, object>> records;
-			IDictionary<string, object> record;
-			IEnumerable<IGrouping<int, IDictionary<string, object>>> resultsets;
+			IEnumerable<IResultset> resultsets;
+			IResultset resultset;
+			IEnumerable<IRecord> records;
+			IRecord record;
+
 			object dbValue;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			records = AdoNetFascade.Instance.ExecuteDictionary(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, out recordsAffected);
-
-			if ((object)records == null)
-				return default(TValue);
-
-			resultsets = records.ToResultsets();
+			resultsets = unitOfWork.ExecuteResultsets(commandType, commandText, commandParameters);
 
 			if ((object)resultsets == null)
 				return default(TValue);
 
-			records = resultsets.SingleOrDefault();
+			// FORCE EAGER LOADING HERE
+			resultset = resultsets.SingleOrDefault();
+
+			if ((object)resultset == null)
+				return default(TValue);
+
+			records = resultset.Records;
 
 			if ((object)records == null)
 				return default(TValue);
@@ -138,54 +123,53 @@ namespace TextMetal.Middleware.Data.UoW
 			return dbValue.ChangeType<TValue>();
 		}
 
-		/// <summary>
-		/// An extension method to execute a schema query operation against a target unit of work.
-		/// DO NOT DISPOSE OF UNIT OF WORK CONTEXT - UP TO THE CALLER.
-		/// </summary>
-		/// <param name="unitOfWork"> The target unit of work. </param>
-		/// <param name="commandType"> The type of the command. </param>
-		/// <param name="commandText"> The SQL text or stored procedure name. </param>
-		/// <param name="commandParameters"> The parameters to use during the operation. </param>
-		/// <param name="recordsAffected"> The output count of records affected. </param>
-		/// <returns> A list of dictionary instances, containing key/value pairs of data. </returns>
-		public static IList<IDictionary<string, object>> ExecuteSchema(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, out int recordsAffected)
+		public static IEnumerable<IRecord> ExecuteSchemaRecords(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
 		{
-			int _recordsAffected = -1;
-			var list = AdoNetFascade.Instance.ExecuteSchema(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, (ra) => _recordsAffected = ra).ToList(); // FORCE EAGER LOADING HERE
-			recordsAffected = _recordsAffected;
-			return list;
-		}
-
-		/// <summary>
-		/// An extension method to execute a schema query operation against a target unit of work.
-		/// DO NOT DISPOSE OF UNIT OF WORK CONTEXT - UP TO THE CALLER.
-		/// </summary>
-		/// <param name="unitOfWork"> The target unit of work. </param>
-		/// <param name="commandType"> The type of the command. </param>
-		/// <param name="commandText"> The SQL text or stored procedure name. </param>
-		/// <param name="commandParameters"> The parameters to use during the operation. </param>
-		/// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
-		/// <returns> An enumerable of dictionary instances, containing key/value pairs of schema data. </returns>
-		public static IEnumerable<IDictionary<string, object>> ExecuteSchema(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> recordsAffectedCallback)
-		{
-			IEnumerable<IDictionary<string, object>> retval;
+			IEnumerable<IRecord> records;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			retval = AdoNetFascade.Instance.ExecuteSchema(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, recordsAffectedCallback);
+			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
+			records = AdoNetFascade.Instance.ExecuteSchemaRecords(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters);
 
-			return retval;
+			return records;
 		}
 
-		public static IDictionary<string, object> GetOutputAsRecord(this IEnumerable<IDbDataParameter> dbDataParameters)
+		/// <summary>
+		/// An extension method to execute a resultset/records query operation against a target unit of work.
+		/// DO NOT DISPOSE OF UNIT OF WORK CONTEXT - UP TO THE CALLER.
+		/// </summary>
+		/// <param name="unitOfWork"> The target unit of work. </param>
+		/// <param name="commandType"> The type of the command. </param>
+		/// <param name="commandText"> The SQL text or stored procedure name. </param>
+		/// <param name="commandParameters"> The parameters to use during the operation. </param>
+		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of schema metadata. </returns>
+		public static IEnumerable<IResultset> ExecuteSchemaResultsets(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
 		{
-			IDictionary<string, object> output;
+			IEnumerable<IResultset> resultsets;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			resultsets = AdoNetFascade.Instance.ExecuteSchemaResultsets(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters);
+
+			return resultsets;
+		}
+
+		/// <summary>
+		/// An extension method to extract outputs from a record dictionary.
+		/// </summary>
+		/// <param name="dbDataParameters"> The target enumerable of data paramters. </param>
+		/// <returns> A dictionary with record key/value pairs of OUTPUT data. </returns>
+		public static IRecord GetOutputAsRecord(this IEnumerable<IDbDataParameter> dbDataParameters)
+		{
+			IRecord output;
 
 			if ((object)dbDataParameters == null)
 				throw new ArgumentNullException("dbDataParameters");
 
-			output = new Dictionary<string, object>();
+			output = new Record();
 
 			foreach (IDbDataParameter dbDataParameter in dbDataParameters)
 			{
@@ -198,26 +182,6 @@ namespace TextMetal.Middleware.Data.UoW
 			}
 
 			return output;
-		}
-
-		public static IEnumerable<IGrouping<int, IDictionary<string, object>>> ToResultsets(this IEnumerable<IDictionary<string, object>> records)
-		{
-			IEnumerable<IGrouping<int, IDictionary<string, object>>> resultsets;
-
-			if ((object)records == null)
-				throw new ArgumentNullException("records");
-
-			resultsets = records.GroupBy(record =>
-										{
-											object resultsetIndex;
-
-											if (record.TryGetValue(AdoNetFascade.ResultsetIndexRecordKey, out resultsetIndex))
-												record.Remove(AdoNetFascade.ResultsetIndexRecordKey);
-
-											return resultsetIndex.ChangeType<int>();
-										});
-
-			return resultsets;
 		}
 
 		#endregion

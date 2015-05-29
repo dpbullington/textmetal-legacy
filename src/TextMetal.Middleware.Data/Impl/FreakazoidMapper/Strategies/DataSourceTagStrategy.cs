@@ -6,10 +6,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
+using TextMetal.Middleware.Common;
 using TextMetal.Middleware.Common.Utilities;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Expressions;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Mappings;
@@ -82,7 +82,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 
 			if ((object)tableMappingAttribute._ColumnMappingAttributes == null ||
 				tableMappingAttribute._ColumnMappingAttributes.Count == 0)
-				Trace.WriteLine(string.Format("The table model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", tableModelType.FullName, typeof(ColumnMappingAttribute).FullName));
+				OnlyWhen._DEBUG_ThenPrint(string.Format("The table model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", tableModelType.FullName, typeof(ColumnMappingAttribute).FullName));
 		}
 
 		private static void AssertValidMapping(Type callProcedureModelType, Type resultModelType, Type returnProcedureModelType, ProcedureMappingAttribute procedureMappingAttribute)
@@ -101,15 +101,15 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 
 			if ((object)procedureMappingAttribute._InputParameterMappingAttributes == null ||
 				procedureMappingAttribute._InputParameterMappingAttributes.Count == 0)
-				Trace.WriteLine(string.Format("The call procedure model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", callProcedureModelType.FullName, typeof(ParameterMappingAttribute).FullName));
+				OnlyWhen._DEBUG_ThenPrint(string.Format("The call procedure model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", callProcedureModelType.FullName, typeof(ParameterMappingAttribute).FullName));
 
 			if ((object)procedureMappingAttribute._ResultColumnMappingAttributes == null ||
 				procedureMappingAttribute._ResultColumnMappingAttributes.Count == 0)
-				Trace.WriteLine(string.Format("The result model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", resultModelType.FullName, typeof(ColumnMappingAttribute).FullName));
+				OnlyWhen._DEBUG_ThenPrint(string.Format("The result model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", resultModelType.FullName, typeof(ColumnMappingAttribute).FullName));
 
 			if ((object)procedureMappingAttribute._OutputParameterMappingAttributes == null ||
 				procedureMappingAttribute._OutputParameterMappingAttributes.Count == 0)
-				Trace.WriteLine(string.Format("The return procedure model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", resultModelType.FullName, typeof(ParameterMappingAttribute).FullName));
+				OnlyWhen._DEBUG_ThenPrint(string.Format("The return procedure model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", resultModelType.FullName, typeof(ParameterMappingAttribute).FullName));
 		}
 
 		public bool CreateNativeDatabaseFile(string databaseFilePath)
@@ -141,7 +141,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
 
 			int expectedRecordsAffected;
-			Action<TTableModelObject, IDictionary<string, object>> tableToModelMappingCallback;
+			Action<TTableModelObject, int, IRecord> tableToModelMappingCallback;
 			string commandText;
 			ITacticParameter tacticParameter;
 			IDictionary<string, ITacticParameter> tacticParameters;
@@ -259,8 +259,8 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
 
 			int expectedRecordsAffected;
-			Action<TResultProcedureModelObject, IDictionary<string, object>> recordToResultModelMappingCallback;
-			Action<TReturnProcedureModelObject, IDictionary<string, object>> outputToReturnProcedureModelMappingCallback;
+			Action<TResultProcedureModelObject, int, IRecord> recordToResultModelMappingCallback;
+			Action<TReturnProcedureModelObject, IRecord> outputToReturnProcedureModelMappingCallback;
 			string commandText;
 			ITacticParameter tacticParameter;
 			IDictionary<string, ITacticParameter> tacticParameters;
@@ -395,7 +395,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
 
 			int expectedRecordsAffected;
-			Action<TTableModelObject, IDictionary<string, object>> tableToModelMappingCallback;
+			Action<TTableModelObject, int, IRecord> tableToModelMappingCallback;
 			string commandText;
 			ITacticParameter tacticParameter;
 			IDictionary<string, ITacticParameter> tacticParameters;
@@ -456,7 +456,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
 
 			int expectedRecordsAffected;
-			Action<TTableModelObject, IDictionary<string, object>> tableToModelMappingCallback;
+			Action<TTableModelObject, int, IRecord> tableToModelMappingCallback;
 			string commandText;
 			ITacticParameter tacticParameter;
 			IDictionary<string, ITacticParameter> tacticParameters;
@@ -580,24 +580,24 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 			return tableTacticCommand;
 		}
 
-		private Action<TResultProcedureModelObject, IDictionary<string, object>> GetMapToMethod<TResultProcedureModelObject>(ProcedureMappingAttribute procedureMappingAttribute)
+		private Action<TResultProcedureModelObject, int, IRecord> GetMapToMethod<TResultProcedureModelObject>(ProcedureMappingAttribute procedureMappingAttribute)
 			where TResultProcedureModelObject : class, IResultProcedureModelObject
 		{
-			Action<TResultProcedureModelObject, IDictionary<string, object>> callback;
+			Action<TResultProcedureModelObject, int, IRecord> callback;
 
 			if ((object)procedureMappingAttribute == null)
 				throw new ArgumentNullException("procedureMappingAttribute");
 
-			callback = (md, ts) => this.MapRecordToResultModel(procedureMappingAttribute._ResultColumnMappingAttributes, md, ts);
+			callback = (md, ri, ts) => this.MapRecordToResultModel(procedureMappingAttribute._ResultColumnMappingAttributes, md, ri, ts);
 
 			return callback;
 		}
 
-		private Action<TReturnProcedureModelObject, IDictionary<string, object>> GetMapToMethod<TResultProcedureModelObject, TReturnProcedureModelObject>(ProcedureMappingAttribute procedureMappingAttribute)
+		private Action<TReturnProcedureModelObject, IRecord> GetMapToMethod<TResultProcedureModelObject, TReturnProcedureModelObject>(ProcedureMappingAttribute procedureMappingAttribute)
 			where TResultProcedureModelObject : class, IResultProcedureModelObject, new()
 			where TReturnProcedureModelObject : class, IReturnProcedureModelObject<DefaultResultsetModelObject<TResultProcedureModelObject>, TResultProcedureModelObject>, new()
 		{
-			Action<TReturnProcedureModelObject, IDictionary<string, object>> callback;
+			Action<TReturnProcedureModelObject, IRecord> callback;
 
 			if ((object)procedureMappingAttribute == null)
 				throw new ArgumentNullException("procedureMappingAttribute");
@@ -607,15 +607,15 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 			return callback;
 		}
 
-		private Action<TTableModelObject, IDictionary<string, object>> GetMapToMethod<TTableModelObject>(TableMappingAttribute tableMappingAttribute)
+		private Action<TTableModelObject, int, IRecord> GetMapToMethod<TTableModelObject>(TableMappingAttribute tableMappingAttribute)
 			where TTableModelObject : class, ITableModelObject
 		{
-			Action<TTableModelObject, IDictionary<string, object>> callback;
+			Action<TTableModelObject, int, IRecord> callback;
 
 			if ((object)tableMappingAttribute == null)
 				throw new ArgumentNullException("tableMappingAttribute");
 
-			callback = (md, ts) => this.MapRecordToResultModel<TTableModelObject>(tableMappingAttribute._ColumnMappingAttributes, md, ts);
+			callback = (md, ri, ts) => this.MapRecordToResultModel<TTableModelObject>(tableMappingAttribute._ColumnMappingAttributes, md, ri, ts);
 
 			return callback;
 		}
@@ -760,7 +760,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 			const string TABLE_ALIAS = "t0";
 
 			int expectedRecordsAffected;
-			Action<TTableModelObject, IDictionary<string, object>> tableToModelMappingCallback;
+			Action<TTableModelObject, int, IRecord> tableToModelMappingCallback;
 			string commandText;
 			ITacticParameter tacticParameter;
 			IDictionary<string, ITacticParameter> tacticParameters;
@@ -848,7 +848,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 			const string TABLE_ALIAS = "t0";
 
 			int expectedRecordsAffected;
-			Action<TTableModelObject, IDictionary<string, object>> tableToModelMappingCallback;
+			Action<TTableModelObject, int, IRecord> tableToModelMappingCallback;
 			string commandText;
 			ITacticParameter tacticParameter;
 			IDictionary<string, ITacticParameter> tacticParameters;
@@ -1034,7 +1034,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
 
 			int expectedRecordsAffected;
-			Action<TTableModelObject, IDictionary<string, object>> tableToModelMappingCallback;
+			Action<TTableModelObject, int, IRecord> tableToModelMappingCallback;
 			string commandText;
 			ITacticParameter tacticParameter;
 			IDictionary<string, ITacticParameter> tacticParameters;
@@ -1195,7 +1195,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 			return wherePredicate;
 		}
 
-		private void MapOutputToReturnProcedureModel<TResultProcedureModelObject, TReturnProcedureModelObject>(ProcedureMappingAttribute procedureMappingAttribute, TReturnProcedureModelObject returnProcedureModelObject, IDictionary<string, object> output)
+		private void MapOutputToReturnProcedureModel<TResultProcedureModelObject, TReturnProcedureModelObject>(ProcedureMappingAttribute procedureMappingAttribute, TReturnProcedureModelObject returnProcedureModelObject, IRecord output)
 			where TResultProcedureModelObject : class, IResultProcedureModelObject, new()
 			where TReturnProcedureModelObject : class, IReturnProcedureModelObject<DefaultResultsetModelObject<TResultProcedureModelObject>, TResultProcedureModelObject>, new()
 		{
@@ -1228,7 +1228,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 			}
 		}
 
-		private void MapRecordToResultModel<TResultProcedureModelObject>(IList<ColumnMappingAttribute> columnMappingAttributes, TResultProcedureModelObject resultProcedureModelObject, IDictionary<string, object> record)
+		private void MapRecordToResultModel<TResultProcedureModelObject>(IList<ColumnMappingAttribute> columnMappingAttributes, TResultProcedureModelObject resultProcedureModelObject, int resultsetIndex, IRecord record)
 			where TResultProcedureModelObject : class, IRecordModelObject
 		{
 			string columnName;

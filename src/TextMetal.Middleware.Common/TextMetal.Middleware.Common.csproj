@@ -47,6 +47,10 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="OnlyWhen.cs" />
+    <Compile Include="Utilities\ConsoleApplicationFascade.cs" />
+    <Compile Include="Utilities\ExecutableApplicationFascade.cs" />
+    <Compile Include="Utilities\IExecutableApplicationFascade.cs" />
     <Compile Include="Utilities\AppConfigFascade.cs" />
     <Compile Include="Utilities\AssemblyInformationFascade.cs" />
     <Compile Include="Utilities\DataTypeFascade.cs" />

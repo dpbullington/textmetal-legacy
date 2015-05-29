@@ -6,9 +6,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
+using TextMetal.Middleware.Common;
 using TextMetal.Middleware.Data.Models.Functional;
 using TextMetal.Middleware.Data.Models.Tabular;
 using TextMetal.Middleware.Data.UoW;
@@ -27,13 +27,6 @@ namespace TextMetal.Middleware.Data.Repositories
 		#endregion
 
 		#region Methods/Operators
-
-		[Conditional("DEBUG")]
-		private void __DEBUG_Print(string message)
-		{
-			/* THIS METHOD SHOULD NOT BE DEFINED IN RELEASE/PRODUCTION BUILDS */
-			Debug.WriteLine(message);
-		}
 
 		public abstract bool Discard<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject tableModelObject) where TTableModelObject : class, ITableModelObject, new();
 
@@ -79,7 +72,11 @@ namespace TextMetal.Middleware.Data.Repositories
 				{
 					returnProcedureModel = this.Execute<TCallProcedureModelObject, TResultProcedureModelObject, TReturnProcedureModelObject>(unitOfWork, callProcedureModel);
 
-					returnProcedureModel.Resultsets = returnProcedureModel.Resultsets.ToList(); // FORCE EAGER LOAD
+					returnProcedureModel.Resultsets = returnProcedureModel.Resultsets.Select(m =>
+																							{
+																								m.Records = m.Records.ToList();
+																								return m;
+																							}).ToList(); // FORCE EAGER LOAD
 
 					unitOfWork.Complete();
 				}
@@ -89,7 +86,11 @@ namespace TextMetal.Middleware.Data.Repositories
 				returnProcedureModel = this.Execute<TCallProcedureModelObject, TResultProcedureModelObject, TReturnProcedureModelObject>(UnitOfWork.Current, callProcedureModel);
 
 				if (this.ForceEagerLoading)
-					returnProcedureModel.Resultsets = returnProcedureModel.Resultsets.ToList(); // FORCE EAGER LOAD
+					returnProcedureModel.Resultsets = returnProcedureModel.Resultsets.Select(m =>
+																							{
+																								m.Records = m.Records.ToList();
+																								return m;
+																							}).ToList(); // FORCE EAGER LOAD
 
 				// DO NOT FORCE EAGER LOAD
 			}
@@ -191,7 +192,7 @@ namespace TextMetal.Middleware.Data.Repositories
 			if ((object)tableModelObject == null)
 				throw new ArgumentNullException("tableModelObject");
 
-			this.__DEBUG_Print(string.Format("OnDiscardConflictTableModel <{0}>", typeof(TTableModelObject).Name));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("OnDiscardConflictTableModel <{0}>", typeof(TTableModelObject).Name));
 		}
 
 		protected virtual void OnPostDeleteTableModel<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject tableModelObject) where TTableModelObject : class, ITableModelObject, new()
@@ -202,7 +203,7 @@ namespace TextMetal.Middleware.Data.Repositories
 			if ((object)tableModelObject == null)
 				throw new ArgumentNullException("tableModelObject");
 
-			this.__DEBUG_Print(string.Format("OnPostDeleteTableModel <{0}>", typeof(TTableModelObject).Name));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("OnPostDeleteTableModel <{0}>", typeof(TTableModelObject).Name));
 		}
 
 		protected virtual void OnPostExecuteProcedureModel<TResultProcedureModelObject, TReturnProcedureModelObject>(IUnitOfWork unitOfWork, TReturnProcedureModelObject returnProcedureModelObject)
@@ -215,7 +216,7 @@ namespace TextMetal.Middleware.Data.Repositories
 			if ((object)returnProcedureModelObject == null)
 				throw new ArgumentNullException("returnProcedureModelObject");
 
-			this.__DEBUG_Print(string.Format("OnPostExecuteProcedureModel <{0}, {1}>", typeof(TResultProcedureModelObject).Name, typeof(TReturnProcedureModelObject).Name));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("OnPostExecuteProcedureModel <{0}, {1}>", typeof(TResultProcedureModelObject).Name, typeof(TReturnProcedureModelObject).Name));
 		}
 
 		protected virtual void OnPostInsertTableModel<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject tableModelObject) where TTableModelObject : class, ITableModelObject, new()
@@ -226,7 +227,7 @@ namespace TextMetal.Middleware.Data.Repositories
 			if ((object)tableModelObject == null)
 				throw new ArgumentNullException("tableModelObject");
 
-			this.__DEBUG_Print(string.Format("OnPostInsertTableModel <{0}>", typeof(TTableModelObject).Name));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("OnPostInsertTableModel <{0}>", typeof(TTableModelObject).Name));
 		}
 
 		protected virtual void OnPostResultsProcedureModel<TResultProcedureModelObject, TReturnProcedureModelObject>(IUnitOfWork unitOfWork, TReturnProcedureModelObject returnProcedureModelObject)
@@ -239,7 +240,7 @@ namespace TextMetal.Middleware.Data.Repositories
 			if ((object)returnProcedureModelObject == null)
 				throw new ArgumentNullException("returnProcedureModelObject");
 
-			this.__DEBUG_Print(string.Format("OnPostResultsProcedureModel <{0}, {1}>", typeof(TResultProcedureModelObject).Name, typeof(TReturnProcedureModelObject).Name));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("OnPostResultsProcedureModel <{0}, {1}>", typeof(TResultProcedureModelObject).Name, typeof(TReturnProcedureModelObject).Name));
 		}
 
 		protected virtual void OnPostSelectionTableModel<TTableModelObject>(IUnitOfWork unitOfWork) where TTableModelObject : class, ITableModelObject, new()
@@ -247,7 +248,7 @@ namespace TextMetal.Middleware.Data.Repositories
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			this.__DEBUG_Print(string.Format("OnPostSelectionTableModel <{0}>", typeof(TTableModelObject).Name));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("OnPostSelectionTableModel <{0}>", typeof(TTableModelObject).Name));
 		}
 
 		protected virtual void OnPostUpdateTableModel<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject tableModelObject) where TTableModelObject : class, ITableModelObject, new()
@@ -258,7 +259,7 @@ namespace TextMetal.Middleware.Data.Repositories
 			if ((object)tableModelObject == null)
 				throw new ArgumentNullException("tableModelObject");
 
-			this.__DEBUG_Print(string.Format("OnPostUpdateTableModel <{0}>", typeof(TTableModelObject).Name));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("OnPostUpdateTableModel <{0}>", typeof(TTableModelObject).Name));
 		}
 
 		protected virtual void OnPreDeleteTableModel<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject tableModelObject) where TTableModelObject : class, ITableModelObject, new()
@@ -269,7 +270,7 @@ namespace TextMetal.Middleware.Data.Repositories
 			if ((object)tableModelObject == null)
 				throw new ArgumentNullException("tableModelObject");
 
-			this.__DEBUG_Print(string.Format("OnPreDeleteTableModel <{0}>", typeof(TTableModelObject).Name));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("OnPreDeleteTableModel <{0}>", typeof(TTableModelObject).Name));
 		}
 
 		protected virtual void OnPreExecuteProcedureModel<TCallProcedureModelObject>(IUnitOfWork unitOfWork, TCallProcedureModelObject callProcedureModelObject) where TCallProcedureModelObject : class, ICallProcedureModelObject, new()
@@ -280,7 +281,7 @@ namespace TextMetal.Middleware.Data.Repositories
 			if ((object)callProcedureModelObject == null)
 				throw new ArgumentNullException("callProcedureModelObject");
 
-			this.__DEBUG_Print(string.Format("OnPreExecuteProcedureModel <{0}>", typeof(TCallProcedureModelObject).Name));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("OnPreExecuteProcedureModel <{0}>", typeof(TCallProcedureModelObject).Name));
 		}
 
 		public virtual void OnPreInsertTableModel<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject tableModelObject) where TTableModelObject : class, ITableModelObject, new()
@@ -291,7 +292,7 @@ namespace TextMetal.Middleware.Data.Repositories
 			if ((object)tableModelObject == null)
 				throw new ArgumentNullException("tableModelObject");
 
-			this.__DEBUG_Print(string.Format("OnPreInsertTableModel <{0}>", typeof(TTableModelObject).Name));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("OnPreInsertTableModel <{0}>", typeof(TTableModelObject).Name));
 			tableModelObject.Mark();
 		}
 
@@ -304,7 +305,7 @@ namespace TextMetal.Middleware.Data.Repositories
 			if ((object)callProcedureModelObject == null)
 				throw new ArgumentNullException("callProcedureModelObject");
 
-			this.__DEBUG_Print(string.Format("OnPreResultsProcedureModel <{0}>", typeof(TCallProcedureModelObject).Name));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("OnPreResultsProcedureModel <{0}>", typeof(TCallProcedureModelObject).Name));
 		}
 
 		protected virtual void OnPreSelectionTableModel<TTableModelObject>(IUnitOfWork unitOfWork) where TTableModelObject : class, ITableModelObject, new()
@@ -312,7 +313,7 @@ namespace TextMetal.Middleware.Data.Repositories
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException("unitOfWork");
 
-			this.__DEBUG_Print(string.Format("OnPreSelectionTableModel <{0}>", typeof(TTableModelObject).Name));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("OnPreSelectionTableModel <{0}>", typeof(TTableModelObject).Name));
 		}
 
 		protected virtual void OnPreUpdateTableModel<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject tableModelObject) where TTableModelObject : class, ITableModelObject, new()
@@ -323,7 +324,7 @@ namespace TextMetal.Middleware.Data.Repositories
 			if ((object)tableModelObject == null)
 				throw new ArgumentNullException("tableModelObject");
 
-			this.__DEBUG_Print(string.Format("OnPreUpdateTableModel <{0}>", typeof(TTableModelObject).Name));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("OnPreUpdateTableModel <{0}>", typeof(TTableModelObject).Name));
 			tableModelObject.Mark();
 		}
 
@@ -335,7 +336,7 @@ namespace TextMetal.Middleware.Data.Repositories
 			if ((object)resultProcedureModelObject == null)
 				throw new ArgumentNullException("resultProcedureModelObject");
 
-			this.__DEBUG_Print(string.Format("OnResultProcedureModel <{0}>", typeof(TResultProcedureModelObject).Name));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("OnResultProcedureModel <{0}>", typeof(TResultProcedureModelObject).Name));
 		}
 
 		protected virtual void OnResultsetProcedureModel<TResultsetModelObject, TResultProcedureModelObject>(IUnitOfWork unitOfWork, TResultsetModelObject resultsetModelObject)
@@ -348,7 +349,7 @@ namespace TextMetal.Middleware.Data.Repositories
 			if ((object)resultsetModelObject == null)
 				throw new ArgumentNullException("resultsetModelObject");
 
-			this.__DEBUG_Print(string.Format("OnResultsetProcedureModel <{0}>", resultsetModelObject.Index));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("OnResultsetProcedureModel <{0}>", resultsetModelObject.Index));
 		}
 
 		protected virtual void OnSaveConflictTableModel<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject tableModelObject) where TTableModelObject : class, ITableModelObject, new()
@@ -359,7 +360,7 @@ namespace TextMetal.Middleware.Data.Repositories
 			if ((object)tableModelObject == null)
 				throw new ArgumentNullException("tableModelObject");
 
-			this.__DEBUG_Print(string.Format("OnSaveConflictTableModel <{0}>", typeof(TTableModelObject).Name));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("OnSaveConflictTableModel <{0}>", typeof(TTableModelObject).Name));
 		}
 
 		protected virtual void OnSelectTableModel<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject tableModelObject) where TTableModelObject : class, ITableModelObject, new()
@@ -370,7 +371,7 @@ namespace TextMetal.Middleware.Data.Repositories
 			if ((object)tableModelObject == null)
 				throw new ArgumentNullException("tableModelObject");
 
-			this.__DEBUG_Print(string.Format("OnSelectTableModel <{0}>", typeof(TTableModelObject).Name));
+			OnlyWhen._DEBUG_ThenPrint(string.Format("OnSelectTableModel <{0}>", typeof(TTableModelObject).Name));
 		}
 
 		public TProjection Query<TProjection>(Func<TDataContext, TProjection> contextQueryCallback)
@@ -388,7 +389,7 @@ namespace TextMetal.Middleware.Data.Repositories
 
 					// HACK ALERT: will this work as expected?
 					if (projection is IEnumerable)
-						((IEnumerable)projection).Cast<object>().ToList(); // FORCE EAGER LOAD
+						projection = (TProjection)(object)((IEnumerable)projection).Cast<object>().ToList(); // FORCE EAGER LOAD
 
 					unitOfWork.Complete();
 				}
@@ -401,7 +402,7 @@ namespace TextMetal.Middleware.Data.Repositories
 				{
 					// HACK ALERT: will this work as expected?
 					if (projection is IEnumerable)
-						((IEnumerable)projection).Cast<object>().ToList(); // FORCE EAGER LOAD
+						projection = (TProjection)(object)((IEnumerable)projection).Cast<object>().ToList(); // FORCE EAGER LOAD
 				}
 
 				// DO NOT FORCE EAGER LOAD

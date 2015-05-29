@@ -5,9 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-
-using Newtonsoft.Json;
 
 namespace TextMetal.Middleware.Data.Models.Functional
 {
@@ -30,18 +27,6 @@ namespace TextMetal.Middleware.Data.Models.Functional
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Gets an enumerable of just the first resultset result objects.
-		/// </summary>
-		[JsonIgnore]
-		public IEnumerable<TResultProcedureModelObject> Results
-		{
-			get
-			{
-				return this.Resultsets.Where(rs => rs.Index == 0).SelectMany(rs => rs.Records);
-			}
-		}
 
 		public IEnumerable<TResultsetModelObject> Resultsets
 		{

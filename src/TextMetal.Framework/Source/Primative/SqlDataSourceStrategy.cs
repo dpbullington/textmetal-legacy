@@ -12,6 +12,7 @@ using System.Linq;
 using TextMetal.Framework.Associative;
 using TextMetal.Framework.Tokenization;
 using TextMetal.Middleware.Common.Utilities;
+using TextMetal.Middleware.Data;
 using TextMetal.Middleware.Data.UoW;
 using TextMetal.Middleware.Solder.Serialization;
 
@@ -39,9 +40,8 @@ namespace TextMetal.Framework.Source.Primative
 			PropertyConstruct propertyConstructA, propertyConstructB, propertyConstructC;
 			Tokenizer tokenizer;
 
-			IEnumerable<IDictionary<string, object>> objs;
+			IEnumerable<IRecord> records;
 			string commandText;
-			int recordsAffected;
 			int count = 0;
 
 			if ((object)sqlQueries == null)
@@ -72,30 +72,25 @@ namespace TextMetal.Framework.Source.Primative
 				using (IUnitOfWork unitOfWork = UnitOfWork.Create(connectionType, connectionString, false))
 				{
 					if (!getSchemaOnly)
-						objs = unitOfWork.ExecuteDictionary(sqlQuery.Type, commandText, null, out recordsAffected);
+						records = unitOfWork.ExecuteRecords(sqlQuery.Type, commandText, null);
 					else
-						objs = unitOfWork.ExecuteSchema(sqlQuery.Type, commandText, null, out recordsAffected);
+						records = unitOfWork.ExecuteSchemaRecords(sqlQuery.Type, commandText, null);
 				}
-
-				propertyConstructA = new PropertyConstruct();
-				propertyConstructA.Name = "RecordsAffected";
-				arrayConstruct.Items.Add(propertyConstructA);
-				propertyConstructA.RawValue = recordsAffected;
 
 				propertyConstructB = new PropertyConstruct();
 				propertyConstructB.Name = "RowCount";
 				arrayConstruct.Items.Add(propertyConstructB);
 
-				if ((object)objs != null)
+				if ((object)records != null)
 				{
-					foreach (IDictionary<string, object> obj in objs)
+					foreach (IRecord record in records)
 					{
 						objectConstruct = new ObjectConstruct();
 						arrayConstruct.Items.Add(objectConstruct);
 
-						if ((object)obj != null)
+						if ((object)record != null)
 						{
-							foreach (KeyValuePair<string, object> keyValuePair in obj)
+							foreach (KeyValuePair<string, object> keyValuePair in record)
 							{
 								propertyConstructC = new PropertyConstruct();
 								propertyConstructC.Name = keyValuePair.Key;

@@ -5,9 +5,7 @@
 
 using System;
 
-using TextMetal.Middleware.Common.Utilities;
-
-namespace TextMetal.Framework.Application
+namespace TextMetal.Middleware.Common.Utilities
 {
 	public interface IExecutableApplicationFascade : IDisposable
 	{

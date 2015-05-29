@@ -6,9 +6,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Xml;
 
+using TextMetal.Middleware.Common;
 using TextMetal.Middleware.Common.Utilities;
 
 namespace TextMetal.Middleware.Data
@@ -41,7 +41,6 @@ namespace TextMetal.Middleware.Data
 
 		#region Fields/Constants
 
-		private const string RESULTSET_INDEX_RECORD_KEY = "__ResultsetIndex__";
 		private static readonly AdoNetFascade instance = new AdoNetFascade();
 		private readonly IReflectionFascade reflectionFascade;
 
@@ -54,14 +53,6 @@ namespace TextMetal.Middleware.Data
 			get
 			{
 				return instance;
-			}
-		}
-
-		public static string ResultsetIndexRecordKey
-		{
-			get
-			{
-				return RESULTSET_INDEX_RECORD_KEY;
 			}
 		}
 
@@ -95,6 +86,8 @@ namespace TextMetal.Middleware.Data
 		{
 			IDbDataParameter dbDataParameter;
 
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::CreateParameter(...): enter", typeof(AdoNetFascade).Name));
+
 			if ((object)dbConnection == null)
 				throw new ArgumentNullException("dbConnection");
 
@@ -110,77 +103,15 @@ namespace TextMetal.Middleware.Data
 			dbDataParameter.Precision = parameterPrecision;
 			dbDataParameter.Scale = parameterScale;
 
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::CreateParameter(...): return parameter", typeof(AdoNetFascade).Name));
+
 			return dbDataParameter;
 		}
 
 		/// <summary>
-		/// Execute a command against a data source, mapping the data reader to a list of dictionaries.
-		/// This overload is for backwards compatability; this overload perfoms EAGER LOADING.
-		/// DO NOT DISPOSE OF CONNECTION/TRANSACTION - UP TO THE CALLER.
-		/// </summary>
-		/// <param name="dbConnection"> The database connection. </param>
-		/// <param name="dbTransaction"> An optional local database transaction. </param>
-		/// <param name="commandType"> The type of the command. </param>
-		/// <param name="commandText"> The SQL text or stored procedure name. </param>
-		/// <param name="commandParameters"> The parameters to use during the operation. </param>
-		/// <param name="recordsAffected"> The output count of records affected. </param>
-		/// <returns> A list of dictionary instances, containing key/value pairs of data. </returns>
-		public IList<IDictionary<string, object>> ExecuteDictionary(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, out int recordsAffected)
-		{
-			int _recordsAffected;
-			List<IDictionary<string, object>> records;
-
-			if ((object)dbConnection == null)
-				throw new ArgumentNullException("dbConnection");
-
-			_recordsAffected = -1;
-
-			// FORCE EAGER LOADING HERE
-			records = this.ExecuteDictionary(dbConnection, dbTransaction, commandType, commandText, commandParameters, (ra) => _recordsAffected = ra).ToList();
-
-			recordsAffected = _recordsAffected;
-
-			return records;
-		}
-
-		/// <summary>
-		/// Execute a command against a data source, mapping the data reader to an enumerable of dictionaries.
-		/// This overload is for backwards compatability; this overload perfoms LAZY LOADING/DEFERRED EXECUTION.
-		/// DO NOT DISPOSE OF CONNECTION/TRANSACTION - UP TO THE CALLER.
-		/// </summary>
-		/// <param name="dbConnection"> The database connection. </param>
-		/// <param name="dbTransaction"> An optional local database transaction. </param>
-		/// <param name="commandType"> The type of the command. </param>
-		/// <param name="commandText"> The SQL text or stored procedure name. </param>
-		/// <param name="commandParameters"> The parameters to use during the operation. </param>
-		/// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
-		/// <returns> An enumerable of dictionary instances, containing key/value pairs of data. </returns>
-		public IEnumerable<IDictionary<string, object>> ExecuteDictionary(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> recordsAffectedCallback)
-		{
-			IEnumerable<IDictionary<string, object>> records;
-			IDataReader dataReader;
-
-			// force no preparation
-			const bool COMMAND_PREPARE = false;
-
-			// force provider default timeout
-			const object COMMAND_TIMEOUT = null; /*int?*/
-
-			// force command behavior to default; the unit of work will manage connection lifetime
-			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
-
-			if ((object)dbConnection == null)
-				throw new ArgumentNullException("dbConnection");
-
-			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
-			dataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE);
-			records = this.GetEnumerableDictionary(dataReader, recordsAffectedCallback);
-
-			return records;
-		}
-
-		/// <summary>
 		/// Executes a command, returning a data reader, against a data source.
+		/// This method DOES NOT DISPOSE OF CONNECTION/TRANSACTION - UP TO THE CALLER.
+		/// This method DOES NOT DISPOSE OF DATA READER - UP TO THE CALLER.
 		/// </summary>
 		/// <param name="dbConnection"> The database connection. </param>
 		/// <param name="dbTransaction"> An optional local database transaction. </param>
@@ -194,6 +125,8 @@ namespace TextMetal.Middleware.Data
 		public IDataReader ExecuteReader(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, CommandBehavior commandBehavior, int? commandTimeout, bool commandPrepare)
 		{
 			IDataReader dataReader;
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteReader(...): enter", typeof(AdoNetFascade).Name));
 
 			if ((object)dbConnection == null)
 				throw new ArgumentNullException("dbConnection");
@@ -225,45 +158,179 @@ namespace TextMetal.Middleware.Data
 				// do the database work
 				dataReader = dbCommand.ExecuteReader(commandBehavior);
 
+				// wrap reader with proxy
+				dataReader = new WrappedDataReader(dataReader);
+
+				// clean out parameters
+				//dbCommand.Parameters.Clear();
+
+				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteReader(...): return reader", typeof(AdoNetFascade).Name));
+
 				return dataReader;
 			}
 		}
 
 		/// <summary>
-		/// Execute a command against a data source, mapping the data reader GetSchemaTable() result to a list of dictionaries.
-		/// This overload is for backwards compatability; this overload perfoms EAGER LOADING.
-		/// DO NOT DISPOSE OF CONNECTION/TRANSACTION - UP TO THE CALLER.
+		/// Execute a command against a data source, mapping the data reader to an enumerable of record dictionaries.
+		/// This method perfoms LAZY LOADING/DEFERRED EXECUTION.
+		/// This method DOES NOT DISPOSE OF CONNECTION/TRANSACTION - UP TO THE CALLER.
 		/// </summary>
 		/// <param name="dbConnection"> The database connection. </param>
 		/// <param name="dbTransaction"> An optional local database transaction. </param>
 		/// <param name="commandType"> The type of the command. </param>
 		/// <param name="commandText"> The SQL text or stored procedure name. </param>
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
-		/// <param name="recordsAffected"> The output count of records affected. </param>
-		/// <returns> A list of dictionary instances, containing key/value pairs of schema metadata. </returns>
-		public IList<IDictionary<string, object>> ExecuteSchema(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, out int recordsAffected)
+		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of schema metadata. </returns>
+		public IEnumerable<IRecord> ExecuteRecords(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
 		{
-			int _recordsAffected = -1;
-			var records = this.ExecuteSchema(dbConnection, dbTransaction, commandType, commandText, commandParameters, (ra) => _recordsAffected = ra).ToList(); // FORCE EAGER LOADING HERE
-			recordsAffected = _recordsAffected;
-			return records;
+			IEnumerable<IRecord> records;
+			IDataReader dataReader;
+
+			// force no preparation
+			const bool COMMAND_PREPARE = false;
+
+			// force provider default timeout
+			const object COMMAND_TIMEOUT = null; /*int?*/
+
+			// force command behavior to default; the unit of work will manage connection lifetime
+			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteRecords(...): enter", typeof(AdoNetFascade).Name));
+
+			if ((object)dbConnection == null)
+				throw new ArgumentNullException("dbConnection");
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteRecords(...): before yield", typeof(AdoNetFascade).Name));
+
+			// MUST DISPOSE WITHIN A NEW YIELD STATE MACHINE
+			using (dataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE))
+			{
+				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteRecords(...): use reader", typeof(AdoNetFascade).Name));
+
+				records = this.GetRecordsFromReader(dataReader, null);
+
+				foreach (IRecord record in records)
+				{
+					OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteRecords(...): on yield", typeof(AdoNetFascade).Name));
+
+					yield return record;
+				}
+
+				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteRecords(...): dispose reader", typeof(AdoNetFascade).Name));
+			}
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteRecords(...): after yield", typeof(AdoNetFascade).Name));
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteRecords(...): leave", typeof(AdoNetFascade).Name));
 		}
 
 		/// <summary>
-		/// Execute a command against a data source, mapping the data reader GetSchemaTable() result to an enumerable of dictionaries.
-		/// This overload is for backwards compatability; this overload perfoms LAZY LOADING/DEFERRED EXECUTION.
-		/// DO NOT DISPOSE OF CONNECTION/TRANSACTION - UP TO THE CALLER.
+		/// Execute a command against a data source, mapping the data reader to an enumerable of resultsets, each with an enumerable of record dictionaries.
+		/// This method perfoms LAZY LOADING/DEFERRED EXECUTION.
+		/// This method DOES NOT DISPOSE OF CONNECTION/TRANSACTION - UP TO THE CALLER.
 		/// </summary>
 		/// <param name="dbConnection"> The database connection. </param>
 		/// <param name="dbTransaction"> An optional local database transaction. </param>
 		/// <param name="commandType"> The type of the command. </param>
 		/// <param name="commandText"> The SQL text or stored procedure name. </param>
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
-		/// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
-		/// <returns> An enumerable of dictionary instances, containing key/value pairs of schema metadata. </returns>
-		public IEnumerable<IDictionary<string, object>> ExecuteSchema(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> recordsAffectedCallback)
+		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of data. </returns>
+		public IEnumerable<IResultset> ExecuteResultsets(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
 		{
-			IEnumerable<IDictionary<string, object>> records;
+			IEnumerable<IResultset> resultsets;
+			IDataReader dataReader;
+
+			// force no preparation
+			const bool COMMAND_PREPARE = false;
+
+			// force provider default timeout
+			const object COMMAND_TIMEOUT = null; /*int?*/
+
+			// force command behavior to default; the unit of work will manage connection lifetime
+			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteResultsets(...): enter", typeof(AdoNetFascade).Name));
+
+			if ((object)dbConnection == null)
+				throw new ArgumentNullException("dbConnection");
+
+			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
+			dataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE);
+			resultsets = this.GetResultsetsFromReader(dataReader);
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteResultsets(...): return resultsets", typeof(AdoNetFascade).Name));
+
+			return resultsets;
+		}
+
+		/// <summary>
+		/// Execute a command against a data source, mapping the data reader GetSchemaTable() result to an enumerable of enumerable of record dictionaries.
+		/// This method perfoms LAZY LOADING/DEFERRED EXECUTION.
+		/// This method DOES NOT DISPOSE OF CONNECTION/TRANSACTION - UP TO THE CALLER.
+		/// </summary>
+		/// <param name="dbConnection"> The database connection. </param>
+		/// <param name="dbTransaction"> An optional local database transaction. </param>
+		/// <param name="commandType"> The type of the command. </param>
+		/// <param name="commandText"> The SQL text or stored procedure name. </param>
+		/// <param name="commandParameters"> The parameters to use during the operation. </param>
+		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of schema metadata. </returns>
+		public IEnumerable<IRecord> ExecuteSchemaRecords(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
+		{
+			IEnumerable<IRecord> records;
+			IDataReader dataReader;
+
+			// force no preparation
+			const bool COMMAND_PREPARE = false;
+
+			// force provider default timeout
+			const object COMMAND_TIMEOUT = null; /*int?*/
+
+			// force command behavior to default; the unit of work will manage connection lifetime
+			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaRecords(...): enter", typeof(AdoNetFascade).Name));
+
+			if ((object)dbConnection == null)
+				throw new ArgumentNullException("dbConnection");
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: before yield", typeof(AdoNetFascade).Name));
+
+			// MUST DISPOSE WITHIN A NEW YIELD STATE MACHINE
+			using (dataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE))
+			{
+				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: use reader", typeof(AdoNetFascade).Name));
+
+				records = this.GetSchemaRecordsFromReader(dataReader, null);
+
+				foreach (IRecord record in records)
+				{
+					OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: on yield", typeof(AdoNetFascade).Name));
+
+					yield return record;
+				}
+
+				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: dispose reader", typeof(AdoNetFascade).Name));
+			}
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: after yield", typeof(AdoNetFascade).Name));
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaRecords(...): leave", typeof(AdoNetFascade).Name));
+		}
+
+		/// <summary>
+		/// Execute a command against a data source, mapping the data reader GetSchemaTable() result to an resultsets, each with an enumerable of record dictionaries.
+		/// This method perfoms LAZY LOADING/DEFERRED EXECUTION.
+		/// This method DOES NOT DISPOSE OF CONNECTION/TRANSACTION - UP TO THE CALLER.
+		/// </summary>
+		/// <param name="dbConnection"> The database connection. </param>
+		/// <param name="dbTransaction"> An optional local database transaction. </param>
+		/// <param name="commandType"> The type of the command. </param>
+		/// <param name="commandText"> The SQL text or stored procedure name. </param>
+		/// <param name="commandParameters"> The parameters to use during the operation. </param>
+		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of schema metadata. </returns>
+		public IEnumerable<IResultset> ExecuteSchemaResultsets(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
+		{
+			IEnumerable<IResultset> resultsets;
 			IDataReader dataReader;
 
 			// force no preparation
@@ -275,129 +342,210 @@ namespace TextMetal.Middleware.Data
 			// force command behavior to default; the unit of work will manage connection lifetime
 			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.SchemaOnly;
 
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaResultsets(...): enter", typeof(AdoNetFascade).Name));
+
 			if ((object)dbConnection == null)
 				throw new ArgumentNullException("dbConnection");
 
 			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
 			dataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE);
-			records = this.GetSchemaEnumerableDictionary(dataReader, recordsAffectedCallback);
+			resultsets = this.GetSchemaResultsetsFromReader(dataReader);
 
-			return records;
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaResultsets(...): return resultsets", typeof(AdoNetFascade).Name));
+
+			return resultsets;
 		}
 
 		/// <summary>
-		/// Execute a command against a data source, mapping the data reader to an enumerable of dictionaries.
-		/// This state machine method (yield return) perfoms LAZY LOADING/DEFERRED EXECUTION.
-		/// THE DATA READER WILL BE DISPOSED UPON ENUMERATION OR FOREACH BRANCH OUT.
+		/// Execute a command against a data source, mapping the data reader to an enumerable of record dictionaries.
+		/// This method perfoms LAZY LOADING/DEFERRED EXECUTION.
+		/// Note that THE DATA READER WILL NOT BE DISPOSED UPON ENUMERATION OR FOREACH BRANCH OUT.
 		/// </summary>
 		/// <param name="dataReader"> The target data reader. </param>
 		/// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
-		/// <returns> An enumerable of dictionary instances, containing key/value pairs of data. </returns>
-		public IEnumerable<IDictionary<string, object>> GetEnumerableDictionary(IDataReader dataReader, Action<int> recordsAffectedCallback)
+		/// <returns> An enumerable of record dictionary instances, containing key/value pairs of data. </returns>
+		public IEnumerable<IRecord> GetRecordsFromReader(IDataReader dataReader, Action<int> recordsAffectedCallback)
 		{
-			IDictionary<string, object> record;
+			IRecord record;
 			int recordsAffected;
-			int resultsetIndex = 0;
+			int recordIndex = 0;
 			string key;
 			object value;
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): enter", typeof(AdoNetFascade).Name));
 
 			if ((object)dataReader == null)
 				throw new ArgumentNullException("dataReader");
 
-			//Trace.WriteLine("[+++ before yield: GetEnumerableDictionary +++]");
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): before yield", typeof(AdoNetFascade).Name));
 
-			using (dataReader)
+			while (dataReader.Read())
 			{
-				do
+				record = new Record();
+
+				for (int columnIndex = 0; columnIndex < dataReader.FieldCount; columnIndex++)
 				{
-					while (dataReader.Read())
-					{
-						record = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+					key = dataReader.GetName(columnIndex);
+					value = dataReader.GetValue(columnIndex).ChangeType<object>();
 
-						key = ResultsetIndexRecordKey;
-						value = resultsetIndex;
+					if (record.ContainsKey(key) || (key ?? string.Empty).Length == 0)
+						key = string.Format("Column_{0:0000}", columnIndex);
 
-						record.Add(key, value);
-
-						for (int index = 0; index < dataReader.FieldCount; index++)
-						{
-							key = dataReader.GetName(index);
-							value = dataReader.GetValue(index).ChangeType<object>();
-
-							if (record.ContainsKey(key))
-								key = string.Format("Column_{0:0000}", index);
-
-							record.Add(key, value);
-						}
-
-						yield return record; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
-					}
-
-					resultsetIndex++;
+					record.Add(key, value);
 				}
-				while (dataReader.NextResult());
+
+				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): on yield", typeof(AdoNetFascade).Name));
+
+				yield return record; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
 			}
 
-			//Trace.WriteLine("[+++ after yield: GetEnumerableDictionary +++]");
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): after yield", typeof(AdoNetFascade).Name));
 
 			recordsAffected = dataReader.RecordsAffected;
 
 			if ((object)recordsAffectedCallback != null)
 				recordsAffectedCallback(recordsAffected);
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): leave", typeof(AdoNetFascade).Name));
 		}
 
 		/// <summary>
-		/// Execute a command against a data source, mapping the data reader GetSchemaTable() result to an enumerable of dictionaries.
-		/// This state machine method (yield return) perfoms LAZY LOADING/DEFERRED EXECUTION.
-		/// THE DATA READER WILL BE DISPOSED UPON ENUMERATION OR FOREACH BRANCH OUT.
+		/// Execute a command against a data source, mapping the data reader to an enumerable of resultsets, each with an enumerable of records dictionaries.
+		/// This method perfoms LAZY LOADING/DEFERRED EXECUTION.
 		/// </summary>
 		/// <param name="dataReader"> The target data reader. </param>
-		/// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
-		/// <returns> An enumerable of dictionary instances, containing key/value pairs of schema metadata. </returns>
-		public IEnumerable<IDictionary<string, object>> GetSchemaEnumerableDictionary(IDataReader dataReader, Action<int> recordsAffectedCallback)
+		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of data. </returns>
+		public IEnumerable<IResultset> GetResultsetsFromReader(IDataReader dataReader)
 		{
-			IDictionary<string, object> record;
 			int resultsetIndex = 0;
-			string key;
-			object value;
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): enter", typeof(AdoNetFascade).Name));
 
 			if ((object)dataReader == null)
 				throw new ArgumentNullException("dataReader");
 
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): before yield", typeof(AdoNetFascade).Name));
+
 			using (dataReader)
 			{
+				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): use reader", typeof(AdoNetFascade).Name));
+
 				do
 				{
-					using (DataTable dataTable = dataReader.GetSchemaTable())
-					{
-						if ((object)dataTable != null)
-						{
-							foreach (DataRow dataRow in dataTable.Rows)
-							{
-								record = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+					Resultset resultset = new Resultset(resultsetIndex++); // prevent modified closure
+					resultset.Records = this.GetRecordsFromReader(dataReader, (ra) => resultset.RecordsAffected = ra);
 
-								key = ResultsetIndexRecordKey;
-								value = resultsetIndex;
+					OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): on yield", typeof(AdoNetFascade).Name));
 
-								record.Add(key, value);
-
-								for (int index = 0; index < dataTable.Columns.Count; index++)
-								{
-									key = dataTable.Columns[index].ColumnName;
-									value = dataRow[index].ChangeType<object>();
-
-									record.Add(key, value);
-								}
-
-								yield return record; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
-							}
-						}
-					}
-
-					resultsetIndex++;
+					yield return resultset; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
 				}
 				while (dataReader.NextResult());
+
+				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): dispose reader", typeof(AdoNetFascade).Name));
 			}
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): after yield", typeof(AdoNetFascade).Name));
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): leave", typeof(AdoNetFascade).Name));
+		}
+
+		/// <summary>
+		/// Execute a command against a data source, mapping the data reader GetSchemaTable() result to an enumerable of record dictionaries.
+		/// This method perfoms LAZY LOADING/DEFERRED EXECUTION.
+		/// Note that THE DATA READER WILL NOT BE DISPOSED UPON ENUMERATION OR FOREACH BRANCH OUT.
+		/// </summary>
+		/// <param name="dataReader"> The target data reader. </param>
+		/// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
+		/// <returns> An enumerable of record dictionary instances, containing key/value pairs of schema metadata. </returns>
+		public IEnumerable<IRecord> GetSchemaRecordsFromReader(IDataReader dataReader, Action<int> recordsAffectedCallback)
+		{
+			IRecord record;
+			int recordsAffected;
+			string key;
+			object value;
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): enter", typeof(AdoNetFascade).Name));
+
+			if ((object)dataReader == null)
+				throw new ArgumentNullException("dataReader");
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): before yield", typeof(AdoNetFascade).Name));
+
+			using (DataTable dataTable = dataReader.GetSchemaTable())
+			{
+				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): use table", typeof(AdoNetFascade).Name));
+
+				if ((object)dataTable != null)
+				{
+					foreach (DataRow dataRow in dataTable.Rows)
+					{
+						record = new Record();
+
+						for (int index = 0; index < dataTable.Columns.Count; index++)
+						{
+							key = dataTable.Columns[index].ColumnName;
+							value = dataRow[index].ChangeType<object>();
+
+							record.Add(key, value);
+						}
+
+						OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): on yield", typeof(AdoNetFascade).Name));
+
+						yield return record; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
+					}
+				}
+
+				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): dispose table", typeof(AdoNetFascade).Name));
+			}
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): after yield", typeof(AdoNetFascade).Name));
+
+			recordsAffected = dataReader.RecordsAffected;
+
+			if ((object)recordsAffectedCallback != null)
+				recordsAffectedCallback(recordsAffected);
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): leave", typeof(AdoNetFascade).Name));
+		}
+
+		/// <summary>
+		/// Execute a command against a data source, mapping the data reader GetSchemaTable() result to an enumerable of resultsets, each with an enumerable of records dictionaries.
+		/// This method perfoms LAZY LOADING/DEFERRED EXECUTION.
+		/// </summary>
+		/// <param name="dataReader"> The target data reader. </param>
+		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of schema metadata. </returns>
+		public IEnumerable<IResultset> GetSchemaResultsetsFromReader(IDataReader dataReader)
+		{
+			int resultsetIndex = 0;
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): enter", typeof(AdoNetFascade).Name));
+
+			if ((object)dataReader == null)
+				throw new ArgumentNullException("dataReader");
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): before yield", typeof(AdoNetFascade).Name));
+
+			using (dataReader)
+			{
+				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): use reader", typeof(AdoNetFascade).Name));
+
+				do
+				{
+					Resultset resultset = new Resultset(resultsetIndex++); // prevent modified closure
+					resultset.Records = this.GetSchemaRecordsFromReader(dataReader, (ra) => resultset.RecordsAffected = ra);
+
+					OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): on yield", typeof(AdoNetFascade).Name));
+
+					yield return resultset; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
+				}
+				while (dataReader.NextResult());
+
+				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): dispose reader", typeof(AdoNetFascade).Name));
+			}
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): after yield", typeof(AdoNetFascade).Name));
+
+			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): leave", typeof(AdoNetFascade).Name));
 		}
 
 		/// <summary>
