@@ -16,7 +16,7 @@ namespace TextMetal.Middleware.Data
 
 		public WrappedDataReader(IDataReader innerDataReader)
 		{
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::.ctor(...)", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::.ctor(...)", typeof(WrappedDataReader).Name));
 
 			if ((object)innerDataReader == null)
 				throw new ArgumentNullException("innerDataReader");
@@ -108,12 +108,12 @@ namespace TextMetal.Middleware.Data
 
 		protected virtual void Dispose(bool disposing)
 		{
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::Dispose(...): enter", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::Dispose(...): enter", typeof(WrappedDataReader).Name));
 
 			if (disposing)
 				this.InnerDataReader.Dispose();
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::Dispose(...): leave", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::Dispose(...): leave", typeof(WrappedDataReader).Name));
 		}
 
 		public virtual bool GetBoolean(int i)
@@ -170,11 +170,11 @@ namespace TextMetal.Middleware.Data
 		{
 			Type retval;
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetFieldType(...): enter", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetFieldType(...): enter", typeof(WrappedDataReader).Name));
 
 			retval = this.InnerDataReader.GetFieldType(i);
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetFieldType(...): return name", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetFieldType(...): return name", typeof(WrappedDataReader).Name));
 
 			return retval;
 		}
@@ -208,11 +208,11 @@ namespace TextMetal.Middleware.Data
 		{
 			string retval;
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetName(...): enter", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetName(...): enter", typeof(WrappedDataReader).Name));
 
 			retval = this.InnerDataReader.GetName(i);
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetName(...): return name", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetName(...): return name", typeof(WrappedDataReader).Name));
 
 			return retval;
 		}
@@ -221,11 +221,11 @@ namespace TextMetal.Middleware.Data
 		{
 			int retval;
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetOrdinal(...): enter", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetOrdinal(...): enter", typeof(WrappedDataReader).Name));
 
 			retval = this.InnerDataReader.GetOrdinal(name);
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetOrdinal(...): return value", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetOrdinal(...): return value", typeof(WrappedDataReader).Name));
 
 			return retval;
 		}
@@ -244,11 +244,11 @@ namespace TextMetal.Middleware.Data
 		{
 			object retval;
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetValue(...): enter", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetValue(...): enter", typeof(WrappedDataReader).Name));
 
 			retval = this.InnerDataReader.GetValue(i);
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetValue(...): return value", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetValue(...): return value", typeof(WrappedDataReader).Name));
 
 			return retval;
 		}
@@ -267,11 +267,11 @@ namespace TextMetal.Middleware.Data
 		{
 			bool retval;
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::NextResult(...): enter", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::NextResult(...): enter", typeof(WrappedDataReader).Name));
 
 			retval = this.InnerDataReader.NextResult();
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::NextResult(...): return flag", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::NextResult(...): return flag", typeof(WrappedDataReader).Name));
 
 			return retval;
 		}
@@ -280,11 +280,11 @@ namespace TextMetal.Middleware.Data
 		{
 			bool retval;
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::Read(...): enter", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::Read(...): enter", typeof(WrappedDataReader).Name));
 			
 			retval = this.InnerDataReader.Read();
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::Read(...): return flag", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::Read(...): return flag", typeof(WrappedDataReader).Name));
 			
 			return retval;
 		}

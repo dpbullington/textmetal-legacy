@@ -12,11 +12,11 @@ namespace TextMetal.Middleware.Common
 	{
 		#region Methods/Operators
 
-		[Conditional("DEBUG")]
-		public static void _DEBUG_ThenPrint(string message)
+		[Conditional("PROFILE")]
+		public static void _PROFILE_ThenPrint(string message)
 		{
 			/* THIS METHOD SHOULD NOT BE DEFINED IN RELEASE/PRODUCTION BUILDS */
-			//Debug.WriteLine(message);
+			Debug.WriteLine(message);
 		}
 
 		#endregion

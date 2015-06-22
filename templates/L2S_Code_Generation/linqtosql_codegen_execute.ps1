@@ -29,10 +29,10 @@ $lib_dir = "..\..\lib"
 $base_src_dir = "$base_dir\src"
 $base_lib_dir = "$base_dir\lib"
 
-$sn_exe = "C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\sn.exe"
+$sn_exe = "C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools\sn.exe"
 $snk_file = "$base_src_dir\$property_module_name.snk"
 
-$sql_metal_exe = "C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\SqlMetal.exe"
+$sql_metal_exe = "C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools\SqlMetal.exe"
 
 $l2s_dir = "$base_src_dir\$property_module_name"
 $l2s_clr_namespace = "$property_clr_namespace"

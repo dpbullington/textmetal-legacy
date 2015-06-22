@@ -134,7 +134,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 
 			stringBuilder.Append(string.Format(Environment.NewLine + "[+++ end __DEBUG_ProfileTacticCommand({0}) +++]" + Environment.NewLine, repositoryOperation));
 
-			OnlyWhen._DEBUG_ThenPrint(stringBuilder.ToString());
+			OnlyWhen._PROFILE_ThenPrint(stringBuilder.ToString());
 			stringBuilder.Clear();
 		}
 

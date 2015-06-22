@@ -82,7 +82,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 
 			if ((object)tableMappingAttribute._ColumnMappingAttributes == null ||
 				tableMappingAttribute._ColumnMappingAttributes.Count == 0)
-				OnlyWhen._DEBUG_ThenPrint(string.Format("The table model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", tableModelType.FullName, typeof(ColumnMappingAttribute).FullName));
+				OnlyWhen._PROFILE_ThenPrint(string.Format("The table model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", tableModelType.FullName, typeof(ColumnMappingAttribute).FullName));
 		}
 
 		private static void AssertValidMapping(Type callProcedureModelType, Type resultModelType, Type returnProcedureModelType, ProcedureMappingAttribute procedureMappingAttribute)
@@ -101,15 +101,15 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 
 			if ((object)procedureMappingAttribute._InputParameterMappingAttributes == null ||
 				procedureMappingAttribute._InputParameterMappingAttributes.Count == 0)
-				OnlyWhen._DEBUG_ThenPrint(string.Format("The call procedure model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", callProcedureModelType.FullName, typeof(ParameterMappingAttribute).FullName));
+				OnlyWhen._PROFILE_ThenPrint(string.Format("The call procedure model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", callProcedureModelType.FullName, typeof(ParameterMappingAttribute).FullName));
 
 			if ((object)procedureMappingAttribute._ResultColumnMappingAttributes == null ||
 				procedureMappingAttribute._ResultColumnMappingAttributes.Count == 0)
-				OnlyWhen._DEBUG_ThenPrint(string.Format("The result model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", resultModelType.FullName, typeof(ColumnMappingAttribute).FullName));
+				OnlyWhen._PROFILE_ThenPrint(string.Format("The result model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", resultModelType.FullName, typeof(ColumnMappingAttribute).FullName));
 
 			if ((object)procedureMappingAttribute._OutputParameterMappingAttributes == null ||
 				procedureMappingAttribute._OutputParameterMappingAttributes.Count == 0)
-				OnlyWhen._DEBUG_ThenPrint(string.Format("The return procedure model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", resultModelType.FullName, typeof(ParameterMappingAttribute).FullName));
+				OnlyWhen._PROFILE_ThenPrint(string.Format("The return procedure model type '{0}' does not specify the '{1}' attribute on any public, instance, read-write property.", resultModelType.FullName, typeof(ParameterMappingAttribute).FullName));
 		}
 
 		public bool CreateNativeDatabaseFile(string databaseFilePath)

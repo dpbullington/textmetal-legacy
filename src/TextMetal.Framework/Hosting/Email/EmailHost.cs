@@ -28,6 +28,10 @@ namespace TextMetal.Framework.Hosting.Email
 
 		#region Methods/Operators
 
+		public void Dispose()
+		{
+		}
+
 		public EmailMessage Host(bool strictMatching, EmailTemplate emailTemplate, object modelObject)
 		{
 			EmailMessage emailMessage;

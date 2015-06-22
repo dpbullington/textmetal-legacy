@@ -86,7 +86,7 @@ namespace TextMetal.Middleware.Data
 		{
 			IDbDataParameter dbDataParameter;
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::CreateParameter(...): enter", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::CreateParameter(...): enter", typeof(AdoNetFascade).Name));
 
 			if ((object)dbConnection == null)
 				throw new ArgumentNullException("dbConnection");
@@ -103,7 +103,7 @@ namespace TextMetal.Middleware.Data
 			dbDataParameter.Precision = parameterPrecision;
 			dbDataParameter.Scale = parameterScale;
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::CreateParameter(...): return parameter", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::CreateParameter(...): return parameter", typeof(AdoNetFascade).Name));
 
 			return dbDataParameter;
 		}
@@ -126,7 +126,7 @@ namespace TextMetal.Middleware.Data
 		{
 			IDataReader dataReader;
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteReader(...): enter", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteReader(...): enter", typeof(AdoNetFascade).Name));
 
 			if ((object)dbConnection == null)
 				throw new ArgumentNullException("dbConnection");
@@ -164,7 +164,7 @@ namespace TextMetal.Middleware.Data
 				// clean out parameters
 				//dbCommand.Parameters.Clear();
 
-				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteReader(...): return reader", typeof(AdoNetFascade).Name));
+				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteReader(...): return reader", typeof(AdoNetFascade).Name));
 
 				return dataReader;
 			}
@@ -196,33 +196,33 @@ namespace TextMetal.Middleware.Data
 			// force command behavior to default; the unit of work will manage connection lifetime
 			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteRecords(...): enter", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteRecords(...): enter", typeof(AdoNetFascade).Name));
 
 			if ((object)dbConnection == null)
 				throw new ArgumentNullException("dbConnection");
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteRecords(...): before yield", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteRecords(...): before yield", typeof(AdoNetFascade).Name));
 
 			// MUST DISPOSE WITHIN A NEW YIELD STATE MACHINE
 			using (dataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE))
 			{
-				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteRecords(...): use reader", typeof(AdoNetFascade).Name));
+				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteRecords(...): use reader", typeof(AdoNetFascade).Name));
 
 				records = this.GetRecordsFromReader(dataReader, recordsAffectedCallback);
 
 				foreach (IRecord record in records)
 				{
-					OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteRecords(...): on yield", typeof(AdoNetFascade).Name));
+					OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteRecords(...): on yield", typeof(AdoNetFascade).Name));
 
 					yield return record;
 				}
 
-				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteRecords(...): dispose reader", typeof(AdoNetFascade).Name));
+				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteRecords(...): dispose reader", typeof(AdoNetFascade).Name));
 			}
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteRecords(...): after yield", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteRecords(...): after yield", typeof(AdoNetFascade).Name));
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteRecords(...): leave", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteRecords(...): leave", typeof(AdoNetFascade).Name));
 		}
 
 		/// <summary>
@@ -250,7 +250,7 @@ namespace TextMetal.Middleware.Data
 			// force command behavior to default; the unit of work will manage connection lifetime
 			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteResultsets(...): enter", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteResultsets(...): enter", typeof(AdoNetFascade).Name));
 
 			if ((object)dbConnection == null)
 				throw new ArgumentNullException("dbConnection");
@@ -259,7 +259,7 @@ namespace TextMetal.Middleware.Data
 			dataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE);
 			resultsets = this.GetResultsetsFromReader(dataReader);
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteResultsets(...): return resultsets", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteResultsets(...): return resultsets", typeof(AdoNetFascade).Name));
 
 			return resultsets;
 		}
@@ -290,33 +290,33 @@ namespace TextMetal.Middleware.Data
 			// force command behavior to default; the unit of work will manage connection lifetime
 			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.Default;
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaRecords(...): enter", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteSchemaRecords(...): enter", typeof(AdoNetFascade).Name));
 
 			if ((object)dbConnection == null)
 				throw new ArgumentNullException("dbConnection");
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: before yield", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: before yield", typeof(AdoNetFascade).Name));
 
 			// MUST DISPOSE WITHIN A NEW YIELD STATE MACHINE
 			using (dataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE))
 			{
-				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: use reader", typeof(AdoNetFascade).Name));
+				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: use reader", typeof(AdoNetFascade).Name));
 
 				records = this.GetSchemaRecordsFromReader(dataReader, recordsAffectedCallback);
 
 				foreach (IRecord record in records)
 				{
-					OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: on yield", typeof(AdoNetFascade).Name));
+					OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: on yield", typeof(AdoNetFascade).Name));
 
 					yield return record;
 				}
 
-				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: dispose reader", typeof(AdoNetFascade).Name));
+				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: dispose reader", typeof(AdoNetFascade).Name));
 			}
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: after yield", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: after yield", typeof(AdoNetFascade).Name));
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaRecords(...): leave", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteSchemaRecords(...): leave", typeof(AdoNetFascade).Name));
 		}
 
 		/// <summary>
@@ -344,7 +344,7 @@ namespace TextMetal.Middleware.Data
 			// force command behavior to default; the unit of work will manage connection lifetime
 			const CommandBehavior COMMAND_BEHAVIOR = CommandBehavior.SchemaOnly;
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaResultsets(...): enter", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteSchemaResultsets(...): enter", typeof(AdoNetFascade).Name));
 
 			if ((object)dbConnection == null)
 				throw new ArgumentNullException("dbConnection");
@@ -353,7 +353,7 @@ namespace TextMetal.Middleware.Data
 			dataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE);
 			resultsets = this.GetSchemaResultsetsFromReader(dataReader);
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::ExecuteSchemaResultsets(...): return resultsets", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteSchemaResultsets(...): return resultsets", typeof(AdoNetFascade).Name));
 
 			return resultsets;
 		}
@@ -374,12 +374,12 @@ namespace TextMetal.Middleware.Data
 			string key;
 			object value;
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): enter", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): enter", typeof(AdoNetFascade).Name));
 
 			if ((object)dataReader == null)
 				throw new ArgumentNullException("dataReader");
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): before yield", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): before yield", typeof(AdoNetFascade).Name));
 
 			while (dataReader.Read())
 			{
@@ -396,19 +396,19 @@ namespace TextMetal.Middleware.Data
 					record.Add(key, value);
 				}
 
-				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): on yield", typeof(AdoNetFascade).Name));
+				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): on yield", typeof(AdoNetFascade).Name));
 
 				yield return record; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
 			}
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): after yield", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): after yield", typeof(AdoNetFascade).Name));
 
 			recordsAffected = dataReader.RecordsAffected;
 
 			if ((object)recordsAffectedCallback != null)
 				recordsAffectedCallback(recordsAffected);
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): leave", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): leave", typeof(AdoNetFascade).Name));
 		}
 
 		/// <summary>
@@ -421,34 +421,34 @@ namespace TextMetal.Middleware.Data
 		{
 			int resultsetIndex = 0;
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): enter", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): enter", typeof(AdoNetFascade).Name));
 
 			if ((object)dataReader == null)
 				throw new ArgumentNullException("dataReader");
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): before yield", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): before yield", typeof(AdoNetFascade).Name));
 
 			using (dataReader)
 			{
-				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): use reader", typeof(AdoNetFascade).Name));
+				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): use reader", typeof(AdoNetFascade).Name));
 
 				do
 				{
 					Resultset resultset = new Resultset(resultsetIndex++); // prevent modified closure
 					resultset.Records = this.GetRecordsFromReader(dataReader, (ra) => resultset.RecordsAffected = ra);
 
-					OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): on yield", typeof(AdoNetFascade).Name));
+					OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): on yield", typeof(AdoNetFascade).Name));
 
 					yield return resultset; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
 				}
 				while (dataReader.NextResult());
 
-				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): dispose reader", typeof(AdoNetFascade).Name));
+				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): dispose reader", typeof(AdoNetFascade).Name));
 			}
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): after yield", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): after yield", typeof(AdoNetFascade).Name));
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): leave", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): leave", typeof(AdoNetFascade).Name));
 		}
 
 		/// <summary>
@@ -466,16 +466,16 @@ namespace TextMetal.Middleware.Data
 			string key;
 			object value;
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): enter", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): enter", typeof(AdoNetFascade).Name));
 
 			if ((object)dataReader == null)
 				throw new ArgumentNullException("dataReader");
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): before yield", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): before yield", typeof(AdoNetFascade).Name));
 
 			using (DataTable dataTable = dataReader.GetSchemaTable())
 			{
-				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): use table", typeof(AdoNetFascade).Name));
+				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): use table", typeof(AdoNetFascade).Name));
 
 				if ((object)dataTable != null)
 				{
@@ -491,23 +491,23 @@ namespace TextMetal.Middleware.Data
 							record.Add(key, value);
 						}
 
-						OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): on yield", typeof(AdoNetFascade).Name));
+						OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): on yield", typeof(AdoNetFascade).Name));
 
 						yield return record; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
 					}
 				}
 
-				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): dispose table", typeof(AdoNetFascade).Name));
+				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): dispose table", typeof(AdoNetFascade).Name));
 			}
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): after yield", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): after yield", typeof(AdoNetFascade).Name));
 
 			recordsAffected = dataReader.RecordsAffected;
 
 			if ((object)recordsAffectedCallback != null)
 				recordsAffectedCallback(recordsAffected);
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): leave", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): leave", typeof(AdoNetFascade).Name));
 		}
 
 		/// <summary>
@@ -520,34 +520,34 @@ namespace TextMetal.Middleware.Data
 		{
 			int resultsetIndex = 0;
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): enter", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): enter", typeof(AdoNetFascade).Name));
 
 			if ((object)dataReader == null)
 				throw new ArgumentNullException("dataReader");
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): before yield", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): before yield", typeof(AdoNetFascade).Name));
 
 			using (dataReader)
 			{
-				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): use reader", typeof(AdoNetFascade).Name));
+				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): use reader", typeof(AdoNetFascade).Name));
 
 				do
 				{
 					Resultset resultset = new Resultset(resultsetIndex++); // prevent modified closure
 					resultset.Records = this.GetSchemaRecordsFromReader(dataReader, (ra) => resultset.RecordsAffected = ra);
 
-					OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): on yield", typeof(AdoNetFascade).Name));
+					OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): on yield", typeof(AdoNetFascade).Name));
 
 					yield return resultset; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
 				}
 				while (dataReader.NextResult());
 
-				OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): dispose reader", typeof(AdoNetFascade).Name));
+				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): dispose reader", typeof(AdoNetFascade).Name));
 			}
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): after yield", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): after yield", typeof(AdoNetFascade).Name));
 
-			OnlyWhen._DEBUG_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): leave", typeof(AdoNetFascade).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): leave", typeof(AdoNetFascade).Name));
 		}
 
 		/// <summary>

@@ -67,7 +67,7 @@ $msbuild_exe = "C:\Program Files (x86)\MSBuild\12.0\bin\amd64\msbuild.exe"
 
 echo "The operation is starting..."
 
-$sql_metal_exe = "C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\SqlMetal.exe"
+$sql_metal_exe = "C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools\SqlMetal.exe"
 
 $l2s_dir = "$src_dir\${ModuleName}"
 $l2s_clr_namespace = "${ClrNamespace}"
