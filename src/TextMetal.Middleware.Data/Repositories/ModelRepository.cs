@@ -8,9 +8,9 @@ using System.Data;
 using System.IO;
 using System.Reflection;
 
-using TextMetal.Middleware.Common.Utilities;
 using TextMetal.Middleware.Data.UoW;
 using TextMetal.Middleware.Solder.Context;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Data.Repositories
 {
@@ -19,8 +19,8 @@ namespace TextMetal.Middleware.Data.Repositories
 		#region Constructors/Destructors
 
 		protected ModelRepository()
-			: this(Common.Utilities.DataTypeFascade.Instance,
-				Common.Utilities.AppConfigFascade.Instance)
+			: this(Solder.Utilities.DataTypeFascade.Instance,
+				Solder.Utilities.AppConfigFascade.Instance)
 		{
 		}
 

@@ -59,16 +59,11 @@
     <Compile Include="Resultset.cs" />
     <Compile Include="IAdoNetFascade.cs" />
     <Compile Include="IResultset.cs" />
-    <Compile Include="Impl\AmbientUnitOfWorkAwareContextWrapper~1.cs" />
-    <Compile Include="Impl\ContextModelRepository~1.cs" />
-    <Compile Include="Impl\MicrosoftLinq\DataContextModelRepository~1.cs" />
-    <Compile Include="UoW\AmbientUnitOfWorkScope.cs" />
     <Compile Include="UoW\ExtensionMethods.cs" />
     <Compile Include="UoW\IUnitOfWork.cs" />
     <Compile Include="UoW\IUnitOfWorkFactory.cs" />
     <Compile Include="UoW\UnitOfWork.cs" />
     <Compile Include="WrappedDataReader.cs" />
-    <None Include="Impl\MicrosoftLinq\DbContextModelRepository~1.cs" />
     <Compile Include="Impl\FreakazoidMapper\Expressions\BinaryExpression.cs" />
     <Compile Include="Impl\FreakazoidMapper\Expressions\BinaryOperator.cs" />
     <Compile Include="Impl\FreakazoidMapper\Expressions\ExpressionVisitor.cs" />
@@ -85,7 +80,6 @@
     <Compile Include="Impl\FreakazoidMapper\FreakazoidContext.cs" />
     <Compile Include="Impl\FreakazoidMapper\FreakazoidModelRepository.cs" />
     <Compile Include="Impl\FreakazoidMapper\FreakazoidTableModelQuery.cs" />
-    <Compile Include="Impl\MicrosoftLinq\LinqTableModelQuery~1.cs" />
     <Compile Include="Impl\FreakazoidMapper\Mappings\ColumnMappingAttribute.cs" />
     <Compile Include="Impl\FreakazoidMapper\Mappings\DatabaseMappingAttribute.cs" />
     <Compile Include="Impl\FreakazoidMapper\Mappings\KeyConstraintColumnMappingAttribute.cs" />
@@ -96,7 +90,6 @@
     <Compile Include="Impl\FreakazoidMapper\Mappings\TableMappingAttribute.cs" />
     <Compile Include="Impl\FreakazoidMapper\Migrations\DatabaseHistory.cs" />
     <Compile Include="Impl\FreakazoidMapper\Migrations\DatabaseRevision.cs" />
-    <Compile Include="Impl\MulticastDisposableContext~1.cs" />
     <Compile Include="Impl\FreakazoidMapper\Strategies\DataSourceTagStrategy.cs" />
     <Compile Include="Impl\FreakazoidMapper\Strategies\DataSourceTagStrategyFactory.cs" />
     <Compile Include="Impl\FreakazoidMapper\Strategies\IDataSourceTagStrategy.cs" />
@@ -147,10 +140,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\TextMetal.Middleware.Common\TextMetal.Middleware.Common.csproj">
-      <Project>{D1860A67-7EFB-4C0F-89CD-A641D99DCC2A}</Project>
-      <Name>TextMetal.Middleware.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TextMetal.Middleware.Solder\TextMetal.Middleware.Solder.csproj">
       <Project>{3B0EFC3C-AA91-4FB4-B2EE-BD8727230A94}</Project>
       <Name>TextMetal.Middleware.Solder</Name>

@@ -10,6 +10,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 
+using TextMetal.Middleware.Solder.Utilities;
+
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>
@@ -142,7 +144,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			{
 				foreach (Assembly assembly in assemblies)
 				{
-					dependencyRegistrationAttribute = ExternalImport.GetOneAttribute<DependencyRegistrationAttribute>(assembly);
+					dependencyRegistrationAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyRegistrationAttribute>(assembly);
 
 					if ((object)dependencyRegistrationAttribute == null)
 						continue;
@@ -153,7 +155,7 @@ namespace TextMetal.Middleware.Solder.Injection
 					{
 						foreach (Type assemblyType in assemblyTypes)
 						{
-							dependencyRegistrationAttribute = ExternalImport.GetOneAttribute<DependencyRegistrationAttribute>(assemblyType);
+							dependencyRegistrationAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyRegistrationAttribute>(assemblyType);
 
 							if ((object)dependencyRegistrationAttribute == null)
 								continue;
@@ -167,7 +169,7 @@ namespace TextMetal.Middleware.Solder.Injection
 							{
 								foreach (MethodInfo methodInfo in methodInfos)
 								{
-									dependencyRegistrationAttribute = ExternalImport.GetOneAttribute<DependencyRegistrationAttribute>(methodInfo);
+									dependencyRegistrationAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyRegistrationAttribute>(methodInfo);
 
 									if ((object)dependencyRegistrationAttribute == null)
 										continue;

@@ -6,7 +6,7 @@
 using System;
 using System.Data;
 
-using TextMetal.Middleware.Common;
+using TextMetal.Middleware.Solder;
 
 namespace TextMetal.Middleware.Data
 {
@@ -281,11 +281,11 @@ namespace TextMetal.Middleware.Data
 			bool retval;
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::Read(...): enter", typeof(WrappedDataReader).Name));
-			
+
 			retval = this.InnerDataReader.Read();
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::Read(...): return flag", typeof(WrappedDataReader).Name));
-			
+
 			return retval;
 		}
 

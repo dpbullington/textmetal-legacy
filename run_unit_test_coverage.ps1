@@ -9,7 +9,7 @@ $output_base_dir = ".\output"
 $cover_exe = "$Env:USERPROFILE\AppData\Local\JetBrains\Installations\dotCover01\dotCover.exe"
 $nunit_exe = ".\$lib_dir\NUnit\nunit-console.exe"
 
-$exclude_filter = "-:nunit-console;-:TextMetal.Middleware.Testing;-:TextMetal.Framework.UnitTests;-:TextMetal.Middleware.Common"
+$exclude_filter = "-:nunit-console;-:TextMetal.Middleware.Testing;-:TextMetal.Framework.UnitTests"
 $target_assembly = "TextMetal.Framework.UnitTests"
 $target_namespaces = @("TextMetal.Framework.UnitTests")
 

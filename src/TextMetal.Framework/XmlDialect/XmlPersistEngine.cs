@@ -12,8 +12,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 
-using TextMetal.Middleware.Common;
-using TextMetal.Middleware.Common.Utilities;
+using TextMetal.Middleware.Solder;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.XmlDialect
 {

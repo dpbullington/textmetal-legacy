@@ -10,7 +10,7 @@ using System.Linq;
 using System.Xml.Schema;
 
 using TextMetal.Framework.Associative;
-using TextMetal.Middleware.Common.Utilities;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Source.Primative
 {

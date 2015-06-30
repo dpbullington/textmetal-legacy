@@ -4,7 +4,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 
 using TextMetal.Middleware.Data.Models.Functional;
 

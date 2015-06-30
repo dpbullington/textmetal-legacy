@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Xml;
 
-using TextMetal.Middleware.Common;
-using TextMetal.Middleware.Common.Utilities;
+using TextMetal.Middleware.Solder;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Data
 {
@@ -33,7 +33,7 @@ namespace TextMetal.Middleware.Data
 		/// Initializes a new instance of the AdoNetFascade class.
 		/// </summary>
 		private AdoNetFascade()
-			: this(Common.Utilities.ReflectionFascade.Instance)
+			: this(Solder.Utilities.ReflectionFascade.Instance)
 		{
 		}
 
@@ -180,7 +180,8 @@ namespace TextMetal.Middleware.Data
 		/// <param name="commandType"> The type of the command. </param>
 		/// <param name="commandText"> The SQL text or stored procedure name. </param>
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
-		/// /// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
+		/// ///
+		/// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
 		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of schema metadata. </returns>
 		public IEnumerable<IRecord> ExecuteRecords(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> recordsAffectedCallback)
 		{

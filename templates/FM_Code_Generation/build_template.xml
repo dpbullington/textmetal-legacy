@@ -355,9 +355,6 @@ EndGlobal
       <HintPath>..\..\lib\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
     </Reference>
 
-	<Reference Include="TextMetal.Middleware.Common">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Common.dll</HintPath>
-    </Reference>
 	<Reference Include="TextMetal.Middleware.Data">
       <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Data.dll</HintPath>
     </Reference>
@@ -525,9 +522,6 @@ EndGlobal
       <HintPath>..\..\lib\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
     </Reference>
 
-	<Reference Include="TextMetal.Middleware.Common">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Common.dll</HintPath>
-    </Reference>
 	<Reference Include="TextMetal.Middleware.Data">
       <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Data.dll</HintPath>
     </Reference>
@@ -696,9 +690,6 @@ EndGlobal
       <HintPath>..\..\lib\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
     </Reference>
 
-	<Reference Include="TextMetal.Middleware.Common">
-      <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Common.dll</HintPath>
-    </Reference>
 	<Reference Include="TextMetal.Middleware.Data">
       <HintPath>..\..\lib\TextMetal\TextMetal.Middleware.Data.dll</HintPath>
     </Reference>

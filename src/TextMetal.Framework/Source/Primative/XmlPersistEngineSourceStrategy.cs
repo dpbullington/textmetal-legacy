@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 
 using TextMetal.Framework.XmlDialect;
-using TextMetal.Middleware.Common.Utilities;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Source.Primative
 {

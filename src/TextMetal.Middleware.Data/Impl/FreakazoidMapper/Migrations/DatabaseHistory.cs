@@ -9,8 +9,8 @@ using System.Data;
 using System.Linq;
 using System.Xml.Serialization;
 
-using TextMetal.Middleware.Common.Utilities;
 using TextMetal.Middleware.Data.UoW;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Migrations
 {

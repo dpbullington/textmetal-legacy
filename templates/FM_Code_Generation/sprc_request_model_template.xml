@@ -31,10 +31,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Xml;
 
-using TextMetal.Middleware.Common.Utilities;
 using TextMetal.Middleware.Data.Models;
 using TextMetal.Middleware.Data.Models.Functional;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Mappings;
+using TextMetal.Middleware.Solder.Utilities;
 ]]>
 						<If>
 							<If.Condition>

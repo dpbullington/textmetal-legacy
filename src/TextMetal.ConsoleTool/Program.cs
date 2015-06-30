@@ -9,7 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 
 using TextMetal.Framework.Hosting.Tool;
-using TextMetal.Middleware.Common.Utilities;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.ConsoleTool
 {

@@ -11,10 +11,10 @@ using System.Linq;
 
 using TextMetal.Framework.Associative;
 using TextMetal.Framework.Tokenization;
-using TextMetal.Middleware.Common.Utilities;
 using TextMetal.Middleware.Data;
 using TextMetal.Middleware.Data.UoW;
 using TextMetal.Middleware.Solder.Serialization;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Source.Primative
 {
@@ -75,38 +75,38 @@ namespace TextMetal.Framework.Source.Primative
 						records = unitOfWork.ExecuteRecords(sqlQuery.Type, commandText, null, null);
 					else
 						records = unitOfWork.ExecuteSchemaRecords(sqlQuery.Type, commandText, null, null);
-				}
+					
+					propertyConstructB = new PropertyConstruct();
+					propertyConstructB.Name = "RowCount";
+					arrayConstruct.Items.Add(propertyConstructB);
 
-				propertyConstructB = new PropertyConstruct();
-				propertyConstructB.Name = "RowCount";
-				arrayConstruct.Items.Add(propertyConstructB);
-
-				if ((object)records != null)
-				{
-					foreach (IRecord record in records)
+					if ((object)records != null)
 					{
-						objectConstruct = new ObjectConstruct();
-						arrayConstruct.Items.Add(objectConstruct);
-
-						if ((object)record != null)
+						foreach (IRecord record in records)
 						{
-							foreach (KeyValuePair<string, object> keyValuePair in record)
-							{
-								propertyConstructC = new PropertyConstruct();
-								propertyConstructC.Name = keyValuePair.Key;
-								propertyConstructC.RawValue = keyValuePair.Value;
+							objectConstruct = new ObjectConstruct();
+							arrayConstruct.Items.Add(objectConstruct);
 
-								objectConstruct.Items.Add(propertyConstructC);
+							if ((object)record != null)
+							{
+								foreach (KeyValuePair<string, object> keyValuePair in record)
+								{
+									propertyConstructC = new PropertyConstruct();
+									propertyConstructC.Name = keyValuePair.Key;
+									propertyConstructC.RawValue = keyValuePair.Value;
+
+									objectConstruct.Items.Add(propertyConstructC);
+								}
 							}
+
+							// correlated
+							WriteSqlQuery(sqlQuery.SubQueries, objectConstruct, connectionType, connectionString, getSchemaOnly);
+
+							count++;
 						}
 
-						// correlated
-						WriteSqlQuery(sqlQuery.SubQueries, objectConstruct, connectionType, connectionString, getSchemaOnly);
-
-						count++;
+						propertyConstructB.RawValue = count;
 					}
-
-					propertyConstructB.RawValue = count;
 				}
 			}
 		}

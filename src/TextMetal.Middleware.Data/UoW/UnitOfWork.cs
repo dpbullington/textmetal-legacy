@@ -6,9 +6,6 @@
 using System;
 using System.Data;
 
-using TextMetal.Middleware.Common.Utilities;
-using TextMetal.Middleware.Solder.Context;
-
 namespace TextMetal.Middleware.Data.UoW
 {
 	/// <summary>
@@ -31,7 +28,6 @@ namespace TextMetal.Middleware.Data.UoW
 
 		#region Fields/Constants
 
-		private static readonly string UNIT_OF_WORK_CONTEXT_CURRENT_KEY = typeof(UnitOfWork).GUID.SafeToString();
 		private readonly IDbConnection connection;
 		private readonly IDbTransaction transaction;
 		private bool completed;
@@ -42,21 +38,6 @@ namespace TextMetal.Middleware.Data.UoW
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Gets the current ambient unit of work active on the current thread and application domain.
-		/// </summary>
-		public static IUnitOfWork Current
-		{
-			get
-			{
-				return DefaultContextualStorageFactory.Instance.GetContextualStorage().GetValue<IUnitOfWork>(UNIT_OF_WORK_CONTEXT_CURRENT_KEY);
-			}
-			set
-			{
-				DefaultContextualStorageFactory.Instance.GetContextualStorage().SetValue<IUnitOfWork>(UNIT_OF_WORK_CONTEXT_CURRENT_KEY, value);
-			}
-		}
 
 		/// <summary>
 		/// Gets the underlying ADO.NET connection.

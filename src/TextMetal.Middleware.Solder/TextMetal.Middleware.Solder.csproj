@@ -60,7 +60,6 @@
     <Compile Include="Context\LogicalCallContextContextualStorageStrategy.cs" />
     <Compile Include="Context\ThreadStaticContextualStorageStrategy.cs" />
     <Compile Include="Context\WcfContextContextualStorageStrategy.cs" />
-    <Compile Include="ExternalImport.cs" />
     <Compile Include="Injection\ActivatorDependencyResolution.cs" />
     <Compile Include="Injection\ConstructorDependencyResolution~1.cs" />
     <Compile Include="Injection\DelegateDependencyResolution.cs" />
@@ -77,6 +76,9 @@
     <Compile Include="Interception\LoggingAspectDynamicInvoker.cs" />
     <Compile Include="Interception\ProxyFactory~1.cs" />
     <Compile Include="Interception\RemotingImpl\DynamicInvokerRealProxy~1.cs" />
+    <Compile Include="IValidate.cs" />
+    <Compile Include="Message.cs" />
+    <Compile Include="OnlyWhen.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
     <Compile Include="Injection\LoggingAspectConstructorDependencyResolution~1.cs" />
     <Compile Include="Serialization\ExtensionMethods.cs" />
@@ -86,6 +88,20 @@
     <Compile Include="Serialization\IXmlSerializationStrategy.cs" />
     <Compile Include="Serialization\JsonSerializationStrategy.cs" />
     <Compile Include="Serialization\XmlSerializationStrategy.cs" />
+    <Compile Include="Severity.cs" />
+    <Compile Include="Utilities\AppConfigFascade.cs" />
+    <Compile Include="Utilities\AssemblyInformationFascade.cs" />
+    <Compile Include="Utilities\ConsoleApplicationFascade.cs" />
+    <Compile Include="Utilities\DataTypeFascade.cs" />
+    <Compile Include="Utilities\DataTypeFascade.impl.p.cs" />
+    <Compile Include="Utilities\ExecutableApplicationFascade.cs" />
+    <Compile Include="Utilities\ExtensionMethods.cs" />
+    <Compile Include="Utilities\IAppConfigFascade.cs" />
+    <Compile Include="Utilities\IAssemblyInformationFascade.cs" />
+    <Compile Include="Utilities\IDataTypeFascade.cs" />
+    <Compile Include="Utilities\IExecutableApplicationFascade.cs" />
+    <Compile Include="Utilities\IReflectionFascade.cs" />
+    <Compile Include="Utilities\ReflectionFascade.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TextMetal.snk">

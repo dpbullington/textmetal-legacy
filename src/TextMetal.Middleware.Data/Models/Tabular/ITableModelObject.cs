@@ -7,7 +7,7 @@ using System;
 
 using Newtonsoft.Json;
 
-using TextMetal.Middleware.Common;
+using TextMetal.Middleware.Solder;
 
 namespace TextMetal.Middleware.Data.Models.Tabular
 {

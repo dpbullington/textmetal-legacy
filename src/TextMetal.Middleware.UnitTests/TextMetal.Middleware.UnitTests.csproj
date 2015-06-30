@@ -55,13 +55,10 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>SolutionAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Common\Fascades\Utilities\_\AppConfigFascadeTests.cs" />
-    <Compile Include="Common\Fascades\Utilities\_\DataTypeFascadeTests.cs" />
+    <Compile Include="Solder\Utilities\_\AppConfigFascadeTests.cs" />
+    <Compile Include="Solder\Utilities\_\DataTypeFascadeTests.cs" />
     <None Include="Solder\Context\_\DefaultExecutionStorageFactoryTests.cs" />
-    <Compile Include="Common\Fascades\Utilities\_\ReflectionFascadeTests.cs" />
-    <Compile Include="Data\Impl\_\AmbientUnitOfWorkAwareContextWrapperTests.cs" />
-    <None Include="Data\Impl\MicrosoftLinq\_\DataContextModelRepositoryTests.cs" />
-    <Compile Include="Data\Impl\_\MulticastContextTests.cs" />
+    <Compile Include="Solder\Utilities\_\ReflectionFascadeTests.cs" />
     <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\ColumnMappingAttributeTests.cs" />
     <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\ParameterMappingAttributeTests.cs" />
     <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\ProcedureMappingAttributeTests.cs" />
@@ -103,14 +100,8 @@
     </None>
     <None Include="UnitTesting.nunit" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Common\Strategies\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TextMetal.Middleware.Common\TextMetal.Middleware.Common.csproj">
-      <Project>{d1860a67-7efb-4c0f-89cd-a641d99dcc2a}</Project>
-      <Name>TextMetal.Middleware.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TextMetal.Middleware.Data\TextMetal.Middleware.Data.csproj">
       <Project>{e41e2352-4249-458e-b4f2-dbdf9b564bf5}</Project>
       <Name>TextMetal.Middleware.Data</Name>

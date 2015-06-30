@@ -9,8 +9,6 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 
-using TextMetal.Middleware.Common;
-using TextMetal.Middleware.Common.Utilities;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Expressions;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Mappings;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Tactics;
@@ -18,6 +16,8 @@ using TextMetal.Middleware.Data.Models;
 using TextMetal.Middleware.Data.Models.Functional;
 using TextMetal.Middleware.Data.Models.Tabular;
 using TextMetal.Middleware.Data.UoW;
+using TextMetal.Middleware.Solder;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 {

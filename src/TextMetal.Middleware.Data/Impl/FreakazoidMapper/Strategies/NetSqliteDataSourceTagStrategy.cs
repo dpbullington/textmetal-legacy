@@ -6,9 +6,9 @@
 using System;
 using System.Reflection;
 
-using TextMetal.Middleware.Common.Utilities;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Tactics;
 using TextMetal.Middleware.Data.UoW;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies
 {

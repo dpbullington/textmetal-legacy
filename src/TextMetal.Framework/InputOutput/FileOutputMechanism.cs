@@ -8,8 +8,8 @@ using System.IO;
 using System.Text;
 
 using TextMetal.Framework.XmlDialect;
-using TextMetal.Middleware.Common.Utilities;
 using TextMetal.Middleware.Solder.Serialization;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.InputOutput
 {

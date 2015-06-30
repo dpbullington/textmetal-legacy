@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-using TextMetal.Middleware.Common;
+using TextMetal.Middleware.Solder;
 
 namespace TextMetal.Middleware.Data.Models.Functional
 {

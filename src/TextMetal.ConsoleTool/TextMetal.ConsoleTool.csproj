@@ -84,10 +84,6 @@
       <Project>{2CA91424-7DD3-4E93-B6E4-F296D9D07716}</Project>
       <Name>TextMetal.Framework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TextMetal.Middleware.Common\TextMetal.Middleware.Common.csproj">
-      <Project>{d1860a67-7efb-4c0f-89cd-a641d99dcc2a}</Project>
-      <Name>TextMetal.Middleware.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TextMetal.Middleware.Solder\TextMetal.Middleware.Solder.csproj">
       <Project>{3B0EFC3C-AA91-4FB4-B2EE-BD8727230A94}</Project>
       <Name>TextMetal.Middleware.Solder</Name>

@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 
-using TextMetal.Middleware.Common.Utilities;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Tokenization
 {

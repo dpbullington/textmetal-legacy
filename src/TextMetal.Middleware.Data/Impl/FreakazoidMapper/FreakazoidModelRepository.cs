@@ -6,24 +6,24 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-using TextMetal.Middleware.Common;
-using TextMetal.Middleware.Common.Utilities;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Migrations;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Strategies;
 using TextMetal.Middleware.Data.Impl.FreakazoidMapper.Tactics;
 using TextMetal.Middleware.Data.Models.Functional;
 using TextMetal.Middleware.Data.Models.Tabular;
+using TextMetal.Middleware.Data.Repositories;
 using TextMetal.Middleware.Data.UoW;
+using TextMetal.Middleware.Solder;
 using TextMetal.Middleware.Solder.Serialization;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 {
-	public class FreakazoidModelRepository : ContextModelRepository<FreakazoidContext>
+	public class FreakazoidModelRepository : ModelRepository<FreakazoidContext>
 	{
 		#region Constructors/Destructors
 
@@ -162,7 +162,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			if (wasNew)
 				return true;
 
-			using (AmbientUnitOfWorkAwareContextWrapper<FreakazoidContext> wrapper = this.GetContext(unitOfWork))
+			using (FreakazoidContext context = new FreakazoidContext())
 			{
 				ITableTacticCommand<TTableModelObject> tableTacticCommand;
 
@@ -218,7 +218,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			if ((object)callProcedureModelObject == null)
 				throw new ArgumentNullException("callProcedureModelObject");
 
-			using (AmbientUnitOfWorkAwareContextWrapper<FreakazoidContext> wrapper = this.GetContext(unitOfWork))
+			using (FreakazoidContext context = new FreakazoidContext())
 			{
 				IProcedureTacticCommand<TCallProcedureModelObject, TResultProcedureModelObject, TReturnProcedureModelObject> procedureTacticCommand;
 
@@ -252,7 +252,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			if ((object)tableModelObject == null)
 				throw new ArgumentNullException("tableModelObject");
 
-			using (AmbientUnitOfWorkAwareContextWrapper<FreakazoidContext> wrapper = this.GetContext(unitOfWork))
+			using (FreakazoidContext context = new FreakazoidContext())
 			{
 				ITableTacticCommand<TTableModelObject> tableTacticCommand;
 
@@ -306,7 +306,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 
 			dummyTableModel = new TTableModelObject();
 
-			using (AmbientUnitOfWorkAwareContextWrapper<FreakazoidContext> wrapper = this.GetContext(unitOfWork))
+			using (FreakazoidContext context = new FreakazoidContext())
 			{
 				ITableTacticCommand<TTableModelObject> tableTacticCommand;
 
@@ -320,11 +320,6 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 
 				return tableModelObjects; // output parameters not propagated until results are fully enumerated
 			}
-		}
-
-		protected override FreakazoidContext GetContext(Type contextType, DbConnection dbConnection, DbTransaction dbTransaction)
-		{
-			return new FreakazoidContext();
 		}
 
 		/// <summary>
@@ -562,7 +557,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			if ((object)prototypeTableModel == null)
 				throw new ArgumentNullException("prototypeTableModel");
 
-			using (AmbientUnitOfWorkAwareContextWrapper<FreakazoidContext> wrapper = this.GetContext(unitOfWork))
+			using (FreakazoidContext context = new FreakazoidContext())
 			{
 				ITableTacticCommand<TTableModelObject> tableTacticCommand;
 
@@ -630,6 +625,25 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			return true;
 		}
 
+		public override TProjection Query<TProjection>(IUnitOfWork unitOfWork, Func<FreakazoidContext, TProjection> contextQueryCallback)
+		{
+			TProjection projection;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException("unitOfWork");
+
+			if ((object)contextQueryCallback == null)
+				throw new ArgumentNullException("contextQueryCallback");
+
+			using (FreakazoidContext context = new FreakazoidContext())
+			{
+				projection = contextQueryCallback(context);
+
+				// do not check for null as this is a valid state for the projection
+				return projection;
+			}
+		}
+
 		public override bool Save<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject tableModelObject)
 		{
 			bool wasNew;
@@ -651,7 +665,7 @@ namespace TextMetal.Middleware.Data.Impl.FreakazoidMapper
 			wasNew = tableModelObject.IsNew;
 			tableModelObject.Mark();
 
-			using (AmbientUnitOfWorkAwareContextWrapper<FreakazoidContext> wrapper = this.GetContext(unitOfWork))
+			using (FreakazoidContext context = new FreakazoidContext())
 			{
 				ITableTacticCommand<TTableModelObject> tableTacticCommand;
 

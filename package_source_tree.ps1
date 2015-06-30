@@ -63,10 +63,6 @@ Copy-Item "$src_dir\TextMetal.Framework\bin\$build_flavor_dir\TextMetal.Framewor
 Copy-Item "$src_dir\TextMetal.Framework\bin\$build_flavor_dir\TextMetal.Framework.xml" "$pkg_dir\bin\."
 Copy-Item "$src_dir\TextMetal.Framework\bin\$build_flavor_dir\TextMetal.Framework.pdb" "$pkg_dir\bin\."
 
-Copy-Item "$src_dir\TextMetal.Middleware.Common\bin\$build_flavor_dir\TextMetal.Middleware.Common.dll" "$pkg_dir\bin\."
-Copy-Item "$src_dir\TextMetal.Middleware.Common\bin\$build_flavor_dir\TextMetal.Middleware.Common.xml" "$pkg_dir\bin\."
-Copy-Item "$src_dir\TextMetal.Middleware.Common\bin\$build_flavor_dir\TextMetal.Middleware.Common.pdb" "$pkg_dir\bin\."
-
 Copy-Item "$src_dir\TextMetal.Middleware.Data\bin\$build_flavor_dir\TextMetal.Middleware.Data.dll" "$pkg_dir\bin\."
 Copy-Item "$src_dir\TextMetal.Middleware.Data\bin\$build_flavor_dir\TextMetal.Middleware.Data.xml" "$pkg_dir\bin\."
 Copy-Item "$src_dir\TextMetal.Middleware.Data\bin\$build_flavor_dir\TextMetal.Middleware.Data.pdb" "$pkg_dir\bin\."

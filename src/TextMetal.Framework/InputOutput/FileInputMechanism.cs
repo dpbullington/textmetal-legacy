@@ -11,7 +11,7 @@ using System.Reflection;
 using TextMetal.Framework.Source;
 using TextMetal.Framework.Template;
 using TextMetal.Framework.XmlDialect;
-using TextMetal.Middleware.Common.Utilities;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.InputOutput
 {

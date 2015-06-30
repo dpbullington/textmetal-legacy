@@ -10,8 +10,8 @@ using NMock;
 
 using NUnit.Framework;
 
-using TextMetal.Middleware.Common.Utilities;
 using TextMetal.Middleware.Data;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.UnitTests.Data._
 {

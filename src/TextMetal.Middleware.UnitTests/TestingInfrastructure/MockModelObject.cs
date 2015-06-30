@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-using TextMetal.Middleware.Common;
+using TextMetal.Middleware.Solder;
 
 namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 {
@@ -76,7 +76,7 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 			}
 			set
 			{
-				this.NameId = default (int?);
+				this.NameId = default(int?);
 			}
 		}
 

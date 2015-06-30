@@ -8,7 +8,7 @@ using System;
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Tokenization;
 using TextMetal.Framework.XmlDialect;
-using TextMetal.Middleware.Common;
+using TextMetal.Middleware.Solder;
 
 namespace TextMetal.Framework.Template
 {
