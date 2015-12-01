@@ -59,11 +59,11 @@
     <Compile Include="Solder\Utilities\_\DataTypeFascadeTests.cs" />
     <None Include="Solder\Context\_\DefaultExecutionStorageFactoryTests.cs" />
     <Compile Include="Solder\Utilities\_\ReflectionFascadeTests.cs" />
-    <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\ColumnMappingAttributeTests.cs" />
-    <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\ParameterMappingAttributeTests.cs" />
-    <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\ProcedureMappingAttributeTests.cs" />
-    <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\TableMappingAttributeTests.cs" />
-    <Compile Include="Data\Impl\FreakazoidMapper\Mappings\_\TacticCommandTests.cs" />
+    <Compile Include="Datazoid\Impl\Mappings\_\ColumnMappingAttributeTests.cs" />
+    <Compile Include="Datazoid\Impl\Mappings\_\ParameterMappingAttributeTests.cs" />
+    <Compile Include="Datazoid\Impl\Mappings\_\ProcedureMappingAttributeTests.cs" />
+    <Compile Include="Datazoid\Impl\Mappings\_\TableMappingAttributeTests.cs" />
+    <Compile Include="Datazoid\Impl\Mappings\_\TacticCommandTests.cs" />
     <None Include="Solder\Injection\_\ActivatorDependencyResolutionTests.cs" />
     <None Include="Solder\Injection\_\ConstructorDependencyResolutionTests.cs" />
     <None Include="Solder\Injection\_\DelegateDependencyResolutionTests.cs" />
@@ -82,9 +82,9 @@
     <Compile Include="TestingInfrastructure\MockModelObject.cs" />
     <Compile Include="TestingInfrastructure\MockDependantObject.cs" />
     <Compile Include="TestingInfrastructure\MockProxyFactory.cs" />
-    <Compile Include="Data\_\AdoNetFascadeTests.cs" />
+    <Compile Include="Datazoid\_\AdoNetYieldingFascadeTests.cs" />
     <None Include="App.config" />
-    <None Include="Data\UoW\_\AmbientUnitOfWorkScope.cs" />
+    <None Include="Datazoid\UoW\_\AmbientUnitOfWorkScope.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
     <Compile Include="TestingInfrastructure\IMockObject.cs" />
     <Compile Include="TestingInfrastructure\MockConnection.cs" />
@@ -102,9 +102,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\TextMetal.Middleware.Data\TextMetal.Middleware.Data.csproj">
+    <ProjectReference Include="..\TextMetal.Middleware.Datazoid\TextMetal.Middleware.Datazoid.csproj">
       <Project>{e41e2352-4249-458e-b4f2-dbdf9b564bf5}</Project>
-      <Name>TextMetal.Middleware.Data</Name>
+      <Name>TextMetal.Middleware.Datazoid</Name>
     </ProjectReference>
     <ProjectReference Include="..\TextMetal.Middleware.Solder\TextMetal.Middleware.Solder.csproj">
       <Project>{3b0efc3c-aa91-4fb4-b2ee-bd8727230a94}</Project>

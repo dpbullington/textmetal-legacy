@@ -11,6 +11,7 @@ output
 pkg
 _ReSharper.*
 .partial
+.vs
 
 # file name specs
 thumbs.db

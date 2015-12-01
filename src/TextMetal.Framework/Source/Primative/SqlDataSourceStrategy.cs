@@ -1,5 +1,5 @@
 ﻿/*
-	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2016 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -11,8 +11,6 @@ using System.Linq;
 
 using TextMetal.Framework.Associative;
 using TextMetal.Framework.Tokenization;
-using TextMetal.Middleware.Data;
-using TextMetal.Middleware.Data.UoW;
 using TextMetal.Middleware.Solder.Serialization;
 using TextMetal.Middleware.Solder.Utilities;
 
@@ -40,7 +38,7 @@ namespace TextMetal.Framework.Source.Primative
 			PropertyConstruct propertyConstructA, propertyConstructB, propertyConstructC;
 			Tokenizer tokenizer;
 
-			IEnumerable<IRecord> records;
+			IEnumerable<IDictionary<string, object>> records;
 			string commandText;
 			int count = 0;
 
@@ -69,44 +67,38 @@ namespace TextMetal.Framework.Source.Primative
 
 				commandText = tokenizer.ExpandTokens(sqlQuery.Text, new DynamicWildcardTokenReplacementStrategy(new object[] { parentAssociativeXmlObject }));
 
-				using (IUnitOfWork unitOfWork = UnitOfWork.Create(connectionType, connectionString, false))
+				records = AdoNetLiteFascade.Instance.ExecuteRecords(getSchemaOnly, connectionType, connectionString, false, IsolationLevel.Unspecified, sqlQuery.Type, commandText, null);
+
+				propertyConstructB = new PropertyConstruct();
+				propertyConstructB.Name = "RowCount";
+				arrayConstruct.Items.Add(propertyConstructB);
+
+				if ((object)records != null)
 				{
-					if (!getSchemaOnly)
-						records = unitOfWork.ExecuteRecords(sqlQuery.Type, commandText, null, null);
-					else
-						records = unitOfWork.ExecuteSchemaRecords(sqlQuery.Type, commandText, null, null);
-					
-					propertyConstructB = new PropertyConstruct();
-					propertyConstructB.Name = "RowCount";
-					arrayConstruct.Items.Add(propertyConstructB);
-
-					if ((object)records != null)
+					foreach (IDictionary<string, object> record in records)
 					{
-						foreach (IRecord record in records)
+						objectConstruct = new ObjectConstruct();
+						arrayConstruct.Items.Add(objectConstruct);
+
+						if ((object)record != null)
 						{
-							objectConstruct = new ObjectConstruct();
-							arrayConstruct.Items.Add(objectConstruct);
-
-							if ((object)record != null)
+							foreach (KeyValuePair<string, object> keyValuePair in record)
 							{
-								foreach (KeyValuePair<string, object> keyValuePair in record)
-								{
-									propertyConstructC = new PropertyConstruct();
-									propertyConstructC.Name = keyValuePair.Key;
-									propertyConstructC.RawValue = keyValuePair.Value;
+								propertyConstructC = new PropertyConstruct();
+								propertyConstructC.Name = keyValuePair.Key;
+								propertyConstructC.RawValue = keyValuePair.Value;
 
-									objectConstruct.Items.Add(propertyConstructC);
-								}
+								objectConstruct.Items.Add(propertyConstructC);
 							}
-
-							// correlated
-							WriteSqlQuery(sqlQuery.SubQueries, objectConstruct, connectionType, connectionString, getSchemaOnly);
-
-							count++;
 						}
 
-						propertyConstructB.RawValue = count;
+						// correlated
+						WriteSqlQuery(sqlQuery.SubQueries, objectConstruct, connectionType, connectionString, getSchemaOnly);
+
+						count++;
 					}
+
+					propertyConstructB.RawValue = count;
 				}
 			}
 		}

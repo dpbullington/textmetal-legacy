@@ -1,5 +1,5 @@
 ﻿/*
-	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2016 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -15,17 +15,6 @@ namespace TextMetal.Middleware.Solder.Injection
 	public sealed class SingletonDependencyResolution : IDependencyResolution
 	{
 		#region Constructors/Destructors
-
-		/// <summary>
-		/// Initializes a new instance of the SingletonDependencyResolution class.
-		/// </summary>
-		/// <param name="instance"> The singleton instance. </param>
-		public SingletonDependencyResolution(object instance)
-		{
-			this.Instance = instance;
-			this.Frozen = true;
-			this.chainedDependencyResolution = null;
-		}
 
 		/// <summary>
 		/// Initializes a new instance of the SingletonDependencyResolution class.
@@ -87,28 +76,11 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		#region Methods/Operators
 
-		/// <summary>
-		/// Gets an instance of an IDependencyResolution using the specified generic type.
-		/// The default constructor will be used to initialize a lazy singled in the current application domain on first request.
-		/// This method is never guaranteed to return a SingletonDependencyResolution instance.
-		/// </summary>
-		/// <typeparam name="TObject"> The target type of resolution. </typeparam>
-		/// <returns> An IDependencyResolution instance. </returns>
-		public static IDependencyResolution LazyConstructorOfType<TObject>()
-			where TObject : new()
+		public void Dispose()
 		{
-			return DelegateDependencyResolution.FromFunc<object>(() => LazySingleton<TObject>.LazyInstance);
-		}
-
-		/// <summary>
-		/// Gets an instance of SingletonDependencyResolution from the specified object instance.
-		/// </summary>
-		/// <typeparam name="TObject"> The target type of resolution. </typeparam>
-		/// <param name="instance"> The singleton instance. </param>
-		/// <returns> A SingletonDependencyResolution instance. </returns>
-		public static SingletonDependencyResolution OfType<TObject>(TObject instance)
-		{
-			return new SingletonDependencyResolution(instance);
+			if ((object)this.Instance != null &&
+				this.Instance is IDisposable)
+				((IDisposable)this.Instance).Dispose();
 		}
 
 		/// <summary>
@@ -121,7 +93,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			if ((object)dependencyManager == null)
 				throw new ArgumentNullException("dependencyManager");
 
-			if (this.Frozen || (object)this.ChainedDependencyResolution == null)
+			if (this.Frozen)
 				return this.Instance;
 
 			try
@@ -133,40 +105,6 @@ namespace TextMetal.Middleware.Solder.Injection
 			{
 				this.Frozen = true;
 			}
-		}
-
-		#endregion
-
-		#region Classes/Structs/Interfaces/Enums/Delegates
-
-		private class LazySingleton<TObject>
-			where TObject : new()
-		{
-			#region Constructors/Destructors
-
-			static LazySingleton()
-			{
-			}
-
-			#endregion
-
-			#region Fields/Constants
-
-			private static readonly TObject lazyInstance = new TObject();
-
-			#endregion
-
-			#region Properties/Indexers/Events
-
-			public static TObject LazyInstance
-			{
-				get
-				{
-					return lazyInstance;
-				}
-			}
-
-			#endregion
 		}
 
 		#endregion

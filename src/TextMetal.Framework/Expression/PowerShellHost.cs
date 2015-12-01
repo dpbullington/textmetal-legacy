@@ -4,9 +4,15 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Management.Automation;
 using System.Management.Automation.Host;
+using System.Management.Automation.Runspaces;
 using System.Threading;
+
+using CompiledCode = System.String;
 
 namespace TextMetal.Framework.Expression
 {
@@ -28,6 +34,7 @@ namespace TextMetal.Framework.Expression
 		private readonly Guid instanceId = Guid.NewGuid();
 		private readonly CultureInfo originalCultureInfo = Thread.CurrentThread.CurrentCulture;
 		private readonly CultureInfo originalUICultureInfo = Thread.CurrentThread.CurrentUICulture;
+		private readonly IDictionary<object, CompiledCode> scriptCompilations = new Dictionary<object, CompiledCode>();
 
 		#endregion
 
@@ -77,6 +84,14 @@ namespace TextMetal.Framework.Expression
 			}
 		}
 
+		private IDictionary<object, CompiledCode> ScriptCompilations
+		{
+			get
+			{
+				return this.scriptCompilations;
+			}
+		}
+
 		/// <summary>
 		/// This sample does not implement a PSHostUserInterface component so this property simply returns null.
 		/// </summary>
@@ -103,11 +118,73 @@ namespace TextMetal.Framework.Expression
 
 		#region Methods/Operators
 
+		public bool Compile(object scriptHandle, string scriptContent)
+		{
+			CompiledCode compiledCode;
+
+			if ((object)scriptHandle == null)
+				throw new ArgumentNullException("scriptHandle");
+
+			if ((object)scriptContent == null)
+				throw new ArgumentNullException("scriptContent");
+
+			compiledCode = scriptContent;
+
+			if (this.ScriptCompilations.ContainsKey(scriptHandle))
+				return false;
+
+			this.ScriptCompilations.Add(scriptHandle, compiledCode);
+
+			return true;
+		}
+
 		/// <summary>
 		/// Not implemented by this example class. The call fails with a NotImplementedException exception.
 		/// </summary>
 		public override void EnterNestedPrompt()
 		{
+		}
+
+		public object Execute(object scriptHandle, IDictionary<string, object> scriptVariables)
+		{
+			CompiledCode compiledCode;
+			PowerShellHost powerShellHost;
+			Collection<PSObject> psObjects;
+			object returnValue;
+
+			if ((object)scriptHandle == null)
+				throw new ArgumentNullException("scriptHandle");
+
+			if ((object)scriptVariables == null)
+				throw new ArgumentNullException("scriptVariables");
+
+			if (!this.ScriptCompilations.TryGetValue(scriptHandle, out compiledCode))
+				throw new InvalidOperationException(string.Format("'{0}'", scriptHandle));
+
+			powerShellHost = new PowerShellHost();
+
+			using (Runspace runspace = RunspaceFactory.CreateRunspace(powerShellHost))
+			{
+				runspace.Open();
+
+				foreach (KeyValuePair<string, object> scriptVariable in scriptVariables)
+					runspace.SessionStateProxy.SetVariable(scriptVariable.Key, scriptVariable.Value);
+
+				using (PowerShell powerShell = PowerShell.Create())
+				{
+					powerShell.Runspace = runspace;
+					powerShell.AddScript(compiledCode);
+
+					psObjects = powerShell.Invoke();
+
+					if ((object)psObjects == null || psObjects.Count != 1)
+						return null;
+
+					returnValue = psObjects[0];
+				}
+			}
+
+			return returnValue;
 		}
 
 		/// <summary>

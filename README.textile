@@ -1,6 +1,6 @@
 h1. TextMetal
 
-TextMetal is a powerful meta-programming framework written in C#. It uses XML as the extensible template language and hosts the dynamic language run-time (DLR) and IronRuby to provide rich expression/logic support.
+TextMetal is a powerful meta-programming framework written in C#. It uses XML as the extensible template language and hosts the PowerShell language run-time (System.Automation) AND the dynamic language run-time (DLR) (IronRuby, et al.) to provide rich expression/logic support.
 
 Meta-programming is all about making software simpler and reusable through the use of programming language independent skills and computer programs that write new computer programs.
 
@@ -9,6 +9,14 @@ TextMetal is a framework for accelerating the delivery, increasing the quality, 
 h2. Middleware for MVPs
 
 TextMetal exposes a powerful set of middleware for rapidly building minimal viable products (MVPs) using the .NET technology stack.
+
+h3. Solder middleware
+
+Solder is a framework written in C# that provides the 'glue' or 'solder' that wires together applications and libraries.
+
+h3. Datazoid middleware
+
+Datazoid is a .NET object persistence framework right out of the Hall of Nifty Things to Know.
 
 h2. License
 

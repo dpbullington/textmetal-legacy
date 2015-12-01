@@ -5,9 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Management.Automation;
-using System.Management.Automation.Runspaces;
 
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Tokenization;
@@ -29,13 +26,6 @@ namespace TextMetal.Framework.Expression
 		}
 
 		#endregion
-
-		#region Fields/Constants
-
-
-		#endregion
-
-		#region Properties/Indexers/Events
 
 		#region Fields/Constants
 
@@ -128,17 +118,7 @@ namespace TextMetal.Framework.Expression
 
 		#endregion
 
-		#endregion
-
 		#region Methods/Operators
-
-		public enum PowerShellSource
-		{
-			Unknown = 0,
-			Script,
-			Expr,
-			File
-		}
 
 		public static object PowerShellExpressionResolver(ITemplatingContext context, string[] parameters)
 		{
@@ -154,10 +134,10 @@ namespace TextMetal.Framework.Expression
 				throw new InvalidOperationException(string.Format("PowerShellExpressionResolver expects '{1}' parameter(s) but received '{0}' parameter(s).", parameters.Length, CNT_P));
 
 			return new PowerShellConstruct()
-			{
-				Src = PowerShellSource.Expr,
-				Expr = parameters[0]
-			}.CoreEvaluateExpression(context);
+					{
+						Src = PowerShellSource.Expr,
+						Expr = parameters[0]
+					}.CoreEvaluateExpression(context);
 		}
 
 		protected override object CoreEvaluateExpression(ITemplatingContext templatingContext)
@@ -201,19 +181,19 @@ namespace TextMetal.Framework.Expression
 			scriptFoo = new Dictionary<string, object>();
 
 			func = (token) =>
-			{
-				object value;
-				value = dynamicWildcardTokenReplacementStrategy.Evaluate(token, null);
-				//Console.WriteLine("[{0}]={1}", token, value);
-				return value;
-			};
+					{
+						object value;
+						value = dynamicWildcardTokenReplacementStrategy.Evaluate(token, null);
+						//Console.WriteLine("[{0}]={1}", token, value);
+						return value;
+					};
 
 			action = () => templatingContext.LaunchDebugger();
 
 			scriptFoo.Add("EvaluateToken", func);
 			scriptFoo.Add("DebuggerBreakpoint", action);
 
-			textMetal = new RubyConstruct.DictionaryDynamicObject(scriptFoo);
+			textMetal = new DictionaryDynamicObject(scriptFoo);
 
 			scriptVariables = new Dictionary<string, object>();
 			scriptVariables.Add("textMetal", textMetal);
@@ -230,100 +210,16 @@ namespace TextMetal.Framework.Expression
 			return result;
 		}
 
-		protected object __CoreEvaluateExpression(TemplatingContext templatingContext)
-		{
-			PowerShellHost powerShellHost;
-			Collection<PSObject> psObjects;
-			DynamicWildcardTokenReplacementStrategy dynamicWildcardTokenReplacementStrategy;
-
-			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
-
-			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy();
-			powerShellHost = new PowerShellHost();
-			
-			using (Runspace runspace = RunspaceFactory.CreateRunspace(powerShellHost))
-			{
-				runspace.Open();
-
-				runspace.SessionStateProxy.SetVariable("__tm__", new PowerShellProxy(dynamicWildcardTokenReplacementStrategy));
-
-				using (PowerShell powerShell = PowerShell.Create())
-				{
-					powerShell.Runspace = runspace;
-					powerShell.AddScript(this.Script);
-
-					psObjects = powerShell.Invoke();
-
-					if ((object)psObjects == null || psObjects.Count != 1)
-						return null;
-
-					return psObjects[0];
-				}
-			}
-		}
-
 		#endregion
 
 		#region Classes/Structs/Interfaces/Enums/Delegates
 
-		private sealed class PowerShellProxy
+		public enum PowerShellSource
 		{
-			#region Constructors/Destructors
-
-			public PowerShellProxy(DynamicWildcardTokenReplacementStrategy dynamicWildcardTokenReplacementStrategy)
-			{
-				if ((object)dynamicWildcardTokenReplacementStrategy == null)
-					throw new ArgumentNullException("dynamicWildcardTokenReplacementStrategy");
-
-				this.dynamicWildcardTokenReplacementStrategy = dynamicWildcardTokenReplacementStrategy;
-			}
-
-			#endregion
-
-			#region Fields/Constants
-
-			private readonly DynamicWildcardTokenReplacementStrategy dynamicWildcardTokenReplacementStrategy;
-
-			#endregion
-
-			#region Properties/Indexers/Events
-
-			private DynamicWildcardTokenReplacementStrategy DynamicWildcardTokenReplacementStrategy
-			{
-				get
-				{
-					return this.dynamicWildcardTokenReplacementStrategy;
-				}
-			}
-
-			#endregion
-
-			#region Methods/Operators
-
-			public bool Def(string token)
-			{
-				object value;
-
-				return this.DynamicWildcardTokenReplacementStrategy.GetByPath(token, out value);
-			}
-
-			public object Get(string token)
-			{
-				object value;
-
-				if (!this.DynamicWildcardTokenReplacementStrategy.GetByPath(token, out value))
-					return null;
-
-				return value;
-			}
-
-			public bool Set(string token, object value)
-			{
-				return this.DynamicWildcardTokenReplacementStrategy.SetByPath(token, value);
-			}
-
-			#endregion
+			Unknown = 0,
+			Script,
+			Expr,
+			File
 		}
 
 		#endregion

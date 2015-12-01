@@ -1,5 +1,5 @@
 ﻿/*
-	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2016 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -70,6 +70,7 @@ namespace TextMetal.Framework.Hosting
 			xpe.RegisterKnownXmlObject<ExpressionContainerConstruct>();
 			xpe.RegisterKnownXmlObject<FacetConstruct>();
 			xpe.RegisterKnownXmlObject<NullaryExpressionConstruct>();
+			xpe.RegisterKnownXmlObject<PowerShellConstruct>();
 			xpe.RegisterKnownXmlObject<RubyConstruct>();
 			xpe.RegisterKnownXmlObject<UnaryExpressionConstruct>();
 			xpe.RegisterKnownXmlObject<ValueConstruct>();

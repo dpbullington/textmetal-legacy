@@ -44,6 +44,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -55,6 +56,9 @@
     <Compile Include="Context\CallContextContextualStorageStrategy.cs" />
     <Compile Include="Context\DefaultContextualStorageFactory.cs" />
     <Compile Include="Context\HttpContextContextualStorageStrategy.cs" />
+    <Compile Include="Context\HttpCookieApplicationSpecificStorageStrategy.cs" />
+    <Compile Include="Context\HttpSessionApplicationSpecificStorageStrategy.cs" />
+    <Compile Include="Context\IApplicationSpecificStorageStrategy.cs" />
     <Compile Include="Context\IContextualStorageFactory.cs" />
     <Compile Include="Context\IContextualStorageStrategy.cs" />
     <Compile Include="Context\LogicalCallContextContextualStorageStrategy.cs" />
@@ -62,25 +66,25 @@
     <Compile Include="Context\WcfContextContextualStorageStrategy.cs" />
     <Compile Include="Injection\ActivatorDependencyResolution.cs" />
     <Compile Include="Injection\ConstructorDependencyResolution~1.cs" />
-    <Compile Include="Injection\DelegateDependencyResolution.cs" />
+    <Compile Include="Injection\DelegateDependencyResolution~1.cs" />
     <Compile Include="Injection\DependencyException.cs" />
     <Compile Include="Injection\DependencyInjectionAttribute.cs" />
     <Compile Include="Injection\DependencyManager.cs" />
     <Compile Include="Injection\DependencyRegistrationAttribute.cs" />
     <Compile Include="Injection\IDependencyManager.cs" />
     <Compile Include="Injection\IDependencyResolution.cs" />
+    <Compile Include="Injection\LoggingAspectDependencyResolution.cs" />
     <Compile Include="Injection\SingletonDependencyResolution.cs" />
     <Compile Include="Interception\AspectDynamicInvoker.cs" />
     <Compile Include="Interception\DynamicInvoker.cs" />
     <Compile Include="Interception\IDynamicInvocation.cs" />
     <Compile Include="Interception\LoggingAspectDynamicInvoker.cs" />
     <Compile Include="Interception\ProxyFactory~1.cs" />
-    <Compile Include="Interception\RemotingImpl\DynamicInvokerRealProxy~1.cs" />
+    <Compile Include="Interception\RemotingImpl\DynamicInvokerRealProxy.cs" />
     <Compile Include="IValidate.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="OnlyWhen.cs" />
     <Compile Include="ProjectAssemblyInfo.cs" />
-    <Compile Include="Injection\LoggingAspectConstructorDependencyResolution~1.cs" />
     <Compile Include="Serialization\ExtensionMethods.cs" />
     <Compile Include="Serialization\IBinarySerializationStrategy.cs" />
     <Compile Include="Serialization\ISerializationStrategy.cs" />
@@ -89,6 +93,7 @@
     <Compile Include="Serialization\JsonSerializationStrategy.cs" />
     <Compile Include="Serialization\XmlSerializationStrategy.cs" />
     <Compile Include="Severity.cs" />
+    <Compile Include="Utilities\AdoNetLiteFascade.cs" />
     <Compile Include="Utilities\AppConfigFascade.cs" />
     <Compile Include="Utilities\AssemblyInformationFascade.cs" />
     <Compile Include="Utilities\ConsoleApplicationFascade.cs" />
@@ -96,6 +101,7 @@
     <Compile Include="Utilities\DataTypeFascade.impl.p.cs" />
     <Compile Include="Utilities\ExecutableApplicationFascade.cs" />
     <Compile Include="Utilities\ExtensionMethods.cs" />
+    <Compile Include="Utilities\IAdoNetLiteFascade.cs" />
     <Compile Include="Utilities\IAppConfigFascade.cs" />
     <Compile Include="Utilities\IAssemblyInformationFascade.cs" />
     <Compile Include="Utilities\IDataTypeFascade.cs" />

@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E41E2352-4249-458E-B4F2-DBDF9B564BF5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>
+    </AppDesignerFolder>
+    <RootNamespace>TextMetal.Middleware.Datazoid</RootNamespace>
+    <AssemblyName>TextMetal.Middleware.Datazoid</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\TextMetal.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\TextMetal.Middleware.Datazoid.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\TextMetal.Middleware.Datazoid.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SolutionAssemblyInfo.cs">
+      <Link>SolutionAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="AdoNetYieldingFascade.cs" />
+    <Compile Include="Column.cs" />
+    <Compile Include="IAdoNetYieldingFascade.cs" />
+    <Compile Include="IColumn.cs" />
+    <Compile Include="IRecord.cs" />
+    <Compile Include="Record.cs" />
+    <Compile Include="RecordDataReader.cs" />
+    <Compile Include="Repositories\Impl\DzContext.cs" />
+    <Compile Include="Repositories\Impl\DzModelRepository.cs" />
+    <Compile Include="Repositories\Impl\DzTableModelQuery.cs" />
+    <Compile Include="Repositories\Impl\Expressions\BinaryExpression.cs" />
+    <Compile Include="Repositories\Impl\Expressions\BinaryOperator.cs" />
+    <Compile Include="Repositories\Impl\Expressions\ExpressionVisitor.cs" />
+    <Compile Include="Repositories\Impl\Expressions\IExpression.cs" />
+    <Compile Include="Repositories\Impl\Expressions\LiteralValue.cs" />
+    <Compile Include="Repositories\Impl\Expressions\NullaryExpression.cs" />
+    <Compile Include="Repositories\Impl\Expressions\NullaryOperator.cs" />
+    <Compile Include="Repositories\Impl\Expressions\SortDirection.cs" />
+    <Compile Include="Repositories\Impl\Expressions\SortOrder.cs" />
+    <Compile Include="Repositories\Impl\Expressions\SymbolName.cs" />
+    <Compile Include="Repositories\Impl\Expressions\UnaryExpression.cs" />
+    <Compile Include="Repositories\Impl\Expressions\UnaryOperator.cs" />
+    <Compile Include="Repositories\Impl\Expressions\VoidExpression.cs" />
+    <Compile Include="Repositories\Impl\Mappings\ColumnMappingAttribute.cs" />
+    <Compile Include="Repositories\Impl\Mappings\DatabaseMappingAttribute.cs" />
+    <Compile Include="Repositories\Impl\Mappings\KeyConstraintColumnMappingAttribute.cs" />
+    <Compile Include="Repositories\Impl\Mappings\KeyConstraintTableMappingAttribute.cs" />
+    <Compile Include="Repositories\Impl\Mappings\KeyConstraintType.cs" />
+    <Compile Include="Repositories\Impl\Mappings\ParameterMappingAttribute.cs" />
+    <Compile Include="Repositories\Impl\Mappings\ProcedureMappingAttribute.cs" />
+    <Compile Include="Repositories\Impl\Mappings\TableMappingAttribute.cs" />
+    <Compile Include="Repositories\Impl\Migrations\DatabaseHistory.cs" />
+    <Compile Include="Repositories\Impl\Migrations\DatabaseRevision.cs" />
+    <Compile Include="Repositories\Impl\Strategies\DataSourceTagStrategy.cs" />
+    <Compile Include="Repositories\Impl\Strategies\DataSourceTagStrategyFactory.cs" />
+    <Compile Include="Repositories\Impl\Strategies\IDataSourceTagStrategy.cs" />
+    <Compile Include="Repositories\Impl\Strategies\IDataSourceTagStrategyFactory.cs" />
+    <Compile Include="Repositories\Impl\Strategies\ISqlNuance.cs" />
+    <Compile Include="Repositories\Impl\Strategies\NetSqliteDataSourceTagStrategy.cs" />
+    <Compile Include="Repositories\Impl\Strategies\NetSqlServerDataSourceTagStrategy.cs" />
+    <Compile Include="Repositories\Impl\Strategies\OdbcSqlServerDataSourceTagStrategy.cs" />
+    <Compile Include="Repositories\Impl\Strategies\SqlExpressionVisitor.cs" />
+    <Compile Include="Repositories\Impl\Tactics\IProcedureTacticCommand~3.cs" />
+    <Compile Include="Repositories\Impl\Tactics\ITableTacticCommand~1.cs" />
+    <Compile Include="Repositories\Impl\Tactics\ITacticCommand.cs" />
+    <Compile Include="Repositories\Impl\Tactics\ITacticParameter.cs" />
+    <Compile Include="Repositories\Impl\Tactics\ProcedureTacticCommand~3.cs" />
+    <Compile Include="Repositories\Impl\Tactics\TableTacticCommand~1.cs" />
+    <Compile Include="Repositories\Impl\Tactics\TacticCommand.cs" />
+    <Compile Include="Repositories\Impl\Tactics\TacticParameter.cs" />
+    <Compile Include="Resultset.cs" />
+    <Compile Include="IResultset.cs" />
+    <Compile Include="UoW\ExtensionMethods.cs" />
+    <Compile Include="UoW\IUnitOfWork.cs" />
+    <Compile Include="UoW\IUnitOfWorkFactory.cs" />
+    <Compile Include="UoW\UnitOfWork.cs" />
+    <Compile Include="WrappedDataReader.cs" />
+    <Compile Include="Models\Functional\DefaultResultsetModelObject~1.cs" />
+    <Compile Include="Models\DynamicModelObject.cs" />
+    <Compile Include="Models\Functional\DynamicResultProcedureModelObject.cs" />
+    <Compile Include="Repositories\IModelRepository~1.cs" />
+    <Compile Include="Models\Functional\IResultProcedureModelObject.cs" />
+    <Compile Include="Models\IRecordModelObject.cs" />
+    <Compile Include="Models\Functional\IResultsetModelObject.cs" />
+    <Compile Include="Models\Functional\IResultsetModelObject~1.cs" />
+    <Compile Include="Models\Tabular\ITableModelObject.cs" />
+    <Compile Include="Models\ModelObject.cs" />
+    <Compile Include="Repositories\ModelRepository.cs" />
+    <Compile Include="Models\Functional\ResultProcedureModelObject.cs" />
+    <Compile Include="Models\Functional\ReturnProcedureModelObject.cs" />
+    <Compile Include="Models\Functional\ReturnProcedureModelObject~1.cs" />
+    <Compile Include="Models\Functional\CallProcedureModelObject.cs" />
+    <Compile Include="Models\Tabular\DynamicTableModelObject.cs" />
+    <Compile Include="Models\Tabular\TableModelObject.cs" />
+    <Compile Include="Models\IModelObject.cs" />
+    <Compile Include="Models\Tabular\ITableModelQuery.cs" />
+    <Compile Include="Repositories\IModelRepository.cs" />
+    <Compile Include="Models\Functional\ICallProcedureModelObject.cs" />
+    <Compile Include="Models\Functional\IReturnProcedureModelObject.cs" />
+    <Compile Include="Models\Functional\IReturnProcedureModelObject~1.cs" />
+    <Compile Include="Repositories\ModelRepository~1.cs" />
+    <Compile Include="ProjectAssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\TextMetal.snk">
+      <Link>TextMetal.snk</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TextMetal.Middleware.Solder\TextMetal.Middleware.Solder.csproj">
+      <Project>{3B0EFC3C-AA91-4FB4-B2EE-BD8727230A94}</Project>
+      <Name>TextMetal.Middleware.Solder</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

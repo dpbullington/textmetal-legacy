@@ -10,7 +10,6 @@ using System.Data.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
-using TextMetal.Middleware.Data.UoW;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
@@ -82,10 +81,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table)
+		protected override IEnumerable<IDbDataParameter> CoreGetColumnParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table)
 		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+			if ((object)connectionType == null)
+				throw new ArgumentNullException("connectionType");
 
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
@@ -106,20 +105,20 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new IDbDataParameter[]
 						{
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
+							//AdoNetLiteFascade.Instance.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//AdoNetLiteFascade.Instance.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, View view)
+		protected override IEnumerable<IDbDataParameter> CoreGetColumnParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, View view)
 		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+			if ((object)connectionType == null)
+				throw new ArgumentNullException("connectionType");
 
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
@@ -140,20 +139,20 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new IDbDataParameter[]
 						{
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", view.ViewName)
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", view.ViewName)
 						};
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetDatabaseParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server)
+		protected override IEnumerable<IDbDataParameter> CoreGetDatabaseParameters(Type connectionType, string dataSourceTag, Server server)
 		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+			if ((object)connectionType == null)
+				throw new ArgumentNullException("connectionType");
 
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
@@ -162,17 +161,17 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new IDbDataParameter[]
 						{
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName)
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName)
 						};
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetDdlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database)
+		protected override IEnumerable<IDbDataParameter> CoreGetDdlTriggerParameters(Type connectionType, string dataSourceTag, Server server, Database database)
 		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+			if ((object)connectionType == null)
+				throw new ArgumentNullException("connectionType");
 
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
@@ -181,18 +180,18 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new IDbDataParameter[]
 						{
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName)
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName)
 						};
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetDmlTriggerParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table)
+		protected override IEnumerable<IDbDataParameter> CoreGetDmlTriggerParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table)
 		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+			if ((object)connectionType == null)
+				throw new ArgumentNullException("connectionType");
 
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
@@ -213,10 +212,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new IDbDataParameter[]
 						{
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};
 			}
 
@@ -234,10 +233,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetForeignKeyColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table, ForeignKey foreignKey)
+		protected override IEnumerable<IDbDataParameter> CoreGetForeignKeyColumnParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table, ForeignKey foreignKey)
 		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+			if ((object)connectionType == null)
+				throw new ArgumentNullException("connectionType");
 
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
@@ -261,21 +260,21 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new IDbDataParameter[]
 						{
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P5", foreignKey.ForeignKeyName)
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName),
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P5", foreignKey.ForeignKeyName)
 						};
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetForeignKeyParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table)
+		protected override IEnumerable<IDbDataParameter> CoreGetForeignKeyParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table)
 		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+			if ((object)connectionType == null)
+				throw new ArgumentNullException("connectionType");
 
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
@@ -296,20 +295,20 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new IDbDataParameter[]
 						{
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetParameterParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Procedure procedure)
+		protected override IEnumerable<IDbDataParameter> CoreGetParameterParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Procedure procedure)
 		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+			if ((object)connectionType == null)
+				throw new ArgumentNullException("connectionType");
 
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
@@ -330,10 +329,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new IDbDataParameter[]
 						{
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", procedure.ProcedureName)
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", procedure.ProcedureName)
 						};
 			}
 
@@ -351,10 +350,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetProcedureParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema)
+		protected override IEnumerable<IDbDataParameter> CoreGetProcedureParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema)
 		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+			if ((object)connectionType == null)
+				throw new ArgumentNullException("connectionType");
 
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
@@ -372,19 +371,19 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new IDbDataParameter[]
 						{
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName)
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName)
 						};
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetSchemaParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database)
+		protected override IEnumerable<IDbDataParameter> CoreGetSchemaParameters(Type connectionType, string dataSourceTag, Server server, Database database)
 		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+			if ((object)connectionType == null)
+				throw new ArgumentNullException("connectionType");
 
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
@@ -396,18 +395,18 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new IDbDataParameter[]
 						{
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
 						};
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetServerParameters(IUnitOfWork unitOfWork, string dataSourceTag)
+		protected override IEnumerable<IDbDataParameter> CoreGetServerParameters(Type connectionType, string dataSourceTag)
 		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+			if ((object)connectionType == null)
+				throw new ArgumentNullException("connectionType");
 
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
@@ -418,7 +417,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetTableParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema)
+		protected override IEnumerable<IDbDataParameter> CoreGetTableParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema)
 		{
 			if ((object)server == null)
 				throw new ArgumentNullException("server");
@@ -433,19 +432,19 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new IDbDataParameter[]
 						{
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName)
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName)
 						};
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetUniqueKeyColumnParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table, UniqueKey uniqueKey)
+		protected override IEnumerable<IDbDataParameter> CoreGetUniqueKeyColumnParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table, UniqueKey uniqueKey)
 		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+			if ((object)connectionType == null)
+				throw new ArgumentNullException("connectionType");
 
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
@@ -469,21 +468,21 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new IDbDataParameter[]
 						{
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P5", uniqueKey.UniqueKeyName)
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName),
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P5", uniqueKey.UniqueKeyName)
 						};
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetUniqueKeyParameters(IUnitOfWork unitOfWork, string dataSourceTag, Server server, Database database, Schema schema, Table table)
+		protected override IEnumerable<IDbDataParameter> CoreGetUniqueKeyParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table)
 		{
-			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+			if ((object)connectionType == null)
+				throw new ArgumentNullException("connectionType");
 
 			if ((object)dataSourceTag == null)
 				throw new ArgumentNullException("dataSourceTag");
@@ -504,10 +503,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new IDbDataParameter[]
 						{
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							unitOfWork.CreateParameter(ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};
 			}
 

@@ -1,5 +1,5 @@
 ﻿/*
-	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2016 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -10,7 +10,7 @@ namespace TextMetal.Middleware.Solder.Injection
 	/// <summary>
 	/// Provides the Factory Method pattern used to resolve dependencies.
 	/// </summary>
-	public interface IDependencyResolution
+	public interface IDependencyResolution : IDisposable
 	{
 		#region Methods/Operators
 

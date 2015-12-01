@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Middleware", "Middleware", "{E21DE8E9-3796-47A3-9B46-D75A6A92B882}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Middleware.Data", "TextMetal.Middleware.Data\TextMetal.Middleware.Data.csproj", "{E41E2352-4249-458E-B4F2-DBDF9B564BF5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Middleware.Datazoid", "TextMetal.Middleware.Datazoid\TextMetal.Middleware.Datazoid.csproj", "{E41E2352-4249-458E-B4F2-DBDF9B564BF5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Middleware.IntegrationTests", "TextMetal.Middleware.IntegrationTests\TextMetal.Middleware.IntegrationTests.csproj", "{37CB28A3-CAB2-4D2F-BDE9-F35F81796FDD}"
 EndProject

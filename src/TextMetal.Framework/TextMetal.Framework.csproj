@@ -81,8 +81,9 @@
     <Compile Include="Associative\IObjectReference.cs" />
     <Compile Include="Associative\IAssociativeMechanism.cs" />
     <Compile Include="Associative\IAssociativeXmlObject.cs" />
-    <None Include="Expression\PowerShellConstruct.cs" />
-    <None Include="Expression\PowerShellHost.cs" />
+    <Compile Include="Expression\DictionaryDynamicObject.cs" />
+    <Compile Include="Expression\PowerShellConstruct.cs" />
+    <Compile Include="Expression\PowerShellHost.cs" />
     <Compile Include="Hosting\ITextMetalHost.cs" />
     <Compile Include="Naming\ICanonicalNaming.cs" />
     <Compile Include="Core\IContainerXmlObject.cs" />
@@ -273,10 +274,6 @@
     <EmbeddedResource Include="Source\DatabaseSchema\Sql\DML\net.sqlserver\Views.sql" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TextMetal.Middleware.Data\TextMetal.Middleware.Data.csproj">
-      <Project>{E41E2352-4249-458E-B4F2-DBDF9B564BF5}</Project>
-      <Name>TextMetal.Middleware.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TextMetal.Middleware.Solder\TextMetal.Middleware.Solder.csproj">
       <Project>{3B0EFC3C-AA91-4FB4-B2EE-BD8727230A94}</Project>
       <Name>TextMetal.Middleware.Solder</Name>

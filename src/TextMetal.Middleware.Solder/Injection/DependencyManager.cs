@@ -1,5 +1,5 @@
 ﻿/*
-	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2016 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -318,6 +318,8 @@ namespace TextMetal.Middleware.Solder.Injection
 			if (this.Disposed)
 				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
 
+			this.FreeDependencyResolutions();
+
 			// cop a reader lock
 			this.ReaderWriterLock.AcquireReaderLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
 
@@ -422,6 +424,8 @@ namespace TextMetal.Middleware.Solder.Injection
 			if (this.Disposed)
 				return;
 
+			this.FreeDependencyResolutions();
+
 			// cop a reader lock
 			this.ReaderWriterLock.AcquireReaderLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
 
@@ -445,6 +449,36 @@ namespace TextMetal.Middleware.Solder.Injection
 				this.Disposed = true;
 				GC.SuppressFinalize(this);
 			}
+		}
+
+		private void FreeDependencyResolutions()
+		{
+			// signal disposal of container ("manager")
+			foreach (IDisposable resolutionDisposable in this.DependencyResolutionRegistrations.Values.OfType<IDisposable>())
+			{
+				if ((object)resolutionDisposable != null)
+					resolutionDisposable.Dispose();
+			}
+		}
+
+		private IDependencyResolution GetDependencyResolution(Type targetType, string selectorKey)
+		{
+			KeyValuePair<Type, string> trait;
+			IDependencyResolution dependencyResolution;
+
+			trait = new KeyValuePair<Type, string>(targetType, selectorKey);
+
+			// first attempt direct resolution: exact type and selector key
+			if (!this.DependencyResolutionRegistrations.TryGetValue(trait, out dependencyResolution))
+			{
+				// second attempt indirect resolution: assignable type and select key
+				var candidateResolutions = this.DependencyResolutionRegistrations.Where(r => (object)r.Key != null && targetType.IsAssignableFrom(r.Key.Key)
+																							&& (selectorKey == string.Empty || r.Key.Value == selectorKey)).Select(x => x.Value);
+
+				dependencyResolution = candidateResolutions.FirstOrDefault();
+			}
+
+			return dependencyResolution;
 		}
 
 		/// <summary>
@@ -486,8 +520,7 @@ namespace TextMetal.Middleware.Solder.Injection
 
 			try
 			{
-				return this.DependencyResolutionRegistrations.Keys.Count(x => x.Key == targetType
-																			&& ((object)selectorKey == null || x.Value == selectorKey)) > 0;
+				return (object)this.GetDependencyResolution(targetType, selectorKey) != null;
 			}
 			finally
 			{
@@ -524,6 +557,7 @@ namespace TextMetal.Middleware.Solder.Injection
 		{
 			KeyValuePair<Type, string> trait;
 			LockCookie lockCookie;
+			IDependencyResolution dependencyResolution;
 
 			if (this.Disposed)
 				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
@@ -546,8 +580,14 @@ namespace TextMetal.Middleware.Solder.Injection
 				{
 					trait = new KeyValuePair<Type, string>(targetType, selectorKey);
 
-					if (!this.DependencyResolutionRegistrations.ContainsKey(trait))
-						throw new DependencyException(string.Format("Dependency resolution does not exist in the dependency manager for target type '{0}' and selector key '{1}'.", targetType.FullName, selectorKey));
+					dependencyResolution = this.GetDependencyResolution(targetType, selectorKey);
+
+					if ((object)dependencyResolution == null) // nothing to offer up
+						throw new DependencyException(string.Format("Dependency resolution in the in-effect dependency manager failed to match for target type '{0}' and selector key '{1}'.", targetType.FullName, selectorKey));
+
+					if ((object)dependencyResolution != null &&
+						dependencyResolution is IDisposable)
+						((IDisposable)dependencyResolution).Dispose();
 
 					this.DependencyResolutionRegistrations.Remove(trait);
 				}
@@ -595,7 +635,6 @@ namespace TextMetal.Middleware.Solder.Injection
 		public object ResolveDependency(Type targetType, string selectorKey)
 		{
 			object value;
-			KeyValuePair<Type, string> trait;
 			IDependencyResolution dependencyResolution;
 			Type typeOfValue;
 
@@ -613,30 +652,10 @@ namespace TextMetal.Middleware.Solder.Injection
 
 			try
 			{
-				trait = new KeyValuePair<Type, string>(targetType, selectorKey);
+				dependencyResolution = this.GetDependencyResolution(targetType, selectorKey);
 
-				if (!this.DependencyResolutionRegistrations.ContainsKey(trait))
-				{
-// To keep from shooting oneself in the foot, this must be explicitly enabled at compile-time.
-#if !ALLOW_FCFS_INDIRECT_RESOLUTION
+				if ((object)dependencyResolution == null) // nothing to offer up
 					throw new DependencyException(string.Format("Dependency resolution in the in-effect dependency manager failed to match for target type '{0}' and selector key '{1}'.", targetType.FullName, selectorKey));
-#else
-	// no direct resolution; lets try FCFS indirect resolution...
-					var candidateResolutions = this.DependencyResolutionRegistrations.Keys.Where(x => targetType.IsAssignableFrom(x.Key)
-						&& (selectorKey == string.Empty || x.Value == selectorKey));
-
-					if (candidateResolutions.Count() < 1) // nothing to offer up
-						throw new DependencyException(string.Format("Dependency resolution in the in-effect dependency manager failed to match for target type '{0}' and selector key '{1}'.", targetType.FullName, selectorKey));
-					
-					// pick the 'best' one...???
-					trait = candidateResolutions.First();
-#endif
-				}
-
-				dependencyResolution = this.DependencyResolutionRegistrations[trait];
-
-				if ((object)dependencyResolution == null)
-					throw new InvalidOperationException("dependencyResolution");
 
 				value = dependencyResolution.Resolve(this);
 
@@ -645,7 +664,7 @@ namespace TextMetal.Middleware.Solder.Injection
 					typeOfValue = value.GetType();
 
 					if (!targetType.IsAssignableFrom(typeOfValue))
-						throw new DependencyException(string.Format("Dependency resolution in the dependency manager matched for target type '{0}' and selector key '{1}' but the resolved value is not assignable from resolved type '{2}'.", targetType.FullName, selectorKey, typeOfValue.FullName));
+						throw new DependencyException(string.Format("Dependency resolution in the dependency manager matched for target type '{0}' and selector key '{1}' but the resolved value type '{2}' is not assignable the target type '{3}'.", targetType.FullName, selectorKey, typeOfValue.FullName, targetType.FullName));
 				}
 
 				return value;

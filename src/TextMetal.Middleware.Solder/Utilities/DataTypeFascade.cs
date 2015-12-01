@@ -1,5 +1,5 @@
 ﻿/*
-	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2016 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
@@ -379,6 +379,12 @@ namespace TextMetal.Middleware.Solder.Utilities
 				UInt64 zresult;
 				retval = UInt64.TryParse(value, NumberStyles.Any, null, out zresult);
 				result = zresult;
+			}
+			else if (valueType == typeof(Version))
+			{
+				Version vresult;
+				retval = Version.TryParse(value, out vresult);
+				result = vresult;
 			}
 			else if (valueType.IsEnum) // special case
 			{
