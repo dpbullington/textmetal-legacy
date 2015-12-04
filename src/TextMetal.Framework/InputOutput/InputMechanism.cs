@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
 using TextMetal.Framework.Template;
@@ -27,6 +28,7 @@ namespace TextMetal.Framework.InputOutput
 		#region Fields/Constants
 
 		private bool disposed;
+		private TextReader currentTextReader;
 
 		#endregion
 
@@ -69,11 +71,31 @@ namespace TextMetal.Framework.InputOutput
 
 			try
 			{
+				if ((object)this.CurrentTextReader != null)
+				{
+					this.CurrentTextReader.Dispose();
+					this.CurrentTextReader = null;
+				}
 			}
 			finally
 			{
 				this.Disposed = true;
 				GC.SuppressFinalize(this);
+			}
+		}
+
+		/// <summary>
+		/// Gets the current text reader instance.
+		/// </summary>
+		public TextReader CurrentTextReader
+		{
+			get
+			{
+				return this.currentTextReader ?? Console.In;
+			}
+			private set
+			{
+				this.currentTextReader = value;
 			}
 		}
 

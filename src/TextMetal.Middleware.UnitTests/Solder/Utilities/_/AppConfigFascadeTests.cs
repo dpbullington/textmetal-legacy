@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using NUnit.Framework;
 
 using TextMetal.Middleware.Solder.Utilities;
+using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
 namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 {

@@ -91,8 +91,8 @@ namespace TextMetal.ConsoleTool
 			if (arguments.ContainsKey(CMDLN_DEBUGGER_LAUNCH))
 				debuggerLaunch = (bool)arguments[CMDLN_DEBUGGER_LAUNCH].Single();
 
-			if (debuggerLaunch)
-				Console.WriteLine("Debugger launch result: '{0}'", Debugger.Launch() && Debugger.IsAttached);
+			//if (debuggerLaunch)
+				//Console.WriteLine("Debugger launch result: '{0}'", Debugger.Launch() && Debugger.IsAttached);
 
 			// required
 			properties = new Dictionary<string, IList<string>>();

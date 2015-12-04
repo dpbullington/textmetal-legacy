@@ -1113,7 +1113,7 @@ namespace TextMetal.Framework.Source.Primative
 
 			foreach (Type type in types)
 			{
-				Console.WriteLine("{0} ==> '{1}'", arrayName, type.FullName);
+				//Console.WriteLine("{0} ==> '{1}'", arrayName, type.FullName);
 
 				objectConstruct00 = new ObjectConstruct();
 				arrayConstruct00.Items.Add(objectConstruct00);

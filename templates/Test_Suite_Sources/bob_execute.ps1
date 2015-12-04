@@ -1,5 +1,5 @@
 #
-#	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
+#	Copyright ©2002-2016 Daniel Bullington (dpbullington@gmail.com)
 #	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 #
 
@@ -32,7 +32,8 @@ $argz = @("-templatefile:$template_file",
 	"-sourcefile:$source_file",
 	"-basedir:$base_dir",
 	"-sourcestrategy:$source_strategy",
-	"-strict:$strict")
+	"-strict:$strict",
+	"-debug:true")
 
 &"$textmetal_exe" $argz
 

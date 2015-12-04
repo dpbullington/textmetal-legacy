@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
 using TextMetal.Framework.Template;
@@ -16,6 +17,14 @@ namespace TextMetal.Framework.InputOutput
 	/// </summary>
 	public interface IInputMechanism : IDisposable
 	{
+		/// <summary>
+		/// Gets the current text reader instance.
+		/// </summary>
+		TextReader CurrentTextReader
+		{
+			get;
+		}
+
 		#region Methods/Operators
 
 		/// <summary>

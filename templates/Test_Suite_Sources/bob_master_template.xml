@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <!--
-	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2016 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 -->
 <Template xmlns="http://www.textmetal.com/api/v6.0.0">
@@ -135,22 +135,19 @@
 
 	<Assign token="test">
 		<Assign.Expression>
-			<Ruby src="File" expr="((self.test + textMetal.EvaluateToken(&quot;test&quot;)) / 2) * -2" file="sample.rb">
+			<JavaScript src="File" expr="0;" file="sample.js">
 				<Script>
-					puts "go ruby";
-					z1 = self.test;
-					z2 = textMetal.EvaluateToken("test");
-					return ((z1 + z2) / 2) * -1;
+					0;
 				</Script>
-			</Ruby>
+			</JavaScript>
 		</Assign.Expression>
 	</Assign>
 
 	<![CDATA[
 ${test}
-*rb*
+*js*
 
-${rb(`textMetal.DebuggerBreakpoint()`)}
+${js(`textMetal.DebuggerBreakpoint()`)}
 ]]>
 
 	<Assign token="test">

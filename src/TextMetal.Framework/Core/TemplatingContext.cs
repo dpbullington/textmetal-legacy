@@ -214,7 +214,7 @@ namespace TextMetal.Framework.Core
 			bool result;
 
 			result = System.Diagnostics.Debugger.Launch() && System.Diagnostics.Debugger.IsAttached;
-			Console.WriteLine("Debugger launch result: '{0}'", result);
+			this.Output.LogTextWriter.WriteLine("Debugger launch result: '{0}'", result);
 			return result;
 		}
 

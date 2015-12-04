@@ -14,6 +14,7 @@ using NMock.Matchers;
 using NUnit.Framework;
 
 using TextMetal.Framework.Tokenization;
+using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
 namespace TextMetal.Framework.UnitTests.Tokenization._
 {
