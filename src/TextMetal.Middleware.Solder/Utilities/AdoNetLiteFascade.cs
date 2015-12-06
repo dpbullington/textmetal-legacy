@@ -6,7 +6,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Xml;
+using System.Reflection;
 
 namespace TextMetal.Middleware.Solder.Utilities
 {
@@ -65,34 +67,34 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 		#region Methods/Operators
 
-		public IDbDataParameter CreateParameter(Type connectionType, ParameterDirection parameterDirection, DbType parameterDbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue)
+		public DbParameter CreateParameter(Type connectionType, ParameterDirection parameterDirection, DbType parameterDbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue)
 		{
-			IDbDataParameter dbDataParameter;
+			DbParameter dbParameter;
 
 			if ((object)connectionType == null)
 				throw new ArgumentNullException("connectionType");
 
-			using (IDbConnection dbConnection = (IDbConnection)Activator.CreateInstance(connectionType))
+			using (DbConnection dbConnection = (DbConnection)Activator.CreateInstance(connectionType))
 			{
-				using (IDbCommand dbCommand = dbConnection.CreateCommand())
-					dbDataParameter = dbCommand.CreateParameter();
+				using (DbCommand dbCommand = dbConnection.CreateCommand())
+					dbParameter = dbCommand.CreateParameter();
 
-				dbDataParameter.ParameterName = parameterName;
-				dbDataParameter.Size = parameterSize;
-				dbDataParameter.Value = parameterValue;
-				dbDataParameter.Direction = parameterDirection;
-				dbDataParameter.DbType = parameterDbType;
-				this.ReflectionFascade.SetLogicalPropertyValue(dbDataParameter, "IsNullable", parameterNullable, true, false);
-				dbDataParameter.Precision = parameterPrecision;
-				dbDataParameter.Scale = parameterScale;
+				dbParameter.ParameterName = parameterName;
+				dbParameter.Size = parameterSize;
+				dbParameter.Value = parameterValue;
+				dbParameter.Direction = parameterDirection;
+				dbParameter.DbType = parameterDbType;
+				this.ReflectionFascade.SetLogicalPropertyValue(dbParameter, "IsNullable", parameterNullable, true, false);
+				dbParameter.Precision = parameterPrecision;
+				dbParameter.Scale = parameterScale;
 
-				return dbDataParameter;
+				return dbParameter;
 			}
 		}
 
-		public IEnumerable<IDictionary<string, object>> ExecuteRecords(bool schemaOnly, Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> resultsetCallback = null)
+		public IEnumerable<IDictionary<string, object>> ExecuteRecords(bool schemaOnly, Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters, Action<int> resultsetCallback = null)
 		{
-			IDbTransaction dbTransaction;
+			DbTransaction dbTransaction;
 			const bool OPEN = true;
 
 			IList<IDictionary<string, object>> records;
@@ -112,7 +114,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)connectionString == null)
 				throw new ArgumentNullException("connectionString");
 
-			using (IDbConnection dbConnection = (IDbConnection)Activator.CreateInstance(connectionType))
+			using (DbConnection dbConnection = (DbConnection)Activator.CreateInstance(connectionType))
 			{
 				if (OPEN)
 				{
@@ -125,7 +127,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 						dbTransaction = null;
 				}
 
-				using (IDbCommand dbCommand = dbConnection.CreateCommand())
+				using (DbCommand dbCommand = dbConnection.CreateCommand())
 				{
 					dbCommand.Transaction = dbTransaction;
 					dbCommand.CommandType = commandType;
@@ -137,7 +139,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 					// add parameters
 					if ((object)commandParameters != null)
 					{
-						foreach (IDbDataParameter commandParameter in commandParameters)
+						foreach (DbParameter commandParameter in commandParameters)
 						{
 							if ((object)commandParameter.Value == null)
 								commandParameter.Value = DBNull.Value;
@@ -153,7 +155,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 					commandBehavior = schemaOnly ? CommandBehavior.SchemaOnly : CommandBehavior.Default;
 
-					using (IDataReader dataReader = dbCommand.ExecuteReader(commandBehavior))
+					using (DbDataReader dataReader = dbCommand.ExecuteReader(commandBehavior))
 					{
 						IDictionary<string, object> record;
 						string key;
@@ -188,7 +190,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 						}
 						else
 						{
-							using (DataTable dataTable = dataReader.GetSchemaTable())
+							/*using (DataTable dataTable = dataReader.GetSchemaTable())
 							{
 								if ((object)dataTable != null)
 								{
@@ -207,7 +209,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 										records.Add(record);
 									}
 								}
-							}
+							}*/
 						}
 					}
 
@@ -227,13 +229,15 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)clrType == null)
 				throw new ArgumentNullException("clrType");
 
+			var _clrTypeInfo = clrType.GetTypeInfo();
+
 			if (clrType.IsByRef /* || type.IsPointer || type.IsArray */)
 				return this.InferDbTypeForClrType(clrType.GetElementType());
-			else if (clrType.IsGenericType &&
-					!clrType.IsGenericTypeDefinition &&
+			else if (_clrTypeInfo.IsGenericType &&
+					!_clrTypeInfo.IsGenericTypeDefinition &&
 					clrType.GetGenericTypeDefinition() == typeof(Nullable<>))
 				return this.InferDbTypeForClrType(Nullable.GetUnderlyingType(clrType));
-			else if (clrType.IsEnum)
+			else if (_clrTypeInfo.IsEnum)
 				return this.InferDbTypeForClrType(Enum.GetUnderlyingType(clrType));
 			else if (clrType == typeof(Boolean))
 				return DbType.Boolean;

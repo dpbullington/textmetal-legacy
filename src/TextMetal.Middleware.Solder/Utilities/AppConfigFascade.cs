@@ -5,11 +5,106 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Text.RegularExpressions;
+#if DNXCORE50
+using ConfigurationErrorsException = System.InvalidOperationException;
+using ConfigurationManager = TextMetal.Middleware.Solder.Utilities._ConfigurationManager;
+using ConnectionStringSettings = TextMetal.Middleware.Solder.Utilities._ConnectionStringSettings;
+
+#endif
 
 namespace TextMetal.Middleware.Solder.Utilities
 {
+	internal sealed class _ConnectionStringSettings
+	{
+		#region Fields/Constants
+
+		private string connectionString;
+		private string providerName;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public string ConnectionString
+		{
+			get
+			{
+				return this.connectionString;
+			}
+		}
+
+		public string ProviderName
+		{
+			get
+			{
+				return this.providerName;
+			}
+		}
+
+		#endregion
+	}
+
+	internal sealed class _AppSettings
+	{
+		#region Properties/Indexers/Events
+
+		public string this[string key]
+		{
+			get
+			{
+				return null;
+			}
+		}
+
+		#endregion
+	}
+
+	internal sealed class _ConnectionStrings
+	{
+		#region Properties/Indexers/Events
+
+		public _ConnectionStringSettings this[string key]
+		{
+			get
+			{
+				return null;
+			}
+		}
+
+		#endregion
+	}
+
+	internal sealed class _ConfigurationManager
+	{
+		#region Fields/Constants
+
+		private static _AppSettings appSettings = new _AppSettings();
+		private static _ConnectionStrings connectionStrings = new _ConnectionStrings();
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public static _AppSettings AppSettings
+		{
+			get
+			{
+				return appSettings;
+			}
+		}
+
+		public static _ConnectionStrings ConnectionStrings
+		{
+			get
+			{
+				return connectionStrings;
+			}
+		}
+
+		#endregion
+	}
+
 	/// <summary>
 	/// Provides static helper and/or extension methods for strongly typed read access to an app.config or web.config file.
 	/// </summary>
@@ -243,7 +338,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)args == null)
 				throw new ArgumentNullException("args");
 
-			arguments = new Dictionary<string, IList<string>>(StringComparer.InvariantCultureIgnoreCase);
+			arguments = new Dictionary<string, IList<string>>(StringComparer.CurrentCultureIgnoreCase);
 
 			foreach (string arg in args)
 			{

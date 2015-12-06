@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
-MinimumVisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{61D501CE-BF7D-40FD-8BE7-86B7CE326A73}"
 	ProjectSection(SolutionItems) = preProject
 		SolutionAssemblyInfo.cs = SolutionAssemblyInfo.cs
@@ -27,6 +27,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Middleware.Solder", "TextMetal.Middleware.Solder\TextMetal.Middleware.Solder.csproj", "{3B0EFC3C-AA91-4FB4-B2EE-BD8727230A94}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Middleware.UnitTests", "TextMetal.Middleware.UnitTests\TextMetal.Middleware.UnitTests.csproj", "{A0917FE0-AAF8-4388-87D5-59F90B602BAF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_portable_", "_portable_", "{98EC87E5-FC09-4752-97B1-88FEDAFDF5B2}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Solder", "TextMetal.Middleware.Solder\TextMetal.Middleware.Solder.xproj", "{B6D5B9FD-4DD7-446C-939F-BD0B2B3A31DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,6 +70,10 @@ Global
 		{A0917FE0-AAF8-4388-87D5-59F90B602BAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0917FE0-AAF8-4388-87D5-59F90B602BAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0917FE0-AAF8-4388-87D5-59F90B602BAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6D5B9FD-4DD7-446C-939F-BD0B2B3A31DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6D5B9FD-4DD7-446C-939F-BD0B2B3A31DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6D5B9FD-4DD7-446C-939F-BD0B2B3A31DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6D5B9FD-4DD7-446C-939F-BD0B2B3A31DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,5 +87,6 @@ Global
 		{37CB28A3-CAB2-4D2F-BDE9-F35F81796FDD} = {E21DE8E9-3796-47A3-9B46-D75A6A92B882}
 		{3B0EFC3C-AA91-4FB4-B2EE-BD8727230A94} = {E21DE8E9-3796-47A3-9B46-D75A6A92B882}
 		{A0917FE0-AAF8-4388-87D5-59F90B602BAF} = {E21DE8E9-3796-47A3-9B46-D75A6A92B882}
+		{B6D5B9FD-4DD7-446C-939F-BD0B2B3A31DC} = {98EC87E5-FC09-4752-97B1-88FEDAFDF5B2}
 	EndGlobalSection
 EndGlobal

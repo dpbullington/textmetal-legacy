@@ -8,13 +8,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Security.Principal;
 
-using TextMetal.Middleware.Solder.Context;
+//using TextMetal.Middleware.Solder.Context;
 
 namespace TextMetal.Middleware.Solder.Utilities
 {
-	public abstract class ExecutableApplicationFascade : IExecutableApplicationFascade /*, ILogicalThreadAffinative*/
+	public abstract class ExecutableApplicationFascade : IExecutableApplicationFascade
 	{
 		#region Constructors/Destructors
 
@@ -47,11 +46,11 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 		#region Fields/Constants
 
-		private static readonly string EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY = typeof(ExecutableApplicationFascade).GUID.SafeToString();
+		private static readonly string EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY = typeof(ExecutableApplicationFascade).GetTypeInfo().GUID.SafeToString();
 		private readonly IAppConfigFascade appConfigFascade;
 		private readonly IDataTypeFascade dataTypeFascade;
 		private readonly IReflectionFascade reflectionFascade;
-		private AssemblyInformationFascade assemblyInformationFascade;
+		private IAssemblyInformationFascade assemblyInformationFascade;
 		private bool disposed;
 
 		#endregion
@@ -62,11 +61,12 @@ namespace TextMetal.Middleware.Solder.Utilities
 		{
 			get
 			{
-				return DefaultContextualStorageFactory.Instance.GetContextualStorage().GetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY);
+				return null;
+				//return DefaultContextualStorageFactory.Instance.GetContextualStorage().GetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY);
 			}
 			set
 			{
-				DefaultContextualStorageFactory.Instance.GetContextualStorage().SetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY, value);
+				//DefaultContextualStorageFactory.Instance.GetContextualStorage().SetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY, value);
 			}
 		}
 
@@ -103,7 +103,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			}
 		}
 
-		public AssemblyInformationFascade AssemblyInformationFascade
+		public IAssemblyInformationFascade AssemblyInformationFascade
 		{
 			get
 			{
@@ -140,7 +140,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 		protected abstract void DisplayFailureMessage(Exception exception);
 
-		protected abstract void DisplayRawArgumentsMessage(IEnumerable<string> arguments);
+		protected abstract void DisplayRawArgumentsMessage(string[] args, IEnumerable<string> arguments);
 
 		protected abstract void DisplaySuccessMessage(TimeSpan duration);
 
@@ -179,16 +179,11 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 		protected abstract int OnStartup(string[] args, IDictionary<string, IList<object>> arguments);
 
-		private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
-		{
-			this.ShowNestedExceptionsAndThrowBrickAtProcess(new ApplicationException("OnUnhandledException", e.ExceptionObject as Exception));
-		}
-
 		public void ShowNestedExceptionsAndThrowBrickAtProcess(Exception e)
 		{
 			this.DisplayFailureMessage(e);
 
-			Environment.Exit(-1);
+			Environment.FailFast(string.Empty, e);
 		}
 
 		private int Startup(string[] args)
@@ -210,12 +205,8 @@ namespace TextMetal.Middleware.Solder.Utilities
 			{
 				start = DateTime.UtcNow;
 
-				AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
-
-				if (this.HookUnhandledExceptionEvents)
-					AppDomain.CurrentDomain.UnhandledException += this.OnUnhandledException;
-
-				this.AssemblyInformationFascade = new AssemblyInformationFascade(Assembly.GetEntryAssembly());
+				// HACK
+				this.AssemblyInformationFascade = new AssemblyInformationFascade(this.GetType().GetTypeInfo().Assembly);
 
 				arguments = this.AppConfigFascade.ParseCommandLineArguments(args);
 				argumentMap = this.GetArgumentMap();
@@ -291,10 +282,12 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 				return returnCode;
 			}
-			finally
+			catch(Exception ex)
 			{
 				if (this.HookUnhandledExceptionEvents)
-					AppDomain.CurrentDomain.UnhandledException += this.OnUnhandledException;
+					ShowNestedExceptionsAndThrowBrickAtProcess(ex);
+
+				throw;
 			}
 		}
 
@@ -306,7 +299,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			}
 			catch (Exception ex)
 			{
-				this.ShowNestedExceptionsAndThrowBrickAtProcess(new ApplicationException("Main", ex));
+				this.ShowNestedExceptionsAndThrowBrickAtProcess(new Exception("Main", ex));
 			}
 
 			return -1;

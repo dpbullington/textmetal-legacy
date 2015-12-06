@@ -5,7 +5,7 @@
 
 using System;
 using System.Globalization;
-using System.Net.Mail;
+using System.Reflection;
 
 namespace TextMetal.Middleware.Solder.Utilities
 {
@@ -64,14 +64,16 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)conversionType == null)
 				throw new ArgumentNullException("conversionType");
 
+			var _conversionTypeInfo = conversionType.GetTypeInfo();
+
 			if ((object)value == null || value == DBNull.Value)
 				return this.DefaultValue(conversionType);
 
 			if (conversionType.IsAssignableFrom(value.GetType()))
 				return value;
 
-			if (conversionType.IsGenericType &&
-				!conversionType.IsGenericTypeDefinition &&
+			if (_conversionTypeInfo.IsGenericType &&
+				!_conversionTypeInfo.IsGenericTypeDefinition &&
 				conversionType.GetGenericTypeDefinition() == typeof(Nullable<>))
 				conversionType = Nullable.GetUnderlyingType(conversionType);
 
@@ -88,7 +90,9 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)targetType == null)
 				throw new ArgumentNullException("targetType");
 
-			return targetType.IsValueType ? Activator.CreateInstance(targetType) : null;
+			var _targetTypeInfo = targetType.GetTypeInfo();
+
+			return _targetTypeInfo.IsValueType ? Activator.CreateInstance(targetType) : null;
 		}
 
 		/// <summary>
@@ -120,7 +124,6 @@ namespace TextMetal.Middleware.Solder.Utilities
 		{
 			try
 			{
-				new MailAddress(value);
 				return true;
 			}
 			catch (FormatException)
@@ -251,11 +254,13 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)valueType == null)
 				throw new ArgumentNullException("valueType");
 
+			var _valueTypeInfo = valueType.GetTypeInfo();
+
 			openNullableType = typeof(Nullable<>);
 			result = null;
 
-			if (valueType.IsGenericType &&
-				!valueType.IsGenericTypeDefinition &&
+			if (_valueTypeInfo.IsGenericType &&
+				!_valueTypeInfo.IsGenericTypeDefinition &&
 				valueType.GetGenericTypeDefinition().Equals(openNullableType))
 			{
 				if ((object)value == null)
@@ -386,7 +391,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 				retval = Version.TryParse(value, out vresult);
 				result = vresult;
 			}
-			else if (valueType.IsEnum) // special case
+			else if (_valueTypeInfo.IsEnum) // special case
 			{
 				object zresult;
 

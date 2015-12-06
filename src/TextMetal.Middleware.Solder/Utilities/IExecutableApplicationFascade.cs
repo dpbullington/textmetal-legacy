@@ -11,7 +11,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 	{
 		#region Properties/Indexers/Events
 
-		AssemblyInformationFascade AssemblyInformationFascade
+		IAssemblyInformationFascade AssemblyInformationFascade
 		{
 			get;
 		}

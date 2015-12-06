@@ -1,0 +1,28 @@
+{
+	"version": "1.0.0-*",
+	"description": "TextMetal.Middleware Solder Portable Library",
+	"authors": [ "©2002-2016 Daniel Bullington (dpbullington@gmail.com)" ],
+	"tags": [ "" ],
+	"projectUrl": "",
+	"licenseUrl": "",
+	"frameworks": {
+		"dnxcore50": {
+			"dependencies": {
+				"Microsoft.CSharp": "4.0.1-beta-23516",
+				"System.Collections": "4.0.11-beta-23516",
+				"System.Console": "4.0.0-beta-23516",
+				"System.Data.Common": "4.0.1-rc2-23602",
+				"System.Linq": "4.0.1-beta-23516",
+				"System.Runtime": "4.0.21-beta-23516",
+				"System.Threading": "4.0.11-beta-23516",
+				"System.Xml.XmlDocument": "4.0.1-beta-23516"
+			}
+		}
+	},
+    "exclude": [
+        "Context",
+        "Injection",
+        "Interception",
+        "Serialization"
+    ]
+}

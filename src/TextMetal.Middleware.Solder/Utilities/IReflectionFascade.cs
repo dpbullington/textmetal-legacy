@@ -18,10 +18,10 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// <summary>
 		/// Gets all custom attributes of the specified type. If no custom attributes of the specified type are defined, then null is returned.
 		/// </summary>
-		/// <typeparam name="TAttribute"> The target ICustomAttributeProvider (Assembly, Type, MemberInfo, etc.) </typeparam>
+		/// <typeparam name="TAttribute"> The target object (Assembly, Type, MemberInfo, etc.) </typeparam>
 		/// <param name="target"> The target object. </param>
 		/// <returns> The custom attributes array or null. </returns>
-		TAttribute[] GetAllAttributes<TAttribute>(ICustomAttributeProvider target)
+		TAttribute[] GetAllAttributes<TAttribute>(object target)
 			where TAttribute : Attribute;
 
 		/// <summary>
@@ -62,17 +62,17 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// Get the single custom attribute of the attribute specified type. If more than one custom attribute exists for the requested type, an InvalidOperationException is thrown. If no custom attributes of the specified type are defined, then null is returned.
 		/// </summary>
 		/// <typeparam name="TAttribute"> The custom attribute type. </typeparam>
-		/// <param name="target"> The target ICustomAttributeProvider (Assembly, Type, MemberInfo, etc.) </param>
+		/// <param name="target"> The target object (Assembly, Type, MemberInfo, etc.) </param>
 		/// <returns> The single custom attribute or null if none are defined. </returns>
-		TAttribute GetOneAttribute<TAttribute>(ICustomAttributeProvider target)
+		TAttribute GetOneAttribute<TAttribute>(object target)
 			where TAttribute : Attribute;
 
 		/// <summary>
 		/// Asserts that the custom attribute is not defined on the target. If more than zero custom attributes exist for the requested type, an InvalidOperationException is thrown.
 		/// </summary>
 		/// <typeparam name="TAttribute"> The custom attribute type. </typeparam>
-		/// <param name="target"> The target ICustomAttributeProvider (Assembly, Type, MemberInfo, etc.) </param>
-		void GetZeroAttributes<TAttribute>(ICustomAttributeProvider target)
+		/// <param name="target"> The target object (Assembly, Type, MemberInfo, etc.) </param>
+		void GetZeroAttributes<TAttribute>(object target)
 			where TAttribute : Attribute;
 
 		/// <summary>

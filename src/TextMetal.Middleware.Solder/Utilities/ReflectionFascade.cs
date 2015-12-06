@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using System.Reflection;
 
 namespace TextMetal.Middleware.Solder.Utilities
@@ -72,21 +73,30 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// <summary>
 		/// Gets all custom attributes of the specified type. If no custom attributes of the specified type are defined, then null is returned.
 		/// </summary>
-		/// <typeparam name="TAttribute"> The target ICustomAttributeProvider (Assembly, Type, MemberInfo, etc.) </typeparam>
+		/// <typeparam name="TAttribute"> The target object (Assembly, Type, MemberInfo, etc.) </typeparam>
 		/// <param name="target"> The target object. </param>
 		/// <returns> The custom attributes array or null. </returns>
-		public TAttribute[] GetAllAttributes<TAttribute>(ICustomAttributeProvider target)
+		public TAttribute[] GetAllAttributes<TAttribute>(object target)
 			where TAttribute : Attribute
 		{
-			object[] attributes;
+			IEnumerable<TAttribute> attributes;
 
 			if ((object)target == null)
 				throw new ArgumentNullException("target");
 
-			attributes = target.GetCustomAttributes(typeof(TAttribute), true);
+			if (target is Assembly)
+				attributes = ((Assembly)target).GetCustomAttributes<TAttribute>();
+			else if (target is Module)
+				attributes = ((Module)target).GetCustomAttributes<TAttribute>();
+			else if (target is MemberInfo)
+				attributes = ((MemberInfo)target).GetCustomAttributes<TAttribute>(true);
+			else if (target is ParameterInfo)
+				attributes = ((ParameterInfo)target).GetCustomAttributes<TAttribute>(true);
+			else
+				attributes = null;
 
-			if ((object)attributes != null && attributes.Length != 0 && attributes is TAttribute[])
-				return attributes as TAttribute[];
+			if ((object)attributes != null)
+				return attributes.ToArray();
 			else
 				return null;
 		}
@@ -293,12 +303,14 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 			while ((object)propertyType != null)
 			{
-				property = propertyType.GetProperty(propertyName, BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance, null, null, new Type[] { }, null);
+				var _propertyTypeInfo = propertyType.GetTypeInfo();
+
+				property = propertyType.GetProperty(propertyName, BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
 
 				if ((object)property != null)
 					return property;
 
-				propertyType = propertyType.BaseType;
+				propertyType = _propertyTypeInfo.BaseType;
 			}
 
 			return null;
@@ -308,9 +320,9 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// Get the single custom attribute of the attribute specified type. If more than one custom attribute exists for the requested type, an InvalidOperationException is thrown. If no custom attributes of the specified type are defined, then null is returned.
 		/// </summary>
 		/// <typeparam name="TAttribute"> The custom attribute type. </typeparam>
-		/// <param name="target"> The target ICustomAttributeProvider (Assembly, Type, MemberInfo, etc.) </param>
+		/// <param name="target"> The target object (Assembly, Type, MemberInfo, etc.) </param>
 		/// <returns> The single custom attribute or null if none are defined. </returns>
-		public TAttribute GetOneAttribute<TAttribute>(ICustomAttributeProvider target)
+		public TAttribute GetOneAttribute<TAttribute>(object target)
 			where TAttribute : Attribute
 		{
 			TAttribute[] attributes;
@@ -336,8 +348,8 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// Asserts that the custom attribute is not defined on the target. If more than zero custom attributes exist for the requested type, an InvalidOperationException is thrown.
 		/// </summary>
 		/// <typeparam name="TAttribute"> The custom attribute type. </typeparam>
-		/// <param name="target"> The target ICustomAttributeProvider (Assembly, Type, MemberInfo, etc.) </param>
-		public void GetZeroAttributes<TAttribute>(ICustomAttributeProvider target)
+		/// <param name="target"> The target object (Assembly, Type, MemberInfo, etc.) </param>
+		public void GetZeroAttributes<TAttribute>(object target)
 			where TAttribute : Attribute
 		{
 			TAttribute[] attributes;
@@ -370,14 +382,16 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)conversionType == null)
 				throw new ArgumentNullException("conversionType");
 
+			var _conversionTypeInfo = conversionType.GetTypeInfo();
+
 			openNullableType = typeof(Nullable<>);
 
-			if (conversionType.IsGenericType &&
-				!conversionType.IsGenericTypeDefinition &&
+			if (_conversionTypeInfo.IsGenericType &&
+				!_conversionTypeInfo.IsGenericTypeDefinition &&
 				conversionType.GetGenericTypeDefinition() == typeof(Nullable<>))
 				return conversionType.GetGenericArguments()[0];
 
-			if (conversionType.IsValueType)
+			if (_conversionTypeInfo.IsValueType)
 				return conversionType;
 
 			return conversionType; // DPB (2014-04-09: change this behavior.)
@@ -395,13 +409,15 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)conversionType == null)
 				throw new ArgumentNullException("conversionType");
 
+			var _conversionTypeInfo = conversionType.GetTypeInfo();
+
 			openNullableType = typeof(Nullable<>);
 
-			if (!conversionType.IsValueType)
+			if (!_conversionTypeInfo.IsValueType)
 				return conversionType;
 
-			if (conversionType.IsGenericType &&
-				!conversionType.IsGenericTypeDefinition &&
+			if (_conversionTypeInfo.IsGenericType &&
+				!_conversionTypeInfo.IsGenericTypeDefinition &&
 				conversionType.GetGenericTypeDefinition() == typeof(Nullable<>))
 				return conversionType;
 
@@ -437,7 +453,6 @@ namespace TextMetal.Middleware.Solder.Utilities
 			Type targetType;
 			PropertyInfo propertyInfo;
 			IDictionary targetDictionary;
-			IDynamicMetaObjectProvider targetDynamic;
 
 			if ((object)targetInstance == null)
 				return false;

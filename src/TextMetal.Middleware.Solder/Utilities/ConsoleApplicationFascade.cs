@@ -47,7 +47,8 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)requiredArgumentTokens != null)
 			{
 				Console.WriteLine();
-				Console.WriteLine(string.Format("USAGE: {0} ", Assembly.GetEntryAssembly().ManifestModule.Name) + string.Join(" ", requiredArgumentTokens));
+				// HACK
+				Console.WriteLine(string.Format("USAGE: {0} ", this.GetType().GetTypeInfo().Assembly.ManifestModule.Name) + string.Join(" ", requiredArgumentTokens));
 			}
 
 			Console.ForegroundColor = oldConsoleColor;
@@ -65,7 +66,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			Console.WriteLine("The operation failed to complete.");
 		}
 
-		protected override sealed void DisplayRawArgumentsMessage(IEnumerable<string> arguments)
+		protected override sealed void DisplayRawArgumentsMessage(string[] args, IEnumerable<string> arguments)
 		{
 			ConsoleColor oldConsoleColor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Blue;
@@ -73,7 +74,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)arguments != null)
 			{
 				Console.WriteLine();
-				Console.WriteLine("RAW CMDLN: {0}", Environment.CommandLine);
+				Console.WriteLine("RAW CMDLN: {0}", string.Join(" ", args));
 				Console.WriteLine();
 				Console.WriteLine("RAW ARGS:");
 
