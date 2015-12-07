@@ -3,17 +3,23 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-using System.Web;
+using Microsoft.AspNet.Http;
 
 namespace TextMetal.Middleware.Solder.Context
 {
-	public sealed class HttpContextContextualStorageStrategy : IContextualStorageStrategy
+	public sealed class HttpContextAccessorContextualStorageStrategy : IContextualStorageStrategy
 	{
 		#region Constructors/Destructors
 
-		public HttpContextContextualStorageStrategy()
+		public HttpContextAccessorContextualStorageStrategy()
 		{
 		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly IHttpContextAccessor __ = null;
 
 		#endregion
 
@@ -26,7 +32,7 @@ namespace TextMetal.Middleware.Solder.Context
 		{
 			get
 			{
-				return (object)HttpContext.Current != null;
+				return (object)new HttpContextAccessorContextualStorageStrategy().__.HttpContext != null;
 			}
 		}
 
@@ -36,27 +42,27 @@ namespace TextMetal.Middleware.Solder.Context
 
 		public static string GetApplicationRootPhysicalPath()
 		{
-			return HttpContext.Current.Server.MapPath("~/");
+			return null; //xx.MapPath("~/");
 		}
 
 		public T GetValue<T>(string key)
 		{
-			return (T)HttpContext.Current.Items[key];
+			return (T)this.__.HttpContext.Items[key];
 		}
 
 		public bool HasValue(string key)
 		{
-			return HttpContext.Current.Items.Contains(key);
+			return this.__.HttpContext.Items.ContainsKey(key);
 		}
 
 		public void RemoveValue(string key)
 		{
-			HttpContext.Current.Items.Remove(key);
+			this.__.HttpContext.Items.Remove(key);
 		}
 
 		public void SetValue<T>(string key, T value)
 		{
-			HttpContext.Current.Items[key] = value;
+			this.__.HttpContext.Items[key] = value;
 		}
 
 		#endregion

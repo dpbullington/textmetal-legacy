@@ -7,8 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Xml;
 using System.Reflection;
+using System.Xml;
 
 namespace TextMetal.Middleware.Solder.Utilities
 {

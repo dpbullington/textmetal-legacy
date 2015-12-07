@@ -282,10 +282,10 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 				return returnCode;
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				if (this.HookUnhandledExceptionEvents)
-					ShowNestedExceptionsAndThrowBrickAtProcess(ex);
+					this.ShowNestedExceptionsAndThrowBrickAtProcess(ex);
 
 				throw;
 			}

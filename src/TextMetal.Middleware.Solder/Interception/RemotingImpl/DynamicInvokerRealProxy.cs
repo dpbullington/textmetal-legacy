@@ -6,9 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.Remoting;
-using System.Runtime.Remoting.Messaging;
-using System.Runtime.Remoting.Proxies;
 
 // STACK_OVERFLOW_CHECK_ENABLED is used to detect NMock Object.ToString() on error.
 

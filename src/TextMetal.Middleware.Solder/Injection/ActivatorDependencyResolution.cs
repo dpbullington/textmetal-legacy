@@ -540,7 +540,9 @@ namespace TextMetal.Middleware.Solder.Injection
 
 			if ((object)constructorInfo == null)
 			{
-				if (this.ActualType.IsValueType)
+				var _actualTypeInfo = this.ActualType.GetTypeInfo();
+
+				if (_actualTypeInfo.IsValueType)
 					return this.GetResolutionInstance(new object[] { });
 
 				throw new DependencyException(string.Format("Constructor lookup failed for target type '{0}' and parameter types '{1}'.", this.ActualType.FullName, string.Join("|", this.ParameterTypes.Select(pt => pt.FullName).ToArray())));

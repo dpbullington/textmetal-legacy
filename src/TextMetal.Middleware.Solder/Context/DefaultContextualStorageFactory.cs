@@ -44,12 +44,10 @@ namespace TextMetal.Middleware.Solder.Context
 		{
 			IContextualStorageStrategy contextualStorageStrategy;
 
-			if (WcfContextContextualStorageStrategy.IsInWcfContext)
-				contextualStorageStrategy = new WcfContextContextualStorageStrategy();
-			else if (HttpContextContextualStorageStrategy.IsInHttpContext)
-				contextualStorageStrategy = new HttpContextContextualStorageStrategy();
-			else /* WinForms/WPF/Console/Service */
-				contextualStorageStrategy = new ThreadStaticContextualStorageStrategy();
+			if (HttpContextAccessorContextualStorageStrategy.IsInHttpContext)
+				contextualStorageStrategy = new HttpContextAccessorContextualStorageStrategy();
+			else
+				contextualStorageStrategy = new ThreadLocalContextualStorageStrategy();
 
 			return contextualStorageStrategy;
 		}

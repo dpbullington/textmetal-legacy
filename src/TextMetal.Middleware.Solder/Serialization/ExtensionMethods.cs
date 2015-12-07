@@ -5,6 +5,7 @@
 
 using System;
 using System.IO;
+using System.Reflection;
 
 namespace TextMetal.Middleware.Solder.Serialization
 {
@@ -50,7 +51,7 @@ namespace TextMetal.Middleware.Solder.Serialization
 			result = default(TObject);
 			targetType = typeof(TObject);
 
-			using (Stream stream = resourceType.Assembly.GetManifestResourceStream(resourceName))
+			using (Stream stream = resourceType.GetTypeInfo().Assembly.GetManifestResourceStream(resourceName))
 			{
 				if (retval = ((object)stream != null))
 					result = (TObject)serializationStrategy.GetObjectFromStream(stream, targetType);
@@ -78,7 +79,7 @@ namespace TextMetal.Middleware.Solder.Serialization
 
 			result = null;
 
-			using (Stream stream = resourceType.Assembly.GetManifestResourceStream(resourceName))
+			using (Stream stream = resourceType.GetTypeInfo().Assembly.GetManifestResourceStream(resourceName))
 			{
 				if (retval = (object)stream != null)
 				{

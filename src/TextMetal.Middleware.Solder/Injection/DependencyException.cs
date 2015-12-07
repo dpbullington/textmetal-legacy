@@ -10,7 +10,6 @@ namespace TextMetal.Middleware.Solder.Injection
 	/// <summary>
 	/// The exception thrown when a specific dependency resolution error occurs.
 	/// </summary>
-	[Serializable]
 	public sealed class DependencyException : Exception
 	{
 		#region Constructors/Destructors

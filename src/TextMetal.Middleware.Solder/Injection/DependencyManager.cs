@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -32,11 +31,8 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		#region Fields/Constants
 
-		private const int LOCK_AQUIRE_TIMEOUT_MILLISECONDS = 500;
-		private static readonly object synchObj = new object();
-		private static bool ready;
 		private readonly Dictionary<KeyValuePair<Type, string>, IDependencyResolution> dependencyResolutionRegistrations = new Dictionary<KeyValuePair<Type, string>, IDependencyResolution>();
-		private readonly ReaderWriterLock readerWriterLock = new ReaderWriterLock();
+		private readonly ReaderWriterLockSlim readerWriterLock = new ReaderWriterLockSlim();
 		private bool disposed;
 
 		#endregion
@@ -50,26 +46,7 @@ namespace TextMetal.Middleware.Solder.Injection
 		{
 			get
 			{
-				return LazySingleton.appDomainInstance;
-			}
-		}
-
-		/// <summary>
-		/// Gets the current app setting for disabling of resolution auto-wiring.
-		/// </summary>
-		private static bool DisableResolutionAutoWire
-		{
-			get
-			{
-				string svalue;
-				bool bvalue;
-
-				svalue = ConfigurationManager.AppSettings[string.Format("{0}::DisableResolutionAutoWire", typeof(DependencyManager).FullName)];
-
-				if (bool.TryParse(svalue, out bvalue))
-					return bvalue;
-				else
-					return false;
+				return AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager;
 			}
 		}
 
@@ -81,7 +58,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
-		private ReaderWriterLock ReaderWriterLock
+		private ReaderWriterLockSlim ReaderWriterLock
 		{
 			get
 			{
@@ -107,129 +84,6 @@ namespace TextMetal.Middleware.Solder.Injection
 		#endregion
 
 		#region Methods/Operators
-
-		/// <summary>
-		/// Private method to handle the assembly load events on application domains.
-		/// </summary>
-		/// <param name="sender"> The sending object. </param>
-		/// <param name="args"> The event arguments. </param>
-		private static void CurrentDomain_AssemblyLoad(object sender, AssemblyLoadEventArgs args)
-		{
-			ScanAssemblies(new Assembly[] { args.LoadedAssembly });
-		}
-
-		/// <summary>
-		/// Private method to handle the assembly unload events on application domains.
-		/// </summary>
-		/// <param name="sender"> The sending object. </param>
-		/// <param name="e"> The event arguments. </param>
-		private static void CurrentDomain_DomainUnload(object sender, EventArgs e)
-		{
-			TearDownApplicationDomain();
-		}
-
-		/// <summary>
-		/// Private method that will scan all asemblies specified to perform auto-wiring of dependencies.
-		/// </summary>
-		/// <param name="assemblies"> An arry of ssemblies to scan and load dependency resolutions automatically ("auto-wire" feature). </param>
-		private static void ScanAssemblies(Assembly[] assemblies)
-		{
-			Type[] assemblyTypes;
-			MethodInfo[] methodInfos;
-			DependencyRegistrationAttribute dependencyRegistrationAttribute;
-			Action dependencyRegistrationMethod;
-			AssemblyName[] referencedAssemblies;
-
-			if ((object)assemblies != null)
-			{
-				foreach (Assembly assembly in assemblies)
-				{
-					dependencyRegistrationAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyRegistrationAttribute>(assembly);
-
-					if ((object)dependencyRegistrationAttribute == null)
-						continue;
-
-					assemblyTypes = assembly.GetTypes();
-
-					if ((object)assemblyTypes != null)
-					{
-						foreach (Type assemblyType in assemblyTypes)
-						{
-							dependencyRegistrationAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyRegistrationAttribute>(assemblyType);
-
-							if ((object)dependencyRegistrationAttribute == null)
-								continue;
-
-							if (!assemblyType.IsPublic)
-								continue;
-
-							methodInfos = assemblyType.GetMethods(BindingFlags.Public | BindingFlags.Static);
-
-							if ((object)methodInfos != null)
-							{
-								foreach (MethodInfo methodInfo in methodInfos)
-								{
-									dependencyRegistrationAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyRegistrationAttribute>(methodInfo);
-
-									if ((object)dependencyRegistrationAttribute == null)
-										continue;
-
-									if (!methodInfo.IsStatic)
-										continue;
-
-									if (!methodInfo.IsPublic)
-										continue;
-
-									dependencyRegistrationMethod = (Action)(Delegate.CreateDelegate(typeof(Action), methodInfo, false));
-
-									if ((object)dependencyRegistrationMethod == null)
-										continue;
-
-									dependencyRegistrationMethod();
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		/// <summary>
-		/// Private thread-safe method which bootstraps an app domain for dependency management.
-		/// </summary>
-		private static void SetUpApplicationDomain()
-		{
-			lock (synchObj)
-			{
-				if (ready)
-					return;
-
-				AppDomain.CurrentDomain.AssemblyLoad += new AssemblyLoadEventHandler(CurrentDomain_AssemblyLoad);
-				AppDomain.CurrentDomain.DomainUnload += new EventHandler(CurrentDomain_DomainUnload);
-				ScanAssemblies(AppDomain.CurrentDomain.GetAssemblies());
-
-				ready = true;
-			}
-		}
-
-		/// <summary>
-		/// Private thread-safe method which dismantles an app domain for dependency management.
-		/// </summary>
-		private static void TearDownApplicationDomain()
-		{
-			lock (synchObj)
-			{
-				if (!ready)
-					return;
-
-				// cleanup
-				if ((object)AppDomainInstance != null)
-					AppDomainInstance.Dispose();
-
-				AppDomain.CurrentDomain.DomainUnload -= new EventHandler(CurrentDomain_DomainUnload);
-				AppDomain.CurrentDomain.AssemblyLoad -= new AssemblyLoadEventHandler(CurrentDomain_AssemblyLoad);
-			}
-		}
 
 		/// <summary>
 		/// Adds a new dependency resolution for a given target type and selector key. Throws a DependencyException if the target type and selector key combination has been previously registered in this instance. This is the generic overload.
@@ -264,7 +118,6 @@ namespace TextMetal.Middleware.Solder.Injection
 		public void AddResolution(Type targetType, string selectorKey, IDependencyResolution dependencyResolution)
 		{
 			KeyValuePair<Type, string> trait;
-			LockCookie lockCookie;
 
 			if (this.Disposed)
 				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
@@ -279,12 +132,12 @@ namespace TextMetal.Middleware.Solder.Injection
 				throw new ArgumentNullException("dependencyResolution");
 
 			// cop a reader lock
-			this.ReaderWriterLock.AcquireReaderLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
+			this.ReaderWriterLock.EnterUpgradeableReadLock();
 
 			try
 			{
 				// cop a writer lock
-				lockCookie = this.ReaderWriterLock.UpgradeToWriterLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
+				this.ReaderWriterLock.EnterWriteLock();
 
 				try
 				{
@@ -297,12 +150,12 @@ namespace TextMetal.Middleware.Solder.Injection
 				}
 				finally
 				{
-					this.ReaderWriterLock.DowngradeFromWriterLock(ref lockCookie);
+					this.ReaderWriterLock.ExitWriteLock();
 				}
 			}
 			finally
 			{
-				this.ReaderWriterLock.ReleaseReaderLock();
+				this.ReaderWriterLock.ExitUpgradeableReadLock();
 			}
 		}
 
@@ -313,7 +166,6 @@ namespace TextMetal.Middleware.Solder.Injection
 		public bool ClearAllResolutions()
 		{
 			bool result;
-			LockCookie lockCookie;
 
 			if (this.Disposed)
 				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
@@ -321,12 +173,12 @@ namespace TextMetal.Middleware.Solder.Injection
 			this.FreeDependencyResolutions();
 
 			// cop a reader lock
-			this.ReaderWriterLock.AcquireReaderLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
+			this.ReaderWriterLock.EnterUpgradeableReadLock();
 
 			try
 			{
 				// cop a writer lock
-				lockCookie = this.ReaderWriterLock.UpgradeToWriterLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
+				this.ReaderWriterLock.EnterWriteLock();
 
 				try
 				{
@@ -338,12 +190,12 @@ namespace TextMetal.Middleware.Solder.Injection
 				}
 				finally
 				{
-					this.ReaderWriterLock.DowngradeFromWriterLock(ref lockCookie);
+					this.ReaderWriterLock.ExitWriteLock();
 				}
 			}
 			finally
 			{
-				this.ReaderWriterLock.ReleaseReaderLock();
+				this.ReaderWriterLock.ExitUpgradeableReadLock();
 			}
 		}
 
@@ -372,7 +224,6 @@ namespace TextMetal.Middleware.Solder.Injection
 		public bool ClearTypeResolutions(Type targetType)
 		{
 			List<KeyValuePair<Type, string>> traitsToRemove;
-			LockCookie lockCookie;
 
 			if (this.Disposed)
 				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
@@ -381,12 +232,12 @@ namespace TextMetal.Middleware.Solder.Injection
 				throw new ArgumentNullException("targetType");
 
 			// cop a reader lock
-			this.ReaderWriterLock.AcquireReaderLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
+			this.ReaderWriterLock.EnterUpgradeableReadLock();
 
 			try
 			{
 				// cop a writer lock
-				lockCookie = this.ReaderWriterLock.UpgradeToWriterLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
+				this.ReaderWriterLock.EnterWriteLock();
 
 				try
 				{
@@ -405,12 +256,12 @@ namespace TextMetal.Middleware.Solder.Injection
 				}
 				finally
 				{
-					this.ReaderWriterLock.DowngradeFromWriterLock(ref lockCookie);
+					this.ReaderWriterLock.ExitWriteLock();
 				}
 			}
 			finally
 			{
-				this.ReaderWriterLock.ReleaseReaderLock();
+				this.ReaderWriterLock.ExitUpgradeableReadLock();
 			}
 		}
 
@@ -419,20 +270,18 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// </summary>
 		public void Dispose()
 		{
-			LockCookie lockCookie;
-
 			if (this.Disposed)
 				return;
 
 			this.FreeDependencyResolutions();
 
 			// cop a reader lock
-			this.ReaderWriterLock.AcquireReaderLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
+			this.ReaderWriterLock.EnterUpgradeableReadLock();
 
 			try
 			{
 				// cop a writer lock
-				lockCookie = this.ReaderWriterLock.UpgradeToWriterLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
+				this.ReaderWriterLock.EnterWriteLock();
 
 				try
 				{
@@ -440,12 +289,12 @@ namespace TextMetal.Middleware.Solder.Injection
 				}
 				finally
 				{
-					this.ReaderWriterLock.DowngradeFromWriterLock(ref lockCookie);
+					this.ReaderWriterLock.ExitWriteLock();
 				}
 			}
 			finally
 			{
-				this.ReaderWriterLock.ReleaseReaderLock();
+				this.ReaderWriterLock.ExitUpgradeableReadLock();
 				this.Disposed = true;
 				GC.SuppressFinalize(this);
 			}
@@ -516,7 +365,7 @@ namespace TextMetal.Middleware.Solder.Injection
 				throw new ArgumentNullException("targetType");
 
 			// cop a reader lock
-			this.ReaderWriterLock.AcquireReaderLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
+			this.ReaderWriterLock.EnterUpgradeableReadLock();
 
 			try
 			{
@@ -524,7 +373,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 			finally
 			{
-				this.ReaderWriterLock.ReleaseReaderLock();
+				this.ReaderWriterLock.ExitUpgradeableReadLock();
 			}
 		}
 
@@ -556,7 +405,6 @@ namespace TextMetal.Middleware.Solder.Injection
 		public void RemoveResolution(Type targetType, string selectorKey)
 		{
 			KeyValuePair<Type, string> trait;
-			LockCookie lockCookie;
 			IDependencyResolution dependencyResolution;
 
 			if (this.Disposed)
@@ -569,12 +417,12 @@ namespace TextMetal.Middleware.Solder.Injection
 				throw new ArgumentNullException("selectorKey");
 
 			// cop a reader lock
-			this.ReaderWriterLock.AcquireReaderLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
+			this.ReaderWriterLock.EnterUpgradeableReadLock();
 
 			try
 			{
 				// cop a writer lock
-				lockCookie = this.ReaderWriterLock.UpgradeToWriterLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
+				this.ReaderWriterLock.EnterWriteLock();
 
 				try
 				{
@@ -593,12 +441,12 @@ namespace TextMetal.Middleware.Solder.Injection
 				}
 				finally
 				{
-					this.ReaderWriterLock.DowngradeFromWriterLock(ref lockCookie);
+					this.ReaderWriterLock.ExitWriteLock();
 				}
 			}
 			finally
 			{
-				this.ReaderWriterLock.ReleaseReaderLock();
+				this.ReaderWriterLock.ExitUpgradeableReadLock();
 			}
 		}
 
@@ -648,7 +496,7 @@ namespace TextMetal.Middleware.Solder.Injection
 				throw new ArgumentNullException("selectorKey");
 
 			// cop a reader lock
-			this.ReaderWriterLock.AcquireReaderLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
+			this.ReaderWriterLock.EnterUpgradeableReadLock();
 
 			try
 			{
@@ -671,43 +519,8 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 			finally
 			{
-				this.ReaderWriterLock.ReleaseReaderLock();
+				this.ReaderWriterLock.ExitUpgradeableReadLock();
 			}
-		}
-
-		#endregion
-
-		#region Classes/Structs/Interfaces/Enums/Delegates
-
-		/// <summary>
-		/// http://www.yoda.arachsys.com/csharp/singleton.html
-		/// </summary>
-		private class LazySingleton
-		{
-			#region Constructors/Destructors
-
-			static LazySingleton()
-			{
-				if (!DisableResolutionAutoWire)
-					LazySetUpApplicationDomain();
-			}
-
-			#endregion
-
-			#region Fields/Constants
-
-			internal static readonly DependencyManager appDomainInstance = new DependencyManager();
-
-			#endregion
-
-			#region Methods/Operators
-
-			private static void LazySetUpApplicationDomain()
-			{
-				SetUpApplicationDomain();
-			}
-
-			#endregion
 		}
 
 		#endregion
