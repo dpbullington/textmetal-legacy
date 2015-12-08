@@ -6,105 +6,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-#if DNXCORE50
-using ConfigurationErrorsException = System.InvalidOperationException;
-using ConfigurationManager = TextMetal.Middleware.Solder.Utilities._ConfigurationManager;
-using ConnectionStringSettings = TextMetal.Middleware.Solder.Utilities._ConnectionStringSettings;
 
-#endif
+using TextMetal.Middleware.Solder.Injection;
+using TextMetal.Middleware.Solder.Runtime;
 
 namespace TextMetal.Middleware.Solder.Utilities
 {
-	internal sealed class _ConnectionStringSettings
-	{
-		#region Fields/Constants
-
-		private string connectionString;
-		private string providerName;
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public string ConnectionString
-		{
-			get
-			{
-				return this.connectionString;
-			}
-		}
-
-		public string ProviderName
-		{
-			get
-			{
-				return this.providerName;
-			}
-		}
-
-		#endregion
-	}
-
-	internal sealed class _AppSettings
-	{
-		#region Properties/Indexers/Events
-
-		public string this[string key]
-		{
-			get
-			{
-				return null;
-			}
-		}
-
-		#endregion
-	}
-
-	internal sealed class _ConnectionStrings
-	{
-		#region Properties/Indexers/Events
-
-		public _ConnectionStringSettings this[string key]
-		{
-			get
-			{
-				return null;
-			}
-		}
-
-		#endregion
-	}
-
-	internal sealed class _ConfigurationManager
-	{
-		#region Fields/Constants
-
-		private static _AppSettings appSettings = new _AppSettings();
-		private static _ConnectionStrings connectionStrings = new _ConnectionStrings();
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public static _AppSettings AppSettings
-		{
-			get
-			{
-				return appSettings;
-			}
-		}
-
-		public static _ConnectionStrings ConnectionStrings
-		{
-			get
-			{
-				return connectionStrings;
-			}
-		}
-
-		#endregion
-	}
-
 	/// <summary>
 	/// Provides static helper and/or extension methods for strongly typed read access to an app.config or web.config file.
 	/// </summary>
@@ -204,13 +111,13 @@ namespace TextMetal.Middleware.Solder.Utilities
 				throw new ArgumentNullException("key");
 
 			typeOfValue = typeof(TValue);
-			svalue = ConfigurationManager.AppSettings[key];
+			svalue = FxSpackleTypes.ConfigurationManager.AppSettings[key];
 
 			if ((object)svalue == null)
-				throw new ConfigurationErrorsException(string.Format("Key '{0}' was not found in app.config file.", key));
+				throw new FxSpackleTypes.ConfigurationErrorsException(string.Format("Key '{0}' was not found in app.config file.", key));
 
 			if (!this.DataTypeFascade.TryParse<TValue>(svalue, out ovalue))
-				throw new ConfigurationErrorsException(string.Format("App.config key '{0}' value '{1}' is not a valid '{2}'.", key, svalue, typeOfValue.FullName));
+				throw new FxSpackleTypes.ConfigurationErrorsException(string.Format("App.config key '{0}' value '{1}' is not a valid '{2}'.", key, svalue, typeOfValue.FullName));
 
 			return ovalue;
 		}
@@ -232,13 +139,13 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)key == null)
 				throw new ArgumentNullException("key");
 
-			svalue = ConfigurationManager.AppSettings[key];
+			svalue = FxSpackleTypes.ConfigurationManager.AppSettings[key];
 
 			if ((object)svalue == null)
-				throw new ConfigurationErrorsException(string.Format("Key '{0}' was not found in app.config file.", key));
+				throw new FxSpackleTypes.ConfigurationErrorsException(string.Format("Key '{0}' was not found in app.config file.", key));
 
 			if (!this.DataTypeFascade.TryParse(valueType, svalue, out ovalue))
-				throw new ConfigurationErrorsException(string.Format("App.config key '{0}' value '{1}' is not a valid '{2}'.", key, svalue, valueType.FullName));
+				throw new FxSpackleTypes.ConfigurationErrorsException(string.Format("App.config key '{0}' value '{1}' is not a valid '{2}'.", key, svalue, valueType.FullName));
 
 			return ovalue;
 		}
@@ -250,15 +157,15 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// <returns> The connection provider. </returns>
 		public string GetConnectionProvider(string name)
 		{
-			ConnectionStringSettings value;
+			FxSpackleTypes.ConnectionStringSettings value;
 
 			if ((object)name == null)
 				throw new ArgumentNullException("name");
 
-			value = ConfigurationManager.ConnectionStrings[name];
+			value = FxSpackleTypes.ConfigurationManager.ConnectionStrings[name];
 
 			if ((object)value == null)
-				throw new ConfigurationErrorsException(string.Format("Connection string name '{0}' was not found in app.config file.", name));
+				throw new FxSpackleTypes.ConfigurationErrorsException(string.Format("Connection string name '{0}' was not found in app.config file.", name));
 
 			//if ((object)value.ConnectionString == null)
 			//	throw new ConfigurationErrorsException(string.Format("Connection string name '{0}' was not found in app.config file.", name));
@@ -273,15 +180,15 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// <returns> The connection string. </returns>
 		public string GetConnectionString(string name)
 		{
-			ConnectionStringSettings value;
+			FxSpackleTypes.ConnectionStringSettings value;
 
 			if ((object)name == null)
 				throw new ArgumentNullException("name");
 
-			value = ConfigurationManager.ConnectionStrings[name];
+			value = FxSpackleTypes.ConfigurationManager.ConnectionStrings[name];
 
 			if ((object)value == null)
-				throw new ConfigurationErrorsException(string.Format("Connection string name '{0}' was not found in app.config file.", name));
+				throw new FxSpackleTypes.ConfigurationErrorsException(string.Format("Connection string name '{0}' was not found in app.config file.", name));
 
 			//if ((object)value.ConnectionString == null)
 			//	throw new ConfigurationErrorsException(string.Format("Connection string name '{0}' was not found in app.config file.", name));
@@ -301,7 +208,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)key == null)
 				throw new ArgumentNullException("key");
 
-			value = ConfigurationManager.AppSettings[key];
+			value = FxSpackleTypes.ConfigurationManager.AppSettings[key];
 
 			return ((object)value != null);
 		}
@@ -313,12 +220,12 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// <returns> A boolean value indicating the connection string name presence. </returns>
 		public bool HasConnectionString(string name)
 		{
-			ConnectionStringSettings value;
+			FxSpackleTypes.ConnectionStringSettings value;
 
 			if ((object)name == null)
 				throw new ArgumentNullException("name");
 
-			value = ConfigurationManager.ConnectionStrings[name];
+			value = FxSpackleTypes.ConfigurationManager.ConnectionStrings[name];
 
 			return ((object)value != null);
 		}

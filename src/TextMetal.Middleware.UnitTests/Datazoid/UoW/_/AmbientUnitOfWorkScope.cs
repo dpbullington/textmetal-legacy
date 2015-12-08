@@ -8,7 +8,7 @@ using System.Data;
 
 using NUnit.Framework;
 
-namespace TextMetal.Middleware.UnitTests.Data._
+namespace TextMetal.Middleware.UnitTests.Datazoid.UoW._
 {
 	[TestFixture]
 	public class AmbientUnitOfWorkScopeTests

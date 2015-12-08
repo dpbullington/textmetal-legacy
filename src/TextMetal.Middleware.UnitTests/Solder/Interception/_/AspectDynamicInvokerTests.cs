@@ -8,10 +8,9 @@ using System.Reflection;
 
 using NUnit.Framework;
 
-using TextMetal.Middleware.Testing;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
-namespace TextMetal.Middleware.UnitTests.Solder.SoC._
+namespace TextMetal.Middleware.UnitTests.Solder.Interception._
 {
 	[TestFixture]
 	public class AspectDynamicInvokerTests

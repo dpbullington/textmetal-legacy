@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace TextMetal.Middleware.Solder.Interception
 {
@@ -29,7 +30,7 @@ namespace TextMetal.Middleware.Solder.Interception
 
 		private const int LOCK_AQUIRE_TIMEOUT_MILLISECONDS = 500;
 		private readonly IDictionary<KeyValuePair<Type, TCacheTrait>, object> proxyCache = new Dictionary<KeyValuePair<Type, TCacheTrait>, object>();
-		private readonly ReaderWriterLock readerWriterLock = new ReaderWriterLock();
+		private readonly ReaderWriterLockSlim readerWriterLock = new ReaderWriterLockSlim();
 		private bool disposed;
 
 		#endregion
@@ -44,7 +45,7 @@ namespace TextMetal.Middleware.Solder.Interception
 			}
 		}
 
-		private ReaderWriterLock ReaderWriterLock
+		private ReaderWriterLockSlim ReaderWriterLock
 		{
 			get
 			{
@@ -91,13 +92,12 @@ namespace TextMetal.Middleware.Solder.Interception
 		protected TProxy CreateOrGetInstance<TProxy>(KeyValuePair<Type, TCacheTrait> keyValuePair, Func<TProxy> proxyFactoryMethod) where TProxy : class
 		{
 			TProxy proxy;
-			LockCookie lockCookie;
 
 			if (this.Disposed)
 				throw new ObjectDisposedException(typeof(ProxyFactory<TCacheTrait>).FullName);
 
 			// cop a reader lock
-			this.ReaderWriterLock.AcquireReaderLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
+			this.ReaderWriterLock.EnterUpgradeableReadLock();
 
 			try
 			{
@@ -109,7 +109,7 @@ namespace TextMetal.Middleware.Solder.Interception
 				else
 				{
 					// cop a writer lock
-					lockCookie = this.ReaderWriterLock.UpgradeToWriterLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
+					this.ReaderWriterLock.EnterWriteLock();
 
 					try
 					{
@@ -121,13 +121,13 @@ namespace TextMetal.Middleware.Solder.Interception
 					}
 					finally
 					{
-						this.ReaderWriterLock.DowngradeFromWriterLock(ref lockCookie);
+						this.ReaderWriterLock.ExitWriteLock();
 					}
 				}
 			}
 			finally
 			{
-				this.ReaderWriterLock.ReleaseReaderLock();
+				this.ReaderWriterLock.ExitUpgradeableReadLock();
 			}
 
 			return proxy;
@@ -138,18 +138,16 @@ namespace TextMetal.Middleware.Solder.Interception
 		/// </summary>
 		public void Dispose()
 		{
-			LockCookie lockCookie;
-
 			if (this.Disposed)
 				return;
 
 			// cop a reader lock
-			this.ReaderWriterLock.AcquireReaderLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
+			this.ReaderWriterLock.EnterUpgradeableReadLock();
 
 			try
 			{
 				// cop a writer lock
-				lockCookie = this.ReaderWriterLock.UpgradeToWriterLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
+				this.ReaderWriterLock.EnterWriteLock();
 
 				try
 				{
@@ -160,12 +158,12 @@ namespace TextMetal.Middleware.Solder.Interception
 				}
 				finally
 				{
-					this.ReaderWriterLock.DowngradeFromWriterLock(ref lockCookie);
+					this.ReaderWriterLock.ExitWriteLock();
 				}
 			}
 			finally
 			{
-				this.ReaderWriterLock.ReleaseReaderLock();
+				this.ReaderWriterLock.ExitUpgradeableReadLock();
 				this.Disposed = true;
 				GC.SuppressFinalize(this);
 			}
@@ -182,7 +180,7 @@ namespace TextMetal.Middleware.Solder.Interception
 				throw new ObjectDisposedException(typeof(ProxyFactory<TCacheTrait>).FullName);
 
 			// cop a reader lock
-			this.ReaderWriterLock.AcquireReaderLock(LOCK_AQUIRE_TIMEOUT_MILLISECONDS);
+			this.ReaderWriterLock.EnterUpgradeableReadLock();
 
 			try
 			{
@@ -190,7 +188,7 @@ namespace TextMetal.Middleware.Solder.Interception
 			}
 			finally
 			{
-				this.ReaderWriterLock.ReleaseReaderLock();
+				this.ReaderWriterLock.ExitUpgradeableReadLock();
 			}
 		}
 

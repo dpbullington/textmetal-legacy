@@ -5,11 +5,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Runtime.InteropServices;
 
 using NUnit.Framework;
 
+using TextMetal.Middleware.Solder.Injection;
+using TextMetal.Middleware.Solder.Runtime;
 using TextMetal.Middleware.Solder.Utilities;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
@@ -29,266 +30,266 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		#region Methods/Operators
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetBooleanTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Boolean>("BadAppConfigFascadeValueBoolean");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetByteTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Byte>("BadAppConfigFascadeValueByte");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetCharTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Char>("BadAppConfigFascadeValueChar");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetConnectionProviderTest()
 		{
 			AppConfigFascade.Instance.GetConnectionProvider("BadMyProvider");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetConnectionStringTest()
 		{
 			AppConfigFascade.Instance.GetConnectionString("BadMyProvider");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetDateTimeTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<DateTime>("BadAppConfigFascadeValueDateTime");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetDecimalTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Decimal>("BadAppConfigFascadeValueDecimal");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetDoubleTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Double>("BadAppConfigFascadeValueDouble");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetEnumTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<CharSet>("BadAppConfigFascadeValueEnum");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetGuidTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Guid>("BadAppConfigFascadeValueGuid");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetInt16Test()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Int16>("BadAppConfigFascadeValueInt16");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetInt32Test()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Int32>("BadAppConfigFascadeValueInt32");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetInt64Test()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Int64>("BadAppConfigFascadeValueInt64");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetSByteTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<SByte>("BadAppConfigFascadeValueSByte");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetSingleTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Single>("BadAppConfigFascadeValueSingle");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetTimeSpanTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<TimeSpan>("BadAppConfigFascadeValueTimeSpan");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetUInt16Test()
 		{
 			AppConfigFascade.Instance.GetAppSetting<UInt16>("BadAppConfigFascadeValueUInt16");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetUInt32Test()
 		{
 			AppConfigFascade.Instance.GetAppSetting<UInt32>("BadAppConfigFascadeValueUInt32");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnInvalidValueGetUInt64Test()
 		{
 			AppConfigFascade.Instance.GetAppSetting<UInt64>("BadAppConfigFascadeValueUInt64");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetBooleanTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Boolean>("NotThereAppConfigFascadeValueBoolean");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetByteTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Byte>("NotThereAppConfigFascadeValueByte");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetCharTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Char>("NotThereAppConfigFascadeValueChar");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetConnectionProviderTest()
 		{
 			AppConfigFascade.Instance.GetConnectionProvider("NotThereMyProvider");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetConnectionStringTest()
 		{
 			AppConfigFascade.Instance.GetConnectionString("NotThereMyProvider");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetDateTimeTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<DateTime>("NotThereAppConfigFascadeValueDateTime");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetDecimalTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Decimal>("NotThereAppConfigFascadeValueDecimal");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetDoubleTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Double>("NotThereAppConfigFascadeValueDouble");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetEnumTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<CharSet>("NotThereAppConfigFascadeValueEnum");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetGuidTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Guid>("NotThereAppConfigFascadeValueGuid");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetInt16Test()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Int16>("NotThereAppConfigFascadeValueInt16");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetInt32Test()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Int32>("NotThereAppConfigFascadeValueInt32");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetInt64Test()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Int64>("NotThereAppConfigFascadeValueInt64");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetSByteTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<SByte>("NotThereAppConfigFascadeValueSByte");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetSingleTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<Single>("NotThereAppConfigFascadeValueSingle");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetTimeSpanTest()
 		{
 			AppConfigFascade.Instance.GetAppSetting<TimeSpan>("NotThereAppConfigFascadeValueTimeSpan");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetUInt16Test()
 		{
 			AppConfigFascade.Instance.GetAppSetting<UInt16>("NotThereAppConfigFascadeValueUInt16");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetUInt32Test()
 		{
 			AppConfigFascade.Instance.GetAppSetting<UInt32>("NotThereAppConfigFascadeValueUInt32");
 		}
 
 		[Test]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(FxSpackleTypes.ConfigurationErrorsException))]
 		public void ShouldFailOnNonExistKeyGetUInt64Test()
 		{
 			AppConfigFascade.Instance.GetAppSetting<UInt64>("NotThereAppConfigFascadeValueUInt64");

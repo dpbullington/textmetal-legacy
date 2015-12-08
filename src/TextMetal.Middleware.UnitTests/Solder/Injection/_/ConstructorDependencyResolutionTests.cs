@@ -5,13 +5,11 @@
 
 using System;
 
-using NMock;
-
 using NUnit.Framework;
 
-using TextMetal.Middleware.Solder.IoC;
+using TextMetal.Middleware.Solder.Injection;
 
-namespace TextMetal.Middleware.UnitTests.Solder.IoC._
+namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 {
 	[TestFixture]
 	public class ConstructorDependencyResolutionTests

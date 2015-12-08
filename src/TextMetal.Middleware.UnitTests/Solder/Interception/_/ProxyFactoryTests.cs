@@ -6,17 +6,14 @@
 using System;
 using System.Reflection;
 
-using NMock;
-
 using NUnit.Framework;
 
-using TextMetal.Middleware.Solder.SoC;
-using TextMetal.Middleware.Testing;
+using TextMetal.Middleware.Solder.Interception;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
 using IMockObject = TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject;
 
-namespace TextMetal.Middleware.UnitTests.Solder.SoC._
+namespace TextMetal.Middleware.UnitTests.Solder.Interception._
 {
 	[TestFixture]
 	public class ProxyFactoryTests

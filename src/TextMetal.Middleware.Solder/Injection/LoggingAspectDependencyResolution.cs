@@ -6,13 +6,9 @@
 using System;
 
 using TextMetal.Middleware.Solder.Interception;
-using TextMetal.Middleware.Solder.Interception.RemotingImpl;
 
 namespace TextMetal.Middleware.Solder.Injection
 {
-	/// <summary>
-	/// TODO
-	/// </summary>
 	public sealed class LoggingAspectDependencyResolution : IDependencyResolution
 	{
 		#region Constructors/Destructors
@@ -76,7 +72,9 @@ namespace TextMetal.Middleware.Solder.Injection
 				return null;
 
 			interceptedInstanceType = interceptedInstance.GetType();
-			wrapperInstance = new DynamicInvokerRealProxy(interceptedInstanceType, new LoggingAspectDynamicInvoker(interceptedInstance)).GetTransparentProxy();
+			wrapperInstance = null;
+
+			//__DynamicProxy(interceptedInstanceType, new LoggingAspectDynamicInvoker(interceptedInstance));
 
 			return wrapperInstance;
 		}

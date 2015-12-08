@@ -155,6 +155,27 @@
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         }
       },
+      "NUnit/3.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/dotnet/nunit.framework.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/nunit.framework.dll": {}
+        }
+      },
+      "NUnitLite/3.0.1": {
+        "type": "package",
+        "dependencies": {
+          "NUnit": "[3.0.1]"
+        },
+        "compile": {
+          "lib/dotnet/nunitlite.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/nunitlite.dll": {}
+        }
+      },
       "System.AppContext/4.0.1-beta-23516": {
         "type": "package",
         "dependencies": {
@@ -753,6 +774,29 @@
         },
         "compile": {
           "ref/dotnet5.4/System.Xml.XmlSerializer.dll": {}
+        }
+      },
+      "TextMetal.Middleware.Solder/1.0.0": {
+        "type": "project",
+        "framework": "DNXCore,Version=v5.0",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc2-16258",
+          "Newtonsoft.Json": "8.0.1-beta3",
+          "System.AppContext": "4.0.1-beta-23516",
+          "System.Collections": "4.0.11-beta-23516",
+          "System.ComponentModel": "4.0.1-beta-23516",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-rc2-23602",
+          "System.IO": "4.0.11-beta-23516",
+          "System.Linq": "4.0.1-beta-23516",
+          "System.Runtime": "4.0.21-beta-23516",
+          "System.Runtime.Extensions": "4.0.11-beta-23516",
+          "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-beta-23516",
+          "System.Threading": "4.0.11-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516"
         }
       }
     },
@@ -909,6 +953,27 @@
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         }
       },
+      "NUnit/3.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/dotnet/nunit.framework.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/nunit.framework.dll": {}
+        }
+      },
+      "NUnitLite/3.0.1": {
+        "type": "package",
+        "dependencies": {
+          "NUnit": "[3.0.1]"
+        },
+        "compile": {
+          "lib/dotnet/nunitlite.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/nunitlite.dll": {}
+        }
+      },
       "runtime.any.System.Linq.Expressions/4.0.11-beta-23516": {
         "type": "package",
         "dependencies": {
@@ -1915,6 +1980,29 @@
         },
         "compile": {
           "ref/dotnet5.4/System.Xml.XmlSerializer.dll": {}
+        }
+      },
+      "TextMetal.Middleware.Solder/1.0.0": {
+        "type": "project",
+        "framework": "DNXCore,Version=v5.0",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc2-16258",
+          "Newtonsoft.Json": "8.0.1-beta3",
+          "System.AppContext": "4.0.1-beta-23516",
+          "System.Collections": "4.0.11-beta-23516",
+          "System.ComponentModel": "4.0.1-beta-23516",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-rc2-23602",
+          "System.IO": "4.0.11-beta-23516",
+          "System.Linq": "4.0.1-beta-23516",
+          "System.Runtime": "4.0.21-beta-23516",
+          "System.Runtime.Extensions": "4.0.11-beta-23516",
+          "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-beta-23516",
+          "System.Threading": "4.0.11-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516"
         }
       }
     },
@@ -2071,6 +2159,27 @@
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         }
       },
+      "NUnit/3.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/dotnet/nunit.framework.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/nunit.framework.dll": {}
+        }
+      },
+      "NUnitLite/3.0.1": {
+        "type": "package",
+        "dependencies": {
+          "NUnit": "[3.0.1]"
+        },
+        "compile": {
+          "lib/dotnet/nunitlite.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/nunitlite.dll": {}
+        }
+      },
       "runtime.any.System.Linq.Expressions/4.0.11-beta-23516": {
         "type": "package",
         "dependencies": {
@@ -3078,10 +3187,37 @@
         "compile": {
           "ref/dotnet5.4/System.Xml.XmlSerializer.dll": {}
         }
+      },
+      "TextMetal.Middleware.Solder/1.0.0": {
+        "type": "project",
+        "framework": "DNXCore,Version=v5.0",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc2-16258",
+          "Newtonsoft.Json": "8.0.1-beta3",
+          "System.AppContext": "4.0.1-beta-23516",
+          "System.Collections": "4.0.11-beta-23516",
+          "System.ComponentModel": "4.0.1-beta-23516",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-rc2-23602",
+          "System.IO": "4.0.11-beta-23516",
+          "System.Linq": "4.0.1-beta-23516",
+          "System.Runtime": "4.0.21-beta-23516",
+          "System.Runtime.Extensions": "4.0.11-beta-23516",
+          "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-beta-23516",
+          "System.Threading": "4.0.11-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516"
+        }
       }
     }
   },
   "libraries": {
+    "TextMetal.Middleware.Solder/1.0.0": {
+      "type": "project",
+      "path": "../TextMetal.Middleware.Solder/project.json"
+    },
     "Microsoft.AspNet.Http.Abstractions/1.0.0-rc1-final": {
       "type": "package",
       "serviceable": true,
@@ -3255,6 +3391,48 @@
         "Newtonsoft.Json.8.0.1-beta3.nupkg",
         "Newtonsoft.Json.8.0.1-beta3.nupkg.sha512",
         "Newtonsoft.Json.nuspec",
+        "tools/install.ps1"
+      ]
+    },
+    "NUnit/3.0.1": {
+      "type": "package",
+      "sha512": "Fhz2Flnzlb+HjVxTK+W3dNAb9FUIbGxUp/G6jTTL487lBxInaDOWigNGzWbj1Ipjb87ix77heBCzrsVhk8+X8w==",
+      "files": [
+        "CHANGES.txt",
+        "lib/dotnet/nunit.framework.dll",
+        "lib/dotnet/nunit.framework.xml",
+        "lib/net20/nunit.framework.dll",
+        "lib/net20/nunit.framework.xml",
+        "lib/net40/nunit.framework.dll",
+        "lib/net40/nunit.framework.xml",
+        "lib/net45/nunit.framework.dll",
+        "lib/net45/nunit.framework.xml",
+        "lib/portable-net45+win8+wp8+wpa81+Xamarin.Mac+MonoAndroid10+MonoTouch10+Xamarin.iOS10/nunit.framework.dll",
+        "lib/portable-net45+win8+wp8+wpa81+Xamarin.Mac+MonoAndroid10+MonoTouch10+Xamarin.iOS10/nunit.framework.xml",
+        "LICENSE.txt",
+        "NOTICES.txt",
+        "NUnit.3.0.1.nupkg",
+        "NUnit.3.0.1.nupkg.sha512",
+        "NUnit.nuspec"
+      ]
+    },
+    "NUnitLite/3.0.1": {
+      "type": "package",
+      "sha512": "+zJ/WEom+1EB1X4bcyj3yVVsRMOyu+dfhQd7of/iHojPqBJH+QWbSgRbfluRXoQBRQQrTXxaqEF7JkM70OFCOA==",
+      "files": [
+        "CHANGES.txt",
+        "content/Program.cs",
+        "content/Program.vb",
+        "lib/dotnet/nunitlite.dll",
+        "lib/net20/nunitlite.dll",
+        "lib/net40/nunitlite.dll",
+        "lib/net45/nunitlite.dll",
+        "lib/portable-net45+win8+wp8+wpa81+Xamarin.Mac/nunitlite.dll",
+        "LICENSE.txt",
+        "NOTICES.txt",
+        "NUnitLite.3.0.1.nupkg",
+        "NUnitLite.3.0.1.nupkg.sha512",
+        "NUnitLite.nuspec",
         "tools/install.ps1"
       ]
     },
@@ -5648,10 +5826,12 @@
   "projectFileDependencyGroups": {
     "": [
       "Newtonsoft.Json >= 8.0.1-beta3",
+      "NUnitLite >= 3.0.1",
       "System.AppContext >= 4.0.1-beta-23516",
       "System.ComponentModel >= 4.0.1-beta-23516",
       "System.IO >= 4.0.11-beta-23516",
-      "System.Runtime.Extensions >= 4.0.11-beta-23516"
+      "System.Runtime.Extensions >= 4.0.11-beta-23516",
+      "TextMetal.Middleware.Solder >= 1.0.0-*"
     ],
     "DNXCore,Version=v5.0": [
       "Microsoft.CSharp >= 4.0.1-beta-23516",

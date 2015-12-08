@@ -5,15 +5,14 @@
 
 using System;
 using System.IO;
-using System.Threading;
-using System.Web;
-using System.Web.Hosting;
+
+using Microsoft.AspNet.Http;
 
 using NUnit.Framework;
 
-using TextMetal.Middleware.Common.Strategies.ContextualStorage;
+using TextMetal.Middleware.Solder.Context;
 
-namespace TextMetal.Middleware.UnitTests.Common.Strategies.ContextualStorage._
+namespace TextMetal.Middleware.UnitTests.Solder.Context._
 {
 	[TestFixture]
 	public static class DefaultExecutionStorageFactoryTests

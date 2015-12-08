@@ -754,6 +754,29 @@
         "compile": {
           "ref/dotnet5.4/System.Xml.XmlSerializer.dll": {}
         }
+      },
+      "TextMetal.Middleware.Solder/1.0.0": {
+        "type": "project",
+        "framework": "DNXCore,Version=v5.0",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc2-16258",
+          "Newtonsoft.Json": "8.0.1-beta3",
+          "System.AppContext": "4.0.1-beta-23516",
+          "System.Collections": "4.0.11-beta-23516",
+          "System.ComponentModel": "4.0.1-beta-23516",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-rc2-23602",
+          "System.IO": "4.0.11-beta-23516",
+          "System.Linq": "4.0.1-beta-23516",
+          "System.Runtime": "4.0.21-beta-23516",
+          "System.Runtime.Extensions": "4.0.11-beta-23516",
+          "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-beta-23516",
+          "System.Threading": "4.0.11-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516"
+        }
       }
     },
     "DNXCore,Version=v5.0/win7-x86": {
@@ -1915,6 +1938,29 @@
         },
         "compile": {
           "ref/dotnet5.4/System.Xml.XmlSerializer.dll": {}
+        }
+      },
+      "TextMetal.Middleware.Solder/1.0.0": {
+        "type": "project",
+        "framework": "DNXCore,Version=v5.0",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc2-16258",
+          "Newtonsoft.Json": "8.0.1-beta3",
+          "System.AppContext": "4.0.1-beta-23516",
+          "System.Collections": "4.0.11-beta-23516",
+          "System.ComponentModel": "4.0.1-beta-23516",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-rc2-23602",
+          "System.IO": "4.0.11-beta-23516",
+          "System.Linq": "4.0.1-beta-23516",
+          "System.Runtime": "4.0.21-beta-23516",
+          "System.Runtime.Extensions": "4.0.11-beta-23516",
+          "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-beta-23516",
+          "System.Threading": "4.0.11-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516"
         }
       }
     },
@@ -3078,10 +3124,37 @@
         "compile": {
           "ref/dotnet5.4/System.Xml.XmlSerializer.dll": {}
         }
+      },
+      "TextMetal.Middleware.Solder/1.0.0": {
+        "type": "project",
+        "framework": "DNXCore,Version=v5.0",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc2-16258",
+          "Newtonsoft.Json": "8.0.1-beta3",
+          "System.AppContext": "4.0.1-beta-23516",
+          "System.Collections": "4.0.11-beta-23516",
+          "System.ComponentModel": "4.0.1-beta-23516",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-rc2-23602",
+          "System.IO": "4.0.11-beta-23516",
+          "System.Linq": "4.0.1-beta-23516",
+          "System.Runtime": "4.0.21-beta-23516",
+          "System.Runtime.Extensions": "4.0.11-beta-23516",
+          "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-beta-23516",
+          "System.Threading": "4.0.11-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516"
+        }
       }
     }
   },
   "libraries": {
+    "TextMetal.Middleware.Solder/1.0.0": {
+      "type": "project",
+      "path": "../TextMetal.Middleware.Solder/project.json"
+    },
     "Microsoft.AspNet.Http.Abstractions/1.0.0-rc1-final": {
       "type": "package",
       "serviceable": true,
@@ -5651,7 +5724,8 @@
       "System.AppContext >= 4.0.1-beta-23516",
       "System.ComponentModel >= 4.0.1-beta-23516",
       "System.IO >= 4.0.11-beta-23516",
-      "System.Runtime.Extensions >= 4.0.11-beta-23516"
+      "System.Runtime.Extensions >= 4.0.11-beta-23516",
+      "TextMetal.Middleware.Solder >= 1.0.0-*"
     ],
     "DNXCore,Version=v5.0": [
       "Microsoft.CSharp >= 4.0.1-beta-23516",
