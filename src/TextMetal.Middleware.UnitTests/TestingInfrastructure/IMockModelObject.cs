@@ -3,8 +3,6 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-using TextMetal.Middleware.Datazoid.Models.Tabular;
-
 namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 {
 	public interface IMockModelObject : ITableModelObject

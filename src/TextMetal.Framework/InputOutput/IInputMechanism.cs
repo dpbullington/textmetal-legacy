@@ -17,6 +17,8 @@ namespace TextMetal.Framework.InputOutput
 	/// </summary>
 	public interface IInputMechanism : IDisposable
 	{
+		#region Properties/Indexers/Events
+
 		/// <summary>
 		/// Gets the current text reader instance.
 		/// </summary>
@@ -24,6 +26,8 @@ namespace TextMetal.Framework.InputOutput
 		{
 			get;
 		}
+
+		#endregion
 
 		#region Methods/Operators
 

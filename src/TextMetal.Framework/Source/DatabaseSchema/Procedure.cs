@@ -8,9 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
+using TextMetal.Middleware.Solder.Runtime;
+
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
-	[Serializable]
+	[FxSpackleTypes.SerializableAttribute]
 	public class Procedure
 	{
 		#region Constructors/Destructors
@@ -40,12 +42,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		private string procedureNameSingularCamelCase;
 		private string procedureNameSingularConstantCase;
 		private string procedureNameSingularPascalCase;
-		private string procedureNameSqlMetalCamelCase;
-		private string procedureNameSqlMetalPascalCase;
-		private string procedureNameSqlMetalPluralCamelCase;
-		private string procedureNameSqlMetalPluralPascalCase;
-		private string procedureNameSqlMetalSingularCamelCase;
-		private string procedureNameSqlMetalSingularPascalCase;
 
 		#endregion
 
@@ -254,84 +250,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			set
 			{
 				this.procedureNameSingularPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ProcedureNameSqlMetalCamelCase
-		{
-			get
-			{
-				return this.procedureNameSqlMetalCamelCase;
-			}
-			set
-			{
-				this.procedureNameSqlMetalCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ProcedureNameSqlMetalPascalCase
-		{
-			get
-			{
-				return this.procedureNameSqlMetalPascalCase;
-			}
-			set
-			{
-				this.procedureNameSqlMetalPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ProcedureNameSqlMetalPluralCamelCase
-		{
-			get
-			{
-				return this.procedureNameSqlMetalPluralCamelCase;
-			}
-			set
-			{
-				this.procedureNameSqlMetalPluralCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ProcedureNameSqlMetalPluralPascalCase
-		{
-			get
-			{
-				return this.procedureNameSqlMetalPluralPascalCase;
-			}
-			set
-			{
-				this.procedureNameSqlMetalPluralPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ProcedureNameSqlMetalSingularCamelCase
-		{
-			get
-			{
-				return this.procedureNameSqlMetalSingularCamelCase;
-			}
-			set
-			{
-				this.procedureNameSqlMetalSingularCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ProcedureNameSqlMetalSingularPascalCase
-		{
-			get
-			{
-				return this.procedureNameSqlMetalSingularPascalCase;
-			}
-			set
-			{
-				this.procedureNameSqlMetalSingularPascalCase = value;
 			}
 		}
 

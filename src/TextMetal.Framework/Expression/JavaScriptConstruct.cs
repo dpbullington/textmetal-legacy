@@ -185,10 +185,10 @@ namespace TextMetal.Framework.Expression
 
 			textMetal.Add("EvaluateToken", func);
 			textMetal.Add("DebuggerBreakpoint", action);
-			
+
 			scriptVariables = new Dictionary<string, object>();
 			scriptVariables.Add("textMetal", textMetal);
-			
+
 			// natives
 			scriptVariables.Add("print", new Action<object>(Console.WriteLine));
 			scriptVariables.Add("prompt", new Func<object>(Console.ReadLine));

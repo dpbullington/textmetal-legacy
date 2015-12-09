@@ -11,8 +11,6 @@ using NUnit.Framework;
 using TextMetal.Middleware.Solder.Interception;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
-using IMockObject = TextMetal.Middleware.UnitTests.TestingInfrastructure.IMockObject;
-
 namespace TextMetal.Middleware.UnitTests.Solder.Interception._
 {
 	[TestFixture]

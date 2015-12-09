@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 using TextMetal.Framework.Associative;
@@ -100,28 +101,8 @@ namespace TextMetal.Framework.Source.Primative
 				arrayConstruct00.Items.Add(objectConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "AssemblyLoadedFromGlobalAssemblyCache";
-				propertyConstruct00.RawValue = assembly.GlobalAssemblyCache;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "AssemblyImageRuntimeVersion";
-				propertyConstruct00.RawValue = assembly.ImageRuntimeVersion;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "AssemblyIsDynamic";
 				propertyConstruct00.RawValue = assembly.IsDynamic;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "AssemblyIsFullyTrusted";
-				propertyConstruct00.RawValue = assembly.IsFullyTrusted;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "AssemblyReflectionOnly";
-				propertyConstruct00.RawValue = assembly.ReflectionOnly;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
@@ -130,36 +111,14 @@ namespace TextMetal.Framework.Source.Primative
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "AssemblyLocation";
-				propertyConstruct00.RawValue = assembly.Location;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "AssemblyManifestModuleName";
 				propertyConstruct00.RawValue = assembly.ManifestModule.Name;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "AssemblyManifestModuleVersionId";
-				propertyConstruct00.RawValue = assembly.ManifestModule.ModuleVersionId;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "AssemblyManifestModuleFullyQualifiedName";
 				propertyConstruct00.RawValue = assembly.ManifestModule.FullyQualifiedName;
 				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "AssemblyManifestModuleMDStreamVersion";
-				propertyConstruct00.RawValue = assembly.ManifestModule.MDStreamVersion;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "AssemblyManifestModuleScopeName";
-				propertyConstruct00.RawValue = assembly.ManifestModule.ScopeName;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				//ModelCustomAttributes(assembly.ManifestModule, objectConstruct00);
 
 				assemblyName = assembly.GetName();
 
@@ -171,9 +130,7 @@ namespace TextMetal.Framework.Source.Primative
 
 				ModelTypes("Types", types, objectConstruct00);
 
-				assemblyReferences = assembly.GetReferencedAssemblies();
-
-				ModelAssemblyReferences(assemblyReferences, objectConstruct00);
+				//ModelAssemblyReferences(assemblyReferences, objectConstruct00);
 			}
 		}
 
@@ -198,28 +155,13 @@ namespace TextMetal.Framework.Source.Primative
 			parent.Items.Add(propertyConstruct00);
 
 			propertyConstruct00 = new PropertyConstruct();
-			propertyConstruct00.Name = "AssemblyCodeBase";
-			propertyConstruct00.RawValue = assemblyName.CodeBase;
-			parent.Items.Add(propertyConstruct00);
-#if !__MonoCS__
-			propertyConstruct00 = new PropertyConstruct();
 			propertyConstruct00.Name = "AssemblyContentType";
 			propertyConstruct00.RawValue = assemblyName.ContentType;
 			parent.Items.Add(propertyConstruct00);
-#endif
-			propertyConstruct00 = new PropertyConstruct();
-			propertyConstruct00.Name = "AssemblyCultureInfoDisplayName";
-			propertyConstruct00.RawValue = assemblyName.CultureInfo.DisplayName;
-			parent.Items.Add(propertyConstruct00);
-#if !__MonoCS__
+
 			propertyConstruct00 = new PropertyConstruct();
 			propertyConstruct00.Name = "AssemblyCultureName";
 			propertyConstruct00.RawValue = assemblyName.CultureName;
-			parent.Items.Add(propertyConstruct00);
-#endif
-			propertyConstruct00 = new PropertyConstruct();
-			propertyConstruct00.Name = "AssemblyHashAlgorithm";
-			propertyConstruct00.RawValue = assemblyName.HashAlgorithm;
 			parent.Items.Add(propertyConstruct00);
 
 			propertyConstruct00 = new PropertyConstruct();
@@ -233,22 +175,9 @@ namespace TextMetal.Framework.Source.Primative
 			parent.Items.Add(propertyConstruct00);
 
 			propertyConstruct00 = new PropertyConstruct();
-			propertyConstruct00.Name = "AssemblyVersionCompatibility";
-			propertyConstruct00.RawValue = assemblyName.VersionCompatibility;
-			parent.Items.Add(propertyConstruct00);
-
-			propertyConstruct00 = new PropertyConstruct();
 			propertyConstruct00.Name = "AssemblyProcessorArchitecture";
 			propertyConstruct00.RawValue = assemblyName.ProcessorArchitecture;
 			parent.Items.Add(propertyConstruct00);
-
-			if ((object)assemblyName.KeyPair != null)
-			{
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "AssemblyKeyPairPublicKey";
-				propertyConstruct00.RawValue = assemblyName.KeyPair.PublicKey;
-				parent.Items.Add(propertyConstruct00);
-			}
 		}
 
 		private static void ModelAssemblyReferences(AssemblyName[] assemblyReferences, AssociativeXmlObject parent)
@@ -369,21 +298,6 @@ namespace TextMetal.Framework.Source.Primative
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "ConstructorIsSecurityCritical";
-				propertyConstruct00.RawValue = constructorInfo.IsSecurityCritical;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "ConstructorIsSecuritySafeCritical";
-				propertyConstruct00.RawValue = constructorInfo.IsSecuritySafeCritical;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "ConstructorIsSecurityTransparent";
-				propertyConstruct00.RawValue = constructorInfo.IsSecurityTransparent;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "ConstructorIsSpecialName";
 				propertyConstruct00.RawValue = constructorInfo.IsSpecialName;
 				objectConstruct00.Items.Add(propertyConstruct00);
@@ -397,12 +311,12 @@ namespace TextMetal.Framework.Source.Primative
 				propertyConstruct00.Name = "ConstructorIsVirtual";
 				propertyConstruct00.RawValue = constructorInfo.IsVirtual;
 				objectConstruct00.Items.Add(propertyConstruct00);
-#if !__MonoCS__
+
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "ConstructorMethodImplementationFlags";
 				propertyConstruct00.RawValue = constructorInfo.MethodImplementationFlags;
 				objectConstruct00.Items.Add(propertyConstruct00);
-#endif
+
 				ModelCustomAttributes(constructorInfo, objectConstruct00);
 
 				parameterInfos = constructorInfo.GetParameters();
@@ -411,7 +325,7 @@ namespace TextMetal.Framework.Source.Primative
 			}
 		}
 
-		private static void ModelCustomAttributes(ICustomAttributeProvider customAttributeProvider, AssociativeXmlObject parent)
+		private static void ModelCustomAttributes(object customAttributeProvider, AssociativeXmlObject parent)
 		{
 			ArrayConstruct arrayConstruct00;
 			PropertyConstruct propertyConstruct00;
@@ -525,11 +439,6 @@ namespace TextMetal.Framework.Source.Primative
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "EventHandlerTypeAssemblyQualifiedName";
 				propertyConstruct00.RawValue = eventInfo.EventHandlerType.AssemblyQualifiedName;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "EventIsMulticast";
-				propertyConstruct00.RawValue = eventInfo.IsMulticast;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
@@ -651,19 +560,9 @@ namespace TextMetal.Framework.Source.Primative
 				{
 					propertyConstruct00 = new PropertyConstruct();
 					propertyConstruct00.Name = "FieldRawConstantValue";
-					propertyConstruct00.RawValue = fieldInfo.GetRawConstantValue();
+					propertyConstruct00.RawValue = null;
 					objectConstruct00.Items.Add(propertyConstruct00);
 				}
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "FieldIsNotSerialized";
-				propertyConstruct00.RawValue = fieldInfo.IsNotSerialized;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "FieldIsPinvokeImpl";
-				propertyConstruct00.RawValue = fieldInfo.IsPinvokeImpl;
-				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "FieldIsPrivate";
@@ -673,21 +572,6 @@ namespace TextMetal.Framework.Source.Primative
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "FieldIsPublic";
 				propertyConstruct00.RawValue = fieldInfo.IsPublic;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "FieldIsSecurityCritical";
-				propertyConstruct00.RawValue = fieldInfo.IsSecurityCritical;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "FieldIsSecuritySafeCritical";
-				propertyConstruct00.RawValue = fieldInfo.IsSecuritySafeCritical;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "FieldIsSecurityTransparent";
-				propertyConstruct00.RawValue = fieldInfo.IsSecurityTransparent;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
@@ -807,21 +691,6 @@ namespace TextMetal.Framework.Source.Primative
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "MethodIsSecurityCritical";
-				propertyConstruct00.RawValue = methodInfo.IsSecurityCritical;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "MethodIsSecuritySafeCritical";
-				propertyConstruct00.RawValue = methodInfo.IsSecuritySafeCritical;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "MethodIsSecurityTransparent";
-				propertyConstruct00.RawValue = methodInfo.IsSecurityTransparent;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "MethodIsSpecialName";
 				propertyConstruct00.RawValue = methodInfo.IsSpecialName;
 				objectConstruct00.Items.Add(propertyConstruct00);
@@ -835,12 +704,12 @@ namespace TextMetal.Framework.Source.Primative
 				propertyConstruct00.Name = "MethodIsVirtual";
 				propertyConstruct00.RawValue = methodInfo.IsVirtual;
 				objectConstruct00.Items.Add(propertyConstruct00);
-#if !__MonoCS__
+
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "MethodImplementationFlags";
 				propertyConstruct00.RawValue = methodInfo.MethodImplementationFlags;
 				objectConstruct00.Items.Add(propertyConstruct00);
-#endif
+
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "MethodReturnTypeName";
 				propertyConstruct00.RawValue = methodInfo.ReturnType.Name;
@@ -930,20 +799,15 @@ namespace TextMetal.Framework.Source.Primative
 				propertyConstruct00.Name = "ParameterDefaultValue";
 				propertyConstruct00.RawValue = parameterInfo.DefaultValue;
 				objectConstruct00.Items.Add(propertyConstruct00);
-#if !__MonoCS__
+
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "ParameterHasDefaultValue";
 				propertyConstruct00.RawValue = parameterInfo.HasDefaultValue;
 				objectConstruct00.Items.Add(propertyConstruct00);
-#endif
+
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "ParameterIsIn";
 				propertyConstruct00.RawValue = parameterInfo.IsIn;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "ParameterIsLcid";
-				propertyConstruct00.RawValue = parameterInfo.IsLcid;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
@@ -1138,57 +1002,59 @@ namespace TextMetal.Framework.Source.Primative
 				propertyConstruct00.RawValue = type.AssemblyQualifiedName;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
-				if ((object)type.BaseType != null)
+				var _typeInfo = type.GetTypeInfo();
+
+				if ((object)_typeInfo.BaseType != null)
 				{
 					propertyConstruct00 = new PropertyConstruct();
 					propertyConstruct00.Name = "TypeBaseName";
-					propertyConstruct00.RawValue = type.BaseType.Name;
+					propertyConstruct00.RawValue = _typeInfo.BaseType.Name;
 					objectConstruct00.Items.Add(propertyConstruct00);
 
 					propertyConstruct00 = new PropertyConstruct();
 					propertyConstruct00.Name = "TypeBaseNamespace";
-					propertyConstruct00.RawValue = type.BaseType.Namespace;
+					propertyConstruct00.RawValue = _typeInfo.BaseType.Namespace;
 					objectConstruct00.Items.Add(propertyConstruct00);
 
 					propertyConstruct00 = new PropertyConstruct();
 					propertyConstruct00.Name = "TypeBaseFullName";
-					propertyConstruct00.RawValue = type.BaseType.FullName;
+					propertyConstruct00.RawValue = _typeInfo.BaseType.FullName;
 					objectConstruct00.Items.Add(propertyConstruct00);
 
 					propertyConstruct00 = new PropertyConstruct();
 					propertyConstruct00.Name = "TypeBaseAssemblyQualifiedName";
-					propertyConstruct00.RawValue = type.BaseType.AssemblyQualifiedName;
+					propertyConstruct00.RawValue = _typeInfo.BaseType.AssemblyQualifiedName;
 					objectConstruct00.Items.Add(propertyConstruct00);
 				}
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeGuid";
-				propertyConstruct00.RawValue = type.GUID;
+				propertyConstruct00.RawValue = _typeInfo.GUID;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsAbstract";
-				propertyConstruct00.RawValue = type.IsAbstract;
+				propertyConstruct00.RawValue = _typeInfo.IsAbstract;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsAnsiClass";
-				propertyConstruct00.RawValue = type.IsAnsiClass;
+				propertyConstruct00.RawValue = _typeInfo.IsAnsiClass;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsArray";
-				propertyConstruct00.RawValue = type.IsArray;
+				propertyConstruct00.RawValue = _typeInfo.IsArray;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsAutoClass";
-				propertyConstruct00.RawValue = type.IsAutoClass;
+				propertyConstruct00.RawValue = _typeInfo.IsAutoClass;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsAutoLayout";
-				propertyConstruct00.RawValue = type.IsAutoLayout;
+				propertyConstruct00.RawValue = _typeInfo.IsAutoLayout;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
@@ -1198,67 +1064,62 @@ namespace TextMetal.Framework.Source.Primative
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsClass";
-				propertyConstruct00.RawValue = type.IsClass;
+				propertyConstruct00.RawValue = _typeInfo.IsClass;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsComObject";
-				propertyConstruct00.RawValue = type.IsCOMObject;
+				propertyConstruct00.RawValue = _typeInfo.IsCOMObject;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsConstructedGenericType";
-				propertyConstruct00.RawValue = type.IsConstructedGenericType;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "TypeIsContextful";
-				propertyConstruct00.RawValue = type.IsContextful;
+				propertyConstruct00.RawValue = _typeInfo.GetGenericTypeDefinition().IsConstructedGenericType;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsEnum";
-				propertyConstruct00.RawValue = type.IsEnum;
+				propertyConstruct00.RawValue = _typeInfo.IsEnum;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsExplicitLayout";
-				propertyConstruct00.RawValue = type.IsExplicitLayout;
+				propertyConstruct00.RawValue = _typeInfo.IsExplicitLayout;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsGenericParameter";
-				propertyConstruct00.RawValue = type.IsGenericParameter;
+				propertyConstruct00.RawValue = _typeInfo.IsGenericParameter;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsGenericType";
-				propertyConstruct00.RawValue = type.IsGenericType;
+				propertyConstruct00.RawValue = _typeInfo.IsGenericType;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsGenericTypeDefinition";
-				propertyConstruct00.RawValue = type.IsGenericTypeDefinition;
+				propertyConstruct00.RawValue = _typeInfo.IsGenericTypeDefinition;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsImport";
-				propertyConstruct00.RawValue = type.IsImport;
+				propertyConstruct00.RawValue = _typeInfo.IsImport;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsInterface";
-				propertyConstruct00.RawValue = type.IsInterface;
+				propertyConstruct00.RawValue = _typeInfo.IsInterface;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsLayoutSequential";
-				propertyConstruct00.RawValue = type.IsLayoutSequential;
+				propertyConstruct00.RawValue = _typeInfo.IsLayoutSequential;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsMarshalByRef";
-				propertyConstruct00.RawValue = type.IsMarshalByRef;
+				propertyConstruct00.RawValue = _typeInfo.IsMarshalByRef;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
@@ -1268,37 +1129,37 @@ namespace TextMetal.Framework.Source.Primative
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsNestedAssembly";
-				propertyConstruct00.RawValue = type.IsNestedAssembly;
+				propertyConstruct00.RawValue = _typeInfo.IsNestedAssembly;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsNestedFamANDAssem";
-				propertyConstruct00.RawValue = type.IsNestedFamANDAssem;
+				propertyConstruct00.RawValue = _typeInfo.IsNestedFamANDAssem;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsNestedFamORAssem";
-				propertyConstruct00.RawValue = type.IsNestedFamORAssem;
+				propertyConstruct00.RawValue = _typeInfo.IsNestedFamORAssem;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsNestedFamily";
-				propertyConstruct00.RawValue = type.IsNestedFamily;
+				propertyConstruct00.RawValue = _typeInfo.IsNestedFamily;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsNestedPrivate";
-				propertyConstruct00.RawValue = type.IsNestedPrivate;
+				propertyConstruct00.RawValue = _typeInfo.IsNestedPrivate;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsNestedPublic";
-				propertyConstruct00.RawValue = type.IsNestedPublic;
+				propertyConstruct00.RawValue = _typeInfo.IsNestedPublic;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsNotPublic";
-				propertyConstruct00.RawValue = type.IsNotPublic;
+				propertyConstruct00.RawValue = _typeInfo.IsNotPublic;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
@@ -1308,74 +1169,59 @@ namespace TextMetal.Framework.Source.Primative
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsPrimitive";
-				propertyConstruct00.RawValue = type.IsPrimitive;
+				propertyConstruct00.RawValue = _typeInfo.IsPrimitive;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsPublic";
-				propertyConstruct00.RawValue = type.IsPublic;
+				propertyConstruct00.RawValue = _typeInfo.IsPublic;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsSealed";
-				propertyConstruct00.RawValue = type.IsSealed;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "TypeIsSecurityCritical";
-				propertyConstruct00.RawValue = type.IsSecurityCritical;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "TypeIsSecuritySafeCritical";
-				propertyConstruct00.RawValue = type.IsSecuritySafeCritical;
-				objectConstruct00.Items.Add(propertyConstruct00);
-
-				propertyConstruct00 = new PropertyConstruct();
-				propertyConstruct00.Name = "TypeIsSecurityTransparent";
-				propertyConstruct00.RawValue = type.IsSecurityTransparent;
+				propertyConstruct00.RawValue = _typeInfo.IsSealed;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsSerializable";
-				propertyConstruct00.RawValue = type.IsSerializable;
+				propertyConstruct00.RawValue = _typeInfo.IsSerializable;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsSpecialName";
-				propertyConstruct00.RawValue = type.IsSpecialName;
+				propertyConstruct00.RawValue = _typeInfo.IsSpecialName;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsUnicodeClass";
-				propertyConstruct00.RawValue = type.IsUnicodeClass;
+				propertyConstruct00.RawValue = _typeInfo.IsUnicodeClass;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsValueType";
-				propertyConstruct00.RawValue = type.IsValueType;
+				propertyConstruct00.RawValue = _typeInfo.IsValueType;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeIsVisible";
-				propertyConstruct00.RawValue = type.IsVisible;
+				propertyConstruct00.RawValue = _typeInfo.IsVisible;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeNamespace";
-				propertyConstruct00.RawValue = type.Namespace;
+				propertyConstruct00.RawValue = _typeInfo.Namespace;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
 				propertyConstruct00 = new PropertyConstruct();
 				propertyConstruct00.Name = "TypeContainsGenericParameters";
-				propertyConstruct00.RawValue = type.ContainsGenericParameters;
+				propertyConstruct00.RawValue = _typeInfo.ContainsGenericParameters;
 				objectConstruct00.Items.Add(propertyConstruct00);
 
-				if (type.IsGenericParameter)
+				if (_typeInfo.IsGenericParameter)
 				{
 					propertyConstruct00 = new PropertyConstruct();
 					propertyConstruct00.Name = "TypeGenericParameterAttributes";
-					propertyConstruct00.RawValue = type.GenericParameterAttributes;
+					propertyConstruct00.RawValue = _typeInfo.GenericParameterAttributes;
 					objectConstruct00.Items.Add(propertyConstruct00);
 
 					propertyConstruct00 = new PropertyConstruct();
@@ -1384,28 +1230,28 @@ namespace TextMetal.Framework.Source.Primative
 					objectConstruct00.Items.Add(propertyConstruct00);
 				}
 
-				if (type.IsGenericType)
+				if (_typeInfo.IsGenericType)
 				{
-					var _type = type.GetGenericTypeDefinition();
+					var _genericType = _typeInfo.GetGenericTypeDefinition();
 
 					propertyConstruct00 = new PropertyConstruct();
 					propertyConstruct00.Name = "TypeGenericTypeDefinitionName";
-					propertyConstruct00.RawValue = _type.Name;
+					propertyConstruct00.RawValue = _genericType.Name;
 					objectConstruct00.Items.Add(propertyConstruct00);
 
 					propertyConstruct00 = new PropertyConstruct();
 					propertyConstruct00.Name = "TypeGenericTypeDefinitionNamespace";
-					propertyConstruct00.RawValue = _type.Namespace;
+					propertyConstruct00.RawValue = _genericType.Namespace;
 					objectConstruct00.Items.Add(propertyConstruct00);
 
 					propertyConstruct00 = new PropertyConstruct();
 					propertyConstruct00.Name = "TypeGenericTypeDefinitionFullName";
-					propertyConstruct00.RawValue = _type.FullName;
+					propertyConstruct00.RawValue = _genericType.FullName;
 					objectConstruct00.Items.Add(propertyConstruct00);
 
 					propertyConstruct00 = new PropertyConstruct();
 					propertyConstruct00.Name = "TypeGenericTypeDefinitionAssemblyQualifiedName";
-					propertyConstruct00.RawValue = _type.AssemblyQualifiedName;
+					propertyConstruct00.RawValue = _genericType.AssemblyQualifiedName;
 					objectConstruct00.Items.Add(propertyConstruct00);
 				}
 
@@ -1439,9 +1285,9 @@ namespace TextMetal.Framework.Source.Primative
 
 				ModelTypes("GenericArguments", childTypes, objectConstruct00);
 
-				if (type.IsGenericParameter)
+				if (_typeInfo.IsGenericParameter)
 				{
-					childTypes = type.GetGenericParameterConstraints();
+					childTypes = _typeInfo.GetGenericParameterConstraints();
 
 					ModelTypes("GenericParameterConstraints", childTypes, objectConstruct00);
 				}
@@ -1458,7 +1304,7 @@ namespace TextMetal.Framework.Source.Primative
 
 			List<Assembly> assemblies;
 			Assembly assembly;
-			IEnumerable<string> filePaths;
+			IEnumerable<AssemblyName> assemblyNames;
 
 			if ((object)sourceFilePath == null)
 				throw new ArgumentNullException("sourceFilePath");
@@ -1473,17 +1319,17 @@ namespace TextMetal.Framework.Source.Primative
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
 
 			if (File.Exists(sourceFilePath))
-				filePaths = new string[] { sourceFilePath };
+				assemblyNames = new AssemblyName[] { new AssemblyName(sourceFilePath) };
 			else if (Directory.Exists(sourceFilePath))
-				filePaths = Directory.EnumerateFiles(sourceFilePath, "*.dll", SearchOption.TopDirectoryOnly);
+				assemblyNames = Directory.EnumerateFiles(sourceFilePath, "*.dll", SearchOption.TopDirectoryOnly).Select(f => new AssemblyName(f));
 			else
-				filePaths = null;
+				assemblyNames = null;
 
-			if ((object)filePaths != null)
+			if ((object)assemblyNames != null)
 			{
-				foreach (string filePath in filePaths)
+				foreach (AssemblyName assemblyName in assemblyNames)
 				{
-					assembly = Assembly.LoadFile(filePath);
+					assembly = Assembly.Load(assemblyName);
 
 					if ((object)assembly == null)
 						throw new InvalidOperationException(string.Format("Failed to load the assembly file '{0}' via Assembly.LoadFile(..).", sourceFilePath));

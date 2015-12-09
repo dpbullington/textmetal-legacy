@@ -39,7 +39,7 @@ namespace TextMetal.Framework.Hosting.Email
 			XmlPersistEngine xpe;
 			TemplateConstruct template;
 			ITemplatingContext templatingContext;
-			XmlTextReader templateXmlTextReader;
+			XmlReader templateXmlReader;
 
 			if ((object)emailTemplate == null)
 				throw new ArgumentNullException("emailTemplate");
@@ -58,8 +58,8 @@ namespace TextMetal.Framework.Hosting.Email
 						using (templatingContext = new TemplatingContext(xpe, new Tokenizer(strictMatching), inputMechanism, outputMechanism, new Dictionary<string, IList<string>>()))
 						{
 							// FROM
-							using (templateXmlTextReader = new XmlTextReader(new StringReader(emailTemplate.FromXml.OuterXml)))
-								template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
+							using (templateXmlReader = XmlReader.Create(new StringReader(emailTemplate.FromXml.OuterXml)))
+								template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlReader);
 
 							templatingContext.IteratorModels.Push(modelObject);
 							template.ExpandTemplate(templatingContext);
@@ -69,8 +69,8 @@ namespace TextMetal.Framework.Hosting.Email
 							stringWriter.GetStringBuilder().Clear();
 
 							// SENDER
-							using (templateXmlTextReader = new XmlTextReader(new StringReader(emailTemplate.SenderXml.OuterXml)))
-								template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
+							using (templateXmlReader = XmlReader.Create(new StringReader(emailTemplate.SenderXml.OuterXml)))
+								template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlReader);
 
 							templatingContext.IteratorModels.Push(modelObject);
 							template.ExpandTemplate(templatingContext);
@@ -80,8 +80,8 @@ namespace TextMetal.Framework.Hosting.Email
 							stringWriter.GetStringBuilder().Clear();
 
 							// REPLYTO
-							using (templateXmlTextReader = new XmlTextReader(new StringReader(emailTemplate.ReplyToXml.OuterXml)))
-								template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
+							using (templateXmlReader = XmlReader.Create(new StringReader(emailTemplate.ReplyToXml.OuterXml)))
+								template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlReader);
 
 							templatingContext.IteratorModels.Push(modelObject);
 							template.ExpandTemplate(templatingContext);
@@ -91,8 +91,8 @@ namespace TextMetal.Framework.Hosting.Email
 							stringWriter.GetStringBuilder().Clear();
 
 							// TO
-							using (templateXmlTextReader = new XmlTextReader(new StringReader(emailTemplate.ToXml.OuterXml)))
-								template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
+							using (templateXmlReader = XmlReader.Create(new StringReader(emailTemplate.ToXml.OuterXml)))
+								template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlReader);
 
 							templatingContext.IteratorModels.Push(modelObject);
 							template.ExpandTemplate(templatingContext);
@@ -102,8 +102,8 @@ namespace TextMetal.Framework.Hosting.Email
 							stringWriter.GetStringBuilder().Clear();
 
 							// CC
-							using (templateXmlTextReader = new XmlTextReader(new StringReader(emailTemplate.CarbonCopyXml.OuterXml)))
-								template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
+							using (templateXmlReader = XmlReader.Create(new StringReader(emailTemplate.CarbonCopyXml.OuterXml)))
+								template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlReader);
 
 							templatingContext.IteratorModels.Push(modelObject);
 							template.ExpandTemplate(templatingContext);
@@ -113,8 +113,8 @@ namespace TextMetal.Framework.Hosting.Email
 							stringWriter.GetStringBuilder().Clear();
 
 							// BCC
-							using (templateXmlTextReader = new XmlTextReader(new StringReader(emailTemplate.BlindCarbonCopyXml.OuterXml)))
-								template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
+							using (templateXmlReader = XmlReader.Create(new StringReader(emailTemplate.BlindCarbonCopyXml.OuterXml)))
+								template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlReader);
 
 							templatingContext.IteratorModels.Push(modelObject);
 							template.ExpandTemplate(templatingContext);
@@ -124,8 +124,8 @@ namespace TextMetal.Framework.Hosting.Email
 							stringWriter.GetStringBuilder().Clear();
 
 							// SUBJECT
-							using (templateXmlTextReader = new XmlTextReader(new StringReader(emailTemplate.SubjectXml.OuterXml)))
-								template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
+							using (templateXmlReader = XmlReader.Create(new StringReader(emailTemplate.SubjectXml.OuterXml)))
+								template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlReader);
 
 							templatingContext.IteratorModels.Push(modelObject);
 							template.ExpandTemplate(templatingContext);
@@ -138,8 +138,8 @@ namespace TextMetal.Framework.Hosting.Email
 							emailMessage.IsBodyHtml = emailTemplate.IsBodyHtml;
 
 							// BODY
-							using (templateXmlTextReader = new XmlTextReader(new StringReader(emailTemplate.BodyXml.OuterXml)))
-								template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlTextReader);
+							using (templateXmlReader = XmlReader.Create(new StringReader(emailTemplate.BodyXml.OuterXml)))
+								template = (TemplateConstruct)xpe.DeserializeFromXml(templateXmlReader);
 
 							templatingContext.IteratorModels.Push(modelObject);
 							template.ExpandTemplate(templatingContext);

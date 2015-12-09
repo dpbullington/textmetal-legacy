@@ -6,9 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Linq;
+using System.Data.Common;
 using System.Xml;
-using System.Xml.Linq;
 
 using TextMetal.Middleware.Solder.Utilities;
 
@@ -80,7 +79,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetColumnParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table)
+		protected override IEnumerable<DbParameter> CoreGetColumnParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table)
 		{
 			if ((object)connectionType == null)
 				throw new ArgumentNullException("connectionType");
@@ -102,7 +101,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
-				return new IDbDataParameter[]
+				return new DbParameter[]
 						{
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
@@ -114,7 +113,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetColumnParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, View view)
+		protected override IEnumerable<DbParameter> CoreGetColumnParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, View view)
 		{
 			if ((object)connectionType == null)
 				throw new ArgumentNullException("connectionType");
@@ -136,7 +135,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
-				return new IDbDataParameter[]
+				return new DbParameter[]
 						{
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
@@ -148,7 +147,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetDatabaseParameters(Type connectionType, string dataSourceTag, Server server)
+		protected override IEnumerable<DbParameter> CoreGetDatabaseParameters(Type connectionType, string dataSourceTag, Server server)
 		{
 			if ((object)connectionType == null)
 				throw new ArgumentNullException("connectionType");
@@ -161,7 +160,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
-				return new IDbDataParameter[]
+				return new DbParameter[]
 						{
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName)
 						};
@@ -170,7 +169,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetDdlTriggerParameters(Type connectionType, string dataSourceTag, Server server, Database database)
+		protected override IEnumerable<DbParameter> CoreGetDdlTriggerParameters(Type connectionType, string dataSourceTag, Server server, Database database)
 		{
 			if ((object)connectionType == null)
 				throw new ArgumentNullException("connectionType");
@@ -180,7 +179,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
-				return new IDbDataParameter[]
+				return new DbParameter[]
 						{
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName)
@@ -190,7 +189,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetDmlTriggerParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table)
+		protected override IEnumerable<DbParameter> CoreGetDmlTriggerParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table)
 		{
 			if ((object)connectionType == null)
 				throw new ArgumentNullException("connectionType");
@@ -212,7 +211,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
-				return new IDbDataParameter[]
+				return new DbParameter[]
 						{
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
@@ -235,7 +234,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetForeignKeyColumnParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table, ForeignKey foreignKey)
+		protected override IEnumerable<DbParameter> CoreGetForeignKeyColumnParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table, ForeignKey foreignKey)
 		{
 			if ((object)connectionType == null)
 				throw new ArgumentNullException("connectionType");
@@ -260,7 +259,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
-				return new IDbDataParameter[]
+				return new DbParameter[]
 						{
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
@@ -273,7 +272,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetForeignKeyParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table)
+		protected override IEnumerable<DbParameter> CoreGetForeignKeyParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table)
 		{
 			if ((object)connectionType == null)
 				throw new ArgumentNullException("connectionType");
@@ -295,7 +294,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
-				return new IDbDataParameter[]
+				return new DbParameter[]
 						{
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
@@ -307,7 +306,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetParameterParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Procedure procedure)
+		protected override IEnumerable<DbParameter> CoreGetParameterParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Procedure procedure)
 		{
 			if ((object)connectionType == null)
 				throw new ArgumentNullException("connectionType");
@@ -329,7 +328,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
-				return new IDbDataParameter[]
+				return new DbParameter[]
 						{
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
@@ -352,7 +351,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetProcedureParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema)
+		protected override IEnumerable<DbParameter> CoreGetProcedureParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema)
 		{
 			if ((object)connectionType == null)
 				throw new ArgumentNullException("connectionType");
@@ -371,7 +370,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
-				return new IDbDataParameter[]
+				return new DbParameter[]
 						{
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
@@ -382,7 +381,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetSchemaParameters(Type connectionType, string dataSourceTag, Server server, Database database)
+		protected override IEnumerable<DbParameter> CoreGetSchemaParameters(Type connectionType, string dataSourceTag, Server server, Database database)
 		{
 			if ((object)server == null)
 				throw new ArgumentNullException("server");
@@ -392,7 +391,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
-				return new IDbDataParameter[]
+				return new DbParameter[]
 						{
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName)
@@ -402,7 +401,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetServerParameters(Type connectionType, string dataSourceTag)
+		protected override IEnumerable<DbParameter> CoreGetServerParameters(Type connectionType, string dataSourceTag)
 		{
 			if ((object)connectionType == null)
 				throw new ArgumentNullException("connectionType");
@@ -416,7 +415,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetTableParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema)
+		protected override IEnumerable<DbParameter> CoreGetTableParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema)
 		{
 			if ((object)connectionType == null)
 				throw new ArgumentNullException("connectionType");
@@ -435,7 +434,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
-				return new IDbDataParameter[]
+				return new DbParameter[]
 						{
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
@@ -446,7 +445,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetUniqueKeyColumnParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table, UniqueKey uniqueKey)
+		protected override IEnumerable<DbParameter> CoreGetUniqueKeyColumnParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table, UniqueKey uniqueKey)
 		{
 			if ((object)connectionType == null)
 				throw new ArgumentNullException("connectionType");
@@ -471,7 +470,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
-				return new IDbDataParameter[]
+				return new DbParameter[]
 						{
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
@@ -484,7 +483,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
 		}
 
-		protected override IEnumerable<IDbDataParameter> CoreGetUniqueKeyParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table)
+		protected override IEnumerable<DbParameter> CoreGetUniqueKeyParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table)
 		{
 			if ((object)connectionType == null)
 				throw new ArgumentNullException("connectionType");
@@ -506,7 +505,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
-				return new IDbDataParameter[]
+				return new DbParameter[]
 						{
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
 							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
@@ -615,24 +614,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 					default:
 						return typeof(Object); // dpb: 2014-05-13/changed behavior here to not throw exception
 				}
-			}
-
-			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
-		}
-
-		protected override Type CoreInferSqlMetalClrTypeForClrType(string dataSourceTag, Type clrType)
-		{
-			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
-
-			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
-			{
-				if (clrType == typeof(Byte[]))
-					return typeof(Binary);
-				else if (clrType == typeof(XmlDocument))
-					return typeof(XElement);
-				else
-					return clrType;
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));

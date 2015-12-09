@@ -7,8 +7,6 @@ using System;
 
 using NUnit.Framework;
 
-using TextMetal.Middleware.Datazoid.Repositories.Impl.Mappings;
-
 namespace TextMetal.Middleware.UnitTests.Datazoid.Impl.Mappings._
 {
 	[TestFixture]

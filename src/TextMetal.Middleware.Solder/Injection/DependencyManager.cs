@@ -10,7 +10,6 @@ using System.Reflection;
 using System.Threading;
 
 using TextMetal.Middleware.Solder.Runtime;
-using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Solder.Injection
 {

@@ -6,8 +6,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 using TextMetal.Framework.Associative;
 using TextMetal.Framework.Tokenization;
@@ -139,8 +141,8 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)connectionType == null)
 				throw new InvalidOperationException(string.Format("Failed to load the connection type '{0}' via Type.GetType(..).", connectionAqtn));
 
-			if (!typeof(IDbConnection).IsAssignableFrom(connectionType))
-				throw new InvalidOperationException(string.Format("The connection type is not assignable to type '{0}'.", typeof(IDbConnection).FullName));
+			if (!typeof(DbConnection).IsAssignableFrom(connectionType))
+				throw new InvalidOperationException(string.Format("The connection type is not assignable to type '{0}'.", typeof(DbConnection).FullName));
 
 			if (properties.TryGetValue(PROP_TOKEN_CONNECTION_STRING, out values))
 			{

@@ -16,6 +16,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.ConsoleTool", "Te
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.UnitTests", "TextMetal.Middleware.UnitTests\TextMetal.Middleware.UnitTests.xproj", "{232F02FA-A089-4128-8B56-6C22EDF2A5AC}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Framework", "TextMetal.Framework\TextMetal.Framework.xproj", "{35D30312-C72C-42A5-996D-0487E94EA3F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,10 @@ Global
 		{232F02FA-A089-4128-8B56-6C22EDF2A5AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{232F02FA-A089-4128-8B56-6C22EDF2A5AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{232F02FA-A089-4128-8B56-6C22EDF2A5AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35D30312-C72C-42A5-996D-0487E94EA3F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35D30312-C72C-42A5-996D-0487E94EA3F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35D30312-C72C-42A5-996D-0487E94EA3F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35D30312-C72C-42A5-996D-0487E94EA3F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,5 +48,6 @@ Global
 		{B6D5B9FD-4DD7-446C-939F-BD0B2B3A31DC} = {98EC87E5-FC09-4752-97B1-88FEDAFDF5B2}
 		{269E869E-C83B-4436-9A67-9273BFE1EF71} = {98EC87E5-FC09-4752-97B1-88FEDAFDF5B2}
 		{232F02FA-A089-4128-8B56-6C22EDF2A5AC} = {98EC87E5-FC09-4752-97B1-88FEDAFDF5B2}
+		{35D30312-C72C-42A5-996D-0487E94EA3F0} = {98EC87E5-FC09-4752-97B1-88FEDAFDF5B2}
 	EndGlobalSection
 EndGlobal

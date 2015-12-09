@@ -123,36 +123,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			get;
 		}
 
-		string TableNameSqlMetalCamelCase
-		{
-			get;
-		}
-
-		string TableNameSqlMetalPascalCase
-		{
-			get;
-		}
-
-		string TableNameSqlMetalPluralCamelCase
-		{
-			get;
-		}
-
-		string TableNameSqlMetalPluralPascalCase
-		{
-			get;
-		}
-
-		string TableNameSqlMetalSingularCamelCase
-		{
-			get;
-		}
-
-		string TableNameSqlMetalSingularPascalCase
-		{
-			get;
-		}
-
 		#endregion
 	}
 }

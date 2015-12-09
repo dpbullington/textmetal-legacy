@@ -8,9 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
+using TextMetal.Middleware.Solder.Runtime;
+
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
-	[Serializable]
+	[FxSpackleTypes.SerializableAttribute]
 	[XmlRoot(ElementName = "Server", Namespace = "http://www.textmetal.com/api/v6.0.0")]
 	public class Server
 	{

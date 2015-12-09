@@ -47,7 +47,7 @@ namespace TextMetal.Framework.Tokenization
 		/// </summary>
 		/// <param name="strictMatching"> A value indicating if exceptions are thrown for bad token matches. </param>
 		public Tokenizer(bool strictMatching)
-			: this(new Dictionary<string, ITokenReplacementStrategy>(StringComparer.InvariantCultureIgnoreCase), strictMatching)
+			: this(new Dictionary<string, ITokenReplacementStrategy>(StringComparer.CurrentCultureIgnoreCase), strictMatching)
 		{
 			this.strictMatching = strictMatching;
 		}

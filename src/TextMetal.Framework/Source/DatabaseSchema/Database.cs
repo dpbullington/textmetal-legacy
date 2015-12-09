@@ -8,9 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
+using TextMetal.Middleware.Solder.Runtime;
+
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
-	[Serializable]
+	[FxSpackleTypes.SerializableAttribute]
 	public class Database
 	{
 		#region Constructors/Destructors
@@ -40,12 +42,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		private string databaseNameSingularCamelCase;
 		private string databaseNameSingularConstantCase;
 		private string databaseNameSingularPascalCase;
-		private string databaseNameSqlMetalCamelCase;
-		private string databaseNameSqlMetalPascalCase;
-		private string databaseNameSqlMetalPluralCamelCase;
-		private string databaseNameSqlMetalPluralPascalCase;
-		private string databaseNameSqlMetalSingularCamelCase;
-		private string databaseNameSqlMetalSingularPascalCase;
 
 		#endregion
 
@@ -251,84 +247,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			set
 			{
 				this.databaseNameSingularPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string DatabaseNameSqlMetalCamelCase
-		{
-			get
-			{
-				return this.databaseNameSqlMetalCamelCase;
-			}
-			set
-			{
-				this.databaseNameSqlMetalCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string DatabaseNameSqlMetalPascalCase
-		{
-			get
-			{
-				return this.databaseNameSqlMetalPascalCase;
-			}
-			set
-			{
-				this.databaseNameSqlMetalPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string DatabaseNameSqlMetalPluralCamelCase
-		{
-			get
-			{
-				return this.databaseNameSqlMetalPluralCamelCase;
-			}
-			set
-			{
-				this.databaseNameSqlMetalPluralCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string DatabaseNameSqlMetalPluralPascalCase
-		{
-			get
-			{
-				return this.databaseNameSqlMetalPluralPascalCase;
-			}
-			set
-			{
-				this.databaseNameSqlMetalPluralPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string DatabaseNameSqlMetalSingularCamelCase
-		{
-			get
-			{
-				return this.databaseNameSqlMetalSingularCamelCase;
-			}
-			set
-			{
-				this.databaseNameSqlMetalSingularCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string DatabaseNameSqlMetalSingularPascalCase
-		{
-			get
-			{
-				return this.databaseNameSqlMetalSingularPascalCase;
-			}
-			set
-			{
-				this.databaseNameSqlMetalSingularPascalCase = value;
 			}
 		}
 

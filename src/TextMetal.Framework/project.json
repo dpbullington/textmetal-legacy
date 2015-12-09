@@ -1,6 +1,6 @@
 {
     "version": "1.0.0-*",
-    "description": "TextMetal Host Impl Portable Console EXE",
+    "description": "TextMetal Framework Solder Portable Library",
     "authors": [ "©2002-2016 Daniel Bullington (dpbullington@gmail.com)" ],
     "summary": "A zero friction, open source meta-programming framework for .NET.",
     "projectUrl": "http://www.textmetal.com",
@@ -10,8 +10,7 @@
     "tags": [ "TextMetal" ],
     "compilationOptions": {
         "keyFile": "../TextMetal.snk",
-        "warningsAsErrors": false,
-        "emitEntryPoint": true
+        "warningsAsErrors": false
     },
     "repository": {
         "type": "git",
@@ -37,16 +36,17 @@
             }
         }
     },
-    "exclude": [
-
-    ],
+	"exclude": [
+		"Expression\\JavaScriptHost.cs",
+		"Expression\\JavaScriptConstruct.cs",
+		"Source\\Primative\\TextSourceSTrategy.cs"
+	],
     "dependencies": {
         "Newtonsoft.Json": "8.0.1-beta3",
         "System.AppContext": "4.0.1-beta-23516",
         "System.ComponentModel": "4.0.1-beta-23516",
         "System.IO": "4.0.11-beta-23516",
         "System.Runtime.Extensions": "4.0.11-beta-23516",
-        "TextMetal.Framework": "1.0.0-*",
         "TextMetal.Middleware.Solder": "1.0.0-*"
     }
 }

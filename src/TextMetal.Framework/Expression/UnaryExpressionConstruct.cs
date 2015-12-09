@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Reflection;
 
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Tokenization;
@@ -87,7 +88,9 @@ namespace TextMetal.Framework.Expression
 			{
 				theType = theObj.GetType();
 
-				if (theType.IsEnum)
+				var _theTypeInfo = theType.GetTypeInfo();
+
+				if (_theTypeInfo.IsEnum)
 				{
 					theType = Enum.GetUnderlyingType(theType);
 					theObj = DataTypeFascade.Instance.ChangeType(theObj, theType);

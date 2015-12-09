@@ -7,9 +7,11 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
+using TextMetal.Middleware.Solder.Runtime;
+
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
-	[Serializable]
+	[FxSpackleTypes.SerializableAttribute]
 	public class PrimaryKey
 	{
 		#region Constructors/Destructors
@@ -38,12 +40,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		private string primaryKeyNameSingularCamelCase;
 		private string primaryKeyNameSingularConstantCase;
 		private string primaryKeyNameSingularPascalCase;
-		private string primaryKeyNameSqlMetalCamelCase;
-		private string primaryKeyNameSqlMetalPascalCase;
-		private string primaryKeyNameSqlMetalPluralCamelCase;
-		private string primaryKeyNameSqlMetalPluralPascalCase;
-		private string primaryKeyNameSqlMetalSingularCamelCase;
-		private string primaryKeyNameSqlMetalSingularPascalCase;
 
 		#endregion
 
@@ -212,84 +208,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			set
 			{
 				this.primaryKeyNameSingularPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string PrimaryKeyNameSqlMetalCamelCase
-		{
-			get
-			{
-				return this.primaryKeyNameSqlMetalCamelCase;
-			}
-			set
-			{
-				this.primaryKeyNameSqlMetalCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string PrimaryKeyNameSqlMetalPascalCase
-		{
-			get
-			{
-				return this.primaryKeyNameSqlMetalPascalCase;
-			}
-			set
-			{
-				this.primaryKeyNameSqlMetalPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string PrimaryKeyNameSqlMetalPluralCamelCase
-		{
-			get
-			{
-				return this.primaryKeyNameSqlMetalPluralCamelCase;
-			}
-			set
-			{
-				this.primaryKeyNameSqlMetalPluralCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string PrimaryKeyNameSqlMetalPluralPascalCase
-		{
-			get
-			{
-				return this.primaryKeyNameSqlMetalPluralPascalCase;
-			}
-			set
-			{
-				this.primaryKeyNameSqlMetalPluralPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string PrimaryKeyNameSqlMetalSingularCamelCase
-		{
-			get
-			{
-				return this.primaryKeyNameSqlMetalSingularCamelCase;
-			}
-			set
-			{
-				this.primaryKeyNameSqlMetalSingularCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string PrimaryKeyNameSqlMetalSingularPascalCase
-		{
-			get
-			{
-				return this.primaryKeyNameSqlMetalSingularPascalCase;
-			}
-			set
-			{
-				this.primaryKeyNameSqlMetalSingularPascalCase = value;
 			}
 		}
 

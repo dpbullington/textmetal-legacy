@@ -8,8 +8,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-using Microsoft.VisualBasic.FileIO;
-
 using TextMetal.Framework.Associative;
 using TextMetal.Middleware.Solder.Utilities;
 

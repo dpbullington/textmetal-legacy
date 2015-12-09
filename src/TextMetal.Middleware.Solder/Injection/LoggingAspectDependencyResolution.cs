@@ -5,8 +5,6 @@
 
 using System;
 
-using TextMetal.Middleware.Solder.Interception;
-
 namespace TextMetal.Middleware.Solder.Injection
 {
 	public sealed class LoggingAspectDependencyResolution : IDependencyResolution

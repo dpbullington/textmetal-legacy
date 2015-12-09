@@ -27,12 +27,28 @@ namespace TextMetal.Framework.InputOutput
 
 		#region Fields/Constants
 
-		private bool disposed;
 		private TextReader currentTextReader;
+
+		private bool disposed;
 
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		/// <summary>
+		/// Gets the current text reader instance.
+		/// </summary>
+		public TextReader CurrentTextReader
+		{
+			get
+			{
+				return this.currentTextReader ?? Console.In;
+			}
+			private set
+			{
+				this.currentTextReader = value;
+			}
+		}
 
 		/// <summary>
 		/// Gets a value indicating whether the current instance has been disposed.
@@ -81,21 +97,6 @@ namespace TextMetal.Framework.InputOutput
 			{
 				this.Disposed = true;
 				GC.SuppressFinalize(this);
-			}
-		}
-
-		/// <summary>
-		/// Gets the current text reader instance.
-		/// </summary>
-		public TextReader CurrentTextReader
-		{
-			get
-			{
-				return this.currentTextReader ?? Console.In;
-			}
-			private set
-			{
-				this.currentTextReader = value;
 			}
 		}
 

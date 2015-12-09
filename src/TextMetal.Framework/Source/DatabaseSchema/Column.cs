@@ -9,11 +9,12 @@ using System.Data;
 using System.Linq;
 using System.Xml.Serialization;
 
+using TextMetal.Middleware.Solder.Runtime;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
-	[Serializable]
+	[FxSpackleTypes.SerializableAttribute]
 	public abstract class Column
 	{
 		#region Constructors/Destructors
@@ -51,23 +52,11 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		private string columnNameSingularCamelCase;
 		private string columnNameSingularConstantCase;
 		private string columnNameSingularPascalCase;
-		private string columnNameSqlMetalCamelCase;
-		private string columnNameSqlMetalPascalCase;
-		private string columnNameSqlMetalPluralCamelCase;
-		private string columnNameSqlMetalPluralPascalCase;
-		private string columnNameSqlMetalSingularCamelCase;
-		private string columnNameSqlMetalSingularPascalCase;
 		private bool columnNullable;
 		private int columnOrdinal;
 		private int columnPrecision;
 		private int columnScale;
 		private int columnSize;
-		private Type columnSqlMetalClrNonNullableType;
-		private Type columnSqlMetalClrNullableType;
-		private Type columnSqlMetalClrType;
-		private string columnSqlMetalCSharpClrNonNullableType;
-		private string columnSqlMetalCSharpClrNullableType;
-		private string columnSqlMetalCSharpClrType;
 		private string columnSqlType;
 
 		#endregion
@@ -409,84 +398,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		}
 
 		[XmlAttribute]
-		public string ColumnNameSqlMetalCamelCase
-		{
-			get
-			{
-				return this.columnNameSqlMetalCamelCase;
-			}
-			set
-			{
-				this.columnNameSqlMetalCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ColumnNameSqlMetalPascalCase
-		{
-			get
-			{
-				return this.columnNameSqlMetalPascalCase;
-			}
-			set
-			{
-				this.columnNameSqlMetalPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ColumnNameSqlMetalPluralCamelCase
-		{
-			get
-			{
-				return this.columnNameSqlMetalPluralCamelCase;
-			}
-			set
-			{
-				this.columnNameSqlMetalPluralCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ColumnNameSqlMetalPluralPascalCase
-		{
-			get
-			{
-				return this.columnNameSqlMetalPluralPascalCase;
-			}
-			set
-			{
-				this.columnNameSqlMetalPluralPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ColumnNameSqlMetalSingularCamelCase
-		{
-			get
-			{
-				return this.columnNameSqlMetalSingularCamelCase;
-			}
-			set
-			{
-				this.columnNameSqlMetalSingularCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ColumnNameSqlMetalSingularPascalCase
-		{
-			get
-			{
-				return this.columnNameSqlMetalSingularPascalCase;
-			}
-			set
-			{
-				this.columnNameSqlMetalSingularPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
 		public bool ColumnNullable
 		{
 			get
@@ -548,84 +459,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			set
 			{
 				this.columnSize = value;
-			}
-		}
-
-		[XmlIgnore]
-		public Type ColumnSqlMetalClrNonNullableType
-		{
-			get
-			{
-				return this.columnSqlMetalClrNonNullableType;
-			}
-			set
-			{
-				this.columnSqlMetalClrNonNullableType = value;
-			}
-		}
-
-		[XmlIgnore]
-		public Type ColumnSqlMetalClrNullableType
-		{
-			get
-			{
-				return this.columnSqlMetalClrNullableType;
-			}
-			set
-			{
-				this.columnSqlMetalClrNullableType = value;
-			}
-		}
-
-		[XmlIgnore]
-		public Type ColumnSqlMetalClrType
-		{
-			get
-			{
-				return this.columnSqlMetalClrType;
-			}
-			set
-			{
-				this.columnSqlMetalClrType = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ColumnSqlMetalCSharpClrNonNullableType
-		{
-			get
-			{
-				return this.columnSqlMetalCSharpClrNonNullableType;
-			}
-			set
-			{
-				this.columnSqlMetalCSharpClrNonNullableType = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ColumnSqlMetalCSharpClrNullableType
-		{
-			get
-			{
-				return this.columnSqlMetalCSharpClrNullableType;
-			}
-			set
-			{
-				this.columnSqlMetalCSharpClrNullableType = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ColumnSqlMetalCSharpClrType
-		{
-			get
-			{
-				return this.columnSqlMetalCSharpClrType;
-			}
-			set
-			{
-				this.columnSqlMetalCSharpClrType = value;
 			}
 		}
 

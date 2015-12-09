@@ -6,8 +6,6 @@
 using System;
 using System.Text;
 
-using Microsoft.CSharp;
-
 namespace TextMetal.Framework.Naming
 {
 	public class StandardCanonicalNaming : ICanonicalNaming
@@ -101,7 +99,7 @@ namespace TextMetal.Framework.Naming
 		/// <returns> True if the specified value is a valid C# identifier; otherwise false. </returns>
 		public static bool IsValidCSharpIdentifier(string value)
 		{
-			return new CSharpCodeProvider().IsValidIdentifier(value);
+			throw new NotImplementedException();
 		}
 
 		/// <summary>

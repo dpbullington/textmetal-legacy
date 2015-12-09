@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Xml.Serialization;
 
+using TextMetal.Middleware.Solder.Runtime;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Source.Primative
@@ -15,7 +16,7 @@ namespace TextMetal.Framework.Source.Primative
 	/// <summary>
 	/// Represents an ordered, keyed set of N-level nested and corrolated SQL queries.
 	/// </summary>
-	[Serializable]
+	[FxSpackleTypes.SerializableAttribute]
 	[XmlRoot(ElementName = "SqlQuery", Namespace = "http://www.textmetal.com/api/v6.0.0")]
 	public sealed class SqlQuery
 	{

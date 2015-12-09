@@ -4,41 +4,42 @@
 */
 
 using System;
-using System.ComponentModel;
+
+using TextMetal.Middleware.Solder.Runtime;
 
 namespace TextMetal.Framework.Expression
 {
-	[Serializable]
+	[FxSpackleTypes.SerializableAttribute]
 	public enum UnaryOperator
 	{
-		[Description("")]
+		[FxSpackleTypes.DescriptionAttribute("")]
 		Undefined = 0,
 
-		[Description("!")]
+		[FxSpackleTypes.DescriptionAttribute("!")]
 		Not,
 
-		[Description("{is_null}")]
+		[FxSpackleTypes.DescriptionAttribute("{is_null}")]
 		IsNull,
 
-		[Description("{is_not_null}")]
+		[FxSpackleTypes.DescriptionAttribute("{is_not_null}")]
 		IsNotNull, // yes, it is redundant
 
-		[Description("{is_defined}")]
+		[FxSpackleTypes.DescriptionAttribute("{is_defined}")]
 		IsDef,
 
-		[Description("-")]
+		[FxSpackleTypes.DescriptionAttribute("-")]
 		Neg,
 
-		[Description("+")]
+		[FxSpackleTypes.DescriptionAttribute("+")]
 		Pos,
 
-		[Description("++")]
+		[FxSpackleTypes.DescriptionAttribute("++")]
 		Incr,
 
-		[Description("--")]
+		[FxSpackleTypes.DescriptionAttribute("--")]
 		Decr,
 
-		[Description("~")]
+		[FxSpackleTypes.DescriptionAttribute("~")]
 		BComp
 	}
 }

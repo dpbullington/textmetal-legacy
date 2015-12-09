@@ -6,11 +6,8 @@
 using System;
 using System.Data;
 
-using NMock;
-
 using NUnit.Framework;
 
-using TextMetal.Middleware.Datazoid;
 using TextMetal.Middleware.Solder.Utilities;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 

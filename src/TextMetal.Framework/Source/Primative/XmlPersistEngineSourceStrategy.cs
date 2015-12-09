@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 using TextMetal.Framework.XmlDialect;
 using TextMetal.Middleware.Solder.Utilities;

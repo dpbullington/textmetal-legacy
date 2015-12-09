@@ -7,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using NMock;
-
 using NUnit.Framework;
 
 using TextMetal.Middleware.Solder.Utilities;

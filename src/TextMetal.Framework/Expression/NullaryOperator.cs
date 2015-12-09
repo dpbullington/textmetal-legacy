@@ -4,14 +4,15 @@
 */
 
 using System;
-using System.ComponentModel;
+
+using TextMetal.Middleware.Solder.Runtime;
 
 namespace TextMetal.Framework.Expression
 {
-	[Serializable]
+	[FxSpackleTypes.SerializableAttribute]
 	public enum NullaryOperator
 	{
-		[Description("{nop}")]
+		[FxSpackleTypes.DescriptionAttribute("{nop}")]
 		Nop = 0
 	}
 }

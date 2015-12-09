@@ -8,6 +8,7 @@ using System.IO;
 using System.Text;
 
 using TextMetal.Framework.XmlDialect;
+using TextMetal.Middleware.Solder.Runtime;
 using TextMetal.Middleware.Solder.Serialization;
 using TextMetal.Middleware.Solder.Utilities;
 
@@ -75,7 +76,7 @@ namespace TextMetal.Framework.InputOutput
 			// this should support XPE, XML, JSON
 			if ((object)xmlObject != null)
 				serializationStrategy = new XpeSerializationStrategy(this.Xpe);
-			else if ((object)ReflectionFascade.Instance.GetOneAttribute<SerializableAttribute>(obj.GetType()) != null)
+			else if ((object)ReflectionFascade.Instance.GetOneAttribute<FxSpackleTypes.SerializableAttribute>(obj.GetType()) != null)
 				serializationStrategy = new XmlSerializationStrategy();
 			else
 				serializationStrategy = new JsonSerializationStrategy();

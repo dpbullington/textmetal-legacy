@@ -88,6 +88,7 @@ namespace TextMetal.Framework.InputOutput
 		protected override Assembly CoreLoadAssembly(string assemblyName)
 		{
 			Assembly assembly;
+			AssemblyName _assemblyName;
 
 			if ((object)assemblyName == null)
 				throw new ArgumentNullException("assemblyName");
@@ -96,7 +97,8 @@ namespace TextMetal.Framework.InputOutput
 				throw new ArgumentOutOfRangeException("assemblyName");
 
 			assemblyName = Path.GetFullPath(assemblyName);
-			assembly = Assembly.LoadFile(assemblyName);
+			_assemblyName = new AssemblyName(assemblyName);
+			assembly = Assembly.Load(_assemblyName);
 
 			return assembly;
 		}

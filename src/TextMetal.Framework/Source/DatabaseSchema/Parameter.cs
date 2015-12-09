@@ -7,11 +7,12 @@ using System;
 using System.Data;
 using System.Xml.Serialization;
 
+using TextMetal.Middleware.Solder.Runtime;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
-	[Serializable]
+	[FxSpackleTypes.SerializableAttribute]
 	public class Parameter
 	{
 		#region Constructors/Destructors
@@ -56,24 +57,12 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		private string parameterNameSingularCamelCase;
 		private string parameterNameSingularConstantCase;
 		private string parameterNameSingularPascalCase;
-		private string parameterNameSqlMetalCamelCase;
-		private string parameterNameSqlMetalPascalCase;
-		private string parameterNameSqlMetalPluralCamelCase;
-		private string parameterNameSqlMetalPluralPascalCase;
-		private string parameterNameSqlMetalSingularCamelCase;
-		private string parameterNameSqlMetalSingularPascalCase;
 		private bool parameterNullable;
 		private int parameterOrdinal;
 		private int parameterPrecision;
 		private string parameterPrefix;
 		private int parameterScale;
 		private int parameterSize;
-		private Type parameterSqlMetalClrNonNullableType;
-		private Type parameterSqlMetalClrNullableType;
-		private Type parameterSqlMetalClrType;
-		private string parameterSqlMetalCSharpClrNonNullableType;
-		private string parameterSqlMetalCSharpClrNullableType;
-		private string parameterSqlMetalCSharpClrType;
 		private string parameterSqlType;
 
 		#endregion
@@ -506,84 +495,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		}
 
 		[XmlAttribute]
-		public string ParameterNameSqlMetalCamelCase
-		{
-			get
-			{
-				return this.parameterNameSqlMetalCamelCase;
-			}
-			set
-			{
-				this.parameterNameSqlMetalCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ParameterNameSqlMetalPascalCase
-		{
-			get
-			{
-				return this.parameterNameSqlMetalPascalCase;
-			}
-			set
-			{
-				this.parameterNameSqlMetalPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ParameterNameSqlMetalPluralCamelCase
-		{
-			get
-			{
-				return this.parameterNameSqlMetalPluralCamelCase;
-			}
-			set
-			{
-				this.parameterNameSqlMetalPluralCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ParameterNameSqlMetalPluralPascalCase
-		{
-			get
-			{
-				return this.parameterNameSqlMetalPluralPascalCase;
-			}
-			set
-			{
-				this.parameterNameSqlMetalPluralPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ParameterNameSqlMetalSingularCamelCase
-		{
-			get
-			{
-				return this.parameterNameSqlMetalSingularCamelCase;
-			}
-			set
-			{
-				this.parameterNameSqlMetalSingularCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ParameterNameSqlMetalSingularPascalCase
-		{
-			get
-			{
-				return this.parameterNameSqlMetalSingularPascalCase;
-			}
-			set
-			{
-				this.parameterNameSqlMetalSingularPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
 		public bool ParameterNullable
 		{
 			get
@@ -658,84 +569,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			set
 			{
 				this.parameterSize = value;
-			}
-		}
-
-		[XmlIgnore]
-		public Type ParameterSqlMetalClrNonNullableType
-		{
-			get
-			{
-				return this.parameterSqlMetalClrNonNullableType;
-			}
-			set
-			{
-				this.parameterSqlMetalClrNonNullableType = value;
-			}
-		}
-
-		[XmlIgnore]
-		public Type ParameterSqlMetalClrNullableType
-		{
-			get
-			{
-				return this.parameterSqlMetalClrNullableType;
-			}
-			set
-			{
-				this.parameterSqlMetalClrNullableType = value;
-			}
-		}
-
-		[XmlIgnore]
-		public Type ParameterSqlMetalClrType
-		{
-			get
-			{
-				return this.parameterSqlMetalClrType;
-			}
-			set
-			{
-				this.parameterSqlMetalClrType = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ParameterSqlMetalCSharpClrNonNullableType
-		{
-			get
-			{
-				return this.parameterSqlMetalCSharpClrNonNullableType;
-			}
-			set
-			{
-				this.parameterSqlMetalCSharpClrNonNullableType = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ParameterSqlMetalCSharpClrNullableType
-		{
-			get
-			{
-				return this.parameterSqlMetalCSharpClrNullableType;
-			}
-			set
-			{
-				this.parameterSqlMetalCSharpClrNullableType = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ParameterSqlMetalCSharpClrType
-		{
-			get
-			{
-				return this.parameterSqlMetalCSharpClrType;
-			}
-			set
-			{
-				this.parameterSqlMetalCSharpClrType = value;
 			}
 		}
 

@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Reflection;
 
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Expression;

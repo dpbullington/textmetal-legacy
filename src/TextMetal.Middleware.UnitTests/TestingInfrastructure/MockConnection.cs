@@ -6,8 +6,6 @@
 using System;
 using System.Data;
 
-using NMock;
-
 namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 {
 	public class MockConnection : IDbConnection

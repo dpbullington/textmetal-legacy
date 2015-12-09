@@ -9,7 +9,6 @@ using System.Runtime.InteropServices;
 
 using NUnit.Framework;
 
-using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Runtime;
 using TextMetal.Middleware.Solder.Utilities;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;

@@ -8,9 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
+using TextMetal.Middleware.Solder.Runtime;
+
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
-	[Serializable]
+	[FxSpackleTypes.SerializableAttribute]
 	public class ProcedureResultset
 	{
 		#region Constructors/Destructors

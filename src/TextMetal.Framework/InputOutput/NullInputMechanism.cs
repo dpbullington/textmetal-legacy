@@ -29,17 +29,7 @@ namespace TextMetal.Framework.InputOutput
 
 		protected override Assembly CoreLoadAssembly(string assemblyName)
 		{
-			Assembly assembly;
-
-			if ((object)assemblyName == null)
-				throw new ArgumentNullException("assemblyName");
-
-			if (DataTypeFascade.Instance.IsWhiteSpace(assemblyName))
-				throw new ArgumentOutOfRangeException("assemblyName");
-
-			assembly = Assembly.Load(assemblyName);
-
-			return assembly;
+			return null;
 		}
 
 		protected override string CoreLoadContent(string contentName)

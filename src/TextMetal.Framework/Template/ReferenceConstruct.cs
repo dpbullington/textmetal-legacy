@@ -83,7 +83,9 @@ namespace TextMetal.Framework.Template
 			{
 				foreach (Type exportedType in exportedTypes)
 				{
-					if (!exportedType.IsAbstract &&
+					var _exportedTypeInfo = exportedType.GetTypeInfo();
+
+					if (!_exportedTypeInfo.IsAbstract &&
 						typeof(IXmlObject).IsAssignableFrom(exportedType))
 					{
 						if (typeof(IXmlTextObject).IsAssignableFrom(exportedType))

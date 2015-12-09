@@ -8,9 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
+using TextMetal.Middleware.Solder.Runtime;
+
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
-	[Serializable]
+	[FxSpackleTypes.SerializableAttribute]
 	public class View : ITabular
 	{
 		#region Constructors/Destructors
@@ -41,13 +43,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		private string viewNameSingularCamelCase;
 		private string viewNameSingularConstantCase;
 		private string viewNameSingularPascalCase;
-		private string viewNameSqlMetal;
-		private string viewNameSqlMetalCamelCase;
-		private string viewNameSqlMetalPascalCase;
-		private string viewNameSqlMetalPluralCamelCase;
-		private string viewNameSqlMetalPluralPascalCase;
-		private string viewNameSqlMetalSingularCamelCase;
-		private string viewNameSqlMetalSingularPascalCase;
 
 		#endregion
 
@@ -253,66 +248,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			}
 		}
 
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNameSqlMetalCamelCase
-		{
-			get
-			{
-				return this.ViewNameSqlMetalCamelCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNameSqlMetalPascalCase
-		{
-			get
-			{
-				return this.ViewNameSqlMetalPascalCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNameSqlMetalPluralCamelCase
-		{
-			get
-			{
-				return this.ViewNameSqlMetalPluralCamelCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNameSqlMetalPluralPascalCase
-		{
-			get
-			{
-				return this.ViewNameSqlMetalPluralPascalCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNameSqlMetalSingularCamelCase
-		{
-			get
-			{
-				return this.ViewNameSqlMetalSingularCamelCase;
-			}
-		}
-
-		[Obsolete("Provided for model breaking change compatability only.")]
-		[XmlIgnore]
-		public string TableNameSqlMetalSingularPascalCase
-		{
-			get
-			{
-				return this.ViewNameSqlMetalSingularPascalCase;
-			}
-		}
-
 		[XmlAttribute]
 		public DateTime CreationTimestamp
 		{
@@ -492,97 +427,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			set
 			{
 				this.viewNameSingularPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ViewNameSqlMetal
-		{
-			get
-			{
-				return this.viewNameSqlMetal;
-			}
-			set
-			{
-				this.viewNameSqlMetal = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ViewNameSqlMetalCamelCase
-		{
-			get
-			{
-				return this.viewNameSqlMetalCamelCase;
-			}
-			set
-			{
-				this.viewNameSqlMetalCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ViewNameSqlMetalPascalCase
-		{
-			get
-			{
-				return this.viewNameSqlMetalPascalCase;
-			}
-			set
-			{
-				this.viewNameSqlMetalPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ViewNameSqlMetalPluralCamelCase
-		{
-			get
-			{
-				return this.viewNameSqlMetalPluralCamelCase;
-			}
-			set
-			{
-				this.viewNameSqlMetalPluralCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ViewNameSqlMetalPluralPascalCase
-		{
-			get
-			{
-				return this.viewNameSqlMetalPluralPascalCase;
-			}
-			set
-			{
-				this.viewNameSqlMetalPluralPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ViewNameSqlMetalSingularCamelCase
-		{
-			get
-			{
-				return this.viewNameSqlMetalSingularCamelCase;
-			}
-			set
-			{
-				this.viewNameSqlMetalSingularCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string ViewNameSqlMetalSingularPascalCase
-		{
-			get
-			{
-				return this.viewNameSqlMetalSingularPascalCase;
-			}
-			set
-			{
-				this.viewNameSqlMetalSingularPascalCase = value;
 			}
 		}
 

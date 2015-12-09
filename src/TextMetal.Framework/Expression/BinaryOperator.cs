@@ -4,92 +4,93 @@
 */
 
 using System;
-using System.ComponentModel;
+
+using TextMetal.Middleware.Solder.Runtime;
 
 namespace TextMetal.Framework.Expression
 {
-	[Serializable]
+	[FxSpackleTypes.SerializableAttribute]
 	public enum BinaryOperator
 	{
-		[Description("")]
+		[FxSpackleTypes.DescriptionAttribute("")]
 		Undefined = 0,
 
-		[Description("+")]
+		[FxSpackleTypes.DescriptionAttribute("+")]
 		Add,
 
-		[Description("-")]
+		[FxSpackleTypes.DescriptionAttribute("-")]
 		Sub,
 
-		[Description("/")]
+		[FxSpackleTypes.DescriptionAttribute("/")]
 		Div,
 
-		[Description("*")]
+		[FxSpackleTypes.DescriptionAttribute("*")]
 		Mul,
 
-		[Description("%")]
+		[FxSpackleTypes.DescriptionAttribute("%")]
 		Mod,
 
-		[Description("&&")]
+		[FxSpackleTypes.DescriptionAttribute("&&")]
 		And,
 
-		[Description("||")]
+		[FxSpackleTypes.DescriptionAttribute("||")]
 		Or,
 
-		[Description("^^")]
+		[FxSpackleTypes.DescriptionAttribute("^^")]
 		Xor,
 
-		[Description("==")]
+		[FxSpackleTypes.DescriptionAttribute("==")]
 		Eq,
 
-		[Description("!=")]
+		[FxSpackleTypes.DescriptionAttribute("!=")]
 		Ne,
 
-		[Description("<")]
+		[FxSpackleTypes.DescriptionAttribute("<")]
 		Lt,
 
-		[Description("<=")]
+		[FxSpackleTypes.DescriptionAttribute("<=")]
 		Le,
 
-		[Description(">")]
+		[FxSpackleTypes.DescriptionAttribute(">")]
 		Gt,
 
-		[Description(">=")]
+		[FxSpackleTypes.DescriptionAttribute(">=")]
 		Ge,
 
-		[Description("{like}")]
+		[FxSpackleTypes.DescriptionAttribute("{like}")]
 		StrLk,
 
-		[Description("{as}")]
+		[FxSpackleTypes.DescriptionAttribute("{as}")]
 		ObjAs,
 
-		[Description("{is}")]
+		[FxSpackleTypes.DescriptionAttribute("{is}")]
 		ObjIs,
 
-		[Description(":=")]
+		[FxSpackleTypes.DescriptionAttribute(":=")]
 		VarPut,
 
-		[Description("&")]
+		[FxSpackleTypes.DescriptionAttribute("&")]
 		Band,
 
-		[Description("|")]
+		[FxSpackleTypes.DescriptionAttribute("|")]
 		Bor,
 
-		[Description("^")]
+		[FxSpackleTypes.DescriptionAttribute("^")]
 		Bxor,
 
-		[Description("<<")]
+		[FxSpackleTypes.DescriptionAttribute("<<")]
 		Bls,
 
-		[Description(">>")]
+		[FxSpackleTypes.DescriptionAttribute(">>")]
 		Brs,
 
-		[Description(">^>")]
+		[FxSpackleTypes.DescriptionAttribute(">^>")]
 		Bsr,
 
-		[Description(">_>")]
+		[FxSpackleTypes.DescriptionAttribute(">_>")]
 		Bur,
 
-		[Description("{parse}")]
+		[FxSpackleTypes.DescriptionAttribute("{parse}")]
 		Parse,
 	}
 }

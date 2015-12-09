@@ -506,8 +506,9 @@ namespace TextMetal.Middleware.UnitTests.Datazoid.UoW._
 
 		#endregion
 	}
+	using
 
-using System.Data;
+System.Data;
 	using System.Transactions;
 
 	using NMock2;
@@ -1519,8 +1520,9 @@ using System.Data;
 
 		#endregion
 	}
+	using
 
-using System.Data;
+System.Data;
 	using System.Transactions;
 
 	using NMock2;

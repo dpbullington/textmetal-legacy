@@ -91,7 +91,7 @@ namespace TextMetal.Framework.Hosting.Tool
 			if (DataTypeFascade.Instance.IsWhiteSpace(sourceStrategyAqtn))
 				throw new ArgumentOutOfRangeException("sourceStrategyAqtn");
 
-			toolVersion = new AssemblyInformationFascade(Assembly.GetAssembly(typeof(IXmlPersistEngine))).AssemblyVersion;
+			toolVersion = new AssemblyInformationFascade(typeof(IXmlPersistEngine).GetTypeInfo().Assembly).AssemblyVersion;
 			templateFilePath = Path.GetFullPath(templateFilePath);
 			baseDirectoryPath = Path.GetFullPath(baseDirectoryPath);
 
@@ -136,24 +136,11 @@ namespace TextMetal.Framework.Hosting.Tool
 											ARGC = argc,
 											ARGV = argv,
 											ARGS = args,
-											CommandLine = Environment.CommandLine,
-											CurrentDirectory = Environment.CurrentDirectory,
 											CurrentManagedThreadId = Environment.CurrentManagedThreadId,
-											ExitCode = Environment.ExitCode,
-											Is64BitOperatingSystem = Environment.Is64BitOperatingSystem,
-											Is64BitProcess = Environment.Is64BitProcess,
-											MachineName = Environment.MachineName,
+											HasShutdownStarted = Environment.HasShutdownStarted,
 											NewLine = Environment.NewLine,
-											OSVersion = Environment.OSVersion,
 											ProcessorCount = Environment.ProcessorCount,
-											SystemDirectory = Environment.SystemDirectory,
-											SystemPageSize = Environment.SystemPageSize,
 											TickCount = Environment.TickCount,
-											UserDomainName = Environment.UserDomainName,
-											UserInteractive = Environment.UserInteractive,
-											UserName = Environment.UserName,
-											Version = Environment.Version,
-											WorkingSet = Environment.WorkingSet,
 											Variables = Environment.GetEnvironmentVariables()
 										};
 						globalVariableTable.Add("ToolVersion", toolVersion);

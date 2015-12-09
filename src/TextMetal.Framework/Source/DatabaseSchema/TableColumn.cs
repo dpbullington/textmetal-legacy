@@ -6,9 +6,11 @@
 using System;
 using System.Xml.Serialization;
 
+using TextMetal.Middleware.Solder.Runtime;
+
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
-	[Serializable]
+	[FxSpackleTypes.SerializableAttribute]
 	public class TableColumn : Column, ITabularColumn
 	{
 		#region Constructors/Destructors

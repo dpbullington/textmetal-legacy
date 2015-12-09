@@ -6,9 +6,11 @@
 using System;
 using System.Xml.Serialization;
 
+using TextMetal.Middleware.Solder.Runtime;
+
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
-	[Serializable]
+	[FxSpackleTypes.SerializableAttribute]
 	public class Trigger
 	{
 		#region Constructors/Destructors
@@ -39,13 +41,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		private string triggerNameSingularCamelCase;
 		private string triggerNameSingularConstantCase;
 		private string triggerNameSingularPascalCase;
-		private string triggerNameSqlMetalCamelCase;
-		private string triggerNameSqlMetalPascalCase;
-		private string triggerNameSqlMetalPascalCase1;
-		private string triggerNameSqlMetalPluralCamelCase;
-		private string triggerNameSqlMetalPluralPascalCase;
-		private string triggerNameSqlMetalSingularCamelCase;
-		private string triggerNameSqlMetalSingularPascalCase;
 
 		#endregion
 
@@ -243,84 +238,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			set
 			{
 				this.triggerNameSingularPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string TriggerNameSqlMetalCamelCase
-		{
-			get
-			{
-				return this.triggerNameSqlMetalCamelCase;
-			}
-			set
-			{
-				this.triggerNameSqlMetalCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string TriggerNameSqlMetalPascalCase
-		{
-			get
-			{
-				return this.triggerNameSqlMetalPascalCase1;
-			}
-			set
-			{
-				this.triggerNameSqlMetalPascalCase1 = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string TriggerNameSqlMetalPluralCamelCase
-		{
-			get
-			{
-				return this.triggerNameSqlMetalPluralCamelCase;
-			}
-			set
-			{
-				this.triggerNameSqlMetalPluralCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string TriggerNameSqlMetalPluralPascalCase
-		{
-			get
-			{
-				return this.triggerNameSqlMetalPluralPascalCase;
-			}
-			set
-			{
-				this.triggerNameSqlMetalPluralPascalCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string TriggerNameSqlMetalSingularCamelCase
-		{
-			get
-			{
-				return this.triggerNameSqlMetalSingularCamelCase;
-			}
-			set
-			{
-				this.triggerNameSqlMetalSingularCamelCase = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string TriggerNameSqlMetalSingularPascalCase
-		{
-			get
-			{
-				return this.triggerNameSqlMetalSingularPascalCase;
-			}
-			set
-			{
-				this.triggerNameSqlMetalSingularPascalCase = value;
 			}
 		}
 

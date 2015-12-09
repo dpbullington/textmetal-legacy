@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 using TextMetal.Framework.Hosting.Tool;
@@ -92,7 +91,7 @@ namespace TextMetal.ConsoleTool
 				debuggerLaunch = (bool)arguments[CMDLN_DEBUGGER_LAUNCH].Single();
 
 			//if (debuggerLaunch)
-				//Console.WriteLine("Debugger launch result: '{0}'", Debugger.Launch() && Debugger.IsAttached);
+			//Console.WriteLine("Debugger launch result: '{0}'", Debugger.Launch() && Debugger.IsAttached);
 
 			// required
 			properties = new Dictionary<string, IList<string>>();

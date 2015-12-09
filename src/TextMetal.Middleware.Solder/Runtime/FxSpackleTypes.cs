@@ -132,6 +132,85 @@ namespace TextMetal.Middleware.Solder.Runtime
 			#endregion
 		}
 
+		[AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = false)]
+		public sealed class DescriptionAttribute : Attribute
+		{
+			#region Constructors/Destructors
+
+			/// <summary>
+			/// Initializes a new instance of the DescriptionAttribute class.
+			/// </summary>
+			public DescriptionAttribute(string value)
+			{
+			}
+
+			#endregion
+		}
+
+		public static class SchemaTableColumn
+		{
+			#region Properties/Indexers/Events
+
+			public static string AllowDBNull
+			{
+				get;
+				set;
+			}
+
+			public static string ColumnName
+			{
+				get;
+				set;
+			}
+
+			public static string ColumnOrdinal
+			{
+				get;
+				set;
+			}
+
+			public static string ColumnSize
+			{
+				get;
+				set;
+			}
+
+			public static string DataType
+			{
+				get;
+				set;
+			}
+
+			public static string NumericPrecision
+			{
+				get;
+				set;
+			}
+
+			public static string NumericScale
+			{
+				get;
+				set;
+			}
+
+			#endregion
+		}
+
+		[AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = false)]
+		public sealed class SerializableAttribute : Attribute
+		{
+			#region Constructors/Destructors
+
+			/// <summary>
+			/// Initializes a new instance of the SerializableAttribute class.
+			/// </summary>
+			public SerializableAttribute()
+			{
+			}
+
+			#endregion
+		}
+
 		#endregion
 	}
 }

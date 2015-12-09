@@ -110,9 +110,13 @@ namespace TextMetal.Framework.Tokenization
 			}
 
 			// method-name
-			methodInfo = targetType.GetMethod(parameters[1], BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static, null, parameterTypes.ToArray(), null);
+			methodInfo = targetType.GetMethod(parameters[1], parameterTypes.ToArray());
 
 			if ((object)methodInfo == null)
+				throw new InvalidOperationException(string.Format("StaticMethodResolver parameter at index '{0}' with value '{1}' was not a valid, executable method name of type '{2}'.", 1, parameters[1], targetType.FullName));
+
+			// BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static
+			if (methodInfo.DeclaringType != targetType || !methodInfo.IsPublic || methodInfo.IsStatic)
 				throw new InvalidOperationException(string.Format("StaticMethodResolver parameter at index '{0}' with value '{1}' was not a valid, executable method name of type '{2}'.", 1, parameters[1], targetType.FullName));
 
 			parameterInfos = methodInfo.GetParameters();
@@ -176,9 +180,17 @@ namespace TextMetal.Framework.Tokenization
 				throw new InvalidOperationException(string.Format("StaticPropertyResolver parameter at index '{0}' with value '{1}' was not a valid, loadable CLR type.", 0, parameters[0]));
 
 			// property-name
-			propertyInfo = targetType.GetProperty(parameters[1], BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static, null, null, new Type[] { }, null);
+			propertyInfo = targetType.GetProperty(parameters[1], null, new Type[] { });
 
 			if ((object)propertyInfo == null)
+				throw new InvalidOperationException(string.Format("StaticPropertyResolver parameter at index '{0}' with value '{1}' was not a valid, executable property name of type '{2}'.", 1, parameters[1], targetType.FullName));
+
+			// BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static
+			if (propertyInfo.DeclaringType != targetType ||
+				!propertyInfo.GetGetMethod().IsPublic ||
+				!propertyInfo.GetSetMethod().IsPublic ||
+				!propertyInfo.GetGetMethod().IsStatic ||
+				!propertyInfo.GetSetMethod().IsStatic)
 				throw new InvalidOperationException(string.Format("StaticPropertyResolver parameter at index '{0}' with value '{1}' was not a valid, executable property name of type '{2}'.", 1, parameters[1], targetType.FullName));
 
 			if (!propertyInfo.CanRead)

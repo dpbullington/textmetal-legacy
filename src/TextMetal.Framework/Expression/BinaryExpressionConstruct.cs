@@ -5,6 +5,7 @@
 
 using System;
 using System.Linq;
+using System.Reflection;
 
 using TextMetal.Framework.Core;
 using TextMetal.Framework.Tokenization;

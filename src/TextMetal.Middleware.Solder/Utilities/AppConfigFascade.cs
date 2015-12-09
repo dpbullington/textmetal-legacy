@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Runtime;
 
 namespace TextMetal.Middleware.Solder.Utilities
