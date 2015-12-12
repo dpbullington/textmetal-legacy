@@ -48,15 +48,16 @@
 		"TestingInfrastructure\\MockConnection.cs",
 		"TestingInfrastructure\\MockModelObject.cs"
 	],
-	"dependencies": {
-		"Newtonsoft.Json": "8.0.1-beta3",
-		"NUnitLite": "3.0.1",
-		"System.AppContext": "4.0.1-beta-23516",
-		"System.ComponentModel": "4.0.1-beta-23516",
-		"System.IO": "4.0.11-beta-23516",
-		"System.Runtime.Extensions": "4.0.11-beta-23516",
-		"TextMetal.Middleware.Solder": "1.0.0-*"
-	},
+    "dependencies": {
+        "Newtonsoft.Json": "8.0.1-beta3",
+        "NUnitLite": "3.0.1",
+        "System.AppContext": "4.0.1-beta-23516",
+        "System.ComponentModel": "4.0.1-beta-23516",
+        "System.IO": "4.0.11-beta-23516",
+        "System.Runtime.Extensions": "4.0.11-beta-23516",
+        "TextMetal.Middleware.Datazoid": "1.0.0-*",
+        "TextMetal.Middleware.Solder": "1.0.0-*"
+    },
 	"commands": {
 		"test": "TextMetal.Middleware.UnitTests app.config"
 	}

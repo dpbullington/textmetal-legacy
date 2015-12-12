@@ -7,11 +7,8 @@ using System;
 using System.Xml;
 using System.Xml.Serialization;
 
-using TextMetal.Middleware.Solder.Runtime;
-
 namespace TextMetal.Framework.Hosting.Email
 {
-	[FxSpackleTypes.SerializableAttribute]
 	[XmlRoot(ElementName = "MessageTemplate", Namespace = "http://www.textmetal.com/api/v6.0.0")]
 	public sealed class EmailTemplate
 	{

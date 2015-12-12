@@ -9,7 +9,6 @@ using System.IO;
 using System.Reflection;
 
 using TextMetal.Middleware.Datazoid.UoW;
-using TextMetal.Middleware.Solder.Context;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Datazoid.Repositories

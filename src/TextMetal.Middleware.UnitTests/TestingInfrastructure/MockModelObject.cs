@@ -6,8 +6,6 @@
 using System;
 using System.Collections.Generic;
 
-using TextMetal.Middleware.Solder;
-
 namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 {
 	public class MockModelObject : IMockModelObject

@@ -7,7 +7,6 @@ using System;
 
 using NUnit.Framework;
 
-using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
 namespace TextMetal.Middleware.UnitTests.Solder.Injection._

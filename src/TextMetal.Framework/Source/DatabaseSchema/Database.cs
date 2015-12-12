@@ -8,11 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
-using TextMetal.Middleware.Solder.Runtime;
-
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
-	[FxSpackleTypes.SerializableAttribute]
 	public class Database
 	{
 		#region Constructors/Destructors

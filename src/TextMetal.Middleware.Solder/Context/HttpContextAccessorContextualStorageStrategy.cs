@@ -32,7 +32,10 @@ namespace TextMetal.Middleware.Solder.Context
 		{
 			get
 			{
-				return (object)new HttpContextAccessorContextualStorageStrategy().__.HttpContext != null;
+				var accessor = new HttpContextAccessorContextualStorageStrategy().__;
+
+				return (object)accessor != null &&
+					(object)accessor.HttpContext != null;
 			}
 		}
 

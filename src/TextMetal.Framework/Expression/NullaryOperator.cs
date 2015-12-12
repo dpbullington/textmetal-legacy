@@ -9,10 +9,9 @@ using TextMetal.Middleware.Solder.Runtime;
 
 namespace TextMetal.Framework.Expression
 {
-	[FxSpackleTypes.SerializableAttribute]
 	public enum NullaryOperator
 	{
-		[FxSpackleTypes.DescriptionAttribute("{nop}")]
+		[OperatorText("{nop}")]
 		Nop = 0
 	}
 }

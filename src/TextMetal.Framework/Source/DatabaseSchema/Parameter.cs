@@ -7,12 +7,10 @@ using System;
 using System.Data;
 using System.Xml.Serialization;
 
-using TextMetal.Middleware.Solder.Runtime;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
-	[FxSpackleTypes.SerializableAttribute]
 	public class Parameter
 	{
 		#region Constructors/Destructors

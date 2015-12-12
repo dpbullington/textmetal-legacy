@@ -8,7 +8,6 @@ using System.Reflection;
 
 using NUnit.Framework;
 
-using TextMetal.Middleware.Solder.Interception;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
 namespace TextMetal.Middleware.UnitTests.Solder.Interception._

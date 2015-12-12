@@ -15,13 +15,26 @@ namespace TextMetal.Middleware.Solder.Context
 
 		public ThreadLocalContextualStorageStrategy()
 		{
+			this.tlsContext = new ThreadLocal<IDictionary<string, object>>(() => new Dictionary<string, object>(StringComparer.CurrentCultureIgnoreCase));
 		}
 
 		#endregion
 
 		#region Fields/Constants
 
-		static ThreadLocal<IDictionary<string, object>> __tls_context = new ThreadLocal<IDictionary<string, object>>();
+		private readonly ThreadLocal<IDictionary<string, object>> tlsContext;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		private ThreadLocal<IDictionary<string, object>> TlsContext
+		{
+			get
+			{
+				return this.tlsContext;
+			}
+		}
 
 		#endregion
 
@@ -30,27 +43,27 @@ namespace TextMetal.Middleware.Solder.Context
 		public T GetValue<T>(string key)
 		{
 			object value;
-			__tls_context.Value.TryGetValue(key, out value);
+			this.TlsContext.Value.TryGetValue(key, out value);
 			return (T)value;
 		}
 
 		public bool HasValue(string key)
 		{
-			return __tls_context.Value.ContainsKey(key);
+			return this.TlsContext.Value.ContainsKey(key);
 		}
 
 		public void RemoveValue(string key)
 		{
-			if (__tls_context.Value.ContainsKey(key))
-				__tls_context.Value.Remove(key);
+			if (this.TlsContext.Value.ContainsKey(key))
+				this.TlsContext.Value.Remove(key);
 		}
 
 		public void SetValue<T>(string key, T value)
 		{
-			if (__tls_context.Value.ContainsKey(key))
-				__tls_context.Value.Remove(key);
+			if (this.TlsContext.Value.ContainsKey(key))
+				this.TlsContext.Value.Remove(key);
 
-			__tls_context.Value.Add(key, value);
+			this.TlsContext.Value.Add(key, value);
 		}
 
 		#endregion

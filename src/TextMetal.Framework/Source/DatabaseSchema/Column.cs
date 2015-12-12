@@ -9,12 +9,10 @@ using System.Data;
 using System.Linq;
 using System.Xml.Serialization;
 
-using TextMetal.Middleware.Solder.Runtime;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
-	[FxSpackleTypes.SerializableAttribute]
 	public abstract class Column
 	{
 		#region Constructors/Destructors

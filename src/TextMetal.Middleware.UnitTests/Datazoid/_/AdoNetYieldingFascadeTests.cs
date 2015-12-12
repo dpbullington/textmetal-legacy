@@ -8,7 +8,6 @@ using System.Data;
 
 using NUnit.Framework;
 
-using TextMetal.Middleware.Solder.Utilities;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
 namespace TextMetal.Middleware.UnitTests.Datazoid._

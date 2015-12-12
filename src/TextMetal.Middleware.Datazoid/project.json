@@ -1,0 +1,50 @@
+{
+    "version": "1.0.0-*",
+    "description": "TextMetal Middleware Datazoid Portable Library",
+    "authors": [ "©2002-2016 Daniel Bullington (dpbullington@gmail.com)" ],
+    "summary": "A zero friction, open source meta-programming framework for .NET.",
+    "projectUrl": "http://www.textmetal.com",
+    "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
+    "iconUrl": "https://github.com/dpbullington/textmetal/blob/master/doc/textmetal-logo.png",
+    "requireLicenseAcceptance": false,
+    "tags": [ "TextMetal" ],
+    "compilationOptions": {
+        "keyFile": "../TextMetal.snk",
+        "warningsAsErrors": false
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/textmetal/main"
+    },
+    "frameworks": {
+        "dotnet5.4": {
+            "dependencies": {
+                "Microsoft.CSharp": "4.0.1-beta-23516",
+                "System.Collections": "4.0.11-beta-23516",
+                "System.Console": "4.0.0-beta-23516",
+                "System.Data.Common": "4.0.1-rc2-23602",
+                "System.Linq": "4.0.1-beta-23516",
+                "System.Runtime": "4.0.21-beta-23516",
+                "System.Threading": "4.0.11-beta-23516",
+                "System.Xml.XmlDocument": "4.0.1-beta-23516",
+                "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+
+                "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-beta-23516",
+
+                "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+                "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc2-16258"
+            }
+        }
+    },
+    "exclude": [
+		"**\\*.cs"
+    ],
+    "dependencies": {
+        "Newtonsoft.Json": "8.0.1-beta3",
+        "System.AppContext": "4.0.1-beta-23516",
+        "System.ComponentModel": "4.0.1-beta-23516",
+        "System.IO": "4.0.11-beta-23516",
+        "System.Runtime.Extensions": "4.0.11-beta-23516",
+        "TextMetal.Middleware.Solder": "1.0.0-*"
+    }
+}

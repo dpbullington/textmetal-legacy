@@ -6,11 +6,8 @@
 using System;
 using System.Xml.Serialization;
 
-using TextMetal.Middleware.Solder.Runtime;
-
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
-	[FxSpackleTypes.SerializableAttribute]
 	public class PrimaryKeyColumn
 	{
 		#region Constructors/Destructors

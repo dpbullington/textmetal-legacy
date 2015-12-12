@@ -7,8 +7,6 @@ using System;
 
 using NUnit.Framework;
 
-using TextMetal.Middleware.Solder.Injection;
-
 namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 {
 	[TestFixture]

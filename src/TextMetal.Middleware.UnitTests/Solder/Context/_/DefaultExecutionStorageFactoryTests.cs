@@ -10,8 +10,6 @@ using Microsoft.AspNet.Http;
 
 using NUnit.Framework;
 
-using TextMetal.Middleware.Solder.Context;
-
 namespace TextMetal.Middleware.UnitTests.Solder.Context._
 {
 	[TestFixture]

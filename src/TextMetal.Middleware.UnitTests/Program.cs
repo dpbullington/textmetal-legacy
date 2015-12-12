@@ -7,7 +7,6 @@ using System;
 using System.Reflection;
 
 using NUnitLite;
-
 using TextMetal.Middleware.Solder.Runtime;
 
 namespace TextMetal.Middleware.UnitTests

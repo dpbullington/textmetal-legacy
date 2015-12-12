@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
+
+using TextMetal.Middleware.Solder.Context;
 
 //using TextMetal.Middleware.Solder.Context;
 
@@ -46,6 +49,10 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 		#region Fields/Constants
 
+		private const string APPCONFIG_ARGS_REGEX = @"-(" + APPCONFIG_ID_REGEX_UNBOUNDED + @"{0,63}):(.{0,})";
+		private const string APPCONFIG_ID_REGEX_UNBOUNDED = @"[a-zA-Z_\.][a-zA-Z_\.0-9]";
+		private const string APPCONFIG_PROPS_REGEX = @"(" + APPCONFIG_ID_REGEX_UNBOUNDED + @"{0,63})=(.{0,})";
+
 		private static readonly string EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY = typeof(ExecutableApplicationFascade).GetTypeInfo().GUID.SafeToString();
 		private readonly IAppConfigFascade appConfigFascade;
 		private readonly IDataTypeFascade dataTypeFascade;
@@ -57,16 +64,36 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 		#region Properties/Indexers/Events
 
+		/// <summary>
+		/// Gets the regular expression pattern for arguments.
+		/// </summary>
+		public static string ArgsRegEx
+		{
+			get
+			{
+				return APPCONFIG_ARGS_REGEX;
+			}
+		}
+
+		/// <summary>
+		/// Gets the regular expression pattern for properties.
+		/// </summary>
+		public static string PropsRegEx
+		{
+			get
+			{
+				return APPCONFIG_PROPS_REGEX;
+			}
+		}
 		public static ExecutableApplicationFascade Current
 		{
 			get
 			{
-				return null;
-				//return DefaultContextualStorageFactory.Instance.GetContextualStorage().GetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY);
+				return DefaultContextualStorageFactory.Instance.GetContextualStorage().GetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY);
 			}
 			set
 			{
-				//DefaultContextualStorageFactory.Instance.GetContextualStorage().SetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY, value);
+				DefaultContextualStorageFactory.Instance.GetContextualStorage().SetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY, value);
 			}
 		}
 
@@ -134,6 +161,106 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 		#region Methods/Operators
 
+		/// <summary>
+		/// Given a string array of command line arguments, this method will parse the arguments using a well know pattern match to obtain a loosely typed dictionary of key/multi-value pairs for use by applications.
+		/// </summary>
+		/// <param name="args"> The command line argument array to parse. </param>
+		/// <returns> A loosely typed dictionary of key/multi-value pairs. </returns>
+		public IDictionary<string, IList<string>> ParseCommandLineArguments(string[] args)
+		{
+			IDictionary<string, IList<string>> arguments;
+			Match match;
+			string key, value;
+			IList<string> argumentValues;
+
+			if ((object)args == null)
+				throw new ArgumentNullException("args");
+
+			arguments = new Dictionary<string, IList<string>>(StringComparer.CurrentCultureIgnoreCase);
+
+			foreach (string arg in args)
+			{
+				match = Regex.Match(arg, ArgsRegEx, RegexOptions.IgnorePatternWhitespace);
+
+				if ((object)match == null)
+					continue;
+
+				if (!match.Success)
+					continue;
+
+				if (match.Groups.Count != 3)
+					continue;
+
+				key = match.Groups[1].Value;
+				value = match.Groups[2].Value;
+
+				// key is required
+				if (this.DataTypeFascade.IsNullOrWhiteSpace(key))
+					continue;
+
+				// val is required
+				if (this.DataTypeFascade.IsNullOrWhiteSpace(value))
+					continue;
+
+				if (!arguments.ContainsKey(key))
+					arguments.Add(key, new List<string>());
+
+				argumentValues = arguments[key];
+
+				// duplicate values are ignored
+				if (argumentValues.Contains(value))
+					continue;
+
+				argumentValues.Add(value);
+			}
+
+			return arguments;
+		}
+
+		/// <summary>
+		/// Given a string property, this method will parse the property using a well know pattern match to obtain an output key/value pair for use by applications.
+		/// </summary>
+		/// <param name="arg"> The property to parse. </param>
+		/// <param name="key"> The output property key. </param>
+		/// <param name="value"> The output property value. </param>
+		/// <returns> A value indicating if the parse was successful or not. </returns>
+		public bool TryParseCommandLineArgumentProperty(string arg, out string key, out string value)
+		{
+			Match match;
+			string k, v;
+
+			key = null;
+			value = null;
+
+			if ((object)arg == null)
+				throw new ArgumentNullException("arg");
+
+			match = Regex.Match(arg, PropsRegEx, RegexOptions.IgnorePatternWhitespace);
+
+			if ((object)match == null)
+				return false;
+
+			if (!match.Success)
+				return false;
+
+			if (match.Groups.Count != 3)
+				return false;
+
+			k = match.Groups[1].Value;
+			v = match.Groups[2].Value;
+
+			// key is required
+			if (this.DataTypeFascade.IsNullOrWhiteSpace(k))
+				return false;
+
+			// val is required
+			if (this.DataTypeFascade.IsNullOrWhiteSpace(v))
+				return false;
+
+			key = k;
+			value = v;
+			return true;
+		}
 		protected abstract void DisplayArgumentErrorMessage(IEnumerable<Message> argumentMessages);
 
 		protected abstract void DisplayArgumentMapMessage(IDictionary<string, ArgumentSpec> argumentMap);
@@ -208,7 +335,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 				// HACK
 				this.AssemblyInformationFascade = new AssemblyInformationFascade(this.GetType().GetTypeInfo().Assembly);
 
-				arguments = this.AppConfigFascade.ParseCommandLineArguments(args);
+				arguments = this.ParseCommandLineArguments(args);
 				argumentMap = this.GetArgumentMap();
 
 				finalArguments = new Dictionary<string, IList<object>>();

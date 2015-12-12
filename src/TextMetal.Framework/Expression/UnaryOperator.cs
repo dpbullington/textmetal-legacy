@@ -9,37 +9,36 @@ using TextMetal.Middleware.Solder.Runtime;
 
 namespace TextMetal.Framework.Expression
 {
-	[FxSpackleTypes.SerializableAttribute]
 	public enum UnaryOperator
 	{
-		[FxSpackleTypes.DescriptionAttribute("")]
+		[OperatorText("")]
 		Undefined = 0,
 
-		[FxSpackleTypes.DescriptionAttribute("!")]
+		[OperatorText("!")]
 		Not,
 
-		[FxSpackleTypes.DescriptionAttribute("{is_null}")]
+		[OperatorText("{is_null}")]
 		IsNull,
 
-		[FxSpackleTypes.DescriptionAttribute("{is_not_null}")]
+		[OperatorText("{is_not_null}")]
 		IsNotNull, // yes, it is redundant
 
-		[FxSpackleTypes.DescriptionAttribute("{is_defined}")]
+		[OperatorText("{is_defined}")]
 		IsDef,
 
-		[FxSpackleTypes.DescriptionAttribute("-")]
+		[OperatorText("-")]
 		Neg,
 
-		[FxSpackleTypes.DescriptionAttribute("+")]
+		[OperatorText("+")]
 		Pos,
 
-		[FxSpackleTypes.DescriptionAttribute("++")]
+		[OperatorText("++")]
 		Incr,
 
-		[FxSpackleTypes.DescriptionAttribute("--")]
+		[OperatorText("--")]
 		Decr,
 
-		[FxSpackleTypes.DescriptionAttribute("~")]
+		[OperatorText("~")]
 		BComp
 	}
 }

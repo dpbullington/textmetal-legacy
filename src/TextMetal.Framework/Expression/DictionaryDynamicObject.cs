@@ -8,12 +8,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
 
-using TextMetal.Middleware.Solder.Runtime;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Expression
 {
-	[FxSpackleTypes.SerializableAttribute]
 	public class DictionaryDynamicObject : DynamicObject, INotifyPropertyChanged
 	{
 		#region Constructors/Destructors

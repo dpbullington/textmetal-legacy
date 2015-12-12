@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 
 namespace TextMetal.Middleware.Solder.Utilities
 {
@@ -28,6 +29,22 @@ namespace TextMetal.Middleware.Solder.Utilities
 		int EntryPoint(string[] args);
 
 		void ShowNestedExceptionsAndThrowBrickAtProcess(Exception e);
+
+		/// <summary>
+		/// Given a string array of command line arguments, this method will parse the arguments using a well know pattern match to obtain a loosely typed dictionary of key/multi-value pairs for use by applications.
+		/// </summary>
+		/// <param name="args"> The command line argument array to parse. </param>
+		/// <returns> A loosely typed dictionary of key/multi-value pairs. </returns>
+		IDictionary<string, IList<string>> ParseCommandLineArguments(string[] args);
+
+		/// <summary>
+		/// Given a string property, this method will parse the property using a well know pattern match to obtain an output key/value pair for use by applications.
+		/// </summary>
+		/// <param name="arg"> The property to parse. </param>
+		/// <param name="key"> The output property key. </param>
+		/// <param name="value"> The output property value. </param>
+		/// <returns> A value indicating if the parse was successful or not. </returns>
+		bool TryParseCommandLineArgumentProperty(string arg, out string key, out string value);
 
 		#endregion
 	}

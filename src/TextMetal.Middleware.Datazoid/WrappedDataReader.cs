@@ -4,7 +4,6 @@
 */
 
 using System;
-using System.Data;
 
 using TextMetal.Middleware.Solder;
 
