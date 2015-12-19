@@ -116,10 +116,10 @@ namespace TextMetal.Framework.Expression
 			const int CNT_P = 1; // expr
 
 			if ((object)context == null)
-				throw new ArgumentNullException("context");
+				throw new ArgumentNullException(nameof(context));
 
 			if ((object)parameters == null)
-				throw new ArgumentNullException("parameters");
+				throw new ArgumentNullException(nameof(parameters));
 
 			if (parameters.Length != CNT_P)
 				throw new InvalidOperationException(string.Format("JavaScriptExpressionResolver expects '{1}' parameter(s) but received '{0}' parameter(s).", parameters.Length, CNT_P));
@@ -144,7 +144,7 @@ namespace TextMetal.Framework.Expression
 			IDictionary<string, object> textMetal;
 
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy();
 

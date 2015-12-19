@@ -2,30 +2,35 @@
 [\!]git*
 
 # directory name specs
-obj
-bin
-debug
-release
-clientbin
-output
-pkg
-_ReSharper.*
 .partial
 .vs
+PublishProfiles
+TestResults
+_ReSharper.*
+artifacts
+bin
+clientbin
+debug
+obj
+output
+packages
+pkg
+release
 
 # file name specs
-thumbs.db
-desktop.ini
+#project.lock.json
 .DS_Store
 TestResult.xml
+desktop.ini
+thumbs.db
 
 # file extension specs
+*.DotSettings
+*.VisualState.xml
+*.cache
 *.orig
+*.pidb
+*.resharper
 *.suo
 *.user
-*.cache
-*.resharper
-*.VisualState.xml
-*.pidb
 *.userprefs
-*.DotSettings

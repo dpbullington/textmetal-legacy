@@ -51,10 +51,10 @@ namespace TextMetal.Middleware.Solder.Serialization
 			object obj;
 
 			if ((object)inputFilePath == null)
-				throw new ArgumentNullException("inputFilePath");
+				throw new ArgumentNullException(nameof(inputFilePath));
 
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			using (Stream stream = File.Open(inputFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
 				obj = this.GetObjectFromStream(stream, targetType);
@@ -74,7 +74,7 @@ namespace TextMetal.Middleware.Solder.Serialization
 			Type targetType;
 
 			if ((object)inputFilePath == null)
-				throw new ArgumentNullException("inputFilePath");
+				throw new ArgumentNullException(nameof(inputFilePath));
 
 			targetType = typeof(TObject);
 			obj = (TObject)this.GetObjectFromFile(inputFilePath, targetType);
@@ -94,10 +94,10 @@ namespace TextMetal.Middleware.Solder.Serialization
 			object obj;
 
 			if ((object)xmlReader == null)
-				throw new ArgumentNullException("xmlReader");
+				throw new ArgumentNullException(nameof(xmlReader));
 
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			xmlSerializer = new XmlSerializer(targetType);
 			obj = xmlSerializer.Deserialize(xmlReader);
@@ -117,7 +117,7 @@ namespace TextMetal.Middleware.Solder.Serialization
 			Type targetType;
 
 			if ((object)xmlReader == null)
-				throw new ArgumentNullException("xmlReader");
+				throw new ArgumentNullException(nameof(xmlReader));
 
 			targetType = typeof(TObject);
 			obj = (TObject)this.GetObjectFromReader(xmlReader, targetType);
@@ -137,10 +137,10 @@ namespace TextMetal.Middleware.Solder.Serialization
 			object obj;
 
 			if ((object)textReader == null)
-				throw new ArgumentNullException("textReader");
+				throw new ArgumentNullException(nameof(textReader));
 
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			xmlSerializer = new XmlSerializer(targetType);
 			obj = xmlSerializer.Deserialize(textReader);
@@ -160,7 +160,7 @@ namespace TextMetal.Middleware.Solder.Serialization
 			Type targetType;
 
 			if ((object)textReader == null)
-				throw new ArgumentNullException("textReader");
+				throw new ArgumentNullException(nameof(textReader));
 
 			targetType = typeof(TObject);
 			obj = (TObject)this.GetObjectFromReader(textReader, targetType);
@@ -180,10 +180,10 @@ namespace TextMetal.Middleware.Solder.Serialization
 			object obj;
 
 			if ((object)stream == null)
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			xmlSerializer = new XmlSerializer(targetType);
 			obj = xmlSerializer.Deserialize(stream);
@@ -203,7 +203,7 @@ namespace TextMetal.Middleware.Solder.Serialization
 			Type targetType;
 
 			if ((object)stream == null)
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 
 			targetType = typeof(TObject);
 			obj = (TObject)this.GetObjectFromStream(stream, targetType);
@@ -241,7 +241,7 @@ namespace TextMetal.Middleware.Solder.Serialization
 			Type targetType;
 
 			if ((object)value == null)
-				throw new ArgumentNullException("value");
+				throw new ArgumentNullException(nameof(value));
 
 			targetType = typeof(TObject);
 			obj = (TObject)this.GetObjectFromString(value, targetType);
@@ -260,10 +260,10 @@ namespace TextMetal.Middleware.Solder.Serialization
 			Type targetType;
 
 			if ((object)outputFilePath == null)
-				throw new ArgumentNullException("outputFilePath");
+				throw new ArgumentNullException(nameof(outputFilePath));
 
 			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
+				throw new ArgumentNullException(nameof(obj));
 
 			targetType = obj.GetType();
 
@@ -279,10 +279,10 @@ namespace TextMetal.Middleware.Solder.Serialization
 		public void SetObjectToFile(string outputFilePath, Type targetType, object obj)
 		{
 			if ((object)outputFilePath == null)
-				throw new ArgumentNullException("outputFilePath");
+				throw new ArgumentNullException(nameof(outputFilePath));
 
 			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
+				throw new ArgumentNullException(nameof(obj));
 
 			using (Stream stream = File.Open(outputFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
 				this.SetObjectToStream(stream, targetType, obj);
@@ -299,10 +299,10 @@ namespace TextMetal.Middleware.Solder.Serialization
 			Type targetType;
 
 			if ((object)stream == null)
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 
 			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
+				throw new ArgumentNullException(nameof(obj));
 
 			targetType = obj.GetType();
 
@@ -320,13 +320,13 @@ namespace TextMetal.Middleware.Solder.Serialization
 			XmlSerializer xmlSerializer;
 
 			if ((object)stream == null)
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
+				throw new ArgumentNullException(nameof(obj));
 
 			xmlSerializer = new XmlSerializer(targetType);
 			xmlSerializer.Serialize(stream, obj);
@@ -343,10 +343,10 @@ namespace TextMetal.Middleware.Solder.Serialization
 			StringWriter stringWriter;
 
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
+				throw new ArgumentNullException(nameof(obj));
 
 			using (stringWriter = new StringWriter())
 			{
@@ -365,7 +365,7 @@ namespace TextMetal.Middleware.Solder.Serialization
 			Type targetType;
 
 			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
+				throw new ArgumentNullException(nameof(obj));
 
 			targetType = obj.GetType();
 
@@ -382,13 +382,13 @@ namespace TextMetal.Middleware.Solder.Serialization
 			XmlSerializer xmlSerializer;
 
 			if ((object)xmlWriter == null)
-				throw new ArgumentNullException("xmlWriter");
+				throw new ArgumentNullException(nameof(xmlWriter));
 
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
+				throw new ArgumentNullException(nameof(obj));
 
 			targetType = obj.GetType();
 			xmlSerializer = new XmlSerializer(targetType);
@@ -405,10 +405,10 @@ namespace TextMetal.Middleware.Solder.Serialization
 			Type targetType;
 
 			if ((object)xmlWriter == null)
-				throw new ArgumentNullException("xmlWriter");
+				throw new ArgumentNullException(nameof(xmlWriter));
 
 			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
+				throw new ArgumentNullException(nameof(obj));
 
 			targetType = obj.GetType();
 
@@ -426,13 +426,13 @@ namespace TextMetal.Middleware.Solder.Serialization
 			XmlSerializer xmlSerializer;
 
 			if ((object)textWriter == null)
-				throw new ArgumentNullException("textWriter");
+				throw new ArgumentNullException(nameof(textWriter));
 
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
+				throw new ArgumentNullException(nameof(obj));
 
 			targetType = obj.GetType();
 			xmlSerializer = new XmlSerializer(targetType);
@@ -449,10 +449,10 @@ namespace TextMetal.Middleware.Solder.Serialization
 			Type targetType;
 
 			if ((object)textWriter == null)
-				throw new ArgumentNullException("textWriter");
+				throw new ArgumentNullException(nameof(textWriter));
 
 			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
+				throw new ArgumentNullException(nameof(obj));
 
 			targetType = obj.GetType();
 

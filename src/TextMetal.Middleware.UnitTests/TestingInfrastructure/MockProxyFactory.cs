@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+
 using TextMetal.Middleware.Solder.Interception;
 
 namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
@@ -46,10 +47,10 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 			//    throw new ObjectDisposedException(typeof(MockProxyFactory).FullName);
 
 			if ((object)cacheKey == null)
-				throw new ArgumentNullException("cacheKey");
+				throw new ArgumentNullException(nameof(cacheKey));
 
 			if ((object)invokeDynamicFactory == null)
-				throw new ArgumentNullException("invokeDynamicFactory");
+				throw new ArgumentNullException(nameof(invokeDynamicFactory));
 
 			keyValuePair = new KeyValuePair<Type, string>(typeof(IMockObject), cacheKey);
 

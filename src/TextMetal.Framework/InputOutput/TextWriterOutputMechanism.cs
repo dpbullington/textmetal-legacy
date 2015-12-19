@@ -24,10 +24,10 @@ namespace TextMetal.Framework.InputOutput
 		public TextWriterOutputMechanism(TextWriter textWriter, IXmlPersistEngine xpe)
 		{
 			if ((object)textWriter == null)
-				throw new ArgumentNullException("textWriter");
+				throw new ArgumentNullException(nameof(textWriter));
 
 			if ((object)xpe == null)
-				throw new ArgumentNullException("xpe");
+				throw new ArgumentNullException(nameof(xpe));
 
 			this.TextWriters.Push(textWriter);
 			this.xpe = xpe;
@@ -69,7 +69,7 @@ namespace TextMetal.Framework.InputOutput
 			ITextSerializationStrategy serializationStrategy;
 
 			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
+				throw new ArgumentNullException(nameof(obj));
 
 			xmlObject = obj as IXmlObject;
 

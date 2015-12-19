@@ -37,10 +37,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override int CoreCalculateColumnSize(string dataSourceTag, Column column)
 		{
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			if ((object)column == null)
-				throw new ArgumentNullException("column");
+				throw new ArgumentNullException(nameof(column));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
@@ -60,10 +60,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override int CoreCalculateParameterSize(string dataSourceTag, Parameter parameter)
 		{
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			if ((object)parameter == null)
-				throw new ArgumentNullException("parameter");
+				throw new ArgumentNullException(nameof(parameter));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
@@ -82,22 +82,22 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override IEnumerable<DbParameter> CoreGetColumnParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table)
 		{
 			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
+				throw new ArgumentNullException(nameof(connectionType));
 
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			if ((object)server == null)
-				throw new ArgumentNullException("server");
+				throw new ArgumentNullException(nameof(server));
 
 			if ((object)database == null)
-				throw new ArgumentNullException("database");
+				throw new ArgumentNullException(nameof(database));
 
 			if ((object)schema == null)
-				throw new ArgumentNullException("schema");
+				throw new ArgumentNullException(nameof(schema));
 
 			if ((object)table == null)
-				throw new ArgumentNullException("table");
+				throw new ArgumentNullException(nameof(table));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
@@ -116,22 +116,22 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override IEnumerable<DbParameter> CoreGetColumnParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, View view)
 		{
 			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
+				throw new ArgumentNullException(nameof(connectionType));
 
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			if ((object)server == null)
-				throw new ArgumentNullException("server");
+				throw new ArgumentNullException(nameof(server));
 
 			if ((object)database == null)
-				throw new ArgumentNullException("database");
+				throw new ArgumentNullException(nameof(database));
 
 			if ((object)schema == null)
-				throw new ArgumentNullException("schema");
+				throw new ArgumentNullException(nameof(schema));
 
 			if ((object)view == null)
-				throw new ArgumentNullException("view");
+				throw new ArgumentNullException(nameof(view));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
@@ -150,13 +150,13 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override IEnumerable<DbParameter> CoreGetDatabaseParameters(Type connectionType, string dataSourceTag, Server server)
 		{
 			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
+				throw new ArgumentNullException(nameof(connectionType));
 
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			if ((object)server == null)
-				throw new ArgumentNullException("server");
+				throw new ArgumentNullException(nameof(server));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
@@ -172,10 +172,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override IEnumerable<DbParameter> CoreGetDdlTriggerParameters(Type connectionType, string dataSourceTag, Server server, Database database)
 		{
 			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
+				throw new ArgumentNullException(nameof(connectionType));
 
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
@@ -192,22 +192,22 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override IEnumerable<DbParameter> CoreGetDmlTriggerParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table)
 		{
 			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
+				throw new ArgumentNullException(nameof(connectionType));
 
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			if ((object)server == null)
-				throw new ArgumentNullException("server");
+				throw new ArgumentNullException(nameof(server));
 
 			if ((object)database == null)
-				throw new ArgumentNullException("database");
+				throw new ArgumentNullException(nameof(database));
 
 			if ((object)schema == null)
-				throw new ArgumentNullException("schema");
+				throw new ArgumentNullException(nameof(schema));
 
 			if ((object)table == null)
-				throw new ArgumentNullException("table");
+				throw new ArgumentNullException(nameof(table));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
@@ -226,7 +226,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override bool CoreGetEmitImplicitReturnParameter(string dataSourceTag)
 		{
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 				return true;
@@ -237,25 +237,25 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override IEnumerable<DbParameter> CoreGetForeignKeyColumnParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table, ForeignKey foreignKey)
 		{
 			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
+				throw new ArgumentNullException(nameof(connectionType));
 
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			if ((object)server == null)
-				throw new ArgumentNullException("server");
+				throw new ArgumentNullException(nameof(server));
 
 			if ((object)database == null)
-				throw new ArgumentNullException("database");
+				throw new ArgumentNullException(nameof(database));
 
 			if ((object)schema == null)
-				throw new ArgumentNullException("schema");
+				throw new ArgumentNullException(nameof(schema));
 
 			if ((object)table == null)
-				throw new ArgumentNullException("table");
+				throw new ArgumentNullException(nameof(table));
 
 			if ((object)foreignKey == null)
-				throw new ArgumentNullException("foreignKey");
+				throw new ArgumentNullException(nameof(foreignKey));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
@@ -275,22 +275,22 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override IEnumerable<DbParameter> CoreGetForeignKeyParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table)
 		{
 			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
+				throw new ArgumentNullException(nameof(connectionType));
 
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			if ((object)server == null)
-				throw new ArgumentNullException("server");
+				throw new ArgumentNullException(nameof(server));
 
 			if ((object)database == null)
-				throw new ArgumentNullException("database");
+				throw new ArgumentNullException(nameof(database));
 
 			if ((object)schema == null)
-				throw new ArgumentNullException("schema");
+				throw new ArgumentNullException(nameof(schema));
 
 			if ((object)table == null)
-				throw new ArgumentNullException("table");
+				throw new ArgumentNullException(nameof(table));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
@@ -309,22 +309,22 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override IEnumerable<DbParameter> CoreGetParameterParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Procedure procedure)
 		{
 			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
+				throw new ArgumentNullException(nameof(connectionType));
 
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			if ((object)server == null)
-				throw new ArgumentNullException("server");
+				throw new ArgumentNullException(nameof(server));
 
 			if ((object)database == null)
-				throw new ArgumentNullException("database");
+				throw new ArgumentNullException(nameof(database));
 
 			if ((object)schema == null)
-				throw new ArgumentNullException("schema");
+				throw new ArgumentNullException(nameof(schema));
 
 			if ((object)procedure == null)
-				throw new ArgumentNullException("procedure");
+				throw new ArgumentNullException(nameof(procedure));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
@@ -343,7 +343,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override string CoreGetParameterPrefix(string dataSourceTag)
 		{
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 				return "@";
@@ -354,19 +354,19 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override IEnumerable<DbParameter> CoreGetProcedureParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema)
 		{
 			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
+				throw new ArgumentNullException(nameof(connectionType));
 
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			if ((object)server == null)
-				throw new ArgumentNullException("server");
+				throw new ArgumentNullException(nameof(server));
 
 			if ((object)database == null)
-				throw new ArgumentNullException("database");
+				throw new ArgumentNullException(nameof(database));
 
 			if ((object)schema == null)
-				throw new ArgumentNullException("schema");
+				throw new ArgumentNullException(nameof(schema));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
@@ -384,10 +384,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override IEnumerable<DbParameter> CoreGetSchemaParameters(Type connectionType, string dataSourceTag, Server server, Database database)
 		{
 			if ((object)server == null)
-				throw new ArgumentNullException("server");
+				throw new ArgumentNullException(nameof(server));
 
 			if ((object)database == null)
-				throw new ArgumentNullException("database");
+				throw new ArgumentNullException(nameof(database));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
@@ -404,10 +404,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override IEnumerable<DbParameter> CoreGetServerParameters(Type connectionType, string dataSourceTag)
 		{
 			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
+				throw new ArgumentNullException(nameof(connectionType));
 
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 				return null;
@@ -418,19 +418,19 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override IEnumerable<DbParameter> CoreGetTableParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema)
 		{
 			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
+				throw new ArgumentNullException(nameof(connectionType));
 
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			if ((object)server == null)
-				throw new ArgumentNullException("server");
+				throw new ArgumentNullException(nameof(server));
 
 			if ((object)database == null)
-				throw new ArgumentNullException("database");
+				throw new ArgumentNullException(nameof(database));
 
 			if ((object)schema == null)
-				throw new ArgumentNullException("schema");
+				throw new ArgumentNullException(nameof(schema));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
@@ -448,25 +448,25 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override IEnumerable<DbParameter> CoreGetUniqueKeyColumnParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table, UniqueKey uniqueKey)
 		{
 			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
+				throw new ArgumentNullException(nameof(connectionType));
 
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			if ((object)server == null)
-				throw new ArgumentNullException("server");
+				throw new ArgumentNullException(nameof(server));
 
 			if ((object)database == null)
-				throw new ArgumentNullException("database");
+				throw new ArgumentNullException(nameof(database));
 
 			if ((object)schema == null)
-				throw new ArgumentNullException("schema");
+				throw new ArgumentNullException(nameof(schema));
 
 			if ((object)table == null)
-				throw new ArgumentNullException("table");
+				throw new ArgumentNullException(nameof(table));
 
 			if ((object)uniqueKey == null)
-				throw new ArgumentNullException("uniqueKey");
+				throw new ArgumentNullException(nameof(uniqueKey));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
@@ -486,22 +486,22 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override IEnumerable<DbParameter> CoreGetUniqueKeyParameters(Type connectionType, string dataSourceTag, Server server, Database database, Schema schema, Table table)
 		{
 			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
+				throw new ArgumentNullException(nameof(connectionType));
 
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			if ((object)server == null)
-				throw new ArgumentNullException("server");
+				throw new ArgumentNullException(nameof(server));
 
 			if ((object)database == null)
-				throw new ArgumentNullException("database");
+				throw new ArgumentNullException(nameof(database));
 
 			if ((object)schema == null)
-				throw new ArgumentNullException("schema");
+				throw new ArgumentNullException(nameof(schema));
 
 			if ((object)table == null)
-				throw new ArgumentNullException("table");
+				throw new ArgumentNullException(nameof(table));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{
@@ -520,7 +520,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 		protected override Type CoreInferClrTypeForSqlType(string dataSourceTag, string sqlType, int sqlPrecision)
 		{
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			if (dataSourceTag.SafeToString().ToLower() == NET_SQL_SERVER_DATA_SOURCE_TAG)
 			{

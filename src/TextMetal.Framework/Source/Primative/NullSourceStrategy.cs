@@ -26,10 +26,10 @@ namespace TextMetal.Framework.Source.Primative
 		protected override object CoreGetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties)
 		{
 			if ((object)sourceFilePath == null)
-				throw new ArgumentNullException("sourceFilePath");
+				throw new ArgumentNullException(nameof(sourceFilePath));
 
 			if ((object)properties == null)
-				throw new ArgumentNullException("properties");
+				throw new ArgumentNullException(nameof(properties));
 
 			return DBNull.Value;
 		}

@@ -17,18 +17,11 @@ namespace TextMetal.Middleware.Solder.Utilities
 			get;
 		}
 
-		bool HookUnhandledExceptionEvents
-		{
-			get;
-		}
-
 		#endregion
 
 		#region Methods/Operators
 
 		int EntryPoint(string[] args);
-
-		void ShowNestedExceptionsAndThrowBrickAtProcess(Exception e);
 
 		/// <summary>
 		/// Given a string array of command line arguments, this method will parse the arguments using a well know pattern match to obtain a loosely typed dictionary of key/multi-value pairs for use by applications.
@@ -36,6 +29,8 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// <param name="args"> The command line argument array to parse. </param>
 		/// <returns> A loosely typed dictionary of key/multi-value pairs. </returns>
 		IDictionary<string, IList<string>> ParseCommandLineArguments(string[] args);
+
+		void ShowNestedExceptionsAndThrowBrickAtProcess(Exception e);
 
 		/// <summary>
 		/// Given a string property, this method will parse the property using a well know pattern match to obtain an output key/value pair for use by applications.

@@ -70,10 +70,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		public override void FixupParameter(IUnitOfWork unitOfWork, ITacticParameter tacticParameter, string originalSqlType)
 		{
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)tacticParameter == null)
-				throw new ArgumentNullException("tacticParameter");
+				throw new ArgumentNullException(nameof(tacticParameter));
 
 			if (originalSqlType.SafeToString().ToUpper() == "NTEXT")
 				tacticParameter.ParameterFixups.Add("OdbcType", Enum.Parse(Type.GetType("System.Data.Odbc.OdbcType, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089", true), "NText", true));

@@ -35,10 +35,10 @@ namespace TextMetal.Framework.InputOutput
 		protected override string CoreLoadContent(string contentName)
 		{
 			if ((object)contentName == null)
-				throw new ArgumentNullException("contentName");
+				throw new ArgumentNullException(nameof(contentName));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(contentName))
-				throw new ArgumentOutOfRangeException("contentName");
+				throw new ArgumentOutOfRangeException(nameof(contentName));
 
 			return null;
 		}
@@ -46,13 +46,13 @@ namespace TextMetal.Framework.InputOutput
 		protected override object CoreLoadSource(string sourceName, IDictionary<string, IList<string>> properties)
 		{
 			if ((object)sourceName == null)
-				throw new ArgumentNullException("sourceName");
+				throw new ArgumentNullException(nameof(sourceName));
 
 			if ((object)properties == null)
-				throw new ArgumentNullException("properties");
+				throw new ArgumentNullException(nameof(properties));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(sourceName))
-				throw new ArgumentOutOfRangeException("sourceName");
+				throw new ArgumentOutOfRangeException(nameof(sourceName));
 
 			return DBNull.Value;
 		}
@@ -60,10 +60,10 @@ namespace TextMetal.Framework.InputOutput
 		protected override ITemplateXmlObject CoreLoadTemplate(string templateName)
 		{
 			if ((object)templateName == null)
-				throw new ArgumentNullException("templateName");
+				throw new ArgumentNullException(nameof(templateName));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(templateName))
-				throw new ArgumentOutOfRangeException("templateName");
+				throw new ArgumentOutOfRangeException(nameof(templateName));
 
 			return null;
 		}

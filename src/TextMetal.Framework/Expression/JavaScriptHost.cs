@@ -65,10 +65,10 @@ namespace TextMetal.Framework.Expression
 			CompiledCode compiledCode;
 
 			if ((object)scriptHandle == null)
-				throw new ArgumentNullException("scriptHandle");
+				throw new ArgumentNullException(nameof(scriptHandle));
 
 			if ((object)scriptContent == null)
-				throw new ArgumentNullException("scriptContent");
+				throw new ArgumentNullException(nameof(scriptContent));
 
 			compiledCode = scriptContent;
 
@@ -86,10 +86,10 @@ namespace TextMetal.Framework.Expression
 			object returnValue;
 
 			if ((object)scriptHandle == null)
-				throw new ArgumentNullException("scriptHandle");
+				throw new ArgumentNullException(nameof(scriptHandle));
 
 			if ((object)scriptVariables == null)
-				throw new ArgumentNullException("scriptVariables");
+				throw new ArgumentNullException(nameof(scriptVariables));
 
 			if (!this.ScriptCompilations.TryGetValue(scriptHandle, out compiledCode))
 				throw new InvalidOperationException(string.Format("'{0}'", scriptHandle));

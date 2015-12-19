@@ -571,7 +571,7 @@ namespace TextMetal.Framework.Associative
 		protected virtual IEnumerator CoreGetAssociativeObjectEnumerator(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			// default (except for Array)
 			return ((IDictionary)this.InnerAsDictionary).GetEnumerator();
@@ -585,7 +585,7 @@ namespace TextMetal.Framework.Associative
 		protected virtual IDictionaryEnumerator CoreGetAssociativeObjectEnumeratorDict(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			return ((IDictionary)this.InnerAsDictionary).GetEnumerator();
 		}
@@ -598,7 +598,7 @@ namespace TextMetal.Framework.Associative
 		protected virtual IEnumerator<KeyValuePair<string, object>> CoreGetAssociativeObjectEnumeratorTickOne(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			return ((IDictionary<string, object>)this.InnerAsDictionary).GetEnumerator();
 		}
@@ -611,7 +611,7 @@ namespace TextMetal.Framework.Associative
 		protected virtual object CoreGetAssociativeObjectValue(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			// default (except for Property)
 			return this;
@@ -625,7 +625,7 @@ namespace TextMetal.Framework.Associative
 		public IEnumerator GetAssociativeObjectEnumerator(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			return this.CoreGetAssociativeObjectEnumerator(templatingContext);
 		}
@@ -638,7 +638,7 @@ namespace TextMetal.Framework.Associative
 		public IDictionaryEnumerator GetAssociativeObjectEnumeratorDict(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			return this.CoreGetAssociativeObjectEnumeratorDict(templatingContext);
 		}
@@ -651,7 +651,7 @@ namespace TextMetal.Framework.Associative
 		public IEnumerator<KeyValuePair<string, object>> GetAssociativeObjectEnumeratorTickOne(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			return this.CoreGetAssociativeObjectEnumeratorTickOne(templatingContext);
 		}
@@ -664,7 +664,7 @@ namespace TextMetal.Framework.Associative
 		public object GetAssociativeObjectValue(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			return this.CoreGetAssociativeObjectValue(templatingContext);
 		}

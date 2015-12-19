@@ -16,10 +16,10 @@ namespace TextMetal.Middleware.Datazoid
 		public RecordDataReader(IEnumerable<IColumn> upstreamMetadata, IEnumerable<IRecord> targetEnumerable)
 		{
 			if ((object)upstreamMetadata == null)
-				throw new ArgumentNullException("upstreamMetadata");
+				throw new ArgumentNullException(nameof(upstreamMetadata));
 
 			if ((object)targetEnumerable == null)
-				throw new ArgumentNullException("targetEnumerable");
+				throw new ArgumentNullException(nameof(targetEnumerable));
 
 			this.targetEnumerator = targetEnumerable.GetEnumerator();
 

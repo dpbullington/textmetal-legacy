@@ -39,7 +39,7 @@ namespace TextMetal.Framework.Associative
 		protected override IEnumerator CoreGetAssociativeObjectEnumerator(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			return this.Items.OfType<IObjectReference>().GetEnumerator();
 		}

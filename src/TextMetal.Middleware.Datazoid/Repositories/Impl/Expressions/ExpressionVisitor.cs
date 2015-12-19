@@ -25,7 +25,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Expressions
 		internal IExpression Visit(IExpression expression)
 		{
 			if ((object)expression == null)
-				throw new ArgumentNullException("expression");
+				throw new ArgumentNullException(nameof(expression));
 
 			if (expression is NullaryExpression)
 				return this.VisitNullary((NullaryExpression)expression);

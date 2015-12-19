@@ -19,10 +19,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 		public DzTableModelQuery(IExpression filterExpression, IEnumerable<SortOrder> sortOrders)
 		{
 			if ((object)filterExpression == null)
-				throw new ArgumentNullException("filterExpression");
+				throw new ArgumentNullException(nameof(filterExpression));
 
 			if ((object)sortOrders == null)
-				throw new ArgumentNullException("sortOrders");
+				throw new ArgumentNullException(nameof(sortOrders));
 
 			this.filterExpression = filterExpression;
 			this.sortOrders = sortOrders;

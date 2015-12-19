@@ -42,7 +42,7 @@ namespace TextMetal.Framework.Hosting.Email
 			XmlReader templateXmlReader;
 
 			if ((object)emailTemplate == null)
-				throw new ArgumentNullException("emailTemplate");
+				throw new ArgumentNullException(nameof(emailTemplate));
 
 			emailMessage = new EmailMessage();
 

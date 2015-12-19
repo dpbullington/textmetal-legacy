@@ -23,7 +23,7 @@ namespace TextMetal.Middleware.Solder.Injection
 		public SingletonDependencyResolution(IDependencyResolution chainedDependencyResolution)
 		{
 			if ((object)chainedDependencyResolution == null)
-				throw new ArgumentNullException("chainedDependencyResolution");
+				throw new ArgumentNullException(nameof(chainedDependencyResolution));
 
 			this.chainedDependencyResolution = chainedDependencyResolution;
 		}
@@ -91,7 +91,7 @@ namespace TextMetal.Middleware.Solder.Injection
 		public object Resolve(IDependencyManager dependencyManager)
 		{
 			if ((object)dependencyManager == null)
-				throw new ArgumentNullException("dependencyManager");
+				throw new ArgumentNullException(nameof(dependencyManager));
 
 			if (this.Frozen)
 				return this.Instance;

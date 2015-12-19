@@ -40,13 +40,13 @@ namespace TextMetal.Middleware.Solder.Serialization
 			bool retval;
 
 			if ((object)serializationStrategy == null)
-				throw new ArgumentNullException("serializationStrategy");
+				throw new ArgumentNullException(nameof(serializationStrategy));
 
 			if ((object)resourceType == null)
-				throw new ArgumentNullException("resourceType");
+				throw new ArgumentNullException(nameof(resourceType));
 
 			if ((object)resourceName == null)
-				throw new ArgumentNullException("resourceName");
+				throw new ArgumentNullException(nameof(resourceName));
 
 			result = default(TObject);
 			targetType = typeof(TObject);
@@ -72,10 +72,10 @@ namespace TextMetal.Middleware.Solder.Serialization
 			bool retval;
 
 			if ((object)resourceType == null)
-				throw new ArgumentNullException("resourceType");
+				throw new ArgumentNullException(nameof(resourceType));
 
 			if ((object)resourceName == null)
-				throw new ArgumentNullException("resourceName");
+				throw new ArgumentNullException(nameof(resourceName));
 
 			result = null;
 

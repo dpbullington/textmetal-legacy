@@ -25,7 +25,7 @@ namespace TextMetal.Framework.Associative
 		public ProxyConstruct(object value)
 		{
 			if ((object)value == null)
-				throw new ArgumentNullException("value");
+				throw new ArgumentNullException(nameof(value));
 
 			this.value = value;
 		}
@@ -63,7 +63,7 @@ namespace TextMetal.Framework.Associative
 		protected override IEnumerator CoreGetAssociativeObjectEnumerator(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			return null;
 		}
@@ -76,7 +76,7 @@ namespace TextMetal.Framework.Associative
 		protected override object CoreGetAssociativeObjectValue(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			return this.Value;
 		}

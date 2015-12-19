@@ -65,31 +65,31 @@ namespace TextMetal.Framework.Hosting.Tool
 			ISourceStrategy sourceStrategy;
 
 			if ((object)templateFilePath == null)
-				throw new ArgumentNullException("templateFilePath");
+				throw new ArgumentNullException(nameof(templateFilePath));
 
 			if ((object)sourceFilePath == null)
-				throw new ArgumentNullException("sourceFilePath");
+				throw new ArgumentNullException(nameof(sourceFilePath));
 
 			if ((object)baseDirectoryPath == null)
-				throw new ArgumentNullException("baseDirectoryPath");
+				throw new ArgumentNullException(nameof(baseDirectoryPath));
 
 			if ((object)sourceStrategyAqtn == null)
-				throw new ArgumentNullException("sourceStrategyAqtn");
+				throw new ArgumentNullException(nameof(sourceStrategyAqtn));
 
 			if ((object)properties == null)
-				throw new ArgumentNullException("properties");
+				throw new ArgumentNullException(nameof(properties));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(templateFilePath))
-				throw new ArgumentOutOfRangeException("templateFilePath");
+				throw new ArgumentOutOfRangeException(nameof(templateFilePath));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
-				throw new ArgumentOutOfRangeException("sourceFilePath");
+				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(baseDirectoryPath))
-				throw new ArgumentOutOfRangeException("baseDirectoryPath");
+				throw new ArgumentOutOfRangeException(nameof(baseDirectoryPath));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(sourceStrategyAqtn))
-				throw new ArgumentOutOfRangeException("sourceStrategyAqtn");
+				throw new ArgumentOutOfRangeException(nameof(sourceStrategyAqtn));
 
 			toolVersion = new AssemblyInformationFascade(typeof(IXmlPersistEngine).GetTypeInfo().Assembly).AssemblyVersion;
 			templateFilePath = Path.GetFullPath(templateFilePath);

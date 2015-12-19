@@ -5,8 +5,6 @@
 
 using System;
 
-using TextMetal.Middleware.Solder.Runtime;
-
 namespace TextMetal.Framework.Expression
 {
 	public enum NullaryOperator

@@ -60,7 +60,7 @@ namespace TextMetal.Framework.Template
 			Type[] exportedTypes;
 
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy();
 

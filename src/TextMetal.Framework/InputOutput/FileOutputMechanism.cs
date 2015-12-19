@@ -28,16 +28,16 @@ namespace TextMetal.Framework.InputOutput
 		public FileOutputMechanism(string baseDirectoryPath, string logFileName, Encoding logFileEncoding, IXmlPersistEngine xpe)
 		{
 			if ((object)baseDirectoryPath == null)
-				throw new ArgumentNullException("baseDirectoryPath");
+				throw new ArgumentNullException(nameof(baseDirectoryPath));
 
 			if ((object)logFileName == null)
-				throw new ArgumentNullException("logFileName");
+				throw new ArgumentNullException(nameof(logFileName));
 
 			if ((object)logFileEncoding == null)
-				throw new ArgumentNullException("logFileEncoding");
+				throw new ArgumentNullException(nameof(logFileEncoding));
 
 			if ((object)xpe == null)
-				throw new ArgumentNullException("xpe");
+				throw new ArgumentNullException(nameof(xpe));
 
 			if (!Path.HasExtension(baseDirectoryPath) &&
 				!baseDirectoryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
@@ -109,10 +109,10 @@ namespace TextMetal.Framework.InputOutput
 			string fullDirectoryPath;
 
 			if ((object)scopeName == null)
-				throw new ArgumentNullException("scopeName");
+				throw new ArgumentNullException(nameof(scopeName));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(scopeName))
-				throw new ArgumentOutOfRangeException("scopeName");
+				throw new ArgumentOutOfRangeException(nameof(scopeName));
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, scopeName));
 			fullDirectoryPath = Path.GetDirectoryName(fullFilePath);
@@ -133,10 +133,10 @@ namespace TextMetal.Framework.InputOutput
 			TextWriter textWriter;
 
 			if ((object)scopeName == null)
-				throw new ArgumentNullException("scopeName");
+				throw new ArgumentNullException(nameof(scopeName));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(scopeName))
-				throw new ArgumentOutOfRangeException("scopeName");
+				throw new ArgumentOutOfRangeException(nameof(scopeName));
 
 			textWriter = this.TextWriters.Pop();
 			textWriter.Flush();
@@ -150,13 +150,13 @@ namespace TextMetal.Framework.InputOutput
 			ISerializationStrategy serializationStrategy;
 
 			if ((object)obj == null)
-				throw new ArgumentNullException("obj");
+				throw new ArgumentNullException(nameof(obj));
 
 			if ((object)objectName == null)
-				throw new ArgumentNullException("objectName");
+				throw new ArgumentNullException(nameof(objectName));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(objectName))
-				throw new ArgumentOutOfRangeException("objectName");
+				throw new ArgumentOutOfRangeException(nameof(objectName));
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, objectName));
 			xmlObject = obj as IXmlObject;

@@ -90,10 +90,10 @@ namespace TextMetal.Framework.XmlDialect
 			int attributeCount;
 
 			if ((object)contextStack == null)
-				throw new ArgumentNullException("contextStack");
+				throw new ArgumentNullException(nameof(contextStack));
 
 			if ((object)xmlName == null)
-				throw new ArgumentNullException("xmlName");
+				throw new ArgumentNullException(nameof(xmlName));
 
 			// sanity check
 			if (contextStack.Count < 1)
@@ -159,10 +159,10 @@ namespace TextMetal.Framework.XmlDialect
 			IXmlObject document;
 
 			if ((object)fileName == null)
-				throw new ArgumentNullException("fileName");
+				throw new ArgumentNullException(nameof(fileName));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(fileName))
-				throw new ArgumentOutOfRangeException("fileName");
+				throw new ArgumentOutOfRangeException(nameof(fileName));
 
 			using (Stream stream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
 			{
@@ -182,7 +182,7 @@ namespace TextMetal.Framework.XmlDialect
 			IXmlObject document;
 
 			if ((object)stream == null)
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 
 			// DO NOT USE A USING BLOCK HERE (CALLER OWNS STREAM) !!!
 			xmlReader = XmlReader.Create(stream);
@@ -232,16 +232,16 @@ namespace TextMetal.Framework.XmlDialect
 				@"( [a-zA-Z_][a-zA-Z_0-9\-]+ ) \. ( [a-zA-Z_][a-zA-Z_0-9\-]+ )";
 
 			if ((object)contextStack == null)
-				throw new ArgumentNullException("contextStack");
+				throw new ArgumentNullException(nameof(contextStack));
 
 			if ((object)currentElementXmlName == null)
-				throw new ArgumentNullException("currentElementXmlName");
+				throw new ArgumentNullException(nameof(currentElementXmlName));
 
 			if ((object)attributes == null)
-				throw new ArgumentNullException("attributes");
+				throw new ArgumentNullException(nameof(attributes));
 
 			if (DataTypeFascade.Instance.IsNullOrWhiteSpace(currentElementXmlName.LocalName))
-				throw new ArgumentOutOfRangeException("currentElementXmlName");
+				throw new ArgumentOutOfRangeException(nameof(currentElementXmlName));
 
 			if (contextStack.Count > 0) // is this NOT the root node?
 			{
@@ -523,7 +523,7 @@ namespace TextMetal.Framework.XmlDialect
 			IXmlLineInfo xmlLineInfo;
 
 			if ((object)xmlReader == null)
-				throw new ArgumentNullException("xmlReader");
+				throw new ArgumentNullException(nameof(xmlReader));
 
 			// setup contextual data
 			attributes = new Dictionary<XmlName, string>();
@@ -666,7 +666,7 @@ namespace TextMetal.Framework.XmlDialect
 			IXmlObject document;
 
 			if ((object)textReader == null)
-				throw new ArgumentNullException("textReader");
+				throw new ArgumentNullException(nameof(textReader));
 
 			// DO NOT USE A USING BLOCK HERE (CALLER OWNS TEXTWRITER) !!!
 			xmlReader = XmlReader.Create(textReader);
@@ -689,10 +689,10 @@ namespace TextMetal.Framework.XmlDialect
 			XmlElementMappingAttribute parentXmlElementMappingAttribute;
 
 			if ((object)contextStack == null)
-				throw new ArgumentNullException("contextStack");
+				throw new ArgumentNullException(nameof(contextStack));
 
 			if ((object)textValue == null)
-				throw new ArgumentNullException("textValue");
+				throw new ArgumentNullException(nameof(textValue));
 
 			// sanity check
 			if (contextStack.Count <= 0)
@@ -758,7 +758,7 @@ namespace TextMetal.Framework.XmlDialect
 			Type targetType;
 
 			if ((object)xmlName == null)
-				throw new ArgumentNullException("xmlName");
+				throw new ArgumentNullException(nameof(xmlName));
 
 			targetType = typeof(TObject);
 
@@ -773,10 +773,10 @@ namespace TextMetal.Framework.XmlDialect
 		public void RegisterKnownXmlObject(XmlName xmlName, Type targetType)
 		{
 			if ((object)xmlName == null)
-				throw new ArgumentNullException("xmlName");
+				throw new ArgumentNullException(nameof(xmlName));
 
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			if (this.KnownXmlObjectTypeRegistrations.ContainsKey(xmlName))
 				throw new InvalidOperationException(string.Format("TODO (enhancement): add meaningful message | XML for target type '{0}'.", targetType.FullName));
@@ -811,7 +811,7 @@ namespace TextMetal.Framework.XmlDialect
 			XmlElementMappingAttribute xmlElementMappingAttribute;
 
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			xmlElementMappingAttribute = ReflectionFascade.Instance.GetOneAttribute<XmlElementMappingAttribute>(targetType);
 
@@ -848,7 +848,7 @@ namespace TextMetal.Framework.XmlDialect
 		public void RegisterKnownXmlTextObject(Type targetType)
 		{
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			if ((object)this.KnownXmlTextObjectTypeRegistration != null)
 				throw new InvalidOperationException(string.Format("TODO (enhancement): add meaningful message | XML for target type '{0}'.", targetType.FullName));
@@ -871,7 +871,7 @@ namespace TextMetal.Framework.XmlDialect
 			Type targetType;
 
 			if ((object)xmlName == null)
-				throw new ArgumentNullException("xmlName");
+				throw new ArgumentNullException(nameof(xmlName));
 
 			if (!this.KnownXmlObjectTypeRegistrations.TryGetValue(xmlName, out targetType))
 				return null;
@@ -928,13 +928,13 @@ namespace TextMetal.Framework.XmlDialect
 		public void SerializeToXml(IXmlObject document, string fileName)
 		{
 			if ((object)document == null)
-				throw new ArgumentNullException("document");
+				throw new ArgumentNullException(nameof(document));
 
 			if ((object)fileName == null)
-				throw new ArgumentNullException("fileName");
+				throw new ArgumentNullException(nameof(fileName));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(fileName))
-				throw new ArgumentOutOfRangeException("fileName");
+				throw new ArgumentOutOfRangeException(nameof(fileName));
 
 			using (Stream stream = File.Open(fileName, FileMode.Create, FileAccess.Write, FileShare.None))
 				this.SerializeToXml(document, stream);
@@ -950,10 +950,10 @@ namespace TextMetal.Framework.XmlDialect
 			XmlWriter xmlWriter;
 
 			if ((object)document == null)
-				throw new ArgumentNullException("document");
+				throw new ArgumentNullException(nameof(document));
 
 			if ((object)stream == null)
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 
 			// DO NOT USE A USING BLOCK HERE (CALLER OWNS STREAM) !!!
 			xmlWriter = XmlWriter.Create(stream, new XmlWriterSettings() { Encoding = Encoding.UTF8 });
@@ -970,10 +970,10 @@ namespace TextMetal.Framework.XmlDialect
 		public void SerializeToXml(IXmlObject document, XmlWriter xmlWriter)
 		{
 			if ((object)document == null)
-				throw new ArgumentNullException("document");
+				throw new ArgumentNullException(nameof(document));
 
 			if ((object)xmlWriter == null)
-				throw new ArgumentNullException("xmlWriter");
+				throw new ArgumentNullException(nameof(xmlWriter));
 
 			this.SerializeToXml(xmlWriter, document, null);
 		}
@@ -996,10 +996,10 @@ namespace TextMetal.Framework.XmlDialect
 			string svalue;
 
 			if ((object)xmlWriter == null)
-				throw new ArgumentNullException("xmlWriter");
+				throw new ArgumentNullException(nameof(xmlWriter));
 
 			if ((object)currentXmlObject == null)
-				throw new ArgumentNullException("currentXmlObject");
+				throw new ArgumentNullException(nameof(currentXmlObject));
 
 			// is this a text element?
 			currentXmlTextObject = currentXmlObject as IXmlTextObject;
@@ -1195,10 +1195,10 @@ namespace TextMetal.Framework.XmlDialect
 			XmlWriter xmlWriter;
 
 			if ((object)document == null)
-				throw new ArgumentNullException("document");
+				throw new ArgumentNullException(nameof(document));
 
 			if ((object)textWriter == null)
-				throw new ArgumentNullException("textWriter");
+				throw new ArgumentNullException(nameof(textWriter));
 
 			// DO NOT USE A USING BLOCK HERE (CALLER OWNS TEXTWRITER) !!!
 			xmlWriter = XmlWriter.Create(textWriter);
@@ -1233,7 +1233,7 @@ namespace TextMetal.Framework.XmlDialect
 			XmlElementMappingAttribute xmlElementMappingAttribute;
 
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			xmlElementMappingAttribute = ReflectionFascade.Instance.GetOneAttribute<XmlElementMappingAttribute>(targetType);
 
@@ -1276,7 +1276,7 @@ namespace TextMetal.Framework.XmlDialect
 			bool retval;
 
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			if (retval = (object)this.KnownXmlTextObjectTypeRegistration != null)
 				this.KnownXmlTextObjectTypeRegistration = null;

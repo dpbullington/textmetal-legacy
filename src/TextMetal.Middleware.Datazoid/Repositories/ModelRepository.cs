@@ -26,10 +26,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories
 		protected ModelRepository(IDataTypeFascade dataTypeFascade, IAppConfigFascade appConfigFascade)
 		{
 			if ((object)dataTypeFascade == null)
-				throw new ArgumentNullException("dataTypeFascade");
+				throw new ArgumentNullException(nameof(dataTypeFascade));
 
 			if ((object)appConfigFascade == null)
-				throw new ArgumentNullException("appConfigFascade");
+				throw new ArgumentNullException(nameof(appConfigFascade));
 
 			this.dataTypeFascade = dataTypeFascade;
 			this.appConfigFascade = appConfigFascade;
@@ -246,7 +246,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories
 				return;
 
 			if ((object)connectionString == null)
-				throw new ArgumentNullException("connectionString");
+				throw new ArgumentNullException(nameof(connectionString));
 
 			// {0} = this.DatabaseFilePath
 			connectionString = string.Format(connectionString ?? string.Empty, this.DatabaseFilePath);

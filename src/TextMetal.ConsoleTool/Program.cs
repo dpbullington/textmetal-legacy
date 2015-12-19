@@ -5,10 +5,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
-using TextMetal.Middleware.Solder.Utilities;
 using TextMetal.Framework.Hosting.Tool;
+using TextMetal.Middleware.Solder.Injection;
+using TextMetal.Middleware.Solder.Runtime;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.ConsoleTool
 {
@@ -19,7 +22,9 @@ namespace TextMetal.ConsoleTool
 	{
 		#region Constructors/Destructors
 
-		public Program()
+		[DependencyInjection]
+		public Program([DependencyInjection] IDataTypeFascade dataTypeFascade, [DependencyInjection] IAppConfigFascade appConfigFascade, [DependencyInjection] IReflectionFascade reflectionFascade)
+			: base(dataTypeFascade, appConfigFascade, reflectionFascade)
 		{
 		}
 
@@ -39,6 +44,12 @@ namespace TextMetal.ConsoleTool
 
 		#region Methods/Operators
 
+		private static int DnxMain(string[] args)
+		{
+			using (ConsoleApplicationFascade program = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty))
+				return program.EntryPoint(args);
+		}
+
 		/// <summary>
 		/// The entry point method for this application.
 		/// </summary>
@@ -47,8 +58,17 @@ namespace TextMetal.ConsoleTool
 		[STAThread]
 		public static int Main(string[] args)
 		{
-			using (Program program = new Program())
-				return program.EntryPoint(args);
+			return DnxMain(args);
+			//try
+			//{
+			//	return DnxMain(args);
+			//}
+			//catch (Exception)
+			//{
+			//	// required to do poor mans' "just in time debugging" with F5 in VS 2015 (DNX) for now
+			//	Debugger.Break();
+			//	throw;
+			//}
 		}
 
 		protected override IDictionary<string, ArgumentSpec> GetArgumentMap()
@@ -82,10 +102,10 @@ namespace TextMetal.ConsoleTool
 			bool hasProperties;
 
 			if ((object)args == null)
-				throw new ArgumentNullException("args");
+				throw new ArgumentNullException(nameof(args));
 
 			if ((object)arguments == null)
-				throw new ArgumentNullException("arguments");
+				throw new ArgumentNullException(nameof(arguments));
 
 			if (arguments.ContainsKey(CMDLN_DEBUGGER_LAUNCH))
 				debuggerLaunch = (bool)arguments[CMDLN_DEBUGGER_LAUNCH].Single();

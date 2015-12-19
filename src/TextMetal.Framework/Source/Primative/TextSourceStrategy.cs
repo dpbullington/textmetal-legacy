@@ -47,13 +47,13 @@ namespace TextMetal.Framework.Source.Primative
 			PropertyConstruct propertyConstruct01;
 
 			if ((object)sourceFilePath == null)
-				throw new ArgumentNullException("sourceFilePath");
+				throw new ArgumentNullException(nameof(sourceFilePath));
 
 			if ((object)properties == null)
-				throw new ArgumentNullException("properties");
+				throw new ArgumentNullException(nameof(properties));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
-				throw new ArgumentOutOfRangeException("sourceFilePath");
+				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
 

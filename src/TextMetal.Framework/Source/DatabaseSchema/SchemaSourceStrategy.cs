@@ -12,7 +12,6 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 
 using TextMetal.Framework.Naming;
-using TextMetal.Middleware.Solder.Runtime;
 using TextMetal.Middleware.Solder.Serialization;
 using TextMetal.Middleware.Solder.Utilities;
 
@@ -36,7 +35,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		private static string FormatCSharpType(Type type)
 		{
 			if ((object)type == null)
-				throw new ArgumentNullException("type");
+				throw new ArgumentNullException(nameof(type));
 
 			var _typeInfo = type.GetTypeInfo();
 
@@ -54,7 +53,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 						s.Add(FormatCSharpType(arg));
 				}
 
-				return string.Format("{0}<{1}>", Regex.Replace(type.Name, "([A-Za-z0-9_]+)(`[0-1]+)", "$1"), string.Join(", ", s.ToArray()));
+				return String.Format("{0}<{1}>", Regex.Replace(type.Name, "([A-Za-z0-9_]+)(`[0-1]+)", "$1"), String.Join(", ", s.ToArray()));
 			}
 
 			return type.Name;
@@ -66,18 +65,18 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			string sqlText;
 
 			if ((object)type == null)
-				throw new ArgumentNullException("type");
+				throw new ArgumentNullException(nameof(type));
 
 			if ((object)name == null)
-				throw new ArgumentNullException("name");
+				throw new ArgumentNullException(nameof(name));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(name))
-				throw new ArgumentOutOfRangeException("name");
+				throw new ArgumentOutOfRangeException(nameof(name));
 
-			resourcePath = string.Format("{0}.DML.{1}.{2}.sql", type.Namespace, folder, name);
+			resourcePath = String.Format("{0}.DML.{1}.{2}.sql", type.Namespace, folder, name);
 
 			if (!type.TryGetStringFromAssemblyResource(resourcePath, out sqlText))
-				throw new InvalidOperationException(string.Format("Failed to obtain assembly manifest (embedded) resource '{0}'.", resourcePath));
+				throw new InvalidOperationException(String.Format("Failed to obtain assembly manifest (embedded) resource '{0}'.", resourcePath));
 
 			return sqlText;
 		}
@@ -137,10 +136,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			IList<string> values;
 
 			if ((object)sourceFilePath == null)
-				throw new ArgumentNullException("sourceFilePath");
+				throw new ArgumentNullException(nameof(sourceFilePath));
 
 			if ((object)properties == null)
-				throw new ArgumentNullException("properties");
+				throw new ArgumentNullException(nameof(properties));
 
 			connectionAqtn = null;
 			if (properties.TryGetValue(PROP_TOKEN_CONNECTION_AQTN, out values))
@@ -153,10 +152,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			}
 
 			if ((object)connectionType == null)
-				throw new InvalidOperationException(string.Format("Failed to load the connection type '{0}' via Type.GetType(..).", connectionAqtn));
+				throw new InvalidOperationException(String.Format("Failed to load the connection type '{0}' via Type.GetType(..).", connectionAqtn));
 
 			if (!typeof(DbConnection).IsAssignableFrom(connectionType))
-				throw new InvalidOperationException(string.Format("The connection type is not assignable to type '{0}'.", typeof(DbConnection).FullName));
+				throw new InvalidOperationException(String.Format("The connection type is not assignable to type '{0}'.", typeof(DbConnection).FullName));
 
 			if (properties.TryGetValue(PROP_TOKEN_CONNECTION_STRING, out values))
 			{
@@ -168,7 +167,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 				connectionString = sourceFilePath;
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(connectionString))
-				throw new InvalidOperationException(string.Format("The connection string cannot be null or whitespace."));
+				throw new InvalidOperationException(String.Format("The connection string cannot be null or whitespace."));
 
 			dataSourceTag = null;
 			if (properties.TryGetValue(PROP_TOKEN_DATA_SOURCE_TAG, out values))
@@ -243,18 +242,17 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			bool disableProcSchDisc, bool enableDatabaseFilter, bool disableNameMangling)
 		{
 			Server server;
-			int recordsAffected;
 			Type clrType;
 			StandardCanonicalNaming effectiveStandardCanonicalNaming;
 
 			if ((object)connectionString == null)
-				throw new ArgumentNullException("connectionString");
+				throw new ArgumentNullException(nameof(connectionString));
 
 			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
+				throw new ArgumentNullException(nameof(connectionType));
 
 			if ((object)dataSourceTag == null)
-				throw new ArgumentNullException("dataSourceTag");
+				throw new ArgumentNullException(nameof(dataSourceTag));
 
 			effectiveStandardCanonicalNaming = disableNameMangling ? StandardCanonicalNaming.InstanceDisableNameMangling : StandardCanonicalNaming.Instance;
 
@@ -326,7 +324,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 									server.Databases.Add(database);
 
-									AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, string.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UseDatabase"), server.ServerName, database.DatabaseName), null);
+									AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, String.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UseDatabase"), server.ServerName, database.DatabaseName), null);
 
 									var dictEnumDdlTrigger = AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DdlTriggers"), this.CoreGetDdlTriggerParameters(connectionType, dataSourceTag, server, database));
 									{
@@ -488,7 +486,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	column.ColumnCSharpIsPrimaryKeyLiteral = column.ColumnIsPrimaryKey.ToString().ToLower();
 																	column.ColumnCSharpIsComputedLiteral = column.ColumnIsComputed.ToString().ToLower();
 																	column.ColumnCSharpIsIdentityLiteral = column.ColumnIsIdentity.ToString().ToLower();
-																	column.ColumnCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
+																	column.ColumnCSharpDbType = String.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
 																	column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
 																	column.ColumnCSharpClrNullableType = (object)column.ColumnClrNullableType != null ? FormatCSharpType(column.ColumnClrNullableType) : FormatCSharpType(typeof(object));
 																	column.ColumnCSharpClrNonNullableType = (object)column.ColumnClrNonNullableType != null ? FormatCSharpType(column.ColumnClrNonNullableType) : FormatCSharpType(typeof(object));
@@ -742,7 +740,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	column.ColumnClrNullableType = ReflectionFascade.Instance.MakeNullableType(clrType);
 																	column.ColumnClrNonNullableType = ReflectionFascade.Instance.MakeNonNullableType(clrType);
 																	column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
-																	column.ColumnCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
+																	column.ColumnCSharpDbType = String.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
 																	column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
 																	column.ColumnCSharpClrNullableType = (object)column.ColumnClrNullableType != null ? FormatCSharpType(column.ColumnClrNullableType) : FormatCSharpType(typeof(object));
 																	column.ColumnCSharpClrNonNullableType = (object)column.ColumnClrNonNullableType != null ? FormatCSharpType(column.ColumnClrNonNullableType) : FormatCSharpType(typeof(object));
@@ -828,8 +826,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																		parameter.ParameterClrType = clrType;
 																		parameter.ParameterClrNullableType = ReflectionFascade.Instance.MakeNullableType(clrType);
 																		parameter.ParameterClrNonNullableType = ReflectionFascade.Instance.MakeNonNullableType(clrType);
-																		parameter.ParameterCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, parameter.ParameterDbType);
-																		parameter.ParameterCSharpDirection = string.Format("{0}.{1}", typeof(ParameterDirection).Name, parameter.ParameterDirection);
+																		parameter.ParameterCSharpDbType = String.Format("{0}.{1}", typeof(DbType).Name, parameter.ParameterDbType);
+																		parameter.ParameterCSharpDirection = String.Format("{0}.{1}", typeof(ParameterDirection).Name, parameter.ParameterDirection);
 																		parameter.ParameterCSharpClrType = (object)parameter.ParameterClrType != null ? FormatCSharpType(parameter.ParameterClrType) : FormatCSharpType(typeof(object));
 																		parameter.ParameterCSharpClrNullableType = (object)parameter.ParameterClrNullableType != null ? FormatCSharpType(parameter.ParameterClrNullableType) : FormatCSharpType(typeof(object));
 																		parameter.ParameterCSharpClrNonNullableType = (object)parameter.ParameterClrNonNullableType != null ? FormatCSharpType(parameter.ParameterClrNonNullableType) : FormatCSharpType(typeof(object));
@@ -847,7 +845,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	parameter = new Parameter();
 
 																	parameter.ParameterPrefix = this.CoreGetParameterPrefix(dataSourceTag);
-																	parameter.ParameterOrdinal = int.MaxValue;
+																	parameter.ParameterOrdinal = Int32.MaxValue;
 																	parameter.ParameterName = SchemaInfoConstants.PARAMETER_NAME_RETURN_VALUE;
 																	parameter.ParameterSize = 0;
 																	parameter.ParameterPrecision = 0;
@@ -879,8 +877,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	parameter.ParameterClrType = clrType;
 																	parameter.ParameterClrNullableType = ReflectionFascade.Instance.MakeNullableType(clrType);
 																	parameter.ParameterClrNonNullableType = ReflectionFascade.Instance.MakeNonNullableType(clrType);
-																	parameter.ParameterCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, parameter.ParameterDbType);
-																	parameter.ParameterCSharpDirection = string.Format("{0}.{1}", typeof(ParameterDirection).Name, parameter.ParameterDirection);
+																	parameter.ParameterCSharpDbType = String.Format("{0}.{1}", typeof(DbType).Name, parameter.ParameterDbType);
+																	parameter.ParameterCSharpDirection = String.Format("{0}.{1}", typeof(ParameterDirection).Name, parameter.ParameterDirection);
 																	parameter.ParameterCSharpClrType = (object)parameter.ParameterClrType != null ? FormatCSharpType(parameter.ParameterClrType) : FormatCSharpType(typeof(object));
 																	parameter.ParameterCSharpClrNullableType = (object)parameter.ParameterClrNullableType != null ? FormatCSharpType(parameter.ParameterClrNullableType) : FormatCSharpType(typeof(object));
 																	parameter.ParameterCSharpClrNonNullableType = (object)parameter.ParameterClrNonNullableType != null ? FormatCSharpType(parameter.ParameterClrNonNullableType) : FormatCSharpType(typeof(object));
@@ -930,7 +928,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	column.ColumnClrNullableType = ReflectionFascade.Instance.MakeNullableType(clrType);
 																	column.ColumnClrNonNullableType = ReflectionFascade.Instance.MakeNonNullableType(clrType);
 																	column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
-																	column.ColumnCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
+																	column.ColumnCSharpDbType = String.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
 																	column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
 																	column.ColumnCSharpClrNullableType = (object)column.ColumnClrNullableType != null ? FormatCSharpType(column.ColumnClrNullableType) : FormatCSharpType(typeof(object));
 																	column.ColumnCSharpClrNonNullableType = (object)column.ColumnClrNonNullableType != null ? FormatCSharpType(column.ColumnClrNonNullableType) : FormatCSharpType(typeof(object));
@@ -949,9 +947,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																try
 																{
-																	int resultsetIndex = int.MinValue;
+																	int resultsetIndex = Int32.MinValue;
 
-																	var dictEnumResultsets = AdoNetLiteFascade.Instance.ExecuteRecords(true, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.StoredProcedure, string.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), server.ServerName, database.DatabaseName, schema.SchemaName, procedure.ProcedureName), parameters, (ri) => resultsetIndex = ri);
+																	var dictEnumResultsets = AdoNetLiteFascade.Instance.ExecuteRecords(true, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.StoredProcedure, String.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), server.ServerName, database.DatabaseName, schema.SchemaName, procedure.ProcedureName), parameters, (ri) => resultsetIndex = ri);
 																	{
 																		if ((object)dictEnumResultsets != null)
 																		{
@@ -968,18 +966,18 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																					column = new ProcedureColumn();
 
-																					column.ColumnOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[FxSpackleTypes.SchemaTableColumn.ColumnOrdinal]);
-																					column.ColumnName = DataTypeFascade.Instance.ChangeType<string>(dictDataMetadata[FxSpackleTypes.SchemaTableColumn.ColumnName]);
+																					column.ColumnOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.ColumnOrdinal]);
+																					column.ColumnName = DataTypeFascade.Instance.ChangeType<string>(dictDataMetadata[SchemaTableColumn.ColumnName]);
 																					column.ColumnIsAnonymous = DataTypeFascade.Instance.ChangeType<bool>(dictDataMetadata["ColumnIsAnonymous"]);
 																					column.ColumnCSharpIsAnonymousLiteral = column.ColumnIsAnonymous.ToString().ToLower();
-																					column.ColumnSize = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[FxSpackleTypes.SchemaTableColumn.ColumnSize]);
-																					column.ColumnPrecision = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[FxSpackleTypes.SchemaTableColumn.NumericPrecision]);
-																					column.ColumnScale = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[FxSpackleTypes.SchemaTableColumn.NumericScale]);
-																					column.ColumnSqlType = string.Empty;
+																					column.ColumnSize = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.ColumnSize]);
+																					column.ColumnPrecision = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.NumericPrecision]);
+																					column.ColumnScale = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.NumericScale]);
+																					column.ColumnSqlType = String.Empty;
 																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.ProviderType]);
 																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.NonVersionedProviderType]);
 																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsLong]);
-																					column.ColumnNullable = DataTypeFascade.Instance.ChangeType<bool>(dictDataMetadata[FxSpackleTypes.SchemaTableColumn.AllowDBNull]);
+																					column.ColumnNullable = DataTypeFascade.Instance.ChangeType<bool>(dictDataMetadata[SchemaTableColumn.AllowDBNull]);
 																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsAliased]);
 																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsExpression]);
 																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsKey]);
@@ -998,7 +996,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																					column.ColumnNamePluralCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
 																					column.ColumnNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
 
-																					clrType = DataTypeFascade.Instance.ChangeType<Type>(dictDataMetadata[FxSpackleTypes.SchemaTableColumn.DataType]);
+																					clrType = DataTypeFascade.Instance.ChangeType<Type>(dictDataMetadata[SchemaTableColumn.DataType]);
 																					column.ColumnDbType = AdoNetLiteFascade.Instance.InferDbTypeForClrType(clrType);
 																					column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
@@ -1006,7 +1004,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																					column.ColumnClrNullableType = ReflectionFascade.Instance.MakeNullableType(clrType);
 																					column.ColumnClrNonNullableType = ReflectionFascade.Instance.MakeNonNullableType(clrType);
 																					column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
-																					column.ColumnCSharpDbType = string.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
+																					column.ColumnCSharpDbType = String.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
 																					column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
 																					column.ColumnCSharpClrNullableType = (object)column.ColumnClrNullableType != null ? FormatCSharpType(column.ColumnClrNullableType) : FormatCSharpType(typeof(object));
 																					column.ColumnCSharpClrNonNullableType = (object)column.ColumnClrNonNullableType != null ? FormatCSharpType(column.ColumnClrNonNullableType) : FormatCSharpType(typeof(object));
@@ -1040,6 +1038,59 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			}
 
 			return server;
+		}
+
+		#endregion
+
+		#region Classes/Structs/Interfaces/Enums/Delegates
+
+		private static class SchemaTableColumn
+		{
+			#region Properties/Indexers/Events
+
+			public static string AllowDBNull
+			{
+				get;
+				set;
+			}
+
+			public static string ColumnName
+			{
+				get;
+				set;
+			}
+
+			public static string ColumnOrdinal
+			{
+				get;
+				set;
+			}
+
+			public static string ColumnSize
+			{
+				get;
+				set;
+			}
+
+			public static string DataType
+			{
+				get;
+				set;
+			}
+
+			public static string NumericPrecision
+			{
+				get;
+				set;
+			}
+
+			public static string NumericScale
+			{
+				get;
+				set;
+			}
+
+			#endregion
 		}
 
 		#endregion

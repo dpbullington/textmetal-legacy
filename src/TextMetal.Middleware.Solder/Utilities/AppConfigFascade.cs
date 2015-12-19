@@ -4,10 +4,9 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
-using TextMetal.Middleware.Solder.Runtime;
+using Microsoft.Framework.Configuration;
+using Microsoft.Framework.Configuration.Json;
 
 namespace TextMetal.Middleware.Solder.Utilities
 {
@@ -21,41 +20,27 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// <summary>
 		/// Initializes a new instance of the AppConfigFascade class.
 		/// </summary>
+		/// <param name="appConfigFilePath"> The file path to the application configuration JSON file. </param>
 		/// <param name="dataTypeFascade"> The data type instance to use. </param>
-		public AppConfigFascade(IDataTypeFascade dataTypeFascade)
+		public AppConfigFascade(string appConfigFilePath, IDataTypeFascade dataTypeFascade)
 		{
 			if ((object)dataTypeFascade == null)
-				throw new ArgumentNullException("dataTypeFascade");
+				throw new ArgumentNullException(nameof(dataTypeFascade));
 
 			this.dataTypeFascade = dataTypeFascade;
-		}
 
-		/// <summary>
-		/// Initializes a new instance of the AppConfigFascade class.
-		/// </summary>
-		private AppConfigFascade()
-			: this(Utilities.DataTypeFascade.Instance)
-		{
+			this.LoadAppConfigFile(appConfigFilePath);
 		}
 
 		#endregion
 
 		#region Fields/Constants
 
-		private static readonly IAppConfigFascade instance = new AppConfigFascade();
 		private readonly IDataTypeFascade dataTypeFascade;
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		public static IAppConfigFascade Instance
-		{
-			get
-			{
-				return instance;
-			}
-		}
 
 		private IDataTypeFascade DataTypeFascade
 		{
@@ -82,7 +67,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			Type typeOfValue;
 
 			if ((object)key == null)
-				throw new ArgumentNullException("key");
+				throw new ArgumentNullException(nameof(key));
 
 			typeOfValue = typeof(TValue);
 			svalue = "TODO";
@@ -108,10 +93,10 @@ namespace TextMetal.Middleware.Solder.Utilities
 			object ovalue;
 
 			if ((object)valueType == null)
-				throw new ArgumentNullException("valueType");
+				throw new ArgumentNullException(nameof(valueType));
 
 			if ((object)key == null)
-				throw new ArgumentNullException("key");
+				throw new ArgumentNullException(nameof(key));
 
 			svalue = "TODO";
 
@@ -134,11 +119,26 @@ namespace TextMetal.Middleware.Solder.Utilities
 			string value;
 
 			if ((object)key == null)
-				throw new ArgumentNullException("key");
+				throw new ArgumentNullException(nameof(key));
 
 			value = "TODO";
 
 			return ((object)value != null);
+		}
+
+		private void LoadAppConfigFile(string appConfigFilePath)
+		{
+			if ((object)appConfigFilePath == null)
+				throw new ArgumentNullException(nameof(appConfigFilePath));
+
+			IConfigurationBuilder configurationBuilder;
+			IConfigurationProvider configurationProvider;
+			IConfigurationRoot configurationRoot;
+
+			configurationBuilder = new ConfigurationBuilder();
+			configurationProvider = new JsonConfigurationProvider(appConfigFilePath);
+			configurationBuilder.Add(configurationProvider);
+			configurationRoot = configurationBuilder.Build();
 		}
 
 		#endregion

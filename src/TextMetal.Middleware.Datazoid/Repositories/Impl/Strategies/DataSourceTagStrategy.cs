@@ -75,7 +75,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		private static void AssertValidMapping(Type tableModelType, TableMappingAttribute tableMappingAttribute)
 		{
 			if ((object)tableModelType == null)
-				throw new ArgumentNullException("tableModelType");
+				throw new ArgumentNullException(nameof(tableModelType));
 
 			if ((object)tableMappingAttribute == null)
 				throw new InvalidOperationException(string.Format("The table model type '{0}' does not specify the '{1}' attribute.", tableModelType.FullName, typeof(TableMappingAttribute).FullName));
@@ -88,13 +88,13 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		private static void AssertValidMapping(Type callProcedureModelType, Type resultModelType, Type returnProcedureModelType, ProcedureMappingAttribute procedureMappingAttribute)
 		{
 			if ((object)callProcedureModelType == null)
-				throw new ArgumentNullException("callProcedureModelType");
+				throw new ArgumentNullException(nameof(callProcedureModelType));
 
 			if ((object)resultModelType == null)
-				throw new ArgumentNullException("resultModelType");
+				throw new ArgumentNullException(nameof(resultModelType));
 
 			if ((object)returnProcedureModelType == null)
-				throw new ArgumentNullException("returnProcedureModelType");
+				throw new ArgumentNullException(nameof(returnProcedureModelType));
 
 			if ((object)procedureMappingAttribute == null)
 				throw new InvalidOperationException(string.Format("The call procedure model type '{0}' does not specify the '{1}' attribute.", callProcedureModelType.FullName, typeof(ProcedureMappingAttribute).FullName));
@@ -148,13 +148,13 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			ColumnMappingAttribute[] columnMappingAttributes;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)prototype == null)
-				throw new ArgumentNullException("prototype");
+				throw new ArgumentNullException(nameof(prototype));
 
 			if ((object)tableMappingAttribute == null)
-				throw new ArgumentNullException("tableMappingAttribute");
+				throw new ArgumentNullException(nameof(tableMappingAttribute));
 
 			commandText = @"DELETE FROM ";
 
@@ -226,10 +226,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			bool isDeleteOne;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)modelValue == null)
-				throw new ArgumentNullException("modelValue");
+				throw new ArgumentNullException(nameof(modelValue));
 
 			modelType = typeof(TTableModelObject);
 			tableMappingAttribute = this.GetTableMapping(modelType);
@@ -267,10 +267,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			ParameterMappingAttribute[] parameterMappingAttributes;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)procedureMappingAttribute == null)
-				throw new ArgumentNullException("procedureMappingAttribute");
+				throw new ArgumentNullException(nameof(procedureMappingAttribute));
 
 			commandText = this.GetProcedureName(procedureMappingAttribute.SchemaName, procedureMappingAttribute.ProcedureName);
 			tacticParameters = new Dictionary<string, ITacticParameter>();
@@ -345,10 +345,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			ProcedureMappingAttribute procedureMappingAttribute;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)callProcedureModelValue == null)
-				throw new ArgumentNullException("callProcedureModelValue");
+				throw new ArgumentNullException(nameof(callProcedureModelValue));
 
 			callProcedureModelType = typeof(TCallProcedureModelObject);
 			resultModelType = typeof(TResultProcedureModelObject);
@@ -372,7 +372,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			TableMappingAttribute tableMappingAttribute;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			modelType = typeof(TTableModelObject);
 			tableMappingAttribute = this.GetTableMapping(modelType);
@@ -402,10 +402,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			ColumnMappingAttribute columnMappingAttribute;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)tableMappingAttribute == null)
-				throw new ArgumentNullException("tableMappingAttribute");
+				throw new ArgumentNullException(nameof(tableMappingAttribute));
 
 			if (this.UseBatchScopeIdentificationSemantics)
 				throw new InvalidOperationException(string.Format("Aw snap."));
@@ -463,13 +463,13 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			ColumnMappingAttribute[] columnMappingAttributes;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)model == null)
-				throw new ArgumentNullException("model");
+				throw new ArgumentNullException(nameof(model));
 
 			if ((object)tableMappingAttribute == null)
-				throw new ArgumentNullException("tableMappingAttribute");
+				throw new ArgumentNullException(nameof(tableMappingAttribute));
 
 			commandText = @"INSERT INTO ";
 
@@ -560,10 +560,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			bool isInsertOne;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)modelValue == null)
-				throw new ArgumentNullException("modelValue");
+				throw new ArgumentNullException(nameof(modelValue));
 
 			modelType = typeof(TTableModelObject);
 			tableMappingAttribute = this.GetTableMapping(modelType);
@@ -586,7 +586,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			Action<TResultProcedureModelObject, int, IRecord> callback;
 
 			if ((object)procedureMappingAttribute == null)
-				throw new ArgumentNullException("procedureMappingAttribute");
+				throw new ArgumentNullException(nameof(procedureMappingAttribute));
 
 			callback = (md, ri, ts) => this.MapRecordToResultModel(procedureMappingAttribute._ResultColumnMappingAttributes, md, ri, ts);
 
@@ -600,7 +600,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			Action<TReturnProcedureModelObject, IRecord> callback;
 
 			if ((object)procedureMappingAttribute == null)
-				throw new ArgumentNullException("procedureMappingAttribute");
+				throw new ArgumentNullException(nameof(procedureMappingAttribute));
 
 			callback = (md, ts) => this.MapOutputToReturnProcedureModel<TResultProcedureModelObject, TReturnProcedureModelObject>(procedureMappingAttribute, md, ts);
 
@@ -613,7 +613,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			Action<TTableModelObject, int, IRecord> callback;
 
 			if ((object)tableMappingAttribute == null)
-				throw new ArgumentNullException("tableMappingAttribute");
+				throw new ArgumentNullException(nameof(tableMappingAttribute));
 
 			callback = (md, ri, ts) => this.MapRecordToResultModel<TTableModelObject>(tableMappingAttribute._ColumnMappingAttributes, md, ri, ts);
 
@@ -626,7 +626,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			List<string> orderByList;
 
 			if ((object)sortOrders == null)
-				throw new ArgumentNullException("sortOrders");
+				throw new ArgumentNullException(nameof(sortOrders));
 
 			orderByList = new List<string>();
 
@@ -659,13 +659,13 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			PropertyInfo[] propertyInfos;
 
 			if ((object)callProcedureModelType == null)
-				throw new ArgumentNullException("callProcedureModelType");
+				throw new ArgumentNullException(nameof(callProcedureModelType));
 
 			if ((object)resultModelType == null)
-				throw new ArgumentNullException("resultModelType");
+				throw new ArgumentNullException(nameof(resultModelType));
 
 			if ((object)returnProcedureModelType == null)
-				throw new ArgumentNullException("returnProcedureModelType");
+				throw new ArgumentNullException(nameof(returnProcedureModelType));
 
 			procedureMappingAttribute = ReflectionFascade.Instance.GetOneAttribute<ProcedureMappingAttribute>(callProcedureModelType);
 
@@ -768,13 +768,13 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			DzTableModelQuery dzTableModelQuery;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)dummy == null)
-				throw new ArgumentNullException("dummy");
+				throw new ArgumentNullException(nameof(dummy));
 
 			if ((object)tableMappingAttribute == null)
-				throw new ArgumentNullException("tableMappingAttribute");
+				throw new ArgumentNullException(nameof(tableMappingAttribute));
 
 			commandText = @"SELECT ";
 
@@ -855,13 +855,13 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			ColumnMappingAttribute[] columnMappingAttributes;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)prototype == null)
-				throw new ArgumentNullException("prototype");
+				throw new ArgumentNullException(nameof(prototype));
 
 			if ((object)tableMappingAttribute == null)
-				throw new ArgumentNullException("tableMappingAttribute");
+				throw new ArgumentNullException(nameof(tableMappingAttribute));
 
 			commandText = @"SELECT ";
 
@@ -955,10 +955,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			bool isSelectOne;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)modelValue == null)
-				throw new ArgumentNullException("modelValue");
+				throw new ArgumentNullException(nameof(modelValue));
 
 			modelType = typeof(TTableModelObject);
 			tableMappingAttribute = this.GetTableMapping(modelType);
@@ -984,7 +984,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			PropertyInfo[] propertyInfos;
 
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			tableMappingAttribute = ReflectionFascade.Instance.GetOneAttribute<TableMappingAttribute>(targetType);
 
@@ -1041,13 +1041,13 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			ColumnMappingAttribute[] columnMappingAttributes;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)model == null)
-				throw new ArgumentNullException("model");
+				throw new ArgumentNullException(nameof(model));
 
 			if ((object)tableMappingAttribute == null)
-				throw new ArgumentNullException("tableMappingAttribute");
+				throw new ArgumentNullException(nameof(tableMappingAttribute));
 
 			commandText = @"UPDATE ";
 
@@ -1151,10 +1151,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			bool isUpdateOne;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)modelValue == null)
-				throw new ArgumentNullException("modelValue");
+				throw new ArgumentNullException(nameof(modelValue));
 
 			modelType = typeof(TTableModelObject);
 			tableMappingAttribute = this.GetTableMapping(modelType);
@@ -1177,16 +1177,16 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			string wherePredicate;
 
 			if ((object)tableMappingAttribute == null)
-				throw new ArgumentNullException("tableMappingAttribute");
+				throw new ArgumentNullException(nameof(tableMappingAttribute));
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)tacticParameters == null)
-				throw new ArgumentNullException("tacticParameters");
+				throw new ArgumentNullException(nameof(tacticParameters));
 
 			if ((object)expression == null)
-				throw new ArgumentNullException("expression");
+				throw new ArgumentNullException(nameof(expression));
 
 			expressionVisitor = new SqlExpressionVisitor(tableMappingAttribute, this, unitOfWork, tacticParameters);
 			expressionVisitor.Visit(expression);
@@ -1202,13 +1202,13 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			ParameterMappingAttribute[] parameterMappingAttributes;
 
 			if ((object)procedureMappingAttribute == null)
-				throw new ArgumentNullException("procedureMappingAttribute");
+				throw new ArgumentNullException(nameof(procedureMappingAttribute));
 
 			if ((object)returnProcedureModelObject == null)
-				throw new ArgumentNullException("returnProcedureModelObject");
+				throw new ArgumentNullException(nameof(returnProcedureModelObject));
 
 			if ((object)output == null)
-				throw new ArgumentNullException("output");
+				throw new ArgumentNullException(nameof(output));
 
 			parameterMappingAttributes = procedureMappingAttribute._OutputParameterMappingAttributes.OrderBy(pma => pma.ParameterOrdinal).ToArray();
 			for (int index = 0; index < parameterMappingAttributes.Length; index++)
@@ -1237,13 +1237,13 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			object[] values;
 
 			if ((object)columnMappingAttributes == null)
-				throw new ArgumentNullException("columnMappingAttributes");
+				throw new ArgumentNullException(nameof(columnMappingAttributes));
 
 			if ((object)resultProcedureModelObject == null)
-				throw new ArgumentNullException("resultProcedureModelObject");
+				throw new ArgumentNullException(nameof(resultProcedureModelObject));
 
 			if ((object)record == null)
-				throw new ArgumentNullException("record");
+				throw new ArgumentNullException(nameof(record));
 
 			values = record.Values.ToArray();
 

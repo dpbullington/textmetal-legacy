@@ -90,7 +90,7 @@ namespace TextMetal.Framework.Expression
 			object obj = null;
 
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			// *** THIS MUST USE THIS OVERLOAD OR CODE WILL FAIL ***
 			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy(false);
@@ -138,7 +138,7 @@ namespace TextMetal.Framework.Expression
 								};
 
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			// *** THIS MUST USE THIS OVERLOAD OR CODE WILL FAIL ***
 			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy(false);

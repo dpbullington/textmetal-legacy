@@ -36,7 +36,7 @@ namespace TextMetal.Framework.Source.Primative
 			MethodInfo accessorMethodInfo = null;
 
 			if ((object)methodInfo == null)
-				throw new ArgumentNullException("methodInfo");
+				throw new ArgumentNullException(nameof(methodInfo));
 
 			propertyInfos = methodInfo.DeclaringType.GetProperties(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public);
 
@@ -86,10 +86,10 @@ namespace TextMetal.Framework.Source.Primative
 			AssemblyName assemblyName;
 
 			if ((object)assemblies == null)
-				throw new ArgumentNullException("assemblies");
+				throw new ArgumentNullException(nameof(assemblies));
 
 			if ((object)parent == null)
-				throw new ArgumentNullException("parent");
+				throw new ArgumentNullException(nameof(parent));
 
 			arrayConstruct00 = new ArrayConstruct();
 			arrayConstruct00.Name = "Assemblies";
@@ -139,10 +139,10 @@ namespace TextMetal.Framework.Source.Primative
 			PropertyConstruct propertyConstruct00;
 
 			if ((object)assemblyName == null)
-				throw new ArgumentNullException("assemblyName");
+				throw new ArgumentNullException(nameof(assemblyName));
 
 			if ((object)parent == null)
-				throw new ArgumentNullException("parent");
+				throw new ArgumentNullException(nameof(parent));
 
 			propertyConstruct00 = new PropertyConstruct();
 			propertyConstruct00.Name = "AssemblyVersion";
@@ -186,10 +186,10 @@ namespace TextMetal.Framework.Source.Primative
 			ObjectConstruct objectConstruct00;
 
 			if ((object)assemblyReferences == null)
-				throw new ArgumentNullException("assemblyReferences");
+				throw new ArgumentNullException(nameof(assemblyReferences));
 
 			if ((object)parent == null)
-				throw new ArgumentNullException("parent");
+				throw new ArgumentNullException(nameof(parent));
 
 			arrayConstruct00 = new ArrayConstruct();
 			arrayConstruct00.Name = "AssemblyReferences";
@@ -213,10 +213,10 @@ namespace TextMetal.Framework.Source.Primative
 			ParameterInfo[] parameterInfos;
 
 			if ((object)constructorInfos == null)
-				throw new ArgumentNullException("constructorInfos");
+				throw new ArgumentNullException(nameof(constructorInfos));
 
 			if ((object)parent == null)
-				throw new ArgumentNullException("parent");
+				throw new ArgumentNullException(nameof(parent));
 
 			arrayConstruct00 = new ArrayConstruct();
 			arrayConstruct00.Name = "Constructors";
@@ -339,10 +339,10 @@ namespace TextMetal.Framework.Source.Primative
 			object value;
 
 			if ((object)customAttributeProvider == null)
-				throw new ArgumentNullException("customAttributeProvider");
+				throw new ArgumentNullException(nameof(customAttributeProvider));
 
 			if ((object)parent == null)
-				throw new ArgumentNullException("parent");
+				throw new ArgumentNullException(nameof(parent));
 
 			customAttributes = ReflectionFascade.Instance.GetAllAttributes<Attribute>(customAttributeProvider);
 
@@ -402,10 +402,10 @@ namespace TextMetal.Framework.Source.Primative
 			MethodInfo methodInfo;
 
 			if ((object)eventInfos == null)
-				throw new ArgumentNullException("eventInfos");
+				throw new ArgumentNullException(nameof(eventInfos));
 
 			if ((object)parent == null)
-				throw new ArgumentNullException("parent");
+				throw new ArgumentNullException(nameof(parent));
 
 			arrayConstruct00 = new ArrayConstruct();
 			arrayConstruct00.Name = "Events";
@@ -487,10 +487,10 @@ namespace TextMetal.Framework.Source.Primative
 			ObjectConstruct objectConstruct00;
 
 			if ((object)fieldInfos == null)
-				throw new ArgumentNullException("fieldInfos");
+				throw new ArgumentNullException(nameof(fieldInfos));
 
 			if ((object)parent == null)
-				throw new ArgumentNullException("parent");
+				throw new ArgumentNullException(nameof(parent));
 
 			arrayConstruct00 = new ArrayConstruct();
 			arrayConstruct00.Name = "Fields";
@@ -598,10 +598,10 @@ namespace TextMetal.Framework.Source.Primative
 			Type[] childTypes;
 
 			if ((object)methodInfos == null)
-				throw new ArgumentNullException("methodInfos");
+				throw new ArgumentNullException(nameof(methodInfos));
 
 			if ((object)parent == null)
-				throw new ArgumentNullException("parent");
+				throw new ArgumentNullException(nameof(parent));
 
 			arrayConstruct00 = new ArrayConstruct();
 			arrayConstruct00.Name = "Methods";
@@ -776,10 +776,10 @@ namespace TextMetal.Framework.Source.Primative
 			ObjectConstruct objectConstruct00;
 
 			if ((object)parameterInfos == null)
-				throw new ArgumentNullException("parameterInfos");
+				throw new ArgumentNullException(nameof(parameterInfos));
 
 			if ((object)parent == null)
-				throw new ArgumentNullException("parent");
+				throw new ArgumentNullException(nameof(parent));
 
 			arrayConstruct00 = new ArrayConstruct();
 			arrayConstruct00.Name = "Parameters";
@@ -869,10 +869,10 @@ namespace TextMetal.Framework.Source.Primative
 			MethodInfo methodInfo;
 
 			if ((object)propertyInfos == null)
-				throw new ArgumentNullException("propertyInfos");
+				throw new ArgumentNullException(nameof(propertyInfos));
 
 			if ((object)parent == null)
-				throw new ArgumentNullException("parent");
+				throw new ArgumentNullException(nameof(parent));
 
 			arrayConstruct00 = new ArrayConstruct();
 			arrayConstruct00.Name = "Properties";
@@ -966,10 +966,10 @@ namespace TextMetal.Framework.Source.Primative
 			Type[] childTypes;
 
 			if ((object)types == null)
-				throw new ArgumentNullException("types");
+				throw new ArgumentNullException(nameof(types));
 
 			if ((object)parent == null)
-				throw new ArgumentNullException("parent");
+				throw new ArgumentNullException(nameof(parent));
 
 			arrayConstruct00 = new ArrayConstruct();
 			arrayConstruct00.Name = arrayName;
@@ -1307,13 +1307,13 @@ namespace TextMetal.Framework.Source.Primative
 			IEnumerable<AssemblyName> assemblyNames;
 
 			if ((object)sourceFilePath == null)
-				throw new ArgumentNullException("sourceFilePath");
+				throw new ArgumentNullException(nameof(sourceFilePath));
 
 			if ((object)properties == null)
-				throw new ArgumentNullException("properties");
+				throw new ArgumentNullException(nameof(properties));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
-				throw new ArgumentOutOfRangeException("sourceFilePath");
+				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
 			assemblies = new List<Assembly>();
 			sourceFilePath = Path.GetFullPath(sourceFilePath);

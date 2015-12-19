@@ -122,7 +122,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Migrations
 			int schemaRevision, currentSchemaRevision;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if (this.Revisions.Count < 1)
 				throw new InvalidOperationException(string.Format("Revision count was less than one."));

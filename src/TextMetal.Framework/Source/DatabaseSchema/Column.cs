@@ -487,7 +487,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			bool isAnonymousColumn;
 
 			if ((object)records == null)
-				throw new ArgumentNullException("records");
+				throw new ArgumentNullException(nameof(records));
 
 			groups = records.GroupBy(record => (string)record[SchemaInfoConstants.COLUMN_NAME_RECORD_KEY]);
 

@@ -72,10 +72,10 @@ namespace TextMetal.Framework.Sort
 			DynamicWildcardTokenReplacementStrategy dynamicWildcardTokenReplacementStrategy;
 
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			if ((object)values == null)
-				throw new ArgumentNullException("values");
+				throw new ArgumentNullException(nameof(values));
 
 			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy();
 

@@ -41,10 +41,10 @@ namespace TextMetal.Framework.Source.Primative
 			string[] files;
 
 			if ((object)directoryPath == null)
-				throw new ArgumentNullException("directoryPath");
+				throw new ArgumentNullException(nameof(directoryPath));
 
 			if ((object)parent == null)
-				throw new ArgumentNullException("parent");
+				throw new ArgumentNullException(nameof(parent));
 
 			arrayConstruct00 = new ArrayConstruct();
 			arrayConstruct00.Name = "Files";
@@ -277,13 +277,13 @@ namespace TextMetal.Framework.Source.Primative
 			string wildcard;
 
 			if ((object)sourceFilePath == null)
-				throw new ArgumentNullException("sourceFilePath");
+				throw new ArgumentNullException(nameof(sourceFilePath));
 
 			if ((object)properties == null)
-				throw new ArgumentNullException("properties");
+				throw new ArgumentNullException(nameof(properties));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
-				throw new ArgumentOutOfRangeException("sourceFilePath");
+				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
 

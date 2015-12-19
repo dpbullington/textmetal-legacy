@@ -115,7 +115,7 @@ namespace TextMetal.Framework.Template
 			DynamicWildcardTokenReplacementStrategy dynamicWildcardTokenReplacementStrategy;
 
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy();
 

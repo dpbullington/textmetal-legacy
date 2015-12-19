@@ -102,7 +102,7 @@ namespace TextMetal.Framework.Associative
 			PropertyConstruct propertyConstruct;
 
 			if ((object)leftAssociativeXmlObject == null)
-				throw new ArgumentNullException("leftAssociativeXmlObject");
+				throw new ArgumentNullException(nameof(leftAssociativeXmlObject));
 
 			thisValue = leftAssociativeXmlObject.GetAssociativeObjectValue(NullTemplatingContext.Instance);
 
@@ -127,7 +127,7 @@ namespace TextMetal.Framework.Associative
 			object value;
 
 			if ((object)associativeXmlObject == null)
-				throw new ArgumentNullException("associativeXmlObject");
+				throw new ArgumentNullException(nameof(associativeXmlObject));
 
 			value = associativeXmlObject.GetAssociativeObjectValue(NullTemplatingContext.Instance);
 
@@ -147,7 +147,7 @@ namespace TextMetal.Framework.Associative
 			object value;
 
 			if ((object)associativeXmlObject == null)
-				throw new ArgumentNullException("associativeXmlObject");
+				throw new ArgumentNullException(nameof(associativeXmlObject));
 
 			value = associativeXmlObject.GetAssociativeObjectValue(NullTemplatingContext.Instance);
 
@@ -165,7 +165,7 @@ namespace TextMetal.Framework.Associative
 		protected override IEnumerator CoreGetAssociativeObjectEnumerator(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			return null;
 		}
@@ -181,7 +181,7 @@ namespace TextMetal.Framework.Associative
 			Type valueType;
 
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			if (DataTypeFascade.Instance.IsNullOrWhiteSpace(this.Type))
 				valueType = typeof(String);

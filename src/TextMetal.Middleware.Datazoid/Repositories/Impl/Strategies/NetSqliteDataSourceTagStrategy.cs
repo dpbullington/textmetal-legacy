@@ -85,10 +85,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		public override void FixupParameter(IUnitOfWork unitOfWork, ITacticParameter tacticParameter, string originalSqlType)
 		{
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)tacticParameter == null)
-				throw new ArgumentNullException("tacticParameter");
+				throw new ArgumentNullException(nameof(tacticParameter));
 		}
 
 		public override string GetAliasedColumnName(string tableAlias, string columnName)

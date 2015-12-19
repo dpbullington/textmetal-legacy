@@ -23,10 +23,10 @@ namespace TextMetal.Middleware.Solder
 		public Message(string category, string description, Severity severity)
 		{
 			if ((object)category == null)
-				throw new ArgumentNullException("category");
+				throw new ArgumentNullException(nameof(category));
 
 			if ((object)description == null)
-				throw new ArgumentNullException("description");
+				throw new ArgumentNullException(nameof(description));
 
 			this.category = category;
 			this.description = description;

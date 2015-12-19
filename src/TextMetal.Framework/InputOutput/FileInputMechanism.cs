@@ -28,13 +28,13 @@ namespace TextMetal.Framework.InputOutput
 		public FileInputMechanism(string baseDirectoryPath, IXmlPersistEngine xpe, ISourceStrategy sourceStrategy)
 		{
 			if ((object)baseDirectoryPath == null)
-				throw new ArgumentNullException("baseDirectoryPath");
+				throw new ArgumentNullException(nameof(baseDirectoryPath));
 
 			if ((object)xpe == null)
-				throw new ArgumentNullException("xpe");
+				throw new ArgumentNullException(nameof(xpe));
 
 			if ((object)sourceStrategy == null)
-				throw new ArgumentNullException("sourceStrategy");
+				throw new ArgumentNullException(nameof(sourceStrategy));
 
 			if (!Path.HasExtension(baseDirectoryPath) &&
 				!baseDirectoryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
@@ -91,10 +91,10 @@ namespace TextMetal.Framework.InputOutput
 			AssemblyName _assemblyName;
 
 			if ((object)assemblyName == null)
-				throw new ArgumentNullException("assemblyName");
+				throw new ArgumentNullException(nameof(assemblyName));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(assemblyName))
-				throw new ArgumentOutOfRangeException("assemblyName");
+				throw new ArgumentOutOfRangeException(nameof(assemblyName));
 
 			assemblyName = Path.GetFullPath(assemblyName);
 			_assemblyName = new AssemblyName(assemblyName);
@@ -109,10 +109,10 @@ namespace TextMetal.Framework.InputOutput
 			string value;
 
 			if ((object)contentName == null)
-				throw new ArgumentNullException("contentName");
+				throw new ArgumentNullException(nameof(contentName));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(contentName))
-				throw new ArgumentOutOfRangeException("contentName");
+				throw new ArgumentOutOfRangeException(nameof(contentName));
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, contentName));
 			//Console.Error.WriteLine(fullFilePath);
@@ -132,13 +132,13 @@ namespace TextMetal.Framework.InputOutput
 			object value;
 
 			if ((object)sourceName == null)
-				throw new ArgumentNullException("sourceName");
+				throw new ArgumentNullException(nameof(sourceName));
 
 			if ((object)properties == null)
-				throw new ArgumentNullException("properties");
+				throw new ArgumentNullException(nameof(properties));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(sourceName))
-				throw new ArgumentOutOfRangeException("sourceName");
+				throw new ArgumentOutOfRangeException(nameof(sourceName));
 
 			//fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, sourceName));
 			//Console.Error.WriteLine(fullFilePath);
@@ -155,10 +155,10 @@ namespace TextMetal.Framework.InputOutput
 			ITemplateXmlObject value;
 
 			if ((object)templateName == null)
-				throw new ArgumentNullException("templateName");
+				throw new ArgumentNullException(nameof(templateName));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(templateName))
-				throw new ArgumentOutOfRangeException("templateName");
+				throw new ArgumentOutOfRangeException(nameof(templateName));
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, templateName));
 			//Console.Error.WriteLine(fullFilePath);

@@ -18,7 +18,7 @@ namespace TextMetal.Middleware.Datazoid
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::.ctor(...)", typeof(WrappedDataReader).Name));
 
 			if ((object)innerDataReader == null)
-				throw new ArgumentNullException("innerDataReader");
+				throw new ArgumentNullException(nameof(innerDataReader));
 
 			this.innerDataReader = innerDataReader;
 		}

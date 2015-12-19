@@ -18,10 +18,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Expressions
 		public BinaryExpression(IExpression leftExpression, BinaryOperator binaryOperator, IExpression rightExpression)
 		{
 			if ((object)leftExpression == null)
-				throw new ArgumentNullException("leftExpression");
+				throw new ArgumentNullException(nameof(leftExpression));
 
 			if ((object)rightExpression == null)
-				throw new ArgumentNullException("rightExpression");
+				throw new ArgumentNullException(nameof(rightExpression));
 
 			this.leftExpression = leftExpression;
 			this.binaryOperator = binaryOperator;

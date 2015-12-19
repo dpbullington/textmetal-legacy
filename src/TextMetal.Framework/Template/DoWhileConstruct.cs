@@ -30,19 +30,19 @@ namespace TextMetal.Framework.Template
 		protected override void CoreConditionalIterationInitialize(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 		}
 
 		protected override void CoreConditionalIterationStep(ITemplatingContext templatingContext, uint indexOneBase)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 		}
 
 		protected override void CoreConditionalIterationTerminate(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 		}
 
 		#endregion

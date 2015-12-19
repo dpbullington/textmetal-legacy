@@ -187,7 +187,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics
 			IDbDataParameter dbDataParameter;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			dbDataParameters = new List<IDbDataParameter>();
 

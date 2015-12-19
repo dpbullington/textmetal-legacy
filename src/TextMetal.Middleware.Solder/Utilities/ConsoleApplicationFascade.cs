@@ -14,7 +14,8 @@ namespace TextMetal.Middleware.Solder.Utilities
 	{
 		#region Constructors/Destructors
 
-		protected ConsoleApplicationFascade()
+		public ConsoleApplicationFascade(IDataTypeFascade dataTypeFascade, IAppConfigFascade appConfigFascade, IReflectionFascade reflectionFascade)
+			: base(dataTypeFascade, appConfigFascade, reflectionFascade)
 		{
 		}
 

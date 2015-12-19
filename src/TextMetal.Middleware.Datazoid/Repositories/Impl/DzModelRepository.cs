@@ -100,7 +100,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			const string INDENT_CHAR = "\t";
 
 			if ((object)tacticCommand == null)
-				throw new ArgumentNullException("tacticCommand");
+				throw new ArgumentNullException(nameof(tacticCommand));
 
 			stringBuilder = new StringBuilder();
 			stringBuilder.Append(string.Format(Environment.NewLine + "[+++ begin __DEBUG_ProfileTacticCommand(InstanceId = '{0}; | RepositoryOperation = '{1}') +++]" + Environment.NewLine, tacticCommand.InstanceId, repositoryOperation));
@@ -149,10 +149,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			IEnumerable<IDbDataParameter> dbDataParameters;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)tableModelObject == null)
-				throw new ArgumentNullException("tableModelObject");
+				throw new ArgumentNullException(nameof(tableModelObject));
 
 			wasNew = tableModelObject.IsNew;
 			tableModelObject.Mark();
@@ -211,10 +211,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			TReturnProcedureModelObject returnProcedureModelObject;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)callProcedureModelObject == null)
-				throw new ArgumentNullException("callProcedureModelObject");
+				throw new ArgumentNullException(nameof(callProcedureModelObject));
 
 			using (DzContext context = new DzContext())
 			{
@@ -245,10 +245,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			IEnumerable<IDbDataParameter> dbDataParameters;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)tableModelObject == null)
-				throw new ArgumentNullException("tableModelObject");
+				throw new ArgumentNullException(nameof(tableModelObject));
 
 			using (DzContext context = new DzContext())
 			{
@@ -297,10 +297,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			IEnumerable<TTableModelObject> tableModelObjects;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)tableModelQuery == null)
-				throw new ArgumentNullException("tableModelQuery");
+				throw new ArgumentNullException(nameof(tableModelQuery));
 
 			dummyTableModel = new TTableModelObject();
 
@@ -348,13 +348,13 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			IEnumerable<IRecord> records;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)resultsetModelObject == null)
-				throw new ArgumentNullException("resultsetModelObject");
+				throw new ArgumentNullException(nameof(resultsetModelObject));
 
 			if ((object)resultset == null)
-				throw new ArgumentNullException("resultset");
+				throw new ArgumentNullException(nameof(resultset));
 
 			records = resultset.Records;
 
@@ -408,16 +408,16 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			IEnumerable<IDbDataParameter> dbDataParameters;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)procedureTacticCommand == null)
-				throw new ArgumentNullException("procedureTacticCommand");
+				throw new ArgumentNullException(nameof(procedureTacticCommand));
 
 			if ((object)callProcedureModelObject == null)
-				throw new ArgumentNullException("callProcedureModelObject");
+				throw new ArgumentNullException(nameof(callProcedureModelObject));
 
 			if ((object)returnProcedureModelObject == null)
-				throw new ArgumentNullException("returnProcedureModelObject");
+				throw new ArgumentNullException(nameof(returnProcedureModelObject));
 
 			this.OnPreResultsProcedureModel<TCallProcedureModelObject>(unitOfWork, callProcedureModelObject);
 
@@ -486,10 +486,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			IEnumerable<IDbDataParameter> dbDataParameters;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)tableTacticCommand == null)
-				throw new ArgumentNullException("tableTacticCommand");
+				throw new ArgumentNullException(nameof(tableTacticCommand));
 
 			this.OnPreSelectionTableModel<TTableModelObject>(unitOfWork);
 
@@ -550,10 +550,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			IEnumerable<IDbDataParameter> dbDataParameters;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)prototypeTableModel == null)
-				throw new ArgumentNullException("prototypeTableModel");
+				throw new ArgumentNullException(nameof(prototypeTableModel));
 
 			using (DzContext context = new DzContext())
 			{
@@ -628,10 +628,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			TProjection projection;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)contextQueryCallback == null)
-				throw new ArgumentNullException("contextQueryCallback");
+				throw new ArgumentNullException(nameof(contextQueryCallback));
 
 			using (DzContext context = new DzContext())
 			{
@@ -655,10 +655,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			IEnumerable<IDbDataParameter> dbDataParameters;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)tableModelObject == null)
-				throw new ArgumentNullException("tableModelObject");
+				throw new ArgumentNullException(nameof(tableModelObject));
 
 			wasNew = tableModelObject.IsNew;
 			tableModelObject.Mark();

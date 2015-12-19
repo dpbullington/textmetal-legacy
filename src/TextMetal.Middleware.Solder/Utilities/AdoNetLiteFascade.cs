@@ -23,7 +23,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 		public AdoNetLiteFascade(IReflectionFascade reflectionFascade)
 		{
 			if ((object)reflectionFascade == null)
-				throw new ArgumentNullException("reflectionFascade");
+				throw new ArgumentNullException(nameof(reflectionFascade));
 
 			this.reflectionFascade = reflectionFascade;
 		}
@@ -72,7 +72,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			DbParameter dbParameter;
 
 			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
+				throw new ArgumentNullException(nameof(connectionType));
 
 			using (DbConnection dbConnection = (DbConnection)Activator.CreateInstance(connectionType))
 			{
@@ -109,10 +109,10 @@ namespace TextMetal.Middleware.Solder.Utilities
 			int resultsetIndex = 0;
 
 			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
+				throw new ArgumentNullException(nameof(connectionType));
 
 			if ((object)connectionString == null)
-				throw new ArgumentNullException("connectionString");
+				throw new ArgumentNullException(nameof(connectionString));
 
 			using (DbConnection dbConnection = (DbConnection)Activator.CreateInstance(connectionType))
 			{
@@ -227,7 +227,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 		public DbType InferDbTypeForClrType(Type clrType)
 		{
 			if ((object)clrType == null)
-				throw new ArgumentNullException("clrType");
+				throw new ArgumentNullException(nameof(clrType));
 
 			var _clrTypeInfo = clrType.GetTypeInfo();
 

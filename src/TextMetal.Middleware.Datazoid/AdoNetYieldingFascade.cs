@@ -23,7 +23,7 @@ namespace TextMetal.Middleware.Datazoid
 		public AdoNetYieldingFascade(IReflectionFascade reflectionFascade)
 		{
 			if ((object)reflectionFascade == null)
-				throw new ArgumentNullException("reflectionFascade");
+				throw new ArgumentNullException(nameof(reflectionFascade));
 
 			this.reflectionFascade = reflectionFascade;
 		}
@@ -88,7 +88,7 @@ namespace TextMetal.Middleware.Datazoid
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::CreateParameter(...): enter", typeof(AdoNetYieldingFascade).Name));
 
 			if ((object)dbConnection == null)
-				throw new ArgumentNullException("dbConnection");
+				throw new ArgumentNullException(nameof(dbConnection));
 
 			using (IDbCommand dbCommand = dbConnection.CreateCommand())
 				dbDataParameter = dbCommand.CreateParameter();
@@ -128,7 +128,7 @@ namespace TextMetal.Middleware.Datazoid
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteReader(...): enter", typeof(AdoNetYieldingFascade).Name));
 
 			if ((object)dbConnection == null)
-				throw new ArgumentNullException("dbConnection");
+				throw new ArgumentNullException(nameof(dbConnection));
 
 			using (IDbCommand dbCommand = dbConnection.CreateCommand())
 			{
@@ -199,7 +199,7 @@ namespace TextMetal.Middleware.Datazoid
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteRecords(...): enter", typeof(AdoNetYieldingFascade).Name));
 
 			if ((object)dbConnection == null)
-				throw new ArgumentNullException("dbConnection");
+				throw new ArgumentNullException(nameof(dbConnection));
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteRecords(...): before yield", typeof(AdoNetYieldingFascade).Name));
 
@@ -253,7 +253,7 @@ namespace TextMetal.Middleware.Datazoid
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteResultsets(...): enter", typeof(AdoNetYieldingFascade).Name));
 
 			if ((object)dbConnection == null)
-				throw new ArgumentNullException("dbConnection");
+				throw new ArgumentNullException(nameof(dbConnection));
 
 			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
 			dataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE);
@@ -293,7 +293,7 @@ namespace TextMetal.Middleware.Datazoid
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteSchemaRecords(...): enter", typeof(AdoNetYieldingFascade).Name));
 
 			if ((object)dbConnection == null)
-				throw new ArgumentNullException("dbConnection");
+				throw new ArgumentNullException(nameof(dbConnection));
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: before yield", typeof(AdoNetYieldingFascade).Name));
 
@@ -347,7 +347,7 @@ namespace TextMetal.Middleware.Datazoid
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteSchemaResultsets(...): enter", typeof(AdoNetYieldingFascade).Name));
 
 			if ((object)dbConnection == null)
-				throw new ArgumentNullException("dbConnection");
+				throw new ArgumentNullException(nameof(dbConnection));
 
 			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
 			dataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE);
@@ -377,7 +377,7 @@ namespace TextMetal.Middleware.Datazoid
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): enter", typeof(AdoNetYieldingFascade).Name));
 
 			if ((object)dataReader == null)
-				throw new ArgumentNullException("dataReader");
+				throw new ArgumentNullException(nameof(dataReader));
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): before yield", typeof(AdoNetYieldingFascade).Name));
 
@@ -424,7 +424,7 @@ namespace TextMetal.Middleware.Datazoid
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): enter", typeof(AdoNetYieldingFascade).Name));
 
 			if ((object)dataReader == null)
-				throw new ArgumentNullException("dataReader");
+				throw new ArgumentNullException(nameof(dataReader));
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): before yield", typeof(AdoNetYieldingFascade).Name));
 
@@ -469,7 +469,7 @@ namespace TextMetal.Middleware.Datazoid
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): enter", typeof(AdoNetYieldingFascade).Name));
 
 			if ((object)dataReader == null)
-				throw new ArgumentNullException("dataReader");
+				throw new ArgumentNullException(nameof(dataReader));
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): before yield", typeof(AdoNetYieldingFascade).Name));
 
@@ -523,7 +523,7 @@ namespace TextMetal.Middleware.Datazoid
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): enter", typeof(AdoNetYieldingFascade).Name));
 
 			if ((object)dataReader == null)
-				throw new ArgumentNullException("dataReader");
+				throw new ArgumentNullException(nameof(dataReader));
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): before yield", typeof(AdoNetYieldingFascade).Name));
 

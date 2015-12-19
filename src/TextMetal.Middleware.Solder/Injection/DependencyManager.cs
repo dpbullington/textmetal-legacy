@@ -9,8 +9,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 
-using TextMetal.Middleware.Solder.Runtime;
-
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>
@@ -38,17 +36,6 @@ namespace TextMetal.Middleware.Solder.Injection
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Gets the singleton instance associated with the current application domain. Most applications will use this instance instead of creating their own instance.
-		/// </summary>
-		public static IDependencyManager AppDomainInstance
-		{
-			get
-			{
-				return AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager;
-			}
-		}
 
 		private Dictionary<KeyValuePair<Type, string>, IDependencyResolution> DependencyResolutionRegistrations
 		{
@@ -99,10 +86,10 @@ namespace TextMetal.Middleware.Solder.Injection
 				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
 
 			if ((object)selectorKey == null)
-				throw new ArgumentNullException("selectorKey");
+				throw new ArgumentNullException(nameof(selectorKey));
 
 			if ((object)dependencyResolution == null)
-				throw new ArgumentNullException("dependencyResolution");
+				throw new ArgumentNullException(nameof(dependencyResolution));
 
 			targetType = typeof(TObject);
 
@@ -123,13 +110,13 @@ namespace TextMetal.Middleware.Solder.Injection
 				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
 
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			if ((object)selectorKey == null)
-				throw new ArgumentNullException("selectorKey");
+				throw new ArgumentNullException(nameof(selectorKey));
 
 			if ((object)dependencyResolution == null)
-				throw new ArgumentNullException("dependencyResolution");
+				throw new ArgumentNullException(nameof(dependencyResolution));
 
 			// cop a reader lock
 			this.ReaderWriterLock.EnterUpgradeableReadLock();
@@ -229,7 +216,7 @@ namespace TextMetal.Middleware.Solder.Injection
 				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
 
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			// cop a reader lock
 			this.ReaderWriterLock.EnterUpgradeableReadLock();
@@ -362,7 +349,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			// selector key can be null in this context
 
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			// cop a reader lock
 			this.ReaderWriterLock.EnterUpgradeableReadLock();
@@ -390,7 +377,7 @@ namespace TextMetal.Middleware.Solder.Injection
 				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
 
 			if ((object)selectorKey == null)
-				throw new ArgumentNullException("selectorKey");
+				throw new ArgumentNullException(nameof(selectorKey));
 
 			targetType = typeof(TObject);
 
@@ -411,10 +398,10 @@ namespace TextMetal.Middleware.Solder.Injection
 				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
 
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			if ((object)selectorKey == null)
-				throw new ArgumentNullException("selectorKey");
+				throw new ArgumentNullException(nameof(selectorKey));
 
 			// cop a reader lock
 			this.ReaderWriterLock.EnterUpgradeableReadLock();
@@ -465,7 +452,7 @@ namespace TextMetal.Middleware.Solder.Injection
 				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
 
 			if ((object)selectorKey == null)
-				throw new ArgumentNullException("selectorKey");
+				throw new ArgumentNullException(nameof(selectorKey));
 
 			targetType = typeof(TObject);
 
@@ -490,10 +477,10 @@ namespace TextMetal.Middleware.Solder.Injection
 				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
 
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			if ((object)selectorKey == null)
-				throw new ArgumentNullException("selectorKey");
+				throw new ArgumentNullException(nameof(selectorKey));
 
 			// cop a reader lock
 			this.ReaderWriterLock.EnterUpgradeableReadLock();

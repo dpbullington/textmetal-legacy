@@ -23,16 +23,16 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		public SqlExpressionVisitor(TableMappingAttribute tableMappingAttribute, ISqlNuance sqlNuance, IUnitOfWork unitOfWork, IDictionary<string, ITacticParameter> tacticParameters)
 		{
 			if ((object)tableMappingAttribute == null)
-				throw new ArgumentNullException("tableMappingAttribute");
+				throw new ArgumentNullException(nameof(tableMappingAttribute));
 
 			if ((object)sqlNuance == null)
-				throw new ArgumentNullException("sqlNuance");
+				throw new ArgumentNullException(nameof(sqlNuance));
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			if ((object)tacticParameters == null)
-				throw new ArgumentNullException("tacticParameters");
+				throw new ArgumentNullException(nameof(tacticParameters));
 
 			this.tableMappingAttribute = tableMappingAttribute;
 			this.sqlNuance = sqlNuance;
@@ -101,7 +101,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		protected override IExpression VisitBinary(BinaryExpression binaryExpression)
 		{
 			if ((object)binaryExpression == null)
-				throw new ArgumentNullException("binaryExpression");
+				throw new ArgumentNullException(nameof(binaryExpression));
 
 			this.Strings.Append("(");
 
@@ -169,7 +169,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			Type valueType;
 
 			if ((object)literalValue == null)
-				throw new ArgumentNullException("literalValue");
+				throw new ArgumentNullException(nameof(literalValue));
 
 			if ((object)literalValue.__ == null)
 				throw new InvalidOperationException("Cannot use the constant literal value NULL as a literalValue operand; use UnaryExpression(..., UnaryOperator.IsNull) instead.");
@@ -200,7 +200,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		protected override IExpression VisitNullary(NullaryExpression nullaryExpression)
 		{
 			if ((object)nullaryExpression == null)
-				throw new ArgumentNullException("nullaryExpression");
+				throw new ArgumentNullException(nameof(nullaryExpression));
 
 			switch (nullaryExpression.NullaryOperator)
 			{
@@ -219,7 +219,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			string columnName;
 
 			if ((object)symbolName == null)
-				throw new ArgumentNullException("symbolName");
+				throw new ArgumentNullException(nameof(symbolName));
 
 			columnName = this.SqlNuance.GetAliasedColumnName("t0", symbolName.Name);
 
@@ -231,7 +231,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		protected override IExpression VisitUnary(UnaryExpression unaryExpression)
 		{
 			if ((object)unaryExpression == null)
-				throw new ArgumentNullException("unaryExpression");
+				throw new ArgumentNullException(nameof(unaryExpression));
 
 			switch (unaryExpression.UnaryOperator)
 			{
@@ -265,7 +265,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		protected override IExpression VisitUnknown(IExpression expression)
 		{
 			if ((object)expression == null)
-				throw new ArgumentNullException("expression");
+				throw new ArgumentNullException(nameof(expression));
 
 			if ((object)expression == VoidExpression.Instance)
 			{

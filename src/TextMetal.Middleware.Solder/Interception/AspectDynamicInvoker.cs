@@ -62,16 +62,16 @@ namespace TextMetal.Middleware.Solder.Interception
 
 			// sanity checks
 			if ((object)proxiedType == null)
-				throw new ArgumentNullException("proxiedType");
+				throw new ArgumentNullException(nameof(proxiedType));
 
 			if ((object)invokedMethodInfo == null)
-				throw new ArgumentNullException("invokedMethodInfo");
+				throw new ArgumentNullException(nameof(invokedMethodInfo));
 
 			if ((object)proxyInstance == null)
-				throw new ArgumentNullException("proxyInstance");
+				throw new ArgumentNullException(nameof(proxyInstance));
 
 			if ((object)invocationParameters == null)
-				throw new ArgumentNullException("invocationParameters");
+				throw new ArgumentNullException(nameof(invocationParameters));
 
 			// obtain the contract type
 			contractType = invokedMethodInfo.DeclaringType;

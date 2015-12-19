@@ -12,31 +12,22 @@ using System.Text.RegularExpressions;
 
 using TextMetal.Middleware.Solder.Context;
 
-//using TextMetal.Middleware.Solder.Context;
-
 namespace TextMetal.Middleware.Solder.Utilities
 {
 	public abstract class ExecutableApplicationFascade : IExecutableApplicationFascade
 	{
 		#region Constructors/Destructors
 
-		protected ExecutableApplicationFascade()
-			: this(Utilities.DataTypeFascade.Instance,
-				Utilities.AppConfigFascade.Instance,
-				Utilities.ReflectionFascade.Instance)
-		{
-		}
-
-		protected ExecutableApplicationFascade(IDataTypeFascade dataTypeFascade, IAppConfigFascade appConfigFascade, IReflectionFascade reflectionFascade)
+		public ExecutableApplicationFascade(IDataTypeFascade dataTypeFascade, IAppConfigFascade appConfigFascade, IReflectionFascade reflectionFascade)
 		{
 			if ((object)dataTypeFascade == null)
-				throw new ArgumentNullException("dataTypeFascade");
+				throw new ArgumentNullException(nameof(dataTypeFascade));
 
 			if ((object)appConfigFascade == null)
-				throw new ArgumentNullException("appConfigFascade");
+				throw new ArgumentNullException(nameof(appConfigFascade));
 
 			if ((object)reflectionFascade == null)
-				throw new ArgumentNullException("reflectionFascade");
+				throw new ArgumentNullException(nameof(reflectionFascade));
 
 			this.dataTypeFascade = dataTypeFascade;
 			this.appConfigFascade = appConfigFascade;
@@ -85,6 +76,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 				return APPCONFIG_PROPS_REGEX;
 			}
 		}
+
 		public static ExecutableApplicationFascade Current
 		{
 			get
@@ -113,12 +105,24 @@ namespace TextMetal.Middleware.Solder.Utilities
 			}
 		}
 
-		public bool HookUnhandledExceptionEvents
+		public static bool HookUnhandledExceptionEvents
 		{
 			get
 			{
-				return !Debugger.IsAttached &&
-						this.AppConfigFascade.GetAppSetting<bool>(string.Format("{0}::HookUnhandledExceptionEvents", this.GetType().Namespace));
+				string key;
+				string svalue;
+				bool ovalue;
+
+				key = string.Format("SOLDER_ENABLE_HOOK_UEX_EVENTS");
+				svalue = Environment.GetEnvironmentVariable(key);
+
+				if ((object)svalue == null)
+					return false;
+
+				if (!Utilities.DataTypeFascade.Instance.TryParse<bool>(svalue, out ovalue))
+					return false;
+
+				return !Debugger.IsAttached && ovalue;
 			}
 		}
 
@@ -161,6 +165,51 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 		#region Methods/Operators
 
+		protected abstract void DisplayArgumentErrorMessage(IEnumerable<Message> argumentMessages);
+
+		protected abstract void DisplayArgumentMapMessage(IDictionary<string, ArgumentSpec> argumentMap);
+
+		protected abstract void DisplayFailureMessage(Exception exception);
+
+		protected abstract void DisplayRawArgumentsMessage(string[] args, IEnumerable<string> arguments);
+
+		protected abstract void DisplaySuccessMessage(TimeSpan duration);
+
+		public void Dispose()
+		{
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (this.Disposed)
+				return;
+
+			if (disposing)
+			{
+				if ((object)Current != null)
+					Current = null;
+			}
+		}
+
+		/// <summary>
+		/// The indirect entry point method for this application. Code is wrapped in this method to leverage the 'TryStartup'/'Startup' pattern. This method, if used, wraps the Startup() method in an exception handler. The handler will catch all exceptions and report a full detailed stack trace to the Console.Error stream; -1 is then returned as the exit code. Otherwise, if no exception is thrown, the exit code returned is that which is returned by Startup().
+		/// </summary>
+		/// <param name="args"> The command line arguments passed from the executing environment. </param>
+		/// <returns> The resulting exit code. </returns>
+		public int EntryPoint(string[] args)
+		{
+			if (HookUnhandledExceptionEvents)
+				return this.TryStartup(args);
+			else
+				return this.Startup(args);
+		}
+
+		protected abstract IDictionary<string, ArgumentSpec> GetArgumentMap();
+
+		protected abstract int OnStartup(string[] args, IDictionary<string, IList<object>> arguments);
+
 		/// <summary>
 		/// Given a string array of command line arguments, this method will parse the arguments using a well know pattern match to obtain a loosely typed dictionary of key/multi-value pairs for use by applications.
 		/// </summary>
@@ -174,7 +223,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			IList<string> argumentValues;
 
 			if ((object)args == null)
-				throw new ArgumentNullException("args");
+				throw new ArgumentNullException(nameof(args));
 
 			arguments = new Dictionary<string, IList<string>>(StringComparer.CurrentCultureIgnoreCase);
 
@@ -216,95 +265,6 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 			return arguments;
 		}
-
-		/// <summary>
-		/// Given a string property, this method will parse the property using a well know pattern match to obtain an output key/value pair for use by applications.
-		/// </summary>
-		/// <param name="arg"> The property to parse. </param>
-		/// <param name="key"> The output property key. </param>
-		/// <param name="value"> The output property value. </param>
-		/// <returns> A value indicating if the parse was successful or not. </returns>
-		public bool TryParseCommandLineArgumentProperty(string arg, out string key, out string value)
-		{
-			Match match;
-			string k, v;
-
-			key = null;
-			value = null;
-
-			if ((object)arg == null)
-				throw new ArgumentNullException("arg");
-
-			match = Regex.Match(arg, PropsRegEx, RegexOptions.IgnorePatternWhitespace);
-
-			if ((object)match == null)
-				return false;
-
-			if (!match.Success)
-				return false;
-
-			if (match.Groups.Count != 3)
-				return false;
-
-			k = match.Groups[1].Value;
-			v = match.Groups[2].Value;
-
-			// key is required
-			if (this.DataTypeFascade.IsNullOrWhiteSpace(k))
-				return false;
-
-			// val is required
-			if (this.DataTypeFascade.IsNullOrWhiteSpace(v))
-				return false;
-
-			key = k;
-			value = v;
-			return true;
-		}
-		protected abstract void DisplayArgumentErrorMessage(IEnumerable<Message> argumentMessages);
-
-		protected abstract void DisplayArgumentMapMessage(IDictionary<string, ArgumentSpec> argumentMap);
-
-		protected abstract void DisplayFailureMessage(Exception exception);
-
-		protected abstract void DisplayRawArgumentsMessage(string[] args, IEnumerable<string> arguments);
-
-		protected abstract void DisplaySuccessMessage(TimeSpan duration);
-
-		public void Dispose()
-		{
-			this.Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (this.Disposed)
-				return;
-
-			if (disposing)
-			{
-				if ((object)Current != null)
-					Current = null;
-			}
-		}
-
-		/// <summary>
-		/// The indirect entry point method for this application. Code is wrapped in this method to leverage the 'TryStartup'/'Startup' pattern. This method, if used, wraps the Startup() method in an exception handler. The handler will catch all exceptions and report a full detailed stack trace to the Console.Error stream; -1 is then returned as the exit code. Otherwise, if no exception is thrown, the exit code returned is that which is returned by Startup().
-		/// </summary>
-		/// <param name="args"> The command line arguments passed from the executing environment. </param>
-		/// <returns> The resulting exit code. </returns>
-		public int EntryPoint(string[] args)
-		{
-			if (this.HookUnhandledExceptionEvents)
-				return this.TryStartup(args);
-			else
-				return this.Startup(args);
-		}
-
-		protected abstract IDictionary<string, ArgumentSpec> GetArgumentMap();
-
-		protected abstract int OnStartup(string[] args, IDictionary<string, IList<object>> arguments);
 
 		public void ShowNestedExceptionsAndThrowBrickAtProcess(Exception e)
 		{
@@ -411,11 +371,56 @@ namespace TextMetal.Middleware.Solder.Utilities
 			}
 			catch (Exception ex)
 			{
-				if (this.HookUnhandledExceptionEvents)
+				if (HookUnhandledExceptionEvents)
 					this.ShowNestedExceptionsAndThrowBrickAtProcess(ex);
 
 				throw;
 			}
+		}
+
+		/// <summary>
+		/// Given a string property, this method will parse the property using a well know pattern match to obtain an output key/value pair for use by applications.
+		/// </summary>
+		/// <param name="arg"> The property to parse. </param>
+		/// <param name="key"> The output property key. </param>
+		/// <param name="value"> The output property value. </param>
+		/// <returns> A value indicating if the parse was successful or not. </returns>
+		public bool TryParseCommandLineArgumentProperty(string arg, out string key, out string value)
+		{
+			Match match;
+			string k, v;
+
+			key = null;
+			value = null;
+
+			if ((object)arg == null)
+				throw new ArgumentNullException(nameof(arg));
+
+			match = Regex.Match(arg, PropsRegEx, RegexOptions.IgnorePatternWhitespace);
+
+			if ((object)match == null)
+				return false;
+
+			if (!match.Success)
+				return false;
+
+			if (match.Groups.Count != 3)
+				return false;
+
+			k = match.Groups[1].Value;
+			v = match.Groups[2].Value;
+
+			// key is required
+			if (this.DataTypeFascade.IsNullOrWhiteSpace(k))
+				return false;
+
+			// val is required
+			if (this.DataTypeFascade.IsNullOrWhiteSpace(v))
+				return false;
+
+			key = k;
+			value = v;
+			return true;
 		}
 
 		private int TryStartup(string[] args)

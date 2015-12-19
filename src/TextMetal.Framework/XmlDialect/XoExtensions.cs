@@ -20,7 +20,7 @@ namespace TextMetal.Framework.XmlDialect
 			XmlElementMappingAttribute xmlElementMappingAttribute;
 
 			if ((object)xmlObject == null)
-				throw new ArgumentNullException("xmlObject");
+				throw new ArgumentNullException(nameof(xmlObject));
 
 			xmlObjectType = xmlObject.GetType();
 			xmlElementMappingAttribute = ReflectionFascade.Instance.GetOneAttribute<XmlElementMappingAttribute>(xmlObjectType);

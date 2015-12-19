@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -40,26 +41,33 @@ namespace TextMetal.Middleware.Solder.Runtime
 		#region Properties/Indexers/Events
 
 		/// <summary>
-		/// Gets the current app setting for disabling of resolution auto-wiring.
+		/// Gets the current app setting for disabling of assembly loader subscription method execution.
 		/// </summary>
-		private static bool DisableResolutionAutoWire
+		private static bool EnvVarDisableAssemblyLoaderSubscriptionMethodExecution
 		{
 			get
 			{
 				string key;
-				bool value;
+				string svalue;
+				bool ovalue;
 
-				key = string.Format("{0}::DisableResolutionAutoWire", typeof(AssemblyLoaderContainerContext).FullName);
+				key = string.Format("SOLDER_DISABLE_ASMLDR_EVENTS");
+				svalue = Environment.GetEnvironmentVariable(key);
 
-				if (!AppConfigFascade.Instance.HasAppSetting(key))
-					return true;
+				if ((object)svalue == null)
+					return false;
 
-				value = AppConfigFascade.Instance.GetAppSetting<bool>(key);
+				if (!DataTypeFascade.Instance.TryParse<bool>(svalue, out ovalue))
+					return false;
 
-				return value;
+				return ovalue;
 			}
 		}
 
+		/// <summary>
+		/// Gets the singleton instance associated with the current assembly loader container context.
+		/// Most applications will use this instance instead of creating their own instance.
+		/// </summary>
 		public static AssemblyLoaderContainerContext TheOnlyAllowedInstance
 		{
 			get
@@ -84,25 +92,20 @@ namespace TextMetal.Middleware.Solder.Runtime
 		#region Methods/Operators
 
 		/// <summary>
-		/// Private method that will scan all asemblies specified to perform auto-wiring of dependencies.
+		/// Private method that will scan all asemblies specified to perform assembly loader subscription method execution.
 		/// </summary>
-		/// <param name="assemblies"> An arry of ssemblies to scan and load dependency resolutions automatically ("auto-wire" feature). </param>
+		/// <param name="assemblies"> An array of assemblies to scan for assembly loader subscription methods. </param>
 		private void ScanAssemblies(Assembly[] assemblies)
 		{
 			Type[] assemblyTypes;
 			MethodInfo[] methodInfos;
-			DependencyRegistrationAttribute dependencyRegistrationAttribute;
+			AssemblyLoaderSubscriberMethodAttribute assemblyLoaderSubscriberMethodAttribute;
 			Action dependencyRegistrationMethod;
 
 			if ((object)assemblies != null)
 			{
 				foreach (Assembly assembly in assemblies)
 				{
-					dependencyRegistrationAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyRegistrationAttribute>(assembly);
-
-					if ((object)dependencyRegistrationAttribute == null)
-						continue;
-
 					// http://stackoverflow.com/questions/7889228/how-to-prevent-reflectiontypeloadexception-when-calling-assembly-gettypes
 					try
 					{
@@ -120,29 +123,27 @@ namespace TextMetal.Middleware.Solder.Runtime
 						{
 							var _assemblyTypeInfo = assemblyType.GetTypeInfo();
 
-							dependencyRegistrationAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyRegistrationAttribute>(assemblyType);
-
-							if ((object)dependencyRegistrationAttribute == null)
-								continue;
-
-							if (!_assemblyTypeInfo.IsPublic)
-								continue;
-
 							methodInfos = assemblyType.GetMethods(BindingFlags.Public | BindingFlags.Static);
 
 							if ((object)methodInfos != null)
 							{
 								foreach (MethodInfo methodInfo in methodInfos)
 								{
-									dependencyRegistrationAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyRegistrationAttribute>(methodInfo);
+									assemblyLoaderSubscriberMethodAttribute = ReflectionFascade.Instance.GetOneAttribute<AssemblyLoaderSubscriberMethodAttribute>(methodInfo);
 
-									if ((object)dependencyRegistrationAttribute == null)
+									if ((object)assemblyLoaderSubscriberMethodAttribute == null)
 										continue;
 
 									if (!methodInfo.IsStatic)
 										continue;
 
 									if (!methodInfo.IsPublic)
+										continue;
+
+									if (methodInfo.ReturnType != typeof(void))
+										continue;
+
+									if (methodInfo.GetParameters().Any())
 										continue;
 
 									dependencyRegistrationMethod = (Action)(methodInfo.CreateDelegate(typeof(Action), null /* static */));
@@ -160,12 +161,14 @@ namespace TextMetal.Middleware.Solder.Runtime
 		}
 
 		/// <summary>
-		/// Private thread-safe method which bootstraps an "app domain" for dependency management.
+		/// Private thread-safe method which bootstraps an "app domain".
 		/// </summary>
 		private void SetUpApplicationDomain()
 		{
-			Console.WriteLine("SetUpApplicationDomain");
-			if (!DisableResolutionAutoWire)
+			//Console.WriteLine(Directory.GetCurrentDirectory());
+			Console.WriteLine("SetUpApplicationDomain {0}", EnvVarDisableAssemblyLoaderSubscriptionMethodExecution);
+
+			if (!EnvVarDisableAssemblyLoaderSubscriptionMethodExecution)
 				return;
 
 			ILibraryManager libraryManager = null;
@@ -189,7 +192,7 @@ namespace TextMetal.Middleware.Solder.Runtime
 		}
 
 		/// <summary>
-		/// Private thread-safe method which dismantles an "app domain" for dependency management.
+		/// Private thread-safe method which dismantles an "app domain".
 		/// </summary>
 		private void TearDownApplicationDomain()
 		{

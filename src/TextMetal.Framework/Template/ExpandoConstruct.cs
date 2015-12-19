@@ -53,7 +53,7 @@ namespace TextMetal.Framework.Template
 		protected override void CoreExpandTemplate(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			// add global cleanup into context to suppro this....
 			//templatingContext.IteratorModels.Push(this.Dynamic.Content);

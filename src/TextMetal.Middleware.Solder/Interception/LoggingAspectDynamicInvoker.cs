@@ -15,7 +15,7 @@ namespace TextMetal.Middleware.Solder.Interception
 		public LoggingAspectDynamicInvoker(object logee)
 		{
 			if ((object)logee == null)
-				throw new ArgumentNullException("logee");
+				throw new ArgumentNullException(nameof(logee));
 
 			this.logee = logee;
 		}
@@ -72,16 +72,16 @@ namespace TextMetal.Middleware.Solder.Interception
 			object returnValue = null;
 
 			if ((object)proxiedType == null)
-				throw new ArgumentNullException("proxiedType");
+				throw new ArgumentNullException(nameof(proxiedType));
 
 			if ((object)invokedMethodInfo == null)
-				throw new ArgumentNullException("invokedMethodInfo");
+				throw new ArgumentNullException(nameof(invokedMethodInfo));
 
 			if ((object)proxyInstance == null)
-				throw new ArgumentNullException("proxyInstance");
+				throw new ArgumentNullException(nameof(proxyInstance));
 
 			if ((object)invocationParameters == null)
-				throw new ArgumentNullException("invocationParameters");
+				throw new ArgumentNullException(nameof(invocationParameters));
 
 			returnValue = base.OnInterceptProceedInvoke(proxiedType, invokedMethodInfo, proxyInstance, invocationParameters);
 

@@ -18,7 +18,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Expressions
 		public UnaryExpression(IExpression theExpression, UnaryOperator unaryOperator)
 		{
 			if ((object)theExpression == null)
-				throw new ArgumentNullException("theExpression");
+				throw new ArgumentNullException(nameof(theExpression));
 
 			this.theExpression = theExpression;
 			this.unaryOperator = unaryOperator;

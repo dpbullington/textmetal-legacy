@@ -37,7 +37,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 			IDbDataParameter dbDataParameter;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			dbDataParameter = AdoNetYieldingFascade.Instance.CreateParameter(unitOfWork.Connection, unitOfWork.Transaction, parameterDirection, dbType, parameterSize, parameterPrecision, parameterScale, parameterNullable, parameterName, parameterValue);
 
@@ -49,7 +49,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 			IEnumerable<IRecord> records;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
 			records = AdoNetYieldingFascade.Instance.ExecuteRecords(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, recordsAffectedCallback);
@@ -71,7 +71,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 			IEnumerable<IResultset> resultsets;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
 			resultsets = AdoNetYieldingFascade.Instance.ExecuteResultsets(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters);
@@ -87,7 +87,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 			object dbValue;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			records = unitOfWork.ExecuteRecords(commandType, commandText, commandParameters, null);
 
@@ -115,7 +115,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 			IEnumerable<IRecord> records;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
 			records = AdoNetYieldingFascade.Instance.ExecuteSchemaRecords(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, recordsAffectedCallback);
@@ -137,7 +137,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 			IEnumerable<IResultset> resultsets;
 
 			if ((object)unitOfWork == null)
-				throw new ArgumentNullException("unitOfWork");
+				throw new ArgumentNullException(nameof(unitOfWork));
 
 			resultsets = AdoNetYieldingFascade.Instance.ExecuteSchemaResultsets(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters);
 
@@ -154,7 +154,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 			IRecord output;
 
 			if ((object)dbDataParameters == null)
-				throw new ArgumentNullException("dbDataParameters");
+				throw new ArgumentNullException(nameof(dbDataParameters));
 
 			output = new Record();
 

@@ -7,6 +7,7 @@ using System;
 using System.Reflection;
 
 using NUnitLite;
+
 using TextMetal.Middleware.Solder.Runtime;
 
 namespace TextMetal.Framework.UnitTests
@@ -34,7 +35,6 @@ namespace TextMetal.Framework.UnitTests
 		[STAThread]
 		public static int Main(string[] args)
 		{
-			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ClearAllResolutions();
 			return new AutoRun().Execute(typeof(Program).GetTypeInfo().Assembly, Console.Out, Console.In, args);
 		}
 

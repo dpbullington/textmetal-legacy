@@ -29,7 +29,7 @@
 				"System.Threading": "4.0.11-beta-23516",
 				"System.Xml.XmlDocument": "4.0.1-beta-23516",
 				"System.Xml.XmlSerializer": "4.0.11-beta-23516",
-
+				"System.Xml.XDocument": "4.0.11-beta-23516",
 				"System.Runtime.InteropServices.RuntimeInformation": "4.0.0-beta-23516",
 
 				"Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
@@ -48,17 +48,18 @@
 		"TestingInfrastructure\\MockConnection.cs",
 		"TestingInfrastructure\\MockModelObject.cs"
 	],
-    "dependencies": {
-        "Newtonsoft.Json": "8.0.1-beta3",
-        "NUnitLite": "3.0.1",
-        "System.AppContext": "4.0.1-beta-23516",
-        "System.ComponentModel": "4.0.1-beta-23516",
-        "System.IO": "4.0.11-beta-23516",
-        "System.Runtime.Extensions": "4.0.11-beta-23516",
-        "TextMetal.Middleware.Datazoid": "1.0.0-*",
-        "TextMetal.Middleware.Solder": "1.0.0-*"
-    },
+	"content": "appconfig.json",
+	"dependencies": {
+		"Newtonsoft.Json": "8.0.1-beta3",
+		"NUnitLite": "3.0.1",
+		"System.AppContext": "4.0.1-beta-23516",
+		"System.ComponentModel": "4.0.1-beta-23516",
+		"System.IO": "4.0.11-beta-23516",
+		"System.Runtime.Extensions": "4.0.11-beta-23516",
+		"TextMetal.Middleware.Datazoid": "1.0.0-*",
+		"TextMetal.Middleware.Solder": "1.0.0-*"
+	},
 	"commands": {
-		"test": "TextMetal.Middleware.UnitTests app.config"
+		"test": "TextMetal.Middleware.UnitTests"
 	}
 }

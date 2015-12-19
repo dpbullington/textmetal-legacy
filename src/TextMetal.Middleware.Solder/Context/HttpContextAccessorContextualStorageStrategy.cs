@@ -35,7 +35,7 @@ namespace TextMetal.Middleware.Solder.Context
 				var accessor = new HttpContextAccessorContextualStorageStrategy().__;
 
 				return (object)accessor != null &&
-					(object)accessor.HttpContext != null;
+						(object)accessor.HttpContext != null;
 			}
 		}
 

@@ -25,7 +25,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 		public ReflectionFascade(IDataTypeFascade dataTypeFascade)
 		{
 			if ((object)dataTypeFascade == null)
-				throw new ArgumentNullException("dataTypeFascade");
+				throw new ArgumentNullException(nameof(dataTypeFascade));
 
 			this.dataTypeFascade = dataTypeFascade;
 		}
@@ -81,7 +81,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			IEnumerable<TAttribute> attributes;
 
 			if ((object)target == null)
-				throw new ArgumentNullException("target");
+				throw new ArgumentNullException(nameof(target));
 
 			if (target is Assembly)
 				attributes = ((Assembly)target).GetCustomAttributes<TAttribute>();
@@ -328,7 +328,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			Type attributeType, targetType;
 
 			if ((object)target == null)
-				throw new ArgumentNullException("target");
+				throw new ArgumentNullException(nameof(target));
 
 			attributeType = typeof(TAttribute);
 			targetType = target.GetType();
@@ -355,7 +355,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			Type attributeType, targetType;
 
 			if ((object)target == null)
-				throw new ArgumentNullException("target");
+				throw new ArgumentNullException(nameof(target));
 
 			attributeType = typeof(TAttribute);
 			targetType = target.GetType();
@@ -379,7 +379,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			Type openNullableType;
 
 			if ((object)conversionType == null)
-				throw new ArgumentNullException("conversionType");
+				throw new ArgumentNullException(nameof(conversionType));
 
 			var _conversionTypeInfo = conversionType.GetTypeInfo();
 
@@ -406,7 +406,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			Type openNullableType, closedNullableType;
 
 			if ((object)conversionType == null)
-				throw new ArgumentNullException("conversionType");
+				throw new ArgumentNullException(nameof(conversionType));
 
 			var _conversionTypeInfo = conversionType.GetTypeInfo();
 

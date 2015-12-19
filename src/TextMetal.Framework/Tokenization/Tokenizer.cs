@@ -36,7 +36,7 @@ namespace TextMetal.Framework.Tokenization
 		public Tokenizer(IDictionary<string, ITokenReplacementStrategy> tokenReplacementStrategies, bool strictMatching)
 		{
 			if ((object)tokenReplacementStrategies == null)
-				throw new ArgumentNullException("tokenReplacementStrategies");
+				throw new ArgumentNullException(nameof(tokenReplacementStrategies));
 
 			this.tokenReplacementStrategies = tokenReplacementStrategies;
 			this.strictMatching = strictMatching;

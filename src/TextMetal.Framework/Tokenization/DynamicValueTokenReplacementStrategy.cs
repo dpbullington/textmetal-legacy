@@ -25,7 +25,7 @@ namespace TextMetal.Framework.Tokenization
 		public DynamicValueTokenReplacementStrategy(Func<string[], object> method)
 		{
 			if ((object)method == null)
-				throw new ArgumentNullException("method");
+				throw new ArgumentNullException(nameof(method));
 
 			this.method = method;
 		}
@@ -70,7 +70,7 @@ namespace TextMetal.Framework.Tokenization
 			List<object> argumentValues;
 
 			if ((object)parameters == null)
-				throw new ArgumentNullException("parameters");
+				throw new ArgumentNullException(nameof(parameters));
 
 			if (parameters.Length < 2)
 				throw new InvalidOperationException(string.Format("StaticMethodResolver requires at least two parameters but was invoked with '{0}'. USAGE: StaticMethodResolver(`assembly-qualified-type-name`, `static-method-name`, [`type0`, `arg0`...])", parameters.Length));
@@ -168,7 +168,7 @@ namespace TextMetal.Framework.Tokenization
 			object propertyValue = null;
 
 			if ((object)parameters == null)
-				throw new ArgumentNullException("parameters");
+				throw new ArgumentNullException(nameof(parameters));
 
 			if (parameters.Length != 2)
 				throw new InvalidOperationException(string.Format("StaticPropertyResolver requires at most two parameters but was invoked with '{0}'. USAGE: StaticPropertyResolver(`assembly-qualified-type-name`, `static-property-name`)", parameters.Length));

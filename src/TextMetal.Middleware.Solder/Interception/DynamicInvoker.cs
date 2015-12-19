@@ -65,16 +65,16 @@ namespace TextMetal.Middleware.Solder.Interception
 			object returnValue;
 
 			if ((object)proxiedType == null)
-				throw new ArgumentNullException("proxiedType");
+				throw new ArgumentNullException(nameof(proxiedType));
 
 			if ((object)invokedMethodInfo == null)
-				throw new ArgumentNullException("invokedMethodInfo");
+				throw new ArgumentNullException(nameof(invokedMethodInfo));
 
 			if ((object)proxyInstance == null)
-				throw new ArgumentNullException("proxyInstance");
+				throw new ArgumentNullException(nameof(proxyInstance));
 
 			if ((object)invocationParameters == null)
-				throw new ArgumentNullException("invocationParameters");
+				throw new ArgumentNullException(nameof(invocationParameters));
 
 			if (invokedMethodInfo.DeclaringType != typeof(object))
 				throw new InvalidOperationException(string.Format("Declaring type for method '{0}' is not '{1}'.", invokedMethodInfo.Name, typeof(object).FullName));

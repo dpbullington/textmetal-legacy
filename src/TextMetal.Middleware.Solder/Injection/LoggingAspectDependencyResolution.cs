@@ -18,7 +18,7 @@ namespace TextMetal.Middleware.Solder.Injection
 		public LoggingAspectDependencyResolution(IDependencyResolution chainedDependencyResolution)
 		{
 			if ((object)chainedDependencyResolution == null)
-				throw new ArgumentNullException("chainedDependencyResolution");
+				throw new ArgumentNullException(nameof(chainedDependencyResolution));
 
 			this.chainedDependencyResolution = chainedDependencyResolution;
 		}
@@ -62,7 +62,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			object wrapperInstance;
 
 			if ((object)dependencyManager == null)
-				throw new ArgumentNullException("dependencyManager");
+				throw new ArgumentNullException(nameof(dependencyManager));
 
 			interceptedInstance = this.ChainedDependencyResolution.Resolve(dependencyManager);
 

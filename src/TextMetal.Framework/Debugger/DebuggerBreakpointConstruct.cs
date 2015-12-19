@@ -140,7 +140,7 @@ namespace TextMetal.Framework.Debugger
 		public object EvaluateExpression(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			templatingContext.LaunchDebugger();
 
@@ -156,7 +156,7 @@ namespace TextMetal.Framework.Debugger
 		public IEnumerable EvaluateSort(ITemplatingContext templatingContext, IEnumerable values)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			templatingContext.LaunchDebugger();
 
@@ -170,7 +170,7 @@ namespace TextMetal.Framework.Debugger
 		public void ExpandTemplate(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			templatingContext.LaunchDebugger();
 		}
@@ -183,7 +183,7 @@ namespace TextMetal.Framework.Debugger
 		public IEnumerator GetAssociativeObjectEnumerator(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			templatingContext.LaunchDebugger();
 
@@ -198,7 +198,7 @@ namespace TextMetal.Framework.Debugger
 		public IDictionaryEnumerator GetAssociativeObjectEnumeratorDict(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			templatingContext.LaunchDebugger();
 
@@ -213,7 +213,7 @@ namespace TextMetal.Framework.Debugger
 		public IEnumerator<KeyValuePair<string, object>> GetAssociativeObjectEnumeratorTickOne(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			templatingContext.LaunchDebugger();
 
@@ -228,7 +228,7 @@ namespace TextMetal.Framework.Debugger
 		public object GetAssociativeObjectValue(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			templatingContext.LaunchDebugger();
 

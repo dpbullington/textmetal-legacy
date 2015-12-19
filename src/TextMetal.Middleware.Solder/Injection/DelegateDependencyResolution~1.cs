@@ -22,7 +22,7 @@ namespace TextMetal.Middleware.Solder.Injection
 		public DelegateDependencyResolution(Func<TObject> factoryCallback)
 		{
 			if ((object)factoryCallback == null)
-				throw new ArgumentNullException("factoryCallback");
+				throw new ArgumentNullException(nameof(factoryCallback));
 
 			this.factoryCallback = factoryCallback;
 		}
@@ -62,7 +62,7 @@ namespace TextMetal.Middleware.Solder.Injection
 		public object Resolve(IDependencyManager dependencyManager)
 		{
 			if ((object)dependencyManager == null)
-				throw new ArgumentNullException("dependencyManager");
+				throw new ArgumentNullException(nameof(dependencyManager));
 
 			return this.FactoryCallback();
 		}

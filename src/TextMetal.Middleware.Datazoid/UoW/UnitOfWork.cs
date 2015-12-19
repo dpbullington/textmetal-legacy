@@ -150,10 +150,10 @@ namespace TextMetal.Middleware.Datazoid.UoW
 			const bool OPEN = true;
 
 			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
+				throw new ArgumentNullException(nameof(connectionType));
 
 			if ((object)connectionString == null)
-				throw new ArgumentNullException("connectionString");
+				throw new ArgumentNullException(nameof(connectionString));
 
 			dbConnection = (IDbConnection)Activator.CreateInstance(connectionType);
 
@@ -178,7 +178,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 			UnitOfWork unitOfWork;
 
 			if ((object)dbConnection == null)
-				throw new ArgumentNullException("dbConnection");
+				throw new ArgumentNullException(nameof(dbConnection));
 
 			unitOfWork = new UnitOfWork(dbConnection, dbTransaction);
 

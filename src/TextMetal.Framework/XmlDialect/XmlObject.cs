@@ -76,7 +76,7 @@ namespace TextMetal.Framework.XmlDialect
 		/// <summary>
 		/// Gets or sets the parent XML object or null if this is the document root.
 		/// </summary>
-		public new IXmlObject Parent
+		public IXmlObject Parent
 		{
 			get
 			{
@@ -91,7 +91,7 @@ namespace TextMetal.Framework.XmlDialect
 		/// <summary>
 		/// Gets or sets the surround XML object or null if this is not surrounded (in a collection).
 		/// </summary>
-		public new IXmlObjectCollection Surround
+		public IXmlObjectCollection Surround
 		{
 			get
 			{

@@ -16,7 +16,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 	{
 		#region Constructors/Destructors
 
-		private DataTypeFascade()
+		public DataTypeFascade()
 		{
 		}
 
@@ -62,7 +62,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 		public object ChangeType(object value, Type conversionType)
 		{
 			if ((object)conversionType == null)
-				throw new ArgumentNullException("conversionType");
+				throw new ArgumentNullException(nameof(conversionType));
 
 			var _conversionTypeInfo = conversionType.GetTypeInfo();
 
@@ -88,7 +88,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 		public object DefaultValue(Type targetType)
 		{
 			if ((object)targetType == null)
-				throw new ArgumentNullException("targetType");
+				throw new ArgumentNullException(nameof(targetType));
 
 			var _targetTypeInfo = targetType.GetTypeInfo();
 
@@ -252,7 +252,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			Type openNullableType;
 
 			if ((object)valueType == null)
-				throw new ArgumentNullException("valueType");
+				throw new ArgumentNullException(nameof(valueType));
 
 			var _valueTypeInfo = valueType.GetTypeInfo();
 
@@ -403,7 +403,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 				}
 			}
 			else
-				throw new ArgumentOutOfRangeException("valueType", string.Format("The value type '{0}' is not supported.", valueType.FullName));
+				throw new ArgumentOutOfRangeException(nameof(valueType), string.Format("The value type '{0}' is not supported.", valueType.FullName));
 
 			return retval;
 		}

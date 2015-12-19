@@ -21,3 +21,10 @@ Datazoid is a .NET object persistence framework right out of the Hall of Nifty T
 h2. License
 
 See doc/LICENSE.txt.
+
+h2. Project sponsors
+
+Microsoft - BizSpark subscription
+JetBrains - Resharper Ultimate subscription
+Xamarin - Xamarin Platform subscription
+GitHub - Free public repositories

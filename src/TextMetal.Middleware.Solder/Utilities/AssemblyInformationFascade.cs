@@ -43,10 +43,10 @@ namespace TextMetal.Middleware.Solder.Utilities
 			AssemblyTrademarkAttribute aTrA;
 
 			if ((object)reflectionFascade == null)
-				throw new ArgumentNullException("reflectionFascade");
+				throw new ArgumentNullException(nameof(reflectionFascade));
 
 			if ((object)assembly == null)
-				throw new ArgumentNullException("assembly");
+				throw new ArgumentNullException(nameof(assembly));
 
 			aTiA = reflectionFascade.GetOneAttribute<AssemblyTitleAttribute>(assembly);
 

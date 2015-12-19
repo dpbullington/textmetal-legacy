@@ -8,9 +8,11 @@ using System;
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>
-	/// Marks a constructor parameter as a dependency injection point.
+	/// Marks a constructor and its parameter(s) or properties as dependency injection points.
+	/// When specified on a constructor, the selector key is used to decide which constructor is resolved.
+	/// When specified on a constructor parameter or a proeprty, the selector key is used to resolve that actual value.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
+	[AttributeUsage(AttributeTargets.Constructor | AttributeTargets.Parameter | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 	public sealed class DependencyInjectionAttribute : Attribute
 	{
 		#region Constructors/Destructors

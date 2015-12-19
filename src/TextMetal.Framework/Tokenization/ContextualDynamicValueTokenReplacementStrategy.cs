@@ -22,7 +22,7 @@ namespace TextMetal.Framework.Tokenization
 		public ContextualDynamicValueTokenReplacementStrategy(Func<TContext, string[], object> method, TContext context)
 		{
 			if ((object)method == null)
-				throw new ArgumentNullException("method");
+				throw new ArgumentNullException(nameof(method));
 
 			this.method = method;
 			this.context = context;

@@ -17,7 +17,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Expressions
 		public SortOrder(SymbolName symbolName, SortDirection sortDirection)
 		{
 			if ((object)symbolName == null)
-				throw new ArgumentNullException("symbolName");
+				throw new ArgumentNullException(nameof(symbolName));
 
 			this.symbolName = symbolName;
 			this.sortDirection = sortDirection;

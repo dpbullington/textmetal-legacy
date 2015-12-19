@@ -37,7 +37,7 @@ namespace TextMetal.Framework.Source.Primative
 		{
 			ArrayConstruct arrayConstruct;
 			ObjectConstruct objectConstruct;
-			PropertyConstruct propertyConstructA, propertyConstructB, propertyConstructC;
+			PropertyConstruct propertyConstructA, propertyConstructB;
 			Tokenizer tokenizer;
 
 			IEnumerable<IDictionary<string, object>> records;
@@ -45,19 +45,19 @@ namespace TextMetal.Framework.Source.Primative
 			int count = 0;
 
 			if ((object)sqlQueries == null)
-				throw new ArgumentNullException("sqlQueries");
+				throw new ArgumentNullException(nameof(sqlQueries));
 
 			if ((object)parentAssociativeXmlObject == null)
-				throw new ArgumentNullException("parentAssociativeXmlObject");
+				throw new ArgumentNullException(nameof(parentAssociativeXmlObject));
 
 			if ((object)connectionType == null)
-				throw new ArgumentNullException("connectionType");
+				throw new ArgumentNullException(nameof(connectionType));
 
 			if ((object)connectionString == null)
-				throw new ArgumentNullException("connectionString");
+				throw new ArgumentNullException(nameof(connectionString));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(connectionString))
-				throw new ArgumentOutOfRangeException("connectionString");
+				throw new ArgumentOutOfRangeException(nameof(connectionString));
 
 			tokenizer = new Tokenizer(true);
 
@@ -71,9 +71,9 @@ namespace TextMetal.Framework.Source.Primative
 
 				records = AdoNetLiteFascade.Instance.ExecuteRecords(getSchemaOnly, connectionType, connectionString, false, IsolationLevel.Unspecified, sqlQuery.Type, commandText, null);
 
-				propertyConstructB = new PropertyConstruct();
-				propertyConstructB.Name = "RowCount";
-				arrayConstruct.Items.Add(propertyConstructB);
+				propertyConstructA = new PropertyConstruct();
+				propertyConstructA.Name = "RowCount";
+				arrayConstruct.Items.Add(propertyConstructA);
 
 				if ((object)records != null)
 				{
@@ -86,11 +86,11 @@ namespace TextMetal.Framework.Source.Primative
 						{
 							foreach (KeyValuePair<string, object> keyValuePair in record)
 							{
-								propertyConstructC = new PropertyConstruct();
-								propertyConstructC.Name = keyValuePair.Key;
-								propertyConstructC.RawValue = keyValuePair.Value;
+								propertyConstructB = new PropertyConstruct();
+								propertyConstructB.Name = keyValuePair.Key;
+								propertyConstructB.RawValue = keyValuePair.Value;
 
-								objectConstruct.Items.Add(propertyConstructC);
+								objectConstruct.Items.Add(propertyConstructB);
 							}
 						}
 
@@ -100,7 +100,7 @@ namespace TextMetal.Framework.Source.Primative
 						count++;
 					}
 
-					propertyConstructB.RawValue = count;
+					propertyConstructA.RawValue = count;
 				}
 			}
 		}
@@ -120,13 +120,13 @@ namespace TextMetal.Framework.Source.Primative
 			SqlQuery sqlQuery;
 
 			if ((object)sourceFilePath == null)
-				throw new ArgumentNullException("sourceFilePath");
+				throw new ArgumentNullException(nameof(sourceFilePath));
 
 			if ((object)properties == null)
-				throw new ArgumentNullException("properties");
+				throw new ArgumentNullException(nameof(properties));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
-				throw new ArgumentOutOfRangeException("sourceFilePath");
+				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
 			connectionAqtn = null;
 			if (properties.TryGetValue(PROP_TOKEN_CONNECTION_AQTN, out values))

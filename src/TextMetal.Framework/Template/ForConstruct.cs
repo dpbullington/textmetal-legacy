@@ -70,7 +70,7 @@ namespace TextMetal.Framework.Template
 			object value;
 
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			if ((object)this.Initializer != null)
 				value = this.Initializer.EvaluateExpression(templatingContext);
@@ -81,7 +81,7 @@ namespace TextMetal.Framework.Template
 			object value;
 
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			if ((object)this.Iterator != null)
 				value = this.Iterator.EvaluateExpression(templatingContext);
@@ -90,7 +90,7 @@ namespace TextMetal.Framework.Template
 		protected override void CoreConditionalIterationTerminate(ITemplatingContext templatingContext)
 		{
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 		}
 
 		#endregion

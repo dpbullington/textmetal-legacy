@@ -76,7 +76,7 @@ namespace TextMetal.Framework.Expression
 			Type theType = null;
 
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			// *** THIS MUST USE THIS OVERLOAD OR CODE WILL FAIL ***
 			dynamicWildcardTokenReplacementStrategy = templatingContext.GetDynamicWildcardTokenReplacementStrategy(false);

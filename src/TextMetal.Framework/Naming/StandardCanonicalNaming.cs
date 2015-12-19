@@ -73,7 +73,7 @@ namespace TextMetal.Framework.Naming
 			StringBuilder sb;
 
 			if ((object)value == null)
-				throw new ArgumentNullException("value");
+				throw new ArgumentNullException(nameof(value));
 
 			sb = new StringBuilder();
 
@@ -143,7 +143,7 @@ namespace TextMetal.Framework.Naming
 			bool toupper = false;
 
 			if ((object)value == null)
-				throw new ArgumentNullException("value");
+				throw new ArgumentNullException(nameof(value));
 
 			value = GetValidCSharpIdentifier(value);
 
@@ -191,7 +191,7 @@ namespace TextMetal.Framework.Naming
 			char prev;
 
 			if ((object)value == null)
-				throw new ArgumentNullException("value");
+				throw new ArgumentNullException(nameof(value));
 
 			value = GetValidCSharpIdentifier(value);
 
@@ -226,7 +226,7 @@ namespace TextMetal.Framework.Naming
 			StringBuilder sb;
 
 			if ((object)value == null)
-				throw new ArgumentNullException("value");
+				throw new ArgumentNullException(nameof(value));
 
 			value = GetValidCSharpIdentifier(value);
 
@@ -249,7 +249,7 @@ namespace TextMetal.Framework.Naming
 		public string GetPluralForm(string value)
 		{
 			if ((object)value == null)
-				throw new ArgumentNullException("value");
+				throw new ArgumentNullException(nameof(value));
 
 			value = GetValidCSharpIdentifier(value);
 
@@ -284,7 +284,7 @@ namespace TextMetal.Framework.Naming
 		public string GetSingularForm(string value)
 		{
 			if ((object)value == null)
-				throw new ArgumentNullException("value");
+				throw new ArgumentNullException(nameof(value));
 
 			value = GetValidCSharpIdentifier(value);
 

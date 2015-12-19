@@ -25,7 +25,7 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// </summary>
 		/// <param name="actualType"> The actual type of the resolution. </param>
 		public ActivatorDependencyResolution(Type actualType)
-			: this(actualType, false, new Type[] { })
+			: this(actualType, new Type[] { })
 		{
 		}
 
@@ -34,27 +34,15 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// </summary>
 		/// <param name="actualType"> The actual type of the resolution. </param>
 		/// <param name="parameterTypes"> The parameter types of the constructor overload to use or null for the default constructor. </param>
-		public ActivatorDependencyResolution(Type actualType, Type[] parameterTypes)
-			: this(actualType, false, parameterTypes)
-		{
-		}
-
-		/// <summary>
-		/// Initializes a new instance of the ConstructorDependencyResolution class.
-		/// </summary>
-		/// <param name="actualType"> The actual type of the resolution. </param>
-		/// <param name="useNonPublicDefault"> A value indicating whether to consider a default, non-public constructor. </param>
-		/// <param name="parameterTypes"> The parameter types of the constructor overload to use or null for the default constructor. </param>
-		private ActivatorDependencyResolution(Type actualType, bool useNonPublicDefault, Type[] parameterTypes)
+		private ActivatorDependencyResolution(Type actualType, Type[] parameterTypes)
 		{
 			if ((object)actualType == null)
-				throw new ArgumentNullException("actualType");
+				throw new ArgumentNullException(nameof(actualType));
 
 			if ((object)parameterTypes == null)
-				throw new ArgumentNullException("parameterTypes");
+				throw new ArgumentNullException(nameof(parameterTypes));
 
 			this.actualType = actualType;
-			this.useNonPublicDefault = useNonPublicDefault;
 			this.parameterTypes = parameterTypes;
 		}
 
@@ -64,7 +52,6 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		private readonly Type actualType;
 		private readonly Type[] parameterTypes;
-		private readonly bool useNonPublicDefault;
 
 		#endregion
 
@@ -86,25 +73,17 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
-		private bool UseNonPublicDefault
-		{
-			get
-			{
-				return this.useNonPublicDefault;
-			}
-		}
-
 		#endregion
 
 		#region Methods/Operators
 
-		public static ActivatorDependencyResolution FromNonPublicDefault<TObject>()
+		public static ActivatorDependencyResolution OfType<TObject>()
 		{
 			Type actualType;
 
 			actualType = typeof(TObject);
 
-			return new ActivatorDependencyResolution(actualType, true, new Type[] { });
+			return new ActivatorDependencyResolution(actualType, new Type[] { });
 		}
 
 		public static ActivatorDependencyResolution OfType<TObject, TParameter0>()
@@ -528,52 +507,83 @@ namespace TextMetal.Middleware.Solder.Injection
 			object[] invocationArguments;
 			int index = 0;
 
-			ConstructorInfo constructorInfo;
+			ConstructorInfo[] constructorInfos;
 			ParameterInfo[] parameterInfos;
 			ParameterInfo parameterInfo;
 			DependencyInjectionAttribute dependencyInjectionAttribute;
 
 			if ((object)dependencyManager == null)
-				throw new ArgumentNullException("dependencyManager");
+				throw new ArgumentNullException(nameof(dependencyManager));
 
-			constructorInfo = this.ActualType.GetConstructor(this.ParameterTypes);
+			var _actualTypeInfo = this.ActualType.GetTypeInfo();
 
-			if ((object)constructorInfo == null)
+			// first check DepInjAttrib
+			constructorInfos = this.ActualType.GetConstructors(BindingFlags.Instance);
+
+			if ((object)constructorInfos != null)
 			{
-				var _actualTypeInfo = this.ActualType.GetTypeInfo();
+				if (constructorInfos.Length == 0)
+				{
+					if (!_actualTypeInfo.IsValueType)
+						throw new DependencyException(string.Format("Constructor lookup failed for target type '{0}' and parameter types '{1}'.", this.ActualType.FullName, string.Join("|", this.ParameterTypes.Select(pt => pt.FullName).ToArray())));
 
-				if (_actualTypeInfo.IsValueType)
-					return this.GetResolutionInstance(new object[] { });
+					// it is a value type so just assume there can be no parameters
+					if (this.ParameterTypes.Length != 0)
+						throw new DependencyException(string.Format("Constructor parameter list mismatch occured for target type '{0}' and parameter types '{1}'.", this.ActualType.FullName, string.Join("|", this.ParameterTypes.Select(pt => pt.FullName).ToArray())));
 
-				throw new DependencyException(string.Format("Constructor lookup failed for target type '{0}' and parameter types '{1}'.", this.ActualType.FullName, string.Join("|", this.ParameterTypes.Select(pt => pt.FullName).ToArray())));
+					invocationArguments = new object[this.ParameterTypes.Length];
+
+					return this.GetResolutionInstance(invocationArguments);
+				}
+
+				foreach (ConstructorInfo constructorInfo in constructorInfos)
+				{
+					dependencyInjectionAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyInjectionAttribute>(constructorInfo);
+					string currentSelectorKey = "";
+
+					if ((object)dependencyInjectionAttribute != null)
+					{
+						if ((currentSelectorKey ?? "") != string.Empty &&
+							dependencyInjectionAttribute.SelectorKey == currentSelectorKey)
+						{
+							// absolute match??
+						}
+					}
+
+					if (true)
+					{
+						parameterInfos = constructorInfo.GetParameters();
+
+						if (parameterInfos == null || parameterInfos.Length != this.ParameterTypes.Length)
+							throw new DependencyException(string.Format("Constructor parameter list mismatch occured for target type '{0}' and parameter types '{1}'.", this.ActualType.FullName, string.Join("|", this.ParameterTypes.Select(pt => pt.FullName).ToArray())));
+
+						invocationArguments = new object[this.ParameterTypes.Length];
+
+						foreach (Type parameterType in this.ParameterTypes)
+						{
+							parameterInfo = parameterInfos[index];
+
+							if (!parameterInfo.ParameterType.IsAssignableFrom(parameterType))
+								throw new DependencyException(string.Format("Constructor parameter '{2}' type '{3}' is not assignable to dependency type '{4}' for target type '{0}' and parameter types '{1}'.", this.ActualType.FullName, string.Join("|", this.ParameterTypes.Select(pt => pt.FullName).ToArray()), parameterInfo.Name, parameterInfo.ParameterType.FullName, parameterType.FullName));
+
+							dependencyInjectionAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyInjectionAttribute>(parameterInfo);
+
+							// TODO: should lookup occur using parameterType or parameterInfo.ParameterType ???
+							if ((object)dependencyInjectionAttribute != null)
+								invocationArguments[index] = dependencyManager.ResolveDependency(parameterType, dependencyInjectionAttribute.SelectorKey);
+							else
+								invocationArguments[index] = Activator.CreateInstance(parameterType);
+
+							index++;
+						}
+
+						return this.GetResolutionInstance(invocationArguments);
+					}
+				}
 			}
 
-			parameterInfos = constructorInfo.GetParameters();
-
-			if (parameterInfos == null || parameterInfos.Length != this.ParameterTypes.Length)
-				throw new DependencyException(string.Format("Constructor parameter list mismatch occured for target type '{0}' and parameter types '{1}'.", this.ActualType.FullName, string.Join("|", this.ParameterTypes.Select(pt => pt.FullName).ToArray())));
-
-			invocationArguments = new object[this.ParameterTypes.Length];
-
-			foreach (Type parameterType in this.ParameterTypes)
-			{
-				parameterInfo = parameterInfos[index];
-
-				if (!parameterInfo.ParameterType.IsAssignableFrom(parameterType))
-					throw new DependencyException(string.Format("Constructor parameter '{2}' type '{3}' is not assignable to dependency type '{4}' for target type '{0}' and parameter types '{1}'.", this.ActualType.FullName, string.Join("|", this.ParameterTypes.Select(pt => pt.FullName).ToArray()), parameterInfo.Name, parameterInfo.ParameterType.FullName, parameterType.FullName));
-
-				dependencyInjectionAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyInjectionAttribute>(parameterInfo);
-
-				// TODO: should lookup occur using parameterType or parameterInfo.ParameterType ???
-				if ((object)dependencyInjectionAttribute != null)
-					invocationArguments[index] = dependencyManager.ResolveDependency(parameterType, dependencyInjectionAttribute.SelectorKey);
-				else
-					invocationArguments[index] = Activator.CreateInstance(parameterType, this.UseNonPublicDefault);
-
-				index++;
-			}
-
-			return this.GetResolutionInstance(invocationArguments);
+			// throw hands up!
+			throw new DependencyException(string.Format("Cannot construct an object to resolve for target type '{0}' and parameter types '{1}'.", this.ActualType.FullName, string.Join("|", this.ParameterTypes.Select(pt => pt.FullName).ToArray())));
 		}
 
 		public void Dispose()
@@ -584,10 +594,10 @@ namespace TextMetal.Middleware.Solder.Injection
 		private object GetResolutionInstance(object[] args)
 		{
 			if ((object)args == null)
-				throw new ArgumentNullException("args");
+				throw new ArgumentNullException(nameof(args));
 
-			if (this.UseNonPublicDefault && args.Length == 0)
-				return Activator.CreateInstance(this.ActualType, true);
+			if (args.Length == 0)
+				return Activator.CreateInstance(this.ActualType);
 			else
 				return Activator.CreateInstance(this.ActualType, args);
 		}

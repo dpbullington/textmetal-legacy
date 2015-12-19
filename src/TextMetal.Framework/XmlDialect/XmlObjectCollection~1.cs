@@ -24,7 +24,7 @@ namespace TextMetal.Framework.XmlDialect
 		public XmlObjectCollection(IXmlObject site)
 		{
 			if ((object)site == null)
-				throw new ArgumentNullException("site");
+				throw new ArgumentNullException(nameof(site));
 
 			this.site = site;
 		}
@@ -76,7 +76,7 @@ namespace TextMetal.Framework.XmlDialect
 		protected override void InsertItem(int index, TXmlObject item)
 		{
 			if ((object)item == null)
-				throw new ArgumentNullException("item");
+				throw new ArgumentNullException(nameof(item));
 
 			item.Surround = this;
 			item.Parent = this.Site;
@@ -111,7 +111,7 @@ namespace TextMetal.Framework.XmlDialect
 		protected override void SetItem(int index, TXmlObject item)
 		{
 			if ((object)item == null)
-				throw new ArgumentNullException("item");
+				throw new ArgumentNullException(nameof(item));
 
 			item.Surround = this;
 			item.Parent = this.Site;

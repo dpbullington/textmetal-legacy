@@ -36,13 +36,13 @@ namespace TextMetal.Framework.Source.Primative
 			object retval;
 
 			if ((object)sourceFilePath == null)
-				throw new ArgumentNullException("sourceFilePath");
+				throw new ArgumentNullException(nameof(sourceFilePath));
 
 			if ((object)properties == null)
-				throw new ArgumentNullException("properties");
+				throw new ArgumentNullException(nameof(properties));
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
-				throw new ArgumentOutOfRangeException("sourceFilePath");
+				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
 			xmlSerializedObjectAqtn = null;
 			if (properties.TryGetValue(CMDLN_TOKEN_XML_SERIALIZED_AQTN, out values))

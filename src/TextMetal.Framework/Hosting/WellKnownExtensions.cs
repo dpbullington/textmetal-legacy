@@ -30,10 +30,10 @@ namespace TextMetal.Framework.Hosting
 			object value;
 
 			if ((object)context == null)
-				throw new ArgumentNullException("context");
+				throw new ArgumentNullException(nameof(context));
 
 			if ((object)parameters == null)
-				throw new ArgumentNullException("parameters");
+				throw new ArgumentNullException(nameof(parameters));
 
 			if (parameters.Length != CNT_P)
 				throw new InvalidOperationException(string.Format("printf expects '{1}' parameter(s) but received '{0}' parameter(s).", parameters.Length, CNT_P));
@@ -53,7 +53,7 @@ namespace TextMetal.Framework.Hosting
 		public static void RegisterWellKnownConstructs(this IXmlPersistEngine xpe)
 		{
 			if ((object)xpe == null)
-				throw new ArgumentNullException("xpe");
+				throw new ArgumentNullException(nameof(xpe));
 
 			xpe.RegisterKnownXmlTextObject<TemplateXmlTextObject>();
 
@@ -105,10 +105,10 @@ namespace TextMetal.Framework.Hosting
 		public static void RegisterWellKnownTokenReplacementStrategies(this Tokenizer tokenizer, ITemplatingContext templatingContext)
 		{
 			if ((object)tokenizer == null)
-				throw new ArgumentNullException("tokenizer");
+				throw new ArgumentNullException(nameof(tokenizer));
 
 			if ((object)templatingContext == null)
-				throw new ArgumentNullException("templatingContext");
+				throw new ArgumentNullException(nameof(templatingContext));
 
 			tokenizer.TokenReplacementStrategies.Add("StaticPropertyResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticPropertyResolver));
 			tokenizer.TokenReplacementStrategies.Add("StaticMethodResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticMethodResolver));

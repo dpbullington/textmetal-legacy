@@ -27,19 +27,19 @@ namespace TextMetal.Framework.Core
 		public TemplatingContext(IXmlPersistEngine xpe, Tokenizer tokenizer, IInputMechanism input, IOutputMechanism output, IDictionary<string, IList<string>> properties)
 		{
 			if ((object)xpe == null)
-				throw new ArgumentNullException("xpe");
+				throw new ArgumentNullException(nameof(xpe));
 
 			if ((object)tokenizer == null)
-				throw new ArgumentNullException("tokenizer");
+				throw new ArgumentNullException(nameof(tokenizer));
 
 			if ((object)input == null)
-				throw new ArgumentNullException("input");
+				throw new ArgumentNullException(nameof(input));
 
 			if ((object)output == null)
-				throw new ArgumentNullException("output");
+				throw new ArgumentNullException(nameof(output));
 
 			if ((object)properties == null)
-				throw new ArgumentNullException("properties");
+				throw new ArgumentNullException(nameof(properties));
 
 			this.xpe = xpe;
 			this.tokenizer = tokenizer;
@@ -151,7 +151,7 @@ namespace TextMetal.Framework.Core
 		public void AddReference(Type xmlObjectType)
 		{
 			if ((object)xmlObjectType == null)
-				throw new ArgumentNullException("xmlObjectType");
+				throw new ArgumentNullException(nameof(xmlObjectType));
 
 			this.Xpe.RegisterKnownXmlObject(xmlObjectType);
 		}
@@ -159,10 +159,10 @@ namespace TextMetal.Framework.Core
 		public void AddReference(XmlName xmlName, Type xmlObjectType)
 		{
 			if ((object)xmlName == null)
-				throw new ArgumentNullException("xmlName");
+				throw new ArgumentNullException(nameof(xmlName));
 
 			if ((object)xmlObjectType == null)
-				throw new ArgumentNullException("xmlObjectType");
+				throw new ArgumentNullException(nameof(xmlObjectType));
 
 			this.Xpe.RegisterKnownXmlObject(xmlName, xmlObjectType);
 		}
