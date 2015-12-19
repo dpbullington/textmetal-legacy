@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.IO;
 using System.Reflection;
 
 using NUnitLite;
@@ -35,6 +36,7 @@ namespace TextMetal.Middleware.UnitTests
 		[STAThread]
 		public static int Main(string[] args)
 		{
+			Console.WriteLine(Directory.GetCurrentDirectory());
 			return new AutoRun().Execute(typeof(Program).GetTypeInfo().Assembly, Console.Out, Console.In, args);
 		}
 

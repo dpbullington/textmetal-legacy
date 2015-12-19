@@ -165,7 +165,6 @@ namespace TextMetal.Middleware.Solder.Runtime
 		/// </summary>
 		private void SetUpApplicationDomain()
 		{
-			//Console.WriteLine(Directory.GetCurrentDirectory());
 			Console.WriteLine("SetUpApplicationDomain {0}", EnvVarDisableAssemblyLoaderSubscriptionMethodExecution);
 
 			if (!EnvVarDisableAssemblyLoaderSubscriptionMethodExecution)

@@ -8,6 +8,14 @@ using System;
 using Microsoft.Framework.Configuration;
 using Microsoft.Framework.Configuration.Json;
 
+/*
+TODO: Backlog (dpbullington@gmail.com / 2015-12-18):
+TODO: Refactor the appConfigFilePath constructor parameter out, do IoC of IConfigurationRoot and leverage commented out static factory method instead.
+TODO: This will enhance unit testability and allow any config types.
+*/
+
+/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2015-12-18 / 98% code coverage */
+
 namespace TextMetal.Middleware.Solder.Utilities
 {
 	/// <summary>
@@ -24,23 +32,34 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// <param name="dataTypeFascade"> The data type instance to use. </param>
 		public AppConfigFascade(string appConfigFilePath, IDataTypeFascade dataTypeFascade)
 		{
+			if ((object)appConfigFilePath == null)
+				throw new ArgumentNullException(nameof(appConfigFilePath));
+
 			if ((object)dataTypeFascade == null)
 				throw new ArgumentNullException(nameof(dataTypeFascade));
 
 			this.dataTypeFascade = dataTypeFascade;
-
-			this.LoadAppConfigFile(appConfigFilePath);
+			this.configurationRoot = LoadAppConfigFile(appConfigFilePath);
 		}
 
 		#endregion
 
 		#region Fields/Constants
 
+		private readonly IConfigurationRoot configurationRoot;
 		private readonly IDataTypeFascade dataTypeFascade;
 
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		private IConfigurationRoot ConfigurationRoot
+		{
+			get
+			{
+				return this.configurationRoot;
+			}
+		}
 
 		private IDataTypeFascade DataTypeFascade
 		{
@@ -53,6 +72,43 @@ namespace TextMetal.Middleware.Solder.Utilities
 		#endregion
 
 		#region Methods/Operators
+
+		//public static AppConfigFascade FromJsonFile(string appConfigFilePath)
+		//{
+		//	AppConfigFascade appConfigFascade;
+
+		//	IConfigurationBuilder configurationBuilder;
+		//	IConfigurationProvider configurationProvider;
+		//	IConfigurationRoot configurationRoot;
+
+		//	if ((object)appConfigFilePath == null)
+		//		throw new ArgumentNullException(nameof(appConfigFilePath));
+
+		//	configurationBuilder = new ConfigurationBuilder();
+		//	configurationProvider = new JsonConfigurationProvider(appConfigFilePath);
+		//	configurationBuilder.Add(configurationProvider);
+		//	configurationRoot = configurationBuilder.Build();
+
+		//	appConfigFascade = new AppConfigFascade(configurationRoot, new DataTypeFascade());
+		//	return appConfigFascade;
+		//}
+
+		private static IConfigurationRoot LoadAppConfigFile(string appConfigFilePath)
+		{
+			IConfigurationBuilder configurationBuilder;
+			IConfigurationProvider configurationProvider;
+			IConfigurationRoot configurationRoot;
+
+			if ((object)appConfigFilePath == null)
+				throw new ArgumentNullException(nameof(appConfigFilePath));
+
+			configurationBuilder = new ConfigurationBuilder();
+			configurationProvider = new JsonConfigurationProvider(appConfigFilePath);
+			configurationBuilder.Add(configurationProvider);
+			configurationRoot = configurationBuilder.Build();
+
+			return configurationRoot;
+		}
 
 		/// <summary>
 		/// Gets the value of an app settings for the current application's default configuration. A AppConfigException is thrown if the key does not exist.
@@ -70,7 +126,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 				throw new ArgumentNullException(nameof(key));
 
 			typeOfValue = typeof(TValue);
-			svalue = "TODO";
+			svalue = this.ConfigurationRoot[key];
 
 			if ((object)svalue == null)
 				throw new AppConfigException(string.Format("Key '{0}' was not found in app.config file.", key));
@@ -98,7 +154,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)key == null)
 				throw new ArgumentNullException(nameof(key));
 
-			svalue = "TODO";
+			svalue = this.ConfigurationRoot[key];
 
 			if ((object)svalue == null)
 				throw new AppConfigException(string.Format("Key '{0}' was not found in app.config file.", key));
@@ -121,24 +177,9 @@ namespace TextMetal.Middleware.Solder.Utilities
 			if ((object)key == null)
 				throw new ArgumentNullException(nameof(key));
 
-			value = "TODO";
+			value = this.ConfigurationRoot[key];
 
 			return ((object)value != null);
-		}
-
-		private void LoadAppConfigFile(string appConfigFilePath)
-		{
-			if ((object)appConfigFilePath == null)
-				throw new ArgumentNullException(nameof(appConfigFilePath));
-
-			IConfigurationBuilder configurationBuilder;
-			IConfigurationProvider configurationProvider;
-			IConfigurationRoot configurationRoot;
-
-			configurationBuilder = new ConfigurationBuilder();
-			configurationProvider = new JsonConfigurationProvider(appConfigFilePath);
-			configurationBuilder.Add(configurationProvider);
-			configurationRoot = configurationBuilder.Build();
 		}
 
 		#endregion

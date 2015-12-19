@@ -9,37 +9,50 @@ $output_base_dir = ".\output"
 
 $cover_exe = "C:\Program Files (x86)\JetBrains\Installations\dotCover04\dotCover.exe"
 
-$target_assembly = "TextMetal.Middleware.UnitTests"
-$target_namespaces = @("TextMetal.Framework.UnitTests")
-#$target_exe = "$Env:USERPROFILE\.dnx\runtimes\dnx-coreclr-win-x64.1.0.0-rc1-update1\bin\dnx.exe"
-#$target_args = @("-p", ".\$src_dir\$target_assembly", "run", "--where", "class=TextMetal.Middleware.UnitTests.Solder.Utilities._.AppConfigFascadeTests")
-
-$target_exe = "C:\Program Files\dotnet\bin\dotnet.exe"
-
-$target_args = @("compile", ".\$src_dir\$target_assembly")
-
-&"$target_exe" $target_args
-return $null;
-
-$target_args = @("run", "-p", ".\$src_dir\$target_assembly", "/where", "class=TextMetal.Middleware.UnitTests.Solder.Utilities._.AppConfigFascadeTests")
+$target_assemblies = @("TextMetal.Middleware.UnitTests")
 
 echo "The operation is starting..."
 
-if ($target_namespaces -ne $null)
+if ($target_assemblies -ne $null)
 {
-	foreach ($target_namespace in $target_namespaces)
+	foreach ($target_assembly in $target_assemblies)
 	{
+
+		# restore
+		$target_exe = "C:\Program Files\dotnet\bin\dotnet.exe"
+		$target_args = @("restore", ".\$src_dir\$target_assembly")
+		&"$target_exe" "$target_args"
+
+		if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
+		{ echo "An error occurred during the operation."; return; }
+
+		# compile
+		$target_exe = "C:\Program Files\dotnet\bin\dotnet.exe"
+		$target_args = @("compile", ".\$src_dir\$target_assembly")
+		&"$target_exe" "$target_args"
+
+		if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
+		{ echo "An error occurred during the operation."; return; }
+
+		$target_wdir = ".\$src_dir\$target_assembly\bin\Debug\dnxcore50"
+		$target_exe = "$target_wdir\$target_assembly.exe"
+		$target_args = @("--where", "class=TextMetal.Middleware.UnitTests.Solder.Utilities._.AppConfigFascadeTests")
 
 		&$cover_exe analyse /Filters="$exclude_filter" `
 			/TargetExecutable="$target_exe" `
 			/TargetArguments="$target_args" `
-			/TargetWorkingDir="" /ReportType=HTML `
-			/Output="$output_base_dir\$target_namespace\$target_namespace-unit-tests.html"
+			/TargetWorkingDir="$target_wdir" /ReportType=HTML `
+			/Output="$output_base_dir\$target_assembly\unit-test-coverage-report.html"
 
 		if (!($LastExitCode -eq $null -or $LastExitCode -eq 0))
 		{ echo "An error occurred during the operation."; return; }
 
 	}
 }
+
+#$target_exe = "$Env:USERPROFILE\.dnx\runtimes\dnx-coreclr-win-x64.1.0.0-rc1-update1\bin\dnx.exe"
+#$target_args = @("-p", ".\$src_dir\$target_assembly", "run", "--where", "class=TextMetal.Middleware.UnitTests.Solder.Utilities._.AppConfigFascadeTests")
+#$target_args = @("run", "-p", ".\$src_dir\$target_assembly", "/where", "class=TextMetal.Middleware.UnitTests.Solder.Utilities._.AppConfigFascadeTests")
+
 
 echo "The operation completed successfully."

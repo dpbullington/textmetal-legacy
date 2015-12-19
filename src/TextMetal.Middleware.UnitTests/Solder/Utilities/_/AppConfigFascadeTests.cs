@@ -27,13 +27,39 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		#region Methods/Operators
 
 		[Test]
-		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnInvalidValueGetBooleanTest()
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnAppSettingsFileNameCreateTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
 			IDataTypeFascade mockDataTypeFascade;
-			
+
+			mockAppConfigFilePath = null;
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnDataTypeCreateTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = string.Empty;
+			mockDataTypeFascade = null;
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnInvalidValueGetTypedBooleanTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
 			mockAppConfigFilePath = "appconfig.json";
 			mockDataTypeFascade = new DataTypeFascade();
 			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
@@ -43,7 +69,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnInvalidValueGetByteTest()
+		public void ShouldFailOnInvalidValueGetTypedByteTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -58,7 +84,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnInvalidValueGetCharTest()
+		public void ShouldFailOnInvalidValueGetTypedCharTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -73,7 +99,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnInvalidValueGetDateTimeTest()
+		public void ShouldFailOnInvalidValueGetTypedDateTimeTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -88,7 +114,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnInvalidValueGetDecimalTest()
+		public void ShouldFailOnInvalidValueGetTypedDecimalTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -103,7 +129,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnInvalidValueGetDoubleTest()
+		public void ShouldFailOnInvalidValueGetTypedDoubleTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -118,7 +144,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnInvalidValueGetEnumTest()
+		public void ShouldFailOnInvalidValueGetTypedEnumTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -133,7 +159,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnInvalidValueGetGuidTest()
+		public void ShouldFailOnInvalidValueGetTypedGuidTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -148,7 +174,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnInvalidValueGetInt16Test()
+		public void ShouldFailOnInvalidValueGetTypedInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -163,7 +189,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnInvalidValueGetInt32Test()
+		public void ShouldFailOnInvalidValueGetTypedInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -178,7 +204,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnInvalidValueGetInt64Test()
+		public void ShouldFailOnInvalidValueGetTypedInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -193,7 +219,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnInvalidValueGetSByteTest()
+		public void ShouldFailOnInvalidValueGetTypedSByteTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -208,7 +234,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnInvalidValueGetSingleTest()
+		public void ShouldFailOnInvalidValueGetTypedSingleTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -223,7 +249,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnInvalidValueGetTimeSpanTest()
+		public void ShouldFailOnInvalidValueGetTypedTimeSpanTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -238,7 +264,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnInvalidValueGetUInt16Test()
+		public void ShouldFailOnInvalidValueGetTypedUInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -253,7 +279,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnInvalidValueGetUInt32Test()
+		public void ShouldFailOnInvalidValueGetTypedUInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -268,7 +294,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnInvalidValueGetUInt64Test()
+		public void ShouldFailOnInvalidValueGetTypedUInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -283,7 +309,262 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnNonExistKeyGetBooleanTest()
+		public void ShouldFailOnInvalidValueGetUntypedBooleanTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Boolean), "BadAppConfigFascadeValueBoolean");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnInvalidValueGetUntypedByteTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Byte), "BadAppConfigFascadeValueByte");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnInvalidValueGetUntypedCharTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Char), "BadAppConfigFascadeValueChar");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnInvalidValueGetUntypedDateTimeTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(DateTime), "BadAppConfigFascadeValueDateTime");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnInvalidValueGetUntypedDecimalTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Decimal), "BadAppConfigFascadeValueDecimal");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnInvalidValueGetUntypedDoubleTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Double), "BadAppConfigFascadeValueDouble");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnInvalidValueGetUntypedEnumTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(CharSet), "BadAppConfigFascadeValueEnum");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnInvalidValueGetUntypedGuidTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Guid), "BadAppConfigFascadeValueGuid");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnInvalidValueGetUntypedInt16Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Int16), "BadAppConfigFascadeValueInt16");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnInvalidValueGetUntypedInt32Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Int32), "BadAppConfigFascadeValueInt32");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnInvalidValueGetUntypedInt64Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Int64), "BadAppConfigFascadeValueInt64");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnInvalidValueGetUntypedSByteTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(SByte), "BadAppConfigFascadeValueSByte");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnInvalidValueGetUntypedSingleTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Single), "BadAppConfigFascadeValueSingle");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnInvalidValueGetUntypedTimeSpanTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(TimeSpan), "BadAppConfigFascadeValueTimeSpan");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnInvalidValueGetUntypedUInt16Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(UInt16), "BadAppConfigFascadeValueUInt16");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnInvalidValueGetUntypedUInt32Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(UInt32), "BadAppConfigFascadeValueUInt32");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnInvalidValueGetUntypedUInt64Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(UInt64), "BadAppConfigFascadeValueUInt64");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnNonExistKeyGetTypedBooleanTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -298,7 +579,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnNonExistKeyGetByteTest()
+		public void ShouldFailOnNonExistKeyGetTypedByteTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -313,7 +594,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnNonExistKeyGetCharTest()
+		public void ShouldFailOnNonExistKeyGetTypedCharTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -328,7 +609,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnNonExistKeyGetDateTimeTest()
+		public void ShouldFailOnNonExistKeyGetTypedDateTimeTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -343,7 +624,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnNonExistKeyGetDecimalTest()
+		public void ShouldFailOnNonExistKeyGetTypedDecimalTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -358,7 +639,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnNonExistKeyGetDoubleTest()
+		public void ShouldFailOnNonExistKeyGetTypedDoubleTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -373,7 +654,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnNonExistKeyGetEnumTest()
+		public void ShouldFailOnNonExistKeyGetTypedEnumTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -388,7 +669,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnNonExistKeyGetGuidTest()
+		public void ShouldFailOnNonExistKeyGetTypedGuidTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -403,7 +684,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnNonExistKeyGetInt16Test()
+		public void ShouldFailOnNonExistKeyGetTypedInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -418,7 +699,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnNonExistKeyGetInt32Test()
+		public void ShouldFailOnNonExistKeyGetTypedInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -433,7 +714,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnNonExistKeyGetInt64Test()
+		public void ShouldFailOnNonExistKeyGetTypedInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -448,7 +729,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnNonExistKeyGetSByteTest()
+		public void ShouldFailOnNonExistKeyGetTypedSByteTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -463,7 +744,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnNonExistKeyGetSingleTest()
+		public void ShouldFailOnNonExistKeyGetTypedSingleTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -478,7 +759,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnNonExistKeyGetTimeSpanTest()
+		public void ShouldFailOnNonExistKeyGetTypedTimeSpanTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -493,7 +774,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnNonExistKeyGetUInt16Test()
+		public void ShouldFailOnNonExistKeyGetTypedUInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -508,7 +789,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnNonExistKeyGetUInt32Test()
+		public void ShouldFailOnNonExistKeyGetTypedUInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -523,7 +804,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(AppConfigException))]
-		public void ShouldFailOnNonExistKeyGetUInt64Test()
+		public void ShouldFailOnNonExistKeyGetTypedUInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -536,6 +817,261 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 			appConfigFascade.GetAppSetting<UInt64>("NotThereAppConfigFascadeValueUInt64");
 		}
 
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnNonExistKeyGetUntypedBooleanTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Boolean), "NotThereAppConfigFascadeValueBoolean");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnNonExistKeyGetUntypedByteTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Byte), "NotThereAppConfigFascadeValueByte");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnNonExistKeyGetUntypedCharTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Char), "NotThereAppConfigFascadeValueChar");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnNonExistKeyGetUntypedDateTimeTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(DateTime), "NotThereAppConfigFascadeValueDateTime");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnNonExistKeyGetUntypedDecimalTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Decimal), "NotThereAppConfigFascadeValueDecimal");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnNonExistKeyGetUntypedDoubleTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Double), "NotThereAppConfigFascadeValueDouble");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnNonExistKeyGetUntypedEnumTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(CharSet), "NotThereAppConfigFascadeValueEnum");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnNonExistKeyGetUntypedGuidTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Guid), "NotThereAppConfigFascadeValueGuid");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnNonExistKeyGetUntypedInt16Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Int16), "NotThereAppConfigFascadeValueInt16");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnNonExistKeyGetUntypedInt32Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Int32), "NotThereAppConfigFascadeValueInt32");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnNonExistKeyGetUntypedInt64Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Int64), "NotThereAppConfigFascadeValueInt64");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnNonExistKeyGetUntypedSByteTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(SByte), "NotThereAppConfigFascadeValueSByte");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnNonExistKeyGetUntypedSingleTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Single), "NotThereAppConfigFascadeValueSingle");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnNonExistKeyGetUntypedTimeSpanTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(TimeSpan), "NotThereAppConfigFascadeValueTimeSpan");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnNonExistKeyGetUntypedUInt16Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(UInt16), "NotThereAppConfigFascadeValueUInt16");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnNonExistKeyGetUntypedUInt32Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(UInt32), "NotThereAppConfigFascadeValueUInt32");
+		}
+
+		[Test]
+		[ExpectedException(typeof(AppConfigException))]
+		public void ShouldFailOnNonExistKeyGetUntypedUInt64Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(UInt64), "NotThereAppConfigFascadeValueUInt64");
+		}
+
 		//[Test]
 		//[ExpectedException(typeof(ArgumentNullException))]
 		//public void ShouldFailOnNullArgsParseCommandLineArgumentsTest()
@@ -545,7 +1081,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullKeyGetBooleanTest()
+		public void ShouldFailOnNullKeyGetTypedBooleanTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -560,7 +1096,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullKeyGetByteTest()
+		public void ShouldFailOnNullKeyGetTypedByteTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -575,7 +1111,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullKeyGetCharTest()
+		public void ShouldFailOnNullKeyGetTypedCharTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -590,7 +1126,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullKeyGetDateTimeTest()
+		public void ShouldFailOnNullKeyGetTypedDateTimeTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -605,7 +1141,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullKeyGetDecimalTest()
+		public void ShouldFailOnNullKeyGetTypedDecimalTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -620,7 +1156,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullKeyGetDoubleTest()
+		public void ShouldFailOnNullKeyGetTypedDoubleTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -635,7 +1171,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullKeyGetEnumTest()
+		public void ShouldFailOnNullKeyGetTypedEnumTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -650,7 +1186,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullKeyGetGuidTest()
+		public void ShouldFailOnNullKeyGetTypedGuidTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -665,7 +1201,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullKeyGetInt16Test()
+		public void ShouldFailOnNullKeyGetTypedInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -680,7 +1216,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullKeyGetInt32Test()
+		public void ShouldFailOnNullKeyGetTypedInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -695,7 +1231,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullKeyGetInt64Test()
+		public void ShouldFailOnNullKeyGetTypedInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -710,7 +1246,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullKeyGetSByteTest()
+		public void ShouldFailOnNullKeyGetTypedSByteTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -725,7 +1261,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullKeyGetSingleTest()
+		public void ShouldFailOnNullKeyGetTypedSingleTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -740,7 +1276,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullKeyGetTimeSpanTest()
+		public void ShouldFailOnNullKeyGetTypedTimeSpanTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -755,7 +1291,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullKeyGetUInt16Test()
+		public void ShouldFailOnNullKeyGetTypedUInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -770,7 +1306,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullKeyGetUInt32Test()
+		public void ShouldFailOnNullKeyGetTypedUInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -785,7 +1321,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullKeyGetUInt64Test()
+		public void ShouldFailOnNullKeyGetTypedUInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -796,6 +1332,261 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
 
 			appConfigFascade.GetAppSetting<UInt64>(null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyGetUntypedBooleanTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Boolean), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyGetUntypedByteTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Byte), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyGetUntypedCharTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Char), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyGetUntypedDateTimeTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(DateTime), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyGetUntypedDecimalTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Decimal), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyGetUntypedDoubleTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Double), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyGetUntypedEnumTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(CharSet), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyGetUntypedGuidTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Guid), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyGetUntypedInt16Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Int16), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyGetUntypedInt32Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Int32), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyGetUntypedInt64Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Int64), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyGetUntypedSByteTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(SByte), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyGetUntypedSingleTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(Single), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyGetUntypedTimeSpanTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(TimeSpan), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyGetUntypedUInt16Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(UInt16), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyGetUntypedUInt32Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(UInt32), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyGetUntypedUInt64Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(UInt64), null);
 		}
 
 		[Test]
@@ -815,7 +1606,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullNameGetAppSettingTest()
+		public void ShouldFailOnNullNameGetTypedAppSettingTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -828,8 +1619,38 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 			appConfigFascade.GetAppSetting<string>(null);
 		}
 
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullNameGetUntypedAppSettingTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(typeof(string), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullTypeGetUntypedAppSettingTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(null, string.Empty);
+		}
+
 		//[Test]
-		//public void ShouldGetArgsParseCommandLineArgumentsTest()
+		//public void Should__GetArgsParseCommandLineArgumentsTest()
 		//{
 		//	List<string> args;
 		//	IDictionary<string, IList<string>> cmdlnargs;
@@ -869,7 +1690,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		//}
 
 		[Test]
-		public void ShouldGetBooleanTest()
+		public void ShouldGetTypedBooleanTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -883,7 +1704,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetByteTest()
+		public void ShouldGetTypedByteTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -897,7 +1718,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetCharTest()
+		public void ShouldGetTypedCharTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -911,7 +1732,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetDateTimeTest()
+		public void ShouldGetTypedDateTimeTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -925,7 +1746,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetDecimalTest()
+		public void ShouldGetTypedDecimalTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -939,7 +1760,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetDoubleTest()
+		public void ShouldGetTypedDoubleTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -953,7 +1774,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetEnumTest()
+		public void ShouldGetTypedEnumTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -967,7 +1788,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetGuidTest()
+		public void ShouldGetTypedGuidTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -981,7 +1802,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetInt16Test()
+		public void ShouldGetTypedInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -995,7 +1816,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetInt32Test()
+		public void ShouldGetTypedInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -1009,7 +1830,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetInt64Test()
+		public void ShouldGetTypedInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -1023,7 +1844,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetSByteTest()
+		public void ShouldGetTypedSByteTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -1037,7 +1858,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetSingleTest()
+		public void ShouldGetTypedSingleTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -1051,7 +1872,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetStringTest()
+		public void ShouldGetTypedStringTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -1065,7 +1886,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetTimeSpanTest()
+		public void ShouldGetTypedTimeSpanTest()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -1079,7 +1900,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetUInt16Test()
+		public void ShouldGetTypedUInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -1093,7 +1914,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetUInt32Test()
+		public void ShouldGetTypedUInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -1107,7 +1928,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetUInt64Test()
+		public void ShouldGetTypedUInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
 			string mockAppConfigFilePath;
@@ -1118,6 +1939,258 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
 
 			Assert.AreEqual(appConfigFascade.GetAppSetting<UInt64>("AppConfigFascadeValueUInt64"), 0L);
+		}
+
+		[Test]
+		public void ShouldGetUntypedBooleanTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Boolean), "AppConfigFascadeValueBoolean"), true);
+		}
+
+		[Test]
+		public void ShouldGetUntypedByteTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Byte), "AppConfigFascadeValueByte"), 0);
+		}
+
+		[Test]
+		public void ShouldGetUntypedCharTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Char), "AppConfigFascadeValueChar"), '0');
+		}
+
+		[Test]
+		public void ShouldGetUntypedDateTimeTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(DateTime), "AppConfigFascadeValueDateTime"), new DateTime(2003, 6, 22));
+		}
+
+		[Test]
+		public void ShouldGetUntypedDecimalTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Decimal), "AppConfigFascadeValueDecimal"), 0);
+		}
+
+		[Test]
+		public void ShouldGetUntypedDoubleTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Double), "AppConfigFascadeValueDouble"), 0);
+		}
+
+		[Test]
+		public void ShouldGetUntypedEnumTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(CharSet), "AppConfigFascadeValueEnum"), CharSet.Unicode);
+		}
+
+		[Test]
+		public void ShouldGetUntypedGuidTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Guid), "AppConfigFascadeValueGuid"), Guid.Empty);
+		}
+
+		[Test]
+		public void ShouldGetUntypedInt16Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Int16), "AppConfigFascadeValueInt16"), 0);
+		}
+
+		[Test]
+		public void ShouldGetUntypedInt32Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Int32), "AppConfigFascadeValueInt32"), 0);
+		}
+
+		[Test]
+		public void ShouldGetUntypedInt64Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Int64), "AppConfigFascadeValueInt64"), 0);
+		}
+
+		[Test]
+		public void ShouldGetUntypedSByteTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(SByte), "AppConfigFascadeValueSByte"), 0);
+		}
+
+		[Test]
+		public void ShouldGetUntypedSingleTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Single), "AppConfigFascadeValueSingle"), 0);
+		}
+
+		[Test]
+		public void ShouldGetUntypedStringTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(string), "AppConfigFascadeValueString"), "foobar");
+		}
+
+		[Test]
+		public void ShouldGetUntypedTimeSpanTest()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(TimeSpan), "AppConfigFascadeValueTimeSpan"), TimeSpan.Zero);
+		}
+
+		[Test]
+		public void ShouldGetUntypedUInt16Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(UInt16), "AppConfigFascadeValueUInt16"), 0);
+		}
+
+		[Test]
+		public void ShouldGetUntypedUInt32Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(UInt32), "AppConfigFascadeValueUInt32"), 0);
+		}
+
+		[Test]
+		public void ShouldGetUntypedUInt64Test()
+		{
+			AppConfigFascade appConfigFascade;
+			string mockAppConfigFilePath;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockAppConfigFilePath = "appconfig.json";
+			mockDataTypeFascade = new DataTypeFascade();
+			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(UInt64), "AppConfigFascadeValueUInt64"), 0L);
 		}
 
 		[Test]
