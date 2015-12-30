@@ -165,12 +165,12 @@ namespace TextMetal.Middleware.Solder.Runtime
 		/// </summary>
 		private void SetUpApplicationDomain()
 		{
+			ILibraryManager libraryManager = null;
+
 			Console.WriteLine("SetUpApplicationDomain {0}", EnvVarDisableAssemblyLoaderSubscriptionMethodExecution);
 
 			if (!EnvVarDisableAssemblyLoaderSubscriptionMethodExecution)
 				return;
-
-			ILibraryManager libraryManager = null;
 
 			if ((object)libraryManager != null)
 			{

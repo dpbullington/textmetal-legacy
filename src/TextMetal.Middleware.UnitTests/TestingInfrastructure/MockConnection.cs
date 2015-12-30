@@ -5,10 +5,11 @@
 
 using System;
 using System.Data;
+using System.Data.Common;
 
 namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 {
-	public class MockConnection : IDbConnection
+	public class MockConnection : DbConnection
 	{
 		#region Constructors/Destructors
 
@@ -20,35 +21,74 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 
 		#region Properties/Indexers/Events
 
-		public int ConnectionTimeout
+		/// <summary>
+		/// Gets the name of the current database after a connection is opened, or the database name specified in the connection string before the connection is opened.
+		/// </summary>
+		/// <returns>
+		/// The name of the current database or the name of the database to be used after a connection is opened. The default value is an empty string.
+		/// </returns>
+		public override string Database
 		{
 			get
 			{
-				throw new NotImplementedException();
+				return null;
 			}
 		}
 
-		public string Database
+		/// <summary>
+		/// Gets the name of the database server to which to connect.
+		/// </summary>
+		/// <returns>
+		/// The name of the database server to which to connect. The default value is an empty string.
+		/// </returns>
+		public override string DataSource
 		{
 			get
 			{
-				throw new NotImplementedException();
+				return null;
 			}
 		}
 
-		public ConnectionState State
+		/// <summary>
+		/// Gets a string that represents the version of the server to which the object is connected.
+		/// </summary>
+		/// <returns>
+		/// The version of the database. The format of the string returned depends on the specific type of connection you are using.
+		/// </returns>
+		/// <exception cref="T:System.InvalidOperationException"> <see cref="P:System.Data.Common.DbConnection.ServerVersion" /> was called while the returned Task was not completed and the connection was not opened after a call to <see cref="Overload:System.Data.Common.DbConnection.OpenAsync" />. </exception>
+		public override string ServerVersion
 		{
 			get
 			{
-				return ConnectionState.Open;
+				return null;
 			}
 		}
 
-		public string ConnectionString
+		/// <summary>
+		/// Gets a string that describes the state of the connection.
+		/// </summary>
+		/// <returns>
+		/// The state of the connection. The format of the string returned depends on the specific type of connection you are using.
+		/// </returns>
+		public override ConnectionState State
 		{
 			get
 			{
-				throw new NotImplementedException();
+				return ConnectionState.Closed;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the string used to open the connection.
+		/// </summary>
+		/// <returns>
+		/// The connection string used to establish the initial connection. The exact contents of the connection string depend on the specific data source for this connection. The default value is an empty string.
+		/// </returns>
+		public override string ConnectionString
+		{
+			get
+			{
+				return null;
 			}
 			set
 			{
@@ -59,49 +99,49 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 
 		#region Methods/Operators
 
-		public IDbTransaction BeginTransaction(IsolationLevel il)
+		/// <summary>
+		/// Starts a database transaction.
+		/// </summary>
+		/// <returns>
+		/// An object representing the new transaction.
+		/// </returns>
+		/// <param name="isolationLevel"> Specifies the isolation level for the transaction. </param>
+		protected override DbTransaction BeginDbTransaction(IsolationLevel isolationLevel)
 		{
-			return this.BeginTransaction();
+			return null;
 		}
 
-		public IDbTransaction BeginTransaction()
-		{
-			MockFactory mockFactory;
-			Mock<IDbTransaction> mockDbTransaction;
-
-			mockFactory = new MockFactory();
-			mockDbTransaction = mockFactory.CreateMock<IDbTransaction>(MockStyle.Stub);
-
-			return mockDbTransaction.MockObject;
-		}
-
-		public void ChangeDatabase(string databaseName)
-		{
-			throw new NotImplementedException();
-		}
-
-		public virtual void Close()
-		{
-			this.Dispose(true);
-			GC.SuppressFinalize((object)this);
-		}
-
-		public IDbCommand CreateCommand()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Dispose()
-		{
-			this.Dispose(true);
-			GC.SuppressFinalize((object)this);
-		}
-
-		protected virtual void Dispose(bool disposing)
+		/// <summary>
+		/// Changes the current database for an open connection.
+		/// </summary>
+		/// <param name="databaseName"> Specifies the name of the database for the connection to use. </param>
+		public override void ChangeDatabase(string databaseName)
 		{
 		}
 
-		public void Open()
+		/// <summary>
+		/// Closes the connection to the database. This is the preferred method of closing any open connection.
+		/// </summary>
+		/// <exception cref="T:System.Data.Common.DbException"> The connection-level error that occurred while opening the connection. </exception>
+		public override void Close()
+		{
+		}
+
+		/// <summary>
+		/// Creates and returns a <see cref="T:System.Data.Common.DbCommand" /> object associated with the current connection.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="T:System.Data.Common.DbCommand" /> object.
+		/// </returns>
+		protected override DbCommand CreateDbCommand()
+		{
+			return null;
+		}
+
+		/// <summary>
+		/// Opens a database connection with the settings specified by the <see cref="P:System.Data.Common.DbConnection.ConnectionString" />.
+		/// </summary>
+		public override void Open()
 		{
 		}
 

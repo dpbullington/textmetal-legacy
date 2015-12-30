@@ -122,7 +122,7 @@ namespace TextMetal.Framework.XmlDialect
 
 					// sanity check
 					if (attributeCount > 1)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					// we only care about child elements
 					if ((object)xmlChildElementMappingAttribute == null)
@@ -250,7 +250,7 @@ namespace TextMetal.Framework.XmlDialect
 
 				// sanity check
 				if ((object)parentXmlObject == null)
-					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+					throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 				// interogate parent XML object
 				parentType = parentXmlObject.GetType();
@@ -258,14 +258,14 @@ namespace TextMetal.Framework.XmlDialect
 
 				// sanity check
 				if ((object)parentPropertyInfos == null)
-					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+					throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 				// get parent mapping metadata
 				parentXmlElementMappingAttribute = ReflectionFascade.Instance.GetOneAttribute<XmlElementMappingAttribute>(parentType);
 
 				// sanity check
 				if ((object)parentXmlElementMappingAttribute == null)
-					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+					throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 				// create parent mapping tables for attributes and child elements
 				parentPropertyToAttributeMappings = new Dictionary<PropertyInfo, XmlAttributeMappingAttribute>();
@@ -286,7 +286,7 @@ namespace TextMetal.Framework.XmlDialect
 
 					// sanity check
 					if (attributeCount > 1)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					// append to the correct mapping table
 					if ((object)xmlAttributeMappingAttribute != null) // is this an attribute mapping?
@@ -309,11 +309,11 @@ namespace TextMetal.Framework.XmlDialect
 
 					// sanity check
 					if ((object)parentPropertyToChildElementMapping == null)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					// sanity check
 					if (!parentPropertyToChildElementMapping.Value.Key.CanWrite)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					// get the raw string value
 					svalue = overrideCurrentXmlTextObject.Text;
@@ -324,7 +324,7 @@ namespace TextMetal.Framework.XmlDialect
 
 					// attempt to set the value
 					if (!ReflectionFascade.Instance.SetLogicalPropertyValue(parentXmlObject, parentPropertyToChildElementMapping.Value.Key.Name, ovalue))
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					// return null to prevent recursion
 					return null;
@@ -350,7 +350,7 @@ namespace TextMetal.Framework.XmlDialect
 				if ((object)previousElementXmlName != null &&
 					(object)parentName != null &&
 					parentName != previousElementXmlName.LocalName)
-					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+					throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 				// resolve the mapping to get child element property
 				parentPropertyToChildElementMapping = parentPropertyToChildElementMappings
@@ -363,14 +363,14 @@ namespace TextMetal.Framework.XmlDialect
 				{
 					// sanity check
 					if (!parentPropertyToChildElementMapping.Value.Key.CanWrite)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					// get parent-of-child mapping metadata
 					parentOfChildXmlElementMappingAttribute = ReflectionFascade.Instance.GetOneAttribute<XmlElementMappingAttribute>(parentPropertyToChildElementMapping.Value.Key.PropertyType);
 
 					// sanity check
 					if ((object)parentOfChildXmlElementMappingAttribute == null)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					// override based on parent-of-child mapping metadata
 					currentElementXmlName.LocalName = parentOfChildXmlElementMappingAttribute.LocalName;
@@ -383,7 +383,7 @@ namespace TextMetal.Framework.XmlDialect
 
 			// sanity check
 			if ((object)currentXmlObject == null)
-				throw new InvalidOperationException(string.Format("TODO (enhancement): add meaningful message '{0}'", currentElementXmlName));
+				throw new InvalidOperationException(string.Format("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. '{0}'", currentElementXmlName));
 
 			// interogate the current type
 			currentType = currentXmlObject.GetType();
@@ -391,14 +391,14 @@ namespace TextMetal.Framework.XmlDialect
 
 			// sanity check
 			if ((object)currentPropertyInfos == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 			// get current mapping metadata
 			currentXmlElementMappingAttribute = ReflectionFascade.Instance.GetOneAttribute<XmlElementMappingAttribute>(currentType);
 
 			// sanity check
 			if ((object)currentXmlElementMappingAttribute == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 			// create current mapping tables for attributes and child elements
 			currentPropertyToAttributeMappings = new Dictionary<PropertyInfo, XmlAttributeMappingAttribute>();
@@ -419,7 +419,7 @@ namespace TextMetal.Framework.XmlDialect
 
 				// sanity check
 				if (attributeCount > 1)
-					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+					throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 				// append to the correct mapping table
 				if ((object)xmlAttributeMappingAttribute != null) // is this an attribute mapping?
@@ -439,7 +439,7 @@ namespace TextMetal.Framework.XmlDialect
 
 					// sanity check
 					if (!currentPropertyToAttributeMapping.Key.CanWrite)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					// get the raw string value
 					svalue = attributes.Where(a => a.Key.LocalName == _currentPropertyToAttributeMapping.Value.LocalName &&
@@ -452,7 +452,7 @@ namespace TextMetal.Framework.XmlDialect
 
 					// attempt to set the values
 					if (!ReflectionFascade.Instance.SetLogicalPropertyValue(currentXmlObject, currentPropertyToAttributeMapping.Key.Name, ovalue))
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 				}
 			}
 
@@ -461,7 +461,7 @@ namespace TextMetal.Framework.XmlDialect
 			{
 				// store this as a child element of parent XML object
 				if (!ReflectionFascade.Instance.SetLogicalPropertyValue(parentXmlObject, parentPropertyToChildElementMapping.Value.Key.Name, currentXmlObject))
-					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+					throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 			}
 			else if ((object)parentXmlElementMappingAttribute != null)
 			{
@@ -469,13 +469,13 @@ namespace TextMetal.Framework.XmlDialect
 
 				// sanity check
 				if ((object)parentXmlObject == null)
-					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+					throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 				if (parentXmlElementMappingAttribute.ChildElementModel == ChildElementModel.Content)
 				{
 					// only one content element is allowed, check to see if it is non-null instance
 					if ((object)parentXmlObject.Content != null)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					// assign to anonymous content property
 					parentXmlObject.Content = currentXmlObject;
@@ -486,15 +486,15 @@ namespace TextMetal.Framework.XmlDialect
 
 					// sanity check
 					if ((object)parentXmlObject.AllowedChildTypes == null)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					// sanity check
 					if ((object)parentXmlObject.Items == null)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					// new collection type check
 					if (parentXmlObject.AllowedChildTypes.Count(t => t.IsAssignableFrom(currentType)) <= 0)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					// add to anonymous collection
 					parentXmlObject.Items.Add(currentXmlObject);
@@ -637,7 +637,7 @@ namespace TextMetal.Framework.XmlDialect
 
 					// sanity check
 					if (contextStack.Count < 1)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					// pop element off stack (unwind)
 					contextStack.Pop();
@@ -649,7 +649,7 @@ namespace TextMetal.Framework.XmlDialect
 
 			// sanity check
 			if (contextStack.Count != 0)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 			// ...and I'm spent!
 			return documentXmlObject;
@@ -696,21 +696,21 @@ namespace TextMetal.Framework.XmlDialect
 
 			// sanity check
 			if (contextStack.Count <= 0)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 			// resolve the XML text object
 			currentXmlTextObject = this.ResolveXmlTextObject(textValue);
 
 			// sanity check
 			if ((object)currentXmlTextObject == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 			// grab the parent XML object
 			parentXmlObject = contextStack.Peek();
 
 			// sanity check
 			if ((object)parentXmlObject == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 			// interogate the parent
 			parentType = parentXmlObject.GetType();
@@ -720,7 +720,7 @@ namespace TextMetal.Framework.XmlDialect
 
 			// sanity check
 			if ((object)parentXmlElementMappingAttribute == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 			// is this a named text element?
 			if ((object)xmlName != null)
@@ -732,11 +732,11 @@ namespace TextMetal.Framework.XmlDialect
 			{
 				// it is OK to have text element and not allow anonymous children
 				if (parentXmlElementMappingAttribute.ChildElementModel != ChildElementModel.Items)
-					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+					throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 				// sanity check
 				if ((object)parentXmlObject.Items == null)
-					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+					throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 				// anonymous, thus add to anonymous child element collection
 				// dpbullington@gmail.com / 2012-10-29 (Issue #32): no longer need to explicitly assign parent
@@ -779,10 +779,10 @@ namespace TextMetal.Framework.XmlDialect
 				throw new ArgumentNullException(nameof(targetType));
 
 			if (this.KnownXmlObjectTypeRegistrations.ContainsKey(xmlName))
-				throw new InvalidOperationException(string.Format("TODO (enhancement): add meaningful message | XML for target type '{0}'.", targetType.FullName));
+				throw new InvalidOperationException(string.Format("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. | XML for target type '{0}'.", targetType.FullName));
 
 			if (!typeof(IXmlObject).IsAssignableFrom(targetType))
-				throw new InvalidOperationException(string.Format("TODO (enhancement): add meaningful message | '{0}'.", targetType.FullName));
+				throw new InvalidOperationException(string.Format("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. | '{0}'.", targetType.FullName));
 
 			this.KnownXmlObjectTypeRegistrations.Add(xmlName, targetType);
 		}
@@ -816,7 +816,7 @@ namespace TextMetal.Framework.XmlDialect
 			xmlElementMappingAttribute = ReflectionFascade.Instance.GetOneAttribute<XmlElementMappingAttribute>(targetType);
 
 			if ((object)xmlElementMappingAttribute == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 			xmlName = new XmlName()
 					{
@@ -851,10 +851,10 @@ namespace TextMetal.Framework.XmlDialect
 				throw new ArgumentNullException(nameof(targetType));
 
 			if ((object)this.KnownXmlTextObjectTypeRegistration != null)
-				throw new InvalidOperationException(string.Format("TODO (enhancement): add meaningful message | XML for target type '{0}'.", targetType.FullName));
+				throw new InvalidOperationException(string.Format("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. | XML for target type '{0}'.", targetType.FullName));
 
 			if (!typeof(IXmlTextObject).IsAssignableFrom(targetType))
-				throw new InvalidOperationException(string.Format("TODO (enhancement): add meaningful message | XML for target type '{0}'.", targetType.FullName));
+				throw new InvalidOperationException(string.Format("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. | XML for target type '{0}'.", targetType.FullName));
 
 			this.KnownXmlTextObjectTypeRegistration = targetType;
 		}
@@ -877,14 +877,14 @@ namespace TextMetal.Framework.XmlDialect
 				return null;
 
 			if ((object)targetType == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 			value = Activator.CreateInstance(targetType);
 
 			xmlObject = value as IXmlObject;
 
 			if ((object)xmlObject == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 			return xmlObject;
 		}
@@ -906,14 +906,14 @@ namespace TextMetal.Framework.XmlDialect
 			targetType = this.KnownXmlTextObjectTypeRegistration;
 
 			if ((object)targetType == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 			value = Activator.CreateInstance(targetType);
 
 			xmlTextObject = value as IXmlTextObject;
 
 			if ((object)xmlTextObject == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 			xmlTextObject.Text = text;
 
@@ -1021,14 +1021,14 @@ namespace TextMetal.Framework.XmlDialect
 
 			// sanity check
 			if ((object)currentPropertyInfos == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 			// get the current mapping metadata
 			currentXmlElementMappingAttribute = ReflectionFascade.Instance.GetOneAttribute<XmlElementMappingAttribute>(currentType);
 
 			// sanity check
 			if ((object)currentXmlElementMappingAttribute == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 			// create current mapping tables for attributes and child elements
 			currentPropertyToAttributeMappings = new Dictionary<PropertyInfo, XmlAttributeMappingAttribute>();
@@ -1049,7 +1049,7 @@ namespace TextMetal.Framework.XmlDialect
 
 				// sanity check
 				if (attributeCount > 1)
-					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+					throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 				// append to the correct mapping table
 				if ((object)xmlAttributeMappingAttribute != null) // is this an attribute mapping?
@@ -1069,7 +1069,7 @@ namespace TextMetal.Framework.XmlDialect
 			{
 				// sanity check
 				if (DataTypeFascade.Instance.IsNullOrWhiteSpace(currentXmlElementMappingAttribute.LocalName))
-					throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+					throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 				// write the start of the element
 				xmlWriter.WriteStartElement(currentXmlElementMappingAttribute.LocalName, currentXmlElementMappingAttribute.NamespaceUri);
@@ -1082,11 +1082,11 @@ namespace TextMetal.Framework.XmlDialect
 				{
 					// sanity check
 					if (!currentPropertyToAttributeMapping.Key.CanRead)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					// get the strongly-typed value
 					if (!ReflectionFascade.Instance.GetLogicalPropertyValue(currentXmlObject, currentPropertyToAttributeMapping.Key.Name, out ovalue))
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					// convert to loosely-typed formatted string
 					svalue = ovalue.SafeToString();
@@ -1104,13 +1104,13 @@ namespace TextMetal.Framework.XmlDialect
 				foreach (KeyValuePair<PropertyInfo, XmlChildElementMappingAttribute> currentPropertyToChildElementMapping in currentPropertyToChildElementMappings.Where(m => m.Value.ChildElementType == ChildElementType.TextValue).OrderBy(m => m.Value.Order).ThenBy(m => m.Value.LocalName))
 				{
 					if (!currentPropertyToChildElementMapping.Key.CanRead)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					if (DataTypeFascade.Instance.IsNullOrWhiteSpace(currentPropertyToChildElementMapping.Value.LocalName))
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					if (!ReflectionFascade.Instance.GetLogicalPropertyValue(currentXmlObject, currentPropertyToChildElementMapping.Key.Name, out ovalue))
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					svalue = ovalue.SafeToString();
 
@@ -1125,16 +1125,16 @@ namespace TextMetal.Framework.XmlDialect
 
 					// sanity check
 					if (!currentPropertyToChildElementMapping.Key.CanRead)
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 					// sanity check
 					if (!typeof(IXmlObject).IsAssignableFrom(currentPropertyToChildElementMapping.Key.PropertyType))
-						throw new InvalidOperationException(string.Format("TODO (enhancement): add meaningful message | '{0}'", currentPropertyToChildElementMapping.Key.PropertyType.FullName));
+						throw new InvalidOperationException(string.Format("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. | '{0}'", currentPropertyToChildElementMapping.Key.PropertyType.FullName));
 
 					// get the XML object property value
 					object _out;
 					if (!ReflectionFascade.Instance.GetLogicalPropertyValue(currentXmlObject, currentPropertyToChildElementMapping.Key.Name, out _out))
-						throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+						throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 					childElement = (IXmlObject)_out;
 
 					// write the child element if not null
@@ -1163,7 +1163,7 @@ namespace TextMetal.Framework.XmlDialect
 									};
 						}
 						else
-							throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+							throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 						// recursively write the child element and so forth
 						this.SerializeToXml(xmlWriter, childElement, xmlName);
@@ -1238,7 +1238,7 @@ namespace TextMetal.Framework.XmlDialect
 			xmlElementMappingAttribute = ReflectionFascade.Instance.GetOneAttribute<XmlElementMappingAttribute>(targetType);
 
 			if ((object)xmlElementMappingAttribute == null)
-				throw new InvalidOperationException("TODO (enhancement): add meaningful message");
+				throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message.");
 
 			xmlName = new XmlName()
 					{

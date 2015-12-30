@@ -74,7 +74,10 @@ namespace TextMetal.Framework.InputOutput
 			xmlObject = obj as IXmlObject;
 
 			// this should support XPE, XML, JSON
-			// TODO: refactor this logic
+			/*
+				BACKLOG(dpbullington@gmail.com / 2015 - 12 - 18):
+				Refactor this logic that is common between this File and TextWriter Outputs.
+			*/
 			if ((object)xmlObject != null)
 				serializationStrategy = new XpeSerializationStrategy(this.Xpe);
 			else if ((object)ReflectionFascade.Instance.GetOneAttribute<XmlRootAttribute>(obj.GetType()) != null)

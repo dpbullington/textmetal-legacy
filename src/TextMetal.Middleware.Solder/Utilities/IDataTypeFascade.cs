@@ -52,13 +52,6 @@ namespace TextMetal.Middleware.Solder.Utilities
 		bool IsNullOrWhiteSpace(string value);
 
 		/// <summary>
-		/// Determines if a string value is a valid email address.
-		/// </summary>
-		/// <param name="value"> The string value to check. </param>
-		/// <returns> A boolean value indicating whether the value is a valid email address. </returns>
-		bool IsValidEmailAddress(string value);
-
-		/// <summary>
 		/// Determines if a string value is zero length or only contains white space.
 		/// </summary>
 		/// <param name="value"> The string value to check. </param>

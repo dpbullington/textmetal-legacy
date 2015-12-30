@@ -135,7 +135,7 @@ namespace TextMetal.Framework.Expression
 						ths = theObj.ChangeType<AspectConstruct>();
 
 						if (DataTypeFascade.Instance.IsWhiteSpace(ths.Name))
-							throw new InvalidOperationException("TODO (enhancement): add meaningful message | dataTypeFascade.Instance.IsNullOrWhiteSpace(ths)");
+							throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. | dataTypeFascade.Instance.IsNullOrWhiteSpace(ths)");
 
 						return dynamicWildcardTokenReplacementStrategy.GetByToken(ths.Name, out obj);
 					}
@@ -518,11 +518,11 @@ namespace TextMetal.Framework.Expression
 				}
 				default:
 				{
-					throw new InvalidOperationException("TODO (enhancement): add meaningful message | unary operator is not recognized");
+					throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. | unary operator is not recognized");
 				}
 			}
 
-			throw new InvalidOperationException("TODO (enhancement): add meaningful message | type is not supported by the unary operator");
+			throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. | type is not supported by the unary operator");
 		}
 
 		#endregion

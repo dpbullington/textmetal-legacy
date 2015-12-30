@@ -177,7 +177,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			parameterName = this.SqlNuance.GetParameterName(string.Format("expr_{0}", Guid.NewGuid().ToString("N")));
 			valueType = literalValue.__.GetType();
 
-			// TODO: find the column mapping attribute and lookup this junk...
+			/*
+				BACKLOG(dpbullington@gmail.com / 2015 - 12 - 18):
+				Find the column mapping attribute and lookup this junk...
+			*/
 			tacticParameter = new TacticParameter()
 							{
 								ParameterDirection = ParameterDirection.Input,

@@ -41,13 +41,18 @@
 	],
     "dependencies": {
         "Newtonsoft.Json": "8.0.1-beta3",
-		"NUnitLite": "3.0.1",
-		"System.AppContext": "4.0.1-beta-23516",
-		"System.ComponentModel": "4.0.1-beta-23516",
-		"System.IO": "4.0.11-beta-23516",
-		"System.Runtime.Extensions": "4.0.11-beta-23516",
-		"TextMetal.Middleware.Solder": "1.0.0-*",
-		"TextMetal.Framework": "1.0.0-*"
+        "NUnitLite": "3.0.1",
+        "System.AppContext": "4.0.1-beta-23516",
+        "System.ComponentModel": "4.0.1-beta-23516",
+        "System.IO": "4.0.11-beta-23516",
+        "System.Runtime.Extensions": "4.0.11-beta-23516",
+        "TextMetal.Middleware.Solder": "1.0.0-*",
+        "TextMetal.Framework": "1.0.0-*",
+        "Microsoft.CodeAnalysis.Common": "1.1.0-rc1-20151109-01",
+        "Microsoft.CodeAnalysis.CSharp": "1.1.0-rc1-20151109-01",
+        "Microsoft.Extensions.CompilationAbstractions": "1.0.0-rc2-16258",
+        "System.IO.FileSystem": "4.0.1-beta-23516",
+        "Microsoft.Dnx.Compilation.CSharp.Abstractions": "1.0.0-rc1-final"
     },
 	"commands": {
 		"test": "TextMetal.Framework.IntegrationTests app.config"

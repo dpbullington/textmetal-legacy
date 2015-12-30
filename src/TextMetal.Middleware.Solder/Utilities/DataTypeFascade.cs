@@ -30,6 +30,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 		#region Properties/Indexers/Events
 
+		[Obsolete("Stop using this")]
 		public static IDataTypeFascade Instance
 		{
 			get
@@ -113,23 +114,6 @@ namespace TextMetal.Middleware.Solder.Utilities
 		public bool IsNullOrWhiteSpace(string value)
 		{
 			return (object)value == null || this.IsWhiteSpace(value);
-		}
-
-		/// <summary>
-		/// Determines if a string value is a valid email address.
-		/// </summary>
-		/// <param name="value"> The string value to check. </param>
-		/// <returns> A boolean value indicating whether the value is a valid email address. </returns>
-		public bool IsValidEmailAddress(string value)
-		{
-			try
-			{
-				return true;
-			}
-			catch (FormatException)
-			{
-				return false;
-			}
 		}
 
 		/// <summary>

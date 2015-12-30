@@ -2,7 +2,7 @@
   "profiles": {
     "test": {
       "commandName": "test",
-      "commandLineArgs": "--where class=TextMetal.Middleware.UnitTests.Solder.Utilities._.AppConfigFascadeTests"
+      "commandLineArgs": "--where class=TextMetal.Middleware.UnitTests.Solder.Utilities._.ReflectionFascadeTests"
     }
   }
 }

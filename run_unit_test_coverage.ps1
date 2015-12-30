@@ -36,7 +36,8 @@ if ($target_assemblies -ne $null)
 
 		$target_wdir = ".\$src_dir\$target_assembly\bin\Debug\dnxcore50"
 		$target_exe = "$target_wdir\$target_assembly.exe"
-		$target_args = @("--where", "class=TextMetal.Middleware.UnitTests.Solder.Utilities._.AppConfigFascadeTests")
+		$target_args = @("--where", "class=TextMetal.Middleware.UnitTests.Solder.Utilities._.ReflectionFascadeTests")
+		$exclude_filter = "-:TextMetal.Middleware.UnitTests"
 
 		&$cover_exe analyse /Filters="$exclude_filter" `
 			/TargetExecutable="$target_exe" `
@@ -49,10 +50,5 @@ if ($target_assemblies -ne $null)
 
 	}
 }
-
-#$target_exe = "$Env:USERPROFILE\.dnx\runtimes\dnx-coreclr-win-x64.1.0.0-rc1-update1\bin\dnx.exe"
-#$target_args = @("-p", ".\$src_dir\$target_assembly", "run", "--where", "class=TextMetal.Middleware.UnitTests.Solder.Utilities._.AppConfigFascadeTests")
-#$target_args = @("run", "-p", ".\$src_dir\$target_assembly", "/where", "class=TextMetal.Middleware.UnitTests.Solder.Utilities._.AppConfigFascadeTests")
-
 
 echo "The operation completed successfully."

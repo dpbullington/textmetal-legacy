@@ -99,7 +99,10 @@ namespace TextMetal.Framework.Expression
 
 			returnValue = this.ScriptEngine.Execute(compiledCode).GetCompletionValue().ToObject();
 
-			// TODO get variables OUT and UP
+			/*
+				BACKLOG(dpbullington@gmail.com / 2015 - 12 - 18):
+				Get variables OUT and UP.
+			*/
 
 			return returnValue;
 		}
@@ -107,3 +110,4 @@ namespace TextMetal.Framework.Expression
 		#endregion
 	}
 }
+ 

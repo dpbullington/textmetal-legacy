@@ -1,0 +1,73 @@
+﻿namespace NMock.Proxy
+{
+	/// <summary>
+	/// Used as a base for interface mocks in order to provide a holder
+	/// for a meaningful ToString() value.
+	/// </summary>
+	public class InterfaceMockBase
+	{
+		#region Constructors/Destructors
+
+		/// <summary>
+		/// Default constructor used by Castle.DynamicProxy.
+		/// </summary>
+		/// <remarks> Do not remove.  This is needed by Castle. </remarks>
+		public InterfaceMockBase()
+			: this(string.Empty)
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="InterfaceMockBase" /> class.
+		/// </summary>
+		/// <param name="name"> The name of this instance. </param>
+		public InterfaceMockBase(string name)
+		{
+			this.Name = name;
+		}
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		internal string Name
+		{
+			get;
+			set;
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		/// <summary>
+		/// Determines whether the specified <see cref="System.Object" /> is equal to the current <see cref="System.Object" />.
+		/// </summary>
+		/// <param name="obj"> The <see cref="System.Object" /> to compare with the current <see cref="System.Object" />. </param>
+		/// <returns> true if the specified <see cref="System.Object" /> is equal to the current <see cref="System.Object" />; otherwise, false. </returns>
+		public override bool Equals(object obj)
+		{
+			return base.Equals(obj);
+		}
+
+		/// <summary>
+		/// Serves as a hash function for a particular type.
+		/// </summary>
+		/// <returns> A hash code for the current System.Object. </returns>
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
+
+		/// <summary>
+		/// Returns the name of this instance.
+		/// </summary>
+		/// <returns> The name of this instance. </returns>
+		public override string ToString()
+		{
+			return this.Name;
+		}
+
+		#endregion
+	}
+}

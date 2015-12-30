@@ -7,8 +7,11 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
+using NMock;
+
 using NUnit.Framework;
 
+using TextMetal.Middleware.Solder.Utilities;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
 namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
@@ -376,7 +379,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullTargetGetAttributeICustomAttributeProviderTest()
+		public void ShouldFailOnNullTargetGetAttributesTest()
 		{
 			ReflectionFascade reflectionFascade;
 
@@ -388,12 +391,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 			reflectionFascade = new ReflectionFascade(mockDataTypeFascade);
 
-			reflectionFascade.GetOneAttribute<MockMultipleTestAttibute>((ICustomAttributeProvider)null);
+			reflectionFascade.GetAllAttributes<MockMultipleTestAttibute>(null);
 		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullTargetGetAttributesICustomAttributeProviderTest()
+		public void ShouldFailOnNullTargetGetAttributeTest()
 		{
 			ReflectionFascade reflectionFascade;
 
@@ -405,12 +408,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 			reflectionFascade = new ReflectionFascade(mockDataTypeFascade);
 
-			reflectionFascade.GetAllAttributes<MockMultipleTestAttibute>((ICustomAttributeProvider)null);
+			reflectionFascade.GetOneAttribute<MockMultipleTestAttibute>(null);
 		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullTargetGetZeroAttributesICustomAttributeProviderTest()
+		public void ShouldFailOnNullTargetGetZeroAttributesTest()
 		{
 			ReflectionFascade reflectionFascade;
 
@@ -422,31 +425,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 			reflectionFascade = new ReflectionFascade(mockDataTypeFascade);
 
-			reflectionFascade.GetZeroAttributes<MockMultipleTestAttibute>((ICustomAttributeProvider)null);
+			reflectionFascade.GetZeroAttributes<MockMultipleTestAttibute>(null);
 		}
 
 		[Test]
-		public void ShouldGetAttributeICustomAttributeProviderTest()
-		{
-			ReflectionFascade reflectionFascade;
-			MockSingleTestAttibute sta;
-
-			MockFactory mockFactory;
-			IDataTypeFascade mockDataTypeFascade;
-
-			mockFactory = new MockFactory();
-			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
-
-			reflectionFascade = new ReflectionFascade(mockDataTypeFascade);
-
-			sta = reflectionFascade.GetOneAttribute<MockSingleTestAttibute>(typeof(MockTestAttributedClass));
-
-			Assert.IsNotNull(sta);
-			Assert.AreEqual(5, sta.Value);
-		}
-
-		[Test]
-		public void ShouldGetAttributesICustomAttributeProviderTest()
+		public void ShouldGetAttributesTest()
 		{
 			ReflectionFascade reflectionFascade;
 			MockMultipleTestAttibute[] tas;
@@ -463,6 +446,26 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 			Assert.IsNotNull(tas);
 			Assert.AreEqual(2, tas.Length);
+		}
+
+		[Test]
+		public void ShouldGetAttributeTest()
+		{
+			ReflectionFascade reflectionFascade;
+			MockSingleTestAttibute sta;
+
+			MockFactory mockFactory;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockFactory = new MockFactory();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
+
+			reflectionFascade = new ReflectionFascade(mockDataTypeFascade);
+
+			sta = reflectionFascade.GetOneAttribute<MockSingleTestAttibute>(typeof(MockTestAttributedClass));
+
+			Assert.IsNotNull(sta);
+			Assert.AreEqual(5, sta.Value);
 		}
 
 		[Test]
@@ -520,26 +523,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetNullAttributeICustomAttributeProviderTest()
-		{
-			ReflectionFascade reflectionFascade;
-			MockMultipleTestAttibute ta;
-
-			MockFactory mockFactory;
-			IDataTypeFascade mockDataTypeFascade;
-
-			mockFactory = new MockFactory();
-			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
-
-			reflectionFascade = new ReflectionFascade(mockDataTypeFascade);
-
-			ta = reflectionFascade.GetOneAttribute<MockMultipleTestAttibute>(typeof(Exception));
-
-			Assert.IsNull(ta);
-		}
-
-		[Test]
-		public void ShouldGetNullAttributesICustomAttributeProviderTest()
+		public void ShouldGetNullAttributesTest()
 		{
 			ReflectionFascade reflectionFascade;
 			MockMultipleTestAttibute[] tas;
@@ -555,6 +539,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 			tas = reflectionFascade.GetAllAttributes<MockMultipleTestAttibute>(typeof(Exception));
 
 			Assert.IsNull(tas);
+		}
+
+		[Test]
+		public void ShouldGetNullAttributeTest()
+		{
+			ReflectionFascade reflectionFascade;
+			MockMultipleTestAttibute ta;
+
+			MockFactory mockFactory;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockFactory = new MockFactory();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
+
+			reflectionFascade = new ReflectionFascade(mockDataTypeFascade);
+
+			ta = reflectionFascade.GetOneAttribute<MockMultipleTestAttibute>(typeof(Exception));
+
+			Assert.IsNull(ta);
 		}
 
 		[Test]

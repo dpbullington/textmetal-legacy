@@ -568,7 +568,10 @@ namespace TextMetal.Middleware.Solder.Injection
 
 							dependencyInjectionAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyInjectionAttribute>(parameterInfo);
 
-							// TODO: should lookup occur using parameterType or parameterInfo.ParameterType ???
+							/*
+								BACKLOG(dpbullington@gmail.com / 2015 - 12 - 18):
+								Should lookup occur using parameterType or parameterInfo.ParameterType?
+							*/
 							if ((object)dependencyInjectionAttribute != null)
 								invocationArguments[index] = dependencyManager.ResolveDependency(parameterType, dependencyInjectionAttribute.SelectorKey);
 							else

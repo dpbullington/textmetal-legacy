@@ -295,7 +295,7 @@ namespace TextMetal.Framework.Expression
 						rhs = rightObj.ChangeType<IComparable>();
 
 						if ((crv = lhs.CompareTo(rightObj)) != (rhs.CompareTo(leftObj) * -1))
-							throw new InvalidOperationException("TODO (enhancement): add meaningful message |((crv = lhs.CompareTo(rightObj)) != (rhs.CompareTo(leftObj) * -1))");
+							throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. |((crv = lhs.CompareTo(rightObj)) != (rhs.CompareTo(leftObj) * -1))");
 
 						return crv == 0;
 					}
@@ -436,7 +436,7 @@ namespace TextMetal.Framework.Expression
 						rhs = rightObj.ChangeType<IComparable>();
 
 						if ((crv = lhs.CompareTo(rightObj)) != (rhs.CompareTo(leftObj) * -1))
-							throw new InvalidOperationException("TODO (enhancement): add meaningful message |((crv = lhs.CompareTo(rightObj)) != (rhs.CompareTo(leftObj) * -1))");
+							throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. |((crv = lhs.CompareTo(rightObj)) != (rhs.CompareTo(leftObj) * -1))");
 
 						return crv != 0;
 					}
@@ -577,7 +577,7 @@ namespace TextMetal.Framework.Expression
 						rhs = rightObj.ChangeType<IComparable>();
 
 						if ((crv = lhs.CompareTo(rightObj)) != (rhs.CompareTo(leftObj) * -1))
-							throw new InvalidOperationException("TODO (enhancement): add meaningful message |((crv = lhs.CompareTo(rightObj)) != (rhs.CompareTo(leftObj) * -1))");
+							throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. |((crv = lhs.CompareTo(rightObj)) != (rhs.CompareTo(leftObj) * -1))");
 
 						return crv < 0;
 					}
@@ -718,7 +718,7 @@ namespace TextMetal.Framework.Expression
 						rhs = rightObj.ChangeType<IComparable>();
 
 						if ((crv = lhs.CompareTo(rightObj)) != (rhs.CompareTo(leftObj) * -1))
-							throw new InvalidOperationException("TODO (enhancement): add meaningful message |((crv = lhs.CompareTo(rightObj)) != (rhs.CompareTo(leftObj) * -1))");
+							throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. |((crv = lhs.CompareTo(rightObj)) != (rhs.CompareTo(leftObj) * -1))");
 
 						return crv <= 0;
 					}
@@ -859,7 +859,7 @@ namespace TextMetal.Framework.Expression
 						rhs = rightObj.ChangeType<IComparable>();
 
 						if ((crv = lhs.CompareTo(rightObj)) != (rhs.CompareTo(leftObj) * -1))
-							throw new InvalidOperationException("TODO (enhancement): add meaningful message |((crv = lhs.CompareTo(rightObj)) != (rhs.CompareTo(leftObj) * -1))");
+							throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. |((crv = lhs.CompareTo(rightObj)) != (rhs.CompareTo(leftObj) * -1))");
 
 						return crv > 0;
 					}
@@ -1000,7 +1000,7 @@ namespace TextMetal.Framework.Expression
 						rhs = rightObj.ChangeType<IComparable>();
 
 						if ((crv = lhs.CompareTo(rightObj)) != (rhs.CompareTo(leftObj) * -1))
-							throw new InvalidOperationException("TODO (enhancement): add meaningful message |((crv = lhs.CompareTo(rightObj)) != (rhs.CompareTo(leftObj) * -1))");
+							throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. |((crv = lhs.CompareTo(rightObj)) != (rhs.CompareTo(leftObj) * -1))");
 
 						return crv >= 0;
 					}
@@ -2127,12 +2127,12 @@ namespace TextMetal.Framework.Expression
 						rhs = rightObj.ChangeType<string>();
 
 						if (DataTypeFascade.Instance.IsWhiteSpace(rhs))
-							throw new InvalidOperationException("TODO (enhancement): add meaningful message | dataTypeFascade.Instance.IsNullOrWhiteSpace(rhs)");
+							throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. | dataTypeFascade.Instance.IsNullOrWhiteSpace(rhs)");
 
 						rightType = Type.GetType(rhs, false);
 
 						if ((object)rightType == null)
-							throw new InvalidOperationException("TODO (enhancement): add meaningful message | Type.GetType");
+							throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. | Type.GetType");
 
 						return DataTypeFascade.Instance.ChangeType(leftObj, rightType);
 					}
@@ -2159,15 +2159,15 @@ namespace TextMetal.Framework.Expression
 							rhs = rightObj.ChangeType<string>();
 
 							if (DataTypeFascade.Instance.IsWhiteSpace(rhs))
-								throw new InvalidOperationException("TODO (enhancement): add meaningful message | dataTypeFascade.Instance.IsNullOrWhiteSpace(rhs)");
+								throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. | dataTypeFascade.Instance.IsNullOrWhiteSpace(rhs)");
 
 							rightType = Type.GetType(rhs, false);
 
 							if ((object)rightType == null)
-								throw new InvalidOperationException("TODO (enhancement): add meaningful message | Type.GetType");
+								throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. | Type.GetType");
 
 							if (!DataTypeFascade.Instance.TryParse(rightType, lhs, out result))
-								throw new InvalidOperationException("TODO (enhancement): add meaningful message | dataTypeFascade.Instance.TryParse");
+								throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. | dataTypeFascade.Instance.TryParse");
 
 							return result;
 						}
@@ -2191,12 +2191,12 @@ namespace TextMetal.Framework.Expression
 						rhs = rightObj.ChangeType<string>();
 
 						if (DataTypeFascade.Instance.IsWhiteSpace(rhs))
-							throw new InvalidOperationException("TODO (enhancement): add meaningful message | dataTypeFascade.Instance.IsNullOrWhiteSpace(rhs)");
+							throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. | dataTypeFascade.Instance.IsNullOrWhiteSpace(rhs)");
 
 						rightType = Type.GetType(rhs, false);
 
 						if ((object)rightType == null)
-							throw new InvalidOperationException("TODO (enhancement): add meaningful message | Type.GetType");
+							throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. | Type.GetType");
 
 						return rightType.IsAssignableFrom(leftType);
 					}
@@ -2236,11 +2236,11 @@ namespace TextMetal.Framework.Expression
 				}
 				default:
 				{
-					throw new InvalidOperationException("TODO (enhancement): add meaningful message | binary operator is not recognized");
+					throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. | binary operator is not recognized");
 				}
 			}
 
-			throw new InvalidOperationException("TODO (enhancement): add meaningful message | type is not supported by the binary operator");
+			throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add meaningful error message. | type is not supported by the binary operator");
 		}
 
 		#endregion

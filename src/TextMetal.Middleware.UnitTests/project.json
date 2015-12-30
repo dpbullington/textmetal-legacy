@@ -43,9 +43,7 @@
 		"Solder\\Injection\\**.cs",
 		"Solder\\Interception\\**.cs",
 		"Solder\\Serialization\\**.cs",
-		"Solder\\Utilities\\_\\ReflectionFascadeTests.cs",
 		"TestingInfrastructure\\IMockModelObject.cs",
-		"TestingInfrastructure\\MockConnection.cs",
 		"TestingInfrastructure\\MockModelObject.cs"
 	],
 	"content": "appconfig.json",
@@ -58,6 +56,7 @@
 		"System.Linq.Expressions": "4.0.11-beta-23516",
 		"System.Runtime.Extensions": "4.0.11-beta-23516",
 		"TextMetal.Middleware.Datazoid": "1.0.0-*",
+		"TextMetal.Middleware.Scrutiny": "1.0.0-*",
 		"TextMetal.Middleware.Solder": "1.0.0-*"
 	},
 	"commands": {

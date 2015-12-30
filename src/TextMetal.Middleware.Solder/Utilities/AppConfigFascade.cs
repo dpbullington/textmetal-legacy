@@ -9,9 +9,9 @@ using Microsoft.Framework.Configuration;
 using Microsoft.Framework.Configuration.Json;
 
 /*
-TODO: Backlog (dpbullington@gmail.com / 2015-12-18):
-TODO: Refactor the appConfigFilePath constructor parameter out, do IoC of IConfigurationRoot and leverage commented out static factory method instead.
-TODO: This will enhance unit testability and allow any config types.
+BACKLOG (dpbullington@gmail.com / 2015-12-18):
+Refactor the appConfigFilePath constructor parameter out, do IoC of IConfigurationRoot and leverage commented out static factory method instead.
+This will enhance unit testability and allow any config types.
 */
 
 /* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2015-12-18 / 98% code coverage */

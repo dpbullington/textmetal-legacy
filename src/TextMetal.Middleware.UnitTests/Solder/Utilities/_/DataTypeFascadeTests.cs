@@ -33,20 +33,28 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		[Test]
 		public void ShouldCheckIsNullOrWhiteSpaceTest()
 		{
-			Assert.IsTrue(DataTypeFascade.Instance.IsNullOrWhiteSpace(null));
-			Assert.IsTrue(DataTypeFascade.Instance.IsNullOrWhiteSpace(string.Empty));
-			Assert.IsTrue(DataTypeFascade.Instance.IsNullOrWhiteSpace("   "));
-			Assert.IsFalse(DataTypeFascade.Instance.IsNullOrWhiteSpace("daniel"));
-			Assert.IsFalse(DataTypeFascade.Instance.IsNullOrWhiteSpace("   daniel     "));
+			DataTypeFascade dataTypeFascade;
+
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsTrue(dataTypeFascade.IsNullOrWhiteSpace(null));
+			Assert.IsTrue(dataTypeFascade.IsNullOrWhiteSpace(string.Empty));
+			Assert.IsTrue(dataTypeFascade.IsNullOrWhiteSpace("   "));
+			Assert.IsFalse(dataTypeFascade.IsNullOrWhiteSpace("daniel"));
+			Assert.IsFalse(dataTypeFascade.IsNullOrWhiteSpace("   daniel     "));
 		}
 
 		[Test]
 		public void ShouldCheckIsWhiteSpaceTest()
 		{
-			Assert.IsFalse(DataTypeFascade.Instance.IsWhiteSpace(null));
-			Assert.IsTrue(DataTypeFascade.Instance.IsWhiteSpace("   "));
-			Assert.IsFalse(DataTypeFascade.Instance.IsWhiteSpace("daniel"));
-			Assert.IsFalse(DataTypeFascade.Instance.IsWhiteSpace("   daniel     "));
+			DataTypeFascade dataTypeFascade;
+
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(dataTypeFascade.IsWhiteSpace(null));
+			Assert.IsTrue(dataTypeFascade.IsWhiteSpace("   "));
+			Assert.IsFalse(dataTypeFascade.IsWhiteSpace("daniel"));
+			Assert.IsFalse(dataTypeFascade.IsWhiteSpace("   daniel     "));
 		}
 
 		//[Test]
@@ -58,31 +66,31 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		//    // both null
 		//    objA = null;
 		//    objB = null;
-		//    result = dataTypeFascade.Instance.ObjectsCompareValueSemantics(objA, objB);
+		//    result = dataTypeFascade.ObjectsCompareValueSemantics(objA, objB);
 		//    Assert.IsNull(result);
 
 		//    // objA null, objB not null
 		//    objA = null;
 		//    objB = 10;
-		//    result = dataTypeFascade.Instance.ObjectsCompareValueSemantics(objA, objB);
+		//    result = dataTypeFascade.ObjectsCompareValueSemantics(objA, objB);
 		//    Assert.Less(result, 0);
 
 		//    // objA not null, objB null
 		//    objA = 10;
 		//    objB = null;
-		//    result = dataTypeFascade.Instance.ObjectsCompareValueSemantics(objA, objB);
+		//    result = dataTypeFascade.ObjectsCompareValueSemantics(objA, objB);
 		//    Assert.Greater(result, 0);
 
 		//    // objA == objB
 		//    objA = 100;
 		//    objB = 100;
-		//    result = dataTypeFascade.Instance.ObjectsCompareValueSemantics(objA, objB);
+		//    result = dataTypeFascade.ObjectsCompareValueSemantics(objA, objB);
 		//    Assert.AreEqual(0, result);
 
 		//    // objA != objB
 		//    objA = 100;
 		//    objB = -100;
-		//    result = dataTypeFascade.Instance.ObjectsCompareValueSemantics(objA, objB);
+		//    result = dataTypeFascade.ObjectsCompareValueSemantics(objA, objB);
 		//    Assert.Greater(result, 0);
 		//}
 
@@ -91,35 +99,38 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			bool result;
 			object objA, objB;
+			DataTypeFascade dataTypeFascade;
 
+			dataTypeFascade = new DataTypeFascade();
+			
 			// both null
 			objA = null;
 			objB = null;
-			result = DataTypeFascade.Instance.ObjectsEqualValueSemantics(objA, objB);
+			result = dataTypeFascade.ObjectsEqualValueSemantics(objA, objB);
 			Assert.IsTrue(result);
 
 			// objA null, objB not null
 			objA = null;
 			objB = "not null string";
-			result = DataTypeFascade.Instance.ObjectsEqualValueSemantics(objA, objB);
+			result = dataTypeFascade.ObjectsEqualValueSemantics(objA, objB);
 			Assert.IsFalse(result);
 
 			// objA not null, objB null
 			objA = "not null string";
 			objB = null;
-			result = DataTypeFascade.Instance.ObjectsEqualValueSemantics(objA, objB);
+			result = dataTypeFascade.ObjectsEqualValueSemantics(objA, objB);
 			Assert.IsFalse(result);
 
 			// objA == objB
 			objA = 100;
 			objB = 100;
-			result = DataTypeFascade.Instance.ObjectsEqualValueSemantics(objA, objB);
+			result = dataTypeFascade.ObjectsEqualValueSemantics(objA, objB);
 			Assert.IsTrue(result);
 
 			// objA != objB
 			objA = 100;
 			objB = -100;
-			result = DataTypeFascade.Instance.ObjectsEqualValueSemantics(objA, objB);
+			result = dataTypeFascade.ObjectsEqualValueSemantics(objA, objB);
 			Assert.IsFalse(result);
 		}
 
@@ -129,8 +140,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			KeyValuePair<int, int> ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<KeyValuePair<int, int>>(DBNull.Value.ToString(), out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<KeyValuePair<int, int>>(DBNull.Value.ToString(), out ovalue);
 		}
 
 		[Test]
@@ -139,22 +153,33 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			object ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse(typeof(KeyValuePair<int, int>), DBNull.Value.ToString(), out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse(typeof(KeyValuePair<int, int>), DBNull.Value.ToString(), out ovalue);
 		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullTypeChangeTypeTest()
 		{
-			DataTypeFascade.Instance.ChangeType(1, null);
+			DataTypeFascade dataTypeFascade;
+
+			dataTypeFascade = new DataTypeFascade();
+
+			dataTypeFascade.ChangeType(1, null);
 		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullTypeDefaultValueTest()
 		{
-			DataTypeFascade.Instance.DefaultValue(null);
+			DataTypeFascade dataTypeFascade;
+
+			dataTypeFascade = new DataTypeFascade();
+
+			dataTypeFascade.DefaultValue(null);
 		}
 
 		[Test]
@@ -164,7 +189,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 			object ovalue;
 			bool result;
 
-			result = DataTypeFascade.Instance.TryParse(null, string.Empty, out ovalue);
+			DataTypeFascade dataTypeFascade;
+
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse(null, string.Empty, out ovalue);
 		}
 
 		[Test]
@@ -172,12 +201,15 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Boolean ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<Boolean>("true", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<Boolean>("true", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(true, ovalue);
 
-			result = DataTypeFascade.Instance.TryParse<Boolean>("false", out ovalue);
+			result = dataTypeFascade.TryParse<Boolean>("false", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(false, ovalue);
 		}
@@ -187,8 +219,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Byte ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<Byte>("0", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<Byte>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -198,8 +233,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Char ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<Char>("0", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<Char>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual('0', ovalue);
 		}
@@ -209,8 +247,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			DateTimeOffset ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<DateTimeOffset>("6/22/2003", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<DateTimeOffset>("6/22/2003", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(new DateTimeOffset(new DateTime(2003, 6, 22)), ovalue);
 		}
@@ -220,8 +261,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			DateTime ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<DateTime>("6/22/2003", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<DateTime>("6/22/2003", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(new DateTime(2003, 6, 22), ovalue);
 		}
@@ -231,8 +275,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Decimal ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<Decimal>("0", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<Decimal>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -241,8 +288,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldGetDefaultOnNullValueChangeTypeTest()
 		{
 			object value;
+			DataTypeFascade dataTypeFascade;
 
-			value = DataTypeFascade.Instance.ChangeType(null, typeof(int));
+			dataTypeFascade = new DataTypeFascade();
+
+			value = dataTypeFascade.ChangeType(null, typeof(int));
 
 			Assert.AreEqual(default(int), value);
 		}
@@ -251,12 +301,15 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldGetDefaultValueTest()
 		{
 			object defaultValue;
+			DataTypeFascade dataTypeFascade;
 
-			defaultValue = DataTypeFascade.Instance.DefaultValue(typeof(int));
+			dataTypeFascade = new DataTypeFascade();
+
+			defaultValue = dataTypeFascade.DefaultValue(typeof(int));
 
 			Assert.AreEqual(0, defaultValue);
 
-			defaultValue = DataTypeFascade.Instance.DefaultValue(typeof(int?));
+			defaultValue = dataTypeFascade.DefaultValue(typeof(int?));
 
 			Assert.IsNull(defaultValue);
 		}
@@ -266,8 +319,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Double ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<Double>("0", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<Double>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -277,8 +333,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			CharSet ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<CharSet>("Unicode", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<CharSet>("Unicode", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(CharSet.Unicode, ovalue);
 		}
@@ -288,8 +347,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Guid ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<Guid>("{00000000-0000-0000-0000-000000000000}", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<Guid>("{00000000-0000-0000-0000-000000000000}", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(Guid.Empty, ovalue);
 		}
@@ -299,8 +361,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Int16 ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<Int16>("0", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<Int16>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -310,8 +375,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Int32 ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<Int32>("0", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<Int32>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -321,8 +389,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Int64 ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<Int64>("0", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<Int64>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -331,8 +402,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldGetNonNullOnNonNullValueChangeTypeTest()
 		{
 			object value;
+			DataTypeFascade dataTypeFascade;
 
-			value = DataTypeFascade.Instance.ChangeType((byte)1, typeof(int));
+			dataTypeFascade = new DataTypeFascade();
+
+			value = dataTypeFascade.ChangeType((byte)1, typeof(int));
 
 			Assert.IsNotNull(value);
 			Assert.IsInstanceOf<int>(value);
@@ -343,8 +417,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldGetNonNullOnNonNullValueNullableChangeTypeTest()
 		{
 			object value;
+			DataTypeFascade dataTypeFascade;
 
-			value = DataTypeFascade.Instance.ChangeType((byte)1, typeof(int?));
+			dataTypeFascade = new DataTypeFascade();
+
+			value = dataTypeFascade.ChangeType((byte)1, typeof(int?));
 
 			Assert.IsNotNull(value);
 			Assert.IsInstanceOf<int?>(value);
@@ -356,8 +433,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			SByte ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<SByte>("0", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<SByte>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -367,8 +447,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Single ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<Single>("0", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<Single>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -378,8 +461,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			String ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<String>("0-8-8-8-8-8-8-8-c", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<String>("0-8-8-8-8-8-8-8-c", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual("0-8-8-8-8-8-8-8-c", ovalue);
 		}
@@ -389,8 +475,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			TimeSpan ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<TimeSpan>("0:0:0", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<TimeSpan>("0:0:0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(TimeSpan.Zero, ovalue);
 		}
@@ -400,8 +489,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			UInt16 ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<UInt16>("0", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<UInt16>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -411,8 +503,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			UInt32 ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<UInt32>("0", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<UInt32>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -422,8 +517,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			UInt64 ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<UInt64>("0", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<UInt64>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
 		}
@@ -433,8 +531,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Boolean ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Boolean>("gibberish", out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Boolean>("gibberish", out ovalue));
 		}
 
 		[Test]
@@ -442,9 +543,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Byte ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Byte>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Byte>("1111111111111111111", out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Byte>("gibberish", out ovalue));
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Byte>("1111111111111111111", out ovalue));
 		}
 
 		[Test]
@@ -452,8 +556,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Char ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Char>("gibberish", out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Char>("gibberish", out ovalue));
 		}
 
 		[Test]
@@ -461,8 +568,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			DateTimeOffset ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<DateTimeOffset>("gibberish", out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<DateTimeOffset>("gibberish", out ovalue));
 		}
 
 		[Test]
@@ -470,8 +580,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			DateTime ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<DateTime>("gibberish", out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<DateTime>("gibberish", out ovalue));
 		}
 
 		[Test]
@@ -479,9 +592,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Decimal ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Decimal>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Decimal>("11111111111111111111111111111111111111", out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Decimal>("gibberish", out ovalue));
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Decimal>("11111111111111111111111111111111111111", out ovalue));
 		}
 
 		[Test]
@@ -489,9 +605,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Double ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Double>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Double>("999,769,313,486,232,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000.00", out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Double>("gibberish", out ovalue));
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Double>("999,769,313,486,232,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000.00", out ovalue));
 		}
 
 		[Test]
@@ -499,8 +618,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			CharSet ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<CharSet>("gibberish", out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<CharSet>("gibberish", out ovalue));
 		}
 
 		[Test]
@@ -508,8 +630,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Guid ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Guid>("gibberish", out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Guid>("gibberish", out ovalue));
 		}
 
 		[Test]
@@ -517,9 +642,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Int16 ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Int16>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Int16>("1111111111111111111", out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Int16>("gibberish", out ovalue));
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Int16>("1111111111111111111", out ovalue));
 		}
 
 		[Test]
@@ -527,9 +655,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Int32 ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Int32>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Int32>("1111111111111111111", out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Int32>("gibberish", out ovalue));
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Int32>("1111111111111111111", out ovalue));
 		}
 
 		[Test]
@@ -537,9 +668,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Int64 ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Int64>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Int64>("9999999999999999999", out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Int64>("gibberish", out ovalue));
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Int64>("9999999999999999999", out ovalue));
 		}
 
 		[Test]
@@ -547,9 +681,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			SByte ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<SByte>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<SByte>("1111111111111111111", out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<SByte>("gibberish", out ovalue));
+			Assert.IsFalse(result = dataTypeFascade.TryParse<SByte>("1111111111111111111", out ovalue));
 		}
 
 		[Test]
@@ -557,9 +694,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Single ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Single>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Single>("999,282,300,000,000,000,000,000,000,000,000,000,000.00", out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Single>("gibberish", out ovalue));
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Single>("999,282,300,000,000,000,000,000,000,000,000,000,000.00", out ovalue));
 		}
 
 		[Test]
@@ -567,9 +707,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			TimeSpan ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<TimeSpan>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<TimeSpan>("99999999.02:48:05.4775807", out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<TimeSpan>("gibberish", out ovalue));
+			Assert.IsFalse(result = dataTypeFascade.TryParse<TimeSpan>("99999999.02:48:05.4775807", out ovalue));
 		}
 
 		[Test]
@@ -577,9 +720,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			UInt16 ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<UInt16>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<UInt16>("1111111111111111111", out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<UInt16>("gibberish", out ovalue));
+			Assert.IsFalse(result = dataTypeFascade.TryParse<UInt16>("1111111111111111111", out ovalue));
 		}
 
 		[Test]
@@ -587,9 +733,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			UInt32 ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<UInt32>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<UInt32>("1111111111111111111", out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<UInt32>("gibberish", out ovalue));
+			Assert.IsFalse(result = dataTypeFascade.TryParse<UInt32>("1111111111111111111", out ovalue));
 		}
 
 		[Test]
@@ -597,9 +746,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			UInt64 ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<UInt64>("gibberish", out ovalue));
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<UInt64>("99999999999999999999", out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<UInt64>("gibberish", out ovalue));
+			Assert.IsFalse(result = dataTypeFascade.TryParse<UInt64>("99999999999999999999", out ovalue));
 		}
 
 		[Test]
@@ -607,24 +759,31 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			bool result;
 			object objA, objB;
+			DataTypeFascade dataTypeFascade;
+
+			dataTypeFascade = new DataTypeFascade();
 
 			// both null
 			objA = null;
 			objB = (int)0;
-			result = DataTypeFascade.Instance.ObjectsEqualValueSemantics(objA, objB);
+			result = dataTypeFascade.ObjectsEqualValueSemantics(objA, objB);
 			Assert.IsFalse(result);
 		}
 
 		[Test]
 		public void ShouldSafeToStringTest()
 		{
-			Assert.AreEqual("123.456", DataTypeFascade.Instance.SafeToString(123.456));
-			Assert.AreEqual("123.46", DataTypeFascade.Instance.SafeToString(123.456, "n"));
-			Assert.AreEqual("urn:foo", DataTypeFascade.Instance.SafeToString(new Uri("urn:foo"), "n"));
+			DataTypeFascade dataTypeFascade;
 
-			Assert.AreEqual(string.Empty, DataTypeFascade.Instance.SafeToString((object)null, null));
-			Assert.AreEqual(null, DataTypeFascade.Instance.SafeToString((object)null, null, null));
-			Assert.AreEqual("1", DataTypeFascade.Instance.SafeToString((object)string.Empty, null, "1", true));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.AreEqual("123.456", dataTypeFascade.SafeToString(123.456));
+			Assert.AreEqual("123.46", dataTypeFascade.SafeToString(123.456, "n"));
+			Assert.AreEqual("urn:foo", dataTypeFascade.SafeToString(new Uri("urn:foo"), "n"));
+
+			Assert.AreEqual(string.Empty, dataTypeFascade.SafeToString((object)null, null));
+			Assert.AreEqual(null, dataTypeFascade.SafeToString((object)null, null, null));
+			Assert.AreEqual("1", dataTypeFascade.SafeToString((object)string.Empty, null, "1", true));
 		}
 
 		[Test]
@@ -632,8 +791,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			int? ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<int?>("100", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<int?>("100", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual((int?)100, ovalue);
 		}
@@ -643,8 +805,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			object ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse(typeof(int?), "100", out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse(typeof(int?), "100", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual((int?)100, ovalue);
 		}
@@ -654,8 +819,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			int? ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse<int?>(null, out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<int?>(null, out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual((int?)null, ovalue);
 		}
@@ -665,8 +833,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			object ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			result = DataTypeFascade.Instance.TryParse(typeof(int?), null, out ovalue);
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse(typeof(int?), null, out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual((int?)null, ovalue);
 		}
@@ -676,8 +847,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Boolean ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Boolean>(null, out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Boolean>(null, out ovalue));
 		}
 
 		[Test]
@@ -685,8 +859,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Byte ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Byte>(null, out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Byte>(null, out ovalue));
 		}
 
 		[Test]
@@ -694,8 +871,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Char ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Char>(null, out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Char>(null, out ovalue));
 		}
 
 		[Test]
@@ -703,8 +883,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			DateTimeOffset ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<DateTimeOffset>(null, out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<DateTimeOffset>(null, out ovalue));
 		}
 
 		[Test]
@@ -712,8 +895,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			DateTime ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<DateTime>(null, out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<DateTime>(null, out ovalue));
 		}
 
 		[Test]
@@ -721,8 +907,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Decimal ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Decimal>(null, out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Decimal>(null, out ovalue));
 		}
 
 		[Test]
@@ -730,8 +919,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Double ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Double>(null, out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Double>(null, out ovalue));
 		}
 
 		[Test]
@@ -739,8 +931,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			CharSet ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<CharSet>(null, out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<CharSet>(null, out ovalue));
 		}
 
 		[Test]
@@ -748,8 +943,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Guid ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Guid>(null, out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Guid>(null, out ovalue));
 		}
 
 		[Test]
@@ -757,8 +955,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Int16 ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Int16>(null, out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Int16>(null, out ovalue));
 		}
 
 		[Test]
@@ -766,8 +967,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Int32 ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Int32>(null, out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Int32>(null, out ovalue));
 		}
 
 		[Test]
@@ -775,8 +979,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Int64 ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Int64>(null, out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Int64>(null, out ovalue));
 		}
 
 		[Test]
@@ -784,8 +991,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			SByte ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<SByte>(null, out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<SByte>(null, out ovalue));
 		}
 
 		[Test]
@@ -793,8 +1003,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			Single ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<Single>(null, out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Single>(null, out ovalue));
 		}
 
 		[Test]
@@ -802,8 +1015,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			TimeSpan ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<TimeSpan>(null, out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<TimeSpan>(null, out ovalue));
 		}
 
 		[Test]
@@ -811,8 +1027,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			UInt16 ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<UInt16>(null, out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<UInt16>(null, out ovalue));
 		}
 
 		[Test]
@@ -820,8 +1039,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			UInt32 ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<UInt32>(null, out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<UInt32>(null, out ovalue));
 		}
 
 		[Test]
@@ -829,8 +1051,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			UInt64 ovalue;
 			bool result;
+			DataTypeFascade dataTypeFascade;
 
-			Assert.IsFalse(result = DataTypeFascade.Instance.TryParse<UInt64>(null, out ovalue));
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<UInt64>(null, out ovalue));
 		}
 
 		#endregion
