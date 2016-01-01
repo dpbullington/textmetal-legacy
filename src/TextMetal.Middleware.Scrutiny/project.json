@@ -34,9 +34,13 @@
             }
         }
     },
-    "exclude": [
-
-    ],
+	"exclude": [
+		"Imports\\NMock\\Proxy\\LinFu",
+		"Imports\\NMock\\Proxy\\Reflective",
+		"Imports\\Castle.Core\\Compatibility",
+		"Imports\\Castle.Core\\Components.DictionaryAdapter",
+		"Imports\\Castle.Core\\Core\\Configuration"
+	],
     "dependencies": {
         "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc2-16258",
         "System.AppContext": "4.0.1-beta-23516",
