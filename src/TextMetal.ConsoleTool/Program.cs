@@ -46,6 +46,8 @@ namespace TextMetal.ConsoleTool
 
 		private static int DnxMain(string[] args)
 		{
+			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, new SingletonDependencyResolution(ActivatorDependencyResolution.OfType<Program, IDataTypeFascade, IAppConfigFascade, IReflectionFascade>()));
+
 			using (ConsoleApplicationFascade program = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty))
 				return program.EntryPoint(args);
 		}

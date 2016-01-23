@@ -6,6 +6,8 @@
 using System;
 using System.Reflection;
 
+using NUnit.Common;
+
 using NUnitLite;
 
 using TextMetal.Middleware.Solder.Runtime;
@@ -35,7 +37,7 @@ namespace TextMetal.Framework.UnitTests
 		[STAThread]
 		public static int Main(string[] args)
 		{
-			return new AutoRun().Execute(typeof(Program).GetTypeInfo().Assembly, Console.Out, Console.In, args);
+			return new AutoRun(typeof(Program).GetTypeInfo().Assembly).Execute(args, new ColorConsoleWriter(), Console.In);
 		}
 
 		#endregion

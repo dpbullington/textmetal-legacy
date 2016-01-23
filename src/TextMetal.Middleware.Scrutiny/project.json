@@ -12,7 +12,7 @@
 		"keyFile": "../TextMetal.snk",
 		"warningsAsErrors": false,
 
-		"define": [ "NETCORE" ]
+		"define": [ "NETCORE", "PORTABLE", "NUNIT_FRAMEWORK", "NUNITLITE" ]
 	},
     "repository": {
         "type": "git",
@@ -20,37 +20,53 @@
     },
     "frameworks": {
         "dotnet5.4": {
-            "dependencies": {
-                "Microsoft.CSharp": "4.0.1-beta-23516",
-                "System.Collections": "4.0.11-beta-23516",
-                "System.Console": "4.0.0-beta-23516",
-                "System.Data.Common": "4.0.1-rc2-23602",
-                "System.Linq": "4.0.1-beta-23516",
-                "System.Runtime": "4.0.21-beta-23516",
-                "System.Threading": "4.0.11-beta-23516",
-                "System.Xml.XmlDocument": "4.0.1-beta-23516",
-                "System.Xml.XmlSerializer": "4.0.11-beta-23516",
-                "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-beta-23516"
-            }
+			"dependencies": {
+				"Microsoft.CSharp": "4.0.1-beta-23516",
+				"System.Collections": "4.0.11-beta-23516",
+				"System.Console": "4.0.0-beta-23516",
+				"System.Data.Common": "4.0.1-beta-23516",
+				"System.Linq": "4.0.1-beta-23516",
+				"System.Runtime": "4.0.21-beta-23516",
+				"System.Threading": "4.0.11-beta-23516",
+				"System.Xml.XmlDocument": "4.0.1-beta-23516",
+				"System.Xml.XmlSerializer": "4.0.11-beta-23516",
+				"System.Runtime.InteropServices.RuntimeInformation": "4.0.0-beta-23516",
+				"Microsoft.CodeAnalysis.Common": "1.2.0-beta1-20160108-01",
+				"Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+				"Microsoft.NETCore": "5.0.1-beta-23516",
+				"Microsoft.NETCore.Platforms": "1.0.1-beta-23516",
+				"Microsoft.NETCore.Portable.Compatibility": "1.0.1-beta-23516",
+				"Newtonsoft.Json": "8.0.2",
+				"System.AppContext": "4.0.1-beta-23516",
+				"System.ComponentModel": "4.0.1-beta-23516",
+				"System.Diagnostics.TraceSource": "4.0.0-beta-23516",
+				"System.IO": "4.0.11-beta-23516",
+				"System.Reflection.Emit": "4.0.1-beta-23516",
+				"System.Reflection.Emit.ILGeneration": "4.0.1-beta-23516",
+				"System.Reflection.Emit.Lightweight": "4.0.1-beta-23516",
+				"System.Reflection.Primitives": "4.0.1-beta-23516",
+				"System.Runtime.Extensions": "4.0.11-beta-23516",
+				"System.Reflection.Metadata": "1.1.1-beta-23516"
+			}
         }
     },
 	"exclude": [
 		"Imports\\NMock\\Proxy\\LinFu",
 		"Imports\\NMock\\Proxy\\Reflective",
+
 		"Imports\\Castle.Core\\Compatibility",
 		"Imports\\Castle.Core\\Components.DictionaryAdapter",
-		"Imports\\Castle.Core\\Core\\Configuration"
+		"Imports\\Castle.Core\\Core\\Configuration",
+
+		"Imports\\NUnit\\Framework\\Compatibility\\BindingFlags.cs",
+		
+		"Imports\\NUnit\\Lite\\OutputWriters",
+		"Imports\\NUnit\\Lite\\DebugWriter.cs",
+		"Imports\\NUnit\\Lite\\OutputManager.cs",
+		"Imports\\NUnit\\Lite\\TcpWriter.cs",
+		"Imports\\NUnit\\Lite\\TeamCityEventListener.cs"
 	],
-    "dependencies": {
-        "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc2-16258",
-        "System.AppContext": "4.0.1-beta-23516",
-        "System.ComponentModel": "4.0.1-beta-23516",
-        "System.Diagnostics.TraceSource": "4.0.0-beta-23516",
-        "System.IO": "4.0.11-beta-23516",
-        "System.Reflection.Emit": "4.0.1-beta-23516",
-        "System.Reflection.Emit.ILGeneration": "4.0.1-beta-23516",
-        "System.Reflection.Emit.Lightweight": "4.0.1-beta-23516",
-        "System.Reflection.Primitives": "4.0.1-beta-23516",
-        "System.Runtime.Extensions": "4.0.11-beta-23516"
-    }
+	"dependencies": {
+
+	}
 }

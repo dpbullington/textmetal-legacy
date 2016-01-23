@@ -5,6 +5,8 @@
 
 using NUnit.Framework;
 
+using TextMetal.Framework.Tokenization;
+
 namespace TextMetal.Framework.UnitTests.Tokenization._
 {
 	/// <summary>

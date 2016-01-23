@@ -41,7 +41,7 @@ namespace NMock.Syntax
 		/// <remarks>
 		/// The matchers will be automatically wrapped in an ArgumentsMatcher.
 		/// </remarks>
-		[Obsolete("Use the With method.  It accepts values and matchers.", true)]
+		[Obsolete("Use the With method.  It accepts values and matchers." /* ^ */ /*, true*/ /* dpbullington@gmail.com ^ */)]
 		IAutoActionSyntax<TResult> WithArguments(params Matcher[] argumentMatchers);
 	}
 }

@@ -23,34 +23,34 @@
 				"Microsoft.CSharp": "4.0.1-beta-23516",
 				"System.Collections": "4.0.11-beta-23516",
 				"System.Console": "4.0.0-beta-23516",
-				"System.Data.Common": "4.0.1-rc2-23602",
+				"System.Data.Common": "4.0.1-beta-23516",
 				"System.Linq": "4.0.1-beta-23516",
 				"System.Runtime": "4.0.21-beta-23516",
 				"System.Threading": "4.0.11-beta-23516",
 				"System.Xml.XmlDocument": "4.0.1-beta-23516",
 				"System.Xml.XmlSerializer": "4.0.11-beta-23516",
-
 				"System.Runtime.InteropServices.RuntimeInformation": "4.0.0-beta-23516",
-
 				"Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
-				"Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc2-16258"
+				"Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+				"System.AppContext": "4.0.1-beta-23516",
+				"System.ComponentModel": "4.0.1-beta-23516",
+				"System.IO": "4.0.11-beta-23516",
+				"System.Runtime.Extensions": "4.0.11-beta-23516",
+				"Newtonsoft.Json": "8.0.2",
+				"Microsoft.CodeAnalysis.Common": "1.2.0-beta1-20160108-01",
+				"System.Reflection.Metadata": "1.1.1-beta-23516"
 			}
 		}
 	},
 	"exclude": [
-		"Tokenization"
 	],
 	"dependencies": {
-		"Newtonsoft.Json": "8.0.1-beta3",
-		"NUnitLite": "3.0.1",
-		"System.AppContext": "4.0.1-beta-23516",
-		"System.ComponentModel": "4.0.1-beta-23516",
-		"System.IO": "4.0.11-beta-23516",
-		"System.Runtime.Extensions": "4.0.11-beta-23516",
 		"TextMetal.Middleware.Solder": "1.0.0-*",
-		"TextMetal.Framework": "1.0.0-*"
+		"TextMetal.Middleware.Scrutiny": "1.0.0-*",
+		"TextMetal.Framework": "1.0.0-*",
+		"TextMetal.Middleware.UnitTests": "1.0.0-*"
 	},
 	"commands": {
-		"test": "TextMetal.Framework.UnitTests app.config"
+		"test": "TextMetal.Framework.UnitTests"
 	}
 }
