@@ -294,7 +294,9 @@ namespace TextMetal.Framework.Source.Primative
 				{
 					recursiveStr = values[0];
 					if (!DataTypeFascade.Instance.TryParse<bool>(recursiveStr, out recursive))
-						;
+					{
+						// do nothing
+					}
 				}
 			}
 

@@ -10,7 +10,6 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Expressions
 	/// <summary>
 	/// Represents an expression with zero operands.
 	/// </summary>
-	[Serializable]
 	public sealed class NullaryExpression : IExpression
 	{
 		#region Constructors/Destructors

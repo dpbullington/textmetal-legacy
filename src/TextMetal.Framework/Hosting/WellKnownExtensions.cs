@@ -69,7 +69,7 @@ namespace TextMetal.Framework.Hosting
 			xpe.RegisterKnownXmlObject<BinaryExpressionConstruct>();
 			xpe.RegisterKnownXmlObject<ExpressionContainerConstruct>();
 			xpe.RegisterKnownXmlObject<FacetConstruct>();
-			//xpe.RegisterKnownXmlObject<JavaScriptConstruct>();
+			xpe.RegisterKnownXmlObject<JavaScriptConstruct>();
 			xpe.RegisterKnownXmlObject<NullaryExpressionConstruct>();
 			xpe.RegisterKnownXmlObject<UnaryExpressionConstruct>();
 			xpe.RegisterKnownXmlObject<ValueConstruct>();

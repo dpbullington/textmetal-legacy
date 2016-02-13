@@ -10,7 +10,6 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Expressions
 	/// <summary>
 	/// Represents a literal value.
 	/// </summary>
-	[Serializable]
 	public sealed class LiteralValue : IExpression
 	{
 		#region Constructors/Destructors

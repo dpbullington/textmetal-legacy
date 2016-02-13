@@ -10,7 +10,6 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Expressions
 	/// <summary>
 	/// Represents a symbol name.
 	/// </summary>
-	[Serializable]
 	public sealed class SymbolName : IExpression
 	{
 		#region Constructors/Destructors

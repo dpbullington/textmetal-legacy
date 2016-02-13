@@ -126,6 +126,27 @@ namespace TextMetal.Middleware.Solder.Utilities
 			}
 		}
 
+		public static bool DnxDebugQuicksMode
+		{
+			get
+			{
+				string key;
+				string svalue;
+				bool ovalue;
+
+				key = string.Format("SOLDER_DNX_DEBUG_QUICKS_MODE");
+				svalue = Environment.GetEnvironmentVariable(key);
+
+				if ((object)svalue == null)
+					return false;
+
+				if (!Utilities.DataTypeFascade.Instance.TryParse<bool>(svalue, out ovalue))
+					return false;
+
+				return ovalue;
+			}
+		}
+
 		protected IReflectionFascade ReflectionFascade
 		{
 			get

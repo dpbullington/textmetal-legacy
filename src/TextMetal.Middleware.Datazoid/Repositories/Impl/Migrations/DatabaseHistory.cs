@@ -17,7 +17,6 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Migrations
 	/// <summary>
 	/// Represents an ordered set of historical revsions to a database (file).
 	/// </summary>
-	[Serializable]
 	[XmlRoot(ElementName = "History", Namespace = "http://www.leastviable.com/api/v7.0.0")]
 	public sealed class DatabaseHistory
 	{

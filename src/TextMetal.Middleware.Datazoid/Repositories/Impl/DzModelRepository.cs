@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -146,7 +147,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			IRecord output;
 			int? recordsAffected = null;
 
-			IEnumerable<IDbDataParameter> dbDataParameters;
+			IEnumerable<DbParameter> dbParameters;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException(nameof(unitOfWork));
@@ -171,9 +172,9 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 				__DEBUG_ProfileTacticCommand(RepositoryOperation.Discard, tableTacticCommand);
 
 				// get native parameters
-				dbDataParameters = tableTacticCommand.GetDbDataParameters(unitOfWork);
+				dbParameters = tableTacticCommand.GetDbParameters(unitOfWork);
 
-				records = unitOfWork.ExecuteRecords(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters, (ra) => recordsAffected = ra);
+				records = unitOfWork.ExecuteRecords(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbParameters, (ra) => recordsAffected = ra);
 
 				if ((object)records == null)
 					throw new InvalidOperationException(string.Format("Records were invalid."));
@@ -242,7 +243,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			IRecord output;
 			int? recordsAffected = null;
 
-			IEnumerable<IDbDataParameter> dbDataParameters;
+			IEnumerable<DbParameter> dbParameters;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException(nameof(unitOfWork));
@@ -259,9 +260,9 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 				__DEBUG_ProfileTacticCommand(RepositoryOperation.Fill, tableTacticCommand);
 
 				// get native parameters
-				dbDataParameters = tableTacticCommand.GetDbDataParameters(unitOfWork);
+				dbParameters = tableTacticCommand.GetDbParameters(unitOfWork);
 
-				records = unitOfWork.ExecuteRecords(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters, (ra) => recordsAffected = ra);
+				records = unitOfWork.ExecuteRecords(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbParameters, (ra) => recordsAffected = ra);
 
 				if ((object)records == null)
 					throw new InvalidOperationException(string.Format("Records were invalid."));
@@ -405,7 +406,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			IRecord record;
 			IRecord output;
 
-			IEnumerable<IDbDataParameter> dbDataParameters;
+			IEnumerable<DbParameter> dbParameters;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException(nameof(unitOfWork));
@@ -427,9 +428,9 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			procedureTacticCommand.EnterEnumeration(this.DisableEnumerationReentrantCheck);
 
 			// get native parameters
-			dbDataParameters = procedureTacticCommand.GetDbDataParameters(unitOfWork);
+			dbParameters = procedureTacticCommand.GetDbParameters(unitOfWork);
 
-			resultsets = unitOfWork.ExecuteResultsets(procedureTacticCommand.CommandType, procedureTacticCommand.CommandText, dbDataParameters);
+			resultsets = unitOfWork.ExecuteResultsets(procedureTacticCommand.CommandType, procedureTacticCommand.CommandText, dbParameters);
 
 			if ((object)resultsets == null)
 				throw new InvalidOperationException(string.Format("Resultsets were invalid."));
@@ -451,7 +452,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			// cannot validate records affected in the general case with procedures
 
 			// right now for procedures only
-			output = dbDataParameters.GetOutputAsRecord();
+			output = dbParameters.GetOutputAsRecord();
 
 			// map to return model from output (destination, source)
 			procedureTacticCommand.OutputToReturnProcedureModelMappingCallback(returnProcedureModelObject, output);
@@ -483,7 +484,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			IRecord output;
 			int? recordsAffected = null;
 
-			IEnumerable<IDbDataParameter> dbDataParameters;
+			IEnumerable<DbParameter> dbParameters;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException(nameof(unitOfWork));
@@ -499,10 +500,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			tableTacticCommand.EnterEnumeration(this.DisableEnumerationReentrantCheck);
 
 			// get native parameters
-			dbDataParameters = tableTacticCommand.GetDbDataParameters(unitOfWork);
+			dbParameters = tableTacticCommand.GetDbParameters(unitOfWork);
 
 			// enumerator overload usage
-			records = unitOfWork.ExecuteRecords(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters, (ra) => recordsAffected = ra);
+			records = unitOfWork.ExecuteRecords(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbParameters, (ra) => recordsAffected = ra);
 
 			if ((object)records == null)
 				throw new InvalidOperationException(string.Format("Records were invalid."));
@@ -547,7 +548,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			IRecord output;
 			int? recordsAffected = null;
 
-			IEnumerable<IDbDataParameter> dbDataParameters;
+			IEnumerable<DbParameter> dbParameters;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException(nameof(unitOfWork));
@@ -564,9 +565,9 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 				__DEBUG_ProfileTacticCommand(RepositoryOperation.Load, tableTacticCommand);
 
 				// get native parameters
-				dbDataParameters = tableTacticCommand.GetDbDataParameters(unitOfWork);
+				dbParameters = tableTacticCommand.GetDbParameters(unitOfWork);
 
-				records = unitOfWork.ExecuteRecords(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters, (ra) => recordsAffected = ra);
+				records = unitOfWork.ExecuteRecords(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbParameters, (ra) => recordsAffected = ra);
 
 				if ((object)records == null)
 					throw new InvalidOperationException(string.Format("Records were invalid."));
@@ -652,7 +653,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			IRecord output;
 			int? recordsAffected = null;
 
-			IEnumerable<IDbDataParameter> dbDataParameters;
+			IEnumerable<DbParameter> dbParameters;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException(nameof(unitOfWork));
@@ -683,9 +684,9 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 				__DEBUG_ProfileTacticCommand(RepositoryOperation.Save, tableTacticCommand);
 
 				// get native parameters
-				dbDataParameters = tableTacticCommand.GetDbDataParameters(unitOfWork);
+				dbParameters = tableTacticCommand.GetDbParameters(unitOfWork);
 
-				records = unitOfWork.ExecuteRecords(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbDataParameters, (ra) => recordsAffected = ra);
+				records = unitOfWork.ExecuteRecords(tableTacticCommand.CommandType, tableTacticCommand.CommandText, dbParameters, (ra) => recordsAffected = ra);
 
 				if ((object)records == null)
 					throw new InvalidOperationException(string.Format("Records were invalid."));
@@ -719,7 +720,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 
 					__DEBUG_ProfileTacticCommand(RepositoryOperation.Identify, tableTacticCommand);
 
-					records = unitOfWork.ExecuteRecords(tableTacticCommand.CommandType, tableTacticCommand.CommandText, tableTacticCommand.GetDbDataParameters(unitOfWork), (ra) => recordsAffected = ra);
+					records = unitOfWork.ExecuteRecords(tableTacticCommand.CommandType, tableTacticCommand.CommandText, tableTacticCommand.GetDbParameters(unitOfWork), (ra) => recordsAffected = ra);
 
 					if ((object)records == null)
 						throw new InvalidOperationException(string.Format("Records were invalid."));

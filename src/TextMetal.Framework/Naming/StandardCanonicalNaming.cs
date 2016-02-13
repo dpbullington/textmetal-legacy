@@ -84,7 +84,9 @@ namespace TextMetal.Framework.Naming
 				else if ((first && char.IsDigit(curr)) || curr == ' ')
 					sb.Append('_');
 				else
-					; // skip
+				{
+					// skip
+				}
 
 				first = false;
 			}

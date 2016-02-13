@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 
 using TextMetal.Middleware.Solder;
 using TextMetal.Middleware.Solder.Utilities;
@@ -81,30 +82,30 @@ namespace TextMetal.Middleware.Datazoid
 		/// <param name="parameterName"> Specifies the parameter name. </param>
 		/// <param name="parameterValue"> Specifies the parameter value. </param>
 		/// <returns> The data parameter with the specified properties set. </returns>
-		public IDbDataParameter CreateParameter(IDbConnection dbConnection, IDbTransaction dbTransaction, ParameterDirection parameterDirection, DbType parameterDbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue)
+		public DbParameter CreateParameter(DbConnection dbConnection, DbTransaction dbTransaction, ParameterDirection parameterDirection, DbType parameterDbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue)
 		{
-			IDbDataParameter dbDataParameter;
+			DbParameter dbParameter;
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::CreateParameter(...): enter", typeof(AdoNetYieldingFascade).Name));
 
 			if ((object)dbConnection == null)
 				throw new ArgumentNullException(nameof(dbConnection));
 
-			using (IDbCommand dbCommand = dbConnection.CreateCommand())
-				dbDataParameter = dbCommand.CreateParameter();
+			using (DbCommand dbCommand = dbConnection.CreateCommand())
+				dbParameter = dbCommand.CreateParameter();
 
-			dbDataParameter.ParameterName = parameterName;
-			dbDataParameter.Size = parameterSize;
-			dbDataParameter.Value = parameterValue;
-			dbDataParameter.Direction = parameterDirection;
-			dbDataParameter.DbType = parameterDbType;
-			this.ReflectionFascade.SetLogicalPropertyValue(dbDataParameter, "IsNullable", parameterNullable, true, false);
-			dbDataParameter.Precision = parameterPrecision;
-			dbDataParameter.Scale = parameterScale;
+			dbParameter.ParameterName = parameterName;
+			dbParameter.Size = parameterSize;
+			dbParameter.Value = parameterValue;
+			dbParameter.Direction = parameterDirection;
+			dbParameter.DbType = parameterDbType;
+			this.ReflectionFascade.SetLogicalPropertyValue(dbParameter, "IsNullable", parameterNullable, true, false);
+			dbParameter.Precision = parameterPrecision;
+			dbParameter.Scale = parameterScale;
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::CreateParameter(...): return parameter", typeof(AdoNetYieldingFascade).Name));
 
-			return dbDataParameter;
+			return dbParameter;
 		}
 
 		/// <summary>
@@ -121,16 +122,16 @@ namespace TextMetal.Middleware.Datazoid
 		/// <param name="commandTimeout"> The command timeout (use null for default). </param>
 		/// <param name="commandPrepare"> Whether to prepare the command at the data source. </param>
 		/// <returns> The data reader result. </returns>
-		public IDataReader ExecuteReader(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, CommandBehavior commandBehavior, int? commandTimeout, bool commandPrepare)
+		public DbDataReader ExecuteReader(DbConnection dbConnection, DbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters, CommandBehavior commandBehavior, int? commandTimeout, bool commandPrepare)
 		{
-			IDataReader dataReader;
+			DbDataReader dbDataReader;
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteReader(...): enter", typeof(AdoNetYieldingFascade).Name));
 
 			if ((object)dbConnection == null)
 				throw new ArgumentNullException(nameof(dbConnection));
 
-			using (IDbCommand dbCommand = dbConnection.CreateCommand())
+			using (DbCommand dbCommand = dbConnection.CreateCommand())
 			{
 				dbCommand.Transaction = dbTransaction;
 				dbCommand.CommandType = commandType;
@@ -142,7 +143,7 @@ namespace TextMetal.Middleware.Datazoid
 				// add parameters
 				if ((object)commandParameters != null)
 				{
-					foreach (IDbDataParameter commandParameter in commandParameters)
+					foreach (DbParameter commandParameter in commandParameters)
 					{
 						if ((object)commandParameter.Value == null)
 							commandParameter.Value = DBNull.Value;
@@ -155,17 +156,17 @@ namespace TextMetal.Middleware.Datazoid
 					dbCommand.Prepare();
 
 				// do the database work
-				dataReader = dbCommand.ExecuteReader(commandBehavior);
+				dbDataReader = dbCommand.ExecuteReader(commandBehavior);
 
 				// wrap reader with proxy
-				dataReader = new WrappedDataReader(dataReader);
+				dbDataReader = new WrappedDbDataReader(dbDataReader);
 
 				// clean out parameters
 				//dbCommand.Parameters.Clear();
 
 				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteReader(...): return reader", typeof(AdoNetYieldingFascade).Name));
 
-				return dataReader;
+				return dbDataReader;
 			}
 		}
 
@@ -182,10 +183,10 @@ namespace TextMetal.Middleware.Datazoid
 		/// ///
 		/// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
 		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of schema metadata. </returns>
-		public IEnumerable<IRecord> ExecuteRecords(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> recordsAffectedCallback)
+		public IEnumerable<IRecord> ExecuteRecords(DbConnection dbConnection, DbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters, Action<int> recordsAffectedCallback)
 		{
 			IEnumerable<IRecord> records;
-			IDataReader dataReader;
+			DbDataReader dbDataReader;
 
 			// force no preparation
 			const bool COMMAND_PREPARE = false;
@@ -204,11 +205,11 @@ namespace TextMetal.Middleware.Datazoid
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteRecords(...): before yield", typeof(AdoNetYieldingFascade).Name));
 
 			// MUST DISPOSE WITHIN A NEW YIELD STATE MACHINE
-			using (dataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE))
+			using (dbDataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE))
 			{
 				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteRecords(...): use reader", typeof(AdoNetYieldingFascade).Name));
 
-				records = this.GetRecordsFromReader(dataReader, recordsAffectedCallback);
+				records = this.GetRecordsFromReader(dbDataReader, recordsAffectedCallback);
 
 				foreach (IRecord record in records)
 				{
@@ -236,10 +237,10 @@ namespace TextMetal.Middleware.Datazoid
 		/// <param name="commandText"> The SQL text or stored procedure name. </param>
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
 		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of data. </returns>
-		public IEnumerable<IResultset> ExecuteResultsets(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
+		public IEnumerable<IResultset> ExecuteResultsets(DbConnection dbConnection, DbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters)
 		{
 			IEnumerable<IResultset> resultsets;
-			IDataReader dataReader;
+			DbDataReader dbDataReader;
 
 			// force no preparation
 			const bool COMMAND_PREPARE = false;
@@ -256,8 +257,8 @@ namespace TextMetal.Middleware.Datazoid
 				throw new ArgumentNullException(nameof(dbConnection));
 
 			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
-			dataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE);
-			resultsets = this.GetResultsetsFromReader(dataReader);
+			dbDataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE);
+			resultsets = this.GetResultsetsFromReader(dbDataReader);
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteResultsets(...): return resultsets", typeof(AdoNetYieldingFascade).Name));
 
@@ -276,10 +277,10 @@ namespace TextMetal.Middleware.Datazoid
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
 		/// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
 		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of schema metadata. </returns>
-		public IEnumerable<IRecord> ExecuteSchemaRecords(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> recordsAffectedCallback)
+		public IEnumerable<IRecord> ExecuteSchemaRecords(DbConnection dbConnection, DbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters, Action<int> recordsAffectedCallback)
 		{
 			IEnumerable<IRecord> records;
-			IDataReader dataReader;
+			DbDataReader dbDataReader;
 
 			// force no preparation
 			const bool COMMAND_PREPARE = false;
@@ -298,11 +299,11 @@ namespace TextMetal.Middleware.Datazoid
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: before yield", typeof(AdoNetYieldingFascade).Name));
 
 			// MUST DISPOSE WITHIN A NEW YIELD STATE MACHINE
-			using (dataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE))
+			using (dbDataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE))
 			{
 				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteSchemaRecords: use reader", typeof(AdoNetYieldingFascade).Name));
 
-				records = this.GetSchemaRecordsFromReader(dataReader, recordsAffectedCallback);
+				records = this.GetSchemaRecordsFromReader(dbDataReader, recordsAffectedCallback);
 
 				foreach (IRecord record in records)
 				{
@@ -330,10 +331,10 @@ namespace TextMetal.Middleware.Datazoid
 		/// <param name="commandText"> The SQL text or stored procedure name. </param>
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
 		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of schema metadata. </returns>
-		public IEnumerable<IResultset> ExecuteSchemaResultsets(IDbConnection dbConnection, IDbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
+		public IEnumerable<IResultset> ExecuteSchemaResultsets(DbConnection dbConnection, DbTransaction dbTransaction, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters)
 		{
 			IEnumerable<IResultset> resultsets;
-			IDataReader dataReader;
+			DbDataReader dbDataReader;
 
 			// force no preparation
 			const bool COMMAND_PREPARE = false;
@@ -350,8 +351,8 @@ namespace TextMetal.Middleware.Datazoid
 				throw new ArgumentNullException(nameof(dbConnection));
 
 			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
-			dataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE);
-			resultsets = this.GetSchemaResultsetsFromReader(dataReader);
+			dbDataReader = this.ExecuteReader(dbConnection, dbTransaction, commandType, commandText, commandParameters, COMMAND_BEHAVIOR, (int?)COMMAND_TIMEOUT, COMMAND_PREPARE);
+			resultsets = this.GetSchemaResultsetsFromReader(dbDataReader);
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::ExecuteSchemaResultsets(...): return resultsets", typeof(AdoNetYieldingFascade).Name));
 
@@ -363,10 +364,10 @@ namespace TextMetal.Middleware.Datazoid
 		/// This method perfoms LAZY LOADING/DEFERRED EXECUTION.
 		/// Note that THE DATA READER WILL NOT BE DISPOSED UPON ENUMERATION OR FOREACH BRANCH OUT.
 		/// </summary>
-		/// <param name="dataReader"> The target data reader. </param>
+		/// <param name="dbDataReader"> The target data reader. </param>
 		/// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
 		/// <returns> An enumerable of record dictionary instances, containing key/value pairs of data. </returns>
-		public IEnumerable<IRecord> GetRecordsFromReader(IDataReader dataReader, Action<int> recordsAffectedCallback)
+		public IEnumerable<IRecord> GetRecordsFromReader(DbDataReader dbDataReader, Action<int> recordsAffectedCallback)
 		{
 			IRecord record;
 			int recordsAffected;
@@ -376,19 +377,19 @@ namespace TextMetal.Middleware.Datazoid
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): enter", typeof(AdoNetYieldingFascade).Name));
 
-			if ((object)dataReader == null)
-				throw new ArgumentNullException(nameof(dataReader));
+			if ((object)dbDataReader == null)
+				throw new ArgumentNullException(nameof(dbDataReader));
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): before yield", typeof(AdoNetYieldingFascade).Name));
 
-			while (dataReader.Read())
+			while (dbDataReader.Read())
 			{
 				record = new Record();
 
-				for (int columnIndex = 0; columnIndex < dataReader.FieldCount; columnIndex++)
+				for (int columnIndex = 0; columnIndex < dbDataReader.FieldCount; columnIndex++)
 				{
-					key = dataReader.GetName(columnIndex);
-					value = dataReader.GetValue(columnIndex).ChangeType<object>();
+					key = dbDataReader.GetName(columnIndex);
+					value = dbDataReader.GetValue(columnIndex).ChangeType<object>();
 
 					if (record.ContainsKey(key) || (key ?? string.Empty).Length == 0)
 						key = string.Format("Column_{0:0000}", columnIndex);
@@ -403,7 +404,7 @@ namespace TextMetal.Middleware.Datazoid
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetRecordsFromReader(...): after yield", typeof(AdoNetYieldingFascade).Name));
 
-			recordsAffected = dataReader.RecordsAffected;
+			recordsAffected = dbDataReader.RecordsAffected;
 
 			if ((object)recordsAffectedCallback != null)
 				recordsAffectedCallback(recordsAffected);
@@ -415,33 +416,33 @@ namespace TextMetal.Middleware.Datazoid
 		/// Execute a command against a data source, mapping the data reader to an enumerable of resultsets, each with an enumerable of records dictionaries.
 		/// This method perfoms LAZY LOADING/DEFERRED EXECUTION.
 		/// </summary>
-		/// <param name="dataReader"> The target data reader. </param>
+		/// <param name="dbDataReader"> The target data reader. </param>
 		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of data. </returns>
-		public IEnumerable<IResultset> GetResultsetsFromReader(IDataReader dataReader)
+		public IEnumerable<IResultset> GetResultsetsFromReader(DbDataReader dbDataReader)
 		{
 			int resultsetIndex = 0;
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): enter", typeof(AdoNetYieldingFascade).Name));
 
-			if ((object)dataReader == null)
-				throw new ArgumentNullException(nameof(dataReader));
+			if ((object)dbDataReader == null)
+				throw new ArgumentNullException(nameof(dbDataReader));
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): before yield", typeof(AdoNetYieldingFascade).Name));
 
-			using (dataReader)
+			using (dbDataReader)
 			{
 				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): use reader", typeof(AdoNetYieldingFascade).Name));
 
 				do
 				{
 					Resultset resultset = new Resultset(resultsetIndex++); // prevent modified closure
-					resultset.Records = this.GetRecordsFromReader(dataReader, (ra) => resultset.RecordsAffected = ra);
+					resultset.Records = this.GetRecordsFromReader(dbDataReader, (ra) => resultset.RecordsAffected = ra);
 
 					OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): on yield", typeof(AdoNetYieldingFascade).Name));
 
 					yield return resultset; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
 				}
-				while (dataReader.NextResult());
+				while (dbDataReader.NextResult());
 
 				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetResultsetsFromReader(...): dispose reader", typeof(AdoNetYieldingFascade).Name));
 			}
@@ -456,10 +457,10 @@ namespace TextMetal.Middleware.Datazoid
 		/// This method perfoms LAZY LOADING/DEFERRED EXECUTION.
 		/// Note that THE DATA READER WILL NOT BE DISPOSED UPON ENUMERATION OR FOREACH BRANCH OUT.
 		/// </summary>
-		/// <param name="dataReader"> The target data reader. </param>
+		/// <param name="dbDataReader"> The target data reader. </param>
 		/// <param name="recordsAffectedCallback"> Executed when the output count of records affected is available to return (post enumeration). </param>
 		/// <returns> An enumerable of record dictionary instances, containing key/value pairs of schema metadata. </returns>
-		public IEnumerable<IRecord> GetSchemaRecordsFromReader(IDataReader dataReader, Action<int> recordsAffectedCallback)
+		public IEnumerable<IRecord> GetSchemaRecordsFromReader(DbDataReader dbDataReader, Action<int> recordsAffectedCallback)
 		{
 			IRecord record;
 			int recordsAffected;
@@ -468,12 +469,12 @@ namespace TextMetal.Middleware.Datazoid
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): enter", typeof(AdoNetYieldingFascade).Name));
 
-			if ((object)dataReader == null)
-				throw new ArgumentNullException(nameof(dataReader));
+			if ((object)dbDataReader == null)
+				throw new ArgumentNullException(nameof(dbDataReader));
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): before yield", typeof(AdoNetYieldingFascade).Name));
 
-			using (DataTable dataTable = dataReader.GetSchemaTable())
+			using (DataTable dataTable = dbDataReader.GetSchemaTable())
 			{
 				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): use table", typeof(AdoNetYieldingFascade).Name));
 
@@ -502,7 +503,7 @@ namespace TextMetal.Middleware.Datazoid
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): after yield", typeof(AdoNetYieldingFascade).Name));
 
-			recordsAffected = dataReader.RecordsAffected;
+			recordsAffected = dbDataReader.RecordsAffected;
 
 			if ((object)recordsAffectedCallback != null)
 				recordsAffectedCallback(recordsAffected);
@@ -514,33 +515,33 @@ namespace TextMetal.Middleware.Datazoid
 		/// Execute a command against a data source, mapping the data reader GetSchemaTable() result to an enumerable of resultsets, each with an enumerable of records dictionaries.
 		/// This method perfoms LAZY LOADING/DEFERRED EXECUTION.
 		/// </summary>
-		/// <param name="dataReader"> The target data reader. </param>
+		/// <param name="dbDataReader"> The target data reader. </param>
 		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of schema metadata. </returns>
-		public IEnumerable<IResultset> GetSchemaResultsetsFromReader(IDataReader dataReader)
+		public IEnumerable<IResultset> GetSchemaResultsetsFromReader(DbDataReader dbDataReader)
 		{
 			int resultsetIndex = 0;
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): enter", typeof(AdoNetYieldingFascade).Name));
 
-			if ((object)dataReader == null)
-				throw new ArgumentNullException(nameof(dataReader));
+			if ((object)dbDataReader == null)
+				throw new ArgumentNullException(nameof(dbDataReader));
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): before yield", typeof(AdoNetYieldingFascade).Name));
 
-			using (dataReader)
+			using (dbDataReader)
 			{
 				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): use reader", typeof(AdoNetYieldingFascade).Name));
 
 				do
 				{
 					Resultset resultset = new Resultset(resultsetIndex++); // prevent modified closure
-					resultset.Records = this.GetSchemaRecordsFromReader(dataReader, (ra) => resultset.RecordsAffected = ra);
+					resultset.Records = this.GetSchemaRecordsFromReader(dbDataReader, (ra) => resultset.RecordsAffected = ra);
 
 					OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): on yield", typeof(AdoNetYieldingFascade).Name));
 
 					yield return resultset; // LAZY PROCESSING INTENT HERE / DO NOT FORCE EAGER LOAD
 				}
-				while (dataReader.NextResult());
+				while (dbDataReader.NextResult());
 
 				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaResultsetsFromReader(...): dispose reader", typeof(AdoNetYieldingFascade).Name));
 			}

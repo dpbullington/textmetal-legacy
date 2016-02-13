@@ -28,6 +28,11 @@ namespace TextMetal.ConsoleTool
 		{
 		}
 
+		private Program()
+			: this(Middleware.Solder.Utilities.DataTypeFascade.Instance, new AppConfigFascade("appconfig.json", Middleware.Solder.Utilities.DataTypeFascade.Instance), Middleware.Solder.Utilities.ReflectionFascade.Instance)
+		{
+		}
+
 		#endregion
 
 		#region Fields/Constants
@@ -48,7 +53,8 @@ namespace TextMetal.ConsoleTool
 		{
 			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, new SingletonDependencyResolution(ActivatorDependencyResolution.OfType<Program, IDataTypeFascade, IAppConfigFascade, IReflectionFascade>()));
 
-			using (ConsoleApplicationFascade program = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty))
+			using (Program program = new Program())
+				//using (ConsoleApplicationFascade program = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty))
 				return program.EntryPoint(args);
 		}
 
@@ -60,17 +66,26 @@ namespace TextMetal.ConsoleTool
 		[STAThread]
 		public static int Main(string[] args)
 		{
-			return DnxMain(args);
-			//try
-			//{
-			//	return DnxMain(args);
-			//}
-			//catch (Exception)
-			//{
-			//	// required to do poor mans' "just in time debugging" with F5 in VS 2015 (DNX) for now
-			//	Debugger.Break();
-			//	throw;
-			//}
+			bool dnxDebugQuicksMode;
+
+			dnxDebugQuicksMode = DnxDebugQuicksMode;
+			Console.WriteLine("DnxDebugQuicksMode: '{0}'", dnxDebugQuicksMode);
+
+			if (!dnxDebugQuicksMode)
+				return DnxMain(args);
+			else
+			{
+				try
+				{
+					return DnxMain(args);
+				}
+				catch (Exception)
+				{
+					// required to do poor mans' "just in time debugging" with F5 in VS 2015 (DNX) for now
+					Debugger.Break();
+					throw;
+				}
+			}
 		}
 
 		protected override IDictionary<string, ArgumentSpec> GetArgumentMap()
@@ -112,8 +127,8 @@ namespace TextMetal.ConsoleTool
 			if (arguments.ContainsKey(CMDLN_DEBUGGER_LAUNCH))
 				debuggerLaunch = (bool)arguments[CMDLN_DEBUGGER_LAUNCH].Single();
 
-			//if (debuggerLaunch)
-			//Console.WriteLine("Debugger launch result: '{0}'", Debugger.Launch() && Debugger.IsAttached);
+			if (debuggerLaunch)
+				Console.WriteLine("Debugger launch result: '{0}'", Debugger.Launch() && Debugger.IsAttached);
 
 			// required
 			properties = new Dictionary<string, IList<string>>();

@@ -4,88 +4,98 @@
 */
 
 using System;
+using System.Collections;
+using System.Data.Common;
 
 using TextMetal.Middleware.Solder;
 
 namespace TextMetal.Middleware.Datazoid
 {
-	public class WrappedDataReader : IDataReader
+	public class WrappedDbDataReader : DbDataReader
 	{
 		#region Constructors/Destructors
 
-		public WrappedDataReader(IDataReader innerDataReader)
+		public WrappedDbDataReader(DbDataReader innerDbDataReader)
 		{
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::.ctor(...)", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::.ctor(...)", typeof(WrappedDbDataReader).Name));
 
-			if ((object)innerDataReader == null)
-				throw new ArgumentNullException(nameof(innerDataReader));
+			if ((object)innerDbDataReader == null)
+				throw new ArgumentNullException(nameof(innerDbDataReader));
 
-			this.innerDataReader = innerDataReader;
+			this.innerDbDataReader = innerDbDataReader;
 		}
 
 		#endregion
 
 		#region Fields/Constants
 
-		private readonly IDataReader innerDataReader;
+		private readonly DbDataReader innerDbDataReader;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		public virtual object this[string name]
+		public override object this[string name]
 		{
 			get
 			{
-				return this.InnerDataReader[name];
+				return this.InnerDbDataReader[name];
 			}
 		}
 
-		public virtual object this[int i]
+		public override object this[int i]
 		{
 			get
 			{
-				return this.InnerDataReader[i];
+				return this.InnerDbDataReader[i];
 			}
 		}
 
-		public virtual int Depth
+		public override int Depth
 		{
 			get
 			{
-				return this.InnerDataReader.Depth;
+				return this.InnerDbDataReader.Depth;
 			}
 		}
 
-		public virtual int FieldCount
+		public override int FieldCount
 		{
 			get
 			{
-				return this.InnerDataReader.FieldCount;
+				return this.InnerDbDataReader.FieldCount;
 			}
 		}
 
-		protected IDataReader InnerDataReader
+		public override bool HasRows
 		{
 			get
 			{
-				return this.innerDataReader;
+				return this.InnerDbDataReader.HasRows;
 			}
 		}
 
-		public virtual bool IsClosed
+		protected DbDataReader InnerDbDataReader
 		{
 			get
 			{
-				return this.InnerDataReader.IsClosed;
+				return this.innerDbDataReader;
 			}
 		}
 
-		public virtual int RecordsAffected
+		public override bool IsClosed
 		{
 			get
 			{
-				return this.InnerDataReader.RecordsAffected;
+				return this.InnerDbDataReader.IsClosed;
+			}
+		}
+
+		public override int RecordsAffected
+		{
+			get
+			{
+				return this.InnerDbDataReader.RecordsAffected;
 			}
 		}
 
@@ -99,191 +109,196 @@ namespace TextMetal.Middleware.Datazoid
 			GC.SuppressFinalize((object)this);
 		}
 
-		public void Dispose()
+		public virtual void Dispose()
 		{
 			this.Dispose(true);
 			GC.SuppressFinalize((object)this);
 		}
 
-		protected virtual void Dispose(bool disposing)
+		protected override void Dispose(bool disposing)
 		{
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::Dispose(...): enter", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::Dispose(...): enter", typeof(WrappedDbDataReader).Name));
 
 			if (disposing)
-				this.InnerDataReader.Dispose();
+				this.InnerDbDataReader.Dispose();
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::Dispose(...): leave", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::Dispose(...): leave", typeof(WrappedDbDataReader).Name));
 		}
 
-		public virtual bool GetBoolean(int i)
+		public override bool GetBoolean(int i)
 		{
-			return this.InnerDataReader.GetBoolean(i);
+			return this.InnerDbDataReader.GetBoolean(i);
 		}
 
-		public virtual byte GetByte(int i)
+		public override byte GetByte(int i)
 		{
-			return this.InnerDataReader.GetByte(i);
+			return this.InnerDbDataReader.GetByte(i);
 		}
 
-		public virtual long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
+		public override long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
 		{
-			return this.InnerDataReader.GetBytes(i, fieldOffset, buffer, bufferoffset, length);
+			return this.InnerDbDataReader.GetBytes(i, fieldOffset, buffer, bufferoffset, length);
 		}
 
-		public virtual char GetChar(int i)
+		public override char GetChar(int i)
 		{
-			return this.InnerDataReader.GetChar(i);
+			return this.InnerDbDataReader.GetChar(i);
 		}
 
-		public virtual long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
+		public override long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
 		{
-			return this.InnerDataReader.GetChars(i, fieldoffset, buffer, bufferoffset, length);
+			return this.InnerDbDataReader.GetChars(i, fieldoffset, buffer, bufferoffset, length);
 		}
 
-		public virtual IDataReader GetData(int i)
+		//public override DbDataReader GetData(int i)
+		//{
+		//	return this.InnerDbDataReader.GetData(i);
+		//}
+
+		public override string GetDataTypeName(int i)
 		{
-			return this.InnerDataReader.GetData(i);
+			return this.InnerDbDataReader.GetDataTypeName(i);
 		}
 
-		public virtual string GetDataTypeName(int i)
+		public override DateTime GetDateTime(int i)
 		{
-			return this.InnerDataReader.GetDataTypeName(i);
+			return this.InnerDbDataReader.GetDateTime(i);
 		}
 
-		public virtual DateTime GetDateTime(int i)
+		public override decimal GetDecimal(int i)
 		{
-			return this.InnerDataReader.GetDateTime(i);
+			return this.InnerDbDataReader.GetDecimal(i);
 		}
 
-		public virtual decimal GetDecimal(int i)
+		public override double GetDouble(int i)
 		{
-			return this.InnerDataReader.GetDecimal(i);
+			return this.InnerDbDataReader.GetDouble(i);
 		}
 
-		public double GetDouble(int i)
+		public override IEnumerator GetEnumerator()
 		{
-			return this.InnerDataReader.GetDouble(i);
+			return this.InnerDbDataReader.GetEnumerator();
 		}
 
-		public virtual Type GetFieldType(int i)
+		public override Type GetFieldType(int i)
 		{
 			Type retval;
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetFieldType(...): enter", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetFieldType(...): enter", typeof(WrappedDbDataReader).Name));
 
-			retval = this.InnerDataReader.GetFieldType(i);
+			retval = this.InnerDbDataReader.GetFieldType(i);
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetFieldType(...): return name", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetFieldType(...): return name", typeof(WrappedDbDataReader).Name));
 
 			return retval;
 		}
 
-		public virtual float GetFloat(int i)
+		public override float GetFloat(int i)
 		{
-			return this.InnerDataReader.GetFloat(i);
+			return this.InnerDbDataReader.GetFloat(i);
 		}
 
-		public virtual Guid GetGuid(int i)
+		public override Guid GetGuid(int i)
 		{
-			return this.InnerDataReader.GetGuid(i);
+			return this.InnerDbDataReader.GetGuid(i);
 		}
 
-		public virtual short GetInt16(int i)
+		public override short GetInt16(int i)
 		{
-			return this.InnerDataReader.GetInt16(i);
+			return this.InnerDbDataReader.GetInt16(i);
 		}
 
-		public virtual int GetInt32(int i)
+		public override int GetInt32(int i)
 		{
-			return this.InnerDataReader.GetInt32(i);
+			return this.InnerDbDataReader.GetInt32(i);
 		}
 
-		public virtual long GetInt64(int i)
+		public override long GetInt64(int i)
 		{
-			return this.InnerDataReader.GetInt64(i);
+			return this.InnerDbDataReader.GetInt64(i);
 		}
 
-		public virtual string GetName(int i)
+		public override string GetName(int i)
 		{
 			string retval;
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetName(...): enter", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetName(...): enter", typeof(WrappedDbDataReader).Name));
 
-			retval = this.InnerDataReader.GetName(i);
+			retval = this.InnerDbDataReader.GetName(i);
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetName(...): return name", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetName(...): return name", typeof(WrappedDbDataReader).Name));
 
 			return retval;
 		}
 
-		public virtual int GetOrdinal(string name)
+		public override int GetOrdinal(string name)
 		{
 			int retval;
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetOrdinal(...): enter", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetOrdinal(...): enter", typeof(WrappedDbDataReader).Name));
 
-			retval = this.InnerDataReader.GetOrdinal(name);
+			retval = this.InnerDbDataReader.GetOrdinal(name);
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetOrdinal(...): return value", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetOrdinal(...): return value", typeof(WrappedDbDataReader).Name));
 
 			return retval;
 		}
 
-		public virtual DataTable GetSchemaTable()
+		//public override DataTable GetSchemaTable()
+		//{
+		//	return this.InnerDbDataReader.GetSchemaTable();
+		//}
+
+		public override string GetString(int i)
 		{
-			return this.InnerDataReader.GetSchemaTable();
+			return this.InnerDbDataReader.GetString(i);
 		}
 
-		public virtual string GetString(int i)
-		{
-			return this.InnerDataReader.GetString(i);
-		}
-
-		public virtual object GetValue(int i)
+		public override object GetValue(int i)
 		{
 			object retval;
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetValue(...): enter", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetValue(...): enter", typeof(WrappedDbDataReader).Name));
 
-			retval = this.InnerDataReader.GetValue(i);
+			retval = this.InnerDbDataReader.GetValue(i);
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetValue(...): return value", typeof(WrappedDataReader).Name));
-
-			return retval;
-		}
-
-		public virtual int GetValues(object[] values)
-		{
-			return this.InnerDataReader.GetValues(values);
-		}
-
-		public virtual bool IsDBNull(int i)
-		{
-			return this.InnerDataReader.IsDBNull(i);
-		}
-
-		public virtual bool NextResult()
-		{
-			bool retval;
-
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::NextResult(...): enter", typeof(WrappedDataReader).Name));
-
-			retval = this.InnerDataReader.NextResult();
-
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::NextResult(...): return flag", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetValue(...): return value", typeof(WrappedDbDataReader).Name));
 
 			return retval;
 		}
 
-		public virtual bool Read()
+		public override int GetValues(object[] values)
+		{
+			return this.InnerDbDataReader.GetValues(values);
+		}
+
+		public override bool IsDBNull(int i)
+		{
+			return this.InnerDbDataReader.IsDBNull(i);
+		}
+
+		public override bool NextResult()
 		{
 			bool retval;
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::Read(...): enter", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::NextResult(...): enter", typeof(WrappedDbDataReader).Name));
 
-			retval = this.InnerDataReader.Read();
+			retval = this.InnerDbDataReader.NextResult();
 
-			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::Read(...): return flag", typeof(WrappedDataReader).Name));
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::NextResult(...): return flag", typeof(WrappedDbDataReader).Name));
+
+			return retval;
+		}
+
+		public override bool Read()
+		{
+			bool retval;
+
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::Read(...): enter", typeof(WrappedDbDataReader).Name));
+
+			retval = this.InnerDbDataReader.Read();
+
+			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::Read(...): return flag", typeof(WrappedDbDataReader).Name));
 
 			return retval;
 		}

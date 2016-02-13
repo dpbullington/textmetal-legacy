@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 
 using TextMetal.Middleware.Datazoid.UoW;
 
@@ -181,23 +182,23 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics
 			this.IsEnumerating = true;
 		}
 
-		public IEnumerable<IDbDataParameter> GetDbDataParameters(IUnitOfWork unitOfWork)
+		public IEnumerable<DbParameter> GetDbParameters(IUnitOfWork unitOfWork)
 		{
-			List<IDbDataParameter> dbDataParameters;
-			IDbDataParameter dbDataParameter;
+			List<DbParameter> dbParameters;
+			DbParameter dbParameter;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException(nameof(unitOfWork));
 
-			dbDataParameters = new List<IDbDataParameter>();
+			dbParameters = new List<DbParameter>();
 
 			foreach (ITacticParameter tacticParameter in this.TacticParameters)
 			{
-				dbDataParameter = unitOfWork.CreateParameter(tacticParameter.ParameterDirection, tacticParameter.ParameterDbType, tacticParameter.ParameterSize, tacticParameter.ParameterPrecision, tacticParameter.ParameterScale, tacticParameter.ParameterNullable, tacticParameter.ParameterName, tacticParameter.ParameterValue);
-				dbDataParameters.Add(dbDataParameter);
+				dbParameter = unitOfWork.CreateParameter(tacticParameter.ParameterDirection, tacticParameter.ParameterDbType, tacticParameter.ParameterSize, tacticParameter.ParameterPrecision, tacticParameter.ParameterScale, tacticParameter.ParameterNullable, tacticParameter.ParameterName, tacticParameter.ParameterValue);
+				dbParameters.Add(dbParameter);
 			}
 
-			return dbDataParameters.ToArray();
+			return dbParameters.ToArray();
 		}
 
 		public abstract Type[] GetModelTypes();

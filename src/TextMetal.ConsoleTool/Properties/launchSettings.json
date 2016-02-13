@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "test": {
+      "commandName": "test",
+      "commandLineArgs": "-sourcefile:NUL -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\bob_master_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.Primative.NullSourceStrategy, TextMetal.Framework\" -strict:true -debug:false",
+      "environmentVariables": {
+        "SOLDER_DNX_DEBUG_QUICKS_MODE": "true",
+        "SOLDER_ENABLE_HOOK_UEX_EVENTS": "false"
+      }
+    }
+  }
+}

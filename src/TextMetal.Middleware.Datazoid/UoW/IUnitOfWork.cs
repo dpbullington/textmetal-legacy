@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Data.Common;
 
 namespace TextMetal.Middleware.Datazoid.UoW
 {
@@ -22,7 +23,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 		/// <summary>
 		/// Gets the underlying ADO.NET connection.
 		/// </summary>
-		IDbConnection Connection
+		DbConnection Connection
 		{
 			get;
 		}
@@ -46,7 +47,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 		/// <summary>
 		/// Gets the underlying ADO.NET transaction.
 		/// </summary>
-		IDbTransaction Transaction
+		DbTransaction Transaction
 		{
 			get;
 		}

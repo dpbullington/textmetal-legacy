@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
+using TextMetal.Framework.Core;
 using TextMetal.Framework.Template;
 
 namespace TextMetal.Framework.InputOutput
@@ -107,7 +108,14 @@ namespace TextMetal.Framework.InputOutput
 		/// <returns> An assembly object or null. </returns>
 		public Assembly LoadAssembly(string assemblyName)
 		{
-			return this.CoreLoadAssembly(assemblyName);
+			try
+			{
+				return this.CoreLoadAssembly(assemblyName);
+			}
+			catch (Exception ex)
+			{
+				throw new TextMetalException(string.Format("CoreLoadAssembly failed for assembly name '{0}'; see inner exception for details.", assemblyName), ex);
+			}
 		}
 
 		/// <summary>
@@ -117,7 +125,14 @@ namespace TextMetal.Framework.InputOutput
 		/// <returns> The text content or null. </returns>
 		public string LoadContent(string contentName)
 		{
-			return this.CoreLoadContent(contentName);
+			try
+			{
+				return this.CoreLoadContent(contentName);
+			}
+			catch (Exception ex)
+			{
+				throw new TextMetalException(string.Format("CoreLoadContent failed for content name '{0}'; see inner exception for details.", contentName), ex);
+			}
 		}
 
 		/// <summary>
@@ -128,7 +143,14 @@ namespace TextMetal.Framework.InputOutput
 		/// <returns> The source object or null. </returns>
 		public object LoadSource(string sourceName, IDictionary<string, IList<string>> properties)
 		{
-			return this.CoreLoadSource(sourceName, properties);
+			try
+			{
+				return this.CoreLoadSource(sourceName, properties);
+			}
+			catch (Exception ex)
+			{
+				throw new TextMetalException(string.Format("CoreLoadSource failed for source name '{0}'; see inner exception for details.", sourceName), ex);
+			}
 		}
 
 		/// <summary>
@@ -138,7 +160,14 @@ namespace TextMetal.Framework.InputOutput
 		/// <returns> The template root object or null. </returns>
 		public ITemplateXmlObject LoadTemplate(string templateName)
 		{
-			return this.CoreLoadTemplate(templateName);
+			try
+			{
+				return this.CoreLoadTemplate(templateName);
+			}
+			catch (Exception ex)
+			{
+				throw new TextMetalException(string.Format("CoreLoadTemplate failed for template name '{0}'; see inner exception for details.", templateName), ex);
+			}
 		}
 
 		#endregion

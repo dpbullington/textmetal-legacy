@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 
 using TextMetal.Middleware.Datazoid.UoW;
 
@@ -81,7 +82,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics
 
 		void EnterEnumeration(bool @override);
 
-		IEnumerable<IDbDataParameter> GetDbDataParameters(IUnitOfWork unitOfWork);
+		IEnumerable<DbParameter> GetDbParameters(IUnitOfWork unitOfWork);
 
 		Type[] GetModelTypes();
 

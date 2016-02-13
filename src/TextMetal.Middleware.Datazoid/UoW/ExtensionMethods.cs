@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 
 using TextMetal.Middleware.Solder.Utilities;
@@ -32,19 +33,19 @@ namespace TextMetal.Middleware.Datazoid.UoW
 		/// <param name="parameterName"> Specifies the parameter name. </param>
 		/// <param name="parameterValue"> Specifies the parameter value. </param>
 		/// <returns> The data parameter with the specified properties set. </returns>
-		public static IDbDataParameter CreateParameter(this IUnitOfWork unitOfWork, ParameterDirection parameterDirection, DbType dbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue)
+		public static DbParameter CreateParameter(this IUnitOfWork unitOfWork, ParameterDirection parameterDirection, DbType dbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue)
 		{
-			IDbDataParameter dbDataParameter;
+			DbParameter dbParameter;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException(nameof(unitOfWork));
 
-			dbDataParameter = AdoNetYieldingFascade.Instance.CreateParameter(unitOfWork.Connection, unitOfWork.Transaction, parameterDirection, dbType, parameterSize, parameterPrecision, parameterScale, parameterNullable, parameterName, parameterValue);
+			dbParameter = AdoNetYieldingFascade.Instance.CreateParameter(unitOfWork.Connection, unitOfWork.Transaction, parameterDirection, dbType, parameterSize, parameterPrecision, parameterScale, parameterNullable, parameterName, parameterValue);
 
-			return dbDataParameter;
+			return dbParameter;
 		}
 
-		public static IEnumerable<IRecord> ExecuteRecords(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> recordsAffectedCallback)
+		public static IEnumerable<IRecord> ExecuteRecords(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters, Action<int> recordsAffectedCallback)
 		{
 			IEnumerable<IRecord> records;
 
@@ -66,7 +67,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 		/// <param name="commandText"> The SQL text or stored procedure name. </param>
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
 		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of data. </returns>
-		public static IEnumerable<IResultset> ExecuteResultsets(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
+		public static IEnumerable<IResultset> ExecuteResultsets(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters)
 		{
 			IEnumerable<IResultset> resultsets;
 
@@ -79,7 +80,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 			return resultsets;
 		}
 
-		public static TValue ExecuteScalar<TValue>(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
+		public static TValue ExecuteScalar<TValue>(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters)
 		{
 			IEnumerable<IRecord> records;
 			IRecord record;
@@ -110,7 +111,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 			return dbValue.ChangeType<TValue>();
 		}
 
-		public static IEnumerable<IRecord> ExecuteSchemaRecords(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters, Action<int> recordsAffectedCallback)
+		public static IEnumerable<IRecord> ExecuteSchemaRecords(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters, Action<int> recordsAffectedCallback)
 		{
 			IEnumerable<IRecord> records;
 
@@ -132,7 +133,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 		/// <param name="commandText"> The SQL text or stored procedure name. </param>
 		/// <param name="commandParameters"> The parameters to use during the operation. </param>
 		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of schema metadata. </returns>
-		public static IEnumerable<IResultset> ExecuteSchemaResultsets(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<IDbDataParameter> commandParameters)
+		public static IEnumerable<IResultset> ExecuteSchemaResultsets(this IUnitOfWork unitOfWork, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters)
 		{
 			IEnumerable<IResultset> resultsets;
 
@@ -147,25 +148,25 @@ namespace TextMetal.Middleware.Datazoid.UoW
 		/// <summary>
 		/// An extension method to extract outputs from a record dictionary.
 		/// </summary>
-		/// <param name="dbDataParameters"> The target enumerable of data paramters. </param>
+		/// <param name="dbParameters"> The target enumerable of data paramters. </param>
 		/// <returns> A dictionary with record key/value pairs of OUTPUT data. </returns>
-		public static IRecord GetOutputAsRecord(this IEnumerable<IDbDataParameter> dbDataParameters)
+		public static IRecord GetOutputAsRecord(this IEnumerable<DbParameter> dbParameters)
 		{
 			IRecord output;
 
-			if ((object)dbDataParameters == null)
-				throw new ArgumentNullException(nameof(dbDataParameters));
+			if ((object)dbParameters == null)
+				throw new ArgumentNullException(nameof(dbParameters));
 
 			output = new Record();
 
-			foreach (IDbDataParameter dbDataParameter in dbDataParameters)
+			foreach (DbParameter dbParameter in dbParameters)
 			{
-				if (dbDataParameter.Direction != ParameterDirection.InputOutput &&
-					dbDataParameter.Direction != ParameterDirection.Output &&
-					dbDataParameter.Direction != ParameterDirection.ReturnValue)
+				if (dbParameter.Direction != ParameterDirection.InputOutput &&
+					dbParameter.Direction != ParameterDirection.Output &&
+					dbParameter.Direction != ParameterDirection.ReturnValue)
 					continue;
 
-				output.Add(dbDataParameter.ParameterName, dbDataParameter.Value);
+				output.Add(dbParameter.ParameterName, dbParameter.Value);
 			}
 
 			return output;

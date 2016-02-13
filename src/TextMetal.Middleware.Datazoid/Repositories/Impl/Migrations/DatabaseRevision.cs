@@ -12,7 +12,6 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Migrations
 	/// <summary>
 	/// Represents a single historical revsion to a database (file).
 	/// </summary>
-	[Serializable]
 	public sealed class DatabaseRevision
 	{
 		#region Constructors/Destructors

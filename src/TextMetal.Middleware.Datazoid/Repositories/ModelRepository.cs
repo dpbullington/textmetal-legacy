@@ -9,6 +9,7 @@ using System.IO;
 using System.Reflection;
 
 using TextMetal.Middleware.Datazoid.UoW;
+using TextMetal.Middleware.Solder.Context;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Datazoid.Repositories
@@ -16,12 +17,6 @@ namespace TextMetal.Middleware.Datazoid.Repositories
 	public abstract class ModelRepository : IModelRepository
 	{
 		#region Constructors/Destructors
-
-		protected ModelRepository()
-			: this(Solder.Utilities.DataTypeFascade.Instance,
-				Solder.Utilities.AppConfigFascade.Instance)
-		{
-		}
 
 		protected ModelRepository(IDataTypeFascade dataTypeFascade, IAppConfigFascade appConfigFascade)
 		{
@@ -180,25 +175,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories
 			AssemblyInformationFascade assemblyInformationFascade;
 			string userSpecificDirectoryPath;
 
-			if (HttpContextContextualStorageStrategy.IsInHttpContext)
-				userSpecificDirectoryPath = Path.GetFullPath(HttpContextContextualStorageStrategy.GetApplicationRootPhysicalPath());
+			if (HttpContextAccessorContextualStorageStrategy.IsInHttpContext)
+				userSpecificDirectoryPath = Path.GetFullPath(HttpContextAccessorContextualStorageStrategy.GetApplicationRootPhysicalPath());
 			else
-			{
-				assembly = Assembly.GetExecutingAssembly();
-				assemblyInformationFascade = new AssemblyInformationFascade(assembly);
-
-				if ((object)assemblyInformationFascade.Company != null &&
-					(object)assemblyInformationFascade.Product != null &&
-					(object)assemblyInformationFascade.Win32FileVersion != null)
-				{
-					userSpecificDirectoryPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-					userSpecificDirectoryPath = Path.Combine(userSpecificDirectoryPath, assemblyInformationFascade.Company);
-					userSpecificDirectoryPath = Path.Combine(userSpecificDirectoryPath, assemblyInformationFascade.Product);
-					userSpecificDirectoryPath = Path.Combine(userSpecificDirectoryPath, assemblyInformationFascade.Win32FileVersion);
-				}
-				else
-					userSpecificDirectoryPath = Path.GetFullPath(".");
-			}
+				userSpecificDirectoryPath = Path.GetFullPath("."); // HACK
 
 			return userSpecificDirectoryPath;
 		}

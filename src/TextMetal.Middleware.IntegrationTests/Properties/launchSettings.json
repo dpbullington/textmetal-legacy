@@ -1,3 +1,10 @@
 {
-  "profiles": {}
+  "profiles": {
+    "test": {
+      "commandName": "test",
+      "environmentVariables": {
+        "DNX_TRACE": "1"
+      }
+    }
+  }
 }

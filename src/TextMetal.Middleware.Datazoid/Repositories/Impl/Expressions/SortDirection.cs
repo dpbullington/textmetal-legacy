@@ -7,7 +7,6 @@ using System;
 
 namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Expressions
 {
-	[Serializable]
 	public enum SortDirection
 	{
 		Undefined = 0,

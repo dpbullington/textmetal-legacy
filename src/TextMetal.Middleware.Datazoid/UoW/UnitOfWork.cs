@@ -5,6 +5,7 @@
 
 using System;
 using System.Data;
+using System.Data.Common;
 
 namespace TextMetal.Middleware.Datazoid.UoW
 {
@@ -18,7 +19,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 		/// <summary>
 		/// Initializes a new instance of the unitOfWork class.
 		/// </summary>
-		public UnitOfWork(IDbConnection connection, IDbTransaction transaction)
+		public UnitOfWork(DbConnection connection, DbTransaction transaction)
 		{
 			this.connection = connection;
 			this.transaction = transaction;
@@ -28,8 +29,8 @@ namespace TextMetal.Middleware.Datazoid.UoW
 
 		#region Fields/Constants
 
-		private readonly IDbConnection connection;
-		private readonly IDbTransaction transaction;
+		private readonly DbConnection connection;
+		private readonly DbTransaction transaction;
 		private bool completed;
 		private IDisposable context;
 		private bool disposed;
@@ -42,7 +43,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 		/// <summary>
 		/// Gets the underlying ADO.NET connection.
 		/// </summary>
-		public IDbConnection Connection
+		public DbConnection Connection
 		{
 			get
 			{
@@ -56,7 +57,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 		/// <summary>
 		/// Gets the underlying ADO.NET transaction.
 		/// </summary>
-		public IDbTransaction Transaction
+		public DbTransaction Transaction
 		{
 			get
 			{
@@ -145,8 +146,8 @@ namespace TextMetal.Middleware.Datazoid.UoW
 		public static IUnitOfWork Create(Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel = IsolationLevel.Unspecified)
 		{
 			UnitOfWork unitOfWork;
-			IDbConnection dbConnection;
-			IDbTransaction dbTransaction;
+			DbConnection dbConnection;
+			DbTransaction dbTransaction;
 			const bool OPEN = true;
 
 			if ((object)connectionType == null)
@@ -155,7 +156,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 			if ((object)connectionString == null)
 				throw new ArgumentNullException(nameof(connectionString));
 
-			dbConnection = (IDbConnection)Activator.CreateInstance(connectionType);
+			dbConnection = (DbConnection)Activator.CreateInstance(connectionType);
 
 			if (OPEN)
 			{
@@ -173,7 +174,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 			return unitOfWork;
 		}
 
-		public static IUnitOfWork From(IDbConnection dbConnection, IDbTransaction dbTransaction)
+		public static IUnitOfWork From(DbConnection dbConnection, DbTransaction dbTransaction)
 		{
 			UnitOfWork unitOfWork;
 

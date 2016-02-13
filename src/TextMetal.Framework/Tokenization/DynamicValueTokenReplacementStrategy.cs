@@ -116,7 +116,7 @@ namespace TextMetal.Framework.Tokenization
 				throw new InvalidOperationException(string.Format("StaticMethodResolver parameter at index '{0}' with value '{1}' was not a valid, executable method name of type '{2}'.", 1, parameters[1], targetType.FullName));
 
 			// BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static
-			if (methodInfo.DeclaringType != targetType || !methodInfo.IsPublic || methodInfo.IsStatic)
+			if (methodInfo.DeclaringType != targetType || !methodInfo.IsPublic || !methodInfo.IsStatic)
 				throw new InvalidOperationException(string.Format("StaticMethodResolver parameter at index '{0}' with value '{1}' was not a valid, executable method name of type '{2}'.", 1, parameters[1], targetType.FullName));
 
 			parameterInfos = methodInfo.GetParameters();
@@ -167,6 +167,8 @@ namespace TextMetal.Framework.Tokenization
 			PropertyInfo propertyInfo;
 			object propertyValue = null;
 
+			MethodInfo getter, setter;
+
 			if ((object)parameters == null)
 				throw new ArgumentNullException(nameof(parameters));
 
@@ -186,11 +188,11 @@ namespace TextMetal.Framework.Tokenization
 				throw new InvalidOperationException(string.Format("StaticPropertyResolver parameter at index '{0}' with value '{1}' was not a valid, executable property name of type '{2}'.", 1, parameters[1], targetType.FullName));
 
 			// BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static
-			if (propertyInfo.DeclaringType != targetType ||
-				!propertyInfo.GetGetMethod().IsPublic ||
-				!propertyInfo.GetSetMethod().IsPublic ||
-				!propertyInfo.GetGetMethod().IsStatic ||
-				!propertyInfo.GetSetMethod().IsStatic)
+			getter = propertyInfo.GetGetMethod();
+			setter = propertyInfo.GetGetMethod();
+			if ((object)propertyInfo.DeclaringType != targetType ||
+				((object)getter != null && (!getter.IsPublic || !getter.IsStatic)) ||
+				((object)setter != null && (!setter.IsPublic || !setter.IsStatic)))
 				throw new InvalidOperationException(string.Format("StaticPropertyResolver parameter at index '{0}' with value '{1}' was not a valid, executable property name of type '{2}'.", 1, parameters[1], targetType.FullName));
 
 			if (!propertyInfo.CanRead)

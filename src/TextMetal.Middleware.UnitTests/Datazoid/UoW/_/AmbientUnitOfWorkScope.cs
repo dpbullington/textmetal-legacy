@@ -5,6 +5,7 @@
 
 using System;
 using System.Data;
+using System.Data.Common;
 
 using NUnit.Framework;
 
@@ -29,13 +30,13 @@ namespace TextMetal.Middleware.UnitTests.Datazoid.UoW._
 			MockFactory mockFactory;
 			DataSourceTransaction transaction;
 			string mockConnectionString;
-			IDbConnection mockDbConnection;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbTransaction mockDbTransaction;
 
 			mockFactory = new MockFactory();
 			mockConnectionString = "db=local";
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
 
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbTransaction).Method("Dispose").WithNoArguments();
@@ -69,14 +70,14 @@ namespace TextMetal.Middleware.UnitTests.Datazoid.UoW._
 			MockFactory mockFactory;
 			DataSourceTransaction transaction;
 			string mockConnectionString;
-			IDbConnection mockDbConnection;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbTransaction mockDbTransaction;
 			IDataSourceTransactionContext mockDataSourceTransactionContext;
 
 			mockFactory = new MockFactory();
 			mockConnectionString = "db=local";
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
 			mockDataSourceTransactionContext = mockFactory.CreateInstance<IDataSourceTransactionContext>();
 
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Dispose").WithNoArguments();
@@ -142,13 +143,13 @@ namespace TextMetal.Middleware.UnitTests.Datazoid.UoW._
 			MockFactory mockFactory;
 			DataSourceTransaction transaction;
 			string mockConnectionString;
-			IDbConnection mockDbConnection;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbTransaction mockDbTransaction;
 
 			mockFactory = new MockFactory();
 			mockConnectionString = "db=local";
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
 
 			transaction = new DataSourceTransaction();
 
@@ -171,13 +172,13 @@ namespace TextMetal.Middleware.UnitTests.Datazoid.UoW._
 			MockFactory mockFactory;
 			DataSourceTransaction transaction;
 			string mockConnectionString;
-			IDbConnection mockDbConnection;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbTransaction mockDbTransaction;
 
 			mockFactory = new MockFactory();
 			mockConnectionString = "db=local";
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
 
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbTransaction).Method("Rollback").WithNoArguments();
@@ -213,13 +214,13 @@ namespace TextMetal.Middleware.UnitTests.Datazoid.UoW._
 			MockFactory mockFactory;
 			DataSourceTransaction transaction;
 			string mockConnectionString;
-			IDbConnection mockDbConnection;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbTransaction mockDbTransaction;
 
 			mockFactory = new MockFactory();
 			mockConnectionString = "db=local";
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
 
 			transaction = new DataSourceTransaction();
 
@@ -275,13 +276,13 @@ namespace TextMetal.Middleware.UnitTests.Datazoid.UoW._
 			MockFactory mockFactory;
 			DataSourceTransaction transaction;
 			string mockConnectionString;
-			IDbConnection mockDbConnection;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbTransaction mockDbTransaction;
 
 			mockFactory = new MockFactory();
 			mockConnectionString = "db=local";
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
 
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbTransaction).Method("Rollback").WithNoArguments();
@@ -316,13 +317,13 @@ namespace TextMetal.Middleware.UnitTests.Datazoid.UoW._
 			MockFactory mockFactory;
 			DataSourceTransaction transaction;
 			string mockConnectionString;
-			IDbConnection mockDbConnection;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbTransaction mockDbTransaction;
 
 			mockFactory = new MockFactory();
 			mockConnectionString = "db=local";
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
 
 			transaction = new DataSourceTransaction();
 
@@ -345,13 +346,13 @@ namespace TextMetal.Middleware.UnitTests.Datazoid.UoW._
 			MockFactory mockFactory;
 			DataSourceTransaction transaction;
 			string mockConnectionString;
-			IDbConnection mockDbConnection;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbTransaction mockDbTransaction;
 
 			mockFactory = new MockFactory();
 			mockConnectionString = "db=local";
 			mockDbConnection = null;
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
 
 			transaction = new DataSourceTransaction();
 
@@ -373,13 +374,13 @@ namespace TextMetal.Middleware.UnitTests.Datazoid.UoW._
 			MockFactory mockFactory;
 			DataSourceTransaction transaction;
 			string mockConnectionString;
-			IDbConnection mockDbConnection;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbTransaction mockDbTransaction;
 
 			mockFactory = new MockFactory();
 			mockConnectionString = null;
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
 
 			transaction = new DataSourceTransaction();
 
@@ -400,13 +401,13 @@ namespace TextMetal.Middleware.UnitTests.Datazoid.UoW._
 			MockFactory mockFactory;
 			DataSourceTransaction transaction;
 			string mockConnectionString;
-			IDbConnection mockDbConnection;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbTransaction mockDbTransaction;
 
 			mockFactory = new MockFactory();
 			mockConnectionString = "db=local";
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
 
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbTransaction).Method("Dispose").WithNoArguments();
@@ -441,13 +442,13 @@ namespace TextMetal.Middleware.UnitTests.Datazoid.UoW._
 			MockFactory mockFactory;
 			DataSourceTransaction transaction;
 			string mockConnectionString;
-			IDbConnection mockDbConnection;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbTransaction mockDbTransaction;
 
 			mockFactory = new MockFactory();
 			mockConnectionString = "db=local";
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
 
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbTransaction).Method("Rollback").WithNoArguments();
@@ -546,17 +547,17 @@ System.Data;
 			MockFactory mockFactory;
 			AdoNetDataSource dataSource;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
-			IDbCommand mockDbCommand;
+			DbConnection mockDbConnection;
+			DbCommand mockDbCommand;
 
-			IDbDataParameter p;
-			IDbDataParameter mockDbParameter;
+			DbParameter p;
+			DbParameter mockDbParameter;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbCommand = mockFactory.CreateInstance<IDbCommand>();
-			mockDbParameter = mockFactory.CreateInstance<IDbDataParameter>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbCommand = mockFactory.CreateInstance<DbCommand>();
+			mockDbParameter = mockFactory.CreateInstance<DbParameter>();
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			Expect.Once.On(mockDbConnection).Method("CreateCommand").Will(Return.Value(mockDbCommand));
@@ -591,11 +592,11 @@ System.Data;
 			Assert.AreEqual(ParameterDirection.Input, p.Direction);
 			Assert.AreEqual("@bob", p.ParameterName);
 			Assert.AreEqual("test", p.Value);
-			Assert.AreEqual(1, ((IDbDataParameter)p).Size);
+			Assert.AreEqual(1, ((DbParameter)p).Size);
 			Assert.AreEqual(DbType.String, p.DbType);
-			Assert.AreEqual((byte)2, ((IDbDataParameter)p).Precision);
-			Assert.AreEqual((byte)3, ((IDbDataParameter)p).Scale);
-			//Assert.AreEqual(true, ((IDbDataParameter)p).IsNullable);
+			Assert.AreEqual((byte)2, ((DbParameter)p).Precision);
+			Assert.AreEqual((byte)3, ((DbParameter)p).Scale);
+			//Assert.AreEqual(true, ((DbParameter)p).IsNullable);
 
 			mockFactory.VerifyAllExpectationsHaveBeenMet();
 		}
@@ -621,23 +622,23 @@ System.Data;
 			MockFactory mockFactory;
 			AdoNetDataSource dataSource;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
-			IDbCommand mockDbCommand;
-			IDataParameterCollection mockDbDataParameterCollection;
-			IDbDataParameter[] mockDbDataParameters;
-			IDbDataParameter mockDbDataParameter0;
-			IDbDataParameter mockDbDataParameter1;
+			DbConnection mockDbConnection;
+			DbCommand mockDbCommand;
+			IDataParameterCollection mockDbParameterCollection;
+			DbParameter[] mockDbParameters;
+			DbParameter mockDbParameter0;
+			DbParameter mockDbParameter1;
 
 			int recordsAffected;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbCommand = mockFactory.CreateInstance<IDbCommand>();
-			mockDbDataParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
-			mockDbDataParameter0 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbDataParameter1 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbDataParameters = new IDbDataParameter[] { mockDbDataParameter0, mockDbDataParameter1 };
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbCommand = mockFactory.CreateInstance<DbCommand>();
+			mockDbParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
+			mockDbParameter0 = mockFactory.CreateInstance<DbParameter>();
+			mockDbParameter1 = mockFactory.CreateInstance<DbParameter>();
+			mockDbParameters = new DbParameter[] { mockDbParameter0, mockDbParameter1 };
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			//Expect.AtLeastOnce.On(mockDbConnection).GetProperty("State").Will(Return.Value(ConnectionState.Open));
@@ -645,8 +646,8 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbConnection).SetProperty("ConnectionString").To("myConnectionString");
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Open").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbConnection).Method("CreateCommand").WithNoArguments().Will(Return.Value(mockDbCommand));
-			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbDataParameterCollection));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Clear").WithNoArguments();
+			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbParameterCollection));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Clear").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Connection").To(mockDbConnection);
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandType").To(CommandType.StoredProcedure);
@@ -654,15 +655,15 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Transaction");
 			Expect.AtLeastOnce.On(mockDbCommand).Method("ExecuteNonQuery").WithNoArguments().Will(Return.Value(1));
 
-			Expect.AtLeastOnce.On(mockDbDataParameter0).GetProperty("Value").Will(Return.Value(1));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).GetProperty("Value").Will(Return.Value(null));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).SetProperty("Value").To(DBNull.Value);
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter0).Will(Return.Value(0));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter1).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbParameter0).GetProperty("Value").Will(Return.Value(1));
+			Expect.AtLeastOnce.On(mockDbParameter1).GetProperty("Value").Will(Return.Value(null));
+			Expect.AtLeastOnce.On(mockDbParameter1).SetProperty("Value").To(DBNull.Value);
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter0).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter1).Will(Return.Value(0));
 
 			dataSource = new AdoNetDataSource(MOCK_CONNECTION_STRING, mockConnectionFactory);
 
-			recordsAffected = dataSource.ExecuteNonQuery(CommandType.StoredProcedure, "blah blah blah", mockDbDataParameters, null, false);
+			recordsAffected = dataSource.ExecuteNonQuery(CommandType.StoredProcedure, "blah blah blah", mockDbParameters, null, false);
 
 			Assert.AreEqual(1, recordsAffected);
 
@@ -675,16 +676,16 @@ System.Data;
 			MockFactory mockFactory;
 			AdoNetDataSource dataSource;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
-			IDbCommand mockDbCommand;
-			IDataParameterCollection mockDbDataParameterCollection;
+			DbConnection mockDbConnection;
+			DbCommand mockDbCommand;
+			IDataParameterCollection mockDbParameterCollection;
 			int recordsAffected;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbCommand = mockFactory.CreateInstance<IDbCommand>();
-			mockDbDataParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbCommand = mockFactory.CreateInstance<DbCommand>();
+			mockDbParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			//Expect.AtLeastOnce.On(mockDbConnection).GetProperty("State").Will(Return.Value(ConnectionState.Open));
@@ -692,8 +693,8 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbConnection).SetProperty("ConnectionString").To("myConnectionString");
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Open").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbConnection).Method("CreateCommand").WithNoArguments().Will(Return.Value(mockDbCommand));
-			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbDataParameterCollection));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Clear").WithNoArguments();
+			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbParameterCollection));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Clear").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Connection").To(mockDbConnection);
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandType").To(CommandType.Text);
@@ -718,25 +719,25 @@ System.Data;
 			MockFactory mockFactory;
 			AdoNetDataSource dataSource;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
-			IDbCommand mockDbCommand;
-			IDataParameterCollection mockDbDataParameterCollection;
-			IDbDataParameter[] mockDbDataParameters;
-			IDbDataParameter mockDbDataParameter0;
-			IDbDataParameter mockDbDataParameter1;
-			IDataReader mockDataReader;
+			DbConnection mockDbConnection;
+			DbCommand mockDbCommand;
+			IDataParameterCollection mockDbParameterCollection;
+			DbParameter[] mockDbParameters;
+			DbParameter mockDbParameter0;
+			DbParameter mockDbParameter1;
+			DbDataReader mockDbDataReader;
 
-			IDataReader dataReader;
+			DbDataReader dbDataReader;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbCommand = mockFactory.CreateInstance<IDbCommand>();
-			mockDbDataParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
-			mockDbDataParameter0 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbDataParameter1 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbDataParameters = new IDbDataParameter[] { mockDbDataParameter0, mockDbDataParameter1 };
-			mockDataReader = mockFactory.CreateInstance<IDataReader>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbCommand = mockFactory.CreateInstance<DbCommand>();
+			mockDbParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
+			mockDbParameter0 = mockFactory.CreateInstance<DbParameter>();
+			mockDbParameter1 = mockFactory.CreateInstance<DbParameter>();
+			mockDbParameters = new DbParameter[] { mockDbParameter0, mockDbParameter1 };
+			mockDbDataReader = mockFactory.CreateInstance<DbDataReader>();
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			//Expect.AtLeastOnce.On(mockDbConnection).GetProperty("State").Will(Return.Value(ConnectionState.Open));
@@ -744,28 +745,28 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbConnection).SetProperty("ConnectionString").To("myConnectionString");
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Open").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbConnection).Method("CreateCommand").WithNoArguments().Will(Return.Value(mockDbCommand));
-			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbDataParameterCollection));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Clear").WithNoArguments();
+			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbParameterCollection));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Clear").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Connection").To(mockDbConnection);
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandType").To(CommandType.StoredProcedure);
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandText").To("blah blah blah");
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Transaction");
-			Expect.AtLeastOnce.On(mockDbCommand).Method("ExecuteReader").With(CommandBehavior.CloseConnection).Will(Return.Value(mockDataReader));
-			Expect.AtLeastOnce.On(mockDbDataParameter0).GetProperty("Value").Will(Return.Value(1));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).GetProperty("Value").Will(Return.Value(null));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).SetProperty("Value").To(DBNull.Value);
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter0).Will(Return.Value(0));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter1).Will(Return.Value(0));
-			Expect.AtLeastOnce.On(mockDataReader).Method("Dispose").WithNoArguments();
+			Expect.AtLeastOnce.On(mockDbCommand).Method("ExecuteReader").With(CommandBehavior.CloseConnection).Will(Return.Value(mockDbDataReader));
+			Expect.AtLeastOnce.On(mockDbParameter0).GetProperty("Value").Will(Return.Value(1));
+			Expect.AtLeastOnce.On(mockDbParameter1).GetProperty("Value").Will(Return.Value(null));
+			Expect.AtLeastOnce.On(mockDbParameter1).SetProperty("Value").To(DBNull.Value);
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter0).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter1).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbDataReader).Method("Dispose").WithNoArguments();
 
 			dataSource = new AdoNetDataSource(MOCK_CONNECTION_STRING, mockConnectionFactory);
 
-			dataReader = dataSource.ExecuteReader(CommandType.StoredProcedure, "blah blah blah", mockDbDataParameters, CommandBehavior.CloseConnection, null, false);
+			dbDataReader = dataSource.ExecuteReader(CommandType.StoredProcedure, "blah blah blah", mockDbParameters, CommandBehavior.CloseConnection, null, false);
 
-			Assert.IsNotNull(dataReader);
+			Assert.IsNotNull(dbDataReader);
 
-			dataReader.Dispose();
+			dbDataReader.Dispose();
 
 			mockFactory.VerifyAllExpectationsHaveBeenMet();
 		}
@@ -776,19 +777,19 @@ System.Data;
 			MockFactory mockFactory;
 			AdoNetDataSource dataSource;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
-			IDbCommand mockDbCommand;
-			IDataParameterCollection mockDbDataParameterCollection;
-			IDataReader mockDataReader;
+			DbConnection mockDbConnection;
+			DbCommand mockDbCommand;
+			IDataParameterCollection mockDbParameterCollection;
+			DbDataReader mockDbDataReader;
 
-			IDataReader dataReader;
+			DbDataReader dbDataReader;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbCommand = mockFactory.CreateInstance<IDbCommand>();
-			mockDbDataParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
-			mockDataReader = mockFactory.CreateInstance<IDataReader>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbCommand = mockFactory.CreateInstance<DbCommand>();
+			mockDbParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
+			mockDbDataReader = mockFactory.CreateInstance<DbDataReader>();
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			//Expect.AtLeastOnce.On(mockDbConnection).GetProperty("State").Will(Return.Value(ConnectionState.Open));
@@ -796,25 +797,25 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbConnection).SetProperty("ConnectionString").To("myConnectionString");
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Open").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbConnection).Method("CreateCommand").WithNoArguments().Will(Return.Value(mockDbCommand));
-			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbDataParameterCollection));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Clear").WithNoArguments();
+			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbParameterCollection));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Clear").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Connection").To(mockDbConnection);
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandType").To(CommandType.Text);
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandText").To("blah blah blah");
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Transaction");
-			Expect.AtLeastOnce.On(mockDbCommand).Method("ExecuteReader").With(CommandBehavior.CloseConnection).Will(Return.Value(mockDataReader));
-			Expect.AtLeastOnce.On(mockDataReader).Method("Dispose").WithNoArguments();
+			Expect.AtLeastOnce.On(mockDbCommand).Method("ExecuteReader").With(CommandBehavior.CloseConnection).Will(Return.Value(mockDbDataReader));
+			Expect.AtLeastOnce.On(mockDbDataReader).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandTimeout").To(15);
 			Expect.AtLeastOnce.On(mockDbCommand).Method("Prepare").WithNoArguments();
 
 			dataSource = new AdoNetDataSource(MOCK_CONNECTION_STRING, mockConnectionFactory);
 
-			dataReader = dataSource.ExecuteReader(CommandType.Text, "blah blah blah", null, CommandBehavior.CloseConnection, 15, true);
+			dbDataReader = dataSource.ExecuteReader(CommandType.Text, "blah blah blah", null, CommandBehavior.CloseConnection, 15, true);
 
-			Assert.IsNotNull(dataReader);
+			Assert.IsNotNull(dbDataReader);
 
-			dataReader.Dispose();
+			dbDataReader.Dispose();
 
 			mockFactory.VerifyAllExpectationsHaveBeenMet();
 		}
@@ -825,25 +826,25 @@ System.Data;
 			MockFactory mockFactory;
 			AdoNetDataSource dataSource;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
-			IDbCommand mockDbCommand;
-			IDataParameterCollection mockDbDataParameterCollection;
-			IDbDataParameter[] mockDbDataParameters;
-			IDbDataParameter mockDbDataParameter0;
-			IDbDataParameter mockDbDataParameter1;
-			IDataReader mockDataReader;
+			DbConnection mockDbConnection;
+			DbCommand mockDbCommand;
+			IDataParameterCollection mockDbParameterCollection;
+			DbParameter[] mockDbParameters;
+			DbParameter mockDbParameter0;
+			DbParameter mockDbParameter1;
+			DbDataReader mockDbDataReader;
 
-			IDataReader dataReader;
+			DbDataReader dbDataReader;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbCommand = mockFactory.CreateInstance<IDbCommand>();
-			mockDbDataParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
-			mockDbDataParameter0 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbDataParameter1 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbDataParameters = new IDbDataParameter[] { mockDbDataParameter0, mockDbDataParameter1 };
-			mockDataReader = mockFactory.CreateInstance<IDataReader>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbCommand = mockFactory.CreateInstance<DbCommand>();
+			mockDbParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
+			mockDbParameter0 = mockFactory.CreateInstance<DbParameter>();
+			mockDbParameter1 = mockFactory.CreateInstance<DbParameter>();
+			mockDbParameters = new DbParameter[] { mockDbParameter0, mockDbParameter1 };
+			mockDbDataReader = mockFactory.CreateInstance<DbDataReader>();
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			//Expect.AtLeastOnce.On(mockDbConnection).GetProperty("State").Will(Return.Value(ConnectionState.Open));
@@ -851,28 +852,28 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbConnection).SetProperty("ConnectionString").To("myConnectionString");
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Open").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbConnection).Method("CreateCommand").WithNoArguments().Will(Return.Value(mockDbCommand));
-			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbDataParameterCollection));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Clear").WithNoArguments();
+			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbParameterCollection));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Clear").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Connection").To(mockDbConnection);
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandType").To(CommandType.StoredProcedure);
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandText").To("blah blah blah");
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Transaction");
-			Expect.AtLeastOnce.On(mockDbCommand).Method("ExecuteReader").With(CommandBehavior.SingleRow).Will(Return.Value(mockDataReader));
-			Expect.AtLeastOnce.On(mockDbDataParameter0).GetProperty("Value").Will(Return.Value(1));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).GetProperty("Value").Will(Return.Value(null));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).SetProperty("Value").To(DBNull.Value);
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter0).Will(Return.Value(0));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter1).Will(Return.Value(0));
-			Expect.AtLeastOnce.On(mockDataReader).Method("Dispose").WithNoArguments();
+			Expect.AtLeastOnce.On(mockDbCommand).Method("ExecuteReader").With(CommandBehavior.SingleRow).Will(Return.Value(mockDbDataReader));
+			Expect.AtLeastOnce.On(mockDbParameter0).GetProperty("Value").Will(Return.Value(1));
+			Expect.AtLeastOnce.On(mockDbParameter1).GetProperty("Value").Will(Return.Value(null));
+			Expect.AtLeastOnce.On(mockDbParameter1).SetProperty("Value").To(DBNull.Value);
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter0).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter1).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbDataReader).Method("Dispose").WithNoArguments();
 
 			dataSource = new AdoNetDataSource(MOCK_CONNECTION_STRING, mockConnectionFactory);
 
-			dataReader = dataSource.ExecuteReader(CommandType.StoredProcedure, "blah blah blah", mockDbDataParameters, CommandBehavior.SingleRow, null, false);
+			dbDataReader = dataSource.ExecuteReader(CommandType.StoredProcedure, "blah blah blah", mockDbParameters, CommandBehavior.SingleRow, null, false);
 
-			Assert.IsNotNull(dataReader);
+			Assert.IsNotNull(dbDataReader);
 
-			dataReader.Dispose();
+			dbDataReader.Dispose();
 
 			mockFactory.VerifyAllExpectationsHaveBeenMet();
 		}
@@ -883,19 +884,19 @@ System.Data;
 			MockFactory mockFactory;
 			AdoNetDataSource dataSource;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
-			IDbCommand mockDbCommand;
-			IDataParameterCollection mockDbDataParameterCollection;
-			IDataReader mockDataReader;
+			DbConnection mockDbConnection;
+			DbCommand mockDbCommand;
+			IDataParameterCollection mockDbParameterCollection;
+			DbDataReader mockDbDataReader;
 
-			IDataReader dataReader;
+			DbDataReader dbDataReader;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbCommand = mockFactory.CreateInstance<IDbCommand>();
-			mockDbDataParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
-			mockDataReader = mockFactory.CreateInstance<IDataReader>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbCommand = mockFactory.CreateInstance<DbCommand>();
+			mockDbParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
+			mockDbDataReader = mockFactory.CreateInstance<DbDataReader>();
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			//Expect.AtLeastOnce.On(mockDbConnection).GetProperty("State").Will(Return.Value(ConnectionState.Open));
@@ -903,23 +904,23 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbConnection).SetProperty("ConnectionString").To("myConnectionString");
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Open").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbConnection).Method("CreateCommand").WithNoArguments().Will(Return.Value(mockDbCommand));
-			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbDataParameterCollection));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Clear").WithNoArguments();
+			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbParameterCollection));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Clear").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Connection").To(mockDbConnection);
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandType").To(CommandType.Text);
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandText").To("blah blah blah");
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Transaction");
-			Expect.AtLeastOnce.On(mockDbCommand).Method("ExecuteReader").With(CommandBehavior.SingleRow).Will(Return.Value(mockDataReader));
-			Expect.AtLeastOnce.On(mockDataReader).Method("Dispose").WithNoArguments();
+			Expect.AtLeastOnce.On(mockDbCommand).Method("ExecuteReader").With(CommandBehavior.SingleRow).Will(Return.Value(mockDbDataReader));
+			Expect.AtLeastOnce.On(mockDbDataReader).Method("Dispose").WithNoArguments();
 
 			dataSource = new AdoNetDataSource(MOCK_CONNECTION_STRING, mockConnectionFactory);
 
-			dataReader = dataSource.ExecuteReader(CommandType.Text, "blah blah blah", null, CommandBehavior.SingleRow, null, false);
+			dbDataReader = dataSource.ExecuteReader(CommandType.Text, "blah blah blah", null, CommandBehavior.SingleRow, null, false);
 
-			Assert.IsNotNull(dataReader);
+			Assert.IsNotNull(dbDataReader);
 
-			dataReader.Dispose();
+			dbDataReader.Dispose();
 
 			mockFactory.VerifyAllExpectationsHaveBeenMet();
 		}
@@ -930,23 +931,23 @@ System.Data;
 			MockFactory mockFactory;
 			AdoNetDataSource dataSource;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
-			IDbCommand mockDbCommand;
-			IDataParameterCollection mockDbDataParameterCollection;
-			IDbDataParameter[] mockDbDataParameters;
-			IDbDataParameter mockDbDataParameter0;
-			IDbDataParameter mockDbDataParameter1;
+			DbConnection mockDbConnection;
+			DbCommand mockDbCommand;
+			IDataParameterCollection mockDbParameterCollection;
+			DbParameter[] mockDbParameters;
+			DbParameter mockDbParameter0;
+			DbParameter mockDbParameter1;
 
 			object returnValue;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbCommand = mockFactory.CreateInstance<IDbCommand>();
-			mockDbDataParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
-			mockDbDataParameter0 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbDataParameter1 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbDataParameters = new IDbDataParameter[] { mockDbDataParameter0, mockDbDataParameter1 };
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbCommand = mockFactory.CreateInstance<DbCommand>();
+			mockDbParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
+			mockDbParameter0 = mockFactory.CreateInstance<DbParameter>();
+			mockDbParameter1 = mockFactory.CreateInstance<DbParameter>();
+			mockDbParameters = new DbParameter[] { mockDbParameter0, mockDbParameter1 };
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			//Expect.AtLeastOnce.On(mockDbConnection).GetProperty("State").Will(Return.Value(ConnectionState.Open));
@@ -954,8 +955,8 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbConnection).SetProperty("ConnectionString").To("myConnectionString");
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Open").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbConnection).Method("CreateCommand").WithNoArguments().Will(Return.Value(mockDbCommand));
-			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbDataParameterCollection));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Clear").WithNoArguments();
+			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbParameterCollection));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Clear").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Connection").To(mockDbConnection);
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandType").To(CommandType.StoredProcedure);
@@ -963,15 +964,15 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Transaction");
 			Expect.AtLeastOnce.On(mockDbCommand).Method("ExecuteScalar").WithNoArguments().Will(Return.Value(1));
 
-			Expect.AtLeastOnce.On(mockDbDataParameter0).GetProperty("Value").Will(Return.Value(1));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).GetProperty("Value").Will(Return.Value(null));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).SetProperty("Value").To(DBNull.Value);
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter0).Will(Return.Value(0));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter1).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbParameter0).GetProperty("Value").Will(Return.Value(1));
+			Expect.AtLeastOnce.On(mockDbParameter1).GetProperty("Value").Will(Return.Value(null));
+			Expect.AtLeastOnce.On(mockDbParameter1).SetProperty("Value").To(DBNull.Value);
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter0).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter1).Will(Return.Value(0));
 
 			dataSource = new AdoNetDataSource(MOCK_CONNECTION_STRING, mockConnectionFactory);
 
-			returnValue = dataSource.ExecuteScalar(CommandType.StoredProcedure, "blah blah blah", mockDbDataParameters, null, false);
+			returnValue = dataSource.ExecuteScalar(CommandType.StoredProcedure, "blah blah blah", mockDbParameters, null, false);
 
 			Assert.AreEqual(1, returnValue);
 
@@ -984,17 +985,17 @@ System.Data;
 			MockFactory mockFactory;
 			AdoNetDataSource dataSource;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
-			IDbCommand mockDbCommand;
-			IDataParameterCollection mockDbDataParameterCollection;
+			DbConnection mockDbConnection;
+			DbCommand mockDbCommand;
+			IDataParameterCollection mockDbParameterCollection;
 
 			object returnValue;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbCommand = mockFactory.CreateInstance<IDbCommand>();
-			mockDbDataParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbCommand = mockFactory.CreateInstance<DbCommand>();
+			mockDbParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			//Expect.AtLeastOnce.On(mockDbConnection).GetProperty("State").Will(Return.Value(ConnectionState.Open));
@@ -1002,8 +1003,8 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbConnection).SetProperty("ConnectionString").To("myConnectionString");
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Open").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbConnection).Method("CreateCommand").WithNoArguments().Will(Return.Value(mockDbCommand));
-			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbDataParameterCollection));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Clear").WithNoArguments();
+			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbParameterCollection));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Clear").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Connection").To(mockDbConnection);
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandType").To(CommandType.Text);
@@ -1028,25 +1029,25 @@ System.Data;
 			MockFactory mockFactory;
 			AdoNetDataSource dataSource;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
-			IDbCommand mockDbCommand;
-			IDataParameterCollection mockDbDataParameterCollection;
-			IDbDataParameter[] mockDbDataParameters;
-			IDbDataParameter mockDbDataParameter0;
-			IDbDataParameter mockDbDataParameter1;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbCommand mockDbCommand;
+			IDataParameterCollection mockDbParameterCollection;
+			DbParameter[] mockDbParameters;
+			DbParameter mockDbParameter0;
+			DbParameter mockDbParameter1;
+			DbTransaction mockDbTransaction;
 
 			int recordsAffected;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbCommand = mockFactory.CreateInstance<IDbCommand>();
-			mockDbDataParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
-			mockDbDataParameter0 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbDataParameter1 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
-			mockDbDataParameters = new IDbDataParameter[] { mockDbDataParameter0, mockDbDataParameter1 };
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbCommand = mockFactory.CreateInstance<DbCommand>();
+			mockDbParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
+			mockDbParameter0 = mockFactory.CreateInstance<DbParameter>();
+			mockDbParameter1 = mockFactory.CreateInstance<DbParameter>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
+			mockDbParameters = new DbParameter[] { mockDbParameter0, mockDbParameter1 };
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			Expect.Once.On(mockConnectionFactory).GetProperty("ConnectionType").Will(Return.Value(mockDbConnection.GetType()));
@@ -1056,8 +1057,8 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Open").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbConnection).Method("CreateCommand").WithNoArguments().Will(Return.Value(mockDbCommand));
 			Expect.AtLeastOnce.On(mockDbConnection).Method("BeginTransaction").With(IsolationLevel.Unspecified).Will(Return.Value(mockDbTransaction));
-			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbDataParameterCollection));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Clear").WithNoArguments();
+			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbParameterCollection));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Clear").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Connection").To(mockDbConnection);
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandType").To(CommandType.StoredProcedure);
@@ -1066,11 +1067,11 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbCommand).Method("ExecuteNonQuery").WithNoArguments().Will(Return.Value(1));
 			Expect.AtLeastOnce.On(mockDbTransaction).Method("Dispose").WithNoArguments();
 
-			Expect.AtLeastOnce.On(mockDbDataParameter0).GetProperty("Value").Will(Return.Value(1));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).GetProperty("Value").Will(Return.Value(null));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).SetProperty("Value").To(DBNull.Value);
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter0).Will(Return.Value(0));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter1).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbParameter0).GetProperty("Value").Will(Return.Value(1));
+			Expect.AtLeastOnce.On(mockDbParameter1).GetProperty("Value").Will(Return.Value(null));
+			Expect.AtLeastOnce.On(mockDbParameter1).SetProperty("Value").To(DBNull.Value);
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter0).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter1).Will(Return.Value(0));
 
 			using (DataSourceTransaction transaction = new DataSourceTransaction())
 			{
@@ -1080,7 +1081,7 @@ System.Data;
 
 				dataSource = new AdoNetDataSource(MOCK_CONNECTION_STRING, mockConnectionFactory);
 
-				recordsAffected = dataSource.ExecuteNonQuery(CommandType.StoredProcedure, "blah blah blah", mockDbDataParameters, null, false);
+				recordsAffected = dataSource.ExecuteNonQuery(CommandType.StoredProcedure, "blah blah blah", mockDbParameters, null, false);
 			}
 
 			Assert.AreEqual(1, recordsAffected);
@@ -1094,25 +1095,25 @@ System.Data;
 			MockFactory mockFactory;
 			AdoNetDataSource dataSource;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
-			IDbCommand mockDbCommand;
-			IDataParameterCollection mockDbDataParameterCollection;
-			IDbDataParameter[] mockDbDataParameters;
-			IDbDataParameter mockDbDataParameter0;
-			IDbDataParameter mockDbDataParameter1;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbCommand mockDbCommand;
+			IDataParameterCollection mockDbParameterCollection;
+			DbParameter[] mockDbParameters;
+			DbParameter mockDbParameter0;
+			DbParameter mockDbParameter1;
+			DbTransaction mockDbTransaction;
 
 			int recordsAffected;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbCommand = mockFactory.CreateInstance<IDbCommand>();
-			mockDbDataParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
-			mockDbDataParameter0 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbDataParameter1 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
-			mockDbDataParameters = new IDbDataParameter[] { mockDbDataParameter0, mockDbDataParameter1 };
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbCommand = mockFactory.CreateInstance<DbCommand>();
+			mockDbParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
+			mockDbParameter0 = mockFactory.CreateInstance<DbParameter>();
+			mockDbParameter1 = mockFactory.CreateInstance<DbParameter>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
+			mockDbParameters = new DbParameter[] { mockDbParameter0, mockDbParameter1 };
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			Expect.Once.On(mockConnectionFactory).GetProperty("ConnectionType").Will(Return.Value(mockDbConnection.GetType()));
@@ -1122,8 +1123,8 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Open").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbConnection).Method("CreateCommand").WithNoArguments().Will(Return.Value(mockDbCommand));
 			Expect.AtLeastOnce.On(mockDbConnection).Method("BeginTransaction").With(IsolationLevel.Unspecified).Will(Return.Value(mockDbTransaction));
-			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbDataParameterCollection));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Clear").WithNoArguments();
+			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbParameterCollection));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Clear").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Connection").To(mockDbConnection);
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandType").To(CommandType.StoredProcedure);
@@ -1133,17 +1134,17 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbTransaction).Method("Commit").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbTransaction).Method("Dispose").WithNoArguments();
 
-			Expect.AtLeastOnce.On(mockDbDataParameter0).GetProperty("Value").Will(Return.Value(1));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).GetProperty("Value").Will(Return.Value(null));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).SetProperty("Value").To(DBNull.Value);
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter0).Will(Return.Value(0));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter1).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbParameter0).GetProperty("Value").Will(Return.Value(1));
+			Expect.AtLeastOnce.On(mockDbParameter1).GetProperty("Value").Will(Return.Value(null));
+			Expect.AtLeastOnce.On(mockDbParameter1).SetProperty("Value").To(DBNull.Value);
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter0).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter1).Will(Return.Value(0));
 
 			using (DataSourceTransactionScope dsts = new DataSourceTransactionScope())
 			{
 				dataSource = new AdoNetDataSource(MOCK_CONNECTION_STRING, mockConnectionFactory);
 
-				recordsAffected = dataSource.ExecuteNonQuery(CommandType.StoredProcedure, "blah blah blah", mockDbDataParameters, null, false);
+				recordsAffected = dataSource.ExecuteNonQuery(CommandType.StoredProcedure, "blah blah blah", mockDbParameters, null, false);
 
 				dsts.Complete();
 			}
@@ -1159,25 +1160,25 @@ System.Data;
 			MockFactory mockFactory;
 			AdoNetDataSource dataSource;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
-			IDbCommand mockDbCommand;
-			IDataParameterCollection mockDbDataParameterCollection;
-			IDbDataParameter[] mockDbDataParameters;
-			IDbDataParameter mockDbDataParameter0;
-			IDbDataParameter mockDbDataParameter1;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbCommand mockDbCommand;
+			IDataParameterCollection mockDbParameterCollection;
+			DbParameter[] mockDbParameters;
+			DbParameter mockDbParameter0;
+			DbParameter mockDbParameter1;
+			DbTransaction mockDbTransaction;
 
 			int recordsAffected;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbCommand = mockFactory.CreateInstance<IDbCommand>();
-			mockDbDataParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
-			mockDbDataParameter0 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbDataParameter1 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
-			mockDbDataParameters = new IDbDataParameter[] { mockDbDataParameter0, mockDbDataParameter1 };
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbCommand = mockFactory.CreateInstance<DbCommand>();
+			mockDbParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
+			mockDbParameter0 = mockFactory.CreateInstance<DbParameter>();
+			mockDbParameter1 = mockFactory.CreateInstance<DbParameter>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
+			mockDbParameters = new DbParameter[] { mockDbParameter0, mockDbParameter1 };
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			Expect.AtLeastOnce.On(mockConnectionFactory).GetProperty("ConnectionType").Will(Return.Value(mockDbConnection.GetType()));
@@ -1187,8 +1188,8 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Open").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbConnection).Method("CreateCommand").WithNoArguments().Will(Return.Value(mockDbCommand));
 			Expect.AtLeastOnce.On(mockDbConnection).Method("BeginTransaction").With(IsolationLevel.Unspecified).Will(Return.Value(mockDbTransaction));
-			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbDataParameterCollection));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Clear").WithNoArguments();
+			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbParameterCollection));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Clear").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Connection").To(mockDbConnection);
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandType").To(CommandType.StoredProcedure);
@@ -1198,19 +1199,19 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbTransaction).Method("Rollback").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbTransaction).Method("Dispose").WithNoArguments();
 
-			Expect.AtLeastOnce.On(mockDbDataParameter0).GetProperty("Value").Will(Return.Value(1));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).GetProperty("Value").Will(Return.Value(null));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).SetProperty("Value").To(DBNull.Value);
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter0).Will(Return.Value(0));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter1).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbParameter0).GetProperty("Value").Will(Return.Value(1));
+			Expect.AtLeastOnce.On(mockDbParameter1).GetProperty("Value").Will(Return.Value(null));
+			Expect.AtLeastOnce.On(mockDbParameter1).SetProperty("Value").To(DBNull.Value);
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter0).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter1).Will(Return.Value(0));
 
 			using (DataSourceTransactionScope dsts = new DataSourceTransactionScope())
 			{
 				dataSource = new AdoNetDataSource(MOCK_CONNECTION_STRING, mockConnectionFactory);
 
-				recordsAffected = dataSource.ExecuteNonQuery(CommandType.StoredProcedure, "blah blah blah", mockDbDataParameters, null, false);
+				recordsAffected = dataSource.ExecuteNonQuery(CommandType.StoredProcedure, "blah blah blah", mockDbParameters, null, false);
 
-				recordsAffected = dataSource.ExecuteNonQuery(CommandType.StoredProcedure, "blah blah blah", mockDbDataParameters, null, false);
+				recordsAffected = dataSource.ExecuteNonQuery(CommandType.StoredProcedure, "blah blah blah", mockDbParameters, null, false);
 			}
 
 			Assert.AreEqual(1, recordsAffected);
@@ -1224,23 +1225,23 @@ System.Data;
 			MockFactory mockFactory;
 			AdoNetDataSource dataSource;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
-			IDbCommand mockDbCommand;
-			IDataParameterCollection mockDbDataParameterCollection;
-			IDbDataParameter[] mockDbDataParameters;
-			IDbDataParameter mockDbDataParameter0;
-			IDbDataParameter mockDbDataParameter1;
+			DbConnection mockDbConnection;
+			DbCommand mockDbCommand;
+			IDataParameterCollection mockDbParameterCollection;
+			DbParameter[] mockDbParameters;
+			DbParameter mockDbParameter0;
+			DbParameter mockDbParameter1;
 
 			int recordsAffected;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbCommand = mockFactory.CreateInstance<IDbCommand>();
-			mockDbDataParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
-			mockDbDataParameter0 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbDataParameter1 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbDataParameters = new IDbDataParameter[] { mockDbDataParameter0, mockDbDataParameter1 };
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbCommand = mockFactory.CreateInstance<DbCommand>();
+			mockDbParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
+			mockDbParameter0 = mockFactory.CreateInstance<DbParameter>();
+			mockDbParameter1 = mockFactory.CreateInstance<DbParameter>();
+			mockDbParameters = new DbParameter[] { mockDbParameter0, mockDbParameter1 };
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			Expect.Once.On(mockConnectionFactory).GetProperty("ConnectionType").Will(Return.Value(mockDbConnection.GetType()));
@@ -1249,8 +1250,8 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbConnection).SetProperty("ConnectionString").To("myConnectionString");
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Open").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbConnection).Method("CreateCommand").WithNoArguments().Will(Return.Value(mockDbCommand));
-			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbDataParameterCollection));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Clear").WithNoArguments();
+			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbParameterCollection));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Clear").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Connection").To(mockDbConnection);
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandType").To(CommandType.StoredProcedure);
@@ -1258,11 +1259,11 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Transaction");
 			Expect.AtLeastOnce.On(mockDbCommand).Method("ExecuteNonQuery").WithNoArguments().Will(Return.Value(1));
 
-			Expect.AtLeastOnce.On(mockDbDataParameter0).GetProperty("Value").Will(Return.Value(1));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).GetProperty("Value").Will(Return.Value(null));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).SetProperty("Value").To(DBNull.Value);
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter0).Will(Return.Value(0));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter1).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbParameter0).GetProperty("Value").Will(Return.Value(1));
+			Expect.AtLeastOnce.On(mockDbParameter1).GetProperty("Value").Will(Return.Value(null));
+			Expect.AtLeastOnce.On(mockDbParameter1).SetProperty("Value").To(DBNull.Value);
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter0).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter1).Will(Return.Value(0));
 
 			using (TransactionScope ts = new TransactionScope())
 			{
@@ -1270,7 +1271,7 @@ System.Data;
 				{
 					dataSource = new AdoNetDataSource(MOCK_CONNECTION_STRING, mockConnectionFactory);
 
-					recordsAffected = dataSource.ExecuteNonQuery(CommandType.StoredProcedure, "blah blah blah", mockDbDataParameters, null, false);
+					recordsAffected = dataSource.ExecuteNonQuery(CommandType.StoredProcedure, "blah blah blah", mockDbParameters, null, false);
 
 					dsts.Complete();
 					ts.Complete();
@@ -1289,26 +1290,26 @@ System.Data;
 			MockFactory mockFactory;
 			AdoNetDataSource dataSource;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
-			IDbCommand mockDbCommand;
-			IDataParameterCollection mockDbDataParameterCollection;
-			IDbDataParameter[] mockDbDataParameters;
-			IDbDataParameter mockDbDataParameter0;
-			IDbDataParameter mockDbDataParameter1;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbCommand mockDbCommand;
+			IDataParameterCollection mockDbParameterCollection;
+			DbParameter[] mockDbParameters;
+			DbParameter mockDbParameter0;
+			DbParameter mockDbParameter1;
+			DbTransaction mockDbTransaction;
 			DataSourceTransaction transaction;
 
 			int recordsAffected;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbCommand = mockFactory.CreateInstance<IDbCommand>();
-			mockDbDataParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
-			mockDbDataParameter0 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbDataParameter1 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
-			mockDbDataParameters = new IDbDataParameter[] { mockDbDataParameter0, mockDbDataParameter1 };
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbCommand = mockFactory.CreateInstance<DbCommand>();
+			mockDbParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
+			mockDbParameter0 = mockFactory.CreateInstance<DbParameter>();
+			mockDbParameter1 = mockFactory.CreateInstance<DbParameter>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
+			mockDbParameters = new DbParameter[] { mockDbParameter0, mockDbParameter1 };
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			Expect.Once.On(mockConnectionFactory).GetProperty("ConnectionType").Will(Return.Value(mockDbConnection.GetType()));
@@ -1318,8 +1319,8 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Open").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbConnection).Method("CreateCommand").WithNoArguments().Will(Return.Value(mockDbCommand));
 			Expect.AtLeastOnce.On(mockDbConnection).Method("BeginTransaction").WithNoArguments().Will(Return.Value(mockDbTransaction));
-			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbDataParameterCollection));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Clear").WithNoArguments();
+			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbParameterCollection));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Clear").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Connection").To(mockDbConnection);
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandType").To(CommandType.StoredProcedure);
@@ -1329,11 +1330,11 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbTransaction).Method("Commit").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbTransaction).Method("Dispose").WithNoArguments();
 
-			Expect.AtLeastOnce.On(mockDbDataParameter0).GetProperty("Value").Will(Return.Value(1));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).GetProperty("Value").Will(Return.Value(null));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).SetProperty("Value").To(DBNull.Value);
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter0).Will(Return.Value(0));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter1).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbParameter0).GetProperty("Value").Will(Return.Value(1));
+			Expect.AtLeastOnce.On(mockDbParameter1).GetProperty("Value").Will(Return.Value(null));
+			Expect.AtLeastOnce.On(mockDbParameter1).SetProperty("Value").To(DBNull.Value);
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter0).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter1).Will(Return.Value(0));
 
 			transaction = new DataSourceTransaction();
 
@@ -1347,7 +1348,7 @@ System.Data;
 
 			dataSource = new AdoNetDataSource(MOCK_CONNECTION_STRING, mockConnectionFactory);
 
-			recordsAffected = dataSource.ExecuteNonQuery(CommandType.StoredProcedure, "blah blah blah", mockDbDataParameters, null, false);
+			recordsAffected = dataSource.ExecuteNonQuery(CommandType.StoredProcedure, "blah blah blah", mockDbParameters, null, false);
 		}
 
 		[Test]
@@ -1357,26 +1358,26 @@ System.Data;
 			MockFactory mockFactory;
 			AdoNetDataSource dataSource;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
-			IDbCommand mockDbCommand;
-			IDataParameterCollection mockDbDataParameterCollection;
-			IDbDataParameter[] mockDbDataParameters;
-			IDbDataParameter mockDbDataParameter0;
-			IDbDataParameter mockDbDataParameter1;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbCommand mockDbCommand;
+			IDataParameterCollection mockDbParameterCollection;
+			DbParameter[] mockDbParameters;
+			DbParameter mockDbParameter0;
+			DbParameter mockDbParameter1;
+			DbTransaction mockDbTransaction;
 			DataSourceTransaction transaction;
 
 			int recordsAffected;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbCommand = mockFactory.CreateInstance<IDbCommand>();
-			mockDbDataParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
-			mockDbDataParameter0 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbDataParameter1 = mockFactory.CreateInstance<IDbDataParameter>();
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
-			mockDbDataParameters = new IDbDataParameter[] { mockDbDataParameter0, mockDbDataParameter1 };
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbCommand = mockFactory.CreateInstance<DbCommand>();
+			mockDbParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
+			mockDbParameter0 = mockFactory.CreateInstance<DbParameter>();
+			mockDbParameter1 = mockFactory.CreateInstance<DbParameter>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
+			mockDbParameters = new DbParameter[] { mockDbParameter0, mockDbParameter1 };
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			Expect.Once.On(mockConnectionFactory).GetProperty("ConnectionType").Will(Return.Value(mockDbConnection.GetType()));
@@ -1386,8 +1387,8 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbConnection).Method("Open").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbConnection).Method("CreateCommand").WithNoArguments().Will(Return.Value(mockDbCommand));
 			Expect.AtLeastOnce.On(mockDbConnection).Method("BeginTransaction").WithNoArguments().Will(Return.Value(mockDbTransaction));
-			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbDataParameterCollection));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Clear").WithNoArguments();
+			Expect.AtLeastOnce.On(mockDbCommand).GetProperty("Parameters").Will(Return.Value(mockDbParameterCollection));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Clear").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).Method("Dispose").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("Connection").To(mockDbConnection);
 			Expect.AtLeastOnce.On(mockDbCommand).SetProperty("CommandType").To(CommandType.StoredProcedure);
@@ -1397,11 +1398,11 @@ System.Data;
 			Expect.AtLeastOnce.On(mockDbTransaction).Method("Commit").WithNoArguments();
 			Expect.AtLeastOnce.On(mockDbTransaction).Method("Dispose").WithNoArguments();
 
-			Expect.AtLeastOnce.On(mockDbDataParameter0).GetProperty("Value").Will(Return.Value(1));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).GetProperty("Value").Will(Return.Value(null));
-			Expect.AtLeastOnce.On(mockDbDataParameter1).SetProperty("Value").To(DBNull.Value);
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter0).Will(Return.Value(0));
-			Expect.AtLeastOnce.On(mockDbDataParameterCollection).Method("Add").With(mockDbDataParameter1).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbParameter0).GetProperty("Value").Will(Return.Value(1));
+			Expect.AtLeastOnce.On(mockDbParameter1).GetProperty("Value").Will(Return.Value(null));
+			Expect.AtLeastOnce.On(mockDbParameter1).SetProperty("Value").To(DBNull.Value);
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter0).Will(Return.Value(0));
+			Expect.AtLeastOnce.On(mockDbParameterCollection).Method("Add").With(mockDbParameter1).Will(Return.Value(0));
 
 			transaction = new DataSourceTransaction();
 
@@ -1415,7 +1416,7 @@ System.Data;
 
 			dataSource = new AdoNetDataSource(MOCK_CONNECTION_STRING, mockConnectionFactory);
 
-			recordsAffected = dataSource.ExecuteNonQuery(CommandType.StoredProcedure, "blah blah blah", mockDbDataParameters, null, false);
+			recordsAffected = dataSource.ExecuteNonQuery(CommandType.StoredProcedure, "blah blah blah", mockDbParameters, null, false);
 		}
 
 		[Test]
@@ -1579,17 +1580,17 @@ System.Data;
 			MockFactory mockFactory;
 			MockAdoNetAmbientAware ambientAware;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbTransaction mockDbTransaction;
 			DataSourceTransaction transaction;
 
-			IDbConnection dbConnection;
-			IDbTransaction dbTransaction;
+			DbConnection dbConnection;
+			DbTransaction dbTransaction;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			Expect.Once.On(mockConnectionFactory).GetProperty("ConnectionType").Will(Return.Value(mockDbConnection.GetType()));
@@ -1623,17 +1624,17 @@ System.Data;
 			MockFactory mockFactory;
 			MockAdoNetAmbientAware ambientAware;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbTransaction mockDbTransaction;
 			DataSourceTransaction transaction;
 
-			IDbConnection dbConnection;
-			IDbTransaction dbTransaction;
+			DbConnection dbConnection;
+			DbTransaction dbTransaction;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			Expect.Once.On(mockConnectionFactory).GetProperty("ConnectionType").Will(Return.Value(mockDbConnection.GetType()));
@@ -1681,8 +1682,8 @@ System.Data;
 			MockFactory mockFactory;
 			MockAdoNetAmbientAware ambientAware;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection dbConnection;
-			IDbTransaction dbTransaction;
+			DbConnection dbConnection;
+			DbTransaction dbTransaction;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
@@ -1732,14 +1733,14 @@ System.Data;
 			MockFactory mockFactory;
 			MockAdoNetAmbientAware ambientAware;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
+			DbConnection mockDbConnection;
 
-			IDbConnection dbConnection;
-			IDbTransaction dbTransaction;
+			DbConnection dbConnection;
+			DbTransaction dbTransaction;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			//Expect.AtLeastOnce.On(mockDbConnection).GetProperty("State").Will(Return.Value(ConnectionState.Open));
@@ -1762,16 +1763,16 @@ System.Data;
 			MockFactory mockFactory;
 			MockAdoNetAmbientAware ambientAware;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
-			IDbTransaction mockDbTransaction;
+			DbConnection mockDbConnection;
+			DbTransaction mockDbTransaction;
 
-			IDbConnection dbConnection;
-			IDbTransaction dbTransaction;
+			DbConnection dbConnection;
+			DbTransaction dbTransaction;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
-			mockDbTransaction = mockFactory.CreateInstance<IDbTransaction>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
+			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			Expect.AtLeastOnce.On(mockConnectionFactory).GetProperty("ConnectionType").Will(Return.Value(mockDbConnection.GetType()));
@@ -1807,14 +1808,14 @@ System.Data;
 			MockFactory mockFactory;
 			MockAdoNetAmbientAware ambientAware;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
+			DbConnection mockDbConnection;
 
-			IDbConnection dbConnection;
-			IDbTransaction dbTransaction;
+			DbConnection dbConnection;
+			DbTransaction dbTransaction;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			Expect.Once.On(mockConnectionFactory).GetProperty("ConnectionType").Will(Return.Value(mockDbConnection.GetType()));
@@ -1850,11 +1851,11 @@ System.Data;
 			MockFactory mockFactory;
 			MockAdoNetAmbientAware ambientAware;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
+			DbConnection mockDbConnection;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 
@@ -1871,11 +1872,11 @@ System.Data;
 			MockFactory mockFactory;
 			MockAdoNetAmbientAware ambientAware;
 			IConnectionFactory mockConnectionFactory;
-			IDbConnection mockDbConnection;
+			DbConnection mockDbConnection;
 
 			mockFactory = new MockFactory();
 			mockConnectionFactory = mockFactory.CreateInstance<IConnectionFactory>();
-			mockDbConnection = mockFactory.CreateInstance<IDbConnection>();
+			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
 
 			Expect.Once.On(mockConnectionFactory).Method("GetConnection").Will(Return.Value(mockDbConnection));
 			Expect.AtLeastOnce.On(mockDbConnection).SetProperty("ConnectionString").To("myConnectionString");

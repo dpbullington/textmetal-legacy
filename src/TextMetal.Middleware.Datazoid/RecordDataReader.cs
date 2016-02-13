@@ -4,16 +4,18 @@
 */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 
 namespace TextMetal.Middleware.Datazoid
 {
-	public class RecordDataReader : IDataReader
+	public class RecordDbDataReader : DbDataReader
 	{
 		#region Constructors/Destructors
 
-		public RecordDataReader(IEnumerable<IColumn> upstreamMetadata, IEnumerable<IRecord> targetEnumerable)
+		public RecordDbDataReader(IEnumerable<IColumn> upstreamMetadata, IEnumerable<IRecord> targetEnumerable)
 		{
 			if ((object)upstreamMetadata == null)
 				throw new ArgumentNullException(nameof(upstreamMetadata));
@@ -33,7 +35,7 @@ namespace TextMetal.Middleware.Datazoid
 																	}).ToDictionary(
 																		p => p.Name,
 																		p => p.Index,
-																		StringComparer.InvariantCultureIgnoreCase);
+																		StringComparer.CurrentCultureIgnoreCase);
 		}
 
 		#endregion
@@ -50,7 +52,7 @@ namespace TextMetal.Middleware.Datazoid
 
 		#region Properties/Indexers/Events
 
-		public virtual object this[string name]
+		public override object this[string name]
 		{
 			get
 			{
@@ -58,7 +60,7 @@ namespace TextMetal.Middleware.Datazoid
 			}
 		}
 
-		public virtual object this[int i]
+		public override object this[int i]
 		{
 			get
 			{
@@ -66,7 +68,7 @@ namespace TextMetal.Middleware.Datazoid
 			}
 		}
 
-		public virtual int Depth
+		public override int Depth
 		{
 			get
 			{
@@ -74,11 +76,19 @@ namespace TextMetal.Middleware.Datazoid
 			}
 		}
 
-		public virtual int FieldCount
+		public override int FieldCount
 		{
 			get
 			{
 				return this.HasRecord ? this.TargetEnumerator.Current.Keys.Count : -1;
+			}
+		}
+
+		public override bool HasRows
+		{
+			get
+			{
+				return this.HasRecord;
 			}
 		}
 
@@ -90,7 +100,7 @@ namespace TextMetal.Middleware.Datazoid
 			}
 		}
 
-		public virtual bool IsClosed
+		public override bool IsClosed
 		{
 			get
 			{
@@ -106,7 +116,7 @@ namespace TextMetal.Middleware.Datazoid
 			}
 		}
 
-		public virtual int RecordsAffected
+		public override int RecordsAffected
 		{
 			get
 			{
@@ -172,92 +182,97 @@ namespace TextMetal.Middleware.Datazoid
 			this.TargetEnumerator.Dispose();
 		}
 
-		public virtual bool GetBoolean(int i)
+		public override bool GetBoolean(int i)
 		{
 			return this.HasRecord ? (Boolean)this.CurrentValues[i] : default(Boolean);
 		}
 
-		public virtual byte GetByte(int i)
+		public override byte GetByte(int i)
 		{
 			return this.HasRecord ? (Byte)this.CurrentValues[i] : default(Byte);
 		}
 
-		public virtual long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
+		public override long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
 		{
 			return 0;
 		}
 
-		public virtual char GetChar(int i)
+		public override char GetChar(int i)
 		{
 			return this.HasRecord ? (Char)this.CurrentValues[i] : default(Char);
 		}
 
-		public virtual long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
+		public override long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
 		{
 			return 0;
 		}
 
-		public virtual IDataReader GetData(int i)
+		//public override DbDataReader GetData(int i)
+		//{
+		//	return null;
+		//}
+
+		public override string GetDataTypeName(int i)
 		{
 			return null;
 		}
 
-		public virtual string GetDataTypeName(int i)
-		{
-			return null;
-		}
-
-		public virtual DateTime GetDateTime(int i)
+		public override DateTime GetDateTime(int i)
 		{
 			return this.HasRecord ? (DateTime)this.CurrentValues[i] : default(DateTime);
 		}
 
-		public virtual decimal GetDecimal(int i)
+		public override decimal GetDecimal(int i)
 		{
 			return this.HasRecord ? (Decimal)this.CurrentValues[i] : default(Decimal);
 		}
 
-		public double GetDouble(int i)
+		public override double GetDouble(int i)
 		{
 			return this.HasRecord ? (Double)this.CurrentValues[i] : default(Double);
 		}
 
-		public virtual Type GetFieldType(int i)
+		public override IEnumerator GetEnumerator()
+		{
+			return this.TargetEnumerator;
+		}
+
+		public override Type GetFieldType(int i)
 		{
 			return this.HasRecord && (object)this.CurrentValues[i] != null ? this.CurrentValues[i].GetType() : null;
 		}
 
-		public virtual float GetFloat(int i)
+		public override float GetFloat(int i)
 		{
 			return this.HasRecord ? (Single)this.CurrentValues[i] : default(Single);
 		}
 
-		public virtual Guid GetGuid(int i)
+		public override Guid GetGuid(int i)
 		{
 			return this.HasRecord ? (Guid)this.CurrentValues[i] : default(Guid);
 		}
 
-		public virtual short GetInt16(int i)
+		public override short GetInt16(int i)
 		{
 			return this.HasRecord ? (Int16)this.CurrentValues[i] : default(Int16);
 		}
 
-		public virtual int GetInt32(int i)
+		public override int GetInt32(int i)
 		{
 			return this.HasRecord ? (Int32)this.CurrentValues[i] : default(Int32);
 		}
 
-		public virtual long GetInt64(int i)
+		public override long GetInt64(int i)
 		{
 			return this.HasRecord ? (Int64)this.CurrentValues[i] : default(Int64);
 		}
 
-		public virtual string GetName(int i)
+		public override string GetName(int i)
 		{
 			return this.HasRecord ? this.CurrentKeys[i] : null;
 		}
 
-		public virtual int GetOrdinal(string name)
+		public override int GetOrdinal(string name)
 		{
 			int value;
 
@@ -267,37 +282,37 @@ namespace TextMetal.Middleware.Datazoid
 			return -1;
 		}
 
-		public virtual DataTable GetSchemaTable()
-		{
-			return null;
-		}
+		//public override DataTable GetSchemaTable()
+		//{
+		//	return null;
+		//}
 
-		public virtual string GetString(int i)
+		public override string GetString(int i)
 		{
 			return this.HasRecord ? (String)this.CurrentValues[i] : default(String);
 		}
 
-		public virtual object GetValue(int i)
+		public override object GetValue(int i)
 		{
 			return this.HasRecord ? (Object)this.CurrentValues[i] : default(Object);
 		}
 
-		public virtual int GetValues(object[] values)
+		public override int GetValues(object[] values)
 		{
 			return 0;
 		}
 
-		public virtual bool IsDBNull(int i)
+		public override bool IsDBNull(int i)
 		{
 			return this.HasRecord ? (object)this.CurrentValues[i] == null : true;
 		}
 
-		public virtual bool NextResult()
+		public override bool NextResult()
 		{
 			return false;
 		}
 
-		public virtual bool Read()
+		public override bool Read()
 		{
 			if (!(this.IsEnumerableClosed ?? false))
 			{

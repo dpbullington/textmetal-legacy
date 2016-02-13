@@ -10,7 +10,6 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Expressions
 	/// <summary>
 	/// Represents an expression with one operand.
 	/// </summary>
-	[Serializable]
 	public sealed class UnaryExpression : IExpression
 	{
 		#region Constructors/Destructors

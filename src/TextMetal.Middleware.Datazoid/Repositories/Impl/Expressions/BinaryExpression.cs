@@ -10,7 +10,6 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Expressions
 	/// <summary>
 	/// Represents an expression with two operands.
 	/// </summary>
-	[Serializable]
 	public sealed class BinaryExpression : IExpression
 	{
 		#region Constructors/Destructors

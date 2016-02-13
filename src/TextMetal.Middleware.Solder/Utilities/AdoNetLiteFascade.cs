@@ -103,7 +103,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			const bool COMMAND_PREPARE = false;
 
 			// force provider default timeout
-			const object COMMAND_TIMEOUT = null; /*int?*/
+			object COMMAND_TIMEOUT = null; /*int?*/
 
 			CommandBehavior commandBehavior;
 			int resultsetIndex = 0;
@@ -155,7 +155,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 					commandBehavior = schemaOnly ? CommandBehavior.SchemaOnly : CommandBehavior.Default;
 
-					using (DbDataReader dataReader = dbCommand.ExecuteReader(commandBehavior))
+					using (DbDataReader dbDataReader = dbCommand.ExecuteReader(commandBehavior))
 					{
 						IDictionary<string, object> record;
 						string key;
@@ -168,14 +168,14 @@ namespace TextMetal.Middleware.Solder.Utilities
 								if ((object)resultsetCallback != null)
 									resultsetCallback(resultsetIndex++);
 
-								while (dataReader.Read())
+								while (dbDataReader.Read())
 								{
 									record = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
-									for (int columnIndex = 0; columnIndex < dataReader.FieldCount; columnIndex++)
+									for (int columnIndex = 0; columnIndex < dbDataReader.FieldCount; columnIndex++)
 									{
-										key = dataReader.GetName(columnIndex);
-										value = dataReader.GetValue(columnIndex).ChangeType<object>();
+										key = dbDataReader.GetName(columnIndex);
+										value = dbDataReader.GetValue(columnIndex).ChangeType<object>();
 
 										if (record.ContainsKey(key) || (key ?? string.Empty).Length == 0)
 											key = string.Format("Column_{0:0000}", columnIndex);
@@ -186,11 +186,11 @@ namespace TextMetal.Middleware.Solder.Utilities
 									records.Add(record);
 								}
 							}
-							while (dataReader.NextResult());
+							while (dbDataReader.NextResult());
 						}
 						else
 						{
-							/*using (DataTable dataTable = dataReader.GetSchemaTable())
+							/*using (DataTable dataTable = dbDataReader.GetSchemaTable())
 							{
 								if ((object)dataTable != null)
 								{

@@ -49,6 +49,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 		#region Properties/Indexers/Events
 
+		[Obsolete("Stop using this")]
 		public static IReflectionFascade Instance
 		{
 			get
