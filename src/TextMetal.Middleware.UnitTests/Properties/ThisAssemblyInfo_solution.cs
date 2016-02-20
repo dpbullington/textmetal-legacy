@@ -4,5 +4,23 @@
 */
 
 using System.Reflection;
+using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("TextMetal.Middleware Unit Tests Portable Console EXE")]
+#if DEBUG
+
+[assembly: AssemblyConfiguration("Debug")]
+#else
+[assembly: AssemblyConfiguration("Release")]
+#endif
+
+[assembly: AssemblyCompany("textmetal.com")]
+[assembly: AssemblyProduct("TextMetal")]
+[assembly: AssemblyCopyright("©2002-2016 Daniel Bullington (dpbullington@gmail.com)")]
+[assembly: AssemblyDescription("Distributed under the MIT license:\r\nhttp://www.opensource.org/licenses/mit-license.php")]
+[assembly: AssemblyTrademark("π")]
+[assembly: AssemblyCulture("")]
+[assembly: AssemblyVersion("8.1.0.*")]
+[assembly: AssemblyFileVersion("8.1.0.0")]
+[assembly: AssemblyInformationalVersion("2016.02.19/preview")]
+[assembly: AssemblyDelaySign(false)]
+[assembly: ComVisible(false)]

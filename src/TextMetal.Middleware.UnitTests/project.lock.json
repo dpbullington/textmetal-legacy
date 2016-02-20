@@ -1313,6 +1313,7 @@
         "framework": ".NETPlatform,Version=v5.5",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
           "System.AppContext": "4.0.1-beta-23516",
           "System.ComponentModel": "4.0.1-beta-23516",
           "System.Console": "4.0.0-beta-23516",
@@ -3107,6 +3108,7 @@
         "framework": ".NETPlatform,Version=v5.5",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
           "System.AppContext": "4.0.1-beta-23516",
           "System.ComponentModel": "4.0.1-beta-23516",
           "System.Console": "4.0.0-beta-23516",
@@ -4901,6 +4903,7 @@
         "framework": ".NETPlatform,Version=v5.5",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
           "System.AppContext": "4.0.1-beta-23516",
           "System.ComponentModel": "4.0.1-beta-23516",
           "System.Console": "4.0.0-beta-23516",

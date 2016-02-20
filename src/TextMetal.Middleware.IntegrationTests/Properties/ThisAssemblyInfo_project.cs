@@ -5,4 +5,4 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("TextMetal.Middleware Integration Tests Portable Library")]
+[assembly: AssemblyTitle("TextMetal Middleware Integration Tests Console App")]

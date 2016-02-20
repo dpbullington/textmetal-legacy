@@ -43,7 +43,7 @@ namespace TextMetal.Middleware.Solder.Runtime
 		/// <summary>
 		/// Gets the current app setting for disabling of assembly loader subscription method execution.
 		/// </summary>
-		private static bool EnvVarDisableAssemblyLoaderSubscriptionMethodExecution
+		private static bool EnvVarEnableAssemblyLoaderSubscriptionMethodExecution
 		{
 			get
 			{
@@ -51,7 +51,7 @@ namespace TextMetal.Middleware.Solder.Runtime
 				string svalue;
 				bool ovalue;
 
-				key = string.Format("SOLDER_DISABLE_ASMLDR_EVENTS");
+				key = string.Format("SOLDER_ENABLE_ASMLDR_EVENTS");
 				svalue = Environment.GetEnvironmentVariable(key);
 
 				if ((object)svalue == null)
@@ -100,7 +100,7 @@ namespace TextMetal.Middleware.Solder.Runtime
 			Type[] assemblyTypes;
 			MethodInfo[] methodInfos;
 			AssemblyLoaderSubscriberMethodAttribute assemblyLoaderSubscriberMethodAttribute;
-			Action dependencyRegistrationMethod;
+			Action<IDependencyManager> dependencyRegistrationMethod;
 
 			if ((object)assemblies != null)
 			{
@@ -143,15 +143,16 @@ namespace TextMetal.Middleware.Solder.Runtime
 									if (methodInfo.ReturnType != typeof(void))
 										continue;
 
-									if (methodInfo.GetParameters().Any())
+									if (methodInfo.GetParameters().Count() != 1 ||
+										methodInfo.GetParameters()[0].ParameterType != typeof(IDependencyManager))
 										continue;
 
-									dependencyRegistrationMethod = (Action)(methodInfo.CreateDelegate(typeof(Action), null /* static */));
+									dependencyRegistrationMethod = (Action<IDependencyManager>)(methodInfo.CreateDelegate(typeof(Action<IDependencyManager>), null /* static */));
 
 									if ((object)dependencyRegistrationMethod == null)
 										continue;
 
-									dependencyRegistrationMethod();
+									dependencyRegistrationMethod(this.DependencyManager);
 								}
 							}
 						}
@@ -165,11 +166,13 @@ namespace TextMetal.Middleware.Solder.Runtime
 		/// </summary>
 		private void SetUpApplicationDomain()
 		{
-			ILibraryManager libraryManager = null;
+			ILibraryManager libraryManager = PlatformServices.Default.LibraryManager;
 
-			Console.WriteLine("SetUpApplicationDomain {0}", EnvVarDisableAssemblyLoaderSubscriptionMethodExecution);
+			Console.WriteLine("SetUpApplicationDomain-> EnvVarEnableAssemblyLoaderSubscriptionMethodExecution: '{0}'; LibraryManager: {1}", EnvVarEnableAssemblyLoaderSubscriptionMethodExecution, (object)libraryManager == null ? "NULL" : "OK");
 
-			if (!EnvVarDisableAssemblyLoaderSubscriptionMethodExecution)
+			this.DependencyManager.AddResolution<PlatformServices>(string.Empty, new SingletonDependencyResolution(new InstanceDependencyResolution(PlatformServices.Default.LibraryManager)));
+
+			if (!EnvVarEnableAssemblyLoaderSubscriptionMethodExecution)
 				return;
 
 			if ((object)libraryManager != null)

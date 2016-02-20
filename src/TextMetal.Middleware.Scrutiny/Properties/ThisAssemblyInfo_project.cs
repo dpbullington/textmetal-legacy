@@ -5,4 +5,4 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("TextMetal.Middleware Scrutiny Portable Library")]
+[assembly: AssemblyTitle("TextMetal Middleware Scrutiny Library")]

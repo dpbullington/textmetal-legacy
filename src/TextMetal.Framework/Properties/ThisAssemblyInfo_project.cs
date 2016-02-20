@@ -5,4 +5,4 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("TextMetal Framework Portable Library")]
+[assembly: AssemblyTitle("TextMetal Framework Library")]

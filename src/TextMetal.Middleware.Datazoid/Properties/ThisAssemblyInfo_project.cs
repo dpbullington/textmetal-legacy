@@ -5,4 +5,4 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("TextMetal.Middleware Data Portable Library")]
+[assembly: AssemblyTitle("TextMetal Middleware Datazoid Library")]

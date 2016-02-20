@@ -1,6 +1,6 @@
 {
 	"version": "1.0.0-*",
-	"description": "TextMetal Middleware Integration Tests DNX Console EXE",
+	"description": "TextMetal Middleware Integration Tests Console App",
 	"authors": [ "©2002-2016 Daniel Bullington (dpbullington@gmail.com)" ],
 	"summary": "A zero friction, open source meta-programming framework for .NET.",
 	"projectUrl": "http://www.textmetal.com",

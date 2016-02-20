@@ -1,6 +1,6 @@
 {
     "version": "1.0.0-*",
-    "description": "TextMetal Middleware Datazoid Portable Library",
+    "description": "TextMetal Middleware Datazoid Library",
     "authors": [ "©2002-2016 Daniel Bullington (dpbullington@gmail.com)" ],
     "summary": "A zero friction, open source meta-programming framework for .NET.",
     "projectUrl": "http://www.textmetal.com",
@@ -16,12 +16,12 @@
         "type": "git",
         "url": "https://github.com/textmetal/main"
     },
-    "frameworks": {
-        "dotnet5.5": {
+	"frameworks": {
+		"dotnet5.5": {
 			"dependencies": {
 			}
-        }
-    },
+		}
+	},
     "exclude": [ "**\\*.cs"  ],
 	"dependencies": {
         "Microsoft.CSharp": "4.0.1-beta-23516",

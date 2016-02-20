@@ -5,4 +5,4 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("TextMetal Framework Unit Tests Portable Library")]
+[assembly: AssemblyTitle("TextMetal Framework Unit Tests Console App")]
