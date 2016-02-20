@@ -4,34 +4,44 @@
 #
 
 cls
-$root = [System.Environment]::CurrentDirectory
+$this_dir_path = [System.Environment]::CurrentDirectory
 
-$build_flavor_dir = "Debug"
-$build_tool_cfg = "Debug"
-$doc_dir = ".\doc"
-$src_dir = ".\src"
-$lib_dir = ".\lib"
-$templates_dir = ".\templates"
-$pkg_dir = ".\pkg"
+$src_dir_path = "$this_dir_path\src"
+$doc_dir_path = "$this_dir_path\doc"
+$imports_dir_path = "$this_dir_path\imports"
+$output_dir_path = "$this_dir_path\output"
+$pkg_dir_path = "$this_dir_path\pkg"
+$templates_dir_path = "$this_dir_path\templates"
+$tools_dir_path = "$this_dir_path\tools"
+
+$sln_file_name = "TextMetal.sln"
+$sln_file_path = "$src_dir_path\$sln_file_name"
+
+$visual_studio_internal_version = "14.0"
+$msbuild_dir_path = "C:\Program Files (x86)\MSBuild\$visual_studio_internal_version\bin\amd64"
+$msbuild_file_name = "msbuild.exe"
+$msbuild_exe = "$msbuild_dir_path\$msbuild_file_name"
+
+$build_flavor = "debug"
+$build_verbosity = "quiet"
 
 $robocopy_exe = "robocopy.exe"
-$msbuild_exe = "C:\Program Files (x86)\MSBuild\12.0\bin\amd64\msbuild.exe"
+$artifacts_dir_path = "$src_dir_path\artifacts"
 
 echo "The operation is starting..."
 
-if ((Test-Path -Path $pkg_dir))
+if ((Test-Path -Path $pkg_dir_path))
 {
-	Remove-Item $pkg_dir -recurse -force
+	Remove-Item $pkg_dir_path -recurse -force
 }
 
-New-Item -ItemType directory -Path $pkg_dir
-New-Item -ItemType directory -Path ($pkg_dir + "\bin")
+New-Item -ItemType directory -Path $pkg_dir_path
 
-Copy-Item ".\trunk.bat" "$pkg_dir\."
-Copy-Item "$doc_dir\LICENSE.txt" "$pkg_dir\."
+Copy-Item "$this_dir_path\trunk.bat" "$pkg_dir_path\."
+Copy-Item "$doc_dir_path\LICENSE.txt" "$pkg_dir_path\."
 
-$argz = @("$templates_dir",
-	"$pkg_dir\templates",
+$argz = @("$templates_dir_path",
+	"$pkg_dir_path\templates",
 	"/MIR",
 	"/e",
 	"/xd", "*!git*", "output",
@@ -42,8 +52,8 @@ $argz = @("$templates_dir",
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 1))
 { echo "An error occurred during the operation."; return; }
 
-$argz = @("$lib_dir",
-	"$pkg_dir\lib",
+$argz = @("$artifacts_dir_path\bin",
+	"$pkg_dir_path\packages",
 	"/MIR",
 	"/e",
 	"/xd", "*!git*", "output",
@@ -53,22 +63,5 @@ $argz = @("$lib_dir",
 
 if (!($LastExitCode -eq $null -or $LastExitCode -eq 1))
 { echo "An error occurred during the operation."; return; }
-
-Copy-Item "$src_dir\TextMetal.ConsoleTool\bin\$build_flavor_dir\TextMetal.exe" "$pkg_dir\bin\."
-Copy-Item "$src_dir\TextMetal.ConsoleTool\bin\$build_flavor_dir\TextMetal.exe.config" "$pkg_dir\bin\."
-Copy-Item "$src_dir\TextMetal.ConsoleTool\bin\$build_flavor_dir\TextMetal.xml" "$pkg_dir\bin\."
-Copy-Item "$src_dir\TextMetal.ConsoleTool\bin\$build_flavor_dir\TextMetal.pdb" "$pkg_dir\bin\."
-
-Copy-Item "$src_dir\TextMetal.Framework\bin\$build_flavor_dir\TextMetal.Framework.dll" "$pkg_dir\bin\."
-Copy-Item "$src_dir\TextMetal.Framework\bin\$build_flavor_dir\TextMetal.Framework.xml" "$pkg_dir\bin\."
-Copy-Item "$src_dir\TextMetal.Framework\bin\$build_flavor_dir\TextMetal.Framework.pdb" "$pkg_dir\bin\."
-
-Copy-Item "$src_dir\TextMetal.Middleware.Data\bin\$build_flavor_dir\TextMetal.Middleware.Data.dll" "$pkg_dir\bin\."
-Copy-Item "$src_dir\TextMetal.Middleware.Data\bin\$build_flavor_dir\TextMetal.Middleware.Data.xml" "$pkg_dir\bin\."
-Copy-Item "$src_dir\TextMetal.Middleware.Data\bin\$build_flavor_dir\TextMetal.Middleware.Data.pdb" "$pkg_dir\bin\."
-
-Copy-Item "$src_dir\TextMetal.Middleware.Solder\bin\$build_flavor_dir\TextMetal.Middleware.Solder.dll" "$pkg_dir\bin\."
-Copy-Item "$src_dir\TextMetal.Middleware.Solder\bin\$build_flavor_dir\TextMetal.Middleware.Solder.xml" "$pkg_dir\bin\."
-Copy-Item "$src_dir\TextMetal.Middleware.Solder\bin\$build_flavor_dir\TextMetal.Middleware.Solder.pdb" "$pkg_dir\bin\."
 
 echo "The operation completed successfully."

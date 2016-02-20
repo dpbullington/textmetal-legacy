@@ -4,14 +4,17 @@
 #
 
 cls
-$root = [System.Environment]::CurrentDirectory
+$this_dir_path = [System.Environment]::CurrentDirectory
 
-$filesToKill = Get-ChildItem $root -Recurse `
-	-Include "artifacts", "obj", "bin", "debug", "release", "clientbin", "output", "pkg", "_ReSharper.*", ".partial", "*.suo", "*.user", "*.cache", "*.resharper", "*.visualstate.xml", "*.pidb", "*.userprefs", "*.DotSettings", "thumbs.db", "desktop.ini", ".DS_Store", "TestResult.xml" -Force
+$removeItemSpecs = @("artifacts", "obj", "bin", "debug", "release",
+	"clientbin", "output", "pkg", "_ReSharper.*", ".partial", "*.suo", "*.user", "*.cache", "*.resharper",
+	"*.visualstate.xml", "*.pidb", "*.userprefs", "*.DotSettings", "thumbs.db", "desktop.ini", ".DS_Store", "TestResult.xml")
 
-foreach ($fileToKill in $filesToKill)
+$removeItems = Get-ChildItem $this_dir_path -Recurse -Include $removeItemSpecs -Force
+
+foreach ($removeItem in $removeItems)
 {
-	"Cleaning: " + $fileToKill.FullName
+	"Deleting item: " + $removeItem.FullName
 
-	try { Remove-Item $fileToKill.FullName -Recurse -Force } catch { }
+	try { Remove-Item $removeItem.FullName -Recurse -Force } catch { }
 }
