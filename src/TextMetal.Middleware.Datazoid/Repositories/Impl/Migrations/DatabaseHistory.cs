@@ -154,10 +154,10 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Migrations
 					revision = this.Revisions.SingleOrDefault(rh => rh.Number == _workingRevision);
 
 					if ((object)revision == null)
-						throw new InvalidOperationException(String.Format("The revision number '{0}' was not found. Revsions must be sequential without any gaps.", _workingRevision));
+						throw new InvalidOperationException(string.Format("The revision number '{0}' was not found. Revsions must be sequential without any gaps.", _workingRevision));
 
 					if (revision.Statements.Count < 1)
-						throw new InvalidOperationException("A revsion must have at least one statement.");
+						throw new InvalidOperationException(string.Format("A revsion must have at least one statement."));
 
 					foreach (string statement in revision.Statements)
 						unitOfWork.ExecuteRecords(CommandType.Text, statement, null, null).ToList();

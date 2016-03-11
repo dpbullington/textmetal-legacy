@@ -12,7 +12,8 @@ using System.Threading;
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>
-	/// Provides dependency registration and resolution services. Uses reader-writer lock for asynchronous protection (i.e. thread-safety).
+	/// Provides dependency registration and resolution services.
+	/// Uses reader-writer lock for asynchronous protection (i.e. thread-safety).
 	/// </summary>
 	public sealed class DependencyManager : IDependencyManager
 	{
@@ -29,7 +30,7 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		#region Fields/Constants
 
-		private readonly Dictionary<KeyValuePair<Type, string>, IDependencyResolution> dependencyResolutionRegistrations = new Dictionary<KeyValuePair<Type, string>, IDependencyResolution>();
+		private readonly Dictionary<Tuple<Type, string>, IDependencyResolution> dependencyResolutionRegistrations = new Dictionary<Tuple<Type, string>, IDependencyResolution>();
 		private readonly ReaderWriterLockSlim readerWriterLock = new ReaderWriterLockSlim();
 		private bool disposed;
 
@@ -37,7 +38,7 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		#region Properties/Indexers/Events
 
-		private Dictionary<KeyValuePair<Type, string>, IDependencyResolution> DependencyResolutionRegistrations
+		private Dictionary<Tuple<Type, string>, IDependencyResolution> DependencyResolutionRegistrations
 		{
 			get
 			{
@@ -77,8 +78,9 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// </summary>
 		/// <typeparam name="TObject"> The target type of resolution. </typeparam>
 		/// <param name="selectorKey"> An non-null, zero or greater length string selector key. </param>
+		/// <param name="includeAssignableTypes"> A boolean value indicating whether to include assignable types in the candidate resolution existence check. </param>
 		/// <param name="dependencyResolution"> The dependency resolution. </param>
-		public void AddResolution<TObject>(string selectorKey, IDependencyResolution dependencyResolution)
+		public void AddResolution<TObject>(string selectorKey, bool includeAssignableTypes, IDependencyResolution dependencyResolution)
 		{
 			Type targetType;
 
@@ -93,7 +95,7 @@ namespace TextMetal.Middleware.Solder.Injection
 
 			targetType = typeof(TObject);
 
-			this.AddResolution(targetType, selectorKey, dependencyResolution);
+			this.AddResolution(targetType, selectorKey, includeAssignableTypes, dependencyResolution);
 		}
 
 		/// <summary>
@@ -101,10 +103,12 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// </summary>
 		/// <param name="targetType"> The target type of resolution. </param>
 		/// <param name="selectorKey"> An non-null, zero or greater length string selector key. </param>
+		/// <param name="includeAssignableTypes"> A boolean value indicating whether to include assignable types in the candidate resolution existence check. </param>
 		/// <param name="dependencyResolution"> The dependency resolution. </param>
-		public void AddResolution(Type targetType, string selectorKey, IDependencyResolution dependencyResolution)
+		public void AddResolution(Type targetType, string selectorKey, bool includeAssignableTypes, IDependencyResolution dependencyResolution)
 		{
-			KeyValuePair<Type, string> trait;
+			Tuple<Type, string> trait;
+			IEnumerable<KeyValuePair<Tuple<Type, string>, IDependencyResolution>> candidateResolutions;
 
 			if (this.Disposed)
 				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
@@ -128,10 +132,11 @@ namespace TextMetal.Middleware.Solder.Injection
 
 				try
 				{
-					trait = new KeyValuePair<Type, string>(targetType, selectorKey);
+					trait = new Tuple<Type, string>(targetType, selectorKey);
+					candidateResolutions = this.GetCandidateResolutions(targetType, selectorKey, includeAssignableTypes);
 
-					if (this.DependencyResolutionRegistrations.ContainsKey(trait))
-						throw new DependencyException(string.Format("Dependency resolution already exists in the dependency manager for target type '{0}' and selector key '{1}'.", targetType.FullName, selectorKey));
+					if (candidateResolutions.Any())
+						throw new DependencyException(string.Format("Dependency resolution already exists in the dependency manager for target type '{0}' and selector key '{1}' (include assignable types: '{2}').", targetType.FullName, selectorKey, includeAssignableTypes));
 
 					this.DependencyResolutionRegistrations.Add(trait, dependencyResolution);
 				}
@@ -157,8 +162,6 @@ namespace TextMetal.Middleware.Solder.Injection
 			if (this.Disposed)
 				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
 
-			this.FreeDependencyResolutions();
-
 			// cop a reader lock
 			this.ReaderWriterLock.EnterUpgradeableReadLock();
 
@@ -169,10 +172,7 @@ namespace TextMetal.Middleware.Solder.Injection
 
 				try
 				{
-					result = this.DependencyResolutionRegistrations.Count > 0;
-
-					this.DependencyResolutionRegistrations.Clear();
-
+					result = this.FreeDependencyResolutions();
 					return result;
 				}
 				finally
@@ -190,8 +190,9 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// Clears all registered dependency resolutions of the specified target type from this instance. This is the generic overload.
 		/// </summary>
 		/// <typeparam name="TObject"> The target type of removal. </typeparam>
+		/// <param name="includeAssignableTypes"> A boolean value indicating whether to include assignable types in the candidate resolution removal list. </param>
 		/// <returns> A value indicating if at least one dependency resolution was removed. </returns>
-		public bool ClearTypeResolutions<TObject>()
+		public bool ClearTypeResolutions<TObject>(bool includeAssignableTypes)
 		{
 			Type targetType;
 
@@ -200,17 +201,19 @@ namespace TextMetal.Middleware.Solder.Injection
 
 			targetType = typeof(TObject);
 
-			return this.ClearTypeResolutions(targetType);
+			return this.ClearTypeResolutions(targetType, includeAssignableTypes);
 		}
 
 		/// <summary>
 		/// Clears all registered dependency resolutions of the specified target type from this instance. This is the non-generic overload.
 		/// </summary>
 		/// <param name="targetType"> The target type of removal. </param>
+		/// <param name="includeAssignableTypes"> A boolean value indicating whether to include assignable types in the candidate resolution removal list. </param>
 		/// <returns> A value indicating if at least one dependency resolution was removed. </returns>
-		public bool ClearTypeResolutions(Type targetType)
+		public bool ClearTypeResolutions(Type targetType, bool includeAssignableTypes)
 		{
-			List<KeyValuePair<Type, string>> traitsToRemove;
+			int count = 0;
+			IEnumerable<KeyValuePair<Tuple<Type, string>, IDependencyResolution>> candidateResolutions;
 
 			if (this.Disposed)
 				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
@@ -228,18 +231,20 @@ namespace TextMetal.Middleware.Solder.Injection
 
 				try
 				{
-					traitsToRemove = new List<KeyValuePair<Type, string>>();
+					// force execution to prevent 'System.InvalidOperationException : Collection was modified; enumeration operation may not execute.'
+					candidateResolutions = this.GetCandidateResolutions(targetType, null, includeAssignableTypes).ToArray();
 
-					foreach (KeyValuePair<KeyValuePair<Type, string>, IDependencyResolution> dependencyResolutionRegistration in this.DependencyResolutionRegistrations)
+					foreach (KeyValuePair<Tuple<Type, string>, IDependencyResolution> dependencyResolutionRegistration in candidateResolutions)
 					{
-						if (dependencyResolutionRegistration.Key.Key == targetType)
-							traitsToRemove.Add(dependencyResolutionRegistration.Key);
+						if ((object)dependencyResolutionRegistration.Value != null)
+							dependencyResolutionRegistration.Value.Dispose();
+
+						this.DependencyResolutionRegistrations.Remove(dependencyResolutionRegistration.Key);
+
+						count++;
 					}
 
-					foreach (KeyValuePair<Type, string> trait in traitsToRemove)
-						this.DependencyResolutionRegistrations.Remove(trait);
-
-					return traitsToRemove.Count > 0;
+					return count > 0;
 				}
 				finally
 				{
@@ -260,8 +265,6 @@ namespace TextMetal.Middleware.Solder.Injection
 			if (this.Disposed)
 				return;
 
-			this.FreeDependencyResolutions();
-
 			// cop a reader lock
 			this.ReaderWriterLock.EnterUpgradeableReadLock();
 
@@ -272,7 +275,7 @@ namespace TextMetal.Middleware.Solder.Injection
 
 				try
 				{
-					this.DependencyResolutionRegistrations.Clear();
+					this.FreeDependencyResolutions();
 				}
 				finally
 				{
@@ -287,32 +290,57 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
-		private void FreeDependencyResolutions()
+		private bool FreeDependencyResolutions()
 		{
-			// signal disposal of container ("manager")
-			foreach (IDisposable resolutionDisposable in this.DependencyResolutionRegistrations.Values.OfType<IDisposable>())
+			bool result;
+
+			result = this.DependencyResolutionRegistrations.Count > 0;
+
+			foreach (KeyValuePair<Tuple<Type, string>, IDependencyResolution> dependencyResolutionRegistration in this.DependencyResolutionRegistrations)
 			{
-				if ((object)resolutionDisposable != null)
-					resolutionDisposable.Dispose();
+				if ((object)dependencyResolutionRegistration.Value != null)
+					dependencyResolutionRegistration.Value.Dispose();
 			}
+
+			this.DependencyResolutionRegistrations.Clear();
+
+			return result;
 		}
 
-		private IDependencyResolution GetDependencyResolution(Type targetType, string selectorKey)
+		private IEnumerable<KeyValuePair<Tuple<Type, string>, IDependencyResolution>> GetCandidateResolutions(Type targetType, string selectorKey, bool includeAssignableTypes)
 		{
-			KeyValuePair<Type, string> trait;
-			IDependencyResolution dependencyResolution;
+			IEnumerable<KeyValuePair<Tuple<Type, string>, IDependencyResolution>> candidateResolutions;
 
-			trait = new KeyValuePair<Type, string>(targetType, selectorKey);
+			if ((object)targetType == null)
+				throw new ArgumentNullException(nameof(targetType));
+
+			// selector key can be null in this context
+			//if ((object)selectorKey == null)
+			//throw new ArgumentNullException(nameof(selectorKey));
+
+			candidateResolutions = this.DependencyResolutionRegistrations.Where(drr =>
+				(drr.Key.Item1 == targetType || (includeAssignableTypes && targetType.IsAssignableFrom(drr.Key.Item1))) &&
+				((object)selectorKey == null || drr.Key.Item2 == selectorKey)
+				);
+
+			return candidateResolutions;
+		}
+
+		private IDependencyResolution GetDependencyResolution(Type targetType, string selectorKey, bool includeAssignableTypes)
+		{
+			IEnumerable<KeyValuePair<Tuple<Type, string>, IDependencyResolution>> candidateResolutions;
+			IDependencyResolution dependencyResolution;
+			Tuple<Type, string> trait;
+
+			// selector key can be null in this context
+			//if ((object)selectorKey == null)
+			//throw new ArgumentNullException(nameof(selectorKey));
+
+			trait = new Tuple<Type, string>(targetType, selectorKey);
+			candidateResolutions = this.GetCandidateResolutions(targetType, selectorKey, includeAssignableTypes);
 
 			// first attempt direct resolution: exact type and selector key
-			if (!this.DependencyResolutionRegistrations.TryGetValue(trait, out dependencyResolution))
-			{
-				// second attempt indirect resolution: assignable type and select key
-				var candidateResolutions = this.DependencyResolutionRegistrations.Where(r => (object)r.Key != null && targetType.IsAssignableFrom(r.Key.Key)
-																							&& (selectorKey == string.Empty || r.Key.Value == selectorKey)).Select(x => x.Value);
-
-				dependencyResolution = candidateResolutions.FirstOrDefault();
-			}
+			dependencyResolution = candidateResolutions.OrderBy(drr => drr.Key == trait).Select(drr => drr.Value).FirstOrDefault();
 
 			return dependencyResolution;
 		}
@@ -321,42 +349,54 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// Gets a value indicating whether there are any registered dependency resolutions of the specified target type in this instance. If selector key is a null value, then this method will return true if any resolution exists for the specified target type, regardless of selector key; otherwise, this method will return true only if a resolution exists for the specified target type and selector key. This is the generic overload.
 		/// </summary>
 		/// <param name="selectorKey"> An null or zero or greater length string selector key. </param>
+		/// <param name="includeAssignableTypes"> A boolean value indicating whether to include assignable types in the candidate resolution existence check. </param>
 		/// <typeparam name="TObject"> The target type of the check. </typeparam>
 		/// <returns> A value indicating if at least one dependency resolution is present. </returns>
-		public bool HasTypeResolution<TObject>(string selectorKey)
+		public bool HasTypeResolution<TObject>(string selectorKey, bool includeAssignableTypes)
 		{
 			Type targetType;
 
 			if (this.Disposed)
 				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
 
+			// selector key can be null in this context
+			//if ((object)selectorKey == null)
+			//throw new ArgumentNullException(nameof(selectorKey));
+
 			targetType = typeof(TObject);
 
-			return this.HasTypeResolution(targetType, selectorKey);
+			return this.HasTypeResolution(targetType, selectorKey, includeAssignableTypes);
 		}
 
 		/// <summary>
 		/// Gets a value indicating whether there are any registered dependency resolutions of the specified target type in this instance. If selector key is a null value, then this method will return true if any resolution exists for the specified target type, regardless of selector key; otherwise, this method will return true only if a resolution exists for the specified target type and selector key. This is the non-generic overload.
 		/// </summary>
-		/// <param name="selectorKey"> An null or zero or greater length string selector key. </param>
 		/// <param name="targetType"> The target type of the check. </param>
+		/// <param name="selectorKey"> An null or zero or greater length string selector key. </param>
+		/// <param name="includeAssignableTypes"> A boolean value indicating whether to include assignable types in the candidate resolution existence check. </param>
 		/// <returns> A value indicating if at least one dependency resolution is present. </returns>
-		public bool HasTypeResolution(Type targetType, string selectorKey)
+		public bool HasTypeResolution(Type targetType, string selectorKey, bool includeAssignableTypes)
 		{
+			IDependencyResolution dependencyResolution;
+
 			if (this.Disposed)
 				throw new ObjectDisposedException(typeof(DependencyManager).FullName);
 
-			// selector key can be null in this context
-
 			if ((object)targetType == null)
 				throw new ArgumentNullException(nameof(targetType));
+
+			// selector key can be null in this context
+			//if ((object)selectorKey == null)
+			//throw new ArgumentNullException(nameof(selectorKey));
 
 			// cop a reader lock
 			this.ReaderWriterLock.EnterUpgradeableReadLock();
 
 			try
 			{
-				return (object)this.GetDependencyResolution(targetType, selectorKey) != null;
+				dependencyResolution = this.GetDependencyResolution(targetType, selectorKey, includeAssignableTypes);
+
+				return (object)dependencyResolution != null;
 			}
 			finally
 			{
@@ -368,8 +408,9 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// Removes the registered dependency resolution of the specified target type and selector key from this instance. Throws a DependencyException if the target type and selector key combination has not been previously registered in this instance. This is the generic overload.
 		/// </summary>
 		/// <typeparam name="TObject"> The target type of removal. </typeparam>
+		/// <param name="includeAssignableTypes"> A boolean value indicating whether to include assignable types in the candidate resolution removal list. </param>
 		/// <param name="selectorKey"> An non-null, zero or greater length string selector key. </param>
-		public void RemoveResolution<TObject>(string selectorKey)
+		public void RemoveResolution<TObject>(string selectorKey, bool includeAssignableTypes)
 		{
 			Type targetType;
 
@@ -381,7 +422,7 @@ namespace TextMetal.Middleware.Solder.Injection
 
 			targetType = typeof(TObject);
 
-			this.RemoveResolution(targetType, selectorKey);
+			this.RemoveResolution(targetType, selectorKey, includeAssignableTypes);
 		}
 
 		/// <summary>
@@ -389,9 +430,10 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// </summary>
 		/// <param name="targetType"> The target type of removal. </param>
 		/// <param name="selectorKey"> An non-null, zero or greater length string selector key. </param>
-		public void RemoveResolution(Type targetType, string selectorKey)
+		/// <param name="includeAssignableTypes"> A boolean value indicating whether to include assignable types in the candidate resolution removal list. </param>
+		public void RemoveResolution(Type targetType, string selectorKey, bool includeAssignableTypes)
 		{
-			KeyValuePair<Type, string> trait;
+			Tuple<Type, string> trait;
 			IDependencyResolution dependencyResolution;
 
 			if (this.Disposed)
@@ -413,17 +455,13 @@ namespace TextMetal.Middleware.Solder.Injection
 
 				try
 				{
-					trait = new KeyValuePair<Type, string>(targetType, selectorKey);
-
-					dependencyResolution = this.GetDependencyResolution(targetType, selectorKey);
+					trait = new Tuple<Type, string>(targetType, selectorKey);
+					dependencyResolution = this.GetDependencyResolution(targetType, selectorKey, includeAssignableTypes);
 
 					if ((object)dependencyResolution == null) // nothing to offer up
-						throw new DependencyException(string.Format("Dependency resolution in the in-effect dependency manager failed to match for target type '{0}' and selector key '{1}'.", targetType.FullName, selectorKey));
+						throw new DependencyException(string.Format("Dependency resolution in the in-effect dependency manager failed to match for target type '{0}' and selector key '{1}' (include assignable types: '{2}').", targetType.FullName, selectorKey, includeAssignableTypes));
 
-					if ((object)dependencyResolution != null &&
-						dependencyResolution is IDisposable)
-						((IDisposable)dependencyResolution).Dispose();
-
+					dependencyResolution.Dispose();
 					this.DependencyResolutionRegistrations.Remove(trait);
 				}
 				finally
@@ -442,8 +480,9 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// </summary>
 		/// <typeparam name="TObject"> The target type of resolution. </typeparam>
 		/// <param name="selectorKey"> An non-null, zero or greater length string selector key. </param>
+		/// <param name="includeAssignableTypes"> A boolean value indicating whether to include assignable types in the candidate resolution lookup list. </param>
 		/// <returns> An object instance of assisgnable to the target type. </returns>
-		public TObject ResolveDependency<TObject>(string selectorKey)
+		public TObject ResolveDependency<TObject>(string selectorKey, bool includeAssignableTypes)
 		{
 			Type targetType;
 			TObject value;
@@ -456,7 +495,7 @@ namespace TextMetal.Middleware.Solder.Injection
 
 			targetType = typeof(TObject);
 
-			value = (TObject)this.ResolveDependency(targetType, selectorKey);
+			value = (TObject)this.ResolveDependency(targetType, selectorKey, includeAssignableTypes);
 
 			return value;
 		}
@@ -466,8 +505,9 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// </summary>
 		/// <param name="targetType"> The target type of resolution. </param>
 		/// <param name="selectorKey"> An non-null, zero or greater length string selector key. </param>
+		/// <param name="includeAssignableTypes"> A boolean value indicating whether to include assignable types in the candidate resolution lookup list. </param>
 		/// <returns> An object instance of assisgnable to the target type. </returns>
-		public object ResolveDependency(Type targetType, string selectorKey)
+		public object ResolveDependency(Type targetType, string selectorKey, bool includeAssignableTypes)
 		{
 			object value;
 			IDependencyResolution dependencyResolution;
@@ -487,10 +527,10 @@ namespace TextMetal.Middleware.Solder.Injection
 
 			try
 			{
-				dependencyResolution = this.GetDependencyResolution(targetType, selectorKey);
+				dependencyResolution = this.GetDependencyResolution(targetType, selectorKey, includeAssignableTypes);
 
 				if ((object)dependencyResolution == null) // nothing to offer up
-					throw new DependencyException(string.Format("Dependency resolution in the in-effect dependency manager failed to match for target type '{0}' and selector key '{1}'.", targetType.FullName, selectorKey));
+					throw new DependencyException(string.Format("Dependency resolution in the in-effect dependency manager failed to match for target type '{0}' and selector key '{1}' (include assignable types: '{2}').", targetType.FullName, selectorKey, includeAssignableTypes));
 
 				value = dependencyResolution.Resolve(this);
 

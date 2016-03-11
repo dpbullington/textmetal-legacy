@@ -4,14 +4,11 @@
 */
 
 using System;
-using System.IO;
 using System.Reflection;
 
 using NUnit.Common;
 
 using NUnitLite;
-
-using TextMetal.Middleware.Solder.Runtime;
 
 namespace TextMetal.Middleware.UnitTests
 {

@@ -172,7 +172,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 				throw new ArgumentNullException(nameof(literalValue));
 
 			if ((object)literalValue.__ == null)
-				throw new InvalidOperationException("Cannot use the constant literal value NULL as a literalValue operand; use UnaryExpression(..., UnaryOperator.IsNull) instead.");
+				throw new InvalidOperationException(string.Format("Cannot use the constant literal value NULL as a literalValue operand; use UnaryExpression(..., UnaryOperator.IsNull) instead."));
 
 			parameterName = this.SqlNuance.GetParameterName(string.Format("expr_{0}", Guid.NewGuid().ToString("N")));
 			valueType = literalValue.__.GetType();

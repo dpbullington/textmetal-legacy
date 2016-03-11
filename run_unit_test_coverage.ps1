@@ -30,17 +30,18 @@ $dotcover_exe = "$dotcover_dir_path\$dotcover_file_name"
 
 echo "The operation is starting..."
 
-$target_assembly_name = "TextMetal.NopCLI"
-$xproject_dir = "$src_dir_path\$target_assembly_name"
+$target_assembly_name = "TextMetal.Middleware.Solder"
+$testsuite_assembly_name = "TextMetal.Middleware.UnitTests"
+$xproject_dir = "$src_dir_path\$testsuite_assembly_name"
 
-$coverage_output_dir_path = "$output_dir_path\$target_assembly_name"
+$coverage_output_dir_path = "$output_dir_path\$testsuite_assembly_name"
 $coverage_output_file_path_woext ="$coverage_output_dir_path\unit-test-coverage-report"
 
 pushd
 cd "$xproject_dir"
 
 $target_exe = "$dotnet_exe"
-$target_args = @("run") #,"--where", "class=TextMetal.Middleware.UnitTests.Solder.Utilities._.ReflectionFascadeTests")
+$target_args = @("run") #, "--where class=TextMetal.Middleware.UnitTests.Solder.*")
 $target_wdir = "$xproject_dir"
 
 $useDotCover = $true
@@ -72,7 +73,7 @@ else
 		/TargetArguments="$target_args" `
 		/TargetWorkingDir="$target_wdir" `
 		/ReportType=HTML `
-		/Output="$coverage_output_file_path_woext.html"
+		/Output="$coverage_output_file_path_woext.html" > "$coverage_output_file_path_woext.log"
 
 	(New-Object -Com Shell.Application).Open("$coverage_output_file_path_woext.html")
 }

@@ -25,17 +25,18 @@
 	},
 	"exclude": [
 		"Datazoid",
-		"Solder\\Context\\**.cs",
-		"Solder\\Injection\\**.cs",
-		"Solder\\Interception\\**.cs",
-		"Solder\\Serialization\\**.cs",
 		"TestingInfrastructure\\IMockModelObject.cs",
-		"TestingInfrastructure\\MockModelObject.cs"
+		"TestingInfrastructure\\MockModelObject.cs",
+
+		
+		"Solder\\Interception\\**.cs",
+		"Solder\\Serialization\\**.cs"
 	],
 	"content": "appconfig.json",
 	"dependencies": {
 		"Microsoft.CSharp": "4.0.1-beta-23516",
 		"Microsoft.NETCore": "5.0.1-beta-23516",
+		"System.Threading.Thread": "4.0.0-beta-23516",
 		"TextMetal.Middleware.Datazoid": "1.0.0-*",
 		"TextMetal.Middleware.Scrutiny": "1.0.0-*",
 		"TextMetal.Middleware.Solder": "1.0.0-*"

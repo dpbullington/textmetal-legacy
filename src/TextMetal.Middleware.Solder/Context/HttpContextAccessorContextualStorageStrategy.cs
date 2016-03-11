@@ -3,6 +3,8 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
+using System;
+
 using Microsoft.AspNet.Http;
 
 namespace TextMetal.Middleware.Solder.Context
@@ -11,31 +13,34 @@ namespace TextMetal.Middleware.Solder.Context
 	{
 		#region Constructors/Destructors
 
-		public HttpContextAccessorContextualStorageStrategy()
+		public HttpContextAccessorContextualStorageStrategy(IHttpContextAccessor httpContextAccessor)
 		{
+			this.httpContextAccessor = httpContextAccessor;
 		}
 
 		#endregion
 
 		#region Fields/Constants
 
-		private readonly IHttpContextAccessor __ = null;
+		private readonly IHttpContextAccessor httpContextAccessor;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		/// <summary>
-		/// Gets a value indicating if the current application domain is running under ASP.NET.
-		/// </summary>
-		public static bool IsInHttpContext
+		private IHttpContextAccessor HttpContextAccessor
 		{
 			get
 			{
-				var accessor = new HttpContextAccessorContextualStorageStrategy().__;
+				return this.httpContextAccessor;
+			}
+		}
 
-				return (object)accessor != null &&
-						(object)accessor.HttpContext != null;
+		public bool IsValidHttpContext
+		{
+			get
+			{
+				return (object)this.httpContextAccessor != null;
 			}
 		}
 
@@ -43,29 +48,34 @@ namespace TextMetal.Middleware.Solder.Context
 
 		#region Methods/Operators
 
-		public static string GetApplicationRootPhysicalPath()
+		private void AssertValidHttpContext()
 		{
-			return null; //xx.MapPath("~/");
+			if (!this.IsValidHttpContext)
+				throw new InvalidOperationException(string.Format("The HTTP context accessor is invalid."));
 		}
 
 		public T GetValue<T>(string key)
 		{
-			return (T)this.__.HttpContext.Items[key];
+			this.AssertValidHttpContext();
+			return (T)this.HttpContextAccessor.HttpContext.Items[key];
 		}
 
 		public bool HasValue(string key)
 		{
-			return this.__.HttpContext.Items.ContainsKey(key);
+			this.AssertValidHttpContext();
+			return this.HttpContextAccessor.HttpContext.Items.ContainsKey(key);
 		}
 
 		public void RemoveValue(string key)
 		{
-			this.__.HttpContext.Items.Remove(key);
+			this.AssertValidHttpContext();
+			this.HttpContextAccessor.HttpContext.Items.Remove(key);
 		}
 
 		public void SetValue<T>(string key, T value)
 		{
-			this.__.HttpContext.Items[key] = value;
+			this.AssertValidHttpContext();
+			this.HttpContextAccessor.HttpContext.Items[key] = value;
 		}
 
 		#endregion

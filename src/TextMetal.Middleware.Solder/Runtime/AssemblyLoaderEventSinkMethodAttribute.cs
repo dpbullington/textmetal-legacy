@@ -11,14 +11,14 @@ namespace TextMetal.Middleware.Solder.Runtime
 	/// Marks a static void(void) method as an assembly loader method.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
-	public sealed class AssemblyLoaderSubscriberMethodAttribute : Attribute
+	public sealed class AssemblyLoaderEventSinkMethodAttribute : Attribute
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the AssemblyLoaderSubscriberMethodAttribute class.
+		/// Initializes a new instance of the AssemblyLoaderEventSinkMethodAttribute class.
 		/// </summary>
-		public AssemblyLoaderSubscriberMethodAttribute()
+		public AssemblyLoaderEventSinkMethodAttribute()
 		{
 		}
 

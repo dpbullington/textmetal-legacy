@@ -17,3 +17,18 @@ Assertion 7: A dependency management framework must allow for the complete manag
 Assertion 8: Dependency management frameworks should be attainable to all calibers of developers; they should not require a DI or IoC approach when all is needed is dependency acquisition the first go around.
 
 Assertion 9: A software developer must ensure to fully understand all ramifications and intricacies of whatever dependency management strategy and framework is chosen to associate with. The balance of complexity within the eco-sphere of the application under development will determine many a destiny.
+
+
+
+NOTES
+-----------------------------------------------
+Dependency Injection in ASP.NET MVC6
+
+Transient lifetime services are created each time they are requested. This lifetime works best for lightweight, stateless service.
+
+Scoped lifetime services are created once per request.
+
+TODO: need thread locking
+Singleton lifetime services are created the first time they are requested, and then every subsequent request will use the same instance. If your application requires singleton behavior, allowing the services container to manage the service’s lifetime is recommended instead of implementing the singleton design pattern and managing your object’s lifetime in the class yourself.
+
+Instance lifetime services: you can choose to add an instance directly to the services container. If you do so, this instance will be used for all subsequent requests (this technique will create a Singleton-scoped instance). One key difference between Instance services and Singleton services is that the Instance service is created in ConfigureServices, while the Singleton service is lazy-loaded the first time it is requested.

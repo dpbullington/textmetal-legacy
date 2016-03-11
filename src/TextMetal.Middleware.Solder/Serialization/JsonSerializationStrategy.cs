@@ -453,7 +453,7 @@ namespace TextMetal.Middleware.Solder.Serialization
 			JsonSerializer serializer;
 
 			if ((object)textWriter == null)
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(textWriter));
 
 			if ((object)targetType == null)
 				throw new ArgumentNullException(nameof(targetType));
@@ -514,7 +514,7 @@ namespace TextMetal.Middleware.Solder.Serialization
 		/// <param name="obj"> The object graph to serialize. </param>
 		public void SetObjectToWriter(BinaryWriter binaryWriter, Type targetType, object obj)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException(nameof(SetObjectToWriter));
 		}
 
 		#endregion

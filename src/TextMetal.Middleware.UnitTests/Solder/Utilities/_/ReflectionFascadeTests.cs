@@ -469,6 +469,26 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
+		public void ShouldGetEmptyAttributesTest()
+		{
+			ReflectionFascade reflectionFascade;
+			MockMultipleTestAttibute[] tas;
+
+			MockFactory mockFactory;
+			IDataTypeFascade mockDataTypeFascade;
+
+			mockFactory = new MockFactory();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
+
+			reflectionFascade = new ReflectionFascade(mockDataTypeFascade);
+
+			tas = reflectionFascade.GetAllAttributes<MockMultipleTestAttibute>(typeof(Exception));
+
+			Assert.IsNotNull(tas);
+			Assert.IsEmpty(tas);
+		}
+
+		[Test]
 		public void ShouldGetErrors()
 		{
 			ReflectionFascade reflectionFascade;
@@ -523,7 +543,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
-		public void ShouldGetNullAttributesTest()
+		public void ShouldGetNullAttributesWithInvalidTargetTest()
 		{
 			ReflectionFascade reflectionFascade;
 			MockMultipleTestAttibute[] tas;
@@ -536,7 +556,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 			reflectionFascade = new ReflectionFascade(mockDataTypeFascade);
 
-			tas = reflectionFascade.GetAllAttributes<MockMultipleTestAttibute>(typeof(Exception));
+			tas = reflectionFascade.GetAllAttributes<MockMultipleTestAttibute>(int.MaxValue);
 
 			Assert.IsNull(tas);
 		}

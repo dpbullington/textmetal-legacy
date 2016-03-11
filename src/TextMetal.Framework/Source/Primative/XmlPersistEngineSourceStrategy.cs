@@ -35,9 +35,6 @@ namespace TextMetal.Framework.Source.Primative
 
 			xpe = this.GetXmlPersistEngine(properties);
 
-			if ((object)xpe == null)
-				throw new ArgumentNullException("xpe");
-
 			if ((object)sourceFilePath == null)
 				throw new ArgumentNullException(nameof(sourceFilePath));
 
@@ -46,6 +43,9 @@ namespace TextMetal.Framework.Source.Primative
 
 			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
+
+			if ((object)xpe == null)
+				throw new InvalidOperationException(nameof(xpe));
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
 

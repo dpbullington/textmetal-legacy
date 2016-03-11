@@ -52,7 +52,7 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 		{
 			get
 			{
-				throw new NotImplementedException();
+				throw new NotImplementedException(nameof(this.PropertyBag));
 			}
 		}
 
@@ -153,7 +153,7 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 
 		public void Mark()
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException(nameof(this.Mark));
 		}
 
 		public virtual IEnumerable<Message> Validate()

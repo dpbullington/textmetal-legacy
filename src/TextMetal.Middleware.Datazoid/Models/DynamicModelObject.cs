@@ -15,7 +15,7 @@ namespace TextMetal.Middleware.Datazoid.Models
 
 		protected DynamicModelObject()
 		{
-			if (this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Length > 0)
+			if (this.GetType().GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance).Length > 0)
 				throw new NotSupportedException(string.Format("This type is semantically sealed."));
 		}
 

@@ -226,7 +226,7 @@ namespace TextMetal.Middleware.Datazoid.UoW
 				throw new ObjectDisposedException(typeof(UnitOfWork).FullName);
 
 			if (this.Completed)
-				throw new InvalidOperationException("The current unit of work is already complete. You should dispose of the unit of work.");
+				throw new InvalidOperationException(string.Format("The current unit of work is already complete. You should dispose of the unit of work."));
 
 			this.Completed = true;
 		}

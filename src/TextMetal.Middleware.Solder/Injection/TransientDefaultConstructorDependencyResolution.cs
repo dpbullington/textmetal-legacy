@@ -10,39 +10,42 @@ using System;
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>
-	/// A dependency resolution implementation that allows only a specific instance
-	/// to be provided, cached, and reused; the specific instance is passed as a constructor parameter.
+	/// A dependency resolution implementation that executes a public, default constructor
+	/// on the target type each time a dependency resolution occurs.
 	/// From 'Dependency Injection in ASP.NET MVC6':
-	/// Instance lifetime services: you can choose to add an instance directly to the services container. If you do so, this instance will be used for all subsequent requests (this technique will create a Singleton-scoped instance). One key difference between Instance services and Singleton services is that the Instance service is created in ConfigureServices, while the Singleton service is lazy-loaded the first time it is requested.
+	/// Transient lifetime services are created each time they are requested. This lifetime works best for lightweight, stateless service.
 	/// </summary>
-	public sealed class InstanceDependencyResolution : IDependencyResolution
+	public class TransientDefaultConstructorDependencyResolution : IDependencyResolution
+
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the InstanceDependencyResolution class.
+		/// Initializes a new instance of the TransientDefaultConstructorDependencyResolution class.
 		/// </summary>
-		/// <param name="instance"> The instance to use for resolution. </param>
-		public InstanceDependencyResolution(object instance)
+		public TransientDefaultConstructorDependencyResolution(Type targetType)
 		{
-			this.instance = instance;
+			if ((object)targetType == null)
+				throw new ArgumentNullException(nameof(targetType));
+
+			this.targetType = targetType;
 		}
 
 		#endregion
 
 		#region Fields/Constants
 
-		private readonly object instance;
+		private readonly Type targetType;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		public object Instance
+		private Type TargetType
 		{
 			get
 			{
-				return this.instance;
+				return this.targetType;
 			}
 		}
 
@@ -50,9 +53,15 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		#region Methods/Operators
 
-		public static InstanceDependencyResolution From<TObject>(TObject instance)
+		public static IDependencyResolution New<TObject>()
+			where TObject : new()
 		{
-			return new InstanceDependencyResolution(instance);
+			return TransientFactoryMethodDependencyResolution.Create<TObject>(() => new TObject());
+		}
+
+		public static TransientDefaultConstructorDependencyResolution Create<TObject>()
+		{
+			return new TransientDefaultConstructorDependencyResolution(typeof(TObject));
 		}
 
 		public void Dispose()
@@ -70,7 +79,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			if ((object)dependencyManager == null)
 				throw new ArgumentNullException(nameof(dependencyManager));
 
-			return this.Instance;
+			return Activator.CreateInstance(this.TargetType);
 		}
 
 		#endregion

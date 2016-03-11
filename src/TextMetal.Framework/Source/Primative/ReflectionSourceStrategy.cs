@@ -38,7 +38,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)methodInfo == null)
 				throw new ArgumentNullException(nameof(methodInfo));
 
-			propertyInfos = methodInfo.DeclaringType.GetProperties(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public);
+			propertyInfos = methodInfo.DeclaringType.GetProperties(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
 
 			if ((object)propertyInfos != null)
 			{
@@ -55,7 +55,7 @@ namespace TextMetal.Framework.Source.Primative
 				}
 			}
 
-			eventInfos = methodInfo.DeclaringType.GetEvents(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public);
+			eventInfos = methodInfo.DeclaringType.GetEvents(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
 
 			if ((object)eventInfos != null)
 			{

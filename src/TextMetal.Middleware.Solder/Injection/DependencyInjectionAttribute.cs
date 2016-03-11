@@ -5,14 +5,15 @@
 
 using System;
 
+/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-10 / 100% code coverage */
+
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>
-	/// Marks a constructor and its parameter(s) or properties as dependency injection points.
-	/// When specified on a constructor, the selector key is used to decide which constructor is resolved.
-	/// When specified on a constructor parameter or a proeprty, the selector key is used to resolve that actual value.
+	/// Explicitly marks a constructor, (setter) method, or property (setter) as a dependency injection point.
+	/// Explicitly marks a parameters on above items as a dependency injection point.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Constructor | AttributeTargets.Parameter | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+	[AttributeUsage(AttributeTargets.Constructor | AttributeTargets.Property | AttributeTargets.Method | AttributeTargets.Parameter, AllowMultiple = false, Inherited = true)]
 	public sealed class DependencyInjectionAttribute : Attribute
 	{
 		#region Constructors/Destructors

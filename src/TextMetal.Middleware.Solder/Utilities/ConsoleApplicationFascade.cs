@@ -23,7 +23,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 		#region Methods/Operators
 
-		protected override sealed void DisplayArgumentErrorMessage(IEnumerable<Message> argumentMessages)
+		protected sealed override void DisplayArgumentErrorMessage(IEnumerable<Message> argumentMessages)
 		{
 			ConsoleColor oldConsoleColor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Red;
@@ -38,7 +38,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			Console.ForegroundColor = oldConsoleColor;
 		}
 
-		protected override sealed void DisplayArgumentMapMessage(IDictionary<string, ArgumentSpec> argumentMap)
+		protected sealed override void DisplayArgumentMapMessage(IDictionary<string, ArgumentSpec> argumentMap)
 		{
 			ConsoleColor oldConsoleColor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Magenta;
@@ -55,7 +55,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			Console.ForegroundColor = oldConsoleColor;
 		}
 
-		protected override sealed void DisplayFailureMessage(Exception exception)
+		protected sealed override void DisplayFailureMessage(Exception exception)
 		{
 			ConsoleColor oldConsoleColor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Red;
@@ -67,7 +67,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			Console.WriteLine("The operation failed to complete.");
 		}
 
-		protected override sealed void DisplayRawArgumentsMessage(string[] args, IEnumerable<string> arguments)
+		protected sealed override void DisplayRawArgumentsMessage(string[] args, IEnumerable<string> arguments)
 		{
 			ConsoleColor oldConsoleColor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Blue;
@@ -87,7 +87,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			Console.ForegroundColor = oldConsoleColor;
 		}
 
-		protected override sealed void DisplaySuccessMessage(TimeSpan duration)
+		protected sealed override void DisplaySuccessMessage(TimeSpan duration)
 		{
 			Console.WriteLine();
 			Console.WriteLine("Operation completed successfully; duration: '{0}'.", duration);

@@ -5,6 +5,8 @@
 
 using System;
 
+/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-10 / 100% code coverage */
+
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>

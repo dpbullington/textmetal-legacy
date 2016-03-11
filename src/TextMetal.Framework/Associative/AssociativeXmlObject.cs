@@ -834,7 +834,7 @@ namespace TextMetal.Framework.Associative
 			{
 				get
 				{
-					throw new NotImplementedException();
+					throw new NotImplementedException(nameof(CurrentVariableTable));
 				}
 			}
 
@@ -842,7 +842,7 @@ namespace TextMetal.Framework.Associative
 			{
 				get
 				{
-					throw new NotImplementedException();
+					throw new NotImplementedException(nameof(Input));
 				}
 			}
 
@@ -850,7 +850,7 @@ namespace TextMetal.Framework.Associative
 			{
 				get
 				{
-					throw new NotImplementedException();
+					throw new NotImplementedException(nameof(IteratorModels));
 				}
 			}
 
@@ -858,7 +858,7 @@ namespace TextMetal.Framework.Associative
 			{
 				get
 				{
-					throw new NotImplementedException();
+					throw new NotImplementedException(nameof(Output));
 				}
 			}
 
@@ -866,7 +866,7 @@ namespace TextMetal.Framework.Associative
 			{
 				get
 				{
-					throw new NotImplementedException();
+					throw new NotImplementedException(nameof(Properties));
 				}
 			}
 
@@ -874,7 +874,7 @@ namespace TextMetal.Framework.Associative
 			{
 				get
 				{
-					throw new NotImplementedException();
+					throw new NotImplementedException(nameof(Tokenizer));
 				}
 			}
 
@@ -882,7 +882,7 @@ namespace TextMetal.Framework.Associative
 			{
 				get
 				{
-					throw new NotImplementedException();
+					throw new NotImplementedException(nameof(VariableTables));
 				}
 			}
 
@@ -892,42 +892,42 @@ namespace TextMetal.Framework.Associative
 
 			public void AddReference(Type xmlObjectType)
 			{
-				throw new NotImplementedException();
+				throw new NotImplementedException(nameof(AddReference));
 			}
 
 			public void AddReference(XmlName xmlName, Type xmlObjectType)
 			{
-				throw new NotImplementedException();
+				throw new NotImplementedException(nameof(AddReference));
 			}
 
 			public void ClearReferences()
 			{
-				throw new NotImplementedException();
+				throw new NotImplementedException(nameof(ClearReferences));
 			}
 
 			public void Dispose()
 			{
-				throw new NotImplementedException();
+				throw new NotImplementedException(nameof(Dispose));
 			}
 
 			public DynamicWildcardTokenReplacementStrategy GetDynamicWildcardTokenReplacementStrategy()
 			{
-				throw new NotImplementedException();
+				throw new NotImplementedException(nameof(GetDynamicWildcardTokenReplacementStrategy));
 			}
 
 			public DynamicWildcardTokenReplacementStrategy GetDynamicWildcardTokenReplacementStrategy(bool strict)
 			{
-				throw new NotImplementedException();
+				throw new NotImplementedException(nameof(GetDynamicWildcardTokenReplacementStrategy));
 			}
 
 			public bool LaunchDebugger()
 			{
-				throw new NotImplementedException();
+				throw new NotImplementedException(nameof(LaunchDebugger));
 			}
 
 			public void SetReference(Type xmlObjectType)
 			{
-				throw new NotImplementedException();
+				throw new NotImplementedException(nameof(SetReference));
 			}
 
 			#endregion

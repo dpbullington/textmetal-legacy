@@ -127,7 +127,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		private ITableTacticCommand<TTableModelObject> GetDeleteAllTacticCommand<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject tableModelObject, ITableModelQuery tableModelQuery, TableMappingAttribute tableMappingAttribute)
 			where TTableModelObject : class, ITableModelObject
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException(nameof(GetDeleteAllTacticCommand));
 		}
 
 		private ITableTacticCommand<TTableModelObject> GetDeleteOneTacticCommand<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject prototype, TableMappingAttribute tableMappingAttribute)
@@ -443,7 +443,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		private ITableTacticCommand<TTableModelObject> GetInsertAllTacticCommand<TTableModelObject>(IUnitOfWork unitOfWork, IModelObject model, ITableModelQuery tableModelQuery, TableMappingAttribute tableMappingAttribute)
 			where TTableModelObject : class, ITableModelObject
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException(nameof(GetInsertAllTacticCommand));
 		}
 
 		private ITableTacticCommand<TTableModelObject> GetInsertOneTacticCommand<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject model, TableMappingAttribute tableMappingAttribute) where TTableModelObject : class, ITableModelObject
@@ -1021,7 +1021,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		private ITableTacticCommand<TTableModelObject> GetUpdateAllTacticCommand<TTableModelObject>(IUnitOfWork unitOfWork, IModelObject model, ITableModelQuery tableModelQuery, TableMappingAttribute tableMappingAttribute)
 			where TTableModelObject : class, ITableModelObject
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException(nameof(GetUpdateAllTacticCommand));
 		}
 
 		private ITableTacticCommand<TTableModelObject> GetUpdateOneTacticCommand<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject model, TableMappingAttribute tableMappingAttribute) where TTableModelObject : class, ITableModelObject

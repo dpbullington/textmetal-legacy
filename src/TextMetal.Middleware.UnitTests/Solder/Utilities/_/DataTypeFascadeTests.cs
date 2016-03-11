@@ -102,7 +102,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 			DataTypeFascade dataTypeFascade;
 
 			dataTypeFascade = new DataTypeFascade();
-			
+
 			// both null
 			objA = null;
 			objB = null;

@@ -10,9 +10,7 @@
     "tags": [ "TextMetal" ],
 	"compilationOptions": {
 		"keyFile": "../TextMetal.snk",
-		"warningsAsErrors": false,
-
-		"define": [ "NETCORE", "PORTABLE", "NUNIT_FRAMEWORK", "NUNITLITE" ]
+		"warningsAsErrors": false
 	},
     "repository": {
         "type": "git",
@@ -21,6 +19,10 @@
 	"frameworks": {
 		"dotnet5.5": {
 			"dependencies": {
+			},
+
+			"compilationOptions": {
+				"define": [ "NETCORE", "PORTABLE", "NUNIT_FRAMEWORK", "NUNITLITE" ]
 			}
 		}
 	},

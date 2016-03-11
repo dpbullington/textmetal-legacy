@@ -1,5 +1,10 @@
+/*
+	Copyright ©2002-2016 Daniel Bullington (dpbullington@gmail.com)
+	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+*/
+
 using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -35,6 +40,7 @@ namespace TextMetal.Middleware.Solder.Runtime
 		#region Fields/Constants
 
 		private readonly IDependencyManager dependencyManager = new DependencyManager();
+		private readonly IList<Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext>> eventSinkMethods = new List<Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext>>();
 
 		#endregion
 
@@ -87,6 +93,14 @@ namespace TextMetal.Middleware.Solder.Runtime
 			}
 		}
 
+		private IList<Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext>> EventSinkMethods
+		{
+			get
+			{
+				return this.eventSinkMethods;
+			}
+		}
+
 		#endregion
 
 		#region Methods/Operators
@@ -99,8 +113,8 @@ namespace TextMetal.Middleware.Solder.Runtime
 		{
 			Type[] assemblyTypes;
 			MethodInfo[] methodInfos;
-			AssemblyLoaderSubscriberMethodAttribute assemblyLoaderSubscriberMethodAttribute;
-			Action<IDependencyManager> dependencyRegistrationMethod;
+			AssemblyLoaderEventSinkMethodAttribute assemblyLoaderEventSinkMethodAttribute;
+			Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext> assemblyLoaderEventSinkMethod;
 
 			if ((object)assemblies != null)
 			{
@@ -129,9 +143,9 @@ namespace TextMetal.Middleware.Solder.Runtime
 							{
 								foreach (MethodInfo methodInfo in methodInfos)
 								{
-									assemblyLoaderSubscriberMethodAttribute = ReflectionFascade.Instance.GetOneAttribute<AssemblyLoaderSubscriberMethodAttribute>(methodInfo);
+									assemblyLoaderEventSinkMethodAttribute = ReflectionFascade.Instance.GetOneAttribute<AssemblyLoaderEventSinkMethodAttribute>(methodInfo);
 
-									if ((object)assemblyLoaderSubscriberMethodAttribute == null)
+									if ((object)assemblyLoaderEventSinkMethodAttribute == null)
 										continue;
 
 									if (!methodInfo.IsStatic)
@@ -143,16 +157,30 @@ namespace TextMetal.Middleware.Solder.Runtime
 									if (methodInfo.ReturnType != typeof(void))
 										continue;
 
-									if (methodInfo.GetParameters().Count() != 1 ||
-										methodInfo.GetParameters()[0].ParameterType != typeof(IDependencyManager))
+									if (methodInfo.GetParameters().Count() == 1 &&
+										methodInfo.GetParameters()[0].ParameterType == typeof(IDependencyManager))
+									{
+										Console.WriteLine("Method '{0}' of type '{1}' uses an unsupported method signature. The migration is to use the new signature '{2} ({3}, {4})', multi-path the logic based on event type, and access the in-effect dependency manager from the context paramter value.", methodInfo.Name, methodInfo.DeclaringType.FullName, typeof(void).Name, nameof(AssemblyLoaderEventType), nameof(AssemblyLoaderContainerContext));
+										continue;
+									}
+
+									if (methodInfo.GetParameters().Count() != 2 ||
+										methodInfo.GetParameters()[0].ParameterType != typeof(AssemblyLoaderEventType) ||
+										methodInfo.GetParameters()[1].ParameterType != typeof(AssemblyLoaderContainerContext))
 										continue;
 
-									dependencyRegistrationMethod = (Action<IDependencyManager>)(methodInfo.CreateDelegate(typeof(Action<IDependencyManager>), null /* static */));
+									assemblyLoaderEventSinkMethod = (Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext>)(methodInfo.CreateDelegate(typeof(Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext>), null /* static */));
 
-									if ((object)dependencyRegistrationMethod == null)
+									if ((object)assemblyLoaderEventSinkMethod == null)
 										continue;
 
-									dependencyRegistrationMethod(this.DependencyManager);
+									if (this.EventSinkMethods.Contains(assemblyLoaderEventSinkMethod))
+										throw new NotSupportedException(string.Format("Method '{0}' of type '{1}' has been sunk before. This is likely a defect in the framework - report this to the project team.", methodInfo.Name, methodInfo.DeclaringType.FullName));
+
+									// notify
+									//Console.WriteLine("{1}::{0}.", methodInfo.Name, methodInfo.DeclaringType.Name);
+									this.EventSinkMethods.Add(assemblyLoaderEventSinkMethod);
+									assemblyLoaderEventSinkMethod(AssemblyLoaderEventType.Startup, this);
 								}
 							}
 						}
@@ -161,36 +189,77 @@ namespace TextMetal.Middleware.Solder.Runtime
 			}
 		}
 
+		public void ScanAssembly<TAssemblyOfTargetType>()
+		{
+			Type assemblyOfTargetType;
+
+			assemblyOfTargetType = typeof(TAssemblyOfTargetType);
+
+			this.ScanAssembly(assemblyOfTargetType);
+		}
+
+		public void ScanAssembly(Type assemblyOfTargetType)
+		{
+			Assembly assembly;
+
+			if ((object)assemblyOfTargetType == null)
+				throw new ArgumentNullException(nameof(assemblyOfTargetType));
+
+			assembly = assemblyOfTargetType.GetTypeInfo().Assembly;
+
+			this.ScanAssembly(assembly);
+		}
+
+		public void ScanAssembly(Assembly assembly)
+		{
+			Assembly[] assemblies;
+
+			if ((object)assembly == null)
+				throw new ArgumentNullException(nameof(assembly));
+
+			assemblies = new Assembly[] { assembly };
+
+			this.ScanAssemblies(assemblies);
+		}
+
 		/// <summary>
 		/// Private thread-safe method which bootstraps an "app domain".
 		/// </summary>
 		private void SetUpApplicationDomain()
 		{
-			ILibraryManager libraryManager = PlatformServices.Default.LibraryManager;
+			ILibraryManager libraryManager;
+			PlatformServices platformServices;
 
-			Console.WriteLine("SetUpApplicationDomain-> EnvVarEnableAssemblyLoaderSubscriptionMethodExecution: '{0}'; LibraryManager: {1}", EnvVarEnableAssemblyLoaderSubscriptionMethodExecution, (object)libraryManager == null ? "NULL" : "OK");
+			Console.WriteLine("SetUpApplicationDomain");
 
-			this.DependencyManager.AddResolution<PlatformServices>(string.Empty, new SingletonDependencyResolution(new InstanceDependencyResolution(PlatformServices.Default.LibraryManager)));
+			platformServices = PlatformServices.Default;
+
+			if ((object)platformServices == null)
+				return; //throw new InvalidOperationException(string.Format("Platform services default instance was invalid."));
+
+			libraryManager = platformServices.LibraryManager;
+
+			if ((object)libraryManager == null)
+				return; //throw new InvalidOperationException(string.Format("Platform services library manager was invalid."));
+
+			this.DependencyManager.AddResolution<PlatformServices>(string.Empty, false, new SingletonWrapperDependencyResolution(new InstanceDependencyResolution(PlatformServices.Default.LibraryManager)));
 
 			if (!EnvVarEnableAssemblyLoaderSubscriptionMethodExecution)
 				return;
 
-			if ((object)libraryManager != null)
-			{
-				var assemblies = libraryManager.GetLibraries().SelectMany(l => l.Assemblies.Select(an =>
+			var assemblies = libraryManager.GetLibraries().SelectMany(l => l.Assemblies.Select(an =>
+																								{
+																									try
 																									{
-																										try
-																										{
-																											return Assembly.Load(an);
-																										}
-																										catch (ReflectionTypeLoadException)
-																										{
-																											return null;
-																										}
-																									}));
+																										return Assembly.Load(an);
+																									}
+																									catch (ReflectionTypeLoadException)
+																									{
+																										return null;
+																									}
+																								})).Where(a => (object)a != null);
 
-				this.ScanAssemblies(assemblies.ToArray());
-			}
+			this.ScanAssemblies(assemblies.ToArray());
 		}
 
 		/// <summary>
@@ -198,7 +267,13 @@ namespace TextMetal.Middleware.Solder.Runtime
 		/// </summary>
 		private void TearDownApplicationDomain()
 		{
+			// notify
+			foreach (Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext> eventSinkMethod in this.EventSinkMethods)
+				eventSinkMethod(AssemblyLoaderEventType.Shutdown, this);
+
 			// cleanup
+			this.EventSinkMethods.Clear();
+
 			if ((object)this.DependencyManager != null)
 				this.DependencyManager.Dispose();
 

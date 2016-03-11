@@ -84,21 +84,21 @@ namespace TextMetal.Middleware.Solder.Interception
 
 			switch (invokedMethodInfo.Name)
 			{
-				case nameof(object.GetType):
+				case nameof(GetType):
 
 					if (invocationParameters.Length != 0)
 						throw new InvalidOperationException(string.Format("Method '{0}' on type '{1}' takes 0 parameter(s).", invokedMethodInfo.Name, typeof(object).FullName));
 
 					returnValue = proxiedType;
 					break;
-				case nameof(object.ToString):
+				case nameof(ToString):
 
 					if (invocationParameters.Length != 0)
 						throw new InvalidOperationException(string.Format("Method '{0}' on type '{1}' takes 0 parameter(s).", invokedMethodInfo.Name, typeof(object).FullName));
 
 					returnValue = proxiedType.FullName;
 					break;
-				case nameof(object.GetHashCode):
+				case nameof(GetHashCode):
 
 					if (invocationParameters.Length != 0)
 						throw new InvalidOperationException(string.Format("Method '{0}' on type '{1}' takes 0 parameter(s).", invokedMethodInfo.Name, typeof(object).FullName));

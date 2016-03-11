@@ -14,7 +14,7 @@ Refactor the appConfigFilePath constructor parameter out, do IoC of IConfigurati
 This will enhance unit testability and allow any config types.
 */
 
-/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2015-12-18 / 98% code coverage */
+/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-02-22 / 98% code coverage */
 
 namespace TextMetal.Middleware.Solder.Utilities
 {

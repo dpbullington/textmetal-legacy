@@ -49,6 +49,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 		private readonly IDataTypeFascade dataTypeFascade;
 		private readonly IReflectionFascade reflectionFascade;
 		private IAssemblyInformationFascade assemblyInformationFascade;
+		private IContextualStorageFactory contextualStorageFactory;
 		private bool disposed;
 
 		#endregion
@@ -66,42 +67,24 @@ namespace TextMetal.Middleware.Solder.Utilities
 			}
 		}
 
-		/// <summary>
-		/// Gets the regular expression pattern for properties.
-		/// </summary>
-		public static string PropsRegEx
+		public static bool DnxDebugQuicksMode
 		{
 			get
 			{
-				return APPCONFIG_PROPS_REGEX;
-			}
-		}
+				string key;
+				string svalue;
+				bool ovalue;
 
-		public static ExecutableApplicationFascade Current
-		{
-			get
-			{
-				return DefaultContextualStorageFactory.Instance.GetContextualStorage().GetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY);
-			}
-			set
-			{
-				DefaultContextualStorageFactory.Instance.GetContextualStorage().SetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY, value);
-			}
-		}
+				key = string.Format("SOLDER_DNX_DEBUG_QUICKS_MODE");
+				svalue = Environment.GetEnvironmentVariable(key);
 
-		protected IAppConfigFascade AppConfigFascade
-		{
-			get
-			{
-				return this.appConfigFascade;
-			}
-		}
+				if ((object)svalue == null)
+					return false;
 
-		protected IDataTypeFascade DataTypeFascade
-		{
-			get
-			{
-				return this.dataTypeFascade;
+				if (!Utilities.DataTypeFascade.Instance.TryParse<bool>(svalue, out ovalue))
+					return false;
+
+				return ovalue;
 			}
 		}
 
@@ -126,24 +109,53 @@ namespace TextMetal.Middleware.Solder.Utilities
 			}
 		}
 
-		public static bool DnxDebugQuicksMode
+		/// <summary>
+		/// Gets the regular expression pattern for properties.
+		/// </summary>
+		public static string PropsRegEx
 		{
 			get
 			{
-				string key;
-				string svalue;
-				bool ovalue;
+				return APPCONFIG_PROPS_REGEX;
+			}
+		}
 
-				key = string.Format("SOLDER_DNX_DEBUG_QUICKS_MODE");
-				svalue = Environment.GetEnvironmentVariable(key);
+		/// <summary>
+		/// TODO use DI here
+		/// </summary>
+		public static ExecutableApplicationFascade Current
+		{
+			get
+			{
+				return new DefaultContextualStorageFactory().GetContextualStorage().GetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY);
+			}
+			set
+			{
+				new DefaultContextualStorageFactory().GetContextualStorage().SetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY, value);
+			}
+		}
 
-				if ((object)svalue == null)
-					return false;
+		protected IAppConfigFascade AppConfigFascade
+		{
+			get
+			{
+				return this.appConfigFascade;
+			}
+		}
 
-				if (!Utilities.DataTypeFascade.Instance.TryParse<bool>(svalue, out ovalue))
-					return false;
+		protected IContextualStorageFactory ContextualStorageFactory
+		{
+			get
+			{
+				return this.contextualStorageFactory;
+			}
+		}
 
-				return ovalue;
+		protected IDataTypeFascade DataTypeFascade
+		{
+			get
+			{
+				return this.dataTypeFascade;
 			}
 		}
 

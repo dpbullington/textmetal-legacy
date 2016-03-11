@@ -5,6 +5,8 @@
 
 using System;
 
+/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-02-22 / 86% code coverage */
+
 namespace TextMetal.Middleware.Solder.Context
 {
 	/// <summary>
@@ -20,32 +22,17 @@ namespace TextMetal.Middleware.Solder.Context
 
 		#endregion
 
-		#region Fields/Constants
-
-		private static readonly DefaultContextualStorageFactory instance = new DefaultContextualStorageFactory();
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public static DefaultContextualStorageFactory Instance
-		{
-			get
-			{
-				return instance;
-			}
-		}
-
-		#endregion
-
 		#region Methods/Operators
 
 		public IContextualStorageStrategy GetContextualStorage()
 		{
+			HttpContextAccessorContextualStorageStrategy httpContextAccessorContextualStorageStrategy;
 			IContextualStorageStrategy contextualStorageStrategy;
 
-			if (HttpContextAccessorContextualStorageStrategy.IsInHttpContext)
-				contextualStorageStrategy = new HttpContextAccessorContextualStorageStrategy();
+			httpContextAccessorContextualStorageStrategy = new HttpContextAccessorContextualStorageStrategy(null);
+
+			if (httpContextAccessorContextualStorageStrategy.IsValidHttpContext)
+				contextualStorageStrategy = httpContextAccessorContextualStorageStrategy;
 			else
 				contextualStorageStrategy = new ThreadLocalContextualStorageStrategy();
 

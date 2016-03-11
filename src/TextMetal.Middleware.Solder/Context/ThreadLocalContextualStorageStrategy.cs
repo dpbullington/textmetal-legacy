@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
+/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-02-22 / 100% code coverage */
+
 namespace TextMetal.Middleware.Solder.Context
 {
 	public sealed class ThreadLocalContextualStorageStrategy : IContextualStorageStrategy

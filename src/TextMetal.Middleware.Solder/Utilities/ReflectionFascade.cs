@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-02-22 / 99% code coverage */
+
 namespace TextMetal.Middleware.Solder.Utilities
 {
 	/// <summary>
@@ -88,6 +90,8 @@ namespace TextMetal.Middleware.Solder.Utilities
 				attributes = ((Assembly)target).GetCustomAttributes<TAttribute>();
 			else if (target is Module)
 				attributes = ((Module)target).GetCustomAttributes<TAttribute>();
+			else if (target is Type)
+				attributes = ((Type)target).GetTypeInfo().GetCustomAttributes<TAttribute>();
 			else if (target is MemberInfo)
 				attributes = ((MemberInfo)target).GetCustomAttributes<TAttribute>(true);
 			else if (target is ParameterInfo)

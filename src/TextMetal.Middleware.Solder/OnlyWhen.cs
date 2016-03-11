@@ -23,16 +23,16 @@ namespace TextMetal.Middleware.Solder
 			Debug.WriteLine(message);
 		}
 
-		[AssemblyLoaderSubscriberMethod]
+		[AssemblyLoaderEventSinkMethod]
 		public static void ThisAssemblyDependencyRegistration(IDependencyManager dependencyManager)
 		{
 			if ((object)dependencyManager == null)
 				throw new ArgumentNullException(nameof(dependencyManager));
 
-			dependencyManager.AddResolution<IDataTypeFascade>(string.Empty, new SingletonDependencyResolution(new ConstructorDependencyResolution<DataTypeFascade>()));
-			dependencyManager.AddResolution<IReflectionFascade>(string.Empty, new SingletonDependencyResolution(ActivatorDependencyResolution.OfType<IReflectionFascade, IDataTypeFascade>()));
-			dependencyManager.AddResolution<IAppConfigFascade>(string.Empty, new SingletonDependencyResolution(ActivatorDependencyResolution.OfType<IAppConfigFascade, string, IDataTypeFascade>()));
-			dependencyManager.AddResolution<IAdoNetLiteFascade>(string.Empty, new SingletonDependencyResolution(ActivatorDependencyResolution.OfType<IAdoNetLiteFascade, IReflectionFascade>()));
+			dependencyManager.AddResolution<IDataTypeFascade>(string.Empty, false, new SingletonWrapperDependencyResolution(TransientDefaultConstructorDependencyResolution.Create<DataTypeFascade>()));
+			dependencyManager.AddResolution<IReflectionFascade>(string.Empty, false, new SingletonWrapperDependencyResolution(TransientActivatorAutoWiringDependencyResolution.OfType<IReflectionFascade, IDataTypeFascade>()));
+			dependencyManager.AddResolution<IAppConfigFascade>(string.Empty, false, new SingletonWrapperDependencyResolution(TransientActivatorAutoWiringDependencyResolution.OfType<IAppConfigFascade, string, IDataTypeFascade>()));
+			dependencyManager.AddResolution<IAdoNetLiteFascade>(string.Empty, false, new SingletonWrapperDependencyResolution(TransientActivatorAutoWiringDependencyResolution.OfType<IAdoNetLiteFascade, IReflectionFascade>()));
 		}
 
 		#endregion

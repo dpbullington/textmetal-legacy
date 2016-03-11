@@ -46,7 +46,7 @@ namespace TextMetal.Middleware.Solder.Interception
 		/// <param name="proxyInstance"> The proxy object instance. </param>
 		/// <param name="invocationParameters"> The parameters passed to the invoked member, if appliable. </param>
 		/// <returns> The return value from the invoked member, if appliable. </returns>
-		public override sealed object Invoke(Type proxiedType, MethodInfo invokedMethodInfo, object proxyInstance, object[] invocationParameters)
+		public sealed override object Invoke(Type proxiedType, MethodInfo invokedMethodInfo, object proxyInstance, object[] invocationParameters)
 		{
 			Type contractType;
 			Type returnType;

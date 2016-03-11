@@ -26,7 +26,7 @@ namespace TextMetal.Middleware.Datazoid
 			this.targetEnumerator = targetEnumerable.GetEnumerator();
 
 			if ((object)this.targetEnumerator == null)
-				throw new InvalidOperationException("targetEnumerable");
+				throw new InvalidOperationException(nameof(targetEnumerator));
 
 			this.ordinalLookup = upstreamMetadata.Select((mc, i) => new
 																	{

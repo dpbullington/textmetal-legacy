@@ -75,7 +75,7 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 				throw new ObjectDisposedException(typeof(MockProxyFactory).FullName);
 
 			if ((object)dynamicInvocation == null)
-				throw new ArgumentNullException("invokeDynamic");
+				throw new ArgumentNullException(nameof(dynamicInvocation));
 
 			proxy = new MockObject();
 
@@ -122,11 +122,11 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 			{
 				get
 				{
-					throw new NotImplementedException();
+					throw new NotImplementedException(nameof(this.SomeProp));
 				}
 				set
 				{
-					throw new NotImplementedException();
+					throw new NotImplementedException(nameof(this.SomeProp));
 				}
 			}
 
@@ -140,7 +140,7 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 
 			public byte SomeMethodWithVarietyOfParameters(int inparam, out string outparam, ref object refparam)
 			{
-				throw new NotImplementedException();
+				throw new NotImplementedException(nameof(this.SomeMethodWithVarietyOfParameters));
 			}
 
 			#endregion

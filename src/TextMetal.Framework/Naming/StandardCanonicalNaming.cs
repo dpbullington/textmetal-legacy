@@ -101,7 +101,7 @@ namespace TextMetal.Framework.Naming
 		/// <returns> True if the specified value is a valid C# identifier; otherwise false. </returns>
 		public static bool IsValidCSharpIdentifier(string value)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException(nameof(IsValidCSharpIdentifier));
 		}
 
 		/// <summary>

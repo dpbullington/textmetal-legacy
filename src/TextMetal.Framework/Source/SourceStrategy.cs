@@ -36,7 +36,7 @@ namespace TextMetal.Framework.Source
 			}
 			/*catch (Exception ex)
 			{
-				throw new InvalidOperationException("The source strategy failed (see inner exception).", ex);
+				throw new InvalidOperationException(string.Format("The source strategy failed (see inner exception)."), ex);
 			}*/
 		}
 

@@ -1218,6 +1218,18 @@
           "lib/dotnet5.4/System.Threading.Tasks.Parallel.dll": {}
         }
       },
+      "System.Threading.Thread/4.0.0-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Runtime": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet5.1/System.Threading.Thread.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Threading.Thread.dll": {}
+        }
+      },
       "System.Threading.Timer/4.0.1-beta-23516": {
         "type": "package",
         "dependencies": {
@@ -1371,6 +1383,7 @@
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-beta-23516",
           "Microsoft.NETCore": "5.0.1-beta-23516",
+          "System.Threading.Thread": "4.0.0-beta-23516",
           "TextMetal.Middleware.Datazoid": "1.0.0",
           "TextMetal.Middleware.Scrutiny": "1.0.0",
           "TextMetal.Middleware.Solder": "1.0.0"
@@ -3046,6 +3059,18 @@
           "lib/dotnet5.4/System.Threading.Tasks.Parallel.dll": {}
         }
       },
+      "System.Threading.Thread/4.0.0-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Runtime": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet5.1/System.Threading.Thread.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Threading.Thread.dll": {}
+        }
+      },
       "System.Threading.Timer/4.0.1-beta-23516": {
         "type": "package",
         "dependencies": {
@@ -3199,6 +3224,7 @@
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-beta-23516",
           "Microsoft.NETCore": "5.0.1-beta-23516",
+          "System.Threading.Thread": "4.0.0-beta-23516",
           "TextMetal.Middleware.Datazoid": "1.0.0",
           "TextMetal.Middleware.Scrutiny": "1.0.0",
           "TextMetal.Middleware.Solder": "1.0.0"
@@ -4874,6 +4900,18 @@
           "lib/dotnet5.4/System.Threading.Tasks.Parallel.dll": {}
         }
       },
+      "System.Threading.Thread/4.0.0-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Runtime": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet5.1/System.Threading.Thread.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Threading.Thread.dll": {}
+        }
+      },
       "System.Threading.Timer/4.0.1-beta-23516": {
         "type": "package",
         "dependencies": {
@@ -5027,6 +5065,7 @@
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-beta-23516",
           "Microsoft.NETCore": "5.0.1-beta-23516",
+          "System.Threading.Thread": "4.0.0-beta-23516",
           "TextMetal.Middleware.Datazoid": "1.0.0",
           "TextMetal.Middleware.Scrutiny": "1.0.0",
           "TextMetal.Middleware.Solder": "1.0.0"
@@ -8690,6 +8729,38 @@
         "System.Threading.Tasks.Parallel.4.0.1-beta-23516.nupkg",
         "System.Threading.Tasks.Parallel.4.0.1-beta-23516.nupkg.sha512",
         "System.Threading.Tasks.Parallel.nuspec"
+      ]
+    },
+    "System.Threading.Thread/4.0.0-beta-23516": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "2a5k/EmBXNiIoQZ8hk32KjoCVs1E5OdQtqJCHcW4qThmk+m/siQgB7zYamlRBeQ5zJs7c1l4oN/y5+YRq8oQ2Q==",
+      "files": [
+        "lib/DNXCore50/System.Threading.Thread.dll",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Threading.Thread.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "ref/dotnet5.1/de/System.Threading.Thread.xml",
+        "ref/dotnet5.1/es/System.Threading.Thread.xml",
+        "ref/dotnet5.1/fr/System.Threading.Thread.xml",
+        "ref/dotnet5.1/it/System.Threading.Thread.xml",
+        "ref/dotnet5.1/ja/System.Threading.Thread.xml",
+        "ref/dotnet5.1/ko/System.Threading.Thread.xml",
+        "ref/dotnet5.1/ru/System.Threading.Thread.xml",
+        "ref/dotnet5.1/System.Threading.Thread.dll",
+        "ref/dotnet5.1/System.Threading.Thread.xml",
+        "ref/dotnet5.1/zh-hans/System.Threading.Thread.xml",
+        "ref/dotnet5.1/zh-hant/System.Threading.Thread.xml",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Threading.Thread.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "System.Threading.Thread.4.0.0-beta-23516.nupkg",
+        "System.Threading.Thread.4.0.0-beta-23516.nupkg.sha512",
+        "System.Threading.Thread.nuspec"
       ]
     },
     "System.Threading.Timer/4.0.1-beta-23516": {

@@ -10,39 +10,42 @@ using System;
 namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>
-	/// A dependency resolution implementation that allows only a specific instance
-	/// to be provided, cached, and reused; the specific instance is passed as a constructor parameter.
+	/// A dependency resolution implementation that executes a
+	/// factory method callback each time a dependency resolution occurs.
 	/// From 'Dependency Injection in ASP.NET MVC6':
-	/// Instance lifetime services: you can choose to add an instance directly to the services container. If you do so, this instance will be used for all subsequent requests (this technique will create a Singleton-scoped instance). One key difference between Instance services and Singleton services is that the Instance service is created in ConfigureServices, while the Singleton service is lazy-loaded the first time it is requested.
+	/// Transient lifetime services are created each time they are requested. This lifetime works best for lightweight, stateless service.
 	/// </summary>
-	public sealed class InstanceDependencyResolution : IDependencyResolution
+	public sealed class TransientFactoryMethodDependencyResolution : IDependencyResolution
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the InstanceDependencyResolution class.
+		/// Initializes a new instance of the TransientFactoryMethodDependencyResolution class.
 		/// </summary>
-		/// <param name="instance"> The instance to use for resolution. </param>
-		public InstanceDependencyResolution(object instance)
+		/// <param name="factoryMethod"> The callback method to execute during resolution. </param>
+		public TransientFactoryMethodDependencyResolution(Delegate factoryMethod)
 		{
-			this.instance = instance;
+			if ((object)factoryMethod == null)
+				throw new ArgumentNullException(nameof(factoryMethod));
+
+			this.factoryMethod = factoryMethod;
 		}
 
 		#endregion
 
 		#region Fields/Constants
 
-		private readonly object instance;
+		private readonly Delegate factoryMethod;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		public object Instance
+		private Delegate FactoryMethod
 		{
 			get
 			{
-				return this.instance;
+				return this.factoryMethod;
 			}
 		}
 
@@ -50,9 +53,12 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		#region Methods/Operators
 
-		public static InstanceDependencyResolution From<TObject>(TObject instance)
+		public static TransientFactoryMethodDependencyResolution Create<TObject>(Func<TObject> factoryMethod)
 		{
-			return new InstanceDependencyResolution(instance);
+			if ((object)factoryMethod == null)
+				throw new ArgumentNullException(nameof(factoryMethod));
+
+			return new TransientFactoryMethodDependencyResolution(factoryMethod);
 		}
 
 		public void Dispose()
@@ -70,7 +76,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			if ((object)dependencyManager == null)
 				throw new ArgumentNullException(nameof(dependencyManager));
 
-			return this.Instance;
+			return this.FactoryMethod.DynamicInvoke(null);
 		}
 
 		#endregion

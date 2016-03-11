@@ -7,6 +7,8 @@ using System;
 
 using NUnit.Framework;
 
+using TextMetal.Middleware.Solder.Injection;
+
 namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 {
 	[TestFixture]
@@ -26,12 +28,31 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		public void ShouldCreateTest()
 		{
 			DependencyException exception;
+			string expected;
 
-			exception = new DependencyException("msg");
+			expected = string.Format("Exception of type '{0}' was thrown.", typeof(DependencyException).FullName);
+			exception = new DependencyException();
 
 			Assert.IsNotNull(exception);
 			Assert.IsNotNull(exception.Message);
-			Assert.AreEqual("msg", exception.Message);
+			Assert.IsNull(exception.InnerException);
+			Assert.AreEqual(expected, exception.Message);
+
+			expected = "msg";
+			exception = new DependencyException(expected);
+
+			Assert.IsNotNull(exception);
+			Assert.IsNotNull(exception.Message);
+			Assert.IsNull(exception.InnerException);
+			Assert.AreEqual(expected, exception.Message);
+
+			expected = "msg";
+			exception = new DependencyException(expected, exception);
+
+			Assert.IsNotNull(exception);
+			Assert.IsNotNull(exception.Message);
+			Assert.IsNotNull(exception.InnerException);
+			Assert.AreEqual(expected, exception.Message);
 		}
 
 		#endregion

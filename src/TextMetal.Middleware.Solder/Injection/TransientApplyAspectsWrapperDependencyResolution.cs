@@ -5,17 +5,19 @@
 
 using System;
 
+using TextMetal.Middleware.Solder.Interception;
+
 namespace TextMetal.Middleware.Solder.Injection
 {
-	public sealed class LoggingAspectDependencyResolution : IDependencyResolution
+	public sealed class TransientApplyAspectsWrapperDependencyResolution : IDependencyResolution
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the LoggingAspectConstructorDependencyResolution`1 class.
+		/// Initializes a new instance of the TransientApplyAspectsWrapperDependencyResolution class.
 		/// </summary>
 		/// <param name="chainedDependencyResolution"> The singleton instance. </param>
-		public LoggingAspectDependencyResolution(IDependencyResolution chainedDependencyResolution)
+		public TransientApplyAspectsWrapperDependencyResolution(IDependencyResolution chainedDependencyResolution)
 		{
 			if ((object)chainedDependencyResolution == null)
 				throw new ArgumentNullException(nameof(chainedDependencyResolution));
@@ -50,6 +52,11 @@ namespace TextMetal.Middleware.Solder.Injection
 			// do nothing
 		}
 
+		private object GetDynamicProxy(Type interceptedInstanceType, LoggingAspectDynamicInvoker loggingAspectDynamicInvoker)
+		{
+			return interceptedInstanceType;
+		}
+
 		/// <summary>
 		/// Resolves a dependency.
 		/// </summary>
@@ -70,9 +77,7 @@ namespace TextMetal.Middleware.Solder.Injection
 				return null;
 
 			interceptedInstanceType = interceptedInstance.GetType();
-			wrapperInstance = null;
-
-			//__DynamicProxy(interceptedInstanceType, new LoggingAspectDynamicInvoker(interceptedInstance));
+			wrapperInstance = this.GetDynamicProxy(interceptedInstanceType, new LoggingAspectDynamicInvoker(interceptedInstance));
 
 			return wrapperInstance;
 		}
