@@ -7,6 +7,8 @@ using System;
 
 using Microsoft.AspNet.Http;
 
+/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-11 / 97% code coverage */
+
 namespace TextMetal.Middleware.Solder.Context
 {
 	public sealed class HttpContextAccessorContextualStorageStrategy : IContextualStorageStrategy

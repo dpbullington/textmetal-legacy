@@ -16,26 +16,33 @@ namespace TextMetal.Middleware.Solder.Context
 		#region Constructors/Destructors
 
 		public AsyncLocalContextualStorageStrategy()
+			: this(new Dictionary<string, object>(StringComparer.CurrentCultureIgnoreCase))
 		{
-			this.tlsContext = new AsyncLocal<IDictionary<string, object>>();
-			this.TlsContext.Value = new Dictionary<string, object>(StringComparer.CurrentCultureIgnoreCase);
+		}
+
+		public AsyncLocalContextualStorageStrategy(IDictionary<string, object> asyncContext)
+		{
+			if ((object)asyncContext == null)
+				throw new ArgumentNullException(nameof(asyncContext));
+
+			this.asyncLocal = new AsyncLocal<IDictionary<string, object>>() { Value = asyncContext };
 		}
 
 		#endregion
 
 		#region Fields/Constants
 
-		private readonly AsyncLocal<IDictionary<string, object>> tlsContext = new AsyncLocal<IDictionary<string, object>>();
+		private readonly AsyncLocal<IDictionary<string, object>> asyncLocal;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		private AsyncLocal<IDictionary<string, object>> TlsContext
+		private AsyncLocal<IDictionary<string, object>> AsyncLocal
 		{
 			get
 			{
-				return this.tlsContext;
+				return this.asyncLocal;
 			}
 		}
 
@@ -46,27 +53,27 @@ namespace TextMetal.Middleware.Solder.Context
 		public T GetValue<T>(string key)
 		{
 			object value;
-			this.TlsContext.Value.TryGetValue(key, out value);
+			this.AsyncLocal.Value.TryGetValue(key, out value);
 			return (T)value;
 		}
 
 		public bool HasValue(string key)
 		{
-			return this.TlsContext.Value.ContainsKey(key);
+			return this.AsyncLocal.Value.ContainsKey(key);
 		}
 
 		public void RemoveValue(string key)
 		{
-			if (this.TlsContext.Value.ContainsKey(key))
-				this.TlsContext.Value.Remove(key);
+			if (this.AsyncLocal.Value.ContainsKey(key))
+				this.AsyncLocal.Value.Remove(key);
 		}
 
 		public void SetValue<T>(string key, T value)
 		{
-			if (this.TlsContext.Value.ContainsKey(key))
-				this.TlsContext.Value.Remove(key);
+			if (this.AsyncLocal.Value.ContainsKey(key))
+				this.AsyncLocal.Value.Remove(key);
 
-			this.TlsContext.Value.Add(key, value);
+			this.AsyncLocal.Value.Add(key, value);
 		}
 
 		#endregion

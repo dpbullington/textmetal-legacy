@@ -5,7 +5,7 @@
 
 using System;
 
-/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-02-22 / 86% code coverage */
+/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-11 / 100% code coverage */
 
 namespace TextMetal.Middleware.Solder.Context
 {
@@ -16,8 +16,27 @@ namespace TextMetal.Middleware.Solder.Context
 	{
 		#region Constructors/Destructors
 
-		public DefaultContextualStorageFactory()
+		public DefaultContextualStorageFactory(ContextScope contextScope)
 		{
+			this.contextScope = contextScope;
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly ContextScope contextScope;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public ContextScope ContextScope
+		{
+			get
+			{
+				return this.contextScope;
+			}
 		}
 
 		#endregion
@@ -26,17 +45,23 @@ namespace TextMetal.Middleware.Solder.Context
 
 		public IContextualStorageStrategy GetContextualStorage()
 		{
-			HttpContextAccessorContextualStorageStrategy httpContextAccessorContextualStorageStrategy;
-			IContextualStorageStrategy contextualStorageStrategy;
-
-			httpContextAccessorContextualStorageStrategy = new HttpContextAccessorContextualStorageStrategy(null);
-
-			if (httpContextAccessorContextualStorageStrategy.IsValidHttpContext)
-				contextualStorageStrategy = httpContextAccessorContextualStorageStrategy;
-			else
-				contextualStorageStrategy = new ThreadLocalContextualStorageStrategy();
-
-			return contextualStorageStrategy;
+			switch (this.ContextScope)
+			{
+				case ContextScope.GlobalStaticUnsafe:
+					return new SharedStaticContextualStorageStrategy();
+				case ContextScope.GlobalDispatchSafe:
+					return null;
+				case ContextScope.LocalFrameSafe:
+					return null;
+				case ContextScope.LocalThreadSafe:
+					return new ThreadLocalContextualStorageStrategy();
+				case ContextScope.LocalAsyncSafe:
+					return new SharedStaticContextualStorageStrategy();
+				case ContextScope.LocalRequestSafe:
+					return new HttpContextAccessorContextualStorageStrategy(null);
+				default:
+					throw new ArgumentOutOfRangeException(nameof(this.ContextScope));
+			}
 		}
 
 		#endregion

@@ -16,25 +16,33 @@ namespace TextMetal.Middleware.Solder.Context
 		#region Constructors/Destructors
 
 		public ThreadLocalContextualStorageStrategy()
+			: this(() => new Dictionary<string, object>(StringComparer.CurrentCultureIgnoreCase))
 		{
-			this.tlsContext = new ThreadLocal<IDictionary<string, object>>(() => new Dictionary<string, object>(StringComparer.CurrentCultureIgnoreCase));
+		}
+
+		public ThreadLocalContextualStorageStrategy(Func<IDictionary<string, object>> tlsContextFactoryMethod)
+		{
+			if ((object)tlsContextFactoryMethod == null)
+				throw new ArgumentNullException(nameof(tlsContextFactoryMethod));
+
+			this.threadLocal = new ThreadLocal<IDictionary<string, object>>(tlsContextFactoryMethod);
 		}
 
 		#endregion
 
 		#region Fields/Constants
 
-		private readonly ThreadLocal<IDictionary<string, object>> tlsContext;
+		private readonly ThreadLocal<IDictionary<string, object>> threadLocal;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		private ThreadLocal<IDictionary<string, object>> TlsContext
+		private ThreadLocal<IDictionary<string, object>> ThreadLocal
 		{
 			get
 			{
-				return this.tlsContext;
+				return this.threadLocal;
 			}
 		}
 
@@ -45,27 +53,27 @@ namespace TextMetal.Middleware.Solder.Context
 		public T GetValue<T>(string key)
 		{
 			object value;
-			this.TlsContext.Value.TryGetValue(key, out value);
+			this.ThreadLocal.Value.TryGetValue(key, out value);
 			return (T)value;
 		}
 
 		public bool HasValue(string key)
 		{
-			return this.TlsContext.Value.ContainsKey(key);
+			return this.ThreadLocal.Value.ContainsKey(key);
 		}
 
 		public void RemoveValue(string key)
 		{
-			if (this.TlsContext.Value.ContainsKey(key))
-				this.TlsContext.Value.Remove(key);
+			if (this.ThreadLocal.Value.ContainsKey(key))
+				this.ThreadLocal.Value.Remove(key);
 		}
 
 		public void SetValue<T>(string key, T value)
 		{
-			if (this.TlsContext.Value.ContainsKey(key))
-				this.TlsContext.Value.Remove(key);
+			if (this.ThreadLocal.Value.ContainsKey(key))
+				this.ThreadLocal.Value.Remove(key);
 
-			this.TlsContext.Value.Add(key, value);
+			this.ThreadLocal.Value.Add(key, value);
 		}
 
 		#endregion

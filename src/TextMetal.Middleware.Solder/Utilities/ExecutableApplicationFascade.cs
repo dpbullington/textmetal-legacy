@@ -43,13 +43,13 @@ namespace TextMetal.Middleware.Solder.Utilities
 		private const string APPCONFIG_ARGS_REGEX = @"-(" + APPCONFIG_ID_REGEX_UNBOUNDED + @"{0,63}):(.{0,})";
 		private const string APPCONFIG_ID_REGEX_UNBOUNDED = @"[a-zA-Z_\.][a-zA-Z_\.0-9]";
 		private const string APPCONFIG_PROPS_REGEX = @"(" + APPCONFIG_ID_REGEX_UNBOUNDED + @"{0,63})=(.{0,})";
+		private static readonly IContextualStorageFactory contextualStorageFactory = new DefaultContextualStorageFactory(ContextScope.GlobalDispatchSafe);
 
 		private static readonly string EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY = typeof(ExecutableApplicationFascade).GetTypeInfo().GUID.SafeToString();
 		private readonly IAppConfigFascade appConfigFascade;
 		private readonly IDataTypeFascade dataTypeFascade;
 		private readonly IReflectionFascade reflectionFascade;
 		private IAssemblyInformationFascade assemblyInformationFascade;
-		private IContextualStorageFactory contextualStorageFactory;
 		private bool disposed;
 
 		#endregion
@@ -64,6 +64,14 @@ namespace TextMetal.Middleware.Solder.Utilities
 			get
 			{
 				return APPCONFIG_ARGS_REGEX;
+			}
+		}
+
+		protected static IContextualStorageFactory ContextualStorageFactory
+		{
+			get
+			{
+				return contextualStorageFactory;
 			}
 		}
 
@@ -120,18 +128,15 @@ namespace TextMetal.Middleware.Solder.Utilities
 			}
 		}
 
-		/// <summary>
-		/// TODO use DI here
-		/// </summary>
 		public static ExecutableApplicationFascade Current
 		{
 			get
 			{
-				return new DefaultContextualStorageFactory().GetContextualStorage().GetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY);
+				return ContextualStorageFactory.GetContextualStorage().GetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY);
 			}
 			set
 			{
-				new DefaultContextualStorageFactory().GetContextualStorage().SetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY, value);
+				ContextualStorageFactory.GetContextualStorage().SetValue<ExecutableApplicationFascade>(EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY, value);
 			}
 		}
 
@@ -140,14 +145,6 @@ namespace TextMetal.Middleware.Solder.Utilities
 			get
 			{
 				return this.appConfigFascade;
-			}
-		}
-
-		protected IContextualStorageFactory ContextualStorageFactory
-		{
-			get
-			{
-				return this.contextualStorageFactory;
 			}
 		}
 

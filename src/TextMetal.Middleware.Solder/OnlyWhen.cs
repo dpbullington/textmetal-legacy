@@ -30,9 +30,9 @@ namespace TextMetal.Middleware.Solder
 				throw new ArgumentNullException(nameof(dependencyManager));
 
 			dependencyManager.AddResolution<IDataTypeFascade>(string.Empty, false, new SingletonWrapperDependencyResolution(TransientDefaultConstructorDependencyResolution.Create<DataTypeFascade>()));
-			dependencyManager.AddResolution<IReflectionFascade>(string.Empty, false, new SingletonWrapperDependencyResolution(TransientActivatorAutoWiringDependencyResolution.OfType<IReflectionFascade, IDataTypeFascade>()));
-			dependencyManager.AddResolution<IAppConfigFascade>(string.Empty, false, new SingletonWrapperDependencyResolution(TransientActivatorAutoWiringDependencyResolution.OfType<IAppConfigFascade, string, IDataTypeFascade>()));
-			dependencyManager.AddResolution<IAdoNetLiteFascade>(string.Empty, false, new SingletonWrapperDependencyResolution(TransientActivatorAutoWiringDependencyResolution.OfType<IAdoNetLiteFascade, IReflectionFascade>()));
+			dependencyManager.AddResolution<IReflectionFascade>(string.Empty, false, new SingletonWrapperDependencyResolution(TransientActivatorAutoWiringDependencyResolution.OfType<ReflectionFascade, IDataTypeFascade>()));
+			dependencyManager.AddResolution<IAppConfigFascade>(string.Empty, false, new SingletonWrapperDependencyResolution(TransientActivatorAutoWiringDependencyResolution.OfType<AppConfigFascade, string, IDataTypeFascade>()));
+			dependencyManager.AddResolution<IAdoNetLiteFascade>(string.Empty, false, new SingletonWrapperDependencyResolution(TransientActivatorAutoWiringDependencyResolution.OfType<AdoNetLiteFascade, IReflectionFascade>()));
 		}
 
 		#endregion

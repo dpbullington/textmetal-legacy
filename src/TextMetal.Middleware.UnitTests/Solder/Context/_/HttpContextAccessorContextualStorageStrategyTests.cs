@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.AspNet.Http;
 
@@ -36,7 +37,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 			const string KEY = "somekey";
 			bool result;
 			string value;
-			string expected;
+			string expected, __expected;
 			IHttpContextAccessor mockHttpContextAccessor;
 			HttpContext mockHttpContext;
 			IDictionary<object, object> mockDictionary;
@@ -44,21 +45,42 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 			MockFactory mockFactory;
 
 			const string _unsusedString = null;
+			object _unusedObject = null;
 
 			mockFactory = new MockFactory();
 			mockHttpContextAccessor = mockFactory.CreateInstance<IHttpContextAccessor>();
 			mockHttpContext = mockFactory.CreateInstance<HttpContext>();
 			mockDictionary = mockFactory.CreateInstance<IDictionary<object, object>>();
 
+			expected = Guid.NewGuid().ToString("N");
+			__expected = new string(expected.ToCharArray().Reverse().ToArray());
+
 			Expect.On(mockHttpContextAccessor).Any.GetProperty(p => p.HttpContext).WillReturn(mockHttpContext);
 			Expect.On(mockHttpContext).Any.GetProperty(p => p.Items).WillReturn(mockDictionary);
 
+			// has unset
 			Expect.On(mockDictionary).One.Method(m => m.ContainsKey(_unsusedString)).With(KEY).WillReturn(false);
-			// TODO need to flush out expectations
+			// get unset
+			Expect.On(mockDictionary).One.GetProperty(m => m[KEY]).WillReturn(null);
+			// remove unset
+			Expect.On(mockDictionary).One.Method(m => m.Remove(_unsusedString)).With(KEY).WillReturn(true);
+			// set unset
+			Expect.On(mockDictionary).One.SetProperty(m => m[KEY] = _unsusedString).To(expected);
+			// has isset
+			Expect.On(mockDictionary).One.Method(m => m.ContainsKey(_unsusedString)).With(KEY).WillReturn(true);
+			// get isset
+			Expect.On(mockDictionary).One.GetProperty(m => m[KEY]).WillReturn(expected);
+			// set isset
+			Expect.On(mockDictionary).One.SetProperty(m => m[KEY] = _unsusedString).To(__expected);
+			Expect.On(mockDictionary).One.Method(m => m.ContainsKey(_unsusedString)).With(KEY).WillReturn(true);
+			Expect.On(mockDictionary).One.GetProperty(m => m[KEY]).WillReturn(__expected);
+			// remove isset
+			Expect.On(mockDictionary).One.Method(m => m.Remove(_unsusedString)).With(KEY).WillReturn(true);
+			// verify remove
+			Expect.On(mockDictionary).One.Method(m => m.ContainsKey(_unsusedString)).With(KEY).WillReturn(false);
+			Expect.On(mockDictionary).One.GetProperty(m => m[KEY]).WillReturn(null);
 
 			httpContextAccessorContextualStorageStrategy = new HttpContextAccessorContextualStorageStrategy(mockHttpContextAccessor);
-
-			Assert.IsNotNull(httpContextAccessorContextualStorageStrategy);
 
 			// has unset
 			result = httpContextAccessorContextualStorageStrategy.HasValue(KEY);
@@ -72,7 +94,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 			httpContextAccessorContextualStorageStrategy.RemoveValue(KEY);
 
 			// set unset
-			expected = Guid.NewGuid().ToString("N");
 			httpContextAccessorContextualStorageStrategy.SetValue(KEY, expected);
 
 			// has isset
@@ -85,15 +106,14 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 			Assert.AreEqual(expected, value);
 
 			// set isset
-			expected = Guid.NewGuid().ToString("N");
-			httpContextAccessorContextualStorageStrategy.SetValue(KEY, expected);
+			httpContextAccessorContextualStorageStrategy.SetValue(KEY, __expected);
 
 			result = httpContextAccessorContextualStorageStrategy.HasValue(KEY);
 			Assert.IsTrue(result);
 
 			value = httpContextAccessorContextualStorageStrategy.GetValue<string>(KEY);
 			Assert.IsNotNull(value);
-			Assert.AreEqual(expected, value);
+			Assert.AreEqual(__expected, value);
 
 			// remove isset
 			httpContextAccessorContextualStorageStrategy.RemoveValue(KEY);
@@ -104,6 +124,8 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 
 			value = httpContextAccessorContextualStorageStrategy.GetValue<string>(KEY);
 			Assert.IsNull(value);
+
+			mockFactory.VerifyAllExpectationsHaveBeenMet();
 		}
 
 		#endregion

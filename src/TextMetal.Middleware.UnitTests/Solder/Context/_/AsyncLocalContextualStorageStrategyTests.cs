@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 
 using TextMetal.Middleware.Solder.Context;
+using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
 namespace TextMetal.Middleware.UnitTests.Solder.Context._
 {
@@ -37,8 +38,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 			Task task;
 
 			asyncLocalContextualStorageStrategy = new AsyncLocalContextualStorageStrategy();
-
-			Assert.IsNotNull(asyncLocalContextualStorageStrategy);
 
 			// set unset
 			expected = Guid.NewGuid().ToString("N");
@@ -78,7 +77,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 			string expected;
 
 			asyncLocalContextualStorageStrategy = new AsyncLocalContextualStorageStrategy();
-			Assert.IsNotNull(asyncLocalContextualStorageStrategy);
 
 			// has unset
 			result = asyncLocalContextualStorageStrategy.HasValue(KEY);
@@ -124,6 +122,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 
 			value = asyncLocalContextualStorageStrategy.GetValue<string>(KEY);
 			Assert.IsNull(value);
+		}
+
+		[Test]
+		public void ShouldCreateTest__todo_mock_async_context()
+		{
+			Assert.Ignore("TODO: This test case has not been implemented yet.");
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullAsyncContextFactoryMethodCreateTest()
+		{
+			AsyncLocalContextualStorageStrategy asyncLocalContextualStorageStrategy;
+
+			asyncLocalContextualStorageStrategy = new AsyncLocalContextualStorageStrategy(null);
 		}
 
 		#endregion

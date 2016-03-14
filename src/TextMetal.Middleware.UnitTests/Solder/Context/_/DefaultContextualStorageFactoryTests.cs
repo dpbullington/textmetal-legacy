@@ -8,6 +8,7 @@ using System;
 using NUnit.Framework;
 
 using TextMetal.Middleware.Solder.Context;
+using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
 namespace TextMetal.Middleware.UnitTests.Solder.Context._
 {
@@ -28,11 +29,48 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 		public void ShouldCreateTest()
 		{
 			DefaultContextualStorageFactory defaultContextualStorageFactory;
+			IContextualStorageStrategy contextualStorageStrategy;
 
-			defaultContextualStorageFactory = new DefaultContextualStorageFactory();
+			defaultContextualStorageFactory = new DefaultContextualStorageFactory(ContextScope.GlobalStaticUnsafe);
+			contextualStorageStrategy = defaultContextualStorageFactory.GetContextualStorage();
 
-			Assert.IsNotNull(defaultContextualStorageFactory);
-			Assert.IsNotNull(defaultContextualStorageFactory.GetContextualStorage());
+			Assert.IsNotNull(contextualStorageStrategy);
+
+			defaultContextualStorageFactory = new DefaultContextualStorageFactory(ContextScope.GlobalDispatchSafe);
+			contextualStorageStrategy = defaultContextualStorageFactory.GetContextualStorage();
+
+			Assert.IsNull(contextualStorageStrategy);
+
+			defaultContextualStorageFactory = new DefaultContextualStorageFactory(ContextScope.LocalFrameSafe);
+			contextualStorageStrategy = defaultContextualStorageFactory.GetContextualStorage();
+
+			Assert.IsNull(contextualStorageStrategy);
+
+			defaultContextualStorageFactory = new DefaultContextualStorageFactory(ContextScope.LocalThreadSafe);
+			contextualStorageStrategy = defaultContextualStorageFactory.GetContextualStorage();
+
+			Assert.IsNotNull(contextualStorageStrategy);
+
+			defaultContextualStorageFactory = new DefaultContextualStorageFactory(ContextScope.LocalAsyncSafe);
+			contextualStorageStrategy = defaultContextualStorageFactory.GetContextualStorage();
+
+			Assert.IsNotNull(contextualStorageStrategy);
+
+			defaultContextualStorageFactory = new DefaultContextualStorageFactory(ContextScope.LocalRequestSafe);
+			contextualStorageStrategy = defaultContextualStorageFactory.GetContextualStorage();
+
+			Assert.IsNotNull(contextualStorageStrategy);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+		public void ShouldFailOnInvalidContextScopeCreateTest()
+		{
+			DefaultContextualStorageFactory defaultContextualStorageFactory;
+
+			defaultContextualStorageFactory = new DefaultContextualStorageFactory(ContextScope.Unknown);
+
+			defaultContextualStorageFactory.GetContextualStorage();
 		}
 
 		#endregion

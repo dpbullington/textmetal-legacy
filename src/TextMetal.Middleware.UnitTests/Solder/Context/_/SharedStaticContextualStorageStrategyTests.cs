@@ -14,11 +14,11 @@ using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 namespace TextMetal.Middleware.UnitTests.Solder.Context._
 {
 	[TestFixture]
-	public class ThreadLocalContextualStorageStrategyTests
+	public class SharedStaticContextualStorageStrategyTests
 	{
 		#region Constructors/Destructors
 
-		public ThreadLocalContextualStorageStrategyTests()
+		public SharedStaticContextualStorageStrategyTests()
 		{
 		}
 
@@ -29,7 +29,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 		[Test]
 		public void ShouldCreateCrossThreadTest()
 		{
-			ThreadLocalContextualStorageStrategy threadLocalContextualStorageStrategy;
+			SharedStaticContextualStorageStrategy sharedStaticContextualStorageStrategy;
 			const string KEY = "somekey";
 			bool result;
 			string value;
@@ -39,18 +39,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 			int managedThreadId;
 
 			managedThreadId = Thread.CurrentThread.ManagedThreadId;
-			threadLocalContextualStorageStrategy = new ThreadLocalContextualStorageStrategy();
+			sharedStaticContextualStorageStrategy = new SharedStaticContextualStorageStrategy();
+			sharedStaticContextualStorageStrategy.ResetValues();
 
 			// set unset
 			expected = Guid.NewGuid().ToString("N");
-			threadLocalContextualStorageStrategy.SetValue(KEY, expected);
+			sharedStaticContextualStorageStrategy.SetValue(KEY, expected);
 
 			// has isset
-			result = threadLocalContextualStorageStrategy.HasValue(KEY);
+			result = sharedStaticContextualStorageStrategy.HasValue(KEY);
 			Assert.IsTrue(result);
 
 			// get isset
-			value = threadLocalContextualStorageStrategy.GetValue<string>(KEY);
+			value = sharedStaticContextualStorageStrategy.GetValue<string>(KEY);
 			Assert.IsNotNull(value);
 			Assert.AreEqual(expected, value);
 
@@ -61,8 +62,8 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 									Assert.AreNotEqual(_managedThreadId, managedThreadId);
 
 									// has isset(other thread)
-									result = threadLocalContextualStorageStrategy.HasValue(KEY);
-									Assert.IsFalse(result);
+									result = sharedStaticContextualStorageStrategy.HasValue(KEY);
+									Assert.IsTrue(result);
 								});
 
 			thread.Start();
@@ -72,73 +73,74 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 		[Test]
 		public void ShouldCreateTest()
 		{
-			ThreadLocalContextualStorageStrategy threadLocalContextualStorageStrategy;
+			SharedStaticContextualStorageStrategy sharedStaticContextualStorageStrategy;
 			const string KEY = "somekey";
 			bool result;
 			string value;
 			string expected;
 
-			threadLocalContextualStorageStrategy = new ThreadLocalContextualStorageStrategy();
+			sharedStaticContextualStorageStrategy = new SharedStaticContextualStorageStrategy();
+			sharedStaticContextualStorageStrategy.ResetValues();
 
 			// has unset
-			result = threadLocalContextualStorageStrategy.HasValue(KEY);
+			result = sharedStaticContextualStorageStrategy.HasValue(KEY);
 			Assert.IsFalse(result);
 
 			// get unset
-			value = threadLocalContextualStorageStrategy.GetValue<string>(KEY);
+			value = sharedStaticContextualStorageStrategy.GetValue<string>(KEY);
 			Assert.IsNull(value);
 
 			// remove unset
-			threadLocalContextualStorageStrategy.RemoveValue(KEY);
+			sharedStaticContextualStorageStrategy.RemoveValue(KEY);
 
 			// set unset
 			expected = Guid.NewGuid().ToString("N");
-			threadLocalContextualStorageStrategy.SetValue(KEY, expected);
+			sharedStaticContextualStorageStrategy.SetValue(KEY, expected);
 
 			// has isset
-			result = threadLocalContextualStorageStrategy.HasValue(KEY);
+			result = sharedStaticContextualStorageStrategy.HasValue(KEY);
 			Assert.IsTrue(result);
 
 			// get isset
-			value = threadLocalContextualStorageStrategy.GetValue<string>(KEY);
+			value = sharedStaticContextualStorageStrategy.GetValue<string>(KEY);
 			Assert.IsNotNull(value);
 			Assert.AreEqual(expected, value);
 
 			// set isset
 			expected = Guid.NewGuid().ToString("N");
-			threadLocalContextualStorageStrategy.SetValue(KEY, expected);
+			sharedStaticContextualStorageStrategy.SetValue(KEY, expected);
 
-			result = threadLocalContextualStorageStrategy.HasValue(KEY);
+			result = sharedStaticContextualStorageStrategy.HasValue(KEY);
 			Assert.IsTrue(result);
 
-			value = threadLocalContextualStorageStrategy.GetValue<string>(KEY);
+			value = sharedStaticContextualStorageStrategy.GetValue<string>(KEY);
 			Assert.IsNotNull(value);
 			Assert.AreEqual(expected, value);
 
 			// remove isset
-			threadLocalContextualStorageStrategy.RemoveValue(KEY);
+			sharedStaticContextualStorageStrategy.RemoveValue(KEY);
 
 			// verify remove
-			result = threadLocalContextualStorageStrategy.HasValue(KEY);
+			result = sharedStaticContextualStorageStrategy.HasValue(KEY);
 			Assert.IsFalse(result);
 
-			value = threadLocalContextualStorageStrategy.GetValue<string>(KEY);
+			value = sharedStaticContextualStorageStrategy.GetValue<string>(KEY);
 			Assert.IsNull(value);
 		}
 
 		[Test]
-		public void ShouldCreateTest__todo_mock_tls_context_factory_method()
+		public void ShouldCreateTest__todo_mock_shared_static()
 		{
 			Assert.Ignore("TODO: This test case has not been implemented yet.");
 		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullTlsContextFactoryMethodCreateTest()
+		public void ShouldFailOnNullSharedStaticCreateTest()
 		{
-			ThreadLocalContextualStorageStrategy threadLocalContextualStorageStrategy;
+			SharedStaticContextualStorageStrategy sharedStaticContextualStorageStrategy;
 
-			threadLocalContextualStorageStrategy = new ThreadLocalContextualStorageStrategy(null);
+			sharedStaticContextualStorageStrategy = new SharedStaticContextualStorageStrategy(null);
 		}
 
 		#endregion
