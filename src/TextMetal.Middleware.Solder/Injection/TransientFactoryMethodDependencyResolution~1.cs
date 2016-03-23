@@ -1,11 +1,9 @@
-﻿/*
-	Copyright ©2002-2016 Daniel Bullington (dpbullington@gmail.com)
+/*
+	Copyright �2002-2016 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
 using System;
-
-/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-10 / 100% code coverage */
 
 namespace TextMetal.Middleware.Solder.Injection
 {
@@ -13,16 +11,15 @@ namespace TextMetal.Middleware.Solder.Injection
 	/// A dependency resolution implementation that executes a
 	/// factory method callback each time a dependency resolution occurs.
 	/// </summary>
-	[Obsolete("TransientFactoryMethodDependencyResolution`1 should be used instead.")]
-	public sealed class TransientFactoryMethodDependencyResolution : DependencyResolution
+	public sealed class TransientFactoryMethodDependencyResolution<TResolution> : DependencyResolution<TResolution>
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the TransientFactoryMethodDependencyResolution class.
+		/// Initializes a new instance of the TransientFactoryMethodDependencyResolution`1 class.
 		/// </summary>
 		/// <param name="factoryMethod"> The callback method to execute during resolution. </param>
-		public TransientFactoryMethodDependencyResolution(Delegate factoryMethod)
+		public TransientFactoryMethodDependencyResolution(Func<TResolution> factoryMethod)
 			: base(DependencyLifetime.Transient)
 		{
 			if ((object)factoryMethod == null)
@@ -35,13 +32,13 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		#region Fields/Constants
 
-		private readonly Delegate factoryMethod;
+		private readonly Func<TResolution> factoryMethod;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		private Delegate FactoryMethod
+		private Func<TResolution> FactoryMethod
 		{
 			get
 			{
@@ -53,18 +50,15 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		#region Methods/Operators
 
-		protected override object CoreResolve(IDependencyManager dependencyManager, Type resolutionType, string selectorKey)
+		protected override TResolution CoreResolve(IDependencyManager dependencyManager, string selectorKey)
 		{
 			if ((object)dependencyManager == null)
 				throw new ArgumentNullException(nameof(dependencyManager));
 
-			if ((object)resolutionType == null)
-				throw new ArgumentNullException(nameof(resolutionType));
-
 			if ((object)selectorKey == null)
 				throw new ArgumentNullException(nameof(selectorKey));
 
-			return this.FactoryMethod.DynamicInvoke(null);
+			return this.FactoryMethod();
 		}
 
 		protected override void Dispose(bool disposing)

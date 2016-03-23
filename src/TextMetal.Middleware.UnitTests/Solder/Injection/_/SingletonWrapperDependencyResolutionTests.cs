@@ -10,7 +10,6 @@ using NMock;
 using NUnit.Framework;
 
 using TextMetal.Middleware.Solder.Injection;
-using TextMetal.Middleware.Solder.Runtime;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
 namespace TextMetal.Middleware.UnitTests.Solder.Injection._
@@ -29,48 +28,14 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		#region Methods/Operators
 
 		[Test]
-		public void ShouldCreateAndEvaluateExplicitEagerLoadTest()
-		{
-			SingletonWrapperDependencyResolution singletonWrapperDependencyResolution;
-			IDependencyManager mockDependencyManager;
-			IDependencyResolution mockDependencyResolution;
-			IDependencyManager _unusedDependencyManager = null;
-			object result;
-			MockFactory mockFactory;
-
-			mockFactory = new MockFactory();
-			mockDependencyManager = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager;
-			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
-
-			Expect.On(mockDependencyResolution).One.Method(m => m.Resolve(_unusedDependencyManager)).With(mockDependencyManager).WillReturn(11);
-			Expect.On(mockDependencyResolution).One.Method(m => m.Dispose());
-
-			singletonWrapperDependencyResolution = new SingletonWrapperDependencyResolution(true, mockDependencyResolution);
-
-			// should be frozen at this point
-			result = singletonWrapperDependencyResolution.Resolve(mockDependencyManager);
-
-			Assert.IsNotNull(result);
-			Assert.AreEqual(11, result);
-
-			// should be frozen at this point
-			result = singletonWrapperDependencyResolution.Resolve(mockDependencyManager);
-
-			Assert.IsNotNull(result);
-			Assert.AreEqual(11, result);
-
-			singletonWrapperDependencyResolution.Dispose();
-
-			mockFactory.VerifyAllExpectationsHaveBeenMet();
-		}
-
-		[Test]
 		public void ShouldCreateAndEvaluateTest()
 		{
 			SingletonWrapperDependencyResolution singletonWrapperDependencyResolution;
 			IDependencyManager mockDependencyManager;
 			IDependencyResolution mockDependencyResolution;
 			IDependencyManager _unusedDependencyManager = null;
+			Type _unusedType = null;
+			string _unusedString = null;
 			object result;
 			MockFactory mockFactory;
 
@@ -78,19 +43,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
-			Expect.On(mockDependencyResolution).One.Method(m => m.Resolve(_unusedDependencyManager)).With(mockDependencyManager).WillReturn(11);
+			Expect.On(mockDependencyResolution).One.Method(m => m.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).With(mockDependencyManager, typeof(object), string.Empty).WillReturn(11);
 			Expect.On(mockDependencyResolution).One.Method(m => m.Dispose());
 
 			singletonWrapperDependencyResolution = new SingletonWrapperDependencyResolution(mockDependencyResolution);
 
 			// should be thawed at this point
-			result = singletonWrapperDependencyResolution.Resolve(mockDependencyManager);
+			result = singletonWrapperDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
 
 			Assert.IsNotNull(result);
 			Assert.AreEqual(11, result);
 
 			// should be frozen at this point
-			result = singletonWrapperDependencyResolution.Resolve(mockDependencyManager);
+			result = singletonWrapperDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
 
 			Assert.IsNotNull(result);
 			Assert.AreEqual(11, result);
@@ -107,7 +72,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			SingletonWrapperDependencyResolution singletonWrapperDependencyResolution;
 			IDependencyManager mockDependencyManager;
 			IDependencyResolution mockDependencyResolution;
-			Func<object> value;
 			object result;
 			MockFactory mockFactory;
 
@@ -117,7 +81,45 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			singletonWrapperDependencyResolution = new SingletonWrapperDependencyResolution(mockDependencyResolution);
 
-			result = singletonWrapperDependencyResolution.Resolve(mockDependencyManager);
+			result = singletonWrapperDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyResolveTest()
+		{
+			SingletonWrapperDependencyResolution singletonWrapperDependencyResolution;
+			IDependencyManager mockDependencyManager;
+			IDependencyResolution mockDependencyResolution;
+			object result;
+			MockFactory mockFactory;
+
+			mockFactory = new MockFactory();
+			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
+			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
+
+			singletonWrapperDependencyResolution = new SingletonWrapperDependencyResolution(mockDependencyResolution);
+
+			result = singletonWrapperDependencyResolution.Resolve(mockDependencyManager, typeof(object), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullTypeResolveTest()
+		{
+			SingletonWrapperDependencyResolution singletonWrapperDependencyResolution;
+			IDependencyManager mockDependencyManager;
+			IDependencyResolution mockDependencyResolution;
+			object result;
+			MockFactory mockFactory;
+
+			mockFactory = new MockFactory();
+			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
+			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
+
+			singletonWrapperDependencyResolution = new SingletonWrapperDependencyResolution(mockDependencyResolution);
+
+			result = singletonWrapperDependencyResolution.Resolve(mockDependencyManager, null, string.Empty);
 		}
 
 		[Test]

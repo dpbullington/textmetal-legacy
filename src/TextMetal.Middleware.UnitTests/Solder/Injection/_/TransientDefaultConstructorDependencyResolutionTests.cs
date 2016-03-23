@@ -30,7 +30,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		[Test]
 		public void ShouldCreateAndEvaluateStronglyTypedAsNewGenericConstrainedTest()
 		{
-			IDependencyResolution transientDefaultConstructorDependencyResolution;
+			TransientDefaultConstructorDependencyResolution<int> transientDefaultConstructorDependencyResolution;
 			IDependencyManager mockDependencyManager;
 			object result;
 			MockFactory mockFactory;
@@ -38,11 +38,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			mockFactory = new MockFactory();
 			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
 
-			transientDefaultConstructorDependencyResolution = TransientDefaultConstructorDependencyResolution.New<int>();
+			transientDefaultConstructorDependencyResolution = new TransientDefaultConstructorDependencyResolution<int>();
 
 			Assert.IsNotNull(transientDefaultConstructorDependencyResolution);
 
-			result = transientDefaultConstructorDependencyResolution.Resolve(mockDependencyManager);
+			result = transientDefaultConstructorDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
 
 			Assert.IsNotNull(result);
 			Assert.AreEqual(0, result);
@@ -55,7 +55,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		[Test]
 		public void ShouldCreateAndEvaluateStronglyTypedTest()
 		{
-			TransientDefaultConstructorDependencyResolution transientDefaultConstructorDependencyResolution;
+			TransientDefaultConstructorDependencyResolution<int> transientDefaultConstructorDependencyResolution;
 			IDependencyManager mockDependencyManager;
 			object result;
 			MockFactory mockFactory;
@@ -63,11 +63,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			mockFactory = new MockFactory();
 			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
 
-			transientDefaultConstructorDependencyResolution = TransientDefaultConstructorDependencyResolution.Create<int>();
+			transientDefaultConstructorDependencyResolution = new TransientDefaultConstructorDependencyResolution<int>();
 
 			Assert.IsNotNull(transientDefaultConstructorDependencyResolution);
 
-			result = transientDefaultConstructorDependencyResolution.Resolve(mockDependencyManager);
+			result = transientDefaultConstructorDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
 
 			Assert.IsNotNull(result);
 			Assert.AreEqual(0, result);
@@ -92,7 +92,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			Assert.IsNotNull(transientDefaultConstructorDependencyResolution);
 
-			result = transientDefaultConstructorDependencyResolution.Resolve(mockDependencyManager);
+			result = transientDefaultConstructorDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
 
 			Assert.IsNotNull(result);
 			Assert.AreEqual(0, result);
@@ -116,7 +116,41 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			transientDefaultConstructorDependencyResolution = new TransientDefaultConstructorDependencyResolution(typeof(int));
 
-			result = transientDefaultConstructorDependencyResolution.Resolve(mockDependencyManager);
+			result = transientDefaultConstructorDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyResolveTest()
+		{
+			TransientDefaultConstructorDependencyResolution transientDefaultConstructorDependencyResolution;
+			IDependencyManager mockDependencyManager;
+			object result;
+			MockFactory mockFactory;
+
+			mockFactory = new MockFactory();
+			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
+
+			transientDefaultConstructorDependencyResolution = new TransientDefaultConstructorDependencyResolution(typeof(int));
+
+			result = transientDefaultConstructorDependencyResolution.Resolve(mockDependencyManager, typeof(object), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullTypeResolveTest()
+		{
+			TransientDefaultConstructorDependencyResolution transientDefaultConstructorDependencyResolution;
+			IDependencyManager mockDependencyManager;
+			object result;
+			MockFactory mockFactory;
+
+			mockFactory = new MockFactory();
+			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
+
+			transientDefaultConstructorDependencyResolution = new TransientDefaultConstructorDependencyResolution(typeof(int));
+
+			result = transientDefaultConstructorDependencyResolution.Resolve(mockDependencyManager, null, string.Empty);
 		}
 
 		[Test]

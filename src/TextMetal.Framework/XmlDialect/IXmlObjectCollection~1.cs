@@ -9,10 +9,14 @@ namespace TextMetal.Framework.XmlDialect
 {
 	/// <summary>
 	/// Represents an XML object collection.
+	/// NOTE: This interface is invariant due to its use of IList`1,
+	/// thus it should NOT derive/implement the non-generic version.
+	/// This will be left to the class implementation for which to solve.
 	/// </summary>
 	/// <typeparam name="TXmlObject"> </typeparam>
-	public interface IXmlObjectCollection<TXmlObject> : IList<TXmlObject>, IXmlObjectCollection
+	public interface IXmlObjectCollection<TXmlObject> : IList<TXmlObject>
 		where TXmlObject : IXmlObject
 	{
+		
 	}
 }

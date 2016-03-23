@@ -43,7 +43,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			instanceDependencyResolution = new InstanceDependencyResolution(value);
 
-			result = instanceDependencyResolution.Resolve(mockDependencyManager);
+			result = instanceDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
 
 			Assert.IsNotNull(result);
 			Assert.AreEqual(11, result);
@@ -56,10 +56,10 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		[Test]
 		public void ShouldCreateStronglyTypedTest()
 		{
-			InstanceDependencyResolution instanceDependencyResolution;
+			InstanceDependencyResolution<int> instanceDependencyResolution;
 			IDependencyManager mockDependencyManager;
 			int value;
-			object result;
+			int result;
 			MockFactory mockFactory;
 
 			mockFactory = new MockFactory();
@@ -67,9 +67,9 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			value = 11;
 
-			instanceDependencyResolution = InstanceDependencyResolution.From<int>(value);
+			instanceDependencyResolution = new InstanceDependencyResolution<int>(value);
 
-			result = instanceDependencyResolution.Resolve(mockDependencyManager);
+			result = instanceDependencyResolution.Resolve(mockDependencyManager, string.Empty);
 
 			Assert.IsNotNull(result);
 			Assert.AreEqual(11, result);
@@ -96,7 +96,47 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			instanceDependencyResolution = new InstanceDependencyResolution(value);
 
-			result = instanceDependencyResolution.Resolve(mockDependencyManager);
+			result = instanceDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullKeyResolveTest()
+		{
+			InstanceDependencyResolution instanceDependencyResolution;
+			IDependencyManager mockDependencyManager;
+			int value;
+			object result;
+			MockFactory mockFactory;
+
+			mockFactory = new MockFactory();
+			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
+
+			value = 11;
+
+			instanceDependencyResolution = new InstanceDependencyResolution(value);
+
+			result = instanceDependencyResolution.Resolve(mockDependencyManager, typeof(object), null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullTypeResolveTest()
+		{
+			InstanceDependencyResolution instanceDependencyResolution;
+			IDependencyManager mockDependencyManager;
+			int value;
+			object result;
+			MockFactory mockFactory;
+
+			mockFactory = new MockFactory();
+			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
+
+			value = 11;
+
+			instanceDependencyResolution = new InstanceDependencyResolution(value);
+
+			result = instanceDependencyResolution.Resolve(mockDependencyManager, null, string.Empty);
 		}
 
 		#endregion

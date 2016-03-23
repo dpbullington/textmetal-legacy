@@ -242,7 +242,9 @@ namespace TextMetal.Middleware.Solder.Runtime
 			if ((object)libraryManager == null)
 				return; //throw new InvalidOperationException(string.Format("Platform services library manager was invalid."));
 
-			this.DependencyManager.AddResolution<PlatformServices>(string.Empty, false, new SingletonWrapperDependencyResolution(new InstanceDependencyResolution(PlatformServices.Default.LibraryManager)));
+			this.DependencyManager.AddResolution<PlatformServices>(string.Empty, false, new SingletonWrapperDependencyResolution<PlatformServices>(new InstanceDependencyResolution<PlatformServices>(PlatformServices.Default)));
+
+			this.DependencyManager.AddResolution<IComparable>(Guid.NewGuid().ToString("N"), false, new SingletonWrapperDependencyResolution<IComparable>(new InstanceDependencyResolution<IComparable>(new Random().Next())));
 
 			if (!EnvVarEnableAssemblyLoaderSubscriptionMethodExecution)
 				return;

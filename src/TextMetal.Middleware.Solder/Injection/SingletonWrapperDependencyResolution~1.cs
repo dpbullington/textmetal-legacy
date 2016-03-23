@@ -1,12 +1,10 @@
-﻿/*
-	Copyright ©2002-2016 Daniel Bullington (dpbullington@gmail.com)
+/*
+	Copyright �2002-2016 Daniel Bullington (dpbullington@gmail.com)
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
 using System;
 using System.Threading;
-
-/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-10 / 99% code coverage */
 
 namespace TextMetal.Middleware.Solder.Injection
 {
@@ -16,17 +14,16 @@ namespace TextMetal.Middleware.Solder.Injection
 	/// retrieved from the inner dependency resolution once per the lifetime of this dependency resolution instance.
 	/// Uses reader-writer lock for asynchronous protection (i.e. thread-safety).
 	/// </summary>
-	[Obsolete("SingletonWrapperDependencyResolution`1 should be used instead.")]
-	public sealed class SingletonWrapperDependencyResolution : DependencyResolution
+	public sealed class SingletonWrapperDependencyResolution<TResolution> : DependencyResolution<TResolution>
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the SingletonWrapperDependencyResolution class.
+		/// Initializes a new instance of the SingletonWrapperDependencyResolution`1 class.
 		/// Lazy loading semantics are assumed by design.
 		/// </summary>
 		/// <param name="innerDependencyResolution"> The chained dependency resolution which is called only once. </param>
-		public SingletonWrapperDependencyResolution(IDependencyResolution innerDependencyResolution)
+		public SingletonWrapperDependencyResolution(IDependencyResolution<TResolution> innerDependencyResolution)
 			: base(DependencyLifetime.Singleton)
 		{
 			if ((object)innerDependencyResolution == null)
@@ -39,16 +36,16 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		#region Fields/Constants
 
-		private readonly IDependencyResolution innerDependencyResolution;
+		private readonly IDependencyResolution<TResolution> innerDependencyResolution;
 		private readonly ReaderWriterLockSlim readerWriterLock = new ReaderWriterLockSlim();
 		private bool frozen;
-		private object instance;
+		private TResolution instance;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		private IDependencyResolution InnerDependencyResolution
+		private IDependencyResolution<TResolution> InnerDependencyResolution
 		{
 			get
 			{
@@ -76,7 +73,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
-		private object Instance
+		private TResolution Instance
 		{
 			get
 			{
@@ -92,13 +89,10 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		#region Methods/Operators
 
-		protected override object CoreResolve(IDependencyManager dependencyManager, Type resolutionType, string selectorKey)
+		protected override TResolution CoreResolve(IDependencyManager dependencyManager, string selectorKey)
 		{
 			if ((object)dependencyManager == null)
 				throw new ArgumentNullException(nameof(dependencyManager));
-
-			if ((object)resolutionType == null)
-				throw new ArgumentNullException(nameof(resolutionType));
 
 			if ((object)selectorKey == null)
 				throw new ArgumentNullException(nameof(selectorKey));
@@ -116,7 +110,7 @@ namespace TextMetal.Middleware.Solder.Injection
 
 				try
 				{
-					this.Instance = this.InnerDependencyResolution.Resolve(dependencyManager, resolutionType, selectorKey);
+					this.Instance = this.InnerDependencyResolution.Resolve(dependencyManager, selectorKey);
 					return this.Instance;
 				}
 				finally

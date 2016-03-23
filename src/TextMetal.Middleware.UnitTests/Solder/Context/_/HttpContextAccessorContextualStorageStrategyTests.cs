@@ -14,6 +14,7 @@ using NMock;
 using NUnit.Framework;
 
 using TextMetal.Middleware.Solder.Context;
+using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
 namespace TextMetal.Middleware.UnitTests.Solder.Context._
 {
@@ -126,6 +127,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 			Assert.IsNull(value);
 
 			mockFactory.VerifyAllExpectationsHaveBeenMet();
+		}
+
+		[Test]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void ShouldFailOnNullSharedStaticCreateTest()
+		{
+			HttpContextAccessorContextualStorageStrategy httpContextAccessorContextualStorageStrategy;
+			IHttpContextAccessor mockHttpContextAccessor;
+
+			mockHttpContextAccessor = null;
+
+			httpContextAccessorContextualStorageStrategy = new HttpContextAccessorContextualStorageStrategy(mockHttpContextAccessor);
+
+			httpContextAccessorContextualStorageStrategy.HasValue("test");
 		}
 
 		#endregion

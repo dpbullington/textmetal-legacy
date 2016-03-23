@@ -11,11 +11,10 @@ namespace TextMetal.Middleware.Solder.Injection
 {
 	/// <summary>
 	/// A dependency resolution implementation that executes a public, default constructor
-	/// on the target type each time a dependency resolution occurs.
-	/// From 'Dependency Injection in ASP.NET MVC6':
-	/// Transient lifetime services are created each time they are requested. This lifetime works best for lightweight, stateless service.
+	/// on the activation type each time a dependency resolution occurs.
 	/// </summary>
-	public class TransientDefaultConstructorDependencyResolution : IDependencyResolution
+	[Obsolete("TransientDefaultConstructorDependencyResolution`1 should be used instead.")]
+	public class TransientDefaultConstructorDependencyResolution : DependencyResolution
 
 	{
 		#region Constructors/Destructors
@@ -23,29 +22,31 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// <summary>
 		/// Initializes a new instance of the TransientDefaultConstructorDependencyResolution class.
 		/// </summary>
-		public TransientDefaultConstructorDependencyResolution(Type targetType)
+		/// <param name="activatorType"> The activator type of the resolution. </param>
+		public TransientDefaultConstructorDependencyResolution(Type activatorType)
+			: base(DependencyLifetime.Transient)
 		{
-			if ((object)targetType == null)
-				throw new ArgumentNullException(nameof(targetType));
+			if ((object)activatorType == null)
+				throw new ArgumentNullException(nameof(activatorType));
 
-			this.targetType = targetType;
+			this.activatorType = activatorType;
 		}
 
 		#endregion
 
 		#region Fields/Constants
 
-		private readonly Type targetType;
+		private readonly Type activatorType;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		private Type TargetType
+		private Type ActivatorType
 		{
 			get
 			{
-				return this.targetType;
+				return this.activatorType;
 			}
 		}
 
@@ -53,33 +54,23 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		#region Methods/Operators
 
-		public static IDependencyResolution New<TObject>()
-			where TObject : new()
-		{
-			return TransientFactoryMethodDependencyResolution.Create<TObject>(() => new TObject());
-		}
-
-		public static TransientDefaultConstructorDependencyResolution Create<TObject>()
-		{
-			return new TransientDefaultConstructorDependencyResolution(typeof(TObject));
-		}
-
-		public void Dispose()
-		{
-			// do nothing
-		}
-
-		/// <summary>
-		/// Resolves a dependency.
-		/// </summary>
-		/// <param name="dependencyManager"> The current in-effect dependency manager requesting this resolution. </param>
-		/// <returns> An instance of an object or null. </returns>
-		public object Resolve(IDependencyManager dependencyManager)
+		protected override object CoreResolve(IDependencyManager dependencyManager, Type resolutionType, string selectorKey)
 		{
 			if ((object)dependencyManager == null)
 				throw new ArgumentNullException(nameof(dependencyManager));
 
-			return Activator.CreateInstance(this.TargetType);
+			if ((object)resolutionType == null)
+				throw new ArgumentNullException(nameof(resolutionType));
+
+			if ((object)selectorKey == null)
+				throw new ArgumentNullException(nameof(selectorKey));
+
+			return Activator.CreateInstance(this.ActivatorType);
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			// do nothing
 		}
 
 		#endregion

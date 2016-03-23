@@ -18,11 +18,13 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 			this.text = null;
 		}
 
+		[DependencyInjection]
 		public MockDependantObject([DependencyInjection(SelectorKey = "")] string text)
 		{
 			this.text = text ?? string.Empty;
 		}
 
+		[DependencyInjection]
 		public MockDependantObject([DependencyInjection(SelectorKey = "named_dep_obj")] MockDependantObject left, MockDependantObject right)
 		{
 			this.text = string.Empty;

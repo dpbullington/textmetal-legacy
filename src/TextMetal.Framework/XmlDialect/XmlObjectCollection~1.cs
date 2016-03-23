@@ -12,7 +12,7 @@ namespace TextMetal.Framework.XmlDialect
 	/// Provides a concrete implementation for XML object collections.
 	/// </summary>
 	/// <typeparam name="TXmlObject"> </typeparam>
-	public class XmlObjectCollection<TXmlObject> : Collection<TXmlObject>, IXmlObjectCollection<TXmlObject>
+	public class XmlObjectCollection<TXmlObject> : Collection<TXmlObject>, IXmlObjectCollection<TXmlObject>, IXmlObjectCollection
 		where TXmlObject : IXmlObject
 	{
 		#region Constructors/Destructors
