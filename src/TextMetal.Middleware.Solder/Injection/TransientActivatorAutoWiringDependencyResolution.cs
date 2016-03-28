@@ -4,6 +4,8 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 using TextMetal.Middleware.Solder.Utilities;
@@ -57,8 +59,6 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		public static object AutoWireResolve(Type activatorType, IDependencyManager dependencyManager, Type resolutionType, string selectorKey)
 		{
-			object[] invocationArguments;
-
 			ConstructorInfo constructorInfo;
 			ConstructorInfo[] constructorInfos;
 			ParameterInfo[] parameterInfos;
@@ -66,7 +66,8 @@ namespace TextMetal.Middleware.Solder.Injection
 			Type parameterType;
 
 			DependencyInjectionAttribute dependencyInjectionAttribute;
-
+			Tuple<ConstructorInfo, ulong, Lazy<Object>> candidateConstructorTrait;
+			
 			if ((object)activatorType == null)
 				throw new ArgumentNullException(nameof(activatorType));
 
@@ -93,48 +94,96 @@ namespace TextMetal.Middleware.Solder.Injection
 				else
 				{
 					// search for best fit constructor
-					constructorInfo = null;
+					candidateConstructorTrait = null;
 
-					for (int index = 0; index < constructorInfos.Length; index++)
+					for (int constructorIndex = 0; constructorIndex < constructorInfos.Length; constructorIndex++)
 					{
-						constructorInfo = constructorInfos[index];
-						dependencyInjectionAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyInjectionAttribute>(constructorInfo);
+						List<Lazy<object>> lazyConstructorArguments;
+						const ulong MAGIC = 2UL;
+						string parameterSelectorKey;
+						ulong score = uint.MinValue;
 
+						constructorInfo = constructorInfos[constructorIndex];
+						dependencyInjectionAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyInjectionAttribute>(constructorInfo);
+						
 						if ((object)dependencyInjectionAttribute != null)
 						{
 							// explicit selector key AND matches .ctor
 							if (selectorKey != string.Empty &&
 								dependencyInjectionAttribute.SelectorKey == selectorKey)
-								break;
+							{
+								if ((object)candidateConstructorTrait != null &&
+									candidateConstructorTrait.Item2 == uint.MaxValue)
+									throw new DependencyException(string.Format("More than one constructor for activator type '{0}' specified the '{1}'.", activatorType.FullName, nameof(DependencyInjectionAttribute)));
+
+								score = uint.MaxValue;
+							}
 						}
-						else
+
+						parameterInfos = constructorInfo.GetParameters();
+						lazyConstructorArguments = new List<Lazy<object>>(parameterInfos.Length);
+
+						// perform scoring to match: parameter count + has resolution (parameter type) count
+						score = Math.Max(score, (ulong)Math.Pow(MAGIC, parameterInfos.Length));
+
+						for (int parameterIndex = 0; parameterIndex < parameterInfos.Length; parameterIndex++)
 						{
-							// TODO: perform scoring to match instead
-							// parameter count + has resolution (parameter type) count
+							Lazy<object> lazyConstructorArgument;
+
+							parameterInfo = parameterInfos[parameterIndex];
+							parameterType = parameterInfo.ParameterType;
+
+							// on parameter
+							dependencyInjectionAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyInjectionAttribute>(parameterInfo);
+
+							if ((object)dependencyInjectionAttribute != null)
+							{
+								score = Math.Max(score, score * MAGIC);
+								parameterSelectorKey = dependencyInjectionAttribute.SelectorKey;
+							}
+							else
+							{
+								// score = score;
+								parameterSelectorKey = string.Empty;
+							}
+
+							if (dependencyManager.HasTypeResolution(parameterType, parameterSelectorKey, true))
+								score = Math.Max(score, score + MAGIC);
+
+							lazyConstructorArgument = new Lazy<object>(() =>
+																		{
+																			// prevent modified closure bug
+																			var _parameterType = parameterType;
+																			var _parameterSelectorKey = parameterSelectorKey;
+																			return dependencyManager.ResolveDependency(_parameterType, _parameterSelectorKey, true);
+																		});
+
+							lazyConstructorArguments.Add(lazyConstructorArgument);
 						}
+
+						if (score >= ((object)candidateConstructorTrait != null ? candidateConstructorTrait.Item2 : uint.MinValue))
+						{
+							Lazy<object> lazyConstructorInvokation;
+
+							lazyConstructorInvokation = new Lazy<object>(() =>
+																		{
+																			// prevent modified closure bug
+																			var _activatorType = activatorType;
+																			var _lazyConstructorArguments = lazyConstructorArguments;
+																			return Activator.CreateInstance(_activatorType, _lazyConstructorArguments.Select(l => l.Value).ToArray());
+																		});
+
+							candidateConstructorTrait = new Tuple<ConstructorInfo, ulong, Lazy<object>>(constructorInfo, score, lazyConstructorInvokation);
+						}
+
+						Console.WriteLine("Constructor for target type '{0}' with parameter types '{1}'; match score {2}.", activatorType.FullName, string.Join("|", parameterInfos.Select(pi => pi.ParameterType.FullName).ToArray()), score);
 
 						constructorInfo = null;
 					}
 
-					if ((object)constructorInfo != null)
+					if ((object)candidateConstructorTrait != null)
 					{
-						parameterInfos = constructorInfo.GetParameters();
-						invocationArguments = new object[parameterInfos.Length];
-
-						for (int index = 0; index < parameterInfos.Length; index++)
-						{
-							parameterInfo = parameterInfos[index];
-							parameterType = parameterInfo.ParameterType;
-
-							dependencyInjectionAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyInjectionAttribute>(parameterInfo);
-
-							if ((object)dependencyInjectionAttribute != null)
-								invocationArguments[index] = dependencyManager.ResolveDependency(parameterType, dependencyInjectionAttribute.SelectorKey, true);
-							else
-								invocationArguments[index] = Activator.CreateInstance(parameterType);
-						}
-
-						return Activator.CreateInstance(activatorType, invocationArguments);
+						return candidateConstructorTrait.Item3.Value; // lazy loads a cascading chain of Lazy's...
 					}
 				}
 			}

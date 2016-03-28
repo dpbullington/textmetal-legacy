@@ -34,11 +34,14 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			IDependencyManager mockDependencyManager;
 			MockFactory mockFactory;
 			object result;
+			Type _unusedType = null;
+			string _unusedString = null;
+			bool _unusedBoolean = false;
 
 			mockFactory = new MockFactory();
 			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
 
-			//Expect.Once.On(mockDependencyManager).Method("ResolveDependency").With(typeof(char[]), string.Empty).Will(Return.Value(new char[] { 'x', 'y', 'z' }));
+			Expect.On(mockDependencyManager).Any.Method(m => m.HasTypeResolution(_unusedType, _unusedString, _unusedBoolean)).WithAnyArguments().Will(Return.Value(false));
 
 			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<DateTime>();
 
@@ -64,6 +67,8 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			mockFactory = new MockFactory();
 			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
 
+			Expect.On(mockDependencyManager).Any.Method(m => m.HasTypeResolution(_unusedType, _unusedString, _unusedBoolean)).WithAnyArguments().Will(Return.Value(false));
+
 			Expect.On(mockDependencyManager).One.Method(m => m.ResolveDependency<string>(_unusedString, _unusedBoolean)).With(string.Empty, true).Will(Return.Value("turing tarpit"));
 
 			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>();
@@ -83,9 +88,15 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			IDependencyManager mockDependencyManager;
 			MockFactory mockFactory;
 			object result;
+			string _unusedString = null;
+			bool _unusedBoolean = false;
+			Type _unusedType = null;
+
 
 			mockFactory = new MockFactory();
 			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
+
+			Expect.On(mockDependencyManager).Any.Method(m => m.HasTypeResolution(_unusedType, _unusedString, _unusedBoolean)).WithAnyArguments().Will(Return.Value(false));
 
 			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<string>();
 
@@ -106,12 +117,14 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			MockDependantObject result;
 			string _unusedString = null;
 			bool _unusedBoolean = false;
+			Type _unusedType = null;
 
 			mockFactory = new MockFactory();
 			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
 
+			Expect.On(mockDependencyManager).Any.Method(m => m.HasTypeResolution(_unusedType, _unusedString, _unusedBoolean)).WithAnyArguments().Will(Return.Value(false));
+
 			Expect.On(mockDependencyManager).One.Method(m => m.ResolveDependency<MockDependantObject>(_unusedString, _unusedBoolean)).With("named_dep_obj", true).Will(Return.Value(new MockDependantObject("this_is_named")));
-			//Expect.Once.On(mockDependencyManager).Method("ResolveDependency").With(typeof(MockDependantObject), string.Empty).Will(Return.Value(new MockDependantObject("this_is_not_named")));
 
 			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>();
 
