@@ -5,11 +5,10 @@
 
 using System;
 
-/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-XX / XXXX% code coverage */
+/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-28 / 83% code coverage */
 
 namespace TextMetal.Middleware.Solder.Injection
 {
-	[Obsolete("InstanceDependencyResolution`1 should be used instead.")]
 	public sealed class InstanceDependencyResolution : DependencyResolution
 	{
 		#region Constructors/Destructors
@@ -48,6 +47,15 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		protected override object CoreResolve(IDependencyManager dependencyManager, Type resolutionType, string selectorKey)
 		{
+			if ((object)dependencyManager == null)
+				throw new ArgumentNullException(nameof(dependencyManager));
+
+			if ((object)resolutionType == null)
+				throw new ArgumentNullException(nameof(resolutionType));
+
+			if ((object)selectorKey == null)
+				throw new ArgumentNullException(nameof(selectorKey));
+
 			return this.Instance;
 		}
 

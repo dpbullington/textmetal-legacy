@@ -6,7 +6,7 @@
 using System;
 using System.Threading;
 
-/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-10 / 99% code coverage */
+/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-28 / 95% code coverage */
 
 namespace TextMetal.Middleware.Solder.Injection
 {
@@ -16,7 +16,6 @@ namespace TextMetal.Middleware.Solder.Injection
 	/// retrieved from the inner dependency resolution once per the lifetime of this dependency resolution instance.
 	/// Uses reader-writer lock for asynchronous protection (i.e. thread-safety).
 	/// </summary>
-	[Obsolete("SingletonWrapperDependencyResolution`1 should be used instead.")]
 	public sealed class SingletonWrapperDependencyResolution : DependencyResolution
 	{
 		#region Constructors/Destructors

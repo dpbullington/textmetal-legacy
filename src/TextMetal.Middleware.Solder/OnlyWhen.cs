@@ -24,15 +24,26 @@ namespace TextMetal.Middleware.Solder
 		}
 
 		[AssemblyLoaderEventSinkMethod]
-		public static void ThisAssemblyDependencyRegistration(IDependencyManager dependencyManager)
+		public static void ThisAssemblyDependencyRegistration(AssemblyLoaderEventType assemblyLoaderEventType, AssemblyLoaderContainerContext assemblyLoaderContainerContext)
 		{
-			if ((object)dependencyManager == null)
-				throw new ArgumentNullException(nameof(dependencyManager));
+			/*if ((object)assemblyLoaderContainerContext == null)
+				throw new ArgumentNullException(nameof(assemblyLoaderContainerContext));
 
-			dependencyManager.AddResolution<IDataTypeFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IDataTypeFascade>(new TransientDefaultConstructorDependencyResolution<DataTypeFascade>()));
-			dependencyManager.AddResolution<IReflectionFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IReflectionFascade>(new TransientActivatorAutoWiringDependencyResolution<ReflectionFascade>()));
-			dependencyManager.AddResolution<IAppConfigFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAppConfigFascade>(new TransientActivatorAutoWiringDependencyResolution<AppConfigFascade>()));
-			dependencyManager.AddResolution<IAdoNetLiteFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetLiteFascade>(new TransientActivatorAutoWiringDependencyResolution<AdoNetLiteFascade>()));
+			switch (assemblyLoaderEventType)
+			{
+				case AssemblyLoaderEventType.Startup:
+					assemblyLoaderContainerContext.DependencyManager.AddResolution<PlatformServices>(string.Empty, false, new SingletonWrapperDependencyResolution<PlatformServices>(new InstanceDependencyResolution<PlatformServices>(platformServices)));
+
+					assemblyLoaderContainerContext.DependencyManager.AddResolution<IDataTypeFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IDataTypeFascade>(new TransientDefaultConstructorDependencyResolution<DataTypeFascade>()));
+					assemblyLoaderContainerContext.DependencyManager.AddResolution<IReflectionFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IReflectionFascade>(new TransientActivatorAutoWiringDependencyResolution<ReflectionFascade>()));
+					assemblyLoaderContainerContext.DependencyManager.AddResolution<IAppConfigFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAppConfigFascade>(new TransientActivatorAutoWiringDependencyResolution<AppConfigFascade>()));
+					assemblyLoaderContainerContext.DependencyManager.AddResolution<IAdoNetLiteFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetLiteFascade>(new TransientActivatorAutoWiringDependencyResolution<AdoNetLiteFascade>()));
+					break;
+				case AssemblyLoaderEventType.Shutdown:
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(assemblyLoaderEventType), assemblyLoaderEventType, null);
+			}*/
 		}
 
 		#endregion

@@ -5,6 +5,8 @@
 
 using System;
 
+/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-04-01 / 84% code coverage */
+
 namespace TextMetal.Middleware.Solder.Injection
 {
 	public abstract class DependencyResolution<TResolution> : DependencyResolution, IDependencyResolution<TResolution>
@@ -35,12 +37,6 @@ namespace TextMetal.Middleware.Solder.Injection
 		}
 
 		protected abstract TResolution CoreResolve(IDependencyManager dependencyManager, string selectorKey);
-
-		public void Dispose()
-		{
-			this.Dispose(true);
-			GC.SuppressFinalize(this);
-		}
 
 		public TResolution Resolve(IDependencyManager dependencyManager, string selectorKey)
 		{

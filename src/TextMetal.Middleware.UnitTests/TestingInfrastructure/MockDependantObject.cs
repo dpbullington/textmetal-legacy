@@ -18,18 +18,25 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 			this.text = null;
 		}
 
-		[DependencyInjection]
-		public MockDependantObject([DependencyInjection(SelectorKey = "")] string text)
+		public MockDependantObject(string text)
 		{
 			this.text = text ?? string.Empty;
 		}
 
 		[DependencyInjection]
-		public MockDependantObject([DependencyInjection(SelectorKey = "named_dep_obj")] MockDependantObject left, MockDependantObject right)
+		public MockDependantObject([DependencyInjection(SelectorKey = "named_dep_obj")] MockDependantObject left, [DependencyInjection] MockDependantObject right)
 		{
 			this.text = string.Empty;
 			this.left = left;
 			this.right = right;
+		}
+
+		[DependencyInjection(SelectorKey = "named_dep_obj")]
+		public MockDependantObject([DependencyInjection] MockDependantObject both)
+		{
+			this.text = string.Empty;
+			this.left = both;
+			this.right = both;
 		}
 
 		#endregion

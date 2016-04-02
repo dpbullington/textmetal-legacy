@@ -28,159 +28,80 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		#region Methods/Operators
 
 		[Test]
-		public void ShouldCreateAndEvaluateNonDefaultContructorOfTypeUsing1ArgsTest()
-		{
-			TransientActivatorAutoWiringDependencyResolution<DateTime> transientActivatorAutoWiringDependencyResolution;
-			IDependencyManager mockDependencyManager;
-			MockFactory mockFactory;
-			object result;
-			Type _unusedType = null;
-			string _unusedString = null;
-			bool _unusedBoolean = false;
-
-			mockFactory = new MockFactory();
-			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
-
-			Expect.On(mockDependencyManager).Any.Method(m => m.HasTypeResolution(_unusedType, _unusedString, _unusedBoolean)).WithAnyArguments().Will(Return.Value(false));
-
-			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<DateTime>();
-
-			result = transientActivatorAutoWiringDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
-
-			Assert.IsNotNull(result);
-			Assert.AreEqual(new DateTime(0), result);
-
-			mockFactory.VerifyAllExpectationsHaveBeenMet();
-		}
-
-		[Test]
-		public void ShouldCreateAndEvaluateNonDefaultContructorOfTypeUsing1ArgsWithAutowireTest()
-		{
-			TransientActivatorAutoWiringDependencyResolution<MockDependantObject> transientActivatorAutoWiringDependencyResolution;
-			IDependencyManager mockDependencyManager;
-			MockFactory mockFactory;
-			MockDependantObject result;
-			string _unusedString = null;
-			bool _unusedBoolean = false;
-			Type _unusedType = null;
-
-			mockFactory = new MockFactory();
-			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
-
-			Expect.On(mockDependencyManager).Any.Method(m => m.HasTypeResolution(_unusedType, _unusedString, _unusedBoolean)).WithAnyArguments().Will(Return.Value(false));
-
-			Expect.On(mockDependencyManager).One.Method(m => m.ResolveDependency<string>(_unusedString, _unusedBoolean)).With(string.Empty, true).Will(Return.Value("turing tarpit"));
-
-			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>();
-
-			result = (MockDependantObject)transientActivatorAutoWiringDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
-
-			Assert.IsNotNull(result);
-			Assert.AreEqual("turing tarpit", result.Text);
-
-			mockFactory.VerifyAllExpectationsHaveBeenMet();
-		}
-
-		[Test]
-		public void ShouldCreateAndEvaluateNonDefaultContructorOfTypeUsing2ArgsTest()
-		{
-			TransientActivatorAutoWiringDependencyResolution<string> transientActivatorAutoWiringDependencyResolution;
-			IDependencyManager mockDependencyManager;
-			MockFactory mockFactory;
-			object result;
-			string _unusedString = null;
-			bool _unusedBoolean = false;
-			Type _unusedType = null;
-
-
-			mockFactory = new MockFactory();
-			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
-
-			Expect.On(mockDependencyManager).Any.Method(m => m.HasTypeResolution(_unusedType, _unusedString, _unusedBoolean)).WithAnyArguments().Will(Return.Value(false));
-
-			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<string>();
-
-			result = transientActivatorAutoWiringDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
-
-			Assert.IsNotNull(result);
-			Assert.AreEqual(string.Empty, result);
-
-			mockFactory.VerifyAllExpectationsHaveBeenMet();
-		}
-
-		[Test]
-		public void ShouldCreateAndEvaluateNonDefaultContructorOfTypeUsing2ArgsWithAutowireTest()
-		{
-			TransientActivatorAutoWiringDependencyResolution<MockDependantObject> transientActivatorAutoWiringDependencyResolution;
-			IDependencyManager mockDependencyManager;
-			MockFactory mockFactory;
-			MockDependantObject result;
-			string _unusedString = null;
-			bool _unusedBoolean = false;
-			Type _unusedType = null;
-
-			mockFactory = new MockFactory();
-			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
-
-			Expect.On(mockDependencyManager).Any.Method(m => m.HasTypeResolution(_unusedType, _unusedString, _unusedBoolean)).WithAnyArguments().Will(Return.Value(false));
-
-			Expect.On(mockDependencyManager).One.Method(m => m.ResolveDependency<MockDependantObject>(_unusedString, _unusedBoolean)).With("named_dep_obj", true).Will(Return.Value(new MockDependantObject("this_is_named")));
-
-			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<MockDependantObject>();
-
-			result = (MockDependantObject)transientActivatorAutoWiringDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
-
-			Assert.IsNotNull(result);
-			Assert.AreEqual(string.Empty, result.Text);
-			Assert.IsNotNull(result.Left);
-			Assert.IsNotNull(result.Right);
-			Assert.AreEqual("this_is_named", result.Left.Text);
-			Assert.IsNull(result.Right.Text);
-
-			mockFactory.VerifyAllExpectationsHaveBeenMet();
-		}
-
-		[Test]
-		public void ShouldCreateAndEvaluateValueTypeTest()
+		public void ShouldCreateAndEvaluateSelectorKeyTest()
 		{
 			TransientActivatorAutoWiringDependencyResolution transientActivatorAutoWiringDependencyResolution;
 			IDependencyManager mockDependencyManager;
-			Type actualType;
+			Type activatorType;
 			object result;
 			MockFactory mockFactory;
+			string _unusedString = null;
+			bool _unusedBoolean = false;
+			Type _unusedType = null;
 
 			mockFactory = new MockFactory();
 			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
 
-			actualType = typeof(int);
+			activatorType = typeof(MockDependantObject);
 
-			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution(actualType);
+			Expect.On(mockDependencyManager).One.Method(m => m.ResolveDependency(_unusedType, _unusedString, _unusedBoolean)).With(typeof(MockDependantObject), string.Empty, true).Will(Return.Value(new MockDependantObject("both")));
 
-			result = transientActivatorAutoWiringDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
+			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution(activatorType);
+
+			Assert.AreEqual(DependencyLifetime.Transient, transientActivatorAutoWiringDependencyResolution.DependencyLifetime);
+
+			result = transientActivatorAutoWiringDependencyResolution.Resolve(mockDependencyManager, typeof(object), "named_dep_obj");
 
 			Assert.IsNotNull(result);
-			Assert.AreEqual(default(int), result);
+			Assert.IsInstanceOf<MockDependantObject>(result);
+			Assert.IsNotNull(((MockDependantObject)result).Text);
+			Assert.AreEqual(string.Empty, ((MockDependantObject)result).Text);
+			Assert.IsNotNull(((MockDependantObject)result).Left);
+			Assert.IsNotNull(((MockDependantObject)result).Right);
+			Assert.AreEqual("both", ((MockDependantObject)result).Left.Text);
+			Assert.AreEqual("both", ((MockDependantObject)result).Right.Text);
+
+			transientActivatorAutoWiringDependencyResolution.Dispose();
 
 			mockFactory.VerifyAllExpectationsHaveBeenMet();
 		}
 
 		[Test]
-		public void ShouldCreateAndEvaluateWithAutowireTest()
+		public void ShouldCreateAndEvaluateTest()
 		{
-			TransientActivatorAutoWiringDependencyResolution<int> transientActivatorAutoWiringDependencyResolution;
+			TransientActivatorAutoWiringDependencyResolution transientActivatorAutoWiringDependencyResolution;
 			IDependencyManager mockDependencyManager;
+			Type activatorType;
 			object result;
 			MockFactory mockFactory;
+			string _unusedString = null;
+			bool _unusedBoolean = false;
+			Type _unusedType = null;
 
 			mockFactory = new MockFactory();
 			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
 
-			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution<int>();
+			activatorType = typeof(MockDependantObject);
+
+			Expect.On(mockDependencyManager).One.Method(m => m.ResolveDependency(_unusedType, _unusedString, _unusedBoolean)).With(typeof(MockDependantObject), "named_dep_obj", true).Will(Return.Value(new MockDependantObject("left")));
+			Expect.On(mockDependencyManager).One.Method(m => m.ResolveDependency(_unusedType, _unusedString, _unusedBoolean)).With(typeof(MockDependantObject), string.Empty, true).Will(Return.Value(new MockDependantObject("right")));
+
+			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution(activatorType);
+
+			Assert.AreEqual(DependencyLifetime.Transient, transientActivatorAutoWiringDependencyResolution.DependencyLifetime);
 
 			result = transientActivatorAutoWiringDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
 
 			Assert.IsNotNull(result);
-			Assert.AreEqual(0, result);
+			Assert.IsInstanceOf<MockDependantObject>(result);
+			Assert.IsNotNull(((MockDependantObject)result).Text);
+			Assert.AreEqual(string.Empty, ((MockDependantObject)result).Text);
+			Assert.IsNotNull(((MockDependantObject)result).Left);
+			Assert.IsNotNull(((MockDependantObject)result).Right);
+			Assert.AreEqual("left", ((MockDependantObject)result).Left.Text);
+			Assert.AreEqual("right", ((MockDependantObject)result).Right.Text);
+
+			transientActivatorAutoWiringDependencyResolution.Dispose();
 
 			mockFactory.VerifyAllExpectationsHaveBeenMet();
 		}
@@ -190,11 +111,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		public void ShouldFailOnNullActualTypeCreateTest()
 		{
 			TransientActivatorAutoWiringDependencyResolution transientActivatorAutoWiringDependencyResolution;
-			Type actualType;
+			Type activatorType;
 
-			actualType = null;
+			activatorType = null;
 
-			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution(actualType);
+			transientActivatorAutoWiringDependencyResolution = new TransientActivatorAutoWiringDependencyResolution(activatorType);
 		}
 
 		[Test]

@@ -28,56 +28,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		#region Methods/Operators
 
 		[Test]
-		public void ShouldCreateAndEvaluateStronglyTypedAsNewGenericConstrainedTest()
-		{
-			TransientDefaultConstructorDependencyResolution<int> transientDefaultConstructorDependencyResolution;
-			IDependencyManager mockDependencyManager;
-			object result;
-			MockFactory mockFactory;
-
-			mockFactory = new MockFactory();
-			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
-
-			transientDefaultConstructorDependencyResolution = new TransientDefaultConstructorDependencyResolution<int>();
-
-			Assert.IsNotNull(transientDefaultConstructorDependencyResolution);
-
-			result = transientDefaultConstructorDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
-
-			Assert.IsNotNull(result);
-			Assert.AreEqual(0, result);
-
-			transientDefaultConstructorDependencyResolution.Dispose();
-
-			mockFactory.VerifyAllExpectationsHaveBeenMet();
-		}
-
-		[Test]
-		public void ShouldCreateAndEvaluateStronglyTypedTest()
-		{
-			TransientDefaultConstructorDependencyResolution<int> transientDefaultConstructorDependencyResolution;
-			IDependencyManager mockDependencyManager;
-			object result;
-			MockFactory mockFactory;
-
-			mockFactory = new MockFactory();
-			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
-
-			transientDefaultConstructorDependencyResolution = new TransientDefaultConstructorDependencyResolution<int>();
-
-			Assert.IsNotNull(transientDefaultConstructorDependencyResolution);
-
-			result = transientDefaultConstructorDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
-
-			Assert.IsNotNull(result);
-			Assert.AreEqual(0, result);
-
-			transientDefaultConstructorDependencyResolution.Dispose();
-
-			mockFactory.VerifyAllExpectationsHaveBeenMet();
-		}
-
-		[Test]
 		public void ShouldCreateAndEvaluateTest()
 		{
 			TransientDefaultConstructorDependencyResolution transientDefaultConstructorDependencyResolution;
@@ -88,14 +38,15 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			mockFactory = new MockFactory();
 			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
 
-			transientDefaultConstructorDependencyResolution = new TransientDefaultConstructorDependencyResolution(typeof(int));
+			transientDefaultConstructorDependencyResolution = new TransientDefaultConstructorDependencyResolution(typeof(MockDependantObject));
 
-			Assert.IsNotNull(transientDefaultConstructorDependencyResolution);
+			Assert.AreEqual(DependencyLifetime.Transient, transientDefaultConstructorDependencyResolution.DependencyLifetime);
 
 			result = transientDefaultConstructorDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
 
 			Assert.IsNotNull(result);
-			Assert.AreEqual(0, result);
+			Assert.IsInstanceOf<MockDependantObject>(result);
+			Assert.IsNull(((MockDependantObject)result).Text);
 
 			transientDefaultConstructorDependencyResolution.Dispose();
 

@@ -28,13 +28,42 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 		#region Methods/Operators
 
-		public static void NotMarkedAsAssemblyLoaderEventSinkMethod(AssemblyLoaderEventType assemblyLoaderEventType, AssemblyLoaderContainerContext assemblyLoaderContainerContext)
+		[AssemblyLoaderEventSinkMethod]
+		public static void IsValidAssemblyLoaderEventSinkMethod(AssemblyLoaderEventType assemblyLoaderEventType, AssemblyLoaderContainerContext assemblyLoaderContainerContext)
 		{
-			throw new Exception();
+			if ((object)assemblyLoaderContainerContext == null)
+				throw new ArgumentNullException(nameof(assemblyLoaderContainerContext));
+
+			switch (assemblyLoaderEventType)
+			{
+				case AssemblyLoaderEventType.Startup:
+					MockFactory mockFactory;
+					IDependencyResolution mockDependencyResolution;
+
+					IDependencyManager _unusedDependencyManager = null;
+					Type _unusedType = null;
+					string _unusedString = null;
+					Type targetType;
+					string selectorKey;
+
+					mockFactory = new MockFactory();
+					mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
+
+					assemblyLoaderContainerContext.DependencyManager.AddResolution(typeof(IFormattable), "bob", false, mockDependencyResolution);
+
+					Expect.On(mockDependencyResolution).Any.Method(m => m.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).WithAnyArguments().WillReturn(1234.5678);
+
+					Expect.On(mockDependencyResolution).One.Method(m => m.Dispose());
+
+					break;
+				case AssemblyLoaderEventType.Shutdown:
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(assemblyLoaderEventType), assemblyLoaderEventType, null);
+			}
 		}
 
-		[AssemblyLoaderEventSinkMethod]
-		public static void ShouldNotMatchSignatureAssemblyLoaderEventSinkMethod(int unused)
+		public static void NotMarkedAsAssemblyLoaderEventSinkMethod(AssemblyLoaderEventType assemblyLoaderEventType, AssemblyLoaderContainerContext assemblyLoaderContainerContext)
 		{
 			throw new Exception();
 		}
@@ -46,21 +75,9 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		}
 
 		[AssemblyLoaderEventSinkMethod]
-		public static void IsValidAssemblyLoaderEventSinkMethod(AssemblyLoaderEventType assemblyLoaderEventType, AssemblyLoaderContainerContext assemblyLoaderContainerContext)
+		public static void ShouldNotMatchSignatureAssemblyLoaderEventSinkMethod(int unused)
 		{
-			if((object)assemblyLoaderContainerContext == null)
-				throw new ArgumentNullException(nameof(assemblyLoaderContainerContext));
-
-			switch (assemblyLoaderEventType)
-			{
-				case AssemblyLoaderEventType.Startup:
-					assemblyLoaderContainerContext.DependencyManager.AddResolution<IFormattable>("bob", false, new TransientFactoryMethodDependencyResolution<IFormattable>(() => 1234.56789));
-					break;
-				case AssemblyLoaderEventType.Shutdown:
-					break;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(assemblyLoaderEventType), assemblyLoaderEventType, null);
-			}
+			throw new Exception();
 		}
 
 		[Test]
@@ -1047,7 +1064,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			selectorKey = "x";
 
 			Expect.On(mockDependencyResolution).One.Method(x => x.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).With(dependencyManager, targetType, selectorKey).Will(Return.Value(1));
-			
+
 			dependencyManager.AddResolution(targetType, selectorKey, false, mockDependencyResolution);
 			value = dependencyManager.ResolveDependency(targetType, selectorKey, false);
 
@@ -1068,7 +1085,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			Assert.IsNotNull(formattable);
 			Assert.IsInstanceOf<double>(formattable);
-			Assert.AreEqual(1234.56789, (double)formattable);
+			Assert.AreEqual(1234.5678, (double)formattable);
 		}
 
 		#endregion

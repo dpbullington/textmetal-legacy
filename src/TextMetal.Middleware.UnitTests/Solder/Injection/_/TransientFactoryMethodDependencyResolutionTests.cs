@@ -43,31 +43,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			transientFactoryMethodDependencyResolution = new TransientFactoryMethodDependencyResolution(value);
 
-			result = transientFactoryMethodDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
-
-			Assert.IsNotNull(result);
-			Assert.AreEqual(11, result);
-
-			transientFactoryMethodDependencyResolution.Dispose();
-
-			mockFactory.VerifyAllExpectationsHaveBeenMet();
-		}
-
-		[Test]
-		public void ShouldCreateStronglyTypedTest()
-		{
-			TransientFactoryMethodDependencyResolution<int> transientFactoryMethodDependencyResolution;
-			IDependencyManager mockDependencyManager;
-			Func<int> value;
-			object result;
-			MockFactory mockFactory;
-
-			mockFactory = new MockFactory();
-			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
-
-			value = () => 11;
-
-			transientFactoryMethodDependencyResolution = new TransientFactoryMethodDependencyResolution<int>(value);
+			Assert.AreEqual(DependencyLifetime.Transient, transientFactoryMethodDependencyResolution.DependencyLifetime);
 
 			result = transientFactoryMethodDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
 
@@ -137,18 +113,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			transientFactoryMethodDependencyResolution = new TransientFactoryMethodDependencyResolution(value);
 
 			result = transientFactoryMethodDependencyResolution.Resolve(mockDependencyManager, null, string.Empty);
-		}
-
-		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullValueCreateFromFuncTest()
-		{
-			TransientFactoryMethodDependencyResolution<int> transientFactoryMethodDependencyResolution;
-			Func<int> value;
-
-			value = null;
-
-			transientFactoryMethodDependencyResolution = new TransientFactoryMethodDependencyResolution<int>(value);
 		}
 
 		[Test]

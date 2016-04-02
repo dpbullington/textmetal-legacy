@@ -5,7 +5,7 @@
 
 using System;
 
-/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-10 / 100% code coverage */
+/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-28 / 85% code coverage */
 
 namespace TextMetal.Middleware.Solder.Injection
 {
@@ -13,7 +13,6 @@ namespace TextMetal.Middleware.Solder.Injection
 	/// A dependency resolution implementation that executes a public, default constructor
 	/// on the activation type each time a dependency resolution occurs.
 	/// </summary>
-	[Obsolete("TransientDefaultConstructorDependencyResolution`1 should be used instead.")]
 	public class TransientDefaultConstructorDependencyResolution : DependencyResolution
 
 	{

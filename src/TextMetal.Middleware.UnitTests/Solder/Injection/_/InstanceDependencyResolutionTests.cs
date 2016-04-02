@@ -43,33 +43,9 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			instanceDependencyResolution = new InstanceDependencyResolution(value);
 
+			Assert.AreEqual(DependencyLifetime.Instance, instanceDependencyResolution.DependencyLifetime);
+
 			result = instanceDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
-
-			Assert.IsNotNull(result);
-			Assert.AreEqual(11, result);
-
-			instanceDependencyResolution.Dispose();
-
-			mockFactory.VerifyAllExpectationsHaveBeenMet();
-		}
-
-		[Test]
-		public void ShouldCreateStronglyTypedTest()
-		{
-			InstanceDependencyResolution<int> instanceDependencyResolution;
-			IDependencyManager mockDependencyManager;
-			int value;
-			int result;
-			MockFactory mockFactory;
-
-			mockFactory = new MockFactory();
-			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
-
-			value = 11;
-
-			instanceDependencyResolution = new InstanceDependencyResolution<int>(value);
-
-			result = instanceDependencyResolution.Resolve(mockDependencyManager, string.Empty);
 
 			Assert.IsNotNull(result);
 			Assert.AreEqual(11, result);

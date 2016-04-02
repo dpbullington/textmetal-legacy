@@ -48,6 +48,8 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			singletonWrapperDependencyResolution = new SingletonWrapperDependencyResolution(mockDependencyResolution);
 
+			Assert.AreEqual(DependencyLifetime.Singleton, singletonWrapperDependencyResolution.DependencyLifetime);
+
 			// should be thawed at this point
 			result = singletonWrapperDependencyResolution.Resolve(mockDependencyManager, typeof(object), string.Empty);
 

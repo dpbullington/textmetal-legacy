@@ -46,7 +46,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 			MockFactory mockFactory;
 
 			const string _unsusedString = null;
-			object _unusedObject = null;
 
 			mockFactory = new MockFactory();
 			mockHttpContextAccessor = mockFactory.CreateInstance<IHttpContextAccessor>();
