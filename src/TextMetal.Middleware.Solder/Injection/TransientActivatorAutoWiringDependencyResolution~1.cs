@@ -4,6 +4,10 @@
 */
 
 using System;
+using System.Linq;
+using System.Reflection;
+
+using TextMetal.Middleware.Solder.Utilities;
 
 /* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-04-01 / 83% code coverage */
 
@@ -38,7 +42,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			if ((object)selectorKey == null)
 				throw new ArgumentNullException(nameof(selectorKey));
 
-			return (TResolution)TransientActivatorAutoWiringDependencyResolution.AutoWireResolve(typeof(TResolution), dependencyManager, typeof(TResolution), selectorKey);
+			return TransientActivatorAutoWiringDependencyResolution.AutoWireResolve<TResolution>(typeof(TResolution), dependencyManager, typeof(TResolution), selectorKey);
 		}
 
 		protected override void Dispose(bool disposing)

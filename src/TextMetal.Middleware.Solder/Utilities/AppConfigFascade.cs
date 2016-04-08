@@ -8,6 +8,8 @@ using System;
 using Microsoft.Framework.Configuration;
 using Microsoft.Framework.Configuration.Json;
 
+using TextMetal.Middleware.Solder.Injection;
+
 /*
 BACKLOG (dpbullington@gmail.com / 2015-12-18):
 Refactor the appConfigFilePath constructor parameter out, do IoC of IConfigurationRoot and leverage commented out static factory method instead.
@@ -30,6 +32,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// </summary>
 		/// <param name="appConfigFilePath"> The file path to the application configuration JSON file. </param>
 		/// <param name="dataTypeFascade"> The data type instance to use. </param>
+		[Obsolete("Stop using this in unit tests.")]
 		public AppConfigFascade(string appConfigFilePath, IDataTypeFascade dataTypeFascade)
 		{
 			if ((object)appConfigFilePath == null)
@@ -40,6 +43,19 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 			this.dataTypeFascade = dataTypeFascade;
 			this.configurationRoot = LoadAppConfigFile(appConfigFilePath);
+		}
+
+		[DependencyInjection]
+		public AppConfigFascade([DependencyInjection] IConfigurationRoot configurationRoot, [DependencyInjection] IDataTypeFascade dataTypeFascade)
+		{
+			if ((object)configurationRoot == null)
+				throw new ArgumentNullException(nameof(configurationRoot));
+
+			if ((object)dataTypeFascade == null)
+				throw new ArgumentNullException(nameof(dataTypeFascade));
+
+			this.dataTypeFascade = dataTypeFascade;
+			this.configurationRoot = configurationRoot;
 		}
 
 		#endregion
@@ -73,27 +89,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 		#region Methods/Operators
 
-		//public static AppConfigFascade FromJsonFile(string appConfigFilePath)
-		//{
-		//	AppConfigFascade appConfigFascade;
-
-		//	IConfigurationBuilder configurationBuilder;
-		//	IConfigurationProvider configurationProvider;
-		//	IConfigurationRoot configurationRoot;
-
-		//	if ((object)appConfigFilePath == null)
-		//		throw new ArgumentNullException(nameof(appConfigFilePath));
-
-		//	configurationBuilder = new ConfigurationBuilder();
-		//	configurationProvider = new JsonConfigurationProvider(appConfigFilePath);
-		//	configurationBuilder.Add(configurationProvider);
-		//	configurationRoot = configurationBuilder.Build();
-
-		//	appConfigFascade = new AppConfigFascade(configurationRoot, new DataTypeFascade());
-		//	return appConfigFascade;
-		//}
-
-		private static IConfigurationRoot LoadAppConfigFile(string appConfigFilePath)
+		internal static IConfigurationRoot LoadAppConfigFile(string appConfigFilePath)
 		{
 			IConfigurationBuilder configurationBuilder;
 			IConfigurationProvider configurationProvider;

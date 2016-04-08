@@ -29,7 +29,6 @@
 		"TestingInfrastructure\\MockModelObject.cs",
 
 		
-		"Solder\\Interception\\**.cs",
 		"Solder\\Serialization\\**.cs"
 	],
 	"content": "appconfig.json",

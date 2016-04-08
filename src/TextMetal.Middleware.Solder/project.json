@@ -24,15 +24,17 @@
 		}
 	},
 	"exclude": [],
-    "dependencies": {
-        "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
-        "Microsoft.CSharp": "4.0.1-beta-23516",
-        "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
-        "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
-        "Microsoft.NETCore": "5.0.1-beta-23516",
-        "System.Console": "4.0.0-beta-23516",
-        "System.Data.Common": "4.0.1-beta-23516",
-        "System.Xml.XmlDocument": "4.0.1-beta-23516",
-        "System.Xml.XmlSerializer": "4.0.11-beta-23516"
-    }
+	"dependencies": {
+		"Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+		"Microsoft.CSharp": "4.0.1-beta-23516",
+		"Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+		"Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+		"Microsoft.NETCore": "5.0.1-beta-23516",
+		"System.Console": "4.0.0-beta-23516",
+		"System.Data.Common": "4.0.1-beta-23516",
+		"System.Xml.XmlDocument": "4.0.1-beta-23516",
+		"System.Xml.XmlSerializer": "4.0.11-beta-23516",
+
+		"TextMetal.Middleware.Scrutiny": "1.0.0-*"
+	}
 }

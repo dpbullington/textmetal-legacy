@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using TextMetal.Middleware.Solder.Injection;
+
 /* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-02-22 / 99% code coverage */
 
 namespace TextMetal.Middleware.Solder.Utilities
@@ -24,7 +26,8 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// Initializes a new instance of the ReflectionFascade class.
 		/// </summary>
 		/// <param name="dataTypeFascade"> The data type instance to use. </param>
-		public ReflectionFascade(IDataTypeFascade dataTypeFascade)
+		[DependencyInjection]
+		public ReflectionFascade([DependencyInjection] IDataTypeFascade dataTypeFascade)
 		{
 			if ((object)dataTypeFascade == null)
 				throw new ArgumentNullException(nameof(dataTypeFascade));

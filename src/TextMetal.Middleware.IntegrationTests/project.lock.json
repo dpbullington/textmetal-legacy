@@ -1316,7 +1316,7 @@
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-beta-23516",
           "Microsoft.NETCore": "5.0.1-beta-23516",
-          "System.Diagnostics.Contracts": "4.0.1-beta-23516",
+          "TextMetal.Middleware.Scrutiny": "1.0.0",
           "TextMetal.Middleware.Solder": "1.0.0"
         }
       },
@@ -1330,6 +1330,7 @@
           "System.ComponentModel": "4.0.1-beta-23516",
           "System.Console": "4.0.0-beta-23516",
           "System.Data.Common": "4.0.1-beta-23516",
+          "System.Diagnostics.Contracts": "4.0.1-beta-23516",
           "System.Diagnostics.TraceSource": "4.0.0-beta-23516",
           "System.Reflection.Emit": "4.0.1-beta-23516",
           "System.Reflection.Emit.ILGeneration": "4.0.1-beta-23516",
@@ -1352,7 +1353,8 @@
           "System.Console": "4.0.0-beta-23516",
           "System.Data.Common": "4.0.1-beta-23516",
           "System.Xml.XmlDocument": "4.0.1-beta-23516",
-          "System.Xml.XmlSerializer": "4.0.11-beta-23516"
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Middleware.Scrutiny": "1.0.0"
         }
       }
     },
@@ -3123,7 +3125,7 @@
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-beta-23516",
           "Microsoft.NETCore": "5.0.1-beta-23516",
-          "System.Diagnostics.Contracts": "4.0.1-beta-23516",
+          "TextMetal.Middleware.Scrutiny": "1.0.0",
           "TextMetal.Middleware.Solder": "1.0.0"
         }
       },
@@ -3137,6 +3139,7 @@
           "System.ComponentModel": "4.0.1-beta-23516",
           "System.Console": "4.0.0-beta-23516",
           "System.Data.Common": "4.0.1-beta-23516",
+          "System.Diagnostics.Contracts": "4.0.1-beta-23516",
           "System.Diagnostics.TraceSource": "4.0.0-beta-23516",
           "System.Reflection.Emit": "4.0.1-beta-23516",
           "System.Reflection.Emit.ILGeneration": "4.0.1-beta-23516",
@@ -3159,7 +3162,8 @@
           "System.Console": "4.0.0-beta-23516",
           "System.Data.Common": "4.0.1-beta-23516",
           "System.Xml.XmlDocument": "4.0.1-beta-23516",
-          "System.Xml.XmlSerializer": "4.0.11-beta-23516"
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Middleware.Scrutiny": "1.0.0"
         }
       }
     },
@@ -4930,7 +4934,7 @@
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-beta-23516",
           "Microsoft.NETCore": "5.0.1-beta-23516",
-          "System.Diagnostics.Contracts": "4.0.1-beta-23516",
+          "TextMetal.Middleware.Scrutiny": "1.0.0",
           "TextMetal.Middleware.Solder": "1.0.0"
         }
       },
@@ -4944,6 +4948,7 @@
           "System.ComponentModel": "4.0.1-beta-23516",
           "System.Console": "4.0.0-beta-23516",
           "System.Data.Common": "4.0.1-beta-23516",
+          "System.Diagnostics.Contracts": "4.0.1-beta-23516",
           "System.Diagnostics.TraceSource": "4.0.0-beta-23516",
           "System.Reflection.Emit": "4.0.1-beta-23516",
           "System.Reflection.Emit.ILGeneration": "4.0.1-beta-23516",
@@ -4966,7 +4971,8 @@
           "System.Console": "4.0.0-beta-23516",
           "System.Data.Common": "4.0.1-beta-23516",
           "System.Xml.XmlDocument": "4.0.1-beta-23516",
-          "System.Xml.XmlSerializer": "4.0.11-beta-23516"
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Middleware.Scrutiny": "1.0.0"
         }
       }
     }

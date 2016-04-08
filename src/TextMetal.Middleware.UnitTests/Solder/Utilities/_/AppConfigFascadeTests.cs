@@ -27,6 +27,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		#region Methods/Operators
 
 		[Test]
+		public void ShouldCreateTest__todo_mock_configuration_root()
+		{
+			Assert.Ignore("TODO: This test case has not been implemented yet.");
+		}
+
+		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnAppSettingsFileNameCreateTest()
 		{

@@ -33,7 +33,7 @@ namespace TextMetal.Middleware.Solder.Injection
 		#region Fields/Constants
 
 		private readonly Dictionary<Tuple<Type, string>, IDependencyResolution> dependencyResolutionRegistrations = new Dictionary<Tuple<Type, string>, IDependencyResolution>();
-		private readonly ReaderWriterLockSlim readerWriterLock = new ReaderWriterLockSlim();
+		private readonly ReaderWriterLockSlim readerWriterLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 		private bool disposed;
 
 		#endregion

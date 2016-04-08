@@ -57,14 +57,14 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		#region Methods/Operators
 
-		public static object AutoWireResolve(Type activatorType, IDependencyManager dependencyManager, Type resolutionType, string selectorKey)
+		public static TResolution AutoWireResolve<TResolution>(Type activatorType, IDependencyManager dependencyManager, Type resolutionType, string selectorKey)
 		{
 			ConstructorInfo constructorInfo;
 			ConstructorInfo[] constructorInfos;
 			ParameterInfo[] parameterInfos;
 
 			DependencyInjectionAttribute dependencyInjectionAttribute;
-			Lazy<object> lazyConstructorInvokation = null;
+			Lazy<TResolution> lazyConstructorInvokation = null;
 
 			if ((object)activatorType == null)
 				throw new ArgumentNullException(nameof(activatorType));
@@ -145,12 +145,12 @@ namespace TextMetal.Middleware.Solder.Injection
 						lazyConstructorArguments[parameterIndex] = lazyConstructorArgument;
 					}
 
-					lazyConstructorInvokation = new Lazy<object>(() =>
+					lazyConstructorInvokation = new Lazy<TResolution>(() =>
 																{
 																	// prevent modified closure bug
 																	var _activatorType = activatorType;
 																	var _lazyConstructorArguments = lazyConstructorArguments;
-																	return Activator.CreateInstance(_activatorType, _lazyConstructorArguments.Select(l => l.Value).ToArray());
+																	return (TResolution)Activator.CreateInstance(_activatorType, _lazyConstructorArguments.Select(l => l.Value).ToArray());
 																});
 				}
 			}
@@ -172,7 +172,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			if ((object)selectorKey == null)
 				throw new ArgumentNullException(nameof(selectorKey));
 
-			return AutoWireResolve(this.ActivatorType, dependencyManager, resolutionType, selectorKey);
+			return AutoWireResolve<object>(this.ActivatorType, dependencyManager, resolutionType, selectorKey);
 		}
 
 		protected override void Dispose(bool disposing)

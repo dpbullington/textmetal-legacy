@@ -28,11 +28,6 @@ namespace TextMetal.ConsoleTool
 		{
 		}
 
-		private Program()
-			: this(Middleware.Solder.Utilities.DataTypeFascade.Instance, new AppConfigFascade("appconfig.json", Middleware.Solder.Utilities.DataTypeFascade.Instance), Middleware.Solder.Utilities.ReflectionFascade.Instance)
-		{
-		}
-
 		#endregion
 
 		#region Fields/Constants
@@ -51,7 +46,7 @@ namespace TextMetal.ConsoleTool
 
 		private static int DnxMain(string[] args)
 		{
-			//AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
+			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
 
 			using (ConsoleApplicationFascade program = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
 				return program.EntryPoint(args);
