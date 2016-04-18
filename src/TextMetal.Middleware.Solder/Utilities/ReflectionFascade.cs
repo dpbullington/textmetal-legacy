@@ -11,7 +11,7 @@ using System.Reflection;
 
 using TextMetal.Middleware.Solder.Injection;
 
-/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-02-22 / 99% code coverage */
+/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-04-16 / 100% code coverage */
 
 namespace TextMetal.Middleware.Solder.Utilities
 {
@@ -35,33 +35,15 @@ namespace TextMetal.Middleware.Solder.Utilities
 			this.dataTypeFascade = dataTypeFascade;
 		}
 
-		/// <summary>
-		/// Initializes a new instance of the ReflectionFascade class.
-		/// </summary>
-		private ReflectionFascade()
-			: this(Utilities.DataTypeFascade.Instance)
-		{
-		}
-
 		#endregion
 
 		#region Fields/Constants
 
-		private static readonly IReflectionFascade instance = new ReflectionFascade();
 		private readonly IDataTypeFascade dataTypeFascade;
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		[Obsolete("Stop using this")]
-		public static IReflectionFascade Instance
-		{
-			get
-			{
-				return instance;
-			}
-		}
 
 		private IDataTypeFascade DataTypeFascade
 		{

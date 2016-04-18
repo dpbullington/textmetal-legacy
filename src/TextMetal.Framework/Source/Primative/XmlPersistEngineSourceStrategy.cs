@@ -41,7 +41,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException(nameof(properties));
 
-			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
+			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
 			if ((object)xpe == null)

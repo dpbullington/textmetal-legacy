@@ -22,7 +22,7 @@
 			}
 		}
 	},
-    "exclude": [ "**\\*.cs"  ],
+    "exclude": [ ],
 	"dependencies": {
         "Microsoft.CSharp": "4.0.1-beta-23516",
         "Microsoft.NETCore": "5.0.1-beta-23516",

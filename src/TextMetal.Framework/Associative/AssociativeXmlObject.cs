@@ -154,7 +154,7 @@ namespace TextMetal.Framework.Associative
 				{
 					foreach (IAssociativeXmlObject item in this.Items)
 					{
-						if (!DataTypeFascade.Instance.IsNullOrWhiteSpace(item.Name) &&
+						if (!ExtensionMethods.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(item.Name) &&
 							!dictionary.ContainsKey(item.Name))
 							dictionary.Add(item.Name, item.GetAssociativeObjectValue(NullTemplatingContext.Instance));
 					}
@@ -834,7 +834,7 @@ namespace TextMetal.Framework.Associative
 			{
 				get
 				{
-					throw new NotImplementedException(nameof(CurrentVariableTable));
+					throw new NotImplementedException(nameof(this.CurrentVariableTable));
 				}
 			}
 
@@ -842,7 +842,7 @@ namespace TextMetal.Framework.Associative
 			{
 				get
 				{
-					throw new NotImplementedException(nameof(Input));
+					throw new NotImplementedException(nameof(this.Input));
 				}
 			}
 
@@ -850,7 +850,7 @@ namespace TextMetal.Framework.Associative
 			{
 				get
 				{
-					throw new NotImplementedException(nameof(IteratorModels));
+					throw new NotImplementedException(nameof(this.IteratorModels));
 				}
 			}
 
@@ -858,7 +858,7 @@ namespace TextMetal.Framework.Associative
 			{
 				get
 				{
-					throw new NotImplementedException(nameof(Output));
+					throw new NotImplementedException(nameof(this.Output));
 				}
 			}
 
@@ -866,7 +866,7 @@ namespace TextMetal.Framework.Associative
 			{
 				get
 				{
-					throw new NotImplementedException(nameof(Properties));
+					throw new NotImplementedException(nameof(this.Properties));
 				}
 			}
 
@@ -874,7 +874,7 @@ namespace TextMetal.Framework.Associative
 			{
 				get
 				{
-					throw new NotImplementedException(nameof(Tokenizer));
+					throw new NotImplementedException(nameof(this.Tokenizer));
 				}
 			}
 
@@ -882,7 +882,7 @@ namespace TextMetal.Framework.Associative
 			{
 				get
 				{
-					throw new NotImplementedException(nameof(VariableTables));
+					throw new NotImplementedException(nameof(this.VariableTables));
 				}
 			}
 
@@ -902,12 +902,12 @@ namespace TextMetal.Framework.Associative
 
 			public void ClearReferences()
 			{
-				throw new NotImplementedException(nameof(ClearReferences));
+				throw new NotImplementedException(nameof(this.ClearReferences));
 			}
 
 			public void Dispose()
 			{
-				throw new NotImplementedException(nameof(Dispose));
+				throw new NotImplementedException(nameof(this.Dispose));
 			}
 
 			public DynamicWildcardTokenReplacementStrategy GetDynamicWildcardTokenReplacementStrategy()
@@ -922,12 +922,12 @@ namespace TextMetal.Framework.Associative
 
 			public bool LaunchDebugger()
 			{
-				throw new NotImplementedException(nameof(LaunchDebugger));
+				throw new NotImplementedException(nameof(this.LaunchDebugger));
 			}
 
 			public void SetReference(Type xmlObjectType)
 			{
-				throw new NotImplementedException(nameof(SetReference));
+				throw new NotImplementedException(nameof(this.SetReference));
 			}
 
 			#endregion

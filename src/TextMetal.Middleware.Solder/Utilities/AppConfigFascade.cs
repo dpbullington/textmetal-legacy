@@ -10,12 +10,6 @@ using Microsoft.Framework.Configuration.Json;
 
 using TextMetal.Middleware.Solder.Injection;
 
-/*
-BACKLOG (dpbullington@gmail.com / 2015-12-18):
-Refactor the appConfigFilePath constructor parameter out, do IoC of IConfigurationRoot and leverage commented out static factory method instead.
-This will enhance unit testability and allow any config types.
-*/
-
 /* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-02-22 / 98% code coverage */
 
 namespace TextMetal.Middleware.Solder.Utilities
@@ -26,24 +20,6 @@ namespace TextMetal.Middleware.Solder.Utilities
 	public class AppConfigFascade : IAppConfigFascade
 	{
 		#region Constructors/Destructors
-
-		/// <summary>
-		/// Initializes a new instance of the AppConfigFascade class.
-		/// </summary>
-		/// <param name="appConfigFilePath"> The file path to the application configuration JSON file. </param>
-		/// <param name="dataTypeFascade"> The data type instance to use. </param>
-		[Obsolete("Stop using this in unit tests.")]
-		public AppConfigFascade(string appConfigFilePath, IDataTypeFascade dataTypeFascade)
-		{
-			if ((object)appConfigFilePath == null)
-				throw new ArgumentNullException(nameof(appConfigFilePath));
-
-			if ((object)dataTypeFascade == null)
-				throw new ArgumentNullException(nameof(dataTypeFascade));
-
-			this.dataTypeFascade = dataTypeFascade;
-			this.configurationRoot = LoadAppConfigFile(appConfigFilePath);
-		}
 
 		[DependencyInjection]
 		public AppConfigFascade([DependencyInjection] IConfigurationRoot configurationRoot, [DependencyInjection] IDataTypeFascade dataTypeFascade)

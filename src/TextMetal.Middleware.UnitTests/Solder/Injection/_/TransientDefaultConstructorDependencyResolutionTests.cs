@@ -55,6 +55,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullActivatorTypeCreateTest()
+		{
+			TransientDefaultConstructorDependencyResolution transientFactoryMethodDependencyResolution;
+			Type type;
+
+			type = null;
+
+			transientFactoryMethodDependencyResolution = new TransientDefaultConstructorDependencyResolution(type);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullDependencyManagerResolveTest()
 		{
 			TransientDefaultConstructorDependencyResolution transientDefaultConstructorDependencyResolution;
@@ -102,18 +114,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			transientDefaultConstructorDependencyResolution = new TransientDefaultConstructorDependencyResolution(typeof(int));
 
 			result = transientDefaultConstructorDependencyResolution.Resolve(mockDependencyManager, null, string.Empty);
-		}
-
-		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullValueCreateTest()
-		{
-			TransientDefaultConstructorDependencyResolution transientFactoryMethodDependencyResolution;
-			Type type;
-
-			type = null;
-
-			transientFactoryMethodDependencyResolution = new TransientDefaultConstructorDependencyResolution(type);
 		}
 
 		#endregion

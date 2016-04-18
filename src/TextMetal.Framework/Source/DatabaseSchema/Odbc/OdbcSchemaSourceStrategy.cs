@@ -104,10 +104,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new DbParameter[]
 						{
-							//AdoNetLiteFascade.Instance.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
-							//AdoNetLiteFascade.Instance.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
+							//AdoNetLiteFascade.ReflectionFascadeLegacyInstance.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
+							//AdoNetLiteFascade.ReflectionFascadeLegacyInstance.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};
 			}
 
@@ -140,8 +140,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 						{
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", view.ViewName)
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", view.ViewName)
 						};
 			}
 
@@ -160,7 +160,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 			{
 				return new DbParameter[]
 						{
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName)
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName)
 						};
 			}
 
@@ -213,8 +213,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 						{
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};
 			}
 
@@ -261,9 +261,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 						{
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName),
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P5", foreignKey.ForeignKeyName)
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P5", foreignKey.ForeignKeyName)
 						};
 			}
 
@@ -296,8 +296,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 						{
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};
 			}
 
@@ -330,8 +330,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 						{
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", procedure.ProcedureName)
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", procedure.ProcedureName)
 						};
 			}
 
@@ -372,7 +372,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 						{
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName)
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName)
 						};
 			}
 
@@ -433,7 +433,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 						{
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName)
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName)
 						};
 			}
 
@@ -469,9 +469,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 						{
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName),
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P5", uniqueKey.UniqueKeyName)
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P5", uniqueKey.UniqueKeyName)
 						};
 			}
 
@@ -504,8 +504,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 						{
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P1", server.ServerName),
 							//AdoNet.CreateParameter(connectionType,ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P2", database.DatabaseName),
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
-							AdoNetLiteFascade.Instance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P3", schema.SchemaName),
+							ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@P4", table.TableName)
 						};
 			}
 

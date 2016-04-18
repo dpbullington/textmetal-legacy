@@ -142,6 +142,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 			httpContextAccessorContextualStorageStrategy.HasValue("test");
 		}
 
+		[Test]
+		public void ShouldNotFailOnNullSharedStaticIsNotValidHttpContextCreateTest()
+		{
+			HttpContextAccessorContextualStorageStrategy httpContextAccessorContextualStorageStrategy;
+			IHttpContextAccessor mockHttpContextAccessor;
+
+			mockHttpContextAccessor = null;
+
+			httpContextAccessorContextualStorageStrategy = new HttpContextAccessorContextualStorageStrategy(mockHttpContextAccessor);
+
+			Assert.IsFalse(httpContextAccessorContextualStorageStrategy.IsValidHttpContext);
+		}
+
 		#endregion
 	}
 }

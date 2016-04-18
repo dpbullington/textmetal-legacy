@@ -60,12 +60,12 @@ namespace TextMetal.ConsoleTool
 		[STAThread]
 		public static int Main(string[] args)
 		{
-			bool dnxDebugQuicksMode;
+			bool enableDnxDebugQuirksMode;
 
-			dnxDebugQuicksMode = DnxDebugQuicksMode;
-			Console.WriteLine("DnxDebugQuicksMode: '{0}'", dnxDebugQuicksMode);
+			enableDnxDebugQuirksMode = EnableDnxDebugQuirksMode;
+			Console.WriteLine("EnableDnxDebugQuirksMode: '{0}'", enableDnxDebugQuirksMode);
 
-			if (!dnxDebugQuicksMode)
+			if (!enableDnxDebugQuirksMode)
 				return DnxMain(args);
 			else
 			{
@@ -169,7 +169,7 @@ namespace TextMetal.ConsoleTool
 				}
 			}
 
-			using (IToolHost toolHost = new ToolHost())
+			using (IToolHost toolHost = new ToolHost(this.ReflectionFascade) /* TODO: use dependency manager here */)
 				toolHost.Host((object)args != null ? args.Length : -1, args, argz, templateFilePath, sourceFilePath, baseDirectoryPath, sourceStrategyAqtn, strictMatching, properties);
 
 			return 0;

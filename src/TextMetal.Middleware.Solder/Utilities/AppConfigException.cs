@@ -1,5 +1,7 @@
 using System;
 
+/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-04-17 / 100% code coverage */
+
 namespace TextMetal.Middleware.Solder.Utilities
 {
 	/// <summary>

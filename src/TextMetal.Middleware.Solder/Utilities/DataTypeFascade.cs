@@ -7,6 +7,8 @@ using System;
 using System.Globalization;
 using System.Reflection;
 
+/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-04-17 / 100% code coverage */
+
 namespace TextMetal.Middleware.Solder.Utilities
 {
 	/// <summary>
@@ -18,25 +20,6 @@ namespace TextMetal.Middleware.Solder.Utilities
 
 		public DataTypeFascade()
 		{
-		}
-
-		#endregion
-
-		#region Fields/Constants
-
-		private static readonly IDataTypeFascade instance = new DataTypeFascade();
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		[Obsolete("Stop using this")]
-		public static IDataTypeFascade Instance
-		{
-			get
-			{
-				return instance;
-			}
 		}
 
 		#endregion

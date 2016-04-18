@@ -31,6 +31,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		#region Methods/Operators
 
 		[Test]
+		public void ShouldCheckIsNullOrEmptyTest()
+		{
+			DataTypeFascade dataTypeFascade;
+
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsTrue(dataTypeFascade.IsNullOrEmpty(null));
+			Assert.IsTrue(dataTypeFascade.IsNullOrEmpty(string.Empty));
+			Assert.IsFalse(dataTypeFascade.IsNullOrEmpty("   "));
+			Assert.IsFalse(dataTypeFascade.IsNullOrEmpty("daniel"));
+			Assert.IsFalse(dataTypeFascade.IsNullOrEmpty("   daniel     "));
+		}
+
+		[Test]
 		public void ShouldCheckIsNullOrWhiteSpaceTest()
 		{
 			DataTypeFascade dataTypeFascade;
@@ -271,6 +285,24 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
+		public void ShouldGetDBNullTest()
+		{
+			DBNull ovalue;
+			bool result;
+			DataTypeFascade dataTypeFascade;
+
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<DBNull>("", out ovalue);
+			Assert.IsTrue(result);
+			Assert.AreEqual(DBNull.Value, ovalue);
+
+			result = dataTypeFascade.TryParse<DBNull>("___", out ovalue);
+			Assert.IsTrue(result);
+			Assert.AreEqual(DBNull.Value, ovalue);
+		}
+
+		[Test]
 		public void ShouldGetDecimalTest()
 		{
 			Decimal ovalue;
@@ -293,6 +325,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 			dataTypeFascade = new DataTypeFascade();
 
 			value = dataTypeFascade.ChangeType(null, typeof(int));
+
+			Assert.AreEqual(default(int), value);
+		}
+
+		[Test]
+		public void ShouldGetDefaultOnNullValueChangeTypeTick1Test()
+		{
+			int value;
+			DataTypeFascade dataTypeFascade;
+
+			dataTypeFascade = new DataTypeFascade();
+
+			value = dataTypeFascade.ChangeType<int>(null);
 
 			Assert.AreEqual(default(int), value);
 		}
@@ -414,6 +459,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
+		public void ShouldGetNonNullOnNonNullValueChangeTypeTick1Test()
+		{
+			int value;
+			DataTypeFascade dataTypeFascade;
+
+			dataTypeFascade = new DataTypeFascade();
+
+			value = dataTypeFascade.ChangeType<int>((byte)1);
+
+			Assert.IsNotNull(value);
+			Assert.IsInstanceOf<int>(value);
+			Assert.AreEqual((int)1, value);
+		}
+
+		[Test]
 		public void ShouldGetNonNullOnNonNullValueNullableChangeTypeTest()
 		{
 			object value;
@@ -422,6 +482,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 			dataTypeFascade = new DataTypeFascade();
 
 			value = dataTypeFascade.ChangeType((byte)1, typeof(int?));
+
+			Assert.IsNotNull(value);
+			Assert.IsInstanceOf<int?>(value);
+			Assert.AreEqual((int?)1, value);
+		}
+
+		[Test]
+		public void ShouldGetNonNullOnNonNullValueNullableChangeTypeTick1Test()
+		{
+			int? value;
+			DataTypeFascade dataTypeFascade;
+
+			dataTypeFascade = new DataTypeFascade();
+
+			value = dataTypeFascade.ChangeType<int?>((byte)1);
 
 			Assert.IsNotNull(value);
 			Assert.IsInstanceOf<int?>(value);
@@ -524,6 +599,24 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 			result = dataTypeFascade.TryParse<UInt64>("0", out ovalue);
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, ovalue);
+		}
+
+		[Test]
+		public void ShouldGetVersionTest()
+		{
+			Version ovalue;
+			bool result;
+			DataTypeFascade dataTypeFascade;
+
+			dataTypeFascade = new DataTypeFascade();
+
+			result = dataTypeFascade.TryParse<Version>("1.2.3.4", out ovalue);
+			Assert.IsTrue(result);
+			Assert.AreEqual(new Version(1, 2, 3, 4), ovalue);
+
+			result = dataTypeFascade.TryParse<Version>("0.0.0.0", out ovalue);
+			Assert.IsTrue(result);
+			Assert.AreEqual(new Version(0, 0, 0, 0), ovalue);
 		}
 
 		[Test]
@@ -843,6 +936,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		}
 
 		[Test]
+		public void ShouldWithNullCanGetDBNullTest()
+		{
+			DBNull ovalue;
+			bool result;
+			DataTypeFascade dataTypeFascade;
+
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsTrue(result = dataTypeFascade.TryParse<DBNull>(null, out ovalue));
+		}
+
+		[Test]
 		public void ShouldWithNullNotGetBooleanTest()
 		{
 			Boolean ovalue;
@@ -1056,6 +1161,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 			dataTypeFascade = new DataTypeFascade();
 
 			Assert.IsFalse(result = dataTypeFascade.TryParse<UInt64>(null, out ovalue));
+		}
+
+		[Test]
+		public void ShouldWithNullNotGetVersionTest()
+		{
+			Version ovalue;
+			bool result;
+			DataTypeFascade dataTypeFascade;
+
+			dataTypeFascade = new DataTypeFascade();
+
+			Assert.IsFalse(result = dataTypeFascade.TryParse<Version>(null, out ovalue));
 		}
 
 		#endregion

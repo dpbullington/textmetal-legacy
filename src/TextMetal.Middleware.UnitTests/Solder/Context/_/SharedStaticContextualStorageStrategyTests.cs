@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 using NUnit.Framework;
@@ -138,9 +139,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullSharedStaticCreateTest()
 		{
+			IDictionary<string, object> mockSharedStatic;
 			SharedStaticContextualStorageStrategy sharedStaticContextualStorageStrategy;
 
-			sharedStaticContextualStorageStrategy = new SharedStaticContextualStorageStrategy(null);
+			mockSharedStatic = null;
+
+			sharedStaticContextualStorageStrategy = new SharedStaticContextualStorageStrategy(mockSharedStatic);
 		}
 
 		#endregion

@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-using TextMetal.Middleware.Solder.Utilities;
+using TextMetal.Middleware.Solder.Runtime;
 
 /* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-30 / 88% code coverage */
 
@@ -57,7 +57,7 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		#region Methods/Operators
 
-		public static TResolution AutoWireResolve<TResolution>(Type activatorType, IDependencyManager dependencyManager, Type resolutionType, string selectorKey)
+		internal static TResolution AutoWireResolve<TResolution>(Type activatorType, IDependencyManager dependencyManager, Type resolutionType, string selectorKey)
 		{
 			ConstructorInfo constructorInfo;
 			ConstructorInfo[] constructorInfos;
@@ -92,7 +92,7 @@ namespace TextMetal.Middleware.Solder.Injection
 					constructorInfo = constructorInfos[constructorIndex];
 
 					// on constructor
-					dependencyInjectionAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyInjectionAttribute>(constructorInfo);
+					dependencyInjectionAttribute = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.ReflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(constructorInfo);
 
 					if ((object)dependencyInjectionAttribute == null)
 					{
@@ -101,7 +101,7 @@ namespace TextMetal.Middleware.Solder.Injection
 
 						for (int parameterIndex = 0; parameterIndex < parameterInfos.Length; parameterIndex++)
 						{
-							if ((object)ReflectionFascade.Instance.GetOneAttribute<DependencyInjectionAttribute>(parameterInfos[parameterIndex]) != null)
+							if ((object)AssemblyLoaderContainerContext.TheOnlyAllowedInstance.ReflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(parameterInfos[parameterIndex]) != null)
 								throw new DependencyException(string.Format("A constructor for activator type '{0}' NOT specifying the '{1}' had at least one parameter specifying the '{1}'.", activatorType.FullName, nameof(DependencyInjectionAttribute)));
 						}
 
@@ -128,7 +128,7 @@ namespace TextMetal.Middleware.Solder.Injection
 						parameterType = parameterInfo.ParameterType;
 
 						// on parameter
-						parameterDependencyInjectionAttribute = ReflectionFascade.Instance.GetOneAttribute<DependencyInjectionAttribute>(parameterInfo);
+						parameterDependencyInjectionAttribute = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.ReflectionFascade.GetOneAttribute<DependencyInjectionAttribute>(parameterInfo);
 
 						if ((object)parameterDependencyInjectionAttribute == null)
 							throw new DependencyException(string.Format("A constructor for activator type '{0}' specifying the '{1}' with selector key '{2}' had at least one parameter missing the '{1}': index='{3}';name='{4}';type='{5}'.", activatorType.FullName, nameof(DependencyInjectionAttribute), selectorKey, parameterIndex, parameterInfo.Name, parameterInfo.ParameterType.FullName));
@@ -146,12 +146,12 @@ namespace TextMetal.Middleware.Solder.Injection
 					}
 
 					lazyConstructorInvokation = new Lazy<TResolution>(() =>
-																{
-																	// prevent modified closure bug
-																	var _activatorType = activatorType;
-																	var _lazyConstructorArguments = lazyConstructorArguments;
-																	return (TResolution)Activator.CreateInstance(_activatorType, _lazyConstructorArguments.Select(l => l.Value).ToArray());
-																});
+																	{
+																		// prevent modified closure bug
+																		var _activatorType = activatorType;
+																		var _lazyConstructorArguments = lazyConstructorArguments;
+																		return (TResolution)Activator.CreateInstance(_activatorType, _lazyConstructorArguments.Select(l => l.Value).ToArray());
+																	});
 				}
 			}
 

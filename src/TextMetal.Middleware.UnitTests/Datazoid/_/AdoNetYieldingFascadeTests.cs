@@ -7,8 +7,12 @@ using System;
 using System.Data;
 using System.Data.Common;
 
+using NMock;
+
 using NUnit.Framework;
 
+using TextMetal.Middleware.Datazoid;
+using TextMetal.Middleware.Solder.Utilities;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
 namespace TextMetal.Middleware.UnitTests.Datazoid._
@@ -33,7 +37,7 @@ namespace TextMetal.Middleware.UnitTests.Datazoid._
 			MockFactory mockFactory;
 			DbConnection mockDbConnection;
 			DbCommand mockDbCommand;
-			IDataParameterCollection mockDbParameterCollection;
+			DbParameterCollection mockDbParameterCollection;
 			DbParameter[] mockDbParameters;
 			DbParameter mockDbParameter0;
 			DbParameter mockDbParameter1;
@@ -48,7 +52,7 @@ namespace TextMetal.Middleware.UnitTests.Datazoid._
 			mockFactory = new MockFactory();
 			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
 			mockDbCommand = mockFactory.CreateInstance<DbCommand>();
-			mockDbParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
+			mockDbParameterCollection = mockFactory.CreateInstance<DbParameterCollection>();
 			mockDbParameter0 = mockFactory.CreateInstance<DbParameter>();
 			mockDbParameter1 = mockFactory.CreateInstance<DbParameter>();
 			mockDbParameters = new DbParameter[] { mockDbParameter0, mockDbParameter1 };
@@ -100,7 +104,7 @@ namespace TextMetal.Middleware.UnitTests.Datazoid._
 			mockDbDataReader = mockFactory.CreateInstance<DbDataReader>();
 			mockReflectionFascade = mockFactory.CreateInstance<IReflectionFascade>();
 
-			Expect.On(mockDbConnection).One.Method(x => x.CreateCommand()).WithNoArguments().Will(Return.Value(mockDbCommand));
+			Expect.On(mockDbConnection).One.Method(x => x.CreateCommand()).Will(Return.Value(mockDbCommand));
 			Expect.On(mockDbCommand).One.Method(x => x.Dispose());
 			Expect.On(mockDbCommand).One.SetProperty(x => x.CommandType).To(CommandType.Text);
 			Expect.On(mockDbCommand).One.SetProperty(x => x.CommandText).To("blah blah blah");
@@ -143,7 +147,7 @@ namespace TextMetal.Middleware.UnitTests.Datazoid._
 			mockDbTransaction = mockFactory.CreateInstance<DbTransaction>();
 			mockReflectionFascade = mockFactory.CreateInstance<IReflectionFascade>();
 
-			Expect.On(mockDbConnection).One.Method(x => x.CreateCommand()).WithNoArguments().Will(Return.Value(mockDbCommand));
+			Expect.On(mockDbConnection).One.Method(x => x.CreateCommand()).Will(Return.Value(mockDbCommand));
 			Expect.On(mockDbCommand).One.Method(x => x.Dispose());
 			Expect.On(mockDbCommand).One.SetProperty(x => x.CommandType).To(CommandType.Text);
 			Expect.On(mockDbCommand).One.SetProperty(x => x.CommandText).To("blah blah blah");
@@ -171,7 +175,7 @@ namespace TextMetal.Middleware.UnitTests.Datazoid._
 			MockFactory mockFactory;
 			DbConnection mockDbConnection;
 			DbCommand mockDbCommand;
-			IDataParameterCollection mockDbParameterCollection;
+			DbParameterCollection mockDbParameterCollection;
 			DbParameter[] mockDbParameters;
 			DbParameter mockDbParameter0;
 			DbParameter mockDbParameter1;
@@ -186,14 +190,14 @@ namespace TextMetal.Middleware.UnitTests.Datazoid._
 			mockFactory = new MockFactory();
 			mockDbConnection = mockFactory.CreateInstance<DbConnection>();
 			mockDbCommand = mockFactory.CreateInstance<DbCommand>();
-			mockDbParameterCollection = mockFactory.CreateInstance<IDataParameterCollection>();
+			mockDbParameterCollection = mockFactory.CreateInstance<DbParameterCollection>();
 			mockDbParameter0 = mockFactory.CreateInstance<DbParameter>();
 			mockDbParameter1 = mockFactory.CreateInstance<DbParameter>();
 			mockDbParameters = new DbParameter[] { mockDbParameter0, mockDbParameter1 };
 			mockDbDataReader = mockFactory.CreateInstance<DbDataReader>();
 			mockReflectionFascade = mockFactory.CreateInstance<IReflectionFascade>();
 
-			Expect.On(mockDbConnection).One.Method(x => x.CreateCommand()).WithNoArguments().Will(Return.Value(mockDbCommand));
+			Expect.On(mockDbConnection).One.Method(x => x.CreateCommand()).Will(Return.Value(mockDbCommand));
 			Expect.On(mockDbCommand).Exactly(2).GetProperty(x => x.Parameters).Will(Return.Value(mockDbParameterCollection));
 			Expect.On(mockDbCommand).One.Method(x => x.Dispose());
 			Expect.On(mockDbCommand).One.SetProperty(x => x.CommandType).To(CommandType.StoredProcedure);
@@ -238,7 +242,7 @@ namespace TextMetal.Middleware.UnitTests.Datazoid._
 			mockDbDataReader = mockFactory.CreateInstance<DbDataReader>();
 			mockReflectionFascade = mockFactory.CreateInstance<IReflectionFascade>();
 
-			Expect.On(mockDbConnection).One.Method(x => x.CreateCommand()).WithNoArguments().Will(Return.Value(mockDbCommand));
+			Expect.On(mockDbConnection).One.Method(x => x.CreateCommand()).Will(Return.Value(mockDbCommand));
 			Expect.On(mockDbCommand).One.Method(x => x.Dispose());
 			Expect.On(mockDbCommand).One.SetProperty(x => x.CommandType).To(CommandType.Text);
 			Expect.On(mockDbCommand).One.SetProperty(x => x.CommandText).To("blah blah blah");

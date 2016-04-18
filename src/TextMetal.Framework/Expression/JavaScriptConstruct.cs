@@ -49,7 +49,7 @@ namespace TextMetal.Framework.Expression
 			{
 				JavaScriptSource src;
 
-				if (!DataTypeFascade.Instance.TryParse<JavaScriptSource>(value, out src))
+				if (!ExtensionMethods.DataTypeFascadeLegacyInstance.TryParse<JavaScriptSource>(value, out src))
 					this.Src = JavaScriptSource.Unknown;
 				else
 					this.Src = src;

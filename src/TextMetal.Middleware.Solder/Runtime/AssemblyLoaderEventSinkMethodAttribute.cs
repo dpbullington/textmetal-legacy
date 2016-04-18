@@ -5,10 +5,12 @@
 
 using System;
 
+/* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-04-18 / 100% code coverage */
+
 namespace TextMetal.Middleware.Solder.Runtime
 {
 	/// <summary>
-	/// Marks a static void(void) method as an assembly loader method.
+	/// Marks a static void (AssemblyLoaderEventType, AssemblyLoaderContainerContext) method as an assembly loader method.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
 	public sealed class AssemblyLoaderEventSinkMethodAttribute : Attribute

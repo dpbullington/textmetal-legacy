@@ -5,12 +5,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 using NMock;
 
 using NUnit.Framework;
 
+using TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies;
 using TextMetal.Middleware.Solder.Utilities;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
@@ -288,15 +290,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 			mockFactory.VerifyAllExpectationsHaveBeenMet();
 		}
 
-		public void ShouldCreateFromSingletonTest()
-		{
-			IReflectionFascade reflectionFascade;
-
-			reflectionFascade = ReflectionFascade.Instance;
-
-			Assert.IsNotNull(reflectionFascade);
-		}
-
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnCreateNullDataType()
@@ -453,19 +446,59 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		{
 			ReflectionFascade reflectionFascade;
 			MockSingleTestAttibute sta;
+			Type targetType;
+			MethodInfo methodInfo;
+			ParameterInfo parameterInfo;
 
 			MockFactory mockFactory;
 			IDataTypeFascade mockDataTypeFascade;
+
+			targetType = typeof(MockTestAttributedClass);
+			var _targetType = targetType.GetTypeInfo();
 
 			mockFactory = new MockFactory();
 			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
 			reflectionFascade = new ReflectionFascade(mockDataTypeFascade);
 
-			sta = reflectionFascade.GetOneAttribute<MockSingleTestAttibute>(typeof(MockTestAttributedClass));
+			sta = reflectionFascade.GetOneAttribute<MockSingleTestAttibute>(_targetType.Module);
+			
+			Assert.IsNotNull(sta);
+			Assert.AreEqual(int.MinValue, sta.Value);
+
+			sta = reflectionFascade.GetOneAttribute<MockSingleTestAttibute>(_targetType.Assembly);
 
 			Assert.IsNotNull(sta);
-			Assert.AreEqual(5, sta.Value);
+			Assert.AreEqual(int.MaxValue, sta.Value);
+
+			sta = reflectionFascade.GetOneAttribute<MockSingleTestAttibute>(targetType);
+
+			Assert.IsNotNull(sta);
+			Assert.AreEqual(1, sta.Value);
+			
+			methodInfo = targetType.GetMethod(nameof(MockTestAttributedClass.MyMethod));
+			Assert.IsNotNull(methodInfo);
+
+			sta = reflectionFascade.GetOneAttribute<MockSingleTestAttibute>(methodInfo);
+
+			Assert.IsNotNull(sta);
+			Assert.AreEqual(2, sta.Value);
+
+			parameterInfo = methodInfo.GetParameters().Single(p => p.Name == "obj");
+			Assert.IsNotNull(parameterInfo);
+
+			sta = reflectionFascade.GetOneAttribute<MockSingleTestAttibute>(parameterInfo);
+
+			Assert.IsNotNull(sta);
+			Assert.AreEqual(4, sta.Value);
+
+			parameterInfo = methodInfo.ReturnParameter;
+			Assert.IsNotNull(parameterInfo);
+
+			sta = reflectionFascade.GetOneAttribute<MockSingleTestAttibute>(parameterInfo);
+
+			Assert.IsNotNull(sta);
+			Assert.AreEqual(8, sta.Value);
 		}
 
 		[Test]
@@ -522,7 +555,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 				message = reflectionFascade.GetErrors(ex, 0);
 
 				Console.WriteLine(message);
-				//Assert.AreEqual("[SwIsHw.Core.UnitTests.TestingInfrastructure.MockException]\r\nouter\r\n[System.Exception]\r\ncollected.outer\r\n[System.Exception]\r\ncollected.inner\r\n[System.Exception]\r\ninner", message);
 			}
 		}
 

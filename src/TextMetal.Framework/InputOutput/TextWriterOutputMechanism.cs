@@ -12,6 +12,8 @@ using TextMetal.Framework.XmlDialect;
 using TextMetal.Middleware.Solder.Serialization;
 using TextMetal.Middleware.Solder.Utilities;
 
+using ExtensionMethods = TextMetal.Middleware.Solder.Utilities.ExtensionMethods;
+
 namespace TextMetal.Framework.InputOutput
 {
 	public class TextWriterOutputMechanism : OutputMechanism
@@ -80,7 +82,7 @@ namespace TextMetal.Framework.InputOutput
 			*/
 			if ((object)xmlObject != null)
 				serializationStrategy = new XpeSerializationStrategy(this.Xpe);
-			else if ((object)ReflectionFascade.Instance.GetOneAttribute<XmlRootAttribute>(obj.GetType()) != null)
+			else if ((object)ExtensionMethods.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlRootAttribute>(obj.GetType()) != null)
 				serializationStrategy = new XmlSerializationStrategy();
 			else
 				serializationStrategy = new JsonSerializationStrategy();

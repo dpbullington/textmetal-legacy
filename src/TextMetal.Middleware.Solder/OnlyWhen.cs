@@ -6,12 +6,7 @@
 using System;
 using System.Diagnostics;
 
-using Microsoft.Extensions.PlatformAbstractions;
-using Microsoft.Framework.Configuration;
-
-using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Runtime;
-using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Solder
 {
@@ -26,10 +21,11 @@ namespace TextMetal.Middleware.Solder
 			Debug.WriteLine(message);
 		}
 
+		[Conditional("PROFILE")]
 		[AssemblyLoaderEventSinkMethod]
 		public static void ThisAssemblyDependencyRegistration(AssemblyLoaderEventType assemblyLoaderEventType, AssemblyLoaderContainerContext assemblyLoaderContainerContext)
 		{
-			const string APP_CONFIG_FILE_NAME = "appconfig.json";
+			/* THIS METHOD SHOULD NOT BE DEFINED IN RELEASE/PRODUCTION BUILDS */
 
 			if ((object)assemblyLoaderContainerContext == null)
 				throw new ArgumentNullException(nameof(assemblyLoaderContainerContext));
@@ -37,15 +33,8 @@ namespace TextMetal.Middleware.Solder
 			switch (assemblyLoaderEventType)
 			{
 				case AssemblyLoaderEventType.Startup:
-					assemblyLoaderContainerContext.DependencyManager.AddResolution<PlatformServices>(string.Empty, false, new SingletonWrapperDependencyResolution<PlatformServices>(new InstanceDependencyResolution<PlatformServices>(PlatformServices.Default)));
-					assemblyLoaderContainerContext.DependencyManager.AddResolution<IConfigurationRoot>(string.Empty, false, new SingletonWrapperDependencyResolution<IConfigurationRoot>(new TransientFactoryMethodDependencyResolution<IConfigurationRoot>(() => AppConfigFascade.LoadAppConfigFile(APP_CONFIG_FILE_NAME))));
-
-					assemblyLoaderContainerContext.DependencyManager.AddResolution<IDataTypeFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IDataTypeFascade>(new TransientDefaultConstructorDependencyResolution<DataTypeFascade>()));
-					assemblyLoaderContainerContext.DependencyManager.AddResolution<IReflectionFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IReflectionFascade>(new TransientActivatorAutoWiringDependencyResolution<ReflectionFascade>()));
-					assemblyLoaderContainerContext.DependencyManager.AddResolution<IAppConfigFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAppConfigFascade>(new TransientActivatorAutoWiringDependencyResolution<AppConfigFascade>()));
-					assemblyLoaderContainerContext.DependencyManager.AddResolution<IAdoNetLiteFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetLiteFascade>(new TransientActivatorAutoWiringDependencyResolution<AdoNetLiteFascade>()));
-					break;
 				case AssemblyLoaderEventType.Shutdown:
+					Debug.WriteLine(assemblyLoaderEventType);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(assemblyLoaderEventType), assemblyLoaderEventType, null);

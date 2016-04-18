@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
+using TextMetal.Middleware.Solder.Injection;
+
 /* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-02-22 / 100% code coverage */
 
 namespace TextMetal.Middleware.Solder.Context
@@ -15,6 +17,7 @@ namespace TextMetal.Middleware.Solder.Context
 	{
 		#region Constructors/Destructors
 
+		[DependencyInjection]
 		public ThreadLocalContextualStorageStrategy()
 			: this(() => new Dictionary<string, object>(StringComparer.CurrentCultureIgnoreCase))
 		{

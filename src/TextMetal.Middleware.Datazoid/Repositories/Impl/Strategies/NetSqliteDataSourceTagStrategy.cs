@@ -10,6 +10,8 @@ using TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics;
 using TextMetal.Middleware.Datazoid.UoW;
 using TextMetal.Middleware.Solder.Utilities;
 
+using ExtensionMethods = TextMetal.Middleware.Solder.Utilities.ExtensionMethods;
+
 namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 {
 	public sealed class NetSqliteDataSourceTagStrategy : DataSourceTagStrategy
@@ -153,7 +155,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		{
 			string retVal;
 
-			retVal = !DataTypeFascade.Instance.IsNullOrWhiteSpace(schemaName) ?
+			retVal = !ExtensionMethods.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(schemaName) ?
 				string.Format(NET_SQLITE_SCHEMA_TABLE_NAME_FORMAT, schemaName, tableName) :
 				string.Format(NET_SQLITE_TABLE_NAME_FORMAT, tableName);
 

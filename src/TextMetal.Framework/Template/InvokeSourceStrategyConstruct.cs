@@ -140,7 +140,7 @@ namespace TextMetal.Framework.Template
 			}
 			else
 			{
-				if (!DataTypeFascade.Instance.IsNullOrWhiteSpace(var))
+				if (!ExtensionMethods.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(var))
 				{
 					IExpressionContainerConstruct expressionContainerConstruct;
 					ValueConstruct valueConstruct;

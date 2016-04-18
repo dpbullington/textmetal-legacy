@@ -18,15 +18,6 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// <summary>
 		/// Initializes a new instance of the AssemblyInformationFascade class.
 		/// </summary>
-		/// <param name="assembly"> The target assembly to examine for information. </param>
-		public AssemblyInformationFascade(Assembly assembly)
-			: this(ReflectionFascade.Instance, assembly)
-		{
-		}
-
-		/// <summary>
-		/// Initializes a new instance of the AssemblyInformationFascade class.
-		/// </summary>
 		/// <param name="reflectionFascade"> The reflectionFascade instance to use. </param>
 		/// <param name="assembly"> The target assembly to examine for information. </param>
 		public AssemblyInformationFascade(IReflectionFascade reflectionFascade, Assembly assembly)

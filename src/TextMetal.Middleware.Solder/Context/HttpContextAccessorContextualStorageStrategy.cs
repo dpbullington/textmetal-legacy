@@ -7,6 +7,8 @@ using System;
 
 using Microsoft.AspNet.Http;
 
+using TextMetal.Middleware.Solder.Injection;
+
 /* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-17 / 100% code coverage */
 
 namespace TextMetal.Middleware.Solder.Context
@@ -15,7 +17,8 @@ namespace TextMetal.Middleware.Solder.Context
 	{
 		#region Constructors/Destructors
 
-		public HttpContextAccessorContextualStorageStrategy(IHttpContextAccessor httpContextAccessor)
+		[DependencyInjection]
+		public HttpContextAccessorContextualStorageStrategy([DependencyInjection] IHttpContextAccessor httpContextAccessor)
 		{
 			this.httpContextAccessor = httpContextAccessor;
 		}

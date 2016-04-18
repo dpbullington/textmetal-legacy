@@ -52,7 +52,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException(nameof(properties));
 
-			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
+			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
@@ -64,7 +64,7 @@ namespace TextMetal.Framework.Source.Primative
 			{
 				if ((object)values != null && values.Count == 1)
 				{
-					if (!DataTypeFascade.Instance.TryParse<bool>(values[0], out firstRecordIsHeader))
+					if (!ExtensionMethods.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out firstRecordIsHeader))
 						firstRecordIsHeader = false;
 				}
 			}
@@ -74,7 +74,7 @@ namespace TextMetal.Framework.Source.Primative
 			{
 				if ((object)values != null && values.Count == 1)
 				{
-					if (!DataTypeFascade.Instance.TryParse<bool>(values[0], out hasQuotedValues))
+					if (!ExtensionMethods.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out hasQuotedValues))
 						hasQuotedValues = false;
 				}
 			}
@@ -93,7 +93,7 @@ namespace TextMetal.Framework.Source.Primative
 					fieldDelimiter = values[0];
 			}
 
-			if (!DataTypeFascade.Instance.IsNullOrWhiteSpace(fieldDelimiter))
+			if (!ExtensionMethods.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(fieldDelimiter))
 			{
 				fieldDelimiter = fieldDelimiter.Replace("\\\\t", "\t");
 				fieldDelimiter = fieldDelimiter.Replace("\\\"", "\"");

@@ -19,6 +19,8 @@ using TextMetal.Middleware.Datazoid.UoW;
 using TextMetal.Middleware.Solder;
 using TextMetal.Middleware.Solder.Utilities;
 
+using ExtensionMethods = TextMetal.Middleware.Solder.Utilities.ExtensionMethods;
+
 namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 {
 	public abstract class DataSourceTagStrategy : IDataSourceTagStrategy, ISqlNuance
@@ -127,7 +129,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		private ITableTacticCommand<TTableModelObject> GetDeleteAllTacticCommand<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject tableModelObject, ITableModelQuery tableModelQuery, TableMappingAttribute tableMappingAttribute)
 			where TTableModelObject : class, ITableModelObject
 		{
-			throw new NotImplementedException(nameof(GetDeleteAllTacticCommand));
+			throw new NotImplementedException(nameof(this.GetDeleteAllTacticCommand));
 		}
 
 		private ITableTacticCommand<TTableModelObject> GetDeleteOneTacticCommand<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject prototype, TableMappingAttribute tableMappingAttribute)
@@ -169,7 +171,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 				string parameterName;
 				object parameterValue;
 
-				if (!ReflectionFascade.Instance.GetLogicalPropertyValue(prototype, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
+				if (!ExtensionMethods.ReflectionFascadeLegacyInstance.GetLogicalPropertyValue(prototype, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
 					throw new InvalidOperationException(string.Format("Ah snap."));
 
 				parameterName = this.GetParameterName(columnMappingAttributes[index].ColumnName);
@@ -288,7 +290,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 				if (parameterMappingAttributes[index].ParameterDirection == ParameterDirection.Input ||
 					parameterMappingAttributes[index].ParameterDirection == ParameterDirection.InputOutput)
 				{
-					if (!ReflectionFascade.Instance.GetLogicalPropertyValue(callProcedureModelValue, parameterMappingAttributes[index]._TargetProperty.Name, out parameterValue))
+					if (!ExtensionMethods.ReflectionFascadeLegacyInstance.GetLogicalPropertyValue(callProcedureModelValue, parameterMappingAttributes[index]._TargetProperty.Name, out parameterValue))
 						throw new InvalidOperationException(string.Format("Ah snap."));
 				}
 
@@ -443,7 +445,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		private ITableTacticCommand<TTableModelObject> GetInsertAllTacticCommand<TTableModelObject>(IUnitOfWork unitOfWork, IModelObject model, ITableModelQuery tableModelQuery, TableMappingAttribute tableMappingAttribute)
 			where TTableModelObject : class, ITableModelObject
 		{
-			throw new NotImplementedException(nameof(GetInsertAllTacticCommand));
+			throw new NotImplementedException(nameof(this.GetInsertAllTacticCommand));
 		}
 
 		private ITableTacticCommand<TTableModelObject> GetInsertOneTacticCommand<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject model, TableMappingAttribute tableMappingAttribute) where TTableModelObject : class, ITableModelObject
@@ -493,7 +495,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 				string parameterName;
 				object parameterValue;
 
-				if (!ReflectionFascade.Instance.GetLogicalPropertyValue(model, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
+				if (!ExtensionMethods.ReflectionFascadeLegacyInstance.GetLogicalPropertyValue(model, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
 					throw new InvalidOperationException(string.Format("Ah snap."));
 
 				parameterName = this.GetParameterName(columnMappingAttributes[index].ColumnName);
@@ -667,7 +669,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			if ((object)returnProcedureModelType == null)
 				throw new ArgumentNullException(nameof(returnProcedureModelType));
 
-			procedureMappingAttribute = ReflectionFascade.Instance.GetOneAttribute<ProcedureMappingAttribute>(callProcedureModelType);
+			procedureMappingAttribute = ExtensionMethods.ReflectionFascadeLegacyInstance.GetOneAttribute<ProcedureMappingAttribute>(callProcedureModelType);
 
 			if ((object)procedureMappingAttribute == null)
 				return null;
@@ -683,7 +685,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 					if (!propertyInfo.CanRead || !propertyInfo.CanWrite)
 						continue;
 
-					parameterMappingAttribute = ReflectionFascade.Instance.GetOneAttribute<ParameterMappingAttribute>(propertyInfo);
+					parameterMappingAttribute = ExtensionMethods.ReflectionFascadeLegacyInstance.GetOneAttribute<ParameterMappingAttribute>(propertyInfo);
 
 					if ((object)parameterMappingAttribute == null)
 						continue;
@@ -707,7 +709,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 					if (!propertyInfo.CanRead || !propertyInfo.CanWrite)
 						continue;
 
-					columnMappingAttribute = ReflectionFascade.Instance.GetOneAttribute<ColumnMappingAttribute>(propertyInfo);
+					columnMappingAttribute = ExtensionMethods.ReflectionFascadeLegacyInstance.GetOneAttribute<ColumnMappingAttribute>(propertyInfo);
 
 					if ((object)columnMappingAttribute == null)
 						continue;
@@ -727,7 +729,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 					if (!propertyInfo.CanRead || !propertyInfo.CanWrite)
 						continue;
 
-					parameterMappingAttribute = ReflectionFascade.Instance.GetOneAttribute<ParameterMappingAttribute>(propertyInfo);
+					parameterMappingAttribute = ExtensionMethods.ReflectionFascadeLegacyInstance.GetOneAttribute<ParameterMappingAttribute>(propertyInfo);
 
 					if ((object)parameterMappingAttribute == null)
 						continue;
@@ -800,7 +802,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 
 			var wherePredicateFragment = this.GetWherePredicateFragment(tableMappingAttribute, unitOfWork, tacticParameters, dzTableModelQuery.FilterExpression);
 
-			if (!DataTypeFascade.Instance.IsNullOrWhiteSpace(wherePredicateFragment))
+			if (!ExtensionMethods.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(wherePredicateFragment))
 			{
 				commandText += @" WHERE {0}";
 				commandText = string.Format(commandText, wherePredicateFragment);
@@ -808,7 +810,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 
 			var orderByListFragment = this.GetOrderByListFragment(dzTableModelQuery.SortOrders);
 
-			if (!DataTypeFascade.Instance.IsNullOrWhiteSpace(orderByListFragment))
+			if (!ExtensionMethods.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(orderByListFragment))
 			{
 				commandText += " ORDER BY {0}";
 				commandText = string.Format(commandText, orderByListFragment);
@@ -887,7 +889,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 				string parameterName;
 				object parameterValue;
 
-				if (!ReflectionFascade.Instance.GetLogicalPropertyValue(prototype, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
+				if (!ExtensionMethods.ReflectionFascadeLegacyInstance.GetLogicalPropertyValue(prototype, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
 					throw new InvalidOperationException(string.Format("Ah snap."));
 
 				parameterName = this.GetParameterName(columnMappingAttributes[index].ColumnName);
@@ -986,7 +988,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			if ((object)targetType == null)
 				throw new ArgumentNullException(nameof(targetType));
 
-			tableMappingAttribute = ReflectionFascade.Instance.GetOneAttribute<TableMappingAttribute>(targetType);
+			tableMappingAttribute = ExtensionMethods.ReflectionFascadeLegacyInstance.GetOneAttribute<TableMappingAttribute>(targetType);
 
 			if ((object)tableMappingAttribute == null)
 				return null;
@@ -1002,7 +1004,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 					if (!propertyInfo.CanRead || !propertyInfo.CanWrite)
 						continue;
 
-					columnMappingAttribute = ReflectionFascade.Instance.GetOneAttribute<ColumnMappingAttribute>(propertyInfo);
+					columnMappingAttribute = ExtensionMethods.ReflectionFascadeLegacyInstance.GetOneAttribute<ColumnMappingAttribute>(propertyInfo);
 
 					if ((object)columnMappingAttribute == null)
 						continue;
@@ -1021,7 +1023,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		private ITableTacticCommand<TTableModelObject> GetUpdateAllTacticCommand<TTableModelObject>(IUnitOfWork unitOfWork, IModelObject model, ITableModelQuery tableModelQuery, TableMappingAttribute tableMappingAttribute)
 			where TTableModelObject : class, ITableModelObject
 		{
-			throw new NotImplementedException(nameof(GetUpdateAllTacticCommand));
+			throw new NotImplementedException(nameof(this.GetUpdateAllTacticCommand));
 		}
 
 		private ITableTacticCommand<TTableModelObject> GetUpdateOneTacticCommand<TTableModelObject>(IUnitOfWork unitOfWork, TTableModelObject model, TableMappingAttribute tableMappingAttribute) where TTableModelObject : class, ITableModelObject
@@ -1060,7 +1062,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 				string parameterName;
 				object parameterValue;
 
-				if (!ReflectionFascade.Instance.GetLogicalPropertyValue(model, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
+				if (!ExtensionMethods.ReflectionFascadeLegacyInstance.GetLogicalPropertyValue(model, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
 					throw new InvalidOperationException(string.Format("Ah snap."));
 
 				parameterName = this.GetParameterName(columnMappingAttributes[index].ColumnName);
@@ -1094,7 +1096,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 				string parameterName;
 				object parameterValue;
 
-				if (!ReflectionFascade.Instance.GetLogicalPropertyValue(model, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
+				if (!ExtensionMethods.ReflectionFascadeLegacyInstance.GetLogicalPropertyValue(model, columnMappingAttributes[index]._TargetProperty.Name, out parameterValue))
 					throw new InvalidOperationException(string.Format("Ah snap."));
 
 				parameterName = this.GetParameterName(columnMappingAttributes[index].ColumnName);
@@ -1222,7 +1224,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 				{
 					propertyValue = parameterValue.ChangeType(parameterMappingAttributes[index]._TargetProperty.PropertyType);
 
-					if (!ReflectionFascade.Instance.SetLogicalPropertyValue(returnProcedureModelObject, parameterMappingAttributes[index]._TargetProperty.Name, propertyValue))
+					if (!ExtensionMethods.ReflectionFascadeLegacyInstance.SetLogicalPropertyValue(returnProcedureModelObject, parameterMappingAttributes[index]._TargetProperty.Name, propertyValue))
 						throw new InvalidOperationException(string.Format("Ah snap."));
 				}
 			}
@@ -1266,7 +1268,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 					{
 						propertyValue = columnValue.ChangeType(columnMappingAttributes[index]._TargetProperty.PropertyType);
 
-						if (!ReflectionFascade.Instance.SetLogicalPropertyValue(resultProcedureModelObject, columnMappingAttributes[index]._TargetProperty.Name, propertyValue))
+						if (!ExtensionMethods.ReflectionFascadeLegacyInstance.SetLogicalPropertyValue(resultProcedureModelObject, columnMappingAttributes[index]._TargetProperty.Name, propertyValue))
 							throw new InvalidOperationException(string.Format("Ah snap."));
 					}
 				}
@@ -1276,7 +1278,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 				foreach (string key in record.Keys)
 				{
 					if (record.TryGetValue(key, out propertyValue))
-						ReflectionFascade.Instance.SetLogicalPropertyValue(resultProcedureModelObject, key, propertyValue);
+						ExtensionMethods.ReflectionFascadeLegacyInstance.SetLogicalPropertyValue(resultProcedureModelObject, key, propertyValue);
 				}
 			}
 		}

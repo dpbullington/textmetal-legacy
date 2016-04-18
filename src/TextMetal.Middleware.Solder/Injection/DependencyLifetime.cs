@@ -28,7 +28,7 @@ namespace TextMetal.Middleware.Solder.Injection
 		Singleton,
 
 		/// <summary>
-		/// Instance lifetime dependencies are those for which you can choose to add an instance directly to the dependency manager. If you do so, this instance will be used for all subsequent requests (this technique will create a Singleton-scoped instance). One key difference between Instance dependencies and Singleton dependencies is that the Instance dependencies is created in "your code", while the Singleton service is lazy-loaded the first time it is requested.
+		/// ReflectionFascadeLegacyInstance lifetime dependencies are those for which you can choose to add an instance directly to the dependency manager. If you do so, this instance will be used for all subsequent requests (this technique will create a Singleton-scoped instance). One key difference between ReflectionFascadeLegacyInstance dependencies and Singleton dependencies is that the ReflectionFascadeLegacyInstance dependencies is created in "your code", while the Singleton service is lazy-loaded the first time it is requested.
 		/// </summary>
 		Instance
 	}

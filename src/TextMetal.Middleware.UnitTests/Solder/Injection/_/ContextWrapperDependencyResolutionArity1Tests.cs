@@ -29,12 +29,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		#region Methods/Operators
 
 		[Test]
-		public void ShouldCreateTest__todo_mock_contextual_storage_strategy()
-		{
-			Assert.Ignore("TODO: This test case has not been implemented yet.");
-		}
-
-		[Test]
 		public void ShouldCreateAndEvaluateTest()
 		{
 			ContextWrapperDependencyResolution<int> contextWrapperDependencyResolution;
@@ -43,13 +37,14 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			IDependencyManager _unusedDependencyManager = null;
 			string _unusedString = null;
 			int result;
+			const int EXPECTED = 11;
 			MockFactory mockFactory;
 
 			mockFactory = new MockFactory();
 			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution<int>>();
 
-			Expect.On(mockDependencyResolution).One.Method(m => m.Resolve(_unusedDependencyManager, _unusedString)).With(mockDependencyManager, string.Empty).WillReturn(11);
+			Expect.On(mockDependencyResolution).One.Method(m => m.Resolve(_unusedDependencyManager, _unusedString)).With(mockDependencyManager, string.Empty).WillReturn(EXPECTED);
 			Expect.On(mockDependencyResolution).One.Method(m => m.Dispose());
 
 			contextWrapperDependencyResolution = new ContextWrapperDependencyResolution<int>(ContextScope.LocalThreadSafe, mockDependencyResolution);
@@ -60,13 +55,13 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			result = contextWrapperDependencyResolution.Resolve(mockDependencyManager, string.Empty);
 
 			Assert.IsNotNull(result);
-			Assert.AreEqual(11, result);
+			Assert.AreEqual(EXPECTED, result);
 
 			// should be frozen at this point
 			result = contextWrapperDependencyResolution.Resolve(mockDependencyManager, string.Empty);
 
 			Assert.IsNotNull(result);
-			Assert.AreEqual(11, result);
+			Assert.AreEqual(EXPECTED, result);
 
 			contextWrapperDependencyResolution.Dispose();
 
@@ -82,13 +77,14 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			IDependencyManager _unusedDependencyManager = null;
 			string _unusedString = null;
 			object result;
+			const int EXPECTED = 11;
 			MockFactory mockFactory;
 
 			mockFactory = new MockFactory();
 			mockDependencyManager = mockFactory.CreateInstance<IDependencyManager>();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution<int>>();
 
-			Expect.On(mockDependencyResolution).One.Method(m => m.Resolve(_unusedDependencyManager, _unusedString)).With(mockDependencyManager, string.Empty).WillReturn(11);
+			Expect.On(mockDependencyResolution).One.Method(m => m.Resolve(_unusedDependencyManager, _unusedString)).With(mockDependencyManager, string.Empty).WillReturn(EXPECTED);
 			Expect.On(mockDependencyResolution).One.Method(m => m.Dispose());
 
 			contextWrapperDependencyResolution = new ContextWrapperDependencyResolution<int>(ContextScope.LocalThreadSafe, mockDependencyResolution);
@@ -99,17 +95,39 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			result = contextWrapperDependencyResolution.Resolve(mockDependencyManager, typeof(int), string.Empty);
 
 			Assert.IsNotNull(result);
-			Assert.AreEqual(11, result);
+			Assert.AreEqual(EXPECTED, result);
 
 			// should be frozen at this point
 			result = contextWrapperDependencyResolution.Resolve(mockDependencyManager, typeof(int), string.Empty);
 
 			Assert.IsNotNull(result);
-			Assert.AreEqual(11, result);
+			Assert.AreEqual(EXPECTED, result);
 
 			contextWrapperDependencyResolution.Dispose();
 
 			mockFactory.VerifyAllExpectationsHaveBeenMet();
+		}
+
+		[Test]
+		public void ShouldCreateTest__todo_mock_contextual_storage_strategy()
+		{
+			Assert.Ignore("TODO: This test case has not been implemented yet.");
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullContextualStorageStrategyCreateTest()
+		{
+			ContextWrapperDependencyResolution<int> contextWrapperDependencyResolution;
+			IContextualStorageStrategy mockContextualStorageStrategy;
+			IDependencyResolution<int> mockDependencyResolution;
+			MockFactory mockFactory;
+
+			mockFactory = new MockFactory();
+			mockContextualStorageStrategy = null;
+			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution<int>>();
+
+			contextWrapperDependencyResolution = new ContextWrapperDependencyResolution<int>(mockContextualStorageStrategy, mockDependencyResolution);
 		}
 
 		[Test]
@@ -148,6 +166,22 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			contextWrapperDependencyResolution = new ContextWrapperDependencyResolution<int>(ContextScope.LocalThreadSafe, mockDependencyResolution);
 
 			result = contextWrapperDependencyResolution.Resolve(mockDependencyManager, typeof(int), string.Empty);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullDependencyResolutionCreateTest()
+		{
+			ContextWrapperDependencyResolution<int> contextWrapperDependencyResolution;
+			IContextualStorageStrategy mockContextualStorageStrategy;
+			IDependencyResolution<int> mockDependencyResolution;
+			MockFactory mockFactory;
+
+			mockFactory = new MockFactory();
+			mockContextualStorageStrategy = mockFactory.CreateInstance<IContextualStorageStrategy>();
+			mockDependencyResolution = null;
+
+			contextWrapperDependencyResolution = new ContextWrapperDependencyResolution<int>(mockContextualStorageStrategy, mockDependencyResolution);
 		}
 
 		[Test]
@@ -205,18 +239,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			contextWrapperDependencyResolution = new ContextWrapperDependencyResolution<int>(ContextScope.LocalThreadSafe, mockDependencyResolution);
 
 			result = contextWrapperDependencyResolution.Resolve(mockDependencyManager, null, string.Empty);
-		}
-
-		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullValueCreateTest()
-		{
-			ContextWrapperDependencyResolution<int> contextWrapperDependencyResolution;
-			IDependencyResolution<int> mockDependencyResolution;
-
-			mockDependencyResolution = null;
-
-			contextWrapperDependencyResolution = new ContextWrapperDependencyResolution<int>(ContextScope.LocalThreadSafe, mockDependencyResolution);
 		}
 
 		#endregion

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 
 using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.Framework.Configuration;
 
 using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Utilities;
@@ -24,6 +25,13 @@ namespace TextMetal.Middleware.Solder.Runtime
 		/// </summary>
 		private AssemblyLoaderContainerContext()
 		{
+			IConfigurationRoot configurationRoot;
+
+			this.dataTypeFascade = new DataTypeFascade();
+			this.reflectionFascade = new ReflectionFascade(this.DataTypeFascade);
+			configurationRoot = Utilities.AppConfigFascade.LoadAppConfigFile(APP_CONFIG_FILE_NAME);
+			this.appConfigFascade = new AppConfigFascade(configurationRoot, this.DataTypeFascade);
+
 			this.SetUpApplicationDomain();
 		}
 
@@ -39,36 +47,18 @@ namespace TextMetal.Middleware.Solder.Runtime
 
 		#region Fields/Constants
 
+		private const string APP_CONFIG_FILE_NAME = "appconfig.json";
+		private const string ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS = "SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS";
+
+		private readonly IAppConfigFascade appConfigFascade;
+		private readonly IDataTypeFascade dataTypeFascade;
 		private readonly IDependencyManager dependencyManager = new DependencyManager();
 		private readonly IList<Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext>> eventSinkMethods = new List<Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext>>();
+		private readonly IReflectionFascade reflectionFascade;
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		/// <summary>
-		/// Gets the current app setting for disabling of assembly loader subscription method execution.
-		/// </summary>
-		private static bool EnvVarEnableAssemblyLoaderSubscriptionMethodExecution
-		{
-			get
-			{
-				string key;
-				string svalue;
-				bool ovalue;
-
-				key = string.Format("SOLDER_ENABLE_ASMLDR_EVENTS");
-				svalue = Environment.GetEnvironmentVariable(key);
-
-				if ((object)svalue == null)
-					return false;
-
-				if (!DataTypeFascade.Instance.TryParse<bool>(svalue, out ovalue))
-					return false;
-
-				return ovalue;
-			}
-		}
 
 		/// <summary>
 		/// Gets the singleton instance associated with the current assembly loader container context.
@@ -79,6 +69,22 @@ namespace TextMetal.Middleware.Solder.Runtime
 			get
 			{
 				return LazySingleton.lazyInstance;
+			}
+		}
+
+		private IAppConfigFascade AppConfigFascade
+		{
+			get
+			{
+				return this.appConfigFascade;
+			}
+		}
+
+		internal IDataTypeFascade DataTypeFascade
+		{
+			get
+			{
+				return this.dataTypeFascade;
 			}
 		}
 
@@ -93,11 +99,41 @@ namespace TextMetal.Middleware.Solder.Runtime
 			}
 		}
 
+		/// <summary>
+		/// Gets the current app setting for disabling of assembly loader subscription method execution.
+		/// </summary>
+		private bool EnableAssemblyLoaderEventSinking
+		{
+			get
+			{
+				string svalue;
+				bool ovalue;
+
+				svalue = Environment.GetEnvironmentVariable(ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS);
+
+				if ((object)svalue == null)
+					return false;
+
+				if (!this.DataTypeFascade.TryParse<bool>(svalue, out ovalue))
+					return false;
+
+				return ovalue;
+			}
+		}
+
 		private IList<Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext>> EventSinkMethods
 		{
 			get
 			{
 				return this.eventSinkMethods;
+			}
+		}
+
+		internal IReflectionFascade ReflectionFascade
+		{
+			get
+			{
+				return this.reflectionFascade;
 			}
 		}
 
@@ -143,7 +179,7 @@ namespace TextMetal.Middleware.Solder.Runtime
 							{
 								foreach (MethodInfo methodInfo in methodInfos)
 								{
-									assemblyLoaderEventSinkMethodAttribute = ReflectionFascade.Instance.GetOneAttribute<AssemblyLoaderEventSinkMethodAttribute>(methodInfo);
+									assemblyLoaderEventSinkMethodAttribute = this.ReflectionFascade.GetOneAttribute<AssemblyLoaderEventSinkMethodAttribute>(methodInfo);
 
 									if ((object)assemblyLoaderEventSinkMethodAttribute == null)
 										continue;
@@ -242,7 +278,7 @@ namespace TextMetal.Middleware.Solder.Runtime
 			if ((object)libraryManager == null)
 				return; //throw new InvalidOperationException(string.Format("Platform services library manager was invalid."));
 
-			if (!EnvVarEnableAssemblyLoaderSubscriptionMethodExecution)
+			if (!this.EnableAssemblyLoaderEventSinking)
 				return;
 
 			var assemblies = libraryManager.GetLibraries().SelectMany(l => l.Assemblies.Select(an =>

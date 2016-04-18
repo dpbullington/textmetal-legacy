@@ -12,7 +12,7 @@ namespace TextMetal.NopCLI
 	/// </summary>
 	internal class Program
 	{
-		#region Constructors/Destructors
+		#region Methods/Operators
 
 		/// <summary>
 		/// The entry point method for this application.

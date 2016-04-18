@@ -66,7 +66,7 @@ namespace TextMetal.Framework.Template
 
 			name = templatingContext.Tokenizer.ExpandTokens(this.Name, dynamicWildcardTokenReplacementStrategy);
 
-			if (DataTypeFascade.Instance.IsNullOrWhiteSpace(name))
+			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(name))
 			{
 				templatingContext.ClearReferences();
 				return;

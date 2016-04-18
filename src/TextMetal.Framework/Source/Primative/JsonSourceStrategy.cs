@@ -10,6 +10,8 @@ using System.IO;
 using TextMetal.Middleware.Solder.Serialization;
 using TextMetal.Middleware.Solder.Utilities;
 
+using ExtensionMethods = TextMetal.Middleware.Solder.Utilities.ExtensionMethods;
+
 namespace TextMetal.Framework.Source.Primative
 {
 	public class JsonSourceStrategy : SourceStrategy
@@ -37,7 +39,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException(nameof(properties));
 
-			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
+			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);

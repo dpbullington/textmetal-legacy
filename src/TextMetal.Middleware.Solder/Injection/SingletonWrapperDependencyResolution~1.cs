@@ -39,7 +39,7 @@ namespace TextMetal.Middleware.Solder.Injection
 		#region Fields/Constants
 
 		private readonly IDependencyResolution<TResolution> innerDependencyResolution;
-		private readonly ReaderWriterLockSlim readerWriterLock = new ReaderWriterLockSlim();
+		private readonly ReaderWriterLockSlim readerWriterLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 		private bool frozen;
 		private TResolution instance;
 

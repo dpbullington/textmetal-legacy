@@ -10,6 +10,8 @@ using System.Data.Common;
 using System.Reflection;
 using System.Xml;
 
+using TextMetal.Middleware.Solder.Injection;
+
 namespace TextMetal.Middleware.Solder.Utilities
 {
 	public class AdoNetLiteFascade : IAdoNetLiteFascade
@@ -20,7 +22,8 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// Initializes a new instance of the AdoNetLiteFascade class.
 		/// </summary>
 		/// <param name="reflectionFascade"> The reflection instance to use. </param>
-		public AdoNetLiteFascade(IReflectionFascade reflectionFascade)
+		[DependencyInjection]
+		public AdoNetLiteFascade([DependencyInjection] IReflectionFascade reflectionFascade)
 		{
 			if ((object)reflectionFascade == null)
 				throw new ArgumentNullException(nameof(reflectionFascade));
@@ -28,32 +31,15 @@ namespace TextMetal.Middleware.Solder.Utilities
 			this.reflectionFascade = reflectionFascade;
 		}
 
-		/// <summary>
-		/// Initializes a new instance of the AdoNetLiteFascade class.
-		/// </summary>
-		private AdoNetLiteFascade()
-			: this(Utilities.ReflectionFascade.Instance)
-		{
-		}
-
 		#endregion
 
 		#region Fields/Constants
 
-		private static readonly AdoNetLiteFascade instance = new AdoNetLiteFascade();
 		private readonly IReflectionFascade reflectionFascade;
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		public static AdoNetLiteFascade Instance
-		{
-			get
-			{
-				return instance;
-			}
-		}
 
 		private IReflectionFascade ReflectionFascade
 		{
@@ -190,6 +176,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 						}
 						else
 						{
+							throw new NotSupportedException(string.Format("Not supported on CoreCLR."));
 							/*using (DataTable dataTable = dbDataReader.GetSchemaTable())
 							{
 								if ((object)dataTable != null)

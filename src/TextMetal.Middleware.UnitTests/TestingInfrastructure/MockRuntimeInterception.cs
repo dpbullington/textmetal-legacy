@@ -4,7 +4,6 @@
 */
 
 using System;
-using System.Reflection;
 
 using TextMetal.Middleware.Solder.Interception;
 
@@ -51,7 +50,8 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 			if ((object)runtimeInvocation.TargetMethod != null)
 			{
 				if (runtimeInvocation.TargetMethod.DeclaringType == typeof(object) ||
-					runtimeInvocation.TargetMethod.DeclaringType == typeof(IDisposable))
+					runtimeInvocation.TargetMethod.DeclaringType == typeof(IDisposable) ||
+					runtimeInvocation.TargetMethod.DeclaringType == typeof(IMockCloneable))
 					runtimeInvocation.InvocationReturnValue = runtimeInvocation.TargetMethod.Invoke(this, runtimeInvocation.InvocationArguments);
 			}
 

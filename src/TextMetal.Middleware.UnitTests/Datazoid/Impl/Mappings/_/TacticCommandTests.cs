@@ -8,6 +8,7 @@ using System.Data;
 
 using NUnit.Framework;
 
+using TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
 namespace TextMetal.Middleware.UnitTests.Datazoid.Impl.Mappings._

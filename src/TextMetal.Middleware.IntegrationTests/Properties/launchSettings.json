@@ -3,7 +3,6 @@
     "test": {
       "commandName": "test",
       "environmentVariables": {
-        "DNX_TRACE": "0"
       }
     }
   }

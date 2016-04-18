@@ -4,6 +4,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
@@ -134,9 +135,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Context._
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullAsyncContextFactoryMethodCreateTest()
 		{
+			IDictionary<string, object> mockAsyncContext;
 			AsyncLocalContextualStorageStrategy asyncLocalContextualStorageStrategy;
 
-			asyncLocalContextualStorageStrategy = new AsyncLocalContextualStorageStrategy(null);
+			mockAsyncContext = null;
+
+			asyncLocalContextualStorageStrategy = new AsyncLocalContextualStorageStrategy(mockAsyncContext);
 		}
 
 		#endregion

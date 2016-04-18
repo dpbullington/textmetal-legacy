@@ -15,6 +15,8 @@ using TextMetal.Framework.Naming;
 using TextMetal.Middleware.Solder.Serialization;
 using TextMetal.Middleware.Solder.Utilities;
 
+using ExtensionMethods = TextMetal.Middleware.Solder.Utilities.ExtensionMethods;
+
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
 	public abstract class SchemaSourceStrategy : SourceStrategy
@@ -70,7 +72,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			if ((object)name == null)
 				throw new ArgumentNullException(nameof(name));
 
-			if (DataTypeFascade.Instance.IsWhiteSpace(name))
+			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(name))
 				throw new ArgumentOutOfRangeException(nameof(name));
 
 			resourcePath = String.Format("{0}.DML.{1}.{2}.sql", type.Namespace, folder, name);
@@ -163,10 +165,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 					connectionString = values[0];
 			}
 
-			if (DataTypeFascade.Instance.IsNullOrWhiteSpace(connectionString))
+			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(connectionString))
 				connectionString = sourceFilePath;
 
-			if (DataTypeFascade.Instance.IsWhiteSpace(connectionString))
+			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(connectionString))
 				throw new InvalidOperationException(String.Format("The connection string cannot be null or whitespace."));
 
 			dataSourceTag = null;
@@ -208,21 +210,21 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			if (properties.TryGetValue(PROP_DISABLE_PROCEDURE_SCHEMA_DISCOVERY, out values))
 			{
 				if ((object)values != null && values.Count > 0)
-					DataTypeFascade.Instance.TryParse<bool>(values[0], out disableProcSchDisc);
+					ExtensionMethods.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out disableProcSchDisc);
 			}
 
 			enableDatabaseFilter = false;
 			if (properties.TryGetValue(PROP_ENABLE_DATABASE_FILTER, out values))
 			{
 				if ((object)values != null && values.Count > 0)
-					DataTypeFascade.Instance.TryParse<bool>(values[0], out enableDatabaseFilter);
+					ExtensionMethods.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out enableDatabaseFilter);
 			}
 
 			disableNameMangling = false;
 			if (properties.TryGetValue(PROP_DISABLE_NAME_MANGLING, out values))
 			{
 				if ((object)values != null && values.Count > 0)
-					DataTypeFascade.Instance.TryParse<bool>(values[0], out disableNameMangling);
+					ExtensionMethods.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out disableNameMangling);
 			}
 
 			return this.GetSchemaModel(connectionString, connectionType, dataSourceTag, serverFilter, databaseFilter, schemaFilter, objectFilter, disableProcSchDisc, enableDatabaseFilter, disableNameMangling);
@@ -261,20 +263,20 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 				server.ConnectionString = connectionString;
 				server.ConnectionType = connectionType.FullName;
 
-				var dictEnumServer = AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Server"), this.CoreGetServerParameters(connectionType, dataSourceTag));
+				var dictEnumServer = ExtensionMethods.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Server"), this.CoreGetServerParameters(connectionType, dataSourceTag));
 				{
 					var dictDataServer = (IDictionary<string, object>)null;
 
 					if ((object)dictEnumServer != null &&
 						(object)(dictDataServer = dictEnumServer.ToList().SingleOrDefault()) != null)
 					{
-						server.ServerName = DataTypeFascade.Instance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_NAME]);
-						server.MachineName = DataTypeFascade.Instance.ChangeType<string>(dictDataServer[SchemaInfoConstants.MACHINE_NAME]);
-						server.InstanceName = DataTypeFascade.Instance.ChangeType<string>(dictDataServer[SchemaInfoConstants.INSTANCE_NAME]);
-						server.ServerVersion = DataTypeFascade.Instance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_VERSION]);
-						server.ServerLevel = DataTypeFascade.Instance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_LEVEL]);
-						server.ServerEdition = DataTypeFascade.Instance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_EDITION]);
-						server.DefaultDatabaseName = DataTypeFascade.Instance.ChangeType<string>(dictDataServer[SchemaInfoConstants.DEFAULT_DATABASE_NAME]);
+						server.ServerName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_NAME]);
+						server.MachineName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.MACHINE_NAME]);
+						server.InstanceName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.INSTANCE_NAME]);
+						server.ServerVersion = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_VERSION]);
+						server.ServerLevel = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_LEVEL]);
+						server.ServerEdition = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_EDITION]);
+						server.DefaultDatabaseName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.DEFAULT_DATABASE_NAME]);
 
 						// filter unwanted servers
 						if ((object)serverFilter != null)
@@ -283,7 +285,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 								return null;
 						}
 
-						var dictEnumDatabase = AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Databases"), this.CoreGetDatabaseParameters(connectionType, dataSourceTag, server));
+						var dictEnumDatabase = ExtensionMethods.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Databases"), this.CoreGetDatabaseParameters(connectionType, dataSourceTag, server));
 						{
 							if ((object)dictEnumDatabase != null)
 							{
@@ -292,9 +294,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 									Database database;
 
 									database = new Database();
-									database.DatabaseId = DataTypeFascade.Instance.ChangeType<int>(dictDataDatabase["DatabaseId"]);
-									database.DatabaseName = DataTypeFascade.Instance.ChangeType<string>(dictDataDatabase["DatabaseName"]);
-									database.CreationTimestamp = DataTypeFascade.Instance.ChangeType<DateTime>(dictDataDatabase["CreationTimestamp"]);
+									database.DatabaseId = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataDatabase["DatabaseId"]);
+									database.DatabaseName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataDatabase["DatabaseName"]);
+									database.CreationTimestamp = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<DateTime>(dictDataDatabase["CreationTimestamp"]);
 									database.DatabaseNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(database.DatabaseName);
 									database.DatabaseNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(database.DatabaseName);
 									database.DatabaseNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(database.DatabaseName);
@@ -324,9 +326,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 									server.Databases.Add(database);
 
-									AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, String.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UseDatabase"), server.ServerName, database.DatabaseName), null);
+									ExtensionMethods.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, String.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UseDatabase"), server.ServerName, database.DatabaseName), null);
 
-									var dictEnumDdlTrigger = AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DdlTriggers"), this.CoreGetDdlTriggerParameters(connectionType, dataSourceTag, server, database));
+									var dictEnumDdlTrigger = ExtensionMethods.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DdlTriggers"), this.CoreGetDdlTriggerParameters(connectionType, dataSourceTag, server, database));
 									{
 										if ((object)dictEnumDdlTrigger != null)
 										{
@@ -336,12 +338,12 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 												trigger = new Trigger();
 
-												trigger.TriggerId = DataTypeFascade.Instance.ChangeType<int>(dictDataTrigger["TriggerId"]);
-												trigger.TriggerName = DataTypeFascade.Instance.ChangeType<string>(dictDataTrigger["TriggerName"]);
-												trigger.IsClrTrigger = DataTypeFascade.Instance.ChangeType<bool>(dictDataTrigger["IsClrTrigger"]);
-												trigger.IsTriggerDisabled = DataTypeFascade.Instance.ChangeType<bool>(dictDataTrigger["IsTriggerDisabled"]);
-												trigger.IsTriggerNotForReplication = DataTypeFascade.Instance.ChangeType<bool>(dictDataTrigger["IsTriggerNotForReplication"]);
-												trigger.IsInsteadOfTrigger = DataTypeFascade.Instance.ChangeType<bool>(dictDataTrigger["IsInsteadOfTrigger"]);
+												trigger.TriggerId = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataTrigger["TriggerId"]);
+												trigger.TriggerName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataTrigger["TriggerName"]);
+												trigger.IsClrTrigger = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsClrTrigger"]);
+												trigger.IsTriggerDisabled = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsTriggerDisabled"]);
+												trigger.IsTriggerNotForReplication = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsTriggerNotForReplication"]);
+												trigger.IsInsteadOfTrigger = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsInsteadOfTrigger"]);
 												trigger.TriggerNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(trigger.TriggerName);
 												trigger.TriggerNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(trigger.TriggerName);
 												trigger.TriggerNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(trigger.TriggerName);
@@ -357,7 +359,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 										}
 									}
 
-									var dictEnumSchema = AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Schemas"), this.CoreGetSchemaParameters(connectionType, dataSourceTag, server, database));
+									var dictEnumSchema = ExtensionMethods.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Schemas"), this.CoreGetSchemaParameters(connectionType, dataSourceTag, server, database));
 									{
 										if ((object)dictEnumSchema != null)
 										{
@@ -366,9 +368,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 												Schema schema;
 
 												schema = new Schema();
-												schema.SchemaId = DataTypeFascade.Instance.ChangeType<int>(dictDataSchema["SchemaId"]);
-												schema.OwnerId = DataTypeFascade.Instance.ChangeType<int>(dictDataSchema["OwnerId"]);
-												schema.SchemaName = DataTypeFascade.Instance.ChangeType<string>(dictDataSchema["SchemaName"]);
+												schema.SchemaId = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataSchema["SchemaId"]);
+												schema.OwnerId = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataSchema["OwnerId"]);
+												schema.SchemaName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataSchema["SchemaName"]);
 												schema.SchemaNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(schema.SchemaName);
 												schema.SchemaNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(schema.SchemaName);
 												schema.SchemaNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(schema.SchemaName);
@@ -388,18 +390,18 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 												database.Schemas.Add(schema);
 
-												var dictEnumTable = AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Tables"), this.CoreGetTableParameters(connectionType, dataSourceTag, server, database, schema));
+												var dictEnumTable = ExtensionMethods.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Tables"), this.CoreGetTableParameters(connectionType, dataSourceTag, server, database, schema));
 												{
 													foreach (var dictDataTable in dictEnumTable.ToList())
 													{
 														Table table;
 
 														table = new Table();
-														table.TableId = DataTypeFascade.Instance.ChangeType<int>(dictDataTable["TableId"]);
-														table.TableName = DataTypeFascade.Instance.ChangeType<string>(dictDataTable["TableName"]);
-														table.CreationTimestamp = DataTypeFascade.Instance.ChangeType<DateTime>(dictDataTable["CreationTimestamp"]);
-														table.ModificationTimestamp = DataTypeFascade.Instance.ChangeType<DateTime>(dictDataTable["ModificationTimestamp"]);
-														table.IsImplementationDetail = DataTypeFascade.Instance.ChangeType<bool>(dictDataTable["IsImplementationDetail"]);
+														table.TableId = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataTable["TableId"]);
+														table.TableName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataTable["TableName"]);
+														table.CreationTimestamp = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<DateTime>(dictDataTable["CreationTimestamp"]);
+														table.ModificationTimestamp = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<DateTime>(dictDataTable["ModificationTimestamp"]);
+														table.IsImplementationDetail = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTable["IsImplementationDetail"]);
 														table.TableNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(table.TableName);
 														table.TableNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(table.TableName);
 														table.TableNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(table.TableName);
@@ -410,14 +412,14 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 														table.TableNamePluralCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(effectiveStandardCanonicalNaming.GetPluralForm(table.TableName));
 														table.TableNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(table.TableName));
 
-														var pkId = DataTypeFascade.Instance.ChangeType<int?>(dictDataTable["PrimaryKeyId"]);
+														var pkId = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int?>(dictDataTable["PrimaryKeyId"]);
 														if ((object)pkId != null)
 														{
 															table.PrimaryKey = new PrimaryKey();
 															table.PrimaryKey.PrimaryKeyId = (int)pkId;
 
-															table.PrimaryKey.PrimaryKeyIsSystemNamed = DataTypeFascade.Instance.ChangeType<bool>(dictDataTable["PrimaryKeyIsSystemNamed"]);
-															table.PrimaryKey.PrimaryKeyName = DataTypeFascade.Instance.ChangeType<string>(dictDataTable["PrimaryKeyName"]);
+															table.PrimaryKey.PrimaryKeyIsSystemNamed = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTable["PrimaryKeyIsSystemNamed"]);
+															table.PrimaryKey.PrimaryKeyName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataTable["PrimaryKeyName"]);
 
 															table.PrimaryKey.PrimaryKeyNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(table.PrimaryKey.PrimaryKeyName);
 															table.PrimaryKey.PrimaryKeyNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(table.PrimaryKey.PrimaryKeyName);
@@ -439,7 +441,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 														schema._Tables.Add(table);
 
-														var dictEnumColumn = AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "TableColumns"), this.CoreGetColumnParameters(connectionType, dataSourceTag, server, database, schema, table));
+														var dictEnumColumn = ExtensionMethods.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "TableColumns"), this.CoreGetColumnParameters(connectionType, dataSourceTag, server, database, schema, table));
 														{
 															if ((object)dictEnumColumn != null)
 															{
@@ -449,22 +451,22 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	column = new TableColumn();
 
-																	column.ColumnOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataColumn["ColumnOrdinal"]);
-																	column.ColumnName = DataTypeFascade.Instance.ChangeType<string>(dictDataColumn["ColumnName"]);
-																	column.ColumnIsAnonymous = DataTypeFascade.Instance.ChangeType<bool>(dictDataColumn["ColumnIsAnonymous"]);
+																	column.ColumnOrdinal = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnOrdinal"]);
+																	column.ColumnName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataColumn["ColumnName"]);
+																	column.ColumnIsAnonymous = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsAnonymous"]);
 																	column.ColumnCSharpIsAnonymousLiteral = column.ColumnIsAnonymous.ToString().ToLower();
-																	column.ColumnNullable = DataTypeFascade.Instance.ChangeType<bool>(dictDataColumn["ColumnNullable"]);
-																	column.ColumnSize = DataTypeFascade.Instance.ChangeType<int>(dictDataColumn["ColumnSize"]);
-																	column.ColumnPrecision = DataTypeFascade.Instance.ChangeType<int>(dictDataColumn["ColumnPrecision"]);
-																	column.ColumnScale = DataTypeFascade.Instance.ChangeType<int>(dictDataColumn["ColumnScale"]);
-																	column.ColumnSqlType = DataTypeFascade.Instance.ChangeType<string>(dictDataColumn["ColumnSqlType"]);
-																	column.ColumnIsUserDefinedType = DataTypeFascade.Instance.ChangeType<bool>(dictDataColumn["ColumnIsUserDefinedType"]);
-																	column.ColumnIsIdentity = DataTypeFascade.Instance.ChangeType<bool>(dictDataColumn["ColumnIsIdentity"]);
-																	column.ColumnIsComputed = DataTypeFascade.Instance.ChangeType<bool>(dictDataColumn["ColumnIsComputed"]);
-																	column.ColumnHasDefault = DataTypeFascade.Instance.ChangeType<bool>(dictDataColumn["ColumnHasDefault"]);
-																	column.ColumnHasCheck = DataTypeFascade.Instance.ChangeType<bool>(dictDataColumn["ColumnHasCheck"]);
-																	column.ColumnIsPrimaryKey = DataTypeFascade.Instance.ChangeType<bool>(dictDataColumn["ColumnIsPrimaryKey"]);
-																	column.ColumnPrimaryKeyOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataColumn["ColumnPrimaryKeyOrdinal"]);
+																	column.ColumnNullable = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnNullable"]);
+																	column.ColumnSize = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnSize"]);
+																	column.ColumnPrecision = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnPrecision"]);
+																	column.ColumnScale = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnScale"]);
+																	column.ColumnSqlType = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataColumn["ColumnSqlType"]);
+																	column.ColumnIsUserDefinedType = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsUserDefinedType"]);
+																	column.ColumnIsIdentity = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsIdentity"]);
+																	column.ColumnIsComputed = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsComputed"]);
+																	column.ColumnHasDefault = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnHasDefault"]);
+																	column.ColumnHasCheck = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnHasCheck"]);
+																	column.ColumnIsPrimaryKey = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsPrimaryKey"]);
+																	column.ColumnPrimaryKeyOrdinal = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnPrimaryKeyOrdinal"]);
 																	column.ColumnNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(column.ColumnName);
 																	column.ColumnNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(column.ColumnName);
 																	column.ColumnNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(column.ColumnName);
@@ -476,12 +478,12 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	column.ColumnNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
 
 																	clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType, column.ColumnPrecision);
-																	column.ColumnDbType = AdoNetLiteFascade.Instance.InferDbTypeForClrType(clrType);
+																	column.ColumnDbType = ExtensionMethods.AdoNetLiteLegacyInstance.InferDbTypeForClrType(clrType);
 																	column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
 																	column.ColumnClrType = clrType ?? typeof(object);
-																	column.ColumnClrNullableType = ReflectionFascade.Instance.MakeNullableType(clrType);
-																	column.ColumnClrNonNullableType = ReflectionFascade.Instance.MakeNonNullableType(clrType);
+																	column.ColumnClrNullableType = ExtensionMethods.ReflectionFascadeLegacyInstance.MakeNullableType(clrType);
+																	column.ColumnClrNonNullableType = ExtensionMethods.ReflectionFascadeLegacyInstance.MakeNonNullableType(clrType);
 																	column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
 																	column.ColumnCSharpIsPrimaryKeyLiteral = column.ColumnIsPrimaryKey.ToString().ToLower();
 																	column.ColumnCSharpIsComputedLiteral = column.ColumnIsComputed.ToString().ToLower();
@@ -514,7 +516,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 															table.Columns.ForEach(c => c.ColumnIsPrimaryKey = true);
 														}
 
-														var dictEnumDmlTrigger = AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DmlTriggers"), this.CoreGetDmlTriggerParameters(connectionType, dataSourceTag, server, database, schema, table));
+														var dictEnumDmlTrigger = ExtensionMethods.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DmlTriggers"), this.CoreGetDmlTriggerParameters(connectionType, dataSourceTag, server, database, schema, table));
 														{
 															if ((object)dictEnumDmlTrigger != null)
 															{
@@ -524,12 +526,12 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	trigger = new Trigger();
 
-																	trigger.TriggerId = DataTypeFascade.Instance.ChangeType<int>(dictDataTrigger["TriggerId"]);
-																	trigger.TriggerName = DataTypeFascade.Instance.ChangeType<string>(dictDataTrigger["TriggerName"]);
-																	trigger.IsClrTrigger = DataTypeFascade.Instance.ChangeType<bool>(dictDataTrigger["IsClrTrigger"]);
-																	trigger.IsTriggerDisabled = DataTypeFascade.Instance.ChangeType<bool>(dictDataTrigger["IsTriggerDisabled"]);
-																	trigger.IsTriggerNotForReplication = DataTypeFascade.Instance.ChangeType<bool>(dictDataTrigger["IsTriggerNotForReplication"]);
-																	trigger.IsInsteadOfTrigger = DataTypeFascade.Instance.ChangeType<bool>(dictDataTrigger["IsInsteadOfTrigger"]);
+																	trigger.TriggerId = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataTrigger["TriggerId"]);
+																	trigger.TriggerName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataTrigger["TriggerName"]);
+																	trigger.IsClrTrigger = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsClrTrigger"]);
+																	trigger.IsTriggerDisabled = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsTriggerDisabled"]);
+																	trigger.IsTriggerNotForReplication = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsTriggerNotForReplication"]);
+																	trigger.IsInsteadOfTrigger = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsInsteadOfTrigger"]);
 																	trigger.TriggerNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(trigger.TriggerName);
 																	trigger.TriggerNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(trigger.TriggerName);
 																	trigger.TriggerNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(trigger.TriggerName);
@@ -545,7 +547,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 															}
 														}
 
-														var dictEnumForeignKey = AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeys"), this.CoreGetForeignKeyParameters(connectionType, dataSourceTag, server, database, schema, table));
+														var dictEnumForeignKey = ExtensionMethods.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeys"), this.CoreGetForeignKeyParameters(connectionType, dataSourceTag, server, database, schema, table));
 														{
 															if ((object)dictEnumForeignKey != null)
 															{
@@ -555,14 +557,14 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	foreignKey = new ForeignKey();
 
-																	foreignKey.ForeignKeyName = DataTypeFascade.Instance.ChangeType<string>(dictDataForeignKey["ForeignKeyName"]);
-																	foreignKey.ForeignKeyIsDisabled = DataTypeFascade.Instance.ChangeType<bool>(dictDataForeignKey["ForeignKeyIsDisabled"]);
-																	foreignKey.ForeignKeyIsSystemNamed = DataTypeFascade.Instance.ChangeType<bool>(dictDataForeignKey["ForeignKeyIsSystemNamed"]);
-																	foreignKey.ForeignKeyIsForReplication = DataTypeFascade.Instance.ChangeType<bool>(dictDataForeignKey["ForeignKeyIsForReplication"]);
-																	foreignKey.ForeignKeyOnDeleteRefIntAction = DataTypeFascade.Instance.ChangeType<byte>(dictDataForeignKey["ForeignKeyOnDeleteRefIntAction"]);
-																	foreignKey.ForeignKeyOnDeleteRefIntActionSqlName = DataTypeFascade.Instance.ChangeType<string>(dictDataForeignKey["ForeignKeyOnDeleteRefIntActionSqlName"]);
-																	foreignKey.ForeignKeyOnUpdateRefIntAction = DataTypeFascade.Instance.ChangeType<byte>(dictDataForeignKey["ForeignKeyOnUpdateRefIntAction"]);
-																	foreignKey.ForeignKeyOnUpdateRefIntActionSqlName = DataTypeFascade.Instance.ChangeType<string>(dictDataForeignKey["ForeignKeyOnUpdateRefIntActionSqlName"]);
+																	foreignKey.ForeignKeyName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKey["ForeignKeyName"]);
+																	foreignKey.ForeignKeyIsDisabled = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataForeignKey["ForeignKeyIsDisabled"]);
+																	foreignKey.ForeignKeyIsSystemNamed = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataForeignKey["ForeignKeyIsSystemNamed"]);
+																	foreignKey.ForeignKeyIsForReplication = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataForeignKey["ForeignKeyIsForReplication"]);
+																	foreignKey.ForeignKeyOnDeleteRefIntAction = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<byte>(dictDataForeignKey["ForeignKeyOnDeleteRefIntAction"]);
+																	foreignKey.ForeignKeyOnDeleteRefIntActionSqlName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKey["ForeignKeyOnDeleteRefIntActionSqlName"]);
+																	foreignKey.ForeignKeyOnUpdateRefIntAction = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<byte>(dictDataForeignKey["ForeignKeyOnUpdateRefIntAction"]);
+																	foreignKey.ForeignKeyOnUpdateRefIntActionSqlName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKey["ForeignKeyOnUpdateRefIntActionSqlName"]);
 																	foreignKey.ForeignKeyNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(foreignKey.ForeignKeyName);
 																	foreignKey.ForeignKeyNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(foreignKey.ForeignKeyName);
 																	foreignKey.ForeignKeyNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(foreignKey.ForeignKeyName);
@@ -573,7 +575,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	foreignKey.ForeignKeyNamePluralCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(effectiveStandardCanonicalNaming.GetPluralForm(foreignKey.ForeignKeyName));
 																	foreignKey.ForeignKeyNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(foreignKey.ForeignKeyName));
 
-																	foreignKey.TargetSchemaName = DataTypeFascade.Instance.ChangeType<string>(dictDataForeignKey["TargetSchemaName"]);
+																	foreignKey.TargetSchemaName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKey["TargetSchemaName"]);
 																	foreignKey.TargetSchemaNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(foreignKey.TargetSchemaName);
 																	foreignKey.TargetSchemaNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(foreignKey.TargetSchemaName);
 																	foreignKey.TargetSchemaNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(foreignKey.TargetSchemaName);
@@ -584,7 +586,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	foreignKey.TargetSchemaNamePluralCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(effectiveStandardCanonicalNaming.GetPluralForm(foreignKey.TargetSchemaName));
 																	foreignKey.TargetSchemaNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(foreignKey.TargetSchemaName));
 
-																	foreignKey.TargetTableName = DataTypeFascade.Instance.ChangeType<string>(dictDataForeignKey["TargetTableName"]);
+																	foreignKey.TargetTableName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKey["TargetTableName"]);
 																	foreignKey.TargetTableNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(foreignKey.TargetTableName);
 																	foreignKey.TargetTableNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(foreignKey.TargetTableName);
 																	foreignKey.TargetTableNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(foreignKey.TargetTableName);
@@ -597,7 +599,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	table.ForeignKeys.Add(foreignKey);
 
-																	var dictEnumForeignKeyColumn = AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeyColumns"), this.CoreGetForeignKeyColumnParameters(connectionType, dataSourceTag, server, database, schema, table, foreignKey));
+																	var dictEnumForeignKeyColumn = ExtensionMethods.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeyColumns"), this.CoreGetForeignKeyColumnParameters(connectionType, dataSourceTag, server, database, schema, table, foreignKey));
 																	{
 																		if ((object)dictEnumForeignKeyColumn != null)
 																		{
@@ -607,11 +609,11 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																				foreignKeyColumn = new ForeignKeyColumn();
 
-																				foreignKeyColumn.ForeignKeyColumnOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataForeignKeyColumn["ForeignKeyColumnOrdinal"]);
-																				foreignKeyColumn.ColumnOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataForeignKeyColumn["ColumnOrdinal"]);
-																				foreignKeyColumn.ColumnName = DataTypeFascade.Instance.ChangeType<string>(dictDataForeignKeyColumn["ColumnName"]);
-																				foreignKeyColumn.TargetColumnOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataForeignKeyColumn["TargetColumnOrdinal"]);
-																				foreignKeyColumn.TargetColumnName = DataTypeFascade.Instance.ChangeType<string>(dictDataForeignKeyColumn["TargetColumnName"]);
+																				foreignKeyColumn.ForeignKeyColumnOrdinal = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataForeignKeyColumn["ForeignKeyColumnOrdinal"]);
+																				foreignKeyColumn.ColumnOrdinal = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataForeignKeyColumn["ColumnOrdinal"]);
+																				foreignKeyColumn.ColumnName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKeyColumn["ColumnName"]);
+																				foreignKeyColumn.TargetColumnOrdinal = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataForeignKeyColumn["TargetColumnOrdinal"]);
+																				foreignKeyColumn.TargetColumnName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKeyColumn["TargetColumnName"]);
 
 																				foreignKey.ForeignKeyColumns.Add(foreignKeyColumn);
 																			}
@@ -621,7 +623,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 															}
 														}
 
-														var dictEnumUniqueKey = AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeys"), this.CoreGetUniqueKeyParameters(connectionType, dataSourceTag, server, database, schema, table));
+														var dictEnumUniqueKey = ExtensionMethods.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeys"), this.CoreGetUniqueKeyParameters(connectionType, dataSourceTag, server, database, schema, table));
 														{
 															if ((object)dictEnumUniqueKey != null)
 															{
@@ -631,9 +633,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	uniqueKey = new UniqueKey();
 
-																	uniqueKey.UniqueKeyId = DataTypeFascade.Instance.ChangeType<int>(dictDataUniqueKey["UniqueKeyId"]);
-																	uniqueKey.UniqueKeyName = DataTypeFascade.Instance.ChangeType<string>(dictDataUniqueKey["UniqueKeyName"]);
-																	uniqueKey.UniqueKeyIsSystemNamed = DataTypeFascade.Instance.ChangeType<bool>(dictDataUniqueKey["UniqueKeyIsSystemNamed"]);
+																	uniqueKey.UniqueKeyId = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataUniqueKey["UniqueKeyId"]);
+																	uniqueKey.UniqueKeyName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataUniqueKey["UniqueKeyName"]);
+																	uniqueKey.UniqueKeyIsSystemNamed = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataUniqueKey["UniqueKeyIsSystemNamed"]);
 																	uniqueKey.UniqueKeyNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(uniqueKey.UniqueKeyName);
 																	uniqueKey.UniqueKeyNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(uniqueKey.UniqueKeyName);
 																	uniqueKey.UniqueKeyNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(uniqueKey.UniqueKeyName);
@@ -646,7 +648,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	table.UniqueKeys.Add(uniqueKey);
 
-																	var dictEnumUniqueKeyColumn = AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeyColumns"), this.CoreGetUniqueKeyColumnParameters(connectionType, dataSourceTag, server, database, schema, table, uniqueKey));
+																	var dictEnumUniqueKeyColumn = ExtensionMethods.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeyColumns"), this.CoreGetUniqueKeyColumnParameters(connectionType, dataSourceTag, server, database, schema, table, uniqueKey));
 																	{
 																		if ((object)dictEnumUniqueKeyColumn != null)
 																		{
@@ -656,10 +658,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																				uniqueKeyColumn = new UniqueKeyColumn();
 
-																				uniqueKeyColumn.UniqueKeyColumnOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataUniqueKeyColumn["UniqueKeyColumnOrdinal"]);
-																				uniqueKeyColumn.ColumnOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataUniqueKeyColumn["ColumnOrdinal"]);
-																				uniqueKeyColumn.ColumnName = DataTypeFascade.Instance.ChangeType<string>(dictDataUniqueKeyColumn["ColumnName"]);
-																				uniqueKeyColumn.UniqueKeyColumnDescendingSort = DataTypeFascade.Instance.ChangeType<bool>(dictDataUniqueKeyColumn["UniqueKeyColumnDescendingSort"]);
+																				uniqueKeyColumn.UniqueKeyColumnOrdinal = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataUniqueKeyColumn["UniqueKeyColumnOrdinal"]);
+																				uniqueKeyColumn.ColumnOrdinal = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataUniqueKeyColumn["ColumnOrdinal"]);
+																				uniqueKeyColumn.ColumnName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataUniqueKeyColumn["ColumnName"]);
+																				uniqueKeyColumn.UniqueKeyColumnDescendingSort = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataUniqueKeyColumn["UniqueKeyColumnDescendingSort"]);
 
 																				uniqueKey.UniqueKeyColumns.Add(uniqueKeyColumn);
 																			}
@@ -671,18 +673,18 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 													}
 												}
 
-												var dictEnumView = AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Views"), this.CoreGetTableParameters(connectionType, dataSourceTag, server, database, schema));
+												var dictEnumView = ExtensionMethods.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Views"), this.CoreGetTableParameters(connectionType, dataSourceTag, server, database, schema));
 												{
 													foreach (var dictDataView in dictEnumView.ToList())
 													{
 														View view;
 
 														view = new View();
-														view.ViewId = DataTypeFascade.Instance.ChangeType<int>(dictDataView["ViewId"]);
-														view.ViewName = DataTypeFascade.Instance.ChangeType<string>(dictDataView["ViewName"]);
-														view.CreationTimestamp = DataTypeFascade.Instance.ChangeType<DateTime>(dictDataView["CreationTimestamp"]);
-														view.ModificationTimestamp = DataTypeFascade.Instance.ChangeType<DateTime>(dictDataView["ModificationTimestamp"]);
-														view.IsImplementationDetail = DataTypeFascade.Instance.ChangeType<bool>(dictDataView["IsImplementationDetail"]);
+														view.ViewId = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataView["ViewId"]);
+														view.ViewName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataView["ViewName"]);
+														view.CreationTimestamp = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<DateTime>(dictDataView["CreationTimestamp"]);
+														view.ModificationTimestamp = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<DateTime>(dictDataView["ModificationTimestamp"]);
+														view.IsImplementationDetail = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataView["IsImplementationDetail"]);
 														view.ViewNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(view.ViewName);
 														view.ViewNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(view.ViewName);
 														view.ViewNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(view.ViewName);
@@ -702,7 +704,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 														schema.Views.Add(view);
 
-														var dictEnumColumn = AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ViewColumns"), this.CoreGetColumnParameters(connectionType, dataSourceTag, server, database, schema, view));
+														var dictEnumColumn = ExtensionMethods.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ViewColumns"), this.CoreGetColumnParameters(connectionType, dataSourceTag, server, database, schema, view));
 														{
 															if ((object)dictEnumColumn != null)
 															{
@@ -712,16 +714,16 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	column = new ViewColumn();
 
-																	column.ColumnOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataColumn["ColumnOrdinal"]);
-																	column.ColumnName = DataTypeFascade.Instance.ChangeType<string>(dictDataColumn["ColumnName"]);
-																	column.ColumnIsAnonymous = DataTypeFascade.Instance.ChangeType<bool>(dictDataColumn["ColumnIsAnonymous"]);
+																	column.ColumnOrdinal = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnOrdinal"]);
+																	column.ColumnName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataColumn["ColumnName"]);
+																	column.ColumnIsAnonymous = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsAnonymous"]);
 																	column.ColumnCSharpIsAnonymousLiteral = column.ColumnIsAnonymous.ToString().ToLower();
-																	column.ColumnNullable = DataTypeFascade.Instance.ChangeType<bool>(dictDataColumn["ColumnNullable"]);
-																	column.ColumnSize = DataTypeFascade.Instance.ChangeType<int>(dictDataColumn["ColumnSize"]);
-																	column.ColumnPrecision = DataTypeFascade.Instance.ChangeType<int>(dictDataColumn["ColumnPrecision"]);
-																	column.ColumnScale = DataTypeFascade.Instance.ChangeType<int>(dictDataColumn["ColumnScale"]);
-																	column.ColumnSqlType = DataTypeFascade.Instance.ChangeType<string>(dictDataColumn["ColumnSqlType"]);
-																	column.ColumnIsUserDefinedType = DataTypeFascade.Instance.ChangeType<bool>(dictDataColumn["ColumnIsUserDefinedType"]);
+																	column.ColumnNullable = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnNullable"]);
+																	column.ColumnSize = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnSize"]);
+																	column.ColumnPrecision = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnPrecision"]);
+																	column.ColumnScale = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnScale"]);
+																	column.ColumnSqlType = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataColumn["ColumnSqlType"]);
+																	column.ColumnIsUserDefinedType = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsUserDefinedType"]);
 																	column.ColumnNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(column.ColumnName);
 																	column.ColumnNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(column.ColumnName);
 																	column.ColumnNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(column.ColumnName);
@@ -733,12 +735,12 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	column.ColumnNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
 
 																	clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType, column.ColumnPrecision);
-																	column.ColumnDbType = AdoNetLiteFascade.Instance.InferDbTypeForClrType(clrType);
+																	column.ColumnDbType = ExtensionMethods.AdoNetLiteLegacyInstance.InferDbTypeForClrType(clrType);
 																	column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
 																	column.ColumnClrType = clrType ?? typeof(object);
-																	column.ColumnClrNullableType = ReflectionFascade.Instance.MakeNullableType(clrType);
-																	column.ColumnClrNonNullableType = ReflectionFascade.Instance.MakeNonNullableType(clrType);
+																	column.ColumnClrNullableType = ExtensionMethods.ReflectionFascadeLegacyInstance.MakeNullableType(clrType);
+																	column.ColumnClrNonNullableType = ExtensionMethods.ReflectionFascadeLegacyInstance.MakeNonNullableType(clrType);
 																	column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
 																	column.ColumnCSharpDbType = String.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
 																	column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
@@ -752,7 +754,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 													}
 												}
 
-												var dictEnumProcedure = AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Procedures"), this.CoreGetProcedureParameters(connectionType, dataSourceTag, server, database, schema));
+												var dictEnumProcedure = ExtensionMethods.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Procedures"), this.CoreGetProcedureParameters(connectionType, dataSourceTag, server, database, schema));
 												{
 													if ((object)dictEnumProcedure != null)
 													{
@@ -761,7 +763,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 															Procedure procedure;
 
 															procedure = new Procedure();
-															procedure.ProcedureName = DataTypeFascade.Instance.ChangeType<string>(dictDataProcedure["ProcedureName"]);
+															procedure.ProcedureName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataProcedure["ProcedureName"]);
 															procedure.ProcedureNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(procedure.ProcedureName);
 															procedure.ProcedureNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(procedure.ProcedureName);
 															procedure.ProcedureNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(procedure.ProcedureName);
@@ -781,7 +783,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 															schema.Procedures.Add(procedure);
 
-															var dictEnumParameter = AdoNetLiteFascade.Instance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureParameters"), this.CoreGetParameterParameters(connectionType, dataSourceTag, server, database, schema, procedure));
+															var dictEnumParameter = ExtensionMethods.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureParameters"), this.CoreGetParameterParameters(connectionType, dataSourceTag, server, database, schema, procedure));
 															{
 																if ((object)dictEnumParameter != null)
 																{
@@ -791,22 +793,22 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																		parameter = new Parameter();
 
-																		parameter.ParameterPrefix = DataTypeFascade.Instance.ChangeType<string>(dictDataParameter["ParameterName"]).Substring(0, 1);
-																		parameter.ParameterOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataParameter["ParameterOrdinal"]);
-																		parameter.ParameterName = DataTypeFascade.Instance.ChangeType<string>(dictDataParameter["ParameterName"]).Substring(1);
-																		parameter.ParameterSize = DataTypeFascade.Instance.ChangeType<int>(dictDataParameter["ParameterSize"]);
-																		parameter.ParameterPrecision = DataTypeFascade.Instance.ChangeType<int>(dictDataParameter["ParameterPrecision"]);
-																		parameter.ParameterScale = DataTypeFascade.Instance.ChangeType<int>(dictDataParameter["ParameterScale"]);
-																		parameter.ParameterSqlType = DataTypeFascade.Instance.ChangeType<string>(dictDataParameter["ParameterSqlType"]);
-																		parameter.ParameterIsUserDefinedType = DataTypeFascade.Instance.ChangeType<bool>(dictDataParameter["ParameterIsUserDefinedType"]);
-																		parameter.ParameterIsOutput = DataTypeFascade.Instance.ChangeType<bool>(dictDataParameter["ParameterIsOutput"]);
-																		parameter.ParameterIsReadOnly = DataTypeFascade.Instance.ChangeType<bool>(dictDataParameter["ParameterIsReadOnly"]);
-																		parameter.ParameterIsCursorRef = DataTypeFascade.Instance.ChangeType<bool>(dictDataParameter["ParameterIsCursorRef"]);
-																		parameter.ParameterIsReturnValue = DataTypeFascade.Instance.ChangeType<bool>(dictDataParameter["ParameterIsReturnValue"]);
-																		parameter.ParameterHasDefault = DataTypeFascade.Instance.ChangeType<bool>(dictDataParameter["ParameterHasDefault"]);
-																		parameter.ParameterNullable = DataTypeFascade.Instance.ChangeType<bool?>(dictDataParameter["ParameterNullable"]) ?? true;
-																		parameter.ParameterDefaultValue = DataTypeFascade.Instance.ChangeType<string>(dictDataParameter["ParameterDefaultValue"]);
-																		parameter.ParameterIsResultColumn = DataTypeFascade.Instance.ChangeType<bool>(dictDataParameter["ParameterIsResultColumn"]);
+																		parameter.ParameterPrefix = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataParameter["ParameterName"]).Substring(0, 1);
+																		parameter.ParameterOrdinal = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataParameter["ParameterOrdinal"]);
+																		parameter.ParameterName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataParameter["ParameterName"]).Substring(1);
+																		parameter.ParameterSize = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataParameter["ParameterSize"]);
+																		parameter.ParameterPrecision = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataParameter["ParameterPrecision"]);
+																		parameter.ParameterScale = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataParameter["ParameterScale"]);
+																		parameter.ParameterSqlType = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataParameter["ParameterSqlType"]);
+																		parameter.ParameterIsUserDefinedType = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsUserDefinedType"]);
+																		parameter.ParameterIsOutput = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsOutput"]);
+																		parameter.ParameterIsReadOnly = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsReadOnly"]);
+																		parameter.ParameterIsCursorRef = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsCursorRef"]);
+																		parameter.ParameterIsReturnValue = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsReturnValue"]);
+																		parameter.ParameterHasDefault = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterHasDefault"]);
+																		parameter.ParameterNullable = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool?>(dictDataParameter["ParameterNullable"]) ?? true;
+																		parameter.ParameterDefaultValue = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataParameter["ParameterDefaultValue"]);
+																		parameter.ParameterIsResultColumn = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsResultColumn"]);
 																		parameter.ParameterNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(parameter.ParameterName);
 																		parameter.ParameterNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(parameter.ParameterName);
 																		parameter.ParameterNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(parameter.ParameterName);
@@ -820,12 +822,12 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																		parameter.ParameterDirection = !parameter.ParameterIsOutput ? ParameterDirection.Input : (!parameter.ParameterIsReadOnly ? ParameterDirection.InputOutput : ParameterDirection.Output);
 
 																		clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, parameter.ParameterSqlType, parameter.ParameterPrecision);
-																		parameter.ParameterDbType = AdoNetLiteFascade.Instance.InferDbTypeForClrType(clrType);
+																		parameter.ParameterDbType = ExtensionMethods.AdoNetLiteLegacyInstance.InferDbTypeForClrType(clrType);
 																		parameter.ParameterSize = this.CoreCalculateParameterSize(dataSourceTag, parameter);
 
 																		parameter.ParameterClrType = clrType;
-																		parameter.ParameterClrNullableType = ReflectionFascade.Instance.MakeNullableType(clrType);
-																		parameter.ParameterClrNonNullableType = ReflectionFascade.Instance.MakeNonNullableType(clrType);
+																		parameter.ParameterClrNullableType = ExtensionMethods.ReflectionFascadeLegacyInstance.MakeNullableType(clrType);
+																		parameter.ParameterClrNonNullableType = ExtensionMethods.ReflectionFascadeLegacyInstance.MakeNonNullableType(clrType);
 																		parameter.ParameterCSharpDbType = String.Format("{0}.{1}", typeof(DbType).Name, parameter.ParameterDbType);
 																		parameter.ParameterCSharpDirection = String.Format("{0}.{1}", typeof(ParameterDirection).Name, parameter.ParameterDirection);
 																		parameter.ParameterCSharpClrType = (object)parameter.ParameterClrType != null ? FormatCSharpType(parameter.ParameterClrType) : FormatCSharpType(typeof(object));
@@ -871,12 +873,12 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	parameter.ParameterDirection = ParameterDirection.ReturnValue;
 
 																	clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, parameter.ParameterSqlType, parameter.ParameterPrecision);
-																	parameter.ParameterDbType = AdoNetLiteFascade.Instance.InferDbTypeForClrType(clrType);
+																	parameter.ParameterDbType = ExtensionMethods.AdoNetLiteLegacyInstance.InferDbTypeForClrType(clrType);
 																	parameter.ParameterSize = this.CoreCalculateParameterSize(dataSourceTag, parameter);
 
 																	parameter.ParameterClrType = clrType;
-																	parameter.ParameterClrNullableType = ReflectionFascade.Instance.MakeNullableType(clrType);
-																	parameter.ParameterClrNonNullableType = ReflectionFascade.Instance.MakeNonNullableType(clrType);
+																	parameter.ParameterClrNullableType = ExtensionMethods.ReflectionFascadeLegacyInstance.MakeNullableType(clrType);
+																	parameter.ParameterClrNonNullableType = ExtensionMethods.ReflectionFascadeLegacyInstance.MakeNonNullableType(clrType);
 																	parameter.ParameterCSharpDbType = String.Format("{0}.{1}", typeof(DbType).Name, parameter.ParameterDbType);
 																	parameter.ParameterCSharpDirection = String.Format("{0}.{1}", typeof(ParameterDirection).Name, parameter.ParameterDirection);
 																	parameter.ParameterCSharpClrType = (object)parameter.ParameterClrType != null ? FormatCSharpType(parameter.ParameterClrType) : FormatCSharpType(typeof(object));
@@ -909,7 +911,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	column.ColumnScale = columnParameter.ParameterScale;
 																	column.ColumnSqlType = columnParameter.ParameterSqlType;
 																	column.ColumnIsUserDefinedType = columnParameter.ParameterIsUserDefinedType;
-																	column.ColumnHasDefault = !DataTypeFascade.Instance.IsNullOrWhiteSpace(columnParameter.ParameterDefaultValue);
+																	column.ColumnHasDefault = !ExtensionMethods.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(columnParameter.ParameterDefaultValue);
 																	column.ColumnNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(columnParameter.ParameterName);
 																	column.ColumnNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(columnParameter.ParameterName);
 																	column.ColumnNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(columnParameter.ParameterName);
@@ -921,12 +923,12 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	column.ColumnNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(columnParameter.ParameterName));
 
 																	clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, columnParameter.ParameterSqlType, columnParameter.ParameterPrecision);
-																	column.ColumnDbType = AdoNetLiteFascade.Instance.InferDbTypeForClrType(clrType);
+																	column.ColumnDbType = ExtensionMethods.AdoNetLiteLegacyInstance.InferDbTypeForClrType(clrType);
 																	column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
 																	column.ColumnClrType = clrType ?? typeof(object);
-																	column.ColumnClrNullableType = ReflectionFascade.Instance.MakeNullableType(clrType);
-																	column.ColumnClrNonNullableType = ReflectionFascade.Instance.MakeNonNullableType(clrType);
+																	column.ColumnClrNullableType = ExtensionMethods.ReflectionFascadeLegacyInstance.MakeNullableType(clrType);
+																	column.ColumnClrNonNullableType = ExtensionMethods.ReflectionFascadeLegacyInstance.MakeNonNullableType(clrType);
 																	column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
 																	column.ColumnCSharpDbType = String.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
 																	column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
@@ -943,13 +945,13 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																// REFERENCE:
 																// http://connect.microsoft.com/VisualStudio/feedback/details/314650/sqm1014-sqlmetal-ignores-stored-procedures-that-use-temp-tables
 																DbParameter[] parameters;
-																parameters = procedure.Parameters.Where(p => !p.ParameterIsReturnValue && !p.ParameterIsResultColumn).Select(p => AdoNetLiteFascade.Instance.CreateParameter(connectionType, p.ParameterIsOutput ? ParameterDirection.Output : ParameterDirection.Input, p.ParameterDbType, p.ParameterSize, (byte)p.ParameterPrecision, (byte)p.ParameterScale, p.ParameterNullable, p.ParameterName, null)).ToArray();
+																parameters = procedure.Parameters.Where(p => !p.ParameterIsReturnValue && !p.ParameterIsResultColumn).Select(p => ExtensionMethods.AdoNetLiteLegacyInstance.CreateParameter(connectionType, p.ParameterIsOutput ? ParameterDirection.Output : ParameterDirection.Input, p.ParameterDbType, p.ParameterSize, (byte)p.ParameterPrecision, (byte)p.ParameterScale, p.ParameterNullable, p.ParameterName, null)).ToArray();
 
 																try
 																{
 																	int resultsetIndex = Int32.MinValue;
 
-																	var dictEnumResultsets = AdoNetLiteFascade.Instance.ExecuteRecords(true, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.StoredProcedure, String.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), server.ServerName, database.DatabaseName, schema.SchemaName, procedure.ProcedureName), parameters, (ri) => resultsetIndex = ri);
+																	var dictEnumResultsets = ExtensionMethods.AdoNetLiteLegacyInstance.ExecuteRecords(true, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.StoredProcedure, String.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), server.ServerName, database.DatabaseName, schema.SchemaName, procedure.ProcedureName), parameters, (ri) => resultsetIndex = ri);
 																	{
 																		if ((object)dictEnumResultsets != null)
 																		{
@@ -966,25 +968,25 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																					column = new ProcedureColumn();
 
-																					column.ColumnOrdinal = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.ColumnOrdinal]);
-																					column.ColumnName = DataTypeFascade.Instance.ChangeType<string>(dictDataMetadata[SchemaTableColumn.ColumnName]);
-																					column.ColumnIsAnonymous = DataTypeFascade.Instance.ChangeType<bool>(dictDataMetadata["ColumnIsAnonymous"]);
+																					column.ColumnOrdinal = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.ColumnOrdinal]);
+																					column.ColumnName = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataMetadata[SchemaTableColumn.ColumnName]);
+																					column.ColumnIsAnonymous = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataMetadata["ColumnIsAnonymous"]);
 																					column.ColumnCSharpIsAnonymousLiteral = column.ColumnIsAnonymous.ToString().ToLower();
-																					column.ColumnSize = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.ColumnSize]);
-																					column.ColumnPrecision = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.NumericPrecision]);
-																					column.ColumnScale = DataTypeFascade.Instance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.NumericScale]);
+																					column.ColumnSize = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.ColumnSize]);
+																					column.ColumnPrecision = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.NumericPrecision]);
+																					column.ColumnScale = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.NumericScale]);
 																					column.ColumnSqlType = String.Empty;
-																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.ProviderType]);
-																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.NonVersionedProviderType]);
-																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsLong]);
-																					column.ColumnNullable = DataTypeFascade.Instance.ChangeType<bool>(dictDataMetadata[SchemaTableColumn.AllowDBNull]);
-																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsAliased]);
-																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsExpression]);
-																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsKey]);
-																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsUnique]);
-																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.BaseSchemaName]);
-																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.BaseTableName]);
-																					//column.ColumnXXX = DataTypeFascade.Instance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.BaseColumnName]);
+																					//column.ColumnXXX = DataTypeFascade.ReflectionFascadeLegacyInstance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.ProviderType]);
+																					//column.ColumnXXX = DataTypeFascade.ReflectionFascadeLegacyInstance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.NonVersionedProviderType]);
+																					//column.ColumnXXX = DataTypeFascade.ReflectionFascadeLegacyInstance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsLong]);
+																					column.ColumnNullable = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataMetadata[SchemaTableColumn.AllowDBNull]);
+																					//column.ColumnXXX = DataTypeFascade.ReflectionFascadeLegacyInstance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsAliased]);
+																					//column.ColumnXXX = DataTypeFascade.ReflectionFascadeLegacyInstance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsExpression]);
+																					//column.ColumnXXX = DataTypeFascade.ReflectionFascadeLegacyInstance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsKey]);
+																					//column.ColumnXXX = DataTypeFascade.ReflectionFascadeLegacyInstance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsUnique]);
+																					//column.ColumnXXX = DataTypeFascade.ReflectionFascadeLegacyInstance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.BaseSchemaName]);
+																					//column.ColumnXXX = DataTypeFascade.ReflectionFascadeLegacyInstance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.BaseTableName]);
+																					//column.ColumnXXX = DataTypeFascade.ReflectionFascadeLegacyInstance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.BaseColumnName]);
 
 																					column.ColumnNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(column.ColumnName);
 																					column.ColumnNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(column.ColumnName);
@@ -996,13 +998,13 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																					column.ColumnNamePluralCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
 																					column.ColumnNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
 
-																					clrType = DataTypeFascade.Instance.ChangeType<Type>(dictDataMetadata[SchemaTableColumn.DataType]);
-																					column.ColumnDbType = AdoNetLiteFascade.Instance.InferDbTypeForClrType(clrType);
+																					clrType = ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType<Type>(dictDataMetadata[SchemaTableColumn.DataType]);
+																					column.ColumnDbType = ExtensionMethods.AdoNetLiteLegacyInstance.InferDbTypeForClrType(clrType);
 																					column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
 																					column.ColumnClrType = clrType ?? typeof(object);
-																					column.ColumnClrNullableType = ReflectionFascade.Instance.MakeNullableType(clrType);
-																					column.ColumnClrNonNullableType = ReflectionFascade.Instance.MakeNonNullableType(clrType);
+																					column.ColumnClrNullableType = ExtensionMethods.ReflectionFascadeLegacyInstance.MakeNullableType(clrType);
+																					column.ColumnClrNonNullableType = ExtensionMethods.ReflectionFascadeLegacyInstance.MakeNonNullableType(clrType);
 																					column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
 																					column.ColumnCSharpDbType = String.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
 																					column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
@@ -1020,8 +1022,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																catch (Exception ex)
 																{
 																	procedure.ProcedureExecuteSchemaThrewException = true;
-																	procedure.ProcedureExecuteSchemaExceptionText = ReflectionFascade.Instance.GetErrors(ex, 0);
-																	//Console.Error.WriteLine(ReflectionFascade.Instance.GetErrors(ex, 0));
+																	procedure.ProcedureExecuteSchemaExceptionText = ExtensionMethods.ReflectionFascadeLegacyInstance.GetErrors(ex, 0);
+																	//Console.Error.WriteLine(ReflectionFascade.ReflectionFascadeLegacyInstance.GetErrors(ex, 0));
 																}
 															}
 														}

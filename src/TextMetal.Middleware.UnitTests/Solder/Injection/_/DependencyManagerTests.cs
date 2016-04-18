@@ -26,6 +26,13 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 		#endregion
 
+		#region Fields/Constants
+
+		private const string COMMON_SELECTOR_KEY = "x";
+		private const string UNCOMMON_SELECTOR_KEY = "bob";
+
+		#endregion
+
 		#region Methods/Operators
 
 		[AssemblyLoaderEventSinkMethod]
@@ -45,13 +52,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 					string _unusedString = null;
 					Type targetType;
 					string selectorKey;
+					bool includeAssignableTypes;
 
 					mockFactory = new MockFactory();
 					mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
-					assemblyLoaderContainerContext.DependencyManager.AddResolution(typeof(IFormattable), "bob", false, mockDependencyResolution);
+					targetType = typeof(IFormattable);
+					selectorKey = UNCOMMON_SELECTOR_KEY;
+					includeAssignableTypes = false;
 
-					Expect.On(mockDependencyResolution).Any.Method(m => m.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).WithAnyArguments().WillReturn(1234.5678);
+					assemblyLoaderContainerContext.DependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
+
+					Expect.On(mockDependencyResolution).Any.Method(m => m.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).With(assemblyLoaderContainerContext.DependencyManager, targetType, selectorKey).WillReturn(1234.5678);
 
 					Expect.On(mockDependencyResolution).One.Method(m => m.Dispose());
 
@@ -87,14 +99,16 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			MockFactory mockFactory;
 			IDependencyResolution<object> mockDependencyResolution;
 			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution<object>>();
 
 			dependencyManager = new DependencyManager();
-			selectorKey = "x";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
-			dependencyManager.AddResolution<object>(selectorKey, false, mockDependencyResolution);
+			dependencyManager.AddResolution<object>(selectorKey, includeAssignableTypes, mockDependencyResolution);
 
 			mockFactory.VerifyAllExpectationsHaveBeenMet();
 		}
@@ -107,15 +121,17 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			IDependencyResolution mockDependencyResolution;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			dependencyManager = new DependencyManager();
 			targetType = typeof(object);
-			selectorKey = "x";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
-			dependencyManager.AddResolution(targetType, selectorKey, false, mockDependencyResolution);
+			dependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
 
 			mockFactory.VerifyAllExpectationsHaveBeenMet();
 		}
@@ -127,6 +143,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			MockFactory mockFactory;
 			IDependencyResolution<IDisposable> mockDependencyResolution;
 			string selectorKey;
+			bool includeAssignableTypes;
 			bool result;
 
 			mockFactory = new MockFactory();
@@ -136,48 +153,85 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			dependencyManager = new DependencyManager();
 
-			result = dependencyManager.HasTypeResolution<IDisposable>(null, false);
+			selectorKey = null;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution<IDisposable>(selectorKey, includeAssignableTypes);
 			Assert.IsFalse(result);
 
-			result = dependencyManager.HasTypeResolution<IDisposable>(string.Empty, false);
+			selectorKey = string.Empty;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution<IDisposable>(selectorKey, includeAssignableTypes);
 			Assert.IsFalse(result);
 
-			result = dependencyManager.HasTypeResolution<IDisposable>("x", false);
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution<IDisposable>(selectorKey, includeAssignableTypes);
 			Assert.IsFalse(result);
 
-			selectorKey = "x";
-			dependencyManager.AddResolution<IDisposable>(selectorKey, false, mockDependencyResolution);
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
-			result = dependencyManager.HasTypeResolution<IDisposable>(null, false);
+			dependencyManager.AddResolution<IDisposable>(selectorKey, includeAssignableTypes, mockDependencyResolution);
+
+			selectorKey = null;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution<IDisposable>(selectorKey, includeAssignableTypes);
 			Assert.IsTrue(result);
 
-			result = dependencyManager.HasTypeResolution<IDisposable>(string.Empty, false);
+			selectorKey = string.Empty;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution<IDisposable>(selectorKey, includeAssignableTypes);
 			Assert.IsFalse(result);
 
-			result = dependencyManager.HasTypeResolution<IDisposable>("x", false);
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution<IDisposable>(selectorKey, includeAssignableTypes);
 			Assert.IsTrue(result);
 
 			dependencyManager.ClearAllResolutions();
 
-			result = dependencyManager.HasTypeResolution<IDisposable>(null, false);
-			Assert.IsFalse(result);
+			selectorKey = null;
+			includeAssignableTypes = false;
 
-			result = dependencyManager.HasTypeResolution<IDisposable>(string.Empty, false);
-			Assert.IsFalse(result);
-
-			result = dependencyManager.HasTypeResolution<IDisposable>("x", false);
+			result = dependencyManager.HasTypeResolution<IDisposable>(selectorKey, includeAssignableTypes);
 			Assert.IsFalse(result);
 
 			selectorKey = string.Empty;
-			dependencyManager.AddResolution<IDisposable>(selectorKey, false, mockDependencyResolution);
+			includeAssignableTypes = false;
 
-			result = dependencyManager.HasTypeResolution<IDisposable>(null, false);
+			result = dependencyManager.HasTypeResolution<IDisposable>(selectorKey, includeAssignableTypes);
+			Assert.IsFalse(result);
+
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution<IDisposable>(selectorKey, includeAssignableTypes);
+			Assert.IsFalse(result);
+
+			selectorKey = string.Empty;
+			includeAssignableTypes = false;
+
+			dependencyManager.AddResolution<IDisposable>(selectorKey, includeAssignableTypes, mockDependencyResolution);
+
+			result = dependencyManager.HasTypeResolution<IDisposable>(selectorKey, includeAssignableTypes);
 			Assert.IsTrue(result);
 
-			result = dependencyManager.HasTypeResolution<IDisposable>(string.Empty, false);
+			selectorKey = string.Empty;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution<IDisposable>(selectorKey, includeAssignableTypes);
 			Assert.IsTrue(result);
 
-			result = dependencyManager.HasTypeResolution<IDisposable>("x", false);
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution<IDisposable>(selectorKey, includeAssignableTypes);
 			Assert.IsFalse(result);
 
 			mockFactory.VerifyAllExpectationsHaveBeenMet();
@@ -191,6 +245,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			IDependencyResolution mockDependencyResolution;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 			bool result;
 
 			mockFactory = new MockFactory();
@@ -198,51 +253,104 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			Expect.On(mockDependencyResolution).One.Method(m => m.Dispose());
 
-			targetType = typeof(IDisposable);
 			dependencyManager = new DependencyManager();
 
-			result = dependencyManager.HasTypeResolution(targetType, null, false);
+			targetType = typeof(IDisposable);
+			selectorKey = null;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution(targetType, selectorKey, includeAssignableTypes);
 			Assert.IsFalse(result);
 
-			result = dependencyManager.HasTypeResolution(targetType, string.Empty, false);
+			targetType = typeof(IDisposable);
+			selectorKey = string.Empty;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution(targetType, selectorKey, includeAssignableTypes);
 			Assert.IsFalse(result);
 
-			result = dependencyManager.HasTypeResolution(targetType, "x", false);
+			targetType = typeof(IDisposable);
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution(targetType, selectorKey, includeAssignableTypes);
 			Assert.IsFalse(result);
 
-			selectorKey = "x";
-			dependencyManager.AddResolution(targetType, selectorKey, false, mockDependencyResolution);
+			targetType = typeof(IDisposable);
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
-			result = dependencyManager.HasTypeResolution(targetType, null, false);
+			dependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
+
+			targetType = typeof(IDisposable);
+			selectorKey = null;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution(targetType, selectorKey, includeAssignableTypes);
 			Assert.IsTrue(result);
 
-			result = dependencyManager.HasTypeResolution(targetType, string.Empty, false);
+			targetType = typeof(IDisposable);
+			selectorKey = string.Empty;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution(targetType, selectorKey, includeAssignableTypes);
 			Assert.IsFalse(result);
 
-			result = dependencyManager.HasTypeResolution(targetType, "x", false);
+			targetType = typeof(IDisposable);
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution(targetType, selectorKey, includeAssignableTypes);
 			Assert.IsTrue(result);
 
 			dependencyManager.ClearAllResolutions();
 
-			result = dependencyManager.HasTypeResolution(targetType, null, false);
+			targetType = typeof(IDisposable);
+			selectorKey = null;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution(targetType, selectorKey, includeAssignableTypes);
 			Assert.IsFalse(result);
 
-			result = dependencyManager.HasTypeResolution(targetType, string.Empty, false);
-			Assert.IsFalse(result);
-
-			result = dependencyManager.HasTypeResolution(targetType, "x", false);
-			Assert.IsFalse(result);
-
+			targetType = typeof(IDisposable);
 			selectorKey = string.Empty;
-			dependencyManager.AddResolution(targetType, selectorKey, false, mockDependencyResolution);
+			includeAssignableTypes = false;
 
-			result = dependencyManager.HasTypeResolution(targetType, null, false);
+			result = dependencyManager.HasTypeResolution(targetType, selectorKey, includeAssignableTypes);
+			Assert.IsFalse(result);
+
+			targetType = typeof(IDisposable);
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution(targetType, selectorKey, includeAssignableTypes);
+			Assert.IsFalse(result);
+
+			targetType = typeof(IDisposable);
+			selectorKey = string.Empty;
+			includeAssignableTypes = false;
+
+			dependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
+
+			targetType = typeof(IDisposable);
+			selectorKey = null;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution(targetType, selectorKey, includeAssignableTypes);
 			Assert.IsTrue(result);
 
-			result = dependencyManager.HasTypeResolution(targetType, string.Empty, false);
+			targetType = typeof(IDisposable);
+			selectorKey = string.Empty;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution(targetType, selectorKey, includeAssignableTypes);
 			Assert.IsTrue(result);
 
-			result = dependencyManager.HasTypeResolution(targetType, "x", false);
+			targetType = typeof(IDisposable);
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
+
+			result = dependencyManager.HasTypeResolution(targetType, selectorKey, includeAssignableTypes);
 			Assert.IsFalse(result);
 
 			mockFactory.VerifyAllExpectationsHaveBeenMet();
@@ -256,22 +364,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			IDependencyResolution mockDependencyResolution;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 			bool result;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
+			targetType = typeof(object);
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
+
 			Expect.On(mockDependencyResolution).One.Method(m => m.Dispose());
 
 			dependencyManager = new DependencyManager();
-			targetType = typeof(object);
-			selectorKey = "ddd";
 
 			result = dependencyManager.ClearAllResolutions();
 
 			Assert.IsFalse(result);
 
-			dependencyManager.AddResolution(targetType, selectorKey, false, mockDependencyResolution);
+			dependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
 
 			result = dependencyManager.ClearAllResolutions();
 
@@ -287,23 +398,26 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			MockFactory mockFactory;
 			IDependencyResolution<object> mockDependencyResolution;
 			string selectorKey;
+			bool includeAssignableTypes;
 			bool result;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution<object>>();
 
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
+
 			Expect.On(mockDependencyResolution).One.Method(m => m.Dispose());
 
 			dependencyManager = new DependencyManager();
-			selectorKey = "ddd";
 
-			result = dependencyManager.ClearTypeResolutions<object>(false);
+			result = dependencyManager.ClearTypeResolutions<object>(includeAssignableTypes);
 
 			Assert.IsFalse(result);
 
-			dependencyManager.AddResolution<object>(selectorKey, false, mockDependencyResolution);
+			dependencyManager.AddResolution<object>(selectorKey, includeAssignableTypes, mockDependencyResolution);
 
-			result = dependencyManager.ClearTypeResolutions<object>(false);
+			result = dependencyManager.ClearTypeResolutions<object>(includeAssignableTypes);
 
 			Assert.IsTrue(result);
 
@@ -318,6 +432,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			IDependencyResolution mockDependencyResolution;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 			bool result;
 
 			mockFactory = new MockFactory();
@@ -327,15 +442,16 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			dependencyManager = new DependencyManager();
 			targetType = typeof(object);
-			selectorKey = "ddd";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
-			result = dependencyManager.ClearTypeResolutions(targetType, false);
+			result = dependencyManager.ClearTypeResolutions(targetType, includeAssignableTypes);
 
 			Assert.IsFalse(result);
 
-			dependencyManager.AddResolution(targetType, selectorKey, false, mockDependencyResolution);
+			dependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
 
-			result = dependencyManager.ClearTypeResolutions(targetType, false);
+			result = dependencyManager.ClearTypeResolutions(targetType, includeAssignableTypes);
 
 			Assert.IsTrue(result);
 
@@ -362,18 +478,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			string _unusedString = null;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution<object>>();
 
 			dependencyManager = new DependencyManager();
 			targetType = typeof(object);
-			selectorKey = "x";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
 			Expect.On(mockDependencyResolution).One.Method(x => x.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).With(dependencyManager, targetType, selectorKey).Will(Return.Value(null));
 
 			dependencyManager.Dispose();
-			dependencyManager.AddResolution<object>(selectorKey, false, mockDependencyResolution);
+			dependencyManager.AddResolution<object>(selectorKey, includeAssignableTypes, mockDependencyResolution);
 		}
 
 		[Test]
@@ -388,18 +506,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			string _unusedString = null;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			dependencyManager = new DependencyManager();
 			targetType = typeof(object);
-			selectorKey = "x";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
 			Expect.On(mockDependencyResolution).One.Method(x => x.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).With(dependencyManager, targetType, selectorKey).Will(Return.Value(null));
 
 			dependencyManager.Dispose();
-			dependencyManager.AddResolution(targetType, selectorKey, false, mockDependencyResolution);
+			dependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
 		}
 
 		[Test]
@@ -409,14 +529,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			DependencyManager dependencyManager;
 			MockFactory mockFactory;
 			IDependencyResolution mockDependencyResolution;
+			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
+			selectorKey = null;
+			includeAssignableTypes = false;
+
 			dependencyManager = new DependencyManager();
 
 			dependencyManager.Dispose();
-			dependencyManager.HasTypeResolution<object>(null, false);
+			dependencyManager.HasTypeResolution<object>(selectorKey, includeAssignableTypes);
 		}
 
 		[Test]
@@ -427,15 +552,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			MockFactory mockFactory;
 			IDependencyResolution mockDependencyResolution;
 			Type targetType;
+			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			dependencyManager = new DependencyManager();
 			targetType = typeof(object);
+			selectorKey = null;
+			includeAssignableTypes = false;
 
 			dependencyManager.Dispose();
-			dependencyManager.HasTypeResolution(targetType, null, false);
+			dependencyManager.HasTypeResolution(targetType, selectorKey, includeAssignableTypes);
 		}
 
 		[Test]
@@ -464,14 +593,17 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			MockFactory mockFactory;
 			IDependencyResolution mockDependencyResolution;
 			bool result;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			dependencyManager = new DependencyManager();
 
+			includeAssignableTypes = false;
+
 			dependencyManager.Dispose();
-			result = dependencyManager.ClearTypeResolutions<object>(false);
+			result = dependencyManager.ClearTypeResolutions<object>(includeAssignableTypes);
 		}
 
 		[Test]
@@ -483,15 +615,17 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			IDependencyResolution mockDependencyResolution;
 			Type targetType;
 			bool result;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			dependencyManager = new DependencyManager();
 			targetType = typeof(object);
+			includeAssignableTypes = false;
 
 			dependencyManager.Dispose();
-			result = dependencyManager.ClearTypeResolutions(targetType, false);
+			result = dependencyManager.ClearTypeResolutions(targetType, includeAssignableTypes);
 		}
 
 		[Test]
@@ -502,15 +636,17 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			MockFactory mockFactory;
 			IDependencyResolution mockDependencyResolution;
 			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			dependencyManager = new DependencyManager();
-			selectorKey = "x";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
 			dependencyManager.Dispose();
-			dependencyManager.RemoveResolution<object>(selectorKey, false);
+			dependencyManager.RemoveResolution<object>(selectorKey, includeAssignableTypes);
 		}
 
 		[Test]
@@ -522,16 +658,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			IDependencyResolution mockDependencyResolution;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			dependencyManager = new DependencyManager();
 			targetType = typeof(object);
-			selectorKey = "x";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
 			dependencyManager.Dispose();
-			dependencyManager.RemoveResolution(targetType, selectorKey, false);
+			dependencyManager.RemoveResolution(targetType, selectorKey, includeAssignableTypes);
 		}
 
 		[Test]
@@ -543,15 +681,17 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			IDependencyResolution mockDependencyResolution;
 			string selectorKey;
 			object value;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			dependencyManager = new DependencyManager();
-			selectorKey = "x";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
 			dependencyManager.Dispose();
-			value = dependencyManager.ResolveDependency<object>(selectorKey, false);
+			value = dependencyManager.ResolveDependency<object>(selectorKey, includeAssignableTypes);
 		}
 
 		[Test]
@@ -564,16 +704,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			Type targetType;
 			string selectorKey;
 			object value;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			dependencyManager = new DependencyManager();
 			targetType = typeof(object);
-			selectorKey = "x";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
 			dependencyManager.Dispose();
-			value = dependencyManager.ResolveDependency(targetType, selectorKey, false);
+			value = dependencyManager.ResolveDependency(targetType, selectorKey, includeAssignableTypes);
 		}
 
 		[Test]
@@ -588,18 +730,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			string _unusedString = null;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			dependencyManager = new DependencyManager();
 			targetType = typeof(object);
-			selectorKey = "x";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
 			Expect.On(mockDependencyResolution).One.Method(x => x.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).With(dependencyManager, targetType, selectorKey).Will(Return.Value(null));
 
-			dependencyManager.AddResolution(targetType, selectorKey, false, mockDependencyResolution);
-			dependencyManager.AddResolution(targetType, selectorKey, false, mockDependencyResolution);
+			dependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
+			dependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
 		}
 
 		[Test]
@@ -611,15 +755,17 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			IDependencyResolution mockDependencyResolution;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			dependencyManager = new DependencyManager();
 			targetType = typeof(object);
-			selectorKey = "zzz";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
-			dependencyManager.RemoveResolution(targetType, selectorKey, false);
+			dependencyManager.RemoveResolution(targetType, selectorKey, includeAssignableTypes);
 		}
 
 		[Test]
@@ -632,15 +778,17 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			Type targetType;
 			string selectorKey;
 			object value;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			dependencyManager = new DependencyManager();
 			targetType = typeof(object);
-			selectorKey = "xxx";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
-			value = dependencyManager.ResolveDependency(targetType, selectorKey, false);
+			value = dependencyManager.ResolveDependency(targetType, selectorKey, includeAssignableTypes);
 		}
 
 		[Test]
@@ -656,6 +804,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			Type targetType;
 			string selectorKey;
 			object value;
+			bool includeAssignableTypes;
 
 			dependencyManager = new DependencyManager();
 
@@ -663,12 +812,13 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			targetType = typeof(IDisposable);
-			selectorKey = "yyy";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
 			Expect.On(mockDependencyResolution).One.Method(x => x.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).With(dependencyManager, targetType, selectorKey).Will(Return.Value(1));
 
-			dependencyManager.AddResolution(targetType, selectorKey, false, mockDependencyResolution);
-			value = dependencyManager.ResolveDependency<IDisposable>(selectorKey, false);
+			dependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
+			value = dependencyManager.ResolveDependency<IDisposable>(selectorKey, includeAssignableTypes);
 		}
 
 		[Test]
@@ -679,14 +829,16 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			MockFactory mockFactory;
 			IDependencyResolution<object> mockDependencyResolution;
 			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = null;
 
 			dependencyManager = new DependencyManager();
-			selectorKey = "x";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
-			dependencyManager.AddResolution<object>(selectorKey, false, mockDependencyResolution);
+			dependencyManager.AddResolution<object>(selectorKey, includeAssignableTypes, mockDependencyResolution);
 		}
 
 		[Test]
@@ -698,15 +850,17 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			IDependencyResolution mockDependencyResolution;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = null;
 
 			dependencyManager = new DependencyManager();
 			targetType = typeof(object);
-			selectorKey = "x";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
-			dependencyManager.AddResolution(targetType, selectorKey, false, mockDependencyResolution);
+			dependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
 		}
 
 		[Test]
@@ -721,6 +875,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			string _unusedString = null;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution<object>>();
@@ -728,10 +883,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			dependencyManager = new DependencyManager();
 			targetType = typeof(object);
 			selectorKey = null;
+			includeAssignableTypes = false;
 
 			Expect.On(mockDependencyResolution).One.Method(x => x.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).With(dependencyManager, targetType, selectorKey).Will(Return.Value(null));
 
-			dependencyManager.AddResolution<object>(selectorKey, false, mockDependencyResolution);
+			dependencyManager.AddResolution<object>(selectorKey, includeAssignableTypes, mockDependencyResolution);
 		}
 
 		[Test]
@@ -746,6 +902,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			string _unusedString = null;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
@@ -753,10 +910,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			dependencyManager = new DependencyManager();
 			targetType = typeof(object);
 			selectorKey = null;
+			includeAssignableTypes = false;
 
 			Expect.On(mockDependencyResolution).One.Method(x => x.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).With(dependencyManager, targetType, selectorKey).Will(Return.Value(null));
 
-			dependencyManager.AddResolution(targetType, selectorKey, false, mockDependencyResolution);
+			dependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
 		}
 
 		[Test]
@@ -767,14 +925,16 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			MockFactory mockFactory;
 			IDependencyResolution mockDependencyResolution;
 			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			dependencyManager = new DependencyManager();
 			selectorKey = null;
+			includeAssignableTypes = false;
 
-			dependencyManager.RemoveResolution<object>(selectorKey, false);
+			dependencyManager.RemoveResolution<object>(selectorKey, includeAssignableTypes);
 		}
 
 		[Test]
@@ -786,6 +946,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			IDependencyResolution mockDependencyResolution;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
@@ -793,8 +954,9 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			dependencyManager = new DependencyManager();
 			targetType = typeof(object);
 			selectorKey = null;
+			includeAssignableTypes = false;
 
-			dependencyManager.RemoveResolution(targetType, selectorKey, false);
+			dependencyManager.RemoveResolution(targetType, selectorKey, includeAssignableTypes);
 		}
 
 		[Test]
@@ -806,14 +968,16 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			IDependencyResolution mockDependencyResolution;
 			string selectorKey;
 			object value;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			dependencyManager = new DependencyManager();
 			selectorKey = null;
+			includeAssignableTypes = false;
 
-			value = dependencyManager.ResolveDependency<object>(selectorKey, false);
+			value = dependencyManager.ResolveDependency<object>(selectorKey, includeAssignableTypes);
 		}
 
 		[Test]
@@ -826,6 +990,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			Type targetType;
 			string selectorKey;
 			object value;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
@@ -833,8 +998,9 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			dependencyManager = new DependencyManager();
 			targetType = typeof(object);
 			selectorKey = null;
+			includeAssignableTypes = false;
 
-			value = dependencyManager.ResolveDependency(targetType, selectorKey, false);
+			value = dependencyManager.ResolveDependency(targetType, selectorKey, includeAssignableTypes);
 		}
 
 		[Test]
@@ -849,17 +1015,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			string _unusedString = null;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			dependencyManager = new DependencyManager();
 			targetType = null;
-			selectorKey = "x";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
 			Expect.On(mockDependencyResolution).One.Method(x => x.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).With(dependencyManager, targetType, selectorKey).Will(Return.Value(null));
 
-			dependencyManager.AddResolution(targetType, selectorKey, false, mockDependencyResolution);
+			dependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
 		}
 
 		[Test]
@@ -870,14 +1038,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			MockFactory mockFactory;
 			IDependencyResolution mockDependencyResolution;
 			Type targetType;
+			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			dependencyManager = new DependencyManager();
 			targetType = null;
+			selectorKey = string.Empty;
+			includeAssignableTypes = false;
 
-			dependencyManager.HasTypeResolution(targetType, null, false);
+			dependencyManager.HasTypeResolution(targetType, selectorKey, includeAssignableTypes);
 		}
 
 		[Test]
@@ -888,14 +1060,16 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			MockFactory mockFactory;
 			IDependencyResolution mockDependencyResolution;
 			Type targetType;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			dependencyManager = new DependencyManager();
 			targetType = null;
+			includeAssignableTypes = false;
 
-			dependencyManager.ClearTypeResolutions(targetType, false);
+			dependencyManager.ClearTypeResolutions(targetType, includeAssignableTypes);
 		}
 
 		[Test]
@@ -907,15 +1081,17 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			IDependencyResolution mockDependencyResolution;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			dependencyManager = new DependencyManager();
 			targetType = null;
-			selectorKey = "x";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
-			dependencyManager.RemoveResolution(targetType, selectorKey, false);
+			dependencyManager.RemoveResolution(targetType, selectorKey, includeAssignableTypes);
 		}
 
 		[Test]
@@ -927,6 +1103,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			IDependencyResolution mockDependencyResolution;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 			object value;
 
 			mockFactory = new MockFactory();
@@ -934,9 +1111,10 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			dependencyManager = new DependencyManager();
 			targetType = null;
-			selectorKey = "x";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
-			value = dependencyManager.ResolveDependency(targetType, selectorKey, false);
+			value = dependencyManager.ResolveDependency(targetType, selectorKey, includeAssignableTypes);
 		}
 
 		[Test]
@@ -971,6 +1149,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			MockFactory mockFactory;
 			IDependencyResolution<object> mockDependencyResolution;
 			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution<object>>();
@@ -978,10 +1157,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			Expect.On(mockDependencyResolution).One.Method(m => m.Dispose());
 
 			dependencyManager = new DependencyManager();
-			selectorKey = "x";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
-			dependencyManager.AddResolution<object>(selectorKey, false, mockDependencyResolution);
-			dependencyManager.RemoveResolution<object>(selectorKey, false);
+			dependencyManager.AddResolution<object>(selectorKey, includeAssignableTypes, mockDependencyResolution);
+			dependencyManager.RemoveResolution<object>(selectorKey, includeAssignableTypes);
 
 			mockFactory.VerifyAllExpectationsHaveBeenMet();
 		}
@@ -994,6 +1174,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			IDependencyResolution mockDependencyResolution;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 
 			mockFactory = new MockFactory();
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
@@ -1002,10 +1183,11 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 			dependencyManager = new DependencyManager();
 			targetType = typeof(object);
-			selectorKey = "x";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
-			dependencyManager.AddResolution(targetType, selectorKey, false, mockDependencyResolution);
-			dependencyManager.RemoveResolution(targetType, selectorKey, false);
+			dependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
+			dependencyManager.RemoveResolution(targetType, selectorKey, includeAssignableTypes);
 
 			mockFactory.VerifyAllExpectationsHaveBeenMet();
 		}
@@ -1021,6 +1203,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			string _unusedString = null;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 			object value;
 
 			dependencyManager = new DependencyManager();
@@ -1029,12 +1212,13 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution<object>>();
 
 			targetType = typeof(object);
-			selectorKey = "x";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
 			Expect.On(mockDependencyResolution).One.Method(x => x.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).With(dependencyManager, targetType, selectorKey).Will(Return.Value(1));
 
-			dependencyManager.AddResolution<object>(selectorKey, false, mockDependencyResolution);
-			value = dependencyManager.ResolveDependency<object>(selectorKey, false);
+			dependencyManager.AddResolution<object>(selectorKey, includeAssignableTypes, mockDependencyResolution);
+			value = dependencyManager.ResolveDependency<object>(selectorKey, includeAssignableTypes);
 
 			Assert.IsNotNull(value);
 			Assert.AreEqual(1, value);
@@ -1053,6 +1237,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			string _unusedString = null;
 			Type targetType;
 			string selectorKey;
+			bool includeAssignableTypes;
 			object value;
 
 			dependencyManager = new DependencyManager();
@@ -1061,12 +1246,13 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			mockDependencyResolution = mockFactory.CreateInstance<IDependencyResolution>();
 
 			targetType = typeof(object);
-			selectorKey = "x";
+			selectorKey = COMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
 			Expect.On(mockDependencyResolution).One.Method(x => x.Resolve(_unusedDependencyManager, _unusedType, _unusedString)).With(dependencyManager, targetType, selectorKey).Will(Return.Value(1));
 
-			dependencyManager.AddResolution(targetType, selectorKey, false, mockDependencyResolution);
-			value = dependencyManager.ResolveDependency(targetType, selectorKey, false);
+			dependencyManager.AddResolution(targetType, selectorKey, includeAssignableTypes, mockDependencyResolution);
+			value = dependencyManager.ResolveDependency(targetType, selectorKey, includeAssignableTypes);
 
 			Assert.IsNotNull(value);
 			Assert.AreEqual(1, value);
@@ -1078,10 +1264,15 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 		public void ShouldVerifyAutoWiringTest()
 		{
 			IFormattable formattable;
+			string selectorKey;
+			bool includeAssignableTypes;
+
+			selectorKey = UNCOMMON_SELECTOR_KEY;
+			includeAssignableTypes = false;
 
 			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.ScanAssembly<DependencyManagerTests>();
 
-			formattable = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IFormattable>("bob", false);
+			formattable = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IFormattable>(selectorKey, includeAssignableTypes);
 
 			Assert.IsNotNull(formattable);
 			Assert.IsInstanceOf<double>(formattable);

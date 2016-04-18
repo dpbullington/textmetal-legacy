@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 using TextMetal.Middleware.Datazoid.Models.Functional;
@@ -26,9 +27,13 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 	{
 		#region Constructors/Destructors
 
-		protected DzModelRepository()
+		protected DzModelRepository(IDataTypeFascade dataTypeFascade, IAppConfigFascade appConfigFascade, IDataSourceTagStrategy dataSourceTagStrategy)
+			: base(dataTypeFascade, appConfigFascade)
 		{
-			this.dataSourceTagStrategy = DataSourceTagStrategyFactory.Instance.GetDataSourceTagStrategy(this.DataSourceTag);
+			if ((object)dataSourceTagStrategy == null)
+				throw new ArgumentNullException(nameof(dataSourceTagStrategy));
+
+			this.dataSourceTagStrategy = dataSourceTagStrategy;
 		}
 
 		#endregion
@@ -612,7 +617,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 			resourceName = string.Format(RESOURCE_NAME_FORMAT, this.GetType().Namespace, this.DataSourceTag.SafeToString().ToLower());
 
 			if (!XmlSerializationStrategy.Instance.TryGetFromAssemblyResource<DatabaseHistory>(this.GetType(), resourceName, out databaseHistory))
-				throw new InvalidOperationException(string.Format("Unable to deserialize instance of '{0}' from the manifest resource name '{1}' in the assembly '{2}'.", typeof(DatabaseHistory).FullName, resourceName, this.GetType().Assembly.FullName));
+				throw new InvalidOperationException(string.Format("Unable to deserialize instance of '{0}' from the manifest resource name '{1}' in the assembly '{2}'.", typeof(DatabaseHistory).FullName, resourceName, this.GetType().GetTypeInfo().Assembly.FullName));
 
 			using (IUnitOfWork unitOfWork = this.GetUnitOfWork(true))
 			{

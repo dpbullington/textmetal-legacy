@@ -102,7 +102,7 @@ namespace TextMetal.Framework.Tokenization
 				}
 				else // argument value
 				{
-					if (!DataTypeFascade.Instance.TryParse(parameterType, parameters[i], out argumentValue))
+					if (!ExtensionMethods.DataTypeFascadeLegacyInstance.TryParse(parameterType, parameters[i], out argumentValue))
 						throw new InvalidOperationException(string.Format("StaticMethodResolver parameter at index '{0}' with value '{1}' was not a valid '{2}'.", i, parameters[i], parameterType.FullName));
 
 					argumentValues.Add(argumentValue);

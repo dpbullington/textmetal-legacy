@@ -6,10 +6,11 @@
 using System;
 using System.Data;
 using System.IO;
-using System.Reflection;
+
+using Microsoft.Extensions.PlatformAbstractions;
 
 using TextMetal.Middleware.Datazoid.UoW;
-using TextMetal.Middleware.Solder.Context;
+using TextMetal.Middleware.Solder.Runtime;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Datazoid.Repositories
@@ -61,7 +62,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories
 			{
 				string connectionString;
 
-				connectionString = this.AppConfigFascade.GetConnectionString(this.ConnectionStringName);
+				connectionString = this.AppConfigFascade.GetAppSetting<string>(this.ConnectionStringName);
 
 				this.OnPreProcessConnectionString(ref connectionString);
 
@@ -85,7 +86,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories
 		{
 			get
 			{
-				return Type.GetType(this.AppConfigFascade.GetConnectionProvider(this.ConnectionStringName), true);
+				return Type.GetType(this.AppConfigFascade.GetAppSetting<string>(this.ConnectionStringName), true);
 			}
 		}
 
@@ -171,14 +172,11 @@ namespace TextMetal.Middleware.Datazoid.Repositories
 
 		private static string GetApplicationUserSpecificDirectoryPath()
 		{
-			Assembly assembly;
-			AssemblyInformationFascade assemblyInformationFascade;
+			IApplicationEnvironment applicationEnvironment;
 			string userSpecificDirectoryPath;
 
-			if (HttpContextAccessorContextualStorageStrategy.IsInHttpContext)
-				userSpecificDirectoryPath = Path.GetFullPath(HttpContextAccessorContextualStorageStrategy.GetApplicationRootPhysicalPath());
-			else
-				userSpecificDirectoryPath = Path.GetFullPath("."); // HACK
+			applicationEnvironment = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IApplicationEnvironment>(string.Empty, false);
+			userSpecificDirectoryPath = Path.GetFullPath(applicationEnvironment.ApplicationBasePath);
 
 			return userSpecificDirectoryPath;
 		}

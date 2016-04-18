@@ -26,7 +26,7 @@ namespace TextMetal.Middleware.Datazoid
 			this.targetEnumerator = targetEnumerable.GetEnumerator();
 
 			if ((object)this.targetEnumerator == null)
-				throw new InvalidOperationException(nameof(targetEnumerator));
+				throw new InvalidOperationException(nameof(this.targetEnumerator));
 
 			this.ordinalLookup = upstreamMetadata.Select((mc, i) => new
 																	{
@@ -84,19 +84,19 @@ namespace TextMetal.Middleware.Datazoid
 			}
 		}
 
-		public override bool HasRows
-		{
-			get
-			{
-				return this.HasRecord;
-			}
-		}
-
 		private bool HasRecord
 		{
 			get
 			{
 				return (object)this.TargetEnumerator.Current != null;
+			}
+		}
+
+		public override bool HasRows
+		{
+			get
+			{
+				return this.HasRecord;
 			}
 		}
 

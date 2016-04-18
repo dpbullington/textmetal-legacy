@@ -27,12 +27,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Interception._
 		#region Methods/Operators
 
 		[Test]
-		public void ShouldCreateTest__todo_mock_invocation_and_context()
-		{
-			Assert.Ignore("TODO: This test case has not been implemented yet.");
-		}
-
-		[Test]
 		public void ShouldCloneInvokeTest()
 		{
 			MockRuntimeInterception mockRuntimeInterception;
@@ -57,6 +51,12 @@ namespace TextMetal.Middleware.UnitTests.Solder.Interception._
 
 			Assert.IsNull(returnValue);
 			Assert.AreEqual("IMockCloneable::Clone", mockRuntimeInterception.LastOperationName);
+		}
+
+		[Test]
+		public void ShouldCreateTest__todo_mock_invocation_and_context()
+		{
+			Assert.Ignore("TODO: This test case has not been implemented yet.");
 		}
 
 		[Test]
@@ -86,7 +86,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Interception._
 			Assert.IsTrue(mockRuntimeInterception.Disposed);
 		}
 
-		
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullInputParameterInvokeTest()

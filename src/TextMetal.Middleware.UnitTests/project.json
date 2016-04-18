@@ -23,14 +23,7 @@
 			}
 		}
 	},
-	"exclude": [
-		"Datazoid",
-		"TestingInfrastructure\\IMockModelObject.cs",
-		"TestingInfrastructure\\MockModelObject.cs",
-
-		
-		"Solder\\Serialization\\**.cs"
-	],
+	"exclude": [ "Datazoid" ],
 	"content": "appconfig.json",
 	"dependencies": {
 		"Microsoft.CSharp": "4.0.1-beta-23516",

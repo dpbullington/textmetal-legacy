@@ -88,6 +88,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnNullDependencyResolutionCreateTest()
+		{
+			SingletonWrapperDependencyResolution singletonWrapperDependencyResolution;
+			IDependencyResolution mockDependencyResolution;
+
+			mockDependencyResolution = null;
+
+			singletonWrapperDependencyResolution = new SingletonWrapperDependencyResolution(mockDependencyResolution);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullKeyResolveTest()
 		{
 			SingletonWrapperDependencyResolution singletonWrapperDependencyResolution;
@@ -122,18 +134,6 @@ namespace TextMetal.Middleware.UnitTests.Solder.Injection._
 			singletonWrapperDependencyResolution = new SingletonWrapperDependencyResolution(mockDependencyResolution);
 
 			result = singletonWrapperDependencyResolution.Resolve(mockDependencyManager, null, string.Empty);
-		}
-
-		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnNullValueCreateTest()
-		{
-			SingletonWrapperDependencyResolution singletonWrapperDependencyResolution;
-			IDependencyResolution mockDependencyResolution;
-
-			mockDependencyResolution = null;
-
-			singletonWrapperDependencyResolution = new SingletonWrapperDependencyResolution(mockDependencyResolution);
 		}
 
 		#endregion

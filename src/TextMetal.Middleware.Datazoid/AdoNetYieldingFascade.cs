@@ -9,6 +9,7 @@ using System.Data;
 using System.Data.Common;
 
 using TextMetal.Middleware.Solder;
+using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Datazoid
@@ -21,7 +22,8 @@ namespace TextMetal.Middleware.Datazoid
 		/// Initializes a new instance of the AdoNetFascade class.
 		/// </summary>
 		/// <param name="reflectionFascade"> The reflection instance to use. </param>
-		public AdoNetYieldingFascade(IReflectionFascade reflectionFascade)
+		[DependencyInjection]
+		public AdoNetYieldingFascade([DependencyInjection] IReflectionFascade reflectionFascade)
 		{
 			if ((object)reflectionFascade == null)
 				throw new ArgumentNullException(nameof(reflectionFascade));
@@ -29,32 +31,17 @@ namespace TextMetal.Middleware.Datazoid
 			this.reflectionFascade = reflectionFascade;
 		}
 
-		/// <summary>
-		/// Initializes a new instance of the AdoNetFascade class.
-		/// </summary>
-		private AdoNetYieldingFascade()
-			: this(Solder.Utilities.ReflectionFascade.Instance)
-		{
-		}
-
 		#endregion
 
 		#region Fields/Constants
 
-		private static readonly AdoNetYieldingFascade instance = new AdoNetYieldingFascade();
+		public static IAdoNetYieldingFascade Instance;
+
 		private readonly IReflectionFascade reflectionFascade;
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		public static AdoNetYieldingFascade Instance
-		{
-			get
-			{
-				return instance;
-			}
-		}
 
 		private IReflectionFascade ReflectionFascade
 		{
@@ -474,7 +461,8 @@ namespace TextMetal.Middleware.Datazoid
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): before yield", typeof(AdoNetYieldingFascade).Name));
 
-			using (DataTable dataTable = dbDataReader.GetSchemaTable())
+			throw new NotSupportedException(string.Format("Not supported on CoreCLR."));
+			/*using (DataTable dataTable = dbDataReader.GetSchemaTable())
 			{
 				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): use table", typeof(AdoNetYieldingFascade).Name));
 
@@ -499,7 +487,7 @@ namespace TextMetal.Middleware.Datazoid
 				}
 
 				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): dispose table", typeof(AdoNetYieldingFascade).Name));
-			}
+			}*/
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): after yield", typeof(AdoNetYieldingFascade).Name));
 
@@ -559,7 +547,7 @@ namespace TextMetal.Middleware.Datazoid
 		/// <returns> The mapped DbType. </returns>
 		public DbType InferDbTypeForClrType(Type clrType)
 		{
-			return AdoNetLiteFascade.Instance.InferDbTypeForClrType(clrType);
+			return ExtensionMethods.AdoNetLiteLegacyInstance.InferDbTypeForClrType(clrType);
 		}
 
 		#endregion

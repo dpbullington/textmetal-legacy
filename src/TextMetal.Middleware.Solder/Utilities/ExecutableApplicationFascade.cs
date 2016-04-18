@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 
 using TextMetal.Middleware.Solder.Context;
+using TextMetal.Middleware.Solder.Runtime;
 
 namespace TextMetal.Middleware.Solder.Utilities
 {
@@ -43,6 +44,10 @@ namespace TextMetal.Middleware.Solder.Utilities
 		private const string APPCONFIG_ARGS_REGEX = @"-(" + APPCONFIG_ID_REGEX_UNBOUNDED + @"{0,63}):(.{0,})";
 		private const string APPCONFIG_ID_REGEX_UNBOUNDED = @"[a-zA-Z_\.][a-zA-Z_\.0-9]";
 		private const string APPCONFIG_PROPS_REGEX = @"(" + APPCONFIG_ID_REGEX_UNBOUNDED + @"{0,63})=(.{0,})";
+
+		private const string ENV_VAR_SOLDER_DNX_DEBUG_QUIRKS_MODE = "SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE";
+
+		private const string ENV_VAR_SOLDER_HOOK_UNHANDLED_EXCEPTIONS = "SOLDER_HOOK_UNHANDLED_EXCEPTIONS";
 		private static readonly IContextualStorageFactory contextualStorageFactory = new DefaultContextualStorageFactory(ContextScope.LocalThreadSafe);
 
 		private static readonly string EXECUTABLE_APPLICATION_CONTEXT_CURRENT_KEY = typeof(ExecutableApplicationFascade).GetTypeInfo().GUID.SafeToString();
@@ -75,42 +80,38 @@ namespace TextMetal.Middleware.Solder.Utilities
 			}
 		}
 
-		public static bool DnxDebugQuicksMode
+		public static bool EnableDnxDebugQuirksMode
 		{
 			get
 			{
-				string key;
 				string svalue;
 				bool ovalue;
 
-				key = string.Format("SOLDER_DNX_DEBUG_QUICKS_MODE");
-				svalue = Environment.GetEnvironmentVariable(key);
+				svalue = Environment.GetEnvironmentVariable(ENV_VAR_SOLDER_DNX_DEBUG_QUIRKS_MODE);
 
 				if ((object)svalue == null)
 					return false;
 
-				if (!Utilities.DataTypeFascade.Instance.TryParse<bool>(svalue, out ovalue))
+				if (!AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DataTypeFascade.TryParse<bool>(svalue, out ovalue))
 					return false;
 
 				return ovalue;
 			}
 		}
 
-		public static bool HookUnhandledExceptionEvents
+		public static bool HookUnhandledExceptions
 		{
 			get
 			{
-				string key;
 				string svalue;
 				bool ovalue;
 
-				key = string.Format("SOLDER_ENABLE_HOOK_UEX_EVENTS");
-				svalue = Environment.GetEnvironmentVariable(key);
+				svalue = Environment.GetEnvironmentVariable(ENV_VAR_SOLDER_HOOK_UNHANDLED_EXCEPTIONS);
 
 				if ((object)svalue == null)
 					return false;
 
-				if (!Utilities.DataTypeFascade.Instance.TryParse<bool>(svalue, out ovalue))
+				if (!AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DataTypeFascade.TryParse<bool>(svalue, out ovalue))
 					return false;
 
 				return !Debugger.IsAttached && ovalue;
@@ -230,7 +231,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 		/// <returns> The resulting exit code. </returns>
 		public int EntryPoint(string[] args)
 		{
-			if (HookUnhandledExceptionEvents)
+			if (HookUnhandledExceptions)
 				return this.TryStartup(args);
 			else
 				return this.Startup(args);
@@ -323,7 +324,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 				start = DateTime.UtcNow;
 
 				// HACK
-				this.AssemblyInformationFascade = new AssemblyInformationFascade(this.GetType().GetTypeInfo().Assembly);
+				this.AssemblyInformationFascade = new AssemblyInformationFascade(this.ReflectionFascade, this.GetType().GetTypeInfo().Assembly);
 
 				arguments = this.ParseCommandLineArguments(args);
 				argumentMap = this.GetArgumentMap();
@@ -401,7 +402,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			}
 			catch (Exception ex)
 			{
-				if (HookUnhandledExceptionEvents)
+				if (HookUnhandledExceptions)
 					this.ShowNestedExceptionsAndThrowBrickAtProcess(ex);
 
 				throw;

@@ -15,6 +15,7 @@ using TextMetal.Framework.Source;
 using TextMetal.Framework.Template;
 using TextMetal.Framework.Tokenization;
 using TextMetal.Framework.XmlDialect;
+using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Hosting.Tool
@@ -29,8 +30,31 @@ namespace TextMetal.Framework.Hosting.Tool
 		/// <summary>
 		/// Initializes a new instance of the ToolHost class.
 		/// </summary>
-		public ToolHost()
+		[DependencyInjection]
+		public ToolHost([DependencyInjection] IReflectionFascade reflectionFascade)
 		{
+			if ((object)reflectionFascade == null)
+				throw new ArgumentNullException(nameof(reflectionFascade));
+
+			this.reflectionFascade = reflectionFascade;
+		}
+
+		#endregion
+
+		#region Fields/Constants
+
+		private readonly IReflectionFascade reflectionFascade;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		protected IReflectionFascade ReflectionFascade
+		{
+			get
+			{
+				return this.reflectionFascade;
+			}
 		}
 
 		#endregion
@@ -79,19 +103,19 @@ namespace TextMetal.Framework.Hosting.Tool
 			if ((object)properties == null)
 				throw new ArgumentNullException(nameof(properties));
 
-			if (DataTypeFascade.Instance.IsWhiteSpace(templateFilePath))
+			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(templateFilePath))
 				throw new ArgumentOutOfRangeException(nameof(templateFilePath));
 
-			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
+			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
-			if (DataTypeFascade.Instance.IsWhiteSpace(baseDirectoryPath))
+			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(baseDirectoryPath))
 				throw new ArgumentOutOfRangeException(nameof(baseDirectoryPath));
 
-			if (DataTypeFascade.Instance.IsWhiteSpace(sourceStrategyAqtn))
+			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceStrategyAqtn))
 				throw new ArgumentOutOfRangeException(nameof(sourceStrategyAqtn));
 
-			toolVersion = new AssemblyInformationFascade(typeof(IXmlPersistEngine).GetTypeInfo().Assembly).AssemblyVersion;
+			toolVersion = new AssemblyInformationFascade(this.ReflectionFascade, typeof(IXmlPersistEngine).GetTypeInfo().Assembly).AssemblyVersion;
 			templateFilePath = Path.GetFullPath(templateFilePath);
 			baseDirectoryPath = Path.GetFullPath(baseDirectoryPath);
 

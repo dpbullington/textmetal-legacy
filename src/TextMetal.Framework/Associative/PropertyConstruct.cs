@@ -114,7 +114,7 @@ namespace TextMetal.Framework.Associative
 			else
 				thatValue = rightObject;
 
-			return DataTypeFascade.Instance.ObjectsEqualValueSemantics(thisValue, thatValue);
+			return ExtensionMethods.DataTypeFascadeLegacyInstance.ObjectsEqualValueSemantics(thisValue, thatValue);
 		}
 
 		/// <summary>
@@ -183,7 +183,7 @@ namespace TextMetal.Framework.Associative
 			if ((object)templatingContext == null)
 				throw new ArgumentNullException(nameof(templatingContext));
 
-			if (DataTypeFascade.Instance.IsNullOrWhiteSpace(this.Type))
+			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.Type))
 				valueType = typeof(String);
 			else
 				valueType = System.Type.GetType(this.Type, false);
@@ -191,7 +191,7 @@ namespace TextMetal.Framework.Associative
 			if ((object)valueType == null)
 				throw new InvalidOperationException(string.Format("Failed to determine or load the type '{0}' of the associative property value.", this.Type));
 
-			if (!DataTypeFascade.Instance.TryParse(valueType, this.Value, out value))
+			if (!ExtensionMethods.DataTypeFascadeLegacyInstance.TryParse(valueType, this.Value, out value))
 				throw new InvalidOperationException(string.Format("Failed to parse the associative property value '{0}' into the specified type '{1}'.", value, this.Type));
 
 			return value;

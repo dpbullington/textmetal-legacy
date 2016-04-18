@@ -5,15 +5,10 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 using NUnit.Common;
 
 using NUnitLite;
-
-using TextMetal.Middleware.Solder.Injection;
-using TextMetal.Middleware.Solder.Interception;
-using TextMetal.Middleware.Solder.Runtime;
 
 namespace TextMetal.Middleware.IntegrationTests
 {

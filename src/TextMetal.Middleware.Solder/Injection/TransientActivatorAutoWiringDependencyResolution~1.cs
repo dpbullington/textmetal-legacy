@@ -4,10 +4,6 @@
 */
 
 using System;
-using System.Linq;
-using System.Reflection;
-
-using TextMetal.Middleware.Solder.Utilities;
 
 /* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-04-01 / 83% code coverage */
 

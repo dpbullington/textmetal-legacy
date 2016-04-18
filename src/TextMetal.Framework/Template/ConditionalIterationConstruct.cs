@@ -148,7 +148,7 @@ namespace TextMetal.Framework.Template
 
 			varIx = templatingContext.Tokenizer.ExpandTokens(this.VarIx, dynamicWildcardTokenReplacementStrategy);
 
-			if (!DataTypeFascade.Instance.IsNullOrWhiteSpace(varIx))
+			if (!ExtensionMethods.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(varIx))
 			{
 				new AllocConstruct()
 				{
@@ -161,7 +161,7 @@ namespace TextMetal.Framework.Template
 			// DO NOT USE REAL FOR LOOP HERE
 			while (true)
 			{
-				if (!DataTypeFascade.Instance.IsNullOrWhiteSpace(varIx))
+				if (!ExtensionMethods.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(varIx))
 				{
 					IExpressionContainerConstruct expressionContainerConstruct;
 					ValueConstruct valueConstruct;
@@ -208,7 +208,7 @@ namespace TextMetal.Framework.Template
 
 			this.CoreConditionalIterationTerminate(templatingContext);
 
-			if (!DataTypeFascade.Instance.IsNullOrWhiteSpace(varIx))
+			if (!ExtensionMethods.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(varIx))
 			{
 				new FreeConstruct()
 				{

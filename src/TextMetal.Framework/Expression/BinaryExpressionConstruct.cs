@@ -2126,15 +2126,15 @@ namespace TextMetal.Framework.Expression
 
 						rhs = rightObj.ChangeType<string>();
 
-						if (DataTypeFascade.Instance.IsWhiteSpace(rhs))
-							throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message. | dataTypeFascade.Instance.IsNullOrWhiteSpace(rhs)");
+						if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(rhs))
+							throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message. | dataTypeFascade.ReflectionFascadeLegacyInstance.IsNullOrWhiteSpace(rhs)");
 
 						rightType = Type.GetType(rhs, false);
 
 						if ((object)rightType == null)
 							throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message. | Type.GetType");
 
-						return DataTypeFascade.Instance.ChangeType(leftObj, rightType);
+						return ExtensionMethods.DataTypeFascadeLegacyInstance.ChangeType(leftObj, rightType);
 					}
 
 					break;
@@ -2158,16 +2158,16 @@ namespace TextMetal.Framework.Expression
 							lhs = leftObj.ChangeType<string>();
 							rhs = rightObj.ChangeType<string>();
 
-							if (DataTypeFascade.Instance.IsWhiteSpace(rhs))
-								throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message. | dataTypeFascade.Instance.IsNullOrWhiteSpace(rhs)");
+							if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(rhs))
+								throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message. | dataTypeFascade.ReflectionFascadeLegacyInstance.IsNullOrWhiteSpace(rhs)");
 
 							rightType = Type.GetType(rhs, false);
 
 							if ((object)rightType == null)
 								throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message. | Type.GetType");
 
-							if (!DataTypeFascade.Instance.TryParse(rightType, lhs, out result))
-								throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message. | dataTypeFascade.Instance.TryParse");
+							if (!ExtensionMethods.DataTypeFascadeLegacyInstance.TryParse(rightType, lhs, out result))
+								throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message. | dataTypeFascade.ReflectionFascadeLegacyInstance.TryParse");
 
 							return result;
 						}
@@ -2190,8 +2190,8 @@ namespace TextMetal.Framework.Expression
 
 						rhs = rightObj.ChangeType<string>();
 
-						if (DataTypeFascade.Instance.IsWhiteSpace(rhs))
-							throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message. | dataTypeFascade.Instance.IsNullOrWhiteSpace(rhs)");
+						if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(rhs))
+							throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message. | dataTypeFascade.ReflectionFascadeLegacyInstance.IsNullOrWhiteSpace(rhs)");
 
 						rightType = Type.GetType(rhs, false);
 

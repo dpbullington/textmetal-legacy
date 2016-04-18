@@ -5,9 +5,14 @@
 
 using System;
 
+using TextMetal.Middleware.UnitTests.TestingInfrastructure;
+
+[assembly: MockSingleTestAttibute(int.MaxValue)]
+[module: MockSingleTestAttibute(int.MinValue)]
+
 namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 {
-	[MockSingleTestAttibute(5)]
+	[MockSingleTestAttibute(1)]
 	[MockMultipleTestAttibute(10)]
 	[MockMultipleTestAttibute(20)]
 	public class MockTestAttributedClass
@@ -19,5 +24,12 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 		}
 
 		#endregion
+
+		[MockSingleTestAttibute(2)]
+		[return: MockSingleTestAttibute(8)]
+		public object MyMethod([MockSingleTestAttibute(4)] object obj)
+		{
+			return obj;
+		}
 	}
 }

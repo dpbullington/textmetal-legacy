@@ -110,7 +110,7 @@ namespace TextMetal.Framework.Expression
 
 			if (this.Dictionary.TryGetValue(binder.Name, out thisValue))
 			{
-				if (!DataTypeFascade.Instance.ObjectsEqualValueSemantics(thisValue, value))
+				if (!ExtensionMethods.DataTypeFascadeLegacyInstance.ObjectsEqualValueSemantics(thisValue, value))
 				{
 					this.Dictionary.Remove(binder.Name);
 

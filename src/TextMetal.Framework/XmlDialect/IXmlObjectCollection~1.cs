@@ -17,6 +17,5 @@ namespace TextMetal.Framework.XmlDialect
 	public interface IXmlObjectCollection<TXmlObject> : IList<TXmlObject>
 		where TXmlObject : IXmlObject
 	{
-		
 	}
 }

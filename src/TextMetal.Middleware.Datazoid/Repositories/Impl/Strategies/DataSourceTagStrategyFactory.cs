@@ -19,24 +19,6 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 
 		#endregion
 
-		#region Fields/Constants
-
-		private static readonly DataSourceTagStrategyFactory instance = new DataSourceTagStrategyFactory();
-
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public static DataSourceTagStrategyFactory Instance
-		{
-			get
-			{
-				return instance;
-			}
-		}
-
-		#endregion
-
 		#region Methods/Operators
 
 		public IDataSourceTagStrategy GetDataSourceTagStrategy(string dataSourceTag)

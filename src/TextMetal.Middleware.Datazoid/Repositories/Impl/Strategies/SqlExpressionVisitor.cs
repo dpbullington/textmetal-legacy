@@ -14,6 +14,8 @@ using TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics;
 using TextMetal.Middleware.Datazoid.UoW;
 using TextMetal.Middleware.Solder.Utilities;
 
+using ExtensionMethods = TextMetal.Middleware.Solder.Utilities.ExtensionMethods;
+
 namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 {
 	public sealed class SqlExpressionVisitor : ExpressionVisitor
@@ -184,7 +186,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			tacticParameter = new TacticParameter()
 							{
 								ParameterDirection = ParameterDirection.Input,
-								ParameterDbType = AdoNetLiteFascade.Instance.InferDbTypeForClrType(valueType),
+								ParameterDbType = ExtensionMethods.AdoNetLiteLegacyInstance.InferDbTypeForClrType(valueType),
 								ParameterSize = default(int),
 								ParameterPrecision = default(byte),
 								ParameterScale = default(byte),

@@ -6,13 +6,28 @@
 using System;
 using System.Runtime.InteropServices;
 
+using Microsoft.Framework.Configuration;
+
+using NMock;
+using NMock.Actions;
+using NMock.Matchers;
+
 using NUnit.Framework;
 
 using TextMetal.Middleware.Solder.Utilities;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
+//using ExpectedException = TextMetal.Middleware.UnitTests.Solder.Utilities._.__ExpectedException;
+
 namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 {
+	public class __ExpectedException : Attribute
+	{
+		public __ExpectedException(Type type)
+		{
+		}
+	}
+
 	[TestFixture]
 	public class AppConfigFascadeTests
 	{
@@ -24,38 +39,44 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 		#endregion
 
+		#region Fields/Constants
+
+		private const string UNATTAINABLE_VALUE = "!@#$%^&*(";
+
+		#endregion
+
 		#region Methods/Operators
 
 		[Test]
-		public void ShouldCreateTest__todo_mock_configuration_root()
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldFailOnAppSettingsConfigurationRootCreateTest()
 		{
-			Assert.Ignore("TODO: This test case has not been implemented yet.");
+			AppConfigFascade appConfigFascade;
+			IConfigurationRoot mockConfigurationRoot;
+			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = null;
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
 		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnAppSettingsFileNameCreateTest()
+		public void ShouldFailOnDataTypeFascadeCreateTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
 
-			mockAppConfigFilePath = null;
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
-		}
-
-		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
-		public void ShouldFailOnDataTypeCreateTest()
-		{
-			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
-			IDataTypeFascade mockDataTypeFascade;
-
-			mockAppConfigFilePath = string.Empty;
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
 			mockDataTypeFascade = null;
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
 		}
 
 		[Test]
@@ -63,14 +84,23 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetTypedBooleanTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueBoolean";
+			string __unusedString = null;
+			Boolean __unusedBoolean;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Boolean>("BadAppConfigFascadeValueBoolean");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Boolean>(__unusedString, out __unusedBoolean)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Boolean>(KEY);
 		}
 
 		[Test]
@@ -78,12 +108,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetTypedByteTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueByte";
+			string __unusedString = null;
+			Byte __unusedByte;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Byte>(__unusedString, out __unusedByte)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
 
 			appConfigFascade.GetAppSetting<Byte>("BadAppConfigFascadeValueByte");
 		}
@@ -93,14 +132,23 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetTypedCharTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueChar";
+			string __unusedString = null;
+			Char __unusedChar;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Char>("BadAppConfigFascadeValueChar");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Char>(__unusedString, out __unusedChar)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Char>(KEY);
 		}
 
 		[Test]
@@ -108,14 +156,23 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetTypedDateTimeTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueDateTime";
+			string __unusedString = null;
+			DateTime __unusedDateTime;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<DateTime>("BadAppConfigFascadeValueDateTime");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<DateTime>(__unusedString, out __unusedDateTime)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<DateTime>(KEY);
 		}
 
 		[Test]
@@ -123,14 +180,23 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetTypedDecimalTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueDecimal";
+			string __unusedString = null;
+			Decimal __unusedDecimal;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Decimal>("BadAppConfigFascadeValueDecimal");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Decimal>(__unusedString, out __unusedDecimal)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Decimal>(KEY);
 		}
 
 		[Test]
@@ -138,14 +204,23 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetTypedDoubleTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueDouble";
+			string __unusedString = null;
+			Double __unusedDouble;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Double>("BadAppConfigFascadeValueDouble");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Double>(__unusedString, out __unusedDouble)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Double>(KEY);
 		}
 
 		[Test]
@@ -153,14 +228,23 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetTypedEnumTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueEnum";
+			string __unusedString = null;
+			CharSet __unusedCharSet;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<CharSet>("BadAppConfigFascadeValueEnum");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<CharSet>(__unusedString, out __unusedCharSet)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<CharSet>(KEY);
 		}
 
 		[Test]
@@ -168,14 +252,23 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetTypedGuidTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueGuid";
+			string __unusedString = null;
+			Guid __unusedGuid;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Guid>("BadAppConfigFascadeValueGuid");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Guid>(__unusedString, out __unusedGuid)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Guid>(KEY);
 		}
 
 		[Test]
@@ -183,14 +276,23 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetTypedInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueInt16";
+			string __unusedString = null;
+			Int16 __unusedInt16;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Int16>("BadAppConfigFascadeValueInt16");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Int16>(__unusedString, out __unusedInt16)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Int16>(KEY);
 		}
 
 		[Test]
@@ -198,14 +300,23 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetTypedInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueInt32";
+			string __unusedString = null;
+			Int32 __unusedInt32;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Int32>("BadAppConfigFascadeValueInt32");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Int32>(__unusedString, out __unusedInt32)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Int32>(KEY);
 		}
 
 		[Test]
@@ -213,14 +324,23 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetTypedInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueInt64";
+			string __unusedString = null;
+			Int64 __unusedInt64;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Int64>("BadAppConfigFascadeValueInt64");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Int64>(__unusedString, out __unusedInt64)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Int64>(KEY);
 		}
 
 		[Test]
@@ -228,14 +348,23 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetTypedSByteTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueSByte";
+			string __unusedString = null;
+			SByte __unusedSByte;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<SByte>("BadAppConfigFascadeValueSByte");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<SByte>(__unusedString, out __unusedSByte)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<SByte>(KEY);
 		}
 
 		[Test]
@@ -243,14 +372,23 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetTypedSingleTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueSingle";
+			string __unusedString = null;
+			Single __unusedSingle;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Single>("BadAppConfigFascadeValueSingle");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Single>(__unusedString, out __unusedSingle)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Single>(KEY);
 		}
 
 		[Test]
@@ -258,14 +396,23 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetTypedTimeSpanTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueTimeSpan";
+			string __unusedString = null;
+			TimeSpan __unusedTimeSpan;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<TimeSpan>("BadAppConfigFascadeValueTimeSpan");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<TimeSpan>(__unusedString, out __unusedTimeSpan)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<TimeSpan>(KEY);
 		}
 
 		[Test]
@@ -273,14 +420,23 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetTypedUInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueUInt16";
+			string __unusedString = null;
+			UInt16 __unusedUInt16;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<UInt16>("BadAppConfigFascadeValueUInt16");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<UInt16>(__unusedString, out __unusedUInt16)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<UInt16>(KEY);
 		}
 
 		[Test]
@@ -288,14 +444,23 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetTypedUInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueUInt32";
+			string __unusedString = null;
+			UInt32 __unusedUInt32;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<UInt32>("BadAppConfigFascadeValueUInt32");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<UInt32>(__unusedString, out __unusedUInt32)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<UInt32>(KEY);
 		}
 
 		[Test]
@@ -303,14 +468,23 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetTypedUInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueUInt64";
+			string __unusedString = null;
+			UInt64 __unusedUInt64;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<UInt64>("BadAppConfigFascadeValueUInt64");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<UInt64>(__unusedString, out __unusedUInt64)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<UInt64>(KEY);
 		}
 
 		[Test]
@@ -318,14 +492,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetUntypedBooleanTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueBoolean";
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedBoolean;
+			Type valueType = typeof(Boolean);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Boolean), "BadAppConfigFascadeValueBoolean");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedBoolean)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -333,14 +518,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetUntypedByteTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueByte";
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedByte;
+			Type valueType = typeof(Byte);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Byte), "BadAppConfigFascadeValueByte");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedByte)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -348,14 +544,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetUntypedCharTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueChar";
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedChar;
+			Type valueType = typeof(Char);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Char), "BadAppConfigFascadeValueChar");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedChar)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -363,14 +570,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetUntypedDateTimeTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueDateTime";
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedDateTime;
+			Type valueType = typeof(DateTime);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(DateTime), "BadAppConfigFascadeValueDateTime");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedDateTime)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -378,14 +596,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetUntypedDecimalTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueDecimal";
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedDecimal;
+			Type valueType = typeof(Decimal);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Decimal), "BadAppConfigFascadeValueDecimal");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedDecimal)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -393,14 +622,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetUntypedDoubleTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueDouble";
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedDouble;
+			Type valueType = typeof(Double);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Double), "BadAppConfigFascadeValueDouble");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedDouble)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -408,14 +648,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetUntypedEnumTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueEnum";
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedCharSet;
+			Type valueType = typeof(CharSet);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(CharSet), "BadAppConfigFascadeValueEnum");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedCharSet)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -423,14 +674,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetUntypedGuidTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueGuid";
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedGuid;
+			Type valueType = typeof(Guid);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Guid), "BadAppConfigFascadeValueGuid");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedGuid)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -438,14 +700,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetUntypedInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueInt16";
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedInt16;
+			Type valueType = typeof(Int16);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Int16), "BadAppConfigFascadeValueInt16");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedInt16)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -453,14 +726,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetUntypedInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueInt32";
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedInt32;
+			Type valueType = typeof(Int32);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Int32), "BadAppConfigFascadeValueInt32");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedInt32)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -468,14 +752,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetUntypedInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueInt64";
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedInt64;
+			Type valueType = typeof(Int64);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Int64), "BadAppConfigFascadeValueInt64");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedInt64)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -483,14 +778,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetUntypedSByteTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueSByte";
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedSByte;
+			Type valueType = typeof(SByte);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(SByte), "BadAppConfigFascadeValueSByte");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedSByte)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -498,14 +804,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetUntypedSingleTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueSingle";
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedSingle;
+			Type valueType = typeof(Single);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Single), "BadAppConfigFascadeValueSingle");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedSingle)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -513,14 +830,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetUntypedTimeSpanTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueTimeSpan";
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedTimeSpan;
+			Type valueType = typeof(TimeSpan);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(TimeSpan), "BadAppConfigFascadeValueTimeSpan");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedTimeSpan)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -528,14 +856,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetUntypedUInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueUInt16";
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedUInt16;
+			Type valueType = typeof(UInt16);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(UInt16), "BadAppConfigFascadeValueUInt16");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedUInt16)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -543,14 +882,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetUntypedUInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueUInt32";
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedUInt32;
+			Type valueType = typeof(UInt32);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(UInt32), "BadAppConfigFascadeValueUInt32");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedUInt32)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -558,14 +908,25 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnInvalidValueGetUntypedUInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "BadAppConfigFascadeValueUInt64";
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedUInt64;
+			Type valueType = typeof(UInt64);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(UInt64), "BadAppConfigFascadeValueUInt64");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedUInt64)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).WillReturn(false);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -573,14 +934,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetTypedBooleanTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueBoolean";
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Boolean>("NotThereAppConfigFascadeValueBoolean");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Boolean>(KEY);
 		}
 
 		[Test]
@@ -588,14 +955,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetTypedByteTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueByte";
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Byte>("NotThereAppConfigFascadeValueByte");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Byte>(KEY);
 		}
 
 		[Test]
@@ -603,14 +976,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetTypedCharTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueChar";
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Char>("NotThereAppConfigFascadeValueChar");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Char>(KEY);
 		}
 
 		[Test]
@@ -618,14 +997,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetTypedDateTimeTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueDateTime";
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<DateTime>("NotThereAppConfigFascadeValueDateTime");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<DateTime>(KEY);
 		}
 
 		[Test]
@@ -633,14 +1018,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetTypedDecimalTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueDecimal";
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Decimal>("NotThereAppConfigFascadeValueDecimal");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Decimal>(KEY);
 		}
 
 		[Test]
@@ -648,14 +1039,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetTypedDoubleTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueDouble";
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Double>("NotThereAppConfigFascadeValueDouble");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Double>(KEY);
 		}
 
 		[Test]
@@ -663,14 +1060,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetTypedEnumTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueEnum";
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<CharSet>("NotThereAppConfigFascadeValueEnum");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<CharSet>(KEY);
 		}
 
 		[Test]
@@ -678,14 +1081,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetTypedGuidTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueGuid";
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Guid>("NotThereAppConfigFascadeValueGuid");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Guid>(KEY);
 		}
 
 		[Test]
@@ -693,14 +1102,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetTypedInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueInt16";
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Int16>("NotThereAppConfigFascadeValueInt16");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Int16>(KEY);
 		}
 
 		[Test]
@@ -708,14 +1123,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetTypedInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueInt32";
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Int32>("NotThereAppConfigFascadeValueInt32");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Int32>(KEY);
 		}
 
 		[Test]
@@ -723,14 +1144,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetTypedInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueInt64";
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Int64>("NotThereAppConfigFascadeValueInt64");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Int64>(KEY);
 		}
 
 		[Test]
@@ -738,14 +1165,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetTypedSByteTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueSByte";
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<SByte>("NotThereAppConfigFascadeValueSByte");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<SByte>(KEY);
 		}
 
 		[Test]
@@ -753,14 +1186,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetTypedSingleTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueSingle";
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Single>("NotThereAppConfigFascadeValueSingle");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Single>(KEY);
 		}
 
 		[Test]
@@ -768,14 +1207,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetTypedTimeSpanTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueTimeSpan";
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<TimeSpan>("NotThereAppConfigFascadeValueTimeSpan");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<TimeSpan>(KEY);
 		}
 
 		[Test]
@@ -783,14 +1228,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetTypedUInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueUInt16";
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<UInt16>("NotThereAppConfigFascadeValueUInt16");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<UInt16>(KEY);
 		}
 
 		[Test]
@@ -798,14 +1249,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetTypedUInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueUInt32";
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<UInt32>("NotThereAppConfigFascadeValueUInt32");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<UInt32>(KEY);
 		}
 
 		[Test]
@@ -813,14 +1270,20 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetTypedUInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueUInt64";
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<UInt64>("NotThereAppConfigFascadeValueUInt64");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<UInt64>(KEY);
 		}
 
 		[Test]
@@ -828,14 +1291,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetUntypedBooleanTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueBoolean";
+			Type valueType = typeof(Boolean);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Boolean), "NotThereAppConfigFascadeValueBoolean");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -843,14 +1313,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetUntypedByteTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueByte";
+			Type valueType = typeof(Byte);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Byte), "NotThereAppConfigFascadeValueByte");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -858,14 +1335,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetUntypedCharTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueChar";
+			Type valueType = typeof(Char);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Char), "NotThereAppConfigFascadeValueChar");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -873,14 +1357,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetUntypedDateTimeTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueDateTime";
+			Type valueType = typeof(DateTime);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(DateTime), "NotThereAppConfigFascadeValueDateTime");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -888,14 +1379,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetUntypedDecimalTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueDecimal";
+			Type valueType = typeof(Decimal);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Decimal), "NotThereAppConfigFascadeValueDecimal");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -903,14 +1401,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetUntypedDoubleTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueDouble";
+			Type valueType = typeof(Double);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Double), "NotThereAppConfigFascadeValueDouble");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -918,14 +1423,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetUntypedEnumTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueEnum";
+			Type valueType = typeof(CharSet);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(CharSet), "NotThereAppConfigFascadeValueEnum");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -933,14 +1445,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetUntypedGuidTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueGuid";
+			Type valueType = typeof(Guid);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Guid), "NotThereAppConfigFascadeValueGuid");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -948,14 +1467,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetUntypedInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueInt16";
+			Type valueType = typeof(Int16);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Int16), "NotThereAppConfigFascadeValueInt16");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -963,14 +1489,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetUntypedInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueInt32";
+			Type valueType = typeof(Int32);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Int32), "NotThereAppConfigFascadeValueInt32");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -978,14 +1511,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetUntypedInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueInt64";
+			Type valueType = typeof(Int64);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Int64), "NotThereAppConfigFascadeValueInt64");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -993,14 +1533,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetUntypedSByteTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueSByte";
+			Type valueType = typeof(SByte);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(SByte), "NotThereAppConfigFascadeValueSByte");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1008,14 +1555,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetUntypedSingleTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueSingle";
+			Type valueType = typeof(Single);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Single), "NotThereAppConfigFascadeValueSingle");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1023,14 +1577,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetUntypedTimeSpanTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueTimeSpan";
+			Type valueType = typeof(TimeSpan);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(TimeSpan), "NotThereAppConfigFascadeValueTimeSpan");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1038,14 +1599,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetUntypedUInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueUInt16";
+			Type valueType = typeof(UInt16);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(UInt16), "NotThereAppConfigFascadeValueUInt16");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1053,14 +1621,21 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetUntypedUInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueUInt32";
+			Type valueType = typeof(UInt32);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(UInt32), "NotThereAppConfigFascadeValueUInt32");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1068,36 +1643,40 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNonExistKeyGetUntypedUInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "NotThereAppConfigFascadeValueUInt64";
+			Type valueType = typeof(UInt64);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(UInt64), "NotThereAppConfigFascadeValueUInt64");
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
-
-		//[Test]
-		//[ExpectedException(typeof(ArgumentNullException))]
-		//public void ShouldFailOnNullArgsParseCommandLineArgumentsTest()
-		//{
-		//	AppConfigFascade.Instance.ParseCommandLineArguments(null);
-		//}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldFailOnNullKeyGetTypedBooleanTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Boolean>(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Boolean>(KEY);
 		}
 
 		[Test]
@@ -1105,14 +1684,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetTypedByteTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Byte>(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Byte>(KEY);
 		}
 
 		[Test]
@@ -1120,14 +1703,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetTypedCharTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Char>(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Char>(KEY);
 		}
 
 		[Test]
@@ -1135,14 +1722,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetTypedDateTimeTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<DateTime>(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<DateTime>(KEY);
 		}
 
 		[Test]
@@ -1150,14 +1741,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetTypedDecimalTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Decimal>(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Decimal>(KEY);
 		}
 
 		[Test]
@@ -1165,14 +1760,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetTypedDoubleTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Double>(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Double>(KEY);
 		}
 
 		[Test]
@@ -1180,14 +1779,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetTypedEnumTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<CharSet>(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<CharSet>(KEY);
 		}
 
 		[Test]
@@ -1195,14 +1798,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetTypedGuidTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Guid>(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Guid>(KEY);
 		}
 
 		[Test]
@@ -1210,14 +1817,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetTypedInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Int16>(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Int16>(KEY);
 		}
 
 		[Test]
@@ -1225,14 +1836,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetTypedInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Int32>(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Int32>(KEY);
 		}
 
 		[Test]
@@ -1240,14 +1855,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetTypedInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Int64>(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Int64>(KEY);
 		}
 
 		[Test]
@@ -1255,14 +1874,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetTypedSByteTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<SByte>(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<SByte>(KEY);
 		}
 
 		[Test]
@@ -1270,14 +1893,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetTypedSingleTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<Single>(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<Single>(KEY);
 		}
 
 		[Test]
@@ -1285,14 +1912,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetTypedTimeSpanTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<TimeSpan>(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<TimeSpan>(KEY);
 		}
 
 		[Test]
@@ -1300,14 +1931,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetTypedUInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<UInt16>(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<UInt16>(KEY);
 		}
 
 		[Test]
@@ -1315,14 +1950,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetTypedUInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<UInt32>(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<UInt32>(KEY);
 		}
 
 		[Test]
@@ -1330,14 +1969,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetTypedUInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<UInt64>(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<UInt64>(KEY);
 		}
 
 		[Test]
@@ -1345,14 +1988,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetUntypedBooleanTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
+			Type valueType = typeof(Boolean);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Boolean), null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1360,14 +2008,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetUntypedByteTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
+			Type valueType = typeof(Byte);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Byte), null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1375,14 +2028,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetUntypedCharTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
+			Type valueType = typeof(Char);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Char), null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1390,14 +2048,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetUntypedDateTimeTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
+			Type valueType = typeof(DateTime);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(DateTime), null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1405,14 +2068,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetUntypedDecimalTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
+			Type valueType = typeof(Decimal);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Decimal), null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1420,14 +2088,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetUntypedDoubleTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
+			Type valueType = typeof(Double);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Double), null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1435,14 +2108,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetUntypedEnumTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
+			Type valueType = typeof(CharSet);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(CharSet), null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1450,14 +2128,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetUntypedGuidTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
+			Type valueType = typeof(Guid);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Guid), null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1465,14 +2148,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetUntypedInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
+			Type valueType = typeof(Int16);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Int16), null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1480,14 +2168,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetUntypedInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
+			Type valueType = typeof(Int32);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Int32), null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1495,14 +2188,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetUntypedInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
+			Type valueType = typeof(Int64);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Int64), null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1510,14 +2208,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetUntypedSByteTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
+			Type valueType = typeof(SByte);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(SByte), null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1525,14 +2228,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetUntypedSingleTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
+			Type valueType = typeof(Single);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(Single), null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1540,14 +2248,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetUntypedTimeSpanTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
+			Type valueType = typeof(TimeSpan);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(TimeSpan), null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1555,14 +2268,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetUntypedUInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
+			Type valueType = typeof(UInt16);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(UInt16), null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1570,14 +2288,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetUntypedUInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
+			Type valueType = typeof(UInt32);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(UInt32), null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1585,14 +2308,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyGetUntypedUInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
+			Type valueType = typeof(UInt64);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(UInt64), null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1600,14 +2328,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullKeyHasAppSettingTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.HasAppSetting(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.HasAppSetting(KEY);
 		}
 
 		[Test]
@@ -1615,14 +2347,18 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullNameGetTypedAppSettingTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting<string>(null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting<string>(KEY);
 		}
 
 		[Test]
@@ -1630,14 +2366,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullNameGetUntypedAppSettingTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = null;
+			Type valueType = typeof(String);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(typeof(string), null);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		[Test]
@@ -1645,14 +2386,19 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldFailOnNullTypeGetUntypedAppSettingTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "";
+			Type valueType = null;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			appConfigFascade.GetAppSetting(null, string.Empty);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			appConfigFascade.GetAppSetting(valueType, KEY);
 		}
 
 		//[Test]
@@ -1678,7 +2424,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		//	args.Add("-arg8:value8c");
 		//	args.Add("-arg8:value8a");
 
-		//	cmdlnargs = AppConfigFascade.Instance.ParseCommandLineArguments(args.ToArray());
+		//	cmdlnargs = AppConfigFascade.ReflectionFascadeLegacyInstance.ParseCommandLineArguments(args.ToArray());
 
 		//	Assert.IsNotNull(cmdlnargs);
 		//	Assert.AreEqual(3, cmdlnargs.Count);
@@ -1699,532 +2445,1131 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 		public void ShouldGetTypedBooleanTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueBoolean";
+			Boolean expected, value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			Boolean __unusedBoolean;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting<Boolean>("AppConfigFascadeValueBoolean"), true);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = true;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Boolean>(__unusedString, out __unusedBoolean)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting<Boolean>(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetTypedByteTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueByte";
+			Byte expected, value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			Byte __unusedByte;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting<Byte>("AppConfigFascadeValueByte"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Byte>(__unusedString, out __unusedByte)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting<Byte>(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetTypedCharTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueChar";
+			Char expected, value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			Char __unusedChar;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting<Char>("AppConfigFascadeValueChar"), '0');
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = '\0';
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Char>(__unusedString, out __unusedChar)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting<Char>(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetTypedDateTimeTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueDateTime";
+			DateTime expected, value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			DateTime __unusedDateTime;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting<DateTime>("AppConfigFascadeValueDateTime"), new DateTime(2003, 6, 22));
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = DateTime.Now;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<DateTime>(__unusedString, out __unusedDateTime)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting<DateTime>(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetTypedDecimalTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueDecimal";
+			Decimal expected, value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			Decimal __unusedDecimal;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting<Decimal>("AppConfigFascadeValueDecimal"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Decimal>(__unusedString, out __unusedDecimal)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting<Decimal>(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetTypedDoubleTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueDouble";
+			Double expected, value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			Double __unusedDouble;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting<Double>("AppConfigFascadeValueDouble"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Double>(__unusedString, out __unusedDouble)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting<Double>(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetTypedEnumTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueEnum";
+			CharSet expected, value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			CharSet __unusedCharSet;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting<CharSet>("AppConfigFascadeValueEnum"), CharSet.Unicode);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = CharSet.Unicode;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<CharSet>(__unusedString, out __unusedCharSet)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting<CharSet>(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetTypedGuidTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueGuid";
+			Guid expected, value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			Guid __unusedGuid;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting<Guid>("AppConfigFascadeValueGuid"), Guid.Empty);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = Guid.Empty;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Guid>(__unusedString, out __unusedGuid)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting<Guid>(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetTypedInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueInt16";
+			Int16 expected, value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			Int16 __unusedInt16;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting<Int16>("AppConfigFascadeValueInt16"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Int16>(__unusedString, out __unusedInt16)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting<Int16>(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetTypedInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueInt32";
+			Int32 expected, value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			Int32 __unusedInt32;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting<Int32>("AppConfigFascadeValueInt32"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Int32>(__unusedString, out __unusedInt32)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting<Int32>(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetTypedInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueInt64";
+			Int64 expected, value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			Int64 __unusedInt64;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting<Int64>("AppConfigFascadeValueInt64"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Int64>(__unusedString, out __unusedInt64)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting<Int64>(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetTypedSByteTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueSByte";
+			SByte expected, value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			SByte __unusedSByte;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting<SByte>("AppConfigFascadeValueSByte"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<SByte>(__unusedString, out __unusedSByte)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting<SByte>(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetTypedSingleTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueSingle";
+			Single expected, value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			Single __unusedSingle;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting<Single>("AppConfigFascadeValueSingle"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<Single>(__unusedString, out __unusedSingle)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting<Single>(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetTypedStringTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueString";
+			String expected, value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			//String __unusedString;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting<string>("AppConfigFascadeValueString"), "foobar");
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = "foobar";
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<String>(__unusedString, out __unusedString)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting<String>(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetTypedTimeSpanTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueTimeSpan";
+			TimeSpan expected, value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			TimeSpan __unusedTimeSpan;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting<TimeSpan>("AppConfigFascadeValueTimeSpan"), TimeSpan.Zero);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = TimeSpan.Zero;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<TimeSpan>(__unusedString, out __unusedTimeSpan)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting<TimeSpan>(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetTypedUInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueUInt16";
+			UInt16 expected, value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			UInt16 __unusedUInt16;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting<UInt16>("AppConfigFascadeValueUInt16"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<UInt16>(__unusedString, out __unusedUInt16)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting<UInt16>(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetTypedUInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueUInt32";
+			UInt32 expected, value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			UInt32 __unusedUInt32;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting<UInt32>("AppConfigFascadeValueUInt32"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<UInt32>(__unusedString, out __unusedUInt32)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting<UInt32>(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetTypedUInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueUInt64";
+			UInt64 expected, value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			UInt64 __unusedUInt64;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting<UInt64>("AppConfigFascadeValueUInt64"), 0L);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse<UInt64>(__unusedString, out __unusedUInt64)).With(UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting<UInt64>(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetUntypedBooleanTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueBoolean";
+			Boolean expected;
+			object value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedBoolean;
+			Type valueType = typeof(Boolean);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Boolean), "AppConfigFascadeValueBoolean"), true);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = true;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedBoolean)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting(valueType, KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetUntypedByteTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueByte";
+			Byte expected;
+			object value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedByte;
+			Type valueType = typeof(Byte);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Byte), "AppConfigFascadeValueByte"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedByte)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting(valueType, KEY);
+
+			Assert.AreEqual(expected, value);
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetUntypedCharTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueChar";
+			Char expected;
+			object value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedChar;
+			Type valueType = typeof(Char);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Char), "AppConfigFascadeValueChar"), '0');
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = '\0';
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedChar)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting(valueType, KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetUntypedDateTimeTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueDateTime";
+			DateTime expected;
+			object value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedDateTime;
+			Type valueType = typeof(DateTime);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(DateTime), "AppConfigFascadeValueDateTime"), new DateTime(2003, 6, 22));
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = DateTime.Now;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedDateTime)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting(valueType, KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetUntypedDecimalTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueDecimal";
+			Decimal expected;
+			object value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedDecimal;
+			Type valueType = typeof(Decimal);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Decimal), "AppConfigFascadeValueDecimal"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedDecimal)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting(valueType, KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetUntypedDoubleTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueDouble";
+			Double expected;
+			object value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedDouble;
+			Type valueType = typeof(Double);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Double), "AppConfigFascadeValueDouble"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedDouble)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting(valueType, KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetUntypedEnumTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueEnum";
+			CharSet expected;
+			object value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedCharSet;
+			Type valueType = typeof(CharSet);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(CharSet), "AppConfigFascadeValueEnum"), CharSet.Unicode);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = CharSet.Unicode;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedCharSet)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting(valueType, KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetUntypedGuidTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueGuid";
+			Guid expected;
+			object value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedGuid;
+			Type valueType = typeof(Guid);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Guid), "AppConfigFascadeValueGuid"), Guid.Empty);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = Guid.Empty;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedGuid)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting(valueType, KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetUntypedInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueInt16";
+			Int16 expected;
+			object value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedInt16;
+			Type valueType = typeof(Int16);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Int16), "AppConfigFascadeValueInt16"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedInt16)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting(valueType, KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetUntypedInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueInt32";
+			Int32 expected;
+			object value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedInt32;
+			Type valueType = typeof(Int32);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Int32), "AppConfigFascadeValueInt32"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedInt32)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting(valueType, KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetUntypedInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueInt64";
+			Int64 expected;
+			object value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedInt64;
+			Type valueType = typeof(Int64);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Int64), "AppConfigFascadeValueInt64"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedInt64)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting(valueType, KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetUntypedSByteTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueSByte";
+			SByte expected;
+			object value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedSByte;
+			Type valueType = typeof(SByte);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(SByte), "AppConfigFascadeValueSByte"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedSByte)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting(valueType, KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetUntypedSingleTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueSingle";
+			Single expected;
+			object value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedSingle;
+			Type valueType = typeof(Single);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(Single), "AppConfigFascadeValueSingle"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedSingle)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting(valueType, KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetUntypedStringTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueString";
+			String expected;
+			object value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedString2;
+			Type valueType = typeof(String);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(string), "AppConfigFascadeValueString"), "foobar");
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = "foobar";
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedString2)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting(valueType, KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetUntypedTimeSpanTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueTimeSpan";
+			TimeSpan expected;
+			object value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedTimeSpan;
+			Type valueType = typeof(TimeSpan);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(TimeSpan), "AppConfigFascadeValueTimeSpan"), TimeSpan.Zero);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = TimeSpan.Zero;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedTimeSpan)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting(valueType, KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetUntypedUInt16Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueUInt16";
+			UInt16 expected;
+			object value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedUInt16;
+			Type valueType = typeof(UInt16);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(UInt16), "AppConfigFascadeValueUInt16"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedUInt16)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting(valueType, KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetUntypedUInt32Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueUInt32";
+			UInt32 expected;
+			object value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedUInt32;
+			Type valueType = typeof(UInt32);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(UInt32), "AppConfigFascadeValueUInt32"), 0);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedUInt32)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting(valueType, KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldGetUntypedUInt64Test()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueUInt64";
+			UInt64 expected;
+			object value;
+			Type __unusedType = null;
+			string __unusedString = null;
+			object __unusedUInt64;
+			Type valueType = typeof(UInt64);
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.AreEqual(appConfigFascade.GetAppSetting(typeof(UInt64), "AppConfigFascadeValueUInt64"), 0L);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = 0L;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+			Expect.On(mockDataTypeFascade).One.Method(m => m.TryParse(__unusedType, __unusedString, out __unusedUInt64)).With(valueType, UNATTAINABLE_VALUE, new AndMatcher(new ArgumentsMatcher.OutMatcher(), new AlwaysMatcher(true, string.Empty))).Will(new SetNamedParameterAction("result", expected), Return.Value(true));
+
+			value = appConfigFascade.GetAppSetting(valueType, KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldHaveFalseHasAppSettingTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueBooleanFalse";
+			bool expected, value;
+			
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
 
-			Assert.IsFalse(appConfigFascade.HasAppSetting("AppConfigFascadeValueBooleanFalse"));
+			expected = false;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(null);
+
+			value = appConfigFascade.HasAppSetting(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		[Test]
 		public void ShouldHaveTrueHasAppSettingTest()
 		{
 			AppConfigFascade appConfigFascade;
-			string mockAppConfigFilePath;
+			IConfigurationRoot mockConfigurationRoot;
 			IDataTypeFascade mockDataTypeFascade;
+			MockFactory mockFactory;
+			const string KEY = "AppConfigFascadeValueBoolean";
+			bool expected, value;
 
-			mockAppConfigFilePath = "appconfig.json";
-			mockDataTypeFascade = new DataTypeFascade();
-			appConfigFascade = new AppConfigFascade(mockAppConfigFilePath, mockDataTypeFascade);
+			mockFactory = new MockFactory();
+			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
+			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();
 
-			Assert.IsTrue(appConfigFascade.HasAppSetting("AppConfigFascadeValueBoolean"));
+			appConfigFascade = new AppConfigFascade(mockConfigurationRoot, mockDataTypeFascade);
+
+			expected = true;
+
+			Expect.On(mockConfigurationRoot).One.GetProperty(p => p[KEY]).WillReturn(UNATTAINABLE_VALUE);
+
+			value = appConfigFascade.HasAppSetting(KEY);
+
+			Assert.AreEqual(expected, value);
 		}
 
 		#endregion
