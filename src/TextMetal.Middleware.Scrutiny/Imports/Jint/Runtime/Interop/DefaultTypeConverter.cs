@@ -41,8 +41,7 @@ namespace Jint.Runtime.Interop
                 return value;
             }
 
-			/* ^ */ var _typeInfo = type.GetTypeInfo(); /* dpbullington@gmail.com ^ */
-			/* ^ */ if (_typeInfo.IsEnum) /* dpbullington@gmail.com ^ */
+            if (type.IsEnum)
             {
                 var integer = System.Convert.ChangeType(value, typeof(int), formatProvider);
                 if (integer == null)
@@ -54,15 +53,13 @@ namespace Jint.Runtime.Interop
             }
 
             var valueType = value.GetType();
-			/* ^ */ var _valueTypeInfo = valueType.GetTypeInfo(); /* dpbullington@gmail.com ^ */
-
-			// is the javascript value an ICallable instance ?
-			if (valueType == typeof(Func<JsValue, JsValue[], JsValue>))
+            // is the javascript value an ICallable instance ?
+            if (valueType == typeof(Func<JsValue, JsValue[], JsValue>))
             {
                 var function = (Func<JsValue, JsValue[], JsValue>)value;
 
-				/* ^ */ if (_valueTypeInfo.IsGenericType) /* dpbullington@gmail.com ^ */
-				{
+                if (type.IsGenericType)
+                {
                     var genericType = type.GetGenericTypeDefinition();
 
                     // create the requested Delegate
@@ -79,10 +76,8 @@ namespace Jint.Runtime.Interop
                         for (var i = 0; i < @params.Count(); i++)
                         {
                             var param = @params[i];
-
-							/* ^ */ var _paramTypeInfo = param.Type.GetTypeInfo();
-                            if (_paramTypeInfo.IsValueType) /* dpbullington@gmail.com ^ */
-							{
+                            if (param.Type.IsValueType)
+                            {
                                 var boxing = Expression.Convert(param, typeof(object));
                                 tmpVars[i] = Expression.Call(null, jsValueFromObject, Expression.Constant(_engine, typeof(Engine)), boxing);
                             }
@@ -95,8 +90,8 @@ namespace Jint.Runtime.Interop
 
                         var callExpresion = Expression.Block(Expression.Call(
                                                 Expression.Call(Expression.Constant(function.Target),
-													/* ^ */ function.GetMethodInfo() /* dpbullington@gmail.com ^ */,
-													Expression.Constant(JsValue.Undefined, typeof(JsValue)),
+                                                    function.Method,
+                                                    Expression.Constant(JsValue.Undefined, typeof(JsValue)),
                                                     @vars),
                                                 jsValueToObject), Expression.Empty());
 
@@ -129,7 +124,7 @@ namespace Jint.Runtime.Interop
                                                     convertChangeType,
                                                     Expression.Call(
                                                             Expression.Call(Expression.Constant(function.Target),
-																	/* ^ */ function.GetMethodInfo() /* dpbullington@gmail.com ^ */,
+                                                                    function.Method,
                                                                     Expression.Constant(JsValue.Undefined, typeof(JsValue)),
                                                                     @vars),
                                                             jsValueToObject),
@@ -147,8 +142,8 @@ namespace Jint.Runtime.Interop
                     {
                         return (Action)(() => function(JsValue.Undefined, new JsValue[0]));
                     }
-                    /* ^ */ else if (_typeInfo.IsSubclassOf(typeof(System.MulticastDelegate))) /* dpbullington@gmail.com ^ */
-					{
+                    else if (type.IsSubclassOf(typeof(System.MulticastDelegate)))
+                    {
                         var method = type.GetMethod("Invoke");
                         var arguments = method.GetParameters();
 
@@ -162,8 +157,8 @@ namespace Jint.Runtime.Interop
                         var callExpression = Expression.Block(
                                                 Expression.Call(
                                                     Expression.Call(Expression.Constant(function.Target),
-														/* ^ */ function.GetMethodInfo() /* dpbullington@gmail.com ^ */,
-														Expression.Constant(JsValue.Undefined, typeof(JsValue)),
+                                                        function.Method,
+                                                        Expression.Constant(JsValue.Undefined, typeof(JsValue)),
                                                         @vars),
                                                     typeof(JsValue).GetMethod("ToObject")),
                                                 Expression.Empty());

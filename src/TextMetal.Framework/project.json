@@ -22,7 +22,7 @@
 			}
 		}
 	},
-	"exclude": [		
+	"exclude": [
 		"Source\\Primative\\TextSourceStrategy.cs"
 	],
 	"dependencies": {

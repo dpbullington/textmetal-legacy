@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Dynamic;
-using System.Reflection;
-
 using Jint.Native.Array;
 using Jint.Native.Boolean;
 using Jint.Native.Date;
@@ -286,7 +284,7 @@ namespace Jint.Native
                 return Null;
             }
 
-            foreach (var converter in engine.Options.GetObjectConverters())
+            foreach (var converter in engine.Options._ObjectConverters)
             {
                 JsValue result;
                 if (converter.TryConvert(value, out result))
@@ -380,9 +378,8 @@ namespace Jint.Native
                 return new DelegateWrapper(engine, d);
             }
 
-			/* ^ */ var _valueTypeInfo = value.GetType().GetTypeInfo(); /* dpbullington@gmail.com ^ */
-			/* ^ */ if (_valueTypeInfo.IsEnum) /* dpbullington@gmail.com ^ */
-			{
+            if (value.GetType().IsEnum)
+            {
                 return new JsValue((Int32)value);
             }
 
