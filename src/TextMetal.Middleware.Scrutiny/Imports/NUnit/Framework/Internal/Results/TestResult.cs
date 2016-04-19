@@ -24,7 +24,7 @@
 using System;
 using System.Globalization;
 using System.IO;
-using System.Text.RegularExpressions;
+using System.Text;
 using NUnit.Framework.Interfaces;
 
 namespace NUnit.Framework.Internal
@@ -58,7 +58,8 @@ namespace NUnit.Framework.Internal
         /// </summary>
         private System.Collections.Generic.List<ITestResult> _children;
 
-        private StringWriter _outWriter;
+        private StringBuilder _output = new StringBuilder();
+        private TextWriter _outWriter;
         private double _duration;
 
         #endregion
@@ -71,8 +72,8 @@ namespace NUnit.Framework.Internal
         /// <param name="test">The test to be used</param>
         public TestResult(ITest test)
         {
-            this.Test = test;
-            this.ResultState = ResultState.Inconclusive;
+            Test = test;
+            ResultState = ResultState.Inconclusive;
         }
 
         #endregion
@@ -194,12 +195,16 @@ namespace NUnit.Framework.Internal
         /// <summary>
         /// Gets a TextWriter, which will write output to be included in the result.
         /// </summary>
-        public StringWriter OutWriter
+        public TextWriter OutWriter
         {
             get
             {
                 if (_outWriter == null)
-                    _outWriter = new StringWriter();
+#if PORTABLE || SILVERLIGHT
+                    _outWriter = new StringWriter(_output);
+#else
+                    _outWriter = TextWriter.Synchronized(new StringWriter(_output));
+#endif
 
                 return _outWriter;
             }
@@ -210,14 +215,12 @@ namespace NUnit.Framework.Internal
         /// </summary>
         public string Output
         {
-            get { return _outWriter == null
-                ? string.Empty
-                : _outWriter.ToString();  }
+            get { return _output.ToString(); }
         }
 
-        #endregion
+#endregion
 
-        #region IXmlNodeBuilder Members
+#region IXmlNodeBuilder Members
 
         /// <summary>
         /// Returns the Xml representation of the result.
@@ -239,7 +242,7 @@ namespace NUnit.Framework.Internal
         public virtual TNode AddToXml(TNode parentNode, bool recursive)
         {
             // A result node looks like a test node with extra info added
-            TNode thisNode = this.Test.AddToXml(parentNode, false);
+            TNode thisNode = Test.AddToXml(parentNode, false);
 
             thisNode.AddAttribute("result", ResultState.Status.ToString());
             if (ResultState.Label != string.Empty) // && ResultState.Label != ResultState.Status.ToString())
@@ -251,7 +254,7 @@ namespace NUnit.Framework.Internal
             thisNode.AddAttribute("end-time", EndTime.ToString("u"));
             thisNode.AddAttribute("duration", Duration.ToString("0.000000", NumberFormatInfo.InvariantInfo));
 
-            if (this.Test is TestSuite)
+            if (Test is TestSuite)
             {
                 thisNode.AddAttribute("total", (PassCount + FailCount + SkipCount + InconclusiveCount).ToString());
                 thisNode.AddAttribute("passed", PassCount.ToString());
@@ -260,7 +263,7 @@ namespace NUnit.Framework.Internal
                 thisNode.AddAttribute("skipped", SkipCount.ToString());
             }
 
-            thisNode.AddAttribute("asserts", this.AssertCount.ToString());
+            thisNode.AddAttribute("asserts", AssertCount.ToString());
 
             switch (ResultState.Status)
             {
@@ -268,11 +271,9 @@ namespace NUnit.Framework.Internal
                     AddFailureElement(thisNode);
                     break;
                 case TestStatus.Skipped:
-                    AddReasonElement(thisNode);
-                    break;
                 case TestStatus.Passed:
                 case TestStatus.Inconclusive:
-                    if (this.Message != null)
+                    if (Message != null)
                         AddReasonElement(thisNode);
                     break;
             }
@@ -288,7 +289,7 @@ namespace NUnit.Framework.Internal
             return thisNode;
         }
 
-        #endregion
+#endregion
 
         /// <summary>
         /// Adds a child result to this result, setting this result's
@@ -297,34 +298,34 @@ namespace NUnit.Framework.Internal
         /// <param name="result">The result to be added</param>
         public virtual void AddResult(ITestResult result)
         {
-            this.Children.Add(result);
+            Children.Add(result);
 
-            //this.AssertCount += result.AssertCount;
+            //AssertCount += result.AssertCount;
 
             // If this result is marked cancelled, don't change it
-            if (this.ResultState != ResultState.Cancelled)
+            if (ResultState != ResultState.Cancelled)
                 switch (result.ResultState.Status)
                 {
                     case TestStatus.Passed:
 
-                        if (this.ResultState.Status == TestStatus.Inconclusive)
-                            this.SetResult(ResultState.Success);
+                        if (ResultState.Status == TestStatus.Inconclusive)
+                            SetResult(ResultState.Success);
 
                         break;
 
                     case TestStatus.Failed:
 
 
-                        if (this.ResultState.Status != TestStatus.Failed)
-                            this.SetResult(ResultState.ChildFailure, CHILD_ERRORS_MESSAGE);
+                        if (ResultState.Status != TestStatus.Failed)
+                            SetResult(ResultState.ChildFailure, CHILD_ERRORS_MESSAGE);
 
                         break;
 
                     case TestStatus.Skipped:
 
                         if (result.ResultState.Label == "Ignored")
-                            if (this.ResultState.Status == TestStatus.Inconclusive || this.ResultState.Status == TestStatus.Passed)
-                                this.SetResult(ResultState.Ignored, CHILD_IGNORE_MESSAGE);
+                            if (ResultState.Status == TestStatus.Inconclusive || ResultState.Status == TestStatus.Passed)
+                                SetResult(ResultState.Ignored, CHILD_IGNORE_MESSAGE);
 
                         break;
 
@@ -333,7 +334,7 @@ namespace NUnit.Framework.Internal
                 }
         }
 
-        #region Other Public Methods
+#region Other Public Methods
 
         /// <summary>
         /// Set the result of the test
@@ -362,32 +363,32 @@ namespace NUnit.Framework.Internal
         /// <param name="stackTrace">Stack trace giving the location of the command</param>
         public void SetResult(ResultState resultState, string message, string stackTrace)
         {
-            this.ResultState = resultState;
-            this.Message = message;
-            this.StackTrace = stackTrace;
+            ResultState = resultState;
+            Message = message;
+            StackTrace = stackTrace;
 
             // Set pseudo-counts for a test case
-            //if (IsTestCase(this.test))
+            //if (IsTestCase(test))
             //{
-            //    this.passCount = 0;
-            //    this.failCount = 0;
-            //    this.skipCount = 0;
-            //    this.inconclusiveCount = 0;
+            //    passCount = 0;
+            //    failCount = 0;
+            //    skipCount = 0;
+            //    inconclusiveCount = 0;
 
-            //    switch (this.ResultState.Status)
+            //    switch (ResultState.Status)
             //    {
             //        case TestStatus.Passed:
-            //            this.passCount++;
+            //            passCount++;
             //            break;
             //        case TestStatus.Failed:
-            //            this.failCount++;
+            //            failCount++;
             //            break;
             //        case TestStatus.Skipped:
-            //            this.skipCount++;
+            //            skipCount++;
             //            break;
             //        default:
             //        case TestStatus.Inconclusive:
-            //            this.inconclusiveCount++;
+            //            inconclusiveCount++;
             //            break;
             //    }
             //}
@@ -460,26 +461,26 @@ namespace NUnit.Framework.Internal
             if (ex is NUnitException)
                 ex = ex.InnerException;
 
-            ResultState resultState = this.ResultState == ResultState.Cancelled
+            ResultState resultState = ResultState == ResultState.Cancelled
                 ? ResultState.Cancelled
                 : ResultState.Error;
             if (Test.IsSuite)
                 resultState = resultState.WithSite(FailureSite.TearDown);
 
             string message = "TearDown : " + ExceptionHelper.BuildMessage(ex);
-            if (this.Message != null)
-                message = this.Message + NUnit.Env.NewLine + message;
+            if (Message != null)
+                message = Message + NUnit.Env.NewLine + message;
 
             string stackTrace = "--TearDown" + NUnit.Env.NewLine + ExceptionHelper.BuildStackTrace(ex);
-            if (this.StackTrace != null)
-                stackTrace = this.StackTrace + NUnit.Env.NewLine + stackTrace;
+            if (StackTrace != null)
+                stackTrace = StackTrace + NUnit.Env.NewLine + stackTrace;
 
             SetResult(resultState, message, stackTrace);
         }
 
-        #endregion
+#endregion
 
-        #region Helper Methods
+#region Helper Methods
 
         /// <summary>
         /// Adds a reason element to a node and returns it.
@@ -515,6 +516,6 @@ namespace NUnit.Framework.Internal
             return targetNode.AddElementWithCDATA("output", Output);
         }
 
-        #endregion
+#endregion
     }
 }
