@@ -6,11 +6,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 using TextMetal.Framework.Source;
 using TextMetal.Framework.Template;
 using TextMetal.Framework.XmlDialect;
+using TextMetal.Middleware.Solder.Runtime;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.InputOutput
@@ -90,15 +92,17 @@ namespace TextMetal.Framework.InputOutput
 			Assembly assembly;
 			AssemblyName _assemblyName;
 
+			//Console.WriteLine(this.GetType().GetTypeInfo().Assembly.GetName().Name);
+
 			if ((object)assemblyName == null)
 				throw new ArgumentNullException(nameof(assemblyName));
 
 			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(assemblyName))
 				throw new ArgumentOutOfRangeException(nameof(assemblyName));
 
-			assemblyName = Path.GetFullPath(assemblyName);
+			//assemblyName = Path.GetFullPath(assemblyName);
 			_assemblyName = new AssemblyName(assemblyName);
-			assembly = Assembly.Load(_assemblyName);
+			assembly = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.PlatformServices.AssemblyLoadContextAccessor.Default.Load(_assemblyName);
 
 			return assembly;
 		}

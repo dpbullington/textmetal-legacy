@@ -129,7 +129,7 @@ namespace Jint
             _statements = new StatementInterpreter(this);
             _expressions = new ExpressionInterpreter(this);
 
-            if (Options._IsClrAllowed)
+            if (Options.IsClrAllowed())
             {
                 Global.FastAddProperty("System", new NamespaceReference(this, "System"), false, false, false);
                 Global.FastAddProperty("importNamespace", new ClrFunctionInstance(this, (thisObj, arguments) =>
@@ -257,7 +257,7 @@ namespace Jint
         
         public void ResetTimeoutTicks()
         {
-            var timeoutIntervalTicks = Options._TimeoutInterval.Ticks;
+            var timeoutIntervalTicks = Options.GetTimeoutInterval().Ticks;
             _timeoutTicks = timeoutIntervalTicks > 0 ? DateTime.UtcNow.Ticks + timeoutIntervalTicks : 0;
         }
 
@@ -288,7 +288,7 @@ namespace Jint
             ResetLastStatement();
             ResetCallStack();
 
-            using (new StrictModeScope(Options._IsStrict || program.Strict))
+            using (new StrictModeScope(Options.IsStrict() || program.Strict))
             {
                 DeclarationBindingInstantiation(DeclarationBindingType.GlobalCode, program.FunctionDeclarations, program.VariableDeclarations, null, null);
 
@@ -322,7 +322,7 @@ namespace Jint
 
         public Completion ExecuteStatement(Statement statement)
         {
-            var maxStatements = Options._MaxStatements;
+            var maxStatements = Options.GetMaxStatements();
             if (maxStatements > 0 && _statementsCount++ > maxStatements)
             {
                 throw new StatementsCountOverflowException();
@@ -335,7 +335,7 @@ namespace Jint
 
             _lastSyntaxNode = statement;
             
-            if (Options._IsDebugMode)
+            if (Options.IsDebugMode())
             {
                 DebugHandler.OnStep(statement);
             }
@@ -690,7 +690,7 @@ namespace Jint
                 throw new ArgumentException("propertyName");
             }
 
-            var reference = new Reference(scope, propertyName, Options._IsStrict);
+            var reference = new Reference(scope, propertyName, Options.IsStrict());
 
             return GetValue(reference);
         }

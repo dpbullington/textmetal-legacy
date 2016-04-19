@@ -14,7 +14,7 @@
 	</Scrizzle>-->
 
 	<Reference name="" />
-	<Reference name="..\..\src\artifacts\bin\TextMetal.Framework\Debug\dotnet5.5\TextMetal.Framework.dll" />
+	<Reference name="TextMetal.Framework" />
 
 	<Import name="bob_import_template2.xml" />
 

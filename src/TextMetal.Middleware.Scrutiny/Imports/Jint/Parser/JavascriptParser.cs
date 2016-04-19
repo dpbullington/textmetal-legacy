@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Jint.Native.String;
 using Jint.Parser.Ast;
 
 namespace Jint.Parser
@@ -889,7 +888,7 @@ namespace Jint.Parser
             }
             catch (OverflowException)
             {
-                n = StringPrototype.TrimEx(number).StartsWith("-") ? double.NegativeInfinity : double.PositiveInfinity;
+                n = number.Trim().StartsWith("-") ? double.NegativeInfinity : double.PositiveInfinity;
             }
             catch (Exception)
             {
@@ -1452,7 +1451,7 @@ namespace Jint.Parser
                 };
         }
 
-        public CallExpression CreateCallExpression(Expression callee, IList<Expression> args)
+        public CallExpression CreateCallExpression(Expression callee, IEnumerable<Expression> args)
         {
             return new CallExpression
                 {
@@ -2328,7 +2327,7 @@ namespace Jint.Parser
 
         // 11.2 Left-Hand-Side Expressions
 
-        private IList<Expression> ParseArguments()
+        private IEnumerable<Expression> ParseArguments()
         {
             var args = new List<Expression>();
 
@@ -2406,7 +2405,7 @@ namespace Jint.Parser
             {
                 if (Match("("))
                 {
-                    IList<Expression> args = ParseArguments();
+                    IEnumerable<Expression> args = ParseArguments();
                     expr = CreateCallExpression(expr, args);
                 }
                 else if (Match("["))

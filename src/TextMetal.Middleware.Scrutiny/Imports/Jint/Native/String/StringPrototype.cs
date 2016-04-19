@@ -74,18 +74,13 @@ namespace Jint.Native.String
         // http://msdn.microsoft.com/en-us/library/system.char.iswhitespace(v=vs.110).aspx
         // http://en.wikipedia.org/wiki/Byte_order_mark
         const char BOM_CHAR = '\uFEFF';
-        const char MONGOLIAN_VOWEL_SEPARATOR = '\u180E';
 
         private static bool IsWhiteSpaceEx(char c)
         {
-            return 
-                char.IsWhiteSpace(c) || 
-                c == BOM_CHAR ||
-                // In .NET 4.6 this was removed from WS based on Unicode 6.3 changes
-                c == MONGOLIAN_VOWEL_SEPARATOR;
+            return char.IsWhiteSpace(c) || c == BOM_CHAR;
         }
 
-        public static string TrimEndEx(string s)
+        private static string TrimEndEx(string s)
         {
             if (s.Length == 0)
                 return string.Empty;
@@ -104,7 +99,7 @@ namespace Jint.Native.String
                 return string.Empty;
         }
 
-        public static string TrimStartEx(string s)
+        private static string TrimStartEx(string s)
         {
             if (s.Length == 0)
                 return string.Empty;
@@ -123,7 +118,7 @@ namespace Jint.Native.String
                 return s.Substring(i);
         }
 
-        public static string TrimEx(string s)
+        private static string TrimEx(string s)
         {
             return TrimEndEx(TrimStartEx(s));
         } 

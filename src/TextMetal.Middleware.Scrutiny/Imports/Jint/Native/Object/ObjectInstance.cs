@@ -39,19 +39,16 @@ namespace Jint.Native.Object
 
         public virtual IEnumerable<KeyValuePair<string, PropertyDescriptor>> GetOwnProperties()
         {
-            EnsureInitialized();
             return Properties;
         }
 
         public virtual bool HasOwnProperty(string p)
         {
-            EnsureInitialized();
             return Properties.ContainsKey(p);
         }
 
         public virtual void RemoveOwnProperty(string p)
         {
-            EnsureInitialized();
             Properties.Remove(p);
         }
 
@@ -72,8 +69,7 @@ namespace Jint.Native.Object
 
             if (desc.IsDataDescriptor())
             {
-                var val = desc.Value;
-                return val.HasValue ? val.Value : Undefined.Instance;
+                return desc.Value.HasValue ? desc.Value.Value : Undefined.Instance;
             }
 
             var getter = desc.Get.HasValue ? desc.Get.Value : Undefined.Instance;
@@ -98,8 +94,6 @@ namespace Jint.Native.Object
         /// <returns></returns>
         public virtual PropertyDescriptor GetOwnProperty(string propertyName)
         {
-            EnsureInitialized();
-
             PropertyDescriptor x;
             if (Properties.TryGetValue(propertyName, out x))
             {
@@ -126,7 +120,6 @@ namespace Jint.Native.Object
 
         protected virtual void SetOwnProperty(string propertyName, PropertyDescriptor desc)
         {
-            EnsureInitialized();
             Properties[propertyName] = desc;
         }
 
@@ -312,8 +305,6 @@ namespace Jint.Native.Object
         /// <returns></returns>
         public JsValue DefaultValue(Types hint)
         {
-            EnsureInitialized();
-
             if (hint == Types.String || (hint == Types.None && Class == "Date"))
             {
                 var toString = Get("toString").TryCast<ICallable>();
@@ -605,11 +596,6 @@ namespace Jint.Native.Object
         public void FastSetProperty(string name, PropertyDescriptor value)
         {
             SetOwnProperty(name, value);
-        }
-
-        protected virtual void EnsureInitialized()
-        {
-
         }
 
         public override string ToString()

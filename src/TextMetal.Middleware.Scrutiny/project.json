@@ -27,8 +27,6 @@
 		}
 	},
 	"exclude": [
-		"Imports\\Jint",
-
 		"Imports\\NMock\\Proxy\\LinFu",
 		"Imports\\NMock\\Proxy\\Reflective",
 

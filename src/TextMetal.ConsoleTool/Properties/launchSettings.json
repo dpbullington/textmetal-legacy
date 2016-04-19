@@ -1,13 +1,33 @@
 {
-  "profiles": {
-    "test": {
-      "commandName": "test",
-      "commandLineArgs": "-sourcefile:NUL -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\bob_master_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.Primative.NullSourceStrategy, TextMetal.Framework\" -strict:true -debug:false",
-      "environmentVariables": {
-        "ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
-        "SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
-        "SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
-      }
-    }
-  }
+	"profiles": {
+		"test": {
+			"commandName": "test",
+			"commandLineArgs": "",
+			"environmentVariables": {
+				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
+				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
+				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
+			}
+		},
+
+		"test_bob_execute": {
+			"commandName": "test_bob_execute",
+			"commandLineArgs": "-sourcefile:NUL -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\bob_master_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.Primative.NullSourceStrategy, TextMetal.Framework\" -strict:true -debug:false",
+			"environmentVariables": {
+				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
+				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
+				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
+			}
+		},
+
+		"test_associative_model_execute": {
+			"commandName": "test_associative_model_execute",
+			"commandLineArgs": "-sourcefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\associative_model_source.xml\" -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\empty_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.Primative.WellKnownXmlPersistEngineSourceStrategy, TextMetal.Framework\" -strict:true -debug:false",
+			"environmentVariables": {
+				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
+				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
+				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
+			}
+		}
+	}
 }

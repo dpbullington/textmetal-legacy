@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Jint.Native.Object;
-using Jint.Native.String;
 using Jint.Parser;
 using Jint.Parser.Ast;
 using Jint.Runtime;
@@ -53,7 +52,7 @@ namespace Jint.Native.Function
             var newValues = new string[values.Length];
             for (var i = 0; i < values.Length; i++)
             {
-                newValues[i] = StringPrototype.TrimEx(values[i]);
+                newValues[i] = values[i].Trim();
             }
             return newValues;
         }

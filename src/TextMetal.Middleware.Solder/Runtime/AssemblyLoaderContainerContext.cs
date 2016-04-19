@@ -25,13 +25,13 @@ namespace TextMetal.Middleware.Solder.Runtime
 		/// </summary>
 		private AssemblyLoaderContainerContext()
 		{
-			IConfigurationRoot configurationRoot;
-
 			this.dataTypeFascade = new DataTypeFascade();
 			this.reflectionFascade = new ReflectionFascade(this.DataTypeFascade);
-			configurationRoot = Utilities.AppConfigFascade.LoadAppConfigFile(APP_CONFIG_FILE_NAME);
-			this.appConfigFascade = new AppConfigFascade(configurationRoot, this.DataTypeFascade);
+			this.configurationRoot = Utilities.AppConfigFascade.LoadAppConfigFile(APP_CONFIG_FILE_NAME);
+			this.appConfigFascade = new AppConfigFascade(this.ConfigurationRoot, this.DataTypeFascade);
+			this.adoNetLiteFascade = new AdoNetLiteFascade(this.ReflectionFascade);
 
+			this.SetUp();
 			this.SetUpApplicationDomain();
 		}
 
@@ -49,8 +49,10 @@ namespace TextMetal.Middleware.Solder.Runtime
 
 		private const string APP_CONFIG_FILE_NAME = "appconfig.json";
 		private const string ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS = "SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS";
+		private readonly IAdoNetLiteFascade adoNetLiteFascade;
 
 		private readonly IAppConfigFascade appConfigFascade;
+		private readonly IConfigurationRoot configurationRoot;
 		private readonly IDataTypeFascade dataTypeFascade;
 		private readonly IDependencyManager dependencyManager = new DependencyManager();
 		private readonly IList<Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext>> eventSinkMethods = new List<Action<AssemblyLoaderEventType, AssemblyLoaderContainerContext>>();
@@ -72,11 +74,27 @@ namespace TextMetal.Middleware.Solder.Runtime
 			}
 		}
 
-		private IAppConfigFascade AppConfigFascade
+		internal IAdoNetLiteFascade AdoNetLiteFascade
+		{
+			get
+			{
+				return this.adoNetLiteFascade;
+			}
+		}
+
+		internal IAppConfigFascade AppConfigFascade
 		{
 			get
 			{
 				return this.appConfigFascade;
+			}
+		}
+
+		private IConfigurationRoot ConfigurationRoot
+		{
+			get
+			{
+				return this.configurationRoot;
 			}
 		}
 
@@ -126,6 +144,14 @@ namespace TextMetal.Middleware.Solder.Runtime
 			get
 			{
 				return this.eventSinkMethods;
+			}
+		}
+
+		public PlatformServices PlatformServices
+		{
+			get
+			{
+				return PlatformServices.Default;
 			}
 		}
 
@@ -256,6 +282,17 @@ namespace TextMetal.Middleware.Solder.Runtime
 			assemblies = new Assembly[] { assembly };
 
 			this.ScanAssemblies(assemblies);
+		}
+
+		private void SetUp()
+		{
+			this.DependencyManager.AddResolution<PlatformServices>(string.Empty, false, new SingletonWrapperDependencyResolution<PlatformServices>(new InstanceDependencyResolution<PlatformServices>(this.PlatformServices)));
+			this.DependencyManager.AddResolution<IConfigurationRoot>(string.Empty, false, new SingletonWrapperDependencyResolution<IConfigurationRoot>(new InstanceDependencyResolution<IConfigurationRoot>(this.ConfigurationRoot)));
+
+			this.DependencyManager.AddResolution<IDataTypeFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IDataTypeFascade>(new InstanceDependencyResolution<IDataTypeFascade>(this.DataTypeFascade)));
+			this.DependencyManager.AddResolution<IReflectionFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IReflectionFascade>(new InstanceDependencyResolution<IReflectionFascade>(this.ReflectionFascade)));
+			this.DependencyManager.AddResolution<IAppConfigFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAppConfigFascade>(new InstanceDependencyResolution<IAppConfigFascade>(this.AppConfigFascade)));
+			this.DependencyManager.AddResolution<IAdoNetLiteFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetLiteFascade>(new InstanceDependencyResolution<IAdoNetLiteFascade>(this.AdoNetLiteFascade)));
 		}
 
 		/// <summary>

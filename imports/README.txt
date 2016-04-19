@@ -8,8 +8,8 @@ nmock3-87315.zip
 nunit-fff446c9add9ccbf0514326e8fcda9cbe446aa96.zip
 	https://github.com/nunit/nunit
 
-jint-921bb6708a648a1933ef499603b7d9d27fbe33b5.zip
-	https://github.com/sebastienros/jint
+jint[dnx branch]-5c248ff0ae27ed41272d7a85193d3af34b1df226.zip
+	https://github.com/sebastienros/jint/tree/dnx
 
 
 

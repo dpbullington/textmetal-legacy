@@ -13,6 +13,7 @@ using Jint.Native.RegExp;
 using Jint.Native.String;
 using Jint.Runtime;
 using Jint.Runtime.Interop;
+using System.Reflection;
 
 namespace Jint.Native
 {
@@ -284,7 +285,7 @@ namespace Jint.Native
                 return Null;
             }
 
-            foreach (var converter in engine.Options._ObjectConverters)
+            foreach (var converter in engine.Options.GetObjectConverters())
             {
                 JsValue result;
                 if (converter.TryConvert(value, out result))
@@ -293,7 +294,7 @@ namespace Jint.Native
                 }
             }
 
-            var typeCode = System.Type.GetTypeCode(value.GetType());
+            var typeCode = value.GetType().GetTypeCode();
             switch (typeCode)
             {
                 case TypeCode.Boolean:
@@ -378,7 +379,7 @@ namespace Jint.Native
                 return new DelegateWrapper(engine, d);
             }
 
-            if (value.GetType().IsEnum)
+            if (value.GetType().GetTypeInfo().IsEnum)
             {
                 return new JsValue((Int32)value);
             }

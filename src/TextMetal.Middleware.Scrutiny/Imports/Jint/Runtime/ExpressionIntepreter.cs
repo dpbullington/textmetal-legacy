@@ -194,13 +194,10 @@ namespace Jint.Runtime
 
         public JsValue EvaluateBinaryExpression(BinaryExpression expression)
         {
-            var leftExpression = EvaluateExpression(expression.Left);
-            JsValue left = _engine.GetValue(leftExpression);
-
-            var rightExpression = EvaluateExpression(expression.Right);
-            JsValue right = _engine.GetValue(rightExpression);
-
+            JsValue left = _engine.GetValue(EvaluateExpression(expression.Left));
+            JsValue right = _engine.GetValue(EvaluateExpression(expression.Right));
             JsValue value;
+
               
             switch (expression.Operator)
             {
@@ -625,19 +622,12 @@ namespace Jint.Runtime
 
         public JsValue EvaluateLiteral(Literal literal)
         {
-            if(literal.Cached)
-            {
-                return literal.CachedValue;
-            }
-
-            literal.Cached = true;
-
             if (literal.Type == SyntaxNodes.RegularExpressionLiteral)
             {
-                return literal.CachedValue = _engine.RegExp.Construct(literal.Raw);
+                return _engine.RegExp.Construct(literal.Raw);
             }
-            
-            return literal.CachedValue = JsValue.FromObject(_engine, literal.Value);
+
+            return JsValue.FromObject(_engine, literal.Value);
         }
 
         public JsValue EvaluateObjectExpression(ObjectExpression objectExpression)
@@ -798,7 +788,7 @@ namespace Jint.Runtime
         {
             var callee = EvaluateExpression(callExpression.Callee);
 
-            if (_engine.Options._IsDebugMode)
+            if (_engine.Options.IsDebugMode())
             {
                 _engine.DebugHandler.AddToDebugCallStack(callExpression);
             }
@@ -806,44 +796,20 @@ namespace Jint.Runtime
             JsValue thisObject;
 
             // todo: implement as in http://www.ecma-international.org/ecma-262/5.1/#sec-11.2.4
-
-
-            JsValue[] arguments;
-
-            if (callExpression.Cached)
-            {
-                arguments = callExpression.CachedArguments;
-            }
-            else
-            {
-                arguments = callExpression.Arguments.Select(EvaluateExpression).Select(_engine.GetValue).ToArray();
-
-                if (callExpression.CanBeCached)
-                {
-                    // The arguments array can be cached if they are all literals
-                    if (callExpression.Arguments.All(x => x is Literal))
-                    {
-                        callExpression.Cached = true;
-                        callExpression.CachedArguments = arguments;
-                    }
-                    else
-                    {
-                        callExpression.CanBeCached = false;
-                    }
-                }
-            }
+            var arguments = callExpression.Arguments.Select(EvaluateExpression).Select(_engine.GetValue).ToArray();
 
             var func = _engine.GetValue(callee);
             
             var r = callee as Reference;
 
-            if (_engine.Options._MaxRecursionDepth >= 0)
+            var isRecursionHandled = _engine.Options.GetMaxRecursionDepth() >= 0;
+            if (isRecursionHandled)
             {
                 var stackItem = new CallStackElement(callExpression, func, r != null ? r.GetReferencedName() : "anonymous function");
 
                 var recursionDepth = _engine.CallStack.Push(stackItem);
 
-                if (recursionDepth > _engine.Options._MaxRecursionDepth)
+                if (recursionDepth > _engine.Options.GetMaxRecursionDepth())
                 {
                     _engine.CallStack.Pop();
                     throw new RecursionDepthOverflowException(_engine.CallStack, stackItem.ToString());
@@ -891,12 +857,12 @@ namespace Jint.Runtime
             
             var result = callable.Call(thisObject, arguments);
 
-            if (_engine.Options._IsDebugMode)
+            if (_engine.Options.IsDebugMode())
             {
                 _engine.DebugHandler.PopDebugCallStack();
             }
 
-            if (_engine.Options._MaxRecursionDepth >= 0)
+            if (isRecursionHandled)
             {
                 _engine.CallStack.Pop();
             }

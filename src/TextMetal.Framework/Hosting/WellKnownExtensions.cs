@@ -112,7 +112,7 @@ namespace TextMetal.Framework.Hosting
 
 			tokenizer.TokenReplacementStrategies.Add("StaticPropertyResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticPropertyResolver));
 			tokenizer.TokenReplacementStrategies.Add("StaticMethodResolver", new DynamicValueTokenReplacementStrategy(DynamicValueTokenReplacementStrategy.StaticMethodResolver));
-			//tokenizer.TokenReplacementStrategies.Add("js", new ContextualDynamicValueTokenReplacementStrategy<ITemplatingContext>(JavaScriptConstruct.JavaScriptExpressionResolver, templatingContext));
+			tokenizer.TokenReplacementStrategies.Add("js", new ContextualDynamicValueTokenReplacementStrategy<ITemplatingContext>(JavaScriptConstruct.JavaScriptExpressionResolver, templatingContext));
 			tokenizer.TokenReplacementStrategies.Add("printf", new ContextualDynamicValueTokenReplacementStrategy<ITemplatingContext>(printf, templatingContext));
 		}
 

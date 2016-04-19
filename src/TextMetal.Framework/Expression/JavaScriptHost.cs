@@ -7,10 +7,7 @@ using System;
 using System.Collections.Generic;
 
 using CompiledCode = System.String;
-
-#if USE_JINT
 using ScriptEngine = Jint.Engine;
-#endif
 
 namespace TextMetal.Framework.Expression
 {
@@ -29,9 +26,7 @@ namespace TextMetal.Framework.Expression
 		private static readonly JavaScriptHost instance = new JavaScriptHost();
 
 		private readonly IDictionary<object, CompiledCode> scriptCompilations = new Dictionary<object, CompiledCode>();
-#if USE_JINT
 		private readonly ScriptEngine scriptEngine = new ScriptEngine();
-#endif
 
 		#endregion
 
@@ -52,8 +47,6 @@ namespace TextMetal.Framework.Expression
 				return this.scriptCompilations;
 			}
 		}
-
-#if USE_JINT
 		private ScriptEngine ScriptEngine
 		{
 			get
@@ -61,7 +54,6 @@ namespace TextMetal.Framework.Expression
 				return this.scriptEngine;
 			}
 		}
-#endif
 
 		#endregion
 
@@ -100,14 +92,12 @@ namespace TextMetal.Framework.Expression
 
 			if (!this.ScriptCompilations.TryGetValue(scriptHandle, out compiledCode))
 				throw new InvalidOperationException(string.Format("'{0}'", scriptHandle));
-#if USE_JINT
+
 			foreach (KeyValuePair<string, object> scriptVariable in scriptVariables)
 				this.ScriptEngine.SetValue(scriptVariable.Key, scriptVariable.Value);
 
 			returnValue = this.ScriptEngine.Execute(compiledCode).GetCompletionValue().ToObject();
-#else
-			returnValue = null;
-#endif
+
 			/*
 				BACKLOG(dpbullington@gmail.com / 2015 - 12 - 18):
 				Get variables OUT and UP.

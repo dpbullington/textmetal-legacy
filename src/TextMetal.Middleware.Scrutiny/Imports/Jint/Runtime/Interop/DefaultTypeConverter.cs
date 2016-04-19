@@ -41,7 +41,7 @@ namespace Jint.Runtime.Interop
                 return value;
             }
 
-            if (type.IsEnum)
+            if (type.GetTypeInfo().IsEnum)
             {
                 var integer = System.Convert.ChangeType(value, typeof(int), formatProvider);
                 if (integer == null)
@@ -58,7 +58,7 @@ namespace Jint.Runtime.Interop
             {
                 var function = (Func<JsValue, JsValue[], JsValue>)value;
 
-                if (type.IsGenericType)
+                if (type.GetTypeInfo().IsGenericType)
                 {
                     var genericType = type.GetGenericTypeDefinition();
 
@@ -72,25 +72,11 @@ namespace Jint.Runtime.Interop
                         {
                             @params[i] = Expression.Parameter(genericArguments[i], genericArguments[i].Name + i);
                         }
-                        var tmpVars = new Expression[@params.Length];
-                        for (var i = 0; i < @params.Count(); i++)
-                        {
-                            var param = @params[i];
-                            if (param.Type.IsValueType)
-                            {
-                                var boxing = Expression.Convert(param, typeof(object));
-                                tmpVars[i] = Expression.Call(null, jsValueFromObject, Expression.Constant(_engine, typeof(Engine)), boxing);
-                            }
-                            else
-                            {
-                                tmpVars[i] = Expression.Call(null, jsValueFromObject, Expression.Constant(_engine, typeof(Engine)), param);
-                            }
-                        }
-                        var @vars = Expression.NewArrayInit(typeof(JsValue), tmpVars);
+                        var @vars = Expression.NewArrayInit(typeof(JsValue), @params.Select(p => Expression.Call(null, jsValueFromObject, Expression.Constant(_engine, typeof(Engine)), p)));
 
                         var callExpresion = Expression.Block(Expression.Call(
                                                 Expression.Call(Expression.Constant(function.Target),
-                                                    function.Method,
+                                                    function.GetMethodInfo(),
                                                     Expression.Constant(JsValue.Undefined, typeof(JsValue)),
                                                     @vars),
                                                 jsValueToObject), Expression.Empty());
@@ -124,7 +110,7 @@ namespace Jint.Runtime.Interop
                                                     convertChangeType,
                                                     Expression.Call(
                                                             Expression.Call(Expression.Constant(function.Target),
-                                                                    function.Method,
+                                                                    function.GetMethodInfo(),
                                                                     Expression.Constant(JsValue.Undefined, typeof(JsValue)),
                                                                     @vars),
                                                             jsValueToObject),
@@ -142,7 +128,7 @@ namespace Jint.Runtime.Interop
                     {
                         return (Action)(() => function(JsValue.Undefined, new JsValue[0]));
                     }
-                    else if (type.IsSubclassOf(typeof(System.MulticastDelegate)))
+                    else if (typeof(MulticastDelegate).IsAssignableFrom(type))
                     {
                         var method = type.GetMethod("Invoke");
                         var arguments = method.GetParameters();
@@ -157,7 +143,7 @@ namespace Jint.Runtime.Interop
                         var callExpression = Expression.Block(
                                                 Expression.Call(
                                                     Expression.Call(Expression.Constant(function.Target),
-                                                        function.Method,
+                                                        function.GetMethodInfo(),
                                                         Expression.Constant(JsValue.Undefined, typeof(JsValue)),
                                                         @vars),
                                                     typeof(JsValue).GetMethod("ToObject")),

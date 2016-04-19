@@ -164,6 +164,7 @@ namespace TextMetal.Framework.Hosting.Tool
 											HasShutdownStarted = Environment.HasShutdownStarted,
 											NewLine = Environment.NewLine,
 											ProcessorCount = Environment.ProcessorCount,
+											StackTrace = Environment.StackTrace,
 											TickCount = Environment.TickCount,
 											Variables = Environment.GetEnvironmentVariables()
 										};
