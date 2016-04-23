@@ -20,34 +20,20 @@
 	"frameworks": {
 		"dnxcore50": {
 			"dependencies": {
+				"Microsoft.CSharp": "4.0.1-beta-23516",
+				"Microsoft.NETCore": "5.0.1-beta-23516",
+				"System.Data.SqlClient": "4.0.0-beta-23516"
 			}
 		}
 	},
 	"exclude": [],
 	"content": "appconfig.json",
     "dependencies": {
-        "Microsoft.CSharp": "4.0.1-beta-23516",
-        "Microsoft.NETCore": "5.0.1-beta-23516",
         "TextMetal.Framework": "1.0.0-*",
         "TextMetal.Middleware.Scrutiny": "1.0.0-*",
         "TextMetal.Middleware.Solder": "1.0.0-*"
     },
 	"commands": {
-		"test": "TextMetal.ConsoleTool",
-		"test_text_delimiter_execute": "TextMetal.ConsoleTool",
-		"test_text_linear_execute": "TextMetal.ConsoleTool",
-		"test_xmlschema_execute": "TextMetal.ConsoleTool",
-		"test_adonet_source_execute": "TextMetal.ConsoleTool",
-		"test_adonet-odbc_source_execute": "TextMetal.ConsoleTool",
-		"test_adonet-sa-dbfilter_source_execute": "TextMetal.ConsoleTool",
-		"test_associative_model_execute": "TextMetal.ConsoleTool",
-		"test_filesystem_execute": "TextMetal.ConsoleTool",
-		"test_get_bat_copy_frags_execute": "TextMetal.ConsoleTool",
-		"test_get_generic_permutations_execute": "TextMetal.ConsoleTool",
-		"test_gso_sql_data_execute": "TextMetal.ConsoleTool",
-		"test_property_path_execute": "TextMetal.ConsoleTool",
-		"test_reflection_execute": "TextMetal.ConsoleTool",
-		"test_sql_data_execute": "TextMetal.ConsoleTool",
-		"test_bob_execute": "TextMetal.ConsoleTool"
+		"runapp": "TextMetal.ConsoleTool"
 	}
 }

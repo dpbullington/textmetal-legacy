@@ -20,18 +20,18 @@
 	"frameworks": {
 		"dnxcore50": {
 			"dependencies": {
+				"Microsoft.CSharp": "4.0.1-beta-23516",
+				"Microsoft.NETCore": "5.0.1-beta-23516"
 			}
 		}
 	},
 	"exclude": [],
-    "dependencies": {
-        "TextMetal.Middleware.Solder": "1.0.0-*",
-        "TextMetal.Middleware.Scrutiny": "1.0.0-*",
-        "TextMetal.Framework": "1.0.0-*",
-        "TextMetal.Middleware.UnitTests": "1.0.0-*",
-        "Microsoft.CSharp": "4.0.1-beta-23516",
-        "Microsoft.NETCore": "5.0.1-beta-23516"
-    },
+	"dependencies": {
+		"TextMetal.Middleware.Solder": "1.0.0-*",
+		"TextMetal.Middleware.Scrutiny": "1.0.0-*",
+		"TextMetal.Framework": "1.0.0-*",
+		"TextMetal.Middleware.UnitTests": "1.0.0-*"
+	},
 	"commands": {
 		"test": "TextMetal.Framework.UnitTests"
 	}

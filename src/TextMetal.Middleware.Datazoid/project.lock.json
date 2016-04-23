@@ -8005,11 +8005,12 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Microsoft.CSharp >= 4.0.1-beta-23516",
-      "Microsoft.NETCore >= 5.0.1-beta-23516",
-      "System.Data.Common >= 4.0.1-beta-23516",
       "TextMetal.Middleware.Solder >= 1.0.0-*"
     ],
-    ".NETPlatform,Version=v5.5": []
+    ".NETPlatform,Version=v5.5": [
+      "Microsoft.CSharp >= 4.0.1-beta-23516",
+      "Microsoft.NETCore >= 5.0.1-beta-23516",
+      "System.Data.Common >= 4.0.1-beta-23516"
+    ]
   }
 }

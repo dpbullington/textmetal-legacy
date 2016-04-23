@@ -7950,19 +7950,19 @@
   },
   "projectFileDependencyGroups": {
     "": [
+      "Newtonsoft.Json >= 8.0.2",
+      "TextMetal.Middleware.Scrutiny >= 1.0.0-*",
       "Microsoft.AspNet.Http.Abstractions >= 1.0.0-rc1-final",
-      "Microsoft.CSharp >= 4.0.1-beta-23516",
       "Microsoft.Extensions.PlatformAbstractions >= 1.0.0-rc1-final",
-      "Microsoft.Framework.Configuration.Json >= 1.0.0-beta8",
+      "Microsoft.Framework.Configuration.Json >= 1.0.0-beta8"
+    ],
+    ".NETPlatform,Version=v5.5": [
+      "Microsoft.CSharp >= 4.0.1-beta-23516",
       "Microsoft.NETCore >= 5.0.1-beta-23516",
       "System.Console >= 4.0.0-beta-23516",
       "System.Data.Common >= 4.0.1-beta-23516",
       "System.Xml.XmlDocument >= 4.0.1-beta-23516",
-      "System.Xml.XmlSerializer >= 4.0.11-beta-23516",
-      "TextMetal.Middleware.Scrutiny >= 1.0.0-*"
-    ],
-    ".NETPlatform,Version=v5.5": [
-      "Newtonsoft.Json >= 8.0.2"
+      "System.Xml.XmlSerializer >= 4.0.11-beta-23516"
     ]
   }
 }

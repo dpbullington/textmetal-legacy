@@ -8887,10 +8887,11 @@
     "": [
       "TextMetal.Middleware.Solder >= 1.0.0-*",
       "TextMetal.Middleware.Scrutiny >= 1.0.0-*",
-      "TextMetal.Framework >= 1.0.0-*",
+      "TextMetal.Framework >= 1.0.0-*"
+    ],
+    "DNXCore,Version=v5.0": [
       "Microsoft.NETCore >= 5.0.1-beta-23516",
       "Microsoft.CSharp >= 4.0.1-beta-23516"
-    ],
-    "DNXCore,Version=v5.0": []
+    ]
   }
 }

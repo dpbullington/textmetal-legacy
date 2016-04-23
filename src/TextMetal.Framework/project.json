@@ -1,24 +1,26 @@
 {
-    "version": "1.0.0-*",
-    "description": "TextMetal Framework Library",
-    "authors": [ "©2002-2016 Daniel Bullington (dpbullington@gmail.com)" ],
-    "summary": "A zero friction, open source meta-programming framework for .NET.",
-    "projectUrl": "http://www.textmetal.com",
-    "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
-    "iconUrl": "https://github.com/dpbullington/textmetal/blob/master/doc/textmetal-logo.png",
-    "requireLicenseAcceptance": false,
-    "tags": [ "TextMetal" ],
-    "compilationOptions": {
-        "keyFile": "../TextMetal.snk",
-        "warningsAsErrors": false
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/textmetal/main"
-    },
+	"version": "1.0.0-*",
+	"description": "TextMetal Framework Library",
+	"authors": [ "©2002-2016 Daniel Bullington (dpbullington@gmail.com)" ],
+	"summary": "A zero friction, open source meta-programming framework for .NET.",
+	"projectUrl": "http://www.textmetal.com",
+	"licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
+	"iconUrl": "https://github.com/dpbullington/textmetal/blob/master/doc/textmetal-logo.png",
+	"requireLicenseAcceptance": false,
+	"tags": [ "TextMetal" ],
+	"compilationOptions": {
+		"keyFile": "../TextMetal.snk",
+		"warningsAsErrors": false
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/textmetal/main"
+	},
 	"frameworks": {
 		"dotnet5.5": {
 			"dependencies": {
+				"Microsoft.CSharp": "4.0.1-beta-23516",
+				"Microsoft.NETCore": "5.0.1-beta-23516"
 			}
 		}
 	},
@@ -26,9 +28,10 @@
 		"Source\\Primative\\TextSourceStrategy.cs"
 	],
 	"dependencies": {
-		"Microsoft.CSharp": "4.0.1-beta-23516",
-		"Microsoft.NETCore": "5.0.1-beta-23516",
 		"TextMetal.Middleware.Scrutiny": "1.0.0-*",
 		"TextMetal.Middleware.Solder": "1.0.0-*"
-	}
+	},
+	"resource": [
+		"**\\*.sql"
+	]
 }

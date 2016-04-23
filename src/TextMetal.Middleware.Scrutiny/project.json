@@ -19,6 +19,20 @@
 	"frameworks": {
 		"dotnet5.5": {
 			"dependencies": {
+				"Microsoft.CSharp": "4.0.1-beta-23516",
+				"Microsoft.NETCore": "5.0.1-beta-23516",
+				"System.AppContext": "4.0.1-beta-23516",
+				"System.ComponentModel": "4.0.1-beta-23516",
+				"System.Console": "4.0.0-beta-23516",
+				"System.Data.Common": "4.0.1-beta-23516",
+				"System.Diagnostics.Contracts": "4.0.1-beta-23516",
+				"System.Diagnostics.TraceSource": "4.0.0-beta-23516",
+				"System.Reflection.Emit": "4.0.1-beta-23516",
+				"System.Reflection.Emit.ILGeneration": "4.0.1-beta-23516",
+				"System.Reflection.Emit.Lightweight": "4.0.1-beta-23516",
+				"System.Runtime.Serialization.Primitives": "4.1.0-beta-23516",
+				"System.Xml.XDocument": "4.0.11-beta-23516",
+				"System.Xml.XmlDocument": "4.0.1-beta-23516"
 			},
 
 			"compilationOptions": {
@@ -43,19 +57,6 @@
 		"Imports\\NUnit\\Lite\\TeamCityEventListener.cs"
 	],
 	"dependencies": {
-		"Microsoft.CSharp": "4.0.1-beta-23516",
-		"Microsoft.NETCore": "5.0.1-beta-23516",
-		"System.AppContext": "4.0.1-beta-23516",
-		"System.ComponentModel": "4.0.1-beta-23516",
-		"System.Console": "4.0.0-beta-23516",
-		"System.Data.Common": "4.0.1-beta-23516",
-		"System.Diagnostics.Contracts": "4.0.1-beta-23516",
-		"System.Diagnostics.TraceSource": "4.0.0-beta-23516",
-		"System.Reflection.Emit": "4.0.1-beta-23516",
-		"System.Reflection.Emit.ILGeneration": "4.0.1-beta-23516",
-		"System.Reflection.Emit.Lightweight": "4.0.1-beta-23516",
-		"System.Runtime.Serialization.Primitives": "4.1.0-beta-23516",
-		"System.Xml.XDocument": "4.0.11-beta-23516",
-		"System.Xml.XmlDocument": "4.0.1-beta-23516"
+		
 	}
 }

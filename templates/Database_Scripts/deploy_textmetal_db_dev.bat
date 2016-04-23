@@ -6,7 +6,7 @@ REM	Distributed under the MIT license: http://www.opensource.org/licenses/mit-li
 REM
 
 set SHOULD_CREATE_DB=true
-set SQLCMD_EXE=sqlcmd.exe
+set SQLCMD_EXE=C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\sqlcmd.exe
 set SQL_DIR=.
 
 set DB_SERVER=(local)

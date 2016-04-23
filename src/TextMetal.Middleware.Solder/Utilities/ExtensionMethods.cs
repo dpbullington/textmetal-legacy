@@ -13,11 +13,12 @@ namespace TextMetal.Middleware.Solder.Utilities
 	{
 		#region Properties/Indexers/Events
 
+		[Obsolete("Stop using this")]
 		public static IAdoNetLiteFascade AdoNetLiteLegacyInstance
 		{
 			get
 			{
-				return null;
+				return AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IAdoNetLiteFascade>(String.Empty, true);
 			}
 		}
 
