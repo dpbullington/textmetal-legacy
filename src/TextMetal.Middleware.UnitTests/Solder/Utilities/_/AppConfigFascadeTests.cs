@@ -23,9 +23,13 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 {
 	public class __ExpectedException : Attribute
 	{
+		#region Constructors/Destructors
+
 		public __ExpectedException(Type type)
 		{
 		}
+
+		#endregion
 	}
 
 	[TestFixture]
@@ -3531,7 +3535,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 			MockFactory mockFactory;
 			const string KEY = "AppConfigFascadeValueBooleanFalse";
 			bool expected, value;
-			
+
 			mockFactory = new MockFactory();
 			mockConfigurationRoot = mockFactory.CreateInstance<IConfigurationRoot>();
 			mockDataTypeFascade = mockFactory.CreateInstance<IDataTypeFascade>();

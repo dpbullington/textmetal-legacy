@@ -47,6 +47,7 @@ namespace TextMetal.Framework.Expression
 				return this.scriptCompilations;
 			}
 		}
+
 		private ScriptEngine ScriptEngine
 		{
 			get

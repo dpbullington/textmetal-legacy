@@ -25,11 +25,15 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 
 		#endregion
 
+		#region Methods/Operators
+
 		[MockSingleTestAttibute(2)]
 		[return: MockSingleTestAttibute(8)]
 		public object MyMethod([MockSingleTestAttibute(4)] object obj)
 		{
 			return obj;
 		}
+
+		#endregion
 	}
 }

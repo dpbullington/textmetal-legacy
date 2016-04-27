@@ -1,10 +1,10 @@
 {
-  "profiles": {
-    "runapp": {
-      "commandName": "runapp",
-      "environmentVariables": {
-        "DNX_TRACE": "1"
-      }
-    }
-  }
+	"profiles": {
+		"runapp": {
+			"commandName": "runapp",
+			"environmentVariables": {
+				"DNX_TRACE": "1"
+			}
+		}
+	}
 }

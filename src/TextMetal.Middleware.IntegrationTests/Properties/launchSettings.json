@@ -1,9 +1,10 @@
 {
-  "profiles": {
-    "test": {
-      "commandName": "test",
-      "environmentVariables": {
-      }
-    }
-  }
+	"profiles": {
+		"test": {
+			"commandName": "test",
+			"environmentVariables": {
+      
+			}
+		}
+	}
 }

@@ -10,7 +10,6 @@ using System.Xml.Serialization;
 
 using TextMetal.Framework.XmlDialect;
 using TextMetal.Middleware.Solder.Serialization;
-using TextMetal.Middleware.Solder.Utilities;
 
 using ExtensionMethods = TextMetal.Middleware.Solder.Utilities.ExtensionMethods;
 

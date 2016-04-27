@@ -12,7 +12,6 @@ using NMock;
 
 using NUnit.Framework;
 
-using TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies;
 using TextMetal.Middleware.Solder.Utilities;
 using TextMetal.Middleware.UnitTests.TestingInfrastructure;
 
@@ -462,7 +461,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 			reflectionFascade = new ReflectionFascade(mockDataTypeFascade);
 
 			sta = reflectionFascade.GetOneAttribute<MockSingleTestAttibute>(_targetType.Module);
-			
+
 			Assert.IsNotNull(sta);
 			Assert.AreEqual(int.MinValue, sta.Value);
 
@@ -475,7 +474,7 @@ namespace TextMetal.Middleware.UnitTests.Solder.Utilities._
 
 			Assert.IsNotNull(sta);
 			Assert.AreEqual(1, sta.Value);
-			
+
 			methodInfo = targetType.GetMethod(nameof(MockTestAttributedClass.MyMethod));
 			Assert.IsNotNull(methodInfo);
 

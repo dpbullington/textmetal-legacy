@@ -30,7 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{64ADAC3F-C7B
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Datazoid", "TextMetal.Middleware.Datazoid\TextMetal.Middleware.Datazoid.xproj", "{D6F33FD2-A067-44FC-9631-C58ED92F0614}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Scrutiny", "TextMetal.Middleware.Scrutiny\TextMetal.Middleware.Scrutiny.xproj", "{F5FC8E02-F454-4D26-AC1F-3F39A6E075C9}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Imports", "TextMetal.Imports\TextMetal.Imports.xproj", "{F5FC8E02-F454-4D26-AC1F-3F39A6E075C9}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.NopCLI", "TextMetal.NopCLI\TextMetal.NopCLI.xproj", "{F796E936-A05D-466D-92FF-B67E05FA90CD}"
 EndProject

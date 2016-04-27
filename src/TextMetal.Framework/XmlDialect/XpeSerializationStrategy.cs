@@ -8,7 +8,6 @@ using System.IO;
 using System.Xml;
 
 using TextMetal.Middleware.Solder.Serialization;
-using TextMetal.Middleware.Solder.Utilities;
 
 using ExtensionMethods = TextMetal.Middleware.Solder.Utilities.ExtensionMethods;
 

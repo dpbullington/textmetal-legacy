@@ -5,4 +5,4 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("TextMetal.Middleware Solder Library")]
+[assembly: AssemblyTitle("TextMetal Middleware Solder Library")]

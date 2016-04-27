@@ -8,7 +8,6 @@ using System.Reflection;
 
 using TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics;
 using TextMetal.Middleware.Datazoid.UoW;
-using TextMetal.Middleware.Solder.Utilities;
 
 using ExtensionMethods = TextMetal.Middleware.Solder.Utilities.ExtensionMethods;
 

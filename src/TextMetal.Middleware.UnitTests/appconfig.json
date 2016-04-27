@@ -17,7 +17,7 @@
 	"AppConfigFascadeValueDouble": "0",
 	"AppConfigFascadeValueDecimal": "0",
 	"AppConfigFascadeValueChar": "0",
-	
+
 	"BadAppConfigFascadeValueBoolean": "x",
 	"BadAppConfigFascadeValueDateTime": "x",
 	"BadAppConfigFascadeValueEnum": "x",
