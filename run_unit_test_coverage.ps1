@@ -24,7 +24,7 @@ $opencover_dir_path = "$tools_dir_path\OpenCover"
 $opencover_file_name = "OpenCover.Console.exe"
 $opencover_exe = "$opencover_dir_path\$opencover_file_name"
 
-$dotcover_dir_path = "C:\Program Files (x86)\JetBrains\Installations\dotCover04"
+$dotcover_dir_path = "C:\Program Files (x86)\JetBrains\Installations\dotCover05"
 $dotcover_file_name = "dotCover.exe"
 $dotcover_exe = "$dotcover_dir_path\$dotcover_file_name"
 

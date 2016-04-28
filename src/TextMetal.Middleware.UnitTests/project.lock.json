@@ -390,6 +390,24 @@
           "lib/dotnet/System.Collections.NonGeneric.dll": {}
         }
       },
+      "System.Collections.Specialized/4.0.1-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections.NonGeneric": "4.0.0",
+          "System.Globalization": "4.0.10",
+          "System.Globalization.Extensions": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Threading": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet5.1/System.Collections.Specialized.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/System.Collections.Specialized.dll": {}
+        }
+      },
       "System.ComponentModel/4.0.1-beta-23516": {
         "type": "package",
         "dependencies": {
@@ -422,6 +440,41 @@
         },
         "runtime": {
           "lib/dotnet5.4/System.ComponentModel.Annotations.dll": {}
+        }
+      },
+      "System.ComponentModel.Primitives/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "System.ComponentModel": "4.0.0",
+          "System.Runtime": "4.0.20"
+        },
+        "compile": {
+          "ref/dotnet/System.ComponentModel.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/System.ComponentModel.Primitives.dll": {}
+        }
+      },
+      "System.ComponentModel.TypeConverter/4.0.1-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.ComponentModel": "4.0.0",
+          "System.ComponentModel.Primitives": "4.0.0",
+          "System.Globalization": "4.0.10",
+          "System.Reflection": "4.0.10",
+          "System.Reflection.Extensions": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Threading": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet5.1/System.ComponentModel.TypeConverter.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/System.ComponentModel.TypeConverter.dll": {}
         }
       },
       "System.Console/4.0.0-beta-23516": {
@@ -1322,6 +1375,29 @@
           "ref/dotnet5.4/System.Xml.XmlSerializer.dll": {}
         }
       },
+      "TextMetal.Imports/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "System.AppContext": "4.0.1-beta-23516",
+          "System.Collections.Specialized": "4.0.1-beta-23516",
+          "System.ComponentModel": "4.0.1-beta-23516",
+          "System.ComponentModel.TypeConverter": "4.0.1-beta-23516",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Diagnostics.Contracts": "4.0.1-beta-23516",
+          "System.Diagnostics.TraceSource": "4.0.0-beta-23516",
+          "System.ObjectModel": "4.0.11-beta-23516",
+          "System.Reflection.Emit": "4.0.1-beta-23516",
+          "System.Reflection.Emit.ILGeneration": "4.0.1-beta-23516",
+          "System.Reflection.Emit.Lightweight": "4.0.1-beta-23516",
+          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23516",
+          "System.Xml.XDocument": "4.0.11-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516"
+        }
+      },
       "TextMetal.Middleware.Datazoid/1.0.0": {
         "type": "project",
         "framework": ".NETPlatform,Version=v5.5",
@@ -1330,26 +1406,6 @@
           "Microsoft.NETCore": "5.0.1-beta-23516",
           "System.Data.Common": "4.0.1-beta-23516",
           "TextMetal.Middleware.Solder": "1.0.0"
-        }
-      },
-      "TextMetal.Middleware.Scrutiny/1.0.0": {
-        "type": "project",
-        "framework": ".NETPlatform,Version=v5.5",
-        "dependencies": {
-          "Microsoft.CSharp": "4.0.1-beta-23516",
-          "Microsoft.NETCore": "5.0.1-beta-23516",
-          "System.AppContext": "4.0.1-beta-23516",
-          "System.ComponentModel": "4.0.1-beta-23516",
-          "System.Console": "4.0.0-beta-23516",
-          "System.Data.Common": "4.0.1-beta-23516",
-          "System.Diagnostics.Contracts": "4.0.1-beta-23516",
-          "System.Diagnostics.TraceSource": "4.0.0-beta-23516",
-          "System.Reflection.Emit": "4.0.1-beta-23516",
-          "System.Reflection.Emit.ILGeneration": "4.0.1-beta-23516",
-          "System.Reflection.Emit.Lightweight": "4.0.1-beta-23516",
-          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23516",
-          "System.Xml.XDocument": "4.0.11-beta-23516",
-          "System.Xml.XmlDocument": "4.0.1-beta-23516"
         }
       },
       "TextMetal.Middleware.Solder/1.0.0": {
@@ -1366,7 +1422,7 @@
           "System.Data.Common": "4.0.1-beta-23516",
           "System.Xml.XmlDocument": "4.0.1-beta-23516",
           "System.Xml.XmlSerializer": "4.0.11-beta-23516",
-          "TextMetal.Middleware.Scrutiny": "1.0.0"
+          "TextMetal.Imports": "1.0.0"
         }
       }
     },
@@ -2108,6 +2164,24 @@
           "lib/dotnet5.4/System.Collections.NonGeneric.dll": {}
         }
       },
+      "System.Collections.Specialized/4.0.1-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections.NonGeneric": "4.0.0",
+          "System.Globalization": "4.0.10",
+          "System.Globalization.Extensions": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Threading": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet5.1/System.Collections.Specialized.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/System.Collections.Specialized.dll": {}
+        }
+      },
       "System.ComponentModel/4.0.1-beta-23516": {
         "type": "package",
         "dependencies": {
@@ -2155,6 +2229,41 @@
         },
         "runtime": {
           "lib/dotnet5.4/System.ComponentModel.EventBasedAsync.dll": {}
+        }
+      },
+      "System.ComponentModel.Primitives/4.0.1-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.ComponentModel": "4.0.0",
+          "System.Runtime": "4.0.20"
+        },
+        "compile": {
+          "ref/dotnet5.1/System.ComponentModel.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/System.ComponentModel.Primitives.dll": {}
+        }
+      },
+      "System.ComponentModel.TypeConverter/4.0.1-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.ComponentModel": "4.0.0",
+          "System.ComponentModel.Primitives": "4.0.0",
+          "System.Globalization": "4.0.10",
+          "System.Reflection": "4.0.10",
+          "System.Reflection.Extensions": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Threading": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet5.1/System.ComponentModel.TypeConverter.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/System.ComponentModel.TypeConverter.dll": {}
         }
       },
       "System.Console/4.0.0-beta-23516": {
@@ -3143,6 +3252,29 @@
           "ref/dotnet5.4/System.Xml.XmlSerializer.dll": {}
         }
       },
+      "TextMetal.Imports/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "System.AppContext": "4.0.1-beta-23516",
+          "System.Collections.Specialized": "4.0.1-beta-23516",
+          "System.ComponentModel": "4.0.1-beta-23516",
+          "System.ComponentModel.TypeConverter": "4.0.1-beta-23516",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Diagnostics.Contracts": "4.0.1-beta-23516",
+          "System.Diagnostics.TraceSource": "4.0.0-beta-23516",
+          "System.ObjectModel": "4.0.11-beta-23516",
+          "System.Reflection.Emit": "4.0.1-beta-23516",
+          "System.Reflection.Emit.ILGeneration": "4.0.1-beta-23516",
+          "System.Reflection.Emit.Lightweight": "4.0.1-beta-23516",
+          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23516",
+          "System.Xml.XDocument": "4.0.11-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516"
+        }
+      },
       "TextMetal.Middleware.Datazoid/1.0.0": {
         "type": "project",
         "framework": ".NETPlatform,Version=v5.5",
@@ -3151,26 +3283,6 @@
           "Microsoft.NETCore": "5.0.1-beta-23516",
           "System.Data.Common": "4.0.1-beta-23516",
           "TextMetal.Middleware.Solder": "1.0.0"
-        }
-      },
-      "TextMetal.Middleware.Scrutiny/1.0.0": {
-        "type": "project",
-        "framework": ".NETPlatform,Version=v5.5",
-        "dependencies": {
-          "Microsoft.CSharp": "4.0.1-beta-23516",
-          "Microsoft.NETCore": "5.0.1-beta-23516",
-          "System.AppContext": "4.0.1-beta-23516",
-          "System.ComponentModel": "4.0.1-beta-23516",
-          "System.Console": "4.0.0-beta-23516",
-          "System.Data.Common": "4.0.1-beta-23516",
-          "System.Diagnostics.Contracts": "4.0.1-beta-23516",
-          "System.Diagnostics.TraceSource": "4.0.0-beta-23516",
-          "System.Reflection.Emit": "4.0.1-beta-23516",
-          "System.Reflection.Emit.ILGeneration": "4.0.1-beta-23516",
-          "System.Reflection.Emit.Lightweight": "4.0.1-beta-23516",
-          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23516",
-          "System.Xml.XDocument": "4.0.11-beta-23516",
-          "System.Xml.XmlDocument": "4.0.1-beta-23516"
         }
       },
       "TextMetal.Middleware.Solder/1.0.0": {
@@ -3187,7 +3299,7 @@
           "System.Data.Common": "4.0.1-beta-23516",
           "System.Xml.XmlDocument": "4.0.1-beta-23516",
           "System.Xml.XmlSerializer": "4.0.11-beta-23516",
-          "TextMetal.Middleware.Scrutiny": "1.0.0"
+          "TextMetal.Imports": "1.0.0"
         }
       }
     },
@@ -3929,6 +4041,24 @@
           "lib/dotnet5.4/System.Collections.NonGeneric.dll": {}
         }
       },
+      "System.Collections.Specialized/4.0.1-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections.NonGeneric": "4.0.0",
+          "System.Globalization": "4.0.10",
+          "System.Globalization.Extensions": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Threading": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet5.1/System.Collections.Specialized.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/System.Collections.Specialized.dll": {}
+        }
+      },
       "System.ComponentModel/4.0.1-beta-23516": {
         "type": "package",
         "dependencies": {
@@ -3976,6 +4106,41 @@
         },
         "runtime": {
           "lib/dotnet5.4/System.ComponentModel.EventBasedAsync.dll": {}
+        }
+      },
+      "System.ComponentModel.Primitives/4.0.1-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.ComponentModel": "4.0.0",
+          "System.Runtime": "4.0.20"
+        },
+        "compile": {
+          "ref/dotnet5.1/System.ComponentModel.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/System.ComponentModel.Primitives.dll": {}
+        }
+      },
+      "System.ComponentModel.TypeConverter/4.0.1-beta-23516": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.ComponentModel": "4.0.0",
+          "System.ComponentModel.Primitives": "4.0.0",
+          "System.Globalization": "4.0.10",
+          "System.Reflection": "4.0.10",
+          "System.Reflection.Extensions": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Threading": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet5.1/System.ComponentModel.TypeConverter.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/System.ComponentModel.TypeConverter.dll": {}
         }
       },
       "System.Console/4.0.0-beta-23516": {
@@ -4964,6 +5129,29 @@
           "ref/dotnet5.4/System.Xml.XmlSerializer.dll": {}
         }
       },
+      "TextMetal.Imports/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "System.AppContext": "4.0.1-beta-23516",
+          "System.Collections.Specialized": "4.0.1-beta-23516",
+          "System.ComponentModel": "4.0.1-beta-23516",
+          "System.ComponentModel.TypeConverter": "4.0.1-beta-23516",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Diagnostics.Contracts": "4.0.1-beta-23516",
+          "System.Diagnostics.TraceSource": "4.0.0-beta-23516",
+          "System.ObjectModel": "4.0.11-beta-23516",
+          "System.Reflection.Emit": "4.0.1-beta-23516",
+          "System.Reflection.Emit.ILGeneration": "4.0.1-beta-23516",
+          "System.Reflection.Emit.Lightweight": "4.0.1-beta-23516",
+          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23516",
+          "System.Xml.XDocument": "4.0.11-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516"
+        }
+      },
       "TextMetal.Middleware.Datazoid/1.0.0": {
         "type": "project",
         "framework": ".NETPlatform,Version=v5.5",
@@ -4972,26 +5160,6 @@
           "Microsoft.NETCore": "5.0.1-beta-23516",
           "System.Data.Common": "4.0.1-beta-23516",
           "TextMetal.Middleware.Solder": "1.0.0"
-        }
-      },
-      "TextMetal.Middleware.Scrutiny/1.0.0": {
-        "type": "project",
-        "framework": ".NETPlatform,Version=v5.5",
-        "dependencies": {
-          "Microsoft.CSharp": "4.0.1-beta-23516",
-          "Microsoft.NETCore": "5.0.1-beta-23516",
-          "System.AppContext": "4.0.1-beta-23516",
-          "System.ComponentModel": "4.0.1-beta-23516",
-          "System.Console": "4.0.0-beta-23516",
-          "System.Data.Common": "4.0.1-beta-23516",
-          "System.Diagnostics.Contracts": "4.0.1-beta-23516",
-          "System.Diagnostics.TraceSource": "4.0.0-beta-23516",
-          "System.Reflection.Emit": "4.0.1-beta-23516",
-          "System.Reflection.Emit.ILGeneration": "4.0.1-beta-23516",
-          "System.Reflection.Emit.Lightweight": "4.0.1-beta-23516",
-          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23516",
-          "System.Xml.XDocument": "4.0.11-beta-23516",
-          "System.Xml.XmlDocument": "4.0.1-beta-23516"
         }
       },
       "TextMetal.Middleware.Solder/1.0.0": {
@@ -5008,19 +5176,19 @@
           "System.Data.Common": "4.0.1-beta-23516",
           "System.Xml.XmlDocument": "4.0.1-beta-23516",
           "System.Xml.XmlSerializer": "4.0.11-beta-23516",
-          "TextMetal.Middleware.Scrutiny": "1.0.0"
+          "TextMetal.Imports": "1.0.0"
         }
       }
     }
   },
   "libraries": {
+    "TextMetal.Imports/1.0.0": {
+      "type": "project",
+      "path": "../TextMetal.Imports/project.json"
+    },
     "TextMetal.Middleware.Datazoid/1.0.0": {
       "type": "project",
       "path": "../TextMetal.Middleware.Datazoid/project.json"
-    },
-    "TextMetal.Middleware.Scrutiny/1.0.0": {
-      "type": "project",
-      "path": "../TextMetal.Middleware.Scrutiny/project.json"
     },
     "TextMetal.Middleware.Solder/1.0.0": {
       "type": "project",
@@ -5948,6 +6116,38 @@
         "System.Collections.NonGeneric.nuspec"
       ]
     },
+    "System.Collections.Specialized/4.0.1-beta-23516": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "h/PM3mqxwZzhClFW7vxdgIoT/4TBqBqHNzIphgpvqisGhe0jpE5XiBVqhZwx2QMkZO7+LJpUmIv8W3gMkPr1fg==",
+      "files": [
+        "lib/dotnet5.4/System.Collections.Specialized.dll",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Collections.Specialized.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "ref/dotnet5.1/de/System.Collections.Specialized.xml",
+        "ref/dotnet5.1/es/System.Collections.Specialized.xml",
+        "ref/dotnet5.1/fr/System.Collections.Specialized.xml",
+        "ref/dotnet5.1/it/System.Collections.Specialized.xml",
+        "ref/dotnet5.1/ja/System.Collections.Specialized.xml",
+        "ref/dotnet5.1/ko/System.Collections.Specialized.xml",
+        "ref/dotnet5.1/ru/System.Collections.Specialized.xml",
+        "ref/dotnet5.1/System.Collections.Specialized.dll",
+        "ref/dotnet5.1/System.Collections.Specialized.xml",
+        "ref/dotnet5.1/zh-hans/System.Collections.Specialized.xml",
+        "ref/dotnet5.1/zh-hant/System.Collections.Specialized.xml",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Collections.Specialized.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "System.Collections.Specialized.4.0.1-beta-23516.nupkg",
+        "System.Collections.Specialized.4.0.1-beta-23516.nupkg.sha512",
+        "System.Collections.Specialized.nuspec"
+      ]
+    },
     "System.ComponentModel/4.0.1-beta-23516": {
       "type": "package",
       "serviceable": true,
@@ -6106,6 +6306,102 @@
         "System.ComponentModel.EventBasedAsync.4.0.11-beta-23516.nupkg",
         "System.ComponentModel.EventBasedAsync.4.0.11-beta-23516.nupkg.sha512",
         "System.ComponentModel.EventBasedAsync.nuspec"
+      ]
+    },
+    "System.ComponentModel.Primitives/4.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "8xElzEmEH5G6XK7qqxRLQ/2r1IuhXlkz0ZdgKNp6ViDD1ukadd+5hccqg1G/L4AYRy96ddMdvgyJjFW87Cegbw==",
+      "files": [
+        "lib/dotnet/System.ComponentModel.Primitives.dll",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.ComponentModel.Primitives.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "ref/dotnet/de/System.ComponentModel.Primitives.xml",
+        "ref/dotnet/es/System.ComponentModel.Primitives.xml",
+        "ref/dotnet/fr/System.ComponentModel.Primitives.xml",
+        "ref/dotnet/it/System.ComponentModel.Primitives.xml",
+        "ref/dotnet/ja/System.ComponentModel.Primitives.xml",
+        "ref/dotnet/ko/System.ComponentModel.Primitives.xml",
+        "ref/dotnet/ru/System.ComponentModel.Primitives.xml",
+        "ref/dotnet/System.ComponentModel.Primitives.dll",
+        "ref/dotnet/System.ComponentModel.Primitives.xml",
+        "ref/dotnet/zh-hans/System.ComponentModel.Primitives.xml",
+        "ref/dotnet/zh-hant/System.ComponentModel.Primitives.xml",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.ComponentModel.Primitives.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "System.ComponentModel.Primitives.4.0.0.nupkg",
+        "System.ComponentModel.Primitives.4.0.0.nupkg.sha512",
+        "System.ComponentModel.Primitives.nuspec"
+      ]
+    },
+    "System.ComponentModel.Primitives/4.0.1-beta-23516": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "ir3rg92dU+RzlbTY/UsERB+Y7nWq6hNkbpcdptWY8sNrcnwI5Fp8QvbUetJCw/R/dcgr9xyavg5rwpx+Sc8LCQ==",
+      "files": [
+        "lib/dotnet5.4/System.ComponentModel.Primitives.dll",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.ComponentModel.Primitives.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "ref/dotnet5.1/de/System.ComponentModel.Primitives.xml",
+        "ref/dotnet5.1/es/System.ComponentModel.Primitives.xml",
+        "ref/dotnet5.1/fr/System.ComponentModel.Primitives.xml",
+        "ref/dotnet5.1/it/System.ComponentModel.Primitives.xml",
+        "ref/dotnet5.1/ja/System.ComponentModel.Primitives.xml",
+        "ref/dotnet5.1/ko/System.ComponentModel.Primitives.xml",
+        "ref/dotnet5.1/ru/System.ComponentModel.Primitives.xml",
+        "ref/dotnet5.1/System.ComponentModel.Primitives.dll",
+        "ref/dotnet5.1/System.ComponentModel.Primitives.xml",
+        "ref/dotnet5.1/zh-hans/System.ComponentModel.Primitives.xml",
+        "ref/dotnet5.1/zh-hant/System.ComponentModel.Primitives.xml",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.ComponentModel.Primitives.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "System.ComponentModel.Primitives.4.0.1-beta-23516.nupkg",
+        "System.ComponentModel.Primitives.4.0.1-beta-23516.nupkg.sha512",
+        "System.ComponentModel.Primitives.nuspec"
+      ]
+    },
+    "System.ComponentModel.TypeConverter/4.0.1-beta-23516": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "qDsYqQxdMF/hu9yTRHYU3qIYmMATKvVeytFd0GEnZwOMrvv5EQj2IhhYccIifukAo7eTfQSMCAZkn9A9XPOtaQ==",
+      "files": [
+        "lib/dotnet5.4/System.ComponentModel.TypeConverter.dll",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.ComponentModel.TypeConverter.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "ref/dotnet5.1/de/System.ComponentModel.TypeConverter.xml",
+        "ref/dotnet5.1/es/System.ComponentModel.TypeConverter.xml",
+        "ref/dotnet5.1/fr/System.ComponentModel.TypeConverter.xml",
+        "ref/dotnet5.1/it/System.ComponentModel.TypeConverter.xml",
+        "ref/dotnet5.1/ja/System.ComponentModel.TypeConverter.xml",
+        "ref/dotnet5.1/ko/System.ComponentModel.TypeConverter.xml",
+        "ref/dotnet5.1/ru/System.ComponentModel.TypeConverter.xml",
+        "ref/dotnet5.1/System.ComponentModel.TypeConverter.dll",
+        "ref/dotnet5.1/System.ComponentModel.TypeConverter.xml",
+        "ref/dotnet5.1/zh-hans/System.ComponentModel.TypeConverter.xml",
+        "ref/dotnet5.1/zh-hant/System.ComponentModel.TypeConverter.xml",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.ComponentModel.TypeConverter.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "System.ComponentModel.TypeConverter.4.0.1-beta-23516.nupkg",
+        "System.ComponentModel.TypeConverter.4.0.1-beta-23516.nupkg.sha512",
+        "System.ComponentModel.TypeConverter.nuspec"
       ]
     },
     "System.Console/4.0.0-beta-23516": {
@@ -8954,7 +9250,7 @@
   "projectFileDependencyGroups": {
     "": [
       "TextMetal.Middleware.Datazoid >= 1.0.0-*",
-      "TextMetal.Middleware.Scrutiny >= 1.0.0-*",
+      "TextMetal.Imports >= 1.0.0-*",
       "TextMetal.Middleware.Solder >= 1.0.0-*"
     ],
     "DNXCore,Version=v5.0": [
