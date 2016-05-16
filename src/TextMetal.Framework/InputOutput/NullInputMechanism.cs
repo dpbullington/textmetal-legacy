@@ -37,7 +37,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)contentName == null)
 				throw new ArgumentNullException(nameof(contentName));
 
-			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(contentName))
+			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(contentName))
 				throw new ArgumentOutOfRangeException(nameof(contentName));
 
 			return null;
@@ -51,7 +51,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)properties == null)
 				throw new ArgumentNullException(nameof(properties));
 
-			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceName))
+			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceName))
 				throw new ArgumentOutOfRangeException(nameof(sourceName));
 
 			return DBNull.Value;
@@ -62,7 +62,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)templateName == null)
 				throw new ArgumentNullException(nameof(templateName));
 
-			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(templateName))
+			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(templateName))
 				throw new ArgumentOutOfRangeException(nameof(templateName));
 
 			return null;

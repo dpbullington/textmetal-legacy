@@ -7,7 +7,7 @@ using System;
 using System.Collections;
 using System.Data.Common;
 
-using TextMetal.Middleware.Solder;
+using TextMetal.Middleware.Solder.Primitives;
 
 namespace TextMetal.Middleware.Datazoid
 {

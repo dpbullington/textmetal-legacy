@@ -8,8 +8,7 @@ using System.Reflection;
 
 using TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics;
 using TextMetal.Middleware.Datazoid.UoW;
-
-using ExtensionMethods = TextMetal.Middleware.Solder.Utilities.ExtensionMethods;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 {
@@ -154,7 +153,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		{
 			string retVal;
 
-			retVal = !ExtensionMethods.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(schemaName) ?
+			retVal = !LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(schemaName) ?
 				string.Format(NET_SQLITE_SCHEMA_TABLE_NAME_FORMAT, schemaName, tableName) :
 				string.Format(NET_SQLITE_TABLE_NAME_FORMAT, tableName);
 

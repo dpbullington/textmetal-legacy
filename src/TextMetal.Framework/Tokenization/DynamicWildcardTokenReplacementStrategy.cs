@@ -105,7 +105,7 @@ namespace TextMetal.Framework.Tokenization
 			value = null;
 			rawToken = _token;
 
-			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(rawToken))
+			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(rawToken))
 			{
 				if (this.Strict)
 					throw new InvalidOperationException(string.Format("Failed to get value for empty token"));
@@ -132,7 +132,7 @@ namespace TextMetal.Framework.Tokenization
 			{
 				foreach (object target in this.Targets)
 				{
-					if (ExtensionMethods.ReflectionFascadeLegacyInstance.GetLogicalPropertyValue(target, firstToken, out tokenReplacementValue))
+					if (LegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetLogicalPropertyValue(target, firstToken, out tokenReplacementValue))
 					{
 						if ((object)tokens == null ||
 							tokens.Length <= 0)
@@ -145,7 +145,7 @@ namespace TextMetal.Framework.Tokenization
 						foreach (string token in tokens)
 						{
 							// only do logical lookup here
-							if (!ExtensionMethods.ReflectionFascadeLegacyInstance.GetLogicalPropertyValue(tokenLogicalValue, token, out tokenLogicalValue))
+							if (!LegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetLogicalPropertyValue(tokenLogicalValue, token, out tokenLogicalValue))
 							{
 								if (this.Strict)
 									throw new InvalidOperationException(string.Format("Failed to get value for token '{0}'", _token));
@@ -182,7 +182,7 @@ namespace TextMetal.Framework.Tokenization
 			{
 				foreach (object target in this.Targets)
 				{
-					if (ExtensionMethods.ReflectionFascadeLegacyInstance.SetLogicalPropertyValue(target, token, value, false, false))
+					if (LegacyInstanceAccessor.ReflectionFascadeLegacyInstance.SetLogicalPropertyValue(target, token, value, false, false))
 						return true;
 				}
 			}

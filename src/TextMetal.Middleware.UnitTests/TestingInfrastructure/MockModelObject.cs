@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-using TextMetal.Middleware.Solder;
+using TextMetal.Middleware.Solder.Primitives;
 
 namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 {

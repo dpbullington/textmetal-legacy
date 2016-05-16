@@ -9,8 +9,6 @@ using TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics;
 using TextMetal.Middleware.Datazoid.UoW;
 using TextMetal.Middleware.Solder.Utilities;
 
-using ExtensionMethods = TextMetal.Middleware.Solder.Utilities.ExtensionMethods;
-
 namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 {
 	public sealed class OdbcSqlServerDataSourceTagStrategy : DataSourceTagStrategy
@@ -133,7 +131,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		{
 			string retVal;
 
-			retVal = !ExtensionMethods.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(schemaName) ?
+			retVal = !LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(schemaName) ?
 				string.Format(ODBC_SQL_SERVER_SCHEMA_PROCEDURE_NAME_FORMAT, schemaName, procedureName) :
 				string.Format(ODBC_SQL_SERVER_PROCEDURE_NAME_FORMAT, procedureName);
 
@@ -153,7 +151,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 		{
 			string retVal;
 
-			retVal = !ExtensionMethods.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(schemaName) ?
+			retVal = !LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(schemaName) ?
 				string.Format(ODBC_SQL_SERVER_SCHEMA_TABLE_NAME_FORMAT, schemaName, tableName) :
 				string.Format(ODBC_SQL_SERVER_TABLE_NAME_FORMAT, tableName);
 

@@ -301,7 +301,7 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "Newtonsoft.Json/8.0.2": {
+      "Newtonsoft.Json/8.0.3": {
         "type": "package",
         "compile": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
@@ -1382,7 +1382,11 @@
           "Microsoft.CSharp": "4.0.1-beta-23516",
           "Microsoft.NETCore": "5.0.1-beta-23516",
           "TextMetal.Imports": "1.0.0",
-          "TextMetal.Middleware.Solder": "1.0.0"
+          "TextMetal.Middleware.Solder.Extensions": "1.0.0",
+          "TextMetal.Middleware.Solder.Injection": "1.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "1.0.0",
+          "TextMetal.Middleware.Solder.Serialization": "1.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "1.0.0"
         }
       },
       "TextMetal.Imports/1.0.0": {
@@ -1415,10 +1419,14 @@
           "Microsoft.CSharp": "4.0.1-beta-23516",
           "Microsoft.NETCore": "5.0.1-beta-23516",
           "System.Data.Common": "4.0.1-beta-23516",
-          "TextMetal.Middleware.Solder": "1.0.0"
+          "TextMetal.Middleware.Solder.Extensions": "1.0.0",
+          "TextMetal.Middleware.Solder.Injection": "1.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "1.0.0",
+          "TextMetal.Middleware.Solder.Serialization": "1.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "1.0.0"
         }
       },
-      "TextMetal.Middleware.Solder/1.0.0": {
+      "TextMetal.Middleware.Solder.Context/1.0.0": {
         "type": "project",
         "framework": ".NETPlatform,Version=v5.5",
         "dependencies": {
@@ -1427,12 +1435,133 @@
           "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
           "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
           "Microsoft.NETCore": "5.0.1-beta-23516",
-          "Newtonsoft.Json": "8.0.2",
+          "Newtonsoft.Json": "8.0.3",
           "System.Console": "4.0.0-beta-23516",
           "System.Data.Common": "4.0.1-beta-23516",
           "System.Xml.XmlDocument": "4.0.1-beta-23516",
           "System.Xml.XmlSerializer": "4.0.11-beta-23516",
           "TextMetal.Imports": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Executive/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "Newtonsoft.Json": "8.0.3",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Imports": "1.0.0",
+          "TextMetal.Middleware.Solder.Context": "1.0.0",
+          "TextMetal.Middleware.Solder.Injection": "1.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "1.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Extensions/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "TextMetal.Middleware.Solder.Injection": "1.0.0",
+          "TextMetal.Middleware.Solder.Serialization": "1.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Injection/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "Newtonsoft.Json": "8.0.3",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Imports": "1.0.0",
+          "TextMetal.Middleware.Solder.Context": "1.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "1.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Interception/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "Newtonsoft.Json": "8.0.3",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Imports": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Primitives/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "Newtonsoft.Json": "8.0.3",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Imports": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Serialization/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "Newtonsoft.Json": "8.0.3",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Imports": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Utilities/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "Newtonsoft.Json": "8.0.3",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Imports": "1.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "1.0.0"
         }
       },
       "TextMetal.Middleware.UnitTests/1.0.0": {
@@ -1444,7 +1573,14 @@
           "System.Threading.Thread": "4.0.0-beta-23516",
           "TextMetal.Imports": "1.0.0",
           "TextMetal.Middleware.Datazoid": "1.0.0",
-          "TextMetal.Middleware.Solder": "1.0.0"
+          "TextMetal.Middleware.Solder.Context": "1.0.0",
+          "TextMetal.Middleware.Solder.Executive": "1.0.0",
+          "TextMetal.Middleware.Solder.Extensions": "1.0.0",
+          "TextMetal.Middleware.Solder.Injection": "1.0.0",
+          "TextMetal.Middleware.Solder.Interception": "1.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "1.0.0",
+          "TextMetal.Middleware.Solder.Serialization": "1.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "1.0.0"
         }
       }
     },
@@ -1743,7 +1879,7 @@
           "ref/dotnet5.1/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "Newtonsoft.Json/8.0.2": {
+      "Newtonsoft.Json/8.0.3": {
         "type": "package",
         "compile": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
@@ -3281,7 +3417,11 @@
           "Microsoft.CSharp": "4.0.1-beta-23516",
           "Microsoft.NETCore": "5.0.1-beta-23516",
           "TextMetal.Imports": "1.0.0",
-          "TextMetal.Middleware.Solder": "1.0.0"
+          "TextMetal.Middleware.Solder.Extensions": "1.0.0",
+          "TextMetal.Middleware.Solder.Injection": "1.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "1.0.0",
+          "TextMetal.Middleware.Solder.Serialization": "1.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "1.0.0"
         }
       },
       "TextMetal.Imports/1.0.0": {
@@ -3314,10 +3454,14 @@
           "Microsoft.CSharp": "4.0.1-beta-23516",
           "Microsoft.NETCore": "5.0.1-beta-23516",
           "System.Data.Common": "4.0.1-beta-23516",
-          "TextMetal.Middleware.Solder": "1.0.0"
+          "TextMetal.Middleware.Solder.Extensions": "1.0.0",
+          "TextMetal.Middleware.Solder.Injection": "1.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "1.0.0",
+          "TextMetal.Middleware.Solder.Serialization": "1.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "1.0.0"
         }
       },
-      "TextMetal.Middleware.Solder/1.0.0": {
+      "TextMetal.Middleware.Solder.Context/1.0.0": {
         "type": "project",
         "framework": ".NETPlatform,Version=v5.5",
         "dependencies": {
@@ -3326,12 +3470,133 @@
           "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
           "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
           "Microsoft.NETCore": "5.0.1-beta-23516",
-          "Newtonsoft.Json": "8.0.2",
+          "Newtonsoft.Json": "8.0.3",
           "System.Console": "4.0.0-beta-23516",
           "System.Data.Common": "4.0.1-beta-23516",
           "System.Xml.XmlDocument": "4.0.1-beta-23516",
           "System.Xml.XmlSerializer": "4.0.11-beta-23516",
           "TextMetal.Imports": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Executive/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "Newtonsoft.Json": "8.0.3",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Imports": "1.0.0",
+          "TextMetal.Middleware.Solder.Context": "1.0.0",
+          "TextMetal.Middleware.Solder.Injection": "1.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "1.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Extensions/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "TextMetal.Middleware.Solder.Injection": "1.0.0",
+          "TextMetal.Middleware.Solder.Serialization": "1.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Injection/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "Newtonsoft.Json": "8.0.3",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Imports": "1.0.0",
+          "TextMetal.Middleware.Solder.Context": "1.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "1.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Interception/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "Newtonsoft.Json": "8.0.3",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Imports": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Primitives/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "Newtonsoft.Json": "8.0.3",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Imports": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Serialization/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "Newtonsoft.Json": "8.0.3",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Imports": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Utilities/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "Newtonsoft.Json": "8.0.3",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Imports": "1.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "1.0.0"
         }
       },
       "TextMetal.Middleware.UnitTests/1.0.0": {
@@ -3343,7 +3608,14 @@
           "System.Threading.Thread": "4.0.0-beta-23516",
           "TextMetal.Imports": "1.0.0",
           "TextMetal.Middleware.Datazoid": "1.0.0",
-          "TextMetal.Middleware.Solder": "1.0.0"
+          "TextMetal.Middleware.Solder.Context": "1.0.0",
+          "TextMetal.Middleware.Solder.Executive": "1.0.0",
+          "TextMetal.Middleware.Solder.Extensions": "1.0.0",
+          "TextMetal.Middleware.Solder.Injection": "1.0.0",
+          "TextMetal.Middleware.Solder.Interception": "1.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "1.0.0",
+          "TextMetal.Middleware.Solder.Serialization": "1.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "1.0.0"
         }
       }
     },
@@ -3642,7 +3914,7 @@
           "ref/dotnet5.1/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "Newtonsoft.Json/8.0.2": {
+      "Newtonsoft.Json/8.0.3": {
         "type": "package",
         "compile": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
@@ -5180,7 +5452,11 @@
           "Microsoft.CSharp": "4.0.1-beta-23516",
           "Microsoft.NETCore": "5.0.1-beta-23516",
           "TextMetal.Imports": "1.0.0",
-          "TextMetal.Middleware.Solder": "1.0.0"
+          "TextMetal.Middleware.Solder.Extensions": "1.0.0",
+          "TextMetal.Middleware.Solder.Injection": "1.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "1.0.0",
+          "TextMetal.Middleware.Solder.Serialization": "1.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "1.0.0"
         }
       },
       "TextMetal.Imports/1.0.0": {
@@ -5213,10 +5489,14 @@
           "Microsoft.CSharp": "4.0.1-beta-23516",
           "Microsoft.NETCore": "5.0.1-beta-23516",
           "System.Data.Common": "4.0.1-beta-23516",
-          "TextMetal.Middleware.Solder": "1.0.0"
+          "TextMetal.Middleware.Solder.Extensions": "1.0.0",
+          "TextMetal.Middleware.Solder.Injection": "1.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "1.0.0",
+          "TextMetal.Middleware.Solder.Serialization": "1.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "1.0.0"
         }
       },
-      "TextMetal.Middleware.Solder/1.0.0": {
+      "TextMetal.Middleware.Solder.Context/1.0.0": {
         "type": "project",
         "framework": ".NETPlatform,Version=v5.5",
         "dependencies": {
@@ -5225,12 +5505,133 @@
           "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
           "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
           "Microsoft.NETCore": "5.0.1-beta-23516",
-          "Newtonsoft.Json": "8.0.2",
+          "Newtonsoft.Json": "8.0.3",
           "System.Console": "4.0.0-beta-23516",
           "System.Data.Common": "4.0.1-beta-23516",
           "System.Xml.XmlDocument": "4.0.1-beta-23516",
           "System.Xml.XmlSerializer": "4.0.11-beta-23516",
           "TextMetal.Imports": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Executive/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "Newtonsoft.Json": "8.0.3",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Imports": "1.0.0",
+          "TextMetal.Middleware.Solder.Context": "1.0.0",
+          "TextMetal.Middleware.Solder.Injection": "1.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "1.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Extensions/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "TextMetal.Middleware.Solder.Injection": "1.0.0",
+          "TextMetal.Middleware.Solder.Serialization": "1.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Injection/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "Newtonsoft.Json": "8.0.3",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Imports": "1.0.0",
+          "TextMetal.Middleware.Solder.Context": "1.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "1.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Interception/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "Newtonsoft.Json": "8.0.3",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Imports": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Primitives/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "Newtonsoft.Json": "8.0.3",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Imports": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Serialization/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "Newtonsoft.Json": "8.0.3",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Imports": "1.0.0"
+        }
+      },
+      "TextMetal.Middleware.Solder.Utilities/1.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.5",
+        "dependencies": {
+          "Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+          "Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+          "Microsoft.NETCore": "5.0.1-beta-23516",
+          "Newtonsoft.Json": "8.0.3",
+          "System.Console": "4.0.0-beta-23516",
+          "System.Data.Common": "4.0.1-beta-23516",
+          "System.Xml.XmlDocument": "4.0.1-beta-23516",
+          "System.Xml.XmlSerializer": "4.0.11-beta-23516",
+          "TextMetal.Imports": "1.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "1.0.0"
         }
       },
       "TextMetal.Middleware.UnitTests/1.0.0": {
@@ -5242,7 +5643,14 @@
           "System.Threading.Thread": "4.0.0-beta-23516",
           "TextMetal.Imports": "1.0.0",
           "TextMetal.Middleware.Datazoid": "1.0.0",
-          "TextMetal.Middleware.Solder": "1.0.0"
+          "TextMetal.Middleware.Solder.Context": "1.0.0",
+          "TextMetal.Middleware.Solder.Executive": "1.0.0",
+          "TextMetal.Middleware.Solder.Extensions": "1.0.0",
+          "TextMetal.Middleware.Solder.Injection": "1.0.0",
+          "TextMetal.Middleware.Solder.Interception": "1.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "1.0.0",
+          "TextMetal.Middleware.Solder.Serialization": "1.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "1.0.0"
         }
       }
     }
@@ -5260,9 +5668,37 @@
       "type": "project",
       "path": "../TextMetal.Middleware.Datazoid/project.json"
     },
-    "TextMetal.Middleware.Solder/1.0.0": {
+    "TextMetal.Middleware.Solder.Context/1.0.0": {
       "type": "project",
-      "path": "../TextMetal.Middleware.Solder/project.json"
+      "path": "../TextMetal.Middleware.Solder.Context/project.json"
+    },
+    "TextMetal.Middleware.Solder.Executive/1.0.0": {
+      "type": "project",
+      "path": "../TextMetal.Middleware.Solder.Executive/project.json"
+    },
+    "TextMetal.Middleware.Solder.Extensions/1.0.0": {
+      "type": "project",
+      "path": "../TextMetal.Middleware.Solder.Extensions/project.json"
+    },
+    "TextMetal.Middleware.Solder.Injection/1.0.0": {
+      "type": "project",
+      "path": "../TextMetal.Middleware.Solder.Injection/project.json"
+    },
+    "TextMetal.Middleware.Solder.Interception/1.0.0": {
+      "type": "project",
+      "path": "../TextMetal.Middleware.Solder.Interception/project.json"
+    },
+    "TextMetal.Middleware.Solder.Primitives/1.0.0": {
+      "type": "project",
+      "path": "../TextMetal.Middleware.Solder.Primitives/project.json"
+    },
+    "TextMetal.Middleware.Solder.Serialization/1.0.0": {
+      "type": "project",
+      "path": "../TextMetal.Middleware.Solder.Serialization/project.json"
+    },
+    "TextMetal.Middleware.Solder.Utilities/1.0.0": {
+      "type": "project",
+      "path": "../TextMetal.Middleware.Solder.Utilities/project.json"
     },
     "TextMetal.Middleware.UnitTests/1.0.0": {
       "type": "project",
@@ -5604,9 +6040,9 @@
         "runtime.json"
       ]
     },
-    "Newtonsoft.Json/8.0.2": {
+    "Newtonsoft.Json/8.0.3": {
       "type": "package",
-      "sha512": "e5yWmEfu68rmtG431zl9N/7PlNKQDIuiDW5MHlEFAZcecakcxrIGnKqrPAtWNILzK2oNanRB5cD150MYhECK3g==",
+      "sha512": "KGsYQdS2zLH+H8x2cZaSI7e+YZ4SFIbyy1YJQYl6GYBWjf5o4H1A68nxyq+WTyVSOJQ4GqS/DiPE+UseUizgMg==",
       "files": [
         "lib/net20/Newtonsoft.Json.dll",
         "lib/net20/Newtonsoft.Json.xml",
@@ -5620,8 +6056,8 @@
         "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
         "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll",
         "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.xml",
-        "Newtonsoft.Json.8.0.2.nupkg",
-        "Newtonsoft.Json.8.0.2.nupkg.sha512",
+        "Newtonsoft.Json.8.0.3.nupkg",
+        "Newtonsoft.Json.8.0.3.nupkg.sha512",
         "Newtonsoft.Json.nuspec",
         "tools/install.ps1"
       ]
@@ -9323,7 +9759,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "TextMetal.Middleware.Solder >= 1.0.0-*",
+      "TextMetal.Middleware.Solder.Primitives >= 1.0.0-*",
       "TextMetal.Imports >= 1.0.0-*",
       "TextMetal.Framework >= 1.0.0-*",
       "TextMetal.Middleware.UnitTests >= 1.0.0-*"

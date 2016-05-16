@@ -30,8 +30,7 @@
 	"content": "appconfig.json",
 	"dependencies": {
 		"TextMetal.Framework": "1.0.0-*",
-		"TextMetal.Imports": "1.0.0-*",
-		"TextMetal.Middleware.Solder": "1.0.0-*"
+		"TextMetal.Middleware.Solder.Executive": "1.0.0-*"
 	},
 	"commands": {
 		"runapp": "TextMetal.ConsoleTool"

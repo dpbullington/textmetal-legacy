@@ -55,7 +55,7 @@ namespace TextMetal.Middleware.UnitTests.TestingInfrastructure
 		/// <returns>
 		/// The version of the database. The format of the string returned depends on the specific type of connection you are using.
 		/// </returns>
-		/// <exception cref="T:System.InvalidOperationException"> <see cref="P:System.Data.Common.DbConnection.ServerVersion" /> was called while the returned Task was not completed and the connection was not opened after a call to <see cref="Overload:System.Data.Common.DbConnection.OpenAsync" />. </exception>
+		/// <exception cref="T:System.InvalidOperationException"> <see cref="P:System.Data.Common.DbConnection.ServerVersion" /> was called while the returned Task was not completed and the connection was not opened after a call to <see cref="DbConnection.OpenAsync" />. </exception>
 		public override string ServerVersion
 		{
 			get

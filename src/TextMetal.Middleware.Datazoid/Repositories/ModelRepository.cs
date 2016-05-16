@@ -10,7 +10,7 @@ using System.IO;
 using Microsoft.Extensions.PlatformAbstractions;
 
 using TextMetal.Middleware.Datazoid.UoW;
-using TextMetal.Middleware.Solder.Runtime;
+using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Datazoid.Repositories

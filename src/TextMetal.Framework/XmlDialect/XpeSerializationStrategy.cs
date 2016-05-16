@@ -8,8 +8,7 @@ using System.IO;
 using System.Xml;
 
 using TextMetal.Middleware.Solder.Serialization;
-
-using ExtensionMethods = TextMetal.Middleware.Solder.Utilities.ExtensionMethods;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.XmlDialect
 {
@@ -86,7 +85,7 @@ namespace TextMetal.Framework.XmlDialect
 			if ((object)inputFilePath == null)
 				throw new ArgumentNullException(nameof(inputFilePath));
 
-			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(inputFilePath))
+			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(inputFilePath))
 				throw new ArgumentOutOfRangeException(nameof(inputFilePath));
 
 			targetType = typeof(TObject);
@@ -242,7 +241,7 @@ namespace TextMetal.Framework.XmlDialect
 			if ((object)obj == null)
 				throw new ArgumentNullException(nameof(obj));
 
-			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(outputFilePath))
+			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(outputFilePath))
 				throw new ArgumentOutOfRangeException(nameof(outputFilePath));
 
 			targetType = obj.GetType();
@@ -264,7 +263,7 @@ namespace TextMetal.Framework.XmlDialect
 			if ((object)obj == null)
 				throw new ArgumentNullException(nameof(obj));
 
-			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(outputFilePath))
+			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(outputFilePath))
 				throw new ArgumentOutOfRangeException(nameof(outputFilePath));
 
 			using (Stream stream = File.Open(outputFilePath, FileMode.Create, FileAccess.Write, FileShare.None))

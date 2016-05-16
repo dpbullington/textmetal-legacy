@@ -41,7 +41,7 @@ pushd
 cd "$xproject_dir"
 
 $target_exe = "$dotnet_exe"
-$target_args = @("run") #, "--where class=TextMetal.Middleware.UnitTests.Solder.*")
+$target_args = @("run", "--", "--where", "class==TextMetal.Middleware.UnitTests.Solder.Injection._.*")
 $target_wdir = "$xproject_dir"
 
 $useDotCover = $true
@@ -66,7 +66,7 @@ if ($useDotCover -eq $false)
 }
 else
 {
-	$filter = "+:$target_assembly_name"
+	$filter = "+:$target_assembly_name*"
 
 	&$dotcover_exe analyse /Filters="$filter" `
 		/TargetExecutable="$target_exe" `

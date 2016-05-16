@@ -12,8 +12,7 @@ using TextMetal.Middleware.Datazoid.Repositories.Impl.Expressions;
 using TextMetal.Middleware.Datazoid.Repositories.Impl.Mappings;
 using TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics;
 using TextMetal.Middleware.Datazoid.UoW;
-
-using ExtensionMethods = TextMetal.Middleware.Solder.Utilities.ExtensionMethods;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 {
@@ -185,7 +184,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			tacticParameter = new TacticParameter()
 							{
 								ParameterDirection = ParameterDirection.Input,
-								ParameterDbType = ExtensionMethods.AdoNetLiteLegacyInstance.InferDbTypeForClrType(valueType),
+								ParameterDbType = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.InferDbTypeForClrType(valueType),
 								ParameterSize = default(int),
 								ParameterPrecision = default(byte),
 								ParameterScale = default(byte),

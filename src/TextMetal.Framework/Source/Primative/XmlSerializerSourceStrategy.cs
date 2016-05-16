@@ -8,8 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 
 using TextMetal.Middleware.Solder.Serialization;
-
-using ExtensionMethods = TextMetal.Middleware.Solder.Utilities.ExtensionMethods;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Source.Primative
 {
@@ -42,7 +41,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException(nameof(properties));
 
-			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
+			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
 			xmlSerializedObjectAqtn = null;

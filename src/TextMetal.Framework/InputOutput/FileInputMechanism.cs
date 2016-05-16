@@ -11,7 +11,7 @@ using System.Reflection;
 using TextMetal.Framework.Source;
 using TextMetal.Framework.Template;
 using TextMetal.Framework.XmlDialect;
-using TextMetal.Middleware.Solder.Runtime;
+using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.InputOutput
@@ -96,7 +96,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)assemblyName == null)
 				throw new ArgumentNullException(nameof(assemblyName));
 
-			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(assemblyName))
+			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(assemblyName))
 				throw new ArgumentOutOfRangeException(nameof(assemblyName));
 
 			//assemblyName = Path.GetFullPath(assemblyName);
@@ -114,7 +114,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)contentName == null)
 				throw new ArgumentNullException(nameof(contentName));
 
-			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(contentName))
+			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(contentName))
 				throw new ArgumentOutOfRangeException(nameof(contentName));
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, contentName));
@@ -140,7 +140,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)properties == null)
 				throw new ArgumentNullException(nameof(properties));
 
-			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceName))
+			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceName))
 				throw new ArgumentOutOfRangeException(nameof(sourceName));
 
 			//fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, sourceName));
@@ -160,7 +160,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)templateName == null)
 				throw new ArgumentNullException(nameof(templateName));
 
-			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(templateName))
+			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(templateName))
 				throw new ArgumentOutOfRangeException(nameof(templateName));
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, templateName));

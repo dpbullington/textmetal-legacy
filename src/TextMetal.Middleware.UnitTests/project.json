@@ -29,9 +29,18 @@
 	"exclude": ["Datazoid"],
 	"content": "appconfig.json",
 	"dependencies": {
-		"TextMetal.Middleware.Datazoid": "1.0.0-*",
 		"TextMetal.Imports": "1.0.0-*",
-		"TextMetal.Middleware.Solder": "1.0.0-*"
+
+		"TextMetal.Middleware.Solder.Context": "1.0.0-*",
+		"TextMetal.Middleware.Solder.Executive": "1.0.0-*",
+		"TextMetal.Middleware.Solder.Extensions": "1.0.0-*",
+		"TextMetal.Middleware.Solder.Injection": "1.0.0-*",
+		"TextMetal.Middleware.Solder.Interception": "1.0.0-*",
+		"TextMetal.Middleware.Solder.Primitives": "1.0.0-*",
+		"TextMetal.Middleware.Solder.Serialization": "1.0.0-*",
+		"TextMetal.Middleware.Solder.Utilities": "1.0.0-*",
+
+		"TextMetal.Middleware.Datazoid": "1.0.0-*"
 	},
 	"commands": {
 		"test": "TextMetal.Middleware.UnitTests"

@@ -17,7 +17,7 @@ using TextMetal.Middleware.Datazoid.Repositories.Impl.Migrations;
 using TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies;
 using TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics;
 using TextMetal.Middleware.Datazoid.UoW;
-using TextMetal.Middleware.Solder;
+using TextMetal.Middleware.Solder.Primitives;
 using TextMetal.Middleware.Solder.Serialization;
 using TextMetal.Middleware.Solder.Utilities;
 

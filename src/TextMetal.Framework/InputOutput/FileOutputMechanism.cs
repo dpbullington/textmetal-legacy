@@ -10,8 +10,7 @@ using System.Xml.Serialization;
 
 using TextMetal.Framework.XmlDialect;
 using TextMetal.Middleware.Solder.Serialization;
-
-using ExtensionMethods = TextMetal.Middleware.Solder.Utilities.ExtensionMethods;
+using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.InputOutput
 {
@@ -112,7 +111,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)scopeName == null)
 				throw new ArgumentNullException(nameof(scopeName));
 
-			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(scopeName))
+			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(scopeName))
 				throw new ArgumentOutOfRangeException(nameof(scopeName));
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, scopeName));
@@ -136,7 +135,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)scopeName == null)
 				throw new ArgumentNullException(nameof(scopeName));
 
-			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(scopeName))
+			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(scopeName))
 				throw new ArgumentOutOfRangeException(nameof(scopeName));
 
 			textWriter = this.TextWriters.Pop();
@@ -156,7 +155,7 @@ namespace TextMetal.Framework.InputOutput
 			if ((object)objectName == null)
 				throw new ArgumentNullException(nameof(objectName));
 
-			if (ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(objectName))
+			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(objectName))
 				throw new ArgumentOutOfRangeException(nameof(objectName));
 
 			fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, objectName));
@@ -169,7 +168,7 @@ namespace TextMetal.Framework.InputOutput
 			*/
 			if ((object)xmlObject != null)
 				serializationStrategy = new XpeSerializationStrategy(this.Xpe);
-			else if ((object)ExtensionMethods.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlRootAttribute>(obj.GetType()) != null)
+			else if ((object)LegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlRootAttribute>(obj.GetType()) != null)
 				serializationStrategy = new XmlSerializationStrategy();
 			else
 				serializationStrategy = new JsonSerializationStrategy();
@@ -200,7 +199,7 @@ namespace TextMetal.Framework.InputOutput
 			string fullFilePath;
 			string fullDirectoryPath;
 
-			if (!ExtensionMethods.DataTypeFascadeLegacyInstance.IsWhiteSpace(this.LogFileName))
+			if (!LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(this.LogFileName))
 			{
 				fullFilePath = Path.GetFullPath(Path.Combine(this.BaseDirectoryPath, this.LogFileName));
 				fullDirectoryPath = Path.GetDirectoryName(fullFilePath);

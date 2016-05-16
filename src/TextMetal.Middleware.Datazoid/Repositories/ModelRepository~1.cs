@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using TextMetal.Middleware.Datazoid.Models.Functional;
 using TextMetal.Middleware.Datazoid.Models.Tabular;
 using TextMetal.Middleware.Datazoid.UoW;
-using TextMetal.Middleware.Solder;
+using TextMetal.Middleware.Solder.Primitives;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Datazoid.Repositories

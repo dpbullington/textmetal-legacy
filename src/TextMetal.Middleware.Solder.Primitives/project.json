@@ -1,0 +1,39 @@
+﻿{
+	"version": "1.0.0-*",
+	"description": "TextMetal Middleware Solder Primitives Library",
+	"authors": ["©2002-2016 Daniel Bullington (dpbullington@gmail.com)"],
+	"summary": "A zero friction, open source meta-programming framework for .NET.",
+	"projectUrl": "http://www.textmetal.com",
+	"licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
+	"iconUrl": "https://github.com/dpbullington/textmetal/blob/master/doc/textmetal-logo.png",
+	"requireLicenseAcceptance": false,
+	"tags": ["TextMetal"],
+	"compilationOptions": {
+		"keyFile": "../TextMetal.snk",
+		"warningsAsErrors": false
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/textmetal/main"
+	},
+	"frameworks": {
+		"dotnet5.5": {
+			"dependencies": {
+				"Microsoft.CSharp": "4.0.1-beta-23516",
+				"Microsoft.NETCore": "5.0.1-beta-23516",
+				"System.Console": "4.0.0-beta-23516",
+				"System.Data.Common": "4.0.1-beta-23516",
+				"System.Xml.XmlDocument": "4.0.1-beta-23516",
+				"System.Xml.XmlSerializer": "4.0.11-beta-23516"
+			}
+		}
+	},
+	"exclude": [],
+	"dependencies": {
+		"TextMetal.Imports": "1.0.0-*",
+		"Microsoft.AspNet.Http.Abstractions": "1.0.0-rc1-final",
+		"Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+		"Microsoft.Framework.Configuration.Json": "1.0.0-beta8",
+		"Newtonsoft.Json": "8.0.3"
+	}
+}

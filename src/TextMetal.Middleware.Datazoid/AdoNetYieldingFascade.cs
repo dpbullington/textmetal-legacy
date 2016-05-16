@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 
-using TextMetal.Middleware.Solder;
 using TextMetal.Middleware.Solder.Injection;
+using TextMetal.Middleware.Solder.Primitives;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Datazoid
@@ -547,7 +547,7 @@ namespace TextMetal.Middleware.Datazoid
 		/// <returns> The mapped DbType. </returns>
 		public DbType InferDbTypeForClrType(Type clrType)
 		{
-			return ExtensionMethods.AdoNetLiteLegacyInstance.InferDbTypeForClrType(clrType);
+			return LegacyInstanceAccessor.AdoNetLiteLegacyInstance.InferDbTypeForClrType(clrType);
 		}
 
 		#endregion

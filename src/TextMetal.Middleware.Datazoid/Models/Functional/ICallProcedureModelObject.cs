@@ -5,7 +5,7 @@
 
 using System;
 
-using TextMetal.Middleware.Solder;
+using TextMetal.Middleware.Solder.Primitives;
 
 namespace TextMetal.Middleware.Datazoid.Models.Functional
 {

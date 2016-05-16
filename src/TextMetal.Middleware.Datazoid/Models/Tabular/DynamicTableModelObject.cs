@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
-using TextMetal.Middleware.Solder;
+using TextMetal.Middleware.Solder.Primitives;
 
 namespace TextMetal.Middleware.Datazoid.Models.Tabular
 {
