@@ -17,42 +17,21 @@
 		"url": "https://github.com/textmetal/main"
 	},
 	"frameworks": {
-		"dotnet5.5": {
-			"compilationOptions": {
-				"define": [ "NETCORE", "PORTABLE", "FEATURE_NETCORE_REFLECTION_API", "NUNIT_FRAMEWORK", "NUNITLITE" ]
+		"netstandard1.5": {
+			"buildOptions": {
+				"define": [ ]
 			},
 			"dependencies": {
-				"Microsoft.CSharp": "4.0.1-beta-23516",
-				"Microsoft.NETCore": "5.0.1-beta-23516",
-				"System.AppContext": "4.0.1-beta-23516",
-				"System.ComponentModel": "4.0.1-beta-23516",
-				"System.Console": "4.0.0-beta-23516",
-				"System.Data.Common": "4.0.1-beta-23516",
-				"System.Diagnostics.Contracts": "4.0.1-beta-23516",
-				"System.Diagnostics.TraceSource": "4.0.0-beta-23516",
-				"System.Reflection.Emit": "4.0.1-beta-23516",
-				"System.Reflection.Emit.ILGeneration": "4.0.1-beta-23516",
-				"System.Reflection.Emit.Lightweight": "4.0.1-beta-23516",
-				"System.Runtime.Serialization.Primitives": "4.1.0-beta-23516",
-				"System.Xml.XDocument": "4.0.11-beta-23516",
-				"System.Xml.XmlDocument": "4.0.1-beta-23516",
+				"NETStandard.Library": "1.5.0-rc2-*",
+				"TextMetal.Imports.CastleCore": "1.0.0-*",
+				"TextMetal.Imports.Jint": "1.0.0-*",
+				"TextMetal.Imports.NMock": "1.0.0-*",
+				"TextMetal.Imports.NUnit": "1.0.0-*"
 
-				"System.ComponentModel.TypeConverter": "4.0.1-beta-23516",
-				"System.Collections.Specialized": "4.0.1-beta-23516",
-				"System.ObjectModel": "4.0.11-beta-23516"
 			}
 		}
 	},
 	"exclude": [
-		"Imports\\NMock\\Proxy\\LinFu",
-		"Imports\\NMock\\Proxy\\Reflective",
-
-		"Imports\\NUnit\\Framework\\Compatibility\\BindingFlags.cs",
-		"Imports\\NUnit\\Lite\\OutputWriters",
-		"Imports\\NUnit\\Lite\\DebugWriter.cs",
-		"Imports\\NUnit\\Lite\\OutputManager.cs",
-		"Imports\\NUnit\\Lite\\TcpWriter.cs",
-		"Imports\\NUnit\\Lite\\TeamCityEventListener.cs"
 	],
 	"dependencies": {
 	}

@@ -8,9 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using Microsoft.Extensions.PlatformAbstractions;
-using Microsoft.Framework.Configuration;
-using Microsoft.Framework.Configuration.Json;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
+using Microsoft.Extensions.DependencyModel;
 
 using TextMetal.Middleware.Solder.Utilities;
 
@@ -147,14 +147,6 @@ namespace TextMetal.Middleware.Solder.Injection
 			}
 		}
 
-		public PlatformServices PlatformServices
-		{
-			get
-			{
-				return PlatformServices.Default;
-			}
-		}
-
 		internal IReflectionFascade ReflectionFascade
 		{
 			get
@@ -167,9 +159,15 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		#region Methods/Operators
 
+		public Assembly LoadAssembly(AssemblyName assemblyName)
+		{
+			return null;
+		}
+
 		internal static IConfigurationRoot LoadAppConfigFile(string appConfigFilePath)
 		{
 			IConfigurationBuilder configurationBuilder;
+			JsonConfigurationSource configurationSource;
 			IConfigurationProvider configurationProvider;
 			IConfigurationRoot configurationRoot;
 
@@ -177,8 +175,9 @@ namespace TextMetal.Middleware.Solder.Injection
 				throw new ArgumentNullException(nameof(appConfigFilePath));
 
 			configurationBuilder = new ConfigurationBuilder();
-			configurationProvider = new JsonConfigurationProvider(appConfigFilePath);
-			configurationBuilder.Add(configurationProvider);
+			configurationSource = new JsonConfigurationSource() { Optional = false, Path = appConfigFilePath };
+			configurationProvider = new JsonConfigurationProvider(configurationSource);
+			configurationBuilder.Add(configurationSource);
 			configurationRoot = configurationBuilder.Build();
 
 			return configurationRoot;
@@ -296,7 +295,6 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		private void SetUp()
 		{
-			this.DependencyManager.AddResolution<PlatformServices>(string.Empty, false, new SingletonWrapperDependencyResolution<PlatformServices>(new InstanceDependencyResolution<PlatformServices>(this.PlatformServices)));
 			this.DependencyManager.AddResolution<IConfigurationRoot>(string.Empty, false, new SingletonWrapperDependencyResolution<IConfigurationRoot>(new InstanceDependencyResolution<IConfigurationRoot>(this.ConfigurationRoot)));
 
 			this.DependencyManager.AddResolution<IDataTypeFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IDataTypeFascade>(new InstanceDependencyResolution<IDataTypeFascade>(this.DataTypeFascade)));
@@ -310,29 +308,23 @@ namespace TextMetal.Middleware.Solder.Injection
 		/// </summary>
 		private void SetUpApplicationDomain()
 		{
-			ILibraryManager libraryManager;
-			PlatformServices platformServices;
+			IReadOnlyList<RuntimeLibrary> runtimeLibraries;
 
 			Console.WriteLine("SetUpApplicationDomain");
 
-			platformServices = PlatformServices.Default;
+			runtimeLibraries = DependencyContext.Default.RuntimeLibraries;
 
-			if ((object)platformServices == null)
-				return; //throw new InvalidOperationException(string.Format("Platform services default instance was invalid."));
-
-			libraryManager = platformServices.LibraryManager;
-
-			if ((object)libraryManager == null)
-				return; //throw new InvalidOperationException(string.Format("Platform services library manager was invalid."));
+			if ((object)runtimeLibraries == null)
+				return;
 
 			if (!this.EnableAssemblyLoaderEventSinking)
 				return;
 
-			var assemblies = libraryManager.GetLibraries().SelectMany(l => l.Assemblies.Select(an =>
+			var assemblies = runtimeLibraries.SelectMany(l => l.Assemblies.Select(ra =>
 																								{
 																									try
 																									{
-																										return Assembly.Load(an);
+																										return Assembly.Load(ra.Name);
 																									}
 																									catch (ReflectionTypeLoadException)
 																									{

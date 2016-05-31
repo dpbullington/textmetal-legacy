@@ -4,8 +4,7 @@
 */
 
 using System;
-
-using Microsoft.Framework.Configuration;
+using Microsoft.Extensions.Configuration;
 
 /* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-04-08 / 100% code coverage */
 

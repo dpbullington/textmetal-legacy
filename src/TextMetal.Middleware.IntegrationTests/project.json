@@ -1,13 +1,13 @@
 ﻿{
 	"version": "1.0.0-*",
 	"description": "TextMetal Middleware Integration Tests Console App",
-	"authors": ["©2002-2016 Daniel Bullington (dpbullington@gmail.com)"],
+	"authors": [ "©2002-2016 Daniel Bullington (dpbullington@gmail.com)" ],
 	"summary": "A zero friction, open source meta-programming framework for .NET.",
 	"projectUrl": "http://www.textmetal.com",
 	"licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
 	"iconUrl": "https://github.com/dpbullington/textmetal/blob/master/doc/textmetal-logo.png",
 	"requireLicenseAcceptance": false,
-	"tags": ["TextMetal"],
+	"tags": [ "TextMetal" ],
 	"compilationOptions": {
 		"keyFile": "../TextMetal.snk",
 		"warningsAsErrors": false,
@@ -18,14 +18,16 @@
 		"url": "https://github.com/textmetal/main"
 	},
 	"frameworks": {
-		"dnxcore50": {
+		"netcoreapp1.0": {
 			"dependencies": {
-				"Microsoft.NETCore": "5.0.1-beta-23516",
-				"Microsoft.CSharp": "4.0.1-beta-23516"
+				"Microsoft.NETCore.App": {
+					"type": "platform",
+					"version": "1.0.0-rc2-*"
+				}
 			}
 		}
 	},
-	"exclude": [],
+	"exclude": [ ],
 	"dependencies": {
 		"TextMetal.Middleware.Solder.Primitives": "1.0.0-*",
 		"TextMetal.Imports": "1.0.0-*",

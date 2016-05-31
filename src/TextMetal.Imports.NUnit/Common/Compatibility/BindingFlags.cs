@@ -9,10 +9,6 @@ namespace NUnit.Framework.Compatibility
 namespace NUnit.Common.Compatibility
 #endif
 {
-	/* ^ */
-#if !NETCORE
-	/* ^ dpbullington@gmail.com ^ */
-
     /// <summary>
     /// Specifies flags that control binding and the way in which the search for members
     /// and types is conducted by reflection.
@@ -59,9 +55,5 @@ namespace NUnit.Common.Compatibility
         /// </summary>
         FlattenHierarchy = 64
     }
-
-	/* ^ */
-#endif
-	/* ^ dpbullington@gmail.com ^ */
 }
 #endif

@@ -101,7 +101,7 @@ namespace TextMetal.Framework.InputOutput
 
 			//assemblyName = Path.GetFullPath(assemblyName);
 			_assemblyName = new AssemblyName(assemblyName);
-			assembly = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.PlatformServices.AssemblyLoadContextAccessor.Default.Load(_assemblyName);
+			assembly = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.LoadAssembly(_assemblyName);
 
 			return assembly;
 		}

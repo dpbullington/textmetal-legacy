@@ -6,7 +6,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-using Microsoft.Framework.Configuration;
+using Microsoft.Extensions.Configuration;
 
 using NMock;
 using NMock.Actions;

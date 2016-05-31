@@ -5,7 +5,7 @@
 
 using System;
 
-using Microsoft.AspNet.Http;
+using Microsoft.AspNetCore.Http;
 
 /* CERTIFICATION OF UNIT TESTING: dpbullington@gmail.com / 2016-03-17 / 100% code coverage */
 

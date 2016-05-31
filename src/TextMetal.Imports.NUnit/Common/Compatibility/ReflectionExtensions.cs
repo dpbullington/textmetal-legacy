@@ -80,9 +80,7 @@ namespace NUnit.Common.Compatibility
         }
     }
 
-	/* ^ */
-#elif PORTABLE && !NETCORE
-	/* ^ dpbullington@gmail.com ^ */
+#elif PORTABLE
 
     /// <summary>
     /// Provides NUnit specific extensions to aid in Reflection
@@ -432,21 +430,12 @@ namespace NUnit.Common.Compatibility
                        .Any(m => m.ReturnType == to && m.Name == "op_Implicit");
         }
     }
-	/* ^ */
-#endif
 
-#if PORTABLE || NETCORE
-	/* dpbullington@gmail.com ^ */
-
-	/// <summary>
-	/// Extensions to the various MemberInfo derived classes
-	/// </summary>
-	public static class MemberInfoExtensions
+    /// <summary>
+    /// Extensions to the various MemberInfo derived classes
+    /// </summary>
+    public static class MemberInfoExtensions
     {
-		/* ^ */
-#if !NETCORE
-		/* dpbullington@gmail.com ^ */
-
         /// <summary>
         /// Returns the get method for the given property
         /// </summary>
@@ -464,17 +453,13 @@ namespace NUnit.Common.Compatibility
             return pinfo.GetMethod;
         }
 
-		/* ^ */
-#endif
-		/* dpbullington@gmail.com ^ */
-
-		/// <summary>
-		/// Returns an array of custom attributes of the specified type applied to this member
-		/// </summary>
-		/// <remarks> Portable throws an argument exception if T does not
-		/// derive from Attribute. NUnit uses interfaces to find attributes, thus
-		/// this method</remarks>
-		public static IEnumerable<T> GetAttributes<T>(this MemberInfo info, bool inherit) where T : class
+        /// <summary>
+        /// Returns an array of custom attributes of the specified type applied to this member
+        /// </summary>
+        /// <remarks> Portable throws an argument exception if T does not
+        /// derive from Attribute. NUnit uses interfaces to find attributes, thus
+        /// this method</remarks>
+        public static IEnumerable<T> GetAttributes<T>(this MemberInfo info, bool inherit) where T : class
         {
             return GetAttributesImpl<T>(info.GetCustomAttributes(inherit));
         }
@@ -506,16 +491,10 @@ namespace NUnit.Common.Compatibility
         }
     }
 
-#endif
-
-	/* ^ */
-#if PORTABLE || NETCORE
-	/* dpbullington@gmail.com ^ */
-
-	/// <summary>
-	/// Extensions for Assembly that are not available in portable
-	/// </summary>
-	public static class AssemblyExtensions
+    /// <summary>
+    /// Extensions for Assembly that are not available in portable
+    /// </summary>
+    public static class AssemblyExtensions
     {
         /// <summary>
         /// DNX does not have a version of GetCustomAttributes on Assembly that takes an inherit
@@ -531,10 +510,6 @@ namespace NUnit.Common.Compatibility
             return asm.GetCustomAttributes(attributeType).ToArray();
         }
 
-		/* ^ */
-#if !NETCORE
-		/* dpbullington@gmail.com ^ */
-
         /// <summary>
         /// Gets the types in a given assembly
         /// </summary>
@@ -544,12 +519,6 @@ namespace NUnit.Common.Compatibility
         {
             return asm.DefinedTypes.Select(info => info.AsType()).ToList();
         }
-
-		/* ^ */
+    }
 #endif
-		/* dpbullington@gmail.com ^ */
-	}
-	/* ^ */
-#endif
-	/* dpbullington@gmail.com ^ */
 }

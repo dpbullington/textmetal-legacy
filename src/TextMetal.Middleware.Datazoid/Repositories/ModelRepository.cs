@@ -10,7 +10,6 @@ using System.IO;
 using Microsoft.Extensions.PlatformAbstractions;
 
 using TextMetal.Middleware.Datazoid.UoW;
-using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Datazoid.Repositories
@@ -170,15 +169,9 @@ namespace TextMetal.Middleware.Datazoid.Repositories
 
 		#region Methods/Operators
 
-		private static string GetApplicationUserSpecificDirectoryPath()
+		protected virtual string GetApplicationUserSpecificDirectoryPath()
 		{
-			IApplicationEnvironment applicationEnvironment;
-			string userSpecificDirectoryPath;
-
-			applicationEnvironment = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IApplicationEnvironment>(string.Empty, false);
-			userSpecificDirectoryPath = Path.GetFullPath(applicationEnvironment.ApplicationBasePath);
-
-			return userSpecificDirectoryPath;
+			return string.Empty;
 		}
 
 		private bool EnsureDatabaseFile()
