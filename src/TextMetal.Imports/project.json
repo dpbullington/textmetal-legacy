@@ -1,5 +1,5 @@
 {
-	"version": "1.0.0-*",
+	"version": "9.0.0-*",
 	"description": "TextMetal Imports Library",
 	"authors": [ "©2002-2016 Daniel Bullington (dpbullington@gmail.com)" ],
 	"summary": "A zero friction, open source meta-programming framework for .NET.",
@@ -8,7 +8,7 @@
 	"iconUrl": "https://github.com/dpbullington/textmetal/blob/master/doc/textmetal-logo.png",
 	"requireLicenseAcceptance": false,
 	"tags": [ "TextMetal" ],
-	"compilationOptions": {
+	"buildOptions": {
 		"keyFile": "../TextMetal.snk",
 		"warningsAsErrors": false
 	},
@@ -23,10 +23,10 @@
 			},
 			"dependencies": {
 				"NETStandard.Library": "1.5.0-rc2-*",
-				"TextMetal.Imports.CastleCore": "1.0.0-*",
-				"TextMetal.Imports.Jint": "1.0.0-*",
-				"TextMetal.Imports.NMock": "1.0.0-*",
-				"TextMetal.Imports.NUnit": "1.0.0-*"
+				"TextMetal.Imports.CastleCore": "9.0.0-*",
+				"TextMetal.Imports.Jint": "9.0.0-*",
+				"TextMetal.Imports.NMock": "9.0.0-*",
+				"TextMetal.Imports.NUnit": "9.0.0-*"
 
 			}
 		}

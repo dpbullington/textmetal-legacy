@@ -1,5 +1,5 @@
 ﻿{
-	"version": "1.0.0-*",
+	"version": "9.0.0-*",
 	"description": "TextMetal Middleware Solder Executive Library",
 	"authors": ["©2002-2016 Daniel Bullington (dpbullington@gmail.com)"],
 	"summary": "A zero friction, open source meta-programming framework for .NET.",
@@ -8,7 +8,7 @@
 	"iconUrl": "https://github.com/dpbullington/textmetal/blob/master/doc/textmetal-logo.png",
 	"requireLicenseAcceptance": false,
 	"tags": ["TextMetal"],
-	"compilationOptions": {
+	"buildOptions": {
 		"keyFile": "../TextMetal.snk",
 		"warningsAsErrors": false
 	},
@@ -25,9 +25,9 @@
 	},
 	"exclude": [],
 	"dependencies": {
-		"TextMetal.Middleware.Solder.Primitives": "1.0.0-*",
-		"TextMetal.Middleware.Solder.Context": "1.0.0-*",
-		"TextMetal.Middleware.Solder.Utilities": "1.0.0-*",
-		"TextMetal.Middleware.Solder.Injection": "1.0.0-*"
+		"TextMetal.Middleware.Solder.Primitives": "9.0.0-*",
+		"TextMetal.Middleware.Solder.Context": "9.0.0-*",
+		"TextMetal.Middleware.Solder.Utilities": "9.0.0-*",
+		"TextMetal.Middleware.Solder.Injection": "9.0.0-*"
 	}
 }

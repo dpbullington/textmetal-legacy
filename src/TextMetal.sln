@@ -68,6 +68,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Imports.NMock", "
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Imports.NUnit", "TextMetal.Imports.NUnit\TextMetal.Imports.NUnit.xproj", "{F1E30B96-34BA-4136-8A49-AF3D35CC53EA}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Solder", "TextMetal.Middleware.Solder\TextMetal.Middleware.Solder.xproj", "{8958F0E4-5879-4D05-9E60-DDBC5CB408C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -158,6 +160,10 @@ Global
 		{F1E30B96-34BA-4136-8A49-AF3D35CC53EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1E30B96-34BA-4136-8A49-AF3D35CC53EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1E30B96-34BA-4136-8A49-AF3D35CC53EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8958F0E4-5879-4D05-9E60-DDBC5CB408C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8958F0E4-5879-4D05-9E60-DDBC5CB408C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8958F0E4-5879-4D05-9E60-DDBC5CB408C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8958F0E4-5879-4D05-9E60-DDBC5CB408C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -192,5 +198,6 @@ Global
 		{CFCC29BD-0D0E-40E5-AB7F-6B5FFFD58EE6} = {C768FC92-FDCA-48DF-94BF-1902245BDF96}
 		{4A88C98B-9D6C-47CD-8D27-9C2D4840A349} = {C768FC92-FDCA-48DF-94BF-1902245BDF96}
 		{F1E30B96-34BA-4136-8A49-AF3D35CC53EA} = {C768FC92-FDCA-48DF-94BF-1902245BDF96}
+		{8958F0E4-5879-4D05-9E60-DDBC5CB408C4} = {009E0012-E258-4542-94BA-6CCB5A47980A}
 	EndGlobalSection
 EndGlobal

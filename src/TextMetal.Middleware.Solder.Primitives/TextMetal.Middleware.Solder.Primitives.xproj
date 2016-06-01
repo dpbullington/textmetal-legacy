@@ -6,7 +6,7 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>B6D5B9FD-4DD7-446C-939F-BD0B2B3A31DC</ProjectGuid>
+    <ProjectGuid>b6d5b9fd-4dd7-446c-939f-bd0b2b3a31dc</ProjectGuid>
     <RootNamespace>TextMetal.Middleware.Solder.Primitives</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">..\artifacts\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>

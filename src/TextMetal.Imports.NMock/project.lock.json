@@ -1261,7 +1261,7 @@
           "lib/netstandard1.3/System.Xml.XmlDocument.dll": {}
         }
       },
-      "TextMetal.Imports.CastleCore/1.0.0": {
+      "TextMetal.Imports.CastleCore/9.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.4",
         "dependencies": {
@@ -4828,7 +4828,7 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "TextMetal.Imports.CastleCore/1.0.0": {
+    "TextMetal.Imports.CastleCore/9.0.0": {
       "type": "project",
       "path": "../TextMetal.Imports.CastleCore/project.json",
       "msbuildProject": "../TextMetal.Imports.CastleCore/TextMetal.Imports.CastleCore.xproj"
@@ -4836,7 +4836,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "TextMetal.Imports.CastleCore >= 1.0.0-*"
+      "TextMetal.Imports.CastleCore >= 9.0.0-*"
     ],
     ".NETStandard,Version=v1.5": [
       "Microsoft.CSharp >= 4.0.1-rc2-24027",

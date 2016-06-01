@@ -1576,6 +1576,35 @@
           "lib/netstandard1.3/System.Xml.XmlDocument.dll": {}
         }
       },
+      "System.Xml.XmlSerializer/4.0.11-rc2-24027": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections": "4.0.11-rc2-24027",
+          "System.Diagnostics.Debug": "4.0.11-rc2-24027",
+          "System.Globalization": "4.0.11-rc2-24027",
+          "System.IO": "4.1.0-rc2-24027",
+          "System.Linq": "4.1.0-rc2-24027",
+          "System.Reflection": "4.1.0-rc2-24027",
+          "System.Reflection.Emit": "4.0.1-rc2-24027",
+          "System.Reflection.Emit.ILGeneration": "4.0.1-rc2-24027",
+          "System.Reflection.Extensions": "4.0.1-rc2-24027",
+          "System.Reflection.Primitives": "4.0.1-rc2-24027",
+          "System.Reflection.TypeExtensions": "4.1.0-rc2-24027",
+          "System.Resources.ResourceManager": "4.0.1-rc2-24027",
+          "System.Runtime": "4.1.0-rc2-24027",
+          "System.Runtime.Extensions": "4.1.0-rc2-24027",
+          "System.Text.RegularExpressions": "4.0.12-rc2-24027",
+          "System.Threading": "4.0.11-rc2-24027",
+          "System.Xml.ReaderWriter": "4.0.11-rc2-24027",
+          "System.Xml.XmlDocument": "4.0.1-rc2-24027"
+        },
+        "compile": {
+          "ref/netstandard1.3/System.Xml.XmlSerializer.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
+        }
+      },
       "TextMetal.Imports/9.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.5",
@@ -1697,6 +1726,39 @@
           "netstandard1.5/TextMetal.Middleware.Solder.Context.dll": {}
         }
       },
+      "TextMetal.Middleware.Solder.Executive/9.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.5",
+        "dependencies": {
+          "NETStandard.Library": "1.5.0-rc2",
+          "TextMetal.Middleware.Solder.Context": "9.0.0",
+          "TextMetal.Middleware.Solder.Injection": "9.0.0",
+          "TextMetal.Middleware.Solder.Primitives": "9.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "9.0.0"
+        },
+        "compile": {
+          "netstandard1.5/TextMetal.Middleware.Solder.Executive.dll": {}
+        },
+        "runtime": {
+          "netstandard1.5/TextMetal.Middleware.Solder.Executive.dll": {}
+        }
+      },
+      "TextMetal.Middleware.Solder.Extensions/9.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.5",
+        "dependencies": {
+          "NETStandard.Library": "1.5.0-rc2",
+          "TextMetal.Middleware.Solder.Injection": "9.0.0",
+          "TextMetal.Middleware.Solder.Serialization": "9.0.0",
+          "TextMetal.Middleware.Solder.Utilities": "9.0.0"
+        },
+        "compile": {
+          "netstandard1.5/TextMetal.Middleware.Solder.Extensions.dll": {}
+        },
+        "runtime": {
+          "netstandard1.5/TextMetal.Middleware.Solder.Extensions.dll": {}
+        }
+      },
       "TextMetal.Middleware.Solder.Injection/9.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.5",
@@ -1718,6 +1780,20 @@
           "netstandard1.5/TextMetal.Middleware.Solder.Injection.dll": {}
         }
       },
+      "TextMetal.Middleware.Solder.Interception/9.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.5",
+        "dependencies": {
+          "NETStandard.Library": "1.5.0-rc2",
+          "TextMetal.Imports": "9.0.0"
+        },
+        "compile": {
+          "netstandard1.5/TextMetal.Middleware.Solder.Interception.dll": {}
+        },
+        "runtime": {
+          "netstandard1.5/TextMetal.Middleware.Solder.Interception.dll": {}
+        }
+      },
       "TextMetal.Middleware.Solder.Primitives/9.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.5",
@@ -1729,6 +1805,22 @@
         },
         "runtime": {
           "netstandard1.5/TextMetal.Middleware.Solder.Primitives.dll": {}
+        }
+      },
+      "TextMetal.Middleware.Solder.Serialization/9.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.5",
+        "dependencies": {
+          "NETStandard.Library": "1.5.0-rc2",
+          "Newtonsoft.Json": "9.0.1-beta1",
+          "System.Xml.XmlSerializer": "4.0.11-rc2-24027",
+          "TextMetal.Imports": "9.0.0"
+        },
+        "compile": {
+          "netstandard1.5/TextMetal.Middleware.Solder.Serialization.dll": {}
+        },
+        "runtime": {
+          "netstandard1.5/TextMetal.Middleware.Solder.Serialization.dll": {}
         }
       },
       "TextMetal.Middleware.Solder.Utilities/9.0.0": {
@@ -5597,6 +5689,74 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
+    "System.Xml.XmlSerializer/4.0.11-rc2-24027": {
+      "sha512": "pbajpRk7iPkxSCrrjzVFpWGk54uBUu4BqrOFtUNXR5pqwKkGtW/8xeHDXnFW7RiP6wKO57cmkOlb7+PxCTpTPw==",
+      "type": "package",
+      "files": [
+        "System.Xml.XmlSerializer.4.0.11-rc2-24027.nupkg.sha512",
+        "System.Xml.XmlSerializer.nuspec",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net45/_._",
+        "lib/netcore50/System.Xml.XmlSerializer.dll",
+        "lib/netstandard1.3/System.Xml.XmlSerializer.dll",
+        "lib/portable-net45+win8+wp8+wpa81/_._",
+        "lib/win8/_._",
+        "lib/wp80/_._",
+        "lib/wpa81/_._",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net45/_._",
+        "ref/netcore50/System.Xml.XmlSerializer.dll",
+        "ref/netcore50/System.Xml.XmlSerializer.xml",
+        "ref/netcore50/de/System.Xml.XmlSerializer.xml",
+        "ref/netcore50/es/System.Xml.XmlSerializer.xml",
+        "ref/netcore50/fr/System.Xml.XmlSerializer.xml",
+        "ref/netcore50/it/System.Xml.XmlSerializer.xml",
+        "ref/netcore50/ja/System.Xml.XmlSerializer.xml",
+        "ref/netcore50/ko/System.Xml.XmlSerializer.xml",
+        "ref/netcore50/ru/System.Xml.XmlSerializer.xml",
+        "ref/netcore50/zh-hans/System.Xml.XmlSerializer.xml",
+        "ref/netcore50/zh-hant/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.0/System.Xml.XmlSerializer.dll",
+        "ref/netstandard1.0/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.0/de/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.0/es/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.0/fr/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.0/it/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.0/ja/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.0/ko/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.0/ru/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.0/zh-hans/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.0/zh-hant/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.3/System.Xml.XmlSerializer.dll",
+        "ref/netstandard1.3/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.3/de/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.3/es/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.3/fr/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.3/it/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.3/ja/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.3/ko/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.3/ru/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.3/zh-hans/System.Xml.XmlSerializer.xml",
+        "ref/netstandard1.3/zh-hant/System.Xml.XmlSerializer.xml",
+        "ref/portable-net45+win8+wp8+wpa81/_._",
+        "ref/win8/_._",
+        "ref/wp80/_._",
+        "ref/wpa81/_._",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "runtimes/aot/lib/netcore50/System.Xml.XmlSerializer.dll"
+      ]
+    },
     "TextMetal.Imports/9.0.0": {
       "type": "project",
       "path": "../TextMetal.Imports/project.json",
@@ -5627,15 +5787,35 @@
       "path": "../TextMetal.Middleware.Solder.Context/project.json",
       "msbuildProject": "../TextMetal.Middleware.Solder.Context/TextMetal.Middleware.Solder.Context.xproj"
     },
+    "TextMetal.Middleware.Solder.Executive/9.0.0": {
+      "type": "project",
+      "path": "../TextMetal.Middleware.Solder.Executive/project.json",
+      "msbuildProject": "../TextMetal.Middleware.Solder.Executive/TextMetal.Middleware.Solder.Executive.xproj"
+    },
+    "TextMetal.Middleware.Solder.Extensions/9.0.0": {
+      "type": "project",
+      "path": "../TextMetal.Middleware.Solder.Extensions/project.json",
+      "msbuildProject": "../TextMetal.Middleware.Solder.Extensions/TextMetal.Middleware.Solder.Extensions.xproj"
+    },
     "TextMetal.Middleware.Solder.Injection/9.0.0": {
       "type": "project",
       "path": "../TextMetal.Middleware.Solder.Injection/project.json",
       "msbuildProject": "../TextMetal.Middleware.Solder.Injection/TextMetal.Middleware.Solder.Injection.xproj"
     },
+    "TextMetal.Middleware.Solder.Interception/9.0.0": {
+      "type": "project",
+      "path": "../TextMetal.Middleware.Solder.Interception/project.json",
+      "msbuildProject": "../TextMetal.Middleware.Solder.Interception/TextMetal.Middleware.Solder.Interception.xproj"
+    },
     "TextMetal.Middleware.Solder.Primitives/9.0.0": {
       "type": "project",
       "path": "../TextMetal.Middleware.Solder.Primitives/project.json",
       "msbuildProject": "../TextMetal.Middleware.Solder.Primitives/TextMetal.Middleware.Solder.Primitives.xproj"
+    },
+    "TextMetal.Middleware.Solder.Serialization/9.0.0": {
+      "type": "project",
+      "path": "../TextMetal.Middleware.Solder.Serialization/project.json",
+      "msbuildProject": "../TextMetal.Middleware.Solder.Serialization/TextMetal.Middleware.Solder.Serialization.xproj"
     },
     "TextMetal.Middleware.Solder.Utilities/9.0.0": {
       "type": "project",
@@ -5644,14 +5824,17 @@
     }
   },
   "projectFileDependencyGroups": {
-    "": [
-      "TextMetal.Middleware.Solder.Context >= 9.0.0-*",
-      "TextMetal.Middleware.Solder.Injection >= 9.0.0-*",
-      "TextMetal.Middleware.Solder.Primitives >= 9.0.0-*",
-      "TextMetal.Middleware.Solder.Utilities >= 9.0.0-*"
-    ],
+    "": [],
     ".NETStandard,Version=v1.5": [
-      "NETStandard.Library >= 1.5.0-rc2-*"
+      "NETStandard.Library >= 1.5.0-rc2-*",
+      "TextMetal.Middleware.Solder.Context >= 9.0.0-*",
+      "TextMetal.Middleware.Solder.Executive >= 9.0.0-*",
+      "TextMetal.Middleware.Solder.Extensions >= 9.0.0-*",
+      "TextMetal.Middleware.Solder.Injection >= 9.0.0-*",
+      "TextMetal.Middleware.Solder.Interception >= 9.0.0-*",
+      "TextMetal.Middleware.Solder.Primitives >= 9.0.0-*",
+      "TextMetal.Middleware.Solder.Serialization >= 9.0.0-*",
+      "TextMetal.Middleware.Solder.Utilities >= 9.0.0-*"
     ]
   },
   "tools": {},

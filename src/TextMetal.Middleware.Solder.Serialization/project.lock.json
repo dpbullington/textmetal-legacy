@@ -112,6 +112,39 @@
           "System.Xml.XDocument": "4.0.11-rc2-24027"
         }
       },
+      "Newtonsoft.Json/9.0.1-beta1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.0.1-rc2-24027",
+          "System.Collections": "4.0.11-rc2-24027",
+          "System.Diagnostics.Debug": "4.0.11-rc2-24027",
+          "System.Dynamic.Runtime": "4.0.11-rc2-24027",
+          "System.Globalization": "4.0.11-rc2-24027",
+          "System.IO": "4.1.0-rc2-24027",
+          "System.Linq": "4.1.0-rc2-24027",
+          "System.Linq.Expressions": "4.0.11-rc2-24027",
+          "System.ObjectModel": "4.0.12-rc2-24027",
+          "System.Reflection": "4.1.0-rc2-24027",
+          "System.Reflection.Extensions": "4.0.1-rc2-24027",
+          "System.Resources.ResourceManager": "4.0.1-rc2-24027",
+          "System.Runtime": "4.1.0-rc2-24027",
+          "System.Runtime.Extensions": "4.1.0-rc2-24027",
+          "System.Runtime.Serialization.Primitives": "4.1.1-rc2-24027",
+          "System.Text.Encoding": "4.0.11-rc2-24027",
+          "System.Text.Encoding.Extensions": "4.0.11-rc2-24027",
+          "System.Text.RegularExpressions": "4.0.12-rc2-24027",
+          "System.Threading": "4.0.11-rc2-24027",
+          "System.Threading.Tasks": "4.0.11-rc2-24027",
+          "System.Xml.ReaderWriter": "4.0.11-rc2-24027",
+          "System.Xml.XDocument": "4.0.11-rc2-24027"
+        },
+        "compile": {
+          "lib/netstandard1.0/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/Newtonsoft.Json.dll": {}
+        }
+      },
       "runtime.native.System/4.0.0-rc2-24027": {
         "type": "package"
       },
@@ -1290,16 +1323,15 @@
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "TextMetal.Imports/1.0.0": {
+      "TextMetal.Imports/9.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.5",
         "dependencies": {
           "NETStandard.Library": "1.5.0-rc2",
-          "TextMetal.Imports.CastleCore": "1.0.0",
-          "TextMetal.Imports.Jint": "1.0.0",
-          "TextMetal.Imports.NMock": "1.0.0",
-          "TextMetal.Imports.NUnit": "1.0.0",
-          "TextMetal.Imports.NewtonsoftJson": "1.0.0"
+          "TextMetal.Imports.CastleCore": "9.0.0",
+          "TextMetal.Imports.Jint": "9.0.0",
+          "TextMetal.Imports.NMock": "9.0.0",
+          "TextMetal.Imports.NUnit": "9.0.0"
         },
         "compile": {
           "netstandard1.5/TextMetal.Imports.dll": {}
@@ -1308,7 +1340,7 @@
           "netstandard1.5/TextMetal.Imports.dll": {}
         }
       },
-      "TextMetal.Imports.CastleCore/1.0.0": {
+      "TextMetal.Imports.CastleCore/9.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.4",
         "dependencies": {
@@ -1336,7 +1368,7 @@
           "netstandard1.4/TextMetal.Imports.CastleCore.dll": {}
         }
       },
-      "TextMetal.Imports.Jint/1.0.0": {
+      "TextMetal.Imports.Jint/9.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.5",
         "dependencies": {
@@ -1353,25 +1385,7 @@
           "netstandard1.5/TextMetal.Imports.Jint.dll": {}
         }
       },
-      "TextMetal.Imports.NewtonsoftJson/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v1.0",
-        "dependencies": {
-          "Microsoft.CSharp": "4.0.1-rc2-24027",
-          "NETStandard.Library": "1.5.0-rc2",
-          "System.Dynamic.Runtime": "4.0.11-rc2-24027",
-          "System.Linq.Expressions": "4.0.11-rc2-24027",
-          "System.Reflection.Extensions": "4.0.1-rc2-24027",
-          "System.Runtime.Serialization.Primitives": "4.1.1-rc2-24027"
-        },
-        "compile": {
-          "netstandard1.0/TextMetal.Imports.NewtonsoftJson.dll": {}
-        },
-        "runtime": {
-          "netstandard1.0/TextMetal.Imports.NewtonsoftJson.dll": {}
-        }
-      },
-      "TextMetal.Imports.NMock/1.0.0": {
+      "TextMetal.Imports.NMock/9.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.5",
         "dependencies": {
@@ -1390,7 +1404,7 @@
           "System.Reflection.Emit.Lightweight": "4.0.1-rc2-24027",
           "System.Runtime.Serialization.Primitives": "4.1.1-rc2-24027",
           "System.Xml.XmlDocument": "4.0.1-rc2-24027",
-          "TextMetal.Imports.CastleCore": "1.0.0"
+          "TextMetal.Imports.CastleCore": "9.0.0"
         },
         "compile": {
           "netstandard1.5/TextMetal.Imports.NMock.dll": {}
@@ -1399,7 +1413,7 @@
           "netstandard1.5/TextMetal.Imports.NMock.dll": {}
         }
       },
-      "TextMetal.Imports.NUnit/1.0.0": {
+      "TextMetal.Imports.NUnit/9.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.5",
         "dependencies": {
@@ -1581,6 +1595,29 @@
         "NETStandard.Library.nuspec",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt"
+      ]
+    },
+    "Newtonsoft.Json/9.0.1-beta1": {
+      "sha512": "eGdISZNV16lWnDPHjfgBVcoyihASk/zsoXLN3r2uZYnXisiTUWKF8Xmgza3EtEFOMbYTmjUqBEjjT7Lx7ilK/w==",
+      "type": "package",
+      "files": [
+        "Newtonsoft.Json.9.0.1-beta1.nupkg.sha512",
+        "Newtonsoft.Json.nuspec",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.xml",
+        "tools/install.ps1"
       ]
     },
     "runtime.native.System/4.0.0-rc2-24027": {
@@ -5022,32 +5059,27 @@
         "runtimes/aot/lib/netcore50/System.Xml.XmlSerializer.dll"
       ]
     },
-    "TextMetal.Imports/1.0.0": {
+    "TextMetal.Imports/9.0.0": {
       "type": "project",
       "path": "../TextMetal.Imports/project.json",
       "msbuildProject": "../TextMetal.Imports/TextMetal.Imports.xproj"
     },
-    "TextMetal.Imports.CastleCore/1.0.0": {
+    "TextMetal.Imports.CastleCore/9.0.0": {
       "type": "project",
       "path": "../TextMetal.Imports.CastleCore/project.json",
       "msbuildProject": "../TextMetal.Imports.CastleCore/TextMetal.Imports.CastleCore.xproj"
     },
-    "TextMetal.Imports.Jint/1.0.0": {
+    "TextMetal.Imports.Jint/9.0.0": {
       "type": "project",
       "path": "../TextMetal.Imports.Jint/project.json",
       "msbuildProject": "../TextMetal.Imports.Jint/TextMetal.Imports.Jint.xproj"
     },
-    "TextMetal.Imports.NewtonsoftJson/1.0.0": {
-      "type": "project",
-      "path": "../TextMetal.Imports.NewtonsoftJson/project.json",
-      "msbuildProject": "../TextMetal.Imports.NewtonsoftJson/TextMetal.Imports.NewtonsoftJson.xproj"
-    },
-    "TextMetal.Imports.NMock/1.0.0": {
+    "TextMetal.Imports.NMock/9.0.0": {
       "type": "project",
       "path": "../TextMetal.Imports.NMock/project.json",
       "msbuildProject": "../TextMetal.Imports.NMock/TextMetal.Imports.NMock.xproj"
     },
-    "TextMetal.Imports.NUnit/1.0.0": {
+    "TextMetal.Imports.NUnit/9.0.0": {
       "type": "project",
       "path": "../TextMetal.Imports.NUnit/project.json",
       "msbuildProject": "../TextMetal.Imports.NUnit/TextMetal.Imports.NUnit.xproj"
@@ -5055,7 +5087,8 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "TextMetal.Imports >= 1.0.0-*"
+      "Newtonsoft.Json >= 9.0.1-beta1",
+      "TextMetal.Imports >= 9.0.0-*"
     ],
     ".NETStandard,Version=v1.5": [
       "NETStandard.Library >= 1.5.0-rc2-*",
