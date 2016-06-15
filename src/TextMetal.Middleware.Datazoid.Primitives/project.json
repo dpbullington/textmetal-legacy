@@ -1,0 +1,33 @@
+{
+	"version": "9.0.0-*",
+	"description": "TextMetal Middleware Datazoid Primitives Library",
+	"authors": ["©2002-2016 Daniel Bullington (dpbullington@gmail.com)"],
+	"summary": "A zero friction, open source meta-programming framework for .NET.",
+	"projectUrl": "http://www.textmetal.com",
+	"licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
+	"iconUrl": "https://github.com/dpbullington/textmetal/blob/master/doc/textmetal-logo.png",
+	"requireLicenseAcceptance": false,
+	"tags": ["TextMetal"],
+	"buildOptions": {
+		"keyFile": "../TextMetal.snk",
+		"warningsAsErrors": false
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/textmetal/main"
+	},
+	"frameworks": {
+		"netstandard1.5": {
+			"dependencies": {
+				"NETStandard.Library": "1.5.0-rc2-*"
+			}
+		}
+	},
+	"exclude": [],
+	"dependencies": {
+		"TextMetal.Middleware.Solder.Primitives": "9.0.0-*",
+		"TextMetal.Middleware.Solder.Injection": "9.0.0-*",
+		"TextMetal.Middleware.Solder.Utilities": "9.0.0-*",
+		"TextMetal.Middleware.Solder.Extensions": "9.0.0-*"
+	}
+}

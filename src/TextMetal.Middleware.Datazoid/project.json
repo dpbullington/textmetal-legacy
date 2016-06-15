@@ -25,10 +25,10 @@
 	},
 	"exclude": [],
 	"dependencies": {
-		"TextMetal.Middleware.Solder.Primitives": "9.0.0-*",
-		"TextMetal.Middleware.Solder.Injection": "9.0.0-*",
-		"TextMetal.Middleware.Solder.Utilities": "9.0.0-*",
-		"TextMetal.Middleware.Solder.Serialization": "9.0.0-*",
-		"TextMetal.Middleware.Solder.Extensions": "9.0.0-*"
+		"TextMetal.Middleware.Datazoid.Primitives": "9.0.0-*",
+		"TextMetal.Middleware.Datazoid.Extensions": "9.0.0-*",
+		"TextMetal.Middleware.Datazoid.UoW": "9.0.0-*",
+		"TextMetal.Middleware.Datazoid.Models": "9.0.0-*",
+		"TextMetal.Middleware.Datazoid.Repositories": "9.0.0-*"
 	}
 }

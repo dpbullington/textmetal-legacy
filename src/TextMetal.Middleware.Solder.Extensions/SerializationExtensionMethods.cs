@@ -7,7 +7,9 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace TextMetal.Middleware.Solder.Serialization
+using TextMetal.Middleware.Solder.Serialization;
+
+namespace TextMetal.Middleware.Solder.Extensions
 {
 	public static class SerializationExtensionMethods
 	{

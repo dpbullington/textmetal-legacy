@@ -4,6 +4,8 @@
 */
 
 using System;
+
+using TextMetal.Middleware.Solder.Extensions;
 using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.XmlDialect

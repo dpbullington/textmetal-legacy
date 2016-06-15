@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 
 using TextMetal.Framework.Naming;
+using TextMetal.Middleware.Solder.Extensions;
 using TextMetal.Middleware.Solder.Serialization;
 using TextMetal.Middleware.Solder.Utilities;
 

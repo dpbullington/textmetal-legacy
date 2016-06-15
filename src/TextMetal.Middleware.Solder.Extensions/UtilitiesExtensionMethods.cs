@@ -5,7 +5,7 @@
 
 using System;
 
-namespace TextMetal.Middleware.Solder.Utilities
+namespace TextMetal.Middleware.Solder.Extensions
 {
 	public static class UtilitiesExtensionMethods
 	{

@@ -6,8 +6,9 @@
 using System;
 
 using TextMetal.Middleware.Solder.Injection;
+using TextMetal.Middleware.Solder.Utilities;
 
-namespace TextMetal.Middleware.Solder.Utilities
+namespace TextMetal.Middleware.Solder.Extensions
 {
 	[Obsolete("Stop using this")]
 	public static class LegacyInstanceAccessor
