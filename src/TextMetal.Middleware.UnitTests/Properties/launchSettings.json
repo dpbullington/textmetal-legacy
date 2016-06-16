@@ -1,8 +1,8 @@
 {
-  "profiles": {
-    "test": {
-      "commandName": "test",
-      "commandLineArgs": "--where module==TextMetal.Middleware.UnitTests.Solder.Injection._"
-    }
-  }
+	"profiles": {
+		"test": {
+			"commandName": "test",
+			"commandLineArgs": "--where module==TextMetal.Middleware.UnitTests.Solder.Injection._"
+		}
+	}
 }

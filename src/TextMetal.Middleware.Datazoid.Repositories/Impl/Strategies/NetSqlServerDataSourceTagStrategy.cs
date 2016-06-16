@@ -8,7 +8,6 @@ using System;
 using TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics;
 using TextMetal.Middleware.Datazoid.UoW;
 using TextMetal.Middleware.Solder.Extensions;
-using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 {

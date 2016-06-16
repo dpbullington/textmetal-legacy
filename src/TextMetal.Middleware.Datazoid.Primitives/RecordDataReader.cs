@@ -33,9 +33,9 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 																		Index = i,
 																		Name = mc.ColumnName
 																	}).ToDictionary(
-																		p => p.Name,
-																		p => p.Index,
-																		StringComparer.CurrentCultureIgnoreCase);
+				p => p.Name,
+				p => p.Index,
+				StringComparer.CurrentCultureIgnoreCase);
 		}
 
 		#endregion

@@ -1,13 +1,13 @@
 ﻿{
 	"version": "9.0.0-*",
 	"description": "TextMetal Framework Unit Tests Console App",
-	"authors": [ "©2002-2016 Daniel Bullington (dpbullington@gmail.com)" ],
+	"authors": ["©2002-2016 Daniel Bullington (dpbullington@gmail.com)"],
 	"summary": "A zero friction, open source meta-programming framework for .NET.",
 	"projectUrl": "http://www.textmetal.com",
 	"licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
 	"iconUrl": "https://github.com/dpbullington/textmetal/blob/master/doc/textmetal-logo.png",
 	"requireLicenseAcceptance": false,
-	"tags": [ "TextMetal" ],
+	"tags": ["TextMetal"],
 	"buildOptions": {
 		"keyFile": "../TextMetal.snk",
 		"warningsAsErrors": false,
@@ -27,7 +27,7 @@
 			}
 		}
 	},
-	"exclude": [ ],
+	"exclude": [],
 	"dependencies": {
 		"TextMetal.Middleware.Solder.Primitives": "9.0.0-*",
 		"TextMetal.Imports": "9.0.0-*",

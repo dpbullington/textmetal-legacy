@@ -7,8 +7,6 @@ using System;
 using System.Data;
 using System.IO;
 
-using Microsoft.Extensions.PlatformAbstractions;
-
 using TextMetal.Middleware.Datazoid.UoW;
 using TextMetal.Middleware.Solder.Utilities;
 
@@ -112,7 +110,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories
 				string value;
 
 				// {0} == GetApplicationUserSpecificDirectoryPath()
-				value = Path.Combine(string.Format(this.DatabaseDirectoryPath ?? string.Empty, GetApplicationUserSpecificDirectoryPath()), this.DatabaseFileName);
+				value = Path.Combine(string.Format(this.DatabaseDirectoryPath ?? string.Empty, this.GetApplicationUserSpecificDirectoryPath()), this.DatabaseFileName);
 
 				return value;
 			}
@@ -169,11 +167,6 @@ namespace TextMetal.Middleware.Datazoid.Repositories
 
 		#region Methods/Operators
 
-		protected virtual string GetApplicationUserSpecificDirectoryPath()
-		{
-			return string.Empty;
-		}
-
 		private bool EnsureDatabaseFile()
 		{
 			string databaseFilePath;
@@ -202,6 +195,11 @@ namespace TextMetal.Middleware.Datazoid.Repositories
 			}
 
 			return retval;
+		}
+
+		protected virtual string GetApplicationUserSpecificDirectoryPath()
+		{
+			return string.Empty;
 		}
 
 		public virtual IUnitOfWork GetUnitOfWork(bool transactional, IsolationLevel isolationLevel = IsolationLevel.Unspecified)

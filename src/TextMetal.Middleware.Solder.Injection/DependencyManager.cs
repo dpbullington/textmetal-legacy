@@ -321,9 +321,9 @@ namespace TextMetal.Middleware.Solder.Injection
 			//throw new ArgumentNullException(nameof(selectorKey));
 
 			candidateResolutions = this.DependencyResolutionRegistrations.Where(drr =>
-				(drr.Key.Item1 == resolutionType || (includeAssignableTypes && resolutionType.IsAssignableFrom(drr.Key.Item1))) &&
-				((object)selectorKey == null || drr.Key.Item2 == selectorKey)
-				);
+																					(drr.Key.Item1 == resolutionType || (includeAssignableTypes && resolutionType.IsAssignableFrom(drr.Key.Item1))) &&
+																					((object)selectorKey == null || drr.Key.Item2 == selectorKey)
+			);
 
 			return candidateResolutions;
 		}

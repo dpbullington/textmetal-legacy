@@ -159,11 +159,6 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		#region Methods/Operators
 
-		public Assembly LoadAssembly(AssemblyName assemblyName)
-		{
-			return null;
-		}
-
 		internal static IConfigurationRoot LoadAppConfigFile(string appConfigFilePath)
 		{
 			IConfigurationBuilder configurationBuilder;
@@ -181,6 +176,11 @@ namespace TextMetal.Middleware.Solder.Injection
 			configurationRoot = configurationBuilder.Build();
 
 			return configurationRoot;
+		}
+
+		public Assembly LoadAssembly(AssemblyName assemblyName)
+		{
+			return null;
 		}
 
 		/// <summary>
@@ -321,16 +321,16 @@ namespace TextMetal.Middleware.Solder.Injection
 				return;
 
 			var assemblies = runtimeLibraries.SelectMany(l => l.Assemblies.Select(ra =>
-																								{
-																									try
-																									{
-																										return Assembly.Load(ra.Name);
-																									}
-																									catch (ReflectionTypeLoadException)
-																									{
-																										return null;
-																									}
-																								})).Where(a => (object)a != null);
+																				{
+																					try
+																					{
+																						return Assembly.Load(ra.Name);
+																					}
+																					catch (ReflectionTypeLoadException)
+																					{
+																						return null;
+																					}
+																				})).Where(a => (object)a != null);
 
 			this.ScanAssemblies(assemblies.ToArray());
 		}

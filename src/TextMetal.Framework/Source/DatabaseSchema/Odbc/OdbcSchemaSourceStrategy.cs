@@ -10,7 +10,6 @@ using System.Data.Common;
 using System.Xml;
 
 using TextMetal.Middleware.Solder.Extensions;
-using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 {
@@ -48,11 +47,11 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 				return column.ColumnSqlType == "image" ||
 						column.ColumnSqlType == "text" ||
 						column.ColumnSqlType == "ntext" ? (int)0 :
-					(column.ColumnDbType == DbType.String &&
-					column.ColumnSqlType.SafeToString().StartsWith("n") &&
-					column.ColumnSize != 0 ?
-						(int)(column.ColumnSize / 2) :
-						column.ColumnSize);
+				(column.ColumnDbType == DbType.String &&
+				column.ColumnSqlType.SafeToString().StartsWith("n") &&
+				column.ColumnSize != 0 ?
+					(int)(column.ColumnSize / 2) :
+					column.ColumnSize);
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));
@@ -71,11 +70,11 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Odbc
 				return parameter.ParameterSqlType == "image" ||
 						parameter.ParameterSqlType == "text" ||
 						parameter.ParameterSqlType == "ntext" ? (int)0 :
-					(parameter.ParameterDbType == DbType.String &&
-					parameter.ParameterSqlType.SafeToString().StartsWith("n") &&
-					parameter.ParameterSize != 0 ?
-						(int)(parameter.ParameterSize / 2) :
-						parameter.ParameterSize);
+				(parameter.ParameterDbType == DbType.String &&
+				parameter.ParameterSqlType.SafeToString().StartsWith("n") &&
+				parameter.ParameterSize != 0 ?
+					(int)(parameter.ParameterSize / 2) :
+					parameter.ParameterSize);
 			}
 
 			throw new ArgumentOutOfRangeException(string.Format("dataSourceTag: '{0}'", dataSourceTag));

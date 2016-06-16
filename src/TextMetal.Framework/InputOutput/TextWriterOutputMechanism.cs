@@ -11,7 +11,6 @@ using System.Xml.Serialization;
 using TextMetal.Framework.XmlDialect;
 using TextMetal.Middleware.Solder.Extensions;
 using TextMetal.Middleware.Solder.Serialization;
-using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.InputOutput
 {

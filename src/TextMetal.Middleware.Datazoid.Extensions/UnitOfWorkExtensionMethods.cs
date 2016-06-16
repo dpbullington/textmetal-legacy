@@ -12,7 +12,6 @@ using System.Linq;
 using TextMetal.Middleware.Datazoid.Primitives;
 using TextMetal.Middleware.Datazoid.UoW;
 using TextMetal.Middleware.Solder.Extensions;
-using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Middleware.Datazoid.Extensions
 {

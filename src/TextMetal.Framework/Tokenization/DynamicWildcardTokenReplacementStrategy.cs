@@ -7,7 +7,6 @@ using System;
 using System.Linq;
 
 using TextMetal.Middleware.Solder.Extensions;
-using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Tokenization
 {
@@ -24,7 +23,7 @@ namespace TextMetal.Framework.Tokenization
 		/// <param name="targets"> The target object instances to evaluate (in linear order) during wildcard token replacement. </param>
 		public DynamicWildcardTokenReplacementStrategy(object[] targets)
 			:
-				this(targets, true)
+			this(targets, true)
 		{
 		}
 

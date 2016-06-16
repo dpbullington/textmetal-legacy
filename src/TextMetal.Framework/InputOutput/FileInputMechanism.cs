@@ -13,7 +13,6 @@ using TextMetal.Framework.Template;
 using TextMetal.Framework.XmlDialect;
 using TextMetal.Middleware.Solder.Extensions;
 using TextMetal.Middleware.Solder.Injection;
-using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.InputOutput
 {

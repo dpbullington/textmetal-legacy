@@ -52,7 +52,7 @@ namespace TextMetal.Middleware.Solder.Executive
 			{
 				Console.WriteLine();
 				// HACK
-				Console.WriteLine(string.Format("USAGE: {0} ", this.GetType().GetTypeInfo().Assembly.ManifestModule.Name) + string.Join(" ", requiredArgumentTokens));
+				Console.WriteLine(string.Format("USAGE: {0} ", this.GetType().GetTypeInfo().Assembly.ManifestModule.Name) + string.Join((string)" ", (IEnumerable<string>)requiredArgumentTokens));
 			}
 
 			Console.ForegroundColor = oldConsoleColor;

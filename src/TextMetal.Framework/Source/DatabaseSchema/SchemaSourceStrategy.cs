@@ -13,8 +13,8 @@ using System.Text.RegularExpressions;
 
 using TextMetal.Framework.Naming;
 using TextMetal.Middleware.Solder.Extensions;
-using TextMetal.Middleware.Solder.Serialization;
-using TextMetal.Middleware.Solder.Utilities;
+
+using Enumerable = System.Linq.Enumerable;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
@@ -181,28 +181,28 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			if (properties.TryGetValue(PROP_TOKEN_SERVER_FILTER, out values))
 			{
 				if ((object)values != null && values.Count > 0)
-					serverFilter = values.ToArray();
+					serverFilter = Enumerable.ToArray(values);
 			}
 
 			databaseFilter = null;
 			if (properties.TryGetValue(PROP_TOKEN_DATABASE_FILTER, out values))
 			{
 				if ((object)values != null && values.Count > 0)
-					databaseFilter = values.ToArray();
+					databaseFilter = Enumerable.ToArray(values);
 			}
 
 			schemaFilter = null;
 			if (properties.TryGetValue(PROP_TOKEN_SCHEMA_FILTER, out values))
 			{
 				if ((object)values != null && values.Count > 0)
-					schemaFilter = values.ToArray();
+					schemaFilter = Enumerable.ToArray(values);
 			}
 
 			objectFilter = null;
 			if (properties.TryGetValue(PROP_TOKEN_OBJECT_FILTER, out values))
 			{
 				if ((object)values != null && values.Count > 0)
-					objectFilter = values.ToArray();
+					objectFilter = Enumerable.ToArray(values);
 			}
 
 			disableProcSchDisc = false;
@@ -267,7 +267,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 					var dictDataServer = (IDictionary<string, object>)null;
 
 					if ((object)dictEnumServer != null &&
-						(object)(dictDataServer = dictEnumServer.ToList().SingleOrDefault()) != null)
+						(object)(dictDataServer = Enumerable.ToList(dictEnumServer).SingleOrDefault()) != null)
 					{
 						server.ServerName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_NAME]);
 						server.MachineName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.MACHINE_NAME]);
@@ -280,7 +280,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 						// filter unwanted servers
 						if ((object)serverFilter != null)
 						{
-							if (!serverFilter.Any(f => Regex.IsMatch(server.ServerName, f)))
+							if (!Enumerable.Any(serverFilter, f => Regex.IsMatch(server.ServerName, f)))
 								return null;
 						}
 
@@ -288,7 +288,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 						{
 							if ((object)dictEnumDatabase != null)
 							{
-								foreach (var dictDataDatabase in dictEnumDatabase.ToList())
+								foreach (var dictDataDatabase in Enumerable.ToList(dictEnumDatabase))
 								{
 									Database database;
 
@@ -318,7 +318,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 										// filter unwanted databases
 										if ((object)databaseFilter != null)
 										{
-											if (!databaseFilter.Any(f => Regex.IsMatch(database.DatabaseName, f)))
+											if (!Enumerable.Any(databaseFilter, f => Regex.IsMatch(database.DatabaseName, f)))
 												continue;
 										}
 									}
@@ -331,7 +331,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 									{
 										if ((object)dictEnumDdlTrigger != null)
 										{
-											foreach (var dictDataTrigger in dictEnumDdlTrigger.ToList())
+											foreach (var dictDataTrigger in Enumerable.ToList(dictEnumDdlTrigger))
 											{
 												Trigger trigger;
 
@@ -362,7 +362,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 									{
 										if ((object)dictEnumSchema != null)
 										{
-											foreach (var dictDataSchema in dictEnumSchema.ToList())
+											foreach (var dictDataSchema in Enumerable.ToList(dictEnumSchema))
 											{
 												Schema schema;
 
@@ -383,7 +383,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 												// filter unwanted schemas
 												if ((object)schemaFilter != null)
 												{
-													if (!schemaFilter.Any(f => Regex.IsMatch(schema.SchemaName, f)))
+													if (!Enumerable.Any(schemaFilter, f => Regex.IsMatch(schema.SchemaName, f)))
 														continue;
 												}
 
@@ -391,7 +391,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 												var dictEnumTable = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Tables"), this.CoreGetTableParameters(connectionType, dataSourceTag, server, database, schema));
 												{
-													foreach (var dictDataTable in dictEnumTable.ToList())
+													foreach (var dictDataTable in Enumerable.ToList(dictEnumTable))
 													{
 														Table table;
 
@@ -434,7 +434,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 														// filter unwanted tables (objects)
 														if ((object)objectFilter != null)
 														{
-															if (!objectFilter.Any(f => Regex.IsMatch(table.TableName, f)))
+															if (!Enumerable.Any(objectFilter, f => Regex.IsMatch(table.TableName, f)))
 																continue;
 														}
 
@@ -444,7 +444,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 														{
 															if ((object)dictEnumColumn != null)
 															{
-																foreach (var dictDataColumn in Column.FixupDuplicateColumns(dictEnumColumn.ToList()))
+																foreach (var dictDataColumn in Column.FixupDuplicateColumns(Enumerable.ToList(dictEnumColumn)))
 																{
 																	TableColumn column;
 
@@ -519,7 +519,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 														{
 															if ((object)dictEnumDmlTrigger != null)
 															{
-																foreach (var dictDataTrigger in dictEnumDmlTrigger.ToList())
+																foreach (var dictDataTrigger in Enumerable.ToList(dictEnumDmlTrigger))
 																{
 																	Trigger trigger;
 
@@ -550,7 +550,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 														{
 															if ((object)dictEnumForeignKey != null)
 															{
-																foreach (var dictDataForeignKey in dictEnumForeignKey.ToList())
+																foreach (var dictDataForeignKey in Enumerable.ToList(dictEnumForeignKey))
 																{
 																	ForeignKey foreignKey;
 
@@ -602,7 +602,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	{
 																		if ((object)dictEnumForeignKeyColumn != null)
 																		{
-																			foreach (var dictDataForeignKeyColumn in dictEnumForeignKeyColumn.ToList())
+																			foreach (var dictDataForeignKeyColumn in Enumerable.ToList(dictEnumForeignKeyColumn))
 																			{
 																				ForeignKeyColumn foreignKeyColumn;
 
@@ -626,7 +626,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 														{
 															if ((object)dictEnumUniqueKey != null)
 															{
-																foreach (var dictDataUniqueKey in dictEnumUniqueKey.ToList())
+																foreach (var dictDataUniqueKey in Enumerable.ToList(dictEnumUniqueKey))
 																{
 																	UniqueKey uniqueKey;
 
@@ -651,7 +651,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	{
 																		if ((object)dictEnumUniqueKeyColumn != null)
 																		{
-																			foreach (var dictDataUniqueKeyColumn in dictEnumUniqueKeyColumn.ToList())
+																			foreach (var dictDataUniqueKeyColumn in Enumerable.ToList(dictEnumUniqueKeyColumn))
 																			{
 																				UniqueKeyColumn uniqueKeyColumn;
 
@@ -674,7 +674,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 												var dictEnumView = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Views"), this.CoreGetTableParameters(connectionType, dataSourceTag, server, database, schema));
 												{
-													foreach (var dictDataView in dictEnumView.ToList())
+													foreach (var dictDataView in Enumerable.ToList(dictEnumView))
 													{
 														View view;
 
@@ -697,7 +697,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 														// filter unwanted views (objects)
 														if ((object)objectFilter != null)
 														{
-															if (!objectFilter.Any(f => Regex.IsMatch(view.ViewName, f)))
+															if (!Enumerable.Any(objectFilter, f => Regex.IsMatch(view.ViewName, f)))
 																continue;
 														}
 
@@ -707,7 +707,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 														{
 															if ((object)dictEnumColumn != null)
 															{
-																foreach (var dictDataColumn in Column.FixupDuplicateColumns(dictEnumColumn.ToList()))
+																foreach (var dictDataColumn in Column.FixupDuplicateColumns(Enumerable.ToList(dictEnumColumn)))
 																{
 																	ViewColumn column;
 
@@ -757,7 +757,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 												{
 													if ((object)dictEnumProcedure != null)
 													{
-														foreach (var dictDataProcedure in dictEnumProcedure.ToList())
+														foreach (var dictDataProcedure in Enumerable.ToList(dictEnumProcedure))
 														{
 															Procedure procedure;
 
@@ -776,7 +776,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 															// filter unwanted procedures (objects)
 															if ((object)objectFilter != null)
 															{
-																if (!objectFilter.Any(f => Regex.IsMatch(procedure.ProcedureName, f)))
+																if (!Enumerable.Any(objectFilter, f => Regex.IsMatch(procedure.ProcedureName, f)))
 																	continue;
 															}
 
@@ -786,7 +786,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 															{
 																if ((object)dictEnumParameter != null)
 																{
-																	foreach (var dictDataParameter in dictEnumParameter.ToList())
+																	foreach (var dictDataParameter in Enumerable.ToList(dictEnumParameter))
 																	{
 																		Parameter parameter;
 
@@ -891,7 +891,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 															// re-map result column parameters into first class columns
 															Parameter[] columnParameters;
-															columnParameters = procedure.Parameters.Where(p => p.ParameterIsResultColumn).ToArray();
+															columnParameters = Enumerable.ToArray(procedure.Parameters.Where(p => p.ParameterIsResultColumn));
 
 															if ((object)columnParameters != null && columnParameters.Length > 0)
 															{
@@ -944,7 +944,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																// REFERENCE:
 																// http://connect.microsoft.com/VisualStudio/feedback/details/314650/sqm1014-sqlmetal-ignores-stored-procedures-that-use-temp-tables
 																DbParameter[] parameters;
-																parameters = procedure.Parameters.Where(p => !p.ParameterIsReturnValue && !p.ParameterIsResultColumn).Select(p => LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, p.ParameterIsOutput ? ParameterDirection.Output : ParameterDirection.Input, p.ParameterDbType, p.ParameterSize, (byte)p.ParameterPrecision, (byte)p.ParameterScale, p.ParameterNullable, p.ParameterName, null)).ToArray();
+																parameters = Enumerable.ToArray<DbParameter>(procedure.Parameters.Where(p => !p.ParameterIsReturnValue && !p.ParameterIsResultColumn).Select(p => LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, p.ParameterIsOutput ? ParameterDirection.Output : ParameterDirection.Input, p.ParameterDbType, p.ParameterSize, (byte)p.ParameterPrecision, (byte)p.ParameterScale, p.ParameterNullable, p.ParameterName, null)));
 
 																try
 																{

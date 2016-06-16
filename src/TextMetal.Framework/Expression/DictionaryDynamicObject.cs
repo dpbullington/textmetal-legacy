@@ -9,7 +9,6 @@ using System.ComponentModel;
 using System.Dynamic;
 
 using TextMetal.Middleware.Solder.Extensions;
-using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Expression
 {

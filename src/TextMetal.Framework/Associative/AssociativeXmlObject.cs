@@ -12,7 +12,6 @@ using TextMetal.Framework.InputOutput;
 using TextMetal.Framework.Tokenization;
 using TextMetal.Framework.XmlDialect;
 using TextMetal.Middleware.Solder.Extensions;
-using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Associative
 {
