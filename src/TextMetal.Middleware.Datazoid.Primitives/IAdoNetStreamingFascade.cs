@@ -8,9 +8,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 
+using TextMetal.Middleware.Solder.Primitives;
+
 namespace TextMetal.Middleware.Datazoid.Primitives
 {
-	public interface IAdoNetYieldingFascade
+	public interface IAdoNetStreamingFascade
 	{
 		#region Methods/Operators
 
@@ -135,14 +137,6 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 		/// <param name="dbDataReader"> The target data reader. </param>
 		/// <returns> An enumerable of resultset instances, each containing an enumerable of dictionaries with record key/value pairs of schema metadata. </returns>
 		IEnumerable<IResultset> GetSchemaResultsetsFromReader(DbDataReader dbDataReader);
-
-		/// <summary>
-		/// Returns a DbType mapping for a Type.
-		/// An InvalidOperationException is thrown for unmappable types.
-		/// </summary>
-		/// <param name="clrType"> The CLR type to map to a DbType. </param>
-		/// <returns> The mapped DbType. </returns>
-		DbType InferDbTypeForClrType(Type clrType);
 
 		#endregion
 	}

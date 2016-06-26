@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TextMetal.Middleware.Datazoid.Primitives
+namespace TextMetal.Middleware.Solder.Primitives
 {
 	public sealed class Resultset : IResultset
 	{
@@ -43,7 +43,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 			{
 				return this.records;
 			}
-			internal set
+			set
 			{
 				this.records = value;
 			}
@@ -55,7 +55,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 			{
 				return this.recordsAffected;
 			}
-			internal set
+			set
 			{
 				this.recordsAffected = value;
 			}

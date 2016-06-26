@@ -10,18 +10,24 @@ using System.Data.Common;
 using System.Reflection;
 using System.Xml;
 
-namespace TextMetal.Middleware.Solder.Utilities
+using TextMetal.Middleware.Solder.Injection;
+using TextMetal.Middleware.Solder.Utilities;
+
+using __Record = System.Collections.Generic.IDictionary<string, object>;
+
+namespace TextMetal.Middleware.Datazoid.Primitives
 {
-	public class AdoNetLiteFascade : IAdoNetLiteFascade
+	public class AdoNetBufferingFascade : IAdoNetBufferingFascade
 	{
 		#region Constructors/Destructors
 
 		/// <summary>
-		/// Initializes a new instance of the AdoNetLiteFascade class.
+		/// Initializes a new instance of the AdoNetBufferingFascade class.
 		/// </summary>
 		/// <param name="reflectionFascade"> The reflection fascade instance to use. </param>
 		/// <param name="dataTypeFascade"> The data type fascade instance to use. </param>
-		public AdoNetLiteFascade(IReflectionFascade reflectionFascade, IDataTypeFascade dataTypeFascade)
+		[DependencyInjection]
+		public AdoNetBufferingFascade([DependencyInjection] IReflectionFascade reflectionFascade, [DependencyInjection] IDataTypeFascade dataTypeFascade)
 		{
 			if ((object)reflectionFascade == null)
 				throw new ArgumentNullException(nameof(reflectionFascade));
@@ -38,14 +44,13 @@ namespace TextMetal.Middleware.Solder.Utilities
 		#region Fields/Constants
 
 		private readonly IDataTypeFascade dataTypeFascade;
-
 		private readonly IReflectionFascade reflectionFascade;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		private IDataTypeFascade DataTypeFascade
+		protected IDataTypeFascade DataTypeFascade
 		{
 			get
 			{
@@ -53,7 +58,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			}
 		}
 
-		private IReflectionFascade ReflectionFascade
+		protected IReflectionFascade ReflectionFascade
 		{
 			get
 			{
@@ -90,7 +95,7 @@ namespace TextMetal.Middleware.Solder.Utilities
 			}
 		}
 
-		public IEnumerable<IDictionary<string, object>> ExecuteRecords(bool schemaOnly, Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters, Action<int> resultsetCallback = null)
+		public IEnumerable<__Record> ExecuteRecords(bool schemaOnly, Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters, Action<int> resultsetCallback = null)
 		{
 			DbTransaction dbTransaction;
 			const bool OPEN = true;
@@ -149,13 +154,13 @@ namespace TextMetal.Middleware.Solder.Utilities
 					if (COMMAND_PREPARE)
 						dbCommand.Prepare();
 
-					records = new List<IDictionary<string, object>>();
+					records = new List<__Record>();
 
 					commandBehavior = schemaOnly ? CommandBehavior.SchemaOnly : CommandBehavior.Default;
 
 					using (DbDataReader dbDataReader = dbCommand.ExecuteReader(commandBehavior))
 					{
-						IDictionary<string, object> record;
+						__Record record;
 						string key;
 						object value;
 

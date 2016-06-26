@@ -9,6 +9,7 @@ using System.Data;
 using System.Data.Common;
 using System.Xml;
 
+using TextMetal.Middleware.Datazoid.Extensions;
 using TextMetal.Middleware.Solder.Extensions;
 
 namespace TextMetal.Framework.Source.DatabaseSchema.Sql
@@ -103,10 +104,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			{
 				return new DbParameter[]
 						{
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName)
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName)
 						};
 			}
 
@@ -137,10 +138,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			{
 				return new DbParameter[]
 						{
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ViewName", view.ViewName)
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ViewName", view.ViewName)
 						};
 			}
 
@@ -162,7 +163,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			{
 				return new DbParameter[]
 						{
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName)
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName)
 						};
 			}
 
@@ -181,8 +182,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			{
 				return new DbParameter[]
 						{
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName)
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName)
 						};
 			}
 
@@ -213,10 +214,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			{
 				return new DbParameter[]
 						{
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName)
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName)
 						};
 			}
 
@@ -261,11 +262,11 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			{
 				return new DbParameter[]
 						{
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ForeignKeyName", foreignKey.ForeignKeyName)
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ForeignKeyName", foreignKey.ForeignKeyName)
 						};
 			}
 
@@ -296,10 +297,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			{
 				return new DbParameter[]
 						{
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName)
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName)
 						};
 			}
 
@@ -330,10 +331,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			{
 				return new DbParameter[]
 						{
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ProcedureName", procedure.ProcedureName)
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ProcedureName", procedure.ProcedureName)
 						};
 			}
 
@@ -372,9 +373,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			{
 				return new DbParameter[]
 						{
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName)
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName)
 						};
 			}
 
@@ -393,8 +394,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			{
 				return new DbParameter[]
 						{
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName)
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName)
 						};
 			}
 
@@ -436,9 +437,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			{
 				return new DbParameter[]
 						{
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName)
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName)
 						};
 			}
 
@@ -472,11 +473,11 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			{
 				return new DbParameter[]
 						{
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@UniqueKeyName", uniqueKey.UniqueKeyName)
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@UniqueKeyName", uniqueKey.UniqueKeyName)
 						};
 			}
 
@@ -507,10 +508,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema.Sql
 			{
 				return new DbParameter[]
 						{
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
-							LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName)
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@ServerName", server.ServerName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@DatabaseName", database.DatabaseName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@SchemaName", schema.SchemaName),
+							DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, ParameterDirection.Input, DbType.String, 100, 0, 0, true, "@TableName", table.TableName)
 						};
 			}
 

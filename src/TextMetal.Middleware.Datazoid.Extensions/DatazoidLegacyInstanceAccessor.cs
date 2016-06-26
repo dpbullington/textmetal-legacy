@@ -16,11 +16,20 @@ namespace TextMetal.Middleware.Datazoid.Extensions
 		#region Properties/Indexers/Events
 
 		[Obsolete("Stop using this")]
-		public static IAdoNetYieldingFascade AdoNetYieldingFascade
+		public static IAdoNetBufferingFascade AdoNetBufferingLegacyInstance
 		{
 			get
 			{
-				return AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IAdoNetYieldingFascade>(String.Empty, true);
+				return AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IAdoNetBufferingFascade>(String.Empty, true);
+			}
+		}
+
+		[Obsolete("Stop using this")]
+		public static IAdoNetStreamingFascade AdoNetStreamingFascade
+		{
+			get
+			{
+				return AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IAdoNetStreamingFascade>(String.Empty, true);
 			}
 		}
 

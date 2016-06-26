@@ -1,0 +1,12 @@
+{
+	"profiles": {
+		"default": {
+			"commandName": "runapp",
+			"environmentVariables": {
+				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
+				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
+				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
+			}
+		}
+	}
+}

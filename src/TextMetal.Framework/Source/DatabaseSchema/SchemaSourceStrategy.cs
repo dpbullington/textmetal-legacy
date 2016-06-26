@@ -12,9 +12,8 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 
 using TextMetal.Framework.Naming;
+using TextMetal.Middleware.Datazoid.Extensions;
 using TextMetal.Middleware.Solder.Extensions;
-
-using Enumerable = System.Linq.Enumerable;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
@@ -71,7 +70,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			if ((object)name == null)
 				throw new ArgumentNullException(nameof(name));
 
-			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(name))
+			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(name))
 				throw new ArgumentOutOfRangeException(nameof(name));
 
 			resourcePath = String.Format("{0}.DML.{1}.{2}.sql", type.Namespace, folder, name);
@@ -164,10 +163,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 					connectionString = values[0];
 			}
 
-			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(connectionString))
+			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(connectionString))
 				connectionString = sourceFilePath;
 
-			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(connectionString))
+			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(connectionString))
 				throw new InvalidOperationException(String.Format("The connection string cannot be null or whitespace."));
 
 			dataSourceTag = null;
@@ -209,21 +208,21 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			if (properties.TryGetValue(PROP_DISABLE_PROCEDURE_SCHEMA_DISCOVERY, out values))
 			{
 				if ((object)values != null && values.Count > 0)
-					LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out disableProcSchDisc);
+					SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out disableProcSchDisc);
 			}
 
 			enableDatabaseFilter = false;
 			if (properties.TryGetValue(PROP_ENABLE_DATABASE_FILTER, out values))
 			{
 				if ((object)values != null && values.Count > 0)
-					LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out enableDatabaseFilter);
+					SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out enableDatabaseFilter);
 			}
 
 			disableNameMangling = false;
 			if (properties.TryGetValue(PROP_DISABLE_NAME_MANGLING, out values))
 			{
 				if ((object)values != null && values.Count > 0)
-					LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out disableNameMangling);
+					SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out disableNameMangling);
 			}
 
 			return this.GetSchemaModel(connectionString, connectionType, dataSourceTag, serverFilter, databaseFilter, schemaFilter, objectFilter, disableProcSchDisc, enableDatabaseFilter, disableNameMangling);
@@ -262,20 +261,20 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 				server.ConnectionString = connectionString;
 				server.ConnectionType = connectionType.FullName;
 
-				var dictEnumServer = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Server"), this.CoreGetServerParameters(connectionType, dataSourceTag));
+				var dictEnumServer = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Server"), this.CoreGetServerParameters(connectionType, dataSourceTag));
 				{
 					var dictDataServer = (IDictionary<string, object>)null;
 
 					if ((object)dictEnumServer != null &&
 						(object)(dictDataServer = Enumerable.ToList(dictEnumServer).SingleOrDefault()) != null)
 					{
-						server.ServerName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_NAME]);
-						server.MachineName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.MACHINE_NAME]);
-						server.InstanceName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.INSTANCE_NAME]);
-						server.ServerVersion = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_VERSION]);
-						server.ServerLevel = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_LEVEL]);
-						server.ServerEdition = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_EDITION]);
-						server.DefaultDatabaseName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.DEFAULT_DATABASE_NAME]);
+						server.ServerName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_NAME]);
+						server.MachineName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.MACHINE_NAME]);
+						server.InstanceName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.INSTANCE_NAME]);
+						server.ServerVersion = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_VERSION]);
+						server.ServerLevel = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_LEVEL]);
+						server.ServerEdition = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.SERVER_EDITION]);
+						server.DefaultDatabaseName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataServer[SchemaInfoConstants.DEFAULT_DATABASE_NAME]);
 
 						// filter unwanted servers
 						if ((object)serverFilter != null)
@@ -284,7 +283,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 								return null;
 						}
 
-						var dictEnumDatabase = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Databases"), this.CoreGetDatabaseParameters(connectionType, dataSourceTag, server));
+						var dictEnumDatabase = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Databases"), this.CoreGetDatabaseParameters(connectionType, dataSourceTag, server));
 						{
 							if ((object)dictEnumDatabase != null)
 							{
@@ -293,9 +292,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 									Database database;
 
 									database = new Database();
-									database.DatabaseId = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataDatabase["DatabaseId"]);
-									database.DatabaseName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataDatabase["DatabaseName"]);
-									database.CreationTimestamp = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<DateTime>(dictDataDatabase["CreationTimestamp"]);
+									database.DatabaseId = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataDatabase["DatabaseId"]);
+									database.DatabaseName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataDatabase["DatabaseName"]);
+									database.CreationTimestamp = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<DateTime>(dictDataDatabase["CreationTimestamp"]);
 									database.DatabaseNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(database.DatabaseName);
 									database.DatabaseNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(database.DatabaseName);
 									database.DatabaseNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(database.DatabaseName);
@@ -325,9 +324,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 									server.Databases.Add(database);
 
-									LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, String.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UseDatabase"), server.ServerName, database.DatabaseName), null);
+									DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, String.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UseDatabase"), server.ServerName, database.DatabaseName), null);
 
-									var dictEnumDdlTrigger = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DdlTriggers"), this.CoreGetDdlTriggerParameters(connectionType, dataSourceTag, server, database));
+									var dictEnumDdlTrigger = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DdlTriggers"), this.CoreGetDdlTriggerParameters(connectionType, dataSourceTag, server, database));
 									{
 										if ((object)dictEnumDdlTrigger != null)
 										{
@@ -337,12 +336,12 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 												trigger = new Trigger();
 
-												trigger.TriggerId = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataTrigger["TriggerId"]);
-												trigger.TriggerName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataTrigger["TriggerName"]);
-												trigger.IsClrTrigger = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsClrTrigger"]);
-												trigger.IsTriggerDisabled = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsTriggerDisabled"]);
-												trigger.IsTriggerNotForReplication = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsTriggerNotForReplication"]);
-												trigger.IsInsteadOfTrigger = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsInsteadOfTrigger"]);
+												trigger.TriggerId = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataTrigger["TriggerId"]);
+												trigger.TriggerName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataTrigger["TriggerName"]);
+												trigger.IsClrTrigger = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsClrTrigger"]);
+												trigger.IsTriggerDisabled = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsTriggerDisabled"]);
+												trigger.IsTriggerNotForReplication = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsTriggerNotForReplication"]);
+												trigger.IsInsteadOfTrigger = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsInsteadOfTrigger"]);
 												trigger.TriggerNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(trigger.TriggerName);
 												trigger.TriggerNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(trigger.TriggerName);
 												trigger.TriggerNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(trigger.TriggerName);
@@ -358,7 +357,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 										}
 									}
 
-									var dictEnumSchema = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Schemas"), this.CoreGetSchemaParameters(connectionType, dataSourceTag, server, database));
+									var dictEnumSchema = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Schemas"), this.CoreGetSchemaParameters(connectionType, dataSourceTag, server, database));
 									{
 										if ((object)dictEnumSchema != null)
 										{
@@ -367,9 +366,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 												Schema schema;
 
 												schema = new Schema();
-												schema.SchemaId = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataSchema["SchemaId"]);
-												schema.OwnerId = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataSchema["OwnerId"]);
-												schema.SchemaName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataSchema["SchemaName"]);
+												schema.SchemaId = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataSchema["SchemaId"]);
+												schema.OwnerId = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataSchema["OwnerId"]);
+												schema.SchemaName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataSchema["SchemaName"]);
 												schema.SchemaNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(schema.SchemaName);
 												schema.SchemaNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(schema.SchemaName);
 												schema.SchemaNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(schema.SchemaName);
@@ -389,18 +388,18 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 												database.Schemas.Add(schema);
 
-												var dictEnumTable = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Tables"), this.CoreGetTableParameters(connectionType, dataSourceTag, server, database, schema));
+												var dictEnumTable = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Tables"), this.CoreGetTableParameters(connectionType, dataSourceTag, server, database, schema));
 												{
 													foreach (var dictDataTable in Enumerable.ToList(dictEnumTable))
 													{
 														Table table;
 
 														table = new Table();
-														table.TableId = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataTable["TableId"]);
-														table.TableName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataTable["TableName"]);
-														table.CreationTimestamp = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<DateTime>(dictDataTable["CreationTimestamp"]);
-														table.ModificationTimestamp = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<DateTime>(dictDataTable["ModificationTimestamp"]);
-														table.IsImplementationDetail = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTable["IsImplementationDetail"]);
+														table.TableId = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataTable["TableId"]);
+														table.TableName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataTable["TableName"]);
+														table.CreationTimestamp = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<DateTime>(dictDataTable["CreationTimestamp"]);
+														table.ModificationTimestamp = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<DateTime>(dictDataTable["ModificationTimestamp"]);
+														table.IsImplementationDetail = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTable["IsImplementationDetail"]);
 														table.TableNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(table.TableName);
 														table.TableNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(table.TableName);
 														table.TableNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(table.TableName);
@@ -411,14 +410,14 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 														table.TableNamePluralCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(effectiveStandardCanonicalNaming.GetPluralForm(table.TableName));
 														table.TableNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(table.TableName));
 
-														var pkId = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int?>(dictDataTable["PrimaryKeyId"]);
+														var pkId = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int?>(dictDataTable["PrimaryKeyId"]);
 														if ((object)pkId != null)
 														{
 															table.PrimaryKey = new PrimaryKey();
 															table.PrimaryKey.PrimaryKeyId = (int)pkId;
 
-															table.PrimaryKey.PrimaryKeyIsSystemNamed = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTable["PrimaryKeyIsSystemNamed"]);
-															table.PrimaryKey.PrimaryKeyName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataTable["PrimaryKeyName"]);
+															table.PrimaryKey.PrimaryKeyIsSystemNamed = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTable["PrimaryKeyIsSystemNamed"]);
+															table.PrimaryKey.PrimaryKeyName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataTable["PrimaryKeyName"]);
 
 															table.PrimaryKey.PrimaryKeyNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(table.PrimaryKey.PrimaryKeyName);
 															table.PrimaryKey.PrimaryKeyNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(table.PrimaryKey.PrimaryKeyName);
@@ -440,7 +439,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 														schema._Tables.Add(table);
 
-														var dictEnumColumn = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "TableColumns"), this.CoreGetColumnParameters(connectionType, dataSourceTag, server, database, schema, table));
+														var dictEnumColumn = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "TableColumns"), this.CoreGetColumnParameters(connectionType, dataSourceTag, server, database, schema, table));
 														{
 															if ((object)dictEnumColumn != null)
 															{
@@ -450,22 +449,22 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	column = new TableColumn();
 
-																	column.ColumnOrdinal = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnOrdinal"]);
-																	column.ColumnName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataColumn["ColumnName"]);
-																	column.ColumnIsAnonymous = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsAnonymous"]);
+																	column.ColumnOrdinal = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnOrdinal"]);
+																	column.ColumnName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataColumn["ColumnName"]);
+																	column.ColumnIsAnonymous = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsAnonymous"]);
 																	column.ColumnCSharpIsAnonymousLiteral = column.ColumnIsAnonymous.ToString().ToLower();
-																	column.ColumnNullable = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnNullable"]);
-																	column.ColumnSize = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnSize"]);
-																	column.ColumnPrecision = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnPrecision"]);
-																	column.ColumnScale = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnScale"]);
-																	column.ColumnSqlType = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataColumn["ColumnSqlType"]);
-																	column.ColumnIsUserDefinedType = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsUserDefinedType"]);
-																	column.ColumnIsIdentity = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsIdentity"]);
-																	column.ColumnIsComputed = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsComputed"]);
-																	column.ColumnHasDefault = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnHasDefault"]);
-																	column.ColumnHasCheck = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnHasCheck"]);
-																	column.ColumnIsPrimaryKey = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsPrimaryKey"]);
-																	column.ColumnPrimaryKeyOrdinal = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnPrimaryKeyOrdinal"]);
+																	column.ColumnNullable = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnNullable"]);
+																	column.ColumnSize = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnSize"]);
+																	column.ColumnPrecision = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnPrecision"]);
+																	column.ColumnScale = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnScale"]);
+																	column.ColumnSqlType = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataColumn["ColumnSqlType"]);
+																	column.ColumnIsUserDefinedType = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsUserDefinedType"]);
+																	column.ColumnIsIdentity = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsIdentity"]);
+																	column.ColumnIsComputed = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsComputed"]);
+																	column.ColumnHasDefault = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnHasDefault"]);
+																	column.ColumnHasCheck = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnHasCheck"]);
+																	column.ColumnIsPrimaryKey = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsPrimaryKey"]);
+																	column.ColumnPrimaryKeyOrdinal = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnPrimaryKeyOrdinal"]);
 																	column.ColumnNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(column.ColumnName);
 																	column.ColumnNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(column.ColumnName);
 																	column.ColumnNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(column.ColumnName);
@@ -477,12 +476,12 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	column.ColumnNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
 
 																	clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType, column.ColumnPrecision);
-																	column.ColumnDbType = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.InferDbTypeForClrType(clrType);
+																	column.ColumnDbType = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.InferDbTypeForClrType(clrType);
 																	column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
 																	column.ColumnClrType = clrType ?? typeof(object);
-																	column.ColumnClrNullableType = LegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNullableType(clrType);
-																	column.ColumnClrNonNullableType = LegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNonNullableType(clrType);
+																	column.ColumnClrNullableType = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNullableType(clrType);
+																	column.ColumnClrNonNullableType = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNonNullableType(clrType);
 																	column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
 																	column.ColumnCSharpIsPrimaryKeyLiteral = column.ColumnIsPrimaryKey.ToString().ToLower();
 																	column.ColumnCSharpIsComputedLiteral = column.ColumnIsComputed.ToString().ToLower();
@@ -515,7 +514,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 															table.Columns.ForEach(c => c.ColumnIsPrimaryKey = true);
 														}
 
-														var dictEnumDmlTrigger = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DmlTriggers"), this.CoreGetDmlTriggerParameters(connectionType, dataSourceTag, server, database, schema, table));
+														var dictEnumDmlTrigger = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "DmlTriggers"), this.CoreGetDmlTriggerParameters(connectionType, dataSourceTag, server, database, schema, table));
 														{
 															if ((object)dictEnumDmlTrigger != null)
 															{
@@ -525,12 +524,12 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	trigger = new Trigger();
 
-																	trigger.TriggerId = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataTrigger["TriggerId"]);
-																	trigger.TriggerName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataTrigger["TriggerName"]);
-																	trigger.IsClrTrigger = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsClrTrigger"]);
-																	trigger.IsTriggerDisabled = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsTriggerDisabled"]);
-																	trigger.IsTriggerNotForReplication = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsTriggerNotForReplication"]);
-																	trigger.IsInsteadOfTrigger = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsInsteadOfTrigger"]);
+																	trigger.TriggerId = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataTrigger["TriggerId"]);
+																	trigger.TriggerName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataTrigger["TriggerName"]);
+																	trigger.IsClrTrigger = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsClrTrigger"]);
+																	trigger.IsTriggerDisabled = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsTriggerDisabled"]);
+																	trigger.IsTriggerNotForReplication = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsTriggerNotForReplication"]);
+																	trigger.IsInsteadOfTrigger = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataTrigger["IsInsteadOfTrigger"]);
 																	trigger.TriggerNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(trigger.TriggerName);
 																	trigger.TriggerNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(trigger.TriggerName);
 																	trigger.TriggerNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(trigger.TriggerName);
@@ -546,7 +545,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 															}
 														}
 
-														var dictEnumForeignKey = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeys"), this.CoreGetForeignKeyParameters(connectionType, dataSourceTag, server, database, schema, table));
+														var dictEnumForeignKey = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeys"), this.CoreGetForeignKeyParameters(connectionType, dataSourceTag, server, database, schema, table));
 														{
 															if ((object)dictEnumForeignKey != null)
 															{
@@ -556,14 +555,14 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	foreignKey = new ForeignKey();
 
-																	foreignKey.ForeignKeyName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKey["ForeignKeyName"]);
-																	foreignKey.ForeignKeyIsDisabled = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataForeignKey["ForeignKeyIsDisabled"]);
-																	foreignKey.ForeignKeyIsSystemNamed = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataForeignKey["ForeignKeyIsSystemNamed"]);
-																	foreignKey.ForeignKeyIsForReplication = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataForeignKey["ForeignKeyIsForReplication"]);
-																	foreignKey.ForeignKeyOnDeleteRefIntAction = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<byte>(dictDataForeignKey["ForeignKeyOnDeleteRefIntAction"]);
-																	foreignKey.ForeignKeyOnDeleteRefIntActionSqlName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKey["ForeignKeyOnDeleteRefIntActionSqlName"]);
-																	foreignKey.ForeignKeyOnUpdateRefIntAction = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<byte>(dictDataForeignKey["ForeignKeyOnUpdateRefIntAction"]);
-																	foreignKey.ForeignKeyOnUpdateRefIntActionSqlName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKey["ForeignKeyOnUpdateRefIntActionSqlName"]);
+																	foreignKey.ForeignKeyName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKey["ForeignKeyName"]);
+																	foreignKey.ForeignKeyIsDisabled = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataForeignKey["ForeignKeyIsDisabled"]);
+																	foreignKey.ForeignKeyIsSystemNamed = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataForeignKey["ForeignKeyIsSystemNamed"]);
+																	foreignKey.ForeignKeyIsForReplication = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataForeignKey["ForeignKeyIsForReplication"]);
+																	foreignKey.ForeignKeyOnDeleteRefIntAction = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<byte>(dictDataForeignKey["ForeignKeyOnDeleteRefIntAction"]);
+																	foreignKey.ForeignKeyOnDeleteRefIntActionSqlName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKey["ForeignKeyOnDeleteRefIntActionSqlName"]);
+																	foreignKey.ForeignKeyOnUpdateRefIntAction = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<byte>(dictDataForeignKey["ForeignKeyOnUpdateRefIntAction"]);
+																	foreignKey.ForeignKeyOnUpdateRefIntActionSqlName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKey["ForeignKeyOnUpdateRefIntActionSqlName"]);
 																	foreignKey.ForeignKeyNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(foreignKey.ForeignKeyName);
 																	foreignKey.ForeignKeyNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(foreignKey.ForeignKeyName);
 																	foreignKey.ForeignKeyNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(foreignKey.ForeignKeyName);
@@ -574,7 +573,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	foreignKey.ForeignKeyNamePluralCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(effectiveStandardCanonicalNaming.GetPluralForm(foreignKey.ForeignKeyName));
 																	foreignKey.ForeignKeyNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(foreignKey.ForeignKeyName));
 
-																	foreignKey.TargetSchemaName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKey["TargetSchemaName"]);
+																	foreignKey.TargetSchemaName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKey["TargetSchemaName"]);
 																	foreignKey.TargetSchemaNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(foreignKey.TargetSchemaName);
 																	foreignKey.TargetSchemaNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(foreignKey.TargetSchemaName);
 																	foreignKey.TargetSchemaNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(foreignKey.TargetSchemaName);
@@ -585,7 +584,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	foreignKey.TargetSchemaNamePluralCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(effectiveStandardCanonicalNaming.GetPluralForm(foreignKey.TargetSchemaName));
 																	foreignKey.TargetSchemaNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(foreignKey.TargetSchemaName));
 
-																	foreignKey.TargetTableName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKey["TargetTableName"]);
+																	foreignKey.TargetTableName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKey["TargetTableName"]);
 																	foreignKey.TargetTableNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(foreignKey.TargetTableName);
 																	foreignKey.TargetTableNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(foreignKey.TargetTableName);
 																	foreignKey.TargetTableNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(foreignKey.TargetTableName);
@@ -598,7 +597,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	table.ForeignKeys.Add(foreignKey);
 
-																	var dictEnumForeignKeyColumn = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeyColumns"), this.CoreGetForeignKeyColumnParameters(connectionType, dataSourceTag, server, database, schema, table, foreignKey));
+																	var dictEnumForeignKeyColumn = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ForeignKeyColumns"), this.CoreGetForeignKeyColumnParameters(connectionType, dataSourceTag, server, database, schema, table, foreignKey));
 																	{
 																		if ((object)dictEnumForeignKeyColumn != null)
 																		{
@@ -608,11 +607,11 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																				foreignKeyColumn = new ForeignKeyColumn();
 
-																				foreignKeyColumn.ForeignKeyColumnOrdinal = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataForeignKeyColumn["ForeignKeyColumnOrdinal"]);
-																				foreignKeyColumn.ColumnOrdinal = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataForeignKeyColumn["ColumnOrdinal"]);
-																				foreignKeyColumn.ColumnName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKeyColumn["ColumnName"]);
-																				foreignKeyColumn.TargetColumnOrdinal = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataForeignKeyColumn["TargetColumnOrdinal"]);
-																				foreignKeyColumn.TargetColumnName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKeyColumn["TargetColumnName"]);
+																				foreignKeyColumn.ForeignKeyColumnOrdinal = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataForeignKeyColumn["ForeignKeyColumnOrdinal"]);
+																				foreignKeyColumn.ColumnOrdinal = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataForeignKeyColumn["ColumnOrdinal"]);
+																				foreignKeyColumn.ColumnName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKeyColumn["ColumnName"]);
+																				foreignKeyColumn.TargetColumnOrdinal = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataForeignKeyColumn["TargetColumnOrdinal"]);
+																				foreignKeyColumn.TargetColumnName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataForeignKeyColumn["TargetColumnName"]);
 
 																				foreignKey.ForeignKeyColumns.Add(foreignKeyColumn);
 																			}
@@ -622,7 +621,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 															}
 														}
 
-														var dictEnumUniqueKey = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeys"), this.CoreGetUniqueKeyParameters(connectionType, dataSourceTag, server, database, schema, table));
+														var dictEnumUniqueKey = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeys"), this.CoreGetUniqueKeyParameters(connectionType, dataSourceTag, server, database, schema, table));
 														{
 															if ((object)dictEnumUniqueKey != null)
 															{
@@ -632,9 +631,9 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	uniqueKey = new UniqueKey();
 
-																	uniqueKey.UniqueKeyId = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataUniqueKey["UniqueKeyId"]);
-																	uniqueKey.UniqueKeyName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataUniqueKey["UniqueKeyName"]);
-																	uniqueKey.UniqueKeyIsSystemNamed = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataUniqueKey["UniqueKeyIsSystemNamed"]);
+																	uniqueKey.UniqueKeyId = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataUniqueKey["UniqueKeyId"]);
+																	uniqueKey.UniqueKeyName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataUniqueKey["UniqueKeyName"]);
+																	uniqueKey.UniqueKeyIsSystemNamed = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataUniqueKey["UniqueKeyIsSystemNamed"]);
 																	uniqueKey.UniqueKeyNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(uniqueKey.UniqueKeyName);
 																	uniqueKey.UniqueKeyNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(uniqueKey.UniqueKeyName);
 																	uniqueKey.UniqueKeyNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(uniqueKey.UniqueKeyName);
@@ -647,7 +646,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	table.UniqueKeys.Add(uniqueKey);
 
-																	var dictEnumUniqueKeyColumn = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeyColumns"), this.CoreGetUniqueKeyColumnParameters(connectionType, dataSourceTag, server, database, schema, table, uniqueKey));
+																	var dictEnumUniqueKeyColumn = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "UniqueKeyColumns"), this.CoreGetUniqueKeyColumnParameters(connectionType, dataSourceTag, server, database, schema, table, uniqueKey));
 																	{
 																		if ((object)dictEnumUniqueKeyColumn != null)
 																		{
@@ -657,10 +656,10 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																				uniqueKeyColumn = new UniqueKeyColumn();
 
-																				uniqueKeyColumn.UniqueKeyColumnOrdinal = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataUniqueKeyColumn["UniqueKeyColumnOrdinal"]);
-																				uniqueKeyColumn.ColumnOrdinal = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataUniqueKeyColumn["ColumnOrdinal"]);
-																				uniqueKeyColumn.ColumnName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataUniqueKeyColumn["ColumnName"]);
-																				uniqueKeyColumn.UniqueKeyColumnDescendingSort = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataUniqueKeyColumn["UniqueKeyColumnDescendingSort"]);
+																				uniqueKeyColumn.UniqueKeyColumnOrdinal = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataUniqueKeyColumn["UniqueKeyColumnOrdinal"]);
+																				uniqueKeyColumn.ColumnOrdinal = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataUniqueKeyColumn["ColumnOrdinal"]);
+																				uniqueKeyColumn.ColumnName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataUniqueKeyColumn["ColumnName"]);
+																				uniqueKeyColumn.UniqueKeyColumnDescendingSort = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataUniqueKeyColumn["UniqueKeyColumnDescendingSort"]);
 
 																				uniqueKey.UniqueKeyColumns.Add(uniqueKeyColumn);
 																			}
@@ -672,18 +671,18 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 													}
 												}
 
-												var dictEnumView = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Views"), this.CoreGetTableParameters(connectionType, dataSourceTag, server, database, schema));
+												var dictEnumView = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Views"), this.CoreGetTableParameters(connectionType, dataSourceTag, server, database, schema));
 												{
 													foreach (var dictDataView in Enumerable.ToList(dictEnumView))
 													{
 														View view;
 
 														view = new View();
-														view.ViewId = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataView["ViewId"]);
-														view.ViewName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataView["ViewName"]);
-														view.CreationTimestamp = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<DateTime>(dictDataView["CreationTimestamp"]);
-														view.ModificationTimestamp = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<DateTime>(dictDataView["ModificationTimestamp"]);
-														view.IsImplementationDetail = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataView["IsImplementationDetail"]);
+														view.ViewId = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataView["ViewId"]);
+														view.ViewName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataView["ViewName"]);
+														view.CreationTimestamp = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<DateTime>(dictDataView["CreationTimestamp"]);
+														view.ModificationTimestamp = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<DateTime>(dictDataView["ModificationTimestamp"]);
+														view.IsImplementationDetail = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataView["IsImplementationDetail"]);
 														view.ViewNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(view.ViewName);
 														view.ViewNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(view.ViewName);
 														view.ViewNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(view.ViewName);
@@ -703,7 +702,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 														schema.Views.Add(view);
 
-														var dictEnumColumn = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ViewColumns"), this.CoreGetColumnParameters(connectionType, dataSourceTag, server, database, schema, view));
+														var dictEnumColumn = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ViewColumns"), this.CoreGetColumnParameters(connectionType, dataSourceTag, server, database, schema, view));
 														{
 															if ((object)dictEnumColumn != null)
 															{
@@ -713,16 +712,16 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																	column = new ViewColumn();
 
-																	column.ColumnOrdinal = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnOrdinal"]);
-																	column.ColumnName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataColumn["ColumnName"]);
-																	column.ColumnIsAnonymous = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsAnonymous"]);
+																	column.ColumnOrdinal = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnOrdinal"]);
+																	column.ColumnName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataColumn["ColumnName"]);
+																	column.ColumnIsAnonymous = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsAnonymous"]);
 																	column.ColumnCSharpIsAnonymousLiteral = column.ColumnIsAnonymous.ToString().ToLower();
-																	column.ColumnNullable = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnNullable"]);
-																	column.ColumnSize = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnSize"]);
-																	column.ColumnPrecision = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnPrecision"]);
-																	column.ColumnScale = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnScale"]);
-																	column.ColumnSqlType = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataColumn["ColumnSqlType"]);
-																	column.ColumnIsUserDefinedType = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsUserDefinedType"]);
+																	column.ColumnNullable = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnNullable"]);
+																	column.ColumnSize = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnSize"]);
+																	column.ColumnPrecision = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnPrecision"]);
+																	column.ColumnScale = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataColumn["ColumnScale"]);
+																	column.ColumnSqlType = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataColumn["ColumnSqlType"]);
+																	column.ColumnIsUserDefinedType = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataColumn["ColumnIsUserDefinedType"]);
 																	column.ColumnNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(column.ColumnName);
 																	column.ColumnNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(column.ColumnName);
 																	column.ColumnNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(column.ColumnName);
@@ -734,12 +733,12 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	column.ColumnNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
 
 																	clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, column.ColumnSqlType, column.ColumnPrecision);
-																	column.ColumnDbType = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.InferDbTypeForClrType(clrType);
+																	column.ColumnDbType = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.InferDbTypeForClrType(clrType);
 																	column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
 																	column.ColumnClrType = clrType ?? typeof(object);
-																	column.ColumnClrNullableType = LegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNullableType(clrType);
-																	column.ColumnClrNonNullableType = LegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNonNullableType(clrType);
+																	column.ColumnClrNullableType = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNullableType(clrType);
+																	column.ColumnClrNonNullableType = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNonNullableType(clrType);
 																	column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
 																	column.ColumnCSharpDbType = String.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
 																	column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
@@ -753,7 +752,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 													}
 												}
 
-												var dictEnumProcedure = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Procedures"), this.CoreGetProcedureParameters(connectionType, dataSourceTag, server, database, schema));
+												var dictEnumProcedure = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "Procedures"), this.CoreGetProcedureParameters(connectionType, dataSourceTag, server, database, schema));
 												{
 													if ((object)dictEnumProcedure != null)
 													{
@@ -762,7 +761,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 															Procedure procedure;
 
 															procedure = new Procedure();
-															procedure.ProcedureName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataProcedure["ProcedureName"]);
+															procedure.ProcedureName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataProcedure["ProcedureName"]);
 															procedure.ProcedureNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(procedure.ProcedureName);
 															procedure.ProcedureNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(procedure.ProcedureName);
 															procedure.ProcedureNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(procedure.ProcedureName);
@@ -782,7 +781,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 															schema.Procedures.Add(procedure);
 
-															var dictEnumParameter = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureParameters"), this.CoreGetParameterParameters(connectionType, dataSourceTag, server, database, schema, procedure));
+															var dictEnumParameter = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(false, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.Text, GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureParameters"), this.CoreGetParameterParameters(connectionType, dataSourceTag, server, database, schema, procedure));
 															{
 																if ((object)dictEnumParameter != null)
 																{
@@ -792,22 +791,22 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																		parameter = new Parameter();
 
-																		parameter.ParameterPrefix = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataParameter["ParameterName"]).Substring(0, 1);
-																		parameter.ParameterOrdinal = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataParameter["ParameterOrdinal"]);
-																		parameter.ParameterName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataParameter["ParameterName"]).Substring(1);
-																		parameter.ParameterSize = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataParameter["ParameterSize"]);
-																		parameter.ParameterPrecision = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataParameter["ParameterPrecision"]);
-																		parameter.ParameterScale = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataParameter["ParameterScale"]);
-																		parameter.ParameterSqlType = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataParameter["ParameterSqlType"]);
-																		parameter.ParameterIsUserDefinedType = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsUserDefinedType"]);
-																		parameter.ParameterIsOutput = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsOutput"]);
-																		parameter.ParameterIsReadOnly = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsReadOnly"]);
-																		parameter.ParameterIsCursorRef = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsCursorRef"]);
-																		parameter.ParameterIsReturnValue = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsReturnValue"]);
-																		parameter.ParameterHasDefault = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterHasDefault"]);
-																		parameter.ParameterNullable = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool?>(dictDataParameter["ParameterNullable"]) ?? true;
-																		parameter.ParameterDefaultValue = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataParameter["ParameterDefaultValue"]);
-																		parameter.ParameterIsResultColumn = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsResultColumn"]);
+																		parameter.ParameterPrefix = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataParameter["ParameterName"]).Substring(0, 1);
+																		parameter.ParameterOrdinal = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataParameter["ParameterOrdinal"]);
+																		parameter.ParameterName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataParameter["ParameterName"]).Substring(1);
+																		parameter.ParameterSize = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataParameter["ParameterSize"]);
+																		parameter.ParameterPrecision = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataParameter["ParameterPrecision"]);
+																		parameter.ParameterScale = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataParameter["ParameterScale"]);
+																		parameter.ParameterSqlType = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataParameter["ParameterSqlType"]);
+																		parameter.ParameterIsUserDefinedType = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsUserDefinedType"]);
+																		parameter.ParameterIsOutput = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsOutput"]);
+																		parameter.ParameterIsReadOnly = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsReadOnly"]);
+																		parameter.ParameterIsCursorRef = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsCursorRef"]);
+																		parameter.ParameterIsReturnValue = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsReturnValue"]);
+																		parameter.ParameterHasDefault = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterHasDefault"]);
+																		parameter.ParameterNullable = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool?>(dictDataParameter["ParameterNullable"]) ?? true;
+																		parameter.ParameterDefaultValue = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataParameter["ParameterDefaultValue"]);
+																		parameter.ParameterIsResultColumn = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsResultColumn"]);
 																		parameter.ParameterNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(parameter.ParameterName);
 																		parameter.ParameterNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(parameter.ParameterName);
 																		parameter.ParameterNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(parameter.ParameterName);
@@ -821,12 +820,12 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																		parameter.ParameterDirection = !parameter.ParameterIsOutput ? ParameterDirection.Input : (!parameter.ParameterIsReadOnly ? ParameterDirection.InputOutput : ParameterDirection.Output);
 
 																		clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, parameter.ParameterSqlType, parameter.ParameterPrecision);
-																		parameter.ParameterDbType = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.InferDbTypeForClrType(clrType);
+																		parameter.ParameterDbType = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.InferDbTypeForClrType(clrType);
 																		parameter.ParameterSize = this.CoreCalculateParameterSize(dataSourceTag, parameter);
 
 																		parameter.ParameterClrType = clrType;
-																		parameter.ParameterClrNullableType = LegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNullableType(clrType);
-																		parameter.ParameterClrNonNullableType = LegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNonNullableType(clrType);
+																		parameter.ParameterClrNullableType = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNullableType(clrType);
+																		parameter.ParameterClrNonNullableType = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNonNullableType(clrType);
 																		parameter.ParameterCSharpDbType = String.Format("{0}.{1}", typeof(DbType).Name, parameter.ParameterDbType);
 																		parameter.ParameterCSharpDirection = String.Format("{0}.{1}", typeof(ParameterDirection).Name, parameter.ParameterDirection);
 																		parameter.ParameterCSharpClrType = (object)parameter.ParameterClrType != null ? FormatCSharpType(parameter.ParameterClrType) : FormatCSharpType(typeof(object));
@@ -872,12 +871,12 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	parameter.ParameterDirection = ParameterDirection.ReturnValue;
 
 																	clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, parameter.ParameterSqlType, parameter.ParameterPrecision);
-																	parameter.ParameterDbType = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.InferDbTypeForClrType(clrType);
+																	parameter.ParameterDbType = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.InferDbTypeForClrType(clrType);
 																	parameter.ParameterSize = this.CoreCalculateParameterSize(dataSourceTag, parameter);
 
 																	parameter.ParameterClrType = clrType;
-																	parameter.ParameterClrNullableType = LegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNullableType(clrType);
-																	parameter.ParameterClrNonNullableType = LegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNonNullableType(clrType);
+																	parameter.ParameterClrNullableType = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNullableType(clrType);
+																	parameter.ParameterClrNonNullableType = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNonNullableType(clrType);
 																	parameter.ParameterCSharpDbType = String.Format("{0}.{1}", typeof(DbType).Name, parameter.ParameterDbType);
 																	parameter.ParameterCSharpDirection = String.Format("{0}.{1}", typeof(ParameterDirection).Name, parameter.ParameterDirection);
 																	parameter.ParameterCSharpClrType = (object)parameter.ParameterClrType != null ? FormatCSharpType(parameter.ParameterClrType) : FormatCSharpType(typeof(object));
@@ -910,7 +909,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	column.ColumnScale = columnParameter.ParameterScale;
 																	column.ColumnSqlType = columnParameter.ParameterSqlType;
 																	column.ColumnIsUserDefinedType = columnParameter.ParameterIsUserDefinedType;
-																	column.ColumnHasDefault = !LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(columnParameter.ParameterDefaultValue);
+																	column.ColumnHasDefault = !SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(columnParameter.ParameterDefaultValue);
 																	column.ColumnNamePascalCase = effectiveStandardCanonicalNaming.GetPascalCase(columnParameter.ParameterName);
 																	column.ColumnNameCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(columnParameter.ParameterName);
 																	column.ColumnNameConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(columnParameter.ParameterName);
@@ -922,12 +921,12 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																	column.ColumnNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(columnParameter.ParameterName));
 
 																	clrType = this.CoreInferClrTypeForSqlType(dataSourceTag, columnParameter.ParameterSqlType, columnParameter.ParameterPrecision);
-																	column.ColumnDbType = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.InferDbTypeForClrType(clrType);
+																	column.ColumnDbType = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.InferDbTypeForClrType(clrType);
 																	column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
 																	column.ColumnClrType = clrType ?? typeof(object);
-																	column.ColumnClrNullableType = LegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNullableType(clrType);
-																	column.ColumnClrNonNullableType = LegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNonNullableType(clrType);
+																	column.ColumnClrNullableType = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNullableType(clrType);
+																	column.ColumnClrNonNullableType = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNonNullableType(clrType);
 																	column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
 																	column.ColumnCSharpDbType = String.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
 																	column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
@@ -944,13 +943,13 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																// REFERENCE:
 																// http://connect.microsoft.com/VisualStudio/feedback/details/314650/sqm1014-sqlmetal-ignores-stored-procedures-that-use-temp-tables
 																DbParameter[] parameters;
-																parameters = Enumerable.ToArray<DbParameter>(procedure.Parameters.Where(p => !p.ParameterIsReturnValue && !p.ParameterIsResultColumn).Select(p => LegacyInstanceAccessor.AdoNetLiteLegacyInstance.CreateParameter(connectionType, p.ParameterIsOutput ? ParameterDirection.Output : ParameterDirection.Input, p.ParameterDbType, p.ParameterSize, (byte)p.ParameterPrecision, (byte)p.ParameterScale, p.ParameterNullable, p.ParameterName, null)));
+																parameters = Enumerable.ToArray<DbParameter>(procedure.Parameters.Where(p => !p.ParameterIsReturnValue && !p.ParameterIsResultColumn).Select(p => DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, p.ParameterIsOutput ? ParameterDirection.Output : ParameterDirection.Input, p.ParameterDbType, p.ParameterSize, (byte)p.ParameterPrecision, (byte)p.ParameterScale, p.ParameterNullable, p.ParameterName, null)));
 
 																try
 																{
 																	int resultsetIndex = Int32.MinValue;
 
-																	var dictEnumResultsets = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(true, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.StoredProcedure, String.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), server.ServerName, database.DatabaseName, schema.SchemaName, procedure.ProcedureName), parameters, (ri) => resultsetIndex = ri);
+																	var dictEnumResultsets = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(true, connectionType, connectionString, false, IsolationLevel.Unspecified, CommandType.StoredProcedure, String.Format(GetAllAssemblyResourceFileText(this.GetType(), dataSourceTag, "ProcedureSchema"), server.ServerName, database.DatabaseName, schema.SchemaName, procedure.ProcedureName), parameters, (ri) => resultsetIndex = ri);
 																	{
 																		if ((object)dictEnumResultsets != null)
 																		{
@@ -967,18 +966,18 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 
 																					column = new ProcedureColumn();
 
-																					column.ColumnOrdinal = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.ColumnOrdinal]);
-																					column.ColumnName = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataMetadata[SchemaTableColumn.ColumnName]);
-																					column.ColumnIsAnonymous = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataMetadata["ColumnIsAnonymous"]);
+																					column.ColumnOrdinal = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.ColumnOrdinal]);
+																					column.ColumnName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataMetadata[SchemaTableColumn.ColumnName]);
+																					column.ColumnIsAnonymous = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataMetadata["ColumnIsAnonymous"]);
 																					column.ColumnCSharpIsAnonymousLiteral = column.ColumnIsAnonymous.ToString().ToLower();
-																					column.ColumnSize = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.ColumnSize]);
-																					column.ColumnPrecision = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.NumericPrecision]);
-																					column.ColumnScale = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.NumericScale]);
+																					column.ColumnSize = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.ColumnSize]);
+																					column.ColumnPrecision = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.NumericPrecision]);
+																					column.ColumnScale = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataMetadata[SchemaTableColumn.NumericScale]);
 																					column.ColumnSqlType = String.Empty;
 																					//column.ColumnXXX = DataTypeFascade.ReflectionFascadeLegacyInstance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.ProviderType]);
 																					//column.ColumnXXX = DataTypeFascade.ReflectionFascadeLegacyInstance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.NonVersionedProviderType]);
 																					//column.ColumnXXX = DataTypeFascade.ReflectionFascadeLegacyInstance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsLong]);
-																					column.ColumnNullable = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataMetadata[SchemaTableColumn.AllowDBNull]);
+																					column.ColumnNullable = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataMetadata[SchemaTableColumn.AllowDBNull]);
 																					//column.ColumnXXX = DataTypeFascade.ReflectionFascadeLegacyInstance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsAliased]);
 																					//column.ColumnXXX = DataTypeFascade.ReflectionFascadeLegacyInstance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsExpression]);
 																					//column.ColumnXXX = DataTypeFascade.ReflectionFascadeLegacyInstance.ChangeType<object>(dictDataMetadata[SchemaTableColumn.IsKey]);
@@ -997,13 +996,13 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																					column.ColumnNamePluralCamelCase = effectiveStandardCanonicalNaming.GetCamelCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
 																					column.ColumnNamePluralConstantCase = effectiveStandardCanonicalNaming.GetConstantCase(effectiveStandardCanonicalNaming.GetPluralForm(column.ColumnName));
 
-																					clrType = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<Type>(dictDataMetadata[SchemaTableColumn.DataType]);
-																					column.ColumnDbType = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.InferDbTypeForClrType(clrType);
+																					clrType = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<Type>(dictDataMetadata[SchemaTableColumn.DataType]);
+																					column.ColumnDbType = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.InferDbTypeForClrType(clrType);
 																					column.ColumnSize = this.CoreCalculateColumnSize(dataSourceTag, column); //recalculate
 
 																					column.ColumnClrType = clrType ?? typeof(object);
-																					column.ColumnClrNullableType = LegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNullableType(clrType);
-																					column.ColumnClrNonNullableType = LegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNonNullableType(clrType);
+																					column.ColumnClrNullableType = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNullableType(clrType);
+																					column.ColumnClrNonNullableType = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.MakeNonNullableType(clrType);
 																					column.ColumnCSharpNullableLiteral = column.ColumnNullable.ToString().ToLower();
 																					column.ColumnCSharpDbType = String.Format("{0}.{1}", typeof(DbType).Name, column.ColumnDbType);
 																					column.ColumnCSharpClrType = (object)column.ColumnClrType != null ? FormatCSharpType(column.ColumnClrType) : FormatCSharpType(typeof(object));
@@ -1021,7 +1020,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																catch (Exception ex)
 																{
 																	procedure.ProcedureExecuteSchemaThrewException = true;
-																	procedure.ProcedureExecuteSchemaExceptionText = LegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetErrors(ex, 0);
+																	procedure.ProcedureExecuteSchemaExceptionText = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetErrors(ex, 0);
 																	//Console.Error.WriteLine(ReflectionFascade.ReflectionFascadeLegacyInstance.GetErrors(ex, 0));
 																}
 															}

@@ -7,6 +7,7 @@ using System;
 
 using TextMetal.Middleware.Datazoid.Models.Functional;
 using TextMetal.Middleware.Datazoid.Primitives;
+using TextMetal.Middleware.Solder.Primitives;
 
 namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics
 {

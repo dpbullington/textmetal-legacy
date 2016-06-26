@@ -3,40 +3,25 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-using System;
+using System.Collections.Generic;
 
-namespace TextMetal.Middleware.Datazoid.Primitives
+namespace TextMetal.Middleware.Solder.Primitives
 {
-	public interface IColumn
+	public interface IResultset
 	{
 		#region Properties/Indexers/Events
 
-		int ColumnIndex
+		int Index
 		{
 			get;
 		}
 
-		bool? ColumnIsNullable
+		IEnumerable<IRecord> Records
 		{
 			get;
 		}
 
-		string ColumnName
-		{
-			get;
-		}
-
-		Type ColumnType
-		{
-			get;
-		}
-
-		int TableIndex
-		{
-			get;
-		}
-
-		object TagContext
+		int? RecordsAffected
 		{
 			get;
 		}

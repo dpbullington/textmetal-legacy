@@ -68,11 +68,11 @@ namespace TextMetal.Framework.Source.Primative
 			{
 				int ivalue;
 
-				if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(value))
+				if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(value))
 					this.Order = null;
 				else
 				{
-					if (!LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse<int>(value, out ivalue))
+					if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse<int>(value, out ivalue))
 						this.Order = null;
 					else
 						this.Order = ivalue;

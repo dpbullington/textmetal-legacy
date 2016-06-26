@@ -9,6 +9,7 @@ using System.Data;
 using System.Data.Common;
 
 using TextMetal.Middleware.Datazoid.Primitives;
+using TextMetal.Middleware.Solder.Primitives;
 
 namespace TextMetal.Middleware.Datazoid.Extensions
 {

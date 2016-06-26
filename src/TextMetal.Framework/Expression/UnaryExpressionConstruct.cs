@@ -93,7 +93,7 @@ namespace TextMetal.Framework.Expression
 				if (_theTypeInfo.IsEnum)
 				{
 					theType = Enum.GetUnderlyingType(theType);
-					theObj = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType(theObj, theType);
+					theObj = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType(theObj, theType);
 				}
 			}
 
@@ -134,7 +134,7 @@ namespace TextMetal.Framework.Expression
 
 						ths = theObj.ChangeType<AspectConstruct>();
 
-						if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(ths.Name))
+						if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(ths.Name))
 							throw new InvalidOperationException("(?) Something went wrong but the software engineers were too lazy to add a meaningful error message. | dataTypeFascade.ReflectionFascadeLegacyInstance.IsNullOrWhiteSpace(ths)");
 
 						return dynamicWildcardTokenReplacementStrategy.GetByToken(ths.Name, out obj);

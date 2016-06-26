@@ -94,7 +94,7 @@ namespace TextMetal.Framework.Expression
 			object value;
 			Type valueType;
 
-			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.Type))
+			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.Type))
 				valueType = typeof(string);
 			else
 				valueType = System.Type.GetType(this.Type, false);
@@ -102,7 +102,7 @@ namespace TextMetal.Framework.Expression
 			if ((object)valueType == null)
 				throw new InvalidOperationException(string.Format("The value run-time type failed to load for type '{0}'.", this.Type));
 
-			if (!LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse(valueType, data, out value))
+			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse(valueType, data, out value))
 				throw new InvalidOperationException(string.Format("Could not parse the value '{0}' as type '{1}'.", data, valueType.FullName));
 
 			this._ = value;

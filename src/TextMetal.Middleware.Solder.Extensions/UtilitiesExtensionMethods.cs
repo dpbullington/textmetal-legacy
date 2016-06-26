@@ -13,32 +13,32 @@ namespace TextMetal.Middleware.Solder.Extensions
 
 		public static T ChangeType<T>(this object value)
 		{
-			return LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<T>(value);
+			return SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<T>(value);
 		}
 
 		public static object ChangeType(this object value, Type conversionType)
 		{
-			return LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType(value, conversionType);
+			return SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType(value, conversionType);
 		}
 
 		public static string SafeToString<TValue>(this TValue value)
 		{
-			return LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.SafeToString<TValue>(value);
+			return SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.SafeToString<TValue>(value);
 		}
 
 		public static string SafeToString<TValue>(this TValue value, string format)
 		{
-			return LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.SafeToString<TValue>(value, format);
+			return SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.SafeToString<TValue>(value, format);
 		}
 
 		public static string SafeToString<TValue>(this TValue value, string format, string @default)
 		{
-			return LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.SafeToString<TValue>(value, format, @default);
+			return SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.SafeToString<TValue>(value, format, @default);
 		}
 
 		public static string SafeToString<TValue>(this TValue value, string format, string @default, bool dofvisnow)
 		{
-			return LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.SafeToString<TValue>(value, format, @default, dofvisnow);
+			return SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.SafeToString<TValue>(value, format, @default, dofvisnow);
 		}
 
 		#endregion

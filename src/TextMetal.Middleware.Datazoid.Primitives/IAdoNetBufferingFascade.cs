@@ -8,15 +8,17 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 
-namespace TextMetal.Middleware.Solder.Utilities
+using __Record = System.Collections.Generic.IDictionary<string, object>;
+
+namespace TextMetal.Middleware.Datazoid.Primitives
 {
-	public interface IAdoNetLiteFascade
+	public interface IAdoNetBufferingFascade
 	{
 		#region Methods/Operators
 
 		DbParameter CreateParameter(Type connectionType, ParameterDirection parameterDirection, DbType parameterDbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue);
 
-		IEnumerable<IDictionary<string, object>> ExecuteRecords(bool schemaOnly, Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters, Action<int> resultsetCallback = null);
+		IEnumerable<__Record> ExecuteRecords(bool schemaOnly, Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters, Action<int> resultsetCallback = null);
 
 		/// <summary>
 		/// Returns a DbType mapping for a Type.

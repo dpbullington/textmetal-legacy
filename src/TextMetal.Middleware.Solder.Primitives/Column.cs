@@ -5,7 +5,7 @@
 
 using System;
 
-namespace TextMetal.Middleware.Datazoid.Primitives
+namespace TextMetal.Middleware.Solder.Primitives
 {
 	public sealed class Column : IColumn
 	{

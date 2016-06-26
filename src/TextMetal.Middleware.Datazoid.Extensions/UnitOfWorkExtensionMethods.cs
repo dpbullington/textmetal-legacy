@@ -12,6 +12,7 @@ using System.Linq;
 using TextMetal.Middleware.Datazoid.Primitives;
 using TextMetal.Middleware.Datazoid.UoW;
 using TextMetal.Middleware.Solder.Extensions;
+using TextMetal.Middleware.Solder.Primitives;
 
 namespace TextMetal.Middleware.Datazoid.Extensions
 {
@@ -42,7 +43,7 @@ namespace TextMetal.Middleware.Datazoid.Extensions
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException(nameof(unitOfWork));
 
-			dbParameter = LegacyInstanceAccessor.AdoNetYieldingFascade.CreateParameter(unitOfWork.Connection, unitOfWork.Transaction, parameterDirection, dbType, parameterSize, parameterPrecision, parameterScale, parameterNullable, parameterName, parameterValue);
+			dbParameter = DatazoidLegacyInstanceAccessor.AdoNetStreamingFascade.CreateParameter(unitOfWork.Connection, unitOfWork.Transaction, parameterDirection, dbType, parameterSize, parameterPrecision, parameterScale, parameterNullable, parameterName, parameterValue);
 
 			return dbParameter;
 		}
@@ -55,7 +56,7 @@ namespace TextMetal.Middleware.Datazoid.Extensions
 				throw new ArgumentNullException(nameof(unitOfWork));
 
 			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
-			records = LegacyInstanceAccessor.AdoNetYieldingFascade.ExecuteRecords(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, recordsAffectedCallback);
+			records = DatazoidLegacyInstanceAccessor.AdoNetStreamingFascade.ExecuteRecords(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, recordsAffectedCallback);
 
 			return records;
 		}
@@ -77,7 +78,7 @@ namespace TextMetal.Middleware.Datazoid.Extensions
 				throw new ArgumentNullException(nameof(unitOfWork));
 
 			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
-			resultsets = LegacyInstanceAccessor.AdoNetYieldingFascade.ExecuteResultsets(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters);
+			resultsets = DatazoidLegacyInstanceAccessor.AdoNetStreamingFascade.ExecuteResultsets(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters);
 
 			return resultsets;
 		}
@@ -121,7 +122,7 @@ namespace TextMetal.Middleware.Datazoid.Extensions
 				throw new ArgumentNullException(nameof(unitOfWork));
 
 			// DO NOT DISPOSE OF DATA READER HERE - THE YIELD STATE MACHINE BELOW WILL DO THIS
-			records = LegacyInstanceAccessor.AdoNetYieldingFascade.ExecuteSchemaRecords(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, recordsAffectedCallback);
+			records = DatazoidLegacyInstanceAccessor.AdoNetStreamingFascade.ExecuteSchemaRecords(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters, recordsAffectedCallback);
 
 			return records;
 		}
@@ -142,7 +143,7 @@ namespace TextMetal.Middleware.Datazoid.Extensions
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException(nameof(unitOfWork));
 
-			resultsets = LegacyInstanceAccessor.AdoNetYieldingFascade.ExecuteSchemaResultsets(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters);
+			resultsets = DatazoidLegacyInstanceAccessor.AdoNetStreamingFascade.ExecuteSchemaResultsets(unitOfWork.Connection, unitOfWork.Transaction, commandType, commandText, commandParameters);
 
 			return resultsets;
 		}

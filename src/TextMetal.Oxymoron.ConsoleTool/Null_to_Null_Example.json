@@ -1,0 +1,54 @@
+{
+	ConfigurationVersion:
+	{
+		Major: 1,
+		Minor: 0,
+		Revision: 0,
+		Build: 0
+	},
+
+	EngineVersion:
+	{
+		Major: 1,
+		Minor: 0,
+		Revision: 0,
+		Build: 0
+	},
+
+	SourceAdapterConfiguration:
+	{
+		AdapterAqtn: "_2ndAsset.ObfuscationEngine.Core.Adapter.Source.NullSourceAdapter, 2ndAsset.ObfuscationEngine.Core"
+	},
+
+	DestinationAdapterConfiguration:
+	{
+		AdapterAqtn: "_2ndAsset.ObfuscationEngine.Core.Adapter.Destination.NullDestinationAdapter, 2ndAsset.ObfuscationEngine.Core"
+	},
+
+	HashConfiguration:
+	{
+		Multiplier: 33,
+		Seed: 5381
+	},
+
+	DictionaryConfigurations:
+	[
+		{
+			PreloadEnabled: false,
+			DictionaryId: "d_Null",
+			RecordCount: 0,
+
+			DictionaryAdapterConfiguration:
+			{
+				AdapterAqtn: "_2ndAsset.ObfuscationEngine.Core.Adapter.Dictionary.NullDictionaryAdapter, 2ndAsset.ObfuscationEngine.Core"
+			}
+		}
+	],
+
+	TableConfiguration:
+	{
+		ColumnConfigurations:
+		[
+		]
+	}
+}

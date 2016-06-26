@@ -70,7 +70,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			}
 			set
 			{
-				if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(value))
+				if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(value))
 					this.ColumnClrNonNullableType = null;
 				else
 					this.ColumnClrNonNullableType = Type.GetType(value, false);
@@ -86,7 +86,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			}
 			set
 			{
-				if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(value))
+				if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(value))
 					this.ColumnClrNullableType = null;
 				else
 					this.ColumnClrNullableType = Type.GetType(value, false);
@@ -102,7 +102,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			}
 			set
 			{
-				if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(value))
+				if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(value))
 					this.ColumnClrType = null;
 				else
 					this.ColumnClrType = Type.GetType(value, false);
@@ -500,7 +500,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 					record.TryGetValue(SchemaInfoConstants.COLUMN_ORDINAL_RECORD_KEY, out columnOrdinal);
 					record.TryGetValue(SchemaInfoConstants.COLUMN_NAME_RECORD_KEY, out columnName);
 
-					isAnonymousColumn = LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(columnName.ChangeType<string>());
+					isAnonymousColumn = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrEmpty(columnName.ChangeType<string>());
 
 					if (isAnonymousColumn || isDuplicateColumn)
 					{

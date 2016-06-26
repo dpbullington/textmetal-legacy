@@ -37,7 +37,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException(nameof(properties));
 
-			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
+			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);

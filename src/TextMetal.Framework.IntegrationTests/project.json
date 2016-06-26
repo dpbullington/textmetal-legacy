@@ -1,22 +1,34 @@
 ﻿{
 	"version": "9.0.0-*",
 	"description": "TextMetal Framework Integration Tests Console App",
-	"authors": ["©2002-2016 Daniel Bullington (dpbullington@gmail.com)"],
-	"summary": "A zero friction, open source meta-programming framework for .NET.",
-	"projectUrl": "http://www.textmetal.com",
-	"licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
-	"iconUrl": "https://github.com/dpbullington/textmetal/blob/master/doc/textmetal-logo.png",
-	"requireLicenseAcceptance": false,
-	"tags": ["TextMetal"],
+	"authors": [ "©2002-2016 Daniel Bullington (dpbullington@gmail.com)" ],
+
+	"packOptions": {
+		"licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
+		"iconUrl": "https://github.com/dpbullington/textmetal/blob/master/doc/textmetal-logo.png",
+		"projectUrl": "http://www.textmetal.com",
+		"summary": "A zero friction, open source meta-programming framework for .NET.",
+		"requireLicenseAcceptance": false,
+		"tags": [ "TextMetal" ],
+		"repository": {
+			"type": "git",
+			"url": "https://github.com/textmetal/main"
+		}
+	},
+
 	"buildOptions": {
 		"keyFile": "../TextMetal.snk",
 		"warningsAsErrors": false,
-		"emitEntryPoint": true
+		"emitEntryPoint": true,
+		"compile":
+		{
+			"exclude":
+			[
+			]
+		}
 	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/textmetal/main"
-	},
+	
+
 	"frameworks": {
 		"netcoreapp1.0": {
 			"dependencies": {
@@ -27,12 +39,13 @@
 			}
 		}
 	},
-	"exclude": [],
+
 	"dependencies": {
 		"TextMetal.Middleware.Solder.Primitives": "9.0.0-*",
 		"TextMetal.Imports": "9.0.0-*",
 		"TextMetal.Framework": "9.0.0-*"
 	},
+
 	"commands": {
 		"test": "TextMetal.Framework.IntegrationTests"
 	}

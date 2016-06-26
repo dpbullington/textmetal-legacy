@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TextMetal.Middleware.Datazoid.Primitives
+namespace TextMetal.Middleware.Solder.Primitives
 {
 	public sealed class Record : Dictionary<string, object>, IRecord
 	{

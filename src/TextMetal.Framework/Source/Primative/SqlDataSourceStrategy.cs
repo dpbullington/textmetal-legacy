@@ -13,6 +13,7 @@ using System.Reflection;
 
 using TextMetal.Framework.Associative;
 using TextMetal.Framework.Tokenization;
+using TextMetal.Middleware.Datazoid.Extensions;
 using TextMetal.Middleware.Solder.Extensions;
 using TextMetal.Middleware.Solder.Serialization;
 
@@ -56,7 +57,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)connectionString == null)
 				throw new ArgumentNullException(nameof(connectionString));
 
-			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(connectionString))
+			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(connectionString))
 				throw new ArgumentOutOfRangeException(nameof(connectionString));
 
 			tokenizer = new Tokenizer(true);
@@ -69,7 +70,7 @@ namespace TextMetal.Framework.Source.Primative
 
 				commandText = tokenizer.ExpandTokens(sqlQuery.Text, new DynamicWildcardTokenReplacementStrategy(new object[] { parentAssociativeXmlObject }));
 
-				records = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.ExecuteRecords(getSchemaOnly, connectionType, connectionString, false, IsolationLevel.Unspecified, sqlQuery.Type, commandText, null);
+				records = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.ExecuteRecords(getSchemaOnly, connectionType, connectionString, false, IsolationLevel.Unspecified, sqlQuery.Type, commandText, null);
 
 				propertyConstructA = new PropertyConstruct();
 				propertyConstructA.Name = "RowCount";
@@ -125,7 +126,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException(nameof(properties));
 
-			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
+			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
 			connectionAqtn = null;
@@ -150,13 +151,13 @@ namespace TextMetal.Framework.Source.Primative
 					connectionString = values[0];
 			}
 
-			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(connectionString))
+			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(connectionString))
 				throw new InvalidOperationException(string.Format("The connection string cannot be null or whitespace."));
 
 			if (properties.TryGetValue(PROP_TOKEN_GET_SCHEMA_ONLY, out values))
 			{
 				if ((object)values != null && values.Count == 1)
-					LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out getSchemaOnly);
+					SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out getSchemaOnly);
 			}
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);

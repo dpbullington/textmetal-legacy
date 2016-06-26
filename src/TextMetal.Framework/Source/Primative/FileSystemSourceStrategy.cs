@@ -61,12 +61,12 @@ namespace TextMetal.Framework.Source.Primative
 			}
 			else
 			{
-				if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(wildcard))
+				if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(wildcard))
 					files = Directory.GetFiles(directoryPath);
 				else
 					files = Directory.GetFiles(directoryPath, wildcard);
 
-				if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(wildcard))
+				if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(wildcard))
 					directories = Directory.GetDirectories(directoryPath);
 				else
 					directories = Directory.GetDirectories(directoryPath, wildcard);
@@ -282,7 +282,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException(nameof(properties));
 
-			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
+			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
@@ -293,7 +293,7 @@ namespace TextMetal.Framework.Source.Primative
 				if ((object)values != null && values.Count == 1)
 				{
 					recursiveStr = values[0];
-					if (!LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse<bool>(recursiveStr, out recursive))
+					if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse<bool>(recursiveStr, out recursive))
 					{
 						// do nothing
 					}

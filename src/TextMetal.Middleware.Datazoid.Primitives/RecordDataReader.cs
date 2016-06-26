@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 
+using TextMetal.Middleware.Solder.Primitives;
+
 namespace TextMetal.Middleware.Datazoid.Primitives
 {
 	public class RecordDbDataReader : DbDataReader

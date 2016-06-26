@@ -3,11 +3,6 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-using System.Collections.Generic;
+using System.Reflection;
 
-namespace TextMetal.Middleware.Datazoid.Primitives
-{
-	public interface IRecord : IDictionary<string, object>
-	{
-	}
-}
+[assembly: AssemblyTitle("TextMetal Oxymoron Console App")]

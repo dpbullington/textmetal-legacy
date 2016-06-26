@@ -23,7 +23,7 @@ namespace TextMetal.Framework.XmlDialect
 				throw new ArgumentNullException(nameof(xmlObject));
 
 			xmlObjectType = xmlObject.GetType();
-			xmlElementMappingAttribute = LegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlElementMappingAttribute>(xmlObjectType);
+			xmlElementMappingAttribute = SolderLegacyInstanceAccessor.ReflectionFascadeLegacyInstance.GetOneAttribute<XmlElementMappingAttribute>(xmlObjectType);
 
 			if ((object)xmlElementMappingAttribute == null)
 				xmlName = null;

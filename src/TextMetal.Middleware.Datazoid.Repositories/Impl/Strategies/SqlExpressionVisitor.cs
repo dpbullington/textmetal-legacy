@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
+using TextMetal.Middleware.Datazoid.Extensions;
 using TextMetal.Middleware.Datazoid.Repositories.Impl.Expressions;
 using TextMetal.Middleware.Datazoid.Repositories.Impl.Mappings;
 using TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics;
@@ -184,7 +185,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 			tacticParameter = new TacticParameter()
 							{
 								ParameterDirection = ParameterDirection.Input,
-								ParameterDbType = LegacyInstanceAccessor.AdoNetLiteLegacyInstance.InferDbTypeForClrType(valueType),
+								ParameterDbType = DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.InferDbTypeForClrType(valueType),
 								ParameterSize = default(int),
 								ParameterPrecision = default(byte),
 								ParameterScale = default(byte),

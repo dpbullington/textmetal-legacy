@@ -53,7 +53,7 @@ namespace TextMetal.Framework.Source.Primative
 			if ((object)properties == null)
 				throw new ArgumentNullException(nameof(properties));
 
-			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
+			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
 			sourceFilePath = Path.GetFullPath(sourceFilePath);
@@ -65,7 +65,7 @@ namespace TextMetal.Framework.Source.Primative
 			{
 				if ((object)values != null && values.Count == 1)
 				{
-					if (!LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out firstRecordIsHeader))
+					if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out firstRecordIsHeader))
 						firstRecordIsHeader = false;
 				}
 			}
@@ -75,7 +75,7 @@ namespace TextMetal.Framework.Source.Primative
 			{
 				if ((object)values != null && values.Count == 1)
 				{
-					if (!LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out hasQuotedValues))
+					if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.TryParse<bool>(values[0], out hasQuotedValues))
 						hasQuotedValues = false;
 				}
 			}
@@ -94,7 +94,7 @@ namespace TextMetal.Framework.Source.Primative
 					fieldDelimiter = values[0];
 			}
 
-			if (!LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(fieldDelimiter))
+			if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(fieldDelimiter))
 			{
 				fieldDelimiter = fieldDelimiter.Replace("\\\\t", "\t");
 				fieldDelimiter = fieldDelimiter.Replace("\\\"", "\"");

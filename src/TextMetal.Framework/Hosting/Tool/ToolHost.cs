@@ -104,16 +104,16 @@ namespace TextMetal.Framework.Hosting.Tool
 			if ((object)properties == null)
 				throw new ArgumentNullException(nameof(properties));
 
-			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(templateFilePath))
+			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(templateFilePath))
 				throw new ArgumentOutOfRangeException(nameof(templateFilePath));
 
-			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
+			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceFilePath))
 				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
 
-			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(baseDirectoryPath))
+			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(baseDirectoryPath))
 				throw new ArgumentOutOfRangeException(nameof(baseDirectoryPath));
 
-			if (LegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceStrategyAqtn))
+			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsWhiteSpace(sourceStrategyAqtn))
 				throw new ArgumentOutOfRangeException(nameof(sourceStrategyAqtn));
 
 			toolVersion = new AssemblyInformationFascade(this.ReflectionFascade, typeof(IXmlPersistEngine).GetTypeInfo().Assembly).AssemblyVersion;

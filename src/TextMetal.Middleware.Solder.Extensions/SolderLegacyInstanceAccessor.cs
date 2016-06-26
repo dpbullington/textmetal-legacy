@@ -16,15 +16,6 @@ namespace TextMetal.Middleware.Solder.Extensions
 		#region Properties/Indexers/Events
 
 		[Obsolete("Stop using this")]
-		public static IAdoNetLiteFascade AdoNetLiteLegacyInstance
-		{
-			get
-			{
-				return AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IAdoNetLiteFascade>(String.Empty, true);
-			}
-		}
-
-		[Obsolete("Stop using this")]
 		public static IDataTypeFascade DataTypeFascadeLegacyInstance
 		{
 			get
