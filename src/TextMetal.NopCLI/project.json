@@ -1,4 +1,4 @@
-﻿{
+{
 	"version": "9.0.0-*",
 	"description": "TextMetal NOP Console App",
 	"authors":
@@ -47,18 +47,17 @@
 		{
 			"dependencies":
 			{
-				"Microsoft.NETCore.App":
-				{
-					"type": "platform",
-					"version": "1.0.0-rc2-*"
-				}
 			}
 		}
 	},
 
 	"dependencies":
 	{
-
+		"Microsoft.NETCore.App":
+		{
+			"version": "1.0.0",
+			"type": "platform"
+		}
 	},
 	"commands":
 	{

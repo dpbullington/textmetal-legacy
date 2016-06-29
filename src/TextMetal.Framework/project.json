@@ -1,4 +1,4 @@
-﻿{
+{
 	"version": "9.0.0-*",
 	"description": "TextMetal Framework Library",
 	"authors":
@@ -43,24 +43,23 @@
 
 	"frameworks":
 	{
-		"netstandard1.5":
+		"netstandard1.6":
 		{
 			"dependencies":
 			{
-				"NETStandard.Library": "1.5.0-rc2-*",
-				"System.Collections.NonGeneric": "4.0.1-rc2-24027"
 			}
 		}
 	},
 
-	"dependencies":
-	{
-		"TextMetal.Imports": "9.0.0-*",
-		"TextMetal.Middleware.Solder.Primitives": "9.0.0-*",
-		"TextMetal.Middleware.Solder.Utilities": "9.0.0-*",
-		"TextMetal.Middleware.Solder.Serialization": "9.0.0-*",
-		"TextMetal.Middleware.Solder.Injection": "9.0.0-*",
-		"TextMetal.Middleware.Solder.Extensions": "9.0.0-*",
-		"TextMetal.Middleware.Datazoid.Extensions": "9.0.0-*"
-	}
+    "dependencies": {
+        "TextMetal.Imports": "9.0.0-*",
+        "TextMetal.Middleware.Solder.Primitives": "9.0.0-*",
+        "TextMetal.Middleware.Solder.Utilities": "9.0.0-*",
+        "TextMetal.Middleware.Solder.Serialization": "9.0.0-*",
+        "TextMetal.Middleware.Solder.Injection": "9.0.0-*",
+        "TextMetal.Middleware.Solder.Extensions": "9.0.0-*",
+        "TextMetal.Middleware.Datazoid.Extensions": "9.0.0-*",
+        "System.Collections.NonGeneric": "4.0.1",
+        "NETStandard.Library": "1.6.0"
+    }
 }

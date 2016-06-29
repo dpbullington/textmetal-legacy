@@ -1,4 +1,4 @@
-﻿{
+{
 	"version": "9.0.0-*",
 	"description": "TextMetal Host Impl Console App",
 	"authors": [ "©2002-2016 Daniel Bullington (dpbullington@gmail.com)" ],
@@ -35,18 +35,19 @@
 	"frameworks": {
 		"netcoreapp1.0": {
 			"dependencies": {
-				"Microsoft.NETCore.App": {
-					"type": "platform",
-					"version": "1.0.0-rc2-*"
-				}
 			}
 		}
 	},
 
-	"dependencies": {
-		"TextMetal.Framework": "9.0.0-*",
-		"TextMetal.Middleware.Solder.Executive": "9.0.0-*"
-	},
+    "dependencies": {
+        "Microsoft.NETCore.App":
+		{
+			"version": "1.0.0",
+			"type": "platform"
+		},
+        "TextMetal.Framework": "9.0.0-*",
+        "TextMetal.Middleware.Solder.Executive": "9.0.0-*"
+    },
 
 	"commands": {
 		"runapp": "TextMetal.ConsoleTool"

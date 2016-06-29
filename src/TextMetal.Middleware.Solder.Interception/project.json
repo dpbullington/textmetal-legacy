@@ -1,4 +1,4 @@
-﻿{
+{
 	"version": "9.0.0-*",
 	"description": "TextMetal Middleware Solder Interception Library",
 	"authors": [ "©2002-2016 Daniel Bullington (dpbullington@gmail.com)" ],
@@ -28,14 +28,14 @@
 	},
 
 	"frameworks": {
-		"netstandard1.5": {
+		"netstandard1.6": {
 			"dependencies": {
-				"NETStandard.Library": "1.5.0-rc2-*"
 			}
 		}
 	},
 
-	"dependencies": {
-		"TextMetal.Imports": "9.0.0-*"
-	}
+    "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "TextMetal.Imports": "9.0.0-*"
+    }
 }

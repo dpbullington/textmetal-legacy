@@ -28,13 +28,12 @@
 	},
 
 	"frameworks": {
-		"netstandard1.5": {
+		"netstandard1.6": {
 			"buildOptions": {
 				"define": [ ]
 			},
 
 			"dependencies": {
-				"NETStandard.Library": "1.5.0-rc2-*",
 				"TextMetal.Imports.CastleCore": "9.0.0-*",
 				"TextMetal.Imports.Jint": "9.0.0-*",
 				"TextMetal.Imports.NMock": "9.0.0-*",
@@ -44,6 +43,7 @@
 		}
 	},
 
-	"dependencies": {
-	}
+    "dependencies": {
+        "NETStandard.Library": "1.6.0"
+    }
 }

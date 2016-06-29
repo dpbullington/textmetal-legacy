@@ -28,18 +28,18 @@
 	},
 
 	"frameworks": {
-		"netstandard1.5": {
+		"netstandard1.6": {
 			"dependencies": {
-				"NETStandard.Library": "1.5.0-rc2-*"
 			}
 		}
 	},
 
-	"dependencies": {
-		"TextMetal.Middleware.Datazoid.Primitives": "9.0.0-*",
-		"TextMetal.Middleware.Datazoid.Extensions": "9.0.0-*",
-		"TextMetal.Middleware.Datazoid.UoW": "9.0.0-*",
-		"TextMetal.Middleware.Datazoid.Models": "9.0.0-*",
-		"TextMetal.Middleware.Datazoid.Repositories": "9.0.0-*"
-	}
+    "dependencies": {
+        "TextMetal.Middleware.Datazoid.Primitives": "9.0.0-*",
+        "TextMetal.Middleware.Datazoid.Extensions": "9.0.0-*",
+        "TextMetal.Middleware.Datazoid.UoW": "9.0.0-*",
+        "TextMetal.Middleware.Datazoid.Models": "9.0.0-*",
+        "TextMetal.Middleware.Datazoid.Repositories": "9.0.0-*",
+        "NETStandard.Library": "1.6.0"
+    }
 }

@@ -1,4 +1,4 @@
-﻿{
+{
 	"version": "9.0.0-*",
 	"description": "TextMetal Middleware Datazoid Repositories Library",
 	"authors": [ "©2002-2016 Daniel Bullington (dpbullington@gmail.com)" ],
@@ -28,15 +28,15 @@
 	},
 
 	"frameworks": {
-		"netstandard1.5": {
+		"netstandard1.6": {
 			"dependencies": {
-				"NETStandard.Library": "1.5.0-rc2-*"
 			}
 		}
 	},
 
-	"dependencies": {
-		"TextMetal.Middleware.Datazoid.Models": "9.0.0-*",
-		"TextMetal.Middleware.Datazoid.Extensions": "9.0.0-*"
-	}
+    "dependencies": {
+        "TextMetal.Middleware.Datazoid.Models": "9.0.0-*",
+        "TextMetal.Middleware.Datazoid.Extensions": "9.0.0-*",
+        "NETStandard.Library": "1.6.0"
+    }
 }
