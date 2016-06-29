@@ -12,7 +12,7 @@ using TextMetal.Middleware.Solder.Executive;
 using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Utilities;
 
-namespace TextMetal.Oxymoron.ConsoleTool
+namespace TextMetal.ConsoleTool.Ox
 {
 	/// <summary>
 	/// Entry point class for the application.

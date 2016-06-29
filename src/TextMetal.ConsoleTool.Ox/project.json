@@ -1,6 +1,6 @@
 ﻿{
 	"version": "9.0.0-*",
-	"description": "TextMetal Oxymoron Console App",
+	"description": "TextMetal Console Ox App (obfuscation host)",
 	"authors": [ "©2002-2016 Daniel Bullington (dpbullington@gmail.com)" ],
 
 	"packOptions": {

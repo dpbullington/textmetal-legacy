@@ -5,4 +5,4 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("TextMetal Oxymoron Console App")]
+[assembly: AssemblyTitle("TextMetal Console Ox App (obfuscation host)")]

@@ -90,7 +90,7 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Textua
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Oxymoron", "Oxymoron", "{25B1711D-E77F-48ED-917C-44B8F9F439CB}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Oxymoron.ConsoleTool", "TextMetal.Oxymoron.ConsoleTool\TextMetal.Oxymoron.ConsoleTool.xproj", "{0037E132-DDF9-4EA5-9192-2BBD91B67506}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.ConsoleTool.Ox", "TextMetal.ConsoleTool.Ox\TextMetal.ConsoleTool.Ox.xproj", "{0037E132-DDF9-4EA5-9192-2BBD91B67506}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
