@@ -5,15 +5,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
 using System.Reflection;
 using System.Xml;
 
+using TextMetal.Middleware.Solder.Extensions;
 using TextMetal.Middleware.Solder.Injection;
+using TextMetal.Middleware.Solder.Primitives;
 using TextMetal.Middleware.Solder.Utilities;
-
-using __Record = System.Collections.Generic.IDictionary<string, object>;
 
 namespace TextMetal.Middleware.Datazoid.Primitives
 {
@@ -95,12 +97,12 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 			}
 		}
 
-		public IEnumerable<__Record> ExecuteRecords(bool schemaOnly, Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters, Action<int> resultsetCallback = null)
+		public IEnumerable<IDictionary<string, object>> ExecuteRecords(bool schemaOnly, Type connectionType, string connectionString, bool transactional, IsolationLevel isolationLevel, CommandType commandType, string commandText, IEnumerable<DbParameter> commandParameters, Action<int> resultsetCallback = null)
 		{
 			DbTransaction dbTransaction;
 			const bool OPEN = true;
 
-			IList<IDictionary<string, object>> records;
+			IList<IRecord> records;
 
 			// force no preparation
 			const bool COMMAND_PREPARE = false;
@@ -110,6 +112,11 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 
 			CommandBehavior commandBehavior;
 			int resultsetIndex = 0;
+
+			ReadOnlyCollection<DbColumn> dbColumns;
+			DbColumn dbColumn;
+			PropertyInfo[] propertyInfos;
+			PropertyInfo propertyInfo;
 
 			if ((object)connectionType == null)
 				throw new ArgumentNullException(nameof(connectionType));
@@ -154,13 +161,14 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 					if (COMMAND_PREPARE)
 						dbCommand.Prepare();
 
-					records = new List<__Record>();
+					records = new List<IRecord>();
 
 					commandBehavior = schemaOnly ? CommandBehavior.SchemaOnly : CommandBehavior.Default;
 
-					using (DbDataReader dbDataReader = dbCommand.ExecuteReader(commandBehavior))
+					// wrap reader with proxy
+					using (DbDataReader dbDataReader = new WrappedDbDataReader.__(dbCommand.ExecuteReader(commandBehavior)))
 					{
-						__Record record;
+						Record record;
 						string key;
 						object value;
 
@@ -173,7 +181,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 
 								while (dbDataReader.Read())
 								{
-									record = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+									record = new Record();
 
 									for (int columnIndex = 0; columnIndex < dbDataReader.FieldCount; columnIndex++)
 									{
@@ -194,27 +202,41 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 						}
 						else
 						{
-							throw new NotSupportedException(string.Format("Not supported on CoreCLR."));
-							/*using (DataTable dataTable = dbDataReader.GetSchemaTable())
+							if (!dbDataReader.CanGetColumnSchema())
+								throw new NotSupportedException(string.Format("The connection command type '{0}' does not support schema access.", dbDataReader.GetType().FullName));
+
+							dbColumns = dbDataReader.GetColumnSchema();
 							{
-								if ((object)dataTable != null)
+								if ((object)dbColumns != null)
 								{
-									foreach (DataRow dataRow in dataTable.Rows)
+									for (int index = 0; index < dbColumns.Count; index++)
 									{
-										record = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+										dbColumn = dbColumns[index];
 
-										for (int index = 0; index < dataTable.Columns.Count; index++)
+										propertyInfos = dbColumn.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+										record = new Record();
+										record.TagContext = dbColumn;
+
+										if ((object)propertyInfos != null)
 										{
-											key = dataTable.Columns[index].ColumnName;
-											value = dataRow[index].ChangeType<object>();
+											for (int i = 0; i < propertyInfos.Length; i++)
+											{
+												propertyInfo = propertyInfos[i];
 
-											record.Add(key, value);
+												if (propertyInfo.GetIndexParameters().Any())
+													continue;
+
+												key = propertyInfo.Name;
+												value = propertyInfo.GetValue(dbColumn);
+												value = value.ChangeType<object>();
+
+												record.Add(key, value);
+											}
 										}
-
-										records.Add(record);
 									}
 								}
-							}*/
+							}
 						}
 					}
 

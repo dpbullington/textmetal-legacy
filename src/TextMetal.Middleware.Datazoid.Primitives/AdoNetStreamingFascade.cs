@@ -5,8 +5,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
+using System.Reflection;
 
 using TextMetal.Middleware.Solder.Extensions;
 using TextMetal.Middleware.Solder.Injection;
@@ -125,7 +128,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 				dbDataReader = dbCommand.ExecuteReader(commandBehavior);
 
 				// wrap reader with proxy
-				dbDataReader = new WrappedDbDataReader(dbDataReader);
+				dbDataReader = new WrappedDbDataReader.__(dbDataReader);
 
 				// clean out parameters
 				//dbCommand.Parameters.Clear();
@@ -428,7 +431,11 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 		/// <returns> An enumerable of record dictionary instances, containing key/value pairs of schema metadata. </returns>
 		public IEnumerable<IRecord> GetSchemaRecordsFromReader(DbDataReader dbDataReader, Action<int> recordsAffectedCallback)
 		{
-			IRecord record;
+			ReadOnlyCollection<DbColumn> dbColumns;
+			DbColumn dbColumn;
+			PropertyInfo[] propertyInfos;
+			PropertyInfo propertyInfo;
+			Record record;
 			int recordsAffected;
 			string key;
 			object value;
@@ -440,23 +447,39 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): before yield", typeof(AdoNetStreamingFascade).Name));
 
-			throw new NotSupportedException(string.Format("Not supported on CoreCLR."));
-			/*using (DataTable dataTable = dbDataReader.GetSchemaTable())
+			if(!dbDataReader.CanGetColumnSchema())
+				throw new NotSupportedException(string.Format("The connection command type '{0}' does not support schema access.", dbDataReader.GetType().FullName));
+
+			dbColumns = dbDataReader.GetColumnSchema();
 			{
 				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): use table", typeof(AdoNetStreamingFascade).Name));
 
-				if ((object)dataTable != null)
+				if ((object)dbColumns != null)
 				{
-					foreach (DataRow dataRow in dataTable.Rows)
+					for (int index = 0; index < dbColumns.Count; index++)
 					{
+						dbColumn = dbColumns[index];
+
+						propertyInfos = dbColumn.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty);
+
 						record = new Record();
+						record.TagContext = dbColumn;
 
-						for (int index = 0; index < dataTable.Columns.Count; index++)
+						if ((object)propertyInfos != null)
 						{
-							key = dataTable.Columns[index].ColumnName;
-							value = dataRow[index].ChangeType<object>();
+							for (int i = 0; i < propertyInfos.Length; i++)
+							{
+								propertyInfo = propertyInfos[i];
 
-							record.Add(key, value);
+								if (propertyInfo.GetIndexParameters().Any())
+									continue;
+
+								key = propertyInfo.Name;
+								value = propertyInfo.GetValue(dbColumn);
+								value = value.ChangeType<object>();
+
+								record.Add(key, value);
+							}
 						}
 
 						OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): on yield", typeof(AdoNetStreamingFascade).Name));
@@ -466,7 +489,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 				}
 
 				OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): dispose table", typeof(AdoNetStreamingFascade).Name));
-			}*/
+			}
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): after yield", typeof(AdoNetStreamingFascade).Name));
 

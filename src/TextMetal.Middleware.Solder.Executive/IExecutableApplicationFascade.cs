@@ -12,15 +12,6 @@ namespace TextMetal.Middleware.Solder.Executive
 {
 	public interface IExecutableApplicationFascade : IDisposable
 	{
-		#region Properties/Indexers/Events
-
-		IAssemblyInformationFascade AssemblyInformationFascade
-		{
-			get;
-		}
-
-		#endregion
-
 		#region Methods/Operators
 
 		int EntryPoint(string[] args);
@@ -32,7 +23,7 @@ namespace TextMetal.Middleware.Solder.Executive
 		/// <returns> A loosely typed dictionary of key/multi-value pairs. </returns>
 		IDictionary<string, IList<string>> ParseCommandLineArguments(string[] args);
 
-		void ShowNestedExceptionsAndThrowBrickAtProcess(Exception e);
+		int ShowNestedExceptionsAndThrowBrickAtProcess(Exception e);
 
 		/// <summary>
 		/// Given a string property, this method will parse the property using a well know pattern match to obtain an output key/value pair for use by applications.

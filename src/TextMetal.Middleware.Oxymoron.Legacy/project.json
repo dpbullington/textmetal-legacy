@@ -1,0 +1,63 @@
+﻿{
+	"version": "9.0.0-*",
+	"description": "TextMetal Middleware Oxymoron Legacy Library",
+	"authors":
+	[
+		"©2002-2016 Daniel Bullington (dpbullington@gmail.com)"
+	],
+
+	"packOptions":
+	{
+		"licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
+		"iconUrl": "https://github.com/dpbullington/textmetal/blob/master/doc/textmetal-logo.png",
+		"projectUrl": "http://www.textmetal.com",
+		"summary": "A zero friction, open source meta-programming framework for .NET.",
+		"requireLicenseAcceptance": false,
+		"tags":
+		[
+			"TextMetal"
+		],
+		"repository":
+		{
+			"type": "git",
+			"url": "https://github.com/textmetal/main"
+		}
+	},
+
+	"buildOptions":
+	{
+		"keyFile": "../TextMetal.snk",
+		"warningsAsErrors": false,
+		"compile":
+		{
+			"exclude":
+			[
+				"Strategy\\ScriptObfuscationStrategy.cs"
+			]
+		}
+	},
+
+	"frameworks":
+	{
+		"netstandard1.6":
+		{
+			"dependencies":
+			{
+			
+			}
+		}
+	},
+
+	"dependencies":
+	{
+		"TextMetal.Middleware.Solder.Primitives": "9.0.0-*",
+		"TextMetal.Middleware.Solder.Extensions": "9.0.0-*",
+		"TextMetal.Middleware.Textual.Primitives": "9.0.0-*",
+		"TextMetal.Middleware.Textual.Delimited": "9.0.0-*",
+		"TextMetal.Middleware.Datazoid.UoW": "9.0.0-*",
+		"TextMetal.Middleware.Datazoid.Extensions": "9.0.0-*",
+		"System.Data.SqlClient": "4.1.0",
+		"NETStandard.Library": "1.6.0",
+		"System.Security.Cryptography.Algorithms": "4.2.0"
+	}
+}

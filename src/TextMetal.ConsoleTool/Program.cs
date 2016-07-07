@@ -23,8 +23,8 @@ namespace TextMetal.ConsoleTool
 		#region Constructors/Destructors
 
 		[DependencyInjection]
-		public Program([DependencyInjection] IDataTypeFascade dataTypeFascade, [DependencyInjection] IAppConfigFascade appConfigFascade, [DependencyInjection] IReflectionFascade reflectionFascade)
-			: base(dataTypeFascade, appConfigFascade, reflectionFascade)
+		public Program([DependencyInjection] IDataTypeFascade dataTypeFascade, [DependencyInjection] IAppConfigFascade appConfigFascade, [DependencyInjection] IReflectionFascade reflectionFascade, [DependencyInjection] IAssemblyInformationFascade assemblyInformationFascade)
+			: base(dataTypeFascade, appConfigFascade, reflectionFascade, assemblyInformationFascade)
 		{
 		}
 

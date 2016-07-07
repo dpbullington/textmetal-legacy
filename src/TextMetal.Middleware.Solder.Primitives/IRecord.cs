@@ -9,5 +9,9 @@ namespace TextMetal.Middleware.Solder.Primitives
 {
 	public interface IRecord : IDictionary<string, object>
 	{
+		object TagContext
+		{
+			get;
+		}
 	}
 }

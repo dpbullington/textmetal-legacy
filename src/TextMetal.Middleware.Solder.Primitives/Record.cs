@@ -18,5 +18,27 @@ namespace TextMetal.Middleware.Solder.Primitives
 		}
 
 		#endregion
+
+		#region Fields/Constants
+
+		private object tagContext;
+
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public object TagContext
+		{
+			get
+			{
+				return this.tagContext;
+			}
+			set
+			{
+				this.tagContext = value;
+			}
+		}
+
+		#endregion
 	}
 }

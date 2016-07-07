@@ -29,6 +29,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			this.reflectionFascade = new ReflectionFascade(this.DataTypeFascade);
 			this.configurationRoot = LoadAppConfigFile(APP_CONFIG_FILE_NAME);
 			this.appConfigFascade = new AppConfigFascade(this.ConfigurationRoot, this.DataTypeFascade);
+			this.assemblyInformationFascade = new AssemblyInformationFascade(this.ReflectionFascade, Assembly.GetEntryAssembly());
 
 			this.SetUp();
 			this.SetUpApplicationDomain();
@@ -48,8 +49,9 @@ namespace TextMetal.Middleware.Solder.Injection
 
 		private const string APP_CONFIG_FILE_NAME = "appconfig.json";
 		private const string ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS = "SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS";
-		
 		private readonly IAppConfigFascade appConfigFascade;
+
+		private readonly IAssemblyInformationFascade assemblyInformationFascade;
 		private readonly IConfigurationRoot configurationRoot;
 		private readonly IDataTypeFascade dataTypeFascade;
 		private readonly IDependencyManager dependencyManager = new DependencyManager();
@@ -77,6 +79,14 @@ namespace TextMetal.Middleware.Solder.Injection
 			get
 			{
 				return this.appConfigFascade;
+			}
+		}
+
+		internal IAssemblyInformationFascade AssemblyInformationFascade
+		{
+			get
+			{
+				return this.assemblyInformationFascade;
 			}
 		}
 
@@ -290,6 +300,7 @@ namespace TextMetal.Middleware.Solder.Injection
 			this.DependencyManager.AddResolution<IDataTypeFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IDataTypeFascade>(new InstanceDependencyResolution<IDataTypeFascade>(this.DataTypeFascade)));
 			this.DependencyManager.AddResolution<IReflectionFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IReflectionFascade>(new InstanceDependencyResolution<IReflectionFascade>(this.ReflectionFascade)));
 			this.DependencyManager.AddResolution<IAppConfigFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAppConfigFascade>(new InstanceDependencyResolution<IAppConfigFascade>(this.AppConfigFascade)));
+			this.DependencyManager.AddResolution<IAssemblyInformationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAssemblyInformationFascade>(new InstanceDependencyResolution<IAssemblyInformationFascade>(this.AssemblyInformationFascade)));
 		}
 
 		/// <summary>

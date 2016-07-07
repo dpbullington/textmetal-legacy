@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
+using TextMetal.Middleware.Datazoid.Primitives;
+using TextMetal.Middleware.Oxymoron.Legacy.Hosting.Tool;
 using TextMetal.Middleware.Solder.Executive;
 using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Utilities;
@@ -22,8 +24,8 @@ namespace TextMetal.ConsoleTool.Ox
 		#region Constructors/Destructors
 
 		[DependencyInjection]
-		public Program([DependencyInjection] IDataTypeFascade dataTypeFascade, [DependencyInjection] IAppConfigFascade appConfigFascade, [DependencyInjection] IReflectionFascade reflectionFascade)
-			: base(dataTypeFascade, appConfigFascade, reflectionFascade)
+		public Program([DependencyInjection] IDataTypeFascade dataTypeFascade, [DependencyInjection] IAppConfigFascade appConfigFascade, [DependencyInjection] IReflectionFascade reflectionFascade, [DependencyInjection] IAssemblyInformationFascade assemblyInformationFascade)
+			: base(dataTypeFascade, appConfigFascade, reflectionFascade, assemblyInformationFascade)
 		{
 		}
 
@@ -31,26 +33,12 @@ namespace TextMetal.ConsoleTool.Ox
 
 		#region Fields/Constants
 
-		private const string CMDLN_DEBUGGER_LAUNCH = "debug";
-		private const string CMDLN_TOKEN_BASEDIR = "basedir";
 		private const string CMDLN_TOKEN_PROPERTY = "property";
 		private const string CMDLN_TOKEN_SOURCEFILE = "sourcefile";
-		private const string CMDLN_TOKEN_SOURCESTRATEGY_AQTN = "sourcestrategy";
-		private const string CMDLN_TOKEN_STRICT = "strict";
-		private const string CMDLN_TOKEN_TEMPLATEFILE = "templatefile";
 
 		#endregion
 
 		#region Methods/Operators
-
-		private static int DnxMain(string[] args)
-		{
-			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
-			//AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<IToolHost>(string.Empty, false, new SingletonWrapperDependencyResolution<IToolHost>(new TransientActivatorAutoWiringDependencyResolution<ToolHost>()));
-
-			using (ConsoleApplicationFascade program = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
-				return program.EntryPoint(args);
-		}
 
 		/// <summary>
 		/// The entry point method for this application.
@@ -60,26 +48,20 @@ namespace TextMetal.ConsoleTool.Ox
 		[STAThread]
 		public static int Main(string[] args)
 		{
-			bool enableDnxDebugQuirksMode;
+			args = new[]
+					{
+						@"-sourcefile2:Null_to_Null_Example.json",
+						@"-sourcefile2:DB_to_DB-sqlbcp_Example.json",
+						@"-sourcefile:DB_to_DB-reccmd_Example.json",
+						@"-sourcefile2:DTF_to_DTF_Example.json"
+					};
 
-			enableDnxDebugQuirksMode = EnableDnxDebugQuirksMode;
-			Console.WriteLine("EnableDnxDebugQuirksMode: '{0}'", enableDnxDebugQuirksMode);
+			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
+			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<IToolHost>(string.Empty, false, new SingletonWrapperDependencyResolution<IToolHost>(new TransientDefaultConstructorDependencyResolution<ToolHost>()));
+			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<IAdoNetStreamingFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetStreamingFascade>(new TransientActivatorAutoWiringDependencyResolution<AdoNetStreamingFascade>()));
 
-			if (!enableDnxDebugQuirksMode)
-				return DnxMain(args);
-			else
-			{
-				try
-				{
-					return DnxMain(args);
-				}
-				catch (Exception)
-				{
-					// required to do poor mans' "just in time debugging" with F5 in VS 2015 (DNX) for now
-					Debugger.Break();
-					throw;
-				}
-			}
+			using (ConsoleApplicationFascade program = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
+				return program.EntryPoint(args);
 		}
 
 		protected override IDictionary<string, ArgumentSpec> GetArgumentMap()
@@ -87,13 +69,8 @@ namespace TextMetal.ConsoleTool.Ox
 			IDictionary<string, ArgumentSpec> argumentMap;
 
 			argumentMap = new Dictionary<string, ArgumentSpec>();
-			argumentMap.Add(CMDLN_TOKEN_TEMPLATEFILE, new ArgumentSpec<string>(true, true));
 			argumentMap.Add(CMDLN_TOKEN_SOURCEFILE, new ArgumentSpec<string>(true, true));
-			argumentMap.Add(CMDLN_TOKEN_BASEDIR, new ArgumentSpec<string>(true, true));
-			argumentMap.Add(CMDLN_TOKEN_SOURCESTRATEGY_AQTN, new ArgumentSpec<string>(true, true));
-			argumentMap.Add(CMDLN_TOKEN_STRICT, new ArgumentSpec<bool>(true, true));
 			argumentMap.Add(CMDLN_TOKEN_PROPERTY, new ArgumentSpec<string>(false, false));
-			argumentMap.Add(CMDLN_DEBUGGER_LAUNCH, new ArgumentSpec<bool>(false, true));
 
 			return argumentMap;
 		}
@@ -103,10 +80,6 @@ namespace TextMetal.ConsoleTool.Ox
 			Dictionary<string, object> argz;
 			string templateFilePath;
 			string sourceFilePath;
-			string baseDirectoryPath;
-			string sourceStrategyAqtn;
-			bool strictMatching;
-			bool debuggerLaunch = false;
 			IDictionary<string, IList<string>> properties;
 			IList<object> argumentValues;
 			IList<string> propertyValues;
@@ -118,30 +91,15 @@ namespace TextMetal.ConsoleTool.Ox
 			if ((object)arguments == null)
 				throw new ArgumentNullException(nameof(arguments));
 
-			if (arguments.ContainsKey(CMDLN_DEBUGGER_LAUNCH))
-				debuggerLaunch = (bool)arguments[CMDLN_DEBUGGER_LAUNCH].Single();
-
-			if (debuggerLaunch)
-				Console.WriteLine("Debugger launch result: '{0}'", Debugger.Launch() && Debugger.IsAttached);
-
 			// required
 			properties = new Dictionary<string, IList<string>>();
 
-			templateFilePath = (string)arguments[CMDLN_TOKEN_TEMPLATEFILE].Single();
 			sourceFilePath = (string)arguments[CMDLN_TOKEN_SOURCEFILE].Single();
-			baseDirectoryPath = (string)arguments[CMDLN_TOKEN_BASEDIR].Single();
-			sourceStrategyAqtn = (string)arguments[CMDLN_TOKEN_SOURCESTRATEGY_AQTN].Single();
-			strictMatching = (bool)arguments[CMDLN_TOKEN_STRICT].Single();
 
 			hasProperties = arguments.TryGetValue(CMDLN_TOKEN_PROPERTY, out argumentValues);
 
 			argz = new Dictionary<string, object>();
-			argz.Add(CMDLN_TOKEN_TEMPLATEFILE, templateFilePath);
 			argz.Add(CMDLN_TOKEN_SOURCEFILE, sourceFilePath);
-			argz.Add(CMDLN_TOKEN_BASEDIR, baseDirectoryPath);
-			argz.Add(CMDLN_TOKEN_SOURCESTRATEGY_AQTN, sourceStrategyAqtn);
-			argz.Add(CMDLN_TOKEN_STRICT, strictMatching);
-			argz.Add(CMDLN_DEBUGGER_LAUNCH, arguments.ContainsKey(CMDLN_DEBUGGER_LAUNCH) ? (object)debuggerLaunch : null);
 			argz.Add(CMDLN_TOKEN_PROPERTY, hasProperties ? (object)argumentValues : null);
 
 			if (hasProperties)
@@ -169,8 +127,30 @@ namespace TextMetal.ConsoleTool.Ox
 				}
 			}
 
-			//using (IToolHost toolHost = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IToolHost>(string.Empty, true))
-				//toolHost.Host((object)args != null ? args.Length : -1, args, argz, templateFilePath, sourceFilePath, baseDirectoryPath, sourceStrategyAqtn, strictMatching, properties);
+			// minimal viable configuration via code example
+			/*using (IToolHost toolHost = new ToolHost())
+			{
+				toolHost.Host(new ObfuscationConfiguration()
+							{
+								SourceAdapterConfiguration = new AdapterConfiguration()
+															{
+																AdapterAqtn = typeof(NullSourceAdapter).AssemblyQualifiedName
+															},
+								DestinationAdapterConfiguration = new AdapterConfiguration()
+																{
+																	AdapterAqtn = typeof(NullDestinationAdapter).AssemblyQualifiedName
+																},
+								TableConfiguration = new TableConfiguration(),
+								HashConfiguration = new HashConfiguration()
+													{
+														Multiplier = 0,
+														Seed = 0
+													}
+							});
+			}*/
+
+			using (IToolHost toolHost = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<IToolHost>(string.Empty, true))
+				toolHost.Host(sourceFilePath);
 
 			return 0;
 		}

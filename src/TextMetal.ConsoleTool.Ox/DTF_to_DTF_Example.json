@@ -1,281 +1,281 @@
 {
-	ConfigurationVersion:
+	"ConfigurationVersion":
 	{
-		Major: 1,
-		Minor: 0,
-		Revision: 0,
-		Build: 0
+		"Major": 1,
+		"Minor": 0,
+		"Revision": 0,
+		"Build": 0
 	},
 
-	EngineVersion:
+	"EngineVersion":
 	{
-		Major: 1,
-		Minor: 0,
-		Revision: 0,
-		Build: 0
+		"Major": 1,
+		"Minor": 0,
+		"Revision": 0,
+		"Build": 0
 	},
 
-	SourceAdapterConfiguration:
+	"SourceAdapterConfiguration":
 	{
-		AdapterAqtn: "_2ndAsset.ObfuscationEngine.Core.Adapter.Source.DelimitedTextSourceAdapter, 2ndAsset.ObfuscationEngine.Core",
+		"AdapterAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Adapter.Source.DelimitedTextSourceAdapter, TextMetal.Middleware.Oxymoron.Legacy",
 
-		AdapterSpecificConfiguration:
+		"AdapterSpecificConfiguration":
 		{
-			DelimitedTextFilePath: "d:\\Confidential_Banking_Data.txt",
-			DelimitedTextSpec:
+			"DelimitedTextFilePath": "d:\\Confidential_Banking_Data.txt",
+			"DelimitedTextSpec":
 			{
-				FirstRecordIsHeader: true,
-				RecordDelimiter: "\r\n",
-				FieldDelimiter: "\t",
-				QuoteValue: "",
+				"FirstRecordIsHeader": true,
+				"RecordDelimiter": "\r\n",
+				"FieldDelimiter": "\t",
+				"QuoteValue": "",
 
-				HeaderSpecs:
+				"HeaderSpecs":
 				[
 					{
-						HeaderName: "Institution",
-						FieldType: "String"
+						"HeaderName": "Institution",
+						"FieldType": "String"
 					},
 
 					{
-						HeaderName: "txid",
-						FieldType: "Number"
+						"HeaderName": "txid",
+						"FieldType": "Number"
 					},
 
 					{
-						HeaderName: "number",
-						FieldType: "String"
+						"HeaderName": "number",
+						"FieldType": "String"
 					},
 
 					{
-						HeaderName: "date",
-						FieldType: "DateTime"
+						"HeaderName": "date",
+						"FieldType": "DateTime"
 					},
 
 					{
-						HeaderName: "payee",
-						FieldType: "String"
+						"HeaderName": "payee",
+						"FieldType": "String"
 					},
 
 					{
-						HeaderName: "amount",
-						FieldType: "Number"
+						"HeaderName": "amount",
+						"FieldType": "Number"
 					},
 
 					{
-						HeaderName: "cleared",
-						FieldType: "Number"
+						"HeaderName": "cleared",
+						"FieldType": "Number"
 					},
 
 					{
-						HeaderName: "category",
-						FieldType: "String"
+						"HeaderName": "category",
+						"FieldType": "String"
 					},
 
 					{
-						HeaderName: "due",
-						FieldType: "DateTime"
+						"HeaderName": "due",
+						"FieldType": "DateTime"
 					},
 
 					{
-						HeaderName: "comments",
-						FieldType: "String"
+						"HeaderName": "comments",
+						"FieldType": "String"
 					}
 				]
 			}
 		}
 	},
 
-	DestinationAdapterConfiguration:
+	"DestinationAdapterConfiguration":
 	{
-		AdapterAqtn: "_2ndAsset.ObfuscationEngine.Core.Adapter.Destination.DelimitedTextDestinationAdapter, 2ndAsset.ObfuscationEngine.Core",
+		"AdapterAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination.DelimitedTextDestinationAdapter, TextMetal.Middleware.Oxymoron.Legacy",
 
-		AdapterSpecificConfiguration:
+		"AdapterSpecificConfiguration":
 		{
-			DelimitedTextFilePath: "d:\\Public_Banking_Data.csv",
-			DelimitedTextSpec:
+			"DelimitedTextFilePath": "d:\\Public_Banking_Data.csv",
+			"DelimitedTextSpec":
 			{
-				FirstRecordIsHeader: true,
-				RecordDelimiter: "\n",
-				FieldDelimiter: ",",
-				QuoteValue: "\""
+				"FirstRecordIsHeader": true,
+				"RecordDelimiter": "\n",
+				"FieldDelimiter": ",",
+				"QuoteValue": "\""
 			}
 		}
 	},
 
-	HashConfiguration:
+	"HashConfiguration":
 	{
-		Multiplier: 33,
-		Seed: 5381
+		"Multiplier": 33,
+		"Seed": 5381
 	},
 
-	DictionaryConfigurations:
+	"DictionaryConfigurations":
 	[
 		{
-			PreloadEnabled: true,
-			DictionaryId: "d_CrayonColor",
-			RecordCount: 121,
+			"PreloadEnabled": true,
+			"DictionaryId": "d_CrayonColor",
+			"RecordCount": 121,
 
-			DictionaryAdapterConfiguration:
+			"DictionaryAdapterConfiguration":
 			{
-				AdapterAqtn: "_2ndAsset.ObfuscationEngine.Core.Adapter.Dictionary.DelimitedTextDictionaryAdapter, 2ndAsset.ObfuscationEngine.Core",
+				"AdapterAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary.DelimitedTextDictionaryAdapter, TextMetal.Middleware.Oxymoron.Legacy",
 
-				AdapterSpecificConfiguration:
+				"AdapterSpecificConfiguration":
 				{
-					DelimitedTextFilePath: "CrayonColorDictionary.txt",
-					DelimitedTextSpec:
+					"DelimitedTextFilePath": "CrayonColorDictionary.txt",
+					"DelimitedTextSpec":
 					{
-						FirstRecordIsHeader: true,
-						RecordDelimiter: "\r\n",
-						FieldDelimiter: "\t",
-						QuoteValue: "",
+						"FirstRecordIsHeader": true,
+						"RecordDelimiter": "\r\n",
+						"FieldDelimiter": "\t",
+						"QuoteValue": ""
 					}
 				}
 			}
 		},
 
 		{
-			PreloadEnabled: true,
-			DictionaryId: "d_LastName",
-			RecordCount: 88800,
+			"PreloadEnabled": true,
+			"DictionaryId": "d_LastName",
+			"RecordCount": 88800,
 
-			DictionaryAdapterConfiguration:
+			"DictionaryAdapterConfiguration":
 			{
-				AdapterAqtn: "_2ndAsset.ObfuscationEngine.Core.Adapter.Dictionary.DelimitedTextDictionaryAdapter, 2ndAsset.ObfuscationEngine.Core",
+				"AdapterAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary.DelimitedTextDictionaryAdapter, TextMetal.Middleware.Oxymoron.Legacy",
 
-				AdapterSpecificConfiguration:
+				"AdapterSpecificConfiguration":
 				{
-					DelimitedTextFilePath: "LastNameDictionary.txt",
-					DelimitedTextSpec:
+					"DelimitedTextFilePath": "LastNameDictionary.txt",
+					"DelimitedTextSpec":
 					{
-						FirstRecordIsHeader: true,
-						RecordDelimiter: "\r\n",
-						FieldDelimiter: "\t",
-						QuoteValue: "",
+						"FirstRecordIsHeader": true,
+						"RecordDelimiter": "\r\n",
+						"FieldDelimiter": "\t",
+						"QuoteValue": ""
 					}
 				}
 			}
 		},
 
 		{
-			PreloadEnabled: true,
-			DictionaryId: "d_FirstName",
-			RecordCount: 5495,
+			"PreloadEnabled": true,
+			"DictionaryId": "d_FirstName",
+			"RecordCount": 5495,
 
-			DictionaryAdapterConfiguration:
+			"DictionaryAdapterConfiguration":
 			{
-				AdapterAqtn: "_2ndAsset.ObfuscationEngine.Core.Adapter.Dictionary.DelimitedTextDictionaryAdapter, 2ndAsset.ObfuscationEngine.Core",
+				"AdapterAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary.DelimitedTextDictionaryAdapter, TextMetal.Middleware.Oxymoron.Legacy",
 
-				AdapterSpecificConfiguration:
+				"AdapterSpecificConfiguration":
 				{
-					DelimitedTextFilePath: "FirstNameDictionary.txt",
-					DelimitedTextSpec:
+					"DelimitedTextFilePath": "FirstNameDictionary.txt",
+					"DelimitedTextSpec":
 					{
-						FirstRecordIsHeader: true,
-						RecordDelimiter: "\r\n",
-						FieldDelimiter: "\t",
-						QuoteValue: "",
+						"FirstRecordIsHeader": true,
+						"RecordDelimiter": "\r\n",
+						"FieldDelimiter": "\t",
+						"QuoteValue": "",
 					}
 				}
 			}
 		}
 	],
 
-	TableConfiguration:
+	"TableConfiguration":
 	{
-		ColumnConfigurations:
+		"ColumnConfigurations":
 		[
 			{
-				ColumnName: "AccountReportingId",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.SurrogateKeyObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "AccountReportingId",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.SurrogateKeyObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
 				}
 			},
 
 			{
-				ColumnName: "txid",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.DefaultingObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "txid",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.DefaultingObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
-					DefaultingCanBeNull: false
+					"DefaultingCanBeNull": false
 				}
 			},
 
 			{
-				ColumnName: "institution",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.SubstitutionObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "institution",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.SubstitutionObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
-					DictionaryReference: "d_FirstName"
+					"DictionaryReference": "d_FirstName"
 				}
 			},
 
 			{
-				ColumnName: "number",
+				"ColumnName": "number",
 				"IsColumnNullable": false,
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.ShufflingObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.ShufflingObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
 				}
 			},
 
 			{
-				ColumnName: "date",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.VarianceObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "date",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.VarianceObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
-					VariancePercentValue: 25
+					"VariancePercentValue": 25
 				}
 			},
 
 			{
-				ColumnName: "payee",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.SubstitutionObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "payee",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.SubstitutionObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
-					DictionaryReference: "d_LastName"
+					"DictionaryReference": "d_LastName"
 				}
 			},
 
 			{
-				ColumnName: "amount",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.VarianceObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "amount",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.VarianceObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
-					VariancePercentValue: 100
+					"VariancePercentValue": 100
 				}
 			},
 
 			{
-				ColumnName: "cleared",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.NoneObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "cleared",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.NoneObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
 				}
 			},
 
 			{
-				ColumnName: "category",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.SubstitutionObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "category",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.SubstitutionObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
-					DictionaryReference: "d_CrayonColor"
+					"DictionaryReference": "d_CrayonColor"
 				}
 			},
 
 			{
-				ColumnName: "due",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.VarianceObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "due",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.VarianceObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
-					VariancePercentValue: 10
+					"VariancePercentValue": 10
 				}
 			},
 
 			{
-				ColumnName: "comments",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.CipheringObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "comments",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.CipheringObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
 				}
 			}

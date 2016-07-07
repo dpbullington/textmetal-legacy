@@ -1,243 +1,243 @@
 {
-	ConfigurationVersion:
+	"ConfigurationVersion":
 	{
-		Major: 1,
-		Minor: 0,
-		Revision: 0,
-		Build: 0
+		"Major": 1,
+		"Minor": 0,
+		"Revision": 0,
+		"Build": 0
 	},
 
-	EngineVersion:
+	"EngineVersion":
 	{
-		Major: 1,
-		Minor: 0,
-		Revision: 0,
-		Build: 0
+		"Major": 1,
+		"Minor": 0,
+		"Revision": 0,
+		"Build": 0
 	},
 
-	SourceAdapterConfiguration:
+	"SourceAdapterConfiguration":
 	{
-		AdapterAqtn: "_2ndAsset.ObfuscationEngine.Core.Adapter.Source.AdoNetSourceAdapter, 2ndAsset.ObfuscationEngine.Core",
+		"AdapterAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Adapter.Source.AdoNetSourceAdapter, TextMetal.Middleware.Oxymoron.Legacy",
 
-		AdapterSpecificConfiguration:
+		"AdapterSpecificConfiguration":
 		{
-			ConnectionAqtn: "System.Data.SqlClient.SqlConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-			ConnectionString: "Server=(local);Integrated Security=SSPI;",
+			"ConnectionAqtn": "System.Data.SqlClient.SqlConnection, System.Data.SqlClient",
+			"ConnectionString": "Server=(local);Integrated Security=SSPI;",
 
-			PreExecuteCommandType: "",
-			PreExecuteCommandText: "",
+			"PreExecuteCommandType": "",
+			"PreExecuteCommandText": "",
 
-			ExecuteCommandText: "[2ndasset_bank_account_demo].[dbo].[ExecuteExport_AccountReporting]",
-			ExecuteCommandType: "StoredProcedure",
+			"ExecuteCommandText": "[bank_account_demo].[dbo].[ExecuteExport_AccountReporting]",
+			"ExecuteCommandType": "StoredProcedure",
 
-			PostExecuteCommandType: "",
-			PostExecuteCommandText: ""
+			"PostExecuteCommandType": "",
+			"PostExecuteCommandText": ""
 		}
 	},
 
-	DestinationAdapterConfiguration:
+	"DestinationAdapterConfiguration":
 	{
-		AdapterAqtn: "_2ndAsset.ObfuscationEngine.Core.Adapter.Destination.SqlBulkCopyAdoNetDestinationAdapter, 2ndAsset.ObfuscationEngine.Core",
+		"AdapterAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination.SqlBulkCopyAdoNetDestinationAdapter, TextMetal.Middleware.Oxymoron.Legacy",
 
-		AdapterSpecificConfiguration:
+		"AdapterSpecificConfiguration":
 		{
-			ConnectionAqtn: "System.Data.SqlClient.SqlConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-			ConnectionString: "Server=(local);Integrated Security=SSPI;",
+			"ConnectionAqtn": "System.Data.SqlClient.SqlConnection, System.Data.SqlClient",
+			"ConnectionString": "Server=(local);Integrated Security=SSPI;",
 
-			PreExecuteCommandType: "Text",
-			PreExecuteCommandText: "TRUNCATE TABLE [2ndasset_bank_account_demo].[dbo].[Ox_AccountReporting]",
+			"PreExecuteCommandType": "Text",
+			"PreExecuteCommandText": "TRUNCATE TABLE [bank_account_demo].[dbo].[Ox_AccountReporting]",
 
-			ExecuteCommandText: "[2ndasset_bank_account_demo].[dbo].[Ox_AccountReporting]",
-			ExecuteCommandType: "TableDirect",
+			"ExecuteCommandText": "[bank_account_demo].[dbo].[Ox_AccountReporting]",
+			"ExecuteCommandType": "TableDirect",
 
-			PostExecuteCommandType: "",
-			PostExecuteCommandText: ""
+			"PostExecuteCommandType": "",
+			"PostExecuteCommandText": ""
 		}
 	},
 
-	HashConfiguration:
+	"HashConfiguration":
 	{
-		Multiplier: 33,
-		Seed: 5381
+		"Multiplier": 33,
+		"Seed": 5381
 	},
 
-	DictionaryConfigurations:
+	"DictionaryConfigurations":
 	[
 		{
-			PreloadEnabled: true,
-			DictionaryId: "d_CrayonColor",
-			RecordCount: 121,
+			"PreloadEnabled": true,
+			"DictionaryId": "d_CrayonColor",
+			"RecordCount": 121,
 
-			DictionaryAdapterConfiguration:
+			"DictionaryAdapterConfiguration":
 			{
-				AdapterAqtn: "_2ndAsset.ObfuscationEngine.Core.Adapter.Dictionary.AdoNetDictionaryAdapter, 2ndAsset.ObfuscationEngine.Core",
+				"AdapterAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary.AdoNetDictionaryAdapter, TextMetal.Middleware.Oxymoron.Legacy",
 
-				AdapterSpecificConfiguration:
+				"AdapterSpecificConfiguration":
 				{
-					ConnectionAqtn: "System.Data.SqlClient.SqlConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-					ConnectionString: "Server=(local);Integrated Security=SSPI;",
+					"ConnectionAqtn": "System.Data.SqlClient.SqlConnection, System.Data.SqlClient",
+					"ConnectionString": "Server=(local);Integrated Security=SSPI;",
 
-					PreExecuteCommandType: "",
-					PreExecuteCommandText: "",
+					"PreExecuteCommandType": "",
+					"PreExecuteCommandText": "",
 
-					ExecuteCommandText: "SELECT t.[Key], t.[CrayonColor] FROM [2ndasset_bank_account_demo].[OxConfig].[CrayonColorDictionary] t ORDER BY t.[Key] ASC",
-					ExecuteCommandType: "Text",
+					"ExecuteCommandText": "SELECT t.[Key], t.[CrayonColor] FROM [bank_account_demo].[OxConfig].[CrayonColorDictionary] t ORDER BY t.[Key] ASC",
+					"ExecuteCommandType": "Text",
 
-					PostExecuteCommandType: "",
-					PostExecuteCommandText: ""
+					"PostExecuteCommandType": "",
+					"PostExecuteCommandText": ""
 				}
 			}
 		},
 
 		{
-			PreloadEnabled: true,
-			DictionaryId: "d_LastName",
-			RecordCount: 88800,
+			"PreloadEnabled": true,
+			"DictionaryId": "d_LastName",
+			"RecordCount": 88800,
 
-			DictionaryAdapterConfiguration:
+			"DictionaryAdapterConfiguration":
 			{
-				AdapterAqtn: "_2ndAsset.ObfuscationEngine.Core.Adapter.Dictionary.AdoNetDictionaryAdapter, 2ndAsset.ObfuscationEngine.Core",
+				"AdapterAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary.AdoNetDictionaryAdapter, TextMetal.Middleware.Oxymoron.Legacy",
 
-				AdapterSpecificConfiguration:
+				"AdapterSpecificConfiguration":
 				{
-					ConnectionAqtn: "System.Data.SqlClient.SqlConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-					ConnectionString: "Server=(local);Integrated Security=SSPI;",
+					"ConnectionAqtn": "System.Data.SqlClient.SqlConnection, System.Data.SqlClient",
+					"ConnectionString": "Server=(local);Integrated Security=SSPI;",
 
-					PreExecuteCommandType: "",
-					PreExecuteCommandText: "",
+					"PreExecuteCommandType": "",
+					"PreExecuteCommandText": "",
 
-					ExecuteCommandText: "SELECT t.[Key], t.[LastName] FROM [2ndasset_bank_account_demo].[OxConfig].[LastNameDictionary] t ORDER BY t.[Key] ASC",
-					ExecuteCommandType: "Text",
+					"ExecuteCommandText": "SELECT t.[Key], t.[LastName] FROM [bank_account_demo].[OxConfig].[LastNameDictionary] t ORDER BY t.[Key] ASC",
+					"ExecuteCommandType": "Text",
 
-					PostExecuteCommandType: "",
-					PostExecuteCommandText: ""
+					"PostExecuteCommandType": "",
+					"PostExecuteCommandText": ""
 				}
 			}
 		},
 
 		{
-			PreloadEnabled: true,
-			DictionaryId: "d_FirstName",
-			RecordCount: 5495,
+			"PreloadEnabled": true,
+			"DictionaryId": "d_FirstName",
+			"RecordCount": 5495,
 
-			DictionaryAdapterConfiguration:
+			"DictionaryAdapterConfiguration":
 			{
-				AdapterAqtn: "_2ndAsset.ObfuscationEngine.Core.Adapter.Dictionary.AdoNetDictionaryAdapter, 2ndAsset.ObfuscationEngine.Core",
+				"AdapterAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary.AdoNetDictionaryAdapter, TextMetal.Middleware.Oxymoron.Legacy",
 
-				AdapterSpecificConfiguration:
+				"AdapterSpecificConfiguration":
 				{
-					ConnectionAqtn: "System.Data.SqlClient.SqlConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-					ConnectionString: "Server=(local);Integrated Security=SSPI;",
+					"ConnectionAqtn": "System.Data.SqlClient.SqlConnection, System.Data.SqlClient",
+					"ConnectionString": "Server=(local);Integrated Security=SSPI;",
 
-					PreExecuteCommandType: "",
-					PreExecuteCommandText: "",
+					"PreExecuteCommandType": "",
+					"PreExecuteCommandText": "",
 
-					ExecuteCommandText: "SELECT t.[Key], t.[FirstName] FROM [2ndasset_bank_account_demo].[OxConfig].[FirstNameDictionary] t ORDER BY t.[Key] ASC",
-					ExecuteCommandType: "Text",
+					"ExecuteCommandText": "SELECT t.[Key], t.[FirstName] FROM [bank_account_demo].[OxConfig].[FirstNameDictionary] t ORDER BY t.[Key] ASC",
+					"ExecuteCommandType": "Text",
 
-					PostExecuteCommandType: "",
-					PostExecuteCommandText: ""
+					"PostExecuteCommandType": "",
+					"PostExecuteCommandText": ""
 				}
 			}
 		}
 	],
 
-	TableConfiguration:
+	"TableConfiguration":
 	{
-		ColumnConfigurations:
+		"ColumnConfigurations":
 		[
 			{
-				ColumnName: "AccountReportingId",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.SurrogateKeyObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "AccountReportingId",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.SurrogateKeyObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
 				}
 			},
 
 			{
-				ColumnName: "TransactionNumber",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.DefaultingObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "TransactionNumber",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.DefaultingObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
-					DefaultingCanBeNull: false
+					"DefaultingCanBeNull": false
 				}
 			},
 
 			{
-				ColumnName: "InstitutionName",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.SubstitutionObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "InstitutionName",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.SubstitutionObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
-					DictionaryReference: "d_FirstName"
+					"DictionaryReference": "d_FirstName"
 				}
 			},
 
 			{
-				ColumnName: "RefNumber",
+				"ColumnName": "RefNumber",
 				"IsColumnNullable": false,
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.ShufflingObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.ShufflingObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
 				}
 			},
 
 			{
-				ColumnName: "TheDate",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.VarianceObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "TheDate",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.VarianceObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
-					VariancePercentValue: 25
+					"VariancePercentValue": 25
 				}
 			},
 
 			{
-				ColumnName: "PayeeName",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.SubstitutionObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "PayeeName",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.SubstitutionObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
-					DictionaryReference: "d_LastName"
+					"DictionaryReference": "d_LastName"
 				}
 			},
 
 			{
-				ColumnName: "TheAmount",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.VarianceObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "TheAmount",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.VarianceObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
-					VariancePercentValue: 100
+					"VariancePercentValue": 100
 				}
 			},
 
 			{
-				ColumnName: "IsCleared",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.NoneObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "IsCleared",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.NoneObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
 				}
 			},
 
 			{
-				ColumnName: "CategoryName",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.SubstitutionObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "CategoryName",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.SubstitutionObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
-					DictionaryReference: "d_CrayonColor"
+					"DictionaryReference": "d_CrayonColor"
 				}
 			},
 
 			{
-				ColumnName: "DueDate",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.VarianceObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "DueDate",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.VarianceObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
-					VariancePercentValue: 10
+					"VariancePercentValue": 10
 				}
 			},
 
 			{
-				ColumnName: "Comments",
-				ObfuscationStrategyAqtn: "_2ndAsset.ObfuscationEngine.Core.Strategy.CipheringObfuscationStrategy, 2ndAsset.ObfuscationEngine.Core",
-				ObfuscationStrategySpecificConfiguration:
+				"ColumnName": "Comments",
+				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.CipheringObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategySpecificConfiguration":
 				{
 				}
 			}

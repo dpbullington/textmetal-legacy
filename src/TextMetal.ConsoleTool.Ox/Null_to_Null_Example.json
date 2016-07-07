@@ -1,53 +1,53 @@
 {
-	ConfigurationVersion:
+	"ConfigurationVersion":
 	{
-		Major: 1,
-		Minor: 0,
-		Revision: 0,
-		Build: 0
+		"Major": 1,
+		"Minor": 0,
+		"Revision": 0,
+		"Build": 0
 	},
 
-	EngineVersion:
+	"EngineVersion":
 	{
-		Major: 1,
-		Minor: 0,
-		Revision: 0,
-		Build: 0
+		"Major": 1,
+		"Minor": 0,
+		"Revision": 0,
+		"Build": 0
 	},
 
-	SourceAdapterConfiguration:
+	"SourceAdapterConfiguration":
 	{
-		AdapterAqtn: "_2ndAsset.ObfuscationEngine.Core.Adapter.Source.NullSourceAdapter, 2ndAsset.ObfuscationEngine.Core"
+		"AdapterAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Adapter.Source.NullSourceAdapter, TextMetal.Middleware.Oxymoron.Legacy"
 	},
 
-	DestinationAdapterConfiguration:
+	"DestinationAdapterConfiguration":
 	{
-		AdapterAqtn: "_2ndAsset.ObfuscationEngine.Core.Adapter.Destination.NullDestinationAdapter, 2ndAsset.ObfuscationEngine.Core"
+		"AdapterAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination.NullDestinationAdapter, TextMetal.Middleware.Oxymoron.Legacy"
 	},
 
-	HashConfiguration:
+	"HashConfiguration":
 	{
-		Multiplier: 33,
-		Seed: 5381
+		"Multiplier": 33,
+		"Seed": 5381
 	},
 
-	DictionaryConfigurations:
+	"DictionaryConfigurations":
 	[
 		{
-			PreloadEnabled: false,
-			DictionaryId: "d_Null",
-			RecordCount: 0,
+			"PreloadEnabled": false,
+			"DictionaryId": "d_Null",
+			"RecordCount": 0,
 
-			DictionaryAdapterConfiguration:
+			"DictionaryAdapterConfiguration":
 			{
-				AdapterAqtn: "_2ndAsset.ObfuscationEngine.Core.Adapter.Dictionary.NullDictionaryAdapter, 2ndAsset.ObfuscationEngine.Core"
+				"AdapterAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary.NullDictionaryAdapter, TextMetal.Middleware.Oxymoron.Legacy"
 			}
 		}
 	],
 
-	TableConfiguration:
+	"TableConfiguration":
 	{
-		ColumnConfigurations:
+		"ColumnConfigurations":
 		[
 		]
 	}

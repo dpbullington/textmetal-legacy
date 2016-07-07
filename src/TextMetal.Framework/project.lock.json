@@ -1836,6 +1836,7 @@
         "framework": ".NETStandard,Version=v1.6",
         "dependencies": {
           "NETStandard.Library": "1.6.0",
+          "System.Threading.Tasks": "4.0.11",
           "TextMetal.Middleware.Solder.Extensions": "9.0.0",
           "TextMetal.Middleware.Solder.Injection": "9.0.0",
           "TextMetal.Middleware.Solder.Primitives": "9.0.0",

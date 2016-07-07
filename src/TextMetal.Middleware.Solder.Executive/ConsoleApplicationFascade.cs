@@ -17,8 +17,8 @@ namespace TextMetal.Middleware.Solder.Executive
 	{
 		#region Constructors/Destructors
 
-		public ConsoleApplicationFascade(IDataTypeFascade dataTypeFascade, IAppConfigFascade appConfigFascade, IReflectionFascade reflectionFascade)
-			: base(dataTypeFascade, appConfigFascade, reflectionFascade)
+		public ConsoleApplicationFascade(IDataTypeFascade dataTypeFascade, IAppConfigFascade appConfigFascade, IReflectionFascade reflectionFascade, IAssemblyInformationFascade assemblyInformationFascade)
+			: base(dataTypeFascade, appConfigFascade, reflectionFascade, assemblyInformationFascade)
 		{
 		}
 
@@ -56,6 +56,12 @@ namespace TextMetal.Middleware.Solder.Executive
 			}
 
 			Console.ForegroundColor = oldConsoleColor;
+		}
+
+		protected sealed override void DisplayBannerMessage()
+		{
+			Console.WriteLine(string.Format("{0} v{1} ({2}; {3})", this.GetType().GetTypeInfo().Assembly.ManifestModule.Name,
+				this.AssemblyInformationFascade.Win32FileVersion, this.AssemblyInformationFascade.AssemblyVersion, this.AssemblyInformationFascade.InformationalVersion));
 		}
 
 		protected sealed override void DisplayFailureMessage(Exception exception)

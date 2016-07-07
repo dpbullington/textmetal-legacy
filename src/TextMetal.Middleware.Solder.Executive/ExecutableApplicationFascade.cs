@@ -21,7 +21,7 @@ namespace TextMetal.Middleware.Solder.Executive
 	{
 		#region Constructors/Destructors
 
-		public ExecutableApplicationFascade(IDataTypeFascade dataTypeFascade, IAppConfigFascade appConfigFascade, IReflectionFascade reflectionFascade)
+		public ExecutableApplicationFascade(IDataTypeFascade dataTypeFascade, IAppConfigFascade appConfigFascade, IReflectionFascade reflectionFascade, IAssemblyInformationFascade assemblyInformationFascade)
 		{
 			if ((object)dataTypeFascade == null)
 				throw new ArgumentNullException(nameof(dataTypeFascade));
@@ -32,9 +32,13 @@ namespace TextMetal.Middleware.Solder.Executive
 			if ((object)reflectionFascade == null)
 				throw new ArgumentNullException(nameof(reflectionFascade));
 
+			if ((object)assemblyInformationFascade == null)
+				throw new ArgumentNullException(nameof(assemblyInformationFascade));
+
 			this.dataTypeFascade = dataTypeFascade;
 			this.appConfigFascade = appConfigFascade;
 			this.reflectionFascade = reflectionFascade;
+			this.assemblyInformationFascade = assemblyInformationFascade;
 
 			Current = this;
 		}
@@ -155,6 +159,14 @@ namespace TextMetal.Middleware.Solder.Executive
 			}
 		}
 
+		protected IAssemblyInformationFascade AssemblyInformationFascade
+		{
+			get
+			{
+				return this.assemblyInformationFascade;
+			}
+		}
+
 		protected IDataTypeFascade DataTypeFascade
 		{
 			get
@@ -168,18 +180,6 @@ namespace TextMetal.Middleware.Solder.Executive
 			get
 			{
 				return this.reflectionFascade;
-			}
-		}
-
-		public IAssemblyInformationFascade AssemblyInformationFascade
-		{
-			get
-			{
-				return this.assemblyInformationFascade;
-			}
-			private set
-			{
-				this.assemblyInformationFascade = value;
 			}
 		}
 
@@ -205,6 +205,8 @@ namespace TextMetal.Middleware.Solder.Executive
 		protected abstract void DisplayArgumentErrorMessage(IEnumerable<Message> argumentMessages);
 
 		protected abstract void DisplayArgumentMapMessage(IDictionary<string, ArgumentSpec> argumentMap);
+
+		protected abstract void DisplayBannerMessage();
 
 		protected abstract void DisplayFailureMessage(Exception exception);
 
@@ -303,11 +305,13 @@ namespace TextMetal.Middleware.Solder.Executive
 			return arguments;
 		}
 
-		public void ShowNestedExceptionsAndThrowBrickAtProcess(Exception e)
+		public int ShowNestedExceptionsAndThrowBrickAtProcess(Exception e)
 		{
 			this.DisplayFailureMessage(e);
 
 			Environment.FailFast(string.Empty, e);
+
+			return Int32.MinValue;
 		}
 
 		private int Startup(string[] args)
@@ -327,10 +331,8 @@ namespace TextMetal.Middleware.Solder.Executive
 
 			try
 			{
+				this.DisplayBannerMessage();
 				start = DateTime.UtcNow;
-
-				// HACK
-				this.AssemblyInformationFascade = new AssemblyInformationFascade(this.ReflectionFascade, this.GetType().GetTypeInfo().Assembly);
 
 				arguments = this.ParseCommandLineArguments(args);
 				argumentMap = this.GetArgumentMap();
@@ -409,7 +411,7 @@ namespace TextMetal.Middleware.Solder.Executive
 			catch (Exception ex)
 			{
 				if (HookUnhandledExceptions)
-					this.ShowNestedExceptionsAndThrowBrickAtProcess(ex);
+					return this.ShowNestedExceptionsAndThrowBrickAtProcess(ex);
 
 				throw;
 			}
@@ -468,7 +470,7 @@ namespace TextMetal.Middleware.Solder.Executive
 			}
 			catch (Exception ex)
 			{
-				this.ShowNestedExceptionsAndThrowBrickAtProcess(new Exception("Main", ex));
+				return this.ShowNestedExceptionsAndThrowBrickAtProcess(new Exception("Main", ex));
 			}
 
 			return -1;
