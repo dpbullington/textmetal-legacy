@@ -72,7 +72,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 
 		#region Methods/Operators
 
-		public DbParameter CreateParameter(Type connectionType, ParameterDirection parameterDirection, DbType parameterDbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue)
+		public DbParameter CreateParameter(Type connectionType, string sourceColumn, ParameterDirection parameterDirection, DbType parameterDbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue)
 		{
 			DbParameter dbParameter;
 
@@ -92,6 +92,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 				this.ReflectionFascade.SetLogicalPropertyValue(dbParameter, "IsNullable", parameterNullable, true, false);
 				dbParameter.Precision = parameterPrecision;
 				dbParameter.Scale = parameterScale;
+				dbParameter.SourceColumn = sourceColumn;
 
 				return dbParameter;
 			}

@@ -7,11 +7,12 @@ using System;
 using System.Data;
 using System.Xml.Serialization;
 
+using TextMetal.Middleware.Datazoid.Primitives;
 using TextMetal.Middleware.Solder.Extensions;
 
 namespace TextMetal.Framework.Source.DatabaseSchema
 {
-	public class Parameter
+	public class Parameter : IAdoNetParameter
 	{
 		#region Constructors/Destructors
 
@@ -57,11 +58,13 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		private string parameterNameSingularPascalCase;
 		private bool parameterNullable;
 		private int parameterOrdinal;
-		private int parameterPrecision;
+		private byte parameterPrecision;
 		private string parameterPrefix;
-		private int parameterScale;
+		private byte parameterScale;
 		private int parameterSize;
 		private string parameterSqlType;
+		private string sourceColumn;
+		private object parameterValue;
 
 		#endregion
 
@@ -229,6 +232,19 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			set
 			{
 				this.parameterCSharpNullableLiteral = value;
+			}
+		}
+
+		[XmlAttribute]
+		public string SourceColumn
+		{
+			get
+			{
+				return this.sourceColumn;
+			}
+			set
+			{
+				this.sourceColumn = value;
 			}
 		}
 
@@ -519,7 +535,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		}
 
 		[XmlAttribute]
-		public int ParameterPrecision
+		public byte ParameterPrecision
 		{
 			get
 			{
@@ -545,7 +561,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		}
 
 		[XmlAttribute]
-		public int ParameterScale
+		public byte ParameterScale
 		{
 			get
 			{
@@ -567,6 +583,18 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			set
 			{
 				this.parameterSize = value;
+			}
+		}
+
+		public object ParameterValue
+		{
+			get
+			{
+				return this.parameterValue;
+			}
+			set
+			{
+				this.parameterValue = value;
 			}
 		}
 

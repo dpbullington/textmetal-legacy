@@ -795,8 +795,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																		parameter.ParameterOrdinal = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataParameter["ParameterOrdinal"]);
 																		parameter.ParameterName = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataParameter["ParameterName"]).Substring(1);
 																		parameter.ParameterSize = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataParameter["ParameterSize"]);
-																		parameter.ParameterPrecision = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataParameter["ParameterPrecision"]);
-																		parameter.ParameterScale = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<int>(dictDataParameter["ParameterScale"]);
+																		parameter.ParameterPrecision = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<byte>(dictDataParameter["ParameterPrecision"]);
+																		parameter.ParameterScale = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<byte>(dictDataParameter["ParameterScale"]);
 																		parameter.ParameterSqlType = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<string>(dictDataParameter["ParameterSqlType"]);
 																		parameter.ParameterIsUserDefinedType = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsUserDefinedType"]);
 																		parameter.ParameterIsOutput = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.ChangeType<bool>(dictDataParameter["ParameterIsOutput"]);
@@ -943,7 +943,7 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 																// REFERENCE:
 																// http://connect.microsoft.com/VisualStudio/feedback/details/314650/sqm1014-sqlmetal-ignores-stored-procedures-that-use-temp-tables
 																DbParameter[] parameters;
-																parameters = Enumerable.ToArray<DbParameter>(procedure.Parameters.Where(p => !p.ParameterIsReturnValue && !p.ParameterIsResultColumn).Select(p => DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, p.ParameterIsOutput ? ParameterDirection.Output : ParameterDirection.Input, p.ParameterDbType, p.ParameterSize, (byte)p.ParameterPrecision, (byte)p.ParameterScale, p.ParameterNullable, p.ParameterName, null)));
+																parameters = Enumerable.ToArray<DbParameter>(procedure.Parameters.Where(p => !p.ParameterIsReturnValue && !p.ParameterIsResultColumn).Select(p => DatazoidLegacyInstanceAccessor.AdoNetBufferingLegacyInstance.CreateParameter(connectionType, null, p.ParameterIsOutput ? ParameterDirection.Output : ParameterDirection.Input, p.ParameterDbType, p.ParameterSize, (byte)p.ParameterPrecision, (byte)p.ParameterScale, p.ParameterNullable, p.ParameterName, null)));
 
 																try
 																{

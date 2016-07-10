@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 
 using Newtonsoft.Json;
@@ -126,23 +127,23 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 
 		#region Methods/Operators
 
-		public IEnumerable<IDbDataParameter> GetDbDataParameters(IUnitOfWork unitOfWork)
+		public IEnumerable<DbParameter> GetDbDataParameters(IUnitOfWork unitOfWork)
 		{
-			List<IDbDataParameter> dbDataParameters;
-			IDbDataParameter dbDataParameter;
+			List<DbParameter> dbParameters;
+			DbParameter dbDataParameter;
 
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException(nameof(unitOfWork));
 
-			dbDataParameters = new List<IDbDataParameter>();
+			dbParameters = new List<DbParameter>();
 
 			foreach (AdoNetParameterConfiguration adoNetParameterConfiguration in this.AdoNetParameterConfigurations)
 			{
-				dbDataParameter = unitOfWork.CreateParameter(adoNetParameterConfiguration.ParameterDirection, adoNetParameterConfiguration.ParameterDbType, adoNetParameterConfiguration.ParameterSize, adoNetParameterConfiguration.ParameterPrecision, adoNetParameterConfiguration.ParameterScale, adoNetParameterConfiguration.ParameterNullable, adoNetParameterConfiguration.ParameterName, adoNetParameterConfiguration.ParameterValue);
-				dbDataParameters.Add(dbDataParameter);
+				dbDataParameter = unitOfWork.CreateParameter(adoNetParameterConfiguration.SourceColumn, adoNetParameterConfiguration.ParameterDirection, adoNetParameterConfiguration.ParameterDbType, adoNetParameterConfiguration.ParameterSize, adoNetParameterConfiguration.ParameterPrecision, adoNetParameterConfiguration.ParameterScale, adoNetParameterConfiguration.ParameterNullable, adoNetParameterConfiguration.ParameterName, adoNetParameterConfiguration.ParameterValue);
+				dbParameters.Add(dbDataParameter);
 			}
 
-			return dbDataParameters.ToArray();
+			return dbParameters.ToArray();
 		}
 
 		public override IEnumerable<Message> Validate()
@@ -156,12 +157,6 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 			int index;
 
 			messages = new List<Message>();
-
-			if ((object)this.CommandType == null)
-				messages.Add(NewError(string.Format("{0} command type is required.", context)));
-
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.CommandText))
-				messages.Add(NewError(string.Format("{0} command text is required.", context)));
 
 			// check for duplicate columns
 			var columnNameSums = this.AdoNetParameterConfigurations.GroupBy(c => c.ParameterName)

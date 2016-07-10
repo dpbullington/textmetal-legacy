@@ -9,12 +9,13 @@ using System.Data;
 
 using Newtonsoft.Json;
 
+using TextMetal.Middleware.Datazoid.Primitives;
 using TextMetal.Middleware.Solder.Extensions;
 using TextMetal.Middleware.Solder.Primitives;
 
 namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 {
-	public class AdoNetParameterConfiguration : ConfigurationObject
+	public class AdoNetParameterConfiguration : ConfigurationObject, IAdoNetParameter
 	{
 		#region Constructors/Destructors
 
@@ -25,6 +26,8 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 		#endregion
 
 		#region Fields/Constants
+
+		private string sourceColumn;
 
 		private DbType parameterDbType;
 		private ParameterDirection parameterDirection;
@@ -38,6 +41,18 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 		#endregion
 
 		#region Properties/Indexers/Events
+
+		public string SourceColumn
+		{
+			get
+			{
+				return this.sourceColumn;
+			}
+			set
+			{
+				this.sourceColumn = value;
+			}
+		}
 
 		public DbType ParameterDbType
 		{

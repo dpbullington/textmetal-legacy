@@ -95,7 +95,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 				throw new ArgumentNullException("metaColumn");
 
 			if ((object)columnConfiguration.ObfuscationStrategySpecificConfiguration == null)
-				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "ObfuscationStrategyConfiguration"));
+				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", nameof(columnConfiguration.ObfuscationStrategySpecificConfiguration)));
 
 			return CompileCSharpCode(columnValue, columnConfiguration.ObfuscationStrategySpecificConfiguration.SourceCode);
 		}

@@ -9,7 +9,6 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 
-using TextMetal.Middleware.Datazoid.Primitives;
 using TextMetal.Middleware.Datazoid.UoW;
 using TextMetal.Middleware.Solder.Extensions;
 using TextMetal.Middleware.Solder.Primitives;
@@ -27,6 +26,7 @@ namespace TextMetal.Middleware.Datazoid.Extensions
 		/// An extension method to create a new data parameter from the data source.
 		/// </summary>
 		/// <param name="unitOfWork"> The target unit of work. </param>
+		/// <param name="columnSource"> Specifies the column source. </param>
 		/// <param name="parameterDirection"> Specifies the parameter direction. </param>
 		/// <param name="dbType"> Specifies the parameter provider-(in)dependent type. </param>
 		/// <param name="parameterSize"> Specifies the parameter size. </param>
@@ -36,6 +36,19 @@ namespace TextMetal.Middleware.Datazoid.Extensions
 		/// <param name="parameterName"> Specifies the parameter name. </param>
 		/// <param name="parameterValue"> Specifies the parameter value. </param>
 		/// <returns> The data parameter with the specified properties set. </returns>
+		public static DbParameter CreateParameter(this IUnitOfWork unitOfWork, string columnSource, ParameterDirection parameterDirection, DbType dbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue)
+		{
+			DbParameter dbParameter;
+
+			if ((object)unitOfWork == null)
+				throw new ArgumentNullException(nameof(unitOfWork));
+
+			dbParameter = DatazoidLegacyInstanceAccessor.AdoNetStreamingFascade.CreateParameter(unitOfWork.Connection, unitOfWork.Transaction, columnSource, parameterDirection, dbType, parameterSize, parameterPrecision, parameterScale, parameterNullable, parameterName, parameterValue);
+
+			return dbParameter;
+		}
+
+		[Obsolete("Stop using this")]
 		public static DbParameter CreateParameter(this IUnitOfWork unitOfWork, ParameterDirection parameterDirection, DbType dbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue)
 		{
 			DbParameter dbParameter;
@@ -43,7 +56,7 @@ namespace TextMetal.Middleware.Datazoid.Extensions
 			if ((object)unitOfWork == null)
 				throw new ArgumentNullException(nameof(unitOfWork));
 
-			dbParameter = DatazoidLegacyInstanceAccessor.AdoNetStreamingFascade.CreateParameter(unitOfWork.Connection, unitOfWork.Transaction, parameterDirection, dbType, parameterSize, parameterPrecision, parameterScale, parameterNullable, parameterName, parameterValue);
+			dbParameter = unitOfWork.CreateParameter(null, parameterDirection, dbType, parameterSize, parameterPrecision, parameterScale, parameterNullable, parameterName, parameterValue);
 
 			return dbParameter;
 		}

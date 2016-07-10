@@ -11,5 +11,12 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary
 {
 	public class AdoNetDictionaryAdapter : AdoNetDictionaryAdapter<AdoNetAdapterConfiguration>
 	{
+		#region Constructors/Destructors
+
+		public AdoNetDictionaryAdapter()
+		{
+		}
+
+		#endregion
 	}
 }

@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{99B3846C-E233-44FA-8147-4F3BD0CFBFFA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TextMetal.SSIS.Ox</RootNamespace>
+    <AssemblyName>TextMetal.SSIS.Ox</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\TextMetal.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\TextMetal.SSIS.Ox.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\TextMetal.SSIS.Ox.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.SqlServer.DTSPipelineWrap, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.DTSRuntimeWrap, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=x86">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ManagedDTS, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SqlServer.PipelineHost, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Common, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.Common.4.1.0\lib\net451\System.Data.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TextMetal.Middleware.Datazoid.UoW">
+      <HintPath>..\TextMetal.Middleware.Oxymoron.Legacy\bin\Debug\netstandard1.6\TextMetal.Middleware.Datazoid.UoW.dll</HintPath>
+    </Reference>
+    <Reference Include="TextMetal.Middleware.Oxymoron.Legacy">
+      <HintPath>..\TextMetal.Middleware.Oxymoron.Legacy\bin\Debug\netstandard1.6\TextMetal.Middleware.Oxymoron.Legacy.dll</HintPath>
+    </Reference>
+    <Reference Include="TextMetal.Middleware.Solder.Extensions">
+      <HintPath>..\TextMetal.Middleware.Oxymoron.Legacy\bin\Debug\netstandard1.6\TextMetal.Middleware.Solder.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="TextMetal.Middleware.Solder.Primitives">
+      <HintPath>..\TextMetal.Middleware.Oxymoron.Legacy\bin\Debug\netstandard1.6\TextMetal.Middleware.Solder.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="TextMetal.Middleware.Solder.Serialization">
+      <HintPath>..\TextMetal.Middleware.Oxymoron.Legacy\bin\Debug\netstandard1.6\TextMetal.Middleware.Solder.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="TextMetal.Middleware.Solder.Utilities">
+      <HintPath>..\TextMetal.Middleware.Oxymoron.Legacy\bin\Debug\netstandard1.6\TextMetal.Middleware.Solder.Utilities.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DtsDestinationAdapter.cs" />
+    <Compile Include="DtsDictionaryAdapter.cs" />
+    <Compile Include="DtsSourceAdapter.cs" />
+    <Compile Include="DtsAdoNetAdapterConfiguration.cs" />
+    <Compile Include="Properties\ThisAssemblyInfo_project.cs" />
+    <Compile Include="Properties\ThisAssemblyInfo_solution.cs" />
+    <Compile Include="__ComponentMetadataWrapper.cs" />
+    <Compile Include="NopConstants.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="CustomPropertyWrapper.cs" />
+    <Compile Include="MappingDisposition.cs" />
+    <Compile Include="NopTransform.cs" />
+    <Compile Include="ObfuscationStrategyTransform.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\TextMetal.snk">
+      <Link>TextMetal.snk</Link>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Icons\TextMetal.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

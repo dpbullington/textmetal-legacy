@@ -22,6 +22,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics
 		#region Fields/Constants
 
 		private readonly IDictionary<string, object> parameterFixups = new Dictionary<string, object>();
+		private string sourceColumn;
 		private DbType parameterDbType;
 		private ParameterDirection parameterDirection;
 		private string parameterName;
@@ -40,6 +41,18 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics
 			get
 			{
 				return this.parameterFixups;
+			}
+		}
+
+		public string SourceColumn
+		{
+			get
+			{
+				return this.sourceColumn;
+			}
+			set
+			{
+				this.sourceColumn = value;
 			}
 		}
 

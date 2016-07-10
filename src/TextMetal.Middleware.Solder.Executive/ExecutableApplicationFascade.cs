@@ -329,92 +329,82 @@ namespace TextMetal.Middleware.Solder.Executive
 			IList<object> finalArgumentValues;
 			object finalArgumentValue;
 
-			try
+			this.DisplayBannerMessage();
+			start = DateTime.UtcNow;
+
+			arguments = this.ParseCommandLineArguments(args);
+			argumentMap = this.GetArgumentMap();
+
+			finalArguments = new Dictionary<string, IList<object>>();
+			argumentValidationMessages = new List<Message>();
+
+			if ((object)argumentMap != null)
 			{
-				this.DisplayBannerMessage();
-				start = DateTime.UtcNow;
-
-				arguments = this.ParseCommandLineArguments(args);
-				argumentMap = this.GetArgumentMap();
-
-				finalArguments = new Dictionary<string, IList<object>>();
-				argumentValidationMessages = new List<Message>();
-
-				if ((object)argumentMap != null)
+				foreach (string argumentToken in argumentMap.Keys)
 				{
-					foreach (string argumentToken in argumentMap.Keys)
+					bool argumentExists;
+					int argumentValueCount = 0;
+					ArgumentSpec argumentSpec;
+
+					if (argumentExists = arguments.TryGetValue(argumentToken, out argumentValues))
+						argumentValueCount = argumentValues.Count;
+
+					if (!argumentMap.TryGetValue(argumentToken, out argumentSpec))
+						continue;
+
+					if (argumentSpec.Required && !argumentExists)
 					{
-						bool argumentExists;
-						int argumentValueCount = 0;
-						ArgumentSpec argumentSpec;
+						argumentValidationMessages.Add(new Message(string.Empty, string.Format("A required argument was not specified: '{0}'.", argumentToken), Severity.Error));
+						continue;
+					}
 
-						if (argumentExists = arguments.TryGetValue(argumentToken, out argumentValues))
-							argumentValueCount = argumentValues.Count;
+					if (argumentSpec.Bounded && argumentValueCount > 1)
+					{
+						argumentValidationMessages.Add(new Message(string.Empty, string.Format("A bounded argument was specified more than once: '{0}'.", argumentToken), Severity.Error));
+						continue;
+					}
 
-						if (!argumentMap.TryGetValue(argumentToken, out argumentSpec))
-							continue;
+					if ((object)argumentValues != null)
+					{
+						finalArgumentValues = new List<object>();
 
-						if (argumentSpec.Required && !argumentExists)
+						if ((object)argumentSpec.Type != null)
 						{
-							argumentValidationMessages.Add(new Message(string.Empty, string.Format("A required argument was not specified: '{0}'.", argumentToken), Severity.Error));
-							continue;
-						}
-
-						if (argumentSpec.Bounded && argumentValueCount > 1)
-						{
-							argumentValidationMessages.Add(new Message(string.Empty, string.Format("A bounded argument was specified more than once: '{0}'.", argumentToken), Severity.Error));
-							continue;
-						}
-
-						if ((object)argumentValues != null)
-						{
-							finalArgumentValues = new List<object>();
-
-							if ((object)argumentSpec.Type != null)
+							foreach (string argumentValue in argumentValues)
 							{
-								foreach (string argumentValue in argumentValues)
-								{
-									if (!this.DataTypeFascade.TryParse(argumentSpec.Type, argumentValue, out finalArgumentValue))
-										argumentValidationMessages.Add(new Message(string.Empty, string.Format("An argument '{0}' value '{1}' was specified that failed to parse to the target type '{2}'.", argumentToken, argumentValue, argumentSpec.Type.FullName), Severity.Error));
-									else
-										finalArgumentValues.Add(finalArgumentValue);
-								}
+								if (!this.DataTypeFascade.TryParse(argumentSpec.Type, argumentValue, out finalArgumentValue))
+									argumentValidationMessages.Add(new Message(string.Empty, string.Format("An argument '{0}' value '{1}' was specified that failed to parse to the target type '{2}'.", argumentToken, argumentValue, argumentSpec.Type.FullName), Severity.Error));
+								else
+									finalArgumentValues.Add(finalArgumentValue);
 							}
-							else
-							{
-								foreach (string argumentValue in argumentValues)
-									finalArgumentValues.Add(argumentValue);
-							}
-
-							finalArguments.Add(argumentToken, finalArgumentValues);
 						}
+						else
+						{
+							foreach (string argumentValue in argumentValues)
+								finalArgumentValues.Add(argumentValue);
+						}
+
+						finalArguments.Add(argumentToken, finalArgumentValues);
 					}
 				}
-
-				if (argumentValidationMessages.Any())
-				{
-					this.DisplayArgumentErrorMessage(argumentValidationMessages);
-					this.DisplayArgumentMapMessage(argumentMap);
-					//this.DisplayRawArgumentsMessage(args);
-					returnCode = -1;
-				}
-				else
-					returnCode = this.OnStartup(args, finalArguments);
-
-				end = DateTime.UtcNow;
-				duration = end - start;
-
-				this.DisplaySuccessMessage(duration);
-
-				return returnCode;
 			}
-			catch (Exception ex)
+
+			if (argumentValidationMessages.Any())
 			{
-				if (HookUnhandledExceptions)
-					return this.ShowNestedExceptionsAndThrowBrickAtProcess(ex);
-
-				throw;
+				this.DisplayArgumentErrorMessage(argumentValidationMessages);
+				this.DisplayArgumentMapMessage(argumentMap);
+				//this.DisplayRawArgumentsMessage(args);
+				returnCode = -1;
 			}
+			else
+				returnCode = this.OnStartup(args, finalArguments);
+
+			end = DateTime.UtcNow;
+			duration = end - start;
+
+			this.DisplaySuccessMessage(duration);
+
+			return returnCode;
 		}
 
 		/// <summary>

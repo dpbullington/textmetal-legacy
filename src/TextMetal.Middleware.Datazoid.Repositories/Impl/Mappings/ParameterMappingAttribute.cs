@@ -7,10 +7,12 @@ using System;
 using System.Data;
 using System.Reflection;
 
+using TextMetal.Middleware.Datazoid.Primitives;
+
 namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Mappings
 {
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-	public sealed class ParameterMappingAttribute : Attribute
+	public sealed class ParameterMappingAttribute : Attribute, IAdoNetParameter
 	{
 		#region Constructors/Destructors
 
@@ -24,6 +26,8 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Mappings
 		#endregion
 
 		#region Fields/Constants
+
+		private string sourceColumn;
 
 		private DbType parameterDbType;
 		private ParameterDirection parameterDirection;
@@ -62,6 +66,18 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Mappings
 			set
 			{
 				this.targetType = value;
+			}
+		}
+
+		public string SourceColumn
+		{
+			get
+			{
+				return this.sourceColumn;
+			}
+			set
+			{
+				this.sourceColumn = value;
 			}
 		}
 
@@ -191,6 +207,18 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Mappings
 			set
 			{
 				this.parameterSqlType = value;
+			}
+		}
+
+		public object ParameterValue
+		{
+			get
+			{
+				return null;
+			}
+			set
+			{
+				// do nothing
 			}
 		}
 

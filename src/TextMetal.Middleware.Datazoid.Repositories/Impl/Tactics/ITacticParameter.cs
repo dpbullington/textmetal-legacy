@@ -7,63 +7,17 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 
+using TextMetal.Middleware.Datazoid.Primitives;
+
 namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics
 {
-	public interface ITacticParameter
+	public interface ITacticParameter : IAdoNetParameter
 	{
 		#region Properties/Indexers/Events
 
 		IDictionary<string, object> ParameterFixups
 		{
 			get;
-		}
-
-		DbType ParameterDbType
-		{
-			get;
-			set;
-		}
-
-		ParameterDirection ParameterDirection
-		{
-			get;
-			set;
-		}
-
-		string ParameterName
-		{
-			get;
-			set;
-		}
-
-		bool ParameterNullable
-		{
-			get;
-			set;
-		}
-
-		byte ParameterPrecision
-		{
-			get;
-			set;
-		}
-
-		byte ParameterScale
-		{
-			get;
-			set;
-		}
-
-		int ParameterSize
-		{
-			get;
-			set;
-		}
-
-		object ParameterValue
-		{
-			get;
-			set;
 		}
 
 		#endregion

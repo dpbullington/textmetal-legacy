@@ -12,6 +12,7 @@ using System.Linq;
 using TextMetal.Middleware.Datazoid.Extensions;
 using TextMetal.Middleware.Datazoid.UoW;
 using TextMetal.Middleware.Oxymoron.Legacy.Config;
+using TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters;
 using TextMetal.Middleware.Solder.Extensions;
 using TextMetal.Middleware.Solder.Primitives;
 
@@ -32,6 +33,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination
 		protected override void CorePublishImpl(TableConfiguration configuration, IUnitOfWork destinationUnitOfWork, DbDataReader sourceDataReader, out long rowsCopied)
 		{
 			IEnumerable<IResultset> resultsets;
+			IEnumerable<DbParameter> dbParameters;
 			long _rowsCopied = 0;
 
 			if ((object)configuration == null)
@@ -43,31 +45,32 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination
 			if ((object)sourceDataReader == null)
 				throw new ArgumentNullException(nameof(sourceDataReader));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommandText))
-				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "ExecuteCommandText"));
+			if ((object)this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand == null)
+				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", nameof(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand)));
 
-			// ?
+			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandText))
+				throw new InvalidOperationException(string.Format("Configuration missing: '{0}.{1}'.", nameof(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand), nameof(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandText)));
+
+			while (sourceDataReader.Read())
 			{
-				DbParameter commandParameter;
-				IDictionary<string, DbParameter> commandParameters;
+				dbParameters = this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.GetDbDataParameters(destinationUnitOfWork);
 
-				commandParameters = new Dictionary<string, DbParameter>();
-
-				while (sourceDataReader.Read())
+				dbParameters = dbParameters.Select(p =>
 				{
-					commandParameters.Clear();
+					// prevent modified closure bug
+					var _sourceDataReader = sourceDataReader;
+					// lazy load
+					p.Value = _sourceDataReader[p.SourceColumn];
+					return p;
+				});
 
-					foreach (ColumnConfiguration columnConfiguration in configuration.ColumnConfigurations)
-					{
-						commandParameter = destinationUnitOfWork.CreateParameter(ParameterDirection.Input, DbType.AnsiString, 0, 0, 0, true, string.Format("@{0}", columnConfiguration.ColumnName), sourceDataReader[columnConfiguration.ColumnName]);
-						commandParameters.Add(columnConfiguration.ColumnName, commandParameter);
-					}
+				resultsets = destinationUnitOfWork.ExecuteResultsets(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandType ?? CommandType.Text,
+					this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandText,
+					dbParameters);
 
-					resultsets = destinationUnitOfWork.ExecuteResultsets(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommandType ?? CommandType.Text, this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommandText, commandParameters.Values.ToArray());
-					resultsets.ToArray();
+				resultsets.ToArray();
 
-					_rowsCopied++;
-				}
+				_rowsCopied++;
 			}
 
 			rowsCopied = _rowsCopied;

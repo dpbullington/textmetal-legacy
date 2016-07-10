@@ -39,8 +39,11 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination
 			if ((object)sourceDataReader == null)
 				throw new ArgumentNullException(nameof(sourceDataReader));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommandText))
-				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "ExecuteCommandText"));
+			if ((object)this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand == null)
+				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", nameof(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand)));
+
+			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandText))
+				throw new InvalidOperationException(string.Format("Configuration missing: '{0}.{1}'.", nameof(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand), nameof(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandText)));
 
 			using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy((SqlConnection)destinationUnitOfWork.Connection, SqlBulkCopyOptions.FireTriggers | SqlBulkCopyOptions.CheckConstraints | SqlBulkCopyOptions.KeepIdentity | SqlBulkCopyOptions.KeepNulls, (SqlTransaction)destinationUnitOfWork.Transaction))
 			{
@@ -53,7 +56,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination
 				sqlBulkCopy.BatchSize = 2500;
 				sqlBulkCopy.NotifyAfter = 2500;
 				//sqlBulkCopy.SqlRowsCopied += callback;
-				sqlBulkCopy.DestinationTableName = this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommandText;
+				sqlBulkCopy.DestinationTableName = this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandText;
 
 				sqlBulkCopy.WriteToServer(sourceDataReader);
 

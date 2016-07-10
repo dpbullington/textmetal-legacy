@@ -51,12 +51,12 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 				columnValue = null;
 
 			if ((object)columnConfiguration.ObfuscationStrategySpecificConfiguration == null)
-				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "ObfuscationStrategyConfiguration"));
+				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", nameof(columnConfiguration.ObfuscationStrategySpecificConfiguration)));
 
 			_columnConfiguration = new ColumnConfiguration<TObfuscationStrategyConfiguration>(columnConfiguration);
 
 			if ((object)_columnConfiguration.ObfuscationStrategySpecificConfiguration == null)
-				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "ObfuscationStrategyConfiguration"));
+				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", nameof(_columnConfiguration.ObfuscationStrategySpecificConfiguration)));
 
 			value = this.CoreGetObfuscatedValue(oxymoronEngine, _columnConfiguration, metaColumn, columnValue);
 
@@ -100,12 +100,12 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 				throw new ArgumentNullException(nameof(columnConfiguration));
 
 			if ((object)columnConfiguration.ObfuscationStrategySpecificConfiguration == null)
-				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "ObfuscationStrategyConfiguration"));
+				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", nameof(columnConfiguration.ObfuscationStrategySpecificConfiguration)));
 
 			_columnConfiguration = new ColumnConfiguration<TObfuscationStrategyConfiguration>(columnConfiguration);
 
 			if ((object)_columnConfiguration.ObfuscationStrategySpecificConfiguration == null)
-				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "ObfuscationStrategyConfiguration"));
+				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", nameof(_columnConfiguration.ObfuscationStrategySpecificConfiguration)));
 
 			return _columnConfiguration.ObfuscationStrategySpecificConfiguration.Validate(colummIndex);
 		}

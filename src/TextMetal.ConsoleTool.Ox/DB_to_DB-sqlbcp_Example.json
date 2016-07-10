@@ -24,14 +24,23 @@
 			"ConnectionAqtn": "System.Data.SqlClient.SqlConnection, System.Data.SqlClient",
 			"ConnectionString": "Server=(local);Integrated Security=SSPI;",
 
-			"PreExecuteCommandType": "",
-			"PreExecuteCommandText": "",
+			"PreExecuteCommand":
+			{
+				"CommandType": "",
+				"CommandText": ""
+			},
 
-			"ExecuteCommandText": "[bank_account_demo].[dbo].[ExecuteExport_AccountReporting]",
-			"ExecuteCommandType": "StoredProcedure",
+			"ExecuteCommand":
+			{
+				"CommandType": "StoredProcedure",
+				"CommandText": "[bank_account_demo].[dbo].[ExecuteExport_AccountReporting]"
+			},
 
-			"PostExecuteCommandType": "",
-			"PostExecuteCommandText": ""
+			"PostExecuteCommand":
+			{
+				"CommandType": "",
+				"CommandText": ""
+			}
 		}
 	},
 
@@ -44,14 +53,23 @@
 			"ConnectionAqtn": "System.Data.SqlClient.SqlConnection, System.Data.SqlClient",
 			"ConnectionString": "Server=(local);Integrated Security=SSPI;",
 
-			"PreExecuteCommandType": "Text",
-			"PreExecuteCommandText": "TRUNCATE TABLE [bank_account_demo].[dbo].[Ox_AccountReporting]",
+			"PreExecuteCommand":
+			{
+				"CommandType": "Text",
+				"CommandText": "TRUNCATE TABLE [bank_account_demo].[dbo].[Ox_AccountReporting]"
+			},
 
-			"ExecuteCommandText": "[bank_account_demo].[dbo].[Ox_AccountReporting]",
-			"ExecuteCommandType": "TableDirect",
+			"ExecuteCommand":
+			{
+				"CommandType": "TableDirect",
+				"CommandText": "[bank_account_demo].[dbo].[Ox_AccountReporting]"
+			},
 
-			"PostExecuteCommandType": "",
-			"PostExecuteCommandText": ""
+			"PostExecuteCommand":
+			{
+				"CommandType": "",
+				"CommandText": ""
+			}
 		}
 	},
 
@@ -77,14 +95,23 @@
 					"ConnectionAqtn": "System.Data.SqlClient.SqlConnection, System.Data.SqlClient",
 					"ConnectionString": "Server=(local);Integrated Security=SSPI;",
 
-					"PreExecuteCommandType": "",
-					"PreExecuteCommandText": "",
+					"PreExecuteCommand":
+					{
+						"CommandType": "",
+						"CommandText": ""
+					},
 
-					"ExecuteCommandText": "SELECT t.[Key], t.[CrayonColor] FROM [bank_account_demo].[OxConfig].[CrayonColorDictionary] t ORDER BY t.[Key] ASC",
-					"ExecuteCommandType": "Text",
+					"ExecuteCommand":
+					{
+						"CommandType": "Text",
+						"CommandText": "SELECT t.[Key], t.[CrayonColor] FROM [bank_account_demo].[OxConfig].[CrayonColorDictionary] t ORDER BY t.[Key] ASC"
+					},
 
-					"PostExecuteCommandType": "",
-					"PostExecuteCommandText": ""
+					"PostExecuteCommand":
+					{
+						"CommandType": "",
+						"CommandText": ""
+					}
 				}
 			}
 		},
@@ -103,14 +130,23 @@
 					"ConnectionAqtn": "System.Data.SqlClient.SqlConnection, System.Data.SqlClient",
 					"ConnectionString": "Server=(local);Integrated Security=SSPI;",
 
-					"PreExecuteCommandType": "",
-					"PreExecuteCommandText": "",
+					"PreExecuteCommand":
+					{
+						"CommandType": "",
+						"CommandText": ""
+					},
 
-					"ExecuteCommandText": "SELECT t.[Key], t.[LastName] FROM [bank_account_demo].[OxConfig].[LastNameDictionary] t ORDER BY t.[Key] ASC",
-					"ExecuteCommandType": "Text",
+					"ExecuteCommand":
+					{
+						"CommandType": "Text",
+						"CommandText": "SELECT t.[Key], t.[LastName] FROM [bank_account_demo].[OxConfig].[LastNameDictionary] t ORDER BY t.[Key] ASC"
+					},
 
-					"PostExecuteCommandType": "",
-					"PostExecuteCommandText": ""
+					"PostExecuteCommand":
+					{
+						"CommandType": "",
+						"CommandText": ""
+					}
 				}
 			}
 		},
@@ -129,14 +165,23 @@
 					"ConnectionAqtn": "System.Data.SqlClient.SqlConnection, System.Data.SqlClient",
 					"ConnectionString": "Server=(local);Integrated Security=SSPI;",
 
-					"PreExecuteCommandType": "",
-					"PreExecuteCommandText": "",
+					"PreExecuteCommand":
+					{
+						"CommandType": "",
+						"CommandText": ""
+					},
 
-					"ExecuteCommandText": "SELECT t.[Key], t.[FirstName] FROM [bank_account_demo].[OxConfig].[FirstNameDictionary] t ORDER BY t.[Key] ASC",
-					"ExecuteCommandType": "Text",
+					"ExecuteCommand":
+					{
+						"CommandType": "Text",
+						"CommandText": "SELECT t.[Key], t.[FirstName] FROM [bank_account_demo].[OxConfig].[FirstNameDictionary] t ORDER BY t.[Key] ASC"
+					},
 
-					"PostExecuteCommandType": "",
-					"PostExecuteCommandText": ""
+					"PostExecuteCommand":
+					{
+						"CommandType": "",
+						"CommandText": ""
+					}
 				}
 			}
 		}

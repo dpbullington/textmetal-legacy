@@ -4,8 +4,11 @@
 */
 
 using System;
+using System.Data;
+using System.Data.Common;
 
 using TextMetal.Middleware.Datazoid.Primitives;
+using TextMetal.Middleware.Datazoid.UoW;
 using TextMetal.Middleware.Solder.Injection;
 
 namespace TextMetal.Middleware.Datazoid.Extensions

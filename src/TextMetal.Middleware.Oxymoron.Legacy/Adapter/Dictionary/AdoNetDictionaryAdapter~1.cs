@@ -55,8 +55,10 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary
 
 		protected override object CoreGetAlternativeValueFromId(DictionaryConfiguration dictionaryConfiguration, IColumn metaColumn, object surrogateId)
 		{
+			AdoNetParameterConfiguration idAdoNetParameterConfiguration;
 			object value;
 			DbParameter dbDataParameterKey;
+			IEnumerable<DbParameter> dbParameters;
 
 			if ((object)dictionaryConfiguration == null)
 				throw new ArgumentNullException(nameof(dictionaryConfiguration));
@@ -66,20 +68,52 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary
 
 			if ((object)surrogateId == null)
 				throw new ArgumentNullException(nameof(surrogateId));
+			
+			if ((object)this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand == null)
+				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", nameof(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand)));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommandText))
-				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "ExecuteCommandText"));
+			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandText))
+				throw new InvalidOperationException(string.Format("Configuration missing: '{0}.{1}'.", nameof(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand), nameof(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandText)));
 
-			dbDataParameterKey = this.DictionaryUnitOfWork.CreateParameter(ParameterDirection.Input, DbType.Object, 0, 0, 0, false, "@ID", surrogateId);
+			idAdoNetParameterConfiguration = this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.AdoNetParameterConfigurations.SingleOrDefault();
 
-			value = this.DictionaryUnitOfWork.ExecuteScalar<string>(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommandType ?? CommandType.Text, this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommandText, new DbParameter[] { dbDataParameterKey });
+			if((object)idAdoNetParameterConfiguration == null)
+				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "ExecuteCommand.AdoNetParameterConfigurations.AdoNetParameterConfiguration[0]"));
+
+			dbDataParameterKey = this.DictionaryUnitOfWork.CreateParameter(idAdoNetParameterConfiguration.ParameterDirection, idAdoNetParameterConfiguration.ParameterDbType, idAdoNetParameterConfiguration.ParameterSize, idAdoNetParameterConfiguration.ParameterPrecision, idAdoNetParameterConfiguration.ParameterScale, idAdoNetParameterConfiguration.ParameterNullable, idAdoNetParameterConfiguration.ParameterName, surrogateId);
+
+			//dbParameters = this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.GetDbDataParameters(this.DictionaryUnitOfWork);
+			//dbParameters = dbParameters.Append(dbDataParameterKey);
+			dbParameters = new DbParameter[] { dbDataParameterKey };
+
+			value = this.DictionaryUnitOfWork.ExecuteScalar<string>(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandType ?? CommandType.Text,
+				this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandText,
+				dbParameters);
 
 			return value;
 		}
 
 		protected override void CoreInitialize()
 		{
+			IEnumerable<IRecord> records;
+			IEnumerable<DbParameter> dbParameters;
+
 			this.DictionaryUnitOfWork = this.AdapterConfiguration.AdapterSpecificConfiguration.GetUnitOfWork();
+
+			if (this.AdapterConfiguration.AdapterSpecificConfiguration.PreExecuteCommand != null &&
+				!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.PreExecuteCommand.CommandText))
+			{
+				dbParameters = this.AdapterConfiguration.AdapterSpecificConfiguration.PreExecuteCommand.GetDbDataParameters(this.DictionaryUnitOfWork);
+
+				records = this.DictionaryUnitOfWork.ExecuteRecords(this.AdapterConfiguration.AdapterSpecificConfiguration.PreExecuteCommand.CommandType ?? CommandType.Text,
+					this.AdapterConfiguration.AdapterSpecificConfiguration.PreExecuteCommand.CommandText,
+					dbParameters, null);
+
+				if ((object)records == null)
+					throw new InvalidOperationException(string.Format("Records were invalid."));
+
+				records.ToArray();
+			}
 		}
 
 		protected override void CorePreloadCache(Func<IEnumerable<IRecord>, IEnumerable<IRecord>> recordCallback, DictionaryConfiguration dictionaryConfiguration, IDictionary<string, IDictionary<long, object>> substitutionCacheRoot)
@@ -98,10 +132,19 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary
 
 			if (dictionaryConfiguration.PreloadEnabled)
 			{
-				if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommandText))
-					throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "ExecuteCommandText"));
+				IEnumerable<DbParameter> dbParameters;
 
-				records = this.DictionaryUnitOfWork.ExecuteRecords(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommandType ?? CommandType.Text, this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommandText, new DbParameter[] { }, null);
+				if ((object)this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand == null)
+					throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", nameof(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand)));
+
+				if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandText))
+					throw new InvalidOperationException(string.Format("Configuration missing: '{0}.{1}'.", nameof(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand), nameof(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandText)));
+
+				dbParameters = this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.GetDbDataParameters(this.DictionaryUnitOfWork);
+
+				records = this.DictionaryUnitOfWork.ExecuteRecords(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandType ?? CommandType.Text,
+					this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandText,
+					dbParameters, null);
 
 				if ((object)records == null)
 					throw new InvalidOperationException(string.Format("Records were invalid."));
@@ -124,6 +167,24 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary
 
 		protected override void CoreTerminate()
 		{
+			IEnumerable<IResultset> resultsets;
+			IEnumerable<DbParameter> dbParameters;
+
+			if (this.AdapterConfiguration.AdapterSpecificConfiguration.PostExecuteCommand != null &&
+				!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.PostExecuteCommand.CommandText))
+			{
+				dbParameters = this.AdapterConfiguration.AdapterSpecificConfiguration.PostExecuteCommand.GetDbDataParameters(this.DictionaryUnitOfWork);
+
+				resultsets = this.DictionaryUnitOfWork.ExecuteSchemaResultsets(this.AdapterConfiguration.AdapterSpecificConfiguration.PostExecuteCommand.CommandType ?? CommandType.Text,
+					this.AdapterConfiguration.AdapterSpecificConfiguration.PostExecuteCommand.CommandText,
+					dbParameters);
+
+				if ((object)resultsets == null)
+					throw new InvalidOperationException(string.Format("Resultsets were invalid."));
+
+				resultsets.ToArray();
+			}
+
 			if ((object)this.DictionaryUnitOfWork != null)
 				this.DictionaryUnitOfWork.Dispose();
 

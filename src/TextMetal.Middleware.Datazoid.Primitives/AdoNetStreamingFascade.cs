@@ -42,6 +42,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 		/// </summary>
 		/// <param name="dbConnection"> The database connection. </param>
 		/// <param name="dbTransaction"> An optional local database transaction. </param>
+		/// <param name="sourceColumn"> Specifies the source column. </param>
 		/// <param name="parameterDirection"> Specifies the parameter direction. </param>
 		/// <param name="parameterDbType"> Specifies the parameter provider-(in)dependent type. </param>
 		/// <param name="parameterSize"> Specifies the parameter size. </param>
@@ -51,7 +52,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 		/// <param name="parameterName"> Specifies the parameter name. </param>
 		/// <param name="parameterValue"> Specifies the parameter value. </param>
 		/// <returns> The data parameter with the specified properties set. </returns>
-		public DbParameter CreateParameter(DbConnection dbConnection, DbTransaction dbTransaction, ParameterDirection parameterDirection, DbType parameterDbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue)
+		public DbParameter CreateParameter(DbConnection dbConnection, DbTransaction dbTransaction, string sourceColumn, ParameterDirection parameterDirection, DbType parameterDbType, int parameterSize, byte parameterPrecision, byte parameterScale, bool parameterNullable, string parameterName, object parameterValue)
 		{
 			DbParameter dbParameter;
 
@@ -71,6 +72,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 			this.ReflectionFascade.SetLogicalPropertyValue(dbParameter, "IsNullable", parameterNullable, true, false);
 			dbParameter.Precision = parameterPrecision;
 			dbParameter.Scale = parameterScale;
+			dbParameter.SourceColumn = sourceColumn;
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::CreateParameter(...): return parameter", typeof(AdoNetStreamingFascade).Name));
 

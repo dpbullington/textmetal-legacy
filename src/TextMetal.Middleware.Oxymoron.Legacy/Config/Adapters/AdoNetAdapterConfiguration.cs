@@ -27,12 +27,48 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 
 		private string connectionAqtn;
 		private string connectionString;
-		private string executeCommandText;
-		private CommandType? executeCommandType;
-		private string postExecuteCommandText;
-		private CommandType? postExecuteCommandType;
-		private string preExecuteCommandText;
-		private CommandType? preExecuteCommandType;
+		private AdoNetCommandConfiguration preExecuteCommand;
+		private AdoNetCommandConfiguration executeCommand;
+		private AdoNetCommandConfiguration postExecuteCommand;
+
+		public AdoNetCommandConfiguration PreExecuteCommand
+		{
+			get
+			{
+				return this.preExecuteCommand;
+			}
+			set
+			{
+				this.EnsureParentOnPropertySet(this.preExecuteCommand, value);
+				this.preExecuteCommand = value;
+			}
+		}
+
+		public AdoNetCommandConfiguration ExecuteCommand
+		{
+			get
+			{
+				return this.executeCommand;
+			}
+			set
+			{
+				this.EnsureParentOnPropertySet(this.executeCommand, value);
+				this.executeCommand = value;
+			}
+		}
+
+		public AdoNetCommandConfiguration PostExecuteCommand
+		{
+			get
+			{
+				return this.postExecuteCommand;
+			}
+			set
+			{
+				this.EnsureParentOnPropertySet(this.postExecuteCommand, value);
+				this.postExecuteCommand = value;
+			}
+		}
 
 		#endregion
 
@@ -59,78 +95,6 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 			set
 			{
 				this.connectionString = value;
-			}
-		}
-
-		public string ExecuteCommandText
-		{
-			get
-			{
-				return this.executeCommandText;
-			}
-			set
-			{
-				this.executeCommandText = value;
-			}
-		}
-
-		public CommandType? ExecuteCommandType
-		{
-			get
-			{
-				return this.executeCommandType;
-			}
-			set
-			{
-				this.executeCommandType = value;
-			}
-		}
-
-		public string PostExecuteCommandText
-		{
-			get
-			{
-				return this.postExecuteCommandText;
-			}
-			set
-			{
-				this.postExecuteCommandText = value;
-			}
-		}
-
-		public CommandType? PostExecuteCommandType
-		{
-			get
-			{
-				return this.postExecuteCommandType;
-			}
-			set
-			{
-				this.postExecuteCommandType = value;
-			}
-		}
-
-		public string PreExecuteCommandText
-		{
-			get
-			{
-				return this.preExecuteCommandText;
-			}
-			set
-			{
-				this.preExecuteCommandText = value;
-			}
-		}
-
-		public CommandType? PreExecuteCommandType
-		{
-			get
-			{
-				return this.preExecuteCommandType;
-			}
-			set
-			{
-				this.preExecuteCommandType = value;
 			}
 		}
 
@@ -171,6 +135,9 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 		public override IEnumerable<Message> Validate(string adapterContext)
 		{
 			List<Message> messages;
+			const string CONTEXT = "Execution";
+			const string PRE_CONTEXT = "Pre-Execution";
+			const string POST_CONTEXT = "Post-Execution";
 
 			messages = new List<Message>();
 
@@ -180,11 +147,16 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.ConnectionString))
 				messages.Add(NewError(string.Format("{0} adapter ADO.NET connection string is required.", adapterContext)));
 
-			if ((object)this.ExecuteCommandType == null)
-				messages.Add(NewError(string.Format("{0} adapter ADO.NET execute command type is required.", adapterContext)));
+			if ((object)this.PreExecuteCommand != null)
+				messages.AddRange(this.PreExecuteCommand.Validate(PRE_CONTEXT));
 
-			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.ExecuteCommandText))
-				messages.Add(NewError(string.Format("{0} adapter ADO.NET execute command text is required.", adapterContext)));
+			if ((object)this.ExecuteCommand == null)
+				messages.Add(NewError(string.Format("{0} adapter ADO.NET execute command is required.", adapterContext)));
+			else
+				messages.AddRange(this.ExecuteCommand.Validate(CONTEXT));
+
+			if ((object)this.PostExecuteCommand != null)
+				messages.AddRange(this.PostExecuteCommand.Validate(POST_CONTEXT));
 
 			return messages;
 		}

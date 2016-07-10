@@ -99,12 +99,12 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter
 				throw new ArgumentNullException(nameof(adapterConfiguration));
 
 			if ((object)adapterConfiguration.AdapterSpecificConfiguration == null)
-				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "AdapterSpecificConfiguration"));
+				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", nameof(adapterConfiguration.AdapterSpecificConfiguration)));
 
 			_adapterConfiguration = new AdapterConfiguration<TAdapterSpecificConfiguration>(adapterConfiguration);
 
 			if ((object)_adapterConfiguration.AdapterSpecificConfiguration == null)
-				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "AdapterSpecificConfiguration"));
+				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", nameof(_adapterConfiguration.AdapterSpecificConfiguration)));
 
 			this.AdapterConfiguration = _adapterConfiguration;
 			this.CoreInitialize();
