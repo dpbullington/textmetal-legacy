@@ -12,12 +12,6 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 	{
 		#region Properties/Indexers/Events
 
-		string SourceColumn
-		{
-			get;
-			set;
-		}
-
 		DbType ParameterDbType
 		{
 			get;
@@ -61,6 +55,12 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 		}
 
 		object ParameterValue
+		{
+			get;
+			set;
+		}
+
+		string SourceColumn
 		{
 			get;
 			set;

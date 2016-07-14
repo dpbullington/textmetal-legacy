@@ -19,7 +19,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Hosting.Tool
 
 		void Host(ObfuscationConfiguration obfuscationConfiguration, Action<string, long, bool, double> statusCallback);
 
-		bool TryGetUpstreamMetadata(ObfuscationConfiguration obfuscationConfiguration, out IEnumerable<IColumn> metaColumns);
+		bool TryGetUpstreamMetadata(ObfuscationConfiguration obfuscationConfiguration, out IEnumerable<IColumn> columns);
 
 		#endregion
 	}

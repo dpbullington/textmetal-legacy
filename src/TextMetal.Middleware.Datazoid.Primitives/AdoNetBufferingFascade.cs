@@ -217,7 +217,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 										propertyInfos = dbColumn.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
 										record = new Record();
-										record.TagContext = dbColumn;
+										record.Context = dbColumn;
 
 										if ((object)propertyInfos != null)
 										{

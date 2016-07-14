@@ -15,7 +15,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary
 	{
 		#region Methods/Operators
 
-		object GetAlternativeValueFromId(DictionaryConfiguration dictionaryConfiguration, IColumn metaColumn, object surrogateId);
+		object GetAlternativeValueFromId(DictionaryConfiguration dictionaryConfiguration, IColumn column, object surrogateId);
 
 		void InitializePreloadCache(Func<IEnumerable<IRecord>, IEnumerable<IRecord>> recordCallback, DictionaryConfiguration dictionaryConfiguration, IDictionary<string, IDictionary<long, object>> substitutionCacheRoot);
 

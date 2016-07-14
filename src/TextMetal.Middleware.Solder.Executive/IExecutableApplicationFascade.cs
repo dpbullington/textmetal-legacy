@@ -6,8 +6,6 @@
 using System;
 using System.Collections.Generic;
 
-using TextMetal.Middleware.Solder.Utilities;
-
 namespace TextMetal.Middleware.Solder.Executive
 {
 	public interface IExecutableApplicationFascade : IDisposable

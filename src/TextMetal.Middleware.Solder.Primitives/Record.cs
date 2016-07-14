@@ -21,21 +21,21 @@ namespace TextMetal.Middleware.Solder.Primitives
 
 		#region Fields/Constants
 
-		private object tagContext;
+		private object context;
 
 		#endregion
 
 		#region Properties/Indexers/Events
 
-		public object TagContext
+		public object Context
 		{
 			get
 			{
-				return this.tagContext;
+				return this.context;
 			}
 			set
 			{
-				this.tagContext = value;
+				this.context = value;
 			}
 		}
 

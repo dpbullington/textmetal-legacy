@@ -86,13 +86,13 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 			return callback(columnValue);
 		}
 
-		protected override object CoreGetObfuscatedValue(IOxymoronEngine oxymoronEngine, ColumnConfiguration<ScriptObfuscationStrategyConfiguration> columnConfiguration, IColumn metaColumn, object columnValue)
+		protected override object CoreGetObfuscatedValue(IOxymoronEngine oxymoronEngine, ColumnConfiguration<ScriptObfuscationStrategyConfiguration> columnConfiguration, IColumn column, object columnValue)
 		{
 			if ((object)columnConfiguration == null)
 				throw new ArgumentNullException("columnConfiguration");
 
-			if ((object)metaColumn == null)
-				throw new ArgumentNullException("metaColumn");
+			if ((object)column == null)
+				throw new ArgumentNullException("column");
 
 			if ((object)columnConfiguration.ObfuscationStrategySpecificConfiguration == null)
 				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", nameof(columnConfiguration.ObfuscationStrategySpecificConfiguration)));

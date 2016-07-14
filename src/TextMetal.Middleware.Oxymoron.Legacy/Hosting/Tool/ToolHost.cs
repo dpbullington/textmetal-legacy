@@ -12,7 +12,6 @@ using TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination;
 using TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary;
 using TextMetal.Middleware.Oxymoron.Legacy.Adapter.Source;
 using TextMetal.Middleware.Oxymoron.Legacy.Config;
-using TextMetal.Middleware.Oxymoron.Legacy.Support;
 using TextMetal.Middleware.Solder.Primitives;
 
 namespace TextMetal.Middleware.Oxymoron.Legacy.Hosting.Tool
@@ -47,16 +46,6 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Hosting.Tool
 
 		#region Methods/Operators
 
-		private static IEnumerable<IRecord> DictionaryWrapRecordCounter(IEnumerable<IRecord> records, Action<string, long, bool, double> recordProcessCallback)
-		{
-			return __WrapRecordCounter("dictionary", records, recordProcessCallback);
-		}
-
-		private static IEnumerable<IRecord> SourceWrapRecordCounter(IEnumerable<IRecord> records, Action<string, long, bool, double> recordProcessCallback)
-		{
-			return __WrapRecordCounter("source", records, recordProcessCallback);
-		}
-
 		private static IEnumerable<IRecord> __WrapRecordCounter(string source, IEnumerable<IRecord> records, Action<string, long, bool, double> recordProcessCallback)
 		{
 			long recordCount = 0;
@@ -85,9 +74,19 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Hosting.Tool
 				recordProcessCallback(source, recordCount, true, (DateTime.UtcNow - startUtc).TotalSeconds);
 		}
 
-		protected override object CoreGetValueForIdViaDictionaryResolution(DictionaryConfiguration dictionaryConfiguration, IColumn metaColumn, object surrogateId)
+		private static IEnumerable<IRecord> DictionaryWrapRecordCounter(IEnumerable<IRecord> records, Action<string, long, bool, double> recordProcessCallback)
 		{
-			return this.DictionaryConfigurationToAdapterMappings[dictionaryConfiguration].GetAlternativeValueFromId(dictionaryConfiguration, metaColumn, surrogateId);
+			return __WrapRecordCounter("dictionary", records, recordProcessCallback);
+		}
+
+		private static IEnumerable<IRecord> SourceWrapRecordCounter(IEnumerable<IRecord> records, Action<string, long, bool, double> recordProcessCallback)
+		{
+			return __WrapRecordCounter("source", records, recordProcessCallback);
+		}
+
+		protected override object CoreGetValueForIdViaDictionaryResolution(DictionaryConfiguration dictionaryConfiguration, IColumn column, object surrogateId)
+		{
+			return this.DictionaryConfigurationToAdapterMappings[dictionaryConfiguration].GetAlternativeValueFromId(dictionaryConfiguration, column, surrogateId);
 		}
 
 		public void Host(ObfuscationConfiguration obfuscationConfiguration, Action<string, long, bool, double> statusCallback)
@@ -126,9 +125,9 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Hosting.Tool
 
 						using (IDestinationAdapter destinationAdapter = obfuscationConfiguration.DestinationAdapterConfiguration.GetAdapterInstance<IDestinationAdapter>())
 						{
-							destinationAdapter.Initialize(obfuscationConfiguration.DestinationAdapterConfiguration);
 							destinationAdapter.UpstreamMetadata = sourceAdapter.UpstreamMetadata;
-
+							destinationAdapter.Initialize(obfuscationConfiguration.DestinationAdapterConfiguration);
+							
 							sourceDataEnumerable = sourceAdapter.PullData(obfuscationConfiguration.TableConfiguration);
 							sourceDataEnumerable = oxymoronEngine.GetObfuscatedValues(sourceDataEnumerable);
 
@@ -152,12 +151,12 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Hosting.Tool
 			this.Host(obfuscationConfiguration, (w, x, y, z) => Console.WriteLine("{0}: {1} {2} {3}", w, x, y, z));
 		}
 
-		public bool TryGetUpstreamMetadata(ObfuscationConfiguration obfuscationConfiguration, out IEnumerable<IColumn> metaColumns)
+		public bool TryGetUpstreamMetadata(ObfuscationConfiguration obfuscationConfiguration, out IEnumerable<IColumn> columns)
 		{
 			if ((object)obfuscationConfiguration == null)
 				throw new ArgumentNullException(nameof(obfuscationConfiguration));
 
-			metaColumns = null;
+			columns = null;
 
 			if ((object)obfuscationConfiguration.SourceAdapterConfiguration != null &&
 				(object)obfuscationConfiguration.SourceAdapterConfiguration.GetAdapterType() != null)
@@ -165,11 +164,12 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Hosting.Tool
 				using (ISourceAdapter sourceAdapter = obfuscationConfiguration.SourceAdapterConfiguration.GetAdapterInstance<ISourceAdapter>())
 				{
 					sourceAdapter.Initialize(obfuscationConfiguration.SourceAdapterConfiguration);
-					metaColumns = sourceAdapter.UpstreamMetadata;
+					columns = sourceAdapter.UpstreamMetadata;
+					return true;
 				}
 			}
 
-			return true;
+			return false;
 		}
 
 		#endregion

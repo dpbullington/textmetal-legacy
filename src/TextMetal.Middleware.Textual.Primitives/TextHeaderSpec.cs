@@ -19,7 +19,7 @@ namespace TextMetal.Middleware.Textual.Primitives
 
 		#region Fields/Constants
 
-		private NumberFormatInfo fieldNumberFormatSpec;
+		private string valueFormat;
 		private FieldType fieldType;
 		private string headerName;
 
@@ -27,15 +27,15 @@ namespace TextMetal.Middleware.Textual.Primitives
 
 		#region Properties/Indexers/Events
 
-		public NumberFormatInfo FieldNumberFormatSpec
+		public string ValueFormat
 		{
 			get
 			{
-				return this.fieldNumberFormatSpec;
+				return this.valueFormat;
 			}
 			set
 			{
-				this.fieldNumberFormatSpec = value;
+				this.valueFormat = value;
 			}
 		}
 

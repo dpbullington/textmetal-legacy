@@ -12,7 +12,6 @@ using System.Linq;
 using TextMetal.Middleware.Datazoid.Extensions;
 using TextMetal.Middleware.Datazoid.UoW;
 using TextMetal.Middleware.Oxymoron.Legacy.Config;
-using TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters;
 using TextMetal.Middleware.Solder.Extensions;
 using TextMetal.Middleware.Solder.Primitives;
 
@@ -56,13 +55,13 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination
 				dbParameters = this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.GetDbDataParameters(destinationUnitOfWork);
 
 				dbParameters = dbParameters.Select(p =>
-				{
-					// prevent modified closure bug
-					var _sourceDataReader = sourceDataReader;
-					// lazy load
-					p.Value = _sourceDataReader[p.SourceColumn];
-					return p;
-				});
+													{
+														// prevent modified closure bug
+														var _sourceDataReader = sourceDataReader;
+														// lazy load
+														p.Value = _sourceDataReader[p.SourceColumn];
+														return p;
+													});
 
 				resultsets = destinationUnitOfWork.ExecuteResultsets(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandType ?? CommandType.Text,
 					this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.CommandText,

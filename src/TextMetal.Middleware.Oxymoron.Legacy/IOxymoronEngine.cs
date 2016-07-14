@@ -37,7 +37,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy
 
 		long GetBoundedHash(long? size, object value);
 
-		object GetObfuscatedValue(IColumn metaColumn, object columnValue);
+		object GetObfuscatedValue(IColumn column, object columnValue);
 
 		IEnumerable<IRecord> GetObfuscatedValues(IEnumerable<IRecord> records);
 

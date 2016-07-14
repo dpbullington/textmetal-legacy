@@ -11,7 +11,9 @@ namespace TextMetal.Middleware.Textual.Delimited
 {
 	public interface IDelimitedTextSpec
 	{
-		List<TextHeaderSpec> HeaderSpecs
+		#region Properties/Indexers/Events
+
+		List<TextHeaderSpec> TextHeaderSpecs
 		{
 			get;
 		}
@@ -22,7 +24,7 @@ namespace TextMetal.Middleware.Textual.Delimited
 			set;
 		}
 
-		bool FirstRecordIsHeader
+		bool? FirstRecordIsHeader
 		{
 			get;
 			set;
@@ -40,6 +42,12 @@ namespace TextMetal.Middleware.Textual.Delimited
 			set;
 		}
 
+		#endregion
+
+		#region Methods/Operators
+
 		void AssertValid();
+
+		#endregion
 	}
 }

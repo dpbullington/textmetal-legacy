@@ -1,4 +1,4 @@
-{
+﻿{
 	"version": "9.0.0-*",
 	"description": "TextMetal NOP Console App",
 	"authors":
@@ -47,6 +47,7 @@
 		{
 			"dependencies":
 			{
+			
 			}
 		}
 	},

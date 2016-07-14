@@ -449,7 +449,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 
 			OnlyWhen._PROFILE_ThenPrint(string.Format("{0}::GetSchemaRecordsFromReader(...): before yield", typeof(AdoNetStreamingFascade).Name));
 
-			if(!dbDataReader.CanGetColumnSchema())
+			if (!dbDataReader.CanGetColumnSchema())
 				throw new NotSupportedException(string.Format("The connection command type '{0}' does not support schema access.", dbDataReader.GetType().FullName));
 
 			dbColumns = dbDataReader.GetColumnSchema();
@@ -465,7 +465,7 @@ namespace TextMetal.Middleware.Datazoid.Primitives
 						propertyInfos = dbColumn.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty);
 
 						record = new Record();
-						record.TagContext = dbColumn;
+						record.Context = dbColumn;
 
 						if ((object)propertyInfos != null)
 						{

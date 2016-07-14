@@ -90,7 +90,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Source
 																	ColumnName = hs.HeaderName,
 																	ColumnType = GetColumnTypeFromFieldType(hs.FieldType),
 																	ColumnIsNullable = true,
-																	TagContext = hs
+																	Context = hs
 																});
 		}
 

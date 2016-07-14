@@ -14,7 +14,6 @@ using System.Text;
 using TextMetal.Middleware.Datazoid.Extensions;
 using TextMetal.Middleware.Datazoid.Models.Functional;
 using TextMetal.Middleware.Datazoid.Models.Tabular;
-using TextMetal.Middleware.Datazoid.Primitives;
 using TextMetal.Middleware.Datazoid.Repositories.Impl.Migrations;
 using TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies;
 using TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics;

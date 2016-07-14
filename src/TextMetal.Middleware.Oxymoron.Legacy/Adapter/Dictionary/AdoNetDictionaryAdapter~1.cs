@@ -53,7 +53,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary
 
 		#region Methods/Operators
 
-		protected override object CoreGetAlternativeValueFromId(DictionaryConfiguration dictionaryConfiguration, IColumn metaColumn, object surrogateId)
+		protected override object CoreGetAlternativeValueFromId(DictionaryConfiguration dictionaryConfiguration, IColumn column, object surrogateId)
 		{
 			AdoNetParameterConfiguration idAdoNetParameterConfiguration;
 			object value;
@@ -63,12 +63,12 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary
 			if ((object)dictionaryConfiguration == null)
 				throw new ArgumentNullException(nameof(dictionaryConfiguration));
 
-			if ((object)metaColumn == null)
-				throw new ArgumentNullException(nameof(metaColumn));
+			if ((object)column == null)
+				throw new ArgumentNullException(nameof(column));
 
 			if ((object)surrogateId == null)
 				throw new ArgumentNullException(nameof(surrogateId));
-			
+
 			if ((object)this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand == null)
 				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", nameof(this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand)));
 
@@ -77,7 +77,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary
 
 			idAdoNetParameterConfiguration = this.AdapterConfiguration.AdapterSpecificConfiguration.ExecuteCommand.AdoNetParameterConfigurations.SingleOrDefault();
 
-			if((object)idAdoNetParameterConfiguration == null)
+			if ((object)idAdoNetParameterConfiguration == null)
 				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "ExecuteCommand.AdoNetParameterConfigurations.AdoNetParameterConfiguration[0]"));
 
 			dbDataParameterKey = this.DictionaryUnitOfWork.CreateParameter(idAdoNetParameterConfiguration.ParameterDirection, idAdoNetParameterConfiguration.ParameterDbType, idAdoNetParameterConfiguration.ParameterSize, idAdoNetParameterConfiguration.ParameterPrecision, idAdoNetParameterConfiguration.ParameterScale, idAdoNetParameterConfiguration.ParameterNullable, idAdoNetParameterConfiguration.ParameterName, surrogateId);

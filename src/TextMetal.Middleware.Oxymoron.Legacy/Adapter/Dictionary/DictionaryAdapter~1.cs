@@ -25,13 +25,13 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary
 
 		#region Methods/Operators
 
-		protected abstract object CoreGetAlternativeValueFromId(DictionaryConfiguration dictionaryConfiguration, IColumn metaColumn, object surrogateId);
+		protected abstract object CoreGetAlternativeValueFromId(DictionaryConfiguration dictionaryConfiguration, IColumn column, object surrogateId);
 
 		protected abstract void CorePreloadCache(Func<IEnumerable<IRecord>, IEnumerable<IRecord>> recordCallback, DictionaryConfiguration dictionaryConfiguration, IDictionary<string, IDictionary<long, object>> substitutionCacheRoot);
 
-		public object GetAlternativeValueFromId(DictionaryConfiguration dictionaryConfiguration, IColumn metaColumn, object surrogateId)
+		public object GetAlternativeValueFromId(DictionaryConfiguration dictionaryConfiguration, IColumn column, object surrogateId)
 		{
-			return this.CoreGetAlternativeValueFromId(dictionaryConfiguration, metaColumn, surrogateId);
+			return this.CoreGetAlternativeValueFromId(dictionaryConfiguration, column, surrogateId);
 		}
 
 		public void InitializePreloadCache(Func<IEnumerable<IRecord>, IEnumerable<IRecord>> recordCallback, DictionaryConfiguration dictionaryConfiguration, IDictionary<string, IDictionary<long, object>> substitutionCacheRoot)

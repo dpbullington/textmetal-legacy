@@ -15,7 +15,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 	{
 		#region Methods/Operators
 
-		object GetObfuscatedValue(IOxymoronEngine oxymoronEngine, ColumnConfiguration columnConfiguration, IColumn metaColumn, object columnValue);
+		object GetObfuscatedValue(IOxymoronEngine oxymoronEngine, ColumnConfiguration columnConfiguration, IColumn column, object columnValue);
 
 		Type GetObfuscationStrategySpecificConfigurationType();
 

@@ -27,8 +27,6 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Mappings
 
 		#region Fields/Constants
 
-		private string sourceColumn;
-
 		private DbType parameterDbType;
 		private ParameterDirection parameterDirection;
 		private string parameterName;
@@ -38,6 +36,8 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Mappings
 		private byte parameterScale;
 		private int parameterSize;
 		private string parameterSqlType;
+
+		private string sourceColumn;
 		private PropertyInfo targetProperty;
 		private Type targetType;
 
@@ -66,18 +66,6 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Mappings
 			set
 			{
 				this.targetType = value;
-			}
-		}
-
-		public string SourceColumn
-		{
-			get
-			{
-				return this.sourceColumn;
-			}
-			set
-			{
-				this.sourceColumn = value;
 			}
 		}
 
@@ -219,6 +207,18 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Mappings
 			set
 			{
 				// do nothing
+			}
+		}
+
+		public string SourceColumn
+		{
+			get
+			{
+				return this.sourceColumn;
+			}
+			set
+			{
+				this.sourceColumn = value;
 			}
 		}
 

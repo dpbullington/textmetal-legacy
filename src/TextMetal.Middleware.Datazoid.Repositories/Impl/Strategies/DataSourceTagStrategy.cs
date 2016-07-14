@@ -12,7 +12,6 @@ using System.Reflection;
 using TextMetal.Middleware.Datazoid.Models;
 using TextMetal.Middleware.Datazoid.Models.Functional;
 using TextMetal.Middleware.Datazoid.Models.Tabular;
-using TextMetal.Middleware.Datazoid.Primitives;
 using TextMetal.Middleware.Datazoid.Repositories.Impl.Expressions;
 using TextMetal.Middleware.Datazoid.Repositories.Impl.Mappings;
 using TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics;

@@ -23,8 +23,8 @@ namespace TextMetal.Middleware.Solder.Primitives
 		private bool? columnIsNullable;
 		private string columnName;
 		private Type columnType;
+		private object context;
 		private int tableIndex;
-		private object tagContext;
 
 		#endregion
 
@@ -78,6 +78,18 @@ namespace TextMetal.Middleware.Solder.Primitives
 			}
 		}
 
+		public object Context
+		{
+			get
+			{
+				return this.context;
+			}
+			set
+			{
+				this.context = value;
+			}
+		}
+
 		public int TableIndex
 		{
 			get
@@ -87,18 +99,6 @@ namespace TextMetal.Middleware.Solder.Primitives
 			set
 			{
 				this.tableIndex = value;
-			}
-		}
-
-		public object TagContext
-		{
-			get
-			{
-				return this.tagContext;
-			}
-			set
-			{
-				this.tagContext = value;
 			}
 		}
 

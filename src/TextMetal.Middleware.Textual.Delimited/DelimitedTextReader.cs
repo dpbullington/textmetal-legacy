@@ -140,16 +140,16 @@ namespace TextMetal.Middleware.Textual.Delimited
 				}
 				else
 				{
-					TextHeaderSpec textHeaderSpec;
+					ITextHeaderSpec textHeaderSpec;
 					Type fieldType;
 					object fieldValue;
 
 					// check header array and field index validity
-					if ((object)this.DelimitedTextSpec.HeaderSpecs == null ||
-						this.ParserState.fieldIndex >= this.DelimitedTextSpec.HeaderSpecs.Count)
-						throw new InvalidOperationException(string.Format("Delimited text reader parse state failure: field index '{0}' exceeded known field indices '{1}' at character index '{2}'.", this.ParserState.fieldIndex, (object)this.DelimitedTextSpec.HeaderSpecs != null ? (this.DelimitedTextSpec.HeaderSpecs.Count - 1) : (int?)null, this.ParserState.characterIndex));
+					if ((object)this.DelimitedTextSpec.TextHeaderSpecs == null ||
+						this.ParserState.fieldIndex >= this.DelimitedTextSpec.TextHeaderSpecs.Count)
+						throw new InvalidOperationException(string.Format("Delimited text reader parse state failure: field index '{0}' exceeded known field indices '{1}' at character index '{2}'.", this.ParserState.fieldIndex, (object)this.DelimitedTextSpec.TextHeaderSpecs != null ? (this.DelimitedTextSpec.TextHeaderSpecs.Count - 1) : (int?)null, this.ParserState.characterIndex));
 
-					textHeaderSpec = this.DelimitedTextSpec.HeaderSpecs[this.ParserState.fieldIndex];
+					textHeaderSpec = this.DelimitedTextSpec.TextHeaderSpecs[this.ParserState.fieldIndex];
 
 					switch (textHeaderSpec.FieldType)
 					{
@@ -255,14 +255,14 @@ namespace TextMetal.Middleware.Textual.Delimited
 		public override IEnumerable<ITextHeaderSpec> ReadHeaderSpecs()
 		{
 			if (this.ParserState.recordIndex == 0 &&
-				this.DelimitedTextSpec.FirstRecordIsHeader)
+				(this.DelimitedTextSpec.FirstRecordIsHeader ?? false))
 			{
 				var y = this.ResumableParserMainLoop(true);
 
 				y.SingleOrDefault(); // force a single enumeration - yield return is a brain fyck
 			}
 
-			return this.DelimitedTextSpec.HeaderSpecs;
+			return this.DelimitedTextSpec.TextHeaderSpecs;
 		}
 
 		public override IEnumerable<IRecord> ReadRecords()
@@ -319,7 +319,7 @@ namespace TextMetal.Middleware.Textual.Delimited
 				}
 
 				// eval on every loop
-				this.ParserState.isHeaderRecord = this.ParserState.recordIndex == 0 && this.DelimitedTextSpec.FirstRecordIsHeader;
+				this.ParserState.isHeaderRecord = this.ParserState.recordIndex == 0 && (this.DelimitedTextSpec.FirstRecordIsHeader ?? false);
 
 				// peek the next byte
 				__value = this.InnerTextReader.Peek();
@@ -333,19 +333,19 @@ namespace TextMetal.Middleware.Textual.Delimited
 						if (this.ParserState.isHeaderRecord)
 						{
 							string[] headerNames;
-							TextHeaderSpec textHeaderSpec;
+							ITextHeaderSpec textHeaderSpec;
 
 							headerNames = this.ParserState.record.Keys.ToArray();
 
 							// stash parsed header names into header specs member
-							if ((object)this.DelimitedTextSpec.HeaderSpecs != null &&
-								headerNames.Length == this.DelimitedTextSpec.HeaderSpecs.Count)
+							if ((object)this.DelimitedTextSpec.TextHeaderSpecs != null &&
+								headerNames.Length == this.DelimitedTextSpec.TextHeaderSpecs.Count)
 							{
 								if ((object)headerNames != null)
 								{
 									for (int headerIndex = 0; headerIndex < headerNames.Length; headerIndex++)
 									{
-										textHeaderSpec = this.DelimitedTextSpec.HeaderSpecs[headerIndex];
+										textHeaderSpec = this.DelimitedTextSpec.TextHeaderSpecs[headerIndex];
 
 										if (!SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(textHeaderSpec.HeaderName) &&
 											textHeaderSpec.HeaderName.ToLower() != headerNames[headerIndex].ToLower())
@@ -358,13 +358,13 @@ namespace TextMetal.Middleware.Textual.Delimited
 							else
 							{
 								// reset header specs because they do not match in length
-								this.DelimitedTextSpec.HeaderSpecs.Clear();
+								this.DelimitedTextSpec.TextHeaderSpecs.Clear();
 
 								if ((object)headerNames != null)
 								{
 									foreach (string headerName in headerNames)
 									{
-										this.DelimitedTextSpec.HeaderSpecs.Add(new TextHeaderSpec()
+										this.DelimitedTextSpec.TextHeaderSpecs.Add(new TextHeaderSpec()
 																				{
 																					HeaderName = headerName,
 																					FieldType = FieldType.String

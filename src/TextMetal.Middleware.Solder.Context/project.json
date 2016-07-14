@@ -1,4 +1,4 @@
-{
+﻿{
 	"version": "9.0.0-*",
 	"description": "TextMetal Middleware Solder Context Library",
 	"authors":
@@ -42,13 +42,14 @@
 		{
 			"dependencies":
 			{
+			
 			}
 		}
 	},
 
-    "dependencies": {
-        "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
-        "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
-        "NETStandard.Library": "1.6.0"
-    }
+	"dependencies": {
+		"Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
+		"Microsoft.Extensions.PlatformAbstractions": "1.0.0",
+		"NETStandard.Library": "1.6.0"
+	}
 }

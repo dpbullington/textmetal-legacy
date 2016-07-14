@@ -90,7 +90,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 			return Encoding.UTF8.GetString(cipherTextBytes);
 		}
 
-		protected override object CoreGetObfuscatedValue(IOxymoronEngine oxymoronEngine, ColumnConfiguration<ObfuscationStrategyConfiguration> columnConfiguration, IColumn metaColumn, object columnValue)
+		protected override object CoreGetObfuscatedValue(IOxymoronEngine oxymoronEngine, ColumnConfiguration<ObfuscationStrategyConfiguration> columnConfiguration, IColumn column, object columnValue)
 		{
 			long signHash, valueHash;
 			object value;
@@ -99,8 +99,8 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 			if ((object)columnConfiguration == null)
 				throw new ArgumentNullException(nameof(columnConfiguration));
 
-			if ((object)metaColumn == null)
-				throw new ArgumentNullException(nameof(metaColumn));
+			if ((object)column == null)
+				throw new ArgumentNullException(nameof(column));
 
 			if ((object)columnConfiguration.ObfuscationStrategySpecificConfiguration == null)
 				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", nameof(columnConfiguration.ObfuscationStrategySpecificConfiguration)));

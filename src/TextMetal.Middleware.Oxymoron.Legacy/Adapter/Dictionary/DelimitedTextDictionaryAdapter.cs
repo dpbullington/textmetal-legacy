@@ -38,7 +38,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary
 
 		#region Methods/Operators
 
-		protected override object CoreGetAlternativeValueFromId(DictionaryConfiguration dictionaryConfiguration, IColumn metaColumn, object surrogateId)
+		protected override object CoreGetAlternativeValueFromId(DictionaryConfiguration dictionaryConfiguration, IColumn column, object surrogateId)
 		{
 			object value;
 			int _surrogateId;
@@ -49,8 +49,8 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary
 			if ((object)dictionaryConfiguration == null)
 				throw new ArgumentNullException(nameof(dictionaryConfiguration));
 
-			if ((object)metaColumn == null)
-				throw new ArgumentNullException(nameof(metaColumn));
+			if ((object)column == null)
+				throw new ArgumentNullException(nameof(column));
 
 			if ((object)surrogateId == null)
 				throw new ArgumentNullException(nameof(surrogateId));

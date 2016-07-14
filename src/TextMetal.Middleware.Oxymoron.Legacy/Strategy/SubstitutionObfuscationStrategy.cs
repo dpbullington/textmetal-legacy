@@ -30,7 +30,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 
 		#region Methods/Operators
 
-		private static object GetSubstitution(IOxymoronEngine oxymoronEngine, DictionaryConfiguration dictionaryConfiguration, IColumn metaColumn, long surrogateId, object value)
+		private static object GetSubstitution(IOxymoronEngine oxymoronEngine, DictionaryConfiguration dictionaryConfiguration, IColumn column, long surrogateId, object value)
 		{
 			Type valueType;
 			string _value;
@@ -44,8 +44,8 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 			if ((object)dictionaryConfiguration == null)
 				throw new ArgumentNullException(nameof(dictionaryConfiguration));
 
-			if ((object)metaColumn == null)
-				throw new ArgumentNullException(nameof(metaColumn));
+			if ((object)column == null)
+				throw new ArgumentNullException(nameof(column));
 
 			if ((object)value == null)
 				return null;
@@ -78,7 +78,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 				if (dictionaryConfiguration.PreloadEnabled)
 					throw new InvalidOperationException(string.Format("Cache miss when is preload enabled for dictionary '{0}'; current cache slot item count: {1}.", dictionaryConfiguration.DictionaryId, dictionaryCache.Count));
 
-				value = oxymoronEngine.OxymoronHost.GetValueForIdViaDictionaryResolution(dictionaryConfiguration, metaColumn, surrogateId);
+				value = oxymoronEngine.OxymoronHost.GetValueForIdViaDictionaryResolution(dictionaryConfiguration, column, surrogateId);
 
 				if (SUBSTITUTION_CACHE_ENABLED)
 					dictionaryCache.Add(surrogateId, value);
@@ -87,7 +87,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 			return value;
 		}
 
-		protected override object CoreGetObfuscatedValue(IOxymoronEngine oxymoronEngine, ColumnConfiguration<SubstitutionObfuscationStrategyConfiguration> columnConfiguration, IColumn metaColumn, object columnValue)
+		protected override object CoreGetObfuscatedValue(IOxymoronEngine oxymoronEngine, ColumnConfiguration<SubstitutionObfuscationStrategyConfiguration> columnConfiguration, IColumn column, object columnValue)
 		{
 			long signHash, valueHash;
 			DictionaryConfiguration dictionaryConfiguration;
@@ -100,8 +100,8 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 			if ((object)columnConfiguration == null)
 				throw new ArgumentNullException(nameof(columnConfiguration));
 
-			if ((object)metaColumn == null)
-				throw new ArgumentNullException(nameof(metaColumn));
+			if ((object)column == null)
+				throw new ArgumentNullException(nameof(column));
 
 			if ((object)columnConfiguration.ObfuscationStrategySpecificConfiguration == null)
 				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", nameof(columnConfiguration.ObfuscationStrategySpecificConfiguration)));
@@ -110,7 +110,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 			valueHash = this.GetValueHash(oxymoronEngine, dictionaryConfiguration.RecordCount, columnValue);
 			surrogateId = valueHash;
 
-			value = GetSubstitution(oxymoronEngine, dictionaryConfiguration, metaColumn, surrogateId, columnValue);
+			value = GetSubstitution(oxymoronEngine, dictionaryConfiguration, column, surrogateId, columnValue);
 
 			return value;
 		}

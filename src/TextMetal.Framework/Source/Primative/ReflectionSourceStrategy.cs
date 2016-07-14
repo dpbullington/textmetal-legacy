@@ -11,7 +11,6 @@ using System.Reflection;
 
 using TextMetal.Framework.Associative;
 using TextMetal.Middleware.Solder.Extensions;
-using TextMetal.Middleware.Solder.Utilities;
 
 namespace TextMetal.Framework.Source.Primative
 {

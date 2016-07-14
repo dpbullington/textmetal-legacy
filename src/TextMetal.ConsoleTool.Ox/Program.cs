@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 using TextMetal.Middleware.Datazoid.Primitives;
@@ -48,14 +47,6 @@ namespace TextMetal.ConsoleTool.Ox
 		[STAThread]
 		public static int Main(string[] args)
 		{
-			args = new[]
-					{
-						@"-sourcefile2:Null_to_Null_Example.json",
-						@"-sourcefile:DB_to_DB-sqlbcp_Example.json",
-						@"-sourcefile2:DB_to_DB-reccmd_Example.json",
-						@"-sourcefile2:DTF_to_DTF_Example.json"
-					};
-
 			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
 			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<IToolHost>(string.Empty, false, new SingletonWrapperDependencyResolution<IToolHost>(new TransientDefaultConstructorDependencyResolution<ToolHost>()));
 			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<IAdoNetStreamingFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetStreamingFascade>(new TransientActivatorAutoWiringDependencyResolution<AdoNetStreamingFascade>()));

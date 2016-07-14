@@ -13,7 +13,6 @@ using Newtonsoft.Json;
 
 using TextMetal.Middleware.Datazoid.Extensions;
 using TextMetal.Middleware.Datazoid.UoW;
-using TextMetal.Middleware.Solder.Extensions;
 using TextMetal.Middleware.Solder.Primitives;
 
 namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters

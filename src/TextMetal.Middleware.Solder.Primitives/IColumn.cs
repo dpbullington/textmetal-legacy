@@ -31,12 +31,12 @@ namespace TextMetal.Middleware.Solder.Primitives
 			get;
 		}
 
-		int TableIndex
+		object Context
 		{
 			get;
 		}
 
-		object TagContext
+		int TableIndex
 		{
 			get;
 		}

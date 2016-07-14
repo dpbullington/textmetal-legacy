@@ -11,6 +11,11 @@ namespace TextMetal.Middleware.Solder.Primitives
 	{
 		#region Properties/Indexers/Events
 
+		object Context
+		{
+			get;
+		}
+
 		int Index
 		{
 			get;

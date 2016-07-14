@@ -63,8 +63,8 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		private byte parameterScale;
 		private int parameterSize;
 		private string parameterSqlType;
-		private string sourceColumn;
 		private object parameterValue;
+		private string sourceColumn;
 
 		#endregion
 
@@ -232,19 +232,6 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			set
 			{
 				this.parameterCSharpNullableLiteral = value;
-			}
-		}
-
-		[XmlAttribute]
-		public string SourceColumn
-		{
-			get
-			{
-				return this.sourceColumn;
-			}
-			set
-			{
-				this.sourceColumn = value;
 			}
 		}
 
@@ -586,6 +573,19 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 			}
 		}
 
+		[XmlAttribute]
+		public string ParameterSqlType
+		{
+			get
+			{
+				return this.parameterSqlType;
+			}
+			set
+			{
+				this.parameterSqlType = value;
+			}
+		}
+
 		public object ParameterValue
 		{
 			get
@@ -599,15 +599,15 @@ namespace TextMetal.Framework.Source.DatabaseSchema
 		}
 
 		[XmlAttribute]
-		public string ParameterSqlType
+		public string SourceColumn
 		{
 			get
 			{
-				return this.parameterSqlType;
+				return this.sourceColumn;
 			}
 			set
 			{
-				this.parameterSqlType = value;
+				this.sourceColumn = value;
 			}
 		}
 

@@ -22,6 +22,7 @@ namespace TextMetal.Middleware.Solder.Primitives
 		#region Fields/Constants
 
 		private readonly int index;
+		private object context;
 		private IEnumerable<IRecord> records;
 		private int? recordsAffected;
 
@@ -34,6 +35,18 @@ namespace TextMetal.Middleware.Solder.Primitives
 			get
 			{
 				return this.index;
+			}
+		}
+
+		public object Context
+		{
+			get
+			{
+				return this.context;
+			}
+			set
+			{
+				this.context = value;
 			}
 		}
 

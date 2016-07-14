@@ -11,7 +11,7 @@ namespace TextMetal.Middleware.Textual.Primitives
 	{
 		#region Properties/Indexers/Events
 
-		NumberFormatInfo FieldNumberFormatSpec
+		string ValueFormat
 		{
 			get;
 			set;

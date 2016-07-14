@@ -27,20 +27,35 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 
 		private string connectionAqtn;
 		private string connectionString;
-		private AdoNetCommandConfiguration preExecuteCommand;
 		private AdoNetCommandConfiguration executeCommand;
 		private AdoNetCommandConfiguration postExecuteCommand;
+		private AdoNetCommandConfiguration preExecuteCommand;
 
-		public AdoNetCommandConfiguration PreExecuteCommand
+		#endregion
+
+		#region Properties/Indexers/Events
+
+		public string ConnectionAqtn
 		{
 			get
 			{
-				return this.preExecuteCommand;
+				return this.connectionAqtn;
 			}
 			set
 			{
-				this.EnsureParentOnPropertySet(this.preExecuteCommand, value);
-				this.preExecuteCommand = value;
+				this.connectionAqtn = value;
+			}
+		}
+
+		public string ConnectionString
+		{
+			get
+			{
+				return this.connectionString;
+			}
+			set
+			{
+				this.connectionString = value;
 			}
 		}
 
@@ -70,31 +85,16 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 			}
 		}
 
-		#endregion
-
-		#region Properties/Indexers/Events
-
-		public string ConnectionAqtn
+		public AdoNetCommandConfiguration PreExecuteCommand
 		{
 			get
 			{
-				return this.connectionAqtn;
+				return this.preExecuteCommand;
 			}
 			set
 			{
-				this.connectionAqtn = value;
-			}
-		}
-
-		public string ConnectionString
-		{
-			get
-			{
-				return this.connectionString;
-			}
-			set
-			{
-				this.connectionString = value;
+				this.EnsureParentOnPropertySet(this.preExecuteCommand, value);
+				this.preExecuteCommand = value;
 			}
 		}
 

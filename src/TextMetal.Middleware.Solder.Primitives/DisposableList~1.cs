@@ -6,10 +6,10 @@
 using System;
 using System.Collections.Generic;
 
-namespace TextMetal.Middleware.Oxymoron.Legacy.Support
+namespace TextMetal.Middleware.Solder.Primitives
 {
-	public class DisposableList<T> : List<T>, IDisposable
-		where T : IDisposable
+	public class DisposableList<TDisposable> : List<TDisposable>, IDisposable
+		where TDisposable : IDisposable
 	{
 		#region Constructors/Destructors
 
@@ -25,7 +25,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Support
 		{
 			if (disposing)
 			{
-				foreach (IDisposable disposable in this)
+				foreach (TDisposable disposable in this)
 					disposable.Dispose();
 			}
 		}

@@ -14,7 +14,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Hosting
 	{
 		#region Methods/Operators
 
-		object GetValueForIdViaDictionaryResolution(DictionaryConfiguration dictionaryConfiguration, IColumn metaColumn, object surrogateId);
+		object GetValueForIdViaDictionaryResolution(DictionaryConfiguration dictionaryConfiguration, IColumn column, object surrogateId);
 
 		#endregion
 	}

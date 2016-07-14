@@ -42,7 +42,7 @@ namespace TextMetal.Middleware.Textual.Primitives
 		#endregion
 
 		#region Methods/Operators
-		
+
 		public void Close()
 		{
 			this.Dispose(true);

@@ -17,7 +17,8 @@
 
 	"SourceAdapterConfiguration":
 	{
-		"AdapterAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Adapter.Source.AdoNetSourceAdapter, TextMetal.Middleware.Oxymoron.Legacy",
+		"AdapterAqtn":
+			"TextMetal.Middleware.Oxymoron.Legacy.Adapter.Source.AdoNetSourceAdapter, TextMetal.Middleware.Oxymoron.Legacy",
 
 		"AdapterSpecificConfiguration":
 		{
@@ -46,7 +47,8 @@
 
 	"DestinationAdapterConfiguration":
 	{
-		"AdapterAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination.RecordCommandAdoNetDestinationAdapter, TextMetal.Middleware.Oxymoron.Legacy",
+		"AdapterAqtn":
+			"TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination.RecordCommandAdoNetDestinationAdapter, TextMetal.Middleware.Oxymoron.Legacy",
 
 		"AdapterSpecificConfiguration":
 		{
@@ -62,7 +64,8 @@
 			"ExecuteCommand":
 			{
 				"CommandType": "Text",
-				"CommandText": "INSERT INTO [bank_account_demo].[dbo].[Ox_AccountReporting] VALUES (@AccountReportingId, @TransactionNumber, @InstitutionName, @RefNumber, @TheDate, @PayeeName, @TheAmount, @IsCleared, @CategoryName, @DueDate, @Comments)",
+				"CommandText":
+					"INSERT INTO [bank_account_demo].[dbo].[Ox_AccountReporting] VALUES (@AccountReportingId, @TransactionNumber, @InstitutionName, @RefNumber, @TheDate, @PayeeName, @TheAmount, @IsCleared, @CategoryName, @DueDate, @Comments)",
 
 				"AdoNetParameterConfigurations":
 				[
@@ -158,7 +161,8 @@
 
 			"DictionaryAdapterConfiguration":
 			{
-				"AdapterAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary.AdoNetDictionaryAdapter, TextMetal.Middleware.Oxymoron.Legacy",
+				"AdapterAqtn":
+					"TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary.AdoNetDictionaryAdapter, TextMetal.Middleware.Oxymoron.Legacy",
 
 				"AdapterSpecificConfiguration":
 				{
@@ -174,7 +178,8 @@
 					"ExecuteCommand":
 					{
 						"CommandType": "Text",
-						"CommandText": "SELECT t.[Key], t.[CrayonColor] FROM [bank_account_demo].[OxConfig].[CrayonColorDictionary] t ORDER BY t.[Key] ASC"
+						"CommandText":
+							"SELECT t.[Key], t.[CrayonColor] FROM [bank_account_demo].[OxConfig].[CrayonColorDictionary] t ORDER BY t.[Key] ASC"
 					},
 
 					"PostExecuteCommand":
@@ -185,7 +190,6 @@
 				}
 			}
 		},
-
 		{
 			"PreloadEnabled": true,
 			"DictionaryId": "d_LastName",
@@ -193,7 +197,8 @@
 
 			"DictionaryAdapterConfiguration":
 			{
-				"AdapterAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary.AdoNetDictionaryAdapter, TextMetal.Middleware.Oxymoron.Legacy",
+				"AdapterAqtn":
+					"TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary.AdoNetDictionaryAdapter, TextMetal.Middleware.Oxymoron.Legacy",
 
 				"AdapterSpecificConfiguration":
 				{
@@ -209,7 +214,8 @@
 					"ExecuteCommand":
 					{
 						"CommandType": "Text",
-						"CommandText": "SELECT t.[Key], t.[LastName] FROM [bank_account_demo].[OxConfig].[LastNameDictionary] t ORDER BY t.[Key] ASC"
+						"CommandText":
+							"SELECT t.[Key], t.[LastName] FROM [bank_account_demo].[OxConfig].[LastNameDictionary] t ORDER BY t.[Key] ASC"
 					},
 
 					"PostExecuteCommand":
@@ -220,7 +226,6 @@
 				}
 			}
 		},
-
 		{
 			"PreloadEnabled": true,
 			"DictionaryId": "d_FirstName",
@@ -228,7 +233,8 @@
 
 			"DictionaryAdapterConfiguration":
 			{
-				"AdapterAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary.AdoNetDictionaryAdapter, TextMetal.Middleware.Oxymoron.Legacy",
+				"AdapterAqtn":
+					"TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary.AdoNetDictionaryAdapter, TextMetal.Middleware.Oxymoron.Legacy",
 
 				"AdapterSpecificConfiguration":
 				{
@@ -244,7 +250,8 @@
 					"ExecuteCommand":
 					{
 						"CommandType": "Text",
-						"CommandText": "SELECT t.[Key], t.[FirstName] FROM [bank_account_demo].[OxConfig].[FirstNameDictionary] t ORDER BY t.[Key] ASC"
+						"CommandText":
+							"SELECT t.[Key], t.[FirstName] FROM [bank_account_demo].[OxConfig].[FirstNameDictionary] t ORDER BY t.[Key] ASC"
 					},
 
 					"PostExecuteCommand":
@@ -263,97 +270,102 @@
 		[
 			{
 				"ColumnName": "AccountReportingId",
-				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.SurrogateKeyObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategyAqtn":
+					"TextMetal.Middleware.Oxymoron.Legacy.Strategy.SurrogateKeyObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
 				"ObfuscationStrategySpecificConfiguration":
 				{
+				
 				}
 			},
-
 			{
 				"ColumnName": "TransactionNumber",
-				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.DefaultingObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategyAqtn":
+					"TextMetal.Middleware.Oxymoron.Legacy.Strategy.DefaultingObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
 				"ObfuscationStrategySpecificConfiguration":
 				{
 					"DefaultingCanBeNull": false
 				}
 			},
-
 			{
 				"ColumnName": "InstitutionName",
-				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.SubstitutionObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategyAqtn":
+					"TextMetal.Middleware.Oxymoron.Legacy.Strategy.SubstitutionObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
 				"ObfuscationStrategySpecificConfiguration":
 				{
 					"DictionaryReference": "d_FirstName"
 				}
 			},
-
 			{
 				"ColumnName": "RefNumber",
 				"IsColumnNullable": false,
-				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.ShufflingObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategyAqtn":
+					"TextMetal.Middleware.Oxymoron.Legacy.Strategy.ShufflingObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
 				"ObfuscationStrategySpecificConfiguration":
 				{
+				
 				}
 			},
-
 			{
 				"ColumnName": "TheDate",
-				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.VarianceObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategyAqtn":
+					"TextMetal.Middleware.Oxymoron.Legacy.Strategy.VarianceObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
 				"ObfuscationStrategySpecificConfiguration":
 				{
 					"VariancePercentValue": 25
 				}
 			},
-
 			{
 				"ColumnName": "PayeeName",
-				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.SubstitutionObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategyAqtn":
+					"TextMetal.Middleware.Oxymoron.Legacy.Strategy.SubstitutionObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
 				"ObfuscationStrategySpecificConfiguration":
 				{
 					"DictionaryReference": "d_LastName"
 				}
 			},
-
 			{
 				"ColumnName": "TheAmount",
-				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.VarianceObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategyAqtn":
+					"TextMetal.Middleware.Oxymoron.Legacy.Strategy.VarianceObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
 				"ObfuscationStrategySpecificConfiguration":
 				{
 					"VariancePercentValue": 100
 				}
 			},
-
 			{
 				"ColumnName": "IsCleared",
-				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.NoneObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategyAqtn":
+					"TextMetal.Middleware.Oxymoron.Legacy.Strategy.NoneObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
 				"ObfuscationStrategySpecificConfiguration":
 				{
+				
 				}
 			},
-
 			{
 				"ColumnName": "CategoryName",
-				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.SubstitutionObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategyAqtn":
+					"TextMetal.Middleware.Oxymoron.Legacy.Strategy.SubstitutionObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
 				"ObfuscationStrategySpecificConfiguration":
 				{
 					"DictionaryReference": "d_CrayonColor"
 				}
 			},
-
 			{
 				"ColumnName": "DueDate",
-				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.VarianceObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategyAqtn":
+					"TextMetal.Middleware.Oxymoron.Legacy.Strategy.VarianceObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
 				"ObfuscationStrategySpecificConfiguration":
 				{
 					"VariancePercentValue": 10
 				}
 			},
-
 			{
 				"ColumnName": "Comments",
-				"ObfuscationStrategyAqtn": "TextMetal.Middleware.Oxymoron.Legacy.Strategy.CipheringObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
+				"ObfuscationStrategyAqtn":
+					"TextMetal.Middleware.Oxymoron.Legacy.Strategy.CipheringObfuscationStrategy, TextMetal.Middleware.Oxymoron.Legacy",
 				"ObfuscationStrategySpecificConfiguration":
 				{
+				
 				}
 			}
 		]

@@ -85,11 +85,11 @@ namespace TextMetal.Middleware.Textual.Delimited
 
 			transientStringBuilder = new StringBuilder();
 
-			if ((object)this.DelimitedTextSpec.HeaderSpecs != null &&
-				this.DelimitedTextSpec.FirstRecordIsHeader)
+			if ((object)this.DelimitedTextSpec.TextHeaderSpecs != null &&
+				(this.DelimitedTextSpec.FirstRecordIsHeader ?? false))
 			{
 				first = true;
-				foreach (TextHeaderSpec headerSpec in this.DelimitedTextSpec.HeaderSpecs)
+				foreach (TextHeaderSpec headerSpec in this.DelimitedTextSpec.TextHeaderSpecs)
 				{
 					this.WriteField(transientStringBuilder, first, headerSpec.HeaderName);
 

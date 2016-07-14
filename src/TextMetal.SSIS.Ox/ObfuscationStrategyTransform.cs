@@ -21,7 +21,6 @@ using TextMetal.Middleware.Oxymoron.Legacy;
 using TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary;
 using TextMetal.Middleware.Oxymoron.Legacy.Config;
 using TextMetal.Middleware.Oxymoron.Legacy.Hosting;
-using TextMetal.Middleware.Oxymoron.Legacy.Support;
 using TextMetal.Middleware.Solder.Primitives;
 
 namespace TextMetal.SSIS.Ox
@@ -403,9 +402,9 @@ namespace TextMetal.SSIS.Ox
 			return UnitOfWork.From(this.DictionaryDbConnection, null);
 		}
 
-		public object GetValueForIdViaDictionaryResolution(DictionaryConfiguration dictionaryConfiguration, IColumn metaColumn, object surrogateId)
+		public object GetValueForIdViaDictionaryResolution(DictionaryConfiguration dictionaryConfiguration, IColumn column, object surrogateId)
 		{
-			return this.DictionaryConfigurationToAdapterMappings[dictionaryConfiguration].GetAlternativeValueFromId(dictionaryConfiguration, metaColumn, surrogateId);
+			return this.DictionaryConfigurationToAdapterMappings[dictionaryConfiguration].GetAlternativeValueFromId(dictionaryConfiguration, column, surrogateId);
 		}
 
 		/// <summary>
@@ -686,7 +685,7 @@ namespace TextMetal.SSIS.Ox
 			object columnValue, obfuColumnValue;
 			int rowIndex = 0;
 
-			IColumn metaColumn;
+			IColumn column;
 
 			if (!buffer.EndOfRowset)
 			{
@@ -703,17 +702,17 @@ namespace TextMetal.SSIS.Ox
 						columnType = InferClrTypeForSsisDataType(columnInfo.type);
 						columnValue = buffer[columnInfo.bufferColumnIndex];
 
-						metaColumn = new Column()
+						column = new Column()
 									{
 										ColumnIndex = columnIndex,
 										ColumnName = columnName,
 										ColumnType = columnType,
 										ColumnIsNullable = null,
 										TableIndex = 0,
-										TagContext = null
+										Context = null
 									};
 
-						obfuColumnValue = this.OxymoronEngine.GetObfuscatedValue(metaColumn, columnValue);
+						obfuColumnValue = this.OxymoronEngine.GetObfuscatedValue(column, columnValue);
 
 						SetBufferValue(buffer, columnInfo.bufferColumnIndex, obfuColumnValue, columnInfo.type);
 

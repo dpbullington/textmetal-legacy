@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 using TextMetal.Middleware.Oxymoron.Legacy.Config;
 using TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters;
@@ -52,34 +53,57 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination
 
 		protected override void CoreInitialize()
 		{
+			TextHeaderSpec[] upstreamTextHeaderSpec;
+
+			AdapterConfiguration<DelimitedTextAdapterConfiguration> destinationAdapterConfiguration;
 			AdapterConfiguration<DelimitedTextAdapterConfiguration> sourceAdapterConfiguration;
 			DelimitedTextSpec effectiveDelimitedTextSpec;
 
 			if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(this.AdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextFilePath))
 				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "DestinationAdapterConfiguration.DelimitedTextAdapterConfiguration.DelimitedTextFilePath"));
 
+			upstreamTextHeaderSpec = this.UpstreamMetadata.Select(um => um.Context).OfType<IRecord>().Select(r => r.Context).OfType<TextHeaderSpec>().ToArray();
+
+			destinationAdapterConfiguration = this.AdapterConfiguration;
 			sourceAdapterConfiguration = new AdapterConfiguration<DelimitedTextAdapterConfiguration>(((ObfuscationConfiguration)this.AdapterConfiguration.Parent).SourceAdapterConfiguration);
 
-			if ((object)this.AdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextSpec == null &&
-				((object)sourceAdapterConfiguration == null ||
-				(object)sourceAdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextSpec == null))
-				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "[Source/Destination]...DelimitedTextSpec"));
-
-			if ((object)this.AdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextSpec != null)
-			{
-				effectiveDelimitedTextSpec = this.AdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextSpec;
-
-				if (effectiveDelimitedTextSpec.HeaderSpecs.Count <= 0 &&
-					(object)sourceAdapterConfiguration != null &&
-					(object)sourceAdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextSpec.HeaderSpecs != null)
-					effectiveDelimitedTextSpec.HeaderSpecs.AddRange(sourceAdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextSpec.HeaderSpecs);
-			}
+			if ((object)destinationAdapterConfiguration != null &&
+				(object)destinationAdapterConfiguration.AdapterSpecificConfiguration != null &&
+				(object)destinationAdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextSpec != null)
+				effectiveDelimitedTextSpec = destinationAdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextSpec;
 			else
-				effectiveDelimitedTextSpec = this.AdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextSpec;
+				effectiveDelimitedTextSpec = new DelimitedTextSpec();
 
+			// 2016-07-12 / dpbullington@gmail.com: fix NRE bug in the below check
+			// attempt to "flow" the DTM spec from source to destination if not specified on destination
+			if ((object)sourceAdapterConfiguration != null &&
+				(object)sourceAdapterConfiguration.AdapterSpecificConfiguration != null &&
+				(object)sourceAdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextSpec != null)
+			{
+				if (effectiveDelimitedTextSpec.TextHeaderSpecs.Count <= 0)
+				{
+					if(upstreamTextHeaderSpec.Length <= 0)
+						effectiveDelimitedTextSpec.TextHeaderSpecs.AddRange(sourceAdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextSpec.TextHeaderSpecs);
+					else
+						effectiveDelimitedTextSpec.TextHeaderSpecs.AddRange(upstreamTextHeaderSpec);
+				}
+
+				if (effectiveDelimitedTextSpec.FieldDelimiter == null)
+					effectiveDelimitedTextSpec.FieldDelimiter = sourceAdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextSpec.FieldDelimiter;
+
+				if (effectiveDelimitedTextSpec.QuoteValue == null)
+					effectiveDelimitedTextSpec.QuoteValue = sourceAdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextSpec.QuoteValue;
+
+				if (effectiveDelimitedTextSpec.RecordDelimiter == null)
+					effectiveDelimitedTextSpec.FieldDelimiter = sourceAdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextSpec.RecordDelimiter;
+
+				if (effectiveDelimitedTextSpec.FirstRecordIsHeader == null)
+					effectiveDelimitedTextSpec.FirstRecordIsHeader = sourceAdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextSpec.FirstRecordIsHeader;
+			}
+			
 			if ((object)effectiveDelimitedTextSpec == null ||
-				effectiveDelimitedTextSpec.HeaderSpecs.Count <= 0)
-				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", "[Source/Destination]...DelimitedTextSpec.HeaderSpecs"));
+				effectiveDelimitedTextSpec.TextHeaderSpecs.Count <= 0)
+				throw new InvalidOperationException(string.Format("Configuration missing: [Source and/or Destination]...{0}.{1}", nameof(DelimitedTextSpec), nameof(DelimitedTextSpec.TextHeaderSpecs)));
 
 			this.DelimitedTextWriter = new DelimitedTextWriter(new StreamWriter(File.Open(this.AdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextFilePath, FileMode.Create, FileAccess.Write, FileShare.None)), effectiveDelimitedTextSpec);
 		}

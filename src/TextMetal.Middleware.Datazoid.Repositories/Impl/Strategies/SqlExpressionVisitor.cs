@@ -13,7 +13,6 @@ using TextMetal.Middleware.Datazoid.Repositories.Impl.Expressions;
 using TextMetal.Middleware.Datazoid.Repositories.Impl.Mappings;
 using TextMetal.Middleware.Datazoid.Repositories.Impl.Tactics;
 using TextMetal.Middleware.Datazoid.UoW;
-using TextMetal.Middleware.Solder.Extensions;
 
 namespace TextMetal.Middleware.Datazoid.Repositories.Impl.Strategies
 {

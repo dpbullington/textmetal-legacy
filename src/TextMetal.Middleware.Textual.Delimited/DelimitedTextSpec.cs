@@ -24,9 +24,9 @@ namespace TextMetal.Middleware.Textual.Delimited
 
 		#region Fields/Constants
 
-		private readonly List<TextHeaderSpec> headerSpecs = new List<TextHeaderSpec>();
+		private readonly List<TextHeaderSpec> textHeaderSpecs = new List<TextHeaderSpec>();
 		private string fieldDelimiter;
-		private bool firstRecordIsHeader;
+		private bool? firstRecordIsHeader;
 		private string quoteValue;
 		private string recordDelimiter;
 
@@ -34,11 +34,11 @@ namespace TextMetal.Middleware.Textual.Delimited
 
 		#region Properties/Indexers/Events
 
-		public List<TextHeaderSpec> HeaderSpecs
+		public List<TextHeaderSpec> TextHeaderSpecs
 		{
 			get
 			{
-				return this.headerSpecs;
+				return this.textHeaderSpecs;
 			}
 		}
 
@@ -54,7 +54,7 @@ namespace TextMetal.Middleware.Textual.Delimited
 			}
 		}
 
-		public bool FirstRecordIsHeader
+		public bool? FirstRecordIsHeader
 		{
 			get
 			{

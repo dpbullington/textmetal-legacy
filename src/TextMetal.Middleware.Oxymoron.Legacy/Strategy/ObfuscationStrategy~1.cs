@@ -31,9 +31,9 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 
 		#region Methods/Operators
 
-		protected abstract object CoreGetObfuscatedValue(IOxymoronEngine oxymoronEngine, ColumnConfiguration<TObfuscationStrategyConfiguration> columnConfiguration, IColumn metaColumn, object columnValue);
+		protected abstract object CoreGetObfuscatedValue(IOxymoronEngine oxymoronEngine, ColumnConfiguration<TObfuscationStrategyConfiguration> columnConfiguration, IColumn column, object columnValue);
 
-		public object GetObfuscatedValue(IOxymoronEngine oxymoronEngine, ColumnConfiguration columnConfiguration, IColumn metaColumn, object columnValue)
+		public object GetObfuscatedValue(IOxymoronEngine oxymoronEngine, ColumnConfiguration columnConfiguration, IColumn column, object columnValue)
 		{
 			ColumnConfiguration<TObfuscationStrategyConfiguration> _columnConfiguration;
 			object value;
@@ -44,8 +44,8 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 			if ((object)columnConfiguration == null)
 				throw new ArgumentNullException(nameof(columnConfiguration));
 
-			if ((object)metaColumn == null)
-				throw new ArgumentNullException(nameof(metaColumn));
+			if ((object)column == null)
+				throw new ArgumentNullException(nameof(column));
 
 			if ((object)columnValue == DBNull.Value)
 				columnValue = null;
@@ -58,7 +58,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Strategy
 			if ((object)_columnConfiguration.ObfuscationStrategySpecificConfiguration == null)
 				throw new InvalidOperationException(string.Format("Configuration missing: '{0}'.", nameof(_columnConfiguration.ObfuscationStrategySpecificConfiguration)));
 
-			value = this.CoreGetObfuscatedValue(oxymoronEngine, _columnConfiguration, metaColumn, columnValue);
+			value = this.CoreGetObfuscatedValue(oxymoronEngine, _columnConfiguration, column, columnValue);
 
 			return value;
 		}

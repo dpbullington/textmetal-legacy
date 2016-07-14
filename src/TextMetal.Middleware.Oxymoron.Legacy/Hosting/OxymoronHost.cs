@@ -52,7 +52,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Hosting
 			}
 		}
 
-		protected abstract object CoreGetValueForIdViaDictionaryResolution(DictionaryConfiguration dictionaryConfiguration, IColumn metaColumn, object surrogateId);
+		protected abstract object CoreGetValueForIdViaDictionaryResolution(DictionaryConfiguration dictionaryConfiguration, IColumn column, object surrogateId);
 
 		public void Dispose()
 		{
@@ -70,9 +70,9 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Hosting
 			}
 		}
 
-		public object GetValueForIdViaDictionaryResolution(DictionaryConfiguration dictionaryConfiguration, IColumn metaColumn, object surrogateId)
+		public object GetValueForIdViaDictionaryResolution(DictionaryConfiguration dictionaryConfiguration, IColumn column, object surrogateId)
 		{
-			return this.CoreGetValueForIdViaDictionaryResolution(dictionaryConfiguration, metaColumn, surrogateId);
+			return this.CoreGetValueForIdViaDictionaryResolution(dictionaryConfiguration, column, surrogateId);
 		}
 
 		#endregion

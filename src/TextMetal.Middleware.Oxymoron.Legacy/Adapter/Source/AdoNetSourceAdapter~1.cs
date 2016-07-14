@@ -57,7 +57,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Source
 		{
 			IEnumerable<IResultset> resultsets;
 			IEnumerable<IRecord> records;
-			List<Column> metaColumns;
+			List<Column> columns;
 			IEnumerable<DbParameter> dbParameters;
 
 			this.SourceUnitOfWork = this.AdapterConfiguration.AdapterSpecificConfiguration.GetUnitOfWork();
@@ -89,7 +89,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Source
 				if ((object)resultsets == null)
 					throw new InvalidOperationException(string.Format("Resultsets were invalid."));
 
-				metaColumns = new List<Column>();
+				columns = new List<Column>();
 
 				foreach (IResultset resultset in resultsets)
 				{
@@ -101,21 +101,21 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Source
 					int i = 0;
 					foreach (IRecord record in records)
 					{
-						DbColumn dbColumn = (DbColumn)record.TagContext;
+						DbColumn dbColumn = (DbColumn)record.Context;
 
-						metaColumns.Add(new Column()
+						columns.Add(new Column()
 										{
 											TableIndex = resultset.Index,
 											ColumnIndex = i++,
 											ColumnName = dbColumn.ColumnName,
 											ColumnType = dbColumn.DataType,
 											ColumnIsNullable = dbColumn.AllowDBNull,
-											TagContext = record
+											Context = record
 										});
 					}
 				}
 
-				this.UpstreamMetadata = metaColumns;
+				this.UpstreamMetadata = columns;
 			}
 		}
 

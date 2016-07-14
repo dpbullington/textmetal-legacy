@@ -27,8 +27,6 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 
 		#region Fields/Constants
 
-		private string sourceColumn;
-
 		private DbType parameterDbType;
 		private ParameterDirection parameterDirection;
 		private string parameterName;
@@ -38,21 +36,11 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 		private int parameterSize;
 		private object parameterValue;
 
+		private string sourceColumn;
+
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		public string SourceColumn
-		{
-			get
-			{
-				return this.sourceColumn;
-			}
-			set
-			{
-				this.sourceColumn = value;
-			}
-		}
 
 		public DbType ParameterDbType
 		{
@@ -160,6 +148,18 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters
 			set
 			{
 				base.Parent = value;
+			}
+		}
+
+		public string SourceColumn
+		{
+			get
+			{
+				return this.sourceColumn;
+			}
+			set
+			{
+				this.sourceColumn = value;
 			}
 		}
 

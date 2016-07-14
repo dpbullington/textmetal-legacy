@@ -139,24 +139,24 @@ namespace TextMetal.Middleware.Oxymoron.Legacy
 			JsonSerializationStrategy.Instance.SetObjectToFile<TConfiguration>(jsonFilePath, configuration);
 		}
 
-		private object _GetObfuscatedValue(IColumn metaColumn, object columnValue)
+		private object _GetObfuscatedValue(IColumn column, object columnValue)
 		{
 			IObfuscationStrategy obfuscationStrategy;
 			ColumnConfiguration columnConfiguration;
 			object obfuscatedValue;
 
-			if ((object)metaColumn == null)
-				throw new ArgumentNullException(nameof(metaColumn));
+			if ((object)column == null)
+				throw new ArgumentNullException(nameof(column));
 
 			// KILLS performance - not sure why
 			//EnsureValidConfigurationOnce(this.TableConfiguration);
 			//columnConfiguration = this.TableConfiguration.ColumnConfigurations.SingleOrDefault(c => c.ColumnName.SafeToString().Trim().ToLower() == columnName.SafeToString().Trim().ToLower());
 
-			if (!this.ColumnCache.TryGetValue(metaColumn.ColumnIndex, out columnConfiguration))
+			if (!this.ColumnCache.TryGetValue(column.ColumnIndex, out columnConfiguration))
 			{
-				columnConfiguration = this.ObfuscationConfiguration.TableConfiguration.ColumnConfigurations.SingleOrDefault(c => c.ColumnName.SafeToString().Trim().ToLower() == metaColumn.ColumnName.SafeToString().Trim().ToLower());
+				columnConfiguration = this.ObfuscationConfiguration.TableConfiguration.ColumnConfigurations.SingleOrDefault(c => c.ColumnName.SafeToString().Trim().ToLower() == column.ColumnName.SafeToString().Trim().ToLower());
 				//columnConfiguration = this.TableConfiguration.ColumnConfigurations.SingleOrDefault(c => c.ColumnName == columnName);
-				this.ColumnCache.Add(metaColumn.ColumnIndex, columnConfiguration);
+				this.ColumnCache.Add(column.ColumnIndex, columnConfiguration);
 			}
 
 			if ((object)columnConfiguration == null)
@@ -167,12 +167,12 @@ namespace TextMetal.Middleware.Oxymoron.Legacy
 				obfuscationStrategy = columnConfiguration.GetObfuscationStrategyInstance();
 
 				if ((object)obfuscationStrategy == null)
-					throw new InvalidOperationException(string.Format("Unknown obfuscation strategy '{0}' specified for column '{1}'.", columnConfiguration.ObfuscationStrategyAqtn, metaColumn.ColumnName));
+					throw new InvalidOperationException(string.Format("Unknown obfuscation strategy '{0}' specified for column '{1}'.", columnConfiguration.ObfuscationStrategyAqtn, column.ColumnName));
 
 				this.ObfuscationStrategyCache.Add(columnConfiguration.ObfuscationStrategyAqtn, obfuscationStrategy);
 			}
 
-			obfuscatedValue = obfuscationStrategy.GetObfuscatedValue(this, columnConfiguration, metaColumn, columnValue);
+			obfuscatedValue = obfuscationStrategy.GetObfuscatedValue(this, columnConfiguration, column, columnValue);
 
 			return obfuscatedValue;
 		}
@@ -269,17 +269,17 @@ namespace TextMetal.Middleware.Oxymoron.Legacy
 			return (int)hashCode;
 		}
 
-		public object GetObfuscatedValue(IColumn metaColumn, object columnValue)
+		public object GetObfuscatedValue(IColumn column, object columnValue)
 		{
 			object value;
 
-			if ((object)metaColumn == null)
-				throw new ArgumentNullException(nameof(metaColumn));
+			if ((object)column == null)
+				throw new ArgumentNullException(nameof(column));
 
 			if ((object)columnValue == DBNull.Value)
 				columnValue = null;
 
-			value = this._GetObfuscatedValue(metaColumn, columnValue);
+			value = this._GetObfuscatedValue(column, columnValue);
 
 			return value;
 		}
@@ -293,7 +293,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy
 			bool? columnIsNullable = null;
 
 			IRecord obfuscatedRecord;
-			IColumn metaColumn;
+			IColumn column;
 
 			if ((object)records == null)
 				throw new ArgumentNullException(nameof(records));
@@ -309,17 +309,17 @@ namespace TextMetal.Middleware.Oxymoron.Legacy
 					columnValue = record[field.Key];
 					columnType = (columnValue ?? new object()).GetType();
 
-					metaColumn = new Column()
+					column = new Column()
 								{
 									ColumnIndex = columnIndex,
 									ColumnName = columnName,
 									ColumnType = columnType,
 									ColumnIsNullable = columnIsNullable,
 									TableIndex = 0,
-									TagContext = null
+									Context = null
 								};
 
-					obfusscatedValue = this.GetObfuscatedValue(metaColumn, columnValue);
+					obfusscatedValue = this.GetObfuscatedValue(column, columnValue);
 					obfuscatedRecord.Add(columnName, obfusscatedValue);
 					columnIndex++;
 				}
