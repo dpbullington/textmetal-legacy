@@ -3,7 +3,7 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-using System.Globalization;
+using System;
 
 namespace TextMetal.Middleware.Textual.Primitives
 {
@@ -19,25 +19,14 @@ namespace TextMetal.Middleware.Textual.Primitives
 
 		#region Fields/Constants
 
-		private string valueFormat;
 		private FieldType fieldType;
 		private string headerName;
+
+		private string valueFormat;
 
 		#endregion
 
 		#region Properties/Indexers/Events
-
-		public string ValueFormat
-		{
-			get
-			{
-				return this.valueFormat;
-			}
-			set
-			{
-				this.valueFormat = value;
-			}
-		}
 
 		public FieldType FieldType
 		{
@@ -60,6 +49,41 @@ namespace TextMetal.Middleware.Textual.Primitives
 			set
 			{
 				this.headerName = value;
+			}
+		}
+
+		public string ValueFormat
+		{
+			get
+			{
+				return this.valueFormat;
+			}
+			set
+			{
+				this.valueFormat = value;
+			}
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		public Type GetClrTypeFromFieldType()
+		{
+			switch (fieldType)
+			{
+				case FieldType.String:
+					return typeof(String);
+				case FieldType.Number:
+					return typeof(Double?);
+				case FieldType.DateTime:
+					return typeof(DateTime?);
+				case FieldType.TimeSpan:
+					return typeof(TimeSpan?);
+				case FieldType.Boolean:
+					return typeof(Boolean?);
+				default:
+					return null;
 			}
 		}
 

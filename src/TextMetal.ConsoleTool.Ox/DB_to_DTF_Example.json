@@ -54,9 +54,13 @@
 			"DelimitedTextSpec":
 			{
 				"FirstRecordIsHeader": true,
-				"RecordDelimiter": "\r\n",
-				"FieldDelimiter": "\t",
-				"QuoteValue": "",
+				"_RecordDelimiter": "\r\n",
+				"_FieldDelimiter": "\t",
+				"_QuoteValue": "",
+
+				"RecordDelimiter": "\n",
+				"FieldDelimiter": ",",
+				"QuoteValue": "\"",
 
 				"TextHeaderSpecs":
 				[

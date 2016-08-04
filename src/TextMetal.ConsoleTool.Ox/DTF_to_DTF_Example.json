@@ -167,7 +167,7 @@
 						"FirstRecordIsHeader": true,
 						"RecordDelimiter": "\r\n",
 						"FieldDelimiter": "\t",
-						"QuoteValue": "",
+						"QuoteValue": ""
 					}
 				}
 			}

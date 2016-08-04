@@ -151,24 +151,7 @@ namespace TextMetal.Middleware.Textual.Delimited
 
 					textHeaderSpec = this.DelimitedTextSpec.TextHeaderSpecs[this.ParserState.fieldIndex];
 
-					switch (textHeaderSpec.FieldType)
-					{
-						case FieldType.Number:
-							fieldType = typeof(Nullable<Decimal>);
-							break;
-						case FieldType.DateTime:
-							fieldType = typeof(Nullable<DateTime>);
-							break;
-						case FieldType.TimeSpan:
-							fieldType = typeof(Nullable<TimeSpan>);
-							break;
-						case FieldType.Boolean:
-							fieldType = typeof(Nullable<Boolean>);
-							break;
-						default:
-							fieldType = typeof(String);
-							break;
-					}
+					fieldType = textHeaderSpec.GetClrTypeFromFieldType() ?? typeof(String);
 
 					if (SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.IsNullOrWhiteSpace(tempStringValue))
 						fieldValue = SolderLegacyInstanceAccessor.DataTypeFascadeLegacyInstance.DefaultValue(fieldType);

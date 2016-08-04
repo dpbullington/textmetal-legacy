@@ -3,19 +3,13 @@
 	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
-using System.Globalization;
+using System;
 
 namespace TextMetal.Middleware.Textual.Primitives
 {
 	public interface ITextHeaderSpec
 	{
 		#region Properties/Indexers/Events
-
-		string ValueFormat
-		{
-			get;
-			set;
-		}
 
 		FieldType FieldType
 		{
@@ -28,6 +22,18 @@ namespace TextMetal.Middleware.Textual.Primitives
 			get;
 			set;
 		}
+
+		string ValueFormat
+		{
+			get;
+			set;
+		}
+
+		#endregion
+
+		#region Methods/Operators
+
+		Type GetClrTypeFromFieldType();
 
 		#endregion
 	}

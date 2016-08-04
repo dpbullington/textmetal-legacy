@@ -51,25 +51,6 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Source
 
 		#region Methods/Operators
 
-		private static Type GetColumnTypeFromFieldType(FieldType fieldType)
-		{
-			switch (fieldType)
-			{
-				case FieldType.String:
-					return typeof(String);
-				case FieldType.Number:
-					return typeof(Double?);
-				case FieldType.DateTime:
-					return typeof(DateTime?);
-				case FieldType.TimeSpan:
-					return typeof(TimeSpan?);
-				case FieldType.Boolean:
-					return typeof(Boolean?);
-				default:
-					throw new ArgumentOutOfRangeException(nameof(fieldType));
-			}
-		}
-
 		protected override void CoreInitialize()
 		{
 			IEnumerable<ITextHeaderSpec> headerSpecs;
@@ -88,7 +69,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Source
 																	TableIndex = 0,
 																	ColumnIndex = i,
 																	ColumnName = hs.HeaderName,
-																	ColumnType = GetColumnTypeFromFieldType(hs.FieldType),
+																	ColumnType = hs.GetClrTypeFromFieldType(),
 																	ColumnIsNullable = true,
 																	Context = hs
 																});
