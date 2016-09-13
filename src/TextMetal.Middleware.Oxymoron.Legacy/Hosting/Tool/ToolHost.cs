@@ -127,7 +127,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Hosting.Tool
 						{
 							destinationAdapter.UpstreamMetadata = sourceAdapter.UpstreamMetadata;
 							destinationAdapter.Initialize(obfuscationConfiguration.DestinationAdapterConfiguration);
-							
+
 							sourceDataEnumerable = sourceAdapter.PullData(obfuscationConfiguration.TableConfiguration);
 							sourceDataEnumerable = oxymoronEngine.GetObfuscatedValues(sourceDataEnumerable);
 

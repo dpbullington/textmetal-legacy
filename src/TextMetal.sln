@@ -90,15 +90,15 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Textua
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Oxymoron", "Oxymoron", "{25B1711D-E77F-48ED-917C-44B8F9F439CB}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.ConsoleTool.Ox", "TextMetal.ConsoleTool.Ox\TextMetal.ConsoleTool.Ox.xproj", "{0037E132-DDF9-4EA5-9192-2BBD91B67506}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Ox.ConsoleTool", "TextMetal.Ox.ConsoleTool\TextMetal.Ox.ConsoleTool.xproj", "{0037E132-DDF9-4EA5-9192-2BBD91B67506}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TextMetal.Middleware.Oxymoron.Legacy", "TextMetal.Middleware.Oxymoron.Legacy\TextMetal.Middleware.Oxymoron.Legacy.xproj", "{94DFAAC5-DF5B-4022-B0B7-E59EF3817530}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "etc", "etc", "{CA834366-EDFF-4998-AEF9-D50B4CC6BA4E}"
 EndProject
-Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "TextMetal.OxDemo.SSIS", "TextMetal.OxDemo.SSIS\TextMetal.OxDemo.SSIS.dtproj", "{B46339FB-4F2E-4323-826F-19054966616F}"
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "TextMetal.Ox.SSIS.BankAccountDemo", "TextMetal.Ox.SSIS.BankAccountDemo\TextMetal.Ox.SSIS.BankAccountDemo.dtproj", "{B46339FB-4F2E-4323-826F-19054966616F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.SSIS.Ox", "TextMetal.SSIS.Ox\TextMetal.SSIS.Ox.csproj", "{99B3846C-E233-44FA-8147-4F3BD0CFBFFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMetal.Ox.SSIS.Components", "TextMetal.Ox.SSIS.Components\TextMetal.Ox.SSIS.Components.csproj", "{99B3846C-E233-44FA-8147-4F3BD0CFBFFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

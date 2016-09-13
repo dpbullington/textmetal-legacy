@@ -9,7 +9,7 @@ using System.Diagnostics;
 using Microsoft.SqlServer.Dts.Pipeline;
 using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
 
-namespace TextMetal.SSIS.Ox
+namespace TextMetal.Ox.SSIS.Components
 {
 #if DEBUG
 	[DtsPipelineComponent(DisplayName = NopConstants.COMPONENT_NAME,

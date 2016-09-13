@@ -13,7 +13,7 @@ using TextMetal.Middleware.Oxymoron.Legacy.Config;
 using TextMetal.Middleware.Solder.Extensions;
 using TextMetal.Middleware.Solder.Serialization;
 
-namespace TextMetal.SSIS.Ox
+namespace TextMetal.Ox.SSIS.Components
 {
 	public sealed class __ComponentMetadataWrapper : CustomPropertyWrapper
 	{

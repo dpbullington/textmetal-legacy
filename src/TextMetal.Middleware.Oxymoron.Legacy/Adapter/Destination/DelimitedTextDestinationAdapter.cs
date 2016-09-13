@@ -82,7 +82,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination
 			{
 				if (effectiveDelimitedTextSpec.TextHeaderSpecs.Count <= 0)
 				{
-					if(upstreamTextHeaderSpec.Length <= 0)
+					if (upstreamTextHeaderSpec.Length <= 0)
 						effectiveDelimitedTextSpec.TextHeaderSpecs.AddRange(sourceAdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextSpec.TextHeaderSpecs);
 					else
 						effectiveDelimitedTextSpec.TextHeaderSpecs.AddRange(upstreamTextHeaderSpec);
@@ -100,7 +100,7 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Destination
 				if (effectiveDelimitedTextSpec.FirstRecordIsHeader == null)
 					effectiveDelimitedTextSpec.FirstRecordIsHeader = sourceAdapterConfiguration.AdapterSpecificConfiguration.DelimitedTextSpec.FirstRecordIsHeader;
 			}
-			
+
 			if ((object)effectiveDelimitedTextSpec == null ||
 				effectiveDelimitedTextSpec.TextHeaderSpecs.Count <= 0)
 				throw new InvalidOperationException(string.Format("Configuration missing: [Source and/or Destination]...{0}.{1}", nameof(DelimitedTextSpec), nameof(DelimitedTextSpec.TextHeaderSpecs)));

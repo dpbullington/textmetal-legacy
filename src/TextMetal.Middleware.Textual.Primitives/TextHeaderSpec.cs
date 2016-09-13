@@ -70,7 +70,7 @@ namespace TextMetal.Middleware.Textual.Primitives
 
 		public Type GetClrTypeFromFieldType()
 		{
-			switch (fieldType)
+			switch (this.fieldType)
 			{
 				case FieldType.String:
 					return typeof(String);

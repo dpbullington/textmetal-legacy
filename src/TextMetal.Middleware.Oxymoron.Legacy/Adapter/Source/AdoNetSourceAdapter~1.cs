@@ -104,14 +104,14 @@ namespace TextMetal.Middleware.Oxymoron.Legacy.Adapter.Source
 						DbColumn dbColumn = (DbColumn)record.Context;
 
 						columns.Add(new Column()
-										{
-											TableIndex = resultset.Index,
-											ColumnIndex = i++,
-											ColumnName = dbColumn.ColumnName,
-											ColumnType = dbColumn.DataType,
-											ColumnIsNullable = dbColumn.AllowDBNull,
-											Context = record
-										});
+									{
+										TableIndex = resultset.Index,
+										ColumnIndex = i++,
+										ColumnName = dbColumn.ColumnName,
+										ColumnType = dbColumn.DataType,
+										ColumnIsNullable = dbColumn.AllowDBNull,
+										Context = record
+									});
 					}
 				}
 

@@ -7,7 +7,7 @@ using System;
 
 using TextMetal.Middleware.Oxymoron.Legacy.Adapter.Dictionary;
 
-namespace TextMetal.SSIS.Ox
+namespace TextMetal.Ox.SSIS.Components
 {
 	internal sealed class DtsDictionaryAdapter : AdoNetDictionaryAdapter<DtsAdoNetAdapterConfiguration>
 	{

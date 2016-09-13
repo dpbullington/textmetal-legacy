@@ -8,7 +8,7 @@ using System.Linq;
 
 using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
 
-namespace TextMetal.SSIS.Ox
+namespace TextMetal.Ox.SSIS.Components
 {
 	public abstract class CustomPropertyWrapper
 	{

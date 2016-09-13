@@ -7,7 +7,7 @@ using System;
 
 using TextMetal.Middleware.Oxymoron.Legacy.Adapter.Source;
 
-namespace TextMetal.SSIS.Ox
+namespace TextMetal.Ox.SSIS.Components
 {
 	internal class DtsSourceAdapter : NullSourceAdapter
 	{

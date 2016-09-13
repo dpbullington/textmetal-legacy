@@ -9,7 +9,7 @@ using System.Data;
 using TextMetal.Middleware.Datazoid.UoW;
 using TextMetal.Middleware.Oxymoron.Legacy.Config.Adapters;
 
-namespace TextMetal.SSIS.Ox
+namespace TextMetal.Ox.SSIS.Components
 {
 	internal class DtsAdoNetAdapterConfiguration : AdoNetAdapterConfiguration
 	{

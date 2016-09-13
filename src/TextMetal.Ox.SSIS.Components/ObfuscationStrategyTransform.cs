@@ -23,7 +23,7 @@ using TextMetal.Middleware.Oxymoron.Legacy.Config;
 using TextMetal.Middleware.Oxymoron.Legacy.Hosting;
 using TextMetal.Middleware.Solder.Primitives;
 
-namespace TextMetal.SSIS.Ox
+namespace TextMetal.Ox.SSIS.Components
 {
 	[DtsPipelineComponent(DisplayName = Constants.COMPONENT_NAME,
 		Description = Constants.COMPONENT_DESCRIPTION,

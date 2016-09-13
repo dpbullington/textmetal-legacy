@@ -8,8 +8,8 @@
     <ProjectGuid>{99B3846C-E233-44FA-8147-4F3BD0CFBFFA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TextMetal.SSIS.Ox</RootNamespace>
-    <AssemblyName>TextMetal.SSIS.Ox</AssemblyName>
+    <RootNamespace>TextMetal.Ox.SSIS.Components</RootNamespace>
+    <AssemblyName>TextMetal.Ox.SSIS.Components</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\TextMetal.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -25,7 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\TextMetal.SSIS.Ox.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\TextMetal.Ox.SSIS.Components.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,7 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\TextMetal.SSIS.Ox.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\TextMetal.Ox.SSIS.Components.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />

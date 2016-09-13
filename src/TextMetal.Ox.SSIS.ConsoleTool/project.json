@@ -1,6 +1,6 @@
 ﻿{
 	"version": "9.0.0-*",
-	"description": "TextMetal Middleware Datazoid Unit of Work (UoW) Library",
+	"description": "TextMetal Host Impl Console App",
 	"authors": ["©2002-2016 Daniel Bullington (dpbullington@gmail.com)"],
 
 	"packOptions": {
@@ -19,14 +19,21 @@
 	"buildOptions": {
 		"keyFile": "../TextMetal.snk",
 		"warningsAsErrors": false,
-		"compile": {
-			"exclude": [
+		"emitEntryPoint": true,
+		"compile":
+		{
+			"exclude":
+			[
 			]
-		}
+		},
+		"copyToOutput":
+		[
+			"appconfig.json"
+		]
 	},
 
 	"frameworks": {
-		"netstandard1.6": {
+		"netcoreapp1.0": {
 			"dependencies": {
 			
 			}
@@ -34,7 +41,16 @@
 	},
 
 	"dependencies": {
-		"NETStandard.Library": "1.6.0",
-		"System.Data.Common": "4.1.0"
+		"Microsoft.NETCore.App":
+		{
+			"version": "1.0.0",
+			"type": "platform"
+		},
+		"TextMetal.Framework": "9.0.0-*",
+		"TextMetal.Middleware.Solder.Executive": "9.0.0-*"
+	},
+
+	"commands": {
+		"runapp": "TextMetal.ConsoleTool"
 	}
 }

@@ -6,8 +6,8 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>0037E132-DDF9-4EA5-9192-2BBD91B67506</ProjectGuid>
-    <RootNamespace>TextMetal.ConsoleTool.Ox</RootNamespace>
+    <ProjectGuid>078BA900-9F3B-452E-AE46-0270D6A66710</ProjectGuid>
+    <RootNamespace>TextMetal.Ox.SSIS.ConsoleTool</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
   </PropertyGroup>

@@ -310,14 +310,14 @@ namespace TextMetal.Middleware.Oxymoron.Legacy
 					columnType = (columnValue ?? new object()).GetType();
 
 					column = new Column()
-								{
-									ColumnIndex = columnIndex,
-									ColumnName = columnName,
-									ColumnType = columnType,
-									ColumnIsNullable = columnIsNullable,
-									TableIndex = 0,
-									Context = null
-								};
+							{
+								ColumnIndex = columnIndex,
+								ColumnName = columnName,
+								ColumnType = columnType,
+								ColumnIsNullable = columnIsNullable,
+								TableIndex = 0,
+								Context = null
+							};
 
 					obfusscatedValue = this.GetObfuscatedValue(column, columnValue);
 					obfuscatedRecord.Add(columnName, obfusscatedValue);

@@ -348,10 +348,10 @@ namespace TextMetal.Middleware.Textual.Delimited
 									foreach (string headerName in headerNames)
 									{
 										this.DelimitedTextSpec.TextHeaderSpecs.Add(new TextHeaderSpec()
-																				{
-																					HeaderName = headerName,
-																					FieldType = FieldType.String
-																				});
+																					{
+																						HeaderName = headerName,
+																						FieldType = FieldType.String
+																					});
 									}
 								}
 							}
