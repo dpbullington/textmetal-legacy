@@ -5,4 +5,4 @@
 
 using System.Reflection;
 
-[assembly: AssemblyTitle("TextMetal SQL Server Integration Services (SSIS) 2016 Pipeline Components")]
+[assembly: AssemblyTitle("TextMetal SQL Server Integration Services (SSIS) 2016 Console Tool")]

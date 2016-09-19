@@ -312,6 +312,9 @@ namespace TextMetal.Middleware.Solder.Injection
 
 			Console.WriteLine("SetUpApplicationDomain");
 
+			if ((object)DependencyContext.Default == null)
+				return;
+
 			runtimeLibraries = DependencyContext.Default.RuntimeLibraries;
 
 			if ((object)runtimeLibraries == null)

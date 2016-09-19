@@ -23,7 +23,7 @@
 				"ObjectName": "StageDimLocation"
 			},
 
-			"ExcludeMemberNames": [ ],
+			"ExcludeMemberNames": [],
 
 			"Destination":
 			{

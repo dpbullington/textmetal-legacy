@@ -65,6 +65,6 @@
 
 	"commands":
 	{
-		"runapp": "TextMetal.Oxymoron.ConsoleTool"
+		"runapp": "TextMetal.Ox.ConsoleTool"
 	}
 }

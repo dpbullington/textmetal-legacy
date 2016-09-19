@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using TextMetal.Middleware.Solder.Serialization;
 
 namespace TextMetal.Ox.SSIS.ConsoleTool.Config
 {

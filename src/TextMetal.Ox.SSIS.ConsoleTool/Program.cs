@@ -17,6 +17,11 @@ using TextMetal.Ox.SSIS.Components;
 using TextMetal.Ox.SSIS.ConsoleTool.Config;
 
 using Configuration = TextMetal.Ox.SSIS.ConsoleTool.Config.Configuration;
+using TextMetal.Middleware.Solder.Executive;
+using TextMetal.Middleware.Solder.Injection;
+using TextMetal.Middleware.Solder.Utilities;
+using TextMetal.Framework.Naming;
+using TextMetal.Middleware.Solder.Extensions;
 
 namespace TextMetal.Ox.SSIS.ConsoleTool
 {
@@ -25,6 +30,16 @@ namespace TextMetal.Ox.SSIS.ConsoleTool
 	/// </summary>
 	internal class Program : ConsoleApplicationFascade
 	{
+		#region Constructors/Destructors
+
+		[DependencyInjection]
+		public Program([DependencyInjection] IDataTypeFascade dataTypeFascade, [DependencyInjection] IAppConfigFascade appConfigFascade, [DependencyInjection] IReflectionFascade reflectionFascade, [DependencyInjection] IAssemblyInformationFascade assemblyInformationFascade)
+			: base(dataTypeFascade, appConfigFascade, reflectionFascade, assemblyInformationFascade)
+		{
+		}
+
+		#endregion
+
 		#region Fields/Constants
 
 		private const string CMDLN_TOKEN_BASEDIR = "basedir";
@@ -86,44 +101,12 @@ namespace TextMetal.Ox.SSIS.ConsoleTool
 
 		#region Methods/Operators
 
-		private static void Execute(string sourceFilePath, string baseDirectoryPath)
-		{
-			Configuration configuration;
-
-			if ((object)sourceFilePath == null)
-				throw new ArgumentNullException("sourceFilePath");
-
-			if ((object)baseDirectoryPath == null)
-				throw new ArgumentNullException("baseDirectoryPath");
-
-			if (DataTypeFascade.Instance.IsWhiteSpace(sourceFilePath))
-				throw new ArgumentOutOfRangeException("sourceFilePath");
-
-			if (DataTypeFascade.Instance.IsWhiteSpace(baseDirectoryPath))
-				throw new ArgumentOutOfRangeException("baseDirectoryPath");
-
-			sourceFilePath = Path.GetFullPath(sourceFilePath);
-			baseDirectoryPath = Path.GetFullPath(baseDirectoryPath);
-
-			if (!Directory.Exists(baseDirectoryPath))
-				Directory.CreateDirectory(baseDirectoryPath);
-
-			/*if (!Directory.Exists(baseDirectoryPath))
-				Directory.Delete(baseDirectoryPath, true);
-
-			Directory.CreateDirectory(baseDirectoryPath);*/
-
-			configuration = Configuration.FromJsonFile(sourceFilePath);
-
-			WriteProject(baseDirectoryPath, configuration);
-		}
-
 		private static string GetDestinationConnectionString(FourPartName fourPartName)
 		{
 			string value;
 
 			if ((object)fourPartName == null)
-				throw new ArgumentNullException("fourPartName");
+				throw new ArgumentNullException(nameof(fourPartName));
 
 			value = string.Format(CONNECTION_STRING_FORMAT, fourPartName.ServerName, fourPartName.DatabaseName);
 
@@ -135,7 +118,7 @@ namespace TextMetal.Ox.SSIS.ConsoleTool
 			string value;
 
 			if ((object)fourPartName == null)
-				throw new ArgumentNullException("fourPartName");
+				throw new ArgumentNullException(nameof(fourPartName));
 
 			value = string.Format(CONNECTION_STRING_FORMAT, fourPartName.ServerName, fourPartName.DatabaseName);
 
@@ -147,7 +130,7 @@ namespace TextMetal.Ox.SSIS.ConsoleTool
 			string value;
 
 			if ((object)fourPartName == null)
-				throw new ArgumentNullException("fourPartName");
+				throw new ArgumentNullException(nameof(fourPartName));
 
 			value = string.Format(CONNECTION_STRING_FORMAT, fourPartName.ServerName, fourPartName.DatabaseName);
 
@@ -159,7 +142,7 @@ namespace TextMetal.Ox.SSIS.ConsoleTool
 			string value;
 
 			if ((object)fourPartName == null)
-				throw new ArgumentNullException("fourPartName");
+				throw new ArgumentNullException(nameof(fourPartName));
 
 			value = string.Format(SSIS_DATABASE_PACKAGE_FILE_NAME_FORMAT, StandardCanonicalNaming.Instance.GetPascalCase(fourPartName.ServerName), StandardCanonicalNaming.Instance.GetPascalCase(fourPartName.DatabaseName));
 
@@ -171,7 +154,7 @@ namespace TextMetal.Ox.SSIS.ConsoleTool
 			string value;
 
 			if ((object)fourPartName == null)
-				throw new ArgumentNullException("fourPartName");
+				throw new ArgumentNullException(nameof(fourPartName));
 
 			value = string.Format(SSIS_OBJECT_PACKAGE_FILE_NAME_FORMAT, StandardCanonicalNaming.Instance.GetPascalCase(fourPartName.ServerName), StandardCanonicalNaming.Instance.GetPascalCase(fourPartName.DatabaseName), StandardCanonicalNaming.Instance.GetPascalCase(fourPartName.SchemaName), StandardCanonicalNaming.Instance.GetPascalCase(fourPartName.ObjectType.ToString()), StandardCanonicalNaming.Instance.GetPascalCase(fourPartName.ObjectName));
 
@@ -183,7 +166,7 @@ namespace TextMetal.Ox.SSIS.ConsoleTool
 			string value;
 
 			if ((object)fourPartName == null)
-				throw new ArgumentNullException("fourPartName");
+				throw new ArgumentNullException(nameof(fourPartName));
 
 			value = string.Format(SSIS_OBJECT_TYPE_PACKAGE_FILE_NAME_FORMAT, StandardCanonicalNaming.Instance.GetPascalCase(fourPartName.ServerName), StandardCanonicalNaming.Instance.GetPascalCase(fourPartName.DatabaseName), StandardCanonicalNaming.Instance.GetPascalCase(fourPartName.SchemaName), StandardCanonicalNaming.Instance.GetPascalCase(fourPartName.ObjectType.ToString()));
 
@@ -195,7 +178,7 @@ namespace TextMetal.Ox.SSIS.ConsoleTool
 			string value;
 
 			if ((object)fourPartName == null)
-				throw new ArgumentNullException("fourPartName");
+				throw new ArgumentNullException(nameof(fourPartName));
 
 			value = string.Format(SSIS_SCHEMA_PACKAGE_FILE_NAME_FORMAT, StandardCanonicalNaming.Instance.GetPascalCase(fourPartName.ServerName), StandardCanonicalNaming.Instance.GetPascalCase(fourPartName.DatabaseName), StandardCanonicalNaming.Instance.GetPascalCase(fourPartName.SchemaName));
 
@@ -207,7 +190,7 @@ namespace TextMetal.Ox.SSIS.ConsoleTool
 			string value;
 
 			if ((object)fourPartName == null)
-				throw new ArgumentNullException("fourPartName");
+				throw new ArgumentNullException(nameof(fourPartName));
 
 			value = string.Format(SSIS_SERVER_PACKAGE_FILE_NAME_FORMAT, StandardCanonicalNaming.Instance.GetPascalCase(fourPartName.ServerName));
 
@@ -219,7 +202,7 @@ namespace TextMetal.Ox.SSIS.ConsoleTool
 			string value;
 
 			if ((object)fourPartName == null)
-				throw new ArgumentNullException("fourPartName");
+				throw new ArgumentNullException(nameof(fourPartName));
 
 			if ((object)useTruncate == null)
 				value = string.Format(NOP_TABLE_COMMAND_TEXT_FORMAT, fourPartName.ToString(false));
@@ -245,7 +228,10 @@ namespace TextMetal.Ox.SSIS.ConsoleTool
 						@"-sourcefile:example.json"
 					};
 
-			using (Program program = new Program())
+			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
+			//AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<IToolHost>(string.Empty, false, new SingletonWrapperDependencyResolution<IToolHost>(new TransientActivatorAutoWiringDependencyResolution<ToolHost>()));
+
+			using (ConsoleApplicationFascade program = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
 				return program.EntryPoint(args);
 		}
 
@@ -253,13 +239,13 @@ namespace TextMetal.Ox.SSIS.ConsoleTool
 			/*,	ConnectionManager sourceConnectionManager, ConnectionManager destinationConnectionManager*/)
 		{
 			if ((object)project == null)
-				throw new ArgumentNullException("project");
+				throw new ArgumentNullException(nameof(project));
 
 			if ((object)configuration == null)
-				throw new ArgumentNullException("configuration");
+				throw new ArgumentNullException(nameof(configuration));
 
 			if ((object)@object == null)
-				throw new ArgumentNullException("object");
+				throw new ArgumentNullException(nameof(@object));
 
 			/*if ((object)sourceConnectionManager == null)
 				throw new ArgumentNullException("sourceConnectionManager");
@@ -506,10 +492,10 @@ namespace TextMetal.Ox.SSIS.ConsoleTool
 			IDTSEvents dtsEvents;
 
 			if ((object)package == null)
-				throw new ArgumentNullException("package");
+				throw new ArgumentNullException(nameof(package));
 
 			if ((object)fourPartName == null)
-				throw new ArgumentNullException("fourPartName");
+				throw new ArgumentNullException(nameof(fourPartName));
 
 			dtsEvents = new ConsoleEvents();
 			application = new Application();
@@ -524,13 +510,13 @@ namespace TextMetal.Ox.SSIS.ConsoleTool
 			IDTSEvents dtsEvents;
 
 			if ((object)project == null)
-				throw new ArgumentNullException("project");
+				throw new ArgumentNullException(nameof(project));
 
 			if ((object)parentPackageName == null)
-				throw new ArgumentNullException("parentPackageName");
+				throw new ArgumentNullException(nameof(parentPackageName));
 
 			if ((object)childPackageNames == null)
-				throw new ArgumentNullException("childPackageNames");
+				throw new ArgumentNullException(nameof(childPackageNames));
 
 			Console.WriteLine("*** {0} ***", parentPackageName);
 
@@ -567,10 +553,10 @@ namespace TextMetal.Ox.SSIS.ConsoleTool
 			IDTSEvents dtsEvents;
 
 			if ((object)package == null)
-				throw new ArgumentNullException("package");
+				throw new ArgumentNullException(nameof(package));
 
 			if ((object)parentPackageName == null)
-				throw new ArgumentNullException("parentPackageName");
+				throw new ArgumentNullException(nameof(parentPackageName));
 
 			dtsEvents = new ConsoleEvents();
 			application = new Application();
@@ -581,7 +567,7 @@ namespace TextMetal.Ox.SSIS.ConsoleTool
 		private static void WriteProject(string baseDirectoryPath, Configuration configuration)
 		{
 			if ((object)configuration == null)
-				throw new ArgumentNullException("configuration");
+				throw new ArgumentNullException(nameof(configuration));
 
 			using (Project project = Project.CreateProject())
 			{
@@ -693,6 +679,38 @@ namespace TextMetal.Ox.SSIS.ConsoleTool
 			}
 		}
 
+		private void Execute(string sourceFilePath, string baseDirectoryPath)
+		{
+			Configuration configuration;
+
+			if ((object)sourceFilePath == null)
+				throw new ArgumentNullException(nameof(sourceFilePath));
+
+			if ((object)baseDirectoryPath == null)
+				throw new ArgumentNullException(nameof(baseDirectoryPath));
+
+			if (this.DataTypeFascade.IsWhiteSpace(sourceFilePath))
+				throw new ArgumentOutOfRangeException(nameof(sourceFilePath));
+
+			if (this.DataTypeFascade.IsWhiteSpace(baseDirectoryPath))
+				throw new ArgumentOutOfRangeException(nameof(baseDirectoryPath));
+
+			sourceFilePath = Path.GetFullPath(sourceFilePath);
+			baseDirectoryPath = Path.GetFullPath(baseDirectoryPath);
+
+			if (!Directory.Exists(baseDirectoryPath))
+				Directory.CreateDirectory(baseDirectoryPath);
+
+			/*if (!Directory.Exists(baseDirectoryPath))
+				Directory.Delete(baseDirectoryPath, true);
+
+			Directory.CreateDirectory(baseDirectoryPath);*/
+
+			configuration = Configuration.FromJsonFile(sourceFilePath);
+
+			WriteProject(baseDirectoryPath, configuration);
+		}
+
 		protected override IDictionary<string, ArgumentSpec> GetArgumentMap()
 		{
 			IDictionary<string, ArgumentSpec> argumentMap;
@@ -710,15 +728,15 @@ namespace TextMetal.Ox.SSIS.ConsoleTool
 			string baseDirectoryPath;
 
 			if ((object)args == null)
-				throw new ArgumentNullException("args");
+				throw new ArgumentNullException(nameof(args));
 
 			if ((object)arguments == null)
-				throw new ArgumentNullException("arguments");
+				throw new ArgumentNullException(nameof(arguments));
 
 			sourceFilePath = (string)arguments[CMDLN_TOKEN_SOURCEFILE].Single();
 			baseDirectoryPath = (string)arguments[CMDLN_TOKEN_BASEDIR].Single();
 
-			Execute(sourceFilePath, baseDirectoryPath);
+			this.Execute(sourceFilePath, baseDirectoryPath);
 
 			return 0;
 		}
