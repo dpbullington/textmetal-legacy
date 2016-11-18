@@ -28,36 +28,32 @@
 			<For.Body>
 
 <![CDATA[
-public static ActivatorDependencyResolution OfType<TObject${rb(`
-temp = ""
-for i in 0..(self.LoopIndex)
-	temp += ", TParameter" + i.ToString()
-end
-temp
+public static ActivatorDependencyResolution OfType<TObject${js(`
+var temp = "";
+for (var i =0; i <= this.LoopIndex; i++)
+	temp += ", TParameter" + i.toString();
+temp;
 `)}>()
 {
 	Type actualType;
-${rb(`
-temp = ""
-for i in 0..(self.LoopIndex)
-	temp += "\tType parameterType" + i.ToString() + ";\r\n"
-end
-temp
+${js(`
+var temp = "";
+for (var i =0; i <= this.LoopIndex; i++)
+	temp += "\tType parameterType" + i.toString() + ";\r\n";
+temp;
 `)}
 	actualType = typeof(TObject);
-${rb(`
-temp = ""
-for i in 0..(self.LoopIndex)
-	temp += "\tparameterType" + i.ToString() + " = typeof(TParameter" + i.ToString() + ");\r\n"
-end
-temp
+${js(`
+var temp = "";
+for (var i =0; i <= this.LoopIndex; i++)
+	temp += "\tparameterType" + i.toString() + " = typeof(TParameter" + i.toString() + ");\r\n";
+temp;
 `)}
-	return new ActivatorDependencyResolution(actualType, new Type[] { ${rb(`
-temp = ""
-for i in 0..(self.LoopIndex)
-	temp += (i != 0 ? ", " : "") + "parameterType" + i.ToString()
-end
-temp
+	return new ActivatorDependencyResolution(actualType, new Type[] { ${js(`
+var temp = "";
+for (var i =0; i <= this.LoopIndex; i++)
+	temp += (i != 0 ? ", " : "") + "parameterType" + i.toString();
+temp;
 `)} });
 }
 ]]>

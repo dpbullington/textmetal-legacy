@@ -6,6 +6,8 @@
 using System;
 using System.Collections.Generic;
 
+using TextMetal.Framework.Core;
+
 namespace TextMetal.Framework.Source
 {
 	public abstract class SourceStrategy : ISourceStrategy
@@ -25,8 +27,11 @@ namespace TextMetal.Framework.Source
 
 		protected abstract object CoreGetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties);
 
-		public object GetSourceObject(string sourceFilePath, IDictionary<string, IList<string>> properties)
+		public object GetSourceObject(/*ITemplatingContext templatingContext, */string sourceFilePath, IDictionary<string, IList<string>> properties)
 		{
+			/*if ((object)templatingContext == null)
+				throw new ArgumentNullException(nameof(templatingContext));*/
+
 			try
 			{
 				return this.CoreGetSourceObject(sourceFilePath, properties);

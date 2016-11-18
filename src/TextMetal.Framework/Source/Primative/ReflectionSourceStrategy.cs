@@ -1321,7 +1321,7 @@ namespace TextMetal.Framework.Source.Primative
 			if (File.Exists(sourceFilePath))
 				assemblyNames = new AssemblyName[] { new AssemblyName(sourceFilePath) };
 			else if (Directory.Exists(sourceFilePath))
-				assemblyNames = Directory.EnumerateFiles(sourceFilePath, "*.dll", SearchOption.TopDirectoryOnly).Select(f => new AssemblyName(f));
+				assemblyNames = Directory.EnumerateFiles(sourceFilePath, "*.*", SearchOption.TopDirectoryOnly).Select(f => new AssemblyName(f)); // 2016-11-01 (dpbullington@gmail.com): changed this to support wildcard directory search
 			else
 				assemblyNames = null;
 
@@ -1329,12 +1329,20 @@ namespace TextMetal.Framework.Source.Primative
 			{
 				foreach (AssemblyName assemblyName in assemblyNames)
 				{
-					assembly = Assembly.Load(assemblyName);
+					// 2016-11-01 (dpbullington@gmail.com): changed this to fail gracefully and support wildcard directory search
+					try
+					{
+						assembly = Assembly.Load(assemblyName);
+					}
+					catch (ReflectionTypeLoadException)
+					{
+						assembly = null;
+					}
 
-					if ((object)assembly == null)
-						throw new InvalidOperationException(string.Format("Failed to load the assembly file '{0}' via Assembly.LoadFile(..).", sourceFilePath));
+					if ((object)assembly != null)
+						assemblies.Add(assembly);
 
-					assemblies.Add(assembly);
+					//if ((object)assembly == null) throw new InvalidOperationException(string.Format("Failed to load the assembly file '{0}' via Assembly.LoadFile(..).", sourceFilePath));}
 				}
 			}
 

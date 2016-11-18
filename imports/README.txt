@@ -15,4 +15,5 @@ https://nmock3.codeplex.com/SourceControl/latest
 REQUIRED CHANGES TO SUPPORT CORE CLR/DNX
 
 nunit[master]-fff446c9add9ccbf0514326e8fcda9cbe446aa96.zip
+https://github.com/nunit/nunit
 NO CHANGES TO SUPPORT netframework1.0

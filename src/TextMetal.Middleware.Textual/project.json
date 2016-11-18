@@ -35,8 +35,10 @@
 		}
 	},
 
-	"dependencies": {
+	"dependencies":
+	{
 		"NETStandard.Library": "1.6.0",
-		"TextMetal.Middleware.Textual.Primitives": "9.0.0-*"
+		"TextMetal.Middleware.Textual.Primitives": "9.0.0-*",
+		"TextMetal.Middleware.Textual.Delimited": "9.0.0-*"
 	}
 }

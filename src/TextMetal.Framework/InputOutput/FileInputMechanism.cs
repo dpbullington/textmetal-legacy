@@ -147,7 +147,7 @@ namespace TextMetal.Framework.InputOutput
 			//Console.Error.WriteLine(fullFilePath);
 
 			// pass-thru the source name without a resolution...let the source strategy decide
-			value = this.sourceStrategy.GetSourceObject(sourceName, properties);
+			value = this.SourceStrategy.GetSourceObject(sourceName, properties);
 
 			return value;
 		}

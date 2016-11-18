@@ -1,4 +1,4 @@
-﻿{
+{
 	"version": "9.0.0-*",
 	"description": "TextMetal Middleware Solder Injection Library",
 	"authors": ["©2002-2016 Daniel Bullington (dpbullington@gmail.com)"],
@@ -33,15 +33,15 @@
 		}
 	},
 
-	"dependencies": {
-		"TextMetal.Imports": "9.0.0-*",
-		"TextMetal.Middleware.Solder.Primitives": "9.0.0-*",
-		"TextMetal.Middleware.Solder.Utilities": "9.0.0-*",
-		"TextMetal.Middleware.Solder.Context": "9.0.0-*",
-		"Microsoft.Extensions.Configuration": "1.0.0",
-		"Microsoft.Extensions.Configuration.Json": "1.0.0",
-		"Microsoft.Extensions.DependencyModel": "1.0.0",
-		"Newtonsoft.Json": "9.0.1",
-		"NETStandard.Library": "1.6.0",
-	}
+    "dependencies": {
+        "TextMetal.Imports": "9.0.0-*",
+        "TextMetal.Middleware.Solder.Primitives": "9.0.0-*",
+        "TextMetal.Middleware.Solder.Utilities": "9.0.0-*",
+        "TextMetal.Middleware.Solder.Context": "9.0.0-*",
+        "Microsoft.Extensions.Configuration": "1.0.0",
+        "Microsoft.Extensions.Configuration.Json": "1.0.0",
+        "Microsoft.Extensions.DependencyModel": "1.0.0",
+        "NETStandard.Library": "1.6.0",
+        "Newtonsoft.Json": "9.0.2-beta1"
+    }
 }

@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 
 using TextMetal.Framework.Hosting.Tool;
+using TextMetal.Middleware.Datazoid.Primitives;
 using TextMetal.Middleware.Solder.Executive;
 using TextMetal.Middleware.Solder.Injection;
 using TextMetal.Middleware.Solder.Utilities;
@@ -48,6 +49,7 @@ namespace TextMetal.ConsoleTool
 		{
 			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<ConsoleApplicationFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<ConsoleApplicationFascade>(new TransientActivatorAutoWiringDependencyResolution<Program>()));
 			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<IToolHost>(string.Empty, false, new SingletonWrapperDependencyResolution<IToolHost>(new TransientActivatorAutoWiringDependencyResolution<ToolHost>()));
+			AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.AddResolution<IAdoNetBufferingFascade>(string.Empty, false, new SingletonWrapperDependencyResolution<IAdoNetBufferingFascade>(new TransientActivatorAutoWiringDependencyResolution<AdoNetBufferingFascade>()));
 
 			using (ConsoleApplicationFascade program = AssemblyLoaderContainerContext.TheOnlyAllowedInstance.DependencyManager.ResolveDependency<ConsoleApplicationFascade>(string.Empty, true))
 				return program.EntryPoint(args);

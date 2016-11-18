@@ -1,4 +1,4 @@
-﻿{
+{
 	"version": "9.0.0-*",
 	"description": "TextMetal Middleware Solder Serialization Library",
 	"authors": ["©2002-2016 Daniel Bullington (dpbullington@gmail.com)"],
@@ -35,10 +35,10 @@
 		}
 	},
 
-	"dependencies": {
-		"NETStandard.Library": "1.6.0",
-		"Newtonsoft.Json": "9.0.1",
-		"System.Xml.XmlSerializer": "4.0.11",
-		"TextMetal.Imports": "9.0.0-*"
-	}
+    "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "Newtonsoft.Json": "9.0.2-beta1",
+        "System.Xml.XmlSerializer": "4.0.11",
+        "TextMetal.Imports": "9.0.0-*"
+    }
 }

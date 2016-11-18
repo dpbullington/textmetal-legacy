@@ -1,4 +1,4 @@
-﻿{
+{
 	"version": "9.0.0-*",
 	"description": "TextMetal Console Ox App (obfuscation host)",
 	"authors":
@@ -47,24 +47,19 @@
 		{
 			"dependencies":
 			{
-			
+
 			}
 		}
 	},
 
 	"dependencies":
 	{
+		"TextMetal.Middleware.Solder.Executive": "9.0.0-*",
+		"TextMetal.Middleware.Oxymoron.Legacy": "9.0.0-*",
 		"Microsoft.NETCore.App":
 		{
-			"version": "1.0.0",
+			"version": "1.0.1",
 			"type": "platform"
-		},
-		"TextMetal.Middleware.Solder.Executive": "9.0.0-*",
-		"TextMetal.Middleware.Oxymoron.Legacy": "9.0.0-*"
-	},
-
-	"commands":
-	{
-		"runapp": "TextMetal.Ox.ConsoleTool"
+		}
 	}
 }

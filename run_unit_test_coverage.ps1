@@ -16,7 +16,7 @@ $dotnet_dir_path = "C:\Program Files\dotnet"
 $dotnet_file_name = "dotnet.exe"
 $dotnet_exe = "$dotnet_dir_path\$dotnet_file_name"
 
-$dotcover_dir_path = "C:\Program Files (x86)\JetBrains\Installations\dotCover05"
+$dotcover_dir_path = "C:\Program Files (x86)\JetBrains\Installations\dotCover06"
 $dotcover_file_name = "dotCover.exe"
 $dotcover_exe = "$dotcover_dir_path\$dotcover_file_name"
 

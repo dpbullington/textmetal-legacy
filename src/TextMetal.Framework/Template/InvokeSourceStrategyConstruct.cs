@@ -124,7 +124,7 @@ namespace TextMetal.Framework.Template
 
 			sourceStrategy = (ISourceStrategy)Activator.CreateInstance(sourceStrategyType);
 
-			source = sourceStrategy.GetSourceObject(sourceFilePath, templatingContext.Properties);
+			source = sourceStrategy.GetSourceObject(/*templatingContext, */sourceFilePath, templatingContext.Properties);
 
 			if (!this.UseAlloc)
 			{

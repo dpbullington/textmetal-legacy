@@ -3,7 +3,7 @@
 	{
 		"default":
 		{
-			"commandName": "runapp",
+			"commandName": "Project",
 			"environmentVariables":
 			{
 				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
@@ -13,7 +13,7 @@
 		},
 		"test_null_src_to_null_dst":
 		{
-			"commandName": "runapp",
+			"commandName": "Project",
 			"commandLineArgs": "-sourcefile:Null_to_Null_Example.json",
 			"environmentVariables":
 			{
@@ -24,7 +24,7 @@
 		},
 		"test_db_src_to_db_use_sql_bcp_dst":
 		{
-			"commandName": "runapp",
+			"commandName": "Project",
 			"commandLineArgs": "-sourcefile:DB_to_DB-sqlbcp_Example.json",
 			"environmentVariables":
 			{
@@ -35,7 +35,7 @@
 		},
 		"test_db_src_to_db_use_rec_cmd_dst":
 		{
-			"commandName": "runapp",
+			"commandName": "Project",
 			"commandLineArgs": "-sourcefile:DB_to_DB-reccmd_Example.json",
 			"environmentVariables":
 			{
@@ -46,7 +46,7 @@
 		},
 		"test_dtf_src_to_dtf_dst":
 		{
-			"commandName": "runapp",
+			"commandName": "Project",
 			"commandLineArgs": "-sourcefile:DTF_to_DTF_Example.json",
 			"environmentVariables":
 			{
@@ -57,7 +57,7 @@
 		},
 		"test_db_src_to_dtf_dst":
 		{
-			"commandName": "runapp",
+			"commandName": "Project",
 			"commandLineArgs": "-sourcefile:DB_to_DTF_Example.json",
 			"environmentVariables":
 			{
@@ -68,7 +68,7 @@
 		},
 		"test_dtf_src_to_db_use_sql_bcp_dst":
 		{
-			"commandName": "runapp",
+			"commandName": "Project",
 			"commandLineArgs": "-sourcefile:DTF_to_DB-sqlbcp_Example.json",
 			"environmentVariables":
 			{
@@ -79,7 +79,7 @@
 		},
 		"test_dtf_src_to_db_use_rec_cmd_dst":
 		{
-			"commandName": "runapp",
+			"commandName": "Project",
 			"commandLineArgs": "-sourcefile:DTF_to_DB-reccmd_Example.json",
 			"environmentVariables":
 			{

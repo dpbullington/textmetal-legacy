@@ -133,6 +133,7 @@ namespace TextMetal.Framework.Hosting.Tool
 			xpe = new XmlPersistEngine();
 			xpe.RegisterWellKnownConstructs();
 
+			// TODO: this was a bad idea and need to be fixed in a next version.
 			using (IInputMechanism inputMechanism = new FileInputMechanism(templateFilePath, xpe, sourceStrategy)) // relative to template directory
 			{
 				source = inputMechanism.LoadSource(sourceFilePath, properties);
