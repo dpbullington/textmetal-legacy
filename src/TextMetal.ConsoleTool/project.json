@@ -43,22 +43,21 @@
 
 	"frameworks":
 	{
-		"netcoreapp1.0":
+		"netcoreapp1.1":
 		{
 			"dependencies":
 			{
-
+				"Microsoft.NETCore.App":
+				{
+					"version": "1.1.0",
+					"type": "platform"
+				}
 			}
 		}
 	},
 
 	"dependencies":
 	{
-		"Microsoft.NETCore.App":
-		{
-			"version": "1.0.1",
-			"type": "platform"
-		},
 		"TextMetal.Framework": "9.0.0-*",
 		"TextMetal.Middleware.Solder.Executive": "9.0.0-*",
 

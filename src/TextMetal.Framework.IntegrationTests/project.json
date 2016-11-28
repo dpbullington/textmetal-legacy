@@ -39,11 +39,15 @@
 
 	"frameworks":
 	{
-		"netcoreapp1.0":
+		"netcoreapp1.1":
 		{
 			"dependencies":
 			{
-
+				"Microsoft.NETCore.App":
+				{
+					"version": "1.1.0",
+					"type": "platform"
+				}
 			}
 		}
 	},
@@ -52,12 +56,7 @@
 	{
 		"TextMetal.Middleware.Solder.Primitives": "9.0.0-*",
 		"TextMetal.Imports": "9.0.0-*",
-		"TextMetal.Framework": "9.0.0-*",
-		"Microsoft.NETCore.App":
-		{
-			"version": "1.0.1",
-			"type": "platform"
-		}
+		"TextMetal.Framework": "9.0.0-*"
 	},
 
 	"commands":

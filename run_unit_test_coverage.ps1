@@ -10,13 +10,13 @@ $src_dir_path = "$this_dir_path\src"
 $output_dir_path = "$this_dir_path\output"
 
 $build_flavor = "debug"
-$build_tfm = "netcoreapp1.0"
+$build_tfm = "netcoreapp1.1"
 
 $dotnet_dir_path = "C:\Program Files\dotnet"
 $dotnet_file_name = "dotnet.exe"
 $dotnet_exe = "$dotnet_dir_path\$dotnet_file_name"
 
-$dotcover_dir_path = "C:\Program Files (x86)\JetBrains\Installations\dotCover06"
+$dotcover_dir_path = "C:\Program Files (x86)\JetBrains\Installations\dotCover07"
 $dotcover_file_name = "dotCover.exe"
 $dotcover_exe = "$dotcover_dir_path\$dotcover_file_name"
 

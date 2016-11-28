@@ -43,11 +43,15 @@
 
 	"frameworks":
 	{
-		"netcoreapp1.0":
+		"netcoreapp1.1":
 		{
 			"dependencies":
 			{
-
+				"Microsoft.NETCore.App":
+				{
+					"version": "1.1.0",
+					"type": "platform"
+				}
 			}
 		}
 	},
@@ -55,11 +59,6 @@
 	"dependencies":
 	{
 		"TextMetal.Middleware.Solder.Executive": "9.0.0-*",
-		"TextMetal.Middleware.Oxymoron.Legacy": "9.0.0-*",
-		"Microsoft.NETCore.App":
-		{
-			"version": "1.0.1",
-			"type": "platform"
-		}
+		"TextMetal.Middleware.Oxymoron.Legacy": "9.0.0-*"
 	}
 }

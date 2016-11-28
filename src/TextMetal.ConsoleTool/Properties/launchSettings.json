@@ -35,6 +35,18 @@
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
 		},
+		"test_adonet-sa-dbfilter_source_execute":
+		{
+			"commandName": "Project",
+			"commandLineArgs": "-sourcefile:\"Server=(local);User ID=sa;PWD=????\" -templatefile:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\empty_template.xml\" -basedir:\"D:\\development\\textmetal\\main\\templates\\Test_Suite_Sources\\output\" -sourcestrategy:\"TextMetal.Framework.Source.DatabaseSchema.Sql.SqlSchemaSourceStrategy, TextMetal.Framework\" -strict:true -debug:false -property:\"ConnectionType=System.Data.SqlClient.SqlConnection, System.Data.SqlClient\" -property:DataSourceTag=net.sqlserver -property:EnableDatabaseFilter=true -property:DatabaseFilter=textmetal_sample",
+			"environmentVariables":
+			{
+				"SOLDER_ENABLE_DNX_DEBUG_QUIRKS_MODE": "false",
+				"DNX_TRACE": "0",
+				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
+				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
+			}
+		},
 		"test_associative_model_execute":
 		{
 			"commandName": "Project",
