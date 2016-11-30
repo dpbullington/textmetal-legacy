@@ -2,18 +2,18 @@
 | OPEN SOURCE IMPORTS
 ------------------------------------------------------------------------------------------------------
 
-[castleproject]Core[netcore]-7f0230223a8afc70d38348e69ffc3a3a28258154.zip
-https://github.com/castleproject/Core/tree/netcore
-NO CHANGES TO SUPPORT CORE CLR/DNX
+Core-04721ac37ac4074f3e1a711723aaf96715d7e674.zip
+https://github.com/castleproject/Core
+NO CHANGES TO SUPPORT netframework1.6
 
-jint[dnx]-5c248ff0ae27ed41272d7a85193d3af34b1df226.zip
-https://github.com/sebastienros/jint/tree/dnx
-NO CHANGES TO SUPPORT netframework1.5
+jint-7b9a8c015c70304514997bd2a0d5c4d0d97881e6.zip
+https://github.com/sebastienros/jint
+NO CHANGES TO SUPPORT netframework1.6
 
 nmock3[trunk]-87315.zip
 https://nmock3.codeplex.com/SourceControl/latest
-REQUIRED CHANGES TO SUPPORT CORE CLR/DNX
+REQUIRED CHANGES TO SUPPORT netframework1.6
 
 nunit[master]-fff446c9add9ccbf0514326e8fcda9cbe446aa96.zip
 https://github.com/nunit/nunit
-NO CHANGES TO SUPPORT netframework1.0
+NO CHANGES TO SUPPORT netframework1.6

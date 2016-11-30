@@ -1,4 +1,4 @@
-// Copyright 2004-2014 Castle Project - http://www.castleproject.org/
+// Copyright 2004-2016 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ namespace Castle.DynamicProxy
 	///   Provides proxy objects for classes and interfaces.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class ProxyGenerator
+	public class ProxyGenerator : IProxyGenerator
 	{
 		private ILogger logger = NullLogger.Instance;
 		private readonly IProxyBuilder proxyBuilder;
@@ -560,7 +560,6 @@ namespace Castle.DynamicProxy
 		{
 			//TODO: add <example> to xml comments to show how to use IChangeProxyTarget
 
-
 			if (interfaceToProxy == null)
 			{
 				throw new ArgumentNullException("interfaceToProxy");
@@ -606,7 +605,6 @@ namespace Castle.DynamicProxy
 					}
 				}
 			}
-			
 #endif
 
 			CheckNotGenericTypeDefinition(interfaceToProxy, "interfaceToProxy");
@@ -646,7 +644,8 @@ namespace Castle.DynamicProxy
 		///   This method uses <see cref = "IProxyBuilder" /> implementation to generate a proxy type.
 		///   As such caller should expect any type of exception that given <see cref = "IProxyBuilder" /> implementation may throw.
 		/// </remarks>
-		public TInterface CreateInterfaceProxyWithoutTarget<TInterface>(IInterceptor interceptor) where TInterface : class
+		public TInterface CreateInterfaceProxyWithoutTarget<TInterface>(IInterceptor interceptor)
+			where TInterface : class
 		{
 			return (TInterface)CreateInterfaceProxyWithoutTarget(typeof(TInterface), interceptor);
 		}

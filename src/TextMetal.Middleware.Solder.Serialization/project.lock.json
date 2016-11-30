@@ -1381,7 +1381,7 @@
       },
       "TextMetal.Imports.CastleCore/9.0.0": {
         "type": "project",
-        "framework": ".NETStandard,Version=v1.4",
+        "framework": ".NETStandard,Version=v1.6",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1",
           "NETStandard.Library": "1.6.0",
@@ -1401,10 +1401,10 @@
           "System.Xml.XmlDocument": "4.0.1"
         },
         "compile": {
-          "netstandard1.4/TextMetal.Imports.CastleCore.dll": {}
+          "netstandard1.6/TextMetal.Imports.CastleCore.dll": {}
         },
         "runtime": {
-          "netstandard1.4/TextMetal.Imports.CastleCore.dll": {}
+          "netstandard1.6/TextMetal.Imports.CastleCore.dll": {}
         }
       },
       "TextMetal.Imports.Jint/9.0.0": {
