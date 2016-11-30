@@ -1,7 +1,6 @@
 h1. TextMetal
 
-TextMetal is a powerful meta-programming framework written in C# and fully supports the commercial .NET Framework and the open source .NET Core runtime and portable platform standards. It uses XML as the extensible template language and hosts the JavaScript language run-time (Jint) to provide rich expression/logic support.
-NOTE: In the past, PowerShell and the dynamic language runtime Iron* languages were supported; these have been removed in favor of JavaScript/Jint.
+TextMetal is a powerful meta-programming framework written in C# and fully supports the commercial .NET Framework and the open source .NET Core runtime and portable platform standards. It uses XML as the extensible template language and hosts the JavaScript language run-time (Jint) to provide rich expression/logic support. NOTE: In the past, PowerShell and the dynamic language runtime Iron* languages were supported; these have been removed in favor of JavaScript/Jint.
 
 Meta-programming is all about making software simpler and reusable through the use of programming language independent skills and computer programs that write new computer programs.
 
