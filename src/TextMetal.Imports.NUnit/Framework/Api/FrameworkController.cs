@@ -22,15 +22,16 @@
 // ***********************************************************************
 
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Security;
 using System.Web.UI;
-using NUnit.Common;
-using NUnit.Framework.Compatibility;
+using NUnit.Compatibility;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 
@@ -49,10 +50,9 @@ namespace NUnit.Framework.Api
     /// other actions. The driver may support other actions, such as
     /// reload on run, by combining these calls.
     /// </summary>
-    [Serializable]
     public class FrameworkController : LongLivedMarshalByRefObject
     {
-#if !PORTABLE && !SILVERLIGHT
+#if !PORTABLE
         private const string LOG_FILE_FORMAT = "InternalTrace.{0}.{1}.log";
 #endif
 
@@ -69,11 +69,12 @@ namespace NUnit.Framework.Api
         /// <param name="settings">A Dictionary of settings to use in loading and running the tests</param>
         public FrameworkController(string assemblyNameOrPath, string idPrefix, IDictionary settings)
         {
+            Initialize(assemblyNameOrPath, settings);
+
             this.Builder = new DefaultTestAssemblyBuilder();
             this.Runner = new NUnitTestAssemblyRunner(this.Builder);
 
             Test.IdPrefix = idPrefix;
-            Initialize(assemblyNameOrPath, settings);
         }
 
         /// <summary>
@@ -100,11 +101,12 @@ namespace NUnit.Framework.Api
         /// <param name="builderType">The Type of the test builder</param>
         public FrameworkController(string assemblyNameOrPath, string idPrefix, IDictionary settings, string runnerType, string builderType)
         {
+            Initialize(assemblyNameOrPath, settings);
+
             Builder = (ITestAssemblyBuilder)Reflect.Construct(Type.GetType(builderType));
             Runner = (ITestAssemblyRunner)Reflect.Construct(Type.GetType(runnerType), new object[] { Builder });
 
             Test.IdPrefix = idPrefix ?? "";
-            Initialize(assemblyNameOrPath, settings);
         }
 
         /// <summary>
@@ -123,21 +125,32 @@ namespace NUnit.Framework.Api
             _testAssembly = assembly;
         }
 
+#if !PORTABLE
+        // This method invokes members on the 'System.Diagnostics.Process' class and must satisfy the link demand of 
+        // the full-trust 'PermissionSetAttribute' on this class. Callers of this method have no influence on how the 
+        // Process class is used, so we can safely satisfy the link demand with a 'SecuritySafeCriticalAttribute' rather
+        // than a 'SecurityCriticalAttribute' and allow use by security transparent callers.
+        [SecuritySafeCritical]
+#endif   
         private void Initialize(string assemblyPath, IDictionary settings)
         {
             AssemblyNameOrPath = assemblyPath;
-            Settings = settings;
 
-            if (settings.Contains(PackageSettings.InternalTraceLevel))
+            var newSettings = settings as IDictionary<string, object>;
+            Settings = newSettings ?? settings.Cast<DictionaryEntry>().ToDictionary(de => (string)de.Key, de => de.Value);
+
+            if (Settings.ContainsKey(FrameworkPackageSettings.InternalTraceLevel))
             {
-                var traceLevel = (InternalTraceLevel)Enum.Parse(typeof(InternalTraceLevel), (string)settings[PackageSettings.InternalTraceLevel], true);
+                var traceLevel = (InternalTraceLevel)Enum.Parse(typeof(InternalTraceLevel), (string)Settings[FrameworkPackageSettings.InternalTraceLevel], true);
 
-                if (settings.Contains(PackageSettings.InternalTraceWriter))
-                    InternalTrace.Initialize((TextWriter)settings[PackageSettings.InternalTraceWriter], traceLevel);
-#if !PORTABLE && !SILVERLIGHT
+                if (Settings.ContainsKey(FrameworkPackageSettings.InternalTraceWriter))
+                    InternalTrace.Initialize((TextWriter)Settings[FrameworkPackageSettings.InternalTraceWriter], traceLevel);
+#if !PORTABLE
                 else
                 {
-                    var workDirectory = settings.Contains(PackageSettings.WorkDirectory) ? (string)settings[PackageSettings.WorkDirectory] : Env.DefaultWorkDirectory;
+                    var workDirectory = Settings.ContainsKey(FrameworkPackageSettings.WorkDirectory) 
+                        ? (string)Settings[FrameworkPackageSettings.WorkDirectory] 
+                        : Environment.CurrentDirectory;
                     var logName = string.Format(LOG_FILE_FORMAT, Process.GetCurrentProcess().Id, Path.GetFileName(assemblyPath));
                     InternalTrace.Initialize(Path.Combine(workDirectory, logName), traceLevel);
                 }
@@ -174,7 +187,7 @@ namespace NUnit.Framework.Api
         /// <summary>
         /// Gets a dictionary of settings for the FrameworkController
         /// </summary>
-        public IDictionary Settings { get; private set; }
+        internal IDictionary<string, object> Settings { get; private set; }
 
         #endregion
 
@@ -224,7 +237,7 @@ namespace NUnit.Framework.Api
             // Insert elements as first child in reverse order
             if (Settings != null) // Some platforms don't have settings
                 InsertSettingsElement(result, Settings);
-#if !PORTABLE && !SILVERLIGHT
+#if !PORTABLE
             InsertEnvironmentElement(result);
 #endif
 
@@ -276,7 +289,7 @@ namespace NUnit.Framework.Api
             // Insert elements as first child in reverse order
             if (Settings != null) // Some platforms don't have settings
                 InsertSettingsElement(result, Settings);
-#if !PORTABLE && !SILVERLIGHT
+#if !PORTABLE
             InsertEnvironmentElement(result);
 #endif
 
@@ -352,7 +365,7 @@ namespace NUnit.Framework.Api
             // Insert elements as first child in reverse order
             if (Settings != null) // Some platforms don't have settings
                 InsertSettingsElement(result, Settings);
-#if !PORTABLE && !SILVERLIGHT
+#if !PORTABLE
             InsertEnvironmentElement(result);
 #endif
 
@@ -380,7 +393,7 @@ namespace NUnit.Framework.Api
             handler.RaiseCallbackEvent(CountTests(filter).ToString());
         }
 
-#if !PORTABLE && !SILVERLIGHT
+#if !PORTABLE
         /// <summary>
         /// Inserts environment element
         /// </summary>
@@ -395,12 +408,10 @@ namespace NUnit.Framework.Api
             env.AddAttribute("clr-version", Environment.Version.ToString());
             env.AddAttribute("os-version", Environment.OSVersion.ToString());
             env.AddAttribute("platform", Environment.OSVersion.Platform.ToString());
-#if !NETCF
             env.AddAttribute("cwd", Environment.CurrentDirectory);
             env.AddAttribute("machine-name", Environment.MachineName);
             env.AddAttribute("user", Environment.UserName);
             env.AddAttribute("user-domain", Environment.UserDomainName);
-#endif
             env.AddAttribute("culture", CultureInfo.CurrentCulture.ToString());
             env.AddAttribute("uiculture", CultureInfo.CurrentUICulture.ToString());
             env.AddAttribute("os-architecture", GetProcessorArchitecture());
@@ -420,7 +431,7 @@ namespace NUnit.Framework.Api
         /// <param name="targetNode">Target node</param>
         /// <param name="settings">Settings dictionary</param>
         /// <returns>The new node</returns>
-        public static TNode InsertSettingsElement(TNode targetNode, IDictionary settings)
+        public static TNode InsertSettingsElement(TNode targetNode, IDictionary<string, object> settings)
         {
             TNode settingsNode = new TNode("settings");
             targetNode.ChildNodes.Insert(0, settingsNode);
@@ -430,8 +441,8 @@ namespace NUnit.Framework.Api
 
 #if PARALLEL
             // Add default values for display
-            if (!settings.Contains(PackageSettings.NumberOfTestWorkers))
-                AddSetting(settingsNode, PackageSettings.NumberOfTestWorkers, NUnitTestAssemblyRunner.DefaultLevelOfParallelism);
+            if (!settings.ContainsKey(FrameworkPackageSettings.NumberOfTestWorkers))
+                AddSetting(settingsNode, FrameworkPackageSettings.NumberOfTestWorkers, NUnitTestAssemblyRunner.DefaultLevelOfParallelism);
 #endif
 
                 return settingsNode;

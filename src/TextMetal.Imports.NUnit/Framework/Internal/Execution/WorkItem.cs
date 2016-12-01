@@ -23,8 +23,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
-using NUnit.Framework.Compatibility;
 using NUnit.Framework.Interfaces;
 
 namespace NUnit.Framework.Internal.Execution
@@ -75,7 +75,7 @@ namespace NUnit.Framework.Internal.Execution
             Result = test.MakeTestResult();
             State = WorkItemState.Ready;
             Actions = new List<ITestAction>();
-#if !PORTABLE && !SILVERLIGHT && !NETCF
+#if !PORTABLE
             TargetApartment = Test.Properties.ContainsKey(PropertyNames.ApartmentState)
                 ? (ApartmentState)Test.Properties.Get(PropertyNames.ApartmentState)
                 : ApartmentState.Unknown;
@@ -188,10 +188,23 @@ namespace NUnit.Framework.Internal.Execution
         /// </summary>
         public TestResult Result { get; protected set; }
 
-#if !SILVERLIGHT && !NETCF && !PORTABLE
+#if !PORTABLE
         internal ApartmentState TargetApartment { get; set; }
         private ApartmentState CurrentApartment { get; set; }
 #endif
+
+        #endregion
+
+        #region OwnThreadReason Enumeration
+
+        [Flags]
+        private enum OwnThreadReason
+        {
+            NotNeeded = 0,
+            RequiresThread = 1,
+            Timeout = 2,
+            DifferentApartment = 4
+        }
 
         #endregion
 
@@ -231,73 +244,46 @@ namespace NUnit.Framework.Internal.Execution
             // execution. Currently, test cases are always run sequentially,
             // so this continues to apply fairly generally.
 
-#if PORTABLE
-            RunTest();
-#elif SILVERLIGHT || NETCF
-            if (Context.IsSingleThreaded)
-                RunTest();
-            else if (Test.RequiresThread || Test is TestMethod && timeout > 0)
-                RunTestOnOwnThread(timeout);
-            else
-                RunTest();
-#else
+            var ownThreadReason = OwnThreadReason.NotNeeded;
+
+#if !PORTABLE
+            if (Test.RequiresThread)
+                ownThreadReason |= OwnThreadReason.RequiresThread;
+            if (timeout > 0 && Test is TestMethod)
+                ownThreadReason |= OwnThreadReason.Timeout;
             CurrentApartment = Thread.CurrentThread.GetApartmentState();
-
-            if (Context.IsSingleThreaded)
-                RunTest();
-            else if (CurrentApartment != TargetApartment && TargetApartment != ApartmentState.Unknown)
-                RunTestOnOwnThread(timeout, TargetApartment);
-            else if (Test.RequiresThread || Test is TestMethod && timeout > 0)
-                RunTestOnOwnThread(timeout, CurrentApartment);
-            else
-                RunTest();
-#endif
-        }
-
-#if SILVERLIGHT || NETCF
-        private Thread thread;
-
-        private void RunTestOnOwnThread(int timeout)
-        {
-            string reason = Test.RequiresThread
-                ? "Has RequiresThreadAttribute."
-                : timeout > 0
-                ? "Has Timeout value set."
-                : null;
-
-            if (reason != null)
-                log.Debug("Running test on own thread. " + reason);
-            else
-                log.Error("Running test on own thread. Reason UNKNOWN.");
-
-            thread = new Thread(RunTest);
-
-            RunThread(timeout);
-        }
+            if (CurrentApartment != TargetApartment && TargetApartment != ApartmentState.Unknown)
+                ownThreadReason |= OwnThreadReason.DifferentApartment;
 #endif
 
-#if !SILVERLIGHT && !NETCF && !PORTABLE
+            if (ownThreadReason == OwnThreadReason.NotNeeded)
+                RunTest();
+            else if (Context.IsSingleThreaded)
+            {
+                var msg = "Test is not runnable in single-threaded context. " + ownThreadReason;
+                log.Error(msg);
+                Result.SetResult(ResultState.NotRunnable, msg);
+                WorkItemComplete();
+            }
+            else
+            {
+                log.Debug("Running test on own thread. " + ownThreadReason);
+#if !PORTABLE
+                var apartment = (ownThreadReason | OwnThreadReason.DifferentApartment) != 0
+                    ? TargetApartment
+                    : CurrentApartment;
+                RunTestOnOwnThread(timeout, apartment);
+#endif
+            }
+        }
+
+#if !PORTABLE
         private Thread thread;
 
         private void RunTestOnOwnThread(int timeout, ApartmentState apartment)
         {
-            string reason = Test.RequiresThread
-                ? "Has RequiresThreadAttribute."
-                : timeout > 0
-                ? "Has Timeout value set."
-                : CurrentApartment != apartment
-                ? "Requires a different apartment."
-                : null;
-
-            if (reason != null)
-                log.Debug("Running test on own thread. " + reason);
-            else
-                log.Error("Running test on own thread. Reason UNKNOWN.");
-
             thread = new Thread(new ThreadStart(RunTest));
-
             thread.SetApartmentState(apartment);
-
             RunThread(timeout);
         }
 #endif
@@ -305,52 +291,56 @@ namespace NUnit.Framework.Internal.Execution
 #if !PORTABLE
         private void RunThread(int timeout)
         {
-#if !NETCF
             thread.CurrentCulture = Context.CurrentCulture;
             thread.CurrentUICulture = Context.CurrentUICulture;
-#endif
-
             thread.Start();
+            
+            if (timeout <= 0)
+                timeout = Timeout.Infinite;
 
-            if (!Test.IsAsynchronous || timeout > 0)
+            if (!thread.Join(timeout))
             {
-                if (timeout <= 0)
-                    timeout = Timeout.Infinite;
-
-                if (!thread.Join(timeout))
+                // Don't enforce timeout when debugger is attached.
+                // We perform this check after the initial timeout has passed to 
+                // give the user additional time to attach a debugger 
+                // after the test has started execution
+                if (Debugger.IsAttached)
                 {
-                    Thread tThread;
-                    lock (threadLock)
-                    {
-                        if (thread == null)
-                            return;
+                    thread.Join();
+                    return;
+                }
 
-                        tThread = thread;
-                        thread = null;
-                    }
-
-                    if (Context.ExecutionStatus == TestExecutionStatus.AbortRequested)
+                Thread tThread;
+                lock (threadLock)
+                {
+                    if (thread == null)
                         return;
 
-                    log.Debug("Killing thread {0}, which exceeded timeout", tThread.ManagedThreadId);
-                    ThreadUtility.Kill(tThread);
-
-                    // NOTE: Without the use of Join, there is a race condition here.
-                    // The thread sets the result to Cancelled and our code below sets
-                    // it to Failure. In order for the result to be shown as a failure,
-                    // we need to ensure that the following code executes after the
-                    // thread has terminated. There is a risk here: the test code might
-                    // refuse to terminate. However, it's more important to deal with
-                    // the normal rather than a pathological case.
-                    tThread.Join();
-
-                    log.Debug("Changing result from {0} to Timeout Failure", Result.ResultState);
-
-                    Result.SetResult(ResultState.Failure,
-                        string.Format("Test exceeded Timeout value of {0}ms", timeout));
-
-                    WorkItemComplete();
+                    tThread = thread;
+                    thread = null;
                 }
+
+                if (Context.ExecutionStatus == TestExecutionStatus.AbortRequested)
+                    return;
+
+                log.Debug("Killing thread {0}, which exceeded timeout", tThread.ManagedThreadId);
+                ThreadUtility.Kill(tThread);
+
+                // NOTE: Without the use of Join, there is a race condition here.
+                // The thread sets the result to Cancelled and our code below sets
+                // it to Failure. In order for the result to be shown as a failure,
+                // we need to ensure that the following code executes after the
+                // thread has terminated. There is a risk here: the test code might
+                // refuse to terminate. However, it's more important to deal with
+                // the normal rather than a pathological case.
+                tThread.Join();
+
+                log.Debug("Changing result from {0} to Timeout Failure", Result.ResultState);
+
+                Result.SetResult(ResultState.Failure,
+                    string.Format("Test exceeded Timeout value of {0}ms", timeout));
+
+                WorkItemComplete();
             }
         }
 #endif
@@ -368,7 +358,6 @@ namespace NUnit.Framework.Internal.Execution
             State = WorkItemState.Running;
 
             PerformWork();
-
         }
 
         private object threadLock = new object();
@@ -451,6 +440,10 @@ namespace NUnit.Framework.Internal.Execution
 
             if (Completed != null)
                 Completed(this, EventArgs.Empty);
+
+            //Clear references to test objects to reduce memory usage
+            Context.TestObject = null;
+            Test.Fixture = null;
         }
 
 #endregion

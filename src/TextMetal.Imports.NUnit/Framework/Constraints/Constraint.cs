@@ -22,7 +22,10 @@
 // ***********************************************************************
 
 using NUnit.Framework.Internal;
+using NUnit.Compatibility;
 using System.Collections;
+using System;
+using System.Reflection;
 
 namespace NUnit.Framework.Constraints
 {
@@ -39,6 +42,8 @@ namespace NUnit.Framework.Constraints
     /// </summary>
     public abstract class Constraint : IConstraint
     {
+        Lazy<string> _displayName;
+
         #region Constructor
 
         /// <summary>
@@ -49,11 +54,16 @@ namespace NUnit.Framework.Constraints
         {
             Arguments = args;
 
-            DisplayName = this.GetType().Name;
-            if (DisplayName.EndsWith("`1") || DisplayName.EndsWith("`2"))
-                DisplayName = DisplayName.Substring(0, DisplayName.Length - 2);
-            if (DisplayName.EndsWith("Constraint"))
-                DisplayName = DisplayName.Substring(0, DisplayName.Length - 10);
+            _displayName = new Lazy<string>(() =>
+            {
+                var type = this.GetType();
+                var displayName = type.Name;
+                if (type.GetTypeInfo().IsGenericType)
+                    displayName = displayName.Substring(0, displayName.Length - 2);
+                if (displayName.EndsWith("Constraint", StringComparison.Ordinal))
+                    displayName = displayName.Substring(0, displayName.Length - 10);
+                return displayName;
+            });
         }
 
         #endregion
@@ -66,7 +76,7 @@ namespace NUnit.Framework.Constraints
         /// trailing "Constraint" removed. Derived classes may set
         /// this to another name in their constructors.
         /// </summary>
-        public string DisplayName { get; protected set; }
+        public virtual string DisplayName { get { return _displayName.Value; } }
 
         /// <summary>
         /// The Description of what this constraint tests, for
@@ -282,15 +292,15 @@ namespace NUnit.Framework.Constraints
 
 #if !PORTABLE
         /// <summary>
-        /// Returns a DelayedConstraint with the specified delay time.
+        /// Returns a DelayedConstraint.WithRawDelayInterval with the specified delay time.
         /// </summary>
-        /// <param name="delayInMilliseconds">The delay in milliseconds.</param>
+        /// <param name="delay">The delay, which defaults to milliseconds.</param>
         /// <returns></returns>
-        public DelayedConstraint After(int delayInMilliseconds)
+        public DelayedConstraint.WithRawDelayInterval After(int delay)
         {
-            return new DelayedConstraint(
+            return new DelayedConstraint.WithRawDelayInterval(new DelayedConstraint(
                 Builder == null ? this : Builder.Resolve(),
-                delayInMilliseconds);
+                delay));
         }
 
         /// <summary>

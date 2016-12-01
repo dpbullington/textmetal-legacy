@@ -22,6 +22,7 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 
 namespace NUnit.Framework.Interfaces
 {
@@ -155,9 +156,9 @@ namespace NUnit.Framework.Interfaces
         }
 
         /// <summary>
-        /// Gets the the collection of child results.
+        /// Gets the collection of child results.
         /// </summary>
-        System.Collections.Generic.IList<ITestResult> Children
+        IEnumerable<ITestResult> Children
         {
             get;
         }
@@ -174,6 +175,14 @@ namespace NUnit.Framework.Interfaces
         /// Gets any text output written to this result.
         /// </summary>
         string Output
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a list of AssertionResults associated with the test
+        /// </summary>
+        IList<AssertionResult> AssertionResults
         {
             get;
         }

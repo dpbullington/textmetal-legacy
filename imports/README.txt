@@ -14,6 +14,6 @@ nmock3[trunk]-87315.zip
 https://nmock3.codeplex.com/SourceControl/latest
 REQUIRED CHANGES TO SUPPORT netframework1.6
 
-nunit[master]-fff446c9add9ccbf0514326e8fcda9cbe446aa96.zip
+nunit-4a11e8ed6384a879074804ad3b955eba4cc46a65.zip
 https://github.com/nunit/nunit
 NO CHANGES TO SUPPORT netframework1.6

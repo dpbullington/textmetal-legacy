@@ -42,8 +42,9 @@ namespace NUnit.Framework
         /// The Equals method throws an InvalidOperationException. This is done 
         /// to make sure there is no mistake by calling this function.
         /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
+        /// <param name="a">The left object.</param>
+        /// <param name="b">The right object.</param>
+        /// <returns>Not applicable</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static new bool Equals(object a, object b)
         {
@@ -55,8 +56,8 @@ namespace NUnit.Framework
         /// implementation makes sure there is no mistake in calling this function 
         /// as part of Assert. 
         /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
+        /// <param name="a">The left object.</param>
+        /// <param name="b">The right object.</param>
         public static new void ReferenceEquals(object a, object b)
         {
             throw new InvalidOperationException("Assume.ReferenceEquals should not be used for Assertions");
@@ -67,13 +68,15 @@ namespace NUnit.Framework
         #region Assume.That
 
         #region ActualValueDelegate
+
         /// <summary>
         /// Apply a constraint to an actual value, succeeding if the constraint
         /// is satisfied and throwing an InconclusiveException on failure.
         /// </summary>
-        /// <param name="expr">A Constraint expression to be applied</param>
+        /// <typeparam name="TActual">The Type being compared.</typeparam>
         /// <param name="del">An ActualValueDelegate returning the value to be tested</param>
-        static public void That<TActual>(ActualValueDelegate<TActual> del, IResolveConstraint expr)
+        /// <param name="expr">A Constraint expression to be applied</param>
+        public static void That<TActual>(ActualValueDelegate<TActual> del, IResolveConstraint expr)
         {
             Assume.That(del, expr.Resolve(), null, null);
         }
@@ -82,25 +85,59 @@ namespace NUnit.Framework
         /// Apply a constraint to an actual value, succeeding if the constraint
         /// is satisfied and throwing an InconclusiveException on failure.
         /// </summary>
+        /// <typeparam name="TActual">The Type being compared.</typeparam>
         /// <param name="del">An ActualValueDelegate returning the value to be tested</param>
         /// <param name="expr">A Constraint expression to be applied</param>
         /// <param name="message">The message that will be displayed on failure</param>
         /// <param name="args">Arguments to be used in formatting the message</param>
-        static public void That<TActual>(ActualValueDelegate<TActual> del, IResolveConstraint expr, string message, params object[] args)
+        public static void That<TActual>(ActualValueDelegate<TActual> del, IResolveConstraint expr, string message, params object[] args)
         {
+            CheckMultipleAssertLevel();
+
+            var constraint = expr.Resolve();
+            var result = constraint.ApplyTo(del);
+
+            if (!result.IsSuccess)
+                ReportFailure(result, message, args);
+        }
+
+        private static void ReportFailure(ConstraintResult result, string message, object[] args)
+        {
+            MessageWriter writer = new TextMessageWriter(message, args);
+            result.WriteMessageTo(writer);
+            throw new InconclusiveException(writer.ToString());
+        }
+
+#if !NET_2_0
+        /// <summary>
+        /// Apply a constraint to an actual value, succeeding if the constraint
+        /// is satisfied and throwing an InconclusiveException on failure.
+        /// </summary>
+        /// <typeparam name="TActual">The Type being compared.</typeparam>
+        /// <param name="del">An ActualValueDelegate returning the value to be tested</param>
+        /// <param name="expr">A Constraint expression to be applied</param>
+        /// <param name="getExceptionMessage">A function to build the message included with the Exception</param>
+        public static void That<TActual>(
+            ActualValueDelegate<TActual> del,
+            IResolveConstraint expr,
+            Func<string> getExceptionMessage)
+        {
+            CheckMultipleAssertLevel();
+
             var constraint = expr.Resolve();
 
             var result = constraint.ApplyTo(del);
             if (!result.IsSuccess)
             {
-                MessageWriter writer = new TextMessageWriter(message, args);
-                result.WriteMessageTo(writer);
-                throw new InconclusiveException(writer.ToString());
+                throw new InconclusiveException(getExceptionMessage());
             }
         }
+#endif
+
         #endregion
 
         #region Boolean
+
         /// <summary>
         /// Asserts that a condition is true. If the condition is false the method throws
         /// an <see cref="InconclusiveException"/>.
@@ -108,7 +145,7 @@ namespace NUnit.Framework
         /// <param name="condition">The evaluated condition</param>
         /// <param name="message">The message to display if the condition is false</param>
         /// <param name="args">Arguments to be used in formatting the message</param>
-        static public void That(bool condition, string message, params object[] args)
+        public static void That(bool condition, string message, params object[] args)
         {
             Assume.That(condition, Is.True, message, args);
         }
@@ -118,13 +155,28 @@ namespace NUnit.Framework
         /// method throws an <see cref="InconclusiveException"/>.
         /// </summary>
         /// <param name="condition">The evaluated condition</param>
-        static public void That(bool condition)
+        public static void That(bool condition)
         {
             Assume.That(condition, Is.True, null, null);
         }
+
+#if !NET_2_0
+        /// <summary>
+        /// Asserts that a condition is true. If the condition is false the method throws
+        /// an <see cref="InconclusiveException"/>.
+        /// </summary> 
+        /// <param name="condition">The evaluated condition</param>
+        /// <param name="getExceptionMessage">A function to build the message included with the Exception</param>
+        public static void That(bool condition, Func<string> getExceptionMessage)
+        {
+            Assume.That(condition, Is.True, getExceptionMessage);
+        }
+#endif
+
         #endregion
 
         #region Lambda returning Boolean
+
 #if !NET_2_0
         /// <summary>
         /// Asserts that a condition is true. If the condition is false the method throws
@@ -133,7 +185,7 @@ namespace NUnit.Framework
         /// <param name="condition">A lambda that returns a Boolean</param>
         /// <param name="message">The message to display if the condition is false</param>
         /// <param name="args">Arguments to be used in formatting the message</param>
-        static public void That(Func<bool> condition, string message, params object[] args)
+        public static void That(Func<bool> condition, string message, params object[] args)
         {
             Assume.That(condition.Invoke(), Is.True, message, args);
         }
@@ -143,11 +195,23 @@ namespace NUnit.Framework
         /// an <see cref="InconclusiveException"/>.
         /// </summary>
         /// <param name="condition">A lambda that returns a Boolean</param>
-        static public void That(Func<bool> condition)
+        public static void That(Func<bool> condition)
         {
             Assume.That(condition.Invoke(), Is.True, null, null);
         }
+
+        /// <summary>
+        /// Asserts that a condition is true. If the condition is false the method throws
+        /// an <see cref="InconclusiveException"/>.
+        /// </summary> 
+        /// <param name="condition">A lambda that returns a Boolean</param>
+        /// <param name="getExceptionMessage">A function to build the message included with the Exception</param>
+        public static void That(Func<bool> condition, Func<string> getExceptionMessage)
+        {
+            Assume.That(condition.Invoke(), Is.True, getExceptionMessage);
+        }
 #endif
+
         #endregion
 
         #region TestDelegate
@@ -158,14 +222,14 @@ namespace NUnit.Framework
         /// </summary>
         /// <param name="code">A TestDelegate to be executed</param>
         /// <param name="constraint">A ThrowsConstraint used in the test</param>
-        static public void That(TestDelegate code, IResolveConstraint constraint)
+        public static void That(TestDelegate code, IResolveConstraint constraint)
         {
             Assume.That((object)code, constraint);
         }
 
-        #endregion
+#endregion
 
-        #endregion
+#endregion
 
         #region Assume.That<TActual>
 
@@ -173,9 +237,10 @@ namespace NUnit.Framework
         /// Apply a constraint to an actual value, succeeding if the constraint
         /// is satisfied and throwing an InconclusiveException on failure.
         /// </summary>
-        /// <param name="expression">A Constraint to be applied</param>
+        /// <typeparam name="TActual">The Type being compared.</typeparam>
         /// <param name="actual">The actual value to test</param>
-        static public void That<TActual>(TActual actual, IResolveConstraint expression)
+        /// <param name="expression">A Constraint to be applied</param>
+        public static void That<TActual>(TActual actual, IResolveConstraint expression)
         {
             Assume.That(actual, expression, null, null);
         }
@@ -184,12 +249,15 @@ namespace NUnit.Framework
         /// Apply a constraint to an actual value, succeeding if the constraint
         /// is satisfied and throwing an InconclusiveException on failure.
         /// </summary>
-        /// <param name="expression">A Constraint expression to be applied</param>
+        /// <typeparam name="TActual">The Type being compared.</typeparam>
         /// <param name="actual">The actual value to test</param>
+        /// <param name="expression">A Constraint expression to be applied</param>
         /// <param name="message">The message that will be displayed on failure</param>
         /// <param name="args">Arguments to be used in formatting the message</param>
-        static public void That<TActual>(TActual actual, IResolveConstraint expression, string message, params object[] args)
+        public static void That<TActual>(TActual actual, IResolveConstraint expression, string message, params object[] args)
         {
+            CheckMultipleAssertLevel();
+
             var constraint = expression.Resolve();
 
             var result = constraint.ApplyTo(actual);
@@ -199,6 +267,42 @@ namespace NUnit.Framework
                 result.WriteMessageTo(writer);
                 throw new InconclusiveException(writer.ToString());
             }
+        }
+
+#if !NET_2_0
+        /// <summary>
+        /// Apply a constraint to an actual value, succeeding if the constraint
+        /// is satisfied and throwing an InconclusiveException on failure.
+        /// </summary>
+        /// <typeparam name="TActual">The Type being compared.</typeparam>
+        /// <param name="actual">The actual value to test</param>
+        /// <param name="expression">A Constraint to be applied</param>
+        /// <param name="getExceptionMessage">A function to build the message included with the Exception</param>
+        public static void That<TActual>(
+            TActual actual,
+            IResolveConstraint expression,
+            Func<string> getExceptionMessage)
+        {
+            CheckMultipleAssertLevel();
+
+            var constraint = expression.Resolve();
+
+            var result = constraint.ApplyTo(actual);
+            if (!result.IsSuccess)
+            {
+                throw new InconclusiveException(getExceptionMessage());
+            }
+        }
+#endif
+
+        #endregion
+
+        #region Helper Methods
+
+        private static void CheckMultipleAssertLevel()
+        {
+            if (TestExecutionContext.CurrentContext.MultipleAssertLevel > 0)
+                throw new Exception("Assume.That may not be used in a multiple assertion block.");
         }
 
         #endregion

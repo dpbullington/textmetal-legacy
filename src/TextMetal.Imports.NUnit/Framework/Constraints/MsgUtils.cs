@@ -60,14 +60,11 @@ namespace NUnit.Framework.Constraints
         private static readonly string Fmt_Null = "null";
         private static readonly string Fmt_EmptyString = "<string.Empty>";
         private static readonly string Fmt_EmptyCollection = "<empty>";
-
         private static readonly string Fmt_String = "\"{0}\"";
         private static readonly string Fmt_Char = "'{0}'";
-        private static readonly string Fmt_DateTime = "yyyy-MM-dd HH:mm:ss.fff";
-#if !NETCF
-		private static readonly string Fmt_DateTimeOffset = "yyyy-MM-dd HH:mm:ss.fffzzz";
-#endif
-		private static readonly string Fmt_ValueType = "{0}";
+        private static readonly string Fmt_DateTime = "yyyy-MM-dd HH:mm:ss.FFFFFFF";
+        private static readonly string Fmt_DateTimeOffset = "yyyy-MM-dd HH:mm:ss.FFFFFFFzzz";
+        private static readonly string Fmt_ValueType = "{0}";
         private static readonly string Fmt_Default = "<{0}>";
 
         /// <summary>
@@ -84,11 +81,9 @@ namespace NUnit.Framework.Constraints
 
             AddFormatter(next => val => val is DateTime ? FormatDateTime((DateTime)val) : next(val));
 
-#if !NETCF
-			AddFormatter(next => val => val is DateTimeOffset ? FormatDateTimeOffset ((DateTimeOffset)val) : next (val));
-#endif
+            AddFormatter(next => val => val is DateTimeOffset ? FormatDateTimeOffset ((DateTimeOffset)val) : next (val));
 
-			AddFormatter(next => val => val is decimal ? FormatDecimal((decimal)val) : next(val));
+            AddFormatter(next => val => val is decimal ? FormatDecimal((decimal)val) : next(val));
 
             AddFormatter(next => val => val is float ? FormatFloat((float)val) : next(val));
 
@@ -100,17 +95,7 @@ namespace NUnit.Framework.Constraints
 
             AddFormatter(next => val => val is string ? FormatString((string)val) : next(val));
 
-            AddFormatter(next => val => val.GetType().IsArray ? FormatArray((Array)val) : next(val));
-
-#if NETCF
-            AddFormatter(next => val =>
-            {
-                var vi = val as System.Reflection.MethodInfo;
-                return (vi != null && vi.IsGenericMethodDefinition)
-                        ? string.Format(Fmt_Default, vi.Name + "<>") 
-                        : next(val);
-            });
-#endif
+            AddFormatter(next => val => val.GetType().IsArray ? FormatArray((Array)val) : next(val));            
         }
 
         /// <summary>
@@ -263,21 +248,19 @@ namespace NUnit.Framework.Constraints
             return dt.ToString(Fmt_DateTime, CultureInfo.InvariantCulture);
         }
 
-#if !NETCF
-		private static string FormatDateTimeOffset(DateTimeOffset dto)
+        private static string FormatDateTimeOffset(DateTimeOffset dto)
         {
             return dto.ToString(Fmt_DateTimeOffset, CultureInfo.InvariantCulture);
         }
-#endif
 
-		/// <summary>
-		/// Returns the representation of a type as used in NUnitLite.
-		/// This is the same as Type.ToString() except for arrays,
-		/// which are displayed with their declared sizes.
-		/// </summary>
-		/// <param name="obj"></param>
-		/// <returns></returns>
-		public static string GetTypeRepresentation(object obj)
+        /// <summary>
+        /// Returns the representation of a type as used in NUnitLite.
+        /// This is the same as Type.ToString() except for arrays,
+        /// which are displayed with their declared sizes.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static string GetTypeRepresentation(object obj)
         {
             Array array = obj as Array;
             if (array == null)
@@ -368,6 +351,38 @@ namespace NUnit.Framework.Constraints
                 }
 
                 s = sb.ToString();
+            }
+
+            return s;
+        }
+
+        /// <summary>
+        /// Converts any null characters in a string 
+        /// to their escaped representation.
+        /// </summary>
+        /// <param name="s">The string to be converted</param>
+        /// <returns>The converted string</returns>
+        public static string EscapeNullCharacters(string s)
+        {
+            if(s != null)
+            {
+                StringBuilder sb = new StringBuilder();
+
+                foreach(char c in s)
+                {
+                    switch(c)
+                    {
+                        case '\0':
+                            sb.Append("\\0");
+                            break;
+
+                        default:
+                            sb.Append(c);
+                            break;
+                    }
+                }
+
+                s = sb.ToString();               
             }
 
             return s;

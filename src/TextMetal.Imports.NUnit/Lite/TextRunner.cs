@@ -22,13 +22,12 @@
 // ***********************************************************************
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Text;
 using NUnit.Common;
+using NUnit;
 using NUnit.Framework.Api;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
@@ -62,8 +61,10 @@ namespace NUnitLite
         public const int INVALID_ARG = -1;
         /// <summary>File not found</summary>
         public const int FILE_NOT_FOUND = -2;
-        /// <summary>Test fixture not found</summary>
-        public const int FIXTURE_NOT_FOUND = -3;
+        /// <summary>Test fixture not found - No longer in use</summary>
+        //public const int FIXTURE_NOT_FOUND = -3;
+        /// <summary>Invalid test suite</summary>
+        public const int INVALID_TEST_FIXTURE = -4;
         /// <summary>Unexpected error occurred</summary>
         public const int UNEXPECTED_ERROR = -100;
 
@@ -77,10 +78,6 @@ namespace NUnitLite
         private ITestListener _teamCity = null;
 
         private TextUI _textUI;
-
-#if SILVERLIGHT
-        private List<ITestResult> _results = new List<ITestResult>();
-#endif
 
         #region Constructors
 
@@ -110,7 +107,7 @@ namespace NUnitLite
 
         #region Public Methods
 
-#if !SILVERLIGHT && !PORTABLE
+#if !PORTABLE
         public int Execute(string[] args)
         {
             var options = new NUnitLiteOptions(args);
@@ -152,9 +149,7 @@ namespace NUnitLite
 
         public int Execute(ExtendedTextWriter writer, TextReader reader, string[] args)
         {
-            var options = new NUnitLiteOptions(args);
-            var textUI = new TextUI(writer, reader, options);
-            return Execute(textUI, options);
+            return Execute(writer, reader, new NUnitLiteOptions(args));
         }
 
         public int Execute(ExtendedTextWriter writer, TextReader reader, NUnitLiteOptions options)
@@ -175,15 +170,13 @@ namespace NUnitLite
 
             try
             {
-#if !SILVERLIGHT && !PORTABLE
+#if !PORTABLE
                 if (!Directory.Exists(_options.WorkDirectory))
                     Directory.CreateDirectory(_options.WorkDirectory);
+#endif
 
-#if !NETCF
                 if (_options.TeamCity)
-                    _teamCity = new TeamCityEventListener();
-#endif
-#endif
+                    _teamCity = new TeamCityEventListener(_textUI.Writer);
 
                 if (_options.ShowVersion || !_options.NoHeader)
                     _textUI.DisplayHeader();
@@ -249,34 +242,26 @@ namespace NUnitLite
                 _textUI.DisplayError(ex.ToString());
                 return UNEXPECTED_ERROR;
             }
-#if !SILVERLIGHT
             finally
             {
                 if (_options.WaitBeforeExit)
                     _textUI.WaitForUser("Press Enter key to continue . . .");
             }
-#endif
         }
 
-#endregion
+        #endregion
 
         #region Helper Methods
 
-        public int RunTests(TestFilter filter, IDictionary runSettings)
+        public int RunTests(TestFilter filter, IDictionary<string, object> runSettings)
         {
             var startTime = DateTime.UtcNow;
 
             ITestResult result = _runner.Run(this, filter);
-
-#if SILVERLIGHT
-            // Silverlight can't display results while the test is running
-            // so we do it afterwards.
-            foreach(ITestResult testResult in _results)
-                _textUI.TestFinished(testResult);
-#endif
+            
             ReportResults(result);
 
-#if !SILVERLIGHT && !PORTABLE
+#if !PORTABLE
             if (_options.ResultOutputSpecifications.Count > 0)
             {
                 var outputManager = new OutputManager(_options.WorkDirectory);
@@ -285,6 +270,8 @@ namespace NUnitLite
                     outputManager.WriteResultFile(result, spec, runSettings, filter);
             }
 #endif
+            if (Summary.InvalidTestFixtures > 0)
+                return INVALID_TEST_FIXTURE;
 
             return Summary.FailureCount + Summary.ErrorCount + Summary.InvalidCount;
         }
@@ -311,7 +298,7 @@ namespace NUnitLite
 
         private int ExploreTests()
         {
-#if !PORTABLE && !SILVERLIGHT
+#if !PORTABLE
             ITest testNode = _runner.LoadedTest;
 
             var specs = _options.ExploreOutputSpecifications;
@@ -339,17 +326,23 @@ namespace NUnitLite
             var runSettings = new Dictionary<string, object>();
 
             if (options.RandomSeed >= 0)
-                runSettings[PackageSettings.RandomSeed] = options.RandomSeed;
+                runSettings[FrameworkPackageSettings.RandomSeed] = options.RandomSeed;
 
 #if !PORTABLE
             if (options.WorkDirectory != null)
-                runSettings[PackageSettings.WorkDirectory] = Path.GetFullPath(options.WorkDirectory);
+                runSettings[FrameworkPackageSettings.WorkDirectory] = Path.GetFullPath(options.WorkDirectory);
 #endif
             if (options.DefaultTimeout >= 0)
-                runSettings[PackageSettings.DefaultTimeout] = options.DefaultTimeout;
+                runSettings[FrameworkPackageSettings.DefaultTimeout] = options.DefaultTimeout;
 
             if (options.StopOnError)
-                runSettings[PackageSettings.StopOnError] = true;
+                runSettings[FrameworkPackageSettings.StopOnError] = true;
+
+            if (options.DefaultTestNamePattern != null)
+                runSettings[FrameworkPackageSettings.DefaultTestNamePattern] = options.DefaultTestNamePattern;
+
+            if (options.TestParameters != null)
+                runSettings[FrameworkPackageSettings.TestParameters] = options.TestParameters;
 
             return runSettings;
         }
@@ -373,7 +366,7 @@ namespace NUnitLite
                     ? new OrFilter(testFilters.ToArray())
                     : testFilters[0];
             }
-                
+
 
             if (options.WhereClauseSpecified)
             {
@@ -387,7 +380,7 @@ namespace NUnitLite
             return filter;
         }
 
-#if !PORTABLE && !SILVERLIGHT
+#if !PORTABLE
         private void InitializeInternalTrace(NUnitLiteOptions _options)
         {
             var traceLevel = (InternalTraceLevel)Enum.Parse(typeof(InternalTraceLevel), _options.InternalTraceLevel ?? "Off", true);
@@ -396,9 +389,6 @@ namespace NUnitLite
             {
                 var logName = GetLogFileName();
 
-#if NETCF // NETCF: Try to encapsulate this
-                InternalTrace.Initialize(Path.Combine(NUnit.Env.DocumentFolder, logName), traceLevel);
-#else
                 StreamWriter streamWriter = null;
                 if (traceLevel > InternalTraceLevel.Off)
                 {
@@ -407,7 +397,6 @@ namespace NUnitLite
                     streamWriter.AutoFlush = true;
                 }
                 InternalTrace.Initialize(streamWriter, traceLevel);
-#endif
             }
         }
 
@@ -417,11 +406,7 @@ namespace NUnitLite
 
             // Some mobiles don't have an Open With menu item,
             // so we use .txt, which is opened easily.
-#if NETCF
-            const string ext = "txt";
-#else
             const string ext = "log";
-#endif
             var baseName = _testAssembly != null
                 ? _testAssembly.GetName().Name
                 : _options.InputFiles.Count > 0
@@ -455,18 +440,18 @@ namespace NUnitLite
             if (_teamCity != null)
                 _teamCity.TestFinished(result);
 
-#if !SILVERLIGHT
             _textUI.TestFinished(result);
-#else
-            // For Silverlight, we can't display the results
-            // until the run is completed. We don't save anything
-            // unless there is associated output, since that's 
-            // the only time we display anything in Silverlight.
-            if (result.Output.Length > 0)
-                _results.Add(result);
-#endif
         }
 
-#endregion
+        /// <summary>
+        /// Called when a test produces output for immediate display
+        /// </summary>
+        /// <param name="output">A TestOutput object containing the text to display</param>
+        public void TestOutput(TestOutput output)
+        {
+            _textUI.TestOutput(output);
+        }
+
+        #endregion
     }
 }

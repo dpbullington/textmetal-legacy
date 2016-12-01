@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using NUnit.Framework.Compatibility;
+using NUnit.Compatibility;
 
 #if NET_4_5 || PORTABLE
 using System.Runtime.ExceptionServices;
@@ -67,7 +67,9 @@ at wrapping a non-async method invocation in an async region was done");
 
         public static bool IsAsyncOperation(MethodInfo method)
         {
-            return method.ReturnType.FullName.StartsWith(TaskTypeName) ||
+            var name = method.ReturnType.FullName;
+            if (name == null) return false;
+            return name.StartsWith(TaskTypeName) ||
                    method.GetCustomAttributes(false).Any(attr => AsyncAttributeTypeName == attr.GetType().FullName);
         }
 

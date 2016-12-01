@@ -22,9 +22,17 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
+#if PARALLEL
+using System.Collections.Concurrent;
+#endif
 using System.Globalization;
 using System.IO;
 using System.Text;
+#if NET_2_0
+using NUnit.Compatibility;
+#endif
+using System.Threading;
 using NUnit.Framework.Interfaces;
 
 namespace NUnit.Framework.Internal
@@ -51,16 +59,32 @@ namespace NUnit.Framework.Internal
         /// </summary>
         internal const double MIN_DURATION = 0.000001d;
 
-//        static Logger log = InternalTrace.GetLogger("TestResult");
-
-        /// <summary>
-        /// List of child results
-        /// </summary>
-        private System.Collections.Generic.List<ITestResult> _children;
+        //        static Logger log = InternalTrace.GetLogger("TestResult");
 
         private StringBuilder _output = new StringBuilder();
-        private TextWriter _outWriter;
         private double _duration;
+
+        /// <summary>
+        /// Aggregate assertion count
+        /// </summary>
+        protected int InternalAssertCount;
+
+        private ResultState _resultState;
+        private string _message;
+        private string _stackTrace;
+
+        private List<AssertionResult> _assertionResults = new List<AssertionResult>();
+
+#if PARALLEL
+        /// <summary>
+        /// ReaderWriterLock
+        /// </summary>
+#if NET_2_0
+        protected ReaderWriterLock RwLock = new ReaderWriterLock();
+#else
+        protected ReaderWriterLockSlim RwLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+#endif
+#endif
 
         #endregion
 
@@ -74,6 +98,12 @@ namespace NUnit.Framework.Internal
         {
             Test = test;
             ResultState = ResultState.Inconclusive;
+
+#if PORTABLE
+            OutWriter = new StringWriter(_output);
+#else
+            OutWriter = TextWriter.Synchronized(new StringWriter(_output));
+#endif
         }
 
         #endregion
@@ -89,7 +119,26 @@ namespace NUnit.Framework.Internal
         /// Gets the ResultState of the test result, which 
         /// indicates the success or failure of the test.
         /// </summary>
-        public ResultState ResultState { get; private set; }
+        public ResultState ResultState
+        {
+            get
+            {
+#if PARALLEL
+                RwLock.EnterReadLock();
+#endif
+                try
+                {
+                    return _resultState;
+                }
+                finally
+                {
+#if PARALLEL
+                    RwLock.ExitReadLock();
+#endif
+                }
+            }
+            private set { _resultState = value; }
+        }
 
         /// <summary>
         /// Gets the name of the test result
@@ -130,19 +179,88 @@ namespace NUnit.Framework.Internal
         /// Gets the message associated with a test
         /// failure or with not running the test
         /// </summary>
-        public string Message { get; private set; }
+        public string Message
+        {
+            get
+            {
+#if PARALLEL
+                RwLock.EnterReadLock();
+#endif
+                try
+                {
+                    return _message;
+                }
+                finally
+                {
+#if PARALLEL
+                    RwLock.ExitReadLock();
+#endif
+                }
+
+            }
+            private set
+            {
+                _message = value;
+            }
+        }
 
         /// <summary>
         /// Gets any stacktrace associated with an
         /// error or failure.
         /// </summary>
-        public virtual string StackTrace { get; private set; }
+        public virtual string StackTrace
+        {
+            get
+            {
+#if PARALLEL
+                RwLock.EnterReadLock();
+#endif
+                try
+                {
+                    return _stackTrace;
+                }
+                finally
+                {
+#if PARALLEL
+                    RwLock.ExitReadLock();
+#endif
+                }
+            }
+
+            private set
+            {
+                _stackTrace = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the count of asserts executed
         /// when running the test.
         /// </summary>
-        public int AssertCount { get; set; }
+        public int AssertCount
+        {
+            get
+            {
+#if PARALLEL
+                RwLock.EnterReadLock();
+#endif
+                try
+                {
+                    return InternalAssertCount;
+                }
+                finally
+                {
+#if PARALLEL
+                    RwLock.ExitReadLock ();
+#endif
+                }
+            }
+
+            internal set
+            {
+                InternalAssertCount = value;
+            }
+        }
 
         /// <summary>
         /// Gets the number of test cases that failed
@@ -170,45 +288,18 @@ namespace NUnit.Framework.Internal
 
         /// <summary>
         /// Indicates whether this result has any child results.
-        /// Test HasChildren before accessing Children to avoid
-        /// the creation of an empty collection.
         /// </summary>
-        public bool HasChildren
-        {
-            get { return _children != null && _children.Count > 0; }
-        }
+        public abstract bool HasChildren { get; }
 
         /// <summary>
         /// Gets the collection of child results.
         /// </summary>
-        public System.Collections.Generic.IList<ITestResult> Children
-        {
-            get
-            {
-                if (_children == null)
-                    _children = new System.Collections.Generic.List<ITestResult>();
-
-                return _children;
-            }
-        }
+        public abstract IEnumerable<ITestResult> Children { get; }
 
         /// <summary>
         /// Gets a TextWriter, which will write output to be included in the result.
         /// </summary>
-        public TextWriter OutWriter
-        {
-            get
-            {
-                if (_outWriter == null)
-#if PORTABLE || SILVERLIGHT
-                    _outWriter = new StringWriter(_output);
-#else
-                    _outWriter = TextWriter.Synchronized(new StringWriter(_output));
-#endif
-
-                return _outWriter;
-            }
-        }
+        public TextWriter OutWriter { get; private set; }
 
         /// <summary>
         /// Gets any text output written to this result.
@@ -218,9 +309,17 @@ namespace NUnit.Framework.Internal
             get { return _output.ToString(); }
         }
 
-#endregion
+        /// <summary>
+        /// Gets a list of assertion results associated with the test.
+        /// </summary>
+        public IList<AssertionResult> AssertionResults
+        {
+            get { return _assertionResults; }
+        }
 
-#region IXmlNodeBuilder Members
+        #endregion
+
+        #region IXmlNodeBuilder Members
 
         /// <summary>
         /// Returns the Xml representation of the result.
@@ -281,6 +380,9 @@ namespace NUnit.Framework.Internal
             if (Output.Length > 0)
                 AddOutputElement(thisNode);
 
+            if (AssertionResults.Count > 0)
+                AddAssertionsElement(thisNode);
+
 
             if (recursive && HasChildren)
                 foreach (TestResult child in Children)
@@ -289,52 +391,9 @@ namespace NUnit.Framework.Internal
             return thisNode;
         }
 
-#endregion
+        #endregion
 
-        /// <summary>
-        /// Adds a child result to this result, setting this result's
-        /// ResultState to Failure if the child result failed.
-        /// </summary>
-        /// <param name="result">The result to be added</param>
-        public virtual void AddResult(ITestResult result)
-        {
-            Children.Add(result);
-
-            //AssertCount += result.AssertCount;
-
-            // If this result is marked cancelled, don't change it
-            if (ResultState != ResultState.Cancelled)
-                switch (result.ResultState.Status)
-                {
-                    case TestStatus.Passed:
-
-                        if (ResultState.Status == TestStatus.Inconclusive)
-                            SetResult(ResultState.Success);
-
-                        break;
-
-                    case TestStatus.Failed:
-
-
-                        if (ResultState.Status != TestStatus.Failed)
-                            SetResult(ResultState.ChildFailure, CHILD_ERRORS_MESSAGE);
-
-                        break;
-
-                    case TestStatus.Skipped:
-
-                        if (result.ResultState.Label == "Ignored")
-                            if (ResultState.Status == TestStatus.Inconclusive || ResultState.Status == TestStatus.Passed)
-                                SetResult(ResultState.Ignored, CHILD_IGNORE_MESSAGE);
-
-                        break;
-
-                    default:
-                        break;
-                }
-        }
-
-#region Other Public Methods
+        #region Other Public Methods
 
         /// <summary>
         /// Set the result of the test
@@ -363,9 +422,21 @@ namespace NUnit.Framework.Internal
         /// <param name="stackTrace">Stack trace giving the location of the command</param>
         public void SetResult(ResultState resultState, string message, string stackTrace)
         {
-            ResultState = resultState;
-            Message = message;
-            StackTrace = stackTrace;
+#if PARALLEL
+            RwLock.EnterWriteLock();
+#endif
+            try
+            {
+                ResultState = resultState;
+                Message = message;
+                StackTrace = stackTrace;
+            }
+            finally
+            {
+#if PARALLEL
+                RwLock.ExitWriteLock();
+#endif
+            }
 
             // Set pseudo-counts for a test case
             //if (IsTestCase(test))
@@ -404,9 +475,12 @@ namespace NUnit.Framework.Internal
                 ex = ex.InnerException;
 
             if (ex is ResultStateException)
-                SetResult(((ResultStateException)ex).ResultState,
-                    ex.Message,
-                    StackFilter.Filter(ex.StackTrace));
+            {
+                string message = ex.Message;
+                string stackTrace = StackFilter.DefaultFilter.Filter(ex.StackTrace);
+
+                SetResult(((ResultStateException)ex).ResultState, message, stackTrace);
+            }
 #if !PORTABLE
             else if (ex is System.Threading.ThreadAbortException)
                 SetResult(ResultState.Cancelled,
@@ -414,9 +488,28 @@ namespace NUnit.Framework.Internal
                     ex.StackTrace);
 #endif
             else
-                SetResult(ResultState.Error,
-                    ExceptionHelper.BuildMessage(ex),
-                    ExceptionHelper.BuildStackTrace(ex));
+            {
+                string message = ExceptionHelper.BuildMessage(ex);
+                string stackTrace = ExceptionHelper.BuildStackTrace(ex);
+                SetResult(ResultState.Error, message, stackTrace);
+
+                if (AssertionResults.Count > 0)
+                {
+                    // Add pending failures to the legacy result message
+                    var writer = new StringWriter();
+
+                    writer.WriteLine("\n  Multiple Assert block had {0} failure(s).", AssertionResults.Count);
+
+                    int counter = 0;
+                    foreach (var assertion in AssertionResults)
+                        writer.WriteLine(string.Format("  {0}) {1}", ++counter, assertion.Message));
+
+                    Message += writer.ToString();
+
+                    // Add to the list of assertion errors, so that newer runners will see it
+                    AssertionResults.Add(new AssertionResult(AssertionStatus.Error, message, stackTrace));
+                }
+            }
         }
 
         /// <summary>
@@ -432,7 +525,7 @@ namespace NUnit.Framework.Internal
             if (ex is ResultStateException)
                 SetResult(((ResultStateException)ex).ResultState.WithSite(site),
                     ex.Message,
-                    StackFilter.Filter(ex.StackTrace));
+                    StackFilter.DefaultFilter.Filter(ex.StackTrace));
 #if !PORTABLE
             else if (ex is System.Threading.ThreadAbortException)
                 SetResult(ResultState.Cancelled.WithSite(site),
@@ -469,18 +562,42 @@ namespace NUnit.Framework.Internal
 
             string message = "TearDown : " + ExceptionHelper.BuildMessage(ex);
             if (Message != null)
-                message = Message + NUnit.Env.NewLine + message;
+                message = Message + Environment.NewLine + message;
 
-            string stackTrace = "--TearDown" + NUnit.Env.NewLine + ExceptionHelper.BuildStackTrace(ex);
+            string stackTrace = "--TearDown" + Environment.NewLine + ExceptionHelper.BuildStackTrace(ex);
             if (StackTrace != null)
-                stackTrace = StackTrace + NUnit.Env.NewLine + stackTrace;
+                stackTrace = StackTrace + Environment.NewLine + stackTrace;
 
             SetResult(resultState, message, stackTrace);
         }
 
-#endregion
+        /// <summary>
+        /// Record an assertion result
+        /// </summary>
+        public void RecordAssertion(AssertionResult assertion)
+        {
+            _assertionResults.Add(assertion);
+        }
 
-#region Helper Methods
+        /// <summary>
+        /// Record an assertion result
+        /// </summary>
+        public void RecordAssertion(AssertionStatus status, string message, string stackTrace)
+        {
+            RecordAssertion(new AssertionResult(status, message, stackTrace));
+        }
+
+        /// <summary>
+        /// Record an assertion result
+        /// </summary>
+        public void RecordAssertion(AssertionStatus status, string message)
+        {
+            RecordAssertion(status, message, null);
+        }
+
+        #endregion
+
+        #region Helper Methods
 
         /// <summary>
         /// Adds a reason element to a node and returns it.
@@ -516,6 +633,23 @@ namespace NUnit.Framework.Internal
             return targetNode.AddElementWithCDATA("output", Output);
         }
 
-#endregion
+        private TNode AddAssertionsElement(TNode targetNode)
+        {
+            var assertionsNode = targetNode.AddElement("assertions");
+
+            foreach (var assertion in AssertionResults)
+            {
+                TNode assertionNode = assertionsNode.AddElement("assertion");
+                assertionNode.AddAttribute("result", assertion.Status.ToString());
+                if (assertion.Message != null)
+                    assertionNode.AddElementWithCDATA("message", assertion.Message);
+                if (assertion.StackTrace != null)
+                    assertionNode.AddElementWithCDATA("stack-trace", assertion.StackTrace);
+            }
+
+            return assertionsNode;
+        }
+
+        #endregion
     }
 }

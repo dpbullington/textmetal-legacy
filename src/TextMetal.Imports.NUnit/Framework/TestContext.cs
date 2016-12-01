@@ -22,10 +22,13 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using NUnit.Framework.Constraints;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
+using NUnit.Framework.Internal.Execution;
 
 namespace NUnit.Framework
 {
@@ -74,6 +77,23 @@ namespace NUnit.Framework
             get { return TestExecutionContext.CurrentContext.OutWriter; }
         }
 
+#if !PORTABLE
+        /// <summary>
+        /// Gets a TextWriter that will send output directly to Console.Error
+        /// </summary>
+        public static TextWriter Error = new EventListenerTextWriter("Error", Console.Error);
+
+        /// <summary>
+        /// Gets a TextWriter for use in displaying immediate progress messages
+        /// </summary>
+        public static readonly TextWriter Progress = new EventListenerTextWriter("Progress", Console.Error);
+#endif
+
+        /// <summary>
+        /// TestParameters object holds parameters for the test run, if any are specified
+        /// </summary>
+        public static readonly TestParameters Parameters = new TestParameters();
+
         /// <summary>
         /// Get a representation of the current test.
         /// </summary>
@@ -98,13 +118,22 @@ namespace NUnit.Framework
             get { return _testExecutionContext.WorkerId; }
         }
 
-#if !SILVERLIGHT && !PORTABLE
+#if !PORTABLE
         /// <summary>
         /// Gets the directory containing the current test assembly.
         /// </summary>
         public string TestDirectory
         {
-            get { return AssemblyHelper.GetDirectoryName(_testExecutionContext.CurrentTest.TypeInfo.Assembly); }
+            get
+            {
+                Test test = _testExecutionContext.CurrentTest;
+                if (test != null)
+                    return AssemblyHelper.GetDirectoryName(test.TypeInfo.Assembly);
+
+                // Test is null, we may be loading tests rather than executing.
+                // Assume that calling assembly is the test assembly.
+                return AssemblyHelper.GetDirectoryName(Assembly.GetCallingAssembly());
+            }
         }
 #endif
 
@@ -435,7 +464,7 @@ namespace NUnit.Framework
 
             #endregion
         }
-        
+
         #endregion
     }
 }

@@ -25,8 +25,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using NUnit.Common;
-using NUnit.Framework.Compatibility;
+using System.Security;
+using NUnit.Compatibility;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 using NUnit.Framework.Internal.Builders;
@@ -72,17 +72,15 @@ namespace NUnit.Framework.Api
         /// <returns>
         /// A TestSuite containing the tests found in the assembly
         /// </returns>
-        public ITest Build(Assembly assembly, IDictionary options)
+        public ITest Build(Assembly assembly, IDictionary<string, object> options)
         {
 #if PORTABLE
             log.Debug("Loading {0}", assembly.FullName);
 #else
             log.Debug("Loading {0} in AppDomain {1}", assembly.FullName, AppDomain.CurrentDomain.FriendlyName);
 #endif
-
-#if SILVERLIGHT
-            string assemblyPath = AssemblyHelper.GetAssemblyName(assembly).Name;
-#elif PORTABLE
+            
+#if PORTABLE
             string assemblyPath = AssemblyHelper.GetAssemblyName(assembly).FullName;
 #else
             string assemblyPath = AssemblyHelper.GetAssemblyPath(assembly);
@@ -99,7 +97,7 @@ namespace NUnit.Framework.Api
         /// <returns>
         /// A TestSuite containing the tests found in the assembly
         /// </returns>
-        public ITest Build(string assemblyName, IDictionary options)
+        public ITest Build(string assemblyName, IDictionary<string, object> options)
         {
 #if PORTABLE
             log.Debug("Loading {0}", assemblyName);
@@ -124,13 +122,36 @@ namespace NUnit.Framework.Api
             return testAssembly;
         }
 
-        private TestSuite Build(Assembly assembly, string assemblyPath, IDictionary options)
+        private TestSuite Build(Assembly assembly, string assemblyPath, IDictionary<string, object> options)
         {
             TestSuite testAssembly = null;
 
             try
             {
-                IList fixtureNames = options[PackageSettings.LOAD] as IList;
+                if (options.ContainsKey(FrameworkPackageSettings.DefaultTestNamePattern))
+                    TestNameGenerator.DefaultTestNamePattern = options[FrameworkPackageSettings.DefaultTestNamePattern] as string;
+
+                if (options.ContainsKey(FrameworkPackageSettings.TestParameters))
+                {
+                    string parameters = options[FrameworkPackageSettings.TestParameters] as string;
+                    if (!string.IsNullOrEmpty(parameters))
+                        foreach (string param in parameters.Split(new[] { ';' }))
+                        {
+                            int eq = param.IndexOf("=");
+
+                            if (eq > 0 && eq < param.Length - 1)
+                            {
+                                var name = param.Substring(0, eq);
+                                var val = param.Substring(eq + 1);
+
+                                TestContext.Parameters.Add(name, val);
+                            }
+                        }
+                }
+
+                IList fixtureNames = null;
+                if (options.ContainsKey (FrameworkPackageSettings.LOAD))
+                    fixtureNames = options[FrameworkPackageSettings.LOAD] as IList;
                 var fixtures = GetFixtures(assembly, fixtureNames);
 
                 testAssembly = BuildTestAssembly(assembly, assemblyPath, fixtures);
@@ -217,6 +238,13 @@ namespace NUnit.Framework.Api
             return result;
         }
 
+#if !PORTABLE
+        // This method invokes members on the 'System.Diagnostics.Process' class and must satisfy the link demand of 
+        // the full-trust 'PermissionSetAttribute' on this class. Callers of this method have no influence on how the 
+        // Process class is used, so we can safely satisfy the link demand with a 'SecuritySafeCriticalAttribute' rather
+        // than a 'SecurityCriticalAttribute' and allow use by security transparent callers.
+        [SecuritySafeCritical]  
+#endif
         private TestSuite BuildTestAssembly(Assembly assembly, string assemblyName, IList<Test> fixtures)
         {
             TestSuite testAssembly = new TestAssembly(assembly, assemblyName);
@@ -237,9 +265,7 @@ namespace NUnit.Framework.Api
             testAssembly.ApplyAttributesToTest(assembly);
 
 #if !PORTABLE
-#if !SILVERLIGHT
             testAssembly.Properties.Set(PropertyNames.ProcessID, System.Diagnostics.Process.GetCurrentProcess().Id);
-#endif
             testAssembly.Properties.Set(PropertyNames.AppDomain, AppDomain.CurrentDomain.FriendlyName);
 #endif
 

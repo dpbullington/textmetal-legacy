@@ -26,7 +26,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using NUnit.Framework.Compatibility;
+using NUnit.Compatibility;
 
 namespace NUnit.Framework.Constraints
 {
@@ -123,8 +123,7 @@ namespace NUnit.Framework.Constraints
         /// modifier.
         /// </remarks>
         public bool WithSameOffset { get; set; }
-
-        #endregion
+		#endregion
 
         #region Public Methods
         /// <summary>
@@ -182,9 +181,6 @@ namespace NUnit.Framework.Constraints
             if (x is string && y is string)
                 return StringsEqual((string)x, (string)y);
 
-            if (x is IEnumerable && y is IEnumerable)
-                return EnumerablesEqual((IEnumerable)x, (IEnumerable)y, ref tolerance);
-
             if (x is Stream && y is Stream)
                 return StreamsEqual((Stream)x, (Stream)y);
 
@@ -199,7 +195,6 @@ namespace NUnit.Framework.Constraints
             if (Numerics.IsNumericType(x) && Numerics.IsNumericType(y))
                 return Numerics.AreEqual(x, y, ref tolerance);
 
-#if !NETCF
             if (x is DateTimeOffset && y is DateTimeOffset)
             {
                 bool result;
@@ -224,7 +219,6 @@ namespace NUnit.Framework.Constraints
 
                 return result;
             }
-#endif
 
             if (tolerance != null && tolerance.Value is TimeSpan)
             {
@@ -242,17 +236,23 @@ namespace NUnit.Framework.Constraints
                 return InvokeFirstIEquatableEqualsSecond(x, y, equals);
             if (xType != yType && (equals = FirstImplementsIEquatableOfSecond(yType, xType)) != null)
                 return InvokeFirstIEquatableEqualsSecond(y, x, equals);
-            
+
+            if (x is IEnumerable && y is IEnumerable)
+                return EnumerablesEqual((IEnumerable) x, (IEnumerable) y, ref tolerance);
+
             return x.Equals(y);
         }
 
         private static MethodInfo FirstImplementsIEquatableOfSecond(Type first, Type second)
         {
+            var pair = new KeyValuePair<Type, MethodInfo>();
+
             foreach (var xEquatableArgument in GetEquatableGenericArguments(first))
                 if (xEquatableArgument.Key.IsAssignableFrom(second))
-                    return xEquatableArgument.Value;
+                    if (pair.Key == null || pair.Key.IsAssignableFrom(xEquatableArgument.Key))
+                        pair = xEquatableArgument;
 
-            return null;
+            return pair.Value;
         }
 
         private static IList<KeyValuePair<Type, MethodInfo>> GetEquatableGenericArguments(Type type)

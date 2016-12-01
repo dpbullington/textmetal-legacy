@@ -31,10 +31,11 @@ using NUnit.Framework.Constraints;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal.Execution;
 
-#if !SILVERLIGHT && !NETCF && !PORTABLE
+#if !PORTABLE
 using System.Runtime.Remoting.Messaging;
+using System.Security;
 using System.Security.Principal;
-using NUnit.Framework.Compatibility;
+using NUnit.Compatibility;
 #endif
 
 namespace NUnit.Framework.Internal
@@ -49,7 +50,7 @@ namespace NUnit.Framework.Internal
     /// are called.
     /// </summary>
     public class TestExecutionContext
-#if !SILVERLIGHT && !NETCF && !PORTABLE
+#if !PORTABLE
         : LongLivedMarshalByRefObject, ILogicalThreadAffinative
 #endif
     {
@@ -84,8 +85,6 @@ namespace NUnit.Framework.Internal
 
         private Randomizer _randomGenerator;
 
-        private IWorkItemDispatcher _dispatcher;
-
         /// <summary>
         /// The current culture
         /// </summary>
@@ -101,7 +100,7 @@ namespace NUnit.Framework.Internal
         /// </summary>
         private TestResult _currentResult;
 
-#if !NETCF && !SILVERLIGHT && !PORTABLE
+#if !PORTABLE
         /// <summary>
         /// The current Principal.
         /// </summary>
@@ -124,7 +123,7 @@ namespace NUnit.Framework.Internal
             _currentCulture = CultureInfo.CurrentCulture;
             _currentUICulture = CultureInfo.CurrentUICulture;
 
-#if !NETCF && !SILVERLIGHT && !PORTABLE
+#if !PORTABLE
             _currentPrincipal = Thread.CurrentPrincipal;
 #endif
 
@@ -152,7 +151,7 @@ namespace NUnit.Framework.Internal
             _currentCulture = other.CurrentCulture;
             _currentUICulture = other.CurrentUICulture;
 
-#if !NETCF && !SILVERLIGHT && !PORTABLE
+#if !PORTABLE
             _currentPrincipal = other.CurrentPrincipal;
 #endif
 
@@ -167,46 +166,54 @@ namespace NUnit.Framework.Internal
 
         #region Static Singleton Instance
 
-        /// <summary>
-        /// The current context, head of the list of saved contexts.
-        /// </summary>
-#if SILVERLIGHT || PORTABLE
+        // NOTE: We use different implementations for various platforms
+
+        // If a user creates a thread then the current context
+        // will be null. This also happens when the compiler
+        // automatically creates threads for async methods.
+        // We create a new context, which is automatically
+        // populated with values taken from the current thread.
+
+#if PORTABLE
+        // In the Silverlight and portable builds, we use a ThreadStatic
+        // field to hold the current TestExecutionContext.
+
         [ThreadStatic]
-        private static TestExecutionContext current;
-#elif NETCF
-        private static LocalDataStoreSlot slotContext = Thread.AllocateDataSlot();
-#else
-        private static readonly string CONTEXT_KEY = "NUnit.Framework.TestContext";
-#endif
+        private static TestExecutionContext _currentContext;
 
         /// <summary>
-        /// Gets the current context.
+        /// Gets and sets the current context.
         /// </summary>
-        /// <value>The current context.</value>
         public static TestExecutionContext CurrentContext
         {
             get
             {
-                // If a user creates a thread then the current context
-                // will be null. This also happens when the compiler
-                // automatically creates threads for async methods.
-                // We create a new context, which is automatically
-                // populated with _values taken from the current thread.
-#if SILVERLIGHT || PORTABLE
-                if (current == null)
-                    current = new TestExecutionContext();
+               if (_currentContext == null)
+                    _currentContext = new TestExecutionContext();
 
-                return current;
-#elif NETCF
-                var current = (TestExecutionContext)Thread.GetData(slotContext);
-                if (current == null)
-                {
-                    current = new TestExecutionContext();
-                    Thread.SetData(slotContext, current);
-                }
-
-                return current;
+                return _currentContext;
+            }
+            private set
+            {
+                _currentContext = value;
+            }
+        }
 #else
+        // In all other builds, we use the CallContext
+
+        private static readonly string CONTEXT_KEY = "NUnit.Framework.TestContext";
+
+        /// <summary>
+        /// Gets and sets the current context.
+        /// </summary>
+        public static TestExecutionContext CurrentContext
+        {
+            // This getter invokes security critical members on the 'System.Runtime.Remoting.Messaging.CallContext' class. 
+            // Callers of this method have no influence on how these methods are used so we define a 'SecuritySafeCriticalAttribute' 
+            // rather than a 'SecurityCriticalAttribute' to enable use by security transparent callers.
+            [SecuritySafeCritical]
+            get
+            {
                 var context = GetTestExecutionContext();
                 if (context == null) // This can happen on Mono
                 {
@@ -215,28 +222,28 @@ namespace NUnit.Framework.Internal
                 }
 
                 return context;
-#endif
             }
-
+            // This setter invokes security critical members on the 'System.Runtime.Remoting.Messaging.CallContext' class. 
+            // Callers of this method have no influence on how these methods are used so we define a 'SecuritySafeCriticalAttribute' 
+            // rather than a 'SecurityCriticalAttribute' to enable use by security transparent callers.
+            [SecuritySafeCritical]
             private set
             {
-#if SILVERLIGHT || PORTABLE
-                current = value;
-#elif NETCF
-                Thread.SetData(slotContext, value);
-#else
                 if (value == null)
                     CallContext.FreeNamedDataSlot(CONTEXT_KEY);
                 else
                     CallContext.SetData(CONTEXT_KEY, value);
-#endif
             }
         }
 
-#if !SILVERLIGHT && !NETCF && !PORTABLE
         /// <summary>
         /// Get the current context or return null if none is found.
         /// </summary>
+        /// <remarks></remarks>
+        // This setter invokes security critical members on the 'System.Runtime.Remoting.Messaging.CallContext' class. 
+        // Callers of this method have no influence on how these methods are used so we define a 'SecuritySafeCriticalAttribute' 
+        // rather than a 'SecurityCriticalAttribute' to enable use by security transparent callers.
+        [SecuritySafeCritical]
         public static TestExecutionContext GetTestExecutionContext()
         {
             return CallContext.GetData(CONTEXT_KEY) as TestExecutionContext;
@@ -341,19 +348,10 @@ namespace NUnit.Framework.Internal
         }
 
         /// <summary>
-        /// The current WorkItemDispatcher
+        /// The current WorkItemDispatcher. Made public for 
+        /// use by nunitlite.tests
         /// </summary>
-        internal IWorkItemDispatcher Dispatcher
-        {
-            get
-            {
-                if (_dispatcher == null)
-                    _dispatcher = new SimpleWorkItemDispatcher();
-
-                return _dispatcher;
-            }
-            set { _dispatcher = value; }
-        }
+        public IWorkItemDispatcher Dispatcher { get; set; }
 
         /// <summary>
         /// The ParallelScope to be used by tests running in this context.
@@ -390,6 +388,11 @@ namespace NUnit.Framework.Internal
         }
 
         /// <summary>
+        /// The current nesting level of multiple assert blocks
+        /// </summary>
+        internal int MultipleAssertLevel { get; set; }
+
+        /// <summary>
         /// Gets or sets the test case timeout value
         /// </summary>
         public int TestCaseTimeout { get; set; }
@@ -412,7 +415,7 @@ namespace NUnit.Framework.Internal
             set
             {
                 _currentCulture = value;
-#if !NETCF && !PORTABLE
+#if !PORTABLE
                 Thread.CurrentThread.CurrentCulture = _currentCulture;
 #endif
             }
@@ -427,13 +430,13 @@ namespace NUnit.Framework.Internal
             set
             {
                 _currentUICulture = value;
-#if !NETCF && !PORTABLE
+#if !PORTABLE
                 Thread.CurrentThread.CurrentUICulture = _currentUICulture;
 #endif
             }
         }
 
-#if !NETCF && !SILVERLIGHT && !PORTABLE
+#if !PORTABLE
         /// <summary>
         /// Gets or sets the current <see cref="IPrincipal"/> for the Thread.
         /// </summary>
@@ -472,7 +475,7 @@ namespace NUnit.Framework.Internal
             _currentCulture = CultureInfo.CurrentCulture;
             _currentUICulture = CultureInfo.CurrentUICulture;
 
-#if !NETCF && !SILVERLIGHT && !PORTABLE
+#if !PORTABLE
             _currentPrincipal = Thread.CurrentPrincipal;
 #endif
         }
@@ -484,12 +487,9 @@ namespace NUnit.Framework.Internal
         /// </summary>
         public void EstablishExecutionEnvironment()
         {
-#if !NETCF && !PORTABLE
+#if !PORTABLE
             Thread.CurrentThread.CurrentCulture = _currentCulture;
             Thread.CurrentThread.CurrentUICulture = _currentUICulture;
-#endif
-
-#if !NETCF && !SILVERLIGHT && !PORTABLE
             Thread.CurrentPrincipal = _currentPrincipal;
 #endif
 
@@ -527,11 +527,12 @@ namespace NUnit.Framework.Internal
 
         #region InitializeLifetimeService
 
-#if !SILVERLIGHT && !NETCF && !PORTABLE
+#if !PORTABLE
         /// <summary>
         /// Obtain lifetime service object
         /// </summary>
         /// <returns></returns>
+        [SecurityCritical]  // Override of security critical method must be security critical itself
         public override object InitializeLifetimeService()
         {
             return null;

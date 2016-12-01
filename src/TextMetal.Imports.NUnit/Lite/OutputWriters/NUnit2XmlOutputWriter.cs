@@ -57,17 +57,15 @@ namespace NUnitLite
         /// </summary>
         /// <param name="result">The test result for the run</param>
         /// <param name="writer">The TextWriter to which the xml will be written</param>
-        public override void WriteResultFile(ITestResult result, TextWriter writer, IDictionary runSettings, TestFilter filter)
+        /// <param name="runSettings"></param>
+        /// <param name="filter"></param>
+        public override void WriteResultFile(ITestResult result, TextWriter writer, IDictionary<string, object> runSettings, TestFilter filter)
         {
             // NOTE: Under .NET 1.1, XmlTextWriter does not implement IDisposable,
             // but does implement Close(). Hence we cannot use a 'using' clause.
             //using (XmlTextWriter xmlWriter = new XmlTextWriter(writer))
-#if SILVERLIGHT
-            XmlWriter xmlWriter = XmlWriter.Create(writer);
-#else
             XmlTextWriter xmlWriter = new XmlTextWriter(writer);
             xmlWriter.Formatting = Formatting.Indented;
-#endif
 
             try
             {
@@ -135,19 +133,15 @@ namespace NUnitLite
             xmlWriter.WriteAttributeString("os-version",
                                            Environment.OSVersion.ToString());
             xmlWriter.WriteAttributeString("platform",
-                Environment.OSVersion.Platform.ToString());
-#if !NETCF
+                                           Environment.OSVersion.Platform.ToString());
             xmlWriter.WriteAttributeString("cwd",
                                            Environment.CurrentDirectory);
-#if !SILVERLIGHT
             xmlWriter.WriteAttributeString("machine-name",
                                            Environment.MachineName);
             xmlWriter.WriteAttributeString("user",
                                            Environment.UserName);
             xmlWriter.WriteAttributeString("user-domain",
                                            Environment.UserDomainName);
-#endif
-#endif
             xmlWriter.WriteEndElement();
         }
 
@@ -194,8 +188,8 @@ namespace NUnitLite
             if (suite != null)
             {
                 xmlWriter.WriteStartElement("test-suite");
-                xmlWriter.WriteAttributeString("type", suite.TestType);
-                xmlWriter.WriteAttributeString("name", suite.TestType == "Assembly"
+                xmlWriter.WriteAttributeString("type", suite.TestType == "ParameterizedMethod" ? "ParameterizedTest" : suite.TestType);
+                xmlWriter.WriteAttributeString("name", suite.TestType == "Assembly" || suite.TestType == "Project"
                     ? result.Test.FullName
                     : result.Test.Name);
             }

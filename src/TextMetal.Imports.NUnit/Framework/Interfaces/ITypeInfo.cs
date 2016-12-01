@@ -23,7 +23,7 @@
 
 using System;
 using System.Reflection;
-using NUnit.Framework.Compatibility;
+using NUnit.Compatibility;
 
 namespace NUnit.Framework.Interfaces
 {
@@ -133,6 +133,11 @@ namespace NUnit.Framework.Interfaces
         /// that match the specified flags.
         /// </summary>
         IMethodInfo[] GetMethods(BindingFlags flags);
+
+        /// <summary>
+        /// Gets the public constructor taking the specified argument Types
+        /// </summary>
+        ConstructorInfo GetConstructor(Type[] argTypes);
 
         /// <summary>
         /// Returns a value indicating whether this Type has a public constructor taking the specified argument Types.

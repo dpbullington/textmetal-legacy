@@ -25,6 +25,8 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using NUnit.Framework.Constraints;
+using NUnit.Framework.Interfaces;
+using NUnit.Framework.Internal;
 
 namespace NUnit.Framework
 {
@@ -102,6 +104,10 @@ namespace NUnit.Framework
             else if (args != null && args.Length > 0)
                 message = string.Format(message, args);
 
+            // If we are in a multiple assert block, this is an error
+            if (TestExecutionContext.CurrentContext.MultipleAssertLevel > 0)
+                throw new Exception("Assert.Pass may not be used in a multiple assertion block.");
+
             throw new SuccessException(message);
         }
 
@@ -142,7 +148,7 @@ namespace NUnit.Framework
             else if (args != null && args.Length > 0)
                 message = string.Format(message, args);
 
-            throw new AssertionException(message);
+            ReportFailure(message);
         }
 
         /// <summary>
@@ -179,6 +185,10 @@ namespace NUnit.Framework
             if (message == null) message = string.Empty;
             else if (args != null && args.Length > 0)
                 message = string.Format(message, args);
+
+            // If we are in a multiple assert block, this is an error
+            if (TestExecutionContext.CurrentContext.MultipleAssertLevel > 0)
+                throw new Exception("Assert.Ignore may not be used in a multiple assertion block.");
 
             throw new IgnoreException(message);
         }
@@ -218,6 +228,10 @@ namespace NUnit.Framework
             else if (args != null && args.Length > 0)
                 message = string.Format(message, args);
 
+            // If we are in a multiple assert block, this is an error
+            if (TestExecutionContext.CurrentContext.MultipleAssertLevel > 0)
+                throw new Exception("Assert.Inconclusive may not be used in a multiple assertion block.");
+
             throw new InconclusiveException(message);
         }
 
@@ -245,10 +259,10 @@ namespace NUnit.Framework
         #region Contains
 
         /// <summary>
-        /// Asserts that an object is contained in a list.
+        /// Asserts that an object is contained in a collection.
         /// </summary>
         /// <param name="expected">The expected object</param>
-        /// <param name="actual">The list to be examined</param>
+        /// <param name="actual">The collection to be examined</param>
         /// <param name="message">The message to display in case of failure</param>
         /// <param name="args">Array of objects to be used in formatting the message</param>
         public static void Contains(object expected, ICollection actual, string message, params object[] args)
@@ -257,10 +271,10 @@ namespace NUnit.Framework
         }
 
         /// <summary>
-        /// Asserts that an object is contained in a list.
+        /// Asserts that an object is contained in a collection.
         /// </summary>
         /// <param name="expected">The expected object</param>
-        /// <param name="actual">The list to be examined</param>
+        /// <param name="actual">The collection to be examined</param>
         public static void Contains(object expected, ICollection actual)
         {
             Assert.That(actual, new CollectionContainsConstraint(expected) ,null, null);
@@ -270,16 +284,104 @@ namespace NUnit.Framework
 
         #region Multiple
 
-        ///// <summary>
-        ///// If an assert fails within this block, execution will continue and 
-        ///// the errors will be reported at the end of the block.
-        ///// </summary>
-        ///// <param name="del">The test delegate</param>
-        //public static void Multiple(TestDelegate del)
-        //{
-        //    del();
-        //}
+        /// <summary>
+        /// Wraps code containing a series of assertions, which should all
+        /// be executed, even if they fail. Failed results are saved and
+        /// reported at the end of the code block.
+        /// </summary>
+        /// <param name="testDelegate">A TestDelegate to be executed in Multiple Assertion mode.</param>
+        public static void Multiple(TestDelegate testDelegate)
+        {
+            TestExecutionContext context = TestExecutionContext.CurrentContext;
+            Guard.OperationValid(context != null, "Assert.Multiple called outside of a valid TestExecutionContext");
+
+            context.MultipleAssertLevel++;
+
+            try
+            {
+                testDelegate();
+            }
+            finally
+            {
+                context.MultipleAssertLevel--;
+            }
+
+            if (context.MultipleAssertLevel == 0)
+            {
+                int count = context.CurrentResult.AssertionResults.Count;
+
+                if (count > 0)
+                {
+                    var writer = new TextMessageWriter("Multiple Assert block had {0} failure(s).", count);
+
+                    int counter = 0;
+                    foreach (var assertion in context.CurrentResult.AssertionResults)
+                        writer.WriteLine(string.Format("  {0}) {1}", ++counter, assertion.Message));
+
+                    throw new AssertionException(writer.ToString());
+                }
+            }
+        }
 
         #endregion
+
+        #region Helper Methods
+
+        private static void ReportFailure(ConstraintResult result, string message)
+        {
+            ReportFailure(result, message, null);
+        }
+
+        private static void ReportFailure(ConstraintResult result, string message, params object[] args)
+        {
+            MessageWriter writer = new TextMessageWriter(message, args);
+            result.WriteMessageTo(writer);
+
+            ReportFailure(writer.ToString());
+        }
+
+        private static void ReportFailure(string message)
+        {
+            // Failure is recorded in <assertion> element in all cases
+            TestExecutionContext.CurrentContext.CurrentResult.RecordAssertion(
+                AssertionStatus.Failed, message, GetStackTrace());
+
+            // If we are outside any multiple assert block, then throw
+            if (TestExecutionContext.CurrentContext.MultipleAssertLevel == 0)
+                throw new AssertionException(message);
+        }
+
+        // System.Envionment.StackTrace puts extra entries on top of the stack, at least in some environments
+        private static StackFilter SystemEnvironmentFilter = new StackFilter(@" System\.Environment\.");
+
+        private static string GetStackTrace()
+        {
+            string stackTrace = null;
+
+#if PORTABLE && !NETSTANDARD1_6
+            // TODO: This isn't actually working! Since we catch it right here,
+            // the stack trace only has one entry.
+            try
+            {
+                // Throw to get stack trace for recording the assertion
+                throw new Exception();
+            }
+            catch (Exception ex)
+            {
+                stackTrace = ex.StackTrace;
+            }
+#else
+            stackTrace = SystemEnvironmentFilter.Filter(Environment.StackTrace);
+#endif
+
+            return StackFilter.DefaultFilter.Filter(stackTrace);
+        }
+
+        private static void IncrementAssertCount()
+        {
+            TestExecutionContext.CurrentContext.IncrementAssertCount();
+        }
+
+#endregion
     }
 }
