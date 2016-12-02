@@ -1,4 +1,4 @@
-﻿{
+{
 	"version": "9.0.0-*",
 	"description": "TextMetal Middleware Datazoid Primitives Library",
 	"authors":
@@ -42,7 +42,7 @@
 		{
 			"dependencies":
 			{
-			
+
 			}
 		}
 	},
@@ -53,7 +53,7 @@
 		"TextMetal.Middleware.Solder.Injection": "9.0.0-*",
 		"TextMetal.Middleware.Solder.Utilities": "9.0.0-*",
 		"TextMetal.Middleware.Solder.Extensions": "9.0.0-*",
-		"NETStandard.Library": "1.6.0",
-		"System.Threading.Tasks": "4.0.11"
+		"NETStandard.Library": "1.6.1",
+		"System.Threading.Tasks": "4.3.0"
 	}
 }

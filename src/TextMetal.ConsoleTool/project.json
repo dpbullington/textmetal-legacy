@@ -58,9 +58,8 @@
 
 	"dependencies":
 	{
+		"System.Data.SqlClient": "4.3.0",
 		"TextMetal.Framework": "9.0.0-*",
-		"TextMetal.Middleware.Solder.Executive": "9.0.0-*",
-
-		"System.Data.SqlClient": "4.1.0"
+		"TextMetal.Middleware.Solder.Executive": "9.0.0-*"
 	}
 }

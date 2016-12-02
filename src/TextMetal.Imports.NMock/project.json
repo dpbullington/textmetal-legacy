@@ -1,22 +1,31 @@
 {
 	"version": "9.0.0-*",
 	"description": "TextMetal Imports NMock Library",
-	"authors": [ "©2002-2016 Daniel Bullington (dpbullington@gmail.com)" ],
+	"authors":
+	[
+		"©2002-2016 Daniel Bullington (dpbullington@gmail.com)"
+	],
 
-	"packOptions": {
+	"packOptions":
+	{
 		"licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
 		"iconUrl": "https://github.com/dpbullington/textmetal/blob/master/doc/textmetal-logo.png",
 		"projectUrl": "http://www.textmetal.com",
 		"summary": "A zero friction, open source meta-programming framework for .NET.",
 		"requireLicenseAcceptance": false,
-		"tags": [ "TextMetal" ],
-		"repository": {
+		"tags":
+		[
+			"TextMetal"
+		],
+		"repository":
+		{
 			"type": "git",
 			"url": "https://github.com/textmetal/main"
 		}
 	},
 
-	"buildOptions": {
+	"buildOptions":
+	{
 		"keyFile": "../TextMetal.snk",
 		"warningsAsErrors": false,
 		"compile":
@@ -29,32 +38,41 @@
 		}
 	},
 
-	"frameworks": {
-		"netstandard1.6": {
-			"buildOptions": {
-				"define": [ "NETCORE" ]
+	"frameworks":
+	{
+		"netstandard1.6":
+		{
+			"buildOptions":
+			{
+				"define":
+				[
+					"NETCORE"
+				]
 			},
 
-			"dependencies": {	}
+			"dependencies":
+			{
+			}
 		}
 	},
 
-    "dependencies": {
-        "Microsoft.CSharp": "4.0.1",
-        "NETStandard.Library": "1.6.0",
-        "System.Collections.Specialized": "4.0.1",
-        "System.ComponentModel": "4.0.1",
-        "System.ComponentModel.TypeConverter": "4.1.0",
-        "System.Data.Common": "4.1.0",
-        "System.Diagnostics.Contracts": "4.0.1",
-        "System.Diagnostics.TraceSource": "4.0.0",
-        "System.Dynamic.Runtime": "4.0.11",
-        "System.Linq.Expressions": "4.1.0",
-        "System.Reflection.Emit": "4.0.1",
-        "System.Reflection.Emit.ILGeneration": "4.0.1",
-        "System.Reflection.Emit.Lightweight": "4.0.1",
-        "System.Runtime.Serialization.Primitives": "4.1.1",
-        "System.Xml.XmlDocument": "4.0.1",
-        "TextMetal.Imports.CastleCore": "9.0.0-*"
-    }
+	"dependencies":
+	{
+		"Microsoft.CSharp": "4.3.0",
+		"NETStandard.Library": "1.6.1",
+		"System.Collections.Specialized": "4.3.0",
+		"System.ComponentModel": "4.3.0",
+		"System.ComponentModel.TypeConverter": "4.3.0",
+		"System.Data.Common": "4.3.0",
+		"System.Diagnostics.Contracts": "4.3.0",
+		"System.Diagnostics.TraceSource": "4.3.0",
+		"System.Dynamic.Runtime": "4.3.0",
+		"System.Linq.Expressions": "4.3.0",
+		"System.Reflection.Emit": "4.3.0",
+		"System.Reflection.Emit.ILGeneration": "4.3.0",
+		"System.Reflection.Emit.Lightweight": "4.3.0",
+		"System.Runtime.Serialization.Primitives": "4.3.0",
+		"System.Xml.XmlDocument": "4.3.0",
+		"TextMetal.Imports.CastleCore": "9.0.0-*"
+	}
 }

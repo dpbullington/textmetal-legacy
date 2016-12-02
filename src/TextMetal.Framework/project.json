@@ -1,4 +1,4 @@
-﻿{
+{
 	"version": "9.0.0-*",
 	"description": "TextMetal Framework Library",
 	"authors":
@@ -62,7 +62,7 @@
 		"TextMetal.Middleware.Solder.Injection": "9.0.0-*",
 		"TextMetal.Middleware.Solder.Extensions": "9.0.0-*",
 		"TextMetal.Middleware.Datazoid.Extensions": "9.0.0-*",
-		"System.Collections.NonGeneric": "4.0.1",
-		"NETStandard.Library": "1.6.0"
+		"NETStandard.Library": "1.6.1",
+		"System.Collections.NonGeneric": "4.3.0"
 	}
 }

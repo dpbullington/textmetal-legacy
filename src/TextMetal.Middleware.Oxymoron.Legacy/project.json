@@ -1,4 +1,4 @@
-﻿{
+{
 	"version": "9.0.0-*",
 	"description": "TextMetal Middleware Oxymoron Legacy Library",
 	"authors":
@@ -43,7 +43,7 @@
 		{
 			"dependencies":
 			{
-			
+
 			}
 		}
 	},
@@ -56,8 +56,8 @@
 		"TextMetal.Middleware.Textual.Delimited": "9.0.0-*",
 		"TextMetal.Middleware.Datazoid.UoW": "9.0.0-*",
 		"TextMetal.Middleware.Datazoid.Extensions": "9.0.0-*",
-		"System.Data.SqlClient": "4.1.0",
-		"NETStandard.Library": "1.6.0",
-		"System.Security.Cryptography.Algorithms": "4.2.0"
+		"NETStandard.Library": "1.6.1",
+		"System.Data.SqlClient": "4.3.0",
+		"System.Security.Cryptography.Algorithms": "4.3.0"
 	}
 }

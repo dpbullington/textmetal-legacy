@@ -43,7 +43,7 @@
 		]
 	},
 
-		"frameworks":
+	"frameworks":
 	{
 		"netcoreapp1.1":
 		{
