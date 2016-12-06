@@ -1,5 +1,5 @@
 ﻿/*
-	Copyright ©2002-2015 Daniel Bullington (dpbullington@gmail.com)
+	Copyright ©2002-2017 Daniel P. Bullington (dpbullington@gmail.com)
 	Commercial software distribution. May contain open source.
 */
 
