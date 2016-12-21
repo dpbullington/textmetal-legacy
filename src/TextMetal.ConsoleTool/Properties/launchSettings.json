@@ -178,10 +178,6 @@
 				"ENV_VAR_SOLDER_ENABLE_ASSMBLY_LOADER_EVENTS": "false",
 				"SOLDER_HOOK_UNHANDLED_EXCEPTIONS": "false"
 			}
-		},
-		"TextMetal.ConsoleTool":
-		{
-			"commandName": "Project"
 		}
 	}
 }

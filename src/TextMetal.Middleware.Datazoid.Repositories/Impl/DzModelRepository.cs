@@ -29,7 +29,7 @@ namespace TextMetal.Middleware.Datazoid.Repositories.Impl
 	{
 		#region Constructors/Destructors
 
-		protected DzModelRepository(IDataTypeFascade dataTypeFascade, IAppConfigFascade appConfigFascade, IDataSourceTagStrategy dataSourceTagStrategy)
+		public DzModelRepository(IDataTypeFascade dataTypeFascade, IAppConfigFascade appConfigFascade, IDataSourceTagStrategy dataSourceTagStrategy)
 			: base(dataTypeFascade, appConfigFascade)
 		{
 			if ((object)dataSourceTagStrategy == null)

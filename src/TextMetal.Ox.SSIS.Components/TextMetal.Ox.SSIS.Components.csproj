@@ -78,6 +78,7 @@
     <Compile Include="DtsDictionaryAdapter.cs" />
     <Compile Include="DtsSourceAdapter.cs" />
     <Compile Include="DtsAdoNetAdapterConfiguration.cs" />
+    <Compile Include="ImpersonationScope.cs" />
     <Compile Include="Properties\ThisAssemblyInfo_project.cs" />
     <Compile Include="Properties\ThisAssemblyInfo_solution.cs" />
     <Compile Include="__ComponentMetadataWrapper.cs" />

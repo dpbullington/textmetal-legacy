@@ -49,10 +49,6 @@
 
 			"dependencies":
 			{
-				"TextMetal.Imports.CastleCore": "9.0.0-*",
-				"TextMetal.Imports.Jint": "9.0.0-*",
-				"TextMetal.Imports.NMock": "9.0.0-*",
-				"TextMetal.Imports.NUnit": "9.0.0-*"
 
 			}
 		}
@@ -60,6 +56,10 @@
 
 	"dependencies":
 	{
-		"NETStandard.Library": "1.6.1"
+		"NETStandard.Library": "1.6.1",
+		"TextMetal.Imports.CastleCore": "9.0.0-*",
+		"TextMetal.Imports.Jint": "9.0.0-*",
+		"TextMetal.Imports.NMock": "9.0.0-*",
+		"TextMetal.Imports.NUnit": "9.0.0-*"
 	}
 }

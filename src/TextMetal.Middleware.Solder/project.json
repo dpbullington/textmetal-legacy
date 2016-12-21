@@ -49,21 +49,20 @@
 
 			"dependencies":
 			{
-				"TextMetal.Middleware.Solder.Context": "9.0.0-*",
-				"TextMetal.Middleware.Solder.Executive": "9.0.0-*",
-				"TextMetal.Middleware.Solder.Extensions": "9.0.0-*",
-				"TextMetal.Middleware.Solder.Injection": "9.0.0-*",
-				"TextMetal.Middleware.Solder.Interception": "9.0.0-*",
-				"TextMetal.Middleware.Solder.Primitives": "9.0.0-*",
-				"TextMetal.Middleware.Solder.Serialization": "9.0.0-*",
-				"TextMetal.Middleware.Solder.Utilities": "9.0.0-*"
-
 			}
 		}
 	},
 
 	"dependencies":
 	{
-		"NETStandard.Library": "1.6.1"
+		"NETStandard.Library": "1.6.1",
+		"TextMetal.Middleware.Solder.Context": "9.0.0-*",
+		"TextMetal.Middleware.Solder.Executive": "9.0.0-*",
+		"TextMetal.Middleware.Solder.Extensions": "9.0.0-*",
+		"TextMetal.Middleware.Solder.Injection": "9.0.0-*",
+		"TextMetal.Middleware.Solder.Interception": "9.0.0-*",
+		"TextMetal.Middleware.Solder.Primitives": "9.0.0-*",
+		"TextMetal.Middleware.Solder.Serialization": "9.0.0-*",
+		"TextMetal.Middleware.Solder.Utilities": "9.0.0-*"
 	}
 }

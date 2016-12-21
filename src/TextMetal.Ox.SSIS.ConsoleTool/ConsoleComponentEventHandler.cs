@@ -1,6 +1,6 @@
 ﻿/*
 	Copyright ©2002-2017 Daniel P. Bullington (dpbullington@gmail.com)
-	Commercial software distribution. May contain open source.
+	Distributed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 */
 
 using System;
